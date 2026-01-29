@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sass styles/chalcedony.scss:styles/chalcedony.css
+npm run sass styles/blackbird.scss:styles/blackbird.css

@@ -1,0 +1,34 @@
+@use "../variables";
+
+.tab-control {
+  display: flex;
+
+  .tab {
+    cursor: pointer;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+
+    color: variables.$fg-weak;
+    border: variables.$border-transparent;
+    border-bottom: none;
+
+    &:not(.active):hover { color: variables.$fg-body; }
+    &:not(.active):active { color: variables.$fg-strong; }
+  }
+
+  .tab.active {
+    cursor: default;
+
+    color: variables.$fg-strong;
+    background-color: rgba(0,0,0,0.70);
+    border: variables.$border-normal;
+    border-bottom: none;
+    box-shadow: variables.$shadow-overlay;
+  }
+}
+
+.tab-container {
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+}

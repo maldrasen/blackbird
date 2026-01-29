@@ -1,0 +1,97 @@
+@use "../variables";
+
+#centerAlerts {
+  display: flex;
+  position: fixed;
+  bottom: 60vh;
+  width: 100%;
+  justify-content: center;
+  z-index: variables.$z-alerts;
+}
+
+#sideAlerts {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: variables.$z-alerts;
+}
+
+#eventAlerts {
+  display: flex;
+  position: fixed;
+  bottom: 177px;
+  width: 100%;
+  justify-content: center;
+  z-index: variables.$z-alerts;
+}
+
+@mixin alert-frame {
+  max-width: 400px;
+  font-size: variables.$fs-big;
+  text-align: left;
+  cursor: pointer;
+  background-color: rgba(0,0,0,0.8);
+  border: variables.$border-normal;
+  box-shadow: variables.$shadow-frame;
+  transition: opacity 1s, transform 1s;
+  transition-timing-function: ease-in;
+
+  &.fade {
+    position: fixed;
+    opacity: 0;
+    transform: scale(1.5);
+  }
+
+  & .title {
+    border-bottom: variables.$border-light;
+    font-size: variables.$fs-bigger;
+    color: variables.$fg-strong;
+    font-family: roboto-medium;
+    text-align: left;
+  }
+}
+
+.alert.center {
+  margin-right: 10px;
+  padding: 10px 20px;
+  @include alert-frame;
+}
+
+.alert.event {
+  margin-right: 5px;
+  padding: 5px 10px;
+  @include alert-frame;
+}
+
+.alert.side {
+  margin-bottom: 5px;
+  padding: 5px 10px;
+  @include alert-frame;
+}
+
+.alert {
+  .title { filter:brightness(100%) contrast(50%); }
+  .message { filter: brightness(100%) contrast(25%); }
+}
+
+.alert.info {
+  .message { color: variables.$fg-info; }
+  .title { color: variables.$fg-info; }
+}
+.alert.success {
+  .message { color: variables.$fg-success; }
+  .title { color: variables.$fg-success; }
+}
+.alert.warning {
+  .message { color: variables.$fg-warning; }
+  .title { color: variables.$fg-warning; }
+}
+.alert.error {
+  .message { color: variables.$fg-error; }
+  .title { color: variables.$fg-error; }
+}
+
+// $fg-info-bright: rgb(250,250,250);
+// $fg-success-bright: rgb(150,250,150);
+// $fg-warning-bright: rgb(250,250,150);
+// $fg-error-bright: rgb(250,150,150);

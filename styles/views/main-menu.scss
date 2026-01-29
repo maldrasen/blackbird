@@ -1,0 +1,48 @@
+@use "../layout";
+@use "../variables";
+
+#mainMenu {
+  position: absolute;
+  top: calc(50vh - 100px);
+  left: calc((100% - 300px)/2);
+  z-index: variables.$z-main-menu;
+
+  .base-frame {
+    width: 290px;
+  }
+
+  h1 {
+    font-family: baskerville;
+  }
+
+  ul {
+    a.button {
+      position: relative;
+      left: -20px;
+      margin-bottom: 5px;
+      width: 300px;
+    }
+  }
+}
+
+#menuCover {
+  @include layout.full-screen;
+  z-index: variables.$z-menu-cover;
+  background-color: rgba(20,15,10,0.666);
+  box-shadow: 0 0 100px 25px rgb(0,0,0) inset;
+}
+
+.close-menu-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  height: 12px;
+  width: 12px;
+  background-size: contain;
+  opacity: 0.33;
+  border: none;
+}
+.close-menu-button:hover {
+  border: none;
+  opacity: 0.66;
+}

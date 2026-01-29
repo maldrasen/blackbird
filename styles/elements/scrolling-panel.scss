@@ -1,0 +1,42 @@
+@use "../variables";
+
+.scrolling-panel-parent {
+  overflow: hidden;
+}
+.scrolling-panel-frame {
+  box-shadow: variables.$shadow-frame;
+}
+.scrolling-panel {
+  display: flex;
+  overflow: hidden;
+  height: 100%;
+  min-height: 100px;
+}
+.scrolling-panel-track {
+  width: 10px;
+  background-color: variables.$bg-scrolling-panel-track;
+  cursor: pointer;
+  box-shadow: variables.$shadow-scrolling-panel-track;
+}
+.scrolling-panel-track.off {
+  display: none;
+}
+.scrolling-panel-thumbwheel {
+  position: relative;
+  top: 0;
+  height: 100px;
+  width: 10px;
+  background-color: variables.$bg-scrolling-panel-thumb;
+  border-left: variables.$border-scrolling-panel-thumb-top;
+  border-top: variables.$border-scrolling-panel-thumb-top;
+  border-right: variables.$border-scrolling-panel-thumb-bottom;
+  border-bottom: variables.$border-scrolling-panel-thumb-bottom;
+  box-shadow: variables.$shadow-scrolling-panel-thumb;
+}
+.scrolling-panel-thumbwheel:hover {
+  background-color: variables.$bg-scrolling-panel-thumb-hover;
+}
+.scrolling-panel-content {
+  position: relative;
+  flex-grow: 1;
+}

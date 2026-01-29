@@ -1,0 +1,185 @@
+@use "variables";
+
+
+@mixin full-screen {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.background-image {
+  @include full-screen;
+  background-position: center;
+  background-size: cover;
+}
+
+.root-element {
+  @include full-screen;
+  z-index: variables.$z-root;
+}
+
+.center-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.base-frame {
+  display: block;
+  padding: 10px;
+  border: variables.$border-normal;
+  background-color: variables.$bg-frame;
+  box-shadow: variables.$shadow-frame;
+}
+
+// Flex Container Classes
+.flex { display:flex;  }
+.flex-center { justify-content: center; } // Align Horizontally
+.flex-middle { align-items: center; }     // Align Vertically
+.flex-wrap { flex-wrap: wrap; }
+
+// Flex Item Classes
+.flex-grow { flex-grow:1; }
+
+
+
+// === Dialog ===
+// The two main layout containers are the dialogs and the overlays. Dialogs
+// either have a set size or are sized to the size of their content. The size
+// of an overlay is dependent on the window size.
+//
+// Another difference is the dialogs have a nested structure, with a container
+// a body, and a footer. The overlays have the overlay and the footer in a flat
+// structure.
+
+.dialog-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: variables.$z-overlay;
+
+  .dialog-body {
+    background-color: rgba(0,0,0,0.70);
+    border: variables.$border-normal;
+    border-bottom: variables.$border-light;
+    box-shadow: variables.$shadow-overlay;
+    overflow: hidden;
+
+    .dialog-footer {
+      text-align: right;
+      padding: 5px;
+      margin-top: 5px;
+
+      background-color: rgba(0,0,0,0.80);
+      border-top: variables.$border-normal;
+      box-shadow: variables.$shadow-overlay;
+      z-index: variables.$z-overlay-footer;
+    }
+  }
+}
+
+// === Overlay ===
+// Overlays come in a few different sizes. The normal overlay takes up most of
+// the screen. The narrow and small overlays have a larger padding to the
+// screen edge, but both are larger than most dialogs will be.
+
+.overlay {
+  position: absolute;
+  top: 50px;
+  bottom: 98px;
+  left: 50px;
+  right: 50px;
+  min-width: 800px;
+  background-color: rgba(0,0,0,0.70);
+  border: variables.$border-normal;
+  border-bottom: variables.$border-light;
+  box-shadow: variables.$shadow-overlay;
+  z-index: variables.$z-overlay;
+  overflow: hidden;
+}
+.overlay.light-overlay {
+  background-color: rgba(0,0,0,0.50);
+}
+
+.overlay.narrow {
+  left: 200px;
+  min-width: 400px;
+  width: calc(100% - 400px);
+}
+
+.overlay.small {
+  left: 200px;
+  top: 200px;
+  min-width: 400px;
+  min-height: 200px;
+  width: calc(100% - 400px);
+  height: calc(100% - 400px);
+}
+
+.overlay-footer {
+  position: absolute;
+  bottom: 55px;
+  left: 50px;
+  right: 50px;
+  min-width: 790px;
+  height: 32px;
+
+  padding: 5px;
+  margin-top: 5px;
+
+  background-color: rgba(0,0,0,0.80);
+  border: variables.$border-normal;
+  border-top: none;
+  //box-shadow: $shadow-overlay;
+
+  z-index: variables.$z-overlay-footer;
+}
+
+.overlay-footer.button-row {
+  text-align: right;
+}
+
+.overlay-footer.narrow {
+  left: 200px;
+  right: 200px;
+  min-width: 390px;
+}
+
+.overlay-footer.small {
+  left: 200px;
+  right: 200px;
+  bottom: 156px;
+  min-width: 390px;
+}
+
+.overlay-header {
+  position: absolute;
+  top: 50px;
+  height: 30px;
+  left: 50px;
+  right: 50px;
+  min-width: 800px;
+
+  overflow: hidden;
+
+  z-index: variables.$z-overlay-footer;
+}
+.overlay-header.narrow {
+  left: 200px;
+  right: 200px;
+  min-width: 400px;
+}
+.overlay.with-header {
+  top: 80px;
+}

@@ -1,0 +1,40 @@
+@use "../variables";
+
+#optionsOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: variables.$z-options-overlay;
+
+  #keyBindingList {
+    width: 430px;
+    min-width: 430px;
+    margin: auto;
+
+    li {
+      height: 35px;
+    }
+    span {
+      display: inline-block;
+      height: 30px;
+      line-height: 30px;
+    }
+    .binding-name {
+      width: 200px;
+    }
+    .binding-input {
+      width: 100px;
+      padding: 0 5px;
+      cursor: pointer;
+      border: variables.$border-light;
+      box-shadow: variables.$shadow-button;
+    }
+    .binding-input:hover {
+      border: variables.$border-normal;
+    }
+    .binding-input.recording {
+      background-color: variables.$bg-input-active;
+      box-shadow: variables.$shadow-inset-button;
+    }
+  }
+
+}

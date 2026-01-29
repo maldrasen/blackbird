@@ -1,7 +1,7 @@
 global.FileHelper = (function() {
 
   function readFile(path) {
-    return fs.readFileSync(`${APP}/${path}`, 'utf8');
+    return fs.readFileSync(`${ROOT}/${path}`, 'utf8');
   }
 
   function readJSON(path) {

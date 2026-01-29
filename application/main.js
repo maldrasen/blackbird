@@ -1,11 +1,9 @@
-global.APP = `${ROOT}/application`;
 
 global.Main = async function() {
   try {
-    // await MainContent.loadDependencies();
-    // MainContent.loadStyles();
-    // MainContent.loadMainContent();
-    //
+    MainContent.loadStyles();
+    MainContent.loadMainContent();
+
     // Models.init();
     // Elements.initAll();
     // Components.initAll();
@@ -24,6 +22,10 @@ global.Main = async function() {
     // }});
   }
   catch(error) {
-    logError("Error booting main", error, { system:'Main' });
+
+
+    console.error(error)
+
+    // logError("Error booting main", error, { system:'Main' });
   }
 }

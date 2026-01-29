@@ -1,0 +1,156 @@
+@use "sass:color";
+@use "../variables";
+
+@mixin button($color) {
+  display: inline-block;
+  font-family: crete;
+  padding: 0 10px;
+  line-height: 30px;
+  white-space: nowrap;
+  cursor: pointer;
+  background-color: variables.$bg-button;
+  color: color.adjust($color, $alpha: -0.25) !important;
+  border: 1px solid color.adjust($color, $alpha: -0.8);
+  border-radius: 3px;
+  box-shadow: variables.$shadow-button;
+
+  &:focus {
+    color: color.adjust($color, $alpha: -0.25) !important;
+    border-color: color.adjust($color, $alpha: -0.8);
+  }
+  &:hover {
+    color: $color !important;
+    border-color: color.adjust($color, $alpha: -0.7);
+  }
+  &:active {
+    box-shadow: variables.$shadow-inset-button;
+  }
+
+  &:before { content:''; }
+  &:after { content:''; }
+}
+
+.button { @include button(variables.$fg-button-default); }
+.button-danger { @include button(variables.$fg-button-danger); }
+.button-warning { @include button(variables.$fg-button-warning); }
+.button-success { @include button(variables.$fg-button-success); }
+.button-primary { @include button(variables.$fg-button-primary); }
+.button-secondary { @include button(variables.$fg-button-secondary); }
+
+.button-big {
+  padding: 0 15px;
+  line-height: 40px;
+  font-size: variables.$fs-big;
+}
+
+.button-small {
+  padding: 0 8px;
+  line-height: 18px;
+  font-size: variables.$fs-small;
+}
+
+.button-tiny {
+  padding: 0 8px;
+  line-height: 16px;
+  font-size: variables.$fs-tiny;
+}
+
+.button.highlight {
+  box-shadow: variables.$shadow-glow-frame;
+}
+
+// Important all the things!
+.disabled {
+  cursor: default !important;
+  color: variables.$fg-very-weak !important;
+  border: 1px solid color.adjust(variables.$fg-very-weak, $alpha: -0.4) !important;
+
+  div {
+    color: variables.$fg-very-weak !important;
+  }
+  .item-icon {
+    opacity: 0.33 !important;
+  }
+
+  &:hover, &:active, &:focus {
+    box-shadow: none !important;
+    color: variables.$fg-very-weak !important;
+    border: 1px solid color.adjust(variables.$fg-very-weak, $alpha: -0.4) !important;
+  }
+}
+
+.button-icon {
+
+  padding: 0;
+  height: 44px;
+  width: 44px;
+  border-radius: 8px;
+  @include button(variables.$fg-button-default);
+
+  .item-icon.large-icon {
+    margin: 0;
+    height: 40px;
+    width: 40px;
+    border-radius: 5px;
+  }
+
+  &:active { border-color:variables.$fg-button-default; }
+}
+
+// Large button icon, used in crafting dialog.
+.button-icon-with-label {
+
+  display: inline-block;
+  height: 80px;
+  width: 80px;
+  text-align: center;
+  font-size: variables.$fs-small;
+  @include button(variables.$fg-button-default);
+
+  .item-icon {
+    position: relative;
+    top: 5px;
+  }
+  .label {
+    position: relative;
+    top: -3px;
+  }
+}
+
+.radio-buttons {
+  display: inline-block;
+  height: 30px;
+  padding: 5px;
+  box-shadow: variables.$shadow-inset;
+  border-radius: 5px;
+}
+
+.radio-button {
+
+  line-height: 29px;
+  border-right-width: 0;
+  border-radius: 0;
+  @include button(variables.$fg-button-default);
+
+  &:last-child {
+    border-right-width: 1px;
+    border-radius: 0 3px 3px 0;
+  }
+  &:first-child {
+    border-radius: 3px 0 0 3px;
+  }
+  &.on {
+    color: variables.$fg-radio-button-on !important;
+    background-color: variables.$bg-radio-button-on;
+    text-shadow: variables.$glow-radio-button-on;
+    box-shadow: variables.$shadow-inset-button;
+  }
+}
+.radio-button.disabled {
+  cursor: default;
+  color: variables.$fg-very-weak !important;
+  border: 1px solid color.adjust(variables.$fg-very-weak, $alpha: -0.3);
+  &:hover {  }
+  &:active { box-shadow:none; }
+  &:focus {  }
+}

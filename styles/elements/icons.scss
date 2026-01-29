@@ -1,0 +1,27 @@
+@use "../variables";
+
+.icon {
+  height: 40px;
+  width: 40px;
+  background-size: contain;
+  background-color: rgb(250,100,0);
+}
+
+.icon.icon-small {
+  height: 30px;
+  width: 30px;
+}
+
+.icon.icon-large {
+  height: 64px;
+  width: 64px;
+}
+
+.icon.bordered {
+  border: variables.$border-light;
+  border-radius: 4px;
+}
+
+.icon.shadowed {
+  box-shadow: variables.$shadow-shallow;
+}

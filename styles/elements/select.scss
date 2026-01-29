@@ -1,0 +1,14 @@
+@use "../variables";
+
+#selectArea {
+  position: absolute;
+  inset:0;
+  z-index: variables.$z-select;
+
+  .select {
+    position: fixed;
+    background-color: rgb(10,10,10);
+    border: variables.$border-normal;
+    box-shadow: variables.$shadow-frame;
+  }
+}

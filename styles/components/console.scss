@@ -1,0 +1,84 @@
+@use "../layout";
+@use "../variables";
+
+#console {
+  @include layout.full-screen;
+  z-index: variables.$z-console;
+  background-color: rgba(10,15,20,0.75);
+  box-shadow: 0 0 100px 25px rgb(0,0,0) inset;
+
+  .console-log-container {
+    position: absolute;
+    top: 0;
+    bottom: 30px;
+    width: 100%;
+  }
+
+  .bottom-bar {
+    position: absolute;
+    bottom: 0;
+    height: 30px;
+    width: 100%;
+
+    background-color: rgb(0,0,0);
+    border-top: variables.$border-light;
+  }
+
+  .dolla {
+    height: 30px;
+    line-height: 27px;
+    margin-left: 10px;
+    font-size: 17px;
+  }
+
+  #commandInput {
+    font-family: "roboto-mono";
+    width: 90%;
+    padding: 7px 2px;
+    border-radius: 0;
+    border: none;
+  }
+
+  #consoleLog {
+    margin: 0 10px;
+    font-family: "roboto-mono";
+    font-size: 14px;
+  }
+
+  .entry.level-2 { opacity:0.666; }
+  .entry.level-3 { opacity:0.333; }
+
+  .entry {
+    .system:before  { content:"["; }
+    .system:after   { content:"]"; }
+    .message:before { content:" "; }
+  }
+
+  .entry.type-info {
+    .time    { color: rgb(140,160,180); }
+    .system  { color: variables.$fg-info; }
+    .message { color: variables.$fg-info-bright; }
+    .data    { color: rgb(180,190,200); }
+  }
+
+  .entry.type-success {
+    .time    { color: rgb(75,200,75); }
+    .system  { color: variables.$fg-success; }
+    .message { color: variables.$fg-success-bright; }
+    .data    { color: rgb(150,200,150); }
+  }
+
+  .entry.type-warning {
+    .time    { color: rgb(200,200,75); }
+    .system  { color: variables.$fg-warning; }
+    .message { color: variables.$fg-warning-bright; }
+    .data    { color: rgb(200,200,150); }
+  }
+
+  .entry.type-error {
+    .time    { color: rgb(200,75,75); }
+    .system  { color: variables.$fg-error; }
+    .message { color: variables.$fg-error-bright; }
+    .data    { color: rgb(150,100,100); }
+  }
+}

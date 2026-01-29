@@ -1,0 +1,12 @@
+@use "../layout";
+@use "../variables";
+
+#backgroundImage {
+  z-index: variables.$z-background;
+}
+
+#mainCover {
+  @include layout.full-screen;
+  background-color: rgb(0,0,0);
+  z-index: variables.$z-main-cover;
+}

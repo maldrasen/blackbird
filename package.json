@@ -29,7 +29,8 @@
 
   "scripts": {
     "start": "electron . --development",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "sass": "sass"
   },
 
   "devDependencies": {

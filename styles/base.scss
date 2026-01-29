@@ -1,0 +1,87 @@
+@use "variables";
+
+:focus { outline: none; }
+
+body {
+  background-color: variables.$bg-root;
+  color: variables.$fg-body;
+  font-size: variables.$fs-body;
+  font-family: 'aleo-light';
+  line-height: 1.5;
+  min-width: 1280px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  user-select: none;
+}
+
+a {
+  color: variables.$fg-link;
+  text-decoration: none;
+  outline: none;
+}
+a:hover, a:focus {
+  color: variables.$fg-link-hover;
+  border-bottom: 1px solid variables.$fg-link-hover;
+}
+a:active {
+  color: variables.$fg-link-active;
+  border-bottom: 1px solid variables.$fg-link-active;
+}
+a.disabled {
+  color: variables.$fg-link;
+  opacity: 0.3;
+  border-bottom: none;
+  cursor: default;
+}
+a.no-underline:hover, a.no-underline:focus, a.no-underline:active {
+  border-bottom: none;
+}
+
+i { font-family: roboto-italic; }
+b { font-family: roboto-bold; color:variables.$fg-strong; }
+
+h1 {
+  font-size: 50px;
+  line-height: 50px;
+  font-family: crete;
+  color: variables.$fg-strong;
+}
+
+h2 {
+  font-size: variables.$fs-h2;
+  font-family: crete;
+  color: variables.$fg-strong;
+}
+
+h3 {
+  font-size: variables.$fs-h3;
+  font-family: crete;
+  color: variables.$fg-strong;
+}
+
+h4 {
+  font-size: variables.$fs-h4;
+  font-family: crete;
+  color: variables.$fg-strong;
+}
+
+h5 {
+  font-size: variables.$fs-h5;
+  font-family: crete;
+}
+
+p {
+  color: variables.$fg-body;
+  margin: 10px 0;
+}
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+
+ul { margin: 0; }
+
+dl {
+  dt {
+    float: left;
+    width: 16em;
+  }
+}

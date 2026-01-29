@@ -1,0 +1,62 @@
+@use "../variables";
+
+#casementsArea {
+  .casement-window {
+    position: absolute;
+    pointer-events: all;
+
+    background-color: rgba(0,0,0,0.8);
+    border: 3px solid variables.$casementBorderColor;
+    box-shadow: variables.$shadow-frame;
+  }
+
+  .resize-handle {
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    right: -3px;
+    bottom: -3px;
+    cursor: se-resize;
+  }
+
+  .casement-container {
+    position: relative;
+    top: 20px;
+  }
+
+  .casement-content {
+    width: 100%;
+    z-index: 50;
+  }
+
+  .casement-bar {
+    position: absolute;
+    width:100%;
+    height: 20px;
+    background: variables.$casementTopGradient;
+    overflow: hidden;
+    cursor: move;
+    z-index: 100;
+
+    h1 {
+      font-size: 15px;
+      line-height: 18px;
+      margin: 0 2px;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      height: 14px;
+      width: 14px;
+      border:none;
+      opacity: 0.5;
+      background-size: contain;
+    }
+    .close-button:hover {
+      opacity: 1;
+      border:none;
+    }
+  }
+}

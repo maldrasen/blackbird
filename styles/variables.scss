@@ -1,0 +1,131 @@
+
+$fs-huge:   18pt;
+$fs-bigger: 14pt;
+$fs-big:    12pt;
+$fs-body:   10pt;
+$fs-small:  9pt;
+$fs-tiny:   8pt;
+
+$fs-h2: 20pt;
+$fs-h3: 16pt;
+$fs-h4: 12pt;
+$fs-h5: 10pt;
+
+$shadow-button:        1px 2px 3px rgba(0,0,0,0.5);
+$shadow-frame:         2px 5px 10px rgba(0,0,0,0.5);
+$shadow-deep:          2px 5px 10px rgba(0,0,0,0.8);
+$shadow-inset:         1px 3px 6px rgba(0,0,0,0.4) inset;
+$shadow-inset-button:  1px 3px 5px rgba(0,0,0,0.8) inset;
+$shadow-shallow:       1px 2px 3px rgba(0,0,0,0.9);
+$shadow-glow-frame:    0 0 20px rgba(250,50,10,0.5), 0 0 5px rgba(250,50,10,0.7), 0 0 2px rgb(250,50,10);
+$shadow-portrait:      2px 4px 5px rgba(0,0,0,0.8);
+$shadow-overlay:       5px 10px 20px rgba(0,0,0,0.8);
+$shadow-dark:          2px 5px 10px rgba(0,0,0,0.8), 5px 10px 20px rgba(0,0,0,0.8);
+
+$shadow-large-highlight:     9px 10px 10px -10px rgba(250,250,250,0.5) inset;
+$shadow-large-antihighlight: -15px 10px 10px -15px rgba(0,0,0,1) inset;
+$shadow-portrait-highlight: 0px 0px 15px rgba(200,200,250,0.75) inset;
+$shadow-small-highlight: 0px 0px 10px rgba(200,200,250,0.5) inset;
+
+$border-transparent: 1px solid transparent;
+$border-very-light:  1px solid rgba(250,250,250,0.05);
+$border-light:       1px solid rgba(250,250,250,0.1);
+$border-normal:      1px solid rgba(250,250,250,0.2);
+$border-heavy:       2px solid rgba(250,250,250,0.3);
+$border-portrait:    1px solid rgb(30,30,30);
+
+$bg-root:            rgb(30,30,30);
+$bg-light:           rgba(0,0,0,0.50);
+$bg-frame:           rgba(0,0,0,0.666);
+$bg-dark:            rgba(0,0,0,0.8);
+$bg-very-dark:       rgba(0,0,0,0.9);
+
+$fg-body:            rgb(180,170,160);
+$fg-strong:          rgb(240,230,220);
+$fg-very-strong:     rgb(250, 250, 250);
+$fg-weak:            rgb(180, 150, 120);
+$fg-very-weak:       rgba(180, 150, 120, 0.5);
+$fg-link:            rgb(220,80,50);
+$fg-link-hover:      rgb(250,100,60);
+$fg-link-active:     rgb(255,110,70);
+
+$fg-mana:            rgb(168,247,255);
+
+$select-shade:       rgba(150,150,200,0.1);
+
+// === Logs and Alerts ===
+$fg-info: rgb(180,200,220);
+$fg-success: rgb(100,250,100);
+$fg-warning: rgb(250,250,100);
+$fg-error: rgb(250,100,100);
+
+$fg-info-bright: rgb(250,250,250);
+$fg-success-bright: rgb(150,250,150);
+$fg-warning-bright: rgb(250,250,150);
+$fg-error-bright: rgb(250,150,150);
+
+// === Buttons ===
+$bg-button:           rgba(0,0,0,0.666);
+$fg-button-default:   rgb(200, 200, 200);
+$fg-button-primary:   rgb(150, 150, 250);
+$fg-button-secondary: rgb(128, 175, 213);
+$fg-button-danger:    rgb(250, 100, 100);
+$fg-button-warning:   rgb(153, 112, 77);
+$fg-button-success:   rgb(127, 201, 127);
+
+// === Forms ===
+$bg-input: rgba(0,0,0,0.8);
+$bg-input-active: rgba(30,30,50);
+$border-input: 1px solid rgba(180,170,160,0.5);
+$border-input-hover: 1px solid rgba(180,170,160,0.75);
+$border-input-focus: 1px solid rgba(180,170,160,0.75);
+
+// === Radio Buttons ===
+$fg-radio-button-on: rgb(250,250,250);
+$bg-radio-button-on: rgba(100,50,0,0.05);
+$glow-radio-button-on:  0 0 3px rgb(200,100,50);
+
+// === Scrolling Panel ===
+$bg-scrolling-panel-track: rgba(0,0,0,0.2);
+$bg-scrolling-panel-thumb: rgb(28,30,40);
+$bg-scrolling-panel-thumb-hover: rgb(52,55,73);
+
+$border-scrolling-panel-thumb-top: 1px solid rgba(100,100,250,0.1);
+$border-scrolling-panel-thumb-bottom: 1px solid rgba(0,0,0,0.5);
+
+$shadow-scrolling-panel-track: 2px 2px 4px rgb(0,0,0) inset;
+$shadow-scrolling-panel-thumb: -2px -2px 5px rgba(0,0,0,0.4) inset,
+                               2px 2px 5px rgba(100,100,250,0.2) inset;
+
+// === Casement ===
+$casementBorderColor: rgb(47,37,34);
+$casementTopGradient: linear-gradient(rgb(47,37,34) 0%, rgb(0,0,0) 100%);
+
+// === Z-Indices ===
+$z-background: 0;
+$z-root: 100;
+$z-canvas: 200;
+$z-slide-window: 300;
+$z-lower-bar: 400;
+$z-viewport: 500;
+$z-event-view: 2000;
+$z-overlay: 3000;
+$z-overlay-footer: 3001;
+$z-casements: 4000;
+
+$z-effects: 9000;
+$z-alerts: 9100;
+
+$z-menu-cover: 13005;
+$z-main-menu: 13010;
+$z-main-cover: 13020;
+
+$z-options-overlay: 14000;
+
+$z-confirmation-cover: 15000;
+$z-confirmation-window: 15010;
+$z-confirmation-footer: 15011;
+
+$z-select: 50000;
+
+$z-console: 60000;

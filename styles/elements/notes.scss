@@ -1,0 +1,40 @@
+@use "../variables";
+
+#noteArea {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  max-width: 400px;
+  padding: 10px;
+
+  font-size: variables.$fs-big;
+  color: variables.$fg-body;
+
+  border: variables.$border-normal;
+  background-color: variables.$bg-frame;
+  box-shadow: variables.$shadow-frame;
+
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 2000ms;
+  pointer-events: none;
+
+  z-index: variables.$z-overlay;
+
+  .key {
+    display: inline-block;
+    padding: 0px 5px;
+    margin: 0 2px;
+
+    font-family: "roboto";
+    font-size: 12px;
+    line-height: 15px;
+
+    border: variables.$border-light;
+    border-radius: 4px;
+    box-shadow: 1px 2px 3px rgba(0,0,0,1);
+    background-color: rgba(60,50,40,0.8);
+  }
+}
+
+#noteArea.show { opacity:1; }

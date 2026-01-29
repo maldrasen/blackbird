@@ -1,0 +1,56 @@
+@use "variables";
+
+input {
+  font-family: roboto;
+  margin: 0;
+  color: variables.$fg-strong;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-bottom: variables.$border-input;
+}
+input:hover {
+  border-bottom: variables.$border-input-hover;
+}
+input:focus {
+  background-color: variables.$bg-input;
+  border: variables.$border-input-focus;
+  border-radius: 3px;
+}
+
+input[type="text"] {
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.stacked-fields {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+
+  label {
+    display: block;
+    font-size: variables.$fs-small;
+  }
+  input {
+    width: calc(100% - 5px);
+  }
+}
+
+.inline-fields {
+  margin: 20px 50px;
+
+  .field-row {
+    height: 40px;
+    line-height: 40px;
+  }
+
+  label {
+    display: inline-block;
+    width: 85px;
+    padding-right: 10px;
+  }
+
+  input {
+    width: 300px;
+  }
+}

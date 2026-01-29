@@ -1,0 +1,75 @@
+@use "../layout";
+@use "../variables";
+
+#eventView {
+  @include layout.full-screen;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  z-index: variables.$z-event-view;
+
+  #layoutContainer {
+    position: absolute;
+    background: rgb(0,0,0);
+    border: variables.$border-normal;
+    box-shadow: variables.$shadow-overlay;
+    overflow: hidden;
+
+    #imageArea {
+      position: absolute;
+      background-size: cover;
+    }
+
+    #textArea {
+      position: absolute;
+    }
+
+    #actions {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      height: 30px;
+      text-align: right;
+      padding: 0 20px 20px 0;
+    }
+  }
+
+  .event-text {
+    padding: 20px;
+    font-size: variables.$fs-big;
+    color: variables.$fg-body;
+    text-shadow: 0px 0px 5px black, 0px 0px 2px black;
+  }
+
+  // The default layout is a horizontal text window near the bottom of the
+  // screen. The image area is optional and should look good with or without it.
+  .default-layout {
+    width: 800px;
+    height: 140px;
+    min-width: 800px;
+    margin: 0 50px 100px 50px;
+    background-color: rgba(0,0,0,0.70);
+
+    #imageArea {
+      aspect-ratio: 16/9;
+      border-bottom: variables.$border-normal;
+    }
+  }
+
+  .left-square-image-layout {
+    bottom: 100px;
+    width: 1000px;
+    min-width: 1000px;
+    height: 600px;
+
+    #imageArea {
+      width: 600px;
+      height: 600px;
+    }
+    #textArea {
+      left: 600px;
+      width: 400px;
+    }
+  }
+}

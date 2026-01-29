@@ -1,0 +1,70 @@
+@use "../variables";
+
+.item-select-area {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.item-select {
+  margin-right: 10px;
+  box-shadow: variables.$shadow-portrait;
+  border: variables.$border-normal;
+  cursor: pointer;
+
+  .icon {
+    height: 64px;
+    width: 64px;
+  }
+  .icon.empty {
+    background-color: rgb(10,10,10);
+  }
+  .name {
+    font-size: 10px;
+    font-family: 'roboto-medium';
+    color: variables.$fg-strong;
+    text-align: center;
+    padding: 2px 0;
+    background-color: rgb(0,0,0);
+  }
+}
+
+.item-select:hover .icon {
+  box-shadow: variables.$shadow-small-highlight;
+}
+
+.item-select-window {
+  position: fixed;
+  width: 300px;
+  min-height: 85px;
+  background-color: rgb(5,5,5);
+  border: variables.$border-normal;
+  box-shadow: variables.$shadow-frame;
+  z-index: variables.$z-select;
+
+  .item-element {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 5px;
+    cursor: pointer;
+
+    .name {
+      font-family: 'aleo-bold';
+      color: variables.$fg-strong;
+      margin: 0 10px;
+    }
+
+    .empty {
+      margin: 0 50px;
+      opacity: 0.5;
+    }
+
+    .aspect-panel { flex-grow:1; }
+  }
+
+  .item-element:hover {
+    background-color: variables.$select-shade;
+  }
+
+}
