@@ -1,0 +1,28 @@
+{
+  "name": "blackbird",
+  "version": "0.0.0",
+  "description": "Lewd Things",
+
+
+  "homepage": "https://gitlab.com/distant-thunder/blackbird#readme",
+  "bugs": {
+    "url": "https://gitlab.com/distant-thunder/blackbird/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/distant-thunder/blackbird.git"
+  },
+  "license": "ISC",
+  "author": "Maldrasen",
+  "type": "commonjs",
+  "main": "main.js",
+
+  "scripts": {
+    "start": "electron .",
+    "test": "test"
+  },
+
+  "devDependencies": {
+    "electron": "23.1.3"
+  }
+}
