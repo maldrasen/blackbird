@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'unsafe-inline' data: file: blob: 'self';
+      script-src  'unsafe-eval'   data: file: blob: 'self'
+    "/>
+
+    <style type="text/css">
+      body {
+        color: #696;
+        background-color: #111;
+      }
+      #loading {
+        margin: 0;
+        padding: 50px;
+        list-style-type: none;
+        line-height: 0.5;
+      }
+    </style>
+
+    <script type="module" src='loader.js'></script>
+  </head>
+
+  <body>
+    <ul id="loading"><li style='color:rgb(150,250,150)'><pre>=== Loading ===</pre></li></ul>
+  </body>
+
+</html>
