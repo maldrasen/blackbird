@@ -1,4 +1,6 @@
 
 /.idea
 /dist
+/lib/*.js
+/lib/*.css
 /node_modules
