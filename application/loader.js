@@ -33,10 +33,36 @@ window.Loader = (function() {
   function finishLoading() {
     try {
       resetDocument();
-      Main();
+      boot();
     } catch(error) {
       console.error("!!! Error invoking Main() !!!");
       console.error(error);
+    }
+  }
+
+  async function boot() {
+    try {
+      MainContent.loadStyles();
+      MainContent.loadMainContent();
+
+      Elements.initAll();
+      Visions.initAll();
+
+      await WorldState.loadState();
+
+      MainMenu.openFully();
+
+      if (Environment.isDevelopment) {
+        Tests.load();
+      }
+
+      console.clear();
+      log("Blackbird Started",{ system:'Main', data:{
+          environment: Environment.name,
+        }});
+    }
+    catch(error) {
+      logError("Error booting main", error, { system:'Main' });
     }
   }
 

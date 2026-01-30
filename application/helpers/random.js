@@ -97,4 +97,8 @@ global.Random = {
     return result;
   },
 
+  identifier() {
+    return (Math.random() + 1).toString(36).substring(2,10).toUpperCase();
+  },
+
 }

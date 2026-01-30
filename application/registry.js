@@ -1,34 +1,26 @@
 global.Registry = (function() {
 
-  const registry = {};
+  const entities = {}; // { entityId : {ComponentType} }
+  const registry = {}; // { ComponentType : { entityId: { entityData } } }
 
   // Called after each spec to empty the registry. Should also be called if a game is unloaded.
   function clear() {
-    registry[ComponentType.actor] = {};        // ['firstName','lastName','genderCode','speciesCode']
-    registry[ComponentType.controlled] = {};   // ['control'])// affection fear respect loyalty?
-    registry[ComponentType.atLocation] = {};   // ['locationCode'])
-    registry[ComponentType.attributes] = {};   // ['strength','dexterity'])
-    registry[ComponentType.mana] = {};         // ['red_mana','yellow_mana','green_mana','blue_mana','black_mana'])
-    registry[ComponentType.health] = {};       // ['health','stamina','mana'])
-    registry[ComponentType.skill] = {};        // ['skillCode','experience','value'])
+    Object.keys(entities).forEach(key => delete entities[key]);
+    Object.values(ComponentType).forEach(type => registry[type] = {});
   }
 
-  // Right now this function only returns an id. I'm not sure if we actually need to store this ID anywhere until
-  // something uses it to create a component. There should never be entities without components.
+  // Because we serialize out to JSON, and because I want to reference an entity by id in the console, the entity ids
+  // are fairly short. Collisions are possible, so if a collision happens we just try again.
   function createEntity() {
-    return crypto.randomUUID();
-  }
-
-  function findEntitiesWithComponents(typeList) {
-    console.log("Find Entities With:",typeList)
-
-    let ids = new Set(Object.keys(registry[typeList[0]]));
-
-    for (let i=1; i<typeList.length; i++) {
-      ids = ids.intersection(   new Set(Object.keys(registry[typeList[i]]))   );
+    let id = Random.identifier();
+    if (entities[id] != null) {
+      console.warn(`Entity ID Collision: ${id}`)
+      return createEntity();
     }
 
-    return ids;
+    entities[id] = new Set();
+
+    return id;
   }
 
   // Deleting an entity will also delete child entities. Some entities (things like skills) can't exist without their
@@ -42,13 +34,21 @@ global.Registry = (function() {
           deleteEntity(data[_parentId])
         }
 
-        registry[type][id] = null;
+        delete registry[type][id];
+        delete entities[id];
       }
     });
   }
 
+  function listEntityComponents(id) {
+    return entities[id];
+  }
+
+  /// === CRUD ===
+
   function createComponent(id, type, data) {
     if (registry[type][id] != null) { throw `Entity[${id}] already has ${type}`}
+    entities[id].add(type);
     registry[type][id] = data;
   }
 
@@ -90,7 +90,9 @@ global.Registry = (function() {
 
   function deleteComponent(id,type) {
     if (registry[type][id] == null) { throw `Entity[${id}] does not have ${type}`}
-    registry[type][id] = null;
+
+    entities[id].delete(type)
+    delete registry[type][id];
   }
 
   function deleteActorComponent(id)      { Registry.deleteComponent(id,ComponentType.actor); }
@@ -101,13 +103,20 @@ global.Registry = (function() {
   function deleteHealthComponent(id)     { Registry.deleteComponent(id,ComponentType.health); }
   function deleteSkillComponent(id)      { Registry.deleteComponent(id,ComponentType.skill); }
 
+  // === Queries ===
+
+  // TODO...
+  function findEntitiesWithComponents(typeList) {
+    return [];
+  }
+
+
   return Object.freeze({
     clear,
 
     createEntity,
     deleteEntity,
-
-    findEntitiesWithComponents,
+    listEntityComponents,
 
     createComponent,
     createActorComponent,
@@ -144,6 +153,9 @@ global.Registry = (function() {
     deleteManaComponent,
     deleteHealthComponent,
     deleteSkillComponent,
+
+    findEntitiesWithComponents,
+
   });
 
 })();
