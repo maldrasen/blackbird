@@ -4,10 +4,9 @@ global.Main = async function() {
     MainContent.loadStyles();
     MainContent.loadMainContent();
 
-    // Models.init();
-    // Elements.initAll();
-    // Components.initAll();
-    //
+    Elements.initAll();
+    Visions.initAll();
+
     // await WorldState.loadState();
     //
     // MainMenu.openFully();
