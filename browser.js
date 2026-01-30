@@ -29,9 +29,7 @@ global.Browser = (function() {
       $mainWindow.webContents.openDevTools();
     }
 
-    if (Environment.isProduction()) {
-      $mainWindow.setMenu(null);
-    }
+    $mainWindow.setMenu(null);
 
     $mainWindow.on('closed', () => {
       $mainWindow = null;

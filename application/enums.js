@@ -76,3 +76,12 @@ global.EventLayouts = Object.freeze({
   defaultLayout: 'default-layout',
   leftSquareImageLayout: 'left-square-image-layout',
 });
+
+global.ComponentType = Object.freeze({
+  actor:'actor',
+  controlled:'controlled',
+  atLocation:'atLocation',
+  attributes:'attributes',
+  mana:'mana',
+  health:'health',
+});

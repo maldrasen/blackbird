@@ -1,4 +1,3 @@
-
 global.Main = async function() {
   try {
     MainContent.loadStyles();
