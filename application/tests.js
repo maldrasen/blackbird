@@ -60,7 +60,7 @@ global.Tests = (function() {
       rootHooks: {
         beforeAll: rootBefore,
         afterAll: rootAfter,
-        // beforeEach: GameState.reset,
+        beforeEach: reset,
       }
     });
     mocha.checkLeaks();
@@ -68,6 +68,10 @@ global.Tests = (function() {
     require(`${ROOT}/manifest.json`).testFileList.forEach(path => {
       require(`${ROOT}/test/${path}`);
     });
+  }
+
+  function reset() {
+    Registry.clear();
   }
 
   async function rootBefore() {

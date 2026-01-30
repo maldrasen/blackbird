@@ -84,4 +84,5 @@ global.ComponentType = Object.freeze({
   attributes:'attributes',
   mana:'mana',
   health:'health',
+  skill:'skill',
 });
