@@ -11,16 +11,17 @@
     width: 290px;
   }
 
-  h1 {
-    font-family: baskerville;
+  h3 {
+    font-family: aleo-light;
+    font-size: 30px;
   }
 
   ul {
     a.button {
+      font-family: aleo-light;
       position: relative;
-      left: -20px;
       margin-bottom: 5px;
-      width: 300px;
+      width: 260px;
     }
   }
 }
