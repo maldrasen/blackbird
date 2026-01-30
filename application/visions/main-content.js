@@ -78,6 +78,7 @@ global.MainContent = (function() {
     loadStyles,
     setMainContent,
     addStylesheet,
+    addScriptTag,
     showCover,
     hideCover,
     setBackground,

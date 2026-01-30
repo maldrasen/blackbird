@@ -50,10 +50,10 @@ global.Tests = (function() {
   }
 
   function loadMocha() {
-    MainContent.addStylesheet(`${ROOT}/lib/mocha.css`);
-    require(`${ROOT}/lib/mocha.js`);
+    MainContent.addStylesheet(`${ROOT}/node_modules/mocha/mocha.css`);
+    require(`${ROOT}/node_modules/mocha/mocha.js`);
 
-    global.expect = require(`${ROOT}/lib/chai.js`).expect;
+    global.expect = require(`${ROOT}/node_modules/chai/chai.js`).expect;
 
     mocha.setup({
       ui:'bdd',
