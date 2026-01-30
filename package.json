@@ -16,14 +16,10 @@
   "build": {
     "appId": "distant-thunder.blackbird",
     "win": {
-      "target": [
-        {
-          "target": "portable",
-          "arch": [
-            "x64"
-          ]
-        }
-      ]
+      "target": [{
+        "target": "portable",
+        "arch": ["x64"]
+      }]
     }
   },
 

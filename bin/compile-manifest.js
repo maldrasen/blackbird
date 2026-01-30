@@ -28,9 +28,9 @@ FileHelper.writeJSON(`${ROOT}/manifest.json`, { fileList, testFileList });
 // We convert the absolute file paths the FileHelper returns to relative paths when adding them to the manifest. Also,
 // we only include files that haven't been included yet. The fileList is initialized with the files that should be
 // loaded first.
-function addFiles(list, path) {
-  FileHelper.recursiveFileList(`${ROOT}/${path}`).forEach(absolutePath => {
-    const index = absolutePath.indexOf('application') + 'application'.length + 1;
+function addFiles(list, rootName) {
+  FileHelper.recursiveFileList(`${ROOT}/${rootName}`).forEach(absolutePath => {
+    const index = absolutePath.indexOf(rootName) + rootName.length + 1;
     const relativePath = absolutePath.substring(index);
 
     if (!list.includes(relativePath)) {

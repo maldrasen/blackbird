@@ -4,3 +4,6 @@
 /lib/*.js
 /lib/*.css
 /node_modules
+
+/styles/blackbird.css
+/styles/blackbird.css.map
