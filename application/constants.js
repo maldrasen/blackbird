@@ -6,9 +6,4 @@
 // want to use the south direction is worse than just having a global _s
 // variable in my opinion.
 
-// Not actually using these, but I'll probably need some constants eventually.
-// I like a leading `_` for a constant.
-global._n = 'n';
-global._s = 's';
-global._e = 'e';
-global._w = 'w';
+global._parentId = 'parentId'
