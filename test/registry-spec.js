@@ -98,10 +98,10 @@ describe('Registry', function() {
 
       let ids = Registry.findEntitiesWithComponents([ComponentType.actor]);
       expect(ids.length).to.equal(2);
-      expect(ids).to.have.members([one]);
+      expect(ids).to.have.members([one,two]);
     });
 
-    it.only('finds the union of all the entities that have all the components', function() {
+    it('finds the union of all the entities that have all the components', function() {
       const one = Registry.createEntity();
       const two = Registry.createEntity();
       const three = Registry.createEntity();
@@ -137,7 +137,22 @@ describe('Registry', function() {
     });
   });
 
+  describe('findComponentsWith()', function() {
+    it('finds components given a filter', function() {
+      const actor1 = Registry.createEntity();
+      const actor2 = Registry.createEntity();
+      const actor3 = Registry.createEntity();
+      const location = Registry.createEntity();
 
+      Registry.createActorComponent(actor1,{ gender:'female' });
+      Registry.createActorComponent(actor2,{ gender:'futa'});
+      Registry.createActorComponent(actor3,{ gender:'female'});
+      Registry.createAtLocationComponent(location,{ gender:'female'});
 
+      const results = Registry.findComponentsWith(ComponentType.actor, data => data.gender === 'female');
+
+      expect(results).to.have.members([actor1,actor3]);
+    });
+  });
 
 });

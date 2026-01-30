@@ -1,7 +1,7 @@
 global.Registry = (function() {
 
   const entities = {}; // { entityId : {ComponentType} }
-  const registry = {}; // { ComponentType : { entityId: { entityData } } }
+  const components = {}; // { ComponentType : { entityId: { entityData } } }
 
   const typesWithChildren = [
     ComponentType.skill,
@@ -10,7 +10,7 @@ global.Registry = (function() {
   // Called after each spec to empty the registry. Should also be called if a game is unloaded.
   function clear() {
     Object.keys(entities).forEach(key => delete entities[key]);
-    Object.values(ComponentType).forEach(type => registry[type] = {});
+    Object.values(ComponentType).forEach(type => components[type] = {});
   }
 
   // Because we serialize out to JSON, and because I want to reference an entity by id in the console, the entity ids
@@ -30,9 +30,9 @@ global.Registry = (function() {
   // Deleting an entity will also delete child entities. Some entities (things like skills) can't exist without their
   // parent entity, so they should be deleted.
   function deleteEntity(id) {
-    Object.keys(registry).forEach(type => {
-      if (registry[type][id]) {
-        delete registry[type][id];
+    Object.keys(components).forEach(type => {
+      if (components[type][id]) {
+        delete components[type][id];
       }
     });
 
@@ -45,13 +45,13 @@ global.Registry = (function() {
     return entities[id];
   }
 
-  /// === CRUD ===
+  /// === CRUD =========================================================================================================
 
   function createComponent(id, type, data) {
-    if (registry[type][id] != null) { throw `Entity[${id}] already has ${type}`}
+    if (components[type][id] != null) { throw `Entity[${id}] already has ${type}`}
 
     entities[id].add(type);
-    registry[type][id] = data;
+    components[type][id] = data;
   }
 
   function createActorComponent(id,data)           { Registry.createComponent(id,ComponentType.actor,data); }
@@ -63,7 +63,7 @@ global.Registry = (function() {
   function createSkillComponent(parentId,id,data)  { Registry.createComponent(id,ComponentType.skill, { _parentId:parentId, ...data }); }
 
   function lookupComponent(id, type) {
-    return registry[type][id];
+    return components[type][id];
   }
 
   function lookupActorComponent(id)      { return Registry.lookupComponent(id,ComponentType.actor); }
@@ -75,9 +75,9 @@ global.Registry = (function() {
   function lookupSkillComponent(id)      { return Registry.lookupComponent(id,ComponentType.skill); }
 
   function updateComponent(id,type,data) {
-    if (registry[type][id] == null) { throw `Entity[${id}] does not have ${type}`}
+    if (components[type][id] == null) { throw `Entity[${id}] does not have ${type}`}
     Object.keys(data).forEach(key => {
-      registry[type][id][key] = data[key]
+      components[type][id][key] = data[key]
     });
   }
 
@@ -91,10 +91,10 @@ global.Registry = (function() {
 
 
   function deleteComponent(id,type) {
-    if (registry[type][id] == null) { throw `Entity[${id}] does not have ${type}`}
+    if (components[type][id] == null) { throw `Entity[${id}] does not have ${type}`}
 
     entities[id].delete(type)
-    delete registry[type][id];
+    delete components[type][id];
   }
 
   function deleteActorComponent(id)      { Registry.deleteComponent(id,ComponentType.actor); }
@@ -105,13 +105,13 @@ global.Registry = (function() {
   function deleteHealthComponent(id)     { Registry.deleteComponent(id,ComponentType.health); }
   function deleteSkillComponent(id)      { Registry.deleteComponent(id,ComponentType.skill); }
 
-  // === Inspect ===
+  // === Inspect =======================================================================================================
 
   function compileEntityData(id) {
     const data = {};
 
     listEntityComponents(id).forEach(type => {
-      data[type] = registry[type][id];
+      data[type] = components[type][id];
     });
 
     // Recursively add child data.
@@ -123,14 +123,14 @@ global.Registry = (function() {
     return data;
   }
 
-  // === Queries ===
+  // === Queries =======================================================================================================
 
   function findChildEntities(id) {
     const children = new Set();
 
     typesWithChildren.forEach(type => {
-      Object.keys(registry[type]).forEach(childId => {
-        if (registry[type][childId]._parentId === id) {
+      Object.keys(components[type]).forEach(childId => {
+        if (components[type][childId]._parentId === id) {
           children.add(childId);
         }
       });
@@ -140,23 +140,28 @@ global.Registry = (function() {
   }
 
   function findEntitiesWithComponents(typeList) {
-    const result = [];
+    const results = [];
 
     Object.keys(entities).forEach(id => {
       if (typeList.every(type => entities[id].has(type))) {
-        result.push(id);
+        results.push(id);
       }
     });
 
-    return result;
+    return results;
   }
 
-  // TODO
-  function findComponentWith(type,filter) {
+  function findComponentsWith(type,filter) {
+    const results = [];
 
+    Object.keys(components[type]).forEach(id => {
+      if (filter(components[type][id])) {
+        results.push(id);
+      }
+    });
+
+    return results;
   }
-
-
 
   return Object.freeze({
     clear,
@@ -205,6 +210,7 @@ global.Registry = (function() {
 
     findChildEntities,
     findEntitiesWithComponents,
+    findComponentsWith,
   });
 
 })();

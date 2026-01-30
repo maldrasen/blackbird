@@ -41,14 +41,18 @@
   #mocha {
     margin: 0;
     padding-bottom: 20px;
-    font-family: 'roboto-mono';
+
+    h1 { font-family:'roboto-mono'; }
+    h2 { font-family:'roboto-mono-thin'; }
 
     h1, h2 {
-      font-family: 'roboto-mono-bold';
+      font-size: 8pt;
       line-height: 1.5;
     }
 
     pre {
+      font-size: 7pt;
+      font-family: 'roboto-mono';
       max-width: 330px;
       overflow: hidden;
       border: variables.$border-light;
