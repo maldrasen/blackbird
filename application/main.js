@@ -7,24 +7,19 @@ global.Main = async function() {
     Elements.initAll();
     Visions.initAll();
 
-    // await WorldState.loadState();
-    //
-    // MainMenu.openFully();
-    // KeyboardMonitor.start();
-    //
-    // if (Environment.isDevelopment) {
-    //   Tests.load();
-    // }
-    //
-    // log("Chalcedony Started",{ system:'Main', data:{
-    //   environment: Environment.name,
-    // }});
+    await WorldState.loadState();
+
+    MainMenu.openFully();
+
+    if (Environment.isDevelopment) {
+      Tests.load();
+    }
+
+    log("Blackbird Started",{ system:'Main', data:{
+      environment: Environment.name,
+    }});
   }
   catch(error) {
-
-
-    console.error(error)
-
-    // logError("Error booting main", error, { system:'Main' });
+    logError("Error booting main", error, { system:'Main' });
   }
 }

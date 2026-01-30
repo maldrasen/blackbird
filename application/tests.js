@@ -50,17 +50,17 @@ global.Tests = (function() {
   }
 
   function loadMocha() {
-    MainContent.addStylesheet(`${APP}/lib/mocha.css`);
-    require(`${APP}/lib/mocha.js`);
+    MainContent.addStylesheet(`${ROOT}/lib/mocha.css`);
+    require(`${ROOT}/lib/mocha.js`);
 
-    global.expect = require(`${APP}/lib/chai.js`).expect;
+    global.expect = require(`${ROOT}/lib/chai.js`).expect;
 
     mocha.setup({
       ui:'bdd',
       rootHooks: {
         beforeAll: rootBefore,
         afterAll: rootAfter,
-        beforeEach: GameState.reset,
+        // beforeEach: GameState.reset,
       }
     });
     mocha.checkLeaks();
