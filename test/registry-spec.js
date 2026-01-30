@@ -37,12 +37,21 @@ describe('Registry', function() {
     });
 
     it("deletes an entity and all of the entity's children", function() {
-      const id1 = Registry.createEntity();
-      const id2 = Registry.createEntity();
-      const id3 = Registry.createEntity();
-      const id4 = Registry.createEntity();
-      const id5 = Registry.createEntity();
-      const id6 = Registry.createEntity();
+      const actor = Registry.createEntity();
+      const skill1 = Registry.createEntity();
+      const skill2 = Registry.createEntity();
+
+      Registry.createActorComponent(actor,{ name:'Belladonna' });
+      Registry.createSkillComponent(actor,skill1,{ code:'deepthroat' });
+      Registry.createSkillComponent(actor,skill2,{ code:'fisting' });
+
+      expect(Registry.compileEntityData(actor).children.length).to.equal(2);
+
+      Registry.deleteEntity(actor)
+
+      expect(Registry.lookupActorComponent(actor)).to.be.undefined
+      expect(Registry.lookupSkillComponent(skill1)).to.be.undefined
+      expect(Registry.lookupSkillComponent(skill2)).to.be.undefined
     });
   });
 
@@ -77,9 +86,6 @@ describe('Registry', function() {
     });
   });
 
-
-
-
   describe('findEntitiesWithComponents()', function() {
     it('finds every entity given a single component', function() {
       const one = Registry.createEntity();
@@ -91,12 +97,11 @@ describe('Registry', function() {
       Registry.createManaComponent(three,{ mana:'Blue' })
 
       let ids = Registry.findEntitiesWithComponents([ComponentType.actor]);
-      // expect(ids.size).to.equal(2);
-      // expect(ids).to.include(one);
-      // expect(ids).to.include(two);
+      expect(ids.length).to.equal(2);
+      expect(ids).to.have.members([one]);
     });
 
-    it('finds the union of all the entities that have all the components', function() {
+    it.only('finds the union of all the entities that have all the components', function() {
       const one = Registry.createEntity();
       const two = Registry.createEntity();
       const three = Registry.createEntity();
@@ -118,17 +123,17 @@ describe('Registry', function() {
       Registry.createHealthComponent(four,{ h:4 });
       Registry.createHealthComponent(six,{ h:6 });
 
-      Registry.createControlledComponent(two,{ c:1 });
-      Registry.createControlledComponent(four,{ c:3 });
-      Registry.createControlledComponent(six,{ c:5 });
+      Registry.createControlledComponent(one,{ c:1 });
+      Registry.createControlledComponent(three,{ c:3 });
+      Registry.createControlledComponent(five,{ c:5 });
 
-      let find1 = Registry.findEntitiesWithComponents([ComponentType.actor, ComponentType.mana, ComponentType.health])
-      let find2 = Registry.findEntitiesWithComponents([ComponentType.actor, ComponentType.mana, ComponentType.controlled])
+      let find1 = Registry.findEntitiesWithComponents([ComponentType.actor, ComponentType.mana]);
+      let find2 = Registry.findEntitiesWithComponents([ComponentType.actor, ComponentType.mana, ComponentType.health])
+      let find3 = Registry.findEntitiesWithComponents([ComponentType.mana, ComponentType.controlled])
 
-      console.log("F1",find1)
-      console.log("F2",find2)
-
-
+      expect(find1).to.have.members([three,four]);
+      expect(find2).to.have.members([four]);
+      expect(find3).to.have.members([three,five]);
     });
   });
 
