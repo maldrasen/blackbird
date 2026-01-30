@@ -4,5 +4,6 @@ global.Elements = {
     Confirmation.init();
     ScrollingPanel.init();
     TabController.init();
+    MouseMonitor.init();
   }
 }

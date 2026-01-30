@@ -1,12 +1,9 @@
 global.OptionsOverlay = (function() {
 
-  let $recordingState = {};
   let $isDirty = false;
   let $isBuilt = false;
 
   function init() {
-    X.onClick('#keyBindingList .binding-input', startRecording);
-
     X.onClick('#optionsOverlay a.close-button', () => {
       WindowManager.pop();
     });
@@ -15,8 +12,6 @@ global.OptionsOverlay = (function() {
       save();
       WindowManager.pop();
     });
-
-    window.addEventListener('keydown', onKeyDown);
   }
 
   function build() {
