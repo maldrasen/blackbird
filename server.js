@@ -1,5 +1,4 @@
 global.Server = (function() {
-
   function init() {
     Browser.receive('boot.start',boot);
   }
@@ -15,8 +14,5 @@ global.Server = (function() {
     });
   }
 
-  return {
-    init
-  };
-
+  return { init };
 })();

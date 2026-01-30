@@ -1,5 +1,4 @@
 global.Browser = (function() {
-
   let $mainWindow;
 
   function init() {
@@ -9,7 +8,6 @@ global.Browser = (function() {
   }
 
   function createWindow() {
-
     $mainWindow = new Electron.BrowserWindow({
       title: 'Blackbird',
       icon: `${ROOT}/assets/icon.png`,
@@ -25,7 +23,7 @@ global.Browser = (function() {
       },
     });
 
-    $mainWindow.loadURL(`file://${ROOT}/client/loading.html`);
+    $mainWindow.loadURL(`file://${ROOT}/views/loading.html`);
 
     if (Environment.isDevelopment()) {
       $mainWindow.webContents.openDevTools();
@@ -65,5 +63,4 @@ global.Browser = (function() {
     send,
     receive,
   };
-
 })();

@@ -1,7 +1,6 @@
 const os = require('os');
 
 global.Environment = (function() {
-
   function getName() { return ENVIRONMENT; }
   function isDevelopment() { return ENVIRONMENT === 'development' }
   function isProduction() { return ENVIRONMENT === 'production' }
@@ -24,6 +23,4 @@ global.Environment = (function() {
     isProduction,
     pack,
   }
-
 })();
-

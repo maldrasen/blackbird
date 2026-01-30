@@ -4,6 +4,7 @@ global.fs = require('fs');
 require('../application/helpers/file-helper.js');
 
 const ROOT = require('path').normalize(`${__dirname}`).replace(/\\/g,"/").replace(/\/bin/,'');
+const blacklist = ['loader.js']
 
 console.log("=== Compiling manifest.json ===");
 
@@ -33,7 +34,7 @@ function addFiles(list, rootName) {
     const index = absolutePath.indexOf(rootName) + rootName.length + 1;
     const relativePath = absolutePath.substring(index);
 
-    if (!list.includes(relativePath)) {
+    if (!list.includes(relativePath) && !blacklist.includes(relativePath)) {
       list.push(relativePath);
     }
   });
