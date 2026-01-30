@@ -5,5 +5,7 @@
 /lib/*.css
 /node_modules
 
+/package-lock.json
+
 /styles/blackbird.css
 /styles/blackbird.css.map
