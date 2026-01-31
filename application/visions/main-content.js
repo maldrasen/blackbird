@@ -28,6 +28,12 @@ global.MainContent = (function() {
     document.querySelector('head').appendChild(link);
   }
 
+  function removeStylesheet(name) {
+    X('head link').forEach(entry => {
+      if (entry.href.match(name)) { entry.remove(); }
+    });
+  }
+
   function setMainContent(path) {
     log(`Set Main Content`,{ system:'MainContent', data:path, level:1 });
 
@@ -77,6 +83,7 @@ global.MainContent = (function() {
     loadStyles,
     setMainContent,
     addStylesheet,
+    removeStylesheet,
     addScriptTag,
     showCover,
     hideCover,

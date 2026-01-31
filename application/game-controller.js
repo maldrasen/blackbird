@@ -5,11 +5,15 @@ global.GameController = (function() {
   }
 
   async function loadLastGame() {
-    console.log("TODO: Load Last Game")
+    console.log("TODO: Load Last Game");
   }
 
   async function openGame() {
-    MainContent.setMainContent(`views/home.html`)
+    MainContent.showCover();
+    MainContent.removeStylesheet('mocha');
+    MainContent.setMainContent('views/home.html');
+    MainContent.setBackground('backgrounds/wood.png')
+    MainContent.hideCover({ fadeTime:2500 });
   }
 
   return {

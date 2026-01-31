@@ -13,7 +13,7 @@ global.MainMenu = (function() {
   function openFully() {
     open();
     MainContent.showCover();
-    MainContent.setBackground('backgrounds/main-menu.jpg');
+    MainContent.setBackground('backgrounds/main-menu.png');
     MainContent.hideCover({ fadeTime:1000 });
   }
 
