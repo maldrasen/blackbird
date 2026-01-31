@@ -11,8 +11,7 @@ describe("CharacterBuilder", function() {
       expect(character.getControlValue()).to.equal(50)
       expect(character.getCurrentStamina()).to.equal(1000)
       expect(character.getMaxStamina()).to.equal(1000)
-
-      console.log(`Built:${character}`);
+      expect(character.getAtLocation()).to.equal('filthy-hovel') // For now.
     });
   });
 

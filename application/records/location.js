@@ -13,6 +13,7 @@ global.Location = (function() {
     }
 
     return Object.freeze({
+      getCode: () => { return code; },
       getName: () => { return location.name; },
       getBackground: () => { return location.background; },
     });

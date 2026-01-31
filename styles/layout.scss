@@ -1,6 +1,5 @@
 @use "variables";
 
-
 @mixin full-screen {
   position: absolute;
   top: 0;
@@ -133,15 +132,13 @@
   left: 50px;
   right: 50px;
   min-width: 790px;
-  height: 32px;
 
   padding: 5px;
   margin-top: 5px;
 
   background-color: rgba(0,0,0,0.80);
   border: variables.$border-normal;
-  border-top: none;
-  //box-shadow: $shadow-overlay;
+  box-shadow: variables.$shadow-overlay;
 
   z-index: variables.$z-overlay-footer;
 }
