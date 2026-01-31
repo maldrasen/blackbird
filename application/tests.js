@@ -1,10 +1,8 @@
 global.Tests = (function() {
 
-  // Not a great way to do this. Mocha probably has some events I could hook
-  // into instead, but just setting a few timeouts that anticipate how long
-  // it's going take for mocha to load and then run all the tests is quick and
-  // dirty and probably work 99% of the time. Good enough for non-production
-  // code.
+  // Not a great way to do this. Mocha probably has some events I could hook into instead, but just setting a few
+  // timeouts that anticipate how long it's going take for mocha to load and then run all the tests is quick and
+  // dirty and probably work 99% of the time. Good enough for non-production code.
   const $mochaLoadTime = 500;
   const $mochaTestTime = 100;
 
@@ -70,18 +68,10 @@ global.Tests = (function() {
     });
   }
 
-  function reset() {
-    Registry.clear();
-  }
-
-  async function rootBefore() {
-    $running = true;
-    await WorldState.reset();
-  }
-
-  function rootAfter() {
-    $running = false;
-  }
+  function reset() { Registry.clear(); }
+  function rootBefore() { $running = true; }
+  function rootAfter() { $running = false; }
+  function running() { return $running; }
 
   function runTests() {
     setTimeout(mocha.run,$mochaLoadTime);
@@ -97,8 +87,6 @@ global.Tests = (function() {
     $testScrollingPanel.resize();
     $testLogScrollingPanel.resize();
   }
-
-  function running() { return $running; }
 
   return {
     running,

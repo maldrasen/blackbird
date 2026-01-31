@@ -28,7 +28,6 @@ global.MainContent = (function() {
     document.querySelector('head').appendChild(link);
   }
 
-
   function setMainContent(path) {
     log(`Set Main Content`,{ system:'MainContent', data:path, level:1 });
 

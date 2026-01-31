@@ -1,98 +1,68 @@
 global.WorldState = (function() {
 
-  const DefaultState = {
-    gameCount: 0,
+  // The WorldState is used to save any game data that isn't associated with a single game.
+  //
+  // Currently, that's only a reference to the last played game, which we keep in order to continue a game.
+  //
+  // The WorldState will also store the game options, though there currently aren't any.
+  //
+  // I may include some rogue light elements in the future, things that would change or improve over successive runs.
+  // I'm still in the planning stages though. If I did something like that I would need some kind of mechanic that
+  // would force the current game to come to a conclusion of some sort. Still I can see the meta progression being used
+  // to unlock different scenarios, different starting species, or abilities.
+
+  const filePath = `${DATA}/World-State.json`;
+  const worldStateRecorder = new StateRecorder(filePath);
+  const defaultState = {
+    options:{},
   }
 
-  const $stateRecorder = new StateRecorder(`${DATA}/World.json`);
+  let $worldState;
 
-  let $testState = DefaultState;
-  let $realState;
-
-  function activeState() { return Tests.running() ? $testState : $realState; }
-  function hasValue(key) { return activeState()[key] != null; }
-  function getValue(key) { return activeState()[key]; }
+  function getValue(key) {
+    return $worldState[key];
+  }
 
   async function setValue(key,value) {
-    activeState()[key] = value;
+    $worldState[key] = value;
     await saveState();
   }
 
-  // Resetting the world state removes all the game progression. This is called
-  // when the specs are started in order to baseline the world state, but would
-  // very rarely if ever be called in production. Maybe if the game version
-  // changes, but even then we'd probably want to migrate the state rather than
-  // resetting, so perhaps only if a migration fails, or an error is thrown by
-  // loadState().
-  async function reset() {
-    if (Tests.running()) {
-      $testState = { ...DefaultState };
-    }
-    else {
-      log("Resetting World State",{ system:'WorldState', level:1, type:LogType.warning });
-      $realState = { ...DefaultState };
-    }
+  function getPreviousGame() { return getValue('previousGame'); }
+  async function setPreviousGame(id) { await setValue('previousGame',id); }
 
-    await saveState();
-  }
-
-  async function startNewGame() {
-    const count = getValue('gameCount') + 1;
-    const state = activeState();
-
-    state.gameCount = count;
-    state.currentGame = { gameNumber:count };
-
-    await saveState();
-  }
-
-  function getCurrentGame() { return getValue('currentGame'); }
-  function hasCurrentGame() { return hasValue('currentGame'); }
-
-  async function setOptions(options) { await setValue('options',options); }
   function getOptions() { return getValue('options'); }
+  async function setOptions(options) { await setValue('options',options); }
 
   // === Save and Load =========================================================
 
   async function saveState() {
-    if (Tests.running() === false) {
-      localLog("Saving World State",$realState);
-      await $stateRecorder.saveState($realState);
-    }
+    localLog("Saving World State");
+    await worldStateRecorder.saveState($worldState);
   }
 
+  // If the world state doesn't exist yet, then save the default state as the world state.
   async function loadState() {
-    if (Tests.running()) { return await reset(); }
-
-    try {
-      const loadedState = await $stateRecorder.loadState();
-      if (loadedState) {
-        $realState = loadedState;
-      }
-    } catch(error) {
-      logError("Error Loading World State", error, { system:"WorldState" });
+    if (fs.existsSync(filePath) === false) {
+      $worldState = defaultState;
+      return await saveState();
     }
 
-    if ($realState == null) {
-      await reset();
-    }
-
-    localLog("Loaded World State",{
-      chapter: $realState.chapter,
-    });
+    $worldState = await worldStateRecorder.loadState();
+    localLog("Loaded World State");
   }
 
-  function localLog(message, data) {
-    log(message, { system:"WorldState", data:data });
+  function localLog(message) {
+    log(message, { system:"WorldState" });
   }
 
   return Object.freeze({
-    reset,
-    startNewGame,
-    getCurrentGame,
-    hasCurrentGame,
-    setOptions,
-    getOptions,
+    getValue,
+    setValue,
+
+    getPreviousGame,
+    setPreviousGame,
+
     saveState,
     loadState,
   });

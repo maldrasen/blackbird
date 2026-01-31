@@ -1,8 +1,9 @@
 global.MainMenu = (function() {
 
   function init() {
-    X.onClick('#mainMenu a.start-button', confirmStartGame);
+    X.onClick('#mainMenu a.start-button', startGame);
     X.onClick('#mainMenu a.continue-button', continueGame);
+    X.onClick('#mainMenu a.load-button', showLoadGame);
     X.onClick('#mainMenu a.options-button', showOptions);
     X.onClick('#mainMenu a.quit-button', window.close);
 
@@ -24,57 +25,41 @@ global.MainMenu = (function() {
   function open() {
     adjustMenu();
     show();
-
-    // if (DungeonView.isVisible()) {
-    //   ClockManager.forcePause();
-    //   X.removeClass('#menuCover','hide');
-    // }
+    // When opened from other than main menu...
+    // X.removeClass('#menuCover','hide');
   }
 
   function close() {
     hide();
-
-    // if (DungeonView.isVisible()) {
-    //   ClockManager.unforcePause();
-    //   X.addClass('#menuCover','hide');
-    // }
+    // When opened from other than main menu...
+    // X.addClass('#menuCover','hide');
   }
 
   function isVisible() { return X.hasClass('#mainMenu','hide') === false; }
 
   function adjustMenu() {
-    if (WorldState.hasCurrentGame()) {
-      X.removeClass('#mainMenu a.continue-button','hide');
+    if (WorldState.getPreviousGame()) {
+      X.removeClass('#mainMenu a.load-button','disabled');
+      X.removeClass('#mainMenu a.continue-button','disabled');
     }
-    // if (DungeonView.isVisible()) {
-    //   X.addClass('#mainMenu a.start-button','hide');
-    //   X.addClass('#mainMenu a.continue-button','hide');
-    // }
-  }
-
-  function confirmStartGame() {
-    if (WorldState.hasCurrentGame() === false) {
-      return startGame();
-    }
-
-    Confirmation.show({
-      text: `Start a new game? This will overwrite your previous game.`,
-      onConfirm: startGame,
-    });
   }
 
   async function startGame() {
     close();
-    // await GameController.startNewGame();
-    // await DungeonView.open();
-    // await GameController.openGame();
+
+    await GameController.startNewGame();
+    await GameController.openGame();
   }
 
   async function continueGame() {
     close();
-    // await GameState.loadState();
-    // await DungeonView.open();
-    // await GameController.openGame();
+
+    await GameController.loadLastGame();
+    await GameController.openGame();
+  }
+
+  function showLoadGame() {
+    console.log("TODO: Show Load Game")
   }
 
   function showOptions() {

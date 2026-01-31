@@ -56,10 +56,9 @@ window.Loader = (function() {
         Tests.load();
       }
 
-      console.clear();
       log("Blackbird Started",{ system:'Main', data:{
-          environment: Environment.name,
-        }});
+        environment: Environment.name,
+      }});
     }
     catch(error) {
       logError("Error booting main", error, { system:'Main' });
