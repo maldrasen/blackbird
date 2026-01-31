@@ -4,9 +4,12 @@ global.Fixtures = (function() {
   // training mode.
 
   function setup() {
-
     console.log("=== Setup Fixture ===");
 
+    const characterId = CharacterBuilder.build({ gender:'female' });
+    const character = Character(characterId);
+
+    console.log(character.toString());
   }
 
   return {
