@@ -15,6 +15,8 @@ global.GameController = (function() {
     MainContent.setMainContent('views/home.html');
     MainContent.setBackground('backgrounds/wood.png')
     MainContent.hideCover({ fadeTime:2500 });
+
+    Fixtures.setup()
   }
 
   return {
