@@ -16,8 +16,10 @@ global.StateMachine = (function() {
     if ($modeChanged) {
 
       if ($mode === Modes.location) {
-        MainContent.setMainContent("views/location.html");
-        MainContent.setBackground("backgrounds/filthy-hovel.jpg")
+        LocationView.show();
+      }
+      if ($mode === Modes.training) {
+        TrainingView.show();
       }
     }
   }
