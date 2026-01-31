@@ -12,11 +12,10 @@ global.GameController = (function() {
     console.clear();
     MainContent.showCover();
     MainContent.removeStylesheet('mocha');
-    MainContent.setMainContent('views/home.html');
-    MainContent.setBackground('backgrounds/wood.png')
-    MainContent.hideCover({ fadeTime:2500 });
 
     Fixtures.setup()
+
+    MainContent.hideCover({ fadeTime:2500 });
   }
 
   return {

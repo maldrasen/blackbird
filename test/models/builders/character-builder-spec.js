@@ -1,7 +1,7 @@
 describe("CharacterBuilder", function() {
 
   describe("build()", function() {
-    it.only("makes a completely random character when no options are given", function() {
+    it("makes a completely random character when no options are given", function() {
       const id = CharacterBuilder.build({});
       const character = Character(id);
 

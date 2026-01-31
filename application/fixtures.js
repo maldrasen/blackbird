@@ -10,6 +10,9 @@ global.Fixtures = (function() {
     const character = Character(characterId);
 
     console.log(character.toString());
+
+    StateMachine.setMode('location');
+    StateMachine.render();
   }
 
   return {
