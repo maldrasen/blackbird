@@ -7,16 +7,30 @@
       script-src  'unsafe-eval'   data: file: blob: 'self'
     "/>
 
-    <style type="text/css">
+    <style>
       body {
         color: #696;
-        background-color: #111;
+        background-color: #121212;
       }
       #loading {
+        position: absolute;
+        top: 0;
+        left: 0;
         margin: 0;
         padding: 50px;
+        z-index: 10;
+      }
+      #fileList {
         list-style-type: none;
         line-height: 0.5;
+      }
+      #logo {
+        position: fixed;
+        right: 50px;
+        top: 50px;
+        height: 256px;
+        width: 256px;
+        z-index: 1;
       }
     </style>
 
@@ -24,7 +38,11 @@
   </head>
 
   <body>
-    <ul id="loading"><li style='color:rgb(150,250,150)'><pre>=== Loading ===</pre></li></ul>
+    <div id="loading">
+      <ul id="fileList"><li style='color:rgb(150,250,150)'><pre>=== Loading ===</pre></li></ul>
+      <img id="logo" src="../assets/logo-dark.png" alt="birb">
+    </div>
+    <div id="loadingCover" class="trans" style="position:absolute; top:0; bottom:0; left:0; right:0; background-color:#000; z-index:1000000; opacity:0; transition-property: opacity;transition-duration:500ms"></div>
   </body>
 
 </html>

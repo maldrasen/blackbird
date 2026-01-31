@@ -45,11 +45,8 @@ window.Loader = (function() {
       MainContent.loadStyles();
       MainContent.loadMainContent();
 
-      Elements.initAll();
-      Visions.initAll();
-
+      Views.initAll();
       await WorldState.loadState();
-
       MainMenu.openFully();
 
       if (Environment.isDevelopment) {
@@ -78,7 +75,18 @@ window.Loader = (function() {
         await import(`../application/${file}`);
       }
 
-      resolve();
+      // This is some nasty ass shit, but without some kind of fade to black here we see some annoying flashing when
+      // the application loads as the temporary loading html is replaced with the actual application html. This adds
+      // a second to the boot time, but it looks nicer with the delay.
+      setTimeout(() => {
+        let cover = document.querySelector('#loadingCover');
+        cover.style.opacity = 1;
+        setTimeout(()=>{
+          cover.style.opacity = 0;
+          setTimeout(()=>{ cover.remove(); },600)
+          resolve();
+        },500);
+      },1000);
     });
   }
 
@@ -88,18 +96,18 @@ window.Loader = (function() {
   function appendItem(content) {
     const element = document.createElement("li");
     element.innerHTML = `<pre>${content}</pre>`;
-    document.querySelector("#loading").append(element)
+    document.querySelector("#fileList").append(element)
   }
 
   function appendError(error) {
     const element = document.createElement("li");
     element.style.color = "rgb(200,100,100)";
     element.innerHTML = `<pre>ERROR: ${JSON.stringify(error)}</pre>`;
-    document.querySelector("#loading").append(element)
+    document.querySelector("#fileList").append(element)
   }
 
   function resetDocument() {
-    document.querySelector("#loading").remove();
+    document.querySelector("#fileList").remove();
     const style = document.getElementsByTagName('style')[0];
     style.parentNode.removeChild(style);
   }
