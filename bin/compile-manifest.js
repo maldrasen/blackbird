@@ -9,8 +9,8 @@ const blacklist = ['loader.js']
 console.log("=== Compiling manifest.json ===");
 
 const fileList = [
-  'constants.js',
-  'enums.js',
+  'application/constants.js',
+  'application/enums.js',
 ];
 
 addFiles(fileList,'application');
@@ -32,7 +32,7 @@ FileHelper.writeJSON(`${ROOT}/manifest.json`, { fileList, testFileList });
 function addFiles(list, rootName) {
   FileHelper.recursiveFileList(`${ROOT}/${rootName}`).forEach(absolutePath => {
     const index = absolutePath.indexOf(rootName) + rootName.length + 1;
-    const relativePath = absolutePath.substring(index);
+    const relativePath = rootName +'/'+ absolutePath.substring(index);
 
     if (!list.includes(relativePath) && !blacklist.includes(relativePath)) {
       list.push(relativePath);

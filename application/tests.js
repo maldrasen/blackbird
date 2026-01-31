@@ -64,7 +64,7 @@ global.Tests = (function() {
     mocha.checkLeaks();
 
     require(`${ROOT}/manifest.json`).testFileList.forEach(path => {
-      require(`${ROOT}/test/${path}`);
+      require(`${ROOT}/${path}`);
     });
   }
 

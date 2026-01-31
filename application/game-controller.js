@@ -9,6 +9,7 @@ global.GameController = (function() {
   }
 
   async function openGame() {
+    console.clear();
     MainContent.showCover();
     MainContent.removeStylesheet('mocha');
     MainContent.setMainContent('views/home.html');

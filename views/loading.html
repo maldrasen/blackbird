@@ -12,6 +12,14 @@
         color: #696;
         background-color: #121212;
       }
+      #logo {
+        position: fixed;
+        right: 50px;
+        top: 50px;
+        height: 256px;
+        width: 256px;
+        z-index: 1;
+      }
       #loading {
         position: absolute;
         top: 0;
@@ -21,26 +29,19 @@
         z-index: 10;
       }
       #fileList {
+        position: relative;
         list-style-type: none;
         line-height: 0.5;
-      }
-      #logo {
-        position: fixed;
-        right: 50px;
-        top: 50px;
-        height: 256px;
-        width: 256px;
-        z-index: 1;
+        z-index: 11;
       }
     </style>
-
     <script type="module" src='../application/loader.js'></script>
   </head>
 
   <body>
     <div id="loading">
-      <ul id="fileList"><li style='color:rgb(150,250,150)'><pre>=== Loading ===</pre></li></ul>
       <img id="logo" src="../assets/logo-dark.png" alt="birb">
+      <ul id="fileList"><li style='color:rgb(150,250,150)'><pre>=== Loading ===</pre></li></ul>
     </div>
     <div id="loadingCover" class="trans" style="position:absolute; top:0; bottom:0; left:0; right:0; background-color:#000; z-index:1000000; opacity:0; transition-property: opacity;transition-duration:500ms"></div>
   </body>

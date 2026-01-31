@@ -72,7 +72,12 @@ window.Loader = (function() {
 
       for (const file of fileList) {
         appendItem(`    - ${file}`);
-        await import(`../application/${file}`);
+        try {
+          await import(`../${file}`);
+        } catch(error) {
+          return appendError(error.message);
+
+        }
       }
 
       // This is some nasty ass shit, but without some kind of fade to black here we see some annoying flashing when
@@ -102,7 +107,7 @@ window.Loader = (function() {
   function appendError(error) {
     const element = document.createElement("li");
     element.style.color = "rgb(200,100,100)";
-    element.innerHTML = `<pre>ERROR: ${JSON.stringify(error)}</pre>`;
+    element.innerHTML = `<pre>ERROR: ${error}</pre>`;
     document.querySelector("#fileList").append(element)
   }
 
