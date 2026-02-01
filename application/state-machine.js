@@ -5,13 +5,16 @@ global.StateMachine = (function() {
   let $mode;
   let $modeChanged;
 
-  function handleCommand(command) {
+  function handleCommand(commandType, commandData) {
+    const command = Command(commandType, commandData);
 
-    // Time system should run first. Every command should take some set amount time. This gives us our delta time.
-    // Subsequent systems will then know how much time has passed since they were last run.
-    TimeSystem.run(command);
+    log(`Run Command:${commandType}`, { system:'StateMachine', data:commandData });
 
     CharacterMovementSystem.run(command);
+    // Time system should run first. Every command should take some set amount time. This gives us our delta time.
+    // Subsequent systems will then know how much time has passed since they were last run.
+
+    TimeSystem.run(command);
 
     render();
   }

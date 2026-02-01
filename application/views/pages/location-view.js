@@ -13,9 +13,14 @@ global.LocationView = (function() {
     buildCharacterList(characters);
   }
 
+  // TODO: Right now clicking on a character will just start the training mode with that character. Once I have more
+  //       of the game's systems done clicking a character here should either start some kind of character interaction
+  //       view or character inspection view. From there you can talk to them or see their character sheet and start
+  //       the training mode. You should be able to ask a character to follow you, or capture them, if you want to take
+  //       them to a bedroom. Some actions might only be available if the room matches, need to consider if the room
+  //       has a bed or a shower or a pillory.
   function characterClicked(event) {
-    const id = event.target.getAttribute('data-id');
-    console.log(`Select:${id}`)
+    StateMachine.handleCommand(Command.Type.startTraining, { characterId:event.target.getAttribute('data-id') });
   }
 
   function buildCharacterList(characters) {
@@ -23,7 +28,7 @@ global.LocationView = (function() {
 
     characters.forEach(c => {
       characterList.appendChild(X.createElement(
-        `<li><a data-id='${c.id}'>${c.getFirstName()} ${c.getLastName()}</a>(${c.getGender()} ${c.getSpecies()})</li>`
+        `<li><a data-id='${c.id}'>${c.getFirstName()} ${c.getLastName()}</a> (${c.getGender()} ${c.getSpecies()})</li>`
       ));
     });
   }
