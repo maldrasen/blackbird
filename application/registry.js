@@ -49,7 +49,6 @@ global.Registry = (function() {
 
   function createComponent(id, type, data) {
     if (components[type][id] != null) { throw `Entity[${id}] already has ${type}`}
-    if (Object.values(ComponentType).includes(type) === false) { throw `${type} is not a valid component type.` }
 
     entities[id].add(type);
     components[type][id] = data;
