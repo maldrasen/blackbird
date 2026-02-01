@@ -1,5 +1,7 @@
 global.CharacterValidator = (function() {
 
+  // Break this into a validator for each component. Should be run by the registry when a component is created or updated.
+
   function validate(id) {
     const actorComponent = Registry.lookupActorComponent(id);
     const controlComponent = Registry.lookupControlledComponent(id);

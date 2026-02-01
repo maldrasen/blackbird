@@ -1,8 +1,8 @@
-describe("CharacterBuilder", function() {
+describe("CharacterFactory", function() {
 
   describe("build()", function() {
     it("makes a completely random character when no options are given", function() {
-      const id = CharacterBuilder.build({});
+      const id = CharacterFactory.build({});
       const character = Character(id);
 
       expect(character.id).to.equal(id);

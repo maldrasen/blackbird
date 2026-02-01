@@ -1,4 +1,4 @@
-global.CharacterBuilder = (function() {
+global.CharacterFactory = (function() {
 
   function build(options) {
     const characterId = Registry.createEntity();
