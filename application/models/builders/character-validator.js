@@ -4,7 +4,7 @@ global.CharacterValidator = (function() {
     const actorComponent = Registry.lookupActorComponent(id);
     const controlComponent = Registry.lookupControlledComponent(id);
     const healthComponent = Registry.lookupHealthComponent(id);
-    const atLocationComponent = Registry.lookupAtLocationComponent(id);
+    const situatedComponent = Registry.lookupSituatedComponent(id);
 
     // At the very least every character will have a name, a gender, and a species.
     Validate.exists('firstName',actorComponent.firstName);
@@ -21,9 +21,10 @@ global.CharacterValidator = (function() {
       Validate.between('control',controlComponent.control,-500,500)
     }
 
-    // A character might not technically be anywhere, so being at a location is optional.
-    if (atLocationComponent) {
-      Validate.exists('location',atLocationComponent.location);
+    // A character might not technically be anywhere, so being at a location is optional. If the component exists
+    // though they should actually be somewhere.
+    if (situatedComponent) {
+      Validate.exists('currentLocation',situatedComponent.currentLocation);
     }
   }
 

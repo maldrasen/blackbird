@@ -1,9 +1,6 @@
 global.GameState = (function() {
 
-  let $stateRecorder;
-  let $gameYear;
-  let $gameDay;
-  let $gameMinutes;
+  let $gameTime;
   let $currentLocation;
 
   // Reset is used to remove the loaded game from the state and leave it blank. This is done when the application is
@@ -11,10 +8,7 @@ global.GameState = (function() {
   function reset() {
     Registry.clear();
 
-    $stateRecorder = null;
-    $gameYear = null;
-    $gameDay = null;
-    $gameMinutes = null;
+    $gameTime = null;
     $currentLocation = null;
   }
 
@@ -27,10 +21,7 @@ global.GameState = (function() {
   function initialize() {
     Registry.clear();
 
-    $gameYear = 1;
-    $gameDay = 1;
-    $gameMinutes = 0;
-
+    $gameTime = 0;
     $currentLocation = 'filthy-hovel';
   }
 
@@ -43,17 +34,13 @@ global.GameState = (function() {
 
   function pack() {
     return {
-      gameYear: $gameYear,
-      gameDay: $gameDay,
-      gameMinutes: $gameMinutes,
+      gameTime: $gameTime,
       currentLocation: $currentLocation,
     }
   }
 
   function unpack(data) {
-    $gameYear = data.gameYear
-    $gameDay = data.gameDay
-    $gameMinutes = data.gameMinutes
+    $gameTime = data.gameTime
     $currentLocation = currentLocation
   }
 

@@ -9,7 +9,7 @@ global.CharacterBuilder = (function() {
     const actorComponent = { gender, species };
     const controlledComponent = { control:50 };
     const healthComponent = { currentStamina:1000, maxStamina:1000 }
-    const atLocationComponent = { location:'filthy-hovel' }
+    const situatedComponent = { currentLocation:'filthy-hovel' }
 
     if (options.firstName == null) {
       const names = NameBuilder.getRandom({ gender, category:'Elf' });
@@ -29,7 +29,7 @@ global.CharacterBuilder = (function() {
     Registry.createActorComponent(characterId, actorComponent);
     Registry.createControlledComponent(characterId, controlledComponent);
     Registry.createHealthComponent(characterId, healthComponent);
-    Registry.createAtLocationComponent(characterId, atLocationComponent);
+    Registry.createSituatedComponent(characterId, situatedComponent);
 
     CharacterValidator.validate(characterId);
 

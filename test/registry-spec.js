@@ -147,7 +147,7 @@ describe('Registry', function() {
       Registry.createActorComponent(actor1,{ gender:'female' });
       Registry.createActorComponent(actor2,{ gender:'futa'});
       Registry.createActorComponent(actor3,{ gender:'female'});
-      Registry.createAtLocationComponent(location,{ gender:'female'});
+      Registry.createSituatedComponent(location,{ gender:'female'});
 
       const results = Registry.findComponentsWith(ComponentType.actor, data => data.gender === 'female');
 

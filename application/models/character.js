@@ -14,8 +14,8 @@ global.Character = function(id) {
   function getCurrentStamina() { return healthComponent().currentStamina; }
   function getMaxStamina() { return healthComponent().maxStamina; }
 
-  function atLocationComponent() { return Registry.lookupAtLocationComponent($id); }
-  function getAtLocation() { return atLocationComponent().location; }
+  function situatedComponent() { return Registry.lookupSituatedComponent($id); }
+  function getCurrentLocation() { return situatedComponent().currentLocation; }
 
   function toString() {
     return `Character[${$id}|${getFirstName()} ${getLastName()}]`;
@@ -30,7 +30,7 @@ global.Character = function(id) {
     getControlValue,
     getCurrentStamina,
     getMaxStamina,
-    getAtLocation,
+    getCurrentLocation,
     toString,
   };
 

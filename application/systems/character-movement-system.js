@@ -12,9 +12,9 @@ global.CharacterMovementSystem = (function() {
   // Find all the characters that are at the specified location. If the location is the current location, we also need
   // the characters who are following or are held captive by the player.
   function getCharactersAtLocation(code) {
-    const entities = Registry.findComponentsWith(ComponentType.atLocation, data => {
+    const entities = Registry.findComponentsWith(ComponentType.situated, data => {
       console.log(`${code} ? `,data)
-      return data.location === code
+      return data.currentLocation === code
     });
 
     return entities.map(id => Character(id));

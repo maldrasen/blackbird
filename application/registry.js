@@ -56,7 +56,7 @@ global.Registry = (function() {
 
   function createActorComponent(id,data)           { Registry.createComponent(id,ComponentType.actor,data); }
   function createControlledComponent(id,data)      { Registry.createComponent(id,ComponentType.controlled,data); }
-  function createAtLocationComponent(id,data)      { Registry.createComponent(id,ComponentType.atLocation,data); }
+  function createSituatedComponent(id,data)      { Registry.createComponent(id,ComponentType.situated,data); }
   function createAttributesComponent(id,data)      { Registry.createComponent(id,ComponentType.attributes,data); }
   function createManaComponent(id,data)            { Registry.createComponent(id,ComponentType.mana,data); }
   function createHealthComponent(id,data)          { Registry.createComponent(id,ComponentType.health,data); }
@@ -68,7 +68,7 @@ global.Registry = (function() {
 
   function lookupActorComponent(id)      { return Registry.lookupComponent(id,ComponentType.actor); }
   function lookupControlledComponent(id) { return Registry.lookupComponent(id,ComponentType.controlled); }
-  function lookupAtLocationComponent(id) { return Registry.lookupComponent(id,ComponentType.atLocation); }
+  function lookupSituatedComponent(id) { return Registry.lookupComponent(id,ComponentType.situated); }
   function lookupAttributesComponent(id) { return Registry.lookupComponent(id,ComponentType.attributes); }
   function lookupManaComponent(id)       { return Registry.lookupComponent(id,ComponentType.mana); }
   function lookupHealthComponent(id)     { return Registry.lookupComponent(id,ComponentType.health); }
@@ -83,7 +83,7 @@ global.Registry = (function() {
 
   function updateActorComponent(id,data)      { updateComponent(id,ComponentType.actor,data) }
   function updateControlledComponent(id,data) { updateComponent(id,ComponentType.controlled,data) }
-  function updateAtLocationComponent(id,data) { updateComponent(id,ComponentType.atLocation,data) }
+  function updateSituatedComponent(id,data) { updateComponent(id,ComponentType.situated,data) }
   function updateAttributesComponent(id,data) { updateComponent(id,ComponentType.attributes,data) }
   function updateManaComponent(id,data)       { updateComponent(id,ComponentType.mana,data) }
   function updateHealthComponent(id,data)     { updateComponent(id,ComponentType.health,data) }
@@ -99,7 +99,7 @@ global.Registry = (function() {
 
   function deleteActorComponent(id)      { Registry.deleteComponent(id,ComponentType.actor); }
   function deleteControlledComponent(id) { Registry.deleteComponent(id,ComponentType.controlled); }
-  function deleteAtLocationComponent(id) { Registry.deleteComponent(id,ComponentType.atLocation); }
+  function deleteSituatedComponent(id) { Registry.deleteComponent(id,ComponentType.situated); }
   function deleteAttributesComponent(id) { Registry.deleteComponent(id,ComponentType.attributes); }
   function deleteManaComponent(id)       { Registry.deleteComponent(id,ComponentType.mana); }
   function deleteHealthComponent(id)     { Registry.deleteComponent(id,ComponentType.health); }
@@ -173,7 +173,7 @@ global.Registry = (function() {
     createComponent,
     createActorComponent,
     createControlledComponent,
-    createAtLocationComponent,
+    createSituatedComponent,
     createAttributesComponent,
     createManaComponent,
     createHealthComponent,
@@ -182,7 +182,7 @@ global.Registry = (function() {
     lookupComponent,
     lookupActorComponent,
     lookupControlledComponent,
-    lookupAtLocationComponent,
+    lookupSituatedComponent,
     lookupAttributesComponent,
     lookupManaComponent,
     lookupHealthComponent,
@@ -191,7 +191,7 @@ global.Registry = (function() {
     updateComponent,
     updateActorComponent,
     updateControlledComponent,
-    updateAtLocationComponent,
+    updateSituatedComponent,
     updateAttributesComponent,
     updateManaComponent,
     updateHealthComponent,
@@ -200,7 +200,7 @@ global.Registry = (function() {
     deleteComponent,
     deleteActorComponent,
     deleteControlledComponent,
-    deleteAtLocationComponent,
+    deleteSituatedComponent,
     deleteAttributesComponent,
     deleteManaComponent,
     deleteHealthComponent,

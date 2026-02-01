@@ -70,11 +70,11 @@ global.KeyCodes = Object.freeze({
 
 global.ComponentType = Object.freeze({
   actor:'actor',
-  controlled:'controlled',
-  atLocation:'atLocation',
   attributes:'attributes',
-  mana:'mana',
+  controlled:'controlled',
   health:'health',
+  mana:'mana',
+  situated:'situated',
   skill:'skill',
 });
 
