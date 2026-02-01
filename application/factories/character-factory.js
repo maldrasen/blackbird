@@ -31,8 +31,6 @@ global.CharacterFactory = (function() {
     Registry.createHealthComponent(characterId, healthComponent);
     Registry.createSituatedComponent(characterId, situatedComponent);
 
-    CharacterValidator.validate(characterId);
-
     return characterId;
   }
 

@@ -6,7 +6,7 @@ describe('Registry', function() {
 
       expect(Registry.listEntityComponents(id)).to.be.empty;
 
-      Registry.createActorComponent(id,{ firstName:'Jada', lastName:'Fire', genderCode:'female', speciesCode:'nymph' });
+      Registry.createActorComponent(id,{ firstName:'Jada', lastName:'Fire', gender:'female', species:'nymph' });
       Registry.createControlledComponent(id,{ control:-200 });
 
       expect(Registry.listEntityComponents(id)).to.include(ComponentType.actor);
@@ -23,7 +23,7 @@ describe('Registry', function() {
   describe('deleteEntity()', function() {
     it('deletes an entity and all of the associated components.', function() {
       const id = Registry.createEntity();
-      Registry.createActorComponent(id,{ firstName:'Jada', lastName:'Fire', genderCode:'female', speciesCode:'nymph' });
+      Registry.createActorComponent(id,{ firstName:'Jada', lastName:'Fire', gender:'female', species:'nymph' });
       Registry.createControlledComponent(id,{ control:-200 });
       Registry.deleteEntity(id);
 
@@ -41,7 +41,7 @@ describe('Registry', function() {
       const skill1 = Registry.createEntity();
       const skill2 = Registry.createEntity();
 
-      Registry.createActorComponent(actor,{ name:'Belladonna' });
+      Registry.createActorComponent(actor,{ firstName:'Angela', lastName:'White', gender:'female', species:'elf' });
       Registry.createSkillComponent(actor,skill1,{ code:'deepthroat' });
       Registry.createSkillComponent(actor,skill2,{ code:'fisting' });
 
@@ -58,23 +58,23 @@ describe('Registry', function() {
   describe('updateComponent()', function() {
     it('updates a value in a component', function() {
       const id = Registry.createEntity();
-      Registry.createActorComponent(id,{ firstName:'Jada', lastName:'Fire', genderCode:'female', speciesCode:'nymph' });
-      Registry.updateActorComponent(id, { firstName:'Laura' });
-      Registry.updateActorComponent(id, { lastName:'Croft', genderCode:'futa' });
+      Registry.createActorComponent(id,{ firstName:'Jada', lastName:'Fire', gender:'female', species:'nymph' });
+      Registry.updateActorComponent(id, { firstName:'Skylar' });
+      Registry.updateActorComponent(id, { lastName:'Vox', gender:'futa' });
 
-      let laura = Registry.lookupActorComponent(id);
+      let skylar = Registry.lookupActorComponent(id);
 
-      expect(laura.firstName).to.equal('Laura');
-      expect(laura.lastName).to.equal('Croft');
-      expect(laura.genderCode).to.equal('futa');
-      expect(laura.speciesCode).to.equal('nymph');
+      expect(skylar.firstName).to.equal('Skylar');
+      expect(skylar.lastName).to.equal('Vox');
+      expect(skylar.gender).to.equal('futa');
+      expect(skylar.species).to.equal('nymph');
     });
   });
 
   describe('deleteComponent()', function() {
     it('deletes a component from an entity', function() {
       const id = Registry.createEntity();
-      Registry.createActorComponent(id,{ firstName:'Jada', lastName:'Fire', genderCode:'female', speciesCode:'nymph' });
+      Registry.createActorComponent(id,{ firstName:'Jada', lastName:'Fire', gender:'female', species:'nymph' });
       Registry.createControlledComponent(id,{ control:-200 });
       Registry.deleteActorComponent(id);
 
@@ -92,11 +92,12 @@ describe('Registry', function() {
       const two = Registry.createEntity();
       const three = Registry.createEntity();
 
-      Registry.createActorComponent(one,{ name:'One' });
-      Registry.createActorComponent(two,{ name:'Two' });
-      Registry.createManaComponent(three,{ mana:'Blue' })
+      Registry.createControlledComponent(one,{ control:1 });
+      Registry.createControlledComponent(two,{ control:2 });
+      Registry.createSituatedComponent(three,{ currentLocation:'filthy-hovel' })
 
-      let ids = Registry.findEntitiesWithComponents([ComponentType.actor]);
+      let ids = Registry.findEntitiesWithComponents([ComponentType.controlled]);
+
       expect(ids.length).to.equal(2);
       expect(ids).to.have.members([one,two]);
     });
@@ -109,23 +110,23 @@ describe('Registry', function() {
       const five = Registry.createEntity();
       const six = Registry.createEntity();
 
-      Registry.createActorComponent(one,{ a:1 });
-      Registry.createActorComponent(two,{ a:2 });
-      Registry.createActorComponent(three,{ a:3 });
-      Registry.createActorComponent(four,{ a:4 });
+      Registry.createActorComponent(one,  { firstName:'A', lastName:'E', gender:'female', species:'elf' });
+      Registry.createActorComponent(two,  { firstName:'B', lastName:'F', gender:'female', species:'elf' });
+      Registry.createActorComponent(three,{ firstName:'C', lastName:'G', gender:'female', species:'elf' });
+      Registry.createActorComponent(four, { firstName:'D', lastName:'H', gender:'female', species:'elf' });
 
-      Registry.createManaComponent(three,{ m:3 });
-      Registry.createManaComponent(four,{ m:4 });
-      Registry.createManaComponent(five,{ m:5 });
-      Registry.createManaComponent(six,{ m:6 });
+      Registry.createManaComponent(three,{});
+      Registry.createManaComponent(four,{});
+      Registry.createManaComponent(five,{});
+      Registry.createManaComponent(six,{});
 
-      Registry.createHealthComponent(two,{ h:2 });
-      Registry.createHealthComponent(four,{ h:4 });
-      Registry.createHealthComponent(six,{ h:6 });
+      Registry.createHealthComponent(two, { currentStamina:1000, maxStamina:1000 });
+      Registry.createHealthComponent(four,{ currentStamina:1000, maxStamina:1000 });
+      Registry.createHealthComponent(six, { currentStamina:1000, maxStamina:1000 });
 
-      Registry.createControlledComponent(one,{ c:1 });
-      Registry.createControlledComponent(three,{ c:3 });
-      Registry.createControlledComponent(five,{ c:5 });
+      Registry.createControlledComponent(one,  { control:100 });
+      Registry.createControlledComponent(three,{ control:100 });
+      Registry.createControlledComponent(five, { control:100 });
 
       let find1 = Registry.findEntitiesWithComponents([ComponentType.actor, ComponentType.mana]);
       let find2 = Registry.findEntitiesWithComponents([ComponentType.actor, ComponentType.mana, ComponentType.health])
@@ -144,12 +145,12 @@ describe('Registry', function() {
       const actor3 = Registry.createEntity();
       const location = Registry.createEntity();
 
-      Registry.createActorComponent(actor1,{ gender:'female' });
-      Registry.createActorComponent(actor2,{ gender:'futa'});
-      Registry.createActorComponent(actor3,{ gender:'female'});
-      Registry.createSituatedComponent(location,{ gender:'female'});
+      Registry.createActorComponent(actor1,{ firstName:'Hard', lastName:'Beefslab', gender:'male', species:'elf' });
+      Registry.createActorComponent(actor2,{ firstName:'Slappy', lastName:'Balls', gender:'futa', species:'elf' });
+      Registry.createActorComponent(actor3,{ firstName:'Dixon', lastName:'Cox', gender:'male', species:'elf' });
+      Registry.createSituatedComponent(location,{ currentLocation:'in your mom' });
 
-      const results = Registry.findComponentsWith(ComponentType.actor, data => data.gender === 'female');
+      const results = Registry.findComponentsWith(ComponentType.actor, data => data.gender === 'male');
 
       expect(results).to.have.members([actor1,actor3]);
     });

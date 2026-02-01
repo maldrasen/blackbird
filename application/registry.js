@@ -54,21 +54,45 @@ global.Registry = (function() {
     components[type][id] = data;
   }
 
-  function createActorComponent(id,data)           { Registry.createComponent(id,ComponentType.actor,data); }
-  function createControlledComponent(id,data)      { Registry.createComponent(id,ComponentType.controlled,data); }
-  function createSituatedComponent(id,data)      { Registry.createComponent(id,ComponentType.situated,data); }
-  function createAttributesComponent(id,data)      { Registry.createComponent(id,ComponentType.attributes,data); }
-  function createManaComponent(id,data)            { Registry.createComponent(id,ComponentType.mana,data); }
-  function createHealthComponent(id,data)          { Registry.createComponent(id,ComponentType.health,data); }
-  function createSkillComponent(parentId,id,data)  { Registry.createComponent(id,ComponentType.skill, { _parentId:parentId, ...data }); }
-
-  function lookupComponent(id, type) {
-    return components[type][id];
+  function createActorComponent(id,data) {
+    Registry.createComponent(id,ComponentType.actor,data);
+    Actor.validate(id);
   }
 
+  function createControlledComponent(id,data) {
+    Registry.createComponent(id,ComponentType.controlled,data);
+    Controlled.validate(id);
+  }
+
+  function createSituatedComponent(id,data) {
+    Registry.createComponent(id,ComponentType.situated,data);
+    Situated.validate(id);
+  }
+
+  function createAttributesComponent(id,data) {
+    Registry.createComponent(id,ComponentType.attributes,data);
+    Attributes.validate(id);
+  }
+
+  function createManaComponent(id,data) {
+    Registry.createComponent(id,ComponentType.mana,data);
+    Mana.validate(id);
+  }
+
+  function createHealthComponent(id,data) {
+    Registry.createComponent(id,ComponentType.health,data);
+    Health.validate(id);
+  }
+
+  function createSkillComponent(parentId,id,data) {
+    Registry.createComponent(id,ComponentType.skill, { _parentId:parentId, ...data });
+    Skill.validate(id);
+  }
+
+  function lookupComponent(id, type)     { return components[type][id]; }
   function lookupActorComponent(id)      { return Registry.lookupComponent(id,ComponentType.actor); }
   function lookupControlledComponent(id) { return Registry.lookupComponent(id,ComponentType.controlled); }
-  function lookupSituatedComponent(id) { return Registry.lookupComponent(id,ComponentType.situated); }
+  function lookupSituatedComponent(id)   { return Registry.lookupComponent(id,ComponentType.situated); }
   function lookupAttributesComponent(id) { return Registry.lookupComponent(id,ComponentType.attributes); }
   function lookupManaComponent(id)       { return Registry.lookupComponent(id,ComponentType.mana); }
   function lookupHealthComponent(id)     { return Registry.lookupComponent(id,ComponentType.health); }
@@ -81,14 +105,40 @@ global.Registry = (function() {
     });
   }
 
-  function updateActorComponent(id,data)      { updateComponent(id,ComponentType.actor,data) }
-  function updateControlledComponent(id,data) { updateComponent(id,ComponentType.controlled,data) }
-  function updateSituatedComponent(id,data) { updateComponent(id,ComponentType.situated,data) }
-  function updateAttributesComponent(id,data) { updateComponent(id,ComponentType.attributes,data) }
-  function updateManaComponent(id,data)       { updateComponent(id,ComponentType.mana,data) }
-  function updateHealthComponent(id,data)     { updateComponent(id,ComponentType.health,data) }
-  function updateSkillComponent(id,data)      { updateComponent(id,ComponentType.skill,data) }
+  function updateActorComponent(id,data) {
+    updateComponent(id,ComponentType.actor,data);
+    Actor.validate(id);
+  }
 
+  function updateControlledComponent(id,data) {
+    updateComponent(id,ComponentType.controlled,data);
+    Controlled.validate(id);
+  }
+
+  function updateSituatedComponent(id,data) {
+    updateComponent(id,ComponentType.situated,data);
+    Situated.validate(id);
+  }
+
+  function updateAttributesComponent(id,data) {
+    updateComponent(id,ComponentType.attributes,data);
+    Attributes.validate(id);
+  }
+
+  function updateManaComponent(id,data) {
+    updateComponent(id,ComponentType.mana,data);
+    Mana.validate(id);
+  }
+
+  function updateHealthComponent(id,data) {
+    updateComponent(id,ComponentType.health,data);
+    Health.validate(id);
+  }
+
+  function updateSkillComponent(id,data) {
+    updateComponent(id,ComponentType.skill,data);
+    Skill.validate(id);
+  }
 
   function deleteComponent(id,type) {
     if (components[type][id] == null) { throw `Entity[${id}] does not have ${type}`}
@@ -99,7 +149,7 @@ global.Registry = (function() {
 
   function deleteActorComponent(id)      { Registry.deleteComponent(id,ComponentType.actor); }
   function deleteControlledComponent(id) { Registry.deleteComponent(id,ComponentType.controlled); }
-  function deleteSituatedComponent(id) { Registry.deleteComponent(id,ComponentType.situated); }
+  function deleteSituatedComponent(id)   { Registry.deleteComponent(id,ComponentType.situated); }
   function deleteAttributesComponent(id) { Registry.deleteComponent(id,ComponentType.attributes); }
   function deleteManaComponent(id)       { Registry.deleteComponent(id,ComponentType.mana); }
   function deleteHealthComponent(id)     { Registry.deleteComponent(id,ComponentType.health); }
