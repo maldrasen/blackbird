@@ -1,10 +1,27 @@
 
+// === System ===
+
 global.LogType = Object.freeze({
   info: 'info',
   success: 'success',
   warning: 'warning',
   error: 'error',
 });
+
+global.CommandType = Object.freeze({
+  startTraining: 'startTraining',
+});
+
+global.GameMode = Object.freeze({
+  location: 'location',
+  training: 'training',
+});
+
+// global.SystemFlags = Object.freeze({
+//   currentEvent: 'event.current-event',
+// });
+
+// === View ===
 
 global.AlertPosition = Object.freeze({
   side: 'side',
@@ -49,8 +66,16 @@ global.KeyCodes = Object.freeze({
   F11: 'F11',
 });
 
-global.SystemFlags = Object.freeze({
-  currentEvent: 'event.current-event',
+// === Components ===
+
+global.ComponentType = Object.freeze({
+  actor:'actor',
+  controlled:'controlled',
+  atLocation:'atLocation',
+  attributes:'attributes',
+  mana:'mana',
+  health:'health',
+  skill:'skill',
 });
 
 global.Gender = Object.freeze({
@@ -69,20 +94,14 @@ global.NameRestriction = Object.freeze({
   hasSkin: 'has-skin',
 });
 
-global.EventType = Object.freeze({
-});
 
-global.EventLayouts = Object.freeze({
-  defaultLayout: 'default-layout',
-  leftSquareImageLayout: 'left-square-image-layout',
-});
 
-global.ComponentType = Object.freeze({
-  actor:'actor',
-  controlled:'controlled',
-  atLocation:'atLocation',
-  attributes:'attributes',
-  mana:'mana',
-  health:'health',
-  skill:'skill',
-});
+
+// global.EventType = Object.freeze({
+// });
+//
+// global.EventLayouts = Object.freeze({
+//   defaultLayout: 'default-layout',
+//   leftSquareImageLayout: 'left-square-image-layout',
+// });
+

@@ -112,7 +112,7 @@ window.Loader = (function() {
   }
 
   function resetDocument() {
-    document.querySelector("#fileList").remove();
+    document.querySelector("#loading").remove();
     const style = document.getElementsByTagName('style')[0];
     style.parentNode.removeChild(style);
   }

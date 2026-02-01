@@ -11,7 +11,7 @@ global.Fixtures = (function() {
 
     console.log(character.toString());
 
-    StateMachine.setMode('location');
+    StateMachine.setMode(GameMode.location);
     StateMachine.render();
   }
 

@@ -1,7 +1,5 @@
 global.StateMachine = (function() {
 
-  const Modes = { location:'location', training:'training' };
-
   let $mode;
   let $modeChanged;
 
@@ -10,11 +8,13 @@ global.StateMachine = (function() {
 
     log(`Run Command:${commandType}`, { system:'StateMachine', data:commandData });
 
-    CharacterMovementSystem.run(command);
     // Time system should run first. Every command should take some set amount time. This gives us our delta time.
     // Subsequent systems will then know how much time has passed since they were last run.
-
     TimeSystem.run(command);
+
+    CharacterMovementSystem.run(command);
+
+    TrainingSystem.run(command);
 
     render();
   }
@@ -23,12 +23,11 @@ global.StateMachine = (function() {
   function render() {
     if ($modeChanged) {
 
-      if ($mode === Modes.location) {
-        LocationView.show();
-      }
-      if ($mode === Modes.training) {
-        TrainingView.show();
-      }
+      if ($mode === GameMode.location) { LocationView.show(); }
+      if ($mode === GameMode.training) { TrainingView.show(); }
+
+      $modeChanged = false;
+      $mode = null;
     }
   }
 
@@ -39,8 +38,11 @@ global.StateMachine = (function() {
   // game is loaded I think.
   function getMode() { return $mode; }
   function setMode(mode) {
-    if (mode !== $mode) { $modeChanged = true; }
-    $mode = mode;
+    if ($modeChanged) { throw "Mode has already been changed." }
+    if (mode !== $mode) {
+      $modeChanged = true;
+      $mode = mode;
+    }
   }
 
   return {
@@ -51,3 +53,4 @@ global.StateMachine = (function() {
   };
 
 })();
+

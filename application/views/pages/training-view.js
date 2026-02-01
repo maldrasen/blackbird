@@ -1,8 +1,10 @@
 global.TrainingView = (function() {
 
-  function show() {
+  function show(data) {
+    const location = Location.lookup(GameState.getCurrentLocation());
+
     MainContent.setMainContent("views/training.html");
-    MainContent.setBackground("backgrounds/filthy-hovel.jpg");
+    MainContent.setBackground(location.getBackground());
   }
 
   return Object.freeze({

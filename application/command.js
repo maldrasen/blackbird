@@ -13,6 +13,3 @@ global.Command = function(type, data) {
   });
 }
 
-Command.Type = {
-  startTraining: 'startTraining',
-};

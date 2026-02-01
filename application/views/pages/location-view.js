@@ -20,7 +20,7 @@ global.LocationView = (function() {
   //       them to a bedroom. Some actions might only be available if the room matches, need to consider if the room
   //       has a bed or a shower or a pillory.
   function characterClicked(event) {
-    StateMachine.handleCommand(Command.Type.startTraining, { characterId:event.target.getAttribute('data-id') });
+    StateMachine.handleCommand(CommandType.startTraining, { characterId:event.target.getAttribute('data-id') });
   }
 
   function buildCharacterList(characters) {

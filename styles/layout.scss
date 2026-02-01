@@ -35,6 +35,14 @@
   box-shadow: variables.$shadow-frame;
 }
 
+.bottom-frame {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 20px;
+}
+
 // Flex Container Classes
 .flex { display:flex;  }
 .flex-center { justify-content: center; } // Align Horizontally
@@ -43,8 +51,6 @@
 
 // Flex Item Classes
 .flex-grow { flex-grow:1; }
-
-
 
 // === Dialog ===
 // The two main layout containers are the dialogs and the overlays. Dialogs
@@ -132,13 +138,14 @@
   left: 50px;
   right: 50px;
   min-width: 790px;
+  height: 32px;
 
   padding: 5px;
   margin-top: 5px;
 
   background-color: rgba(0,0,0,0.80);
   border: variables.$border-normal;
-  box-shadow: variables.$shadow-overlay;
+  border-top: none;
 
   z-index: variables.$z-overlay-footer;
 }
