@@ -26,11 +26,17 @@ global.LocationView = (function() {
   function buildCharacterList(characters) {
     const characterList = X.first('#characterList');
 
-    characters.forEach(c => {
-      characterList.appendChild(X.createElement(
-        `<li><a data-id='${c.id}'>${c.getFirstName()} ${c.getLastName()}</a> (${c.getGender()} ${c.getSpecies()})</li>`
-      ));
+    characters.forEach(id => {
+      characterList.appendChild(buildCharacterItem(id));
     });
+  }
+
+  function buildCharacterItem(id) {
+    const actor = Registry.lookupActorComponent(id)
+
+    return X.createElement(`<li>
+      <a data-id='${id}'>${actor.firstName} ${actor.lastName}</a>
+      (${actor.gender} ${actor.species})</li>`);
   }
 
   return Object.freeze({

@@ -6,10 +6,9 @@ global.Fixtures = (function() {
   function setupTraining() {
     console.log("=== Setup Fixture ===");
 
-    const characterId = CharacterFactory.build({ gender:'female' });
-    const character = Character(characterId);
-
-    console.log(character.toString());
+    CharacterFactory.build({ gender:'female' });
+    CharacterFactory.build({ gender:'female' });
+    CharacterFactory.build({ gender:'female' });
 
     StateMachine.setMode(GameMode.location);
     StateMachine.render();
