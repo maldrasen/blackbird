@@ -5,6 +5,10 @@ global.Species = (function() {
     $speciesMap[code] = data;
   }
 
+  function getAllCodes() {
+    return Object.keys($speciesMap);
+  }
+
   function lookup(code) {
     const species = $speciesMap[code];
 
@@ -20,6 +24,7 @@ global.Species = (function() {
 
   return Object.freeze({
     register,
+    getAllCodes,
     lookup,
   });
 

@@ -7,6 +7,10 @@ global.SkillRecord = (function() {
     $skills[code] = data;
   }
 
+  function getAllCodes() {
+    return Object.keys($skills);
+  }
+
   function lookup(code) {
     const skill = $skills[code];
 
@@ -22,6 +26,7 @@ global.SkillRecord = (function() {
 
   return Object.freeze({
     register,
+    getAllCodes,
     lookup,
   });
 

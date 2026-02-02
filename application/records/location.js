@@ -5,6 +5,10 @@ global.Location = (function() {
     $locations[code] = data;
   }
 
+  function getAllCodes() {
+    return Object.keys($locations);
+  }
+
   function lookup(code) {
     const location = $locations[code];
 
@@ -21,6 +25,7 @@ global.Location = (function() {
 
   return Object.freeze({
     register,
+    getAllCodes,
     lookup,
   });
 

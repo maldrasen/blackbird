@@ -13,7 +13,7 @@ global.SexualPreference = (function() {
     });
 
     Validate.exists(_parentId,sexualPreferenceComponent._parentId);
-    Validate.isIn('type',sexualPreferenceComponent.type,['gynophilic','androphilic']); // TODO: Actual List of sexual preferences
+    Validate.isIn('type',sexualPreferenceComponent.type,SexualPreferenceRecord.getAllCodes());
     Validate.between('value',sexualPreferenceComponent.value,-100,100);
   }
 

@@ -5,6 +5,10 @@ global.SexAction = (function() {
     $sexActions[code] = data;
   }
 
+  function getAllCodes() {
+    return Object.keys($sexActions);
+  }
+
   function lookup(code) {
     const action = $sexActions[code];
 
@@ -20,6 +24,7 @@ global.SexAction = (function() {
 
   return Object.freeze({
     register,
+    getAllCodes,
     lookup,
   });
 

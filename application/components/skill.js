@@ -12,8 +12,8 @@ global.Skill = (function() {
       }
     });
 
-    Validate.exists(_parentId,skillComponent._parentId)
-    Validate.isIn('code',skillComponent.code,['oral-sex','anal-sex']) // TODO: list of skill
+    Validate.exists(_parentId,skillComponent._parentId);
+    Validate.isIn('code',skillComponent.code,SkillRecord.getAllCodes());
     Validate.atLeast('level',skillComponent.level,1);
     Validate.atLeast('experience',skillComponent.experience,0);
   }

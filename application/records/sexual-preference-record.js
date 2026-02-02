@@ -1,8 +1,12 @@
-global.SexualPreference = (function() {
+global.SexualPreferenceRecord = (function() {
   const $sexualPreferences = {};
 
   function register(code,data) {
     $sexualPreferences[code] = data;
+  }
+
+  function getAllCodes() {
+    return Object.keys($sexualPreferences);
   }
 
   function lookup(code) {
@@ -33,6 +37,7 @@ global.SexualPreference = (function() {
 
   return Object.freeze({
     register,
+    getAllCodes,
     lookup,
   });
 
