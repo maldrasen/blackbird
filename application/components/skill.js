@@ -16,7 +16,6 @@ global.Skill = (function() {
     Validate.isIn('code',skillComponent.code,['oral-sex','anal-sex']) // TODO: list of skill
     Validate.atLeast('level',skillComponent.level,1);
     Validate.atLeast('experience',skillComponent.experience,0);
-
   }
 
   return Object.freeze({
