@@ -69,13 +69,20 @@ global.KeyCodes = Object.freeze({
 // === Components ===
 
 global.ComponentType = Object.freeze({
-  actor:'actor',
-  attributes:'attributes',
-  controlled:'controlled',
-  health:'health',
-  mana:'mana',
-  situated:'situated',
-  skill:'skill',
+  actor: 'actor',
+  arousal: 'arousal',
+  aspect: 'aspect',
+  attributes: 'attributes',
+  controlled: 'controlled',
+  feelings: 'feelings',
+  health: 'health',
+  mana: 'mana',
+  mark: 'mark',
+  memory: 'memory',
+  personality: 'personality',
+  sexualPreference: 'sexual-preference',
+  situated: 'situated',
+  skill: 'skill',
 });
 
 global.Gender = Object.freeze({

@@ -4,7 +4,7 @@ global.SexualPreference = (function() {
   function properties() { return $properties; }
 
   function validate(id) {
-    const sexualPreferenceComponent = Registry.lookupPersonalityComponent(id)
+    const sexualPreferenceComponent = Registry.lookupSexualPreferenceComponent(id)
 
     Object.keys(sexualPreferenceComponent).forEach(key => {
       if ($properties.includes(key) === false) {
