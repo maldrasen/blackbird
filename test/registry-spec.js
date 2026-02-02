@@ -42,8 +42,8 @@ describe('Registry', function() {
       const skill2 = Registry.createEntity();
 
       Registry.createActorComponent(actor,{ firstName:'Angela', lastName:'White', gender:'female', species:'elf' });
-      Registry.createSkillComponent(actor,skill1,{ code:'deepthroat' });
-      Registry.createSkillComponent(actor,skill2,{ code:'fisting' });
+      Registry.createSkillComponent(actor,skill1,{ code:'oral-sex', level:42, experience:0 });
+      Registry.createSkillComponent(actor,skill2,{ code:'anal-sex', level:69, experience:0 });
 
       expect(Registry.compileEntityData(actor).children.length).to.equal(2);
 
@@ -120,9 +120,9 @@ describe('Registry', function() {
       Registry.createManaComponent(five,{});
       Registry.createManaComponent(six,{});
 
-      Registry.createHealthComponent(two, { currentStamina:1000, maxStamina:1000 });
-      Registry.createHealthComponent(four,{ currentStamina:1000, maxStamina:1000 });
-      Registry.createHealthComponent(six, { currentStamina:1000, maxStamina:1000 });
+      Registry.createHealthComponent(two, { currentStamina:1000, maxStamina:1000, currentHealth:1000, maxHealth:1000 });
+      Registry.createHealthComponent(four,{ currentStamina:1000, maxStamina:1000, currentHealth:1000, maxHealth:1000 });
+      Registry.createHealthComponent(six, { currentStamina:1000, maxStamina:1000, currentHealth:1000, maxHealth:1000 });
 
       Registry.createControlledComponent(one,  { control:100 });
       Registry.createControlledComponent(three,{ control:100 });

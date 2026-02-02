@@ -1,5 +1,5 @@
 global.Health = (function() {
-  const $properties = ['currentStamina','maxStamina'];
+  const $properties = ['currentStamina','maxStamina','currentHealth','maxHealth'];
 
   function properties() { return $properties; }
 
@@ -12,8 +12,10 @@ global.Health = (function() {
       }
     });
 
-    Validate.between('currentStamina',healthComponent.currentStamina,0,1500);
-    Validate.between('maxStamina',healthComponent.currentStamina,500,1500);
+    Validate.atLeast('currentStamina',healthComponent.currentStamina,0);
+    Validate.atLeast('maxStamina',healthComponent.maxStamina,1);
+    Validate.atLeast('currentHealth',healthComponent.currentHealth,0);
+    Validate.atLeast('maxHealth',healthComponent.maxHealth,1);
   }
 
   return Object.freeze({

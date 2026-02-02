@@ -1,5 +1,5 @@
 global.Mana = (function() {
-  const $properties = [];
+  const $properties = ['red_mana','yellow_mana','green_mana','blue_mana','black_mana'];
 
   function properties() { return $properties; }
 

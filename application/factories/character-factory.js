@@ -8,7 +8,9 @@ global.CharacterFactory = (function() {
 
     const actorComponent = { gender, species };
     const controlledComponent = { control:50 };
-    const healthComponent = { currentStamina:1000, maxStamina:1000 }
+
+    // Need to figure out how stamina and health values are figured out.
+    const healthComponent = { currentStamina:1000, maxStamina:1000, currentHealth:20, maxHealth:20, }
     const situatedComponent = { currentLocation:'filthy-hovel' }
 
     if (options.firstName == null) {

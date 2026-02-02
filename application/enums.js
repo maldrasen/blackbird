@@ -82,6 +82,7 @@ global.Gender = Object.freeze({
   male: 'male',
   female: 'female',
   futa: 'futa',
+  enby: 'enby',
 });
 
 global.NameRestriction = Object.freeze({

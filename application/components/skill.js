@@ -1,5 +1,5 @@
 global.Skill = (function() {
-  const $properties = [_parentId,'code','level'];
+  const $properties = [_parentId,'code','level','experience'];
 
   function properties() { return $properties; }
 
@@ -11,6 +11,12 @@ global.Skill = (function() {
         throw `Skill component does not have a ${key} property.`
       }
     });
+
+    Validate.exists(_parentId,skillComponent._parentId)
+    Validate.isIn('code',skillComponent.code,['oral-sex','anal-sex']) // TODO: list of skill
+    Validate.atLeast('level',skillComponent.level,1);
+    Validate.atLeast('experience',skillComponent.experience,0);
+
   }
 
   return Object.freeze({

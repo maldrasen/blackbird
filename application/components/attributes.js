@@ -1,5 +1,5 @@
 global.Attributes = (function() {
-  const $properties = [];
+  const $properties = ['strength','dexterity','vitality','intelligence','beauty'];
 
   function properties() { return $properties; }
 
@@ -10,6 +10,12 @@ global.Attributes = (function() {
       if ($properties.includes(key) === false) {
         throw `Attribute component does not have a ${key} property.`
       }
+
+      Validate.atLeast('strength',attributeComponent.strength,1);
+      Validate.atLeast('dexterity',attributeComponent.dexterity,1);
+      Validate.atLeast('vitality',attributeComponent.vitality,1);
+      Validate.atLeast('intelligence',attributeComponent.intelligence,1);
+      Validate.atLeast('beauty',attributeComponent.beauty,1);
     });
   }
 

@@ -1,5 +1,5 @@
 global.Actor = (function() {
-  const $properties = ['firstName','lastName','gender','species'];
+  const $properties = ['givenName','firstName','lastName','gender','species'];
 
   function properties() { return $properties; }
 
@@ -12,8 +12,6 @@ global.Actor = (function() {
       }
     });
 
-    Validate.exists('firstName',actorComponent.firstName);
-    Validate.exists('lastName',actorComponent.lastName);
     Validate.isIn('gender',actorComponent.gender,Object.values(Gender));
     Validate.isIn('species',actorComponent.species,['elf','nymph']); // TODO: Fetch a list of species
   }
