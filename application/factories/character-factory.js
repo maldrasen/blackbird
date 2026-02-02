@@ -4,7 +4,7 @@ global.CharacterFactory = (function() {
     const characterId = Registry.createEntity();
 
     const gender = options.gender || Gender.female
-    const species = options.species || 'elf';
+    const species = options.species || Random.from(Species.getAllCodes());
 
     const actorComponent = { gender, species };
     const controlledComponent = { control:50 };

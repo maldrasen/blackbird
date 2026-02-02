@@ -41,7 +41,7 @@ describe('Registry', function() {
       const skill1 = Registry.createEntity();
       const skill2 = Registry.createEntity();
 
-      Registry.createActorComponent(actor,{ firstName:'Angela', lastName:'White', gender:'female', species:'elf' });
+      Registry.createActorComponent(actor,{ firstName:'Angela', lastName:'White', gender:'female', species:'cambion' });
       Registry.createSkillComponent(actor,skill1,{ code:'oral-sex', level:42, experience:0 });
       Registry.createSkillComponent(actor,skill2,{ code:'anal-sex', level:69, experience:0 });
 
@@ -110,10 +110,10 @@ describe('Registry', function() {
       const five = Registry.createEntity();
       const six = Registry.createEntity();
 
-      Registry.createActorComponent(one,  { firstName:'A', lastName:'E', gender:'female', species:'elf' });
-      Registry.createActorComponent(two,  { firstName:'B', lastName:'F', gender:'female', species:'elf' });
-      Registry.createActorComponent(three,{ firstName:'C', lastName:'G', gender:'female', species:'elf' });
-      Registry.createActorComponent(four, { firstName:'D', lastName:'H', gender:'female', species:'elf' });
+      Registry.createActorComponent(one,  { firstName:'A', lastName:'E', gender:'female', species:'cambion' });
+      Registry.createActorComponent(two,  { firstName:'B', lastName:'F', gender:'female', species:'cambion' });
+      Registry.createActorComponent(three,{ firstName:'C', lastName:'G', gender:'female', species:'cambion' });
+      Registry.createActorComponent(four, { firstName:'D', lastName:'H', gender:'female', species:'cambion' });
 
       Registry.createManaComponent(three,{});
       Registry.createManaComponent(four,{});
@@ -145,9 +145,9 @@ describe('Registry', function() {
       const actor3 = Registry.createEntity();
       const location = Registry.createEntity();
 
-      Registry.createActorComponent(actor1,{ firstName:'Hard', lastName:'Beefslab', gender:'male', species:'elf' });
-      Registry.createActorComponent(actor2,{ firstName:'Slappy', lastName:'Balls', gender:'futa', species:'elf' });
-      Registry.createActorComponent(actor3,{ firstName:'Dixon', lastName:'Cox', gender:'male', species:'elf' });
+      Registry.createActorComponent(actor1,{ firstName:'Hard', lastName:'Beefslab', gender:'male', species:'equian' });
+      Registry.createActorComponent(actor2,{ firstName:'Slappy', lastName:'Balls', gender:'futa', species:'equian' });
+      Registry.createActorComponent(actor3,{ firstName:'Dixon', lastName:'Cox', gender:'male', species:'equian' });
       Registry.createSituatedComponent(location,{ currentLocation:'in your mom' });
 
       const results = Registry.findComponentsWith(ComponentType.actor, data => data.gender === 'male');

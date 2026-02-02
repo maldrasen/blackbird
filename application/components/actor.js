@@ -13,7 +13,7 @@ global.Actor = (function() {
     });
 
     Validate.isIn('gender',actorComponent.gender,Object.values(Gender));
-    Validate.isIn('species',actorComponent.species,['elf','nymph']); // TODO: Fetch a list of species
+    Validate.isIn('species',actorComponent.species,Species.getAllCodes());
   }
 
   return Object.freeze({
