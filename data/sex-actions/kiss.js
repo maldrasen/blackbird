@@ -1,6 +1,7 @@
 SexAction.register('kiss',{
   category: 'Foreplay',
   name: 'Kissing',
+  difficulty: 15,
 
   // An action can persist body parts, such that if the next command issued doesn't involve these parts, the action
   // will persist on the next turn. An action could also just 'use' a body part, to release it from a previous action,
@@ -17,16 +18,8 @@ SexAction.register('kiss',{
   // Besides the obvious of needing the used or target parts sex acts can have different requirements.
   requires:[],
 
-
-  // consent
-  // Part of the sex action logic will be determining how the target will react to the action. The reaction can range
-  // from refusal and fighting back to enthusiastic. The consent calculation will take a ton of different things into
-  // consideration, mostly about sexual preferences and attitude towards the player.
-  difficulty: 15,
-
   // By default, oral preferences will complement mouth actions. Other preferences won't be as straight forward, such
   // as a gentle personality preferring kissing, while an aggressive personality won't care for it.
   complementing: ['gentle personality'],
   conflicting:   ['aggressive personality'],
-
 });
