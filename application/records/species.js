@@ -19,6 +19,11 @@ global.Species = (function() {
     return Object.freeze({
       getCode: () => { return species.code; },
       getName: () => { return species.name; },
+      getGenderRatio: () => { return species.genderRatio; },
+      getSexualityRatio: () => { return species.sexualityRatio; },
+      getAttributes: () => { return species.attributes; },
+      getPersonalityArchetypes: () => { return species.personalityArchetypes },
+      getBody: () => { return species.body },
     });
   }
 

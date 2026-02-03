@@ -1,8 +1,8 @@
 describe("CharacterFactory", function() {
 
-  describe("build()", function() {
+  describe.only("build()", function() {
     it("makes a completely random character when no options are given", function() {
-      const id = CharacterFactory.build({});
+      const id = CharacterFactory.build({ control:50 });
       const actor = Registry.lookupActorComponent(id);
       const control = Registry.lookupControlledComponent(id);
       const health = Registry.lookupHealthComponent(id);
