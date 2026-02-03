@@ -13,7 +13,7 @@ Species.register('lupin', {
   },
 
   // Lupin personality will be complex, because there's a very big in-group / out-group distinction.
-  personalities: {
+  personalityRanges: {
     openness:[0,40],            // They follow The Way
     conscientiousness:[20,80],  // Moderate
     extraversion:[50,100],      // Pack oriented

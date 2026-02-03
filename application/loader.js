@@ -16,6 +16,9 @@ window.Loader = (function() {
   // directory. This file must be present and should include all the javascript
   // files of the wrapped application.
   function startLoading() {
+    if (Environment.isDevelopment) { document.querySelector('body').classList.add('development'); }
+    if (Environment.isProduction) { document.querySelector('body').classList.add('production'); }
+
     try {
       appendItem(`Loading from ${ROOT}/application`);
       const manifest = require(`${ROOT}/manifest.json`);

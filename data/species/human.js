@@ -12,7 +12,7 @@ Species.register('human', {
     beauty: 'C',
   },
 
-  personalities: {
+  personalityRanges: {
     openness:[10,90],
     conscientiousness:[10,90],
     extraversion:[10,90],

@@ -12,7 +12,7 @@ Species.register('nymph', {
     beauty: 'A',
   },
 
-  personalities: {
+  personalityRanges: {
     openness:[60,100],        // Up for anything
     conscientiousness:[0,30], // Very lazy
     extraversion:[30,70],     // Moderate, likes groups but also likes one on one time.

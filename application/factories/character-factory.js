@@ -26,7 +26,10 @@ global.CharacterFactory = (function() {
 
     const actorComponent = { gender:genderCode, species:speciesCode };
     const attributesComponent = rollAttributes(genderCode, speciesCode);
-    const healthComponent = calculateHealth(attributesComponent);
+    const healthComponent = rollHealth(attributesComponent);
+    const personalityComponent = rollPersonality(genderCode, speciesCode);
+
+
 
     // Need to completely rework names down to a single name version.
     // if (options.firstName == null) {
@@ -37,22 +40,23 @@ global.CharacterFactory = (function() {
     Registry.createActorComponent(characterId, actorComponent);
     Registry.createAttributesComponent(characterId, attributesComponent);
     Registry.createHealthComponent(characterId, healthComponent);
+    Registry.createPersonalityComponent(characterId, personalityComponent);
 
     return characterId;
   }
 
   // I don't think we roll attributes in any place other than this character factory. If so we can move this to the
   // Attributes component or something.
-  function rollAttributes(genderCode,speciesCode) {
+  function rollAttributes(gender,species) {
     const diceLevels = { F:1, D:2, C:3, B:4, A:5, S:6, SS:7, SSS:8 }
-    const speciesMap = Species.lookup(speciesCode).getAttributes();
+    const speciesMap = Species.lookup(species).getAttributes();
     const attributes = {};
 
     ['strength','dexterity','vitality','intelligence','beauty'].forEach(code => {
       let dice = diceLevels[speciesMap[code]];
 
-      if (code === 'strength' && ['male','futa'].includes(genderCode)) { dice += 1 }
-      if (code === 'beauty' && ['female','futa'].includes(genderCode)) { dice += 1 }
+      if (code === 'strength' && ['male','futa'].includes(gender)) { dice += 1 }
+      if (code === 'beauty' && ['female','futa'].includes(gender)) { dice += 1 }
 
       attributes[code] = Random.rollDice({ x:dice, d:10 });
 
@@ -65,9 +69,22 @@ global.CharacterFactory = (function() {
   // Health is based on the character's vitality and rolled randomly. If we have a mechanism for adding a point
   // of vitality, it should also roll and add more health points as well. Baseline health is simply (vitality)d10.
   // Health and current health are the only values currently tracked by the health component.
-  function calculateHealth(attributes) {
+  function rollHealth(attributes) {
     const health = Random.rollDice({ x:attributes.vitality, d:10 });
-    return { currentHealth:health, maxHealth:health };
+    const stamina = Attributes.createWrapper({ data:attributes }).getMaxStamina();
+
+    return { currentStamina:stamina, currentHealth:health, maxHealth:health };
+  }
+
+  function rollPersonality(gender,species) {
+    const ranges = Species.lookup(species).getPersonalityRanges();
+    const personality = { sanity:100 };
+
+    Object.keys(ranges).forEach(key => {
+      personality[key] = Random.between(ranges[key][0],ranges[key][1]);
+    });
+
+    return personality;
   }
 
   return {

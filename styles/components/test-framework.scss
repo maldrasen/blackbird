@@ -76,30 +76,3 @@
   }
 }
 
-#testLogFrame {
-  position: absolute;
-
-  top: 20px;
-  bottom: 20px;
-  left: 20px;
-  width: 455px;
-
-  border: variables.$border-normal;
-  box-shadow: variables.$shadow-frame;
-  background-color: variables.$bg-light;
-  z-index: variables.$z-viewport;
-
-  h1 {
-    margin: 20px 10px 0;
-    padding-bottom: 5px;
-    font-size: variables.$fs-bigger;
-    line-height: 1;
-    border-bottom: variables.$border-normal;
-  }
-
-  p {
-    font-family: 'roboto-mono';
-    font-size: variables.$fs-small;
-    margin: 0 10px 0 30px;
-  }
-}

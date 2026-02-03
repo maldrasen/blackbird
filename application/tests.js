@@ -32,19 +32,9 @@ global.Tests = (function() {
         </div>
       </div>`);
 
-    const testLogFrame = X.createElement(`
-      <div id='testLogFrame'>
-        <div class='scroll'>
-          <div id='testLog'></div>
-        </div>
-      </div>`)
-
-    const mainContent = X.first('#mainContent');
-    mainContent.appendChild(testFrame);
-    mainContent.appendChild(testLogFrame);
+    X.first('#mainContent').appendChild(testFrame);
 
     $testScrollingPanel = ScrollingPanel({ selector:'#testFrame .scroll' });
-    $testLogScrollingPanel = ScrollingPanel({ selector:'#testLogFrame .scroll' });
   }
 
   function loadMocha() {

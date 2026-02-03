@@ -41,7 +41,7 @@ describe('Registry', function() {
       const skill1 = Registry.createEntity();
       const skill2 = Registry.createEntity();
 
-      Registry.createActorComponent(actor,{ firstName:'Angela', lastName:'White', gender:'female', species:'cambion' });
+      Registry.createActorComponent(actor,{ firstName:'Angela', lastName:'White', gender:'female', species:'elf' });
       Registry.createSkillComponent(actor,skill1,{ code:'oral-sex', level:42, experience:0 });
       Registry.createSkillComponent(actor,skill2,{ code:'anal-sex', level:69, experience:0 });
 
@@ -110,19 +110,19 @@ describe('Registry', function() {
       const five = Registry.createEntity();
       const six = Registry.createEntity();
 
-      Registry.createActorComponent(one,  { firstName:'A', lastName:'E', gender:'female', species:'cambion' });
-      Registry.createActorComponent(two,  { firstName:'B', lastName:'F', gender:'female', species:'cambion' });
-      Registry.createActorComponent(three,{ firstName:'C', lastName:'G', gender:'female', species:'cambion' });
-      Registry.createActorComponent(four, { firstName:'D', lastName:'H', gender:'female', species:'cambion' });
+      Registry.createActorComponent(one,  { firstName:'A', lastName:'E', gender:'female', species:'elf' });
+      Registry.createActorComponent(two,  { firstName:'B', lastName:'F', gender:'female', species:'elf' });
+      Registry.createActorComponent(three,{ firstName:'C', lastName:'G', gender:'female', species:'elf' });
+      Registry.createActorComponent(four, { firstName:'D', lastName:'H', gender:'female', species:'elf' });
 
       Registry.createManaComponent(three,{});
       Registry.createManaComponent(four,{});
       Registry.createManaComponent(five,{});
       Registry.createManaComponent(six,{});
 
-      Registry.createHealthComponent(two, { currentStamina:1000, maxStamina:1000, currentHealth:1000, maxHealth:1000 });
-      Registry.createHealthComponent(four,{ currentStamina:1000, maxStamina:1000, currentHealth:1000, maxHealth:1000 });
-      Registry.createHealthComponent(six, { currentStamina:1000, maxStamina:1000, currentHealth:1000, maxHealth:1000 });
+      Registry.createHealthComponent(two, { currentStamina:1000, currentHealth:100, maxHealth:100 });
+      Registry.createHealthComponent(four,{ currentStamina:1000, currentHealth:100, maxHealth:100 });
+      Registry.createHealthComponent(six, { currentStamina:1000, currentHealth:100, maxHealth:100 });
 
       Registry.createControlledComponent(one,  { control:100 });
       Registry.createControlledComponent(three,{ control:100 });

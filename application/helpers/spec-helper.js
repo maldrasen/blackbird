@@ -6,12 +6,4 @@ global.SpecHelper = {
     }
   },
 
-  startLog(title) {
-    X.first('#testLog').appendChild(X.createElement(`<h1>${title}</h1>`));
-  },
-
-  log(message) {
-    X.first('#testLog').appendChild(X.createElement(`<p>${message}</p>`));
-  },
-
 };

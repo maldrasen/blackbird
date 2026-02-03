@@ -3,8 +3,6 @@
 
 #mainMenu {
   position: absolute;
-  top: calc(50vh - 100px);
-  left: calc((100% - 300px)/2);
   z-index: variables.$z-main-menu;
 
   .base-frame {
@@ -24,6 +22,18 @@
       width: 260px;
     }
   }
+}
+
+// Upper left in development because test frame exists.
+body.development #mainMenu {
+  top: 20px;
+  left: 20px;
+}
+
+// Center in production
+body.production #mainMenu {
+  top: calc(50vh - 100px);
+  left: calc((100% - 300px)/2);
 }
 
 #menuCover {

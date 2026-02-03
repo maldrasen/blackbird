@@ -22,7 +22,7 @@ global.Species = (function() {
       getGenderRatio: () => { return species.genderRatio; },
       getSexualityRatio: () => { return species.sexualityRatio; },
       getAttributes: () => { return species.attributes; },
-      getPersonalityArchetypes: () => { return species.personalityArchetypes },
+      getPersonalityRanges: () => { return species.personalityRanges; },
       getBody: () => { return species.body },
     });
   }

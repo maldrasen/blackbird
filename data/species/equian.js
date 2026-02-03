@@ -12,7 +12,7 @@ Species.register('equian', {
     beauty: 'C',
   },
 
-  personalities: {
+  personalityRanges: {
     openness:[30,70],          // A bit traditionalist.
     conscientiousness:[10,50], // Nomadic, unstructured culture.
     extraversion:[50,90],      // Herd dynamics. Very social.

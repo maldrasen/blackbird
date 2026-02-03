@@ -1,5 +1,5 @@
 global.Health = (function() {
-  const $properties = ['currentHealth','maxHealth'];
+  const $properties = ['currentStamina','currentHealth','maxHealth'];
 
   function properties() { return $properties; }
 
@@ -12,6 +12,7 @@ global.Health = (function() {
       }
     });
 
+    Validate.atLeast('currentStamina',healthComponent.currentStamina,0);
     Validate.atLeast('currentHealth',healthComponent.currentHealth,0);
     Validate.atLeast('maxHealth',healthComponent.maxHealth,1);
   }

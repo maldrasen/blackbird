@@ -22,8 +22,10 @@ global.Attributes = (function() {
   // Wrapper classes are used to take a plain JavaScript object and add methods that the component might need. The
   // wrappers should be immutable, only used to access data. They should be temporary too as the underlying data can
   // change without changing the wrapped data.
-  function createWrapper(id) {
-    const attributes = Registry.lookupAttributesComponent(id);
+  //
+  // Wrapper can be either be created with the raw component data or the entity id.
+  function createWrapper(argument) {
+    const attributes = argument.data || Registry.lookupAttributesComponent(argument.id);
 
     function getStrength() { return attributes.strength; }
     function getDexterity() { return attributes.dexterity; }

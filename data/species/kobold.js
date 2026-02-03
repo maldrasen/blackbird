@@ -12,7 +12,7 @@ Species.register('kobold', {
     beauty: 'D',
   },
 
-  personalities: {
+  personalityRanges: {
     openness:[20,80],          // Moderate
     conscientiousness:[0,30],  // Not big on long term planning (except for traps)
     extraversion:[50,100],     // Tribal, pack oriented

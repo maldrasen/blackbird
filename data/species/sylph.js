@@ -12,7 +12,7 @@ Species.register('sylph', {
     beauty: 'B',
   },
 
-  personalities: {
+  personalityRanges: {
     openness:[60,100],        // Very curious and open to new experiences
     conscientiousness:[0,30], // No self control at all.
     extraversion:[60,100],    // Flirtatious with everyone.
