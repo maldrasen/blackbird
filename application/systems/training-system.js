@@ -6,10 +6,9 @@ global.TrainingSystem = (function() {
 
   function startTraining(command) {
     const characterId = command.getValue('characterId');
-    console.log("Start Training on ",characterId);
 
-    TrainingView.show({
-      characterId,
+    TrainingController.start({
+      partners:[characterId]
     });
 
     StateMachine.setMode(GameMode.training);

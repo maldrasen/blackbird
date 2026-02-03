@@ -20,6 +20,7 @@ window.Loader = (function() {
       appendItem(`Loading from ${ROOT}/application`);
       const manifest = require(`${ROOT}/manifest.json`);
       loadAll(manifest.fileList).then(finishLoading);
+      fakeScroll();
     }
     catch(error) {
       appendError(error);
@@ -105,6 +106,9 @@ window.Loader = (function() {
   }
 
   function appendError(error) {
+    console.error(`=== Error ===`);
+    console.error(error);
+
     const element = document.createElement("li");
     element.style.color = "rgb(200,100,100)";
     element.innerHTML = `<pre>ERROR: ${error}</pre>`;
@@ -115,6 +119,32 @@ window.Loader = (function() {
     document.querySelector("#loading").remove();
     const style = document.getElementsByTagName('style')[0];
     style.parentNode.removeChild(style);
+  }
+
+  // Fake scroll effect to make it look like the loading page is actually doing something during this flash prevention
+  // pause. Has the added benefit of leaving the page loaded at the last element, which will be an error, if there is
+  // one.
+  function fakeScroll() {
+    const startTime = performance.now();
+    const duration = 1000;
+
+    const animate = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // The loading could be removed at any moment. Only continue to scroll if there is one.
+      const loading = document.querySelector('#loading');
+      if (loading) {
+        loading.setAttribute('style',`top:${progress * (loading.offsetHeight - 1080) * -1}px`)
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      }
+    }
+
+    setTimeout(()=> {
+      requestAnimationFrame(animate);
+    },100);
   }
 
   return {

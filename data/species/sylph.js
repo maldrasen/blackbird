@@ -35,7 +35,6 @@ Species.register('sylph', {
       small: 20,
       average: 20,
     }}
-
   },
 
 });
