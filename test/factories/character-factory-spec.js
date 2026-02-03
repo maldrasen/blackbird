@@ -17,10 +17,7 @@ describe("CharacterFactory", function() {
       expect(health.currentHealth).to.be.within(1,1000);
       expect(health.currentHealth).to.equal(health.maxHealth);
 
-      // const actor = Registry.lookupActorComponent(id);
-      // expect(actor.firstName).to.exist
-      // expect(actor.lastName).to.exist
-
+      expect(Registry.lookupArousalComponent(id).arousal).to.equal(0);
     });
 
     it("can make a bunch of random characters quickly without crashing", function() {

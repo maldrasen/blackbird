@@ -84,9 +84,10 @@ global.Registry = (function() {
     Registry.createComponent(id,ComponentType.arousal,data);
     Arousal.validate(id);
   }
-  function createAspectComponent(parentId,id,data) {
-    Registry.createComponent(id,ComponentType.aspect, { _parentId:parentId, ...data });
-    Aspect.validate(id);
+  function createAspectComponent(id,data) {
+    const entity = Registry.createEntity();
+    Registry.createComponent(entity, ComponentType.aspect, { _parentId:id, ...data});
+    Aspect.validate(entity);
   }
   function createAttributesComponent(id,data) {
     Registry.createComponent(id,ComponentType.attributes,data);
@@ -96,9 +97,10 @@ global.Registry = (function() {
     Registry.createComponent(id,ComponentType.controlled,data);
     Controlled.validate(id);
   }
-  function createFeelingsComponent(parentId,id,data) {
-    Registry.createComponent(id,ComponentType.feelings, { _parentId:parentId, ...data });
-    Feelings.validate(id);
+  function createFeelingsComponent(id,data) {
+    const entity = Registry.createEntity();
+    Registry.createComponent(entity, ComponentType.feelings, { _parentId:id, ...data});
+    Feelings.validate(entity);
   }
   function createHealthComponent(id,data) {
     Registry.createComponent(id,ComponentType.health,data);
@@ -112,25 +114,28 @@ global.Registry = (function() {
     Registry.createComponent(id,ComponentType.mark,data);
     Mark.validate(id);
   }
-  function createMemoryComponent(parentId,id,data) {
-    Registry.createComponent(id,ComponentType.memory, { _parentId:parentId, ...data });
-    Memory.validate(id);
+  function createMemoryComponent(id,data) {
+    const entity = Registry.createEntity();
+    Registry.createComponent(entity, ComponentType.memory, { _parentId:id, ...data});
+    Memory.validate(entity);
   }
   function createPersonalityComponent(id,data) {
     Registry.createComponent(id,ComponentType.personality,data);
     Personality.validate(id);
   }
-  function createSexualPreferenceComponent(parentId,id,data) {
-    Registry.createComponent(id,ComponentType.sexualPreference,{ _parentId:parentId, ...data });
-    Personality.validate(id);
+  function createSexualPreferenceComponent(id,data) {
+    const entity = Registry.createEntity();
+    Registry.createComponent(entity, ComponentType.sexualPreference, { _parentId:id, ...data});
+    SexualPreference.validate(entity);
   }
   function createSituatedComponent(id,data) {
     Registry.createComponent(id,ComponentType.situated,data);
     Situated.validate(id);
   }
-  function createSkillComponent(parentId,id,data) {
-    Registry.createComponent(id,ComponentType.skill, { _parentId:parentId, ...data });
-    Skill.validate(id);
+  function createSkillComponent(id,data) {
+    const entity = Registry.createEntity();
+    Registry.createComponent(entity, ComponentType.skill, { _parentId:id, ...data});
+    Skill.validate(entity);
   }
 
   function lookupActorComponent(id)            { return Registry.lookupComponent(id,ComponentType.actor); }

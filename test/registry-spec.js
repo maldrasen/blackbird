@@ -6,7 +6,7 @@ describe('Registry', function() {
 
       expect(Registry.listEntityComponents(id)).to.be.empty;
 
-      Registry.createActorComponent(id,{ firstName:'Jada', lastName:'Fire', gender:'female', species:'nymph' });
+      Registry.createActorComponent(id,{ name:'Jada', surname:'Fire', gender:'female', species:'nymph' });
       Registry.createControlledComponent(id,{ control:-200 });
 
       expect(Registry.listEntityComponents(id)).to.include(ComponentType.actor);
@@ -15,7 +15,7 @@ describe('Registry', function() {
       const actor = Registry.lookupActorComponent(id);
       const control = Registry.lookupControlledComponent(id);
 
-      expect(actor.firstName).to.equal('Jada');
+      expect(actor.name).to.equal('Jada');
       expect(control.control).to.equal(-200);
     });
   });
@@ -23,7 +23,7 @@ describe('Registry', function() {
   describe('deleteEntity()', function() {
     it('deletes an entity and all of the associated components.', function() {
       const id = Registry.createEntity();
-      Registry.createActorComponent(id,{ firstName:'Jada', lastName:'Fire', gender:'female', species:'nymph' });
+      Registry.createActorComponent(id,{ name:'Jada', surname:'Fire', gender:'female', species:'nymph' });
       Registry.createControlledComponent(id,{ control:-200 });
       Registry.deleteEntity(id);
 
@@ -38,34 +38,32 @@ describe('Registry', function() {
 
     it("deletes an entity and all of the entity's children", function() {
       const actor = Registry.createEntity();
-      const skill1 = Registry.createEntity();
-      const skill2 = Registry.createEntity();
 
-      Registry.createActorComponent(actor,{ firstName:'Angela', lastName:'White', gender:'female', species:'elf' });
-      Registry.createSkillComponent(actor,skill1,{ code:'oral-sex', level:42, experience:0 });
-      Registry.createSkillComponent(actor,skill2,{ code:'anal-sex', level:69, experience:0 });
+      Registry.createActorComponent(actor,{ name:'Angela', surname:'White', gender:'female', species:'elf' });
+      Registry.createSkillComponent(actor,{ code:'oral-sex', level:42, experience:0 });
+      Registry.createSkillComponent(actor,{ code:'anal-sex', level:69, experience:0 });
 
       expect(Registry.compileEntityData(actor).children.length).to.equal(2);
+      expect(Registry.findEntitiesWithComponents(['skill']).length).to.equal(2);
 
       Registry.deleteEntity(actor)
 
       expect(Registry.lookupActorComponent(actor)).to.be.undefined
-      expect(Registry.lookupSkillComponent(skill1)).to.be.undefined
-      expect(Registry.lookupSkillComponent(skill2)).to.be.undefined
+      expect(Registry.findEntitiesWithComponents(['skill']).length).to.equal(0);
     });
   });
 
   describe('updateComponent()', function() {
     it('updates a value in a component', function() {
       const id = Registry.createEntity();
-      Registry.createActorComponent(id,{ firstName:'Jada', lastName:'Fire', gender:'female', species:'nymph' });
-      Registry.updateActorComponent(id, { firstName:'Skylar' });
-      Registry.updateActorComponent(id, { lastName:'Vox', gender:'futa' });
+      Registry.createActorComponent(id,{ name:'Jada', surname:'Fire', gender:'female', species:'nymph' });
+      Registry.updateActorComponent(id, { name:'Skylar' });
+      Registry.updateActorComponent(id, { surname:'Vox', gender:'futa' });
 
       let skylar = Registry.lookupActorComponent(id);
 
-      expect(skylar.firstName).to.equal('Skylar');
-      expect(skylar.lastName).to.equal('Vox');
+      expect(skylar.name).to.equal('Skylar');
+      expect(skylar.surname).to.equal('Vox');
       expect(skylar.gender).to.equal('futa');
       expect(skylar.species).to.equal('nymph');
     });
@@ -74,7 +72,7 @@ describe('Registry', function() {
   describe('deleteComponent()', function() {
     it('deletes a component from an entity', function() {
       const id = Registry.createEntity();
-      Registry.createActorComponent(id,{ firstName:'Jada', lastName:'Fire', gender:'female', species:'nymph' });
+      Registry.createActorComponent(id,{ name:'Jada', surname:'Fire', gender:'female', species:'nymph' });
       Registry.createControlledComponent(id,{ control:-200 });
       Registry.deleteActorComponent(id);
 
@@ -110,10 +108,10 @@ describe('Registry', function() {
       const five = Registry.createEntity();
       const six = Registry.createEntity();
 
-      Registry.createActorComponent(one,  { firstName:'A', lastName:'E', gender:'female', species:'elf' });
-      Registry.createActorComponent(two,  { firstName:'B', lastName:'F', gender:'female', species:'elf' });
-      Registry.createActorComponent(three,{ firstName:'C', lastName:'G', gender:'female', species:'elf' });
-      Registry.createActorComponent(four, { firstName:'D', lastName:'H', gender:'female', species:'elf' });
+      Registry.createActorComponent(one,  { name:'A', gender:'female', species:'elf' });
+      Registry.createActorComponent(two,  { name:'B', gender:'female', species:'elf' });
+      Registry.createActorComponent(three,{ name:'C', gender:'female', species:'elf' });
+      Registry.createActorComponent(four, { name:'D', gender:'female', species:'elf' });
 
       Registry.createManaComponent(three,{});
       Registry.createManaComponent(four,{});
@@ -145,9 +143,9 @@ describe('Registry', function() {
       const actor3 = Registry.createEntity();
       const location = Registry.createEntity();
 
-      Registry.createActorComponent(actor1,{ firstName:'Hard', lastName:'Beefslab', gender:'male', species:'equian' });
-      Registry.createActorComponent(actor2,{ firstName:'Slappy', lastName:'Balls', gender:'futa', species:'equian' });
-      Registry.createActorComponent(actor3,{ firstName:'Dixon', lastName:'Cox', gender:'male', species:'equian' });
+      Registry.createActorComponent(actor1,{ name:'Hard', surname:'Beefslab', gender:'male', species:'equian' });
+      Registry.createActorComponent(actor2,{ name:'Slappy', surname:'Balls', gender:'futa', species:'equian' });
+      Registry.createActorComponent(actor3,{ name:'Dixon', surname:'Cox', gender:'male', species:'equian' });
       Registry.createSituatedComponent(location,{ currentLocation:'in your mom' });
 
       const results = Registry.findComponentsWith(ComponentType.actor, data => data.gender === 'male');

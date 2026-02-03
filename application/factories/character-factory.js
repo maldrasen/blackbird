@@ -25,24 +25,47 @@ global.CharacterFactory = (function() {
     const sexuality = options.sexuality || Random.fromFrequencyMap(species.getSexualityRatio());
 
     const actorComponent = { gender:genderCode, species:speciesCode };
+    const arousalComponent = { arousal:0 }
     const attributesComponent = rollAttributes(genderCode, speciesCode);
     const healthComponent = rollHealth(attributesComponent);
     const personalityComponent = rollPersonality(genderCode, speciesCode);
 
-
-
-    // Need to completely rework names down to a single name version.
+    // Need to completely rework names down to a single name version. Names will still adjust values and add fetishes
+    // and such.
     // if (options.firstName == null) {
     //   actorComponent.firstName = names.first.name;
     //   actorComponent.lastName = names.last.name;
     // }
 
     Registry.createActorComponent(characterId, actorComponent);
+    Registry.createArousalComponent(characterId, arousalComponent);
     Registry.createAttributesComponent(characterId, attributesComponent);
     Registry.createHealthComponent(characterId, healthComponent);
     Registry.createPersonalityComponent(characterId, personalityComponent);
 
     return characterId;
+  }
+
+  // Currently the player is always a male human. The game might have a rogue-lite mechanic where new species and body
+  // types are unlocked through multiple runs. I'll add character creation as part of the new game, and character
+  // creation will have these new unlocked options. This is fine for early in development though.
+  function buildPlayer() {
+    const playerId = Registry.createEntity();
+    const speciesCode = 'human';
+    const genderCode = 'male';
+
+    const actorComponent = { name:'Greg', gender:genderCode, species:speciesCode };
+    const arousalComponent = { arousal:0 }
+
+    const attributesComponent = rollAttributes(genderCode, speciesCode);
+    const healthComponent = rollHealth(attributesComponent);
+
+    Registry.createActorComponent(playerId, actorComponent);
+    Registry.createArousalComponent(playerId, arousalComponent);
+    Registry.createAttributesComponent(playerId, attributesComponent);
+    Registry.createHealthComponent(playerId, healthComponent);
+
+    return playerId;
   }
 
   // I don't think we roll attributes in any place other than this character factory. If so we can move this to the
@@ -87,8 +110,9 @@ global.CharacterFactory = (function() {
     return personality;
   }
 
-  return {
-    build
-  }
+  return Object.freeze({
+    build,
+    buildPlayer,
+  });
 
 })();

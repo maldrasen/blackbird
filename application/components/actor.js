@@ -1,5 +1,5 @@
 global.Actor = (function() {
-  const $properties = ['givenName','firstName','lastName','gender','species'];
+  const $properties = ['title','name','surname','gender','species'];
 
   function properties() { return $properties; }
 
