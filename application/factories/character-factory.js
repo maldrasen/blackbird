@@ -38,18 +38,6 @@ global.CharacterFactory = (function() {
     Registry.createAttributesComponent(characterId, attributesComponent);
     Registry.createHealthComponent(characterId, healthComponent);
 
-    // === Control ===
-    // The control value shouldn't be chosen at random. Only characters under the player's control will have a control
-    // component. Control value will be determined by how the character was captured, information the character factory
-    // doesn't have access to.
-    if (options.control) {
-      Registry.createControlledComponent(characterId, { control:options.control });
-    }
-
-    // Like control, the current location should probably be passed as an argument.
-    const situatedComponent = { currentLocation:'filthy-hovel' }
-    Registry.createSituatedComponent(characterId, situatedComponent);
-
     return characterId;
   }
 

@@ -19,12 +19,6 @@ describe("CharacterFactory", function() {
       const health = Registry.lookupHealthComponent(id);
       expect(health.currentHealth).to.be.within(1,1000);
       expect(health.currentHealth).to.equal(health.maxHealth);
-
-      const control = Registry.lookupControlledComponent(id);
-      expect(control.control).to.equal(50)
-
-      const situated = Registry.lookupSituatedComponent(id);
-      expect(situated.currentLocation).to.equal('filthy-hovel') // For now.
     });
   });
 
