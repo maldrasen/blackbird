@@ -12,17 +12,13 @@ Species.register('lupin', {
     beauty: 'C',
   },
 
-  personalityArchetypes: {
-    bimbo: 16,
-    mother: 22,
-    brat: 6,
-    princess: 8,
-    deviant: 1,
-    wallflower: 8,
-    stoner: 12,
-    tradwife: 10,
-    warrior: 30,
-    thug: 20,
+  // Lupin personality will be complex, because there's a very big in-group / out-group distinction.
+  personalities: {
+    openness:[0,40],            // They follow The Way
+    conscientiousness:[20,80],  // Moderate
+    extraversion:[50,100],      // Pack oriented
+    agreeableness:[40,100],     // Agreeable (within their pack)
+    neuroticism:[50,90],        // Suspicious of outsiders
   },
 
   body: {

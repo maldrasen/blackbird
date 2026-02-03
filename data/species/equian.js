@@ -2,7 +2,7 @@ Species.register('equian', {
   name: 'Equian',
 
   genderRatio: { female:40, futa:20, male:40, enby:5 },
-  sexualityRatio: { straight:40, gay:20, bi:30, ace:5 },
+  sexualityRatio: { straight:60, gay:20, bi:20, ace:5 },
 
   attributes: {
     strength: 'A',
@@ -12,17 +12,12 @@ Species.register('equian', {
     beauty: 'C',
   },
 
-  personalityArchetypes: {
-    bimbo: 12,
-    mother: 20,
-    brat: 2,
-    princess: 4,
-    deviant: 1,
-    wallflower: 8,
-    stoner: 13,
-    tradwife: 10,
-    warrior: 20,
-    thug: 15,
+  personalities: {
+    openness:[30,70],          // A bit traditionalist.
+    conscientiousness:[10,50], // Nomadic, unstructured culture.
+    extraversion:[50,90],      // Herd dynamics. Very social.
+    agreeableness:[50,90],     // Herd dynamics. Work together.
+    neuroticism:[40,80],       // Herbivores
   },
 
   body: {

@@ -12,14 +12,12 @@ Species.register('nymph', {
     beauty: 'A',
   },
 
-  personalityArchetypes: {
-    mother: 33,
-    bimbo: 22,
-    stoner: 14,
-    princess: 10,
-    brat: 6,
-    tradwife: 2,
-    deviant: 1,
+  personalities: {
+    openness:[60,100],        // Up for anything
+    conscientiousness:[0,30], // Very lazy
+    extraversion:[30,70],     // Moderate, likes groups but also likes one on one time.
+    agreeableness:[60,100],   // Very friendly / seductive
+    neuroticism:[60,100],     // Emotionally Volatile
   },
 
   body: {

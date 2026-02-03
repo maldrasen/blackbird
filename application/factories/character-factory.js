@@ -1,10 +1,15 @@
 global.CharacterFactory = (function() {
 
+  // This map is just a placeholder. For a randomly generated character the actual species will largely depend on
+  // location. If the player is exploring the dungeon it will mostly be monster girls. There will be a world generation
+  // step as well (similar to HHS) that populates the city with NPCs. That will come from a city species frequency map.
   const SpeciesFrequency = {
-    cambion: 50,
-    kobold: 40,
-    equian: 20,
-    lupin: 20,
+    elf: 10,
+    equian: 10,
+    halfling: 10,
+    human: 10,
+    kobold: 10,
+    lupin: 10,
     nymph: 10,
     sylph: 10,
   }
@@ -23,16 +28,11 @@ global.CharacterFactory = (function() {
     const attributesComponent = rollAttributes(genderCode, speciesCode);
     const healthComponent = calculateHealth(attributesComponent);
 
-    if (options.firstName == null) {
-      const names = NameBuilder.getRandom({ gender:genderCode, category:'Elf' });
-
-      // TODO: Handle the triggers requirements and adjustments that some names come with. These values will be
-      //       included with the name. Character builder, especially personality and body parts will need to be more
-      //       developed before we can start working on this.
-
-      actorComponent.firstName = names.first.name;
-      actorComponent.lastName = names.last.name;
-    }
+    // Need to completely rework names down to a single name version.
+    // if (options.firstName == null) {
+    //   actorComponent.firstName = names.first.name;
+    //   actorComponent.lastName = names.last.name;
+    // }
 
     Registry.createActorComponent(characterId, actorComponent);
     Registry.createAttributesComponent(characterId, attributesComponent);
@@ -56,7 +56,7 @@ global.CharacterFactory = (function() {
 
       attributes[code] = Random.rollDice({ x:dice, d:10 });
 
-      if (attributes[code] < 5) { attributes.code = 5; }
+      if (attributes[code] < 5) { attributes[code] = 5; }
     });
 
     return attributes;

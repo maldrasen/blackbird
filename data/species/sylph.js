@@ -12,14 +12,12 @@ Species.register('sylph', {
     beauty: 'B',
   },
 
-  personalityArchetypes: {
-    mother: 10,
-    bimbo: 25,
-    stoner: 10,
-    princess: 20,
-    brat: 25,
-    wallflower: 5,
-    deviant: 1,
+  personalities: {
+    openness:[60,100],        // Very curious and open to new experiences
+    conscientiousness:[0,30], // No self control at all.
+    extraversion:[60,100],    // Flirtatious with everyone.
+    agreeableness:[20,60],    // They're fae, they don't really care about other people
+    neuroticism:[50,100],     // Small and fragile
   },
 
   body: {

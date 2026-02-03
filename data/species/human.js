@@ -1,5 +1,5 @@
-Species.register('cambion', {
-  name: 'Cambion',
+Species.register('human', {
+  name: 'Human',
 
   genderRatio: { female:40, futa:20, male:40, enby:5 },
   sexualityRatio: { straight:40, gay:20, bi:30, ace:5 },
@@ -12,18 +12,12 @@ Species.register('cambion', {
     beauty: 'C',
   },
 
-  personalityArchetypes: {
-    bimbo: 15,
-    mother: 20,
-    brat: 10,
-    princess: 10,
-    deviant: 1,
-    wallflower: 10,
-    stoner: 15,
-    nun: 5,
-    tradwife: 10,
-    warrior: 20,
-    thug: 15,
+  personalities: {
+    openness:[10,90],
+    conscientiousness:[10,90],
+    extraversion:[10,90],
+    agreeableness:[10,90],
+    neuroticism:[10,90],
   },
 
   body: {

@@ -12,14 +12,12 @@ Species.register('kobold', {
     beauty: 'D',
   },
 
-  personalityArchetypes: {
-    bimbo: 12,
-    brat: 22,
-    deviant: 2,
-    wallflower: 9,
-    stoner: 13,
-    warrior: 12,
-    thug: 35,
+  personalities: {
+    openness:[20,80],          // Moderate
+    conscientiousness:[0,30],  // Not big on long term planning (except for traps)
+    extraversion:[50,100],     // Tribal, pack oriented
+    agreeableness:[0,40],      // Little bastards
+    neuroticism:[50,100],      // Anxious
   },
 
   body: {
