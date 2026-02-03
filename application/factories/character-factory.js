@@ -14,20 +14,14 @@ global.CharacterFactory = (function() {
     const speciesCode = options.species || Random.fromFrequencyMap(SpeciesFrequency);
     const species = Species.lookup(speciesCode);
     const genderCode = options.gender || Random.fromFrequencyMap(species.getGenderRatio());
+
+    // Sexuality used to set sexual preferences for gynophilic and androphilic. A straight futa is gynophilic, a gay
+    // futa is androphilic (because of butt stuff). Bi is positive in both. Ace is negative in both.
     const sexuality = options.sexuality || Random.fromFrequencyMap(species.getSexualityRatio());
 
-    console.log(`=== Creating Character [${characterId}] ===`);
-    console.log(`Species: ${speciesCode}`);
-    console.log(`Gender: ${genderCode}`);
-    console.log(`Sexuality: ${sexuality}`)
-
-    // const gender = options.gender || Gender.female
     const actorComponent = { gender:genderCode, species:speciesCode };
     const attributesComponent = rollAttributes(genderCode, speciesCode);
-
-    // Need to figure out how stamina and health values are figured out.
-    const healthComponent = { currentStamina:1000, maxStamina:1000, currentHealth:20, maxHealth:20, }
-    const situatedComponent = { currentLocation:'filthy-hovel' }
+    const healthComponent = calculateHealth(attributesComponent);
 
     if (options.firstName == null) {
       const names = NameBuilder.getRandom({ gender:genderCode, category:'Elf' });
@@ -36,10 +30,6 @@ global.CharacterFactory = (function() {
       //       included with the name. Character builder, especially personality and body parts will need to be more
       //       developed before we can start working on this.
 
-      console.log("Random Name:");
-      console.log("  -",names.first);
-      console.log("  -",names.last);
-
       actorComponent.firstName = names.first.name;
       actorComponent.lastName = names.last.name;
     }
@@ -47,7 +37,6 @@ global.CharacterFactory = (function() {
     Registry.createActorComponent(characterId, actorComponent);
     Registry.createAttributesComponent(characterId, attributesComponent);
     Registry.createHealthComponent(characterId, healthComponent);
-    Registry.createSituatedComponent(characterId, situatedComponent);
 
     // === Control ===
     // The control value shouldn't be chosen at random. Only characters under the player's control will have a control
@@ -56,6 +45,10 @@ global.CharacterFactory = (function() {
     if (options.control) {
       Registry.createControlledComponent(characterId, { control:options.control });
     }
+
+    // Like control, the current location should probably be passed as an argument.
+    const situatedComponent = { currentLocation:'filthy-hovel' }
+    Registry.createSituatedComponent(characterId, situatedComponent);
 
     return characterId;
   }
@@ -67,7 +60,6 @@ global.CharacterFactory = (function() {
     const speciesMap = Species.lookup(speciesCode).getAttributes();
     const attributes = {};
 
-    console.log("Rolling attributes");
     ['strength','dexterity','vitality','intelligence','beauty'].forEach(code => {
       let dice = diceLevels[speciesMap[code]];
 
@@ -75,10 +67,19 @@ global.CharacterFactory = (function() {
       if (code === 'beauty' && ['female','futa'].includes(genderCode)) { dice += 1 }
 
       attributes[code] = Random.rollDice({ x:dice, d:10 });
-      console.log(` - ${code}:${attributes[code]}`);
+
+      if (attributes[code] < 5) { attributes.code = 5; }
     });
 
     return attributes;
+  }
+
+  // Health is based on the character's vitality and rolled randomly. If we have a mechanism for adding a point
+  // of vitality, it should also roll and add more health points as well. Baseline health is simply (vitality)d10.
+  // Health and current health are the only values currently tracked by the health component.
+  function calculateHealth(attributes) {
+    const health = Random.rollDice({ x:attributes.vitality, d:10 });
+    return { currentHealth:health, maxHealth:health };
   }
 
   return {
