@@ -31,6 +31,8 @@ global.Random = {
   from(array) {
     if (array && array.length) {
       return array[Random.upTo(array.length)];
+    } else {
+      throw `Empty array`
     }
   },
 

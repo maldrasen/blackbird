@@ -129,6 +129,7 @@ let names = [
   { name:"Sirenia" },
   { name:"Slut" },
   { name:"Snatch" },
+  { name:"Sodomy", triggers:['anal-slut[50]','cock-lover.2','cum-lover.2']},
   { name:"Sodomistress" },
   { name:"Syphili" },
   { name:"Syphilis" },

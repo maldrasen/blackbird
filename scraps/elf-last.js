@@ -41,7 +41,6 @@ let names = [
   { name:'Darkflame' },
   { name:'Darkhollow' },
   { name:'Darkleaf' },
-  { name:'Darkmagic', triggers:['magical']},
   { name:'Darksky' },
   { name:'Darkthorn' },
   { name:'Darkwater' },

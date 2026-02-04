@@ -3,6 +3,11 @@
 // these parts during sex. The strongest of these preferences is the character's 'weakness' and gets extra pleasure.
 // Tempted to add aurel sex too, but difficult to train something that a person is unlikely to survive.
 
+SexualPreferenceRecord.register('sensitive',{
+  name: 'Sensitive',
+  description: 'All sexual activities bring more pleasure.',
+});
+
 SexualPreferenceRecord.register('anal-slut',{
   name: 'Anal Slut',
   description: 'A preference for sexual activities using their anus.',

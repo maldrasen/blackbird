@@ -30,12 +30,19 @@ global.CharacterFactory = (function() {
     const healthComponent = rollHealth(attributesComponent);
     const personalityComponent = rollPersonality(genderCode, speciesCode);
 
-    // Need to completely rework names down to a single name version. Names will still adjust values and add fetishes
-    // and such.
-    // if (options.firstName == null) {
-    //   actorComponent.firstName = names.first.name;
-    //   actorComponent.lastName = names.last.name;
-    // }
+    if (options.name) { actorComponent.name = options.name; }
+    if (options.title) { actorComponent.title = options.title; }
+    if (options.surname) { actorComponent.surname = options.surname; }
+
+    let nameData;
+
+    if (actorComponent.name == null) {
+      nameData = Name.getRandom(genderCode, speciesCode);
+
+      actorComponent.name = nameData.name.name;
+      if (nameData.title) { actorComponent.title = nameData.title.name; }
+      if (nameData.surname) { actorComponent.surname = nameData.surname.name; }
+    }
 
     Registry.createActorComponent(characterId, actorComponent);
     Registry.createArousalComponent(characterId, arousalComponent);
