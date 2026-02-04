@@ -51,7 +51,7 @@ global.Name = (function() {
   // Other Triggers:
   //    magical: Adds a mana component and starting spells
   //    virgin: Ensure virginity, lack of sexual experience
-  //    slut: Has had a lot of sexual experience / multiple partners
+  //    slut: Has had a lot of sexual experience / multiple partners / extra fetish or two
 
   const $nameData = {
     title: {},
@@ -88,19 +88,11 @@ global.Name = (function() {
       };
 
       // Because I want character names to be unique, if we find a name that's already in use I give the character a
-      // title or surname. Ten percent of characters will also randomly receive titles and surnames.
-      if (!isUnique(names) || Random.roll(100) < 10) {
-        let roll = Random.roll(10);
-        if (roll < 4) {
-          names.title = getRandomTitle(genderCode);
-        }
-        if (roll >= 4 && roll < 8) {
-          names.surname = getRandomSurname(genderCode);
-        }
-        if (roll >= 8) {
-          names.title = getRandomTitle(genderCode);
-          names.surname = getRandomSurname(genderCode);
-        }
+      // title or a surname. Surnames are more common than titles, and titles are mostly negative.
+      if (!isUnique(names) || Random.roll(10) === 0) {
+        Random.roll(30) === 0 ?
+            names.title = getRandomTitle(genderCode):
+            names.surname = getRandomSurname(genderCode);
       }
 
       // Adding a title or surname could still produce a non-unique name. If so just try again.
@@ -143,9 +135,7 @@ global.Name = (function() {
 
   return Object.freeze({
     register,
-
     getRandom,
-
     isUnique,
     isValid,
   });

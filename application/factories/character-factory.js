@@ -15,6 +15,7 @@ global.CharacterFactory = (function() {
   }
 
   function build(options) {
+    const triggers = [];
     const characterId = Registry.createEntity();
     const speciesCode = options.species || Random.fromFrequencyMap(SpeciesFrequency);
     const species = Species.lookup(speciesCode);
@@ -34,15 +35,24 @@ global.CharacterFactory = (function() {
     if (options.title) { actorComponent.title = options.title; }
     if (options.surname) { actorComponent.surname = options.surname; }
 
-    let nameData;
 
     if (actorComponent.name == null) {
-      nameData = Name.getRandom(genderCode, speciesCode);
+      const nameData = Name.getRandom(genderCode, speciesCode);
+      triggers.push(...(nameData.name.triggers||[]))
 
       actorComponent.name = nameData.name.name;
-      if (nameData.title) { actorComponent.title = nameData.title.name; }
-      if (nameData.surname) { actorComponent.surname = nameData.surname.name; }
+      if (nameData.title) {
+        actorComponent.title = nameData.title.name;
+        triggers.push(...(nameData.title.triggers||[]))
+      }
+      if (nameData.surname) {
+        actorComponent.surname = nameData.surname.name;
+        triggers.push(...(nameData.surname.triggers||[]))
+      }
     }
+
+    log(StringHelper.pack(`Building: ${actorComponent.title||''} ${actorComponent.name} ${actorComponent.surname||''}
+        [${genderCode} ${speciesCode}]`),{ system:'CharacterFactory', data:{ triggers }});
 
     Registry.createActorComponent(characterId, actorComponent);
     Registry.createArousalComponent(characterId, arousalComponent);
