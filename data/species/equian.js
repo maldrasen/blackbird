@@ -21,6 +21,7 @@ Species.register('equian', {
   },
 
   body: {
+    mutability: 0,
 
     mouth: {
       averageTongueLength: 90,

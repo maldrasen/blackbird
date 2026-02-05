@@ -21,6 +21,8 @@ Species.register('kobold', {
   },
 
   body: {
+    mutability: 0,
+
     tits: false,
     nipples: false,
 

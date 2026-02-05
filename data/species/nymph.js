@@ -21,6 +21,8 @@ Species.register('nymph', {
   },
 
   body: {
+    mutability: 25,
+
     tits:{ size:{
       tiny:    5,
       small:   10,

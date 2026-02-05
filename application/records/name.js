@@ -95,8 +95,8 @@ global.Name = (function() {
             names.surname = getRandomSurname(genderCode);
       }
 
-      // Adding a title or surname could still produce a non-unique name. If so just try again.
-      if (isUnique(names) && isValid(names, genderCode, speciesCode)) {
+      // Adding a title or surname could still produce a non-unique name.
+      if (isUnique(names)) {
         return names;
       }
     }
@@ -126,18 +126,10 @@ global.Name = (function() {
     }).length === 0;
   }
 
-  function isValid(names, genderCode, speciesCode) {
-    // console.log("=== Check Name Validity ===");
-    // console.log(genderCode, speciesCode);
-    // console.log(names);
-    return true;
-  }
-
   return Object.freeze({
     register,
     getRandom,
     isUnique,
-    isValid,
   });
 
 })();

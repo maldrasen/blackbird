@@ -21,6 +21,8 @@ Species.register('halfling', {
   },
 
   body: {
+    mutability: 50,
+
     tits:{ size:{
       tiny:    5,
       small:   10,

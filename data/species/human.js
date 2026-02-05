@@ -21,6 +21,8 @@ Species.register('human', {
   },
 
   body: {
+    mutability: 50,
+
     tits:{ size:{
       zero:    5,
       tiny:    10,

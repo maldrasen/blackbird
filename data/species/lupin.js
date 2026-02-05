@@ -22,6 +22,7 @@ Species.register('lupin', {
   },
 
   body: {
+    mutability: 0,
 
     mouth: {
       averageTongueLength: 120,

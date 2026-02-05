@@ -52,7 +52,7 @@ global.EnglishHelper = {
     if (number === 0) { return options.whenZero || 'zero'; }
     if (number === 1) { return options.whenOne || 'one'; }
 
-    return millions(number);
+    return millions(number).trim();
   },
 
   // Same as numberInEnglish(), but upper case.

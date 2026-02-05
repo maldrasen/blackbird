@@ -14,51 +14,69 @@ global.CharacterFactory = (function() {
     sylph: 10,
   }
 
+  // Options:
+  //   gender: Gender code
+  //   species: Species code
+  //   name: String (for unique characters)
+  //   title: String (for unique characters)
+  //   surname: String (for unique characters)
+  //   triggers: Detailed in the character-adjuster.
+  //
   function build(options) {
-    const triggers = [];
+
+    const triggers = options.triggers || [];
     const characterId = Registry.createEntity();
     const speciesCode = options.species || Random.fromFrequencyMap(SpeciesFrequency);
     const species = Species.lookup(speciesCode);
     const genderCode = options.gender || Random.fromFrequencyMap(species.getGenderRatio());
 
-    // Sexuality used to set sexual preferences for gynophilic and androphilic. A straight futa is gynophilic, a gay
-    // futa is androphilic (because of butt stuff). Bi is positive in both. Ace is negative in both.
-    const sexuality = options.sexuality || Random.fromFrequencyMap(species.getSexualityRatio());
+    const actorData = { gender:genderCode, species:speciesCode };
+    const attributesData = rollAttributes(genderCode, speciesCode);
+    const healthData = rollHealth(attributesData);
+    const personalityData = rollPersonality(genderCode, speciesCode);
 
-    const actorComponent = { gender:genderCode, species:speciesCode };
-    const arousalComponent = { arousal:0 }
-    const attributesComponent = rollAttributes(genderCode, speciesCode);
-    const healthComponent = rollHealth(attributesComponent);
-    const personalityComponent = rollPersonality(genderCode, speciesCode);
+    if (options.name) { actorData.name = options.name; }
+    if (options.title) { actorData.title = options.title; }
+    if (options.surname) { actorData.surname = options.surname; }
 
-    if (options.name) { actorComponent.name = options.name; }
-    if (options.title) { actorComponent.title = options.title; }
-    if (options.surname) { actorComponent.surname = options.surname; }
-
-
-    if (actorComponent.name == null) {
+    if (actorData.name == null) {
       const nameData = Name.getRandom(genderCode, speciesCode);
       triggers.push(...(nameData.name.triggers||[]))
 
-      actorComponent.name = nameData.name.name;
+      actorData.name = nameData.name.name;
       if (nameData.title) {
-        actorComponent.title = nameData.title.name;
+        actorData.title = nameData.title.name;
         triggers.push(...(nameData.title.triggers||[]))
       }
       if (nameData.surname) {
-        actorComponent.surname = nameData.surname.name;
+        actorData.surname = nameData.surname.name;
         triggers.push(...(nameData.surname.triggers||[]))
       }
     }
 
-    log(StringHelper.pack(`Building: ${actorComponent.title||''} ${actorComponent.name} ${actorComponent.surname||''}
+    log(StringHelper.pack(`Building[${characterId}]: ${actorData.title||''} ${actorData.name} ${actorData.surname||''}
         [${genderCode} ${speciesCode}]`),{ system:'CharacterFactory', data:{ triggers }});
 
-    Registry.createActorComponent(characterId, actorComponent);
-    Registry.createArousalComponent(characterId, arousalComponent);
-    Registry.createAttributesComponent(characterId, attributesComponent);
-    Registry.createHealthComponent(characterId, healthComponent);
-    Registry.createPersonalityComponent(characterId, personalityComponent);
+    const bodyData = BodyFactory.build(actorData, attributesData, triggers);
+
+
+    // Sexuality used to set sexual preferences for gynophilic and androphilic. A straight futa is gynophilic, a gay
+    // futa is androphilic (because of butt stuff). Bi is positive in both. Ace is negative in both.
+    const sexuality = options.sexuality || Random.fromFrequencyMap(species.getSexualityRatio());
+
+    // TODO: Use the list of triggers to make adjustments to the body, sexual preferences and other components. If we
+    //       find that we've generated a body or sexual preferences that's incompatible with the triggers, we can try
+    //       return build(options) again to try once again. We should probably add a counter to the options so that we
+    //       only retry a few time and just eventually return an invalid character if we never get a valid character
+    //       for some reason. This would be a pretty major bug though so we'd need to print out all the information we
+    //       can to determine why so many characters are incompatible. Because the triggers can come from the options
+    //       though this situation can be caused by an input like triggers:['flat-chest','huge-tits']
+
+    Registry.createActorComponent(characterId, actorData);
+    Registry.createArousalComponent(characterId, { arousal:0 });
+    Registry.createAttributesComponent(characterId, attributesData);
+    Registry.createHealthComponent(characterId, healthData);
+    Registry.createPersonalityComponent(characterId, personalityData);
 
     return characterId;
   }
