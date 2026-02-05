@@ -23,8 +23,10 @@ Species.register('lupin', {
 
   body: {
     averageHeight: 1875,
-
     skinType: 'fur',
+    earShape: 'dog',
+    tailShape: 'dog',
+    smellFamily: 'earthy',
 
     mouth: {
       averageTongueLength: 120,

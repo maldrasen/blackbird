@@ -23,6 +23,8 @@ Species.register('nymph', {
   body: {
     averageHeight: 1500,
     mutability: 25,
+    earShape: 'elf',
+    smellFamily: 'lusty',
 
     tits:{ size:{
       tiny:    5,

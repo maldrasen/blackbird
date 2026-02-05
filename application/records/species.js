@@ -36,6 +36,11 @@ global.Species = (function() {
       getFemaleHeightRatio: () => { return species.body.femaleHeightRatio || _humanFemaleRatio; },
       getMutability: () => { return species.body.mutability || 0; },
       getSkinType: () => { return species.body.skinType || 'skin'; },
+      getEyeShape: () => { return species.body.eyeShape || 'round'; },
+      getEarShape: () => { return species.body.earShape; },
+      getTailShape: () => { return species.body.tailShape; },
+      getHornShape: () => { return species.body.hornShape; },
+      getSmellFamily: () => { return species.body.smellFamily; },
     });
   }
 

@@ -22,6 +22,8 @@ Species.register('human', {
 
   body: {
     mutability: 50,
+    earShape: 'human',
+    smellFamily: 'all',
 
     tits:{ size:{
       zero:    5,

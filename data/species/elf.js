@@ -23,6 +23,8 @@ Species.register('elf', {
   body: {
     averageHeight: 1650,
     mutability: 50,
+    earShape: 'elf',
+    smellFamily: 'floral',
 
     tits:{ size:{
       zero:    5,

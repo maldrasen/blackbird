@@ -59,6 +59,7 @@ global.CharacterFactory = (function() {
 
     const bodyData = BodyFactory.build(actorData, attributesData, triggers);
 
+    log('BodyData',{ system:'CharacterFactory', data:bodyData });
 
     // Sexuality used to set sexual preferences for gynophilic and androphilic. A straight futa is gynophilic, a gay
     // futa is androphilic (because of butt stuff). Bi is positive in both. Ace is negative in both.

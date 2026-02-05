@@ -22,9 +22,13 @@ Species.register('kobold', {
 
   body: {
     averageHeight: 800,
-
     skinType: 'scales',
+    eyeShape: 'dragon',
+    tailShape: 'dragon',
+    hornShape: 'curved-back',
+    smellFamily: 'lusty',
 
+    earShape: false,
     tits: false,
     nipples: false,
 

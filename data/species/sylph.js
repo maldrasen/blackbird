@@ -23,6 +23,8 @@ Species.register('sylph', {
   body: {
     averageHeight: 1400,
     mutability: 25,
+    earShape: 'elf',
+    smellFamily: 'floral',
 
     aspects: ['flexible'],
 

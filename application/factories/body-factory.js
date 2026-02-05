@@ -1,47 +1,77 @@
 global.BodyFactory = (function() {
 
-
-
-
   function build(actor, attributes, triggers) {
     const species = Species.lookup(actor.species);
-    const bodyData = {};
+    const bodyData = {
+      height: getRandomHeight(species, actor.gender),
+      skinType: species.getSkinType(),
+      eyeShape: species.getEyeShape(),
+      eyeColor: Random.from(BodyData.CommonEyeColors),
+      bodySmell: getRandomSmell(species),
+    };
 
-    bodyData.height = getRandomHeight(species, actor.gender);
-    bodyData.skinType = species.getSkinType();
+    // === Skin, Scales, Hair, and Eyes ===
 
-    console.log('---')
-    console.log(`${actor.species} ${actor.gender} = ${MeasurementHelper.feetAndInchesAbbreviated(bodyData.height)}`);
+    if (species.getEarShape()) { bodyData.earShape = species.getEarShape(); }
+    if (species.getTailShape()) { bodyData.tailShape = species.getTailShape(); }
+    if (species.getHornShape()) { bodyData.hornShape = species.getHornShape(); }
 
-    console.log("Data:",bodyData);
-    console.log('')
-
-    // Cosmetic
-    // Skin Type - will be skin, fur, scales
-    // Skin Color - Skin or Scales
-    // Eye Color
-    // Iris Shape - Always assume normal for that species unless specified.
-    // Hair Color - Hair but also fur if skin type is fur
-    // Ear Shape - Lots of characters with animal ears in this version I think.
-    // Tail Shape
-    // Horn Shape
-
+    if (bodyData.skinType === 'scales') {
+      bodyData.scaleColor = Random.from(BodyData.ScaleColors);
+    } else {
+      bodyData.skinColor = Random.from(BodyData.HumanSkinTones);
+      bodyData.hairColor = Random.from(BodyData.CommonHairColors);
+    }
 
     return bodyData;
   }
 
-  function getRandomMutation(species, gender) {
+  function getRandomMutation(species) {
     if (Random.roll(100) > species.getMutability()) { return null; }
 
-    // Common
-    //   Ear and Tail
-    //   Horns
-    //   Eye Color, Iris Shape
-    //
-    // Unusual
-    //   Always lactate
+    // Get an uncommon mutation 80% of the time.
+    if (Random.roll(100) < 80) {
+      switch(Random.roll(5)) {
+        case 0: return uncommonEarsAndTail();
+        case 1: return uncommonEyeColor();
+        case 2: return uncommonEyeShape();
+        case 3: return uncommonHairColor();
+        case 4: return uncommonHorns();
+      }
+    }
 
+    // Otherwise get something more unusual. The above mutations only influence the body component, but this could
+    // also generate triggers that effect other body parts or even add aspects. Something like always lactating.
+  }
 
+  function uncommonEarsAndTail() {
+    const mutation = { tailShape: Random.from(BodyData.TailShapes) };
+    if (BodyData.UncommonEarShapes.includes(mutation.tailShape)) { mutation.earShape = mutation.tailShape }
+    return mutation;
+  }
+
+  function uncommonEyeShape() {
+    return {
+      eyeColor: Random.from(BodyData.EyeColors),
+      eyeShape: Random.from(BodyData.EyeShapes),
+    };
+  }
+
+  function uncommonHorns() {
+    const mutation = { hornShape: Random.from(BodyData.HornShapes) };
+    return (mutation.hornShape === 'forward-cow') ? { ...mutation, tailShape:'cow' } : mutation;
+  }
+
+  function uncommonEyeColor() { return { eyeColor: Random.from(BodyData.UncommonEyeColors)}; }
+  function uncommonHairColor() { return { hairColor: Random.from(BodyData.UncommonHairColors)}; }
+
+  function getRandomSmell(species) {
+    switch(species.getSmellFamily()) {
+      case 'all':    return Random.from(BodyData.AllSmells);
+      case 'earthy': return Random.from(BodyData.EarthySmells);
+      case 'floral': return Random.from(BodyData.FloralSmells);
+      case 'lusty':  return Random.from(BodyData.LustySmells);
+    }
   }
 
   function getRandomHeight(species, gender) {
@@ -58,6 +88,11 @@ global.BodyFactory = (function() {
     return Math.round(averageHeight + (multiplier * deviation));
   }
 
-  return Object.freeze({ build });
+  return Object.freeze({
+    build,
+    uncommonEarsAndTail,
+    uncommonEyeColor,
+    uncommonHorns,
+  });
 
 })();

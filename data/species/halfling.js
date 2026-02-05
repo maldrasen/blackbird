@@ -23,6 +23,8 @@ Species.register('halfling', {
   body: {
     averageHeight: 900,
     mutability: 50,
+    earShape: 'human',
+    smellFamily: 'earthy',
 
     tits:{ size:{
       tiny:    5,
