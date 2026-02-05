@@ -21,6 +21,7 @@ Species.register('elf', {
   },
 
   body: {
+    averageHeight: 1650,
     mutability: 50,
 
     tits:{ size:{

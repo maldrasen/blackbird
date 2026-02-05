@@ -75,6 +75,7 @@ global.CharacterFactory = (function() {
     Registry.createActorComponent(characterId, actorData);
     Registry.createArousalComponent(characterId, { arousal:0 });
     Registry.createAttributesComponent(characterId, attributesData);
+    Registry.createBodyComponent(characterId, bodyData);
     Registry.createHealthComponent(characterId, healthData);
     Registry.createPersonalityComponent(characterId, personalityData);
 

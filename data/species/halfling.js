@@ -21,6 +21,7 @@ Species.register('halfling', {
   },
 
   body: {
+    averageHeight: 900,
     mutability: 50,
 
     tits:{ size:{

@@ -31,10 +31,11 @@ global.Species = (function() {
       getAttributes: () => { return species.attributes; },
       getPersonalityRanges: () => { return species.personalityRanges; },
       getBody: () => { return species.body },
-
       getAverageHeight: () => { return species.body.averageHeight || _humanMaleHeight; },
       getHeightDeviationRatio: () => { return species.body.heightDeviationRatio || _humanDeviationRatio; },
       getFemaleHeightRatio: () => { return species.body.femaleHeightRatio || _humanFemaleRatio; },
+      getMutability: () => { return species.body.mutability || 0; },
+      getSkinType: () => { return species.body.skinType || 'skin'; },
     });
   }
 

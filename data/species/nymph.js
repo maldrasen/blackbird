@@ -21,6 +21,7 @@ Species.register('nymph', {
   },
 
   body: {
+    averageHeight: 1500,
     mutability: 25,
 
     tits:{ size:{

@@ -21,11 +21,10 @@ Species.register('sylph', {
   },
 
   body: {
+    averageHeight: 1400,
     mutability: 25,
 
     aspects: ['flexible'],
-
-    mouth:{ maxMouthWidth:44 },
 
     tits:{ size:{
       zero: 30,

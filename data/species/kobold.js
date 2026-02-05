@@ -21,7 +21,9 @@ Species.register('kobold', {
   },
 
   body: {
-    mutability: 0,
+    averageHeight: 800,
+
+    skinType: 'scales',
 
     tits: false,
     nipples: false,

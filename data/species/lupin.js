@@ -22,7 +22,9 @@ Species.register('lupin', {
   },
 
   body: {
-    mutability: 0,
+    averageHeight: 1875,
+
+    skinType: 'fur',
 
     mouth: {
       averageTongueLength: 120,

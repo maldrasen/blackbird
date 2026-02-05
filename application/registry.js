@@ -93,6 +93,10 @@ global.Registry = (function() {
     Registry.createComponent(id,ComponentType.attributes,data);
     Attributes.validate(id);
   }
+  function createBodyComponent(id,data) {
+    Registry.createComponent(id,ComponentType.body,data);
+    Body.validate(id);
+  }
   function createControlledComponent(id,data) {
     Registry.createComponent(id,ComponentType.controlled,data);
     Controlled.validate(id);
@@ -142,6 +146,7 @@ global.Registry = (function() {
   function lookupArousalComponent(id)          { return Registry.lookupComponent(id,ComponentType.arousal); }
   function lookupAspectComponent(id)           { return Registry.lookupComponent(id,ComponentType.aspect); }
   function lookupAttributesComponent(id)       { return Registry.lookupComponent(id,ComponentType.attributes); }
+  function lookupBodyComponent(id)             { return Registry.lookupComponent(id,ComponentType.body); }
   function lookupControlledComponent(id)       { return Registry.lookupComponent(id,ComponentType.controlled); }
   function lookupFeelingsComponent(id)         { return Registry.lookupComponent(id,ComponentType.feelings); }
   function lookupHealthComponent(id)           { return Registry.lookupComponent(id,ComponentType.health); }
@@ -168,6 +173,10 @@ global.Registry = (function() {
   function updateAttributesComponent(id,data) {
     updateComponent(id,ComponentType.attributes,data);
     Attributes.validate(id);
+  }
+  function updateBodyComponent(id,data) {
+    updateComponent(id,ComponentType.body,data);
+    Body.validate(id);
   }
   function updateControlledComponent(id,data) {
     updateComponent(id,ComponentType.controlled,data);
@@ -214,6 +223,7 @@ global.Registry = (function() {
   function deleteArousalComponent(id)          { Registry.deleteComponent(id,ComponentType.arousal); }
   function deleteAspectComponent(id)           { Registry.deleteComponent(id,ComponentType.aspect); }
   function deleteAttributesComponent(id)       { Registry.deleteComponent(id,ComponentType.attributes); }
+  function deleteBodyComponent(id)             { Registry.deleteComponent(id,ComponentType.body); }
   function deleteControlledComponent(id)       { Registry.deleteComponent(id,ComponentType.controlled); }
   function deleteFeelingsComponent(id)         { Registry.deleteComponent(id,ComponentType.feelings); }
   function deleteHealthComponent(id)           { Registry.deleteComponent(id,ComponentType.health); }
@@ -295,6 +305,7 @@ global.Registry = (function() {
     createArousalComponent,
     createAspectComponent,
     createAttributesComponent,
+    createBodyComponent,
     createControlledComponent,
     createFeelingsComponent,
     createHealthComponent,
@@ -311,6 +322,7 @@ global.Registry = (function() {
     lookupArousalComponent,
     lookupAspectComponent,
     lookupAttributesComponent,
+    lookupBodyComponent,
     lookupControlledComponent,
     lookupFeelingsComponent,
     lookupHealthComponent,
@@ -327,6 +339,7 @@ global.Registry = (function() {
     updateArousalComponent,
     updateAspectComponent,
     updateAttributesComponent,
+    updateBodyComponent,
     updateControlledComponent,
     updateFeelingsComponent,
     updateHealthComponent,
@@ -343,6 +356,7 @@ global.Registry = (function() {
     deleteArousalComponent,
     deleteAspectComponent,
     deleteAttributesComponent,
+    deleteBodyComponent,
     deleteControlledComponent,
     deleteFeelingsComponent,
     deleteHealthComponent,
