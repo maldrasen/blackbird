@@ -57,7 +57,7 @@ window.Loader = (function() {
         Tests.load();
       }
 
-      log("Blackbird Started",{ system:'Main', data:{
+      log("Blackbird Started",{ system:'Main', level:1, data:{
         environment: Environment.name,
       }});
     }

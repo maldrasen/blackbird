@@ -30,14 +30,14 @@ global.BodyFactory = (function() {
 
       // Triggers are added to the existing trigger list.
       (mutation.addTriggers||[]).forEach(trigger => {
-        log(`Mutation added trigger ${trigger}`,{ system:'BodyFactory' });
+        log(`Mutation added trigger: ${trigger}`,{ system:'BodyFactory', level:3 });
         triggers.push(trigger);
       });
 
       // Other keys are used to modify the body data.
       Object.keys(mutation).forEach(key => {
         if (key !== 'addTriggers') {
-          log(`Mutation changed ${key}: ${bodyData[key]} becomes ${mutation[key]}`,{ system:'BodyFactory' });
+          log(`Mutation changed ${key}: ${bodyData[key]} becomes ${mutation[key]}`,{ system:'BodyFactory', level:3 });
           bodyData[key] = mutation[key];
         }
       })

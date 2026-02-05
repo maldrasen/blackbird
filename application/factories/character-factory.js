@@ -54,8 +54,12 @@ global.CharacterFactory = (function() {
       }
     }
 
+    // Character creation is super complicated, so it's worth it to log the data as we build it.
     log(StringHelper.pack(`Building[${characterId}]: ${actorData.title||''} ${actorData.name} ${actorData.surname||''}
-        [${genderCode} ${speciesCode}]`),{ system:'CharacterFactory', data:{ triggers }});
+        [${genderCode} ${speciesCode}]`),{ system:'CharacterFactory', level:1 });
+    if (triggers.length > 0) {
+      log('Name Triggers',{ system:'CharacterFactory', level:3, data: { triggers }});
+    }
 
     // The body factory rolls for random mutations and might modify the triggers array. We don't know what parts a
     // character will have at this point. (They don't always come from gender) If we trigger something like big-tits
