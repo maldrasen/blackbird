@@ -35,7 +35,7 @@ global.LocationView = (function() {
     const actor = Registry.lookupActorComponent(id)
 
     return X.createElement(`<li>
-      <a data-id='${id}'>${actor.firstName} ${actor.lastName}</a>
+      <a data-id='${id}'>${actor.title||''} ${actor.name} ${actor.surname||''}</a>
       (${actor.gender} ${actor.species})</li>`);
   }
 

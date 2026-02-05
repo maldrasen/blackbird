@@ -1,6 +1,6 @@
 global.BodyFactory = (function() {
 
-  function build(actor, attributes, triggers) {
+  function build(actor, triggers) {
     const species = Species.lookup(actor.species);
     const bodyData = {
       height: getRandomHeight(species, actor.gender),
@@ -23,11 +23,31 @@ global.BodyFactory = (function() {
       bodyData.hairColor = Random.from(BodyData.CommonHairColors);
     }
 
+    // === Random Mutations ===
+
+    const mutation = getRandomMutation(actor, species);
+    if (mutation) {
+
+      // Triggers are added to the existing trigger list.
+      (mutation.addTriggers||[]).forEach(trigger => {
+        log(`Mutation added trigger ${trigger}`,{ system:'BodyFactory' });
+        triggers.push(trigger);
+      });
+
+      // Other keys are used to modify the body data.
+      Object.keys(mutation).forEach(key => {
+        if (key !== 'addTriggers') {
+          log(`Mutation changed ${key}: ${bodyData[key]} becomes ${mutation[key]}`,{ system:'BodyFactory' });
+          bodyData[key] = mutation[key];
+        }
+      })
+    }
+
     return bodyData;
   }
 
-  function getRandomMutation(species) {
-    if (Random.roll(100) > species.getMutability()) { return null; }
+  function getRandomMutation(actor, species) {
+    if (Random.roll(100) > species.getMutability()) { return null }
 
     // Get an uncommon mutation 80% of the time.
     if (Random.roll(100) < 80) {
@@ -46,20 +66,53 @@ global.BodyFactory = (function() {
 
   function uncommonEarsAndTail() {
     const mutation = { tailShape: Random.from(BodyData.TailShapes) };
-    if (BodyData.UncommonEarShapes.includes(mutation.tailShape)) { mutation.earShape = mutation.tailShape }
+
+    if (BodyData.UncommonEarShapes.includes(mutation.tailShape)) {
+      mutation.earShape = mutation.tailShape
+    }
+
+    if (mutation.tailShape === 'horse') {
+      mutation.addTriggers = ['horse-cock','horse-pussy','horse-anus'];
+    }
+
     return mutation;
   }
 
   function uncommonEyeShape() {
-    return {
+    const mutation = {
       eyeColor: Random.from(BodyData.EyeColors),
       eyeShape: Random.from(BodyData.EyeShapes),
     };
+
+    if (mutation.eyeShape === 'cat') {
+      mutation.tailShape = 'cat';
+      mutation.earShape = 'cat';
+    }
+
+    if (mutation.eyeShape === 'heart') {
+      mutation.addTriggers = ['slut'];
+    }
+
+    return mutation;
   }
 
   function uncommonHorns() {
     const mutation = { hornShape: Random.from(BodyData.HornShapes) };
-    return (mutation.hornShape === 'forward-cow') ? { ...mutation, tailShape:'cow' } : mutation;
+
+    // Getting cow horns adds some cow features. Milky balls and tits.
+    if (mutation.hornShape === 'forward-cow') {
+      mutation.tailShape = 'cow';
+      mutation.addTriggers = ['huge-balls','huge-tits','cow-tits','milky','productive:3'];
+    }
+
+    // Getting a unicorn horn adds some horse features.
+    if (mutation.hornShape === 'unicorn') {
+      mutation.tailShape = 'horse';
+      mutation.earShape = 'horse';
+      mutation.addTriggers = ['horse-cock','horse-pussy','horse-anus'];
+    }
+
+    return mutation;
   }
 
   function uncommonEyeColor() { return { eyeColor: Random.from(BodyData.UncommonEyeColors)}; }
@@ -88,11 +141,6 @@ global.BodyFactory = (function() {
     return Math.round(averageHeight + (multiplier * deviation));
   }
 
-  return Object.freeze({
-    build,
-    uncommonEarsAndTail,
-    uncommonEyeColor,
-    uncommonHorns,
-  });
+  return Object.freeze({ build });
 
 })();

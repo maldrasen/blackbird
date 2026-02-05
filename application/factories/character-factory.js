@@ -57,9 +57,11 @@ global.CharacterFactory = (function() {
     log(StringHelper.pack(`Building[${characterId}]: ${actorData.title||''} ${actorData.name} ${actorData.surname||''}
         [${genderCode} ${speciesCode}]`),{ system:'CharacterFactory', data:{ triggers }});
 
-    const bodyData = BodyFactory.build(actorData, attributesData, triggers);
-
-    log('BodyData',{ system:'CharacterFactory', data:bodyData });
+    // The body factory rolls for random mutations and might modify the triggers array. We don't know what parts a
+    // character will have at this point. (They don't always come from gender) If we trigger something like big-tits
+    // and they don't end up having breasts, we can ignore the triggers that don't apply.
+    const bodyData = BodyFactory.build(actorData, triggers);
+    log('BodyData',{ system:'CharacterFactory', data:{ body:bodyData, triggers:triggers }});
 
     // Sexuality used to set sexual preferences for gynophilic and androphilic. A straight futa is gynophilic, a gay
     // futa is androphilic (because of butt stuff). Bi is positive in both. Ace is negative in both.

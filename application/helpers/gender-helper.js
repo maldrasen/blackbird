@@ -36,4 +36,23 @@ global.GenderHelper = {
     if (gender === Gender.futa) { return 'hirs'; }
     if (gender === Gender.enby) { return 'theirs'; }
   },
+
+  hasCock: function(gender) {
+    switch(gender) {
+      case Gender.male: return true;
+      case Gender.female: return false;
+      case Gender.futa: return true;
+      case Gender.enby: return false;
+    }
+  },
+
+  hasBreasts: function(gender) {
+    switch(gender) {
+      case Gender.male: return false;
+      case Gender.female: return true;
+      case Gender.futa: return true;
+      case Gender.enby: return false;
+    }
+  },
+
 }

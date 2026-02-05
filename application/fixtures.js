@@ -6,9 +6,10 @@ global.Fixtures = (function() {
     const player = CharacterFactory.buildPlayer();
     const characters = []
 
-    characters.push(CharacterFactory.build({}));
-    characters.push(CharacterFactory.build({}));
-    characters.push(CharacterFactory.build({}));
+    for (let i=0; i<20; i++) {
+      characters.push(CharacterFactory.build({ species:'elf' }));
+    }
+
     characters.forEach(id => {
       Registry.createControlledComponent(id,{ control:-200 });
       Registry.createSituatedComponent(id,{ currentLocation:'filthy-hovel' });
