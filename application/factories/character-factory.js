@@ -23,17 +23,19 @@ global.CharacterFactory = (function() {
   //   triggers: Detailed in the character-adjuster.
   //
   function build(options) {
-
     const triggers = options.triggers || [];
     const characterId = Registry.createEntity();
     const speciesCode = options.species || Random.fromFrequencyMap(SpeciesFrequency);
     const species = Species.lookup(speciesCode);
     const genderCode = options.gender || Random.fromFrequencyMap(species.getGenderRatio());
+    const biologicalSex = getBiologicalSex(species,genderCode);
 
     const actorData = { gender:genderCode, species:speciesCode };
     const attributesData = rollAttributes(genderCode, speciesCode);
     const healthData = rollHealth(attributesData);
     const personalityData = rollPersonality(genderCode, speciesCode);
+
+    let breastsData;
 
     if (options.name) { actorData.name = options.name; }
     if (options.title) { actorData.title = options.title; }
@@ -65,7 +67,13 @@ global.CharacterFactory = (function() {
     // character will have at this point. (They don't always come from gender) If we trigger something like big-tits
     // and they don't end up having breasts, we can ignore the triggers that don't apply.
     const bodyData = BodyFactory.build(actorData, triggers);
-    log('BodyData',{ system:'CharacterFactory', data:{ body:bodyData, triggers:triggers }});
+    log('BodyData',{ system:'CharacterFactory', data:bodyData });
+    log('Triggers',{ system:'CharacterFactory', data:{ triggers:triggers }});
+
+    if ([Gender.futa, Gender.female].includes(biologicalSex)) {
+      breastsData = BreastsFactory.build(actorData);
+      log('BreastData',{ system:'CharacterFactory', data:{ body:breastsData }});
+    }
 
     // Sexuality used to set sexual preferences for gynophilic and androphilic. A straight futa is gynophilic, a gay
     // futa is androphilic (because of butt stuff). Bi is positive in both. Ace is negative in both.
@@ -85,6 +93,8 @@ global.CharacterFactory = (function() {
     Registry.createBodyComponent(characterId, bodyData);
     Registry.createHealthComponent(characterId, healthData);
     Registry.createPersonalityComponent(characterId, personalityData);
+
+    if (breastsData) { Registry.createBreastsComponent(characterId, breastsData); }
 
     return characterId;
   }
@@ -109,6 +119,19 @@ global.CharacterFactory = (function() {
     Registry.createHealthComponent(playerId, healthComponent);
 
     return playerId;
+  }
+
+  // If a character is non-binary I still need to know their biological sex in order to build the various naughty bits.
+  // This value needs to be randomly chosen from the species gender ratio map with the enby option removed.
+  function getBiologicalSex(species, gender) {
+    if (gender !== Gender.enby) { return gender; }
+
+    const ratios = species.getGenderRatio();
+    return Random.fromFrequencyMap({
+      male: ratios.male,
+      female: ratios.female,
+      futa: ratios.futa,
+    });
   }
 
   // I don't think we roll attributes in any place other than this character factory. If so we can move this to the

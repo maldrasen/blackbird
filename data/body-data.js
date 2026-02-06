@@ -30,3 +30,4 @@ global.BodyData = {
 BodyData.EyeColors = [ ...BodyData.CommonEyeColors, ...BodyData.UncommonEyeColors ];
 BodyData.HairColors = [ ...BodyData.CommonHairColors, ...BodyData.UncommonHairColors ];
 BodyData.AllSmells = [ ...BodyData.EarthySmells, ...BodyData.FloralSmells, ...BodyData.LustySmells ];
+

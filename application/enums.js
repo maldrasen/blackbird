@@ -74,6 +74,7 @@ global.ComponentType = Object.freeze({
   aspect: 'aspect',
   attributes: 'attributes',
   body: 'body',
+  breasts: 'breasts',
   controlled: 'controlled',
   feelings: 'feelings',
   health: 'health',

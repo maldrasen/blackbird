@@ -130,9 +130,15 @@ global.BodyFactory = (function() {
   function getRandomHeight(species, gender) {
     const heightDeviationRatio = species.getHeightDeviationRatio();
     const femaleHeightRatio = species.getFemaleHeightRatio();
+    const futaHeightRatio = 1-(1-femaleHeightRatio)/2;
+
+    let heightRatio = 1;
+    if (gender === Gender.female) { heightRatio = femaleHeightRatio; }
+    if (gender === Gender.futa)   { heightRatio = futaHeightRatio; }
+    if (gender === Gender.enby)   { heightRatio = futaHeightRatio; }
 
     // Apply Ratios
-    const averageHeight = species.getAverageHeight() * (gender === Gender.female ? femaleHeightRatio : 1);
+    const averageHeight = species.getAverageHeight() * heightRatio;
     const deviation = averageHeight * heightDeviationRatio;
 
     // Get random multiplier.
