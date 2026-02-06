@@ -2,7 +2,6 @@ global.Species = (function() {
 
   const $speciesMap = {};
 
-
   function register(code,data) { $speciesMap[code] = data; }
   function getAllCodes() { return Object.keys($speciesMap); }
 
@@ -14,6 +13,10 @@ global.Species = (function() {
       throw `Bad species code [${code}]`
     }
 
+    function getAverageHeight() {
+      return species.body.averageHeight || _humanMaleHeight;
+    }
+
     return Object.freeze({
       getCode: () => { return species.code; },
       getName: () => { return species.name; },
@@ -22,9 +25,14 @@ global.Species = (function() {
       getAttributes: () => { return species.attributes; },
       getPersonalityRanges: () => { return species.personalityRanges; },
       getBody: () => { return species.body },
-      getAverageHeight: () => { return species.body.averageHeight || _humanMaleHeight; },
+
+      getAverageHeight: getAverageHeight,
       getHeightDeviationRatio: () => { return species.body.heightDeviationRatio || _humanDeviationRatio; },
       getFemaleHeightRatio: () => { return species.body.femaleHeightRatio || _humanFemaleRatio; },
+      getLengthRatio: () => { return getAverageHeight() / _humanMaleHeight; },
+      getAreaRatio: () => { return (getAverageHeight() / _humanMaleHeight) ** 2; },
+      getVolumeRatio: () => { return (getAverageHeight() / _humanMaleHeight) ** 3; },
+
       getMutability: () => { return species.body.mutability || 0; },
       getSkinType: () => { return species.body.skinType || 'skin'; },
       getEyeShape: () => { return species.body.eyeShape || 'round'; },

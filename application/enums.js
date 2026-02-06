@@ -109,7 +109,6 @@ global.NameRestriction = Object.freeze({
   hasSkin: 'has-skin',
 });
 
-
 // === Bodies ===
 
 
