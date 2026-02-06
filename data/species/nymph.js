@@ -26,7 +26,7 @@ Species.register('nymph', {
     earShape: 'elf',
     smellFamily: 'lusty',
 
-    breasts:{
+    breasts: {
       tiny:    5,
       small:   10,
       average: 20,
@@ -34,11 +34,13 @@ Species.register('nymph', {
       huge:    20,
     },
 
-    cock:{ size:{
-      small:   10,
-      average: 50,
-      big:     30,
-    }},
+    cock: {
+      size: {
+        small:   10,
+        average: 50,
+        big:     30,
+      },
+    },
   },
 
 });

@@ -34,10 +34,13 @@ Species.register('sylph', {
       small: 10,
     },
 
-    cock:{ size:{
-      small: 20,
-      average: 20,
-    }}
+    cock: {
+      size: {
+        tiny:    5,
+        small:   20,
+        average: 10,
+      },
+    },
   },
 
 });

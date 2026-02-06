@@ -1,5 +1,5 @@
 Species.register('lupin', {
-  name: 'Lupiun',
+  name: 'Lupin',
 
   genderRatio: { female:40, futa:20, male:40, enby:5 },
   sexualityRatio: { straight:40, gay:20, bi:30, ace:5 },
@@ -50,10 +50,10 @@ Species.register('lupin', {
       shape: 'dog',
       sheath: 'fur',
       size: {
-        small: 10,
+        small:   10,
         average: 40,
-        big: 20,
-        huge: 5,
+        big:     20,
+        huge:    5,
       }
     },
 

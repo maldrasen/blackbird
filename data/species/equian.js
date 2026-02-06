@@ -32,7 +32,7 @@ Species.register('equian', {
       maxMouthWidth: 80,
     },
 
-    breasts:{
+    breasts: {
       tiny:    5,
       small:   10,
       average: 20,
@@ -53,7 +53,7 @@ Species.register('equian', {
         average: 10,
         big:     20,
         huge:    30,
-      }
+      },
     },
 
     pussy:{ shape:'horse' },

@@ -26,7 +26,7 @@ Species.register('elf', {
     earShape: 'elf',
     smellFamily: 'floral',
 
-    breasts:{
+    breasts: {
       zero:    5,
       tiny:    10,
       small:   20,
@@ -35,11 +35,13 @@ Species.register('elf', {
       huge:    1,
     },
 
-    cock:{ size:{
-      small:   10,
-      average: 60,
-      big:     30,
-    }},
+    cock: {
+      size: {
+        small:   20,
+        average: 60,
+        big:     20,
+      },
+    },
   },
 
 });

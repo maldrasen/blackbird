@@ -1,4 +1,3 @@
-
 global.BreastsFactory = (function() {
 
   function build(actor) {

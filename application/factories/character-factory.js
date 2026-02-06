@@ -36,6 +36,7 @@ global.CharacterFactory = (function() {
     const personalityData = rollPersonality(genderCode, speciesCode);
 
     let breastsData;
+    let cockData;
 
     if (options.name) { actorData.name = options.name; }
     if (options.title) { actorData.title = options.title; }
@@ -72,9 +73,16 @@ global.CharacterFactory = (function() {
 
     // Technically, men also have nipples, but I don't think we ever actually do anything with them. Even a "lick his
     // nipples action" wouldn't need to describe them in any detail.
-    if ([Gender.futa, Gender.female].includes(biologicalSex) && species.getBody().breasts) {
-      breastsData = BreastsFactory.build(actorData);
-      log('BreastData',{ system:'CharacterFactory', data:{ body:breastsData }});
+    if ([Gender.futa, Gender.female].includes(biologicalSex)) {
+      if (species.getBody().breasts) {
+        breastsData = BreastsFactory.build(actorData);
+        log('BreastData',{ system:'CharacterFactory', data:breastsData });
+      }
+    }
+
+    if ([Gender.futa, Gender.male].includes(biologicalSex)) {
+      cockData = CockFactory.build(actorData);
+      log('CockData',{ system:'CharacterFactory', data:cockData });
     }
 
     // Sexuality used to set sexual preferences for gynophilic and androphilic. A straight futa is gynophilic, a gay
@@ -97,6 +105,7 @@ global.CharacterFactory = (function() {
     Registry.createPersonalityComponent(characterId, personalityData);
 
     if (breastsData) { Registry.createBreastsComponent(characterId, breastsData); }
+    if (cockData) { Registry.createCockComponent(characterId, cockData); }
 
     return characterId;
   }

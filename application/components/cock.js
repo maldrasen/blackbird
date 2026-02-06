@@ -1,5 +1,7 @@
 global.Cock = (function() {
-  const $properties = [_parentId,'placement'];
+  const $properties = [_parentId,'placement','count','shape','length','width','flaccidLength','headFlare','knotFlare',
+    'shaftFlare','lengthFlare','knotRatio','bumpSize','spineSize','ridgeSize','testicleSize','testicleCount',
+    'cumVolume'];
 
   function properties() { return $properties; }
 
@@ -14,6 +16,9 @@ global.Cock = (function() {
 
     Validate.exists(_parentId,cockComponent._parentId);
     Validate.exists('placement',cockComponent.placement);
+    Validate.atLeast('count',cockComponent.count,1);
+    Validate.atLeast('testicleCount',cockComponent.testicleCount,2);
+    Validate.isIn('shape',cockComponent.shape,Object.keys(CockData.CockShapes))
   }
 
   return Object.freeze({

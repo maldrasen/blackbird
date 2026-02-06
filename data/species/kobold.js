@@ -42,9 +42,9 @@ Species.register('kobold', {
       shape: 'dragon',
       sheath: 'scales',
       size: {
-        tiny: 20,
-        small: 15,
         average: 10,
+        big:     30,
+        huge:    10,
       }
     },
 

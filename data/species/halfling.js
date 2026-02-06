@@ -26,18 +26,22 @@ Species.register('halfling', {
     earShape: 'human',
     smellFamily: 'earthy',
 
-    breasts:{
+    // Because halflings are scaled down they need relatively larger cock and breast
+    // sizes so that they don't seem ridiculously small compared to other species.
+
+    breasts: {
       small:   10,
       average: 20,
       big:     60,
       huge:    30,
     },
-
-    cock:{ size:{
-      small:   10,
-      average: 60,
-      big:     30,
-    }},
+    cock: {
+      size: {
+        average: 20,
+        big:     50,
+        huge:    20,
+      },
+    },
   },
 
 });
