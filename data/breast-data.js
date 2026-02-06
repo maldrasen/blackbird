@@ -29,5 +29,14 @@ global.BreastData = {
     'monster': { soft:['elongated-sacks'],  medium:['massive-bells'],      firm:['straining-round']},
   },
 
-  NippleShapes: ['normal','puffy','inverted','teat','mouth','cock','pussy'],
+  NippleShapes: {
+    normal: 80,
+    puffy: 15,
+    inverted: 5,
+    teat: 0,
+    mouth: 0,
+    cock: 0,
+    pussy: 0,
+  },
+
 }

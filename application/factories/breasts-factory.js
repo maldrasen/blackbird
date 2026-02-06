@@ -1,7 +1,4 @@
 
-//   'nippleShape','nippleWidth',
-//   'nippleLength','nippleShade','areolaWidth','lactationFactor','orificeMinWidth','orificeMaxWidth','description'];
-
 global.BreastsFactory = (function() {
 
   function build(actor) {
@@ -10,12 +7,30 @@ global.BreastsFactory = (function() {
       breastCount: 2,
       breastSize: Random.fromFrequencyMap(species.getBody().breasts),
       breastFirmness: Random.from(Object.keys(BreastData.BreastFirmness)),
+      nippleShape: Random.fromFrequencyMap(BreastData.NippleShapes),
+      nippleShade: Random.roll(5),
+      orificeMinWidth: 0,
+      orificeMaxWidth: 0,
+      lactationFactor: 0,
     };
 
     const builtBreasts = buildBreasts(species, breastsData.breastSize, breastsData.breastFirmness);
     breastsData.relativeBreastVolume = builtBreasts.relativeVolume;
     breastsData.absoluteBreastVolume = builtBreasts.absoluteVolume;
     breastsData.breastShape = builtBreasts.breastShape;
+
+    const lengthRatio = species.getAverageHeight() / _humanMaleHeight;
+    const randomLength = Random.normalDistribution(12,6);
+    const randomWidthRatio = Random.between(4,8)/10;
+
+    breastsData.nippleLength = Math.round(randomLength * lengthRatio);
+    breastsData.nippleWidth = Math.round(breastsData.nippleLength * randomWidthRatio)
+
+    if (breastsData.nippleLength < 3) { breastsData.nippleLength = 3;}
+    if (breastsData.nippleWidth < 2) { breastsData.nippleWidth = 2;}
+
+    breastsData.areolaWidth = Math.round(Random.normalDistribution(48,18) * lengthRatio);
+    if (breastsData.areolaWidth < breastsData.nippleWidth * 2) { breastsData.areolaWidth = breastsData.nippleWidth * 2 }
 
     return breastsData;
   }
@@ -39,7 +54,7 @@ global.BreastsFactory = (function() {
   // General function that converts a relative breast volume into an absolute breast volume. This should be called
   // every time a breast's relative volume changes in order to keep absolute volume consistent.
   function calculateAbsoluteVolume(species, relativeVolume) {
-    const volumeRatio = (species.getAverageHeight() / 1750) ** 3
+    const volumeRatio = (species.getAverageHeight() / _humanMaleHeight) ** 3
     return Math.round(relativeVolume * volumeRatio);
   }
 

@@ -141,10 +141,7 @@ global.BodyFactory = (function() {
     const averageHeight = species.getAverageHeight() * heightRatio;
     const deviation = averageHeight * heightDeviationRatio;
 
-    // Get random multiplier.
-    const multiplier = Math.sqrt(-2.0 * Math.log(Math.random())) * Math.cos(2.0 * Math.PI * Math.random());
-
-    return Math.round(averageHeight + (multiplier * deviation));
+    return Random.normalDistribution(averageHeight, deviation);
   }
 
   return Object.freeze({ build });
