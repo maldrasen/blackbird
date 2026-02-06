@@ -64,13 +64,15 @@ global.CharacterFactory = (function() {
     }
 
     // The body factory rolls for random mutations and might modify the triggers array. We don't know what parts a
-    // character will have at this point. (They don't always come from gender) If we trigger something like big-tits
+    // character will have at this point. (They don't always come from gender) If we trigger something like big-tits,
     // and they don't end up having breasts, we can ignore the triggers that don't apply.
     const bodyData = BodyFactory.build(actorData, triggers);
     log('BodyData',{ system:'CharacterFactory', data:bodyData });
     log('Triggers',{ system:'CharacterFactory', data:{ triggers:triggers }});
 
-    if ([Gender.futa, Gender.female].includes(biologicalSex)) {
+    // Technically, men also have nipples, but I don't think we ever actually do anything with them. Even a "lick his
+    // nipples action" wouldn't need to describe them in any detail.
+    if ([Gender.futa, Gender.female].includes(biologicalSex) && species.getBody().breasts) {
       breastsData = BreastsFactory.build(actorData);
       log('BreastData',{ system:'CharacterFactory', data:{ body:breastsData }});
     }

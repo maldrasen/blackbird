@@ -29,8 +29,7 @@ Species.register('kobold', {
     smellFamily: 'lusty',
 
     earShape: false,
-    tits: false,
-    nipples: false,
+    breasts: false,
 
     mouth: {
       tongueShape: 'forked',

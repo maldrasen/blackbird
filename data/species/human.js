@@ -25,14 +25,14 @@ Species.register('human', {
     earShape: 'human',
     smellFamily: 'all',
 
-    tits:{ size:{
+    breasts:{
       zero:    5,
       tiny:    10,
       small:   20,
       average: 35,
       big:     15,
       huge:    5,
-    }},
+    },
 
     cock:{ size:{
       small:   10,

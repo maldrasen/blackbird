@@ -26,13 +26,13 @@ Species.register('nymph', {
     earShape: 'elf',
     smellFamily: 'lusty',
 
-    tits:{ size:{
+    breasts:{
       tiny:    5,
       small:   10,
       average: 20,
       big:     40,
       huge:    20,
-    }},
+    },
 
     cock:{ size:{
       small:   10,

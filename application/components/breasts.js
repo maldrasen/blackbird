@@ -1,6 +1,7 @@
 global.Breasts = (function() {
-  const $properties = ['breastCount','breastSize','breastFirmness','breastVolume','breastShape','nippleShape','nippleWidth',
-    'nippleLength','nippleShade','areolaWidth','lactationFactor','orificeMinWidth','orificeMaxWidth','description'];
+  const $properties = ['breastCount','breastSize','breastFirmness','relativeBreastVolume','absoluteBreastVolume',
+    'breastShape','nippleShape','nippleWidth','nippleLength','nippleShade','areolaWidth','lactationFactor',
+    'orificeMinWidth','orificeMaxWidth','description'];
 
   function properties() { return $properties; }
 

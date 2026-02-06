@@ -26,14 +26,14 @@ Species.register('elf', {
     earShape: 'elf',
     smellFamily: 'floral',
 
-    tits:{ size:{
+    breasts:{
       zero:    5,
       tiny:    10,
       small:   20,
       average: 10,
       big:     5,
       huge:    1,
-    }},
+    },
 
     cock:{ size:{
       small:   10,

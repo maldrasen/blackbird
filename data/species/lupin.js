@@ -33,13 +33,13 @@ Species.register('lupin', {
       maxMouthWidth: 240,
     },
 
-    tits:{ size:{
+    breasts:{
       tiny:    10,
       small:   20,
       average: 50,
       big:     20,
       huge:    10,
-    }},
+    },
 
     nipples: {
       shade: 0,

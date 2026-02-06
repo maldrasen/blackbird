@@ -28,11 +28,11 @@ Species.register('sylph', {
 
     aspects: ['flexible'],
 
-    tits:{ size:{
+    breasts:{
       zero: 30,
       tiny: 20,
       small: 10,
-    }},
+    },
 
     cock:{ size:{
       small: 20,

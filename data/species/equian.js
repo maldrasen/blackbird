@@ -32,13 +32,13 @@ Species.register('equian', {
       maxMouthWidth: 80,
     },
 
-    tits:{ size:{
+    breasts:{
       tiny:    5,
       small:   10,
       average: 20,
       big:     60,
       huge:    10,
-    }},
+    },
 
     nipples: {
       shade: 0,

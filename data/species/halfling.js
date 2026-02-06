@@ -26,13 +26,12 @@ Species.register('halfling', {
     earShape: 'human',
     smellFamily: 'earthy',
 
-    tits:{ size:{
-      tiny:    5,
+    breasts:{
       small:   10,
       average: 20,
       big:     60,
-      huge:    10,
-    }},
+      huge:    30,
+    },
 
     cock:{ size:{
       small:   10,
