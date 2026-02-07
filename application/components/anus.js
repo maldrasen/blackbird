@@ -19,7 +19,7 @@ global.Anus = (function() {
 
     Validate.exists(_parentId,anusComponent._parentId);
     Validate.exists('placement',anusComponent.placement);
-    Validate.exists('shape',anusComponent.shape);
+    Validate.isIn('shape',anusComponent.shape,AnusData.AnusShapes);
     Validate.atLeast('minWidth',anusComponent.minWidth,0);
     Validate.atLeast('maxWidth',anusComponent.maxWidth,24);
     Validate.atLeast('prolapseLength',anusComponent.prolapseLength,0);

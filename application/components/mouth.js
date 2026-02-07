@@ -19,7 +19,7 @@ global.Mouth = (function() {
     Validate.atLeast('maxThroatWidth',mouthComponent.maxThroatWidth,26);
     Validate.atLeast('comfortableThroatDepth',mouthComponent.tongueLength,0);
     Validate.atLeast('tongueLength',mouthComponent.tongueLength,50);
-    Validate.exists('tongueShape',mouthComponent.placement);
+    Validate.isIn('tongueShape',mouthComponent.tongueShape,MouthData.TongueShapes);
   }
 
   return Object.freeze({

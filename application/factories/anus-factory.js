@@ -1,7 +1,7 @@
 global.AnusFactory = (function() {
 
-  // I should keep the shapes in a data class, but it hardly seems necessary for three values. We clamp the minWidth
-  // to 24 to make anal penetration easier for small species. Halflings and kobolds have big assholes I guess.
+  // We clamp the minWidth to 24 to make anal penetration easier for
+  // small species. Halflings and kobolds have big assholes I guess.
   function build(actor) {
     const species = Species.lookup(actor.species);
     const reference = species.getBody().anus || {};
