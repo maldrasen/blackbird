@@ -48,7 +48,7 @@ Species.register('lupin', {
 
     cock: {
       shape: 'dog',
-      sheath: 'fur',
+      cumMultiplier: 5,
       size: {
         small:   10,
         average: 40,

@@ -46,9 +46,8 @@ Species.register('equian', {
     },
 
     cock: {
+      cumMultiplier: 10,
       shape: 'horse',
-      sheath: 'skin',
-      minimumWidth: 30,
       size: {
         average: 10,
         big:     20,

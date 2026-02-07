@@ -35,6 +35,7 @@ Species.register('nymph', {
     },
 
     cock: {
+      cumMultiplier: 1.5,
       size: {
         small:   10,
         average: 50,

@@ -36,6 +36,7 @@ Species.register('halfling', {
       huge:    30,
     },
     cock: {
+      cumMultiplier: 0.5,
       size: {
         average: 20,
         big:     50,

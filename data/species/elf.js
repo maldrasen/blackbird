@@ -36,6 +36,7 @@ Species.register('elf', {
     },
 
     cock: {
+      cumMultiplier: 0.9,
       size: {
         small:   20,
         average: 60,

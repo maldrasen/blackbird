@@ -35,6 +35,7 @@ Species.register('sylph', {
     },
 
     cock: {
+      cumMultiplier: 0.7,
       size: {
         tiny:    5,
         small:   20,

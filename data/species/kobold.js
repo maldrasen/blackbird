@@ -40,7 +40,7 @@ Species.register('kobold', {
 
     cock: {
       shape: 'dragon',
-      sheath: 'scales',
+      cumMultiplier: 4, // Surprise, though they have internal balls, they produce a massive amount of cum.
       size: {
         average: 10,
         big:     30,
