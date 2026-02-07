@@ -11,6 +11,7 @@ global.AnusFactory = (function() {
       shape: reference.shape || Random.fromFrequencyMap({ normal:70, puffy:15, wrinkled:15 }),
       minWidth: 0,
       maxWidth: Math.max(24, Math.round(Random.roll(35,55) * species.getLengthRatio())),
+      prolapseLength: 0,
     };
   }
 
