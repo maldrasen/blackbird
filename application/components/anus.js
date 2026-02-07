@@ -4,7 +4,7 @@
 //       e.g. shitting nipples, then there's no reason to have a strangely placed anus  
 
 global.Anus = (function() {
-  const $properties = [_parentId,'placement'];
+  const $properties = [_parentId,'placement','shape','minWidth','maxWidth'];
 
   function properties() { return $properties; }
 
@@ -19,6 +19,9 @@ global.Anus = (function() {
 
     Validate.exists(_parentId,anusComponent._parentId);
     Validate.exists('placement',anusComponent.placement);
+    Validate.exists('shape',anusComponent.shape);
+    Validate.atLeast('minWidth',anusComponent.minWidth,0);
+    Validate.atLeast('maxWidth',anusComponent.maxWidth,24);
   }
 
   return Object.freeze({

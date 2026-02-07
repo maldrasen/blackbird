@@ -29,6 +29,7 @@ Species.register('lupin', {
     smellFamily: 'earthy',
 
     mouth: {
+      tongueShape: 'dog',
       tongueLength: 150,
       tongueLengthDev: 10,
       mouthWidth: 240,

@@ -37,6 +37,7 @@ global.CharacterFactory = (function() {
 
     let breastsData;
     let cockData;
+    let pussyData;
 
     if (options.name) { actorData.name = options.name; }
     if (options.title) { actorData.title = options.title; }
@@ -68,14 +69,20 @@ global.CharacterFactory = (function() {
     // character will have at this point. (They don't always come from gender) If we trigger something like big-tits,
     // and they don't end up having breasts, we can ignore the triggers that don't apply.
     const bodyData = BodyFactory.build(actorData, triggers);
+    const anusData = AnusFactory.build(actorData);
     const mouthData = MouthFactory.build(actorData, bodyData);
+
     log('BodyData',{ system:'CharacterFactory', data:bodyData });
     log('Triggers',{ system:'CharacterFactory', data:{ triggers:triggers }});
+    log('AnusData',{ system:'CharacterFactory', data:anusData });
     log('MouthData',{ system:'CharacterFactory', data:mouthData });
 
     // Technically, men also have nipples, but I don't think we ever actually do anything with them. Even a "lick his
     // nipples action" wouldn't need to describe them in any detail.
     if ([Gender.futa, Gender.female].includes(biologicalSex)) {
+      pussyData = PussyFactory.build(actorData);
+      log('PussyData',{ system:'CharacterFactory', data:pussyData });
+
       if (species.getBody().breasts) {
         breastsData = BreastsFactory.build(actorData);
         log('BreastData',{ system:'CharacterFactory', data:breastsData });
@@ -100,6 +107,7 @@ global.CharacterFactory = (function() {
     //       though this situation can be caused by an input like triggers:['flat-chest','huge-tits']
 
     Registry.createActorComponent(characterId, actorData);
+    Registry.createAnusComponent(characterId, anusData);
     Registry.createArousalComponent(characterId, { arousal:0 });
     Registry.createAttributesComponent(characterId, attributesData);
     Registry.createBodyComponent(characterId, bodyData);
@@ -109,6 +117,7 @@ global.CharacterFactory = (function() {
 
     if (breastsData) { Registry.createBreastsComponent(characterId, breastsData); }
     if (cockData) { Registry.createCockComponent(characterId, cockData); }
+    if (pussyData) { Registry.createPussyComponent(characterId, pussyData); }
 
     return characterId;
   }
