@@ -41,6 +41,7 @@ global.Name = (function() {
   //    huge-tits (2 sizes up to at least huge size)
   //    cow-tits (teat nipples)
   //    milky (add lactation)
+  //    forked-tongue (tongue shape)
   //
   // Preference Trigger:
   //    (preferenceCode)[value]

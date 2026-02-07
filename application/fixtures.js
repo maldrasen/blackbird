@@ -7,7 +7,7 @@ global.Fixtures = (function() {
     const characters = []
 
     for (let i=0; i<20; i++) {
-      characters.push(CharacterFactory.build({ species:'elf' }));
+      characters.push(CharacterFactory.build({  }));
     }
 
     characters.forEach(id => {

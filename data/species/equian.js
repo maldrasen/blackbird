@@ -28,8 +28,10 @@ Species.register('equian', {
     smellFamily: 'earthy',
 
     mouth: {
-      averageTongueLength: 90,
-      maxMouthWidth: 80,
+      tongueLength: 100,
+      tongueLengthDev: 10,
+      mouthWidth: 80,
+      mouthWidthDev: 5,
     },
 
     breasts: {

@@ -93,6 +93,10 @@ global.BodyFactory = (function() {
       mutation.addTriggers = ['slut'];
     }
 
+    if (mutation.eyeShape === 'dragon') {
+      mutation.addTriggers = ['forked-tongue'];
+    }
+
     return mutation;
   }
 

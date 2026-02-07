@@ -69,6 +69,20 @@ global.Random = (function() {
     return Math.round(average + (multiplier * deviation));
   }
 
+  function testDistribution(average,deviation,iterations=100) {
+    let max = -1000000;
+    let min = 1000000
+
+    for (let i=0; i<iterations; i++) {
+      let x = Random.normalDistribution(average,deviation);
+      if (x < min) { min = x; }
+      if (x > max) { max = x; }
+    }
+
+    console.log(`Normal Distribution (${average},${deviation}) = [${min}-${max}]`)
+  }
+
+
   // Randomize an array, usually so it can be iterated through in a random order.
   function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -91,6 +105,7 @@ global.Random = (function() {
     from,
     fromFrequencyMap,
     normalDistribution,
+    testDistribution,
     shuffle,
     identifier,
   });

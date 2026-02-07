@@ -33,9 +33,12 @@ Species.register('kobold', {
 
     mouth: {
       tongueShape: 'forked',
-      averageTongueLength: 100,
-      maxMouthWidth: 200,
-      maxThroatWidth: 40,
+      tongueLength: 100,
+      tongueLengthDev: 10,
+      mouthWidth: 200,
+      mouthWidthDev: 20,
+      throatWidth: 40,
+      throatWidthDev: 3,
     },
 
     cock: {

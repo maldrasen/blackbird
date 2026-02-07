@@ -29,8 +29,10 @@ Species.register('lupin', {
     smellFamily: 'earthy',
 
     mouth: {
-      averageTongueLength: 120,
-      maxMouthWidth: 240,
+      tongueLength: 150,
+      tongueLengthDev: 10,
+      mouthWidth: 240,
+      mouthWidthDev: 20,
     },
 
     breasts:{
@@ -39,11 +41,6 @@ Species.register('lupin', {
       average: 50,
       big:     20,
       huge:    10,
-    },
-
-    nipples: {
-      shade: 0,
-      shape: 'teat',
     },
 
     cock: {

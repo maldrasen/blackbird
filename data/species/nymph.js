@@ -26,6 +26,11 @@ Species.register('nymph', {
     earShape: 'elf',
     smellFamily: 'lusty',
 
+    mouth: {
+      gagReflex: 40,
+      gagReflexDev: 10,
+    },
+
     breasts: {
       tiny:    5,
       small:   10,
