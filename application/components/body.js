@@ -14,7 +14,7 @@ global.Body = (function() {
     'description'
   ];
 
-  function properties() { return $properties; }
+  function getProperties() { return $properties; }
 
   function validate(id) {
     const bodyComponent = Registry.lookupBodyComponent(id)
@@ -66,7 +66,7 @@ global.Body = (function() {
   }
 
   return Object.freeze({
-    properties,
+    getProperties,
     validate,
     createWrapper,
   });

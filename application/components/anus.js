@@ -6,7 +6,7 @@
 global.Anus = (function() {
   const $properties = [_parentId,'placement','shape','minWidth','maxWidth','prolapseLength'];
 
-  function properties() { return $properties; }
+  function getProperties() { return $properties; }
 
   function validate(id) {
     const anusComponent = Registry.lookupAnusComponent(id);
@@ -26,7 +26,7 @@ global.Anus = (function() {
   }
 
   return Object.freeze({
-    properties,
+    getProperties,
     validate,
   });
 

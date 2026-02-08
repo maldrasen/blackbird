@@ -17,7 +17,7 @@ global.Breasts = (function() {
     'description'
   ];
 
-  function properties() { return $properties; }
+  function getProperties() { return $properties; }
 
   function validate(id) {
     const breastsComponent = Registry.lookupBreastsComponent(id);
@@ -45,7 +45,7 @@ global.Breasts = (function() {
   }
 
   return Object.freeze({
-    properties,
+    getProperties,
     validate,
   });
 

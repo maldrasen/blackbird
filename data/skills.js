@@ -3,101 +3,101 @@
 
 // Persuasion, intimidation, seduction, convince other characters to like you more or just the ability to communicate
 // in general.
-SkillRecord.register('conversation',{
+Skill.register('conversation',{
   name: "Conversation",
   attributes: [Attrib.intelligence, Attrib.beauty] });
 
 // A character's perception, and ability to search for things, tracking, danger sense.
-SkillRecord.register('scouting',{
+Skill.register('scouting',{
   name: "Scouting",
   attributes: [Attrib.intelligence] });
 
 // Used for hide actions in combat, but also should just make them less likely to be attacked in combat.
-SkillRecord.register('stealth',{
+Skill.register('stealth',{
   name: "Stealth",
   attributes: [Attrib.dexterity] });
 
 // Probably used for a variety of things, but for opening locks and disarming traps. I don't like having whole skills
 // devoted to thief shit that's useless everywhere else though, so this could also include using any kind of mechanical
 // object and figuring out how they work.
-SkillRecord.register('mechanics',{
+Skill.register('mechanics',{
   name: "Mechanics",
   attributes: [Attrib.intelligence] });
 
 // The magical version of mechanics. Not related to a specific type of magic, arcana is used to figure out magical
 // traps, magical locks, identifying magical items, and using things like wands.
-SkillRecord.register('arcana',{
+Skill.register('arcana',{
   name: "Arcane",
   attributes: [Attrib.intelligence] });
 
 // == Magical ===
 
-SkillRecord.register('sorcery',{
+Skill.register('sorcery',{
   name: "Sorcery",
   attributes: [Attrib.intelligence] });
 
-SkillRecord.register('thaumaturgy',{
+Skill.register('thaumaturgy',{
   name: "Thaumaturgy",
   attributes: [Attrib.intelligence] });
 
-SkillRecord.register('witchcraft',{
+Skill.register('witchcraft',{
   name: "Witchcraft",
   attributes: [Attrib.intelligence] });
 
-SkillRecord.register('magic',{
+Skill.register('magic',{
   name: "Magic",
   attributes: [Attrib.intelligence] });
 
-SkillRecord.register('wizardry',{
+Skill.register('wizardry',{
   name: "Wizardry",
   attributes: [Attrib.intelligence] });
 
 // === Martial ===
 
-SkillRecord.register('axe',{
+Skill.register('axe',{
   name: "Axes",
   attributes: [Attrib.strength] });
 
-SkillRecord.register('bows',{
+Skill.register('bows',{
   name: "Bows & Guns",
   attributes: [Attrib.dexterity] });
 
-SkillRecord.register('daggers',{
+Skill.register('daggers',{
   name: "Daggers",
   attributes: [Attrib.dexterity] });
 
-SkillRecord.register('grappling',{
+Skill.register('grappling',{
   name: "Grappling",
   attributes: [Attrib.strength, Attrib.dexterity] });
 
-SkillRecord.register('maces',{
+Skill.register('maces',{
   name: "Maces",
   attributes: [Attrib.strength] });
 
-SkillRecord.register('polearms',{
+Skill.register('polearms',{
   name: "Spears & Polearms",
   attributes: [Attrib.strength] });
 
-SkillRecord.register('shields',{
+Skill.register('shields',{
   name: "Shields",
   attributes: [Attrib.strength] });
 
-SkillRecord.register('swords',{
+Skill.register('swords',{
   name: "Swords",
   attributes: [Attrib.strength, Attrib.dexterity] });
 
-SkillRecord.register('whips',{
+Skill.register('whips',{
   name: "Whips & Flails",
   attributes: [Attrib.dexterity] });
 
 // === Sexual ===
 
 // Vitality for endurance, strength for anal squeezing.
-SkillRecord.register('anal-sex',{
+Skill.register('anal-sex',{
   name: "Anal Sex",
   attributes: [Attrib.strength, Attrib.vitality] });
 
 // Vitality for endurance lack of breathing, dexterity for tongue work.
-SkillRecord.register('oral-sex',{
+Skill.register('oral-sex',{
   name: "Oral Sex",
   attributes: [Attrib.dexterity, Attrib.vitality] });

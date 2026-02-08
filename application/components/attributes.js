@@ -1,7 +1,7 @@
 global.Attributes = (function() {
   const $properties = Object.keys(Attrib);
 
-  function properties() { return $properties; }
+  function getProperties() { return $properties; }
 
   function validate(id) {
     const attributeComponent = Registry.lookupAttributesComponent(id)
@@ -53,7 +53,7 @@ global.Attributes = (function() {
   }
 
   return Object.freeze({
-    properties,
+    getProperties,
     validate,
     createWrapper,
   });

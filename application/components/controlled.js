@@ -1,7 +1,7 @@
 global.Controlled = (function() {
   const $properties = ['control'];
 
-  function properties() { return $properties; }
+  function getProperties() { return $properties; }
 
   function validate(id) {
     const controlledComponent = Registry.lookupControlledComponent(id);
@@ -16,7 +16,7 @@ global.Controlled = (function() {
   }
 
   return Object.freeze({
-    properties,
+    getProperties,
     validate,
   });
 

@@ -1,7 +1,7 @@
 global.Arousal = (function() {
   const $properties = ['arousal','pleasure','edging','refectory'];
 
-  function properties() { return $properties; }
+  function getProperties() { return $properties; }
 
   function validate(id) {
     const arousalComponent = Registry.lookupArousalComponent(id)
@@ -16,7 +16,7 @@ global.Arousal = (function() {
   }
 
   return Object.freeze({
-    properties,
+    getProperties,
     validate,
   });
 

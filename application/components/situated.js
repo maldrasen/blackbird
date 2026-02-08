@@ -1,7 +1,7 @@
 global.Situated = (function() {
   const $properties = ['currentLocation'];
 
-  function properties() { return $properties; }
+  function getProperties() { return $properties; }
 
   function validate(id) {
     const situatedComponent = Registry.lookupSituatedComponent(id);
@@ -16,7 +16,7 @@ global.Situated = (function() {
   }
 
   return Object.freeze({
-    properties,
+    getProperties,
     validate,
   });
 

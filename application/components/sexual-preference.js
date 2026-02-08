@@ -1,7 +1,7 @@
 global.SexualPreference = (function() {
   const $properties = [_parentId,'type','value'];
 
-  function properties() { return $properties; }
+  function getProperties() { return $properties; }
 
   function validate(id) {
     const sexualPreferenceComponent = Registry.lookupSexualPreferenceComponent(id)
@@ -18,7 +18,7 @@ global.SexualPreference = (function() {
   }
 
   return Object.freeze({
-    properties,
+    getProperties,
     validate,
   });
 

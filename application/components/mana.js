@@ -1,7 +1,7 @@
 global.Mana = (function() {
   const $properties = ['red_mana','yellow_mana','green_mana','blue_mana','black_mana'];
 
-  function properties() { return $properties; }
+  function getProperties() { return $properties; }
 
   function validate(id) {
     const manaComponent = Registry.lookupManaComponent(id)
@@ -14,7 +14,7 @@ global.Mana = (function() {
   }
 
   return Object.freeze({
-    properties,
+    getProperties,
     validate,
   });
 

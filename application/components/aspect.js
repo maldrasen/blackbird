@@ -1,7 +1,7 @@
 global.Aspect = (function() {
   const $properties = [_parentId,'code','level'];
 
-  function properties() { return $properties; }
+  function getProperties() { return $properties; }
 
   function validate(id) {
     const aspectComponent = Registry.lookupAspectComponent(id)
@@ -13,12 +13,12 @@ global.Aspect = (function() {
     });
 
     Validate.exists(_parentId,aspectComponent._parentId)
-    Validate.isIn('code',aspectComponent.code,['temp']) // TODO: list of aspects
+    // Validate.isIn('code',aspectComponent.code,[]) // TODO: list of aspects
     Validate.atLeast('level',aspectComponent.level,1);
   }
 
   return Object.freeze({
-    properties,
+    getProperties,
     validate,
   });
 

@@ -2,10 +2,7 @@ global.Registry = (function() {
 
   const entities = {}; // { entityId : {ComponentType} }
   const components = {}; // { ComponentType : { entityId: { entityData } } }
-
-  const typesWithChildren = [
-    ComponentType.skill,
-  ];
+  const typesWithChildren = [];
 
   // === Entity CRUD ===================================================================================================
 
@@ -29,8 +26,8 @@ global.Registry = (function() {
     return id;
   }
 
-  // Deleting an entity will also delete child entities. Some entities (things like skills) can't exist without their
-  // parent entity, so they should be deleted.
+  // Deleting an entity will also delete child entities. Some entities (things like body parts) can't exist without
+  // their parent entity, so they should be deleted.
   function deleteEntity(id) {
     Object.keys(components).forEach(type => {
       if (components[type][id]) {
@@ -84,6 +81,7 @@ global.Registry = (function() {
     const entity = Registry.createEntity();
     Registry.createComponent(entity, ComponentType.anus, { _parentId:id, ...data});
     Anus.validate(entity);
+    return entity;
   }
   function createArousalComponent(id,data) {
     Registry.createComponent(id,ComponentType.arousal,data);
@@ -93,6 +91,7 @@ global.Registry = (function() {
     const entity = Registry.createEntity();
     Registry.createComponent(entity, ComponentType.aspect, { _parentId:id, ...data});
     Aspect.validate(entity);
+    return entity;
   }
   function createAttributesComponent(id,data) {
     Registry.createComponent(id,ComponentType.attributes,data);
@@ -110,6 +109,7 @@ global.Registry = (function() {
     const entity = Registry.createEntity();
     Registry.createComponent(entity, ComponentType.cock, { _parentId:id, ...data});
     Cock.validate(entity);
+    return entity;
   }
   function createControlledComponent(id,data) {
     Registry.createComponent(id,ComponentType.controlled,data);
@@ -119,6 +119,7 @@ global.Registry = (function() {
     const entity = Registry.createEntity();
     Registry.createComponent(entity, ComponentType.feelings, { _parentId:id, ...data});
     Feelings.validate(entity);
+    return entity;
   }
   function createHealthComponent(id,data) {
     Registry.createComponent(id,ComponentType.health,data);
@@ -136,11 +137,13 @@ global.Registry = (function() {
     const entity = Registry.createEntity();
     Registry.createComponent(entity, ComponentType.memory, { _parentId:id, ...data});
     Memory.validate(entity);
+    return entity;
   }
   function createMouthComponent(id,data) {
     const entity = Registry.createEntity();
     Registry.createComponent(entity, ComponentType.mouth, { _parentId:id, ...data});
     Mouth.validate(entity);
+    return entity;
   }
   function createPersonalityComponent(id,data) {
     Registry.createComponent(id,ComponentType.personality,data);
@@ -150,25 +153,25 @@ global.Registry = (function() {
     const entity = Registry.createEntity();
     Registry.createComponent(entity, ComponentType.pussy, { _parentId:id, ...data});
     Pussy.validate(entity);
+    return entity;
   }
   function createScalesComponent(id,data) {
-    const entity = Registry.createEntity();
-    Registry.createComponent(entity, ComponentType.scales, { _parentId:id, ...data});
-    Scales.validate(entity);
+    Registry.createComponent(id, ComponentType.scales,data);
+    Scales.validate(id);
   }
   function createSexualPreferenceComponent(id,data) {
     const entity = Registry.createEntity();
     Registry.createComponent(entity, ComponentType.sexualPreference, { _parentId:id, ...data});
     SexualPreference.validate(entity);
+    return entity;
   }
   function createSituatedComponent(id,data) {
     Registry.createComponent(id,ComponentType.situated,data);
     Situated.validate(id);
   }
-  function createSkillComponent(id,data) {
-    const entity = Registry.createEntity();
-    Registry.createComponent(entity, ComponentType.skill, { _parentId:id, ...data});
-    Skill.validate(entity);
+  function createSkillsComponent(id,data) {
+    Registry.createComponent(id, ComponentType.skills, data);
+    Skills.validate(id);
   }
 
   function lookupActorComponent(id)            { return Registry.lookupComponent(id,ComponentType.actor); }
@@ -191,7 +194,7 @@ global.Registry = (function() {
   function lookupScalesComponent(id)           { return Registry.lookupComponent(id,ComponentType.scales); }
   function lookupSexualPreferenceComponent(id) { return Registry.lookupComponent(id,ComponentType.sexualPreference); }
   function lookupSituatedComponent(id)         { return Registry.lookupComponent(id,ComponentType.situated); }
-  function lookupSkillComponent(id)            { return Registry.lookupComponent(id,ComponentType.skill); }
+  function lookupSkillsComponent(id)            { return Registry.lookupComponent(id,ComponentType.skills); }
 
   function updateActorComponent(id,data) {
     updateComponent(id,ComponentType.actor,data);
@@ -273,9 +276,9 @@ global.Registry = (function() {
     updateComponent(id,ComponentType.situated,data);
     Situated.validate(id);
   }
-  function updateSkillComponent(id,data) {
-    updateComponent(id,ComponentType.skill,data);
-    Skill.validate(id);
+  function updateSkillsComponent(id,data) {
+    updateComponent(id,ComponentType.skills,data);
+    Skills.validate(id);
   }
 
   function deleteActorComponent(id)            { Registry.deleteComponent(id,ComponentType.actor); }
@@ -298,7 +301,7 @@ global.Registry = (function() {
   function deleteScalesComponent(id)            { Registry.deleteComponent(id,ComponentType.scales); }
   function deleteSexualPreferenceComponent(id) { Registry.deleteComponent(id,ComponentType.sexualPreference); }
   function deleteSituatedComponent(id)         { Registry.deleteComponent(id,ComponentType.situated); }
-  function deleteSkillComponent(id)            { Registry.deleteComponent(id,ComponentType.skill); }
+  function deleteSkillsComponent(id)            { Registry.deleteComponent(id,ComponentType.skills); }
 
   // === Inspect =======================================================================================================
 
@@ -322,6 +325,14 @@ global.Registry = (function() {
 
   function findChildEntities(id) {
     const children = new Set();
+
+    if (typesWithChildren.length === 0) {
+      Object.keys(ComponentType).forEach(code => {
+        if (global[ComponentType[code]].getProperties().includes(_parentId)) {
+          typesWithChildren.push(ComponentType[code])
+        }
+      });
+    }
 
     typesWithChildren.forEach(type => {
       Object.keys(components[type]).forEach(childId => {
@@ -386,7 +397,7 @@ global.Registry = (function() {
     createScalesComponent,
     createSexualPreferenceComponent,
     createSituatedComponent,
-    createSkillComponent,
+    createSkillsComponent,
 
     lookupComponent,
     lookupActorComponent,
@@ -409,7 +420,7 @@ global.Registry = (function() {
     lookupScalesComponent,
     lookupSexualPreferenceComponent,
     lookupSituatedComponent,
-    lookupSkillComponent,
+    lookupSkillsComponent,
 
     updateComponent,
     updateActorComponent,
@@ -432,7 +443,7 @@ global.Registry = (function() {
     updateScalesComponent,
     updateSexualPreferenceComponent,
     updateSituatedComponent,
-    updateSkillComponent,
+    updateSkillsComponent,
 
     deleteComponent,
     deleteActorComponent,
@@ -455,7 +466,7 @@ global.Registry = (function() {
     deleteScalesComponent,
     deleteSexualPreferenceComponent,
     deleteSituatedComponent,
-    deleteSkillComponent,
+    deleteSkillsComponent,
 
     compileEntityData,
 

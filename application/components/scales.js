@@ -42,7 +42,7 @@ global.Scales = (function() {
     'sufferingAnima',
   ];
 
-  function properties() { return $properties; }
+  function getProperties() { return $properties; }
 
   function validate(id) {
     const scalesComponent = Registry.lookupScalesComponent(id);
@@ -55,7 +55,7 @@ global.Scales = (function() {
   }
 
   return Object.freeze({
-    properties,
+    getProperties,
     validate,
   });
 

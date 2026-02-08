@@ -1,7 +1,7 @@
 global.Actor = (function() {
   const $properties = ['title','name','surname','gender','species'];
 
-  function properties() { return $properties; }
+  function getProperties() { return $properties; }
 
   function validate(id) {
     const actorComponent = Registry.lookupActorComponent(id)
@@ -17,7 +17,7 @@ global.Actor = (function() {
   }
 
   return Object.freeze({
-    properties,
+    getProperties,
     validate,
   });
 

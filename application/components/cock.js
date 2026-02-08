@@ -16,7 +16,7 @@ global.Cock = (function() {
     'description'
   ];
 
-  function properties() { return $properties; }
+  function getProperties() { return $properties; }
 
   function validate(id) {
     const cockComponent = Registry.lookupCockComponent(id);
@@ -35,7 +35,7 @@ global.Cock = (function() {
   }
 
   return Object.freeze({
-    properties,
+    getProperties,
     validate,
   });
 

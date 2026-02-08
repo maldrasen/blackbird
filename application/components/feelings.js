@@ -1,7 +1,7 @@
 global.Feelings = (function() {
   const $properties = [_parentId, 'target', 'affection', 'fear', 'respect'];
 
-  function properties() { return $properties; }
+  function getProperties() { return $properties; }
 
   function validate(id) {
     const feelingsComponent = Registry.lookupFeelingsComponent(id)
@@ -20,7 +20,7 @@ global.Feelings = (function() {
   }
 
   return Object.freeze({
-    properties,
+    getProperties,
     validate,
   });
 

@@ -1,7 +1,7 @@
 global.Health = (function() {
   const $properties = ['currentStamina','currentHealth','maxHealth'];
 
-  function properties() { return $properties; }
+  function getProperties() { return $properties; }
 
   function validate(id) {
     const healthComponent = Registry.lookupHealthComponent(id);
@@ -18,7 +18,7 @@ global.Health = (function() {
   }
 
   return Object.freeze({
-    properties,
+    getProperties,
     validate,
   });
 

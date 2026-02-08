@@ -24,7 +24,6 @@ global.Name = (function() {
     if (genderCode === Gender.male) { list = $nameData.name.male; }
     if (genderCode === Gender.enby) { list = Random.roll(10) < 5 ? $nameData.name.male : $nameData.name.female }
 
-
     while(true) {
       let names = {
         name: Random.from(list),

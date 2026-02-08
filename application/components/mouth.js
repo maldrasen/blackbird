@@ -2,7 +2,7 @@ global.Mouth = (function() {
   const $properties = [_parentId,'placement','maxMouthWidth','maxThroatWidth','comfortableThroatDepth','tongueLength',
     'tongueShape'];
 
-  function properties() { return $properties; }
+  function getProperties() { return $properties; }
 
   function validate(id) {
     const mouthComponent = Registry.lookupMouthComponent(id);
@@ -23,7 +23,7 @@ global.Mouth = (function() {
   }
 
   return Object.freeze({
-    properties,
+    getProperties,
     validate,
   });
 

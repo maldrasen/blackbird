@@ -1,7 +1,7 @@
 global.Memory = (function() {
   const $properties = [_parentId,'time','type','details'];
 
-  function properties() { return $properties; }
+  function getProperties() { return $properties; }
 
   function validate(id) {
     const memoryComponent = Registry.lookupMemoryComponent(id)
@@ -18,7 +18,7 @@ global.Memory = (function() {
   }
 
   return Object.freeze({
-    properties,
+    getProperties,
     validate,
   });
 

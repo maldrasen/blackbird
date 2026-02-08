@@ -17,7 +17,7 @@ global.Pussy = (function() {
     'prolapseLength'
   ];
 
-  function properties() { return $properties; }
+  function getProperties() { return $properties; }
 
   function validate(id) {
     const pussyComponent = Registry.lookupPussyComponent(id);
@@ -37,7 +37,7 @@ global.Pussy = (function() {
   }
 
   return Object.freeze({
-    properties,
+    getProperties,
     validate,
   });
 

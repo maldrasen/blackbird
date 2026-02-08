@@ -1,7 +1,7 @@
 global.Mark = (function() {
   const $properties = ['type','memory'];
 
-  function properties() { return $properties; }
+  function getProperties() { return $properties; }
 
   function validate(id) {
     const markComponent = Registry.lookupMarkComponent(id)
@@ -17,7 +17,7 @@ global.Mark = (function() {
   }
 
   return Object.freeze({
-    properties,
+    getProperties,
     validate,
   });
 

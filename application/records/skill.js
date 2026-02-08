@@ -1,10 +1,10 @@
-// We need to call this the "SkillRecord" because "Skill" refers to the skill component.
-
-global.SkillRecord = (function() {
+global.Skill = (function() {
   const $skills = {};
 
+  // The skill register() function also needs to add the skill code as a property of the Skills component.
   function register(code,data) {
     $skills[code] = data;
+    Skills.addSkill(code);
   }
 
   function getAllCodes() {
@@ -21,6 +21,7 @@ global.SkillRecord = (function() {
     return Object.freeze({
       getCode: () => { return skill.code; },
       getName: () => { return skill.name; },
+      getAttributes: () => { return skill.attributes; }
     });
   }
 
