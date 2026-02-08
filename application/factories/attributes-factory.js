@@ -1,6 +1,18 @@
 global.AttributesFactory = (function() {
-  const positiveAttributeTriggers = { strong:'strength', skillful:'dexterity', healthy:'vitality', smart:'intelligence',  beautiful:'beauty' };
-  const negativeAttributeTriggers = { weak:'strength',   clumsy:'dexterity',   sickly:'vitality',  stupid:'intelligence', ugly:'beauty' };
+  const positiveAttributeTriggers = {
+    strong: Attrib.strength,
+    skillful: Attrib.dexterity,
+    healthy: Attrib.vitality,
+    smart: Attrib.intelligence,
+    beautiful: Attrib.beauty,
+  };
+  const negativeAttributeTriggers = {
+    weak: Attrib.strength,
+    clumsy: Attrib.dexterity,
+    sickly: Attrib.vitality,
+    stupid: Attrib.intelligence,
+    ugly: Attrib.beauty,
+  };
 
   // I don't think we roll attributes in any place other than this character factory. If so we can move this to the
   // Attributes component or something.
@@ -9,11 +21,11 @@ global.AttributesFactory = (function() {
     const speciesMap = Species.lookup(species).getAttributes();
     const attributes = {};
 
-    ['strength','dexterity','vitality','intelligence','beauty'].forEach(code => {
+    Object.keys(Attrib).forEach(code => {
       let dice = diceLevels[speciesMap[code]];
 
-      if (code === 'strength' && ['male','futa'].includes(gender)) { dice += 1 }
-      if (code === 'beauty' && ['female','futa'].includes(gender)) { dice += 1 }
+      if (code === Attrib.strength && [Gender.male,Gender.futa].includes(gender)) { dice += 1 }
+      if (code === Attrib.beauty && [Gender.female,Gender.futa].includes(gender)) { dice += 1 }
 
       attributes[code] = Random.rollDice({ x:dice, d:10 });
 

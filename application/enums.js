@@ -68,6 +68,14 @@ global.KeyCodes = Object.freeze({
 
 // === Components ===
 
+global.Attrib = Object.freeze({
+  strength: 'strength',
+  dexterity: 'dexterity',
+  vitality: 'vitality',
+  intelligence: 'intelligence',
+  beauty: 'beauty',
+});
+
 global.ComponentType = Object.freeze({
   actor: 'actor',
   anus: 'anus',
