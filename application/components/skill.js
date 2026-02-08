@@ -1,5 +1,5 @@
 global.Skill = (function() {
-  const $properties = [_parentId,'code','level','experience'];
+  const $properties = [_parentId,'code','points'];
 
   function properties() { return $properties; }
 
@@ -14,8 +14,7 @@ global.Skill = (function() {
 
     Validate.exists(_parentId,skillComponent._parentId);
     Validate.isIn('code',skillComponent.code,SkillRecord.getAllCodes());
-    Validate.atLeast('level',skillComponent.level,1);
-    Validate.atLeast('experience',skillComponent.experience,0);
+    Validate.atLeast('points',skillComponent.points,1);
   }
 
   return Object.freeze({

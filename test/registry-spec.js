@@ -40,8 +40,8 @@ describe('Registry', function() {
       const actor = Registry.createEntity();
 
       Registry.createActorComponent(actor,{ name:'Angela', surname:'White', gender:'female', species:'elf' });
-      Registry.createSkillComponent(actor,{ code:'oral-sex', level:42, experience:0 });
-      Registry.createSkillComponent(actor,{ code:'anal-sex', level:69, experience:0 });
+      Registry.createSkillComponent(actor,{ code:'oral-sex', points:42 });
+      Registry.createSkillComponent(actor,{ code:'anal-sex', points:69 });
 
       expect(Registry.compileEntityData(actor).children.length).to.equal(2);
       expect(Registry.findEntitiesWithComponents(['skill']).length).to.equal(2);
