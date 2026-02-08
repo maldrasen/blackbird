@@ -10,7 +10,7 @@ global.BodyData = {
   CommonHairColors: ['white','platinumBlond','blond','strawberryBlond','goldenBlond','darkBlond','lightBrown',
     'brown','copper','auburn','chestnut','darkBrown','blackBrown','black','jetBlack','darkRed','red','gray'],
   UncommonHairColors: ['lightBlue','blue','darkBlue','lightGreen','green','darkGreen','lightPurple','purple',
-    'darkPurple'],
+    'darkPurple','pink'],
 
   EyeShapes: ['round','dragon','cat','heart'],
   CommonEyeColors: ['brown','hazel','amber','green','blue','gray','black'],

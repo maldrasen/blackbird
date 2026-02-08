@@ -69,6 +69,38 @@ global.BodyFactory = (function() {
     return Random.normalDistribution(averageHeight, deviation);
   }
 
-  return Object.freeze({ build, applyBodyTriggers });
+  function applyTriggers(bodyData, triggers) {
+    [...triggers].forEach(trigger => {
+
+      // These triggers include the value that the body property should be set to.
+      const match = trigger.match(/(.*)-(tail|ears|eyes|eyeColor|hair|horn)$/);
+      if (match) {
+        switch (match[2]) {
+          case 'tail':     bodyData.tailShape = match[1]; break;
+          case 'ears':     bodyData.earShape = match[1]; break;
+          case 'eyes':     bodyData.eyeShape = match[1]; break;
+          case 'eyeColor': bodyData.eyeColor = match[1]; break;
+          case 'hair':     bodyData.hairColor = match[1]; break;
+          case 'horn':     bodyData.hornShape = match[1]; break;
+        }
+        log(`Applied ${trigger}`,{ system:'BodyFactory', level:3 });
+        ArrayHelper.remove(triggers,trigger);
+      }
+
+      if (trigger === 'dark-skin') {
+        bodyData.skinColor = Random.from(BodyData.DarkHumanSkinTones);
+        log(`Applied ${trigger}`,{ system:'BodyFactory', level:3 });
+        ArrayHelper.remove(triggers,trigger);
+      }
+
+      if (trigger === 'light-skin') {
+        bodyData.skinColor = Random.from(BodyData.LightHumanSkinTones);
+        log(`Applied ${trigger}`,{ system:'BodyFactory', level:3 });
+        ArrayHelper.remove(triggers,trigger);
+      }
+    });
+  }
+
+  return Object.freeze({ build, applyTriggers });
 
 })();

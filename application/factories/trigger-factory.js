@@ -1,52 +1,42 @@
 global.TriggerFactory = (function() {
 
+  // Rather than applying random adjustments during body creation, we create triggers for them. We need to do this
+  // because there are triggers that come from the names that do the exact same thing. So, rather than implementing the
+  // same thing in two different ways, we create triggers for everything, then apply everything after all the body data
+  // objects have been built.
   function addRandomTriggers(triggers, species) {
-    getRandomMutations(species).forEach(trigger => {
-      console.log("Add Trigger: ",trigger);
-      triggers.push(trigger);
-    });
-  }
-
-  function getRandomMutations(species) {
-    if (Random.roll(100) > species.getMutability()) { return []; }
+    if (Random.roll(100) > species.getMutability()) { return; }
 
     // Get an uncommon mutation 80% of the time.
     if (Random.roll(100) < 80) {
       switch(Random.roll(5)) {
-        case 0: return uncommonEarsAndTail();
-        case 1: return uncommonEyeColor();
-        case 2: return uncommonEyeShape();
-        case 3: return uncommonHairColor();
-        case 4: return uncommonHorns();
+        case 0: return uncommonEarsAndTail(triggers);
+        case 1: return uncommonEyeColor(triggers);
+        case 2: return uncommonEyeShape(triggers);
+        case 3: return uncommonHairColor(triggers);
+        case 4: return uncommonHorns(triggers);
       }
     }
 
     // TODO: Add more unusual triggers 80% of the remaining time (16%)
     // TODO: Otherwise (4%) get something very strange.
-    return [];
   }
 
-  function uncommonEarsAndTail() {
+  function uncommonEarsAndTail(triggers) {
     const shape = Random.from(BodyData.TailShapes);
-    const triggers = [`${shape}-tail`];
+    triggers.push(`${shape}-tail`);
 
     if (BodyData.UncommonEarShapes.includes(shape)) {
-      triggers.push(`${shape}-ears`)
-    }
-
+      triggers.push(`${shape}-ears`) }
     if (shape === 'horse') {
-      triggers.push(...['horse-cock','horse-pussy','horse-anus']);
-    }
+      triggers.push(...['horse-cock','horse-pussy','horse-anus']); }
 
     return triggers;
   }
 
-  function uncommonEyeShape() {
+  function uncommonEyeShape(triggers) {
     const shape = Random.from(BodyData.EyeShapes);
-    const triggers = [
-      `${Random.from(BodyData.EyeColors)}-eyeColor`,
-      `${shape}-eyes`,
-    ];
+    triggers.push(`${shape}-eyes`);
 
     if (shape === 'cat')    { triggers.push(...['cat-tail','cat-ears']); }
     if (shape === 'heart')  { triggers.push('slut'); }
@@ -55,45 +45,27 @@ global.TriggerFactory = (function() {
     return triggers;
   }
 
-  function uncommonHorns() {
+  function uncommonHorns(triggers) {
     const shape = Random.from(BodyData.HornShapes);
-    const triggers = [`${shape}-horn`];
+    triggers.push(`${shape}-horn`);
 
     // Getting cow horns adds cow features. Milky balls and tits.
     if (shape === 'forward-cow') {
-      triggers.push(...['cow-tail','huge-balls','huge-tits','cow-tits','milky','productive:3'])
-    }
+      triggers.push(...['cow-tail','huge-balls','huge-tits','cow-tits','milky','productive:3']); }
 
     // Getting a unicorn horn adds horse features.
     if (shape === 'unicorn') {
-      triggers.push(...['horse-tail','horse-ears','horse-cock','horse-pussy','horse-anus'])
-    }
+      triggers.push(...['horse-tail','horse-ears','horse-cock','horse-pussy','horse-anus']); }
 
     return triggers;
   }
 
-  function uncommonEyeColor() { return [`${Random.from(BodyData.UncommonEyeColors)}-eyes`]; }
-  function uncommonHairColor() { return [`${Random.from(BodyData.UncommonHairColors)}-hair`]; }
+  function uncommonEyeColor(triggers) { return [`${Random.from(BodyData.UncommonEyeColors)}-eyeColor`]; }
+  function uncommonHairColor(triggers) { return [`${Random.from(BodyData.UncommonHairColors)}-hair`]; }
 
   return Object.freeze({
     addRandomTriggers,
   });
 
-})()
+})();
 
-
-// TODO: Check the trigger list to see if we set any of these twice
-// const triggerTypes = ['-tail','-ears','-eyes','-eyeColor','-hair','-horn'];
-
-// Separate Trigger Applier?
-// function applyBodyTriggers() {
-//
-// }
-
-// === Resolve Triggers ===
-// Object.keys(mutation).forEach(key => {
-//   if (key !== 'addTriggers') {
-//     log(`Mutation changed ${key}: ${bodyData[key]} becomes ${mutation[key]}`,{ system:'BodyFactory', level:3 });
-//     bodyData[key] = mutation[key];
-//   }
-// });
