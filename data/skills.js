@@ -91,13 +91,32 @@ Skill.register('whips',{
   attributes: [Attrib.dexterity] });
 
 // === Sexual ===
+// I'll need some kind of BDSM skills. The sexual preferences for domination, sadism, etc., only indicate how much you
+// like something, but not if you're good at it. Being a dominator takes skill, but being submissive doesn't.
+// Submissiveness would instead rely on the servicing skill. What other sex skills are there?
 
-// Vitality for endurance, strength for anal squeezing.
-Skill.register('anal-sex',{
-  name: "Anal Sex",
-  attributes: [Attrib.strength, Attrib.vitality] });
+// Characters with high performance are more active and vocal during sex. When an action is done to a character with
+// high performance, it's more pleasurable for the person doing the action.
+Skill.register('performance',{
+  name: "Performance",
+  attributes: [Attrib.beauty] });
 
-// Vitality for endurance lack of breathing, dexterity for tongue work.
-Skill.register('oral-sex',{
-  name: "Oral Sex",
+// General sexual skill. High technique makes all sex actions better for the receiver of the action. Technique and
+// Performance should mirror each other.
+Skill.register('technique',{
+  name: "Technique",
+  attributes: [Attrib.dexterity] });
+
+// Specifically for mouth and hand actions. Servicing factor can multiply with technique factor to make blowjobs and
+// such as pleasurable as (or more than) fucking.
+Skill.register('servicing',{
+  name: "Servicing",
   attributes: [Attrib.dexterity, Attrib.vitality] });
+
+// Deepthroating skill will increase the comfortable throat depth. Cleaner and more visible than adjusting the value on
+// the mouth component. First hidden skill, which indicates that the skill isn't displayed until there are points.
+Skill.register('deepthroating',{
+  name: "Servicing",
+  attributes: [Attrib.vitality],
+  hidden: true,
+});
