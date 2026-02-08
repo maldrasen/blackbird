@@ -1,59 +1,5 @@
 global.Name = (function() {
 
-  // In addition to the obvious 'name' value, a name can trigger changes to the character as it's being built. Triggers
-  // can change attributes, change body parts, add sexual preferences, and trigger other changes. In this version of
-  // the game most characters have a single name. A character might also randomly have a title or a surname. Titles
-  // should all have triggers.
-  //
-  // Attribute triggers (Each +/- 10 per level or 10 by default):
-  //    strong / weak
-  //    skillful / clumsy
-  //    healthy / sickly
-  //    smart / stupid
-  //    ugly / beautiful
-  //
-  // Personality Triggers
-  //    calm
-  //    kind
-  //
-  // Body Triggers:
-  //    tall / short (by factor for species)
-  //    red-hair (or fur/scales)
-  //    white-hair (or fur/scales)
-  //    pink-hair (or fur/scales)
-  //    purple-hair (or fur/scales)
-  //    dark-skin (or fur/scales)
-  //    light-skin (or fur/scales)
-  //    big-cock (1 size up to at least big size)
-  //    big-balls (1 size up to at least big size)
-  //    dog-cock (if would be normal)
-  //    dog-pussy (if would be normal)
-  //    horse-cock (if would be normal)
-  //    horse-pussy (if would be normal)
-  //    horse-anus (if would be normal)
-  //    two-cocks (if would be single)
-  //    three-cocks (if would be single)
-  //    huge-cock (2 sizes up to at least huge size)
-  //    huge-balls (2 sizes up to at least huge size)
-  //    flat-chest (set size to 0)
-  //    small-tits (1 size down to at most small)
-  //    big-tits (1 size up to at least big size)
-  //    huge-tits (2 sizes up to at least huge size)
-  //    cow-tits (teat nipples)
-  //    milky (add lactation)
-  //    forked-tongue (tongue shape)
-  //
-  // Preference Trigger:
-  //    (preferenceCode)[value]
-  //
-  // Aspect Triggers:
-  //    (aspectCode):(1-5 optional)
-  //
-  // Other Triggers:
-  //    magical: Adds a mana component and starting spells
-  //    virgin: Ensure virginity, lack of sexual experience
-  //    slut: Has had a lot of sexual experience / multiple partners / extra fetish or two
-
   const $nameData = {
     title: {},
     name: {},
@@ -71,11 +17,7 @@ global.Name = (function() {
   // Get a random name from the normal name lists based on the character's gender. (Some species, demonic entities and
   // such, will have unique name lists to pull from.) Futa characters will pull from the feminine list, enby characters
   // will randomly pick one to use. Once we decide which name list to use we enter a while loop, picking names randomly
-  // until we find an appropriate name. (Names might not work if there are conflicting triggers, e.g. if we trigger
-  // horse-cock on a lupin, we try again because we don't want to change from a dog cock.)
-  //
-  // Components should include all the character components that have been built so far.
-  //
+  // until we find unique character name.
   function getRandom(genderCode, speciesCode) {
     let list = $nameData.name.female;
 

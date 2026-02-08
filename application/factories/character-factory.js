@@ -23,6 +23,7 @@ global.CharacterFactory = (function() {
   //   triggers: Detailed in the character-adjuster.
   //
   function build(options) {
+    const attempt = options.attempt || 1;
     const triggers = options.triggers || [];
     const characterId = Registry.createEntity();
     const speciesCode = options.species || Random.fromFrequencyMap(SpeciesFrequency);
@@ -31,8 +32,7 @@ global.CharacterFactory = (function() {
     const biologicalSex = getBiologicalSex(species,genderCode);
 
     const actorData = { gender:genderCode, species:speciesCode };
-    const attributesData = rollAttributes(genderCode, speciesCode);
-    const healthData = rollHealth(attributesData);
+    const attributesData = AttributesFactory.rollAttributes(genderCode, speciesCode);
     const personalityData = rollPersonality(genderCode, speciesCode);
 
     let breastsData;
@@ -77,6 +77,11 @@ global.CharacterFactory = (function() {
     log('AnusData',{ system:'CharacterFactory', data:anusData });
     log('MouthData',{ system:'CharacterFactory', data:mouthData });
 
+    // We can adjust the attributes at this point. Calling this function mutates both the attributes data and the
+    // triggers array. After the attributes are adjusted it's safe to calculate the health.
+    AttributesFactory.adjustAttributes(attributesData, triggers);
+    const healthData = AttributesFactory.rollHealth(attributesData);
+
     // Technically, men also have nipples, but I don't think we ever actually do anything with them. Even a "lick his
     // nipples action" wouldn't need to describe them in any detail.
     if ([Gender.futa, Gender.female].includes(biologicalSex)) {
@@ -94,10 +99,6 @@ global.CharacterFactory = (function() {
       log('CockData',{ system:'CharacterFactory', data:cockData });
     }
 
-    // Sexuality used to set sexual preferences for gynophilic and androphilic. A straight futa is gynophilic, a gay
-    // futa is androphilic (because of butt stuff). Bi is positive in both. Ace is negative in both.
-    const sexuality = options.sexuality || Random.fromFrequencyMap(species.getSexualityRatio());
-
     // TODO: Use the list of triggers to make adjustments to the body, sexual preferences and other components. If we
     //       find that we've generated a body or sexual preferences that's incompatible with the triggers, we can try
     //       return build(options) again to try once again. We should probably add a counter to the options so that we
@@ -105,6 +106,31 @@ global.CharacterFactory = (function() {
     //       for some reason. This would be a pretty major bug though so we'd need to print out all the information we
     //       can to determine why so many characters are incompatible. Because the triggers can come from the options
     //       though this situation can be caused by an input like triggers:['flat-chest','huge-tits']
+
+    try {
+
+      const sexualPreferences = SexualPreferenceFactory.build({
+        biologicalSex: biologicalSex,
+        sexuality:     options.sexuality || Random.fromFrequencyMap(species.getSexualityRatio()),
+      }, triggers);
+
+      const aspects = []; // TODO: Some triggers add aspects.
+      const skills = [];  // TODO: Characters might come with some skills.
+    }
+    catch(error) {
+      console.warn(error);
+      log(error,{ system:'CharacterFactory', type:LogType.warning, buildOptions:options });
+
+      Registry.deleteEntity(characterId);
+
+      if (attempt >= 10) {
+        logError('Cannot create a character using these options.',{ system:'CharacterFactory', buildOptions:options });
+        throw error
+      }
+
+      options.attempt = attempt + 1;
+      return build(options);
+    }
 
     Registry.createActorComponent(characterId, actorData);
     Registry.createAnusComponent(characterId, anusData);
@@ -133,8 +159,8 @@ global.CharacterFactory = (function() {
     const actorComponent = { name:'Greg', gender:genderCode, species:speciesCode };
     const arousalComponent = { arousal:0 }
 
-    const attributesComponent = rollAttributes(genderCode, speciesCode);
-    const healthComponent = rollHealth(attributesComponent);
+    const attributesComponent = AttributesFactory.rollAttributes(genderCode, speciesCode);
+    const healthComponent = AttributesFactory.rollHealth(attributesComponent);
 
     Registry.createActorComponent(playerId, actorComponent);
     Registry.createArousalComponent(playerId, arousalComponent);
@@ -155,37 +181,6 @@ global.CharacterFactory = (function() {
       female: ratios.female,
       futa: ratios.futa,
     });
-  }
-
-  // I don't think we roll attributes in any place other than this character factory. If so we can move this to the
-  // Attributes component or something.
-  function rollAttributes(gender,species) {
-    const diceLevels = { F:1, D:2, C:3, B:4, A:5, S:6, SS:7, SSS:8 }
-    const speciesMap = Species.lookup(species).getAttributes();
-    const attributes = {};
-
-    ['strength','dexterity','vitality','intelligence','beauty'].forEach(code => {
-      let dice = diceLevels[speciesMap[code]];
-
-      if (code === 'strength' && ['male','futa'].includes(gender)) { dice += 1 }
-      if (code === 'beauty' && ['female','futa'].includes(gender)) { dice += 1 }
-
-      attributes[code] = Random.rollDice({ x:dice, d:10 });
-
-      if (attributes[code] < 5) { attributes[code] = 5; }
-    });
-
-    return attributes;
-  }
-
-  // Health is based on the character's vitality and rolled randomly. If we have a mechanism for adding a point
-  // of vitality, it should also roll and add more health points as well. Baseline health is simply (vitality)d10.
-  // Health and current health are the only values currently tracked by the health component.
-  function rollHealth(attributes) {
-    const health = Random.rollDice({ x:attributes.vitality, d:10 });
-    const stamina = Attributes.createWrapper({ data:attributes }).getMaxStamina();
-
-    return { currentStamina:stamina, currentHealth:health, maxHealth:health };
   }
 
   function rollPersonality(gender,species) {

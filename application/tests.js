@@ -7,7 +7,6 @@ global.Tests = (function() {
   const $mochaTestTime = 100;
 
   let $testScrollingPanel;
-  let $testLogScrollingPanel;
   let $running = false;
 
   function load() {
@@ -18,7 +17,6 @@ global.Tests = (function() {
 
       X.onClick('#mocha li.test', () => {
         $testScrollingPanel.resize();
-        $testLogScrollingPanel.resize();
       });
     }
   }
@@ -75,7 +73,6 @@ global.Tests = (function() {
     }
 
     $testScrollingPanel.resize();
-    $testLogScrollingPanel.resize();
   }
 
   return {

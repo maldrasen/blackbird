@@ -21,9 +21,8 @@ describe("CharacterFactory", function() {
     });
 
     it("can make a bunch of random characters quickly without crashing", function() {
-      for(let i=0; i<100; i++) { CharacterFactory.build({}); }
+      for(let i=0; i<100; i++) { CharacterFactory.build({ triggers:[] }); }
     });
-
   });
 
 });
