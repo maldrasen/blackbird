@@ -20,6 +20,11 @@ Species.register('equian', {
     neuroticism:[40,80],       // Herbivores
   },
 
+  sexualPreferences: {
+    'beast-lover':{ chance:90, strength:20 },
+    'orgy-lover':{ chance:50, strength:20 },  // Herd animals fuck with the surrounding herd.
+  },
+
   body: {
     averageHeight: 2000,
     skinType: 'fur',

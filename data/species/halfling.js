@@ -20,6 +20,11 @@ Species.register('halfling', {
     neuroticism:[0,40],         // Easy going and brave.
   },
 
+  sexualPreferences: {
+    'cervix-slut':{ chance:25, strength:20 }, // Because of their relatively shallow pussies, halflings have an unusually sensitive cervix.
+    'perverted':{ chance:25, strength:-20 }, // Halflings are rural traditionalists and don't like anything too unusual or different.
+  },
+
   body: {
     averageHeight: 900,
     mutability: 50,

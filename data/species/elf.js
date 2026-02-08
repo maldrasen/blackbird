@@ -20,6 +20,11 @@ Species.register('elf', {
     neuroticism:[0,50],         // Long lived and emotionally stable.
   },
 
+  sexualPreferences: {
+    'perverted':{ chance:50, strength:-20 }, // Elves are more chaste and reserved.
+    'dominant':{ chance:25, strength:20 }, // Elves are more likely to want to be in charge.
+  },
+
   body: {
     averageHeight: 1650,
     mutability: 50,

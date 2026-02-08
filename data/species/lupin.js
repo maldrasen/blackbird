@@ -21,6 +21,11 @@ Species.register('lupin', {
     neuroticism:[50,90],        // Suspicious of outsiders
   },
 
+  sexualPreferences: {
+    'beast-lover':{ chance:90, strength:20 },
+    'orgy-lover':{ chance:50, strength:20 },  // Pack animals fuck with the pack.
+  },
+
   body: {
     averageHeight: 1875,
     skinType: 'fur',

@@ -20,6 +20,11 @@ Species.register('kobold', {
     neuroticism:[50,100],      // Anxious
   },
 
+  sexualPreferences: {
+    'beast-lover':{ chance:90, strength:20 },
+    'orgy-lover':{ chance:60, strength:30 },  // Kobolds are gangbang enthusiasts.
+  },
+
   body: {
     averageHeight: 800,
     skinType: 'scales',

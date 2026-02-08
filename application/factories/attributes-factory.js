@@ -44,6 +44,7 @@ global.AttributesFactory = (function() {
       if (triggers.includes(triggerName)) {
         const attributeName = positiveAttributeTriggers[triggerName];
         attributesData[attributeName] += Random.rollDice({ x:2, d:10 });
+        log(`Applied ${triggerName}`,{ system:'Attributes Factory', level:3 });
         ArrayHelper.remove(triggers, triggerName);
       }
     });
@@ -57,6 +58,7 @@ global.AttributesFactory = (function() {
           attributesData[attributeName] = 1;
         }
 
+        log(`Applied ${triggerName}`,{ system:'Attributes Factory', level:3 });
         ArrayHelper.remove(triggers, triggerName);
       }
     });

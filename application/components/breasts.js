@@ -31,8 +31,8 @@ global.Breasts = (function() {
     Validate.atLeast('breastCount',breastsComponent.breastCount,2);
     Validate.isIn('breastSize',breastsComponent.breastSize,Object.keys(BreastData.BreastSizes));
     Validate.isIn('breastFirmness',breastsComponent.breastFirmness,Object.keys(BreastData.BreastFirmness));
-    Validate.atLeast('relativeBreastVolume',breastsComponent.relativeBreastVolume,1);
-    Validate.atLeast('absoluteBreastVolume',breastsComponent.absoluteBreastVolume,1);
+    Validate.atLeast('relativeBreastVolume',breastsComponent.relativeBreastVolume,0);
+    Validate.atLeast('absoluteBreastVolume',breastsComponent.absoluteBreastVolume,0);
     Validate.exists('breastShape',breastsComponent.breastShape);
     Validate.isIn('nippleShape',breastsComponent.nippleShape,Object.keys(BreastData.NippleShapes));
     Validate.atLeast('nippleWidth',breastsComponent.nippleWidth,1);

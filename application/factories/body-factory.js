@@ -3,7 +3,7 @@ global.BodyFactory = (function() {
   function build(actor, triggers) {
     const species = Species.lookup(actor.species);
     const bodyData = {
-      height: getRandomHeight(species, actor.gender),
+      height: getRandomHeight(species, actor.gender, triggers),
       skinType: species.getSkinType(),
       eyeShape: species.getEyeShape(),
       eyeColor: Random.from(BodyData.CommonEyeColors),
@@ -40,7 +40,7 @@ global.BodyFactory = (function() {
           log(`Mutation changed ${key}: ${bodyData[key]} becomes ${mutation[key]}`,{ system:'BodyFactory', level:3 });
           bodyData[key] = mutation[key];
         }
-      })
+      });
     }
 
     return bodyData;
@@ -131,8 +131,12 @@ global.BodyFactory = (function() {
     }
   }
 
-  function getRandomHeight(species, gender) {
-    const heightDeviationRatio = species.getHeightDeviationRatio();
+  // 0.9 - 1.1
+  function fuzz() {
+    return 1 + (Random.roll(100)-50)/1000
+  }
+
+  function getRandomHeight(species, gender, triggers) {
     const femaleHeightRatio = species.getFemaleHeightRatio();
     const futaHeightRatio = 1-(1-femaleHeightRatio)/2;
 
@@ -143,7 +147,21 @@ global.BodyFactory = (function() {
 
     // Apply Ratios
     const averageHeight = species.getAverageHeight() * heightRatio;
-    const deviation = averageHeight * heightDeviationRatio;
+    const deviation = averageHeight * species.getHeightDeviationRatio();
+
+    // If this character is short, set height around two standard deviations below average.
+    if (triggers.includes('short')) {
+      log(`Applied Short`,{ system:'BodyFactory', level:3 });
+      ArrayHelper.remove(triggers,'short');
+      return Math.round(averageHeight - (deviation * 2 * fuzz()));
+    }
+
+    // If this character is tall, set height around two standard deviations above average.
+    if (triggers.includes('tall')) {
+      log(`Applied Tall`,{ system:'BodyFactory', level:3 });
+      ArrayHelper.remove(triggers,'tall');
+      return Math.round(averageHeight + (deviation * 2 * fuzz()));
+    }
 
     return Random.normalDistribution(averageHeight, deviation);
   }

@@ -20,6 +20,12 @@ Species.register('sylph', {
     neuroticism:[50,100],     // Small and fragile
   },
 
+  // Sylphs are naturally bratty and are more likely to enjoy degrading experiences as novel and interesting.
+  sexualPreferences: {
+    'humiliation-slut': { chance:25, strength:20  },
+    'affection-slut':   { chance:25, strength:-20 },
+  },
+
   body: {
     averageHeight: 1400,
     mutability: 25,

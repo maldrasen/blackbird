@@ -21,6 +21,7 @@ global.CharacterFactory = (function() {
   //   title: String (for unique characters)
   //   surname: String (for unique characters)
   //   triggers: Detailed in the character-adjuster.
+  //   sexuality: (straight, gay, bi, ace)
   //
   function build(options) {
     const attempt = options.attempt || 1;
@@ -38,6 +39,9 @@ global.CharacterFactory = (function() {
     let breastsData;
     let cockData;
     let pussyData;
+    let sexualPreferences;
+    let aspects;
+    let skills;
 
     if (options.name) { actorData.name = options.name; }
     if (options.title) { actorData.title = options.title; }
@@ -58,12 +62,9 @@ global.CharacterFactory = (function() {
       }
     }
 
-    // Character creation is super complicated, so it's worth it to log the data as we build it.
+    // Log start of character creation.
     log(StringHelper.pack(`Building[${characterId}]: ${actorData.title||''} ${actorData.name} ${actorData.surname||''}
         [${genderCode} ${speciesCode}]`),{ system:'CharacterFactory', level:1 });
-    if (triggers.length > 0) {
-      log('Name Triggers',{ system:'CharacterFactory', level:3, data: { triggers }});
-    }
 
     // The body factory rolls for random mutations and might modify the triggers array. We don't know what parts a
     // character will have at this point. (They don't always come from gender) If we trigger something like big-tits,
@@ -71,11 +72,6 @@ global.CharacterFactory = (function() {
     const bodyData = BodyFactory.build(actorData, triggers);
     const anusData = AnusFactory.build(actorData);
     const mouthData = MouthFactory.build(actorData, bodyData);
-
-    log('BodyData',{ system:'CharacterFactory', data:bodyData });
-    log('Triggers',{ system:'CharacterFactory', data:{ triggers:triggers }});
-    log('AnusData',{ system:'CharacterFactory', data:anusData });
-    log('MouthData',{ system:'CharacterFactory', data:mouthData });
 
     // We can adjust the attributes at this point. Calling this function mutates both the attributes data and the
     // triggers array. After the attributes are adjusted it's safe to calculate the health.
@@ -86,36 +82,31 @@ global.CharacterFactory = (function() {
     // nipples action" wouldn't need to describe them in any detail.
     if ([Gender.futa, Gender.female].includes(biologicalSex)) {
       pussyData = PussyFactory.build(actorData);
-      log('PussyData',{ system:'CharacterFactory', data:pussyData });
-
       if (species.getBody().breasts) {
         breastsData = BreastsFactory.build(actorData);
-        log('BreastData',{ system:'CharacterFactory', data:breastsData });
       }
     }
-
     if ([Gender.futa, Gender.male].includes(biologicalSex)) {
       cockData = CockFactory.build(actorData);
-      log('CockData',{ system:'CharacterFactory', data:cockData });
     }
-
-    // TODO: Use the list of triggers to make adjustments to the body, sexual preferences and other components. If we
-    //       find that we've generated a body or sexual preferences that's incompatible with the triggers, we can try
-    //       return build(options) again to try once again. We should probably add a counter to the options so that we
-    //       only retry a few time and just eventually return an invalid character if we never get a valid character
-    //       for some reason. This would be a pretty major bug though so we'd need to print out all the information we
-    //       can to determine why so many characters are incompatible. Because the triggers can come from the options
-    //       though this situation can be caused by an input like triggers:['flat-chest','huge-tits']
 
     try {
 
-      const sexualPreferences = SexualPreferenceFactory.build({
+      sexualPreferences = SexualPreferenceFactory.build({
+        actor:         actorData,
         biologicalSex: biologicalSex,
         sexuality:     options.sexuality || Random.fromFrequencyMap(species.getSexualityRatio()),
       }, triggers);
 
-      const aspects = []; // TODO: Some triggers add aspects.
-      const skills = [];  // TODO: Characters might come with some skills.
+      aspects = {}; // TODO: Some triggers add aspects.
+      skills = {};  // TODO: Characters might come with some skills.
+
+      // Make Anus Adjustments
+      // Make Breast Adjustments
+      // Make Cock Adjustments
+      // Make Pussy Adjustments
+
+      // TODO: If there are any triggers left in the array throw an error, because it wasn't recognized.
     }
     catch(error) {
       console.warn(error);
@@ -132,6 +123,17 @@ global.CharacterFactory = (function() {
       return build(options);
     }
 
+    log('CharacterData',{ system:'CharacterFactory', data:{
+      attributes: attributesData,
+      body: bodyData,
+      anus: anusData,
+      breasts: breastsData || {},
+      cock: cockData || {},
+      mouth: mouthData,
+      pussy: pussyData,
+      sexualPreferences: sexualPreferences,
+    }});
+
     Registry.createActorComponent(characterId, actorData);
     Registry.createAnusComponent(characterId, anusData);
     Registry.createArousalComponent(characterId, { arousal:0 });
@@ -144,6 +146,10 @@ global.CharacterFactory = (function() {
     if (breastsData) { Registry.createBreastsComponent(characterId, breastsData); }
     if (cockData) { Registry.createCockComponent(characterId, cockData); }
     if (pussyData) { Registry.createPussyComponent(characterId, pussyData); }
+
+    Object.keys(sexualPreferences).forEach(type => {
+      Registry.createSexualPreferenceComponent(characterId, { type:type, value:sexualPreferences[type] });
+    });
 
     return characterId;
   }

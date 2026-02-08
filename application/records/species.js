@@ -24,6 +24,7 @@ global.Species = (function() {
       getSexualityRatio: () => { return species.sexualityRatio; },
       getAttributes: () => { return species.attributes; },
       getPersonalityRanges: () => { return species.personalityRanges; },
+      getSexualPreferences: () => { return species.sexualPreferences; },
       getBody: () => { return species.body },
 
       getAverageHeight: getAverageHeight,
