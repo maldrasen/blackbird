@@ -22,6 +22,14 @@ global.SexualPreferenceFactory = (function() {
 
     const preferences = buildBaselineSexuality(options);
 
+    // Most species (but not humans) have a few species level sexual preferences. Species preferences need to be added
+    // before the slut and virgin triggers in order to properly remove all sexual preferences from virgins.
+    Object.keys(speciesPrefs).forEach(preference => {
+      if (Random.roll(100) < speciesPrefs[preference].chance) {
+        preferences[preference] = (Random.roll(18)-9) + speciesPrefs[preference].strength;
+      }
+    });
+
     // Loop through the triggers looking for strings matching keyword[DD], adding a sexual preference for each and
     // removing the trigger from the array once matched. Strength from triggers will be fuzzed between -9 and 9 points.
     // We make a copy of the array because I don't like modifying arrays that I'm iterating though.
@@ -33,6 +41,12 @@ global.SexualPreferenceFactory = (function() {
         ArrayHelper.remove(triggers,'slut');
       }
 
+      if (trigger === 'virgin') {
+        applyVirgin(preferences);
+        log(`Applied virgin`,{ system:'SexualPreferenceFactory', level:3 });
+        ArrayHelper.remove(triggers,'virgin');
+      }
+
       const match = trigger.match(/([a-zA-Z-]+)\[(-?\d+)]/)
       if (match) {
         try {
@@ -41,13 +55,6 @@ global.SexualPreferenceFactory = (function() {
           ArrayHelper.remove(triggers,trigger);
         }
         catch (error) { throw `Unparsable Trigger: ${trigger}`; }
-      }
-    });
-
-    // Most species (but not humans) have a few species level sexual preferences.
-    Object.keys(speciesPrefs).forEach(preference => {
-      if (Random.roll(100) < speciesPrefs[preference].chance) {
-        preferences[preference] = (Random.roll(18)-9) + speciesPrefs[preference].strength;
       }
     });
 
@@ -91,8 +98,16 @@ global.SexualPreferenceFactory = (function() {
     return preferences;
   }
 
+  // The slut trigger is fairly common. Rather than specifying anything specific it randomly adds 2 - 8 sexual
+  // preferences. More common preferences will be picked more frequently. The function also increases the strength of
+  // the androphile and gynophile preferences when they are already positive.
   function applySlut(preferences, options) {
     let count = Random.between(2,8);
+
+    if (preferences.gynophilic > 0) {
+      preferences.gynophilic += Random.roll(20); }
+    if (preferences.androphilic > 0) {
+      preferences.androphilic += Random.roll(20); }
 
     const sluttyPreferences =  {
       'sensitive': 30,
@@ -106,8 +121,8 @@ global.SexualPreferenceFactory = (function() {
       'beast-lover': 10,
       'submissive': 10,
       'masochistic': 10,
-      'affection-slut': 110,
-      'humiliation-slut': 110,
+      'affection-slut': 10,
+      'humiliation-slut': 10,
       'rope-bunny': 5,
     };
 
@@ -136,14 +151,35 @@ global.SexualPreferenceFactory = (function() {
 
       if (preferences['affection-slut'] > 0 && key === 'humiliation-slut') { continue; }
       if (preferences['humiliation-slut'] > 0 && key === 'affection-slut') { continue; }
-
       if (preferences[key] == null) {
-        log(`   Slut adds ${key}[${strength}]`,{ system:'SexualPreferenceFactory', level:3 });
+        log(`Slut adds ${key}[${strength}]`,{ system:'SexualPreferenceFactory', level:3 });
         preferences[key] = strength;
         count -= 1;
       }
     }
+  }
 
+  // The applyVirgin() function does the opposite of applySlut() by removing what positive sexual preferences it can
+  // and lowering the positive gender sexualities by half.
+  //
+  // TODO: Eventually we might have systems that track other virgin properties, first kiss, hymen intact, all that
+  //       shit. Right now none of that exists, so applyVirgin() is really more of an "applyChaste()" but this will
+  //       need to be updated if we ever do any of that.
+  //
+  function applyVirgin(preferences) {
+    const retained = ['gynophilic','androphilic'];
+
+    if (preferences.gynophilic > 0) {
+      preferences.gynophilic = Math.ceil(preferences.gynophilic/2); }
+    if (preferences.androphilic > 0) {
+      preferences.androphilic = Math.ceil(preferences.androphilic/2); }
+
+    Object.keys(preferences).forEach(key => {
+      if (retained.includes(key) === false && preferences[key] > 0) {
+        log(`Virgin removes ${key}`,{ system:'SexualPreferenceFactory', level:3 });
+        delete preferences[key];
+      }
+    });
   }
 
   return Object.freeze({ build });
