@@ -17,24 +17,9 @@ global.CockFactory = (function() {
     Object.assign(cockData, cockOfSize(sizeData, shapeData, species));
     Object.assign(cockData, ballsOfSize(sizeData, shapeData, species));
 
-    const urethraMin = cockDef.urethraWidthMin || 3;
-    const urethraMax = cockDef.urethraWidthMax || 6;
-    cockData.maxUrethraWidth = Math.max(2, Math.round(Random.between(urethraMin,urethraMax) * species.getLengthRatio()));
-
-    // The knot size is a percentage of cock width, anywhere between 120% - 150%. Knot flare is the additional width
-    // as a percentage of knot width that the knot grows during orgasm. An inch wide cock, with 150% / 150% growth
-    // factors would normally have a 1.5 inch wide knot, then a 2.25 inch wide knot during orgasm. The 'knotting'
-    // action depends on the smaller knot fitting, then the larger knot being too large to remove.
-    if (shapeData.knot) {
-      cockData.knotRatio = 120 + Random.roll(30);
-      cockData.knotFlare = 120 + Random.roll(30);
-    }
-
-    // The percentage of the cock width that the cock head grows to during orgasm, between 150% and 200%. This can lead
-    // to scenes where a two inch wide cock flares out to four inches wide deep inside of someone.
-    if (shapeData.headFlare) {
-      cockData.headFlare = 150 + Random.roll(50);
-    }
+    setUrethraSize(cockData, cockDef, species);
+    applyCockKnot(cockData, shapeData);
+    applyHeadFlare(cockData, shapeData);
 
     return cockData;
   }
@@ -77,6 +62,13 @@ global.CockFactory = (function() {
     }
   }
 
+  function setUrethraSize(cockData, cockDef, species) {
+    const urethraMin = cockDef.urethraWidthMin || 3;
+    const urethraMax = cockDef.urethraWidthMax || 6;
+    cockData.maxUrethraWidth = Math.max(2, Math.round(Random.between(urethraMin,urethraMax) * species.getLengthRatio()));
+  }
+
+  // === Triggers ======================================================================================================
 
   function applyTriggers(cockData, actorData, triggers) {
 
@@ -104,9 +96,11 @@ global.CockFactory = (function() {
         andRemove(trigger)
       }
       if (trigger === 'dog-cock') {
+        if (cockData) { changeCockShape('dog', cockData, actorData); }
         andRemove(trigger)
       }
       if (trigger === 'horse-cock') {
+        if (cockData) { changeCockShape('horse', cockData, actorData); }
         andRemove(trigger)
       }
       if (trigger === 'two-cocks') {
@@ -161,6 +155,41 @@ global.CockFactory = (function() {
     const species = Species.lookup(actorData.species);
 
     cockData.testicleWidth = ballsOfSize(sizeData, shapeData, species).testicleWidth;
+  }
+
+  // Change the shape without changing the size. Also applies knots and flares if they need to exist. However this
+  // function doesn't try to remove already existing features. Some triggers might add cock features without changing
+  // the shape, so we want to maintain those features. Instead, we reject characters with shapes other than normal.
+  function changeCockShape(newShape, cockData, actorData) {
+    if (cockData.shape === newShape) { return }
+    if (cockData.shape !== 'normal') {
+      throw `Character rejected. Can't change ${cockData.shape} cock to ${newShape} cock.`
+    }
+
+    cockData.shape = newShape;
+
+    const shapeData = CockData.CockShapes[cockData.shape];
+    applyCockKnot(cockData, shapeData);
+    applyHeadFlare(cockData, shapeData);
+  }
+
+  // The knot size is a percentage of cock width, anywhere between 120% - 150%. Knot flare is the additional width
+  // as a percentage of knot width that the knot grows during orgasm. An inch wide cock, with 150% / 150% growth
+  // factors would normally have a 1.5 inch wide knot, then a 2.25 inch wide knot during orgasm. The 'knotting'
+  // action depends on the smaller knot fitting, then the larger knot being too large to remove.
+  function applyCockKnot(cockData, shapeData) {
+    if (shapeData.knot) {
+      cockData.knotRatio = 120 + Random.roll(30);
+      cockData.knotFlare = 120 + Random.roll(30);
+    }
+  }
+
+  // The percentage of the cock width that the cock head grows to during orgasm, between 150% and 200%. This can lead
+  // to scenes where a two inch wide cock flares out to four inches wide deep inside of someone.
+  function applyHeadFlare(cockData, shapeData) {
+    if (shapeData.headFlare) {
+      cockData.headFlare = 150 + Random.roll(50);
+    }
   }
 
   return Object.freeze({ build, applyTriggers });
