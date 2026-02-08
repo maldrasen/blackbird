@@ -17,10 +17,12 @@ Adds or removes 2d10 from associated stat
 
 ### Body Triggers:
 - `tall` / `short` (by factor for species)
-- `red-hair` (or fur/scales)
-- `white-hair` (or fur/scales)
-- `pink-hair` (or fur/scales)
-- `purple-hair` (or fur/scales)
+- `(color)-hair` (or fur/scales)
+- `(type)-tail`
+- `(type)-ears`
+- `(type)-eyes`
+- `(color)-eyeColor`
+- `(type)-horn`
 - `dark-skin` (or fur/scales)
 - `light-skin` (or fur/scales)
 - `big-cock` (1 size up to at least big size)

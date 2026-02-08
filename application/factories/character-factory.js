@@ -66,12 +66,11 @@ global.CharacterFactory = (function() {
     log(StringHelper.pack(`Building[${characterId}]: ${actorData.title||''} ${actorData.name} ${actorData.surname||''}
         [${genderCode} ${speciesCode}]`),{ system:'CharacterFactory', level:1 });
 
-    // The body factory rolls for random mutations and might modify the triggers array. We don't know what parts a
-    // character will have at this point. (They don't always come from gender) If we trigger something like big-tits,
-    // and they don't end up having breasts, we can ignore the triggers that don't apply.
     const bodyData = BodyFactory.build(actorData, triggers);
     const anusData = AnusFactory.build(actorData);
     const mouthData = MouthFactory.build(actorData, bodyData);
+
+    TriggerFactory.addRandomTriggers(triggers, species);
 
     // We can adjust the attributes at this point. Calling this function mutates both the attributes data and the
     // triggers array. After the attributes are adjusted it's safe to calculate the health.
