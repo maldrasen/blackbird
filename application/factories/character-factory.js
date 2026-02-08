@@ -25,7 +25,7 @@ global.CharacterFactory = (function() {
   //
   function build(options) {
     const attempt = options.attempt || 1;
-    const triggers = options.triggers || [];
+    const triggers = [...options.triggers||[]]; // Very Important
     const characterId = Registry.createEntity();
     const speciesCode = options.species || Random.fromFrequencyMap(SpeciesFrequency);
     const species = Species.lookup(speciesCode);
@@ -96,6 +96,9 @@ global.CharacterFactory = (function() {
         actor:         actorData,
         biologicalSex: biologicalSex,
         sexuality:     options.sexuality || Random.fromFrequencyMap(species.getSexualityRatio()),
+        cock:          cockData,
+        pussy:         pussyData,
+        breasts:       breastsData,
       }, triggers);
 
       aspects = {}; // TODO: Some triggers add aspects.
@@ -105,8 +108,6 @@ global.CharacterFactory = (function() {
       // Make Breast Adjustments
       // Make Cock Adjustments
       // Make Pussy Adjustments
-
-      // TODO: If there are any triggers left in the array throw an error, because it wasn't recognized.
     }
     catch(error) {
       console.warn(error);
@@ -121,6 +122,11 @@ global.CharacterFactory = (function() {
 
       options.attempt = attempt + 1;
       return build(options);
+    }
+
+    if (triggers.length > 0) {
+      console.warn(`Unresolved Triggers`,triggers)
+      // throw `Error: Unresolved Triggers: ${JSON.stringify(triggers)}`;
     }
 
     log('CharacterData',{ system:'CharacterFactory', data:{
