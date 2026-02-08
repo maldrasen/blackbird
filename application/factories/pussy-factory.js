@@ -46,6 +46,11 @@ global.PussyFactory = (function() {
     return pussyData;
   }
 
-  return Object.freeze({ build });
+  function applyTriggers(pussyData, triggers) {
+    [...triggers].forEach(trigger => {
+    });
+  }
+
+  return Object.freeze({ build, applyTriggers });
 
 })();

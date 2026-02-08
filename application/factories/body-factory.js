@@ -70,6 +70,12 @@ global.BodyFactory = (function() {
   }
 
   function applyTriggers(bodyData, triggers) {
+
+    function andRemove(trigger) {
+      log(`Applied ${trigger}`,{ system:'BodyFactory', level:3 });
+      ArrayHelper.remove(triggers, trigger);
+    }
+
     [...triggers].forEach(trigger => {
 
       // These triggers include the value that the body property should be set to.
@@ -83,20 +89,17 @@ global.BodyFactory = (function() {
           case 'hair':     bodyData.hairColor = match[1]; break;
           case 'horn':     bodyData.hornShape = match[1]; break;
         }
-        log(`Applied ${trigger}`,{ system:'BodyFactory', level:3 });
-        ArrayHelper.remove(triggers,trigger);
+        andRemove(trigger);
       }
 
       if (trigger === 'dark-skin') {
         bodyData.skinColor = Random.from(BodyData.DarkHumanSkinTones);
-        log(`Applied ${trigger}`,{ system:'BodyFactory', level:3 });
-        ArrayHelper.remove(triggers,trigger);
+        andRemove(trigger);
       }
 
       if (trigger === 'light-skin') {
         bodyData.skinColor = Random.from(BodyData.LightHumanSkinTones);
-        log(`Applied ${trigger}`,{ system:'BodyFactory', level:3 });
-        ArrayHelper.remove(triggers,trigger);
+        andRemove(trigger);
       }
     });
   }

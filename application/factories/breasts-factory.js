@@ -54,6 +54,11 @@ global.BreastsFactory = (function() {
     return Math.round(relativeVolume * species.getVolumeRatio());
   }
 
-  return Object.freeze({ build });
+  function applyTriggers(breastData, triggers) {
+    [...triggers].forEach(trigger => {
+    });
+  }
+
+  return Object.freeze({ build, applyTriggers });
 
 })();
