@@ -2,9 +2,12 @@ global.CockFactory = (function() {
 
   function build(actor) {
     const species = Species.lookup(actor.species);
+    const cockDef = species.getBody().cock;
+
     const cockData = {
       placement: 'normal',
-      shape: species.getBody().cock.shape || 'normal',
+      shape: cockDef.shape || 'normal',
+      minUrethraWidth: 0,
     };
 
     const size = Random.fromFrequencyMap(species.getBody().cock.size);
@@ -25,6 +28,10 @@ global.CockFactory = (function() {
     cockData.length = Math.max(24,Math.round(lengthRatio * baseLength));
     cockData.width = Math.round(lengthRatio * baseWidth * widthVariation);
     cockData.cumVolume = Math.round(sizeData.cumVolume * species.getBody().cock.cumMultiplier * cumVariation);
+
+    const urethraMin = cockDef.urethraWidthMin || 3;
+    const urethraMax = cockDef.urethraWidthMax || 6;
+    cockData.maxUrethraWidth = Math.max(2, Math.round(Random.between(urethraMin,urethraMax) * species.getLengthRatio()));
 
     // Once we have all the basic lengths, widths, and volumes calculated we make shape specific adjustments, adding
     // shape specific features like knots and flares, or not including some features that aren't applicable.

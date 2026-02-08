@@ -1,6 +1,18 @@
 global.Body = (function() {
-  const $properties = ['height','skinType','scaleColor','skinColor','hairColor','eyeColor','eyeShape','earShape',
-    'tailShape','hornShape','bodySmell','description'];
+  const $properties = [
+    'height',
+    'skinType',
+    'scaleColor',
+    'skinColor',
+    'hairColor',
+    'eyeColor',
+    'eyeShape',
+    'earShape',
+    'tailShape',
+    'hornShape',
+    'bodySmell',
+    'description'
+  ];
 
   function properties() { return $properties; }
 

@@ -55,7 +55,11 @@ Species.register('lupin', {
       }
     },
 
-    pussy: { shape:'dog' },
+    pussy: {
+      shape:'dog',
+      pussyWidth: 80,
+      pussyWidthDev: 8,
+    },
   },
 
 });

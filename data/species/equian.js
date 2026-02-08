@@ -57,7 +57,17 @@ Species.register('equian', {
       },
     },
 
-    pussy:{ shape:'horse' },
+    pussy:{
+      shape:'horse',
+      pussyWidth: 90,
+      pussyWidthDev: 8,
+      urethraWidthMin: 8,
+      urethraWidthMax: 12,
+      clitLength: 48,
+      clitLengthDev: 8,
+      clitWidth: 42,
+      clitWidthDev: 5,
+    },
     anus:{ shape:'horse' },
   },
 

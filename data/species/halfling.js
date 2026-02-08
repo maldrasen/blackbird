@@ -43,6 +43,10 @@ Species.register('halfling', {
         huge:    20,
       },
     },
+    pussy: {
+      pussyWidth: 90,
+      pussyWidthDev: 7,
+    }
   },
 
 });

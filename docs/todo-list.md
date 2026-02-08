@@ -25,6 +25,11 @@ default this could be a single point a day, but a comfortable environment will r
 bad environment (enforced bondage rules) would drop sanity every day. If sanity drops to 0 overnight, we could enqueue
 a mindbreak event where the player finds the character in a broken state.
 
+### Arousal Adjustments for Min and Max Orifice Width
+High arousal levels should increase resting max width, maybe by 30% or so. This would need to read the arousal from 
+the arousal component and the width from the orifice, to calculate the working max width. Arousal should also increase
+min width size, replicating an opening aroused pussy.
+
 ---
 
 # Long Term Plans

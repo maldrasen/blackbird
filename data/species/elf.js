@@ -43,6 +43,13 @@ Species.register('elf', {
         big:     20,
       },
     },
+
+    // Elves have very large inner labia.
+    pussy: {
+      labiaLength: 60,
+      labiaLengthDev: 20,
+    },
+
   },
 
 });

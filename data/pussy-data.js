@@ -10,6 +10,8 @@ global.PussyData = {
     painful:      { min:91,  max:96  },
     agonizing:    { min:96,  max:100 },
     destructive:  { min:0,           }, // > (maxWidth)
-  }
+  },
+
+  PussyShapes: ['normal','dog','dragon','horse'],
 
 };

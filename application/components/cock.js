@@ -1,6 +1,20 @@
 global.Cock = (function() {
-  const $properties = [_parentId,'placement','shape','length','width','flaccidLength','knotRatio','knotFlare',
-    'headFlare','testicleWidth','cumVolume','description'];
+  const $properties = [
+    _parentId,
+    'placement',
+    'shape',
+    'length',
+    'width',
+    'minUrethraWidth',
+    'maxUrethraWidth',
+    'flaccidLength',
+    'knotRatio',
+    'knotFlare',
+    'headFlare',
+    'testicleWidth',
+    'cumVolume',
+    'description'
+  ];
 
   function properties() { return $properties; }
 

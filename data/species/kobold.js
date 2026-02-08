@@ -51,7 +51,11 @@ Species.register('kobold', {
       }
     },
 
-    pussy:{ shape:'dragon' }
+    pussy:{
+      shape:'dragon',
+      pussyWidth: 90,
+      pussyWidthDev: 7,
+    }
   },
 
 });
