@@ -12,8 +12,8 @@ Adds or removes 2d10 from associated stat
 - `ugly` / `beautiful`
 
 ### Personality Triggers
-- `calm`
-- `kind`
+- `calm` (reduces neuroticism)
+- `kind` (increases agreeableness)
 
 ### Body Triggers:
 - `tall` / `short` (by factor for species)

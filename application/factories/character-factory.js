@@ -33,7 +33,7 @@ global.CharacterFactory = (function() {
 
     const actorData = { gender:genderCode, species:speciesCode };
     const attributesData = AttributesFactory.rollAttributes(genderCode, speciesCode);
-    const personalityData = rollPersonality(genderCode, speciesCode);
+    const personalityData = PersonalityFactory.rollPersonality(genderCode, speciesCode);
 
     // It's very important for triggers to be a clone here. The character factory might add incompatible triggers that
     // cause the character to be rejected. If we change the original triggers array, when a character is rejected we
@@ -117,6 +117,7 @@ global.CharacterFactory = (function() {
       BreastsFactory.applyTriggers(breastsData, actorData, triggers);
       CockFactory.applyTriggers(cockData, actorData, triggers);
       PussyFactory.applyTriggers(pussyData, triggers);
+      PersonalityFactory.applyTriggers(personalityData, triggers);
     }
     catch(error) {
       console.warn(error);
@@ -140,6 +141,7 @@ global.CharacterFactory = (function() {
 
     log('CharacterData',{ system:'CharacterFactory', data:{
       attributes: attributesData,
+      personality: personalityData,
       body: bodyData,
       anus: anusData,
       breasts: breastsData || {},
@@ -147,6 +149,7 @@ global.CharacterFactory = (function() {
       mouth: mouthData,
       pussy: pussyData,
       sexualPreferences: sexualPreferences,
+      aspects: aspectData,
     }});
 
     Registry.createActorComponent(characterId, actorData);
@@ -157,6 +160,7 @@ global.CharacterFactory = (function() {
     Registry.createHealthComponent(characterId, healthData);
     Registry.createMouthComponent(characterId, mouthData);
     Registry.createPersonalityComponent(characterId, personalityData);
+    Registry.createSkillsComponent(characterId, skillsData);
 
     if (breastsData) { Registry.createBreastsComponent(characterId, breastsData); }
     if (cockData) { Registry.createCockComponent(characterId, cockData); }
@@ -208,17 +212,6 @@ global.CharacterFactory = (function() {
     });
   }
 
-  function rollPersonality(gender,species) {
-    const ranges = Species.lookup(species).getPersonalityRanges();
-    const personality = { sanity:100 };
-
-    Object.keys(ranges).forEach(key => {
-      personality[key] = Random.between(ranges[key][0],ranges[key][1]);
-    });
-
-    return personality;
-  }
-
   function buildAspectData(triggers) {
     const aspectData = {};
 
@@ -243,7 +236,7 @@ global.CharacterFactory = (function() {
       skillsData[skillCode] = 0;
     });
 
-    return skillsData
+    return skillsData;
   }
 
   return Object.freeze({

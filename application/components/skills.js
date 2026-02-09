@@ -9,9 +9,9 @@ global.Skills = (function() {
   function addSkill(code) { $properties.push(code); }
 
   function validate(id) {
-    const skillComponent = Registry.lookupSkillComponent(id)
+    const skillsComponent = Registry.lookupSkillsComponent(id)
 
-    Object.keys(skillComponent).forEach(key => {
+    Object.keys(skillsComponent).forEach(key => {
       if ($properties.includes(key) === false) {
         throw `Skill component does not have a ${key} property.`
       }
@@ -19,7 +19,7 @@ global.Skills = (function() {
 
     // The skills components has a property for each skill, with the associated skill points.
     $properties.forEach(code => {
-      Validate.between(code,skillComponent[code],0,100);
+      Validate.between(code,skillsComponent[code],0,100);
     });
   }
 
