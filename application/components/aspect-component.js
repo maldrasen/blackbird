@@ -1,20 +1,22 @@
-global.AspectComponent = (function() {
-  const $properties = [_parentId,'code','level'];
+global.AspectsComponent = (function() {
+  const $properties = Object.keys(AspectType);
 
   function getProperties() { return $properties; }
 
   function validate(id) {
-    const aspectComponent = Registry.lookupAspectComponent(id)
+    const aspectsComponent = Registry.lookupAspectsComponent(id)
 
-    Object.keys(aspectComponent).forEach(key => {
+    Object.keys(aspectsComponent).forEach(key => {
       if ($properties.includes(key) === false) {
         throw `Aspect component does not have a ${key} property.`
       }
     });
 
-    Validate.exists(_parentId,aspectComponent._parentId)
-    // Validate.isIn('code',aspectComponent.code,[]) // TODO: list of aspects
-    Validate.atLeast('level',aspectComponent.level,1);
+    Object.keys(AspectType).forEach(aspectCode => {
+      if (aspectsComponent[aspectCode] != null) {
+        Validate.between(aspectCode, aspectsComponent[aspectCode], 1, 5);
+      }
+    });
   }
 
   return Object.freeze({

@@ -45,7 +45,7 @@ global.CharacterFactory = (function() {
     let cockData;
     let pussyData;
     let sexualPreferences;
-    let aspectData;
+    let aspectsData;
     let skillsData;
 
     if (options.name) { actorData.name = options.name; }
@@ -108,7 +108,7 @@ global.CharacterFactory = (function() {
         breasts:       breastsData,
       }, triggers);
 
-      aspectData = buildAspectData(triggers);
+      aspectsData = buildAspectsData(triggers);
       skillsData = buildSkillsData(triggers);
 
       BodyFactory.applyTriggers(bodyData, triggers);
@@ -150,7 +150,7 @@ global.CharacterFactory = (function() {
       mouth: mouthData,
       pussy: pussyData,
       sexualPreferences: sexualPreferences,
-      aspects: aspectData,
+      aspects: aspectsData,
     }});
 
     Registry.createActorComponent(characterId, actorData);
@@ -162,6 +162,7 @@ global.CharacterFactory = (function() {
     Registry.createMouthComponent(characterId, mouthData);
     Registry.createPersonalityComponent(characterId, personalityData);
     Registry.createSkillsComponent(characterId, skillsData);
+    Registry.createAspectsComponent(characterId, aspectsData);
 
     if (breastsData) { Registry.createBreastsComponent(characterId, breastsData); }
     if (cockData) { Registry.createCockComponent(characterId, cockData); }
@@ -169,10 +170,6 @@ global.CharacterFactory = (function() {
 
     Object.keys(sexualPreferences).forEach(type => {
       Registry.createSexualPreferenceComponent(characterId, { type:type, value:sexualPreferences[type] });
-    });
-
-    Object.keys(aspectData).forEach(aspectCode => {
-      Registry.createAspectComponent(characterId, { code:aspectCode, level:aspectData[aspectCode] });
     });
 
     return characterId;
@@ -213,19 +210,19 @@ global.CharacterFactory = (function() {
     });
   }
 
-  function buildAspectData(triggers) {
-    const aspectData = {};
+  function buildAspectsData(triggers) {
+    const aspectsData = {};
 
     [...triggers].forEach(trigger => {
       const match = trigger.match(/(.+):(\d)/);
       if (match) {
-        aspectData[match[1]] = parseInt(match[2]);
+        aspectsData[match[1]] = parseInt(match[2]);
         log(`Applied ${trigger}`,{ system:'CharacterFactory', level:3 });
         ArrayHelper.remove(triggers, trigger);
       }
     });
 
-    return aspectData;
+    return aspectsData;
   }
 
   // TODO: Triggers that add skills. At the moment all characters start with all skills at 0. The skills component

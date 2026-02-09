@@ -80,7 +80,7 @@ global.ComponentType = Object.freeze({
   actor: 'ActorComponent',
   anus: 'AnusComponent',
   arousal: 'ArousalComponent',
-  aspect: 'AspectComponent',
+  aspects: 'AspectsComponent',
   attributes: 'AttributesComponent',
   body: 'BodyComponent',
   breasts: 'BreastsComponent',

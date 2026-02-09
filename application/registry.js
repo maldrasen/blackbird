@@ -87,11 +87,9 @@ global.Registry = (function() {
     Registry.createComponent(id,ComponentType.arousal,data);
     ArousalComponent.validate(id);
   }
-  function createAspectComponent(id,data) {
-    const entity = Registry.createEntity();
-    Registry.createComponent(entity, ComponentType.aspect, { _parentId:id, ...data});
-    AspectComponent.validate(entity);
-    return entity;
+  function createAspectsComponent(id,data) {
+    Registry.createComponent(id, ComponentType.aspects, data);
+    AspectsComponent.validate(id);
   }
   function createAttributesComponent(id,data) {
     Registry.createComponent(id,ComponentType.attributes,data);
@@ -177,7 +175,7 @@ global.Registry = (function() {
   function lookupActorComponent(id)            { return Registry.lookupComponent(id,ComponentType.actor); }
   function lookupAnusComponent(id)             { return Registry.lookupComponent(id,ComponentType.anus); }
   function lookupArousalComponent(id)          { return Registry.lookupComponent(id,ComponentType.arousal); }
-  function lookupAspectComponent(id)           { return Registry.lookupComponent(id,ComponentType.aspect); }
+  function lookupAspectsComponent(id)          { return Registry.lookupComponent(id,ComponentType.aspects); }
   function lookupAttributesComponent(id)       { return Registry.lookupComponent(id,ComponentType.attributes); }
   function lookupBodyComponent(id)             { return Registry.lookupComponent(id,ComponentType.body); }
   function lookupBreastsComponent(id)          { return Registry.lookupComponent(id,ComponentType.breasts); }
@@ -208,9 +206,9 @@ global.Registry = (function() {
     updateComponent(id,ComponentType.arousal,data);
     ArousalComponent.validate(id);
   }
-  function updateAspectComponent(id,data) {
-    updateComponent(id,ComponentType.aspect,data);
-    AspectComponent.validate(id);
+  function updateAspectsComponent(id,data) {
+    updateComponent(id,ComponentType.aspects,data);
+    AspectsComponent.validate(id);
   }
   function updateAttributesComponent(id,data) {
     updateComponent(id,ComponentType.attributes,data);
@@ -284,7 +282,7 @@ global.Registry = (function() {
   function deleteActorComponent(id)            { Registry.deleteComponent(id,ComponentType.actor); }
   function deleteAnusComponent(id)             { Registry.deleteComponent(id,ComponentType.anus); }
   function deleteArousalComponent(id)          { Registry.deleteComponent(id,ComponentType.arousal); }
-  function deleteAspectComponent(id)           { Registry.deleteComponent(id,ComponentType.aspect); }
+  function deleteAspectsComponent(id)          { Registry.deleteComponent(id,ComponentType.aspects); }
   function deleteAttributesComponent(id)       { Registry.deleteComponent(id,ComponentType.attributes); }
   function deleteBodyComponent(id)             { Registry.deleteComponent(id,ComponentType.body); }
   function deleteBreastsComponent(id)          { Registry.deleteComponent(id,ComponentType.breasts); }
@@ -380,7 +378,7 @@ global.Registry = (function() {
     createActorComponent,
     createAnusComponent,
     createArousalComponent,
-    createAspectComponent,
+    createAspectsComponent,
     createAttributesComponent,
     createBodyComponent,
     createBreastsComponent,
@@ -403,7 +401,7 @@ global.Registry = (function() {
     lookupActorComponent,
     lookupAnusComponent,
     lookupArousalComponent,
-    lookupAspectComponent,
+    lookupAspectsComponent,
     lookupAttributesComponent,
     lookupBodyComponent,
     lookupBreastsComponent,
@@ -426,7 +424,7 @@ global.Registry = (function() {
     updateActorComponent,
     updateAnusComponent,
     updateArousalComponent,
-    updateAspectComponent,
+    updateAspectsComponent,
     updateAttributesComponent,
     updateBodyComponent,
     updateBreastsComponent,
@@ -449,7 +447,7 @@ global.Registry = (function() {
     deleteActorComponent,
     deleteAnusComponent,
     deleteArousalComponent,
-    deleteAspectComponent,
+    deleteAspectsComponent,
     deleteAttributesComponent,
     deleteBodyComponent,
     deleteBreastsComponent,

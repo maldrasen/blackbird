@@ -40,16 +40,16 @@ describe('Registry', function() {
       const actor = Registry.createEntity();
 
       Registry.createActorComponent(actor,{ name:'Angela', surname:'White', gender:'female', species:'elf' });
-      Registry.createAspectComponent(actor,{ code:'noble', level:1 });
-      Registry.createAspectComponent(actor,{ code:'slave', level:2 });
+      Registry.createAnusComponent(actor,{ placement:'normal', shape:'normal', minWidth:0, maxWidth:100, prolapseLength:500 });
+      Registry.createAnusComponent(actor,{ placement:'mouth', shape:'normal', minWidth:0, maxWidth:100, prolapseLength:1000 });
 
       expect(Registry.compileEntityData(actor).children.length).to.equal(2);
-      expect(Registry.findEntitiesWithComponents([ComponentType.aspect]).length).to.equal(2);
+      expect(Registry.findEntitiesWithComponents([ComponentType.anus]).length).to.equal(2);
 
       Registry.deleteEntity(actor)
 
       expect(Registry.lookupActorComponent(actor)).to.be.undefined
-      expect(Registry.findEntitiesWithComponents([ComponentType.aspect]).length).to.equal(0);
+      expect(Registry.findEntitiesWithComponents([ComponentType.anus]).length).to.equal(0);
     });
   });
 

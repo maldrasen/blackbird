@@ -6,7 +6,7 @@ global.Fixtures = (function() {
     const player = CharacterFactory.buildPlayer();
     const characters = []
 
-    for (let i=0; i<50; i++) {
+    for (let i=0; i<10; i++) {
       characters.push(CharacterFactory.build({ triggers:[] }));
     }
 
