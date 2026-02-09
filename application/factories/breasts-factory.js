@@ -98,7 +98,8 @@ global.BreastsFactory = (function() {
   }
 
   // This function will change the nipple shape to teat. Then set nipple length to 2.0 - 4.5 in long (around 3" though)
-  // Then we either add a little to nipple width, or between 0.5 - 0.75 inches wide, whatever's thicker.
+  // Then we either add a little to nipple width, or between 0.5 - 0.75 inches wide, whatever's thicker. If increasing
+  // the nipple width makes the nipple wider than the areola we need to make it bigger as well.
   function changeNipplesToTeats(breastData, actorData) {
     const species = Species.lookup(actorData.species);
     const ratio = species.getLengthRatio();
@@ -106,6 +107,10 @@ global.BreastsFactory = (function() {
     breastData.nippleShape = 'teat';
     breastData.nippleLength = Math.round(ratio * Random.normalDistribution(80,12));
     breastData.nippleWidth = Math.round(ratio * Math.max(breastData.nippleWidth+Random.roll(6)+4,12+Random.roll(8)));
+
+    if (breastData.nippleWidth > breastData.areolaWidth) {
+      breastData.areolaWidth = breastData.nippleWidth + 2 + Random.roll(10)
+    }
   }
 
   function changeBreastSize(size, breastData, actorData) {
