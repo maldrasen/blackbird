@@ -100,12 +100,12 @@ global.CharacterFactory = (function() {
         breasts:       breastsData,
       }, triggers);
 
-      aspects = {}; // TODO: Some triggers add aspects.
-      skills = {};  // TODO: Characters might come with some skills.
+      aspects = {}; // TODO: Some triggers add aspects. "productive:3"
+      skills = {};  // TODO: Characters might come with some skills. "servicing:42"
 
       BodyFactory.applyTriggers(bodyData, triggers);
       // Make Anus Adjustments
-      // BreastsFactory.applyTriggers(breastsData, actorData, triggers);
+      BreastsFactory.applyTriggers(breastsData, actorData, triggers);
       CockFactory.applyTriggers(cockData, actorData, triggers);
       PussyFactory.applyTriggers(pussyData, triggers);
     }

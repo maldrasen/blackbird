@@ -54,9 +54,66 @@ global.BreastsFactory = (function() {
     return Math.round(relativeVolume * species.getVolumeRatio());
   }
 
-  function applyTriggers(breastData, triggers) {
+  // === Triggers ======================================================================================================
+
+  function applyTriggers(breastData, actorData, triggers) {
+
+    function andRemove(trigger) {
+      log(`Applied ${trigger}`,{ system:'BreastFactory', level:3 });
+      ArrayHelper.remove(triggers, trigger);
+    }
+
     [...triggers].forEach(trigger => {
+
+      if (trigger === 'flat-chest') {
+        if (breastData) { changeBreastSize('zero', breastData, actorData); }
+        andRemove(trigger);
+      }
+
+      if (trigger === 'small-tits') {
+        if (breastData) { changeBreastSize('small', breastData, actorData); }
+        andRemove(trigger);
+      }
+
+      if (trigger === 'big-tits') {
+        if (breastData) { changeBreastSize('big', breastData, actorData); }
+        andRemove(trigger);
+      }
+
+      if (trigger === 'huge-tits') {
+        if (breastData) { changeBreastSize('huge', breastData, actorData); }
+        andRemove(trigger);
+      }
+
+      if (trigger === 'cow-tits') {
+        if (breastData) { changeNipplesToTeats(breastData, actorData); }
+        andRemove(trigger);
+      }
+
+      if (trigger === 'milky') {
+        if (breastData) { breastData.lactationFactor = 90 + Random.roll(11); }
+        andRemove(trigger);
+      }
     });
+  }
+
+  // This function will change the nipple shape to teat. Then set nipple length to 2.0 - 4.5 in long (around 3" though)
+  // Then we either add a little to nipple width, or between 0.5 - 0.75 inches wide, whatever's thicker.
+  function changeNipplesToTeats(breastData, actorData) {
+    const species = Species.lookup(actorData.species);
+    const ratio = species.getLengthRatio();
+
+    breastData.nippleShape = 'teat';
+    breastData.nippleLength = Math.round(ratio * Random.normalDistribution(80,12));
+    breastData.nippleWidth = Math.round(ratio * Math.max(breastData.nippleWidth+Random.roll(6)+4,12+Random.roll(8)));
+  }
+
+  function changeBreastSize(size, breastData, actorData) {
+    breastData.breastSize = size;
+
+    Object.apply(breastData, buildBreasts(
+      Species.lookup(actorData.species),
+      size, breastData.breastFirmness));
   }
 
   return Object.freeze({ build, applyTriggers });
