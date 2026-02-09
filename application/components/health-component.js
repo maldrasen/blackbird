@@ -1,4 +1,4 @@
-global.Health = (function() {
+global.HealthComponent = (function() {
   const $properties = ['currentStamina','currentHealth','maxHealth'];
 
   function getProperties() { return $properties; }

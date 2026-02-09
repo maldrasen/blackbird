@@ -1,4 +1,4 @@
-global.Scales = (function() {
+global.ScalesComponent = (function() {
 
   const $properties = [
     // Animus Levels (physical sensitivity and pleasure)

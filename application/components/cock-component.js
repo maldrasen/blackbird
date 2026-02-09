@@ -1,4 +1,4 @@
-global.Cock = (function() {
+global.CockComponent = (function() {
   const $properties = [
     _parentId,
     'placement',

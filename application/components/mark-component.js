@@ -1,4 +1,4 @@
-global.Mark = (function() {
+global.MarkComponent = (function() {
   const $properties = ['type','memory'];
 
   function getProperties() { return $properties; }

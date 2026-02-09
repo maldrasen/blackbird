@@ -1,4 +1,4 @@
-global.Mana = (function() {
+global.ManaComponent = (function() {
   const $properties = ['red_mana','yellow_mana','green_mana','blue_mana','black_mana'];
 
   function getProperties() { return $properties; }

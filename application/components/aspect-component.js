@@ -1,4 +1,4 @@
-global.Aspect = (function() {
+global.AspectComponent = (function() {
   const $properties = [_parentId,'code','level'];
 
   function getProperties() { return $properties; }

@@ -1,4 +1,4 @@
-global.Actor = (function() {
+global.ActorComponent = (function() {
   const $properties = ['title','name','surname','gender','species'];
 
   function getProperties() { return $properties; }

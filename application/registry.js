@@ -75,103 +75,103 @@ global.Registry = (function() {
 
   function createActorComponent(id,data) {
     Registry.createComponent(id,ComponentType.actor,data);
-    Actor.validate(id);
+    ActorComponent.validate(id);
   }
   function createAnusComponent(id,data) {
     const entity = Registry.createEntity();
     Registry.createComponent(entity, ComponentType.anus, { _parentId:id, ...data});
-    Anus.validate(entity);
+    AnusComponent.validate(entity);
     return entity;
   }
   function createArousalComponent(id,data) {
     Registry.createComponent(id,ComponentType.arousal,data);
-    Arousal.validate(id);
+    ArousalComponent.validate(id);
   }
   function createAspectComponent(id,data) {
     const entity = Registry.createEntity();
     Registry.createComponent(entity, ComponentType.aspect, { _parentId:id, ...data});
-    Aspect.validate(entity);
+    AspectComponent.validate(entity);
     return entity;
   }
   function createAttributesComponent(id,data) {
     Registry.createComponent(id,ComponentType.attributes,data);
-    Attributes.validate(id);
+    AttributesComponent.validate(id);
   }
   function createBodyComponent(id,data) {
     Registry.createComponent(id,ComponentType.body,data);
-    Body.validate(id);
+    BodyComponent.validate(id);
   }
   function createBreastsComponent(id,data) {
     Registry.createComponent(id,ComponentType.breasts,data);
-    Breasts.validate(id);
+    BreastsComponent.validate(id);
   }
   function createCockComponent(id,data) {
     const entity = Registry.createEntity();
     Registry.createComponent(entity, ComponentType.cock, { _parentId:id, ...data});
-    Cock.validate(entity);
+    CockComponent.validate(entity);
     return entity;
   }
   function createControlledComponent(id,data) {
     Registry.createComponent(id,ComponentType.controlled,data);
-    Controlled.validate(id);
+    ControlledComponent.validate(id);
   }
   function createFeelingsComponent(id,data) {
     const entity = Registry.createEntity();
     Registry.createComponent(entity, ComponentType.feelings, { _parentId:id, ...data});
-    Feelings.validate(entity);
+    FeelingsComponent.validate(entity);
     return entity;
   }
   function createHealthComponent(id,data) {
     Registry.createComponent(id,ComponentType.health,data);
-    Health.validate(id);
+    HealthComponent.validate(id);
   }
   function createManaComponent(id,data) {
     Registry.createComponent(id,ComponentType.mana,data);
-    Mana.validate(id);
+    ManaComponent.validate(id);
   }
   function createMarkComponent(id,data) {
     Registry.createComponent(id,ComponentType.mark,data);
-    Mark.validate(id);
+    MarkComponent.validate(id);
   }
   function createMemoryComponent(id,data) {
     const entity = Registry.createEntity();
     Registry.createComponent(entity, ComponentType.memory, { _parentId:id, ...data});
-    Memory.validate(entity);
+    MemoryComponent.validate(entity);
     return entity;
   }
   function createMouthComponent(id,data) {
     const entity = Registry.createEntity();
     Registry.createComponent(entity, ComponentType.mouth, { _parentId:id, ...data});
-    Mouth.validate(entity);
+    MouthComponent.validate(entity);
     return entity;
   }
   function createPersonalityComponent(id,data) {
     Registry.createComponent(id,ComponentType.personality,data);
-    Personality.validate(id);
+    PersonalityComponent.validate(id);
   }
   function createPussyComponent(id,data) {
     const entity = Registry.createEntity();
     Registry.createComponent(entity, ComponentType.pussy, { _parentId:id, ...data});
-    Pussy.validate(entity);
+    PussyComponent.validate(entity);
     return entity;
   }
   function createScalesComponent(id,data) {
     Registry.createComponent(id, ComponentType.scales,data);
-    Scales.validate(id);
+    ScalesComponent.validate(id);
   }
   function createSexualPreferenceComponent(id,data) {
     const entity = Registry.createEntity();
     Registry.createComponent(entity, ComponentType.sexualPreference, { _parentId:id, ...data});
-    SexualPreference.validate(entity);
+    SexualPreferenceComponent.validate(entity);
     return entity;
   }
   function createSituatedComponent(id,data) {
     Registry.createComponent(id,ComponentType.situated,data);
-    Situated.validate(id);
+    SituatedComponent.validate(id);
   }
   function createSkillsComponent(id,data) {
     Registry.createComponent(id, ComponentType.skills, data);
-    Skills.validate(id);
+    SkillsComponent.validate(id);
   }
 
   function lookupActorComponent(id)            { return Registry.lookupComponent(id,ComponentType.actor); }
@@ -198,87 +198,87 @@ global.Registry = (function() {
 
   function updateActorComponent(id,data) {
     updateComponent(id,ComponentType.actor,data);
-    Actor.validate(id);
+    ActorComponent.validate(id);
   }
   function updateAnusComponent(id,data) {
     updateComponent(id,ComponentType.anus,data);
-    Anus.validate(id);
+    AnusComponent.validate(id);
   }
   function updateArousalComponent(id,data) {
     updateComponent(id,ComponentType.arousal,data);
-    Arousal.validate(id);
+    ArousalComponent.validate(id);
   }
   function updateAspectComponent(id,data) {
     updateComponent(id,ComponentType.aspect,data);
-    Aspect.validate(id);
+    AspectComponent.validate(id);
   }
   function updateAttributesComponent(id,data) {
     updateComponent(id,ComponentType.attributes,data);
-    Attributes.validate(id);
+    AttributesComponent.validate(id);
   }
   function updateBodyComponent(id,data) {
     updateComponent(id,ComponentType.body,data);
-    Body.validate(id);
+    BodyComponent.validate(id);
   }
   function updateBreastsComponent(id,data) {
     updateComponent(id,ComponentType.breasts,data);
-    Breasts.validate(id);
+    BreastsComponent.validate(id);
   }
   function updateCockComponent(id,data) {
     updateComponent(id,ComponentType.cock,data);
-    Cock.validate(id);
+    CockComponent.validate(id);
   }
   function updateControlledComponent(id,data) {
     updateComponent(id,ComponentType.controlled,data);
-    Controlled.validate(id);
+    ControlledComponent.validate(id);
   }
   function updateFeelingsComponent(id,data) {
     updateComponent(id,ComponentType.feelings,data);
-    Feelings.validate(id);
+    FeelingsComponent.validate(id);
   }
   function updateHealthComponent(id,data) {
     updateComponent(id,ComponentType.health,data);
-    Health.validate(id);
+    HealthComponent.validate(id);
   }
   function updateManaComponent(id,data) {
     updateComponent(id,ComponentType.mana,data);
-    Mana.validate(id);
+    ManaComponent.validate(id);
   }
   function updateMarkComponent(id,data) {
     updateComponent(id,ComponentType.mark,data);
-    Mark.validate(id);
+    MarkComponent.validate(id);
   }
   function updateMemoryComponent(id,data) {
     updateComponent(id,ComponentType.memory,data);
-    Memory.validate(id);
+    MemoryComponent.validate(id);
   }
   function updateMouthComponent(id,data) {
     updateComponent(id,ComponentType.mouth,data);
-    Mouth.validate(id);
+    MouthComponent.validate(id);
   }
   function updatePersonalityComponent(id,data) {
     updateComponent(id,ComponentType.memory,data);
-    Memory.validate(id);
+    MemoryComponent.validate(id);
   }
   function updatePussyComponent(id,data) {
     updateComponent(id,ComponentType.pussy,data);
-    Pussy.validate(id);
+    PussyComponent.validate(id);
   }
   function updateScalesComponent(id,data) {
     updateComponent(id,ComponentType.scales,data);
-    Scales.validate(id);
+    ScalesComponent.validate(id);
   }
   function updateSexualPreferenceComponent(id,data) {
     updateComponent(id,ComponentType.memory,data);
-    Memory.validate(id);
+    MemoryComponent.validate(id);
   }
   function updateSituatedComponent(id,data) {
     updateComponent(id,ComponentType.situated,data);
-    Situated.validate(id);
+    SituatedComponent.validate(id);
   }
   function updateSkillsComponent(id,data) {
     updateComponent(id,ComponentType.skills,data);
-    Skills.validate(id);
+    SkillsComponent.validate(id);
   }
 
   function deleteActorComponent(id)            { Registry.deleteComponent(id,ComponentType.actor); }
@@ -298,10 +298,10 @@ global.Registry = (function() {
   function deleteMouthComponent(id)            { Registry.deleteComponent(id,ComponentType.mouth); }
   function deletePersonalityComponent(id)      { Registry.deleteComponent(id,ComponentType.personality); }
   function deletePussyComponent(id)            { Registry.deleteComponent(id,ComponentType.pussy); }
-  function deleteScalesComponent(id)            { Registry.deleteComponent(id,ComponentType.scales); }
+  function deleteScalesComponent(id)           { Registry.deleteComponent(id,ComponentType.scales); }
   function deleteSexualPreferenceComponent(id) { Registry.deleteComponent(id,ComponentType.sexualPreference); }
   function deleteSituatedComponent(id)         { Registry.deleteComponent(id,ComponentType.situated); }
-  function deleteSkillsComponent(id)            { Registry.deleteComponent(id,ComponentType.skills); }
+  function deleteSkillsComponent(id)           { Registry.deleteComponent(id,ComponentType.skills); }
 
   // === Inspect =======================================================================================================
 

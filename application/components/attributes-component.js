@@ -1,4 +1,4 @@
-global.Attributes = (function() {
+global.AttributesComponent = (function() {
   const $properties = Object.keys(Attrib);
 
   function getProperties() { return $properties; }

@@ -3,7 +3,7 @@
 //       have nipple cunts, which I do plan on. I think the driving factor is that unless there is a scat play element,
 //       e.g. shitting nipples, then there's no reason to have a strangely placed anus  
 
-global.Anus = (function() {
+global.AnusComponent = (function() {
   const $properties = [_parentId,'placement','shape','minWidth','maxWidth','prolapseLength'];
 
   function getProperties() { return $properties; }

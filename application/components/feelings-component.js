@@ -1,4 +1,4 @@
-global.Feelings = (function() {
+global.FeelingsComponent = (function() {
   const $properties = [_parentId, 'target', 'affection', 'fear', 'respect'];
 
   function getProperties() { return $properties; }

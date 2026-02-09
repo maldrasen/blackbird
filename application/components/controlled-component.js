@@ -1,4 +1,4 @@
-global.Controlled = (function() {
+global.ControlledComponent = (function() {
   const $properties = ['control'];
 
   function getProperties() { return $properties; }

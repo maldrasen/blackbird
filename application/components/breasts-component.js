@@ -1,4 +1,4 @@
-global.Breasts = (function() {
+global.BreastsComponent = (function() {
   const $properties = [
     'breastCount',
     'breastSize',

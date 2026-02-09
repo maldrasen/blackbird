@@ -5,7 +5,7 @@ describe("CharacterFactory", function() {
     it("makes a completely random character when no options are given", function() {
       const id = CharacterFactory.build({});
 
-      const attributes = Attributes.createWrapper({ id });
+      const attributes = AttributesComponent.createWrapper({ id });
       expect(attributes.getStrength()).to.be.within(1,100);
       expect(attributes.getDexterity()).to.be.within(1,100);
       expect(attributes.getVitality()).to.be.within(1,100);

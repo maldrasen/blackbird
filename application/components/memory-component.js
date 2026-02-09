@@ -1,4 +1,4 @@
-global.Memory = (function() {
+global.MemoryComponent = (function() {
   const $properties = [_parentId,'time','type','details'];
 
   function getProperties() { return $properties; }

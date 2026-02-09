@@ -233,7 +233,7 @@ global.CharacterFactory = (function() {
   function buildSkillsData(triggers) {
     const skillsData = {};
 
-    Skills.getProperties().forEach(skillCode => {
+    SkillsComponent.getProperties().forEach(skillCode => {
       skillsData[skillCode] = 0;
     });
 

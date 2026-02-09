@@ -1,4 +1,4 @@
-global.Pussy = (function() {
+global.PussyComponent = (function() {
   const $properties = [
     _parentId,
     'placement',

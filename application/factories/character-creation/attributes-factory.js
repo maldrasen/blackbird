@@ -40,7 +40,7 @@ global.AttributesFactory = (function() {
   // Health and current health are the only values currently tracked by the health component.
   function rollHealth(attributes) {
     const health = Random.rollDice({ x:attributes.vitality, d:10 });
-    const stamina = Attributes.createWrapper({ data:attributes }).getMaxStamina();
+    const stamina = AttributesComponent.createWrapper({ data:attributes }).getMaxStamina();
 
     return { currentStamina:stamina, currentHealth:health, maxHealth:health };
   }

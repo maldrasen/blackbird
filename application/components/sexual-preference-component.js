@@ -1,4 +1,4 @@
-global.SexualPreference = (function() {
+global.SexualPreferenceComponent = (function() {
   const $properties = [_parentId,'type','value'];
 
   function getProperties() { return $properties; }

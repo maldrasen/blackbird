@@ -4,7 +4,7 @@ global.Skill = (function() {
   // The skill register() function also needs to add the skill code as a property of the Skills component.
   function register(code,data) {
     $skills[code] = data;
-    Skills.addSkill(code);
+    SkillsComponent.addSkill(code);
   }
 
   function getAllCodes() {

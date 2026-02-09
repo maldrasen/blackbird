@@ -23,7 +23,7 @@ global.MouthFactory = (function() {
       mouthData.tongueLength = Math.round(Random.normalDistribution(mouthDef.tongueLength,mouthDef.tongueLengthDev));
     }
 
-    const throatDepth = Body.createWrapper({ data:body }).getThroatDepth();
+    const throatDepth = BodyComponent.createWrapper({ data:body }).getThroatDepth();
     const gagReflex = Math.min(100,Math.max(0,mouthDef.gagReflex ?
         Random.normalDistribution(mouthDef.gagReflex,mouthDef.gagReflexDev) :
         Random.normalDistribution(60,10)

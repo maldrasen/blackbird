@@ -1,4 +1,4 @@
-global.Mouth = (function() {
+global.MouthComponent = (function() {
   const $properties = [_parentId,'placement','maxMouthWidth','maxThroatWidth','comfortableThroatDepth','tongueLength',
     'tongueShape'];
 

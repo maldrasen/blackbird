@@ -1,4 +1,4 @@
-global.Situated = (function() {
+global.SituatedComponent = (function() {
   const $properties = ['currentLocation'];
 
   function getProperties() { return $properties; }

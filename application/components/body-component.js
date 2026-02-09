@@ -1,4 +1,4 @@
-global.Body = (function() {
+global.BodyComponent = (function() {
   const $properties = [
     'height',
     'skinType',

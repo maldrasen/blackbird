@@ -1,4 +1,4 @@
-global.Arousal = (function() {
+global.ArousalComponent = (function() {
   const $properties = ['arousal','pleasure','edging','refectory'];
 
   function getProperties() { return $properties; }

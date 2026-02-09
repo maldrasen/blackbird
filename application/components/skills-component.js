@@ -1,4 +1,4 @@
-global.Skills = (function() {
+global.SkillsComponent = (function() {
   const $properties = [];
 
   function getProperties() { return $properties; }
