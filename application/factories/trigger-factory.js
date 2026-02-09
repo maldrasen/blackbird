@@ -60,8 +60,8 @@ global.TriggerFactory = (function() {
     return triggers;
   }
 
-  function uncommonEyeColor(triggers) { return [`${Random.from(BodyData.UncommonEyeColors)}-eyeColor`]; }
-  function uncommonHairColor(triggers) { return [`${Random.from(BodyData.UncommonHairColors)}-hair`]; }
+  function uncommonEyeColor(triggers) { triggers.push(`${Random.from(BodyData.UncommonEyeColors)}-eyeColor`); }
+  function uncommonHairColor(triggers) { triggers.push(`${Random.from(BodyData.UncommonHairColors)}-hair`); }
 
   return Object.freeze({
     addRandomTriggers,
