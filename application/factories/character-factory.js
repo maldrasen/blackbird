@@ -45,8 +45,8 @@ global.CharacterFactory = (function() {
     let cockData;
     let pussyData;
     let sexualPreferences;
-    let aspects;
-    let skills;
+    let aspectData;
+    let skillsData;
 
     if (options.name) { actorData.name = options.name; }
     if (options.title) { actorData.title = options.title; }
@@ -108,8 +108,8 @@ global.CharacterFactory = (function() {
         breasts:       breastsData,
       }, triggers);
 
-      aspects = {}; // TODO: Some triggers add aspects. "productive:3"
-      skills = {};  // TODO: Characters might come with some skills. "servicing:42"
+      aspectData = buildAspectData(triggers);
+      skillsData = buildSkillsData(triggers);
 
       BodyFactory.applyTriggers(bodyData, triggers);
       AnusFactory.applyTriggers(anusData, triggers);
@@ -166,6 +166,10 @@ global.CharacterFactory = (function() {
       Registry.createSexualPreferenceComponent(characterId, { type:type, value:sexualPreferences[type] });
     });
 
+    Object.keys(aspectData).forEach(aspectCode => {
+      Registry.createAspectComponent(characterId, { code:aspectCode, level:aspectData[aspectCode] });
+    });
+
     return characterId;
   }
 
@@ -213,6 +217,33 @@ global.CharacterFactory = (function() {
     });
 
     return personality;
+  }
+
+  function buildAspectData(triggers) {
+    const aspectData = {};
+
+    [...triggers].forEach(trigger => {
+      const match = trigger.match(/(.+):(\d)/);
+      if (match) {
+        aspectData[match[1]] = parseInt(match[2]);
+        log(`Applied ${trigger}`,{ system:'CharacterFactory', level:3 });
+        ArrayHelper.remove(triggers, trigger);
+      }
+    });
+
+    return aspectData;
+  }
+
+  // TODO: Triggers that add skills. At the moment all characters start with all skills at 0. The skills component
+  //       needs to have all the skill properties set though.
+  function buildSkillsData(triggers) {
+    const skillsData = {};
+
+    Skills.getProperties().forEach(skillCode => {
+      skillsData[skillCode] = 0;
+    });
+
+    return skillsData
   }
 
   return Object.freeze({

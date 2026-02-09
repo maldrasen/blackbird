@@ -117,6 +117,13 @@ global.NameRestriction = Object.freeze({
   hasSkin: 'has-skin',
 });
 
+global.AspectType = Object.freeze({
+  flexible: 'Flexible',
+  productive: 'Productive',
+  noble: 'Noble',
+  slave: 'Slave',
+});
+
 // === Bodies ===
 
 
