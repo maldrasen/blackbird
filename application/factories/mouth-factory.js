@@ -37,6 +37,27 @@ global.MouthFactory = (function() {
     return mouthData;
   }
 
-  return Object.freeze({ build });
+  // === Triggers ======================================================================================================
+
+  // Seems overkill for one trigger, but it follows the same pattern
+  // as the others, and it will be easy to add more if necessary.
+  function applyTriggers(mouthData, triggers) {
+
+    function andRemove(trigger) {
+      log(`Applied ${trigger}`,{ system:'MouthFactory', level:3 });
+      ArrayHelper.remove(triggers, trigger);
+    }
+
+    [...triggers].forEach(trigger => {
+
+      if (trigger === 'forked-tongue') {
+        mouthData.tongueShape = 'forked';
+        andRemove(trigger);
+      }
+
+    });
+  }
+
+  return Object.freeze({ build, applyTriggers });
 
 })();

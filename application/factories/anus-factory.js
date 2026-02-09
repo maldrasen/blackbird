@@ -15,6 +15,29 @@ global.AnusFactory = (function() {
     };
   }
 
-  return Object.freeze({ build });
+  // === Triggers ======================================================================================================
+
+  // Seems overkill for one trigger, but it follows the same pattern
+  // as the others, and it will be easy to add more if necessary.
+  function applyTriggers(anusData, triggers) {
+
+    function andRemove(trigger) {
+      log(`Applied ${trigger}`,{ system:'AnusFactory', level:3 });
+      ArrayHelper.remove(triggers, trigger);
+    }
+
+    [...triggers].forEach(trigger => {
+
+      // Change shape to horse and increase the size by 120% - 150%.
+      if (trigger === 'horse-anus') {
+        anusData.shape = 'horse';
+        anusData.maxWidth = Math.round(anusData.maxWidth * (1.2 + Random.roll(30)/100));
+        andRemove(trigger);
+      }
+
+    });
+  }
+
+  return Object.freeze({ build, applyTriggers });
 
 })();

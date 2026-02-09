@@ -51,6 +51,7 @@ global.AttributesFactory = (function() {
   //    healthy / sickly
   //    smart / stupid
   //    beautiful / ugly
+
   function adjustAttributes(attributesData, triggers) {
     Object.keys(positiveAttributeTriggers).forEach(triggerName => {
       if (triggers.includes(triggerName)) {

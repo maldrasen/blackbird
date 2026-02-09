@@ -7,7 +7,7 @@ global.ArrayHelper = {
   },
 
   remove(array, element) {
-    let index = array.indexOf(element);
+    const index = array.indexOf(element);
     (index >= 0) ? array.splice(index, 1) : array;
   },
 

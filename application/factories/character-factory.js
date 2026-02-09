@@ -25,7 +25,6 @@ global.CharacterFactory = (function() {
   //
   function build(options) {
     const attempt = options.attempt || 1;
-    const triggers = [...options.triggers||[]]; // Very Important
     const characterId = Registry.createEntity();
     const speciesCode = options.species || Random.fromFrequencyMap(SpeciesFrequency);
     const species = Species.lookup(speciesCode);
@@ -35,6 +34,12 @@ global.CharacterFactory = (function() {
     const actorData = { gender:genderCode, species:speciesCode };
     const attributesData = AttributesFactory.rollAttributes(genderCode, speciesCode);
     const personalityData = rollPersonality(genderCode, speciesCode);
+
+    // It's very important for triggers to be a clone here. The character factory might add incompatible triggers that
+    // cause the character to be rejected. If we change the original triggers array, when a character is rejected we
+    // must call build() with the original options again, otherwise this will just try to make a character with the
+    // same incompatible triggers.
+    let triggers = [...options.triggers||[]];
 
     let breastsData;
     let cockData;
@@ -61,6 +66,9 @@ global.CharacterFactory = (function() {
         triggers.push(...(nameData.surname.triggers||[]))
       }
     }
+
+    // Make triggers unique.
+    triggers = [...new Set(triggers)]
 
     // Log start of character creation.
     log(StringHelper.pack(`Building[${characterId}]: ${actorData.title||''} ${actorData.name} ${actorData.surname||''}
@@ -104,7 +112,8 @@ global.CharacterFactory = (function() {
       skills = {};  // TODO: Characters might come with some skills. "servicing:42"
 
       BodyFactory.applyTriggers(bodyData, triggers);
-      // Make Anus Adjustments
+      AnusFactory.applyTriggers(anusData, triggers);
+      MouthFactory.applyTriggers(mouthData, triggers);
       BreastsFactory.applyTriggers(breastsData, actorData, triggers);
       CockFactory.applyTriggers(cockData, actorData, triggers);
       PussyFactory.applyTriggers(pussyData, triggers);
