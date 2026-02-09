@@ -46,9 +46,41 @@ global.PussyFactory = (function() {
     return pussyData;
   }
 
+  // === Apply Triggers ================================================================================================
+
   function applyTriggers(pussyData, triggers) {
+
+    function andRemove(trigger) {
+      log(`Applied ${trigger}`,{ system:'PussyFactory', level:3 });
+      ArrayHelper.remove(triggers, trigger);
+    }
+
     [...triggers].forEach(trigger => {
+
+      if (trigger === 'dog-pussy') {
+        if (pussyData) { changeShapeTo('dog', pussyData) }
+        andRemove(trigger);
+      }
+
+      if (trigger === 'horse-pussy') {
+        if (pussyData) { changeShapeTo('horse', pussyData) }
+        andRemove(trigger);
+      }
+
     });
+  }
+
+  function changeShapeTo(newShape, pussyData) {
+    pussyData.shape = newShape;
+
+    if (newShape === 'horse') {
+      delete pussyData.innerLabiaLength;
+    }
+    if (newShape === 'dog') {
+      delete pussyData.innerLabiaLength;
+      delete pussyData.clitWidth;
+      delete pussyData.clitLength;
+    }
   }
 
   return Object.freeze({ build, applyTriggers });

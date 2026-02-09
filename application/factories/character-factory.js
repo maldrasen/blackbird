@@ -105,9 +105,9 @@ global.CharacterFactory = (function() {
 
       BodyFactory.applyTriggers(bodyData, triggers);
       // Make Anus Adjustments
-      // Make Breast Adjustments
+      // BreastsFactory.applyTriggers(breastsData, actorData, triggers);
       CockFactory.applyTriggers(cockData, actorData, triggers);
-      // Make Pussy Adjustments
+      PussyFactory.applyTriggers(pussyData, triggers);
     }
     catch(error) {
       console.warn(error);
