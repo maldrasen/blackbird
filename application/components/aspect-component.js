@@ -1,18 +1,17 @@
 global.AspectsComponent = (function() {
-  const $properties = Object.keys(AspectType);
 
-  function getProperties() { return $properties; }
+  function getProperties() { return Object.keys(AspectType); }
 
   function validate(id) {
     const aspectsComponent = Registry.lookupAspectsComponent(id)
 
     Object.keys(aspectsComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (getProperties().includes(key) === false) {
         throw `Aspect component does not have a ${key} property.`
       }
     });
 
-    Object.keys(AspectType).forEach(aspectCode => {
+    getProperties().forEach(aspectCode => {
       if (aspectsComponent[aspectCode] != null) {
         Validate.between(aspectCode, aspectsComponent[aspectCode], 1, 5);
       }

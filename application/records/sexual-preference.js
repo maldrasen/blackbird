@@ -1,4 +1,4 @@
-global.SexualPreferenceRecord = (function() {
+global.SexualPreference = (function() {
   const $sexualPreferences = {};
 
   function register(code,data) {

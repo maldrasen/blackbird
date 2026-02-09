@@ -157,11 +157,9 @@ global.Registry = (function() {
     Registry.createComponent(id, ComponentType.scales,data);
     ScalesComponent.validate(id);
   }
-  function createSexualPreferenceComponent(id,data) {
-    const entity = Registry.createEntity();
-    Registry.createComponent(entity, ComponentType.sexualPreference, { _parentId:id, ...data});
-    SexualPreferenceComponent.validate(entity);
-    return entity;
+  function createSexualPreferencesComponent(id,data) {
+    Registry.createComponent(id, ComponentType.sexualPreferences, data);
+    SexualPreferencesComponent.validate(id);
   }
   function createSituatedComponent(id,data) {
     Registry.createComponent(id,ComponentType.situated,data);
@@ -172,26 +170,26 @@ global.Registry = (function() {
     SkillsComponent.validate(id);
   }
 
-  function lookupActorComponent(id)            { return Registry.lookupComponent(id,ComponentType.actor); }
-  function lookupAnusComponent(id)             { return Registry.lookupComponent(id,ComponentType.anus); }
-  function lookupArousalComponent(id)          { return Registry.lookupComponent(id,ComponentType.arousal); }
-  function lookupAspectsComponent(id)          { return Registry.lookupComponent(id,ComponentType.aspects); }
-  function lookupAttributesComponent(id)       { return Registry.lookupComponent(id,ComponentType.attributes); }
-  function lookupBodyComponent(id)             { return Registry.lookupComponent(id,ComponentType.body); }
-  function lookupBreastsComponent(id)          { return Registry.lookupComponent(id,ComponentType.breasts); }
-  function lookupCockComponent(id)             { return Registry.lookupComponent(id,ComponentType.cock); }
-  function lookupControlledComponent(id)       { return Registry.lookupComponent(id,ComponentType.controlled); }
-  function lookupFeelingsComponent(id)         { return Registry.lookupComponent(id,ComponentType.feelings); }
-  function lookupHealthComponent(id)           { return Registry.lookupComponent(id,ComponentType.health); }
-  function lookupManaComponent(id)             { return Registry.lookupComponent(id,ComponentType.mana); }
-  function lookupMarkComponent(id)             { return Registry.lookupComponent(id,ComponentType.mark); }
-  function lookupMemoryComponent(id)           { return Registry.lookupComponent(id,ComponentType.memory); }
-  function lookupMouthComponent(id)            { return Registry.lookupComponent(id,ComponentType.mouth); }
-  function lookupPersonalityComponent(id)      { return Registry.lookupComponent(id,ComponentType.personality); }
-  function lookupPussyComponent(id)            { return Registry.lookupComponent(id,ComponentType.pussy); }
-  function lookupScalesComponent(id)           { return Registry.lookupComponent(id,ComponentType.scales); }
-  function lookupSexualPreferenceComponent(id) { return Registry.lookupComponent(id,ComponentType.sexualPreference); }
-  function lookupSituatedComponent(id)         { return Registry.lookupComponent(id,ComponentType.situated); }
+  function lookupActorComponent(id)             { return Registry.lookupComponent(id,ComponentType.actor); }
+  function lookupAnusComponent(id)              { return Registry.lookupComponent(id,ComponentType.anus); }
+  function lookupArousalComponent(id)           { return Registry.lookupComponent(id,ComponentType.arousal); }
+  function lookupAspectsComponent(id)           { return Registry.lookupComponent(id,ComponentType.aspects); }
+  function lookupAttributesComponent(id)        { return Registry.lookupComponent(id,ComponentType.attributes); }
+  function lookupBodyComponent(id)              { return Registry.lookupComponent(id,ComponentType.body); }
+  function lookupBreastsComponent(id)           { return Registry.lookupComponent(id,ComponentType.breasts); }
+  function lookupCockComponent(id)              { return Registry.lookupComponent(id,ComponentType.cock); }
+  function lookupControlledComponent(id)        { return Registry.lookupComponent(id,ComponentType.controlled); }
+  function lookupFeelingsComponent(id)          { return Registry.lookupComponent(id,ComponentType.feelings); }
+  function lookupHealthComponent(id)            { return Registry.lookupComponent(id,ComponentType.health); }
+  function lookupManaComponent(id)              { return Registry.lookupComponent(id,ComponentType.mana); }
+  function lookupMarkComponent(id)              { return Registry.lookupComponent(id,ComponentType.mark); }
+  function lookupMemoryComponent(id)            { return Registry.lookupComponent(id,ComponentType.memory); }
+  function lookupMouthComponent(id)             { return Registry.lookupComponent(id,ComponentType.mouth); }
+  function lookupPersonalityComponent(id)       { return Registry.lookupComponent(id,ComponentType.personality); }
+  function lookupPussyComponent(id)             { return Registry.lookupComponent(id,ComponentType.pussy); }
+  function lookupScalesComponent(id)            { return Registry.lookupComponent(id,ComponentType.scales); }
+  function lookupSexualPreferencesComponent(id) { return Registry.lookupComponent(id,ComponentType.sexualPreferences); }
+  function lookupSituatedComponent(id)          { return Registry.lookupComponent(id,ComponentType.situated); }
   function lookupSkillsComponent(id)            { return Registry.lookupComponent(id,ComponentType.skills); }
 
   function updateActorComponent(id,data) {
@@ -266,9 +264,9 @@ global.Registry = (function() {
     updateComponent(id,ComponentType.scales,data);
     ScalesComponent.validate(id);
   }
-  function updateSexualPreferenceComponent(id,data) {
-    updateComponent(id,ComponentType.memory,data);
-    MemoryComponent.validate(id);
+  function updateSexualPreferencesComponent(id,data) {
+    updateComponent(id,ComponentType.sexualPreferences,data);
+    SexualPreferencesComponent.validate(id);
   }
   function updateSituatedComponent(id,data) {
     updateComponent(id,ComponentType.situated,data);
@@ -279,27 +277,27 @@ global.Registry = (function() {
     SkillsComponent.validate(id);
   }
 
-  function deleteActorComponent(id)            { Registry.deleteComponent(id,ComponentType.actor); }
-  function deleteAnusComponent(id)             { Registry.deleteComponent(id,ComponentType.anus); }
-  function deleteArousalComponent(id)          { Registry.deleteComponent(id,ComponentType.arousal); }
-  function deleteAspectsComponent(id)          { Registry.deleteComponent(id,ComponentType.aspects); }
-  function deleteAttributesComponent(id)       { Registry.deleteComponent(id,ComponentType.attributes); }
-  function deleteBodyComponent(id)             { Registry.deleteComponent(id,ComponentType.body); }
-  function deleteBreastsComponent(id)          { Registry.deleteComponent(id,ComponentType.breasts); }
-  function deleteCockComponent(id)             { Registry.deleteComponent(id,ComponentType.cock); }
-  function deleteControlledComponent(id)       { Registry.deleteComponent(id,ComponentType.controlled); }
-  function deleteFeelingsComponent(id)         { Registry.deleteComponent(id,ComponentType.feelings); }
-  function deleteHealthComponent(id)           { Registry.deleteComponent(id,ComponentType.health); }
-  function deleteManaComponent(id)             { Registry.deleteComponent(id,ComponentType.mana); }
-  function deleteMarkComponent(id)             { Registry.deleteComponent(id,ComponentType.mark); }
-  function deleteMemoryComponent(id)           { Registry.deleteComponent(id,ComponentType.memory); }
-  function deleteMouthComponent(id)            { Registry.deleteComponent(id,ComponentType.mouth); }
-  function deletePersonalityComponent(id)      { Registry.deleteComponent(id,ComponentType.personality); }
-  function deletePussyComponent(id)            { Registry.deleteComponent(id,ComponentType.pussy); }
-  function deleteScalesComponent(id)           { Registry.deleteComponent(id,ComponentType.scales); }
-  function deleteSexualPreferenceComponent(id) { Registry.deleteComponent(id,ComponentType.sexualPreference); }
-  function deleteSituatedComponent(id)         { Registry.deleteComponent(id,ComponentType.situated); }
-  function deleteSkillsComponent(id)           { Registry.deleteComponent(id,ComponentType.skills); }
+  function deleteActorComponent(id)             { Registry.deleteComponent(id,ComponentType.actor); }
+  function deleteAnusComponent(id)              { Registry.deleteComponent(id,ComponentType.anus); }
+  function deleteArousalComponent(id)           { Registry.deleteComponent(id,ComponentType.arousal); }
+  function deleteAspectsComponent(id)           { Registry.deleteComponent(id,ComponentType.aspects); }
+  function deleteAttributesComponent(id)        { Registry.deleteComponent(id,ComponentType.attributes); }
+  function deleteBodyComponent(id)              { Registry.deleteComponent(id,ComponentType.body); }
+  function deleteBreastsComponent(id)           { Registry.deleteComponent(id,ComponentType.breasts); }
+  function deleteCockComponent(id)              { Registry.deleteComponent(id,ComponentType.cock); }
+  function deleteControlledComponent(id)        { Registry.deleteComponent(id,ComponentType.controlled); }
+  function deleteFeelingsComponent(id)          { Registry.deleteComponent(id,ComponentType.feelings); }
+  function deleteHealthComponent(id)            { Registry.deleteComponent(id,ComponentType.health); }
+  function deleteManaComponent(id)              { Registry.deleteComponent(id,ComponentType.mana); }
+  function deleteMarkComponent(id)              { Registry.deleteComponent(id,ComponentType.mark); }
+  function deleteMemoryComponent(id)            { Registry.deleteComponent(id,ComponentType.memory); }
+  function deleteMouthComponent(id)             { Registry.deleteComponent(id,ComponentType.mouth); }
+  function deletePersonalityComponent(id)       { Registry.deleteComponent(id,ComponentType.personality); }
+  function deletePussyComponent(id)             { Registry.deleteComponent(id,ComponentType.pussy); }
+  function deleteScalesComponent(id)            { Registry.deleteComponent(id,ComponentType.scales); }
+  function deleteSexualPreferencesComponent(id) { Registry.deleteComponent(id,ComponentType.sexualPreferences); }
+  function deleteSituatedComponent(id)          { Registry.deleteComponent(id,ComponentType.situated); }
+  function deleteSkillsComponent(id)            { Registry.deleteComponent(id,ComponentType.skills); }
 
   // === Inspect =======================================================================================================
 
@@ -393,7 +391,7 @@ global.Registry = (function() {
     createPersonalityComponent,
     createPussyComponent,
     createScalesComponent,
-    createSexualPreferenceComponent,
+    createSexualPreferencesComponent,
     createSituatedComponent,
     createSkillsComponent,
 
@@ -416,7 +414,7 @@ global.Registry = (function() {
     lookupPersonalityComponent,
     lookupPussyComponent,
     lookupScalesComponent,
-    lookupSexualPreferenceComponent,
+    lookupSexualPreferencesComponent,
     lookupSituatedComponent,
     lookupSkillsComponent,
 
@@ -439,7 +437,7 @@ global.Registry = (function() {
     updatePersonalityComponent,
     updatePussyComponent,
     updateScalesComponent,
-    updateSexualPreferenceComponent,
+    updateSexualPreferencesComponent,
     updateSituatedComponent,
     updateSkillsComponent,
 
@@ -462,7 +460,7 @@ global.Registry = (function() {
     deletePersonalityComponent,
     deletePussyComponent,
     deleteScalesComponent,
-    deleteSexualPreferenceComponent,
+    deleteSexualPreferencesComponent,
     deleteSituatedComponent,
     deleteSkillsComponent,
 

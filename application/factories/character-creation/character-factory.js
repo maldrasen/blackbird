@@ -162,15 +162,12 @@ global.CharacterFactory = (function() {
     Registry.createMouthComponent(characterId, mouthData);
     Registry.createPersonalityComponent(characterId, personalityData);
     Registry.createSkillsComponent(characterId, skillsData);
+    Registry.createSexualPreferencesComponent(characterId, sexualPreferences);
     Registry.createAspectsComponent(characterId, aspectsData);
 
     if (breastsData) { Registry.createBreastsComponent(characterId, breastsData); }
     if (cockData) { Registry.createCockComponent(characterId, cockData); }
     if (pussyData) { Registry.createPussyComponent(characterId, pussyData); }
-
-    Object.keys(sexualPreferences).forEach(type => {
-      Registry.createSexualPreferenceComponent(characterId, { type:type, value:sexualPreferences[type] });
-    });
 
     return characterId;
   }
