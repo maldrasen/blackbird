@@ -7,7 +7,7 @@ global.Fixtures = (function() {
     const characters = []
 
     for (let i=0; i<50; i++) {
-      characters.push(CharacterFactory.build({ triggers:[] }));
+      characters.push(CharacterFactory.build({ triggers:['huge-tits'] }));
     }
 
     characters.forEach(id => {
