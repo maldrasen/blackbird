@@ -5,6 +5,7 @@ global.CockFactory = (function() {
     const cockDef = species.getBody().cock;
 
     const cockData = {
+      count: 1,
       placement: 'normal',
       shape: cockDef.shape || 'normal',
       minUrethraWidth: 0,
@@ -70,6 +71,8 @@ global.CockFactory = (function() {
 
   // === Triggers ======================================================================================================
 
+  // This is ugly, but even if the character doesn't have a cock (and the trigger is ignored) we still need to remove
+  // that trigger, and only that trigger.
   function applyTriggers(cockData, actorData, triggers) {
 
     function andRemove(trigger) {
@@ -78,7 +81,6 @@ global.CockFactory = (function() {
     }
 
     [...triggers].forEach(trigger => {
-
       if (trigger === 'big-cock') {
         if (cockData) { makeCockBig(cockData, actorData); }
         andRemove(trigger);
@@ -89,25 +91,27 @@ global.CockFactory = (function() {
       }
       if (trigger === 'big-balls') {
         if (cockData && cockData.testicleWidth) { makeBallsBig(cockData, actorData); }
-        andRemove(trigger)
+        andRemove(trigger);
       }
       if (trigger === 'huge-balls') {
         if (cockData && cockData.testicleWidth) { makeBallsHuge(cockData, actorData); }
-        andRemove(trigger)
+        andRemove(trigger);
       }
       if (trigger === 'dog-cock') {
         if (cockData) { changeCockShape('dog', cockData, actorData); }
-        andRemove(trigger)
+        andRemove(trigger);
       }
       if (trigger === 'horse-cock') {
         if (cockData) { changeCockShape('horse', cockData, actorData); }
-        andRemove(trigger)
+        andRemove(trigger);
       }
       if (trigger === 'two-cocks') {
-        andRemove(trigger)
+        if (cockData) { cockData.count = 2; }
+        andRemove(trigger);
       }
       if (trigger === 'three-cocks') {
-        andRemove(trigger)
+        if (cockData) { cockData.count = 3; }
+        andRemove(trigger);
       }
     });
   }

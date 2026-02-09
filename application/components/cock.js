@@ -2,6 +2,7 @@ global.Cock = (function() {
   const $properties = [
     _parentId,
     'placement',
+    'count',
     'size',
     'shape',
     'length',
@@ -30,6 +31,7 @@ global.Cock = (function() {
 
     Validate.exists(_parentId,cockComponent._parentId);
     Validate.exists('placement',cockComponent.placement);
+    Validate.atLeast('count', cockComponent.count, 1);
     Validate.isIn('size',cockComponent.size,Object.keys(CockData.CockSizes));
     Validate.isIn('shape',cockComponent.shape,Object.keys(CockData.CockShapes));
     Validate.atLeast('length',cockComponent.length,24);
