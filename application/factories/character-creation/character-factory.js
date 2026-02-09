@@ -118,6 +118,8 @@ global.CharacterFactory = (function() {
       CockFactory.applyTriggers(cockData, actorData, triggers);
       PussyFactory.applyTriggers(pussyData, triggers);
       PersonalityFactory.applyTriggers(personalityData, triggers);
+
+      applyMagical(triggers);
     }
     catch(error) {
       console.warn(error);
@@ -135,8 +137,7 @@ global.CharacterFactory = (function() {
     }
 
     if (triggers.length > 0) {
-      console.warn(`Unresolved Triggers`,triggers)
-      // throw `Error: Unresolved Triggers: ${JSON.stringify(triggers)}`;
+      throw `Error: Unresolved Triggers: ${JSON.stringify(triggers)}`;
     }
 
     log('CharacterData',{ system:'CharacterFactory', data:{
@@ -237,6 +238,16 @@ global.CharacterFactory = (function() {
     });
 
     return skillsData;
+  }
+
+  // TODO: The magical trigger will need to randomly select a spell or two to give to a character, then it will need to
+  //       add mana enough to cast their spells. The function will need to produce a mana component and a list of known
+  //       spells.
+  function applyMagical(triggers) {
+    if (triggers.includes('magical')) {
+      log(`Applied Magical`,{ system:'CharacterFactory', level:3 });
+      ArrayHelper.remove(triggers, 'magical');
+    }
   }
 
   return Object.freeze({
