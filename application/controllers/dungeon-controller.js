@@ -7,7 +7,10 @@ global.DungeonController = (function() {
   }
 
   function changeFloor(floor) {
+    log("Building Dungeon",{ system:'DungeonController', level:1, data:{ floor }});
+
     $currentFloor = floor;
+
     // When the floor changes we generate an entirely new map for that floor.
   }
 
