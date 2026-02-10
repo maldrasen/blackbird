@@ -2,6 +2,7 @@ global.GameState = (function() {
 
   let $gameTime;
   let $currentLocation;
+  let $currentFloor;
 
   // Reset is used to remove the loaded game from the state and leave it blank. This is done when the application is
   // started or when we quit a game and go back to the main menu.
@@ -35,13 +36,22 @@ global.GameState = (function() {
   function pack() {
     return {
       gameTime: $gameTime,
+      gameMode: StateMachine.getMode(),
       currentLocation: $currentLocation,
+      currentFloor: $currentFloor,
     }
   }
 
+  // TODO: Need to verify that it's actually sane to set the mode directly like this when we load a game. I think the
+  //       mode should only be location or dungeon. If the game is in autosave mode we should save the game when the
+  //       dungeon floor is changed. When the game is loaded from the dungeon the game should load the dungeon view and
+  //       build that dungeon level. Otherwise, I think we only allow saving in locations. Never during events or
+  //       training though.
   function unpack(data) {
-    $gameTime = data.gameTime
-    $currentLocation = currentLocation
+    $gameTime = data.gameTime;
+    $currentLocation = data.currentLocation;
+    $currentFloor = data.currentFloor;
+    StateMachine.setMode(data.gameMode);
   }
 
   return Object.freeze({

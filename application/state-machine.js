@@ -20,7 +20,25 @@ global.StateMachine = (function() {
     render();
   }
 
-  // Not sure about calling render directly. It might have to be called at least once when a game is loaded.
+
+  // The state machine should usually only change modes when it receives a command. However, starting a new game,
+  // loading a game, or starting a fixture will set the mode directly as there's nothing that can send a command yet.
+  // Even 'internally' to the StateMachine though it's the various systems that handles the commands and ultimately
+  // needs to call the setMode() function, so it needs to be rather public. Still, a single command should only ever
+  // change the mode once. If the mode has been changed then we know the view needs to be completely rebuilt.
+
+  function getMode() { return $mode; }
+  function setMode(mode) {
+    if ($modeChanged) { throw "Mode has already been changed." }
+    if (mode !== $mode) {
+      $modeChanged = true;
+      $mode = mode;
+    }
+  }
+
+  // When the mode is set directly (when not sending a command) the render() function then needs to be called to update
+  // the view. Setting the mode directly bypasses the other systems that run every turn (which it has to so that
+  // nothing is updated when a game is loaded).
   function render() {
     if ($modeChanged) {
 
@@ -32,21 +50,7 @@ global.StateMachine = (function() {
       $mode = null;
     }
   }
-
-  // Adjusted by the fixture right now, but changing the mode is something that should probably only happen internally.
-  // The plan is for the state machine to only change itself based on the command received. It will run all the
-  // systems and the systems change the state of all the components, but the state itself should only be governed from
-  // within. At least that's my current thinking. Also, not sure yet what sets the initial mode. Will need to happen the
-  // game is loaded I think.
-  function getMode() { return $mode; }
-  function setMode(mode) {
-    if ($modeChanged) { throw "Mode has already been changed." }
-    if (mode !== $mode) {
-      $modeChanged = true;
-      $mode = mode;
-    }
-  }
-
+  
   return {
     handleCommand,
     render,
