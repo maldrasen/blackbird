@@ -1,6 +1,7 @@
 SexAction.register('fondle-breasts',{
-  category: 'Foreplay',
   name: 'Fondle Breasts',
+  mainCategory: 'Foreplay',
+  partCategory: 'Breasts',
   difficulty: 15,
 
   persistPlayer: 'hands',

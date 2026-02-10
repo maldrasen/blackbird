@@ -1,9 +1,10 @@
 SexAction.register('get-deepthroat',{
-  category: 'Oral',
   name: 'Get Deepthroated',
+  mainCategory: 'Oral',
+  partCategory: 'Cock',
   difficulty: 80,
 
-  // A follow up action may require one or more persisted actions to be happening.
+  // A follow-up action may require one or more persisted actions to be happening.
   while:['get-blowjob'],
 
   persistPlayer:'cock',

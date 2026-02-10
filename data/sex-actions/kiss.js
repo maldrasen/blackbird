@@ -1,6 +1,7 @@
 SexAction.register('kiss',{
-  category: 'Foreplay',
   name: 'Kissing',
+  mainCategory: 'Foreplay',
+  partCategory: 'Mouth',
   difficulty: 15,
 
   // An action can persist body parts, such that if the next command issued doesn't involve these parts, the action

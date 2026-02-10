@@ -34,7 +34,7 @@ global.StateMachine = (function() {
   // Adjusted by the fixture right now, but changing the mode is something that should probably only happen internally.
   // The plan is for the state machine to only change itself based on the command received. It will run all the
   // systems and the systems change the state of all the components, but the state itself should only be governed from
-  // within. At least that's my current thinking. Also not sure yet what sets the initial mode. Will need to happen the
+  // within. At least that's my current thinking. Also, not sure yet what sets the initial mode. Will need to happen the
   // game is loaded I think.
   function getMode() { return $mode; }
   function setMode(mode) {

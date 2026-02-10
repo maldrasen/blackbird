@@ -10,11 +10,9 @@ global.Location = (function() {
   }
 
   function lookup(code) {
-    const location = $locations[code];
+    if ($locations[code] === null) { throw `Bad location code [${code}]` }
 
-    if (location === null) {
-      throw `Bad location code [${code}]`
-    }
+    const location = { ...$locations[code] };
 
     return Object.freeze({
       getCode: () => { return code; },

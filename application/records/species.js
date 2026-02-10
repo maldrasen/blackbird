@@ -7,11 +7,9 @@ global.Species = (function() {
 
   // The lookup() function returns a wrapper for the species data object.
   function lookup(code) {
-    const species = $speciesMap[code];
+    if ($speciesMap[code] === null) { throw `Bad species code [${code}]`; }
 
-    if (species === null) {
-      throw `Bad species code [${code}]`
-    }
+    const species = { ...$speciesMap[code] };
 
     function getAverageHeight() {
       return species.body.averageHeight || _humanMaleHeight;

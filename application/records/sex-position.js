@@ -10,15 +10,13 @@ global.SexPosition = (function() {
   }
 
   function lookup(code) {
-    const location = $sexPositions[code];
+    if ($sexPositions[code] === null) { throw `Bad sex position code [${code}]`; }
 
-    if (location === null) {
-      throw `Bad sex position code [${code}]`
-    }
+    const position = { ...$sexPositions[code] };
 
     return Object.freeze({
       getCode: () => { return code; },
-      getName: () => { return $sexPositions.name; },
+      getName: () => { return position.name; },
     });
   }
 

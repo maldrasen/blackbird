@@ -1,6 +1,7 @@
 SexAction.register('get-blowjob',{
-  category: 'Oral',
   name: 'Get Blowjob',
+  mainCategory: 'Oral',
+  partCategory: 'Cock',
   difficulty: 35,
 
   persistPlayer: 'cock',

@@ -1,10 +1,11 @@
 SexAction.register('deep-kiss',{
-  category: 'Foreplay',
-  name: 'Deep Kissing',
+  name: 'Deep Kiss',
+  mainCategory: 'Foreplay',
+  partCategory: 'Mouth',
   difficulty: 30,
 
   // A follow up action may require one or more persisted actions to be happening.
-  while:['kiss'],
+  availableWhile:['kiss'],
 
   persistPlayer:'mouth',
   persistPartner:'mouth',

@@ -10,11 +10,9 @@ global.SexualPreference = (function() {
   }
 
   function lookup(code) {
-    const preference = $sexualPreferences[code];
+    if ($sexualPreferences[code] === null) { throw `Bad sexual preference code [${code}]` }
 
-    if (preference === null) {
-      throw `Bad sexual preference code [${code}]`
-    }
+    const preference = { ...$sexualPreferences[code] };
 
     const getDefaultValue = function(entity) {
       if (preference.defaultValue == null) { return 0; }

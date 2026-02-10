@@ -13,6 +13,7 @@ global.Views = (function() {
     EventView.init();
     MainMenu.init();
     OptionsOverlay.init();
+    TrainingView.init();
   }
 
   return {

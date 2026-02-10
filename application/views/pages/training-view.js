@@ -1,10 +1,38 @@
 global.TrainingView = (function() {
 
+  let $mainCategories;
+  let $partCategories;
+
+  function init() {
+    $mainCategories = {};
+    $partCategories = {};
+
+    SexAction.getAllCodes().forEach(code => {
+      const action = SexAction.lookup(code);
+      const mainCategory = action.getMainCategory();
+      const partCategory = action.getPartCategory();
+
+      if ($mainCategories[mainCategory] == null) {
+        $mainCategories[mainCategory] = {};
+      }
+      if ($partCategories[partCategory] == null) {
+        $partCategories[partCategory] = {};
+      }
+
+      $mainCategories[mainCategory][action.getCode()] = action.getName();
+      $partCategories[partCategory][action.getCode()] = action.getName();
+    });
+
+    console.log("=== Compiled Categories ===")
+    console.log($mainCategories);
+    console.log($partCategories);
+  }
+
   function show() {
     const location = Location.lookup(GameState.getCurrentLocation());
 
     MainContent.setMainContent("views/training.html");
-    // MainContent.setBackground(location.getBackground());
+    MainContent.setBackground(location.getBackground());
 
     buildStatusPanel();
   }
@@ -22,7 +50,6 @@ global.TrainingView = (function() {
     // Milk [7000/10000]
     // Sex[   ](0/2) Semen[XX  ](4/9) womb[X   ](3646p)       // Satasfaction Row [number of orgasms] []
     // In Use: [Clit Cap], [Nipple Cap]
-
 
     // My attributes:
     // [Control] slow changing, but training is used to increase it, so probably good to have.
@@ -52,7 +79,8 @@ global.TrainingView = (function() {
 
 
   return Object.freeze({
-    show
+    init,
+    show,
   });
 
 })();
