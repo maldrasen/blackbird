@@ -4,7 +4,7 @@ global.TrainingView = (function() {
     const location = Location.lookup(GameState.getCurrentLocation());
 
     MainContent.setMainContent("views/training.html");
-    MainContent.setBackground(location.getBackground());
+    // MainContent.setBackground(location.getBackground());
 
     buildStatusPanel();
   }
