@@ -18,11 +18,11 @@ global.GameState = (function() {
   //       and we'll want to start the scenario on a specific date and time.
   // TODO: Also assuming we'll start the game in the so called filthy hovel.
   //       That'll probable change as I actually write the game story.
-  function initialize() {
+  function initialize(options) {
     Registry.clear();
 
-    $gameTime = 0;
-    $currentLocation = 'filthy-hovel';
+    $gameTime = options.time || 0;
+    $currentLocation = options.location || 'filthy-hovel';
   }
 
   // === CRUD ==========================================================================================================

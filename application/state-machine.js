@@ -15,6 +15,7 @@ global.StateMachine = (function() {
     CharacterMovementSystem.run(command);
 
     TrainingSystem.run(command);
+    DungeonSystem.run(command);
 
     render();
   }
@@ -23,6 +24,7 @@ global.StateMachine = (function() {
   function render() {
     if ($modeChanged) {
 
+      if ($mode === GameMode.dungeon) { DungeonView.show(); }
       if ($mode === GameMode.location) { LocationView.show(); }
       if ($mode === GameMode.training) { TrainingView.show(); }
 

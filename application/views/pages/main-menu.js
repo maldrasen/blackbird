@@ -2,12 +2,18 @@ global.MainMenu = (function() {
 
   function init() {
     X.onClick('#mainMenu a.start-button', startGame);
+    X.onClick('#mainMenu a.start-fixture', startFixture);
+
     X.onClick('#mainMenu a.continue-button', continueGame);
     X.onClick('#mainMenu a.load-button', showLoadGame);
     X.onClick('#mainMenu a.options-button', showOptions);
     X.onClick('#mainMenu a.quit-button', window.close);
 
     X.first('#mainMenu a.close-menu-button').style['background-image'] = X.assetURL('ui/x-icon.png');
+
+    if (Environment.isDevelopment) {
+      X.removeClass('#mainMenu .start-fixture','hide');
+    }
   }
 
   function openFully() {
@@ -44,11 +50,27 @@ global.MainMenu = (function() {
     }
   }
 
+  // TODO: Start a real new game.
   async function startGame() {
     close();
-
     await GameController.startNewGame();
     await GameController.openGame();
+  }
+
+  // TODO: We could also get any game setup we wanted from the Fixtures module here.
+  async function startFixture(event) {
+    close();
+
+    const fixture = event.target.dataset.fixture
+    const stateOptions = {};
+
+    let setup;
+    if (fixture === 'dungeon') { setup = Fixtures.setupDungeon; }
+    if (fixture === 'training') { setup = Fixtures.setupTraining; }
+    if (setup == null) { throw `Bad fixture code: ${fixture}`; }
+
+    await GameController.startNewGame(stateOptions);
+    await GameController.openGame(setup);
   }
 
   async function continueGame() {

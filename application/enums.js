@@ -13,6 +13,8 @@ global.CommandType = Object.freeze({
 });
 
 global.GameMode = Object.freeze({
+  dungeon: 'dungeon',
+  event: 'event',
   location: 'location',
   training: 'training',
 });
