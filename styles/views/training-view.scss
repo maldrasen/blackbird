@@ -1,0 +1,36 @@
+@use "../variables";
+
+#trainingView {
+
+  .painal {
+    padding: 5px;
+    background: rgba(100,100,100,0.1);
+    border: variables.$border-heavy;
+  }
+
+  .top-row-panel {
+    .status-panel {
+      background: rgba(0,0,0,0.1);
+      flex-grow: 1;
+    }
+    .position-panel {
+      background: rgba(0,0,0,0.1);
+      height: 120px;
+      width: 120px;
+    }
+  }
+
+  .action-menu-panel {
+
+    .top-category-toggles {}
+    .side-category-toggles {}
+    .action-list-panel {}
+
+  }
+
+
+  .top-row-panel {
+    display: flex;
+  }
+
+}
