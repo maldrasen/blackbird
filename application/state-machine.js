@@ -4,6 +4,7 @@ global.StateMachine = (function() {
   let $modeChanged;
 
   function handleCommand(commandType, commandData) {
+    console.log(`Command:${commandType} : ${JSON.stringify(commandData)}`)
     const command = Command(commandType, commandData);
 
     log(`Run Command:${commandType}`, { system:'StateMachine', data:commandData });

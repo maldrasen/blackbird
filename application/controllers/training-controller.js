@@ -42,9 +42,7 @@ global.TrainingController = (function() {
 
 
   function start(data) {
-    TrainingView.show();
-
-    console.log("Start Training:",data);
+    console.log("Start Training in Controller:",data);
 
     nextTurn()
   }

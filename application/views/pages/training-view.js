@@ -4,31 +4,22 @@ global.TrainingView = (function() {
   let $partCategories;
 
   function init() {
-    $mainCategories = {};
-    $partCategories = {};
+    $mainCategories = new Set();
+    $partCategories = new Set();
 
     SexAction.getAllCodes().forEach(code => {
       const action = SexAction.lookup(code);
-      const mainCategory = action.getMainCategory();
-      const partCategory = action.getPartCategory();
-
-      if ($mainCategories[mainCategory] == null) {
-        $mainCategories[mainCategory] = {};
-      }
-      if ($partCategories[partCategory] == null) {
-        $partCategories[partCategory] = {};
-      }
-
-      $mainCategories[mainCategory][action.getCode()] = action.getName();
-      $partCategories[partCategory][action.getCode()] = action.getName();
+      $mainCategories.add(action.getMainCategory());
+      $partCategories.add(action.getPartCategory());
     });
 
-    console.log("=== Compiled Categories ===")
-    console.log($mainCategories);
-    console.log($partCategories);
+    $mainCategories = [...$mainCategories].sort();
+    $partCategories = [...$partCategories].sort();
   }
 
   function show() {
+    console.log("=== TrainingView.show() Called ===")
+
     const location = Location.lookup(GameState.getCurrentLocation());
 
     MainContent.setMainContent("views/training.html");
@@ -38,6 +29,35 @@ global.TrainingView = (function() {
   }
 
   function buildStatusPanel() {
+    const sideToggles = X.first('#sideToggles');
+    const topToggles = X.first('#topToggles');
+    const actionList = X.first('#actionList');
+
+    $mainCategories.forEach(name => {
+      sideToggles.appendChild(X.createElement(
+        `<li class="toggle on"><a data-type="main" data-name="${name}" href="#">${name}</a></li>`));
+    });
+
+    $partCategories.forEach(name => {
+      topToggles.appendChild(X.createElement(
+        `<li class="toggle on"><a data-type="part" data-name="${name}" href="#">${name}</a></li>`));
+    });
+
+    // All actions are added to the panel, even actions that will always be hidden. Each round will need to determine
+    // which actions should be visible, and enabled. Potentially, this game with have a hundred or more actions and
+    // eventually the action list will need to be placed in a scrolling panel.
+    SexAction.getAllCodes().forEach(code => {
+      const action = SexAction.lookup(code);
+
+      actionList.appendChild(X.createElement(
+        `<li class="xhide"><a class="button xdisabled"
+            data-code="${action.getCode()}"
+            data-main-category="${action.getMainCategory()}"
+            data-part-category="${action.getPartCategory()}"
+            href="#">${action.getName()}</a></li>`));
+    });
+
+
     // Name (Status Effects) (Relevant Stats)
     // [clothing]
     // [Stamina Bar] (2000/2000)
@@ -73,10 +93,7 @@ global.TrainingView = (function() {
     // Gems are spent on abilities.
 
     // Controller will need to maintain a training state, these training values are converted into the 'gems'
-
   }
-
-
 
   return Object.freeze({
     init,
