@@ -13,16 +13,13 @@ global.FloorFactory = (function() {
 
   // In order to do this, each floor needs a rarity map.
   function pickTheme(floor) {
-    if (rarityRanges[1] == null) {
-      compileRarityRanges();
-    }
-
-    return `stuff:${floor}`
+    if (rarityRanges[1] == null) { compileRarityRanges(); }
+    return Random.from(rarityRanges[getRandomRarity()][floor]);
   }
 
   function compileRarityRanges() {
-    console.log("=== Compiling Rarity Ranges ===")
 
+    // Initialize 5x10 table
     for (let i=1; i<=5; i++) {
       rarityRanges[i] = {};
       for (let j=1; j<=10; j++) {
@@ -49,6 +46,12 @@ global.FloorFactory = (function() {
       for (let i=rangeLow; i<=rangeHigh; i++) {
         rarityRanges[rarity][i].push(themeCode);
       }
+    });
+  }
+
+  function getRandomRarity() {
+    return Random.fromFrequencyMap({
+      1:50, 2:30, 3:10, 4:3, 5:1,
     });
   }
 
