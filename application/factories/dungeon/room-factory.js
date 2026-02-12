@@ -6,15 +6,12 @@ global.RoomFactory = (function() {
   function buildSingleRoom(options) {
     validateRanges(options);
 
-    console.log("Building single room:",options)
-
     const room = Room.build();
     room.setMainBox(
-      Random.between(options.height[0],options.height[1]),
       Random.between(options.width[0],options.width[1]),
+      Random.between(options.height[0],options.height[1]),
     );
-
-    console.log("MainBox:",room.getMainBox())
+    room.compileFootprint();
 
     return room;
   }
