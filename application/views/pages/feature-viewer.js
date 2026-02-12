@@ -14,18 +14,18 @@ global.FeatureViewer = (function(){
     if (featureType === 'random') {
       return buildRandomFeature();
     }
-
-    console.log("generate feature:",featureType);
   }
 
   function clear() {
-
+    X.empty('#viewOverlay');
+    X.fill('#viewOverlay', X.copyElement('#templates .feature'));
   }
 
   function buildRandomFeature() {
-    const level = Random.between(1,10);
-    const floor = FloorFactory.build({ level });
-    console.log(floor)
+    const floor = FloorFactory.build(Random.between(1,10));
+    const theme = DungeonTheme.lookup(floor.getTheme());
+    X.fill('#viewOverlay .level',floor.getLevel());
+    X.fill('#viewOverlay .theme',theme.getName());
   }
 
   return Object.freeze({

@@ -1,11 +1,12 @@
 
-// Very common and normal theme, default dungeon.
+// Richly appointed royal chambers
 DungeonTheme.register('castle',{
   name: "Castle",
-  rarity: 1,
+  rarity: 4,
 
   features:[
-    { code:'emptyRoom', rarity:1, type:'generic', width:[2,5], height:[2,5]},
+    { code:'emptyRoom', rarity:1, type:'generic', width:[2,5], height:[2,5],
+      contents:['empty']},
   ]
 
 });

@@ -49,9 +49,12 @@ global.FloorFactory = (function() {
     });
   }
 
+  // Rarity 1 is the same percentage chance as rarity 2 because there should
+  // only be one theme (generic dungeon) in the first slot, meaning the generic
+  // dungeon will be picked as often as all the level 2 themes combined.
   function getRandomRarity() {
     return Random.fromFrequencyMap({
-      1:50, 2:30, 3:10, 4:3, 5:1,
+      1:30, 2:30, 3:10, 4:3, 5:1,
     });
   }
 
