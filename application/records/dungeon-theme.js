@@ -13,11 +13,13 @@ global.DungeonTheme = (function() {
   function lookup(code) {
     if ($themes[code] === null) { throw `Bad dungeon theme code [${code}]` }
 
-    const location = { ...$themes[code] };
+    const theme = { ...$themes[code] };
 
     return Object.freeze({
       getCode: () => { return code; },
-      getName: () => { return location.name; },
+      getName: () => { return theme.name; },
+      getRarity: () => { return theme.rarity; },
+      getRange: () => { return theme.range; }
     });
   }
 
