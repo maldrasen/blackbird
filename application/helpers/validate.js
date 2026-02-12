@@ -19,11 +19,16 @@ global.Validate = (function() {
     if (value == null) { throw message ? message : `Validation Failed: ${name} is null.` }
   }
 
+  function equals(name, value, equalTo, message=null) {
+    if (value !== equalTo) { throw message ? message : `Validation Failed: ${name} doesn't equal ${equalTo}` }
+  }
+
   return Object.freeze({
     between,
     atLeast,
     isIn,
     exists,
+    equals,
   });
 
 })();

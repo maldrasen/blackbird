@@ -26,6 +26,9 @@ global.FeatureViewer = (function(){
     const theme = DungeonTheme.lookup(floor.getTheme());
     X.fill('#viewOverlay .level',floor.getLevel());
     X.fill('#viewOverlay .theme',theme.getName());
+
+    const feature = theme.getRandomFeature();
+    console.log("Got feature:",feature);
   }
 
   return Object.freeze({

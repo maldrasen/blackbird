@@ -1,5 +1,4 @@
 global.DungeonTheme = (function() {
-
   const $themes = {};
 
   function register(code,data) {
@@ -15,11 +14,22 @@ global.DungeonTheme = (function() {
 
     const theme = { ...$themes[code] };
 
+    // TODO: This function should use the feature rarity. Before we can do that
+    //       though every feature is going to need at least five different
+    //       feature types to pull from. That should be the bare minimum for
+    //       any dungeon theme I think.
+    function getRandomFeature() {
+      const options = Random.from(theme.features);
+      const featureType = FeatureType.lookup(options.type);
+      return featureType.buildFeature(options);
+    }
+
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return theme.name; },
       getRarity: () => { return theme.rarity; },
-      getRange: () => { return theme.range; }
+      getRange: () => { return theme.range; },
+      getRandomFeature: getRandomFeature,
     });
   }
 
