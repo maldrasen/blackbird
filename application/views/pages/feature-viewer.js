@@ -9,7 +9,23 @@ global.FeatureViewer = (function(){
 
   function generateFeature(event) {
     const featureType = event.target.dataset.feature;
-    console.log("generate feature:",featureType)
+
+    clear()
+    if (featureType === 'random') {
+      return buildRandomFeature();
+    }
+
+    console.log("generate feature:",featureType);
+  }
+
+  function clear() {
+
+  }
+
+  function buildRandomFeature() {
+    const level = Random.between(1,10);
+    const floor = FloorFactory.build({ level });
+    console.log(floor)
   }
 
   return Object.freeze({
