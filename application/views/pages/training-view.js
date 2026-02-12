@@ -44,7 +44,7 @@ global.TrainingView = (function() {
     });
 
     // All actions are added to the panel, even actions that will always be hidden. Each round will need to determine
-    // which actions should be visible, and enabled. Potentially, this game with have a hundred or more actions and
+    // which actions should be visible and enabled. Potentially, this game with have a hundred or more actions and
     // eventually the action list will need to be placed in a scrolling panel.
     SexAction.getAllCodes().forEach(code => {
       const action = SexAction.lookup(code);
