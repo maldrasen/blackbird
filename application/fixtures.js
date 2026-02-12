@@ -8,6 +8,10 @@ global.Fixtures = (function() {
     StateMachine.render();
   }
 
+  function setupFeature() {
+    FeatureViewer.show()
+  }
+
   // The training fixture actually puts the game into the location mode, with characters available to be trained.
   function setupTraining() {
     buildRandomCharacters(buildRandomPlayer(), 10, { triggers:[] })
@@ -41,6 +45,7 @@ global.Fixtures = (function() {
 
   return Object.freeze({
     setupDungeon,
+    setupFeature,
     setupTraining,
   });
 

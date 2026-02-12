@@ -66,6 +66,7 @@ global.MainMenu = (function() {
 
     let setup;
     if (fixture === 'dungeon') { setup = Fixtures.setupDungeon; }
+    if (fixture === 'feature') { setup = Fixtures.setupFeature; }
     if (fixture === 'training') { setup = Fixtures.setupTraining; }
     if (setup == null) { throw `Bad fixture code: ${fixture}`; }
 
