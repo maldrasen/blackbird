@@ -30,6 +30,6 @@ global.RoomFactory = (function() {
 
   return Object.freeze({
     buildSingleRoom
-  })
+  });
 
 })();
