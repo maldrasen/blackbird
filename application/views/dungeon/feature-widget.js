@@ -1,37 +1,41 @@
-global.FeatureWidget = (function() {
+// noinspection CssInvalidPropertyValue
 
-  const _tileSize = 30;
+global.FeatureWidget = (function() {
 
   function build(feature) {
     const featureContainer = X.createElement(`<div class="feature-widget">`);
 
     function buildElement() {
       feature.getRooms().forEach(room => {
-        const mainProps = room.getMainBox();
-        const mainBox = X.createElement(`<div class="room-box">`);
-
-        let bottom = mainProps.y * _tileSize;
-        let left = mainProps.x * _tileSize;
-        let width = mainProps.width * _tileSize;
-        let height = mainProps.height * _tileSize;
-
-        mainBox.setAttribute('style',`bottom:${bottom}px; left:${left}px; width:${width}px; height:${height}px`)
-
-        let bounds = room.getBounds();
-        let position = room.getPosition();
-        bottom = position[0] * _tileSize;
-        left = position[1] * _tileSize;
-        height = bounds.yMax * _tileSize;
-        width = bounds.xMax * _tileSize;
-
-        const roomContainer = X.createElement('<div class="room-container hidden-room">');
-        roomContainer.setAttribute('style',`bottom:${bottom}px; left:${left}px; width:${width}px; height:${height}px;`);
-        roomContainer.appendChild(mainBox);
-
+        const roomContainer = buildRoomContainer(room);
+        roomContainer.appendChild(buildBoxElement(room.getMainBox()));
+        if (room.getSubBox()) { roomContainer.appendChild(buildBoxElement(room.getSubBox())); }
         featureContainer.appendChild(roomContainer);
       });
 
       return featureContainer;
+    }
+
+    function buildRoomContainer(room) {
+      const bounds = room.getBounds();
+      const position = room.getPosition();
+      const bottom = position[0] * _tileSize;
+      const left = position[1] * _tileSize;
+      const height = bounds.yMax * _tileSize;
+      const width = bounds.xMax * _tileSize;
+
+      return X.createElement(`<div class="room-container hidden-room" 
+        style="bottom:${bottom}px; left:${left}px; width:${width}px; height:${height}px;">`);
+    }
+
+    function buildBoxElement(props) {
+      const bottom = props.y * _tileSize;
+      const left = props.x * _tileSize;
+      const width = props.width * _tileSize;
+      const height = props.height * _tileSize;
+
+      return X.createElement(`<div class="room-box" 
+        style="bottom:${bottom}px; left:${left}px; width:${width}px; height:${height}px">`);
     }
 
     return Object.freeze({

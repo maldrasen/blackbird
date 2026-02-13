@@ -54,7 +54,7 @@ global.RoomFactory = (function() {
       console.log(`  legV:${legV} legH:${legH}`);
       if (legV === 'T' && legH === 'L') { origin = [-legLength, bounds.yMax - legThick]; }
       if (legV === 'T' && legH === 'R') { origin = [bounds.xMax, bounds.yMax - legThick]; }
-      if (legV === 'B' && legH === 'L') { origin = [-legThick,0]; }
+      if (legV === 'B' && legH === 'L') { origin = [-legLength,0]; }
       if (legV === 'B' && legH === 'R') { origin = [bounds.xMax,0]; }
       console.log(`  Origin(${origin[0]},${origin[1]})`)
       room.setSubBox(origin[0],origin[1],legLength,legThick)
