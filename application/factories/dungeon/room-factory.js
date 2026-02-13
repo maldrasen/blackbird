@@ -63,6 +63,17 @@ global.RoomFactory = (function() {
     return room;
   }
 
+  // The options for the tea room should usually have the width greater than the height. We trim whatever value we roll
+  // for the width. We can build a left or right T by using the width as the height though.
+  //   height:    [min,max]
+  //   width:     [min,max]
+  //   legRatio:  [low,high] (20%-80% range)
+  //   legLength: [min,max]
+  //
+  function buildTeaRoom(options) {
+    const room = Room.build();
+  }
+
   function startRoom(options) {
     const room = Room.build();
     room.setMainBox(
