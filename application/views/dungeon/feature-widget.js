@@ -17,7 +17,7 @@ global.FeatureWidget = (function() {
 
         mainBox.setAttribute('style',`bottom:${bottom}px; left:${left}px; width:${width}px; height:${height}px`)
 
-        let bounds = room.calculateBounds();
+        let bounds = room.getBounds();
         let position = room.getPosition();
         bottom = position[0] * _tileSize;
         left = position[1] * _tileSize;

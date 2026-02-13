@@ -16,8 +16,8 @@ global.Feature = (function() {
       throw `Implement compileFootprint()`;
     }
 
-    function calculateBounds() {
-      if ($rooms.length === 1) { return $rooms[0].calculateBounds(); }
+    function getBounds() {
+      if ($rooms.length === 1) { return $rooms[0].getBounds(); }
       throw `Implement calculation for more than one room.`
     }
 
@@ -26,8 +26,9 @@ global.Feature = (function() {
       getDoors: () => { return [...$doors]; },
       addRoom: (room) => { $rooms.push(room); },
       addDoor: (door) => { $doors.push(door); },
+      setPosition,
       compileFootprint,
-      calculateBounds,
+      getBounds,
     });
   }
 

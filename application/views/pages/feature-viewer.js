@@ -16,6 +16,7 @@ global.FeatureViewer = (function(){
   }
 
   function clear() {
+    console.clear();
     X.empty('#viewOverlay');
     X.fill('#viewOverlay', X.copyElement('#templates .feature'));
   }
@@ -25,7 +26,7 @@ global.FeatureViewer = (function(){
     const theme = DungeonTheme.lookup(options.theme || floor.getTheme());
     const feature = theme.getRandomFeature();
     const rooms = feature.getRooms();
-    const bounds = feature.calculateBounds(feature);
+    const bounds = feature.getBounds();
 
     X.fill('#viewOverlay .level',floor.getLevel());
     X.fill('#viewOverlay .theme',theme.getName());

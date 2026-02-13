@@ -5,13 +5,15 @@ global.RoomFactory = (function() {
   //   width:  [min,max]
   function buildSingleRoom(options) {
     validateRanges(options);
-
-    const room = startRoom(options);
-    room.compileFootprint();
-
-    return room;
+    return startRoom(options);
   }
 
+  // Build a leg (L-Shaped) room
+  //   height:    [min,max]
+  //   width:     [min,max]
+  //   legRatio:  [low,high] (20%-80% range)
+  //   legLength: [min,max]
+  //
   // TODO: Accept placement options so this can be tested.
   function buildLegRoom(options) {
     validateRanges(options);
@@ -22,7 +24,7 @@ global.RoomFactory = (function() {
     Validate.atLeast('legLength[1]',options.legLength[1],1);
 
     const room = startRoom(options);
-    const bounds = room.calculateBounds();
+    const bounds = room.getBounds();
     const ratio = Random.between(options.legRatio[0], options.legRatio[1]) / 100
     const legLength = Random.between(options.legLength[0], options.legLength[1]);
 
@@ -57,8 +59,6 @@ global.RoomFactory = (function() {
       console.log(`  Origin(${origin[0]},${origin[1]})`)
       room.setSubBox(origin[0],origin[1],legLength,legThick)
     }
-
-    room.compileFootprint();
 
     return room;
   }

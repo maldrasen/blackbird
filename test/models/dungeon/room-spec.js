@@ -1,11 +1,11 @@
-describe.only("Room", function() {
+describe("Room", function() {
 
-  describe("calculateBounds()", function() {
+  describe("getBounds()", function() {
     it('calculates the bounds for a single box room', function() {
       const room = Room.build();
       room.setMainBox(2,3);
 
-      const bounds = room.calculateBounds();
+      const bounds = room.getBounds();
       expect(bounds.xMin).to.equal(0);
       expect(bounds.xMax).to.equal(2);
       expect(bounds.yMin).to.equal(0);
@@ -17,10 +17,10 @@ describe.only("Room", function() {
       room.setMainBox(4,4);
       room.setSubBox(1,4,2,2);
 
-      const bounds = room.calculateBounds();
+      const bounds = room.getBounds();
       expect(bounds.xMin).to.equal(0);
-      expect(bounds.xMax).to.equal(4);
       expect(bounds.yMin).to.equal(0);
+      expect(bounds.xMax).to.equal(4);
       expect(bounds.yMax).to.equal(6);
     });
 
@@ -29,11 +29,11 @@ describe.only("Room", function() {
       room.setMainBox(4,4);
       room.setSubBox(1,-2,2,2);
 
-      const bounds = room.calculateBounds();
+      const bounds = room.getBounds();
       expect(bounds.xMin).to.equal(0);
+      expect(bounds.yMin).to.equal(0);
       expect(bounds.xMax).to.equal(4);
-      expect(bounds.yMin).to.equal(-2);
-      expect(bounds.yMax).to.equal(4);
+      expect(bounds.yMax).to.equal(6);
     });
 
     it('calculates the bounds of a two box room. (E)', function() {
@@ -41,10 +41,10 @@ describe.only("Room", function() {
       room.setMainBox(4,4);
       room.setSubBox(4,1,2,2);
 
-      const bounds = room.calculateBounds();
+      const bounds = room.getBounds();
       expect(bounds.xMin).to.equal(0);
-      expect(bounds.xMax).to.equal(6);
       expect(bounds.yMin).to.equal(0);
+      expect(bounds.xMax).to.equal(6);
       expect(bounds.yMax).to.equal(4);
     });
 
@@ -53,10 +53,10 @@ describe.only("Room", function() {
       room.setMainBox(4,4);
       room.setSubBox(-2,1,2,2);
 
-      const bounds = room.calculateBounds();
-      expect(bounds.xMin).to.equal(-2);
-      expect(bounds.xMax).to.equal(4);
+      const bounds = room.getBounds();
+      expect(bounds.xMin).to.equal(0);
       expect(bounds.yMin).to.equal(0);
+      expect(bounds.xMax).to.equal(6);
       expect(bounds.yMax).to.equal(4);
     });
   });

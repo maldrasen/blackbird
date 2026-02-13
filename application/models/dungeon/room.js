@@ -12,9 +12,33 @@ global.Room = (function() {
       $mainBox = { x:0, y:0, width, height };
     }
 
-    // When the sub box is set we can then adjust the bounds and footprint.
+    // We need to recalculate the origin whenever we set a sub box, ensuring
+    // that even if the box is to the left or below the main box, the room
+    // origin will always remain at (0,0)
     function setSubBox(x, y, width, height) {
+      if ($mainBox == null) { throw `Main box must be set first.` }
+
       $subBox = { x, y, width, height };
+
+      const bounds = getBounds();
+
+      if (bounds.xMin > 0) { throw 'This should never happen'; }
+      if (bounds.yMin > 0) { throw 'This should never happen'; }
+
+      if (bounds.xMin < 0) {
+        const xAdjust = - $subBox.x;
+        $mainBox.x += xAdjust;
+        $subBox.x += xAdjust;
+      }
+      if (bounds.yMin < 0) {
+        const yAdjust = - $subBox.y;
+        $mainBox.y += yAdjust;
+        $subBox.y += yAdjust;
+      }
+
+      console.log("=== Reset Origin ===")
+      console.log(inspect())
+      console.log("Bounds:",bounds);
     }
 
     // Position of this room within the feature.
@@ -22,38 +46,14 @@ global.Room = (function() {
       $position = [x,y];
     }
 
-    // Like the Feature, the Room footprint is a two dimensional array used to determine if a tile is empty or not. An
-    // empty till will be null. A full tile will be set to 1. It's possible that we'll also use the footprint to
-    // include other symbols on the room, representing furniture or other features.
-    //
-    // For two dimensional grids I think grid[y][x] is the customary format.
-    //
-    function compileFootprint() {
-      if ($mainBox == null) { throw `Main box must be set first.` }
-
-      const bounds = calculateBounds();
-      const yRange = bounds.yMax - bounds.yMin;
-      const xRange = bounds.xMax - bounds.xMin;
-
-      $footprint = new Array(yRange);
-      for (let y=bounds.yMin; y<bounds.yMax; y++) {
-        $footprint[y] = new Array(xRange);
-      }
-
-      for (let y=0; y<$mainBox.height; y++) {
-        for (let x=0; x<$mainBox.width; x++) {
-          $footprint[y][x] = 1;
-        }
-      }
-    }
-
-    function calculateBounds() {
+    // Return the room bounds in an object { xMin, xMax, yMin, yMax }
+    function getBounds() {
       // When there is only one box the room origin is always at (0,0)
       if ($subBox == null) {
         return { xMin:0, xMax:$mainBox.width, yMin:0, yMax:$mainBox.height };
       }
 
-      // This should work both before and after we recalculate the room origin point.
+      // This needs to work both before and after we recalculate the room origin point.
       return {
         xMin: Math.min($mainBox.x, $subBox.x),
         xMax: Math.max(($mainBox.x + $mainBox.width), ($subBox.x + $subBox.width)),
@@ -93,8 +93,7 @@ global.Room = (function() {
       setMainBox,
       setSubBox,
       setPosition,
-      compileFootprint,
-      calculateBounds,
+      getBounds,
       containsTile,
       inspect,
     });

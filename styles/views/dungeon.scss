@@ -4,9 +4,14 @@
   position: absolute;
 
   box-sizing: border-box;
-  border: variables.$border-normal;
+
+  .room-container {
+    border: variables.$border-normal;
+  }
+  .room-box {
+    background-color: rgba(80,70,60,0.2);
+  }
 
   .hidden-room {
-    background-color: rgba(80,70,60,0.2);
   }
 }
