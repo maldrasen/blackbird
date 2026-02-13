@@ -17,10 +17,9 @@ DungeonTheme.register('dungeon',{
       width:[4,6], height:[4,6], legRatio:[30,60], legLength:[2,6],
       contents:['empty'] },
 
-    { code:'temp.3', rarity:1, type:['tea-room'],
+    { code:'temp.3', rarity:1, types:['tea-room'],
       width:[6,10], height:[2,6], trim:[1,3], teaLength:[2,6],
-      contents:['empty']
-    }
+      contents:['empty'] },
   ]
 
 });

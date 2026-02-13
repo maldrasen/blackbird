@@ -34,29 +34,20 @@ global.RoomFactory = (function() {
     let legThick;
     let origin;
 
-    console.log("=== Building Leg ===")
-    console.log('Bounds:',bounds);
-
     if (Random.flipCoin()) {
       legThick = Math.min(Math.max(1,Math.round(bounds.xMax * ratio)),bounds.xMax-1);
-      console.log(`Vert Placement: ${legThick} x ${legLength}`);
-      console.log(`  legV:${legV} legH:${legH}`);
       if (legV === 'T' && legH === 'L') { origin = [0,bounds.yMax]; }
       if (legV === 'T' && legH === 'R') { origin = [bounds.xMax - legThick, bounds.yMax]; }
       if (legV === 'B' && legH === 'L') { origin = [0,-legLength]; }
       if (legV === 'B' && legH === 'R') { origin = [bounds.xMax - legThick, -legLength]; }
-      console.log(`  Origin(${origin[0]},${origin[1]})`);
       room.setSubBox(origin[0],origin[1],legThick,legLength);
     }
     else {
       legThick = Math.min(Math.max(1,Math.round(bounds.yMax * ratio)),bounds.yMax-1);
-      console.log(`Hors Placement: ${legLength} x ${legThick}`);
-      console.log(`  legV:${legV} legH:${legH}`);
       if (legV === 'T' && legH === 'L') { origin = [-legLength, bounds.yMax - legThick]; }
       if (legV === 'T' && legH === 'R') { origin = [bounds.xMax, bounds.yMax - legThick]; }
       if (legV === 'B' && legH === 'L') { origin = [-legLength,0]; }
       if (legV === 'B' && legH === 'R') { origin = [bounds.xMax,0]; }
-      console.log(`  Origin(${origin[0]},${origin[1]})`)
       room.setSubBox(origin[0],origin[1],legLength,legThick)
     }
 
@@ -71,7 +62,22 @@ global.RoomFactory = (function() {
   //   legLength: [min,max]
   //
   function buildTeaRoom(options) {
+    console.log("=== Tea room ===")
+
     const room = Room.build();
+    const vertical = Random.flipCoin();
+    const heightRange = vertical ? options.width : options.height;
+    const widthRange = vertical ? options.height : options.width;
+
+    room.setMainBox(
+      Random.between(widthRange[0],widthRange[1]),
+      Random.between(heightRange[0],heightRange[1]),
+    );
+
+    console.log(`Vertical: ${vertical}`);
+    console.log(`Initial: ${room.inspect()}`);
+
+    return room;
   }
 
   function startRoom(options) {
@@ -98,6 +104,7 @@ global.RoomFactory = (function() {
   return Object.freeze({
     buildSingleRoom,
     buildLegRoom,
+    buildTeaRoom,
   });
 
 })();
