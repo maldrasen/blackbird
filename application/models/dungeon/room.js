@@ -48,15 +48,23 @@ global.Room = (function() {
     }
 
     function calculateBounds() {
+      // When there is only one box the room origin is always at (0,0)
       if ($subBox == null) {
         return { xMin:0, xMax:$mainBox.width, yMin:0, yMax:$mainBox.height };
       }
-      throw `Calculate bounds for two box rooms.`
+
+      // This should work both before and after we recalculate the room origin point.
+      return {
+        xMin: Math.min($mainBox.x, $subBox.x),
+        xMax: Math.max(($mainBox.x + $mainBox.width), ($subBox.x + $subBox.width)),
+        yMin: Math.min($mainBox.y, $subBox.y),
+        yMax: Math.max(($mainBox.y + $mainBox.height), ($subBox.y + $subBox.height)),
+      };
     }
 
-    // For now... yes.
     function containsTile(x,y) {
-      return true;
+      if ($subBox == null) { return true; }
+      throw `Check both boxes for point`
     }
 
     // Get a string representation of this room.

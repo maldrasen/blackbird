@@ -6,7 +6,7 @@ DungeonTheme.register('forbidden-grove',{
   range: 5,
 
   features:[
-    { code:'emptyRoom', rarity:1, type:'generic', width:[2,5], height:[2,5],
+    { code:'emptyRoom', rarity:1, types:['rect-room'], width:[2,5], height:[2,5],
       contents:['empty']},
   ]
 

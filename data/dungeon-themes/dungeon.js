@@ -7,8 +7,12 @@ DungeonTheme.register('dungeon',{
   rarity: 1,
 
   features:[
-    { code:'emptyRoom', rarity:1, type:'generic', width:[2,5], height:[2,5],
+    { code:'temp.1', rarity:1, types:['rect-room'], width:[2,5], height:[2,5],
       contents:['empty']},
+
+    { code:'temp.2', rarity:1, types:['leg-room'],
+      width:[4,6], height:[4,6], legRatio:[30,60], legLength:[2,6],
+      contents:['empty'] }
   ]
 
 });

@@ -11,9 +11,8 @@ global.FeatureViewer = (function(){
     const featureType = event.target.dataset.feature;
 
     clear()
-    if (featureType === 'random') {
-      return buildRandomFeature();
-    }
+    if (featureType === 'random') { return buildFeature({}); }
+    if (featureType === 'dungeon') { return buildFeature({ floor:1, theme:'dungeon' }) }
   }
 
   function clear() {
@@ -21,9 +20,9 @@ global.FeatureViewer = (function(){
     X.fill('#viewOverlay', X.copyElement('#templates .feature'));
   }
 
-  function buildRandomFeature() {
-    const floor = FloorFactory.build(Random.between(1,10));
-    const theme = DungeonTheme.lookup(floor.getTheme());
+  function buildFeature(options) {
+    const floor = FloorFactory.build(options.floor || Random.between(1,10));
+    const theme = DungeonTheme.lookup(options.theme || floor.getTheme());
     const feature = theme.getRandomFeature();
     const rooms = feature.getRooms();
     const bounds = feature.calculateBounds(feature);

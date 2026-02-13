@@ -1,4 +1,4 @@
-FeatureType.register('generic',{
+FeatureType.register('rect-room',{
 
   // Generic room only has a single square room.
   build: function(options) {
