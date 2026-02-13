@@ -1,7 +1,6 @@
 <div id="featureViewer" class="root-element">
 
-  <div id="viewOverlay" class='overlay padding font-roboto-mono fs-big'>
-  </div>
+  <div id="viewOverlay" class='overlay big-padding font-roboto-mono fs-big'></div>
 
   <div class='overlay-footer button-row'>
     <a href='#' class='button button-primary generate-feature' data-feature='random'>Random</a>
@@ -9,10 +8,18 @@
 
   <div id="templates" class='hide'>
     <div class='feature'>
-      <div class='floor-information'>
-        Floor:<span class='level'></span>
-        [<span class='theme'></span>]
+
+      <div class='top-row'>
+        <div class='top-info'>
+          <div class='floor-information'>
+            Floor:<span class='level'></span>
+            [<span class='theme'></span>]
+          </div>
+          <ul class='rooms'></ul>
+        </div>
+        <pre class='footprint'></pre>
       </div>
+
     </div>
   </div>
 

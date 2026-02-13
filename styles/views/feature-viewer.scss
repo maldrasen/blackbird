@@ -1,0 +1,15 @@
+@use "../variables";
+
+#featureViewer {
+  .top-row { display: flex; }
+  .top-info { flex-grow: 1; }
+
+  .footprint {
+    line-height: 20px;
+    font-size: 30px;
+  }
+
+  ul.rooms {
+    .room { color: variables.$fg-weak; }
+  }
+}

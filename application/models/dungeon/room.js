@@ -4,6 +4,7 @@ global.Room = (function() {
   function build() {
     let $mainBox;
     let $subBox;
+    let $position = [0,0];
     let $footprint;
 
     // Main box is always placed at (0,0);
@@ -14,6 +15,11 @@ global.Room = (function() {
     // When the sub box is set we can then adjust the bounds and footprint.
     function setSubBox(x, y, width, height) {
       $subBox = { x, y, width, height };
+    }
+
+    // Position of this room within the feature.
+    function setPosition(x,y) {
+      $position = [x,y];
     }
 
     // Like the Feature, the Room footprint is a two dimensional array used to determine if a tile is empty or not. An
@@ -48,14 +54,33 @@ global.Room = (function() {
       throw `Calculate bounds for two box rooms.`
     }
 
+    // For now... yes.
+    function containsTile(x,y) {
+      return true;
+    }
+
+    // Get a string representation of this room.
+    function inspect() {
+      let inspection = `Room{${$position[0]},${$position[1]}}`;
+      inspection += ` M:(${$mainBox.x},${$mainBox.y})[${$mainBox.width},${$mainBox.height}]`;
+      if ($subBox) {
+        inspection += ` S:(${$subBox.x},${$subBox.y})[${$subBox.width},${$subBox.height}]`;
+      }
+      return inspection;
+    }
+
     return Object.freeze({
       getSubBox: () => { return { ...$subBox }; },
       getMainBox: () => { return { ...$mainBox }; },
+      getPosition: () => { return $position; },
       getFootprint: () => { return $footprint; },
       setMainBox,
       setSubBox,
+      setPosition,
       compileFootprint,
       calculateBounds,
+      containsTile,
+      inspect,
     });
   }
 
