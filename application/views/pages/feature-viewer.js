@@ -26,7 +26,6 @@ global.FeatureViewer = (function(){
     const theme = DungeonTheme.lookup(floor.getTheme());
     const feature = theme.getRandomFeature();
     const rooms = feature.getRooms();
-    const doors = feature.getDoors();
     const bounds = feature.calculateBounds(feature);
 
     X.fill('#viewOverlay .level',floor.getLevel());
@@ -35,9 +34,14 @@ global.FeatureViewer = (function(){
 
     rooms.forEach(room => {
       X.fill('#viewOverlay .rooms',X.createElement(`<li class='room'><pre>  - ${room.inspect()}</pre></li>`));
+      X.fill('#viewOverlay .widget-area',buildFeatureWidget(feature));
     });
   }
 
+  function buildFeatureWidget(feature) {
+    const widget = FeatureWidget.build(feature);
+    return widget.buildElement();
+  }
 
   function getFootprintText(rooms, bounds) {
     let text = "";

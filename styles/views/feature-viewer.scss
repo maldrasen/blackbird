@@ -12,4 +12,16 @@
   ul.rooms {
     .room { color: variables.$fg-weak; }
   }
+
+  .widget-area {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    padding: 50px;
+    border: variables.$border-light;
+
+    .feature-widget {
+      position: relative;
+    }
+  }
 }

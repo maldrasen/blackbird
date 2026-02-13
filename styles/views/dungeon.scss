@@ -1,0 +1,12 @@
+@use "../variables";
+
+.feature-widget {
+  position: absolute;
+
+  box-sizing: border-box;
+  border: variables.$border-normal;
+
+  .hidden-room {
+    background-color: rgba(80,70,60,0.2);
+  }
+}
