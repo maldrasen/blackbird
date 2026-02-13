@@ -63,8 +63,16 @@ global.Room = (function() {
     }
 
     function containsTile(x,y) {
-      if ($subBox == null) { return true; }
-      throw `Check both boxes for point`
+      return boxContains($mainBox,x,y) || boxContains($subBox,x,y);
+    }
+
+    function boxContains(box,x,y) {
+      if (box == null) { return false; }
+      if (x < box.x) { return false; }
+      if (y < box.y) { return false; }
+      if (x > box.x + box.width-1) { return false; }
+      if (y > box.y + box.height-1) { return false; }
+      return true;
     }
 
     // Get a string representation of this room.
