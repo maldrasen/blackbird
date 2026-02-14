@@ -58,24 +58,63 @@ global.RoomFactory = (function() {
   // for the width. We can build a left or right T by using the width as the height though.
   //   height:    [min,max]
   //   width:     [min,max]
-  //   legRatio:  [low,high] (20%-80% range)
-  //   legLength: [min,max]
+  //   trim:      [min,max] (trimmed from both ends to make the T symmetrical)
+  //   teaLength: [min,max]
   //
   function buildTeaRoom(options) {
-    console.log("=== Tea room ===")
-
     const room = Room.build();
     const vertical = Random.flipCoin();
-    const heightRange = vertical ? options.width : options.height;
     const widthRange = vertical ? options.height : options.width;
+    const heightRange = vertical ? options.width : options.height;
+    const mainWidth = Random.between(widthRange[0],widthRange[1]);
+    const mainHeight = Random.between(heightRange[0],heightRange[1]);
+    const trim = Random.between(options.trim[0],options.trim[1]);
 
-    room.setMainBox(
-      Random.between(widthRange[0],widthRange[1]),
-      Random.between(heightRange[0],heightRange[1]),
-    );
+    room.setMainBox(mainWidth,mainHeight);
 
-    console.log(`Vertical: ${vertical}`);
-    console.log(`Initial: ${room.inspect()}`);
+    let subHeight;
+    let subWidth;
+    let subX;
+    let subY;
+
+    function logTrimError(m,t) {
+      const message = `Bad tea room options: Trimmed width (${t}*2) exceeded main width (${m})`;
+      console.error(message,options);
+      throw message;
+    }
+
+    if (vertical) {
+      subHeight = mainHeight - (trim * 2);
+      subWidth = Random.between(options.teaLength[0],options.teaLength[1]);
+
+      if (subHeight <= 0) { logTrimError(mainHeight,trim); }
+
+      // Left Side / Right Side
+      if (Random.flipCoin()) {
+        subX = -subWidth;
+        subY = trim;
+      } else {
+        subX = mainWidth;
+        subY = trim;
+      }
+    }
+    if (!vertical) {
+      subWidth = mainWidth - (trim * 2);
+      subHeight = Random.between(options.teaLength[0],options.teaLength[1]);
+
+      if (subWidth <= 0) { logTrimError(mainWidth,trim); }
+
+      // Top Side / Bottom Side
+      if (Random.flipCoin()) {
+        subX = trim;
+        subY = mainHeight;
+      } else {
+        subX = trim;
+        subY = -subHeight;
+      }
+    }
+
+    room.setSubBox(subX, subY, subWidth, subHeight);
 
     return room;
   }

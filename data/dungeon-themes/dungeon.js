@@ -17,8 +17,9 @@ DungeonTheme.register('dungeon',{
       width:[4,6], height:[4,6], legRatio:[30,60], legLength:[2,6],
       contents:['empty'] },
 
+    // For a T-shaped room the width[0] must be > 2 * trim[1]
     { code:'temp.3', rarity:1, types:['tea-room'],
-      width:[6,10], height:[2,6], trim:[1,3], teaLength:[2,6],
+      width:[5,8], height:[2,6], trim:[1,2], teaLength:[2,6],
       contents:['empty'] },
   ]
 
