@@ -120,6 +120,9 @@ global.NameRestriction = Object.freeze({
 });
 
 global.AspectType = Object.freeze({
+  erogenousCervix: 'Erogenous Cervix',
+  erogenousThroat: 'Erogenous Throat',
+  erogenousUrethra: 'Erogenous Urethra',
   flexible: 'Flexible',
   productive: 'Productive',
   noble: 'Noble',

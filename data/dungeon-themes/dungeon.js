@@ -10,19 +10,18 @@ DungeonTheme.register('dungeon',{
   //       of contents? We need to figure out how contents are selected. Should be a many to many relationship, but we
   //       shouldn't need to explicitly state that every room can have a combat encounter.
   features:[
-    { rarity:1, type:'rect-room', size:[2,5],
-      contents:['empty']},
+    // { rarity:1, type:'rect-room', size:[2,5],
+    //   contents:['empty']},
 
-    { rarity:1, type:'leg-room',
-      size:[4,6], legRatio:[30,60], legLength:[2,6],
+    // { rarity:1, type:'leg-room',
+    //   size:[4,6], legRatio:[30,60], legLength:[2,6],
+    //   contents:['empty'] },
+
+    { rarity:1, type:'tea-room', size:[3,6],
       contents:['empty'] },
 
-    { rarity:1, type:'tea-room',
-      width:[5,8], height:[2,6], trim:[1,2], teaLength:[2,6],
-      contents:['empty'] },
-
-    { rarity:1, type:'cross-room', size:[4,8],
-      contents:['empty'] },
+    // { rarity:1, type:'cross-room', size:[3,12],
+    //   contents:['empty'] },
   ]
 
 });
