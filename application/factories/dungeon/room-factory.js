@@ -62,6 +62,10 @@ global.RoomFactory = (function() {
   //   teaLength: [min,max]
   //
   function buildTeaRoom(options) {
+    if (options.width[0] <= options.trim[1] * 2) {
+      throw `Bad options: width[0] must be > trim[1]*2`
+    }
+
     const room = Room.build();
     const vertical = Random.flipCoin();
     const widthRange = vertical ? options.height : options.width;
@@ -77,17 +81,9 @@ global.RoomFactory = (function() {
     let subX;
     let subY;
 
-    function logTrimError(m,t) {
-      const message = `Bad tea room options: Trimmed width (${t}*2) exceeded main width (${m})`;
-      console.error(message,options);
-      throw message;
-    }
-
     if (vertical) {
       subHeight = mainHeight - (trim * 2);
       subWidth = Random.between(options.teaLength[0],options.teaLength[1]);
-
-      if (subHeight <= 0) { logTrimError(mainHeight,trim); }
 
       // Left Side / Right Side
       if (Random.flipCoin()) {
@@ -101,8 +97,6 @@ global.RoomFactory = (function() {
     if (!vertical) {
       subWidth = mainWidth - (trim * 2);
       subHeight = Random.between(options.teaLength[0],options.teaLength[1]);
-
-      if (subWidth <= 0) { logTrimError(mainWidth,trim); }
 
       // Top Side / Bottom Side
       if (Random.flipCoin()) {
