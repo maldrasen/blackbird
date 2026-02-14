@@ -6,7 +6,7 @@ DungeonTheme.register('temple',{
   range: [6,10],
 
   features:[
-    { code:'emptyRoom', rarity:1, types:['rect-room'], width:[2,5], height:[2,5],
+    { rarity:1, type:'rect-room', size:[2,5],
       contents:['empty']},
   ]
 

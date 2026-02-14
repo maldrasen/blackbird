@@ -20,8 +20,7 @@ global.DungeonTheme = (function() {
     //       any dungeon theme I think.
     function getRandomFeature() {
       const options = Random.from(theme.features);
-      const type = Random.from(options.types);
-      const featureType = FeatureType.lookup(type);
+      const featureType = FeatureType.lookup(options.type);
       return featureType.buildFeature(options);
     }
 
