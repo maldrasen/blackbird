@@ -13,12 +13,11 @@ DungeonTheme.register('dungeon',{
     // { rarity:1, type:'rect-room', size:[2,5],
     //   contents:['empty']},
 
-    // { rarity:1, type:'leg-room',
-    //   size:[4,6], legRatio:[30,60], legLength:[2,6],
-    //   contents:['empty'] },
-
-    { rarity:1, type:'tea-room', size:[3,6],
+    { rarity:1, type:'leg-room', size:[3,6],
       contents:['empty'] },
+
+    // { rarity:1, type:'tea-room', size:[3,6],
+    //   contents:['empty'] },
 
     // { rarity:1, type:'cross-room', size:[3,12],
     //   contents:['empty'] },

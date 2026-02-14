@@ -1,53 +1,47 @@
 global.RoomFactory = (function() {
 
-  // Build a single box room given the options:
+  // Build a single box room.
   //   size: [min,max]
   function buildSingleRoom(options) {
-    validateRanges(options);
-    return startRoom(options);
+    const room = Room.build();
+    room.setMainBox(
+      Random.between(options.size[0],options.size[1]),
+      Random.between(options.size[0],options.size[1]),
+    );
+    return room;
   }
 
-  // Build a leg (L-Shaped) room
+  // Build a leg shaped room
   //   size:      [min,max]
-  //   legRatio:  [low,high] (20%-80% range)
-  //   legLength: [min,max]
-  //
-  // TODO: Might chance the way the leg width math works to work more like the cross notches.
-  // TODO: Accept placement options so this can be tested.
   function buildLegRoom(options) {
-    validateRanges(options);
+    if (options.size[0] < 3) { throw `Minimum size needs to be at least 3` }
 
-    Validate.between('legRatio[0]',options.legRatio[0],20,80);
-    Validate.between('legRatio[1]',options.legRatio[1],20,80);
-    Validate.atLeast('legLength[0]',options.legLength[0],1);
-    Validate.atLeast('legLength[1]',options.legLength[1],1);
+    const rotation = Random.from(['NE','NW','SE','SW']);
+    const totalWidth = Random.between(options.size[0], options.size[1]);
+    const totalHeight = Random.between(options.size[0], options.size[1]);
+    const widthRange = notchRange(totalWidth);
+    const heightRange = notchRange(totalHeight);
+    const notchWidth = Random.between(widthRange[0],widthRange[1]);
+    const notchHeight = Random.between(heightRange[0],heightRange[1]);
+    const room = Room.build(options);
 
-    const room = startRoom(options);
-    const bounds = room.getBounds();
-    const ratio = Random.between(options.legRatio[0], options.legRatio[1]) / 100
-    const legLength = Random.between(options.legLength[0], options.legLength[1]);
-
-    const legV = Random.from(['T','B']);
-    const legH = Random.from(['L','R']);
-
-    let legThick;
-    let origin;
-
-    if (Random.flipCoin()) {
-      legThick = Math.min(Math.max(1,Math.round(bounds.xMax * ratio)),bounds.xMax-1);
-      if (legV === 'T' && legH === 'L') { origin = [0,bounds.yMax]; }
-      if (legV === 'T' && legH === 'R') { origin = [bounds.xMax - legThick, bounds.yMax]; }
-      if (legV === 'B' && legH === 'L') { origin = [0,-legLength]; }
-      if (legV === 'B' && legH === 'R') { origin = [bounds.xMax - legThick, -legLength]; }
-      room.setSubBox(origin[0],origin[1],legThick,legLength);
-    }
-    else {
-      legThick = Math.min(Math.max(1,Math.round(bounds.yMax * ratio)),bounds.yMax-1);
-      if (legV === 'T' && legH === 'L') { origin = [-legLength, bounds.yMax - legThick]; }
-      if (legV === 'T' && legH === 'R') { origin = [bounds.xMax, bounds.yMax - legThick]; }
-      if (legV === 'B' && legH === 'L') { origin = [-legLength,0]; }
-      if (legV === 'B' && legH === 'R') { origin = [bounds.xMax,0]; }
-      room.setSubBox(origin[0],origin[1],legLength,legThick)
+    switch (rotation) {
+      case 'NE':
+        room.setMainBox(totalWidth-notchWidth, totalHeight);
+        room.setSubBox(0, 0, totalWidth, totalHeight-notchHeight);
+        break;
+      case 'NW':
+        room.setMainBox(totalWidth-notchWidth, totalHeight);
+        room.setSubBox(-notchWidth, 0, totalWidth, totalHeight-notchHeight);
+        break;
+      case 'SE':
+        room.setMainBox(totalWidth-notchWidth, totalHeight);
+        room.setSubBox(0, notchHeight, totalWidth, totalHeight-notchHeight);
+        break;
+      case 'SW':
+        room.setMainBox(totalWidth-notchWidth, totalHeight);
+        room.setSubBox(-notchWidth, notchHeight, totalWidth, totalHeight-notchHeight);
+        break;
     }
 
     return room;
@@ -90,16 +84,10 @@ global.RoomFactory = (function() {
     return room;
   }
 
-  // Notch max is half of (length-2) in order to allow at least a 2 tile wide corridor when notch is taken from either
-  // side. This function is used when making both the cross and T Rooms.
-  function getTrimMax(length) {
-    return (length === 3) ? 1 : Math.floor((length-2) / 2);
-  }
-
-  // The cross room only takes a room size option. The notch size is determined by the room size, and they'll either
-  // be square notches or match the room's aspect ratio.
+  // The cross room only takes a room size option. The notch size is determined
+  // by the room size, and they'll either be square notches or match the room's
+  // aspect ratio.
   //   size:    [min,max]
-  //
   function buildCrossRoom(options) {
     if (options.size[0] < 3) { throw `Minimum size needs to be at least 3` }
 
@@ -120,21 +108,19 @@ global.RoomFactory = (function() {
     return room;
   }
 
-  function startRoom(options) {
-    const room = Room.build();
-    room.setMainBox(
-      Random.between(options.size[0],options.size[1]),
-      Random.between(options.size[0],options.size[1]),
-    );
-    return room;
+  // Notch range is for L shaped rooms to allow for larger notches while
+  // ensuring that any leg is at least 2 tiles wide.
+  function notchRange(length) {
+    const min = Math.max(Math.round(length * 0.33), 1);
+    const max = Math.min(Math.round(length * 0.66), length-2);
+    return [min,max]
   }
 
-  // Ensure that the options have the height and width range in the correct format.
-  function validateRanges(options) {
-    Validate.exists('size',options.size);
-    Validate.equals('size.length',options.size.length,2);
-    Validate.atLeast('size[0]',options.size[0],1)
-    Validate.atLeast('size[1]',options.size[1],1)
+  // Trim max is half of (length-2) in order to allow at least a 2 tile wide
+  // corridor when notch is taken from either side. This function is used when
+  // making both the cross and T Rooms.
+  function getTrimMax(length) {
+    return (length === 3) ? 1 : Math.floor((length-2) / 2);
   }
 
   return Object.freeze({
