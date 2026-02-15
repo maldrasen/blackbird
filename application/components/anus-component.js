@@ -6,10 +6,28 @@
 global.AnusComponent = (function() {
   const $properties = [_parentId,'placement','shape','minWidth','maxWidth','prolapseLength'];
 
-  function getProperties() { return $properties; }
+  function create(id,data) {
+    const entity = Registry.createEntity();
+    Registry.createComponent(entity, ComponentType.anus, { _parentId:id, ...data});
+    validate(entity);
+    return entity;
+  }
+
+  function update(id,data) {
+    Registry.updateComponent(id,ComponentType.anus,data);
+    validate(id);
+  }
+
+  function lookup(id) {
+    return Registry.lookupComponent(id,ComponentType.anus);
+  }
+
+  function destroy(id) {
+    Registry.deleteComponent(id,ComponentType.anus);
+  }
 
   function validate(id) {
-    const anusComponent = Registry.lookupAnusComponent(id);
+    const anusComponent = lookup(id);
 
     Object.keys(anusComponent).forEach(key => {
       if ($properties.includes(key) === false) {
@@ -26,8 +44,11 @@ global.AnusComponent = (function() {
   }
 
   return Object.freeze({
-    getProperties,
-    validate,
+    hasParent: () => { return true; },
+    create,
+    update,
+    lookup,
+    destroy,
   });
 
 })();

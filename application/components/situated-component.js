@@ -1,10 +1,26 @@
 global.SituatedComponent = (function() {
   const $properties = ['currentLocation'];
 
-  function getProperties() { return $properties; }
+  function create(id,data) {
+    Registry.createComponent(id,ComponentType.situated,data);
+    validate(id);
+  }
+
+  function update(id,data) {
+    Registry.updateComponent(id,ComponentType.situated,data);
+    validate(id);
+  }
+
+  function lookup(id) {
+    return Registry.lookupComponent(id,ComponentType.situated);
+  }
+
+  function destroy(id) {
+    Registry.deleteComponent(id,ComponentType.situated);
+  }
 
   function validate(id) {
-    const situatedComponent = Registry.lookupSituatedComponent(id);
+    const situatedComponent = lookup(id);
 
     Object.keys(situatedComponent).forEach(key => {
       if ($properties.includes(key) === false) {
@@ -16,8 +32,11 @@ global.SituatedComponent = (function() {
   }
 
   return Object.freeze({
-    getProperties,
-    validate,
+    hasParent: () => { return false; },
+    create,
+    update,
+    lookup,
+    destroy,
   });
 
 })();

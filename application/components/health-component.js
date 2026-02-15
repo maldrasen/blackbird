@@ -1,10 +1,26 @@
 global.HealthComponent = (function() {
   const $properties = ['currentStamina','currentHealth','maxHealth'];
 
-  function getProperties() { return $properties; }
+  function create(id,data) {
+    Registry.createComponent(id,ComponentType.health,data);
+    validate(id);
+  }
+
+  function update(id,data) {
+    Registry.updateComponent(id,ComponentType.health,data);
+    validate(id);
+  }
+
+  function lookup(id) {
+    return Registry.lookupComponent(id,ComponentType.health);
+  }
+
+  function destroy(id) {
+    Registry.deleteComponent(id,ComponentType.health);
+  }
 
   function validate(id) {
-    const healthComponent = Registry.lookupHealthComponent(id);
+    const healthComponent = lookup(id);
 
     Object.keys(healthComponent).forEach(key => {
       if ($properties.includes(key) === false) {
@@ -18,8 +34,11 @@ global.HealthComponent = (function() {
   }
 
   return Object.freeze({
-    getProperties,
-    validate,
+    hasParent: () => { return false; },
+    create,
+    update,
+    lookup,
+    destroy,
   });
 
 })();

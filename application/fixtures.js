@@ -38,9 +38,9 @@ global.Fixtures = (function() {
     }
 
     characters.forEach(id => {
-      Registry.createControlledComponent(id,{ control:-200 });
-      Registry.createSituatedComponent(id,{ currentLocation:GameState.getCurrentLocation() });
-      Registry.createFeelingsComponent(id,{ target:player, affection:-200, respect:0, fear:200 });
+      ControlledComponent.create(id,{ control:-200 });
+      SituatedComponent.create(id,{ currentLocation:GameState.getCurrentLocation() });
+      FeelingsComponent.create(id,{ target:player, affection:-200, respect:0, fear:200 });
     });
 
     return characters;

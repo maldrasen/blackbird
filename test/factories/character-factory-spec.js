@@ -13,11 +13,11 @@ describe("CharacterFactory", function() {
       expect(attributes.getBeauty()).to.be.within(1,100);
       expect(attributes.getMaxStamina()).to.be.within(1000,10000);
 
-      const health = Registry.lookupHealthComponent(id);
+      const health = HealthComponent.lookup(id);
       expect(health.currentHealth).to.be.within(1,1000);
       expect(health.currentHealth).to.equal(health.maxHealth);
 
-      expect(Registry.lookupArousalComponent(id).arousal).to.equal(0);
+      expect(ArousalComponent.lookup(id).arousal).to.equal(0);
     });
 
     it("can make a bunch of random characters quickly without crashing", function() {

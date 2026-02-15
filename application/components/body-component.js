@@ -14,10 +14,26 @@ global.BodyComponent = (function() {
     'description'
   ];
 
-  function getProperties() { return $properties; }
+  function create(id,data) {
+    Registry.createComponent(id,ComponentType.body,data);
+    validate(id);
+  }
+
+  function update(id,data) {
+    Registry.updateComponent(id,ComponentType.body,data);
+    validate(id);
+  }
+
+  function lookup(id) {
+    return Registry.lookupComponent(id,ComponentType.body);
+  }
+
+  function destroy(id) {
+    Registry.deleteComponent(id,ComponentType.body);
+  }
 
   function validate(id) {
-    const bodyComponent = Registry.lookupBodyComponent(id)
+    const bodyComponent = lookup(id)
 
     Object.keys(bodyComponent).forEach(key => {
       if ($properties.includes(key) === false) {
@@ -46,7 +62,7 @@ global.BodyComponent = (function() {
   }
 
   function createWrapper(argument) {
-    const body = argument.data || Registry.lookupBodyComponent(argument.id);
+    const body = argument.data || lookup(argument.id);
 
     // Confusingly mouth and throat are on the body component because they're height based.
     //   Mouth Depth = 80mm on a 1620mm high body.
@@ -66,8 +82,11 @@ global.BodyComponent = (function() {
   }
 
   return Object.freeze({
-    getProperties,
-    validate,
+    hasParent: () => { return false; },
+    create,
+    update,
+    lookup,
+    destroy,
     createWrapper,
   });
 

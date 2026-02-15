@@ -6,8 +6,8 @@ describe("FeelingsComponent", function() {
       const deer = Registry.createEntity();
 
       expect(function() {
-        Registry.createFeelingsComponent(wolf, { target:deer, affection:0, fear:0, respect:0 });
-        Registry.createFeelingsComponent(wolf, { target:deer, affection:0, fear:0, respect:0 });
+        FeelingsComponent.create(wolf, { target:deer, affection:0, fear:0, respect:0 });
+        FeelingsComponent.create(wolf, { target:deer, affection:0, fear:0, respect:0 });
       }).to.throw('Validation Failed');
     });
 
@@ -16,9 +16,9 @@ describe("FeelingsComponent", function() {
       const rabbit = Registry.createEntity();
       const horse = Registry.createEntity();
 
-      Registry.createFeelingsComponent(wolf, { target:rabbit, affection:80, fear:0, respect:10 });
-      Registry.createFeelingsComponent(wolf, { target:horse, affection:40, fear:20, respect:30 });
-      Registry.createFeelingsComponent(horse, { target:rabbit, affection:10, fear:0, respect:0 });
+      FeelingsComponent.create(wolf, { target:rabbit, affection:80, fear:0, respect:10 });
+      FeelingsComponent.create(wolf, { target:horse, affection:40, fear:20, respect:30 });
+      FeelingsComponent.create(horse, { target:rabbit, affection:10, fear:0, respect:0 });
 
       const feelings = FeelingsComponent.findByTarget(wolf, rabbit);
       expect(feelings._parentId).to.equal(wolf);

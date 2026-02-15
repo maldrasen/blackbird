@@ -1,10 +1,27 @@
 global.ControlledComponent = (function() {
   const $properties = ['control'];
 
-  function getProperties() { return $properties; }
+  function create(id,data) {
+    Registry.createComponent(id,ComponentType.controlled,data);
+    validate(id);
+  }
+
+  function update(id,data) {
+    Registry.updateComponent(id,ComponentType.controlled,data);
+    validate(id);
+  }
+
+  function lookup(id) {
+    return Registry.lookupComponent(id,ComponentType.controlled);
+  }
+
+  function destroy(id) {
+    Registry.deleteComponent(id,ComponentType.controlled);
+  }
+
 
   function validate(id) {
-    const controlledComponent = Registry.lookupControlledComponent(id);
+    const controlledComponent = lookup(id);
 
     Object.keys(controlledComponent).forEach(key => {
       if ($properties.includes(key) === false) {
@@ -16,8 +33,11 @@ global.ControlledComponent = (function() {
   }
 
   return Object.freeze({
-    getProperties,
-    validate,
+    hasParent: () => { return false; },
+    create,
+    update,
+    lookup,
+    destroy,
   });
 
 })();

@@ -1,10 +1,28 @@
 global.MemoryComponent = (function() {
   const $properties = [_parentId,'time','type','details'];
 
-  function getProperties() { return $properties; }
+  function create(id,data) {
+    const entity = Registry.createEntity();
+    Registry.createComponent(entity, ComponentType.memory, { _parentId:id, ...data});
+    validate(entity);
+    return entity;
+  }
+
+  function update(id,data) {
+    Registry.updateComponent(id,ComponentType.memory,data);
+    validate(id);
+  }
+
+  function lookup(id) {
+    return Registry.lookupComponent(id,ComponentType.memory);
+  }
+
+  function destroy(id) {
+    Registry.deleteComponent(id,ComponentType.memory);
+  }
 
   function validate(id) {
-    const memoryComponent = Registry.lookupMemoryComponent(id)
+    const memoryComponent = lookup(id)
 
     Object.keys(memoryComponent).forEach(key => {
       if ($properties.includes(key) === false) {
@@ -18,8 +36,11 @@ global.MemoryComponent = (function() {
   }
 
   return Object.freeze({
-    getProperties,
-    validate,
+    hasParent: () => { return true; },
+    create,
+    update,
+    lookup,
+    destroy,
   });
 
 })();

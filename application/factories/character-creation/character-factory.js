@@ -153,21 +153,21 @@ global.CharacterFactory = (function() {
       aspects: aspectsData,
     }});
 
-    Registry.createActorComponent(characterId, actorData);
-    Registry.createAnusComponent(characterId, anusData);
-    Registry.createArousalComponent(characterId, { arousal:0 });
-    Registry.createAttributesComponent(characterId, attributesData);
-    Registry.createBodyComponent(characterId, bodyData);
-    Registry.createHealthComponent(characterId, healthData);
-    Registry.createMouthComponent(characterId, mouthData);
-    Registry.createPersonalityComponent(characterId, personalityData);
-    Registry.createSkillsComponent(characterId, skillsData);
-    Registry.createSexualPreferencesComponent(characterId, sexualPreferences);
-    Registry.createAspectsComponent(characterId, aspectsData);
+    ActorComponent.create(characterId, actorData);
+    AnusComponent.create(characterId, anusData);
+    ArousalComponent.create(characterId, { arousal:0 });
+    AttributesComponent.create(characterId, attributesData);
+    BodyComponent.create(characterId, bodyData);
+    HealthComponent.create(characterId, healthData);
+    MouthComponent.create(characterId, mouthData);
+    PersonalityComponent.create(characterId, personalityData);
+    SkillsComponent.create(characterId, skillsData);
+    SexualPreferencesComponent.create(characterId, sexualPreferences);
+    AspectsComponent.create(characterId, aspectsData);
 
-    if (breastsData) { Registry.createBreastsComponent(characterId, breastsData); }
-    if (cockData) { Registry.createCockComponent(characterId, cockData); }
-    if (pussyData) { Registry.createPussyComponent(characterId, pussyData); }
+    if (breastsData) { BreastsComponent.create(characterId, breastsData); }
+    if (cockData) { CockComponent.create(characterId, cockData); }
+    if (pussyData) { PussyComponent.create(characterId, pussyData); }
 
     return characterId;
   }
@@ -186,10 +186,10 @@ global.CharacterFactory = (function() {
     const attributesComponent = AttributesFactory.rollAttributes(genderCode, speciesCode);
     const healthComponent = AttributesFactory.rollHealth(attributesComponent);
 
-    Registry.createActorComponent(playerId, actorComponent);
-    Registry.createArousalComponent(playerId, arousalComponent);
-    Registry.createAttributesComponent(playerId, attributesComponent);
-    Registry.createHealthComponent(playerId, healthComponent);
+    ActorComponent.create(playerId, actorComponent);
+    ArousalComponent.create(playerId, arousalComponent);
+    AttributesComponent.create(playerId, attributesComponent);
+    HealthComponent.create(playerId, healthComponent);
 
     return playerId;
   }
@@ -227,7 +227,7 @@ global.CharacterFactory = (function() {
   function buildSkillsData(triggers) {
     const skillsData = {};
 
-    SkillsComponent.getProperties().forEach(skillCode => {
+    SkillsComponent.getSkills().forEach(skillCode => {
       skillsData[skillCode] = 0;
     });
 

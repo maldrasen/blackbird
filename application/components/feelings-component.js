@@ -1,10 +1,28 @@
 global.FeelingsComponent = (function() {
   const $properties = [_parentId, 'target', 'affection', 'fear', 'respect'];
 
-  function getProperties() { return $properties; }
+  function create(id,data) {
+    const entity = Registry.createEntity();
+    Registry.createComponent(entity, ComponentType.feelings, { _parentId:id, ...data});
+    validate(entity);
+    return entity;
+  }
+
+  function update(id,data) {
+    Registry.updateComponent(id,ComponentType.feelings,data);
+    validate(id);
+  }
+
+  function lookup(id) {
+    return Registry.lookupComponent(id,ComponentType.feelings);
+  }
+
+  function destroy(id) {
+    Registry.deleteComponent(id,ComponentType.feelings);
+  }
 
   function validate(id) {
-    const feelingsComponent = Registry.lookupFeelingsComponent(id)
+    const feelingsComponent = lookup(id)
 
     Object.keys(feelingsComponent).forEach(key => {
       if ($properties.includes(key) === false) {
@@ -31,12 +49,15 @@ global.FeelingsComponent = (function() {
       return component._parentId === characterId && component.target === targetId;
     })[0];
 
-    return entity ? Registry.lookupFeelingsComponent(entity) : null;
+    return entity ? lookup(entity) : null;
   }
 
   return Object.freeze({
-    getProperties,
-    validate,
+    hasParent: () => { return false; },
+    create,
+    update,
+    lookup,
+    destroy,
     findByTarget,
   });
 

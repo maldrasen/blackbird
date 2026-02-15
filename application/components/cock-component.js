@@ -18,10 +18,28 @@ global.CockComponent = (function() {
     'description'
   ];
 
-  function getProperties() { return $properties; }
+  function create(id,data) {
+    const entity = Registry.createEntity();
+    Registry.createComponent(entity, ComponentType.cock, { _parentId:id, ...data});
+    validate(entity);
+    return entity;
+  }
+
+  function update(id,data) {
+    Registry.updateComponent(id,ComponentType.cock,data);
+    validate(id);
+  }
+
+  function lookup(id) {
+    return Registry.lookupComponent(id,ComponentType.cock);
+  }
+
+  function destroy(id) {
+    Registry.deleteComponent(id,ComponentType.cock);
+  }
 
   function validate(id) {
-    const cockComponent = Registry.lookupCockComponent(id);
+    const cockComponent = lookup(id);
 
     Object.keys(cockComponent).forEach(key => {
       if ($properties.includes(key) === false) {
@@ -39,8 +57,11 @@ global.CockComponent = (function() {
   }
 
   return Object.freeze({
-    getProperties,
-    validate,
+    hasParent: () => { return true; },
+    create,
+    update,
+    lookup,
+    destroy,
   });
 
 })();

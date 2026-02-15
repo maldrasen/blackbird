@@ -1,13 +1,30 @@
 global.AttributesComponent = (function() {
-  const $properties = Object.keys(Attrib);
 
-  function getProperties() { return $properties; }
+  function create(id,data) {
+    Registry.createComponent(id,ComponentType.attributes,data);
+    validate(id);
+  }
+
+  function update(id,data) {
+    Registry.updateComponent(id,ComponentType.attributes,data);
+    validate(id);
+  }
+
+  function lookup(id) {
+    return Registry.lookupComponent(id,ComponentType.attributes);
+  }
+
+  function destroy(id) {
+    Registry.deleteComponent(id,ComponentType.attributes);
+  }
+
 
   function validate(id) {
-    const attributeComponent = Registry.lookupAttributesComponent(id)
+    const attributes = Object.keys(Attrib);
+    const attributeComponent = lookup(id);
 
     Object.keys(attributeComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (attributes.includes(key) === false) {
         throw `Attribute component does not have a ${key} property.`
       }
 
@@ -25,7 +42,7 @@ global.AttributesComponent = (function() {
   //
   // Wrapper can be either be created with the raw component data or the entity id.
   function createWrapper(argument) {
-    const attributes = argument.data || Registry.lookupAttributesComponent(argument.id);
+    const attributes = argument.data || lookup(argument.id);
 
     function getStrength() { return attributes.strength; }
     function getDexterity() { return attributes.dexterity; }
@@ -53,8 +70,11 @@ global.AttributesComponent = (function() {
   }
 
   return Object.freeze({
-    getProperties,
-    validate,
+    hasParent: () => { return false; },
+    create,
+    update,
+    lookup,
+    destroy,
     createWrapper,
   });
 

@@ -2,10 +2,28 @@ global.MouthComponent = (function() {
   const $properties = [_parentId,'placement','maxMouthWidth','maxThroatWidth','comfortableThroatDepth','tongueLength',
     'tongueShape'];
 
-  function getProperties() { return $properties; }
+  function create(id,data) {
+    const entity = Registry.createEntity();
+    Registry.createComponent(entity, ComponentType.mouth, { _parentId:id, ...data});
+    validate(entity);
+    return entity;
+  }
+
+  function update(id,data) {
+    Registry.updateComponent(id,ComponentType.mouth,data);
+    validate(id);
+  }
+
+  function lookup(id) {
+    return Registry.lookupComponent(id,ComponentType.mouth);
+  }
+
+  function destroy(id) {
+    Registry.deleteComponent(id,ComponentType.mouth);
+  }
 
   function validate(id) {
-    const mouthComponent = Registry.lookupMouthComponent(id);
+    const mouthComponent = lookup(id);
 
     Object.keys(mouthComponent).forEach(key => {
       if ($properties.includes(key) === false) {
@@ -23,8 +41,11 @@ global.MouthComponent = (function() {
   }
 
   return Object.freeze({
-    getProperties,
-    validate,
+    hasParent: () => { return true; },
+    create,
+    update,
+    lookup,
+    destroy,
   });
 
 })();

@@ -20,7 +20,7 @@ global.SexualPreference = (function() {
 
       // Gender based default preference.
       if (preference.defaultValue.male) {
-        return preference.defaultValue[Registry.lookupActorComponent(entity).gender];
+        return preference.defaultValue[ActorComponent.lookup(entity).gender];
       }
 
       throw `Invalid SexualPreference[${preference.code}].defaultValue`

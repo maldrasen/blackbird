@@ -4,10 +4,26 @@
 global.PersonalityComponent = (function() {
   const $properties = ['openness','conscientiousness','extraversion','agreeableness','neuroticism','sanity','broken'];
 
-  function getProperties() { return $properties; }
+  function create(id,data) {
+    Registry.createComponent(id,ComponentType.personality,data);
+    validate(id);
+  }
+
+  function update(id,data) {
+    Registry.updateComponent(id,ComponentType.personality,data);
+    validate(id);
+  }
+
+  function lookup(id) {
+    return Registry.lookupComponent(id,ComponentType.personality);
+  }
+
+  function destroy(id) {
+    Registry.deleteComponent(id,ComponentType.personality);
+  }
 
   function validate(id) {
-    const personalityComponent = Registry.lookupPersonalityComponent(id)
+    const personalityComponent = lookup(id)
 
     Object.keys(personalityComponent).forEach(key => {
       if ($properties.includes(key) === false) {
@@ -19,8 +35,11 @@ global.PersonalityComponent = (function() {
   }
 
   return Object.freeze({
-    getProperties,
-    validate,
+    hasParent: () => { return false; },
+    create,
+    update,
+    lookup,
+    destroy,
   });
 
 })();

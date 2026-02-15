@@ -1,10 +1,26 @@
 global.ManaComponent = (function() {
   const $properties = ['red_mana','yellow_mana','green_mana','blue_mana','black_mana'];
 
-  function getProperties() { return $properties; }
+  function create(id,data) {
+    Registry.createComponent(id,ComponentType.mana,data);
+    validate(id);
+  }
+
+  function update(id,data) {
+    Registry.updateComponent(id,ComponentType.mana,data);
+    validate(id);
+  }
+
+  function lookup(id) {
+    return Registry.lookupComponent(id,ComponentType.mana);
+  }
+
+  function destroy(id) {
+    Registry.deleteComponent(id,ComponentType.mana);
+  }
 
   function validate(id) {
-    const manaComponent = Registry.lookupManaComponent(id)
+    const manaComponent = lookup(id)
 
     Object.keys(manaComponent).forEach(key => {
       if ($properties.includes(key) === false) {
@@ -14,8 +30,11 @@ global.ManaComponent = (function() {
   }
 
   return Object.freeze({
-    getProperties,
-    validate,
+    hasParent: () => { return false; },
+    create,
+    update,
+    lookup,
+    destroy,
   });
 
 })();

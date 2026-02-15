@@ -1,10 +1,26 @@
 global.ArousalComponent = (function() {
   const $properties = ['arousal','pleasure','edging','refectory'];
 
-  function getProperties() { return $properties; }
+  function create(id,data) {
+    Registry.createComponent(id,ComponentType.arousal,data);
+    validate(id);
+  }
+
+  function update(id,data) {
+    Registry.updateComponent(id,ComponentType.arousal,data);
+    validate(id);
+  }
+
+  function lookup(id) {
+    return Registry.lookupComponent(id,ComponentType.arousal);
+  }
+
+  function destroy(id) {
+    Registry.deleteComponent(id,ComponentType.arousal);
+  }
 
   function validate(id) {
-    const arousalComponent = Registry.lookupArousalComponent(id)
+    const arousalComponent = lookup(id)
 
     Object.keys(arousalComponent).forEach(key => {
       if ($properties.includes(key) === false) {
@@ -16,8 +32,11 @@ global.ArousalComponent = (function() {
   }
 
   return Object.freeze({
-    getProperties,
-    validate,
+    hasParent: () => { return false; },
+    create,
+    update,
+    lookup,
+    destroy,
   });
 
 })();

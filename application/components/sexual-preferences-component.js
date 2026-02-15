@@ -1,17 +1,34 @@
 global.SexualPreferencesComponent = (function() {
 
-  function getProperties() { return SexualPreference.getAllCodes(); }
+  function create(id,data) {
+    Registry.createComponent(id, ComponentType.sexualPreferences, data);
+    validate(id);
+  }
+
+  function update(id,data) {
+    Registry.updateComponent(id,ComponentType.sexualPreferences,data);
+    validate(id);
+  }
+
+  function lookup(id) {
+    return Registry.lookupComponent(id,ComponentType.sexualPreferences);
+  }
+
+  function destroy(id) {
+    Registry.deleteComponent(id,ComponentType.sexualPreferences);
+  }
 
   function validate(id) {
-    const sexualPreferencesComponent = Registry.lookupSexualPreferencesComponent(id)
+    const codes = SexualPreference.getAllCodes();
+    const sexualPreferencesComponent = lookup(id)
 
     Object.keys(sexualPreferencesComponent).forEach(key => {
-      if (getProperties().includes(key) === false) {
+      if (codes.includes(key) === false) {
         throw `Sexual preference component does not have a ${key} property.`
       }
     });
 
-    getProperties().forEach(preferenceCode => {
+    codes.forEach(preferenceCode => {
       if (sexualPreferencesComponent[preferenceCode] != null) {
         Validate.between(preferenceCode, sexualPreferencesComponent[preferenceCode], -100, 100);
       }
@@ -19,8 +36,11 @@ global.SexualPreferencesComponent = (function() {
   }
 
   return Object.freeze({
-    getProperties,
-    validate,
+    hasParent: () => { return false; },
+    create,
+    update,
+    lookup,
+    destroy,
   });
 
 })();

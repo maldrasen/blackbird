@@ -17,10 +17,26 @@ global.BreastsComponent = (function() {
     'description'
   ];
 
-  function getProperties() { return $properties; }
+  function create(id,data) {
+    Registry.createComponent(id,ComponentType.breasts,data);
+    validate(id);
+  }
+
+  function update(id,data) {
+    Registry.updateComponent(id,ComponentType.breasts,data);
+    validate(id);
+  }
+
+  function lookup(id) {
+    return Registry.lookupComponent(id,ComponentType.breasts);
+  }
+
+  function destroy(id) {
+    Registry.deleteComponent(id,ComponentType.breasts);
+  }
 
   function validate(id) {
-    const breastsComponent = Registry.lookupBreastsComponent(id);
+    const breastsComponent = lookup(id);
 
     Object.keys(breastsComponent).forEach(key => {
       if ($properties.includes(key) === false) {
@@ -45,8 +61,11 @@ global.BreastsComponent = (function() {
   }
 
   return Object.freeze({
-    getProperties,
-    validate,
+    hasParent: () => { return false; },
+    create,
+    update,
+    lookup,
+    destroy,
   });
 
 })();

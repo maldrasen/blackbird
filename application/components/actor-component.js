@@ -1,10 +1,26 @@
 global.ActorComponent = (function() {
   const $properties = ['title','name','surname','gender','species'];
 
-  function getProperties() { return $properties; }
+  function create(id,data) {
+    Registry.createComponent(id,ComponentType.actor,data);
+    validate(id);
+  }
+
+  function update(id,data) {
+    Registry.updateComponent(id,ComponentType.actor,data);
+    validate(id);
+  }
+
+  function lookup(id) {
+    return Registry.lookupComponent(id,ComponentType.actor);
+  }
+
+  function destroy(id) {
+    Registry.deleteComponent(id,ComponentType.actor);
+  }
 
   function validate(id) {
-    const actorComponent = Registry.lookupActorComponent(id)
+    const actorComponent = lookup(id)
 
     Object.keys(actorComponent).forEach(key => {
       if ($properties.includes(key) === false) {
@@ -17,8 +33,11 @@ global.ActorComponent = (function() {
   }
 
   return Object.freeze({
-    getProperties,
-    validate,
+    hasParent: () => { return false; },
+    create,
+    update,
+    lookup,
+    destroy,
   });
 
 })();

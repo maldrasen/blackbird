@@ -17,10 +17,28 @@ global.PussyComponent = (function() {
     'prolapseLength'
   ];
 
-  function getProperties() { return $properties; }
+  function create(id,data) {
+    const entity = Registry.createEntity();
+    Registry.createComponent(entity, ComponentType.pussy, { _parentId:id, ...data});
+    validate(entity);
+    return entity;
+  }
+
+  function update(id,data) {
+    Registry.updateComponent(id,ComponentType.pussy,data);
+    validate(id);
+  }
+
+  function lookup(id) {
+    return Registry.lookupComponent(id,ComponentType.pussy);
+  }
+
+  function destroy(id) {
+    Registry.deleteComponent(id,ComponentType.pussy);
+  }
 
   function validate(id) {
-    const pussyComponent = Registry.lookupPussyComponent(id);
+    const pussyComponent = lookup(id);
 
     Object.keys(pussyComponent).forEach(key => {
       if ($properties.includes(key) === false) {
@@ -37,8 +55,11 @@ global.PussyComponent = (function() {
   }
 
   return Object.freeze({
-    getProperties,
-    validate,
+    hasParent: () => { return true; },
+    create,
+    update,
+    lookup,
+    destroy,
   });
 
 })();

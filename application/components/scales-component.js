@@ -42,10 +42,26 @@ global.ScalesComponent = (function() {
     'sufferingAnima',
   ];
 
-  function getProperties() { return $properties; }
+  function create(id,data) {
+    Registry.createComponent(id, ComponentType.scales,data);
+    validate(id);
+  }
+
+  function update(id,data) {
+    Registry.updateComponent(id,ComponentType.scales,data);
+    validate(id);
+  }
+
+  function lookup(id) {
+    return Registry.lookupComponent(id,ComponentType.scales);
+  }
+
+  function destroy(id) {
+    Registry.deleteComponent(id,ComponentType.scales);
+  }
 
   function validate(id) {
-    const scalesComponent = Registry.lookupScalesComponent(id);
+    const scalesComponent = lookup(id);
 
     Object.keys(scalesComponent).forEach(key => {
       if ($properties.includes(key) === false) {
@@ -55,8 +71,11 @@ global.ScalesComponent = (function() {
   }
 
   return Object.freeze({
-    getProperties,
-    validate,
+    hasParent: () => { return false; },
+    create,
+    update,
+    lookup,
+    destroy,
   });
 
 })();

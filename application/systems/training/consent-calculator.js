@@ -16,7 +16,7 @@ global.ConsentCalculator = (function() {
   }
 
   function applyBaseFactor(characterId, sexAction, factor, actor) {
-    const feelings = Registry.lookupFeelingsComponent(characterId);
+    const feelings = FeelingsComponent.lookup(characterId);
 
     console.log("Feelings:",feelings);
     return 1;
