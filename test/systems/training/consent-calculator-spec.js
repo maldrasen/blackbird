@@ -1,4 +1,4 @@
-describe.only("ConsentCalculator", function() {
+describe("ConsentCalculator", function() {
 
   describe("Base Classes", function() {
     it("calculates emotional actions");

@@ -3,6 +3,7 @@ global.GameState = (function() {
   let $gameTime;
   let $currentLocation;
   let $currentFloor;
+  let $player;
 
   // Reset is used to remove the loaded game from the state and leave it blank. This is done when the application is
   // started or when we quit a game and go back to the main menu.
@@ -31,6 +32,9 @@ global.GameState = (function() {
   function setCurrentLocation(location) { $currentLocation = location }
   function getCurrentLocation() { return $currentLocation; }
 
+  function setPlayer(player) { $player = player; }
+  function getPlayer() { return $player; }
+
   // === Save and Load =================================================================================================
 
   function pack() {
@@ -39,6 +43,7 @@ global.GameState = (function() {
       gameMode: StateMachine.getMode(),
       currentLocation: $currentLocation,
       currentFloor: $currentFloor,
+      player: $player,
     }
   }
 
@@ -51,6 +56,7 @@ global.GameState = (function() {
     $gameTime = data.gameTime;
     $currentLocation = data.currentLocation;
     $currentFloor = data.currentFloor;
+    $player = data.player;
     StateMachine.setMode(data.gameMode);
   }
 
@@ -59,6 +65,8 @@ global.GameState = (function() {
     initialize,
     setCurrentLocation,
     getCurrentLocation,
+    setPlayer,
+    getPlayer,
     pack,
     unpack,
   });

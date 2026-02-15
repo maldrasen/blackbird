@@ -20,9 +20,12 @@ global.Fixtures = (function() {
     StateMachine.render();
   }
 
-  // This function could take character options if I wanted to test a specific player type.
+  // When we build a player object, we set the player entity id in the GameState. This function could take character
+  // options if I wanted to test a specific player type.
   function buildRandomPlayer() {
-    return CharacterFactory.buildPlayer();
+    const player = CharacterFactory.buildPlayer();
+    GameState.setPlayer(player);
+    return player;
   }
 
   // Creating random characters needs a player to exist in order to create their feelings. This fixture is still using

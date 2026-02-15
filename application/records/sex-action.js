@@ -19,12 +19,15 @@ global.SexAction = (function() {
       getName: () => { return action.name; },
       getMainCategory: () => { return action.mainCategory; },
       getPartCategory: () => { return action.partCategory; },
-      getDifficulty: () => { return action.difficulty; },
-      getAvailableWhile: () => { return action.availableWhile },
-      getPersistPlayer: () => { return action.persistPlayer; },
-      getPersistPartner: () => { return action.persistPartner; },
-      getComplementing: () => { return action.complementing; },
-      getConflicting: () => { return action.conflicting; },
+      getConsentTarget: () => { return action.consentTarget; },
+      getConsentFactors: () => { return { ...action.consentFactors }; },
+
+      // Include these when we're sure they're being used.
+      // getAvailableWhile: () => { return action.availableWhile },
+      // getPersistPlayer: () => { return action.persistPlayer; },
+      // getPersistPartner: () => { return action.persistPartner; },
+      // getComplementing: () => { return action.complementing; },
+      // getConflicting: () => { return action.conflicting; },
     });
   }
 

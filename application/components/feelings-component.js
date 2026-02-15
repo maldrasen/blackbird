@@ -17,11 +17,27 @@ global.FeelingsComponent = (function() {
     Validate.exists('affection',feelingsComponent.affection);
     Validate.exists('fear',feelingsComponent.fear);
     Validate.exists('respect',feelingsComponent.respect);
+
+    // We need to validate that exactly one feelings component for the target character exists.
+    Validate.equals('uniqueness',Registry.findComponentsWith(ComponentType.feelings, component => {
+      return component._parentId === feelingsComponent._parentId && component.target === feelingsComponent.target;
+    }).length,1);
+  }
+
+  // Find by target always returns the first result because there is at most one FeelingsComponent with the parent id
+  // and the target id.
+  function findByTarget(characterId, targetId) {
+    const entity = Registry.findComponentsWith(ComponentType.feelings, component => {
+      return component._parentId === characterId && component.target === targetId;
+    })[0];
+
+    return entity ? Registry.lookupFeelingsComponent(entity) : null;
   }
 
   return Object.freeze({
     getProperties,
     validate,
+    findByTarget,
   });
 
 })();
