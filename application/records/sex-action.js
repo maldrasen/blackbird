@@ -20,7 +20,7 @@ global.SexAction = (function() {
       getMainCategory: () => { return action.mainCategory; },
       getPartCategory: () => { return action.partCategory; },
       getConsentTarget: () => { return action.consentTarget; },
-      getConsentFactors: () => { return { ...action.consentFactors }; },
+      getConsentFactors: () => { return [ ...action.consentFactors ]; },
 
       // Include these when we're sure they're being used.
       // getAvailableWhile: () => { return action.availableWhile },
