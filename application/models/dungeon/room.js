@@ -35,10 +35,6 @@ global.Room = (function() {
         $mainBox.y += yAdjust;
         $subBox.y += yAdjust;
       }
-
-      console.log("=== Reset Origin ===")
-      console.log(inspect())
-      console.log("Bounds:",bounds);
     }
 
     // Position of this room within the feature.

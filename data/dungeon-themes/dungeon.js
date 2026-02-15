@@ -6,21 +6,19 @@ DungeonTheme.register('dungeon',{
   name: "The Dungeon",
   rarity: 1,
 
-  // TODO: Do we need codes? What would they be used for when a feature has a type, or a collection of types and a list
-  //       of contents? We need to figure out how contents are selected. Should be a many to many relationship, but we
-  //       shouldn't need to explicitly state that every room can have a combat encounter.
+  // TODO: The room contents need to be a many to many relationship with the features. Rather than having arrays on
+  //       both I think the dungeon themes need to each have a join table. They would only reference features and
+  //       contents by code, as defined in that theme. Like the features, the contents will be simple, reference a
+  //       content type, and pass along a few arguments.
+  //
+  // TODO: Actually handle the rarity and update these values.
+  //
   features:[
-    // { rarity:1, type:'rect-room', size:[2,5],
-    //   contents:['empty']},
-
-    { rarity:1, type:'leg-room', size:[3,6],
-      contents:['empty'] },
-
-    // { rarity:1, type:'tea-room', size:[3,6],
-    //   contents:['empty'] },
-
-    // { rarity:1, type:'cross-room', size:[3,12],
-    //   contents:['empty'] },
+    { code:'small-square', rarity:1, type:'rect-room',  size:[2,5]},
+    { code:'large-square', rarity:1, type:'rect-room',  size:[5,8]},
+    { code:'leg-room',     rarity:1, type:'leg-room',   size:[3,8]},
+    { code:'tea-room',     rarity:1, type:'tea-room',   size:[3,8]},
+    { code:'cross-room',   rarity:1, type:'cross-room', size:[3,9]},
   ]
 
 });
