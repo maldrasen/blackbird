@@ -2,7 +2,14 @@ SexAction.register('fondle-ass',{
   name: 'Fondle Ass',
   mainCategory: 'Foreplay',
   partCategory: 'Ass',
-  difficulty: 20,
 
   persistPlayer: 'hands',
+
+
+  consentTarget: 20,
+  consentFactors: [
+    { type:'base', baseClass:'touching' },
+  ],
+
+
 });

@@ -23,4 +23,10 @@ SexAction.register('kiss',{
   // as a gentle personality preferring kissing, while an aggressive personality won't care for it.
   complementing: ['gentle personality'],
   conflicting:   ['aggressive personality'],
+
+  consentTarget: 15,
+  consentFactors: [
+    { type:'base', baseClass:'emotional' },
+  ],
+
 });

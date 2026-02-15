@@ -2,7 +2,6 @@ SexAction.register('get-blowjob',{
   name: 'Get Blowjob',
   mainCategory: 'Oral',
   partCategory: 'Cock',
-  difficulty: 35,
 
   persistPlayer: 'cock',
   persistPartner: 'mouth',
@@ -12,4 +11,10 @@ SexAction.register('get-blowjob',{
   complementing: ['cum-dump'],
   conflicting:   ['dominant'],
   skill:         'oral-sex',
+
+  consentTarget: 35,
+  consentFactors: [
+    { type:'base', baseClass:'service' },
+  ],
+
 });

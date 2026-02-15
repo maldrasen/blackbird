@@ -2,7 +2,6 @@ SexAction.register('get-deepthroat',{
   name: 'Get Deepthroated',
   mainCategory: 'Oral',
   partCategory: 'Cock',
-  difficulty: 80,
 
   // A follow-up action may require one or more persisted actions to be happening.
   while:['get-blowjob'],
@@ -15,4 +14,10 @@ SexAction.register('get-deepthroat',{
   complementing: ['cum-dump','masochistic','breath-player'],
   conflicting:   ['dominant'],
   skill:         'oral-sex',
+
+  consentTarget: 80,
+  consentFactors: [
+    { type:'base', baseClass:'roughService' },
+  ],
+
 });
