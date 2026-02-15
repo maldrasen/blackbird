@@ -1,5 +1,19 @@
 describe("Room", function() {
 
+  describe("setSubBox()", function() {
+    it("adjusts the room's origin point.", function() {
+      const room = Room.build();
+      room.setMainBox(10,10)
+      room.setSubBox(-3,-6,10,10);
+
+      const bounds = room.getBounds();
+      expect(bounds.xMin).to.equal(0);
+      expect(bounds.yMin).to.equal(0);
+      expect(bounds.xMax).to.equal(13);
+      expect(bounds.yMax).to.equal(16);
+    });
+  });
+
   describe("getBounds()", function() {
     it('calculates the bounds for a single box room', function() {
       const room = Room.build();
