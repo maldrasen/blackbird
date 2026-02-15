@@ -19,11 +19,7 @@ global.GameMode = Object.freeze({
   training: 'training',
 });
 
-// global.SystemFlags = Object.freeze({
-//   currentEvent: 'event.current-event',
-// });
-
-// === View ===
+// === Views ===
 
 global.AlertPosition = Object.freeze({
   side: 'side',
@@ -70,14 +66,6 @@ global.KeyCodes = Object.freeze({
 
 // === Components ===
 
-global.Attrib = Object.freeze({
-  strength: 'strength',
-  dexterity: 'dexterity',
-  vitality: 'vitality',
-  intelligence: 'intelligence',
-  beauty: 'beauty',
-});
-
 global.ComponentType = Object.freeze({
   actor: 'ActorComponent',
   anus: 'AnusComponent',
@@ -102,21 +90,19 @@ global.ComponentType = Object.freeze({
   skills: 'SkillsComponent',
 });
 
+global.Attrib = Object.freeze({
+  strength: 'strength',
+  dexterity: 'dexterity',
+  vitality: 'vitality',
+  intelligence: 'intelligence',
+  beauty: 'beauty',
+});
+
 global.Gender = Object.freeze({
   male: 'male',
   female: 'female',
   futa: 'futa',
   enby: 'enby',
-});
-
-global.NameRestriction = Object.freeze({
-  male: 'male',
-  female: 'female',
-  notMale: 'not-male',
-  notFemale: 'not-female',
-  hasFur: 'has-fur',
-  hasScales: 'has-scales',
-  hasSkin: 'has-skin',
 });
 
 global.AspectType = Object.freeze({
@@ -129,17 +115,12 @@ global.AspectType = Object.freeze({
   slave: 'Slave',
 });
 
-// === Bodies ===
+// === Training ===
 
-
-
-// === Events ===
-
-// global.EventType = Object.freeze({
-// });
-//
-// global.EventLayouts = Object.freeze({
-//   defaultLayout: 'default-layout',
-//   leftSquareImageLayout: 'left-square-image-layout',
-// });
-
+// Consent uses numbers so that they can be compared.
+global.Consent = Object.freeze({
+  eager: 3,
+  willing: 2,
+  reluctant: 1,
+  unwilling: 0,
+});

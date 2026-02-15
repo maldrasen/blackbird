@@ -3,18 +3,18 @@ SexAction.register('get-blowjob',{
   mainCategory: 'Oral',
   partCategory: 'Cock',
 
-  persistPlayer: 'cock',
-  persistPartner: 'mouth',
-
-  requirements:["check to see if partner can fit player's cock in mouth"],
-
-  complementing: ['cum-dump'],
-  conflicting:   ['dominant'],
-  skill:         'oral-sex',
+  // persistPlayer: 'cock',
+  // persistPartner: 'mouth',
+  //
+  // requirements:["check to see if partner can fit player's cock in mouth"],
+  //
+  // complementing: ['cum-dump'],
+  // conflicting:   ['dominant'],
+  // skill:         'oral-sex',
 
   consentTarget: 35,
   consentFactors: [
-    { type:'base', baseClass:'service' },
+    { type:'base', baseClass: SexAction.BaseClass.service },
   ],
 
 });

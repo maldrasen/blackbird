@@ -3,12 +3,12 @@ SexAction.register('fondle-breasts',{
   mainCategory: 'Foreplay',
   partCategory: 'Breasts',
 
-  persistPlayer: 'hands',
-  persistPartner: 'breasts',
+  // persistPlayer: 'hands',
+  // persistPartner: 'breasts',
 
   consentTarget: 15,
   consentFactors: [
-    { type:'base', baseClass:'touching' },
+    { type:'base', baseClass: SexAction.BaseClass.touching },
   ],
 
 });

@@ -1,6 +1,13 @@
 global.SexAction = (function() {
   const $sexActions = {};
 
+  const BaseClass = {
+    emotional: 'emotional',
+    roughService: 'roughService',
+    service: 'service',
+    touching: 'touching',
+  };
+
   function register(code,data) {
     $sexActions[code] = data;
   }
@@ -32,6 +39,7 @@ global.SexAction = (function() {
   }
 
   return Object.freeze({
+    BaseClass,
     register,
     getAllCodes,
     lookup,

@@ -1,5 +1,8 @@
 
+.DS_Store
+
 /.idea
+/docs/.obsidian
 /dist
 /lib/*.js
 /lib/*.css

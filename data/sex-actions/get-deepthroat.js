@@ -4,20 +4,20 @@ SexAction.register('get-deepthroat',{
   partCategory: 'Cock',
 
   // A follow-up action may require one or more persisted actions to be happening.
-  while:['get-blowjob'],
-
-  persistPlayer:'cock',
-  persistPartner:'mouth',
-
-  requirements:["check to see if partner can fit player's cock in mouth","and throat"],
-
-  complementing: ['cum-dump','masochistic','breath-player'],
-  conflicting:   ['dominant'],
-  skill:         'oral-sex',
+  // while:['get-blowjob'],
+  //
+  // persistPlayer:'cock',
+  // persistPartner:'mouth',
+  //
+  // requirements:["check to see if partner can fit player's cock in mouth","and throat"],
+  //
+  // complementing: ['cum-dump','masochistic','breath-player'],
+  // conflicting:   ['dominant'],
+  // skill:         'oral-sex',
 
   consentTarget: 80,
   consentFactors: [
-    { type:'base', baseClass:'roughService' },
+    { type:'base', baseClass: SexAction.BaseClass.roughService },
   ],
 
 });
