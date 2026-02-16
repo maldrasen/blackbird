@@ -9,13 +9,23 @@ SexAction.register('deep-kiss',{
   // persistPlayer:'mouth',
   // persistPartner:'mouth',
   //
-  // complementing: [],
-  // conflicting:   [],
+  // Preferences
+  // complementing: ['affection-slut','oral-slut'],
+  // conflicting:   ['humiliation-slut'],
+  //
+  // Personality
+  // complementing: ['gentle personality'],
+  // conflicting:   ['aggressive personality'],
 
   consentTarget: 30,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.emotional },
     { type:'arousal', strength:0.3 },
+    { type:'gender' },
+    // { type:'complementing' },
+    // { type:'conflicting' },
   ],
+
+
 
 });

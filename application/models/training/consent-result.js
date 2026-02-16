@@ -23,8 +23,9 @@ global.ConsentResult = (function() {
     // Apply a single factor. This function is only public in order to make
     // the model easier to test each factor in isolation.
     function applyFactor(factor) {
-      if (factor.type === 'base') { return applyBaseFactor(factor); }
+      if (factor.type === 'base')    { return applyBaseFactor(factor);    }
       if (factor.type === 'arousal') { return applyArousalFactor(factor); }
+      if (factor.type === 'gender')  { return applyGenderFactor(factor);  }
       throw `Unrecognized consent factor type: ${factor.type}`;
     }
 
@@ -71,6 +72,33 @@ global.ConsentResult = (function() {
         value: arousal });
     }
 
+    function applyGenderFactor(factor) {
+      const preferences = SexualPreferencesComponent.lookup($characterId);
+      const gender = ActorComponent.lookup($targetId).gender;
+
+      let maleFactor = 1;
+      let femaleFactor = 1;
+
+      if (gender === Gender.male) {
+        maleFactor = sexualPreferenceValue(preferences['androphilic']);
+      }
+      if (gender === Gender.female) {
+        femaleFactor = sexualPreferenceValue(preferences['gynophilic']);
+      }
+      // Futa characters apply both male and female gender preferences.
+      if (gender === Gender.futa) {
+        maleFactor = sexualPreferenceValue(preferences['androphilic'])
+        femaleFactor = sexualPreferenceValue(preferences['gynophilic']);
+      }
+      // Non-Binary character apply both male and female gender preferences at half strength. (0.75 - 1.5)
+      if (gender === Gender.enby) {
+        maleFactor = (1 + sexualPreferenceValue(preferences['androphilic'])) / 2;
+        femaleFactor = (1 + sexualPreferenceValue(preferences['gynophilic'])) / 2;
+      }
+
+      console.log("Male Factor?",maleFactor)
+    }
+
     return Object.freeze({
       getCharacter: () => { return $characterId; },
       getTarget: () => { return $targetId; },
@@ -95,9 +123,29 @@ global.ConsentResult = (function() {
     ])(rawValue);
   }
 
+  // The sexual preferences are measured on a scale from -100 to 100. This function takes the raw preference value and
+  // first applies a geometric curve to it, then returns a value to be used as a factor for the running value. If the
+  // sexual preference is null this function returns 1. (no effect)
+  //
+  //   Strength 2: [0.50 - 2]
+  //   Strength 3: [0.33 - 3]
+  //   Strength 4: [0.25 - 4]
+  //   Strength 5: [0.20 - 5]
+  //
+  function sexualPreferenceValue(rawValue, strength=2) {
+    if (rawValue == null || rawValue === 0) { return 1; }
+    const curved = Math.pow(rawValue,2) * 0.01;
+
+    if (strength === 2) { return (rawValue > 0) ? 1 + (curved/100)   : 1 - (curved/200); }
+    if (strength === 3) { return (rawValue > 0) ? 1 + (curved/50)    : 1 - (curved/149.25); }
+    if (strength === 4) { return (rawValue > 0) ? 1 + (curved/33.33) : 1 - (curved/133.33); }
+    if (strength === 5) { return (rawValue > 0) ? 1 + (curved/25)    : 1 - (curved/125); }
+  }
+
   return Object.freeze({
     build,
     feelingBaseValue,
+    sexualPreferenceValue,
   });
 
 })();

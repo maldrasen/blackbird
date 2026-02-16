@@ -16,6 +16,7 @@ SexAction.register('get-blowjob',{
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.service },
     { type:'arousal', strength:0.4 },
+    { type:'gender' },
   ],
 
 });

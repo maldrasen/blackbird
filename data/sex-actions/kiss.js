@@ -20,6 +20,10 @@ SexAction.register('kiss',{
 
   // By default, oral preferences will complement mouth actions. Other preferences won't be as straight forward, such
   // as a gentle personality preferring kissing, while an aggressive personality won't care for it.
+
+  // complementing: ['affection-slut','oral-slut'],
+  // conflicting:   ['humiliation-slut'],
+
   // complementing: ['gentle personality'],
   // conflicting:   ['aggressive personality'],
 
@@ -27,6 +31,7 @@ SexAction.register('kiss',{
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.emotional },
     { type:'arousal', strength:0.2 },
+    { type:'gender' },
   ],
 
 });
