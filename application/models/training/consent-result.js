@@ -3,18 +3,25 @@ global.ConsentResult = (function() {
   function build(characterId, targetId=null) {
     const $characterId = characterId;
     const $targetId = targetId || GameState.getPlayer();
-    const factors = [];
 
-    let $consentValue = 0;
-    let $sexAction;
+    let $response, $consentValue, $sexAction;
 
+    // Setting the sex action also resets the results so that the same
+    // ConsentResult object can be used for multiple actions
     function setSexAction(code) {
+      $response = { additive:[] };
+      $consentValue = 0;
       $sexAction = SexAction.lookup(code);
+    }
+
+    function applyFactors() {
       $sexAction.getConsentFactors().forEach(factor => {
         applyFactor(factor);
       });
     }
 
+    // Apply a single factor. This function is only public in order to make
+    // the model easier to test each factor in isolation.
     function applyFactor(factor) {
       if (factor.type === 'base') { return applyBaseFactor(factor); }
       throw `Unrecognized consent factor type: ${factor.type}`;
@@ -22,18 +29,37 @@ global.ConsentResult = (function() {
 
     function applyBaseFactor(factor) {
       const feelings = FeelingsComponent.findByTarget($characterId, $targetId);
-      console.log("Feelings:",feelings);
+      const affectionBase = feelingBaseValue(feelings.affection);
+      const fearBase = feelingBaseValue(feelings.fear);
+      const respectBase = feelingBaseValue(feelings.respect);
 
-      // SexAction.BaseClass.emotional // 100% affection
-      // SexAction.BaseClass.roughService // Respect / Fear
-      // SexAction.BaseClass.service // Respect
-      // SexAction.BaseClass.touching // Affection / fear
+      let baseValue;
 
+      switch (factor.baseClass) {
+        case SexAction.BaseClass.emotional:
+          baseValue = affectionBase - (fearBase/2); break;
+        case SexAction.BaseClass.roughService:
+          baseValue = (respectBase + fearBase) / 2; break;
+        case SexAction.BaseClass.service:
+          baseValue = respectBase + (affectionBase/2); break;
+        case SexAction.BaseClass.touching:
+          baseValue = affectionBase + (fearBase/2); break;
+        default: throw `Unrecognized BaseClass (${factor.baseClass})`;
+      }
+
+      $consentValue += baseValue;
+      $response.additive.push({
+        label: TextHelper.titlecaseAll(factor.baseClass),
+        value: baseValue });
     }
 
     return Object.freeze({
       getCharacter: () => { return $characterId; },
       getTarget: () => { return $targetId; },
+      getResponse: () => { return $response; },
+      getConsentValue: () => { return $consentValue; },
+      applyFactors,
+      applyFactor,
       setSexAction,
     });
   }

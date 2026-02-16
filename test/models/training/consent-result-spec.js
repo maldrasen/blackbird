@@ -1,18 +1,30 @@
 describe.only("ConsentResult", function() {
 
+
   describe("Base Classes", function() {
     it("calculates emotional actions", function() {
       const wolf = Registry.createEntity();
       const rabbit = Registry.createEntity();
+      const deer = Registry.createEntity();
+
+      let result, response;
 
       FeelingsComponent.create(rabbit, { target:wolf, affection:20, fear:100, respect:50 });
+      FeelingsComponent.create(deer, { target:wolf, affection:100, fear:20, respect:50 });
 
-      console.log("Calculation:")
-
-      const result = ConsentResult.build(rabbit, wolf);
+      result = ConsentResult.build(rabbit, wolf);
       result.setSexAction('kiss');
+      result.applyFactor({ type:'base', baseClass: SexAction.BaseClass.emotional });
+      response = result.getResponse().additive[0];
+      expect(response.value).to.equal(-3);
+      expect(response.label).to.equal('Emotional');
 
-      console.log("Result:",result)
+      result = ConsentResult.build(deer, wolf);
+      result.setSexAction('deep-kiss');
+      result.applyFactor({ type:'base', baseClass: SexAction.BaseClass.emotional });
+      response = result.getResponse().additive[0];
+      expect(response.value).to.equal(9);
+      expect(response.label).to.equal('Emotional');
     });
 
     it("calculates touching actions");

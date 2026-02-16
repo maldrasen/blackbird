@@ -1,15 +1,22 @@
-global.TextHelper = {
+global.TextHelper = (function() {
 
-  titlecase(word) {
+  function titlecase(word) {
     return `${word.charAt(0).toUpperCase()}${word.substring(1)}`;
-  },
+  }
 
-  titlecaseAll(phrase) {
-    return phrase.split(/\s/).map(word => { return TextUtility.titlecase(word) }).join(' ');
-  },
+  function titlecaseAll(phrase) {
+    return phrase.split(/\s/).map(word => { return titlecase(word) }).join(' ');
+  }
 
-  formatNumber(number) {
+  // Format number with 2 decimal places.
+  function formatNumber(number) {
     return `${Math.round(number*100) / 100}`
-  },
+  }
 
-}
+  return Object.freeze({
+    titlecase,
+    titlecaseAll,
+    formatNumber,
+  })
+
+})();
