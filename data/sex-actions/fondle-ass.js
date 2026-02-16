@@ -8,6 +8,7 @@ SexAction.register('fondle-ass',{
   consentTarget: 20,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.touching },
+    { type:'arousal' },
   ],
 
 

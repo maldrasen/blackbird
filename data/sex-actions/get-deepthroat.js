@@ -18,6 +18,7 @@ SexAction.register('get-deepthroat',{
   consentTarget: 80,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.roughService },
+    { type:'arousal', strength:0.4 },
   ],
 
 });

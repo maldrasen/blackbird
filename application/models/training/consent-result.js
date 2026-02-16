@@ -24,6 +24,7 @@ global.ConsentResult = (function() {
     // the model easier to test each factor in isolation.
     function applyFactor(factor) {
       if (factor.type === 'base') { return applyBaseFactor(factor); }
+      if (factor.type === 'arousal') { return applyArousalFactor(factor); }
       throw `Unrecognized consent factor type: ${factor.type}`;
     }
 
@@ -51,6 +52,23 @@ global.ConsentResult = (function() {
       $response.additive.push({
         label: TextHelper.titlecaseAll(factor.baseClass),
         value: baseValue });
+    }
+
+    // Apply a geometric growth curve to the arousal value. This curve assumes arousal is somewhere between 0 and 100.
+    // Values above 100 will produce unusually high consent numbers, but that's probably fine. Values above 100 are
+    // probably only be achieved with drugs or mind control, so consent going out the window works thematically.
+    function applyArousalFactor(factor) {
+      const component = ArousalComponent.lookup($characterId);
+
+      let arousal = Math.pow(component.arousal,2) * 0.01;
+      if (factor.strength) {
+        arousal *= factor.strength;
+      }
+
+      $consentValue += arousal;
+      $response.additive.push({
+        label: 'Arousal',
+        value: arousal });
     }
 
     return Object.freeze({

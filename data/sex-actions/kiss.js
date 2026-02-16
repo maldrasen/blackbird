@@ -26,6 +26,7 @@ SexAction.register('kiss',{
   consentTarget: 15,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.emotional },
+    { type:'arousal', strength:0.2 },
   ],
 
 });
