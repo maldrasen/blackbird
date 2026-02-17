@@ -1,6 +1,6 @@
 describe("ConsentResult", function() {
 
-  describe("applyFactor()", function() {
+  describe.only("applyFactor()", function() {
     it("applies emotional actions", function() {
       const wolf = Registry.createEntity();
       const rabbit = Registry.createEntity();
@@ -17,6 +17,7 @@ describe("ConsentResult", function() {
       response = result.getResponse().additive[0];
       expect(response.value).to.equal(-3);
       expect(response.label).to.equal('Emotional');
+      expect(result.getConsent()).to.equal(Consent.unwilling);
 
       result = ConsentResult(deer, wolf);
       result.setSexAction('deep-kiss');
@@ -24,6 +25,7 @@ describe("ConsentResult", function() {
       response = result.getResponse().additive[0];
       expect(response.value).to.equal(9);
       expect(response.label).to.equal('Emotional');
+      expect(result.getConsent()).to.equal(Consent.unwilling);
     });
 
     it("applies touching actions", function() {
@@ -115,6 +117,7 @@ describe("ConsentResult", function() {
       result.applyFactor({ type:'arousal' });
 
       expect(result.getResponse().additive[0].value).to.equal(25);
+      expect(result.getConsent()).to.equal(Consent.willing);
     });
 
     it("applies high arousal", function() {
@@ -128,6 +131,7 @@ describe("ConsentResult", function() {
       result.applyFactor({ type:'arousal' });
 
       expect(result.getResponse().additive[0].value).to.equal(64);
+      expect(result.getConsent()).to.equal(Consent.eager);
     });
 
     it("applies factor strength to arousal value", function() {
@@ -141,6 +145,7 @@ describe("ConsentResult", function() {
       result.applyFactor({ type:'arousal', strength:0.2 });
 
       expect(result.getResponse().additive[0].value).to.equal(20);
+      expect(result.getConsent()).to.equal(Consent.willing);
     });
 
     it("applies gender preferences", function() {
@@ -159,6 +164,7 @@ describe("ConsentResult", function() {
       expect(Math.round(result.getConsentValue())).to.equal(39);
       expect(result.getResponse().multiplicative[0].label).to.equal('Gender');
       expect(Math.round(100 * result.getResponse().multiplicative[0].value)).to.equal(156);
+      expect(result.getConsent()).to.equal(Consent.reluctant);
     });
 
     it("applies scaled gender preferences", function() {
@@ -175,6 +181,7 @@ describe("ConsentResult", function() {
       result.applyFactor({ type:'gender', scale:1.5 });
       expect(Math.round(result.getConsentValue())).to.equal(32);
       expect(Math.round(100 * result.getResponse().multiplicative[0].value)).to.equal(128);
+      expect(result.getConsent()).to.equal(Consent.unwilling);
     });
 
     it("applies gender preferences for futanari characters (when straight)", function() {
@@ -192,6 +199,7 @@ describe("ConsentResult", function() {
       result.applyFactor({ type:'gender' });
       expect(Math.round(result.getConsentValue())).to.equal(28);
       expect(Math.round(100 * result.getResponse().multiplicative[0].value)).to.equal(112);
+      expect(result.getConsent()).to.equal(Consent.willing);
     });
 
     it("applies gender preferences for futanari characters (when bi)", function() {
@@ -209,6 +217,7 @@ describe("ConsentResult", function() {
       result.applyFactor({ type:'gender' });
       expect(Math.round(result.getConsentValue())).to.equal(61);
       expect(Math.round(100 * result.getResponse().multiplicative[0].value)).to.equal(244);
+      expect(result.getConsent()).to.equal(Consent.eager);
     });
 
     it("applies gender preferences for non-binary characters", function() {
@@ -226,6 +235,7 @@ describe("ConsentResult", function() {
       result.applyFactor({ type:'gender' });
       expect(Math.round(result.getConsentValue())).to.equal(41);
       expect(Math.round(100 * result.getResponse().multiplicative[0].value)).to.equal(164);
+      expect(result.getConsent()).to.equal(Consent.eager);
     });
 
     it("applies complementing sexual preferences", function() {
@@ -290,6 +300,7 @@ describe("ConsentResult", function() {
       result.applyFactors();
 
       expect(Math.round(result.getConsentValue())).to.equal(46);
+      expect(result.getConsent()).to.equal(Consent.willing);
     });
   });
 

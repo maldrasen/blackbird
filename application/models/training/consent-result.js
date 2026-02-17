@@ -5,6 +5,14 @@ global.ConsentResult = (characterId, targetId=null) => {
 
   let $response, $consentValue, $sexAction;
 
+  function getConsent() {
+    const target = $sexAction.getConsentTarget();
+    if ($consentValue < target)        { return Consent.unwilling; }
+    if ($consentValue < (target*1.25)) { return Consent.reluctant; }
+    if ($consentValue < (target*2))    { return Consent.willing;   }
+    return Consent.eager;
+  }
+
   // Setting the sex action also resets the results so that the same
   // ConsentResult object can be used for multiple actions
   function setSexAction(code) {
@@ -143,8 +151,9 @@ global.ConsentResult = (characterId, targetId=null) => {
   return Object.freeze({
     getCharacter: () => { return $characterId; },
     getTarget: () => { return $targetId; },
-    getResponse: () => { return $response; },
+    getResponse: () => { return $response },
     getConsentValue: () => { return $consentValue; },
+    getConsent,
     applyFactors,
     applyFactor,
     setSexAction,
