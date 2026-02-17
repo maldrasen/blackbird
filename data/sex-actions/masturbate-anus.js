@@ -1,7 +1,8 @@
 SexAction.register('masturbate-anus',{
   name: 'Masturbate (Anus)',
   mainCategory: 'Performance',
-  partCategory: 'Cock',
+  playerCategory: 'Watch',
+  partnerCategory: 'Anus',
   description: `{T:name} will finger {T:his} asshole for you while you watch.`,
 
   // persistPartner:'anus',

@@ -1,7 +1,8 @@
 SexAction.register('kiss',{
   name: 'Kissing',
   mainCategory: 'Foreplay',
-  partCategory: 'Mouth',
+  playerCategory: 'Mouth',
+  partnerCategory: 'Mouth',
   description: `You and {T:name} will share an intimate kiss.`,
 
   // An action can persist body parts, such that if the next command issued doesn't involve these parts, the action

@@ -1,7 +1,8 @@
 SexAction.register('deep-kiss',{
   name: 'Deep Kiss',
   mainCategory: 'Foreplay',
-  partCategory: 'Mouth',
+  playerCategory: 'Mouth',
+  partnerCategory: 'Mouth',
   description: `You and {T:name} will share a passionate kiss, thrusting your tongue deep into {T:his} mouth, while 
     {T:he} does the same.`,
 

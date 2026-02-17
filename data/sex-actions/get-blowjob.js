@@ -1,7 +1,8 @@
 SexAction.register('get-blowjob',{
   name: 'Get Blowjob',
   mainCategory: 'Oral',
-  partCategory: 'Cock',
+  playerCategory: 'Cock',
+  partnerCategory: 'Mouth',
   description: `{T:name} will suck your cock.`,
 
   // persistPlayer: 'cock',
@@ -9,8 +10,6 @@ SexAction.register('get-blowjob',{
   //
   // requirements:["check to see if partner can fit player's cock in mouth"],
   //
-  // complementing: ['cum-dump'],
-  // conflicting:   ['dominant'],
   // skill:         'oral-sex',
 
   consentTarget: 35,

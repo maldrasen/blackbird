@@ -1,7 +1,8 @@
 SexAction.register('get-deepthroat',{
   name: 'Get Deepthroated',
   mainCategory: 'Oral',
-  partCategory: 'Cock',
+  playerCategory: 'Cock',
+  partnerCategory: 'Mouth',
   description: `{T:name} will try and deepthroat your cock, taking it as deep as {T:he} can.`,
 
   // A follow-up action may require one or more persisted actions to be happening.
@@ -12,8 +13,6 @@ SexAction.register('get-deepthroat',{
   //
   // requirements:["check to see if partner can fit player's cock in mouth","and throat"],
   //
-  // complementing: ['cum-dump','masochistic','breath-player'],
-  // conflicting:   ['dominant'],
   // skill:         'oral-sex',
 
   consentTarget: 80,
@@ -26,6 +25,8 @@ SexAction.register('get-deepthroat',{
     { type:'preference', code:'cum-dump', scale:3 },
     { type:'preference', code:'breath-player' },
     { type:'preference', code:'submissive' },
+    { type:'preference', code:'masochistic' },
+    { type:'preference', code:'sadist', conflicting:true },
     { type:'preference', code:'dominant', conflicting:true },
   ],
 

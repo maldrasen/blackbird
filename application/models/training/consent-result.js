@@ -41,6 +41,8 @@ global.ConsentResult = (characterId, targetId=null) => {
     switch (factor.baseClass) {
       case SexAction.BaseClass.emotional:
         baseValue = affectionBase - (fearBase/2); break;
+      case SexAction.BaseClass.reverseService:
+        baseValue = affectionBase + respectBase; break;
       case SexAction.BaseClass.roughService:
         baseValue = (respectBase + fearBase) / 2; break;
       case SexAction.BaseClass.service:

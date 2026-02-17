@@ -1,7 +1,8 @@
 SexAction.register('masturbate-cock',{
   name: 'Masturbate (Cock)',
   mainCategory: 'Performance',
-  partCategory: 'Cock',
+  playerCategory: 'Watch',
+  partnerCategory: 'Cock',
   description: `{T:name} will masturbate for you while you watch.`,
 
   // persistPartner:'cock',

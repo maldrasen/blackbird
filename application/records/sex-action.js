@@ -4,6 +4,7 @@ global.SexAction = (function() {
   const BaseClass = {
     emotional: 'emotional',
     performance: 'performance',
+    reverseService: 'reverseService',
     roughService: 'roughService',
     service: 'service',
     touching: 'touching',
@@ -26,7 +27,8 @@ global.SexAction = (function() {
       getCode: () => { return code; },
       getName: () => { return action.name; },
       getMainCategory: () => { return action.mainCategory; },
-      getPartCategory: () => { return action.partCategory; },
+      getPartnerCategory: () => { return action.partnerCategory; },
+      getPlayerCategory: () => { return action.playerCategory; },
       getConsentTarget: () => { return action.consentTarget; },
       getConsentFactors: () => { return [ ...action.consentFactors ]; },
 

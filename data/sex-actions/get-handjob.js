@@ -1,0 +1,18 @@
+SexAction.register('get-handjob',{
+  name: 'Get Handjob',
+  mainCategory: 'Service',
+  playerCategory: 'Cock',
+  partnerCategory: 'Hands',
+  description: `{T:name} will jack off your cock.`,
+
+  consentTarget: 25,
+  consentFactors: [
+    { type:'base', baseClass: SexAction.BaseClass.service },
+    { type:'arousal', strength:0.4 },
+    { type:'gender' },
+    { type:'preference', code:'cock-lover', scale:3 },
+    { type:'preference', code:'submissive' },
+    { type:'preference', code:'dominant', conflicting:true },
+  ],
+
+});
