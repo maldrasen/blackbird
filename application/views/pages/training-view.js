@@ -1,20 +1,24 @@
 global.TrainingView = (function() {
 
   let $mainCategories;
-  let $partCategories;
+  let $partnerCategories;
+  let $playerCategories;
 
   function init() {
     $mainCategories = new Set();
-    $partCategories = new Set();
+    $partnerCategories = new Set();
+    $playerCategories = new Set();
 
     SexAction.getAllCodes().forEach(code => {
       const action = SexAction.lookup(code);
       $mainCategories.add(action.getMainCategory());
-      $partCategories.add(action.getPartCategory());
+      $partnerCategories.add(action.getPartnerCategory());
+      $playerCategories.add(action.getPlayerCategory());
     });
 
     $mainCategories = [...$mainCategories].sort();
-    $partCategories = [...$partCategories].sort();
+    $partnerCategories = [...$partnerCategories].sort();
+    $playerCategories = [...$playerCategories].sort();
   }
 
   function show() {
@@ -38,9 +42,14 @@ global.TrainingView = (function() {
         `<li class="toggle on"><a data-type="main" data-name="${name}" href="#">${name}</a></li>`));
     });
 
-    $partCategories.forEach(name => {
+    $partnerCategories.forEach(name => {
       topToggles.appendChild(X.createElement(
-        `<li class="toggle on"><a data-type="part" data-name="${name}" href="#">${name}</a></li>`));
+        `<li class="toggle on"><a data-type="partner" data-name="${name}" href="#">${name}</a></li>`));
+    });
+
+    $playerCategories.forEach(name => {
+      topToggles.appendChild(X.createElement(
+        `<li class="toggle on"><a data-type="player" data-name="${name}" href="#">${name}</a></li>`));
     });
 
     // All actions are added to the panel, even actions that will always be hidden. Each round will need to determine
@@ -53,7 +62,8 @@ global.TrainingView = (function() {
         `<li class="xhide"><a class="button xdisabled"
             data-code="${action.getCode()}"
             data-main-category="${action.getMainCategory()}"
-            data-part-category="${action.getPartCategory()}"
+            data-partner-category="${action.getPartnerCategory()}"
+            data-player-category="${action.getPlayerCategory()}"
             href="#">${action.getName()}</a></li>`));
     });
 
