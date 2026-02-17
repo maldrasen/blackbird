@@ -1,14 +1,6 @@
-global.Door = (function() {
-
-  function build() {
-
-    return Object.freeze({
-
-    });
-  }
+global.Door = () => {
 
   return Object.freeze({
-    build
   });
 
-})();
+}

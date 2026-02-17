@@ -1,4 +1,4 @@
-
+/*
 class Room {
   constructor(id, x, y, width, height) {
     this.id = id;
@@ -14,7 +14,7 @@ class Room {
   }
 
   // Get all edge tiles where doors could go
-  getEdgeTiles() { /* ... */ }
+  getEdgeTiles() {  }
 }
 
 class Door {
@@ -107,3 +107,4 @@ function findDisconnectedComponents(floor) {
 
   return components;
 }
+ */

@@ -2,7 +2,7 @@ describe("Room", function() {
 
   describe("setSubBox()", function() {
     it("adjusts the room's origin point.", function() {
-      const room = Room.build();
+      const room = Room();
       room.setMainBox(10,10)
       room.setSubBox(-3,-6,10,10);
 
@@ -16,7 +16,7 @@ describe("Room", function() {
 
   describe("getBounds()", function() {
     it('calculates the bounds for a single box room', function() {
-      const room = Room.build();
+      const room = Room();
       room.setMainBox(2,3);
 
       const bounds = room.getBounds();
@@ -27,7 +27,7 @@ describe("Room", function() {
     });
 
     it('calculates the bounds of a two box room. (N)', function() {
-      const room = Room.build();
+      const room = Room();
       room.setMainBox(4,4);
       room.setSubBox(1,4,2,2);
 
@@ -39,7 +39,7 @@ describe("Room", function() {
     });
 
     it('calculates the bounds of a two box room. (S)', function() {
-      const room = Room.build();
+      const room = Room();
       room.setMainBox(4,4);
       room.setSubBox(1,-2,2,2);
 
@@ -51,7 +51,7 @@ describe("Room", function() {
     });
 
     it('calculates the bounds of a two box room. (E)', function() {
-      const room = Room.build();
+      const room = Room();
       room.setMainBox(4,4);
       room.setSubBox(4,1,2,2);
 
@@ -63,7 +63,7 @@ describe("Room", function() {
     });
 
     it('calculates the bounds of a two box room. (W)', function() {
-      const room = Room.build();
+      const room = Room();
       room.setMainBox(4,4);
       room.setSubBox(-2,1,2,2);
 
@@ -77,7 +77,7 @@ describe("Room", function() {
 
   describe("containsTile()", function() {
     it('checks the main box', function() {
-      const room = Room.build();
+      const room = Room();
       room.setMainBox(1,4);
       expect(room.containsTile(0,0)).to.be.true;
       expect(room.containsTile(0,3)).to.be.true;
@@ -88,7 +88,7 @@ describe("Room", function() {
     });
 
     it('checks main and sub boxes', function() {
-      const room = Room.build();
+      const room = Room();
       room.setMainBox(3,1);
       room.setSubBox(3,0,1,3);
 

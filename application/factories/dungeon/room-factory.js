@@ -3,7 +3,7 @@ global.RoomFactory = (function() {
   // Build a single box room.
   //   size: [min,max]
   function buildSingleRoom(options) {
-    const room = Room.build();
+    const room = Room();
     room.setMainBox(
       Random.between(options.size[0],options.size[1]),
       Random.between(options.size[0],options.size[1]),
@@ -23,7 +23,7 @@ global.RoomFactory = (function() {
     const heightRange = notchRange(totalHeight);
     const notchWidth = Random.between(widthRange[0],widthRange[1]);
     const notchHeight = Random.between(heightRange[0],heightRange[1]);
-    const room = Room.build(options);
+    const room = Room(options);
 
     switch (rotation) {
       case 'NE':
@@ -60,7 +60,7 @@ global.RoomFactory = (function() {
     const notchHeight = Random.between(1, getTrimMax(totalHeight));
     const legWidth = totalWidth-(notchWidth*2);
     const legHeight = totalHeight-(notchHeight*2);
-    const room = Room.build(options);
+    const room = Room(options);
 
     switch(rotation) {
       case 'N':

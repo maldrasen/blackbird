@@ -8,7 +8,7 @@ global.FloorFactory = (function() {
     if (level == null) { throw "The floor number is required" }
     if (theme == null) { theme = pickTheme(level); }
 
-    return Floor.build({ level, theme });
+    return Floor({ level, theme });
   }
 
   // In order to do this, each floor needs a rarity map.
