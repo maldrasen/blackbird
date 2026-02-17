@@ -2,6 +2,7 @@ SexAction.register('get-blowjob',{
   name: 'Get Blowjob',
   mainCategory: 'Oral',
   partCategory: 'Cock',
+  description: `{T:name} will suck your cock.`,
 
   // persistPlayer: 'cock',
   // persistPartner: 'mouth',
@@ -17,6 +18,11 @@ SexAction.register('get-blowjob',{
     { type:'base', baseClass: SexAction.BaseClass.service },
     { type:'arousal', strength:0.4 },
     { type:'gender' },
+    { type:'preference', code:'oral-slut', scale:3 },
+    { type:'preference', code:'cock-lover', scale:3 },
+    { type:'preference', code:'cum-dump', scale:3 },
+    { type:'preference', code:'submissive' },
+    { type:'preference', code:'dominant', conflicting:true },
   ],
 
 });

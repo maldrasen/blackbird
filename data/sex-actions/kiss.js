@@ -2,6 +2,7 @@ SexAction.register('kiss',{
   name: 'Kissing',
   mainCategory: 'Foreplay',
   partCategory: 'Mouth',
+  description: `You and {T:name} will share an intimate kiss.`,
 
   // An action can persist body parts, such that if the next command issued doesn't involve these parts, the action
   // will persist on the next turn. An action could also just 'use' a body part, to release it from a previous action,
@@ -32,6 +33,11 @@ SexAction.register('kiss',{
     { type:'base', baseClass: SexAction.BaseClass.emotional },
     { type:'arousal', strength:0.2 },
     { type:'gender' },
+    { type:'preference', code:'oral-slut', scale:3 },
+    { type:'preference', code:'affection-slut' },
+    { type:'preference', code:'humiliation-slut', conflicting:true },
+    { type:'preference', code:'debaser', conflicting:true },
+    { type:'preference', code:'sadist', conflicting:true },
   ],
 
 });

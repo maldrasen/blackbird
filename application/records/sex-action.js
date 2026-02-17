@@ -3,6 +3,7 @@ global.SexAction = (function() {
 
   const BaseClass = {
     emotional: 'emotional',
+    performance: 'performance',
     roughService: 'roughService',
     service: 'service',
     touching: 'touching',

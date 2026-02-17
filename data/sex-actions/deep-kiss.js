@@ -2,16 +2,14 @@ SexAction.register('deep-kiss',{
   name: 'Deep Kiss',
   mainCategory: 'Foreplay',
   partCategory: 'Mouth',
+  description: `You and {T:name} will share a passionate kiss, thrusting your tongue deep into {T:his} mouth, while 
+    {T:he} does the same.`,
 
   // A follow up action may require one or more persisted actions to be happening.
   // availableWhile:['kiss'],
   //
   // persistPlayer:'mouth',
   // persistPartner:'mouth',
-  //
-  // Preferences
-  // complementing: ['affection-slut','oral-slut'],
-  // conflicting:   ['humiliation-slut'],
   //
   // Personality
   // complementing: ['gentle personality'],
@@ -22,10 +20,10 @@ SexAction.register('deep-kiss',{
     { type:'base', baseClass: SexAction.BaseClass.emotional },
     { type:'arousal', strength:0.3 },
     { type:'gender' },
-    // { type:'complementing' },
-    // { type:'conflicting' },
+    { type:'preference', code:'oral-slut', scale:3 },
+    { type:'preference', code:'affection-slut' },
+    { type:'preference', code:'humiliation-slut', conflicting:true },
+    { type:'preference', code:'debaser', conflicting:true },
   ],
-
-
 
 });

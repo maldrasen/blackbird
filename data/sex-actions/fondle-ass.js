@@ -2,6 +2,7 @@ SexAction.register('fondle-ass',{
   name: 'Fondle Ass',
   mainCategory: 'Foreplay',
   partCategory: 'Ass',
+  description: `Fondle and squeeze {T:name's} ass.`,
 
   // persistPlayer: 'hands',
 
@@ -10,6 +11,8 @@ SexAction.register('fondle-ass',{
     { type:'base', baseClass: SexAction.BaseClass.touching },
     { type:'arousal' },
     { type:'gender', scale:1.5 },
+    { type:'preference', code:'sensitive', scale:1.5 },
+    { type:'preference', code:'anal-slut' },
   ],
 
 

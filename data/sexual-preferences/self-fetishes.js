@@ -41,8 +41,8 @@ SexualPreference.register('incest-lover',{
   defaultValue: -40,
 });
 
-SexualPreference.register('masterbator',{
-  name: 'Masterbator',
+SexualPreference.register('masturbator',{
+  name: 'Masturbator',
   description: 'An love of self pleasure',
   defaultValue: { male:20, female:10, futa:30, enby:10 },
 });

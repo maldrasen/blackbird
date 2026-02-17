@@ -22,9 +22,11 @@ global.ConsentResult = (characterId, targetId=null) => {
   // Apply a single factor. This function is only public in order to make
   // the model easier to test each factor in isolation.
   function applyFactor(factor) {
-    if (factor.type === 'base')    { return applyBaseFactor(factor);    }
-    if (factor.type === 'arousal') { return applyArousalFactor(factor); }
-    if (factor.type === 'gender')  { return applyGenderFactor(factor);  }
+    if (factor.type === 'base')       { return applyBaseFactor(factor);       }
+    if (factor.type === 'arousal')    { return applyArousalFactor(factor);    }
+    if (factor.type === 'gender')     { return applyGenderFactor(factor);     }
+    if (factor.type === 'preference') { return applyPreferenceFactor(factor); }
+
     throw `Unrecognized consent factor type: ${factor.type}`;
   }
 
@@ -115,6 +117,24 @@ global.ConsentResult = (characterId, targetId=null) => {
     $response.multiplicative.push({
       label: 'Gender',
       value: (maleFactor * femaleFactor),
+    });
+  }
+
+  function applyPreferenceFactor(factor) {
+    const preferences = SexualPreferencesComponent.lookup($characterId);
+    if (preferences[factor.code] == null) { return; }
+
+    const preferenceValue = factor.conflicting ? -1 * preferences[factor.code] : preferences[factor.code]
+
+    let factorValue = ComponentMath.personalityFactorValue(preferenceValue);
+    if (factor.scale) {
+      factorValue = ComponentMath.applyFactorScale(factorValue, factor.scale);
+    }
+
+    $consentValue = $consentValue * factorValue;
+    $response.multiplicative.push({
+      label: SexualPreference.lookup(factor.code).getName(),
+      value: factorValue,
     });
   }
 

@@ -112,7 +112,7 @@ global.SexualPreferenceFactory = (function() {
     const sluttyPreferences =  {
       'sensitive': 30,
       'exhibitionist': 30,
-      'masterbator': 30,
+      'masturbator': 30,
       'perverted': 20,
       'sex-toy-lover': 20,
       'ass-lover': 15,

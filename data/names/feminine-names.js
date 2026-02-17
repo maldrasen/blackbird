@@ -289,7 +289,7 @@ Name.register('name',Gender.female,[
   { name:"Jasmine" },
   { name:"Jenyfer" },
   { name:"Jillian" },
-  { name:"Jilly", triggers:["masterbator[20]"]},
+  { name:"Jilly", triggers:["masturbator[20]"]},
   { name:"Josephine" },
   { name:"Judithe" },
   { name:"Juicy", triggers:['slut','pussy-slut[20]']},

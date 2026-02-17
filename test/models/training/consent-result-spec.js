@@ -228,6 +228,53 @@ describe("ConsentResult", function() {
       expect(Math.round(100 * result.getResponse().multiplicative[0].value)).to.equal(164);
     });
 
+    it("applies complementing sexual preferences", function() {
+      const wolf = Registry.createEntity();
+      const rabbit = Registry.createEntity();
+
+      SexualPreferencesComponent.create(rabbit, { masturbator:30 });
+      ArousalComponent.create(rabbit, { arousal:50 });
+
+      const result = ConsentResult(rabbit, wolf);
+      result.setSexAction('masturbate-pussy');
+      result.applyFactor({ type:'arousal' });
+      result.applyFactor({ type:'preference', code:'masturbator' });
+
+      expect(Math.round(result.getConsentValue())).to.equal(27);
+      expect(result.getResponse().multiplicative[0].label).to.equal('Masturbator');
+      expect(Math.round(100 * result.getResponse().multiplicative[0].value)).to.equal(109);
+    });
+
+    it("applies conflicting sexual preferences", function() {
+      const wolf = Registry.createEntity();
+      const horse = Registry.createEntity();
+
+      SexualPreferencesComponent.create(horse, { 'humiliation-slut':50 });
+      ArousalComponent.create(horse, { arousal:50 });
+
+      const result = ConsentResult(horse, wolf);
+      result.setSexAction('kiss');
+      result.applyFactor({ type:'arousal' });
+      result.applyFactor({ type:'preference', code:'humiliation-slut', conflicting:true });
+      expect(Math.round(result.getConsentValue())).to.equal(22);
+      expect(Math.round(100 * result.getResponse().multiplicative[0].value)).to.equal(88);
+    });
+
+    it("applies scaled sexual preferences", function() {
+      const wolf = Registry.createEntity();
+      const horse = Registry.createEntity();
+
+      SexualPreferencesComponent.create(horse, { masturbator:50 });
+      ArousalComponent.create(horse, { arousal:50 });
+
+      const result = ConsentResult(horse, wolf);
+      result.setSexAction('masturbate-anus');
+      result.applyFactor({ type:'arousal' });
+      result.applyFactor({ type:'preference', code:'masturbator', scale:3 });
+      expect(Math.round(result.getConsentValue())).to.equal(38);
+      expect(Math.round(100 * result.getResponse().multiplicative[0].value)).to.equal(150);
+    });
+
     it("applies everything all together", function() {
       const wolf = Registry.createEntity();
       const horse = Registry.createEntity();
@@ -236,13 +283,13 @@ describe("ConsentResult", function() {
 
       FeelingsComponent.create(wolf, { target:horse, affection:200, fear:100, respect:150 });
       ArousalComponent.create(wolf, { arousal:33 });
-      SexualPreferencesComponent.create(wolf, { androphilic:25 });
+      SexualPreferencesComponent.create(wolf, { androphilic:25, 'oral-slut':30 });
 
       const result = ConsentResult(wolf,horse);
       result.setSexAction('get-blowjob');
       result.applyFactors();
 
-      expect(Math.round(result.getConsentValue())).to.equal(39);
+      expect(Math.round(result.getConsentValue())).to.equal(46);
     });
   });
 
