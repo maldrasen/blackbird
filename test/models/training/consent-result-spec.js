@@ -95,8 +95,8 @@ describe("ConsentResult", function() {
       ArousalComponent.create(cat, { arousal:20 });
 
       const result = ConsentResult(cat,dog);
-            result.setSexAction('fondle-ass');
-            result.applyFactor({ type:'arousal' });
+      result.setSexAction('fondle-ass');
+      result.applyFactor({ type:'arousal' });
 
       const response = result.getResponse().additive[0];
 
@@ -111,8 +111,8 @@ describe("ConsentResult", function() {
       ArousalComponent.create(cat, { arousal:50 });
 
       const result = ConsentResult(cat,dog);
-            result.setSexAction('fondle-ass');
-            result.applyFactor({ type:'arousal' });
+      result.setSexAction('fondle-ass');
+      result.applyFactor({ type:'arousal' });
 
       expect(result.getResponse().additive[0].value).to.equal(25);
     });
@@ -124,8 +124,8 @@ describe("ConsentResult", function() {
       ArousalComponent.create(cat, { arousal:80 });
 
       const result = ConsentResult(cat,dog);
-            result.setSexAction('fondle-ass');
-            result.applyFactor({ type:'arousal' });
+      result.setSexAction('fondle-ass');
+      result.applyFactor({ type:'arousal' });
 
       expect(result.getResponse().additive[0].value).to.equal(64);
     });
@@ -137,10 +137,95 @@ describe("ConsentResult", function() {
       ArousalComponent.create(cat, { arousal:100 });
 
       const result = ConsentResult(cat,dog);
-            result.setSexAction('fondle-breasts');
-            result.applyFactor({ type:'arousal', strength:0.2 });
+      result.setSexAction('fondle-breasts');
+      result.applyFactor({ type:'arousal', strength:0.2 });
 
       expect(result.getResponse().additive[0].value).to.equal(20);
+    });
+
+    it("applies gender preferences", function() {
+      const wolf = Registry.createEntity();
+      const lamb = Registry.createEntity();
+
+      ActorComponent.create(wolf, { gender:Gender.male, species:'lupin' });
+      ArousalComponent.create(lamb, { arousal:50 });
+      SexualPreferencesComponent.create(lamb, { androphilic:75 });
+
+      const result = ConsentResult(lamb, wolf);
+      result.setSexAction('get-blowjob');
+      result.applyFactor({ type:'arousal' });
+      expect(Math.round(result.getConsentValue())).to.equal(25);
+      result.applyFactor({ type:'gender' });
+      expect(Math.round(result.getConsentValue())).to.equal(39);
+      expect(result.getResponse().multiplicative[0].label).to.equal('Gender');
+      expect(Math.round(100 * result.getResponse().multiplicative[0].value)).to.equal(156);
+    });
+
+    it("applies scaled gender preferences", function() {
+      const wolf = Registry.createEntity();
+      const lamb = Registry.createEntity();
+
+      ActorComponent.create(wolf, { gender:Gender.male, species:'lupin' });
+      ArousalComponent.create(lamb, { arousal:50 });
+      SexualPreferencesComponent.create(lamb, { androphilic:75 });
+
+      const result = ConsentResult(lamb, wolf);
+      result.setSexAction('get-deepthroat');
+      result.applyFactor({ type:'arousal' });
+      result.applyFactor({ type:'gender', scale:1.5 });
+      expect(Math.round(result.getConsentValue())).to.equal(32);
+      expect(Math.round(100 * result.getResponse().multiplicative[0].value)).to.equal(128);
+    });
+
+    it("applies gender preferences for futanari characters (when straight)", function() {
+      const wolf = Registry.createEntity();
+      const horse = Registry.createEntity();
+
+      ActorComponent.create(wolf, { gender:Gender.futa, species:'lupin' });
+      ArousalComponent.create(horse, { arousal:50 });
+      SexualPreferencesComponent.create(horse, { androphilic:75, gynophilic:-75 });
+
+      const result = ConsentResult(horse, wolf);
+      result.setSexAction('fondle-ass');
+      result.applyFactor({ type:'arousal' });
+      expect(Math.round(result.getConsentValue())).to.equal(25);
+      result.applyFactor({ type:'gender' });
+      expect(Math.round(result.getConsentValue())).to.equal(28);
+      expect(Math.round(100 * result.getResponse().multiplicative[0].value)).to.equal(112);
+    });
+
+    it("applies gender preferences for futanari characters (when bi)", function() {
+      const wolf = Registry.createEntity();
+      const horse = Registry.createEntity();
+
+      ActorComponent.create(wolf, { gender:Gender.futa, species:'lupin' });
+      ArousalComponent.create(horse, { arousal:50 });
+      SexualPreferencesComponent.create(horse, { androphilic:75, gynophilic:75 });
+
+      const result = ConsentResult(horse, wolf);
+      result.setSexAction('fondle-ass');
+      result.applyFactor({ type:'arousal' });
+      expect(Math.round(result.getConsentValue())).to.equal(25);
+      result.applyFactor({ type:'gender' });
+      expect(Math.round(result.getConsentValue())).to.equal(61);
+      expect(Math.round(100 * result.getResponse().multiplicative[0].value)).to.equal(244);
+    });
+
+    it("applies gender preferences for non-binary characters", function() {
+      const wolf = Registry.createEntity();
+      const goat = Registry.createEntity();
+
+      ActorComponent.create(wolf, { gender:Gender.enby, species:'lupin' });
+      ArousalComponent.create(goat, { arousal:50 });
+      SexualPreferencesComponent.create(goat, { androphilic:75, gynophilic:75 });
+
+      const result = ConsentResult(goat, wolf);
+      result.setSexAction('fondle-ass');
+      result.applyFactor({ type:'arousal' });
+      expect(Math.round(result.getConsentValue())).to.equal(25);
+      result.applyFactor({ type:'gender' });
+      expect(Math.round(result.getConsentValue())).to.equal(41);
+      expect(Math.round(100 * result.getResponse().multiplicative[0].value)).to.equal(164);
     });
 
     it("applies everything all together", function() {
@@ -154,12 +239,11 @@ describe("ConsentResult", function() {
       SexualPreferencesComponent.create(wolf, { androphilic:25 });
 
       const result = ConsentResult(wolf,horse);
-            result.setSexAction('get-blowjob');
-            result.applyFactors();
+      result.setSexAction('get-blowjob');
+      result.applyFactors();
 
       expect(Math.round(result.getConsentValue())).to.equal(39);
     });
   });
-
 
 });

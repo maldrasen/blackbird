@@ -9,16 +9,16 @@ I think the best way to take care of this is to keep a footprint grid for the fe
 Navigation in the game is done on the room level. When exploring the dungeon the current location in the dungeon should be set to the room id. This value can be kept in the dungeon controller and doesn't need to be persisted. When a new floor is entered the new location is always a room with the stairs. A room is composed of one or two boxes that describe the room size and shape. We want to limit the number of boxes to just two I think. From the two boxes we can determine the footprint of that room. When we A room's origin point is always in the lower left, at 0,0. The lower left corner won't always be a floor tile though.
 
 ```
-                "Two-Box" Rooms
+          "Two-Box" Rooms
 
- L-Shaped     Z-Shaped    X-Shaped    T-Shaped
+ L-Shaped     X-Shaped    T-Shaped
 
- XXXXXXXX     XXX...      ...XX...    XXXXXXXX
- XXXXXXXX     XXX...      ...XX...    XXXXXXXX
- XXXXXXXX     XXXXXX      XXXXXXXX    ..XXXX..
- .....XXX     ...XXX      XXXXXXXX    o.XXXX..
- o....XXX     o..XXX      ...XX...
-                          o..XX...
+ XXXXXXXX     ...XX...    XXXXXXXX
+ XXXXXXXX     ...XX...    XXXXXXXX
+ XXXXXXXX     XXXXXXXX    ..XXXX..
+ .....XXX     XXXXXXXX    o.XXXX..
+ o....XXX     ...XX...
+              o..XX...
 ```
 
 As rooms are added to the feature we need to figure out if they fit or not. I think we can do that by overlaying the room grid, on top of the feature grid, offsetting the location by the origin offset. We can check cell by cell if there's a collision or not.
