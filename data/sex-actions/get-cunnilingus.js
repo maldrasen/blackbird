@@ -1,8 +1,8 @@
 SexAction.register('get-cunnilingus',{
   name: 'Get Cunnilingus',
-  mainCategory: 'Oral',
-  playerCategory: 'Pussy',
-  partnerCategory: 'Mouth',
+  mainCategory: SexAction.MainCategory.receiving,
+  playerCategory: SexAction.PartCategory.pussy,
+  partnerCategory: SexAction.PartCategory.mouth,
   description: `{T:name} will eat your pussy.`,
 
   requires:['P:has-pussy'],

@@ -1,8 +1,8 @@
 SexAction.register('masturbate-cock',{
   name: 'Masturbate (Cock)',
-  mainCategory: 'Performance',
-  playerCategory: 'Watch',
-  partnerCategory: 'Cock',
+  mainCategory: SexAction.MainCategory.performance,
+  playerCategory: SexAction.PartCategory.none,
+  partnerCategory: SexAction.PartCategory.cock,
   description: `{T:name} will masturbate for you while you watch.`,
 
   requires:['T:has-cock'],

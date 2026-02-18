@@ -1,8 +1,8 @@
 SexAction.register('fondle-cock',{
   name: 'Fondle Cock',
-  mainCategory: 'Foreplay',
-  playerCategory: 'Hands',
-  partnerCategory: 'Cock',
+  mainCategory: SexAction.MainCategory.foreplay,
+  playerCategory: SexAction.PartCategory.hands,
+  partnerCategory: SexAction.PartCategory.cock,
   description: `Fondle and stroke {T:name's} cock.`,
 
   requires:['T:has-cock'],

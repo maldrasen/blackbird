@@ -1,8 +1,8 @@
 SexAction.register('suck-cock',{
   name: 'Suck Cock',
-  mainCategory: 'Reverse Service',
-  playerCategory: 'Mouth',
-  partnerCategory: 'Cock',
+  mainCategory: SexAction.MainCategory.giving,
+  playerCategory: SexAction.PartCategory.mouth,
+  partnerCategory: SexAction.PartCategory.cock,
   description: `You'll suck {T:name's} cock.`,
 
   requires:['T:has-cock'],

@@ -1,8 +1,8 @@
 SexAction.register('fondle-pussy',{
   name: 'Fondle Pussy',
-  mainCategory: 'Foreplay',
-  playerCategory: 'Hands',
-  partnerCategory: 'Pussy',
+  mainCategory: SexAction.MainCategory.foreplay,
+  playerCategory: SexAction.PartCategory.hands,
+  partnerCategory: SexAction.PartCategory.pussy,
   description: `Fondle and rub {T:name's} clit and pussy.`,
 
   requires:['T:has-pussy'],

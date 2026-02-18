@@ -1,8 +1,8 @@
 SexAction.register('get-deepthroat',{
   name: 'Get Deepthroated',
-  mainCategory: 'Oral',
-  playerCategory: 'Cock',
-  partnerCategory: 'Mouth',
+  mainCategory: SexAction.MainCategory.receiving,
+  playerCategory: SexAction.PartCategory.cock,
+  partnerCategory: SexAction.PartCategory.mouth,
   description: `{T:name} will try and deepthroat your cock, taking it as deep as {T:he} can.`,
 
   requires:['P:has-cock'],

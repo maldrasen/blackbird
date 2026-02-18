@@ -1,8 +1,8 @@
 SexAction.register('get-titfuck',{
   name: 'Get Handjob',
-  mainCategory: 'Service',
-  playerCategory: 'Cock',
-  partnerCategory: 'Breasts',
+  mainCategory: SexAction.MainCategory.receiving,
+  playerCategory: SexAction.PartCategory.cock,
+  partnerCategory: SexAction.PartCategory.breasts,
   description: `{T:name} will squeeze your cock between {T:his} tits.`,
 
   requires:['P:has-cock','T:has-breasts'],

@@ -1,8 +1,8 @@
 SexAction.register('get-handjob',{
   name: 'Get Handjob',
-  mainCategory: 'Service',
-  playerCategory: 'Cock',
-  partnerCategory: 'Hands',
+  mainCategory: SexAction.MainCategory.receiving,
+  playerCategory: SexAction.PartCategory.cock,
+  partnerCategory: SexAction.PartCategory.hands,
   description: `{T:name} will jack off your cock.`,
 
   requires:['P:has-cock'],

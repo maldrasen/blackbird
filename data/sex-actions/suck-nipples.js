@@ -1,8 +1,8 @@
 SexAction.register('suck-nipples',{
   name: 'Suck Nipples',
-  mainCategory: 'Foreplay',
-  playerCategory: 'Mouth',
-  partnerCategory: 'Breasts',
+  mainCategory: SexAction.MainCategory.foreplay,
+  playerCategory: SexAction.PartCategory.mouth,
+  partnerCategory: SexAction.PartCategory.breasts,
   description: `You'll lick and suck on {T:name's} nipples.`,
 
   requires:['T:has-breasts'],

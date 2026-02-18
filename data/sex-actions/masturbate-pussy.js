@@ -1,8 +1,8 @@
 SexAction.register('masturbate-pussy',{
   name: 'Masturbate (Pussy)',
-  mainCategory: 'Performance',
-  playerCategory: 'Watch',
-  partnerCategory: 'Pussy',
+  mainCategory: SexAction.MainCategory.performance,
+  playerCategory: SexAction.PartCategory.none,
+  partnerCategory: SexAction.PartCategory.pussy,
   description: `{T:name} will masturbate for you while you watch.`,
 
   requires:['T:has-pussy'],

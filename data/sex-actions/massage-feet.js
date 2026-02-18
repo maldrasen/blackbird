@@ -1,8 +1,8 @@
 SexAction.register('massage-feet',{
   name: 'Massage Feet',
-  mainCategory: 'Reverse Service',
-  playerCategory: 'Hands',
-  partnerCategory: 'Other',
+  mainCategory: SexAction.MainCategory.giving,
+  playerCategory: SexAction.PartCategory.hands,
+  partnerCategory: SexAction.PartCategory.other,
   description: `You'll give {T:name} a relaxing foot massage.`,
 
   consentTarget: 0,

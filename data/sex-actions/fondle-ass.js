@@ -1,8 +1,8 @@
 SexAction.register('fondle-ass',{
   name: 'Fondle Ass',
-  mainCategory: 'Foreplay',
-  playerCategory: 'Hands',
-  partnerCategory: 'Ass',
+  mainCategory: SexAction.MainCategory.foreplay,
+  playerCategory: SexAction.PartCategory.hands,
+  partnerCategory: SexAction.PartCategory.ass,
   description: `Fondle and squeeze {T:name's} ass.`,
 
   // persistPlayer: 'hands',

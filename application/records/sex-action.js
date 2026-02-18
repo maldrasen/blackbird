@@ -1,6 +1,23 @@
 global.SexAction = (function() {
   const $sexActions = {};
 
+  const MainCategory = {
+    foreplay: 'Foreplay',
+    giving: 'Giving',
+    performance: 'Performance',
+    receiving: 'Receiving',
+  };
+
+  const PartCategory = {
+    ass: 'Ass',
+    breasts: 'Breasts',
+    cock: 'Cock',
+    hands: 'Hands',
+    mouth: 'Mouth',
+    none: 'None',
+    pussy: 'Pussy',
+  };
+
   const BaseClass = {
     emotional: 'emotional',
     performance: 'performance',
@@ -56,6 +73,8 @@ global.SexAction = (function() {
 
   return Object.freeze({
     BaseClass,
+    MainCategory,
+    PartCategory,
     register,
     getAllCodes,
     getPossible,

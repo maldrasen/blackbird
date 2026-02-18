@@ -1,8 +1,8 @@
 SexAction.register('suck-pussy',{
   name: 'Eat Pussy',
-  mainCategory: 'Reverse Service',
-  playerCategory: 'Mouth',
-  partnerCategory: 'Pussy',
+  mainCategory: SexAction.MainCategory.giving,
+  playerCategory: SexAction.PartCategory.mouth,
+  partnerCategory: SexAction.PartCategory.pussy,
   description: `You'll eat {T:name's} pussy, focusing on sucking and licking {T:his} clit.`,
 
   requires:['T:has-pussy'],

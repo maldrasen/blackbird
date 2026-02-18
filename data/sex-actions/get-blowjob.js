@@ -1,8 +1,8 @@
 SexAction.register('get-blowjob',{
   name: 'Get Blowjob',
-  mainCategory: 'Oral',
-  playerCategory: 'Cock',
-  partnerCategory: 'Mouth',
+  mainCategory: SexAction.MainCategory.receiving,
+  playerCategory: SexAction.PartCategory.cock,
+  partnerCategory: SexAction.PartCategory.mouth,
   description: `{T:name} will suck your cock.`,
 
   requires:['P:has-cock'],

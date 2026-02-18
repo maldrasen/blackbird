@@ -1,8 +1,8 @@
 SexAction.register('fondle-breasts',{
   name: 'Fondle Breasts',
-  mainCategory: 'Foreplay',
-  playerCategory: 'Hands',
-  partnerCategory: 'Breasts',
+  mainCategory: SexAction.MainCategory.foreplay,
+  playerCategory: SexAction.PartCategory.hands,
+  partnerCategory: SexAction.PartCategory.breasts,
   description: `Fondle and squeeze {T:name's} breasts.`,
 
   // persistPlayer: 'hands',
