@@ -40,12 +40,19 @@ global.MouthComponent = (function() {
     Validate.isIn('tongueShape',mouthComponent.tongueShape,MouthData.TongueShapes);
   }
 
+  function of(parent) {
+    return Registry.findComponentsWith(ComponentType.mouth, mouthData => {
+      return mouthData[_parentId] === parent;
+    });
+  }
+
   return Object.freeze({
     hasParent: () => { return true; },
     create,
     update,
     lookup,
     destroy,
+    of,
   });
 
 })();

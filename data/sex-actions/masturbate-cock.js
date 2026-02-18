@@ -5,6 +5,8 @@ SexAction.register('masturbate-cock',{
   partnerCategory: 'Cock',
   description: `{T:name} will masturbate for you while you watch.`,
 
+  requires:['T:has-cock'],
+
   // persistPartner:'cock',
 
   consentTarget: 30,

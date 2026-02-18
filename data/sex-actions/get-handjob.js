@@ -5,6 +5,8 @@ SexAction.register('get-handjob',{
   partnerCategory: 'Hands',
   description: `{T:name} will jack off your cock.`,
 
+  requires:['P:has-cock'],
+
   consentTarget: 25,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.service },

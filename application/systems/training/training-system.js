@@ -8,7 +8,7 @@ global.TrainingSystem = (function() {
     const characterId = command.getValue('characterId');
 
     TrainingController.start({
-      partners:[characterId]
+      partner: characterId
     });
 
     StateMachine.setMode(GameMode.training);

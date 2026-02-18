@@ -43,12 +43,19 @@ global.AnusComponent = (function() {
     Validate.atLeast('prolapseLength',anusComponent.prolapseLength,0);
   }
 
+  function of(parent) {
+    return Registry.findComponentsWith(ComponentType.anus, anusData => {
+      return anusData[_parentId] === parent;
+    });
+  }
+
   return Object.freeze({
     hasParent: () => { return true; },
     create,
     update,
     lookup,
     destroy,
+    of,
   });
 
 })();

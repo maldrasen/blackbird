@@ -5,6 +5,8 @@ SexAction.register('fondle-pussy',{
   partnerCategory: 'Pussy',
   description: `Fondle and rub {T:name's} clit and pussy.`,
 
+  requires:['T:has-pussy'],
+
   consentTarget: 25,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.touching },

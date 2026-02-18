@@ -52,6 +52,15 @@ global.TrainingView = (function() {
         `<li class="toggle on"><a data-type="player" data-name="${name}" href="#">${name}</a></li>`));
     });
 
+    const state = {
+      player: GameState.getPlayer(),
+      partner: TrainingController.getPartner(),
+    }
+
+    SexAction.getPossible(state).forEach(code => {
+
+    });
+
     // All actions are added to the panel, even actions that will always be hidden. Each round will need to determine
     // which actions should be visible and enabled. Potentially, this game with have a hundred or more actions and
     // eventually the action list will need to be placed in a scrolling panel.
@@ -59,7 +68,7 @@ global.TrainingView = (function() {
       const action = SexAction.lookup(code);
 
       actionList.appendChild(X.createElement(
-        `<li class="xhide"><a class="button xdisabled"
+        `<li class="hide"><a class="button disabled"
             data-code="${action.getCode()}"
             data-main-category="${action.getMainCategory()}"
             data-partner-category="${action.getPartnerCategory()}"
@@ -69,7 +78,6 @@ global.TrainingView = (function() {
 
 
     // Name (Status Effects) (Relevant Stats)
-    // [clothing]
     // [Stamina Bar] (2000/2000)
     // [Health Bar] (100/100)
     // -- PALAM ----- -------------- -------------- --------------

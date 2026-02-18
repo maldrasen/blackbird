@@ -1,20 +1,36 @@
-global.CentralScrutinizer = (function() {
+//
+// It is my responsibility to enforce all the laws that haven't been passed yet.
+//    - Frank Zappa
+//
+global.CentralScrutinizer = function(context) {
+  const $context = context;
 
-  // It is my responsibility to enforce all the laws that haven't been passed yet.
-  //    - Frank Zappa
-  //
-  // Really all this so that we can have conditions that are easily persisted
-  // because functions cannot be serialized to JSON.
+  const breastsPattern = /(\w):([a-z-]*breasts[a-z-]*)/
+  const cockPattern = /(\w):([a-z-]*cock[a-z-]*)/
+  const pussyPattern = /(\w):([a-z-]*pussy[a-z-]*)/
 
-  function allConditionsPass(conditions,context) {
+  function allConditionsPass(conditions) {
     for (const condition of (conditions||[])) {
-      if (false === condition.isValid(context)) { return false; }
+      if (false === isValid(condition)) { return false; }
     }
     return true;
   }
 
-  function anyConditionFails(conditions,context) {
-    return allConditionsPass(conditions,context) === false;
+  function anyConditionFails(conditions) {
+    return allConditionsPass(conditions) === false;
+  }
+
+  function isValid(condition) {
+    if (typeof condition === 'function') { return condition($context) }
+
+    let match = condition.match(breastsPattern);
+    if (match) { return BreastsScrutinizer.isValid(match[2], match[1], context); }
+    match = condition.match(cockPattern);
+    if (match) { return CockScrutinizer.isValid(match[2], match[1], context); }
+    match = condition.match(pussyPattern);
+    if (match) { return PussyScrutinizer.isValid(match[2], match[1], context); }
+
+    throw `Unrecognized condition: ${condition}`;
   }
 
   return Object.freeze({
@@ -22,4 +38,4 @@ global.CentralScrutinizer = (function() {
     anyConditionFails,
   });
 
-})();
+}

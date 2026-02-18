@@ -18,10 +18,21 @@ global.SexAction = (function() {
     return Object.keys($sexActions);
   }
 
+  function getPossible(state) {
+    return Object.keys($sexActions).filter(key => {
+      return lookup(key).isPossible(state);
+    });
+  }
+
   function lookup(code) {
     if ($sexActions[code] == null) { throw `Bad sex action code [${code}]` }
 
     const action = {...$sexActions[code]};
+
+    function isPossible(state) {
+      console.log(`Is this possible? ${code}`);
+      return true;
+    }
 
     return Object.freeze({
       getCode: () => { return code; },
@@ -31,6 +42,8 @@ global.SexAction = (function() {
       getPlayerCategory: () => { return action.playerCategory; },
       getConsentTarget: () => { return action.consentTarget; },
       getConsentFactors: () => { return [ ...action.consentFactors ]; },
+      getRequires: () => { return [...action.requires||[]]; },
+      isPossible,
 
       // Include these when we're sure they're being used.
       // getAvailableWhile: () => { return action.availableWhile },
@@ -45,6 +58,7 @@ global.SexAction = (function() {
     BaseClass,
     register,
     getAllCodes,
+    getPossible,
     lookup,
   });
 

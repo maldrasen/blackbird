@@ -5,6 +5,8 @@ SexAction.register('suck-cock',{
   partnerCategory: 'Cock',
   description: `You'll suck {T:name's} cock.`,
 
+  requires:['T:has-cock'],
+
   consentTarget: 17,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.reverseService },

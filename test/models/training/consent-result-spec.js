@@ -1,6 +1,6 @@
 describe("ConsentResult", function() {
 
-  describe.only("applyFactor()", function() {
+  describe("applyFactor()", function() {
     it("applies emotional actions", function() {
       const wolf = Registry.createEntity();
       const rabbit = Registry.createEntity();

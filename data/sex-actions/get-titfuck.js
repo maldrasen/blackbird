@@ -5,6 +5,8 @@ SexAction.register('get-titfuck',{
   partnerCategory: 'Breasts',
   description: `{T:name} will squeeze your cock between {T:his} tits.`,
 
+  requires:['P:has-cock','T:has-breasts'],
+
   consentTarget: 30,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.service },

@@ -35,12 +35,19 @@ global.MarkComponent = (function() {
     Validate.exists('memory',markComponent.memory);
   }
 
+  function of(parent) {
+    return Registry.findComponentsWith(ComponentType.mark, markData => {
+      return markData[_parentId] === parent;
+    });
+  }
+
   return Object.freeze({
     hasParent: () => { return true; },
     create,
     update,
     lookup,
     destroy,
+    of,
   });
 
 })();

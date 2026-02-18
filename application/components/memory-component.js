@@ -35,12 +35,19 @@ global.MemoryComponent = (function() {
     Validate.isIn('type',memoryComponent.type,['training','event']);
   }
 
+  function of(parent) {
+    return Registry.findComponentsWith(ComponentType.memory, memoryData => {
+      return memoryData[_parentId] === parent;
+    });
+  }
+
   return Object.freeze({
     hasParent: () => { return true; },
     create,
     update,
     lookup,
     destroy,
+    of,
   });
 
 })();

@@ -29,8 +29,8 @@ global.ObjectHelper = (function() {
   // Filter an object's properties, allowing the properties that match the selector function.
   function select(object, selector) {
     let filtered = {};
-    ObjectHelper.each(object, (key, value) => {
-      if (selector(key,value)) { filtered[key] = value; }
+    Object.keys(object).forEach(key => {
+      if (selector(key,object[key])) { filtered[key] = object[key]; }
     });
     return filtered;
   }

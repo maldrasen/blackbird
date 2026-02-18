@@ -56,12 +56,19 @@ global.CockComponent = (function() {
     Validate.atLeast('width',cockComponent.width,12);
   }
 
+  function of(parent) {
+    return Registry.findComponentsWith(ComponentType.cock, cockData => {
+      return cockData[_parentId] === parent;
+    });
+  }
+
   return Object.freeze({
     hasParent: () => { return true; },
     create,
     update,
     lookup,
     destroy,
+    of,
   });
 
 })();

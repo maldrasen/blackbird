@@ -54,12 +54,19 @@ global.PussyComponent = (function() {
     Validate.atLeast('maxUrethraWidth',pussyComponent.maxPussyWidth,2);
   }
 
+  function of(parent) {
+    return Registry.findComponentsWith(ComponentType.pussy, pussyData => {
+      return pussyData[_parentId] === parent;
+    });
+  }
+
   return Object.freeze({
     hasParent: () => { return true; },
     create,
     update,
     lookup,
     destroy,
+    of,
   });
 
 })();

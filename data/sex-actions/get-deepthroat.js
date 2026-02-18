@@ -5,6 +5,8 @@ SexAction.register('get-deepthroat',{
   partnerCategory: 'Mouth',
   description: `{T:name} will try and deepthroat your cock, taking it as deep as {T:he} can.`,
 
+  requires:['P:has-cock'],
+
   // A follow-up action may require one or more persisted actions to be happening.
   // while:['get-blowjob'],
   //
