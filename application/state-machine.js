@@ -1,7 +1,7 @@
 global.StateMachine = (function() {
 
-  let $mode;
-  let $modeChanged;
+  let $currentMode;
+  let $pendingMode;
 
   function handleCommand(commandType, commandData) {
     console.log(`Command:${commandType} : ${JSON.stringify(commandData)}`)
@@ -24,16 +24,16 @@ global.StateMachine = (function() {
 
   // The state machine should usually only change modes when it receives a command. However, starting a new game,
   // loading a game, or starting a fixture will set the mode directly as there's nothing that can send a command yet.
-  // Even 'internally' to the StateMachine though it's the various systems that handles the commands and ultimately
+  // Even 'internally' to the StateMachine though it's the various systems that handle the commands and ultimately
   // needs to call the setMode() function, so it needs to be rather public. Still, a single command should only ever
   // change the mode once. If the mode has been changed then we know the view needs to be completely rebuilt.
 
-  function getMode() { return $mode; }
+  function getMode() { return $currentMode; }
+
   function setMode(mode) {
-    if ($modeChanged) { throw "Mode has already been changed." }
-    if (mode !== $mode) {
-      $modeChanged = true;
-      $mode = mode;
+    if ($pendingMode) { throw "Mode has already been changed." }
+    if (mode !== $currentMode) {
+      $pendingMode = mode;
     }
   }
 
@@ -41,14 +41,14 @@ global.StateMachine = (function() {
   // the view. Setting the mode directly bypasses the other systems that run every turn (which it has to so that
   // nothing is updated when a game is loaded).
   function render() {
-    if ($modeChanged) {
+    if ($pendingMode) {
 
-      if ($mode === GameMode.dungeon) { DungeonView.show(); }
-      if ($mode === GameMode.location) { LocationView.show(); }
-      if ($mode === GameMode.training) { TrainingView.show(); }
+      if ($pendingMode === GameMode.dungeon) { DungeonView.show(); }
+      if ($pendingMode === GameMode.location) { LocationView.show(); }
+      if ($pendingMode === GameMode.training) { TrainingView.show(); }
 
-      $modeChanged = false;
-      $mode = null;
+      $currentMode = $pendingMode;
+      $pendingMode = null;
     }
   }
   

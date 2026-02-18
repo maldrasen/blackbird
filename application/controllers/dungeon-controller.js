@@ -2,7 +2,12 @@ global.DungeonController = (function() {
 
   let $currentFloor;
 
+  function clear() {
+    $currentFloor = null;
+  }
+
   function createDungeon() {
+    clear();
     changeFloor(1);
   }
 

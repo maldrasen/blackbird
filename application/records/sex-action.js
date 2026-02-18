@@ -19,7 +19,7 @@ global.SexAction = (function() {
   }
 
   function lookup(code) {
-    if ($sexActions[code] === null) { throw `Bad sex action code [${code}]` }
+    if ($sexActions[code] == null) { throw `Bad sex action code [${code}]` }
 
     const action = {...$sexActions[code]};
 

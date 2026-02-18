@@ -3,26 +3,29 @@ global.TrainingController = (function() {
   // The scale thresholds could be played with a bit, raised or lowered as needed as the levels aren't very even at all.
   const ScaleThresholds = [100, 500, 3000, 10000, 30000, 60000, 100000, 250000, 600000, 1000000];
 
-  const $characterState = {};
-  const $trainingScales = {
-    clitoral: 0,
-    vaginal: 0,
-    anal: 0,
-    oral: 0,
-    nipple: 0,
-    penile: 0,
-    cervical: 0,
-    urethral: 0,
-    prostate: 0,
-    comfort: 0,
-    desire: 0,
-    submission: 0,
-    shame: 0,
-    suffering: 0,
-    anger: 0,
-  }
+  let $characterState, $trainingScales, $currentPosition;
 
-  let $currentPosition = 'standing'
+  function clear() {
+    $currentPosition = 'standing'
+    $characterState = {};
+    $trainingScales = {
+      clitoral: 0,
+      vaginal: 0,
+      anal: 0,
+      oral: 0,
+      nipple: 0,
+      penile: 0,
+      cervical: 0,
+      urethral: 0,
+      prostate: 0,
+      comfort: 0,
+      desire: 0,
+      submission: 0,
+      shame: 0,
+      suffering: 0,
+      anger: 0,
+    };
+  }
 
   // TODO: We should keep track of the fluids (cum, piss, milk, vomit) produced by each actor.
   //       We should keep track of how much fluid goes into each orifice separately.
@@ -44,7 +47,8 @@ global.TrainingController = (function() {
   function start(data) {
     console.log("Start Training in Controller:",data);
 
-    nextTurn()
+    clear();
+    nextTurn();
   }
 
   function nextTurn() {
