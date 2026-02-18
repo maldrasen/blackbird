@@ -8,8 +8,9 @@ global.Weaver = function(context) {
   // Context Match: {{@KEY}}
   //     - [KEY] A string value in the context object.
   //
-  // Actor Match: {{A::LOOM}}
-  //      - [A] Actor subject Code. There should be a single character code for an Actor object within the context's actor's object.
+  // Actor Match: {{A:LOOM}}
+  //      - [A] Actor subject Code. There should be a single character code for
+  //            an Actor reference within the context's actor's object.
   //      - [LOOM] Loom token. This is the Loom object and function to pass the actor into.
   //
   // Utility Match: {{UTIL}} or {{UTIL|ARG}}
@@ -17,7 +18,7 @@ global.Weaver = function(context) {
   //      - [ARG] Optional. The string argument to pass to the utility.
 
   const CONTEXT_PATTERN = /{{@([^}]+)}}/
-  const ACTOR_PATTERN = /{{([^}]+)::([^}]+)}}/
+  const ACTOR_PATTERN = /{{([^}]+):([^}]+)}}/
   const UTILITY_PATTERN = /{{([^}]+)\|([^}]+)}}/
   const SIMPLE_PATTERN = /{{([^}]+)}}/
 

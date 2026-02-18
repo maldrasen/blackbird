@@ -1,7 +1,7 @@
 
 global.fs = require('fs');
 
-require('../application/helpers/file-helper.js');
+require('../application/modules/helpers/file-helper.js');
 
 const ROOT = require('path').normalize(`${__dirname}`).replace(/\\/g,"/").replace(/\/bin/,'');
 const blacklist = ['loader.js']

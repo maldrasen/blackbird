@@ -1,33 +1,33 @@
-global.ArrayHelper = {
+global.ArrayHelper = (function() {
 
-  find(array, finder) {
+  function find(array, finder) {
     for (let i=0; i<array.length; i++) {
       if (finder(array[i])) { return i; }
     }
-  },
+  }
 
-  remove(array, element) {
+  function remove(array, element) {
     const index = array.indexOf(element);
     (index >= 0) ? array.splice(index, 1) : array;
-  },
+  }
 
-  unique(array) {
+  function unique(array) {
     return [...new Set(array)];
-  },
+  }
 
-  compact(array) {
+  function compact(array) {
     return array.filter(i => { return i != null });
-  },
+  }
 
-  differenceInElements(first, second) {
+  function differenceInElements(first, second) {
     return {
       added: second.filter(item => !first.includes(item)),
       removed: first.filter(item => !second.includes(item)),
     }
-  },
+  }
 
   // Return a new shuffled array.
-  shuffle(orig) {
+  function shuffle(orig) {
     let array = orig.slice();
     let currentIndex = array.length;
     let temporaryValue, randomIndex;
@@ -42,6 +42,15 @@ global.ArrayHelper = {
     }
 
     return array;
-  },
+  }
 
-};
+  return Object.freeze({
+    find,
+    remove,
+    unique,
+    compact,
+    differenceInElements,
+    shuffle,
+  });
+
+})();

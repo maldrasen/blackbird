@@ -62,7 +62,7 @@ global.ConsentResult = (characterId, targetId=null) => {
 
     $consentValue += baseValue;
     $response.additive.push({
-      label: TextHelper.titlecaseAll(factor.baseClass),
+      label: StringHelper.titlecaseAll(factor.baseClass),
       value: baseValue });
   }
 

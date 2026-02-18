@@ -80,7 +80,7 @@ global.Console = (function() {
 
     options.level = 1;
     options.type = LogType.error;
-    options.data.error = ErrorHelper.errorToString(error)
+    options.data.error = errorToString(error)
 
     log(message, options);
 
@@ -128,6 +128,10 @@ global.Console = (function() {
       if (typeof data !== 'string') { data = JSON.stringify(data,null,1) }
       element.appendChild(X.createElement(`<span class='data'> ${data}</span>`));
     }
+  }
+
+  function errorToString(error) {
+    return JSON.stringify(error, Object.getOwnPropertyNames(error))
   }
 
   return Object.freeze({

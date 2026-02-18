@@ -1,24 +1,24 @@
-global.EnglishHelper = {
+global.EnglishHelper = (function() {
 
-  possessive(word) {
+  // Simple possessive logic that works for most words. (Add exceptions to this when we find them.)
+  function possessive(word) {
     return word.endsWith('s') ? `${word}'` : `${word}'s`;
-  },
+  }
 
   // Prepends 'a' or 'an' to the beginning of the string.
-  a_an(string) {
+  function a_an(string) {
     return string.match(/^[aeiou]/i) ? `an ${string}` : `a ${string}`;
-  },
+  }
 
   // Prepends 'A' or 'An' to the beginning of the string.
-  A_An(string) {
+  function A_An(string) {
     return string.match(/^[aeiou]/i) ? `An ${string}` : `A ${string}`;
-  },
+  }
 
-  // Returns a positive number in English. If a 'whenOne' option is specified
-  // then that is returned for 'one' in cases where "a" or "an" would sound
-  // better in a phrase, i.e. 'a big black cock' is better than 'one big black
-  // cock'. The whenZero options is the same, but for zero.
-  numberInEnglish(number, options={}) {
+  // Returns a positive number in English. If a 'whenOne' option is specified then that is returned for 'one' in cases
+  // where "a" or "an" would sound better in a phrase, i.e. 'a big black cock' is better than 'one big black cock'. The
+  // whenZero options is the same, but for zero.
+  function numberInEnglish(number, options={}) {
     const oneWords = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
     const tenWords = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
     const teenWords = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
@@ -53,11 +53,19 @@ global.EnglishHelper = {
     if (number === 1) { return options.whenOne || 'one'; }
 
     return millions(number).trim();
-  },
+  }
 
   // Same as numberInEnglish(), but upper case.
-  NumberInEnglish(number, options) {
-    return TextHelper.titlecase(EnglishHelper.numberInEnglish(number, options));
-  },
+  function NumberInEnglish(number, options) {
+    return StringHelper.titlecase(EnglishHelper.numberInEnglish(number, options));
+  }
 
-};
+  return Object.freeze({
+    possessive,
+    a_an,
+    A_An,
+    numberInEnglish,
+    NumberInEnglish,
+  });
+
+})();
