@@ -57,6 +57,11 @@ global.ConsentResult = (characterId, targetId=null) => {
         baseValue = respectBase + (affectionBase/2); break;
       case SexAction.BaseClass.touching:
         baseValue = affectionBase + (fearBase/2); break;
+      case SexAction.BaseClass.penetration:
+        baseValue = affectionBase + (respectBase/2) - (fearBase/2); break;
+      case SexAction.BaseClass.performance:
+        baseValue = respectBase + (fearBase/2); break;
+
       default: throw `Unrecognized BaseClass (${factor.baseClass})`;
     }
 

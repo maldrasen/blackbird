@@ -48,6 +48,15 @@ global.SexAction = (function() {
 
     const action = {...$sexActions[code]};
 
+    // TODO: This function will need to determine things like arousal state (is cock hard) and if an insertion can
+    //       possibly fit into an orifice. The orifice size calculations can change during training, so this needs to
+    //       be recalculated every turn.
+    function isAvailable(context) {
+      return true;
+    }
+
+    // The isPossible() checks the basic action requirements to hide actions that will not ever be possible during this
+    // training. These are conditions like, you can't get a tail job, when a character doesn't have a tail.
     function isPossible(context) {
       return CentralScrutinizer(context).allConditionsPass(action.requires||[]);
     }
@@ -61,6 +70,7 @@ global.SexAction = (function() {
       getConsentTarget: () => { return action.consentTarget; },
       getConsentFactors: () => { return [ ...action.consentFactors ]; },
       getRequires: () => { return action.requires||[]; },
+      isAvailable,
       isPossible,
 
       // Include these when we're sure they're being used.

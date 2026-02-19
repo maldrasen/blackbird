@@ -95,6 +95,12 @@
     margin: 3px;
     color: rgb(150,150,150);
     font-size: variables.$fs-big;
+
+    a.unavailable { color:rgb(60,60,60) }
+    a.unwilling { color:#8f3632; }
+    a.reluctant { color:#916843; }
+    a.willing { color:#959257; }
+    a.eager { color:#859c82; }
   }
 
 }

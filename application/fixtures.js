@@ -38,9 +38,13 @@ global.Fixtures = (function() {
     }
 
     characters.forEach(id => {
-      ControlledComponent.create(id,{ control:-200 });
+      ControlledComponent.create(id,{ control:0 });
       SituatedComponent.create(id,{ currentLocation:GameState.getCurrentLocation() });
-      FeelingsComponent.create(id,{ target:player, affection:-200, respect:0, fear:200 });
+      FeelingsComponent.create(id,{ target:player,
+        affection: Random.between(100,400),
+        respect: Random.between(100,400),
+        fear: Random.between(0,200)
+      });
     });
 
     return characters;
