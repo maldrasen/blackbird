@@ -2,6 +2,7 @@ global.TrainingView = (function() {
 
   function init() {
     TrainingCategoryToggles.init();
+    TrainingActionPanel.init();
   }
 
   function show() {
@@ -9,30 +10,11 @@ global.TrainingView = (function() {
     MainContent.setBackground(Location.lookup(GameState.getCurrentLocation()).getBackground());
 
     TrainingCategoryToggles.build();
-    buildActionsPanel();
-    buildStatusPanel();
-  }
+    TrainingActionPanel.build();
+    TrainingStatusPanel.build();
 
-  function buildStatusPanel() {
-
-  }
-
-  // Each round will need to determine which actions should be enabled. Potentially, this game with have a hundred or
-  // more actions and eventually the action list will need to be placed in a scrolling panel.
-  function buildActionsPanel() {
-
-    TrainingController.getPossibleActions().forEach(code => {
-      const action = SexAction.lookup(code);
-      const actionList = X.first('#actionList');
-
-      actionList.appendChild(X.createElement(
-        `<li><a class="button"
-            data-code="${action.getCode()}"
-            data-main-category="${action.getMainCategory()}"
-            data-partner-category="${action.getPartnerCategory()}"
-            data-player-category="${action.getPlayerCategory()}"
-            href="#">${action.getName()}</a></li>`));
-    });
+    TrainingActionPanel.update();
+    TrainingStatusPanel.update();
   }
 
   return Object.freeze({

@@ -1,5 +1,5 @@
 SexAction.register('fuck-anus',{
-  name: 'Anal Fucking',
+  name: 'Ass Fucking',
   mainCategory: SexAction.MainCategory.sex,
   playerCategory: SexAction.PartCategory.cock,
   partnerCategory: SexAction.PartCategory.ass,
