@@ -175,21 +175,56 @@ global.CharacterFactory = (function() {
   // Currently the player is always a male human. The game might have a rogue-lite mechanic where new species and body
   // types are unlocked through multiple runs. I'll add character creation as part of the new game, and character
   // creation will have these new unlocked options. This is fine for early in development though.
-  function buildPlayer() {
+  function buildPlayer(options={}) {
     const playerId = Registry.createEntity();
-    const speciesCode = 'human';
-    const genderCode = 'male';
+    const speciesCode = options.species || 'human';
+    const genderCode = options.gender || Gender.male;
+    const triggers = options.triggers || [];
 
-    const actorComponent = { name:'Greg', gender:genderCode, species:speciesCode };
-    const arousalComponent = { arousal:0 }
+    const actorData = { name:'Greg', gender:genderCode, species:speciesCode };
+    const arousalData = { arousal:0 };
+    const attributesData = AttributesFactory.rollAttributes(genderCode, speciesCode);
+    const healthData = AttributesFactory.rollHealth(attributesData);
 
-    const attributesComponent = AttributesFactory.rollAttributes(genderCode, speciesCode);
-    const healthComponent = AttributesFactory.rollHealth(attributesComponent);
+    let pussyData, breastsData, cockData;
+    const bodyData = BodyFactory.build(actorData,triggers);
+    const anusData = AnusFactory.build(actorData);
+    const mouthData = MouthFactory.build(actorData,bodyData);
 
-    ActorComponent.create(playerId, actorComponent);
-    ArousalComponent.create(playerId, arousalComponent);
-    AttributesComponent.create(playerId, attributesComponent);
-    HealthComponent.create(playerId, healthComponent);
+    if ([Gender.futa, Gender.female].includes(actorData.gender)) {
+      pussyData = PussyFactory.build(actorData);
+      breastsData = BreastsFactory.build(actorData);
+    }
+    if ([Gender.futa, Gender.male].includes(actorData.gender)) {
+      cockData = CockFactory.build(actorData);
+    }
+
+    const aspectsData = buildAspectsData(triggers);
+    const skillsData = buildSkillsData(triggers);
+
+    // Triggers are applied in the same way, though I'm not sure if player
+    // creation can produce triggers. This could be useful in a spec though.
+    BodyFactory.applyTriggers(bodyData, triggers);
+    AnusFactory.applyTriggers(anusData, triggers);
+    MouthFactory.applyTriggers(mouthData, triggers);
+    BreastsFactory.applyTriggers(breastsData, actorData, triggers);
+    CockFactory.applyTriggers(cockData, actorData, triggers);
+    PussyFactory.applyTriggers(pussyData, triggers);
+
+    // Build all starting player components.
+    ActorComponent.create(playerId, actorData);
+    ArousalComponent.create(playerId, arousalData);
+    AttributesComponent.create(playerId, attributesData);
+    HealthComponent.create(playerId, healthData);
+    SkillsComponent.create(playerId, skillsData);
+    AspectsComponent.create(playerId, aspectsData);
+    AnusComponent.create(playerId, anusData);
+    BodyComponent.create(playerId, bodyData);
+    MouthComponent.create(playerId, mouthData);
+
+    if (breastsData) { BreastsComponent.create(playerId, breastsData); }
+    if (cockData) { CockComponent.create(playerId, cockData); }
+    if (pussyData) { PussyComponent.create(playerId, pussyData); }
 
     return playerId;
   }

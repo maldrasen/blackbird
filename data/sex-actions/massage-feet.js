@@ -2,7 +2,7 @@ SexAction.register('massage-feet',{
   name: 'Massage Feet',
   mainCategory: SexAction.MainCategory.giving,
   playerCategory: SexAction.PartCategory.hands,
-  partnerCategory: SexAction.PartCategory.other,
+  partnerCategory: SexAction.PartCategory.none,
   description: `You'll give {T:name} a relaxing foot massage.`,
 
   consentTarget: 0,

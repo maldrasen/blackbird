@@ -36,11 +36,13 @@ global.SexAction = (function() {
   }
 
   function getPossible(context) {
-
-    console.log("Context?",context)
-
+    console.log("Possible Actions:")
     return Object.keys($sexActions).filter(key => {
-      return lookup(key).isPossible(context);
+      const poss = lookup(key).isPossible(context);
+      if (poss === false) {
+        console.log(`  ${key} is not possible`)
+      }
+      return poss
     });
   }
 
