@@ -1,5 +1,5 @@
 SexAction.register('get-titfuck',{
-  name: 'Get Handjob',
+  name: 'Get Titfuck',
   mainCategory: SexAction.MainCategory.receiving,
   playerCategory: SexAction.PartCategory.cock,
   partnerCategory: SexAction.PartCategory.breasts,

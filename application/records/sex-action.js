@@ -2,20 +2,20 @@ global.SexAction = (function() {
   const $sexActions = {};
 
   const MainCategory = {
-    foreplay: 'Foreplay',
-    giving: 'Giving',
-    performance: 'Performance',
-    receiving: 'Receiving',
+    foreplay: 'foreplay',
+    giving: 'giving',
+    performance: 'performance',
+    receiving: 'receiving',
   };
 
   const PartCategory = {
-    ass: 'Ass',
-    breasts: 'Breasts',
-    cock: 'Cock',
-    hands: 'Hands',
-    mouth: 'Mouth',
-    none: 'None',
-    pussy: 'Pussy',
+    ass: 'ass',
+    breasts: 'breasts',
+    cock: 'cock',
+    hands: 'hands',
+    mouth: 'mouth',
+    none: 'none',
+    pussy: 'pussy',
   };
 
   const BaseClass = {

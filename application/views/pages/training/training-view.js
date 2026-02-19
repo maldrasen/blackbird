@@ -1,75 +1,20 @@
 global.TrainingView = (function() {
 
-  let $mainCategories;
-  let $partnerCategories;
-  let $playerCategories;
-
   function init() {
-    X.onClick('#trainingView #showPlayerToggles', showPlayerToggles);
-    X.onClick('#trainingView #showPartnerToggles', showPartnerToggles);
+    TrainingCategoryToggles.init();
   }
 
   function show() {
     MainContent.setMainContent("views/training.html");
     MainContent.setBackground(Location.lookup(GameState.getCurrentLocation()).getBackground());
 
-    buildCategoryPanels();
+    TrainingCategoryToggles.build();
     buildActionsPanel();
     buildStatusPanel();
   }
 
   function buildStatusPanel() {
 
-  }
-
-  function buildCategoryPanels() {
-    $mainCategories = new Set();
-    $partnerCategories = new Set();
-    $playerCategories = new Set();
-
-    const player = TrainingController.getPlayer();
-    const partner = TrainingController.getPartner();
-    const playerActor = ActorComponent.lookup(player);
-    const partnerActor = ActorComponent.lookup(partner);
-
-    X.fill('#showPlayerToggles', EnglishHelper.possessive(playerActor.name));
-    X.fill('#showPartnerToggles', EnglishHelper.possessive(partnerActor.name));
-
-    TrainingController.getPossibleActions().forEach(code => {
-      const action = SexAction.lookup(code);
-      $mainCategories.add(action.getMainCategory());
-      $partnerCategories.add(action.getPartnerCategory());
-      $playerCategories.add(action.getPlayerCategory());
-    });
-
-    $mainCategories = [...$mainCategories].sort();
-    $partnerCategories = [...$partnerCategories].sort();
-    $playerCategories = [...$playerCategories].sort();
-
-    // Let's try not filtering by the none category. This might make these
-    // actions difficult to find though as they'll  never appear under any of
-    // the part filters.
-    ArrayHelper.remove($partnerCategories,SexAction.PartCategory.none);
-    ArrayHelper.remove($playerCategories,SexAction.PartCategory.none);
-
-    const mainToggles = X.first('#mainToggles');
-    const partnerToggles = X.first('#partnerToggles');
-    const playerToggles = X.first('#playerToggles');
-
-    $mainCategories.forEach(name => {
-      mainToggles.appendChild(X.createElement(
-        `<li><a data-type="main" data-name="${name}" href="#" class='off'>${name}</a></li>`));
-    });
-
-    $partnerCategories.forEach(name => {
-      partnerToggles.appendChild(X.createElement(
-        `<li><a data-type="partner" data-name="${name}" href="#" class='off'>${name}</a></li>`));
-    });
-
-    $playerCategories.forEach(name => {
-      playerToggles.appendChild(X.createElement(
-        `<li><a data-type="player" data-name="${name}" href="#" class='off'>${name}</a></li>`));
-    });
   }
 
   // Each round will need to determine which actions should be enabled. Potentially, this game with have a hundred or
@@ -81,28 +26,13 @@ global.TrainingView = (function() {
       const actionList = X.first('#actionList');
 
       actionList.appendChild(X.createElement(
-        `<li><a class="button disabled"
+        `<li><a class="button"
             data-code="${action.getCode()}"
             data-main-category="${action.getMainCategory()}"
             data-partner-category="${action.getPartnerCategory()}"
             data-player-category="${action.getPlayerCategory()}"
             href="#">${action.getName()}</a></li>`));
     });
-  }
-
-  // Should first disable any active filters...
-  function showPlayerToggles() {
-    X.removeClass('#showPartnerToggles','hide');
-    X.removeClass('#partnerToggles','hide');
-    X.addClass('#showPlayerToggles','hide');
-    X.addClass('#playerToggles','hide');
-  }
-
-  function showPartnerToggles() {
-    X.removeClass('#showPlayerToggles','hide');
-    X.removeClass('#playerToggles','hide');
-    X.addClass('#showPartnerToggles','hide');
-    X.addClass('#partnerToggles','hide');
   }
 
   return Object.freeze({
