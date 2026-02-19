@@ -10,12 +10,12 @@ global.TrainingActionPanel = (function() {
       const actionList = X.first('#actionList');
 
       actionList.appendChild(X.createElement(
-        `<li class="sex-action"><a class=""
+        `<li class="sex-action"><a id="sexAction_${code}" href="#"
             data-code="${action.getCode()}"
             data-main-category="${action.getMainCategory()}"
             data-partner-category="${action.getPartnerCategory()}"
             data-player-category="${action.getPlayerCategory()}"
-            href="#">${action.getName()}</a></li>`));
+            class="">${action.getName()}</a></li>`));
     });
 
     ScrollingPanel({ id:'#actionListScroll' });
@@ -25,20 +25,13 @@ global.TrainingActionPanel = (function() {
     const context = TrainingController.getContext();
     const consentResult = ConsentResult(context.T, context.P);
 
-    console.log("Update Action Panel")
-
     X.each('#actionList .sex-action a', link => {
       const code = link.dataset.code;
       const sexAction = SexAction.lookup(code);
 
-      link.setAttribute('class','');
-
       consentResult.setSexAction(code);
       consentResult.applyFactors();
-
-      const response = consentResult.getResponse();
-
-      console.log(`Update ${code} Action [${consentResult.getConsentValue()}]=${consentResult.getConsent()}`,response);
+      createTooltip(link, context, consentResult);
 
       if (sexAction.isAvailable(context) === false) {
         X.addClass(link,'unavailable');
@@ -48,7 +41,20 @@ global.TrainingActionPanel = (function() {
         if (consentResult.getConsent() === Consent.willing)   { X.addClass(link,'willing'); }
         if (consentResult.getConsent() === Consent.eager)     { X.addClass(link,'eager'); }
       }
+    });
+  }
 
+  function createTooltip(link, context, consentResult) {
+    link.setAttribute('class','tooltip-parent');
+
+    const sexAction = SexAction.lookup(link.dataset.code);
+
+    console.log(`TT:[${consentResult.getConsentValue()}]`,consentResult.getResponse());
+
+    Tooltip.register(link.getAttribute('id'),{
+      content: `<div style='width:400px'>${sexAction.getDescription(context)}</div>`,
+      position: 'bottom',
+      delay: 100,
     });
   }
 

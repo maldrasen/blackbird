@@ -104,28 +104,25 @@ $casementTopGradient: linear-gradient(rgb(47,37,34) 0%, rgb(0,0,0) 100%);
 // === Z-Indices ===
 $z-background: 0;
 $z-root: 100;
-$z-canvas: 200;
-$z-slide-window: 300;
-$z-lower-bar: 400;
-$z-viewport: 500;
-$z-event-view: 2000;
-$z-overlay: 3000;
-$z-overlay-footer: 3001;
-$z-casements: 4000;
+$z-slide-window: 200;
+$z-viewport: 300;
+$z-event-view: 1000;
+$z-overlay: 2000;
+$z-overlay-footer: 2001;
+$z-casements: 3000;
 
-$z-effects: 9000;
-$z-alerts: 9100;
+$z-effects: 4000;
+$z-alerts: 4100;
 
-$z-menu-cover: 13005;
-$z-main-menu: 13010;
-$z-main-cover: 13020;
+$z-menu-cover: 5005;
+$z-main-menu: 5010;
+$z-main-cover: 5020;
+$z-options-overlay: 5100;
 
-$z-options-overlay: 14000;
-
-$z-confirmation-cover: 15000;
-$z-confirmation-window: 15010;
-$z-confirmation-footer: 15011;
+$z-confirmation-cover: 10000;
+$z-confirmation-window: 10010;
+$z-confirmation-footer: 10011;
 
 $z-select: 50000;
-
+$z-tooltip: 51000;
 $z-console: 60000;

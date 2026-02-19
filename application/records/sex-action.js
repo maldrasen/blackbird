@@ -48,6 +48,11 @@ global.SexAction = (function() {
 
     const action = {...$sexActions[code]};
 
+    // TODO: Run this through the weaver.
+    function getDescription(context) {
+      return action.description;
+    }
+
     // TODO: This function will need to determine things like arousal state (is cock hard) and if an insertion can
     //       possibly fit into an orifice. The orifice size calculations can change during training, so this needs to
     //       be recalculated every turn.
@@ -70,6 +75,7 @@ global.SexAction = (function() {
       getConsentTarget: () => { return action.consentTarget; },
       getConsentFactors: () => { return [ ...action.consentFactors ]; },
       getRequires: () => { return action.requires||[]; },
+      getDescription,
       isAvailable,
       isPossible,
 

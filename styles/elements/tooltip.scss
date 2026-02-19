@@ -1,0 +1,38 @@
+@use "../variables";
+
+.tooltip-parent {
+  display: inline-block;
+}
+
+.default-tooltip {
+  line-height: 1.3;
+  padding: 5px 8px;
+}
+
+#tooltipFrame {
+  position: fixed;
+
+  min-height: 30px;
+  min-width: 100px;
+  max-width: 400px;
+
+  box-sizing: border-box;
+  background-color: rgba(0,0,0,0.9);
+  border: variables.$border-normal;
+  border-radius: 5px;
+  box-shadow: variables.$shadow-frame;
+  z-index: variables.$z-tooltip;
+
+  dl {
+    margin: 5px;
+    dt {
+      width: auto;
+      margin-left: 10px;
+      margin-right: 5px;
+      color: variables.$fg-strong;
+    }
+    dd {
+      margin-left: 20px;
+    }
+  }
+}

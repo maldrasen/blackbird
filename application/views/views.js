@@ -5,8 +5,9 @@ global.Views = (function() {
     Confirmation.init();
     ScrollingPanel.init();
     TabController.init();
-    MouseMonitor.init();
+    Tooltip.init();
 
+    MouseMonitor.init();
     WindowManager.init();
 
     Console.init();
