@@ -5,8 +5,8 @@ global.TrainingView = (function() {
   let $playerCategories;
 
   function init() {
-    X.onClick('#trainingView #showPlayerToggles', event => { console.log("Show Player") });
-    X.onClick('#trainingView #showPartnerToggles', event => { console.log("Show Partner") });
+    X.onClick('#trainingView #showPlayerToggles', showPlayerToggles);
+    X.onClick('#trainingView #showPartnerToggles', showPartnerToggles);
   }
 
   function show() {
@@ -32,8 +32,8 @@ global.TrainingView = (function() {
     const playerActor = ActorComponent.lookup(player);
     const partnerActor = ActorComponent.lookup(partner);
 
-    X.fill('#showPlayerToggles',playerActor.name);
-    X.fill('#showPartnerToggles',partnerActor.name);
+    X.fill('#showPlayerToggles', EnglishHelper.possessive(playerActor.name));
+    X.fill('#showPartnerToggles', EnglishHelper.possessive(partnerActor.name));
 
     TrainingController.getPossibleActions().forEach(code => {
       const action = SexAction.lookup(code);
@@ -58,22 +58,19 @@ global.TrainingView = (function() {
 
     $mainCategories.forEach(name => {
       mainToggles.appendChild(X.createElement(
-        `<li class="toggle on"><a data-type="main" data-name="${name}" href="#" class='button'>${name}</a></li>`));
+        `<li><a data-type="main" data-name="${name}" href="#" class='off'>${name}</a></li>`));
     });
 
     $partnerCategories.forEach(name => {
       partnerToggles.appendChild(X.createElement(
-        `<li class="toggle on"><a data-type="partner" data-name="${name}" href="#" class='button'>${name}</a></li>`));
+        `<li><a data-type="partner" data-name="${name}" href="#" class='off'>${name}</a></li>`));
     });
 
     $playerCategories.forEach(name => {
       playerToggles.appendChild(X.createElement(
-        `<li class="toggle on"><a data-type="player" data-name="${name}" href="#" class='button'>${name}</a></li>`));
+        `<li><a data-type="player" data-name="${name}" href="#" class='off'>${name}</a></li>`));
     });
-
   }
-
-
 
   // Each round will need to determine which actions should be enabled. Potentially, this game with have a hundred or
   // more actions and eventually the action list will need to be placed in a scrolling panel.
@@ -91,6 +88,21 @@ global.TrainingView = (function() {
             data-player-category="${action.getPlayerCategory()}"
             href="#">${action.getName()}</a></li>`));
     });
+  }
+
+  // Should first disable any active filters...
+  function showPlayerToggles() {
+    X.removeClass('#showPartnerToggles','hide');
+    X.removeClass('#partnerToggles','hide');
+    X.addClass('#showPlayerToggles','hide');
+    X.addClass('#playerToggles','hide');
+  }
+
+  function showPartnerToggles() {
+    X.removeClass('#showPlayerToggles','hide');
+    X.removeClass('#playerToggles','hide');
+    X.addClass('#showPartnerToggles','hide');
+    X.addClass('#partnerToggles','hide');
   }
 
   return Object.freeze({
