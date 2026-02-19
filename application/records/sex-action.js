@@ -6,6 +6,7 @@ global.SexAction = (function() {
     giving: 'giving',
     performance: 'performance',
     receiving: 'receiving',
+    sex: 'sex',
   };
 
   const PartCategory = {
@@ -21,6 +22,7 @@ global.SexAction = (function() {
   const BaseClass = {
     emotional: 'emotional',
     performance: 'performance',
+    penetration: 'penetration',
     reverseService: 'reverseService',
     roughService: 'roughService',
     service: 'service',
@@ -36,13 +38,8 @@ global.SexAction = (function() {
   }
 
   function getPossible(context) {
-    console.log("Possible Actions:")
     return Object.keys($sexActions).filter(key => {
-      const poss = lookup(key).isPossible(context);
-      if (poss === false) {
-        console.log(`  ${key} is not possible`)
-      }
-      return poss
+      return lookup(key).isPossible(context);
     });
   }
 
