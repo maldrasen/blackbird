@@ -35,9 +35,12 @@ global.SexAction = (function() {
     return Object.keys($sexActions);
   }
 
-  function getPossible(state) {
+  function getPossible(context) {
+
+    console.log("Context?",context)
+
     return Object.keys($sexActions).filter(key => {
-      return lookup(key).isPossible(state);
+      return lookup(key).isPossible(context);
     });
   }
 
@@ -46,9 +49,8 @@ global.SexAction = (function() {
 
     const action = {...$sexActions[code]};
 
-    function isPossible(state) {
-      console.log(`Is this possible? ${code}`);
-      return true;
+    function isPossible(context) {
+      return CentralScrutinizer(context).allConditionsPass(action.requires||[]);
     }
 
     return Object.freeze({
@@ -59,7 +61,7 @@ global.SexAction = (function() {
       getPlayerCategory: () => { return action.playerCategory; },
       getConsentTarget: () => { return action.consentTarget; },
       getConsentFactors: () => { return [ ...action.consentFactors ]; },
-      getRequires: () => { return [...action.requires||[]]; },
+      getRequires: () => { return action.requires||[]; },
       isPossible,
 
       // Include these when we're sure they're being used.

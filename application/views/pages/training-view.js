@@ -1,38 +1,22 @@
 global.TrainingView = (function() {
 
-  let $mainCategories;
-  let $partnerCategories;
-  let $playerCategories;
-
   function init() {
-    $mainCategories = new Set();
-    $partnerCategories = new Set();
-    $playerCategories = new Set();
-
-    SexAction.getAllCodes().forEach(code => {
-      const action = SexAction.lookup(code);
-      $mainCategories.add(action.getMainCategory());
-      $partnerCategories.add(action.getPartnerCategory());
-      $playerCategories.add(action.getPlayerCategory());
-    });
-
-    $mainCategories = [...$mainCategories].sort();
-    $partnerCategories = [...$partnerCategories].sort();
-    $playerCategories = [...$playerCategories].sort();
+    console.log("=== TrainingView.init() ===")
   }
 
   function show() {
-    console.log("=== TrainingView.show() Called ===")
+    console.log("=== TrainingView.show() ===")
 
     const location = Location.lookup(GameState.getCurrentLocation());
 
     MainContent.setMainContent("views/training.html");
     MainContent.setBackground(location.getBackground());
 
-    buildStatusPanel();
+    // buildActionPanel();
+    // buildStatusPanel();
   }
 
-  function buildStatusPanel() {
+  function buildActionPanel() {
     const sideToggles = X.first('#sideToggles');
     const topToggles = X.first('#topToggles');
     const actionList = X.first('#actionList');
