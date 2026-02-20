@@ -15,14 +15,26 @@
   box-shadow: variables.$shadow-frame;
   z-index: variables.$z-game-state;
 
+  // In order to make the status bars properly centered the two side chunks are
+  // set to a fixed size. We may need to adjust this size if we have long
+  // location names or the status effect list grows too long.
+  .fixed-size {
+    width: 220px;
+    overflow: hidden;
+  }
+  .status-bar {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+  }
   .chunk {
     height: 30px;
     line-height: 30px;
+    margin: 0 5px;
   }
-
   .left {
     display: flex;
-    padding: 0 10px;
+    padding: 0 5px;
   }
   .center {
     display: flex;
@@ -32,8 +44,13 @@
   .right {
     display: flex;
     justify-content: flex-end;
-    padding: 0 10px;
+    padding: 0 5px;
   }
 
+  // Temp Shit Colors
+  .health { color: rgba(214, 132, 132, 0.5); }
+  .stamina { color: rgba(212, 208, 120, 0.5); }
+  .mana { color: rgba(135, 189, 208, 0.5); }
+  .arousal { color: rgba(174, 97, 145, 0.5); }
+  .time { color: variables.$fg-weak; }
 }
-

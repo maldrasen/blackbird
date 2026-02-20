@@ -32,6 +32,9 @@ global.GameState = (function() {
   function setCurrentLocation(location) { $currentLocation = location }
   function getCurrentLocation() { return $currentLocation; }
 
+  function setGameTime(time) { $gameTime = time; }
+  function getGameTime() { return $gameTime; }
+
   function setPlayer(player) { $player = player; }
   function getPlayer() { return $player; }
 
@@ -65,6 +68,8 @@ global.GameState = (function() {
     initialize,
     setCurrentLocation,
     getCurrentLocation,
+    setGameTime,
+    getGameTime,
     setPlayer,
     getPlayer,
     pack,
