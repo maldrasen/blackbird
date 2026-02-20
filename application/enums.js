@@ -68,6 +68,8 @@ global.KeyCodes = Object.freeze({
 
 global.ComponentType = Object.freeze({
   actor: 'ActorComponent',
+  anima: 'AnimaComponent',
+  animus: 'AnimusComponent',
   anus: 'AnusComponent',
   arousal: 'ArousalComponent',
   aspects: 'AspectsComponent',
@@ -76,6 +78,7 @@ global.ComponentType = Object.freeze({
   breasts: 'BreastsComponent',
   cock: 'CockComponent',
   controlled: 'ControlledComponent',
+  emotions: 'EmotionsComponent',
   feelings: 'FeelingsComponent',
   health: 'HealthComponent',
   mana: 'ManaComponent',
@@ -84,7 +87,7 @@ global.ComponentType = Object.freeze({
   mouth: 'MouthComponent',
   personality: 'PersonalityComponent',
   pussy: 'PussyComponent',
-  scales: 'ScalesComponent',
+  sensitivities: 'SensitivitiesComponent',
   sexualPreferences: 'SexualPreferencesComponent',
   situated: 'SituatedComponent',
   skills: 'SkillsComponent',

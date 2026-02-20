@@ -6,6 +6,7 @@ global.TrainingController = (function() {
   let $context, $trainingScales, $currentPosition, $possibleActions
 
   // Start needs to initialize all the controller's state variables so that state doesn't leak between training events.
+  // These are the transient scale values that overflow into the acquired anima and animus at the end of training.
   function start(data) {
     $currentPosition = 'standing'
     $trainingScales = {

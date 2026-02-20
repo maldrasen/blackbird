@@ -170,10 +170,8 @@ global.CharacterOverlay = (function() {
     }
   }
 
+  // Scales will display sensitivities and emotions ranks along with their associated anima and animus.
   function fillScales() {
-    const scales = ScalesComponent.lookup($id);
-
-    console.log("Scales:",scales);
   }
 
   function makeTag(label,value,classname) {
