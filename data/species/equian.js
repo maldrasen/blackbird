@@ -20,6 +20,19 @@ Species.register('equian', {
     neuroticism:[40,80],       // Herbivores
   },
 
+  // Huge cocks and clits and pussies, but as such their sensitivity is lower.
+  sensitivities: {
+    cock:     { Z:0,   F:5,  D:10, C:80,  B:20, A:5 },
+    clit:     { Z:0,   F:5,  D:10, C:80,  B:20, A:5 },
+    pussy:    { Z:0,   F:10, D:30, C:80,  B:15, A:5 },
+    anus:     { Z:0,   F:10, D:30, C:100, B:20, A:5 },
+    prostate: { Z:0,   F:10, D:30, C:100, B:20, A:5 },
+    nipple:   { Z:0,   F:10, D:30, C:50,  B:5,  A:1 },
+    oral:     { Z:100, F:5,  D:1,  C:0,   B:0,  A:0 },
+    urethra:  { Z:100, F:5,  D:1,  C:0,   B:0,  A:0 },
+    cervix:   { Z:100, F:10, D:5,  C:1,   B:0,  A:0 },
+  },
+
   sexualPreferences: {
     'beast-lover':{ chance:90, strength:20 },
     'orgy-lover':{ chance:50, strength:20 },  // Herd animals fuck with the surrounding herd.

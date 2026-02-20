@@ -108,6 +108,7 @@ global.CharacterFactory = (function() {
         breasts:       breastsData,
       }, triggers);
 
+      // TODO: Also apply aspects from species.
       aspectsData = buildAspectsData(triggers);
       skillsData = buildSkillsData(triggers);
 

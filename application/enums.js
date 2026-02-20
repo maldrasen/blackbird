@@ -116,11 +116,12 @@ global.GenderName = Object.freeze({
 });
 
 global.AspectType = Object.freeze({
-  erogenousCervix: 'Erogenous Cervix',
+  erogenousCervix: 'Erogenous Cervix', // Erogenous aspects also enabled when sensitivity is randomly assigned.
   erogenousThroat: 'Erogenous Throat',
   erogenousUrethra: 'Erogenous Urethra',
-  flexible: 'Flexible',
-  productive: 'Productive',
+  flexible: 'Flexible', // Makes larger insertions work and enables special positions (folded in half, self sucking)
+  premature: 'Premature', // Lowers orgasm thresholds (2000,1000,500)
+  productive: 'Productive', // Increases cum and milk volumes.
   noble: 'Noble',
   slave: 'Slave',
 });

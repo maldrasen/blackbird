@@ -20,8 +20,23 @@ Species.register('halfling', {
     neuroticism:[0,40],         // Easy going and brave.
   },
 
+// Because of their relatively shallow pussies, halflings have an unusually
+// sensitive cervix.
+sensitivities: {
+    cock:     { Z:0,   F:1,  D:5,  C:100, B:40, A:15 },
+    clit:     { Z:0,   F:1,  D:5,  C:100, B:40, A:15 },
+    pussy:    { Z:0,   F:5,  D:20, C:100, B:30, A:10 },
+    anus:     { Z:0,   F:10, D:30, C:100, B:20, A:5  },
+    prostate: { Z:0,   F:10, D:30, C:100, B:20, A:5  },
+    nipple:   { Z:0,   F:10, D:30, C:50,  B:5,  A:1  },
+    oral:     { Z:100, F:5,  D:1,  C:0,   B:0,  A:0  },
+    urethra:  { Z:100, F:5,  D:1,  C:0,   B:0,  A:0  },
+    cervix:   { Z:0,   F:10, D:30, C:10,  B:5,  A:1  },
+  },
+
   sexualPreferences: {
-    'cervix-slut':{ chance:25, strength:20 }, // Because of their relatively shallow pussies, halflings have an unusually sensitive cervix.
+    'size-queen': { chance:33, strength:30 }, // They prefer larger partners.
+    'cervix-slut':{ chance:25, strength:20 }, // Cervix sex is a big kink among halflings.
     'perverted':{ chance:25, strength:-20 }, // Halflings are rural traditionalists and don't like anything too unusual or different.
   },
 

@@ -20,10 +20,30 @@ Species.register('sylph', {
     neuroticism:[50,100],     // Small and fragile
   },
 
+  // It's rare for a sylph to have a cock, but when they do they're exceedingly
+  // sensitive and prone to premature ejaculation. They also have extremely
+  // sensitive prostates.
+  sensitivities: {
+    cock:     { Z:0,   F:0,  D:1,  C:10,  B:30, A:60 },
+    clit:     { Z:0,   F:0,  D:5,  C:20,  B:40, A:5  },
+    pussy:    { Z:0,   F:5,  D:20, C:100, B:30, A:10 },
+    anus:     { Z:0,   F:5,  D:20, C:100, B:30, A:10 },
+    prostate: { Z:0,   F:0,  D:1,  C:10,  B:30, A:60 },
+    nipple:   { Z:0,   F:10, D:30, C:50,  B:5,  A:1  },
+    oral:     { Z:100, F:5,  D:1,  C:0,   B:0,  A:0  },
+    urethra:  { Z:100, F:5,  D:1,  C:0,   B:0,  A:0  },
+    cervix:   { Z:100, F:10, D:5,  C:1,   B:0,  A:0  },
+  },
+
   // Sylphs are naturally bratty and are more likely to enjoy degrading experiences as novel and interesting.
   sexualPreferences: {
     'humiliation-slut': { chance:25, strength:20  },
     'affection-slut':   { chance:25, strength:-20 },
+  },
+
+  aspects: {
+    'flexible':  { chance:33, a:20, b:5,  c:1 },
+    'premature': { chance:33, a:30, b:10, c:5 },
   },
 
   body: {
@@ -31,8 +51,6 @@ Species.register('sylph', {
     mutability: 25,
     earShape: 'elf',
     smellFamily: 'floral',
-
-    aspects: ['flexible'],
 
     breasts:{
       zero: 30,

@@ -20,6 +20,18 @@ Species.register('elf', {
     neuroticism:[0,50],         // Long lived and emotionally stable.
   },
 
+  sensitivities: {
+    cock:     { Z:0,   F:1,  D:5,  C:100, B:40, A:15 },
+    clit:     { Z:0,   F:1,  D:5,  C:100, B:40, A:15 },
+    pussy:    { Z:0,   F:5,  D:20, C:100, B:30, A:10 },
+    anus:     { Z:0,   F:10, D:30, C:100, B:20, A:5  },
+    prostate: { Z:0,   F:10, D:30, C:100, B:20, A:5  },
+    nipple:   { Z:0,   F:10, D:30, C:50,  B:5,  A:1  },
+    oral:     { Z:100, F:5,  D:1,  C:0,   B:0,  A:0  },
+    urethra:  { Z:100, F:5,  D:1,  C:0,   B:0,  A:0  },
+    cervix:   { Z:100, F:10, D:5,  C:1,   B:0,  A:0  },
+  },
+
   sexualPreferences: {
     'perverted':{ chance:50, strength:-20 }, // Elves are more chaste and reserved.
     'dominant':{ chance:25, strength:20 }, // Elves are more likely to want to be in charge.
