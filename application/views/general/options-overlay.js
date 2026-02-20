@@ -15,6 +15,7 @@ global.OptionsOverlay = (function() {
   }
 
   function build() {
+    console.log("We keep building this don't we?")
     X.loadDocument('#optionsOverlay','views/options-overlay.html');
   }
 

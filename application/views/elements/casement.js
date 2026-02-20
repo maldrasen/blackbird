@@ -26,6 +26,16 @@ global.Casement = (function() {
     fromString(FileHelper.readFile(path),options);
   }
 
+  // The Casements are what I used to call Dialogs. (There's a bit of a name collision there) They're very complicated
+  // UI components, but they're kind of the bare minimum to get a floating dialog window that can be open, closed,
+  // dragged, and resized, with scrolling contents; all by just giving them a string of content to display. Casements
+  // are either created from an HTML string or from a file, where an HTML string is read from. Once a casement is open,
+  // it should have its bounds set, and a title set, like so:
+  //
+  //    casement = Casement.fromString('<p>This is a casement.</p>');
+  //    casement.setTitle("Title");
+  //    casement.setBounds({ top:10, left:20, height:100, width:200 });
+  //
   // Available Options:
   //    scrollingPanel   (true by default)
   //    resizable        (true by default)

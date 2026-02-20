@@ -52,47 +52,7 @@
 // Flex Item Classes
 .flex-grow { flex-grow:1; }
 
-// === Dialog ===
-// The two main layout containers are the dialogs and the overlays. Dialogs
-// either have a set size or are sized to the size of their content. The size
-// of an overlay is dependent on the window size.
-//
-// Another difference is the dialogs have a nested structure, with a container
-// a body, and a footer. The overlays have the overlay and the footer in a flat
-// structure.
 
-.dialog-container {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  z-index: variables.$z-overlay;
-
-  .dialog-body {
-    background-color: rgba(0,0,0,0.70);
-    border: variables.$border-normal;
-    border-bottom: variables.$border-light;
-    box-shadow: variables.$shadow-overlay;
-    overflow: hidden;
-
-    .dialog-footer {
-      text-align: right;
-      padding: 5px;
-      margin-top: 5px;
-
-      background-color: rgba(0,0,0,0.80);
-      border-top: variables.$border-normal;
-      box-shadow: variables.$shadow-overlay;
-      z-index: variables.$z-overlay-footer;
-    }
-  }
-}
 
 // === Overlay ===
 // Overlays come in a few different sizes. The normal overlay takes up most of
@@ -186,4 +146,14 @@
 }
 .overlay.with-header {
   top: 80px;
+}
+
+#overlayCover {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0,0,0,0.66);
+  z-index: variables.$z-overlay-cover;
 }
