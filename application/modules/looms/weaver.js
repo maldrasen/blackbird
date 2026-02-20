@@ -5,22 +5,22 @@ global.Weaver = function(context) {
   // === Weaver String Replacement Formats ===
   // Regular Expressions for Life!
   //
-  // Context Match: {{@KEY}}
+  // Context Match: {@KEY}
   //     - [KEY] A string value in the context object.
   //
-  // Actor Match: {{A:LOOM}}
+  // Actor Match: {A:LOOM}
   //      - [A] Actor subject Code. There should be a single character code for
   //            an Actor reference within the context's actor's object.
   //      - [LOOM] Loom token. This is the Loom object and function to pass the actor into.
   //
-  // Utility Match: {{UTIL}} or {{UTIL|ARG}}
+  // Utility Match: {UTIL} or {UTIL|ARG}
   //      - [UTIL] The name of the utility.
   //      - [ARG] Optional. The string argument to pass to the utility.
 
-  const CONTEXT_PATTERN = /{{@([^}]+)}}/
-  const ACTOR_PATTERN = /{{([^}]+):([^}]+)}}/
-  const UTILITY_PATTERN = /{{([^}]+)\|([^}]+)}}/
-  const SIMPLE_PATTERN = /{{([^}]+)}}/
+  const CONTEXT_PATTERN = /{@([^}]+)}/
+  const ACTOR_PATTERN = /{([^}]+):([^}]+)}/
+  const UTILITY_PATTERN = /{([^}]+)\|([^}]+)}/
+  const SIMPLE_PATTERN = /{([^}]+)}/
 
   function weave(source) {
     if (source == null) { return ''; }
@@ -58,7 +58,7 @@ global.Weaver = function(context) {
 
   function actorValue(subject, token) {
     try {
-      return formatWarning(`TODO: Weaver:Actor(${subject},${token})`);
+      return ActorLoom.weave(context[subject], token);
     }
     catch (error) {
       return onError('Actor', error, { subject, token });

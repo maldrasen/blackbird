@@ -66,8 +66,6 @@
 .fs-small { font-size: variables.$fs-small; }
 .fs-tiny { font-size: variables.$fs-tiny; }
 
-.mana-color { color:variables.$fg-mana; }
-
 .border-light { border: variables.$border-light; }
 .border-normal { border: variables.$border-normal; }
 .border-heavy { border: variables.$border-heavy; }
@@ -79,9 +77,11 @@
 .border-bottom { border-bottom: variables.$border-normal; }
 .border-top { border-top: variables.$border-normal; }
 
-.weaver-error { font-family:roboto-mono; color:variables.$fg-error; }
-.weaver-warning { font-family:roboto-mono; color:variables.$fg-warning; }
-
-.drag-active {
-  cursor: grabbing;
+.weaver-error {
+  font-family:'roboto-mono', monospace;
+  color: variables.$fg-error;
+}
+.weaver-warning {
+  font-family:'roboto-mono', monospace;
+  color: variables.$fg-warning;
 }

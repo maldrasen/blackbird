@@ -7,7 +7,7 @@ global.TrainingView = (function() {
 
   function show() {
     MainContent.setMainContent("views/training.html");
-    MainContent.setBackground(Location.lookup(GameState.getCurrentLocation()).getBackground());
+    MainContent.setBackground(`backgrounds/training.png`);
 
     TrainingCategoryToggles.build();
     TrainingActionPanel.build();

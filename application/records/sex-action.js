@@ -48,9 +48,8 @@ global.SexAction = (function() {
 
     const action = {...$sexActions[code]};
 
-    // TODO: Run this through the weaver.
     function getDescription(context) {
-      return action.description;
+      return Weaver(context).weave(action.description);
     }
 
     // TODO: This function will need to determine things like arousal state (is cock hard) and if an insertion can
