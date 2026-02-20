@@ -39,43 +39,24 @@ global.TrainingActionPanel = (function() {
     });
   }
 
+  function actionClicked(event) {
+    console.log("Click:",event.target);
+  }
+
+  // === Big Messy Tooltip ===
+
   function createTooltip(link, context, consentResult) {
     link.setAttribute('class','tooltip-parent');
 
     const sexAction = SexAction.lookup(link.dataset.code);
-    const additive = consentResult.getResponse().additive;
-    const multiplicative = consentResult.getResponse().multiplicative;
 
     let content = `<div class='sex-action-tooltip'>`
     content += `<p class='description'>${sexAction.getDescription(context)}</p>`
     content += `<div class='calculation ${consentResult.getConsentClassname()}'>`
     content += `<div class='target'>Consent Target[${sexAction.getConsentTarget()}]</div>`
-
-    content += `<div class='math'>(`
-    for (let i=0; i<additive.length; i++) {
-      const response = additive[i];
-      content += `${response.label}[${StringHelper.formatNumber(response.value)}]`;
-      if (i < additive.length-1) { content += ` + ` }
-    }
-    content += `)`
-    if (multiplicative.length > 0) {
-      content += ` * `
-      for (let i=0; i<multiplicative.length; i++) {
-        const response = multiplicative[i];
-        content += `${response.label}[${StringHelper.formatNumber(response.value)}]`;
-        if (i < multiplicative.length-1) { content += ` * ` }
-      }
-    }
-    content += `</div>`
-
-    content += `<div class='break'></div>`
-
-    content += `<div class='result'>`
-    content += `${StringHelper.formatNumber(consentResult.getConsentValue())} `
-    content += `(${consentResult.getConsentLabel()})</div>`
-
-    content += `</div>`;
-    content += `</div>`;
+    content += buildMathSegment(consentResult);
+    content += buildResultSegment(consentResult);
+    content += `</div></div>`;
 
     Tooltip.register(link.getAttribute('id'),{
       content: content,
@@ -84,8 +65,36 @@ global.TrainingActionPanel = (function() {
     });
   }
 
-  function actionClicked(event) {
-    console.log("Click:",event.target);
+  function buildMathSegment(consentResult) {
+    const additive = consentResult.getResponse().additive;
+    const multiplicative = consentResult.getResponse().multiplicative;
+
+    let content = `<div class='math'>(`
+    for (let i=0; i<additive.length; i++) {
+      const response = additive[i];
+      content += `${response.label}[${StringHelper.formatNumber(response.value)}]`;
+      if (i < additive.length-1) { content += ` + ` }
+    }
+    content += `)`
+
+    if (multiplicative.length > 0) {
+      content += ` × `
+      for (let i=0; i<multiplicative.length; i++) {
+        const response = multiplicative[i];
+        content += `${response.label}[${StringHelper.formatNumber(response.value)}]`;
+        if (i < multiplicative.length-1) { content += ` * ` }
+      }
+    }
+
+    return content + `</div>`;
+  }
+
+  function buildResultSegment(consentResult) {
+    return `<div class='break'></div>
+      <div class='result'>
+        ${StringHelper.formatNumber(consentResult.getConsentValue())}
+        (${consentResult.getConsentLabel()})
+      </div>`;
   }
 
   return Object.freeze({
