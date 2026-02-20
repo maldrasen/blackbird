@@ -69,6 +69,8 @@ global.CharacterOverlay = (function() {
     fillAspects();
     fillMarks();
     fillSexualPreferences();
+    fillScales();
+    fillSkills();
   }
 
   function getHealthBar() {
@@ -137,7 +139,6 @@ global.CharacterOverlay = (function() {
   function fillSexualPreferences() {
     const sexualPreferences = SexualPreferencesComponent.lookup($id);
 
-
     let html = `<div class='tag-area'>`
     Object.keys(sexualPreferences).forEach(key => {
       const preference = SexualPreference.lookup(key);
@@ -146,6 +147,33 @@ global.CharacterOverlay = (function() {
     html += `</div>`
 
     X.fill('#characterOverlay .sexual-preferences-area', X.createElement(html));
+  }
+
+  function fillSkills() {
+    const skills = SkillsComponent.lookup($id);
+    let anySkill = false;
+    let html = `<div class='tag-area'>`
+
+    Object.keys(skills).forEach(code => {
+      const skill = Skill.lookup(code)
+      if (skills[code] > 0) {
+        html += makeTag(skill.getName(), skills[code], 'skill-tag');
+        anySkill = true;
+      }
+    });
+    html += `</div>`
+
+    if (anySkill) {
+      X.fill('#characterOverlay .skills-area', X.createElement(html));
+    } else {
+      X.addClass('#characterOverlay .skills-area','hide');
+    }
+  }
+
+  function fillScales() {
+    const scales = ScalesComponent.lookup($id);
+
+    console.log("Scales:",scales);
   }
 
   function makeTag(label,value,classname) {
