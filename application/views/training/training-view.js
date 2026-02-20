@@ -15,6 +15,8 @@ global.TrainingView = (function() {
 
     TrainingActionPanel.update();
     TrainingStatusPanel.update();
+
+    GameStateFrame.show();
   }
 
   return Object.freeze({

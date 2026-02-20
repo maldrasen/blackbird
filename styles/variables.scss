@@ -114,8 +114,9 @@ $casementTopGradient: linear-gradient(rgb(47,37,34) 0%, rgb(0,0,0) 100%);
 // === Z-Indices ===
 $z-background: 0;
 $z-root: 100;
-$z-slide-window: 200;
-$z-viewport: 300;
+$z-game-state: 200;
+$z-slide-window: 300;
+$z-viewport: 400;
 $z-event-view: 1000;
 $z-overlay: 2000;
 $z-overlay-footer: 2001;

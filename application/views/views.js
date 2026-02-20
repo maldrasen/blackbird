@@ -10,6 +10,8 @@ global.Views = (function() {
     MouseMonitor.init();
     WindowManager.init();
 
+    GameStateFrame.init();
+
     Console.init();
     EventView.init();
     MainMenu.init();
@@ -17,8 +19,6 @@ global.Views = (function() {
     TrainingView.init();
   }
 
-  return {
-    initAll
-  }
+  return Object.freeze({ initAll });
 
 })();

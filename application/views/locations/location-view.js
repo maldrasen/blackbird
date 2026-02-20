@@ -11,6 +11,7 @@ global.LocationView = (function() {
     X.onClick('#characterList a', characterClicked);
 
     buildCharacterList(characters);
+    GameStateFrame.show();
   }
 
   // TODO: Right now clicking on a character will just start the training mode with that character. Once I have more

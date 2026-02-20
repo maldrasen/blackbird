@@ -1,0 +1,39 @@
+@use "../variables";
+
+#gameStateFrame {
+  position: absolute;
+  display: flex;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+
+  flex-direction: row;
+
+  background-color: rgb(0,0,0);
+  border-bottom: variables.$border-normal;
+  box-shadow: variables.$shadow-frame;
+  z-index: variables.$z-game-state;
+
+  .chunk {
+    height: 30px;
+    line-height: 30px;
+  }
+
+  .left {
+    display: flex;
+    padding: 0 10px;
+  }
+  .center {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+  }
+  .right {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 10px;
+  }
+
+}
+

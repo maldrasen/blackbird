@@ -9,8 +9,10 @@
 @use 'forms.scss';
 @use 'layout.scss';
 
+@use 'components/character-details.scss';
 @use 'components/console.scss';
 @use 'components/effects.scss';
+@use 'components/game-state-frame.scss';
 @use 'components/test-framework.scss';
 
 @use 'elements/alerts.scss';
