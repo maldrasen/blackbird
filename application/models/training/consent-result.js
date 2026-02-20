@@ -153,15 +153,34 @@ global.ConsentResult = (characterId, targetId=null) => {
     });
   }
 
+  function getConsentClassname() {
+    switch (getConsent()) {
+      case Consent.unwilling: return 'fg-unwilling';
+      case Consent.reluctant: return 'fg-reluctant';
+      case Consent.willing:   return 'fg-willing';
+      case Consent.eager:     return 'fg-eager';
+    }
+  }
+
+  function getConsentLabel() {
+    switch (getConsent()) {
+      case Consent.unwilling: return 'Unwilling';
+      case Consent.reluctant: return 'Reluctant';
+      case Consent.willing:   return 'Willing';
+      case Consent.eager:     return 'Eager';
+    }
+  }
+
   return Object.freeze({
     getCharacter: () => { return $characterId; },
     getTarget: () => { return $targetId; },
     getResponse: () => { return $response },
     getConsentValue: () => { return $consentValue; },
+    getConsentClassname,
+    getConsentLabel,
     getConsent,
     applyFactors,
     applyFactor,
     setSexAction,
   });
-
 }

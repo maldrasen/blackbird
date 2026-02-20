@@ -93,7 +93,7 @@ global.Tooltip = (function() {
         frame.appendChild(list);
       }
 
-      // Finally position and display the tooltip.
+      // Position and display the tooltip.
       if (tooltip.position === 'bottom') {
         frame.style['top'] = `${offset.top + offset.height}px`;
         frame.style['left'] = `${offset.left}px`;
@@ -105,6 +105,13 @@ global.Tooltip = (function() {
 
       X.addClass(frame,tooltip.classname);
       X.removeClass(frame,'hide');
+
+      // If the tooltip is now hanging off the right side of the screen,
+      // reposition it so that it's anchored to right side of the parent.
+      const frameOffset = X.getPosition(frame);
+      if (offset.x + frameOffset.width + 10 > window.innerWidth) {
+        frame.style['left'] = `${(frameOffset.x - frameOffset.width) + offset.width}px`
+      }
     }
   }
 

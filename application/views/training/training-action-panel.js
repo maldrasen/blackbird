@@ -33,14 +33,9 @@ global.TrainingActionPanel = (function() {
       consentResult.applyFactors();
       createTooltip(link, context, consentResult);
 
-      if (sexAction.isAvailable(context) === false) {
-        X.addClass(link,'unavailable');
-      } else {
-        if (consentResult.getConsent() === Consent.unwilling) { X.addClass(link,'unwilling'); }
-        if (consentResult.getConsent() === Consent.reluctant) { X.addClass(link,'reluctant'); }
-        if (consentResult.getConsent() === Consent.willing)   { X.addClass(link,'willing'); }
-        if (consentResult.getConsent() === Consent.eager)     { X.addClass(link,'eager'); }
-      }
+      X.addClass(link, sexAction.isAvailable(context) ?
+        consentResult.getConsentClassname() :
+        'unavailable');
     });
   }
 
@@ -48,11 +43,42 @@ global.TrainingActionPanel = (function() {
     link.setAttribute('class','tooltip-parent');
 
     const sexAction = SexAction.lookup(link.dataset.code);
+    const additive = consentResult.getResponse().additive;
+    const multiplicative = consentResult.getResponse().multiplicative;
 
-    console.log(`TT:[${consentResult.getConsentValue()}]`,consentResult.getResponse());
+    let content = `<div class='sex-action-tooltip'>`
+    content += `<p class='description'>${sexAction.getDescription(context)}</p>`
+    content += `<div class='calculation ${consentResult.getConsentClassname()}'>`
+    content += `<div class='target'>Consent Target[${sexAction.getConsentTarget()}]</div>`
+
+    content += `<div class='math'>(`
+    for (let i=0; i<additive.length; i++) {
+      const response = additive[i];
+      content += `${response.label}[${StringHelper.formatNumber(response.value)}]`;
+      if (i < additive.length-1) { content += ` + ` }
+    }
+    content += `)`
+    if (multiplicative.length > 0) {
+      content += ` * `
+      for (let i=0; i<multiplicative.length; i++) {
+        const response = multiplicative[i];
+        content += `${response.label}[${StringHelper.formatNumber(response.value)}]`;
+        if (i < multiplicative.length-1) { content += ` * ` }
+      }
+    }
+    content += `</div>`
+
+    content += `<div class='break'></div>`
+
+    content += `<div class='result'>`
+    content += `${StringHelper.formatNumber(consentResult.getConsentValue())} `
+    content += `(${consentResult.getConsentLabel()})</div>`
+
+    content += `</div>`;
+    content += `</div>`;
 
     Tooltip.register(link.getAttribute('id'),{
-      content: `<div style='width:400px'>${sexAction.getDescription(context)}</div>`,
+      content: content,
       position: 'bottom',
       delay: 100,
     });

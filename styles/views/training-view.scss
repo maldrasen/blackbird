@@ -96,11 +96,53 @@
     color: rgb(150,150,150);
     font-size: variables.$fs-big;
 
-    a.unavailable { color:rgb(60,60,60) }
-    a.unwilling { color:#8f3632; }
-    a.reluctant { color:#916843; }
-    a.willing { color:#959257; }
-    a.eager { color:#859c82; }
   }
 
 }
+
+.sex-action-tooltip {
+  padding: 5px;
+  width: 400px;
+
+  .description {
+  }
+  .calculation {
+    font-family: 'roboto-mono', monospace;
+    font-size: variables.$fs-small;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 5px;
+  }
+  .break {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: inherit;
+  }
+  .target {
+    color: variables.$fg-strong;
+    margin: 4px 6px 2px
+  }
+  .math {
+    color: variables.$fg-body;
+    margin: 0 10px 4px;
+  }
+  .result {
+    margin: 4px 6px;
+  }
+}
+
+.fg-unavailable {
+  color:rgb(60,60,60);
+  border-color:rgba(60,60,60,0.5); }
+.fg-unwilling {
+  color:rgb(143,75,70);
+  border-color:rgba(143,75,70,0.5); }
+.fg-reluctant {
+  color:rgb(145,104,67);
+  border-color:rgba(145,104,67,0.5); }
+.fg-willing {
+  color:rgb(149,146,87);
+  border-color:rgba(149,146,87,0.5); }
+.fg-eager {
+  color:rgb(133,156,130);
+  border-color:rgba(133,156,130,0.5); }
