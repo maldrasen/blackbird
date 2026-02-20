@@ -9,7 +9,6 @@
 @use 'forms.scss';
 @use 'layout.scss';
 
-@use 'components/character-details.scss';
 @use 'components/console.scss';
 @use 'components/effects.scss';
 @use 'components/game-state-frame.scss';
@@ -28,6 +27,7 @@
 @use 'elements/tabs.scss';
 @use 'elements/tooltip.scss';
 
+@use 'views/character-overlay';
 @use 'views/dungeon.scss';
 @use 'views/event-view.scss';
 @use 'views/feature-viewer.scss';

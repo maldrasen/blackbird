@@ -1,0 +1,64 @@
+@use "../variables";
+
+#characterOverlay {
+
+  .overlay {
+    display: flex;
+    .main-panel {
+      flex-grow: 1;
+      padding: 10px;
+      border-right: variables.$border-normal;
+    }
+    .side-panel {
+      padding: 10px;
+      width: 300px;
+      overflow: hidden;
+    }
+  }
+
+  .actor-row {
+    display: flex;
+    font-size: variables.$fs-bigger;
+    border-bottom: variables.$border-light;
+    .full-name { flex-grow:1 }
+    .gender { margin-right:6px; }
+  }
+
+  .row-of-panels {
+    display: flex;
+  }
+
+  .panel {
+    flex-grow: 1;
+    padding: 5px;
+
+    margin: 10px 5px 10px;
+    background-color: rgb(0,0,0);
+
+    border: variables.$border-light;
+    box-shadow: variables.$shadow-dark;
+
+    &:first-child { margin-left:0; }
+    &:last-child { margin-right:0; }
+  }
+
+  .tag-area {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    margin-right: 5px;
+    margin-top: 5px;
+    padding: 3px 10px;
+    font-size: variables.$fs-big;
+    border: variables.$border-very-light;
+    box-shadow: variables.$shadow-dark;
+    background-color: rgba(47, 41, 41, 0.3);
+
+    .label { border-right: variables.$border-very-light; }
+    .value { color: variables.$fg-strong; }
+
+  }
+
+}

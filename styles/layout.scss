@@ -73,8 +73,9 @@
   z-index: variables.$z-overlay;
   overflow: hidden;
 }
-.overlay.light-overlay {
-  background-color: rgba(0,0,0,0.50);
+.overlay.no-footer {
+  bottom: 50px;
+  border-bottom: variables.$border-normal;
 }
 
 .overlay.narrow {

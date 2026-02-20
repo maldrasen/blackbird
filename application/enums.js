@@ -105,6 +105,13 @@ global.Gender = Object.freeze({
   enby: 'enby',
 });
 
+global.GenderName = Object.freeze({
+  male: 'Male',
+  female: 'Female',
+  futa: 'Futanari',
+  enby: 'Non-Binary',
+});
+
 global.AspectType = Object.freeze({
   erogenousCervix: 'Erogenous Cervix',
   erogenousThroat: 'Erogenous Throat',

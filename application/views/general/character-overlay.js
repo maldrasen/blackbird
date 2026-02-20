@@ -40,8 +40,120 @@ global.CharacterOverlay = (function() {
 
   function update() {
     console.log("Update this.")
+
+    X.fill('#characterOverlay .actor-row .full-name', $character.getFullName());
+    X.fill('#characterOverlay .actor-row .species', $character.getSpeciesName());
+    X.fill('#characterOverlay .actor-row .gender', $character.getGenderName());
+
+    X.fill('#characterOverlay .health-panel .health', getHealthBar());
+    X.fill('#characterOverlay .health-panel .stamina', getStaminaBar());
+    X.fill('#characterOverlay .health-panel .arousal', getArousalBar());
+
+    X.fill('#characterOverlay .mana-panel .red', getManaBar('red'));
+    X.fill('#characterOverlay .mana-panel .yellow', getManaBar('yellow'));
+    X.fill('#characterOverlay .mana-panel .green', getManaBar('green'));
+    X.fill('#characterOverlay .mana-panel .blue', getManaBar('blue'));
+    X.fill('#characterOverlay .mana-panel .black', getManaBar('black'));
+
+    X.fill('#characterOverlay .feelings-panel .control', getControlBar());
+    X.fill('#characterOverlay .feelings-panel .affection', getFeelingsBar('affection'));
+    X.fill('#characterOverlay .feelings-panel .respect', getFeelingsBar('respect'));
+    X.fill('#characterOverlay .feelings-panel .fear', getFeelingsBar('fear'));
+
+    X.fill('#characterOverlay .attributes-panel .strength', getAttributeBar('strength'));
+    X.fill('#characterOverlay .attributes-panel .dexterity', getAttributeBar('dexterity'));
+    X.fill('#characterOverlay .attributes-panel .vitality', getAttributeBar('vitality'));
+    X.fill('#characterOverlay .attributes-panel .intelligence', getAttributeBar('intelligence'));
+    X.fill('#characterOverlay .attributes-panel .beauty', getAttributeBar('beauty'));
+
+    fillAspects();
+    fillMarks();
+    fillSexualPreferences();
   }
 
+  function getHealthBar() {
+    const health = HealthComponent.lookup($id);
+    return `Health (${health.currentHealth}/${health.maxHealth})`;
+  }
+
+  function getStaminaBar() {
+    const current = Math.round(HealthComponent.lookup($id).currentStamina);
+    const max = Math.round(AttributesComponent.createWrapper({ id:$id }).getMaxStamina());
+    return `Stamina (${current}/${max})`;
+  }
+
+  function getArousalBar() {
+    const arousal = ArousalComponent.lookup($id).arousal;
+    return `Arousal (${arousal}/100)`;
+  }
+
+  // TODO: Implement Mana
+  function getManaBar(color) {
+    return `${StringHelper.titlecase(color)} Mana(0/0)`
+  }
+
+  function getControlBar() {
+    const control = ControlledComponent.lookup($id);
+    return `Control ${control.control}`
+  }
+
+  // I think it's safe to say that the feelings panel should always show the feelings directed towards the player in
+  // the status screen. The feelings towards other characters are essentially hidden though.
+  function getFeelingsBar(feel) {
+    const feelings = FeelingsComponent.findByTarget($id, GameState.getPlayer());
+    return `${StringHelper.titlecase(feel)} ${feelings[feel]}`
+  }
+
+  function getAttributeBar(attr) {
+    const attributes = AttributesComponent.lookup($id);
+    return `${StringHelper.titlecase(attr)} ${attributes[attr]}`;
+  }
+
+  function fillAspects() {
+    const aspects = AspectsComponent.lookup($id);
+    const keys = Object.keys(aspects);
+    let html;
+
+    if (keys.length === 0) {
+      X.addClass(`#characterOverlay .aspects-area`,'hide');
+    }
+
+    if (keys.length > 0) {
+      html = `<div class='tag-area'>`;
+      keys.forEach(key => {
+        html += makeTag(AspectType[key], aspects[key], 'aspect-tag');
+      });
+      html += `</div>`;
+
+      X.fill('#characterOverlay .aspects-area', X.createElement(html));
+    }
+  }
+
+  // TODO: Fill marks area once we have any.
+  function fillMarks() {
+    X.addClass(`#characterOverlay .marks-area`,'hide');
+  }
+
+  function fillSexualPreferences() {
+    const sexualPreferences = SexualPreferencesComponent.lookup($id);
+
+
+    let html = `<div class='tag-area'>`
+    Object.keys(sexualPreferences).forEach(key => {
+      const preference = SexualPreference.lookup(key);
+      html += makeTag(preference.getName(), sexualPreferences[key], 'sexual-preference-tag');
+    });
+    html += `</div>`
+
+    X.fill('#characterOverlay .sexual-preferences-area', X.createElement(html));
+  }
+
+  function makeTag(label,value,classname) {
+    return `<div class='${classname} tag'>
+      <span class='label'>${label}</span>
+      <span class='value'>${value}</span>
+    </div>`
+  }
 
   // TODO: Right now clicking on a character will just start the training mode with that character. Once I have more
   //       of the game's systems done clicking a character here should either start some kind of character interaction

@@ -11,6 +11,8 @@ global.Character = function(id) {
   return Object.freeze({
     getName: () => { return ActorComponent.lookup(id).name; },
     getFullName,
+    getSpeciesName: () => { return Species.lookup(ActorComponent.lookup(id).species).getName(); },
+    getGenderName: () => { return GenderName[ActorComponent.lookup(id).gender] },
   });
 
 }
