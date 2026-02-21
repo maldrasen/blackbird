@@ -32,14 +32,10 @@ global.EmotionsComponent = (function() {
     const emotionsComponent = lookup(id);
 
     Object.keys(emotionsComponent).forEach(key => {
+      Validate.between(key, emotionsComponent[key], 1, 8);
       if ($properties.includes(key) === false) {
         throw `Emotions component does not have a ${key} property.`
       }
-    });
-
-    Object.keys($properties).forEach(key => {
-      Validate.exists(key, emotionsComponent[key]);
-      Validate.between(key, emotionsComponent[key], 0, 8);
     });
   }
 

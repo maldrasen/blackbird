@@ -7,11 +7,6 @@ global.SexualPreferenceFactory = (function() {
   // Sexuality has to key off of biological sex because I have no idea who a straight non-binary person is supposed to
   // be attracted to. A straight futa is gynophilic, a gay futa is androphilic (because of butt stuff). Bi is positive
   // in both. Ace is negative in both.
-  //
-  // Note: We could also add any number of randomized sexual preferences in the factory here, but I think it's better
-  //       to do that after the character has already been built. The system outside the character factory will know
-  //       more about the context the character is being created under.
-  //
   function build(options, triggers) {
     const speciesPrefs = Species.lookup(options.actor.species).getSexualPreferences() || {};
 
@@ -25,6 +20,9 @@ global.SexualPreferenceFactory = (function() {
     // Most species (but not humans) have a few species level sexual preferences. Species preferences need to be added
     // before the slut and virgin triggers in order to properly remove all sexual preferences from virgins.
     Object.keys(speciesPrefs).forEach(preference => {
+      if (preference === 'male-dominated')   { applyDominated(preferences, options.actor, Gender.male);   }
+      if (preference === 'female-dominated') { applyDominated(preferences, options.actor, Gender.female); }
+      if (preference === 'futa-dominated')   { applyDominated(preferences, options.actor, Gender.futa);   }
       if (Random.roll(100) < speciesPrefs[preference].chance) {
         preferences[preference] = (Random.roll(18)-9) + speciesPrefs[preference].strength;
       }
@@ -178,6 +176,53 @@ global.SexualPreferenceFactory = (function() {
       if (retained.includes(key) === false && preferences[key] > 0) {
         log(`Virgin removes ${key}`,{ system:'SexualPreferenceFactory', level:3 });
         delete preferences[key];
+      }
+    });
+  }
+
+  // When applying these sexual preferences, we roll against each preference,
+  // which should give most characters several of these preferences.
+  function applyDominated(preferences, actor, dominantGender) {
+    const domPrefs = {
+      'dominant':50,
+      'sadistic':40,
+      'debaser':40,
+      'rigger': 30,
+      'choker': 20,
+      'pisser': 20,
+      'pugilist': 20
+    };
+    const subPrefs = {
+      'submissive':50,
+      'masochistic':40,
+      'humiliation-slut':40,
+      'rope-bunny': 30,
+      'breath-player': 20,
+      'piss-slut': 20,
+      'punching-bag': 20
+    };
+
+    if (actor.gender === dominantGender) {
+      return Object.keys(domPrefs).forEach(key => {
+        if (Random.roll(100) < domPrefs[key]) {
+          preferences[key] = (preferences[key]||0) + Random.between(10,30);
+        }
+      });
+    }
+
+    // In a male or female dominated society the non-binary and futanari are a
+    // little less likely to be as submissive as the males or females.
+    if ([Gender.futa, Gender.enby].includes(actor.gender)) {
+      return Object.keys(subPrefs).forEach(key => {
+        if (Random.roll(100) < (subPrefs[key]/1.5)) {
+          preferences[key] = (preferences[key]||0) + Random.between(10,20);
+        }
+      });
+    }
+
+    Object.keys(subPrefs).forEach(key => {
+      if (Random.roll(100) < subPrefs[key]) {
+        preferences[key] = (preferences[key]||0) + Random.between(10,30);
       }
     });
   }
