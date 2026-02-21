@@ -108,8 +108,7 @@ global.CharacterFactory = (function() {
         breasts:       breastsData,
       }, triggers);
 
-      // TODO: Also apply aspects from species.
-      aspectsData = buildAspectsData(triggers);
+      aspectsData = AspectsFactory.build(triggers, speciesCode);
       skillsData = buildSkillsData(triggers);
 
       BodyFactory.applyTriggers(bodyData, triggers);
@@ -200,7 +199,7 @@ global.CharacterFactory = (function() {
       cockData = CockFactory.build(actorData);
     }
 
-    const aspectsData = buildAspectsData(triggers);
+    const aspectsData = AspectsFactory.build(triggers, speciesCode);
     const skillsData = buildSkillsData(triggers);
 
     // Triggers are applied in the same way, though I'm not sure if player
@@ -243,20 +242,6 @@ global.CharacterFactory = (function() {
     });
   }
 
-  function buildAspectsData(triggers) {
-    const aspectsData = {};
-
-    [...triggers].forEach(trigger => {
-      const match = trigger.match(/(.+):(\d)/);
-      if (match) {
-        aspectsData[match[1]] = parseInt(match[2]);
-        log(`Applied ${trigger}`,{ system:'CharacterFactory', level:3 });
-        ArrayHelper.remove(triggers, trigger);
-      }
-    });
-
-    return aspectsData;
-  }
 
   // TODO: Triggers that add skills. At the moment all characters start with all skills at 0. The skills component
   //       needs to have all the skill properties set though.

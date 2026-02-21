@@ -18,8 +18,18 @@ global.TriggerFactory = (function() {
       }
     }
 
-    // TODO: Add more unusual triggers 80% of the remaining time (16%)
-    // TODO: Otherwise (4%) get something very strange.
+    if (Random.roll(100) < 80) {
+      switch(Random.roll(5)) {
+        case 0: return rareAspect(triggers, 'erogenousThroat');
+        case 1: return rareAspect(triggers, 'erogenousCervix');
+        case 2: return rareAspect(triggers, 'erogenousUrethra');
+        case 3: return rareAspect(triggers, 'premature');
+        case 4: return rareAspect(triggers, 'productive');
+      }
+    }
+
+    // TODO: Otherwise (4%) get something very strange. Nipple cunts, extra
+    //       cocks, etc.
   }
 
   function uncommonEarsAndTail(triggers) {
@@ -62,6 +72,11 @@ global.TriggerFactory = (function() {
 
   function uncommonEyeColor(triggers) { triggers.push(`${Random.from(BodyData.UncommonEyeColors)}-eyeColor`); }
   function uncommonHairColor(triggers) { triggers.push(`${Random.from(BodyData.UncommonHairColors)}-hair`); }
+
+  function rareAspect(triggers, aspectType) {
+    const level = Random.fromFrequencyMap({ '1':100, '2':10, '3':1 });
+    triggers.push(`${aspectType}:${level}`);
+  }
 
   return Object.freeze({
     addRandomTriggers,

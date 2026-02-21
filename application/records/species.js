@@ -22,9 +22,11 @@ global.Species = (function() {
       getSexualityRatio: () => { return species.sexualityRatio; },
       getAttributes: () => { return species.attributes; },
       getPersonalityRanges: () => { return species.personalityRanges; },
+      getSensitivities: () => { return species.sensitivities; },
       getSexualPreferences: () => { return species.sexualPreferences; },
-      getBody: () => { return species.body },
+      getAspects: () => { return species.aspects; },
 
+      getBody: () => { return species.body; },
       getAverageHeight: getAverageHeight,
       getHeightDeviationRatio: () => { return species.body.heightDeviationRatio || _humanDeviationRatio; },
       getFemaleHeightRatio: () => { return species.body.femaleHeightRatio || _humanFemaleRatio; },
