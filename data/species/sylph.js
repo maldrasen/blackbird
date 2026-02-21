@@ -59,7 +59,7 @@ Species.register('sylph', {
 
   aspects: {
     flexible:  { chance:33, levels:{ 1:20, 2:5,  3:1 }},
-    premature: { chance:33, levels:{ 1:30, 2:10, 3:5 }},
+    premature: { chance:33, levels:{ 1:30, 2:10, 3:5 }, genders:['male','futa']},
   },
 
   body: {

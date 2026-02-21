@@ -35,14 +35,10 @@ global.SensitivitiesComponent = (function() {
     const sensitivitiesComponent = lookup(id);
 
     Object.keys(sensitivitiesComponent).forEach(key => {
+      Validate.between(key, sensitivitiesComponent[key], 1, 8);
       if ($properties.includes(key) === false) {
         throw `Sensitivities component does not have a ${key} property.`
       }
-    });
-
-    Object.keys($properties).forEach(key => {
-      Validate.exists(key, sensitivitiesComponent[key]);
-      Validate.between(key, sensitivitiesComponent[key], 0, 8);
     });
   }
 

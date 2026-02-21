@@ -20,16 +20,16 @@ global.TriggerFactory = (function() {
 
     if (Random.roll(100) < 80) {
       switch(Random.roll(5)) {
-        case 0: return rareAspect(triggers, 'erogenousThroat');
-        case 1: return rareAspect(triggers, 'erogenousCervix');
-        case 2: return rareAspect(triggers, 'erogenousUrethra');
+        case 0: return triggers.push('erogenous-throat');
+        case 1: return triggers.push('erogenous-cervix');
+        case 2: return triggers.push('erogenous-urethra');
         case 3: return rareAspect(triggers, 'premature');
         case 4: return rareAspect(triggers, 'productive');
       }
     }
 
     // TODO: Otherwise (4%) get something very strange. Nipple cunts, extra
-    //       cocks, etc.
+    //       cocks, etc. Perhaps extreme sensitivities like S rank anus.
   }
 
   function uncommonEarsAndTail(triggers) {

@@ -46,6 +46,7 @@ global.CharacterFactory = (function() {
     let pussyData;
     let sexualPreferences;
     let aspectsData;
+    let sensitivitiesData;
     let skillsData;
 
     if (options.name) { actorData.name = options.name; }
@@ -108,7 +109,8 @@ global.CharacterFactory = (function() {
         breasts:       breastsData,
       }, triggers);
 
-      aspectsData = AspectsFactory.build(triggers, speciesCode);
+      aspectsData = AspectsFactory.build(triggers, actorData);
+      sensitivitiesData = SensitivitiesFactory.build(triggers, actorData, breastsData, cockData, pussyData);
       skillsData = buildSkillsData(triggers);
 
       BodyFactory.applyTriggers(bodyData, triggers);
@@ -149,6 +151,7 @@ global.CharacterFactory = (function() {
       cock: cockData || {},
       mouth: mouthData,
       pussy: pussyData,
+      sensitivitiesData: sensitivitiesData,
       sexualPreferences: sexualPreferences,
       aspects: aspectsData,
     }});
@@ -162,6 +165,7 @@ global.CharacterFactory = (function() {
     MouthComponent.create(characterId, mouthData);
     PersonalityComponent.create(characterId, personalityData);
     SkillsComponent.create(characterId, skillsData);
+    SensitivitiesComponent.create(characterId, sensitivitiesData);
     SexualPreferencesComponent.create(characterId, sexualPreferences);
     AspectsComponent.create(characterId, aspectsData);
 
@@ -199,7 +203,7 @@ global.CharacterFactory = (function() {
       cockData = CockFactory.build(actorData);
     }
 
-    const aspectsData = AspectsFactory.build(triggers, speciesCode);
+    const aspectsData = AspectsFactory.build(triggers, actorData);
     const skillsData = buildSkillsData(triggers);
 
     // Triggers are applied in the same way, though I'm not sure if player

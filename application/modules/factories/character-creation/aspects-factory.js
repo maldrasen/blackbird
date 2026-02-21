@@ -2,28 +2,31 @@ global.AspectsFactory = (function() {
 
   // If the same aspect is added by both the species and a trigger, the
   // trigger will overwrite the species, which is fine I think.
-  function build(triggers, speciesCode) {
+  function build(triggers, actorData) {
     const aspectsData = {};
-    applySpecies(aspectsData, speciesCode);
+    applySpecies(aspectsData, actorData);
     applyTriggers(aspectsData, triggers);
     return aspectsData;
   }
 
-  function applySpecies(aspectsData, speciesCode) {
-    const species = Species.lookup(speciesCode);
+  function applySpecies(aspectsData, actorData) {
+    const gender = actorData.gender;
+    const species = Species.lookup(actorData.species);
     const speciesAspects = species.getAspects() || {};
 
-    Object.keys(speciesAspects).forEach(aspectCode => {
-      if (Random.roll(100) < speciesAspects[aspectCode].chance) {
-        let level = 1;
-        if (speciesAspects[aspectCode].levels) {
-          level = parseInt(Random.fromFrequencyMap(speciesAspects[aspectCode].levels));
-        }
-
-        log(`Species:${speciesCode} added ${aspectCode}[${level}]`,{ system:'AspectsFactory', level:3 });
-        aspectsData[aspectCode] = level;
-      }
+    Object.keys(speciesAspects).forEach(code => {
+      attemptAspect(speciesAspects[code], code, aspectsData, species, gender);
     });
+  }
+
+  function attemptAspect(def, code, aspectsData, species, gender) {
+    if (Random.roll(100) < def.chance) {
+      if (def.genders == null || def.genders.includes(gender)) {
+        const level = (def.levels) ? parseInt(Random.fromFrequencyMap(def.levels)) : 1;
+        log(`${species.getName()} adds ${code}[${level}]`,{ system:'AspectsFactory', level:3 });
+        aspectsData[code] = level;
+      }
+    }
   }
 
   // This function mutates both the aspectsData object and the triggers array,
