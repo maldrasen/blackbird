@@ -13,6 +13,12 @@ global.AnimusComponent = (function() {
     'urethra',
   ];
 
+  function createBaseline(id) {
+    const baseline = {};
+    $properties.forEach(key => { baseline[key] = 0; });
+    create(id, baseline);
+  }
+
   function create(id,data) {
     Registry.createComponent(id, ComponentType.animus,data);
     validate(id);
@@ -47,6 +53,7 @@ global.AnimusComponent = (function() {
 
   return Object.freeze({
     hasParent: () => { return false; },
+    createBaseline,
     create,
     update,
     lookup,

@@ -157,6 +157,8 @@ global.CharacterFactory = (function() {
     }});
 
     ActorComponent.create(characterId, actorData);
+    AnimaComponent.createBaseline(characterId);
+    AnimusComponent.createBaseline(characterId);
     AnusComponent.create(characterId, anusData);
     ArousalComponent.create(characterId, { arousal:0 });
     AttributesComponent.create(characterId, attributesData);

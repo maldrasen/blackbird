@@ -34,8 +34,6 @@ Species.register('human', {
     cervix:   { Z:100, F:10, D:5,  C:1,   B:0,  A:0  },
   },
 
-  sexualPreferences: 'pick-at-random',
-
   body: {
     mutability: 50,
     earShape: 'human',

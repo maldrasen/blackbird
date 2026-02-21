@@ -9,6 +9,12 @@ global.AnimaComponent = (function() {
     'suffering',
   ];
 
+  function createBaseline(id) {
+    const baseline = {};
+    $properties.forEach(key => { baseline[key] = 0; });
+    create(id, baseline);
+  }
+
   function create(id,data) {
     Registry.createComponent(id, ComponentType.anima,data);
     validate(id);
@@ -43,6 +49,7 @@ global.AnimaComponent = (function() {
 
   return Object.freeze({
     hasParent: () => { return false; },
+    createBaseline,
     create,
     update,
     lookup,
