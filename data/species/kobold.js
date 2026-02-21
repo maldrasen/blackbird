@@ -33,7 +33,13 @@ Species.register('kobold', {
     cervix:   { Z:100, F:10, D:5,  C:1,   B:0,  A:0  },
   },
 
+  // Kobolds (and probably other races as well) have default BDSM preferences,
+  // based on gender, dominant males, submissive females in their case, though
+  // would be revered for a dark elf species. The 'male-dominated' is just a
+  // shortcut that will need special handling, and should also include stuff
+  // like 'choker', 'punching-bag'
   sexualPreferences: {
+    'male-dominated': { strength:50 },
     'beast-lover':{ chance:90, strength:20 },
     'orgy-lover':{ chance:60, strength:30 },  // Kobolds are gangbang enthusiasts.
   },

@@ -33,9 +33,14 @@ Species.register('equian', {
     cervix:   { Z:100, F:10, D:5,  C:1,   B:0,  A:0 },
   },
 
+  // Horses are into ass play, breeding, and showing their bodies.
   sexualPreferences: {
-    'beast-lover':{ chance:90, strength:20 },
-    'orgy-lover':{ chance:50, strength:20 },  // Herd animals fuck with the surrounding herd.
+    'anal-slut':     { chance:20, strength:20 },
+    'exhibitionist': { chance:30, strength:30 },
+    'stud':          { chance:20, strength:30, genders:['male','futa'] },
+    'breeder':       { chance:20, strength:30, genders:['female','futa'] },
+    'beast-lover':   { chance:90, strength:20 },
+    'orgy-lover':    { chance:50, strength:20 },
   },
 
   body: {

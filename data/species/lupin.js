@@ -34,11 +34,13 @@ Species.register('lupin', {
     cervix:   { Z:100, F:10,  D:5,  C:1,   B:0,  A:0  },
   },
 
+  // Because of their dog-like nature and sensitive urethra, they're into piss.
   sexualPreferences: {
-    'pisser': { chance:20, strength:30 },
-    'piss-slut': { chance:10, strength:20 },
+    'pisser': { chance:40, strength:30 },
+    'piss-slut': { chance:20, strength:20 },
     'beast-lover':{ chance:90, strength:20 },
     'orgy-lover':{ chance:50, strength:20 },
+    'urethra-slut':{ chance:10, strength:10 },
   },
 
   body: {

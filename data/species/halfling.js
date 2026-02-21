@@ -34,10 +34,13 @@ sensitivities: {
     cervix:   { Z:0,   F:10, D:30, C:10,  B:5,  A:1  },
   },
 
+  // Because of their small size, gaping, stretching and cervix play are big
+  // kinks among halflings.
   sexualPreferences: {
-    'size-queen': { chance:33, strength:30 }, // They prefer larger partners.
-    'cervix-slut':{ chance:25, strength:20 }, // Cervix sex is a big kink among halflings.
-    'perverted':{ chance:25, strength:-20 }, // Halflings are rural traditionalists and don't like anything too unusual or different.
+    'size-queen':  { chance:33, strength:30 },
+    'gape-queen':  { chance:10, strength:30 },
+    'cervix-slut': { chance:25, strength:20 },
+    'perverted':   { chance:25, strength:-20 },
   },
 
   body: {

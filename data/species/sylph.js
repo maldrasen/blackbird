@@ -35,10 +35,26 @@ Species.register('sylph', {
     cervix:   { Z:100, F:10, D:5,  C:1,   B:0,  A:0  },
   },
 
-  // Sylphs are naturally bratty and are more likely to enjoy degrading experiences as novel and interesting.
+  // Sylphs are curious and naturally bratty. They like to watch others, and
+  // they are more likely to enjoy both pain and degrading experiences as being
+  // novel and interesting.
   sexualPreferences: {
-    'humiliation-slut': { chance:25, strength:20  },
+    'voyeur':           { chance:50, strength:30 },
+    'exhibitionist':    { chance:30, strength:30 },
+    'humiliation-slut': { chance:25, strength:20 },
     'affection-slut':   { chance:25, strength:-20 },
+    'perverted':        { chance:20, strength:20 },
+    'incest-lover':     { chance:20, strength:20 },
+    'masturbator':      { chance:20, strength:20 },
+    'sex-toy-lover':    { chance:10, strength:10 },
+    'masochistic':      { chance:10, strength:10 },
+    'cum-dump':         { chance:10, strength:20 },
+    'breath-player':    { chance:5, strength:10 },
+    'enemas':           { chance:5, strength:10 },
+    'gape-queen':       { chance:5, strength:10 },
+    'size-queen':       { chance:5, strength:10 },
+    'piss-slut':        { chance:5, strength:10 },
+    'punching-bag':     { chance:5, strength:10 },
   },
 
   aspects: {

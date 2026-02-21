@@ -32,9 +32,10 @@ Species.register('elf', {
     cervix:   { Z:100, F:10, D:5,  C:1,   B:0,  A:0  },
   },
 
+  // Elves are chaste and reserved, but like being in control.
   sexualPreferences: {
-    'perverted':{ chance:50, strength:-20 }, // Elves are more chaste and reserved.
-    'dominant':{ chance:25, strength:20 }, // Elves are more likely to want to be in charge.
+    'perverted': { chance:50, strength:-20 },
+    'dominant':  { chance:25, strength:20 },
   },
 
   body: {
