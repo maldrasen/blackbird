@@ -28,11 +28,11 @@ global.AttributesComponent = (function() {
         throw `Attribute component does not have a ${key} property.`
       }
 
-      Validate.atLeast(Attrib.strength, attributeComponent.strength,1);
-      Validate.atLeast(Attrib.dexterity, attributeComponent.dexterity,1);
-      Validate.atLeast(Attrib.vitality, attributeComponent.vitality,1);
-      Validate.atLeast(Attrib.intelligence, attributeComponent.intelligence,1);
-      Validate.atLeast(Attrib.beauty, attributeComponent.beauty,1);
+      Validate.atLeast(`Attributes.strength`, attributeComponent.strength,1);
+      Validate.atLeast(`Attributes.dexterity`, attributeComponent.dexterity,1);
+      Validate.atLeast(`Attributes.vitality`, attributeComponent.vitality,1);
+      Validate.atLeast(`Attributes.intelligence`, attributeComponent.intelligence,1);
+      Validate.atLeast(`Attributes.beauty`, attributeComponent.beauty,1);
     });
   }
 

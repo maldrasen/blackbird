@@ -31,7 +31,7 @@ global.PersonalityComponent = (function() {
       }
     });
 
-    Validate.exists('sanity',personalityComponent.sanity);
+    Validate.exists('Personality.sanity',personalityComponent.sanity);
   }
 
   return Object.freeze({

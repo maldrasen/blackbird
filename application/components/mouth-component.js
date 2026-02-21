@@ -32,12 +32,12 @@ global.MouthComponent = (function() {
     });
 
     Validate.exists(_parentId,mouthComponent._parentId);
-    Validate.exists('placement',mouthComponent.placement);
-    Validate.atLeast('maxMouthWidth',mouthComponent.maxMouthWidth,32);
-    Validate.atLeast('maxThroatWidth',mouthComponent.maxThroatWidth,26);
-    Validate.atLeast('comfortableThroatDepth',mouthComponent.tongueLength,0);
-    Validate.atLeast('tongueLength',mouthComponent.tongueLength,50);
-    Validate.isIn('tongueShape',mouthComponent.tongueShape,MouthData.TongueShapes);
+    Validate.exists('Mouth.placement',mouthComponent.placement);
+    Validate.atLeast('Mouth.maxMouthWidth',mouthComponent.maxMouthWidth,32);
+    Validate.atLeast('Mouth.maxThroatWidth',mouthComponent.maxThroatWidth,26);
+    Validate.atLeast('Mouth.comfortableThroatDepth',mouthComponent.tongueLength,0);
+    Validate.atLeast('Mouth.tongueLength',mouthComponent.tongueLength,50);
+    Validate.isIn('Mouth.tongueShape',mouthComponent.tongueShape,MouthData.TongueShapes);
   }
 
   function of(parent) {

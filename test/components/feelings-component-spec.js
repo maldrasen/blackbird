@@ -8,7 +8,7 @@ describe("FeelingsComponent", function() {
       expect(function() {
         FeelingsComponent.create(wolf, { target:deer, affection:0, fear:0, respect:0 });
         FeelingsComponent.create(wolf, { target:deer, affection:0, fear:0, respect:0 });
-      }).to.throw('Validation Failed');
+      }).to.throw('Validate.equals Failed');
     });
 
     it("finds the feelings a character has for another character", function() {

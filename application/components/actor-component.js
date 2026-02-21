@@ -28,8 +28,8 @@ global.ActorComponent = (function() {
       }
     });
 
-    Validate.isIn('gender',actorComponent.gender,Object.values(Gender));
-    Validate.isIn('species',actorComponent.species,Species.getAllCodes());
+    Validate.isIn('Actor.gender',actorComponent.gender,Object.values(Gender));
+    Validate.isIn('Actor.species',actorComponent.species,Species.getAllCodes());
   }
 
   return Object.freeze({

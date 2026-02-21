@@ -29,7 +29,7 @@ global.ControlledComponent = (function() {
       }
     });
 
-    Validate.between('control',controlledComponent.control,-500,500)
+    Validate.between('Controlled.control',controlledComponent.control,-500,500)
   }
 
   return Object.freeze({

@@ -30,7 +30,7 @@ global.AspectsComponent = (function() {
 
     properties.forEach(aspectCode => {
       if (aspectsComponent[aspectCode] != null) {
-        Validate.between(aspectCode, aspectsComponent[aspectCode], 1, 5);
+        Validate.between(`Aspect.${aspectCode}`, aspectsComponent[aspectCode], 1, 5);
       }
     });
   }

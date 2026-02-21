@@ -46,12 +46,12 @@ global.PussyComponent = (function() {
       }
     });
 
-    Validate.exists(_parentId,pussyComponent._parentId);
-    Validate.exists('placement',pussyComponent.placement);
-    Validate.isIn('shape',pussyComponent.shape,PussyData.PussyShapes);
-    Validate.atLeast('maxPussyWidth',pussyComponent.maxPussyWidth,32);
-    Validate.atLeast('maxPussyDepth',pussyComponent.maxPussyWidth,32);
-    Validate.atLeast('maxUrethraWidth',pussyComponent.maxPussyWidth,2);
+    Validate.exists('Pussy._parentId',pussyComponent._parentId);
+    Validate.exists('Pussy.placement',pussyComponent.placement);
+    Validate.isIn('Pussy.shape',pussyComponent.shape,PussyData.PussyShapes);
+    Validate.atLeast('Pussy.maxPussyWidth',pussyComponent.maxPussyWidth,32);
+    Validate.atLeast('Pussy.maxPussyDepth',pussyComponent.maxPussyWidth,32);
+    Validate.atLeast('Pussy.maxUrethraWidth',pussyComponent.maxPussyWidth,2);
   }
 
   function of(parent) {

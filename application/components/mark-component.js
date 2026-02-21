@@ -30,9 +30,9 @@ global.MarkComponent = (function() {
       }
     });
 
-    Validate.exists(_parentId,markComponent._parentId);
-    Validate.isIn('type',markComponent.type,['hate','lust','love']);
-    Validate.exists('memory',markComponent.memory);
+    Validate.exists('Mark._parentId',markComponent._parentId);
+    Validate.isIn('Mark.type',markComponent.type,['hate','lust','love']);
+    Validate.exists('Mark.memory',markComponent.memory);
   }
 
   function of(parent) {

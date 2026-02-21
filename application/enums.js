@@ -78,7 +78,6 @@ global.ComponentType = Object.freeze({
   breasts: 'BreastsComponent',
   cock: 'CockComponent',
   controlled: 'ControlledComponent',
-  emotions: 'EmotionsComponent',
   feelings: 'FeelingsComponent',
   health: 'HealthComponent',
   mana: 'ManaComponent',

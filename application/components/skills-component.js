@@ -36,7 +36,7 @@ global.SkillsComponent = (function() {
 
     // The skills components has a property for each skill, with the associated skill points.
     $skills.forEach(code => {
-      Validate.between(code,skillsComponent[code],0,100);
+      Validate.between(`Skills.${code}`,skillsComponent[code],0,100);
     });
   }
 

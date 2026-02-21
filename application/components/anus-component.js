@@ -35,12 +35,12 @@ global.AnusComponent = (function() {
       }
     });
 
-    Validate.exists(_parentId,anusComponent._parentId);
-    Validate.exists('placement',anusComponent.placement);
-    Validate.isIn('shape',anusComponent.shape,AnusData.AnusShapes);
-    Validate.atLeast('minWidth',anusComponent.minWidth,0);
-    Validate.atLeast('maxWidth',anusComponent.maxWidth,24);
-    Validate.atLeast('prolapseLength',anusComponent.prolapseLength,0);
+    Validate.exists(`Anus._parentId`,anusComponent._parentId);
+    Validate.exists('Anus.placement',anusComponent.placement);
+    Validate.isIn('Anus.shape',anusComponent.shape,AnusData.AnusShapes);
+    Validate.atLeast('Anus.minWidth',anusComponent.minWidth,0);
+    Validate.atLeast('Anus.maxWidth',anusComponent.maxWidth,24);
+    Validate.atLeast('Anus.prolapseLength',anusComponent.prolapseLength,0);
   }
 
   function of(parent) {

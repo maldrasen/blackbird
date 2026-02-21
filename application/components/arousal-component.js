@@ -28,7 +28,7 @@ global.ArousalComponent = (function() {
       }
     });
 
-    Validate.atLeast('arousal',arousalComponent.arousal,0);
+    Validate.atLeast('Arousal.arousal',arousalComponent.arousal,0);
   }
 
   return Object.freeze({

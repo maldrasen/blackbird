@@ -28,7 +28,7 @@ global.SituatedComponent = (function() {
       }
     });
 
-    Validate.exists('currentLocation',situatedComponent.currentLocation);
+    Validate.exists('Situated.currentLocation',situatedComponent.currentLocation);
   }
 
   return Object.freeze({

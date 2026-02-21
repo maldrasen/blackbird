@@ -44,20 +44,20 @@ global.BreastsComponent = (function() {
       }
     });
 
-    Validate.atLeast('breastCount',breastsComponent.breastCount,2);
-    Validate.isIn('breastSize',breastsComponent.breastSize,Object.keys(BreastData.BreastSizes));
-    Validate.isIn('breastFirmness',breastsComponent.breastFirmness,Object.keys(BreastData.BreastFirmness));
-    Validate.atLeast('relativeBreastVolume',breastsComponent.relativeBreastVolume,0);
-    Validate.atLeast('absoluteBreastVolume',breastsComponent.absoluteBreastVolume,0);
-    Validate.exists('breastShape',breastsComponent.breastShape);
-    Validate.isIn('nippleShape',breastsComponent.nippleShape,Object.keys(BreastData.NippleShapes));
-    Validate.atLeast('nippleWidth',breastsComponent.nippleWidth,1);
-    Validate.atLeast('nippleLength',breastsComponent.nippleLength,1);
-    Validate.between('nippleShade',breastsComponent.nippleShade,0,5);
-    Validate.atLeast('areolaWidth',breastsComponent.areolaWidth,1);
-    Validate.atLeast('lactationFactor',breastsComponent.lactationFactor,0);
-    Validate.atLeast('orificeMinWidth',breastsComponent.orificeMinWidth,0);
-    Validate.atLeast('orificeMaxWidth',breastsComponent.orificeMaxWidth,0);
+    Validate.atLeast('Breasts.breastCount',breastsComponent.breastCount,2);
+    Validate.isIn('Breasts.breastSize',breastsComponent.breastSize,Object.keys(BreastData.BreastSizes));
+    Validate.isIn('Breasts.breastFirmness',breastsComponent.breastFirmness,Object.keys(BreastData.BreastFirmness));
+    Validate.atLeast('Breasts.relativeBreastVolume',breastsComponent.relativeBreastVolume,0);
+    Validate.atLeast('Breasts.absoluteBreastVolume',breastsComponent.absoluteBreastVolume,0);
+    Validate.exists('Breasts.breastShape',breastsComponent.breastShape);
+    Validate.isIn('Breasts.nippleShape',breastsComponent.nippleShape,Object.keys(BreastData.NippleShapes));
+    Validate.atLeast('Breasts.nippleWidth',breastsComponent.nippleWidth,1);
+    Validate.atLeast('Breasts.nippleLength',breastsComponent.nippleLength,1);
+    Validate.between('Breasts.nippleShade',breastsComponent.nippleShade,0,5);
+    Validate.atLeast('Breasts.areolaWidth',breastsComponent.areolaWidth,1);
+    Validate.atLeast('Breasts.lactationFactor',breastsComponent.lactationFactor,0);
+    Validate.atLeast('Breasts.orificeMinWidth',breastsComponent.orificeMinWidth,0);
+    Validate.atLeast('Breasts.orificeMaxWidth',breastsComponent.orificeMaxWidth,0);
   }
 
   return Object.freeze({

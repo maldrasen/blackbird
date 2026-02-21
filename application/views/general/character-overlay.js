@@ -69,7 +69,8 @@ global.CharacterOverlay = (function() {
     fillAspects();
     fillMarks();
     fillSexualPreferences();
-    fillScales();
+    fillSensitivities();
+    fillAnima();
     fillSkills();
   }
 
@@ -170,9 +171,12 @@ global.CharacterOverlay = (function() {
     }
   }
 
-  // Scales will display sensitivities and emotions ranks along with their associated anima and animus.
-  function fillScales() {
+  function fillSensitivities() {
   }
+
+  function fillAnima() {
+  }
+
 
   function makeTag(label,value,classname) {
     return `<div class='${classname} tag'>

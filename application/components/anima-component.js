@@ -1,6 +1,7 @@
 global.AnimaComponent = (function() {
 
-  // Anima is like experience or gems, earned through training, spent to upgrade emotional response levels.
+  // Anima is like experience or gems, earned through training, spent to
+  // upgrade sexual preferences and other components.
   const $properties = [
     'comfort',
     'desire',
@@ -42,8 +43,8 @@ global.AnimaComponent = (function() {
       }
     });
 
-    Object.keys($properties).forEach(key => {
-      Validate.atLeast(key, animaComponent[key], 0);
+    $properties.forEach(key => {
+      Validate.atLeast(`Anima.${key}`, animaComponent[key], 0);
     });
   }
 

@@ -30,9 +30,9 @@ global.MemoryComponent = (function() {
       }
     });
 
-    Validate.exists(_parentId,memoryComponent._parentId);
-    Validate.exists('time',memoryComponent.time);
-    Validate.isIn('type',memoryComponent.type,['training','event']);
+    Validate.exists('Memory._parentId',memoryComponent._parentId);
+    Validate.exists('Memory.time',memoryComponent.time);
+    Validate.isIn('Memory.type',memoryComponent.type,['training','event']);
   }
 
   function of(parent) {

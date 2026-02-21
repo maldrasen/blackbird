@@ -1,6 +1,7 @@
 global.AnimusComponent = (function() {
 
-  // Animus Totals (Animus is like experience or gems, earned through training, spent to upgrade sensitivity levels)
+  // Animus Totals (Animus is like experience or gems, earned through training,
+  // spent to upgrade sensitivity levels and other components)
   const $properties = [
     'anus',
     'cervix',
@@ -46,8 +47,8 @@ global.AnimusComponent = (function() {
       }
     });
 
-    Object.keys($properties).forEach(key => {
-      Validate.atLeast(key, animusComponent[key], 0);
+    $properties.forEach(key => {
+      Validate.atLeast(`Animus.${key}`, animusComponent[key], 0);
     });
   }
 

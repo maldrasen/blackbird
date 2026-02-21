@@ -30,14 +30,14 @@ global.FeelingsComponent = (function() {
       }
     });
 
-    Validate.exists(_parentId,feelingsComponent._parentId);
-    Validate.exists('target',feelingsComponent.target);
-    Validate.exists('affection',feelingsComponent.affection);
-    Validate.exists('fear',feelingsComponent.fear);
-    Validate.exists('respect',feelingsComponent.respect);
+    Validate.exists('Feelings._parentId',feelingsComponent._parentId);
+    Validate.exists('Feelings.target',feelingsComponent.target);
+    Validate.exists('Feelings.affection',feelingsComponent.affection);
+    Validate.exists('Feelings.fear',feelingsComponent.fear);
+    Validate.exists('Feelings.respect',feelingsComponent.respect);
 
     // We need to validate that exactly one feelings component for the target character exists.
-    Validate.equals('uniqueness',Registry.findComponentsWith(ComponentType.feelings, component => {
+    Validate.equals('Feelings.uniqueness',Registry.findComponentsWith(ComponentType.feelings, component => {
       return component._parentId === feelingsComponent._parentId && component.target === feelingsComponent.target;
     }).length,1);
   }

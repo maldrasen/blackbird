@@ -30,7 +30,7 @@ global.SexualPreferencesComponent = (function() {
 
     codes.forEach(preferenceCode => {
       if (sexualPreferencesComponent[preferenceCode] != null) {
-        Validate.between(preferenceCode, sexualPreferencesComponent[preferenceCode], -100, 100);
+        Validate.between(`SexualPreferences.${preferenceCode}`, sexualPreferencesComponent[preferenceCode], -100, 100);
       }
     });
   }

@@ -47,13 +47,13 @@ global.CockComponent = (function() {
       }
     });
 
-    Validate.exists(_parentId,cockComponent._parentId);
-    Validate.exists('placement',cockComponent.placement);
-    Validate.atLeast('count', cockComponent.count, 1);
-    Validate.isIn('size',cockComponent.size,Object.keys(CockData.CockSizes));
-    Validate.isIn('shape',cockComponent.shape,Object.keys(CockData.CockShapes));
-    Validate.atLeast('length',cockComponent.length,24);
-    Validate.atLeast('width',cockComponent.width,12);
+    Validate.exists(`Cock._parentId`,cockComponent._parentId);
+    Validate.exists('Cock.placement',cockComponent.placement);
+    Validate.atLeast('Cock.count', cockComponent.count, 1);
+    Validate.isIn('Cock.size',cockComponent.size,Object.keys(CockData.CockSizes));
+    Validate.isIn('Cock.shape',cockComponent.shape,Object.keys(CockData.CockShapes));
+    Validate.atLeast('Cock.length',cockComponent.length,24);
+    Validate.atLeast('Cock.width',cockComponent.width,12);
   }
 
   function of(parent) {

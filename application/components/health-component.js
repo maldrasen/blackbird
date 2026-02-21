@@ -28,9 +28,9 @@ global.HealthComponent = (function() {
       }
     });
 
-    Validate.atLeast('currentStamina',healthComponent.currentStamina,0);
-    Validate.atLeast('currentHealth',healthComponent.currentHealth,0);
-    Validate.atLeast('maxHealth',healthComponent.maxHealth,1);
+    Validate.atLeast('Health.currentStamina',healthComponent.currentStamina,0);
+    Validate.atLeast('Health.currentHealth',healthComponent.currentHealth,0);
+    Validate.atLeast('Health.maxHealth',healthComponent.maxHealth,1);
   }
 
   return Object.freeze({
