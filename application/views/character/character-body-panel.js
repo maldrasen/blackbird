@@ -110,18 +110,90 @@ global.CharacterBodyPanel = (function() {
     X.fill('#characterOverlay .breasts-area',X.createElement(list.getList()))
   }
 
+  // Like the breasts component, I'll wait until I've built the cock describer
+  // before spending a lot of time making this look better.
   function fillCock(id) {
     const cock = CockComponent.lookupNormalOf(id);
+    const list = ListBuilder('ul','two-columns');
+
     if (cock == null) {
       return X.addClass('#characterOverlay .cock-panel','hide');
     }
+
+    const cockLength = MeasurementHelper.inchesWithFractions(cock.length,true);
+    const cockWidth = MeasurementHelper.inchesWithFractions(cock.width,true);
+
+    list.add(`<li>Shape</li>`);
+    list.add(`<li>${cock.shape}</li>`);
+    list.add(`<li>Size</li>`);
+    list.add(`<li>${cock.size}</li>`);
+    list.add(`<li>Length</li>`);
+    list.add(`<li>${StringHelper.titlecaseAll(cockLength)}</li>`);
+
+    if (cock.flaccidLength) {
+      const flaccidLength = MeasurementHelper.inchesWithFractions(cock.flaccidLength,true);
+      list.add(`<li>Flaccid</li>`);
+      list.add(`<li>${StringHelper.titlecaseAll(flaccidLength)}</li>`);
+    }
+
+    list.add(`<li>Width</li>`);
+    list.add(`<li>${StringHelper.titlecaseAll(cockWidth)}</li>`);
+
+    if (cock.knotRatio) {
+      let resting = cock.width * (cock.knotRatio/100);
+      let inflated = cock.width * (cock.knotRatio/100) * (cock.knotFlare/100);
+
+      resting = MeasurementHelper.inchesWithFractions(resting,true);
+      inflated = MeasurementHelper.inchesWithFractions(inflated,true);
+
+      list.add(`<li>Resting Knot Width</li>`);
+      list.add(`<li>${StringHelper.titlecaseAll(resting)}</li>`);
+      list.add(`<li>Inflated Knot Width</li>`);
+      list.add(`<li>${StringHelper.titlecaseAll(inflated)}</li>`);
+    }
+    if (cock.headFlare) {
+      const flare = MeasurementHelper.inchesWithFractions(cock.width * (cock.headFlare/100),true);
+      list.add(`<li>Head Flare</li>`);
+      list.add(`<li>${StringHelper.titlecaseAll(flare)}</li>`);
+    }
+
+    X.fill('#characterOverlay .cock-area',X.createElement(list.getList()))
   }
 
   function fillPussy(id) {
     const pussy = PussyComponent.lookupNormalOf(id);
+    const list = ListBuilder('ul','two-columns');
+
     if (pussy == null) {
       return X.addClass('#characterOverlay .pussy-panel','hide');
     }
+
+    const pussyWidth = MeasurementHelper.inchesWithFractions(pussy.maxPussyWidth, true)
+    const pussyDepth = MeasurementHelper.inchesWithFractions(pussy.maxPussyWidth, true)
+
+    list.add(`<li>Shape</li>`);
+    list.add(`<li>${StringHelper.titlecaseAll(pussy.shape)}</li>`);
+    list.add(`<li>Width</li>`);
+    list.add(`<li>${StringHelper.titlecaseAll(pussyWidth)}</li>`);
+    list.add(`<li>Depth</li>`);
+    list.add(`<li>${StringHelper.titlecaseAll(pussyDepth)}</li>`);
+
+    if (pussy.clitLength) {
+      list.add(`<li>Clit Length</li>`);
+      list.add(`<li>${pussy.clitLength}</li>`);
+      list.add(`<li>Clit Width</li>`);
+      list.add(`<li>${pussy.clitWidth}</li>`);
+    }
+    if (pussy.innerLabiaLength) {
+      list.add(`<li>Inner Labia</li>`);
+      list.add(`<li>${pussy.innerLabiaLength}</li>`);
+    }
+    if (pussy.outerLabiaSize) {
+      list.add(`<li>Outer Labia</li>`);
+      list.add(`<li>${pussy.outerLabiaSize}</li>`);
+    }
+
+    X.fill('#characterOverlay .pussy-area',X.createElement(list.getList()))
   }
 
   return Object.freeze({
