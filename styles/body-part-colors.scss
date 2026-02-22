@@ -22,7 +22,7 @@ $scaleColor-gold: #DAA520;
 $scaleColor-green: #108030;
 $scaleColor-blue: #2040B0;
 $scaleColor-purple: #7111B1;
-$scaleColor-black: #121212;
+$scaleColor-black: #252527;
 $scaleColor-gray: #666666;
 
 $hairColor-white: #E8E8E8;
@@ -38,8 +38,8 @@ $hairColor-auburn: #A0522D;
 $hairColor-chestnut: #7D4F2E;
 $hairColor-darkBrown: #4A3728;
 $hairColor-blackBrown: #292620;
-$hairColor-black: #202020;
-$hairColor-jetBlack: #181818;
+$hairColor-black: #252527;
+$hairColor-jetBlack: #202023;
 $hairColor-darkRed: #401010;
 $hairColor-red: #702020;
 $hairColor-gray: #8C8C8C;
@@ -64,4 +64,71 @@ $eyeColor-amber: #FFB347;
 $eyeColor-green: #428B42;
 $eyeColor-blue: #4169E1;
 $eyeColor-gray: #778899;
-$eyeColor-black: #0F1419;
+$eyeColor-black: #303035;
+
+.fg-skin-color-porcelain { color:$skinColor-porcelain }
+.fg-skin-color-ivory { color:$skinColor-ivory }
+.fg-skin-color-fair { color:$skinColor-fair }
+.fg-skin-color-light { color:$skinColor-light }
+.fg-skin-color-warm { color:$skinColor-warm }
+.fg-skin-color-medium { color:$skinColor-medium }
+.fg-skin-color-olive { color:$skinColor-olive }
+.fg-skin-color-golden { color:$skinColor-golden }
+.fg-skin-color-sunkissed { color:$skinColor-sunkissed }
+.fg-skin-color-tan { color:$skinColor-tan }
+.fg-skin-color-caramel { color:$skinColor-caramel }
+.fg-skin-color-richTan { color:$skinColor-richTan }
+.fg-skin-color-deepTan { color:$skinColor-deepTan }
+.fg-skin-color-richBrown { color:$skinColor-richBrown }
+.fg-skin-color-deepBrown { color:$skinColor-deepBrown }
+.fg-skin-color-darkBrown { color:$skinColor-darkBrown }
+.fg-skin-color-ebony { color:$skinColor-ebony }
+
+.fg-scale-color-red{ color:$scaleColor-red; }
+.fg-scale-color-gold { color:$scaleColor-gold; }
+.fg-scale-color-green { color:$scaleColor-green; }
+.fg-scale-color-blue { color:$scaleColor-blue; }
+.fg-scale-color-purple { color:$scaleColor-purple; }
+.fg-scale-color-black { color:$scaleColor-black; }
+.fg-scale-color-gray { color: $scaleColor-gray; }
+
+.fg-hair-color-white { color: $hairColor-white }
+.fg-hair-color-platinumBlond { color: $hairColor-platinumBlond }
+.fg-hair-color-blond { color: $hairColor-blond }
+.fg-hair-color-strawberryBlond { color: $hairColor-strawberryBlond }
+.fg-hair-color-goldenBlond { color: $hairColor-goldenBlond }
+.fg-hair-color-darkBlond { color: $hairColor-darkBlond }
+.fg-hair-color-lightBrown { color: $hairColor-lightBrown }
+.fg-hair-color-brown { color: $hairColor-brown }
+.fg-hair-color-copper { color: $hairColor-copper }
+.fg-hair-color-auburn { color: $hairColor-auburn }
+.fg-hair-color-chestnut { color: $hairColor-chestnut }
+.fg-hair-color-darkBrown { color: $hairColor-darkBrown }
+.fg-hair-color-blackBrown { color: $hairColor-blackBrown }
+.fg-hair-color-black { color: $hairColor-black }
+.fg-hair-color-jetBlack { color: $hairColor-jetBlack }
+.fg-hair-color-darkRed { color: $hairColor-darkRed }
+.fg-hair-color-red { color: $hairColor-red }
+.fg-hair-color-gray { color: $hairColor-gray }
+.fg-hair-color-lightBlue { color: $hairColor-lightBlue }
+.fg-hair-color-blue { color: $hairColor-blue }
+.fg-hair-color-darkBlue { color: $hairColor-darkBlue }
+.fg-hair-color-lightGreen { color: $hairColor-lightGreen }
+.fg-hair-color-green { color: $hairColor-green }
+.fg-hair-color-darkGreen { color: $hairColor-darkGreen }
+.fg-hair-color-lightPurple { color: $hairColor-lightPurple }
+.fg-hair-color-purple { color: $hairColor-purple }
+.fg-hair-color-darkPurple { color: $hairColor-darkPurple }
+.fg-hair-color-pink { color: $hairColor-pink }
+
+.fg-eye-color-purple { color: $eyeColor-purple }
+.fg-eye-color-pink { color: $eyeColor-pink }
+.fg-eye-color-red { color: $eyeColor-red }
+.fg-eye-color-gold { color: $eyeColor-gold }
+.fg-eye-color-brown { color: $eyeColor-brown }
+.fg-eye-color-hazel { color: $eyeColor-hazel }
+.fg-eye-color-amber { color: $eyeColor-amber }
+.fg-eye-color-green { color: $eyeColor-green }
+.fg-eye-color-blue { color: $eyeColor-blue }
+.fg-eye-color-gray { color: $eyeColor-gray }
+.fg-eye-color-black { color: $eyeColor-black }

@@ -19,7 +19,7 @@ global.BodyData = {
   EarShapes: ['cat','dog','elf','fox','horse','human','rabbit'],
   UncommonEarShapes: ['cat','dog','fox','horse','rabbit'],
 
-  HornShapes: ['deer','curved-ram','forward-cow','curved-back','unicorn'],
+  HornShapes: ['deer','curvedRam','forwardCow','curvedBack','unicorn'],
   TailShapes: ['cat','cow','demon','dog','dragon','fox','horse','rabbit'],
 
   EarthySmells: ['rain','pine','sage','freshCutGrass','sandalwood','cedar','clover','woodsmoke','patchouli'],

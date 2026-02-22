@@ -92,10 +92,10 @@ window.Loader = (function() {
         cover.style.opacity = 1;
         setTimeout(()=>{
           cover.style.opacity = 0;
-          setTimeout(()=>{ cover.remove(); },600)
+          setTimeout(()=>{ cover.remove(); },500)
           resolve();
-        },500);
-      },1000);
+        },400);
+      },600);
     });
   }
 
@@ -129,7 +129,7 @@ window.Loader = (function() {
   // one.
   function fakeScroll() {
     const startTime = performance.now();
-    const duration = 1000;
+    const duration = 600;
 
     const animate = (currentTime) => {
       const elapsed = currentTime - startTime;

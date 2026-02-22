@@ -60,7 +60,7 @@ global.TriggerFactory = (function() {
     triggers.push(`${shape}-horn`);
 
     // Getting cow horns adds cow features. Milky balls and tits.
-    if (shape === 'forward-cow') {
+    if (shape === 'forwardCow') {
       triggers.push(...['cow-tail','huge-balls','huge-tits','cow-tits','milky','productive:3']); }
 
     // Getting a unicorn horn adds horse features.

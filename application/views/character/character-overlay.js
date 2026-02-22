@@ -53,6 +53,13 @@ global.CharacterOverlay = (function() {
     CharacterOverviewPanel.fillAnima($id);
     CharacterOverviewPanel.fillAnimus($id);
     CharacterOverviewPanel.fillSkills($id);
+
+    CharacterBodyPanel.fillAnus($id);
+    CharacterBodyPanel.fillBody($id);
+    CharacterBodyPanel.fillBreasts($id);
+    CharacterBodyPanel.fillCock($id);
+    CharacterBodyPanel.fillMouth($id);
+    CharacterBodyPanel.fillPussy($id);
   }
 
   function fillHeader() {
@@ -68,8 +75,6 @@ global.CharacterOverlay = (function() {
   function fillPortrait() {
     let gender = ActorComponent.lookup($id).gender;
     if (gender === Gender.enby) { gender = Gender.female; }
-
-    console.log("Wrong?",gender)
 
     function pickRandom() {
       if (gender === Gender.female) {

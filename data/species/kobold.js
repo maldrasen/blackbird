@@ -49,7 +49,7 @@ Species.register('kobold', {
     skinType: 'scales',
     eyeShape: 'dragon',
     tailShape: 'dragon',
-    hornShape: 'curved-back',
+    hornShape: 'curvedBack',
     smellFamily: 'lusty',
 
     earShape: false,
