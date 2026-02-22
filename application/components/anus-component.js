@@ -43,10 +43,17 @@ global.AnusComponent = (function() {
     Validate.atLeast('Anus.prolapseLength',anusComponent.prolapseLength,0);
   }
 
-  function of(parent) {
+  function of(parent, placement='normal') {
     return Registry.findComponentsWith(ComponentType.anus, anusData => {
-      return anusData[_parentId] === parent;
+      if (placement === anusData.placement) {
+        return anusData[_parentId] === parent;
+      }
     });
+  }
+
+  // Used to get the single normal 'face' mouth component, given a parent.
+  function lookupNormalOf(parent) {
+    return lookup(of(parent));
   }
 
   return Object.freeze({
@@ -56,6 +63,7 @@ global.AnusComponent = (function() {
     lookup,
     destroy,
     of,
+    lookupNormalOf,
   });
 
 })();

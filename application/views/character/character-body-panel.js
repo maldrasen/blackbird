@@ -1,6 +1,22 @@
 global.CharacterBodyPanel = (function() {
 
-  function fillAnus(id) {}
+  // TODO: Once we have gaping and prolapsed anuses, this will need to expand (how like an anus)
+  function fillAnus(id) {
+    const anus = AnusComponent.lookupNormalOf(id);
+    const list = ListBuilder('ul','two-columns');
+
+    let shape = 'A Normal Looking Asshole'
+    if (anus.shape === 'puffy') { shape = `A Puffy, Slightly Protruding, Asshole` }
+    if (anus.shape === 'wrinkled') { shape = `A Wide and Deeply Wrinkled Asshole` }
+    if (anus.shape === 'horse') { shape = `A Thick, Donut Shaped, Horse Asshole` }
+
+    list.add(`<li>Shape</li>`);
+    list.add(`<li>${StringHelper.titlecaseAll(shape)}</li>`);
+    list.add(`<li>Max Width</li>`);
+    list.add(`<li>${StringHelper.titlecaseAll(MeasurementHelper.inchesWithFractions(anus.maxWidth,true))}</li>`);
+
+    X.fill('#characterOverlay .anus-area',X.createElement(list.getList()))
+  }
 
   // I'll combine the body and the mouth as I don't want to display stuff like
   // the comfortableThroatDepth. Tongue shape and length are the only 'visible'
