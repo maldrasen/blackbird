@@ -71,11 +71,43 @@ global.CharacterBodyPanel = (function() {
     X.fill('#characterOverlay .body-area',X.createElement(list.getList()))
   }
 
+  // I think I'll improve this function later, after the breast describer has
+  // been finished. I should be writing a short version of the breast
+  // descriptions there that I'll use instead of the Size, Firmness, Shape rows
+  // below. The lactation, nipple shade, and nipple orifice details will need
+  // to be improved as well. (Use skin color for nipple shades?)
   function fillBreasts(id) {
     const breasts = BreastsComponent.lookup(id);
+    const list = ListBuilder('ul','two-columns');
+
     if (breasts == null) {
       return X.addClass('#characterOverlay .breasts-panel','hide');
     }
+
+    const nippleWidth = MeasurementHelper.inchesWithFractions(breasts.nippleWidth,true);
+    const nippleLength = MeasurementHelper.inchesWithFractions(breasts.nippleLength,true);
+    const areolaWidth = MeasurementHelper.inchesWithFractions(breasts.areolaWidth,true);
+
+    list.add(`<li>Size</li>`);
+    list.add(`<li>${StringHelper.titlecaseAll(`${breasts.breastSize}`)}</li>`);
+    list.add(`<li>Firmness</li>`);
+    list.add(`<li>${StringHelper.titlecaseAll(`${breasts.breastFirmness}`)}</li>`);
+    list.add(`<li>Shape</li>`);
+    list.add(`<li>${StringHelper.titlecaseAll(breasts.breastShape)}</li>`);
+    list.add(`<li>Volume</li>`);
+    list.add(`<li>${breasts.absoluteBreastVolume} ml</li>`);
+    list.add(`<li>Nipple Shape</li>`);
+    list.add(`<li>${StringHelper.titlecaseAll(breasts.nippleShape)}</li>`);
+    list.add(`<li>Nipple Shade</li>`);
+    list.add(`<li>${breasts.nippleShade}</li>`);
+    list.add(`<li>Nipple Width</li>`);
+    list.add(`<li>${StringHelper.titlecaseAll(nippleWidth)}</li>`);
+    list.add(`<li>Nipple Length</li>`);
+    list.add(`<li>${StringHelper.titlecaseAll(nippleLength)}</li>`);
+    list.add(`<li>Areola Width</li>`);
+    list.add(`<li>${StringHelper.titlecaseAll(areolaWidth)}</li>`);
+
+    X.fill('#characterOverlay .breasts-area',X.createElement(list.getList()))
   }
 
   function fillCock(id) {
