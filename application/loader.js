@@ -12,6 +12,13 @@ Electron.ipcRenderer.on("boot.setContext", (event, context) => {
 
 window.Loader = (function() {
 
+  // === Timing Values ===
+  // Opacity transition duration is set in the style, currently set to 500ms
+  const startCover = 100;
+  const startScroll = 50;
+  const startUncover = 600;
+  const removeCover = 1100;
+
   // We load the client by reading the manifest.json file in the application
   // directory. This file must be present and should include all the javascript
   // files of the wrapped application.
@@ -80,7 +87,6 @@ window.Loader = (function() {
           await import(`../${file}`);
         } catch(error) {
           return appendError(error.message);
-
         }
       }
 
@@ -89,13 +95,13 @@ window.Loader = (function() {
       // a second to the boot time, but it looks nicer with the delay.
       setTimeout(() => {
         let cover = document.querySelector('#loadingCover');
-        cover.style.opacity = 1;
+        cover.style.opacity = '1';
         setTimeout(()=>{
-          cover.style.opacity = 0;
-          setTimeout(()=>{ cover.remove(); },500)
+          cover.style.opacity = '0';
+          setTimeout(()=>{ cover.remove(); },removeCover)
           resolve();
-        },400);
-      },600);
+        },startUncover);
+      },startCover);
     });
   }
 
@@ -147,7 +153,7 @@ window.Loader = (function() {
 
     setTimeout(()=> {
       requestAnimationFrame(animate);
-    },100);
+    },startScroll);
   }
 
   return {

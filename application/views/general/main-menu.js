@@ -11,7 +11,8 @@ global.MainMenu = (function() {
 
     X.first('#mainMenu a.close-menu-button').style['background-image'] = X.assetURL('ui/x-icon.png');
 
-    if (Environment.isDevelopment) {
+    // TODO: Show fixture in prod for now. Change this before an actual release though.
+    if (Environment.isDevelopment || Environment.isProduction) {
       X.removeClass('#mainMenu .start-fixture','hide');
     }
   }
