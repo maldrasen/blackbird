@@ -9,15 +9,14 @@ global.CharacterOverlay = (function() {
 
   let $id, $character, $isPlayer;
 
-  function init() {
-    X.onClick('start-training', sendStartTrainingCommand);
-  }
+  function init() {}
 
   // Because the CharacterOverlay displays available character actions, we might need some other options here.
   // Everything I need now though I can determine from the current state and the character data I think.
   //
   // Options
-  //   id*  Character entity id.
+  //   id*        Character entity id.
+  //   isPlayer   true if we're viewing the player character (they have fewer options)
   //
   function open(options) {
     $isPlayer = (options.isPlayer === true);
@@ -106,23 +105,21 @@ global.CharacterOverlay = (function() {
     X.first('#characterOverlay .portrait').setAttribute('style',`background-image:${pickRandom()}`);
   }
 
-  // TODO: Right now clicking on a character will just start the training mode with that character. Once I have more
-  //       of the game's systems done clicking a character here should either start some kind of character interaction
-  //       view or character inspection view. From there you can talk to them or see their character sheet and start
-  //       the training mode. You should be able to ask a character to follow you, or capture them, if you want to take
-  //       them to a bedroom. Some actions might only be available if the room matches, need to consider if the room
-  //       has a bed or a shower or a pillory.
-  //
+  // It's best for the view that opened the character overlay to decide what
+  // interactions are available from this view.
+  function addInteraction(label, callback) {
+    const link = X.createElement(`<li><a href='#'>${label}</a></li>`)
+    link.addEventListener('mousedown',callback);
 
-  function sendStartTrainingCommand() {
-    close();
-    StateMachine.handleCommand(CommandType.startTraining, { characterId:$id });
+    X.removeClass('#characterOverlay .interaction-title','hide');
+    X.first('#characterOverlay .interaction-list').appendChild(link);
   }
 
   return Object.freeze({
     init,
     open,
     close,
+    addInteraction,
   });
 
 })();

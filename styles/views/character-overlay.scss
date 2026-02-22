@@ -30,6 +30,7 @@
       grid-column: 2;
       grid-row: 2;
       padding: 10px;
+      margin-right: 10px;
       overflow: hidden;
     }
   }
@@ -118,6 +119,17 @@
   }
 
   // === Specific Panel Styles ===
+
+  .side-panel {
+    .interaction-title {
+      font-size: variables.$fs-bigger;
+      border-bottom: variables.$border-light;
+    }
+    .interaction-list {
+      font-size: variables.$fs-big;
+      text-align: right;
+    }
+  }
 
   .anima-animus {
     .label { color: variables.$fg-weak; }

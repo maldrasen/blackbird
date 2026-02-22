@@ -15,7 +15,14 @@ global.LocationView = (function() {
   }
 
   function characterClicked(event) {
-    CharacterOverlay.open({ id:event.target.getAttribute('data-id') });
+    const characterId = event.target.getAttribute('data-id');
+
+    CharacterOverlay.open({ id:characterId });
+
+    CharacterOverlay.addInteraction('Start Training', () => {
+      CharacterOverlay.close();
+      StateMachine.handleCommand(CommandType.startTraining, { characterId:characterId });
+    });
   }
 
   function buildCharacterList(characters) {

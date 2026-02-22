@@ -102,7 +102,7 @@ global.RoomFactory = (function() {
     const subWidth = totalWidth - (notchWidth*2);
     const subHeight = totalHeight;
 
-    const room = Room.build(options);
+    const room = Room(options);
     room.setMainBox(mainWidth,mainHeight);
     room.setSubBox(notchWidth,-notchHeight,subWidth,subHeight);
     return room;
