@@ -122,14 +122,13 @@ global.CharacterOverlay = (function() {
     const keys = Object.keys(aspects);
     const list = ListBuilder(`div`,`tag-area`);
 
-    if (keys.length === 0) {
-      X.addClass(`#characterOverlay .aspects-area`,'hide');
-    }
+    keys.forEach(key => {
+      const value = aspects[key];
+      const stars = ['','★','★★','★★★'][value]
+      list.add(makeTag(AspectType[key], stars, `aspect-tag strength-${value}`));
+    });
 
-    if (keys.length > 0) {
-      keys.forEach(key => { list.add(makeTag(AspectType[key], aspects[key], 'aspect-tag')); });
-      X.fill('#characterOverlay .aspects-area', X.createElement(list.getList()));
-    }
+    X.fill('#characterOverlay .aspects-area', X.createElement(list.getList()));
   }
 
   // TODO: Fill marks area once we have any.
@@ -139,9 +138,10 @@ global.CharacterOverlay = (function() {
 
   function fillSexualPreferences() {
     const sexualPreferences = SexualPreferencesComponent.lookup($id);
+    const keys = Object.keys(sexualPreferences).sort();
     const list = ListBuilder(`div`,`tag-area`)
 
-    Object.keys(sexualPreferences).forEach(key => {
+    keys.forEach(key => {
       const preference = SexualPreference.lookup(key);
       const value = sexualPreferences[key];
       const name = (value >= 0) ? preference.getName() : preference.getAntiname();
@@ -156,9 +156,10 @@ global.CharacterOverlay = (function() {
 
   function fillSensitivities() {
     const sensitives = SensitivitiesComponent.lookup($id);
-    const list = ListBuilder(`div`,`tag-area`)
+    const list = ListBuilder(`div`,`tag-area`);
+    const keys = Object.keys(sensitives).sort();
 
-    Object.keys(sensitives).forEach(key => {
+    keys.forEach(key => {
       const letter = sensitivityLetterValue(sensitives[key]);
       const label = `${StringHelper.titlecase(key)} Sensitivity`
       list.add(makeTag(label, letter, `sensitivity-tag strength-${letter}`));
@@ -169,11 +170,12 @@ global.CharacterOverlay = (function() {
 
   function fillAnima() {
     const anima = AnimaComponent.lookup($id);
-    const list = ListBuilder('ul');
+    const list = ListBuilder('ul','four-columns anima-animus');
+    const keys = Object.keys(anima).sort();
 
-    Object.keys(anima).forEach(key => {
+    keys.forEach(key => {
       if (anima[key] > 0) {
-        list.add(`<li>${StringHelper.titlecase(key)} ${anima[key]}</li>`);
+        list.add(`<li class='label'>${StringHelper.titlecase(key)}</li><li class='value'>${anima[key]}</li>`);
       }
     });
 
@@ -182,11 +184,12 @@ global.CharacterOverlay = (function() {
 
   function fillAnimus() {
     const animus = AnimusComponent.lookup($id);
-    const list = ListBuilder('ul');
+    const list = ListBuilder('ul','four-columns anima-animus');
+    const keys = Object.keys(animus).sort();
 
-    Object.keys(animus).forEach(key => {
+    keys.forEach(key => {
       if (animus[key] > 0) {
-        list.add(`<li>${StringHelper.titlecase(key)} ${animus[key]}</li>`);
+        list.add(`<li class='label'>${StringHelper.titlecase(key)}</li><li class='value'>${animus[key]}</li>`);
       }
     });
 
@@ -196,8 +199,9 @@ global.CharacterOverlay = (function() {
   function fillSkills() {
     const skills = SkillsComponent.lookup($id);
     const list = ListBuilder(`div`,`tag-area`);
+    const keys = Object.keys(skills).sort();
 
-    Object.keys(skills).forEach(code => {
+    keys.forEach(code => {
       const skill = Skill.lookup(code)
       if (skills[code] > 0) {
         list.add(makeTag(skill.getName(), skills[code], 'skill-tag'));

@@ -12,7 +12,7 @@ global.AnimaComponent = (function() {
 
   function createBaseline(id) {
     const baseline = {};
-    $properties.forEach(key => { baseline[key] = Random.between(0,10); }); // TEMP
+    $properties.forEach(key => { baseline[key] = 0 });
     create(id, baseline);
   }
 
