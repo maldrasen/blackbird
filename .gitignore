@@ -6,6 +6,7 @@
 /dist
 /lib/*.js
 /lib/*.css
+/assets/ai-assets/*.jpg
 /node_modules
 
 /package-lock.json
