@@ -85,7 +85,7 @@ global.GameStateFrame = (function() {
   }
 
   function playerClicked() {
-    console.log("TODO: Open character details for the player.")
+    CharacterOverlay.open({ id:GameState.getPlayer(), isPlayer:true });
   }
 
   function locationClicked() {

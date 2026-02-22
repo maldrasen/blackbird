@@ -7,7 +7,7 @@ global.CharacterOverlay = (function() {
   // shown. The WindowManager calls the close() function when the window is popped off the stack. The close() function
   // should empty the overlay, and hide it and the cover.
 
-  let $id, $character;
+  let $id, $character, $isPlayer;
 
   function init() {
     X.onClick('start-training', sendStartTrainingCommand);
@@ -20,6 +20,7 @@ global.CharacterOverlay = (function() {
   //   id*  Character entity id.
   //
   function open(options) {
+    $isPlayer = (options.isPlayer === true);
     $id = options.id;
     $character = Character($id);
 
@@ -44,15 +45,24 @@ global.CharacterOverlay = (function() {
 
     CharacterOverviewPanel.fillHealthBars($id);
     CharacterOverviewPanel.fillManaBars($id);
-    CharacterOverviewPanel.fillFeelingsBars($id);
     CharacterOverviewPanel.fillAttributes($id);
     CharacterOverviewPanel.fillAspects($id);
-    CharacterOverviewPanel.fillMarks($id);
     CharacterOverviewPanel.fillSexualPreferences($id);
     CharacterOverviewPanel.fillSensitivities($id);
-    CharacterOverviewPanel.fillAnima($id);
-    CharacterOverviewPanel.fillAnimus($id);
     CharacterOverviewPanel.fillSkills($id);
+
+    if ($isPlayer === false) {
+      CharacterOverviewPanel.fillFeelingsBars($id);
+      CharacterOverviewPanel.fillMarks($id);
+      CharacterOverviewPanel.fillAnima($id);
+      CharacterOverviewPanel.fillAnimus($id);
+    }
+    if ($isPlayer) {
+      X.addClass('#characterOverlay .feelings-panel','hide');
+      X.addClass('#characterOverlay .marks-panel','hide');
+      X.addClass('#characterOverlay .anima-panel','hide');
+      X.addClass('#characterOverlay .animus-panel','hide');
+    }
 
     CharacterBodyPanel.fillAnus($id);
     CharacterBodyPanel.fillBody($id);

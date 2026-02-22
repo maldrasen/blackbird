@@ -228,6 +228,15 @@ global.CharacterFactory = (function() {
     BodyComponent.create(playerId, bodyData);
     MouthComponent.create(playerId, mouthData);
 
+    // TODO: These values are important to the sensation calculations. We
+    //       mostly just need to know when the player is going to cum. The
+    //       player doesn't gain anima so, there's no way to upgrade these
+    //       values, so they're either going to need a different upgrade path,
+    //       or will have a simplified version of these components.
+
+    SexualPreferencesComponent.create(playerId, {});
+    SensitivitiesComponent.create(playerId, {});
+
     if (breastsData) { BreastsComponent.create(playerId, breastsData); }
     if (cockData) { CockComponent.create(playerId, cockData); }
     if (pussyData) { PussyComponent.create(playerId, pussyData); }
