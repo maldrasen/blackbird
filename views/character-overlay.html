@@ -1,11 +1,12 @@
 <div class='overlay no-footer'>
-  <div class='main-panel'>
 
-    <div class='actor-row'>
-      <div class='full-name'></div>
-      <div class='gender'></div>
-      <div class='species'></div>
-    </div>
+  <div class='header-panel'>
+    <div class='full-name'></div>
+    <div class='gender'></div>
+    <div class='species'></div>
+  </div>
+
+  <div class='main-panel'>
 
     <ul class="tab-control" data-container="character">
       <li class="tab active" data-tab="overview">Overview</li>
@@ -88,31 +89,44 @@
             <div class='panel-content animus-area'></div>
           </div>
         </div>
-
-        <div class='row-of-panels'>
-          <div class='panel'>
-            <div class='panel-label'>Description</div>
-            <div class='panel-content description-area'>[TODO: Big long descriptions]</div>
-          </div>
-        </div>
       </div>
 
       <!-- Body Tab -------------------------------------------------------- -->
 
       <div id='bodyTab' class="tab-content padding" data-tab="body">
-        <h1>Body</h1>
-      </div>
+        <div class='row-of-panels'>
+          <div class='panel'>
+            <div class='description-area'>[TODO: Big long descriptions]</div>
+          </div>
+        </div>
+
+        <div class='row-of-panels'>
+          <div class='panel breasts-panel'>
+            <div class='panel-label'>Breasts</div>
+            <div class='panel-content breasts-area'></div>
+          </div>
+          <div class='panel cock-panel'>
+            <div class='panel-label'>Cock</div>
+            <div class='panel-content cock-area'></div>
+          </div>
+          <div class='panel breasts-panel'>
+            <div class='panel-label'>Pussy</div>
+            <div class='panel-content pussy-area'></div>
+          </div>
+        </div>
+     </div>
 
       <!-- Equipment Tab --------------------------------------------------- -->
 
       <div id='equipmentTab' class="tab-content padding" data-tab="equipment">
-        <h1>Equipment</h1>
+        <h3 class='fg-very-weak'>TODO: Equipment</h3>
       </div>
 
     </div>
   </div>
 
   <div class='side-panel'>
+    <div class='portrait'></div>
     Character Interactions
   </div>
 </div>

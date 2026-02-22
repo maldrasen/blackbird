@@ -77,6 +77,12 @@
 .border-bottom { border-bottom: variables.$border-normal; }
 .border-top { border-top: variables.$border-normal; }
 
+.fg-body { color: variables.$fg-body; }
+.fg-strong { color: variables.$fg-strong; }
+.fg-very-strong { color: variables.$fg-very-strong; }
+.fg-weak { color: variables.$fg-weak; }
+.fg-very-weak { color: variables.$fg-very-weak; }
+
 .weaver-error {
   font-family:'roboto-mono', monospace;
   color: variables.$fg-error;

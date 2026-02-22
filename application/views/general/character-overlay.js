@@ -39,239 +39,57 @@ global.CharacterOverlay = (function() {
   }
 
   function update() {
-    console.log("Update this.")
+    fillHeader();
+    fillPortrait();
 
-    X.fill('#characterOverlay .actor-row .full-name', $character.getFullName());
-    X.fill('#characterOverlay .actor-row .species', $character.getSpeciesName());
-    X.fill('#characterOverlay .actor-row .gender', $character.getGenderName());
-
-    X.fill('#characterOverlay .health-panel .health', getHealthBar());
-    X.fill('#characterOverlay .health-panel .stamina', getStaminaBar());
-    X.fill('#characterOverlay .health-panel .arousal', getArousalBar());
-
-    X.fill('#characterOverlay .mana-panel .red', getManaBar('red'));
-    X.fill('#characterOverlay .mana-panel .yellow', getManaBar('yellow'));
-    X.fill('#characterOverlay .mana-panel .green', getManaBar('green'));
-    X.fill('#characterOverlay .mana-panel .blue', getManaBar('blue'));
-    X.fill('#characterOverlay .mana-panel .black', getManaBar('black'));
-
-    X.fill('#characterOverlay .feelings-panel .control', getControlBar());
-    X.fill('#characterOverlay .feelings-panel .affection', getFeelingsBar('affection'));
-    X.fill('#characterOverlay .feelings-panel .respect', getFeelingsBar('respect'));
-    X.fill('#characterOverlay .feelings-panel .fear', getFeelingsBar('fear'));
-
-    fillAttributes();
-    fillAspects();
-    fillMarks();
-    fillSexualPreferences();
-    fillSensitivities();
-    fillAnima();
-    fillAnimus();
-    fillSkills();
+    CharacterOverviewPanel.fillHealthBars($id);
+    CharacterOverviewPanel.fillManaBars($id);
+    CharacterOverviewPanel.fillFeelingsBars($id);
+    CharacterOverviewPanel.fillAttributes($id);
+    CharacterOverviewPanel.fillAspects($id);
+    CharacterOverviewPanel.fillMarks($id);
+    CharacterOverviewPanel.fillSexualPreferences($id);
+    CharacterOverviewPanel.fillSensitivities($id);
+    CharacterOverviewPanel.fillAnima($id);
+    CharacterOverviewPanel.fillAnimus($id);
+    CharacterOverviewPanel.fillSkills($id);
   }
 
-  function getHealthBar() {
-    const health = HealthComponent.lookup($id);
-    return `Health (${health.currentHealth}/${health.maxHealth})`;
+  function fillHeader() {
+    X.fill('#characterOverlay .header-panel .full-name', $character.getFullName());
+    X.fill('#characterOverlay .header-panel .species', $character.getSpeciesName());
+    X.fill('#characterOverlay .header-panel .gender', $character.getGenderName());
   }
 
-  function getStaminaBar() {
-    const current = Math.round(HealthComponent.lookup($id).currentStamina);
-    const max = Math.round(AttributesComponent.createWrapper({ id:$id }).getMaxStamina());
-    return `Stamina (${current}/${max})`;
-  }
+  // Yak shaving, completely temporary, mostly wrong, but fun to look at pictures. The real version of this will allow
+  // a user to click on the portrait. This will open the portrait library, where a portrait can be selected from the
+  // defaults. There will be an option to upload a portrait as well. When we upload a portrait we set its scale and
+  // location within a viewport with the correct aspect ratio. Future plan stuff.
+  function fillPortrait() {
+    let gender = ActorComponent.lookup($id).gender;
+    if (gender === Gender.enby) { gender = Gender.female; }
 
-  function getArousalBar() {
-    const arousal = ArousalComponent.lookup($id).arousal;
-    return `Arousal (${arousal}/100)`;
-  }
+    console.log("Wrong?",gender)
 
-  // TODO: Implement Mana
-  function getManaBar(color) {
-    return `${StringHelper.titlecase(color)} Mana(0/0)`
-  }
-
-  function getControlBar() {
-    const control = ControlledComponent.lookup($id);
-    return `Control ${control.control}`
-  }
-
-  // I think it's safe to say that the feelings panel should always show the feelings directed towards the player in
-  // the status screen. The feelings towards other characters are essentially hidden though.
-  function getFeelingsBar(feel) {
-    const feelings = FeelingsComponent.findByTarget($id, GameState.getPlayer());
-    const value = feelings[feel];
-    const letter = feelingLetterValue(value);
-    const range = feelingsLetterRange(value);
-    const remainder = feelingsLetterRemainder(value);
-    return `${StringHelper.titlecase(feel)} ${letter} (${remainder}/${range})`;
-  }
-
-  function fillAttributes() {
-    const attributes = AttributesComponent.lookup($id);
-    const list = ListBuilder('ul','two-columns');
-
-    ['strength', 'dexterity', 'vitality', 'intelligence', 'beauty'].forEach(key => {
-      list.add(`<li class='label'>${StringHelper.titlecase(key)}</li><li class='value'>${attributes[key]}</li>`)
-    });
-
-    X.fill('#characterOverlay .attributes-area', X.createElement(list.getList()));
-  }
-
-  function fillAspects() {
-    const aspects = AspectsComponent.lookup($id);
-    const keys = Object.keys(aspects);
-    const list = ListBuilder(`div`,`tag-area`);
-
-    keys.forEach(key => {
-      const value = aspects[key];
-      const stars = ['','★','★★','★★★'][value]
-      list.add(makeTag(AspectType[key], stars, `aspect-tag strength-${value}`));
-    });
-
-    X.fill('#characterOverlay .aspects-area', X.createElement(list.getList()));
-  }
-
-  // TODO: Fill marks area once we have any.
-  function fillMarks() {
-    X.addClass(`#characterOverlay .marks-area`,'hide');
-  }
-
-  function fillSexualPreferences() {
-    const sexualPreferences = SexualPreferencesComponent.lookup($id);
-    const keys = Object.keys(sexualPreferences).sort();
-    const list = ListBuilder(`div`,`tag-area`)
-
-    keys.forEach(key => {
-      const preference = SexualPreference.lookup(key);
-      const value = sexualPreferences[key];
-      const name = (value >= 0) ? preference.getName() : preference.getAntiname();
-      const letter = preferenceLetterValue(Math.abs(value));
-
-      list.add(makeTag(name, letter, `sexual-preference-tag strength-${letter}`));
-    });
-
-    X.fill('#characterOverlay .sexual-preferences-area', X.createElement(list.getList()));
-  }
-
-
-  function fillSensitivities() {
-    const sensitives = SensitivitiesComponent.lookup($id);
-    const list = ListBuilder(`div`,`tag-area`);
-    const keys = Object.keys(sensitives).sort();
-
-    keys.forEach(key => {
-      const letter = sensitivityLetterValue(sensitives[key]);
-      const label = `${StringHelper.titlecase(key)} Sensitivity`
-      list.add(makeTag(label, letter, `sensitivity-tag strength-${letter}`));
-    });
-
-    X.fill('#characterOverlay .sensitivities-area',X.createElement(list.getList()));
-  }
-
-  function fillAnima() {
-    const anima = AnimaComponent.lookup($id);
-    const list = ListBuilder('ul','four-columns anima-animus');
-    const keys = Object.keys(anima).sort();
-
-    keys.forEach(key => {
-      if (anima[key] > 0) {
-        list.add(`<li class='label'>${StringHelper.titlecase(key)}</li><li class='value'>${anima[key]}</li>`);
+    function pickRandom() {
+      if (gender === Gender.female) {
+        const roll = Random.between(1,35);
+        const file = (roll < 10) ? `female-0${roll}.jpg` : `female-${roll}.jpg`
+        return X.assetURL(`ai-assets/${file}`);
       }
-    });
-
-    X.fill('#characterOverlay .anima-area',X.createElement(list.getList()));
-  }
-
-  function fillAnimus() {
-    const animus = AnimusComponent.lookup($id);
-    const list = ListBuilder('ul','four-columns anima-animus');
-    const keys = Object.keys(animus).sort();
-
-    keys.forEach(key => {
-      if (animus[key] > 0) {
-        list.add(`<li class='label'>${StringHelper.titlecase(key)}</li><li class='value'>${animus[key]}</li>`);
+      if (gender === Gender.futa) {
+        const roll = Random.between(1,20);
+        const file = (roll < 10) ? `futa-0${roll}.jpg` : `futa-${roll}.jpg`
+        return X.assetURL(`ai-assets/${file}`);
       }
-    });
-
-    X.fill('#characterOverlay .animus-area',X.createElement(list.getList()));
-  }
-
-  function fillSkills() {
-    const skills = SkillsComponent.lookup($id);
-    const list = ListBuilder(`div`,`tag-area`);
-    const keys = Object.keys(skills).sort();
-
-    keys.forEach(code => {
-      const skill = Skill.lookup(code)
-      if (skills[code] > 0) {
-        list.add(makeTag(skill.getName(), skills[code], 'skill-tag'));
+      if (gender === Gender.male) {
+        const roll = Random.between(1,13);
+        const file = (roll < 10) ? `male-0${roll}.jpg` : `male-${roll}.jpg`
+        return X.assetURL(`ai-assets/${file}`);
       }
-    });
+    }
 
-    X.fill('#characterOverlay .skills-area', X.createElement(list.getList()));
-  }
-
-
-
-
-  function makeTag(label,value,classname) {
-    return `<div class='${classname} tag'>
-      <span class='label'>${label}</span>
-      <span class='value'>${value}</span>
-    </div>`
-  }
-
-  // Value will be between 0 and 1000. Over 500 is within the unobtainable S ranks.
-  function feelingLetterValue(value) {
-    if (value <= 100) { return 'F'; }
-    if (value <= 200) { return 'D'; }
-    if (value <= 400) { return 'C'; }
-    if (value <= 500) { return 'B'; }
-    if (value <= 600) { return 'A'; }
-    if (value <= 800) { return 'S'; }
-    if (value <= 900) { return 'SS'; }
-    return 'SSS';
-  }
-
-  // Prolly a better way to do this, but I'm lazy.
-  function feelingsLetterRange(value) {
-    if (value <= 100) { return 100; }
-    if (value <= 200) { return 100; }
-    if (value <= 400) { return 200; }
-    if (value <= 500) { return 100; }
-    if (value <= 600) { return 100; }
-    if (value <= 800) { return 200; }
-    if (value <= 900) { return 100; }
-    return 100
-  }
-
-  function feelingsLetterRemainder(value) {
-    if (value <= 100) { return value; }
-    if (value <= 200) { return value-100; }
-    if (value <= 400) { return value-200; }
-    if (value <= 500) { return value-400; }
-    if (value <= 600) { return value-500; }
-    if (value <= 800) { return value-600; }
-    if (value <= 900) { return value-800; }
-    return value-900;
-  }
-
-  // Value will be between 1-8
-  function sensitivityLetterValue(value) {
-    return ['','F','D','C','B','A','S','SS','SSS'][value];
-  }
-
-  // Value will be between 0-100 (for now, S ranks will be implemented later)
-  function preferenceLetterValue(value) {
-    if (value <= 20) { return `F`; }
-    if (value <= 40) { return `D`; }
-    if (value <= 60) { return `C`; }
-    if (value <= 80) { return `B`; }
-    if (value <= 100) { return `A`; }
-    if (value <= 150) { return `S`; }
-    if (value <= 200) { return `SS`; }
-    return `SSS`
+    X.first('#characterOverlay .portrait').setAttribute('style',`background-image:${pickRandom()}`);
   }
 
   // TODO: Right now clicking on a character will just start the training mode with that character. Once I have more
@@ -286,7 +104,6 @@ global.CharacterOverlay = (function() {
     close();
     StateMachine.handleCommand(CommandType.startTraining, { characterId:$id });
   }
-
 
   return Object.freeze({
     init,

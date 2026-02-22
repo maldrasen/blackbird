@@ -2,19 +2,47 @@
 
 #characterOverlay {
 
+  // === Layout ===
+
   .overlay {
-    display: flex;
+    display: grid;
+    background-color: rgba(20,20,20,0.6);
+    grid-template-columns: 1fr 300px;
+    grid-template-rows: 50px 1fr;
+
+    .header-panel {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      display: flex;
+      font-size: variables.$fs-bigger;
+      border-bottom: variables.$border-light;
+      padding: 10px 15px;
+      .full-name { flex-grow:1 }
+      .gender { margin-right:6px; }
+    }
     .main-panel {
+      grid-column: 1;
+      grid-row: 2;
       flex-grow: 1;
       padding: 10px;
-      border-right: variables.$border-normal;
-      background-color: rgba(25,25,25,0.4);
     }
     .side-panel {
+      grid-column: 2;
+      grid-row: 2;
       padding: 10px;
-      width: 300px;
       overflow: hidden;
     }
+  }
+
+  .portrait {
+    aspect-ratio: 2/3;
+    width: 270px;
+    margin-top: 31px;
+    margin-bottom: 20px;
+    background-color: #000;
+    background-size: cover;
+    border: 1px solid rgb(100,100,100); // The normal transparency fucks the image.
+    box-shadow: variables.$shadow-portrait;
   }
 
   // TODO: We may want to make these the tab default styles.
@@ -27,14 +55,17 @@
     box-shadow: 0 1px 1px #000;
   }
 
-  .actor-row {
-    display: flex;
-    font-size: variables.$fs-bigger;
-    border-bottom: variables.$border-light;
-    margin-bottom: 10px;
-    .full-name { flex-grow:1 }
-    .gender { margin-right:6px; }
+  // TODO: Also default grid layout styles.
+  .two-columns {
+    display: grid;
+    grid-template-columns: auto auto;
   }
+  .four-columns {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+  }
+
+  // === Panels ===
 
   .row-of-panels {
     display: flex;
@@ -69,6 +100,8 @@
     margin-top: -30px;
   }
 
+  // === Tags ===
+
   .tag-area {
     display: flex;
     flex-wrap: wrap;
@@ -85,18 +118,11 @@
     .value { color: variables.$fg-strong; }
   }
 
+  // === Specific Panel Styles ===
+
   .anima-animus {
     .label { color: variables.$fg-weak; }
     .value { font-family: 'roboto-medium', sans-serif; }
   }
 
-}
-
-.two-columns {
-  display: grid;
-  grid-template-columns: auto auto;
-}
-.four-columns {
-  display: grid;
-  grid-template-columns: auto auto auto auto;
 }
