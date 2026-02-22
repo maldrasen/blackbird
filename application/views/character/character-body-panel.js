@@ -71,9 +71,26 @@ global.CharacterBodyPanel = (function() {
     X.fill('#characterOverlay .body-area',X.createElement(list.getList()))
   }
 
-  function fillBreasts(id) {}
-  function fillCock(id) {}
-  function fillPussy(id) {}
+  function fillBreasts(id) {
+    const breasts = BreastsComponent.lookup(id);
+    if (breasts == null) {
+      return X.addClass('#characterOverlay .breasts-panel','hide');
+    }
+  }
+
+  function fillCock(id) {
+    const cock = CockComponent.lookupNormalOf(id);
+    if (cock == null) {
+      return X.addClass('#characterOverlay .cock-panel','hide');
+    }
+  }
+
+  function fillPussy(id) {
+    const pussy = PussyComponent.lookupNormalOf(id);
+    if (pussy == null) {
+      return X.addClass('#characterOverlay .pussy-panel','hide');
+    }
+  }
 
   return Object.freeze({
     fillAnus,

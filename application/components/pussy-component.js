@@ -54,10 +54,17 @@ global.PussyComponent = (function() {
     Validate.atLeast('Pussy.maxUrethraWidth',pussyComponent.maxPussyWidth,2);
   }
 
-  function of(parent) {
+  function of(parent, placement='normal') {
     return Registry.findComponentsWith(ComponentType.pussy, pussyData => {
-      return pussyData[_parentId] === parent;
+      if (placement === pussyData.placement) {
+        return pussyData[_parentId] === parent;
+      }
     });
+  }
+
+  // Used to get the single normal 'face' mouth component, given a parent.
+  function lookupNormalOf(parent) {
+    return lookup(of(parent));
   }
 
   return Object.freeze({
@@ -67,6 +74,7 @@ global.PussyComponent = (function() {
     lookup,
     destroy,
     of,
+    lookupNormalOf,
   });
 
 })();
