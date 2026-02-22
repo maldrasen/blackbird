@@ -33,12 +33,14 @@ SexualPreference.register('debaser',{
 
 SexualPreference.register('affection-slut',{
   name: 'Affection Slut',
+  antiname: 'Affection Rejecting',
   description: 'A desire for emotional comfort, support, and praise',
   defaultValue: 25,
 });
 
 SexualPreference.register('humiliation-slut',{
   name: 'Humiliation Slut',
+  antiname: 'Humiliation Hating',
   description: 'A desire for emotional abuse, humiliation, degradation, and objectification',
   defaultValue: -25,
 });

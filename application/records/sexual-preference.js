@@ -29,6 +29,7 @@ global.SexualPreference = (function() {
     return Object.freeze({
       getCode: () => { return preference.code; },
       getName: () => { return preference.name; },
+      getAntiname: () => { return preference.antiname || `Anti-${preference}` },
       getDefaultValue,
     });
   }

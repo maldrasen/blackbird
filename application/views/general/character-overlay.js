@@ -71,6 +71,7 @@ global.CharacterOverlay = (function() {
     fillSexualPreferences();
     fillSensitivities();
     fillAnima();
+    fillAnimus();
     fillSkills();
   }
 
@@ -104,7 +105,11 @@ global.CharacterOverlay = (function() {
   // the status screen. The feelings towards other characters are essentially hidden though.
   function getFeelingsBar(feel) {
     const feelings = FeelingsComponent.findByTarget($id, GameState.getPlayer());
-    return `${StringHelper.titlecase(feel)} ${feelings[feel]}`
+    const value = feelings[feel];
+    const letter = feelingLetterValue(value);
+    const range = feelingsLetterRange(value);
+    const remainder = feelingsLetterRemainder(value);
+    return `${StringHelper.titlecase(feel)} ${letter} (${remainder}/${range})`;
   }
 
   function getAttributeBar(attr) {
@@ -115,20 +120,15 @@ global.CharacterOverlay = (function() {
   function fillAspects() {
     const aspects = AspectsComponent.lookup($id);
     const keys = Object.keys(aspects);
-    let html;
+    const list = ListBuilder(`div`,`tag-area`);
 
     if (keys.length === 0) {
       X.addClass(`#characterOverlay .aspects-area`,'hide');
     }
 
     if (keys.length > 0) {
-      html = `<div class='tag-area'>`;
-      keys.forEach(key => {
-        html += makeTag(AspectType[key], aspects[key], 'aspect-tag');
-      });
-      html += `</div>`;
-
-      X.fill('#characterOverlay .aspects-area', X.createElement(html));
+      keys.forEach(key => { list.add(makeTag(AspectType[key], aspects[key], 'aspect-tag')); });
+      X.fill('#characterOverlay .aspects-area', X.createElement(list.getList()));
     }
   }
 
@@ -139,43 +139,75 @@ global.CharacterOverlay = (function() {
 
   function fillSexualPreferences() {
     const sexualPreferences = SexualPreferencesComponent.lookup($id);
+    const list = ListBuilder(`div`,`tag-area`)
 
-    let html = `<div class='tag-area'>`
     Object.keys(sexualPreferences).forEach(key => {
       const preference = SexualPreference.lookup(key);
-      html += makeTag(preference.getName(), sexualPreferences[key], 'sexual-preference-tag');
-    });
-    html += `</div>`
+      const value = sexualPreferences[key];
+      const name = (value >= 0) ? preference.getName() : preference.getAntiname();
+      const letter = preferenceLetterValue(Math.abs(value));
 
-    X.fill('#characterOverlay .sexual-preferences-area', X.createElement(html));
+      list.add(makeTag(name, letter, `sexual-preference-tag strength-${letter}`));
+    });
+
+    X.fill('#characterOverlay .sexual-preferences-area', X.createElement(list.getList()));
+  }
+
+
+  function fillSensitivities() {
+    const sensitives = SensitivitiesComponent.lookup($id);
+    const list = ListBuilder(`div`,`tag-area`)
+
+    Object.keys(sensitives).forEach(key => {
+      const letter = sensitivityLetterValue(sensitives[key]);
+      const label = `${StringHelper.titlecase(key)} Sensitivity`
+      list.add(makeTag(label, letter, `sensitivity-tag strength-${letter}`));
+    });
+
+    X.fill('#characterOverlay .sensitivities-area',X.createElement(list.getList()));
+  }
+
+  function fillAnima() {
+    const anima = AnimaComponent.lookup($id);
+    const list = ListBuilder('ul');
+
+    Object.keys(anima).forEach(key => {
+      if (anima[key] > 0) {
+        list.add(`<li>${StringHelper.titlecase(key)} ${anima[key]}</li>`);
+      }
+    });
+
+    X.fill('#characterOverlay .anima-area',X.createElement(list.getList()));
+  }
+
+  function fillAnimus() {
+    const animus = AnimusComponent.lookup($id);
+    const list = ListBuilder('ul');
+
+    Object.keys(animus).forEach(key => {
+      if (animus[key] > 0) {
+        list.add(`<li>${StringHelper.titlecase(key)} ${animus[key]}</li>`);
+      }
+    });
+
+    X.fill('#characterOverlay .animus-area',X.createElement(list.getList()));
   }
 
   function fillSkills() {
     const skills = SkillsComponent.lookup($id);
-    let anySkill = false;
-    let html = `<div class='tag-area'>`
+    const list = ListBuilder(`div`,`tag-area`);
 
     Object.keys(skills).forEach(code => {
       const skill = Skill.lookup(code)
       if (skills[code] > 0) {
-        html += makeTag(skill.getName(), skills[code], 'skill-tag');
-        anySkill = true;
+        list.add(makeTag(skill.getName(), skills[code], 'skill-tag'));
       }
     });
-    html += `</div>`
 
-    if (anySkill) {
-      X.fill('#characterOverlay .skills-area', X.createElement(html));
-    } else {
-      X.addClass('#characterOverlay .skills-area','hide');
-    }
+    X.fill('#characterOverlay .skills-area', X.createElement(list.getList()));
   }
 
-  function fillSensitivities() {
-  }
 
-  function fillAnima() {
-  }
 
 
   function makeTag(label,value,classname) {
@@ -183,6 +215,58 @@ global.CharacterOverlay = (function() {
       <span class='label'>${label}</span>
       <span class='value'>${value}</span>
     </div>`
+  }
+
+  // Value will be between 0 and 1000. Over 500 is within the unobtainable S ranks.
+  function feelingLetterValue(value) {
+    if (value <= 100) { return 'F'; }
+    if (value <= 200) { return 'D'; }
+    if (value <= 400) { return 'C'; }
+    if (value <= 500) { return 'B'; }
+    if (value <= 600) { return 'A'; }
+    if (value <= 800) { return 'S'; }
+    if (value <= 900) { return 'SS'; }
+    return 'SSS';
+  }
+
+  // Prolly a better way to do this, but I'm lazy.
+  function feelingsLetterRange(value) {
+    if (value <= 100) { return 100; }
+    if (value <= 200) { return 100; }
+    if (value <= 400) { return 200; }
+    if (value <= 500) { return 100; }
+    if (value <= 600) { return 100; }
+    if (value <= 800) { return 200; }
+    if (value <= 900) { return 100; }
+    return 100
+  }
+
+  function feelingsLetterRemainder(value) {
+    if (value <= 100) { return value; }
+    if (value <= 200) { return value-100; }
+    if (value <= 400) { return value-200; }
+    if (value <= 500) { return value-400; }
+    if (value <= 600) { return value-500; }
+    if (value <= 800) { return value-600; }
+    if (value <= 900) { return value-800; }
+    return value-900;
+  }
+
+  // Value will be between 1-8
+  function sensitivityLetterValue(value) {
+    return ['','F','D','C','B','A','S','SS','SSS'][value];
+  }
+
+  // Value will be between 0-100 (for now, S ranks will be implemented later)
+  function preferenceLetterValue(value) {
+    if (value <= 20) { return `F`; }
+    if (value <= 40) { return `D`; }
+    if (value <= 60) { return `C`; }
+    if (value <= 80) { return `B`; }
+    if (value <= 100) { return `A`; }
+    if (value <= 150) { return `S`; }
+    if (value <= 200) { return `SS`; }
+    return `SSS`
   }
 
   // TODO: Right now clicking on a character will just start the training mode with that character. Once I have more
