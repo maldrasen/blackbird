@@ -58,7 +58,6 @@ global.CharacterOverlay = (function() {
     CharacterBodyPanel.fillBody($id);
     CharacterBodyPanel.fillBreasts($id);
     CharacterBodyPanel.fillCock($id);
-    CharacterBodyPanel.fillMouth($id);
     CharacterBodyPanel.fillPussy($id);
   }
 

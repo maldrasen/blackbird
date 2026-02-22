@@ -2,8 +2,12 @@ global.CharacterBodyPanel = (function() {
 
   function fillAnus(id) {}
 
+  // I'll combine the body and the mouth as I don't want to display stuff like
+  // the comfortableThroatDepth. Tongue shape and length are the only 'visible'
+  // parameters I'll display.
   function fillBody(id) {
     const body = BodyComponent.lookup(id);
+    const mouth = MouthComponent.lookupNormalOf(id);
     const list = ListBuilder('ul','two-columns');
 
     let eyes = StringHelper.titlecaseAll(body.eyeColor);
@@ -41,12 +45,18 @@ global.CharacterBodyPanel = (function() {
       list.add(`<li>${StringHelper.titlecaseAll(body.hornShape)} Horns</li>`)
     }
 
+    let tongue = MeasurementHelper.inchesWithFractions(mouth.tongueLength);
+    if (mouth.tongueShape === 'forked') { tongue = `Forked and ${tongue}` }
+    if (mouth.tongueShape === 'dog') { tongue = `Wide, Flat, and ${tongue}` }
+
+    list.add(`<li>Tongue</li>`);
+    list.add(`<li>${StringHelper.titlecaseAll(tongue)} Long</li>`);
+
     X.fill('#characterOverlay .body-area',X.createElement(list.getList()))
   }
 
   function fillBreasts(id) {}
   function fillCock(id) {}
-  function fillMouth(id) {}
   function fillPussy(id) {}
 
   return Object.freeze({
@@ -54,7 +64,6 @@ global.CharacterBodyPanel = (function() {
     fillBody,
     fillBreasts,
     fillCock,
-    fillMouth,
     fillPussy,
   });
 

@@ -10,7 +10,7 @@ global.MouthFactory = (function() {
       maxMouthWidth:  Math.max(32,Math.round(Random.normalDistribution(60,3) * lengthRatio)),
       maxThroatWidth: Math.max(26,Math.round(Random.normalDistribution(35,2) * lengthRatio)),
       tongueLength:   Math.max(50,Math.round(Random.normalDistribution(65,15) * lengthRatio)),
-      tongueShape:    mouthDef.shape || 'normal',
+      tongueShape:    mouthDef.tongueShape || 'normal',
     };
 
     if (mouthDef.mouthWidth) {

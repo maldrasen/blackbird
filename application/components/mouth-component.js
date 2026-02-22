@@ -40,10 +40,17 @@ global.MouthComponent = (function() {
     Validate.isIn('Mouth.tongueShape',mouthComponent.tongueShape,MouthData.TongueShapes);
   }
 
-  function of(parent) {
+  function of(parent, placement='normal') {
     return Registry.findComponentsWith(ComponentType.mouth, mouthData => {
-      return mouthData[_parentId] === parent;
+      if (placement === mouthData.placement) {
+        return mouthData[_parentId] === parent;
+      }
     });
+  }
+
+  // Used to get the single normal 'face' mouth component, given a parent.
+  function lookupNormalOf(parent) {
+    return lookup(of(parent));
   }
 
   return Object.freeze({
@@ -53,6 +60,7 @@ global.MouthComponent = (function() {
     lookup,
     destroy,
     of,
+    lookupNormalOf,
   });
 
 })();
