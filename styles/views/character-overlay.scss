@@ -8,6 +8,7 @@
       flex-grow: 1;
       padding: 10px;
       border-right: variables.$border-normal;
+      background-color: rgba(25,25,25,0.4);
     }
     .side-panel {
       padding: 10px;
@@ -16,10 +17,21 @@
     }
   }
 
+  // TODO: We may want to make these the tab default styles.
+  .tab-container {
+    border: variables.$border-normal;
+    background-color: #000;
+    box-shadow: variables.$shadow-frame;
+  }
+  .tab.active {
+    box-shadow: 0 1px 1px #000;
+  }
+
   .actor-row {
     display: flex;
     font-size: variables.$fs-bigger;
     border-bottom: variables.$border-light;
+    margin-bottom: 10px;
     .full-name { flex-grow:1 }
     .gender { margin-right:6px; }
   }

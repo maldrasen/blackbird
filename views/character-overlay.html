@@ -7,87 +7,108 @@
       <div class='species'></div>
     </div>
 
-    <div class='row-of-panels'>
-      <div class='panel health-panel'>
-        <div class='health'></div>
-        <div class='stamina'></div>
-        <div class='arousal'></div>
-        <div class='pleasure'></div>
-        <div class='extra'></div> <!-- Refectory / Edging. Really only applicable in training. -->
+    <ul class="tab-control" data-container="character">
+      <li class="tab active" data-tab="overview">Overview</li>
+      <li class="tab" data-tab="body">Body</li>
+      <li class="tab" data-tab="equipment">Equipment</li>
+    </ul>
+
+    <div id='characterContainer' class='tab-container' data-container-name="character">
+
+      <!-- Overview Tab ---------------------------------------------------- -->
+
+      <div id='overviewTab' class="tab-content active padding" data-tab="overview">
+
+        <div class='row-of-panels'>
+          <div class='panel health-panel'>
+            <div class='health'></div>
+            <div class='stamina'></div>
+            <div class='arousal'></div>
+            <div class='pleasure'></div>
+            <div class='extra'></div> <!-- Refectory / Edging. Really only applicable in training. -->
+          </div>
+
+          <div class='panel mana-panel'>
+            <div class='red'></div>
+            <div class='yellow'></div>
+            <div class='green'></div>
+            <div class='blue'></div>
+            <div class='black'></div>
+          </div>
+
+          <div class='panel feelings-panel'>
+            <div class='control'></div>
+            <div class='affection'></div>
+            <div class='respect'></div>
+            <div class='fear'></div>
+          </div>
+
+          <div class='panel attributes-area'></div>
+        </div>
+
+        <div class='row-of-panels'>
+          <div class='panel'>
+            <div class='panel-label'>Aspects</div>
+            <div class='panel-content aspects-area'></div>
+          </div>
+
+          <div class='panel'>
+            <div class='panel-label'>Marks</div>
+            <div class='panel-content marks-area'></div>
+          </div>
+        </div>
+
+        <div class='row-of-panels'>
+          <div class='panel'>
+            <div class='panel-label'>Sexual Preferences</div>
+            <div class='panel-content sexual-preferences-area'></div>
+          </div>
+        </div>
+
+        <div class='row-of-panels'>
+          <div class='panel'>
+            <div class='panel-label'>Sensitivities</div>
+            <div class='panel-content sensitivities-area'></div>
+          </div>
+        </div>
+
+        <div class='row-of-panels'>
+          <div class='panel'>
+            <div class='panel-label'>Skills</div>
+            <div class='panel-content skills-area'></div>
+          </div>
+
+          <div class='panel'>
+            <div class='panel-label'>Anima</div>
+            <div class='panel-content anima-area'></div>
+          </div>
+
+          <div class='panel'>
+            <div class='panel-label'>Animus</div>
+            <div class='panel-content animus-area'></div>
+          </div>
+        </div>
+
+        <div class='row-of-panels'>
+          <div class='panel'>
+            <div class='panel-label'>Description</div>
+            <div class='panel-content description-area'>[TODO: Big long descriptions]</div>
+          </div>
+        </div>
       </div>
 
-      <div class='panel mana-panel'>
-        <div class='red'></div>
-        <div class='yellow'></div>
-        <div class='green'></div>
-        <div class='blue'></div>
-        <div class='black'></div>
+      <!-- Body Tab -------------------------------------------------------- -->
+
+      <div id='bodyTab' class="tab-content padding" data-tab="body">
+        <h1>Body</h1>
       </div>
 
-      <div class='panel feelings-panel'>
-        <div class='control'></div>
-        <div class='affection'></div>
-        <div class='respect'></div>
-        <div class='fear'></div>
+      <!-- Equipment Tab --------------------------------------------------- -->
+
+      <div id='equipmentTab' class="tab-content padding" data-tab="equipment">
+        <h1>Equipment</h1>
       </div>
 
-      <div class='panel attributes-panel'>
-        <div class='strength'></div>
-        <div class='dexterity'></div>
-        <div class='vitality'></div>
-        <div class='intelligence'></div>
-        <div class='beauty'></div>
-      </div>
-    </div>
-
-    <div class='row-of-panels'>
-      <div class='panel block'>
-        <div class='panel-label'>Aspects</div>
-        <div class='panel-content aspects-area'></div>
-      </div>
-
-      <div class='panel block'>
-        <div class='panel-label'>Marks</div>
-        <div class='panel-content marks-area'></div>
-      </div>
-    </div>
-
-    <div class='row-of-panels'>
-      <div class='panel block'>
-        <div class='panel-label'>Sexual Preferences</div>
-        <div class='panel-content sexual-preferences-area'></div>
-      </div>
-    </div>
-
-    <div class='row-of-panels'>
-      <div class='panel block'>
-        <div class='panel-label'>Sensitivities</div>
-        <div class='panel-content sensitivities-area'></div>
-      </div>
-    </div>
-
-    <div class='row-of-panels'>
-      <div class='panel block'>
-        <div class='panel-label'>Skills</div>
-        <div class='panel-content skills-area'></div>
-      </div>
-
-      <div class='panel block'>
-        <div class='panel-label'>Anima</div>
-        <div class='panel-content anima-area'></div>
-      </div>
-
-      <div class='panel block'>
-        <div class='panel-label'>Animus</div>
-        <div class='panel-content animus-area'></div>
-      </div>
-    </div>
-
-    <div class='row-of-panels'>
-      <div class='panel'>
-        <div class='panel-label'>Description</div>
-        <div class='panel-content description-area'>[TODO: Big long descriptions]</div>
-      </div>
     </div>
   </div>
 

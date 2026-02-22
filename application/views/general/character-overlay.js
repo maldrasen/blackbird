@@ -60,12 +60,7 @@ global.CharacterOverlay = (function() {
     X.fill('#characterOverlay .feelings-panel .respect', getFeelingsBar('respect'));
     X.fill('#characterOverlay .feelings-panel .fear', getFeelingsBar('fear'));
 
-    X.fill('#characterOverlay .attributes-panel .strength', getAttributeBar('strength'));
-    X.fill('#characterOverlay .attributes-panel .dexterity', getAttributeBar('dexterity'));
-    X.fill('#characterOverlay .attributes-panel .vitality', getAttributeBar('vitality'));
-    X.fill('#characterOverlay .attributes-panel .intelligence', getAttributeBar('intelligence'));
-    X.fill('#characterOverlay .attributes-panel .beauty', getAttributeBar('beauty'));
-
+    fillAttributes();
     fillAspects();
     fillMarks();
     fillSexualPreferences();
@@ -112,9 +107,15 @@ global.CharacterOverlay = (function() {
     return `${StringHelper.titlecase(feel)} ${letter} (${remainder}/${range})`;
   }
 
-  function getAttributeBar(attr) {
+  function fillAttributes() {
     const attributes = AttributesComponent.lookup($id);
-    return `${StringHelper.titlecase(attr)} ${attributes[attr]}`;
+    const list = ListBuilder('ul','two-columns');
+
+    ['strength', 'dexterity', 'vitality', 'intelligence', 'beauty'].forEach(key => {
+      list.add(`<li class='label'>${StringHelper.titlecase(key)}</li><li class='value'>${attributes[key]}</li>`)
+    });
+
+    X.fill('#characterOverlay .attributes-area', X.createElement(list.getList()));
   }
 
   function fillAspects() {
