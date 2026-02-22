@@ -15,7 +15,7 @@ global.FileHelper = (function() {
 
   function writeJSON(path, object) {
     return new Promise(resolve => {
-      fs.writeFile(path, JSON.stringify(object), error => {
+      fs.writeFile(path, JSON.stringify(object,null,2), error => {
         if (error) { throw error; }
         resolve();
       });
