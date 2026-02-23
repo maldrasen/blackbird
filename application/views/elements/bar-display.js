@@ -49,7 +49,12 @@ global.BarDisplay = function(options) {
   }
   function setCurrentValue(current) {
     $current = current;
+
+    let width = ($max > 0) ? Math.round(($current / $max) * 100) : 0;
+
+
     getElement().querySelector('.current').replaceChildren($current);
+    getElement().querySelector('.bar').setAttribute(`style`,`width:${width}%`);
   }
 
   return Object.freeze({

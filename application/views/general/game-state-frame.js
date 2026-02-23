@@ -52,22 +52,45 @@ global.GameStateFrame = (function() {
 
   function getHealthBar(player) {
     const health = HealthComponent.lookup(player);
-    return `Health(${health.currentHealth}/${health.maxHealth})`;
+    return BarDisplay({
+      label: 'Health',
+      currentValue: health.currentHealth,
+      minValue: 0,
+      maxValue: health.maxHealth,
+      color: 'health',
+    }).getElement();
   }
 
   function getStaminaBar(player) {
     const current = Math.round(HealthComponent.lookup(player).currentStamina);
     const max = Math.round(AttributesComponent.createWrapper({ id:player }).getMaxStamina());
-    return `Stamina(${current}/${max})`;
+    return BarDisplay({
+      label: 'Stamina',
+      currentValue: current,
+      minValue: 0,
+      maxValue: max,
+      color: 'stamina',
+    }).getElement();
   }
 
   function getManaBar(player) {
-    return `Mana(0/0)`
+    return BarDisplay({
+      label: 'Mana',
+      currentValue: 0,
+      minValue: 0,
+      maxValue: 0,
+      color: 'mana',
+    }).getElement();0
   }
 
   function getArousalBar(player) {
-    const arousal = ArousalComponent.lookup(player).arousal;
-    return `Arousal(${arousal}/100)`;
+    return BarDisplay({
+      label: 'Arousal',
+      currentValue: ArousalComponent.lookup(player).arousal,
+      minValue: 0,
+      maxValue: 100,
+      color: 'arousal',
+    }).getElement();
   }
 
   // TODO: The raw game time is the number of minutes since some date in the
