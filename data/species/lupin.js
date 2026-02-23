@@ -12,13 +12,10 @@ Species.register('lupin', {
     beauty: 'C',
   },
 
-  // Lupin personality will be complex, because there's a very big in-group / out-group distinction.
   personalityRanges: {
-    openness:[0,40],            // They follow The Way
-    conscientiousness:[20,80],  // Moderate
-    extraversion:[50,100],      // Pack oriented
-    agreeableness:[40,100],     // Agreeable (within their pack)
-    neuroticism:[50,90],        // Suspicious of outsiders
+    calm:    { average:10,  deviation:10 },
+    kind:    { average:20,  deviation:10 },
+    violent: { average:30,  deviation:10 },
   },
 
   // Lupins all have some degree of urethra sensitivity.

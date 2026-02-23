@@ -13,11 +13,9 @@ Species.register('human', {
   },
 
   personalityRanges: {
-    openness:[10,90],
-    conscientiousness:[10,90],
-    extraversion:[10,90],
-    agreeableness:[10,90],
-    neuroticism:[10,90],
+    calm:    { average:0, deviation:25 },
+    kind:    { average:0, deviation:22 },
+    violent: { average:0, deviation:25 },
   },
 
   // The human sensitives should be considered the default range. Other species

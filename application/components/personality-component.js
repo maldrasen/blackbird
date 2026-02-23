@@ -1,8 +1,5 @@
-// Personality is mostly based on the big five personality traits, plus the addition of a sanity
-//    https://en.wikipedia.org/wiki/Big_Five_personality_traits
-
 global.PersonalityComponent = (function() {
-  const $properties = ['openness','conscientiousness','extraversion','agreeableness','neuroticism','sanity','broken'];
+  const $properties = ['calm','kind','violent','sanity','broken'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.personality,data);
@@ -31,7 +28,11 @@ global.PersonalityComponent = (function() {
       }
     });
 
-    Validate.exists('Personality.sanity',personalityComponent.sanity);
+    Validate.between('Personality.sanity',personalityComponent.sanity, 0, 100);
+
+    ['calm','kind','violent'].forEach(key => {
+      Validate.between(`Personality.${key}`,personalityComponent[key],-100,100);
+    });
   }
 
   return Object.freeze({

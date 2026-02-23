@@ -13,11 +13,9 @@ Species.register('nymph', {
   },
 
   personalityRanges: {
-    openness:[60,100],        // Up for anything
-    conscientiousness:[0,30], // Very lazy
-    extraversion:[30,70],     // Moderate, likes groups but also likes one on one time.
-    agreeableness:[60,100],   // Very friendly / seductive
-    neuroticism:[60,100],     // Emotionally Volatile
+    calm:    { average:30,  deviation:10 },
+    kind:    { average:30,  deviation:10 },
+    violent: { average:-30, deviation:10 },
   },
 
   // Nymphs have an overall boost to their sensitivities, and highly sensitive

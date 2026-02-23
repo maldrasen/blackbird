@@ -5,7 +5,8 @@ global.PersonalityFactory = (function() {
     const personality = { sanity:100 };
 
     Object.keys(ranges).forEach(key => {
-      personality[key] = Random.between(ranges[key][0],ranges[key][1]);
+      const range = ranges[key];
+      personality[key] = Random.normalDistribution(range.average, range.deviation);
     });
 
     return personality;
@@ -14,30 +15,43 @@ global.PersonalityFactory = (function() {
   function applyTriggers(personalityData, triggers) {
 
     function andRemove(trigger) {
-      log(`Applied ${trigger}`,{ system:'MouthFactory', level:3 });
+      log(`Applied ${trigger}`,{ system:'PersonalityFactory', level:3 });
       ArrayHelper.remove(triggers, trigger);
     }
 
+    if (triggers.includes['calm'] && triggers.includes['excitable']) {
+      throw `Character rejected. Cannot be both calm and excitable.` }
+    if (triggers.includes['kind'] && triggers.includes['cruel']) {
+      throw `Character rejected. Cannot be both kind and cruel.` }
+    if (triggers.includes['violent'] && triggers.includes['passive']) {
+      throw `Character rejected. Cannot be both violent and passive.` }
+
     [...triggers].forEach(trigger => {
-
       if (trigger === 'calm') {
-        adjustProperty(personalityData, 'neuroticism', false);
-        andRemove(trigger);
-      }
-
+        adjustProperty(personalityData, 'calm', 'positive');
+        andRemove(trigger); }
       if (trigger === 'kind') {
-        adjustProperty(personalityData, 'agreeableness', true)
-        andRemove(trigger);
-      }
-
+        adjustProperty(personalityData, 'kind', 'positive');
+        andRemove(trigger); }
+      if (trigger === 'violent') {
+        adjustProperty(personalityData, 'violent', 'positive');
+        andRemove(trigger); }
+      if (trigger === 'excitable') {
+        adjustProperty(personalityData, 'calm', 'negative');
+        andRemove(trigger); }
+      if (trigger === 'cruel') {
+        adjustProperty(personalityData, 'kind', 'negative');
+        andRemove(trigger); }
+      if (trigger === 'passive') {
+        adjustProperty(personalityData, 'violent', 'negative');
+        andRemove(trigger); }
     });
   }
 
-  function adjustProperty(personalityData, code, isIncreased) {
-    const factor = isIncreased ? Random.between(150,175) : Random.between(25,50);
-    let newValue = Math.round((factor/100) * personalityData[code]);
-    if (newValue > 100) { newValue = 100; }
-    personalityData[code] = newValue;
+  // The trigger will just reset the personality value into a range that's
+  // within normal bounds for that personality type.
+  function adjustProperty(personalityData, code, direction) {
+    personalityData[code] = (direction === 'positive') ? Random.between(20,60) : -Random.between(20,60);
   }
 
   return Object.freeze({

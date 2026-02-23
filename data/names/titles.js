@@ -2,13 +2,15 @@
 Name.register('title',Gender.male,[
   { name:"Arseface", triggers:['ugly']},
   { name:"Big", triggers:['tall','strong','big-cock']},
-  { name:"Bonechewer", triggers:['sadistic[40]']},
+  { name:"Bonechewer", triggers:['sadistic[40]','violent']},
   { name:"Long", triggers:['tall','big-cock']},
 ]);
 
 Name.register('title',Gender.female,[
   { name:"Bang Bang", triggers:['magical','slut']},
   { name:"Creamy", triggers:['sensitive[40]','cum-dump[20]','humiliation-slut[20]','slut']},
+  { name:"Cumrag", triggers:['cum-dump[40]',`humiliation-slut[40]`,'slut']},
+  { name:"Cumtoilet", triggers:['cum-dump[40]',`humiliation-slut[40]`,'piss-slut[40]','slut']},
   { name:"Dripping", triggers:['sensitive[40]','humiliation-slut[20]','slut']},
   { name:"Drippy", triggers:['sensitive[40]','humiliation-slut[20]','slut']},
   { name:"Lil'", triggers:['short','small-tits']},
@@ -20,14 +22,15 @@ Name.register('title',Gender.female,[
 
 Name.register('title',Gender.enby,[
   { name:"Average" },
-  { name:"Bloody", triggers:['sadistic[30]']},
+  { name:"Bloody", triggers:['sadistic[30]','violent']},
   { name:"Dirty", triggers:['perverted[40]','ugly']},
   { name:"Filthy", triggers:['perverted[40]','ugly']},
-  { name:"Fister", triggers:['sadistic[30]','stretcher[30]']},
-  { name:"Gatekeeper", triggers:['strong','healthy']},
-  { name:"Gatewatcher", triggers:['strong','healthy']},
-  { name:"Hollering", triggers:['stupid']},
-  { name:"Jolly" },
+  { name:"Fister", triggers:['sadistic[30]','stretcher[30]','cruel','violent']},
+  { name:"Foxy", triggers:['dog-cock','dog-pussy','skillful','smart','beautiful','fox-ears','fox-tail','red-hairs']},
+  { name:"Gatekeeper", triggers:['strong','healthy','calm']},
+  { name:"Gatewatcher", triggers:['strong','healthy','calm']},
+  { name:"Hollering", triggers:['stupid','excitable']},
+  { name:"Jolly", triggers:['kind']},
   { name:"Nasty", triggers:['perverted[40]','ugly']},
-  { name:"Screaming", triggers:['stupid','magical']},
+  { name:"Screaming", triggers:['stupid','magical','excitable']},
 ]);

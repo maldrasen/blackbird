@@ -13,11 +13,9 @@ Species.register('equian', {
   },
 
   personalityRanges: {
-    openness:[30,70],          // A bit traditionalist.
-    conscientiousness:[10,50], // Nomadic, unstructured culture.
-    extraversion:[50,90],      // Herd dynamics. Very social.
-    agreeableness:[50,90],     // Herd dynamics. Work together.
-    neuroticism:[40,80],       // Herbivores
+    calm:    { average:30, deviation:10 },
+    kind:    { average:0,  deviation:20 },
+    violent: { average:30, deviation:10 },
   },
 
   // Huge cocks and clits and pussies, but as such their sensitivity is lower.

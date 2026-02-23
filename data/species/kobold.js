@@ -13,11 +13,9 @@ Species.register('kobold', {
   },
 
   personalityRanges: {
-    openness:[20,80],          // Moderate
-    conscientiousness:[0,30],  // Not big on long term planning (except for traps)
-    extraversion:[50,100],     // Tribal, pack oriented
-    agreeableness:[0,40],      // Little bastards
-    neuroticism:[50,100],      // Anxious
+    calm:    { average:-40, deviation:15 },
+    kind:    { average:-40, deviation:15 },
+    violent: { average:40,  deviation:15 },
   },
 
   // Fairly standard, except that kobolds don't have nipples.

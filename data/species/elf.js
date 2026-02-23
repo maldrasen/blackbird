@@ -13,11 +13,9 @@ Species.register('elf', {
   },
 
   personalityRanges: {
-    openness:[0,40],            // Long lived traditionalists.
-    conscientiousness:[20,80],  // Moderate
-    extraversion:[10,90],       // Any
-    agreeableness:[30,70],      // Moderate
-    neuroticism:[0,50],         // Long lived and emotionally stable.
+    calm:    { average:30, deviation:10 },
+    kind:    { average:0,  deviation:20 },
+    violent: { average:0,  deviation:20 },
   },
 
   sensitivities: {

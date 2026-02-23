@@ -76,6 +76,17 @@ global.BodyFactory = (function() {
       ArrayHelper.remove(triggers, trigger);
     }
 
+    // (Converts 'red-hairs' type trigger into 'darkRed-hair')
+    pickSingleHairColor(triggers);
+
+    checkDuplicates(triggers,'tail');
+    checkDuplicates(triggers,'ears');
+    checkDuplicates(triggers,'eyes');
+    checkDuplicates(triggers,'eyeColor');
+    checkDuplicates(triggers,'hair');
+    checkDuplicates(triggers,'horn');
+    checkDuplicates(triggers,'skin');
+
     [...triggers].forEach(trigger => {
 
       // These triggers include the value that the body property should be set to.
@@ -102,6 +113,43 @@ global.BodyFactory = (function() {
         andRemove(trigger);
       }
     });
+  }
+
+  // Leave the ArrayHelper.remove() function inside of each if statement. If we
+  // add a different (color)-hairs trigger, and it isn't matched, an error will
+  // then be generated for an unresolved trigger if it's not matched here.
+  function pickSingleHairColor(triggers) {
+    [...triggers].forEach(trigger => {
+      const match = trigger.match(/(.*)-hairs$/);
+      if (match) {
+        if (match[1] === 'black') {
+          triggers.push(`${Random.from(['blackBrown','black','jetBlack'])}-hair`);
+          ArrayHelper.remove(triggers,trigger)
+        }
+        if (match[1] === 'blue') {
+          triggers.push(`${Random.from(['lightBlue','blue','darkBlue'])}-hair`);
+          ArrayHelper.remove(triggers,trigger)
+        }
+        if (match[1] === 'green') {
+          triggers.push(`${Random.from(['lightGreen','green','darkGreen'])}-hair`);
+          ArrayHelper.remove(triggers,trigger)
+        }
+        if (match[1] === 'purple') {
+          triggers.push(`${Random.from(['lightPurple','purple','darkPurple'])}-hair`);
+          ArrayHelper.remove(triggers,trigger)
+        }
+        if (match[1] === 'red') {
+          triggers.push(`${Random.from(['copper','auburn','darkRed','red'])}-hair`);
+          ArrayHelper.remove(triggers,trigger)
+        }
+      }
+    });
+  }
+
+  function checkDuplicates(triggers,type) {
+    if (triggers.filter(trigger => trigger.match(new RegExp(`-${type}$`))).length > 1) {
+      throw `Character rejected. Triggers array contains more than one ${type} trigger.`
+    }
   }
 
   return Object.freeze({ build, applyTriggers });

@@ -13,11 +13,9 @@ Species.register('halfling', {
   },
 
   personalityRanges: {
-    openness:[0,40],            // Rural traditionalists.
-    conscientiousness:[50,90],  // Hardworking
-    extraversion:[10,50],       // Small tight knit communities
-    agreeableness:[50,90],      // Friendly
-    neuroticism:[0,40],         // Easy going and brave.
+    calm:    { average:20,  deviation:10 },
+    kind:    { average:20,  deviation:10 },
+    violent: { average:-20, deviation:10 },
   },
 
 // Because of their relatively shallow pussies, halflings have an unusually

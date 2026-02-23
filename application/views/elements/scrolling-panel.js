@@ -38,7 +38,7 @@ global.ScrollingPanel = function(options) {
       event.preventDefault();
       event.stopPropagation();
       (event.deltaY > 0) ? stepDown(STEP_DISTANCE) : stepUp(STEP_DISTANCE);
-    });
+    },{ passive:false });
 
     const parent = $wrappedContent.parentNode;
     parent.removeChild($wrappedContent);

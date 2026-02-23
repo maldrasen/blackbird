@@ -13,11 +13,9 @@ Species.register('sylph', {
   },
 
   personalityRanges: {
-    openness:[60,100],        // Very curious and open to new experiences
-    conscientiousness:[0,30], // No self control at all.
-    extraversion:[60,100],    // Flirtatious with everyone.
-    agreeableness:[20,60],    // They're fae, they don't really care about other people
-    neuroticism:[50,100],     // Small and fragile
+    calm:    { average:-30, deviation:10 },
+    kind:    { average:0,   deviation:10 },
+    violent: { average:-30, deviation:10 },
   },
 
   // It's rare for a sylph to have a cock, but when they do they're exceedingly
