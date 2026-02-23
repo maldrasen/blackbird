@@ -1,27 +1,35 @@
 <div id="trainingView" class="root-element">
 
-  <div class="top-row-panel">
-    <div class="status-panel">
-
-      <div class="player-status">[Player Status. Doesn't need to show much. Maybe just health and stamina.]</div>
-
-      <div class="partner-status">
-        <div class="name-row">
-          <span class="name"></span>
-          <span class="status-effects"></span>
-          <span class="name"></span>
-        </div>
+  <div class="top-row">
+    <div class="panel partner-status-panel">
+      <div class="name-row small-margin-bottom">
+        <div class="full-name"></div>
+        <div class="status-effects"></div>
+        <div class="gender small-margin-right"></div>
+        <div class="species"></div>
       </div>
 
+      <div class="partner-status-bars">
+        <div class="health margin-bottom"></div>
+        <div class="stamina margin-bottom"></div>
+        <div class="mana margin-bottom"></div>
+        <div class="arousal"></div>
+      </div>
     </div>
-    <div class="position-panel">
+
+    <div class="panel extra-status-panel">
+      <!-- I'm sure I'll have something I need to put in here. The layout looks
+         wrong if the character status panel takes up too much room though. -->
+    </div>
+
+    <div class="panel position-panel">
       <div class="position-frame"></div>
     </div>
   </div>
 
-  <div class="scales-panel"><div class='empty-table'>Training Scales</div></div>
+  <div class="panel scales-panel"><div class='empty-table'>Training Scales</div></div>
 
-  <div class="action-panel">
+  <div class="panel action-panel">
     <div class="action-panel-top">
       <ul id="characterToggleSwitch" class='small-padding'>
         <li><a id="showPlayerToggles" href="#" class="toggle-switch hide"></a></li>

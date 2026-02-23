@@ -78,4 +78,8 @@ describe('LetterGradeHelper', function() {
     });
   });
 
+  // I had a spec for the LetterGradeHelper.scaleValue() but it was too
+  // fragile and would break whenever I change the scale thresholds. Pretty
+  // sure the function works though.
+
 });

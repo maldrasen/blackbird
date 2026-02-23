@@ -12,11 +12,9 @@ global.TrainingView = (function() {
     TrainingCategoryToggles.build();
     TrainingActionPanel.build();
     TrainingStatusPanel.build();
-
     TrainingScalesPanel.build();
 
     TrainingActionPanel.update();
-    TrainingStatusPanel.update();
 
     GameStateFrame.show();
   }

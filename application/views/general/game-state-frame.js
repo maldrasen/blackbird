@@ -80,7 +80,7 @@ global.GameStateFrame = (function() {
       minValue: 0,
       maxValue: 0,
       color: 'mana',
-    }).getElement();0
+    }).getElement();
   }
 
   function getArousalBar(player) {

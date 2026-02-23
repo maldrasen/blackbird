@@ -1,7 +1,7 @@
 @use "../variables";
 
-$bg-action-panel: rgba(0,0,0,0.5);
-$bg-action-list-panel: rgba(0,0,0,0.5);
+$bg-action-panel: rgba(0,0,0,0.25);
+$bg-top-panel: rgb(0,0,0,0.5);
 
 // === Toggles ===
 // Will these be used any other place? They're just super simplified radio
@@ -55,14 +55,36 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
   display: flex;
   flex-direction: column;
 
-  .top-row-panel {
+  .panel {
+    background-color: $bg-top-panel;
+    border: variables.$border-normal;
+    box-shadow: variables.$shadow-frame;
+  }
+
+  .top-row {
     display: flex;
     margin-top: 50px;
 
-    .status-panel {
+    .partner-status-panel {
       flex-grow: 1;
-      padding: 10px;
+      margin: 0 20px;
+      padding: 10px 20px;
+      font-size: variables.$fs-bigger;
+
+      .name-row {
+        display: flex;
+        border-bottom: variables.$border-light;
+      }
+      .status-effects { flex-grow: 1; }
     }
+
+    .extra-status-panel {
+      flex-grow: 1;
+      padding: 10px 20px;
+      margin-right: 20px;
+      font-size: variables.$fs-bigger;
+    }
+
     .position-panel {
       display: flex;
       align-items: center;
@@ -76,9 +98,6 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
       .position-frame {
         height: 180px;
         width: 180px;
-        background-color: rgba(0,0,0,0.75);
-        border: variables.$border-normal;
-        box-shadow: variables.$shadow-frame;
       }
     }
   }
@@ -88,9 +107,7 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     margin: 20px 20px 0;
     padding: 10px;
-    background-color: rgba(0,0,0,0.75);
-    border: variables.$border-normal;
-    box-shadow: variables.$shadow-frame;
+
     .cell { padding: 10px; }
 
     .empty-table {
@@ -103,9 +120,6 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
   .action-panel {
     padding: 10px;
     margin: 20px;
-    background-color: $bg-action-panel;
-    border: variables.$border-normal;
-    box-shadow: variables.$shadow-frame;
 
     .action-panel-top {
       display: flex;
@@ -117,7 +131,7 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
     .action-list-panel {
       flex-grow: 1;
       padding: 5px;
-      background-color: $bg-action-list-panel;
+      background-color: $bg-action-panel;
       border: variables.$border-light;
       box-shadow: variables.$shadow-shallow;
 
