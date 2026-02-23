@@ -99,6 +99,7 @@
     "application/views/dungeon/feature-viewer.js",
     "application/views/dungeon/feature-widget.js",
     "application/views/elements/alert.js",
+    "application/views/elements/bar-display.js",
     "application/views/elements/casement.js",
     "application/views/elements/confirmation.js",
     "application/views/elements/scrolling-panel.js",

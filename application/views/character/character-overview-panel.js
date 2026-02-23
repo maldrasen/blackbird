@@ -155,22 +155,40 @@ global.CharacterOverviewPanel = (function() {
 
   // === Bars and Tags and Things ===
   // We should probably eventually make tag an element. I'm assuming it will be
-  // a common way to display values. Bars too of course.
+  // a common way to display values.
 
   function getHealthBar(id) {
     const health = HealthComponent.lookup(id);
-    return `Health (${health.currentHealth}/${health.maxHealth})`;
+    return BarDisplay({
+      label: 'Health',
+      currentValue: health.currentHealth,
+      minValue: 0,
+      maxValue: health.maxHealth,
+      color: 'health',
+    }).getElement();
   }
 
   function getStaminaBar(id) {
     const current = Math.round(HealthComponent.lookup(id).currentStamina);
     const max = Math.round(AttributesComponent.createWrapper({ id:id }).getMaxStamina());
-    return `Stamina (${current}/${max})`;
+
+    return BarDisplay({
+      label: 'Stamina',
+      currentValue: current,
+      minValue: 0,
+      maxValue: max,
+      color: 'stamina',
+    }).getElement();
   }
 
   function getArousalBar(id) {
-    const arousal = ArousalComponent.lookup(id).arousal;
-    return `Arousal (${arousal}/100)`;
+    return BarDisplay({
+      label: 'Arousal',
+      currentValue: ArousalComponent.lookup(id).arousal,
+      minValue: 0,
+      maxValue: 100,
+      color: 'arousal',
+    }).getElement();
   }
 
   // TODO: Implement Mana

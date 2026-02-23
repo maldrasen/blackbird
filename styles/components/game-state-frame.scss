@@ -47,10 +47,9 @@
     padding: 0 5px;
   }
 
-  // Temp Shit Colors
-  .health { color: rgba(214, 132, 132, 0.5); }
-  .stamina { color: rgba(212, 208, 120, 0.5); }
-  .mana { color: rgba(135, 189, 208, 0.5); }
-  .arousal { color: rgba(174, 97, 145, 0.5); }
+  .health { color: variables.$fg-health; }
+  .stamina { color: variables.$fg-stamina; }
+  .mana { color: variables.$fg-mana;  }
+  .arousal { color: variables.$fg-arousal;  }
   .time { color: variables.$fg-weak; }
 }

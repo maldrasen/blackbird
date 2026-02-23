@@ -1,0 +1,47 @@
+@use "../variables";
+
+.bar-display {
+  margin-bottom: 5px;
+
+  &:last-child { margin-bottom: 0; }
+
+  .text-row {
+    display: flex;
+    font-family: 'roboto-medium', sans-serif;
+
+    .label {
+      color: variables.$fg-body;
+      font-size: variables.$fs-small;
+    }
+    .value-label {
+      color: variables.$fg-weak;
+      font-size: variables.$fs-tiny;
+      margin-left: 5px;
+      margin-top: 1px;
+    }
+  }
+
+  .bar-track {
+    height: 7px;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.5) inset
+  }
+  .bar {
+    height: 7px;
+    width: 100%;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  }
+
+  // TODO: This is fine for now, but maybe a gradient would look cool?
+  .bar-display-fg-arousal { background-color: variables.$fg-arousal; }
+  .bar-display-bg-arousal { background-color: variables.$bg-arousal; }
+  .bar-display-fg-health { background-color: variables.$fg-health; }
+  .bar-display-bg-health { background-color: variables.$bg-health; }
+  .bar-display-fg-mana { background-color: variables.$fg-mana; }
+  .bar-display-bg-mana { background-color: variables.$bg-mana; }
+  .bar-display-fg-stamina { background-color: variables.$fg-stamina; }
+  .bar-display-bg-stamina { background-color: variables.$bg-stamina; }
+}
+
+
+
+
