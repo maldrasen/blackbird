@@ -16,10 +16,20 @@ global.BodyFactory = (function() {
     if (species.getTailShape()) { bodyData.tailShape = species.getTailShape(); }
     if (species.getHornShape()) { bodyData.hornShape = species.getHornShape(); }
 
+    if (bodyData.skinType === 'skin') {
+      bodyData.skinColor = Random.from(BodyData.HumanSkinTones);
+      bodyData.hairColor = Random.from(BodyData.CommonHairColors);
+    }
     if (bodyData.skinType === 'scales') {
       bodyData.scaleColor = Random.from(BodyData.ScaleColors);
-    } else {
+    }
+    if (bodyData.skinType === 'fur') {
       bodyData.skinColor = Random.from(BodyData.HumanSkinTones);
+      bodyData.furColor = Random.from(BodyData.CommonHairColors);
+    }
+    if (bodyData.skinType === 'fur&hair') {
+      bodyData.skinColor = Random.from(BodyData.HumanSkinTones);
+      bodyData.furColor = Random.from(BodyData.CommonHairColors);
       bodyData.hairColor = Random.from(BodyData.CommonHairColors);
     }
 
@@ -97,7 +107,7 @@ global.BodyFactory = (function() {
           case 'ears':     bodyData.earShape = match[1]; break;
           case 'eyes':     bodyData.eyeShape = match[1]; break;
           case 'eyeColor': bodyData.eyeColor = match[1]; break;
-          case 'hair':     bodyData.hairColor = match[1]; break;
+          case 'hair':     applyHairTrigger(bodyData,match[1]); break;
           case 'horn':     bodyData.hornShape = match[1]; break;
         }
         andRemove(trigger);
@@ -146,10 +156,36 @@ global.BodyFactory = (function() {
     });
   }
 
-  function checkDuplicates(triggers,type) {
+  function checkDuplicates(triggers, type) {
     if (triggers.filter(trigger => trigger.match(new RegExp(`-${type}$`))).length > 1) {
       throw `Character rejected. Triggers array contains more than one ${type} trigger.`
     }
+  }
+
+  // A hair-color trigger will apply a scale color to scaly characters.
+  const hairScaleMapping = {
+    red:    ['copper','auburn','chestnut','darkRed','red','pink'],
+    gold:   ['platinumBlond','blond','strawberryBlond','goldenBlond','darkBlond','lightBrown','brown'],
+    green:  ['lightGreen','green','darkGreen'],
+    blue:   ['lightBlue','blue','darkBlue'],
+    purple: ['lightPurple','purple','darkPurple'],
+    black:  ['darkBrown','blackBrown','black','jetBlack'],
+    gray:   ['gray','white'],
+  }
+
+  // Hair trigger in this case is a trigger that changes the hair color. This
+  // is more complex than the other triggers because we should also make it
+  // apply to fur or scale color if possible, or reject the character if not.
+  function applyHairTrigger(bodyData, color) {
+    if (bodyData.hairColor) { return bodyData.hairColor = color; }
+    if (bodyData.furColor) { return bodyData.furColor = color; }
+    if (bodyData.scaleColor == null) { throw `BodyData has no hair, fur, or scales.`; }
+
+    Object.keys(hairScaleMapping).forEach(scaleColor => {
+      if (hairScaleMapping[scaleColor].includes(color)) {
+        bodyData.scaleColor = scaleColor;
+      }
+    });
   }
 
   return Object.freeze({ build, applyTriggers });

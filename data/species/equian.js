@@ -43,7 +43,7 @@ Species.register('equian', {
 
   body: {
     averageHeight: 2000,
-    skinType: 'fur',
+    skinType: 'fur&hair',
     earShape: 'horse',
     tailShape: 'horse',
     smellFamily: 'earthy',

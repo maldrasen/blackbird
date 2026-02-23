@@ -2,8 +2,9 @@ global.BodyComponent = (function() {
   const $properties = [
     'height',
     'skinType',
-    'scaleColor',
     'skinColor',
+    'furColor',
+    'scaleColor',
     'hairColor',
     'eyeColor',
     'eyeShape',
@@ -47,15 +48,10 @@ global.BodyComponent = (function() {
     Validate.isIn('Body.eyeShape',bodyComponent.eyeShape,BodyData.EyeShapes);
     Validate.isIn('Body.bodySmell',bodyComponent.bodySmell,BodyData.AllSmells);
 
-    // Bodies will either have scales, or will have skin and hair. Fur covered bodies use the skin color for skin
-    // covered body parts, dicks mostly.
-    if (bodyComponent.skinType === 'scales') {
-      Validate.isIn('Body.scaleColor',bodyComponent.scaleColor,BodyData.ScaleColors);
-    } else {
-      Validate.isIn('Body.skinColor',bodyComponent.skinColor,BodyData.HumanSkinTones);
-      Validate.isIn('Body.hairColor',bodyComponent.hairColor,BodyData.HairColors);
-    }
-
+    if (bodyComponent.scaleColor) { Validate.isIn('Body.scaleColor',bodyComponent.scaleColor,BodyData.ScaleColors); }
+    if (bodyComponent.skinColor) { Validate.isIn('Body.skinColor',bodyComponent.skinColor,BodyData.HumanSkinTones); }
+    if (bodyComponent.hairColor) { Validate.isIn('Body.hairColor',bodyComponent.hairColor,BodyData.HairColors); }
+    if (bodyComponent.furColor) { Validate.isIn('Body.furColor',bodyComponent.furColor,BodyData.HairColors); }
     if (bodyComponent.eyeShape) { Validate.isIn('Body.earShape',bodyComponent.eyeShape,BodyData.EyeShapes); }
     if (bodyComponent.tailShape) { Validate.isIn('Body.tailShape',bodyComponent.tailShape,BodyData.TailShapes); }
     if (bodyComponent.hornShape) { Validate.isIn('Body.hornShape',bodyComponent.hornShape,BodyData.HornShapes); }
