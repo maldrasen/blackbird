@@ -131,9 +131,11 @@
     }
   }
 
-  .anima-animus {
+  .anima-animus, .personality-area {
     .label { color: variables.$fg-weak; }
     .value { font-family: 'roboto-medium', sans-serif; }
   }
+
+
 
 }

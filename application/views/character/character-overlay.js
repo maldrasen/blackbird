@@ -45,6 +45,7 @@ global.CharacterOverlay = (function() {
     CharacterOverviewPanel.fillHealthBars($id);
     CharacterOverviewPanel.fillManaBars($id);
     CharacterOverviewPanel.fillAttributes($id);
+    CharacterOverviewPanel.fillPersonality($id);
     CharacterOverviewPanel.fillAspects($id);
     CharacterOverviewPanel.fillSexualPreferences($id);
     CharacterOverviewPanel.fillSensitivities($id);

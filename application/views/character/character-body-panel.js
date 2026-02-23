@@ -35,19 +35,28 @@ global.CharacterBodyPanel = (function() {
 
     list.add(`<li>Height</li>`);
     list.add(`<li>${StringHelper.titlecaseAll(MeasurementHelper.feetAndInchesInEnglish(body.height))} Tall</li>`);
-    list.add(`<li>Eyes</li>`);
-    list.add(`<li class='fg-eye-color-${body.eyeColor}'>${eyes}</li>`)
 
-    if (body.skinType === 'scales') {
-      list.add(`<li>Scale Color</li>`);
-      list.add(`<li class='fg-scale-color-${body.scaleColor}'>${StringHelper.titlecaseAll(body.scaleColor)}</li>`);
-    }
-    if (body.skinType !== 'scales') {
-      list.add(`<li>Skin Color</li>`);
-      list.add(`<li class='fg-skin-color-${body.skinColor}'>${StringHelper.titlecaseAll(body.skinColor)}</li>`);
+    if (body.hairColor) {
       list.add(`<li>Hair Color</li>`);
       list.add(`<li class='fg-hair-color-${body.hairColor}'>${StringHelper.titlecaseAll(body.hairColor)}</li>`);
     }
+    if (body.eyeColor) {
+      list.add(`<li>Eye Color</li>`);
+      list.add(`<li class='fg-eye-color-${body.eyeColor}'>${eyes}</li>`)
+    }
+    if (body.furColor) {
+      list.add(`<li>Fur Color</li>`);
+      list.add(`<li class='fg-hair-color-${body.furColor}'>${StringHelper.titlecaseAll(body.furColor)}</li>`);
+    }
+    if (body.scaleColor) {
+      list.add(`<li>Scale Color</li>`);
+      list.add(`<li class='fg-scale-color-${body.scaleColor}'>${StringHelper.titlecaseAll(body.scaleColor)}</li>`);
+    }
+    if (body.skinColor) {
+      list.add(`<li>Skin Color</li>`);
+      list.add(`<li class='fg-skin-color-${body.skinColor}'>${StringHelper.titlecaseAll(body.skinColor)}</li>`);
+    }
+
     if (body.earShape && body.earShape !== 'human') {
       list.add(`<li>Ears</li>`);
       list.add(`<li>${StringHelper.titlecaseAll(body.earShape)} Ears</li>`)
