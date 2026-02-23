@@ -85,12 +85,19 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
 
   .scales-panel {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     margin: 20px 20px 0;
     padding: 10px;
     background-color: rgba(0,0,0,0.75);
     border: variables.$border-normal;
     box-shadow: variables.$shadow-frame;
+    .cell { padding: 10px; }
+
+    .empty-table {
+      font-size: variables.$fs-bigger;
+      color: variables.$fg-very-weak;
+      opacity: 0.5;
+    }
   }
 
   .action-panel {

@@ -45,19 +45,20 @@ global.CharacterOverlay = (function() {
     CharacterOverviewPanel.fillHealthBars($id);
     CharacterOverviewPanel.fillManaBars($id);
     CharacterOverviewPanel.fillAttributes($id);
-    CharacterOverviewPanel.fillPersonality($id);
     CharacterOverviewPanel.fillAspects($id);
     CharacterOverviewPanel.fillSexualPreferences($id);
     CharacterOverviewPanel.fillSensitivities($id);
     CharacterOverviewPanel.fillSkills($id);
 
     if ($isPlayer === false) {
+      CharacterOverviewPanel.fillPersonality($id);
       CharacterOverviewPanel.fillFeelingsBars($id);
       CharacterOverviewPanel.fillMarks($id);
       CharacterOverviewPanel.fillAnima($id);
       CharacterOverviewPanel.fillAnimus($id);
     }
     if ($isPlayer) {
+      X.addClass('#characterOverlay .personality-panel','hide');
       X.addClass('#characterOverlay .feelings-panel','hide');
       X.addClass('#characterOverlay .marks-panel','hide');
       X.addClass('#characterOverlay .anima-panel','hide');

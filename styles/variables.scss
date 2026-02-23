@@ -84,6 +84,24 @@ $fg-eager:         rgb(133,156,130);
 $fg-eager-b:       rgba(133,156,130,0.5);
 
 // === Other Attributes and Bars ===
+
+$fg-rank-F: #6e6454;
+$bg-rank-F: #2b2521;
+$fg-rank-D: #a07a57;
+$bg-rank-D: #2e2319;
+$fg-rank-C: #D4844A;
+$bg-rank-C: #352011;
+$fg-rank-B: #E07830;
+$bg-rank-B: #2c1808;
+$fg-rank-A: #F05010;
+$bg-rank-A: #3d1404;
+$fg-rank-S: #D42020;
+$bg-rank-S: #490a0a;
+$fg-rank-SS: #A020A0;
+$bg-rank-SS: #3c0c3c;
+$fg-rank-SSS: #2080FF;
+$bg-rank-SSS: #081c39;
+
 $fg-health:   rgb(198,107,107);
 $bg-health:   rgb(60,36,36);
 $fg-stamina:  rgb(197,194,101);
@@ -92,6 +110,11 @@ $fg-mana:     rgb(90,127,140);
 $bg-mana:     rgb(42,56,61);
 $fg-arousal:  rgb(222,131,180);
 $bg-arousal:  rgb(90,53,77);
+$fg-plain:    rgb(120, 109, 104);
+$bg-plain:    rgb(43, 37, 35);
+
+
+
 
 // === Forms ===
 $bg-input: rgba(0,0,0,0.8);

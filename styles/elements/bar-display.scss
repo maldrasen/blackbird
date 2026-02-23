@@ -4,6 +4,7 @@
   margin-bottom: 5px;
   line-height: 1;
   width: 100%;
+  white-space: nowrap;
 
   &:last-child { margin-bottom: 0; }
 
@@ -35,6 +36,8 @@
   }
 
   // TODO: This is fine for now, but maybe a gradient would look cool?
+  .bar-display-fg-plain { background-color: variables.$fg-plain; }
+  .bar-display-bg-plain { background-color: variables.$bg-plain; }
   .bar-display-fg-arousal { background-color: variables.$fg-arousal; }
   .bar-display-bg-arousal { background-color: variables.$bg-arousal; }
   .bar-display-fg-health { background-color: variables.$fg-health; }
@@ -43,6 +46,22 @@
   .bar-display-bg-mana { background-color: variables.$bg-mana; }
   .bar-display-fg-stamina { background-color: variables.$fg-stamina; }
   .bar-display-bg-stamina { background-color: variables.$bg-stamina; }
+  .bar-display-fg-rank-F { background-color: variables.$fg-rank-F; }
+  .bar-display-bg-rank-F { background-color: variables.$bg-rank-F; }
+  .bar-display-fg-rank-D { background-color: variables.$fg-rank-D; }
+  .bar-display-bg-rank-D { background-color: variables.$bg-rank-D; }
+  .bar-display-fg-rank-C { background-color: variables.$fg-rank-C; }
+  .bar-display-bg-rank-C { background-color: variables.$bg-rank-C; }
+  .bar-display-fg-rank-B { background-color: variables.$fg-rank-B; }
+  .bar-display-bg-rank-B { background-color: variables.$bg-rank-B; }
+  .bar-display-fg-rank-A { background-color: variables.$fg-rank-A; }
+  .bar-display-bg-rank-A { background-color: variables.$bg-rank-A; }
+  .bar-display-fg-rank-S { background-color: variables.$fg-rank-S; }
+  .bar-display-bg-rank-S { background-color: variables.$bg-rank-S; }
+  .bar-display-fg-rank-SS { background-color: variables.$fg-rank-SS; }
+  .bar-display-bg-rank-SS { background-color: variables.$bg-rank-SS; }
+  .bar-display-fg-rank-SSS { background-color: variables.$fg-rank-SSS; }
+  .bar-display-bg-rank-SSS { background-color: variables.$bg-rank-SSS; }
 }
 
 

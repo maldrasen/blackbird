@@ -61,6 +61,9 @@ global.BarDisplay = function(options) {
     getElement().querySelector('.bar').setAttribute(`style`,`width:${width}%`);
   }
 
+  function hide() { X.addClass(getElement(),'hide'); }
+  function show() { X.removeClass(getElement(),'hide'); }
+
   return Object.freeze({
     getElement,
     setLabel,
@@ -68,6 +71,8 @@ global.BarDisplay = function(options) {
     setMinValue,
     setMaxValue,
     setCurrentValue,
+    hide,
+    show,
   });
 
 }

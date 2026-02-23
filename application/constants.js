@@ -24,4 +24,4 @@ global._tileSize = 30;
 
 // === Training ===
 // The scale thresholds could be played with a bit, raised or lowered as needed as the levels aren't very even at all.
-global._scaleThresholds = [100, 500, 3000, 10000, 30000, 60000, 100000, 250000];
+global._scaleThresholds = [100, 600, 3600, 13600, 43600, 103600, 203600, 453600];
