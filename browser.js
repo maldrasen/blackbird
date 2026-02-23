@@ -13,8 +13,8 @@ global.Browser = (function() {
       icon: `${ROOT}/assets/icon.png`,
       width: 1920,
       height: 1080,
-      minWidth: 1280,
-      minHeight: 720,
+      minWidth: 1600,
+      minHeight: 1000,
 
       webPreferences: {
         contextIsolation: false,

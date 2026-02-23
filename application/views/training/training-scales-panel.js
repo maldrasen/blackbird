@@ -41,7 +41,9 @@ global.TrainingScalesPanel = (function() {
     const cell = X.createElement(`<div class='cell'></div>`);
           cell.appendChild(scaleBars[scale].getElement());
 
-    (value === 0) ? X.addClass(scaleBars[scale].getElement().closest('.cell'),'hide') : removeEmpty();
+    if (value === 0) {
+      X.addClass(scaleBars[scale].getElement().closest('.cell'),'hide')
+    }
 
     X.first('#trainingView .scales-panel').appendChild(cell);
   }
@@ -51,7 +53,6 @@ global.TrainingScalesPanel = (function() {
     const bar = scaleBars[scale]
 
     X.removeClass(bar.getElement().closest('.cell'),'hide')
-    removeEmpty();
 
     bar.setColor(`rank-${grade.letter}`);
     bar.setLabel(`${scaleLabels[scale]} (Rank ${grade.letter})`);
@@ -59,9 +60,6 @@ global.TrainingScalesPanel = (function() {
     bar.setCurrentValue(grade.progress);
   }
 
-  function removeEmpty() {
-    X.remove('#trainingView .empty-table');
-  }
 
   return Object.freeze({
     build,

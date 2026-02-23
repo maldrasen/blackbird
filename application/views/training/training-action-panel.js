@@ -17,8 +17,6 @@ global.TrainingActionPanel = (function() {
             data-player-category="${action.getPlayerCategory()}"
             class="">${action.getName()}</a></li>`));
     });
-
-    ScrollingPanel({ id:'#actionListScroll' });
   }
 
   function update() {

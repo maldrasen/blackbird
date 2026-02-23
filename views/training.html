@@ -1,6 +1,6 @@
 <div id="trainingView" class="root-element">
 
-  <div class="top-row">
+  <div id="statusRow">
     <div class="panel partner-status-panel">
       <div class="name-row small-margin-bottom">
         <div class="full-name"></div>
@@ -12,8 +12,8 @@
       <div class="partner-status-bars">
         <div class="health margin-bottom"></div>
         <div class="stamina margin-bottom"></div>
-        <div class="mana margin-bottom"></div>
-        <div class="arousal"></div>
+        <div class="arousal margin-bottom"></div>
+        <div class="pleasure"></div>
       </div>
     </div>
 
@@ -27,27 +27,43 @@
     </div>
   </div>
 
-  <div class="panel scales-panel"><div class='empty-table'>Training Scales</div></div>
+  <div id='scalesRow'>
+    <div class="panel scales-panel"></div>
+  </div>
 
-  <div class="panel action-panel">
-    <div class="action-panel-top">
-      <ul id="characterToggleSwitch" class='small-padding'>
-        <li><a id="showPlayerToggles" href="#" class="toggle-switch hide"></a></li>
-        <li><a id="showPartnerToggles" href="#" class="toggle-switch"></a></li>
-      </ul>
-      <ul id="playerToggles" class="toggles inactive top hide"></ul>
-      <ul id="partnerToggles" class="toggles inactive top"></ul>
+  <div id="persistedRow">
+    <div class="panel persisted-actions-panel">
+      <div id="persistedActionScroll">
+        <ul id='persistedActions'></ul>
+      </div>
     </div>
-    <div class="action-main-area">
-      <ul id="mainToggles" class="toggles inactive side"></ul>
-      <div class="action-list-panel">
-        <div id="actionListScroll">
-          <ul id="actionList"></ul>
+  </div>
+
+  <div id="actionRow">
+    <div class="panel action-panel">
+      <div class="action-panel-top">
+        <ul id="characterToggleSwitch" class='small-padding'>
+          <li><a id="showPlayerToggles" href="#" class="toggle-switch hide"></a></li>
+          <li><a id="showPartnerToggles" href="#" class="toggle-switch"></a></li>
+        </ul>
+        <ul id="playerToggles" class="toggles inactive top hide"></ul>
+        <ul id="partnerToggles" class="toggles inactive top"></ul>
+      </div>
+      <div class="action-main-area">
+        <ul id="mainToggles" class="toggles inactive side"></ul>
+        <div class="action-list-panel">
+          <div id="actionListScroll">
+            <ul id="actionList"></ul>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="persisted-actions-panel"></div>
-  <div class="output-text-panel"></div>
+  <div id="outputRow">
+    <div class="panel output-text-panel">
+      <div id='outputTextScroll'></div>
+    </div>
+  </div>
+
 </div>

@@ -61,13 +61,12 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
     box-shadow: variables.$shadow-frame;
   }
 
-  .top-row {
+  #statusRow {
     display: flex;
-    margin-top: 50px;
+    padding: 40px 10px 0;
 
     .partner-status-panel {
       flex-grow: 1;
-      margin: 0 20px;
       padding: 10px 20px;
       font-size: variables.$fs-bigger;
 
@@ -81,7 +80,7 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
     .extra-status-panel {
       flex-grow: 1;
       padding: 10px 20px;
-      margin-right: 20px;
+      margin: 0 10px;
       font-size: variables.$fs-bigger;
     }
 
@@ -90,7 +89,6 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
       align-items: center;
       justify-content: center;
 
-      margin-right: 20px;
       height: 180px;
       box-sizing: border-box;
       aspect-ratio: 1/1;
@@ -102,54 +100,57 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
     }
   }
 
-  .scales-panel {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    margin: 20px 20px 0;
-    padding: 10px;
+  #scalesRow {
+    padding: 10px 10px 0;
 
-    .cell { padding: 10px; }
+    .scales-panel {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      padding: 10px;
+      min-height: 30px;
 
-    .empty-table {
-      font-size: variables.$fs-bigger;
-      color: variables.$fg-very-weak;
-      opacity: 0.5;
+      .cell { padding: 10px; }
     }
   }
 
-  .action-panel {
-    padding: 10px;
-    margin: 20px;
+  #persistedRow {
+    padding: 10px 10px 0;
+    #persistedActionScroll { max-height: 200px; }
+    #persistedActions { padding: 10px; }
+  }
 
-    .action-panel-top {
-      display: flex;
-      justify-content: flex-end;
-    }
-    .action-main-area {
-      display: flex;
-    }
-    .action-list-panel {
-      flex-grow: 1;
-      padding: 5px;
-      background-color: $bg-action-panel;
-      border: variables.$border-light;
-      box-shadow: variables.$shadow-shallow;
+  #actionRow {
+    padding: 10px 10px 0;
 
-      ul {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        max-height: 250px;
+    .action-panel {
+      padding: 10px;
+
+      .action-panel-top {
+        display: flex;
+        justify-content: flex-end;
+      }
+      .action-main-area {
+        display: flex;
+      }
+      .action-list-panel {
+        flex-grow: 1;
+        padding: 5px;
+        background-color: $bg-action-panel;
+        border: variables.$border-light;
+        box-shadow: variables.$shadow-shallow;
+
+        ul {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+          max-height: 250px;
+        }
       }
     }
   }
 
-  .persisted-actions-panel {
+  #outputRow {
     padding: 10px;
-  }
-
-  .output-text-panel {
     flex-grow: 1;
-    padding: 10px;
   }
 
   // Style should match a toggle link, but it's not part of the toggles. This
