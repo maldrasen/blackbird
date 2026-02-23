@@ -1,7 +1,5 @@
 global.TrainingController = (function() {
 
-  // The scale thresholds could be played with a bit, raised or lowered as needed as the levels aren't very even at all.
-  const ScaleThresholds = [100, 500, 3000, 10000, 30000, 60000, 100000, 250000, 600000, 1000000];
 
   let $context, $trainingScales, $currentPosition, $possibleActions
 

@@ -57,6 +57,7 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
 
   .top-row-panel {
     display: flex;
+    margin-top: 50px;
 
     .status-panel {
       flex-grow: 1;
@@ -67,9 +68,29 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
       align-items: center;
       justify-content: center;
 
-      min-height: 180px;
+      margin-right: 20px;
+      height: 180px;
+      box-sizing: border-box;
       aspect-ratio: 1/1;
+
+      .position-frame {
+        height: 180px;
+        width: 180px;
+        background-color: rgba(0,0,0,0.75);
+        border: variables.$border-normal;
+        box-shadow: variables.$shadow-frame;
+      }
     }
+  }
+
+  .scales-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    margin: 20px 20px 0;
+    padding: 10px;
+    background-color: rgba(0,0,0,0.75);
+    border: variables.$border-normal;
+    box-shadow: variables.$shadow-frame;
   }
 
   .action-panel {

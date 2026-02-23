@@ -21,3 +21,7 @@ global._humanFemaleRatio = 1500 / 1750;   // (Actual female average height is 16
 
 // === Dungeon ===
 global._tileSize = 30;
+
+// === Training ===
+// The scale thresholds could be played with a bit, raised or lowered as needed as the levels aren't very even at all.
+global._scaleThresholds = [100, 500, 3000, 10000, 30000, 60000, 100000, 250000];

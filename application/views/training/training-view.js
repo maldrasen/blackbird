@@ -13,6 +13,8 @@ global.TrainingView = (function() {
     TrainingActionPanel.build();
     TrainingStatusPanel.build();
 
+    TrainingScalesPanel.build();
+
     TrainingActionPanel.update();
     TrainingStatusPanel.update();
 

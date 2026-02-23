@@ -1,11 +1,8 @@
 global.BarDisplay = function(options) {
 
-  let $element;
-  let $max = options.maxValue;
-  let $min = options.minValue;
-  let $current = options.currentValue;
-  let $label = options.label;
-  let $color = options.color;
+  // Theoretically everything about the bars can be changed after they've been
+  // built, in case we need to update the bars in a view. Or the constructor
+  // can be used a single time to build a static bar element.
 
   const template = StringHelper.pack(`<div class='bar-display'>
     <div class='text-row'>
@@ -14,6 +11,13 @@ global.BarDisplay = function(options) {
     </div>
     <div class='bar-track'><div class='bar'></div></div>
   </div>`);
+
+  let $element;
+  let $max = options.maxValue;
+  let $min = options.minValue;
+  let $current = options.currentValue;
+  let $label = options.label;
+  let $color = options.color;
 
   function getElement() {
     if ($element == null) {
@@ -43,16 +47,16 @@ global.BarDisplay = function(options) {
   function setMinValue(min) {
     $min = min;
   }
+
   function setMaxValue(max) {
     $max = max;
     getElement().querySelector('.max').replaceChildren($max);
   }
+
   function setCurrentValue(current) {
     $current = current;
 
     let width = ($max > 0) ? Math.round(($current / $max) * 100) : 0;
-
-
     getElement().querySelector('.current').replaceChildren($current);
     getElement().querySelector('.bar').setAttribute(`style`,`width:${width}%`);
   }
@@ -60,6 +64,10 @@ global.BarDisplay = function(options) {
   return Object.freeze({
     getElement,
     setLabel,
+    setColor,
+    setMinValue,
+    setMaxValue,
+    setCurrentValue,
   });
 
 }
