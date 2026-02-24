@@ -19,6 +19,7 @@ global.Skill = (function() {
     return Object.freeze({
       getCode: () => { return skill.code; },
       getName: () => { return skill.name; },
+      getFactor: () => { return skill.factor; },
       getAttributes: () => { return skill.attributes; }
     });
   }

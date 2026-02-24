@@ -56,7 +56,11 @@ global.Tests = (function() {
     });
   }
 
-  function reset() { Registry.clear(); }
+  function reset() {
+    Random.stubReset();
+    Registry.clear();
+  }
+
   function rootBefore() { $running = true; }
   function rootAfter() { $running = false; }
   function running() { return $running; }

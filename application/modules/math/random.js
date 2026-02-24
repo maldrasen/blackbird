@@ -1,41 +1,73 @@
 global.Random = (function() {
 
-  // Random number between 0 and the limit exclusive, meaning upTo(100) will
-  // return between 0 and 99.
-  function upTo(limit) {
-    return Math.floor(Math.random() * limit);
+  const $stubQueues = { roll:[], rollDice:[], flipCoin:[], between:[], from:[] };
+
+  function stubRoll(...values) { $stubQueues.roll.push(...values); }
+  function stubRollDice(...values) { $stubQueues.rollDice.push(...values); }
+  function stubFlipCoin(...values) { $stubQueues.flipCoin.push(...values); }
+  function stubBetween(...values) { $stubQueues.between.push(...values); }
+  function stubFrom(...values) { $stubQueues.from.push(...values); }
+
+  function stubReset() {
+    $stubQueues.roll = [];
+    $stubQueues.rollDice = [];
+    $stubQueues.flipCoin = [];
+    $stubQueues.between = [];
+    $stubQueues.from = [];
   }
 
-  // Roll 1d(rand) + plus.
-  function roll(rand, plus=0) {
-    return Random.upTo(rand)+plus;
+  function stubbedValue(name, limits={}) {
+    const value = $stubQueues[name].shift();
+
+    if (limits.min != null && value < limits.min) {
+      throw `Stubbed value ${value} is below minimum of ${limits.min}`; }
+    if (limits.max != null && value > limits.max) {
+      throw `Stubbed value ${value} is above maximum of ${limits.max}`; }
+    if (limits.within != null && limits.within.includes(value) === false) {
+      throw `Stubbed value ${value} was not within ${JSON.stringify(limits.within)}`;
+    }
+
+    return value;
+  }
+
+  // Random number between 0 and the limit exclusive, (meaning upTo(100) will
+  // return between 0 and 99) plus an optional 'plus' value.
+  function roll(limit, plus=0) {
+    if ($stubQueues.roll.length > 0) { return stubbedValue('roll',{ min:plus, max:(limit+plus-1) }); }
+    return Math.floor(Math.random() * limit) + plus;
   }
 
   // Simulate rolling dice. Options:
   //   { x:(dice count), d:(dice faces), p:(plus or minus) }
   function rollDice(options) {
+    if ($stubQueues.rollDice.length > 0) { return stubbedValue('rollDice'); }
+
     let total = options.p || 0;
     for (let x = 0; x<(options.x || 1); x++) {
       total += Random.roll(options.d || 6) + 1;
     }
+
     return total;
   }
 
   // Boolean Heads or tails, 50% probability.
   function flipCoin() {
+    if ($stubQueues.flipCoin.length > 0) { return stubbedValue('flipCoin'); }
     return Random.roll(2) === 0;
   }
 
   // Rolls between the new numbers inclusive, meaning min or max value could be
   // chosen.
   function between(min, max) {
+    if ($stubQueues.between.length > 0) { return stubbedValue('between',{ min:min, max:max }); }
     return Random.roll(max-min+1,min);
   }
 
   // Select a random element in an array.
   function from(array) {
+    if ($stubQueues.from.length > 0) { return stubbedValue('from',{ within:array }); }
     if (array && array.length) {
-      return array[Random.upTo(array.length)];
+      return array[Random.roll(array.length)];
     } else {
       throw `Empty array`
     }
@@ -46,12 +78,12 @@ global.Random = (function() {
   //
   //   { codeA:10, codeB:100, codeC:50 }
   //
-  // It doesn't matter what the values of the keys add up to or what they are
+  // It doesn't matter what the values of the keys add up to or what they are;
   // the ratios between the numbers determine the probability
   function fromFrequencyMap(map) {
     let index = 0;
     let keys = Object.keys(map);
-    let random = Random.upTo(Object.values(map).reduce(function(a,v) { return a+v; }));
+    let random = Random.roll(Object.values(map).reduce(function(a,v) { return a+v; }));
 
     for (let i=0; i<keys.length; i++) {
       index += map[keys[i]];
@@ -97,12 +129,20 @@ global.Random = (function() {
   }
 
   return Object.freeze({
-    upTo,
+    stubReset,
+
+    stubRoll,
+    stubRollDice,
+    stubFlipCoin,
+    stubBetween,
+    stubFrom,
+
     roll,
     rollDice,
     flipCoin,
     between,
     from,
+
     fromFrequencyMap,
     normalDistribution,
     testDistribution,
