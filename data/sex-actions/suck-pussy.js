@@ -19,7 +19,7 @@ SexAction.register('suck-pussy',{
 
   sensations: {
     clit:    80,
-    pussy:   20,
+    pussy:   40,
     comfort: 50,
     desire:  60,
     shame:   10,

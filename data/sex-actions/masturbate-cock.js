@@ -21,7 +21,7 @@ SexAction.register('masturbate-cock',{
   ],
 
   sensations: {
-    cock:       60,
+    cock:       65,
     desire:     50,
     shame:      80,
     submission: 60,

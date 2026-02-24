@@ -21,7 +21,7 @@ SexAction.register('masturbate-pussy',{
   ],
 
   sensations: {
-    clit:       50,
+    clit:       60,
     pussy:      50,
     desire:     40,
     shame:      60,

@@ -17,7 +17,7 @@ SexAction.register('finger-pussy',{
   ],
 
   sensations: {
-    clit:       40,
+    clit:       30,
     pussy:      60,
     anger:      10,
     comfort:    30,

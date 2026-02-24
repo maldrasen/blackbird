@@ -6,7 +6,7 @@ global.DungeonView = (function() {
 
   function show() {
     MainContent.setMainContent("views/dungeon.html");
-    MainContent.setBackground("backgrounds/dungeon.png");
+    MainContent.setBackground("backgrounds/dungeon.jpg");
 
   }
 

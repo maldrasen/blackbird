@@ -7,7 +7,7 @@ SexAction.register('masturbate-anus',{
 
   // persistPartner:'anus',
 
-  consentTarget: 50,
+  consentTarget: 45,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.performance },
     { type:'arousal', strength:1.5 },
@@ -19,7 +19,7 @@ SexAction.register('masturbate-anus',{
   ],
 
   sensations: {
-    anus:       60,
+    anus:       70,
     prostate:   20,
     anger:      10,
     desire:     30,

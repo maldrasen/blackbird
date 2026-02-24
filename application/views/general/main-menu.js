@@ -20,7 +20,7 @@ global.MainMenu = (function() {
   function openFully() {
     open();
     MainContent.showCover();
-    MainContent.setBackground('backgrounds/main-menu.png');
+    MainContent.setBackground('backgrounds/main-menu.jpg');
     MainContent.hideCover({ fadeTime:1000 });
   }
 
@@ -69,6 +69,7 @@ global.MainMenu = (function() {
     if (fixture === 'dungeon') { setup = Fixtures.setupDungeon; }
     if (fixture === 'feature') { setup = Fixtures.setupFeature; }
     if (fixture === 'training') { setup = Fixtures.setupTraining; }
+    if (fixture === 'reports') { setup = ReportFixture.show; }
     if (setup == null) { throw `Bad fixture code: ${fixture}`; }
 
     await GameController.startNewGame(stateOptions);

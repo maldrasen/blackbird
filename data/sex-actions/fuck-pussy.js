@@ -22,7 +22,7 @@ SexAction.register('fuck-pussy',{
   ],
 
   sensations: {
-    clit:       60,
+    clit:       35,
     pussy:      100,
     anger:      20,
     comfort:    40,

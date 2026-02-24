@@ -10,11 +10,6 @@ global.StringHelper = (function() {
     return string.replace(/\s+/g,' ').trim();
   }
 
-  // Destroyer of Internets
-  function pad(string,length) {
-    return (string.length < length) ? `${string}${new Array(length - string.length).fill(' ').join('')}` : string;
-  }
-
   // Converts only the first letter of a string to upper case (for capitalizing sentences mostly)
   function titlecase(word) {
     return `${word.charAt(0).toUpperCase()}${word.substring(1)}`;
@@ -31,7 +26,6 @@ global.StringHelper = (function() {
   return Object.freeze({
     formatNumber,
     pack,
-    pad,
     titlecase,
     titlecaseAll,
   });

@@ -68,6 +68,9 @@ global.SexAction = (function() {
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return action.name; },
+      getTime: () => { return action.time; },
+      getPartnerStamina: () => { return action.partnerStamina; },
+      getPlayerStamina: () => { return action.playerStamina; },
       getMainCategory: () => { return action.mainCategory; },
       getPartnerCategory: () => { return action.partnerCategory; },
       getPlayerCategory: () => { return action.playerCategory; },
@@ -75,6 +78,7 @@ global.SexAction = (function() {
       getConsentFactors: () => { return [ ...action.consentFactors ]; },
       getRequires: () => { return action.requires||[]; },
       getSensations: () => { return { ...action.sensations }; },
+      getPlayerSensations: () => { return { ...action.playerSensations }; },
       getDescription,
       isAvailable,
       isPossible,
