@@ -9,7 +9,8 @@ global.LogType = Object.freeze({
 });
 
 global.CommandType = Object.freeze({
-  startTraining: 'startTraining',
+  trainingStart: 'Training.Start',
+  trainingSexAction: 'Training.SexAction',
 });
 
 global.GameMode = Object.freeze({

@@ -1,7 +1,10 @@
 global.TrainingSystem = (function() {
 
   function run(command) {
-    if (command.getType() === CommandType.startTraining) { startTraining(command); }
+    switch (command.getType()) {
+      case CommandType.trainingStart: return startTraining(command);
+      case CommandType.trainingSexAction: return handleSexAction(command);
+    }
   }
 
   function startTraining(command) {
@@ -15,6 +18,13 @@ global.TrainingSystem = (function() {
     });
 
     StateMachine.setMode(GameMode.training);
+  }
+
+  function handleSexAction(command) {
+    const code = command.getValue('code');
+    const result = SensationResult(code,TrainingController.getContext());
+
+    TrainingView.update();
   }
 
   return Object.freeze({

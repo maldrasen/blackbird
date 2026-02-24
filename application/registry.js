@@ -12,6 +12,9 @@ global.Registry = (function() {
     Object.values(ComponentType).forEach(type => components[type] = {});
   }
 
+  function dump(id) { console.log(JSON.stringify(Registry.compileEntityData(id),null,2)); }
+  function entityExists(id) { return entities[id] != null; }
+
   // Because we serialize out to JSON, and because I want to reference an entity by id in the console, the entity ids
   // are fairly short. Collisions are possible, so if a collision happens we just try again.
   function createEntity() {
@@ -137,6 +140,8 @@ global.Registry = (function() {
 
   return Object.freeze({
     clear,
+    dump,
+    entityExists,
     createEntity,
     deleteEntity,
     listEntityComponents,

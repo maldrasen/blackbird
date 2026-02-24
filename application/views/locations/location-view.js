@@ -21,7 +21,7 @@ global.LocationView = (function() {
 
     CharacterOverlay.addInteraction('Start Training', () => {
       CharacterOverlay.close();
-      StateMachine.handleCommand(CommandType.startTraining, { characterId:characterId });
+      StateMachine.handleCommand(CommandType.trainingStart, { characterId:characterId });
     });
   }
 

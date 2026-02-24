@@ -30,6 +30,8 @@ global.CharacterOverlay = (function() {
     WindowManager.push(CharacterOverlay)
     X.removeClass('#characterOverlay','hide');
     X.removeClass('#overlayCover','hide');
+
+    log(`Open Character Overlay [${$id}]`,{ system:'CharacterOverlay' });
   }
 
   function close() {

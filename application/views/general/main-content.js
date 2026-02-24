@@ -78,6 +78,19 @@ global.MainContent = (function() {
     X.first('#backgroundImage').style['background-image'] = null;
   }
 
+  function halt() {
+    Tooltip.close();
+    X.removeClass('#haltCover','hide');
+  }
+
+  function unhalt() {
+    X.addClass('#haltCover','hide');
+  }
+
+  function isHalted() {
+    return X.hasClass('#haltCover','hide')
+  }
+
   return {
     loadMainContent,
     loadStyles,
@@ -89,6 +102,9 @@ global.MainContent = (function() {
     hideCover,
     setBackground,
     clearBackground,
+    halt,
+    unhalt,
+    isHalted,
   };
 
 })();

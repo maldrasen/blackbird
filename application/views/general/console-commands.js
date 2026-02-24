@@ -4,6 +4,9 @@ global.ConsoleCommands = (function() {
     help: {
       commandFunction: printHelp,
       description:`Prints this list of console commands.` },
+    entityData: {
+      commandFunction: printEntityData,
+      description:`Print all the component data for a given entity ID.` },
   }
 
   const $commandHistory = [];
@@ -86,9 +89,17 @@ global.ConsoleCommands = (function() {
     return `${list}</pre>`;
   }
 
-  return {
+  function printEntityData(args) {
+    const id = args[0]
+    if (Registry.entityExists(id) === false) {
+      throw `Entity[${id}] does not exist.`
+    }
+    return `<pre class='json-dump'>${JSON.stringify(Registry.compileEntityData(id),null,2)}</pre>`
+  }
+
+  return Object.freeze({
     sendCommand,
     loadPreviousCommand,
-  }
+  });
 
 })();

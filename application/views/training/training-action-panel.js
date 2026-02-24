@@ -38,7 +38,8 @@ global.TrainingActionPanel = (function() {
   }
 
   function actionClicked(event) {
-    console.log("Click:",event.target);
+    MainContent.halt();
+    StateMachine.handleCommand(CommandType.trainingSexAction,{ code:event.target.dataset.code });
   }
 
   // === Big Messy Tooltip ===

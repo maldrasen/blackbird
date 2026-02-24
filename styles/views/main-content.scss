@@ -11,3 +11,9 @@
   pointer-events: none;
   z-index: variables.$z-main-cover;
 }
+
+#haltCover {
+  @include layout.full-screen;
+  background-color: rgba(0,0,0,0);
+  z-index: variables.$z-halt-cover;
+}
