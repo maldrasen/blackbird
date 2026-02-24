@@ -30,4 +30,8 @@ SexAction.register('get-rimming',{
     desire: 60
   },
 
+  skills: {
+    partner:['servicing']
+  },
+
 });

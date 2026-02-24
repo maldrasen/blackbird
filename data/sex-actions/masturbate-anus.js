@@ -30,4 +30,9 @@ SexAction.register('masturbate-anus',{
     desire: 40
   },
 
+  skills: {
+    partner:['performance']
+  },
+
+
 });

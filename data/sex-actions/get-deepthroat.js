@@ -45,4 +45,8 @@ SexAction.register('get-deepthroat',{
     desire: 100,
   },
 
+  skills: {
+    partner:['servicing','deepthroating']
+  },
+
 });

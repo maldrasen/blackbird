@@ -27,4 +27,8 @@ SexAction.register('fondle-ass',{
     desire: 30,
   },
 
+  skills: {
+    player:['servicing']
+  },
+
 });

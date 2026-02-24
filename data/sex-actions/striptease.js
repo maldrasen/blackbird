@@ -27,4 +27,8 @@ SexAction.register('striptease',{
     desire: 25
   },
 
+  skills: {
+    partner:['dance','performance']
+  },
+
 });

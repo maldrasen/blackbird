@@ -113,10 +113,19 @@ Skill.register('servicing',{
   name: "Servicing",
   attributes: [Attrib.dexterity, Attrib.vitality] });
 
+// Specifically for thrusting and fucking type actions where strength and vitality are impressive.
+Skill.register('ravishing',{
+  name: "Ravishing",
+  attributes: [Attrib.strength, Attrib.vitality] });
+
 // Deepthroating skill will increase the comfortable throat depth. Cleaner and more visible than adjusting the value on
-// the mouth component. First hidden skill, which indicates that the skill isn't displayed until there are points.
+// the mouth component.
 Skill.register('deepthroating',{
   name: "Servicing",
-  attributes: [Attrib.vitality],
-  hidden: true,
-});
+  attributes: [Attrib.vitality] });
+
+// === Other ===
+
+Skill.register('dance',{
+  name: "Dance",
+  attributes: [Attrib.beauty, Attrib.dexterity] });

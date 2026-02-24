@@ -30,4 +30,8 @@ SexAction.register('get-titfuck',{
     desire: 80,
   },
 
+  skills: {
+    partner:['servicing']
+  },
+
 });

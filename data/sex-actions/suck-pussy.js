@@ -28,4 +28,8 @@ SexAction.register('suck-pussy',{
     desire: 40
   },
 
+  skills: {
+    player:['servicing']
+  },
+
 });

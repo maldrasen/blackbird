@@ -27,4 +27,8 @@ SexAction.register('suck-anus',{
     desire: 40
   },
 
+  skills: {
+    player:['servicing']
+  },
+
 });

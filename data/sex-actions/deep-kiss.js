@@ -39,4 +39,9 @@ SexAction.register('deep-kiss',{
     desire: 40,
   },
 
+  skills: {
+    partner:['servicing'],
+    player:['servicing'],
+  },
+
 });

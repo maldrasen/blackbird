@@ -51,5 +51,10 @@ SexAction.register('kiss',{
     desire: 15
   },
 
+  skills: {
+    partner:['servicing'],
+    player:['servicing'],
+  },
+
 
 });

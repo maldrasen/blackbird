@@ -39,4 +39,8 @@ SexAction.register('get-blowjob',{
     desire: 70
   },
 
+  skills: {
+    partner:['servicing']
+  },
+
 });

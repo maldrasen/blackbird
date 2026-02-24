@@ -38,4 +38,8 @@ SexAction.register('lap-dance',{
     desire: 60,
   },
 
+  skills: {
+    partner:['dance','performance']
+  },
+
 });

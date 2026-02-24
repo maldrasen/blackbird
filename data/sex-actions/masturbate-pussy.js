@@ -31,4 +31,8 @@ SexAction.register('masturbate-pussy',{
     desire: 30
   },
 
+  skills: {
+    partner:['performance']
+  },
+
 });

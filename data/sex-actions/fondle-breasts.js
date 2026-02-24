@@ -30,4 +30,8 @@ SexAction.register('fondle-breasts',{
     desire: 30
   },
 
+  skills: {
+    player:['servicing']
+  },
+
 });

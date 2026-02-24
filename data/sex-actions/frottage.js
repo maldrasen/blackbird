@@ -29,4 +29,9 @@ SexAction.register('frottage',{
     desire: 60
   },
 
+  skills: {
+    partner:['servicing'],
+    player:['servicing'],
+  },
+
 });

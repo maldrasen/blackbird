@@ -30,4 +30,8 @@ SexAction.register('finger-pussy',{
     desire: 50
   },
 
+  skills: {
+    player:['servicing']
+  },
+
 });

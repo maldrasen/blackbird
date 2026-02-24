@@ -36,4 +36,8 @@ SexAction.register('fuck-pussy',{
     desire: 80
   },
 
+  skills: {
+    partner:['ravishing']
+  },
+
 });

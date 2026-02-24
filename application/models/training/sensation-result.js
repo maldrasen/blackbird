@@ -53,6 +53,10 @@ global.SensationResult = function(code, context) {
     }
   }
 
+  function applySkills() {
+
+  }
+
   function getSensations() {
     return ObjectHelper.select(sensations, (key, value) => {
       return value > 0;
@@ -64,5 +68,6 @@ global.SensationResult = function(code, context) {
     getSensations,
     applyFactors,
     applyBaseline,
+    applySkills,
   });
 }

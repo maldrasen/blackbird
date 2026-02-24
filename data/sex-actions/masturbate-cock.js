@@ -30,4 +30,8 @@ SexAction.register('masturbate-cock',{
     desire: 30
   },
 
+  skills: {
+    partner:['performance']
+  },
+
 });

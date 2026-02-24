@@ -36,4 +36,8 @@ SexAction.register('fuck-anus',{
     desire: 90,
   },
 
+  skills: {
+    partner:['ravishing']
+  },
+
 });

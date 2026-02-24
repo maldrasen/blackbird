@@ -28,4 +28,8 @@ SexAction.register('finger-anus',{
     desire: 60
   },
 
+  skills: {
+    player:['servicing']
+  },
+
 });

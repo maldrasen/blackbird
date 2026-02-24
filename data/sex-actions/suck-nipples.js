@@ -27,4 +27,8 @@ SexAction.register('suck-nipples',{
     desire: 30
   },
 
+  skills: {
+    player:['servicing']
+  },
+
 });

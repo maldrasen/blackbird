@@ -36,4 +36,8 @@ SexAction.register('get-cunnilingus',{
     desire: 60,
   },
 
+  skills: {
+    partner:['servicing']
+  },
+
 });

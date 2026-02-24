@@ -22,4 +22,8 @@ SexAction.register('massage-back',{
     desire: 10
   },
 
+  skills: {
+    player:['servicing']
+  },
+
 });

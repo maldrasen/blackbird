@@ -22,4 +22,8 @@ SexAction.register('massage-feet',{
     desire: 10
   },
 
+  skills: {
+    player:['servicing']
+  },
+
 });

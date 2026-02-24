@@ -27,4 +27,8 @@ SexAction.register('fondle-cock',{
     desire: 40
   },
 
+  skills: {
+    player:['servicing']
+  },
+
 });

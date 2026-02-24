@@ -31,4 +31,8 @@ SexAction.register('give-titfuck',{
     desire: 40,
   },
 
+  skills: {
+    player:['servicing']
+  },
+
 });

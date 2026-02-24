@@ -27,4 +27,8 @@ SexAction.register('get-handjob',{
     desire: 50,
   },
 
+  skills: {
+    partner:['servicing']
+  },
+
 });
