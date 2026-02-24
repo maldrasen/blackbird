@@ -15,4 +15,16 @@ SexAction.register('fondle-ass',{
     { type:'preference', code:'sensitive', scale:1.5 },
     { type:'preference', code:'anal-slut' },
   ],
+
+  sensations: {
+    anus:       10,
+    comfort:    10,
+    desire:     30,
+    shame:      10,
+    submission: 10
+  },
+  playerSensations: {
+    desire: 30,
+  },
+
 });

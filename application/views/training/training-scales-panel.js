@@ -1,15 +1,15 @@
 global.TrainingScalesPanel = (function() {
 
   const scaleLabels = {
-    anal:       'Anus Sense',
-    cervical:   'Cervix Sense',
-    clitoral:   'Clitoris Sense',
+    anus:       'Anus Sense',
+    cervix:     'Cervix Sense',
+    clit:       'Clitoris Sense',
     nipple:     'Nipple Sense',
-    oral:       'Throat Sense',
-    penile:     'Cock Sense',
+    throat:     'Throat Sense',
+    cock:       'Cock Sense',
     prostate:   'Prostate Sense',
-    urethral:   'Urethra Sense',
-    vaginal:    'Vagina Sense',
+    urethra:    'Urethra Sense',
+    pussy:      'Vagina Sense',
     anger:      'Anger',
     comfort:    'Comfort',
     desire:     'Desire',

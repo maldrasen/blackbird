@@ -27,4 +27,16 @@ SexAction.register('deep-kiss',{
     { type:'preference', code:'debaser', conflicting:true },
   ],
 
+  sensations: {
+    throat:     10,
+    comfort:    20,
+    desire:     40,
+    shame:      10,
+    submission: 10,
+  },
+  playerSensations: {
+    throat: 10,
+    desire: 40,
+  },
+
 });

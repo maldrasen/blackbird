@@ -23,4 +23,17 @@ SexAction.register('get-cunnilingus',{
     { type:'preference', code:'dominant', conflicting:true },
   ],
 
+  sensations: {
+    comfort:    15,
+    desire:     40,
+    shame:      50,
+    submission: 70,
+    suffering:  20,
+  },
+  playerSensations: {
+    clit:   80,
+    pussy:  20,
+    desire: 60,
+  },
+
 });

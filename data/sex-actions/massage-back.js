@@ -13,4 +13,13 @@ SexAction.register('massage-back',{
     { type:'preference', code:'humiliation-slut', conflicting:true },
   ],
 
+  sensations: {
+    comfort:    30,
+    desire:     10,
+    shame:      5,
+  },
+  playerSensations: {
+    desire: 10
+  },
+
 });

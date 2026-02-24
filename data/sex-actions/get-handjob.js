@@ -17,4 +17,14 @@ SexAction.register('get-handjob',{
     { type:'preference', code:'dominant', conflicting:true },
   ],
 
+  sensations: {
+    desire:     30,
+    shame:      20,
+    submission: 20,
+  },
+  playerSensations: {
+    cock:   60,
+    desire: 50,
+  },
+
 });

@@ -41,4 +41,15 @@ SexAction.register('kiss',{
     { type:'preference', code:'sadist', conflicting:true },
   ],
 
+  sensations: {
+    comfort:    30,
+    desire:     20,
+    shame:      5,
+    submission: 5,
+  },
+  playerSensations: {
+    desire: 15
+  },
+
+
 });

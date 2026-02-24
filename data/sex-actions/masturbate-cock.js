@@ -20,4 +20,14 @@ SexAction.register('masturbate-cock',{
     { type:'preference', code:'masturbator', scale:3 },
   ],
 
+  sensations: {
+    cock:       60,
+    desire:     50,
+    shame:      80,
+    submission: 60,
+  },
+  playerSensations: {
+    desire: 30
+  },
+
 });

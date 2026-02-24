@@ -18,4 +18,16 @@ SexAction.register('masturbate-anus',{
     { type:'preference', code:'masturbator', scale:3 },
   ],
 
+  sensations: {
+    anus:       60,
+    prostate:   20,
+    anger:      10,
+    desire:     30,
+    shame:      120,
+    submission: 120,
+  },
+  playerSensations: {
+    desire: 40
+  },
+
 });

@@ -20,4 +20,15 @@ SexAction.register('give-titfuck',{
     { type:'preference', code:'dominant' },
   ],
 
+  sensations: {
+    cock:    50,
+    comfort: 40,
+    desire:  80,
+    shame:   20,
+  },
+  playerSensations: {
+    nipple: 20,
+    desire: 40,
+  },
+
 });

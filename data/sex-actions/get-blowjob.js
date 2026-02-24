@@ -26,4 +26,17 @@ SexAction.register('get-blowjob',{
     { type:'preference', code:'dominant', conflicting:true },
   ],
 
+  sensations: {
+    throat:     20,
+    comfort:    10,
+    desire:     40,
+    shame:      60,
+    submission: 80,
+    suffering:  40,
+  },
+  playerSensations: {
+    cock:   80,
+    desire: 70
+  },
+
 });

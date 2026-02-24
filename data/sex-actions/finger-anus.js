@@ -13,4 +13,19 @@ SexAction.register('finger-anus',{
     { type:'preference', code:'sensitive', scale:1.5 },
     { type:'preference', code:'anal-slut' },
   ],
+
+  sensations: {
+    anus:       60,
+    prostate:   40,
+    anger:      20,
+    comfort:    20,
+    desire:     80,
+    shame:      100,
+    submission: 100,
+    suffering:  20,
+  },
+  playerSensations: {
+    desire: 60
+  },
+
 });

@@ -8,7 +8,7 @@ global.TrainingController = (function() {
   function start(data) {
     $currentPosition = 'standing'
     $trainingScales = {
-      anal:0, cervical:0, clitoral:0, nipple:0, oral:0, penile:0, prostate:0, urethral:0, vaginal:0,
+      anus:0, cervix:0, clit:0, nipple:0, throat:0, cock:0, prostate:0, urethra:0, pussy:0,
       anger:0, comfort:0, desire:0, shame:0, submission:0, suffering:0,
     };
 

@@ -17,4 +17,15 @@ SexAction.register('suck-cock',{
     { type:'preference', code:'dominant' },
   ],
 
+  sensations: {
+    cock:    80,
+    comfort: 50,
+    desire:  70,
+    shame:   10,
+  },
+  playerSensations: {
+    throat: 20,
+    desire: 40,
+  },
+
 });

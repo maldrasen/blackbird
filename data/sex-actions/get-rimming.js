@@ -18,4 +18,16 @@ SexAction.register('get-rimming',{
     { type:'preference', code:'dominant', conflicting:true },
   ],
 
+  sensations: {
+    anger:      10,
+    desire:     40,
+    shame:      80,
+    submission: 120,
+    suffering:  20,
+  },
+  playerSensations: {
+    anus:   80,
+    desire: 60
+  },
+
 });

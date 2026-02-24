@@ -16,4 +16,15 @@ SexAction.register('fondle-cock',{
     { type:'preference', code:'cock-slut' },
   ],
 
+  sensations: {
+    cock:       60,
+    comfort:    30,
+    desire:     50,
+    shame:      20,
+    submission: 10,
+  },
+  playerSensations: {
+    desire: 40
+  },
+
 });

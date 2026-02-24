@@ -22,4 +22,20 @@ SexAction.register('lap-dance',{
     { type:'preference', code:'submissive' },
   ],
 
+  sensations: {
+    anus:       5,
+    clit:       5,
+    nipple:     5,
+    cock:       10,
+    pussy:      5,
+    comfort:    10,
+    desire:     15,
+    shame:      20,
+    submission: 30,
+  },
+  playerSensations: {
+    cock:   30,
+    desire: 60,
+  },
+
 });

@@ -21,4 +21,19 @@ SexAction.register('fuck-anus',{
     { type:'preference', code:'debaser', conflicting:true },
   ],
 
+  sensations: {
+    anus:       100,
+    prostate:   100,
+    anger:      40,
+    comfort:    20,
+    desire:     90,
+    shame:      150,
+    submission: 200,
+    suffering:  100,
+  },
+  playerSensations: {
+    cock:   100,
+    desire: 90,
+  },
+
 });

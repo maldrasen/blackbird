@@ -20,4 +20,15 @@ SexAction.register('masturbate-pussy',{
     { type:'preference', code:'masturbator', scale:3 },
   ],
 
+  sensations: {
+    clit:       50,
+    pussy:      50,
+    desire:     40,
+    shame:      60,
+    submission: 80,
+  },
+  playerSensations: {
+    desire: 30
+  },
+
 });

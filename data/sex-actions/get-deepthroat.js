@@ -32,4 +32,17 @@ SexAction.register('get-deepthroat',{
     { type:'preference', code:'dominant', conflicting:true },
   ],
 
+  sensations: {
+    throat:     80,
+    anger:      50,
+    desire:     30,
+    shame:      100,
+    submission: 300,
+    suffering:  200,
+  },
+  playerSensations: {
+    cock:   100,
+    desire: 100,
+  },
+
 });

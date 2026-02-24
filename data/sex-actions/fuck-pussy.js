@@ -21,4 +21,19 @@ SexAction.register('fuck-pussy',{
     { type:'preference', code:'debaser', conflicting:true },
   ],
 
+  sensations: {
+    clit:       60,
+    pussy:      100,
+    anger:      20,
+    comfort:    40,
+    desire:     100,
+    shame:      80,
+    submission: 80,
+    suffering:  40,
+  },
+  playerSensations: {
+    cock:   100,
+    desire: 80
+  },
+
 });

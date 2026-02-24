@@ -17,4 +17,16 @@ SexAction.register('frottage',{
     { type:'preference', code:'cock-lover' },
   ],
 
+  sensations: {
+    cock:       60,
+    comfort:    30,
+    desire:     60,
+    shame:      30,
+    submission: 15,
+  },
+  playerSensations: {
+    cock:   60,
+    desire: 60
+  },
+
 });

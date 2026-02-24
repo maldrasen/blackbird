@@ -19,4 +19,15 @@ SexAction.register('fondle-breasts',{
     { type:'preference', code:'breast-slut' },
   ],
 
+  sensations: {
+    nipple:     30,
+    comfort:    20,
+    desire:     30,
+    shame:      10,
+    submission: 10,
+  },
+  playerSensations: {
+    desire: 30
+  },
+
 });
