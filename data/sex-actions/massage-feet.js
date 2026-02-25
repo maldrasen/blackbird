@@ -13,7 +13,7 @@ SexAction.register('massage-feet',{
     { type:'preference', code:'humiliation-slut', conflicting:true },
   ],
 
-  sensations: {
+  partnerSensations: {
     comfort:    25,
     desire:     15,
     shame:      5,

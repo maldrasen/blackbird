@@ -17,7 +17,7 @@ SexAction.register('suck-cock',{
     { type:'preference', code:'dominant' },
   ],
 
-  sensations: {
+  partnerSensations: {
     cock:    80,
     comfort: 50,
     desire:  70,

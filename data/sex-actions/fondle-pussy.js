@@ -16,7 +16,7 @@ SexAction.register('fondle-pussy',{
     { type:'preference', code:'pussy-slut' },
   ],
 
-  sensations: {
+  partnerSensations: {
     clit:       50,
     pussy:      25,
     comfort:    30,

@@ -20,7 +20,7 @@ SexAction.register('masturbate-pussy',{
     { type:'preference', code:'masturbator', scale:3 },
   ],
 
-  sensations: {
+  partnerSensations: {
     clit:       60,
     pussy:      50,
     desire:     40,
@@ -32,7 +32,7 @@ SexAction.register('masturbate-pussy',{
   },
 
   skills: {
-    partner:['performance']
+    partner:['performance','technique'],
   },
 
 });

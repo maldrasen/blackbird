@@ -17,7 +17,7 @@ SexAction.register('get-handjob',{
     { type:'preference', code:'dominant', conflicting:true },
   ],
 
-  sensations: {
+  partnerSensations: {
     desire:     30,
     shame:      20,
     submission: 20,

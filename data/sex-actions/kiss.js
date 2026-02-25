@@ -41,7 +41,7 @@ SexAction.register('kiss',{
     { type:'preference', code:'sadist', conflicting:true },
   ],
 
-  sensations: {
+  partnerSensations: {
     comfort:    30,
     desire:     20,
     shame:      5,

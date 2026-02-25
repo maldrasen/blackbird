@@ -17,7 +17,7 @@ SexAction.register('get-titfuck',{
     { type:'preference', code:'dominant', conflicting:true },
   ],
 
-  sensations: {
+  partnerSensations: {
     nipple:     20,
     comfort:    10,
     desire:     40,

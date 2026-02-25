@@ -14,7 +14,7 @@ SexAction.register('finger-anus',{
     { type:'preference', code:'anal-slut' },
   ],
 
-  sensations: {
+  partnerSensations: {
     anus:       60,
     prostate:   40,
     anger:      20,

@@ -22,7 +22,7 @@ SexAction.register('lap-dance',{
     { type:'preference', code:'submissive' },
   ],
 
-  sensations: {
+  partnerSensations: {
     anus:       5,
     clit:       5,
     nipple:     5,

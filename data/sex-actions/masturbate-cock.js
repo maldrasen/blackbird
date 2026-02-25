@@ -20,7 +20,7 @@ SexAction.register('masturbate-cock',{
     { type:'preference', code:'masturbator', scale:3 },
   ],
 
-  sensations: {
+  partnerSensations: {
     cock:       65,
     desire:     50,
     shame:      80,
@@ -31,7 +31,7 @@ SexAction.register('masturbate-cock',{
   },
 
   skills: {
-    partner:['performance']
+    partner:['performance','technique'],
   },
 
 });

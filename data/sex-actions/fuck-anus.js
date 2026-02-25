@@ -21,7 +21,7 @@ SexAction.register('fuck-anus',{
     { type:'preference', code:'debaser', conflicting:true },
   ],
 
-  sensations: {
+  partnerSensations: {
     anus:       100,
     prostate:   100,
     anger:      40,

@@ -17,7 +17,7 @@ SexAction.register('suck-pussy',{
     { type:'preference', code:'dominant' },
   ],
 
-  sensations: {
+  partnerSensations: {
     clit:    80,
     pussy:   40,
     comfort: 50,

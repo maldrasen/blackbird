@@ -16,7 +16,7 @@ SexAction.register('finger-pussy',{
     { type:'preference', code:'pussy-slut' },
   ],
 
-  sensations: {
+  partnerSensations: {
     clit:       30,
     pussy:      60,
     anger:      10,

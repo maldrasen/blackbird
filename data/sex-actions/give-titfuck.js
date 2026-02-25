@@ -20,7 +20,7 @@ SexAction.register('give-titfuck',{
     { type:'preference', code:'dominant' },
   ],
 
-  sensations: {
+  partnerSensations: {
     cock:    50,
     comfort: 40,
     desire:  80,

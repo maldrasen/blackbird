@@ -18,7 +18,7 @@ SexAction.register('get-rimming',{
     { type:'preference', code:'dominant', conflicting:true },
   ],
 
-  sensations: {
+  partnerSensations: {
     anger:      10,
     desire:     40,
     shame:      80,

@@ -17,7 +17,7 @@ SexAction.register('frottage',{
     { type:'preference', code:'cock-lover' },
   ],
 
-  sensations: {
+  partnerSensations: {
     cock:       60,
     comfort:    30,
     desire:     60,

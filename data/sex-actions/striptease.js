@@ -17,7 +17,7 @@ SexAction.register('striptease',{
     { type:'preference', code:'submissive' },
   ],
 
-  sensations: {
+  partnerSensations: {
     comfort:    10,
     desire:     20,
     shame:      40,

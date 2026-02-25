@@ -77,7 +77,7 @@ global.SexAction = (function() {
       getConsentTarget: () => { return action.consentTarget; },
       getConsentFactors: () => { return [ ...action.consentFactors ]; },
       getRequires: () => { return action.requires||[]; },
-      getSensations: () => { return { ...action.sensations }; },
+      getPartnerSensations: () => { return { ...action.partnerSensations }; },
       getPlayerSensations: () => { return { ...action.playerSensations }; },
       getSkills: () => { return { ...action.skills }; },
       getDescription,

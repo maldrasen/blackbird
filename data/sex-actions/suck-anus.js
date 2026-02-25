@@ -16,7 +16,7 @@ SexAction.register('suck-anus',{
     { type:'preference', code:'debaser' },
   ],
 
-  sensations: {
+  partnerSensations: {
     anus:       80,
     comfort:    10,
     desire:     60,

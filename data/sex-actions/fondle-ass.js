@@ -16,7 +16,7 @@ SexAction.register('fondle-ass',{
     { type:'preference', code:'anal-slut' },
   ],
 
-  sensations: {
+  partnerSensations: {
     anus:       10,
     comfort:    10,
     desire:     30,

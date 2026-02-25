@@ -26,7 +26,7 @@ SexAction.register('get-blowjob',{
     { type:'preference', code:'dominant', conflicting:true },
   ],
 
-  sensations: {
+  partnerSensations: {
     throat:     20,
     comfort:    10,
     desire:     40,

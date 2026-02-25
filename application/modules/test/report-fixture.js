@@ -28,21 +28,21 @@ global.ReportFixture = (function() {
         case 'time': throw `Implement time`;
         case 'playerStamina': throw `Implement stamina`;
         case 'partnerStamina': throw `Implement stamina`;
-        case 'sensation.anus':        addNumericResult(action.getSensations().anus); break;
-        case 'sensation.cervix':      addNumericResult(action.getSensations().cervix); break;
-        case 'sensation.clit':        addNumericResult(action.getSensations().clit); break;
-        case 'sensation.nipple':      addNumericResult(action.getSensations().nipple); break;
-        case 'sensation.throat':      addNumericResult(action.getSensations().throat); break;
-        case 'sensation.cock':        addNumericResult(action.getSensations().cock); break;
-        case 'sensation.prostate':    addNumericResult(action.getSensations().prostate); break;
-        case 'sensation.urethra':     addNumericResult(action.getSensations().urethra); break;
-        case 'sensation.pussy':       addNumericResult(action.getSensations().pussy); break;
-        case 'sensation.anger':       addNumericResult(action.getSensations().anger); break;
-        case 'sensation.comfort':     addNumericResult(action.getSensations().comfort); break;
-        case 'sensation.desire':      addNumericResult(action.getSensations().desire); break;
-        case 'sensation.shame':       addNumericResult(action.getSensations().shame); break;
-        case 'sensation.submission':  addNumericResult(action.getSensations().submission); break;
-        case 'sensation.suffering':   addNumericResult(action.getSensations().suffering); break;
+        case 'sensation.anus':        addNumericResult(action.getPartnerSensations().anus); break;
+        case 'sensation.cervix':      addNumericResult(action.getPartnerSensations().cervix); break;
+        case 'sensation.clit':        addNumericResult(action.getPartnerSensations().clit); break;
+        case 'sensation.nipple':      addNumericResult(action.getPartnerSensations().nipple); break;
+        case 'sensation.throat':      addNumericResult(action.getPartnerSensations().throat); break;
+        case 'sensation.cock':        addNumericResult(action.getPartnerSensations().cock); break;
+        case 'sensation.prostate':    addNumericResult(action.getPartnerSensations().prostate); break;
+        case 'sensation.urethra':     addNumericResult(action.getPartnerSensations().urethra); break;
+        case 'sensation.pussy':       addNumericResult(action.getPartnerSensations().pussy); break;
+        case 'sensation.anger':       addNumericResult(action.getPartnerSensations().anger); break;
+        case 'sensation.comfort':     addNumericResult(action.getPartnerSensations().comfort); break;
+        case 'sensation.desire':      addNumericResult(action.getPartnerSensations().desire); break;
+        case 'sensation.shame':       addNumericResult(action.getPartnerSensations().shame); break;
+        case 'sensation.submission':  addNumericResult(action.getPartnerSensations().submission); break;
+        case 'sensation.suffering':   addNumericResult(action.getPartnerSensations().suffering); break;
         case 'player.anus':           addNumericResult(action.getPlayerSensations().anus); break;
         case 'player.cervix':         addNumericResult(action.getPlayerSensations().cervix); break;
         case 'player.clit':           addNumericResult(action.getPlayerSensations().clit); break;
@@ -75,8 +75,6 @@ global.ReportFixture = (function() {
     X.fill('#output', X.createElement(`<pre>${array.join(`\n`)}</pre>`))
   }
 
-  return Object.freeze({
-    show
-  })
+  return Object.freeze({ show });
 
 })();

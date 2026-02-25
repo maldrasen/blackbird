@@ -32,7 +32,7 @@ SexAction.register('get-deepthroat',{
     { type:'preference', code:'dominant', conflicting:true },
   ],
 
-  sensations: {
+  partnerSensations: {
     throat:     80,
     anger:      50,
     desire:     30,

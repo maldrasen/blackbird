@@ -23,7 +23,7 @@ SexAction.register('get-cunnilingus',{
     { type:'preference', code:'dominant', conflicting:true },
   ],
 
-  sensations: {
+  partnerSensations: {
     comfort:    15,
     desire:     40,
     shame:      50,

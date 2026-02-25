@@ -18,7 +18,7 @@ SexAction.register('masturbate-anus',{
     { type:'preference', code:'masturbator', scale:3 },
   ],
 
-  sensations: {
+  partnerSensations: {
     anus:       70,
     prostate:   20,
     anger:      10,
@@ -31,8 +31,7 @@ SexAction.register('masturbate-anus',{
   },
 
   skills: {
-    partner:['performance']
+    partner:['performance','technique'],
   },
-
 
 });

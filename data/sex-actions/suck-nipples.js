@@ -16,7 +16,7 @@ SexAction.register('suck-nipples',{
     { type:'preference', code:'breast-slut' },
   ],
 
-  sensations: {
+  partnerSensations: {
     nipple:     60,
     comfort:    30,
     desire:     40,

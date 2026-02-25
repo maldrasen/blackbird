@@ -21,7 +21,7 @@ SexAction.register('fuck-pussy',{
     { type:'preference', code:'debaser', conflicting:true },
   ],
 
-  sensations: {
+  partnerSensations: {
     clit:       35,
     pussy:      100,
     anger:      20,
