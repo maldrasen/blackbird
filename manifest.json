@@ -36,6 +36,7 @@
     "application/models/dungeon/feature.js",
     "application/models/dungeon/floor.js",
     "application/models/dungeon/room.js",
+    "application/models/skill-check.js",
     "application/models/state-recorder.js",
     "application/models/training/consent-result.js",
     "application/models/training/sensation-result.js",
@@ -316,8 +317,8 @@
   "testFileList": [
     "test/components/feelings-component-spec.js",
     "test/controllers/dungeon-controller-spec.js",
-    "test/models/character-spec.js",
     "test/models/dungeon/room-spec.js",
+    "test/models/skill-check-spec.js",
     "test/models/training/consent-result-spec.js",
     "test/models/training/sensation-result-spec.js",
     "test/modules/factories/character-creation/character-factory-spec.js",
