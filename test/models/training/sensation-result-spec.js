@@ -1,4 +1,4 @@
-describe.only("SensationResult", function() {
+describe("SensationResult", function() {
 
   describe('applyBaseline()', function() {
     it("applyBaseline() sensations", function() {
@@ -39,6 +39,20 @@ describe.only("SensationResult", function() {
   });
 
   describe('applyTechnique()', function() {
+    it.only("applyTechnique() when partner is 'performing'", function() {
+      const context = TrainingFixtures.standardTrainingContext({},{
+        skills: { technique:30 },
+        feelings:{ respect:350 }});
+
+      const result = SensationResult('masturbate-anus', context);
+      result.applyBaseline();
+      result.applyTechnique();
+
+      console.log(`Consent: ${result.getResponse().consent.getConsentValue()}`,result.getResponse().consent.getConsentLabel())
+      console.log(result.getResponse());
+    });
+
+
     it('applyTechnique() when player has no skill', function() {
       const context = TrainingFixtures.standardTrainingContext({},{ feelings:{ affection:150 }});
       const result = SensationResult('suck-pussy', context);
