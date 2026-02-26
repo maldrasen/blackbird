@@ -3,6 +3,7 @@ SexAction.register('deep-kiss',{
   mainCategory: SexAction.MainCategory.foreplay,
   playerCategory: SexAction.PartCategory.mouth,
   partnerCategory: SexAction.PartCategory.mouth,
+  direction: ActionDirection.mutual,
   description: `You and {T:name} will share a passionate kiss, thrusting your tongue deep into {T:his} mouth, while 
     {T:he} does the same.`,
 
@@ -44,9 +45,6 @@ SexAction.register('deep-kiss',{
   },
 
   techniqueTarget: 12,
-  skills: {
-    partner:['servicing'],
-    player:['servicing'],
-  },
+  skills: {},
 
 });

@@ -3,6 +3,7 @@ SexAction.register('suck-nipples',{
   mainCategory: SexAction.MainCategory.foreplay,
   playerCategory: SexAction.PartCategory.mouth,
   partnerCategory: SexAction.PartCategory.breasts,
+  direction: ActionDirection.playerToPartner,
   description: `You'll lick and suck on {T:name's} nipples.`,
 
   time: 1,
@@ -32,8 +33,6 @@ SexAction.register('suck-nipples',{
   },
 
   techniqueTarget: 10,
-  skills: {
-    player:['servicing']
-  },
+  skills: {},
 
 });

@@ -3,6 +3,7 @@ SexAction.register('fondle-breasts',{
   mainCategory: SexAction.MainCategory.foreplay,
   playerCategory: SexAction.PartCategory.hands,
   partnerCategory: SexAction.PartCategory.breasts,
+  direction: ActionDirection.playerToPartner,
   description: `Fondle and squeeze {T:name's} breasts.`,
 
   time: 1,
@@ -32,8 +33,6 @@ SexAction.register('fondle-breasts',{
   },
 
   techniqueTarget: 6,
-  skills: {
-    player:['servicing']
-  },
+  skills: {},
 
 });

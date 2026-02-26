@@ -3,6 +3,7 @@ SexAction.register('get-deepthroat',{
   mainCategory: SexAction.MainCategory.receiving,
   playerCategory: SexAction.PartCategory.cock,
   partnerCategory: SexAction.PartCategory.mouth,
+  direction: ActionDirection.partnerToPlayer,
   description: `{T:name} will try and deepthroat your cock, taking it as deep as {T:he} can.`,
 
   time: 1,

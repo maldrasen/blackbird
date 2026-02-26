@@ -3,6 +3,7 @@ SexAction.register('get-blowjob',{
   mainCategory: SexAction.MainCategory.receiving,
   playerCategory: SexAction.PartCategory.cock,
   partnerCategory: SexAction.PartCategory.mouth,
+  direction: ActionDirection.partnerToPlayer,
   description: `{T:name} will suck your cock.`,
 
   time: 1,

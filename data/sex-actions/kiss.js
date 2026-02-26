@@ -3,6 +3,7 @@ SexAction.register('kiss',{
   mainCategory: SexAction.MainCategory.foreplay,
   playerCategory: SexAction.PartCategory.mouth,
   partnerCategory: SexAction.PartCategory.mouth,
+  direction: ActionDirection.mutual,
   description: `You and {T:name} will share an intimate kiss.`,
 
   time: 1,
@@ -32,9 +33,6 @@ SexAction.register('kiss',{
   },
 
   techniqueTarget: 10,
-  skills: {
-    partner:['servicing'],
-    player:['servicing'],
-  },
+  skills: {},
 
 });

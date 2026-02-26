@@ -3,6 +3,7 @@ SexAction.register('masturbate-cock',{
   mainCategory: SexAction.MainCategory.performance,
   playerCategory: SexAction.PartCategory.none,
   partnerCategory: SexAction.PartCategory.cock,
+  direction: ActionDirection.partnerToSelf,
   description: `{T:name} will masturbate for you while you watch.`,
 
   time: 1,
@@ -34,7 +35,7 @@ SexAction.register('masturbate-cock',{
 
   techniqueTarget: 7,
   skills: {
-    partner:['performance','technique'],
+    partner:['performance'],
   },
 
 });

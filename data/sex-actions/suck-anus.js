@@ -3,6 +3,7 @@ SexAction.register('suck-anus',{
   mainCategory: SexAction.MainCategory.giving,
   playerCategory: SexAction.PartCategory.mouth,
   partnerCategory: SexAction.PartCategory.ass,
+  direction: ActionDirection.playerToPartner,
   description: `You'll eat {T:name's} asshole, focusing on licking {T:his} anal ring and probing it with your tongue.`,
 
   time: 1,

@@ -3,6 +3,7 @@ SexAction.register('get-handjob',{
   mainCategory: SexAction.MainCategory.receiving,
   playerCategory: SexAction.PartCategory.cock,
   partnerCategory: SexAction.PartCategory.hands,
+  direction: ActionDirection.partnerToPlayer,
   description: `{T:name} will jack off your cock.`,
 
   time: 1,

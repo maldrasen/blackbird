@@ -3,6 +3,7 @@ SexAction.register('masturbate-pussy',{
   mainCategory: SexAction.MainCategory.performance,
   playerCategory: SexAction.PartCategory.none,
   partnerCategory: SexAction.PartCategory.pussy,
+  direction: ActionDirection.partnerToSelf,
   description: `{T:name} will masturbate for you while you watch.`,
 
   time: 1,
@@ -35,7 +36,7 @@ SexAction.register('masturbate-pussy',{
 
   techniqueTarget: 9,
   skills: {
-    partner:['performance','technique'],
+    partner:['performance'],
   },
 
 });

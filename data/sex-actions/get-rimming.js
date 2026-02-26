@@ -3,6 +3,7 @@ SexAction.register('get-rimming',{
   mainCategory: SexAction.MainCategory.receiving,
   playerCategory: SexAction.PartCategory.ass,
   partnerCategory: SexAction.PartCategory.mouth,
+  direction: ActionDirection.partnerToPlayer,
   description: `{T:name} will eat your ass.`,
 
   time: 1,

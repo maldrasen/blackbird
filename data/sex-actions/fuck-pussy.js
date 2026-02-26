@@ -3,6 +3,7 @@ SexAction.register('fuck-pussy',{
   mainCategory: SexAction.MainCategory.sex,
   playerCategory: SexAction.PartCategory.cock,
   partnerCategory: SexAction.PartCategory.pussy,
+  direction: ActionDirection.playerToPartner,
   description: `You'll fuck {T:name's} pussy.`,
 
   time: 2,

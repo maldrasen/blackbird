@@ -3,6 +3,7 @@ SexAction.register('suck-cock',{
   mainCategory: SexAction.MainCategory.giving,
   playerCategory: SexAction.PartCategory.mouth,
   partnerCategory: SexAction.PartCategory.cock,
+  direction: ActionDirection.playerToPartner,
   description: `You'll suck {T:name's} cock.`,
 
   time: 1,

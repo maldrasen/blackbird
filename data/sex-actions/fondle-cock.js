@@ -3,6 +3,7 @@ SexAction.register('fondle-cock',{
   mainCategory: SexAction.MainCategory.foreplay,
   playerCategory: SexAction.PartCategory.hands,
   partnerCategory: SexAction.PartCategory.cock,
+  direction: ActionDirection.playerToPartner,
   description: `Fondle and stroke {T:name's} cock.`,
 
   time: 1,
@@ -32,8 +33,6 @@ SexAction.register('fondle-cock',{
   },
 
   techniqueTarget: 8,
-  skills: {
-    player:['servicing']
-  },
+  skills: {},
 
 });

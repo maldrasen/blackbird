@@ -3,6 +3,7 @@ SexAction.register('fuck-anus',{
   mainCategory: SexAction.MainCategory.sex,
   playerCategory: SexAction.PartCategory.cock,
   partnerCategory: SexAction.PartCategory.ass,
+  direction: ActionDirection.playerToPartner,
   description: `You'll fuck {T:name's} ass.`,
 
   time: 2,

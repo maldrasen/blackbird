@@ -3,6 +3,7 @@ SexAction.register('massage-back',{
   mainCategory: SexAction.MainCategory.giving,
   playerCategory: SexAction.PartCategory.hands,
   partnerCategory: SexAction.PartCategory.none,
+  direction: ActionDirection.playerToPartner,
   description: `You'll give {T:name} a relaxing back massage.`,
 
   time: 10,
@@ -27,8 +28,6 @@ SexAction.register('massage-back',{
   },
 
   techniqueTarget: 12,
-  skills: {
-    player:['servicing']
-  },
+  skills: {},
 
 });

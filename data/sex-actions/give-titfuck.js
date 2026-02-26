@@ -7,6 +7,7 @@ SexAction.register('give-titfuck',{
   mainCategory: SexAction.MainCategory.giving,
   playerCategory: SexAction.PartCategory.breasts,
   partnerCategory: SexAction.PartCategory.cock,
+  direction: ActionDirection.playerToPartner,
   description: `You'll rub and squeeze {T:name's} cock between your tits.`,
 
   time: 1,

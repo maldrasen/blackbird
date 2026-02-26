@@ -3,6 +3,7 @@ SexAction.register('finger-anus',{
   mainCategory: SexAction.MainCategory.foreplay,
   playerCategory: SexAction.PartCategory.hands,
   partnerCategory: SexAction.PartCategory.ass,
+  direction: ActionDirection.playerToPartner,
   description: `Fuck {T:name's} asshole with your fingers.`,
 
   time: 1,
@@ -33,8 +34,6 @@ SexAction.register('finger-anus',{
   },
 
   techniqueTarget: 16,
-  skills: {
-    player:['servicing']
-  },
+  skills: {},
 
 });

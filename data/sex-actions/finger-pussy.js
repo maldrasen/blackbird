@@ -3,6 +3,7 @@ SexAction.register('finger-pussy',{
   mainCategory: SexAction.MainCategory.foreplay,
   playerCategory: SexAction.PartCategory.hands,
   partnerCategory: SexAction.PartCategory.pussy,
+  direction: ActionDirection.playerToPartner,
   description: `Fuck {T:name's} pussy with your fingers.`,
 
   time: 1,
@@ -35,8 +36,6 @@ SexAction.register('finger-pussy',{
   },
 
   techniqueTarget: 14,
-  skills: {
-    player:['servicing']
-  },
+  skills: {},
 
 });

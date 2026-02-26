@@ -3,6 +3,7 @@ SexAction.register('suck-pussy',{
   mainCategory: SexAction.MainCategory.giving,
   playerCategory: SexAction.PartCategory.mouth,
   partnerCategory: SexAction.PartCategory.pussy,
+  direction: ActionDirection.playerToPartner,
   description: `You'll eat {T:name's} pussy, focusing on sucking and licking {T:his} clit.`,
 
   time: 1,

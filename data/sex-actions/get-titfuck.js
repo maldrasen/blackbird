@@ -3,6 +3,7 @@ SexAction.register('get-titfuck',{
   mainCategory: SexAction.MainCategory.receiving,
   playerCategory: SexAction.PartCategory.cock,
   partnerCategory: SexAction.PartCategory.breasts,
+  direction: ActionDirection.partnerToPlayer,
   description: `{T:name} will squeeze your cock between {T:his} tits.`,
 
   time: 1,

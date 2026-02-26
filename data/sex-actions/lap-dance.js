@@ -3,6 +3,7 @@ SexAction.register('lap-dance',{
   mainCategory: SexAction.MainCategory.performance,
   playerCategory: SexAction.PartCategory.cock,
   partnerCategory: SexAction.PartCategory.ass,
+  direction: ActionDirection.partnerToBoth,
   description: `{T:name} will straddle your legs and grind {T:his} ass on your cock.`,
 
   time: 5,
@@ -46,7 +47,7 @@ SexAction.register('lap-dance',{
 
   techniqueTarget: 18,
   skills: {
-    partner:['dance','performance','technique']
+    partner:['dance','performance']
   },
 
 });

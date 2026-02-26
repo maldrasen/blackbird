@@ -3,6 +3,7 @@ SexAction.register('frottage',{
   mainCategory: SexAction.MainCategory.foreplay,
   playerCategory: SexAction.PartCategory.cock,
   partnerCategory: SexAction.PartCategory.cock,
+  direction: ActionDirection.mutual,
   description: `You and {T:name} will rub your cocks together.`,
 
   time: 1,
@@ -34,9 +35,6 @@ SexAction.register('frottage',{
   },
 
   techniqueTarget: 9,
-  skills: {
-    partner:['servicing'],
-    player:['servicing'],
-  },
+  skills: {},
 
 });

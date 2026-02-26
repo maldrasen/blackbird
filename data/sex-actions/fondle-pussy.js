@@ -3,6 +3,7 @@ SexAction.register('fondle-pussy',{
   mainCategory: SexAction.MainCategory.foreplay,
   playerCategory: SexAction.PartCategory.hands,
   partnerCategory: SexAction.PartCategory.pussy,
+  direction: ActionDirection.playerToPartner,
   description: `Fondle and rub {T:name's} clit and pussy.`,
 
   time: 1,
@@ -33,8 +34,6 @@ SexAction.register('fondle-pussy',{
   },
 
   techniqueTarget: 10,
-  skills: {
-    player:['servicing']
-  },
+  skills: {},
 
 });

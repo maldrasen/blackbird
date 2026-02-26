@@ -132,3 +132,13 @@ global.Consent = Object.freeze({
   reluctant: 1,
   unwilling: 0,
 });
+
+global.ActionDirection = Object.freeze({
+  mutual: 'mutual',
+  partnerToPlayer: 'partner-to-player',
+  partnerToSelf: 'partner-to-self',
+  partnerToBoth: 'partner-to-both',
+  playerToPartner: 'player-to-partner',
+  playerToSelf: 'player-to-self',
+  playerToBoth: 'player-to-both',
+});

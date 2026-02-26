@@ -3,6 +3,7 @@ SexAction.register('striptease',{
   mainCategory: SexAction.MainCategory.performance,
   playerCategory: SexAction.PartCategory.none,
   partnerCategory: SexAction.PartCategory.none,
+  direction: ActionDirection.partnerToPlayer,
   description: `{T:name} will sensually remove {T:his} clothes for your enjoyment.`,
 
   time: 5,
@@ -27,9 +28,6 @@ SexAction.register('striptease',{
     shame:      40,
     submission: 30,
   },
-
-  // The desire for this action is heavily influenced by the partner's
-  // performance skill.
   playerSensations: {
     desire: 10
   },

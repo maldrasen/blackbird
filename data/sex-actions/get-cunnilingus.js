@@ -3,6 +3,7 @@ SexAction.register('get-cunnilingus',{
   mainCategory: SexAction.MainCategory.receiving,
   playerCategory: SexAction.PartCategory.pussy,
   partnerCategory: SexAction.PartCategory.mouth,
+  direction: ActionDirection.partnerToPlayer,
   description: `{T:name} will eat your pussy.`,
 
   time: 1,
