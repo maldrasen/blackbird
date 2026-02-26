@@ -29,7 +29,7 @@ SexAction.register('masturbate-anus',{
     submission: 120,
   },
   playerSensations: {
-    desire: 40
+    desire: 25
   },
 
   techniqueTarget: 13,

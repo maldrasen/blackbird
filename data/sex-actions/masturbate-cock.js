@@ -29,7 +29,7 @@ SexAction.register('masturbate-cock',{
     submission: 60,
   },
   playerSensations: {
-    desire: 30
+    desire: 20
   },
 
   techniqueTarget: 7,

@@ -61,7 +61,7 @@ global.SensationResult = function(code, context) {
         consentResult.applyFactors();
   const consent = consentResult.getConsent();
 
-  const skillsUsed = { partner:[], player:[] };
+  const skillsUsed = { partner:new Set(), player:new Set() };
   const response = { consent:consentResult, partner:{}, player:{} };
 
   function applyFactors() {
@@ -129,7 +129,7 @@ global.SensationResult = function(code, context) {
   }
 
   function applyTechniqueSkill(options) {
-    (options.from === 'partner' ? skillsUsed.partner : skillsUsed.player).push('technique');
+    (options.from === 'partner' ? skillsUsed.partner : skillsUsed.player).add('technique');
 
     const fromEntity = options.from === 'partner' ? partner : player;
     const toHas = options.to === 'partner' ? partnerHas : playerHas;
@@ -188,13 +188,86 @@ global.SensationResult = function(code, context) {
         if (options.to === 'player')  { addPlayerSensation(code,label,value,extra); }
       }
     });
+
+    // Lap dance is a special case. It's adds the technique skill to both the
+    // player's and the partner's sensations. It's kind of masturbation while
+    // grinding. The player is uninvolved, so the partner's technique is
+    // applied twice. If we didn't add cock sensation here it wouldn't get any
+    // value from the partner's technique. If there are other actions like this
+    // (there probably will be) we'll need to figure out a way to flag these
+    // "one person's technique pleasuring two people at once" actions.
+    if (sexAction.getCode() === 'lap-dance') {
+      addPlayerSensation('cock',label,value,extra);
+    }
   }
 
-  // The performance skill is applied automatically when a person is receiving
-  // an action. The performance always adds a slight bonus to the desire
-  // received. When an action includes desire specifically the bonus is higher
-  // and the skill should get more experience.
+  // The performance skill is applied automatically when a person is receiving an action. The performance always adds a
+  // slight bonus to the desire received. When an action includes desire specifically the bonus is higher. The
+  // performance skill is only increased by performance specific actions.
   function applyPerformance() {
+    const partnerSkills = sexAction.getSkills().partner || [];
+    const playerSkills = sexAction.getSkills().player || [];
+
+    // I don't have any player performance focused actions yet. I'm thinking
+    // they might work slightly differently as the player character may have
+    // different skills and abilities than the partner characters.
+    if (playerSkills.includes('performance')) {
+      throw `TODO: Implement player performance focused actions.`
+    }
+
+    if (partnerSkills.includes('performance')) {
+      if (playerSkills.length > 0) { throw `Player should not be doing anything if this is performance focused.`; }
+      return applyPerformanceWhenPartnerFocused(); }
+
+    if (partnerSkills.length === 0 && playerSkills.length > 0) {
+      return applyPerformanceSkill({ from:'player', to:'partner' }); }
+    if (partnerSkills.length > 0 && playerSkills.length === 0) {
+      return applyPerformanceSkill({ from:'partner', to:'player' }); }
+
+    applyPerformanceSkill({ from:'player', to:'partner' });
+    applyPerformanceSkill({ from:'partner', to:'player' });
+  }
+
+  // A partner focused performance action that includes playerSensations (like lap-dance) will add the performance
+  // skill roll to the physical sensations as well as increasing desire. Unlike the technique skill there is no
+  // performance target to hit. We can always add the skill check value to the sensations.
+  function applyPerformanceWhenPartnerFocused() {
+    skillsUsed.partner.add('performance');
+
+    const check = SkillCheck(partner, 'performance');
+
+    let value = check.value;
+    let label = 'Performance'
+    let extra;
+
+    if (check.crit) {
+      value *= 2;
+      label = 'Excellent Performance';
+      extra = 'crit';
+
+      // If a partner crits their performance focused action, this adds the
+      // skill check value to their physical sensations. Technique could crit
+      // as well leading to massive baseline sensations for performances.
+      Object.keys(sexAction.getPartnerSensations()).forEach(key => {
+        if (PhysicalCodes.has(key)) { addPartnerSensation(key, label, value/2, extra); }
+      });
+    }
+    if (check.fumble) {
+      value = 0;
+      label = 'Terrible Performance';
+      extra = 'fumble';
+
+      // If a partner fumbles their performance focused action, this generates
+      // a large amount of shame and embarrassment.
+      addPartnerSensation('shame',label,80,extra);
+    }
+
+    Object.keys(sexAction.getPlayerSensations()).forEach(key => {
+      addPlayerSensation(key, label, (key === 'desire' ? value*2 : value), extra);
+    });
+  }
+
+  function applyPerformanceSkill(options) {
 
   }
 

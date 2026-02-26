@@ -9,10 +9,12 @@ SexAction.register('lap-dance',{
   playerStamina: 20,
   partnerStamina: 70,
 
+  requires:['P:has-cock'],
+
   // TODO: Dancing requirements. Lap dance is probably a dance. Lap dance might
   //       have a few lap dance specific follow on actions, like a lap dance
   //       frottage. We might need to include grinding controls like we've done
-  //       for thrusting. This sex action assumes a cock. Should make a no-cock
+  //       for thrusting. This sex action requires a cock. Should make a no-cock
   //       version as well, though that would not have the same grinding logic.
 
   consentTarget: 18,
@@ -38,13 +40,13 @@ SexAction.register('lap-dance',{
     submission: 30,
   },
   playerSensations: {
-    cock:   30,
-    desire: 60,
+    cock:   40,
+    desire: 30,
   },
 
   techniqueTarget: 18,
   skills: {
-    partner:['dance','performance']
+    partner:['dance','performance','technique']
   },
 
 });

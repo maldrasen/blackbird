@@ -38,7 +38,7 @@ describe("SensationResult", function() {
   });
 
   describe('applyTechnique()', function() {
-    it.only('applyTechnique() when player has no skill', function() {
+    it('when player has no skill', function() {
       Random.stubBetween(50,15);
 
       const context = TrainingFixtures.standardTrainingContext({},{ feelings:{ affection:150 }});
@@ -52,7 +52,7 @@ describe("SensationResult", function() {
     });
 
 
-    it("applyTechnique() when partner is 'performing' with double skill target", function() {
+    it("when partner is 'performing' with double skill target", function() {
       Random.stubBetween(50,15);
 
       const context = TrainingFixtures.standardTrainingContext({},{
@@ -71,7 +71,7 @@ describe("SensationResult", function() {
       expect(anusSensations[1].value).to.equal(65);
     });
 
-    it("applyTechnique() crit when partner is 'performing'", function() {
+    it("crit when partner is 'performing'", function() {
       Random.stubBetween(99,15);
 
       const context = TrainingFixtures.standardTrainingContext({},{
@@ -92,12 +92,12 @@ describe("SensationResult", function() {
       expect(desireSensations[1].value).to.equal(50);
     });
 
-    it("applyTechnique() fumble when partner is 'performing'", function() {
+    it("fumble when partner is 'performing'", function() {
       Random.stubBetween(1,15);
 
       const context = TrainingFixtures.standardTrainingContext({},{
         skills: { technique:30 },
-        feelings:{ respect:350 }});
+        feelings: { respect:350 }});
 
       const result = SensationResult('masturbate-anus', context);
       result.applyBaseline();
@@ -105,6 +105,39 @@ describe("SensationResult", function() {
 
       // Only baseline sensations are received, because technique value was reduced to 0.
       expect(result.getResponse().partner.anus.length).to.equal(1);
+    });
+  });
+
+  describe('applyPerformance()', function() {
+    it('when normal performance focused action', function() {
+      Random.stubBetween(50,10);
+
+      const context = TrainingFixtures.standardTrainingContext({},{
+        skills: { performance:20 },
+        feelings: { respect:100 }});
+
+      const result = SensationResult('striptease', context);
+      result.applyBaseline();
+      result.applyPerformance();
+
+      expect(Math.round(result.getPlayerSensations().desire)).to.equal(65);
+    });
+
+    it('when performance focused action with player sensations', function() {
+      Random.stubBetween(50,10); // Technique Roll
+      Random.stubBetween(50,12); // Performance Roll
+
+      const context = TrainingFixtures.standardTrainingContext({},{
+        skills: { performance:20 },
+        feelings: { respect:200 }});
+
+      const result = SensationResult('lap-dance', context);
+      result.applyBaseline();
+      result.applyTechnique();
+      result.applyPerformance();
+
+      expect(Math.round(result.getPlayerSensations().cock)).to.equal(90);
+      expect(Math.round(result.getPartnerSensations().clit)).to.equal(24);
     });
   });
 

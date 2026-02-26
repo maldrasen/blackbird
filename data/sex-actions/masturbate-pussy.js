@@ -30,7 +30,7 @@ SexAction.register('masturbate-pussy',{
     submission: 80,
   },
   playerSensations: {
-    desire: 30
+    desire: 20
   },
 
   techniqueTarget: 9,

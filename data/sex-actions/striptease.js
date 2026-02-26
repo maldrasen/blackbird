@@ -27,8 +27,11 @@ SexAction.register('striptease',{
     shame:      40,
     submission: 30,
   },
+
+  // The desire for this action is heavily influenced by the partner's
+  // performance skill.
   playerSensations: {
-    desire: 25
+    desire: 10
   },
 
   techniqueTarget: 17,
