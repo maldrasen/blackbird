@@ -5,6 +5,10 @@ SexAction.register('finger-pussy',{
   partnerCategory: SexAction.PartCategory.pussy,
   description: `Fuck {T:name's} pussy with your fingers.`,
 
+  time: 1,
+  playerStamina: 40,
+  partnerStamina: 60,
+
   requires:['T:has-pussy'],
 
   consentTarget: 28,
@@ -30,6 +34,7 @@ SexAction.register('finger-pussy',{
     desire: 50
   },
 
+  techniqueTarget: 14,
   skills: {
     player:['servicing']
   },

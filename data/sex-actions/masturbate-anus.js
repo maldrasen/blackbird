@@ -5,7 +5,9 @@ SexAction.register('masturbate-anus',{
   partnerCategory: SexAction.PartCategory.ass,
   description: `{T:name} will finger {T:his} asshole for you while you watch.`,
 
-  // persistPartner:'anus',
+  time: 1,
+  playerStamina: -10,
+  partnerStamina: 70,
 
   consentTarget: 45,
   consentFactors: [
@@ -30,6 +32,7 @@ SexAction.register('masturbate-anus',{
     desire: 40
   },
 
+  techniqueTarget: 13,
   skills: {
     partner:['performance','technique'],
   },

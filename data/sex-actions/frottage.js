@@ -5,6 +5,10 @@ SexAction.register('frottage',{
   partnerCategory: SexAction.PartCategory.cock,
   description: `You and {T:name} will rub your cocks together.`,
 
+  time: 1,
+  playerStamina: 60,
+  partnerStamina: 60,
+
   requires:['P:has-cock','T:has-cock'],
 
   consentTarget: 17,
@@ -29,6 +33,7 @@ SexAction.register('frottage',{
     desire: 60
   },
 
+  techniqueTarget: 9,
   skills: {
     partner:['servicing'],
     player:['servicing'],

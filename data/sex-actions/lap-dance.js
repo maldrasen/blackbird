@@ -5,6 +5,10 @@ SexAction.register('lap-dance',{
   partnerCategory: SexAction.PartCategory.ass,
   description: `{T:name} will straddle your legs and grind {T:his} ass on your cock.`,
 
+  time: 5,
+  playerStamina: 20,
+  partnerStamina: 70,
+
   // TODO: Dancing requirements. Lap dance is probably a dance. Lap dance might
   //       have a few lap dance specific follow on actions, like a lap dance
   //       frottage. We might need to include grinding controls like we've done
@@ -38,6 +42,7 @@ SexAction.register('lap-dance',{
     desire: 60,
   },
 
+  techniqueTarget: 18,
   skills: {
     partner:['dance','performance']
   },

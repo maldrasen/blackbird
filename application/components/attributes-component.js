@@ -18,7 +18,6 @@ global.AttributesComponent = (function() {
     Registry.deleteComponent(id,ComponentType.attributes);
   }
 
-
   function validate(id) {
     const attributes = Object.keys(Attrib);
     const attributeComponent = lookup(id);

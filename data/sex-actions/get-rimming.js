@@ -5,6 +5,10 @@ SexAction.register('get-rimming',{
   partnerCategory: SexAction.PartCategory.mouth,
   description: `{T:name} will eat your ass.`,
 
+  time: 1,
+  playerStamina: 50,
+  partnerStamina: 70,
+
   consentTarget: 40,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.service },
@@ -30,6 +34,7 @@ SexAction.register('get-rimming',{
     desire: 60
   },
 
+  techniqueTarget: 12,
   skills: {
     partner:['servicing']
   },

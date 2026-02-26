@@ -5,6 +5,10 @@ SexAction.register('get-handjob',{
   partnerCategory: SexAction.PartCategory.hands,
   description: `{T:name} will jack off your cock.`,
 
+  time: 1,
+  playerStamina: 60,
+  partnerStamina: 50,
+
   requires:['P:has-cock'],
 
   consentTarget: 25,
@@ -27,6 +31,7 @@ SexAction.register('get-handjob',{
     desire: 50,
   },
 
+  techniqueTarget: 8,
   skills: {
     partner:['servicing']
   },

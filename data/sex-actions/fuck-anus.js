@@ -5,6 +5,10 @@ SexAction.register('fuck-anus',{
   partnerCategory: SexAction.PartCategory.ass,
   description: `You'll fuck {T:name's} ass.`,
 
+  time: 2,
+  playerStamina: 100,
+  partnerStamina: 120,
+
   requires:['P:has-cock'],
 
   consentTarget: 50,
@@ -36,8 +40,9 @@ SexAction.register('fuck-anus',{
     desire: 90,
   },
 
+  techniqueTarget: 20,
   skills: {
-    partner:['ravishing']
+    player:['ravishing']
   },
 
 });

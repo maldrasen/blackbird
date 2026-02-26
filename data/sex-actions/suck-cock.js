@@ -5,6 +5,10 @@ SexAction.register('suck-cock',{
   partnerCategory: SexAction.PartCategory.cock,
   description: `You'll suck {T:name's} cock.`,
 
+  time: 1,
+  playerStamina: 80,
+  partnerStamina: 60,
+
   requires:['T:has-cock'],
 
   consentTarget: 17,
@@ -28,6 +32,7 @@ SexAction.register('suck-cock',{
     desire: 40,
   },
 
+  techniqueTarget: 22,
   skills: {
     player:['servicing']
   },

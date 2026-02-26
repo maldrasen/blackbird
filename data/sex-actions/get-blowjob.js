@@ -5,6 +5,10 @@ SexAction.register('get-blowjob',{
   partnerCategory: SexAction.PartCategory.mouth,
   description: `{T:name} will suck your cock.`,
 
+  time: 1,
+  playerStamina: 60,
+  partnerStamina: 80,
+
   requires:['P:has-cock'],
 
   // persistPlayer: 'cock',
@@ -39,6 +43,7 @@ SexAction.register('get-blowjob',{
     desire: 70
   },
 
+  techniqueTarget: 22,
   skills: {
     partner:['servicing']
   },

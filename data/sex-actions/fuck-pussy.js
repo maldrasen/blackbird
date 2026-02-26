@@ -5,6 +5,10 @@ SexAction.register('fuck-pussy',{
   partnerCategory: SexAction.PartCategory.pussy,
   description: `You'll fuck {T:name's} pussy.`,
 
+  time: 2,
+  playerStamina: 100,
+  partnerStamina: 100,
+
   requires:['P:has-cock','T:has-pussy'],
 
   consentTarget: 45,
@@ -36,8 +40,9 @@ SexAction.register('fuck-pussy',{
     desire: 80
   },
 
+  techniqueTarget: 18,
   skills: {
-    partner:['ravishing']
+    player:['ravishing']
   },
 
 });

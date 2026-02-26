@@ -5,6 +5,10 @@ SexAction.register('fondle-pussy',{
   partnerCategory: SexAction.PartCategory.pussy,
   description: `Fondle and rub {T:name's} clit and pussy.`,
 
+  time: 1,
+  playerStamina: 30,
+  partnerStamina: 40,
+
   requires:['T:has-pussy'],
 
   consentTarget: 25,
@@ -28,6 +32,7 @@ SexAction.register('fondle-pussy',{
     desire: 40
   },
 
+  techniqueTarget: 10,
   skills: {
     player:['servicing']
   },

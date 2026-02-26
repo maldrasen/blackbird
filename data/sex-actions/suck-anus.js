@@ -5,6 +5,10 @@ SexAction.register('suck-anus',{
   partnerCategory: SexAction.PartCategory.ass,
   description: `You'll eat {T:name's} asshole, focusing on licking {T:his} anal ring and probing it with your tongue.`,
 
+  time: 1,
+  playerStamina: 70,
+  partnerStamina: 50,
+
   consentTarget: 20,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.reverseService },
@@ -27,6 +31,7 @@ SexAction.register('suck-anus',{
     desire: 40
   },
 
+  techniqueTarget: 12,
   skills: {
     player:['servicing']
   },

@@ -9,6 +9,10 @@ SexAction.register('give-titfuck',{
   partnerCategory: SexAction.PartCategory.cock,
   description: `You'll rub and squeeze {T:name's} cock between your tits.`,
 
+  time: 1,
+  playerStamina: 60,
+  partnerStamina: 30,
+
   requires:['P:has-breasts','T:has-cock'],
 
   consentTarget: 10,
@@ -31,6 +35,7 @@ SexAction.register('give-titfuck',{
     desire: 40,
   },
 
+  techniqueTarget: 14,
   skills: {
     player:['servicing']
   },

@@ -5,6 +5,10 @@ SexAction.register('massage-feet',{
   partnerCategory: SexAction.PartCategory.none,
   description: `You'll give {T:name} a relaxing foot massage.`,
 
+  time: 10,
+  playerStamina: 50,
+  partnerStamina: -60,
+
   consentTarget: 0,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.reverseService },
@@ -22,6 +26,7 @@ SexAction.register('massage-feet',{
     desire: 10
   },
 
+  techniqueTarget: 11,
   skills: {
     player:['servicing']
   },

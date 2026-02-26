@@ -5,9 +5,11 @@ SexAction.register('masturbate-cock',{
   partnerCategory: SexAction.PartCategory.cock,
   description: `{T:name} will masturbate for you while you watch.`,
 
-  requires:['T:has-cock'],
+  time: 1,
+  playerStamina: -10,
+  partnerStamina: 60,
 
-  // persistPartner:'cock',
+  requires:['T:has-cock'],
 
   consentTarget: 30,
   consentFactors: [
@@ -30,6 +32,7 @@ SexAction.register('masturbate-cock',{
     desire: 30
   },
 
+  techniqueTarget: 7,
   skills: {
     partner:['performance','technique'],
   },

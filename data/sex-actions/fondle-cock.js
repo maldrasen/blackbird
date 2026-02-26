@@ -5,6 +5,10 @@ SexAction.register('fondle-cock',{
   partnerCategory: SexAction.PartCategory.cock,
   description: `Fondle and stroke {T:name's} cock.`,
 
+  time: 1,
+  playerStamina: 30,
+  partnerStamina: 40,
+
   requires:['T:has-cock'],
 
   consentTarget: 15,
@@ -27,6 +31,7 @@ SexAction.register('fondle-cock',{
     desire: 40
   },
 
+  techniqueTarget: 8,
   skills: {
     player:['servicing']
   },

@@ -5,17 +5,11 @@ SexAction.register('get-deepthroat',{
   partnerCategory: SexAction.PartCategory.mouth,
   description: `{T:name} will try and deepthroat your cock, taking it as deep as {T:he} can.`,
 
-  requires:['P:has-cock'],
+  time: 1,
+  playerStamina: 60,
+  partnerStamina: 160,
 
-  // A follow-up action may require one or more persisted actions to be happening.
-  // while:['get-blowjob'],
-  //
-  // persistPlayer:'cock',
-  // persistPartner:'mouth',
-  //
-  // requirements:["check to see if partner can fit player's cock in mouth","and throat"],
-  //
-  // skill:         'oral-sex',
+  requires:['P:has-cock'],
 
   consentTarget: 80,
   consentFactors: [
@@ -45,6 +39,7 @@ SexAction.register('get-deepthroat',{
     desire: 100,
   },
 
+  techniqueTarget: 28,
   skills: {
     partner:['servicing','deepthroating']
   },

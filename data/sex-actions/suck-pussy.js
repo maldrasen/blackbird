@@ -5,6 +5,10 @@ SexAction.register('suck-pussy',{
   partnerCategory: SexAction.PartCategory.pussy,
   description: `You'll eat {T:name's} pussy, focusing on sucking and licking {T:his} clit.`,
 
+  time: 1,
+  playerStamina: 70,
+  partnerStamina: 60,
+
   requires:['T:has-pussy'],
 
   consentTarget: 17,
@@ -28,6 +32,7 @@ SexAction.register('suck-pussy',{
     desire: 40
   },
 
+  techniqueTarget: 22,
   skills: {
     player:['servicing']
   },

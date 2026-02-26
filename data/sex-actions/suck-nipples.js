@@ -5,6 +5,10 @@ SexAction.register('suck-nipples',{
   partnerCategory: SexAction.PartCategory.breasts,
   description: `You'll lick and suck on {T:name's} nipples.`,
 
+  time: 1,
+  playerStamina: 40,
+  partnerStamina: 30,
+
   requires:['T:has-breasts'],
 
   consentTarget: 15,
@@ -27,6 +31,7 @@ SexAction.register('suck-nipples',{
     desire: 30
   },
 
+  techniqueTarget: 10,
   skills: {
     player:['servicing']
   },

@@ -5,12 +5,11 @@ SexAction.register('get-cunnilingus',{
   partnerCategory: SexAction.PartCategory.mouth,
   description: `{T:name} will eat your pussy.`,
 
-  requires:['P:has-pussy'],
+  time: 1,
+  playerStamina: 60,
+  partnerStamina: 70,
 
-  // persistPlayer: 'pussy',
-  // persistPartner: 'mouth',
-  //
-  // skill:         'oral-sex',
+  requires:['P:has-pussy'],
 
   consentTarget: 30,
   consentFactors: [
@@ -36,6 +35,7 @@ SexAction.register('get-cunnilingus',{
     desire: 60,
   },
 
+  techniqueTarget: 22,
   skills: {
     partner:['servicing']
   },

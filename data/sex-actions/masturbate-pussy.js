@@ -5,9 +5,11 @@ SexAction.register('masturbate-pussy',{
   partnerCategory: SexAction.PartCategory.pussy,
   description: `{T:name} will masturbate for you while you watch.`,
 
-  requires:['T:has-pussy'],
+  time: 1,
+  playerStamina: -10,
+  partnerStamina: 60,
 
-  // persistPartner:'pussy',
+  requires:['T:has-pussy'],
 
   consentTarget: 35,
   consentFactors: [
@@ -31,6 +33,7 @@ SexAction.register('masturbate-pussy',{
     desire: 30
   },
 
+  techniqueTarget: 9,
   skills: {
     partner:['performance','technique'],
   },

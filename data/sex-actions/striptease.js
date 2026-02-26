@@ -5,6 +5,10 @@ SexAction.register('striptease',{
   partnerCategory: SexAction.PartCategory.none,
   description: `{T:name} will sensually remove {T:his} clothes for your enjoyment.`,
 
+  time: 5,
+  playerStamina: -10,
+  partnerStamina: 50,
+
   // TODO: Dancing requirements. Is this a skill that needs to be learned? Is this even a 'dance'?
 
   consentTarget: 10,
@@ -27,6 +31,7 @@ SexAction.register('striptease',{
     desire: 25
   },
 
+  techniqueTarget: 17,
   skills: {
     partner:['dance','performance']
   },

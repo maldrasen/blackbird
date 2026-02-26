@@ -5,6 +5,10 @@ SexAction.register('finger-anus',{
   partnerCategory: SexAction.PartCategory.ass,
   description: `Fuck {T:name's} asshole with your fingers.`,
 
+  time: 1,
+  playerStamina: 40,
+  partnerStamina: 70,
+
   consentTarget: 30,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.touching },
@@ -28,6 +32,7 @@ SexAction.register('finger-anus',{
     desire: 60
   },
 
+  techniqueTarget: 16,
   skills: {
     player:['servicing']
   },

@@ -5,7 +5,9 @@ SexAction.register('fondle-ass',{
   partnerCategory: SexAction.PartCategory.ass,
   description: `Fondle and squeeze {T:name's} ass.`,
 
-  // persistPlayer: 'hands',
+  time: 1,
+  playerStamina: 30,
+  partnerStamina: 30,
 
   consentTarget: 20,
   consentFactors: [
@@ -27,6 +29,7 @@ SexAction.register('fondle-ass',{
     desire: 30,
   },
 
+  techniqueTarget: 6,
   skills: {
     player:['servicing']
   },

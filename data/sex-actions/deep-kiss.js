@@ -16,6 +16,10 @@ SexAction.register('deep-kiss',{
   // complementing: ['gentle personality'],
   // conflicting:   ['aggressive personality'],
 
+  time: 1,
+  playerStamina: 40,
+  partnerStamina: 40,
+
   consentTarget: 30,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.emotional },
@@ -39,6 +43,7 @@ SexAction.register('deep-kiss',{
     desire: 40,
   },
 
+  techniqueTarget: 12,
   skills: {
     partner:['servicing'],
     player:['servicing'],

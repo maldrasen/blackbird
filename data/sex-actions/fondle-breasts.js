@@ -5,8 +5,9 @@ SexAction.register('fondle-breasts',{
   partnerCategory: SexAction.PartCategory.breasts,
   description: `Fondle and squeeze {T:name's} breasts.`,
 
-  // persistPlayer: 'hands',
-  // persistPartner: 'breasts',
+  time: 1,
+  playerStamina: 30,
+  partnerStamina: 30,
 
   requires:['T:has-breasts'],
 
@@ -30,6 +31,7 @@ SexAction.register('fondle-breasts',{
     desire: 30
   },
 
+  techniqueTarget: 6,
   skills: {
     player:['servicing']
   },

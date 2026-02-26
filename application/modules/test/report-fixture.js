@@ -24,10 +24,11 @@ global.ReportFixture = (function() {
       };
 
       switch (sort) {
-        case 'consentTarget': addNumericResult(action.getConsentTarget()); break;
-        case 'time': throw `Implement time`;
-        case 'playerStamina': throw `Implement stamina`;
-        case 'partnerStamina': throw `Implement stamina`;
+        case 'consentTarget':         addNumericResult(action.getConsentTarget()); break;
+        case 'techniqueTarget':       addNumericResult(action.getTechniqueTarget()); break;
+        case 'time':                  addNumericResult(action.getTime()); break;
+        case 'playerStamina':         addNumericResult(action.getPlayerStamina()); break;
+        case 'partnerStamina':        addNumericResult(action.getPartnerStamina()); break;
         case 'sensation.anus':        addNumericResult(action.getPartnerSensations().anus); break;
         case 'sensation.cervix':      addNumericResult(action.getPartnerSensations().cervix); break;
         case 'sensation.clit':        addNumericResult(action.getPartnerSensations().clit); break;
