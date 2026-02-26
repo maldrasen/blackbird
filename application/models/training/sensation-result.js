@@ -1,11 +1,10 @@
 global.SensationResult = function(code, context) {
-  const PhysicalCodes = new Set([
-    'anus', 'cervix', 'clit', 'nipple', 'throat', 'cock', 'prostate', 'urethra', 'pussy'
-  ]);
-
-  const sexAction = SexAction.lookup(code);
   const player = context.P;
   const partner = context.T;
+
+  const sexAction = SexAction.lookup(code);
+  const partnerSensations = Object.keys(sexAction.getPartnerSensations());
+  const playerSensations = Object.keys(sexAction.getPlayerSensations());
 
   // Only add sensation to parts the character actually has. This is important for anal actions that might include
   // prostate stimulus, or actions like a lap dance that has both cock and pussy sensations. (Sensations and part
@@ -18,32 +17,33 @@ global.SensationResult = function(code, context) {
   const partnerHasPussy = PussyComponent.lookupNormalOf(partner) != null;
 
   const playerHas = {
-    nipple:   playerHasBreasts,
-    cock:     playerHasCock,
-    prostate: playerHasCock,
-    cervix:   playerHasPussy,
-    clit:     playerHasPussy,
-    pussy:    playerHasPussy};
+    desire:   true,
+    anus:     playerSensations.includes('anus'),
+    throat:   playerSensations.includes('throat'),
+    urethra:  playerSensations.includes('urethra'),
+    nipple:   playerSensations.includes('nipple')   && playerHasBreasts,
+    cock:     playerSensations.includes('cock')     && playerHasCock,
+    prostate: playerSensations.includes('prostate') && playerHasCock,
+    cervix:   playerSensations.includes('cervix')   && playerHasPussy,
+    clit:     playerSensations.includes('clit')     && playerHasPussy,
+    pussy:    playerSensations.includes('pussy')    && playerHasPussy };
 
   const partnerHas = {
-    nipple:   partnerHasBreasts,
-    cock:     partnerHasCock,
-    prostate: partnerHasCock,
-    cervix:   partnerHasPussy,
-    clit:     partnerHasPussy,
-    pussy:    partnerHasPussy };
-
-  const playerSensations = {
-    anus:0, cervix:0, clit:0, nipple:0, throat:0, cock:0, prostate:0, urethra:0, pussy:0, desire:0 };
-
-  const partnerSensations = {
-    anus:0, cervix:0, clit:0, nipple:0, throat:0, cock:0, prostate:0, urethra:0, pussy:0,
-    anger:0, comfort:0, desire:0, shame:0, submission:0, suffering:0 };
-
-  Object.keys(playerSensations).forEach(key => {
-    if (playerHas[key] == null) { playerHas[key] = true; } });
-  Object.keys(partnerSensations).forEach(key => {
-    if (partnerHas[key] == null) { partnerHas[key] = true; } });
+    anger:      true,
+    comfort:    true,
+    desire:     true,
+    shame:      true,
+    submission: true,
+    suffering:  true,
+    anus:       partnerSensations.includes('anus'),
+    throat:     partnerSensations.includes('throat'),
+    urethra:    partnerSensations.includes('urethra'),
+    nipple:     partnerSensations.includes('nipple')   && partnerHasBreasts,
+    cock:       partnerSensations.includes('cock')     && partnerHasCock,
+    prostate:   partnerSensations.includes('prostate') && partnerHasCock,
+    cervix:     partnerSensations.includes('cervix')   && partnerHasPussy,
+    clit:       partnerSensations.includes('clit')     && partnerHasPussy,
+    pussy:      partnerSensations.includes('pussy')    && partnerHasPussy };
 
   // Consent Effects
   // - **Eager** `(> 100)` All the positive sensation from this action get a bonus.
@@ -75,9 +75,9 @@ global.SensationResult = function(code, context) {
     const partnerBaseline = sexAction.getPartnerSensations();
     const playerBaseline = sexAction.getPlayerSensations();
 
-    Object.keys(partnerSensations).forEach(key => {
+    Object.keys(partnerHas).forEach(key => {
       response.partner[key] = []; });
-    Object.keys(playerSensations).forEach(key => {
+    Object.keys(playerHas).forEach(key => {
       response.player[key] = []; });
     Object.keys(partnerBaseline).forEach(key => {
       addPartnerSensation(key,'Baseline',partnerBaseline[key]); });
@@ -124,13 +124,37 @@ global.SensationResult = function(code, context) {
   }
 
   function applyTechniqueSkill(options) {
+    (options.from === 'partner' ? skillsUsed.partner : skillsUsed.player).push('technique');
+
     const fromEntity = options.from === 'partner' ? partner : player;
-    const toSensations = options.to === 'partner' ? partnerSensations : playerSensations;
+    const toHas = options.to === 'partner' ? partnerHas : playerHas;
     const check = SkillCheck(fromEntity, 'technique');
 
     let value = check.value;
     let label = 'Technique';
     let extra = null;
+
+    // It's possible to both crit and exceed the technique target by 2, in
+    // which case the sensation value is quadrupled. The anger that may have
+    // been caused by this action is also reduced.
+    if (value > sexAction.getTechniqueTarget() * 2) {
+      label = 'Pleasing Technique'
+      extra = 'good'
+      value *= 2;
+      if (options.from === 'player' && options.to === 'partner') {
+        multiplyPartnerSensation('anger',label,0.5,extra); }
+    }
+
+    if (value < sexAction.getTechniqueTarget()) {
+      label = 'Poor Technique'
+      extra = 'poor'
+      value /= 2;
+
+      if (options.from === 'partner' && options.to === 'player') {
+        addPartnerSensation('shame',label,25,extra); }
+      if (options.from === 'player' && options.to === 'partner') {
+        addPartnerSensation('anger',label,50,extra); }
+    }
 
     if (check.crit) {
       value *= 2;
@@ -144,7 +168,7 @@ global.SensationResult = function(code, context) {
     }
     if (check.fumble) {
       value = 0;
-      label = 'Poor Technique';
+      label = 'Terrible Technique';
       extra = 'fumble';
 
       if (options.from === 'partner' && options.to === 'player') {
@@ -153,8 +177,8 @@ global.SensationResult = function(code, context) {
         addPartnerSensation('anger',label,100,extra); }
     }
 
-    Object.keys(toSensations).forEach(code => {
-      if (value > 0 && toSensations[code] > 0 && PhysicalCodes.has(code)) {
+    Object.keys(toHas).forEach(code => {
+      if (value > 0) {
         if (options.to === 'partner') { addPartnerSensation(code,label,value,extra); }
         if (options.to === 'player')  { addPlayerSensation(code,label,value,extra); }
       }
@@ -176,33 +200,25 @@ global.SensationResult = function(code, context) {
 
   function addPartnerSensation(code, label, value, extra=null) {
     if (partnerHas[code]) {
-      // console.log(`--- Partner Add ${code}[${label}] = ${value} ${extra ? `(${extra})` : '' }`);
       response.partner[code].push({ op:'add', label:label, value:value, extra:extra });
-      partnerSensations[code] += value;
     }
   }
 
   function addPlayerSensation(code, label, value, extra=null) {
     if (playerHas[code]) {
-      // console.log(`--- Player Add ${code}[${label}] = ${value} ${extra ? `(${extra})` : '' }`);
       response.player[code].push({ op:'add', label:label, value:value, extra:extra });
-      playerSensations[code] += value;
     }
   }
 
   function multiplyPartnerSensation(code, label, value, extra=null) {
-    if (partnerHas[code] && partnerSensations[code]) {
-      // console.log(`--- Partner Mult ${code}[${label}] = ${value} ${extra ? `(${extra})` : '' }`);
+    if (partnerHas[code]) {
       response.partner[code].push({ op:'mult', label:label, value:value, extra:extra });
-      partnerSensations[code] *= value;
     }
   }
 
   function multiplyPlayerSensation(code, label, value, extra=null) {
-    if (playerHas[code] && playerSensations[code]) {
-      // console.log(`--- Player Mult ${code}[${label}] = ${value} ${extra ? `(${extra})` : '' }`);
+    if (playerHas[code]) {
       response.player[code].push({ op:'mult', label:label, value:value, extra:extra });
-      playerSensations[code] *= value;
     }
   }
 
@@ -223,17 +239,36 @@ global.SensationResult = function(code, context) {
   }
 
   function getPartnerSensations() {
-    return ObjectHelper.select(partnerSensations, (key, value) => {
-      return value > 0; });
+    return compileSensations(Object.keys(partnerHas), response.partner)
   }
 
   function getPlayerSensations() {
-    return ObjectHelper.select(playerSensations, (key, value) => {
-      return value > 0; });
+    return compileSensations(Object.keys(playerHas), response.player)
+  }
+
+  function compileSensations(keys, operations) {
+    const sensations = {};
+
+    keys.forEach(key => { sensations[key] = 0; });
+
+    keys.forEach(key => {
+      operations[key].forEach(operation => {
+        if (operation.op === 'add') { sensations[key] += operation.value; }
+      });
+    });
+
+    keys.forEach(key => {
+      operations[key].forEach(operation => {
+        if (operation.op === 'mult') { sensations[key] *= operation.value; }
+      });
+    });
+
+    return ObjectHelper.select(sensations, (key, value) => { return value > 0; });
   }
 
   return Object.freeze({
     getConsent: () => { return consentResult; },
+    getSkillsUsed: () => { return skillsUsed; },
     getResponse,
     getPartnerSensations,
     getPlayerSensations,

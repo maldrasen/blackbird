@@ -22,7 +22,6 @@ describe("SensationResult", function() {
       expect(sensations.shame).to.equal(120);
       expect(sensations.submission).to.equal(120);
       expect(result.getPlayerSensations().cock).to.equal(60);
-
     });
 
     it('applyBaseline() sensations when unwilling', function() {
@@ -53,7 +52,7 @@ describe("SensationResult", function() {
     });
 
 
-    it("applyTechnique() when partner is 'performing'", function() {
+    it("applyTechnique() when partner is 'performing' with double skill target", function() {
       Random.stubBetween(50,15);
 
       const context = TrainingFixtures.standardTrainingContext({},{
@@ -64,12 +63,12 @@ describe("SensationResult", function() {
       result.applyBaseline();
       result.applyTechnique();
 
-      expect(Math.round(result.getPartnerSensations().anus)).to.equal(103);
+      expect(result.getPartnerSensations().anus).to.equal(135);
 
       const anusSensations = result.getResponse().partner.anus;
-      expect(anusSensations[1].label).to.equal('Technique');
-      expect(anusSensations[1].extra).to.be.null;
-      expect(anusSensations[1].value).to.equal(32.5);
+      expect(anusSensations[1].label).to.equal('Pleasing Technique');
+      expect(anusSensations[1].extra).to.equal('good');
+      expect(anusSensations[1].value).to.equal(65);
     });
 
     it("applyTechnique() crit when partner is 'performing'", function() {
@@ -86,7 +85,7 @@ describe("SensationResult", function() {
       const anusSensations = result.getResponse().partner.anus;
       expect(anusSensations[1].label).to.equal('Excellent Technique');
       expect(anusSensations[1].extra).to.equal('crit');
-      expect(anusSensations[1].value).to.equal(65);
+      expect(anusSensations[1].value).to.equal(130);
 
       const desireSensations = result.getResponse().partner.desire;
       expect(desireSensations[1].label).to.equal('Excellent Technique');
