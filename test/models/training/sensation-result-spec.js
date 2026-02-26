@@ -1,4 +1,4 @@
-describe.only("SensationResult", function() {
+describe("SensationResult", function() {
 
   describe('applyBaseline()', function() {
     it("applyBaseline() sensations", function() {
