@@ -39,7 +39,9 @@ describe("SensationResult", function() {
   });
 
   describe('applyTechnique()', function() {
-    it.only("applyTechnique() when partner is 'performing'", function() {
+    it("applyTechnique() when partner is 'performing'", function() {
+      Random.stubBetween(50,15);
+
       const context = TrainingFixtures.standardTrainingContext({},{
         skills: { technique:30 },
         feelings:{ respect:350 }});
@@ -48,10 +50,49 @@ describe("SensationResult", function() {
       result.applyBaseline();
       result.applyTechnique();
 
-      console.log(`Consent: ${result.getResponse().consent.getConsentValue()}`,result.getResponse().consent.getConsentLabel())
-      console.log(result.getResponse());
+      expect(Math.round(result.getPartnerSensations().anus)).to.equal(103);
+
+      const anusSensations = result.getResponse().partner.anus;
+      expect(anusSensations[1].label).to.equal('Technique');
+      expect(anusSensations[1].extra).to.be.null;
+      expect(anusSensations[1].value).to.equal(32.5);
     });
 
+    it("applyTechnique() crit when partner is 'performing'", function() {
+      Random.stubBetween(99,15);
+
+      const context = TrainingFixtures.standardTrainingContext({},{
+        skills: { technique:30 },
+        feelings:{ respect:350 }});
+
+      const result = SensationResult('masturbate-anus', context);
+      result.applyBaseline();
+      result.applyTechnique();
+
+      const anusSensations = result.getResponse().partner.anus;
+      expect(anusSensations[1].label).to.equal('Excellent Technique');
+      expect(anusSensations[1].extra).to.equal('crit');
+      expect(anusSensations[1].value).to.equal(65);
+
+      const desireSensations = result.getResponse().partner.desire;
+      expect(desireSensations[1].label).to.equal('Excellent Technique');
+      expect(desireSensations[1].value).to.equal(50);
+    });
+
+    it("applyTechnique() fumble when partner is 'performing'", function() {
+      Random.stubBetween(1,15);
+
+      const context = TrainingFixtures.standardTrainingContext({},{
+        skills: { technique:30 },
+        feelings:{ respect:350 }});
+
+      const result = SensationResult('masturbate-anus', context);
+      result.applyBaseline();
+      result.applyTechnique();
+
+      // Only baseline sensations are received, because technique value was reduced to 0.
+      expect(result.getResponse().partner.anus.length).to.equal(1);
+    });
 
     it('applyTechnique() when player has no skill', function() {
       const context = TrainingFixtures.standardTrainingContext({},{ feelings:{ affection:150 }});

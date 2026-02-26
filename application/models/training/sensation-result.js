@@ -94,50 +94,67 @@ global.SensationResult = function(code, context) {
     }
   }
 
-  // Almost every skill will have a technique roll, either by the player or the
-  // partner, or by both if this is a mutual action. Not sure if we ever have
-  // an action where neither person is using technique. I'll assume not for
-  // now.
+  // Almost every skill will have a technique roll, either by the player or the partner, or by both if this is a mutual
+  // action. Not sure if we ever have an action where neither person is using technique. I'll assume not for now.
   //
-  // In most cases, the technique roll only adds to the physical sensation
-  // baselines for the opposite person. Some actions though have the player
-  // acting on themselves. In these cases the skill list will include the
-  // 'technique' skill to indicate that it's being used on themselves.
+  // In most cases, the technique roll only adds to the physical sensation baselines for the opposite person. Some
+  // actions though have the player acting on themselves. In these cases the skill list will include the 'technique'
+  // skill to indicate that it's being used on themselves.
   //
-  // Technique is dex based and has a factor of 1.25, meaning the normal max
-  // roll for Technique is 125, if a person has 100 dex. A high dex score
-  // though might be around though, which puts the normal high range for
-  // technique at around 10-38. It should be reasonable to just add the
-  // technique skill value directly, double it on a crit, and set it to 0 on
-  // a fumble.
+  // Technique is dex based and has a factor of 1.25, meaning the normal max roll for Technique is 125, if a person has
+  // 100 dex. A high dex score though might be around though, which puts the normal high range for technique at around
+  // 10-38. It should be reasonable to just add the technique skill value directly, double it on a crit, and set it to
+  // 0 on a fumble.
   function applyTechnique() {
     const partnerSkills = sexAction.getSkills().partner || [];
     const playerSkills = sexAction.getSkills().player || [];
 
     if (partnerSkills.includes('technique')) {
-      const check = SkillCheck(partner, 'technique');
-
-      let value = check.value;
-      if (check.crit) { value *= 2; }
-      if (check.fumble) { value = 0; } // A performance 'fumble' shouldn't add anger maybe?
-
-      console.log("Technique Check:",check);
-
-      Object.keys(partnerSensations).forEach(code => {
-        if (partnerSensations[code] > 0 && PhysicalCodes.has(code)) {
-          console.log(`---Add ${value} to ${code}`);
-          addPartnerSensation(code,'Technique',value);
-        }
-      });
-
-      // sensation based on skill...
-      //addPartnerSensation('')
+      applyTechniqueSkill({ from:'partner', to:'partner' });
     }
     if (playerSkills.includes('technique')) {
-      const check = SkillCheck(player, 'technique');
+      applyTechniqueSkill({ from:'player', to:'player' });
     }
 
-    // This will be complicated to figure out...
+    // TODO: From player to partner, from partner to player, and mutual actions.
+  }
+
+  function applyTechniqueSkill(options) {
+    const fromEntity = options.from === 'partner' ? partner : player;
+    const toSensations = options.to === 'partner' ? partnerSensations : playerSensations;
+    const check = SkillCheck(fromEntity, 'technique');
+
+    let value = check.value;
+    let label = 'Technique';
+    let extra = null;
+
+    if (check.crit) {
+      value *= 2;
+      label = 'Excellent Technique';
+      extra = 'crit';
+
+      if (options.to === 'partner') {
+        addPartnerSensation('desire',label,50,extra); }
+      if (options.to === 'player') {
+        addPlayerSensation('desire',label,50,extra); }
+    }
+    if (check.fumble) {
+      value = 0;
+      label = 'Poor Technique';
+      extra = 'fumble';
+
+      if (options.from === 'partner' && options.to === 'player') {
+        addPartnerSensation('shame',label,50,extra); }
+      if (options.from === 'player' && options.to === 'partner') {
+        addPartnerSensation('anger',label,100,extra); }
+    }
+
+    Object.keys(toSensations).forEach(code => {
+      if (value > 0 && toSensations[code] > 0 && PhysicalCodes.has(code)) {
+        if (options.to === 'partner') { addPartnerSensation(code,label,value,extra); }
+        if (options.to === 'player')  { addPlayerSensation(code,label,value,extra); }
+      }
+    });
   }
 
   // The performance skill is applied automatically when a person is receiving
@@ -153,30 +170,34 @@ global.SensationResult = function(code, context) {
 
   }
 
-  function addPartnerSensation(code, label, value) {
+  function addPartnerSensation(code, label, value, extra=null) {
     if (partnerHas[code]) {
-      response.partner[code].push({ op:'add', label:label, value:value });
+      // console.log(`--- Partner Add ${code}[${label}] = ${value} ${extra ? `(${extra})` : '' }`);
+      response.partner[code].push({ op:'add', label:label, value:value, extra:extra });
       partnerSensations[code] += value;
     }
   }
 
-  function addPlayerSensation(code, label, value) {
+  function addPlayerSensation(code, label, value, extra=null) {
     if (playerHas[code]) {
-      response.player[code].push({ op:'add', label:label, value:value });
+      // console.log(`--- Player Add ${code}[${label}] = ${value} ${extra ? `(${extra})` : '' }`);
+      response.player[code].push({ op:'add', label:label, value:value, extra:extra });
       playerSensations[code] += value;
     }
   }
 
-  function multiplyPartnerSensation(code, label, value) {
+  function multiplyPartnerSensation(code, label, value, extra=null) {
     if (partnerHas[code] && partnerSensations[code]) {
-      response.partner[code].push({ op:'mult', label:label, value:value });
+      // console.log(`--- Partner Mult ${code}[${label}] = ${value} ${extra ? `(${extra})` : '' }`);
+      response.partner[code].push({ op:'mult', label:label, value:value, extra:extra });
       partnerSensations[code] *= value;
     }
   }
 
-  function multiplyPlayerSensation(code, label, value) {
+  function multiplyPlayerSensation(code, label, value, extra=null) {
     if (playerHas[code] && playerSensations[code]) {
-      response.player[code].push({ op:'mult', label:label, value:value });
+      // console.log(`--- Player Mult ${code}[${label}] = ${value} ${extra ? `(${extra})` : '' }`);
+      response.player[code].push({ op:'mult', label:label, value:value, extra:extra });
       playerSensations[code] *= value;
     }
   }
