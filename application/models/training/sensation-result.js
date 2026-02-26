@@ -10,8 +10,6 @@ global.SensationResult = function(code, context) {
     anus:0, cervix:0, clit:0, nipple:0, throat:0, cock:0, prostate:0, urethra:0, pussy:0,
     anger:0, comfort:0, desire:0, shame:0, submission:0, suffering:0 };
 
-  const skillsUsed = { player:[], partner:[] };
-
   // Consent Effects
   // - **Eager** `(> 100)` All the positive sensation from this action get a bonus.
   // - **Willing** `(25 - 100)` Default value, sensation calculations are normal.
@@ -23,20 +21,20 @@ global.SensationResult = function(code, context) {
         consentResult.applyFactors();
   const consent = consentResult.getConsent();
 
+  const skillsUsed = { partner:[], player:[] };
+  const response = { consent:consentResult, partner:{}, player:{} };
+
   function applyFactors() {
     applyBaseline();
   }
 
-  // The baseline sensations for each action is defined on the action itself.
-  // This should make it easy to balance the action sensation as they'll
-  // always have a well defined starting place to individually tweak. Actions
-  // should only baseline the sensations they produce, so kissing shouldn't
-  // send any anal sensations.
+  // This function always needs to be called first, even in the specs, in order
+  // to set up the response object. The baseline sensations for each action is
+  // defined on the action itself. This should make it easy to balance the
+  // action sensation as they'll always have a well defined starting place to
+  // individually tweak.
   //
-  //   anus:0, cervix:0, clit:0, nipple:0, throat:0, cock:0, prostate:0, urethra:0, pussy:0,
-  //   anger:0, comfort:0, desire:0, shame:0, submission:0, suffering:0,
-  //
-  // We do need to take the consent into consideration here as well. If the
+  // We also need to take the consent into consideration here as well. If the
   // partner is unwilling the action should produce anger and suffering, even
   // if it normally wouldn't. Likewise, a reluctant action should always
   // produce some level of submission and shame.
@@ -44,21 +42,22 @@ global.SensationResult = function(code, context) {
     const partnerBaseline = sexAction.getPartnerSensations();
     const playerBaseline = sexAction.getPlayerSensations();
 
+    Object.keys(partnerSensations).forEach(key => {
+      response.partner[key] = []; });
+    Object.keys(playerSensations).forEach(key => {
+      response.player[key] = []; });
     Object.keys(partnerBaseline).forEach(key => {
-      partnerSensations[key] = partnerBaseline[key];
-    });
-
+      addPartnerSensation(key,'Baseline',partnerBaseline[key]); });
     Object.keys(playerBaseline).forEach(key => {
-      playerSensations[key] = playerBaseline[key];
-    });
+      addPlayerSensation(key,'Baseline',playerBaseline[key]); });
 
     if (consent === Consent.unwilling) {
-      partnerSensations['anger'] += 100;
-      partnerSensations['suffering'] += 100;
+      addPartnerSensation('anger','Baseline',100);
+      addPartnerSensation('suffering','Baseline',100);
     }
     if (consent === Consent.reluctant) {
-      partnerSensations['shame'] += 100;
-      partnerSensations['submission'] += 100;
+      addPartnerSensation('shame','Baseline',100);
+      addPartnerSensation('submission','Baseline',100);
     }
   }
 
@@ -92,20 +91,59 @@ global.SensationResult = function(code, context) {
 
   }
 
+  function addPartnerSensation(code, label, value) {
+    response.partner[code].push({ op:'add', label:label, value:value });
+    partnerSensations[code] += value;
+  }
+
+  function addPlayerSensation(code, label, value) {
+    response.player[code].push({ op:'add', label:label, value:value });
+    playerSensations[code] += value;
+  }
+
+  function multiplyPartnerSensation(code, label, value) {
+    if (partnerSensations[code]) {
+      response.partner[code].push({ op:'mult', label:label, value:value });
+      partnerSensations[code] *= value;
+    }
+  }
+
+  function multiplyPlayerSensation(code, label, value) {
+    if (playerSensations[code]) {
+      response.player[code].push({ op:'mult', label:label, value:value });
+      playerSensations[code] *= value;
+    }
+  }
+
+  function getResponse() {
+    const slimResponse = {
+      consent: response.consent,
+      partnerSensations: getPartnerSensations(),
+      playerSensations: getPlayerSensations(),
+      partner:{},
+      player:{} };
+
+    Object.keys(slimResponse.partnerSensations).forEach(key => {
+      slimResponse.partner[key] = response.partner[key]; });
+    Object.keys(slimResponse.playerSensations).forEach(key => {
+      slimResponse.player[key] = response.player[key]; });
+
+    return slimResponse;
+  }
+
   function getPartnerSensations() {
     return ObjectHelper.select(partnerSensations, (key, value) => {
-      return value > 0;
-    });
+      return value > 0; });
   }
 
   function getPlayerSensations() {
     return ObjectHelper.select(playerSensations, (key, value) => {
-      return value > 0;
-    });
+      return value > 0; });
   }
 
   return Object.freeze({
     getConsent: () => { return consentResult; },
+    getResponse,
     getPartnerSensations,
     getPlayerSensations,
     applyFactors,

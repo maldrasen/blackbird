@@ -1,4 +1,4 @@
-describe("SensationResult", function() {
+describe.only("SensationResult", function() {
 
   describe('applyBaseline()', function() {
     it("applyBaseline() sensations", function() {
@@ -44,6 +44,8 @@ describe("SensationResult", function() {
       const result = SensationResult('suck-pussy', context);
       result.applyBaseline();
       result.applyTechnique();
+
+      console.log(result.getResponse());
     });
   });
 
