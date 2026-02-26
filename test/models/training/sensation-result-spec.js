@@ -115,7 +115,7 @@ describe("SensationResult", function() {
 
       const context = TrainingFixtures.standardTrainingContext({},{
         skills: { performance:20 },
-        feelings: { respect:100 }});
+        feelings: { respect:150 }});
 
       const result = SensationResult('striptease', context);
       result.applyBaseline();
@@ -224,6 +224,42 @@ describe("SensationResult", function() {
       expect(desireSensations[1].label).to.equal('Performance')
       expect(Math.round(desireSensations[1].value)).to.equal(14)
       expect(result.getSkillsUsed().partner).to.include('performance');
+    });
+
+    it('when normal action with reluctant consent', function() {
+      Random.stubBetween(50,10);
+
+      const context = TrainingFixtures.standardTrainingContext({},{
+        skills: { performance:20 },
+        feelings: { affection:140, respect:140 }});
+
+      const result = SensationResult('fondle-breasts', context);
+      result.applyBaseline();
+      result.applyPerformance();
+
+      const desireSensations = result.getResponse().player.desire;
+      expect(desireSensations[1].label).to.equal('Performance')
+      expect(Math.round(desireSensations[1].value)).to.equal(7)
+    });
+
+    it('when normal action with fumbled performance', function() {
+      Random.stubBetween(1);
+
+      const context = TrainingFixtures.standardTrainingContext({},{
+        skills: { performance:20 },
+        feelings: { affection:180, respect:180 }});
+
+      const result = SensationResult('fondle-breasts', context);
+      result.applyBaseline();
+      result.applyPerformance();
+
+      const response = result.getResponse();
+      const shameSensations = response.partner.shame;
+
+      expect(shameSensations[1].extra).to.equal("fumble");
+      expect(shameSensations[1].label).to.equal("Terrible Performance");
+      expect(shameSensations[1].value).to.equal(60);
+      expect(response.player.desire.length).to.equal(1);
     });
   });
 

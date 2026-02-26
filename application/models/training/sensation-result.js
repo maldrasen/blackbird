@@ -1,3 +1,11 @@
+/**
+ * SensationResult is a long complicated module, used to calculate the sensation values for a single sex action. It's
+ * tempting to break this into multiple modules, but I don't think that would really help to understand it, and would
+ * only further complicate an already complicated process.
+ *
+ * @param {string} code - Sex action code
+ * @param {object} context - Sex action context { T:partner, P:player }
+ */
 global.SensationResult = function(code, context) {
 
   const PhysicalCodes = new Set([
@@ -98,6 +106,8 @@ global.SensationResult = function(code, context) {
       addPartnerSensation('submission','Baseline',100);
     }
   }
+
+  // === Skills : Technique ============================================================================================
 
   // Almost every skill will have a technique roll, either by the player or the partner, or by both if this is a mutual
   // action. Not sure if we ever have an action where neither person is using technique. I'll assume not for now.
@@ -201,6 +211,8 @@ global.SensationResult = function(code, context) {
     }
   }
 
+  // === Skills : Performance ==========================================================================================
+
   // The performance skill is applied automatically when a person is receiving an action. The performance always adds a
   // slight bonus to the desire received. When an action includes desire specifically the bonus is higher. The
   // performance skill is only increased by performance specific actions.
@@ -232,11 +244,13 @@ global.SensationResult = function(code, context) {
   // skill roll to the physical sensations as well as increasing desire. Unlike the technique skill there is no
   // performance target to hit. We can always add the skill check value to the sensations.
   function applyPerformanceWhenPartnerFocused() {
+    if (consent === Consent.unwilling) { return; }
+
     skillsUsed.partner.add('performance');
 
     const check = SkillCheck(partner, 'performance');
 
-    let value = check.value;
+    let value = (consent === Consent.reluctant ? 0.5 : 1) * check.value;
     let label = 'Performance'
     let extra;
 
@@ -268,46 +282,55 @@ global.SensationResult = function(code, context) {
   }
 
   // The applyPerformance() method is the opposite of the technique function because the 'to' entity is the character
-  // doing the performing to the 'from' entity performing the action.
+  // doing the performing to the 'from' entity performing the action. A critical performance doesn't really do anything
+  // but increase the desire in the acting character.
   function applyPerformanceSkill(options) {
+    let consentFactor = 1;
+
+    // Partner performance will suffer if consent is less than willing.
+    // Player performance bonus to desire is unaffected by consent.
+    if (options.to === 'partner') {
+      if (consent === Consent.unwilling) { return; }
+      if (consent === Consent.reluctant) { consentFactor = 0.5; }
+    }
+
     (options.to === 'partner' ? skillsUsed.partner : skillsUsed.player).add('performance');
 
     const performingEntity = options.to === 'partner' ? partner : player;
     const check = SkillCheck(performingEntity, 'performance');
 
-    let value = (check.value / 2);
+    let value = consentFactor * (check.value / 2);
     let label = 'Performance';
     let extra = null;
 
-    // if (check.crit) {
-    //   value *= 2;
-    //   label = 'Excellent Technique';
-    //   extra = 'crit';
-    //
-    //   if (options.to === 'partner') {
-    //     addPartnerSensation('desire',label,50,extra); }
-    //   if (options.to === 'player') {
-    //     addPlayerSensation('desire',label,50,extra); }
-    // }
-    // if (check.fumble) {
-    //   value = 0;
-    //   label = 'Terrible Technique';
-    //   extra = 'fumble';
-    //
-    //   if (options.from === 'partner' && options.to === 'player') {
-    //     addPartnerSensation('shame',label,50,extra); }
-    //   if (options.from === 'player' && options.to === 'partner') {
-    //     addPartnerSensation('anger',label,100,extra); }
-    // }
+    if (check.crit) {
+      value *= 2;
+      label = 'Excellent Performance';
+      extra = 'crit';
+    }
+    if (check.fumble) {
+      value = 0;
+      label = 'Terrible Performance';
+      extra = 'fumble';
 
-    if (options.from === 'partner') { addPartnerSensation('desire',label,value,extra); }
-    if (options.from === 'player') { addPlayerSensation('desire',label,value,extra); }
+      // Only the partner will generate extra shame from a botched performance.
+      if (options.to === 'partner') { addPartnerSensation('shame',label,60,extra); }
+    }
+
+    if (value > 0) {
+      if (options.from === 'partner') { addPartnerSensation('desire',label,value,extra); }
+      if (options.from === 'player') { addPlayerSensation('desire',label,value,extra); }
+    }
   }
+
+  // === Skills : Servicing, Ravishing =================================================================================
 
   // Apply other skills like servicing, ravishing, dance, etc.
   function applySkills() {
 
   }
+
+  // === Sensation Result : Response ===================================================================================
 
   function addPartnerSensation(code, label, value, extra=null) {
     if (partnerHas[code]) {
@@ -377,9 +400,16 @@ global.SensationResult = function(code, context) {
     return ObjectHelper.select(sensations, (key, value) => { return value > 0; });
   }
 
+  function getSkillsUsed() {
+    return {
+      player:[...skillsUsed.player],
+      partner:[...skillsUsed.partner]
+    };
+  }
+
   return Object.freeze({
     getConsent: () => { return consentResult; },
-    getSkillsUsed: () => { return skillsUsed; },
+    getSkillsUsed,
     getResponse,
     getPartnerSensations,
     getPlayerSensations,
