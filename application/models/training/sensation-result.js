@@ -263,12 +263,45 @@ global.SensationResult = function(code, context) {
     }
 
     Object.keys(sexAction.getPlayerSensations()).forEach(key => {
-      addPlayerSensation(key, label, (key === 'desire' ? value*2 : value), extra);
+      if (value > 0) { addPlayerSensation(key, label, (key === 'desire' ? value*2 : value), extra); }
     });
   }
 
+  // The applyPerformance() method is the opposite of the technique function because the 'to' entity is the character
+  // doing the performing to the 'from' entity performing the action.
   function applyPerformanceSkill(options) {
+    (options.to === 'partner' ? skillsUsed.partner : skillsUsed.player).add('performance');
 
+    const performingEntity = options.to === 'partner' ? partner : player;
+    const check = SkillCheck(performingEntity, 'performance');
+
+    let value = (check.value / 2);
+    let label = 'Performance';
+    let extra = null;
+
+    // if (check.crit) {
+    //   value *= 2;
+    //   label = 'Excellent Technique';
+    //   extra = 'crit';
+    //
+    //   if (options.to === 'partner') {
+    //     addPartnerSensation('desire',label,50,extra); }
+    //   if (options.to === 'player') {
+    //     addPlayerSensation('desire',label,50,extra); }
+    // }
+    // if (check.fumble) {
+    //   value = 0;
+    //   label = 'Terrible Technique';
+    //   extra = 'fumble';
+    //
+    //   if (options.from === 'partner' && options.to === 'player') {
+    //     addPartnerSensation('shame',label,50,extra); }
+    //   if (options.from === 'player' && options.to === 'partner') {
+    //     addPartnerSensation('anger',label,100,extra); }
+    // }
+
+    if (options.from === 'partner') { addPartnerSensation('desire',label,value,extra); }
+    if (options.from === 'player') { addPlayerSensation('desire',label,value,extra); }
   }
 
   // Apply other skills like servicing, ravishing, dance, etc.
