@@ -110,39 +110,37 @@ global.SensationResult = function(code, context) {
   // === Skills : Technique ============================================================================================
 
   // Almost every skill will have a technique roll, either by the player or the partner, or by both if this is a mutual
-  // action. Not sure if we ever have an action where neither person is using technique. I'll assume not for now.
-  //
-  // In most cases, the technique roll only adds to the physical sensation baselines for the opposite person. Some
-  // actions though have the player acting on themselves. In these cases the skill list will include the 'technique'
-  // skill to indicate that it's being used on themselves.
+  // action. In most cases, the technique roll only adds to the physical sensation baselines for the opposite person.
+  // Crits or fumbles on skill checks could add to the emotional sensation as well though.
   //
   // Technique is dex based and has a factor of 1.25, meaning the normal max roll for Technique is 125, if a person has
   // 100 dex. A high dex score though might be around though, which puts the normal high range for technique at around
   // 10-38. It should be reasonable to just add the technique skill value directly, double it on a crit, and set it to
   // 0 on a fumble.
   function applyTechnique() {
-    const partnerSkills = sexAction.getSkills().partner || [];
-    const playerSkills = sexAction.getSkills().player || [];
-
-    if (partnerSkills.includes('technique')) {
-      return applyTechniqueSkill({ from:'partner', to:'partner' }); }
-    if (playerSkills.includes('technique')) {
-      return applyTechniqueSkill({ from:'player', to:'player' }); }
-
-    if (partnerSkills.length === 0 && playerSkills.length > 0) {
-      return applyTechniqueSkill({ from:'player', to:'partner' }); }
-    if (partnerSkills.length > 0 && playerSkills.length === 0) {
-      return applyTechniqueSkill({ from:'partner', to:'player' }); }
-
-    applyTechniqueSkill({ from:'player', to:'partner' });
-    applyTechniqueSkill({ from:'partner', to:'player' });
+    switch(sexAction.getDirection()) {
+      case ActionDirection.partnerToPlayer:
+        applyTechniqueSkill({ from:'partner', to:'player' }); break;
+      case ActionDirection.partnerToSelf:
+        applyTechniqueSkill({ from:'partner', to:'partner' }); break;
+      case ActionDirection.partnerToBoth:
+        applyTechniqueSkill({ from:'partner', to:'both' }); break;
+      case ActionDirection.playerToPartner:
+        applyTechniqueSkill({ from:'player', to:'partner' }); break;
+      case ActionDirection.playerToSelf:
+        applyTechniqueSkill({ from:'player', to:'player' }); break;
+      case ActionDirection.playerToBoth:
+        applyTechniqueSkill({ from:'player', to:'both' }); break;
+      case ActionDirection.mutual:
+        applyTechniqueSkill({ from:'player', to:'partner' });
+        applyTechniqueSkill({ from:'partner', to:'player' });
+    }
   }
 
   function applyTechniqueSkill(options) {
     (options.from === 'partner' ? skillsUsed.partner : skillsUsed.player).add('technique');
 
     const fromEntity = options.from === 'partner' ? partner : player;
-    const toHas = options.to === 'partner' ? partnerHas : playerHas;
     const check = SkillCheck(fromEntity, 'technique');
 
     let value = check.value;
@@ -156,7 +154,7 @@ global.SensationResult = function(code, context) {
       label = 'Pleasing Technique'
       extra = 'good'
       value *= 2;
-      if (options.from === 'player' && options.to === 'partner') {
+      if (sexAction.directionHasPlayerActingOnPartner()) {
         multiplyPartnerSensation('anger',label,0.5,extra); }
     }
 
@@ -165,9 +163,9 @@ global.SensationResult = function(code, context) {
       extra = 'poor'
       value /= 2;
 
-      if (options.from === 'partner' && options.to === 'player') {
+      if (sexAction.directionHasPartnerActingOnPlayer()) {
         addPartnerSensation('shame',label,25,extra); }
-      if (options.from === 'player' && options.to === 'partner') {
+      if (sexAction.directionHasPlayerActingOnPartner()) {
         addPartnerSensation('anger',label,50,extra); }
     }
 
@@ -192,52 +190,53 @@ global.SensationResult = function(code, context) {
         addPartnerSensation('anger',label,100,extra); }
     }
 
-    Object.keys(toHas).forEach(code => {
-      if (value > 0 && PhysicalCodes.has(code)) {
-        if (options.to === 'partner') { addPartnerSensation(code,label,value,extra); }
-        if (options.to === 'player')  { addPlayerSensation(code,label,value,extra); }
-      }
-    });
+    if (['partner','both'].includes(options.to)) {
+      Object.keys(partnerHas).forEach(code => {
+        if (value > 0 && PhysicalCodes.has(code)) {
+          addPartnerSensation(code,label,value,extra);
+        }
+      });
+    }
 
-    // Lap dance is a special case. It's adds the technique skill to both the
-    // player's and the partner's sensations. It's kind of masturbation while
-    // grinding. The player is uninvolved, so the partner's technique is
-    // applied twice. If we didn't add cock sensation here it wouldn't get any
-    // value from the partner's technique. If there are other actions like this
-    // (there probably will be) we'll need to figure out a way to flag these
-    // "one person's technique pleasuring two people at once" actions.
-    if (sexAction.getCode() === 'lap-dance') {
-      addPlayerSensation('cock',label,value,extra);
+    if (['player','both'].includes(options.to)) {
+      Object.keys(playerHas).forEach(code => {
+        if (value > 0 && PhysicalCodes.has(code)) {
+          addPlayerSensation(code,label,value,extra);
+        }
+      });
     }
   }
 
   // === Skills : Performance ==========================================================================================
 
   // The performance skill is applied automatically when a person is receiving an action. The performance always adds a
-  // slight bonus to the desire received. When an action includes desire specifically the bonus is higher. The
-  // performance skill is only increased by performance specific actions.
+  // slight bonus to the desire received. The performance skill is only increased by performance specific actions.
+  // I don't have any player performance focused actions yet. I'm thinking they might work slightly differently as the
+  // player character may have different skills and abilities than the partner characters.
   function applyPerformance() {
     const partnerSkills = sexAction.getSkills().partner || [];
     const playerSkills = sexAction.getSkills().player || [];
 
-    // I don't have any player performance focused actions yet. I'm thinking
-    // they might work slightly differently as the player character may have
-    // different skills and abilities than the partner characters.
-    if (playerSkills.includes('performance')) {
-      throw `TODO: Implement player performance focused actions.`
+    if (partnerSkills.includes('performance')) { return applyPerformanceWhenPartnerFocused(); }
+    if (playerSkills.includes('performance')) { throw `TODO: Implement player performance focused actions.` }
+
+    switch(sexAction.getDirection()) {
+      case ActionDirection.partnerToPlayer:
+        applyPerformanceSkill({ from:'partner', to:'player' }); break;
+      case ActionDirection.partnerToSelf:
+        applyPerformanceSkill({ from:'partner', to:'partner' }); break;
+      case ActionDirection.partnerToBoth:
+        applyPerformanceSkill({ from:'partner', to:'both' }); break;
+      case ActionDirection.playerToPartner:
+        applyPerformanceSkill({ from:'player', to:'partner' }); break;
+      case ActionDirection.playerToSelf:
+        applyPerformanceSkill({ from:'player', to:'player' }); break;
+      case ActionDirection.playerToBoth:
+        applyPerformanceSkill({ from:'player', to:'both' }); break;
+      case ActionDirection.mutual:
+        applyPerformanceSkill({ from:'player', to:'partner' });
+        applyPerformanceSkill({ from:'partner', to:'player' });
     }
-
-    if (partnerSkills.includes('performance')) {
-      if (playerSkills.length > 0) { throw `Player should not be doing anything if this is performance focused.`; }
-      return applyPerformanceWhenPartnerFocused(); }
-
-    if (partnerSkills.length === 0 && playerSkills.length > 0) {
-      return applyPerformanceSkill({ from:'player', to:'partner' }); }
-    if (partnerSkills.length > 0 && playerSkills.length === 0) {
-      return applyPerformanceSkill({ from:'partner', to:'player' }); }
-
-    applyPerformanceSkill({ from:'player', to:'partner' });
-    applyPerformanceSkill({ from:'partner', to:'player' });
   }
 
   // A partner focused performance action that includes playerSensations (like lap-dance) will add the performance
@@ -262,7 +261,7 @@ global.SensationResult = function(code, context) {
       // If a partner crits their performance focused action, this adds the
       // skill check value to their physical sensations. Technique could crit
       // as well leading to massive baseline sensations for performances.
-      Object.keys(sexAction.getPartnerSensations()).forEach(key => {
+      Object.keys(partnerHas).forEach(key => {
         if (PhysicalCodes.has(key)) { addPartnerSensation(key, label, value/2, extra); }
       });
     }
@@ -276,7 +275,11 @@ global.SensationResult = function(code, context) {
       addPartnerSensation('shame',label,80,extra);
     }
 
-    Object.keys(sexAction.getPlayerSensations()).forEach(key => {
+    // Performance focused actions (like masturbate) usually don't have player
+    // sensations other than desire. When they do (like lap dance) I want
+    // performance to effect all of these values as well, though desire has
+    // twice the effect.
+    Object.keys(playerHas).forEach(key => {
       if (value > 0) { addPlayerSensation(key, label, (key === 'desire' ? value*2 : value), extra); }
     });
   }
@@ -289,12 +292,10 @@ global.SensationResult = function(code, context) {
 
     // Partner performance will suffer if consent is less than willing.
     // Player performance bonus to desire is unaffected by consent.
-    if (options.to === 'partner') {
+    if (sexAction.getDirection() !== ActionDirection.playerToSelf) {
       if (consent === Consent.unwilling) { return; }
       if (consent === Consent.reluctant) { consentFactor = 0.5; }
     }
-
-    (options.to === 'partner' ? skillsUsed.partner : skillsUsed.player).add('performance');
 
     const performingEntity = options.to === 'partner' ? partner : player;
     const check = SkillCheck(performingEntity, 'performance');
@@ -314,7 +315,7 @@ global.SensationResult = function(code, context) {
       extra = 'fumble';
 
       // Only the partner will generate extra shame from a botched performance.
-      if (options.to === 'partner') { addPartnerSensation('shame',label,60,extra); }
+      if (options.from === 'player') { addPartnerSensation('shame',label,60,extra); }
     }
 
     if (value > 0) {

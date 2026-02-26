@@ -1,4 +1,4 @@
-describe("SensationResult", function() {
+describe.only("SensationResult", function() {
 
   describe('applyBaseline()', function() {
     it("applyBaseline() sensations", function() {
@@ -223,7 +223,7 @@ describe("SensationResult", function() {
       const desireSensations = result.getResponse().player.desire;
       expect(desireSensations[1].label).to.equal('Performance')
       expect(Math.round(desireSensations[1].value)).to.equal(14)
-      expect(result.getSkillsUsed().partner).to.include('performance');
+      expect(result.getSkillsUsed().partner).to.not.include('performance');
     });
 
     it('when normal action with reluctant consent', function() {

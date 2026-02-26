@@ -65,6 +65,15 @@ global.SexAction = (function() {
       return CentralScrutinizer(context).allConditionsPass(action.requires||[]);
     }
 
+    function directionHasPlayerActingOnPartner() {
+      return [ActionDirection.playerToPartner, ActionDirection.playerToBoth].includes(action.direction)
+    }
+
+    function directionHasPartnerActingOnPlayer() {
+      return [ActionDirection.partnerToPlayer, ActionDirection.partnerToBoth].includes(action.direction)
+    }
+
+
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return action.name; },
@@ -74,6 +83,9 @@ global.SexAction = (function() {
       getMainCategory: () => { return action.mainCategory; },
       getPartnerCategory: () => { return action.partnerCategory; },
       getPlayerCategory: () => { return action.playerCategory; },
+      getDirection: () => { return action.direction },
+      directionHasPlayerActingOnPartner,
+      directionHasPartnerActingOnPlayer,
       getConsentTarget: () => { return action.consentTarget; },
       getConsentFactors: () => { return [ ...action.consentFactors ]; },
       getTechniqueTarget: () => { return action.techniqueTarget; },
