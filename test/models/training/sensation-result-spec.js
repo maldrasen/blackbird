@@ -39,6 +39,20 @@ describe("SensationResult", function() {
   });
 
   describe('applyTechnique()', function() {
+    it('applyTechnique() when player has no skill', function() {
+      Random.stubBetween(50,15);
+
+      const context = TrainingFixtures.standardTrainingContext({},{ feelings:{ affection:150 }});
+      const result = SensationResult('suck-pussy', context);
+      result.applyBaseline();
+      result.applyTechnique();
+
+      const clitSensations = result.getResponse().partner.clit;
+      expect(clitSensations[1].label).to.equal('Technique');
+      expect(clitSensations[1].value).to.equal(25);
+    });
+
+
     it("applyTechnique() when partner is 'performing'", function() {
       Random.stubBetween(50,15);
 
@@ -92,15 +106,6 @@ describe("SensationResult", function() {
 
       // Only baseline sensations are received, because technique value was reduced to 0.
       expect(result.getResponse().partner.anus.length).to.equal(1);
-    });
-
-    it('applyTechnique() when player has no skill', function() {
-      const context = TrainingFixtures.standardTrainingContext({},{ feelings:{ affection:150 }});
-      const result = SensationResult('suck-pussy', context);
-      result.applyBaseline();
-      result.applyTechnique();
-
-      console.log(result.getResponse());
     });
   });
 

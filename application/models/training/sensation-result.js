@@ -110,13 +110,17 @@ global.SensationResult = function(code, context) {
     const playerSkills = sexAction.getSkills().player || [];
 
     if (partnerSkills.includes('technique')) {
-      applyTechniqueSkill({ from:'partner', to:'partner' });
-    }
+      return applyTechniqueSkill({ from:'partner', to:'partner' }); }
     if (playerSkills.includes('technique')) {
-      applyTechniqueSkill({ from:'player', to:'player' });
-    }
+      return applyTechniqueSkill({ from:'player', to:'player' }); }
 
-    // TODO: From player to partner, from partner to player, and mutual actions.
+    if (partnerSkills.length === 0 && playerSkills.length > 0) {
+      return applyTechniqueSkill({ from:'player', to:'partner' }); }
+    if (partnerSkills.length > 0 && playerSkills.length === 0) {
+      return applyTechniqueSkill({ from:'partner', to:'player' }); }
+
+    applyTechniqueSkill({ from:'player', to:'partner' });
+    applyTechniqueSkill({ from:'partner', to:'player' });
   }
 
   function applyTechniqueSkill(options) {

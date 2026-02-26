@@ -1,6 +1,14 @@
 // Skill checks can roll against one attribute, or an average of attributes.
 // The attribute roll is then multiplied by the level and skill factor to
 // get the final value.
+
+/**
+ * @function
+ * @global
+ * @param {string} id - Entity ID
+ * @param {string} code - Skill code
+ * @returns {{value: number, crit?: boolean, fumble?: boolean}}
+ */
 global.SkillCheck = function(id, code) {
   const level = SkillsComponent.lookup(id)[code];
   const skill = Skill.lookup(code);
