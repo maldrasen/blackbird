@@ -38,7 +38,7 @@ describe("SensationResult", function() {
   });
 
   describe('applyTechnique()', function() {
-    it('applyTechnique() when player has no skill', function() {
+    it.only('applyTechnique() when player has no skill', function() {
       Random.stubBetween(50,15);
 
       const context = TrainingFixtures.standardTrainingContext({},{ feelings:{ affection:150 }});

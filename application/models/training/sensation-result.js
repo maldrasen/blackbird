@@ -1,4 +1,9 @@
 global.SensationResult = function(code, context) {
+
+  const PhysicalCodes = new Set([
+     'anus','cervix','clit','nipple','throat','cock','prostate','urethra','pussy'
+  ]);
+
   const player = context.P;
   const partner = context.T;
 
@@ -178,7 +183,7 @@ global.SensationResult = function(code, context) {
     }
 
     Object.keys(toHas).forEach(code => {
-      if (value > 0) {
+      if (value > 0 && PhysicalCodes.has(code)) {
         if (options.to === 'partner') { addPartnerSensation(code,label,value,extra); }
         if (options.to === 'player')  { addPlayerSensation(code,label,value,extra); }
       }
