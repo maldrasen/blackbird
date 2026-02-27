@@ -459,6 +459,50 @@ global.SensationResult = function(code, context) {
     return base+1;                           // Between 1 and 2
   }
 
+
+  // =====================================
+  //   Sensation Result : Apply Arousal
+  // =====================================
+  // Arousal should at least affect the physical sensations. High arousal should also reduce anger and suffering,
+  // increase comfort. (Perhaps also increase shame and submission) Arousal should touch desire at all though as
+  // desire anima is what creates arousal.
+
+
+  // =============================================
+  //   Sensation Result : Apply Training Scales
+  // =============================================
+  // Training scales should be simple. They just represent part sensitivity. We might want to do some linear
+  // interpolation between scale thresholds and the scale factor to make the scale curve smoothish.
+
+
+  // ================================================
+  //   Sensation Result : Apply Sexual Preferences
+  // ================================================
+  // Sexual preferences will need to do something different for the sensation results. I think each sexual preference
+  // will need a list of sensations and factors which are used to determine how much the preference effects each
+  // sensation.
+
+
+  // ======================================================
+  //   Sensation Result : Handle Persisted Action States
+  // ======================================================
+  // Well need to look at how persisted action states work with the sensation results as well. Because the persisted
+  // states can interact with the current action we'll need to consider everything together in a single sensation
+  // result for the turn.
+  //
+  // Most persisted action states would add to the baseline values I think. Having a dildo inserted adds a baseline
+  // amount of pussy sensation and shame each turn. We should be able to ask the persisted state class for its
+  // sensation values. If this is a follow on action though, (thrusting the dildo from the persisted state) we
+  // probably wouldn't use the persisted state's baseline and would use the action's baseline instead.
+
+
+  // ===========================================
+  //   Sensation Result : Random Bullshit Go!
+  // ===========================================
+  // There are probably a bunch of other random shit that will end up adjusting these sensations. Body piercings,
+  // magic, and drugs could all effect part sensitivities.
+
+
   // ================================
   //   Sensation Result : Response
   // ================================
