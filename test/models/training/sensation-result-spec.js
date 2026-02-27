@@ -1,7 +1,7 @@
 describe("SensationResult", function() {
 
   describe('applyBaseline()', function() {
-    it("applyBaseline() sensations", function() {
+    it("baseline sensations", function() {
       const context = TrainingFixtures.standardTrainingContext({},{});
       const result = SensationResult('massage-back',context);
       result.applyBaseline();
@@ -12,7 +12,7 @@ describe("SensationResult", function() {
       expect(result.getPlayerSensations().desire).to.equal(10);
     });
 
-    it('applyBaseline() sensations when reluctant', function() {
+    it('sensations when reluctant', function() {
       const context = TrainingFixtures.standardTrainingContext({},{ feelings:{ respect:160 } });
       const result = SensationResult('get-handjob', context);
       result.applyBaseline();
@@ -24,7 +24,7 @@ describe("SensationResult", function() {
       expect(result.getPlayerSensations().cock).to.equal(60);
     });
 
-    it('applyBaseline() sensations when unwilling', function() {
+    it('sensations when unwilling', function() {
       const context = TrainingFixtures.standardTrainingContext({},{});
       const result = SensationResult('fondle-breasts', context);
       result.applyBaseline();
@@ -263,8 +263,8 @@ describe("SensationResult", function() {
     });
   });
 
-  describe('applyPlayerServicing()', function() {
-    it('applyPlayerServicing() when player has no skill', function() {
+  describe('applyPlayerSkill()', function() {
+    it('when player has no skill', function() {
       Random.stubBetween(50,1);
 
       const context = TrainingFixtures.standardTrainingContext({},{ feelings:{ affection:150 }});
@@ -277,7 +277,7 @@ describe("SensationResult", function() {
       expect(sensations.pussy).to.equal(43)
     });
 
-    it('applyPlayerServicing() player has skill', function() {
+    it('when player has skill', function() {
       Random.stubBetween(50,23);
 
       const context = TrainingFixtures.standardTrainingContext(
@@ -292,7 +292,7 @@ describe("SensationResult", function() {
       expect(Math.round(sensations.pussy)).to.equal(62)
     });
 
-    it('applyPlayerServicing() when skill fumbles', function() {
+    it('when skill fumbles', function() {
       Random.stubBetween(1);
 
       const context = TrainingFixtures.standardTrainingContext(
@@ -303,6 +303,7 @@ describe("SensationResult", function() {
       result.applySkills();
 
       const sensations = result.getPartnerSensations();
+      expect(sensations.anger).to.equal(100);
       expect(sensations.comfort).to.equal(25);
       expect(Math.round(sensations.pussy)).to.equal(5);
 
@@ -312,24 +313,105 @@ describe("SensationResult", function() {
       expect(Math.round(pussySensations[1].value * 100)).to.equal(13)
     });
 
-    it('applyPlayerServicing() when skill crits', function() {
+    it('when skill crits', function() {
       Random.stubBetween(99);
 
       const context = TrainingFixtures.standardTrainingContext(
-        { attributes:{ dexterity:30, vitality:30 }, skills:{ servicing:20 }},
-        { feelings:{ affection:150 }});
-      const result = SensationResult('suck-pussy', context);
+        { attributes:{ strength:30, vitality:30 }, skills:{ ravishing:30 }},
+        { feelings:{ affection:400 }});
+      const result = SensationResult('fuck-pussy', context);
       result.applyBaseline();
       result.applySkills();
 
       const sensations = result.getPartnerSensations();
-      expect(sensations.comfort).to.equal(75);
-      expect(Math.round(sensations.pussy)).to.equal(102);
+      expect(sensations.anger).to.equal(10);
+      expect(sensations.comfort).to.equal(60);
+      expect(Math.round(sensations.pussy)).to.equal(239);
 
       const pussySensations = result.getResponse().partner.pussy;
-      expect(pussySensations[1].label).to.equal('Skillful Servicing');
+      expect(pussySensations[1].label).to.equal('Skillful Ravishing');
       expect(pussySensations[1].extra).to.equal('crit');
-      expect(Math.round(pussySensations[1].value * 100)).to.equal(254);
+      expect(Math.round(pussySensations[1].value * 100)).to.equal(239);
+      expect(result.getSkillsUsed().player).to.include('ravishing');
+    });
+  });
+
+  describe('applyPartnerSkill()', function() {
+    it('when normal skill', function() {
+      Random.stubBetween(50,19);
+
+      const context = TrainingFixtures.standardTrainingContext({},{
+        feelings:{ respect:250, affection:200 },
+        skills:{ servicing:20 },
+        attributes:{ dexterity:30, vitality:20 }
+      });
+
+      const result = SensationResult('get-blowjob', context);
+      result.applyBaseline();
+      result.applySkills();
+
+      expect(result.getPlayerSensations().cock).to.equal(116);
+      expect(result.getSkillsUsed().partner).to.include('servicing');
+    });
+
+    it(`when fumbled skill`, function() {
+      Random.stubBetween(1);
+
+      const context = TrainingFixtures.standardTrainingContext({},{
+        feelings:{ respect:250, affection:200 },
+        skills:{ servicing:20 },
+        attributes:{ dexterity:30, vitality:20 }
+      });
+
+      const result = SensationResult('get-blowjob', context);
+      result.applyBaseline();
+      result.applySkills();
+
+      const cockSensations = result.getResponse().player.cock;
+
+      expect(Math.round(result.getPlayerSensations().cock)).to.equal(9);
+      expect(result.getPartnerSensations().shame).to.equal(90);
+      expect(cockSensations[1].label).to.equal('Clumsy Servicing')
+      expect(Math.round(cockSensations[1].value * 100)).to.equal(11);
+    });
+  });
+
+  describe('applyPartnerDancing()', function() {
+    it('when normal dancing', function() {
+      Random.stubBetween(50,25);
+
+      const context = TrainingFixtures.standardTrainingContext({},{
+        feelings:{ respect:200, affection:200 },
+        skills:{ dancing:30 },
+        attributes:{ dexterity:30, beauty:40 }
+      });
+
+      const result = SensationResult('striptease', context);
+      result.applyBaseline();
+      result.applySkills();
+
+      const sensations = result.getPartnerSensations();
+      expect(sensations.shame).to.equal(40);
+      expect(Math.round(sensations.submission)).to.equal(104);
+      expect(result.getSkillsUsed().partner).to.include('dance');
+    });
+
+    it('when fumbled dancing', function() {
+      Random.stubBetween(1);
+
+      const context = TrainingFixtures.standardTrainingContext({},{
+        feelings:{ respect:200, affection:200 },
+        skills:{ dancing:30 },
+        attributes:{ dexterity:30, beauty:40 }
+      });
+
+      const result = SensationResult('striptease', context);
+      result.applyBaseline();
+      result.applySkills();
+
+      const sensations = result.getPartnerSensations();
+      expect(sensations.shame).to.equal(120);
+      expect(Math.round(sensations.submission)).to.equal(48);
     });
   });
 

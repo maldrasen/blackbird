@@ -338,42 +338,85 @@ global.SensationResult = function(code, context) {
 
     playerSkills.forEach(skill => {
       if (['performance','technique'].includes(skill) === false) {
-        if (skill === 'ravishing') { applyPlayerRavishing(); }
-        if (skill === 'servicing') { applyPlayerServicing(); }
+        if (skill === 'ravishing') { applyPlayerSkill({ skill:'ravishing', label:'Ravishing' }); }
+        if (skill === 'servicing') { applyPlayerSkill({ skill:'servicing', label:'Servicing' }); }
       }
     });
 
     partnerSkills.forEach(skill => {
       if (['performance','technique'].includes(skill) === false) {
         if (skill === 'dance') { applyPartnerDancing(); }
-        if (skill === 'servicing') { applyPartnerServicing(); }
+        if (skill === 'servicing') { applyPartnerSkill({ skill:'servicing', label:'Servicing' }); }
       }
     });
   }
 
+  // The partner's dancing skill doesn't affect the player's physical sensations, and will instead increase the
+  // partner's submission; the enjoyment they receive from performing submissive actions. This skill needs to be an add
+  // rather than a multiply, because the technique and performance skills don't really touch submission.
   function applyPartnerDancing() {
     skillsUsed.partner.add('dance');
+
     const check = SkillCheck(partner, 'dance');
+    let label = 'Dancing';
+    let extra = null;
+
+    if (check.crit) {
+      extra = 'crit'
+      label = `Skillful Dancing`;
+    }
+    if (check.fumble) {
+      extra = 'fumble';
+      label = `Clumsy Dancing`;
+      addPartnerSensation('shame',label,80,extra);
+    }
+
+    addPartnerSensation('submission', label, check.value, extra);
   }
 
-  function applyPlayerRavishing() {
-    skillsUsed.player.add('ravishing');
-    const check = SkillCheck(player, 'ravishing');
-  }
+  function applyPartnerSkill(options) {
+    skillsUsed.partner.add(options.skill);
 
-  function applyPlayerServicing() {
-    skillsUsed.player.add('servicing');
-
-    const check = SkillCheck(player, 'servicing');
+    const check = SkillCheck(partner, options.skill);
     let factor = skillFactor(check);
-    let label = 'Servicing'
+    let label = options.label;
+    let extra = null;
+
+    if (check.crit) {
+      extra = 'crit'
+      label = `Skillful ${label}`;
+    }
+    if (check.fumble) {
+      extra = 'fumble';
+      label = `Clumsy ${label}`;
+
+      // Again, a fumbled skill roll will add shame to the partner, adding it
+      // if no shame exists in the baseline, or multiplying it if there is.
+      (getPartnerSensations().shame == null) ?
+        addPartnerSensation('shame',label,50,extra):
+        multiplyPartnerSensation('shame',label,1.5,extra);
+    }
+
+    Object.keys(playerHas).forEach(key => {
+      if (PhysicalCodes.has(key)) { multiplyPlayerSensation(key, label, factor, extra); }
+    });
+  }
+
+  // The applyPlayerSkill() function applies to both player servicing and
+  // player ravishing.
+  function applyPlayerSkill(options) {
+    skillsUsed.player.add(options.skill);
+
+    const check = SkillCheck(player, options.skill);
+    let factor = skillFactor(check);
+    let label = options.label;
     let extra = null;
 
     // If we crit anger and suffering are reduced. It doesn't matter if there
     // is no baseline anger or suffering as they'll be 0 anyway.
     if (check.crit) {
       extra = 'crit'
-      label = 'Skillful Servicing';
+      label = `Skillful ${label}`;
       multiplyPartnerSensation('comfort',label,1.5,extra);
       multiplyPartnerSensation('desire',label,1.5,extra);
       multiplyPartnerSensation('anger',label,0.5,extra);
@@ -384,7 +427,7 @@ global.SensationResult = function(code, context) {
     // in the baseline sensations, and increase them if they are.
     if (check.fumble) {
       extra = 'fumble'
-      label = 'Clumsy Servicing'
+      label = `Clumsy ${label}`
 
       const sensations = getPartnerSensations();
 
@@ -403,11 +446,6 @@ global.SensationResult = function(code, context) {
     Object.keys(partnerHas).forEach(key => {
       if (PhysicalCodes.has(key)) { multiplyPartnerSensation(key, label, factor, extra); }
     });
-  }
-
-  function applyPartnerServicing() {
-    skillsUsed.partner.add('servicing');
-    const check = SkillCheck(partner, 'servicing');
   }
 
   // Still working out the effect that the skill roll should have on the
