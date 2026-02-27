@@ -101,6 +101,7 @@
     "application/views/character/character-overlay.js",
     "application/views/character/character-overview-panel.js",
     "application/views/dungeon/dungeon-view.js",
+    "application/views/dungeon/dungeon-viewport.js",
     "application/views/dungeon/feature-viewer.js",
     "application/views/dungeon/feature-widget.js",
     "application/views/elements/alert.js",

@@ -114,6 +114,13 @@ X.getPosition = function(element) {
   return element.getBoundingClientRect();
 }
 
+X.windowDimensions = function() {
+  return {
+    width: window.innerWidth,
+    height: window.innerHeight,
+  }
+}
+
 X.assetURL = function(path) {
   return `url('${ROOT}/assets/${path}')`;
 }

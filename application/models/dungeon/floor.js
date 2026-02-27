@@ -6,11 +6,8 @@ global.Floor = data => {
   Validate.atLeast('level', $level, 1);
   Validate.exists('theme', $theme);
 
-  function getLevel() { return $level; }
-  function getTheme() { return $theme; }
-
   return Object.freeze({
-    getLevel,
-    getTheme,
+    getLevel: () => { return $level; },
+    getTheme: () => { return $theme; },
   });
 }

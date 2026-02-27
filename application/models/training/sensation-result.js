@@ -353,7 +353,10 @@ global.SensationResult = function(code, context) {
 
   // The partner's dancing skill doesn't affect the player's physical sensations, and will instead increase the
   // partner's submission; the enjoyment they receive from performing submissive actions. This skill needs to be an add
-  // rather than a multiply, because the technique and performance skills don't really touch submission.
+  // rather than a multiply, because the technique and performance skills don't really touch submission. This function
+  // assumes the sexAction is one of the 'seductive' dances. In the future we might also have 'self-abusive' dances
+  // that increase suffering, and masturbatory dances to increase sensations (actually lab dance is already like this
+  // but handles the sensations as part of the technique skill)
   function applyPartnerDancing() {
     skillsUsed.partner.add('dance');
 

@@ -13,6 +13,7 @@ global.Views = (function() {
     GameStateFrame.init();
 
     Console.init();
+    DungeonView.init();
     EventView.init();
     MainMenu.init();
     OptionsOverlay.init();
