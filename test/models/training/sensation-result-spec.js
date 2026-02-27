@@ -263,22 +263,74 @@ describe("SensationResult", function() {
     });
   });
 
-  // describe('applySkills()', function() {
-  //   it('applySkills() when player has no skill', function() {
-  //     const context = TrainingFixtures.standardTrainingContext({},{ feelings:{ affection:150 }});
-  //     const result = SensationResult('suck-pussy', context);
-  //     result.applyBaseline();
-  //     result.applySkills();
-  //   });
-  //
-  //   it('applySkills() player has skill', function() {
-  //     const context = TrainingFixtures.standardTrainingContext(
-  //       { skills:{ servicing:20 }},
-  //       { feelings:{ affection:150 }});
-  //     const result = SensationResult('suck-pussy', context);
-  //     result.applyBaseline();
-  //     result.applySkills();
-  //   });
-  // });
+  describe('applyPlayerServicing()', function() {
+    it('applyPlayerServicing() when player has no skill', function() {
+      Random.stubBetween(50,1);
+
+      const context = TrainingFixtures.standardTrainingContext({},{ feelings:{ affection:150 }});
+      const result = SensationResult('suck-pussy', context);
+      result.applyBaseline();
+      result.applySkills();
+
+      const sensations = result.getPartnerSensations();
+      expect(sensations.comfort).to.equal(50)
+      expect(sensations.pussy).to.equal(43)
+    });
+
+    it('applyPlayerServicing() player has skill', function() {
+      Random.stubBetween(50,23);
+
+      const context = TrainingFixtures.standardTrainingContext(
+        { attributes:{ dexterity:30, vitality:30 }, skills:{ servicing:20 }},
+        { feelings:{ affection:150 }});
+      const result = SensationResult('suck-pussy', context);
+      result.applyBaseline();
+      result.applySkills();
+
+      const sensations = result.getPartnerSensations();
+      expect(sensations.comfort).to.equal(50)
+      expect(Math.round(sensations.pussy)).to.equal(62)
+    });
+
+    it('applyPlayerServicing() when skill fumbles', function() {
+      Random.stubBetween(1);
+
+      const context = TrainingFixtures.standardTrainingContext(
+        { attributes:{ dexterity:30, vitality:30 }, skills:{ servicing:20 }},
+        { feelings:{ affection:150 }});
+      const result = SensationResult('suck-pussy', context);
+      result.applyBaseline();
+      result.applySkills();
+
+      const sensations = result.getPartnerSensations();
+      expect(sensations.comfort).to.equal(25);
+      expect(Math.round(sensations.pussy)).to.equal(5);
+
+      const pussySensations = result.getResponse().partner.pussy;
+      expect(pussySensations[1].label).to.equal('Clumsy Servicing')
+      expect(pussySensations[1].extra).to.equal('fumble')
+      expect(Math.round(pussySensations[1].value * 100)).to.equal(13)
+    });
+
+    it('applyPlayerServicing() when skill crits', function() {
+      Random.stubBetween(99);
+
+      const context = TrainingFixtures.standardTrainingContext(
+        { attributes:{ dexterity:30, vitality:30 }, skills:{ servicing:20 }},
+        { feelings:{ affection:150 }});
+      const result = SensationResult('suck-pussy', context);
+      result.applyBaseline();
+      result.applySkills();
+
+      const sensations = result.getPartnerSensations();
+      expect(sensations.comfort).to.equal(75);
+      expect(Math.round(sensations.pussy)).to.equal(102);
+
+      const pussySensations = result.getResponse().partner.pussy;
+      expect(pussySensations[1].label).to.equal('Skillful Servicing');
+      expect(pussySensations[1].extra).to.equal('crit');
+      expect(Math.round(pussySensations[1].value * 100)).to.equal(254);
+    });
+  });
 
 });

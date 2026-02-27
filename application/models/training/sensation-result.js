@@ -19,6 +19,9 @@ global.SensationResult = function(code, context) {
   const partnerSensations = Object.keys(sexAction.getPartnerSensations());
   const playerSensations = Object.keys(sexAction.getPlayerSensations());
 
+  const partnerSkills = sexAction.getSkills().partner || [];
+  const playerSkills = sexAction.getSkills().player || [];
+
   // Only add sensation to parts the character actually has. This is important for anal actions that might include
   // prostate stimulus, or actions like a lap dance that has both cock and pussy sensations. (Sensations and part
   // checks will need to expand once we have actions that target nipple cocks and other strange body configurations.)
@@ -57,6 +60,9 @@ global.SensationResult = function(code, context) {
     cervix:     partnerSensations.includes('cervix')   && partnerHasPussy,
     clit:       partnerSensations.includes('clit')     && partnerHasPussy,
     pussy:      partnerSensations.includes('pussy')    && partnerHasPussy };
+
+  Object.keys(playerHas).forEach(key => { if (playerHas[key] === false) { delete playerHas[key]; }});
+  Object.keys(partnerHas).forEach(key => { if (partnerHas[key] === false) { delete partnerHas[key]; }});
 
   // Consent Effects
   // - **Eager** `(> 100)` All the positive sensation from this action get a bonus.
@@ -107,7 +113,9 @@ global.SensationResult = function(code, context) {
     }
   }
 
-  // === Skills : Technique ============================================================================================
+  // ========================
+  //    Skills : Technique
+  // ========================
 
   // Almost every skill will have a technique roll, either by the player or the partner, or by both if this is a mutual
   // action. In most cases, the technique roll only adds to the physical sensation baselines for the opposite person.
@@ -214,9 +222,6 @@ global.SensationResult = function(code, context) {
   // I don't have any player performance focused actions yet. I'm thinking they might work slightly differently as the
   // player character may have different skills and abilities than the partner characters.
   function applyPerformance() {
-    const partnerSkills = sexAction.getSkills().partner || [];
-    const playerSkills = sexAction.getSkills().player || [];
-
     if (partnerSkills.includes('performance')) { return applyPerformanceWhenPartnerFocused(); }
     if (playerSkills.includes('performance')) { throw `TODO: Implement player performance focused actions.` }
 
@@ -324,14 +329,101 @@ global.SensationResult = function(code, context) {
     }
   }
 
-  // === Skills : Servicing, Ravishing =================================================================================
+  // ===================================
+  //    Skills : Servicing, Ravishing
+  // ===================================
 
   // Apply other skills like servicing, ravishing, dance, etc.
   function applySkills() {
 
+    playerSkills.forEach(skill => {
+      if (['performance','technique'].includes(skill) === false) {
+        if (skill === 'ravishing') { applyPlayerRavishing(); }
+        if (skill === 'servicing') { applyPlayerServicing(); }
+      }
+    });
+
+    partnerSkills.forEach(skill => {
+      if (['performance','technique'].includes(skill) === false) {
+        if (skill === 'dance') { applyPartnerDancing(); }
+        if (skill === 'servicing') { applyPartnerServicing(); }
+      }
+    });
   }
 
-  // === Sensation Result : Response ===================================================================================
+  function applyPartnerDancing() {
+    skillsUsed.partner.add('dance');
+    const check = SkillCheck(partner, 'dance');
+  }
+
+  function applyPlayerRavishing() {
+    skillsUsed.player.add('ravishing');
+    const check = SkillCheck(player, 'ravishing');
+  }
+
+  function applyPlayerServicing() {
+    skillsUsed.player.add('servicing');
+
+    const check = SkillCheck(player, 'servicing');
+    let factor = skillFactor(check);
+    let label = 'Servicing'
+    let extra = null;
+
+    // If we crit anger and suffering are reduced. It doesn't matter if there
+    // is no baseline anger or suffering as they'll be 0 anyway.
+    if (check.crit) {
+      extra = 'crit'
+      label = 'Skillful Servicing';
+      multiplyPartnerSensation('comfort',label,1.5,extra);
+      multiplyPartnerSensation('desire',label,1.5,extra);
+      multiplyPartnerSensation('anger',label,0.5,extra);
+      multiplyPartnerSensation('suffering',label,0.5,extra);
+    }
+
+    // If we fumble though, we need to add suffering and anger if they are not
+    // in the baseline sensations, and increase them if they are.
+    if (check.fumble) {
+      extra = 'fumble'
+      label = 'Clumsy Servicing'
+
+      const sensations = getPartnerSensations();
+
+      (sensations.anger == null) ?
+        addPartnerSensation('anger',label,100,extra):
+        multiplyPartnerSensation('anger',label,1.5,extra);
+
+      (sensations.suffering == null) ?
+        addPartnerSensation('suffering',label,50,extra):
+        multiplyPartnerSensation('suffering',label,1.5,extra);
+
+      multiplyPartnerSensation('comfort',label,0.5,extra);
+      multiplyPartnerSensation('desire',label,0.5,extra);
+    }
+
+    Object.keys(partnerHas).forEach(key => {
+      if (PhysicalCodes.has(key)) { multiplyPartnerSensation(key, label, factor, extra); }
+    });
+  }
+
+  function applyPartnerServicing() {
+    skillsUsed.partner.add('servicing');
+    const check = SkillCheck(partner, 'servicing');
+  }
+
+  // Still working out the effect that the skill roll should have on the
+  // sensations. A normal skill roll is around 20, so having a normal factor
+  // around 1.2 seems right. If this is a crit the factor would jump to 2.2,
+  // and a fumble would drop it to 0.2 which seems reasonable.
+  function skillFactor(check) {
+    const base = Math.min(1, check.value/100);
+    if (check.fumble) { return base; }       // Between 0 and 1
+    if (check.crit)   { return base+2 }      // Between 2 and 3
+    return base+1;                           // Between 1 and 2
+  }
+
+  // ================================
+  //   Sensation Result : Response
+  // ================================
 
   function addPartnerSensation(code, label, value, extra=null) {
     if (partnerHas[code]) {
