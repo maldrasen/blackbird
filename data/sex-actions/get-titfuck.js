@@ -39,5 +39,10 @@ SexAction.register('get-titfuck',{
   skills: {
     partner:['servicing']
   },
+  alignment: {
+    submission: 2,
+    masochism: 0,
+    shame: 1,
+  },
 
 });

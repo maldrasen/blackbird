@@ -45,6 +45,10 @@ SexAction.register('deep-kiss',{
   },
 
   techniqueTarget: 12,
-  skills: {},
+  alignment: {
+    submission: 1,
+    masochism: 0,
+    shame: 0,
+  },
 
 });

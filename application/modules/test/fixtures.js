@@ -23,7 +23,9 @@ global.Fixtures = (function() {
   // When we build a player object, we set the player entity id in the GameState. This function could take character
   // options if I wanted to test a specific player type.
   function buildRandomPlayer() {
-    const player = CharacterFactory.buildPlayer();
+    const player = CharacterFactory.buildPlayer({
+      style:Random.from(['domination','degradation','sadism'])
+    });
     GameState.setPlayer(player);
     return player;
   }

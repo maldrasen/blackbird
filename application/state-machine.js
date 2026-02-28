@@ -2,6 +2,7 @@ global.StateMachine = (function() {
 
   let $currentMode;
   let $pendingMode;
+  let $deltaTime;
 
   function handleCommand(commandType, commandData) {
     console.log(`Command:${commandType} : ${JSON.stringify(commandData)}`)
@@ -9,26 +10,28 @@ global.StateMachine = (function() {
 
     log(`Run Command:${commandType}`, { system:'StateMachine', data:commandData });
 
-    // Time system should run first. Every command should take some set amount time. This gives us our delta time.
-    // Subsequent systems will then know how much time has passed since they were last run.
-    TimeSystem.run(command);
-
     CharacterMovementSystem.run(command);
-
     TrainingSystem.run(command);
     DungeonSystem.run(command);
+
+    // Time system should run last. Every command should take some set amount time, and will set the delta time when
+    // the command is handled by the associated system. The time system will determine if anything is scheduled to
+    // happen, update the time in the GameState, and clear the delta time afterward.
+    TimeSystem.run(command);
 
     render();
   }
 
+  function setDeltaTime(time) {
+    if ($deltaTime != null) { throw "Delta time has already been set." }
+    $deltaTime = time;
+  }
 
   // The state machine should usually only change modes when it receives a command. However, starting a new game,
   // loading a game, or starting a fixture will set the mode directly as there's nothing that can send a command yet.
   // Even 'internally' to the StateMachine though it's the various systems that handle the commands and ultimately
   // needs to call the setMode() function, so it needs to be rather public. Still, a single command should only ever
   // change the mode once. If the mode has been changed then we know the view needs to be completely rebuilt.
-
-  function getMode() { return $currentMode; }
 
   function setMode(mode) {
     if ($pendingMode) { throw "Mode has already been changed." }
@@ -53,10 +56,13 @@ global.StateMachine = (function() {
   }
   
   return {
+    clearDeltaTime: () => { $deltaTime = null; },
+    getDeltaTime: () => { return $deltaTime; },
+    setDeltaTime,
+    getMode: () => { return $currentMode; },
+    setMode,
     handleCommand,
     render,
-    getMode,
-    setMode,
   };
 
 })();

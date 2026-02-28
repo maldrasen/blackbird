@@ -33,6 +33,10 @@ SexAction.register('suck-nipples',{
   },
 
   techniqueTarget: 10,
-  skills: {},
+  alignment: {
+    submission: 0,
+    masochism: 0,
+    shame: 0,
+  },
 
 });

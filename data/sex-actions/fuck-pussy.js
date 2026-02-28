@@ -45,5 +45,10 @@ SexAction.register('fuck-pussy',{
   skills: {
     player:['ravishing']
   },
+  alignment: {
+    submission: 2,
+    masochism: 0,
+    shame: 1,
+  },
 
 });

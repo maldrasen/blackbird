@@ -44,5 +44,10 @@ SexAction.register('get-deepthroat',{
   skills: {
     partner:['servicing','deepthroating']
   },
+  alignment: {
+    submission: 3,
+    masochism: 3,
+    shame: 2,
+  },
 
 });

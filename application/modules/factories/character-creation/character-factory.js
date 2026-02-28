@@ -187,6 +187,21 @@ global.CharacterFactory = (function() {
     const genderCode = options.gender || Gender.male;
     const triggers = options.triggers || [];
 
+    if (options.style) {
+      if (options.style === 'domination') {
+        options.triggers.push('domination<10,20>');
+        options.triggers.push('dominant[20]');
+      }
+      if (options.style === 'degradation') {
+        options.triggers.push('degradation<10,20>');
+        options.triggers.push('debaser[20]');
+      }
+      if (options.style === 'sadism') {
+        options.triggers.push('sadism<10,20>');
+        options.triggers.push('sadistic[20]');
+      }
+    }
+
     const actorData = { name:'Greg', gender:genderCode, species:speciesCode };
     const arousalData = { arousal:0 };
     const attributesData = AttributesFactory.rollAttributes(genderCode, speciesCode);

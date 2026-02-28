@@ -37,8 +37,8 @@ SexAction.register('lap-dance',{
     pussy:      5,
     comfort:    10,
     desire:     15,
-    shame:      20,
-    submission: 30,
+    shame:      60,
+    submission: 80,
   },
   playerSensations: {
     cock:   40,
@@ -48,6 +48,11 @@ SexAction.register('lap-dance',{
   techniqueTarget: 18,
   skills: {
     partner:['dance','performance']
+  },
+  alignment: {
+    submission: 1,
+    masochism: 0,
+    shame: 2,
   },
 
 });

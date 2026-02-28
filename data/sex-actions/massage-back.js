@@ -16,10 +16,11 @@ SexAction.register('massage-back',{
     { type:'gender', scale:1.25 },
     { type:'preference', code:'affection-slut' },
     { type:'preference', code:'humiliation-slut', conflicting:true },
+    { type:'preference', code:'masochistic', conflicting:true },
   ],
 
   partnerSensations: {
-    comfort:    30,
+    comfort:    50,
     desire:     10,
     shame:      5,
   },
@@ -28,6 +29,10 @@ SexAction.register('massage-back',{
   },
 
   techniqueTarget: 12,
-  skills: {},
+  alignment: {
+    submission: 0,
+    masochism: -1,
+    shame: 0,
+  },
 
 });

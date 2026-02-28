@@ -34,6 +34,10 @@ SexAction.register('finger-anus',{
   },
 
   techniqueTarget: 16,
-  skills: {},
+  alignment: {
+    submission: 2,
+    masochism: 1,
+    shame: 2,
+  },
 
 });

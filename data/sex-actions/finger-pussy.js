@@ -36,6 +36,10 @@ SexAction.register('finger-pussy',{
   },
 
   techniqueTarget: 14,
-  skills: {},
+  alignment: {
+    submission: 1,
+    masochism: 0,
+    shame: 1,
+  },
 
 });

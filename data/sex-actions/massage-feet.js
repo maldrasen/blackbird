@@ -16,10 +16,11 @@ SexAction.register('massage-feet',{
     { type:'gender', scale:1.25 },
     { type:'preference', code:'affection-slut' },
     { type:'preference', code:'humiliation-slut', conflicting:true },
+    { type:'preference', code:'masochistic', conflicting:true },
   ],
 
   partnerSensations: {
-    comfort:    25,
+    comfort:    40,
     desire:     15,
     shame:      5,
   },
@@ -28,6 +29,10 @@ SexAction.register('massage-feet',{
   },
 
   techniqueTarget: 11,
-  skills: {},
+  alignment: {
+    submission: 0,
+    masochism: -1,
+    shame: 0,
+  },
 
 });

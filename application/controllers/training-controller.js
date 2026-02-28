@@ -23,6 +23,22 @@ global.TrainingController = (function() {
   function handleSensationResult(result) {
     console.log("Got Sensation Results:",result.getResponse());
 
+    // Update Training Scales
+
+    // Adjust arousal
+    //   Arousal should go up or down depending on the amount of desire generated. I think we multiply the desire by
+    //   some factor (maybe 0.1) And if the resulting desire is less than the arousal, we lower it by an amount based
+    //   on the difference between the desire with the factor and the current arousal, or we raise it in a similar way
+    //   if the desire is higher than the current. The goal is to keep desire floating between 0-100. Keeping it
+    //   consistently high should require the desire from the sensations to be very high. Foreplay actions though
+    //   should produce more desire than servicing or fucking. Difficult actions in particular don't generate much
+    //   arousal without the associated preferences, so the arousal system should usually have the player going back to
+    //   foreplay when their partner's arousal dips.
+
+    // Adjust staminas
+
+    // Set the deltaTime for the action.
+
     TrainingView.update();
   }
 

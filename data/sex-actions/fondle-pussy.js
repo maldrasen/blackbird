@@ -34,6 +34,10 @@ SexAction.register('fondle-pussy',{
   },
 
   techniqueTarget: 10,
-  skills: {},
+  alignment: {
+    submission: 0,
+    masochism: 0,
+    shame: 1,
+  },
 
 });

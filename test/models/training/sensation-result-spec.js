@@ -7,7 +7,7 @@ describe("SensationResult", function() {
       result.applyBaseline();
 
       const sensations = result.getPartnerSensations();
-      expect(sensations.comfort).to.equal(30);
+      expect(sensations.comfort).to.equal(50);
       expect(sensations.desire).to.equal(10);
       expect(result.getPlayerSensations().desire).to.equal(10);
     });
@@ -391,8 +391,8 @@ describe("SensationResult", function() {
       result.applySkills();
 
       const sensations = result.getPartnerSensations();
-      expect(sensations.shame).to.equal(40);
-      expect(Math.round(sensations.submission)).to.equal(104);
+      expect(sensations.shame).to.equal(60);
+      expect(Math.round(sensations.submission)).to.equal(114);
       expect(result.getSkillsUsed().partner).to.include('dance');
     });
 
@@ -410,8 +410,8 @@ describe("SensationResult", function() {
       result.applySkills();
 
       const sensations = result.getPartnerSensations();
-      expect(sensations.shame).to.equal(120);
-      expect(Math.round(sensations.submission)).to.equal(48);
+      expect(sensations.shame).to.equal(140);
+      expect(Math.round(sensations.submission)).to.equal(58);
     });
   });
 
@@ -435,7 +435,7 @@ describe("SensationResult", function() {
     });
   });
 
-  describe.only("applyPreference()", function() {
+  describe("applyPreference()", function() {
     it("there is a body part preference", function() {
       const context = TrainingFixtures.standardTrainingContext({},{
         arousal: { arousal:75 },

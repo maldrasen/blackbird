@@ -110,9 +110,29 @@ Skill.register('whips',{
   attributes: [Attrib.dexterity] });
 
 // === Sexual ===
-// I'll need some kind of BDSM skills. The sexual preferences for domination, sadism, etc., only indicate how much you
-// like something, but not if you're good at it. Being a dominator takes skill, but being submissive doesn't.
-// Submissiveness would instead rely on the servicing skill. What other sex skills are there?
+
+// Only the player character (and perhaps some NPCs) should have access to the domination, degradation, and sadism
+// skills. The conceit of the game is that the player is capturing people to serve them and to train sexually. The
+// player is always in the 'dominant' role. Captured characters can have sexual preferences that conflict with this,
+// but that's the reality of their situation. It might make sense for characters in assistant roles to develop some
+// of these skills, but only once they're completely devoted to the player. Skills like servicing and performance are
+// essentially submissive skills, though I think it's fine for the player to have them as well. Being able to please
+// your partner is part of dominating them.
+
+Skill.register('domination',{
+  name: "Domination",
+  factor: 2.5,
+  attributes: [Attrib.strength, Attrib.intelligence] });
+
+Skill.register('degradation',{
+  name: "Degradation",
+  factor: 2,
+  attributes: [Attrib.dexterity, Attrib.intelligence] });
+
+Skill.register('sadism',{
+  name: "Sadism",
+  factor: 1.25,
+  attributes: [Attrib.strength, Attrib.dexterity] });
 
 // Characters with high performance are more active and vocal during sex. When an action is done to a character with
 // high performance, it's more pleasurable for the person doing the action.

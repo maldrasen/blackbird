@@ -38,5 +38,10 @@ SexAction.register('masturbate-pussy',{
   skills: {
     partner:['performance'],
   },
+  alignment: {
+    submission: 2,
+    masochism: 0,
+    shame: 1,
+  },
 
 });

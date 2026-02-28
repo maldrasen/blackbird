@@ -25,8 +25,8 @@ SexAction.register('striptease',{
   partnerSensations: {
     comfort:    10,
     desire:     20,
-    shame:      40,
-    submission: 30,
+    shame:      60,
+    submission: 40,
   },
   playerSensations: {
     desire: 10
@@ -35,6 +35,11 @@ SexAction.register('striptease',{
   techniqueTarget: 17,
   skills: {
     partner:['dance','performance']
+  },
+  alignment: {
+    submission: 1,
+    masochism: 0,
+    shame: 2,
   },
 
 });
