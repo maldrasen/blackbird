@@ -655,6 +655,6 @@ global.SensationResult = function(code, context) {
     applySkills,
     applyArousal,
     applyPreference,
-});
+  });
 
 }
