@@ -462,20 +462,37 @@ global.SensationResult = function(code, context) {
     return base+1;                           // Between 1 and 2
   }
 
-
   // =====================================
   //   Sensation Result : Apply Arousal
   // =====================================
-  // Arousal should at least affect the physical sensations. High arousal should also reduce anger and suffering,
-  // increase comfort. (Perhaps also increase shame and submission) Arousal should touch desire at all though as
-  // desire anima is what creates arousal.
 
+  // Arousal should be between 1-100, so we translate that into a simple 1-2 factor. The arousal factor increases all
+  // physical sensations. In the partner character high arousal increases submission and comfort, and decreases anger.
+  function applyArousal() {
+    const partnerFactor = 1 + (ArousalComponent.lookup(partner).arousal / 100);
+    const playerFactor = 1 + (ArousalComponent.lookup(player).arousal / 100);
+
+    Object.keys(playerHas).forEach(key => {
+      if (PhysicalCodes.has(key)) {
+        multiplyPlayerSensation(key, 'Arousal', playerFactor); }
+    });
+
+    Object.keys(partnerHas).forEach(key => {
+      if (PhysicalCodes.has(key)) {
+        multiplyPartnerSensation(key, 'Arousal', partnerFactor); }
+      if (['submission','comfort'].includes(key)) {
+        multiplyPartnerSensation(key, 'Arousal', partnerFactor); }
+      if (key === 'anger') {
+        multiplyPartnerSensation(key, 'Arousal', 1/partnerFactor); }
+    });
+  }
 
   // =============================================
   //   Sensation Result : Apply Training Scales
   // =============================================
   // Training scales should be simple. They just represent part sensitivity. We might want to do some linear
-  // interpolation between scale thresholds and the scale factor to make the scale curve smoothish.
+  // interpolation between scale thresholds and the scale factor to make the scale curve smoothish. We'll have to come
+  // back to this once we have the sensations adding their values to the scales.
 
 
   // ================================================
@@ -596,6 +613,7 @@ global.SensationResult = function(code, context) {
     applyTechnique,
     applyPerformance,
     applySkills,
+    applyArousal,
   });
 
 }

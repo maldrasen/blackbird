@@ -415,4 +415,24 @@ describe("SensationResult", function() {
     });
   });
 
+  describe("applyArousal()", function() {
+    it("applies arousal",function() {
+      const context = TrainingFixtures.standardTrainingContext(
+        { arousal: { arousal:25 }},
+        { arousal: { arousal:75 }, feelings:{ affection:400, respect:600 } });
+
+      const result = SensationResult('get-deepthroat', context);
+      result.applyBaseline();
+      result.applyArousal();
+
+      const partnerSensations = result.getPartnerSensations();
+      const playerSensations = result.getPlayerSensations();
+
+      expect(Math.round(partnerSensations.anger)).to.equal(29);
+      expect(partnerSensations.submission).to.equal(525);
+      expect(partnerSensations.throat).to.equal(140);
+      expect(playerSensations.cock).to.equal(125);
+    });
+  });
+
 });
