@@ -435,4 +435,8 @@ describe("SensationResult", function() {
     });
   });
 
+  describe.only("applySexualPreferences()", function() {
+
+  });
+
 });

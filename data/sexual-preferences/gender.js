@@ -7,12 +7,10 @@ SexualPreference.register('gynophilic',{
   name: 'Gynophilic',
   antiname: 'Gynophobic',
   description: 'An attraction to feminine traits',
-  defaultValue: { male:60, female:10, futa:60, enby:30 },
 });
 
 SexualPreference.register('androphilic',{
   name: 'Androphilic',
   antiname: 'Androphobic',
   description: 'An attraction to masculine traits',
-  defaultValue: { male:-40, female:40, futa:20, enby:30 },
 });

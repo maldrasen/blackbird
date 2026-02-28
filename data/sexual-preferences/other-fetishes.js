@@ -13,7 +13,6 @@ SexualPreference.register('choker',{
 SexualPreference.register('pisser',{
   name: 'Pisser',
   description: 'A love of urinating on or inside of others, marking them.',
-  defaultValue: -10,
 });
 
 SexualPreference.register('pugilist',{
@@ -39,5 +38,4 @@ SexualPreference.register('stud',{
 SexualPreference.register('voyeur',{
   name: 'Voyeur',
   description: 'A love of watching others.',
-  defaultValue: 10,
 });
