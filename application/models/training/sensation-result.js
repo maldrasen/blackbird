@@ -498,10 +498,7 @@ global.SensationResult = function(code, context) {
   // ================================================
   //   Sensation Result : Apply Sexual Preferences
   // ================================================
-  // Sexual preferences will need to do something different for the sensation results. I think each sexual preference
-  // will need a list of sensations and factors which are used to determine how much the preference effects each
-  // sensation. Some sexual preferences should even convert sensation types. A masochist will transfer suffering to
-  // the physical pleasure sensations. Now that I think about it, this should probably be handled in a closure...
+  
   function applySexualPreferences() {
 
   }
