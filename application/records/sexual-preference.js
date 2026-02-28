@@ -18,6 +18,7 @@ global.SexualPreference = (function() {
       getCode: () => { return preference.code; },
       getName: () => { return preference.name; },
       getAntiname: () => { return preference.antiname || `Anti-${preference}` },
+      getSensations: () => { return preference.sensations; },
     });
   }
 

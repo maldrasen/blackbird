@@ -423,20 +423,51 @@ describe("SensationResult", function() {
 
       const result = SensationResult('get-deepthroat', context);
       result.applyBaseline();
-      result.applyArousal();
+      result.applyArousal({ strength:0.8 });
 
       const partnerSensations = result.getPartnerSensations();
       const playerSensations = result.getPlayerSensations();
 
-      expect(Math.round(partnerSensations.anger)).to.equal(29);
-      expect(partnerSensations.submission).to.equal(525);
-      expect(partnerSensations.throat).to.equal(140);
-      expect(playerSensations.cock).to.equal(125);
+      expect(Math.round(partnerSensations.anger)).to.equal(36);
+      expect(Math.round(partnerSensations.submission)).to.equal(420);
+      expect(Math.round(partnerSensations.throat)).to.equal(112);
+      expect(Math.round(playerSensations.cock)).to.equal(100);
     });
   });
 
-  describe.only("applySexualPreferences()", function() {
+  describe.only("applyPreference()", function() {
+    it("there is a body part preference", function() {
+      const context = TrainingFixtures.standardTrainingContext({},{
+        arousal: { arousal:75 },
+        sexualPreferences:{ 'anal-slut':50 } });
 
+      const result = SensationResult('suck-anus',context);
+      result.applyBaseline();
+      result.applyPreference({ type:'preference', code:'anal-slut', scale:2.5 });
+
+      expect(result.getPartnerSensations().anus).to.equal(185);
+    });
+
+    it("all together, when there are multiple sensitivities", function() {
+      Random.stubBetween(99);
+
+      const context = TrainingFixtures.standardTrainingContext({},{
+        arousal: { arousal:75 },
+        sexualPreferences:{ 'pussy-slut':50, 'sensitive':30, 'masturbator':70 } });
+
+      const result = SensationResult('masturbate-pussy',context);
+      result.applyFactors();
+
+      const pussySensations = result.getResponse().partner.pussy;
+      expect(pussySensations.length).to.equal(6);
+      expect(pussySensations[3].label).to.equal('Sensitive');
+      expect(Math.round(pussySensations[3].value * 100)).to.equal(109)
+      expect(pussySensations[4].label).to.equal('Pussy Slut');
+      expect(Math.round(pussySensations[4].value * 100)).to.equal(188)
+      expect(pussySensations[5].label).to.equal('Masturbator');
+      expect(Math.round(pussySensations[5].value * 100)).to.equal(273)
+      expect(Math.round(result.getPartnerSensations().pussy)).to.equal(2193);
+    });
   });
 
 });

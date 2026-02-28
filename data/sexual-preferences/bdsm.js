@@ -1,6 +1,4 @@
 
-// Most of the default BDSM values should be influenced by personality more than gender.
-
 SexualPreference.register('dominant',{
   name: 'Dominant',
   description: 'A desire to control others',

@@ -80,6 +80,17 @@ global.SensationResult = function(code, context) {
 
   function applyFactors() {
     applyBaseline();
+    applyTechnique();
+    applyPerformance();
+    applySkills();
+
+    // This switch statement should ignore some of the consent factors that we don't use.
+    sexAction.getConsentFactors().forEach(factor => {
+      switch (factor.type) {
+        case 'arousal': applyArousal(factor); break;
+        case 'preference': applyPreference(factor); break;
+      }
+    });
   }
 
   // The applyBaseline() function always needs to be called first, even in the specs, in order to set up the response
@@ -468,9 +479,14 @@ global.SensationResult = function(code, context) {
 
   // Arousal should be between 1-100, so we translate that into a simple 1-2 factor. The arousal factor increases all
   // physical sensations. In the partner character high arousal increases submission and comfort, and decreases anger.
-  function applyArousal() {
-    const partnerFactor = 1 + (ArousalComponent.lookup(partner).arousal / 100);
-    const playerFactor = 1 + (ArousalComponent.lookup(player).arousal / 100);
+  function applyArousal(factor) {
+    let partnerFactor = 1 + (ArousalComponent.lookup(partner).arousal / 100);
+    let playerFactor = 1 + (ArousalComponent.lookup(player).arousal / 100);
+
+    if (factor.strength) {
+      partnerFactor *= factor.strength;
+      playerFactor *= factor.strength;
+    }
 
     Object.keys(playerHas).forEach(key => {
       if (PhysicalCodes.has(key)) {
@@ -494,13 +510,36 @@ global.SensationResult = function(code, context) {
   // interpolation between scale thresholds and the scale factor to make the scale curve smoothish. We'll have to come
   // back to this once we have the sensations adding their values to the scales.
 
+  // This function should also determine character's weakness, that is the part that is the most sensitive, when
+  // sensitivity is at least a B. Actions that hit the weakness generate slightly more sensation, maybe 25% more or so,
+  // and should increase comfort as well. Unless this is a pain causing action, then we get increased pain.
+
+
 
   // ================================================
   //   Sensation Result : Apply Sexual Preferences
   // ================================================
-  
-  function applySexualPreferences() {
 
+  function applyPreference(factor) {
+    const preference = SexualPreference.lookup(factor.code);
+    const sensations = preference.getSensations();
+    const preferences = SexualPreferencesComponent.lookup(partner);
+
+    if (preferences[factor.code] == null) { return; }
+    if (sensations == null) { return; }
+
+    const preferenceValue = factor.conflicting ? -1 * preferences[factor.code] : preferences[factor.code]
+
+    let factorValue = ComponentMath.personalityFactorValue(preferenceValue) * (sensations.factor || 1);
+    if (factor.scale) {
+      factorValue = ComponentMath.applyFactorScale(factorValue, factor.scale);
+    }
+
+    (sensations.increase || []).forEach(code => {
+      if (partnerHas[code]) {
+        multiplyPartnerSensation(code, preference.getName(), factorValue);
+      }
+    });
   }
 
   // ======================================================
@@ -615,6 +654,7 @@ global.SensationResult = function(code, context) {
     applyPerformance,
     applySkills,
     applyArousal,
-  });
+    applyPreference,
+});
 
 }

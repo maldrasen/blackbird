@@ -16,7 +16,7 @@ SexAction.register('suck-anus',{
     { type:'arousal', strength:3 },
     { type:'gender', scale:1.5 },
     { type:'preference', code:'sensitive' },
-    { type:'preference', code:'anal-slut', range:2.5 },
+    { type:'preference', code:'anal-slut', scale:2.5 },
     { type:'preference', code:'dominant' },
     { type:'preference', code:'debaser' },
   ],

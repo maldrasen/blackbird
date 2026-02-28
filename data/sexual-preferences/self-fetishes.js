@@ -17,6 +17,7 @@ SexualPreference.register('cum-dump',{
 SexualPreference.register('enemas',{
   name: 'Enema Lover',
   description: 'A love of having their colon filled with fluids.',
+  sensations: { increase:['anus','prostate'] }
 });
 
 SexualPreference.register('exhibitionist',{
@@ -39,6 +40,7 @@ SexualPreference.register('incest-lover',{
 SexualPreference.register('masturbator',{
   name: 'Masturbator',
   description: 'An love of self pleasure',
+  sensations: { increase:['anus','throat','urethra','nipple','cock','prostate','cervix','clit','pussy'], factor:1.25 },
 });
 
 SexualPreference.register('orgy-lover',{
