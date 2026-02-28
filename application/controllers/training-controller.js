@@ -20,6 +20,12 @@ global.TrainingController = (function() {
     $possibleActions = SexAction.getPossible($context);
   }
 
+  function handleSensationResult(result) {
+    console.log("Got Sensation Results:",result.getResponse());
+
+    TrainingView.update();
+  }
+
   return Object.freeze({
     getPartner: () => { return $context.T },
     getPlayer: () => { return $context.P },
@@ -28,6 +34,7 @@ global.TrainingController = (function() {
     getPossibleActions: () => { return [...$possibleActions]; },
     getTrainingScales: () => { return { ...$trainingScales }; },
     start,
+    handleSensationResult,
   });
 
 })();

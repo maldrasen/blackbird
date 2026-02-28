@@ -23,8 +23,14 @@ global.TrainingSystem = (function() {
   function handleSexAction(command) {
     const code = command.getValue('code');
     const result = SensationResult(code,TrainingController.getContext());
+    result.applyFactors();
 
-    TrainingView.update();
+    log(`Executing SexAction`,{ system:'TrainingSystem', data:{
+      partner: result.getPartnerSensations(),
+      player: result.getPlayerSensations(),
+    }});
+
+    TrainingController.handleSensationResult(result);
   }
 
   return Object.freeze({

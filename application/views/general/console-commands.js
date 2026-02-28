@@ -84,7 +84,7 @@ global.ConsoleCommands = (function() {
   function printHelp() {
     let list = `<pre class='padding'>\n=== Console Help ===\n`;
     Object.keys($commands).forEach(name => {
-      list += `${StringHelper.pad(name,12)} ${$commands[name].description}\n`
+      list += `${name.padEnd(12)} ${$commands[name].description}\n`
     });
     return `${list}</pre>`;
   }
