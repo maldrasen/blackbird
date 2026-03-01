@@ -464,10 +464,63 @@ global.SensationResult = function(code, context) {
   }
 
   // The sex action alignment refers to where the action falls within our submission, masochism, debasement matrix.
-  // The players
+  // The alignment of an action affects the player's sensations, but uses both the player's skill in that BDSM class
+  // and the partner's associated BDSM preference to do so.
   function applyAlignment() {
+    const alignment = sexAction.getAlignment();
+    const preferences = SexualPreferencesComponent.lookup(player);
+
+    // TODO: A few of the servicing actions have a negative submission
+    //   alignment. These service actions already have 0 baseline submission,
+    //   so we shouldn't need to adjust it. How else might this effect
+    //   sensations though? Does it have any effect?
+    if (alignment.submission < 0) {}
+
+    if (alignment.submission > 0) {
+    }
+
+    if (alignment.masochism > 0) {
+    }
+
+    if (alignment.shame > 0) {
+
+    }
+  }
+
+  // If partner is dominant, they'll struggle to accept a submissive action, and this should dramatically increase
+  // their anger. A player with a high domination skill though should be able to reduce their anger, by being a more
+  // dominant top in this case.
+  function applyDominationOnTop(level) {
 
   }
+
+  // If partner is neutral (not having a submissive preference) this should still increase anger. A high skill level
+  // though should reduce that anger, redirecting it into shame and suffering perhaps. This should need a skill check
+  // to determine how much anger gets converted.
+  function applyDomination(level) {
+
+  }
+
+  // If the partner is submissive, then the player's domination skill should increase their submission at the very
+  // least. It should also reduce anger and perhaps increase comfort. As domination is more psychological, these
+  // functions shouldn't touch the physical sensations.
+  function applyDominationOnBottom(level) {
+
+  }
+
+  // A player's sadism skill should increase physical sensations, and should increase suffering. Sadistic actions
+  // create a lot of anger unless the player has the masochist preference. Bring good at sadism won't make other people
+  // like it more though.
+  function applySadismOnTop(level) {}
+  function applySadism(level) {}
+  function applySadismOnBottom(level) {}
+
+  // I think the degradation skill is a bit of a halfway between physical and psychological, and should primarily be
+  // about increasing shame. Degradation also causes a lot of anger, but like masochism I think only the
+  // humiliation-slut preference will reduce it.
+  function applyDegradationOnTop(level) {}
+  function applyDegradation(level) {}
+  function applyDegradationOnBottom(level) {}
 
   // Still working out the effect that the skill roll should have on the sensations. A normal skill roll is around 20,
   // so having a normal factor around 1.2 seems right. If this is a crit the factor would jump to 2.2, and a fumble

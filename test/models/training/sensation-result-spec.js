@@ -1,4 +1,4 @@
-describe.only("SensationResult", function() {
+describe("SensationResult", function() {
 
   describe('applyBaseline()', function() {
     it("baseline sensations", function() {
@@ -470,6 +470,11 @@ describe.only("SensationResult", function() {
     });
   });
 
-
+  // This is all a work in progress still.
+  describe("applyAlignment()", function() {
+    it("when alignment is submission");
+    it("when alignment is masochism");
+    it("when alignment is shame");
+  });
 
 });

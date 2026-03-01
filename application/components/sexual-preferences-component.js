@@ -20,17 +20,18 @@ global.SexualPreferencesComponent = (function() {
 
   function validate(id) {
     const codes = SexualPreference.getAllCodes();
-    const sexualPreferencesComponent = lookup(id)
+    const preferencesComponent = lookup(id)
 
-    Object.keys(sexualPreferencesComponent).forEach(key => {
+    Object.keys(preferencesComponent).forEach(key => {
       if (codes.includes(key) === false) {
         throw `Sexual preference component does not have a ${key} property.`
       }
     });
 
-    codes.forEach(preferenceCode => {
-      if (sexualPreferencesComponent[preferenceCode] != null) {
-        Validate.between(`SexualPreferences.${preferenceCode}`, sexualPreferencesComponent[preferenceCode], -100, 100);
+    codes.forEach(code => {
+      if (preferencesComponent[code] != null) {
+        const min = SexualPreference.lookup(code).isNegativeAllowed() ? -100 : 0;
+        Validate.between(`SexualPreferences.${code}`, preferencesComponent[code], min, 100);
       }
     });
   }

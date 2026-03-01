@@ -34,7 +34,6 @@ Species.register('nymph', {
 
   // Nymphs are the opposite of Sylphs. They melt under loving affection, but hate emotional abuse.
   sexualPreferences: {
-    'humiliation-slut': { chance:25, strength:-20 },
     'affection-slut':   { chance:25, strength:20 },
     'breast-slut':      { chance:30, strength:20 },
   },

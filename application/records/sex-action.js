@@ -93,6 +93,7 @@ global.SexAction = (function() {
       getPartnerSensations: () => { return { ...action.partnerSensations }; },
       getPlayerSensations: () => { return { ...action.playerSensations }; },
       getSkills: () => { return { ...action.skills }; },
+      getAlignment: () => { return { ...action.alignment }; },
       getDescription,
       isAvailable,
       isPossible,

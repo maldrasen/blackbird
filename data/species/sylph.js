@@ -40,7 +40,6 @@ Species.register('sylph', {
     'voyeur':           { chance:50, strength:30 },
     'exhibitionist':    { chance:30, strength:30 },
     'humiliation-slut': { chance:25, strength:20 },
-    'affection-slut':   { chance:25, strength:-20 },
     'perverted':        { chance:20, strength:20 },
     'incest-lover':     { chance:20, strength:20 },
     'masturbator':      { chance:20, strength:20 },

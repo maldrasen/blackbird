@@ -19,6 +19,7 @@ global.SexualPreference = (function() {
       getName: () => { return preference.name; },
       getAntiname: () => { return preference.antiname || `Anti-${preference}` },
       getSensations: () => { return preference.sensations; },
+      isNegativeAllowed: () => { return (preference.allowNegative !== false); }
     });
   }
 
