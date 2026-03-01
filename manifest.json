@@ -13,6 +13,7 @@
     "application/components/breasts-component.js",
     "application/components/cock-component.js",
     "application/components/controlled-component.js",
+    "application/components/description-component.js",
     "application/components/feelings-component.js",
     "application/components/health-component.js",
     "application/components/mana-component.js",
