@@ -54,6 +54,7 @@
     "application/modules/factories/character-creation/pussy-factory.js",
     "application/modules/factories/character-creation/sensitivities-factory.js",
     "application/modules/factories/character-creation/sexual-preference-factory.js",
+    "application/modules/factories/character-creation/skills-factory.js",
     "application/modules/factories/character-creation/trigger-factory.js",
     "application/modules/factories/dungeon/floor-factory.js",
     "application/modules/factories/dungeon/room-factory.js",

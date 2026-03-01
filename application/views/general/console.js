@@ -156,6 +156,7 @@ global.Console = (function() {
  *    data - Object of data to include.
  * ```
  *
+ * @function
  * @param {string} message
  * @param {object} options
  */
@@ -172,6 +173,7 @@ window.log = Console.log;
  *    data - Object of data to include.
  * ```
  *
+ * @function
  * @param {string} message
  * @param {error} error
  * @param {object} options

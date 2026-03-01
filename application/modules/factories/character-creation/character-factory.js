@@ -111,7 +111,7 @@ global.CharacterFactory = (function() {
 
       aspectsData = AspectsFactory.build(triggers, actorData);
       sensitivitiesData = SensitivitiesFactory.build(triggers, actorData, breastsData, cockData, pussyData);
-      skillsData = buildSkillsData(triggers);
+      skillsData = SkillsFactory.build(triggers);
 
       BodyFactory.applyTriggers(bodyData, triggers);
       AnusFactory.applyTriggers(anusData, triggers);
@@ -189,16 +189,16 @@ global.CharacterFactory = (function() {
 
     if (options.style) {
       if (options.style === 'domination') {
-        options.triggers.push('domination<10,20>');
-        options.triggers.push('dominant[20]');
+        triggers.push('domination<10,20>');
+        triggers.push('dominant[20]');
       }
       if (options.style === 'degradation') {
-        options.triggers.push('degradation<10,20>');
-        options.triggers.push('debaser[20]');
+        triggers.push('degradation<10,20>');
+        triggers.push('debaser[20]');
       }
       if (options.style === 'sadism') {
-        options.triggers.push('sadism<10,20>');
-        options.triggers.push('sadistic[20]');
+        triggers.push('sadism<10,20>');
+        triggers.push('sadistic[20]');
       }
     }
 
@@ -221,7 +221,7 @@ global.CharacterFactory = (function() {
     }
 
     const aspectsData = AspectsFactory.build(triggers, actorData);
-    const skillsData = buildSkillsData(triggers);
+    const skillsData = SkillsFactory.build(triggers);
 
     // Triggers are applied in the same way, though I'm not sure if player
     // creation can produce triggers. This could be useful in a spec though.
@@ -270,19 +270,6 @@ global.CharacterFactory = (function() {
       female: ratios.female,
       futa: ratios.futa,
     });
-  }
-
-
-  // TODO: Triggers that add skills. At the moment all characters start with all skills at 0. The skills component
-  //       needs to have all the skill properties set though.
-  function buildSkillsData(triggers) {
-    const skillsData = {};
-
-    SkillsComponent.getSkills().forEach(skillCode => {
-      skillsData[skillCode] = 0;
-    });
-
-    return skillsData;
   }
 
   // TODO: The magical trigger will need to randomly select a spell or two to give to a character, then it will need to

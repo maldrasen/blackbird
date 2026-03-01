@@ -83,6 +83,7 @@ global.SensationResult = function(code, context) {
     applyTechnique();
     applyPerformance();
     applySkills();
+    applyAlignment();
 
     // This switch statement should ignore some of the consent factors that we don't use.
     sexAction.getConsentFactors().forEach(factor => {
@@ -462,10 +463,15 @@ global.SensationResult = function(code, context) {
     });
   }
 
-  // Still working out the effect that the skill roll should have on the
-  // sensations. A normal skill roll is around 20, so having a normal factor
-  // around 1.2 seems right. If this is a crit the factor would jump to 2.2,
-  // and a fumble would drop it to 0.2 which seems reasonable.
+  // The sex action alignment refers to where the action falls within our submission, masochism, debasement matrix.
+  // The players
+  function applyAlignment() {
+
+  }
+
+  // Still working out the effect that the skill roll should have on the sensations. A normal skill roll is around 20,
+  // so having a normal factor around 1.2 seems right. If this is a crit the factor would jump to 2.2, and a fumble
+  // would drop it to 0.2 which seems reasonable.
   function skillFactor(check) {
     const base = Math.min(1, check.value/100);
     if (check.fumble) { return base; }       // Between 0 and 1

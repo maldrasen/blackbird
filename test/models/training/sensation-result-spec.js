@@ -1,4 +1,4 @@
-describe("SensationResult", function() {
+describe.only("SensationResult", function() {
 
   describe('applyBaseline()', function() {
     it("baseline sensations", function() {
@@ -449,7 +449,7 @@ describe("SensationResult", function() {
     });
 
     it("all together, when there are multiple sensitivities", function() {
-      Random.stubBetween(99);
+      Random.stubBetween(99,99,0,0);
 
       const context = TrainingFixtures.standardTrainingContext({},{
         arousal: { arousal:75 },
@@ -459,15 +459,17 @@ describe("SensationResult", function() {
       result.applyFactors();
 
       const pussySensations = result.getResponse().partner.pussy;
-      expect(pussySensations.length).to.equal(6);
-      expect(pussySensations[3].label).to.equal('Sensitive');
-      expect(Math.round(pussySensations[3].value * 100)).to.equal(109)
-      expect(pussySensations[4].label).to.equal('Pussy Slut');
-      expect(Math.round(pussySensations[4].value * 100)).to.equal(188)
-      expect(pussySensations[5].label).to.equal('Masturbator');
-      expect(Math.round(pussySensations[5].value * 100)).to.equal(273)
-      expect(Math.round(result.getPartnerSensations().pussy)).to.equal(2193);
+      expect(pussySensations.length).to.equal(7);
+      expect(pussySensations[4].label).to.equal('Sensitive');
+      expect(Math.round(pussySensations[4].value * 100)).to.equal(109)
+      expect(pussySensations[5].label).to.equal('Pussy Slut');
+      expect(Math.round(pussySensations[5].value * 100)).to.equal(188)
+      expect(pussySensations[6].label).to.equal('Masturbator');
+      expect(Math.round(pussySensations[6].value * 100)).to.equal(273)
+      expect(Math.round(result.getPartnerSensations().pussy)).to.equal(2577);
     });
   });
+
+
 
 });

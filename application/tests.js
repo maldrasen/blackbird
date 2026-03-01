@@ -47,6 +47,7 @@ global.Tests = (function() {
         beforeAll: rootBefore,
         afterAll: rootAfter,
         beforeEach: reset,
+        afterEach: reset,
       }
     });
     mocha.checkLeaks();
