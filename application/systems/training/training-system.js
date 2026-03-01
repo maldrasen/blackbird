@@ -23,12 +23,16 @@ global.TrainingSystem = (function() {
   function handleSexAction(command) {
     const code = command.getValue('code');
     const result = SensationResult(code,TrainingController.getContext());
+    const sexAction = SexAction.lookup(result.getSexAction());
+
     result.applyFactors();
 
     log(`Executing SexAction`,{ system:'TrainingSystem', data:{
       partner: result.getPartnerSensations(),
       player: result.getPlayerSensations(),
     }});
+
+    StateMachine.setDeltaTime(sexAction.getTime());
 
     TrainingController.handleSensationResult(result);
   }

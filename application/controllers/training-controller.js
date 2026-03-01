@@ -1,15 +1,17 @@
 global.TrainingController = (function() {
 
-
-  let $context, $trainingScales, $currentPosition, $possibleActions
+  let $context, $partnerScales, $playerScales, $currentPosition, $possibleActions
 
   // Start needs to initialize all the controller's state variables so that state doesn't leak between training events.
   // These are the transient scale values that overflow into the acquired anima and animus at the end of training.
   function start(data) {
     $currentPosition = 'standing'
-    $trainingScales = {
+    $partnerScales = {
       anus:0, cervix:0, clit:0, nipple:0, throat:0, cock:0, prostate:0, urethra:0, pussy:0,
       anger:0, comfort:0, desire:0, shame:0, submission:0, suffering:0,
+    };
+    $playerScales = {
+      anus:0, cervix:0, clit:0, nipple:0, throat:0, cock:0, prostate:0, urethra:0, pussy:0, desire:0
     };
 
     $context = {
@@ -23,7 +25,7 @@ global.TrainingController = (function() {
   function handleSensationResult(result) {
     console.log("Got Sensation Results:",result.getResponse());
 
-    // Update Training Scales
+    updateTrainingScales(result);
 
     // Adjust arousal
     //   Arousal should go up or down depending on the amount of desire generated. I think we multiply the desire by
@@ -35,11 +37,26 @@ global.TrainingController = (function() {
     //   arousal without the associated preferences, so the arousal system should usually have the player going back to
     //   foreplay when their partner's arousal dips.
 
-    // Adjust staminas
-
-    // Set the deltaTime for the action.
+    adjustStamina()
 
     TrainingView.update();
+  }
+
+  // We need to check for anima overflow as the scales are updated.
+  function updateTrainingScales(result) {
+    const playerSensations = result.getPlayerSensations();
+    Object.keys(playerSensations).forEach(key => {
+      $playerScales[key] += playerSensations[key];
+    });
+
+    const partnerSensations = result.getPartnerSensations();
+    Object.keys(partnerSensations).forEach(key => {
+      $partnerScales[key] += partnerSensations[key];
+    });
+  }
+
+  function adjustStamina() {
+
   }
 
   return Object.freeze({
@@ -48,7 +65,8 @@ global.TrainingController = (function() {
     getContext: () => { return { ...$context }; },
     getCurrentPosition: () => { return $currentPosition; },
     getPossibleActions: () => { return [...$possibleActions]; },
-    getTrainingScales: () => { return { ...$trainingScales }; },
+    getPartnerScales: () => { return { ...$partnerScales }; },
+    getPlayerScales: () => { return { ...$playerScales }; },
     start,
     handleSensationResult,
   });

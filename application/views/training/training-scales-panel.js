@@ -21,7 +21,7 @@ global.TrainingScalesPanel = (function() {
   const scaleBars = {};
 
   function build() {
-    const scales = TrainingController.getTrainingScales();
+    const scales = TrainingController.getPartnerScales();
     Object.keys(scales).forEach(scale => {
       addScale(scale, scales[scale]);
     });

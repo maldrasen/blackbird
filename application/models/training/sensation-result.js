@@ -703,6 +703,8 @@ global.SensationResult = function(code, context) {
 
   return Object.freeze({
     getConsent: () => { return consentResult; },
+    getContext: () => { return context; },
+    getSexAction: () => { return code; },
     getSkillsUsed,
     getResponse,
     getPartnerSensations,
