@@ -48,10 +48,19 @@ global.ComponentMath = (function() {
     return scaleMin + (scaleRange * position)
   }
 
+  // This function takes a positive value and returns a value between 0 and the max, usually 100. We're currently using
+  // this to derive a value for desire (which could be any positive number) that can be compared to the current
+  // arousal, but a function like this could be useful for generating other like factors. The 'r' value defines the
+  // steepness of the curve. A small r value makes the curve grow slower.
+  function saturatingGrowthCurve(x, max=100, r = 0.01) {
+    return max * (1 - Math.exp(-r * x));
+  }
+
   return Object.freeze({
     emotionBaseValue,
     personalityFactorValue,
     applyFactorScale,
+    saturatingGrowthCurve,
   })
 
 })();

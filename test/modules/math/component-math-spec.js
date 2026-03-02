@@ -99,4 +99,14 @@ describe("ComponentMath", function() {
     });
   });
 
+  describe('saturatingGrowthCurve()', function() {
+    it('can have have slow growth', function() {
+      expect(Math.round(ComponentMath.saturatingGrowthCurve(100, 100, 0.003))).to.equal(26);
+      expect(Math.round(ComponentMath.saturatingGrowthCurve(300, 100, 0.003))).to.equal(59);
+      expect(Math.round(ComponentMath.saturatingGrowthCurve(500, 100, 0.003))).to.equal(78);
+      expect(Math.round(ComponentMath.saturatingGrowthCurve(750, 100, 0.003))).to.equal(89);
+      expect(Math.round(ComponentMath.saturatingGrowthCurve(1000, 100, 0.003))).to.equal(95);
+    });
+  });
+
 });

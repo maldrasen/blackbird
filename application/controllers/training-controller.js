@@ -1,9 +1,7 @@
 global.TrainingController = (function() {
 
-  let $context, $currentPosition, $possibleActions,
-    $anima, $animus, $partnerScales, $previousPartnerScales, $playerScales, $previousPlayerScales;
-
-
+  let $context, $player, $partner, $currentPosition, $possibleActions, $anima, $animus, $partnerScales,
+      $previousPartnerScales, $playerScales, $previousPlayerScales;
 
   // Start needs to initialize all the controller's state variables so that state doesn't leak between training events.
   // These are the transient scale values that overflow into the acquired anima and animus at the end of training.
@@ -26,6 +24,9 @@ global.TrainingController = (function() {
       $playerScales[key] = 0;
     });
 
+    $player = data.player;
+    $partner = data.partner;
+
     $context = {
       P: data.player,
       T: data.partner,
@@ -35,21 +36,9 @@ global.TrainingController = (function() {
   }
 
   function handleSensationResult(result) {
-    console.log("Got Sensation Results:",result.getResponse());
-
     updateTrainingScales(result);
-
-    // Adjust arousal
-    //   Arousal should go up or down depending on the amount of desire generated. I think we multiply the desire by
-    //   some factor (maybe 0.1) And if the resulting desire is less than the arousal, we lower it by an amount based
-    //   on the difference between the desire with the factor and the current arousal, or we raise it in a similar way
-    //   if the desire is higher than the current. The goal is to keep desire floating between 0-100. Keeping it
-    //   consistently high should require the desire from the sensations to be very high. Foreplay actions though
-    //   should produce more desire than servicing or fucking. Difficult actions in particular don't generate much
-    //   arousal without the associated preferences, so the arousal system should usually have the player going back to
-    //   foreplay when their partner's arousal dips.
-
-    adjustStamina()
+    updateStamina(result);
+    updateArousal(result);
 
     TrainingView.update();
   }
@@ -73,8 +62,8 @@ global.TrainingController = (function() {
     Object.keys(sensations).forEach(key => {
       scales[key] += sensations[key];
 
-      const previousLevel = determineLevel(previousScales[key]);
-      const newLevel = determineLevel(scales[key]);
+      const previousLevel = determineScaleLevel(previousScales[key]);
+      const newLevel = determineScaleLevel(scales[key]);
 
       if (isPartner && newLevel > previousLevel) {
         const overflow = scales[key] - _scaleThresholds[newLevel-1];
@@ -84,7 +73,7 @@ global.TrainingController = (function() {
     });
   }
 
-  function determineLevel(value) {
+  function determineScaleLevel(value) {
     let level = 0;
     _scaleThresholds.forEach(max => {
       if (max <= value) { level += 1; }
@@ -92,8 +81,53 @@ global.TrainingController = (function() {
     return level;
   }
 
-  function adjustStamina() {
+  // The desire generated should cause the arousal to increase or decrease. The goal is to keep arousal value floating
+  // between 0 and 100. Keeping the arousal consistently high should require the desire from the sensations to be very
+  // high. Foreplay actions should produce more desire than servicing or fucking. Difficult actions in particular don't
+  // generate much desire without the associated preferences. The idea is that the arousal system should usually have
+  // the player going back to foreplay when their partner's arousal dips.
+  //
+  // I'm going to need to experiment with different r values here as small changes (0.002 vs 0.003) will have dramatic
+  // results with how arousal is generated. I'll know it's too high if arousal is consistently pulled into the 90s. I
+  // might need to look into dynamically adjusting the r-value based on a character's feelings or the other factors
+  // that determine the desire values. (Or clamp the desire into a known range.)
+  //
+  // TODO: Updating the arousal should also update the pleasure...
+  //
+  function updateArousal(result) {
+    updateArousalFor($player, result.getPlayerSensations().desire);
+    updateArousalFor($partner, result.getPartnerSensations().desire);
+  }
 
+  function updateArousalFor(entity, desire) {
+    const rValue = 0.0025;
+    const comparative = ComponentMath.saturatingGrowthCurve(desire, 100, rValue);
+    const arousal = ArousalComponent.lookup(entity).arousal;
+
+    if (comparative < arousal) {
+      const difference = arousal - comparative;
+      ArousalComponent.update(entity, { arousal: arousal - (difference/2) })
+    }
+    if (comparative > arousal) {
+      const difference = comparative - arousal;
+      ArousalComponent.update(entity, { arousal: arousal + (difference/2) })
+    }
+  }
+
+  // For now, we can just subtract the action stamina cost from the current staminas.
+  function updateStamina(result) {
+    const action = SexAction.lookup(result.getSexAction());
+    const playerHealth = HealthComponent.lookup($player);
+    const partnerHealth = HealthComponent.lookup($partner);
+
+    playerHealth.currentStamina -= action.getPlayerStamina();
+    partnerHealth.currentStamina -= action.getPartnerStamina();
+
+    if (playerHealth.currentStamina < 0) { playerHealth.currentStamina = 0; }
+    if (partnerHealth.currentStamina < 0) { partnerHealth.currentStamina = 0; }
+
+    HealthComponent.update($player, playerHealth);
+    HealthComponent.update($partner, partnerHealth);
   }
 
   return Object.freeze({
@@ -111,8 +145,9 @@ global.TrainingController = (function() {
     start,
     handleSensationResult,
     updateTrainingScales,
-    determineLevel,
-    adjustStamina,
+    determineScaleLevel,
+    updateArousal,
+    updateStamina,
   });
 
 })();

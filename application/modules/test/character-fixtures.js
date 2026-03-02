@@ -10,6 +10,7 @@ global.CharacterFixtures = (function() {
 
     genericAttributes(id, options.attributes);
     genericArousal(id, options.arousal);
+    genericHealth(id, options.health);
     genericPersonality(id, options.personality);
     genericBody(id, options.body);
     genericAnus(id, options.anus);
@@ -32,6 +33,7 @@ global.CharacterFixtures = (function() {
 
     genericAttributes(id, options.attributes);
     genericArousal(id, options.arousal);
+    genericHealth(id, options.health);
     genericPersonality(id, options.personality);
     genericBody(id, options.body);
     genericAnus(id, options.anus);
@@ -53,6 +55,11 @@ global.CharacterFixtures = (function() {
   function genericArousal(id, options={}) {
     const defaultArousal = { arousal:0 };
     return ArousalComponent.create(id, { ...defaultArousal, ...options });
+  }
+
+  function genericHealth(id, options={}) {
+    const defaultHealth = { currentStamina:2000, currentHealth:100, maxHealth:100 };
+    return HealthComponent.create(id, { ...defaultHealth, ...options });
   }
 
   function genericPersonality(id, options={}) {
