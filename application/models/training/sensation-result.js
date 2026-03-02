@@ -7,10 +7,7 @@
  * @param {object} context - Sex action context { T:partner, P:player }
  */
 global.SensationResult = function(code, context) {
-
-  const PhysicalCodes = new Set([
-     'anus','cervix','clit','nipple','throat','cock','prostate','urethra','pussy'
-  ]);
+  const physicalCodes = new Set(AnimusComponent.getProperties());
 
   const player = context.P;
   const partner = context.T;
@@ -212,7 +209,7 @@ global.SensationResult = function(code, context) {
 
     if (['partner','both'].includes(options.to)) {
       Object.keys(partnerHas).forEach(code => {
-        if (value > 0 && PhysicalCodes.has(code)) {
+        if (value > 0 && physicalCodes.has(code)) {
           addPartnerSensation(code,label,value,extra);
         }
       });
@@ -220,7 +217,7 @@ global.SensationResult = function(code, context) {
 
     if (['player','both'].includes(options.to)) {
       Object.keys(playerHas).forEach(code => {
-        if (value > 0 && PhysicalCodes.has(code)) {
+        if (value > 0 && physicalCodes.has(code)) {
           addPlayerSensation(code,label,value,extra);
         }
       });
@@ -279,7 +276,7 @@ global.SensationResult = function(code, context) {
       // skill check value to their physical sensations. Technique could crit
       // as well leading to massive baseline sensations for performances.
       Object.keys(partnerHas).forEach(key => {
-        if (PhysicalCodes.has(key)) { addPartnerSensation(key, label, value/2, extra); }
+        if (physicalCodes.has(key)) { addPartnerSensation(key, label, value/2, extra); }
       });
     }
     if (check.fumble) {
@@ -413,7 +410,7 @@ global.SensationResult = function(code, context) {
     }
 
     Object.keys(playerHas).forEach(key => {
-      if (PhysicalCodes.has(key)) { multiplyPlayerSensation(key, label, factor, extra); }
+      if (physicalCodes.has(key)) { multiplyPlayerSensation(key, label, factor, extra); }
     });
   }
 
@@ -459,7 +456,7 @@ global.SensationResult = function(code, context) {
     }
 
     Object.keys(partnerHas).forEach(key => {
-      if (PhysicalCodes.has(key)) { multiplyPartnerSensation(key, label, factor, extra); }
+      if (physicalCodes.has(key)) { multiplyPartnerSensation(key, label, factor, extra); }
     });
   }
 
@@ -577,12 +574,12 @@ global.SensationResult = function(code, context) {
     }
 
     Object.keys(playerHas).forEach(key => {
-      if (PhysicalCodes.has(key)) {
+      if (physicalCodes.has(key)) {
         multiplyPlayerSensation(key, 'Arousal', playerFactor); }
     });
 
     Object.keys(partnerHas).forEach(key => {
-      if (PhysicalCodes.has(key)) {
+      if (physicalCodes.has(key)) {
         multiplyPartnerSensation(key, 'Arousal', partnerFactor); }
       if (['submission','comfort'].includes(key)) {
         multiplyPartnerSensation(key, 'Arousal', partnerFactor); }
