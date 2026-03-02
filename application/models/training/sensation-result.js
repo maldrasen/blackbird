@@ -705,6 +705,10 @@ global.SensationResult = function(code, context) {
   function compileSensations(keys, operations) {
     const sensations = {};
 
+    if (Object.keys(operations).length === 0) {
+      throw `The applyFactors() function should be called first.`
+    }
+
     keys.forEach(key => { sensations[key] = 0; });
 
     keys.forEach(key => {

@@ -26,7 +26,7 @@ Species.register('kobold', {
     anus:     { Z:0,   F:10, D:30, C:100, B:20, A:5  },
     prostate: { Z:0,   F:10, D:30, C:100, B:20, A:5  },
     nipple:   { Z:100, F:0,  D:0,  C:0,   B:0,  A:0  },
-    oral:     { Z:100, F:5,  D:1,  C:0,   B:0,  A:0  },
+    throat:   { Z:100, F:5,  D:1,  C:0,   B:0,  A:0  },
     urethra:  { Z:100, F:5,  D:1,  C:0,   B:0,  A:0  },
     cervix:   { Z:100, F:10, D:5,  C:1,   B:0,  A:0  },
   },

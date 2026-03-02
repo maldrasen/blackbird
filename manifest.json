@@ -320,6 +320,7 @@
   "testFileList": [
     "test/components/feelings-component-spec.js",
     "test/controllers/dungeon-controller-spec.js",
+    "test/controllers/training-controller-spec.js",
     "test/models/dungeon/room-spec.js",
     "test/models/skill-check-spec.js",
     "test/models/training/consent-result-spec.js",

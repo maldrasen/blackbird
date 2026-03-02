@@ -50,6 +50,7 @@ global.AnimaComponent = (function() {
 
   return Object.freeze({
     hasParent: () => { return false; },
+    getProperties: () => { return [...$properties]; },
     createBaseline,
     create,
     update,

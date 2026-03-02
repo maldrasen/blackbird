@@ -7,9 +7,9 @@ global.SensitivitiesComponent = (function() {
     'cock',
     'clit',
     'nipple',
-    'oral',
     'prostate',
     'pussy',
+    'throat',
     'urethra',
   ];
 

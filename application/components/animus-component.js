@@ -8,9 +8,9 @@ global.AnimusComponent = (function() {
     'cock',
     'clit',
     'nipple',
-    'oral',
     'prostate',
     'pussy',
+    'throat',
     'urethra',
   ];
 
@@ -54,6 +54,7 @@ global.AnimusComponent = (function() {
 
   return Object.freeze({
     hasParent: () => { return false; },
+    getProperties: () => { return [...$properties]; },
     createBaseline,
     create,
     update,

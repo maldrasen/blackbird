@@ -1,18 +1,30 @@
 global.TrainingController = (function() {
 
-  let $context, $partnerScales, $playerScales, $currentPosition, $possibleActions
+  let $context, $currentPosition, $possibleActions,
+    $anima, $animus, $partnerScales, $previousPartnerScales, $playerScales, $previousPlayerScales;
+
+
 
   // Start needs to initialize all the controller's state variables so that state doesn't leak between training events.
   // These are the transient scale values that overflow into the acquired anima and animus at the end of training.
   function start(data) {
     $currentPosition = 'standing'
-    $partnerScales = {
-      anus:0, cervix:0, clit:0, nipple:0, throat:0, cock:0, prostate:0, urethra:0, pussy:0,
-      anger:0, comfort:0, desire:0, shame:0, submission:0, suffering:0,
-    };
-    $playerScales = {
-      anus:0, cervix:0, clit:0, nipple:0, throat:0, cock:0, prostate:0, urethra:0, pussy:0, desire:0
-    };
+
+    $anima = {};
+    $animus = {};
+    $partnerScales = {};
+    $playerScales = { desire:0 };
+
+    AnimaComponent.getProperties().forEach(key => {
+      $anima[key] = 0;
+      $partnerScales[key] = 0;
+    });
+
+    AnimusComponent.getProperties().forEach(key => {
+      $animus[key] = 0;
+      $partnerScales[key] = 0;
+      $playerScales[key] = 0;
+    });
 
     $context = {
       P: data.player,
@@ -44,15 +56,40 @@ global.TrainingController = (function() {
 
   // We need to check for anima overflow as the scales are updated.
   function updateTrainingScales(result) {
-    const playerSensations = result.getPlayerSensations();
-    Object.keys(playerSensations).forEach(key => {
-      $playerScales[key] += playerSensations[key];
+    updateScales(result.getPlayerSensations(), $previousPlayerScales, $playerScales, false);
+    updateScales(result.getPartnerSensations(), $previousPartnerScales, $partnerScales, true);
+  }
+
+  // When we update the training scales, we check to see if any of the partner scale levels have risen. When they do,
+  // the scale overflow amount is converted to anima or animus. We need to keep track of the previous scale values to
+  // show in the action output.
+  function updateScales(sensations, previousScales, scales, isPartner) {
+
+    previousScales = {};
+    Object.keys(scales).forEach(key => {
+      previousScales[key] = scales[key];
     });
 
-    const partnerSensations = result.getPartnerSensations();
-    Object.keys(partnerSensations).forEach(key => {
-      $partnerScales[key] += partnerSensations[key];
+    Object.keys(sensations).forEach(key => {
+      scales[key] += sensations[key];
+
+      const previousLevel = determineLevel(previousScales[key]);
+      const newLevel = determineLevel(scales[key]);
+
+      if (isPartner && newLevel > previousLevel) {
+        const overflow = scales[key] - _scaleThresholds[newLevel-1];
+        if ($anima[key] != null) { $anima[key] += overflow; }
+        if ($animus[key] != null) { $animus[key] += overflow; }
+      }
     });
+  }
+
+  function determineLevel(value) {
+    let level = 0;
+    _scaleThresholds.forEach(max => {
+      if (max <= value) { level += 1; }
+    });
+    return level;
   }
 
   function adjustStamina() {
@@ -65,10 +102,17 @@ global.TrainingController = (function() {
     getContext: () => { return { ...$context }; },
     getCurrentPosition: () => { return $currentPosition; },
     getPossibleActions: () => { return [...$possibleActions]; },
+    getAnima: () => { return { ...$anima }; },
+    getAnimus: () => { return { ...$animus }; },
     getPartnerScales: () => { return { ...$partnerScales }; },
+    getPreviousPartnerScales: () => { return { ...$previousPartnerScales }; },
     getPlayerScales: () => { return { ...$playerScales }; },
+    getPreviousPlayerScales: () => { return { ...$previousPlayerScales }; },
     start,
     handleSensationResult,
+    updateTrainingScales,
+    determineLevel,
+    adjustStamina,
   });
 
 })();

@@ -85,7 +85,7 @@ global.Console = (function() {
     log(message, options);
 
     console.error(message, options);
-    console.error(error.stack);
+    if (error) { console.error(error); }
   }
 
   function append(logData) {

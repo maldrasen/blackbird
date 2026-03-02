@@ -27,7 +27,7 @@ Species.register('nymph', {
     anus:     { Z:0,   F:0,  D:20, C:80, B:20, A:5  },
     prostate: { Z:0,   F:0,  D:20, C:80, B:20, A:5  },
     nipple:   { Z:0,   F:0,  D:10, C:50, B:25, A:5  },
-    oral:     { Z:100, F:5,  D:1,  C:0,  B:0,  A:0  },
+    throat:   { Z:100, F:5,  D:1,  C:0,  B:0,  A:0  },
     urethra:  { Z:100, F:5,  D:10, C:5,  B:1,  A:0  },
     cervix:   { Z:100, F:5,  D:10, C:5,  B:1,  A:0  },
   },

@@ -37,7 +37,7 @@ global.SensitivitiesFactory = (function() {
     }
 
     if (triggers.includes('erogenous-throat')) {
-      increaseSensitivity('oral',sensitivities);
+      increaseSensitivity('throat',sensitivities);
       andRemove('erogenous-throat');
     }
     if (triggers.includes('erogenous-urethra')) {
