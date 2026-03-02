@@ -449,7 +449,7 @@ describe("SensationResult", function() {
     });
 
     it("all together, when there are multiple sensitivities", function() {
-      Random.stubBetween(99,99,0,0);
+      Random.stubBetween(99,99,99,99,0);
 
       const context = TrainingFixtures.standardTrainingContext({},{
         arousal: { arousal:75 },
