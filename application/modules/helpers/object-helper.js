@@ -19,20 +19,12 @@ global.ObjectHelper = (function() {
 
   // Filter an object, returning only the properties with keys in the allowedKeys array.
   function filter(object, allowedKeys) {
-    let filtered = {};
-    allowedKeys.forEach(key => {
-      if (typeof object[key] != 'undefined') { filtered[key] = object[key]; }
-    });
-    return filtered;
+    return Object.fromEntries(Object.entries(object).filter(([key, value]) => allowedKeys.includes(key)));
   }
 
   // Filter an object's properties, allowing the properties that match the selector function.
   function select(object, selector) {
-    let filtered = {};
-    Object.keys(object).forEach(key => {
-      if (selector(key,object[key])) { filtered[key] = object[key]; }
-    });
-    return filtered;
+    return Object.fromEntries(Object.entries(object).filter(([key, value]) => selector(key, value)));
   }
 
   function unfloat(object) {

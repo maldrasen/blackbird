@@ -329,6 +329,7 @@
     "test/modules/factories/dungeon/floor-factory-spec.js",
     "test/modules/factories/dungeon/room-factory-spec.js",
     "test/modules/helpers/letter-grade-helper-spec.js",
+    "test/modules/helpers/object-helper-spec.js",
     "test/modules/language/measurement-helper-spec.js",
     "test/modules/math/component-math-spec.js",
     "test/modules/scrutinizers/actor-scrutinizers-spec.js",
