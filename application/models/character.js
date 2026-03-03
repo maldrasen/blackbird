@@ -30,6 +30,7 @@ global.Character = function(id) {
   //
   // mostIntense:{ code, value }
   //
+  // A character's arousal and a high edging value should also affect the trigger threshold.
   function rollForOrgasm(mostIntense) {
     const pleasure = ArousalComponent.lookup(id).pleasure;
     const threshold = getOrgasmThreshold();

@@ -12,4 +12,20 @@ describe("Character", function() {
     });
   });
 
+  describe("rollForOrgasm()", function() {
+    it("always orgasms when pleasure is above threshold (for now)", function() {
+      const lady = Character(CharacterFixtures.genericFemale({ arousal:{ arousal:1, pleasure:10001 } }));
+      const ladyboy = Character(CharacterFixtures.genericMale({ arousal:{ arousal:99, pleasure:9999 } }));
+      expect(lady.rollForOrgasm({})).to.be.true;
+      expect(ladyboy.rollForOrgasm({})).to.be.false;
+    });
+  });
+
+  describe("rollRefectoryPeriod()", function() {
+    it("just randomly picks a number (for now)", function() {
+      Random.stubBetween(10);
+      expect(Character(CharacterFixtures.genericMale({})).rollRefectoryPeriod()).to.equal(10);
+    });
+  });
+
 });
