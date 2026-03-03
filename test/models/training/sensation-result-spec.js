@@ -121,7 +121,7 @@ describe("SensationResult", function() {
       result.applyBaseline();
       result.applyPerformance();
 
-      expect(Math.round(result.getPlayerSensations().desire)).to.equal(65);
+      expect(result.getPlayerSensations().desire).to.equal(65);
       expect(result.getSkillsUsed().partner).to.contain('performance');
     });
 
@@ -142,7 +142,7 @@ describe("SensationResult", function() {
       expect(pussySensations[2].label).to.equal('Excellent Performance');
       expect(pussySensations[2].extra).to.equal('crit');
       expect(Math.round(pussySensations[2].value)).to.equal(32);
-      expect(Math.round(result.getPartnerSensations().pussy)).to.equal(182);
+      expect(result.getPartnerSensations().pussy).to.equal(182);
     });
 
     it('when performance focused action fumbles', function() {
@@ -178,8 +178,8 @@ describe("SensationResult", function() {
       result.applyTechnique();
       result.applyPerformance();
 
-      expect(Math.round(result.getPlayerSensations().cock)).to.equal(90);
-      expect(Math.round(result.getPartnerSensations().clit)).to.equal(24);
+      expect(result.getPlayerSensations().cock).to.equal(90);
+      expect(result.getPartnerSensations().clit).to.equal(24);
     });
 
     it('when critical performance focused action with player sensations', function() {
@@ -195,8 +195,8 @@ describe("SensationResult", function() {
       result.applyTechnique();
       result.applyPerformance();
 
-      expect(Math.round(result.getPlayerSensations().cock)).to.equal(122);
-      expect(Math.round(result.getPartnerSensations().clit)).to.equal(55);
+      expect(result.getPlayerSensations().cock).to.equal(122);
+      expect(result.getPartnerSensations().clit).to.equal(55);
 
       const clitSensations = result.getResponse().partner.clit;
       expect(clitSensations[2].extra).to.equal('crit');
@@ -289,7 +289,7 @@ describe("SensationResult", function() {
 
       const sensations = result.getPartnerSensations();
       expect(sensations.comfort).to.equal(50)
-      expect(Math.round(sensations.pussy)).to.equal(62)
+      expect(sensations.pussy).to.equal(62)
     });
 
     it('when skill fumbles', function() {
@@ -305,7 +305,7 @@ describe("SensationResult", function() {
       const sensations = result.getPartnerSensations();
       expect(sensations.anger).to.equal(100);
       expect(sensations.comfort).to.equal(25);
-      expect(Math.round(sensations.pussy)).to.equal(5);
+      expect(sensations.pussy).to.equal(5);
 
       const pussySensations = result.getResponse().partner.pussy;
       expect(pussySensations[1].label).to.equal('Clumsy Servicing')
@@ -326,7 +326,7 @@ describe("SensationResult", function() {
       const sensations = result.getPartnerSensations();
       expect(sensations.anger).to.equal(10);
       expect(sensations.comfort).to.equal(60);
-      expect(Math.round(sensations.pussy)).to.equal(239);
+      expect(sensations.pussy).to.equal(239);
 
       const pussySensations = result.getResponse().partner.pussy;
       expect(pussySensations[1].label).to.equal('Skillful Ravishing');
@@ -369,7 +369,7 @@ describe("SensationResult", function() {
 
       const cockSensations = result.getResponse().player.cock;
 
-      expect(Math.round(result.getPlayerSensations().cock)).to.equal(9);
+      expect(result.getPlayerSensations().cock).to.equal(9);
       expect(result.getPartnerSensations().shame).to.equal(90);
       expect(cockSensations[1].label).to.equal('Clumsy Servicing')
       expect(Math.round(cockSensations[1].value * 100)).to.equal(11);
@@ -392,7 +392,7 @@ describe("SensationResult", function() {
 
       const sensations = result.getPartnerSensations();
       expect(sensations.shame).to.equal(60);
-      expect(Math.round(sensations.submission)).to.equal(114);
+      expect(sensations.submission).to.equal(114);
       expect(result.getSkillsUsed().partner).to.include('dance');
     });
 
@@ -411,7 +411,7 @@ describe("SensationResult", function() {
 
       const sensations = result.getPartnerSensations();
       expect(sensations.shame).to.equal(140);
-      expect(Math.round(sensations.submission)).to.equal(58);
+      expect(sensations.submission).to.equal(58);
     });
   });
 
@@ -428,10 +428,10 @@ describe("SensationResult", function() {
       const partnerSensations = result.getPartnerSensations();
       const playerSensations = result.getPlayerSensations();
 
-      expect(Math.round(partnerSensations.anger)).to.equal(36);
-      expect(Math.round(partnerSensations.submission)).to.equal(420);
-      expect(Math.round(partnerSensations.throat)).to.equal(112);
-      expect(Math.round(playerSensations.cock)).to.equal(100);
+      expect(partnerSensations.anger).to.equal(36);
+      expect(partnerSensations.submission).to.equal(420);
+      expect(partnerSensations.throat).to.equal(112);
+      expect(playerSensations.cock).to.equal(100);
     });
   });
 

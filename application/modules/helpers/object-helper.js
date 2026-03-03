@@ -35,10 +35,16 @@ global.ObjectHelper = (function() {
     return filtered;
   }
 
+  function unfloat(object) {
+    return Object.fromEntries(Object.entries(object).map(([key, value]) =>
+      [key, typeof value === 'number' ? Math.round(value) : value]));
+  }
+
   return Object.freeze({
     fetch,
     filter,
     select,
+    unfloat,
   });
 
 })();

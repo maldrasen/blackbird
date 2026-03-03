@@ -12,7 +12,7 @@ global.TrainingSystem = (function() {
 
     // Theoretically, the 'player' in the training system could be another
     // character entirely, in case we do some kind of 'possession' mechanic.
-    TrainingController.start({
+    TrainingController.startTraining({
       player: GameState.getPlayer(),
       partner: characterId
     });

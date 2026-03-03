@@ -11,7 +11,7 @@ describe("TrainingController", function() {
       const result = SensationResult('get-blowjob',context);
       result.applyFactors();
 
-      TrainingController.start({ player:context.P, partner:context.T });
+      TrainingController.startTraining({ player:context.P, partner:context.T });
       TrainingController.updateTrainingScales(result);
 
       expect(TrainingController.getAnima().shame).to.equal(60);
@@ -41,12 +41,16 @@ describe("TrainingController", function() {
       const result = SensationResult('finger-anus',context);
       result.applyFactors();
 
-      TrainingController.start({ player:context.P, partner:context.T });
+      TrainingController.startTraining({ player:context.P, partner:context.T });
       TrainingController.updateArousal(result);
       TrainingController.updateStamina(result);
 
-      expect(Math.round(ArousalComponent.lookup(context.P).arousal)).to.equal(48);
-      expect(Math.round(ArousalComponent.lookup(context.T).arousal)).to.equal(24);
+      const playerArousal = ArousalComponent.lookup(context.P)
+      const partnerArousal = ArousalComponent.lookup(context.T)
+
+      expect(Math.round(playerArousal.arousal)).to.equal(48);
+      expect(Math.round(partnerArousal.arousal)).to.equal(24);
+      expect(Math.round(partnerArousal.pleasure)).to.equal(240);
       expect(HealthComponent.lookup(context.P).currentStamina).to.equal(60);
       expect(HealthComponent.lookup(context.T).currentStamina).to.equal(0);
     });

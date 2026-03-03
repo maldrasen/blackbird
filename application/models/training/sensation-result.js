@@ -692,11 +692,11 @@ global.SensationResult = function(code, context) {
   }
 
   function getPartnerSensations() {
-    return compileSensations(Object.keys(partnerHas), response.partner)
+    return ObjectHelper.unfloat(compileSensations(Object.keys(partnerHas), response.partner));
   }
 
   function getPlayerSensations() {
-    return compileSensations(Object.keys(playerHas), response.player)
+    return ObjectHelper.unfloat(compileSensations(Object.keys(playerHas), response.player));
   }
 
   function compileSensations(keys, operations) {
