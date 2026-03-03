@@ -13,7 +13,7 @@ global.Character = function(id) {
   // amount or by a percentage. (Which is why I'm using a variable here)
   function getOrgasmThreshold() {
     let threshold = 10000;
-    const premature = AspectsComponent.lookup(id)[AspectType.premature];
+    const premature = AspectsComponent.lookup(id).premature;
     if (premature) { threshold -= (premature * 2500) }
     return threshold;
   }
