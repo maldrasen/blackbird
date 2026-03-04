@@ -21,7 +21,7 @@ global.TrainingOutput = (function() {
   }
 
   const rankClasses = ['fg-rank-F','fg-rank-D','fg-rank-C','fg-rank-B',
-    'fg-rank-A','fg-rank-S','fg-rank-SS','fg-rank-SSS']
+                       'fg-rank-A','fg-rank-S','fg-rank-SS','fg-rank-SSS']
 
   function show(sensationResult) {
     const response = sensationResult.getResponse();

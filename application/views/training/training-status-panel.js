@@ -54,17 +54,20 @@ global.TrainingStatusPanel = (function() {
     X.fill('#trainingView .partner-status-bars .pleasure',pleasureBar.getElement());
   }
 
-  function updateHealth() {}
-  function updateStamina() {}
-  function updateArousal() {}
-  function updatePleasure() {}
+  function update() {
+    const partner = TrainingController.getPartner()
+    const health = HealthComponent.lookup(partner);
+    const arousalData = ArousalComponent.lookup(partner);
+
+    healthBar.setCurrentValue(health.currentHealth);
+    staminaBar.setCurrentValue(Math.round(health.currentStamina));
+    arousalBar.setCurrentValue(arousalData.arousal);
+    pleasureBar.setCurrentValue(arousalData.pleasure);
+  }
 
   return Object.freeze({
     build,
-    updateHealth,
-    updateStamina,
-    updateArousal,
-    updatePleasure,
+    update,
   });
 
 })();
