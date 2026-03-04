@@ -119,20 +119,34 @@ global.TrainingCategoryToggles = (function() {
   function adjustVisibleActions() {
     const isPlayer = displayedToggles() === "playerToggles";
     const mainCategories = getActiveTogglesWithin('mainToggles');
+    const consentCategories = getActiveTogglesWithin('consentToggles');
     const partCategories = getActiveTogglesWithin(displayedToggles());
+
+    console.log("Consent:",consentCategories);
 
     X.each("#actionList a", actionLink => {
       let visible = true;
 
       const mainCat = actionLink.getAttribute('data-main-category');
       const partCat = actionLink.getAttribute(isPlayer ? 'data-player-category' : 'data-partner-category');
+      const consentCat = consentFromClassname(actionLink);
       const listItem = actionLink.closest('li');
 
       if (mainCategories.length > 0 && mainCategories.includes(mainCat) === false) { visible = false; }
       if (partCategories.length > 0 && partCategories.includes(partCat) === false) { visible = false; }
+      if (consentCategories.length > 0 && consentCategories.includes(consentCat) === false) { visible = false; }
 
       visible ? X.removeClass(listItem,'hide') : X.addClass(listItem,'hide')
     });
+  }
+
+  function consentFromClassname(element) {
+    const classname = element.getAttribute('class');
+    if (classname.includes('unwilling')) { return 'unwilling' }
+    if (classname.includes('reluctant')) { return 'reluctant' }
+    if (classname.includes('willing')) { return 'willing' }
+    if (classname.includes('eager')) { return 'eager' }
+    throw `No consent class found in ${element.outerHTML}`
   }
 
   function displayedToggles() {

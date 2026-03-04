@@ -124,10 +124,12 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
 
     .action-panel {
       padding: 10px;
+      min-width: 780px;
 
       .action-panel-top {
         display: flex;
         justify-content: flex-end;
+        .spacer { flex-grow:1 }
       }
       .action-main-area {
         display: flex;
@@ -144,6 +146,10 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
           grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
           max-height: 250px;
         }
+      }
+      .action-button-row {
+        text-align: right;
+        margin-top: 10px;
       }
     }
   }

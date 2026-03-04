@@ -42,6 +42,13 @@
   <div id="actionRow">
     <div class="panel action-panel">
       <div class="action-panel-top">
+        <ul id='consentToggles' class='toggles inactive top' style='margin-left:110px' >
+          <li><a data-code="unwilling" href="#" class="no-underline off">Unwilling</a></li>
+          <li><a data-code="reluctant" href="#" class="no-underline off">Reluctant</a></li>
+          <li><a data-code="willing" href="#" class="no-underline off">Willing</a></li>
+          <li><a data-code="eager" href="#" class="no-underline off">Eager</a></li>
+        </ul>
+        <div class='spacer'></div>
         <ul id="characterToggleSwitch" class='small-padding'>
           <li><a id="showPlayerToggles" href="#" class="toggle-switch hide"></a></li>
           <li><a id="showPartnerToggles" href="#" class="toggle-switch"></a></li>
@@ -57,12 +64,9 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div id="outputRow">
-    <div class="panel output-text-panel">
-      <div id='outputTextScroll'></div>
+      <div class='action-button-row'>
+        <a id='endTrainingButton' href='#' class='button button-danger'>End Training</a>
+      </div>
     </div>
   </div>
 
