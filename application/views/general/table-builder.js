@@ -18,6 +18,7 @@
  * ```
  */
 global.TableBuilder = function(options) {
+  const tableClassname = options.classname;
   const rows = [];
 
   function addRow(options={}) {
@@ -29,7 +30,7 @@ global.TableBuilder = function(options) {
   }
 
   function getTable() {
-    let table = options.classname ? `<table class=${options.classname}>` : `<table>`
+    let table = tableClassname ? `<table class=${tableClassname}>` : `<table>`
     rows.forEach(row => {
       table += row.classname ? `<tr class='${row.classname}'>` : `<tr>`
       row.cells.forEach(cell => {

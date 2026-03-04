@@ -122,8 +122,6 @@ global.TrainingCategoryToggles = (function() {
     const consentCategories = getActiveTogglesWithin('consentToggles');
     const partCategories = getActiveTogglesWithin(displayedToggles());
 
-    console.log("Consent:",consentCategories);
-
     X.each("#actionList a", actionLink => {
       let visible = true;
 

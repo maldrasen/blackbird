@@ -3,6 +3,8 @@ global.TrainingView = (function() {
   let persistedScrollingPanel;
 
   function init() {
+    X.onClick('#endTrainingButton', showEndConfirm);
+
     window.addEventListener('resize', calculatePersistedHeight);
 
     TrainingCategoryToggles.init();
@@ -48,6 +50,10 @@ global.TrainingView = (function() {
       persistedScrollingPanel.setHeight(window.innerHeight - heights);
       persistedScrollingPanel.resize();
     }
+  }
+
+  function showEndConfirm() {
+    Confirmation.show({ text:`End Training?`, onConfirm:TrainingController.endTraining });
   }
 
   return Object.freeze({

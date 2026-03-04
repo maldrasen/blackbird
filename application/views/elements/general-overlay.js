@@ -17,8 +17,6 @@ global.GeneralOverlay = (function() {
     X.removeClass('#generalOverlay','hide');
     X.removeClass('#overlayCover','hide');
 
-    console.log("Options?",options)
-
     if (['small','narrow'].includes(options.classname)) {
       X.addClass('#generalOverlay .overlay',options.classname)
       X.addClass('#generalOverlay .overlay-footer',options.classname)

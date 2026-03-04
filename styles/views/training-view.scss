@@ -216,3 +216,40 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
     margin: 4px 6px;
   }
 }
+
+// =====================
+//    Training Output
+// =====================
+
+#trainingOutput {
+  margin: 10px;
+  background-color: rgb(10,12,15);
+
+  .sensation-table {
+    width: 100%;
+    margin: 10px 0;
+    border: variables.$border-light;
+    box-shadow: variables.$shadow-frame;
+
+    td {
+      padding: 2.5px 5px;
+    }
+    td.label {
+      font-family: 'roboto-bold', sans-serif;
+      color: variables.$fg-strong;
+    }
+    td.values {
+      font-family: 'roboto-mono', monospace;
+      font-size: variables.$fs-big;
+    }
+    td.thresholds {
+      opacity: 0.66;
+    }
+    td.essences {
+      color: variables.$fg-strong;
+      border-left: variables.$border-light;
+    }
+  }
+
+}
+

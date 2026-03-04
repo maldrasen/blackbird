@@ -1,17 +1,23 @@
 global.TrainingController = (function() {
 
-  let $context, $player, $partner, $currentPosition, $possibleActions, $anima, $animus, $partnerScales,
-      $previousPartnerScales, $playerScales, $previousPlayerScales;
+  let $context, $player, $partner, $currentPosition, $possibleActions, $anima, $animus, $essenceOfAnger,
+      $partnerScales, $previousPartnerScales, $playerScales, $previousPlayerScales;
 
   // Start needs to initialize all the controller's state variables so that state doesn't leak between training events.
   // These are the transient scale values that overflow into the acquired anima and animus at the end of training.
+  //
+  // TODO: It's possible that a character may have some initial anger (or comfort) but that would depend on how this
+  //       training began and their feelings towards the player.
   function startTraining(data) {
     $currentPosition = 'standing'
 
     $anima = {};
     $animus = {};
-    $partnerScales = {};
+    $essenceOfAnger = 0;
+    $partnerScales = { anger:0 };
+    $previousPartnerScales = { anger:0 };
     $playerScales = { desire:0 };
+    $previousPlayerScales = { desire:0 };
 
     AnimaComponent.getProperties().forEach(key => {
       $anima[key] = 0;
@@ -35,9 +41,10 @@ global.TrainingController = (function() {
     $possibleActions = SexAction.getPossible($context);
   }
 
+  // TODO: Update the Arousal component, deleting everything but arousal. Also reduce arousal to something ambient.
+  //       Once training is over we show the 'level up' view.
   function endTraining() {
-    // Update the Arousal component, deleting everything but arousal. Also
-    // reduce arousal to something ambient.
+    console.log("=== End Training ===")
   }
 
   function handleSensationResult(result) {
@@ -60,7 +67,6 @@ global.TrainingController = (function() {
   // show in the action output.
   function updateScales(sensations, previousScales, scales, isPartner) {
 
-    previousScales = {};
     Object.keys(scales).forEach(key => {
       previousScales[key] = scales[key];
     });
@@ -71,8 +77,14 @@ global.TrainingController = (function() {
       const previousLevel = determineScaleLevel(previousScales[key]);
       const newLevel = determineScaleLevel(scales[key]);
 
+      if (key === 'anger') {
+        console.log(`Updating anger level ${previousLevel} -> ${newLevel}`);
+        console.log(`Scales: ${scales.anger}`)
+      }
+
       if (isPartner && newLevel > previousLevel) {
         const overflow = scales[key] - _scaleThresholds[newLevel-1];
+        if (key === 'anger') { $essenceOfAnger += overflow; console.log(`Essence of Anger: ${$essenceOfAnger}`)}
         if ($anima[key] != null) { $anima[key] += overflow; }
         if ($animus[key] != null) { $animus[key] += overflow; }
       }
@@ -190,6 +202,7 @@ global.TrainingController = (function() {
     getPossibleActions: () => { return [...$possibleActions]; },
     getAnima: () => { return { ...$anima }; },
     getAnimus: () => { return { ...$animus }; },
+    getEssenceOfAnger: () => { return $essenceOfAnger },
     getPartnerScales: () => { return { ...$partnerScales }; },
     getPreviousPartnerScales: () => { return { ...$previousPartnerScales }; },
     getPlayerScales: () => { return { ...$playerScales }; },
