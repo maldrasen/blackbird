@@ -77,14 +77,9 @@ global.TrainingController = (function() {
       const previousLevel = determineScaleLevel(previousScales[key]);
       const newLevel = determineScaleLevel(scales[key]);
 
-      if (key === 'anger') {
-        console.log(`Updating anger level ${previousLevel} -> ${newLevel}`);
-        console.log(`Scales: ${scales.anger}`)
-      }
-
       if (isPartner && newLevel > previousLevel) {
         const overflow = scales[key] - _scaleThresholds[newLevel-1];
-        if (key === 'anger') { $essenceOfAnger += overflow; console.log(`Essence of Anger: ${$essenceOfAnger}`)}
+        if (key === 'anger') { $essenceOfAnger += overflow; }
         if ($anima[key] != null) { $anima[key] += overflow; }
         if ($animus[key] != null) { $animus[key] += overflow; }
       }
