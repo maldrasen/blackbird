@@ -223,32 +223,44 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
 
 #trainingOutput {
   margin: 10px;
-  background-color: rgb(10,12,15);
 
   .sensation-table {
     width: 100%;
     margin: 10px 0;
+    background-color: rgb(10,12,15);
     border: variables.$border-light;
     box-shadow: variables.$shadow-frame;
 
     tr.header {
       border-bottom: variables.$border-light;
     }
-
     td {
       padding: 2.5px 5px;
       white-space: nowrap;
     }
-    td.label {
+    td.sensation {
+      width: 0;
+      padding-right: 20px;
+    }
+    td.sensations {
+      width: 0;
+      padding-right: 20px;
       font-family: 'roboto-bold', sans-serif;
       color: variables.$fg-strong;
     }
     td.values {
+      width: 0;
       font-family: 'roboto-mono', monospace;
-      font-size: variables.$fs-big;
+      //font-size: variables.$fs-big;
     }
     td.thresholds {
       opacity: 0.66;
+    }
+    td.rank {
+      padding-left: 20px;
+    }
+    td.ranks {
+      padding-left: 20px;
     }
     td.essence {
       padding-left: 10px;

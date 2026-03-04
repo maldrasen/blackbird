@@ -1,12 +1,13 @@
 global.TrainingOutput = (function() {
-
   const arrow = `→`;
 
   function show(sensationResult) {
     const response = sensationResult.getResponse();
 
     const output = X.createElement(`<div id='trainingOutput'></div>`);
+    output.appendChild(X.createElement(`<p>Action Story...</p>`));
     output.appendChild(buildSensationTable(response));
+
     GeneralOverlay.open(output, { classname:'small' });
   }
 
@@ -39,25 +40,24 @@ global.TrainingOutput = (function() {
   }
 
   // TODO: Still need to add the tooltips detailing all the factors for each of the sensations.
+  //
+  // TODO: This will probably break when we jump two levels at once. Need a good way to make that possible before I can
+  //       test that though.
+  //
+  // TODO: When the partner orgasms we need to also show the sense reduction that occurs as well. In the ERA games an
+  //       orgasm reduced the accumulated scale by 90% of the orgasm threshold.
+  //
   function addSensationRow(builder, code, response, type) {
     const sensationValue = response.partnerSensations[code];
     const currentValue = TrainingController.getPartnerScales()[code];
-    const scaleValue = LetterGradeHelper.scaleValue(currentValue)
+    const currentScale = LetterGradeHelper.scaleValue(currentValue)
 
     const previousValue = TrainingController.getPreviousPartnerScales()[code];
-    const previousLevel = TrainingController.determineScaleLevel(previousValue);
-    const previousLetter = LetterGradeHelper.sensitivityValue(previousLevel+1);
-    const previousThreshold = _scaleThresholds[previousLevel];
+    const previousScale = LetterGradeHelper.scaleValue(previousValue);
 
-    const rankChanged = previousLetter !== scaleValue.letter;
-    const rankDisplay = rankChanged ? `${previousLetter} ${arrow} ${scaleValue.letter}` : `${scaleValue.letter}`;
-    const rankClass = `fg-rank-${scaleValue.letter}`;
-
-    // console.log(`\n==== ${code} ====`)
-    // console.log(`Sen:${sensationValue} Current:${currentValue}`,scaleValue);
-    // console.log(`Prev${previousValue} / ${previousLevel} / ${previousLetter} / ${previousThreshold}`);
-    // console.log(`Current: ${currentLevel} / ${currentLetter}`);
-    // console.log(`Rank Changed? ${rankChanged} / ${rankDisplay}`);
+    const rankChanged = previousScale.letter !== currentScale.letter;
+    const rankDisplay = rankChanged ? `${previousScale.letter} ${arrow} ${currentScale.letter}` : `${currentScale.letter}`;
+    const rankClass = `fg-rank-${currentScale.letter}`;
 
     let essenceValue = TrainingController.getEssenceOfAnger();
     let essenceLabel = 'Essence of Anger'
@@ -70,17 +70,13 @@ global.TrainingOutput = (function() {
       essenceLabel = `${StringHelper.titlecase(code)} Anima`; }
 
     builder.addRow({ classname:`${code} ${type}` })
-    builder.addCell(`${ScaleLabels[code]}`, { classname:'label' });
-
-    // If there has been an orgasm, change this to include the orgasm value
-    // subtracted from the pleasure scales (90% of the orgasm threshold)
-    builder.addCell(`${previousValue}`, { classname:'values' });
+    builder.addCell(`${ScaleLabels[code]}`, { classname:'sensations' });
+    builder.addCell(`${previousScale.progress}`, { classname:'values' });
     builder.addCell(`+ ${sensationValue}`, { classname:'values' });
-    builder.addCell(rankChanged ? `- ${previousThreshold}`:'', { classname:'values' });
-    builder.addCell(`= ${scaleValue.progress}`, { classname:'values' });
-
+    builder.addCell(rankChanged ? `- ${previousScale.range}`:'', { classname:'values' });
+    builder.addCell(`= ${currentScale.progress}`, { classname:'values' });
     builder.addCell(rankDisplay, { classname:`ranks ${rankClass}` });
-    builder.addCell(`${scaleValue.range}`, { classname:`thresholds ${rankClass}` })
+    builder.addCell(`${currentScale.range}`, { classname:`thresholds ${rankClass}` })
     builder.addCell(`${essenceLabel} (${essenceValue})`, { classname:'essences' })
   }
 
