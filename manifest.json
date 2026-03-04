@@ -124,6 +124,7 @@
     "application/views/general/main-content.js",
     "application/views/general/main-menu.js",
     "application/views/general/options-overlay.js",
+    "application/views/general/table-builder.js",
     "application/views/interactions/mouse-monitor.js",
     "application/views/interactions/window-manager.js",
     "application/views/locations/location-view.js",
