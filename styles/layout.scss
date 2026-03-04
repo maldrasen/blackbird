@@ -117,14 +117,14 @@
 
 .overlay-footer.narrow {
   left: 200px;
-  right: 200px;
+  width: calc(100% - 410px);
   min-width: 390px;
 }
 
 .overlay-footer.small {
   left: 200px;
-  right: 200px;
   bottom: 156px;
+  width: calc(100% - 410px);
   min-width: 390px;
 }
 

@@ -46,6 +46,7 @@ global.TrainingController = (function() {
     updateArousal(result);
 
     TrainingView.update();
+    TrainingOutput.show(result);
   }
 
   // We need to check for anima overflow as the scales are updated.

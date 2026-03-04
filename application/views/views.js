@@ -3,6 +3,7 @@ global.Views = (function() {
   function initAll() {
     Casement.init();
     Confirmation.init();
+    GeneralOverlay.init();
     ScrollingPanel.init();
     TabController.init();
     Tooltip.init();
