@@ -20,6 +20,9 @@ global.TrainingOutput = (function() {
     anger: 'Anger',
   }
 
+  const rankClasses = ['fg-rank-F','fg-rank-D','fg-rank-C','fg-rank-B',
+    'fg-rank-A','fg-rank-S','fg-rank-SS','fg-rank-SSS']
+
   function show(sensationResult) {
     const response = sensationResult.getResponse();
 
@@ -29,22 +32,34 @@ global.TrainingOutput = (function() {
   }
 
   function buildSensationTable(response) {
-    const sensationTable = TableBuilder({ classname:'sensation-table' });
+    const builder = TableBuilder({ classname:'sensation-table' });
+
+    addHeader(builder);
 
     AnimusComponent.getProperties().forEach(code => {
       if (response.partnerSensations[code]) {
-        addSensationRow(sensationTable, code, response, 'animus'); }});
+        addSensationRow(builder, code, response, 'animus'); }});
 
     AnimaComponent.getProperties().forEach(code => {
       if (response.partnerSensations[code]) {
-        addSensationRow(sensationTable, code, response, 'anima'); }});
+        addSensationRow(builder, code, response, 'anima'); }});
 
     if (response.partnerSensations.anger > 0) {
-      addSensationRow(sensationTable, 'anger', response, 'anger'); }
+      addSensationRow(builder, 'anger', response, 'anger'); }
 
-    return sensationTable.getTable();
+    return builder.getTable();
   }
 
+  function addHeader(builder) {
+    builder.addRow({ classname:'header' });
+    builder.addCell('Sensation', {classname: 'sensation' });
+    ['','',''].forEach(() => { builder.addCell('') });
+    ['rank','threshold','essence'].forEach(
+      text => { builder.addCell(StringHelper.titlecase(text), { classname:text });
+    });
+  }
+
+  // TODO: Still need to add the tooltips detailing all the factors for each of the sensations.
   function addSensationRow(builder, code, response, type) {
     const sensationValue = response.partnerSensations[code];
     const previousValue = TrainingController.getPreviousPartnerScales()[code];
@@ -52,9 +67,9 @@ global.TrainingOutput = (function() {
     const previousLevel = TrainingController.determineScaleLevel(previousValue);
     const currentLevel = TrainingController.determineScaleLevel(currentValue);
 
-    const level = (currentLevel === previousLevel) ?
-      `Lv${currentLevel}` :
-      `Lv${previousLevel} ${arrow} Lv${currentLevel}`;
+    const rank = (currentLevel === previousLevel) ?
+      `${currentLevel}` :
+      `${previousLevel} ${arrow} ${currentLevel}`;
 
     let essenceValue = TrainingController.getEssenceOfAnger();
     let essenceLabel = 'Essence of Anger'
@@ -75,8 +90,8 @@ global.TrainingOutput = (function() {
     builder.addCell(`+ ${sensationValue}`, { classname:'values' })
     builder.addCell(`= ${currentValue}`, { classname:'values' });
 
-    builder.addCell(level, { classname:'level' });
-    builder.addCell(`(Next ${_scaleThresholds[currentLevel]})`, { classname:'thresholds' })
+    builder.addCell(rank, { classname:`ranks ${rankClasses[currentLevel]}` });
+    builder.addCell(`(Next ${_scaleThresholds[currentLevel]})`, { classname:`thresholds ${rankClasses[currentLevel]}` })
     builder.addCell(`${essenceLabel} (${essenceValue})`, { classname:'essences' })
   }
 

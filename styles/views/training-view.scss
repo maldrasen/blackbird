@@ -231,6 +231,10 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
     border: variables.$border-light;
     box-shadow: variables.$shadow-frame;
 
+    tr.header {
+      border-bottom: variables.$border-light;
+    }
+
     td {
       padding: 2.5px 5px;
     }

@@ -83,6 +83,15 @@
 .fg-weak { color: variables.$fg-weak; }
 .fg-very-weak { color: variables.$fg-very-weak; }
 
+.fg-rank-F { color: variables.$fg-rank-F; }
+.fg-rank-D { color: variables.$fg-rank-D; }
+.fg-rank-C { color: variables.$fg-rank-C; }
+.fg-rank-B { color: variables.$fg-rank-B; }
+.fg-rank-A { color: variables.$fg-rank-A; }
+.fg-rank-S { color: variables.$fg-rank-S; }
+.fg-rank-SS { color: variables.$fg-rank-SS; }
+.fg-rank-SSS { color: variables.$fg-rank-SSS; }
+
 .weaver-error {
   font-family:'roboto-mono', monospace;
   color: variables.$fg-error;

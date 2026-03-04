@@ -33,6 +33,8 @@ global.TrainingView = (function() {
   function update() {
     MainContent.unhalt();
 
+    TrainingScalesPanel.update();
+
     calculatePersistedHeight();
   }
 

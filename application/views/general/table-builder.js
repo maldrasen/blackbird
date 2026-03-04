@@ -2,12 +2,12 @@
  * Using the DOM manipulation functions to do this is just a giant pain in the ass. Just building a table from an HTML
  * string is way easier.
  *
- * @param options { classname }
+ * @param options
  * @constructor
  *
  * ### Usage:
  * ```
- * const table = TableBuilder({ table:{ classname:'example-table' } });
+ * const table = TableBuilder({ classname:'example-table' });
  * table.addRow();
  * table.addCell('horny stuff');
  * table.addCell('pleasant things');

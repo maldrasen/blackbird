@@ -60,10 +60,17 @@ global.TrainingScalesPanel = (function() {
     bar.setCurrentValue(grade.progress);
   }
 
+  function update() {
+    const scales = TrainingController.getPartnerScales();
+    Object.keys(scales).forEach(scale => {
+      setScaleValue(scale, scales[scale]);
+    });
+  }
 
   return Object.freeze({
     build,
     setScaleValue,
+    update,
   });
 
 })();
