@@ -35,6 +35,7 @@ global.TrainingView = (function() {
 
     TrainingStatusPanel.update();
     TrainingScalesPanel.update();
+    TrainingActionPanel.update();
     GameStateFrame.update();
 
     calculatePersistedHeight();

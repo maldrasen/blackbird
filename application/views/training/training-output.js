@@ -2,27 +2,6 @@ global.TrainingOutput = (function() {
 
   const arrow = `→`;
 
-  const labels = {
-    anus: 'Pleasure (Anus)',
-    cervix: 'Pleasure (Cervix)',
-    cock: 'Pleasure (Cock)',
-    clit: 'Pleasure (Clitoris)',
-    nipple: 'Pleasure (Nipples)',
-    prostate: 'Pleasure (Prostate)',
-    pussy: 'Pleasure (Pussy)',
-    throat: 'Pleasure (Throat)',
-    urethra: 'Pleasure (Urethra)',
-    comfort: 'Comfort',
-    desire: 'Desire',
-    shame: 'Shame',
-    submission: 'Submission',
-    suffering: 'Suffering',
-    anger: 'Anger',
-  }
-
-  const rankClasses = ['fg-rank-F','fg-rank-D','fg-rank-C','fg-rank-B',
-                       'fg-rank-A','fg-rank-S','fg-rank-SS','fg-rank-SSS']
-
   function show(sensationResult) {
     const response = sensationResult.getResponse();
 
@@ -53,7 +32,7 @@ global.TrainingOutput = (function() {
   function addHeader(builder) {
     builder.addRow({ classname:'header' });
     builder.addCell('Sensation', {classname: 'sensation' });
-    ['','',''].forEach(() => { builder.addCell('') });
+    ['','','',''].forEach(() => { builder.addCell('') });
     ['rank','threshold','essence'].forEach(
       text => { builder.addCell(StringHelper.titlecase(text), { classname:text });
     });
@@ -62,14 +41,23 @@ global.TrainingOutput = (function() {
   // TODO: Still need to add the tooltips detailing all the factors for each of the sensations.
   function addSensationRow(builder, code, response, type) {
     const sensationValue = response.partnerSensations[code];
-    const previousValue = TrainingController.getPreviousPartnerScales()[code];
     const currentValue = TrainingController.getPartnerScales()[code];
-    const previousLevel = TrainingController.determineScaleLevel(previousValue);
-    const currentLevel = TrainingController.determineScaleLevel(currentValue);
+    const scaleValue = LetterGradeHelper.scaleValue(currentValue)
 
-    const rank = (currentLevel === previousLevel) ?
-      `${currentLevel}` :
-      `${previousLevel} ${arrow} ${currentLevel}`;
+    const previousValue = TrainingController.getPreviousPartnerScales()[code];
+    const previousLevel = TrainingController.determineScaleLevel(previousValue);
+    const previousLetter = LetterGradeHelper.sensitivityValue(previousLevel+1);
+    const previousThreshold = _scaleThresholds[previousLevel];
+
+    const rankChanged = previousLetter !== scaleValue.letter;
+    const rankDisplay = rankChanged ? `${previousLetter} ${arrow} ${scaleValue.letter}` : `${scaleValue.letter}`;
+    const rankClass = `fg-rank-${scaleValue.letter}`;
+
+    // console.log(`\n==== ${code} ====`)
+    // console.log(`Sen:${sensationValue} Current:${currentValue}`,scaleValue);
+    // console.log(`Prev${previousValue} / ${previousLevel} / ${previousLetter} / ${previousThreshold}`);
+    // console.log(`Current: ${currentLevel} / ${currentLetter}`);
+    // console.log(`Rank Changed? ${rankChanged} / ${rankDisplay}`);
 
     let essenceValue = TrainingController.getEssenceOfAnger();
     let essenceLabel = 'Essence of Anger'
@@ -82,17 +70,27 @@ global.TrainingOutput = (function() {
       essenceLabel = `${StringHelper.titlecase(code)} Anima`; }
 
     builder.addRow({ classname:`${code} ${type}` })
-    builder.addCell(`${labels[code]}`, { classname:'label' });
+    builder.addCell(`${ScaleLabels[code]}`, { classname:'label' });
 
     // If there has been an orgasm, change this to include the orgasm value
     // subtracted from the pleasure scales (90% of the orgasm threshold)
-    builder.addCell(`${previousValue}`, { classname:'values' })
-    builder.addCell(`+ ${sensationValue}`, { classname:'values' })
-    builder.addCell(`= ${currentValue}`, { classname:'values' });
+    builder.addCell(`${previousValue}`, { classname:'values' });
+    builder.addCell(`+ ${sensationValue}`, { classname:'values' });
+    builder.addCell(rankChanged ? `- ${previousThreshold}`:'', { classname:'values' });
+    builder.addCell(`= ${scaleValue.progress}`, { classname:'values' });
 
-    builder.addCell(rank, { classname:`ranks ${rankClasses[currentLevel]}` });
-    builder.addCell(`(Next ${_scaleThresholds[currentLevel]})`, { classname:`thresholds ${rankClasses[currentLevel]}` })
+    builder.addCell(rankDisplay, { classname:`ranks ${rankClass}` });
+    builder.addCell(`${scaleValue.range}`, { classname:`thresholds ${rankClass}` })
     builder.addCell(`${essenceLabel} (${essenceValue})`, { classname:'essences' })
+  }
+
+  // Because the scales show the thresholds as if the current scale value has been set to 0, we need to subtract the
+  // difference between
+  function differenceBetweenLevels(previous, current) {
+    if (previous === current) { return 0; }
+    console.log(`--- ${previous} -> ${current}`);
+    console.log(_scaleThresholds[previous], _scaleThresholds[current]);
+    return _scaleThresholds[current] - _scaleThresholds[previous];
   }
 
   return Object.freeze({ show });

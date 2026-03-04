@@ -1,23 +1,5 @@
 global.TrainingScalesPanel = (function() {
 
-  const scaleLabels = {
-    anus:       'Anus Sense',
-    cervix:     'Cervix Sense',
-    clit:       'Clitoris Sense',
-    nipple:     'Nipple Sense',
-    throat:     'Throat Sense',
-    cock:       'Cock Sense',
-    prostate:   'Prostate Sense',
-    urethra:    'Urethra Sense',
-    pussy:      'Vagina Sense',
-    anger:      'Anger',
-    comfort:    'Comfort',
-    desire:     'Desire',
-    shame:      'Shame',
-    submission: 'Submission',
-    suffering:  'Suffering',
-  }
-
   const scaleBars = {};
 
   function build() {
@@ -34,7 +16,7 @@ global.TrainingScalesPanel = (function() {
       maxValue: grade.range,
       minValue: 0,
       currentValue: grade.progress,
-      label: `${scaleLabels[scale]} (Rank ${grade.letter})`,
+      label: `${ScaleLabels[scale]} (Rank ${grade.letter})`,
       color: `rank-${grade.letter}`,
     });
 
@@ -55,7 +37,7 @@ global.TrainingScalesPanel = (function() {
     X.removeClass(bar.getElement().closest('.cell'),'hide')
 
     bar.setColor(`rank-${grade.letter}`);
-    bar.setLabel(`${scaleLabels[scale]} (Rank ${grade.letter})`);
+    bar.setLabel(`${ScaleLabels[scale]} (Rank ${grade.letter})`);
     bar.setMaxValue(grade.range);
     bar.setCurrentValue(grade.progress);
   }
@@ -63,7 +45,7 @@ global.TrainingScalesPanel = (function() {
   function update() {
     const scales = TrainingController.getPartnerScales();
     Object.keys(scales).forEach(scale => {
-      setScaleValue(scale, scales[scale]);
+      if (scales[scale] > 0) { setScaleValue(scale, scales[scale]); }
     });
   }
 

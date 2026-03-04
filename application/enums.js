@@ -126,6 +126,24 @@ global.AspectType = Object.freeze({
 
 // === Training ===
 
+global.ScaleLabels = {
+  anus:       'Anus Sense',
+  cervix:     'Cervix Sense',
+  clit:       'Clitoris Sense',
+  nipple:     'Nipple Sense',
+  throat:     'Throat Sense',
+  cock:       'Cock Sense',
+  prostate:   'Prostate Sense',
+  urethra:    'Urethra Sense',
+  pussy:      'Vagina Sense',
+  anger:      'Anger',
+  comfort:    'Comfort',
+  desire:     'Desire',
+  shame:      'Shame',
+  submission: 'Submission',
+  suffering:  'Suffering',
+}
+
 // Consent uses numbers so that they can be compared.
 global.Consent = Object.freeze({
   eager: 3,

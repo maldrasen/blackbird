@@ -237,6 +237,7 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
 
     td {
       padding: 2.5px 5px;
+      white-space: nowrap;
     }
     td.label {
       font-family: 'roboto-bold', sans-serif;
@@ -249,7 +250,11 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
     td.thresholds {
       opacity: 0.66;
     }
+    td.essence {
+      padding-left: 10px;
+    }
     td.essences {
+      padding-left: 10px;
       color: variables.$fg-strong;
       border-left: variables.$border-light;
     }
