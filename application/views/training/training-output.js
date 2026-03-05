@@ -69,15 +69,67 @@ global.TrainingOutput = (function() {
       essenceValue = TrainingController.getAnima()[code];
       essenceLabel = `${StringHelper.titlecase(code)} Anima`; }
 
+    const extra = extraClass(response.partner[code]);
+
+    console.log(`${code} extra?`,extra)
+
     builder.addRow({ classname:`${code} ${type}` })
-    builder.addCell(`${ScaleLabels[code]}`, { classname:'sensations' });
+    builder.addCell(`${ScaleLabels[code]}`, { id:`${code}TrainingOutput`, classname:`${extra} tooltip-parent sensations` });
     builder.addCell(`${previousScale.progress}`, { classname:'values' });
     builder.addCell(`+ ${sensationValue}`, { classname:'values' });
     builder.addCell(rankChanged ? `- ${previousScale.range}`:'', { classname:'values' });
     builder.addCell(`= ${currentScale.progress}`, { classname:'values' });
     builder.addCell(rankDisplay, { classname:`ranks ${rankClass}` });
-    builder.addCell(`${currentScale.range}`, { classname:`thresholds ${rankClass}` })
-    builder.addCell(`${essenceLabel} (${essenceValue})`, { classname:'essences' })
+    builder.addCell(`${currentScale.range}`, { classname:`thresholds ${rankClass}` });
+    builder.addCell(`${essenceLabel} (${essenceValue})`, { classname:'essences' });
+
+    Tooltip.register(`${code}TrainingOutput`,{
+      content: buildSensationTooltip(code, response.partner[code], sensationValue),
+      classname: `training-output-tooltip`,
+    });
+  }
+
+  function buildSensationTooltip(code, sensations, total) {
+    const adds = []
+    const mults = []
+
+    sensations.forEach(sense => {
+      if (sense.op === 'add') { adds.push(sense); }
+      if (sense.op === 'mult') { mults.push(sense); }
+    });
+
+    let math = `(`
+    for (let i=0; i<adds.length; i++) {
+      math += adds[i].extra ? `<span class='fg-extra-${adds[i].extra}'>` : `<span>`
+      math += `${adds[i].label}[${StringHelper.formatNumber(adds[i].value)}]`;
+      math += `</span>`
+      if (i < adds.length-1) { math += ` + ` }
+    }
+    math += `)`
+
+    mults.forEach(sense => {
+      math += ` × `
+      math += sense.extra ? `<span class='fg-extra-${sense.extra}'>` : `<span>`
+      math += `${sense.label}[${StringHelper.formatNumber(sense.value)}]`;
+      math += `</span>`
+    });
+
+    math += ` = ${total}`
+
+    return `<div class='calculation'>
+      <div class='scale-label'>${ScaleLabels[code]}</div>
+      <div class='math'>${math}</div>
+    </div>`
+  }
+
+  // Each sensation can have a different 'extra' value (poor, good, crit, or fumble) so this function returns the
+  // highest priority extra if there is one.
+  function extraClass(sensations) {
+    if (sensations.filter(sense => { return sense.extra === 'crit' }).length > 0) { return `fg-extra-crit` }
+    if (sensations.filter(sense => { return sense.extra === 'fumble' }).length > 0) { return `fg-extra-fumble` }
+    if (sensations.filter(sense => { return sense.extra === 'poor' }).length > 0) { return `fg-extra-poor` }
+    if (sensations.filter(sense => { return sense.extra === 'good' }).length > 0) { return `fg-extra-good` }
+    return '';
   }
 
   // Because the scales show the thresholds as if the current scale value has been set to 0, we need to subtract the

@@ -3,6 +3,16 @@
 $bg-action-panel: rgba(0,0,0,0.25);
 $bg-top-panel: rgb(0,0,0,0.5);
 
+$fg-extra-good: rgb(89, 195, 117);
+$fg-extra-crit: rgb(37, 214, 83);
+$fg-extra-poor: rgb(166, 111, 94);
+$fg-extra-fumble: rgb(202, 67, 24);
+
+.fg-extra-good { color: $fg-extra-good; }
+.fg-extra-poor { color: $fg-extra-poor; }
+.fg-extra-crit { color: $fg-extra-crit; }
+.fg-extra-fumble { color: $fg-extra-fumble; }
+
 // === Toggles ===
 // Will these be used any other place? They're just super simplified radio
 // buttons, so it seems we might.
@@ -217,6 +227,23 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
   }
 }
 
+.training-output-tooltip {
+  padding: 10px;
+  max-width: 400px;
+
+  .calculation {
+    font-family: 'roboto-mono', monospace;
+    font-size: variables.$fs-small;
+  }
+  .scale-label {
+    color: variables.$fg-strong;
+  }
+  .math {
+    margin-left: 10px;
+    color: variables.$fg-body;
+  }
+}
+
 // =====================
 //    Training Output
 // =====================
@@ -243,28 +270,26 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
       padding-right: 20px;
     }
     td.sensations {
-      width: 0;
       padding-right: 20px;
       font-family: 'roboto-bold', sans-serif;
       color: variables.$fg-strong;
     }
+
+    // Because precedence...
+    td.sensations.fg-extra-good { color: $fg-extra-good; }
+    td.sensations.fg-extra-poor { color: $fg-extra-poor; }
+    td.sensations.fg-extra-crit { color: $fg-extra-crit; }
+    td.sensations.fg-extra-fumble { color: $fg-extra-fumble; }
+
     td.values {
       width: 0;
       font-family: 'roboto-mono', monospace;
-      //font-size: variables.$fs-big;
     }
-    td.thresholds {
-      opacity: 0.66;
-    }
-    td.rank {
-      padding-left: 20px;
-    }
-    td.ranks {
-      padding-left: 20px;
-    }
-    td.essence {
-      padding-left: 10px;
-    }
+
+    td.thresholds { opacity: 0.66; }
+    td.rank { padding-left: 20px; }
+    td.ranks { padding-left: 20px; }
+    td.essence { padding-left: 10px; }
     td.essences {
       padding-left: 10px;
       color: variables.$fg-strong;
@@ -273,4 +298,3 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
   }
 
 }
-

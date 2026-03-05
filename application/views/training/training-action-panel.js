@@ -76,13 +76,9 @@ global.TrainingActionPanel = (function() {
     }
     content += `)`
 
-    if (multiplicative.length > 0) {
-      content += ` × `
-      for (let i=0; i<multiplicative.length; i++) {
-        const response = multiplicative[i];
-        content += `${response.label}[${StringHelper.formatNumber(response.value)}]`;
-        if (i < multiplicative.length-1) { content += ` * ` }
-      }
+    for (let i=0; i<multiplicative.length; i++) {
+      const response = multiplicative[i];
+      content += ` × ${response.label}[${StringHelper.formatNumber(response.value)}]`;
     }
 
     return content + `</div>`;
