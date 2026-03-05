@@ -39,8 +39,6 @@ global.TrainingOutput = (function() {
     });
   }
 
-  // TODO: Still need to add the tooltips detailing all the factors for each of the sensations.
-  //
   // TODO: This will probably break when we jump two levels at once. Need a good way to make that possible before I can
   //       test that though.
   //
@@ -70,8 +68,6 @@ global.TrainingOutput = (function() {
       essenceLabel = `${StringHelper.titlecase(code)} Anima`; }
 
     const extra = extraClass(response.partner[code]);
-
-    console.log(`${code} extra?`,extra)
 
     builder.addRow({ classname:`${code} ${type}` })
     builder.addCell(`${ScaleLabels[code]}`, { id:`${code}TrainingOutput`, classname:`${extra} tooltip-parent sensations` });
@@ -130,15 +126,6 @@ global.TrainingOutput = (function() {
     if (sensations.filter(sense => { return sense.extra === 'poor' }).length > 0) { return `fg-extra-poor` }
     if (sensations.filter(sense => { return sense.extra === 'good' }).length > 0) { return `fg-extra-good` }
     return '';
-  }
-
-  // Because the scales show the thresholds as if the current scale value has been set to 0, we need to subtract the
-  // difference between
-  function differenceBetweenLevels(previous, current) {
-    if (previous === current) { return 0; }
-    console.log(`--- ${previous} -> ${current}`);
-    console.log(_scaleThresholds[previous], _scaleThresholds[current]);
-    return _scaleThresholds[current] - _scaleThresholds[previous];
   }
 
   return Object.freeze({ show });
