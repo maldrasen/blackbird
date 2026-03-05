@@ -44,6 +44,7 @@ global.Character = function(id) {
   }
 
   return Object.freeze({
+    isPlayer: () => { return id === GameState.getPlayer(); },
     getEntity: () => { return id; },
     getName: () => { return ActorComponent.lookup(id).name; },
     getFullName,

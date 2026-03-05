@@ -41,6 +41,7 @@
     "application/models/state-recorder.js",
     "application/models/training/consent-result.js",
     "application/models/training/sensation-result.js",
+    "application/modules/balance.js",
     "application/modules/describers/body-describer.js",
     "application/modules/describers/breast-describer.js",
     "application/modules/factories/character-creation/anus-factory.js",

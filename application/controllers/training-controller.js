@@ -109,15 +109,15 @@ global.TrainingController = (function() {
     updateArousalFor($partner, result.getPartnerSensations());
   }
 
-
   function updateArousalFor(entity, sensations) {
     let mostIntense;
 
     const character = Character(entity);
-    const rValue = 0.0025;
+    const rValue = 0.0035;
     const pleasureDecayRate = 0.75;
     const comparative = ComponentMath.saturatingGrowthCurve(sensations.desire, 100, rValue);
     const arousalData = ArousalComponent.lookup(entity);
+    const previousArousal = arousalData.arousal;
 
     if (comparative < arousalData.arousal) {
       const difference = arousalData.arousal - comparative;
@@ -158,6 +158,15 @@ global.TrainingController = (function() {
     }
 
     ArousalComponent.update(entity, ObjectHelper.unfloat(arousalData));
+
+    if (character.isPlayer() === false) {
+      Balance.arousal({
+        desire: sensations.desire,
+        comparative: comparative,
+        previousArousal: previousArousal,
+        currentArousal: arousalData.arousal
+      });
+    }
   }
 
   // The edging value can be a little arbitrary. It just needs to be a positive number that increases every turn that
