@@ -51,4 +51,18 @@ SexAction.register('deep-kiss',{
     shame: 0,
   },
 
+  storyTeller: result => { return tellStory(result); },
 });
+
+function tellStory(result) {
+  const consent = result.getConsent().getConsent();
+  if (consent === Consent.unwilling) { tellUnwillingStory(result); }
+  if (consent === Consent.reluctant) { tellReluctantStory(result); }
+  if (consent === Consent.willing) { tellWillingStory(result); }
+  if (consent === Consent.eager) { tellEagerStory(result); }
+}
+
+function tellUnwillingStory(result) { return `TODO: Unwilling Deep Kissing story.` }
+function tellReluctantStory(result) { return `TODO: Reluctant Deep Kissing story.` }
+function tellWillingStory(result) { return `TODO: Willing Deep Kissing story.` }
+function tellEagerStory(result) { return `TODO: Eager Deep Kissing story.` }

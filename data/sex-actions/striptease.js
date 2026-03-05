@@ -1,3 +1,8 @@
+
+// The Striptease action uses the dance skill, but it's not technically a
+// dance, which allows non-dancers to earn some dancing skills. This action
+// requires active participation from the partner so they can't be unwilling,
+// and must be able to move.
 SexAction.register('striptease',{
   name: 'Striptease',
   mainCategory: SexAction.MainCategory.performance,
@@ -10,7 +15,16 @@ SexAction.register('striptease',{
   playerStamina: -10,
   partnerStamina: 50,
 
-  // TODO: Dancing requirements. Is this a skill that needs to be learned? Is this even a 'dance'?
+  // TODO: Rework action requirements as four arrays. We'll include the
+  //   show/hide and disable/enable arrays in order to give the conditions
+  //   more logical names. (hideWhen isNaked is better than showWhen
+  //   isNotNaked) Disable/Enable should disable the actions, but they should
+  //   still be visible, giving show/hide a higher priority.
+
+  showWhen: [],
+  hideWhen: ['partner.isNaked'],
+  disableWhen: ['consent.unwilling'],
+  enableWhen: ['partner.canMove'],
 
   consentTarget: 10,
   consentFactors: [
@@ -42,4 +56,18 @@ SexAction.register('striptease',{
     shame: 2,
   },
 
+  storyTeller: result => { return tellStory(result); },
 });
+
+function tellStory(result) {
+  const consent = result.getConsent().getConsent();
+  if (consent === Consent.unwilling) { throw `Unwilling striptease shouldn't be possible.` }
+  if (consent === Consent.reluctant) { tellReluctantStory(result); }
+  if (consent === Consent.willing) { tellWillingStory(result); }
+  if (consent === Consent.eager) { tellEagerStory(result); }
+}
+
+function tellUnwillingStory(result) { return `TODO: Unwilling Striptease story.` }
+function tellReluctantStory(result) { return `TODO: Reluctant Striptease story.` }
+function tellWillingStory(result) { return `TODO: Willing Striptease story.` }
+function tellEagerStory(result) { return `TODO: Eager Striptease story.` }

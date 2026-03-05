@@ -51,4 +51,18 @@ SexAction.register('fuck-pussy',{
     shame: 1,
   },
 
+  storyTeller: result => { return tellStory(result); },
 });
+
+function tellStory(result) {
+  const consent = result.getConsent().getConsent();
+  if (consent === Consent.unwilling) { tellUnwillingStory(result); }
+  if (consent === Consent.reluctant) { tellReluctantStory(result); }
+  if (consent === Consent.willing) { tellWillingStory(result); }
+  if (consent === Consent.eager) { tellEagerStory(result); }
+}
+
+function tellUnwillingStory(result) { return `TODO: Unwilling Sex story.` }
+function tellReluctantStory(result) { return `TODO: Reluctant Sex story.` }
+function tellWillingStory(result) { return `TODO: Willing Sex story.` }
+function tellEagerStory(result) { return `TODO: Eager Sex story.` }

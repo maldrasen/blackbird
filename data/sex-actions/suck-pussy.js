@@ -43,4 +43,18 @@ SexAction.register('suck-pussy',{
     shame: 0,
   },
 
+  storyTeller: result => { return tellStory(result); },
 });
+
+function tellStory(result) {
+  const consent = result.getConsent().getConsent();
+  if (consent === Consent.unwilling) { tellUnwillingStory(result); }
+  if (consent === Consent.reluctant) { tellReluctantStory(result); }
+  if (consent === Consent.willing) { tellWillingStory(result); }
+  if (consent === Consent.eager) { tellEagerStory(result); }
+}
+
+function tellUnwillingStory(result) { return `TODO: Unwilling Pussy Eating story.` }
+function tellReluctantStory(result) { return `TODO: Reluctant Pussy Eating story.` }
+function tellWillingStory(result) { return `TODO: Willing Pussy Eating story.` }
+function tellEagerStory(result) { return `TODO: Eager Pussy Eating story.` }
