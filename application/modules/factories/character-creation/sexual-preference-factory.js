@@ -31,18 +31,30 @@ global.SexualPreferenceFactory = (function() {
     // Loop through the triggers looking for strings matching keyword[DD], adding a sexual preference for each and
     // removing the trigger from the array once matched. Strength from triggers will be fuzzed between -9 and 9 points.
     // We make a copy of the array because I don't like modifying arrays that I'm iterating though.
+    //
+    // The bimbo, slut, and virgin triggers, while adjusting sexual preferences, also add an associated aspect which
+    // we do by simply adding an aspect trigger for it to be picked up later.
     [...triggers].forEach(trigger => {
+
+      if (trigger === 'bimbo') {
+        applySlut(preferences, options);
+        log(`Applied bimbo`,{ system:'SexualPreferenceFactory', level:3 });
+        ArrayHelper.remove(triggers,'bimbo');
+        triggers.push(`bimbo:${Random.between(1,3)}`)
+      }
 
       if (trigger === 'slut') {
         applySlut(preferences, options);
         log(`Applied slut`,{ system:'SexualPreferenceFactory', level:3 });
         ArrayHelper.remove(triggers,'slut');
+        triggers.push(`slut:${Random.between(1,3)}`)
       }
 
       if (trigger === 'virgin') {
         applyVirgin(preferences);
         log(`Applied virgin`,{ system:'SexualPreferenceFactory', level:3 });
         ArrayHelper.remove(triggers,'virgin');
+        triggers.push(`chaste:${Random.between(1,3)}`)
       }
 
       const match = trigger.match(/([a-zA-Z-]+)\[(-?\d+)]/)
@@ -145,12 +157,19 @@ global.SexualPreferenceFactory = (function() {
 
     while (count > 0) {
       const key = Random.fromFrequencyMap(sluttyPreferences);
-      const strength = Random.between(1,40);
+      const strength = Random.between(10,40);
 
       if (preferences['affection-slut'] > 0 && key === 'humiliation-slut') { continue; }
       if (preferences['humiliation-slut'] > 0 && key === 'affection-slut') { continue; }
-      if (preferences[key] == null) {
-        log(`Slut adds ${key}[${strength}]`,{ system:'SexualPreferenceFactory', level:3 });
+
+      if (preferences[key]) {
+        const adjust = Math.floor(strength/2);
+        log(`Bimbo/Slut adds ${adjust} to ${key}[${preferences[key]}]`,{ system:'SexualPreferenceFactory', level:3 });
+        preferences[key] += adjust;
+        count -= 1;
+      }
+      else if (preferences[key] == null) {
+        log(`Bimbo/Slut adds ${key}[${strength}]`,{ system:'SexualPreferenceFactory', level:3 });
         preferences[key] = strength;
         count -= 1;
       }

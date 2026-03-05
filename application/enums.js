@@ -120,6 +120,9 @@ global.AspectType = Object.freeze({
   flexible: 'Flexible', // Makes larger insertions work and enables special positions (folded in half, self sucking)
   premature: 'Premature', // Lowers orgasm thresholds (2000,1000,500)
   productive: 'Productive', // Increases cum and milk volumes.
+  chaste: 'Chaste',
+  bimbo: 'Bimbo',
+  slut: 'Slut',
   noble: 'Noble',
   slave: 'Slave',
 });
