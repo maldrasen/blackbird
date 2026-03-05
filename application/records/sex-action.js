@@ -97,13 +97,7 @@ global.SexAction = (function() {
       getDescription,
       isAvailable,
       isPossible,
-
-      // Include these when we're sure they're being used.
-      // getAvailableWhile: () => { return action.availableWhile },
-      // getPersistPlayer: () => { return action.persistPlayer; },
-      // getPersistPartner: () => { return action.persistPartner; },
-      // getComplementing: () => { return action.complementing; },
-      // getConflicting: () => { return action.conflicting; },
+      tellStory: result => { return action.storyTeller(result); }
     });
   }
 
