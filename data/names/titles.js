@@ -15,9 +15,9 @@ Name.register('title',Gender.female,[
   { name:"Drippy", triggers:['sensitive[40]','humiliation-slut[20]','slut']},
   { name:"Lil'", triggers:['short','small-tits']},
   { name:"Moaning", triggers:['sensitive[20]','humiliation-slut[20]','slut']},
-  { name:"Moneymakers", triggers:['huge-tits','humiliation-slut[20]','slut']},
+  { name:"Moneymakers", triggers:['huge-tits','breast-slut[20]','humiliation-slut[20]','bimbo','stupid']},
   { name:"Soaking Wet", triggers:['sensitive[40]','humiliation-slut[30]','slut']},
-  { name:"Sweet Tits", triggers:['small-tits','humiliation-slut[20]','slut']},
+  { name:"Sweet Tits", triggers:['small-tits','breast-slut[20]','humiliation-slut[20]','bimbo','stupid']},
 ]);
 
 Name.register('title',Gender.enby,[

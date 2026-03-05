@@ -11,7 +11,7 @@ Name.register('surname',Gender.male,[
 ]);
 
 Name.register('surname',Gender.female,[
-  { name:'Knockers', triggers:['big-tits','humiliation-slut[20]']},
+  { name:'Knockers', triggers:['bimbo','stupid','big-tits','breast-slut[20]','humiliation-slut[30]']},
 ]);
 
 Name.register('surname',Gender.enby,[
