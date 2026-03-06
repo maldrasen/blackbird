@@ -27,23 +27,27 @@ global.AspectsComponent = (function() {
   }
 
   function validate(id) {
-    const properties = Object.keys(AspectType);
-    const aspectsComponent = lookup(id)
+    validateData(lookup(id));
+  }
 
-    Object.keys(aspectsComponent).forEach(key => {
+  // This component needs early validation (before it's made into a component)
+  function validateData(aspectsData) {
+    const properties = Object.keys(AspectType);
+
+    Object.keys(aspectsData).forEach(key => {
       if (properties.includes(key) === false) {
         throw `Aspect component does not have a ${key} property.`
       }
     });
 
     properties.forEach(aspectCode => {
-      if (aspectsComponent[aspectCode] != null) {
-        Validate.between(`Aspect.${aspectCode}`, aspectsComponent[aspectCode], 1, 5);
+      if (aspectsData[aspectCode] != null) {
+        Validate.between(`Aspect.${aspectCode}`, aspectsData[aspectCode], 1, 5);
       }
     });
 
-    Validate.singleKeyFrom(`Aspect`, aspectsComponent, personalityAspects);
-    Validate.singleKeyFrom(`Aspect`, aspectsComponent, roleAspects);
+    Validate.singleKeyFrom(`Aspect`, aspectsData, personalityAspects);
+    Validate.singleKeyFrom(`Aspect`, aspectsData, roleAspects);
   }
 
   return Object.freeze({
@@ -52,6 +56,7 @@ global.AspectsComponent = (function() {
     update,
     lookup,
     destroy,
+    validateData,
   });
 
 })();

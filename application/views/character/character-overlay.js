@@ -9,7 +9,9 @@ global.CharacterOverlay = (function() {
 
   let $id, $character, $isPlayer;
 
-  function init() {}
+  function init() {
+    X.onClick(`#characterOverlay .close-button`, close);
+  }
 
   // Because the CharacterOverlay displays available character actions, we might need some other options here.
   // Everything I need now though I can determine from the current state and the character data I think.

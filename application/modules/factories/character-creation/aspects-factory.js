@@ -6,6 +6,12 @@ global.AspectsFactory = (function() {
     const aspectsData = {};
     applySpecies(aspectsData, actorData);
     applyTriggers(aspectsData, triggers);
+
+    // We need to validate the data here for rare cases like when both the slut
+    // and bimbo aspects are added to the character (there can only be one at
+    // a time)
+    AspectsComponent.validateData(aspectsData);
+
     return aspectsData;
   }
 

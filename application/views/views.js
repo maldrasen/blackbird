@@ -2,23 +2,21 @@ global.Views = (function() {
 
   function initAll() {
     Casement.init();
+    CharacterOverlay.init();
     Confirmation.init();
-    GeneralOverlay.init();
-    ScrollingPanel.init();
-    TabController.init();
-    Tooltip.init();
-
-    MouseMonitor.init();
-    WindowManager.init();
-
-    GameStateFrame.init();
-
     Console.init();
     DungeonView.init();
     EventView.init();
+    GameStateFrame.init();
+    GeneralOverlay.init();
     MainMenu.init();
+    MouseMonitor.init();
     OptionsOverlay.init();
+    ScrollingPanel.init();
+    TabController.init();
+    Tooltip.init();
     TrainingView.init();
+    WindowManager.init();
   }
 
   return Object.freeze({ initAll });
