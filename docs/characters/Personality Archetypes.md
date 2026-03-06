@@ -1,61 +1,29 @@
-When we create a character we set their personality values from the species averages. Sometimes though I want a specific 'type' of character. For this I'll have canned character types that can be applied to a character that sets their personality sliders accordingly. The archetypes could also adjust sexual preferences and add aspects. 
+Though we have a personality component a character's entire personality also needs to take their gender, species, aspects, and sexual preferences into consideration. In order to simplify this we can summarize these factors into a personality archetype. Then in each action we can have a dialog tree for each personality archetype. This still means writing dialog for at least fifteen personality types (and probably even more as time goes on) but that should still be simpler overall.
 
-### Bimbo (Service Slut)
-- Low Intelligence
-- High Agreeableness, Openness, Extraversion
-- Low Neuroticism
-- Extra sexual preferences
+### Innocent
+- `innocent` - The innocent type is unique in that it's the only one based on the character's sexual history. If the character has no sexual history at all, and has very few sexual preferences (just the gender preferences and perverted if it's negative) then they will get the innocent archetype.
 
-### Mother (Empathetic Caregiver)
-- High Agreeableness and Conscientiousness
-- Low Neuroticism and Extraversion
-- Low Pain Tolerance
+### Kobolds
+The kobolds are a unique enough species that they should have their own dialog tree. The kobolds are also a male dominated species, so they'll either have a dominant or a submissive personality.
+- `koboldDom` - Vicious little bastards.
+- `koboldSub` - Vicious little bastards, who are used to being treated like shit.
 
-### Brat
-- Low Agreeableness, Conscientiousness
-- Low respect
-- High Extraversion
-- Degradation Kink
+### Aspects
+Some character aspects will take priority over other personality traits.
+- `bimbo` - Loves sex and is kind of stupid.
+- `prude` - Uninterested in sex, cold, unfeeling, frigid, angry.
+- `slut` - Loves sex and is up for anything with anyone.
 
-### Princess
-- Low Agreeableness, Conscientiousness
-- Low respect
-- Low serving fetishes
-- Praise Kink
+### Sexual Preferences
+- `pervert` - Up for anything, lewd, sometimes gross.  Will ask for more unusual acts.
 
-### Deviant (Sex Obsession)
-- Lower sanity
-- Many sexual preferences
-- High Openness
-- Low Conscientiousness and Neuroticism
-
-### Wallflower
-- High Neuroticism, Conscientiousness
-- Low Extraversion
-- Starting Fear
-
-### Stoner
-- High Openness
-- Low Neuroticism, Conscientiousness, Extraversion
-- Stoner Aspect makes a person more likely to accept drugs.
-
-### Nun
-- Low Openness
-- High Neuroticism, Conscientiousness
-- High Intelligence, magic
-
-### Tradwife 
-- Low Openness
-- High Extraversion, Agreeableness
-
-### Warrior
-- Dominant
-- High Conscientiousness
-- Low Agreeableness, Neuroticism
-- High Strength / Combat Skills
-
-### Thug
-- Sadist
-- Low Conscientiousness and Agreeableness
-- High Openness, Neuroticism
-- High Strength / Combat Skills
+### Personality Factors
+The rest of the archetypes are chosen based on the three factors in the personality component (`kind`,`calm`, and `violent`) thought the factor needs to be at a minimum level for it to have much of an influence on the personality. A character without any strong personality factors will be `reserved`, a mostly stoic and unemotional personality type.
+- `sweet` - Kind and gentle.
+- `playful` - Playful, fun loving.
+- `brat` - Playful, disobedient, and insulting.
+- `serious` - Violent when they need to be, takes situations seriously.
+- `heartless` - Violent, cruel, insulting, hateful.
+- `timid` - Passive, but excitable, so they're probably a bit fearful.
+- `bitch` - The most interesting thing about them is they're kind of mean.
+- `reserved` - No strong personality in any direction, they are unemotional and stoic.
