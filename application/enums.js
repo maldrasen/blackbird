@@ -9,15 +9,18 @@ global.LogType = Object.freeze({
 });
 
 global.CommandType = Object.freeze({
+  trainingPropose: 'Training.Propose',
   trainingStart: 'Training.Start',
   trainingSexAction: 'Training.SexAction',
+  trainingEnd: 'Training.End',
 });
 
 global.GameMode = Object.freeze({
   dungeon: 'dungeon',
-  event: 'event',
+  episode: 'episode',
   location: 'location',
   training: 'training',
+  trainingComplete: 'trainingComplete',
 });
 
 // === Views ===

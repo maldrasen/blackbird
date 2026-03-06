@@ -1,31 +1,24 @@
-global.EventView = (function() {
-
-  let $event;
-  let $returnState;
+global.EpisodeView = (function() {
 
   function init() {
-    X.onCodeDown(KeyCodes.Space, isVisible, advance);
-    X.onClick('#eventView .next-button', nextPage);
-    X.onClick('#eventView .continue-button', nextStage);
-    X.loadDocument('#eventArea','/views/event-view.html');
+    // X.onCodeDown(KeyCodes.Space, isVisible, advance);
+    // X.onClick('#eventView .next-button', nextPage);
+    // X.onClick('#eventView .continue-button', nextStage);
+    // X.loadDocument('#eventArea','/views/event-view.html');
   }
 
-  function show(event) {
-    $event = event;
-    $event.onBefore();
-    $event.compile();
+  function show() {
+    const episode = Episode.lookup(EpisodeController.getEpisodeCode())
 
-    // We should render the event here, going through the pages and performing
-    // any necessary text replacement.
+    MainContent.setMainContent(episode.getContent());
+    MainContent.setBackground(episode.getBackground());
 
-    $returnState = { };
+    log("Show",{ system:"EpisodeView", data:{ code:episode.getCode() }});
 
-    log("Show",{ system:"EventView", data:{ code:$event.getCode() }});
-
-    setLayout();
-    showStage();
+    // showStage();
   }
 
+  /*
   function isVisible() {
     return !X.hasClass('#eventView','hide');
   }
@@ -122,11 +115,12 @@ global.EventView = (function() {
     if ($event.advancePage()) { return showPage(); }
     throw `Event is complete, but this should have been called by the complete button I think?`
   }
+*/
 
   return {
     init,
     show,
-    isVisible,
+    // isVisible,
   }
 
 })();

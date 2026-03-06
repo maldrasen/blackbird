@@ -2,9 +2,20 @@ global.TrainingSystem = (function() {
 
   function run(command) {
     switch (command.getType()) {
+      case CommandType.trainingPropose: return proposeTraining(command);
       case CommandType.trainingStart: return startTraining(command);
       case CommandType.trainingSexAction: return handleSexAction(command);
+      case CommandType.trainingEnd: return endTraining(command);
     }
+  }
+
+  function proposeTraining(command) {
+    const characterId = command.getValue('characterId');
+    const player = GameState.getPlayer();
+
+    EpisodeController.startEpisode('propose-training', { P:player, T:characterId });
+
+    StateMachine.setMode(GameMode.episode);
   }
 
   function startTraining(command) {
@@ -35,6 +46,10 @@ global.TrainingSystem = (function() {
     StateMachine.setDeltaTime(sexAction.getTime());
 
     TrainingController.handleSensationResult(result);
+  }
+
+  function endTraining() {
+
   }
 
   return Object.freeze({

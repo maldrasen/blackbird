@@ -1,8 +1,30 @@
 @use "../layout";
 @use "../variables";
 
+#episodeView.episode-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  .episode-frame {
+    height: 400px;
+    width: 600px;
+
+    background-color: rgba(0,0,0,0.70);
+    border: variables.$border-normal;
+    box-shadow: variables.$shadow-frame;
+    z-index: variables.$z-root;
+    overflow: hidden;
+  }
+}
+
+
+
+
+/*
+Old Version... keeping this for now.
 #eventView {
-  @include layout.full-screen;
 
   display: flex;
   justify-content: center;
@@ -73,3 +95,4 @@
     }
   }
 }
+*/

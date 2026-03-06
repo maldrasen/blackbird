@@ -47,6 +47,7 @@ global.StateMachine = (function() {
     if ($pendingMode) {
 
       if ($pendingMode === GameMode.dungeon) { DungeonView.show(); }
+      if ($pendingMode === GameMode.episode) { EpisodeView.show(); }
       if ($pendingMode === GameMode.location) { LocationView.show(); }
       if ($pendingMode === GameMode.training) { TrainingView.show(); }
 

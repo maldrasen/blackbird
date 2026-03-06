@@ -6,7 +6,7 @@ global.Views = (function() {
     Confirmation.init();
     Console.init();
     DungeonView.init();
-    EventView.init();
+    EpisodeView.init();
     GameStateFrame.init();
     GeneralOverlay.init();
     MainMenu.init();
