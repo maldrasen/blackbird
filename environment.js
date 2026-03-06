@@ -17,10 +17,11 @@ global.Environment = (function() {
     };
   }
 
-  return {
+  return Object.freeze({
     getName,
     isDevelopment,
     isProduction,
     pack,
-  }
+  });
+
 })();

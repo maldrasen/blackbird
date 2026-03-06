@@ -56,9 +56,10 @@ global.Browser = (function() {
     Electron.ipcMain.handle(message, callback);
   }
 
-  return {
+  return Object.freeze({
     init,
     send,
     receive,
-  };
+  });
+
 })();

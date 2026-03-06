@@ -4,8 +4,8 @@ global.Server = (function() {
   }
 
   // When the server receives the 'client.boot' message we know the browser window has been opened and the Loader
-  // script has been run. We now need to send all of the application context to the client, which should be able to
-  // load itself essentially.
+  // script has been run. We now need to send all the application context to the client, which should be able to
+  // load itself.
   function boot() {
     Browser.send('boot.setContext',{
       ROOT: ROOT,
@@ -14,5 +14,5 @@ global.Server = (function() {
     });
   }
 
-  return { init };
+  return Object.freeze({ init });
 })();
