@@ -23,12 +23,25 @@ global.Validate = (function() {
     if (value !== equalTo) { throw message ? message : `Validate.equals Failed: ${name} doesn't equal ${equalTo}` }
   }
 
+  function singleKeyFrom(name, data, keyList, message=null) {
+    let found;
+    Object.keys(data).forEach(key => {
+      if (keyList.includes(key)) {
+        if (found != null) {
+          throw message ? message : `Validate.singleKeyFrom Failed: ${name} cannot include both ${key} and ${found}`
+        }
+        found = key;
+      }
+    });
+  }
+
   return Object.freeze({
     between,
     atLeast,
     isIn,
     exists,
     equals,
+    singleKeyFrom
   });
 
 })();

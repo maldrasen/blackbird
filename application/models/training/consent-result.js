@@ -5,14 +5,6 @@ global.ConsentResult = (characterId, targetId=null) => {
 
   let $response, $consentValue, $sexAction;
 
-  function getConsent() {
-    const target = $sexAction.getConsentTarget();
-    if ($consentValue < target)        { return Consent.unwilling; }
-    if ($consentValue < (target*1.25)) { return Consent.reluctant; }
-    if ($consentValue < (target*2))    { return Consent.willing;   }
-    return Consent.eager;
-  }
-
   // Setting the sex action also resets the results so that the same
   // ConsentResult object can be used for multiple actions
   function setSexAction(code) {
@@ -153,6 +145,20 @@ global.ConsentResult = (characterId, targetId=null) => {
     });
   }
 
+  function getConsentValue() {
+    if ($response.additive.length > 0) { return $consentValue; }
+    throw `No factors have been applied to the ConsentResult.`;
+  }
+
+  function getConsent() {
+    const target = $sexAction.getConsentTarget();
+    const value = getConsentValue();
+    if (value < target)        { return Consent.unwilling; }
+    if (value < (target*1.25)) { return Consent.reluctant; }
+    if (value < (target*2))    { return Consent.willing;   }
+    return Consent.eager;
+  }
+
   function getConsentClassname() {
     switch (getConsent()) {
       case Consent.unwilling: return 'fg-unwilling';
@@ -175,7 +181,7 @@ global.ConsentResult = (characterId, targetId=null) => {
     getCharacter: () => { return $characterId; },
     getTarget: () => { return $targetId; },
     getResponse: () => { return $response },
-    getConsentValue: () => { return $consentValue; },
+    getConsentValue,
     getConsentClassname,
     getConsentLabel,
     getConsent,

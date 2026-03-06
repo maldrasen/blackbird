@@ -20,7 +20,7 @@ describe("CharacterFactory", function() {
       expect(ArousalComponent.lookup(id).arousal).to.equal(0);
     });
 
-    it.only("can make a bunch of random characters quickly without crashing", function() {
+    it("can make a bunch of random characters quickly without crashing", function() {
       for(let i=0; i<100; i++) { CharacterFactory.build({ triggers:[] }); }
     });
   });

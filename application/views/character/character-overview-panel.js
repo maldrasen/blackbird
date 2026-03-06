@@ -68,7 +68,7 @@ global.CharacterOverviewPanel = (function() {
     keys.forEach(key => {
       const value = aspects[key];
       const stars = ['','★','★★','★★★'][value]
-      list.add(makeTag(AspectType[key], stars, `aspect-tag strength-${value}`));
+      list.add(makeTag(StringHelper.titlecase(key), stars, `aspect-tag strength-${value}`));
     });
 
     X.fill('#characterOverlay .aspects-area', X.createElement(list.getList()));

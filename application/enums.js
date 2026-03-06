@@ -117,15 +117,35 @@ global.GenderName = Object.freeze({
 });
 
 global.AspectType = Object.freeze({
-  flexible: 'Flexible', // Makes larger insertions work and enables special positions (folded in half, self sucking)
-  premature: 'Premature', // Lowers orgasm thresholds (2000,1000,500)
-  productive: 'Productive', // Increases cum and milk volumes.
-  chaste: 'Chaste',
-  bimbo: 'Bimbo',
-  slut: 'Slut',
-  noble: 'Noble',
-  slave: 'Slave',
+  flexible: 'flexible', // Makes larger insertions work and enables special positions (folded in half, self sucking)
+  premature: 'premature', // Lowers orgasm thresholds (2000,1000,500)
+  productive: 'productive', // Increases cum and milk volumes.
+  chaste: 'chaste',
+  bimbo: 'bimbo',
+  slut: 'slut',
+  noble: 'noble',
+  slave: 'slave',
 });
+
+// === Personality ===
+
+global.Attitude = {
+  afraid: 'afraid',
+  angry: 'angry',
+  horny: 'horny',
+  resigned: 'resigned',
+};
+
+global.Architype = {
+  barbaric: 'barbaric', // Wild, violent, animalistic, crude, brutal.
+  bimbo: 'bimbo',       // Lots of sexual experience and kind of stupid.
+  brat: 'brat',         // Playful, disobedient, and insulting.
+  innocent: 'innocent', // Timid and inexperienced, but not necessarily uninterested, but can be afraid.
+  pervert: 'pervert',   // Up for anything, lewd, sometimes gross.
+  prude: 'prude',       // Uninterested in sex, cold, unfeeling, frigid, angry.
+  reserved: 'reserved', // Unemotional but accepting
+  slut: 'slut',         // Lots of sexual experience, and interested.
+}
 
 // === Training ===
 
@@ -153,6 +173,14 @@ global.Consent = Object.freeze({
   willing: 2,
   reluctant: 1,
   unwilling: 0,
+});
+
+// Currently the same as the consent values, but there should be more nuance.
+global.TrainingAttitude = Object.freeze({
+  eager: 'eager',
+  willing: 'willing',
+  reluctant: 'reluctant',
+  unwilling: 'unwilling',
 });
 
 global.ActionDirection = Object.freeze({
