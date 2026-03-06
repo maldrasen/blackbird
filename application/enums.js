@@ -120,7 +120,7 @@ global.AspectType = Object.freeze({
   flexible: 'flexible', // Makes larger insertions work and enables special positions (folded in half, self sucking)
   premature: 'premature', // Lowers orgasm thresholds (2000,1000,500)
   productive: 'productive', // Increases cum and milk volumes.
-  chaste: 'chaste',
+  prude: 'prude',
   bimbo: 'bimbo',
   slut: 'slut',
   noble: 'noble',
@@ -137,14 +137,29 @@ global.Attitude = {
 };
 
 global.Architype = {
-  barbaric: 'barbaric', // Wild, violent, animalistic, crude, brutal.
-  bimbo: 'bimbo',       // Lots of sexual experience and kind of stupid.
-  brat: 'brat',         // Playful, disobedient, and insulting.
-  innocent: 'innocent', // Timid and inexperienced, but not necessarily uninterested, but can be afraid.
+  innocent: 'innocent', // Timid and inexperienced, based on sexual history and lack of strong preferences.
+
+  // Personality from species.
+  koboldDom: 'koboldDom',
+  koboldSub: 'koboldSub',
+
+  // Personality strongly influenced by aspects.
+  bimbo: 'bimbo',  // Loves sex and is kind of stupid.
+  prude: 'prude',  // Uninterested in sex, cold, unfeeling, frigid, angry.
+  slut: 'slut',    // Loves sex and is up for anything with anyone.
+
+  // Personality strongly influenced by sexual preferences.
   pervert: 'pervert',   // Up for anything, lewd, sometimes gross.
-  prude: 'prude',       // Uninterested in sex, cold, unfeeling, frigid, angry.
-  reserved: 'reserved', // Unemotional but accepting
-  slut: 'slut',         // Lots of sexual experience, and interested.
+
+  // Lowest priority archetypes, based entirely on personality factors.
+  sweet: 'sweet',         // Kind, gentle.
+  playful: 'playful',     // Playful, fun loving.
+  brat: 'brat',           // Playful, disobedient, and insulting.
+  serious: 'serious',     // Violent when they need to be, takes situations seriously.
+  heartless: 'heartless', // Violent, cruel, insulting, hateful.
+  timid: 'timid',         // Passive, but excitable, so they're probably a bit fearful.
+  bitch: 'bitch',         // The most interesting thing about them is they're kind of mean.
+  reserved: 'reserved',   // No strong personality in any direction, they are unemotional and stoic.
 }
 
 // === Training ===

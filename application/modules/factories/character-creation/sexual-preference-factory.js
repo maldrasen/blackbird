@@ -54,7 +54,6 @@ global.SexualPreferenceFactory = (function() {
         applyVirgin(preferences);
         log(`Applied virgin`,{ system:'SexualPreferenceFactory', level:3 });
         ArrayHelper.remove(triggers,'virgin');
-        triggers.push(`chaste:${Random.between(1,3)}`)
       }
 
       const match = trigger.match(/([a-zA-Z-]+)\[(-?\d+)]/)

@@ -48,7 +48,6 @@ SexualPreference.register('orgy-lover',{
   description: 'An love of group sex.',
 });
 
-// This defaults to -20 in order to give a global distaste for perverted actions.
 SexualPreference.register('perverted',{
   name: 'Perverted',
   antiname: 'Traditional',

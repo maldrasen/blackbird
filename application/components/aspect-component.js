@@ -3,7 +3,7 @@ global.AspectsComponent = (function() {
   const personalityAspects = [
     AspectType.bimbo,
     AspectType.slut,
-    AspectType.chaste];
+    AspectType.prude];
   const roleAspects = [
     AspectType.noble,
     AspectType.slave];

@@ -1,7 +1,70 @@
 global.Personality = function(id) {
 
-  function getArchetype() {
+  const domPreferences = ['dominant','sadistic','debaser'];
+  const subPreferences = ['submissive','masochistic','affection-slut','humiliation-slut'];
+  const bdsmPreferences = [...domPreferences, ...subPreferences];
 
+  // The character's personality archetype is used to choose an initial dialog tree, which is easier than branching
+  // within a huge tree that needs to take a character's personality, feelings, and aspects all into consideration.
+  // Certain personality aspects are 'stronger' than others, so a character with a 'bimbo' aspect will act like a bimbo
+  // even if they're also a violent sadist.
+  function getArchetype() {
+    const character = Character(id);
+    const aspects = AspectsComponent.lookup(id);
+    const personality = PersonalityComponent.lookup(id);
+    const sexualPreferences = SexualPreferencesComponent.lookup(id);
+    const strongestPreference = strongestPreferenceFactor(sexualPreferences);
+    const strongestFactor = strongestPersonalityFactor(personality);
+    const personalityStrength = Math.abs(strongestFactor.value);
+
+    if (personality.broken) { throw `Implement broken as archetype.` }
+
+    // Some species have their own dialog trees. We need to be careful to not
+    // allow kobolds without some kind of BDSM preference. Perhaps we need a
+    // post creation character cleanup type class.
+    if (character.getSpeciesName() === 'Kobold') {
+      if (domPreferences.includes(strongestPreference.code)) { return Architype.koboldDom; }
+      if (subPreferences.includes(strongestPreference.code)) { return Architype.koboldSub; }
+      throw `Kobolds need to either be dominant or submissive.`
+    }
+
+    // TODO: The 'innocent' archetype needs to look at sexual history, but I
+    //   haven't written that component yet.
+
+    // Aspects have the next highest priority when determining archetype.
+    if (aspects[AspectType.prude]) { return Architype.prude; }
+    if (aspects[AspectType.bimbo]) { return Architype.bimbo; }
+    if (aspects[AspectType.slut]) { return Architype.slut; }
+
+    // TODO: The other sexual preferences will probably also have associated
+    //   personality types, at least among the BDSM preferences. A strong
+    //   dominant or masochist will need their own personality trees eventually,
+    //   though we can probably do without them for now.
+
+    if (sexualPreferences.perverted > personalityStrength) { return Architype.pervert; }
+    if (Math.abs(-1 * sexualPreferences.perverted) > personalityStrength) { return Architype.prude; }
+
+    // They are either violent or passive.
+    if (personality.violent > 20) {
+      return (personality.kind < 0) ? Architype.heartless : Architype.serious;
+    }
+    if (personality.violent < -20 && personality.calm < 0) {
+      return Architype.timid
+    }
+
+    // They are either calm or excitable.
+    if (personality.calm < -20) {
+      return (personality.kind > 0) ? Architype.playful : Architype.brat;
+    }
+    if (personality.calm > 20) { return Architype.reserved; }
+
+    // They are either kind of cruel.
+    if (personality.kind > 20) { return Architype.sweet; }
+    if (personality.kind < -20) { return Architype.bitch; }
+
+    // No strong personality factors in any direction indicate that this person
+    // is rather unemotional and stoic.
+    return Architype.reserved;
   }
 
   function getAttitude() {
@@ -59,6 +122,33 @@ global.Personality = function(id) {
       }
     });
     return { code:highestCode, value:highestValue };
+  }
+
+  function strongestPreferenceFactor(sexualPreferences) {
+    let strongestCode = 'none';
+    let strongestValue = 0;
+
+    bdsmPreferences.forEach(code => {
+      if (sexualPreferences[code] > strongestValue) {
+        strongestCode = code;
+        strongestValue = sexualPreferences[code];
+      }
+    });
+
+    return { code:strongestCode, value:strongestValue }
+  }
+
+  // This function really only needs to find the strongest BDSM preference.
+  function strongestPersonalityFactor(personality) {
+    let strongestCode = 'none';
+    let strongestValue = 0;
+    ['calm','kind','violent'].forEach(code => {
+      if (Math.abs(personality[code]) > strongestValue) {
+        strongestCode = code;
+        strongestValue = Math.abs(personality[code]);
+      }
+    });
+    return { code:strongestCode, value:personality[strongestCode] };
   }
 
   return Object.freeze({
