@@ -137,7 +137,8 @@ global.Attitude = {
 };
 
 global.Architype = {
-  innocent: 'innocent', // Timid and inexperienced, based on sexual history and lack of strong preferences.
+  // Timid and inexperienced, based on sexual history and lack of strong preferences.
+  innocent: 'innocent',
 
   // Personality from species.
   koboldDom: 'koboldDom',

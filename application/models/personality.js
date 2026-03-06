@@ -19,13 +19,11 @@ global.Personality = function(id) {
 
     if (personality.broken) { throw `Implement broken as archetype.` }
 
-    // Some species have their own dialog trees. We need to be careful to not
-    // allow kobolds without some kind of BDSM preference. Perhaps we need a
-    // post creation character cleanup type class.
+    // Some species have their own dialog trees.
     if (character.getSpeciesName() === 'Kobold') {
       if (domPreferences.includes(strongestPreference.code)) { return Architype.koboldDom; }
       if (subPreferences.includes(strongestPreference.code)) { return Architype.koboldSub; }
-      throw `Kobolds need to either be dominant or submissive.`
+      throw `Kobolds must be dominant or submissive.`
     }
 
     // TODO: The 'innocent' archetype needs to look at sexual history, but I
@@ -67,6 +65,8 @@ global.Personality = function(id) {
     return Architype.reserved;
   }
 
+  // Attitude is more situational than the personality archetype and can best be summered as the way the character
+  // feels about the current situation.
   function getAttitude() {
 
   }
@@ -155,6 +155,9 @@ global.Personality = function(id) {
     getArchetype,
     getAttitude,
     attitudeTowardsTraining,
+
+    strongestPreferenceFactor,
+    strongestPersonalityFactor,
   });
 
 }

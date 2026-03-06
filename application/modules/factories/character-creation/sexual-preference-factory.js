@@ -201,6 +201,8 @@ global.SexualPreferenceFactory = (function() {
   // When applying these sexual preferences, we roll against each preference,
   // which should give most characters several of these preferences.
   function applyDominated(preferences, actor, dominantGender) {
+    const domRequires = ['dominant','sadistic','debaser'];
+    const subRequires = ['submissive','masochistic','humiliation-slut'];
     const domPrefs = {
       'dominant':50,
       'sadistic':40,
@@ -221,21 +223,23 @@ global.SexualPreferenceFactory = (function() {
     };
 
     if (actor.gender === dominantGender) {
-      return Object.keys(domPrefs).forEach(key => {
+      Object.keys(domPrefs).forEach(key => {
         if (Random.roll(100) < domPrefs[key]) {
           preferences[key] = (preferences[key]||0) + Random.between(10,30);
         }
       });
+      return alsoInclude(preferences, domRequires);
     }
 
     // In a male or female dominated society the non-binary and futanari are a
     // little less likely to be as submissive as the males or females.
     if ([Gender.futa, Gender.enby].includes(actor.gender)) {
-      return Object.keys(subPrefs).forEach(key => {
+      Object.keys(subPrefs).forEach(key => {
         if (Random.roll(100) < (subPrefs[key]/1.5)) {
           preferences[key] = (preferences[key]||0) + Random.between(10,20);
         }
       });
+      return alsoInclude(preferences, subRequires);
     }
 
     Object.keys(subPrefs).forEach(key => {
@@ -243,6 +247,14 @@ global.SexualPreferenceFactory = (function() {
         preferences[key] = (preferences[key]||0) + Random.between(10,30);
       }
     });
+    alsoInclude(preferences, subRequires);
+  }
+
+  // We need to make sure that at least one of these preferences is included.
+  function alsoInclude(preferences, requires) {
+    if (Object.keys(ObjectHelper.filter(preferences, requires)).length === 0) {
+      preferences[Random.from(requires)] = Random.between(10,30);
+    }
   }
 
   return Object.freeze({ build });
