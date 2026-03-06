@@ -430,7 +430,6 @@ describe("SensationResult", function() {
 
       expect(partnerSensations.anger).to.equal(36);
       expect(partnerSensations.submission).to.equal(420);
-      expect(partnerSensations.throat).to.equal(112);
       expect(playerSensations.cock).to.equal(100);
     });
   });

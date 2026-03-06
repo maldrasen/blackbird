@@ -29,15 +29,25 @@ global.SensationResult = function(code, context) {
   const partnerHasCock = CockComponent.lookupNormalOf(partner) != null;
   const partnerHasPussy = PussyComponent.lookupNormalOf(partner) != null;
 
+  const partnerSensitivities = SensitivitiesComponent.lookup(partner);
+  const partnerErogenousCervix = partnerSensitivities.cervix > 0;
+  const partnerErogenousThroat = partnerSensitivities.throat > 0;
+  const partnerErogenousUrethra = partnerSensitivities.urethra > 0;
+
+  const playerSensitivities = SensitivitiesComponent.lookup(player);
+  const playerErogenousCervix = playerSensitivities.cervix > 0;
+  const playerErogenousThroat = playerSensitivities.throat > 0;
+  const playerErogenousUrethra = playerSensitivities.urethra > 0;
+
   const playerHas = {
     desire:   true,
     anus:     playerSensations.includes('anus'),
-    throat:   playerSensations.includes('throat'),
-    urethra:  playerSensations.includes('urethra'),
+    throat:   playerSensations.includes('throat')   && playerErogenousThroat,
+    urethra:  playerSensations.includes('urethra')  && playerErogenousUrethra,
     nipple:   playerSensations.includes('nipple')   && playerHasBreasts,
     cock:     playerSensations.includes('cock')     && playerHasCock,
     prostate: playerSensations.includes('prostate') && playerHasCock,
-    cervix:   playerSensations.includes('cervix')   && playerHasPussy,
+    cervix:   playerSensations.includes('cervix')   && playerHasPussy && playerErogenousCervix,
     clit:     playerSensations.includes('clit')     && playerHasPussy,
     pussy:    playerSensations.includes('pussy')    && playerHasPussy };
 
@@ -49,12 +59,12 @@ global.SensationResult = function(code, context) {
     submission: true,
     suffering:  true,
     anus:       partnerSensations.includes('anus'),
-    throat:     partnerSensations.includes('throat'),
-    urethra:    partnerSensations.includes('urethra'),
+    throat:     partnerSensations.includes('throat')   && partnerErogenousThroat,
+    urethra:    partnerSensations.includes('urethra')  && partnerErogenousUrethra,
     nipple:     partnerSensations.includes('nipple')   && partnerHasBreasts,
     cock:       partnerSensations.includes('cock')     && partnerHasCock,
     prostate:   partnerSensations.includes('prostate') && partnerHasCock,
-    cervix:     partnerSensations.includes('cervix')   && partnerHasPussy,
+    cervix:     partnerSensations.includes('cervix')   && partnerHasPussy && partnerErogenousCervix,
     clit:       partnerSensations.includes('clit')     && partnerHasPussy,
     pussy:      partnerSensations.includes('pussy')    && partnerHasPussy };
 
