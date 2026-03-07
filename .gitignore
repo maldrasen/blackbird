@@ -1,5 +1,6 @@
 
 .DS_Store
+.tmp*
 
 /.idea
 /docs/.obsidian
