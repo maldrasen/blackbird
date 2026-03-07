@@ -76,7 +76,7 @@ global.CockFactory = (function() {
   function applyTriggers(cockData, actorData, triggers) {
 
     function andRemove(trigger) {
-      log(`Applied ${trigger}`,{ system:'CockFactory', level:3 });
+      Console.log(`Applied ${trigger}`,{ system:'CockFactory', level:3 });
       ArrayHelper.remove(triggers, trigger);
     }
 

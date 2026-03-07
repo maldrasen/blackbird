@@ -59,7 +59,7 @@ global.BreastsFactory = (function() {
   function applyTriggers(breastsData, actorData, triggers) {
 
     function andRemove(trigger) {
-      log(`Applied ${trigger}`,{ system:'BreastFactory', level:3 });
+      Console.log(`Applied ${trigger}`,{ system:'BreastFactory', level:3 });
       ArrayHelper.remove(triggers, trigger);
     }
 

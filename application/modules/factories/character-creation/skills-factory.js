@@ -11,7 +11,7 @@ global.SkillsFactory = (function() {
       const match = trigger.match(/^([a-z\-]+)<(\d+),(\d+)>$/)
       if (match) {
         skillsData[match[1]] = Random.between(parseInt(match[2]),parseInt(match[3]));
-        log(`Applied ${trigger}`,{ system:'SkillsFactory', level:3 });
+        Console.log(`Applied ${trigger}`,{ system:'SkillsFactory', level:3 });
         ArrayHelper.remove(triggers, trigger);
       }
     });

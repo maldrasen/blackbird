@@ -7,8 +7,11 @@
   justify-content: center;
   height: 100vh;
 
+
   .episode-frame {
-    height: 400px;
+    display: flex;
+    flex-direction: column;
+    height: 300px;
     width: 600px;
 
     background-color: rgba(0,0,0,0.70);
@@ -19,8 +22,19 @@
   }
 }
 
+#episodePage {
+  flex-grow: 1;
+  margin: 20px;
+  font-size: variables.$fs-bigger;
+}
 
-
+#episodeButtons {
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px;
+  border-top: variables.$border-light;
+  background-color: rgb(0,0,0.5);
+}
 
 /*
 Old Version... keeping this for now.

@@ -33,6 +33,7 @@ global.Episode = (function() {
     return Object.freeze({
       getCode: () => { return code; },
       getContent: () => { return views[getLayout()]; },
+      getPages: () => { return episode.pages; },
       getBackground,
       getLayout,
     });

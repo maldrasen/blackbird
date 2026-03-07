@@ -29,7 +29,7 @@ global.AspectsFactory = (function() {
     if (Random.roll(100) < def.chance) {
       if (def.genders == null || def.genders.includes(gender)) {
         const level = (def.levels) ? parseInt(Random.fromFrequencyMap(def.levels)) : 1;
-        log(`${species.getName()} adds ${code}[${level}]`,{ system:'AspectsFactory', level:3 });
+        Console.log(`${species.getName()} adds ${code}[${level}]`,{ system:'AspectsFactory', level:3 });
         aspectsData[code] = level;
       }
     }
@@ -42,7 +42,7 @@ global.AspectsFactory = (function() {
       const match = trigger.match(/(.+):(\d)/);
       if (match) {
         aspectsData[match[1]] = parseInt(match[2]);
-        log(`Applied ${trigger}`,{ system:'AspectsFactory', level:3 });
+        Console.log(`Applied ${trigger}`,{ system:'AspectsFactory', level:3 });
         ArrayHelper.remove(triggers, trigger);
       }
     });

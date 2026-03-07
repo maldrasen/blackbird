@@ -5,10 +5,9 @@ global.StateMachine = (function() {
   let $deltaTime;
 
   function handleCommand(commandType, commandData) {
-    console.log(`Command:${commandType} : ${JSON.stringify(commandData)}`)
     const command = Command(commandType, commandData);
 
-    log(`Run Command:${commandType}`, { system:'StateMachine', data:commandData });
+    Console.log(`Run Command:${commandType}`, { system:'StateMachine', data:commandData });
 
     CharacterMovementSystem.run(command);
     TrainingSystem.run(command);

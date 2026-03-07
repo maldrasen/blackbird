@@ -78,7 +78,7 @@ global.Weaver = function(context) {
   function formatError(message) { return `<span class='weaver-error'>${message}</span>` }
 
   function onError(type, error, data) {
-    logError(`Weaver:${type}Error thrown.`, error, { system:'Weaver', ...data });
+    Console.logError(`Weaver:${type}Error thrown.`, error, { system:'Weaver', ...data });
     return formatError(`Weaver:${type}Error`);
   }
 

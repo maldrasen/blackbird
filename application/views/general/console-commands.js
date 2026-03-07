@@ -20,7 +20,7 @@ global.ConsoleCommands = (function() {
         executeCommand(command);
       }
       catch (error) {
-        logError(`Error running command`,error,{ system:'Console' });
+        Console.logError(`Error running command`,error,{ system:'Console' });
       }
       $commandHistory.push(command);
       $commandHistoryPointer = null;
@@ -61,10 +61,10 @@ global.ConsoleCommands = (function() {
 
     const valid = meetsRequirements(command);
     if (valid === true) {
-      return log(command.commandFunction(args) || 'Success',{ system:"Console" });
+      return Console.log(command.commandFunction(args) || 'Success',{ system:"Console" });
     }
 
-    log(`Invalid Command: ${valid}`, { system:'Console', type:LogType.warning })
+    Console.log(`Invalid Command: ${valid}`, { system:'Console', type:LogType.warning })
   }
 
   function meetsRequirements(command) {

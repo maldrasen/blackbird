@@ -72,8 +72,9 @@ global.CharacterFactory = (function() {
     triggers = [...new Set(triggers)]
 
     // Log start of character creation.
-    log(StringHelper.pack(`Building[${characterId}]: ${actorData.title||''} ${actorData.name} ${actorData.surname||''}
-        [${genderCode} ${speciesCode}]`),{ system:'CharacterFactory', level:1 });
+    Console.log(StringHelper.pack(`Building[${characterId}]: ${actorData.title||''} 
+      ${actorData.name} ${actorData.surname||''} [${genderCode} ${speciesCode}]`),
+      { system:'CharacterFactory', level:1 });
 
     const bodyData = BodyFactory.build(actorData, triggers);
     const anusData = AnusFactory.build(actorData);
@@ -125,12 +126,15 @@ global.CharacterFactory = (function() {
     }
     catch(error) {
       console.warn(error);
-      log(error,{ system:'CharacterFactory', type:LogType.warning, buildOptions:options });
+      Console.log(error,{ system:'CharacterFactory', type:LogType.warning, buildOptions:options });
 
       Registry.deleteEntity(characterId);
 
       if (attempt >= 10) {
-        logError('Cannot create a character using these options.',{ system:'CharacterFactory', buildOptions:options });
+        Console.logError('Cannot create a character using these options.',{
+          system: 'CharacterFactory',
+          data: { options:options },
+        });
         throw error
       }
 
@@ -142,7 +146,7 @@ global.CharacterFactory = (function() {
       throw `Error: Unresolved Triggers: ${JSON.stringify(triggers)}`;
     }
 
-    log('CharacterData',{ system:'CharacterFactory', data:{
+    Console.log('CharacterData',{ system:'CharacterFactory', data:{
       attributes: attributesData,
       personality: personalityData,
       body: bodyData,
@@ -277,7 +281,7 @@ global.CharacterFactory = (function() {
   //       spells.
   function applyMagical(triggers) {
     if (triggers.includes('magical')) {
-      log(`Applied Magical`,{ system:'CharacterFactory', level:3 });
+      Console.log(`Applied Magical`,{ system:'CharacterFactory', level:3 });
       ArrayHelper.remove(triggers, 'magical');
     }
   }

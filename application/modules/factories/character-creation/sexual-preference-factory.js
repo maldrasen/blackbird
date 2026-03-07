@@ -38,21 +38,21 @@ global.SexualPreferenceFactory = (function() {
 
       if (trigger === 'bimbo') {
         applySlut(preferences, options);
-        log(`Applied bimbo`,{ system:'SexualPreferenceFactory', level:3 });
+        Console.log(`Applied bimbo`,{ system:'SexualPreferenceFactory', level:3 });
         ArrayHelper.remove(triggers,'bimbo');
         triggers.push(`bimbo:${Random.between(1,3)}`)
       }
 
       if (trigger === 'slut') {
         applySlut(preferences, options);
-        log(`Applied slut`,{ system:'SexualPreferenceFactory', level:3 });
+        Console.log(`Applied slut`,{ system:'SexualPreferenceFactory', level:3 });
         ArrayHelper.remove(triggers,'slut');
         triggers.push(`slut:${Random.between(1,3)}`)
       }
 
       if (trigger === 'virgin') {
         applyVirgin(preferences);
-        log(`Applied virgin`,{ system:'SexualPreferenceFactory', level:3 });
+        Console.log(`Applied virgin`,{ system:'SexualPreferenceFactory', level:3 });
         ArrayHelper.remove(triggers,'virgin');
       }
 
@@ -60,7 +60,7 @@ global.SexualPreferenceFactory = (function() {
       if (match) {
         try {
           preferences[match[1]] = (Random.roll(18)-9) + parseInt(match[2]);
-          log(`Applied ${trigger}`,{ system:'SexualPreferenceFactory', level:3 });
+          Console.log(`Applied ${trigger}`,{ system:'SexualPreferenceFactory', level:3 });
           ArrayHelper.remove(triggers,trigger);
         }
         catch (error) { throw `Unparsable Trigger: ${trigger}`; }
@@ -163,12 +163,12 @@ global.SexualPreferenceFactory = (function() {
 
       if (preferences[key]) {
         const adjust = Math.floor(strength/2);
-        log(`Bimbo/Slut adds ${adjust} to ${key}[${preferences[key]}]`,{ system:'SexualPreferenceFactory', level:3 });
+        Console.log(`Bimbo/Slut adds ${adjust} to ${key}[${preferences[key]}]`,{ system:'SexualPreferenceFactory', level:3 });
         preferences[key] += adjust;
         count -= 1;
       }
       else if (preferences[key] == null) {
-        log(`Bimbo/Slut adds ${key}[${strength}]`,{ system:'SexualPreferenceFactory', level:3 });
+        Console.log(`Bimbo/Slut adds ${key}[${strength}]`,{ system:'SexualPreferenceFactory', level:3 });
         preferences[key] = strength;
         count -= 1;
       }
@@ -192,7 +192,7 @@ global.SexualPreferenceFactory = (function() {
 
     Object.keys(preferences).forEach(key => {
       if (retained.includes(key) === false && preferences[key] > 0) {
-        log(`Virgin removes ${key}`,{ system:'SexualPreferenceFactory', level:3 });
+        Console.log(`Virgin removes ${key}`,{ system:'SexualPreferenceFactory', level:3 });
         delete preferences[key];
       }
     });

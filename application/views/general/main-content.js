@@ -35,7 +35,7 @@ global.MainContent = (function() {
   }
 
   function setMainContent(path) {
-    log(`Set Main Content`,{ system:'MainContent', data:path, level:1 });
+    Console.log(`Set Main Content`,{ system:'MainContent', data:path, level:1 });
 
     clearBackground();
     X.loadDocument('#mainContent',path);

@@ -53,7 +53,7 @@ global.WorldState = (function() {
   }
 
   function localLog(message) {
-    log(message, { system:"WorldState", level:1 });
+    Console.log(message, { system:"WorldState", level:1 });
   }
 
   return Object.freeze({

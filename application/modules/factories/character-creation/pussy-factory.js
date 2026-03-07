@@ -51,7 +51,7 @@ global.PussyFactory = (function() {
   function applyTriggers(pussyData, triggers) {
 
     function andRemove(trigger) {
-      log(`Applied ${trigger}`,{ system:'PussyFactory', level:3 });
+      Console.log(`Applied ${trigger}`,{ system:'PussyFactory', level:3 });
       ArrayHelper.remove(triggers, trigger);
     }
 

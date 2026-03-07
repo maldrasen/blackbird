@@ -32,7 +32,7 @@ global.SensitivitiesFactory = (function() {
   // If a trigger doesn't apply to this body we can just ignore it.
   function applyTriggers(triggers, sensitivities, breastsData, pussyData) {
     function andRemove(trigger) {
-      log(`Applied ${trigger}`,{ system:'SensitivitiesFactory', level:3 });
+      Console.log(`Applied ${trigger}`,{ system:'SensitivitiesFactory', level:3 });
       ArrayHelper.remove(triggers, trigger);
     }
 

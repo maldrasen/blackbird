@@ -15,7 +15,7 @@ global.PersonalityFactory = (function() {
   function applyTriggers(personalityData, triggers) {
 
     function andRemove(trigger) {
-      log(`Applied ${trigger}`,{ system:'PersonalityFactory', level:3 });
+      Console.log(`Applied ${trigger}`,{ system:'PersonalityFactory', level:3 });
       ArrayHelper.remove(triggers, trigger);
     }
 

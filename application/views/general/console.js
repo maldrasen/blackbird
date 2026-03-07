@@ -82,7 +82,7 @@ global.Console = (function() {
     options.type = LogType.error;
     options.data.error = errorToString(error)
 
-    log(message, options);
+    Console.log(message, options);
 
     console.error(message, options);
     if (error) { console.error(error); }
@@ -144,38 +144,3 @@ global.Console = (function() {
   });
 
 })();
-
-/**
- * Print a message to the Blackbird console.
- *
- * ```
- * Log Options:
- *    system - Label for the system this message is from.
- *    type - A LogType (info, success, warning, error)
- *    level - Message importance (1,2,3)
- *    data - Object of data to include.
- * ```
- *
- * @function
- * @param {string} message
- * @param {object} options
- */
-window.log = Console.log;
-
-/**
- * Print an error to the Blackbird console.
- *
- * ```
- * Log Options:
- *    system - Label for the system this message is from.
- *    type - A LogType (info, success, warning, error)
- *    level - Message importance (1,2,3)
- *    data - Object of data to include.
- * ```
- *
- * @function
- * @param {string} message
- * @param {error} error
- * @param {object} options
- */
-window.logError = Console.logError;

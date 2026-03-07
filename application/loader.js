@@ -64,12 +64,12 @@ window.Loader = (function() {
         Tests.load();
       }
 
-      log("Blackbird Started",{ system:'Main', level:1, data:{
+      Console.log("Blackbird Started",{ system:'Main', level:1, data:{
         environment: Environment.name,
       }});
     }
     catch(error) {
-      logError("Error booting main", error, { system:'Main' });
+      Console.logError("Error booting main", error, { system:'Main' });
     }
   }
 

@@ -64,14 +64,14 @@ global.BodyFactory = (function() {
 
     // If this character is short, set height around two standard deviations below average.
     if (triggers.includes('short')) {
-      log(`Applied Short`,{ system:'BodyFactory', level:3 });
+      Console.log(`Applied Short`,{ system:'BodyFactory', level:3 });
       ArrayHelper.remove(triggers,'short');
       return Math.round(averageHeight - (deviation * 2 * fuzz));
     }
 
     // If this character is tall, set height around two standard deviations above average.
     if (triggers.includes('tall')) {
-      log(`Applied Tall`,{ system:'BodyFactory', level:3 });
+      Console.log(`Applied Tall`,{ system:'BodyFactory', level:3 });
       ArrayHelper.remove(triggers,'tall');
       return Math.round(averageHeight + (deviation * 2 * fuzz));
     }
@@ -82,7 +82,7 @@ global.BodyFactory = (function() {
   function applyTriggers(bodyData, triggers) {
 
     function andRemove(trigger) {
-      log(`Applied ${trigger}`,{ system:'BodyFactory', level:3 });
+      Console.log(`Applied ${trigger}`,{ system:'BodyFactory', level:3 });
       ArrayHelper.remove(triggers, trigger);
     }
 

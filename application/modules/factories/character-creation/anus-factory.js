@@ -22,7 +22,7 @@ global.AnusFactory = (function() {
   function applyTriggers(anusData, triggers) {
 
     function andRemove(trigger) {
-      log(`Applied ${trigger}`,{ system:'AnusFactory', level:3 });
+      Console.log(`Applied ${trigger}`,{ system:'AnusFactory', level:3 });
       ArrayHelper.remove(triggers, trigger);
     }
 

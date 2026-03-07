@@ -39,29 +39,33 @@ global.Personality = function(id) {
     //   dominant or masochist will need their own personality trees eventually,
     //   though we can probably do without them for now.
 
-    if (sexualPreferences.perverted > personalityStrength) { return Architype.pervert; }
-    if (Math.abs(-1 * sexualPreferences.perverted) > personalityStrength) { return Architype.prude; }
+    const perv = sexualPreferences.perverted;
+    if (perv > 10 && perv > personalityStrength) { return Architype.pervert; }
+    if (perv < -10 && Math.abs(-1 * perv) > personalityStrength) { return Architype.prude; }
 
-    // They are either violent or passive.
+    // A violent person will be more serious, unless they're unkind enough to
+    // be heartless.
     if (personality.violent > 20) {
-      return (personality.kind < 0) ? Architype.heartless : Architype.serious;
-    }
-    if (personality.violent < -20 && personality.calm < 0) {
-      return Architype.timid
+      return (personality.kind < -10) ? Architype.heartless : Architype.serious;
     }
 
-    // They are either calm or excitable.
+    // A very passive person will usually use a different factor to determine
+    // their personality archetype, unless they're also excitable, in which
+    // case they have the timid archetype.
+    if (personality.violent < -20 && personality.calm < -10) { return Architype.timid; }
+
+    // If they're overly excitable, they'll either be playful or a brat.
     if (personality.calm < -20) {
       return (personality.kind > 0) ? Architype.playful : Architype.brat;
     }
-    if (personality.calm > 20) { return Architype.reserved; }
 
-    // They are either kind of cruel.
+    // If we don't have an archetype for them yet, we can use the kindness
+    // factor to choose between sweet and bitch.
     if (personality.kind > 20) { return Architype.sweet; }
     if (personality.kind < -20) { return Architype.bitch; }
 
-    // No strong personality factors in any direction indicate that this person
-    // is rather unemotional and stoic.
+    // Finally, a character with no strong personality factors in any direction
+    // indicates that this person is rather unemotional and stoic.
     return Architype.reserved;
   }
 

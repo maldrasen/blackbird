@@ -38,6 +38,7 @@
     "application/models/dungeon/feature.js",
     "application/models/dungeon/floor.js",
     "application/models/dungeon/room.js",
+    "application/models/episode-page.js",
     "application/models/personality.js",
     "application/models/skill-check.js",
     "application/models/state-recorder.js",

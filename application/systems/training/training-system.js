@@ -38,7 +38,7 @@ global.TrainingSystem = (function() {
 
     result.applyFactors();
 
-    log(`Executing SexAction`,{ system:'TrainingSystem', data:{
+    Console.log(`Executing SexAction`,{ system:'TrainingSystem', data:{
       partner: result.getPartnerSensations(),
       player: result.getPlayerSensations(),
     }});

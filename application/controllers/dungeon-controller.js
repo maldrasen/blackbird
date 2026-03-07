@@ -14,7 +14,7 @@ global.DungeonController = (function() {
   }
 
   function changeFloor(level) {
-    log("Building Dungeon",{ system:'DungeonController', level:1, data:{ level }});
+    Console.log("Building Dungeon",{ system:'DungeonController', level:1, data:{ level }});
 
     $currentFloor = FloorFactory.build(level);
 

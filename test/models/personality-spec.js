@@ -34,9 +34,9 @@ describe("Personality", function() {
 
     it('takes personality factors into consideration', function() {
       const reserved = Personality(CharacterFixtures.genericFemale({ personality:{ calm:0, kind:0, violent:0 } }));
-      const heartless = Personality(CharacterFixtures.genericFemale({ personality:{ calm:0, kind:-5, violent:21 } }));
+      const heartless = Personality(CharacterFixtures.genericFemale({ personality:{ calm:0, kind:-15, violent:21 } }));
       const serious = Personality(CharacterFixtures.genericFemale({ personality:{ calm:0, kind:5, violent:21 } }));
-      const timid = Personality(CharacterFixtures.genericFemale({ personality:{ calm:-5, kind:0, violent:-21 } }));
+      const timid = Personality(CharacterFixtures.genericFemale({ personality:{ calm:-15, kind:0, violent:-21 } }));
       const playful = Personality(CharacterFixtures.genericFemale({ personality:{ calm:-21, kind:5, violent:0 } }));
       const brat = Personality(CharacterFixtures.genericFemale({ personality:{ calm:-21, kind:-5, violent:0 } }));
       const sweet = Personality(CharacterFixtures.genericFemale({personality: {calm: 0, kind: 21, violent: 0}}));

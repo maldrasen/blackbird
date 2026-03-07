@@ -44,7 +44,7 @@ global.MouthFactory = (function() {
   function applyTriggers(mouthData, triggers) {
 
     function andRemove(trigger) {
-      log(`Applied ${trigger}`,{ system:'MouthFactory', level:3 });
+      Console.log(`Applied ${trigger}`,{ system:'MouthFactory', level:3 });
       ArrayHelper.remove(triggers, trigger);
     }
 

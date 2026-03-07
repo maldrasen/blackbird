@@ -33,7 +33,7 @@ global.CharacterOverlay = (function() {
     X.removeClass('#characterOverlay','hide');
     X.removeClass('#overlayCover','hide');
 
-    log(`Open Character Overlay [${$id}]`,{ system:'CharacterOverlay' });
+    Console.log(`Open Character Overlay [${$id}]`,{ system:'CharacterOverlay' });
   }
 
   function close() {
