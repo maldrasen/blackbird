@@ -17,10 +17,10 @@ global.CommandType = Object.freeze({
 
 global.GameMode = Object.freeze({
   dungeon: 'dungeon',
+  enlighten: 'enlighten',
   episode: 'episode',
   location: 'location',
   training: 'training',
-  trainingComplete: 'trainingComplete',
 });
 
 // === Views ===

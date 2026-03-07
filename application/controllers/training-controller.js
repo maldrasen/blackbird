@@ -41,10 +41,9 @@ global.TrainingController = (function() {
     $possibleActions = SexAction.getPossible($context);
   }
 
-  // TODO: Update the Arousal component, deleting everything but arousal. Also reduce arousal to something ambient.
-  //       Once training is over we show the 'level up' view.
   function endTraining() {
-    console.log("=== End Training ===")
+    ArousalComponent.update($partner, { arousal:0 });
+    StateMachine.handleCommand(CommandType.trainingEnd);
   }
 
   function handleSensationResult(result) {

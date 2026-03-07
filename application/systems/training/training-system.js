@@ -51,12 +51,16 @@ global.TrainingSystem = (function() {
     TrainingController.handleSensationResult(result);
   }
 
-  function endTraining() {
-
+  function endTraining(command) {
+    EnlightenController.startEnlightenment({
+      partner: TrainingController.getPartner(),
+      anima: TrainingController.getAnima(),
+      animus: TrainingController.getAnimus(),
+      anger: TrainingController.getEssenceOfAnger(),
+    });
+    StateMachine.setMode(GameMode.enlighten);
   }
 
-  return Object.freeze({
-    run
-  });
+  return Object.freeze({ run });
 
 })();

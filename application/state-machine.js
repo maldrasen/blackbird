@@ -5,7 +5,7 @@ global.StateMachine = (function() {
   let $pendingMode;
   let $deltaTime;
 
-  function handleCommand(commandType, commandData) {
+  function handleCommand(commandType, commandData={}) {
     const command = Command(commandType, commandData);
 
     Console.log(`Run Command:${commandType}`, { system:'StateMachine', data:commandData });
