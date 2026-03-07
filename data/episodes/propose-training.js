@@ -1,7 +1,27 @@
 Episode.register('propose-training',{
   layout: 'centered',
-  pages: [{ contentFunction:generate, buttons:[{ standard:'continue' }] }],
+  pages: [{ contentFunction:generate, buttons:[
+    { id:'proposeContinueButton', label:'Continue', callback:EpisodeController.endEpisode },
+    { id:'proposeNevermindButton', classname:'hide', label:'Never mind…', callback:EpisodeController.endEpisode },
+  ]}],
+  endFunction: endProposition,
 });
+
+function endProposition() {
+  const partner = EpisodeController.getContext().T;
+  const state = EpisodeController.getState();
+
+  // If no alternative has been set then we return to the previous mode,
+  // otherwise we need to somehow adjust the training state before the training
+  // begins. We can probably send context like that in the command so it
+  // shouldn't be a problem. Stuff like bondage and grappling will need to be
+  // implemented first, as forcing your partner is essentially combat with them.
+  if (state.attitude === TrainingAttitude.unwilling) {
+    return StateMachine.returnToPreviousMode();
+  }
+
+  StateMachine.handleCommand(CommandType.trainingStart, { characterId:partner });
+}
 
 function generate() {
   const partner = EpisodeController.getContext().T;
@@ -9,14 +29,19 @@ function generate() {
   const archetype = personality.getArchetype();
   const attitude = personality.attitudeTowardsTraining();
 
+  EpisodeController.setStateProperty('attitude',attitude);
+
   if (attitude === TrainingAttitude.eager) { return `<div>${eagerText(archetype, partner)}</div>`; }
   if (attitude === TrainingAttitude.willing) { return `<div>${willingText(archetype, partner)}</div>`; }
   if (attitude === TrainingAttitude.reluctant) { return `<div>${reluctantText(archetype, partner)}</div>`; }
 
   if (attitude === TrainingAttitude.unwilling) {
+    X.addClass('#proposeContinueButton','hide');
+    X.removeClass('#proposeNevermindButton','hide');
+
     return `<div>
       <div>${unwillingText(archetype)}<div>
-      <div>(Unwilling Partner Options)</div>
+      <div class='fg-weak'>(Unwilling Partner Options)</div>
     </div>`
   }
 

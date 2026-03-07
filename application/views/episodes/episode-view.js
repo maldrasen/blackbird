@@ -17,8 +17,6 @@ global.EpisodeView = (function() {
   }
 
   function setPageContent(episodePage) {
-    const content = Weaver(EpisodeController.getContext()).weave(episodePage.getContent());
-
     X.empty('#episodePage');
     X.empty('#episodeButtons');
     X.addClass('#episodeButtons','hide');
@@ -27,16 +25,28 @@ global.EpisodeView = (function() {
       addButton(buttonData);
     })
 
+    // We need to get the content after the buttons are added because getting
+    // the content might call a contentFunction() which might need to modify
+    // the buttons.
+    const template = episodePage.getContent();
+    const content = Weaver(EpisodeController.getContext()).weave(template);
+
     X.fill('#episodePage',X.createElement(content));
   }
 
   function addButton(buttonData) {
     X.removeClass('#episodeButtons','hide');
+
     if (buttonData.standard === 'continue') {
       return X.first('#episodeButtons').appendChild(X.createElement(
         `<a href='#' class='button continue-button'>Continue</a>`));
     }
-    throw `Not sure how to handle this button: ${JSON.stringify(buttonData)}`;
+
+    const button = X.createElement(`<a href='#' class='button'>${buttonData.label}</a>`);
+    if (buttonData.id) { button.id = buttonData.id; }
+    if (buttonData.classname) { X.addClass(button,buttonData.classname); }
+    if (typeof buttonData.callback === 'function') { button.addEventListener('click',buttonData.callback); }
+    X.first('#episodeButtons').appendChild(button);
   }
 
   function isVisible() {

@@ -1,5 +1,6 @@
 global.StateMachine = (function() {
 
+  let $previousMode;
   let $currentMode;
   let $pendingMode;
   let $deltaTime;
@@ -39,6 +40,18 @@ global.StateMachine = (function() {
     }
   }
 
+  function markPreviousMode() {
+    if ($previousMode != null) { throw `Previous mode has already been marked and should be returned to.`; }
+    $previousMode = $currentMode;
+  }
+
+  function returnToPreviousMode() {
+    if ($previousMode == null) { throw `Previous mode has not been set.`; }
+    setMode($previousMode);
+    $previousMode = null;
+    render();
+  }
+
   // When the mode is set directly (when not sending a command) the render() function then needs to be called to update
   // the view. Setting the mode directly bypasses the other systems that run every turn (which it has to so that
   // nothing is updated when a game is loaded).
@@ -54,13 +67,17 @@ global.StateMachine = (function() {
       $pendingMode = null;
     }
   }
-  
+
+
   return {
     clearDeltaTime: () => { $deltaTime = null; },
     getDeltaTime: () => { return $deltaTime; },
     setDeltaTime,
     getMode: () => { return $currentMode; },
     setMode,
+    getPreviousMode: () => { return $previousMode; },
+    markPreviousMode,
+    returnToPreviousMode,
     handleCommand,
     render,
   };

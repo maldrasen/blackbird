@@ -1,19 +1,24 @@
 global.EpisodeController = (function() {
 
-  let $episodeCode;
-  let $nextPage;
-  let $pageIndex;
-  let $context;
+  let $episodeCode, $episodeState, $nextPage, $pageIndex, $context;
 
   function startEpisode(code, context) {
     $episodeCode = code;
+    $episodeState = {};
     $nextPage = null;
     $pageIndex = null;
     $context = context;
   }
 
   function endEpisode() {
+    const episode = Episode.lookup($episodeCode);
+    const endFunction = episode.getEndFunction();
 
+    if (typeof endFunction === 'function') {
+      return endFunction();
+    }
+
+    StateMachine.returnToPreviousMode();
   }
 
   // This controller should always have the data we need to look up the next page. If this page contains some kind of
@@ -44,7 +49,10 @@ global.EpisodeController = (function() {
   return Object.freeze({
     getEpisodeCode: () => { return $episodeCode; },
     getContext: () => { return $context; },
+    getState: () => { return $episodeState; },
+    setStateProperty: (key,value) => { $episodeState[key] = value; },
     startEpisode,
+    endEpisode,
     nextPage,
   });
 

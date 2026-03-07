@@ -9,12 +9,15 @@ global.TrainingSystem = (function() {
     }
   }
 
+  // We mark the previous game mode when training is first proposed. We return to the previous mode when the training
+  // is either denied by the partner or once the level up mode has concluded.
   function proposeTraining(command) {
     const characterId = command.getValue('characterId');
     const player = GameState.getPlayer();
 
     EpisodeController.startEpisode('propose-training', { P:player, T:characterId });
 
+    StateMachine.markPreviousMode();
     StateMachine.setMode(GameMode.episode);
   }
 
