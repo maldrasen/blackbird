@@ -18,6 +18,6 @@ Dialog.register(Architype.innocent, DialogKeys.proposeTraining_Reluctant, contex
 });
 
 Dialog.register(Architype.innocent, DialogKeys.proposeTraining_Unwilling, context => {
-  return `"Training?" {T:name} takes a small step back, {T:her} eyes wide. "No, 
+  return `"Training?" {T:name} takes a small step back, {T:his} eyes wide. "No, 
     I... I really don't think I can do something like that."`;
 });
