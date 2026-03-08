@@ -19,11 +19,13 @@ Some character aspects will take priority over other personality traits.
 
 ### Personality Factors
 The rest of the archetypes are chosen based on the three factors in the personality component (`kind`,`calm`, and `violent`) thought the factor needs to be at a minimum level for it to have much of an influence on the personality. A character without any strong personality factors will be `reserved`, a mostly stoic and unemotional personality type.
-- `sweet` - Kind and gentle.
+- `sweet` - Kind and gentle women.
+- `kind` - King and gentle men.
 - `playful` - Playful, fun loving.
 - `brat` - Playful, disobedient, and insulting.
 - `serious` - Violent when they need to be, takes situations seriously.
 - `heartless` - Violent, cruel, insulting, hateful.
 - `timid` - Passive, but excitable, so they're probably a bit fearful.
-- `bitch` - The most interesting thing about them is they're kind of mean.
+- `bitch` - The most interesting thing about them is they're kind of mean. (female only)
+- `bastard` - Essentially bitches, but the male version.
 - `reserved` - No strong personality in any direction, they are unemotional and stoic.

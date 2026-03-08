@@ -8,6 +8,35 @@ global.Character = function(id) {
     return name;
   }
 
+  // TODO: Implement me.
+  function breastsAreAtLeast(size) { return true; }
+
+  // TODO: Implement me.
+  function cockIsAtLeast(size) { return true; }
+
+  // TODO: Implement me.
+  function isTallerThan(id) { return true; }
+
+  // TODO: Implement me.
+  function isShorterThan(id) { return true; }
+
+  // TODO: Implement me. (This should take an id or a value)
+  function isStrongerThan(id) { return true; }
+
+  // TODO: Implement me.
+  function isNaked() { return true; }
+
+  // TODO: Implement me.
+  function isTopless() { return true; }
+
+  // TODO: Implement me.
+  function isBottomless() { return true; }
+
+  // TODO: More specific than just not bottomless
+  function isWearingPants() { return true; }
+
+  function wouldConsentTo(code, minimumLevel=Consent.willing) { return true; }
+
   // The orgasm threshold is normally 10,000. The premature aspect reduces it to 7500, 5000, or 2500. There might be
   // other factors (such as equipment, special abilities, drugs) that raise or lower this threshold, either by a set
   // amount or by a percentage. (Which is why I'm using a variable here)
@@ -53,9 +82,22 @@ global.Character = function(id) {
     hasBreasts: () => { return BreastsComponent.lookup(id) != null; },
     hasNormalPussy: () => { return PussyComponent.lookupNormalOf(id) != null; },
     hasNormalCock: () => { return CockComponent.lookupNormalOf(id) != null; },
+    breastsAreAtLeast,
+    cockIsAtLeast,
+    isTallerThan,
+    isShorterThan,
+    isStrongerThan,
+    isNaked,
+    isTopless,
+    isBottomless,
+    isWearingPants,
+    wouldConsentTo,
     getOrgasmThreshold,
     rollForOrgasm,
     rollRefectoryPeriod,
   });
+
+
+
 
 }
