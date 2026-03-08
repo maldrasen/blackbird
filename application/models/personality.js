@@ -4,6 +4,10 @@ global.Personality = function(id) {
   const subPreferences = ['submissive','masochistic','affection-slut','humiliation-slut'];
   const bdsmPreferences = [...domPreferences, ...subPreferences];
 
+  const fetishPreferences = ['choker','pisser','pugilist','rigger','stretcher','stud',
+    'breath-player','breeder','cum-dump','enemas','gape-queen','piss-slut','prolapse-queen',
+    'punching-bag','rope-bunny','sex-toy-lover','size-queen'];
+
   // The character's personality archetype is used to choose an initial dialog tree, which is easier than branching
   // within a huge tree that needs to take a character's personality, feelings, and aspects all into consideration.
   // Certain personality aspects are 'stronger' than others, so a character with a 'bimbo' aspect will act like a bimbo
@@ -155,6 +159,19 @@ global.Personality = function(id) {
     return { code:strongestCode, value:personality[strongestCode] };
   }
 
+  function strongestFetishes(threshold) {
+    const preferences = SexualPreferencesComponent.lookup(id);
+    const fetishes = []
+
+    fetishPreferences.forEach(code => {
+      if (preferences[code] >= threshold) {
+        fetishes.push({ code:code, value:preferences[code] })
+      }
+    });
+
+    return fetishes.sort((a,b) => { return b.value - a.value });
+  }
+
   return Object.freeze({
     getArchetype,
     getAttitude,
@@ -162,6 +179,7 @@ global.Personality = function(id) {
 
     strongestPreferenceFactor,
     strongestPersonalityFactor,
+    strongestFetishes,
   });
 
 }
