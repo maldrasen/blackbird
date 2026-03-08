@@ -140,30 +140,23 @@ global.Attitude = {
 };
 
 global.Architype = {
-  // Timid and inexperienced, based on sexual history and lack of strong preferences.
+  bastard: 'bastard',
+  bimbo: 'bimbo',
+  bitch: 'bitch',
+  brat: 'brat',
+  heartless: 'heartless',
   innocent: 'innocent',
-
-  // Personality from species.
   koboldDom: 'koboldDom',
   koboldSub: 'koboldSub',
-
-  // Personality strongly influenced by aspects.
-  bimbo: 'bimbo',  // Loves sex and is kind of stupid.
-  prude: 'prude',  // Uninterested in sex, cold, unfeeling, frigid, angry.
-  slut: 'slut',    // Loves sex and is up for anything with anyone.
-
-  // Personality strongly influenced by sexual preferences.
-  pervert: 'pervert',   // Up for anything, lewd, sometimes gross.
-
-  // Lowest priority archetypes, based entirely on personality factors.
-  sweet: 'sweet',         // Kind, gentle.
-  playful: 'playful',     // Playful, fun loving.
-  brat: 'brat',           // Playful, disobedient, and insulting.
-  serious: 'serious',     // Violent when they need to be, takes situations seriously.
-  heartless: 'heartless', // Violent, cruel, insulting, hateful.
-  timid: 'timid',         // Passive, but excitable, so they're probably a bit fearful.
-  bitch: 'bitch',         // The most interesting thing about them is they're kind of mean.
-  reserved: 'reserved',   // No strong personality in any direction, they are unemotional and stoic.
+  nice: 'nice',
+  pervert: 'pervert',
+  playful: 'playful',
+  prude: 'prude',
+  reserved: 'reserved',
+  serious: 'serious',
+  slut: 'slut',
+  sweet: 'sweet',
+  timid: 'timid',
 }
 
 // === Training ===

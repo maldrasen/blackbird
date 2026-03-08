@@ -1,4 +1,6 @@
 
+// The playful archetype is excitable, curious, and fun loving,
+
 Dialog.register(Architype.playful, DialogKeys.proposeTraining_Eager, context => {
   return  `{T:name} laughs and bends over a little in front of you, wiggling 
     {T:his} ass invitingly. "Finally! Come and take it {P:insultingName}."`;

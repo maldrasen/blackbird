@@ -1,4 +1,7 @@
 
+// Timid characters are passive but also excitable. As such they come across as timid and a bit fearful. Timid
+// characters can be any gender.
+
 Dialog.register(Architype.timid, DialogKeys.proposeTraining_Eager, context => {
   return `{T:name} looks startled, then breaks into a sudden, nervous smile. 
     "Oh! Um... yes. Yes, okay. Sorry, you just surprised me."`;

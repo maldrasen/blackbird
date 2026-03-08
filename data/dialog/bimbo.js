@@ -1,5 +1,10 @@
 
-// TODO: We actually need to check breast size and gender here.
+// Bimbos love sex and are kind of stupid. We'll eventually have a personality monitoring system to ensure that bimbo
+// characters never get too smart, or too calm. Bimbos will also always be females or futas so we know they at least
+// have tits, though not always necessarily large tits. (big-tit-bimbo should be a child archetype that falls back to
+// bimbo)
+
+// TODO: Should either switch on breast size here or make that big-tit-bimbo chile archetype.
 Dialog.register(Architype.bimbo, DialogKeys.proposeTraining_Eager, context => {
   return `{T:name} bounces in place, {T:his} {T:breasts.bigTits} swinging 
     enticingly, "Training? Sure! Let's do it right now!"`;

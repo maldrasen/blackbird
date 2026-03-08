@@ -1,4 +1,9 @@
 
+// The most interesting thing about the bitch archetype is that they're kind of mean. When determining their
+// personality archetype, they didn't meet the requirements for any other kind of personality (not violent and no
+// strong calm/excitable values) so they kind of ended up here. No men are bitches, they get shunted into the bastard
+// personality instead.
+
 Dialog.register(Architype.bitch, DialogKeys.proposeTraining_Eager, context => {
   return `{T:name} looks you up and down, then smirks. "Fine. But you better leave me satisfied."`;
 });

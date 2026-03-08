@@ -1,4 +1,7 @@
 
+// Brats are playful, disobedient, and insulting. Brats can be any gender though if they're male they'll lean into the
+// pratty femboy persona.
+
 Dialog.register(Architype.brat, DialogKeys.proposeTraining_Eager, context => {
   return `{T:name} crosses {T:his} arms and smirks. "Training? Fine. But I'm not making it easy on you."`; });
 Dialog.register(Architype.brat, DialogKeys.proposeTraining_Willing, context => {

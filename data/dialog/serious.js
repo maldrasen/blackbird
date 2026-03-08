@@ -1,4 +1,8 @@
 
+// The serious characters have a high violent score. They're more interested in exploring the dungeon than they are in
+// being trained for sex, but they know it's part of the arrangement. They're violent when they need to be, and take
+// situations seriously.
+
 Dialog.register(Architype.serious, DialogKeys.proposeTraining_Eager, context => {
   return `{T:name} gives a single, decisive nod. "Alright. Let's not waste time then."`; });
 Dialog.register(Architype.serious, DialogKeys.proposeTraining_Willing, context => {

@@ -16,6 +16,7 @@ global.Personality = function(id) {
     const character = Character(id);
     const aspects = AspectsComponent.lookup(id);
     const personality = PersonalityComponent.lookup(id);
+    const actor = ActorComponent.lookup(id);
     const sexualPreferences = SexualPreferencesComponent.lookup(id);
     const strongestPreference = strongestPreferenceFactor(sexualPreferences);
     const strongestFactor = strongestPersonalityFactor(personality);
@@ -31,7 +32,9 @@ global.Personality = function(id) {
     }
 
     // TODO: The 'innocent' archetype needs to look at sexual history, but I
-    //   haven't written that component yet.
+    //   haven't written that component yet. An innocent archetype should also
+    //   look at some other factors as well to make sure they're not overly
+    //   violent and have few sexual preferences.
 
     // Aspects have the next highest priority when determining archetype.
     if (aspects[AspectType.prude]) { return Architype.prude; }
@@ -63,10 +66,14 @@ global.Personality = function(id) {
       return (personality.kind > 0) ? Architype.playful : Architype.brat;
     }
 
-    // If we don't have an archetype for them yet, we can use the kindness
-    // factor to choose between sweet and bitch.
-    if (personality.kind > 20) { return Architype.sweet; }
-    if (personality.kind < -20) { return Architype.bitch; }
+    // If we don't have an archetype for them at this point, we can use their
+    // kindness factor to choose between nice/sweet and bastard/bitch.
+    if (personality.kind > 20) {
+      return (actor.gender === Gender.male) ? Architype.nice : Architype.sweet;
+    }
+    if (personality.kind < -20) {
+      return (actor.gender === Gender.male) ? Architype.bastard : Architype.bitch;
+    }
 
     // Finally, a character with no strong personality factors in any direction
     // indicates that this person is rather unemotional and stoic.

@@ -1,4 +1,9 @@
 
+// Perverts can be any gender because their dialog trees will mostly need to detect fetishes and body parts to make
+// choices. Both perverted men and a perverted futa are going to be thinking with their cocks. In general perverts have
+// no shame and are into some weird shit. Like sluts, pervert will have several child archetypes for specific kinds of
+// perverts, but will fall back to the pervert dialog when their specific fetishes aren't pertinent.
+
 Dialog.register(Architype.pervert, DialogKeys.proposeTraining_Eager, context => {
   return `TODO: Eager perverted suggestions.`
 });

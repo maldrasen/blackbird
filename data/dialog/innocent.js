@@ -1,4 +1,7 @@
 
+// This archetype is based entirely around the character's sexual history. They're timid and inexperienced, and have
+// no strong sexual preferences.
+
 Dialog.register(Architype.innocent, DialogKeys.proposeTraining_Eager, context => {
   return  `{T:name} looks up at you with wide frightened eyes, "I... okay. I 
     trust you. Just... be gentle with me?"`;

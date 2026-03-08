@@ -1,4 +1,8 @@
 
+// Slut characters love sex and is up for anything with anyone. Slut is a bit of a double edged sword though. While
+// they'll consent to most sex actions with the player, they're also likely to fuck anyone who asks. Players who care
+// about NTR should probably avoid them.
+
 Dialog.register(Architype.slut, DialogKeys.proposeTraining_Eager, context => {
   return `{T:name} licks {T:his} lips and is already moving toward you before 
     you finish speaking. "Fuck yes. Let go."`;

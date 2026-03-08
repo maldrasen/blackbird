@@ -1,4 +1,7 @@
 
+// Kobold society is strongly male dominated, though the kobold women are also vicious little bastards whenever they
+// can get away with it.
+
 Dialog.register(Architype.koboldSub, DialogKeys.proposeTraining_Eager, context => {
   return `{T:name} drops {T:his} gaze immediately, ears flat and tail slowly raising 
       upward. "Of course master. Use this one however you want."`;

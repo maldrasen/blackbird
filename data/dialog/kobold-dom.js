@@ -1,4 +1,9 @@
 
+// Kobolds are vicious little bastards. Given that Kobold society is strongly male dominated we can assume that the
+// dominant kobolds should all be men. It might be possible to train one into submission, so we'll need to eventually
+// write a child archetype for a submissive male kobold. The player gender should also have a strong influence on the
+// dialog here as they naturally look down on women.
+
 Dialog.register(Architype.koboldDom, DialogKeys.proposeTraining_Eager, context => {
   return `{T:name} bares {T:his} teeth in a sharp grin. "Training? You want {T:name} to train you? 
     Ha! Fine. Then this one will show you no mercy."`;

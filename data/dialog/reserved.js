@@ -1,4 +1,7 @@
 
+// The reserved characters have no strong personality in any direction, they are unemotional, stoic, and don't talk a
+// lot.
+
 Dialog.register(Architype.reserved, DialogKeys.proposeTraining_Eager, context => {
   return `{T:name} pauses, then nods once. "Yes. I'm ready when you are."`; });
 Dialog.register(Architype.reserved, DialogKeys.proposeTraining_Willing, context => {
