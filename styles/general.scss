@@ -92,7 +92,7 @@
 .fg-rank-SS { color: variables.$fg-rank-SS; }
 .fg-rank-SSS { color: variables.$fg-rank-SSS; }
 
-.weaver-error {
+.weaver-error, .dialog-error {
   font-family:'roboto-mono', monospace;
   color: variables.$fg-error;
 }
