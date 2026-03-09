@@ -32,7 +32,7 @@
   }
 
   #commandInput {
-    font-family: "roboto-mono";
+    font-family: "roboto-mono", monospace;
     width: 90%;
     padding: 7px 2px;
     border-radius: 0;
@@ -41,7 +41,7 @@
 
   #consoleLog {
     margin: 0 10px;
-    font-family: "roboto-mono";
+    font-family: "roboto-mono", monospace;
     font-size: 14px;
   }
 
@@ -53,6 +53,8 @@
     .system:after   { content:"]"; }
     .message:before { content:" "; }
   }
+
+  .entry:last-child { padding-bottom: 10px; }
 
   .entry.type-info {
     .time    { color: rgb(140,160,180); }

@@ -103,12 +103,7 @@ global.Console = (function() {
     X.first('#consoleLog').appendChild(entryElement);
 
     if ($scrollingPanel) { $scrollingPanel.resize(); }
-
-    if (Environment.isDevelopment) {
-      if (logData.type === LogType.error || logData.type === LogType.warning) {
-        Alert.showFromLog(logData)
-      }
-    }
+    if (logData.type === LogType.error) { Alert.showFromLog(logData); }
   }
 
   function trimEntries() {
