@@ -23,9 +23,9 @@ global.Character = function(id) {
   // ==============
 
   // The attribute functions take either an entity id (which would be a string) or a raw attribute value (a number)
-  function compareAttributes(value, attribute) {
-    return AttributesComponent.lookup(id)[attribute] > (typeof value === 'string') ?
-      AttributesComponent.lookup(value)[attribute] : value;
+  function compareAttributes(arg, attribute) {
+    const other = (typeof arg === 'string') ? AttributesComponent.lookup(arg)[attribute] : arg;
+    return AttributesComponent.lookup(id)[attribute] > other;
   }
 
   function isFasterThan(value) { return compareAttributes(value, Attrib.dexterity); }
@@ -92,15 +92,15 @@ global.Character = function(id) {
 
   function isGay() {
     const preferences = SexualPreferencesComponent.lookup(id);
-    if (isMale()) { return preferences.gynophilic < 10 && preferences.androphilic > 10; }
-    if (isFemale()) { return preferences.gynophilic > 10 && preferences.androphilic < 10; }
+    if (isMale()) { return preferences.gynophilic <= 10 && preferences.androphilic >= 10; }
+    if (isFemale()) { return preferences.gynophilic >= 10 && preferences.androphilic <= 10; }
     throw `Gay has no meaning when gender is ${getGenderName()}`;
   }
 
   function isStraight() {
     const preferences = SexualPreferencesComponent.lookup(id);
-    if (isMale()) { return preferences.gynophilic > 10 && preferences.androphilic < 10; }
-    if (isFemale()) { return preferences.gynophilic < 10 && preferences.androphilic > 10; }
+    if (isMale()) { return preferences.gynophilic >= 10 && preferences.androphilic <= 10; }
+    if (isFemale()) { return preferences.gynophilic <= 10 && preferences.androphilic >= 10; }
     `Straight has no meaning when gender is ${getGenderName()}`;
   }
 
