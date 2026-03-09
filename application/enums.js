@@ -83,8 +83,11 @@ global.ComponentType = Object.freeze({
   cock: 'CockComponent',
   controlled: 'ControlledComponent',
   description: 'DescriptionComponent',
+  equipment: 'EquipmentComponent',
   feelings: 'FeelingsComponent',
   health: 'HealthComponent',
+  inventory: 'InventoryComponent',
+  item: 'ItemComponent',
   mana: 'ManaComponent',
   mark: 'MarkComponent',
   memory: 'MemoryComponent',
@@ -203,4 +206,16 @@ global.ActionDirection = Object.freeze({
   playerToPartner: 'player-to-partner',
   playerToSelf: 'player-to-self',
   playerToBoth: 'player-to-both',
+});
+
+// =====================
+//   Items & Equipment
+// =====================
+
+global.EquipmentSlot = Object.freeze({
+  chest: 'chest',
+  feet: 'feet',
+  hands: 'hands',
+  head: 'head',
+  legs: 'legs',
 });

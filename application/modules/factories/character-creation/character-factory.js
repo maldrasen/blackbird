@@ -174,6 +174,8 @@ global.CharacterFactory = (function() {
     SensitivitiesComponent.create(characterId, sensitivitiesData);
     SexualPreferencesComponent.create(characterId, sexualPreferences);
     AspectsComponent.create(characterId, aspectsData);
+    EquipmentComponent.create(characterId);
+    InventoryComponent.create(characterId);
 
     if (breastsData) { BreastsComponent.create(characterId, breastsData); }
     if (cockData) { CockComponent.create(characterId, cockData); }
@@ -259,6 +261,9 @@ global.CharacterFactory = (function() {
     if (breastsData) { BreastsComponent.create(playerId, breastsData); }
     if (cockData) { CockComponent.create(playerId, cockData); }
     if (pussyData) { PussyComponent.create(playerId, pussyData); }
+
+    EquipmentComponent.create(playerId);
+    InventoryComponent.create(playerId);
 
     return playerId;
   }

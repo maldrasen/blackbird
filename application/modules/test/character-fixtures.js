@@ -20,6 +20,9 @@ global.CharacterFixtures = (function() {
     genericAspects(id, options.aspects);
     genericSkills(id, options.skills);
 
+    EquipmentComponent.create(id);
+    InventoryComponent.create(id);
+
     return id;
   }
 
@@ -43,6 +46,9 @@ global.CharacterFixtures = (function() {
     genericSexualPreferences(id, options.sexualPreferences);
     genericAspects(id, options.aspects);
     genericSkills(id, options.skills);
+
+    EquipmentComponent.create(id);
+    InventoryComponent.create(id);
 
     return id;
   }

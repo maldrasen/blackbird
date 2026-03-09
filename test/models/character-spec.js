@@ -1,4 +1,4 @@
-describe.only("Character", function() {
+describe("Character", function() {
 
   describe("Attribute Values", function() {
     it("Compares both characters and raw values", function() {
@@ -64,6 +64,27 @@ describe.only("Character", function() {
         expect(Character(man).isGay()).to.be.true;
         expect(Character(woman).isGay()).to.be.true;
       });
+    });
+  });
+
+  describe.only("Equipment", function() {
+    it('knows when you are naked', function() {
+      const goat = CharacterFixtures.genericMale({});
+      const horse = CharacterFixtures.genericMale({ species:'equian' });
+      const wolf = CharacterFixtures.genericMale({ species:'lupin' });
+
+      ItemFixtures.addRandomEquipment(goat)
+
+      const pants = PantsFactory.build();
+      InventoryComponent.addItem(horse, pants);
+      EquipmentComponent.update(horse, { legs:pants });
+
+      expect(Character(goat).isNaked()).to.be.false
+      expect(Character(goat).isTopless()).to.be.false
+      expect(Character(horse).isTopless()).to.be.true;
+      expect(Character(horse).isBottomless()).to.be.false;
+      expect(Character(wolf).isNaked()).to.be.true;
+      expect(Character(wolf).isBottomless()).to.be.true;
     });
   });
 
