@@ -52,17 +52,37 @@ Dialog.register(Architype.reserved, DialogKeys.proposeTraining_Reluctant, contex
   return Random.from(options);
 });
 
-// TODO: All of these rejections sound like it might be possible later, we need some rejections where we make it clear
-//   that they're not interested in sex with other men, or whatever else might be the reason here.
-Dialog.register(Architype.reserved, DialogKeys.proposeTraining_Unwilling, context => {
-  const options = [
-    `{T:name} steps back half a pace, hands raised in quiet surrender. "I'm sorry, I just... I can't yet."`
-    `{T:name} offers a small, apologetic smile. "Um, maybe some other time? I promise I'll think about it seriously."`,
-    `{T:name} rubs his forearm, voice soft. "I don't want to disappoint you... but I can't. Not yet."`];
 
+Dialog.register(Architype.reserved, DialogKeys.proposeTraining_Unwilling, context => {
+  const player = Character(context.P);
+  const partner = Character(context.T);
+  let options = []
+
+  options.push(`{T:name} turns slightly away, back to you for a moment before 
+      glancing back. "I'm flattered you asked, honestly... but no."`);
+
+  // If the partner is straight their refusal should say as much and not act
+  // like it might be possible at some point.
+  if (player.isMale() && partner.isStraight()) {
+    options.push(`{T:name} takes a slow breath, placing a hand on your arm.
+      "I'm sorry... that's just not something I want."`);
+    options.push(`{T:name} looks down at the floor, shoulders tense. "No,
+      not... not with another man. That doesn't feel right to me."`);
+    options.push(`{T:name} crosses his arms over his chest, the motion protective.
+      "Sorry, it's just... I don't feel anything sexual toward other men."`);
+    options.push(`{T:name} meets your eyes directly, expression kind yet resolute. 
+      "Sorry, it's just... I'm straight. Whatever this is... it's not for me."`);
+    return Random.from(options);
+  }
+
+  options.push(`{T:name} steps back half a pace, hands raised in quiet 
+    surrender. "I'm sorry, I just... I can't yet."`)
+  options.push(`{T:name} offers a small, apologetic smile. "Um, maybe some 
+    other time? I promise I'll think about it seriously."`);
+  options.push(`{T:name} rubs his forearm, voice soft. "I don't want to 
+    disappoint you... but I can't. Not yet."`);
   options.push(`{T:name} shakes his head gently, expression pained but kind. 
     "I'm sorry... but I'm just not there yet. Can we wait a little longer?"`);
 
   return Random.from(options);
 });
-
