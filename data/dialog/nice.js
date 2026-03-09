@@ -3,7 +3,7 @@
 // either going to end up in the serious or nice archetype, and as such we'll need a lot of variety in these dialog
 // trees.
 
-Dialog.register(ArchitypeCode.reserved, DialogKeys.proposeTraining_Eager, context => {
+Dialog.register(ArchetypeCode.reserved, DialogKeys.proposeTraining_Eager, context => {
   const options = [
     `{T:name} exhales shakily, fingers tightening around yours. "I'm ready whenever you are."`];
 
@@ -19,7 +19,7 @@ Dialog.register(ArchitypeCode.reserved, DialogKeys.proposeTraining_Eager, contex
   return Random.from(options);
 });
 
-Dialog.register(ArchitypeCode.reserved, DialogKeys.proposeTraining_Willing, context => {
+Dialog.register(ArchetypeCode.reserved, DialogKeys.proposeTraining_Willing, context => {
   const options = [];
 
   options.push(`{T:name} nods once, steady and calm, a small smile tugging at the
@@ -32,7 +32,7 @@ Dialog.register(ArchitypeCode.reserved, DialogKeys.proposeTraining_Willing, cont
   return Random.from(options);
 });
 
-Dialog.register(ArchitypeCode.reserved, DialogKeys.proposeTraining_Reluctant, context => {
+Dialog.register(ArchetypeCode.reserved, DialogKeys.proposeTraining_Reluctant, context => {
   const partner = Character(context.T);
   const options = [
     `{T:name} crosses his arms over his chest. "Alright, It's a lot to ask… but I'll try for you."`,
@@ -53,7 +53,7 @@ Dialog.register(ArchitypeCode.reserved, DialogKeys.proposeTraining_Reluctant, co
 });
 
 
-Dialog.register(ArchitypeCode.reserved, DialogKeys.proposeTraining_Unwilling, context => {
+Dialog.register(ArchetypeCode.reserved, DialogKeys.proposeTraining_Unwilling, context => {
   const player = Character(context.P);
   const partner = Character(context.T);
   let options = []

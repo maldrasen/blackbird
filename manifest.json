@@ -154,6 +154,7 @@
     "application/views/views.js",
     "application/world-state.js",
     "data/anus-data.js",
+    "data/archetypes.js",
     "data/body-data.js",
     "data/breast-data.js",
     "data/cock-data.js",

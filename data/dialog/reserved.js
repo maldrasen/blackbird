@@ -2,25 +2,25 @@
 // The reserved characters have no strong personality in any direction, they are unemotional, stoic, and don't talk a
 // lot.
 
-Dialog.register(ArchitypeCode.reserved, DialogKeys.proposeTraining_Eager, context => {
+Dialog.register(ArchetypeCode.reserved, DialogKeys.proposeTraining_Eager, context => {
   const options = [
     `{T:name} pauses, then nods once. "Yes. I'm ready when you are."`];
   return Random.from(options);
 });
 
-Dialog.register(ArchitypeCode.reserved, DialogKeys.proposeTraining_Willing, context => {
+Dialog.register(ArchetypeCode.reserved, DialogKeys.proposeTraining_Willing, context => {
   const options = [
     `{T:name} considers for a moment before answering. "Alright. I don't have any objections."`];
   return Random.from(options);
 });
 
-Dialog.register(ArchitypeCode.reserved, DialogKeys.proposeTraining_Reluctant, context => {
+Dialog.register(ArchetypeCode.reserved, DialogKeys.proposeTraining_Reluctant, context => {
   const options = [
     `{T:name} is quiet for a beat. "Well... I'm not opposed. I just need a moment."`];
   return Random.from(options);
 });
 
-Dialog.register(ArchitypeCode.reserved, DialogKeys.proposeTraining_Unwilling, context => {
+Dialog.register(ArchetypeCode.reserved, DialogKeys.proposeTraining_Unwilling, context => {
   const options = [
     `{T:name} shakes {T:his} head without any particular emotion. "No. I would prefer not to."`];
   return Random.from(options);

@@ -2,7 +2,7 @@ global.Dialog = (function() {
 
   const dialog = {};
 
-  Object.values(ArchitypeCode).forEach(archetype => {
+  Object.values(ArchetypeCode).forEach(archetype => {
     dialog[archetype] = {};
   });
 

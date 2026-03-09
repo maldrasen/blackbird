@@ -26,8 +26,8 @@ global.Personality = function(id) {
 
     // Some species have their own dialog trees.
     if (character.getSpeciesName() === 'Kobold') {
-      if (domPreferences.includes(strongestPreference.code)) { return ArchitypeCode.koboldDom; }
-      if (subPreferences.includes(strongestPreference.code)) { return ArchitypeCode.koboldSub; }
+      if (domPreferences.includes(strongestPreference.code)) { return ArchetypeCode.koboldDom; }
+      if (subPreferences.includes(strongestPreference.code)) { return ArchetypeCode.koboldSub; }
       throw `Kobolds must be dominant or submissive.`
     }
 
@@ -37,9 +37,9 @@ global.Personality = function(id) {
     //   violent and have few sexual preferences.
 
     // Aspects have the next highest priority when determining archetype.
-    if (aspects[AspectType.prude]) { return ArchitypeCode.prude; }
-    if (aspects[AspectType.bimbo]) { return ArchitypeCode.bimbo; }
-    if (aspects[AspectType.slut]) { return ArchitypeCode.slut; }
+    if (aspects[AspectType.prude]) { return ArchetypeCode.prude; }
+    if (aspects[AspectType.bimbo]) { return ArchetypeCode.bimbo; }
+    if (aspects[AspectType.slut]) { return ArchetypeCode.slut; }
 
     // TODO: The other sexual preferences will probably also have associated
     //   personality types, at least among the BDSM preferences. A strong
@@ -47,37 +47,37 @@ global.Personality = function(id) {
     //   though we can probably do without them for now.
 
     const perv = sexualPreferences.perverted;
-    if (perv > 10 && perv > personalityStrength) { return ArchitypeCode.pervert; }
-    if (perv < -10 && Math.abs(-1 * perv) > personalityStrength) { return ArchitypeCode.prude; }
+    if (perv > 10 && perv > personalityStrength) { return ArchetypeCode.pervert; }
+    if (perv < -10 && Math.abs(-1 * perv) > personalityStrength) { return ArchetypeCode.prude; }
 
     // A violent person will be more serious, unless they're unkind enough to
     // be heartless.
     if (personality.violent > 20) {
-      return (personality.kind < -10) ? ArchitypeCode.heartless : ArchitypeCode.serious;
+      return (personality.kind < -10) ? ArchetypeCode.heartless : ArchetypeCode.serious;
     }
 
     // A very passive person will usually use a different factor to determine
     // their personality archetype, unless they're also excitable, in which
     // case they have the timid archetype.
-    if (personality.violent < -20 && personality.calm < -10) { return ArchitypeCode.timid; }
+    if (personality.violent < -20 && personality.calm < -10) { return ArchetypeCode.timid; }
 
     // If they're overly excitable, they'll either be playful or a brat.
     if (personality.calm < -20) {
-      return (personality.kind > 0) ? ArchitypeCode.playful : ArchitypeCode.brat;
+      return (personality.kind > 0) ? ArchetypeCode.playful : ArchetypeCode.brat;
     }
 
     // If we don't have an archetype for them at this point, we can use their
     // kindness factor to choose between nice/sweet and bastard/bitch.
     if (personality.kind > 20) {
-      return (actor.gender === Gender.male) ? ArchitypeCode.nice : ArchitypeCode.sweet;
+      return (actor.gender === Gender.male) ? ArchetypeCode.nice : ArchetypeCode.sweet;
     }
     if (personality.kind < -20) {
-      return (actor.gender === Gender.male) ? ArchitypeCode.bastard : ArchitypeCode.bitch;
+      return (actor.gender === Gender.male) ? ArchetypeCode.bastard : ArchetypeCode.bitch;
     }
 
     // Finally, a character with no strong personality factors in any direction
     // indicates that this person is rather unemotional and stoic.
-    return ArchitypeCode.reserved;
+    return ArchetypeCode.reserved;
   }
 
   // Attitude is more situational than the personality archetype and can best be summered as the way the character

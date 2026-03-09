@@ -3,7 +3,7 @@
 // personality or to the sexual preferences to ensure that we don't get heartless submissives. A heartless character
 // can be any gender.
 
-Dialog.register(ArchitypeCode.heartless, DialogKeys.proposeTraining_Eager, context => {
+Dialog.register(ArchetypeCode.heartless, DialogKeys.proposeTraining_Eager, context => {
   const options = []
 
   options.push(`{T:name} looks you over with cold amusement. "Oh? You 
@@ -16,7 +16,7 @@ Dialog.register(ArchitypeCode.heartless, DialogKeys.proposeTraining_Eager, conte
   return Random.from(options);
 });
 
-Dialog.register(ArchitypeCode.heartless, DialogKeys.proposeTraining_Willing, context => {
+Dialog.register(ArchetypeCode.heartless, DialogKeys.proposeTraining_Willing, context => {
   const options = [
     `{T:name} shrugs, clearly unimpressed. "If it'll shut you up, then sure. Let's see what you've got."`,
     `{T:name} crosses {T:his} arms. "Training? Fine. As long as I get what I want from it."`,
@@ -26,7 +26,7 @@ Dialog.register(ArchitypeCode.heartless, DialogKeys.proposeTraining_Willing, con
   return Random.from(options);
 });
 
-Dialog.register(ArchitypeCode.heartless, DialogKeys.proposeTraining_Reluctant, context => {
+Dialog.register(ArchetypeCode.heartless, DialogKeys.proposeTraining_Reluctant, context => {
   const options = [];
 
   options.push(`{T:name} regards you with barely concealed contempt. "Oh? I might let 
@@ -37,7 +37,7 @@ Dialog.register(ArchitypeCode.heartless, DialogKeys.proposeTraining_Reluctant, c
   return Random.from(options);
 });
 
-Dialog.register(ArchitypeCode.heartless, DialogKeys.proposeTraining_Unwilling, context => {
+Dialog.register(ArchetypeCode.heartless, DialogKeys.proposeTraining_Unwilling, context => {
   const options = [
     `{T:name} scoffs loudly and turns away. "You must be joking. Submitting to you? Never."`,
     `{T:name} glares over {T:his} shoulder. "No. And if you ask again I'll make you regret it."`,
