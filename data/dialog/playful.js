@@ -1,7 +1,7 @@
 
 // The playful archetype is excitable, curious, and fun loving,
 
-Dialog.register(Architype.playful, DialogKeys.proposeTraining_Eager, context => {
+Dialog.register(ArchitypeCode.playful, DialogKeys.proposeTraining_Eager, context => {
   const options = [];
 
   options.push(`{T:name} laughs and bends over a little in front of you, wiggling 
@@ -12,7 +12,7 @@ Dialog.register(Architype.playful, DialogKeys.proposeTraining_Eager, context => 
   return Random.from(options);
 });
 
-Dialog.register(Architype.playful, DialogKeys.proposeTraining_Willing, context => {
+Dialog.register(ArchitypeCode.playful, DialogKeys.proposeTraining_Willing, context => {
   const options = [];
 
   options.push(`{T:name} taps {T:his} chin with one finger, pretending to
@@ -23,7 +23,7 @@ Dialog.register(Architype.playful, DialogKeys.proposeTraining_Willing, context =
   return Random.from(options);
 });
 
-Dialog.register(Architype.playful, DialogKeys.proposeTraining_Reluctant, context => {
+Dialog.register(ArchitypeCode.playful, DialogKeys.proposeTraining_Reluctant, context => {
   const options = [
     `{T:name} twirls once then stops, looking at you sideways. "Fine... This better not be boring though."`,
     `{T:name} squints at you with a lopsided grin. "You're serious? Alright, but you owe me one."`];
@@ -31,7 +31,7 @@ Dialog.register(Architype.playful, DialogKeys.proposeTraining_Reluctant, context
   return Random.from(options);
 });
 
-Dialog.register(Architype.playful, DialogKeys.proposeTraining_Unwilling, context => {
+Dialog.register(ArchitypeCode.playful, DialogKeys.proposeTraining_Unwilling, context => {
   const options = [
     `{T:name} sticks out {T:his} tongue. "Nope! Not happening. Ask again maybe sometime never."`];
 

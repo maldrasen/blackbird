@@ -2,7 +2,7 @@
 // Brats are playful, disobedient, and insulting. Brats can be any gender though if they're male they'll lean into the
 // pratty femboy persona.
 
-Dialog.register(Architype.brat, DialogKeys.proposeTraining_Eager, context => {
+Dialog.register(ArchitypeCode.brat, DialogKeys.proposeTraining_Eager, context => {
   const options = [
     `{T:name} crosses {T:his} arms and smirks. "Training? Fine. But I'm not making it easy on you."`,
     `{T:name} heaves an overly dramatic sigh, "...Fine. But don't assume this means anything special."`];
@@ -10,7 +10,7 @@ Dialog.register(Architype.brat, DialogKeys.proposeTraining_Eager, context => {
   return Random.from(options);
 });
 
-Dialog.register(Architype.brat, DialogKeys.proposeTraining_Willing, context => {
+Dialog.register(ArchitypeCode.brat, DialogKeys.proposeTraining_Willing, context => {
   const options = [
     `{T:name} shrugs with exaggerated indifference. "Whatever, sure. Just don't expect me to do all the work."`,
     `"Train me? Tch, whatever." {T:name} rolls {T:his} eyes but nods. "Just don't screw it up."`,
@@ -24,7 +24,7 @@ Dialog.register(Architype.brat, DialogKeys.proposeTraining_Willing, context => {
   return Random.from(options);
 });
 
-Dialog.register(Architype.brat, DialogKeys.proposeTraining_Reluctant, context => {
+Dialog.register(ArchitypeCode.brat, DialogKeys.proposeTraining_Reluctant, context => {
   const options = [
     `{T:name} snorts. "Wow, really? You've got some nerve asking. Maybe you'll just have to make me."`,
     `{T:name's} eyes widen. "You're seriously asking me that? Fine, just... be quick about it."`,
@@ -36,7 +36,7 @@ Dialog.register(Architype.brat, DialogKeys.proposeTraining_Reluctant, context =>
   return Random.from(options);
 });
 
-Dialog.register(Architype.brat, DialogKeys.proposeTraining_Unwilling, context => {
+Dialog.register(ArchitypeCode.brat, DialogKeys.proposeTraining_Unwilling, context => {
   const options = [
     `{T:name} rolls {T:his} eyes so hard it looks painful. "With you? Ha! Dream on."`,
     `{T:name} glares, shaking {T:his} head. "Training! You're such a fucking creep. Back off loser!"`,

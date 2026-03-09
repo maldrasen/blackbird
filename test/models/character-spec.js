@@ -67,7 +67,7 @@ describe("Character", function() {
     });
   });
 
-  describe.only("Equipment", function() {
+  describe("Equipment", function() {
     it('knows when you are naked', function() {
       const goat = CharacterFixtures.genericMale({});
       const horse = CharacterFixtures.genericMale({ species:'equian' });

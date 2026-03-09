@@ -4,7 +4,7 @@
 // build, most women are going to end up with the sweet personality archetype. As such we should do what we can to add
 // variety to this archetype or find other variables that can be used to differentiate the sweet characters.
 
-Dialog.register(Architype.sweet, DialogKeys.proposeTraining_Eager, context => {
+Dialog.register(ArchitypeCode.sweet, DialogKeys.proposeTraining_Eager, context => {
   const options = [
     `{T:name} smiles warmly and takes your hand. "Of course. I really just want to make you happy. Whatever you need."`,
     `{T:name} blushes softly, eyes sparkling. "Yes, please! I love having the chance to get closer like this."`];
@@ -21,7 +21,7 @@ Dialog.register(Architype.sweet, DialogKeys.proposeTraining_Eager, context => {
   return Random.from(options);
 });
 
-Dialog.register(Architype.sweet, DialogKeys.proposeTraining_Willing, context => {
+Dialog.register(ArchitypeCode.sweet, DialogKeys.proposeTraining_Willing, context => {
   const options = [
     `"You want to... train me?" {T:name} nods gently. "Okay. I'll try my best."`,
     `{T:name} lowers {T:his} gaze, "If that's what you need from me... then yes, I'll do my best for you."`,
@@ -34,7 +34,7 @@ Dialog.register(Architype.sweet, DialogKeys.proposeTraining_Willing, context => 
   return Random.from(options);
 });
 
-Dialog.register(Architype.sweet, DialogKeys.proposeTraining_Reluctant, context => {
+Dialog.register(ArchitypeCode.sweet, DialogKeys.proposeTraining_Reluctant, context => {
   const options = [
     `{T:name} looks down at {T:his} hands. "I want to say yes for your sake, but... I'm a little scared."`,
     `{T:name} bites {T:his} lip, eyes pleading. "Training? I'll try, but promise you'll stop if it hurts?"`];
@@ -45,7 +45,7 @@ Dialog.register(Architype.sweet, DialogKeys.proposeTraining_Reluctant, context =
   return Random.from(options);
 });
 
-Dialog.register(Architype.sweet, DialogKeys.proposeTraining_Unwilling, context => {
+Dialog.register(ArchitypeCode.sweet, DialogKeys.proposeTraining_Unwilling, context => {
   const options = [
     `{T:name} shakes {T:his} head slowly, "No… not yet. Give me a little more time, please?"`,
     `{T:name} whispers softly, trembling. "I can't. It's just... too much right now. Forgive me?"`];

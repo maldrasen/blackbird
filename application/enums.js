@@ -142,7 +142,7 @@ global.Attitude = {
   resigned: 'resigned',
 };
 
-global.Architype = {
+global.ArchitypeCode = {
   bastard: 'bastard',
   bimbo: 'bimbo',
   bitch: 'bitch',

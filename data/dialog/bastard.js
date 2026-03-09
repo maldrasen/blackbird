@@ -3,7 +3,7 @@
 // kind of mean. I wanted to separate bastards and bitches though as there's a definite gender difference between the
 // two dialog trees.
 
-Dialog.register(Architype.bastard, DialogKeys.proposeTraining_Eager, context => {
+Dialog.register(ArchitypeCode.bastard, DialogKeys.proposeTraining_Eager, context => {
   const partner = Character(context.T);
   const options = [];
 
@@ -30,7 +30,7 @@ Dialog.register(Architype.bastard, DialogKeys.proposeTraining_Eager, context => 
   return Random.from(options);
 });
 
-Dialog.register(Architype.bastard, DialogKeys.proposeTraining_Willing, context => {
+Dialog.register(ArchitypeCode.bastard, DialogKeys.proposeTraining_Willing, context => {
   const partner = Character(context.T);
   const options = [];
 
@@ -50,7 +50,7 @@ Dialog.register(Architype.bastard, DialogKeys.proposeTraining_Willing, context =
   return Random.from(options);
 });
 
-Dialog.register(Architype.bastard, DialogKeys.proposeTraining_Reluctant, context => {
+Dialog.register(ArchitypeCode.bastard, DialogKeys.proposeTraining_Reluctant, context => {
   const partner = Character(context.T);
   const options = [];
 
@@ -66,7 +66,7 @@ Dialog.register(Architype.bastard, DialogKeys.proposeTraining_Reluctant, context
   return Random.from(options);
 });
 
-Dialog.register(Architype.bastard, DialogKeys.proposeTraining_Unwilling, context => {
+Dialog.register(ArchitypeCode.bastard, DialogKeys.proposeTraining_Unwilling, context => {
   const partner = Character(context.T);
   const options = [];
 

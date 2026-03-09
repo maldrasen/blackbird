@@ -95,6 +95,7 @@
     "application/modules/test/report-fixture.js",
     "application/modules/test/training-fixtures.js",
     "application/modules/validate.js",
+    "application/records/archetype.js",
     "application/records/article.js",
     "application/records/dialog.js",
     "application/records/dungeon-theme.js",
