@@ -80,11 +80,10 @@ describe("Character", function() {
       EquipmentComponent.update(horse, { legs:pants });
 
       expect(Character(goat).isNaked()).to.be.false
-      expect(Character(goat).isTopless()).to.be.false
-      expect(Character(horse).isTopless()).to.be.true;
-      expect(Character(horse).isBottomless()).to.be.false;
       expect(Character(wolf).isNaked()).to.be.true;
-      expect(Character(wolf).isBottomless()).to.be.true;
+      expect(Character(goat).isEquipped(EquipmentSlot.legs)).to.be.true
+      expect(Character(horse).isEquipped(EquipmentSlot.legs)).to.be.true;
+      expect(Character(horse).isEquipped(EquipmentSlot.chest)).to.be.false;
     });
   });
 

@@ -119,18 +119,12 @@ global.Character = function(id) {
   //   Equipment
   // =============
 
-  // TODO: These functions will need more nuance I think. Should isNaked() be false if a person is only wearing a hat?
-  //   I know isTopless() and isBottomless() will need to consider underwear as well. What counts as pants?
-
+  // TODO: Should isNaked() be false if a person is only wearing a hat?
   function isNaked() {
     return Object.keys(ObjectHelper.select(EquipmentComponent.lookup(id), ([_,i]) => i != null)).length === 0;
   }
 
-  function isTopless() { return EquipmentComponent.lookup(id)[EquipmentSlot.chest] == null; }
-  function isBottomless() { return EquipmentComponent.lookup(id)[EquipmentSlot.legs] == null; }
-
-  // TODO: In this world, there are only pants.
-  function isWearingPants() { return EquipmentComponent.lookup(id)[EquipmentSlot.legs] != null; }
+  function isEquipped(slot) { return EquipmentComponent.lookup(id)[slot] != null; }
 
   // ===============
   //   Orgasm Data
@@ -206,9 +200,7 @@ global.Character = function(id) {
 
     // Equipment
     isNaked,
-    isTopless,
-    isBottomless,
-    isWearingPants,
+    isEquipped,
 
     // Orgasm Data
     getOrgasmThreshold,

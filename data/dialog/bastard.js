@@ -7,7 +7,7 @@ Dialog.register(ArchetypeCode.bastard, DialogKeys.proposeTraining_Eager, context
   const partner = Character(context.T);
   const options = [];
 
-  if (partner.isWearingPants() && partner.cockIsAtLeast('big')) {
+  if (partner.isEquipped(EquipmentSlot.legs) && partner.cockIsAtLeast('big')) {
     options.push(`{T:name} grabs your wrist roughly and presses your palm against his 
       thick bulge. "You want to train this? Ha! Bend over then {P:insultingName}."`)
 
@@ -34,7 +34,7 @@ Dialog.register(ArchetypeCode.bastard, DialogKeys.proposeTraining_Willing, conte
   const partner = Character(context.T);
   const options = [];
 
-  if (partner.isWearingPants() && partner.wouldConsentTo('suck-cock')) {
+  if (partner.isEquipped(EquipmentSlot.legs) && partner.wouldConsentTo('suck-cock')) {
     options.push(`{T:name} grins and hooks a thumb in his waistband, tugging it low enough to 
       show the root of his {T:cock.thick} cock. "All right, I'll let you suck me off"`)
   }
@@ -70,7 +70,7 @@ Dialog.register(ArchetypeCode.bastard, DialogKeys.proposeTraining_Unwilling, con
   const partner = Character(context.T);
   const options = [];
 
-  if (partner.isWearingPants() && partner.cockIsAtLeast('big')) {
+  if (partner.isEquipped(EquipmentSlot.legs) && partner.cockIsAtLeast('big')) {
     options.push(`{T:name} sneers, adjusting the thick bulge in his pants with 
       zero shame. "You want some of this bitch? Heh, you wish."`)
   }

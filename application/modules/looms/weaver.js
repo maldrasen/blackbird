@@ -16,9 +16,14 @@ global.Weaver = function(context) {
   // Utility Match: {UTIL} or {UTIL|ARG}
   //      - [UTIL] The name of the utility.
   //      - [ARG] Optional. The string argument to pass to the utility.
+  //
+  // Function Match: {FUNC()} or {FUNC(ARGS...)}
+  //      - [FUNC] The function name
+  //      - [ARGS] Comma separated list of arguments
 
-  const CONTEXT_PATTERN = /{@([^}]+)}/
   const ACTOR_PATTERN = /{([^}]+):([^}]+)}/
+  const CONTEXT_PATTERN = /{@([^}]+)}/
+  const FUNCTION_PATTERN = /{(\w+)\(([^)]*)\)}/
   const UTILITY_PATTERN = /{([^}]+)\|([^}]+)}/
   const SIMPLE_PATTERN = /{([^}]+)}/
 
@@ -29,8 +34,9 @@ global.Weaver = function(context) {
     let weaving = true;
 
     while (weaving) {
-      let contextMatch = text.match(CONTEXT_PATTERN);
       let actorMatch = text.match(ACTOR_PATTERN);
+      let contextMatch = text.match(CONTEXT_PATTERN);
+      let functionMatch = text.match(FUNCTION_PATTERN);
       let utilityMatch = text.match(UTILITY_PATTERN);
       let simpleMatch = text.match(SIMPLE_PATTERN);
 
@@ -38,6 +44,9 @@ global.Weaver = function(context) {
         text = text.replace(contextMatch[0], contextValue(contextMatch[1].trim()));
       } else if (actorMatch) {
         text = text.replace(actorMatch[0], actorValue(actorMatch[1].trim(), actorMatch[2].trim()));
+      } else if (functionMatch) {
+        const value = executeFunction(functionMatch[1].trim(),functionMatch[2].split(',').map(s => s.trim()))
+        text = text.replace(functionMatch[0],value||'');
       } else if (utilityMatch) {
         text = text.replace(utilityMatch[0], utilityValue(utilityMatch[1].trim(), utilityMatch[2].trim()));
       } else if (simpleMatch) {
@@ -63,6 +72,10 @@ global.Weaver = function(context) {
     catch (error) {
       return onError('Actor', error, { subject, token });
     }
+  }
+
+  function executeFunction(name, arguments) {
+    return formatError(`TODO: ${name}() function.`)
   }
 
   function utilityValue(utility, argument) {

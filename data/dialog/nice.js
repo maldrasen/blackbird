@@ -39,12 +39,12 @@ Dialog.register(ArchetypeCode.reserved, DialogKeys.proposeTraining_Reluctant, co
     `{T:name} gives a small nod. "Alright... just don't push me too hard yet. I know the sort of things you're in to."`,
     `{T:name} exhales slowly, shoulders dropping. "Well... I'm nervous, but I don't want to let you down."`];
 
-  if (partner.isWearingPants() && partner.cockIsAtLeast('huge')) {
+  if (partner.isEquipped(EquipmentSlot.legs) && partner.cockIsAtLeast('huge')) {
     options.push(`{T:name} hesitates, glancing down at the massive bulge in the front of his 
       pants before looking back at you. "I want to say yes... but I wouldn't want to hurt you."`);
   }
 
-  if (partner.isWearingPants() && partner.cockIsAtLeast('big')) {
+  if (partner.isEquipped(EquipmentSlot.legs) && partner.cockIsAtLeast('big')) {
     options.push(`{T:name} shifts uncomfortably, the heavy outline of his {T:cock.thick} cock 
       stirring faintly against his thigh. "Okay, we can give it a try, if that's what you want."`);
   }
