@@ -181,6 +181,9 @@ global.CharacterFactory = (function() {
     if (cockData) { CockComponent.create(characterId, cockData); }
     if (pussyData) { PussyComponent.create(characterId, pussyData); }
 
+    // Final cleanup functions
+    Archetype.assignArchetype(characterId);
+
     return characterId;
   }
 

@@ -1,5 +1,5 @@
 global.PersonalityComponent = (function() {
-  const $properties = ['calm','kind','violent','sanity','broken'];
+  const $properties = ['archetype','calm','kind','violent','sanity','broken'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.personality,data);

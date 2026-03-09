@@ -374,6 +374,7 @@
     "test/modules/language/measurement-helper-spec.js",
     "test/modules/math/component-math-spec.js",
     "test/modules/scrutinizers/actor-scrutinizers-spec.js",
+    "test/records/archetype-spec.js",
     "test/records/name-spec.js",
     "test/registry-spec.js"
   ]
