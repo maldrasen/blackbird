@@ -123,28 +123,14 @@ global.Character = function(id) {
   //   I know isTopless() and isBottomless() will need to consider underwear as well. What counts as pants?
 
   function isNaked() {
-    const equipment = EquipmentComponent.lookup(id);
-    let naked = true;
-
-    Object.keys(equipment).forEach(slot => {
-      if (equipment[slot] != null) { naked = false }
-    });
-
-    return naked;
+    return Object.keys(ObjectHelper.select(EquipmentComponent.lookup(id), ([_,i]) => i != null)).length === 0;
   }
 
-  function isTopless() {
-    return EquipmentComponent.lookup(id)[EquipmentSlot.chest] == null;
-  }
-
-  function isBottomless() {
-    return EquipmentComponent.lookup(id)[EquipmentSlot.legs] == null;
-  }
+  function isTopless() { return EquipmentComponent.lookup(id)[EquipmentSlot.chest] == null; }
+  function isBottomless() { return EquipmentComponent.lookup(id)[EquipmentSlot.legs] == null; }
 
   // TODO: In this world, there are only pants.
-  function isWearingPants() {
-    return EquipmentComponent.lookup(id)[EquipmentSlot.legs] != null;
-  }
+  function isWearingPants() { return EquipmentComponent.lookup(id)[EquipmentSlot.legs] != null; }
 
   // ===============
   //   Orgasm Data
