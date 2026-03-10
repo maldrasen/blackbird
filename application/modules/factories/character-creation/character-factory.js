@@ -96,6 +96,8 @@ global.CharacterFactory = (function() {
       breasts: breastsData,
     }, triggers);
 
+    // TODO: Run sexual history factory here.
+
     const aspectsData = AspectsFactory.build(triggers, actorData);
     const sensitivitiesData = SensitivitiesFactory.build(triggers, actorData, breastsData, cockData, pussyData);
     const skillsData = SkillsFactory.build(triggers);
@@ -107,6 +109,7 @@ global.CharacterFactory = (function() {
     CockFactory.applyTriggers(cockData, actorData, triggers);
     PussyFactory.applyTriggers(pussyData, triggers);
 
+    // TODO: Add archetype flavors here
     applyMagical(triggers);
 
     if (triggers.length > 0) {
