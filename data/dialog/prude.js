@@ -1,9 +1,8 @@
 
-// The prudes are uninterested in sex, cold, unfeeling, frigid, angry. They can be any gender. It should be possible,
-// through training to cause a character to lose this aspect. Rather than having their personality change into
-// something entirely different, I think we'll also eventually need an ex-prude archetype. Like bimbo and slut
-// whatever system we design to monitor personalities should ensure that prudes remain serious (and this should
-// actually fall back to serious when necessary)
+// The prude archetype is child of the serious archetype but with more animosity towards sex. The prudes are
+// uninterested in anything sexual. They're cold, unfeeling, frigid, angry. They can be any gender. It should be
+// possible, through training to cause a character to lose this archetype. Rather than having their personality
+// reverting back to serious, I think we'll also eventually need an ex-prude archetype.
 
 Dialog.register(ArchetypeCode.prude, DialogKeys.proposeTraining_Eager, context => {
   return `{T:name} stiffens, then exhales slowly. "...Fine. That is my purpose here I suppose."`;

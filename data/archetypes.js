@@ -14,45 +14,51 @@ Archetype.register(ArchetypeCode.brat, {
   name: 'Brat',
 });
 
-Archetype.register(ArchetypeCode.heartless, {
-  name: 'Heartless',
-});
-
 Archetype.register(ArchetypeCode.innocent, {
   name: 'Innocent',
 });
 
 Archetype.register(ArchetypeCode.koboldDom, {
-  name: '',
-});
-Archetype.register(ArchetypeCode.koboldSub, {
-  name: '',
-});
-Archetype.register(ArchetypeCode.nice, {
-  name: '',
-});
-Archetype.register(ArchetypeCode.pervert, {
-  name: '',
-});
-Archetype.register(ArchetypeCode.playful, {
-  name: '',
-});
-Archetype.register(ArchetypeCode.prude, {
-  name: '',
-});
-Archetype.register(ArchetypeCode.reserved, {
-  name: '',
-});
-Archetype.register(ArchetypeCode.serious, {
-  name: '',
-});
-Archetype.register(ArchetypeCode.slut, {
-  name: '',
-});
-Archetype.register(ArchetypeCode.sweet, {
-  name: '',
-});
-Archetype.register(ArchetypeCode.timid, {
-  name: '',
+  name: 'Dominant Kobold',
 });
 
+Archetype.register(ArchetypeCode.koboldSub, {
+  name: 'Submissive Kobold',
+});
+
+Archetype.register(ArchetypeCode.nice, {
+  name: 'Nice Guy',
+});
+
+Archetype.register(ArchetypeCode.pervert, {
+  name: 'Pervery',
+});
+
+Archetype.register(ArchetypeCode.playful, {
+  name: 'Playful',
+});
+
+Archetype.register(ArchetypeCode.prude, {
+  name: 'Prude',
+  parent: 'serious',
+});
+
+Archetype.register(ArchetypeCode.reserved, {
+  name: 'Reserved',
+});
+
+Archetype.register(ArchetypeCode.serious, {
+  name: 'Serious',
+});
+
+Archetype.register(ArchetypeCode.slut, {
+  name: 'Slut',
+});
+
+Archetype.register(ArchetypeCode.sweet, {
+  name: 'Sweet',
+});
+
+Archetype.register(ArchetypeCode.timid, {
+  name: 'Timid',
+});

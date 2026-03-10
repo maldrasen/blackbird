@@ -1,7 +1,5 @@
 
-// The heartless are violent, cruel, insulting, hateful. We might want to add some monitoring either to this
-// personality or to the sexual preferences to ensure that we don't get heartless submissives. A heartless character
-// can be any gender.
+// TODO: Get rid of heartless. All this should be moved into bastard or bitch.
 
 Dialog.register(ArchetypeCode.heartless, DialogKeys.proposeTraining_Eager, context => {
   const options = []

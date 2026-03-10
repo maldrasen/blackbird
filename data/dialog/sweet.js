@@ -1,8 +1,7 @@
 
-// Sweet characters are kind and gentle. Like bitch though, sweet characters end up with this personality archetype
-// because they didn't have anything interesting to really differentiate them. Because of the way the personalities are
-// build, most women are going to end up with the sweet personality archetype. As such we should do what we can to add
-// variety to this archetype or find other variables that can be used to differentiate the sweet characters.
+// Sweet characters are kind and gentle, and perhaps a little mothering. Because of the way the archetypes are
+// distributed, a lot of women are going to end up with the sweet personality archetype. As such we should do what we
+// can to add variety to this archetype or find other variables that can be used to differentiate the sweet characters.
 
 Dialog.register(ArchetypeCode.sweet, DialogKeys.proposeTraining_Eager, context => {
   const options = [

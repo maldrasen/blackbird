@@ -1,6 +1,7 @@
 
 // Kobold society is strongly male dominated, though the kobold women are also vicious little bastards whenever they
-// can get away with it.
+// can get away with it. It's possible that some kobold subs will be male. They can be trained into submission or are
+// generated that way. All the non-binary kobolds should be submissive, former males.
 
 Dialog.register(ArchetypeCode.koboldSub, DialogKeys.proposeTraining_Eager, context => {
   return `{T:name} drops {T:his} gaze immediately, ears flat and tail slowly raising 

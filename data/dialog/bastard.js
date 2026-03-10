@@ -1,7 +1,7 @@
 
-// The bastard archetype is the male equivalent of bitch, in that the only interesting thing about them is that they're
-// kind of mean. I wanted to separate bastards and bitches though as there's a definite gender difference between the
-// two dialog trees.
+// The bastard archetype is the male equivalent of bitch. Bastards are always sadists or debasers, but never bottoms.
+// I wanted to separate bastards and bitches though as there's a definite gender difference between the two dialog
+// trees.
 
 Dialog.register(ArchetypeCode.bastard, DialogKeys.proposeTraining_Eager, context => {
   const partner = Character(context.T);

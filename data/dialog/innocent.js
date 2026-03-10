@@ -1,6 +1,6 @@
 
-// This archetype is based entirely around the character's sexual history. They're timid and inexperienced, and have
-// no strong sexual preferences.
+// Innocent characters are timid and inexperienced, and have no strong sexual preferences. This archetype should
+// eventually evolve into either the playful archetype, though it depends on how they're trained.
 
 Dialog.register(ArchetypeCode.innocent, DialogKeys.proposeTraining_Eager, context => {
   return  `{T:name} looks up at you with wide frightened eyes, "I... okay. I 

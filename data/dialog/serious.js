@@ -1,7 +1,6 @@
 
-// The serious characters have a high violent score. They're more interested in exploring the dungeon than they are in
-// being trained for sex, but they know it's part of the arrangement. They're violent when they need to be, and take
-// situations seriously.
+// The serious characters are more interested in exploring the dungeon than they are in being trained for sex, but they
+// know it's part of the arrangement. They're violent when they need to be, and take situations seriously.
 
 Dialog.register(ArchetypeCode.serious, DialogKeys.proposeTraining_Eager, context => {
   const partner = Character(context.T);
