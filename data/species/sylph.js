@@ -12,10 +12,11 @@ Species.register('sylph', {
     beauty: 'B',
   },
 
-  personalityRanges: {
-    calm:    { average:-30, deviation:10 },
-    kind:    { average:0,   deviation:10 },
-    violent: { average:-30, deviation:10 },
+  archetypes: {
+    enby:   ArchetypeDistribution(Gender.enby,'sylph'),
+    female: ArchetypeDistribution(Gender.female,'sylph'),
+    futa:   ArchetypeDistribution(Gender.futa,'sylph'),
+    male:   ArchetypeDistribution(Gender.male,'sylph'),
   },
 
   // It's rare for a sylph to have a cock, but when they do they're exceedingly

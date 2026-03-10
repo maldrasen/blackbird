@@ -1,7 +1,7 @@
 Species.register('kobold', {
   name: 'Kobold',
 
-  genderRatio: { female:40, futa:20, male:40, enby:5 },
+  genderRatio: { female:40, futa:20, male:40, enby:10 },
   sexualityRatio: { straight:70, gay:10, bi:10, ace:10 },
 
   attributes: {
@@ -12,10 +12,11 @@ Species.register('kobold', {
     beauty: 'D',
   },
 
-  personalityRanges: {
-    calm:    { average:-40, deviation:15 },
-    kind:    { average:-40, deviation:15 },
-    violent: { average:40,  deviation:15 },
+  archetypes: {
+    enby:   { koboldSub:100 },
+    female: { koboldSub:100 },
+    futa:   { koboldSub:100 },
+    male:   { koboldDom:100 },
   },
 
   // Fairly standard, except that kobolds don't have nipples.

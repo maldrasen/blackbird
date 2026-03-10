@@ -12,10 +12,11 @@ Species.register('equian', {
     beauty: 'C',
   },
 
-  personalityRanges: {
-    calm:    { average:30, deviation:10 },
-    kind:    { average:0,  deviation:20 },
-    violent: { average:30, deviation:10 },
+  archetypes: {
+    enby:   ArchetypeDistribution(Gender.enby,'equian'),
+    female: ArchetypeDistribution(Gender.female,'equian'),
+    futa:   ArchetypeDistribution(Gender.futa,'equian'),
+    male:   ArchetypeDistribution(Gender.male,'equian'),
   },
 
   // Huge cocks and clits and pussies, but as such their sensitivity is lower.

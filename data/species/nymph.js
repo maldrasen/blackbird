@@ -12,10 +12,11 @@ Species.register('nymph', {
     beauty: 'A',
   },
 
-  personalityRanges: {
-    calm:    { average:30,  deviation:10 },
-    kind:    { average:30,  deviation:10 },
-    violent: { average:-30, deviation:10 },
+  archetypes: {
+    enby:   ArchetypeDistribution(Gender.enby,'nymph'),
+    female: ArchetypeDistribution(Gender.female,'nymph'),
+    futa:   ArchetypeDistribution(Gender.futa,'nymph'),
+    male:   ArchetypeDistribution(Gender.male,'nymph'),
   },
 
   // Nymphs have an overall boost to their sensitivities, and highly sensitive

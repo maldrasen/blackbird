@@ -12,10 +12,11 @@ Species.register('halfling', {
     beauty: 'B',
   },
 
-  personalityRanges: {
-    calm:    { average:20,  deviation:10 },
-    kind:    { average:20,  deviation:10 },
-    violent: { average:-20, deviation:10 },
+  archetypes: {
+    enby:   ArchetypeDistribution(Gender.enby,'halfling'),
+    female: ArchetypeDistribution(Gender.female,'halfling'),
+    futa:   ArchetypeDistribution(Gender.futa,'halfling'),
+    male:   ArchetypeDistribution(Gender.male,'halfling'),
   },
 
 // Because of their relatively shallow pussies, halflings have an unusually

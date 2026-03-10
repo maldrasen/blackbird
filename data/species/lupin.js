@@ -12,10 +12,11 @@ Species.register('lupin', {
     beauty: 'C',
   },
 
-  personalityRanges: {
-    calm:    { average:10,  deviation:10 },
-    kind:    { average:20,  deviation:10 },
-    violent: { average:30,  deviation:10 },
+  archetypes: {
+    enby:   ArchetypeDistribution(Gender.enby,'lupin'),
+    female: ArchetypeDistribution(Gender.female,'lupin'),
+    futa:   ArchetypeDistribution(Gender.futa,'lupin'),
+    male:   ArchetypeDistribution(Gender.male,'lupin'),
   },
 
   // Lupins all have some degree of urethra sensitivity.

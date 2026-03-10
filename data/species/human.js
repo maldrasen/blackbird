@@ -12,10 +12,11 @@ Species.register('human', {
     beauty: 'C',
   },
 
-  personalityRanges: {
-    calm:    { average:0, deviation:25 },
-    kind:    { average:0, deviation:22 },
-    violent: { average:0, deviation:25 },
+  archetypes: {
+    enby:   ArchetypeDistribution(Gender.enby),
+    female: ArchetypeDistribution(Gender.female),
+    futa:   ArchetypeDistribution(Gender.futa),
+    male:   ArchetypeDistribution(Gender.male),
   },
 
   // The human sensitives should be considered the default range. Other species
