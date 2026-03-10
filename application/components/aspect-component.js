@@ -1,13 +1,5 @@
 global.AspectsComponent = (function() {
 
-  const personalityAspects = [
-    AspectType.bimbo,
-    AspectType.slut,
-    AspectType.prude];
-  const roleAspects = [
-    AspectType.noble,
-    AspectType.slave];
-
   function create(id,data) {
     Registry.createComponent(id, ComponentType.aspects, data);
     validate(id);
@@ -46,8 +38,6 @@ global.AspectsComponent = (function() {
       }
     });
 
-    Validate.singleKeyFrom(`Aspect`, aspectsData, personalityAspects);
-    Validate.singleKeyFrom(`Aspect`, aspectsData, roleAspects);
   }
 
   return Object.freeze({

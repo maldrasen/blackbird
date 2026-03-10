@@ -10,16 +10,17 @@ global.SexualPreference = (function() {
   }
 
   function lookup(code) {
-    if ($sexualPreferences[code] === null) { throw `Bad sexual preference code [${code}]` }
+    if ($sexualPreferences[code] == null) { throw `Bad sexual preference code [${code}]` }
 
     const preference = { ...$sexualPreferences[code] };
 
     return Object.freeze({
-      getCode: () => { return preference.code; },
+      getCode: () => { return code; },
       getName: () => { return preference.name; },
       getAntiname: () => { return preference.antiname || `Anti-${preference}` },
       getSensations: () => { return preference.sensations; },
-      isNegativeAllowed: () => { return (preference.allowNegative !== false); }
+      getRequires: () => { return preference.requires; },
+      isNegativeAllowed: () => { return (preference.allowNegative !== false); },
     });
   }
 

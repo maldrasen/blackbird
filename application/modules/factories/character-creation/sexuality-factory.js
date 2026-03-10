@@ -1,5 +1,8 @@
 global.SexualityFactory = (function() {
 
+  // Sexuality has to key off of biological sex because I have no idea who a straight non-binary person is supposed to
+  // be attracted to. A straight futa is gynophilic, a gay futa is androphilic (because of butt stuff). Bi is positive
+  // in both. Ace is negative in both.
   function build(context, triggers) {
     const preferences = applySexualityTriggers(triggers);
 

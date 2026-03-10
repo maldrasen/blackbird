@@ -7,6 +7,7 @@ SexualPreference.register('breath-player',{
 SexualPreference.register('breeder',{
   name: 'Breeder',
   description: 'A love of pregnancy and birthing.',
+  requires: 'pussy',
 });
 
 SexualPreference.register('cum-dump',{

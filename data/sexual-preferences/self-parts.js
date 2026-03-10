@@ -19,12 +19,14 @@ SexualPreference.register('breast-slut',{
   name: 'Breast Slut',
   description: 'A preference for sexual activities using their breasts.',
   sensations: { increase:['nipple'], factor:1.5 },
+  requires: 'breasts',
 });
 
 SexualPreference.register('cervix-slut',{
   name: 'Cervix Slut',
   description: 'A preference for sexual activities using their cervix and womb.',
   sensations: { increase:['cervix'], factor:1.5 },
+  requires: 'pussy',
 });
 
 // And balls too of course
@@ -32,6 +34,7 @@ SexualPreference.register('cock-slut',{
   name: 'Cock Slut',
   description: 'A preference for sexual activities using their cock.',
   sensations: { increase:['cock'], factor:1.5 },
+  requires: 'cock',
 });
 
 SexualPreference.register('oral-slut',{
@@ -44,6 +47,7 @@ SexualPreference.register('pussy-slut',{
   name: 'Pussy Slut',
   description: 'A preference for sexual activities using their pussy.',
   sensations: { increase:['clit','pussy'], factor:1.5 },
+  requires: 'pussy',
 });
 
 // Hidden until unlocked by action.

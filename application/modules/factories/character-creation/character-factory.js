@@ -88,15 +88,13 @@ global.CharacterFactory = (function() {
       sex: biologicalSex
     }, triggers);
 
-    //   SexualPreferenceFactory.build({
-    //   actor:         actorData,
-    //   personality:   personalityData
-    //   biologicalSex: biologicalSex,
-    //   sexuality:      || ,
-    //   cock:          cockData,
-    //   pussy:         pussyData,
-    //   breasts:       breastsData,
-    // }, triggers);
+    SexualPreferencesFactory.makeAdjustments(sexualPreferences, {
+      actor: actorData,
+      personality: personalityData,
+      cock: cockData,
+      pussy: pussyData,
+      breasts: breastsData,
+    }, triggers);
 
     const aspectsData = AspectsFactory.build(triggers, actorData);
     const sensitivitiesData = SensitivitiesFactory.build(triggers, actorData, breastsData, cockData, pussyData);
