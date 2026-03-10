@@ -49,7 +49,7 @@ global.TriggerFactory = (function() {
     triggers.push(`${shape}-eyes`);
 
     if (shape === 'cat')    { triggers.push(...['cat-tail','cat-ears']); }
-    if (shape === 'heart')  { triggers.push('slut'); }
+    if (shape === 'heart')  { triggers.push('~slut'); }
     if (shape === 'dragon') { triggers.push('forked-tongue'); }
 
     return triggers;

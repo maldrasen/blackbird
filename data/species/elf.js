@@ -1,8 +1,6 @@
 Species.register('elf', {
   name: 'Elf',
-
   genderRatio: { female:40, futa:20, male:40, enby:5 },
-  sexualityRatio: { straight:40, gay:20, bi:40, ace:5 },
 
   attributes: {
     strength: 'D',

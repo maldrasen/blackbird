@@ -1,8 +1,6 @@
 Species.register('halfling', {
   name: 'Halfling',
-
   genderRatio: { female:40, futa:20, male:40, enby:5 },
-  sexualityRatio: { straight:60, gay:20, bi:20, ace:5 },
 
   attributes: {
     strength: 'D',

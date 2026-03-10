@@ -81,14 +81,18 @@ global.CharacterFactory = (function() {
     const healthData = AttributesFactory.rollHealth(attributesData);
     const personalityData = PersonalityFactory.buildPersonality(actorData, triggers);
 
-    console.log(`\n==========`)
-    console.log(`Building ${actorData.gender} ${actorData.species}`);
-    console.log(`Archetype:`,personalityData.archetype);
+    const sexualPreferences = SexualityFactory.build({
+      sexuality: options.sexuality,
+      actor: actorData,
+      personality: personalityData,
+      sex: biologicalSex
+    }, triggers);
 
-    // const sexualPreferences = SexualPreferenceFactory.build({
+    //   SexualPreferenceFactory.build({
     //   actor:         actorData,
+    //   personality:   personalityData
     //   biologicalSex: biologicalSex,
-    //   sexuality:     options.sexuality || Random.fromFrequencyMap(species.getSexualityRatio()),
+    //   sexuality:      || ,
     //   cock:          cockData,
     //   pussy:         pussyData,
     //   breasts:       breastsData,
@@ -112,8 +116,6 @@ global.CharacterFactory = (function() {
     //   throw `Error: Unresolved Triggers: ${JSON.stringify(triggers)}`;
     }
 
-
-
     ActorComponent.create(characterId, actorData);
     AnimaComponent.createBaseline(characterId);
     AnimusComponent.createBaseline(characterId);
@@ -126,7 +128,7 @@ global.CharacterFactory = (function() {
     PersonalityComponent.create(characterId, personalityData);
     SkillsComponent.create(characterId, skillsData);
     SensitivitiesComponent.create(characterId, sensitivitiesData);
-    // SexualPreferencesComponent.create(characterId, sexualPreferences);
+    SexualPreferencesComponent.create(characterId, sexualPreferences);
     AspectsComponent.create(characterId, aspectsData);
     EquipmentComponent.create(characterId);
     InventoryComponent.create(characterId);
@@ -145,13 +147,12 @@ global.CharacterFactory = (function() {
       mouth: mouthData,
       pussy: pussyData,
       sensitivitiesData: sensitivitiesData,
-      // sexualPreferences: sexualPreferences,
+      sexualPreferences: sexualPreferences,
       aspects: aspectsData,
     }});
 
     return characterId;
   }
-
 
   function buildNames(options, actorData, triggers) {
     if (options.name) { actorData.name = options.name; }

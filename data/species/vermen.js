@@ -1,8 +1,6 @@
 Species.register('vermen', {
   name: 'Vermen',
-
   genderRatio: { female:40, futa:20, male:40, enby:10 },
-  sexualityRatio: { straight:70, gay:10, bi:10, ace:10 },
 
   attributes: {
     strength: 'F',

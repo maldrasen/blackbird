@@ -1,8 +1,6 @@
 Species.register('human', {
   name: 'Human',
-
   genderRatio: { female:40, futa:20, male:40, enby:5 },
-  sexualityRatio: { straight:40, gay:20, bi:30, ace:5 },
 
   attributes: {
     strength: 'C',

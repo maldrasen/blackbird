@@ -1,8 +1,6 @@
 Species.register('nymph', {
   name: 'Nymph',
-
   genderRatio: { female:60, futa:40, male:0, enby:0 },
-  sexualityRatio: { straight:0, gay:20, bi:80, ace:0 },
 
   attributes: {
     strength: 'D',

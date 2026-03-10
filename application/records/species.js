@@ -19,7 +19,6 @@ global.Species = (function() {
       getCode: () => { return species.code; },
       getName: () => { return species.name; },
       getGenderRatio: () => { return species.genderRatio; },
-      getSexualityRatio: () => { return species.sexualityRatio; },
       getAttributes: () => { return species.attributes; },
       getArchetypes: () => { return species.archetypes; },
       getSensitivities: () => { return species.sensitivities; },

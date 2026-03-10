@@ -1,8 +1,6 @@
 Species.register('sylph', {
   name: 'Sylph',
-
   genderRatio: { female:75, futa:25, male:5, enby:20 },
-  sexualityRatio: { straight:0, gay:40, bi:60, ace:1 },
 
   attributes: {
     strength: 'F',
