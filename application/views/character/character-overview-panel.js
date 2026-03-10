@@ -38,24 +38,14 @@ global.CharacterOverviewPanel = (function() {
     X.fill('#characterOverlay .attributes-area', X.createElement(list.getList()));
   }
 
+  // Temp fix. We might not include the personality information on the character panel, and if we do it might go next
+  // to the name along with the personality flavors.
   function fillPersonality(id) {
     const personality = PersonalityComponent.lookup(id);
     const list = ListBuilder('ul','two-columns');
 
-    const calmLabel = personality.calm >= 0 ? 'Calm' : 'Excitable';
-    const kindLabel = personality.kind >= 0 ? 'Kind' : 'Cruel';
-    const violentLabel = personality.violent >= 0 ? 'Violent' : 'Passive'
-
-    const calmLetter = LetterGradeHelper.preferenceValue(Math.abs(personality.calm));
-    const kindLetter = LetterGradeHelper.preferenceValue(Math.abs(personality.kind));
-    const violentLetter = LetterGradeHelper.preferenceValue(Math.abs(personality.violent));
-
-    list.add(`<li class='label'>${calmLabel}</li>`);
-    list.add(`<li class='value strength-${calmLetter}'>${calmLetter}</li>`);
-    list.add(`<li class='label'>${kindLabel}</li>`);
-    list.add(`<li class='value strength-${kindLetter}'>${kindLetter}</li>`);
-    list.add(`<li class='label'>${violentLabel}</li>`);
-    list.add(`<li class='value strength-${violentLetter}'>${violentLetter}</li>`);
+    list.add(`<li class='label'>Archetype</li>`);
+    list.add(`<li class='value'>${personality.archetype}</li>`);
 
     X.fill('#characterOverlay .personality-area',X.createElement(list.getList()));
   }

@@ -34,11 +34,12 @@ global.LocationView = (function() {
   }
 
   function buildCharacterItem(id) {
-    const actor = ActorComponent.lookup(id)
+    const actor = ActorComponent.lookup(id);
+    const personality = PersonalityComponent.lookup(id);
 
     return X.createElement(`<li>
       <a data-id='${id}'>${actor.title||''} ${actor.name} ${actor.surname||''}</a>
-      (${actor.gender} ${actor.species})</li>`);
+      (${actor.gender} ${actor.species}) - ${personality.archetype}</li>`);
   }
 
   return Object.freeze({
