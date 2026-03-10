@@ -62,6 +62,7 @@
     "application/modules/factories/character-creation/cock-factory.js",
     "application/modules/factories/character-creation/mouth-factory.js",
     "application/modules/factories/character-creation/personality-factory.js",
+    "application/modules/factories/character-creation/player-factory.js",
     "application/modules/factories/character-creation/pussy-factory.js",
     "application/modules/factories/character-creation/sensitivities-factory.js",
     "application/modules/factories/character-creation/sexual-preference-factory.js",
@@ -375,10 +376,10 @@
     "test/modules/factories/dungeon/room-factory-spec.js",
     "test/modules/helpers/letter-grade-helper-spec.js",
     "test/modules/helpers/object-helper-spec.js",
+    "test/modules/helpers/string-helper-spec.js",
     "test/modules/language/measurement-helper-spec.js",
     "test/modules/math/component-math-spec.js",
     "test/modules/scrutinizers/actor-scrutinizers-spec.js",
-    "test/records/archetype-spec.js",
     "test/records/name-spec.js",
     "test/registry-spec.js"
   ]

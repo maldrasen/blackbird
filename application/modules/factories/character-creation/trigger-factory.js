@@ -83,4 +83,3 @@ global.TriggerFactory = (function() {
   });
 
 })();
-

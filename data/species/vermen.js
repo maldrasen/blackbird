@@ -13,10 +13,10 @@ Species.register('vermen', {
   },
 
   archetypes: {
-    enby:   { vermenSub:100 },
-    female: { vermenSub:100 },
-    futa:   { vermenSub:100 },
-    male:   { vermenDom:100 },
+    enby:   { 'vermen-sub':100 },
+    female: { 'vermen-sub':100 },
+    futa:   { 'vermen-sub':100 },
+    male:   { 'vermen-dom':100 },
   },
 
   // Vermen have strange bodies with multiple nipples and unusual erogenous zones.
@@ -42,7 +42,7 @@ Species.register('vermen', {
   body: {
     averageHeight: 800,
     skinType: 'fur',
-    eyeShape: 'rat',
+    earShape: 'rat',
     tailShape: 'rat',
     smellFamily: 'earthy',
 

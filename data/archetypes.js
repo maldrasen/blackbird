@@ -93,3 +93,14 @@ Archetype.register(ArchetypeCode.timid, {
   name: 'Timid',
   sexStyle: SexStyle.bashful,
 });
+
+Archetype.register(ArchetypeCode.vermenDom, {
+  name: 'Dominant Vermen',
+  sexStyle: SexStyle.rough,
+});
+
+Archetype.register(ArchetypeCode.vermenSub, {
+  name: 'Submissive Vermen',
+  sexStyle: SexStyle.submissive,
+});
+

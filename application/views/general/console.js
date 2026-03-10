@@ -65,6 +65,8 @@ global.Console = (function() {
       options.type = options.type || LogType.info;
       append(options);
     }
+    if (options.type === LogType.warning) { console.warn(message); }
+    if (options.type === LogType.error) { console.error(message); }
   }
 
   function logError(message, error, options={}) {
@@ -73,8 +75,8 @@ global.Console = (function() {
     if (Tests.running()) {
       console.error('=== Error ===');
       console.error(message);
-      console.error(error);
-      console.error(options);
+      console.error(JSON.stringify(error));
+      console.error(JSON.stringify(options));
       return;
     }
 

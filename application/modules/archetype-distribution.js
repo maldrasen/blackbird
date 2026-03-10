@@ -202,7 +202,9 @@ global.ArchetypeDistribution = function(gender, species='human') {
 
   const rounded = {}
   Object.entries(distribution).forEach(([key,value]) => {
-    if (Math.round(value) > 0) { rounded[key] = Math.round(value); }
+    let actual = key;
+    if (key === 'flowerChild') { actual = ArchetypeCode.flowerChild; }
+    if (Math.round(value) > 0) { rounded[actual] = Math.round(value); }
   });
 
   return rounded;

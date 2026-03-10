@@ -1,4 +1,4 @@
-describe.only("CharacterFactory", function() {
+describe("CharacterFactory", function() {
 
   describe("build()", function() {
     it("makes a completely random character when no options are given", function() {

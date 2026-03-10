@@ -13,10 +13,10 @@ Species.register('kobold', {
   },
 
   archetypes: {
-    enby:   { koboldSub:100 },
-    female: { koboldSub:100 },
-    futa:   { koboldSub:100 },
-    male:   { koboldDom:100 },
+    enby:   { 'kobold-sub':100 },
+    female: { 'kobold-sub':100 },
+    futa:   { 'kobold-sub':100 },
+    male:   { 'kobold-dom':100 },
   },
 
   // Fairly standard, except that kobolds don't have nipples.

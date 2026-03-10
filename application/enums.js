@@ -155,6 +155,8 @@ global.ArchetypeCode = {
   slut: 'slut',
   sweet: 'sweet',
   timid: 'timid',
+  vermenDom: 'vermen-dom',
+  vermenSub: 'vermen-sub',
 };
 
 global.SexStyle = {

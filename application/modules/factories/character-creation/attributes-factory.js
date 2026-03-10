@@ -14,9 +14,7 @@ global.AttributesFactory = (function() {
     ugly: Attrib.beauty,
   };
 
-  // I don't think we roll attributes in any place other than this character factory. If so we can move this to the
-  // Attributes component or something.
-  function rollAttributes(gender,species) {
+  function rollAttributes(sex,species) {
     const diceLevels = { F:1, D:2, C:3, B:4, A:5, S:6, SS:7, SSS:8 }
     const speciesMap = Species.lookup(species).getAttributes();
     const attributes = {};
@@ -24,8 +22,8 @@ global.AttributesFactory = (function() {
     Object.keys(Attrib).forEach(code => {
       let dice = diceLevels[speciesMap[code]];
 
-      if (code === Attrib.strength && [Gender.male,Gender.futa].includes(gender)) { dice += 1 }
-      if (code === Attrib.beauty && [Gender.female,Gender.futa].includes(gender)) { dice += 1 }
+      if (code === Attrib.strength && [Gender.male,Gender.futa].includes(sex)) { dice += 1 }
+      if (code === Attrib.beauty && [Gender.female,Gender.futa].includes(sex)) { dice += 1 }
 
       attributes[code] = Random.rollDice({ x:dice, d:10 });
 
