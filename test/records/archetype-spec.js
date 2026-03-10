@@ -1,4 +1,4 @@
-describe.only('Archetype', function() {
+describe('Archetype', function() {
 
   describe('getArchetype()', function() {
     it('looks at the aspects first', function() {

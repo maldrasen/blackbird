@@ -162,15 +162,17 @@
     "data/dialog/bimbo.js",
     "data/dialog/bitch.js",
     "data/dialog/brat.js",
-    "data/dialog/heartless.js",
+    "data/dialog/flower-child.js",
     "data/dialog/innocent.js",
     "data/dialog/kobold-dom.js",
     "data/dialog/kobold-sub.js",
+    "data/dialog/maniac.js",
     "data/dialog/nice.js",
     "data/dialog/pervert.js",
     "data/dialog/playful.js",
     "data/dialog/prude.js",
     "data/dialog/reserved.js",
+    "data/dialog/savage.js",
     "data/dialog/serious.js",
     "data/dialog/slut.js",
     "data/dialog/sweet.js",
@@ -354,7 +356,8 @@
     "data/species/kobold.js",
     "data/species/lupin.js",
     "data/species/nymph.js",
-    "data/species/sylph.js"
+    "data/species/sylph.js",
+    "data/species/vermen.js"
   ],
   "testFileList": [
     "test/components/feelings-component-spec.js",

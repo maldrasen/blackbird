@@ -1,4 +1,4 @@
-describe("CharacterFactory", function() {
+describe.only("CharacterFactory", function() {
 
   describe("build()", function() {
 

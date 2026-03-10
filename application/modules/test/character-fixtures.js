@@ -69,7 +69,7 @@ global.CharacterFixtures = (function() {
   }
 
   function genericPersonality(id, options={}) {
-    const defaultPersonality = { archetype:ArchetypeCode.reserved, sanity:100, calm:30, kind:20, violent:10 };
+    const defaultPersonality = { archetype:ArchetypeCode.reserved, sanity:100 };
     return PersonalityComponent.create(id, { ...defaultPersonality, ...options });
   }
 

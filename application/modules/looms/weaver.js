@@ -45,7 +45,7 @@ global.Weaver = function(context) {
       } else if (actorMatch) {
         text = text.replace(actorMatch[0], actorValue(actorMatch[1].trim(), actorMatch[2].trim()));
       } else if (functionMatch) {
-        const value = executeFunction(functionMatch[1].trim(),functionMatch[2].split(',').map(s => s.trim()))
+        const value = functionValue(functionMatch[1].trim(),functionMatch[2].split(',').map(s => s.trim()))
         text = text.replace(functionMatch[0],value||'');
       } else if (utilityMatch) {
         text = text.replace(utilityMatch[0], utilityValue(utilityMatch[1].trim(), utilityMatch[2].trim()));
@@ -74,7 +74,7 @@ global.Weaver = function(context) {
     }
   }
 
-  function executeFunction(name, arguments) {
+  function functionValue(name, argumentList) {
     return formatError(`TODO: ${name}() function.`)
   }
 
