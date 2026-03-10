@@ -16,11 +16,11 @@ global.BodyData = {
   CommonEyeColors: ['brown','hazel','amber','green','blue','gray','black'],
   UncommonEyeColors: ['purple','pink','red','gold'],
 
-  EarShapes: ['cat','dog','elf','fox','horse','human','rabbit'],
+  EarShapes: ['cat','dog','elf','fox','horse','human','rabbit','rat'],
   UncommonEarShapes: ['cat','dog','fox','horse','rabbit'],
 
   HornShapes: ['deer','curvedRam','forwardCow','curvedBack','unicorn'],
-  TailShapes: ['cat','cow','demon','dog','dragon','fox','horse','rabbit'],
+  TailShapes: ['cat','cow','demon','dog','dragon','fox','horse','rabbit','rat'],
 
   EarthySmells: ['rain','pine','sage','freshCutGrass','sandalwood','cedar','clover','woodsmoke','patchouli'],
   FloralSmells: ['jasmine','rose','lavender','honeysuckle','vanilla','peach','orange','strawberry'],

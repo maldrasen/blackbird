@@ -49,6 +49,7 @@
     "application/models/state-recorder.js",
     "application/models/training/consent-result.js",
     "application/models/training/sensation-result.js",
+    "application/modules/archetype-distribution.js",
     "application/modules/balance.js",
     "application/modules/describers/body-describer.js",
     "application/modules/describers/breast-describer.js",
