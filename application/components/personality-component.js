@@ -1,5 +1,5 @@
 global.PersonalityComponent = (function() {
-  const $properties = ['archetype','calm','kind','violent','sanity','broken'];
+  const $properties = ['archetype','sanity','broken'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.personality,data);
@@ -28,11 +28,8 @@ global.PersonalityComponent = (function() {
       }
     });
 
+    Validate.isIn('Personality.archetype',personalityComponent.archetype, Object.values(ArchetypeCode));
     Validate.between('Personality.sanity',personalityComponent.sanity, 0, 100);
-
-    ['calm','kind','violent'].forEach(key => {
-      Validate.between(`Personality.${key}`,personalityComponent[key],-100,100);
-    });
   }
 
   return Object.freeze({

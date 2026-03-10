@@ -135,32 +135,36 @@ global.AspectType = Object.freeze({
 
 // === Personality ===
 
-global.Attitude = {
-  afraid: 'afraid',
-  angry: 'angry',
-  horny: 'horny',
-  resigned: 'resigned',
-};
-
 global.ArchetypeCode = {
   bastard: 'bastard',
   bimbo: 'bimbo',
   bitch: 'bitch',
   brat: 'brat',
-  heartless: 'heartless',
+  flowerChild: 'flower-child',
   innocent: 'innocent',
-  koboldDom: 'koboldDom',
-  koboldSub: 'koboldSub',
+  koboldDom: 'kobold-dom',
+  koboldSub: 'kobold-sub',
+  maniac: 'maniac',
   nice: 'nice',
   pervert: 'pervert',
   playful: 'playful',
   prude: 'prude',
   reserved: 'reserved',
+  savage: 'savage',
   serious: 'serious',
   slut: 'slut',
   sweet: 'sweet',
   timid: 'timid',
-}
+};
+
+global.SexStyle = {
+  bashful: 'bashful',
+  frisky: 'frisky',
+  gentle: 'gentle',
+  rough: 'rough',
+  shameless: 'shameless',
+  submissive: 'submissive',
+};
 
 // === Training ===
 
