@@ -42,4 +42,45 @@ describe("SexualPreferencesFactory", function() {
     expect(subs.length).to.be.within(1,3);
   });
 
+  // There's no telling what this will actually do. There's a bit too much
+  // randomness to stub out without this being completely fragile. Just make
+  // sure this doesn't blow up and check what the preferences look like if
+  // there's a problem I guess.
+  it("randomly adds sexual preferences for the archetype", function() {
+    const preferences = {};
+
+    SexualPreferencesFactory.makeAdjustments(preferences,{
+      actor:{ gender:Gender.female, species:'nymph' },
+      personality:{ archetype:ArchetypeCode.slut },
+      sensitivities:{ pussy:2, breasts:2 },
+    },[]);
+  });
+
+  it("removes preferences when the character is a prude or innocent", function() {
+    const preferences = {};
+
+    SexualPreferencesFactory.makeAdjustments(preferences,{
+      actor:{ gender:Gender.female, species:'nymph' },
+      personality:{ archetype:ArchetypeCode.innocent },
+      sensitivities:{ pussy:2, breasts:2 },
+    },['cock-lover[20]','exhibitionist[30]','gynophilic[60]','androphilic[-30]']);
+
+    expect(Object.keys(preferences).length).to.equal(2);
+    expect(preferences.gynophilic).to.be.lessThan(50);
+    expect(preferences.androphilic).to.be.lessThan(-20);
+  });
+
+  it("Adds perversions when character is perverted", function() {
+    const preferences = {};
+
+    SexualPreferencesFactory.makeAdjustments(preferences,{
+      actor:{ gender:Gender.female, species:'lupin' },
+      personality:{ archetype:ArchetypeCode.pervert },
+      sensitivities:{ pussy:2, breasts:2 },
+    },[]);
+
+    // Perverted must add at least two preferences but probably a lot more.
+    expect(Object.keys(preferences).length).to.be.greaterThan(1);
+  });
+
 });

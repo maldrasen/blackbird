@@ -3,10 +3,10 @@ global.SexualPreferencesFactory = (function() {
   const PreferenceFamilies = {
     'top':['dominant','sadistic','debaser'],
     'bottom':['submissive','masochistic','humiliation-slut'],
-    'self-rough':['breath-player','gape-queen','prolapse-queen','punching-bag','rope-bunny','size-queen'],
+    'self-rough':['breath-player','gape-queen','rope-bunny','size-queen'],
     'other-rough':['choker','pisser','pugilist','rigger','stretcher'],
-    'humiliating':['cum-dump','enemas','piss-slut','masturbator','sex-toy-lover'],
-    'slut':['anal-slut','breast-slut','cervix-slut','cock-slut','oral-slut','pussy-slut','urethra-slut'],
+    'humiliating':['cum-dump','piss-slut','masturbator','sex-toy-lover'],
+    'slut':['anal-slut','breast-slut','cock-slut','oral-slut','pussy-slut'],
     'other-parts':['ass-lover','cock-lover','pussy-lover','breast-lover']};
 
   function makeAdjustments(sexualPreferences, context, triggers) {
@@ -47,6 +47,8 @@ global.SexualPreferencesFactory = (function() {
     });
   }
 
+  // TODO: Clearly some of these archetypes should also include negative
+  //  preferences. I'll start adding them after the special handling.
   function applyArchetypePreferences(sexualPreferences, context) {
     const archetype = Archetype.lookup(context.personality.archetype);
     const archetypePreferences = archetype.getSexualPreferences() || {};
@@ -55,19 +57,24 @@ global.SexualPreferencesFactory = (function() {
       addPreferences(sexualPreferences, code, archetypePreferences[code]);
     });
 
-    // TODO: Archetypes with special handling:
+    if (['innocent','prude'].includes(archetype.getCode())) {
+      reducePreference(sexualPreferences, 'gynophilic');
+      reducePreference(sexualPreferences, 'androphilic');
 
-    // innocent / prude - Both of these archetypes will remove all positive
-    //   sexual preferences and lower the gender preferences. The difference
-    //   between the two is that prudes can have sexual experience. (first
-    //   kiss, rape victim)
+      Object.keys(sexualPreferences).forEach(code => {
+        if (['gynophilic','androphilic'].includes(code) === false) {
+          delete sexualPreferences[code];
+        }
+      });
+    }
 
-    // pervert - Probably best to pick some strange fetishes based on their
-    //   body and sexuality and work backwards adding preferences that would
-    //   be logical requirements.
+    if ('pervert' === archetype.getCode()) {
+      applyPervert(sexualPreferences, context);
+    }
+  }
 
-    // TODO: Clearly some of these archetypes should also include negative
-    //  preferences. I'll start adding them after the special handling.
+  function reducePreference(prefs, code) {
+    if (prefs[code] > 0) { prefs[code] = Math.round((Random.between(20,80)/100) * prefs[code]); }
   }
 
   // Every sexual preference in the archetype will either be a family of sexual preferences or a specific preference.
@@ -149,6 +156,57 @@ global.SexualPreferencesFactory = (function() {
         if (code === 'stud') { delete sexualPreferences[code]; }
       }
     });
+  }
+
+  // The applyPervert() function picks at least one perversion 'theme' which includes a 'rare' fetish to give a large
+  // bonus to. We also add some associated preferences that could be seen as prerequisites, as well as the perverted
+  // preference.
+  function applyPervert(preferences, context) {
+    const perversions = [];
+
+    // Perverted anal/toilet slut.
+    perversions.push({ code:'enemas', includes:[
+      'ass-lover','anal-slut','piss-slut','pisser','humiliation-slut']})
+
+    // Perverted pain slut.
+    perversions.push({ code:'punching-bag', includes:[
+      'masochistic','submissive','breath-player','rope-bunny','anal-slut','oral-slut']});
+
+    // Perverted bucket cunt slut (must have a pussy)
+    if(context.sensitivities.pussy > 0) {
+      perversions.push({ code:'prolapse-queen', includes:[
+        'gape-queen','size-queen','stretcher','pussy-slut','anal-slut','sex-toy-lover','humiliation-slut']});
+    }
+
+    // Perverted cock worshiper (must like dick)
+    if (preferences.androphilic > 0) {
+      perversions.push({ code:'beast-lover', includes:[
+        'submissive','breath-player','size-queen','cum-dump','piss-slut','cock-lover','anal-slut','oral-slut']});
+    }
+
+    // Apply one of the available perversions.
+    const first = Random.from(perversions);
+    ArrayHelper.remove(perversions,first);
+    applyPerversion(preferences, first);
+
+    // We can rarely add a second for someone who's super perverted.
+    if (Random.roll(100) < 33) { applyPerversion(preferences, Random.from(perversions)); }
+  }
+
+  function applyPerversion(preferences, perversion) {
+    increasePreference(preferences, 'perverted', Random.between(20,40));
+    increasePreference(preferences, perversion.code, Random.between(20,40));
+    perversion.includes.forEach(code => {
+      increasePreference(preferences, code, Random.between(0,20), 80);
+    });
+  }
+
+  function increasePreference(preferences, code, amount, chance=100) {
+    if (Random.roll(100) < chance) {
+      if (preferences[code] == null) { preferences[code] = 0; }
+      preferences[code] += amount;
+      if (preferences[code] > 100) { preferences.code = 100; }
+    }
   }
 
   return Object.freeze({ makeAdjustments });
