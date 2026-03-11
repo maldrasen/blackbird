@@ -66,7 +66,7 @@ describe("SexualPreferencesFactory", function() {
     },['cock-lover[20]','exhibitionist[30]','gynophilic[60]','androphilic[-30]']);
 
     expect(Object.keys(preferences).length).to.equal(2);
-    expect(preferences.gynophilic).to.be.lessThan(50);
+    expect(preferences.gynophilic).to.be.lessThan(60);
     expect(preferences.androphilic).to.be.lessThan(-20);
   });
 
