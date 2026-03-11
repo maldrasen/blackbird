@@ -13,6 +13,7 @@ global.Archetype = (function() {
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return archetype.name; },
+      getRequires: () => { return archetype.requires; },
       getSexStyle: () => { return archetype.sexStyle; },
       getSexualityRatio: () => { return archetype.sexualityRatio; },
       getSexualPreferences: () => { return archetype.sexualPreferences||{}; },

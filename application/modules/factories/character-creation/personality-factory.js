@@ -4,12 +4,13 @@ global.PersonalityFactory = (function() {
     const archetypes = Species.lookup(actorData.species).getArchetypes();
     const personality = { sanity: 100 };
 
-    function setArchetype(trigger, archetype) {
+    function setArchetype(trigger, archetypeCode) {
+      assertValid(archetypeCode, actorData);
       if (personality.archetype != null) {
         throw `Character Rejected: Can't set more than one personality archetypes.`
       }
 
-      personality.archetype = archetype;
+      personality.archetype = archetypeCode;
       Console.log(`Applied ${trigger}`,{ system:'PersonalityFactory', level:3 });
       ArrayHelper.remove(triggers, trigger);
     }
@@ -33,6 +34,22 @@ global.PersonalityFactory = (function() {
     }
 
     return personality;
+  }
+
+  function assertValid(code, actor) {
+    const available = Object.keys(Species.lookup(actor.species).getArchetypes()[actor.gender]);
+    const requires = Archetype.lookup(code).getRequires();
+
+    if (available.includes(code) === false) {
+      throw `Character Rejected: Species[${actor.species}] cannot be an Archetype[${code}].`;}
+    if (requires === 'gender.male' && actor.gender !== Gender.male) {
+      throw `Character Rejected: Archetype[${code}] must be male.`; }
+    if (requires === 'gender.not-male' && actor.gender === Gender.male) {
+      throw `Character Rejected: Archetype[${code}] must not be male.`; }
+    if (requires === 'species.kobold' && actor.species !== 'kobold') {
+      throw `Character Rejected: Archetype[${code}] must be a Kobold.`; }
+    if (requires === 'species.vermen' && actor.species !== 'vermen') {
+      throw `Character Rejected: Archetype[${code}] must be a Vermen.`; }
   }
 
   return Object.freeze({

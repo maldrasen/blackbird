@@ -17,10 +17,10 @@ global.SexualPreference = (function() {
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return preference.name; },
-      getAntiname: () => { return preference.antiname || `Anti-${preference}` },
+      getAntiname: () => { return preference.antiname || `Anti-${preference.name}` },
       getSensations: () => { return preference.sensations; },
       getRequires: () => { return preference.requires; },
-      isNegativeAllowed: () => { return (preference.allowNegative !== false); },
+      isNegativeAllowed: () => { return preference.antiname != null; },
     });
   }
 

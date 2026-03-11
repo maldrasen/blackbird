@@ -1,6 +1,7 @@
 
 Archetype.register(ArchetypeCode.bastard, {
   name: 'Bastard',
+  requires: 'gender.male',
   sexStyle: SexStyle.rough,
   sexualityRatio: { straight:80, gay:10, bi:10 },
   sexualPreferences: {
@@ -11,6 +12,7 @@ Archetype.register(ArchetypeCode.bastard, {
 
 Archetype.register(ArchetypeCode.bimbo, {
   name: 'Bimbo',
+  requires: 'gender.not-male',
   sexStyle: SexStyle.shameless,
   sexualityRatio: { straight:25, bi:75 },
   sexualPreferences: {
@@ -20,12 +22,13 @@ Archetype.register(ArchetypeCode.bimbo, {
     'slut':          { chance:30, strength:[10,20] },
     'other-parts':   { chance:20, strength:[10,20] },
     'masturbator':   { chance:30, strength:[10,30] },
-    'sex-toy-lover': { chance:30, strength:[10,30] }
+    'sex-toy-lover': { chance:30, strength:[10,30] },
   }
 });
 
 Archetype.register(ArchetypeCode.bitch, {
   name: 'Bitch',
+  requires: 'gender.not-male',
   sexStyle: SexStyle.rough,
   sexualityRatio: { straight:80, gay:10, bi:10 },
   sexualPreferences: {
@@ -66,6 +69,7 @@ Archetype.register(ArchetypeCode.innocent, {
 
 Archetype.register(ArchetypeCode.koboldDom, {
   name: 'Dominant Kobold',
+  requires: 'species.kobold',
   sexStyle: SexStyle.rough,
   sexualityRatio: { straight:80, gay:10, bi:10 },
   sexualPreferences: {
@@ -77,6 +81,7 @@ Archetype.register(ArchetypeCode.koboldDom, {
 
 Archetype.register(ArchetypeCode.koboldSub, {
   name: 'Submissive Kobold',
+  requires: 'species.kobold',
   sexStyle: SexStyle.submissive,
   sexualityRatio: { straight:60, gay:20, bi:40, ace:10 },
   sexualPreferences: {
@@ -97,6 +102,7 @@ Archetype.register(ArchetypeCode.maniac, {
 
 Archetype.register(ArchetypeCode.nice, {
   name: 'Nice Guy',
+  requires: 'gender.male',
   sexStyle: SexStyle.gentle,
   sexualityRatio: { straight:40, gay:20, bi:40, ace:5 },
   sexualPreferences:{
@@ -183,6 +189,7 @@ Archetype.register(ArchetypeCode.slut, {
 
 Archetype.register(ArchetypeCode.sweet, {
   name: 'Sweet',
+  requires: 'gender.not-male',
   sexStyle: SexStyle.gentle,
   sexualityRatio: { straight:40, gay:20, bi:30, ace:5 },
   sexualPreferences:{
@@ -203,6 +210,7 @@ Archetype.register(ArchetypeCode.timid, {
 
 Archetype.register(ArchetypeCode.vermenDom, {
   name: 'Dominant Vermen',
+  requires: 'species.vermen',
   sexStyle: SexStyle.rough,
   sexualityRatio: { straight:80, gay:10, bi:10 },
   sexualPreferences: {
@@ -216,6 +224,7 @@ Archetype.register(ArchetypeCode.vermenDom, {
 
 Archetype.register(ArchetypeCode.vermenSub, {
   name: 'Submissive Vermen',
+  requires: 'species.vermen',
   sexStyle: SexStyle.submissive,
   sexualityRatio: { straight:80, gay:20, bi:40 },
   sexualPreferences: {

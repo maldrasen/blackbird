@@ -5,6 +5,8 @@
 global.CentralScrutinizer = function(context) {
   const $context = context;
 
+  const genderPattern = /(\w):gender\.([a-z-]*)/
+  const speciesPattern = /(\w):species\.([a-z-]*)/
   const breastsPattern = /(\w):([a-z-]*breasts[a-z-]*)/
   const cockPattern = /(\w):([a-z-]*cock[a-z-]*)/
   const pussyPattern = /(\w):([a-z-]*pussy[a-z-]*)/
@@ -23,7 +25,11 @@ global.CentralScrutinizer = function(context) {
   function isValid(condition) {
     if (typeof condition === 'function') { return condition($context) }
 
-    let match = condition.match(breastsPattern);
+    let match = condition.match(genderPattern);
+    if (match) { return isGenderValid(match[2], match[1], context); }
+    match = condition.match(speciesPattern);
+    if (match) { return isSpeciesValid(match[2], match[1], context); }
+    match = condition.match(breastsPattern);
     if (match) { return BreastsScrutinizer.isValid(match[2], match[1], context); }
     match = condition.match(cockPattern);
     if (match) { return CockScrutinizer.isValid(match[2], match[1], context); }
@@ -32,6 +38,11 @@ global.CentralScrutinizer = function(context) {
 
     throw `Unrecognized condition: ${condition}`;
   }
+
+  // TODO: I was going to use this, but then I realized that the these functions
+  //   should only validate entities, not the plain objects that the factories use.
+  function isGenderValid(requirement, key, context) { throw `Implement isGenderValid()` }
+  function isSpeciesValid(requirement, key, context) { throw `Implement isSpeciesValid()` }
 
   return Object.freeze({
     allConditionsPass,

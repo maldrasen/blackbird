@@ -47,8 +47,6 @@ global.SexualPreferencesFactory = (function() {
     });
   }
 
-  // TODO: Clearly some of these archetypes should also include negative
-  //  preferences. I'll start adding them after the special handling.
   function applyArchetypePreferences(sexualPreferences, context) {
     const archetype = Archetype.lookup(context.personality.archetype);
     const archetypePreferences = archetype.getSexualPreferences() || {};
