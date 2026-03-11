@@ -10,7 +10,7 @@ global.DungeonTheme = (function() {
   }
 
   function lookup(code) {
-    if ($themes[code] === null) { throw `Bad dungeon theme code [${code}]` }
+    if ($themes[code] == null) { throw `Bad dungeon theme code [${code}]` }
 
     const theme = { ...$themes[code] };
 

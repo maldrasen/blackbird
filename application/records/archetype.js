@@ -6,7 +6,7 @@ global.Archetype = (function() {
   }
 
   function lookup(code) {
-    if ($archetypes[code] === null) { throw `Bad archetype code [${code}]` }
+    if ($archetypes[code] == null) { throw `Bad archetype code [${code}]` }
 
     const archetype = { ...$archetypes[code] };
 

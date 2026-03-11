@@ -12,7 +12,7 @@ global.Skill = (function() {
   }
 
   function lookup(code) {
-    if ($skills[code] === null) { throw `Bad skill code [${code}]` }
+    if ($skills[code] == null) { throw `Bad skill code [${code}]` }
 
     const skill = { ...$skills[code] };
 

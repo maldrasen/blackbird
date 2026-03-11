@@ -10,7 +10,7 @@ global.Location = (function() {
   }
 
   function lookup(code) {
-    if ($locations[code] === null) { throw `Bad location code [${code}]` }
+    if ($locations[code] == null) { throw `Bad location code [${code}]` }
 
     const location = { ...$locations[code] };
 

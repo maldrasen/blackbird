@@ -5,6 +5,7 @@ describe("SexualPreferencesFactory", function() {
 
     SexualPreferencesFactory.makeAdjustments(preferences,{
       actor:{ species:'elf' },
+      personality:{ archetype:ArchetypeCode.serious },
     },['rope-bunny[50]']);
 
     expect(preferences['rope-bunny']).to.be.within(40,60);
@@ -16,6 +17,7 @@ describe("SexualPreferencesFactory", function() {
 
     SexualPreferencesFactory.makeAdjustments(preferences,{
       actor:{ gender:Gender.female, species:'halfling' },
+      personality:{ archetype:ArchetypeCode.reserved },
       sensitivities:{ pussy:2, cervix:1 },
     },[]);
 
@@ -30,6 +32,7 @@ describe("SexualPreferencesFactory", function() {
 
     SexualPreferencesFactory.makeAdjustments(preferences,{
       actor:{ gender:Gender.female, species:'kobold' },
+      personality:{ archetype:ArchetypeCode.koboldSub },
     },[]);
 
     const doms = ['dominant','sadistic','debaser'].filter(code => preferences[code] > 0);

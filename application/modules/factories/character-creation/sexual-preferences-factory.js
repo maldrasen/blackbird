@@ -1,5 +1,14 @@
 global.SexualPreferencesFactory = (function() {
 
+  const PreferenceFamilies = {
+    'top':['dominant','sadistic','debaser'],
+    'bottom':['submissive','masochistic','humiliation-slut'],
+    'self-rough':['breath-player','gape-queen','prolapse-queen','punching-bag','rope-bunny','size-queen'],
+    'other-rough':['choker','pisser','pugilist','rigger','stretcher'],
+    'humiliating':['cum-dump','enemas','piss-slut','masturbator','sex-toy-lover'],
+    'slut':['anal-slut','breast-slut','cervix-slut','cock-slut','oral-slut','pussy-slut','urethra-slut'],
+    'other-parts':['ass-lover','cock-lover','pussy-lover','breast-lover']};
+
   function makeAdjustments(sexualPreferences, context, triggers) {
     applyTriggers(sexualPreferences, context, triggers);
     applySpeciesPreferences(sexualPreferences, context);
@@ -35,11 +44,11 @@ global.SexualPreferencesFactory = (function() {
   }
 
   function applyArchetypePreferences(sexualPreferences, context) {
-    const archetype = Archetype.lookup(context.actor.archetype);
-    const archetypePrefs = archetype.getSexualPreferences() || {};
+    const archetype = Archetype.lookup(context.personality.archetype);
+    const archetypePreferences = archetype.getSexualPreferences() || {};
 
-    Object.keys(archetypePrefs).forEach(code => {
-      addPreferences(sexualPreferences, code, archetypePrefs[code]);
+    Object.keys(archetypePreferences).forEach(code => {
+      addPreferences(sexualPreferences, code, archetypePreferences[code]);
     });
 
     // TODO: Archetypes with special handling:
@@ -51,27 +60,19 @@ global.SexualPreferencesFactory = (function() {
 
   // Every sexual preference in the archetype will either be a family of sexual preferences or a specific preference.
   function addPreferences(sexualPreferences, code, options) {
-    const topPreferences = ['dominant','sadistic','debaser'];
-    const bottomPreferences = ['submissive','masochistic','humiliation-slut'];
-    const selfRoughPreferences = ['breath-player','gape-queen','prolapse-queen','punching-bag','rope-bunny','size-queen'];
-    const otherRoughPreferences = ['choker','pisser','pugilist','rigger','stretcher'];
-    const humiliatingPreferences = ['cum-dump','enemas','piss-slut','masturbator','sex-toy-lover'];
-    const slutPreferences = ['anal-slut','breast-slut','cervix-slut','cock-slut','oral-slut','pussy-slut','urethra-slut'];
-    const otherPartsPreferences = ['ass-lover','cock-lover','pussy-lover','breast-lover'];
+    addPreferenceFamily(sexualPreferences, (PreferenceFamilies[code] || [code]), options);
 
-    switch(code) {
-      case 'top':         addPreferenceFamily(sexualPreferences, topPreferences, options); break;
-      case 'bottom':      addPreferenceFamily(sexualPreferences, bottomPreferences, options); break;
-      case 'self-rough':  addPreferenceFamily(sexualPreferences, selfRoughPreferences, options); break;
-      case 'other-rough': addPreferenceFamily(sexualPreferences, otherRoughPreferences, options); break;
-      case 'humiliating': addPreferenceFamily(sexualPreferences, humiliatingPreferences, options); break;
-      case 'slut':        addPreferenceFamily(sexualPreferences, slutPreferences, options); break;
-      case 'other-parts': addPreferenceFamily(sexualPreferences, otherPartsPreferences, options); break;
-      default:            addPreferenceFamily(sexualPreferences, [code], options);
+    if (code === 'top') { removePreferenceFamily(sexualPreferences, PreferenceFamilies.bottom); }
+    if (code === 'bottom') { removePreferenceFamily(sexualPreferences, PreferenceFamilies.top); }
+
+    // When a character has a chance of randomly adding preferences for other
+    // body parts we also increase their overall gender attractions.
+    if (code === 'other-parts') {
+      const min = options.strength[0]
+      const max = options.strength[1]
+      if (sexualPreferences.androphilic > 0) { sexualPreferences.androphilic += Random.between(min,max); }
+      if (sexualPreferences.gynophilic > 0) { sexualPreferences.gynophilic += Random.between(min,max); }
     }
-
-    if (code === 'top') { removePreferenceFamily(sexualPreferences, bottomPreferences); }
-    if (code === 'bottom') { removePreferenceFamily(sexualPreferences, topPreferences); }
   }
 
   // When adding preferences for other's parts (cock-lover, etc.) We need to check the character's sexuality.
