@@ -61,7 +61,7 @@ global.CharacterFactory = (function() {
     triggers = [...new Set(triggers)]
 
     // Log start of character creation.
-    Console.log(StringHelper.pack(`Building[${characterId}]: ${actorData.title||''} 
+    Console.log(StringHelper.pack(`Building[${characterId}]: ${actorData.title||''}
       ${actorData.name} ${actorData.surname||''} [${genderCode} ${speciesCode}]`),
       { system:'CharacterFactory', level:1 });
 
@@ -80,6 +80,9 @@ global.CharacterFactory = (function() {
     AttributesFactory.adjustAttributes(attributesData, triggers);
     const healthData = AttributesFactory.rollHealth(attributesData);
     const personalityData = PersonalityFactory.buildPersonality(actorData, triggers);
+    const aspectsData = AspectsFactory.build(triggers, actorData);
+    const sensitivitiesData = SensitivitiesFactory.build(triggers, actorData, breastsData, cockData, pussyData);
+    const skillsData = SkillsFactory.build(triggers);
 
     const sexualPreferences = SexualityFactory.build({
       sexuality: options.sexuality,
@@ -91,16 +94,10 @@ global.CharacterFactory = (function() {
     SexualPreferencesFactory.makeAdjustments(sexualPreferences, {
       actor: actorData,
       personality: personalityData,
-      cock: cockData,
-      pussy: pussyData,
-      breasts: breastsData,
+      sensitivities: sensitivitiesData,
     }, triggers);
 
     // TODO: Run sexual history factory here.
-
-    const aspectsData = AspectsFactory.build(triggers, actorData);
-    const sensitivitiesData = SensitivitiesFactory.build(triggers, actorData, breastsData, cockData, pussyData);
-    const skillsData = SkillsFactory.build(triggers);
 
     BodyFactory.applyTriggers(bodyData, triggers);
     AnusFactory.applyTriggers(anusData, triggers);

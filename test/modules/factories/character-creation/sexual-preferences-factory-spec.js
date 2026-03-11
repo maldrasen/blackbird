@@ -16,7 +16,7 @@ describe("SexualPreferencesFactory", function() {
 
     SexualPreferencesFactory.makeAdjustments(preferences,{
       actor:{ gender:Gender.female, species:'halfling' },
-      pussy:{ weOnlyCareThatTheObjectExists:true },
+      sensitivities:{ pussy:2, cervix:1 },
     },[]);
 
     expect(preferences['size-queen']).to.equal(22);

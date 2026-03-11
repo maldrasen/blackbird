@@ -35,18 +35,67 @@ global.SexualPreferencesFactory = (function() {
   }
 
   function applyArchetypePreferences(sexualPreferences, context) {
-    // TODO: Working on this now.
+    const archetype = Archetype.lookup(context.actor.archetype);
+    const archetypePrefs = archetype.getSexualPreferences() || {};
+
+    Object.keys(archetypePrefs).forEach(code => {
+      addPreferences(sexualPreferences, code, archetypePrefs[code]);
+    });
+
+    // TODO: Archetypes with special handling:
+    // innocent
+    // prude
+    // pervert - Probably best to pick some strange fetishes based on their body and sexuality and work backwards
+    //   adding preferences that would be logical requirements.
+  }
+
+  // Every sexual preference in the archetype will either be a family of sexual preferences or a specific preference.
+  function addPreferences(sexualPreferences, code, options) {
+    const topPreferences = ['dominant','sadistic','debaser'];
+    const bottomPreferences = ['submissive','masochistic','humiliation-slut'];
+    const selfRoughPreferences = ['breath-player','gape-queen','prolapse-queen','punching-bag','rope-bunny','size-queen'];
+    const otherRoughPreferences = ['choker','pisser','pugilist','rigger','stretcher'];
+    const humiliatingPreferences = ['cum-dump','enemas','piss-slut','masturbator','sex-toy-lover'];
+    const slutPreferences = ['anal-slut','breast-slut','cervix-slut','cock-slut','oral-slut','pussy-slut','urethra-slut'];
+    const otherPartsPreferences = ['ass-lover','cock-lover','pussy-lover','breast-lover'];
+
+    switch(code) {
+      case 'top':         addPreferenceFamily(sexualPreferences, topPreferences, options); break;
+      case 'bottom':      addPreferenceFamily(sexualPreferences, bottomPreferences, options); break;
+      case 'self-rough':  addPreferenceFamily(sexualPreferences, selfRoughPreferences, options); break;
+      case 'other-rough': addPreferenceFamily(sexualPreferences, otherRoughPreferences, options); break;
+      case 'humiliating': addPreferenceFamily(sexualPreferences, humiliatingPreferences, options); break;
+      case 'slut':        addPreferenceFamily(sexualPreferences, slutPreferences, options); break;
+      case 'other-parts': addPreferenceFamily(sexualPreferences, otherPartsPreferences, options); break;
+      default:            addPreferenceFamily(sexualPreferences, [code], options);
+    }
+
+    if (code === 'top') { removePreferenceFamily(sexualPreferences, bottomPreferences); }
+    if (code === 'bottom') { removePreferenceFamily(sexualPreferences, topPreferences); }
+  }
+
+  // When adding preferences for other's parts (cock-lover, etc.) We need to check the character's sexuality.
+  function addPreferenceFamily(sexualPreferences, family, options) {
+    console.log("WIP: add from", family, options);
+  }
+
+  function removePreferenceFamily(sexualPreferences, family) {
+    console.log("WIP: remove from", family);
   }
 
   // It's possible that we've added preferences (like cervix-slut) to characters that don't have the matching
-  // requirements (like a cervix). Rather than check every time, we can just remove everything that isn't applicable
-  // at the end.
+  // requirements (like a cervix and the cervix within the sensitivities object). Rather than check every time, we can
+  // just remove everything that isn't applicable at the end.
   function removeIncorrectPreferences(sexualPreferences, context) {
     Object.keys(sexualPreferences).forEach(code => {
       const preference = SexualPreference.lookup(code);
-      if (preference.getRequires() === 'breasts' && context.breasts == null) { delete sexualPreferences[code]; }
-      if (preference.getRequires() === 'cock' && context.cock == null) { delete sexualPreferences[code]; }
-      if (preference.getRequires() === 'pussy' && context.pussy == null) { delete sexualPreferences[code]; }
+      const senses = context.sensitivities;
+
+      if (preference.getRequires() === 'breasts' && senses.breasts == null) { delete sexualPreferences[code]; }
+      if (preference.getRequires() === 'cock' && senses.cock == null) { delete sexualPreferences[code]; }
+      if (preference.getRequires() === 'pussy' && senses.pussy == null) { delete sexualPreferences[code]; }
+      if (preference.getRequires() === 'erogenousCervix' && senses.cervix == null) { delete sexualPreferences[code]; }
+      if (preference.getRequires() === 'erogenousUrethra' && senses.urethra == null) { delete sexualPreferences[code]; }
     });
   }
 

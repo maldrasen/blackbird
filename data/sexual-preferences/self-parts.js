@@ -26,7 +26,7 @@ SexualPreference.register('cervix-slut',{
   name: 'Cervix Slut',
   description: 'A preference for sexual activities using their cervix and womb.',
   sensations: { increase:['cervix'], factor:1.5 },
-  requires: 'pussy',
+  requires: 'erogenousCervix',
 });
 
 // And balls too of course
@@ -55,4 +55,5 @@ SexualPreference.register('urethra-slut',{
   name: 'Urethra Slut',
   description: 'A preference for sexual activities using their urethra.',
   sensations: { increase:['urethra'], factor:1.5 },
+  requires: 'erogenousUrethra',
 });

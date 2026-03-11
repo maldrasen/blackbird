@@ -15,6 +15,7 @@ global.Archetype = (function() {
       getName: () => { return archetype.name; },
       getSexStyle: () => { return archetype.sexStyle; },
       getSexualityRatio: () => { return archetype.sexualityRatio; },
+      getSexualPreferences: () => { return archetype.sexualPreferences||{}; },
     });
   }
 
