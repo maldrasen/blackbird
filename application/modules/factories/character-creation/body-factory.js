@@ -158,7 +158,7 @@ global.BodyFactory = (function() {
 
   function checkDuplicates(triggers, type) {
     if (triggers.filter(trigger => trigger.match(new RegExp(`-${type}$`))).length > 1) {
-      throw `Character rejected. Triggers array contains more than one ${type} trigger.`
+      throw `Character Rejected: Triggers array contains more than one ${type} trigger.`
     }
   }
 

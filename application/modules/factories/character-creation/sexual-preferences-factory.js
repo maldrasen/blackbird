@@ -21,6 +21,13 @@ global.SexualPreferencesFactory = (function() {
     [...triggers].forEach(trigger => {
       const match = trigger.match(/([a-zA-Z-]+)\[(-?\d+)]/);
       if (match) {
+
+        // TODO: Seems like a bad idea to hard code this list when we will be
+        //  adding more species that have their own unique archetypes.
+        if (['kobold','vermen'].includes(context.actor.species)) {
+          throw `Character Rejected: ${trigger} can't be applied to a ${context.actor.species}`;
+        }
+
         sexualPreferences[SexualPreference.lookup(match[1]).getCode()] = parseInt(match[2]) - 10 + Random.roll(20);
         Console.log(`Applied ${trigger}`,{ system:'SexualPreferencesFactory', level:3 });
         ArrayHelper.remove(triggers,trigger);
@@ -34,9 +41,6 @@ global.SexualPreferencesFactory = (function() {
     const speciesPrefs = Species.lookup(context.actor.species).getSexualPreferences() || {};
 
     Object.keys(speciesPrefs).forEach(code => {
-      if (code === 'male-dominated')   { applyDominated(sexualPreferences, context.actor, Gender.male);   }
-      if (code === 'female-dominated') { applyDominated(sexualPreferences, context.actor, Gender.female); }
-      if (code === 'futa-dominated')   { applyDominated(sexualPreferences, context.actor, Gender.futa);   }
       if (speciesPrefs[code].chance && Random.roll(100) < speciesPrefs[code].chance) {
         sexualPreferences[code] = (Random.roll(20)-10) + speciesPrefs[code].strength;
       }
@@ -52,10 +56,18 @@ global.SexualPreferencesFactory = (function() {
     });
 
     // TODO: Archetypes with special handling:
-    // innocent
-    // prude
-    // pervert - Probably best to pick some strange fetishes based on their body and sexuality and work backwards
-    //   adding preferences that would be logical requirements.
+
+    // innocent / prude - Both of these archetypes will remove all positive
+    //   sexual preferences and lower the gender preferences. The difference
+    //   between the two is that prudes can have sexual experience. (first
+    //   kiss, rape victim)
+
+    // pervert - Probably best to pick some strange fetishes based on their
+    //   body and sexuality and work backwards adding preferences that would
+    //   be logical requirements.
+
+    // TODO: Clearly some of these archetypes should also include negative
+    //  preferences. I'll start adding them after the special handling.
   }
 
   // Every sexual preference in the archetype will either be a family of sexual preferences or a specific preference.
@@ -75,13 +87,39 @@ global.SexualPreferencesFactory = (function() {
     }
   }
 
-  // When adding preferences for other's parts (cock-lover, etc.) We need to check the character's sexuality.
   function addPreferenceFamily(sexualPreferences, family, options) {
-    console.log("WIP: add from", family, options);
+    if (options.atLeast && options.atLeast > family.length) {
+      throw `Seems like a bad idea to require more preferences than there are in the family.`
+    }
+
+    family.forEach(code => {
+      const roll = Random.roll(100)
+      if (roll < options.chance) {
+        const min = options.strength[0];
+        const max = options.strength[1];
+
+        // Adding a preference will add to an existing preference.
+        if (sexualPreferences[code] == null) { sexualPreferences[code] = 0; }
+        sexualPreferences[code] = Random.between(min,max);
+        if (sexualPreferences[code] > 100) { sexualPreferences[code] = 100; }
+      }
+    });
+
+    const count = family.filter(code => sexualPreferences[code] > 0).length;
+
+    // Sure, just run this until we have at least the required number of the
+    // preferences from the family. At least will usually be 1 anyway.
+    if (options.atLeast && options.atLeast > count) {
+      addPreferenceFamily(sexualPreferences, family, options);
+    }
   }
 
+  // Delete the preference if it's positive. This will still leave negative
+  // preferences, but that should be okay in this context.
   function removePreferenceFamily(sexualPreferences, family) {
-    console.log("WIP: remove from", family);
+    family.forEach(code => {
+      if (sexualPreferences[code] > 0) { delete sexualPreferences[code]; }
+    })
   }
 
   // It's possible that we've added preferences (like cervix-slut) to characters that don't have the matching
@@ -97,174 +135,21 @@ global.SexualPreferencesFactory = (function() {
       if (preference.getRequires() === 'pussy' && senses.pussy == null) { delete sexualPreferences[code]; }
       if (preference.getRequires() === 'erogenousCervix' && senses.cervix == null) { delete sexualPreferences[code]; }
       if (preference.getRequires() === 'erogenousUrethra' && senses.urethra == null) { delete sexualPreferences[code]; }
-    });
-  }
 
-  // When applying these sexual preferences, we roll against each preference,
-  // which should give most characters several of these preferences.
-  function applyDominated(preferences, actor, dominantGender) {
-    const domRequires = ['dominant','sadistic','debaser'];
-    const subRequires = ['submissive','masochistic','humiliation-slut'];
-    const domPrefs = {
-      'dominant':50,
-      'sadistic':40,
-      'debaser':40,
-      'rigger': 30,
-      'choker': 20,
-      'pisser': 20,
-      'pugilist': 20
-    };
-    const subPrefs = {
-      'submissive':50,
-      'masochistic':40,
-      'humiliation-slut':40,
-      'rope-bunny': 30,
-      'breath-player': 20,
-      'piss-slut': 20,
-      'punching-bag': 20
-    };
-
-    if (actor.gender === dominantGender) {
-      Object.keys(domPrefs).forEach(key => {
-        if (Random.roll(100) < domPrefs[key]) {
-          preferences[key] = (preferences[key]||0) + Random.between(10,30);
-        }
-      });
-      return alsoInclude(preferences, domRequires);
-    }
-
-    // In a male or female dominated society the non-binary and futanari are a
-    // little less likely to be as submissive as the males or females.
-    if ([Gender.futa, Gender.enby].includes(actor.gender)) {
-      Object.keys(subPrefs).forEach(key => {
-        if (Random.roll(100) < (subPrefs[key]/1.5)) {
-          preferences[key] = (preferences[key]||0) + Random.between(10,20);
-        }
-      });
-      return alsoInclude(preferences, subRequires);
-    }
-
-    Object.keys(subPrefs).forEach(key => {
-      if (Random.roll(100) < subPrefs[key]) {
-        preferences[key] = (preferences[key]||0) + Random.between(10,30);
+      // If you don't like men, you don't love cocks, cum and getting pregnant.
+      if (sexualPreferences.androphilic < 0) {
+        if (code === 'cock-lover') { delete sexualPreferences[code]; }
+        if (code === 'cum-dump') { delete sexualPreferences[code]; }
+        if (code === 'breeder') { delete sexualPreferences[code]; }
       }
-    });
-    alsoInclude(preferences, subRequires);
-  }
-
-  // We need to make sure that at least one of these preferences is included.
-  function alsoInclude(preferences, requires) {
-    if (Object.keys(ObjectHelper.filter(preferences, requires)).length === 0) {
-      preferences[Random.from(requires)] = Random.between(10,30);
-    }
-  }
-
-
-
-
-
-
-
-
-
-
-  /*
-
-Consider moving these?
-
-  // The slut trigger is fairly common. Rather than specifying anything specific it randomly adds 2 - 8 sexual
-  // preferences. More common preferences will be picked more frequently. The function also increases the strength of
-  // the androphile and gynophile preferences when they are already positive.
-  function applySlut(preferences, options) {
-    let count = Random.between(2,8);
-
-    if (preferences.gynophilic > 0) {
-      preferences.gynophilic += Random.roll(20); }
-    if (preferences.androphilic > 0) {
-      preferences.androphilic += Random.roll(20); }
-
-    const sluttyPreferences =  {
-      'sensitive': 30,
-      'exhibitionist': 30,
-      'masturbator': 30,
-      'perverted': 20,
-      'sex-toy-lover': 20,
-      'ass-lover': 15,
-      'anal-slut': 10,
-      'oral-slut': 10,
-      'beast-lover': 10,
-      'submissive': 10,
-      'masochistic': 10,
-      'affection-slut': 10,
-      'humiliation-slut': 10,
-      'rope-bunny': 5,
-    };
-
-    if (options.breasts) {
-      sluttyPreferences['breast-slut'] = 20;
-    }
-    if (options.pussy) {
-      sluttyPreferences['pussy-slut'] = 30;
-      sluttyPreferences['breeder'] = 10;
-    }
-    if (options.cock) {
-      sluttyPreferences['cock-slut'] = 30;
-    }
-    if (preferences.androphilic > 0) {
-      sluttyPreferences['cock-lover'] = 15;
-      sluttyPreferences['cum-dump'] = 10;
-    }
-    if (preferences.gynophilic > 0) {
-      sluttyPreferences['breast-lover'] = 15;
-      sluttyPreferences['pussy-lover'] = 15;
-    }
-
-    while (count > 0) {
-      const key = Random.fromFrequencyMap(sluttyPreferences);
-      const strength = Random.between(10,40);
-
-      if (preferences['affection-slut'] > 0 && key === 'humiliation-slut') { continue; }
-      if (preferences['humiliation-slut'] > 0 && key === 'affection-slut') { continue; }
-
-      if (preferences[key]) {
-        const adjust = Math.floor(strength/2);
-        Console.log(`Bimbo/Slut adds ${adjust} to ${key}[${preferences[key]}]`,{ system:'SexualPreferenceFactory', level:3 });
-        preferences[key] += adjust;
-        count -= 1;
-      }
-      else if (preferences[key] == null) {
-        Console.log(`Bimbo/Slut adds ${key}[${strength}]`,{ system:'SexualPreferenceFactory', level:3 });
-        preferences[key] = strength;
-        count -= 1;
-      }
-    }
-  }
-
-  // The applyVirgin() function does the opposite of applySlut() by removing what positive sexual preferences it can
-  // and lowering the positive gender sexualities by half.
-  //
-  // TODO: Eventually we might have systems that track other virgin properties, first kiss, hymen intact, all that
-  //       shit. Right now none of that exists, so applyVirgin() is really more of an "applyChaste()" but this will
-  //       need to be updated if we ever do any of that.
-  //
-  function applyVirgin(preferences) {
-    const retained = ['gynophilic','androphilic'];
-
-    if (preferences.gynophilic > 0) {
-      preferences.gynophilic = Math.ceil(preferences.gynophilic/2); }
-    if (preferences.androphilic > 0) {
-      preferences.androphilic = Math.ceil(preferences.androphilic/2); }
-
-    Object.keys(preferences).forEach(key => {
-      if (retained.includes(key) === false && preferences[key] > 0) {
-        Console.log(`Virgin removes ${key}`,{ system:'SexualPreferenceFactory', level:3 });
-        delete preferences[key];
+      // If you don't like women, you don't love tits, pussies, and getting women pregnant.
+      if (sexualPreferences.gynophilic < 0) {
+        if (code === 'breast-lover') { delete sexualPreferences[code]; }
+        if (code === 'pussy-lover') { delete sexualPreferences[code]; }
+        if (code === 'stud') { delete sexualPreferences[code]; }
       }
     });
   }
-
-  */
-
 
   return Object.freeze({ makeAdjustments });
 

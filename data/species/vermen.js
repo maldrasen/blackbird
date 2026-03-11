@@ -30,13 +30,6 @@ Species.register('vermen', {
     cervix:   { Z:5,   F:30,  D:20, C:5,   B:2,  A:1  },
   },
 
-  sexualPreferences: {
-    'male-dominated': { strength:50 },
-    'perverted':{ chance:90, strength:40 },
-    'beast-lover':{ chance:90, strength:20 },
-    'orgy-lover':{ chance:60, strength:30 },
-  },
-
   body: {
     averageHeight: 800,
     skinType: 'fur',
