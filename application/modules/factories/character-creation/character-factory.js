@@ -17,7 +17,12 @@ global.CharacterFactory = (function() {
   //   triggers: Detailed in the documentation
   //   sexuality: (straight, gay, bi, ace)
   //
+  // Note: If you specify the gender I'm also requiring the species to be set. By specifying the gender first you
+  // bypass selecting gender based on the species ratio, so you get far too many male sylphs for instance.
   function build(options={}) {
+    if (options.gender && options.species == null) {
+      throw `If you specify a gender, you should also specify a species.`; }
+
     for (let attempts=0; attempts<10; attempts++) {
       let characterId = Registry.createEntity();
       try {
@@ -45,6 +50,8 @@ global.CharacterFactory = (function() {
     const species = Species.lookup(speciesCode);
     const genderCode = options.gender || Random.fromFrequencyMap(species.getGenderRatio());
     const biologicalSex = getBiologicalSex(species,genderCode);
+
+    assertGenderInSpecies(genderCode, species);
 
     const actorData = { gender:genderCode, species:speciesCode };
     const attributesData = AttributesFactory.rollAttributes(biologicalSex, speciesCode);
@@ -150,6 +157,13 @@ global.CharacterFactory = (function() {
     }});
 
     return characterId;
+  }
+
+  function assertGenderInSpecies(gender, species) {
+    const genderMap = species.getGenderRatio();
+    if (genderMap[gender] == null || genderMap[gender] < 1) {
+      throw `Character Rejected: ${species.getName()} cannot be ${gender}`;
+    }
   }
 
   function buildNames(options, actorData, triggers) {
