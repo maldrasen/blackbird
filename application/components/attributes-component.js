@@ -55,7 +55,7 @@ global.AttributesComponent = (function() {
     //   Max stamina should be 10,000. Max vitality is 100, which is 100 stamina per point.
     // The formula below approximates that curve.
     function getMaxStamina() {
-      return -146738.78 / (attributes.vitality + 12.674) + 11302.33
+      return Math.floor(-146738.78 / (attributes.vitality + 12.674) + 11302.33);
     }
 
     return Object.freeze({

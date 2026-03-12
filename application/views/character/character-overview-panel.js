@@ -159,8 +159,8 @@ global.CharacterOverviewPanel = (function() {
   }
 
   function getStaminaBar(id) {
-    const current = Math.round(HealthComponent.lookup(id).currentStamina);
-    const max = Math.round(AttributesComponent.createWrapper({ id:id }).getMaxStamina());
+    const current = HealthComponent.lookup(id).currentStamina;
+    const max = AttributesComponent.createWrapper({ id:id }).getMaxStamina();
 
     return BarDisplay({
       label: 'Stamina',

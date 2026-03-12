@@ -190,9 +190,6 @@ global.TrainingController = (function() {
     playerHealth.currentStamina -= action.getPlayerStamina();
     partnerHealth.currentStamina -= action.getPartnerStamina();
 
-    if (playerHealth.currentStamina < 0) { playerHealth.currentStamina = 0; }
-    if (partnerHealth.currentStamina < 0) { partnerHealth.currentStamina = 0; }
-
     HealthComponent.update($player, playerHealth);
     HealthComponent.update($partner, partnerHealth);
   }

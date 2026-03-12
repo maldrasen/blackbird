@@ -118,6 +118,10 @@ describe('Registry', function() {
       ManaComponent.create(five,{});
       ManaComponent.create(six,{});
 
+      AttributesComponent.create(two, { strength:10, dexterity:10, vitality:10, intelligence:10, beauty:10 });
+      AttributesComponent.create(four, { strength:10, dexterity:10, vitality:10, intelligence:10, beauty:10 });
+      AttributesComponent.create(six, { strength:10, dexterity:10, vitality:10, intelligence:10, beauty:10 });
+
       HealthComponent.create(two, { currentStamina:1000, currentHealth:100, maxHealth:100 });
       HealthComponent.create(four,{ currentStamina:1000, currentHealth:100, maxHealth:100 });
       HealthComponent.create(six, { currentStamina:1000, currentHealth:100, maxHealth:100 });
