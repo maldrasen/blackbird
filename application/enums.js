@@ -95,6 +95,7 @@ global.ComponentType = Object.freeze({
   personality: 'PersonalityComponent',
   pussy: 'PussyComponent',
   sensitivities: 'SensitivitiesComponent',
+  sexualHistory: 'SexualHistoryComponent',
   sexualPreferences: 'SexualPreferencesComponent',
   situated: 'SituatedComponent',
   skills: 'SkillsComponent',

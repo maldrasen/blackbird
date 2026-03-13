@@ -26,6 +26,7 @@
     "application/components/personality-component.js",
     "application/components/pussy-component.js",
     "application/components/sensitivities-component.js",
+    "application/components/sexual-history-component.js",
     "application/components/sexual-preferences-component.js",
     "application/components/situated-component.js",
     "application/components/skills-component.js",
