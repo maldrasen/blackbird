@@ -32,9 +32,9 @@ global.ConsentResult = (characterId, targetId=null) => {
 
   function applyBaseFactor(factor) {
     const feelings = FeelingsComponent.findByTarget($characterId, $targetId);
-    const affectionBase = ComponentMath.emotionBaseValue(feelings.affection);
-    const fearBase = ComponentMath.emotionBaseValue(feelings.fear);
-    const respectBase = ComponentMath.emotionBaseValue(feelings.respect);
+    const affectionBase = CharacterMath.emotionBaseValue(feelings.affection);
+    const fearBase = CharacterMath.emotionBaseValue(feelings.fear);
+    const respectBase = CharacterMath.emotionBaseValue(feelings.respect);
 
     let baseValue;
 
@@ -101,24 +101,24 @@ global.ConsentResult = (characterId, targetId=null) => {
     let femaleFactor = 1;
 
     if (gender === Gender.male) {
-      maleFactor = ComponentMath.personalityFactorValue(preferences['androphilic']);
+      maleFactor = CharacterMath.personalityFactorValue(preferences['androphilic']);
     }
     if (gender === Gender.female) {
-      femaleFactor = ComponentMath.personalityFactorValue(preferences['gynophilic']);
+      femaleFactor = CharacterMath.personalityFactorValue(preferences['gynophilic']);
     }
     if (gender === Gender.futa) {
-      maleFactor = ComponentMath.personalityFactorValue(preferences['androphilic']);
-      femaleFactor = ComponentMath.personalityFactorValue(preferences['gynophilic']);
+      maleFactor = CharacterMath.personalityFactorValue(preferences['androphilic']);
+      femaleFactor = CharacterMath.personalityFactorValue(preferences['gynophilic']);
     }
     if (gender === Gender.enby) {
-      maleFactor = ComponentMath.applyFactorScale(
-        ComponentMath.personalityFactorValue(preferences['androphilic']),1.5);
-      femaleFactor = ComponentMath.applyFactorScale(
-        ComponentMath.personalityFactorValue(preferences['gynophilic']),1.5);
+      maleFactor = CharacterMath.applyFactorScale(
+        CharacterMath.personalityFactorValue(preferences['androphilic']),1.5);
+      femaleFactor = CharacterMath.applyFactorScale(
+        CharacterMath.personalityFactorValue(preferences['gynophilic']),1.5);
     }
 
-    maleFactor = ComponentMath.applyFactorScale(maleFactor, factor.scale || 2);
-    femaleFactor = ComponentMath.applyFactorScale(femaleFactor, factor.scale || 2);
+    maleFactor = CharacterMath.applyFactorScale(maleFactor, factor.scale || 2);
+    femaleFactor = CharacterMath.applyFactorScale(femaleFactor, factor.scale || 2);
 
     $consentValue = $consentValue * (maleFactor * femaleFactor);
     $response.multiplicative.push({
@@ -133,9 +133,9 @@ global.ConsentResult = (characterId, targetId=null) => {
 
     const preferenceValue = factor.conflicting ? -1 * preferences[factor.code] : preferences[factor.code]
 
-    let factorValue = ComponentMath.personalityFactorValue(preferenceValue);
+    let factorValue = CharacterMath.personalityFactorValue(preferenceValue);
     if (factor.scale) {
-      factorValue = ComponentMath.applyFactorScale(factorValue, factor.scale);
+      factorValue = CharacterMath.applyFactorScale(factorValue, factor.scale);
     }
 
     $consentValue = $consentValue * factorValue;

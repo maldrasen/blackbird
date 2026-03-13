@@ -1,4 +1,4 @@
-global.ComponentMath = (function() {
+global.CharacterMath = (function() {
 
   // Function that takes the values from the Feelings or Control components and maps them onto a range of values that
   // can be used in the consent or sensation calculations. These values are measured on a scale from -1000 to 1000,

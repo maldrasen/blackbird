@@ -503,7 +503,7 @@ global.SensationResult = function(code, context) {
     }
 
     if (alignment.submission > 0) {
-      const submissiveFactor = ComponentMath.personalityFactorValue(preferences.submissive);
+      const submissiveFactor = CharacterMath.personalityFactorValue(preferences.submissive);
       const check = SkillCheck(player, 'domination');
 
       skillsUsed.player.add('domination');
@@ -514,7 +514,7 @@ global.SensationResult = function(code, context) {
     }
 
     if (alignment.masochism > 0) {
-      const masochismFactor = ComponentMath.personalityFactorValue(preferences.masochistic);
+      const masochismFactor = CharacterMath.personalityFactorValue(preferences.masochistic);
       const check = SkillCheck(player, 'sadism');
 
       skillsUsed.player.add('sadism');
@@ -525,7 +525,7 @@ global.SensationResult = function(code, context) {
     }
 
     if (alignment.shame > 0) {
-      const shameFactor = ComponentMath.personalityFactorValue(preferences['humiliation-slut']);
+      const shameFactor = CharacterMath.personalityFactorValue(preferences['humiliation-slut']);
       const check = SkillCheck(player, 'degradation');
 
       skillsUsed.player.add('degradation');
@@ -624,9 +624,9 @@ global.SensationResult = function(code, context) {
 
     const preferenceValue = factor.conflicting ? -1 * preferences[factor.code] : preferences[factor.code]
 
-    let factorValue = ComponentMath.personalityFactorValue(preferenceValue) * (sensations.factor || 1);
+    let factorValue = CharacterMath.personalityFactorValue(preferenceValue) * (sensations.factor || 1);
     if (factor.scale) {
-      factorValue = ComponentMath.applyFactorScale(factorValue, factor.scale);
+      factorValue = CharacterMath.applyFactorScale(factorValue, factor.scale);
     }
 
     (sensations.increase || []).forEach(code => {

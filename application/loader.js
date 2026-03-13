@@ -156,8 +156,8 @@ window.Loader = (function() {
     },startScroll);
   }
 
-  return {
+  return Object.freeze({
     startLoading,
-  }
+  });
 
 })();

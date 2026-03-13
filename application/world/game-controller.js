@@ -24,10 +24,10 @@ global.GameController = (function() {
     MainContent.hideCover({ fadeTime:2500 });
   }
 
-  return {
+  return Object.freeze({
     startNewGame,
     loadLastGame,
     openGame,
-  };
+  });
 
 })();

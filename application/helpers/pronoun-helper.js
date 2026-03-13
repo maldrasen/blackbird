@@ -1,4 +1,4 @@
-global.Pronouns = (function() {
+global.PronounHelper = (function() {
 
   function he(gender) {
     if (gender === Gender.male) { return 'he'; }

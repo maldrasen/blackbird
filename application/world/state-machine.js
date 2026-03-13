@@ -68,8 +68,7 @@ global.StateMachine = (function() {
     }
   }
 
-
-  return {
+  return Object.freeze({
     clearDeltaTime: () => { $deltaTime = null; },
     getDeltaTime: () => { return $deltaTime; },
     setDeltaTime,
@@ -80,7 +79,7 @@ global.StateMachine = (function() {
     returnToPreviousMode,
     handleCommand,
     render,
-  };
+  });
 
 })();
 

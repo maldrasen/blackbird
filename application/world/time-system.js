@@ -21,8 +21,8 @@ global.TimeSystem = (function() {
     StateMachine.clearDeltaTime();
   }
 
-  return {
+  return Object.freeze({
     run
-  }
+  });
 
 })();
