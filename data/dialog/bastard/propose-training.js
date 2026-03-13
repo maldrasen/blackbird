@@ -9,11 +9,11 @@ Dialog.register(ArchetypeCode.bastard, DialogKeys.proposeTraining_Eager, context
 
   if (partner.isEquipped(EquipmentSlot.legs) && partner.cockIsAtLeast('big')) {
     options.push(`{T:name} grabs your wrist roughly and presses your palm against his 
-      thick bulge. "You want to train this? Ha! Bend over then {P:insultingName}."`)
+      thick bulge. "You want to train this? Ha! Bend over then {P:meanName}."`)
 
     if (partner.isTallerThan(context.P)) {
       options.push(`{T:name} smirks down at you, one hand lazily tightening around the thick bulge in his
-        {T:equipped.pants}. "Heh, Fine... train me. But don't think for a second I'll make this easy on you."`);
+        {T:equipped.legs}. "Heh, Fine... train me. But don't think for a second I'll make this easy on you."`);
     }
   }
 
@@ -21,7 +21,7 @@ Dialog.register(ArchetypeCode.bastard, DialogKeys.proposeTraining_Eager, context
     options.push(`{T:name} steps in close, letting you feel the heat radiating off 
       of his broad frame. "Yeah, go ahead and try to break me. I could use the laugh."`)
     options.push(`{T:name} chuckles low, rolling his shoulders so his muscles 
-      flex under his shirt. "Alright, {P:insultingName}. Train away."`)
+      flex under his shirt. "Alright, {P:meanName}. Train away."`)
   }
 
   options.push(`{T:name} leans against the wall with his arms crossed, his cocky grin 
@@ -59,7 +59,7 @@ Dialog.register(ArchetypeCode.bastard, DialogKeys.proposeTraining_Reluctant, con
   }
 
   options.push(`{T:name} snorts, crossing his arms over his chest. 
-    "Yeah? All right {P:insultingName}, let's see what you got."`)
+    "Yeah? All right {P:meanName}, let's see what you got."`)
   options.push(`{T:name} shifts his weight, his jaw tight. "This is beneath me... 
     but whatever. Just keep your voice down when I start pounding you."`)
 
@@ -76,7 +76,7 @@ Dialog.register(ArchetypeCode.bastard, DialogKeys.proposeTraining_Unwilling, con
   }
   if (partner.isTallerThan(context.P)) {
     options.push(`{T:name} laughs, stepping closer so his full height towers
-      over you. "You? Train me? Heh, cute. Fuck off {P:insultingName}."`)
+      over you. "You? Train me? Heh, cute. Fuck off {P:meanName}."`)
   }
 
   options.push(`{T:name} turns away from you, dismissing you with a wave. "I'm not 

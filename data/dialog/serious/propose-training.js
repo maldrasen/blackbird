@@ -29,16 +29,16 @@ Dialog.register(ArchetypeCode.serious, DialogKeys.proposeTraining_Willing, conte
   ];
 
   if (partner.cockIsAtLeast('big') && partner.isEquipped(EquipmentSlot.legs)) {
-    options.push(`{T:name} straightens, the outline of {T:his} {T:cock.large} cock straining against {T:his} 
+    options.push(`{T:name} straightens, the outline of {T:his} {T:cock.bigCock} straining against {T:his} 
       {T:equipped.legs}. "Understood. I'm prepared for whatever comes next."`);
   }
   if (partner.breastsAreAtLeast('big') && partner.isEquipped(EquipmentSlot.chest)) {
-    options.push(`{T:name} straightens, the outline of {T:his} {T:breasts.bigFirmBreasts} straining against {T:his} 
+    options.push(`{T:name} straightens, the outline of {T:his} {T:breasts.bigSoftBreasts} straining against {T:his} 
       {T:equipped.chest}. "Understood. I'm prepared for whatever comes next."`);
   }
 
   if (partner.isEquipped(EquipmentSlot.chest)) {
-    options.push(`{T:name} nods and begins to pull off {T:his} {T.equipped.chest}. 
+    options.push(`{T:name} nods and begins to pull off {T:his} {T:equipped.chest}. 
       {unequip(T,chest)} "Alright, let's get going then."`);
   }
 

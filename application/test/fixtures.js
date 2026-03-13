@@ -14,7 +14,7 @@ global.Fixtures = (function() {
 
   // The training fixture actually puts the game into the location mode, with characters available to be trained.
   function setupTraining() {
-    buildRandomCharacters(buildRandomPlayer(), 10, { triggers:[] });
+    buildRandomCharacters(buildRandomPlayer(), 10, { gender:'female',species:'sylph',triggers:['~bimbo'] });
 
     StateMachine.setMode(GameMode.location);
     StateMachine.render();

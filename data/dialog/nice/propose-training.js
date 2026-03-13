@@ -45,7 +45,7 @@ Dialog.register(ArchetypeCode.reserved, DialogKeys.proposeTraining_Reluctant, co
   }
 
   if (partner.isEquipped(EquipmentSlot.legs) && partner.cockIsAtLeast('big')) {
-    options.push(`{T:name} shifts uncomfortably, the heavy outline of his {T:cock.thick} cock 
+    options.push(`{T:name} shifts uncomfortably, the heavy outline of his {T:cock.big} cock 
       stirring faintly against his thigh. "Okay, we can give it a try, if that's what you want."`);
   }
 
