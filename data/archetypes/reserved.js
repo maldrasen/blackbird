@@ -1,6 +1,8 @@
 Archetype.register(ArchetypeCode.reserved, {
   name: 'Reserved',
 
+  outfitStyles: [OutfitStyle.sensible],
+  denialStyle: DenialStyle.horny,
   sexStyle: SexStyle.submissive,
   sexualityRatio: { straight:40, gay:20, bi:20, ace:30 },
 

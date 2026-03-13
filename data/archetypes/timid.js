@@ -1,6 +1,8 @@
 Archetype.register(ArchetypeCode.timid, {
   name: 'Timid',
 
+  outfitStyles: [OutfitStyle.sensible],
+  denialStyle: DenialStyle.frightened,
   sexStyle: SexStyle.bashful,
   sexualityRatio: { straight:40, gay:30, bi:30, ace:20 },
   sexualPreferences:{

@@ -2,6 +2,8 @@ Archetype.register(ArchetypeCode.koboldDom, {
   name: 'Dominant Kobold',
   requires: 'species.kobold',
 
+  outfitStyles: [OutfitStyle.barbaric],
+  denialStyle: DenialStyle.violent,
   sexStyle: SexStyle.rough,
   sexualityRatio: { straight:80, gay:10, bi:10 },
   sexualPreferences: {

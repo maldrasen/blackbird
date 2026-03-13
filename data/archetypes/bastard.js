@@ -2,6 +2,8 @@ Archetype.register(ArchetypeCode.bastard, {
   name: 'Bastard',
   requires: 'gender.male',
 
+  outfitStyles: [OutfitStyle.sensible],
+  denialStyle: DenialStyle.violent,
   sexStyle: SexStyle.rough,
   sexualityRatio: { straight:80, gay:10, bi:10 },
   sexualPreferences: {

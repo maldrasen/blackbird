@@ -1,6 +1,8 @@
 Archetype.register(ArchetypeCode.flowerChild, {
   name: 'Flower Child',
 
+  outfitStyles: [OutfitStyle.natural],
+  denialStyle: DenialStyle.frightened,
   sexStyle: SexStyle.gentle,
   sexualityRatio: { straight:10, gay:10, bi:80 },
   sexualPreferences: {

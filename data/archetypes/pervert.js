@@ -1,6 +1,8 @@
 Archetype.register(ArchetypeCode.pervert, {
   name: 'Pervert',
 
+  outfitStyles: [OutfitStyle.flirty, OutfitStyle.slutty],
+  denialStyle: DenialStyle.angry,
   sexStyle: SexStyle.shameless,
   sexualityRatio: { straight:10, gay:10, bi:100 },
 

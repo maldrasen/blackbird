@@ -2,6 +2,8 @@ Archetype.register(ArchetypeCode.bimbo, {
   name: 'Bimbo',
   requires: 'gender.not-male',
 
+  outfitStyles: [OutfitStyle.flirty, OutfitStyle.slutty],
+  denialStyle: DenialStyle.frightened,
   sexStyle: SexStyle.shameless,
   sexualityRatio: { straight:25, bi:75 },
   sexualPreferences: {

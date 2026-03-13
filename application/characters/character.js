@@ -90,6 +90,13 @@ global.Character = function(id) {
   //   Sexual Preferences
   // ======================
 
+  // Only useful for testing positive preferences. We would need a separate function to check if they have one of the
+  // anti-preferences and at what strength.
+  function hasSexualPreference(code, threshold) {
+    const value = SexualPreferencesComponent.lookup(id)[code];
+    return (value != null) ? value > threshold : false;
+  }
+
   function isGay() {
     const preferences = SexualPreferencesComponent.lookup(id);
     if (isMale()) { return preferences.gynophilic <= 10 && preferences.androphilic >= 10; }
@@ -115,6 +122,10 @@ global.Character = function(id) {
     return result.getConsent() >= minimumLevel;
   }
 
+  function hasDoneAction(code) {
+    return SexualHistoryComponent.lookup(id).actions[code] > 0;
+  }
+
   // =============
   //   Equipment
   // =============
@@ -125,6 +136,31 @@ global.Character = function(id) {
   }
 
   function isEquipped(slot) { return EquipmentComponent.lookup(id)[slot] != null; }
+
+  // A general can we see their cock, pussy, or ass function.
+  function isExposedCrotch() {
+    const equipment = EquipmentComponent.lookup(id)
+    const legs = equipment[EquipmentSlot.legs];
+    const underlegs = equipment[EquipmentSlot.underlegs];
+
+    let exposed = true;
+    if (legs && Item(legs).isLewd() === false) { exposed = false; }
+    if (underlegs && Item(underlegs).isLewd() === false) { exposed = false; }
+
+    return exposed
+  }
+
+  function isExposedNipple() {
+    const equipment = EquipmentComponent.lookup(id)
+    const chest = equipment[EquipmentSlot.chest];
+    const underchest = equipment[EquipmentSlot.underchest];
+
+    let exposed = true;
+    if (chest && Item(chest).isLewd() === false) { exposed = false; }
+    if (underchest && Item(underchest).isLewd() === false) { exposed = false; }
+
+    return exposed
+  }
 
   // ===============
   //   Orgasm Data
@@ -194,13 +230,17 @@ global.Character = function(id) {
     cockIsAtLeast,
 
     // Sexual Preferences
+    hasSexualPreference,
     isStraight,
     isGay,
     wouldConsentTo,
+    hasDoneAction,
 
     // Equipment
     isNaked,
     isEquipped,
+    isExposedNipple,
+    isExposedCrotch,
 
     // Orgasm Data
     getOrgasmThreshold,

@@ -19,6 +19,10 @@ global.Validate = (function() {
     if (value == null) { throw message ? message : `Validate.exists Failed: ${name} is null.` }
   }
 
+  function trueOrNull(name, value, message=null) {
+    if (value != null || value !== true) { throw message ? message : `Validate.trueOrNull Failed: ${name} is ${value}`; }
+  }
+
   function equals(name, value, equalTo, message=null) {
     if (value !== equalTo) { throw message ? message : `Validate.equals Failed: ${name} doesn't equal ${equalTo}` }
   }
@@ -40,6 +44,7 @@ global.Validate = (function() {
     atLeast,
     isIn,
     exists,
+    trueOrNull,
     equals,
     singleKeyFrom
   });

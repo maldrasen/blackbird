@@ -2,6 +2,8 @@ Archetype.register(ArchetypeCode.koboldSub, {
   name: 'Submissive Kobold',
   requires: 'species.kobold',
 
+  outfitStyles: [OutfitStyle.barbaric],
+  denialStyle: DenialStyle.horny,
   sexStyle: SexStyle.submissive,
   sexualityRatio: { straight:60, gay:20, bi:40, ace:10 },
   sexualPreferences: {

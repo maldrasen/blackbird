@@ -2,6 +2,7 @@ global.ItemComponent = (function() {
   const $properties = [
     'name',
     'slots',
+    'isLewd',
   ];
 
   function create(data) {
@@ -33,6 +34,7 @@ global.ItemComponent = (function() {
       }
     });
 
+    Validate.trueOrNull('Item.isLewd',itemComponent.isLewd);
     Validate.exists(`Item.name`,itemComponent.name);
   }
 

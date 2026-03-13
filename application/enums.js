@@ -212,6 +212,13 @@ global.Consent = Object.freeze({
   unwilling: 0,
 });
 
+global.DenialStyle = Object.freeze({
+  angry: 'angry',
+  frightened: 'frightened',
+  horny: 'horny',
+  violent: 'violent',
+});
+
 // Currently the same as the consent values, but there should be more nuance.
 global.TrainingAttitude = Object.freeze({
   eager: 'eager',
@@ -234,10 +241,20 @@ global.ActionDirection = Object.freeze({
 //   Items & Equipment
 // =====================
 
+global.OutfitStyle = Object.freeze({
+  barbaric: 'barbaric',
+  flirty: 'flirty',
+  natural: 'natural',
+  sensible: 'sensible',
+  slutty: 'slutty',
+});
+
 global.EquipmentSlot = Object.freeze({
   chest: 'chest',
   feet: 'feet',
   hands: 'hands',
   head: 'head',
   legs: 'legs',
+  underchest: 'underchest',
+  underlegs: 'underlegs',
 });

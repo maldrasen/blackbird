@@ -2,6 +2,8 @@ Archetype.register(ArchetypeCode.sweet, {
   name: 'Sweet',
   requires: 'gender.not-male',
 
+  outfitStyles: [OutfitStyle.flirty, OutfitStyle.sensible],
+  denialStyle: DenialStyle.frightened,
   sexStyle: SexStyle.gentle,
   sexualityRatio: { straight:40, gay:20, bi:30, ace:5 },
   sexualPreferences:{

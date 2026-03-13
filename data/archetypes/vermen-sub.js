@@ -2,6 +2,8 @@ Archetype.register(ArchetypeCode.vermenSub, {
   name: 'Submissive Vermen',
   requires: 'species.vermen',
 
+  outfitStyles: [OutfitStyle.barbaric],
+  denialStyle: DenialStyle.horny,
   sexStyle: SexStyle.submissive,
   sexualityRatio: { straight:80, gay:20, bi:40 },
   sexualPreferences: {

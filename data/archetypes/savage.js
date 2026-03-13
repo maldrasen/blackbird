@@ -1,6 +1,8 @@
 Archetype.register(ArchetypeCode.savage, {
   name: 'Savage',
 
+  outfitStyles: [OutfitStyle.natural, OutfitStyle.barbaric],
+  denialStyle: DenialStyle.violent,
   sexStyle: SexStyle.rough,
   sexualityRatio: { straight:40, gay:20, bi:30 },
   sexualPreferences: {
