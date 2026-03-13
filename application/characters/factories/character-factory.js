@@ -104,7 +104,11 @@ global.CharacterFactory = (function() {
       sensitivities: sensitivitiesData,
     }, triggers);
 
-    // TODO: Run sexual history factory here.
+    const sexualHistoryData = SexualHistoryFactory.build({
+      personality: personalityData,
+      sensitivities: sensitivitiesData,
+      sexualPreferences: sexualPreferences,
+    });
 
     BodyFactory.applyTriggers(bodyData, triggers);
     AnusFactory.applyTriggers(anusData, triggers);
@@ -134,6 +138,7 @@ global.CharacterFactory = (function() {
     SkillsComponent.create(characterId, skillsData);
     SensitivitiesComponent.create(characterId, sensitivitiesData);
     SexualPreferencesComponent.create(characterId, sexualPreferences);
+    SexualHistoryComponent.create(characterId, sexualHistoryData);
     AspectsComponent.create(characterId, aspectsData);
     EquipmentComponent.create(characterId);
     InventoryComponent.create(characterId);
@@ -153,6 +158,7 @@ global.CharacterFactory = (function() {
       pussy: pussyData,
       sensitivitiesData: sensitivitiesData,
       sexualPreferences: sexualPreferences,
+      sexualHistory: sexualHistoryData,
       aspects: aspectsData,
     }});
 

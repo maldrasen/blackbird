@@ -141,6 +141,14 @@ global.AspectType = Object.freeze({
   productive: 'productive', // Increases cum and milk volumes.
 });
 
+global.VirginityType = Object.freeze({
+  kiss: 'kiss',
+  oral: 'oral',
+  pussy: 'pussy',
+  cock: 'cock',
+  anal: 'anal',
+});
+
 // === Personality ===
 
 global.ArchetypeCode = {
