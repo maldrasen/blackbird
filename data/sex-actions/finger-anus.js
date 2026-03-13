@@ -15,7 +15,6 @@ SexAction.register('finger-anus',{
     { type:'base', baseClass: SexAction.BaseClass.touching },
     { type:'arousal' },
     { type:'gender', scale:1.5 },
-    { type:'preference', code:'sensitive', scale:1.5 },
     { type:'preference', code:'anal-slut' },
   ],
 

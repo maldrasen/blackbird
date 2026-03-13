@@ -17,7 +17,6 @@ SexAction.register('suck-cock',{
     { type:'base', baseClass: SexAction.BaseClass.reverseService },
     { type:'arousal', strength:3 },
     { type:'gender', scale:1.5 },
-    { type:'preference', code:'sensitive' },
     { type:'preference', code:'cock-slut' },
     { type:'preference', code:'dominant' },
   ],

@@ -17,7 +17,6 @@ SexAction.register('suck-nipples',{
     { type:'base', baseClass: SexAction.BaseClass.reverseService },
     { type:'arousal' },
     { type:'gender', scale:1.5 },
-    { type:'preference', code:'sensitive' },
     { type:'preference', code:'breast-slut' },
   ],
 

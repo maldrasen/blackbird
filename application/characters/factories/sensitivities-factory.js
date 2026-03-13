@@ -36,6 +36,18 @@ global.SensitivitiesFactory = (function() {
       ArrayHelper.remove(triggers, trigger);
     }
 
+    // Don't increase sensations beyond 'A'
+    if (triggers.includes('sensitive')) {
+      Object.keys(sensitivities).forEach(key => { if (sensitivities[key] < 5) { sensitivities[key] += 1; }});
+      andRemove('sensitive');
+    }
+
+    // Don't reduce sensations below 'F'
+    if (triggers.includes('insensitive')) {
+      Object.keys(sensitivities).forEach(key => { if (sensitivities[key] > 1) { sensitivities[key] -= 1; }});
+      andRemove('insensitive');
+    }
+
     if (triggers.includes('erogenous-throat')) {
       increaseSensitivity('throat',sensitivities);
       andRemove('erogenous-throat');

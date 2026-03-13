@@ -1,13 +1,7 @@
 
-// The preferences are also used to determine the sensitivity of these parts or the amount of pleasure received using
-// these parts during sex. The strongest of these preferences is the character's 'weakness' and gets extra pleasure.
-// Tempted to add aurel sex too, but difficult to train something that a person is unlikely to survive.
-
-SexualPreference.register('sensitive',{
-  name: 'Sensitive',
-  description: 'All sexual activities bring more pleasure.',
-  sensations: { increase:['anus','throat','urethra','nipple','cock','prostate','cervix','clit','pussy'] },
-});
+// The preferences are also used to determine the character's preference for using these parts during sex. The
+// strongest of these preferences is the character's 'weakness' and gets extra pleasure. Tempted to add aurel sex
+// too, but difficult to train something that a person is unlikely to survive.
 
 SexualPreference.register('anal-slut',{
   name: 'Anal Slut',

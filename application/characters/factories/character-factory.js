@@ -121,8 +121,7 @@ global.CharacterFactory = (function() {
     applyMagical(triggers);
 
     if (triggers.length > 0) {
-      console.log(`Unresolved Triggers:`,triggers);
-    //   throw `Error: Unresolved Triggers: ${JSON.stringify(triggers)}`;
+      throw `Error: Unresolved Triggers: ${JSON.stringify(triggers)}`;
     }
 
     ActorComponent.create(characterId, actorData);

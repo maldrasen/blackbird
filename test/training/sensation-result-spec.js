@@ -452,20 +452,19 @@ describe("SensationResult", function() {
 
       const context = TrainingFixtures.standardTrainingContext({},{
         arousal: { arousal:75 },
-        sexualPreferences:{ 'pussy-slut':50, 'sensitive':30, 'masturbator':70 } });
+        sexualPreferences:{ 'pussy-slut':50, 'masturbator':70 } });
 
       const result = SensationResult('masturbate-pussy',context);
       result.applyFactors();
 
       const pussySensations = result.getResponse().partner.pussy;
-      expect(pussySensations.length).to.equal(7);
-      expect(pussySensations[4].label).to.equal('Sensitive');
-      expect(Math.round(pussySensations[4].value * 100)).to.equal(109)
-      expect(pussySensations[5].label).to.equal('Pussy Slut');
-      expect(Math.round(pussySensations[5].value * 100)).to.equal(188)
-      expect(pussySensations[6].label).to.equal('Masturbator');
-      expect(Math.round(pussySensations[6].value * 100)).to.equal(273)
-      expect(Math.round(result.getPartnerSensations().pussy)).to.equal(2577);
+      expect(pussySensations.length).to.equal(6);
+
+      expect(pussySensations[4].label).to.equal('Pussy Slut');
+      expect(Math.round(pussySensations[4].value * 100)).to.equal(188)
+      expect(pussySensations[5].label).to.equal('Masturbator');
+      expect(Math.round(pussySensations[5].value * 100)).to.equal(273)
+      expect(Math.round(result.getPartnerSensations().pussy)).to.equal(2364);
     });
   });
 

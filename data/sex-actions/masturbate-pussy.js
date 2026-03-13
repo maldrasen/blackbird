@@ -16,7 +16,6 @@ SexAction.register('masturbate-pussy',{
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.performance },
     { type:'arousal', strength:1.5 },
-    { type:'preference', code:'sensitive' },
     { type:'preference', code:'pussy-slut' },
     { type:'preference', code:'humiliation-slut' },
     { type:'preference', code:'exhibitionist', scale:3 },

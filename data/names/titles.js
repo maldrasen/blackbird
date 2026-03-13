@@ -8,15 +8,15 @@ Name.register('title',Gender.male,[
 
 Name.register('title',Gender.female,[
   { name:"Bang Bang", triggers:['~slut','magical']},
-  { name:"Creamy", triggers:['~slut','sensitive[40]','cum-dump[20]','humiliation-slut[20]']},
+  { name:"Creamy", triggers:['~slut','sensitive','cum-dump[20]','humiliation-slut[20]']},
   { name:"Cumrag", triggers:['~slut','cum-dump[40]',`humiliation-slut[40]`]},
   { name:"Cumtoilet", triggers:['~slut','cum-dump[40]',`humiliation-slut[40]`,'piss-slut[40]']},
-  { name:"Dripping", triggers:['~slut','sensitive[40]','humiliation-slut[20]']},
-  { name:"Drippy", triggers:['~slut','sensitive[40]','humiliation-slut[20]']},
+  { name:"Dripping", triggers:['~slut','sensitive','humiliation-slut[20]']},
+  { name:"Drippy", triggers:['~slut','sensitive','humiliation-slut[20]']},
   { name:"Lil'", triggers:['short','small-tits']},
-  { name:"Moaning", triggers:['~slut','sensitive[20]','humiliation-slut[20]']},
+  { name:"Moaning", triggers:['~slut','sensitive','humiliation-slut[20]']},
   { name:"Moneymakers", triggers:['~bimbo','huge-tits','breast-slut[20]','humiliation-slut[20]','stupid']},
-  { name:"Soaking Wet", triggers:['~slut','sensitive[40]','humiliation-slut[30]']},
+  { name:"Soaking Wet", triggers:['~slut','sensitive','humiliation-slut[30]']},
   { name:"Sweet Tits", triggers:['~bimbo','small-tits','breast-slut[20]','humiliation-slut[20]','stupid']},
 ]);
 

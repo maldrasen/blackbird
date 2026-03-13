@@ -23,7 +23,6 @@ SexAction.register('lap-dance',{
     { type:'base', baseClass: SexAction.BaseClass.performance },
     { type:'arousal', strength:1.5 },
     { type:'gender', scale:1.25 },
-    { type:'preference', code:'sensitive', scale:1.5 },
     { type:'preference', code:'exhibitionist', scale:3 },
     { type:'preference', code:'humiliation-slut' },
     { type:'preference', code:'submissive' },

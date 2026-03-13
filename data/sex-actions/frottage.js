@@ -17,7 +17,6 @@ SexAction.register('frottage',{
     { type:'base', baseClass: SexAction.BaseClass.touching },
     { type:'arousal' },
     { type:'gender' },
-    { type:'preference', code:'sensitive', scale:1.5 },
     { type:'preference', code:'cock-slut' },
     { type:'preference', code:'cock-lover' },
   ],
