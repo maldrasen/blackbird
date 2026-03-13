@@ -50,7 +50,7 @@ global.Weaver = function(context) {
       } else if (utilityMatch) {
         text = text.replace(utilityMatch[0], utilityValue(utilityMatch[1].trim(), utilityMatch[2].trim()));
       } else if (simpleMatch) {
-        text = text.replace(simpleMatch[0], utilityValue(simpleMatch[1].trim()));
+        text = text.replace(simpleMatch[0], simpleValue(simpleMatch[1].trim()));
       } else {
         weaving = false;
       }
@@ -70,21 +70,27 @@ global.Weaver = function(context) {
       return ActorLoom.weave(context[subject], token);
     }
     catch (error) {
-      return onError('Actor', error, { subject, token });
+      onError('Actor', error, { subject, token });
+      return formatError(`[${subject}:${token}]`);
     }
   }
 
   function functionValue(name, argumentList) {
-    return formatError(`TODO: ${name}() function.`)
+    return formatWarning(`[${name}(${JSON.stringify(argumentList)})]`)
   }
 
   function utilityValue(utility, argument) {
     try {
-      return formatWarning(`TODO: Weaver:Utility(${utility},${argument})`);
+      return formatWarning(`[${utility}|${argument}]`);
     }
     catch (error) {
-      return onError('Utility', error, { utility, argument });
+      onError('Utility', error, { utility, argument });
+      return formatError(`[${utility}|${argument}]`);
     }
+  }
+
+  function simpleValue(key) {
+    return formatWarning(`[${key}]`);
   }
 
   function formatWarning(message) { return `<span class='weaver-warning'>${message}</span>` }
@@ -92,7 +98,6 @@ global.Weaver = function(context) {
 
   function onError(type, error, data) {
     Console.logError(`Weaver:${type}Error thrown.`, error, { system:'Weaver', ...data });
-    return formatError(`Weaver:${type}Error`);
   }
 
   return Object.freeze({

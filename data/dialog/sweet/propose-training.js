@@ -13,9 +13,9 @@ Dialog.register(ArchetypeCode.sweet, DialogKeys.proposeTraining_Eager, context =
   options.push(`{T:name} wraps {T:his} arms around your waist from behind, cheek resting
     between your shoulder blades. "Mmm... train me however you like. I'm all yours."`);
   options.push(`{T:name} steps closer, resting {T:his} hands on your chest with a warm, 
-    knowing smile. "Yes {P:niceName}... let me take care of you."`);
+    knowing smile. "Yes {T:niceName}... let me take care of you."`);
   options.push(`{T:name} leans against you, brushing {T:his} {T:breasts.bigSoft}
-    breasts against your arm. "Whatever you want {P:niceName}."`);
+    breasts against your arm. "Whatever you want {T:niceName}."`);
 
   return Random.from(options);
 });

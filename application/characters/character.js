@@ -137,8 +137,12 @@ global.Character = function(id) {
 
   function isEquipped(slot) { return EquipmentComponent.lookup(id)[slot] != null; }
 
+  // TODO: Support for equippable anal plugs and dildos and shit.
+  function isAnusEmpty() { return true; }
+  function isPussyEmpty() { return true; }
+
   // A general can we see their cock, pussy, or ass function.
-  function isExposedCrotch() {
+  function isCrotchExposed() {
     const equipment = EquipmentComponent.lookup(id)
     const legs = equipment[EquipmentSlot.legs];
     const underlegs = equipment[EquipmentSlot.underlegs];
@@ -150,7 +154,7 @@ global.Character = function(id) {
     return exposed
   }
 
-  function isExposedNipple() {
+  function areBreastsExposed() {
     const equipment = EquipmentComponent.lookup(id)
     const chest = equipment[EquipmentSlot.chest];
     const underchest = equipment[EquipmentSlot.underchest];
@@ -239,8 +243,10 @@ global.Character = function(id) {
     // Equipment
     isNaked,
     isEquipped,
-    isExposedNipple,
-    isExposedCrotch,
+    isAnusEmpty,
+    isPussyEmpty,
+    areBreastsExposed,
+    isCrotchExposed,
 
     // Orgasm Data
     getOrgasmThreshold,

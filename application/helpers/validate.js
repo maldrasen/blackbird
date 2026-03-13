@@ -20,7 +20,8 @@ global.Validate = (function() {
   }
 
   function trueOrNull(name, value, message=null) {
-    if (value != null || value !== true) { throw message ? message : `Validate.trueOrNull Failed: ${name} is ${value}`; }
+    if (value === undefined || value === null || value === true) { return; }
+    throw message ? message : `Validate.trueOrNull Failed: ${name} is ${value}`;
   }
 
   function equals(name, value, equalTo, message=null) {

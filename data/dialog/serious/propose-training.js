@@ -7,7 +7,7 @@ Dialog.register(ArchetypeCode.serious, DialogKeys.proposeTraining_Eager, context
   const options = [
     `{T:name} smiles and gives a single, decisive nod. "Alright. Let's not waste time then."`,
     `{T:name} nods with obvious respect. "You know what you're doing. I'll follow your lead."`,
-    `{T:name} chuckles and meets your gaze, "Okay {P:niceName}, get started whenever you're ready."`];
+    `{T:name} chuckles and meets your gaze, "Okay {T:niceName}, get started whenever you're ready."`];
 
   if (partner.isStrongerThan(20)) {
     options.push(`{T:name} smiles and cracks {T:his} neck, muscles tensing in preparation. "Let's get to it then."`);
