@@ -1,4 +1,4 @@
-Species.register('vermen', {
+Species.register(SpeciesCode.vermen, {
   name: 'Vermen',
   genderRatio: { female:40, futa:20, male:40, enby:10 },
 

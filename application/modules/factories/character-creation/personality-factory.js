@@ -46,9 +46,9 @@ global.PersonalityFactory = (function() {
       throw `Character Rejected: Archetype[${code}] must be male.`; }
     if (requires === 'gender.not-male' && actor.gender === Gender.male) {
       throw `Character Rejected: Archetype[${code}] must not be male.`; }
-    if (requires === 'species.kobold' && actor.species !== 'kobold') {
+    if (requires === 'species.kobold' && actor.species !== SpeciesCode.kobold) {
       throw `Character Rejected: Archetype[${code}] must be a Kobold.`; }
-    if (requires === 'species.vermen' && actor.species !== 'vermen') {
+    if (requires === 'species.vermen' && actor.species !== SpeciesCode.vermen) {
       throw `Character Rejected: Archetype[${code}] must be a Vermen.`; }
   }
 

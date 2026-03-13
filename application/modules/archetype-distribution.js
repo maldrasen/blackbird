@@ -1,4 +1,4 @@
-global.ArchetypeDistribution = function(gender, species='human') {
+global.ArchetypeDistribution = function(gender, species=SpeciesCode.human) {
 
   const femaleStandard = {
     bastard:     0,
@@ -85,7 +85,7 @@ global.ArchetypeDistribution = function(gender, species='human') {
   if (gender === Gender.futa) { distribution = futaStandard; }
   if (gender === Gender.enby) { distribution = enbyStandard; }
 
-  if (species === 'elf') {
+  if (species === SpeciesCode.elf) {
     distribution.bastard *=     1.3;
     distribution.bimbo *=       0.5;
     distribution.bitch *=       1.7;
@@ -104,7 +104,7 @@ global.ArchetypeDistribution = function(gender, species='human') {
     distribution.sweet *=       0.7;
     distribution.timid *=       1.2;
   }
-  if (species === 'equian') {
+  if (species === SpeciesCode.equian) {
     distribution.bastard *=     1.1;
     distribution.bimbo *=       0.6;
     distribution.bitch *=       0.4;
@@ -121,9 +121,9 @@ global.ArchetypeDistribution = function(gender, species='human') {
     distribution.serious *=     1.7;
     distribution.slut *=        0.8;
     distribution.sweet *=       1.2;
-    distribution.timid *=       0.8;
+    distribution.timid *=       0.0;
   }
-  if (species === 'halfling') {
+  if (species === SpeciesCode.halfling) {
     distribution.bastard *=     0.2;
     distribution.bimbo *=       1.2;
     distribution.bitch *=       0.8;
@@ -142,7 +142,7 @@ global.ArchetypeDistribution = function(gender, species='human') {
     distribution.sweet *=       1.8;
     distribution.timid *=       2.0;
   }
-  if (species === 'lupin') {
+  if (species === SpeciesCode.lupin) {
     distribution.bastard *=     1.1;
     distribution.bimbo *=       1.2;
     distribution.bitch *=       1.4;
@@ -159,9 +159,9 @@ global.ArchetypeDistribution = function(gender, species='human') {
     distribution.serious *=     1.8;
     distribution.slut *=        1.3;
     distribution.sweet *=       1.5;
-    distribution.timid *=       0.5;
+    distribution.timid *=       0.0;
   }
-  if (species === 'nymph') {
+  if (species === SpeciesCode.nymph) {
     distribution.bastard *=     0.0;
     distribution.bimbo *=       1.4;
     distribution.bitch *=       0.6;
@@ -180,7 +180,7 @@ global.ArchetypeDistribution = function(gender, species='human') {
     distribution.sweet *=       2.2;
     distribution.timid *=       1.6;
   }
-  if (species === 'sylph') {
+  if (species === SpeciesCode.sylph) {
     distribution.bastard *=     1.5;
     distribution.bimbo *=       1.3;
     distribution.bitch *=       1.7;

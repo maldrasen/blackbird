@@ -1,4 +1,4 @@
-Species.register('halfling', {
+Species.register(SpeciesCode.halfling, {
   name: 'Halfling',
   genderRatio: { female:40, futa:20, male:40, enby:5 },
 
@@ -11,15 +11,15 @@ Species.register('halfling', {
   },
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby,'halfling'),
-    female: ArchetypeDistribution(Gender.female,'halfling'),
-    futa:   ArchetypeDistribution(Gender.futa,'halfling'),
-    male:   ArchetypeDistribution(Gender.male,'halfling'),
+    enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.halfling),
+    female: ArchetypeDistribution(Gender.female,SpeciesCode.halfling),
+    futa:   ArchetypeDistribution(Gender.futa,SpeciesCode.halfling),
+    male:   ArchetypeDistribution(Gender.male,SpeciesCode.halfling),
   },
 
-// Because of their relatively shallow pussies, halflings have an unusually
-// sensitive cervix.
-sensitivities: {
+  // Because of their relatively shallow pussies, halflings have an unusually
+  // sensitive cervix.
+  sensitivities: {
     cock:     { Z:0,   F:1,  D:5,  C:100, B:40, A:15 },
     clit:     { Z:0,   F:1,  D:5,  C:100, B:40, A:15 },
     pussy:    { Z:0,   F:5,  D:20, C:100, B:30, A:10 },

@@ -1,4 +1,4 @@
-Species.register('elf', {
+Species.register(SpeciesCode.elf, {
   name: 'Elf',
   genderRatio: { female:40, futa:20, male:40, enby:5 },
 
@@ -11,10 +11,10 @@ Species.register('elf', {
   },
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby,'elf'),
-    female: ArchetypeDistribution(Gender.female,'elf'),
-    futa:   ArchetypeDistribution(Gender.futa,'elf'),
-    male:   ArchetypeDistribution(Gender.male,'elf'),
+    enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.elf),
+    female: ArchetypeDistribution(Gender.female,SpeciesCode.elf),
+    futa:   ArchetypeDistribution(Gender.futa,SpeciesCode.elf),
+    male:   ArchetypeDistribution(Gender.male,SpeciesCode.elf),
   },
 
   sensitivities: {

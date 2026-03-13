@@ -152,7 +152,7 @@ describe("ConsentResult", function() {
       const wolf = Registry.createEntity();
       const lamb = Registry.createEntity();
 
-      ActorComponent.create(wolf, { gender:Gender.male, species:'lupin' });
+      ActorComponent.create(wolf, { gender:Gender.male, species:SpeciesCode.lupin });
       ArousalComponent.create(lamb, { arousal:50 });
       SexualPreferencesComponent.create(lamb, { androphilic:75 });
 
@@ -171,7 +171,7 @@ describe("ConsentResult", function() {
       const wolf = Registry.createEntity();
       const lamb = Registry.createEntity();
 
-      ActorComponent.create(wolf, { gender:Gender.male, species:'lupin' });
+      ActorComponent.create(wolf, { gender:Gender.male, species:SpeciesCode.lupin });
       ArousalComponent.create(lamb, { arousal:50 });
       SexualPreferencesComponent.create(lamb, { androphilic:75 });
 
@@ -188,7 +188,7 @@ describe("ConsentResult", function() {
       const wolf = Registry.createEntity();
       const horse = Registry.createEntity();
 
-      ActorComponent.create(wolf, { gender:Gender.futa, species:'lupin' });
+      ActorComponent.create(wolf, { gender:Gender.futa, species:SpeciesCode.lupin });
       ArousalComponent.create(horse, { arousal:50 });
       SexualPreferencesComponent.create(horse, { androphilic:75, gynophilic:-75 });
 
@@ -206,7 +206,7 @@ describe("ConsentResult", function() {
       const wolf = Registry.createEntity();
       const horse = Registry.createEntity();
 
-      ActorComponent.create(wolf, { gender:Gender.futa, species:'lupin' });
+      ActorComponent.create(wolf, { gender:Gender.futa, species:SpeciesCode.lupin });
       ArousalComponent.create(horse, { arousal:50 });
       SexualPreferencesComponent.create(horse, { androphilic:75, gynophilic:75 });
 
@@ -224,7 +224,7 @@ describe("ConsentResult", function() {
       const wolf = Registry.createEntity();
       const goat = Registry.createEntity();
 
-      ActorComponent.create(wolf, { gender:Gender.enby, species:'lupin' });
+      ActorComponent.create(wolf, { gender:Gender.enby, species:SpeciesCode.lupin });
       ArousalComponent.create(goat, { arousal:50 });
       SexualPreferencesComponent.create(goat, { androphilic:75, gynophilic:75 });
 
@@ -289,7 +289,7 @@ describe("ConsentResult", function() {
       const wolf = Registry.createEntity();
       const horse = Registry.createEntity();
 
-      ActorComponent.create(horse, { gender:Gender.male, species:'equian' });
+      ActorComponent.create(horse, { gender:Gender.male, species:SpeciesCode.equian });
 
       FeelingsComponent.create(wolf, { target:horse, affection:200, fear:100, respect:150 });
       ArousalComponent.create(wolf, { arousal:33 });

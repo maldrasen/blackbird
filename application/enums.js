@@ -123,6 +123,18 @@ global.GenderName = Object.freeze({
   enby: 'Non-Binary',
 });
 
+global.SpeciesCode = Object.freeze({
+  elf: 'elf',
+  equian: 'equian',
+  halfling: 'halfling',
+  human: 'human',
+  kobold: 'kobold',
+  lupin: 'lupin',
+  nymph: 'nymph',
+  sylph: 'sylph',
+  vermen: 'vermen',
+});
+
 global.AspectType = Object.freeze({
   flexible: 'flexible', // Makes larger insertions work and enables special positions (folded in half, self sucking)
   premature: 'premature', // Lowers orgasm thresholds (2000,1000,500)

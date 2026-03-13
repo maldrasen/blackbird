@@ -39,7 +39,8 @@ global.SexualityFactory = (function() {
   function randomSexuality(context) {
     const archetype = Archetype.lookup(context.personality.archetype);
     const sexuality = Random.fromFrequencyMap(archetype.getSexualityRatio());
-    return (sexuality === 'straight' && ['sylph','nymph'].includes(context.actor.species)) ? 'bi' : sexuality;
+    const menAreRare = [SpeciesCode.sylph, SpeciesCode.nymph].includes(context.actor.species)
+    return (sexuality === 'straight' && menAreRare) ? 'bi' : sexuality;
   }
 
   function buildBaselineSexuality(sexuality, sex) {

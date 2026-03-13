@@ -27,7 +27,7 @@ describe("Character", function() {
     });
 
     it("Compares breast sizes", function() {
-      const horse = CharacterFixtures.genericFemale({ species:'equian', breasts:{ breastSize:'big' } });
+      const horse = CharacterFixtures.genericFemale({ species:SpeciesCode.equian, breasts:{ breastSize:'big' } });
       const volume = BreastsComponent.lookup(horse).absoluteBreastVolume;
 
       expect(Character(horse).breastsAreAtLeast('small')).to.be.true;
@@ -38,7 +38,7 @@ describe("Character", function() {
     });
 
     it("Compares cock sizes", function() {
-      const horse = CharacterFixtures.genericMale({ species:'equian', cock:{ size:'huge' } });
+      const horse = CharacterFixtures.genericMale({ species:SpeciesCode.equian, cock:{ size:'huge' } });
       const length = CockComponent.lookupNormalOf(horse).length;
 
       expect(Character(horse).cockIsAtLeast('big')).to.be.true;
@@ -70,8 +70,8 @@ describe("Character", function() {
   describe("Equipment", function() {
     it('knows when you are naked', function() {
       const goat = CharacterFixtures.genericMale({});
-      const horse = CharacterFixtures.genericMale({ species:'equian' });
-      const wolf = CharacterFixtures.genericMale({ species:'lupin' });
+      const horse = CharacterFixtures.genericMale({ species:SpeciesCode.equian });
+      const wolf = CharacterFixtures.genericMale({ species:SpeciesCode.lupin });
 
       ItemFixtures.addRandomEquipment(goat)
 

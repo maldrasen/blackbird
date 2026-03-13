@@ -1,4 +1,4 @@
-Species.register('nymph', {
+Species.register(SpeciesCode.nymph, {
   name: 'Nymph',
   genderRatio: { female:60, futa:40, male:0, enby:0 },
 
@@ -11,10 +11,10 @@ Species.register('nymph', {
   },
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby,'nymph'),
-    female: ArchetypeDistribution(Gender.female,'nymph'),
-    futa:   ArchetypeDistribution(Gender.futa,'nymph'),
-    male:   ArchetypeDistribution(Gender.male,'nymph'),
+    enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.nymph),
+    female: ArchetypeDistribution(Gender.female,SpeciesCode.nymph),
+    futa:   ArchetypeDistribution(Gender.futa,SpeciesCode.nymph),
+    male:   ArchetypeDistribution(Gender.male,SpeciesCode.nymph),
   },
 
   // Nymphs have an overall boost to their sensitivities, and highly sensitive

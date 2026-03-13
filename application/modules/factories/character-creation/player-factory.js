@@ -4,7 +4,7 @@ global.PlayerFactory = (function() {
   // or I'll them as options in character creation right at the start. This is fine for early in development though.
   function build(options={}) {
     const playerId = Registry.createEntity();
-    const speciesCode = options.species || 'human';
+    const speciesCode = options.species || SpeciesCode.human;
     const genderCode = options.gender || Gender.male;
     const triggers = options.triggers || [];
 

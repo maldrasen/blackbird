@@ -1,4 +1,4 @@
-Species.register('kobold', {
+Species.register(SpeciesCode.kobold, {
   name: 'Kobold',
   genderRatio: { female:40, futa:20, male:40, enby:10 },
 

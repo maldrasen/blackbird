@@ -220,7 +220,7 @@ global.CharacterFactory = (function() {
   function getBiologicalSex(species, gender) {
     if (gender !== Gender.enby) { return gender; }
 
-    if (['kobold','vermen'].includes(species.getCode())) {
+    if ([SpeciesCode.kobold,SpeciesCode.vermen].includes(species.getCode())) {
       return Gender.male;
     }
 

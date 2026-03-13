@@ -1,4 +1,4 @@
-Species.register('lupin', {
+Species.register(SpeciesCode.lupin, {
   name: 'Lupin',
   genderRatio: { female:40, futa:20, male:40, enby:5 },
 
@@ -11,10 +11,10 @@ Species.register('lupin', {
   },
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby,'lupin'),
-    female: ArchetypeDistribution(Gender.female,'lupin'),
-    futa:   ArchetypeDistribution(Gender.futa,'lupin'),
-    male:   ArchetypeDistribution(Gender.male,'lupin'),
+    enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.lupin),
+    female: ArchetypeDistribution(Gender.female,SpeciesCode.lupin),
+    futa:   ArchetypeDistribution(Gender.futa,SpeciesCode.lupin),
+    male:   ArchetypeDistribution(Gender.male,SpeciesCode.lupin),
   },
 
   // Lupins all have some degree of urethra sensitivity.

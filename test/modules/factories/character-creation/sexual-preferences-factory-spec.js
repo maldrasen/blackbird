@@ -4,7 +4,7 @@ describe("SexualPreferencesFactory", function() {
     const preferences = {};
 
     SexualPreferencesFactory.makeAdjustments(preferences,{
-      actor:{ species:'elf' },
+      actor:{ species:SpeciesCode.elf },
       personality:{ archetype:ArchetypeCode.serious },
     },['rope-bunny[50]']);
 
@@ -16,7 +16,7 @@ describe("SexualPreferencesFactory", function() {
     const preferences = {};
 
     SexualPreferencesFactory.makeAdjustments(preferences,{
-      actor:{ gender:Gender.female, species:'halfling' },
+      actor:{ gender:Gender.female, species:SpeciesCode.halfling },
       personality:{ archetype:ArchetypeCode.reserved },
       sensitivities:{ pussy:2, cervix:1 },
     },[]);
@@ -31,7 +31,7 @@ describe("SexualPreferencesFactory", function() {
     const preferences = {};
 
     SexualPreferencesFactory.makeAdjustments(preferences,{
-      actor:{ gender:Gender.female, species:'kobold' },
+      actor:{ gender:Gender.female, species:SpeciesCode.kobold },
       personality:{ archetype:ArchetypeCode.koboldSub },
     },[]);
 
@@ -50,7 +50,7 @@ describe("SexualPreferencesFactory", function() {
     const preferences = {};
 
     SexualPreferencesFactory.makeAdjustments(preferences,{
-      actor:{ gender:Gender.female, species:'nymph' },
+      actor:{ gender:Gender.female, species:SpeciesCode.nymph },
       personality:{ archetype:ArchetypeCode.slut },
       sensitivities:{ pussy:2, breasts:2 },
     },[]);
@@ -60,7 +60,7 @@ describe("SexualPreferencesFactory", function() {
     const preferences = {};
 
     SexualPreferencesFactory.makeAdjustments(preferences,{
-      actor:{ gender:Gender.female, species:'nymph' },
+      actor:{ gender:Gender.female, species:SpeciesCode.nymph },
       personality:{ archetype:ArchetypeCode.innocent },
       sensitivities:{ pussy:2, breasts:2 },
     },['cock-lover[20]','exhibitionist[30]','gynophilic[60]','androphilic[-30]']);
@@ -74,7 +74,7 @@ describe("SexualPreferencesFactory", function() {
     const preferences = {};
 
     SexualPreferencesFactory.makeAdjustments(preferences,{
-      actor:{ gender:Gender.female, species:'lupin' },
+      actor:{ gender:Gender.female, species:SpeciesCode.lupin },
       personality:{ archetype:ArchetypeCode.pervert },
       sensitivities:{ pussy:2, breasts:2 },
     },[]);

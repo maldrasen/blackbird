@@ -1,4 +1,4 @@
-Species.register('equian', {
+Species.register(SpeciesCode.equian, {
   name: 'Equian',
   genderRatio: { female:40, futa:20, male:40, enby:5 },
 
@@ -11,10 +11,10 @@ Species.register('equian', {
   },
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby,'equian'),
-    female: ArchetypeDistribution(Gender.female,'equian'),
-    futa:   ArchetypeDistribution(Gender.futa,'equian'),
-    male:   ArchetypeDistribution(Gender.male,'equian'),
+    enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.equian),
+    female: ArchetypeDistribution(Gender.female,SpeciesCode.equian),
+    futa:   ArchetypeDistribution(Gender.futa,SpeciesCode.equian),
+    male:   ArchetypeDistribution(Gender.male,SpeciesCode.equian),
   },
 
   // Huge cocks and clits and pussies, but as such their sensitivity is lower.
@@ -34,8 +34,8 @@ Species.register('equian', {
   sexualPreferences: {
     'anal-slut':     { chance:20, strength:20 },
     'exhibitionist': { chance:30, strength:30 },
-    'stud':          { chance:20, strength:30, genders:['male','futa'] },
-    'breeder':       { chance:20, strength:30, genders:['female','futa'] },
+    'stud':          { chance:20, strength:30, genders:[Gender.male,Gender.futa] },
+    'breeder':       { chance:20, strength:30, genders:[Gender.female,Gender.futa] },
     'beast-lover':   { chance:90, strength:20 },
     'orgy-lover':    { chance:50, strength:20 },
   },

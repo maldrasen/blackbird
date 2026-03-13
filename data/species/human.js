@@ -1,4 +1,4 @@
-Species.register('human', {
+Species.register(SpeciesCode.human, {
   name: 'Human',
   genderRatio: { female:40, futa:20, male:40, enby:5 },
 
