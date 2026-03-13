@@ -122,6 +122,22 @@ Dialog.register(ArchetypeCode.bimbo, DialogKeys.proposeTraining_Reluctant, conte
   if (partner.hasSexualPreference('cock-lover',20) && player.hasNormalCock()) {
     dialogOptions.push(`Well... your cock does look yummy...`); }
 
+  if (partner.hasNormalCock()) {
+    dialogOptions.push(`Umm... it's a little messy though right? Like when you make me 
+      spray cum everywhere. And then I'm the one who has to clean it all up.`); }
+
+  if (partner.hasNormalCock() && player.cockIsAtLeast('big')) {
+    dialogOptions.push(`Umm... maybe? I mean, my cock wants some, but my little pussy's scared.`); }
+
+  if (partner.hasNormalCock() && partner.isCrotchExposed()) {
+    motionOptions.push(`{T:name} reaches down, wrapping {T:his} hand around {T:his} 
+      {T:cock.thickSixInchLongCock}, giving it a firm squeeze.`)
+  }
+  if (partner.areBreastsExposed()) {
+    motionOptions.push(`{T:name} shrugs, reaching up to cup {T:his} {T:breasts.bigRoundBreasts}, 
+      giving {T:his} {T:breasts.thickNipples} a gentle pull.` )
+  }
+
   return `${Random.from(motionOptions)} "${Random.from(dialogOptions)}"`;
 });
 
@@ -144,9 +160,11 @@ Dialog.register(ArchetypeCode.bimbo, DialogKeys.proposeTraining_Unwilling, conte
       swinging back and forth hypnotically.`);
   }
 
+  if (partner.hasNormalCock() && partner.isCrotchExposed()) {
+    motionOptions.push(`{T:name} shakes {T:his} head, {T:his} {cock} hanging limp between {T:his} legs.`); }
+
   if (player.cockIsAtLeast('huge')) {
-    dialogOptions.push(`You're too big. Like, find someone else to stretch out.`);
-  }
+    dialogOptions.push(`You're too big. Like, find someone else to stretch out.`); }
 
   return `${Random.from(motionOptions)} "${Random.from(dialogOptions)}"`;
 });
