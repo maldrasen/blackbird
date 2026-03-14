@@ -19,6 +19,10 @@ global.ActorLoom = (function() {
       case `him`: return PronounHelper.him(ActorComponent.lookup(id).gender);
       case `his`: return PronounHelper.his(ActorComponent.lookup(id).gender);
       case `hers`: return PronounHelper.hers(ActorComponent.lookup(id).gender);
+      case `He`: return StringHelper.titlecase(weave(id,'he'));
+      case `Him`: return StringHelper.titlecase(weave(id,'him'));
+      case `His`: return StringHelper.titlecase(weave(id,'his'));
+      case `Hers`: return StringHelper.titlecase(weave(id,'hers'));
       case `name`: return Character(id).getName();
       case `name's`: return EnglishHelper.possessive(Character(id).getName());
       case `full-name`: return Character(id).getFullName();

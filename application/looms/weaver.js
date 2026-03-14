@@ -81,7 +81,7 @@ global.Weaver = function(context) {
 
   function utilityValue(utility, argument) {
     try {
-      return formatWarning(`[${utility}|${argument}]`);
+      return UtilityLoom.weave(utility, argument);
     }
     catch (error) {
       onError('Utility', error, { utility, argument });

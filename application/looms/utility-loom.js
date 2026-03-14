@@ -1,7 +1,7 @@
 global.UtilityLoom = (function() {
 
   function weave(token, argument) {
-    // TODO: Handle it!
+    throw `Unknown Utility Token (${token}|${argument})`;
   }
 
   return Object.freeze({ weave });
