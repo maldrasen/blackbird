@@ -46,10 +46,14 @@ global.TrainingView = (function() {
   // element to force it to fill the proper space. We'll need to call this
   // every round because the heights of many of the other panels will change.
   function calculatePersistedHeight() {
+    const statusRow = X.first('#statusRow');
+    const scalesRow = X.first('#scalesRow');
+    const actionRow = X.first('#actionRow');
+
     if (persistedScrollingPanel) {
-      const status = X.getPosition(X.first('#statusRow')).height;
-      const scales = X.getPosition(X.first('#scalesRow')).height;
-      const action = X.getPosition(X.first('#actionRow')).height;
+      const status = X.getPosition(statusRow).height;
+      const scales = X.getPosition(scalesRow).height;
+      const action = X.getPosition(actionRow).height;
       const heights = status + scales + action + 25
 
       persistedScrollingPanel.setHeight(window.innerHeight - heights);

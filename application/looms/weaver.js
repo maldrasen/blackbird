@@ -90,6 +90,16 @@ global.Weaver = function(context) {
   }
 
   function simpleValue(key) {
+    if (key === 'breast') { return Random.fromFrequencyMap({ tit:10, breast:8 }); }
+    if (key === 'breasts') { return Random.fromFrequencyMap({ tits:10, breasts:8, jugs:1, hooters:1, knockers:1 }); }
+    if (key === 'cock') { return Random.fromFrequencyMap({ cock:10, dick:3, shaft:1, length:1, manhood:1 }); }
+    if (key === 'pussy') { return Random.fromFrequencyMap({ pussy:10, cunt:8, snatch:1, quim:1 }); }
+
+    if (key === 'Breast') { return StringHelper.titlecase(simpleValue('breast')); }
+    if (key === 'Breasts') { return StringHelper.titlecase(simpleValue('breasts')); }
+    if (key === 'Cock') { return StringHelper.titlecase(simpleValue('cock')); }
+    if (key === 'Pussy') { return StringHelper.titlecase(simpleValue('pussy')); }
+
     return formatWarning(`[${key}]`);
   }
 
