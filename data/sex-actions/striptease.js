@@ -15,12 +15,15 @@ SexAction.register('striptease',{
   playerStamina: -10,
   partnerStamina: 50,
 
+  // TODO: Stop all the other persisted actions. Still not sure how to force
+  //   that as this action uses nothing and persists nothing.
+
   uses: {
     player: [],
-    partner: TrainingSlot.all,
+    partner: [],
   },
   availableWhen:{
-    conditions:['T:unbound','T:not-naked']
+    conditions:['T:unbound','T:equipment.not-naked']
   },
 
   consentTarget: 10,

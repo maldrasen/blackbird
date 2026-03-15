@@ -35,12 +35,14 @@ global.TrainingActionPanel = (function() {
       consentResult.applyFactors();
 
       const actionContext = { consent:consentResult.getConsent(), ...context };
-      const isAvailable = sexAction.isAvailable(actionContext);
-      const isEnabled = sexAction.isEnabled(actionContext);
 
-      if (isAvailable === false) { X.addClass(item, 'unavailable'); }
-      if (isEnabled === false) { X.addClass(link, 'not-enabled'); }
-      if (isAvailable && isEnabled) { createTooltip(link, context, consentResult); }
+      sexAction.isAvailable(actionContext) ?
+        createTooltip(link, context, consentResult) :
+        X.addClass(item, 'unavailable');
+
+      // Calling this not-enabled because disabled already has hooks.
+      if (sexAction.isEnabled(actionContext) === false) {
+        X.addClass(link, 'not-enabled'); }
 
       // The consent classname is important for filtering, even if an action is
       // unavailable. This also needs to be set after the tooltip is created

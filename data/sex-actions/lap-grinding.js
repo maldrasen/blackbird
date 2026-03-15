@@ -16,7 +16,8 @@ SexAction.register('lap-grinding',{
     partner: [TrainingSlot.ass],
   },
   availableWhen:{
-    conditions:['T:unbound']
+    conditions:['T:unbound'],
+    persistedAction: 'lap-grinding',
   },
 
   consentTarget: 18,

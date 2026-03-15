@@ -11,6 +11,8 @@ global.CentralScrutinizer = function(context) {
   const cockPattern = /(\w):([a-z-]*cock[a-z-]*)/
   const pussyPattern = /(\w):([a-z-]*pussy[a-z-]*)/
 
+  const equipmentPattern = /(\w):equipment\.([a-z-]+)/
+
   function allConditionsPass(conditions) {
     for (const condition of (conditions||[])) {
       if (false === isValid(condition)) { return false; }
@@ -35,6 +37,11 @@ global.CentralScrutinizer = function(context) {
     if (match) { return CockScrutinizer.isValid(match[2], match[1], context); }
     match = condition.match(pussyPattern);
     if (match) { return PussyScrutinizer.isValid(match[2], match[1], context); }
+    match = condition.match(equipmentPattern);
+    if (match) { return EquipmentScrutinizer.isValid(match[2], match[1], context); }
+
+    // TODO: Until bondage stuff is implemented.
+    if (condition.match(/:unbound/)) { return true; }
 
     throw `Unrecognized condition: ${condition}`;
   }

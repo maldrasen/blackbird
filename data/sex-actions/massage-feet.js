@@ -11,9 +11,11 @@ SexAction.register('massage-feet',{
   partnerStamina: -60,
 
   uses: {
-    player: TrainingSlot.all,
+    player: [TrainingSlot.hands],
     partner: [],
   },
+
+  // TODO: Stop all the other persisted actions.
 
   // TODO: Like the massage-back action there isn't enough information in the
   //   'uses' property for the position system to know that the player needs to

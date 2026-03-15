@@ -77,15 +77,15 @@ global.SexAction = (function() {
     function isPossible(context) {
       if (action.requires && CentralScrutinizer(context).allConditionsPass(action.requires) === false) { return false; }
 
-      const playerSenses = SensitivitiesComponent.lookup(context.P);
-      const partnerSenses = SensitivitiesComponent.lookup(context.T);
+      const player = Character(context.P);
+      const partner = Character(context.T);
 
-      if (action.uses.player.includes(TrainingSlot.breasts) && playerSenses.breasts == null) { return false; }
-      if (action.uses.player.includes(TrainingSlot.cock) && playerSenses.cock == null) { return false; }
-      if (action.uses.player.includes(TrainingSlot.pussy) && playerSenses.pussy == null) { return false; }
-      if (action.uses.partner.includes(TrainingSlot.breasts) && partnerSenses.breasts == null) { return false; }
-      if (action.uses.partner.includes(TrainingSlot.cock) && partnerSenses.cock == null) { return false; }
-      if (action.uses.partner.includes(TrainingSlot.pussy) && partnerSenses.pussy == null) { return false; }
+      if (action.uses.player.includes(TrainingSlot.breasts) && player.hasBreasts() === false) { return false; }
+      if (action.uses.player.includes(TrainingSlot.cock) && player.hasNormalCock() === false) { return false; }
+      if (action.uses.player.includes(TrainingSlot.pussy) && player.hasNormalPussy() === false) { return false; }
+      if (action.uses.partner.includes(TrainingSlot.breasts) && partner.hasBreasts() === false) { return false; }
+      if (action.uses.partner.includes(TrainingSlot.cock) && partner.hasNormalCock() === false) { return false; }
+      if (action.uses.partner.includes(TrainingSlot.pussy) && partner.hasNormalPussy() === false) { return false; }
 
       return true
     }
@@ -93,27 +93,51 @@ global.SexAction = (function() {
     // The isAvailable() function serves as the second filter. It hides actions that shouldn't currently be visible,
     // but might become possible if their requirements are met. This is generally used to show follow on actions that
     // require a certain body position to become visible.
-    //   TODO: Check the "availableWhen" property for configuration.
-    //     - AvailableWhen.conditions (Send to the scrutinizer)
-    //     - AvailableWhen.player (List of player parts)
-    //     - AvailableWhen.partner (List of partner parts)
-    //     -- We can check the part arrays for a matching persisted action that includes all elements from both arrays.
     //
-    //   TODO: Orifice fit from the penetration property. (Arousal state, lube, etc can make an impossible penetration
-    //    possible)
+    //  TODO: Orifice fit from penetration. (There are things that can make
+    //   an impossible penetration possible)
+    //
     function isAvailable(context) {
-      return matchesPersistedAction();
+      return matchesPersistedAction() && availableConditionsMet(context);
     }
 
-    // If the availableWhen property includes a player and a partner array, then this action is only available when a
-    // matching action has been persisted.
+    // TODO: An action that depends on the previousAction should be flagged as
+    //   special somehow as that action will only be available for this round.
+    //
     function matchesPersistedAction() {
-      if (action.availableWhen == null) { return true; }
-      if (action.availableWhen.player == null) { return true; }
+      const persistedActions = TrainingController.getPersistedActions();
 
-      return TrainingController.getPersistedActions().filter(persisted => {
-        return persisted.usesParts(action.availableWhen.player, action.availableWhen.partner)
-      }).length > 0;
+      // True if there are no particular conditions.
+      if (action.availableWhen == null) { return true; }
+
+      // True when the previous action was the one specified.
+      if (action.availableWhen.previousAction) {
+        return TrainingController.getPreviousAction() === action.availableWhen.previousAction;
+      }
+
+      // True if the specified action has been persisted.
+      if (action.availableWhen.persistedAction) {
+        return persistedActions.filter(persisted => {
+          return persisted.getCode() === action.availableWhen.persistedAction;
+        }).length > 0;
+      }
+
+      // True if a matching action has been persisted.
+      if (action.availableWhen.player && action.availableWhen.partner) {
+        return persistedActions.filter(persisted => {
+          return persisted.usesParts(action.availableWhen.player, action.availableWhen.partner)
+        }).length > 0;
+      }
+
+      return true;
+    }
+
+    // The available and the possible actions have different condition sets. The available conditions are for
+    // conditions that might change during training. For instance, strip-tease is only available once, when the
+    // partner is still wearing clothes and becomes unavailable and hidden once they're naked.
+    function availableConditionsMet(context) {
+      return (action.availableWhen && action.availableWhen.conditions) ?
+        CentralScrutinizer(context).allConditionsPass(action.availableWhen.conditions) : true;
     }
 
     // The isEnabled() function determines if an available action should be enabled or not. The logic here is that

@@ -10,28 +10,21 @@ SexAction.register('massage-back',{
   playerStamina: 50,
   partnerStamina: -80,
 
-  // Giving a massage uses the TrainingSlot.all array because starting a
-  // massage action should stop all the other persisted actions. This does not
-  // persist an action, but should have follow on actions based on this action
-  // being a previous action.
-
-  // TODO: The persistence here is kind of odd. The massage actions shouldn't
-  //   persist the massage as an action, but there should be some kind of
-  //   after-massage mode where we could follow a massage up with an ass
-  //   massage or a turn-over event that could be followed on by a handjob.
-  //   I think to make that happen the "availableWhen" property needs to be
-  //   able to look at the previous action, not just persisted states. These
-  //   follow on actions would only be available for a single round though, so
-  //   they should somehow be flagged as limited time actions.
-
-  uses: {
-    player: TrainingSlot.all,
-    partner: [],
-  },
+  // TODO: Stop all the other persisted actions.
 
   // TODO: The slot connectivity with this action isn't enough to force the
   //   correct sex position. We'll need a way to let the position system know
   //   that the partner's back should be to the player and within reach somehow.
+
+  // TODO: There should be some follow up actions like an ass massage or a
+  //   "turn-over" event that could build a large amount of lust in
+  //   anticipation. These actions would need to use the previousAction
+  //   availableWhen property because this doesn't persist anything.
+
+  uses: {
+    player: [TrainingSlot.hands],
+    partner: [],
+  },
 
   consentTarget: 5,
   minimumConsent: Consent.reluctant,
