@@ -73,7 +73,6 @@ global.SexAction = (function() {
       return [ActionDirection.partnerToPlayer, ActionDirection.partnerToBoth].includes(action.direction)
     }
 
-
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return action.name; },
@@ -97,7 +96,6 @@ global.SexAction = (function() {
       getDescription,
       isAvailable,
       isPossible,
-      tellStory: result => { return action.storyTeller(result); }
     });
   }
 

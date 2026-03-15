@@ -3,9 +3,18 @@ global.TrainingOutput = (function() {
 
   function show(sensationResult) {
     const response = sensationResult.getResponse();
+    const action = sensationResult.getSexAction();
+    const context = sensationResult.getContext();
+    const personality = PersonalityComponent.lookup(context.T);
+    const archetype = Archetype.lookup(personality.archetype);
+
+    context.consent = sensationResult.getConsent().getConsent();
+
+    const template = Dialog.lookupTemplate(archetype.getSexStyle(),action,context);
+    const text = Weaver(context).weave(template)
 
     const output = X.createElement(`<div id='trainingOutput'></div>`);
-    output.appendChild(X.createElement(`<p>Action Story...</p>`));
+    output.appendChild(X.createElement(`<p>${text}</p>`));
     output.appendChild(buildSensationTable(response));
 
     GeneralOverlay.open(output, { classname:'small' });

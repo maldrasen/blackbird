@@ -55,19 +55,4 @@ SexAction.register('striptease',{
     masochism: 0,
     shame: 2,
   },
-
-  storyTeller: result => { return tellStory(result); },
 });
-
-function tellStory(result) {
-  const consent = result.getConsent().getConsent();
-  if (consent === Consent.unwilling) { throw `Unwilling striptease shouldn't be possible.` }
-  if (consent === Consent.reluctant) { tellReluctantStory(result); }
-  if (consent === Consent.willing) { tellWillingStory(result); }
-  if (consent === Consent.eager) { tellEagerStory(result); }
-}
-
-function tellUnwillingStory(result) { return `TODO: Unwilling Striptease story.` }
-function tellReluctantStory(result) { return `TODO: Reluctant Striptease story.` }
-function tellWillingStory(result) { return `TODO: Willing Striptease story.` }
-function tellEagerStory(result) { return `TODO: Eager Striptease story.` }
