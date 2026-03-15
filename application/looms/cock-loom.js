@@ -6,7 +6,7 @@ global.CockLoom = (function() {
   // {A:cock.big}` Just an adjective that can be used to describe the cock.
   // {A:cock.thick}` An adjective that doesn't rely on size.
   function weave(id, token) {
-    throw `Unknown Cock Token (${token})`;
+    return `<span class='weaver-warning'>Cock:[${token}]</span>`
   }
 
   return Object.freeze({ weave });

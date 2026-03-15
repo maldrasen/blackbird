@@ -26,7 +26,7 @@ global.ActorLoom = (function() {
       case `name`: return Character(id).getName();
       case `name's`: return EnglishHelper.possessive(Character(id).getName());
       case `full-name`: return Character(id).getFullName();
-      default: throw `Unknown Actor Token (${token})`;
+      default: return `<span class='weaver-warning'>Actor:[${token}]</span>`
     }
   }
 

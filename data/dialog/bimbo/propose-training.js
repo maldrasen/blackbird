@@ -44,7 +44,7 @@ Dialog.register(ArchetypeCode.bimbo, DialogKeys.proposeTraining_Eager, context =
     dialogOptions.push(`Ohmygod, yes! I wanna be your favorite little cock sucker!`); }
 
   if (partner.wouldConsentTo('get-rimming')) {
-    dialogOptions.push(`"Hehe. Sure thing {T:niceName}. You can make me lick your butthole if you want to."`); }
+    dialogOptions.push(`Hehe. Sure thing {T:niceName}. You can make me lick your butthole if you want to.`); }
 
   if (partner.hasNormalCock()) {
     dialogOptions.push(`Ohmygod, yes {T:niceName}! I wanna be your favorite cum-spraying little slut!`)

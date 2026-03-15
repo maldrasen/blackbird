@@ -22,7 +22,7 @@ describe("SexualHistoryFactory", function() {
     let firsts = SexualHistoryFactory.build({
       personality:{ archetype:ArchetypeCode.slut },
       sensitivities:{ pussy:10 },
-      sexualPreferences:{ androphilic:10, gynophilic:10, 'cock-lover':50, 'cum-dump':50 },
+      sexualPreferences:{ androphilic:10, gynophilic:10, 'cock-lover':60, 'cum-dump':60 },
     }).firsts;
 
     expect(firsts.cock).to.be.undefined;

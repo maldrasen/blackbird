@@ -11,7 +11,7 @@ global.BreastsLoom = (function() {
   // {A:breasts} Any word for breasts.
   // {A:breasts:thickNipples} A phrase like 'long nipples' or 'dark teats'
   function weave(id, token) {
-    throw `Unknown Breasts Token (${token})`;
+    return `<span class='weaver-warning'>Breasts:[${token}]</span>`
   }
 
   return Object.freeze({ weave });

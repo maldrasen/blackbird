@@ -1,7 +1,7 @@
 global.PussyLoom = (function() {
 
   function weave(id, token) {
-    throw `Unknown Pussy Token (${token})`;
+    return `<span class='weaver-warning'>Pussy:[${token}]</span>`
   }
 
   return Object.freeze({ weave });
