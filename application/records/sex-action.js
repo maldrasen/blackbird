@@ -60,13 +60,34 @@ global.SexAction = (function() {
       return [ActionDirection.partnerToPlayer, ActionDirection.partnerToBoth].includes(action.direction);
     }
 
+    // The getActingCharacter() function should always return player or partner I think. If an assistant is involved in
+    // this action either the player or the partner will still be the primary actor. Mutual actions return the 'player'
+    // as the actor so that mutual persisted actions are organized under the player.
+    function getActingCharacter() {
+      if (action.direction === ActionDirection.mutual) { return 'player'; }
+      if (action.direction.match(/player-to/)) { return 'player'; }
+      if (action.direction.match(/partner-to/)) { return 'partner'; }
+      throw `Unknown Sex Action Direction: ${action.direction}`
+    }
+
     // The isPossible() checks the basic action requirements to hide actions that will not ever be possible during this
     // training. These are conditions like, you can't get a tail job, when a character doesn't have a tail. This acts
     // as the initial action filter. Actions that are filtered here are no longer considered when determining which
     // actions are visible.
-    //   TODO: Update this so it looks at the "uses" object
     function isPossible(context) {
-      return CentralScrutinizer(context).allConditionsPass(action.requires||[]);
+      if (action.requires && CentralScrutinizer(context).allConditionsPass(action.requires) === false) { return false; }
+
+      const playerSenses = SensitivitiesComponent.lookup(context.P);
+      const partnerSenses = SensitivitiesComponent.lookup(context.T);
+
+      if (action.uses.player.includes(TrainingSlot.breasts) && playerSenses.breasts == null) { return false; }
+      if (action.uses.player.includes(TrainingSlot.cock) && playerSenses.cock == null) { return false; }
+      if (action.uses.player.includes(TrainingSlot.pussy) && playerSenses.pussy == null) { return false; }
+      if (action.uses.partner.includes(TrainingSlot.breasts) && partnerSenses.breasts == null) { return false; }
+      if (action.uses.partner.includes(TrainingSlot.cock) && partnerSenses.cock == null) { return false; }
+      if (action.uses.partner.includes(TrainingSlot.pussy) && partnerSenses.pussy == null) { return false; }
+
+      return true
     }
 
     // The isAvailable() function serves as the second filter. It hides actions that shouldn't currently be visible,
@@ -81,7 +102,18 @@ global.SexAction = (function() {
     //   TODO: Orifice fit from the penetration property. (Arousal state, lube, etc can make an impossible penetration
     //    possible)
     function isAvailable(context) {
-      return true;
+      return matchesPersistedAction();
+    }
+
+    // If the availableWhen property includes a player and a partner array, then this action is only available when a
+    // matching action has been persisted.
+    function matchesPersistedAction() {
+      if (action.availableWhen == null) { return true; }
+      if (action.availableWhen.player == null) { return true; }
+
+      return TrainingController.getPersistedActions().filter(persisted => {
+        return persisted.usesParts(action.availableWhen.player, action.availableWhen.partner)
+      }).length > 0;
     }
 
     // The isEnabled() function determines if an available action should be enabled or not. The logic here is that
@@ -90,8 +122,8 @@ global.SexAction = (function() {
     //   TODO: Bondage state, freedom of movement requirements.
     //   TODO: Arousal state for actions that require a hard cock.
     //   TODO: Actions that require inventory items should check the inventory.
-
     function isEnabled(context) {
+      if (action.minimumConsent && action.minimumConsent > context.consent) { return false; }
       return true;
     }
 
@@ -100,6 +132,7 @@ global.SexAction = (function() {
       // Name, Description, Category, Direction
       getCode: () => { return code; },
       getName: () => { return action.name; },
+      getPersistedName: () => { return action.persistedName; },
       getDescription,
       getMainCategory: () => { return action.mainCategory; },
       getPartnerCategory: () => { return action.partnerCategory; },
@@ -107,11 +140,16 @@ global.SexAction = (function() {
       getDirection: () => { return action.direction },
       directionHasPlayerActingOnPartner,
       directionHasPartnerActingOnPlayer,
+      getActingCharacter,
 
       // Time & Stamina
       getTime: () => { return action.time; },
       getPartnerStamina: () => { return action.partnerStamina; },
       getPlayerStamina: () => { return action.playerStamina; },
+
+      // Action persistence
+      getPersist: () => { return action.persist },
+      getUses: () => { return action.uses; },
 
       // Action visibility and enabled state.
       isPossible,

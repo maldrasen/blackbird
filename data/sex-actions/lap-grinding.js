@@ -20,6 +20,7 @@ SexAction.register('lap-grinding',{
   },
 
   consentTarget: 18,
+  minimumConsent: Consent.reluctant,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.performance },
     { type:'arousal', strength:1.5 },

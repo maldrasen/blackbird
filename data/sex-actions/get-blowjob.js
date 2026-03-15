@@ -20,6 +20,7 @@ SexAction.register('get-blowjob',{
   penetration: { player:'cock', partner:'mouth' },
 
   consentTarget: 35,
+  minimumConsent: Consent.reluctant,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.service },
     { type:'arousal', strength:0.4 },

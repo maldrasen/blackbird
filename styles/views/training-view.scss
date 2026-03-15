@@ -38,9 +38,9 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
 // === Consent Classes ===
 // Pretty sure the events will also need to use the same consent colors.
 
-.fg-unavailable {
-  color: variables.$fg-unavailable;
-  border-color: variables.$fg-unavailable-b;
+.fg-disabled {
+  color: variables.$fg-disabled;
+  border-color: variables.$fg-disabled-b;
 }
 .fg-unwilling {
   color: variables.$fg-unwilling;
@@ -150,6 +150,13 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
         background-color: $bg-action-panel;
         border: variables.$border-light;
         box-shadow: variables.$shadow-shallow;
+
+        .unavailable { display:none; }
+
+        .not-enabled {
+          cursor: default;
+          color: variables.$fg-disabled;
+        }
 
         ul {
           display: grid;

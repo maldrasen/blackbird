@@ -34,6 +34,7 @@ SexAction.register('massage-back',{
   //   that the partner's back should be to the player and within reach somehow.
 
   consentTarget: 5,
+  minimumConsent: Consent.reluctant,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.reverseService },
     { type:'gender', scale:1.25 },

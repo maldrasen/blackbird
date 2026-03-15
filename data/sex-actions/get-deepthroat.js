@@ -24,6 +24,7 @@ SexAction.register('get-deepthroat',{
   penetration: { player:'cock', partner:'throat' },
 
   consentTarget: 80,
+  minimumConsent: Consent.reluctant,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.roughService },
     { type:'arousal', strength:0.4 },

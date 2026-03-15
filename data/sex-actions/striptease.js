@@ -24,6 +24,7 @@ SexAction.register('striptease',{
   },
 
   consentTarget: 10,
+  minimumConsent: Consent.reluctant,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.performance },
     { type:'arousal', strength:1.5 },

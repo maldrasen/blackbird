@@ -18,6 +18,7 @@ SexAction.register('get-lick-cock',{
   },
 
   consentTarget: 27,
+  minimumConsent: Consent.reluctant,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.service },
     { type:'arousal', strength:0.4 },

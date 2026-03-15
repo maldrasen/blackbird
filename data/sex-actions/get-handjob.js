@@ -18,6 +18,7 @@ SexAction.register('get-handjob',{
   },
 
   consentTarget: 25,
+  minimumConsent: Consent.reluctant,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.service },
     { type:'arousal', strength:0.4 },

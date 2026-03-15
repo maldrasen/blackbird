@@ -115,6 +115,7 @@
     "application/test/training-fixtures.js",
     "application/training/consent-result.js",
     "application/training/enlighten-controller.js",
+    "application/training/persisted-action.js",
     "application/training/sensation-result.js",
     "application/training/training-controller.js",
     "application/training/training-system.js",

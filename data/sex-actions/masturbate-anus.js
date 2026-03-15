@@ -18,6 +18,7 @@ SexAction.register('masturbate-anus',{
   },
 
   consentTarget: 45,
+  minimumConsent: Consent.reluctant,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.performance },
     { type:'arousal', strength:1.5 },

@@ -24,22 +24,36 @@ global.TrainingActionPanel = (function() {
     const consentResult = ConsentResult(context.T, context.P);
 
     X.each('#actionList .sex-action a', link => {
+      const item = link.closest('li');
       const code = link.dataset.code;
       const sexAction = SexAction.lookup(code);
 
+      item.setAttribute('class','sex-action');
+      link.setAttribute('class','');
+
       consentResult.setSexAction(code);
       consentResult.applyFactors();
-      createTooltip(link, context, consentResult);
 
-      X.addClass(link, sexAction.isAvailable(context) ?
-        consentResult.getConsentClassname() :
-        'unavailable');
+      const actionContext = { consent:consentResult.getConsent(), ...context };
+      const isAvailable = sexAction.isAvailable(actionContext);
+      const isEnabled = sexAction.isEnabled(actionContext);
+
+      if (isAvailable === false) { X.addClass(item, 'unavailable'); }
+      if (isEnabled === false) { X.addClass(link, 'not-enabled'); }
+      if (isAvailable && isEnabled) { createTooltip(link, context, consentResult); }
+
+      // The consent classname is important for filtering, even if an action is
+      // unavailable. This also needs to be set after the tooltip is created
+      // because of a bug I'm too lazy to fix right now.
+      X.addClass(link, consentResult.getConsentClassname());
     });
   }
 
   function actionClicked(event) {
-    MainContent.halt();
-    StateMachine.handleCommand(CommandType.trainingSexAction,{ code:event.target.dataset.code });
+    if (X.hasClass(event.target,'not-enabled') === false) {
+      MainContent.halt();
+      StateMachine.handleCommand(CommandType.trainingSexAction,{ code:event.target.dataset.code });
+    }
   }
 
   // === Big Messy Tooltip ===

@@ -18,6 +18,7 @@ SexAction.register('get-rimming',{
   },
 
   consentTarget: 40,
+  minimumConsent: Consent.reluctant,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.service },
     { type:'arousal', strength:0.4 },

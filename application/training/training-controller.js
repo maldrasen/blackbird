@@ -1,7 +1,7 @@
 global.TrainingController = (function() {
 
   let $context, $player, $partner, $currentPosition, $possibleActions, $anima, $animus, $essenceOfAnger,
-      $partnerScales, $previousPartnerScales, $playerScales, $previousPlayerScales;
+      $partnerScales, $previousPartnerScales, $playerScales, $previousPlayerScales, $persistedActions;
 
   // Start needs to initialize all the controller's state variables so that state doesn't leak between training events.
   // These are the transient scale values that overflow into the acquired anima and animus at the end of training.
@@ -38,6 +38,7 @@ global.TrainingController = (function() {
       T: data.partner,
     }
 
+    $persistedActions = [];
     $possibleActions = SexAction.getPossible($context);
   }
 
@@ -197,6 +198,7 @@ global.TrainingController = (function() {
     getPreviousPartnerScales: () => { return { ...$previousPartnerScales }; },
     getPlayerScales: () => { return { ...$playerScales }; },
     getPreviousPlayerScales: () => { return { ...$previousPlayerScales }; },
+    getPersistedActions: () => { return $persistedActions; },
     startTraining,
     endTraining,
     handleSensationResult,

@@ -20,6 +20,7 @@ SexAction.register('get-titfuck',{
   },
 
   consentTarget: 30,
+  minimumConsent: Consent.reluctant,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.service },
     { type:'arousal', strength:0.4 },

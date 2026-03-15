@@ -18,6 +18,7 @@ SexAction.register('get-cunnilingus',{
   },
 
   consentTarget: 30,
+  minimumConsent: Consent.reluctant,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.service },
     { type:'arousal', strength:0.4 },

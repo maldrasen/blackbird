@@ -21,6 +21,7 @@ SexAction.register('massage-feet',{
   //   other than a list of valid positions for this action.
 
   consentTarget: 0,
+  minimumConsent: Consent.reluctant,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.reverseService },
     { type:'gender', scale:1.25 },

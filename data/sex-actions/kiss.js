@@ -26,7 +26,7 @@ SexAction.register('kiss',{
     { type:'preference', code:'affection-slut' },
     { type:'preference', code:'humiliation-slut', conflicting:true },
     { type:'preference', code:'debaser', conflicting:true },
-    { type:'preference', code:'sadist', conflicting:true },
+    { type:'preference', code:'sadistic', conflicting:true },
   ],
 
   partnerSensations: {
