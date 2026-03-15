@@ -1,5 +1,6 @@
 SexAction.register('masturbate-cock',{
   name: 'Masturbate (Cock)',
+  persistedName: `Stroking {T:His} Cock`,
   mainCategory: SexAction.MainCategory.performance,
   playerCategory: SexAction.PartCategory.none,
   partnerCategory: SexAction.PartCategory.cock,
@@ -10,7 +11,11 @@ SexAction.register('masturbate-cock',{
   playerStamina: -10,
   partnerStamina: 60,
 
-  requires:['T:has-cock'],
+  persist: { action:'masturbate-cock', revert:'nothing', when:Consent.willing },
+  uses: {
+    player: [],
+    partner: [TrainingSlot.cock, TrainingSlot.hands],
+  },
 
   consentTarget: 30,
   consentFactors: [

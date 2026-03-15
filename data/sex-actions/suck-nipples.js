@@ -1,5 +1,6 @@
 SexAction.register('suck-nipples',{
   name: 'Suck Nipples',
+  persistedName: `Sucking on {T:name's} Nipples`,
   mainCategory: SexAction.MainCategory.foreplay,
   playerCategory: SexAction.PartCategory.mouth,
   partnerCategory: SexAction.PartCategory.breasts,
@@ -10,7 +11,11 @@ SexAction.register('suck-nipples',{
   playerStamina: 40,
   partnerStamina: 30,
 
-  requires:['T:has-breasts'],
+  persist: { action:'suck-nipples' },
+  uses: {
+    player: [TrainingSlot.mouth],
+    partner: [TrainingSlot.breasts],
+  },
 
   consentTarget: 15,
   consentFactors: [

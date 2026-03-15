@@ -15,16 +15,13 @@ SexAction.register('striptease',{
   playerStamina: -10,
   partnerStamina: 50,
 
-  // TODO: Rework action requirements as four arrays. We'll include the
-  //   show/hide and disable/enable arrays in order to give the conditions
-  //   more logical names. (hideWhen isNaked is better than showWhen
-  //   isNotNaked) Disable/Enable should disable the actions, but they should
-  //   still be visible, giving show/hide a higher priority.
-
-  showWhen: [],
-  hideWhen: ['partner.isNaked'],
-  disableWhen: ['consent.unwilling'],
-  enableWhen: ['partner.canMove'],
+  uses: {
+    player: [],
+    partner: TrainingSlot.all,
+  },
+  availableWhen:{
+    conditions:['T:unbound','T:not-naked']
+  },
 
   consentTarget: 10,
   consentFactors: [

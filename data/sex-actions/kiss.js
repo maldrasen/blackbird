@@ -1,5 +1,6 @@
 SexAction.register('kiss',{
   name: 'Kissing',
+  persistedName: `Kissing Each Other`,
   mainCategory: SexAction.MainCategory.foreplay,
   playerCategory: SexAction.PartCategory.mouth,
   partnerCategory: SexAction.PartCategory.mouth,
@@ -9,6 +10,12 @@ SexAction.register('kiss',{
   time: 1,
   playerStamina: 30,
   partnerStamina: 30,
+
+  persist: { action:'kiss', revert:'nothing', when:Consent.willing },
+  uses: {
+    player: [TrainingSlot.mouth],
+    partner: [TrainingSlot.mouth],
+  },
 
   consentTarget: 15,
   consentFactors: [

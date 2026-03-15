@@ -1,5 +1,6 @@
 SexAction.register('masturbate-anus',{
   name: 'Masturbate (Anus)',
+  persistedName: `Fingering {T:His} Asshole`,
   mainCategory: SexAction.MainCategory.performance,
   playerCategory: SexAction.PartCategory.none,
   partnerCategory: SexAction.PartCategory.ass,
@@ -9,6 +10,12 @@ SexAction.register('masturbate-anus',{
   time: 1,
   playerStamina: -10,
   partnerStamina: 70,
+
+  persist: { action:'masturbate-anus', revert:'nothing', when:Consent.willing },
+  uses: {
+    player: [],
+    partner: [TrainingSlot.ass, TrainingSlot.hands],
+  },
 
   consentTarget: 45,
   consentFactors: [

@@ -1,5 +1,6 @@
 SexAction.register('get-titfuck',{
   name: 'Get Titfuck',
+  persistedName: `Titfucking Your Cock`,
   mainCategory: SexAction.MainCategory.receiving,
   playerCategory: SexAction.PartCategory.cock,
   partnerCategory: SexAction.PartCategory.breasts,
@@ -10,7 +11,13 @@ SexAction.register('get-titfuck',{
   playerStamina: 30,
   partnerStamina: 60,
 
-  requires:['P:has-cock','T:has-breasts'],
+  requires:['T:breasts-at-least-big'],
+
+  persist: { action:'get-titfuck', revert:'nothing', when:Consent.reluctant },
+  uses: {
+    player: [TrainingSlot.cock],
+    partner: [TrainingSlot.breasts, TrainingSlot.hands],
+  },
 
   consentTarget: 30,
   consentFactors: [

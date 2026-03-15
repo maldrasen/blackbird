@@ -1,5 +1,6 @@
 SexAction.register('fondle-cock',{
   name: 'Fondle Cock',
+  persistedName: `Fondling {T:name's} Cock`,
   mainCategory: SexAction.MainCategory.foreplay,
   playerCategory: SexAction.PartCategory.hands,
   partnerCategory: SexAction.PartCategory.cock,
@@ -10,7 +11,11 @@ SexAction.register('fondle-cock',{
   playerStamina: 30,
   partnerStamina: 40,
 
-  requires:['T:has-cock'],
+  persist: { action:'fondle-cock' },
+  uses: {
+    player: [TrainingSlot.hands],
+    partner: [TrainingSlot.cock],
+  },
 
   consentTarget: 15,
   consentFactors: [

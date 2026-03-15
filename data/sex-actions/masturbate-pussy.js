@@ -1,5 +1,6 @@
 SexAction.register('masturbate-pussy',{
   name: 'Masturbate (Pussy)',
+  persistedName: `Fingering {T:His} Pussy`,
   mainCategory: SexAction.MainCategory.performance,
   playerCategory: SexAction.PartCategory.none,
   partnerCategory: SexAction.PartCategory.pussy,
@@ -10,7 +11,11 @@ SexAction.register('masturbate-pussy',{
   playerStamina: -10,
   partnerStamina: 60,
 
-  requires:['T:has-pussy'],
+  persist: { action:'masturbate-pussy', revert:'nothing', when:Consent.willing },
+  uses: {
+    player: [],
+    partner: [TrainingSlot.pussy, TrainingSlot.hands],
+  },
 
   consentTarget: 35,
   consentFactors: [

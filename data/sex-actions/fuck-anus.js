@@ -1,5 +1,6 @@
 SexAction.register('fuck-anus',{
-  name: 'Ass Fucking',
+  name: 'Fuck Anus',
+  persistedName: `Fucking {T:name's} Ass`,
   mainCategory: SexAction.MainCategory.sex,
   playerCategory: SexAction.PartCategory.cock,
   partnerCategory: SexAction.PartCategory.ass,
@@ -10,7 +11,13 @@ SexAction.register('fuck-anus',{
   playerStamina: 100,
   partnerStamina: 120,
 
-  requires:['P:has-cock'],
+  persist: { action:'fuck-anus' },
+  uses: {
+    player: [TrainingSlot.cock],
+    partner: [TrainingSlot.ass],
+  },
+
+  penetration: { player:'cock', partner:'anus' },
 
   consentTarget: 50,
   consentFactors: [

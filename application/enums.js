@@ -186,6 +186,24 @@ global.SexStyle = {
 
 // === Training ===
 
+// Consent uses numbers so that they can be compared.
+global.Consent = Object.freeze({
+  eager: 3,
+  willing: 2,
+  reluctant: 1,
+  unwilling: 0,
+});
+
+global.TrainingSlot = {
+  all: ['ass','breasts','cock','hands','mouth','pussy'],
+  ass: 'ass',
+  breasts: 'breasts',
+  cock: 'cock',
+  hands: 'hands',
+  mouth: 'mouth',
+  pussy: 'pussy',
+}
+
 global.ScaleLabels = {
   anus:       'Anus Sense',
   cervix:     'Cervix Sense',
@@ -203,14 +221,6 @@ global.ScaleLabels = {
   submission: 'Submission',
   suffering:  'Suffering',
 }
-
-// Consent uses numbers so that they can be compared.
-global.Consent = Object.freeze({
-  eager: 3,
-  willing: 2,
-  reluctant: 1,
-  unwilling: 0,
-});
 
 global.DenialStyle = Object.freeze({
   angry: 'angry',

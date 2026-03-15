@@ -1,5 +1,6 @@
 SexAction.register('get-handjob',{
   name: 'Get Handjob',
+  persistedName: `Stroking Your Cock`,
   mainCategory: SexAction.MainCategory.receiving,
   playerCategory: SexAction.PartCategory.cock,
   partnerCategory: SexAction.PartCategory.hands,
@@ -10,7 +11,11 @@ SexAction.register('get-handjob',{
   playerStamina: 60,
   partnerStamina: 50,
 
-  requires:['P:has-cock'],
+  persist: { action:'get-handjob', revert:'nothing', when:Consent.reluctant },
+  uses: {
+    player: [TrainingSlot.cock],
+    partner: [TrainingSlot.hands],
+  },
 
   consentTarget: 25,
   consentFactors: [

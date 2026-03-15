@@ -1,5 +1,6 @@
 SexAction.register('suck-cock',{
   name: 'Suck Cock',
+  persistedName: `Sucking {T:name's} Cock`,
   mainCategory: SexAction.MainCategory.giving,
   playerCategory: SexAction.PartCategory.mouth,
   partnerCategory: SexAction.PartCategory.cock,
@@ -10,7 +11,11 @@ SexAction.register('suck-cock',{
   playerStamina: 80,
   partnerStamina: 60,
 
-  requires:['T:has-cock'],
+  persist: { action:'suck-cock' },
+  uses: {
+    player: [TrainingSlot.mouth],
+    partner: [TrainingSlot.cock],
+  },
 
   consentTarget: 17,
   consentFactors: [

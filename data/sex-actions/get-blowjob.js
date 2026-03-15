@@ -1,5 +1,6 @@
 SexAction.register('get-blowjob',{
   name: 'Get Blowjob',
+  persistedName: `Sucking Your Cock`,
   mainCategory: SexAction.MainCategory.receiving,
   playerCategory: SexAction.PartCategory.cock,
   partnerCategory: SexAction.PartCategory.mouth,
@@ -10,14 +11,13 @@ SexAction.register('get-blowjob',{
   playerStamina: 60,
   partnerStamina: 80,
 
-  requires:['P:has-cock'],
+  persist: { action:'get-blowjob', revert:'get-lick-cock', when:Consent.willing },
+  uses: {
+    player: [TrainingSlot.cock],
+    partner: [TrainingSlot.mouth],
+  },
 
-  // persistPlayer: 'cock',
-  // persistPartner: 'mouth',
-  //
-  // requirements:["check to see if partner can fit player's cock in mouth"],
-  //
-  // skill:         'oral-sex',
+  penetration: { player:'cock', partner:'mouth' },
 
   consentTarget: 35,
   consentFactors: [

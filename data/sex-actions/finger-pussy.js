@@ -1,5 +1,6 @@
 SexAction.register('finger-pussy',{
   name: 'Finger Pussy',
+  persistedName: `Fingering {T:name's} Pussy`,
   mainCategory: SexAction.MainCategory.foreplay,
   playerCategory: SexAction.PartCategory.hands,
   partnerCategory: SexAction.PartCategory.pussy,
@@ -10,7 +11,11 @@ SexAction.register('finger-pussy',{
   playerStamina: 40,
   partnerStamina: 60,
 
-  requires:['T:has-pussy'],
+  persist: { action:'finger-pussy' },
+  uses: {
+    player: [TrainingSlot.hands],
+    partner: [TrainingSlot.pussy],
+  },
 
   consentTarget: 28,
   consentFactors: [

@@ -1,30 +1,29 @@
-SexAction.register('fuck-pussy',{
-  name: 'Fuck Pussy',
-  persistedName: `Fucking {T:name's} Pussy`,
+SexAction.register('insert-cock-anus',{
+  name: 'Fuck Anus',
   mainCategory: SexAction.MainCategory.sex,
   playerCategory: SexAction.PartCategory.cock,
-  partnerCategory: SexAction.PartCategory.pussy,
+  partnerCategory: SexAction.PartCategory.ass,
   direction: ActionDirection.playerToPartner,
-  description: `You'll fuck {T:name's} pussy.`,
+  description: `You'll fuck {T:name's} ass.`,
 
   time: 2,
   playerStamina: 100,
-  partnerStamina: 100,
+  partnerStamina: 120,
 
-  persist: { action:'fuck-pussy' },
+  persist: { action:'fuck-anus' },
   uses: {
-    player: [TrainingSlot.cock],
-    partner: [TrainingSlot.pussy],
+    player: [TrainingSlot.cock, TrainingSlot.hands],
+    partner: [TrainingSlot.ass],
   },
 
-  penetration: { player:'cock', partner:'pussy' },
+  penetration: { player:'cock', partner:'anus' },
 
-  consentTarget: 45,
+  consentTarget: 50,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.penetration },
     { type:'arousal' },
     { type:'gender' },
-    { type:'preference', code:'pussy-slut', scale:3 },
+    { type:'preference', code:'anal-slut', scale:3 },
     { type:'preference', code:'cock-lover' },
     { type:'preference', code:'cum-dump' },
     { type:'preference', code:'submissive' },
@@ -34,27 +33,27 @@ SexAction.register('fuck-pussy',{
   ],
 
   partnerSensations: {
-    clit:       35,
-    pussy:      100,
-    anger:      20,
-    comfort:    40,
-    desire:     100,
-    shame:      80,
-    submission: 80,
-    suffering:  40,
+    anus:       100,
+    prostate:   100,
+    anger:      40,
+    comfort:    20,
+    desire:     90,
+    shame:      150,
+    submission: 200,
+    suffering:  100,
   },
   playerSensations: {
     cock:   100,
-    desire: 80
+    desire: 90,
   },
 
-  techniqueTarget: 18,
+  techniqueTarget: 20,
   skills: {
     player:['ravishing']
   },
   alignment: {
-    submission: 2,
-    masochism: 0,
-    shame: 1,
+    submission: 3,
+    masochism: 2,
+    shame: 2,
   },
 });

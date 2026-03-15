@@ -1,6 +1,5 @@
-SexAction.register('fuck-pussy',{
+SexAction.register('insert-cock-pussy',{
   name: 'Fuck Pussy',
-  persistedName: `Fucking {T:name's} Pussy`,
   mainCategory: SexAction.MainCategory.sex,
   playerCategory: SexAction.PartCategory.cock,
   partnerCategory: SexAction.PartCategory.pussy,
@@ -13,7 +12,7 @@ SexAction.register('fuck-pussy',{
 
   persist: { action:'fuck-pussy' },
   uses: {
-    player: [TrainingSlot.cock],
+    player: [TrainingSlot.cock, TrainingSlot.hands],
     partner: [TrainingSlot.pussy],
   },
 

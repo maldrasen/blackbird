@@ -1,5 +1,6 @@
 SexAction.register('fondle-pussy',{
   name: 'Fondle Pussy',
+  persistedName: `Fondling {T:name's} Pussy`,
   mainCategory: SexAction.MainCategory.foreplay,
   playerCategory: SexAction.PartCategory.hands,
   partnerCategory: SexAction.PartCategory.pussy,
@@ -10,7 +11,11 @@ SexAction.register('fondle-pussy',{
   playerStamina: 30,
   partnerStamina: 40,
 
-  requires:['T:has-pussy'],
+  persist: { action:'fondle-pussy' },
+  uses: {
+    player: [TrainingSlot.hands],
+    partner: [TrainingSlot.pussy],
+  },
 
   consentTarget: 25,
   consentFactors: [

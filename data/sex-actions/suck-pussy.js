@@ -1,5 +1,6 @@
 SexAction.register('suck-pussy',{
   name: 'Eat Pussy',
+  persistedName: `Eating {T:name's} Pussy`,
   mainCategory: SexAction.MainCategory.giving,
   playerCategory: SexAction.PartCategory.mouth,
   partnerCategory: SexAction.PartCategory.pussy,
@@ -10,7 +11,11 @@ SexAction.register('suck-pussy',{
   playerStamina: 70,
   partnerStamina: 60,
 
-  requires:['T:has-pussy'],
+  persist: { action:'suck-nipples' },
+  uses: {
+    player: [TrainingSlot.mouth],
+    partner: [TrainingSlot.pussy],
+  },
 
   consentTarget: 17,
   consentFactors: [

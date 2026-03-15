@@ -1,5 +1,6 @@
 SexAction.register('get-deepthroat',{
   name: 'Get Deepthroated',
+  persistedName: `Deepthroating Your Cock`,
   mainCategory: SexAction.MainCategory.receiving,
   playerCategory: SexAction.PartCategory.cock,
   partnerCategory: SexAction.PartCategory.mouth,
@@ -10,7 +11,17 @@ SexAction.register('get-deepthroat',{
   playerStamina: 60,
   partnerStamina: 160,
 
-  requires:['P:has-cock'],
+  persist: { action:'get-deepthroat', revert:'get-blowjob', when:Consent.willing },
+  uses: {
+    player: [TrainingSlot.cock],
+    partner: [TrainingSlot.mouth],
+  },
+  availableWhen:{
+    player: [TrainingSlot.cock],
+    partner: [TrainingSlot.mouth]
+  },
+
+  penetration: { player:'cock', partner:'throat' },
 
   consentTarget: 80,
   consentFactors: [

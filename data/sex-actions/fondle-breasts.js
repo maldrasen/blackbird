@@ -1,5 +1,6 @@
 SexAction.register('fondle-breasts',{
   name: 'Fondle Breasts',
+  persistedName: `Fondling {T:name's} Breasts`,
   mainCategory: SexAction.MainCategory.foreplay,
   playerCategory: SexAction.PartCategory.hands,
   partnerCategory: SexAction.PartCategory.breasts,
@@ -10,7 +11,11 @@ SexAction.register('fondle-breasts',{
   playerStamina: 30,
   partnerStamina: 30,
 
-  requires:['T:has-breasts'],
+  persist: { action:'fondle-breasts' },
+  uses: {
+    player: [TrainingSlot.hands],
+    partner: [TrainingSlot.breasts],
+  },
 
   consentTarget: 15,
   consentFactors: [

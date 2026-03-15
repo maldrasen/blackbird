@@ -1,5 +1,6 @@
 SexAction.register('frottage',{
   name: 'Frottage',
+  persistedName: `Rubbing Your Cocks Together`,
   mainCategory: SexAction.MainCategory.foreplay,
   playerCategory: SexAction.PartCategory.cock,
   partnerCategory: SexAction.PartCategory.cock,
@@ -10,7 +11,11 @@ SexAction.register('frottage',{
   playerStamina: 60,
   partnerStamina: 60,
 
-  requires:['P:has-cock','T:has-cock'],
+  persist: { action:'frottage' },
+  uses: {
+    player: [TrainingSlot.cock],
+    partner: [TrainingSlot.cock],
+  },
 
   consentTarget: 17,
   consentFactors: [

@@ -1,5 +1,6 @@
 SexAction.register('suck-anus',{
   name: 'Eat Ass',
+  persistedName: `Licking {T:name's} Asshole`,
   mainCategory: SexAction.MainCategory.giving,
   playerCategory: SexAction.PartCategory.mouth,
   partnerCategory: SexAction.PartCategory.ass,
@@ -9,6 +10,12 @@ SexAction.register('suck-anus',{
   time: 1,
   playerStamina: 70,
   partnerStamina: 50,
+
+  persist: { action:'suck-anus' },
+  uses: {
+    player: [TrainingSlot.mouth],
+    partner: [TrainingSlot.ass],
+  },
 
   consentTarget: 20,
   consentFactors: [

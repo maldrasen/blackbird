@@ -1,5 +1,6 @@
 SexAction.register('finger-anus',{
   name: 'Finger Anus',
+  persistedName: `Fingering {T:name's} Asshole`,
   mainCategory: SexAction.MainCategory.foreplay,
   playerCategory: SexAction.PartCategory.hands,
   partnerCategory: SexAction.PartCategory.ass,
@@ -9,6 +10,12 @@ SexAction.register('finger-anus',{
   time: 1,
   playerStamina: 40,
   partnerStamina: 70,
+
+  persist: { action:'finger-anus' },
+  uses: {
+    player: [TrainingSlot.hands],
+    partner: [TrainingSlot.ass],
+  },
 
   consentTarget: 30,
   consentFactors: [

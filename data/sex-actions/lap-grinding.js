@@ -1,19 +1,19 @@
-SexAction.register('lap-dance',{
-  name: 'Lap Dance',
+SexAction.register('lap-grinding',{
+  name: 'Grinding',
   mainCategory: SexAction.MainCategory.performance,
   playerCategory: SexAction.PartCategory.cock,
   partnerCategory: SexAction.PartCategory.ass,
   direction: ActionDirection.partnerToBoth,
-  description: `{T:name} will straddle your legs and grind {T:his} ass on your cock.`,
+  description: `{T:name} will continue to grind {T:his} ass on your cock.`,
 
-  time: 5,
-  playerStamina: 20,
-  partnerStamina: 70,
+  time: 1,
+  playerStamina: 15,
+  partnerStamina: 50,
 
   persist: { action:'lap-grinding' },
   uses: {
     player: [TrainingSlot.cock],
-    partner: TrainingSlot.all,
+    partner: [TrainingSlot.ass],
   },
   availableWhen:{
     conditions:['T:unbound']
@@ -30,19 +30,19 @@ SexAction.register('lap-dance',{
   ],
 
   partnerSensations: {
-    anus:       5,
-    clit:       5,
-    nipple:     5,
-    cock:       10,
-    pussy:      5,
-    comfort:    10,
-    desire:     15,
-    shame:      60,
-    submission: 80,
+    anus:       8,
+    clit:       7,
+    nipple:     7,
+    cock:       12,
+    pussy:      7,
+    comfort:    12,
+    desire:     20,
+    shame:      70,
+    submission: 90,
   },
   playerSensations: {
-    cock:   40,
-    desire: 30,
+    cock:   50,
+    desire: 40,
   },
 
   techniqueTarget: 18,

@@ -1,5 +1,6 @@
 SexAction.register('get-rimming',{
   name: 'Get Rimming',
+  persistedName: `Licking Your Asshole`,
   mainCategory: SexAction.MainCategory.receiving,
   playerCategory: SexAction.PartCategory.ass,
   partnerCategory: SexAction.PartCategory.mouth,
@@ -9,6 +10,12 @@ SexAction.register('get-rimming',{
   time: 1,
   playerStamina: 50,
   partnerStamina: 70,
+
+  persist: { action:'get-rimming', revert:'nothing', when:Consent.reluctant },
+  uses: {
+    player: [TrainingSlot.ass],
+    partner: [TrainingSlot.mouth],
+  },
 
   consentTarget: 40,
   consentFactors: [

@@ -10,6 +10,16 @@ SexAction.register('massage-feet',{
   playerStamina: 50,
   partnerStamina: -60,
 
+  uses: {
+    player: TrainingSlot.all,
+    partner: [],
+  },
+
+  // TODO: Like the massage-back action there isn't enough information in the
+  //   'uses' property for the position system to know that the player needs to
+  //   be able to reach the partner's feet. Not sure how to implement that
+  //   other than a list of valid positions for this action.
+
   consentTarget: 0,
   consentFactors: [
     { type:'base', baseClass: SexAction.BaseClass.reverseService },

@@ -1,5 +1,6 @@
 SexAction.register('deep-kiss',{
   name: 'Deep Kiss',
+  persistedName: `Deeply Kissing Each Other`,
   mainCategory: SexAction.MainCategory.foreplay,
   playerCategory: SexAction.PartCategory.mouth,
   partnerCategory: SexAction.PartCategory.mouth,
@@ -7,19 +8,19 @@ SexAction.register('deep-kiss',{
   description: `You and {T:name} will share a passionate kiss, thrusting your tongue deep into {T:his} mouth, while 
     {T:he} does the same.`,
 
-  // A follow up action may require one or more persisted actions to be happening.
-  // availableWhile:['kiss'],
-  //
-  // persistPlayer:'mouth',
-  // persistPartner:'mouth',
-  //
-  // Personality
-  // complementing: ['gentle personality'],
-  // conflicting:   ['aggressive personality'],
-
   time: 1,
   playerStamina: 40,
   partnerStamina: 40,
+
+  persist: { action:'deep-kiss', revert:'kiss', when:Consent.willing },
+  uses: {
+    player: [TrainingSlot.mouth],
+    partner: [TrainingSlot.partner],
+  },
+  availableWhen:{
+    player: [TrainingSlot.mouth],
+    partner: [TrainingSlot.mouth]
+  },
 
   consentTarget: 30,
   consentFactors: [
