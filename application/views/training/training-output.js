@@ -55,25 +55,26 @@ global.TrainingOutput = (function() {
   //       orgasm reduced the accumulated scale by 90% of the orgasm threshold.
   //
   function addSensationRow(builder, code, response, type) {
+    const state = TrainingController.getState();
     const sensationValue = response.partnerSensations[code];
-    const currentValue = TrainingController.getPartnerScales()[code];
+    const currentValue = state.getPartnerScales()[code];
     const currentScale = LetterGradeHelper.scaleValue(currentValue)
 
-    const previousValue = TrainingController.getPreviousPartnerScales()[code];
+    const previousValue = state.getPreviousPartnerScales()[code];
     const previousScale = LetterGradeHelper.scaleValue(previousValue);
 
     const rankChanged = previousScale.letter !== currentScale.letter;
     const rankDisplay = rankChanged ? `${previousScale.letter} ${arrow} ${currentScale.letter}` : `${currentScale.letter}`;
     const rankClass = `fg-rank-${currentScale.letter}`;
 
-    let essenceValue = TrainingController.getEssenceOfAnger();
+    let essenceValue = state.getEssenceOfAnger();
     let essenceLabel = 'Essence of Anger'
 
     if (type === 'animus') {
-      essenceValue = TrainingController.getAnimus()[code];
+      essenceValue = state.getAnimus()[code];
       essenceLabel = `${StringHelper.titlecase(code)} Animus`; }
     if (type === 'anima') {
-      essenceValue = TrainingController.getAnima()[code];
+      essenceValue = state.getAnima()[code];
       essenceLabel = `${StringHelper.titlecase(code)} Anima`; }
 
     const extra = extraClass(response.partner[code]);

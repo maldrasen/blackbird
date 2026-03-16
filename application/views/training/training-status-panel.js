@@ -6,7 +6,7 @@ global.TrainingStatusPanel = (function() {
   let pleasureBar;
 
   function build() {
-    const partner = TrainingController.getPartner()
+    const partner = TrainingController.getState().getPartner()
     const health = HealthComponent.lookup(partner);
     const character = Character(partner);
 
@@ -55,7 +55,7 @@ global.TrainingStatusPanel = (function() {
   }
 
   function update() {
-    const partner = TrainingController.getPartner()
+    const partner = TrainingController.getState().getPartner()
     const health = HealthComponent.lookup(partner);
     const arousalData = ArousalComponent.lookup(partner);
 

@@ -36,7 +36,7 @@ global.TrainingSystem = (function() {
 
   function handleSexAction(command) {
     const code = command.getValue('code');
-    const result = SensationResult(code,TrainingController.getContext());
+    const result = SensationResult(code,TrainingController.getState().getContext());
     const sexAction = SexAction.lookup(result.getSexAction());
 
     result.applyFactors();
@@ -52,11 +52,13 @@ global.TrainingSystem = (function() {
   }
 
   function endTraining(command) {
+    const state = TrainingController.getState();
+
     EnlightenController.startEnlightenment({
-      partner: TrainingController.getPartner(),
-      anima: TrainingController.getAnima(),
-      animus: TrainingController.getAnimus(),
-      anger: TrainingController.getEssenceOfAnger(),
+      partner: state.getPartner(),
+      anima: state.getAnima(),
+      animus: state.getAnimus(),
+      anger: state.getEssenceOfAnger(),
     });
     StateMachine.setMode(GameMode.enlighten);
   }

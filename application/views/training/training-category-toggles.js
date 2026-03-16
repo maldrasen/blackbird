@@ -11,15 +11,15 @@ global.TrainingCategoryToggles = (function() {
     let $partnerCategories = new Set();
     let $playerCategories = new Set();
 
-    const player = TrainingController.getPlayer();
-    const partner = TrainingController.getPartner();
+    const player = TrainingController.getState().getPlayer();
+    const partner = TrainingController.getState().getPartner();
     const playerActor = ActorComponent.lookup(player);
     const partnerActor = ActorComponent.lookup(partner);
 
     X.fill('#showPlayerToggles', EnglishHelper.possessive(playerActor.name));
     X.fill('#showPartnerToggles', EnglishHelper.possessive(partnerActor.name));
 
-    TrainingController.getPossibleActions().forEach(code => {
+    TrainingController.getState().getPossibleActions().forEach(code => {
       const action = SexAction.lookup(code);
       $mainCategories.add(action.getMainCategory());
       $partnerCategories.add(action.getPartnerCategory());

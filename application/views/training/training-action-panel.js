@@ -5,7 +5,7 @@ global.TrainingActionPanel = (function() {
   }
 
   function build() {
-    TrainingController.getPossibleActions().forEach(code => {
+    TrainingController.getState().getPossibleActions().forEach(code => {
       const action = SexAction.lookup(code);
       const actionList = X.first('#actionList');
 
@@ -20,7 +20,7 @@ global.TrainingActionPanel = (function() {
   }
 
   function update() {
-    const context = TrainingController.getContext();
+    const context = TrainingController.getState().getContext();
     const consentResult = ConsentResult(context.T, context.P);
 
     X.each('#actionList .sex-action a', link => {

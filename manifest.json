@@ -119,6 +119,7 @@
     "application/training/persisted-action.js",
     "application/training/sensation-result.js",
     "application/training/training-controller.js",
+    "application/training/training-state.js",
     "application/training/training-system.js",
     "application/views/character/character-body-panel.js",
     "application/views/character/character-overlay.js",
@@ -334,6 +335,7 @@
     "test/training/consent-result-spec.js",
     "test/training/sensation-result-spec.js",
     "test/training/training-controller-spec.js",
+    "test/training/training-state-spec.js",
     "test/world/registry-spec.js"
   ]
 }

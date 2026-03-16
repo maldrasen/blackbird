@@ -105,14 +105,14 @@ global.SexAction = (function() {
     //   special somehow as that action will only be available for this round.
     //
     function matchesPersistedAction() {
-      const persistedActions = TrainingController.getPersistedActions();
+      const persistedActions = TrainingController.getState().getPersistedActions();
 
       // True if there are no particular conditions.
       if (action.availableWhen == null) { return true; }
 
       // True when the previous action was the one specified.
       if (action.availableWhen.previousAction) {
-        return TrainingController.getPreviousAction() === action.availableWhen.previousAction;
+        return TrainingController.getState().getPreviousAction() === action.availableWhen.previousAction;
       }
 
       // True if the specified action has been persisted.

@@ -1,7 +1,6 @@
 global.TrainingController = (function() {
 
-  let $context, $player, $partner, $currentPosition, $possibleActions, $anima, $animus, $essenceOfAnger,
-      $partnerScales, $previousPartnerScales, $playerScales, $previousPlayerScales, $persistedActions, $previousAction;
+  let state;
 
   // Start needs to initialize all the controller's state variables so that state doesn't leak between training events.
   // These are the transient scale values that overflow into the acquired anima and animus at the end of training.
@@ -9,91 +8,22 @@ global.TrainingController = (function() {
   // TODO: It's possible that a character may have some initial anger (or comfort) but that would depend on how this
   //       training began and their feelings towards the player.
   function startTraining(data) {
-    $currentPosition = 'standing'
-
-    $anima = {};
-    $animus = {};
-    $essenceOfAnger = 0;
-    $partnerScales = { anger:0 };
-    $previousPartnerScales = { anger:0 };
-    $playerScales = { desire:0 };
-    $previousPlayerScales = { desire:0 };
-
-    AnimaComponent.getProperties().forEach(key => {
-      $anima[key] = 0;
-      $partnerScales[key] = 0;
-    });
-
-    AnimusComponent.getProperties().forEach(key => {
-      $animus[key] = 0;
-      $partnerScales[key] = 0;
-      $playerScales[key] = 0;
-    });
-
-    $player = data.player;
-    $partner = data.partner;
-
-    $context = {
-      P: data.player,
-      T: data.partner,
-    }
-
-    $persistedActions = [];
-    $possibleActions = SexAction.getPossible($context);
+    state = TrainingState(data);
   }
 
   function endTraining() {
-    ArousalComponent.update($partner, { arousal:0 });
+    ArousalComponent.update(state.getPartner(), { arousal:0 });
     StateMachine.handleCommand(CommandType.trainingEnd);
   }
 
   function handleSensationResult(result) {
-    $previousAction = result.getSexAction();
-
-    updateTrainingScales(result);
+    state.setPreviousAction(result.getSexAction());
+    state.updateTrainingScales(result);
     updateStamina(result);
     updateArousal(result);
 
     TrainingView.update();
     TrainingOutput.show(result);
-  }
-
-  // We need to check for anima overflow as the scales are updated.
-  function updateTrainingScales(result) {
-    updateScales(result.getPlayerSensations(), $previousPlayerScales, $playerScales, false);
-    updateScales(result.getPartnerSensations(), $previousPartnerScales, $partnerScales, true);
-  }
-
-  // When we update the training scales, we check to see if any of the partner scale levels have risen. When they do,
-  // the scale overflow amount is converted to anima or animus. We need to keep track of the previous scale values to
-  // show in the action output.
-  function updateScales(sensations, previousScales, scales, isPartner) {
-
-    Object.keys(scales).forEach(key => {
-      previousScales[key] = scales[key];
-    });
-
-    Object.keys(sensations).forEach(key => {
-      scales[key] += sensations[key];
-
-      const previousLevel = determineScaleLevel(previousScales[key]);
-      const newLevel = determineScaleLevel(scales[key]);
-
-      if (isPartner && newLevel > previousLevel) {
-        const overflow = scales[key] - _scaleThresholds[newLevel-1];
-        if (key === 'anger') { $essenceOfAnger += overflow; }
-        if ($anima[key] != null) { $anima[key] += overflow; }
-        if ($animus[key] != null) { $animus[key] += overflow; }
-      }
-    });
-  }
-
-  function determineScaleLevel(value) {
-    let level = 0;
-    _scaleThresholds.forEach(max => {
-      if (max <= value) { level += 1; }
-    });
-    return level;
   }
 
   // The desire generated should cause the arousal to increase or decrease. The goal is to keep arousal value floating
@@ -107,8 +37,8 @@ global.TrainingController = (function() {
   // might need to look into dynamically adjusting the r-value based on a character's feelings or the other factors
   // that determine the desire values. (Or clamp the desire into a known range.)
   function updateArousal(result) {
-    updateArousalFor($player, result.getPlayerSensations());
-    updateArousalFor($partner, result.getPartnerSensations());
+    updateArousalFor(state.getPlayer(), result.getPlayerSensations());
+    updateArousalFor(state.getPartner(), result.getPartnerSensations());
   }
 
   function updateArousalFor(entity, sensations) {
@@ -177,36 +107,23 @@ global.TrainingController = (function() {
   // For now, we can just subtract the action stamina cost from the current staminas.
   function updateStamina(result) {
     const action = SexAction.lookup(result.getSexAction());
-    const playerHealth = HealthComponent.lookup($player);
-    const partnerHealth = HealthComponent.lookup($partner);
+    const player = state.getPlayer();
+    const partner = state.getPartner();
+    const playerHealth = HealthComponent.lookup(player);
+    const partnerHealth = HealthComponent.lookup(partner);
 
     playerHealth.currentStamina -= action.getPlayerStamina();
     partnerHealth.currentStamina -= action.getPartnerStamina();
 
-    HealthComponent.update($player, playerHealth);
-    HealthComponent.update($partner, partnerHealth);
+    HealthComponent.update(player, playerHealth);
+    HealthComponent.update(partner, partnerHealth);
   }
 
   return Object.freeze({
-    getPartner: () => { return $context.T },
-    getPlayer: () => { return $context.P },
-    getContext: () => { return { ...$context }; },
-    getCurrentPosition: () => { return $currentPosition; },
-    getPossibleActions: () => { return [...$possibleActions]; },
-    getAnima: () => { return { ...$anima }; },
-    getAnimus: () => { return { ...$animus }; },
-    getEssenceOfAnger: () => { return $essenceOfAnger },
-    getPartnerScales: () => { return { ...$partnerScales }; },
-    getPreviousPartnerScales: () => { return { ...$previousPartnerScales }; },
-    getPlayerScales: () => { return { ...$playerScales }; },
-    getPreviousPlayerScales: () => { return { ...$previousPlayerScales }; },
-    getPersistedActions: () => { return $persistedActions; },
-    getPreviousAction: () => { return $previousAction; },
+    getState: () => { return state; },
     startTraining,
     endTraining,
     handleSensationResult,
-    updateTrainingScales,
-    determineScaleLevel,
     updateArousal,
     updateStamina,
   });
