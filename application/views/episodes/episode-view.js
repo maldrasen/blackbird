@@ -6,7 +6,7 @@ global.EpisodeView = (function() {
   }
 
   function show() {
-    const episode = Episode.lookup(EpisodeController.getEpisodeCode())
+    const episode = EpisodeController.getEpisode();
 
     MainContent.setMainContent(episode.getContent());
     MainContent.setBackground(episode.getBackground());

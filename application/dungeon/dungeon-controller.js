@@ -1,29 +1,21 @@
 global.DungeonController = (function() {
 
-  let $currentFloor;
-
-  function clear() {
-    $currentFloor = null;
-  }
+  let state;
 
   // The floor might not always be one, if we are loading a game rather than starting a fresh dungeon.
   // Should be fine for now though.
   function createDungeon() {
-    clear();
-    changeFloor(1);
+    state = DungeonState();
   }
 
-  function changeFloor(level) {
+  function changeLevel(level) {
     Console.log("Building Dungeon",{ system:'DungeonController', level:1, data:{ level }});
-
-    $currentFloor = FloorFactory.build(level);
-
-    console.log(`Current Floor: ${$currentFloor.getLevel()}/${$currentFloor.getTheme()}`)
+    state.changeLevel(level);
   }
 
   return Object.freeze({
     createDungeon,
-    changeFloor,
+    changeLevel,
   });
 
 })();

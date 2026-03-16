@@ -8,15 +8,14 @@ Episode.register('propose-training',{
 });
 
 function endProposition() {
-  const partner = EpisodeController.getContext().T;
-  const state = EpisodeController.getState();
+  const partner = EpisodeController.getPartner();
 
   // If no alternative has been set then we return to the previous mode,
   // otherwise we need to somehow adjust the training state before the training
   // begins. We can probably send context like that in the command so it
   // shouldn't be a problem. Stuff like bondage and grappling will need to be
   // implemented first, as forcing your partner is essentially combat with them.
-  if (state.attitude === TrainingAttitude.unwilling) {
+  if (EpisodeController.getPropertyValue('attitude') === TrainingAttitude.unwilling) {
     return StateMachine.returnToPreviousMode();
   }
 
@@ -24,13 +23,12 @@ function endProposition() {
 }
 
 function generateContent() {
-  const context = EpisodeController.getContext()
-  const personality = Personality(context.T);
+  const personality = Personality(EpisodeController.getPartner());
   const archetype = personality.getArchetype();
   const attitude = personality.attitudeTowardsTraining();
-  const template = Dialog.lookupTemplate(archetype, getDialogKey(attitude), context)
+  const template = Dialog.lookupTemplate(archetype, getDialogKey(attitude), EpisodeController.getContext());
 
-  EpisodeController.setStateProperty('attitude',attitude);
+  EpisodeController.setPropertyValue('attitude',attitude);
 
   if (attitude !== TrainingAttitude.unwilling) {
     return `<p>${template}</p>`
