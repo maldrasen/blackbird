@@ -99,7 +99,7 @@ global.TrainingCategoryToggles = (function() {
     }
 
     adjustTogglesClass(toggles.getAttribute('id'));
-    adjustVisibleActions();
+    applyToggleFilters();
   }
 
   function adjustTogglesClass(id) {
@@ -116,7 +116,7 @@ global.TrainingCategoryToggles = (function() {
     }
   }
 
-  function adjustVisibleActions() {
+  function applyToggleFilters() {
     const isPlayer = displayedToggles() === "playerToggles";
     const mainCategories = getActiveTogglesWithin('mainToggles');
     const consentCategories = getActiveTogglesWithin('consentToggles');
@@ -168,6 +168,7 @@ global.TrainingCategoryToggles = (function() {
   return Object.freeze({
     init,
     build,
+    applyToggleFilters,
   });
 
 })();

@@ -49,6 +49,8 @@ global.TrainingActionPanel = (function() {
       // because of a bug I'm too lazy to fix right now.
       X.addClass(link, consentResult.getConsentClassname());
     });
+
+    TrainingCategoryToggles.applyToggleFilters();
   }
 
   function actionClicked(event) {
