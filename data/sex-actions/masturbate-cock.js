@@ -11,7 +11,7 @@ SexAction.register('masturbate-cock',{
   playerStamina: -10,
   partnerStamina: 60,
 
-  persist: { action:'masturbate-cock', revert:'nothing', when:Consent.willing },
+  persist: { action:'masturbate-cock', revert:_nothing, when:Consent.willing },
   uses: {
     player: [],
     partner: [TrainingSlot.cock, TrainingSlot.hands],

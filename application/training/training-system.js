@@ -49,6 +49,11 @@ global.TrainingSystem = (function() {
     StateMachine.setDeltaTime(sexAction.getTime());
 
     TrainingController.handleSensationResult(result);
+    TrainingController.checkPersistedActions(sexAction);
+    TrainingController.persistAction(sexAction, result.getConsent());
+
+    TrainingView.update();
+    TrainingOutput.show(result);
   }
 
   function endTraining(command) {

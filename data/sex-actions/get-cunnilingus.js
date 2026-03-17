@@ -11,7 +11,7 @@ SexAction.register('get-cunnilingus',{
   playerStamina: 60,
   partnerStamina: 70,
 
-  persist: { action:'get-cunnilingus', revert:'nothing', when:Consent.reluctant },
+  persist: { action:'get-cunnilingus', revert:_nothing, when:Consent.reluctant },
   uses: {
     player: [TrainingSlot.pussy],
     partner: [TrainingSlot.mouth],

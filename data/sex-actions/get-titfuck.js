@@ -13,7 +13,7 @@ SexAction.register('get-titfuck',{
 
   requires:['T:breasts-at-least-big'],
 
-  persist: { action:'get-titfuck', revert:'nothing', when:Consent.reluctant },
+  persist: { action:'get-titfuck', revert:_nothing, when:Consent.reluctant },
   uses: {
     player: [TrainingSlot.cock],
     partner: [TrainingSlot.breasts, TrainingSlot.hands],

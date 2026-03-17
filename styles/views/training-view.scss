@@ -127,6 +127,34 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
     padding: 10px 10px 0;
     #persistedActionScroll { max-height: 200px; }
     #persistedActions { padding: 10px; }
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    .list-header {
+      font-size: variables.$fs-bigger;
+    }
+
+    .persisted-action-item {
+      display: flex;
+      padding: 10px;
+      border: variables.$border-light;
+      background-color: rgb(20,25,30);
+
+      .name {
+        font-size: variables.$fs-big;
+        font-family: 'roboto-bold', sans-serif;
+      }
+
+      // Temp
+      .uses {
+        font-family: 'roboto-mono', monospace;
+        color: variables.$fg-weak;
+      }
+
+      .spacer { flex-grow:1; }
+    }
   }
 
   #actionRow {

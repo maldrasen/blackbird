@@ -156,6 +156,7 @@
     "application/views/training/training-action-panel.js",
     "application/views/training/training-category-toggles.js",
     "application/views/training/training-output.js",
+    "application/views/training/training-persisted-actions-panel.js",
     "application/views/training/training-scales-panel.js",
     "application/views/training/training-status-panel.js",
     "application/views/training/training-view.js",

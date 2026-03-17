@@ -21,9 +21,6 @@ global.TrainingController = (function() {
     state.updateTrainingScales(result);
     updateStamina(result);
     updateArousal(result);
-
-    TrainingView.update();
-    TrainingOutput.show(result);
   }
 
   // The desire generated should cause the arousal to increase or decrease. The goal is to keep arousal value floating
@@ -119,6 +116,36 @@ global.TrainingController = (function() {
     HealthComponent.update(partner, partnerHealth);
   }
 
+  function checkPersistedActions(sexAction) {
+    const actionUses = sexAction.getUses();
+    console.log("=== Check Persisted Actions ===");
+    console.log("Action Uses:",actionUses);
+    state.getPersistedActions().forEach(persistedAction => {
+      console.log(`Persisted:${persistedAction.getName()}`);
+    });
+  }
+
+  function persistAction(sexAction, consentResult) {
+    const persistData = sexAction.getPersist();
+    if (persistData == null) { return false; }
+
+    let persistCode = persistData.action;
+    if (persistData.revert && persistData.when) {
+      if (consentResult.getConsent() <= persistData.when) {
+        persistCode = persistData.revert;
+      }
+    }
+
+    if (persistCode === _nothing) { return false; }
+
+    state.addPersistedAction(persistCode);
+  }
+
+  function removePersistedAction(code) {
+    state.removePersistedAction(code);
+    TrainingPersistedActionsPanel.update();
+  }
+
   return Object.freeze({
     getState: () => { return state; },
     startTraining,
@@ -126,6 +153,9 @@ global.TrainingController = (function() {
     handleSensationResult,
     updateArousal,
     updateStamina,
+    checkPersistedActions,
+    persistAction,
+    removePersistedAction,
   });
 
 })();

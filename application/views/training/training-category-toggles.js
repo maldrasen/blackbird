@@ -65,7 +65,7 @@ global.TrainingCategoryToggles = (function() {
     X.removeClass('#partnerToggles','hide');
     X.addClass('#showPlayerToggles','hide');
     X.addClass('#playerToggles','hide');
-    adjustVisibleActions();
+    applyToggleFilters();
   }
 
   function showPartnerToggles() {
@@ -74,7 +74,7 @@ global.TrainingCategoryToggles = (function() {
     X.removeClass('#playerToggles','hide');
     X.addClass('#showPartnerToggles','hide');
     X.addClass('#partnerToggles','hide');
-    adjustVisibleActions();
+    applyToggleFilters();
   }
 
   function resetToggles() {

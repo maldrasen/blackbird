@@ -11,7 +11,7 @@ SexAction.register('get-handjob',{
   playerStamina: 60,
   partnerStamina: 50,
 
-  persist: { action:'get-handjob', revert:'nothing', when:Consent.reluctant },
+  persist: { action:'get-handjob', revert:_nothing, when:Consent.reluctant },
   uses: {
     player: [TrainingSlot.cock],
     partner: [TrainingSlot.hands],

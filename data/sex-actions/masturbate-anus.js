@@ -11,7 +11,7 @@ SexAction.register('masturbate-anus',{
   playerStamina: -10,
   partnerStamina: 70,
 
-  persist: { action:'masturbate-anus', revert:'nothing', when:Consent.willing },
+  persist: { action:'masturbate-anus', revert:_nothing, when:Consent.willing },
   uses: {
     player: [],
     partner: [TrainingSlot.ass, TrainingSlot.hands],

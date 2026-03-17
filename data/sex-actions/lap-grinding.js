@@ -1,5 +1,7 @@
 SexAction.register('lap-grinding',{
   name: 'Grinding',
+  persistedName: `Grinding on your Cock`,
+
   mainCategory: SexAction.MainCategory.performance,
   playerCategory: SexAction.PartCategory.cock,
   partnerCategory: SexAction.PartCategory.ass,

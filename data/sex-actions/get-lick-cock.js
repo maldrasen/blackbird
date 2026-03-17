@@ -11,7 +11,7 @@ SexAction.register('get-lick-cock',{
   playerStamina: 40,
   partnerStamina: 60,
 
-  persist: { action:'get-lick-cock', revert:'nothing', when:Consent.willing },
+  persist: { action:'get-lick-cock', revert:_nothing, when:Consent.willing },
   uses: {
     player: [TrainingSlot.cock],
     partner: [TrainingSlot.mouth],

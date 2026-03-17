@@ -1,9 +1,10 @@
 global.TrainingState = function(data) {
 
   let previousAction;
+  let persistedActions = [];
   let currentPosition = 'standing'
-  let essenceOfAnger = 0;
 
+  let essenceOfAnger = 0;
   const anima = {};
   const animus = {};
 
@@ -32,7 +33,6 @@ global.TrainingState = function(data) {
   };
 
   const possibleActions = SexAction.getPossible(context);
-  const persistedActions = [];
 
   // We need to check for anima overflow as the scales are updated.
   function updateTrainingScales(result) {
@@ -64,6 +64,14 @@ global.TrainingState = function(data) {
     });
   }
 
+  // I feel like I have an irrational hatred of JavaScript's splice function,
+  // but it's the only way to remove an array element.
+  function removePersistedAction(code) {
+    const index = persistedActions.findIndex(action => action.getCode() === code);
+    if (index < 0) { throw `Action:${code} has not been persisted.` }
+    persistedActions.splice(index, 1);
+  }
+
   return Object.freeze({
     getPlayer: () => { return player; },
     getPartner: () => { return partner; },
@@ -83,7 +91,10 @@ global.TrainingState = function(data) {
     setPreviousAction: action => { previousAction = action; },
     getPreviousAction: () => { return previousAction; },
 
+    addPersistedAction: code => { persistedActions.push(PersistedAction(code, {...context})); },
     getPersistedActions: () => { return persistedActions; },
+    removeAllPersistedActions: () => { persistedActions = []; },
+    removePersistedAction,
 
     updateTrainingScales,
   });

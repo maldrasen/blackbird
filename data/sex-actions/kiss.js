@@ -11,7 +11,7 @@ SexAction.register('kiss',{
   playerStamina: 30,
   partnerStamina: 30,
 
-  persist: { action:'kiss', revert:'nothing', when:Consent.willing },
+  persist: { action:'kiss', revert:_nothing, when:Consent.willing },
   uses: {
     player: [TrainingSlot.mouth],
     partner: [TrainingSlot.mouth],
