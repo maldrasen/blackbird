@@ -23,7 +23,6 @@ global.TrainingView = (function() {
   }
 
   function update() {
-    console.log("=== Training View Update ===")
     MainContent.unhalt();
 
     TrainingStatusPanel.update();

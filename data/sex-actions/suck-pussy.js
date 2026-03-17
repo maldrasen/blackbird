@@ -11,7 +11,7 @@ SexAction.register('suck-pussy',{
   playerStamina: 70,
   partnerStamina: 60,
 
-  persist: { action:'suck-nipples' },
+  persist: { action:'suck-pussy' },
   uses: {
     player: [TrainingSlot.mouth],
     partner: [TrainingSlot.pussy],

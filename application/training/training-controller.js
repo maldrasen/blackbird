@@ -117,12 +117,59 @@ global.TrainingController = (function() {
   }
 
   function checkPersistedActions(sexAction) {
-    const actionUses = sexAction.getUses();
-    console.log("=== Check Persisted Actions ===");
-    console.log("Action Uses:",actionUses);
-    state.getPersistedActions().forEach(persistedAction => {
-      console.log(`Persisted:${persistedAction.getName()}`);
+    console.log("=== Checking Persisted Actions ===");
+    [...state.getPersistedActions()].forEach(persistedAction => {
+
+      if (willContinue(persistedAction) === false) {
+        state.removePersistedAction(persistedAction.getCode());
+      }
+
+      if (actionsUseSameSlots(sexAction, persistedAction)) {
+        state.removePersistedAction(persistedAction.getCode());
+      }
     });
+  }
+
+  // TODO: When we stop a persisted action because the action's consent value dropped below the action threshold we
+  //   should set some kind of state value so that we can show something about that in the output. If this action
+  //   reverts to something else, I think we can add it to the persisted actions. The consent might be too low still,
+  //   but we revert new actions the same way.
+
+  // TODO: Other state changes could also change this action. If the persisted action is using a cock, and the cock
+  //   haver has an orgasm, then the action should either stop entirely or change to a post orgasm version.
+
+  function willContinue(persistedAction) {
+    const persistData = persistedAction.getAction().getPersist();
+    if (persistData.revert && persistData.when) {
+      console.log(`Recalculate Consent: ${persistedAction.getCode()}`);
+
+      const consentResult = ConsentResult(state.getPartner(), state.getPlayer());
+      consentResult.setSexAction(persistedAction.getCode());
+      consentResult.applyFactors();
+
+      if (consentResult.getConsent() <= persistData.when) {
+        console.log(` - ${persistedAction.getCode()} Consent Dropped Below Threshold!`)
+        if (persistData.revert !== _nothing) {
+          console.log(`   Revert persisted ${persistData.revert}`);
+          state.addPersistedAction(persistData.revert);
+        }
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // A persisted action can't use the same slots as another action.
+  function actionsUseSameSlots(sexAction, persistedAction) {
+    const actionUses = sexAction.getUses();
+    const persistedUses = persistedAction.getAction().getUses();
+
+    for (let i=0; i<actionUses.player.length; i++) {
+      if (persistedUses.player.includes(actionUses.player[i])) { return true; }}
+    for (let i=0; i<actionUses.partner.length; i++) {
+      if (persistedUses.partner.includes(actionUses.partner[i])) { return true; }}
+
+    return false;
   }
 
   function persistAction(sexAction, consentResult) {
