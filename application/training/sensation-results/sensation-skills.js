@@ -1,5 +1,4 @@
 global.SensationSkills = (function() {
-  const physicalCodes = new Set(AnimusComponent.getProperties());
 
   // Apply other skills like servicing, ravishing, dance, etc.
   function apply(result) {
@@ -76,7 +75,9 @@ global.SensationSkills = (function() {
     }
 
     Object.keys(result.getPlayerHasSensations()).forEach(key => {
-      if (physicalCodes.has(key)) { result.multiplyPlayerSensation(key, label, factor, extra); }
+      if (AnimusComponent.has(key)) {
+        result.multiplyPlayerSensation(key, label, factor, extra);
+      }
     });
   }
 
@@ -124,7 +125,9 @@ global.SensationSkills = (function() {
     }
 
     Object.keys(result.getPartnerHasSensations()).forEach(key => {
-      if (physicalCodes.has(key)) { result.multiplyPartnerSensation(key, label, factor, extra); }
+      if (AnimusComponent.has(key)) {
+        result.multiplyPartnerSensation(key, label, factor, extra);
+      }
     });
   }
 

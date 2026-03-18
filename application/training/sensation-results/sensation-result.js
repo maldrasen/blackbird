@@ -76,23 +76,7 @@ global.SensationResult = function(code, context) {
   Object.keys(playerHas).forEach(key => { response.player[key] = []; });
   Object.keys(partnerHas).forEach(key => { response.partner[key] = []; });
 
-
-  // TODO: Refactoring all this. These functions will have to be called outside of the result class.
-  function applyFactors() {
-    // SensationBaseline.apply();
-    // SensationTechnique.apply();
-    // SensationPerformance.apply();
-    // SensationSkills.apply();
-    // SensationAlignment.apply();
-
-    // This switch statement should ignore some of the consent factors that we don't use.
-    sexAction.getConsentFactors().forEach(factor => {
-      switch (factor.type) {
-        case 'arousal': SensationArousal.apply(factor); break;
-        case 'preference': SensationPreferences.apply(factor); break;
-      }
-    });
-  }
+  let persistedActions;
 
   // =============================================
   //   Sensation Result : Apply Training Scales
@@ -213,6 +197,10 @@ global.SensationResult = function(code, context) {
     getPlayer: () => { return player; },
     getPartner: () => { return partner; },
     getSexAction: () => { return sexAction; },
+
+    setPersistedActions: actions => { persistedActions = actions; },
+    getPersistedActions: () => { return persistedActions },
+
     getPlayerHasSensations: () => { return playerHas; },
     getPartnerHasSensations: () => { return partnerHas; },
     getPlayerSensations,
@@ -221,10 +209,33 @@ global.SensationResult = function(code, context) {
     addPartnerSensation,
     multiplyPartnerSensation,
     multiplyPlayerSensation,
+
     addToPlayerSkills: skill => { skillsUsed.player.add(skill); },
     addToPartnerSkills: skill => { skillsUsed.partner.add(skill); },
     getSkillsUsed,
+
     getResponse,
   });
+}
 
+SensationResult.build = function(code, persistedActions, context) {
+  const result = SensationResult(code, context);
+  result.setPersistedActions(persistedActions);
+
+  SensationBaseline.apply(result);
+  SensationTechnique.apply(result);
+  SensationPerformance.apply(result);
+  SensationSkills.apply(result);
+  SensationAlignment.apply(result);
+
+  // The consent factor contains some of the same data that can be used to
+  // build the sensations, though not every consent factor is used.
+  result.getSexAction().getConsentFactors().forEach(factor => {
+    switch (factor.type) {
+      case 'arousal': SensationArousal.apply(result, factor); break;
+      case 'preference': SensationPreferences.apply(result, factor); break;
+    }
+  });
+
+  return result;
 }

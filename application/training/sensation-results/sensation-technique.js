@@ -1,5 +1,4 @@
 global.SensationTechnique = (function() {
-  const physicalCodes = new Set(AnimusComponent.getProperties());
 
   // Almost every skill will have a technique roll, either by the player or the partner, or by both if this is a mutual
   // action. In most cases, the technique roll only adds to the physical sensation baselines for the opposite person.
@@ -85,7 +84,7 @@ global.SensationTechnique = (function() {
 
     if (['partner','both'].includes(options.to)) {
       Object.keys(result.getPartnerHasSensations()).forEach(code => {
-        if (value > 0 && physicalCodes.has(code)) {
+        if (value > 0 && AnimusComponent.has(code)) {
           result.addPartnerSensation(code,label,value,extra);
         }
       });
@@ -93,7 +92,7 @@ global.SensationTechnique = (function() {
 
     if (['player','both'].includes(options.to)) {
       Object.keys(result.getPlayerHasSensations()).forEach(code => {
-        if (value > 0 && physicalCodes.has(code)) {
+        if (value > 0 && AnimusComponent.has(code)) {
           result.addPlayerSensation(code,label,value,extra);
         }
       });

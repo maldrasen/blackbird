@@ -1,5 +1,4 @@
 global.SensationArousal = (function() {
-  const physicalCodes = new Set(AnimusComponent.getProperties());
 
   // Arousal should be between 1-100, so we translate that into a simple 1-2 factor. The arousal factor increases all
   // physical sensations. In the partner character high arousal increases submission and comfort, and decreases anger.
@@ -16,12 +15,12 @@ global.SensationArousal = (function() {
     }
 
     Object.keys(result.getPlayerHasSensations()).forEach(key => {
-      if (physicalCodes.has(key)) {
+      if (AnimusComponent.has(key)) {
         result.multiplyPlayerSensation(key, 'Arousal', playerFactor); }
     });
 
     Object.keys(result.getPartnerHasSensations()).forEach(key => {
-      if (physicalCodes.has(key)) {
+      if (AnimusComponent.has(key)) {
         result.multiplyPartnerSensation(key, 'Arousal', partnerFactor); }
       if (['submission','comfort'].includes(key)) {
         result.multiplyPartnerSensation(key, 'Arousal', partnerFactor); }

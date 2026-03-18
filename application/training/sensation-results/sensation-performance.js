@@ -1,5 +1,4 @@
 global.SensationPerformance = (function() {
-  const physicalCodes = new Set(AnimusComponent.getProperties());
 
   // The performance skill is applied automatically when a person is receiving an action. The performance always adds a
   // slight bonus to the desire received. The performance skill is only increased by performance specific actions.
@@ -58,7 +57,7 @@ global.SensationPerformance = (function() {
       // skill check value to their physical sensations. Technique could crit
       // as well leading to massive baseline sensations for performances.
       Object.keys(result.getPartnerHasSensations()).forEach(key => {
-        if (physicalCodes.has(key)) { result.addPartnerSensation(key, label, value/2, extra); }
+        if (AnimusComponent.has(key)) { result.addPartnerSensation(key, label, value/2, extra); }
       });
     }
     if (check.fumble) {
