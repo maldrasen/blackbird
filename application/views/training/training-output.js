@@ -8,9 +8,9 @@ global.TrainingOutput = (function() {
     const personality = PersonalityComponent.lookup(context.T);
     const archetype = Archetype.lookup(personality.archetype);
 
-    context.consent = sensationResult.getConsent().getConsent();
+    context.consent = sensationResult.getConsentResult().getConsent();
 
-    const template = Dialog.lookupTemplate(archetype.getSexStyle(),action,context);
+    const template = Dialog.lookupTemplate(archetype.getSexStyle(),action.getCode(),context);
     const text = Weaver(context).weave(template)
 
     const output = X.createElement(`<div id='trainingOutput'></div>`);

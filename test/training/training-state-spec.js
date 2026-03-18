@@ -8,8 +8,7 @@ describe("TrainingState", function() {
         arousal:{ arousal:50 },
         feelings:{ respect:170 },
       });
-      const result = SensationResult('get-blowjob',context);
-      result.applyFactors();
+      const result = SensationResult.build('get-blowjob',[],context);
 
       const state = TrainingState({ player:context.P, partner:context.T });
       state.updateTrainingScales(result);

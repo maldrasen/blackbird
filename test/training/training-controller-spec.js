@@ -9,8 +9,7 @@ describe("TrainingController", function() {
         { health:{ currentStamina:20 }, arousal:{ arousal:20 }, feelings:{ affection:200, respect:200 }, preferences:{ 'anal-slut':75 },
       });
 
-      const result = SensationResult('finger-anus',context);
-      result.applyFactors();
+      const result = SensationResult.build('finger-anus',[],context);
 
       TrainingController.startTraining({ player:context.P, partner:context.T });
       TrainingController.updateArousal(result);

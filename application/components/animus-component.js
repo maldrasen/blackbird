@@ -53,6 +53,7 @@ global.AnimusComponent = (function() {
   }
 
   return Object.freeze({
+    has: key => { return $properties.includes(key); },
     hasParent: () => { return false; },
     getProperties: () => { return [...$properties]; },
     createBaseline,

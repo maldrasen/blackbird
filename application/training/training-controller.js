@@ -17,7 +17,7 @@ global.TrainingController = (function() {
   }
 
   function handleSensationResult(result) {
-    state.setPreviousAction(result.getSexAction());
+    state.setPreviousAction(result.getSexAction().getCode());
     state.updateTrainingScales(result);
     updateStamina(result);
     updateArousal(result);
@@ -103,7 +103,7 @@ global.TrainingController = (function() {
 
   // For now, we can just subtract the action stamina cost from the current staminas.
   function updateStamina(result) {
-    const action = SexAction.lookup(result.getSexAction());
+    const action = result.getSexAction();
     const player = state.getPlayer();
     const partner = state.getPartner();
     const playerHealth = HealthComponent.lookup(player);

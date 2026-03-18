@@ -36,10 +36,9 @@ global.TrainingSystem = (function() {
 
   function handleSexAction(command) {
     const code = command.getValue('code');
-    const result = SensationResult(code,TrainingController.getState().getContext());
-    const sexAction = SexAction.lookup(result.getSexAction());
-
-    result.applyFactors();
+    const state = TrainingController.getState()
+    const result = SensationResult.build(code, state.getPersistedActions(), state.getContext());
+    const sexAction = result.getSexAction();
 
     Console.log(`Executing SexAction`,{ system:'TrainingSystem', data:{
       partner: result.getPartnerSensations(),
@@ -50,7 +49,7 @@ global.TrainingSystem = (function() {
 
     TrainingController.handleSensationResult(result);
     TrainingController.checkPersistedActions(sexAction);
-    TrainingController.persistAction(sexAction, result.getConsent());
+    TrainingController.persistAction(sexAction, result.getConsentResult());
 
     TrainingView.update();
     TrainingOutput.show(result);
