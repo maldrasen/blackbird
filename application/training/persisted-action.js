@@ -1,10 +1,10 @@
 global.PersistedAction = function(code, context) {
-  const action = SexAction.lookup(code);
-  const playerParts = action.getUses().player;
-  const partnerParts = action.getUses().partner;
+  const sexAction = SexAction.lookup(code);
+  const playerParts = sexAction.getUses().player;
+  const partnerParts = sexAction.getUses().partner;
 
   function getName() {
-    return Weaver(context).weave(action.getPersistedName());
+    return Weaver(context).weave(sexAction.getPersistedName());
   }
 
   function usesParts(player, partner) {
@@ -16,7 +16,7 @@ global.PersistedAction = function(code, context) {
   return Object.freeze({
     getCode: () => { return code; },
     getName,
-    getAction: () => { return action; },
+    getSexAction: () => { return sexAction; },
     getPlayerParts: () => { return [...playerParts] },
     getPartnerParts: () => { return [...partnerParts] },
     usesParts,

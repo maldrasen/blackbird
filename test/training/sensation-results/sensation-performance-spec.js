@@ -3,11 +3,11 @@ describe("SensationPerformance", function() {
   it('when normal performance focused action', function() {
     Random.stubBetween(50,10);
 
-    const context = TrainingFixtures.standardTrainingContext({},{
+    const state = TrainingFixtures.standardTrainingState({},{
       skills: { performance:20 },
       feelings: { respect:150 }});
 
-    const result = SensationResult('striptease', context);
+    const result = SensationResult('striptease', state);
     SensationBaseline.apply(result);
     SensationPerformance.apply(result);
 
@@ -19,11 +19,11 @@ describe("SensationPerformance", function() {
     Random.stubBetween(99); // Technique Roll
     Random.stubBetween(99); // Performance Roll
 
-    const context = TrainingFixtures.standardTrainingContext({},{
+    const state = TrainingFixtures.standardTrainingState({},{
       skills: { performance:20 },
       feelings: { respect:400 }});
 
-    const result = SensationResult('masturbate-pussy', context);
+    const result = SensationResult('masturbate-pussy', state);
     SensationBaseline.apply(result);
     SensationTechnique.apply(result);
     SensationPerformance.apply(result);
@@ -38,11 +38,11 @@ describe("SensationPerformance", function() {
   it('when performance focused action fumbles', function() {
     Random.stubBetween(1);
 
-    const context = TrainingFixtures.standardTrainingContext({},{
+    const state = TrainingFixtures.standardTrainingState({},{
       skills: { performance:20 },
       feelings: { respect:400 }});
 
-    const result = SensationResult('masturbate-pussy', context);
+    const result = SensationResult('masturbate-pussy', state);
     SensationBaseline.apply(result);
     SensationPerformance.apply(result);
 
@@ -59,11 +59,11 @@ describe("SensationPerformance", function() {
     Random.stubBetween(50,10); // Technique Roll
     Random.stubBetween(50,12); // Performance Roll
 
-    const context = TrainingFixtures.standardTrainingContext({},{
+    const state = TrainingFixtures.standardTrainingState({},{
       skills: { performance:20 },
       feelings: { respect:200 }});
 
-    const result = SensationResult('lap-dance', context);
+    const result = SensationResult('lap-dance', state);
     SensationBaseline.apply(result);
     SensationTechnique.apply(result);
     SensationPerformance.apply(result);
@@ -76,11 +76,11 @@ describe("SensationPerformance", function() {
     Random.stubBetween(50,10); // Technique Roll
     Random.stubBetween(99);    // Performance Roll
 
-    const context = TrainingFixtures.standardTrainingContext({},{
+    const state = TrainingFixtures.standardTrainingState({},{
       skills: { performance:20 },
       feelings: { respect:200 }});
 
-    const result = SensationResult('lap-dance', context);
+    const result = SensationResult('lap-dance', state);
     SensationBaseline.apply(result);
     SensationTechnique.apply(result);
     SensationPerformance.apply(result);
@@ -102,11 +102,11 @@ describe("SensationPerformance", function() {
   it('when normal action with default performance', function() {
     Random.stubBetween(50,10);
 
-    const context = TrainingFixtures.standardTrainingContext({},{
+    const state = TrainingFixtures.standardTrainingState({},{
       skills: { performance:20 },
       feelings: { affection:180, respect:180 }});
 
-    const result = SensationResult('fondle-breasts', context);
+    const result = SensationResult('fondle-breasts', state);
     SensationBaseline.apply(result);
     SensationPerformance.apply(result);
 
@@ -119,11 +119,11 @@ describe("SensationPerformance", function() {
   it('when normal action with reluctant consent', function() {
     Random.stubBetween(50,10);
 
-    const context = TrainingFixtures.standardTrainingContext({},{
+    const state = TrainingFixtures.standardTrainingState({},{
       skills: { performance:20 },
       feelings: { affection:140, respect:140 }});
 
-    const result = SensationResult('fondle-breasts', context);
+    const result = SensationResult('fondle-breasts', state);
     SensationBaseline.apply(result);
     SensationPerformance.apply(result);
 
@@ -135,11 +135,11 @@ describe("SensationPerformance", function() {
   it('when normal action with fumbled performance', function() {
     Random.stubBetween(1);
 
-    const context = TrainingFixtures.standardTrainingContext({},{
+    const state = TrainingFixtures.standardTrainingState({},{
       skills: { performance:20 },
       feelings: { affection:180, respect:180 }});
 
-    const result = SensationResult('fondle-breasts', context);
+    const result = SensationResult('fondle-breasts', state);
     SensationBaseline.apply(result);
     SensationPerformance.apply(result);
 

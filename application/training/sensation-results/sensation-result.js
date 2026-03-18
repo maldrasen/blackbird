@@ -4,15 +4,28 @@
  * modules to have their effects applied.
  *
  * @param {string} code - Sex action code
- * @param {object} context - Sex action context { T:partner, P:player }
+ * @param {object} state - TrainingState
  */
-global.SensationResult = function(code, context) {
+global.SensationResult = function(code, state) {
+  const context = state.getContext();
+  const persistedActions = state.getPersistedActions();
+  const previousAction = state.getPreviousAction();
+
   const player = context.P;
   const partner = context.T;
 
+  // We include the sensations that the sex action influences.
   const sexAction = SexAction.lookup(code);
   const partnerSensations = Object.keys(sexAction.getPartnerSensations());
   const playerSensations = Object.keys(sexAction.getPlayerSensations());
+
+  // We also include the sensations that the persisted actions influence.
+  persistedActions.forEach(persistedAction => {
+    Object.keys(persistedAction.getSexAction().getPartnerSensations()).forEach(code => {
+      if (partnerSensations.includes(code) === false) { partnerSensations.push(code); }});
+    Object.keys(persistedAction.getSexAction().getPlayerSensations()).forEach(code => {
+      if (playerSensations.includes(code) === false) { playerSensations.push(code); }});
+  });
 
   // Only add sensation to parts the character actually has. This is important for anal actions that might include
   // prostate stimulus, or actions like a lap dance that has both cock and pussy sensations. (Sensations and part
@@ -75,9 +88,6 @@ global.SensationResult = function(code, context) {
 
   Object.keys(playerHas).forEach(key => { response.player[key] = []; });
   Object.keys(partnerHas).forEach(key => { response.partner[key] = []; });
-
-  let previousAction;
-  let persistedActions;
 
   // ================================
   //   Sensation Result : Response
@@ -168,10 +178,7 @@ global.SensationResult = function(code, context) {
     getPlayer: () => { return player; },
     getPartner: () => { return partner; },
     getSexAction: () => { return sexAction; },
-
-    setPreviousAction: action => { previousAction = action; },
     getPreviousAction: () => { return previousAction; },
-    setPersistedActions: actions => { persistedActions = actions; },
     getPersistedActions: () => { return persistedActions },
 
     getPlayerHasSensations: () => { return playerHas; },
@@ -192,9 +199,7 @@ global.SensationResult = function(code, context) {
 }
 
 SensationResult.build = function(code, state) {
-  const result = SensationResult(code, state.getContext());
-  result.setPersistedActions(state.getPersistedActions());
-  result.setPreviousAction(state.getPreviousAction());
+  const result = SensationResult(code, state);
 
   SensationBaseline.apply(result);
   SensationTechnique.apply(result);

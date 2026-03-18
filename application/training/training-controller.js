@@ -139,7 +139,7 @@ global.TrainingController = (function() {
   //   haver has an orgasm, then the action should either stop entirely or change to a post orgasm version.
 
   function willContinue(persistedAction) {
-    const persistData = persistedAction.getAction().getPersist();
+    const persistData = persistedAction.getSexAction().getPersist();
     if (persistData.revert && persistData.when) {
       console.log(`Recalculate Consent: ${persistedAction.getCode()}`);
 
@@ -162,7 +162,7 @@ global.TrainingController = (function() {
   // A persisted action can't use the same slots as another action.
   function actionsUseSameSlots(sexAction, persistedAction) {
     const actionUses = sexAction.getUses();
-    const persistedUses = persistedAction.getAction().getUses();
+    const persistedUses = persistedAction.getSexAction().getUses();
 
     for (let i=0; i<actionUses.player.length; i++) {
       if (persistedUses.player.includes(actionUses.player[i])) { return true; }}

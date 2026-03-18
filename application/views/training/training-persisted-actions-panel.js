@@ -22,7 +22,7 @@ global.TrainingPersistedActionsPanel = (function() {
     const partnerActions = [];
 
     actions.forEach(persistedAction => {
-      const acting = persistedAction.getAction().getActingCharacter();
+      const acting = persistedAction.getSexAction().getActingCharacter();
       acting === 'player' ? playerActions.push(persistedAction) : partnerActions.push(persistedAction);
     });
 
@@ -49,7 +49,7 @@ global.TrainingPersistedActionsPanel = (function() {
   function buildPersistedActionItem(persistedAction) {
     return X.createElement(`<li class='persisted-action-item' data-code='${persistedAction.getCode()}'>
       <div class='name'>${persistedAction.getName()}</div>
-      <div class='uses'>${JSON.stringify(persistedAction.getAction().getUses())}</div>
+      <div class='uses'>${JSON.stringify(persistedAction.getSexAction().getUses())}</div>
       <div class='spacer'></div>
       <div><a href='#' class='stop-action button button-danger button-small'>Stop</a></div>
     </li>`);

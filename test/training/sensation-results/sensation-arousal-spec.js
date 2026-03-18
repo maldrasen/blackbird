@@ -1,11 +1,11 @@
 describe("SensationArousal", function() {
 
   it("applies arousal",function() {
-    const context = TrainingFixtures.standardTrainingContext(
+    const state = TrainingFixtures.standardTrainingState(
       { arousal: { arousal:25 }},
       { arousal: { arousal:75 }, feelings:{ affection:400, respect:600 } });
 
-    const result = SensationResult('get-deepthroat', context);
+    const result = SensationResult('get-deepthroat', state);
     SensationBaseline.apply(result);
     SensationArousal.apply(result, { strength:0.8 });
 
