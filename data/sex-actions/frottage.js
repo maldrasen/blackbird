@@ -13,7 +13,7 @@ SexAction.register('frottage',{
 
   persist: { action:'frottage' },
   uses: {
-    player: [TrainingSlot.cock],
+    player: [TrainingSlot.cock, TrainingSlot.hands],
     partner: [TrainingSlot.cock],
   },
 

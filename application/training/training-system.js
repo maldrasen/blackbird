@@ -36,9 +36,18 @@ global.TrainingSystem = (function() {
 
   function handleSexAction(command) {
     const code = command.getValue('code');
-    const state = TrainingController.getState()
-    const result = SensationResult.build(code, state);
-    const sexAction = result.getSexAction();
+    const sexAction = SexAction.lookup(code);
+
+    // Before executing this action we need to check the existing persisted
+    // actions, removing the actions that might interfere with the new action
+    // or should be removed for other reasons.
+    TrainingController.checkPersistedActions(sexAction);
+
+    // We then check the sex position and change it if the next action requires
+    // it. Changing position might also remove some or all persisted actions.
+    TrainingController.checkPosition(sexAction);
+
+    const result = SensationResult.build(code, TrainingController.getState());
 
     Console.log(`Executing SexAction`,{ system:'TrainingSystem', data:{
       partner: result.getPartnerSensations(),
@@ -48,7 +57,6 @@ global.TrainingSystem = (function() {
     StateMachine.setDeltaTime(sexAction.getTime());
 
     TrainingController.handleSensationResult(result);
-    TrainingController.checkPersistedActions(sexAction);
     TrainingController.persistAction(sexAction, result.getConsentResult());
 
     TrainingView.update();
