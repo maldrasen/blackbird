@@ -80,7 +80,6 @@ global.SensationResult = function(code, context) {
   const consentResult = ConsentResult(partner, player);
         consentResult.setSexAction(code);
         consentResult.applyFactors();
-  const consent = consentResult.getConsent();
 
   const skillsUsed = { partner:new Set(), player:new Set() };
   const response = { consent:consentResult, partner:{}, player:{} };
@@ -91,9 +90,9 @@ global.SensationResult = function(code, context) {
 
   // TODO: Refactoring all this. These functions will have to be called outside of the result class.
   function applyFactors() {
-    // applyBaseline();
+    // SensationBaseline.apply();
     // SensationTechnique.apply();
-    applyPerformance();
+    // SensationPerformance.apply();
     applySkills();
     applyAlignment();
 
@@ -104,122 +103,6 @@ global.SensationResult = function(code, context) {
         case 'preference': applyPreference(factor); break;
       }
     });
-  }
-
-
-
-  // === Skills : Performance ==========================================================================================
-
-  // The performance skill is applied automatically when a person is receiving an action. The performance always adds a
-  // slight bonus to the desire received. The performance skill is only increased by performance specific actions.
-  // I don't have any player performance focused actions yet. I'm thinking they might work slightly differently as the
-  // player character may have different skills and abilities than the partner characters.
-  function applyPerformance() {
-    if (partnerSkills.includes('performance')) { return applyPerformanceWhenPartnerFocused(); }
-    if (playerSkills.includes('performance')) { throw `TODO: Implement player performance focused actions.` }
-
-    switch(sexAction.getDirection()) {
-      case ActionDirection.partnerToPlayer:
-        applyPerformanceSkill({ from:'partner', to:'player' }); break;
-      case ActionDirection.partnerToSelf:
-        applyPerformanceSkill({ from:'partner', to:'partner' }); break;
-      case ActionDirection.partnerToBoth:
-        applyPerformanceSkill({ from:'partner', to:'both' }); break;
-      case ActionDirection.playerToPartner:
-        applyPerformanceSkill({ from:'player', to:'partner' }); break;
-      case ActionDirection.playerToSelf:
-        applyPerformanceSkill({ from:'player', to:'player' }); break;
-      case ActionDirection.playerToBoth:
-        applyPerformanceSkill({ from:'player', to:'both' }); break;
-      case ActionDirection.mutual:
-        applyPerformanceSkill({ from:'player', to:'partner' });
-        applyPerformanceSkill({ from:'partner', to:'player' });
-    }
-  }
-
-  // A partner focused performance action that includes playerSensations (like lap-dance) will add the performance
-  // skill roll to the physical sensations as well as increasing desire. Unlike the technique skill there is no
-  // performance target to hit. We can always add the skill check value to the sensations.
-  function applyPerformanceWhenPartnerFocused() {
-    if (consent === Consent.unwilling) { return; }
-
-    skillsUsed.partner.add('performance');
-
-    const check = SkillCheck(partner, 'performance');
-
-    let value = (consent === Consent.reluctant ? 0.5 : 1) * check.value;
-    let label = 'Performance'
-    let extra;
-
-    if (check.crit) {
-      value *= 2;
-      label = 'Excellent Performance';
-      extra = 'crit';
-
-      // If a partner crits their performance focused action, this adds the
-      // skill check value to their physical sensations. Technique could crit
-      // as well leading to massive baseline sensations for performances.
-      Object.keys(partnerHas).forEach(key => {
-        if (physicalCodes.has(key)) { addPartnerSensation(key, label, value/2, extra); }
-      });
-    }
-    if (check.fumble) {
-      value = 0;
-      label = 'Terrible Performance';
-      extra = 'fumble';
-
-      // If a partner fumbles their performance focused action, this generates
-      // a large amount of shame and embarrassment.
-      addPartnerSensation('shame',label,80,extra);
-    }
-
-    // Performance focused actions (like masturbate) usually don't have player
-    // sensations other than desire. When they do (like lap dance) I want
-    // performance to effect all of these values as well, though desire has
-    // twice the effect.
-    Object.keys(playerHas).forEach(key => {
-      if (value > 0) { addPlayerSensation(key, label, (key === 'desire' ? value*2 : value), extra); }
-    });
-  }
-
-  // The applyPerformance() method is the opposite of the technique function because the 'to' entity is the character
-  // doing the performing to the 'from' entity performing the action. A critical performance doesn't really do anything
-  // but increase the desire in the acting character.
-  function applyPerformanceSkill(options) {
-    let consentFactor = 1;
-
-    // Partner performance will suffer if consent is less than willing.
-    // Player performance bonus to desire is unaffected by consent.
-    if (sexAction.getDirection() !== ActionDirection.playerToSelf) {
-      if (consent === Consent.unwilling) { return; }
-      if (consent === Consent.reluctant) { consentFactor = 0.5; }
-    }
-
-    const performingEntity = options.to === 'partner' ? partner : player;
-    const check = SkillCheck(performingEntity, 'performance');
-
-    let value = consentFactor * (check.value / 2);
-    let label = 'Performance';
-    let extra = null;
-
-    if (check.crit) {
-      value *= 2;
-      label = 'Excellent Performance';
-      extra = 'crit';
-    }
-    if (check.fumble) {
-      value = 0;
-      label = 'Terrible Performance';
-      extra = 'fumble';
-
-      // Only the partner will generate extra shame from a botched performance.
-      if (options.from === 'player') { addPartnerSensation('shame',label,60,extra); }
-    }
-
-    if (value > 0) {
-      if (options.from === 'partner') { addPartnerSensation('desire',label,value,extra); }
-      if (options.from === 'player') { addPlayerSensation('desire',label,value,extra); }
-    }
   }
 
   // ===================================
@@ -614,10 +497,8 @@ global.SensationResult = function(code, context) {
     };
   }
 
-
-
   return Object.freeze({
-    getConsent: () => { return consentResult; },
+    getConsentResult: () => { return consentResult; },
     getContext: () => { return context; },
     getSexAction: () => { return sexAction; },
 
@@ -640,8 +521,6 @@ global.SensationResult = function(code, context) {
 
     getResponse,
 
-    applyFactors,
-    applyPerformance,
     applySkills,
     applyArousal,
     applyPreference,

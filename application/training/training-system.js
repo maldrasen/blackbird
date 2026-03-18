@@ -50,7 +50,7 @@ global.TrainingSystem = (function() {
 
     TrainingController.handleSensationResult(result);
     TrainingController.checkPersistedActions(sexAction);
-    TrainingController.persistAction(sexAction, result.getConsent());
+    TrainingController.persistAction(sexAction, result.getConsentResult());
 
     TrainingView.update();
     TrainingOutput.show(result);

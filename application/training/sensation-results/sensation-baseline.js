@@ -10,7 +10,7 @@ global.SensationBaseline = (function() {
   // submission and shame.
   function apply(result) {
     const sexAction = result.getSexAction();
-    const consent = result.getConsent().getConsent();
+    const consent = result.getConsentResult().getConsent();
     const partnerBaseline = sexAction.getPartnerSensations();
     const playerBaseline = sexAction.getPlayerSensations();
 
