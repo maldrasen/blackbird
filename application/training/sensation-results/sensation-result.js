@@ -85,9 +85,10 @@ global.SensationResult = function(code, context) {
   const skillsUsed = { partner:new Set(), player:new Set() };
   const response = { consent:consentResult, partner:{}, player:{} };
 
+  // TODO: Refactoring all this. These functions will have to be called outside of the result class.
   function applyFactors() {
     applyBaseline();
-    applyTechnique();
+    // SensationTechnique.apply();
     applyPerformance();
     applySkills();
     applyAlignment();
@@ -136,103 +137,6 @@ global.SensationResult = function(code, context) {
   //    Skills : Technique
   // ========================
 
-  // Almost every skill will have a technique roll, either by the player or the partner, or by both if this is a mutual
-  // action. In most cases, the technique roll only adds to the physical sensation baselines for the opposite person.
-  // Crits or fumbles on skill checks could add to the emotional sensation as well though.
-  //
-  // Technique is dex based and has a factor of 1.25, meaning the normal max roll for Technique is 125, if a person has
-  // 100 dex. A high dex score though might be around though, which puts the normal high range for technique at around
-  // 10-38. It should be reasonable to just add the technique skill value directly, double it on a crit, and set it to
-  // 0 on a fumble.
-  function applyTechnique() {
-    switch(sexAction.getDirection()) {
-      case ActionDirection.partnerToPlayer:
-        applyTechniqueSkill({ from:'partner', to:'player' }); break;
-      case ActionDirection.partnerToSelf:
-        applyTechniqueSkill({ from:'partner', to:'partner' }); break;
-      case ActionDirection.partnerToBoth:
-        applyTechniqueSkill({ from:'partner', to:'both' }); break;
-      case ActionDirection.playerToPartner:
-        applyTechniqueSkill({ from:'player', to:'partner' }); break;
-      case ActionDirection.playerToSelf:
-        applyTechniqueSkill({ from:'player', to:'player' }); break;
-      case ActionDirection.playerToBoth:
-        applyTechniqueSkill({ from:'player', to:'both' }); break;
-      case ActionDirection.mutual:
-        applyTechniqueSkill({ from:'player', to:'partner' });
-        applyTechniqueSkill({ from:'partner', to:'player' });
-    }
-  }
-
-  function applyTechniqueSkill(options) {
-    (options.from === 'partner' ? skillsUsed.partner : skillsUsed.player).add('technique');
-
-    const fromEntity = options.from === 'partner' ? partner : player;
-    const check = SkillCheck(fromEntity, 'technique');
-
-    let value = check.value;
-    let label = 'Technique';
-    let extra = null;
-
-    // It's possible to both crit and exceed the technique target by 2, in
-    // which case the sensation value is quadrupled. The anger that may have
-    // been caused by this action is also reduced.
-    if (value > sexAction.getTechniqueTarget() * 2) {
-      label = 'Pleasing Technique'
-      extra = 'good'
-      value *= 2;
-      if (sexAction.directionHasPlayerActingOnPartner()) {
-        multiplyPartnerSensation('anger',label,0.5,extra); }
-    }
-
-    if (value < sexAction.getTechniqueTarget()) {
-      label = 'Poor Technique'
-      extra = 'poor'
-      value /= 2;
-
-      if (sexAction.directionHasPartnerActingOnPlayer()) {
-        addPartnerSensation('shame',label,25,extra); }
-      if (sexAction.directionHasPlayerActingOnPartner()) {
-        addPartnerSensation('anger',label,50,extra); }
-    }
-
-    if (check.crit) {
-      value *= 2;
-      label = 'Excellent Technique';
-      extra = 'crit';
-
-      if (options.to === 'partner') {
-        addPartnerSensation('desire',label,50,extra); }
-      if (options.to === 'player') {
-        addPlayerSensation('desire',label,50,extra); }
-    }
-    if (check.fumble) {
-      value = 0;
-      label = 'Terrible Technique';
-      extra = 'fumble';
-
-      if (options.from === 'partner' && options.to === 'player') {
-        addPartnerSensation('shame',label,50,extra); }
-      if (options.from === 'player' && options.to === 'partner') {
-        addPartnerSensation('anger',label,100,extra); }
-    }
-
-    if (['partner','both'].includes(options.to)) {
-      Object.keys(partnerHas).forEach(code => {
-        if (value > 0 && physicalCodes.has(code)) {
-          addPartnerSensation(code,label,value,extra);
-        }
-      });
-    }
-
-    if (['player','both'].includes(options.to)) {
-      Object.keys(playerHas).forEach(code => {
-        if (value > 0 && physicalCodes.has(code)) {
-          addPlayerSensation(code,label,value,extra);
-        }
-      });
-    }
-  }
 
   // === Skills : Performance ==========================================================================================
 
@@ -740,17 +644,34 @@ global.SensationResult = function(code, context) {
     };
   }
 
+
+
   return Object.freeze({
     getConsent: () => { return consentResult; },
     getContext: () => { return context; },
-    getSexAction: () => { return code; },
-    getSkillsUsed,
-    getResponse,
-    getPartnerSensations,
+    getSexAction: () => { return sexAction; },
+
+    getPlayer: () => { return player; },
+    getPartner: () => { return partner; },
+
     getPlayerSensations,
+    getPartnerSensations,
+    getPlayerHasSensations: () => { return playerHas; },
+    getPartnerHasSensations: () => { return partnerHas; },
+
+    addPlayerSensation,
+    addPartnerSensation,
+    multiplyPartnerSensation,
+    multiplyPlayerSensation,
+
+    addToPlayerSkills: skill => { skillsUsed.player.add(skill); },
+    addToPartnerSkills: skill => { skillsUsed.partner.add(skill); },
+    getSkillsUsed,
+
+    getResponse,
+
     applyFactors,
     applyBaseline,
-    applyTechnique,
     applyPerformance,
     applySkills,
     applyArousal,

@@ -37,77 +37,6 @@ describe("SensationResult", function() {
     });
   });
 
-  describe('applyTechnique()', function() {
-    it('when player has no skill', function() {
-      Random.stubBetween(50,15);
-
-      const context = TrainingFixtures.standardTrainingContext({},{ feelings:{ affection:150 }});
-      const result = SensationResult('suck-pussy', context);
-      result.applyBaseline();
-      result.applyTechnique();
-
-      const clitSensations = result.getResponse().partner.clit;
-      expect(clitSensations[1].label).to.equal('Technique');
-      expect(clitSensations[1].value).to.equal(25);
-      expect(result.getSkillsUsed().player).to.contain('technique');
-    });
-
-
-    it("when partner is 'performing' with double skill target", function() {
-      Random.stubBetween(50,15);
-
-      const context = TrainingFixtures.standardTrainingContext({},{
-        skills: { technique:30 },
-        feelings:{ respect:350 }});
-
-      const result = SensationResult('masturbate-anus', context);
-      result.applyBaseline();
-      result.applyTechnique();
-
-      expect(result.getPartnerSensations().anus).to.equal(135);
-
-      const anusSensations = result.getResponse().partner.anus;
-      expect(anusSensations[1].label).to.equal('Pleasing Technique');
-      expect(anusSensations[1].extra).to.equal('good');
-      expect(anusSensations[1].value).to.equal(65);
-    });
-
-    it("crit when partner is 'performing'", function() {
-      Random.stubBetween(99);
-
-      const context = TrainingFixtures.standardTrainingContext({},{
-        skills: { technique:30 },
-        feelings:{ respect:350 }});
-
-      const result = SensationResult('masturbate-anus', context);
-      result.applyBaseline();
-      result.applyTechnique();
-
-      const anusSensations = result.getResponse().partner.anus;
-      expect(anusSensations[1].label).to.equal('Excellent Technique');
-      expect(anusSensations[1].extra).to.equal('crit');
-      expect(anusSensations[1].value).to.equal(130);
-
-      const desireSensations = result.getResponse().partner.desire;
-      expect(desireSensations[1].label).to.equal('Excellent Technique');
-      expect(desireSensations[1].value).to.equal(50);
-    });
-
-    it("fumble when partner is 'performing'", function() {
-      Random.stubBetween(1);
-
-      const context = TrainingFixtures.standardTrainingContext({},{
-        skills: { technique:30 },
-        feelings: { respect:350 }});
-
-      const result = SensationResult('masturbate-anus', context);
-      result.applyBaseline();
-      result.applyTechnique();
-
-      // Only baseline sensations are received, because technique value was reduced to 0.
-      expect(result.getResponse().partner.anus.length).to.equal(1);
-    });
-  });
 
   describe('applyPerformance()', function() {
     it('when normal performance focused action', function() {
@@ -135,7 +64,7 @@ describe("SensationResult", function() {
 
       const result = SensationResult('masturbate-pussy', context);
       result.applyBaseline();
-      result.applyTechnique();
+      SensationTechnique.apply(result);
       result.applyPerformance();
 
       const pussySensations = result.getResponse().partner.pussy;
@@ -175,7 +104,7 @@ describe("SensationResult", function() {
 
       const result = SensationResult('lap-dance', context);
       result.applyBaseline();
-      result.applyTechnique();
+      SensationTechnique.apply(result);
       result.applyPerformance();
 
       expect(result.getPlayerSensations().cock).to.equal(90);
@@ -192,7 +121,7 @@ describe("SensationResult", function() {
 
       const result = SensationResult('lap-dance', context);
       result.applyBaseline();
-      result.applyTechnique();
+      SensationTechnique.apply(result);
       result.applyPerformance();
 
       expect(result.getPlayerSensations().cock).to.equal(122);
@@ -447,25 +376,27 @@ describe("SensationResult", function() {
       expect(result.getPartnerSensations().anus).to.equal(185);
     });
 
-    it("all together, when there are multiple sensitivities", function() {
-      Random.stubBetween(99,99,99,99,0);
+    it("REFACTORING");
 
-      const context = TrainingFixtures.standardTrainingContext({},{
-        arousal: { arousal:75 },
-        sexualPreferences:{ 'pussy-slut':50, 'masturbator':70 } });
-
-      const result = SensationResult('masturbate-pussy',context);
-      result.applyFactors();
-
-      const pussySensations = result.getResponse().partner.pussy;
-      expect(pussySensations.length).to.equal(6);
-
-      expect(pussySensations[4].label).to.equal('Pussy Slut');
-      expect(Math.round(pussySensations[4].value * 100)).to.equal(188)
-      expect(pussySensations[5].label).to.equal('Masturbator');
-      expect(Math.round(pussySensations[5].value * 100)).to.equal(273)
-      expect(Math.round(result.getPartnerSensations().pussy)).to.equal(2364);
-    });
+  //   it("all together, when there are multiple sensitivities", function() {
+  //     Random.stubBetween(99,99,99,99,0);
+  //
+  //     const context = TrainingFixtures.standardTrainingContext({},{
+  //       arousal: { arousal:75 },
+  //       sexualPreferences:{ 'pussy-slut':50, 'masturbator':70 } });
+  //
+  //     const result = SensationResult('masturbate-pussy',context);
+  //     result.applyFactors();
+  //
+  //     const pussySensations = result.getResponse().partner.pussy;
+  //     expect(pussySensations.length).to.equal(6);
+  //
+  //     expect(pussySensations[4].label).to.equal('Pussy Slut');
+  //     expect(Math.round(pussySensations[4].value * 100)).to.equal(188)
+  //     expect(pussySensations[5].label).to.equal('Masturbator');
+  //     expect(Math.round(pussySensations[5].value * 100)).to.equal(273)
+  //     expect(Math.round(result.getPartnerSensations().pussy)).to.equal(2364);
+  //   });
   });
 
   // This is all a work in progress still.

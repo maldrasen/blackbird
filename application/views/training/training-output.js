@@ -10,7 +10,7 @@ global.TrainingOutput = (function() {
 
     context.consent = sensationResult.getConsent().getConsent();
 
-    const template = Dialog.lookupTemplate(archetype.getSexStyle(),action,context);
+    const template = Dialog.lookupTemplate(archetype.getSexStyle(),action.getCode(),context);
     const text = Weaver(context).weave(template)
 
     const output = X.createElement(`<div id='trainingOutput'></div>`);

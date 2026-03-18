@@ -37,7 +37,7 @@ global.TrainingSystem = (function() {
   function handleSexAction(command) {
     const code = command.getValue('code');
     const result = SensationResult(code,TrainingController.getState().getContext());
-    const sexAction = SexAction.lookup(result.getSexAction());
+    const sexAction = result.getSexAction();
 
     result.applyFactors();
 
