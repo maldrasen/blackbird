@@ -1,10 +1,12 @@
 /**
+ * The sensation result model is used to hold the sensation data for a single sex action performed in a training
+ * session. The SensationResult doesn't do much itself, and needs to be passed to all the other Sensation builder
+ * modules to have their effects applied.
+ *
  * @param {string} code - Sex action code
  * @param {object} context - Sex action context { T:partner, P:player }
  */
 global.SensationResult = function(code, context) {
-  const physicalCodes = new Set(AnimusComponent.getProperties());
-
   const player = context.P;
   const partner = context.T;
 
@@ -64,12 +66,6 @@ global.SensationResult = function(code, context) {
   Object.keys(playerHas).forEach(key => { if (playerHas[key] === false) { delete playerHas[key]; }});
   Object.keys(partnerHas).forEach(key => { if (partnerHas[key] === false) { delete partnerHas[key]; }});
 
-  // Consent Effects
-  // - **Eager** `(> 100)` All the positive sensations from this action get a bonus.
-  // - **Willing** `(25 - 100)` Default value, sensation calculations are normal.
-  // - **Reluctant** `(0 - 25)` When consent is reluctant the positive sensation values are all penalized
-  // - **Unwilling** `(< 0)` Increased negative sensations, anger, fear, etc. And very penalized positive values.
-
   const consentResult = ConsentResult(partner, player);
         consentResult.setSexAction(code);
         consentResult.applyFactors();
@@ -86,137 +82,15 @@ global.SensationResult = function(code, context) {
     // SensationBaseline.apply();
     // SensationTechnique.apply();
     // SensationPerformance.apply();
-    // SensationSkills.apply()
-    applyAlignment();
+    // SensationSkills.apply();
+    // SensationAlignment.apply();
 
     // This switch statement should ignore some of the consent factors that we don't use.
     sexAction.getConsentFactors().forEach(factor => {
       switch (factor.type) {
-        case 'arousal': applyArousal(factor); break;
-        case 'preference': applyPreference(factor); break;
+        case 'arousal': SensationArousal.apply(factor); break;
+        case 'preference': SensationPreferences.apply(factor); break;
       }
-    });
-  }
-
-  // ===================================
-  //    Skills : Servicing, Ravishing
-  // ===================================
-
-
-  // =======================================
-  //   Sensation Result : Apply Alignment
-  // =======================================
-
-  // The sex action alignment refers to where the action falls within our submission, masochism, debasement matrix.
-  // The alignment of an action affects the player's sensations but uses both the player's skill in that BDSM class
-  // and the partner's associated BDSM preference to do so.
-  //
-  // TODO: I really have no idea how all this should really work yet. I think I need to get the game into a more
-  //  playable state before implementing any of these functions.
-  //
-  function applyAlignment() {
-    const alignment = sexAction.getAlignment();
-    const preferences = SexualPreferencesComponent.lookup(partner);
-
-    if (alignment.submission < 0) {
-      // TODO: If this is a servicing action (-1 on submission) generally, we
-      //   don't need to adjust the partner's anger. This should have some kind
-      //   of effect though.
-    }
-
-    if (alignment.submission > 0) {
-      const submissiveFactor = CharacterMath.personalityFactorValue(preferences.submissive);
-      const check = SkillCheck(player, 'domination');
-
-      skillsUsed.player.add('domination');
-
-      if (submissiveFactor < 0) { applyDominationOnTop(alignment.submission, submissiveFactor, check); }
-      if (submissiveFactor === 0) { applyDomination(alignment.submission, submissiveFactor, check); }
-      if (submissiveFactor > 0) { applyDominationOnBottom(alignment.submission, submissiveFactor, check); }
-    }
-
-    if (alignment.masochism > 0) {
-      const masochismFactor = CharacterMath.personalityFactorValue(preferences.masochistic);
-      const check = SkillCheck(player, 'sadism');
-
-      skillsUsed.player.add('sadism');
-
-      if (masochismFactor < 0) { applySadismOnTop(alignment.masochism, masochismFactor, check); }
-      if (masochismFactor === 0) { applySadism(alignment.masochism, masochismFactor, check); }
-      if (masochismFactor > 0) { applySadismOnBottom(alignment.masochism, masochismFactor, check); }
-    }
-
-    if (alignment.shame > 0) {
-      const shameFactor = CharacterMath.personalityFactorValue(preferences['humiliation-slut']);
-      const check = SkillCheck(player, 'degradation');
-
-      skillsUsed.player.add('degradation');
-
-      if (shameFactor < 0) { applyDegradationOnTop(alignment.masochism, shameFactor, check); }
-      if (shameFactor === 0) { applyDegradation(alignment.masochism, shameFactor, check); }
-      if (shameFactor > 0) { applyDegradationOnBottom(alignment.masochism, shameFactor, check); }
-    }
-
-    // TODO: We need to consider the effect affection-slut would have on the
-    //  current action as it too is part of the whole BDSM matrix.
-  }
-
-  // If partner is dominant, they'll struggle to accept a submissive action, and this should dramatically increase
-  // their anger. A player with a high domination skill though should be able to reduce their anger, by being a more
-  // dominant top in this case.
-  function applyDominationOnTop(level, factor, check) {}
-
-  // If partner is neutral (not having a submissive preference) this should still increase anger. A high skill level
-  // though should reduce that anger, redirecting it into shame and suffering perhaps. This should need a skill check
-  // to determine how much anger gets converted.
-  function applyDomination(level, factor, check) {}
-
-  // If the partner is submissive, then the player's domination skill should increase their submission at the very
-  // least. It should also reduce anger and perhaps increase comfort. As domination is more psychological, these
-  // functions shouldn't touch the physical sensations.
-  function applyDominationOnBottom(level, factor, check) {}
-
-  // A player's sadism skill should increase physical sensations, and should increase suffering. Sadistic actions
-  // create a lot of anger unless the player has the masochist preference. Bring good at sadism won't make other people
-  // like it more though.
-  function applySadismOnTop(level, factor, check) {}
-  function applySadism(level, factor, check) {}
-  function applySadismOnBottom(level, factor, check) {}
-
-  // I think the degradation skill is a bit of a halfway between physical and psychological, and should primarily be
-  // about increasing shame. Degradation also causes a lot of anger, but like masochism I think only the
-  // humiliation-slut preference will reduce it.
-  function applyDegradationOnTop(level, factor, check) {}
-  function applyDegradation(level, factor, check) {}
-  function applyDegradationOnBottom(level, factor, check) {}
-
-  // =====================================
-  //   Sensation Result : Apply Arousal
-  // =====================================
-
-  // Arousal should be between 1-100, so we translate that into a simple 1-2 factor. The arousal factor increases all
-  // physical sensations. In the partner character high arousal increases submission and comfort, and decreases anger.
-  function applyArousal(factor) {
-    let partnerFactor = 1 + (ArousalComponent.lookup(partner).arousal / 100);
-    let playerFactor = 1 + (ArousalComponent.lookup(player).arousal / 100);
-
-    if (factor.strength) {
-      partnerFactor *= factor.strength;
-      playerFactor *= factor.strength;
-    }
-
-    Object.keys(playerHas).forEach(key => {
-      if (physicalCodes.has(key)) {
-        multiplyPlayerSensation(key, 'Arousal', playerFactor); }
-    });
-
-    Object.keys(partnerHas).forEach(key => {
-      if (physicalCodes.has(key)) {
-        multiplyPartnerSensation(key, 'Arousal', partnerFactor); }
-      if (['submission','comfort'].includes(key)) {
-        multiplyPartnerSensation(key, 'Arousal', partnerFactor); }
-      if (key === 'anger') {
-        multiplyPartnerSensation(key, 'Arousal', 1/partnerFactor); }
     });
   }
 
@@ -231,33 +105,6 @@ global.SensationResult = function(code, context) {
   // sensitivity is at least a B. Actions that hit the weakness generate slightly more sensation, maybe 25% more or so,
   // and should increase comfort as well. Unless this is a pain causing action, then we get increased pain.
 
-
-  // ================================================
-  //   Sensation Result : Apply Sexual Preferences
-  // ================================================
-
-  function applyPreference(factor) {
-    const preference = SexualPreference.lookup(factor.code);
-    const sensations = preference.getSensations();
-    const preferences = SexualPreferencesComponent.lookup(partner);
-
-    if (preferences[factor.code] == null) { return; }
-    if (sensations == null) { return; }
-
-    const preferenceValue = factor.conflicting ? -1 * preferences[factor.code] : preferences[factor.code]
-
-    let factorValue = CharacterMath.personalityFactorValue(preferenceValue) * (sensations.factor || 1);
-    if (factor.scale) {
-      factorValue = CharacterMath.applyFactorScale(factorValue, factor.scale);
-    }
-
-    (sensations.increase || []).forEach(code => {
-      if (partnerHas[code]) {
-        multiplyPartnerSensation(code, preference.getName(), factorValue);
-      }
-    });
-  }
-
   // ======================================================
   //   Sensation Result : Handle Persisted Action States
   // ======================================================
@@ -270,14 +117,12 @@ global.SensationResult = function(code, context) {
   // sensation values. If this is a follow on action though, (thrusting the dildo from the persisted state) we
   // probably wouldn't use the persisted state's baseline and would use the action's baseline instead.
 
-
   // ===========================================
   //   Sensation Result : Random Bullshit Go!
   // ===========================================
   // There are probably a bunch of other random shit that will end up adjusting these sensations. Body piercings,
   // magic, and drugs could all effect part sensitivities. There are some aspects that will change the way sensations
   // are produced.
-
 
   // ================================
   //   Sensation Result : Response
@@ -365,25 +210,20 @@ global.SensationResult = function(code, context) {
   return Object.freeze({
     getConsentResult: () => { return consentResult; },
     getContext: () => { return context; },
-    getSexAction: () => { return sexAction; },
-
     getPlayer: () => { return player; },
     getPartner: () => { return partner; },
-
-    getPlayerSensations,
-    getPartnerSensations,
+    getSexAction: () => { return sexAction; },
     getPlayerHasSensations: () => { return playerHas; },
     getPartnerHasSensations: () => { return partnerHas; },
-
+    getPlayerSensations,
+    getPartnerSensations,
     addPlayerSensation,
     addPartnerSensation,
     multiplyPartnerSensation,
     multiplyPlayerSensation,
-
     addToPlayerSkills: skill => { skillsUsed.player.add(skill); },
     addToPartnerSkills: skill => { skillsUsed.partner.add(skill); },
     getSkillsUsed,
-
     getResponse,
   });
 

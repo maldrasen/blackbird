@@ -1,156 +1,155 @@
 describe("SensationPerformance", function() {
-  describe('applyPerformance()', function() {
-    it('when normal performance focused action', function() {
-      Random.stubBetween(50,10);
 
-      const context = TrainingFixtures.standardTrainingContext({},{
-        skills: { performance:20 },
-        feelings: { respect:150 }});
+  it('when normal performance focused action', function() {
+    Random.stubBetween(50,10);
 
-      const result = SensationResult('striptease', context);
-      SensationBaseline.apply(result);
-      SensationPerformance.apply(result);
+    const context = TrainingFixtures.standardTrainingContext({},{
+      skills: { performance:20 },
+      feelings: { respect:150 }});
 
-      expect(result.getPlayerSensations().desire).to.equal(65);
-      expect(result.getSkillsUsed().partner).to.contain('performance');
-    });
+    const result = SensationResult('striptease', context);
+    SensationBaseline.apply(result);
+    SensationPerformance.apply(result);
 
-    it('when performance focused action crits', function() {
-      Random.stubBetween(99); // Technique Roll
-      Random.stubBetween(99); // Performance Roll
+    expect(result.getPlayerSensations().desire).to.equal(65);
+    expect(result.getSkillsUsed().partner).to.contain('performance');
+  });
 
-      const context = TrainingFixtures.standardTrainingContext({},{
-        skills: { performance:20 },
-        feelings: { respect:400 }});
+  it('when performance focused action crits', function() {
+    Random.stubBetween(99); // Technique Roll
+    Random.stubBetween(99); // Performance Roll
 
-      const result = SensationResult('masturbate-pussy', context);
-      SensationBaseline.apply(result);
-      SensationTechnique.apply(result);
-      SensationPerformance.apply(result);
+    const context = TrainingFixtures.standardTrainingContext({},{
+      skills: { performance:20 },
+      feelings: { respect:400 }});
 
-      const pussySensations = result.getResponse().partner.pussy;
-      expect(pussySensations[2].label).to.equal('Excellent Performance');
-      expect(pussySensations[2].extra).to.equal('crit');
-      expect(Math.round(pussySensations[2].value)).to.equal(32);
-      expect(result.getPartnerSensations().pussy).to.equal(182);
-    });
+    const result = SensationResult('masturbate-pussy', context);
+    SensationBaseline.apply(result);
+    SensationTechnique.apply(result);
+    SensationPerformance.apply(result);
 
-    it('when performance focused action fumbles', function() {
-      Random.stubBetween(1);
+    const pussySensations = result.getResponse().partner.pussy;
+    expect(pussySensations[2].label).to.equal('Excellent Performance');
+    expect(pussySensations[2].extra).to.equal('crit');
+    expect(Math.round(pussySensations[2].value)).to.equal(32);
+    expect(result.getPartnerSensations().pussy).to.equal(182);
+  });
 
-      const context = TrainingFixtures.standardTrainingContext({},{
-        skills: { performance:20 },
-        feelings: { respect:400 }});
+  it('when performance focused action fumbles', function() {
+    Random.stubBetween(1);
 
-      const result = SensationResult('masturbate-pussy', context);
-      SensationBaseline.apply(result);
-      SensationPerformance.apply(result);
+    const context = TrainingFixtures.standardTrainingContext({},{
+      skills: { performance:20 },
+      feelings: { respect:400 }});
 
-      // Only baseline sensations added to pussy on fumble.
-      expect(result.getResponse().partner.pussy.length).to.equal(1);
+    const result = SensationResult('masturbate-pussy', context);
+    SensationBaseline.apply(result);
+    SensationPerformance.apply(result);
 
-      const shameSensations = result.getResponse().partner.shame;
-      expect(shameSensations[1].extra).to.equal('fumble');
-      expect(shameSensations[1].label).to.equal('Terrible Performance');
-      expect(shameSensations[1].value).to.equal(80);
-    });
+    // Only baseline sensations added to pussy on fumble.
+    expect(result.getResponse().partner.pussy.length).to.equal(1);
 
-    it('when performance focused action with player sensations', function() {
-      Random.stubBetween(50,10); // Technique Roll
-      Random.stubBetween(50,12); // Performance Roll
+    const shameSensations = result.getResponse().partner.shame;
+    expect(shameSensations[1].extra).to.equal('fumble');
+    expect(shameSensations[1].label).to.equal('Terrible Performance');
+    expect(shameSensations[1].value).to.equal(80);
+  });
 
-      const context = TrainingFixtures.standardTrainingContext({},{
-        skills: { performance:20 },
-        feelings: { respect:200 }});
+  it('when performance focused action with player sensations', function() {
+    Random.stubBetween(50,10); // Technique Roll
+    Random.stubBetween(50,12); // Performance Roll
 
-      const result = SensationResult('lap-dance', context);
-      SensationBaseline.apply(result);
-      SensationTechnique.apply(result);
-      SensationPerformance.apply(result);
+    const context = TrainingFixtures.standardTrainingContext({},{
+      skills: { performance:20 },
+      feelings: { respect:200 }});
 
-      expect(result.getPlayerSensations().cock).to.equal(90);
-      expect(result.getPartnerSensations().clit).to.equal(24);
-    });
+    const result = SensationResult('lap-dance', context);
+    SensationBaseline.apply(result);
+    SensationTechnique.apply(result);
+    SensationPerformance.apply(result);
 
-    it('when critical performance focused action with player sensations', function() {
-      Random.stubBetween(50,10); // Technique Roll
-      Random.stubBetween(99);    // Performance Roll
+    expect(result.getPlayerSensations().cock).to.equal(90);
+    expect(result.getPartnerSensations().clit).to.equal(24);
+  });
 
-      const context = TrainingFixtures.standardTrainingContext({},{
-        skills: { performance:20 },
-        feelings: { respect:200 }});
+  it('when critical performance focused action with player sensations', function() {
+    Random.stubBetween(50,10); // Technique Roll
+    Random.stubBetween(99);    // Performance Roll
 
-      const result = SensationResult('lap-dance', context);
-      SensationBaseline.apply(result);
-      SensationTechnique.apply(result);
-      SensationPerformance.apply(result);
+    const context = TrainingFixtures.standardTrainingContext({},{
+      skills: { performance:20 },
+      feelings: { respect:200 }});
 
-      expect(result.getPlayerSensations().cock).to.equal(122);
-      expect(result.getPartnerSensations().clit).to.equal(55);
+    const result = SensationResult('lap-dance', context);
+    SensationBaseline.apply(result);
+    SensationTechnique.apply(result);
+    SensationPerformance.apply(result);
 
-      const clitSensations = result.getResponse().partner.clit;
-      expect(clitSensations[2].extra).to.equal('crit');
-      expect(clitSensations[2].label).to.equal('Excellent Performance');
-      expect(Math.round(clitSensations[0].value)).to.equal(5);
-      expect(Math.round(clitSensations[1].value)).to.equal(19);
-      expect(Math.round(clitSensations[2].value)).to.equal(32);
+    expect(result.getPlayerSensations().cock).to.equal(122);
+    expect(result.getPartnerSensations().clit).to.equal(55);
 
-      expect(result.getSkillsUsed().partner).to.contain('technique');
-      expect(result.getSkillsUsed().partner).to.contain('performance');
-    });
+    const clitSensations = result.getResponse().partner.clit;
+    expect(clitSensations[2].extra).to.equal('crit');
+    expect(clitSensations[2].label).to.equal('Excellent Performance');
+    expect(Math.round(clitSensations[0].value)).to.equal(5);
+    expect(Math.round(clitSensations[1].value)).to.equal(19);
+    expect(Math.round(clitSensations[2].value)).to.equal(32);
 
-    it('when normal action with default performance', function() {
-      Random.stubBetween(50,10);
+    expect(result.getSkillsUsed().partner).to.contain('technique');
+    expect(result.getSkillsUsed().partner).to.contain('performance');
+  });
 
-      const context = TrainingFixtures.standardTrainingContext({},{
-        skills: { performance:20 },
-        feelings: { affection:180, respect:180 }});
+  it('when normal action with default performance', function() {
+    Random.stubBetween(50,10);
 
-      const result = SensationResult('fondle-breasts', context);
-      SensationBaseline.apply(result);
-      SensationPerformance.apply(result);
+    const context = TrainingFixtures.standardTrainingContext({},{
+      skills: { performance:20 },
+      feelings: { affection:180, respect:180 }});
 
-      const desireSensations = result.getResponse().player.desire;
-      expect(desireSensations[1].label).to.equal('Performance')
-      expect(Math.round(desireSensations[1].value)).to.equal(14)
-      expect(result.getSkillsUsed().partner).to.not.include('performance');
-    });
+    const result = SensationResult('fondle-breasts', context);
+    SensationBaseline.apply(result);
+    SensationPerformance.apply(result);
 
-    it('when normal action with reluctant consent', function() {
-      Random.stubBetween(50,10);
+    const desireSensations = result.getResponse().player.desire;
+    expect(desireSensations[1].label).to.equal('Performance')
+    expect(Math.round(desireSensations[1].value)).to.equal(14)
+    expect(result.getSkillsUsed().partner).to.not.include('performance');
+  });
 
-      const context = TrainingFixtures.standardTrainingContext({},{
-        skills: { performance:20 },
-        feelings: { affection:140, respect:140 }});
+  it('when normal action with reluctant consent', function() {
+    Random.stubBetween(50,10);
 
-      const result = SensationResult('fondle-breasts', context);
-      SensationBaseline.apply(result);
-      SensationPerformance.apply(result);
+    const context = TrainingFixtures.standardTrainingContext({},{
+      skills: { performance:20 },
+      feelings: { affection:140, respect:140 }});
 
-      const desireSensations = result.getResponse().player.desire;
-      expect(desireSensations[1].label).to.equal('Performance')
-      expect(Math.round(desireSensations[1].value)).to.equal(7)
-    });
+    const result = SensationResult('fondle-breasts', context);
+    SensationBaseline.apply(result);
+    SensationPerformance.apply(result);
 
-    it('when normal action with fumbled performance', function() {
-      Random.stubBetween(1);
+    const desireSensations = result.getResponse().player.desire;
+    expect(desireSensations[1].label).to.equal('Performance')
+    expect(Math.round(desireSensations[1].value)).to.equal(7)
+  });
 
-      const context = TrainingFixtures.standardTrainingContext({},{
-        skills: { performance:20 },
-        feelings: { affection:180, respect:180 }});
+  it('when normal action with fumbled performance', function() {
+    Random.stubBetween(1);
 
-      const result = SensationResult('fondle-breasts', context);
-      SensationBaseline.apply(result);
-      SensationPerformance.apply(result);
+    const context = TrainingFixtures.standardTrainingContext({},{
+      skills: { performance:20 },
+      feelings: { affection:180, respect:180 }});
 
-      const response = result.getResponse();
-      const shameSensations = response.partner.shame;
+    const result = SensationResult('fondle-breasts', context);
+    SensationBaseline.apply(result);
+    SensationPerformance.apply(result);
 
-      expect(shameSensations[1].extra).to.equal("fumble");
-      expect(shameSensations[1].label).to.equal("Terrible Performance");
-      expect(shameSensations[1].value).to.equal(60);
-      expect(response.player.desire.length).to.equal(1);
-    });
+    const response = result.getResponse();
+    const shameSensations = response.partner.shame;
+
+    expect(shameSensations[1].extra).to.equal("fumble");
+    expect(shameSensations[1].label).to.equal("Terrible Performance");
+    expect(shameSensations[1].value).to.equal(60);
+    expect(response.player.desire.length).to.equal(1);
   });
 
 });
