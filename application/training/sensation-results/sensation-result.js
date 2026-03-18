@@ -72,7 +72,7 @@ global.SensationResult = function(code, context) {
   Object.keys(partnerHas).forEach(key => { if (partnerHas[key] === false) { delete partnerHas[key]; }});
 
   // Consent Effects
-  // - **Eager** `(> 100)` All the positive sensation from this action get a bonus.
+  // - **Eager** `(> 100)` All the positive sensations from this action get a bonus.
   // - **Willing** `(25 - 100)` Default value, sensation calculations are normal.
   // - **Reluctant** `(0 - 25)` When consent is reluctant the positive sensation values are all penalized
   // - **Unwilling** `(< 0)` Increased negative sensations, anger, fear, etc. And very penalized positive values.
@@ -85,9 +85,13 @@ global.SensationResult = function(code, context) {
   const skillsUsed = { partner:new Set(), player:new Set() };
   const response = { consent:consentResult, partner:{}, player:{} };
 
+  Object.keys(playerHas).forEach(key => { response.player[key] = []; });
+  Object.keys(partnerHas).forEach(key => { response.partner[key] = []; });
+
+
   // TODO: Refactoring all this. These functions will have to be called outside of the result class.
   function applyFactors() {
-    applyBaseline();
+    // applyBaseline();
     // SensationTechnique.apply();
     applyPerformance();
     applySkills();
@@ -102,40 +106,6 @@ global.SensationResult = function(code, context) {
     });
   }
 
-  // The applyBaseline() function always needs to be called first, even in the specs, in order to set up the response
-  // object, and to give the sensations a starting value for the factors to work on. The baseline sensations for each
-  // action is defined on the action itself. This should make it easy to balance the action sensation as they'll always
-  // have a well defined starting place to individually tweak.
-  //
-  // We also need to take the consent into consideration here as well. If the partner is unwilling the action should
-  // produce anger and suffering, even if it normally wouldn't. Likewise, a reluctant action should always produce some
-  // submission and shame.
-  function applyBaseline() {
-    const partnerBaseline = sexAction.getPartnerSensations();
-    const playerBaseline = sexAction.getPlayerSensations();
-
-    Object.keys(partnerHas).forEach(key => {
-      response.partner[key] = []; });
-    Object.keys(playerHas).forEach(key => {
-      response.player[key] = []; });
-    Object.keys(partnerBaseline).forEach(key => {
-      addPartnerSensation(key,'Baseline',partnerBaseline[key]); });
-    Object.keys(playerBaseline).forEach(key => {
-      addPlayerSensation(key,'Baseline',playerBaseline[key]); });
-
-    if (consent === Consent.unwilling) {
-      addPartnerSensation('anger','Baseline',100);
-      addPartnerSensation('suffering','Baseline',100);
-    }
-    if (consent === Consent.reluctant) {
-      addPartnerSensation('shame','Baseline',100);
-      addPartnerSensation('submission','Baseline',100);
-    }
-  }
-
-  // ========================
-  //    Skills : Technique
-  // ========================
 
 
   // === Skills : Performance ==========================================================================================
@@ -671,7 +641,6 @@ global.SensationResult = function(code, context) {
     getResponse,
 
     applyFactors,
-    applyBaseline,
     applyPerformance,
     applySkills,
     applyArousal,

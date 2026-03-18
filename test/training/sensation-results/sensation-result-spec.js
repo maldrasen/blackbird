@@ -1,42 +1,5 @@
 describe("SensationResult", function() {
 
-  describe('applyBaseline()', function() {
-    it("baseline sensations", function() {
-      const context = TrainingFixtures.standardTrainingContext({},{});
-      const result = SensationResult('massage-back',context);
-      result.applyBaseline();
-
-      const sensations = result.getPartnerSensations();
-      expect(sensations.comfort).to.equal(50);
-      expect(sensations.desire).to.equal(10);
-      expect(result.getPlayerSensations().desire).to.equal(10);
-    });
-
-    it('sensations when reluctant', function() {
-      const context = TrainingFixtures.standardTrainingContext({},{ feelings:{ respect:160 } });
-      const result = SensationResult('get-handjob', context);
-      result.applyBaseline();
-
-      const sensations = result.getPartnerSensations();
-      expect(sensations.desire).to.equal(30);
-      expect(sensations.shame).to.equal(120);
-      expect(sensations.submission).to.equal(120);
-      expect(result.getPlayerSensations().cock).to.equal(60);
-    });
-
-    it('sensations when unwilling', function() {
-      const context = TrainingFixtures.standardTrainingContext({},{});
-      const result = SensationResult('fondle-breasts', context);
-      result.applyBaseline();
-
-      const sensations = result.getPartnerSensations();
-      expect(sensations.nipple).to.equal(30);
-      expect(sensations.anger).to.equal(100);
-      expect(sensations.suffering).to.equal(100);
-      expect(result.getPlayerSensations().desire).to.equal(30);
-    });
-  });
-
 
   describe('applyPerformance()', function() {
     it('when normal performance focused action', function() {
@@ -47,7 +10,7 @@ describe("SensationResult", function() {
         feelings: { respect:150 }});
 
       const result = SensationResult('striptease', context);
-      result.applyBaseline();
+      SensationBaseline.apply(result);
       result.applyPerformance();
 
       expect(result.getPlayerSensations().desire).to.equal(65);
@@ -63,7 +26,7 @@ describe("SensationResult", function() {
         feelings: { respect:400 }});
 
       const result = SensationResult('masturbate-pussy', context);
-      result.applyBaseline();
+      SensationBaseline.apply(result);
       SensationTechnique.apply(result);
       result.applyPerformance();
 
@@ -82,7 +45,7 @@ describe("SensationResult", function() {
         feelings: { respect:400 }});
 
       const result = SensationResult('masturbate-pussy', context);
-      result.applyBaseline();
+      SensationBaseline.apply(result);
       result.applyPerformance();
 
       // Only baseline sensations added to pussy on fumble.
@@ -103,7 +66,7 @@ describe("SensationResult", function() {
         feelings: { respect:200 }});
 
       const result = SensationResult('lap-dance', context);
-      result.applyBaseline();
+      SensationBaseline.apply(result);
       SensationTechnique.apply(result);
       result.applyPerformance();
 
@@ -120,7 +83,7 @@ describe("SensationResult", function() {
         feelings: { respect:200 }});
 
       const result = SensationResult('lap-dance', context);
-      result.applyBaseline();
+      SensationBaseline.apply(result);
       SensationTechnique.apply(result);
       result.applyPerformance();
 
@@ -146,7 +109,7 @@ describe("SensationResult", function() {
         feelings: { affection:180, respect:180 }});
 
       const result = SensationResult('fondle-breasts', context);
-      result.applyBaseline();
+      SensationBaseline.apply(result);
       result.applyPerformance();
 
       const desireSensations = result.getResponse().player.desire;
@@ -163,7 +126,7 @@ describe("SensationResult", function() {
         feelings: { affection:140, respect:140 }});
 
       const result = SensationResult('fondle-breasts', context);
-      result.applyBaseline();
+      SensationBaseline.apply(result);
       result.applyPerformance();
 
       const desireSensations = result.getResponse().player.desire;
@@ -179,7 +142,7 @@ describe("SensationResult", function() {
         feelings: { affection:180, respect:180 }});
 
       const result = SensationResult('fondle-breasts', context);
-      result.applyBaseline();
+      SensationBaseline.apply(result);
       result.applyPerformance();
 
       const response = result.getResponse();
@@ -198,7 +161,7 @@ describe("SensationResult", function() {
 
       const context = TrainingFixtures.standardTrainingContext({},{ feelings:{ affection:150 }});
       const result = SensationResult('suck-pussy', context);
-      result.applyBaseline();
+      SensationBaseline.apply(result);
       result.applySkills();
 
       const sensations = result.getPartnerSensations();
@@ -213,7 +176,7 @@ describe("SensationResult", function() {
         { attributes:{ dexterity:30, vitality:30 }, skills:{ servicing:20 }},
         { feelings:{ affection:150 }});
       const result = SensationResult('suck-pussy', context);
-      result.applyBaseline();
+      SensationBaseline.apply(result);
       result.applySkills();
 
       const sensations = result.getPartnerSensations();
@@ -228,7 +191,7 @@ describe("SensationResult", function() {
         { attributes:{ dexterity:30, vitality:30 }, skills:{ servicing:20 }},
         { feelings:{ affection:150 }});
       const result = SensationResult('suck-pussy', context);
-      result.applyBaseline();
+      SensationBaseline.apply(result);
       result.applySkills();
 
       const sensations = result.getPartnerSensations();
@@ -249,7 +212,7 @@ describe("SensationResult", function() {
         { attributes:{ strength:30, vitality:30 }, skills:{ ravishing:30 }},
         { feelings:{ affection:400 }});
       const result = SensationResult('fuck-pussy', context);
-      result.applyBaseline();
+      SensationBaseline.apply(result);
       result.applySkills();
 
       const sensations = result.getPartnerSensations();
@@ -276,7 +239,7 @@ describe("SensationResult", function() {
       });
 
       const result = SensationResult('get-blowjob', context);
-      result.applyBaseline();
+      SensationBaseline.apply(result);
       result.applySkills();
 
       expect(result.getPlayerSensations().cock).to.equal(116);
@@ -293,7 +256,7 @@ describe("SensationResult", function() {
       });
 
       const result = SensationResult('get-blowjob', context);
-      result.applyBaseline();
+      SensationBaseline.apply(result);
       result.applySkills();
 
       const cockSensations = result.getResponse().player.cock;
@@ -316,7 +279,7 @@ describe("SensationResult", function() {
       });
 
       const result = SensationResult('striptease', context);
-      result.applyBaseline();
+      SensationBaseline.apply(result);
       result.applySkills();
 
       const sensations = result.getPartnerSensations();
@@ -335,7 +298,7 @@ describe("SensationResult", function() {
       });
 
       const result = SensationResult('striptease', context);
-      result.applyBaseline();
+      SensationBaseline.apply(result);
       result.applySkills();
 
       const sensations = result.getPartnerSensations();
@@ -351,7 +314,7 @@ describe("SensationResult", function() {
         { arousal: { arousal:75 }, feelings:{ affection:400, respect:600 } });
 
       const result = SensationResult('get-deepthroat', context);
-      result.applyBaseline();
+      SensationBaseline.apply(result);
       result.applyArousal({ strength:0.8 });
 
       const partnerSensations = result.getPartnerSensations();
@@ -370,7 +333,7 @@ describe("SensationResult", function() {
         sexualPreferences:{ 'anal-slut':50 } });
 
       const result = SensationResult('suck-anus',context);
-      result.applyBaseline();
+      SensationBaseline.apply(result);
       result.applyPreference({ type:'preference', code:'anal-slut', scale:2.5 });
 
       expect(result.getPartnerSensations().anus).to.equal(185);
