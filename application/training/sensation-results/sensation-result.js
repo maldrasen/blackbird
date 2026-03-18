@@ -1,8 +1,4 @@
 /**
- * SensationResult is a long complicated module, used to calculate the sensation values for a single sex action. It's
- * tempting to break this into multiple modules, but I don't think that would really help to understand it, and would
- * only further complicate an already complicated process.
- *
  * @param {string} code - Sex action code
  * @param {object} context - Sex action context { T:partner, P:player }
  */
@@ -15,9 +11,6 @@ global.SensationResult = function(code, context) {
   const sexAction = SexAction.lookup(code);
   const partnerSensations = Object.keys(sexAction.getPartnerSensations());
   const playerSensations = Object.keys(sexAction.getPlayerSensations());
-
-  const partnerSkills = sexAction.getSkills().partner || [];
-  const playerSkills = sexAction.getSkills().player || [];
 
   // Only add sensation to parts the character actually has. This is important for anal actions that might include
   // prostate stimulus, or actions like a lap dance that has both cock and pussy sensations. (Sensations and part
@@ -93,7 +86,7 @@ global.SensationResult = function(code, context) {
     // SensationBaseline.apply();
     // SensationTechnique.apply();
     // SensationPerformance.apply();
-    applySkills();
+    // SensationSkills.apply()
     applyAlignment();
 
     // This switch statement should ignore some of the consent factors that we don't use.
@@ -108,134 +101,6 @@ global.SensationResult = function(code, context) {
   // ===================================
   //    Skills : Servicing, Ravishing
   // ===================================
-
-  // Apply other skills like servicing, ravishing, dance, etc.
-  function applySkills() {
-
-    playerSkills.forEach(skill => {
-      if (['performance','technique'].includes(skill) === false) {
-        if (skill === 'ravishing') { applyPlayerSkill({ skill:'ravishing', label:'Ravishing' }); }
-        if (skill === 'servicing') { applyPlayerSkill({ skill:'servicing', label:'Servicing' }); }
-      }
-    });
-
-    partnerSkills.forEach(skill => {
-      if (['performance','technique'].includes(skill) === false) {
-        if (skill === 'dance') { applyPartnerDancing(); }
-        if (skill === 'servicing') { applyPartnerSkill({ skill:'servicing', label:'Servicing' }); }
-      }
-    });
-  }
-
-  // The partner's dancing skill doesn't affect the player's physical sensations, and will instead increase the
-  // partner's submission; the enjoyment they receive from performing submissive actions. This skill needs to be an add
-  // rather than a multiply, because the technique and performance skills don't really touch submission. This function
-  // assumes the sexAction is one of the 'seductive' dances. In the future we might also have 'self-abusive' dances
-  // that increase suffering, and masturbatory dances to increase sensations (actually lab dance is already like this
-  // but handles the sensations as part of the technique skill)
-  function applyPartnerDancing() {
-    skillsUsed.partner.add('dance');
-
-    const check = SkillCheck(partner, 'dance');
-    let label = 'Dancing';
-    let extra = null;
-
-    if (check.crit) {
-      extra = 'crit'
-      label = `Skillful Dancing`;
-    }
-    if (check.fumble) {
-      extra = 'fumble';
-      label = `Clumsy Dancing`;
-      addPartnerSensation('shame',label,80,extra);
-    }
-
-    addPartnerSensation('submission', label, check.value, extra);
-  }
-
-  function applyPartnerSkill(options) {
-    skillsUsed.partner.add(options.skill);
-
-    const check = SkillCheck(partner, options.skill);
-    let factor = skillFactor(check);
-    let label = options.label;
-    let extra = null;
-
-    if (check.crit) {
-      extra = 'crit'
-      label = `Skillful ${label}`;
-    }
-    if (check.fumble) {
-      extra = 'fumble';
-      label = `Clumsy ${label}`;
-
-      // Again, a fumbled skill roll will add shame to the partner, adding it
-      // if no shame exists in the baseline, or multiplying it if there is.
-      (getPartnerSensations().shame == null) ?
-        addPartnerSensation('shame',label,50,extra):
-        multiplyPartnerSensation('shame',label,1.5,extra);
-    }
-
-    Object.keys(playerHas).forEach(key => {
-      if (physicalCodes.has(key)) { multiplyPlayerSensation(key, label, factor, extra); }
-    });
-  }
-
-  // The applyPlayerSkill() function applies to both player servicing and
-  // player ravishing.
-  function applyPlayerSkill(options) {
-    skillsUsed.player.add(options.skill);
-
-    const check = SkillCheck(player, options.skill);
-    let factor = skillFactor(check);
-    let label = options.label;
-    let extra = null;
-
-    // If we crit anger and suffering are reduced. It doesn't matter if there
-    // is no baseline anger or suffering as they'll be 0 anyway.
-    if (check.crit) {
-      extra = 'crit'
-      label = `Skillful ${label}`;
-      multiplyPartnerSensation('comfort',label,1.5,extra);
-      multiplyPartnerSensation('desire',label,1.5,extra);
-      multiplyPartnerSensation('anger',label,0.5,extra);
-      multiplyPartnerSensation('suffering',label,0.5,extra);
-    }
-
-    // If we fumble though, we need to add suffering and anger if they are not
-    // in the baseline sensations, and increase them if they are.
-    if (check.fumble) {
-      extra = 'fumble'
-      label = `Clumsy ${label}`
-
-      const sensations = getPartnerSensations();
-
-      (sensations.anger == null) ?
-        addPartnerSensation('anger',label,100,extra):
-        multiplyPartnerSensation('anger',label,1.5,extra);
-
-      (sensations.suffering == null) ?
-        addPartnerSensation('suffering',label,50,extra):
-        multiplyPartnerSensation('suffering',label,1.5,extra);
-
-      multiplyPartnerSensation('comfort',label,0.5,extra);
-      multiplyPartnerSensation('desire',label,0.5,extra);
-    }
-
-    Object.keys(partnerHas).forEach(key => {
-      if (physicalCodes.has(key)) { multiplyPartnerSensation(key, label, factor, extra); }
-    });
-  }
-
-  // Still working out the effect that the skill roll should have on the sensations. A normal skill roll is around 20,
-  // so having a normal factor around 1.2 seems right. If this is a crit the factor would jump to 2.2, and a fumble
-  // would drop it to 0.2 which seems reasonable.
-  function skillFactor(check) {
-    const base = Math.min(1, check.value/100);
-    if (check.fumble) { return base; }       // Between 0 and 1
-    if (check.crit)   { return base+2 }      // Between 2 and 3
-    return base+1;                           // Between 1 and 2
-  }
 
 
   // =======================================
@@ -520,11 +385,6 @@ global.SensationResult = function(code, context) {
     getSkillsUsed,
 
     getResponse,
-
-    applySkills,
-    applyArousal,
-    applyPreference,
-    applyAlignment,
   });
 
 }
