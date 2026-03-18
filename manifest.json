@@ -125,6 +125,7 @@
     "application/training/sensation-results/sensation-performance.js",
     "application/training/sensation-results/sensation-preferences.js",
     "application/training/sensation-results/sensation-result.js",
+    "application/training/sensation-results/sensation-scales.js",
     "application/training/sensation-results/sensation-skills.js",
     "application/training/sensation-results/sensation-technique.js",
     "application/training/training-controller.js",

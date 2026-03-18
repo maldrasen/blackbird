@@ -4,13 +4,11 @@ describe("TrainingState", function() {
     it('updates the anima and animus when the scale levels are increased', function() {
       Random.stubBetween(99,99,99,99,99,99,0); // All crits and a guard.
 
-      const context = TrainingFixtures.standardTrainingContext({},{
+      const state = TrainingFixtures.standardTrainingState({},{
         arousal:{ arousal:50 },
-        feelings:{ respect:170 },
+        feelings:{ respect:170 }
       });
-      const result = SensationResult.build('get-blowjob',[],context);
-
-      const state = TrainingState({ player:context.P, partner:context.T });
+      const result = SensationResult.build('get-blowjob',state);
       state.updateTrainingScales(result);
 
       expect(state.getAnima().shame).to.equal(60);

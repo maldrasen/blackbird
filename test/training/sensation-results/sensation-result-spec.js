@@ -3,11 +3,11 @@ describe("SensationResult", function() {
   it("all together, when there are multiple sensitivities", function() {
     Random.stubBetween(99,99,99,99,0);
 
-    const context = TrainingFixtures.standardTrainingContext({},{
+    const state = TrainingFixtures.standardTrainingState({},{
       arousal: { arousal:75 },
       sexualPreferences:{ 'pussy-slut':50, 'masturbator':70 } });
 
-    const result = SensationResult.build('masturbate-pussy',[],context);
+    const result = SensationResult.build('masturbate-pussy',state);
     const pussySensations = result.getResponse().partner.pussy;
     expect(pussySensations.length).to.equal(6);
 

@@ -76,37 +76,8 @@ global.SensationResult = function(code, context) {
   Object.keys(playerHas).forEach(key => { response.player[key] = []; });
   Object.keys(partnerHas).forEach(key => { response.partner[key] = []; });
 
+  let previousAction;
   let persistedActions;
-
-  // =============================================
-  //   Sensation Result : Apply Training Scales
-  // =============================================
-  // Training scales should be simple. They just represent part sensitivity. We might want to do some linear
-  // interpolation between scale thresholds and the scale factor to make the scale curve smoothish. We'll have to come
-  // back to this once we have the sensations adding their values to the scales.
-
-  // This function should also determine character's weakness, that is the part that is the most sensitive, when
-  // sensitivity is at least a B. Actions that hit the weakness generate slightly more sensation, maybe 25% more or so,
-  // and should increase comfort as well. Unless this is a pain causing action, then we get increased pain.
-
-  // ======================================================
-  //   Sensation Result : Handle Persisted Action States
-  // ======================================================
-  // Well need to look at how persisted action states work with the sensation results as well. Because the persisted
-  // states can interact with the current action we'll need to consider everything together in a single sensation
-  // result for the turn.
-  //
-  // Most persisted action states would add to the baseline values I think. Having a dildo inserted adds a baseline
-  // amount of pussy sensation and shame each turn. We should be able to ask the persisted state class for its
-  // sensation values. If this is a follow on action though, (thrusting the dildo from the persisted state) we
-  // probably wouldn't use the persisted state's baseline and would use the action's baseline instead.
-
-  // ===========================================
-  //   Sensation Result : Random Bullshit Go!
-  // ===========================================
-  // There are probably a bunch of other random shit that will end up adjusting these sensations. Body piercings,
-  // magic, and drugs could all effect part sensitivities. There are some aspects that will change the way sensations
-  // are produced.
 
   // ================================
   //   Sensation Result : Response
@@ -198,6 +169,8 @@ global.SensationResult = function(code, context) {
     getPartner: () => { return partner; },
     getSexAction: () => { return sexAction; },
 
+    setPreviousAction: action => { previousAction = action; },
+    getPreviousAction: () => { return previousAction; },
     setPersistedActions: actions => { persistedActions = actions; },
     getPersistedActions: () => { return persistedActions },
 
@@ -218,9 +191,10 @@ global.SensationResult = function(code, context) {
   });
 }
 
-SensationResult.build = function(code, persistedActions, context) {
-  const result = SensationResult(code, context);
-  result.setPersistedActions(persistedActions);
+SensationResult.build = function(code, state) {
+  const result = SensationResult(code, state.getContext());
+  result.setPersistedActions(state.getPersistedActions());
+  result.setPreviousAction(state.getPreviousAction());
 
   SensationBaseline.apply(result);
   SensationTechnique.apply(result);
