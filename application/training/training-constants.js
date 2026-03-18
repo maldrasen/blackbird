@@ -13,4 +13,18 @@ global.TrainingConstants = Object.freeze({
   reluctantSubmission: 100,
 
 
+
+
+  // Sensation Scale Factors
+  scaleFactors: {
+    F: 0.25,
+    D: 0.5,
+    C: 1,
+    B: 1.5,
+    A: 2,
+    S: 4,
+    SS: 8,
+    SSS: 16,
+  },
+
 });

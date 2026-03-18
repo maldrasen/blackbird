@@ -175,6 +175,7 @@ global.SensationResult = function(code, state) {
   return Object.freeze({
     getConsentResult: () => { return consentResult; },
     getContext: () => { return context; },
+    getState: () => { return state; },
     getPlayer: () => { return player; },
     getPartner: () => { return partner; },
     getSexAction: () => { return sexAction; },
@@ -206,6 +207,7 @@ SensationResult.build = function(code, state) {
   SensationPerformance.apply(result);
   SensationSkills.apply(result);
   SensationAlignment.apply(result);
+  SensationScales.apply(result);
 
   // The consent factor contains some of the same data that can be used to
   // build the sensations, though not every consent factor is used.

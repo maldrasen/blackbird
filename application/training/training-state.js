@@ -97,6 +97,8 @@ global.TrainingState = function(data) {
     removePersistedAction,
 
     updateTrainingScales,
+    setPartnerScaleValue: (key,value) => { partnerScales[key] = value; },
+    setPlayerScaleValue: (key,value) => { playerScales[key] = value; },
   });
 }
 
