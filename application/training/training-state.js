@@ -56,7 +56,7 @@ global.TrainingState = function(data) {
       const newLevel = TrainingState.determineScaleLevel(scales[key]);
 
       if (isPartner && newLevel > previousLevel) {
-        const overflow = scales[key] - _scaleThresholds[newLevel-1];
+        const overflow = scales[key] - _scaleThresholds[previousLevel];
         if (key === 'anger') { essenceOfAnger += overflow; }
         if (anima[key] != null) { anima[key] += overflow; }
         if (animus[key] != null) { animus[key] += overflow; }
