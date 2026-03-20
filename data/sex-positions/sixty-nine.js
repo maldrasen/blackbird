@@ -2,15 +2,17 @@
 SexPosition.register('sixty-nine',{
   name: 'Sixty Nine',
 
+  // Anilingus is possible from a sixty nine position, though the receiver's
+  // legs have to be really pulled up.
   alignment: {
     first: {
-      mouth: MouthAlignment.cock,
+      mouth: [MouthAlignment.ass, MouthAlignment.cock],
       hands: HandAlignment.bottom,
       cock: CockAlignment.oral,
       ass: AssAlignment.oral,
     },
     second: {
-      mouth: MouthAlignment.cock,
+      mouth: [MouthAlignment.ass, MouthAlignment.cock],
       hands: HandAlignment.any,
       cock: CockAlignment.oral,
       ass: AssAlignment.oral,

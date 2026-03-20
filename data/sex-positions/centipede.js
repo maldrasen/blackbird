@@ -7,7 +7,7 @@ SexPosition.register('centipede',{
   // the cock backwards behind the person.
   alignment: {
     first: {
-      mouth: MouthAlignment.crotch,
+      mouth: [MouthAlignment.ass, MouthAlignment.cock],
       hands: HandAlignment.any,
     },
     second: {

@@ -4,13 +4,13 @@ SexPosition.register('missionary',{
 
   alignment: {
     first: {
-      mouth: MouthAlignment.top,
+      mouth: [MouthAlignment.mouth, MouthAlignment.breasts],
       hands: HandAlignment.front,
       cock: CockAlignment.penetrate,
       ass: AssAlignment.fingered,
     },
     second: {
-      mouth: MouthAlignment.top,
+      mouth: [MouthAlignment.mouth, MouthAlignment.breasts],
       hands: HandAlignment.any,
       cock: CockAlignment.penetrate,
     },

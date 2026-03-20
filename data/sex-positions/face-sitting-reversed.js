@@ -9,7 +9,7 @@ SexPosition.register('face-sitting-reversed',{
       ass: AssAlignment.oral,
     },
     second: {
-      mouth: MouthAlignment.crotch,
+      mouth: [MouthAlignment.ass, MouthAlignment.cock],
       hands: HandAlignment.bottom,
     },
   },

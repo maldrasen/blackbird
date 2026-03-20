@@ -4,13 +4,13 @@ SexPosition.register('standing',{
 
   alignment: {
     first: {
-      mouth: MouthAlignment.mouth,
+      mouth: [MouthAlignment.mouth, MouthAlignment.breasts],
       hands: HandAlignment.any,
       cock: CockAlignment.penetrate,
       ass: AssAlignment.penetrate,
     },
     second: {
-      mouth: MouthAlignment.mouth,
+      mouth: [MouthAlignment.mouth, MouthAlignment.breasts],
       hands: HandAlignment.any,
       cock: CockAlignment.penetrate,
       ass: AssAlignment.penetrate,
