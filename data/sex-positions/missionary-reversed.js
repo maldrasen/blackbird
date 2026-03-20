@@ -1,4 +1,4 @@
-// Player lying on top of partner. Partner laying face down.
+// First lying on top of Second. Second lying face down.
 SexPosition.register('reverse-missionary',{
   name: 'Reverse Missionary',
 });

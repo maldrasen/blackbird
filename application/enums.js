@@ -195,7 +195,6 @@ global.Consent = Object.freeze({
 });
 
 global.TrainingSlot = {
-  all: ['ass','breasts','cock','hands','mouth','pussy'],
   ass: 'ass',
   breasts: 'breasts',
   cock: 'cock',
