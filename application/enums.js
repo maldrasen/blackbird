@@ -204,9 +204,11 @@ global.TrainingSlot = {
 }
 
 global.MouthAlignment = {
+  ass: 'ass',              // The mouth can eat ass, but can't suck a cock.
+  cock: 'cock',            // The mouth can suck a cock, but can't eat ass.
+  crotch: 'crotch',        // The mouth can suck a cock, pussy, ass or clit.
   mouth: 'mouth',          // The mouth can kiss the other mouth.
   breasts: 'breasts',      // The mouth can suck on nipples.
-  cock: 'cock',            // The mouth can suck a cock, pussy, ass or clit.
 };
 
 global.HandAlignment = {
@@ -220,11 +222,14 @@ global.HandAlignment = {
 
 global.CockAlignment = {
   oral: 'oral',            // The cock is in a position where it can be sucked.
+  rubbed: 'rubbed',        // Only the hands can reach the cock from here.
   frottage: 'frottage',    // The waists are aligned, but not in a way where the cock can penetrate.
   penetrate: 'penetrate',  // The cock is in a position where it can penetrate the other person's ass or pussy.
 };
 
 global.AssAlignment = {
+  eatAss: 'eatAss',        // The ass can be licked, but not the clit.
+  eatPussy: 'eatPussy',    // The pussy or clit can be sucked, but not the ass.
   oral: 'oral',            // The ass (or pussy, or clit) is in a position where it can be sucked.
   penetrate: 'penetrate'   // The ass (or pussy) is in a position where it can be fucked.
 };

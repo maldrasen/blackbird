@@ -2,6 +2,10 @@
 SexPosition.register('face-sitting',{
   name: 'Face Sitting',
 
+  // It's possible to suck cock from a face sat upon position. It's really
+  // having a cock pointed downward while it's lowered down it into your mouth
+  // though really. Could just detect that in the action text and make it into
+  // more of a sucking on balls action.
   alignment: {
     first: {
       hands: HandAlignment.self,
@@ -9,7 +13,7 @@ SexPosition.register('face-sitting',{
       ass: AssAlignment.oral,
     },
     second: {
-      mouth: MouthAlignment.cock,
+      mouth: MouthAlignment.crotch,
       hands: HandAlignment.any,
     },
   },
