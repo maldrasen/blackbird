@@ -10,7 +10,7 @@ SexPosition.register('standing-reversed',{
     },
     second: {
       cock: [CockAlignment.rubbed],
-      ass: AssAlignment.penetrate,
+      ass: [AssAlignment.fingered, AssAlignment.fucked],
     },
   },
 

@@ -208,33 +208,36 @@ global.TrainingSlot = {
 // for masturbation type actions. This would only be false in case of bondage
 // positions, which would be an entirely different system.
 global.HandAlignment = {
-  ass: 'ass',
+  ass:     'ass',
   breasts: 'breasts',
-  cock: 'cock',
-  mouth: 'mouth',
+  cock:    'cock',
+  mouth:   'mouth',
 };
 
 // The mouth alignment can use the same values as the hands.
 global.MouthAlignment = {
-  ass: 'ass',
+  ass:     'ass',
   breasts: 'breasts',
-  cock: 'cock',
-  mouth: 'mouth',
+  cock:    'cock',
+  mouth:   'mouth',
 };
 
 global.CockAlignment = {
-  frottage: 'frottage', // The participants cocks can be rubbed together.
-  fucked: 'fucked',     // The cock can penetrate the other person's ass or pussy.
-  rubbed: 'rubbed',     // The cock can be rubbed with hands.
-  sucked: 'sucked',     // The cock can be sucked.
+  frottage: 'frottage',  // The participants cocks can be rubbed together.
+  fucked:   'fucked',    // The cock can penetrate the other person's ass or pussy.
+  rubbed:   'rubbed',    // The cock can be rubbed with hands.
+  sucked:   'sucked',    // The cock can be sucked.
 };
 
+// Rarely (in positions where the legs are together) only the ass or pussy
+// might be edible, though even when the legs are together both holes can get
+// fingered or fucked.
 global.AssAlignment = {
-  eatAss: 'eatAss',        // The ass can be licked or fingered, but not the clit.
-  eatPussy: 'eatPussy',    // The pussy or clit can be sucked, but not the ass. Ass can be fingered still.
-  oral: 'oral',            // The ass (or pussy) can be sucked or fingered.
-  penetrate: 'penetrate',  // The ass (or pussy) can be fucked or fingered.
-  fingered: 'fingered',    // The ass (or pussy) can only be fingered.
+  onlyAssEaten:   'only-ass-eaten',
+  onlyPussyEaten: 'only-pussy-eaten',
+  eaten:          'eaten',
+  fingered:       'fingered',
+  fucked:         'fucked',
 };
 
 global.ScaleLabels = {

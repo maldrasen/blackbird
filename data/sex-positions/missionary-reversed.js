@@ -12,7 +12,7 @@ SexPosition.register('reverse-missionary',{
     },
     second: {
       cock: [CockAlignment.rubbed],
-      ass: AssAlignment.penetrate,
+      ass: [AssAlignment.fingered, AssAlignment.fucked],
     },
   },
 

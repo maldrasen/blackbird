@@ -12,7 +12,7 @@ SexPosition.register('centipede',{
     },
     second: {
       cock: [CockAlignment.rubbed, CockAlignment.sucked],
-      ass: AssAlignment.oral,
+      ass: [AssAlignment.eaten, AssAlignment.fingered],
     },
   },
 

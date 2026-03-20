@@ -9,13 +9,13 @@ SexPosition.register('sixty-nine',{
       mouth: [MouthAlignment.ass, MouthAlignment.cock],
       hands: [HandAlignment.ass, HandAlignment.cock],
       cock: [CockAlignment.rubbed, CockAlignment.sucked],
-      ass: AssAlignment.oral,
+      ass: [AssAlignment.eaten, AssAlignment.fingered],
     },
     second: {
       mouth: [MouthAlignment.ass, MouthAlignment.cock],
       hands: [HandAlignment.ass, HandAlignment.breasts, HandAlignment.cock],
       cock: [CockAlignment.rubbed, CockAlignment.sucked],
-      ass: AssAlignment.oral,
+      ass: [AssAlignment.eaten, AssAlignment.fingered],
     },
   },
 

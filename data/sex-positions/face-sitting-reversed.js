@@ -6,7 +6,7 @@ SexPosition.register('face-sitting-reversed',{
     first: {
       hands: [HandAlignment.breasts, HandAlignment.cock],
       cock: [CockAlignment.rubbed],
-      ass: AssAlignment.oral,
+      ass: [AssAlignment.eaten, AssAlignment.fingered],
     },
     second: {
       mouth: [MouthAlignment.ass, MouthAlignment.cock],

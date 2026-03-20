@@ -12,7 +12,7 @@ SexPosition.register('lap-sitting',{
       mouth: [MouthAlignment.mouth, MouthAlignment.breasts],
       hands: [HandAlignment.ass, HandAlignment.breasts, HandAlignment.cock, HandAlignment.mouth],
       cock: [CockAlignment.frottage, CockAlignment.rubbed],
-      ass: AssAlignment.penetrate,
+      ass: [AssAlignment.fingered, AssAlignment.fucked],
     },
   },
 

@@ -2,10 +2,11 @@
 SexPosition.register('kneeling-service',{
   name: 'Service Kneeling',
 
+  // Pussy eating is still possible from the kneeling behind position.
   alignment: {
     first: {
       cock: [CockAlignment.rubbed],
-      ass: AssAlignment.eatAss,
+      ass: [AssAlignment.eaten, AssAlignment.fingered],
     },
     second: {
       mouth: [MouthAlignment.ass],

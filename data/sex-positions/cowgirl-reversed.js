@@ -2,6 +2,7 @@
 SexPosition.register('cowgirl-reversed',{
   name: 'Reverse Cowgirl',
 
+
   alignment: {
     first: {
       hands: [HandAlignment.ass, HandAlignment.cock],
@@ -9,7 +10,7 @@ SexPosition.register('cowgirl-reversed',{
     },
     second: {
       cock: [CockAlignment.frottage, CockAlignment.rubbed],
-      ass: AssAlignment.penetrate,
+      ass: [AssAlignment.fingered, AssAlignment.fucked],
     },
   },
 

@@ -9,7 +9,7 @@ SexPosition.register('lap-sitting-reversed',{
     },
     second: {
       cock: [CockAlignment.rubbed],
-      ass: AssAlignment.penetrate,
+      ass: [AssAlignment.fingered, AssAlignment.fucked],
     },
   },
 

@@ -2,6 +2,8 @@
 SexPosition.register('cowgirl',{
   name: 'Cowgirl',
 
+  // Pussy fingering from the cowgirl position is awkward and difficult, but
+  // technically possible. Should this have a difficulty penalty maybe?
   alignment: {
     first: {
       hands: [HandAlignment.ass, HandAlignment.breasts, HandAlignment.cock, HandAlignment.mouth],
@@ -10,7 +12,7 @@ SexPosition.register('cowgirl',{
     second: {
       hands: [HandAlignment.breasts, HandAlignment.cock, HandAlignment.mouth],
       cock: [CockAlignment.frottage, CockAlignment.rubbed],
-      ass: AssAlignment.penetrate,
+      ass: [AssAlignment.fingered, AssAlignment.fucked],
     },
   },
 

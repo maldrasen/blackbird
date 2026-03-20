@@ -7,7 +7,7 @@ SexPosition.register('face-sitting',{
   alignment: {
     first: {
       cock: [CockAlignment.rubbed],
-      ass: AssAlignment.oral,
+      ass: [AssAlignment.eaten, AssAlignment.fingered],
     },
     second: {
       mouth: [MouthAlignment.ass, MouthAlignment.cock],

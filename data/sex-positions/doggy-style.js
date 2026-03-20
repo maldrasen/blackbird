@@ -9,7 +9,7 @@ SexPosition.register('doggy-style',{
     },
     second: {
       cock: [CockAlignment.frottage, CockAlignment.rubbed],
-      ass: AssAlignment.penetrate,
+      ass: [AssAlignment.fingered, AssAlignment.fucked],
     },
   },
 
