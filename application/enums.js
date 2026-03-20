@@ -209,6 +209,7 @@ global.MouthAlignment = {
   crotch: 'crotch',        // The mouth can suck a cock, pussy, ass or clit.
   mouth: 'mouth',          // The mouth can kiss the other mouth.
   breasts: 'breasts',      // The mouth can suck on nipples.
+  top: 'top',              // The mouth can reach mouth or nipples.
 };
 
 global.HandAlignment = {
@@ -228,10 +229,11 @@ global.CockAlignment = {
 };
 
 global.AssAlignment = {
-  eatAss: 'eatAss',        // The ass can be licked, but not the clit.
-  eatPussy: 'eatPussy',    // The pussy or clit can be sucked, but not the ass.
-  oral: 'oral',            // The ass (or pussy, or clit) is in a position where it can be sucked.
-  penetrate: 'penetrate'   // The ass (or pussy) is in a position where it can be fucked.
+  eatAss: 'eatAss',        // The ass can be licked or fingered, but not the clit.
+  eatPussy: 'eatPussy',    // The pussy or clit can be sucked, but not the ass. Ass can be fingered still.
+  oral: 'oral',            // The ass (or pussy) can be sucked or fingered.
+  penetrate: 'penetrate',  // The ass (or pussy) can be fucked or fingered.
+  fingered: 'fingered',    // The ass (or pussy) can only be fingered.
 };
 
 global.ScaleLabels = {

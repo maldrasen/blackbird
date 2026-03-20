@@ -5,16 +5,13 @@ SexPosition.register('standing-reversed',{
 
   alignment: {
     first: {
-      mouth: null,
-      hands: null,
-      cock: null,
-      ass: null,
+      hands: HandAlignment.any,
+      cock: CockAlignment.penetrate,
     },
     second: {
-      mouth: null,
-      hands: null,
-      cock: null,
-      ass: null,
+      hands: HandAlignment.self,
+      cock: CockAlignment.rubbed,
+      ass: AssAlignment.penetrate,
     },
   },
 

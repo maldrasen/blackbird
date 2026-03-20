@@ -4,16 +4,16 @@ SexPosition.register('sixty-nine',{
 
   alignment: {
     first: {
-      mouth: null,
-      hands: null,
-      cock: null,
-      ass: null,
+      mouth: MouthAlignment.cock,
+      hands: HandAlignment.bottom,
+      cock: CockAlignment.oral,
+      ass: AssAlignment.oral,
     },
     second: {
-      mouth: null,
-      hands: null,
-      cock: null,
-      ass: null,
+      mouth: MouthAlignment.cock,
+      hands: HandAlignment.any,
+      cock: CockAlignment.oral,
+      ass: AssAlignment.oral,
     },
   },
 

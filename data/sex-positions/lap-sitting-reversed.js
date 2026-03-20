@@ -1,19 +1,16 @@
-// First straddling Second's lap facing away from them.
+// Second straddling First's lap facing away from them.
 SexPosition.register('lap-sitting-reversed',{
   name: 'Reverse Lap Sitting',
 
   alignment: {
     first: {
-      mouth: null,
-      hands: null,
-      cock: null,
-      ass: null,
+      hands: HandAlignment.any,
+      cock: CockAlignment.penetrate,
     },
     second: {
-      mouth: null,
-      hands: null,
-      cock: null,
-      ass: null,
+      hands: HandAlignment.self,
+      cock: CockAlignment.rubbed,
+      ass: AssAlignment.penetrate,
     },
   },
 

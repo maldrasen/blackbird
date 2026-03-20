@@ -5,16 +5,13 @@ SexPosition.register('prone',{
 
   alignment: {
     first: {
-      mouth: null,
-      hands: null,
-      cock: null,
-      ass: null,
+      hands: HandAlignment.self,
+      cock: CockAlignment.oral,
+      ass: AssAlignment.oral,
     },
     second: {
-      mouth: null,
-      hands: null,
-      cock: null,
-      ass: null,
+      mouth: MouthAlignment.crotch,
+      hands: HandAlignment.any,
     },
   },
 
