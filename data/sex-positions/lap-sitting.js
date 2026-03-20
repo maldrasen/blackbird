@@ -5,12 +5,12 @@ SexPosition.register('lap-sitting',{
   alignment: {
     first: {
       mouth: [MouthAlignment.mouth, MouthAlignment.breasts],
-      hands: HandAlignment.any,
+      hands: [HandAlignment.ass, HandAlignment.breasts, HandAlignment.cock, HandAlignment.mouth],
       cock: CockAlignment.penetrate,
     },
     second: {
       mouth: [MouthAlignment.mouth, MouthAlignment.breasts],
-      hands: HandAlignment.front,
+      hands: [HandAlignment.ass, HandAlignment.breasts, HandAlignment.cock, HandAlignment.mouth],
       cock: CockAlignment.frottage,
       ass: AssAlignment.penetrate,
     },

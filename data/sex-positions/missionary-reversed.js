@@ -2,13 +2,15 @@
 SexPosition.register('reverse-missionary',{
   name: 'Reverse Missionary',
 
+  // Reaching down under the second person to grab their cock is difficult
+  // unless they're raising their ass up, but not so much that this becomes a
+  // different position.
   alignment: {
     first: {
-      hands: HandAlignment.back,
+      hands: [HandAlignment.ass, HandAlignment.breasts, HandAlignment.cock, HandAlignment.mouth],
       cock: CockAlignment.penetrate,
     },
     second: {
-      hands: HandAlignment.self,
       cock: CockAlignment.rubbed,
       ass: AssAlignment.penetrate,
     },

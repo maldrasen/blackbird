@@ -8,13 +8,12 @@ SexPosition.register('face-sitting',{
   // more of a sucking on balls action.
   alignment: {
     first: {
-      hands: HandAlignment.self,
       cock: CockAlignment.oral,
       ass: AssAlignment.oral,
     },
     second: {
       mouth: [MouthAlignment.ass, MouthAlignment.cock],
-      hands: HandAlignment.any,
+      hands: [HandAlignment.ass, HandAlignment.breasts, HandAlignment.cock, HandAlignment.mouth],
     },
   },
 

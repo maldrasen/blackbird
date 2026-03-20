@@ -8,10 +8,9 @@ SexPosition.register('centipede',{
   alignment: {
     first: {
       mouth: [MouthAlignment.ass, MouthAlignment.cock],
-      hands: HandAlignment.any,
+      hands: [HandAlignment.ass, HandAlignment.breasts, HandAlignment.cock],
     },
     second: {
-      hands: HandAlignment.self,
       cock: CockAlignment.oral,
       ass: AssAlignment.oral,
     },

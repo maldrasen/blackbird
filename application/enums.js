@@ -203,26 +203,23 @@ global.TrainingSlot = {
   pussy: 'pussy',
 }
 
-global.MouthAlignment = {
-  ass: 'ass',
-  cock: 'cock',
-  mouth: 'mouth',
-  breasts: 'breasts',
-};
 
+// With hand alignment we can assume that a person can always reach themselves
+// for masturbation type actions. This would only be false in case of bondage
+// positions, which would be an entirely different system.
 global.HandAlignment = {
   ass: 'ass',
   breasts: 'breasts',
   cock: 'cock',
-  head: 'head', // We will probably have actions that require hands on head, around neck or in mouth.
+  mouth: 'mouth',
+};
 
-
-  any: 'any',              // The hands can comfortably reach any other part that can be rubbed or fingered.
-  back: 'back',            // The hands can comfortably reach any back facing part, pretty much just the ass.
-  bottom: 'bottom',        // The hands can comfortably reach the ass, cock, or pussy.
-  front: 'front',          // The hands can comfortably reach any front facing part, just not the ass.
-  self: 'self',            // The hands can comfortably reach this person's breasts, cock or pussy.
-  top: 'top',              // The hands can comfortably reach the head or breasts.
+// The mouth alignment can use the same values as the hands.
+global.MouthAlignment = {
+  ass: 'ass',
+  breasts: 'breasts',
+  cock: 'cock',
+  mouth: 'mouth',
 };
 
 global.CockAlignment = {

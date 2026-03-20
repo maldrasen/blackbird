@@ -4,13 +4,13 @@ SexPosition.register('kneeling',{
 
   alignment: {
     first: {
-      hands: HandAlignment.self,
+      hands: [HandAlignment.mouth],
       cock: CockAlignment.oral,
       ass: AssAlignment.eatPussy,
     },
     second: {
       mouth: [MouthAlignment.cock],
-      hands: HandAlignment.any,
+      hands: [HandAlignment.ass, HandAlignment.breasts, HandAlignment.cock, HandAlignment.mouth],
     },
   },
 
