@@ -1,7 +1,6 @@
-// First standing behind second, crotch pressed against ass. Second has back
-// turned to first.
-SexPosition.register('standing-reversed',{
-  name: 'Reverse Standing',
+// First lying on side behind Second. Second has back to first.
+SexPosition.register('spooning',{
+  name: 'Spooning',
 
   alignment: {
     first: {
