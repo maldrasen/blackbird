@@ -13,4 +13,24 @@ SexPosition.register('doggy-style',{
     },
   },
 
+  moves: [
+    { code:'centipede', generator:moveCentipede },
+  ],
 });
+
+// First bends over further, pushing their face into Second's ass.
+function moveCentipede(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    options.push(`You bend over further, pushing your face into {B:name's} ass.`);
+  }
+
+  if (b.isPlayer()) {
+    options.push(`You feel {A:name} bending down behind you, pushing {A:his} face into your ass.`);
+  }
+
+  return Random.from(options);
+}
