@@ -223,10 +223,10 @@ global.MouthAlignment = {
 };
 
 global.CockAlignment = {
-  oral: 'oral',            // The cock is in a position where it can be sucked.
-  rubbed: 'rubbed',        // Only the hands can reach the cock from here.
-  frottage: 'frottage',    // The waists are aligned, but not in a way where the cock can penetrate.
-  penetrate: 'penetrate',  // The cock is in a position where it can penetrate the other person's ass or pussy.
+  frottage: 'frottage', // The participants cocks can be rubbed together.
+  fucked: 'fucked',     // The cock can penetrate the other person's ass or pussy.
+  rubbed: 'rubbed',     // The cock can be rubbed with hands.
+  sucked: 'sucked',     // The cock can be sucked.
 };
 
 global.AssAlignment = {

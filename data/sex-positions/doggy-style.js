@@ -5,10 +5,10 @@ SexPosition.register('doggy-style',{
   alignment: {
     first: {
       hands: [HandAlignment.ass, HandAlignment.breasts, HandAlignment.cock, HandAlignment.mouth],
-      cock: CockAlignment.penetrate,
+      cock: [CockAlignment.frottage, CockAlignment.fucked, CockAlignment.rubbed],
     },
     second: {
-      cock: CockAlignment.frottage,
+      cock: [CockAlignment.frottage, CockAlignment.rubbed],
       ass: AssAlignment.penetrate,
     },
   },

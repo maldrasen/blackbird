@@ -6,7 +6,7 @@ SexPosition.register('prone',{
   alignment: {
     first: {
       hands: [HandAlignment.mouth],
-      cock: CockAlignment.oral,
+      cock: [CockAlignment.rubbed, CockAlignment.sucked],
       ass: AssAlignment.oral,
     },
     second: {

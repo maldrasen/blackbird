@@ -11,7 +11,7 @@ SexPosition.register('centipede',{
       hands: [HandAlignment.ass, HandAlignment.breasts, HandAlignment.cock],
     },
     second: {
-      cock: CockAlignment.oral,
+      cock: [CockAlignment.rubbed, CockAlignment.sucked],
       ass: AssAlignment.oral,
     },
   },

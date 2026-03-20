@@ -5,12 +5,13 @@ SexPosition.register('face-sitting-reversed',{
   alignment: {
     first: {
       hands: [HandAlignment.breasts, HandAlignment.cock],
-      cock: CockAlignment.oral,
+      cock: [CockAlignment.rubbed],
       ass: AssAlignment.oral,
     },
     second: {
       mouth: [MouthAlignment.ass, MouthAlignment.cock],
       hands: [HandAlignment.ass, HandAlignment.cock],
+      cock: [CockAlignment.rubbed],
     },
   },
 

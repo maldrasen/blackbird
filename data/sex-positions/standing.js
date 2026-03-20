@@ -6,13 +6,13 @@ SexPosition.register('standing',{
     first: {
       mouth: [MouthAlignment.mouth, MouthAlignment.breasts],
       hands: [HandAlignment.ass, HandAlignment.breasts, HandAlignment.cock, HandAlignment.mouth],
-      cock: CockAlignment.penetrate,
+      cock: [CockAlignment.frottage, CockAlignment.fucked, CockAlignment.rubbed],
       ass: AssAlignment.penetrate,
     },
     second: {
       mouth: [MouthAlignment.mouth, MouthAlignment.breasts],
       hands: [HandAlignment.ass, HandAlignment.breasts, HandAlignment.cock, HandAlignment.mouth],
-      cock: CockAlignment.penetrate,
+      cock: [CockAlignment.frottage, CockAlignment.fucked, CockAlignment.rubbed],
       ass: AssAlignment.penetrate,
     },
   },

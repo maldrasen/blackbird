@@ -8,13 +8,13 @@ SexPosition.register('sixty-nine',{
     first: {
       mouth: [MouthAlignment.ass, MouthAlignment.cock],
       hands: [HandAlignment.ass, HandAlignment.cock],
-      cock: CockAlignment.oral,
+      cock: [CockAlignment.rubbed, CockAlignment.sucked],
       ass: AssAlignment.oral,
     },
     second: {
       mouth: [MouthAlignment.ass, MouthAlignment.cock],
       hands: [HandAlignment.ass, HandAlignment.breasts, HandAlignment.cock],
-      cock: CockAlignment.oral,
+      cock: [CockAlignment.rubbed, CockAlignment.sucked],
       ass: AssAlignment.oral,
     },
   },

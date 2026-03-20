@@ -4,7 +4,7 @@ SexPosition.register('kneeling-service',{
 
   alignment: {
     first: {
-      cock: CockAlignment.rubbed,
+      cock: [CockAlignment.rubbed],
       ass: AssAlignment.eatAss,
     },
     second: {

@@ -5,10 +5,10 @@ SexPosition.register('cowgirl-reversed',{
   alignment: {
     first: {
       hands: [HandAlignment.ass, HandAlignment.cock],
-      cock: CockAlignment.penetrate,
+      cock: [CockAlignment.frottage, CockAlignment.fucked, CockAlignment.rubbed],
     },
     second: {
-      cock: CockAlignment.frottage,
+      cock: [CockAlignment.frottage, CockAlignment.rubbed],
       ass: AssAlignment.penetrate,
     },
   },
