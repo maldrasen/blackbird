@@ -28,6 +28,9 @@ global.BreastsDescriber = (function() {
     }
   }
 
+  // TODO: More fruits: lemons, limes, grapefruit, various melons
+  //   Pinecones for pert breasts. Need to think of more and larger conical shaped items.
+
   // 0 - 200 ml / firm
   function compareTinyBalls(volume) {
     if (volume < 50) { return null } // Too small to compare to anything.

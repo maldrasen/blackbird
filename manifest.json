@@ -335,6 +335,7 @@
     "test/dungeon/factories/floor-factory-spec.js",
     "test/dungeon/factories/room-factory-spec.js",
     "test/dungeon/room-spec.js",
+    "test/helpers/english-helper-spec.js",
     "test/helpers/letter-grade-helper-spec.js",
     "test/helpers/measurement-helper-spec.js",
     "test/helpers/object-helper-spec.js",

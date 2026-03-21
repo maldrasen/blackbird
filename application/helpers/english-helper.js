@@ -1,5 +1,45 @@
 global.EnglishHelper = (function() {
 
+  // This obviously doesn't include all the irregular plurals, and I could find a better way to handle capitalized
+  // irregular words, but this is probably good enough for now.
+  function pluralize(word) {
+    if (word === 'Foot') { return 'Feet'; }
+    if (word === 'Man') { return 'Men'; }
+    if (word === 'Woman') { return 'Women'; }
+    if (word === 'Vermen') { return 'Vermen'; }
+
+    if (word === 'foot') { return 'feet'; }
+    if (word === 'man') { return 'men'; }
+    if (word === 'woman') { return 'women'; }
+
+    if (word.endsWith('s')) { return `${word}es` }
+    if (word.endsWith('sh')) { return `${word}es` }
+    if (word.endsWith('ch')) { return `${word}es` }
+    if (word.endsWith('x')) { return `${word}es` }
+    if (word.endsWith('z')) { return `${word}es` }
+    if (word.endsWith('f')) { return `${word.substring(0,word.length-1)}ves`; }
+    if (word.endsWith('fe')) { return `${word.substring(0,word.length-2)}ves`; }
+
+    if (word.endsWith('y')) {
+      const stem = word.substring(0,word.length-1)
+      const proceeding = word.substring(word.length-2, word.length-1);
+      return isVowel(proceeding) ? `${word}s` : `${stem}ies`
+    }
+    if (word.endsWith('o')) {
+      const proceeding = word.substring(word.length-2, word.length-1);
+      return isVowel(proceeding) ? `${word}s` : `${word}es`;
+    }
+
+    return `${word}s`;
+  }
+
+  function isVowel(letter) {
+    if (typeof letter === 'string' && letter.length === 1) {
+      return ['a','e','i','o','u'].includes(letter);
+    }
+    throw `${letter} is not a letter`;
+  }
+
   // Simple possessive logic that works for most words. (Add exceptions to this when we find them.)
   function possessive(word) {
     return word.endsWith('s') ? `${word}'` : `${word}'s`;
@@ -61,6 +101,7 @@ global.EnglishHelper = (function() {
   }
 
   return Object.freeze({
+    pluralize,
     possessive,
     a_an,
     A_An,
