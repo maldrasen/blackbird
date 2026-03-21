@@ -20,12 +20,12 @@ global.BreastData = {
   },
 
   BreastShapeTable: {
-    'zero':    { soft:['flat'],             medium:['flat'],               firm:['flat']},
-    'tiny':    { soft:['flat','pancakes'],  medium:['tiddys'],             firm:['pert','golfballs']},
-    'small':   { soft:['teardrops'],        medium:['conical'],            firm:['small-round','tubular']},
-    'average': { soft:['swingers'],         medium:['average'],            firm:['perky','torpedos']},
-    'big':     { soft:['dangling'],         medium:['heavy-bells'],        firm:['bigRound']},
-    'huge':    { soft:['pendulous'],        medium:['hangers','cowTits'],  firm:['bimbo']},
+    'zero':    { soft:['flat'],             medium:['flat'],               firm:['tiny-balls']},
+    'tiny':    { soft:['flat','pancakes'],  medium:['tiddys'],             firm:['pert','small-balls']},
+    'small':   { soft:['teardrops'],        medium:['conical'],            firm:['balls','tubular']},
+    'average': { soft:['swingers'],         medium:['average'],            firm:['perky','torpedoes']},
+    'big':     { soft:['dangling'],         medium:['heavy-bells'],        firm:['big-round']},
+    'huge':    { soft:['pendulous'],        medium:['hangers','cow-tits'], firm:['bimbo']},
     'monster': { soft:['elongated-sacks'],  medium:['massive-bells'],      firm:['straining-round']},
   },
 

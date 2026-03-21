@@ -1,3 +1,100 @@
+global.BreastsDescriber = (function() {
+
+  // Some shapes (flat/pancake) don't have a round object with which to compare, so the caller of this function should
+  // expect to handle a null result for some sizes.
+  function sizeShapeComparison(shape, volume) {
+    switch (shape) {
+      case 'tiny-balls': return compareTinyBalls(volume);
+      case 'pert': return comparePert(volume);
+      case 'small-balls': return compareSmallBalls(volume);
+      case 'teardrops': return compareTeardrops(volume);
+      case 'conical': return compareConical(volume);
+      case 'balls': return compareBalls(volume);
+      case 'tubular': return compareTubular(volume);
+      case 'swingers': return compareSwingers(volume);
+      case 'average': return compareAverage(volume);
+      case 'perky': return comparePerky(volume);
+      case 'torpedoes': return compareTorpedoes(volume);
+      case 'dangling': return compareDangling(volume);
+      case 'heavy-bells': return compareHeavyBells(volume);
+      case 'big-round': return compareBigRound(volume);
+      case 'pendulous': return comparePendulous(volume);
+      case 'hangers': return compareHangers(volume);
+      case 'cow-tits': return compareCowTits(volume);
+      case 'bimbo': return compareBimbo(volume);
+      case 'elongated-sacks': return compareElongatedSacks(volume);
+      case 'massive-bells': return compareMassiveBells(volume);
+      case 'straining-round': return compareStrainingRound(volume);
+    }
+  }
+
+  // 0 - 200 ml / firm
+  function compareTinyBalls(volume) {
+    if (volume < 50) { return null } // Too small to compare to anything.
+    if (volume < 100) { return Random.from(['small tart plum',`large hen's egg`,'plump apricot']); }
+    if (volume < 150) { return Random.from(['tiny pear','tiny apple','firm young peach','ripe plum','small orange','large apricot']); }
+    return Random.from(['small green apple','plump peach','large plum','ripe orange']);
+  }
+
+  // 200 - 400 ml / firm
+  function comparePert(volume) {
+    if (volume < 250) { return Random.from(['firm young pear']); }
+    if (volume < 300) { return Random.from(['ripe pear']); }
+    if (volume < 350) { return Random.from(['large pear']); }
+    return Random.from(['overgrown pear']);
+  }
+
+  // 200 - 400 ml / firm
+  function compareSmallBalls(volume) {
+    if (volume < 250) { return Random.from(['ripe apple','juicy peach','juicy orange','freshly baked roll']); }
+    if (volume < 300) { return Random.from(['plump apple','large peach','plump orange','large bread roll']); }
+    if (volume < 350) { return Random.from(['large apple','large orange','plump bread roll']); }
+    return Random.from(['overgrown apple','overgrown orange','large cinnamon roll']);
+  }
+
+  // 400 - 700 ml / soft
+  function compareTeardrops(volume) {}
+  // 400 - 700 ml / medium
+  function compareConical(volume) {}
+  // 400 - 700 ml / firm
+  function compareBalls(volume) {}
+  // 400 - 700 ml / firm / narrow
+  function compareTubular(volume) {}
+  // 700 - 1,200 ml / soft
+  function compareSwingers(volume) {}
+  // 700 - 1,200 ml / medium
+  function compareAverage(volume) {}
+  // 700 - 1,200 ml / firm
+  function comparePerky(volume) {}
+  // 700 - 1,200 ml / firm / narrow
+  function compareTorpedoes(volume) {}
+  // 1200 - 2000 / soft
+  function compareDangling(volume) {}
+  // 1,200 - 2,000 / medium
+  function compareHeavyBells(volume) {}
+  // 1,200 - 2,000 / firm
+  function compareBigRound(volume) {}
+  // 2,000 - 5,000 / soft
+  function comparePendulous(volume) {}
+  // 2,000 - 5,000 / medium
+  function compareHangers(volume) {}
+  // 2,000 - 5,000 / medium
+  function compareCowTits(volume) {}
+  // 2,000 - 5,000 / firm
+  function compareBimbo(volume) {}
+  // 5,000 - 10,000 / soft
+  function compareElongatedSacks(volume) {}
+  // 5,000 - 10,000 / medium
+  function compareMassiveBells(volume) {}
+  // 5,000 - 10,000 / firm
+  function compareStrainingRound(volume) {}
+
+  return Object.freeze({
+    sizeShapeComparison,
+  });
+
+})();
+
 /*
 
 These all need to be rewritten, converted to a templated format, and selected based on shape. Not a bad starting point
