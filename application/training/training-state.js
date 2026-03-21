@@ -81,20 +81,12 @@ global.TrainingState = function(data) {
     return { A:position.first, B:position.second };
   }
 
-  function swapPositionRoles() {
-    const second = position.second;
-    position.second = position.first;
-    position.first = second;
-  }
-
   // TODO: We need to store messages outside of the normal sex action text for
   //   events like position changes, and other such events.
   function addMessage(message) {}
 
   // When changePosition() is called we get the code of the new position and
   // the new position context, which has which person should be in which slot.
-  // We can look at the previous position to see if they're being swapped or
-  // not and include that information in the context.
   function changePosition(code, context) {
     const newPosition = SexPosition.lookup(code);
     const oldPosition = SexPosition.lookup(position.code);
@@ -132,7 +124,6 @@ global.TrainingState = function(data) {
 
     getPosition: () => { return SexPosition.lookup(position.code); },
     getPositionContext,
-    swapPositionRoles,
 
     setPreviousAction: action => { previousAction = action; },
     getPreviousAction: () => { return previousAction; },

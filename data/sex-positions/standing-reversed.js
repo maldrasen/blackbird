@@ -15,6 +15,8 @@ SexPosition.register('standing-reversed',{
   },
 
   moves:[
+    { code:'centipede', generator:moveCentipede },
+    { code:'kneeling-service', generator:moveKneeling },
     { code:'lap-sitting-reversed', generator:moveLapSitting },
     { code:'spooning', generator:moveSpooning },
     { code:'standing', generator:moveStanding },
@@ -22,6 +24,8 @@ SexPosition.register('standing-reversed',{
 
 });
 
+function moveCentipede(context) {}
+function moveKneeling(context) {}
+function moveLapSitting(context) {}
 function moveSpooning(context) {}
 function moveStanding(context) {}
-function moveLapSitting(context) {}

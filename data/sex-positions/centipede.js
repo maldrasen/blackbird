@@ -16,9 +16,10 @@ SexPosition.register('centipede',{
     },
   },
 
+  // We can move from standing reversed to centipede, but not back to standing.
   moves:[
     { code:'doggy-style', generator:moveDoggyStyle },
-    { code:'kneeling-service', generator:moveKneelingService, swap:true },
+    { code:'kneeling-service', generator:moveKneelingService },
   ],
 
   generateRearrange: rearrange,
