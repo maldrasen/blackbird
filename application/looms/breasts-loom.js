@@ -13,38 +13,37 @@ global.BreastsLoom = (function() {
   const firmnessWords = {
     soft:   { soft:10, pillowy:8, jiggly:5, squishy:4, doughy:2 },
     medium: { plush:10, yielding:6, supple:8 },
-    firm:   { firm:10, solid:6 },
+    firm:   { firm:10, solid:6, stiff:2 },
   };
 
   const shapeWords = {
     'flat':             { 'flat':10, 'barely noticeable':5 },
     'pancakes':         { 'flat':10 },
-    'tiny-balls':       { 'jutting':10, 'pointed':8 },
-    'tiddys':           { 'cute':10 },
-    'pert':             { 'pert':10, 'perky':10 },
-    'small-balls':      { 'tight round':10 },
+    'tiny-balls':       { 'jutting':10, 'pointed':8, 'adorable':3 },
+    'tiddys':           { 'cute':10,  'adorable':3, 'compact':1 },
+    'pert':             { 'pert':10, 'perky':10, 'upturned':2 },
+    'small-balls':      { 'round':10 },
     'teardrops':        { 'teardrop':10 },
     'conical':          { 'conical':10 },
     'balls':            { 'round':10 },
     'tubular':          { 'tubular':10, 'long':8 },
     'swingers':         { 'swinging':10, 'dangling':10 },
     'average':          { 'full':10, 'beautiful':8, 'perfectly shaped':8 },
-    'perky':            { 'perky':10 },
-    'torpedoes':        { 'elongated':10 },
-    'dangling':         { 'dangling':10 },
-    'heavy-bells':      { 'bell shaped':10, 'heavy':8 },
+    'perky':            { 'perky':10, 'upthrust':6 },
+    'torpedoes':        { 'elongated':10, 'projecting':4 },
+    'dangling':         { 'dangling':10, 'heavy':8 },
+    'heavy-bells':      { 'bell shaped':10, 'heavy':8, 'bell like':5 },
     'big-round':        { 'round':10 },
-    'pendulous':        { 'pendulous':10, 'heavy':8 },
+    'pendulous':        { 'pendulous':10, 'heavy':8, 'low hanging':5 },
     'hangers':          { 'hanging':10, 'dangling':9, 'swinging':8, 'sagging':6 },
-    'cow-tits':         { 'cow like':10, 'heavily veined':8,  },
-    'bimbo':            { 'bimbo':10, 'spherical':8, 'perfectly rounded':7 },
-    'elongated-sacks':  { 'elongated':10, 'dangling':8 },
+    'cow-tits':         { 'cow like':10, 'heavily veined':8 },
+    'bimbo':            { 'bimbo':10, 'spherical':8, 'perfectly rounded':7, 'fake looking':2 },
+    'elongated-sacks':  { 'elongated':10, 'dangling':8, 'heavy stretched':3 },
     'massive-bells':    { 'low hanging':10, 'swinging':8, 'heavy pendulous':8 },
     'straining-round':  { 'round':10, 'spherical':8, 'perfectly rounded':7 },
   };
 
   const saggyShapes = ['swingers','dangling','heavy-bells','pendulous','hangers','elongated-sacks','massive-bells'];
-
 
   // {A:breasts.bigSoftBreasts} A phrase like "big firm tits" or "large soft breasts"
   // {A:breasts.bigBreasts} A phrase like "big tits" or "large breasts"
@@ -132,6 +131,20 @@ global.BreastsLoom = (function() {
   function shapeWord(shape) {
     return Random.fromFrequencyMap(shapeWords[shape]);
   }
+
+  // Consider shape
+  //   normal: 80,
+  //   puffy: 15,
+  //   inverted: 5,
+  //   teat: 0,
+
+  // Nipple Sizes
+  //   'nippleWidth',
+  //   'nippleLength',
+  //   'areolaWidth',
+
+  // And Color
+  //   'nippleShade',
 
   // nipples, teats, nubs, buds, peaks, tips
   function shortNippleDescription(breasts) {
