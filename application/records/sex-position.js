@@ -14,9 +14,18 @@ global.SexPosition = (function() {
 
     const position = { ...$sexPositions[code] };
 
+    function getRearrange(context) {
+      return (typeof position.generateRearrange === 'function') ?
+        Weaver(context).weave(position.generateRearrange(context)):
+        Weaver.formatWarning(`[SexPosition(${code}).generateRearrange()]`);
+    }
+
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return position.name; },
+      getAlignment: () => { return position.alignment; },
+      getMoves: () => { return position.moves; },
+      getRearrange,
     });
   }
 

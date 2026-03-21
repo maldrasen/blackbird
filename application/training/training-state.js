@@ -2,7 +2,6 @@ global.TrainingState = function(data) {
 
   let previousAction;
   let persistedActions = [];
-  let currentPosition = 'standing'
 
   let essenceOfAnger = 0;
   const anima = {};
@@ -30,6 +29,12 @@ global.TrainingState = function(data) {
   const context = {
     P: data.player,
     T: data.partner,
+  };
+
+  const position = {
+    code: 'standing',
+    first: data.player,
+    second: data.partner
   };
 
   const possibleActions = SexAction.getPossible(context);
@@ -72,6 +77,44 @@ global.TrainingState = function(data) {
     persistedActions.splice(index, 1);
   }
 
+  function getPositionContext() {
+    return { A:position.first, B:position.second };
+  }
+
+  function swapPositionRoles() {
+    const second = position.second;
+    position.second = position.first;
+    position.first = second;
+  }
+
+  function changePosition(code) {
+    const newPosition = SexPosition.lookup(code);
+    const oldPosition = SexPosition.lookup(position.code);
+    const move = oldPosition.getMoves().filter(move => move.code === code)[0];
+
+    if (move == null) {
+      // Remove all persisted actions.
+
+      // Ahh, we actually have no idea here what the roles should be. We need
+      // to calculate which character is in which role, set them in the
+      // position, then get the new context. Then we can add this message.
+      const message = newPosition.getRearrange(getPositionContext());
+
+    }
+    if (move != null) {
+      // Remove persisted actions what don't match the new alignment.
+
+      // If we're following a move to the new position, the roles should be
+      // correct in the old position. We swap the positions after the message
+      // is written if we need to.
+      const message = move.generator(getPositionContext());
+      if (move.switch === true) { swapPositionRoles(); }
+    }
+
+    // Finally, the position is updated to the new code.
+    position.code = code;
+  }
+
   return Object.freeze({
     getPlayer: () => { return player; },
     getPartner: () => { return partner; },
@@ -86,8 +129,10 @@ global.TrainingState = function(data) {
     getPlayerScales: () => { return { ...playerScales }; },
     getPreviousPlayerScales: () => { return { ...previousPlayerScales }; },
 
-    setCurrentPosition: position => { currentPosition = position; },
-    getCurrentPosition: () => { return currentPosition; },
+    getPosition: () => { return SexPosition.lookup(position.code); },
+    getPositionContext,
+    swapPositionRoles,
+
     setPreviousAction: action => { previousAction = action; },
     getPreviousAction: () => { return previousAction; },
 

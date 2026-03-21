@@ -107,6 +107,16 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
         height: 180px;
         width: 180px;
       }
+
+      // TODO: Temp for the next version for now.
+      .position-frame ul {
+        padding: 20px;
+        li.name {
+          color: variables.$fg-strong;
+          font-size: variables.$fs-big;
+        }
+        li.person { margin-left:5px; }
+      }
     }
   }
 

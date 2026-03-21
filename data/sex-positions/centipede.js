@@ -20,7 +20,33 @@ SexPosition.register('centipede',{
     { code:'doggy-style', generator:moveDoggyStyle },
     { code:'kneeling-service', generator:moveKneelingService, switch:true },
   ],
+
+  generateRearrange: rearrange,
 });
+
+// TODO: For all of these functions, we need to take the partner's attitude into consideration. These messages
+//   should be fairly different depending on how they feel about the sex action that's about to be performed. I'm
+//   really just getting started with the sex position implementation though, so this is probably fine for now.
+
+function rearrange(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    options.push(`Gently placing your hand on {B:name's} back, you push {B:him} down into a kneeling position in 
+      front of you. Then, once {B:his} ass is raised high in the air, you kneel behind {B:him}, pressing your face 
+      between {B:his} ass cheeks.`);
+  }
+
+  if (b.isPlayer()) {
+    options.push(`You give {A:name} a sly wink, slowly bending over in front of {A:him}. {A:He} watches as you raise 
+      your ass high in the air, then with a lustful look on {A:his} face, {A:He} kneels behind you, pushing {A:his} 
+      face between your ass cheeks.`);
+  }
+
+  return Random.from(options);
+}
 
 function moveDoggyStyle(context) {
   const a = Character(context.A);

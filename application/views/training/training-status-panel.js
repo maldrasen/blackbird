@@ -45,6 +45,7 @@ global.TrainingStatusPanel = (function() {
       color: 'pleasure',
     });
 
+    X.fill('#trainingView .position-frame',buildPositionFrame());
     X.fill('#trainingView .partner-status-panel .full-name',character.getFullName());
     X.fill('#trainingView .partner-status-panel .gender',character.getGenderName());
     X.fill('#trainingView .partner-status-panel .species',character.getSpeciesName());
@@ -55,6 +56,8 @@ global.TrainingStatusPanel = (function() {
   }
 
   function update() {
+    X.fill('#trainingView .position-frame',buildPositionFrame());
+
     const partner = TrainingController.getState().getPartner()
     const health = HealthComponent.lookup(partner);
     const arousalData = ArousalComponent.lookup(partner);
@@ -63,6 +66,24 @@ global.TrainingStatusPanel = (function() {
     staminaBar.setCurrentValue(Math.round(health.currentStamina));
     arousalBar.setCurrentValue(arousalData.arousal);
     pleasureBar.setCurrentValue(arousalData.pleasure);
+  }
+
+  // TODO: This is really just a temporary version of this panel. What I'd really like are some graphics for each
+  //   position that highlights the player and the partner in a different color so that we can see which role they're
+  //   in. The graphics should be simple, a silhouette with solid color figures, but with enough detail that we can
+  //   easily tell their genders. (Show cocks and tits on each figure basically)
+  function buildPositionFrame() {
+    const state = TrainingController.getState();
+    const position = state.getPosition().getName();
+    const context = state.getPositionContext();
+    const first = Character(context.A).getName();
+    const second = Character(context.B).getName();
+
+    return X.createElement(`<ul>
+      <li class='name'>${position}</li>
+      <li class='person'>A → ${first}</li>
+      <li class='person'>B → ${second}</li>
+    </ul>`);
   }
 
   return Object.freeze({
