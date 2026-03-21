@@ -13,4 +13,7 @@ SexPosition.register('spooning',{
     },
   },
 
+  // We can move from standing reversed to spooning, but not back to standing.
+  moves:[],
+
 });

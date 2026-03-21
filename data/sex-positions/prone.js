@@ -15,4 +15,6 @@ SexPosition.register('prone',{
     },
   },
 
+  moves:[],
+
 });

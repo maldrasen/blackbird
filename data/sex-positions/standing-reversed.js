@@ -14,4 +14,14 @@ SexPosition.register('standing-reversed',{
     },
   },
 
+  moves:[
+    { code:'lap-sitting-reversed', generator:moveLapSitting },
+    { code:'spooning', generator:moveSpooning },
+    { code:'standing', generator:moveStanding },
+  ],
+
 });
+
+function moveSpooning(context) {}
+function moveStanding(context) {}
+function moveLapSitting(context) {}

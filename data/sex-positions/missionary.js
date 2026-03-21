@@ -17,4 +17,7 @@ SexPosition.register('missionary',{
     },
   },
 
+  // We can move from standing to missionary, but not back to standing.
+  moves:[],
+
 });

@@ -19,4 +19,6 @@ SexPosition.register('sixty-nine',{
     },
   },
 
+  moves:[],
+
 });

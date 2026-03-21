@@ -13,4 +13,10 @@ SexPosition.register('lap-sitting-reversed',{
     },
   },
 
+  moves:[
+    { code:'standing-reversed', generator:moveStanding },
+  ],
+
 });
+
+function moveStanding(context) {}

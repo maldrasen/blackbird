@@ -16,4 +16,10 @@ SexPosition.register('lap-sitting',{
     },
   },
 
+  moves:[
+    { code:'standing', generator:moveStanding },
+  ],
+
 });
+
+function moveStanding() {}

@@ -16,6 +16,7 @@ SexPosition.register('doggy-style',{
   moves: [
     { code:'centipede', generator:moveCentipede },
   ],
+
 });
 
 // First bends over further, pushing their face into Second's ass.

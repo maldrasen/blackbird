@@ -16,4 +16,6 @@ SexPosition.register('cowgirl',{
     },
   },
 
+  moves:[],
+
 });

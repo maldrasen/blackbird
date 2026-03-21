@@ -87,32 +87,33 @@ global.TrainingState = function(data) {
     position.first = second;
   }
 
-  function changePosition(code) {
+  // TODO: We need to store messages outside of the normal sex action text for
+  //   events like position changes, and other such events.
+  function addMessage(message) {}
+
+  // When changePosition() is called we get the code of the new position and
+  // the new position context, which has which person should be in which slot.
+  // We can look at the previous position to see if they're being swapped or
+  // not and include that information in the context.
+  function changePosition(code, context) {
     const newPosition = SexPosition.lookup(code);
     const oldPosition = SexPosition.lookup(position.code);
     const move = oldPosition.getMoves().filter(move => move.code === code)[0];
 
     if (move == null) {
       // Remove all persisted actions.
-
-      // Ahh, we actually have no idea here what the roles should be. We need
-      // to calculate which character is in which role, set them in the
-      // position, then get the new context. Then we can add this message.
-      const message = newPosition.getRearrange(getPositionContext());
+      addMessage(newPosition.getRearrange(context));
 
     }
     if (move != null) {
       // Remove persisted actions what don't match the new alignment.
-
-      // If we're following a move to the new position, the roles should be
-      // correct in the old position. We swap the positions after the message
-      // is written if we need to.
-      const message = move.generator(getPositionContext());
-      if (move.switch === true) { swapPositionRoles(); }
+      addMessage(move.generator(context));
     }
 
-    // Finally, the position is updated to the new code.
+    // Finally, the position is updated to the new code and context.
     position.code = code;
+    position.first = context.A;
+    position.second = context.B;
   }
 
   return Object.freeze({

@@ -15,8 +15,9 @@ SexPosition.register('kneeling-service',{
   },
 
   moves:[
-    { code: 'centipede', generator:moveCentipede, switch:true },
+    { code:'centipede', generator:moveCentipede, swap:true },
   ]
+
 });
 
 function moveCentipede(context) {

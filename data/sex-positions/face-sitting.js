@@ -15,4 +15,6 @@ SexPosition.register('face-sitting',{
     },
   },
 
+  moves:[],
+
 });

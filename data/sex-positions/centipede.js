@@ -18,7 +18,7 @@ SexPosition.register('centipede',{
 
   moves:[
     { code:'doggy-style', generator:moveDoggyStyle },
-    { code:'kneeling-service', generator:moveKneelingService, switch:true },
+    { code:'kneeling-service', generator:moveKneelingService, swap:true },
   ],
 
   generateRearrange: rearrange,

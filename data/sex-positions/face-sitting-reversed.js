@@ -15,4 +15,7 @@ SexPosition.register('face-sitting-reversed',{
     },
   },
 
+  moves:[],
+
 });
+
