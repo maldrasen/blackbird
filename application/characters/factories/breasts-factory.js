@@ -117,6 +117,7 @@ global.BreastsFactory = (function() {
     const newTits = buildBreasts(Species.lookup(actorData.species), size, breastsData.breastFirmness);
 
     breastsData.breastSize = size;
+    breastsData.breastShape = newTits.breastShape;
     breastsData.relativeBreastVolume = newTits.relativeVolume;
     breastsData.absoluteBreastVolume = newTits.absoluteVolume;
   }

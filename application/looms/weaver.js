@@ -58,7 +58,7 @@ global.Weaver = function(context) {
       text.replace(/\s+/g,' ');
     }
 
-    return text;
+    return StringHelper.pack(text);
   }
 
   function contextValue(key) {

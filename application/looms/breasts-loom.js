@@ -57,28 +57,39 @@ global.BreastsLoom = (function() {
   // {A:breasts.bigSoft} A longer adjective phrase without a word for breasts.
   // {A:breasts.bigRound} A longer adjective phrase describing the shape without a word for breasts.
   // {A:breasts:thickNipples} A phrase like 'long nipples' or 'dark teats'
+  // {A:breasts.apples} A plural size comparison word.
+  // {A:breasts.anApple} A singular size comparison prefixed with a or an.
   function weave(id, token) {
     const breasts = BreastsComponent.lookup(id);
+    const size = breasts.breastSize;
+    const firmness = breasts.breastFirmness;
+    const shape = breasts.breastShape;
+    const volume = breasts.absoluteBreastVolume;
 
-    if (token === 'bigSoftBreasts') {
-      return `${sizeWord(breasts.breastSize)} ${firmnessWord(breasts.breastFirmness)} ${breastsWord(breasts)}`; }
-    if (token === 'bigBreasts') {
-      return `${sizeWord(breasts.breastSize)} ${breastsWord(breasts)}`; }
-    if (token === 'softBreasts') {
-      return `${firmnessWord(breasts.breastFirmness)} ${breastsWord(breasts)}`; }
-    if (token === 'bigRoundBreasts') {
-      return `${sizeWord(breasts.breastSize)} ${shapeWord(breasts.breastShape)} ${breastsWord(breasts)}`; }
-    if (token === 'bigSoft') {
-      return `${sizeWord(breasts.breastSize)} ${firmnessWord(breasts.breastFirmness)}`; }
-    if (token === 'bigRound') {
-      return `${sizeWord(breasts.breastSize)} ${shapeWord(breasts.breastShape)}`; }
+    if (token === 'bigSoftBreasts') { return `${sizeWord(size)} ${firmnessWord(firmness)} ${breastsWord(breasts)}`; }
+    if (token === 'bigBreasts') { return `${sizeWord(size)} ${breastsWord(breasts)}`; }
+    if (token === 'softBreasts') { return `${firmnessWord(firmness)} ${breastsWord(breasts)}`; }
+    if (token === 'bigRoundBreasts') { return `${sizeWord(size)} ${shapeWord(shape)} ${breastsWord(breasts)}`; }
+    if (token === 'bigSoft') { return `${sizeWord(size)} ${firmnessWord(firmness)}`; }
+    if (token === 'bigRound') { return `${sizeWord(size)} ${shapeWord(shape)}`; }
 
-    if (token === 'big') { return sizeWord(breasts.breastSize); }
-    if (token === 'soft') { return firmnessWord(breasts.breastFirmness); }
-    if (token === 'round') { return shapeWord(breasts.breastShape); }
+    if (token === 'big') { return sizeWord(size); }
+    if (token === 'soft') { return firmnessWord(firmness); }
+    if (token === 'round') { return shapeWord(shape); }
     if (token === 'breast') { return breastWord(breasts); }
     if (token === 'breasts') { return breastsWord(breasts); }
     if (token === 'thickNipples') { return shortNippleDescription(breasts); }
+
+    if (token === 'apples') {
+      const comparison = BreastsDescriber.sizeShapeComparison(shape, volume);
+      if (comparison == null) { return `[Comparison:${shape},${volume}]` }
+      return EnglishHelper.pluralize(comparison);
+    }
+    if (token === 'anApple') {
+      const comparison = BreastsDescriber.sizeShapeComparison(shape, volume);
+      if (comparison == null) { return `[Comparison:${shape},${volume}]` }
+      return EnglishHelper.a_an(comparison);
+    }
 
     return Weaver.formatError(`[Breasts:${token}]`);
   }
@@ -113,7 +124,7 @@ global.BreastsLoom = (function() {
       options['hanger'] = 3;
     }
 
-    return Random.from(options);
+    return Random.fromFrequencyMap(options);
   }
 
   function breastsWord(breasts) {

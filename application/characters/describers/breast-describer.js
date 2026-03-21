@@ -1,5 +1,87 @@
 global.BreastsDescriber = (function() {
 
+  function getTemplate(id) {
+    const breasts = BreastsComponent.lookup(id);
+    const startOptions = [];
+
+    if (breasts.breastShape === 'flat') {
+      startOptions.push(`{C:name's} {breasts} are almost completely flat, barely rising above {C:his} chest.`);
+      startOptions.push(`{C:name's} chest is completely flat, similar to an adolescent boy.`);
+      startOptions.push(`{C:name's} chest is washboard flat, without any noticeable {breasts} at all.`);
+    }
+
+    if (breasts.breastShape === 'tiny-balls') {
+      startOptions.push(`{C:name's} tiny breasts are firm and round, barely as
+        large as {C:breasts.apples}.`);
+      startOptions.push(`Tiny round mounds sit high on {C:name's} chest,
+        no larger than {C:breasts.apples} and perfectly spherical.`);
+      startOptions.push(`Tiny perfectly rounded mounds sit high on {C:name's} 
+        chest like {C:breasts.apples}, jutting forward, firm and unyielding.`);
+      startOptions.push(`{C:name's} tiny {breasts} are compact and noticeably 
+        spherical even at their modest size, each small {C:breasts.breast} no
+        larger than {C:breasts.anApple}.`);
+    }
+
+    if (breasts.breastShape === 'pancakes') {
+      startOptions.push(`Though {C:name} does have {breasts}, they're soft and 
+        wide, barely noticeable swells over {C:his} lean chest.`);
+      startOptions.push(`{C:name's} {breasts} are almost completely flat, 
+        offering only the faintest soft swell against {C:his} chest.`);
+      startOptions.push(`{C:name's} {breasts} are almost completely flat against
+        {C:his} chest, showing only the softest, slightest feminine swell.`);
+    }
+
+    // TODO: Tiny breasts of medium firmness. These are difficult to describe, basically A cup breasts that are wide
+    //   and soft. They're not firm enough to be pert and round, but not wide enough that they disappear completely.
+    if (breasts.breastShape === `tiddys`) {
+      startOptions.push('TODO[tiddys]')
+    }
+
+    if (breasts.breastShape === 'pert') {
+      startOptions.push(`{C:name's} {breasts} form tiny, firm cones that jut 
+        forward from {C:his} chest, defying gravity despite their modest size.`);
+      startOptions.push(`{C:name's} tiny {breasts} form delicate, youthful buds 
+        that sit high and tight on {C:his} chest, barely swelling outward.`);
+      startOptions.push(`{C:name's} small, dainty peaks rise gently from {C:his}
+        chest, firm and delicately pointed.`);
+    }
+
+    if (breasts.breastShape === 'small-balls') {
+      startOptions.push(`{C:name's} {breasts} small firm breasts form compact, 
+        perfectly rounded spheres that rest high and proud on {C:his} chest.`);
+    }
+
+    if (breasts.breastShape === 'teardrops') {
+      startOptions.push(`{C:name's} {breasts} are like small gentle teardrops, hanging 
+        with a slight downward curve and swaying subtly with {C:his} movements.`)
+    }
+
+    if (breasts.breastShape === 'conical') {
+      startOptions.push(`{C:name's} {breasts} form small, upward pointing cones 
+        that jiggle slightly when {C:he} moves.`);
+    }
+
+    if (breasts.breastShape === 'tubular') {
+      startOptions.push(`{C:name's} firm {breasts}, project outward in narrow, 
+        tube-like shapes, elongated and pointed rather than rounded.`);
+    }
+
+    if (breasts.breastShape === 'balls') {
+      startOptions.push(`{C:name's} small {breasts} are round and firm, each 
+        about the size of {C:breasts.anApple}.`);
+    }
+
+    // TODO: Need to finish the round width comparisons before adding more of
+    //   these overall descriptions for the larger sizes.
+    if (startOptions.length === 0) {
+      return `[TODO:${breasts.breastShape}]`;
+    }
+
+    const start = Random.from(startOptions);
+
+    return `${start}`;
+  }
+
   // Some shapes (flat/pancake) don't have a round object with which to compare, so the caller of this function should
   // expect to handle a null result for some sizes.
   function sizeShapeComparison(shape, volume) {
@@ -33,7 +115,7 @@ global.BreastsDescriber = (function() {
 
   // 0 - 200 ml / firm
   function compareTinyBalls(volume) {
-    if (volume < 50) { return null } // Too small to compare to anything.
+    if (volume < 50) { return Random.from([`strawberry`,'large walnut']) }
     if (volume < 100) { return Random.from(['small tart plum',`large hen's egg`,'plump apricot']); }
     if (volume < 150) { return Random.from(['tiny pear','tiny apple','firm young peach','ripe plum','small orange','large apricot']); }
     return Random.from(['small green apple','plump peach','large plum','ripe orange']);
@@ -93,50 +175,13 @@ global.BreastsDescriber = (function() {
   function compareStrainingRound(volume) {}
 
   return Object.freeze({
+    getTemplate,
     sizeShapeComparison,
   });
 
 })();
 
 /*
-
-These all need to be rewritten, converted to a templated format, and selected based on shape. Not a bad starting point
-though.
-
-flat (tiny/soft)
-  Her breasts are completely flat, barely rising above her chest,
-
-pancakes (tiny/soft)
-  Her breasts are almost completely flat, offering only the faintest soft swell against her chest.
-  Her breasts are almost completely flat against her chest, showing only the softest, slightest swell.
-
-tiddys (tiny/medium)
-  Her tiny breasts form delicate, youthful buds that sit high and tight against her chest, barely swelling outward.
-  Her small, dainty peaks rise gently from her chest, firm and delicately pointed.
-
-golfballs (tiny/firm)
-  Tiny round mounds sit high on her chest, no larger than golf balls and perfectly spherical.
-  Tiny, perfectly rounded mounds sit high on her chest like delicate golf balls, firm and unyielding.
-  Tiny, perfectly rounded mounds rest high on her chest, compact and noticeably spherical even at their modest size.
-
-pert (tiny/firm)
-  Her breasts form tiny, firm cones that jut forward from her chest, defying gravity despite their modest size.
-
----
-
-teardrops (small/soft)
-  Her breasts are like small gentle teardrops, hanging with a slight downward curve and swaying subtly with her movements.
-
-conical (small/medium)
-  Her breasts form small, upward-pointing cones that jiggle slightly when she moves.
-
-smallRound (small/firm)
-  Her small firm breasts form compact, perfectly rounded spheres that rest high and proud on her chest.
-
-tubular (small/firm)
-  Her small, firm breasts project outward in narrow, tube-like shapes, elongated and pointed rather than rounded.
-
----
 
 swingers (average/soft)
   Her soft, modestly sized breasts swell forward in a soft, gentle curve before dropping into a natural sag.
