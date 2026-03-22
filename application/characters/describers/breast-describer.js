@@ -115,9 +115,11 @@ global.BreastsDescriber = (function() {
 
   // 0 - 200 ml / firm
   function compareTinyBalls(volume) {
-    if (volume < 50) { return Random.from([`strawberry`,'large walnut']) }
-    if (volume < 100) { return Random.from(['small tart plum',`large hen's egg`,'plump apricot']); }
-    if (volume < 150) { return Random.from(['tiny pear','tiny apple','firm young peach','ripe plum','small orange','large apricot']); }
+    if (volume < 50) { return Random.from([`strawberry`,'large walnut','small lime','small lemon']) }
+    if (volume < 100) { return Random.from(['small tart plum',`large hen's egg`,'plump apricot','ripe lemon',
+      'ripe lime']); }
+    if (volume < 150) { return Random.from(['tiny pear','tiny apple','firm young peach','ripe plum','small orange',
+      'large apricot']); }
     return Random.from(['small green apple','plump peach','large plum','ripe orange']);
   }
 
@@ -137,28 +139,48 @@ global.BreastsDescriber = (function() {
     return Random.from(['overgrown apple','overgrown orange','large cinnamon roll']);
   }
 
+
+
   // 400 - 700 ml / soft
   function compareTeardrops(volume) {}
   // 400 - 700 ml / medium
   function compareConical(volume) {}
   // 400 - 700 ml / firm
-  function compareBalls(volume) {}
+  function compareBalls(volume) {
+    // Grapefruit
+  }
   // 400 - 700 ml / firm / narrow
-  function compareTubular(volume) {}
+  function compareTubular(volume) {
+  }
+
+
+
   // 700 - 1,200 ml / soft
   function compareSwingers(volume) {}
   // 700 - 1,200 ml / medium
   function compareAverage(volume) {}
   // 700 - 1,200 ml / firm
-  function comparePerky(volume) {}
+  function comparePerky(volume) {
+    // coconut
+  }
   // 700 - 1,200 ml / firm / narrow
-  function compareTorpedoes(volume) {}
-  // 1200 - 2000 / soft
+  function compareTorpedoes(volume) {
+    // Wine Bottle
+  }
+
+
+
+  // 1,200 - 2,000 / soft
   function compareDangling(volume) {}
   // 1,200 - 2,000 / medium
   function compareHeavyBells(volume) {}
   // 1,200 - 2,000 / firm
-  function compareBigRound(volume) {}
+  function compareBigRound(volume) {
+    // cantaloupe
+  }
+
+
+
   // 2,000 - 5,000 / soft
   function comparePendulous(volume) {}
   // 2,000 - 5,000 / medium
@@ -167,12 +189,17 @@ global.BreastsDescriber = (function() {
   function compareCowTits(volume) {}
   // 2,000 - 5,000 / firm
   function compareBimbo(volume) {}
+
+
+
   // 5,000 - 10,000 / soft
   function compareElongatedSacks(volume) {}
   // 5,000 - 10,000 / medium
   function compareMassiveBells(volume) {}
   // 5,000 - 10,000 / firm
-  function compareStrainingRound(volume) {}
+  function compareStrainingRound(volume) {
+    // whole watermelon
+  }
 
   return Object.freeze({
     getTemplate,
