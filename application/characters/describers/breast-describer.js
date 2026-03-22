@@ -2,84 +2,153 @@ global.BreastsDescriber = (function() {
 
   function getTemplate(id) {
     const breasts = BreastsComponent.lookup(id);
-    const startOptions = [];
+    const shape = breasts.breastShape;
+    const volume = breasts.absoluteBreastVolume;
+    const pounds = MeasurementHelper.gramsToPounds(volume);
 
-    if (breasts.breastShape === 'flat') {
-      startOptions.push(`{C:name's} {breasts} are almost completely flat, barely rising above {C:his} chest.`);
-      startOptions.push(`{C:name's} chest is completely flat, similar to an adolescent boy.`);
-      startOptions.push(`{C:name's} chest is washboard flat, without any noticeable {breasts} at all.`);
+    const options = [];
+
+    if (shape === 'flat') {
+      options.push(`{C:name's} {breasts} are almost completely flat, barely rising above {C:his} chest.`);
+      options.push(`{C:name's} chest is completely flat, similar to an adolescent boy.`);
+      options.push(`{C:name's} chest is washboard flat, without any noticeable {breasts} at all.`);
     }
 
-    if (breasts.breastShape === 'tiny-balls') {
-      startOptions.push(`{C:name's} tiny breasts are firm and round, barely as
+    if (shape === 'tiny-balls') {
+      options.push(`{C:name's} tiny breasts are firm and round, barely as
         large as {C:breasts.apples}.`);
-      startOptions.push(`Tiny round mounds sit high on {C:name's} chest,
+      options.push(`Tiny round mounds sit high on {C:name's} chest,
         no larger than {C:breasts.apples} and perfectly spherical.`);
-      startOptions.push(`Tiny perfectly rounded mounds sit high on {C:name's}
+      options.push(`Tiny perfectly rounded mounds sit high on {C:name's}
         chest like {C:breasts.apples}, jutting forward, firm and unyielding.`);
-      startOptions.push(`{C:name's} tiny {breasts} are compact and noticeably
+      options.push(`{C:name's} tiny {breasts} are compact and noticeably
         spherical even at their modest size, each small {C:breasts.breast} no
         larger than {C:breasts.anApple}.`);
     }
 
-    if (breasts.breastShape === 'pancakes') {
-      startOptions.push(`Though {C:name} does have {breasts}, they're soft and
+    if (shape === 'pancakes') {
+      options.push(`Though {C:name} does have {breasts}, they're soft and
         wide, barely noticeable swells over {C:his} lean chest.`);
-      startOptions.push(`{C:name's} {breasts} are almost completely flat,
+      options.push(`{C:name's} {breasts} are almost completely flat,
         offering only the faintest soft swell against {C:his} chest.`);
-      startOptions.push(`{C:name's} {breasts} are almost completely flat against
+      options.push(`{C:name's} {breasts} are almost completely flat against
         {C:his} chest, showing only the softest, slightest feminine swell.`);
     }
 
     // TODO: Tiny breasts of medium firmness. These are difficult to describe, basically A cup breasts that are wide
     //   and soft. They're not firm enough to be pert and round, but not wide enough that they disappear completely.
-    if (breasts.breastShape === `tiddys`) {
-      startOptions.push('TODO[tiddys]')
+    if (shape === `tiddys`) {
+      options.push('TODO[tiddys]')
     }
 
-    if (breasts.breastShape === 'pert') {
-      startOptions.push(`{C:name's} {breasts} form tiny, firm cones that jut
+    if (shape === 'pert') {
+      options.push(`{C:name's} {breasts} form tiny, firm cones that jut
         forward from {C:his} chest, defying gravity despite their modest size.`);
-      startOptions.push(`{C:name's} tiny {breasts} form delicate, youthful buds
+      options.push(`{C:name's} tiny {breasts} form delicate, youthful buds
         that sit high and tight on {C:his} chest, barely swelling outward.`);
-      startOptions.push(`{C:name's} small, dainty peaks rise gently from {C:his}
+      options.push(`{C:name's} small, dainty peaks rise gently from {C:his}
         chest, firm and delicately pointed.`);
     }
 
-    if (breasts.breastShape === 'small-balls') {
-      startOptions.push(`{C:name's} {breasts} small firm breasts form compact,
+    if (shape === 'small-balls') {
+      options.push(`{C:name's} {breasts} small firm breasts form compact,
         perfectly rounded spheres that rest high and proud on {C:his} chest.`);
     }
 
-    if (breasts.breastShape === 'teardrops') {
-      startOptions.push(`{C:name's} {breasts} are like small gentle teardrops, hanging
+    if (shape === 'teardrops') {
+      options.push(`{C:name's} {breasts} are like small gentle teardrops, hanging
         with a slight downward curve and swaying subtly with {C:his} movements.`)
     }
 
-    if (breasts.breastShape === 'conical') {
-      startOptions.push(`{C:name's} {breasts} form small, upward pointing cones
+    if (shape === 'conical') {
+      options.push(`{C:name's} {breasts} form small, upward pointing cones
         that jiggle slightly when {C:he} moves.`);
     }
 
-    if (breasts.breastShape === 'tubular') {
-      startOptions.push(`{C:name's} firm {breasts}, project outward in narrow,
+    if (shape === 'tubular') {
+      options.push(`{C:name's} firm {breasts}, project outward in narrow,
         tube-like shapes, elongated and pointed rather than rounded.`);
     }
 
-    if (breasts.breastShape === 'balls') {
-      startOptions.push(`{C:name's} small {breasts} are round and firm, each
+    if (shape === 'balls') {
+      options.push(`{C:name's} small {breasts} are round and firm, each
         about the size of {C:breasts.anApple}.`);
     }
 
-    // TODO: Need to finish the round width comparisons before adding more of
-    //   these overall descriptions for the larger sizes.
-    if (startOptions.length === 0) {
-      return `[TODO:${breasts.breastShape}]`;
+    if (shape === 'swingers') {
+      options.push(`{C:name's} soft, {C:breasts.apple} sized {breasts} swell 
+        forward in a soft, gentle curve before dropping into a heavy natural sag.`);
+      options.push(`{C:name's} {C:breasts.apple} sized {breasts} look 
+        incredibly soft, swinging from side to side {C:his} every movement.`)
     }
 
-    const start = Random.from(startOptions);
+    if (shape === 'average') {
+      options.push(`{C:name's} {breasts} form a soft, classic teardrop shape, 
+        full at the bottom and tapering gently upward with a natural, relaxed curve.`)
+      options.push(`Full and softly rounded, {C:name's} {C:breasts.apple} sized 
+        {breasts} sway heavily with {C:his} every movements.`)
+      options.push(`Perfectly balanced, {C:breasts.apple} sized {breasts} adorn {C:name's} chest,
+        round and full, with a subtle lift that gives them a harmonious, natural appearance.`)
+      options.push(`{C:name's} {C:breasts.apple} sized {breasts} flare into a gentle bell 
+        shape, widening toward the base with a soft, inviting fullness.`)
+      options.push(`{C:name's} {breasts} are full and round, each about the 
+        size of {C:breasts.anApple} they hang like soft swaying bells.`)
+    }
 
-    return `${start}`;
+    if (options.length === 0) {
+      options.push(`[TODO:${breasts.breastShape}]`);
+    }
+
+    const start = Random.from(options);
+    const weight = (pounds > 1.5) ? describeWeight(breasts) : '';
+
+    return `${start} ${weight}`;
+  }
+
+  function describeWeight(breasts) {
+    const firmness = breasts.breastFirmness;
+    const volume = breasts.absoluteBreastVolume;
+
+    console.log("Volume:",volume)
+
+    const pounds = MeasurementHelper.gramsToPounds(volume);
+    const weight = breastWeight(firmness, volume);
+    const options = [];
+
+    options.push(`{C:His} {C:breasts.bigRoundBreasts} weigh just over ${weight} each.`);
+    options.push(`{C:his} {C:breasts.bigRoundBreasts} carry a warm ${weight} heft each.`);
+    options.push(`You'd estimate that each of {C:his} {C:breasts.bigBreasts} weigh at least ${weight}.`);
+
+    if (pounds > 5) {
+      options.push(`Each of {C:his} {C:breasts.bigBreasts} have to weigh at least ${weight}. They rest 
+        heavily on {C:his} ribcage giving {C:his} figure an undeniably lewd shape.`);
+    }
+
+    if (BreastData.SaggyShapes.includes(breasts.breastShape)) {
+      if (pounds > 4) {
+        options.push(`{C:His} pair of heavy ${weight} {C:breasts.breasts} hang with a gentle pendulous curve, their
+          substantial weight pulling them downward in slow, hypnotic arcs as {C:he} shifts {C:his} posture.`);
+      }
+      if (pounds > 8) {
+        options.push(`From the way {C:his} {C:breasts.bigBreasts} hang low and full, swaying ponderously with the 
+          smallest motion, you'd guess that each {C:breasts.bigBreast} weighs at least ${weight}.`);
+      }
+    }
+
+    return Random.from(options);
+  }
+
+  // Functional minimum of around 75ml, practically though this function shouldn't be used to describe breasts of less
+  // than average size.
+  function breastWeight(firmness, volume) {
+    const grams = volume * BreastData.BreastFirmness[firmness];
+    const ounces = MeasurementHelper.gramsToOunces(grams);
+
+    if (ounces < 2) { throw `These tits are too small to describe by weight`; }
+
+    return MeasurementHelper.gramsToPounds(grams) > 0 ?
+      MeasurementHelper.poundsWithFraction(grams) :
+      `${EnglishHelper.numberInEnglish(ounces)} ounces`;
   }
 
   // Some shapes (flat/pancake) don't have a round object with which to compare, so the caller of this function should
@@ -235,6 +304,7 @@ global.BreastsDescriber = (function() {
 
   return Object.freeze({
     getTemplate,
+    breastWeight,
     sizeShapeComparison,
   });
 
@@ -242,16 +312,7 @@ global.BreastsDescriber = (function() {
 
 /*
 
-swingers (average/soft)
-  Her soft, modestly sized breasts swell forward in a soft, gentle curve before dropping into a natural sag.
-  Her modestly sized breasts look incredibly soft, swinging from side to side her every movement.
 
-extraMedium (average/medium)
-  Her breasts form a soft, classic teardrop shape, full at the bottom and tapering gently upward with a natural, relaxed curve.
-  Full and softly rounded, her breasts sway heavily with her movements.
-  Perfectly balanced orbs rest evenly on her chest, round and full, with a subtle lift that gives them a harmonious, natural appearance.
-  Her average sized breasts flare into a gentle bell shape, widening toward the base with a soft, inviting fullness.
-  Her breasts are full and round, hanging like soft swaying bells.
 
 perky (average/firm)
   Her firm, modestly sized breasts form round perky hemispheres, sitting high on her torso, and lifting upward with almost no sag.

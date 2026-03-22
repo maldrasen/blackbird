@@ -75,6 +75,11 @@ global.BreastsFactory = (function() {
         andRemove(trigger);
       }
 
+      if (trigger === 'average-tits') {
+        if (breastsData) { changeBreastSize('average', breastsData, actorData); }
+        andRemove(trigger);
+      }
+
       if (trigger === 'big-tits') {
         if (breastsData) { changeBreastSize('big', breastsData, actorData); }
         andRemove(trigger);

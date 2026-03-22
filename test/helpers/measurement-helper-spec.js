@@ -1,5 +1,15 @@
 describe('MeasurementHelper', function() {
 
+  describe('poundsWithFraction()', function() {
+    it('converts grams to pounds with fractions', function() {
+      expect(MeasurementHelper.poundsWithFraction(500)).to.equal('one pound')
+      expect(MeasurementHelper.poundsWithFraction(600)).to.equal('one and a quarter pound')
+      expect(MeasurementHelper.poundsWithFraction(700)).to.equal('one and a half pound')
+      expect(MeasurementHelper.poundsWithFraction(800)).to.equal('one and three-quarters pound');
+      expect(MeasurementHelper.poundsWithFraction(900)).to.equal('two pounds');
+    });
+  });
+
   describe('feetAndInches()', function() {
     it('converts millimeters to feet and inches', function() {
       expect(MeasurementHelper.feetAndInches(20)).to.deep.equal({   feet:0, inches:1 });

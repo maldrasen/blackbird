@@ -4,6 +4,33 @@ global.MeasurementHelper = (function() {
   const prime = '′'
   const doublePrime = '″'
 
+  const poundsPerGram = 0.002204623;
+  const ouncesPerGram = 0.03527396;
+
+  // Convert grams to pounds or ounces.
+  function gramsToPounds(g) { return g * poundsPerGram; }
+  function gramsToOunces(g) { return g * ouncesPerGram; }
+
+  // Convert grams to an English phrase with pounds and quarters
+  function poundsWithFraction(g) {
+    const totalPounds = gramsToPounds(g);
+    let wholePounds = Math.floor(totalPounds);
+    let fractionIndex = Math.round((totalPounds-wholePounds) * 4);
+
+    if (wholePounds < 1) { throw `Grams:${g} is too small, minimum of one pound is required.`; }
+
+    if (fractionIndex === 4) {
+      wholePounds += 1;
+      fractionIndex = 0;
+    }
+
+    const numberWord = EnglishHelper.numberInEnglish(wholePounds);
+    const fractionWord = fractionPhrase(fractionIndex)
+    const poundWord = (wholePounds === 1) ? 'pound' : 'pounds';
+
+    return StringHelper.pack(`${numberWord} ${fractionWord} ${poundWord}`);
+  }
+
   function feetAndInches(mm) {
     const inches = Math.round(mm / 25.4);
     return {
@@ -98,7 +125,7 @@ global.MeasurementHelper = (function() {
     return feetAndInchesInEnglish(mm,true);
   }
 
-  function fractionPhrase(index, eighths) {
+  function fractionPhrase(index, eighths=false) {
     if (eighths) {
       switch(index) {
         case 0: return '';
@@ -142,6 +169,9 @@ global.MeasurementHelper = (function() {
   }
 
   return Object.freeze({
+    gramsToPounds,
+    gramsToOunces,
+    poundsWithFraction,
     feetAndInches,
     feetInchesAndFraction,
     feetAndInchesAbbreviated,

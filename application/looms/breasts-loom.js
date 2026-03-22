@@ -43,8 +43,6 @@ global.BreastsLoom = (function() {
     'straining-round':  { 'round':10, 'spherical':8, 'perfectly rounded':7 },
   };
 
-  const saggyShapes = ['swingers','dangling','heavy-bells','pendulous','hangers','elongated-sacks','massive-bells'];
-
   // {A:breasts.bigSoftBreasts} A phrase like "big firm tits" or "large soft breasts"
   // {A:breasts.bigBreasts} A phrase like "big tits" or "large breasts"
   // {A:breasts.softBreasts} A phrase like "soft tits" or "firm breasts"
@@ -80,6 +78,11 @@ global.BreastsLoom = (function() {
     if (token === 'breasts') { return breastsWord(breasts); }
     if (token === 'thickNipples') { return shortNippleDescription(breasts); }
 
+    if (token === 'apple') {
+      const comparison = BreastsDescriber.sizeShapeComparison(shape, volume);
+      if (comparison == null) { return `[Comparison:${shape},${volume}]` }
+      return comparison;
+    }
     if (token === 'apples') {
       const comparison = BreastsDescriber.sizeShapeComparison(shape, volume);
       if (comparison == null) { return `[Comparison:${shape},${volume}]` }
@@ -119,7 +122,7 @@ global.BreastsLoom = (function() {
     if (breasts.breastShape === 'tiddys') { options['tiddy'] = 2; }
     if (breasts.breastShape === 'teardrops') { options['teardrop'] = 2; }
 
-    if (saggyShapes.includes(breasts.breastShape)) {
+    if (BreastData.SaggyShapes.includes(breasts.breastShape)) {
       options['swinger'] = 3;
       options['hanger'] = 3;
     }

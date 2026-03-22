@@ -29,6 +29,8 @@ global.BreastData = {
     'monster': { soft:['elongated-sacks'],  medium:['massive-bells'],      firm:['straining-round']},
   },
 
+  SaggyShapes: ['swingers','dangling','heavy-bells','pendulous','hangers','elongated-sacks','massive-bells'],
+
   NippleShapes: {
     normal: 80,
     puffy: 15,
