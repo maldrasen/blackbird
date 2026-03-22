@@ -15,17 +15,17 @@ global.BreastsDescriber = (function() {
         large as {C:breasts.apples}.`);
       startOptions.push(`Tiny round mounds sit high on {C:name's} chest,
         no larger than {C:breasts.apples} and perfectly spherical.`);
-      startOptions.push(`Tiny perfectly rounded mounds sit high on {C:name's} 
+      startOptions.push(`Tiny perfectly rounded mounds sit high on {C:name's}
         chest like {C:breasts.apples}, jutting forward, firm and unyielding.`);
-      startOptions.push(`{C:name's} tiny {breasts} are compact and noticeably 
+      startOptions.push(`{C:name's} tiny {breasts} are compact and noticeably
         spherical even at their modest size, each small {C:breasts.breast} no
         larger than {C:breasts.anApple}.`);
     }
 
     if (breasts.breastShape === 'pancakes') {
-      startOptions.push(`Though {C:name} does have {breasts}, they're soft and 
+      startOptions.push(`Though {C:name} does have {breasts}, they're soft and
         wide, barely noticeable swells over {C:his} lean chest.`);
-      startOptions.push(`{C:name's} {breasts} are almost completely flat, 
+      startOptions.push(`{C:name's} {breasts} are almost completely flat,
         offering only the faintest soft swell against {C:his} chest.`);
       startOptions.push(`{C:name's} {breasts} are almost completely flat against
         {C:his} chest, showing only the softest, slightest feminine swell.`);
@@ -38,36 +38,36 @@ global.BreastsDescriber = (function() {
     }
 
     if (breasts.breastShape === 'pert') {
-      startOptions.push(`{C:name's} {breasts} form tiny, firm cones that jut 
+      startOptions.push(`{C:name's} {breasts} form tiny, firm cones that jut
         forward from {C:his} chest, defying gravity despite their modest size.`);
-      startOptions.push(`{C:name's} tiny {breasts} form delicate, youthful buds 
+      startOptions.push(`{C:name's} tiny {breasts} form delicate, youthful buds
         that sit high and tight on {C:his} chest, barely swelling outward.`);
       startOptions.push(`{C:name's} small, dainty peaks rise gently from {C:his}
         chest, firm and delicately pointed.`);
     }
 
     if (breasts.breastShape === 'small-balls') {
-      startOptions.push(`{C:name's} {breasts} small firm breasts form compact, 
+      startOptions.push(`{C:name's} {breasts} small firm breasts form compact,
         perfectly rounded spheres that rest high and proud on {C:his} chest.`);
     }
 
     if (breasts.breastShape === 'teardrops') {
-      startOptions.push(`{C:name's} {breasts} are like small gentle teardrops, hanging 
+      startOptions.push(`{C:name's} {breasts} are like small gentle teardrops, hanging
         with a slight downward curve and swaying subtly with {C:his} movements.`)
     }
 
     if (breasts.breastShape === 'conical') {
-      startOptions.push(`{C:name's} {breasts} form small, upward pointing cones 
+      startOptions.push(`{C:name's} {breasts} form small, upward pointing cones
         that jiggle slightly when {C:he} moves.`);
     }
 
     if (breasts.breastShape === 'tubular') {
-      startOptions.push(`{C:name's} firm {breasts}, project outward in narrow, 
+      startOptions.push(`{C:name's} firm {breasts}, project outward in narrow,
         tube-like shapes, elongated and pointed rather than rounded.`);
     }
 
     if (breasts.breastShape === 'balls') {
-      startOptions.push(`{C:name's} small {breasts} are round and firm, each 
+      startOptions.push(`{C:name's} small {breasts} are round and firm, each
         about the size of {C:breasts.anApple}.`);
     }
 
@@ -104,31 +104,25 @@ global.BreastsDescriber = (function() {
       case 'hangers': return compareHangers(volume);
       case 'cow-tits': return compareCowTits(volume);
       case 'bimbo': return compareBimbo(volume);
-      case 'elongated-sacks': return compareElongatedSacks(volume);
-      case 'massive-bells': return compareMassiveBells(volume);
-      case 'straining-round': return compareStrainingRound(volume);
     }
   }
 
-  // TODO: More fruits: lemons, limes, grapefruit, various melons
-  //   Pinecones for pert breasts. Need to think of more and larger conical shaped items.
-
   // 0 - 200 ml / firm
   function compareTinyBalls(volume) {
-    if (volume < 50) { return Random.from([`strawberry`,'large walnut','small lime','small lemon']) }
-    if (volume < 100) { return Random.from(['small tart plum',`large hen's egg`,'plump apricot','ripe lemon',
-      'ripe lime']); }
-    if (volume < 150) { return Random.from(['tiny pear','tiny apple','firm young peach','ripe plum','small orange',
-      'large apricot']); }
+    if (volume < 50) { return Random.from([`strawberry`,'large walnut','tiny lime','tiny lemon']) }
+    if (volume < 100) { return Random.from(['small lime','small lemon','small tart plum',`large hen's egg`,
+      'plump apricot','ripe lemon','ripe lime']); }
+    if (volume < 150) { return Random.from(['ripe lemon','ripe lime','tiny pear','tiny apple','firm young peach',
+      'ripe plum','small orange','large apricot']); }
     return Random.from(['small green apple','plump peach','large plum','ripe orange']);
   }
 
   // 200 - 400 ml / firm
   function comparePert(volume) {
-    if (volume < 250) { return Random.from(['firm young pear']); }
-    if (volume < 300) { return Random.from(['ripe pear']); }
-    if (volume < 350) { return Random.from(['large pear']); }
-    return Random.from(['overgrown pear']);
+    if (volume < 250) { return Random.from(['firm young pear', 'tiny pinecone']); }
+    if (volume < 300) { return Random.from(['ripe pear','small mango','small pinecone']); }
+    if (volume < 350) { return Random.from(['large pear','tiny eggplant','small mango','pinecone']); }
+    return Random.from(['overgrown pear','small eggplant','ripe mango','pinecone']);
   }
 
   // 200 - 400 ml / firm
@@ -136,69 +130,107 @@ global.BreastsDescriber = (function() {
     if (volume < 250) { return Random.from(['ripe apple','juicy peach','juicy orange','freshly baked roll']); }
     if (volume < 300) { return Random.from(['plump apple','large peach','plump orange','large bread roll']); }
     if (volume < 350) { return Random.from(['large apple','large orange','plump bread roll']); }
-    return Random.from(['overgrown apple','overgrown orange','large cinnamon roll']);
+    return Random.from(['overgrown apple','overgrown orange','large cinnamon roll','small grapefruit']);
   }
-
-
 
   // 400 - 700 ml / soft
-  function compareTeardrops(volume) {}
+  function compareTeardrops(volume) {
+    if (volume < 550) { return Random.from(['juicy mango', 'ripe eggplant', 'leather belt pouch']); }
+    return Random.from(['large juicy mango','large juicy eggplant','full wineskin']);
+  }
+
   // 400 - 700 ml / medium
-  function compareConical(volume) {}
+  function compareConical(volume) {
+    if (volume < 550) { return Random.from(['large pinecone','ripe eggplant']); }
+    return Random.from(['huge pinecone','large juicy eggplant']);
+  }
+
   // 400 - 700 ml / firm
   function compareBalls(volume) {
-    // Grapefruit
+    if (volume < 550) { return Random.from(['juicy grapefruit']); }
+    return Random.from(['large ripe grapefruit']);
   }
+
   // 400 - 700 ml / firm / narrow
   function compareTubular(volume) {
+    if (volume < 550) { return Random.from(['leather flask','small wine bottle']); }
+    return Random.from(['small ale tankard','full wineskin','bottle of wine']);
   }
-
-
 
   // 700 - 1,200 ml / soft
-  function compareSwingers(volume) {}
+  function compareSwingers(volume) {
+    if (volume < 1000) { return Random.from(['heavy wineskin','ale tankard']); }
+    return Random.from(['heavy tavern tankard','bulging wineskin','large wine decanter']);
+  }
+
   // 700 - 1,200 ml / medium
-  function compareAverage(volume) {}
+  function compareAverage(volume) {
+    if (volume < 1000) { return Random.from(['overgrown grapefruit']); }
+    return Random.from(['young cantaloupe','small cantaloupe','small honeydew melon']);
+  }
+
   // 700 - 1,200 ml / firm
   function comparePerky(volume) {
-    // coconut
+    if (volume < 1000) { return Random.from(['full powder horn','large drinking horn']); }
+    return Random.from(['young pineapple','small pineapple']);
   }
+
   // 700 - 1,200 ml / firm / narrow
   function compareTorpedoes(volume) {
-    // Wine Bottle
+    if (volume < 1000) { return Random.from(['large wine bottle']); }
+    return Random.from(['oversized wine bottle']);
   }
-
-
 
   // 1,200 - 2,000 / soft
-  function compareDangling(volume) {}
-  // 1,200 - 2,000 / medium
-  function compareHeavyBells(volume) {}
-  // 1,200 - 2,000 / firm
-  function compareBigRound(volume) {
-    // cantaloupe
+  function compareDangling(volume) {
+    if (volume < 1600) { return Random.from(['small pineapple']); }
+    return Random.from(['ripe pineapple','juicy pineapple']);
   }
 
+  // 1,200 - 2,000 / medium
+  function compareHeavyBells(volume) {
+    if (volume < 1600) { return Random.from(['small pineapple']); }
+    return Random.from(['ripe pineapple','juicy pineapple']);
+  }
 
+  // 1,200 - 2,000 / firm
+  function compareBigRound(volume) {
+    if (volume < 1600) { return Random.from(['young coconut','juicy cantaloupe','ripe honeydew melon']); }
+    return Random.from(['small coconut','ripe cantaloupe','juicy honeydew melon']);
+  }
 
   // 2,000 - 5,000 / soft
-  function comparePendulous(volume) {}
+  function comparePendulous(volume) {
+    if (volume < 3000) { return Random.from(['ripe pineapple','juicy pineapple','small oblong watermelon']); }
+    if (volume < 4000) { return Random.from(['large pineapple','big pineapple','small elongated watermelon',
+      'small elongated pumpkin']); }
+    return Random.from(['huge pineapple','overgrown pineapple','ripe watermelon','ripe pumpkin']);
+  }
+
   // 2,000 - 5,000 / medium
-  function compareHangers(volume) {}
+  function compareHangers(volume) {
+    if (volume < 3000) { return Random.from(['ripe pineapple','juicy pineapple','small oblong watermelon']); }
+    if (volume < 4000) { return Random.from(['large pineapple','big pineapple','small elongated watermelon',
+      'small elongated pumpkin']); }
+    return Random.from(['huge pineapple','overgrown pineapple','ripe watermelon','ripe pumpkin']);
+  }
+
   // 2,000 - 5,000 / medium
-  function compareCowTits(volume) {}
+  function compareCowTits(volume) {
+    if (volume < 3000) { return Random.from(['ripe coconut','big juicy cantaloupe','big juicy honeydew melon',
+      'ripe watermelon']); }
+    if (volume < 4000) { return Random.from(['swollen coconut','huge cantaloupe','swollen honeydew melon',
+      'swollen watermelon','small swollen pumpkin']); }
+    return Random.from(['bulging coconut','bulging honeydew melon','bulging watermelon','ripe pumpkin']);
+  }
+
   // 2,000 - 5,000 / firm
-  function compareBimbo(volume) {}
-
-
-
-  // 5,000 - 10,000 / soft
-  function compareElongatedSacks(volume) {}
-  // 5,000 - 10,000 / medium
-  function compareMassiveBells(volume) {}
-  // 5,000 - 10,000 / firm
-  function compareStrainingRound(volume) {
-    // whole watermelon
+  function compareBimbo(volume) {
+    if (volume < 3000) { return Random.from(['ripe coconut','big juicy cantaloupe','big juicy honeydew melon',
+      'small round watermelon']); }
+    if (volume < 4000) { return Random.from(['large coconut','huge cantaloupe','huge honeydew melon',
+      'ripe round watermelon','small pumpkin']); }
+    return Random.from(['large ripe coconut','overgrown honeydew melon','round juicy watermelon','ripe pumpkin']);
   }
 
   return Object.freeze({
