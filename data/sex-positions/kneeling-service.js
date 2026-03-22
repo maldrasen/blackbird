@@ -16,7 +16,9 @@ SexPosition.register('kneeling-service',{
 
   moves:[
     { code:'centipede', generator:moveCentipede },
+    { code:'kneeling', generator:moveKneeling },
     { code:'standing-reversed', generator:moveStanding },
+    { code:'lap-sitting-reversed', generator:moveLapSitting },
   ]
 
 });
@@ -36,4 +38,6 @@ function moveCentipede(context) {
   return Random.from(options);
 }
 
-function moveStanding(context) {}
+function moveKneeling(context) { return `[Move:Kneeling]`; }
+function moveStanding(context) { return `[Move:StandingReversed]`; }
+function moveLapSitting(context) { return `[Move:LapSittingReversed]`; }

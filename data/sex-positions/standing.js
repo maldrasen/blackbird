@@ -31,7 +31,7 @@ SexPosition.register('standing',{
   ],
 });
 
-function moveKneeling(context) {}
-function moveLapSitting(context) {}
-function moveMissionary(context) {}
-function moveStandingReversed(context) {}
+function moveKneeling(context) { return `[Mode:Kneeling]`; }
+function moveLapSitting(context) { return `[Mode:LapSitting]`; }
+function moveMissionary(context) { return `[Mode:Missionary]`; }
+function moveStandingReversed(context) { return `[Mode:StandingReversed]`; }

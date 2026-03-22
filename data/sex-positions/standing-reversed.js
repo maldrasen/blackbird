@@ -24,8 +24,8 @@ SexPosition.register('standing-reversed',{
 
 });
 
-function moveCentipede(context) {}
-function moveKneeling(context) {}
-function moveLapSitting(context) {}
-function moveSpooning(context) {}
-function moveStanding(context) {}
+function moveCentipede(context) { return `[Move:Centipede]`; }
+function moveKneeling(context) { return `[Move:KneelingService]`; }
+function moveLapSitting(context) { return `[Move:LapSittingReversed]`; }
+function moveSpooning(context) { return `[Move:Spooning]`; }
+function moveStanding(context) { return `[Move:Standing]`; }

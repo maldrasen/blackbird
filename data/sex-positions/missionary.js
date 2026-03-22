@@ -18,6 +18,10 @@ SexPosition.register('missionary',{
   },
 
   // We can move from standing to missionary, but not back to standing.
-  moves:[],
+  moves:[
+    { code:'lap-sitting', generator:moveLapSitting },
+  ],
 
 });
+
+function moveLapSitting(context) { return `[Move:LapSitting]`; }

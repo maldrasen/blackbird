@@ -19,6 +19,10 @@ SexPosition.register('sixty-nine',{
     },
   },
 
-  moves:[],
+  moves:[
+    { code:'face-sitting-reversed', generator:moveFaceSitting },
+  ],
 
 });
+
+function moveFaceSitting(context) { return `[Move:FaceSittingReversed]`; }

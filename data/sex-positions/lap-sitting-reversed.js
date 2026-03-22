@@ -14,9 +14,11 @@ SexPosition.register('lap-sitting-reversed',{
   },
 
   moves:[
+    { code:'lap-sitting', generator:moveLapSitting },
     { code:'standing-reversed', generator:moveStanding },
   ],
 
 });
 
-function moveStanding(context) {}
+function moveLapSitting(context) { return `[Move:LapSitting]`; }
+function moveStanding(context) { return `[Move:StandingReversed]`; }

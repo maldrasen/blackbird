@@ -16,8 +16,10 @@ SexPosition.register('kneeling',{
 
   moves:[
     { code:'standing', generator:moveStanding },
+    { code:'kneeling-service', generator:moveKneelingService },
   ],
 
 });
 
-function moveStanding(context) {}
+function moveStanding(context) { return `[Move:Standing]`; }
+function moveKneelingService(context) { return `[Move:KneelingService]`; }
