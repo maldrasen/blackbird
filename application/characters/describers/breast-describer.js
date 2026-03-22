@@ -95,13 +95,95 @@ global.BreastsDescriber = (function() {
         size of {C:breasts.anApple} they hang like soft swaying bells.`)
     }
 
-    if (options.length === 0) {
-      options.push(`[TODO:${breasts.breastShape}]`);
+    if (shape === 'perky') {
+      options.push(`{C:name's} {C:breasts.soft} {C:breasts.apple} sized breasts form round 
+        perky hemispheres, sitting high on {C:his} torso, lifting upward with almost no sag`)
+    }
+
+    if (shape === 'torpedoes') {
+      options.push(`{C:name's} {C:breasts.softBreasts} project forward, 
+        strangely elongated despite their size and weight.`);
+      options.push(`{C:name's} {C:breasts.softBreasts} extend forward in an 
+        elongated shape that slopes gently downwards.`);
+      options.push(`{C:name's} long {C:breasts.softBreasts} project 
+        dramatically outward before gently yielding to gravity.`);
+      options.push(`{C:name's} {C:breasts.apple} sized {C:breasts.breasts} project sharply forward
+        in a firm, elongated shape, maintaining a pointed, upward-angled profile with minimal sag.`);
+    }
+
+    if (shape === 'dangling') {
+      options.push(`{C:name's} {C:breasts.big} {C:breasts.apple} sized {C:breasts.breasts} look huge on {C:his} frame, 
+        dangling udders that swing freely with every step, stretching downward under their own weight.`);
+      options.push(`Heavy and sack-like, {C:name's} {C:breasts.bigBreasts} sway
+        pendulously, slapping softly against {C:his} ribs when {C:he} moves.`);
+      options.push(`{C:name's} ripe, drooping {C:breasts.breasts} hang low from {C:his} chest,
+        their weight pulling them into lewd, swaying arcs that beg to be grabbed or slapped.`);
+    }
+
+    if (shape === 'heavy-bells') {
+      options.push(`{C:name's} {C:breasts.bigBreasts} form heavy {C:breasts.apple} sized bells,
+        swinging and pulling downward, creating deep cleavage and a soft, pendulous sway.`);
+      options.push(`{C:name's} {C:breasts.big}, bouncing {C:breasts.breasts} dominate {C:his} frame,
+        rolling and shifting with every motion in a hypnotic, fleshy display.`);
+      options.push(`Deep, plunging cleavage forms where {C:name's} {C:breasts.apple} sized 
+        {C:breasts.breasts} hang together, slapping together heavily when she leans forward.`);
+    }
+
+    if (shape === 'big-round') {
+      options.push(`{C:name's} {C:breasts.bigBreasts} form big rounded {C:breasts.apple} 
+        sized orbs that remain surprisingly high and firm.`);
+      options.push(`{C:name's} {C:breasts.bigRoundBreasts} thrust sharply forward, high and firm`);
+      options.push(`Taut, bulging {C:breasts.apple} sized orbs sit high and proud on {C:name's} 
+        chest, straining against gravity and practically demanding attention.`);
+    }
+
+    if (shape === 'pendulous') {
+      options.push(`{C:name's} enormous dangling {C:breasts.apple} sized {C:breasts.breasts} hang low 
+        down {C:his} torso, swaying heavily and slapping against each other with each motion.`);
+    }
+
+    if (shape === 'hangers') {
+      options.push(`{C:name's} {C:breasts.bigBreasts} hang deeply and heavily from {C:his} chest, 
+        creating a pronounced lower curve and soft, rolling bounce with each step.`);
+      options.push(`Massive and full, {C:name's} breasts drop low under their own weight, forming 
+        generous, swaying {C:breasts.apple} sized orbs that dominate {C:his} silhouette.`);
+    }
+
+    if (shape === 'cow-tits') {
+      options.push(`{C:name's} {C:breasts.big}, cow-like udders sag deeply, their 
+        sheer weight causing them to swing and slap together.`);
+      options.push(`{C:name's} {C:breasts.big} heavy breasts, each the size of {C:breasts.anApple}, 
+        hang low and full, swaying pendulously with every movement like swollen udders.`);
+      options.push(`{C:name's} {C:breasts.big} {C:breasts.apple} sized breasts hang low and full,
+        swaying heavily with every movement as though they needed to be milked.`);
+    }
+
+    if (shape === 'bimbo') {
+      options.push(`{C:name's} {C:breasts.big}, impossibly round, high-set {C:breasts.breasts} jut 
+        forward like exaggerated bimbo implants, barely yielding to gravity.`);
+      options.push(`{C:name's} {C:breasts.bigBreasts} are each easily as big an {C:breasts.anApple}. 
+        They're also impossibly round and high-set, taut and defiant against gravity.`);
+      options.push(`{C:name's} {C:breasts.big}, impossibly round {C:breasts.breasts} jut forward 
+        and upward, remaining taut and high despite their extraordinary size.`);
+    }
+
+    if (shape === 'elongated-sacks') {
+      options.push(`{C:name's} {C:breasts.bigBreasts} form colossal, elongated sacks that dangle
+        almost down to {C:his} waist, stretching and swinging with hypnotic motion.`);
+    }
+
+    if (shape === 'massive-bells') {
+      options.push(`Monstrously heavy, bell shaped {C:breasts.breasts} dominate {C:name's} frame,
+        hanging low with impossibly deep cleavage that you could get lost within.`);
+    }
+
+    if (shape === 'straining-round') {
+      options.push(`{C:name's} gigantic {C:breasts.breasts}, sit improbably high; 
+        deeply veined, straining, taut, and bulging against their own mass.`);
     }
 
     const start = Random.from(options);
     const weight = (pounds > 1.5) ? describeWeight(breasts) : '';
-
     return `${start} ${weight}`;
   }
 
@@ -116,7 +198,7 @@ global.BreastsDescriber = (function() {
     const options = [];
 
     options.push(`{C:His} {C:breasts.bigRoundBreasts} weigh just over ${weight} each.`);
-    options.push(`{C:his} {C:breasts.bigRoundBreasts} carry a warm ${weight} heft each.`);
+    options.push(`{C:His} {C:breasts.bigRoundBreasts} carry a warm ${weight} heft each.`);
     options.push(`You'd estimate that each of {C:his} {C:breasts.bigBreasts} weigh at least ${weight}.`);
 
     if (pounds > 5) {
@@ -228,8 +310,8 @@ global.BreastsDescriber = (function() {
 
   // 700 - 1,200 ml / soft
   function compareSwingers(volume) {
-    if (volume < 1000) { return Random.from(['heavy wineskin','ale tankard']); }
-    return Random.from(['heavy tavern tankard','bulging wineskin','large wine decanter']);
+    if (volume < 1000) { return Random.from(['wineskin','ale tankard']); }
+    return Random.from(['tavern tankard','bulging wineskin','large wine decanter']);
   }
 
   // 700 - 1,200 ml / medium
@@ -240,7 +322,7 @@ global.BreastsDescriber = (function() {
 
   // 700 - 1,200 ml / firm
   function comparePerky(volume) {
-    if (volume < 1000) { return Random.from(['full powder horn','large drinking horn']); }
+    if (volume < 1000) { return Random.from(['wineskin','ale tankard']); }
     return Random.from(['young pineapple','small pineapple']);
   }
 
@@ -309,65 +391,3 @@ global.BreastsDescriber = (function() {
   });
 
 })();
-
-/*
-
-
-
-perky (average/firm)
-  Her firm, modestly sized breasts form round perky hemispheres, sitting high on her torso, and lifting upward with almost no sag.
-
-torpedos (average/firm)
-  Her firm breasts project forward in an elongated torpedo shape, sloping gently downward with noticeable weight.
-  Her firm breasts extend forward in an elongated shape that slopes gently downward, carrying a subtle forward projection.
-  Her long firm breasts extend outward in a somewhat torpedo-like form, sloping forward but yielding noticeably to gravity.
-  Her breasts project sharply forward in a firm, elongated torpedo shape, maintaining a pointed, upward-angled profile with minimal sag.
-
----
-
-dangling (big/soft)
-  Her breasts look large and heavy, dangling udders that swing freely with every step, stretching downward under their own weight.
-  Heavy and sack-like, her breasts sway pendulously, slapping softly against her ribs when she moves.
-  Her ripe, drooping melons hang low from her chest, their weight pulling them into a lewd, swaying arc that begs to be grabbed.
-
-heavyBells (big/medium)
-  Her large breasts form heavy bells, swinging and pulling downward, creating deep cleavage and a soft, pendulous bounce.
-  Her big, bouncing globes dominate her frame, rolling and shifting with every motion in a hypnotic, fleshy display.
-  Deep, plunging cleavage forms where her breasts drop heavily together, slapping together heavily when she leans forward.
-
-bigRound (big/firm)
-  Her large breasts form big rounded orbs that remain surprisingly high and firm.
-  Her big round breasts thrust sharply forward, high and firm.
-  Taut, bulging orbs sit proud and unyielding on her chest, straining against gravity and practically demanding attention.
-
----
-
-pendulous (huge/soft)
-  Enormous pendulous teardrops hang low, swaying heavily and brushing against her torso with each motion.
-
-hangers (huge/medium)
-  Her huge breasts hang deeply and heavily from her chest, creating a pronounced lower curve and soft, rolling bounce with each step.
-  Massive and full, her breasts drop low under their own weight, forming generous, swaying orbs that dominate her silhouette.
-
-cowTits (huge/medium)
-  Massive, cow-like udders sag deeply, their sheer weight causing them to swing and slap together.
-  Massive, heavy breasts hang low and full, swaying pendulously with every movement like swollen udders.
-  Massive breasts hang low and full, swaying heavily with every movement and creating a pronounced, pendulous curve.
-
-bimbo (huge/firm)
-  Huge, impossibly round and high-set globes jut forward like exaggerated bimbo implants, barely yielding to gravity.
-  Huge, impossibly round and high-set globes thrust forward, taut and defiant against gravity.
-  Huge, impossibly round breasts thrust forward and upward, remaining taut and high despite their extraordinary size.
-
----
-
-elongatedSacks (monster/soft)
-  Colossal, elongated sacks dangle almost to her waist, stretching and swinging with hypnotic motion.
-
-massiveBells (monster/medium)
-  Monstrously heavy bells dominate her frame, hanging low with deep cleavage and overwhelming presence.
-
-strainingRound (monster/firm)
-  Gigantic, straining rounded spheres sit improbably high, taut and bulging against their own mass.
-
-*/

@@ -1,4 +1,4 @@
-describe.only("BreastDescriber", function() {
+describe("BreastDescriber", function() {
 
   it("describes tiny and flat breasts", function() {
     console.log('=== Flat Chest ===');
