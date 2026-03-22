@@ -159,11 +159,20 @@ global.BreastsDescriber = (function() {
 
   // 200 - 400 ml / medium
   function describeTiddys() {
-    // TODO: Tiny breasts of medium firmness. These are difficult to describe,
-    //   basically A cup breasts that are wide and soft. They're not firm
-    //   enough to be pert and round, but not wide enough that they disappear
-    //   completely.
-    return 'TODO[tiddys]';
+    const options = [];
+    options.push(`{C:name's} {C:breasts.bigSoftBreasts} spread across {C:his} chest in a soft, generous sweep.`);
+    options.push(`Small and spread wide, {C:name's} {breasts} rest like two soft pillows against {C:his} chest.`);
+    options.push(`{C:name's} small {breasts} form a gentle, wide swell across {C:his} 
+      ribcage; each one soft and heavy enough to drape slightly outward.`);
+    options.push(`{C:name's} {C:breasts.softBreasts} sit low and broad across {C:his} 
+      chest, their soft weight pulling them into modest, subtle teardrops.`);
+    options.push(`A modest handful each, {C:name's} {C:breasts.softBreasts} are wide and softly rounded.
+      They barely rise from {C:his} torso but still create a delicate shelf of soft warmth.`);
+    options.push(`Small, wide, and deliciously soft, {C:name's} {C:breasts.breasts} rest against {C:his} ribs
+      with a gentle outward drape, their slight firmness causing them to bounce lightly when {C:he} walks.`);
+    options.push(`{C:name's} {C:breasts.softBreasts} are an epitome of understated sensuality. {C:His} little titties
+      sit low and full, soft enough to ripple under your fingertips and just large enough to form two small teardrops.`);
+    return Random.from(options);
   }
 
   // 200 - 400 ml / firm
