@@ -17,6 +17,7 @@ SexPosition.register('lap-sitting',{
   },
 
   moves:[
+    { code:'face-sitting', generator:moveFaceSitting },
     { code:'lap-sitting-reversed', generator:moveLapSitting },
     { code:'missionary', generator:moveMissionary },
     { code:'standing', generator:moveStanding },
@@ -24,6 +25,7 @@ SexPosition.register('lap-sitting',{
 
 });
 
-function moveLapSitting() { return `[Move:LapSittingReversed]`; }
-function moveMissionary() { return `[Move:Missionary]`; }
-function moveStanding() { return `[Move:Standing]`; }
+function moveFaceSitting(context) { return `[Move:FaceSitting]`; }
+function moveLapSitting(context) { return `[Move:LapSittingReversed]`; }
+function moveMissionary(context) { return `[Move:Missionary]`; }
+function moveStanding(context) { return `[Move:Standing]`; }

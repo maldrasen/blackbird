@@ -16,6 +16,14 @@ SexPosition.register('reverse-missionary',{
     },
   },
 
-  moves:[],
+  moves:[
+    { code:'doggy-style', generator:moveDoggyStyle },
+    { code:'missionary', generator:moveMissionary },
+    { code:'spooning', generator:moveSpooning },
+  ],
 
 });
+
+function moveDoggyStyle(context) { return `[Move:DoggyStyle]`; }
+function moveMissionary(context) { return `[Move:Missionary]`; }
+function moveSpooning(context) { return `[Move:Spooning]`; }

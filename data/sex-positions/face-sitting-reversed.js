@@ -16,9 +16,15 @@ SexPosition.register('face-sitting-reversed',{
   },
 
   moves:[
+    { code:'cowgirl-reversed', generator:moveCowgirl },
+    { code:'lap-sitting-reversed', generator:moveLapSitting },
+    { code:'face-sitting', generator:moveFaceSitting },
     { code:'sixty-nine', generator:moveSixtyNine },
   ],
 
 });
 
+function moveCowgirl(context) { return `[Move:CowgirlReversed]`; }
+function moveLapSitting(context) { return `[Move:LapSittingReversed]`; }
+function moveFaceSitting(context) { return `[Move:FaceSitting]`; }
 function moveSixtyNine(context) { return `[Move:SixtyNine]`; }

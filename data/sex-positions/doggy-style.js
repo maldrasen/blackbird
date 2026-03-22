@@ -15,6 +15,8 @@ SexPosition.register('doggy-style',{
 
   moves: [
     { code:'centipede', generator:moveCentipede },
+    { code:'missionary-reversed', generator:moveMissionary },
+    { code:'spooning', generator:moveSpooning },
   ],
 
 });
@@ -35,3 +37,6 @@ function moveCentipede(context) {
 
   return Random.from(options);
 }
+
+function moveMissionary(context) { return `[Move:MissionaryReversed]`; }
+function moveSpooning(context) { return `[Move:Spooning]`; }

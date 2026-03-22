@@ -14,6 +14,12 @@ SexPosition.register('spooning',{
   },
 
   // We can move from standing reversed to spooning, but not back to standing.
-  moves:[],
+  moves:[
+    { code:'doggy-style', generator:moveDoggyStyle },
+    { code:'missionary-reversed', generator:moveMissionary },
+  ],
 
 });
+
+function moveDoggyStyle(context) { return `[Move:DoggyStyle]`; }
+function moveMissionary(context) { return `[Move:MissionaryReversed]`; }
