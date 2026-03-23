@@ -13,11 +13,11 @@ SexAction.register('get-titfuck',{
 
   requires:['T:breasts-at-least-big'],
 
-  persist: { action:'get-titfuck', revert:_nothing, when:Consent.reluctant },
-  uses: {
-    player: [TrainingSlot.cock],
-    partner: [TrainingSlot.breasts, TrainingSlot.hands],
+  alignment: {
+    player: { cock:[CockAlignment.rubbed] },
+    partner: { breasts:[BreastAlignment.cock], hands:[HandAlignment.cock] },
   },
+  persist: { action:'get-titfuck', revert:_nothing, when:Consent.reluctant },
 
   consentTarget: 30,
   minimumConsent: Consent.reluctant,

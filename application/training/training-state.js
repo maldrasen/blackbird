@@ -69,6 +69,15 @@ global.TrainingState = function(data) {
     });
   }
 
+
+
+  // TODO: We need to store messages outside of the normal sex action text for
+  //   events like position changes, and other such events.
+  function addMessage(message) {}
+
+
+
+
   // I feel like I have an irrational hatred of JavaScript's splice function,
   // but it's the only way to remove an array element.
   function removePersistedAction(code) {
@@ -77,13 +86,31 @@ global.TrainingState = function(data) {
     persistedActions.splice(index, 1);
   }
 
+
+
+
+
+
+  function setPositionData(data) {
+    position.code = data.code;
+    position.first = data.first;
+    position.second = data.second;
+  }
+
   function getPositionContext() {
     return { A:position.first, B:position.second };
   }
 
-  // TODO: We need to store messages outside of the normal sex action text for
-  //   events like position changes, and other such events.
-  function addMessage(message) {}
+  function getPlayerAlignment() {
+    const alignment = SexPosition.lookup(position.code).getAlignment();
+    return (position.first === player) ? alignment.first : alignment.second
+  }
+
+  function getPartnerAlignment() {
+    const alignment = SexPosition.lookup(position.code).getAlignment();
+    return (position.first === partner) ? alignment.first : alignment.second
+  }
+
 
   // When changePosition() is called we get the code of the new position and
   // the new position context, which has which person should be in which slot.
@@ -122,8 +149,11 @@ global.TrainingState = function(data) {
     getPlayerScales: () => { return { ...playerScales }; },
     getPreviousPlayerScales: () => { return { ...previousPlayerScales }; },
 
+    setPositionData,
     getPosition: () => { return SexPosition.lookup(position.code); },
     getPositionContext,
+    getPlayerAlignment,
+    getPartnerAlignment,
 
     setPreviousAction: action => { previousAction = action; },
     getPreviousAction: () => { return previousAction; },

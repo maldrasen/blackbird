@@ -11,11 +11,8 @@ SexAction.register('suck-nipples',{
   playerStamina: 40,
   partnerStamina: 30,
 
+  alignment: SexAlignment.giveOral(TrainingSlot.breasts),
   persist: { action:'suck-nipples' },
-  uses: {
-    player: [TrainingSlot.mouth],
-    partner: [TrainingSlot.breasts],
-  },
 
   consentTarget: 15,
   consentFactors: [

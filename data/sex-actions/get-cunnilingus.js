@@ -11,11 +11,8 @@ SexAction.register('get-cunnilingus',{
   playerStamina: 60,
   partnerStamina: 70,
 
+  alignment: SexAlignment.getOral(TrainingSlot.pussy),
   persist: { action:'get-cunnilingus', revert:_nothing, when:Consent.reluctant },
-  uses: {
-    player: [TrainingSlot.pussy],
-    partner: [TrainingSlot.mouth],
-  },
 
   consentTarget: 30,
   minimumConsent: Consent.reluctant,

@@ -11,11 +11,8 @@ SexAction.register('fondle-ass',{
   playerStamina: 30,
   partnerStamina: 30,
 
+  alignment: SexAlignment.giveFondling(HandAlignment.ass),
   persist: { action:'fondle-ass' },
-  uses: {
-    player: [TrainingSlot.hands],
-    partner: [TrainingSlot.ass],
-  },
 
   consentTarget: 20,
   consentFactors: [

@@ -11,12 +11,8 @@ SexAction.register('get-blowjob',{
   playerStamina: 60,
   partnerStamina: 80,
 
+  alignment: SexAlignment.getOral(TrainingSlot.cock),
   persist: { action:'get-blowjob', revert:'get-lick-cock', when:Consent.willing },
-  uses: {
-    player: [TrainingSlot.cock],
-    partner: [TrainingSlot.mouth],
-  },
-
   penetration: { player:'cock', partner:'mouth' },
 
   consentTarget: 35,

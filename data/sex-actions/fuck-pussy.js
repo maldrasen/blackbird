@@ -11,12 +11,8 @@ SexAction.register('fuck-pussy',{
   playerStamina: 100,
   partnerStamina: 100,
 
+  alignment: SexAlignment.giveFucking(TrainingSlot.pussy),
   persist: { action:'fuck-pussy' },
-  uses: {
-    player: [TrainingSlot.cock],
-    partner: [TrainingSlot.pussy],
-  },
-
   penetration: { player:'cock', partner:'pussy' },
 
   consentTarget: 45,

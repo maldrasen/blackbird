@@ -10,17 +10,17 @@ SexAction.register('massage-feet',{
   playerStamina: 50,
   partnerStamina: -60,
 
+  // Even though the characters are still touching, we can force the apart
+  // position. Any other action would need to reposition anyway.
+
+  forcePosition: {
+    code: 'apart',
+    clearPersisted: true,
+  },
   uses: {
     player: [TrainingSlot.hands],
     partner: [],
   },
-
-  // TODO: Stop all the other persisted actions.
-
-  // TODO: Like the massage-back action there isn't enough information in the
-  //   'uses' property for the position system to know that the player needs to
-  //   be able to reach the partner's feet. Not sure how to implement that
-  //   other than a list of valid positions for this action.
 
   consentTarget: 0,
   minimumConsent: Consent.reluctant,

@@ -12,6 +12,11 @@ SexAction.register('lap-grinding',{
   playerStamina: 15,
   partnerStamina: 50,
 
+  // Lap grinding has no alignment because we don't arrive at this action
+  // by selecting it anywhere. It's purely a state. As a state though we still
+  // need to know the 'uses' arrays, and there's no alignment to pull them
+  // from, so we can just keep these 'uses' properties as a fallback.
+
   persist: { action:'lap-grinding' },
   uses: {
     player: [TrainingSlot.cock],

@@ -11,11 +11,8 @@ SexAction.register('get-handjob',{
   playerStamina: 60,
   partnerStamina: 50,
 
+  alignment: SexAlignment.getFondling(HandAlignment.cock),
   persist: { action:'get-handjob', revert:_nothing, when:Consent.reluctant },
-  uses: {
-    player: [TrainingSlot.cock],
-    partner: [TrainingSlot.hands],
-  },
 
   consentTarget: 25,
   minimumConsent: Consent.reluctant,

@@ -11,11 +11,8 @@ SexAction.register('get-rimming',{
   playerStamina: 50,
   partnerStamina: 70,
 
+  alignment: SexAlignment.getOral(TrainingSlot.ass),
   persist: { action:'get-rimming', revert:_nothing, when:Consent.reluctant },
-  uses: {
-    player: [TrainingSlot.ass],
-    partner: [TrainingSlot.mouth],
-  },
 
   consentTarget: 40,
   minimumConsent: Consent.reluctant,

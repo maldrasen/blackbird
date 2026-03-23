@@ -11,11 +11,8 @@ SexAction.register('finger-anus',{
   playerStamina: 40,
   partnerStamina: 70,
 
+  alignment: SexAlignment.giveFingering(TrainingSlot.ass),
   persist: { action:'finger-anus' },
-  uses: {
-    player: [TrainingSlot.hands],
-    partner: [TrainingSlot.ass],
-  },
 
   consentTarget: 30,
   consentFactors: [

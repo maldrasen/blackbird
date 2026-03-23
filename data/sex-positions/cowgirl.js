@@ -19,9 +19,11 @@ SexPosition.register('cowgirl',{
   moves:[
     { code:'cowgirl-reversed', generator:moveCowgirl },
     { code:'face-sitting', generator:moveFaceSitting },
+    { code:'straddle', generator:moveStraddle },
   ],
 
 });
 
 function moveCowgirl(context) { return `[Move:CowgirlReversed]`; }
 function moveFaceSitting(context) { return `[Move:FaceSitting]`; }
+function moveStraddle(context) { return `[Move:Straddle]`; }

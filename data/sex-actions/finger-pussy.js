@@ -11,11 +11,8 @@ SexAction.register('finger-pussy',{
   playerStamina: 40,
   partnerStamina: 60,
 
+  alignment: SexAlignment.giveFingering(TrainingSlot.pussy),
   persist: { action:'finger-pussy' },
-  uses: {
-    player: [TrainingSlot.hands],
-    partner: [TrainingSlot.pussy],
-  },
 
   consentTarget: 28,
   consentFactors: [

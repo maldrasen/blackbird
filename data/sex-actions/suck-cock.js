@@ -11,11 +11,8 @@ SexAction.register('suck-cock',{
   playerStamina: 80,
   partnerStamina: 60,
 
+  alignment: SexAlignment.giveOral(TrainingSlot.cock),
   persist: { action:'suck-cock' },
-  uses: {
-    player: [TrainingSlot.mouth],
-    partner: [TrainingSlot.cock],
-  },
 
   consentTarget: 17,
   consentFactors: [

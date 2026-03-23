@@ -9,6 +9,7 @@ SexPosition.register('kneeling',{
       ass: [AssAlignment.onlyPussyEaten, AssAlignment.fingered],
     },
     second: {
+      breasts: [BreastAlignment.cock],
       mouth: [MouthAlignment.cock],
       hands: [HandAlignment.ass, HandAlignment.breasts, HandAlignment.cock, HandAlignment.mouth],
     },

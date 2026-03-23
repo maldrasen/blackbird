@@ -11,11 +11,8 @@ SexAction.register('suck-anus',{
   playerStamina: 70,
   partnerStamina: 50,
 
+  alignment: SexAlignment.giveOral(TrainingSlot.ass),
   persist: { action:'suck-anus' },
-  uses: {
-    player: [TrainingSlot.mouth],
-    partner: [TrainingSlot.ass],
-  },
 
   consentTarget: 20,
   consentFactors: [

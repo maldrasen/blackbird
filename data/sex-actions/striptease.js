@@ -15,13 +15,11 @@ SexAction.register('striptease',{
   playerStamina: -10,
   partnerStamina: 50,
 
-  // TODO: Stop all the other persisted actions. Still not sure how to force
-  //   that as this action uses nothing and persists nothing.
-
-  uses: {
-    player: [],
-    partner: [],
+  forcePosition: {
+    code: 'apart',
+    clearPersisted: true,
   },
+
   availableWhen:{
     conditions:['T:unbound','T:equipment.not-naked']
   },

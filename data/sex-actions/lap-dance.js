@@ -10,15 +10,16 @@ SexAction.register('lap-dance',{
   playerStamina: 20,
   partnerStamina: 70,
 
-  // TODO: Needs to unpersist all actions. Maybe it's better to handle that by
-  //   triggering a major position change somehow. Slots aren't the way to do
-  //   this.
-
-  persist: { action:'lap-grinding' },
+  forcePosition: {
+    code: 'lap-sitting',
+    clearPersisted: true,
+  },
   uses: {
     player: [TrainingSlot.cock],
     partner: [TrainingSlot.ass],
   },
+
+  persist: { action:'lap-grinding' },
   availableWhen:{
     conditions:['T:unbound']
   },

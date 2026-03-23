@@ -11,11 +11,8 @@ SexAction.register('get-lick-cock',{
   playerStamina: 40,
   partnerStamina: 60,
 
+  alignment: SexAlignment.getOral(TrainingSlot.cock),
   persist: { action:'get-lick-cock', revert:_nothing, when:Consent.willing },
-  uses: {
-    player: [TrainingSlot.cock],
-    partner: [TrainingSlot.mouth],
-  },
 
   consentTarget: 27,
   minimumConsent: Consent.reluctant,

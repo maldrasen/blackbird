@@ -12,11 +12,8 @@ SexAction.register('deep-kiss',{
   playerStamina: 40,
   partnerStamina: 40,
 
+  alignment: SexAlignment.kissing(),
   persist: { action:'deep-kiss', revert:'kiss', when:Consent.willing },
-  uses: {
-    player: [TrainingSlot.mouth],
-    partner: [TrainingSlot.mouth],
-  },
   availableWhen:{
     player: [TrainingSlot.mouth],
     partner: [TrainingSlot.mouth]

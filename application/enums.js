@@ -203,6 +203,11 @@ global.TrainingSlot = {
   pussy: 'pussy',
 }
 
+// Currently the breast alignment is only used for the get-titfuck and
+// give-titfuck actions (and only available when kneeling or prone) but it
+// should follow the same pattern as the other alignments and could be
+// extended at some point (especially once we add exotic nipple types)
+global.BreastAlignment = { cock:'cock' }
 
 // With hand alignment we can assume that a person can always reach themselves
 // for masturbation type actions. This would only be false in case of bondage

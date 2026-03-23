@@ -20,6 +20,7 @@ SexPosition.register('reverse-missionary',{
     { code:'doggy-style', generator:moveDoggyStyle },
     { code:'missionary', generator:moveMissionary },
     { code:'spooning', generator:moveSpooning },
+    { code:'straddle', generator:moveStraddle },
   ],
 
 });
@@ -27,3 +28,4 @@ SexPosition.register('reverse-missionary',{
 function moveDoggyStyle(context) { return `[Move:DoggyStyle]`; }
 function moveMissionary(context) { return `[Move:Missionary]`; }
 function moveSpooning(context) { return `[Move:Spooning]`; }
+function moveStraddle(context) { return `[Move:Straddle]`; }

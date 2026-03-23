@@ -10,6 +10,7 @@ SexPosition.register('prone',{
       ass: [AssAlignment.eaten, AssAlignment.fingered],
     },
     second: {
+      breasts: [BreastAlignment.cock],
       mouth: [MouthAlignment.ass, MouthAlignment.cock],
       hands: [HandAlignment.ass, HandAlignment.breasts, HandAlignment.cock, HandAlignment.mouth],
     },

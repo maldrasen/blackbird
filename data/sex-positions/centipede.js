@@ -21,6 +21,8 @@ SexPosition.register('centipede',{
   moves:[
     { code:'doggy-style', generator:moveDoggyStyle },
     { code:'kneeling-service', generator:moveKneelingService },
+    { code:'missionary-reversed', generator:moveMissionary },
+    { code:'straddle', generator:moveStraddle },
   ],
 
   generateRearrange: rearrange,
@@ -90,3 +92,6 @@ function moveKneelingService(context) {
 
   return Random.from(options);
 }
+
+function moveMissionary(context) { return `[Move:MissionaryReversed]`; }
+function moveStraddle(context) { return `[Move:Straddle]`; }

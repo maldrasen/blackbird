@@ -11,11 +11,8 @@ SexAction.register('get-deepthroat',{
   playerStamina: 60,
   partnerStamina: 160,
 
+  alignment: SexAlignment.getOral(TrainingSlot.cock),
   persist: { action:'get-deepthroat', revert:'get-blowjob', when:Consent.willing },
-  uses: {
-    player: [TrainingSlot.cock],
-    partner: [TrainingSlot.mouth],
-  },
   availableWhen:{
     player: [TrainingSlot.cock],
     partner: [TrainingSlot.mouth]

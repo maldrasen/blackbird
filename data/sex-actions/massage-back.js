@@ -10,17 +10,15 @@ SexAction.register('massage-back',{
   playerStamina: 50,
   partnerStamina: -80,
 
-  // TODO: Stop all the other persisted actions.
-
-  // TODO: The slot connectivity with this action isn't enough to force the
-  //   correct sex position. We'll need a way to let the position system know
-  //   that the partner's back should be to the player and within reach somehow.
-
   // TODO: There should be some follow up actions like an ass massage or a
   //   "turn-over" event that could build a large amount of lust in
   //   anticipation. These actions would need to use the previousAction
   //   availableWhen property because this doesn't persist anything.
 
+  forcePosition: {
+    code: 'waist-straddle',
+    clearPersisted: true,
+  },
   uses: {
     player: [TrainingSlot.hands],
     partner: [],

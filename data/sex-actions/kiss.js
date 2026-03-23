@@ -11,11 +11,8 @@ SexAction.register('kiss',{
   playerStamina: 30,
   partnerStamina: 30,
 
+  alignment: SexAlignment.kissing(),
   persist: { action:'kiss', revert:_nothing, when:Consent.willing },
-  uses: {
-    player: [TrainingSlot.mouth],
-    partner: [TrainingSlot.mouth],
-  },
 
   consentTarget: 15,
   consentFactors: [

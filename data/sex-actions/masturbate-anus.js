@@ -11,6 +11,9 @@ SexAction.register('masturbate-anus',{
   playerStamina: -10,
   partnerStamina: 70,
 
+  // An action with no alignment, and no forced position can be done in any
+  // position
+
   persist: { action:'masturbate-anus', revert:_nothing, when:Consent.willing },
   uses: {
     player: [],

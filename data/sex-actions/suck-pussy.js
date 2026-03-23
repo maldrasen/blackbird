@@ -11,11 +11,8 @@ SexAction.register('suck-pussy',{
   playerStamina: 70,
   partnerStamina: 60,
 
+  alignment: SexAlignment.giveOral(TrainingSlot.pussy),
   persist: { action:'suck-pussy' },
-  uses: {
-    player: [TrainingSlot.mouth],
-    partner: [TrainingSlot.pussy],
-  },
 
   consentTarget: 17,
   consentFactors: [

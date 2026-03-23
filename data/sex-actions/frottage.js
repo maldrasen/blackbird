@@ -11,11 +11,8 @@ SexAction.register('frottage',{
   playerStamina: 60,
   partnerStamina: 60,
 
+  alignment: SexAlignment.frottage(),
   persist: { action:'frottage' },
-  uses: {
-    player: [TrainingSlot.cock, TrainingSlot.hands],
-    partner: [TrainingSlot.cock],
-  },
 
   consentTarget: 17,
   consentFactors: [

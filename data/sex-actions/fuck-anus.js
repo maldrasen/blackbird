@@ -11,12 +11,8 @@ SexAction.register('fuck-anus',{
   playerStamina: 100,
   partnerStamina: 120,
 
+  alignment: SexAlignment.giveFucking(TrainingSlot.ass),
   persist: { action:'fuck-anus' },
-  uses: {
-    player: [TrainingSlot.cock],
-    partner: [TrainingSlot.ass],
-  },
-
   penetration: { player:'cock', partner:'anus' },
 
   consentTarget: 50,
