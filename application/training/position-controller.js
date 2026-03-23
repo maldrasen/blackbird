@@ -6,21 +6,52 @@ global.PositionController = (function() {
   //   we'll need to check the existing persisted actions for the ones that are still possible. Changing the position
   //   also adds a message to the state detailing the move that was made.
   function checkPosition(sexAction) {
-    console.log(`Check Position for ${sexAction.getName()}`);
 
     const state = TrainingController.getState();
     const position = state.getPosition();
-    const positionContext = state.getPositionContext();
-    const player = state.getPlayer();
-    const partner = state.getPartner();
     const alignment = position.getAlignment();
     const actionUses = sexAction.getUses();
 
-    console.log(`  Position`,position.getName());
-    console.log(`  Context:`,positionContext);
-    console.log(`  Alignment:`,alignment);
-    console.log(`  Uses:`,actionUses);
+    console.log(`Check Position [${position.getName()}] against ${sexAction.getName()}`);
+
+    let playerAlignment;
+    let partnerAlignment;
+    let isAligned = true;
+
+    if (state.getPositionContext().first === state.getPlayer()) {
+      playerAlignment = alignment.first;
+      partnerAlignment = alignment.second;
+    } else {
+      playerAlignment = alignment.second;
+      partnerAlignment = alignment.first;
+    }
+
+    console.log(`  Player`,playerAlignment);
+    console.log(`  Partner`,partnerAlignment);
+
+    actionUses.player.forEach(playerSlot => {
+      actionUses.partner.forEach(partnerSlot => {
+
+        console.log(`    Are slots aligned?`,playerSlot,partnerSlot);
+
+        if (['mouth','hands','cock','ass'].includes(partnerSlot)) {
+          console.log(`    ${playerSlot} included in `,partnerAlignment[partnerSlot])
+          partnerAlignment[partnerSlot].includes(playerSlot);
+        }
+        if (['mouth','hands','cock','ass'].includes(playerSlot)) {
+          console.log(`    ${partnerSlot} included in `,playerAlignment[playerSlot])
+          playerAlignment[playerSlot].includes(partnerSlot);
+        }
+
+      });
+    })
   }
+
+
+
+
+
+
 
   return Object.freeze({
     checkPosition
