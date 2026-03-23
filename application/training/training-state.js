@@ -31,7 +31,7 @@ global.TrainingState = function(data) {
     T: data.partner,
   };
 
-  const position = {
+  const position = data.position || {
     code: 'standing',
     first: data.player,
     second: data.partner

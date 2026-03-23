@@ -45,7 +45,7 @@ global.TrainingSystem = (function() {
 
     // We then check the sex position and change it if the next action requires
     // it. Changing position might also remove some or all persisted actions.
-    TrainingController.checkPosition(sexAction);
+    PositionController.checkPosition(sexAction);
 
     const result = SensationResult.build(code, TrainingController.getState());
 

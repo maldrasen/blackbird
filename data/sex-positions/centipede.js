@@ -4,7 +4,8 @@ SexPosition.register('centipede',{
   name: 'Centipede',
 
   // Technically can suck cock in this position, but it's weird, having to pull
-  // the cock backwards behind the person.
+  // the cock backwards behind the person. Action text will need to consider
+  // current position as well as attitude and everything else.
   alignment: {
     first: {
       mouth: [MouthAlignment.ass, MouthAlignment.cock],
