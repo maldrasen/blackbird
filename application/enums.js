@@ -265,7 +265,19 @@ global.DenialStyle = Object.freeze({
   violent: 'violent',
 });
 
-// Currently the same as the consent values, but there should be more nuance.
+// Will also need intoxicated, maybe hypnotized.
+global.Attitude = Object.freeze({
+  loving: 'loving',
+  lustful: 'lustful',
+  accepting: 'accepting', // Willing, consenting, but not interested or into it.
+  fearful: 'fearful',
+  resistant: 'resistant', // Unhappy, trying to stop you.
+  violent: 'violent',     // Angry, actively fighting back.
+});
+
+// Currently the same as the consent values, but there should be more nuance,
+// depending on the action types they're willing to consent to. i.e., Willing
+// to suck you off, but won't kiss you.
 global.TrainingAttitude = Object.freeze({
   eager: 'eager',
   willing: 'willing',

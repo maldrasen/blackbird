@@ -9,9 +9,10 @@ global.Personality = function(id) {
   }
 
   // Attitude is more situational than the personality archetype and can best be summered as the way the character
-  // feels about the current situation.
+  // feels about the current situation. Until this is implemented proper, I can just randomly return a possible
+  // attitude, as it's mostly used to select different dialog trees.
   function getAttitude() {
-
+    return Random.from(Object.keys(Attitude));
   }
 
   // When we start a training scene we first start an event where we describe the partner's reaction to having a
