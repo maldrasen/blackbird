@@ -18,8 +18,8 @@ SexAction.register('give-titfuck',{
   requires:['P:breasts-at-least-big'],
 
   alignment: {
-    player: { breasts:[BreastAlignment.cock], hands:[HandAlignment.cock] },
-    partner: { cock:[CockAlignment.rubbed] },
+    player: { breasts:BreastAlignment.cock, hands:HandAlignment.cock },
+    partner: { cock:CockAlignment.rubbed },
   },
   persist: { action:'give-titfuck' },
 

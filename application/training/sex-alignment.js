@@ -3,7 +3,7 @@ global.SexAlignment = (function()  {
   function getFondling(handAlignment) {
     return {
       player: { },
-      partner: { hands:[handAlignment] },
+      partner: { hands:handAlignment },
     }
   }
 
@@ -11,21 +11,21 @@ global.SexAlignment = (function()  {
     const alignment = { player:{}, partner:{} };
 
     if (trainingSlot === TrainingSlot.breasts) {
-      alignment.partner.mouth = [MouthAlignment.breasts];
+      alignment.partner.mouth = MouthAlignment.breasts;
     }
     if (trainingSlot === TrainingSlot.cock) {
-      alignment.player.cock = [CockAlignment.sucked];
-      alignment.partner.mouth = [MouthAlignment.cock];
+      alignment.player.cock = CockAlignment.sucked;
+      alignment.partner.mouth = MouthAlignment.cock;
     }
     if (trainingSlot === TrainingSlot.ass) {
       alignment.target = TrainingSlot.ass;
-      alignment.player.ass = [AssAlignment.eaten];
-      alignment.partner.mouth = [MouthAlignment.ass];
+      alignment.player.ass = AssAlignment.eaten;
+      alignment.partner.mouth = MouthAlignment.ass;
     }
     if (trainingSlot === TrainingSlot.pussy) {
       alignment.target = TrainingSlot.pussy;
-      alignment.player.ass = [AssAlignment.eaten];
-      alignment.partner.mouth = [MouthAlignment.ass];
+      alignment.player.ass = AssAlignment.eaten;
+      alignment.partner.mouth = MouthAlignment.ass;
     }
 
     return alignment
@@ -37,8 +37,8 @@ global.SexAlignment = (function()  {
   function giveFingering(trainingSlot) {
     return {
       target: trainingSlot,
-      player: { hands:[HandAlignment.ass] },
-      partner: { ass:[AssAlignment.fingered] },
+      player: { hands:HandAlignment.ass },
+      partner: { ass:AssAlignment.fingered },
     };
   }
 
@@ -48,7 +48,7 @@ global.SexAlignment = (function()  {
   // else to it as well.
   function giveFondling(handAlignment) {
     return {
-      player: { hands:[handAlignment] },
+      player: { hands:handAlignment },
       partner: { },
     }
   }
@@ -57,21 +57,21 @@ global.SexAlignment = (function()  {
     const alignment = { player:{}, partner:{} };
 
     if (trainingSlot === TrainingSlot.breasts) {
-      alignment.player.mouth = [MouthAlignment.breasts];
+      alignment.player.mouth = MouthAlignment.breasts;
     }
     if (trainingSlot === TrainingSlot.cock) {
-      alignment.player.mouth = [MouthAlignment.cock];
-      alignment.partner.cock = [CockAlignment.sucked];
+      alignment.player.mouth = MouthAlignment.cock;
+      alignment.partner.cock = CockAlignment.sucked;
     }
     if (trainingSlot === TrainingSlot.ass) {
       alignment.target = TrainingSlot.ass;
-      alignment.player.mouth = [MouthAlignment.ass];
-      alignment.partner.ass = [AssAlignment.eaten];
+      alignment.player.mouth = MouthAlignment.ass;
+      alignment.partner.ass = AssAlignment.eaten;
     }
     if (trainingSlot === TrainingSlot.pussy) {
       alignment.target = TrainingSlot.pussy;
-      alignment.player.mouth = [MouthAlignment.ass];
-      alignment.partner.ass = [AssAlignment.eaten];
+      alignment.player.mouth = MouthAlignment.ass;
+      alignment.partner.ass = AssAlignment.eaten;
     }
 
     return alignment;
@@ -79,16 +79,16 @@ global.SexAlignment = (function()  {
 
   function kissing() {
     return {
-      player: { mouth:[MouthAlignment.mouth] },
-      partner: { mouth:[MouthAlignment.mouth] },
+      player: { mouth:MouthAlignment.mouth },
+      partner: { mouth:MouthAlignment.mouth },
     };
   }
 
   // This might be unique to the frottage action.
   function frottage() {
     return {
-      player: { cock:[CockAlignment.frottage], hands:[HandAlignment.cock] },
-      partner: { cock:[CockAlignment.frottage] },
+      player: { cock:CockAlignment.frottage, hands:HandAlignment.cock },
+      partner: { cock:CockAlignment.frottage },
     }
   }
 
@@ -98,12 +98,12 @@ global.SexAlignment = (function()  {
   function giveFucking(trainingSlot, also=null) {
     const alignment = {
       target: trainingSlot,
-      player: { cock:[CockAlignment.fucked] },
-      partner: { ass:[AssAlignment.fucked] },
+      player: { cock:CockAlignment.fucked },
+      partner: { ass:AssAlignment.fucked },
     }
 
     if (also === TrainingSlot.hands) {
-      alignment.player.hands = [HandAlignment.ass];
+      alignment.player.hands = HandAlignment.ass;
     }
 
     return alignment;
