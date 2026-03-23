@@ -39,7 +39,7 @@ SexAction.register('frottage',{
   },
 
   techniqueTarget: 9,
-  alignment: {
+  orientation: {
     submission: 0,
     masochism: 0,
     shame: 1,

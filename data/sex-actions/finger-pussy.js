@@ -40,7 +40,7 @@ SexAction.register('finger-pussy',{
   },
 
   techniqueTarget: 14,
-  alignment: {
+  orientation: {
     submission: 1,
     masochism: 0,
     shame: 1,

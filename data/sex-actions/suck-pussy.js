@@ -41,7 +41,7 @@ SexAction.register('suck-pussy',{
   skills: {
     player:['servicing']
   },
-  alignment: {
+  orientation: {
     submission: -1,
     masochism: 0,
     shame: 0,

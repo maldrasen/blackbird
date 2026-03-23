@@ -42,7 +42,7 @@ SexAction.register('massage-feet',{
   },
 
   techniqueTarget: 11,
-  alignment: {
+  orientation: {
     submission: 0,
     masochism: -1,
     shame: 0,

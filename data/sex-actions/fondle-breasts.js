@@ -37,7 +37,7 @@ SexAction.register('fondle-breasts',{
   },
 
   techniqueTarget: 6,
-  alignment: {
+  orientation: {
     submission: 0,
     masochism: 0,
     shame: 1,

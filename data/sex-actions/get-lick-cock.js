@@ -45,7 +45,7 @@ SexAction.register('get-lick-cock',{
   skills: {
     partner:['servicing']
   },
-  alignment: {
+  orientation: {
     submission: 1,
     shame: 1,
   },

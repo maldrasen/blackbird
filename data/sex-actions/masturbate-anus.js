@@ -44,7 +44,7 @@ SexAction.register('masturbate-anus',{
   skills: {
     partner:['performance'],
   },
-  alignment: {
+  orientation: {
     submission: 2,
     masochism: 0,
     shame: 2,

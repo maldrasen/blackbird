@@ -1,7 +1,7 @@
-global.SensationAlignment = (function() {
+global.SensationOrientation = (function() {
 
-  // The sex action alignment refers to where the action falls within our submission, masochism, debasement matrix.
-  // The alignment of an action affects the player's sensations but uses both the player's skill in that BDSM class
+  // The sex action orientation refers to where the action falls within our submission, masochism, debasement matrix.
+  // The orientation of an action affects the player's sensations but uses both the player's skill in that BDSM class
   // and the partner's associated BDSM preference to do so.
   //
   // TODO: I really have no idea how all this should really work yet. I think I need to get the game into a more
@@ -10,46 +10,46 @@ global.SensationAlignment = (function() {
   function apply(result) {
     const player = result.getPlayer();
     const partner = result.getPartner();
-    const alignment = result.getSexAction().getAlignment();
+    const orientation = result.getSexAction().getOrientation();
     const preferences = SexualPreferencesComponent.lookup(partner);
 
-    if (alignment.submission < 0) {
+    if (orientation.submission < 0) {
       // TODO: If this is a servicing action (-1 on submission) generally, we
       //   don't need to adjust the partner's anger. This should have some kind
       //   of effect though.
     }
 
-    if (alignment.submission > 0) {
+    if (orientation.submission > 0) {
       const submissiveFactor = CharacterMath.personalityFactorValue(preferences.submissive);
       const check = SkillCheck(player, 'domination');
 
       result.addToPlayerSkills('domination');
 
-      if (submissiveFactor < 0) { applyDominationOnTop(alignment.submission, submissiveFactor, check); }
-      if (submissiveFactor === 0) { applyDomination(alignment.submission, submissiveFactor, check); }
-      if (submissiveFactor > 0) { applyDominationOnBottom(alignment.submission, submissiveFactor, check); }
+      if (submissiveFactor < 0) { applyDominationOnTop(orientation.submission, submissiveFactor, check); }
+      if (submissiveFactor === 0) { applyDomination(orientation.submission, submissiveFactor, check); }
+      if (submissiveFactor > 0) { applyDominationOnBottom(orientation.submission, submissiveFactor, check); }
     }
 
-    if (alignment.masochism > 0) {
+    if (orientation.masochism > 0) {
       const masochismFactor = CharacterMath.personalityFactorValue(preferences.masochistic);
       const check = SkillCheck(player, 'sadism');
 
       result.addToPlayerSkills('sadism');
 
-      if (masochismFactor < 0) { applySadismOnTop(alignment.masochism, masochismFactor, check); }
-      if (masochismFactor === 0) { applySadism(alignment.masochism, masochismFactor, check); }
-      if (masochismFactor > 0) { applySadismOnBottom(alignment.masochism, masochismFactor, check); }
+      if (masochismFactor < 0) { applySadismOnTop(orientation.masochism, masochismFactor, check); }
+      if (masochismFactor === 0) { applySadism(orientation.masochism, masochismFactor, check); }
+      if (masochismFactor > 0) { applySadismOnBottom(orientation.masochism, masochismFactor, check); }
     }
 
-    if (alignment.shame > 0) {
+    if (orientation.shame > 0) {
       const shameFactor = CharacterMath.personalityFactorValue(preferences['humiliation-slut']);
       const check = SkillCheck(player, 'degradation');
 
       result.addToPlayerSkills('degradation');
 
-      if (shameFactor < 0) { applyDegradationOnTop(alignment.masochism, shameFactor, check); }
-      if (shameFactor === 0) { applyDegradation(alignment.masochism, shameFactor, check); }
-      if (shameFactor > 0) { applyDegradationOnBottom(alignment.masochism, shameFactor, check); }
+      if (shameFactor < 0) { applyDegradationOnTop(orientation.masochism, shameFactor, check); }
+      if (shameFactor === 0) { applyDegradation(orientation.masochism, shameFactor, check); }
+      if (shameFactor > 0) { applyDegradationOnBottom(orientation.masochism, shameFactor, check); }
     }
 
     // TODO: We need to consider the effect affection-slut would have on the

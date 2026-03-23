@@ -42,7 +42,7 @@ SexAction.register('get-handjob',{
   skills: {
     partner:['servicing']
   },
-  alignment: {
+  orientation: {
     submission: 1,
     masochism: 0,
     shame: 0,

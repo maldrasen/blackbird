@@ -206,7 +206,7 @@ SensationResult.build = function(code, state) {
   SensationTechnique.apply(result);
   SensationPerformance.apply(result);
   SensationSkills.apply(result);
-  SensationAlignment.apply(result);
+  SensationOrientation.apply(result);
   SensationScales.apply(result);
 
   // The consent factor contains some of the same data that can be used to

@@ -46,7 +46,7 @@ SexAction.register('massage-back',{
   },
 
   techniqueTarget: 12,
-  alignment: {
+  orientation: {
     submission: 0,
     masochism: -1,
     shame: 0,

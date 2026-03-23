@@ -40,7 +40,7 @@ SexAction.register('finger-anus',{
   },
 
   techniqueTarget: 16,
-  alignment: {
+  orientation: {
     submission: 2,
     masochism: 1,
     shame: 2,

@@ -47,7 +47,7 @@ SexAction.register('get-rimming',{
   skills: {
     partner:['servicing']
   },
-  alignment: {
+  orientation: {
     submission: 3,
     masochism: 0,
     shame: 2,

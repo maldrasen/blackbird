@@ -51,7 +51,7 @@ SexAction.register('insert-cock-anus',{
   skills: {
     player:['ravishing']
   },
-  alignment: {
+  orientation: {
     submission: 3,
     masochism: 2,
     shame: 2,

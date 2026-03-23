@@ -15,7 +15,7 @@ SexAction.register('deep-kiss',{
   persist: { action:'deep-kiss', revert:'kiss', when:Consent.willing },
   uses: {
     player: [TrainingSlot.mouth],
-    partner: [TrainingSlot.partner],
+    partner: [TrainingSlot.mouth],
   },
   availableWhen:{
     player: [TrainingSlot.mouth],
@@ -46,7 +46,7 @@ SexAction.register('deep-kiss',{
   },
 
   techniqueTarget: 12,
-  alignment: {
+  orientation: {
     submission: 1,
     masochism: 0,
     shame: 0,

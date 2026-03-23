@@ -49,7 +49,7 @@ SexAction.register('get-blowjob',{
   skills: {
     partner:['servicing']
   },
-  alignment: {
+  orientation: {
     submission: 2,
     masochism: 1,
     shame: 1,

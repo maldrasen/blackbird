@@ -42,7 +42,7 @@ SexAction.register('suck-anus',{
   skills: {
     player:['servicing']
   },
-  alignment: {
+  orientation: {
     submission: -1,
     masochism: 0,
     shame: -1,

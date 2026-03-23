@@ -40,7 +40,7 @@ SexAction.register('kiss',{
   },
 
   techniqueTarget: 10,
-  alignment: {
+  orientation: {
     submission: 0,
     masochism: 0,
     shame: 0,

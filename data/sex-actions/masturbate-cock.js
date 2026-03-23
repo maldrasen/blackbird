@@ -42,7 +42,7 @@ SexAction.register('masturbate-cock',{
   skills: {
     partner:['performance'],
   },
-  alignment: {
+  orientation: {
     submission: 1,
     masochism: 0,
     shame: 2,

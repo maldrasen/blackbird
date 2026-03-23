@@ -54,7 +54,7 @@ SexAction.register('lap-dance',{
   skills: {
     partner:['dance','performance']
   },
-  alignment: {
+  orientation: {
     submission: 1,
     masochism: 0,
     shame: 2,
