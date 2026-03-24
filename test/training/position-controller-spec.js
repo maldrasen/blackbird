@@ -1,6 +1,6 @@
 describe("PositionController", function() {
 
-  describe.only('checkPosition()', function() {
+  describe('checkPosition()', function() {
     it('when position is compatible', function() {
       const state = TrainingFixtures.standardTrainingState({});
       const context = state.getContext();

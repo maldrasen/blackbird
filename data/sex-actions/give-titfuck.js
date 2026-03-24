@@ -17,10 +17,7 @@ SexAction.register('give-titfuck',{
 
   requires:['P:breasts-at-least-big'],
 
-  alignment: {
-    player: { breasts:BreastAlignment.cock, hands:HandAlignment.cock },
-    partner: { cock:CockAlignment.rubbed },
-  },
+  alignment: SexAlignment.giveTitfuck(),
   persist: { action:'give-titfuck' },
 
   consentTarget: 10,

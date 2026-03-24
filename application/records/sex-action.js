@@ -70,6 +70,31 @@ global.SexAction = (function() {
       throw `Unknown Sex Action Direction: ${action.direction}`
     }
 
+    // The uses arrays are build from the SexAlignment object, or falls back to the uses property if there is one.
+    // These arrays represent the parts that each participant in the action are using, which is important for
+    // determining what persisted actions can happen at the same time.
+    function getUses() {
+      const uses = action.uses || { player:[], partner:[] };
+
+      if (action.alignment) {
+        const player = action.alignment.player;
+        const partner = action.alignment.partner;
+
+        if (player.ass) { uses.player.push(action.alignment.target); }
+        if (partner.ass) { uses.player.push(action.alignment.target); }
+        if (player.cock) { uses.player.push(TrainingSlot.cock); }
+        if (partner.cock) { uses.partner.push(TrainingSlot.cock); }
+        if (player.hands) { uses.player.push(TrainingSlot.hands); }
+        if (partner.hands) { uses.partner.push(TrainingSlot.hands); }
+        if (player.mouth) { uses.player.push(TrainingSlot.mouth); }
+        if (partner.mouth) { uses.partner.push(TrainingSlot.mouth); }
+        if (player.breasts) { uses.player.push(TrainingSlot.breasts); }
+        if (partner.breasts) { uses.partner.push(TrainingSlot.breasts); }
+      }
+
+      return uses;
+    }
+
     // The isPossible() checks the basic action requirements to hide actions that will not ever be possible during this
     // training. These are conditions like, you can't get a tail job, when a character doesn't have a tail. This acts
     // as the initial action filter. Actions that are filtered here are no longer considered when determining which
@@ -79,13 +104,14 @@ global.SexAction = (function() {
 
       const player = Character(context.P);
       const partner = Character(context.T);
+      const uses = getUses();
 
-      if (action.uses.player.includes(TrainingSlot.breasts) && player.hasBreasts() === false) { return false; }
-      if (action.uses.player.includes(TrainingSlot.cock) && player.hasNormalCock() === false) { return false; }
-      if (action.uses.player.includes(TrainingSlot.pussy) && player.hasNormalPussy() === false) { return false; }
-      if (action.uses.partner.includes(TrainingSlot.breasts) && partner.hasBreasts() === false) { return false; }
-      if (action.uses.partner.includes(TrainingSlot.cock) && partner.hasNormalCock() === false) { return false; }
-      if (action.uses.partner.includes(TrainingSlot.pussy) && partner.hasNormalPussy() === false) { return false; }
+      if (uses.player.includes(TrainingSlot.breasts) && player.hasBreasts() === false) { return false; }
+      if (uses.player.includes(TrainingSlot.cock) && player.hasNormalCock() === false) { return false; }
+      if (uses.player.includes(TrainingSlot.pussy) && player.hasNormalPussy() === false) { return false; }
+      if (uses.partner.includes(TrainingSlot.breasts) && partner.hasBreasts() === false) { return false; }
+      if (uses.partner.includes(TrainingSlot.cock) && partner.hasNormalCock() === false) { return false; }
+      if (uses.partner.includes(TrainingSlot.pussy) && partner.hasNormalPussy() === false) { return false; }
 
       return true
     }
@@ -173,7 +199,7 @@ global.SexAction = (function() {
 
       // Action persistence
       getPersist: () => { return action.persist },
-      getUses: () => { return action.uses; },
+      getUses,
 
       // Action visibility and enabled state.
       isPossible,
