@@ -111,7 +111,6 @@ global.TrainingState = function(data) {
     return (position.first === partner) ? alignment.first : alignment.second
   }
 
-
   // When changePosition() is called we get the code of the new position and
   // the new position context, which has which person should be in which slot.
   function changePosition(code, context) {
@@ -150,6 +149,7 @@ global.TrainingState = function(data) {
     getPreviousPlayerScales: () => { return { ...previousPlayerScales }; },
 
     setPositionData,
+    changePosition,
     getPosition: () => { return SexPosition.lookup(position.code); },
     getPositionContext,
     getPlayerAlignment,

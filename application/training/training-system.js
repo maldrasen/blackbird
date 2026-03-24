@@ -45,9 +45,7 @@ global.TrainingSystem = (function() {
 
     // We then check the sex position and change it if the next action requires
     // it. Changing position might also remove some or all persisted actions.
-    if (PositionController.isPositionAligned(sexAction) === false) {
-      console.log("Reposition...")
-    }
+    PositionController.repositionIfNecessary(sexAction);
 
     const result = SensationResult.build(code, TrainingController.getState());
 
