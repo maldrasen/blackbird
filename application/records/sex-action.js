@@ -198,7 +198,8 @@ global.SexAction = (function() {
       getPlayerStamina: () => { return action.playerStamina; },
 
       // Action persistence
-      getPersist: () => { return action.persist },
+      getPersist: () => { return action.persist; },
+      getAlignment: () => { return action.alignment; },
       getUses,
 
       // Action visibility and enabled state.

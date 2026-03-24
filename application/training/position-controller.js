@@ -1,25 +1,27 @@
 global.PositionController = (function() {
 
-  // TODO: Make sure this new action is compatible with existing position. If it isn't then determine the closest
-  //   position that is. We can set the current position to the one we found. If there was no connection between
-  //   positions then all the persisted actions are removed. If there was a connection between the connections then
-  //   we'll need to check the existing persisted actions for the ones that are still possible. Changing the position
-  //   also adds a message to the state detailing the move that was made.
-  function checkPosition(sexAction) {
+  function isPositionAligned(sexAction) {
     const state = TrainingController.getState();
-    const position = state.getPosition();
-    const playerAlignment = state.getPlayerAlignment();
-    const partnerAlignment = state.getPartnerAlignment();
+    const actionAlignment = sexAction.getAlignment();
 
-    console.log(`Check Position [${position.getName()}] against ${sexAction.getName()}`);
-    console.log(`  Player`,playerAlignment);
-    console.log(`  Partner`,partnerAlignment);
+    return checkAlignment(actionAlignment.player, state.getPlayerAlignment()) &&
+           checkAlignment(actionAlignment.partner, state.getPartnerAlignment())
+  }
 
-    return true;
+  // The sex action alignment will have a map of parts with each part having an alignment value:
+  //   { cock:CockAlignment.sucked }
+  // The position alignment will have a map of parts with each part having an array of alignment values:
+  //   { cock:[CockAlignment.rubbed, CockAlignment.sucked] }
+  // This function checks to see that each value in the sex action alignment map has a corresponding value in the
+  // position alignment array.
+  function checkAlignment(action, position) {
+    return ['ass','breasts','cock','hands','mouth'].map(key => {
+      return (action[key] == null) ? true : position[key].includes(action[key]);
+    }).includes(false) === false;
   }
 
   return Object.freeze({
-    checkPosition
+    isPositionAligned
   });
 
 })();
