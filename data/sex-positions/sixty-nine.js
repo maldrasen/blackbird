@@ -22,7 +22,7 @@ SexPosition.register('sixty-nine',{
   moves:[
     { code:'face-sitting-reversed', generator:moveFaceSitting },
     { code:'missionary', generator:moveMissionary },
-    { code:'prone', generator:moveProne },
+    { code:'prone', generator:moveProne, swap:true },
   ],
 
 });

@@ -15,10 +15,10 @@ SexPosition.register('kneeling-service',{
   },
 
   moves:[
-    { code:'centipede', generator:moveCentipede },
+    { code:'centipede', generator:moveCentipede, swap:true },
     { code:'kneeling', generator:moveKneeling },
-    { code:'standing-reversed', generator:moveStanding },
-    { code:'lap-sitting-reversed', generator:moveLapSitting },
+    { code:'standing-reversed', generator:moveStanding, swap:true },
+    { code:'lap-sitting-reversed', generator:moveLapSitting, swap:true },
   ]
 
 });

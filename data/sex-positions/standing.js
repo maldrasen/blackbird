@@ -25,9 +25,13 @@ SexPosition.register('standing',{
   // position. That gives us the correct alignment map to look at.
   moves:[
     { code:'kneeling', generator:moveKneeling },
+    { code:'kneeling', generator:moveKneeling, swap:true },
     { code:'lap-sitting', generator:moveLapSitting },
+    { code:'lap-sitting', generator:moveLapSitting, swap:true },
     { code:'missionary', generator:moveMissionary },
+    { code:'missionary', generator:moveMissionary, swap:true },
     { code:'standing-reversed', generator:moveStandingReversed },
+    { code:'standing-reversed', generator:moveStandingReversed, swap:true },
   ],
 });
 

@@ -17,8 +17,8 @@ SexPosition.register('prone',{
   },
 
   moves:[
-    { code:'missionary', generator:moveMissionary },
-    { code:'sixty-nine', generator:moveSixtyNine },
+    { code:'missionary', generator:moveMissionary, swap:true },
+    { code:'sixty-nine', generator:moveSixtyNine, swap:true },
   ],
 
 });

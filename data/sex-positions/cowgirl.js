@@ -18,8 +18,8 @@ SexPosition.register('cowgirl',{
 
   moves:[
     { code:'cowgirl-reversed', generator:moveCowgirl },
-    { code:'face-sitting', generator:moveFaceSitting },
-    { code:'straddle', generator:moveStraddle },
+    { code:'face-sitting', generator:moveFaceSitting, swap:true },
+    { code:'straddle', generator:moveStraddle, swap:true },
   ],
 
 });

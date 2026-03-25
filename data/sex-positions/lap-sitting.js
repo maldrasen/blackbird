@@ -17,9 +17,9 @@ SexPosition.register('lap-sitting',{
   },
 
   moves:[
-    { code:'face-sitting', generator:moveFaceSitting },
+    { code:'face-sitting', generator:moveFaceSitting, swap:true },
     { code:'lap-sitting-reversed', generator:moveLapSitting },
-    { code:'missionary', generator:moveMissionary },
+    { code:'missionary', generator:moveMissionary, swap:true },
     { code:'standing', generator:moveStanding },
   ],
 

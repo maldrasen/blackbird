@@ -16,7 +16,7 @@ SexPosition.register('standing-reversed',{
 
   moves:[
     { code:'centipede', generator:moveCentipede },
-    { code:'kneeling-service', generator:moveKneeling },
+    { code:'kneeling-service', generator:moveKneeling, swap:true },
     { code:'lap-sitting-reversed', generator:moveLapSitting },
     { code:'spooning', generator:moveSpooning },
     { code:'standing', generator:moveStanding },

@@ -16,8 +16,8 @@ SexPosition.register('face-sitting',{
   },
 
   moves:[
-    { code:'cowgirl', generator:moveCowgirl },
-    { code:'lap-sitting', generator:moveLapSitting },
+    { code:'cowgirl', generator:moveCowgirl, swap:true },
+    { code:'lap-sitting', generator:moveLapSitting, swap:true },
     { code:'face-sitting-reversed', generator:moveFaceSitting },
   ],
 

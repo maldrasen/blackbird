@@ -15,7 +15,7 @@ SexPosition.register('straddle',{
 
   moves:[
     { code:'centipede', generator:moveCentipede },
-    { code:'cowgirl', generator:moveCowgirl },
+    { code:'cowgirl', generator:moveCowgirl, swap:true },
     { code:'doggy-style', generator:moveDoggyStyle },
     { code:'missionary-reverse', generator:moveMissionary },
   ],
