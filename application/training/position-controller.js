@@ -3,6 +3,7 @@ global.PositionController = (function() {
   function repositionIfNecessary(sexAction) {
     if (PositionController.isPositionAligned(sexAction) === false) {
       const newPosition = findAlignedPosition(sexAction);
+      const state = TrainingController.getState();
 
       if (newPosition) {
         const playerFirst = state.getPositionContext().A === state.getPlayer();
