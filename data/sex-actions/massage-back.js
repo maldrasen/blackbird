@@ -16,7 +16,8 @@ SexAction.register('massage-back',{
   //   availableWhen property because this doesn't persist anything.
 
   forcePosition: {
-    code: 'waist-straddle',
+    code: 'straddle',
+    playerFirst: true,
     clearPersisted: true,
   },
   uses: {

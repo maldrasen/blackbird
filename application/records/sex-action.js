@@ -200,6 +200,7 @@ global.SexAction = (function() {
       // Action persistence
       getPersist: () => { return action.persist; },
       getAlignment: () => { return action.alignment; },
+      getForcePosition: () => { return action.forcePosition; },
       getUses,
 
       // Action visibility and enabled state.

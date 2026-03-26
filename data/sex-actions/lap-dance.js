@@ -12,6 +12,7 @@ SexAction.register('lap-dance',{
 
   forcePosition: {
     code: 'lap-sitting',
+    playerFirst: true,
     clearPersisted: true,
   },
   uses: {

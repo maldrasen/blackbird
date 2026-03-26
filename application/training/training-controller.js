@@ -117,7 +117,6 @@ global.TrainingController = (function() {
   }
 
   function checkPersistedActions(sexAction) {
-    console.log("=== Checking Persisted Actions ===");
     [...state.getPersistedActions()].forEach(persistedAction => {
 
       if (willContinue(persistedAction) === false) {

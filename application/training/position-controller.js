@@ -1,15 +1,21 @@
 global.PositionController = (function() {
 
   function repositionIfNecessary(sexAction) {
+    if (sexAction.getForcePosition() != null) { return forcePosition(sexAction); }
+
     if (PositionController.isPositionAligned(sexAction) === false) {
       const move = findAlignedPosition(sexAction);
-      move ? shiftPosition(move) : changePosition(sexAction);
+      move ? shiftPosition(sexAction, move) : changePosition(sexAction);
     }
   }
 
+  // If the sex action doesn't have an alignment then it should either force a
+  // position (like lap-dance) or can be done in any position (like masturbate)
   function isPositionAligned(sexAction) {
     const state = TrainingController.getState();
     const actionAlignment = sexAction.getAlignment();
+
+    if (actionAlignment == null) { return true; }
 
     return checkAlignment(actionAlignment.player, state.getPlayerAlignment()) &&
            checkAlignment(actionAlignment.partner, state.getPartnerAlignment());
@@ -45,9 +51,7 @@ global.PositionController = (function() {
     return canShift.length > 0 ? Random.from(canShift) : null;
   }
 
-  // TODO: Shift position needs to reconsider all persisted actions.
-
-  function shiftPosition(move) {
+  function shiftPosition(sexAction, move) {
     const state = TrainingController.getState();
     const context = state.getPositionContext();
     const [first, second] = move.swap ? [context.B, context.A] : [context.A, context.B];
@@ -55,9 +59,9 @@ global.PositionController = (function() {
 
     state.addMessage('shift-position',message);
     state.setPositionData({ code:move.code, first:first, second:second });
-  }
 
-  // TODO: Change position needs to remove all persisted actions.
+    TrainingController.checkPersistedActions(sexAction);
+  }
 
   function changePosition(sexAction) {
     const actionAlignment = sexAction.getAlignment();
@@ -83,8 +87,26 @@ global.PositionController = (function() {
     const positionData = Random.from(valid);
     const position = SexPosition.lookup(positionData.code);
 
+    state.removeAllPersistedActions();
     state.addMessage('change-position', position.getRearrange({ A:positionData.first, B:positionData.second }));
     state.setPositionData(positionData)
+  }
+
+  function forcePosition(sexAction) {
+    const forcePosition = sexAction.getForcePosition();
+    const position = SexPosition.lookup(forcePosition.code);
+    const state = TrainingController.getState();
+    const currentPosition = state.getPosition().getCode();
+
+    if (currentPosition !== forcePosition.code) {
+      const player = state.getPlayer();
+      const partner = state.getPartner();
+      const [first,second] = forcePosition.playerFirst ? [player,partner] : [partner,player];
+
+      state.removeAllPersistedActions();
+      state.addMessage('change-position', position.getRearrange({ A:first, B:second }));
+      state.setPositionData({ code:forcePosition.code, first:first, second:second });
+    }
   }
 
   return Object.freeze({

@@ -17,6 +17,7 @@ SexAction.register('striptease',{
 
   forcePosition: {
     code: 'apart',
+    playerFirst: true,
     clearPersisted: true,
   },
 

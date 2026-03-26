@@ -86,8 +86,8 @@ describe("PositionController", function() {
         position: { code:'cowgirl', first:context.P, second:context.T },
       });
 
-      PositionController.shiftPosition(
-        PositionController.findAlignedPosition(SexAction.lookup('suck-pussy')));
+      const sexAction = SexAction.lookup('suck-pussy');
+      PositionController.shiftPosition(sexAction, PositionController.findAlignedPosition(sexAction));
 
       const state = TrainingController.getState();
       expect(state.getMessages()['shift-position']).to.not.be.null;
@@ -110,7 +110,6 @@ describe("PositionController", function() {
       expect(state.getPositionContext().A).to.equal(context.T);
       expect(state.getPositionContext().B).to.equal(context.P);
     });
-
   });
 
 });

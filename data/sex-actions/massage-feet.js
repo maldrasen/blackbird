@@ -15,6 +15,7 @@ SexAction.register('massage-feet',{
 
   forcePosition: {
     code: 'apart',
+    playerFirst: true,
     clearPersisted: true,
   },
   uses: {
