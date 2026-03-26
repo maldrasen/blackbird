@@ -78,4 +78,23 @@ describe("PositionController", function() {
     });
   });
 
+  describe('shiftPosition()', function() {
+    it("Updates the training state", function(){
+      const context = TrainingFixtures.standardTrainingState({}).getContext();
+
+      TrainingController.startTraining({ player:context.P, partner:context.T,
+        position: { code:'cowgirl', first:context.P, second:context.T },
+      });
+
+      PositionController.shiftPosition(
+        PositionController.findAlignedPosition(SexAction.lookup('suck-pussy')));
+
+      const state = TrainingController.getState();
+      expect(state.getMessages()['shift-position']).to.not.be.null;
+      expect(state.getPosition().getName()).to.equal('Face Sitting');
+      expect(state.getPositionContext().A).to.equal(context.T);
+      expect(state.getPositionContext().B).to.equal(context.P);
+    });
+  });
+
 });

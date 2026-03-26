@@ -2,18 +2,8 @@ global.PositionController = (function() {
 
   function repositionIfNecessary(sexAction) {
     if (PositionController.isPositionAligned(sexAction) === false) {
-      const newPosition = findAlignedPosition(sexAction);
-      const state = TrainingController.getState();
-
-      if (newPosition) {
-        const playerFirst = state.getPositionContext().A === state.getPlayer();
-        const newContext = {
-          first: playerFirst ? state.getPlayer() : state.getPartner(),
-          second: playerFirst ? state.getPartner() : state.getPlayer(),
-        };
-        state.changePosition(newPosition.code, newContext);
-      }
-
+      const move = findAlignedPosition(sexAction);
+      move ? shiftPosition(move) : changePosition(sexAction);
     }
   }
 
@@ -55,10 +45,31 @@ global.PositionController = (function() {
     return canShift.length > 0 ? Random.from(canShift) : null;
   }
 
+  // TODO: Shift position needs to reconsider all persisted actions.
+
+  function shiftPosition(move) {
+    const state = TrainingController.getState();
+    const context = state.getPositionContext();
+    const [first, second] = move.swap ? [context.B, context.A] : [context.A, context.B];
+    const message = move.generator({ A:first, B:second });
+
+    state.addMessage('shift-position',message);
+    state.setPositionData({ code:move.code, first:first, second:second });
+  }
+
+  // TODO: Change position needs to remove all persisted actions. (And also
+  //   find a new valid position, and set it in the state, ensuring that the
+  //   roles are set correctly.
+
+  function changePosition(sexAction) {
+    const actionAlignment = sexAction.getAlignment();
+  }
+
   return Object.freeze({
     isPositionAligned,
     repositionIfNecessary,
     findAlignedPosition,
+    shiftPosition,
   });
 
 })();

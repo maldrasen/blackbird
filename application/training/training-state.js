@@ -2,6 +2,7 @@ global.TrainingState = function(data) {
 
   let previousAction;
   let persistedActions = [];
+  let messages = {};
 
   let essenceOfAnger = 0;
   const anima = {};
@@ -39,6 +40,10 @@ global.TrainingState = function(data) {
 
   const possibleActions = SexAction.getPossible(context);
 
+  // ============
+  //    Scales
+  // ============
+
   // We need to check for anima overflow as the scales are updated.
   function updateTrainingScales(result) {
     updateScales(result.getPlayerSensations(), previousPlayerScales, playerScales, false);
@@ -69,14 +74,9 @@ global.TrainingState = function(data) {
     });
   }
 
-
-
-  // TODO: We need to store messages outside of the normal sex action text for
-  //   events like position changes, and other such events.
-  function addMessage(message) {}
-
-
-
+  // =======================
+  //    Persisted Actions
+  // =======================
 
   // I feel like I have an irrational hatred of JavaScript's splice function,
   // but it's the only way to remove an array element.
@@ -86,10 +86,9 @@ global.TrainingState = function(data) {
     persistedActions.splice(index, 1);
   }
 
-
-
-
-
+  // ==============
+  //    Position
+  // ==============
 
   function setPositionData(data) {
     position.code = data.code;
@@ -111,29 +110,6 @@ global.TrainingState = function(data) {
     return (position.first === partner) ? alignment.first : alignment.second
   }
 
-  // When changePosition() is called we get the code of the new position and
-  // the new position context, which has which person should be in which slot.
-  function changePosition(code, context) {
-    const newPosition = SexPosition.lookup(code);
-    const oldPosition = SexPosition.lookup(position.code);
-    const move = oldPosition.getMoves().filter(move => move.code === code)[0];
-
-    if (move == null) {
-      // Remove all persisted actions.
-      addMessage(newPosition.getRearrange(context));
-
-    }
-    if (move != null) {
-      // Remove persisted actions what don't match the new alignment.
-      addMessage(move.generator(context));
-    }
-
-    // Finally, the position is updated to the new code and context.
-    position.code = code;
-    position.first = context.A;
-    position.second = context.B;
-  }
-
   return Object.freeze({
     getPlayer: () => { return player; },
     getPartner: () => { return partner; },
@@ -147,25 +123,26 @@ global.TrainingState = function(data) {
     getPreviousPartnerScales: () => { return { ...previousPartnerScales }; },
     getPlayerScales: () => { return { ...playerScales }; },
     getPreviousPlayerScales: () => { return { ...previousPlayerScales }; },
-
-    setPositionData,
-    changePosition,
-    getPosition: () => { return SexPosition.lookup(position.code); },
-    getPositionContext,
-    getPlayerAlignment,
-    getPartnerAlignment,
-
-    setPreviousAction: action => { previousAction = action; },
-    getPreviousAction: () => { return previousAction; },
+    setPartnerScaleValue: (key,value) => { partnerScales[key] = value; },
+    setPlayerScaleValue: (key,value) => { playerScales[key] = value; },
+    updateTrainingScales,
 
     addPersistedAction: code => { persistedActions.push(PersistedAction(code, {...context})); },
     getPersistedActions: () => { return persistedActions; },
     removeAllPersistedActions: () => { persistedActions = []; },
     removePersistedAction,
+    setPreviousAction: action => { previousAction = action; },
+    getPreviousAction: () => { return previousAction; },
 
-    updateTrainingScales,
-    setPartnerScaleValue: (key,value) => { partnerScales[key] = value; },
-    setPlayerScaleValue: (key,value) => { playerScales[key] = value; },
+    setPositionData,
+    getPosition: () => { return SexPosition.lookup(position.code); },
+    getPositionContext,
+    getPlayerAlignment,
+    getPartnerAlignment,
+
+    clearMessages: () => { messages = {}; },
+    getMessages: () => { return messages },
+    addMessage: (type, message) => { messages[type] = message; },
   });
 }
 
