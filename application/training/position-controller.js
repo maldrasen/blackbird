@@ -33,12 +33,10 @@ global.PositionController = (function() {
   // position alignment array.
   function checkAlignment(action, position) {
     return ['ass','breasts','cock','hands','mouth'].map(key => {
-      return (action[key] == null) ? true : position[key].includes(action[key]);
+      return (action[key] == null) ? true : (position[key]||[]).includes(action[key]);
     }).includes(false) === false;
   }
 
-  // TODO: This keeps the same first/second roles. We need to also consider
-  //   moves where the roles swap.
   function findAlignedPosition(sexAction) {
     const actionAlignment = sexAction.getAlignment();
     const state = TrainingController.getState();
@@ -46,8 +44,9 @@ global.PositionController = (function() {
 
     const canShift = state.getPosition().getMoves().filter(move => {
       const adjacent = SexPosition.lookup(move.code);
-      const playerAlignment = adjacent.getAlignment()[playerFirst ? 'first' : 'second'];
-      const partnerAlignment = adjacent.getAlignment()[playerFirst ? 'second' : 'first'];
+      const flip = move.swap ? !playerFirst : playerFirst;
+      const { first, second } = adjacent.getAlignment();
+      const [playerAlignment, partnerAlignment] = flip ? [first, second] : [second, first];
 
       return checkAlignment(actionAlignment.player, playerAlignment) &&
              checkAlignment(actionAlignment.partner, partnerAlignment);

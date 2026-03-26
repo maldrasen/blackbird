@@ -57,7 +57,7 @@ describe("PositionController", function() {
       expect(PositionController.findAlignedPosition(SexAction.lookup('get-blowjob')).code).to.equal('kneeling');
     });
 
-    it.only('when characters will need to swap roles', function() {
+    it('when characters will need to swap roles', function() {
       const context = TrainingFixtures.standardTrainingState({}).getContext();
 
       TrainingController.startTraining({ player:context.P, partner:context.T,
@@ -67,6 +67,15 @@ describe("PositionController", function() {
       expect(PositionController.findAlignedPosition(SexAction.lookup('suck-pussy')).code).to.equal('face-sitting');
     });
 
+    it('when no move is possible', function() {
+      const context = TrainingFixtures.standardTrainingState({}).getContext();
+
+      TrainingController.startTraining({ player:context.P, partner:context.T,
+        position: { code:'cowgirl', first:context.T, second:context.P },
+      });
+
+      expect(PositionController.findAlignedPosition(SexAction.lookup('suck-pussy'))).to.be.null;
+    });
   });
 
 });
