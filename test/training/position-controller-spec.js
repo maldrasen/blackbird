@@ -97,4 +97,20 @@ describe("PositionController", function() {
     });
   });
 
+  describe('changePosition()', function() {
+    it("Updates the training state", function(){
+      const context = TrainingFixtures.standardTrainingState({}).getContext();
+
+      TrainingController.startTraining({ player:context.P, partner:context.T });
+      PositionController.changePosition(SexAction.lookup('give-titfuck'));
+
+      const state = TrainingController.getState();
+      expect(state.getMessages()['change-position']).to.not.be.null;
+      expect(state.getPosition().getCode()).to.be.oneOf(['kneeling','prone']);
+      expect(state.getPositionContext().A).to.equal(context.T);
+      expect(state.getPositionContext().B).to.equal(context.P);
+    });
+
+  });
+
 });

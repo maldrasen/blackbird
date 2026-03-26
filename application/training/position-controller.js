@@ -57,12 +57,34 @@ global.PositionController = (function() {
     state.setPositionData({ code:move.code, first:first, second:second });
   }
 
-  // TODO: Change position needs to remove all persisted actions. (And also
-  //   find a new valid position, and set it in the state, ensuring that the
-  //   roles are set correctly.
+  // TODO: Change position needs to remove all persisted actions.
 
   function changePosition(sexAction) {
     const actionAlignment = sexAction.getAlignment();
+    const state = TrainingController.getState();
+    const player = state.getPlayer();
+    const partner = state.getPartner();
+    const valid = [];
+
+    SexPosition.getAllCodes().forEach(code => {
+      const sexPosition = SexPosition.lookup(code);
+      const alignment = sexPosition.getAlignment();
+
+      if (checkAlignment(actionAlignment.player, alignment.first) &&
+          checkAlignment(actionAlignment.partner, alignment.second)) {
+        valid.push({ code:code, first:player, second:partner });
+      }
+      else if (checkAlignment(actionAlignment.player, alignment.second) &&
+               checkAlignment(actionAlignment.partner, alignment.first)) {
+        valid.push({ code:code, first:partner, second:player });
+      }
+    });
+
+    const positionData = Random.from(valid);
+    const position = SexPosition.lookup(positionData.code);
+
+    state.addMessage('change-position', position.getRearrange({ A:positionData.first, B:positionData.second }));
+    state.setPositionData(positionData)
   }
 
   return Object.freeze({
@@ -70,6 +92,7 @@ global.PositionController = (function() {
     repositionIfNecessary,
     findAlignedPosition,
     shiftPosition,
+    changePosition,
   });
 
 })();
