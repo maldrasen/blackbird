@@ -7,6 +7,7 @@ global.CentralScrutinizer = function(context) {
 
   const genderPattern = /(\w):gender\.([a-z-]*)/
   const speciesPattern = /(\w):species\.([a-z-]*)/
+  const anusPattern = /(\w):([a-z-]*anus[a-z-]*)/
   const breastsPattern = /(\w):([a-z-]*breasts[a-z-]*)/
   const cockPattern = /(\w):([a-z-]*cock[a-z-]*)/
   const pussyPattern = /(\w):([a-z-]*pussy[a-z-]*)/
@@ -31,6 +32,8 @@ global.CentralScrutinizer = function(context) {
     if (match) { return isGenderValid(match[2], match[1], context); }
     match = condition.match(speciesPattern);
     if (match) { return isSpeciesValid(match[2], match[1], context); }
+    match = condition.match(anusPattern);
+    if (match) { return AnusScrutinizer.isValid(match[2], match[1], context); }
     match = condition.match(breastsPattern);
     if (match) { return BreastsScrutinizer.isValid(match[2], match[1], context); }
     match = condition.match(cockPattern);

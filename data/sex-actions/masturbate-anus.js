@@ -12,7 +12,7 @@ SexAction.register('masturbate-anus',{
   partnerStamina: 70,
 
   // An action with no alignment, and no forced position can be done in any
-  // position
+  // position.
 
   persist: { action:'masturbate-anus', revert:_nothing, when:Consent.willing },
   uses: {

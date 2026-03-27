@@ -11,6 +11,7 @@ SexAction.register('fondle-breasts',{
   playerStamina: 30,
   partnerStamina: 30,
 
+  requires: ['T:has-breasts'],
   alignment: SexAlignment.giveFondling(HandAlignment.breasts),
   persist: { action:'fondle-breasts' },
 
