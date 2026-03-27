@@ -158,7 +158,7 @@ global.BodyFactory = (function() {
 
   function checkDuplicates(triggers, type) {
     if (triggers.filter(trigger => trigger.match(new RegExp(`-${type}$`))).length > 1) {
-      throw `Character Rejected: Triggers array contains more than one ${type} trigger.`
+      throw new Error(`Character Rejected: Triggers array contains more than one ${type} trigger.`);
     }
   }
 
@@ -179,7 +179,7 @@ global.BodyFactory = (function() {
   function applyHairTrigger(bodyData, color) {
     if (bodyData.hairColor) { return bodyData.hairColor = color; }
     if (bodyData.furColor) { return bodyData.furColor = color; }
-    if (bodyData.scaleColor == null) { throw `BodyData has no hair, fur, or scales.`; }
+    if (bodyData.scaleColor == null) { throw new Error(`BodyData has no hair, fur, or scales.`); }
 
     Object.keys(hairScaleMapping).forEach(scaleColor => {
       if (hairScaleMapping[scaleColor].includes(color)) {

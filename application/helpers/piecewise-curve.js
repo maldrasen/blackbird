@@ -32,7 +32,7 @@ global.PiecewiseCurve = function(zones) {
     });
 
     if (output == null) {
-      throw `Input Value (${input}) was not found within a defined zone.`
+      throw new Error(`Input Value (${input}) was not found within a defined zone.`);
     }
 
     return (input > 0) ? output : output * -1;

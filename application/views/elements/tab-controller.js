@@ -36,7 +36,7 @@ global.TabController = (function () {
 
   function setActiveByName(control, name) {
     if (!X.hasClass(control, 'tab-control')) {
-      throw "First argument must be a tab control";
+      throw new Error('First argument must be a tab control');
     }
 
     let container = findContainer(control);

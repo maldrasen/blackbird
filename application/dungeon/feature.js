@@ -12,12 +12,12 @@ global.Feature = () => {
   }
 
   function compileFootprint() {
-    throw `Implement compileFootprint()`;
+    throw new Error(`Implement compileFootprint()`);
   }
 
   function getBounds() {
     if ($rooms.length === 1) { return $rooms[0].getBounds(); }
-    throw `Implement calculation for more than one room.`
+    throw new Error(`Implement calculation for more than one room.`);
   }
 
   return Object.freeze({

@@ -39,7 +39,7 @@ global.AnimaComponent = (function() {
 
     Object.keys(animaComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Anima component does not have a ${key} property.`
+        throw new Error(`Anima component does not have a ${key} property.`);
       }
     });
 

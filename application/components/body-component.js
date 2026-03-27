@@ -38,7 +38,7 @@ global.BodyComponent = (function() {
 
     Object.keys(bodyComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Body component does not have a ${key} property.`
+        throw new Error(`Body component does not have a ${key} property.`);
       }
     });
 

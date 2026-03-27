@@ -70,7 +70,7 @@ global.MainMenu = (function() {
     if (fixture === 'feature') { setup = Fixtures.setupFeature; }
     if (fixture === 'training') { setup = Fixtures.setupTraining; }
     if (fixture === 'reports') { setup = ReportFixture.show; }
-    if (setup == null) { throw `Bad fixture code: ${fixture}`; }
+    if (setup == null) { throw new Error(`Bad fixture code: ${fixture}`); }
 
     await GameController.startNewGame(stateOptions);
     await GameController.openGame(setup);

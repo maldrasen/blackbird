@@ -20,10 +20,10 @@ global.InventoryComponent = (function() {
   // in an empty state, that function doesn't need validation. When we add an item to an inventory we make sure that
   // the item exists and that it isn't already in an inventory, including the inventory that it's going into.
   function addItem(inventoryId, itemId) {
-    if (ItemComponent.lookup(itemId) == null) { throw `Item:${itemId} does not exist.`; }
+    if (ItemComponent.lookup(itemId) == null) { throw new Error(`Item:${itemId} does not exist.`); }
 
     Registry.findEntitiesWithComponents([ComponentType.inventory]).forEach(invId => {
-      if (hasItem(invId, itemId)) { throw `Inventory:${invId} already has Item:${itemId}` }
+      if (hasItem(invId, itemId)) { throw new Error(`Inventory:${invId} already has Item:${itemId}`); }
     });
 
     const inventory = lookup(inventoryId);
@@ -33,7 +33,7 @@ global.InventoryComponent = (function() {
 
   function removeItem(inventoryId, itemId) {
     if (hasItem(inventoryId, itemId) === false) {
-      throw `Inventory:${inventoryId} doesn't have Item:${itemId} to remove.`;
+      throw new Error(`Inventory:${inventoryId} doesn't have Item:${itemId} to remove.`);
     }
 
     const inventory = lookup(inventoryId);
@@ -49,7 +49,7 @@ global.InventoryComponent = (function() {
     const inventory = lookup(inventoryId);
     const article = Article.lookup(code);
 
-    if (article == null) { throw `Unknown Article:${code}` }
+    if (article == null) { throw new Error(`Unknown Article:${code}`); }
     if (quantity > 0) { inventory.articles[code] = quantity; }
     if (quantity <= 0) { delete inventory.articles[code]; }
 

@@ -30,7 +30,7 @@ global.SkillsComponent = (function() {
 
     Object.keys(skillsComponent).forEach(key => {
       if ($skills.includes(key) === false) {
-        throw `Skill component does not have a ${key} property.`
+        throw new Error(`Skill component does not have a ${key} property.`);
       }
     });
 

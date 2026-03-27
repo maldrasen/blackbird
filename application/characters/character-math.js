@@ -28,8 +28,8 @@ global.CharacterMath = (function() {
   // 1.5 to this factor will reduce the range to between 0.66 and 1.5. A strength of 4 should double the effect of the
   // normal range (0.25 to 4)
   function applyFactorScale(factor, scale) {
-    if (scale <= 1) { throw `Scale must be > 1`; }
-    if (factor < 0.5 || factor > 2) { throw `This function expects a factor between 0.5 and 2`; }
+    if (scale <= 1) { throw new Error(`Scale must be > 1`); }
+    if (factor < 0.5 || factor > 2) { throw new Error(`This function expects a factor between 0.5 and 2`); }
     if (factor === 1 || scale === 2) { return factor; }
 
     let scaleMin, scaleRange, position;

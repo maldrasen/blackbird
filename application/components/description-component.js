@@ -2,7 +2,7 @@ global.DescriptionComponent = (function() {
   const $properties = [_parentId, 'template'];
 
   function create(id,data) {
-    if (of(id) != null) { throw `A description for this component already exists.` }
+    if (of(id) != null) { throw new Error(`A description for this component already exists.`); }
 
     const entity = Registry.createEntity();
     Registry.createComponent(entity, ComponentType.description, { _parentId:id, ...data});
@@ -28,7 +28,7 @@ global.DescriptionComponent = (function() {
 
     Object.keys(descriptionComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Description component does not have a ${key} property.`
+        throw new Error(`Description component does not have a ${key} property.`);
       }
     });
 

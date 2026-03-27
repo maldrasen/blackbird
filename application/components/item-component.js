@@ -30,7 +30,7 @@ global.ItemComponent = (function() {
 
     Object.keys(itemComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Item component does not have a ${key} property.`
+        throw new Error(`Item component does not have a ${key} property.`);
       }
     });
 

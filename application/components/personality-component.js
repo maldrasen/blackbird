@@ -24,7 +24,7 @@ global.PersonalityComponent = (function() {
 
     Object.keys(personalityComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Personality component does not have a ${key} property.`
+        throw new Error(`Personality component does not have a ${key} property.`);
       }
     });
 

@@ -12,7 +12,7 @@ global.PussyScrutinizer = (function() {
   function isValid(condition, key, context) {
     switch (condition) {
       case 'has-pussy': return getPussy(key, context) != null;
-      default: throw `Unknown Pussy Condition ${condition}`;
+      default: throw new Error(`Unknown Pussy Condition ${condition}`);
     }
   }
 

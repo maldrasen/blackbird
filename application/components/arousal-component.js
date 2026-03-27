@@ -24,7 +24,7 @@ global.ArousalComponent = (function() {
 
     Object.keys(arousalComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Arousal component does not have a ${key} property.`
+        throw new Error(`Arousal component does not have a ${key} property.`);
       }
     });
 

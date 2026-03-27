@@ -24,7 +24,7 @@ global.SituatedComponent = (function() {
 
     Object.keys(situatedComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Situated component does not have a ${key} property.`
+        throw new Error(`Situated component does not have a ${key} property.`);
       }
     });
 

@@ -26,7 +26,7 @@ global.MemoryComponent = (function() {
 
     Object.keys(memoryComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Memory component does not have a ${key} property.`
+        throw new Error(`Memory component does not have a ${key} property.`);
       }
     });
 

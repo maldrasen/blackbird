@@ -46,7 +46,8 @@ global.LetterGradeHelper = (function() {
     const letters = ['F','D','C','B','A','S','SS','SSS'];
 
     if (_scaleThresholds.length !== letters.length) {
-      throw `The scale thresholds must be mappable to letter grades.`}
+      throw new Error(`The scale thresholds must be mappable to letter grades.`);
+    }
 
     for (let i=0; i<_scaleThresholds.length; i++) {
       let max = _scaleThresholds[i];
@@ -59,7 +60,7 @@ global.LetterGradeHelper = (function() {
       }
     }
 
-    throw `Scale value [${value}] is higher than the max scale threshold. What did you just do to her?`
+    throw new Error(`Scale value [${value}] is higher than the max scale threshold. What did you just do to her?`);
   }
 
   return Object.freeze({

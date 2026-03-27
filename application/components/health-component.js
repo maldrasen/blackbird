@@ -44,7 +44,7 @@ global.HealthComponent = (function() {
     const healthComponent = lookup(id);
     Object.keys(healthComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Health component does not have a ${key} property.`
+        throw new Error(`Health component does not have a ${key} property.`);
       }
     });
   }

@@ -24,7 +24,7 @@ global.ManaComponent = (function() {
 
     Object.keys(manaComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Mana component does not have a ${key} property.`
+        throw new Error(`Mana component does not have a ${key} property.`);
       }
     });
   }

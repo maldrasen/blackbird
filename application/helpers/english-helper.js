@@ -37,7 +37,7 @@ global.EnglishHelper = (function() {
     if (typeof letter === 'string' && letter.length === 1) {
       return ['a','e','i','o','u'].includes(letter);
     }
-    throw `${letter} is not a letter`;
+    throw new Error(`${letter} is not a letter`);
   }
 
   // Simple possessive logic that works for most words. (Add exceptions to this when we find them.)
@@ -88,7 +88,7 @@ global.EnglishHelper = (function() {
       return `${tenWords[Math.floor(n/10)]}-${oneWords[n%10]}`;
     }
 
-    if (number < 0)  { throw `Error: Not doing negative numbers in English: ${number}`; }
+    if (number < 0)  { throw new Error(`Not doing negative numbers in English: ${number}`); }
     if (number === 0) { return options.whenZero || 'zero'; }
     if (number === 1) { return options.whenOne || 'one'; }
 

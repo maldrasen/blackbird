@@ -78,10 +78,9 @@ global.TrainingState = function(data) {
   //    Persisted Actions
   // =======================
 
-  // TODO: There might be a bug in this. I saw a persisted action not get removed once.
   function removePersistedAction(code) {
     const index = persistedActions.findIndex(action => action.getCode() === code);
-    if (index < 0) { throw `Action:${code} has not been persisted.` }
+    if (index < 0) { throw new Error(`Action:${code} has not been persisted.`); }
     persistedActions.splice(index, 1);
   }
 

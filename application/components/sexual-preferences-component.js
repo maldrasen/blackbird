@@ -24,7 +24,7 @@ global.SexualPreferencesComponent = (function() {
 
     Object.keys(preferencesComponent).forEach(key => {
       if (codes.includes(key) === false) {
-        throw `Sexual preference component does not have a ${key} property.`
+        throw new Error(`Sexual preference component does not have a ${key} property.`);
       }
     });
 

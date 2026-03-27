@@ -51,7 +51,7 @@ global.Tooltip = (function() {
     currentTooltip = event.target.getAttribute('id');
 
     if (currentTooltip == null || tooltipLibrary[currentTooltip] == null) {
-      throw `Cannot find tooltip with code ${currentTooltip}`;
+      throw new Error(`Cannot find tooltip with code ${currentTooltip}`);
     }
 
     setTimeout(() => {

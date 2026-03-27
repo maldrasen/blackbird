@@ -10,7 +10,7 @@ global.SensationPerformance = (function() {
     const playerSkills = sexAction.getSkills().player || [];
 
     if (partnerSkills.includes('performance')) { return applyPerformanceWhenPartnerFocused(result); }
-    if (playerSkills.includes('performance')) { throw `TODO: Implement player performance focused actions.` }
+    if (playerSkills.includes('performance')) { throw new Error(`TODO: Implement player performance focused actions.`); }
 
     switch(sexAction.getDirection()) {
       case ActionDirection.partnerToPlayer:

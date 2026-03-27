@@ -31,7 +31,7 @@ global.AnusComponent = (function() {
 
     Object.keys(anusComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Anus component does not have a ${key} property.`
+        throw new Error(`Anus component does not have a ${key} property.`);
       }
     });
 

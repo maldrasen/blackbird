@@ -102,7 +102,7 @@ global.BreastsDescriber = (function() {
     const grams = volume * BreastData.BreastFirmness[firmness];
     const ounces = MeasurementHelper.gramsToOunces(grams);
 
-    if (ounces < 2) { throw `These tits are too small to describe by weight`; }
+    if (ounces < 2) { throw new Error(`These tits are too small to describe by weight`); }
 
     return MeasurementHelper.gramsToPounds(grams) > 0 ?
       MeasurementHelper.poundsWithFraction(grams) :

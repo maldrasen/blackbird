@@ -25,7 +25,7 @@ global.SexualHistoryFactory = (function() {
     const pussySlut = context.sexualPreferences['pussy-slut'];
 
     if (androphilia == null) {
-      throw `Androphilic preference should have been set.`
+      throw new Error(`Androphilic preference should have been set.`);
     }
 
     // (1.1 - 10.9) base increases chance of virginity if they don't like men.

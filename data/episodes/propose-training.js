@@ -50,6 +50,6 @@ function getDialogKey(attitude) {
     case TrainingAttitude.willing: return DialogKeys.proposeTraining_Willing;
     case TrainingAttitude.reluctant: return DialogKeys.proposeTraining_Reluctant;
     case TrainingAttitude.unwilling: return DialogKeys.proposeTraining_Unwilling;
-    default: throw `Unimplemented Attitude ${attitude}`;
+    default: throw new Error(`Unimplemented Attitude ${attitude}`);
   }
 }

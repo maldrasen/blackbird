@@ -44,7 +44,7 @@ global.SexAction = (function() {
   }
 
   function lookup(code) {
-    if ($sexActions[code] == null) { throw `Bad sex action code [${code}]` }
+    if ($sexActions[code] == null) { throw new Error(`Bad sex action code [${code}]`); }
 
     const action = {...$sexActions[code]};
 
@@ -67,7 +67,7 @@ global.SexAction = (function() {
       if (action.direction === ActionDirection.mutual) { return 'player'; }
       if (action.direction.match(/player-to/)) { return 'player'; }
       if (action.direction.match(/partner-to/)) { return 'partner'; }
-      throw `Unknown Sex Action Direction: ${action.direction}`
+      throw new Error(`Unknown Sex Action Direction: ${action.direction}`);
     }
 
     // The uses arrays are build from the SexAlignment object, or falls back to the uses property if there is one.

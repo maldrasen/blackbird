@@ -43,13 +43,13 @@ global.CentralScrutinizer = function(context) {
     // TODO: Until bondage stuff is implemented.
     if (condition.match(/:unbound/)) { return true; }
 
-    throw `Unrecognized condition: ${condition}`;
+    throw new Error(`Unrecognized condition: ${condition}`);
   }
 
   // TODO: I was going to use this, but then I realized that the these functions
   //   should only validate entities, not the plain objects that the factories use.
-  function isGenderValid(requirement, key, context) { throw `Implement isGenderValid()` }
-  function isSpeciesValid(requirement, key, context) { throw `Implement isSpeciesValid()` }
+  function isGenderValid(requirement, key, context) { throw new Error(`Implement isGenderValid()`); }
+  function isSpeciesValid(requirement, key, context) { throw new Error(`Implement isSpeciesValid()`); }
 
   return Object.freeze({
     allConditionsPass,

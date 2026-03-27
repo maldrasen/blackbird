@@ -20,11 +20,11 @@ global.Random = (function() {
     const value = $stubQueues[name].shift();
 
     if (limits.min != null && value < limits.min) {
-      throw `Stubbed value ${value} is below minimum of ${limits.min}`; }
+      throw new Error(`Stubbed value ${value} is below minimum of ${limits.min}`); }
     if (limits.max != null && value > limits.max) {
-      throw `Stubbed value ${value} is above maximum of ${limits.max}`; }
+      throw new Error(`Stubbed value ${value} is above maximum of ${limits.max}`); }
     if (limits.within != null && limits.within.includes(value) === false) {
-      throw `Stubbed value ${value} was not within ${JSON.stringify(limits.within)}`;
+      throw new Error(`Stubbed value ${value} was not within ${JSON.stringify(limits.within)}`);
     }
 
     return value;
@@ -69,7 +69,7 @@ global.Random = (function() {
     if (array && array.length) {
       return array[Random.roll(array.length)];
     } else {
-      throw `Empty array`
+      throw new Error(`Empty array`);
     }
   }
 
@@ -92,7 +92,7 @@ global.Random = (function() {
       }
     }
 
-    throw 'Invalid frequency map';
+    throw new Error('Invalid frequency map');
   }
 
   // Normal distribution using the Box–Muller transform

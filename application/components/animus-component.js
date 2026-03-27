@@ -43,7 +43,7 @@ global.AnimusComponent = (function() {
 
     Object.keys(animusComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Animus component does not have a ${key} property.`
+        throw new Error(`Animus component does not have a ${key} property.`);
       }
     });
 

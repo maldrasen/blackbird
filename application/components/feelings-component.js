@@ -26,7 +26,7 @@ global.FeelingsComponent = (function() {
 
     Object.keys(feelingsComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Feelings component does not have a ${key} property.`
+        throw new Error(`Feelings component does not have a ${key} property.`);
       }
     });
 

@@ -15,7 +15,7 @@ global.Episode = (function() {
   }
 
   function lookup(code) {
-    if ($episodes[code] == null) { throw `Bad episode code [${code}]` }
+    if ($episodes[code] == null) { throw new Error(`Bad episode code [${code}]`); }
 
     const episode = { ...$episodes[code] };
 

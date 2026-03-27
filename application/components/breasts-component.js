@@ -40,7 +40,7 @@ global.BreastsComponent = (function() {
 
     Object.keys(breastsComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Breasts component does not have a ${key} property.`
+        throw new Error(`Breasts component does not have a ${key} property.`);
       }
     });
 

@@ -10,7 +10,7 @@ global.SexPosition = (function() {
   }
 
   function lookup(code) {
-    if ($sexPositions[code] == null) { throw `Bad sex position code [${code}]`; }
+    if ($sexPositions[code] == null) { throw new Error(`Bad sex position code [${code}]`); }
 
     const position = { ...$sexPositions[code] };
 

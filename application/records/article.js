@@ -6,7 +6,7 @@ global.Article = (function() {
   }
 
   function lookup(code) {
-    if ($articles[code] == null) { throw `Bad article code [${code}]` }
+    if ($articles[code] == null) { throw new Error(`Bad article code [${code}]`); }
 
     const article = { ...$articles[code] };
 

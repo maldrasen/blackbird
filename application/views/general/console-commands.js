@@ -56,7 +56,7 @@ global.ConsoleCommands = (function() {
     args.shift();
 
     if (command == null) {
-      throw `Unrecognized Command: ${commandString}. Type 'help' for a list of commands.`
+      throw new Error(`Unrecognized Command: ${commandString}. Type 'help' for a list of commands.`);
     }
 
     const valid = meetsRequirements(command);
@@ -74,7 +74,7 @@ global.ConsoleCommands = (function() {
           case 'game.loaded':
             if (!GameState.isLoaded()) { return `A Game must be loaded.`; }
             break;
-          default: throw `Bad Requirement ${requirement}`
+          default: throw new Error(`Bad Requirement ${requirement}`);
         }
       }
     }
@@ -92,7 +92,7 @@ global.ConsoleCommands = (function() {
   function printEntityData(args) {
     const id = args[0]
     if (Registry.entityExists(id) === false) {
-      throw `Entity[${id}] does not exist.`
+      throw new Error(`Entity[${id}] does not exist.`);
     }
     return `<pre class='json-dump'>${JSON.stringify(Registry.compileEntityData(id),null,2)}</pre>`
   }

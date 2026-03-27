@@ -15,14 +15,14 @@ global.Room = () => {
   // that even if the box is to the left or below the main box, the room
   // origin will always remain at (0,0)
   function setSubBox(x, y, width, height) {
-    if ($mainBox == null) { throw `Main box must be set first.` }
+    if ($mainBox == null) { throw new Error(`Main box must be set first.`); }
 
     $subBox = { x, y, width, height };
 
     const bounds = getBounds();
 
-    if (bounds.xMin > 0) { throw 'This should never happen'; }
-    if (bounds.yMin > 0) { throw 'This should never happen'; }
+    if (bounds.xMin > 0) { throw new Error('This should never happen'); }
+    if (bounds.yMin > 0) { throw new Error('This should never happen'); }
 
     if (bounds.xMin < 0) {
       const xAdjust = - $subBox.x;

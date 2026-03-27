@@ -25,7 +25,7 @@ global.ControlledComponent = (function() {
 
     Object.keys(controlledComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Controlled component does not have a ${key} property.`
+        throw new Error(`Controlled component does not have a ${key} property.`);
       }
     });
 

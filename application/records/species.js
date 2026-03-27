@@ -7,7 +7,7 @@ global.Species = (function() {
 
   // The lookup() function returns a wrapper for the species data object.
   function lookup(code) {
-    if ($speciesMap[code] == null) { throw `Bad species code [${code}]`; }
+    if ($speciesMap[code] == null) { throw new Error(`Bad species code [${code}]`); }
 
     const species = { ...$speciesMap[code] };
 

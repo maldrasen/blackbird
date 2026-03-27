@@ -66,7 +66,7 @@ global.Registry = (function() {
   /// === Component CRUD ===============================================================================================
 
   function createComponent(id, type, data) {
-    if (components[type][id] != null) { throw `Entity[${id}] already has ${type}`}
+    if (components[type][id] != null) { throw new Error(`Entity[${id}] already has ${type}`); }
 
     entities[id].add(type);
     components[type][id] = data;
@@ -77,14 +77,14 @@ global.Registry = (function() {
   }
 
   function updateComponent(id,type,data) {
-    if (components[type][id] == null) { throw `Entity[${id}] does not have ${type}`}
+    if (components[type][id] == null) { throw new Error(`Entity[${id}] does not have ${type}`); }
     Object.keys(data).forEach(key => {
       components[type][id][key] = data[key]
     });
   }
 
   function deleteComponent(id,type) {
-    if (components[type][id] == null) { throw `Entity[${id}] does not have ${type}`}
+    if (components[type][id] == null) { throw new Error(`Entity[${id}] does not have ${type}`); }
 
     entities[id].delete(type)
     delete components[type][id];

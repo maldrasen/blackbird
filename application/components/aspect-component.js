@@ -28,7 +28,7 @@ global.AspectsComponent = (function() {
 
     Object.keys(aspectsData).forEach(key => {
       if (properties.includes(key) === false) {
-        throw `Aspect component does not have a ${key} property.`
+        throw new Error(`Aspect component does not have a ${key} property.`);
       }
     });
 

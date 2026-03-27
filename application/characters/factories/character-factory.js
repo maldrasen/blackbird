@@ -21,7 +21,7 @@ global.CharacterFactory = (function() {
   // bypass selecting gender based on the species ratio, so you get far too many male sylphs for instance.
   function build(options={}) {
     if (options.gender && options.species == null) {
-      throw `If you specify a gender, you should also specify a species.`; }
+      throw new Error(`If you specify a gender, you should also specify a species.`); }
 
     for (let attempts=0; attempts<10; attempts++) {
       let characterId = Registry.createEntity();
@@ -30,7 +30,10 @@ global.CharacterFactory = (function() {
       }
       catch(error) {
         Registry.deleteEntity(characterId);
-        Console.log(error,{ system:'CharacterFactory', type:LogType.warning, data:{ options }});
+
+        error.message.match(/Character Rejected/) ?
+          Console.log(error.message, { System:'CharacterFactory', level:3 }):
+          Console.log(error,{ system:'CharacterFactory', type:LogType.warning, data:{ options }});
       }
     }
 
@@ -40,7 +43,7 @@ global.CharacterFactory = (function() {
       data: { options:options },
     });
 
-    throw `Cannot create character.`
+    throw new Error(`Cannot create character.`);
   }
 
   // The buildLoop() will throw an exception to reject a character. This can happen when we randomly pick incompatible
@@ -121,7 +124,7 @@ global.CharacterFactory = (function() {
     applyMagical(triggers);
 
     if (triggers.length > 0) {
-      throw `Error: Unresolved Triggers: ${JSON.stringify(triggers)}`;
+      throw new Error(`Unresolved Triggers: ${JSON.stringify(triggers)}`);
     }
 
     ActorComponent.create(characterId, actorData);
@@ -167,7 +170,7 @@ global.CharacterFactory = (function() {
   function assertGenderInSpecies(gender, species) {
     const genderMap = species.getGenderRatio();
     if (genderMap[gender] == null || genderMap[gender] < 1) {
-      throw `Character Rejected: ${species.getName()} cannot be ${gender}`;
+      throw new Error(`Character Rejected: ${species.getName()} cannot be ${gender}`);
     }
   }
 
@@ -192,7 +195,7 @@ global.CharacterFactory = (function() {
     }
 
     if (StringHelper.longestCommonSubstring(actorData.name, actorData.surname||'') > 3) {
-      throw `Character Rejected: Name[${actorData.name}] and Surname[${actorData.surname}] are too similar.`
+      throw new Error(`Character Rejected: Name[${actorData.name}] and Surname[${actorData.surname}] are too similar.`);
     }
   }
 

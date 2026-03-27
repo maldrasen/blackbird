@@ -24,7 +24,7 @@ global.EquipmentComponent = (function() {
 
     Object.keys(equipmentComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Equipment component does not have a ${key} property.`
+        throw new Error(`Equipment component does not have a ${key} property.`);
       }
     });
 
@@ -34,10 +34,10 @@ global.EquipmentComponent = (function() {
         const equippedItem = ItemComponent.lookup(itemId);
 
         if (InventoryComponent.hasItem(id, itemId) === false) {
-          throw `Item:${itemId} is equipped, but isn't in Character:${id}'s inventory.`;
+          throw new Error(`Item:${itemId} is equipped, but isn't in Character:${id}'s inventory.`);
         }
         if (equippedItem.slots.includes(slot) === false) {
-          throw `Item:${itemId} cannot be equipped in Slot:${slot}`;
+          throw new Error(`Item:${itemId} cannot be equipped in Slot:${slot}`);
         }
       }
     });

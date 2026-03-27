@@ -9,7 +9,7 @@ global.BreastsScrutinizer = (function() {
 
     switch (condition) {
       case 'has-breasts': return getBreasts(key, context) != null;
-      default: throw `Unknown Breasts Condition ${condition}`;
+      default: throw new Error(`Unknown Breasts Condition ${condition}`);
     }
   }
 
@@ -22,7 +22,7 @@ global.BreastsScrutinizer = (function() {
 
     const targetIndex = sizes.indexOf(size);
     const currentIndex = sizes.indexOf(breasts.breastSize);
-    if (targetIndex < 0) { throw `Bad breast size (${size})`; }
+    if (targetIndex < 0) { throw new Error(`Bad breast size (${size})`); }
 
     return currentIndex >= targetIndex
   }

@@ -144,7 +144,7 @@ global.TrainingCategoryToggles = (function() {
     if (classname.includes('reluctant')) { return 'reluctant' }
     if (classname.includes('willing')) { return 'willing' }
     if (classname.includes('eager')) { return 'eager' }
-    throw `No consent class found in ${element.outerHTML}`
+    throw new Error(`No consent class found in ${element.outerHTML}`);
   }
 
   function displayedToggles() {

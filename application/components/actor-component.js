@@ -24,7 +24,7 @@ global.ActorComponent = (function() {
 
     Object.keys(actorComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Actor component does not have a ${key} property.`
+        throw new Error(`Actor component does not have a ${key} property.`);
       }
     });
 

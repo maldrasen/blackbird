@@ -64,7 +64,7 @@ global.Character = function(id) {
 
     if (typeof value === 'string') {
       const targetIndex = breastSizes.indexOf(value);
-      if (targetIndex < 0) { throw `Unknown Breast Size (${value})`; }
+      if (targetIndex < 0) { throw new Error(`Unknown Breast Size (${value})`); }
       return breastSizes.indexOf(tits.breastSize) >= targetIndex;
     }
 
@@ -79,7 +79,7 @@ global.Character = function(id) {
 
     if (typeof value === 'string') {
       const targetIndex = cockSizes.indexOf(value);
-      if (targetIndex < 0) { throw `Unknown Cock Size (${value})`; }
+      if (targetIndex < 0) { throw new Error(`Unknown Cock Size (${value})`); }
       return cockSizes.indexOf(cock.size) >= targetIndex;
     }
 
@@ -101,14 +101,14 @@ global.Character = function(id) {
     const preferences = SexualPreferencesComponent.lookup(id);
     if (isMale()) { return preferences.gynophilic <= 10 && preferences.androphilic >= 10; }
     if (isFemale()) { return preferences.gynophilic >= 10 && preferences.androphilic <= 10; }
-    throw `Gay has no meaning when gender is ${getGenderName()}`;
+    throw new Error(`Gay has no meaning when gender is ${getGenderName()}`);
   }
 
   function isStraight() {
     const preferences = SexualPreferencesComponent.lookup(id);
     if (isMale()) { return preferences.gynophilic >= 10 && preferences.androphilic <= 10; }
     if (isFemale()) { return preferences.gynophilic <= 10 && preferences.androphilic >= 10; }
-    `Straight has no meaning when gender is ${getGenderName()}`;
+    throw new Error(`Straight has no meaning when gender is ${getGenderName()}`);
   }
 
   // TODO: This is a little wrong because it tests to see if a character would consent to this sex action right the

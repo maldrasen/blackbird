@@ -24,7 +24,7 @@ global.SexualHistoryComponent =  (function() {
 
     Object.keys(historyComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Sexual history component does not have a ${key} property.`
+        throw new Error(`Sexual history component does not have a ${key} property.`);
       }
     });
   }

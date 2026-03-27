@@ -154,7 +154,7 @@ global.Casement = (function() {
 
     function reposition() {
       if (Object.keys($bounds).length !== 4) {
-        throw `Casement bounds have not been set.`
+        throw new Error(`Casement bounds have not been set.`);
       }
 
       if ($bounds.height < $minHeight) { $bounds.height = $minHeight; }

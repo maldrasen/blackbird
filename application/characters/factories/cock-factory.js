@@ -167,7 +167,7 @@ global.CockFactory = (function() {
   function changeCockShape(newShape, cockData, actorData) {
     if (cockData.shape === newShape) { return }
     if (cockData.shape !== 'normal') {
-      throw `Character Rejected: Can't change ${cockData.shape} cock to ${newShape} cock.`
+      throw new Error(`Character Rejected: Can't change ${cockData.shape} cock to ${newShape} cock.`);
     }
 
     cockData.shape = newShape;

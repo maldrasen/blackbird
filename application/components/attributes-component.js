@@ -24,7 +24,7 @@ global.AttributesComponent = (function() {
 
     Object.keys(attributeComponent).forEach(key => {
       if (attributes.includes(key) === false) {
-        throw `Attribute component does not have a ${key} property.`
+        throw new Error(`Attribute component does not have a ${key} property.`);
       }
 
       Validate.atLeast(`Attributes.strength`, attributeComponent.strength,1);

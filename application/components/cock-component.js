@@ -43,7 +43,7 @@ global.CockComponent = (function() {
 
     Object.keys(cockComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Cock component does not have a ${key} property.`
+        throw new Error(`Cock component does not have a ${key} property.`);
       }
     });
 

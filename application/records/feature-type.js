@@ -10,7 +10,7 @@ global.FeatureType = (function() {
   }
 
   function lookup(code) {
-    if ($featureTypes[code] == null) { throw `Bad feature code [${code}]` }
+    if ($featureTypes[code] == null) { throw new Error(`Bad feature code [${code}]`); }
 
     const featureType = { ...$featureTypes[code] };
 

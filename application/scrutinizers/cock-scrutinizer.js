@@ -12,7 +12,7 @@ global.CockScrutinizer = (function() {
   function isValid(condition, key, context) {
     switch (condition) {
       case 'has-cock': return getCock(key, context) != null;
-      default: throw `Unknown Cock Condition ${condition}`;
+      default: throw new Error(`Unknown Cock Condition ${condition}`);
     }
   }
 

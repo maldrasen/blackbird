@@ -42,7 +42,7 @@ global.PussyComponent = (function() {
 
     Object.keys(pussyComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Pussy component does not have a ${key} property.`
+        throw new Error(`Pussy component does not have a ${key} property.`);
       }
     });
 

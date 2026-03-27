@@ -10,7 +10,7 @@ global.SexualPreference = (function() {
   }
 
   function lookup(code) {
-    if ($sexualPreferences[code] == null) { throw `Bad sexual preference code [${code}]` }
+    if ($sexualPreferences[code] == null) { throw new Error(`Bad sexual preference code [${code}]`); }
 
     const preference = { ...$sexualPreferences[code] };
 

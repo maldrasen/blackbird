@@ -27,7 +27,7 @@ global.MouthComponent = (function() {
 
     Object.keys(mouthComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Mouth component does not have a ${key} property.`
+        throw new Error(`Mouth component does not have a ${key} property.`);
       }
     });
 

@@ -17,7 +17,7 @@ global.MeasurementHelper = (function() {
     let wholePounds = Math.floor(totalPounds);
     let fractionIndex = Math.round((totalPounds-wholePounds) * 4);
 
-    if (wholePounds < 1) { throw `Grams:${g} is too small, minimum of one pound is required.`; }
+    if (wholePounds < 1) { throw new Error(`Grams:${g} is too small, minimum of one pound is required.`); }
 
     if (fractionIndex === 4) {
       wholePounds += 1;

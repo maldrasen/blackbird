@@ -26,7 +26,7 @@ global.MarkComponent = (function() {
 
     Object.keys(markComponent).forEach(key => {
       if ($properties.includes(key) === false) {
-        throw `Mark component does not have a ${key} property.`
+        throw new Error(`Mark component does not have a ${key} property.`);
       }
     });
 

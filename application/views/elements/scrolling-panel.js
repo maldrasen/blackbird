@@ -125,7 +125,7 @@ global.ScrollingPanel = function(options) {
   function scrollToBottom() { if (isActive()) { setThumbPosition(getThumbExtent()); }}
 
   function setThumbPosition(position) {
-    if (typeof position !== 'number' || isNaN(position)) { throw `Thumb position is not a number`; }
+    if (typeof position !== 'number' || isNaN(position)) { throw new Error(`Thumb position is not a number`); }
 
     $scrollingPanel.dataset.thumbPosition = position;
     $scrollingPanelThumb.style['top'] = `${position}px`;
@@ -133,7 +133,7 @@ global.ScrollingPanel = function(options) {
   }
 
   function setThumbExtent(extent) {
-    if (typeof extent !== 'number' || isNaN(extent)) { throw `Thumb extent is not a number`; }
+    if (typeof extent !== 'number' || isNaN(extent)) { throw new Error(`Thumb extent is not a number`); }
     $scrollingPanel.dataset.thumbExtent = extent;
   }
 
@@ -231,7 +231,7 @@ function determineWrappedContent(options) {
   if (options.id) { return X.first(options.id); }
   if (options.selector) { return X.first(options.selector); }
   if (options.element) { return options.element; }
-  throw `Cannot find wrapped content in options`;
+  throw new Error(`Cannot find wrapped content in options`);
 }
 
 function activeScrollingPanel() {

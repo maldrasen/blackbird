@@ -23,7 +23,7 @@ global.StateMachine = (function() {
   }
 
   function setDeltaTime(time) {
-    if ($deltaTime != null) { throw "Delta time has already been set." }
+    if ($deltaTime != null) { throw new Error('Delta time has already been set.'); }
     $deltaTime = time;
   }
 
@@ -34,19 +34,19 @@ global.StateMachine = (function() {
   // change the mode once. If the mode has been changed then we know the view needs to be completely rebuilt.
 
   function setMode(mode) {
-    if ($pendingMode) { throw "Mode has already been changed." }
+    if ($pendingMode) { throw new Error('Mode has already been changed.'); }
     if (mode !== $currentMode) {
       $pendingMode = mode;
     }
   }
 
   function markPreviousMode() {
-    if ($previousMode != null) { throw `Previous mode has already been marked and should be returned to.`; }
+    if ($previousMode != null) { throw new Error(`Previous mode has already been marked and should be returned to.`); }
     $previousMode = $currentMode;
   }
 
   function returnToPreviousMode() {
-    if ($previousMode == null) { throw `Previous mode has not been set.`; }
+    if ($previousMode == null) { throw new Error(`Previous mode has not been set.`); }
     setMode($previousMode);
     $previousMode = null;
     render();

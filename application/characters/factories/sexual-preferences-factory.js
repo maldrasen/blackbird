@@ -25,7 +25,7 @@ global.SexualPreferencesFactory = (function() {
         // TODO: Seems like a bad idea to hard code this list when we will be
         //  adding more species that have their own unique archetypes.
         if ([SpeciesCode.kobold,SpeciesCode.vermen].includes(context.actor.species)) {
-          throw `Character Rejected: ${trigger} can't be applied to a ${context.actor.species}`;
+          throw new Error(`Character Rejected: ${trigger} can't be applied to a ${context.actor.species}`);
         }
 
         sexualPreferences[SexualPreference.lookup(match[1]).getCode()] = parseInt(match[2]) - 10 + Random.roll(20);
@@ -94,7 +94,7 @@ global.SexualPreferencesFactory = (function() {
 
   function addPreferenceFamily(sexualPreferences, family, options) {
     if (options.atLeast && options.atLeast > family.length) {
-      throw `Seems like a bad idea to require more preferences than there are in the family.`
+      throw new Error(`Seems like a bad idea to require more preferences than there are in the family.`);
     }
 
     family.forEach(code => {

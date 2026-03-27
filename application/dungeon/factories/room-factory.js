@@ -14,7 +14,7 @@ global.RoomFactory = (function() {
   // Build a leg shaped room
   //   size:      [min,max]
   function buildLegRoom(options) {
-    if (options.size[0] < 3) { throw `Minimum size needs to be at least 3` }
+    if (options.size[0] < 3) { throw new Error(`Minimum size needs to be at least 3`); }
 
     const rotation = Random.from(['NE','NW','SE','SW']);
     const totalWidth = Random.between(options.size[0], options.size[1]);
@@ -51,7 +51,7 @@ global.RoomFactory = (function() {
   //   size:    [min,max]
   //
   function buildTeaRoom(options) {
-    if (options.size[0] < 3) { throw `Minimum size needs to be at least 3` }
+    if (options.size[0] < 3) { throw new Error(`Minimum size needs to be at least 3`); }
 
     const rotation = Random.from(['N','S','E','W']);
     const totalWidth = Random.between(options.size[0], options.size[1]);
@@ -89,7 +89,7 @@ global.RoomFactory = (function() {
   // aspect ratio.
   //   size:    [min,max]
   function buildCrossRoom(options) {
-    if (options.size[0] < 3) { throw `Minimum size needs to be at least 3` }
+    if (options.size[0] < 3) { throw new Error(`Minimum size needs to be at least 3`); }
 
     const totalWidth = Random.between(options.size[0],options.size[1]);
     const totalHeight = Random.between(options.size[0],options.size[1]);

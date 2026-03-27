@@ -27,7 +27,7 @@ global.ConsentResult = (characterId, targetId=null) => {
     if (factor.type === 'gender')     { return applyGenderFactor(factor);     }
     if (factor.type === 'preference') { return applyPreferenceFactor(factor); }
 
-    throw `Unrecognized consent factor type: ${factor.type}`;
+    throw new Error(`Unrecognized consent factor type: ${factor.type}`);
   }
 
   function applyBaseFactor(factor) {
@@ -54,7 +54,7 @@ global.ConsentResult = (characterId, targetId=null) => {
       case SexAction.BaseClass.performance:
         baseValue = respectBase + (fearBase/2); break;
 
-      default: throw `Unrecognized BaseClass (${factor.baseClass})`;
+      default: throw new Error(`Unrecognized BaseClass (${factor.baseClass})`);
     }
 
     $consentValue += baseValue;
@@ -147,7 +147,7 @@ global.ConsentResult = (characterId, targetId=null) => {
 
   function getConsentValue() {
     if ($response.additive.length > 0) { return $consentValue; }
-    throw `No factors have been applied to the ConsentResult.`;
+    throw new Error(`No factors have been applied to the ConsentResult.`);
   }
 
   function getConsent() {

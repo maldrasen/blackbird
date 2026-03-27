@@ -80,7 +80,7 @@ global.ReportFixture = (function() {
         case 'player.urethra':        addNumericResult(action.getPlayerSensations().urethra); break;
         case 'player.pussy':          addNumericResult(action.getPlayerSensations().pussy); break;
         case 'player.desire':         addNumericResult(action.getPlayerSensations().desire); break;
-        default: throw `Implement ${sort}`;
+        default: throw new Error(`Implement ${sort}`);
       }
 
       return display
