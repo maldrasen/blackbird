@@ -2,6 +2,7 @@ global.TrainingOutput = (function() {
   const arrow = `→`;
 
   function show(sensationResult) {
+    const messages = TrainingController.getState().getMessages();
     const response = sensationResult.getResponse();
     const action = sensationResult.getSexAction();
     const context = sensationResult.getContext();
@@ -12,8 +13,13 @@ global.TrainingOutput = (function() {
 
     const template = Dialog.lookupTemplate(archetype.getSexStyle(),action.getCode(),context);
     const text = Weaver(context).weave(template)
-
     const output = X.createElement(`<div id='trainingOutput'></div>`);
+
+    if (messages[TrainingMessage.changePosition] || messages[TrainingMessage.shiftPosition]) {
+      const message = messages[TrainingMessage.changePosition] || messages[TrainingMessage.shiftPosition];
+      output.appendChild(X.createElement(`<p>${message}</p>`))
+    }
+
     output.appendChild(X.createElement(`<p>${text}</p>`));
     output.appendChild(buildSensationTable(response));
 

@@ -57,7 +57,7 @@ global.PositionController = (function() {
     const [first, second] = move.swap ? [context.B, context.A] : [context.A, context.B];
     const message = move.generator({ A:first, B:second });
 
-    state.addMessage('shift-position',message);
+    state.addMessage(TrainingMessage.shiftPosition,message);
     state.setPositionData({ code:move.code, first:first, second:second });
 
     TrainingController.checkPersistedActions(sexAction);
@@ -86,9 +86,10 @@ global.PositionController = (function() {
 
     const positionData = Random.from(valid);
     const position = SexPosition.lookup(positionData.code);
+    const positionContext = { A:positionData.first, B:positionData.second };
 
     state.removeAllPersistedActions();
-    state.addMessage('change-position', position.getRearrange({ A:positionData.first, B:positionData.second }));
+    state.addMessage(TrainingMessage.changePosition, position.getRearrange(positionContext));
     state.setPositionData(positionData)
   }
 
@@ -104,7 +105,7 @@ global.PositionController = (function() {
       const [first,second] = forcePosition.playerFirst ? [player,partner] : [partner,player];
 
       state.removeAllPersistedActions();
-      state.addMessage('change-position', position.getRearrange({ A:first, B:second }));
+      state.addMessage(TrainingMessage.changePosition, position.getRearrange({ A:first, B:second }));
       state.setPositionData({ code:forcePosition.code, first:first, second:second });
     }
   }

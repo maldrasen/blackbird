@@ -90,7 +90,7 @@ describe("PositionController", function() {
       PositionController.shiftPosition(sexAction, PositionController.findAlignedPosition(sexAction));
 
       const state = TrainingController.getState();
-      expect(state.getMessages()['shift-position']).to.not.be.null;
+      expect(state.getMessages()[TrainingMessage.shiftPosition]).to.not.be.null;
       expect(state.getPosition().getName()).to.equal('Face Sitting');
       expect(state.getPositionContext().A).to.equal(context.T);
       expect(state.getPositionContext().B).to.equal(context.P);
@@ -105,7 +105,7 @@ describe("PositionController", function() {
       PositionController.changePosition(SexAction.lookup('give-titfuck'));
 
       const state = TrainingController.getState();
-      expect(state.getMessages()['change-position']).to.not.be.null;
+      expect(state.getMessages()[TrainingMessage.changePosition]).to.not.be.null;
       expect(state.getPosition().getCode()).to.be.oneOf(['kneeling','prone']);
       expect(state.getPositionContext().A).to.equal(context.T);
       expect(state.getPositionContext().B).to.equal(context.P);

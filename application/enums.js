@@ -203,6 +203,11 @@ global.TrainingSlot = {
   pussy: 'pussy',
 }
 
+global.TrainingMessage = {
+  changePosition: 'change-position',
+  shiftPosition: 'shift-position',
+}
+
 // Currently the breast alignment is only used for the get-titfuck and
 // give-titfuck actions (and only available when kneeling or prone) but it
 // should follow the same pattern as the other alignments and could be
