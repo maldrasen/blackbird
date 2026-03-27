@@ -124,7 +124,7 @@ global.SexAction = (function() {
     //   an impossible penetration possible)
     //
     function isAvailable(context) {
-      return matchesPersistedAction() && availableConditionsMet(context);
+      return isNotPersisted() && matchesPersistedAction() && availableConditionsMet(context);
     }
 
     // TODO: An action that depends on the previousAction should be flagged as
@@ -165,6 +165,9 @@ global.SexAction = (function() {
       return (action.availableWhen && action.availableWhen.conditions) ?
         CentralScrutinizer(context).allConditionsPass(action.availableWhen.conditions) : true;
     }
+
+    function isPersisted() { return TrainingController.getState().isActionPersisted(code); }
+    function isNotPersisted() { return !isPersisted(); }
 
     // The isEnabled() function determines if an available action should be enabled or not. The logic here is that
     // an available action can be shown in a disabled state if something can be done at some point to make these

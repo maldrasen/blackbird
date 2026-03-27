@@ -78,12 +78,15 @@ global.TrainingState = function(data) {
   //    Persisted Actions
   // =======================
 
-  // I feel like I have an irrational hatred of JavaScript's splice function,
-  // but it's the only way to remove an array element.
+  // TODO: There might be a bug in this. I saw a persisted action not get removed once.
   function removePersistedAction(code) {
     const index = persistedActions.findIndex(action => action.getCode() === code);
     if (index < 0) { throw `Action:${code} has not been persisted.` }
     persistedActions.splice(index, 1);
+  }
+
+  function isActionPersisted(code) {
+    return persistedActions.filter(action => action.getCode() === code).length > 0;
   }
 
   // ==============
@@ -133,6 +136,7 @@ global.TrainingState = function(data) {
     removePersistedAction,
     setPreviousAction: action => { previousAction = action; },
     getPreviousAction: () => { return previousAction; },
+    isActionPersisted,
 
     setPositionData,
     getPosition: () => { return SexPosition.lookup(position.code); },
