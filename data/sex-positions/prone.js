@@ -21,7 +21,50 @@ SexPosition.register('prone',{
     { code:'sixty-nine', generator:moveSixtyNine, swap:true },
   ],
 
+  generateRearrange: rearrange
 });
 
-function moveMissionary(context) { return `[Move:Missionary]`; }
-function moveSixtyNine(context) { return `[Move:SixtyNine]`; }
+function rearrange(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Rearrange to prone with player on bottom with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Rearrange to prone with player on top with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveMissionary(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to missionary with player on top with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to missionary with player on bottom with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveSixtyNine(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to sixty nine with player on top with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to sixty nine with player on bottom with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}

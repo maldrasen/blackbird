@@ -20,7 +20,23 @@ SexPosition.register('doggy-style',{
     { code:'straddle', generator:moveStraddle },
   ],
 
+  generateRearrange: rearrange
 });
+
+function rearrange(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Rearrange to doggy style with player in back with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Rearrange to doggy style with player in front with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
 
 // First bends over further, pushing their face into Second's ass.
 function moveCentipede(context) {
@@ -39,6 +55,47 @@ function moveCentipede(context) {
   return Random.from(options);
 }
 
-function moveMissionary(context) { return `[Move:MissionaryReversed]`; }
-function moveSpooning(context) { return `[Move:Spooning]`; }
-function moveStraddle(context) { return `[Move:Straddle]`; }
+function moveMissionary(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to missionary reversed with player on top with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to missionary reversed with player on bottom with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveSpooning(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to spooning with player in back with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to spooning with player in front with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveStraddle(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to straddle with player on top with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to straddle with player on bottom with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}

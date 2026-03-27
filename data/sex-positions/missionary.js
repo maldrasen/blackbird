@@ -25,9 +25,80 @@ SexPosition.register('missionary',{
     { code:'sixty-nine', generator:moveSixtyNine },
   ],
 
+  generateRearrange: rearrange
 });
 
-function moveLapSitting(context) { return `[Move:LapSitting]`; }
-function moveMissionary(context) { return `[Move:MissionaryReversed]`; }
-function moveProne(context) { return `[Move:Prone]`; }
-function moveSixtyNine(context) { return `[Move:SixtyNine]`; }
+function rearrange(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Rearrange to missionary with player on top with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Rearrange to missionary with player on bottom with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveLapSitting(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to lap sitting reversed with player on bottom with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to lap sitting reversed with player on top with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveMissionary(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to missionary reversed with player on top with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to missionary reversed with player on bottom with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveProne(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to prone with player on bottom (receiving) with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to prone with player on top (giving) with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveSixtyNine(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to sixty nine with player on top with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to sixty nine with player on bottom with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}

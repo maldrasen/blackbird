@@ -25,8 +25,65 @@ SexPosition.register('sixty-nine',{
     { code:'prone', generator:moveProne, swap:true },
   ],
 
+  generateRearrange: rearrange
 });
 
-function moveFaceSitting(context) { return `[Move:FaceSittingReversed]`; }
-function moveMissionary(context) { return `[Move:Missionary]`; }
-function moveProne(context) { return `[Move:Prone]`; }
+function rearrange(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Rearrange to sixty nine with player on top with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Rearrange to sixty nine with player on bottom with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveFaceSitting(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to face sitting reversed with player on top with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to face sitting reversed with player on bottom with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveMissionary(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to missionary with player on top with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to missionary with player on bottom with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveProne(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to prone with player on bottom (receiving) with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to prone with player on top (giving) with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}

@@ -22,10 +22,95 @@ SexPosition.register('standing-reversed',{
     { code:'standing', generator:moveStanding },
   ],
 
+  generateRearrange: rearrange
 });
 
-function moveCentipede(context) { return `[Move:Centipede]`; }
-function moveKneeling(context) { return `[Move:KneelingService]`; }
-function moveLapSitting(context) { return `[Move:LapSittingReversed]`; }
-function moveSpooning(context) { return `[Move:Spooning]`; }
-function moveStanding(context) { return `[Move:Standing]`; }
+function rearrange(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Rearrange to standing reversed with player behind partner with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Rearrange to standing reversed with player in front of partner with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveCentipede(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to centipede with player in back with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to centipede with player in front with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveKneeling(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to kneeling with player still standing with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to kneeling with player kneeling with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveLapSitting(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to lap sitting reversed with player on bottom with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to lap sitting reversed with player on top with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveSpooning(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to spooning with player in back with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to spooning with player in front with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveStanding(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to standing (partner turns around) with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to standing (player turns around) with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}

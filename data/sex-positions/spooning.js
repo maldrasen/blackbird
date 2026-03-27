@@ -19,7 +19,50 @@ SexPosition.register('spooning',{
     { code:'missionary-reversed', generator:moveMissionary },
   ],
 
+  generateRearrange: rearrange
 });
 
-function moveDoggyStyle(context) { return `[Move:DoggyStyle]`; }
-function moveMissionary(context) { return `[Move:MissionaryReversed]`; }
+function rearrange(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Rearrange to spooning with player behind partner with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Rearrange to spooning with player in front of partner with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveDoggyStyle(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to doggy style with player in back with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to doggy style with player in front with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveMissionary(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to missionary with player on top with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to missionary with player on bottom with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}

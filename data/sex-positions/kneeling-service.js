@@ -19,9 +19,25 @@ SexPosition.register('kneeling-service',{
     { code:'kneeling', generator:moveKneeling },
     { code:'standing-reversed', generator:moveStanding, swap:true },
     { code:'lap-sitting-reversed', generator:moveLapSitting, swap:true },
-  ]
+  ],
 
+  generateRearrange: rearrange
 });
+
+function rearrange(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Rearrange to kneeling service with player standing with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Rearrange to kneeling service with player on knees with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
 
 function moveCentipede(context) {
   const a = Character(context.A);
@@ -38,6 +54,47 @@ function moveCentipede(context) {
   return Random.from(options);
 }
 
-function moveKneeling(context) { return `[Move:Kneeling]`; }
-function moveStanding(context) { return `[Move:StandingReversed]`; }
-function moveLapSitting(context) { return `[Move:LapSittingReversed]`; }
+function moveKneeling(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to kneeling with player standing with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to kneeling with player kneeling with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveStanding(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to standing reversed with player standing behind with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to standing reversed with player standing in front with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveLapSitting(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to lap sitting reversed with player on bottom with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to lap sitting reversed with player on top with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}

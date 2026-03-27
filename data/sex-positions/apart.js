@@ -12,4 +12,9 @@ SexPosition.register('apart',{
 
   moves:[],
 
+  generateRearrange: rearrange
 });
+
+function rearrange(context) {
+  return `[Rearrange with player and partner standing apart with partner attitude ${context.attitude}]`
+}

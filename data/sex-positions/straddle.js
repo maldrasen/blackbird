@@ -20,9 +20,80 @@ SexPosition.register('straddle',{
     { code:'missionary-reverse', generator:moveMissionary },
   ],
 
+  generateRearrange: rearrange
 });
 
-function moveCentipede(context) { return `[Move:Centipede]`; }
-function moveCowgirl(context) { return `[Move:Cowgirl]`; }
-function moveDoggyStyle(context) { return `[Move:DoggyStyle]`; }
-function moveMissionary(context) { return `[Move:MissionaryReverse]`; }
+function rearrange(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Rearrange to straddle with player on top with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Rearrange to straddle with player on bottom with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveCentipede(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to centipede with player in back with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to centipede with player in front with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveCowgirl(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to cowgirl with player on bottom with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to cowgirl with player on top with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveDoggyStyle(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to doggy style with player in back with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to doggy style with player in front with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveMissionary(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to missionary reversed with player on top with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to missionary reversed with player on bottom with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}

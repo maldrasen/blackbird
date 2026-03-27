@@ -19,8 +19,65 @@ SexPosition.register('lap-sitting-reversed',{
     { code:'standing-reversed', generator:moveStanding },
   ],
 
+  generateRearrange: rearrange
 });
 
-function moveFaceSitting(context) { return `[Move:FaceSittingReversed]`; }
-function moveLapSitting(context) { return `[Move:LapSitting]`; }
-function moveStanding(context) { return `[Move:StandingReversed]`; }
+function rearrange(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Rearrange to reverse lap sitting with player on bottom with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Rearrange to reverse lap sitting with player on top with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveFaceSitting(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to face sitting reversed with player on top with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to face sitting reversed with player on bottom with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveLapSitting(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to lap sitting reversed with player on bottom with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to lap sitting reversed with player on top with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveStanding(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to standing reversed with player standing behind with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to standing reversed with player standing in front with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}

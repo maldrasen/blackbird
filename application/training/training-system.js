@@ -38,6 +38,8 @@ global.TrainingSystem = (function() {
     const code = command.getValue('code');
     const sexAction = SexAction.lookup(code);
     const state = TrainingController.getState();
+          state.clearMessages();
+          state.determineAttitude(sexAction);
 
     // Before executing this action we need to check the existing persisted
     // actions, removing the actions that might interfere with the new action
@@ -62,8 +64,6 @@ global.TrainingSystem = (function() {
 
     TrainingView.update();
     TrainingOutput.show(result);
-
-    state.clearMessages();
   }
 
   function endTraining(command) {

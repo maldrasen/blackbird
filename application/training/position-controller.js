@@ -55,9 +55,9 @@ global.PositionController = (function() {
     const state = TrainingController.getState();
     const context = state.getPositionContext();
     const [first, second] = move.swap ? [context.B, context.A] : [context.A, context.B];
-    const message = move.generator({ A:first, B:second });
+    const message = move.generator({ A:first, B:second, attitude:state.getAttitude() });
 
-    state.addMessage(TrainingMessage.shiftPosition,message);
+    state.addMessage(TrainingMessage.shiftPosition, message);
     state.setPositionData({ code:move.code, first:first, second:second });
 
     TrainingController.checkPersistedActions(sexAction);
@@ -86,7 +86,7 @@ global.PositionController = (function() {
 
     const positionData = Random.from(valid);
     const position = SexPosition.lookup(positionData.code);
-    const positionContext = { A:positionData.first, B:positionData.second };
+    const positionContext = { A:positionData.first, B:positionData.second, attitude:state.getAttitude() };
 
     state.removeAllPersistedActions();
     state.addMessage(TrainingMessage.changePosition, position.getRearrange(positionContext));
@@ -103,9 +103,10 @@ global.PositionController = (function() {
       const player = state.getPlayer();
       const partner = state.getPartner();
       const [first,second] = forcePosition.playerFirst ? [player,partner] : [partner,player];
+      const positionContext = { A:first, B:second, attitude:state.getAttitude() };
 
       state.removeAllPersistedActions();
-      state.addMessage(TrainingMessage.changePosition, position.getRearrange({ A:first, B:second }));
+      state.addMessage(TrainingMessage.changePosition, position.getRearrange(positionContext));
       state.setPositionData({ code:forcePosition.code, first:first, second:second });
     }
   }

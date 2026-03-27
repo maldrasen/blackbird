@@ -1,5 +1,6 @@
 global.TrainingState = function(data) {
 
+  let attitude;
   let previousAction;
   let persistedActions = [];
   let messages = {};
@@ -117,6 +118,9 @@ global.TrainingState = function(data) {
     getPartner: () => { return partner; },
     getContext: () => { return { ...context }; },
     getPossibleActions: () => { return [...possibleActions]; },
+
+    determineAttitude: sexAction => { attitude = Personality(partner).attitudeTowardsAction(sexAction); },
+    getAttitude: () => { return attitude; },
 
     getAnima: () => { return { ...anima }; },
     getAnimus: () => { return { ...animus }; },

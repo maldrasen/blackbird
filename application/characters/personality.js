@@ -11,7 +11,7 @@ global.Personality = function(id) {
   // Attitude is more situational than the personality archetype and can best be summered as the way the character
   // feels about the current situation. Until this is implemented proper, I can just randomly return a possible
   // attitude, as it's mostly used to select different dialog trees.
-  function getAttitude() {
+  function attitudeTowardsAction(sexAction) {
     return Random.from(Object.keys(Attitude));
   }
 
@@ -83,7 +83,7 @@ global.Personality = function(id) {
 
   return Object.freeze({
     getArchetype,
-    getAttitude,
+    attitudeTowardsAction,
     attitudeTowardsTraining,
     getStrongestFetishes,
   });

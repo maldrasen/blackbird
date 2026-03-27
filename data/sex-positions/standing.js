@@ -33,9 +33,70 @@ SexPosition.register('standing',{
     { code:'standing-reversed', generator:moveStandingReversed },
     { code:'standing-reversed', generator:moveStandingReversed, swap:true },
   ],
+
+  generateRearrange: rearrange
 });
 
-function moveKneeling(context) { return `[Mode:Kneeling]`; }
-function moveLapSitting(context) { return `[Mode:LapSitting]`; }
-function moveMissionary(context) { return `[Mode:Missionary]`; }
-function moveStandingReversed(context) { return `[Mode:StandingReversed]`; }
+function rearrange(context) {
+  return `[Rearrange to standing with partner attitude ${context.attitude}]`;
+}
+
+function moveKneeling(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to kneeling with player still standing with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to kneeling with player kneeling with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveLapSitting(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to lap sitting with player on bottom with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to lap sitting with player on top with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveMissionary(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to missionary with player on top with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to missionary with player on bottom with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
+
+function moveStandingReversed(context) {
+  const a = Character(context.A);
+  const b = Character(context.B);
+  const options = [];
+
+  if (a.isPlayer()) {
+    return `[Shift to standing reversed with player standing behind with partner attitude ${context.attitude}]`;
+  }
+  if (b.isPlayer()) {
+    return `[Shift to standing reversed with player standing in front with partner attitude ${context.attitude}]`;
+  }
+
+  return Random.from(options);
+}
