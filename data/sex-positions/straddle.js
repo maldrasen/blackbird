@@ -207,24 +207,29 @@ function moveDoggyStyle(context) {
   }
 
   if (b.isPlayer() && context.attitude === Attitude.loving) {
-    // options.push(`You slide back gently along your partner's body, easing into position in front as they affectionately raise their hips and bend forward, their firm, rounded ass lifting high while their smooth thighs spread wider beneath you in tender submission.`);
-    // options.push(`With warm affection, your partner arches their back and lifts their curving hips as you settle in front, bending over lovingly so their plump ass cheeks part invitingly, their soft skin brushing yours with quiet warmth.`);
-    // options.push(`Gently guiding the shift, you move into the front of doggy style while your partner raises their hips with loving care, their rounded ass pushing upward and their thighs opening softly to welcome the new position.`);
-    // options.push(`Your partner turns their head with a soft, affectionate smile and raises their hips as you slide into place in front, their smooth back arching beautifully while their firm ass lifts high in gentle surrender.`);
+    options.push(`You feel {A:name} sliding along your back, {A:his} hands resting on your hips as your raise your ass
+      high into the air.`);
+    if (a.hasBreasts() && a.areBreastsExposed()) {
+      options.push(`You feel {A:name} sliding backwards, dragging {A:his} stiff nipples along your back as {A:he} 
+        positions {A:him}self behind you.`);
+    }
+    if (a.hasNormalCock() && a.isCrotchExposed()) {
+      options.push(`{A:name} lets the hot flesh of {A:his} cock drag across your back as {A:he} positions {A:him}self 
+        behind you.`);
+    }
   }
 
   if (b.isPlayer() && context.attitude === Attitude.lustful) {
-    // options.push(`Eagerly, your partner lifts their hips with slutty hunger as you slide into the front doggy position, grinding their firm, rounded ass back toward you while their thighs spread wide and their body quivers in horny need. "Yes, get in front— I want you right there!"`);
-    // options.push(`Lustfully raising their curving hips high, your partner bends over sluttily as you settle in front, pushing their plump ass cheeks up with eager wiggles, their smooth skin flushed with raw desire.`);
-    // options.push(`Horny and impatient, your partner arches their back and shoves their rounded ass upward as you move into the front position, their thighs parting sluttily so their warm body presses forward in desperate lust.`);
-    // options.push(`With slutty enthusiasm, your partner lifts their hips fast and bends over deep as you take the front of doggy style, grinding their firm ass against you while their body trembles with eager, dripping hunger.`);
+    options.push(`{A:name} squeezes your hips as {A:he} positions himself behind you, watching hungrily as you raise
+       your ass into the air and spread your legs slightly.`);
+    if (a.hasNormalCock() && a.isCrotchExposed()) {
+      options.push(`{A:name} squeezes your hips as you raise your ass into the air, spreading your ass cheeks as 
+        {A:he} slaps {A:his} {A:cock.thickCock} between them.`);
+    }
   }
 
   if (b.isPlayer() && context.attitude === Attitude.accepting) {
-    // options.push(`Your partner raises their hips with quiet willingness as you slide into the front doggy position, bending over compliantly so their rounded ass lifts steadily, their smooth thighs parting without extra effort.`);
-    // options.push(`Willing but detached, your partner lifts their curving hips as you settle in front, their firm ass rising into position with passive compliance while their body remains relaxed beneath you.`);
-    // options.push(`Accepting the change calmly, your partner bends forward and raises their hips as you move into the front, their plump ass cheeks parting neutrally in the new doggy stance.`);
-    // options.push(`With indifferent consent, your partner arches slightly and lifts their hips while you take the front position, their smooth back staying even as their rounded ass settles into doggy without spark.`);
+    // TODO: Write this...
   }
 
   if (b.isPlayer() && context.attitude === Attitude.fearful) {
