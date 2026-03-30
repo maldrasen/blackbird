@@ -173,54 +173,60 @@ function moveDoggyStyle(context) {
     options.push(`{B:name} smiles at you, raising {B:his} hips while spreading {B:his} thighs and arching {B:his} 
       back, knowing how completely exposed it makes {B:him} look in front of you.`);
   }
+
   if (a.isPlayer() && context.attitude === Attitude.lustful) {
-    // options.push(`Eagerly, your partner lifts their hips with slutty hunger as you slide back, grinding their firm ass back against you while their thighs spread wide and their body quivers in horny anticipation. "Yes, put me in doggy—I need you behind me now!"`);
-    // options.push(`Lustfully raising their curving hips high, your partner bends over sluttily as you slide backward, pushing their rounded ass up to meet you with horny wiggles and breathless moans.`);
-    // options.push(`Horny and impatient, your partner arches their back and shoves their ass upward as you slide back, their thighs parting eagerly so their warm, smooth body presses back against yours in raw need.`);
-    // options.push(`With slutty enthusiasm, your partner lifts their hips fast and bends over deep as you ease backward, grinding their firm ass cheeks against you while their body trembles with eager lust.`);
+    options.push(`{B:name} has a hungry look in {B:his} eyes as you slide back behind {B:him}. {B:He} lets out a low
+      moan as {B:he} raises {B:his} ass into the air and spreads {B:his} legs slightly.`);
+    options.push(`{B:name} arches {B:his} back and raises {B:his} ass upward as you slide back, {B:his} thighs 
+      parting for you as you position yourself behind {B:him}.`);
+    if (a.hasNormalCock() && a.isCrotchExposed()) {
+      options.push(`{B:name} raises {B:his} ass as you position yourself behind {B:him}, letting your 
+        {A:cock.thickCock} rest heavily between {B:his} ass cheeks.`);
+    }
   }
+
   if (a.isPlayer() && context.attitude === Attitude.accepting) {
-    // options.push(`Your partner raises their hips with quiet willingness as you slide back, bending over compliantly so their ass lifts into position without extra effort, their body settling into doggy with steady, neutral compliance.`);
-    // options.push(`Willing but detached, your partner lifts their curving hips as you slide backward, parting their thighs just enough for the shift while their smooth back remains relaxed beneath you.`);
-    // options.push(`Accepting the change calmly, your partner bends forward and raises their hips as you move back, their rounded ass rising into doggy style with passive consent and little spark of interest.`);
-    // options.push(`With indifferent consent, your partner arches slightly and lifts their hips while you slide back, their body yielding into the new position with even breaths and unexcited poise.`);
+    options.push(`{B:name} raises {B:his} hips as you slide back, bending over and lifting {B:his} ass into position.`);
   }
+
   if (a.isPlayer() && context.attitude === Attitude.fearful) {
-    // options.push(`Timidly, your partner raises their shaky hips as you slide back, bending over fearfully so their firm ass lifts high while their thighs tremble and part beneath your guiding hands.`);
-    // options.push(`Afraid of punishment, your partner quickly lifts their curving hips and bends forward as you ease backward, their body tensing yet obedient in the doggy shift. "I'll... I'll raise up just like you want," they whisper.`);
-    // options.push(`With nervous obedience, your partner arches their back and raises their hips submissively as you slide back, their rounded ass pushing up while their smooth skin quivers under you.`);
-    // options.push(`Fearful and compliant, your partner bends over fast and lifts their hips as you move backward, their thighs spreading wide in timid submission to settle into doggy position.`);
+    options.push(`{B:name} quickly lifts {B:his} hips, bending forward as you slide backward, taking position behind 
+      {B:him}.`);
+    options.push(`With nervous obedience, {B:name} arches {B:his} back and raises {B:his} hips submissively as you 
+      slide behind {B:him}.`);
   }
+
   if (a.isPlayer() && context.attitude === Attitude.resistant) {
-    // options.push(`Unhappy with the shift, your partner complains as you slide back, reluctantly raising their hips and bending over while their body stiffens, their firm ass lifting only after your persistent guidance. "I don't want to bend over like some animal..."`);
-    // options.push(`Resistant and grumbling, your partner keeps their hips low at first as you slide backward, then lifts them unhappily into doggy, their rounded ass rising with clear irritation.`);
-    // options.push(`With an annoyed huff, your partner bends forward only after protest and raises their hips as you move back, their thighs parting stiffly while their smooth back stays tense.`);
-    // options.push(`Complaining the whole time, your partner resists lifting their curving hips as you slide back, finally bending over into doggy with muttered displeasure and a rigid posture.`);
+    options.push(`{B:name} exhales softly as you take hold of the back of {B:his} head, pushing {B:his} face down.
+      Reluctantly, {B:he} raises {B:his} ass upward as you position yourself behind {B:him}."`);
   }
+
   if (a.isPlayer() && context.attitude === Attitude.violent) {
-    // options.push(`Angrily fighting the move, your partner thrashes as you slide back, refusing to raise their hips until you force them, their firm ass finally lifting into doggy while their body bucks in fury.`);
-    // options.push(`Violently resisting, your partner keeps their hips pinned down as you try to slide backward, then kicks and twists before bending over, their rounded ass shoved up against their will. "Don't you dare put me in doggy like this!" they snarl.`);
-    // options.push(`In furious protest, your partner claws at the ground and refuses to lift their curving hips as you slide back, only yielding after struggle to bend into the new position with raw anger.`);
-    // options.push(`Fighting back hard, your partner thrashes and keeps their thighs clamped as you move backward, forcing their hips up into doggy only after you overpower them, their body rigid with violent defiance.`);
+    options.push(`{B:name} thrashes as you slide back, but with a firm grip on {B:his} hips you pull {B:his} ass 
+      upward as you position yourself behind {B:him}.`);
   }
+
   if (b.isPlayer() && context.attitude === Attitude.loving) {
     // options.push(`You slide back gently along your partner's body, easing into position in front as they affectionately raise their hips and bend forward, their firm, rounded ass lifting high while their smooth thighs spread wider beneath you in tender submission.`);
     // options.push(`With warm affection, your partner arches their back and lifts their curving hips as you settle in front, bending over lovingly so their plump ass cheeks part invitingly, their soft skin brushing yours with quiet warmth.`);
     // options.push(`Gently guiding the shift, you move into the front of doggy style while your partner raises their hips with loving care, their rounded ass pushing upward and their thighs opening softly to welcome the new position.`);
     // options.push(`Your partner turns their head with a soft, affectionate smile and raises their hips as you slide into place in front, their smooth back arching beautifully while their firm ass lifts high in gentle surrender.`);
   }
+
   if (b.isPlayer() && context.attitude === Attitude.lustful) {
     // options.push(`Eagerly, your partner lifts their hips with slutty hunger as you slide into the front doggy position, grinding their firm, rounded ass back toward you while their thighs spread wide and their body quivers in horny need. "Yes, get in front— I want you right there!"`);
     // options.push(`Lustfully raising their curving hips high, your partner bends over sluttily as you settle in front, pushing their plump ass cheeks up with eager wiggles, their smooth skin flushed with raw desire.`);
     // options.push(`Horny and impatient, your partner arches their back and shoves their rounded ass upward as you move into the front position, their thighs parting sluttily so their warm body presses forward in desperate lust.`);
     // options.push(`With slutty enthusiasm, your partner lifts their hips fast and bends over deep as you take the front of doggy style, grinding their firm ass against you while their body trembles with eager, dripping hunger.`);
   }
+
   if (b.isPlayer() && context.attitude === Attitude.accepting) {
     // options.push(`Your partner raises their hips with quiet willingness as you slide into the front doggy position, bending over compliantly so their rounded ass lifts steadily, their smooth thighs parting without extra effort.`);
     // options.push(`Willing but detached, your partner lifts their curving hips as you settle in front, their firm ass rising into position with passive compliance while their body remains relaxed beneath you.`);
     // options.push(`Accepting the change calmly, your partner bends forward and raises their hips as you move into the front, their plump ass cheeks parting neutrally in the new doggy stance.`);
     // options.push(`With indifferent consent, your partner arches slightly and lifts their hips while you take the front position, their smooth back staying even as their rounded ass settles into doggy without spark.`);
   }
+
   if (b.isPlayer() && context.attitude === Attitude.fearful) {
     throw new Error('Having the player bend over and being fearful seems incompatible.');
   }
