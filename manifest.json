@@ -2,6 +2,7 @@
   "fileList": [
     "application/constants.js",
     "application/enums.js",
+    "application/browser.js",
     "application/characters/archetype-distribution.js",
     "application/characters/character-math.js",
     "application/characters/character-movement-system.js",
@@ -65,6 +66,7 @@
     "application/dungeon/feature.js",
     "application/dungeon/floor.js",
     "application/dungeon/room.js",
+    "application/environment.js",
     "application/episodes/episode-controller.js",
     "application/episodes/episode-page.js",
     "application/episodes/episode-state.js",
@@ -111,6 +113,7 @@
     "application/scrutinizers/cock-scrutinizer.js",
     "application/scrutinizers/equipment-scrutinizer.js",
     "application/scrutinizers/pussy-scrutinizer.js",
+    "application/server.js",
     "application/test/character-fixtures.js",
     "application/test/fixtures.js",
     "application/test/item-fixtures.js",

@@ -374,8 +374,8 @@ function moveMissionary(context) {
 
   if (b.isPlayer() && context.attitude === Attitude.fearful) {
     options.push(`{A:name} gasps slightly as you start to turn over underneath {A:him}.`);
-    options.push(`You feel {A:name} shudder slightly and turn away as you roll over underneath {A:him}, afraid of 
-      what's to come.`);
+    options.push(`You feel {A:name} shudder slightly and turn to look away as you roll over underneath {A:him}, 
+      afraid of what's to come.`);
 
     if (b.hasNormalCock() === false) {
       options.push(`{A:name's} eyes widen as you start to turn over underneath {A:him}, wrapping your legs around 
@@ -389,7 +389,7 @@ function moveMissionary(context) {
 
   if (b.isPlayer() && context.attitude === Attitude.resistant) {
     options.push(`{A:name} frowns as {A:he} watches you turn over underneath {A:him}.`);
-    options.push(`{A:name} huffs and turns away as you turn over underneath {A:him}, feeling more exposed now that 
+    options.push(`{A:name} huffs and looks away as you turn over underneath {A:him}, feeling more exposed now that 
       you're facing {A:him}.`);
 
     if (b.hasNormalCock() && b.isCrotchExposed()) {

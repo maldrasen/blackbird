@@ -5,9 +5,9 @@ try {
   global.DATA = Electron.app.getPath("userData")
   global.ENVIRONMENT = process.argv.includes('--development') ? 'development' : 'production';
 
-  require(`${ROOT}/environment.js`);
-  require(`${ROOT}/server.js`);
-  require(`${ROOT}/browser.js`);
+  require(`${ROOT}/application/environment.js`);
+  require(`${ROOT}/application/server.js`);
+  require(`${ROOT}/application/browser.js`);
 
   Server.init();
   Browser.init();
