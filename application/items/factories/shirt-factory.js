@@ -1,6 +1,6 @@
 global.ShirtFactory = (function() {
 
-  function build(options) {
+  function build(options={}) {
     return ItemComponent.create({ name:'shirt', slots:[EquipmentSlot.chest] });
   }
 
@@ -8,4 +8,4 @@ global.ShirtFactory = (function() {
     build
   });
 
-})()
+})();

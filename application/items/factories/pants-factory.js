@@ -8,4 +8,4 @@ global.PantsFactory = (function() {
     build
   });
 
-})()
+})();
