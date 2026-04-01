@@ -11,13 +11,23 @@ global.Species = (function() {
 
     const species = { ...$speciesMap[code] };
 
-    function getAverageHeight() {
-      return species.body.averageHeight || _humanMaleHeight;
+    function getAverageHeight(gender=Gender.male) {
+      const maleAverage = species.body.averageHeight || _humanMaleHeight;
+      const femaleHeightRatio = species.body.femaleHeightRatio || _humanFemaleRatio;
+      const futaHeightRatio = 1-(1-femaleHeightRatio)/2;
+
+      switch (gender) {
+        case Gender.male: return maleAverage;
+        case Gender.female: return maleAverage * femaleHeightRatio;
+        case Gender.futa: return maleAverage * futaHeightRatio;
+        case Gender.enby: return maleAverage * futaHeightRatio;
+      }
     }
 
     return Object.freeze({
       getCode: () => { return species.code; },
       getName: () => { return species.name; },
+      getAdjective: () => { return species.adjective || species.name; },
       getGenderRatio: () => { return species.genderRatio; },
       getAttributes: () => { return species.attributes; },
       getArchetypes: () => { return species.archetypes; },
@@ -28,7 +38,7 @@ global.Species = (function() {
       getBody: () => { return species.body; },
       getAverageHeight: getAverageHeight,
       getHeightDeviationRatio: () => { return species.body.heightDeviationRatio || _humanDeviationRatio; },
-      getFemaleHeightRatio: () => { return species.body.femaleHeightRatio || _humanFemaleRatio; },
+
       getLengthRatio: () => { return getAverageHeight() / _humanMaleHeight; },
       getAreaRatio: () => { return (getAverageHeight() / _humanMaleHeight) ** 2; },
       getVolumeRatio: () => { return (getAverageHeight() / _humanMaleHeight) ** 3; },

@@ -30,6 +30,20 @@ global.PronounHelper = (function() {
     if (gender === Gender.enby) { return 'theirs'; }
   }
 
-  return Object.freeze({ he, him, his, hers });
+  function man(gender) {
+    if (gender === Gender.male) { return 'man'; }
+    if (gender === Gender.female) { return 'woman'; }
+    if (gender === Gender.futa) { return 'futa'; }
+    if (gender === Gender.enby) { return 'enby'; }
+  }
+
+  function men(gender) {
+    if (gender === Gender.male) { return 'men'; }
+    if (gender === Gender.female) { return 'women'; }
+    if (gender === Gender.futa) { return 'futas'; }
+    if (gender === Gender.enby) { return 'enbies'; }
+  }
+
+  return Object.freeze({ he, him, his, hers, man, men });
 
 })();

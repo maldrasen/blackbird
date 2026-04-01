@@ -49,18 +49,9 @@ global.BodyFactory = (function() {
   // this is done so early in the process, only names should add tall or short. We apply it early because the character
   // height is used in a lot of other places, so it can't be changed later during character creation.
   function getRandomHeight(species, gender, triggers) {
-    const femaleHeightRatio = species.getFemaleHeightRatio();
-    const futaHeightRatio = 1-(1-femaleHeightRatio)/2;
-    const fuzz = 1 + (Random.roll(100)-50)/1000; // 0.9 - 1.1
-
-    let heightRatio = 1;
-    if (gender === Gender.female) { heightRatio = femaleHeightRatio; }
-    if (gender === Gender.futa)   { heightRatio = futaHeightRatio; }
-    if (gender === Gender.enby)   { heightRatio = futaHeightRatio; }
-
-    // Apply Ratios
-    const averageHeight = species.getAverageHeight() * heightRatio;
+    const averageHeight = species.getAverageHeight(gender);
     const deviation = averageHeight * species.getHeightDeviationRatio();
+    const fuzz = 1 + (Random.roll(100)-50)/1000; // 0.9 - 1.1
 
     // If this character is short, set height around two standard deviations below average.
     if (triggers.includes('short')) {

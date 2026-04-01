@@ -1,5 +1,6 @@
 Species.register(SpeciesCode.elf, {
   name: 'Elf',
+  adjective: 'Elven',
   genderRatio: { female:40, futa:20, male:40, enby:5 },
 
   attributes: {

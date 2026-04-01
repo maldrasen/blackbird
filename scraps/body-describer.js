@@ -361,35 +361,5 @@ global.BodyDescriber = class BodyDescriber {
     ]);
   }
 
-  // I'm just going to recreate the short tall logic from the HasBody concern
-  // here, rather than making everything up to this point async. We already
-  // have the character and the body which is why it needed to be async in the
-  // first place.
-  describeHeightWeight() {
-    const height = this.body.height;
-    const average = this.character.species.averageHeight();
 
-    if (height < average * 0.8) {
-      return Random.from([
-        `{{He}}'s smaller than most {{C::species.elves}}, weighing {{C::body.fiftyPounds}} and standing {{C::body.fiveFootTenInches}} tall.`,
-        `{{He}}'s shorter than most {{C::species.elves}}; {{C::body.fiveFootTenInches}} tall and weighing {{C::body.fiftyPounds}}.`,
-        `{{He}}'s {{C::body.fiveFootTenInches}} tall, and weighs {{C::body.fiftyPounds}}, which makes {{him}} a bit small for {{C::species.anElf}}.`,
-        `{{He}} weighs {{C::body.fiftyPounds}} and is {{C::body.fiveFootTenInches}} tall, which is a bit short for {{C::species.anElf}}.`,
-      ])
-    }
-
-    if (height > average * 1.2) {
-      return Random.from([
-        `{{He}}'s larger than most {{C::species.elves}}, weighing {{C::body.fiftyPounds}} and standing {{C::body.fiveFootTenInches}} tall.`,
-        `{{He}}'s taller than most {{C::species.elves}}; {{C::body.fiveFootTenInches}} tall and weighing {{C::body.fiftyPounds}}.`,
-        `{{He}}'s {{C::body.fiveFootTenInches}} tall, and weighs {{C::body.fiftyPounds}}, which makes {{him}} large for {{C::species.anElf}}.`,
-        `{{He}} weighs {{C::body.fiftyPounds}} and is {{C::body.fiveFootTenInches}} tall, which is a tall for {{C::species.anElf}}.`,
-      ])
-    }
-
-    return Random.from([
-      `{{He}}'s {{C::body.fiveFootTenInches}} tall, and weighs {{C::body.fiftyPounds}}.`,
-      `{{He}} weighs {{C::body.fiftyPounds}} and is {{C::body.fiveFootTenInches}} tall.`,
-    ]);
-  }
 }
