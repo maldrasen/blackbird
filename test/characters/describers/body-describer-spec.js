@@ -4,15 +4,13 @@ describe("BodyDescriber", function() {
     console.log(message);
   }
 
-
   it("describes height", function() {
-    log(`=== Height ===`)
+    log(`=== Height ===`);
     for (let i=0; i<10; i++) {
       const elf = CharacterFactory.build({ });
       const description = BodyDescriber.describeHeight(elf);
       log(Weaver({ C:elf }).weave(description.text));
     }
-
-  })
+  });
 
 });
