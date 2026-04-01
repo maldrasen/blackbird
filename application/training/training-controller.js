@@ -192,6 +192,18 @@ global.TrainingController = (function() {
     TrainingPersistedActionsPanel.update();
   }
 
+  // Sometimes, when the sex positon shifts and the partner is being reluctant (fearful, resistant, or violent) the
+  // shift would require the use of the player's hands. This should be evident in the text of the shift message. When
+  // this happens we need to unpersist any action that's using the player's hands, even if the next sex action wouldn't
+  // normally use the player's hands.
+  function positionUsedHands() {
+    state.getPersistedActions().forEach(action => {
+      if (action.usesSlot('player',TrainingSlot.hands)) {
+        state.removePersistedAction(action.getCode());
+      }
+    });
+  }
+
   return Object.freeze({
     getState: () => { return state; },
     startTraining,
@@ -202,6 +214,7 @@ global.TrainingController = (function() {
     checkPersistedActions,
     persistAction,
     removePersistedAction,
+    positionUsedHands,
   });
 
 })();

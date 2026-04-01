@@ -229,7 +229,7 @@ function moveDoggyStyle(context) {
   }
 
   if (b.isPlayer() && context.attitude === Attitude.accepting) {
-    // TODO: Write this...
+    options.push(`{A:name} watches as you raise your ass up into the air, positioning {A:him}self behind you.`);
   }
 
   if (b.isPlayer() && context.attitude === Attitude.fearful) {

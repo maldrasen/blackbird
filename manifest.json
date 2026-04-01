@@ -347,6 +347,7 @@
     "test/helpers/object-helper-spec.js",
     "test/helpers/string-helper-spec.js",
     "test/records/name-spec.js",
+    "test/records/sex-action-spec.js",
     "test/scrutinizers/actor-scrutinizers-spec.js",
     "test/training/consent-result-spec.js",
     "test/training/position-controller-spec.js",

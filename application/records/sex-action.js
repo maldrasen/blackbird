@@ -95,6 +95,12 @@ global.SexAction = (function() {
       return uses;
     }
 
+    // - role: { player, partner }
+    // - slot: TrainingSlot
+    function usesSlot(role, slot) {
+      return getUses()[role].includes(slot);
+    }
+
     // The isPossible() checks the basic action requirements to hide actions that will not ever be possible during this
     // training. These are conditions like, you can't get a tail job, when a character doesn't have a tail. This acts
     // as the initial action filter. Actions that are filtered here are no longer considered when determining which
@@ -205,6 +211,7 @@ global.SexAction = (function() {
       getAlignment: () => { return action.alignment; },
       getForcePosition: () => { return action.forcePosition; },
       getUses,
+      usesSlot,
 
       // Action visibility and enabled state.
       isPossible,

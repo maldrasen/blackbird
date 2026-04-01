@@ -54,13 +54,18 @@ global.PositionController = (function() {
   function shiftPosition(sexAction, move) {
     const state = TrainingController.getState();
     const context = state.getPositionContext();
+    const attitude = state.getAttitude();
     const [first, second] = move.swap ? [context.B, context.A] : [context.A, context.B];
-    const message = move.generator({ A:first, B:second, attitude:state.getAttitude() });
+    const message = move.generator({ A:first, B:second, attitude:attitude });
 
     state.addMessage(TrainingMessage.shiftPosition, message);
     state.setPositionData({ code:move.code, first:first, second:second });
 
     TrainingController.checkPersistedActions(sexAction);
+
+    if ([Attitude.violent, Attitude.resistant, Attitude.fearful].includes(attitude)) {
+      TrainingController.positionUsedHands();
+    }
   }
 
   function changePosition(sexAction) {
