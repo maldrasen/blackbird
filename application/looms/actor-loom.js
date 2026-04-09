@@ -1,12 +1,16 @@
 global.ActorLoom = (function() {
 
+  const BODY_PATTERN = /^body\.(.*)/;
   const BREASTS_PATTERN = /^breasts\.(.*)/;
   const COCK_PATTERN = /^cock\.(.*)/;
   const PUSSY_PATTERN = /^pussy\.(.*)/;
   const SPECIES_PATTERN = /^species\.(.*)/;
 
   function weave(id, token) {
-    let match = token.match(BREASTS_PATTERN);
+    let match = token.match(BODY_PATTERN);
+    if (match) { return BodyLoom.weave(id, match[1]); }
+
+    match = token.match(BREASTS_PATTERN);
     if (match) { return BreastsLoom.weave(id, match[1]); }
 
     match = token.match(COCK_PATTERN);
