@@ -73,14 +73,14 @@ global.BodyDescriber = (function() {
   function describeNymph(id) {
     return Random.from([
       { text:`Given {C:his} long tapered ears, at first glance you might mistake {C:name} for a particularly lush 
-          looking elf. In truth though {C:she}'s a nymph, one of the fae water spirits.` }
+          looking elf. In truth though {C:he's} a nymph, one of the fae water spirits.` }
     ]);
   }
 
   function describeSylph(id) {
     return Random.from([
       { text:`Given {C:his} long tapered ears, at first glance you might mistake {C:name} for a young looking elf. In
-          truth though {C:she}'s a sylph, one of the fae wind spirit.` }
+          truth though {C:he's} a sylph, one of the fae wind spirit.` }
     ]);
   }
 
@@ -100,29 +100,29 @@ global.BodyDescriber = (function() {
     const options = [];
 
     if (tallness < 0.90) {
-      options.push({ text:`{C:He}'s much shorter than most {C:species.elven} {C:men}, standing ${measurement} tall.` });
-      options.push({ text:`{C:He}'s ${measurement} tall, which is very short for {C:species.anElf} {C:man}.` });
-      options.push({ text:`At ${measurement}, {C:he}'s much shorter than most {C:species.elven} {C:men}.` });
+      options.push({ text:`{C:He's} much shorter than most {C:species.elven} {C:men}, standing ${measurement} tall.` });
+      options.push({ text:`{C:He's} ${measurement} tall, which is very short for {C:species.anElf} {C:man}.` });
+      options.push({ text:`At ${measurement}, {C:he's} much shorter than most {C:species.elven} {C:men}.` });
     }
     if (tallness >= 0.90 && tallness < 0.95) {
-      options.push({ text:`{C:He}'s shorter than most {C:species.elven} {C:men}, standing ${measurement} tall.` });
-      options.push({ text:`{C:He}'s ${measurement} tall, which is somewhat short for {C:species.anElf} {C:man}.` });
-      options.push({ text:`At ${measurement}, {C:he}'s a little on the short side, when compared to most {C:species.elven} {C:men}.` });
+      options.push({ text:`{C:He's} shorter than most {C:species.elven} {C:men}, standing ${measurement} tall.` });
+      options.push({ text:`{C:He's} ${measurement} tall, which is somewhat short for {C:species.anElf} {C:man}.` });
+      options.push({ text:`At ${measurement}, {C:he's} a little on the short side, when compared to most {C:species.elven} {C:men}.` });
     }
     if (tallness >= 0.95 && tallness < 1.05) {
-      options.push({ text:`{C:He}'s average height for an {C:species.elf} {C:man}, standing ${measurement} tall.` });
-      options.push({ text:`{C:He}'s ${measurement} tall, which is about average for {C:species.anElf} {C:man}.` });
-      options.push({ text:`At ${measurement}, {C:he}'s about average for an {C:species.elven} {C:man}.` });
+      options.push({ text:`{C:He's} average height for an {C:species.elf} {C:man}, standing ${measurement} tall.` });
+      options.push({ text:`{C:He's} ${measurement} tall, which is about average for {C:species.anElf} {C:man}.` });
+      options.push({ text:`At ${measurement}, {C:he's} about average for an {C:species.elven} {C:man}.` });
     }
     if (tallness >= 1.05 && tallness < 1.10) {
-      options.push({ text:`{C:He}'s taller than most {C:species.elven} {C:men}, standing ${measurement} tall.` });
-      options.push({ text:`{C:He}'s ${measurement} tall, which is fairly tall for {C:species.anElf} {C:man}.` });
-      options.push({ text:`At ${measurement}, {C:he}'s taller than most {C:species.elven} {C:men}.` });
+      options.push({ text:`{C:He's} taller than most {C:species.elven} {C:men}, standing ${measurement} tall.` });
+      options.push({ text:`{C:He's} ${measurement} tall, which is fairly tall for {C:species.anElf} {C:man}.` });
+      options.push({ text:`At ${measurement}, {C:he's} taller than most {C:species.elven} {C:men}.` });
     }
     if (tallness >= 1.10) {
-      options.push({ text:`{C:He}'s much taller than most {C:species.elven} {C:men}, standing ${measurement} tall.` });
-      options.push({ text:`{C:He}'s ${measurement} tall, which is very tall for {C:species.anElf} {C:man}.` });
-      options.push({ text:`At ${measurement}, {C:he}'s much taller than most {C:species.elven} {C:men}.` });
+      options.push({ text:`{C:He's} much taller than most {C:species.elven} {C:men}, standing ${measurement} tall.` });
+      options.push({ text:`{C:He's} ${measurement} tall, which is very tall for {C:species.anElf} {C:man}.` });
+      options.push({ text:`At ${measurement}, {C:he's} much taller than most {C:species.elven} {C:men}.` });
     }
 
     return Random.from(options);

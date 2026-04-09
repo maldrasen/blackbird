@@ -7,6 +7,14 @@ global.PronounHelper = (function() {
     if (gender === Gender.enby) { return 'they'; }
   }
 
+  // Conjunction he's, she's, shi's, or they're
+  function hes(gender) {
+    if (gender === Gender.male) { return `he's`; }
+    if (gender === Gender.female) { return `she's`; }
+    if (gender === Gender.futa) { return `shi's`; }
+    if (gender === Gender.enby) { return `they're`; }
+  }
+
   function him(gender) {
     if (gender === Gender.male) { return 'him'; }
     if (gender === Gender.female) { return 'her'; }
@@ -44,6 +52,6 @@ global.PronounHelper = (function() {
     if (gender === Gender.enby) { return 'enbies'; }
   }
 
-  return Object.freeze({ he, him, his, hers, man, men });
+  return Object.freeze({ he, hes, him, his, hers, man, men });
 
 })();

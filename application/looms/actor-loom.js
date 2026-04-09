@@ -24,6 +24,7 @@ global.ActorLoom = (function() {
 
     switch (token) {
       case `he`: return PronounHelper.he(ActorComponent.lookup(id).gender);
+      case `he's`: return PronounHelper.hes(ActorComponent.lookup(id).gender);
       case `him`: return PronounHelper.him(ActorComponent.lookup(id).gender);
       case `his`: return PronounHelper.his(ActorComponent.lookup(id).gender);
       case `hers`: return PronounHelper.hers(ActorComponent.lookup(id).gender);

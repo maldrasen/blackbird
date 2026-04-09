@@ -1,10 +1,10 @@
-describe.only("BodyDescriber", function() {
+describe("BodyDescriber", function() {
 
   function log(message) {
     console.log(message);
   }
 
-  it("describes species", function() {
+  it.only("describes species", function() {
     log(`=== Species ===`);
     for (let i=0; i<10; i++) {
       const shadow = CharacterFactory.build({ });
