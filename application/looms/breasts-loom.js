@@ -94,7 +94,7 @@ global.BreastsLoom = (function() {
       return EnglishHelper.a_an(comparison);
     }
 
-    return Weaver.formatError(`[Breasts:${token}]`);
+    return Weaver.formatWarning(`[Breasts:${token}]`);
   }
 
   // Unlike the {breast} token (which usually resolves to "breast" or "tit") this breast word function takes the

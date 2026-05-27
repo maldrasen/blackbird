@@ -38,8 +38,8 @@ global.ActorLoom = (function() {
       case `Men`: return StringHelper.titlecase(weave(id,'men'));
       case `name`: return Character(id).getName();
       case `name's`: return EnglishHelper.possessive(Character(id).getName());
-      case `full-name`: return Character(id).getFullName();
-      default: return Weaver({}).formatWarning(`Actor:[${token}]`)
+      case `fullName`: return Character(id).getFullName();
+      default: return Weaver({}).formatWarning(`[Actor:${token}]`)
     }
   }
 
@@ -52,7 +52,7 @@ global.ActorLoom = (function() {
       case `elven`: return species.getAdjective().toLocaleLowerCase();
       case `anElf`: return EnglishHelper.a_an(species.getName());
 
-      default: return Weaver({}).formatWarning(`Actor:Species[${token}]`);
+      default: return Weaver({}).formatWarning(`[Species:${token}]`);
     }
   }
 

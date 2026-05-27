@@ -1,7 +1,7 @@
 global.PussyLoom = (function() {
 
   function weave(id, token) {
-    return `<span class='weaver-warning'>Pussy:[${token}]</span>`
+    return Weaver.formatWarning(`[Pussy:${token}]`);
   }
 
   return Object.freeze({ weave });
