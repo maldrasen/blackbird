@@ -18,6 +18,7 @@ global.Monster = (function() {
       getCode: () => { return code; },
       getName: () => { return monster.name; },
       getSpecies: () => { return monster.species; },
+      getTriggers: () => { return monster.triggers || [] },
     });
   }
 

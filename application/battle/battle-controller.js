@@ -44,8 +44,7 @@ global.BattleController = (function() {
   }
 
   function buildMonster(code) {
-    const id = Registry.createEntity();
-    MonsterFactory.build(id, code);
+    const id = MonsterFactory.build(code);
 
     state.addMonster(id);
     return id;
