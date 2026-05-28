@@ -1,0 +1,44 @@
+# Negative
+- *Blind* Reduced attack accuracy and dodge.
+- *Stunned* Increase time until next action. Unable to defend.
+- *Fear* Sometimes cowers instead of attacking (willpower check?) might run away.
+- *Silence* Can't cast spells or talk.
+- *Poison* Poison should have different strengths, causing periodic damage.
+- *Toxin* Toxin builds stacks and on reaching a certain level causes massive damage.
+- *Paralysis* Persists after combat. A paralyzed character can't act or move. You can start training with a paralyzed character to do whatever you want to them. Takes an entire day to fade on its own.
+- *Hallucinating* Targets for actions will be randomized. Can choose not to act.
+- *Enraged* Will always attack the "enrage target" that's set when the status is applied using normal attacks and physical abilities. Physical attack damage increased. Can be combined with hallucinating to attack anyone. Tank characters can enrage foes into attacking them.
+- *Enthralled* Their attention is entirely focused on watching a character. They can't take actions or dodge. Damage will remove the effect. Arousal builds every second. 
+- *Infested* Something is growing inside of them. Chance not to act, reduced dodge. After an hour or so they burst with insects or tentacles or whatever taking damage. Can be cured with magic. Birth event should happen after combat.
+- *Hexed* The character is unlucky, having reduced accuracy, lowered resistances.
+- *Vulnerable* Will take double damage on the next attack, can stack multiple times.
+- *Damned* Will take 4x damage on the next attack. 
+- *Mana Burn* Using mana causes damage.
+- *Withering* Reduces all damage done.
+- *Slow* Actions take more time. Slow should have different strengths.
+
+# Positive
+- *Haste* Reduce time actions take.
+- *Shield* Negate next attack damage.
+- *Intangible* Can only be effected by magic and magic weapons.
+- *Regain* Health is restored every second
+
+# Binding
+Binding is the primary way a player captures monsters in the dungeon. There should be three levels, *Arms Bound*, *Legs Bound* and then *Fully Bound*. A fully bound character can't act and can be captured at the end of battle. Binding actions could use rope, or spider silk, or magic, but should all cost some resource. A monster bound with rope could be set free in a single action by another monster if they cut the rope, so binding actions need to be planned. Magic bounds should be harder to dispel though.
+
+Some monsters should also bind characters as well. Binding normally just prevents a character from acting and can be removed by the characters in the same way. If the entire party is bound or can't act that leads to a game over, though we could have an event describing what the monsters do to the captured characters.  
+
+# Disease & Curses
+Diseases are a special class of status effects in that they persist after combat is over. I'm thinking that we could include several different types of disease, each having their own effects. We could also make disease spread from character to character. Effects could be simple, from ability score decreases to uncontrollable vomiting and diarrhea. Curses would be similar but have more interesting effects and more difficult to get rid of, though they wouldn't spread. A curse could affect arousal gain or change sexual preferences. 
+
+# Drugs
+Drugs also apply different effects and persist after battle. Drugs also have their own use outside of combat, but the effects of the various drugs can be the result of attacks as well.
+
+# Aroused & Lewd
+The character's arousal state is it's own component, but arousal state should effect their battle stats as well, causing a slight penalty to hit or dodge chance, could cause them to miss turns to pleasure themselves. Some spells and effects can increase arousal during battle. 
+
+If arousal gets high enough there's a chance of them becoming lewd, which has them masterbating uncontrollably, begging to get fucked, trying to mount other characters, etc. This effectively removes them from combat, but they'll still act to describe their lewd actions. A lewd character can influence another aroused character to become lewd as well.
+
+If multiple characters are lewd during a battle there's a chance that they'll all start fucking. This could have monsters fucking the player's party members. 
+
+Once the battle is over, if there are any lewd characters, we need to have an event to decide what to do. If the player is not lewd and the character's party members are fucking the monsters they should be able to decide to let it happen or stop it from happening. If everyone on the player's side is lewd they'll get fucked by the monsters. (Monsters that don't want to fuck won't use attacks that increase arousal, but what happens when the players do it to themselves? That might be possible.) If the monsters are all lewd there should be a chance to fuck them or recruit them to the party. This follow on event sounds like it's going to be very complicated, but important for the sex filled dungeon flavor I'm going for here.

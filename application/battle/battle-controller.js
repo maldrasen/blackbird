@@ -20,10 +20,18 @@ global.BattleController = (function() {
   //
   // - Keeping track of battle time in ms keeps the speed of actions granular. Action values should be pretty high, but
   //   the difference between attacking every 550ms vs every 500ms is somewhat noticeable.
+  //
+  // - Some status effects have periodic effects. Rather than being dependent on the character they should go into the
+  //   turn order.
 
   function startBattle(data) {
     console.log("=== Start Battle ===");
     state = BattleState(data);
+
+    console.log("Encounter:",state.getEncounter().getCode());
+    const ranks = state.getEncounter().chooseMonsters();
+
+    console.log("Ranks:",ranks)
   }
 
   return Object.freeze({
