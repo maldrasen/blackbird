@@ -11,6 +11,8 @@ Species.register(SpeciesCode.elf, {
     beauty: 'B',
   },
 
+  healthFactor: 0.8,
+
   archetypes: {
     enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.elf),
     female: ArchetypeDistribution(Gender.female,SpeciesCode.elf),

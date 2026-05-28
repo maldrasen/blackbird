@@ -10,6 +10,8 @@ Species.register(SpeciesCode.halfling, {
     beauty: 'B',
   },
 
+  healthFactor: 0.6,
+
   archetypes: {
     enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.halfling),
     female: ArchetypeDistribution(Gender.female,SpeciesCode.halfling),

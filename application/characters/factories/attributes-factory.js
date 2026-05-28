@@ -33,11 +33,12 @@ global.AttributesFactory = (function() {
     return attributes;
   }
 
-  // Health is based on the character's vitality and rolled randomly. If we have a mechanism for adding a point
-  // of vitality, it should also roll and add more health points as well. Baseline health is simply (vitality)d10.
-  // Health and current health are the only values currently tracked by the health component.
-  function rollHealth(attributes) {
-    const health = Random.rollDice({ x:attributes.vitality, d:10 });
+  // Health is based on the character's vitality and rolled randomly, then multiplied by the species health factor. If
+  // we have a mechanism for adding a point of vitality, it should also roll and add more health points as well.
+  // Baseline health is simply (vitality)d10 * healthFactor. Health and current health are the only values currently
+  // tracked by the health component.
+  function rollHealth(attributes, factor=1.0) {
+    const health = Math.round(Random.rollDice({ x:attributes.vitality, d:10 }) * factor);
     const stamina = AttributesComponent.createWrapper({ data:attributes }).getMaxStamina();
 
     return { currentStamina:stamina, currentHealth:health, maxHealth:health };

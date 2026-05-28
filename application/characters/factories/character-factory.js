@@ -88,7 +88,7 @@ global.CharacterFactory = (function() {
     // We can adjust the attributes at this point. Calling this function mutates both the attributes data and the
     // triggers array. After the attributes are adjusted it's safe to calculate the health.
     AttributesFactory.adjustAttributes(attributesData, triggers);
-    const healthData = AttributesFactory.rollHealth(attributesData);
+    const healthData = AttributesFactory.rollHealth(attributesData, species.getHealthFactor());
     const personalityData = PersonalityFactory.buildPersonality(actorData, triggers);
     const aspectsData = AspectsFactory.build(triggers, actorData);
     const sensitivitiesData = SensitivitiesFactory.build(triggers, actorData, breastsData, cockData, pussyData);

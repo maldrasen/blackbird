@@ -10,6 +10,8 @@ Species.register(SpeciesCode.vermen, {
     beauty: 'F',
   },
 
+  healthFactor: 0.2,
+
   archetypes: {
     enby:   { 'vermen-sub':100 },
     female: { 'vermen-sub':100 },

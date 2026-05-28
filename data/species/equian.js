@@ -10,6 +10,8 @@ Species.register(SpeciesCode.equian, {
     beauty: 'C',
   },
 
+  healthFactor: 1.6,
+
   archetypes: {
     enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.equian),
     female: ArchetypeDistribution(Gender.female,SpeciesCode.equian),

@@ -10,6 +10,8 @@ Species.register(SpeciesCode.lupin, {
     beauty: 'C',
   },
 
+  healthFactor: 1.25,
+
   archetypes: {
     enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.lupin),
     female: ArchetypeDistribution(Gender.female,SpeciesCode.lupin),

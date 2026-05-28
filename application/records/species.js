@@ -30,6 +30,7 @@ global.Species = (function() {
       getAdjective: () => { return species.adjective || species.name; },
       getGenderRatio: () => { return species.genderRatio; },
       getAttributes: () => { return species.attributes; },
+      getHealthFactor: () => { return species.healthFactor; },
       getArchetypes: () => { return species.archetypes; },
       getSensitivities: () => { return species.sensitivities; },
       getSexualPreferences: () => { return species.sexualPreferences; },

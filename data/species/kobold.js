@@ -10,6 +10,8 @@ Species.register(SpeciesCode.kobold, {
     beauty: 'D',
   },
 
+  healthFactor: 0.2,
+
   archetypes: {
     enby:   { 'kobold-sub':100 },
     female: { 'kobold-sub':100 },
