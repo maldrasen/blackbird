@@ -13,6 +13,7 @@ global.StateMachine = (function() {
     CharacterMovementSystem.run(command);
     TrainingSystem.run(command);
     DungeonSystem.run(command);
+    BattleSystem.run(command);
 
     // Time system should run last. Every command should take some set amount time, and will set the delta time when
     // the command is handled by the associated system. The time system will determine if anything is scheduled to
@@ -83,4 +84,3 @@ global.StateMachine = (function() {
   });
 
 })();
-

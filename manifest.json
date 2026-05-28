@@ -2,6 +2,9 @@
   "fileList": [
     "application/constants.js",
     "application/enums.js",
+    "application/battle/battle-controller.js",
+    "application/battle/battle-state.js",
+    "application/battle/battle-system.js",
     "application/browser.js",
     "application/characters/archetype-distribution.js",
     "application/characters/character-math.js",
@@ -139,7 +142,6 @@
     "application/training/training-controller.js",
     "application/training/training-state.js",
     "application/training/training-system.js",
-    "application/views/battle/battle-controller.js",
     "application/views/battle/battle-view.js",
     "application/views/character/character-body-panel.js",
     "application/views/character/character-overlay.js",

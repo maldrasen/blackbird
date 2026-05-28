@@ -1,6 +1,11 @@
 global.Fixtures = (function() {
 
   function setupBattle() {
+
+    BattleController.startBattle({
+      afterBattle: 'returnTo.mainMenu' // Possible implementation...
+    });
+
     StateMachine.setMode(GameMode.battle);
     StateMachine.render();
   }
