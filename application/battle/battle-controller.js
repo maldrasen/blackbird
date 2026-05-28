@@ -29,12 +29,37 @@ global.BattleController = (function() {
     state = BattleState(data);
 
     const formation = state.getEncounter().buildFormation();
+    buildMonsters(formation);
+    state.setFormation(formation);
+  }
 
-    console.log("Formation:",formation)
+  function buildMonsters(formation) {
+    for (let r=0; r<formation.length; r++) {
+      for (let p=0; p<formation[r].length; p++) {
+        if (formation[r][p]) {
+          formation[r][p] = buildMonster(formation[r][p]);
+        }
+      }
+    }
+  }
+
+  function buildMonster(code) {
+    const id = Registry.createEntity();
+    MonsterFactory.build(id, code);
+
+    state.addMonster(id);
+    return id;
+  }
+
+  function endBattle() {
+    state.cleanup();
+    state = null;
   }
 
   return Object.freeze({
     startBattle,
+    endBattle,
+    getState: () => { return state; },
   });
 
 })();

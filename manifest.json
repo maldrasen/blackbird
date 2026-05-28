@@ -19,6 +19,7 @@
     "application/characters/factories/breasts-factory.js",
     "application/characters/factories/character-factory.js",
     "application/characters/factories/cock-factory.js",
+    "application/characters/factories/monster-factory.js",
     "application/characters/factories/mouth-factory.js",
     "application/characters/factories/personality-factory.js",
     "application/characters/factories/player-factory.js",
