@@ -371,6 +371,7 @@
     "test/helpers/object-helper-spec.js",
     "test/helpers/string-helper-spec.js",
     "test/items/factories/outfit-factory-spec.js",
+    "test/records/encounter-spec.js",
     "test/records/name-spec.js",
     "test/records/sex-action-spec.js",
     "test/scrutinizers/actor-scrutinizers-spec.js",

@@ -1,5 +1,5 @@
 Encounter.register('kobold-3',{
-  ranks:[
+  formation:[
     [0,1,1,2,1,1,0],
     [0,0,3,3,3,0,0],
   ],

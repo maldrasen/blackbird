@@ -28,10 +28,9 @@ global.BattleController = (function() {
     console.log("=== Start Battle ===");
     state = BattleState(data);
 
-    console.log("Encounter:",state.getEncounter().getCode());
-    const ranks = state.getEncounter().chooseMonsters();
+    const formation = state.getEncounter().buildFormation();
 
-    console.log("Ranks:",ranks)
+    console.log("Formation:",formation)
   }
 
   return Object.freeze({
