@@ -139,6 +139,8 @@
     "application/training/training-controller.js",
     "application/training/training-state.js",
     "application/training/training-system.js",
+    "application/views/battle/battle-controller.js",
+    "application/views/battle/battle-view.js",
     "application/views/character/character-body-panel.js",
     "application/views/character/character-overlay.js",
     "application/views/character/character-overview-panel.js",

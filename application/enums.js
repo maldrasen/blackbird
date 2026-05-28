@@ -16,6 +16,7 @@ global.CommandType = Object.freeze({
 });
 
 global.GameMode = Object.freeze({
+  battle: 'battle',
   dungeon: 'dungeon',
   enlighten: 'enlighten',
   episode: 'episode',

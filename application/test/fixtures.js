@@ -1,5 +1,10 @@
 global.Fixtures = (function() {
 
+  function setupBattle() {
+    StateMachine.setMode(GameMode.battle);
+    StateMachine.render();
+  }
+
   // The fixture calls the dungeon controller directly to setup a new dungeon. This should actually all be called in
   // the StateMachine when the DungeonSystem sees the command that puts the game into the dungeon mode.
   function setupDungeon() {
@@ -54,6 +59,7 @@ global.Fixtures = (function() {
   }
 
   return Object.freeze({
+    setupBattle,
     setupDungeon,
     setupFeature,
     setupTraining,

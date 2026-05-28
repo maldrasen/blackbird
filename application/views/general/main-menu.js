@@ -66,6 +66,7 @@ global.MainMenu = (function() {
     const stateOptions = {};
 
     let setup;
+    if (fixture === 'battle') { setup = Fixtures.setupBattle; }
     if (fixture === 'dungeon') { setup = Fixtures.setupDungeon; }
     if (fixture === 'feature') { setup = Fixtures.setupFeature; }
     if (fixture === 'training') { setup = Fixtures.setupTraining; }
