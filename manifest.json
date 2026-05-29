@@ -121,6 +121,7 @@
     "application/scrutinizers/equipment-scrutinizer.js",
     "application/scrutinizers/pussy-scrutinizer.js",
     "application/server.js",
+    "application/test/battle-fixtures.js",
     "application/test/character-fixtures.js",
     "application/test/fixtures.js",
     "application/test/item-fixtures.js",
@@ -352,6 +353,7 @@
     "data/species/vermen.js"
   ],
   "testFileList": [
+    "test/battle/battle-state-test.js",
     "test/characters/character-math-spec.js",
     "test/characters/character-spec.js",
     "test/characters/describers/body-describer-spec.js",

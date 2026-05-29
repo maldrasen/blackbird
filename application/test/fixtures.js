@@ -1,15 +1,9 @@
 global.Fixtures = (function() {
 
   function setupBattle() {
-    const player = buildRandomPlayer();
-    const characters = buildRandomCharacters(player, 2, { triggers:[] });
-
-    PartyConfiguration.setCharacter(player,'0.1');
-    PartyConfiguration.setCharacter(characters[0],'0.2');
-    PartyConfiguration.setCharacter(characters[1],'1.1');
-
+    BattleFixtures.prepareForBattle();
     BattleController.startBattle({
-      afterBattle: 'returnTo.mainMenu', // Possible implementation...
+      afterBattle: 'returnTo.mainMenu',
       encounter: 'kobold-1',
     });
 
@@ -31,43 +25,10 @@ global.Fixtures = (function() {
 
   // The training fixture actually puts the game into the location mode, with characters available to be trained.
   function setupTraining() {
-    buildRandomCharacters(buildRandomPlayer(), 10, { triggers:[] });
-
+    CharacterFixtures.randomPlayer();
+    CharacterFixtures.randomCharacters(10, { triggers:[] });
     StateMachine.setMode(GameMode.location);
     StateMachine.render();
-  }
-
-  // When we build a player object, we set the player entity id in the GameState. This function could take character
-  // options if I wanted to test a specific player type.
-  function buildRandomPlayer() {
-    const player = PlayerFactory.build({
-      style:Random.from(['domination','degradation','sadism'])
-    });
-    GameState.setPlayer(player);
-    return player;
-  }
-
-  // Creating random characters needs a player to exist in order to create their feelings. This fixture is still using
-  // placeholder values for the control and feelings components. Should figure out what the default values there are.
-  function buildRandomCharacters(player, count, options={}) {
-    const characters = []
-
-    for (let i=0; i<count; i++) {
-      characters.push(CharacterFactory.build(options));
-    }
-
-    characters.forEach(id => {
-      ControlledComponent.create(id,{ control:0 });
-      SituatedComponent.create(id,{ currentLocation:GameState.getCurrentLocation() });
-      ArousalComponent.update(id,{ arousal:Random.between(0,25) });
-      FeelingsComponent.create(id,{ target:player,
-        affection: Random.between(100,400),
-        respect: Random.between(100,400),
-        fear: Random.between(0,200)
-      });
-    });
-
-    return characters;
   }
 
   return Object.freeze({

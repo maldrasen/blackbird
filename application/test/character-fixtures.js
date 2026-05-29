@@ -1,5 +1,46 @@
 global.CharacterFixtures = (function() {
 
+  // When we build a player object, we set the player entity id in the GameState. This function could take character
+  // options if I wanted to test a specific player type.
+  function randomPlayer() {
+    const player = PlayerFactory.build({
+      style:Random.from(['domination','degradation','sadism'])
+    });
+    GameState.setPlayer(player);
+    return player;
+  }
+
+  // Creating random characters needs a player to exist in order to create their feelings. This fixture is still using
+  // placeholder values for the control and feelings components. Should figure out what the default values there are.
+  function randomCharacters(count, options={}) {
+    const characters = []
+    const player = GameState.getPlayer();
+    const location = GameState.getCurrentLocation();
+
+    for (let i=0; i<count; i++) {
+      characters.push(CharacterFactory.build(options));
+    }
+
+    characters.forEach(id => {
+      ControlledComponent.create(id,{ control:0 });
+      ArousalComponent.update(id,{ arousal:Random.between(0,25) });
+
+      if (location) {
+        SituatedComponent.create(id,{ currentLocation:location });
+      }
+
+      if (player) {
+        FeelingsComponent.create(id,{ target:player,
+          affection: Random.between(100,400),
+          respect: Random.between(100,400),
+          fear: Random.between(0,200)
+        });
+      }
+    });
+
+    return characters;
+  }
+
   function genericMale(options) {
     const id = Registry.createEntity();
     const defaultSensitivities = { cock:3, anus:2, prostate:2 };
@@ -130,6 +171,8 @@ global.CharacterFixtures = (function() {
   }
 
   return Object.freeze({
+    randomPlayer,
+    randomCharacters,
     genericMale,
     genericFemale,
     genericAttributes,

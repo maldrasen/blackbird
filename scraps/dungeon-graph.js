@@ -42,11 +42,11 @@ class DungeonFloor {
 function buildConnectivityGraph(floor) {
   const graph = new Map(); // roomId -> Set of connected roomIds
 
-  for (const room of floor.rooms.values()) {
+  for (const room of Object.values(floor.rooms)) {
     graph.set(room.id, new Set());
   }
 
-  for (const door of floor.doors.values()) {
+  for (const door of Object.values(floor.doors)) {
     const [roomA, roomB] = door.rooms;
     graph.get(roomA).add(roomB);
     graph.get(roomB).add(roomA);
