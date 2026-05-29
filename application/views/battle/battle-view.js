@@ -5,9 +5,9 @@ global.BattleView = (function() {
   }
 
   function show() {
-    console.log("Show Battle View")
     MainContent.setMainContent("views/battle.html");
     MainContent.setBackground("backgrounds/battle.jpg");
+    FormationPanel.build();
   }
 
   return Object.freeze({

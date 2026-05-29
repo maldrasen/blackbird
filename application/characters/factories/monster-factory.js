@@ -1,8 +1,6 @@
 global.MonsterFactory = (function() {
 
   function build(code) {
-    console.log(`Build [${code}]`);
-
     const monsterType = Monster.lookup(code);
     const monsterSpecies = monsterType.getSpecies();
     let monsterId;
@@ -17,7 +15,16 @@ global.MonsterFactory = (function() {
       monsterId = Registry.createEntity();
     }
 
+    buildMonsterComponents(monsterId, code);
+
     return monsterId;
+  }
+
+  // Not sure what else this needs to add other than a handle to the monster data objects. Spells and abilities and
+  // such probably come from the data object. The entity should carry anything that makes the monster unique, but I'm
+  // not sure if there is anything like that.
+  function buildMonsterComponents(monsterId, code) {
+    MonsterComponent.create(monsterId,{ code });
   }
 
   return Object.freeze({

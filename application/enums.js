@@ -92,6 +92,7 @@ global.ComponentType = Object.freeze({
   mana: 'ManaComponent',
   mark: 'MarkComponent',
   memory: 'MemoryComponent',
+  monster: 'MonsterComponent',
   mouth: 'MouthComponent',
   personality: 'PersonalityComponent',
   pussy: 'PussyComponent',

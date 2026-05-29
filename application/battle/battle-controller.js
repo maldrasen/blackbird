@@ -25,7 +25,6 @@ global.BattleController = (function() {
   //   turn order.
 
   function startBattle(data) {
-    console.log("=== Start Battle ===");
     state = BattleState(data);
 
     buildMonsters(state.getEncounter().buildFormation());
