@@ -187,6 +187,7 @@
     "application/world/command.js",
     "application/world/game-controller.js",
     "application/world/game-state.js",
+    "application/world/party-configuration.js",
     "application/world/registry.js",
     "application/world/state-machine.js",
     "application/world/time-system.js",
@@ -390,6 +391,8 @@
     "test/training/sensation-results/sensation-technique-spec.js",
     "test/training/training-controller-spec.js",
     "test/training/training-state-spec.js",
+    "test/world/game-state-spec.js",
+    "test/world/party-configuration-spec.js",
     "test/world/registry-spec.js"
   ]
 }

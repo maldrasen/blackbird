@@ -28,26 +28,26 @@ global.BattleController = (function() {
     console.log("=== Start Battle ===");
     state = BattleState(data);
 
-    const formation = state.getEncounter().buildFormation();
-    buildMonsters(formation);
-    state.setFormation(formation);
+    buildMonsters(state.getEncounter().buildFormation());
+
+    console.log("Starting Formation")
+    console.log(state.getPartyFormation());
+    console.log(state.getMonsterFormation());
+
   }
 
+  // When building the monsters we take the formation from the encounter and loop though the arrays that represent the
+  // ranks and columns. The values in the arrays are passed to the monster factory to build the monster then its entity
+  // ID is added to the state at the proper position in the monster formation.
   function buildMonsters(formation) {
     for (let r=0; r<formation.length; r++) {
       for (let p=0; p<formation[r].length; p++) {
         if (formation[r][p]) {
-          formation[r][p] = buildMonster(formation[r][p]);
+          const monster = MonsterFactory.build(formation[r][p]);
+          state.addMonster(monster,`${r}.${p}`);
         }
       }
     }
-  }
-
-  function buildMonster(code) {
-    const id = MonsterFactory.build(code);
-
-    state.addMonster(id);
-    return id;
   }
 
   function endBattle() {

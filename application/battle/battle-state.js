@@ -5,9 +5,13 @@ global.BattleState = function(data) {
   const afterBattle = data.afterBattle;
   const encounter = findEncounter(data);
   const turnOrder = {};
-  const monsters = [];
 
-  let formation;
+  // TODO: The party formation is a copy of the formation in the configuration, that way if party characters are moved
+  //       around they'll return to their original positions after the battle. If a character is killed or disabled
+  //       though we'll need to make a persistent change to put any character that was behind the fallen character into
+  //       the front rank.
+  const partyFormation = { ...PartyConfiguration.getConfiguration() };
+  const monsterFormation = {};
 
   Validate.exists('BattleState.afterBattle',afterBattle);
 
@@ -19,8 +23,12 @@ global.BattleState = function(data) {
     throw `Battle needs to find encounter in some other way.`
   }
 
-  function addMonster(id) {
-    monsters.push(id);
+  function addMonster(id, position) {
+
+    console.log("Add monster:",id,position)
+
+    if (position.match(/\d\.\d/) === false) { throw `Position[${position}] is invalid` }
+    monsterFormation[position] = id;
   }
 
   // The cleanup() function needs to be called after the battle to remove the temporary monsters that were built.
@@ -30,7 +38,7 @@ global.BattleState = function(data) {
   //       should be done after that event instead.
   //
   function cleanup() {
-    monsters.forEach(id => {
+    monsterFormation.values().forEach(id => {
       Registry.deleteEntity(id);
     });
   }
@@ -38,10 +46,10 @@ global.BattleState = function(data) {
   return Object.freeze({
     getAfterBattle: () => { return afterBattle; },
     getEncounter: () => { return encounter; },
-    getMonsters: () => { return [...monsters]; },
-    setFormation: f => { formation = f; },
-    getFormation: () => { return formation; },
     addMonster,
+    getMonsters: () => { return monsterFormation.values(); },
+    getMonsterFormation: () => { return { ...monsterFormation }; },
+    getPartyFormation: () => { return { ...partyFormation }; },
     cleanup,
   });
 

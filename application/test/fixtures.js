@@ -1,6 +1,12 @@
 global.Fixtures = (function() {
 
   function setupBattle() {
+    const player = buildRandomPlayer();
+    const characters = buildRandomCharacters(player, 2, { triggers:[] });
+
+    PartyConfiguration.setCharacter(player,'0.1');
+    PartyConfiguration.setCharacter(characters[0],'0.2');
+    PartyConfiguration.setCharacter(characters[1],'1.1');
 
     BattleController.startBattle({
       afterBattle: 'returnTo.mainMenu', // Possible implementation...

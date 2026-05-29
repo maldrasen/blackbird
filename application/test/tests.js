@@ -59,7 +59,7 @@ global.Tests = (function() {
 
   function reset() {
     Random.stubReset();
-    Registry.clear();
+    GameState.reset();
   }
 
   function rootBefore() { $running = true; }
