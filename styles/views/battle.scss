@@ -24,11 +24,12 @@
       box-shadow: variables.$shadow-frame;
     }
     .position.acting {
-      border-color: rgba(100,33,0,1);
+      border-color: rgba(100,33,0,0.75);
     }
 
     .monster, .character {
       box-sizing: border-box;
+      cursor: pointer;
       height: 79px;
       width: 79px;
       padding: 5px;
@@ -36,6 +37,7 @@
       font-family: "habibi", sans-serif;
       text-align: center;
       overflow: hidden;
+      &:hover { background-color: rgba(20,20,30,0.75); }
     }
 
   }

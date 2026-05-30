@@ -44,7 +44,7 @@ global.BattleController = (function() {
     console.log("Next:",next)
 
     if (next.type === 'monster') {
-      const result = MonsterBrain.executeBattleTurn(next.id);
+      const result = MonsterSimulator.executeBattleTurn(next.id);
       FormationPanel.highlightActingMonster(next.id);
       next.time += result.time;
       state.setTurnOrder(next);

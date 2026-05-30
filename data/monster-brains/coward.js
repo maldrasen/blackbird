@@ -1,0 +1,3 @@
+MonsterBrain.register('coward',{
+
+});
