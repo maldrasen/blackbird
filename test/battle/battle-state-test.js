@@ -14,7 +14,7 @@ describe("BattleState", function() {
   describe("Turn Order", function() {
     it('moves the character within the turn order after acting', function() {
       BattleFixtures.prepareForBattle();
-      BattleController.startBattle({ encounter:'kobold-1' });
+      BattleController.startBattle({ encounter:'kobold-1', ambushState:'normal' });
 
       const state = BattleController.getState();
       const next = state.getNext();
@@ -29,7 +29,7 @@ describe("BattleState", function() {
 
     it('entities can be removed from the turn order', function() {
       BattleFixtures.prepareForBattle();
-      BattleController.startBattle({ encounter:'kobold-1' });
+      BattleController.startBattle({ encounter:'kobold-1', ambushState:'normal' });
 
       const state = BattleController.getState();
       const order = state.getTurnOrder();

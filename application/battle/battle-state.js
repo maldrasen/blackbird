@@ -1,5 +1,7 @@
 global.BattleState = function(data) {
 
+  const AMBUSH_REACTION_TIME = 1000;
+
   // TODO: Should check if the after battle return point is a valid point. Returning to the main menu should not be
   //       possible during a normal game for instance. This will usually be set to the dungeon or a running event.
   const afterBattle = data.afterBattle || 'dungeon';
@@ -12,6 +14,8 @@ global.BattleState = function(data) {
   //       the front rank.
   const partyFormation = { ...PartyConfiguration.getConfiguration() };
   const monsterFormation = {};
+
+  let ambushState = 'normal';
 
   // Theoretically these can change and should be based off of the position values as defined in the formation (or
   // from the encounter formation itself) It's fine to leave these hard coded for now though I think.
@@ -62,6 +66,9 @@ global.BattleState = function(data) {
     return false;
   }
 
+  function getMonsters() { return Object.values(monsterFormation); }
+  function getCharacters() { return Object.values(partyFormation); }
+
   // === Turn Order ====================================================================================================
 
   // The turn order is modeled as a simple queue, ordered by the time value of the actors in the array. Once an entity
@@ -80,7 +87,31 @@ global.BattleState = function(data) {
       turnOrder.push({ ...data, key });
     }
 
+    sortTurnOrder();
+  }
+
+  function sortTurnOrder() {
     turnOrder.sort((a,b) => { return a.time - b.time });
+  }
+
+  // Setting the ambush state also adjusts the turn order accordingly.
+  // State can be normal, party-ambushed, monsters-ambushed
+  function setAmbushState(state) {
+    ambushState = state;
+
+    if (ambushState === 'party-ambushed') {
+      turnOrder.forEach(data => {
+        if (data.type === 'character') { data.time += AMBUSH_REACTION_TIME; }
+      });
+      sortTurnOrder();
+    }
+
+    if (ambushState === 'monsters-ambushed') {
+      turnOrder.forEach(data => {
+        if (data.type === 'monster') { data.time += AMBUSH_REACTION_TIME; }
+      });
+      sortTurnOrder();
+    }
   }
 
   function buildKey(data) {
@@ -114,7 +145,6 @@ global.BattleState = function(data) {
     getAfterBattle: () => { return afterBattle; },
     getEncounter: () => { return encounter; },
     addMonster,
-    getMonsters: () => { return Object.values(monsterFormation); },
     getMonsterFormation: () => { return { ...monsterFormation }; },
     getPartyFormation: () => { return { ...partyFormation }; },
     getMaxMonsterRank,
@@ -124,9 +154,13 @@ global.BattleState = function(data) {
     monsterAtPosition,
     characterAtPosition,
     isMonsterRankOccupied,
+    getMonsters,
+    getCharacters,
 
     setTurnOrder,
     getTurnOrder: () => { return [ ...turnOrder ]; },
+    setAmbushState,
+    getAmbushState: () => { return ambushState; },
     getNext,
     removeFromTurnOrder,
   });

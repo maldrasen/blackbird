@@ -29,6 +29,7 @@ global.BattleController = (function() {
 
     buildMonsters(state.getEncounter().buildFormation());
     rollReactionTimes();
+    state.setAmbushState(data.ambushState || rollAmbush());
   }
 
   function endBattle() {
@@ -83,6 +84,17 @@ global.BattleController = (function() {
         time: Random.roll(1000),
       });
     });
+  }
+
+  // TODO: Keeping the ambush state super simple, stupid, and frequent for now. There will eventually be variables
+  //       that effect the ambush chances here. Scouting ahead or something to make favorable ambushes more likely.
+  //       Some monster types (sneaky ones) will also be more likely to ambush, whereas big stompy monsters will be
+  //       easier for you to ambush.
+  function rollAmbush() {
+    const ambushRoll = Random.roll(100);
+    if (ambushRoll < 30) { return 'party-ambushed'; }
+    if (ambushRoll > 70) { return 'monsters-ambushed'; }
+    return 'normal';
   }
 
   return Object.freeze({

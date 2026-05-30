@@ -147,6 +147,7 @@
     "application/training/training-controller.js",
     "application/training/training-state.js",
     "application/training/training-system.js",
+    "application/views/battle/battle-text.js",
     "application/views/battle/battle-view.js",
     "application/views/battle/formation-panel.js",
     "application/views/character/character-body-panel.js",

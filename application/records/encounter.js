@@ -44,6 +44,7 @@ global.Encounter = (function() {
 
     return Object.freeze({
       getCode: () => { return code; },
+      getDescription: () => { return encounter.description; },
       buildFormation,
     });
   }
