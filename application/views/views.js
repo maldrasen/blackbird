@@ -1,6 +1,7 @@
 global.Views = (function() {
 
   function initAll() {
+    BattleView.init();
     Casement.init();
     CharacterOverlay.init();
     Confirmation.init();

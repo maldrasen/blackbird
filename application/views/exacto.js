@@ -22,15 +22,19 @@ X.remove = function(query) {
 }
 
 X.removeAttribute = function(arg, attribute) {
-  (typeof arg == "string" ? X.first(arg) : arg).removeAttribute(attribute);
+  (typeof arg === 'string' ? X.first(arg) : arg).removeAttribute(attribute);
 }
 
 X.empty = function(arg) {
-  (typeof arg == "string" ? X.first(arg) : arg).replaceChildren();
+  (typeof arg === 'string' ? X.first(arg) : arg).replaceChildren();
 }
 
 X.fill = function(arg, element) {
-  (typeof arg == "string" ? X.first(arg) : arg).replaceChildren(element);
+  (typeof arg === 'string' ? X.first(arg) : arg).replaceChildren(element);
+}
+
+X.append = function(arg, element) {
+  (typeof arg === 'string' ? X.first(arg) : arg).appendChild(element);
 }
 
 X.createElement = function(string) {

@@ -37,6 +37,35 @@ global.BattleController = (function() {
     state = null;
   }
 
+  function advanceBattle() {
+    const next = state.getNext();
+
+    console.log("=== Advance Battle ===");
+    console.log("Next:",next)
+
+    if (next.type === 'monster') {
+      const result = MonsterBrain.executeBattleTurn(next.id);
+      FormationPanel.highlightActingMonster(next.id);
+      next.time += result.time;
+      state.setTurnOrder(next);
+
+      console.log("Result:",result)
+      BattleText.setMessages(result.messages);
+    }
+    if (next.type === 'character') {
+      console.log("Show Commands");
+      next.time += 1000;
+      state.setTurnOrder(next);
+
+      FormationPanel.highlightActingCharacter(next.id);
+
+      const actor = ActorComponent.lookup(next.id);
+      BattleText.setMessages([
+        { text:`${actor.name} jacks off.` }
+      ]);
+    }
+  }
+
   // When building the monsters we take the formation from the encounter and loop though the arrays that represent the
   // ranks and columns. The values in the arrays are passed to the monster factory to build the monster then its entity
   // ID is added to the state at the proper position in the monster formation.
@@ -100,6 +129,7 @@ global.BattleController = (function() {
   return Object.freeze({
     startBattle,
     endBattle,
+    advanceBattle,
     getState: () => { return state; },
   });
 

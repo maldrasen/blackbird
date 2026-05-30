@@ -1,7 +1,7 @@
 global.BattleView = (function() {
 
   function init() {
-
+    BattleText.init();
   }
 
   function show() {
@@ -12,8 +12,6 @@ global.BattleView = (function() {
     BattleText.build();
     BattleText.showBattleStartText();
   }
-
-
 
   return Object.freeze({
     init,

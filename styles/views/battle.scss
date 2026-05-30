@@ -27,6 +27,10 @@
       border: variables.$border-light;
       box-shadow: variables.$shadow-frame;
     }
+
+    .position.acting {
+      border-color: rgba(100,33,0,1);
+    }
   }
 
   .bottom-panel {

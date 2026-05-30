@@ -5,6 +5,7 @@
     "application/battle/battle-controller.js",
     "application/battle/battle-state.js",
     "application/battle/battle-system.js",
+    "application/battle/monster-brain.js",
     "application/browser.js",
     "application/characters/archetype-distribution.js",
     "application/characters/character-math.js",

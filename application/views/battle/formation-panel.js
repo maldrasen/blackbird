@@ -64,8 +64,25 @@ global.FormationPanel = (function() {
     }
   }
 
+  function clearHighlight() {
+    X.removeClass('.position.acting','acting');
+  }
+
+  function highlightActingMonster(id) {
+    clearHighlight();
+    X.addClass(X.first(`.monster[data-id='${id}']`).parentElement,'acting');
+  }
+
+  function highlightActingCharacter(id) {
+    clearHighlight();
+    X.addClass(X.first(`.character[data-id='${id}']`).parentElement,'acting');
+  }
+
   return Object.freeze({
-    build
+    build,
+    clearHighlight,
+    highlightActingMonster,
+    highlightActingCharacter,
   });
 
 })();
