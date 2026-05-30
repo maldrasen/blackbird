@@ -15,7 +15,7 @@ global.BattleState = function(data) {
 
   // Theoretically these can change and should be based off of the position values as defined in the formation (or
   // from the encounter formation itself) It's fine to leave these hard coded for now though I think.
-  function getMaxMonsterRank() { return 2; }
+  function getMaxMonsterRank() { return 5; }
   function getMaxMonsterColumn() { return 7; }
   function getMaxPartyRank() { return 2; }
   function getMaxPartyColumn() { return 3; }
@@ -45,6 +45,21 @@ global.BattleState = function(data) {
   function addMonster(id, position) {
     if (position.match(/\d\.\d/) === false) { throw `Position[${position}] is invalid` }
     monsterFormation[position] = id;
+  }
+
+  function monsterAtPosition(rank, position) {
+    return monsterFormation[`${rank}.${position}`] || null;
+  }
+
+  function characterAtPosition(rank, position) {
+    return partyFormation[`${rank}.${position}`] || null;
+  }
+
+  function isMonsterRankOccupied(rank) {
+    for (let p=0; p<getMaxMonsterColumn(); p++) {
+      if (monsterAtPosition(rank, p)) { return true; }
+    }
+    return false;
   }
 
   // === Turn Order ====================================================================================================
@@ -106,6 +121,10 @@ global.BattleState = function(data) {
     getMaxMonsterColumn,
     getMaxPartyRank,
     getMaxPartyColumn,
+    monsterAtPosition,
+    characterAtPosition,
+    isMonsterRankOccupied,
+
     setTurnOrder,
     getTurnOrder: () => { return [ ...turnOrder ]; },
     getNext,

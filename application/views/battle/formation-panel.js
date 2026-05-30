@@ -30,6 +30,14 @@ global.FormationPanel = (function() {
 
       X.first('#monsterFormation').appendChild(X.createElement(row));
     }
+
+    // Hide unoccupied ranks past the second when they are unoccupied. We still keep them in case something is somehow
+    // moved back beyond the second rank.
+    for (let r=2; r<state.getMaxMonsterRank(); r++) {
+      if (state.isMonsterRankOccupied(r) === false) {
+        X.addClass(`#monsterFormation .rank-${r}`,'hide');
+      }
+    }
   }
 
   function buildPartyFormation(state) {

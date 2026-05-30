@@ -1,6 +1,17 @@
 describe("BattleState", function() {
 
-  describe.only("Turn Order", function() {
+  describe("Formation", function() {
+    it('monsterAtPosition()', function() {
+      BattleFixtures.prepareForBattle();
+      BattleController.startBattle({ encounter:'kobold-1' });
+
+      const state = BattleController.getState();
+      expect(state.monsterAtPosition(0,3)).to.not.be.null;
+      expect(state.monsterAtPosition(1,3)).to.be.null;
+    });
+  })
+
+  describe("Turn Order", function() {
     it('moves the character within the turn order after acting', function() {
       BattleFixtures.prepareForBattle();
       BattleController.startBattle({ encounter:'kobold-1' });
