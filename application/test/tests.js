@@ -72,7 +72,7 @@ global.Tests = (function() {
   }
 
   function resizeReport() {
-    if (X('#mocha .test.fail').length > 0) {
+    if (X.all('#mocha .test.fail').length > 0) {
       X.addClass('#testFrame','with-failures');
       X.addClass('#mainMenu','hide');
     }

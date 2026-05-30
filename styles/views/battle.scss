@@ -16,21 +16,28 @@
 
     .position {
       box-sizing: border-box;
-      text-align: center;
       height: 80px;
       width: 80px;
-      font-size: variables.$fs-small;
-      font-family: "habibi", sans-serif;
       background-color: rgba(0,0,0,0.6);
       margin: 2px;
-      padding: 5px;
       border: variables.$border-light;
       box-shadow: variables.$shadow-frame;
     }
-
     .position.acting {
       border-color: rgba(100,33,0,1);
     }
+
+    .monster, .character {
+      box-sizing: border-box;
+      height: 79px;
+      width: 79px;
+      padding: 5px;
+      font-size: variables.$fs-tiny;
+      font-family: "habibi", sans-serif;
+      text-align: center;
+      overflow: hidden;
+    }
+
   }
 
   .bottom-panel {

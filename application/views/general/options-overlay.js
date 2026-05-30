@@ -50,7 +50,7 @@ global.OptionsOverlay = (function() {
   // Pack all the options, but mostly keybindings for now.
   function pack() {
     let options = { ... WorldState.getOptions() };
-    let listItems = X("#keyBindingList li");
+    let listItems = X.all("#keyBindingList li");
 
     for (let i=0; i<listItems.length; i++) {
       let listItem = listItems[i];

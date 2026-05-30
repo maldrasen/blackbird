@@ -29,7 +29,7 @@ global.MainContent = (function() {
   }
 
   function removeStylesheet(name) {
-    X('head link').forEach(entry => {
+    X.all('head link').forEach(entry => {
       if (entry.href.match(name)) { entry.remove(); }
     });
   }

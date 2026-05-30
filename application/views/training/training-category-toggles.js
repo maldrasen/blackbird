@@ -104,7 +104,7 @@ global.TrainingCategoryToggles = (function() {
 
   function adjustTogglesClass(id) {
     const toggles = X.first(`#${id}`);
-    const anyActive = X(`#${id} .on`).length > 0;
+    const anyActive = X.all(`#${id} .on`).length > 0;
 
     if (anyActive && X.hasClass(toggles, 'inactive')) {
       X.addClass(toggles,'active');

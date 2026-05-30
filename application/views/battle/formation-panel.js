@@ -64,18 +64,18 @@ global.FormationPanel = (function() {
     }
   }
 
-  function clearHighlight() {
-    X.removeClass('.position.acting','acting');
-  }
+  function getMonsterElement(id) { return X.first(`.monster[data-id='${id}']`); }
+  function getCharacterElement(id) { return X.first(`.character[data-id='${id}']`); }
+  function clearHighlight() { X.removeClass('.position.acting','acting'); }
 
   function highlightActingMonster(id) {
     clearHighlight();
-    X.addClass(X.first(`.monster[data-id='${id}']`).parentElement,'acting');
+    X.addClass(getMonsterElement(id).parentElement,'acting');
   }
 
   function highlightActingCharacter(id) {
     clearHighlight();
-    X.addClass(X.first(`.character[data-id='${id}']`).parentElement,'acting');
+    X.addClass(getCharacterElement(id).parentElement,'acting');
   }
 
   return Object.freeze({
