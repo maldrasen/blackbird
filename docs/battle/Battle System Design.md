@@ -30,3 +30,8 @@ The item component is needed because some basic items (especially clothing) need
 Basic dungeon equipment is cursed. It disintegrates once it's outside of the dungeon proper. The first time you capture a monster with a sword we add an event where the monster's equipment turns into a pile of rust, leaving them naked.
   
 The only loot that doesn't disintegrate are the 'higher order' materials. These are metals that can be enchanted or are already magical. This magic stabilizes them when outside the dungeon. This solves a few problems. Some monsters can randomly have cool magical equipment that they use, that they then drop on death or have in their inventory when captured. Monsters can still drop some stuff that's useful, gold, teeth, whatever, according to their loot table. Any loot found will be useful. Even if a "doom copper" sword is worse than everything you have, the blacksmith can still buy it.
+
+### Weapon Damage
+Weapon damage should relate to the way we calculate health, in terms of scale. The health formula is `vitality d10 * health factor` or around `5.5` health per vitality for humans. So kobolds should have around 10 hp with their 0.2 health factor and a 1st level equian might have around 250, while an equian with 100 vitality could have around 900. A human should have around 100, and a halfling around 40.
+
+One of the principle that I'd like for weapon damage to follow is that a character's skills and attributes matter more than their equipment. A heroic warrior with a pointed stick is more dangerous than a nobleman with a magic sword.
