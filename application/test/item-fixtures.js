@@ -7,8 +7,11 @@ global.ItemFixtures = (function() {
     equipment.legs = PantsFactory.build(options.legs);
     equipment.chest = ShirtFactory.build(options.chest)
 
-    InventoryComponent.addItem(character, equipment.legs);
-    InventoryComponent.addItem(character, equipment.chest);
+    const manager = InventoryManager(character);
+    manager.addItem(equipment.legs);
+    manager.addItem(equipment.chest);
+
+    // This needs to go through the equipment manager...
     EquipmentComponent.update(character, equipment);
   }
 

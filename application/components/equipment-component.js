@@ -33,7 +33,7 @@ global.EquipmentComponent = (function() {
         const itemId = equipmentComponent[slot];
         const equippedItem = ItemComponent.lookup(itemId);
 
-        if (InventoryComponent.hasItem(id, itemId) === false) {
+        if (InventoryManager(id).hasItem(itemId) === false) {
           throw new Error(`Item:${itemId} is equipped, but isn't in Character:${id}'s inventory.`);
         }
         if (equippedItem.slots.includes(slot) === false) {

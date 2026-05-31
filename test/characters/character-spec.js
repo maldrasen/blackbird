@@ -76,7 +76,9 @@ describe("Character", function() {
       ItemFixtures.addRandomEquipment(goat)
 
       const pants = PantsFactory.build();
-      InventoryComponent.addItem(horse, pants);
+      InventoryManager(horse).addItem(pants);
+
+      // Also needs the equipment manager.
       EquipmentComponent.update(horse, { legs:pants });
 
       expect(Character(goat).isNaked()).to.be.false
