@@ -1,7 +1,6 @@
 global.BaseWeapon = (function() {
   const $weapons = {};
 
-  // The skill register() function also needs to add the skill code as a property of the Skills component.
   function register(code,data) {
     $weapons[code] = data;
   }
@@ -17,6 +16,10 @@ global.BaseWeapon = (function() {
 
     return Object.freeze({
       getCode: () => { return weapon.code; },
+      getType: () => { return weapon.type; },
+      getHands: () => { return weapon.hands; },
+      getLow: () => { return weapon.low; },
+      getHigh: () => { return weapon.high; },
     });
   }
 

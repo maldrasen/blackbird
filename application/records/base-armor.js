@@ -17,6 +17,7 @@ global.BaseArmor = (function() {
 
     return Object.freeze({
       getCode: () => { return armor.code; },
+      getSlots: () => { return armor.slots; },
     });
   }
 
