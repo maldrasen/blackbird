@@ -101,6 +101,7 @@ global.ComponentType = Object.freeze({
   sexualPreferences: 'SexualPreferencesComponent',
   situated: 'SituatedComponent',
   skills: 'SkillsComponent',
+  weapon: 'WeaponComponent',
 });
 
 global.Attrib = Object.freeze({
@@ -320,6 +321,8 @@ global.OutfitStyle = Object.freeze({
 });
 
 global.EquipmentSlot = Object.freeze({
+  primary:'primary',
+  secondary:'secondary',
   chest: 'chest',
   feet: 'feet',
   hands: 'hands',
