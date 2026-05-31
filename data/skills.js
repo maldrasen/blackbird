@@ -64,6 +64,21 @@ Skill.register('wizardry',{
 
 // === Martial ===
 
+Skill.register('dodge',{
+  name: "Dodge",
+  factor: 1,
+  attributes: [Attrib.dexterity] });
+
+Skill.register('parry',{
+  name: "Parry",
+  factor: 2,
+  attributes: [Attrib.dexterity, Attrib.strength] });
+
+Skill.register('block',{
+  name: "Block",
+  factor: 1,
+  attributes: [Attrib.strength] });
+
 Skill.register('axe',{
   name: "Axes",
   factor: 1,
@@ -92,11 +107,6 @@ Skill.register('maces',{
 Skill.register('polearms',{
   name: "Spears & Polearms",
   factor: 1.25,
-  attributes: [Attrib.strength] });
-
-Skill.register('shields',{
-  name: "Shields",
-  factor: 1,
   attributes: [Attrib.strength] });
 
 Skill.register('swords',{
