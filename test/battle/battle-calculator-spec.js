@@ -2,7 +2,7 @@ describe('BattleCalculator', function() {
 
   describe('rollWeaponDamage()', function() {
 
-    it.only('rolls character damage', function() {
+    it('rolls character damage', function() {
       const horse = CharacterFixtures.genericMale({ attributes:{ strength:30, dexterity:20 } });
       const axe = WeaponFactory.build('war-axe');
 

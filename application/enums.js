@@ -76,6 +76,7 @@ global.ComponentType = Object.freeze({
   anima: 'AnimaComponent',
   animus: 'AnimusComponent',
   anus: 'AnusComponent',
+  armor: 'ArmorComponent',
   arousal: 'ArousalComponent',
   aspects: 'AspectsComponent',
   attributes: 'AttributesComponent',

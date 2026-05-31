@@ -15,9 +15,7 @@ global.InventoryManager = function(characterId) {
   // When we add an item to an inventory we make sure that the item exists and that it isn't already in an inventory,
   // including the inventory that it's going into.
   function addItem(itemId) {
-    
-    // TODO: This could also be an armor or a weapon.
-    // if (ItemComponent.lookup(itemId) == null) { throw new Error(`Item:${itemId} does not exist.`); }
+    if (ItemComponent.lookup(itemId) == null) { throw new Error(`Item:${itemId} does not exist.`); }
 
     Registry.findEntitiesWithComponents([ComponentType.inventory]).forEach(invId => {
       if (hasItem(invId, itemId)) { throw new Error(`Inventory:${invId} already has Item:${itemId}`); }

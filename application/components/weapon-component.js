@@ -19,7 +19,6 @@ global.WeaponComponent = (function() {
     Registry.deleteComponent(id,ComponentType.weapon);
   }
 
-
   function validate(id) {
     const weaponComponent = lookup(id);
 

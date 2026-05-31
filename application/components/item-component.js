@@ -1,12 +1,9 @@
 global.ItemComponent = (function() {
   const $properties = [
-    'name',
-    'slots',
-    'isLewd',
+    'type',
   ];
 
-  function create(data) {
-    const id = Registry.createEntity();
+  function create(id, data) {
     Registry.createComponent(id,ComponentType.item,data);
     validate(id);
     return id;
@@ -34,8 +31,7 @@ global.ItemComponent = (function() {
       }
     });
 
-    Validate.trueOrNull('Item.isLewd',itemComponent.isLewd);
-    Validate.exists(`Item.name`,itemComponent.name);
+    Validate.exists(`Item.type`,itemComponent.type);
   }
 
   return Object.freeze({
