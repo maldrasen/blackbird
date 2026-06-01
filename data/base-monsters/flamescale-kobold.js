@@ -1,4 +1,4 @@
-Monster.register('flamescale-kobold',{
+BaseMonster.register('flamescale-kobold',{
   name: 'Flamescale Kobold',
   species: SpeciesCode.kobold,
   brain: 'fighter',

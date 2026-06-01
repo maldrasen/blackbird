@@ -1,4 +1,4 @@
-global.Monster = (function() {
+global.BaseMonster = (function() {
   const $monsters = {};
 
   function register(code,data) {

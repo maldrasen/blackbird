@@ -1,6 +1,6 @@
 describe("MonsterFactory", function() {
 
-  describe.only('Building a species based monster', function() {
+  describe('Building a species based monster', function() {
     it("uses the CharacterFactory to build the base monster", function() {
       const id = MonsterFactory.build('deepdark-whisperer');
       expect(BodyComponent.lookup(id).scaleColor).to.equal('black');

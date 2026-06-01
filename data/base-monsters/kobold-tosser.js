@@ -1,4 +1,4 @@
-Monster.register('kobold-tosser',{
+BaseMonster.register('kobold-tosser',{
   name: 'Kobold Tosser',
   species: SpeciesCode.kobold,
   brain: 'hunter',

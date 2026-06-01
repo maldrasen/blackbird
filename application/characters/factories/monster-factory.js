@@ -1,7 +1,7 @@
 global.MonsterFactory = (function() {
 
   function build(code) {
-    const monsterType = Monster.lookup(code);
+    const monsterType = BaseMonster.lookup(code);
     const monsterSpecies = monsterType.getSpecies();
     const attackTable = monsterType.getAttackTable();
 
@@ -19,11 +19,11 @@ global.MonsterFactory = (function() {
 
     // Pick a weapon attack from the table if this monster has a weapon attack. (Some monsters will only have
     // abilities)
-    if (attackTable) {
-      const attack = Random.from(attackTable);
-      console.log("Picked this attack",attack)
-      console.log("Needs to be saved on the monster component somehow...")
-    }
+    // if (attackTable) {
+      // const attack = Random.from(attackTable);
+      // console.log("Picked this attack",attack)
+      // console.log("Needs to be saved on the monster component somehow...")
+    // }
 
     buildMonsterComponents(monsterId, code);
 

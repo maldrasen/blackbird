@@ -1,7 +1,7 @@
 global.MonsterSimulator = (function() {
 
   function executeBattleTurn(id) {
-    const monster = Monster.lookup(MonsterComponent.lookup(id).code);
+    const monster = BaseMonster.lookup(MonsterComponent.lookup(id).code);
     const brain = MonsterBrain.lookup(monster.getBrain());
     const attributes = AttributesComponent.lookup(id);
     const health = HealthComponent.lookup(id);

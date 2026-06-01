@@ -19,7 +19,7 @@ global.FormationPanel = (function() {
 
         if (monsterId) {
           const monsterComponent = MonsterComponent.lookup(monsterId);
-          const monster = Monster.lookup(monsterComponent.code);
+          const monster = BaseMonster.lookup(monsterComponent.code);
           row += `<div class="monster" data-id="${monsterId}">${monster.getName()}</div>`;
         }
 
