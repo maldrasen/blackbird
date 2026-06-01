@@ -9,8 +9,7 @@ describe("MonsterFactory", function() {
     it("adds attacks", function() {
       const id = MonsterFactory.build('kobold-runt');
       const monster = MonsterComponent.lookup(id);
-
-      console.log(monster);
+      expect(monster.basicAttack.attackText.startsWith('basic')).to.be.true;
     });
 
     it("adds abilities");
