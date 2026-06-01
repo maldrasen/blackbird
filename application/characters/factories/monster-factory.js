@@ -1,15 +1,16 @@
 global.MonsterFactory = (function() {
 
   function build(code) {
-    const monsterType = BaseMonster.lookup(code);
-    const monsterSpecies = monsterType.getSpecies();
-    const attackTable = monsterType.getAttackTable();
+    const monsterBase = BaseMonster.lookup(code);
+    const monsterSpecies = monsterBase.getSpecies();
+    const monsterData = { code };
 
     let monsterId;
 
     // We can use the character factory to build the base monster.
     if (monsterSpecies) {
-      monsterId = CharacterFactory.build({ species:monsterSpecies, triggers:monsterType.getTriggers() });
+      monsterId = CharacterFactory.build({ species:monsterSpecies, triggers:monsterBase.getTriggers() });
+      addBasicAttack(monsterData, monsterBase);
     }
 
     // We need to build the battle applicable components that the character builder would have built from scratch.
@@ -17,24 +18,18 @@ global.MonsterFactory = (function() {
       monsterId = Registry.createEntity();
     }
 
-    // Pick a weapon attack from the table if this monster has a weapon attack. (Some monsters will only have
-    // abilities)
-    // if (attackTable) {
-      // const attack = Random.from(attackTable);
-      // console.log("Picked this attack",attack)
-      // console.log("Needs to be saved on the monster component somehow...")
-    // }
-
-    buildMonsterComponents(monsterId, code);
-
+    MonsterComponent.create(monsterId, monsterData);
     return monsterId;
   }
 
-  // Not sure what else this needs to add other than a handle to the monster data objects. Spells and abilities and
-  // such probably come from the data object. The entity should carry anything that makes the monster unique, but I'm
-  // not sure if there is anything like that.
-  function buildMonsterComponents(monsterId, code) {
-    MonsterComponent.create(monsterId,{ code });
+  // Pick a weapon attack from the table if this monster has a weapon attack. Some monsters won't have any weapon
+  // attacks and will only have other natural attacks (bite, claw) and some monsters might only have abilities, like
+  // a poison spit or something.
+  function addBasicAttack(monsterData, monsterBase) {
+    const attackTable = monsterBase.getAttackTable();
+    if (attackTable) {
+      monsterData.basicAttack = Random.from(attackTable);
+    }
   }
 
   return Object.freeze({

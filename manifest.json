@@ -32,6 +32,7 @@
     "application/characters/factories/sexuality-factory.js",
     "application/characters/factories/skills-factory.js",
     "application/characters/factories/trigger-factory.js",
+    "application/characters/monster.js",
     "application/characters/personality.js",
     "application/characters/skill-check.js",
     "application/components/actor-component.js",
@@ -124,6 +125,7 @@
     "application/records/sexual-preference.js",
     "application/records/skill.js",
     "application/records/species.js",
+    "application/records/text-source.js",
     "application/scrutinizers/anus-scrutinizer.js",
     "application/scrutinizers/breasts-scrutinizer.js",
     "application/scrutinizers/central-scrutinizer.js",
@@ -377,7 +379,8 @@
     "data/species/lupin.js",
     "data/species/nymph.js",
     "data/species/sylph.js",
-    "data/species/vermen.js"
+    "data/species/vermen.js",
+    "data/text-sources/attack-text.js"
   ],
   "testFileList": [
     "test/battle/battle-calculator-spec.js",

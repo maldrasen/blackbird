@@ -1,5 +1,5 @@
 global.MonsterComponent = (function() {
-  const $properties = ['code'];
+  const $properties = ['code','basicAttack'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.monster,data);
