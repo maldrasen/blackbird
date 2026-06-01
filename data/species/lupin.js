@@ -10,6 +10,11 @@ Species.register(SpeciesCode.lupin, {
     beauty: 'C',
   },
 
+  resistances: {
+    slash: 10,
+    shock: 10,
+  },
+
   healthFactor: 1.25,
 
   archetypes: {

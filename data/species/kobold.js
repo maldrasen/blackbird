@@ -10,6 +10,12 @@ Species.register(SpeciesCode.kobold, {
     beauty: 'D',
   },
 
+  resistances: {
+    slash: 10,
+    fire: 20,
+    psychic: -10,
+  },
+
   healthFactor: 0.2,
 
   archetypes: {

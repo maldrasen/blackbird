@@ -11,6 +11,10 @@ Species.register(SpeciesCode.equian, {
   },
 
   healthFactor: 1.6,
+  resistances: {
+    slash: 10,
+    crush: 10,
+  },
 
   archetypes: {
     enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.equian),

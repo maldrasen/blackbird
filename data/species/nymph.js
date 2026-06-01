@@ -10,6 +10,10 @@ Species.register(SpeciesCode.nymph, {
     beauty: 'A',
   },
 
+  resistances: {
+    nature: 20,
+  },
+
   archetypes: {
     enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.nymph),
     female: ArchetypeDistribution(Gender.female,SpeciesCode.nymph),

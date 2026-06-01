@@ -31,19 +31,17 @@ global.Species = (function() {
       getGenderRatio: () => { return species.genderRatio; },
       getAttributes: () => { return species.attributes; },
       getHealthFactor: () => { return species.healthFactor; },
+      getResistances: () => { return species.resistances; },
       getArchetypes: () => { return species.archetypes; },
       getSensitivities: () => { return species.sensitivities; },
       getSexualPreferences: () => { return species.sexualPreferences; },
       getAspects: () => { return species.aspects; },
-
       getBody: () => { return species.body; },
       getAverageHeight: getAverageHeight,
       getHeightDeviationRatio: () => { return species.body.heightDeviationRatio || _humanDeviationRatio; },
-
       getLengthRatio: () => { return getAverageHeight() / _humanMaleHeight; },
       getAreaRatio: () => { return (getAverageHeight() / _humanMaleHeight) ** 2; },
       getVolumeRatio: () => { return (getAverageHeight() / _humanMaleHeight) ** 3; },
-
       getMutability: () => { return species.body.mutability || 0; },
       getSkinType: () => { return species.body.skinType || 'skin'; },
       getEyeShape: () => { return species.body.eyeShape || 'round'; },

@@ -10,6 +10,8 @@ Species.register(SpeciesCode.human, {
     beauty: 'C',
   },
 
+  resistances: {},
+
   archetypes: {
     enby:   ArchetypeDistribution(Gender.enby),
     female: ArchetypeDistribution(Gender.female),

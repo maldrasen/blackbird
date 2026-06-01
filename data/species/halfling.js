@@ -11,6 +11,9 @@ Species.register(SpeciesCode.halfling, {
   },
 
   healthFactor: 0.6,
+  resistances: {
+    corruption: 20,
+  },
 
   archetypes: {
     enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.halfling),

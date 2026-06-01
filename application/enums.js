@@ -1,5 +1,7 @@
 
-// === System ===
+// ==========
+//   System
+// ==========
 
 global.LogType = Object.freeze({
   info: 'info',
@@ -24,7 +26,9 @@ global.GameMode = Object.freeze({
   training: 'training',
 });
 
-// === Views ===
+// =========
+//   Views
+// =========
 
 global.AlertPosition = Object.freeze({
   side: 'side',
@@ -69,7 +73,9 @@ global.KeyCodes = Object.freeze({
   F11: 'F11',
 });
 
-// === Components ===
+// ==============
+//   Components
+// ==============
 
 global.ComponentType = Object.freeze({
   actor: 'ActorComponent',
@@ -153,7 +159,9 @@ global.VirginityType = Object.freeze({
   anal: 'anal',
 });
 
-// === Personality ===
+// ===============
+//   Personality
+// ===============
 
 global.ArchetypeCode = {
   bastard: 'bastard',
@@ -188,7 +196,9 @@ global.SexStyle = {
   submissive: 'submissive',
 };
 
-// === Training ===
+// ============
+//   Training
+// ============
 
 // Consent uses numbers so that they can be compared.
 global.Consent = Object.freeze({
@@ -307,6 +317,22 @@ global.ActionDirection = Object.freeze({
   playerToPartner: 'player-to-partner',
   playerToSelf: 'player-to-self',
   playerToBoth: 'player-to-both',
+});
+
+// ==========
+//   Battle
+// ==========
+
+global.DamageType = Object.freeze({
+  crush: 'crush',
+  slash: 'slash',
+  pierce: 'pierce',
+  fire: 'fire',
+  shock: 'shock',
+  arcane: 'arcane',
+  psychic: 'psychic',
+  corruption: 'corruption',
+  nature: 'nature',
 });
 
 // =====================

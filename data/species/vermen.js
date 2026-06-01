@@ -10,6 +10,11 @@ Species.register(SpeciesCode.vermen, {
     beauty: 'F',
   },
 
+  resistances: {
+    nature: 50,
+    psychic: -20,
+  },
+
   healthFactor: 0.2,
 
   archetypes: {

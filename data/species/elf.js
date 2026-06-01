@@ -12,6 +12,9 @@ Species.register(SpeciesCode.elf, {
   },
 
   healthFactor: 0.8,
+  resistances: {
+    arcane: 20,
+  },
 
   archetypes: {
     enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.elf),
