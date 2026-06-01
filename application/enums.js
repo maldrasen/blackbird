@@ -359,9 +359,15 @@ global.EquipmentSlot = Object.freeze({
   underlegs: 'underlegs',
 });
 
-global.WeaponHandedness = {
+global.WeaponHandedness = Object.freeze({
   one: 'one',
   main: 'main',
   off: 'off',
   two: 'two',
-};
+});
+
+global.WeaponReach = Object.freeze({
+  close: 'close',
+  extended: 'extended',
+  long: 'long',
+});

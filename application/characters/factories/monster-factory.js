@@ -3,16 +3,26 @@ global.MonsterFactory = (function() {
   function build(code) {
     const monsterType = Monster.lookup(code);
     const monsterSpecies = monsterType.getSpecies();
+    const attackTable = monsterType.getAttackTable();
+
     let monsterId;
 
-    // we can use the character factory to build the base monster.
+    // We can use the character factory to build the base monster.
     if (monsterSpecies) {
       monsterId = CharacterFactory.build({ species:monsterSpecies, triggers:monsterType.getTriggers() });
     }
 
-    // we need to build the battle applicable components that the character builder would have built from scratch.
+    // We need to build the battle applicable components that the character builder would have built from scratch.
     if (monsterSpecies == null) {
       monsterId = Registry.createEntity();
+    }
+
+    // Pick a weapon attack from the table if this monster has a weapon attack. (Some monsters will only have
+    // abilities)
+    if (attackTable) {
+      const attack = Random.from(attackTable);
+      console.log("Picked this attack",attack)
+      console.log("Needs to be saved on the monster component somehow...")
     }
 
     buildMonsterComponents(monsterId, code);

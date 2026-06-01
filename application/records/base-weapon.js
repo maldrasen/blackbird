@@ -16,8 +16,11 @@ global.BaseWeapon = (function() {
 
     return Object.freeze({
       getCode: () => { return weapon.code; },
+      getName: () => { return weapon.name; },
       getType: () => { return weapon.type; },
+      getDamageType: () => { return weapon.damageType; },
       getHands: () => { return weapon.hands; },
+      getReach: () => { return weapon.reach || WeaponReach.close },
       getLow: () => { return weapon.low; },
       getHigh: () => { return weapon.high; },
     });

@@ -1,4 +1,4 @@
-describe.only('EquipmentManager', function() {
+describe('EquipmentManager', function() {
 
   it('canEquipItem()', function() {
     const horse = CharacterFixtures.genericMale({});

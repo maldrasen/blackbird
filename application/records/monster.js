@@ -20,6 +20,7 @@ global.Monster = (function() {
       getSpecies: () => { return monster.species; },
       getBrain: () => { return monster.brain; },
       getTriggers: () => { return monster.triggers || [] },
+      getAttackTable: () => { return monster.attackTable; }
     });
   }
 
