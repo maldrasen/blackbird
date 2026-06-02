@@ -7,15 +7,7 @@ describe('BattleCalculator', function() {
       const axe = WeaponFactory.build('war-axe');
 
       InventoryManager(horse).addItem(axe);
-
-      const inv = InventoryComponent.lookup(horse);
-      console.log("Inventory:",JSON.stringify(inv));
-
-      // Now equip the war axe...
-      // const equipment = EquipmentComponent.lookup(character);
-      // equipment.legs = PantsFactory.build(options.legs);
-      // equipment.chest = ShirtFactory.build(options.chest)
-      // EquipmentComponent.update(character, equipment);
+      EquipmentManager(horse).equipItem(axe, EquipmentSlot.primary);
     });
 
     it('rolls monster damage');

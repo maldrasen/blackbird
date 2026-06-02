@@ -385,6 +385,7 @@
   "testFileList": [
     "test/battle/battle-calculator-spec.js",
     "test/battle/battle-state-test.js",
+    "test/battle/monster-simulator-spec.js",
     "test/characters/character-math-spec.js",
     "test/characters/character-spec.js",
     "test/characters/describers/body-describer-spec.js",
