@@ -29,6 +29,8 @@ global.BattleController = (function() {
 
     buildMonsters(state.getEncounter().buildFormation());
     rollReactionTimes();
+    populateThreatTables();
+
     state.setAmbushState(data.ambushState || rollAmbush());
   }
 
@@ -112,6 +114,16 @@ global.BattleController = (function() {
         id: id,
         time: Random.roll(1000),
       });
+    });
+  }
+
+  // Monsters decide their target based on their threat table, but these tables need to have some value for each
+  // character. The monster brains set different weights on the functions used to determine threat, that way different
+  // monsters will have different target priorities. They could simply target the closest first, or the least armored,
+  // or the most injured.
+  function populateThreatTables() {
+    state.getMonsters().forEach(id => {
+      Monster(id).populateThreatTable();
     });
   }
 

@@ -3,14 +3,41 @@ global.MonsterSimulator = (function() {
   // TODO: We'll eventually use the monster brain to decide what actions to take.
   function executeBattleTurn(id) {
     const monster = Monster(id);
-    const brain = monster.getBrain();
+    const target = pickTarget(monster);
 
-    // 1. Select highest threat target from threat table.
-    // 2. Select the best available ability or attack that can hit that target.
-    // 3. If they have nothing that can hit that target, go back to step one and select the next highest threat.
-    //    - It's possible that a monster can't use any ability on any target. Have them defend or jack off or something.
+
+    // const brain = monster.getBrain();
+
 
     return executeBasicAttack(monster);
+  }
+
+
+  // 1. Select highest threat target from threat table.
+  // 2. Select the best available ability or attack that can hit that target.
+  // 3. If they have nothing that can hit that target, go back to step one and select the next highest threat.
+  //    - It's possible that a monster can't use any ability on any target. Have them defend or jack off or something.
+  function pickTarget(monster) {
+
+    const state = BattleController.getState();
+    const characters = state.getCharacters();
+
+    let target = getHighestThreatFrom(monster, characters);
+  }
+
+  // Pick the highest threat monster that is a member of the characters array.
+  function getHighestThreatFrom(monster, characters) {
+    let threat = 0;
+    let target = null;
+
+    Object.entries(monster.getThreatTable()).forEach(([id,th]) => {
+      if (characters.includes(id) && th > threat) {
+        threat = th;
+        highest = id;
+      }
+    });
+
+    return target;
   }
 
   // TODO: Still need to consider basic attack time. Setting it to a second for now. The basic attack command means,
@@ -41,6 +68,7 @@ global.MonsterSimulator = (function() {
 
   return Object.freeze({
     executeBattleTurn,
+    pickTarget,
     executeBasicAttack,
   })
 
