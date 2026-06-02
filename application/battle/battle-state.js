@@ -51,17 +51,50 @@ global.BattleState = function(data) {
     monsterFormation[position] = id;
   }
 
-  function monsterAtPosition(rank, position) {
+  function getPositionOf(id) {
+    const monsters = Object.entries(monsterFormation);
+    const characters = Object.entries(partyFormation);
+
+    for (let i=0; i<monsters.length; i++) {
+      if (monsters[i][1] === id) { return monsters[i][0]; }
+    }
+    for (let i=0; i<characters.length; i++) {
+      if (characters[i][1] === id) { return characters[i][0]; }
+    }
+
+    throw new Error(`Entity[${id}] is not in a battle formation.`);
+  }
+
+  function getMonsterAtPosition(rank, position) {
     return monsterFormation[`${rank}.${position}`] || null;
   }
 
-  function characterAtPosition(rank, position) {
+  function getCharacterAtPosition(rank, position) {
     return partyFormation[`${rank}.${position}`] || null;
+  }
+
+  // Some functions need the formation objects in an inverted state,
+  // with the IDs as keys and their position as the value.
+
+  function getMonsterPositions() {
+    const monsters = {};
+    Object.entries(monsterFormation).forEach(([id, position]) => {
+      monsters[id]=position;
+    });
+    return monsters;
+  }
+
+  function getCharacterPositions() {
+    const characters = {};
+    Object.entries(partyFormation).forEach(([id, position]) => {
+      characters[id]=position;
+    });
+    return characters;
   }
 
   function isMonsterRankOccupied(rank) {
     for (let p=0; p<getMaxMonsterColumn(); p++) {
-      if (monsterAtPosition(rank, p)) { return true; }
+      if (getMonsterAtPosition(rank, p)) { return true; }
     }
     return false;
   }
@@ -151,8 +184,12 @@ global.BattleState = function(data) {
     getMaxMonsterColumn,
     getMaxPartyRank,
     getMaxPartyColumn,
-    monsterAtPosition,
-    characterAtPosition,
+
+    getPositionOf,
+    getMonsterAtPosition,
+    getCharacterAtPosition,
+    getMonsterPositions,
+    getCharacterPositions,
     isMonsterRankOccupied,
     getMonsters,
     getCharacters,

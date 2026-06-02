@@ -25,13 +25,13 @@ global.Monster = function(id) {
 
     // We start with some random "I just don't like your face" threat.
     state.getCharacters().forEach(id => {
-      threatTable[id] = Random.roll(25);
+      threatTable[id] = 0; //Random.roll(500);
     });
 
     // There's probably a more elegant way to do this, but this works fine I guess.
     getBrain().getThreatWeights().forEach(generator => {
       switch (generator.code) {
-        case ThreatWeight.closest: ThreatGenerators.closest(threatTable, generator.weight); break;
+        case ThreatWeight.closest: ThreatGenerators.closest(threatTable, generator.weight, id); break;
         case ThreatWeight.leastArmor: ThreatGenerators.leastArmor(threatTable, generator.weight); break;
         case ThreatWeight.leastHealth: ThreatGenerators.leastHealth(threatTable, generator.weight); break;
       }

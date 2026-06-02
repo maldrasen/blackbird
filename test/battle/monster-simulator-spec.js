@@ -6,7 +6,7 @@ describe("MonsterSimulator", function() {
       BattleController.startBattle({ encounter:'kobold-1' });
 
       const state = BattleController.getState();
-      const monsterId = state.monsterAtPosition(0,3);
+      const monsterId = state.getMonsterAtPosition(0,3);
       const target = MonsterSimulator.pickTarget(Monster(monsterId));
 
       console.log("WIP MonsterSimulator")
@@ -20,7 +20,7 @@ describe("MonsterSimulator", function() {
       BattleController.startBattle({ encounter:'kobold-1' });
 
       const state = BattleController.getState();
-      const monsterId = state.monsterAtPosition(0,3);
+      const monsterId = state.getMonsterAtPosition(0,3);
       const result = MonsterSimulator.executeBasicAttack(Monster(monsterId));
 
       console.log("WIP MonsterSimulator")

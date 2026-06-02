@@ -1,13 +1,13 @@
 describe("BattleState", function() {
 
   describe("Formation", function() {
-    it('monsterAtPosition()', function() {
+    it('getMonsterAtPosition()', function() {
       BattleFixtures.prepareForBattle();
       BattleController.startBattle({ encounter:'kobold-1' });
 
       const state = BattleController.getState();
-      expect(state.monsterAtPosition(0,3)).to.not.be.null;
-      expect(state.monsterAtPosition(1,3)).to.be.null;
+      expect(state.getMonsterAtPosition(0,3)).to.not.be.null;
+      expect(state.getMonsterAtPosition(1,3)).to.be.null;
     });
   })
 
