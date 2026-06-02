@@ -14,10 +14,20 @@ global.BaseMonster = (function() {
 
     const monster = { ...$monsters[code] };
 
+    // Base monsters can have their own gender ratio, like the kobold sneak sluts who are mostly female. If a gender
+    // ratio isn't defined we fallback to the species ratio. If the monster doesn't have a species we can assume it's
+    // usually an animal of some sort and can have an equal chance of being male or female.
+    function getGenderRatio() {
+      if (monster.genderRatio) { return monster.genderRatio; }
+      if (monster.species) { return Species.lookup(monster.species).getGenderRatio(); }
+      return { male:10, female:10 };
+    }
+
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return monster.name; },
       getSpecies: () => { return monster.species; },
+      getGenderRatio,
       getBrain: () => { return monster.brain; },
       getTriggers: () => { return monster.triggers || [] },
       getAttackTable: () => { return monster.attackTable; }

@@ -9,7 +9,11 @@ global.MonsterFactory = (function() {
 
     // We can use the character factory to build the base monster.
     if (monsterSpecies) {
-      monsterId = CharacterFactory.build({ species:monsterSpecies, triggers:monsterBase.getTriggers() });
+      monsterId = CharacterFactory.build({
+        species: monsterSpecies,
+        gender: Random.fromFrequencyMap(monsterBase.getGenderRatio()),
+        triggers: monsterBase.getTriggers()
+      });
       addBasicAttack(monsterData, monsterBase);
     }
 
