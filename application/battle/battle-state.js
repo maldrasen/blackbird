@@ -20,9 +20,9 @@ global.BattleState = function(data) {
   // Theoretically these can change and should be based off of the position values as defined in the formation (or
   // from the encounter formation itself) It's fine to leave these hard coded for now though I think.
   function getMaxMonsterRank() { return 5; }
-  function getMaxMonsterColumn() { return 7; }
+  function getMaxMonsterColumn() { return 5; }
   function getMaxPartyRank() { return 2; }
-  function getMaxPartyColumn() { return 3; }
+  function getMaxPartyColumn() { return 5; }
 
   // The cleanup() function needs to be called after the battle to remove the temporary monsters that were built.
   //
