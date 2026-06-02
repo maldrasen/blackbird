@@ -2,7 +2,7 @@ global.Monster = function(id) {
 
   function monsterComponent() { return MonsterComponent.lookup(id); }
   function getBaseMonster() { return BaseMonster.lookup(monsterComponent().code); }
-  function getBrain() { return getBaseMonster().getBrain(); }
+  function getBrain() { return MonsterBrain.lookup(getBaseMonster().getBrain()); }
 
   function getBasicAttack() {
     const attackData = monsterComponent().basicAttack;
@@ -14,10 +14,34 @@ global.Monster = function(id) {
   //   Threat
   // ==========
 
+  // Populating the threat table is done when the battle first starts. It will replace whatever is currently in the
+  // table (which should be nothing) though it could also be used to completely reset the threat if there's some kind
+  // of effect that would do that.
   function populateThreatTable() {
-    const state = BattleController.getState();
-
     console.log("=== Populate threat table ===")
+
+    const state = BattleController.getState();
+    const threatTable = {};
+
+    // We start with some random "I just don't like your face" threat.
+    state.getCharacters().forEach(id => {
+      threatTable[id] = Random.roll(25);
+    });
+
+    // There's probably a more elegant way to do this, but this works fine I guess.
+    getBrain().getThreatWeights().forEach(generator => {
+      switch (generator.code) {
+        case ThreatWeight.closest: ThreatGenerators.closest(threatTable, generator.weight); break;
+        case ThreatWeight.leastArmor: ThreatGenerators.leastArmor(threatTable, generator.weight); break;
+        case ThreatWeight.leastHealth: ThreatGenerators.leastHealth(threatTable, generator.weight); break;
+      }
+    });
+
+    console.log("Threat:",JSON.stringify(threatTable));
+
+    const component = monsterComponent();
+    component.threatTable = threatTable;
+    MonsterComponent.update(id, component);
   }
 
   function getThreatTable() {

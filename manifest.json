@@ -7,6 +7,7 @@
     "application/battle/battle-state.js",
     "application/battle/battle-system.js",
     "application/battle/monster-simulator.js",
+    "application/battle/threat-generators.js",
     "application/browser.js",
     "application/characters/archetype-distribution.js",
     "application/characters/character-math.js",

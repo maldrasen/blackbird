@@ -371,3 +371,9 @@ global.WeaponReach = Object.freeze({
   extended: 'extended',
   long: 'long',
 });
+
+global.ThreatWeight = Object.freeze({
+  closest: 'closest',
+  leastArmor: 'least-armor',
+  leastHealth: 'least-health',
+});
