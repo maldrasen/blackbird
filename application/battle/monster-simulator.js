@@ -4,6 +4,12 @@ global.MonsterSimulator = (function() {
   function executeBattleTurn(id) {
     const monster = Monster(id);
     const brain = monster.getBrain();
+
+    // 1. Select highest threat target from threat table.
+    // 2. Select the best available ability or attack that can hit that target.
+    // 3. If they have nothing that can hit that target, go back to step one and select the next highest threat.
+    //    - It's possible that a monster can't use any ability on any target. Have them defend or jack off or something.
+
     return executeBasicAttack(monster);
   }
 

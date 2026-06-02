@@ -3,7 +3,7 @@ global.MonsterFactory = (function() {
   function build(code) {
     const monsterBase = BaseMonster.lookup(code);
     const monsterSpecies = monsterBase.getSpecies();
-    const monsterData = { code };
+    const monsterData = { code, threatTable:{}, abilityCooldowns:{} };
 
     let monsterId;
 
