@@ -73,25 +73,6 @@ global.BattleState = function(data) {
     return partyFormation[`${rank}.${position}`] || null;
   }
 
-  // Some functions need the formation objects in an inverted state,
-  // with the IDs as keys and their position as the value.
-
-  function getMonsterPositions() {
-    const monsters = {};
-    Object.entries(monsterFormation).forEach(([id, position]) => {
-      monsters[id]=position;
-    });
-    return monsters;
-  }
-
-  function getCharacterPositions() {
-    const characters = {};
-    Object.entries(partyFormation).forEach(([id, position]) => {
-      characters[id]=position;
-    });
-    return characters;
-  }
-
   function isMonsterRankOccupied(rank) {
     for (let p=0; p<getMaxMonsterColumn(); p++) {
       if (getMonsterAtPosition(rank, p)) { return true; }
@@ -188,8 +169,6 @@ global.BattleState = function(data) {
     getPositionOf,
     getMonsterAtPosition,
     getCharacterAtPosition,
-    getMonsterPositions,
-    getCharacterPositions,
     isMonsterRankOccupied,
     getMonsters,
     getCharacters,

@@ -14,37 +14,39 @@
 // character produces threat for all monsters.
 
 global.ThreatGenerators = (function() {
-
+  const threatBase = 100;
 
   // Characters that are closet in position have some initial threat.
   function closest(threatTable, weight, monsterId) {
     const state = BattleController.getState();
     const position = state.getPositionOf(monsterId);
 
-    Object.entries(state.getCharacterPositions()).forEach(([pos, id]) => {
+    Object.entries(state.getPartyFormation()).forEach(([pos, id]) => {
       const distance = BattleHelper.distanceBetweenPositions(position, pos);
 
       let threat = 0;
+      if (distance.position === 0) { threat += threatBase * 0.60; }
+      if (distance.position === 1) { threat += threatBase * 0.30; }
+      if (distance.position === 2) { threat += threatBase * 0.10; }
+      if (distance.rank === 0) { threat += threatBase * 0.40; }
 
-      if (distance.position === 0) { threat += 60; }
-      if (distance.position === 1) { threat += 30; }
-      if (distance.position === 2) { threat += 10; }
-
-      if (distance.rank === 0) { threat += 40; }
-
-      threatTable[id] += threat * weight;
+      threatTable[id] += Math.round(threat * weight);
     });
-
   }
 
-  // Kill the one in the dress
-  function leastArmor(threatTable, weight) {
+  // TODO: Kill the one in the dress. I'm going to need to come back and do this one later, once the character armor
+  //       is in a better place. This will need to total all the character's armors, find who has the lowest and the
+  //       highest, use tha as a ratio to give the lowest 100 threat, the highest 0, and lerp the ones inbetween.
+  function leastArmor(threatTable, weight) {}
 
-  }
 
-  // Finish him!
+  // Finish him! Threat generates is the inverse of health percentage. A completely healthy character generates 0
+  // threat, and threat approaches 100 as they become more injured.
   function leastHealth(threatTable, weight) {
-
+    BattleController.getState().getCharacters().forEach(id => {
+      const health = HealthComponent.lookup(id);
+      threatTable[id] += Math.round((1 - (health.currentHealth / health.maxHealth)) * threatBase * weight);
+    });
   }
 
   return Object.freeze({

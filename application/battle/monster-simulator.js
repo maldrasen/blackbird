@@ -5,9 +5,7 @@ global.MonsterSimulator = (function() {
     const monster = Monster(id);
     const target = pickTarget(monster);
 
-
     // const brain = monster.getBrain();
-
 
     return executeBasicAttack(monster);
   }
@@ -18,13 +16,22 @@ global.MonsterSimulator = (function() {
   // 3. If they have nothing that can hit that target, go back to step one and select the next highest threat.
   //    - It's possible that a monster can't use any ability on any target. Have them defend or jack off or something.
   function pickTarget(monster) {
-    console.log("Pick Target:")
+    console.log(`Pick Target for ${monster.getEntity()}`)
 
     const state = BattleController.getState();
     const characters = state.getCharacters();
 
     let target = getHighestThreatFrom(monster, characters);
-    console.log(`  Try ${target}`);
+    console.log(`   Highest Threat: ${target}`);
+
+    const monsterPosition = state.getPositionOf(monster.getEntity());
+    const targetPosition = state.getPositionOf(target);
+    const actor = ActorComponent.lookup(target)
+
+    console.log(`   M:${monsterPosition}`);
+    console.log(`   C:${targetPosition} - ${actor.name}`);
+
+    return target;
   }
 
   // Pick the highest threat monster that is a member of the characters array.

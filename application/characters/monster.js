@@ -18,14 +18,12 @@ global.Monster = function(id) {
   // table (which should be nothing) though it could also be used to completely reset the threat if there's some kind
   // of effect that would do that.
   function populateThreatTable() {
-    console.log("=== Populate threat table ===")
-
     const state = BattleController.getState();
     const threatTable = {};
 
     // We start with some random "I just don't like your face" threat.
     state.getCharacters().forEach(id => {
-      threatTable[id] = 0; //Random.roll(500);
+      threatTable[id] = Random.roll(500);
     });
 
     // There's probably a more elegant way to do this, but this works fine I guess.
@@ -36,8 +34,6 @@ global.Monster = function(id) {
         case ThreatWeight.leastHealth: ThreatGenerators.leastHealth(threatTable, generator.weight); break;
       }
     });
-
-    console.log("Threat:",JSON.stringify(threatTable));
 
     const component = monsterComponent();
     component.threatTable = threatTable;
@@ -55,6 +51,7 @@ global.Monster = function(id) {
   }
 
   return Object.freeze({
+    getEntity: () => { return id },
     getBaseMonster,
     getBrain,
     getBasicAttack,
