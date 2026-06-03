@@ -23,7 +23,8 @@ global.SexualPreferencesFactory = (function() {
       if (match) {
 
         // TODO: Seems like a bad idea to hard code this list when we will be
-        //  adding more species that have their own unique archetypes.
+        //       adding more species that have their own unique archetypes.
+
         if ([SpeciesCode.kobold,SpeciesCode.vermen].includes(context.actor.species)) {
           throw new Error(`Character Rejected: ${trigger} can't be applied to a ${context.actor.species}`);
         }

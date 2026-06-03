@@ -3,12 +3,7 @@ global.Monster = function(id) {
   function monsterComponent() { return MonsterComponent.lookup(id); }
   function getBaseMonster() { return BaseMonster.lookup(monsterComponent().code); }
   function getBrain() { return MonsterBrain.lookup(getBaseMonster().getBrain()); }
-
-  function getBasicAttack() {
-    const attackData = monsterComponent().basicAttack;
-    console.log("[Monster.getBasicAttack()]",attackData)
-    return attackData;
-  }
+  function getBasicAttack() { return monsterComponent().basicAttack; }
 
   // ==========
   //   Threat

@@ -37,7 +37,7 @@ global.CharacterFactory = (function() {
       }
     }
 
-    Console.log('Cannot create a character using these options.',{
+    Console.log(`Cannot create a character using these options: ${JSON.stringify(options)}`,{
       system: 'CharacterFactory',
       type: LogType.error,
       data: { options:options },

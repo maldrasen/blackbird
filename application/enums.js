@@ -367,6 +367,7 @@ global.WeaponHandedness = Object.freeze({
 });
 
 global.WeaponReach = Object.freeze({
+  short: 'short',
   close: 'close',
   extended: 'extended',
   long: 'long',

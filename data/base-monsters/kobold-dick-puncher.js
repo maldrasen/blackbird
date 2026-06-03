@@ -3,5 +3,5 @@ BaseMonster.register('kobold-dick-puncher',{
   species: SpeciesCode.kobold,
   genderRatio: { male:100 },
   brain: 'fighter',
-  triggers:['strong','stupid','pugilist[20]'],
+  triggers:['strong','stupid'],
 });

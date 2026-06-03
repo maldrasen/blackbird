@@ -3,5 +3,5 @@ BaseMonster.register('kobold-sneak-slut',{
   species: SpeciesCode.kobold,
   genderRatio: { male:5, female:60, futa:20, enby:5 },
   brain: 'rogue',
-  triggers: ['weak','skillful','beautiful','androphilic[20]'],
+  triggers: ['weak','skillful','beautiful'],
 });

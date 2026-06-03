@@ -5,6 +5,6 @@ MonsterBrain.register('coward',{
     { code:ThreatWeight.closest,     weight:50 },
     { code:ThreatWeight.leastArmor,  weight:75 },
     { code:ThreatWeight.leastHealth, weight:75 },
-  ]
+  ],
 
 });
