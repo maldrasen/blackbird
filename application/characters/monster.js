@@ -4,6 +4,7 @@ global.Monster = function(id) {
   function getBaseMonster() { return BaseMonster.lookup(monsterComponent().code); }
   function getBrain() { return MonsterBrain.lookup(getBaseMonster().getBrain()); }
   function getBasicAttack() { return monsterComponent().basicAttack; }
+  function getBaseName() { return getBaseMonster().getName(); }
 
   // ==========
   //   Threat
@@ -51,6 +52,7 @@ global.Monster = function(id) {
   return Object.freeze({
     getEntity: () => { return id },
     getBaseMonster,
+    getBaseName,
     getBrain,
     getBasicAttack,
 

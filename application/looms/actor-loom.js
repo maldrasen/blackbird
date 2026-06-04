@@ -39,6 +39,8 @@ global.ActorLoom = (function() {
       case `name`: return Character(id).getName();
       case `name's`: return EnglishHelper.possessive(Character(id).getName());
       case `fullName`: return Character(id).getFullName();
+      case `baseName`: return Monster(id).getBaseName();
+      case `primaryWeaponName`: return getWeaponName(id,EquipmentSlot.primary);
       default: return Weaver({}).formatWarning(`[Actor:${token}]`)
     }
   }
@@ -54,6 +56,21 @@ global.ActorLoom = (function() {
 
       default: return Weaver({}).formatWarning(`[Species:${token}]`);
     }
+  }
+
+  // The weapon name could come from the base monster's basic attack as monsters are normally built without bothering
+  // with actual equipment and such. (Some monsters might actually have equipment though) Otherwise this will need to
+  // get the name of the equipped item. Some weapons will have interesting names, but basic equipment needs to get the
+  // name from the base weapon name.
+  function getWeaponName(id, slot) {
+    const equipped = EquipmentComponent.lookup(id)[slot];
+    const monster = MonsterComponent.lookup(id);
+
+    if (equipped == null && monster) {
+      return Monster(id).getBasicAttack().name;
+    }
+
+    throw new Error(`TODO: Handle actual equipment.`);
   }
 
   return Object.freeze({ weave });

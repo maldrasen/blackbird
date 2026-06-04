@@ -26,6 +26,10 @@ global.GameMode = Object.freeze({
   training: 'training',
 });
 
+global.DialogCategory = Object.freeze({
+  attackText: 'attackText',
+});
+
 // =========
 //   Views
 // =========
@@ -335,6 +339,14 @@ global.DamageType = Object.freeze({
   nature: 'nature',
 });
 
+global.ThreatWeight = Object.freeze({
+  closest: 'closest',
+  leastArmor: 'leastArmor',
+  leastHealth: 'leastHealth',
+  killMen: 'killMen',
+  killWomen: 'killWomen',
+});
+
 // =====================
 //   Items & Equipment
 // =====================
@@ -371,12 +383,4 @@ global.WeaponReach = Object.freeze({
   close: 'close',
   extended: 'extended',
   long: 'long',
-});
-
-global.ThreatWeight = Object.freeze({
-  closest: 'closest',
-  leastArmor: 'leastArmor',
-  leastHealth: 'leastHealth',
-  killMen: 'killMen',
-  killWomen: 'killWomen',
 });

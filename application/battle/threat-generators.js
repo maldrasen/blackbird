@@ -39,7 +39,6 @@ global.ThreatGenerators = (function() {
   //       highest, use tha as a ratio to give the lowest 100 threat, the highest 0, and lerp the ones inbetween.
   function leastArmor(threatTable, weight) {}
 
-
   // Finish him! Threat generates is the inverse of health percentage. A completely healthy character generates 0
   // threat, and threat approaches 100 as they become more injured.
   function leastHealth(threatTable, weight) {

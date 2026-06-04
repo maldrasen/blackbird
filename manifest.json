@@ -127,7 +127,6 @@
     "application/records/sexual-preference.js",
     "application/records/skill.js",
     "application/records/species.js",
-    "application/records/text-source.js",
     "application/scrutinizers/anus-scrutinizer.js",
     "application/scrutinizers/breasts-scrutinizer.js",
     "application/scrutinizers/central-scrutinizer.js",
@@ -256,6 +255,7 @@
     "data/body-data.js",
     "data/breast-data.js",
     "data/cock-data.js",
+    "data/dialog/attack-text.js",
     "data/dialog/bashful/fondle-breasts.js",
     "data/dialog/bastard/propose-training.js",
     "data/dialog/bimbo/propose-training.js",
@@ -381,8 +381,7 @@
     "data/species/lupin.js",
     "data/species/nymph.js",
     "data/species/sylph.js",
-    "data/species/vermen.js",
-    "data/text-sources/attack-text.js"
+    "data/species/vermen.js"
   ],
   "testFileList": [
     "test/battle/battle-calculator-spec.js",

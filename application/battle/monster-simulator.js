@@ -124,14 +124,13 @@ global.MonsterSimulator = (function() {
   //       attack for 1 second, so a single attack command can have multiple swings or stabs in that time.
   function executeBasicAttack(monster, target) {
     const attack = monster.getBasicAttack();
-    const attackText = TextSource.lookup(attack.attackText).getText();
-    const messages = [{ text:attackText }];
+    const context = { C:monster.getEntity(), T:target };
 
-    const actor = ActorComponent.lookup(target);
+    // TODO: Attack text will need different text for crits and fumbles.
 
-    // TODO: Messages all need to be run though the weaver.
-
-    console.log(`Monster[${monster.getEntity()}] will attack ${actor.name}`)
+    const attackText = Random.from(Dialog.lookupTemplate(DialogCategory.attackText, attack.attackText, context));
+    const weaver = Weaver(context);
+    const messages = [{ text:weaver.weave(attackText) }];
 
     return {
       messages: messages,

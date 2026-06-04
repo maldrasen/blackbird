@@ -2,6 +2,7 @@ global.Dialog = (function() {
 
   const dialog = {};
 
+  Object.values(DialogCategory).forEach(category => { dialog[category] = {}; });
   Object.values(ArchetypeCode).forEach(archetype => { dialog[archetype] = {}; });
   Object.values(SexStyle).forEach(style => { dialog[style] = {}; })
 
