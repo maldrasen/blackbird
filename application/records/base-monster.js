@@ -23,18 +23,22 @@ global.BaseMonster = (function() {
       return { male:10, female:10 };
     }
 
+    function getThreatWeights() {
+      return monster.threatWeights || MonsterBrain.lookup(monster.brain).getThreatWeights();
+    }
+
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return monster.name; },
       getSpecies: () => { return monster.species; },
       getGenderRatio,
       getTriggers: () => { return monster.triggers || [] },
-
       getBrain: () => { return monster.brain; },
+      getThreatWeights,
       getLevel: () => { return monster.level || 0; },
-
       getAttackTable: () => { return monster.attackTable; }
     });
+
   }
 
   return Object.freeze({

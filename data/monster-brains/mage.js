@@ -1,8 +1,8 @@
 MonsterBrain.register('mage',{
 
-  threatWeights:[
-    { code:ThreatWeight.leastHealth, weight:100 },
-  ],
+  threatWeights: {
+    leastHealth: 100,
+  },
 
   attributeGrowth: {
     strength: 10,

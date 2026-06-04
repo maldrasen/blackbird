@@ -7,6 +7,14 @@ BaseMonster.register('kobold-sneak-slut',{
   brain: 'rogue',
   level: 3,
 
+  // Adds a preference for attacking women on top of rogue weights.
+  threatWeights: {
+    closest: 10,
+    leastArmor: 80,
+    leastHealth: 40,
+    killWomen: 100,
+  },
+
   attackTable:[
     { base:'knife', name:'bone knife', attackText:'basic-thrust' },
   ],

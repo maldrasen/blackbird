@@ -22,11 +22,14 @@ global.Monster = function(id) {
     });
 
     // There's probably a more elegant way to do this, but this works fine I guess.
-    getBrain().getThreatWeights().forEach(generator => {
-      switch (generator.code) {
-        case ThreatWeight.closest: ThreatGenerators.closest(threatTable, generator.weight, id); break;
-        case ThreatWeight.leastArmor: ThreatGenerators.leastArmor(threatTable, generator.weight); break;
-        case ThreatWeight.leastHealth: ThreatGenerators.leastHealth(threatTable, generator.weight); break;
+    Object.entries(getBaseMonster().getThreatWeights()).forEach(([generator, weight]) => {
+      switch (generator) {
+        case ThreatWeight.closest: ThreatGenerators.closest(threatTable, weight, id); break;
+        case ThreatWeight.leastArmor: ThreatGenerators.leastArmor(threatTable, weight); break;
+        case ThreatWeight.leastHealth: ThreatGenerators.leastHealth(threatTable, weight); break;
+        case ThreatWeight.killMen: ThreatGenerators.killMen(threatTable, weight); break;
+        case ThreatWeight.killWomen: ThreatGenerators.killWomen(threatTable, weight); break;
+        default: throw new Error(`Unknown Threat Generator [${generator}]`);
       }
     });
 

@@ -1,10 +1,10 @@
 MonsterBrain.register('rogue',{
 
-  threatWeights:[
-    { code:ThreatWeight.closest,     weight:25 },
-    { code:ThreatWeight.leastArmor,  weight:100 },
-    { code:ThreatWeight.leastHealth, weight:75 },
-  ],
+  threatWeights: {
+    closest: 25,
+    leastArmor: 100,
+    leastHealth: 75,
+  },
 
   attributeGrowth: {
     strength: 50,

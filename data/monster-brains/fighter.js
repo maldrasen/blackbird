@@ -1,10 +1,10 @@
 MonsterBrain.register('fighter',{
 
-  threatWeights:[
-    { code:ThreatWeight.closest,     weight:50 },
-    { code:ThreatWeight.leastArmor,  weight:75 },
-    { code:ThreatWeight.leastHealth, weight:100 },
-  ],
+  threatWeights: {
+    closest: 50,
+    leastArmor: 75,
+    leastHealth: 100,
+  },
 
   attributeGrowth: {
     strength: 100,

@@ -1,9 +1,9 @@
 MonsterBrain.register('hunter',{
 
-  threatWeights:[
-    { code:ThreatWeight.leastArmor,  weight:75 },
-    { code:ThreatWeight.leastHealth, weight:100 },
-  ],
+  threatWeights: {
+    leastArmor: 75,
+    leastHealth: 100,
+  },
 
   attributeGrowth: {
     strength: 20,
