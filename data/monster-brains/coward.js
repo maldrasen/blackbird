@@ -7,4 +7,12 @@ MonsterBrain.register('coward',{
     { code:ThreatWeight.leastHealth, weight:75 },
   ],
 
+  attributeGrowth: {
+    strength: 30,
+    dexterity: 80,
+    vitality: 100,
+    intelligence: 10,
+    beauty: 10,
+  }
+
 });

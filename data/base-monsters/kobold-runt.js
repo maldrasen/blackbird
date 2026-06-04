@@ -1,9 +1,11 @@
 BaseMonster.register('kobold-runt',{
   name: 'Kobold Runt',
   species: SpeciesCode.kobold,
-  brain: 'coward',
   genderRatio: { female:100 },
-  triggers:['weak','clumsy','sickly'],
+  triggers:[],
+
+  brain: 'coward',
+  level: 1,
 
   attackTable:[
     { base:'hammer', name:'bone club', attackText:'basic-swing' },

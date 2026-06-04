@@ -22,8 +22,51 @@ global.MonsterFactory = (function() {
       monsterId = Registry.createEntity();
     }
 
+    addLevels(monsterBase, monsterId);
+
     MonsterComponent.create(monsterId, monsterData);
     return monsterId;
+  }
+
+  // TODO: Eventually we'll want to unify the leveling into a class that works for both monsters and characters. We
+  //       don't want to repeat the logic for attribute increase on level up and the associated changes to health or
+  //       other attribute dependent properties. (Like mana pools maybe?)
+  function addLevels(monsterBase, monsterId) {
+    const attributes = AttributesComponent.lookup(monsterId);
+    const brain = MonsterBrain.lookup(monsterBase.getBrain());
+    const attributeGrowth = brain.getAttributeGrowth();
+    const startingVitality = attributes[Attrib.vitality];
+
+    if (attributeGrowth) {
+      for (let i=0; i< monsterBase.getLevel(); i++) {
+        const attr = Random.fromFrequencyMap(attributeGrowth);
+        const roll = Random.between(1,5);
+
+        attributes[attr] += roll;
+      }
+    }
+
+    if (startingVitality !== attributes[Attrib.vitality]) {
+      addHealth(monsterBase, monsterId, attributes[Attrib.vitality] - startingVitality);
+    }
+
+    AttributesComponent.update(monsterId, attributes);
+  }
+
+  // TODO: If leveling the monster increases its vitality we need to give it more health. Doing this here is a bad
+  //       design. We also set the health in the AttributesFactory when the character is first created using the same
+  //       method. We should centralize this someplace else, maybe on the health component itself so that health
+  //       increases on level up or on create happen in the same place.
+  function addHealth(monsterBase, monsterId, vitalityIncrease) {
+    const species = monsterBase.getSpecies();
+    const factor = species ? Species.lookup(species).getHealthFactor() : 1;
+    const addedHealth = Math.ceil(Random.rollDice({ x:vitalityIncrease, d:10 }) * factor);
+    const health = HealthComponent.lookup(monsterId);
+
+    health.maxHealth += addedHealth;
+    health.currentHealth += addedHealth;
+
+    HealthComponent.update(monsterId, health);
   }
 
   // Pick a weapon attack from the table if this monster has a weapon attack. Some monsters won't have any weapon

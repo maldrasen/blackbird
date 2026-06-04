@@ -6,4 +6,12 @@ MonsterBrain.register('rogue',{
     { code:ThreatWeight.leastHealth, weight:75 },
   ],
 
+  attributeGrowth: {
+    strength: 50,
+    dexterity: 100,
+    vitality: 30,
+    intelligence: 10,
+    beauty: 10,
+  },
+
 });

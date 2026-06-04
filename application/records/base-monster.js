@@ -28,8 +28,11 @@ global.BaseMonster = (function() {
       getName: () => { return monster.name; },
       getSpecies: () => { return monster.species; },
       getGenderRatio,
-      getBrain: () => { return monster.brain; },
       getTriggers: () => { return monster.triggers || [] },
+
+      getBrain: () => { return monster.brain; },
+      getLevel: () => { return monster.level || 0; },
+
       getAttackTable: () => { return monster.attackTable; }
     });
   }

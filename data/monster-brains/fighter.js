@@ -6,4 +6,12 @@ MonsterBrain.register('fighter',{
     { code:ThreatWeight.leastHealth, weight:100 },
   ],
 
+  attributeGrowth: {
+    strength: 100,
+    dexterity: 60,
+    vitality: 80,
+    intelligence: 20,
+    beauty: 10,
+  },
+
 });
