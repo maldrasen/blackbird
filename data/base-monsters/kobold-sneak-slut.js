@@ -6,4 +6,9 @@ BaseMonster.register('kobold-sneak-slut',{
 
   brain: 'rogue',
   level: 3,
+
+  attackTable:[
+    { base:'knife', name:'bone knife', attackText:'basic-thrust' },
+  ],
+
 });

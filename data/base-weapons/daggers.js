@@ -1,7 +1,60 @@
 
-// Knife
-// Dirk
-// Dagger
-// Poignard
-// Baselard
-// Stiletto
+BaseWeapon.register('knife', {
+  name: 'Knife',
+  type: 'dagger',
+  damageTypes: [
+    { type:DamageType.slash, percent:60 },
+    { type:DamageType.pierce, percent:40 }
+  ],
+  hands: WeaponHandedness.one,
+  low: 20,
+  high: 30,
+});
+
+BaseWeapon.register('dirk', {
+  name: 'Dirk',
+  type: 'dagger',
+  damageType: DamageType.pierce,
+  hands: WeaponHandedness.one,
+  low: 40,
+  high: 60,
+});
+
+BaseWeapon.register('dagger', {
+  name: 'Dagger',
+  type: 'dagger',
+  damageTypes: [
+    { type:DamageType.slash, percent:60 },
+    { type:DamageType.pierce, percent:40 }
+  ],
+  hands: WeaponHandedness.one,
+  low: 50,
+  high: 75,
+});
+
+BaseWeapon.register('poignard', {
+  name: 'Poignard',
+  type: 'dagger',
+  damageType: DamageType.pierce,
+  hands: WeaponHandedness.one,
+  low: 70,
+  high: 90,
+});
+
+BaseWeapon.register('baselard', {
+  name: 'Baselard',
+  type: 'dagger',
+  damageType: DamageType.pierce,
+  hands: WeaponHandedness.one,
+  low: 80,
+  high: 100,
+});
+
+BaseWeapon.register('stiletto', {
+  name: 'Stiletto',
+  type: 'dagger',
+  damageType: DamageType.pierce,
+  hands: WeaponHandedness.one,
+  low: 100,
+  high: 120,
+});

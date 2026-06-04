@@ -6,4 +6,9 @@ BaseMonster.register('kobold-tosser',{
 
   brain: 'hunter',
   level: 5,
+
+  attackTable:[
+    { base:'spear', name:'bone spear', attackText:'basic-thrust' },
+  ],
+
 });
