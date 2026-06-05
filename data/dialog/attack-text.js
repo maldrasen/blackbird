@@ -1,10 +1,10 @@
 
 Dialog.register(DialogCategory.attackText, 'basic-swing', context => {
-  return [`{C:baseName} swings {C:his} {C:primaryWeaponName} at {T:name}.`]
+  return [`{S/mon}{C:baseName}{/S} swings {C:his} {S/abl}{C:primaryWeaponName}{/S} at {S/act}{T:name}{/S}.`]
 });
 
 Dialog.register(DialogCategory.attackText, 'basic-thrust', context => {
-  return [`{C:baseName} thrust {C:his} {C:primaryWeaponName} at {T:name}.`]
+  return [`{S/mon}{C:baseName}{/S} thrust {C:his} {S/abl}{C:primaryWeaponName}{/S} at {S/act}{T:name}{/S}.`]
 });
 
 Dialog.register(DialogCategory.attackText, 'dick-punch', context => {

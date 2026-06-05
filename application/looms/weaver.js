@@ -27,6 +27,9 @@ global.Weaver = function(context) {
   const UTILITY_PATTERN = /{([^}]+)\|([^}]+)}/
   const SIMPLE_PATTERN = /{([^}]+)}/
 
+  const OPEN_SPAN_PATTERN = /{S\/([^}]+)}/;
+  const CLOSE_SPAN = `{\/S}`;
+
   function weave(source) {
     if (source == null) { return ''; }
 
@@ -38,6 +41,8 @@ global.Weaver = function(context) {
       let contextMatch = text.match(CONTEXT_PATTERN);
       let functionMatch = text.match(FUNCTION_PATTERN);
       let utilityMatch = text.match(UTILITY_PATTERN);
+      let openSpanMatch = text.match(OPEN_SPAN_PATTERN);
+      let closeSpanMatch = text.includes(CLOSE_SPAN);
       let simpleMatch = text.match(SIMPLE_PATTERN);
 
       if (contextMatch) {
@@ -49,6 +54,10 @@ global.Weaver = function(context) {
         text = text.replace(functionMatch[0],value||'');
       } else if (utilityMatch) {
         text = text.replace(utilityMatch[0], utilityValue(utilityMatch[1].trim(), utilityMatch[2].trim()));
+      } else if (openSpanMatch) {
+        text = text.replace(openSpanMatch[0], `<span style="${styleFor(openSpanMatch[1])}">`)
+      } else if (closeSpanMatch) {
+        text = text.replace(CLOSE_SPAN, `</span>`);
       } else if (simpleMatch) {
         text = text.replace(simpleMatch[0], simpleValue(simpleMatch[1].trim()));
       } else {
@@ -86,6 +95,15 @@ global.Weaver = function(context) {
     catch (error) {
       onError('Utility', error, { utility, argument });
       return formatError(`[${utility}|${argument}]`);
+    }
+  }
+
+  function styleFor(key) {
+    switch(key) {
+      case 'abl': return `color: rgb(160,120,150)`;
+      case 'act': return `color: rgb(150,150,200)`;
+      case 'mon': return `color: rgb(200,150,120)`;
+      default: return `color:red`;
     }
   }
 
