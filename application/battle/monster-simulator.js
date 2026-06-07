@@ -126,6 +126,58 @@ global.MonsterSimulator = (function() {
     const attack = monster.getBasicAttack();
     const context = { C:monster.getEntity(), T:target };
 
+    // TODO: Skill checks need a way to have modifiers passed to them. There's no way to adjust crit or fumble chances,
+    //       and it would be good to build in an advantage / disadvantage type system as well.
+
+    const baseWeapon = BaseWeapon.lookup(attack.base);
+    const weaponSkill = baseWeapon.getSkill();
+    const attackRoll = SkillCheck(monster.getEntity(), weaponSkill)
+    const dodgeRoll = SkillCheck(target, 'dodge');
+
+    // TODO: Assume defend with dodge for now. Characters will block when they have a shield equipped, or parry with a
+    //       sword equipped.
+
+    console.log("Making basic attack");
+    console.log(`   Base: ${baseWeapon.getCode()}`);
+    console.log(`   Skill: `,weaponSkill);
+    console.log(`   Attack Roll`,attackRoll);
+    console.log(`   Dodge Roll`,dodgeRoll);
+
+    // Should be some kind of penalty for a crit miss. Maybe extra time before next turn. Could give an "off balance"
+    // status effect that reduces dodge chance until next turn. Could be multiple penalty types.
+    if (attackRoll.fumble) {
+      console.log("Attack Fumbled!")
+    }
+
+    // Crit hit. Extra damage? Extra Damage Crit Chance?
+    if (attackRoll.crit) {
+      console.log("Attack CRIT!")
+    }
+
+    // Extra damage. (They get the vulnerable status until the next, impending hit)
+    if (dodgeRoll.fumble) {
+      console.log("Dodge Fumbled!")
+    }
+
+    // Critical dodge might add a status effect giving advantage to next dodge until next turn. Not much, but it's
+    // something
+    if (dodgeRoll.crit) {
+      console.log("Dodge CRIT!")
+    }
+
+    // An attack crit and dodge crit at the same time is possible. If this happens we could just reroll by calling
+    // this function again, or roll a tiebreaker, allowing one person to crit and changing the other roll. A double
+    // fumble could still apply both penalties.
+
+    // Normal attack result. No hits or crits on either side.
+    if (Object.keys(attackRoll).length === 1 && Object.keys(dodgeRoll).length === 1) {
+      if (attackRoll.value > dodgeRoll.value) {
+        console.log("Hit!");
+      } else {
+        console.log("Miss...");
+      }
+    }
+
     // TODO: Attack text will need different text for crits and fumbles.
 
     const attackText = Random.from(Dialog.lookupTemplate(DialogCategory.attackText, attack.attackText, context));

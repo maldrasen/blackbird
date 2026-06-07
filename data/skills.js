@@ -79,7 +79,7 @@ Skill.register('block',{
   factor: 1,
   attributes: [Attrib.strength] });
 
-Skill.register('axe',{
+Skill.register('axes',{
   name: "Axes",
   factor: 1,
   attributes: [Attrib.strength] });

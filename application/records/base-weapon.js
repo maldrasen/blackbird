@@ -14,10 +14,16 @@ global.BaseWeapon = (function() {
 
     const weapon = { ...$weapons[code] };
 
+    // Except for block, all the weapon skills just happen to be the weapon type +s
+    function getSkill() {
+      return (weapon.type === 'shield') ? 'block' : `${weapon.type}s`;
+    }
+
     return Object.freeze({
       getCode: () => { return weapon.code; },
       getName: () => { return weapon.name; },
       getType: () => { return weapon.type; },
+      getSkill,
       getDamageType: () => { return weapon.damageType; },
       getHands: () => { return weapon.hands; },
       getReach: () => { return weapon.reach || WeaponReach.close },
