@@ -8,8 +8,8 @@ BaseMonster.register('kobold-runt',{
   level: 1,
 
   attackTable:[
-    { base:'hammer', name:'bone club', attackText:'basic-swing' },
-    { base:'spear', name:'bone spear', attackText:'basic-thrust' },
+    { base:'hammer', name:'bone club' },
+    { base:'spear', name:'bone spear' },
   ],
 
   abilities:[

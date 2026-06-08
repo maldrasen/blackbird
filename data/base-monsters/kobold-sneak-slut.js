@@ -16,7 +16,7 @@ BaseMonster.register('kobold-sneak-slut',{
   },
 
   attackTable:[
-    { base:'knife', name:'bone knife', attackText:'basic-thrust' },
+    { base:'knife', name:'bone knife' },
   ],
 
 });

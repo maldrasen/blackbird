@@ -29,6 +29,7 @@ global.BaseWeapon = (function() {
       getReach: () => { return weapon.reach || WeaponReach.close },
       getLow: () => { return weapon.low; },
       getHigh: () => { return weapon.high; },
+      getAttackText: () => { return weapon.attackText; },
     });
   }
 
