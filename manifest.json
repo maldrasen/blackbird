@@ -66,6 +66,7 @@
     "application/components/sexual-preferences-component.js",
     "application/components/situated-component.js",
     "application/components/skills-component.js",
+    "application/components/status-effect-component.js",
     "application/components/weapon-component.js",
     "application/dialog-keys.js",
     "application/dungeon/door.js",

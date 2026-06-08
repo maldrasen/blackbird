@@ -112,6 +112,7 @@ global.ComponentType = Object.freeze({
   sexualPreferences: 'SexualPreferencesComponent',
   situated: 'SituatedComponent',
   skills: 'SkillsComponent',
+  statusEffect: 'StatusEffectComponent',
   weapon: 'WeaponComponent',
 });
 
