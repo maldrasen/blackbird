@@ -10,71 +10,96 @@ global.BasicAttack = (function() {
   //       weapons equipped? A basic attack can also attack multiple times at higher levels. Need to handle that. Some
   //       monsters might have multiple basic attacks as well, claw/claw/bite for instance.
 
+  // When we execute the basic attack we first find the monster attack, or equipped weapon. Then we make attack and
+  // defend rolls using the base weapon skill type for attacker. Because there are three possible states for each roll
+  // (crit, fumble, or normal) we're left with a table with 9 possible outcomes for each attack.
+  //
+  //           D-Crit          D-Fum            D-Nor
+  //   A-Crit  [Reroll]        [A++] & [D--]    [A++]
+  //   A-Fum   [A--] & [D++]   [A--] & [D--]    [A--]
+  //   A-Nor   [D++]           [D--]            [Normal]
+  //
+  //   [A++]   Attacker gets a positive status effect that increases physical weapon damage.
+  //   [A--]   Attacker gets a status effect (like off balance)
+  //   [D++]   Defender gets a positive status effect (something to reduce incoming damage)
+  //   [D--]   Defender gets a negative status effect (like vulnerable)
+  //
+  // By handling crits and fumbles as status effects that increase or reduce damage we reduce the number states and
+  // keep some of the interesting situations (like when an attacker crits and the defender fumbles, the added damage
+  // from the critting state and the extra damage from the vulnerable state will add up to 4x damage)
+  //
+  // By separating the rolls and the status effects like this we also separate the actual to-hit from the crits and
+  // fumbles. An attacker can crit (doing the best they can) but still miss their target.
+
   function execute(attacker, target) {
     const attack = findBasicAttack(attacker);
     const baseWeapon = BaseWeapon.lookup(attack.base);
-    const attackRoll = SkillCheck(attacker, baseWeapon.getSkill())
-    const dodgeRoll = SkillCheck(target, 'dodge');
-
-    // An attack crit and defend crit at the same time is possible. Rather than determine which roll should win out,
-    // we can simply call this function again as a tiebreaker.
-    if (attackRoll.crit && dodgeRoll.crit) {
-      return execute(attacker, target);
-    }
-
-    const context = buildAttackContext(attacker, target, attackRoll, dodgeRoll);
+    const attackRoll = SkillCheck(attacker, baseWeapon.getSkill());
+    const defendRoll = SkillCheck(target, 'dodge');
 
     // TODO: Assume defend with dodge for now. Characters will block when they have a shield equipped, or parry with a
     //       sword equipped.
 
+    if (attackRoll.crit && defendRoll.crit) {
+      return execute(attacker, target);
+    }
+
+    const context = buildAttackContext(attacker, target, attackRoll, defendRoll);
+
+
+
     console.log("Making basic attack");
     console.log(`   Base: ${baseWeapon.getCode()}`);
     console.log(`   Attack Roll`,attackRoll);
-    console.log(`   Dodge Roll`,dodgeRoll);
+    console.log(`   Dodge Roll`,defendRoll);
     console.log(`   Context:`,context);
 
-    // Should be some kind of penalty for a crit miss. Maybe extra time before next turn. Could give an "off balance"
-    // status effect that reduces dodge chance until next turn. Could be multiple penalty types.
-    if (attackRoll.fumble) {
-      console.log("Attack Fumbled!")
-    }
-
-    // Crit hit. Extra damage? Extra Damage Crit Chance?
-    if (attackRoll.crit) {
-      console.log("Attack CRIT!")
-    }
-
-    // Extra damage. (They get the vulnerable status until the next, impending hit)
-    if (dodgeRoll.fumble) {
-      console.log("Dodge Fumbled!")
-    }
-
-    // Critical dodge might add a status effect giving advantage to next dodge until next turn. Not much, but it's
-    // something
-    if (dodgeRoll.crit) {
-      console.log("Dodge CRIT!")
-    }
-
-
-    // Normal attack result. No hits or crits on either side.
-    if (Object.keys(attackRoll).length === 1 && Object.keys(dodgeRoll).length === 1) {
-      if (attackRoll.value > dodgeRoll.value) {
-        console.log("Hit!");
-      } else {
-        console.log("Miss...");
-      }
-    }
-
-    const attackTextKey = attack.attackText || baseWeapon.getAttackText();
-    const attackText = Random.from(Dialog.lookupTemplate(DialogCategory.attackText, attackTextKey, context));
-    const weaver = Weaver(context);
-    const messages = [{ text:weaver.weave(attackText) }];
-
-    return {
-      messages: messages,
+    const result = {
+      messages: [],
       time: 1000,
-    };
+    }
+
+    // // const attackTextKey = attack.attackText || baseWeapon.getAttackText();
+    // // const attackText = Random.from(Dialog.lookupTemplate(DialogCategory.attackText, attackTextKey, context));
+    // // const weaver = Weaver(context);
+    // // const messages = [{ text:weaver.weave(attackText) }];
+
+    function processHit() {
+      // Because the hit happens these status effects only apply to this single
+      // attack, so they're not really status effects then are they?
+      if (context.attack === 'crit') { addStatus(attacker, 'do-extra-damage') }
+      if (context.attack === 'fumble') { addStatus(attacker, 'do-less-damage') }
+      if (context.defend === 'crit') { addStatus(target, 'take-less-damage') }
+      if (context.defend === 'fumble') { addStatus(target, 'take-more-damage') }
+
+      const strength = AttributesComponent.lookup(attacker).strength;
+      const damageRoll = Random.between(baseWeapon.getHigh(), baseWeapon.getLow())
+      const damage = Math.round((damageRoll / 100) * strength);
+
+      result.messages.push({ text:'<< Attack hit >>'})
+      result.messages.push({ text: `Damage (${damageRoll}%) * ${strength} = ${damage}` })
+
+      return result;
+    }
+
+    function processMiss() {
+      if (context.attack === 'crit') { addStatus(attacker, 'increase-hit-chance'); }
+      if (context.attack === 'fumble') { addStatus(attacker, 'become-easier-to-hit'); }
+      if (context.defend === 'crit') { addStatus(target, 'become-harder-to-hit') }
+      if (context.defend === 'fumble') { addStatus(target, 'take-more-damage') }
+
+      result.messages.push({ text:'<< Attack missed >>' });
+
+      return result;
+    }
+
+    function addStatus(entity, status) {
+      result.messages.push({ text:`Add Status to ${entity} - ${status}` });
+    }
+
+    return (attackRoll.value > defendRoll.value) ? processHit() : processMiss();
   }
+
 
   // A basic attack will have a base weapon at a bare minimum. To give monster attacks different flavors we also can
   // include a weapon 'name' and the 'attackText' attributes. If the name or attackText properties are null then the
