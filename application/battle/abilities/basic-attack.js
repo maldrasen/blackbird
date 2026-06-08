@@ -36,6 +36,7 @@ global.BasicAttack = (function() {
     const baseWeapon = BaseWeapon.lookup(attack.base);
     const attackRoll = SkillCheck(attacker, baseWeapon.getSkill());
     const defendRoll = SkillCheck(target, 'dodge');
+    const hitLocation = BattleHelper.randomHitLocation();
 
     // TODO: Assume defend with dodge for now. Characters will block when they have a shield equipped, or parry with a
     //       sword equipped.
@@ -44,9 +45,11 @@ global.BasicAttack = (function() {
       return execute(attacker, target);
     }
 
-    const context = buildAttackContext(attacker, target, attackRoll, defendRoll);
-
-
+    const context = buildContext({
+      C: attacker,
+      T: target,
+      hitLocation: hitLocation,
+    }, attackRoll, defendRoll);
 
     console.log("Making basic attack");
     console.log(`   Base: ${baseWeapon.getCode()}`);
@@ -76,7 +79,7 @@ global.BasicAttack = (function() {
       const damageRoll = Random.between(baseWeapon.getHigh(), baseWeapon.getLow())
       const damage = Math.round((damageRoll / 100) * strength);
 
-      result.messages.push({ text:'<< Attack hit >>'})
+      result.messages.push({ text:`<< Attack hit ${hitLocation} >>`});
       result.messages.push({ text: `Damage (${damageRoll}%) * ${strength} = ${damage}` })
 
       return result;
@@ -88,7 +91,7 @@ global.BasicAttack = (function() {
       if (context.defend === 'crit') { addStatus(target, 'become-harder-to-hit') }
       if (context.defend === 'fumble') { addStatus(target, 'take-more-damage') }
 
-      result.messages.push({ text:'<< Attack missed >>' });
+      result.messages.push({ text:`<< Attack missed ${hitLocation} >>` });
 
       return result;
     }
@@ -123,8 +126,7 @@ global.BasicAttack = (function() {
 
   // The context is used to select the attack text, so it needs to know if the attack roll or defend rolls are crits
   // or fumbles. This function just puts those values into a better format.
-  function buildAttackContext(attacker, target, attackRoll, defendRoll) {
-    const context = { C:attacker, T:target };
+  function buildContext(context, attackRoll, defendRoll) {
     if (attackRoll.crit) { context.attack = 'crit'; }
     if (attackRoll.fumble) { context.attack = 'fumble'; }
     if (context.attack == null) { context.attack = 'normal'; }

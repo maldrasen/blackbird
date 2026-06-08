@@ -12,8 +12,19 @@ global.BattleHelper = (function() {
     }
   }
 
+  function randomHitLocation() {
+    return Random.fromFrequencyMap({
+      chest: 35,
+      feet:  15,
+      hands: 15,
+      head:  10,
+      legs:  25,
+    });
+  }
+
   return Object.freeze({
-    distanceBetweenPositions
+    distanceBetweenPositions,
+    randomHitLocation,
   })
 
 })();
