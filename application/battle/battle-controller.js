@@ -42,31 +42,46 @@ global.BattleController = (function() {
   function advanceBattle() {
     const next = state.getNext();
 
-    console.log("=== Advance Battle ===");
-    console.log("Next:",next)
-
     if (next.type === 'monster') {
-      FormationPanel.highlightActingMonster(next.id);
-      const result = MonsterSimulator.executeBattleTurn(next.id);
-      next.time += result.time;
-      state.setTurnOrder(next);
-
-      BattleText.setMessages(result.messages);
+      state.setActingMonster(next.id);
+      showMonsterResult(MonsterSimulator.executeBattleTurn(next.id));
     }
     if (next.type === 'character') {
-      FormationPanel.highlightActingCharacter(next.id);
-      PartyCommands.showCommands(next.id);
+      state.setActingCharacter(next.id);
+      PartyCommands.showCommands();
+    }
+  }
 
-      // This needs to happen on action selection...
-      // next.time += result.time;
-      // state.setTurnOrder(next);
-      //
-      // const actor = ActorComponent.lookup(next.id);
-      // BattleText.setMessages([
-      //   { text:`${actor.name} jacks off.` }
-      // ]);
+  function showMonsterResult(result) {
+    const next = state.getNext();
+    const acting = state.getActingMonster();
+
+    if (next.id !== acting) {
+      throw new Error(`BattleController Error: Somehow the next monster is not the acting monster. Something 
+        must have changed the turn order while the acting monster was executing their turn.`);
     }
 
+    next.time += result.time;
+    state.setTurnOrder(next);
+
+    BattleText.setMessages(result.messages);
+    BattleView.update();
+  }
+
+  function showCharacterResult(result) {
+    const next = state.getNext();
+    const acting = state.getActingCharacter();
+
+    if (next.id !== acting) {
+      throw new Error(`BattleController Error: Somehow the next character is not the acting character. Something 
+        must have changed the turn order while the acting character was executing their turn.`);
+    }
+
+    next.time += result.time;
+    state.setTurnOrder(next);
+
+    CommandPanel.hide();
+    BattleText.setMessages(result.messages);
     BattleView.update();
   }
 
@@ -144,6 +159,7 @@ global.BattleController = (function() {
     startBattle,
     endBattle,
     advanceBattle,
+    showCharacterResult,
     getState: () => { return state; },
   });
 

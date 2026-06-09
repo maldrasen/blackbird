@@ -16,6 +16,8 @@ global.BattleState = function(data) {
   const monsterFormation = {};
 
   let ambushState = 'normal';
+  let actingMonster;
+  let actingCharacter;
 
   // Theoretically these can change and should be based off of the position values as defined in the formation (or
   // from the encounter formation itself) It's fine to leave these hard coded for now though I think.
@@ -155,6 +157,19 @@ global.BattleState = function(data) {
     turnOrder.splice(index, 1)
   }
 
+  function setActingCharacter(id) {
+    FormationPanel.highlightActingCharacter(id);
+    actingCharacter = id;
+    actingMonster = null;
+  }
+
+  function setActingMonster(id) {
+    FormationPanel.highlightActingMonster(id);
+    actingCharacter = null;
+    actingMonster = id;
+  }
+
+
   return Object.freeze({
     cleanup,
     getAfterBattle: () => { return afterBattle; },
@@ -181,6 +196,11 @@ global.BattleState = function(data) {
     getAmbushState: () => { return ambushState; },
     getNext,
     removeFromTurnOrder,
+
+    setActingCharacter,
+    getActingCharacter: () => { return actingCharacter; },
+    setActingMonster,
+    getActingMonster: () => { return actingMonster; },
   });
 
 }

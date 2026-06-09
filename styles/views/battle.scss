@@ -16,8 +16,8 @@
 
     .position {
       box-sizing: border-box;
-      height: 160px;
-      width: 160px;
+      height: 120px;
+      width: 120px;
       background-color: rgba(0,0,0,0.6);
       margin: 2px;
       border: variables.$border-light;
@@ -30,8 +30,8 @@
     .monster, .character {
       box-sizing: border-box;
       cursor: pointer;
-      height: 159px;
-      width: 159px;
+      height: 119px;
+      width: 119px;
       padding: 5px;
       font-size: variables.$fs-tiny;
       font-family: "habibi", sans-serif;
@@ -39,7 +39,6 @@
       overflow: hidden;
       &:hover { background-color: rgba(20,20,30,0.75); }
     }
-
   }
 
   .bottom-panel {
@@ -53,7 +52,11 @@
   }
 
   #commandPanel {
-
+    #title {
+      margin: 10px;
+      font-size: variables.$fs-bigger;
+      border-bottom: variables.$border-heavy;
+    }
   }
 
   #textPanel {
