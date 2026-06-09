@@ -1,6 +1,4 @@
-// TODO: We need to remove the system stuff, but once that's done we can rename
-//       this to battle system maybe?
-global.BattleStuff = (function() {
+global.BattleSystem = (function() {
 
   // TODO: This will need to take into account conditions like vulnerable, once
   //       we have conditions being applied.
@@ -18,6 +16,6 @@ global.BattleStuff = (function() {
 
   return Object.freeze({
     applyDamage
-  })
+  });
 
 })()

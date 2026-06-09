@@ -77,7 +77,7 @@ global.BasicAttack = (function() {
         text: weaver.weave(`Attack hit {T:name's} ${hitLocation} for ${damage} damage!`)
       });
 
-      BattleStuff.applyDamage(target, damage);
+      BattleSystem.applyDamage(target, damage);
 
       return result;
     }
