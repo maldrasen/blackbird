@@ -13,6 +13,11 @@ global.BattleView = (function() {
     BattleText.showBattleStartText();
   }
 
+  function showCommands(commands) {
+    CommandPanel.show();
+    CommandPanel.showCommands(commands);
+  }
+
   function update() {
     const state = BattleController.getState();
     FormationPanel.updateAll(state);
@@ -21,6 +26,7 @@ global.BattleView = (function() {
   return Object.freeze({
     init,
     show,
+    showCommands,
     update,
   });
 

@@ -46,25 +46,25 @@ global.BattleController = (function() {
     console.log("Next:",next)
 
     if (next.type === 'monster') {
-      const result = MonsterSimulator.executeBattleTurn(next.id);
       FormationPanel.highlightActingMonster(next.id);
+      const result = MonsterSimulator.executeBattleTurn(next.id);
       next.time += result.time;
       state.setTurnOrder(next);
 
-      console.log("Result:",result)
       BattleText.setMessages(result.messages);
     }
     if (next.type === 'character') {
-      console.log("Show Commands");
-      next.time += 1000;
-      state.setTurnOrder(next);
-
       FormationPanel.highlightActingCharacter(next.id);
+      PartyCommands.showCommands(next.id);
 
-      const actor = ActorComponent.lookup(next.id);
-      BattleText.setMessages([
-        { text:`${actor.name} jacks off.` }
-      ]);
+      // This needs to happen on action selection...
+      // next.time += result.time;
+      // state.setTurnOrder(next);
+      //
+      // const actor = ActorComponent.lookup(next.id);
+      // BattleText.setMessages([
+      //   { text:`${actor.name} jacks off.` }
+      // ]);
     }
 
     BattleView.update();
