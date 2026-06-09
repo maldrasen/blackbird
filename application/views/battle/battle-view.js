@@ -13,9 +13,15 @@ global.BattleView = (function() {
     BattleText.showBattleStartText();
   }
 
+  function update() {
+    const state = BattleController.getState();
+    FormationPanel.updateAll(state);
+  }
+
   return Object.freeze({
     init,
-    show
+    show,
+    update,
   });
 
 })();

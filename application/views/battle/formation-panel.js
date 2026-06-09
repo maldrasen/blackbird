@@ -1,10 +1,13 @@
 global.FormationPanel = (function() {
 
+  const healthBars = {};
+
   function build() {
     const state = BattleController.getState();
 
     buildMonsterFormation(state);
     buildPartyFormation(state);
+    updateAll(state);
   }
 
   function buildMonsterFormation(state) {
@@ -20,7 +23,12 @@ global.FormationPanel = (function() {
         if (monsterId) {
           const monsterComponent = MonsterComponent.lookup(monsterId);
           const monster = BaseMonster.lookup(monsterComponent.code);
-          row += `<div class="monster" data-id="${monsterId}">${monster.getName()}</div>`;
+
+          row += `<div class="monster" data-id="${monsterId}">
+            <div class='name'>${monster.getName()}</div>
+            <div class='status'></div>
+            <div class='health-bar'></div>
+          </div>`;
         }
 
         row += `</div>`
@@ -38,6 +46,10 @@ global.FormationPanel = (function() {
         X.addClass(`#monsterFormation .rank-${r}`,'hide');
       }
     }
+
+    state.getMonsters().forEach(monster => {
+      addHealthBar(getMonsterElement(monster), monster, true)
+    });
   }
 
   function buildPartyFormation(state) {
@@ -52,7 +64,11 @@ global.FormationPanel = (function() {
 
         if (characterId) {
           const actor = ActorComponent.lookup(characterId);
-          row += `<div class="character" data-id="${characterId}">${actor.name}</div>`;
+          row += `<div class="character" data-id="${characterId}">
+            <div class='name'>${actor.name}</div>
+            <div class='status'></div>
+            <div class='health-bar'></div>
+          </div>`;
         }
 
         row += `</div>`
@@ -62,6 +78,27 @@ global.FormationPanel = (function() {
 
       X.first('#partyFormation').appendChild(X.createElement(row));
     }
+    state.getCharacters().forEach(character => {
+      addHealthBar(getCharacterElement(character), character);
+    });
+  }
+
+  function addHealthBar(element, entity, hideValues=false) {
+    const health = HealthComponent.lookup(entity);
+    const healthBar = BarDisplay({
+      label: 'Health',
+      currentValue: health.currentHealth,
+      minValue: 0,
+      maxValue: health.maxHealth,
+      color: 'health',
+    });
+
+    if (hideValues) {
+      healthBar.hideValues();
+    }
+    healthBars[entity] = healthBar;
+
+    element.querySelector('.health-bar').appendChild(healthBar.getElement());
   }
 
   function getMonsterElement(id) { return X.first(`.monster[data-id='${id}']`); }
@@ -78,11 +115,24 @@ global.FormationPanel = (function() {
     X.addClass(getCharacterElement(id).parentElement,'acting');
   }
 
+  function updateAll(state) {
+    state.getMonsters().forEach(monster => {
+      const health = HealthComponent.lookup(monster)
+      healthBars[monster].setCurrentValue(health.currentHealth);
+    });
+    state.getCharacters().forEach(character => {
+      const health = HealthComponent.lookup(character)
+      healthBars[character].setCurrentValue(health.currentHealth);
+    });
+  }
+
+
   return Object.freeze({
     build,
     clearHighlight,
     highlightActingMonster,
     highlightActingCharacter,
+    updateAll,
   });
 
 })();

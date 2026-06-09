@@ -63,6 +63,10 @@ global.BarDisplay = function(options) {
 
   function hide() { X.addClass(getElement(),'hide'); }
   function show() { X.removeClass(getElement(),'hide'); }
+  function hideTextRow() { X.addClass(getElement().querySelector('.text-row'),'hide'); }
+  function showTextRow() { X.removeClass(getElement().querySelector('.text-row'),'hide'); }
+  function hideValues() { X.addClass(getElement().querySelector('.value-label'),'hide'); }
+  function showValues() { X.removeClass(getElement().querySelector('.value-label'),'hide'); }
 
   return Object.freeze({
     getElement,
@@ -73,6 +77,10 @@ global.BarDisplay = function(options) {
     setCurrentValue,
     hide,
     show,
+    hideTextRow,
+    showTextRow,
+    hideValues,
+    showValues,
   });
 
 }

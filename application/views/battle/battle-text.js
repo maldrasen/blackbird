@@ -37,8 +37,6 @@ global.BattleText = (function() {
 
   // TODO: Add an optional mode where we just show all the messages at once rather than clicking though them all.
   function advanceText() {
-    console.log("=== Advance Text ===");
-
     if (messageList == null || messageList.length === 0) {
       return BattleController.advanceBattle();
     }
