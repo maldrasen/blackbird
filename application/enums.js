@@ -10,13 +10,6 @@ global.LogType = Object.freeze({
   error: 'error',
 });
 
-global.CommandType = Object.freeze({
-  trainingPropose: 'Training.Propose',
-  trainingStart: 'Training.Start',
-  trainingSexAction: 'Training.SexAction',
-  trainingEnd: 'Training.End',
-});
-
 global.GameMode = Object.freeze({
   battle: 'battle',
   dungeon: 'dungeon',

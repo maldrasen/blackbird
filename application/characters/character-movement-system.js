@@ -7,7 +7,6 @@ global.CharacterMovementSystem = (function() {
   // TODO: Characters who are interacting with the player shouldn't wander off though. The character the player is
   //       interacting with should be in the command. A situation like a threesome might be tricky though.
   //
-  function run(command) {}
 
   // Find all the characters that are at the specified location. If the location is the current location, we also need
   // the characters who are following or are held captive by the player.
@@ -18,7 +17,6 @@ global.CharacterMovementSystem = (function() {
   }
 
   return Object.freeze({
-    run,
     getCharactersAtLocation,
   });
 

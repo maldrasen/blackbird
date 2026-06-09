@@ -13,7 +13,7 @@ global.EpisodeController = (function() {
       return endFunction();
     }
 
-    StateMachine.returnToPreviousMode();
+    GameState.returnToPreviousMode();
   }
 
   function nextPage() {

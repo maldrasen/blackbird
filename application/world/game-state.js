@@ -1,6 +1,8 @@
 global.GameState = (function() {
 
   let $gameTime;
+  let $gameMode;
+  let $returnMode;
   let $currentLocation;
   let $currentFloor;
   let $player;
@@ -12,6 +14,8 @@ global.GameState = (function() {
     Registry.clear();
 
     $gameTime = null;
+    $gameMode = null;
+    $returnMode = null;
     $currentLocation = null;
     $currentFloor = null;
     $player = null;
@@ -28,29 +32,66 @@ global.GameState = (function() {
     Registry.clear();
 
     $gameTime = options.time || 0;
+    $gameMode = GameMode.location;
     $currentLocation = options.location || 'filthy-hovel';
   }
 
-  // === CRUD ==========================================================================================================
+  // ===============
+  //    Game Time
+  // ===============
 
-  function setCurrentLocation(location) { $currentLocation = location }
-  function getCurrentLocation() { return $currentLocation; }
+  // TODO: Eventually we will need to check to see if there are any periodic or scheduled tasks that need to be run.
+  // TODO: We might also want to do things like recover stamina, hit points, and mana in this function as well.
 
-  function setGameTime(time) { $gameTime = time; }
   function getGameTime() { return $gameTime; }
+  function advanceGameTime(time) { $gameTime += time; }
 
-  function setPlayer(player) { $player = player; }
+  // ===============
+  //    Game Mode
+  // ===============
+
+  function getGameMode() { return $gameMode; }
+  function setGameMode(mode) {
+    $gameMode = mode;
+    switch(mode) {
+      case GameMode.battle: return BattleView.show();
+      case GameMode.dungeon: return DungeonView.show();
+      case GameMode.episode: return EpisodeView.show();
+      case GameMode.location: return LocationView.show();
+      case GameMode.training: return TrainingView.show();
+    }
+  }
+
+  // Return mode is not persisted as it should be impossible to save
+  // from episodes, or other modes that can be returned from.
+  function getReturnMode() { return $returnMode; }
+  function markReturnMode() { $returnMode = $gameMode; }
+  function returnToPreviousMode() {
+    setGameMode($returnMode);
+    $returnMode = null;
+  }
+
+  // ==========
+  //    Crud
+  // ==========
+
+  function getCurrentLocation() { return $currentLocation; }
+  function setCurrentLocation(location) { $currentLocation = location }
+
   function getPlayer() { return $player; }
+  function setPlayer(player) { $player = player; }
 
-  function setPartyConfiguration(config) { $partyConfiguration = config; }
   function getPartyConfiguration() { return $partyConfiguration; }
+  function setPartyConfiguration(config) { $partyConfiguration = config; }
 
-  // === Save and Load =================================================================================================
+  // ===================
+  //    Save and Load
+  // ===================
 
   function pack() {
     return {
       gameTime: $gameTime,
-      gameMode: StateMachine.getMode(),
+      gameMode: $gameMode,
       currentLocation: $currentLocation,
       currentFloor: $currentFloor,
       player: $player,
@@ -65,25 +106,33 @@ global.GameState = (function() {
   //       training though.
   function unpack(data) {
     $gameTime = data.gameTime;
+    $gameMode = data.gameMode;
     $currentLocation = data.currentLocation;
     $currentFloor = data.currentFloor;
     $player = data.player;
     $partyConfiguration = data.partyConfiguration;
-
-    StateMachine.setMode(data.gameMode);
   }
 
   return Object.freeze({
     reset,
     initialize,
-    setCurrentLocation,
-    getCurrentLocation,
-    setGameTime,
+
     getGameTime,
-    setPlayer,
+    advanceGameTime,
+
+    getGameMode,
+    setGameMode,
+    getReturnMode,
+    markReturnMode,
+    returnToPreviousMode,
+
+    getCurrentLocation,
+    setCurrentLocation,
     getPlayer,
-    setPartyConfiguration,
+    setPlayer,
     getPartyConfiguration,
+    setPartyConfiguration,
+
     pack,
     unpack,
   });

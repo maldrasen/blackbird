@@ -7,16 +7,12 @@ global.Fixtures = (function() {
       encounter: `kobold-${Random.between(1,4)}`,
     });
 
-    StateMachine.setMode(GameMode.battle);
-    StateMachine.render();
+    GameState.setGameMode(GameMode.battle);
   }
 
-  // The fixture calls the dungeon controller directly to setup a new dungeon. This should actually all be called in
-  // the StateMachine when the DungeonSystem sees the command that puts the game into the dungeon mode.
   function setupDungeon() {
     DungeonController.createDungeon();
-    StateMachine.setMode(GameMode.dungeon);
-    StateMachine.render();
+    GameState.setGameMode(GameMode.dungeon);
   }
 
   function setupFeature() {
@@ -27,8 +23,7 @@ global.Fixtures = (function() {
   function setupTraining() {
     CharacterFixtures.randomPlayer();
     CharacterFixtures.randomCharacters(10, { triggers:[] });
-    StateMachine.setMode(GameMode.location);
-    StateMachine.render();
+    GameState.setGameMode(GameMode.location);
   }
 
   return Object.freeze({

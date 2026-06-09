@@ -58,7 +58,7 @@ global.TrainingActionPanel = (function() {
   function actionClicked(event) {
     if (X.hasClass(event.target,'not-enabled') === false) {
       MainContent.halt();
-      StateMachine.handleCommand(CommandType.trainingSexAction,{ code:event.target.dataset.code });
+      TrainingSystem.handleSexAction(event.target.dataset.code);
     }
   }
 

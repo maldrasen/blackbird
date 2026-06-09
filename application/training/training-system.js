@@ -1,41 +1,25 @@
 global.TrainingSystem = (function() {
 
-  function run(command) {
-    switch (command.getType()) {
-      case CommandType.trainingPropose: return proposeTraining(command);
-      case CommandType.trainingStart: return startTraining(command);
-      case CommandType.trainingSexAction: return handleSexAction(command);
-      case CommandType.trainingEnd: return endTraining(command);
-    }
-  }
-
   // We mark the previous game mode when training is first proposed. We return to the previous mode when the training
   // is either denied by the partner or once the level up mode has concluded.
-  function proposeTraining(command) {
-    const characterId = command.getValue('characterId');
-    const player = GameState.getPlayer();
-
-    EpisodeController.startEpisode('propose-training', { P:player, T:characterId });
-
-    StateMachine.markPreviousMode();
-    StateMachine.setMode(GameMode.episode);
+  function proposeTraining(characterId) {
+    EpisodeController.startEpisode('propose-training', { P:GameState.getPlayer(), T:characterId });
+    GameState.markReturnMode();
+    GameState.setGameMode(GameMode.episode);
   }
 
-  function startTraining(command) {
-    const characterId = command.getValue('characterId');
-
-    // Theoretically, the 'player' in the training system could be another
-    // character entirely, in case we do some kind of 'possession' mechanic.
+  // Theoretically, the 'player' in the training system could be another  character entirely, in case we do some kind
+  // of 'possession' mechanic.
+  function startTraining(characterId) {
     TrainingController.startTraining({
       player: GameState.getPlayer(),
       partner: characterId
     });
 
-    StateMachine.setMode(GameMode.training);
+    GameState.setGameMode(GameMode.training);
   }
 
-  function handleSexAction(command) {
-    const code = command.getValue('code');
+  function handleSexAction(code) {
     const sexAction = SexAction.lookup(code);
     const state = TrainingController.getState();
           state.clearMessages();
@@ -57,7 +41,9 @@ global.TrainingSystem = (function() {
       player: result.getPlayerSensations(),
     }});
 
-    StateMachine.setDeltaTime(sexAction.getTime());
+    // TODO: We're no longer advancing the game time in modes like training and battle. Instead we want to keep track
+    //       of the total time that training takes, and advance the game time after training is complete.
+    // sexAction.getTime();
 
     TrainingController.handleSensationResult(result);
     TrainingController.persistAction(sexAction, result.getConsentResult());
@@ -66,7 +52,7 @@ global.TrainingSystem = (function() {
     TrainingOutput.show(result);
   }
 
-  function endTraining(command) {
+  function endTraining() {
     const state = TrainingController.getState();
 
     EnlightenController.startEnlightenment({
@@ -75,9 +61,14 @@ global.TrainingSystem = (function() {
       animus: state.getAnimus(),
       anger: state.getEssenceOfAnger(),
     });
-    StateMachine.setMode(GameMode.enlighten);
+    GameState.setGameMode(GameMode.enlighten);
   }
 
-  return Object.freeze({ run });
+  return Object.freeze({
+    proposeTraining,
+    startTraining,
+    handleSexAction,
+    endTraining,
+  });
 
 })();

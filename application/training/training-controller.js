@@ -13,7 +13,7 @@ global.TrainingController = (function() {
 
   function endTraining() {
     ArousalComponent.update(state.getPartner(), { arousal:0 });
-    StateMachine.handleCommand(CommandType.trainingEnd);
+    TrainingSystem.endTraining();
   }
 
   function handleSensationResult(result) {

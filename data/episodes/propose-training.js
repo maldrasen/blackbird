@@ -16,10 +16,10 @@ function endProposition() {
   // shouldn't be a problem. Stuff like bondage and grappling will need to be
   // implemented first, as forcing your partner is essentially combat with them.
   if (EpisodeController.getPropertyValue('attitude') === TrainingAttitude.unwilling) {
-    return StateMachine.returnToPreviousMode();
+    return GameState.returnToPreviousMode();
   }
 
-  StateMachine.handleCommand(CommandType.trainingStart, { characterId:partner });
+  TrainingSystem.startTraining(partner);
 }
 
 function generateContent() {
