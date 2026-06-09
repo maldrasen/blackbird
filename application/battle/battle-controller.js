@@ -66,6 +66,7 @@ global.BattleController = (function() {
         { text:`${actor.name} jacks off.` }
       ]);
     }
+    // TODO: Now update UI. All monsters and characters will need to be redrawn.
   }
 
   // When building the monsters we take the formation from the encounter and loop though the arrays that represent the

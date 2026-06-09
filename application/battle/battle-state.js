@@ -82,6 +82,7 @@ global.BattleState = function(data) {
 
   function getMonsters() { return Object.values(monsterFormation); }
   function getCharacters() { return Object.values(partyFormation); }
+  function isMonster(id) { return getMonsters().includes(id); }
 
   // === Turn Order ====================================================================================================
 
@@ -172,6 +173,7 @@ global.BattleState = function(data) {
     isMonsterRankOccupied,
     getMonsters,
     getCharacters,
+    isMonster,
 
     setTurnOrder,
     getTurnOrder: () => { return [ ...turnOrder ]; },

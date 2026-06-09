@@ -32,6 +32,7 @@ global.BasicAttack = (function() {
   // fumbles. An attacker can crit (doing the best they can) but still miss their target.
 
   function execute(attacker, target) {
+    const state = BattleController.getState();
     const attack = findBasicAttack(attacker);
     const baseWeapon = BaseWeapon.lookup(attack.base);
     const attackRoll = SkillCheck(attacker, baseWeapon.getSkill());
@@ -51,53 +52,54 @@ global.BasicAttack = (function() {
       hitLocation: hitLocation,
     }, attackRoll, defendRoll);
 
-    console.log("Making basic attack");
-    console.log(`   Base: ${baseWeapon.getCode()}`);
-    console.log(`   Attack Roll`,attackRoll);
-    console.log(`   Dodge Roll`,defendRoll);
-    console.log(`   Context:`,context);
+    const attackTextKey = attack.attackText || baseWeapon.getAttackText();
+    const attackText = Random.from(Dialog.lookupTemplate(DialogCategory.attackText, attackTextKey, context));
+    const weaver = Weaver(context);
 
     const result = {
-      messages: [],
+      messages: [{ text:weaver.weave(attackText) }],
       time: 1000,
     }
-
-    // // const attackTextKey = attack.attackText || baseWeapon.getAttackText();
-    // // const attackText = Random.from(Dialog.lookupTemplate(DialogCategory.attackText, attackTextKey, context));
-    // // const weaver = Weaver(context);
-    // // const messages = [{ text:weaver.weave(attackText) }];
 
     function processHit() {
       // Because the hit happens these status effects only apply to this single
       // attack, so they're not really status effects then are they?
-      if (context.attack === 'crit') { addStatus(attacker, 'do-extra-damage') }
-      if (context.attack === 'fumble') { addStatus(attacker, 'do-less-damage') }
-      if (context.defend === 'crit') { addStatus(target, 'take-less-damage') }
-      if (context.defend === 'fumble') { addStatus(target, 'take-more-damage') }
+      if (context.attack === 'crit') { addStatus(attacker,'C','do-extra-damage') }
+      if (context.attack === 'fumble') { addStatus(attacker,'C','do-less-damage') }
+      if (context.defend === 'crit') { addStatus(target,'T','take-less-damage') }
+      if (context.defend === 'fumble') { addStatus(target,'T','take-more-damage') }
 
       const strength = AttributesComponent.lookup(attacker).strength;
       const damageRoll = Random.between(baseWeapon.getHigh(), baseWeapon.getLow())
       const damage = Math.round((damageRoll / 100) * strength);
 
-      result.messages.push({ text:`<< Attack hit ${hitLocation} >>`});
-      result.messages.push({ text: `Damage (${damageRoll}%) * ${strength} = ${damage}` })
+      result.messages.push({
+        text: weaver.weave(`Attack hit {T:name's} ${hitLocation} for ${damage} damage!`)
+      });
+
+      BattleStuff.applyDamage(target, damage);
 
       return result;
     }
 
     function processMiss() {
-      if (context.attack === 'crit') { addStatus(attacker, 'increase-hit-chance'); }
-      if (context.attack === 'fumble') { addStatus(attacker, 'become-easier-to-hit'); }
-      if (context.defend === 'crit') { addStatus(target, 'become-harder-to-hit') }
-      if (context.defend === 'fumble') { addStatus(target, 'take-more-damage') }
+      if (context.attack === 'crit') { addStatus(attacker,'C','increase-hit-chance'); }
+      if (context.attack === 'fumble') { addStatus(attacker,'C','become-easier-to-hit'); }
+      if (context.defend === 'crit') { addStatus(target,'T','become-harder-to-hit') }
+      if (context.defend === 'fumble') { addStatus(target,'T','take-more-damage') }
 
-      result.messages.push({ text:`<< Attack missed ${hitLocation} >>` });
+      result.messages.push({
+        text: weaver.weave(`Attack missed {T:name's} ${hitLocation}`)
+      });
 
       return result;
     }
 
-    function addStatus(entity, status) {
-      result.messages.push({ text:`Add Status to ${entity} - ${status}` });
+    function addStatus(entity, key, status) {
+      const name = state.isMonster(entity) ? `{${key}:baseName}` : `{${key}:name}`
+      result.messages.push({
+        text: weaver.weave(`Add Status to ${name} - ${status}`)
+      });
     }
 
     return (attackRoll.value > defendRoll.value) ? processHit() : processMiss();
@@ -111,7 +113,7 @@ global.BasicAttack = (function() {
   // TODO: It's possible a character won't have a primary weapon equipped. We could add a 'fist' base weapon, or make
   //       martial arts a more complex system or we don't allow unequipped characters to make basic attacks.
   function findBasicAttack(attacker) {
-    if (BattleController.getState().getMonsters().includes(attacker)) {
+    if (BattleController.getState().isMonster(attacker)) {
       return Monster(attacker).getBasicAttack();
     }
 
