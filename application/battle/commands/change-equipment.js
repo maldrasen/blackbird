@@ -8,13 +8,13 @@ global.ChangeEquipment = (function() {
   //       probably just a dialog.
 
   function start() {
-    const state = BattleController.getState();
+    const state = BattleInterface.getState();
     const character = Character(state.getActingCharacter());
 
-    BattleController.showCharacterResult({
+    BattleInterface.showCharacterResult({
       time: 500,
       messages: [{ text:`TODO: ${character.getName()} changes equipment...` }],
-    })
+    });
   }
 
   return Object.freeze({

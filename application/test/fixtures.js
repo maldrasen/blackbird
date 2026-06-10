@@ -2,7 +2,7 @@ global.Fixtures = (function() {
 
   function setupBattle() {
     BattleFixtures.prepareForBattle();
-    BattleController.startBattle({
+    BattleInterface.startBattle({
       afterBattle: 'returnTo.mainMenu',
       encounter: `kobold-${Random.between(1,4)}`,
     });

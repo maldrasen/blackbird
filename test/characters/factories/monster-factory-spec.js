@@ -7,9 +7,9 @@ describe("MonsterFactory", function() {
     });
 
     it("adds attacks", function() {
-      const id = MonsterFactory.build('kobold-runt');
+      const id = MonsterFactory.build('kobold-dick-puncher');
       const monster = MonsterComponent.lookup(id);
-      expect(monster.basicAttack.attackText.startsWith('basic')).to.be.true;
+      expect(monster.basicAttack.base).to.equal('hammer');
     });
 
     it("adds abilities");

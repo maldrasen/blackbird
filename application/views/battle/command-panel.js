@@ -15,7 +15,7 @@ global.CommandPanel = (function() {
   }
 
   function showCommands(commands) {
-    const state = BattleController.getState();
+    const state = BattleInterface.getState();
     const character = Character(state.getActingCharacter());
 
     show();

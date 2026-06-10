@@ -2,7 +2,7 @@
   "fileList": [
     "application/constants.js",
     "application/enums.js",
-    "application/battle/battle-controller.js",
+    "application/battle/battle-interface.js",
     "application/battle/battle-state.js",
     "application/battle/battle-system.js",
     "application/battle/commands/basic-attack.js",

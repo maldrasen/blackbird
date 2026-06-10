@@ -3,7 +3,7 @@ describe("SkillCheck", function() {
   it("Rolls the associated attribute when there is no skill", function() {
     Random.stubBetween(50,10);
     const character = CharacterFixtures.genericMale({ attributes:{ strength:20 }});
-    expect(SkillCheck(character,'axe').value).to.equal(15);
+    expect(SkillCheck(character,'axes').value).to.equal(15);
   });
 
   it("Multiplies by factor when skill exists", function() {
@@ -29,7 +29,7 @@ describe("SkillCheck", function() {
   it("Can crit", function() {
     Random.stubBetween(98);
     const character = CharacterFixtures.genericMale({ attributes:{ strength:20 }});
-    const check = SkillCheck(character,'axe');
+    const check = SkillCheck(character,'axes');
     expect(check.value).to.equal(20);
     expect(check.crit).to.be.true;
   });
@@ -37,7 +37,7 @@ describe("SkillCheck", function() {
   it("Can fumble", function() {
     Random.stubBetween(3);
     const character = CharacterFixtures.genericMale({ attributes:{ strength:20 }});
-    const check = SkillCheck(character,'axe');
+    const check = SkillCheck(character,'axes');
     expect(check.value).to.equal(5);
     expect(check.fumble).to.be.true;
   });

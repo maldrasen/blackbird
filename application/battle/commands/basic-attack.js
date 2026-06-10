@@ -32,7 +32,7 @@ global.BasicAttack = (function() {
   // fumbles. An attacker can crit (doing the best they can) but still miss their target.
 
   function execute(attacker, target) {
-    const state = BattleController.getState();
+    const state = BattleInterface.getState();
     const attack = findBasicAttack(attacker);
 
     const baseWeapon = BaseWeapon.lookup(attack.base);
@@ -114,7 +114,7 @@ global.BasicAttack = (function() {
   // TODO: It's possible a character won't have a primary weapon equipped. We could add a 'fist' base weapon, or make
   //       martial arts a more complex system or we don't allow unequipped characters to make basic attacks.
   function findBasicAttack(attacker) {
-    if (BattleController.getState().isMonster(attacker)) {
+    if (BattleInterface.getState().isMonster(attacker)) {
       return Monster(attacker).getBasicAttack();
     }
 

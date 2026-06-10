@@ -1,4 +1,4 @@
-global.BattleController = (function() {
+global.BattleInterface = (function() {
 
   let state;
 
@@ -57,7 +57,7 @@ global.BattleController = (function() {
     const acting = state.getActingMonster();
 
     if (next.id !== acting) {
-      throw new Error(`BattleController Error: Somehow the next monster is not the acting monster. Something 
+      throw new Error(`BattleInterface Error: Somehow the next monster is not the acting monster. Something 
         must have changed the turn order while the acting monster was executing their turn.`);
     }
 
@@ -73,7 +73,7 @@ global.BattleController = (function() {
     const acting = state.getActingCharacter();
 
     if (next.id !== acting) {
-      throw new Error(`BattleController Error: Somehow the next character is not the acting character. Something 
+      throw new Error(`BattleInterface Error: Somehow the next character is not the acting character. Something 
         must have changed the turn order while the acting character was executing their turn.`);
     }
 
