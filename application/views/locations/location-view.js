@@ -21,7 +21,7 @@ global.LocationView = (function() {
 
     CharacterOverlay.addInteraction('Start Training', () => {
       CharacterOverlay.close();
-      TrainingSystem.proposeTraining(characterId);
+      TrainingInterface.proposeTraining(characterId);
     });
   }
 

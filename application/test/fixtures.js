@@ -11,7 +11,7 @@ global.Fixtures = (function() {
   }
 
   function setupDungeon() {
-    DungeonController.createDungeon();
+    DungeonSystem.createDungeon();
     GameState.setGameMode(GameMode.dungeon);
   }
 

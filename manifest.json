@@ -165,7 +165,7 @@
     "application/training/sensation-results/sensation-technique.js",
     "application/training/sex-alignment.js",
     "application/training/training-constants.js",
-    "application/training/training-controller.js",
+    "application/training/training-interface.js",
     "application/training/training-state.js",
     "application/training/training-system.js",
     "application/views/battle/battle-text.js",
@@ -452,8 +452,8 @@
     "test/training/sensation-results/sensation-scales-spec.js",
     "test/training/sensation-results/sensation-skill-spec.js",
     "test/training/sensation-results/sensation-technique-spec.js",
-    "test/training/training-controller-spec.js",
     "test/training/training-state-spec.js",
+    "test/training/training-system-spec.js",
     "test/world/game-state-spec.js",
     "test/world/party-configuration-spec.js",
     "test/world/registry-spec.js"

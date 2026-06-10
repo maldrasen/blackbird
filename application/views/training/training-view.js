@@ -34,7 +34,7 @@ global.TrainingView = (function() {
   }
 
   function showEndConfirm() {
-    Confirmation.show({ text:`End Training?`, onConfirm:TrainingController.endTraining });
+    Confirmation.show({ text:`End Training?`, onConfirm:TrainingSystem.endTraining });
   }
 
   return Object.freeze({

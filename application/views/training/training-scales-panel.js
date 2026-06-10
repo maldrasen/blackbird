@@ -3,7 +3,7 @@ global.TrainingScalesPanel = (function() {
   const scaleBars = {};
 
   function build() {
-    Object.entries(TrainingController.getState().getPartnerScales()).forEach(([scale,value]) => {
+    Object.entries(TrainingSystem.getState().getPartnerScales()).forEach(([scale,value]) => {
       addScale(scale, value);
     });
   }
@@ -42,7 +42,7 @@ global.TrainingScalesPanel = (function() {
   }
 
   function update() {
-    Object.entries(TrainingController.getState().getPartnerScales()).forEach(([scale,value]) => {
+    Object.entries(TrainingSystem.getState().getPartnerScales()).forEach(([scale,value]) => {
       if (value > 0) { setScaleValue(scale, value); }
     });
   }

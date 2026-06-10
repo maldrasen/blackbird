@@ -7,7 +7,7 @@ global.TrainingActionPanel = (function() {
   function build() {
     ScrollingPanel({ id:'#actionListScroll' });
 
-    TrainingController.getState().getPossibleActions().forEach(code => {
+    TrainingSystem.getState().getPossibleActions().forEach(code => {
       const action = SexAction.lookup(code);
       const actionList = X.first('#actionList');
 
@@ -22,7 +22,7 @@ global.TrainingActionPanel = (function() {
   }
 
   function update() {
-    const context = TrainingController.getState().getContext();
+    const context = TrainingSystem.getState().getContext();
     const consentResult = ConsentResult(context.T, context.P);
 
     X.each('#actionList .sex-action a', link => {

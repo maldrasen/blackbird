@@ -19,7 +19,10 @@ function endProposition() {
     return GameState.returnToPreviousMode();
   }
 
-  TrainingSystem.startTraining(partner);
+  TrainingSystem.startTraining({
+    player: GameState.getPlayer(),
+    partner: partner
+  });
 }
 
 function generateContent() {

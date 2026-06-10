@@ -2,7 +2,7 @@ global.TrainingOutput = (function() {
   const arrow = `→`;
 
   function show(sensationResult) {
-    const messages = TrainingController.getState().getMessages();
+    const messages = TrainingSystem.getState().getMessages();
     const response = sensationResult.getResponse();
     const action = sensationResult.getSexAction();
     const context = sensationResult.getContext();
@@ -61,7 +61,7 @@ global.TrainingOutput = (function() {
   //       orgasm reduced the accumulated scale by 90% of the orgasm threshold.
   //
   function addSensationRow(builder, code, response, type) {
-    const state = TrainingController.getState();
+    const state = TrainingSystem.getState();
     const sensationValue = response.partnerSensations[code];
     const currentValue = state.getPartnerScales()[code];
     const currentScale = LetterGradeHelper.scaleValue(currentValue)

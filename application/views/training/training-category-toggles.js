@@ -7,19 +7,20 @@ global.TrainingCategoryToggles = (function() {
   }
 
   function build() {
+    const state = TrainingSystem.getState();
     let $mainCategories = new Set();
     let $partnerCategories = new Set();
     let $playerCategories = new Set();
 
-    const player = TrainingController.getState().getPlayer();
-    const partner = TrainingController.getState().getPartner();
+    const player = state.getPlayer();
+    const partner = state.getPartner();
     const playerActor = ActorComponent.lookup(player);
     const partnerActor = ActorComponent.lookup(partner);
 
     X.fill('#showPlayerToggles', EnglishHelper.possessive(playerActor.name));
     X.fill('#showPartnerToggles', EnglishHelper.possessive(partnerActor.name));
 
-    TrainingController.getState().getPossibleActions().forEach(code => {
+    state.getPossibleActions().forEach(code => {
       const action = SexAction.lookup(code);
       $mainCategories.add(action.getMainCategory());
       $partnerCategories.add(action.getPartnerCategory());

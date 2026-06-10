@@ -12,7 +12,7 @@ global.PositionController = (function() {
   // If the sex action doesn't have an alignment then it should either force a
   // position (like lap-dance) or can be done in any position (like masturbate)
   function isPositionAligned(sexAction) {
-    const state = TrainingController.getState();
+    const state = TrainingSystem.getState();
     const actionAlignment = sexAction.getAlignment();
 
     if (actionAlignment == null) { return true; }
@@ -35,7 +35,7 @@ global.PositionController = (function() {
 
   function findAlignedPosition(sexAction) {
     const actionAlignment = sexAction.getAlignment();
-    const state = TrainingController.getState();
+    const state = TrainingSystem.getState();
     const playerFirst = state.getPositionContext().A === state.getPlayer();
 
     const canShift = state.getPosition().getMoves().filter(move => {
@@ -52,7 +52,7 @@ global.PositionController = (function() {
   }
 
   function shiftPosition(sexAction, move) {
-    const state = TrainingController.getState();
+    const state = TrainingSystem.getState();
     const context = state.getPositionContext();
     const attitude = state.getAttitude();
     const [first, second] = move.swap ? [context.B, context.A] : [context.A, context.B];
@@ -61,16 +61,16 @@ global.PositionController = (function() {
     state.addMessage(TrainingMessage.shiftPosition, message);
     state.setPositionData({ code:move.code, first:first, second:second });
 
-    TrainingController.checkPersistedActions(sexAction);
+    TrainingSystem.checkPersistedActions(sexAction);
 
     if ([Attitude.violent, Attitude.resistant, Attitude.fearful].includes(attitude)) {
-      TrainingController.positionUsedHands();
+      TrainingSystem.positionUsedHands();
     }
   }
 
   function changePosition(sexAction) {
     const actionAlignment = sexAction.getAlignment();
-    const state = TrainingController.getState();
+    const state = TrainingSystem.getState();
     const player = state.getPlayer();
     const partner = state.getPartner();
     const valid = [];
@@ -101,7 +101,7 @@ global.PositionController = (function() {
   function forcePosition(sexAction) {
     const forcePosition = sexAction.getForcePosition();
     const position = SexPosition.lookup(forcePosition.code);
-    const state = TrainingController.getState();
+    const state = TrainingSystem.getState();
     const currentPosition = state.getPosition().getCode();
 
     if (currentPosition !== forcePosition.code) {

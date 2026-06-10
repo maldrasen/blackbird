@@ -6,7 +6,7 @@ global.TrainingStatusPanel = (function() {
   let pleasureBar;
 
   function build() {
-    const partner = TrainingController.getState().getPartner()
+    const partner = TrainingSystem.getState().getPartner()
     const health = HealthComponent.lookup(partner);
     const character = Character(partner);
 
@@ -58,7 +58,7 @@ global.TrainingStatusPanel = (function() {
   function update() {
     X.fill('#trainingView .position-frame',buildPositionFrame());
 
-    const partner = TrainingController.getState().getPartner()
+    const partner = TrainingSystem.getState().getPartner()
     const health = HealthComponent.lookup(partner);
     const arousalData = ArousalComponent.lookup(partner);
 
@@ -73,7 +73,7 @@ global.TrainingStatusPanel = (function() {
   //   in. The graphics should be simple, a silhouette with solid color figures, but with enough detail that we can
   //   easily tell their genders. (Show cocks and tits on each figure basically)
   function buildPositionFrame() {
-    const state = TrainingController.getState();
+    const state = TrainingSystem.getState();
     const position = state.getPosition().getName();
     const context = state.getPositionContext();
     const first = Character(context.A).getName();

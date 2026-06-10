@@ -1,4 +1,4 @@
-describe("TrainingController", function() {
+describe("TrainingSystem", function() {
 
   describe('updateArousal() and updateStamina()', function() {
     it('updates the arousal level for both the player and the partner', function() {
@@ -12,9 +12,9 @@ describe("TrainingController", function() {
       const context = state.getContext();
       const result = SensationResult.build('finger-anus',state);
 
-      TrainingController.startTraining({ player:context.P, partner:context.T });
-      TrainingController.updateArousal(result);
-      TrainingController.updateStamina(result);
+      TrainingSystem.startTraining({ player:context.P, partner:context.T });
+      TrainingSystem.updateArousal(result);
+      TrainingSystem.updateStamina(result);
 
       const playerArousal = ArousalComponent.lookup(context.P)
       const partnerArousal = ArousalComponent.lookup(context.T)

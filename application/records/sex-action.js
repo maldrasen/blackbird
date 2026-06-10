@@ -137,14 +137,14 @@ global.SexAction = (function() {
     //   special somehow as that action will only be available for this round.
     //
     function matchesPersistedAction() {
-      const persistedActions = TrainingController.getState().getPersistedActions();
+      const persistedActions = TrainingSystem.getState().getPersistedActions();
 
       // True if there are no particular conditions.
       if (action.availableWhen == null) { return true; }
 
       // True when the previous action was the one specified.
       if (action.availableWhen.previousAction) {
-        return TrainingController.getState().getPreviousAction() === action.availableWhen.previousAction;
+        return TrainingSystem.getState().getPreviousAction() === action.availableWhen.previousAction;
       }
 
       // True if the specified action has been persisted.
@@ -172,7 +172,7 @@ global.SexAction = (function() {
         CentralScrutinizer(context).allConditionsPass(action.availableWhen.conditions) : true;
     }
 
-    function isPersisted() { return TrainingController.getState().isActionPersisted(code); }
+    function isPersisted() { return TrainingSystem.getState().isActionPersisted(code); }
     function isNotPersisted() { return !isPersisted(); }
 
     // The isEnabled() function determines if an available action should be enabled or not. The logic here is that

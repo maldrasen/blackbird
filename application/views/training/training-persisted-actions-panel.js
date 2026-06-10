@@ -17,7 +17,7 @@ global.TrainingPersistedActionsPanel = (function() {
     X.empty('#persistedActions');
 
     const list = X.first('#persistedActions');
-    const actions = TrainingController.getState().getPersistedActions();
+    const actions = TrainingSystem.getState().getPersistedActions();
     const playerActions = [];
     const partnerActions = [];
 
@@ -61,7 +61,7 @@ global.TrainingPersistedActionsPanel = (function() {
   // should be) and recalculate its consent value for the tooltip and consent style.
   function stopAction(event) {
     const code = event.target.closest('.persisted-action-item').getAttribute('data-code');
-    TrainingController.removePersistedAction(code);
+    TrainingSystem.removePersistedAction(code);
     TrainingActionPanel.update();
   }
 
