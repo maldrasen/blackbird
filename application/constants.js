@@ -8,7 +8,6 @@
 
 global._parentId = '_parentId'
 
-
 // If a species doesn't have height data specified, then we fallback to these constants which are used to calculate a
 // random heights for the species. The standard deviation is normally around 70mm, but I represent it as a ratio
 // below so that a species with a different average height can still have a comparable height deviation. The same is

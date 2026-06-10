@@ -42,38 +42,19 @@ global.MonsterSimulator = (function() {
   function getPossibleActions(state, monster, target) {
     const monsterPosition = state.getPositionOf(monster.getEntity());
     const targetPosition = state.getPositionOf(target);
-    const distance = BattleHelper.distanceBetweenPositions(monsterPosition, targetPosition);
     const actions = [];
 
-    if (isBasicAttackInRange(monster, distance)) {
+    if (isBasicAttackInRange(monster, monsterPosition, targetPosition)) {
       actions.push('basic-attack')
     }
 
     return actions;
   }
 
-  // Weapon Ranges
-  //   Short:    Daggers and fists can only reach the character directly in front or diagonal.
-  //   Close:    Swords, axes, maces, etc. can hit the front rank from the front, in front or two positions away.
-  //   Extended: Polearms can hit the back rank from the front, the front from the back, in any position.
-  //   Long:     Bows can hit any position.
-  function isBasicAttackInRange(monster, distance) {
+  function isBasicAttackInRange(monster, p1, p2) {
     const basicAttack = monster.getBasicAttack();
-
-    if (basicAttack == null) {
-      return false;
-    }
-
-    const weapon = BaseWeapon.lookup(basicAttack.base);
-    const reach = weapon.getReach();
-
-    switch (reach) {
-      case WeaponReach.short: return distance.rank === 0 && distance.position <= 1;
-      case WeaponReach.close: return distance.rank === 0 && distance.position <= 2;
-      case WeaponReach.extended: return distance.rank <= 1;
-      case WeaponReach.long: return true;
-      default: throw new Error(`Bad reach value [${reach}]`);
-    }
+    return (basicAttack == null) ? false :
+      BattleHelper.isAttackWithinRange(BaseWeapon.lookup(basicAttack.base).getReach(), p1, p2);
   }
 
   // Target data has a list of possible actions that can be used against the target. This function will be used to

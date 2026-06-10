@@ -33,7 +33,7 @@ global.CommandPanel = (function() {
     const command = event.target.dataset.command;
 
     switch(command) {
-      case BattleCommand.basicAttack: return TargetingController.startCommandTargeting(command);
+      case BattleCommand.basicAttack: return TargetingController.startBasicAttackTargeting();
       case BattleCommand.changeEquipment: return ChangeEquipment.start();
       case BattleCommand.useItem: return UseItem.start();
       default: throw new Error(`Unrecognized Command: ${command}`);

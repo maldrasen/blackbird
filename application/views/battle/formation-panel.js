@@ -13,37 +13,18 @@ global.FormationPanel = (function() {
   function buildMonsterFormation(state) {
     const formation = state.getMonsterFormation();
 
-    for (let r=state.getMaxMonsterRank()-1; r >= 0; r--) {
-      let row =`<div class="rank rank-${r}">`;
+    for (let r=1; r >= 0; r--) {
+      const rankElement = X.createElement(`<div class="rank rank-${r}"></div>`);
+      X.first('#monsterFormation').appendChild(rankElement);
 
-      for (let p=0; p<state.getMaxMonsterColumn(); p++) {
+      for (let p=0; p<5; p++) {
         const monsterId = formation[`${r}.${p}`];
-        row += `<div class="position position-${r}-${p}">`;
+        const positionElement = X.createElement(`<div class="position position-${r}-${p}"></div>`)
+        rankElement.appendChild(positionElement);
 
         if (monsterId) {
-          const monsterComponent = MonsterComponent.lookup(monsterId);
-          const monster = BaseMonster.lookup(monsterComponent.code);
-
-          row += `<div class="monster" data-id="${monsterId}">
-            <div class='name'>${monster.getName()}</div>
-            <div class='status'></div>
-            <div class='health-bar'></div>
-          </div>`;
+          positionElement.appendChild(buildMonsterElement(monsterId));
         }
-
-        row += `</div>`
-      }
-
-      row += `</div>`
-
-      X.first('#monsterFormation').appendChild(X.createElement(row));
-    }
-
-    // Hide unoccupied ranks past the second when they are unoccupied. We still keep them in case something is somehow
-    // moved back beyond the second rank.
-    for (let r=2; r<state.getMaxMonsterRank(); r++) {
-      if (state.isMonsterRankOccupied(r) === false) {
-        X.addClass(`#monsterFormation .rank-${r}`,'hide');
       }
     }
 
@@ -55,32 +36,43 @@ global.FormationPanel = (function() {
   function buildPartyFormation(state) {
     const formation = state.getPartyFormation();
 
-    for (let r=0; r<state.getMaxPartyRank(); r++) {
-      let row =`<div class="rank rank-${r}">`;
+    for (let r=0; r<2; r++) {
+      const rankElement = X.createElement(`<div class="rank rank-${r}"></div>`);
+      X.first('#partyFormation').appendChild(rankElement);
 
-      for (let p=0; p<state.getMaxPartyColumn(); p++) {
+      for (let p=0; p<5; p++) {
         const characterId = formation[`${r}.${p}`];
-        row += `<div class="position position-${r}-${p}">`;
+        const positionElement = X.createElement(`<div class="position position-${r}-${p}"></div>`)
+        rankElement.appendChild(positionElement);
 
         if (characterId) {
-          const actor = ActorComponent.lookup(characterId);
-          row += `<div class="character" data-id="${characterId}">
-            <div class='name'>${actor.name}</div>
-            <div class='status'></div>
-            <div class='health-bar'></div>
-          </div>`;
+          positionElement.appendChild(buildCharacterElement(characterId))
         }
-
-        row += `</div>`
       }
-
-      row += `</div>`
-
-      X.first('#partyFormation').appendChild(X.createElement(row));
     }
+
     state.getCharacters().forEach(character => {
       addHealthBar(getCharacterElement(character), character);
     });
+  }
+
+  function buildMonsterElement(monsterId) {
+    const monsterComponent = MonsterComponent.lookup(monsterId);
+    const monster = BaseMonster.lookup(monsterComponent.code);
+
+    return X.createElement(`<div class="monster" data-id="${monsterId}">
+      <div class='name'>${monster.getName()}</div>
+      <div class='status'></div>
+      <div class='health-bar'></div>
+    </div>`);
+  }
+
+  function buildCharacterElement(characterId) {
+    return X.createElement(`<div class="character" data-id="${characterId}">
+      <div class='name'>${Character(characterId).getName()}</div>
+      <div class='status'></div>
+      <div class='health-bar'></div>
+    </div>`);
   }
 
   function addHealthBar(element, entity, hideValues=false) {

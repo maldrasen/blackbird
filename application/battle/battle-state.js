@@ -19,13 +19,6 @@ global.BattleState = function(data) {
   let actingMonster;
   let actingCharacter;
 
-  // Theoretically these can change and should be based off of the position values as defined in the formation (or
-  // from the encounter formation itself) It's fine to leave these hard coded for now though I think.
-  function getMaxMonsterRank() { return 5; }
-  function getMaxMonsterColumn() { return 5; }
-  function getMaxPartyRank() { return 2; }
-  function getMaxPartyColumn() { return 5; }
-
   // The cleanup() function needs to be called after the battle to remove the temporary monsters that were built.
   //
   // TODO: If a monster is to be made permanent it should either be removed from the array or in some way should
@@ -177,10 +170,6 @@ global.BattleState = function(data) {
     addMonster,
     getMonsterFormation: () => { return { ...monsterFormation }; },
     getPartyFormation: () => { return { ...partyFormation }; },
-    getMaxMonsterRank,
-    getMaxMonsterColumn,
-    getMaxPartyRank,
-    getMaxPartyColumn,
 
     getPositionOf,
     getMonsterAtPosition,
