@@ -2,6 +2,10 @@ Blackbird is going to stick to a system like Wizardry or SMT, with a few notable
 
 ### Action Time
 Each combat action takes some amount of time, measured in milliseconds. A basic attack action can take 1000ms, but the character making a basic attack can take multiple swings in that time. Better to have 1 command with 4 separate attacks than 4 commands I think as far as pacing goes. Effects that give the character haste can reduce this time. We should measure haste as a ratio, so if your haste is 0.8 actions will take 80% of the normal action time. Slow effects will use the same haste value, but set it higher than 1.
+ 
+I think a lot of RPGs and tactics games use a very similar system. It's intuitive, allows for fast characters to have more overall turns, though usually something like 20% more often. Physical attacks should naturally have short delay values. Casting a spell could be a two step process, as in the trails games, where your action is to start casting a spell. That spell's casting time is your delay value. When your next turn happens the spell actually goes off, then you get a normal delay until your next turn. Monsters would have the same mechanics, giving you a chance to interrupt their spell casting. 
+
+
 
 ### Armor
 Like Wizardry I want armor to be piecemeal per body part. Each attack with target a specific body part. Some abilities always target the same part (head shot, dick punch, etc.) Most attacks are chosen randomly. Armor only provides damage reduction. Damage will need damage types, including multiple physical damage types (slash, crush, pierce) and elemental damage types (fire, shock, etc)
