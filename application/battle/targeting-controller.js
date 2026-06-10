@@ -2,9 +2,8 @@ global.TargetingController = (function() {
 
   function startBasicAttackTargeting() {
     const monsters = getMonstersInRange();
-    const positions = monsters.map(mon => mon.position)
-    console.log("Monsters in range:",monsters);
-    console.log("Positions:",positions);
+    const positions = monsters.map(mon => mon.position);
+    FormationPanel.startTargeting(positions,[]);
   }
 
   function getMonstersInRange() {

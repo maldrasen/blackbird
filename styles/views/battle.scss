@@ -22,6 +22,7 @@
       margin: 2px;
       border: variables.$border-light;
       box-shadow: variables.$shadow-frame;
+      overflow: hidden;
     }
     .position.acting {
       border-color: rgba(100,33,0,0.75);
@@ -29,15 +30,13 @@
 
     .monster, .character {
       box-sizing: border-box;
-      cursor: pointer;
-      height: 119px;
-      width: 119px;
+      height: 118px;
+      width: 118px;
       padding: 5px;
       font-size: variables.$fs-tiny;
       font-family: "habibi", sans-serif;
       text-align: center;
       overflow: hidden;
-      &:hover { background-color: rgba(20,20,30,0.75); }
     }
   }
 
@@ -57,19 +56,45 @@
       font-size: variables.$fs-bigger;
       border-bottom: variables.$border-heavy;
     }
+    #cancelArea { display:none; }
   }
 
   #textPanel {
-
     cursor: pointer;
 
     #battleText {
       text-align: center;
       padding: 20px;
       font-size: variables.$fs-bigger;
-      font-family: "habibi", sans-serif;
+      //font-family: "habibi", sans-serif;
     }
   }
-
 }
 
+#battleView.normal-mode {
+  #formationPanel {
+    .position.occupied:hover {
+      background-color: rgba(30,30,45,0.66);
+      cursor: pointer;
+    }
+  }
+}
+
+#battleView.target-mode {
+
+  #commandPanel {
+    #commandArea { display:none; }
+    #utilityArea { display:none; }
+    #cancelArea { display:block; }
+  }
+
+  #formationPanel {
+    .position.valid-target {
+      background-color: rgba(20,20,30,0.66);
+      cursor: pointer;
+    }
+    .position.valid-target:hover { background-color: rgba(40,40,60,0.66); }
+    .position.invalid-target { opacity: 0.4; }
+    .position.invalid-target:hover { background-color: rgba(0,0,0,0.6); }
+  }
+}

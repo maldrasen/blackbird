@@ -3,6 +3,7 @@ global.BattleView = (function() {
   function init() {
     BattleText.init();
     CommandPanel.init();
+    FormationPanel.init();
   }
 
   function show() {

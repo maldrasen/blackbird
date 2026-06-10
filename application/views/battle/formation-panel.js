@@ -2,6 +2,12 @@ global.FormationPanel = (function() {
 
   const healthBars = {};
 
+  function init() {
+    X.onClick('#battleView.target-mode .position.valid-target', targetSelected);
+    X.onClick('#battleView.normal-mode .position.occupied', inspectPosition);
+    X.onClick('#commandPanel .cancel-button', stopTargeting);
+  }
+
   function build() {
     const state = BattleController.getState();
 
@@ -14,15 +20,16 @@ global.FormationPanel = (function() {
     const formation = state.getMonsterFormation();
 
     for (let r=1; r >= 0; r--) {
-      const rankElement = X.createElement(`<div class="rank rank-${r}"></div>`);
+      const rankElement = X.createElement(`<div class='rank'></div>`);
       X.first('#monsterFormation').appendChild(rankElement);
 
       for (let p=0; p<5; p++) {
         const monsterId = formation[`${r}.${p}`];
-        const positionElement = X.createElement(`<div class="position position-${r}-${p}"></div>`)
+        const positionElement = X.createElement(`<div class='position' data-position='${r}.${p}'></div>`)
         rankElement.appendChild(positionElement);
 
         if (monsterId) {
+          X.addClass(positionElement, 'occupied');
           positionElement.appendChild(buildMonsterElement(monsterId));
         }
       }
@@ -37,15 +44,16 @@ global.FormationPanel = (function() {
     const formation = state.getPartyFormation();
 
     for (let r=0; r<2; r++) {
-      const rankElement = X.createElement(`<div class="rank rank-${r}"></div>`);
+      const rankElement = X.createElement(`<div class='rank'></div>`);
       X.first('#partyFormation').appendChild(rankElement);
 
       for (let p=0; p<5; p++) {
         const characterId = formation[`${r}.${p}`];
-        const positionElement = X.createElement(`<div class="position position-${r}-${p}"></div>`)
+        const positionElement = X.createElement(`<div class='position' data-position='${r}.${p}'></div>`)
         rankElement.appendChild(positionElement);
 
         if (characterId) {
+          X.addClass(positionElement, 'occupied');
           positionElement.appendChild(buildCharacterElement(characterId))
         }
       }
@@ -118,13 +126,54 @@ global.FormationPanel = (function() {
     });
   }
 
+  function startTargeting(monsterPositions, characterPositions) {
+    X.addClass('#battleView','target-mode');
+    X.removeClass('#battleView','normal-mode');
+
+    X.each('#monsterFormation .position', element => {
+      X.addClass(element, monsterPositions.includes(element.dataset.position) ?
+        'valid-target' :
+        'invalid-target');
+    });
+    X.each('#partyFormation .position', element => {
+      X.addClass(element, characterPositions.includes(element.dataset.position) ?
+        'valid-target' :
+        'invalid-target');
+    });
+  }
+
+  function stopTargeting() {
+    X.removeClass('.position.valid-target','valid-target')
+    X.removeClass('.position.invalid-target','invalid-target')
+    X.removeClass('#battleView','target-mode');
+    X.addClass('#battleView','normal-mode');
+  }
+
+  function inspectPosition(event) {
+    const position = event.target.closest('.position').dataset.position;
+    console.log("Inspect Position",position);
+  }
+
+  function targetSelected(event) {
+    const position = event.target.closest('.position').dataset.position;
+
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    stopTargeting();
+
+    console.log("Target Selected",position);
+  }
+
+
 
   return Object.freeze({
+    init,
     build,
     clearHighlight,
     highlightActingMonster,
     highlightActingCharacter,
     updateAll,
+    startTargeting,
   });
 
 })();
