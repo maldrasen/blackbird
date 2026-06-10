@@ -11,7 +11,7 @@ global.FormationPanel = (function() {
   }
 
   function build() {
-    const state = BattleInterface.getState();
+    const state = BattleSystem.getState();
 
     buildMonsterFormation(state);
     buildPartyFormation(state);

@@ -8,10 +8,10 @@ global.ChangeEquipment = (function() {
   //       probably just a dialog.
 
   function start() {
-    const state = BattleInterface.getState();
+    const state = BattleSystem.getState();
     const character = Character(state.getActingCharacter());
 
-    BattleInterface.showCharacterResult({
+    BattleSystem.finishCharacterTurn({
       time: 500,
       messages: [{ text:`TODO: ${character.getName()} changes equipment...` }],
     });

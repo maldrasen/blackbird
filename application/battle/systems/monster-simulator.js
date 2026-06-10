@@ -20,7 +20,7 @@ global.MonsterSimulator = (function() {
   // checks them. If the monster can't hit any target with any action this function returns null, indicating that the
   // monster must pass its turn, defending, making rude gestures, jacking off, whatever.
   function pickTarget(monster) {
-    const state = BattleInterface.getState();
+    const state = BattleSystem.getState();
     const characters = state.getCharacters();
 
     while (characters.length > 0) {

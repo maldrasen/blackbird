@@ -14,7 +14,7 @@ global.Monster = function(id) {
   // table (which should be nothing) though it could also be used to completely reset the threat if there's some kind
   // of effect that would do that.
   function populateThreatTable() {
-    const state = BattleInterface.getState();
+    const state = BattleSystem.getState();
     const threatTable = {};
 
     // We start with some random "I just don't like your face" threat.

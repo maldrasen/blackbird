@@ -38,7 +38,7 @@ global.BattleText = (function() {
   // TODO: Add an optional mode where we just show all the messages at once rather than clicking though them all.
   function advanceText() {
     if (messageList == null || messageList.length === 0) {
-      return BattleInterface.advanceBattle();
+      return BattleSystem.advanceBattle();
     }
 
     const next = messageList.shift();
@@ -57,7 +57,7 @@ global.BattleText = (function() {
   // TODO: The description and start phrases will work for most encounter types, though some will need their own start
   //       and ambush phrases.
   function showBattleStartText() {
-    const state = BattleInterface.getState();
+    const state = BattleSystem.getState();
     const encounter = state.getEncounter();
     const phrase = StringHelper.titlecase(getStartPhrase(state.getAmbushState()).replace(`XXX`, encounter.getDescription()));
     addText(phrase,{ size:'large', color:'important' });

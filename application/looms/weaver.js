@@ -98,11 +98,12 @@ global.Weaver = function(context) {
     }
   }
 
+  // TODO: Define these colors somewhere else.
   function styleFor(key) {
     switch(key) {
-      case 'abl': return `color: rgb(160,120,150)`;
-      case 'act': return `color: rgb(150,150,200)`;
-      case 'mon': return `color: rgb(200,150,120)`;
+      case 'abl': return `color: rgb(160,120,150)`; // Ability
+      case 'act': return `color: rgb(150,150,200)`; // Acting Character or Monster
+      case 'tar': return `color: rgb(200,150,120)`; // Target
       default: return `color:red`;
     }
   }

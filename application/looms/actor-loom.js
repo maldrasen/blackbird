@@ -40,6 +40,7 @@ global.ActorLoom = (function() {
       case `name's`: return EnglishHelper.possessive(Character(id).getName());
       case `fullName`: return Character(id).getFullName();
       case `baseName`: return findBaseName(id);
+      case `baseName's`: return EnglishHelper.possessive(findBaseName(id));
       case `primaryWeaponName`: return getWeaponName(id,EquipmentSlot.primary);
       default: return Weaver({}).formatWarning(`[Actor:${token}]`)
     }

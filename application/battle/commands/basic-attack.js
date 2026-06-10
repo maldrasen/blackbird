@@ -32,7 +32,7 @@ global.BasicAttack = (function() {
   // fumbles. An attacker can crit (doing the best they can) but still miss their target.
 
   function execute(attacker, target) {
-    const state = BattleInterface.getState();
+    const state = BattleSystem.getState();
     const attack = findBasicAttack(attacker);
 
     const baseWeapon = BaseWeapon.lookup(attack.base);
@@ -48,7 +48,7 @@ global.BasicAttack = (function() {
     }
 
     const context = buildContext({
-      C: attacker,
+      A: attacker,
       T: target,
       hitLocation: hitLocation,
     }, attackRoll, defendRoll);
@@ -65,8 +65,8 @@ global.BasicAttack = (function() {
     function processHit() {
       // Because the hit happens these status effects only apply to this single
       // attack, so they're not really status effects then are they?
-      if (context.attack === 'crit') { addStatus(attacker,'C','do-extra-damage') }
-      if (context.attack === 'fumble') { addStatus(attacker,'C','do-less-damage') }
+      if (context.attack === 'crit') { addStatus(attacker,'A','do-extra-damage') }
+      if (context.attack === 'fumble') { addStatus(attacker,'A','do-less-damage') }
       if (context.defend === 'crit') { addStatus(target,'T','take-less-damage') }
       if (context.defend === 'fumble') { addStatus(target,'T','take-more-damage') }
 
@@ -75,7 +75,7 @@ global.BasicAttack = (function() {
       const damage = Math.round((damageRoll / 100) * strength);
 
       result.messages.push({
-        text: weaver.weave(`Attack hit {T:name's} ${hitLocation} for ${damage} damage!`)
+        text: weaver.weave(`Attack hit {T:baseName's} ${hitLocation} for ${damage} damage!`)
       });
 
       BattleSystem.applyDamage(target, damage);
@@ -84,22 +84,21 @@ global.BasicAttack = (function() {
     }
 
     function processMiss() {
-      if (context.attack === 'crit') { addStatus(attacker,'C','increase-hit-chance'); }
-      if (context.attack === 'fumble') { addStatus(attacker,'C','become-easier-to-hit'); }
+      if (context.attack === 'crit') { addStatus(attacker,'A','increase-hit-chance'); }
+      if (context.attack === 'fumble') { addStatus(attacker,'A','become-easier-to-hit'); }
       if (context.defend === 'crit') { addStatus(target,'T','become-harder-to-hit') }
       if (context.defend === 'fumble') { addStatus(target,'T','take-more-damage') }
 
       result.messages.push({
-        text: weaver.weave(`Attack missed {T:name's} ${hitLocation}`)
+        text: weaver.weave(`Attack missed {T:baseName's} ${hitLocation}`)
       });
 
       return result;
     }
 
     function addStatus(entity, key, status) {
-      const name = state.isMonster(entity) ? `{${key}:baseName}` : `{${key}:name}`
       result.messages.push({
-        text: weaver.weave(`Add Status to ${name} - ${status}`)
+        text: weaver.weave(`Add Status to {${key}:baseName} - ${status}`)
       });
     }
 
@@ -114,7 +113,7 @@ global.BasicAttack = (function() {
   // TODO: It's possible a character won't have a primary weapon equipped. We could add a 'fist' base weapon, or make
   //       martial arts a more complex system or we don't allow unequipped characters to make basic attacks.
   function findBasicAttack(attacker) {
-    if (BattleInterface.getState().isMonster(attacker)) {
+    if (BattleSystem.getState().isMonster(attacker)) {
       return Monster(attacker).getBasicAttack();
     }
 

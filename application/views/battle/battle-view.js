@@ -16,7 +16,7 @@ global.BattleView = (function() {
   }
 
   function update() {
-    const state = BattleInterface.getState();
+    const state = BattleSystem.getState();
     FormationPanel.updateAll(state);
   }
 
