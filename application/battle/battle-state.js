@@ -60,11 +60,15 @@ global.BattleState = function(data) {
     throw new Error(`Entity[${id}] is not in a battle formation.`);
   }
 
-  function getMonsterAtPosition(rank, position) {
+  // Will either accept a rank and position or a string in the format r.p
+  function getMonsterAtPosition(rank, position=null) {
+    if (position == null) { return monsterFormation[rank] || null }
     return monsterFormation[`${rank}.${position}`] || null;
   }
 
-  function getCharacterAtPosition(rank, position) {
+  // Will either accept a rank and position or a string in the format r.p
+  function getCharacterAtPosition(rank, position=null) {
+    if (position == null) { return partyFormation[rank] || null }
     return partyFormation[`${rank}.${position}`] || null;
   }
 

@@ -2,6 +2,8 @@ global.FormationPanel = (function() {
 
   const healthBars = {};
 
+  let targetModeCallback;
+
   function init() {
     X.onClick('#battleView.target-mode .position.valid-target', targetSelected);
     X.onClick('#battleView.normal-mode .position.occupied', inspectPosition);
@@ -126,7 +128,9 @@ global.FormationPanel = (function() {
     });
   }
 
-  function startTargeting(monsterPositions, characterPositions) {
+  function startTargeting(monsterPositions, characterPositions, callback) {
+    targetModeCallback = callback;
+
     X.addClass('#battleView','target-mode');
     X.removeClass('#battleView','normal-mode');
 
@@ -154,6 +158,7 @@ global.FormationPanel = (function() {
     console.log("Inspect Position",position);
   }
 
+  // Targeting always returns a position because some abilities (like AoE attacks) might target an empty position.
   function targetSelected(event) {
     const position = event.target.closest('.position').dataset.position;
 
@@ -161,10 +166,9 @@ global.FormationPanel = (function() {
     event.stopImmediatePropagation();
     stopTargeting();
 
-    console.log("Target Selected",position);
+    targetModeCallback(position);
+    targetModeCallback = null;
   }
-
-
 
   return Object.freeze({
     init,

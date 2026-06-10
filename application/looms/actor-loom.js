@@ -39,7 +39,7 @@ global.ActorLoom = (function() {
       case `name`: return Character(id).getName();
       case `name's`: return EnglishHelper.possessive(Character(id).getName());
       case `fullName`: return Character(id).getFullName();
-      case `baseName`: return Monster(id).getBaseName();
+      case `baseName`: return findBaseName(id);
       case `primaryWeaponName`: return getWeaponName(id,EquipmentSlot.primary);
       default: return Weaver({}).formatWarning(`[Actor:${token}]`)
     }
@@ -63,14 +63,25 @@ global.ActorLoom = (function() {
   // get the name of the equipped item. Some weapons will have interesting names, but basic equipment needs to get the
   // name from the base weapon name.
   function getWeaponName(id, slot) {
-    const equipped = EquipmentComponent.lookup(id)[slot];
+    const equipped = EquipmentManager(id).getSlot(slot);
     const monster = MonsterComponent.lookup(id);
 
     if (equipped == null && monster) {
       return Monster(id).getBasicAttack().name;
     }
+    if (equipped) {
+      return Weapon(equipped).getName();
+    }
 
-    throw new Error(`TODO: Handle actual equipment.`);
+    throw new Error(`TODO: Attacking with fists?`);
+  }
+
+  // Monsters have both names and base names because the monster factory builds the monster with an actor component.
+  // (Which has the actor name) In the battle UI though it doesn't make sense to call monsters by their first name, so
+  // we call them by the name of the base monster they're derived from. The attack text is used by both the characters
+  // and monsters though, so when the attack text is for a character we use the character's actual name.
+  function findBaseName(id) {
+    return MonsterComponent.lookup(id) ? Monster(id).getBaseName() : Character(id).getName();
   }
 
   return Object.freeze({ weave });

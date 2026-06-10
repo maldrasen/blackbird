@@ -34,6 +34,7 @@ global.BasicAttack = (function() {
   function execute(attacker, target) {
     const state = BattleController.getState();
     const attack = findBasicAttack(attacker);
+
     const baseWeapon = BaseWeapon.lookup(attack.base);
     const attackRoll = SkillCheck(attacker, baseWeapon.getSkill());
     const defendRoll = SkillCheck(target, 'dodge');

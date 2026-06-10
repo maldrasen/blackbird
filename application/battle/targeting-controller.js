@@ -1,9 +1,15 @@
 global.TargetingController = (function() {
 
   function startBasicAttackTargeting() {
+    const state = BattleController.getState()
     const monsters = getMonstersInRange();
     const positions = monsters.map(mon => mon.position);
-    FormationPanel.startTargeting(positions,[]);
+    FormationPanel.startTargeting(positions, [], position => {
+      BattleController.showCharacterResult(BasicAttack.execute(
+        state.getActingCharacter(),
+        state.getMonsterAtPosition(position)
+      ));
+    });
   }
 
   function getMonstersInRange() {
