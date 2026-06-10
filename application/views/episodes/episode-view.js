@@ -1,19 +1,19 @@
 global.EpisodeView = (function() {
 
   function init() {
-    X.onClick('#episodeButtons .continue-button', EpisodeController.nextPage);
-    X.onCodeDown(KeyCodes.Space, isVisible, EpisodeController.nextPage);
+    X.onClick('#episodeButtons .continue-button', EpisodeSystem.nextPage);
+    X.onCodeDown(KeyCodes.Space, isVisible, EpisodeSystem.nextPage);
   }
 
   function show() {
-    const episode = EpisodeController.getEpisode();
+    const episode = EpisodeSystem.getEpisode();
 
     MainContent.setMainContent(episode.getContent());
     MainContent.setBackground(episode.getBackground());
 
     Console.log("Show",{ system:"EpisodeView", data:{ code:episode.getCode() }});
 
-    EpisodeController.nextPage();
+    EpisodeSystem.nextPage();
   }
 
   function setPageContent(episodePage) {
@@ -29,7 +29,7 @@ global.EpisodeView = (function() {
     // the content might call a contentFunction() which might need to modify
     // the buttons.
     const template = episodePage.getContent();
-    const content = Weaver(EpisodeController.getContext()).weave(template);
+    const content = Weaver(EpisodeSystem.getContext()).weave(template);
 
     X.fill('#episodePage',X.createElement(content));
   }

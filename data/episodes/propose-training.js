@@ -1,21 +1,21 @@
 Episode.register('propose-training',{
   layout: 'centered',
   pages: [{ contentFunction:generateContent, buttons:[
-    { id:'proposeContinueButton', label:'Continue', callback:EpisodeController.endEpisode },
-    { id:'proposeNevermindButton', classname:'hide', label:'Never mind…', callback:EpisodeController.endEpisode },
+    { id:'proposeContinueButton', label:'Continue', callback:EpisodeSystem.endEpisode },
+    { id:'proposeNevermindButton', classname:'hide', label:'Never mind…', callback:EpisodeSystem.endEpisode },
   ]}],
   endFunction: endProposition,
 });
 
 function endProposition() {
-  const partner = EpisodeController.getPartner();
+  const partner = EpisodeSystem.getPartner();
 
   // If no alternative has been set then we return to the previous mode,
   // otherwise we need to somehow adjust the training state before the training
   // begins. We can probably send context like that in the command so it
   // shouldn't be a problem. Stuff like bondage and grappling will need to be
   // implemented first, as forcing your partner is essentially combat with them.
-  if (EpisodeController.getPropertyValue('attitude') === TrainingAttitude.unwilling) {
+  if (EpisodeSystem.getPropertyValue('attitude') === TrainingAttitude.unwilling) {
     return GameState.returnToPreviousMode();
   }
 
@@ -23,12 +23,12 @@ function endProposition() {
 }
 
 function generateContent() {
-  const personality = Personality(EpisodeController.getPartner());
+  const personality = Personality(EpisodeSystem.getPartner());
   const archetype = personality.getArchetype();
   const attitude = personality.attitudeTowardsTraining();
-  const template = Dialog.lookupTemplate(archetype, getDialogKey(attitude), EpisodeController.getContext());
+  const template = Dialog.lookupTemplate(archetype, getDialogKey(attitude), EpisodeSystem.getContext());
 
-  EpisodeController.setPropertyValue('attitude',attitude);
+  EpisodeSystem.setPropertyValue('attitude',attitude);
 
   if (attitude !== TrainingAttitude.unwilling) {
     return `<p>${template}</p>`

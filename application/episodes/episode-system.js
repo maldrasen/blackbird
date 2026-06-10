@@ -1,4 +1,4 @@
-global.EpisodeController = (function() {
+global.EpisodeSystem = (function() {
   let state;
 
   function startEpisode(code, context) {

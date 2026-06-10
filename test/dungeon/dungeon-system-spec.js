@@ -1,4 +1,4 @@
-describe("DungeonController", function() {
+describe("DungeonSystem", function() {
 
   describe("changeLevel()", function() {
 

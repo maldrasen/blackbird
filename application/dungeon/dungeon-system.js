@@ -1,4 +1,4 @@
-global.DungeonController = (function() {
+global.DungeonSystem = (function() {
 
   let state;
 
