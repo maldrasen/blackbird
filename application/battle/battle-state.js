@@ -110,6 +110,12 @@ global.BattleState = function(data) {
   function getCharacters() { return Object.values(partyFormation); }
   function isMonster(id) { return getMonsters().includes(id); }
 
+  function removeFromFormation(id) {
+    const formation = isMonster(id) ? monsterFormation : partyFormation;
+    const position = getPositionOf(id);
+    delete formation[position];
+  }
+
   // === Turn Order ====================================================================================================
 
   // The turn order is modeled as a simple queue, ordered by the time value of the actors in the array. Once an entity
@@ -178,14 +184,14 @@ global.BattleState = function(data) {
     const index = turnOrderIndex(key);
 
     if (index < 0) {
-      throw `Key:${key} is not in turn order.`
+      throw new Error(`Key:${key} is not in turn order.`);
     }
 
     turnOrder.splice(index, 1)
   }
 
-  // Conditions are for character states that are not status effects (as status effects are their own entities that
-  // are part of the turn order) Currently the only status I can think of is "dead" so this might just be used to
+  // Conditions are for character states that are not status effects; status effects are their own entities that
+  // are part of the turn order. Currently the only status I can think of is "dead" so this might just be used to
   // track deaths.
   function addCondition(id, key) {
     if (conditions[id]==null) { conditions[id]=[] }
@@ -208,7 +214,6 @@ global.BattleState = function(data) {
     actingMonster = id;
   }
 
-
   return Object.freeze({
     cleanup,
     getAfterBattle: () => { return afterBattle; },
@@ -216,6 +221,7 @@ global.BattleState = function(data) {
     addMonster,
     getMonsterFormation: () => { return { ...monsterFormation }; },
     getPartyFormation: () => { return { ...partyFormation }; },
+    removeFromFormation,
 
     getPositionOf,
     isInFront,

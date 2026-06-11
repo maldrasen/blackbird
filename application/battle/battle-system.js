@@ -100,20 +100,36 @@ global.BattleSystem = (function() {
   function killEntity(id) {
     console.log(`=== ${id} was killed ===`);
 
+    const isMonster = state.isMonster(id);
+    const isInFront = state.isInFront(id);
+
     state.addCondition(id,'dead');
-    state.removeFromTurnOrder({ type:(state.isMonster(id) ? 'monster' : 'character'), id:id });
+    state.removeFromTurnOrder({ type:(isMonster ? 'monster' : 'character'), id:id });
 
     BattleInterface.killEntity(id);
 
-    if (state.isInFront(id)) {
+    // Remove characters from threat tables.
+    if (isMonster === false) {
+      state.getMonsters().forEach(mon => {
+        Monster(mon).updateThreat(id, 0);
+      })
+    }
+
+    // If this character is in the back rank they can be safely removed.
+    if (isInFront === false) {
+      state.removeFromFormation(id);
+    }
+
+    if (isInFront) {
       const column = state.getColumnContaining(id);
-      if (column.back.id != null) {
-        console.log(`Entity:${id} was killed. Entity:${column.back.id} is behind them and must move forward.`);
-        FormationManager.moveForwardOnDeath(column);
-      }
+
+      // No other character is behind this one, it can be removed.
+      if (column.back.id) { state.removeFromFormation(id); }
+
+      // A character is in the rank behind this one, it must move forward.
+      if (column.back.id != null) { FormationManager.moveForwardOnDeath(column); }
     }
   }
-
 
   return Object.freeze({
     startBattle,

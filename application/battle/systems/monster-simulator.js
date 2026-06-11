@@ -21,7 +21,7 @@ global.MonsterSimulator = (function() {
   // monster must pass its turn, defending, making rude gestures, jacking off, whatever.
   function pickTarget(monster) {
     const state = BattleSystem.getState();
-    const characters = state.getCharacters();
+    const characters = state.getCharacters().filter(id => state.isAlive(id));
 
     while (characters.length > 0) {
       const target = getHighestThreatFrom(monster, characters);

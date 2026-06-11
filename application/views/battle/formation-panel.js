@@ -199,7 +199,20 @@ global.FormationPanel = (function() {
   }
 
   function killEntity(id) {
-    console.log("Kill Entity in formation panel");
+    const state = BattleSystem.getState();
+    const element = state.isMonster(id) ? getMonsterElement(id) : getCharacterElement(id);
+    const position = element.closest('.position');
+
+    X.addClass(element,'dead');
+
+    setTimeout(()=>{
+      X.addClass(element,'removed');
+    },1);
+
+    setTimeout(()=>{
+      element.remove();
+      X.removeClass(position,'occupied');
+    },_battleKillEffectTime);
   }
 
   return Object.freeze({
