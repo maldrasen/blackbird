@@ -88,7 +88,7 @@ global.MainContent = (function() {
   }
 
   function isHalted() {
-    return X.hasClass('#haltCover','hide')
+    return X.hasClass('#haltCover','hide') === false;
   }
 
   return {

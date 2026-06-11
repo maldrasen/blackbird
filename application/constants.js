@@ -20,7 +20,6 @@ global._humanFemaleRatio = 1500 / 1750;   // (Actual female average height is 16
 
 // === Battle ===
 global._battleDamageEffectTime = 500;
-
 global._battleKillEffectTime = 1000;
 
 // === Dungeon ===

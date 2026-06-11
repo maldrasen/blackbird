@@ -28,12 +28,18 @@ global.BattleInterface = (function() {
     FormationPanel.killEntity(id);
   }
 
+  function moveForwardOnDeath(columnData) {
+    if (Tests.running()) { return; }
+    FormationPanel.moveForwardOnDeath(columnData);
+  }
+
   return Object.freeze({
     showCharacterCommands,
     showCharacterResult,
     showMonsterResult,
     showDamageEffect,
     killEntity,
+    moveForwardOnDeath,
   });
 
 })();

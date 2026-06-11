@@ -1,9 +1,10 @@
 global.FormationManager = (function() {
 
-  // Moves the character in the back rank to the front. The character in the front should be dead, so it's removed
-  // from the formation, replaced by the character that was behind.
-  function moveForwardOnDeath(columnData) {
-    console.log("Column Data:",columnData);
+  // This would overwrite the other entity, so only call this in the case of the death of an entity.
+  function moveForwardOnDeath(column) {
+    column.side === 'monster' ?
+      BattleSystem.getState().setMonsterPosition(column.back.id, column.front.position) :
+      BattleSystem.getState().setCharacterPosition(column.back.id, column.front.position);
   }
 
   return Object.freeze({

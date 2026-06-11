@@ -127,7 +127,10 @@ global.BattleSystem = (function() {
       if (column.back.id) { state.removeFromFormation(id); }
 
       // A character is in the rank behind this one, it must move forward.
-      if (column.back.id != null) { FormationManager.moveForwardOnDeath(column); }
+      if (column.back.id != null) {
+        FormationManager.moveForwardOnDeath(column);
+        BattleInterface.moveForwardOnDeath(column);
+      }
     }
   }
 

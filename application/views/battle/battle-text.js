@@ -39,7 +39,9 @@ global.BattleText = (function() {
   }
 
   function advanceBattle() {
-    BattleSystem.advanceBattle();
+    if (MainContent.isHalted() === false) {
+      BattleSystem.advanceBattle();
+    }
   }
 
   // TODO: The description and start phrases will work for most encounter types, though some will need their own start

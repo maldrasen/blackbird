@@ -1,5 +1,7 @@
 global.BattleView = (function() {
 
+  let blocked = false;
+
   function init() {
     BattleText.init();
     CommandPanel.init();
@@ -9,7 +11,6 @@ global.BattleView = (function() {
   function show() {
     MainContent.setMainContent("views/battle.html");
     MainContent.setBackground("backgrounds/battle.jpg");
-
     FormationPanel.build();
     BattleText.build();
     BattleText.showBattleStartText();

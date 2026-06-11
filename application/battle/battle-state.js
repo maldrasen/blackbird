@@ -61,6 +61,16 @@ global.BattleState = function(data) {
     throw new Error(`Entity[${id}] is not in a battle formation.`);
   }
 
+  function setMonsterPosition(id, position) {
+    delete monsterFormation[getPositionOf(id)];
+    monsterFormation[position] = id;
+  }
+
+  function setCharacterPosition(id, position) {
+    delete partyFormation[getPositionOf(id)];
+    partyFormation[position] = id;
+  }
+
   function isInFront(id) {
     return getPositionOf(id)[0] === '0';
   }
@@ -224,6 +234,8 @@ global.BattleState = function(data) {
     removeFromFormation,
 
     getPositionOf,
+    setMonsterPosition,
+    setCharacterPosition,
     isInFront,
     isInBack,
     getColumnContaining,

@@ -128,12 +128,16 @@ global.FormationPanel = (function() {
 
   function updateAll(state) {
     state.getMonsters().forEach(monster => {
-      const health = HealthComponent.lookup(monster)
-      healthBars[monster].setCurrentValue(health.currentHealth);
+      if (state.isAlive(monster)) {
+        const health = HealthComponent.lookup(monster);
+        healthBars[monster].setCurrentValue(health.currentHealth);
+      }
     });
     state.getCharacters().forEach(character => {
-      const health = HealthComponent.lookup(character)
-      healthBars[character].setCurrentValue(health.currentHealth);
+      if (state.isAlive(character)) {
+        const health = HealthComponent.lookup(character);
+        healthBars[character].setCurrentValue(health.currentHealth);
+      }
     });
   }
 
@@ -179,7 +183,6 @@ global.FormationPanel = (function() {
     targetModeCallback = null;
   }
 
-
   // Data: { entity, damage, type, isCrit, killed }
   function showDamageEffect(data) {
     FlashSquare.flash({
@@ -215,6 +218,45 @@ global.FormationPanel = (function() {
     },_battleKillEffectTime);
   }
 
+  // Moves the character in the back rank to the front. The character in the front should be dead, so it's removed
+  // from the formation, replaced by the character that was behind.
+  function moveForwardOnDeath(columnData) {
+    MainContent.halt();
+
+    const isMonster = (columnData.side === 'monster');
+    const formationId = isMonster ? `#monsterFormation` : `#partyFormation`;
+    const element = isMonster ? getMonsterElement(columnData.back.id) : getCharacterElement(columnData.back.id);
+    const targetElement = X.first(`${formationId} [data-position='${columnData.front.position}']`)
+    const targetCoords = X.getPosition(targetElement);
+    const currentCoords = X.getPosition(element);
+
+    X.removeClass(element.closest('.position'),'occupied');
+
+    setTimeout(() => {
+      X.addClass(element,'moving');
+      element.setAttribute('style',[
+        `left:${currentCoords.left}px;`,
+        `top:${currentCoords.top}px;`,
+      ].join(' '))
+    },_battleKillEffectTime + 10)
+
+    setTimeout(() => {
+      element.setAttribute('style',[
+        `left:${targetCoords.left + 1}px;`,
+        `top:${targetCoords.top + 1}px;`,
+      ].join(' '));
+
+    },_battleKillEffectTime + 11);
+
+    setTimeout(() => {
+      targetElement.appendChild(element);
+      X.addClass(targetElement,'occupied');
+      X.removeClass(element,'moving');
+      element.removeAttribute('style');
+      MainContent.unhalt();
+    },_battleKillEffectTime + 512);
+  }
+
   return Object.freeze({
     init,
     build,
@@ -225,6 +267,7 @@ global.FormationPanel = (function() {
     startTargeting,
     showDamageEffect,
     killEntity,
+    moveForwardOnDeath,
   });
 
 })();

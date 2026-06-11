@@ -48,6 +48,14 @@
       &.dead.removed {
         opacity: 0;
       }
+
+      &.moving {
+        position: absolute;
+        z-index: variables.$z-effects;
+        transition-property: left, top;
+        transition-duration: 500ms;
+        transition-timing-function: ease-in-out;
+      }
     }
 
   }
