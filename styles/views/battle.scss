@@ -37,7 +37,19 @@
       font-family: "habibi", sans-serif;
       text-align: center;
       overflow: hidden;
+
+      &.dead {
+        filter: grayscale(1);
+        transition-property: opacity;
+        transition-timing-function: ease-out;
+        transition-duration: 1000ms;
+        opacity: 1;
+      }
+      &.dead.removed {
+        opacity: 0;
+      }
     }
+
   }
 
   .bottom-panel {

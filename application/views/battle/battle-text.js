@@ -12,12 +12,10 @@ global.BattleText = (function() {
     `You ambush XXX!`
   ];
 
-  let messageList;
-
   function init() {
-    X.onCodeDown('Space', isTextVisible, advanceText);
-    X.onCodeDown('Enter', isTextVisible, advanceText);
-    X.onClick('#textPanel', advanceText);
+    X.onCodeDown('Space', isTextVisible, advanceBattle);
+    X.onCodeDown('Enter', isTextVisible, advanceBattle);
+    X.onClick('#textPanel', advanceBattle);
   }
 
   function build() { ScrollingPanel({ id:'#textScroll' }); }
@@ -30,28 +28,18 @@ global.BattleText = (function() {
   }
 
   function setMessages(messages) {
-    messageList = messages;
     clear();
-    advanceText();
+
+    messages.forEach(message => {
+      let classname = ``;
+      if (message.size === 'large') { classname += `fs-huge `; }
+      if (message.color === 'important') { classname += `fg-strong `; }
+      X.append('#battleText',X.createElement(`<div class="${classname}">${message.text}</div>`));
+    });
   }
 
-  // TODO: Add an optional mode where we just show all the messages at once rather than clicking though them all.
-  function advanceText() {
-    if (messageList == null || messageList.length === 0) {
-      return BattleSystem.advanceBattle();
-    }
-
-    const next = messageList.shift();
-    addText(next.text, next.properties);
-  }
-
-  function addText(text, properties={}) {
-    let classname = ``;
-
-    if (properties.size === 'large') { classname += `fs-huge `; }
-    if (properties.color === 'important') { classname += `fg-strong `; }
-
-    X.append('#battleText',X.createElement(`<div class="${classname}">${text}</div>`));
+  function advanceBattle() {
+    BattleSystem.advanceBattle();
   }
 
   // TODO: The description and start phrases will work for most encounter types, though some will need their own start
@@ -60,7 +48,7 @@ global.BattleText = (function() {
     const state = BattleSystem.getState();
     const encounter = state.getEncounter();
     const phrase = StringHelper.titlecase(getStartPhrase(state.getAmbushState()).replace(`XXX`, encounter.getDescription()));
-    addText(phrase,{ size:'large', color:'important' });
+    setMessages([{ text:phrase, size:'large', color:'important' }]);
   }
 
   function getStartPhrase(ambushState) {
@@ -76,7 +64,6 @@ global.BattleText = (function() {
     hide,
     show,
     setMessages,
-    addText,
     showBattleStartText,
   });
 

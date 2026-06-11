@@ -23,11 +23,17 @@ global.BattleInterface = (function() {
     FormationPanel.showDamageEffect(data);
   }
 
+  function killEntity(id) {
+    if (Tests.running()) { return; }
+    FormationPanel.killEntity(id);
+  }
+
   return Object.freeze({
     showCharacterCommands,
     showCharacterResult,
     showMonsterResult,
     showDamageEffect,
+    killEntity,
   });
 
 })();

@@ -44,6 +44,12 @@ global.BattleSystem = (function() {
     next.time += result.time;
     state.setTurnOrder(next);
 
+    // If no messages have been set then this monster has either skipped their turn or
+    // they're doing something silently. Either way we can simply advance the battle.
+    if (result.messages == null || result.messages.length === 0) {
+      return advanceBattle();
+    }
+
     BattleInterface.showMonsterResult(result);
   }
 
@@ -92,8 +98,12 @@ global.BattleSystem = (function() {
   // Remove from turn order.
   // Remove monster from formation once the death animation finishes.
   function killEntity(id) {
-
     console.log(`=== ${id} was killed ===`);
+
+    state.addCondition(id,'dead');
+    state.removeFromTurnOrder({ type:(state.isMonster(id) ? 'monster' : 'character'), id:id });
+
+    BattleInterface.killEntity(id);
 
     if (state.isInFront(id)) {
       const column = state.getColumnContaining(id);
@@ -102,17 +112,8 @@ global.BattleSystem = (function() {
         FormationManager.moveForwardOnDeath(column);
       }
     }
-
-    // May need to do something different for monsters and players.
-    // (state.isMonster(id) ? killMonster(id) : killCharacter(id));
   }
 
-  function killMonster(id) {
-    console.log("TODO: Kill Monster")
-  }
-  function killCharacter(id) {
-    console.log("TODO: Kill Character")
-  }
 
   return Object.freeze({
     startBattle,

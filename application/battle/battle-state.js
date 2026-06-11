@@ -14,6 +14,7 @@ global.BattleState = function(data) {
   //       the front rank.
   const partyFormation = { ...PartyConfiguration.getConfiguration() };
   const monsterFormation = {};
+  const conditions = {};
 
   let ambushState = 'normal';
   let actingMonster;
@@ -86,8 +87,6 @@ global.BattleState = function(data) {
     return column;
   }
 
-
-
   // Will either accept a rank and position or a string in the format r.p
   function getMonsterAtPosition(rank, position=null) {
     if (position == null) { return monsterFormation[rank] || null }
@@ -116,7 +115,7 @@ global.BattleState = function(data) {
   // The turn order is modeled as a simple queue, ordered by the time value of the actors in the array. Once an entity
   // has an entry in the array, we can update its time value as the other values should be immutable.
   //   data.time - time for next scheduled action
-  //   data.type - monster, character, status-effect
+  //   data.type - monster, character, status
   //   data.id - entity id (status effects will also have the id of the entity with the status effect)
   //   data.code - code for status effects
   function setTurnOrder(data) {
@@ -156,7 +155,9 @@ global.BattleState = function(data) {
     }
   }
 
+  // Data: { type, id, code } or { type, id }
   function buildKey(data) {
+    Validate.isIn('data.type', data.type, ['monster','character','status']);
     return data.code ? `${data.type}.${data.id}.${data.code}` : `${data.type}.${data.id}`;
   }
 
@@ -171,6 +172,7 @@ global.BattleState = function(data) {
     return { ...turnOrder[0] };
   }
 
+  // Data: { type, id, code } or { type, id }
   function removeFromTurnOrder(data) {
     const key = buildKey(data);
     const index = turnOrderIndex(key);
@@ -180,6 +182,18 @@ global.BattleState = function(data) {
     }
 
     turnOrder.splice(index, 1)
+  }
+
+  // Conditions are for character states that are not status effects (as status effects are their own entities that
+  // are part of the turn order) Currently the only status I can think of is "dead" so this might just be used to
+  // track deaths.
+  function addCondition(id, key) {
+    if (conditions[id]==null) { conditions[id]=[] }
+    conditions[id].push(key);
+  }
+
+  function isAlive(id) {
+    return conditions[id] == null || conditions[id].includes('dead') === false;
   }
 
   function setActingCharacter(id) {
@@ -220,6 +234,9 @@ global.BattleState = function(data) {
     getAmbushState: () => { return ambushState; },
     getNext,
     removeFromTurnOrder,
+
+    addCondition,
+    isAlive,
 
     setActingCharacter,
     getActingCharacter: () => { return actingCharacter; },

@@ -198,6 +198,10 @@ global.FormationPanel = (function() {
     throw new Error(`TODO: Implement colors for damage type ${data.type}`)
   }
 
+  function killEntity(id) {
+    console.log("Kill Entity in formation panel");
+  }
+
   return Object.freeze({
     init,
     build,
@@ -207,6 +211,7 @@ global.FormationPanel = (function() {
     updateAll,
     startTargeting,
     showDamageEffect,
+    killEntity,
   });
 
 })();
