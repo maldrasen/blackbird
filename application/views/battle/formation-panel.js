@@ -195,6 +195,10 @@ global.FormationPanel = (function() {
   // If the data type is an object, rather than a string it's a combined data type, for now we can assume it's
   // one of the physical damage types, at least for now. Otherwise we can find the type with the highest percentage.
   function getDamageColor(data) {
+    if (data.type == null) {
+      throw new Error(`Undefined Damage Type in ${JSON.stringify(data)}`);
+    }
+
     const type = (typeof data.type === 'object') ? DamageType.pierce : data.type;
 
     if ([DamageType.crush, DamageType.pierce, DamageType.slash].includes(type)) {
@@ -229,11 +233,23 @@ global.FormationPanel = (function() {
     const isMonster = (columnData.side === 'monster');
     const formationId = isMonster ? `#monsterFormation` : `#partyFormation`;
     const element = isMonster ? getMonsterElement(columnData.back.id) : getCharacterElement(columnData.back.id);
-    const targetElement = X.first(`${formationId} [data-position='${columnData.front.position}']`)
+    const target = X.first(`${formationId} [data-position='${columnData.front.position}']`)
+    moveEntity(element,target)
+  }
+
+  function moveInwardOnDeath(moves) {
+    moves.forEach(move => {
+      const element = getMonsterElement(move.id);
+      const target = X.first(`#monsterFormation [data-position='${move.to}']`);
+      moveEntity(element,target);
+    });
+  }
+
+  function moveEntity(element,targetElement) {
+    X.removeClass(element.closest('.position'),'occupied');
+
     const targetCoords = X.getPosition(targetElement);
     const currentCoords = X.getPosition(element);
-
-    X.removeClass(element.closest('.position'),'occupied');
 
     setTimeout(() => {
       X.addClass(element,'moving');
@@ -249,14 +265,14 @@ global.FormationPanel = (function() {
         `top:${targetCoords.top + 1}px;`,
       ].join(' '));
 
-    },_battleKillEffectTime + 11);
+    },_battleKillEffectTime + 15);
 
     setTimeout(() => {
       targetElement.appendChild(element);
       X.addClass(targetElement,'occupied');
       X.removeClass(element,'moving');
       element.removeAttribute('style');
-    },_battleKillEffectTime + 512);
+    },_battleKillEffectTime + 520);
   }
 
   return Object.freeze({
@@ -270,6 +286,7 @@ global.FormationPanel = (function() {
     showDamageEffect,
     killEntity,
     moveForwardOnDeath,
+    moveInwardOnDeath,
   });
 
 })();
