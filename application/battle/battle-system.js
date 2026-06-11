@@ -71,24 +71,14 @@ global.BattleSystem = (function() {
     BattleInterface.showCharacterResult(result);
   }
 
-  // When damage is applied to a character most of the time all we need to do is reduce their health and play the hit
-  // effect. If a character dies from this damage though we need to show a death effect, then once the effect has
-  // played, if a character is behind the character that died that character must move up. If the death clears a colum
-  // we need to move everyone in towards the center. I think we need to animate the moves to make it clear who went
-  // where. As these animations are playing though we need to lock the interface, preventing the battle from advancing
-  // until all the movement animations are done playing. If no movement is required though, we don't need to lock
-  // anything.
-  //
-  // Data: { entity, damage, type, isCrit }
-  //
+  // Data: { entity, damage, damageTypes, isCrit }
   // TODO: This will also need to take into account conditions like vulnerable, once we have conditions being applied.
-  // TODO: Remember some weapons and abilities will have multiple damage types.
-  //
+  // TODO: The damage types really only matter when calculating damage resistances.
   function applyDamage(data) {
     let killed = false;
 
     const health = HealthComponent.lookup(data.entity);
-    health.currentHealth -= data.damage;
+          health.currentHealth -= data.damage;
 
     if (health.currentHealth <= 0) {
       health.currentHealth = 0;
@@ -99,7 +89,6 @@ global.BattleSystem = (function() {
     BattleInterface.showDamageEffect({ killed, ...data });
     HealthComponent.update(data.entity, health);
   }
-
 
   // There's a lot that needs to be done when an entity is killed. The entities are removed from the turn order and
   // the formations. If a character was in the back row, and the character in front of them was killed they move to

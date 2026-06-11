@@ -15,7 +15,7 @@ BaseWeapon.register('knife', {
 BaseWeapon.register('dirk', {
   name: 'Dirk',
   type: 'dagger',
-  damageType: DamageType.pierce,
+  damageTypes: DamageType.pierce,
   hands: WeaponHandedness.one,
   low: 40,
   high: 60,

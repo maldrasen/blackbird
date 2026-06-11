@@ -79,7 +79,7 @@ global.BasicAttack = (function() {
       BattleSystem.applyDamage({
         entity: target,
         damage: damage,
-        type:   baseWeapon.getDamageType(),
+        damageTypes: baseWeapon.getDamageTypes(),
         isCrit: context.attack === 'crit',
       });
 

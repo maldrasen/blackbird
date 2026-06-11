@@ -183,30 +183,13 @@ global.FormationPanel = (function() {
     targetModeCallback = null;
   }
 
-  // Data: { entity, damage, type, isCrit, killed }
+  // Data: { entity, damage, damageTypes, isCrit, killed }
   function showDamageEffect(data) {
     FlashSquare.flash({
       element: getPositionElement(data.entity),
-      color: getDamageColor(data),
+      color: BattleView.getDamageColor(data),
       duration: _battleDamageEffectTime,
     });
-  }
-
-  // If the data type is an object, rather than a string it's a combined data type, for now we can assume it's
-  // one of the physical damage types, at least for now. Otherwise we can find the type with the highest percentage.
-  function getDamageColor(data) {
-    if (data.type == null) {
-      throw new Error(`Undefined Damage Type in ${JSON.stringify(data)}`);
-    }
-
-    const type = (typeof data.type === 'object') ? DamageType.pierce : data.type;
-
-    if ([DamageType.crush, DamageType.pierce, DamageType.slash].includes(type)) {
-      if (data.killed) { return `rgb(200,25,25)`; }
-      if (data.isCrit) { return `rgb(150,20,20)`; }
-      return `rgb(75,10,10)`;
-    }
-    throw new Error(`TODO: Implement colors for damage type ${type}`)
   }
 
   function killEntity(id) {
@@ -245,7 +228,10 @@ global.FormationPanel = (function() {
     });
   }
 
-  function moveEntity(element,targetElement) {
+  // Chromium seems to have a problem starting a bunch of transitions at the same time. Adding a slight delay offset
+  // to each one doesn't seem to help. Not sure how to fix this other than rewriting it using tween.js or something.
+  // Could use a different effect entirely, but I'll wait to see how lot it takes to annoy me.
+  function moveEntity(element, targetElement) {
     X.removeClass(element.closest('.position'),'occupied');
 
     const targetCoords = X.getPosition(targetElement);

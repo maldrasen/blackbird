@@ -19,12 +19,16 @@ global.BaseWeapon = (function() {
       return (weapon.type === 'shield') ? 'block' : `${weapon.type}s`;
     }
 
+    function getDamageTypes() {
+      return weapon.damageTypes ? weapon.damageTypes : [{ type:weapon.damageType, percent:100 }];
+    }
+
     return Object.freeze({
       getCode: () => { return weapon.code; },
       getName: () => { return weapon.name; },
       getType: () => { return weapon.type; },
       getSkill,
-      getDamageType: () => { return weapon.damageType; },
+      getDamageTypes,
       getHands: () => { return weapon.hands; },
       getReach: () => { return weapon.reach || WeaponReach.close },
       getLow: () => { return weapon.low; },
