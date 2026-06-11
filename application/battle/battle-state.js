@@ -19,6 +19,7 @@ global.BattleState = function(data) {
   let ambushState = 'normal';
   let actingMonster;
   let actingCharacter;
+  let interrupt;
 
   // The cleanup() function needs to be called after the battle to remove the temporary monsters that were built.
   //
@@ -260,6 +261,9 @@ global.BattleState = function(data) {
     getActingCharacter: () => { return actingCharacter; },
     setActingMonster,
     getActingMonster: () => { return actingMonster; },
+    battleWon: () => { interrupt = 'victory' },
+    battleLost: () => { interrupt = 'game-over' },
+    getInterrupt: () => { return interrupt; },
   });
 
 }

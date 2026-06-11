@@ -18,6 +18,10 @@ global.BattleSystem = (function() {
 
   function advanceBattle() {
     const next = state.getNext();
+    const interrupt = state.getInterrupt();
+
+    if (interrupt === 'victory') { return BattleInterface.showVictory(); }
+    if (interrupt === 'game-over') { return BattleInterface.showGameOver(); }
 
     if (next.type === 'monster') {
       state.setActingMonster(next.id);
@@ -78,6 +82,7 @@ global.BattleSystem = (function() {
   // Data: { entity, damage, type, isCrit }
   //
   // TODO: This will also need to take into account conditions like vulnerable, once we have conditions being applied.
+  // TODO: Remember some weapons and abilities will have multiple damage types.
   //
   function applyDamage(data) {
     let killed = false;
@@ -98,10 +103,9 @@ global.BattleSystem = (function() {
   // Remove from turn order.
   // Remove monster from formation once the death animation finishes.
   function killEntity(id) {
-    console.log(`=== ${id} was killed ===`);
-
     const isMonster = state.isMonster(id);
     const isInFront = state.isInFront(id);
+    const isPlayer = GameState.getPlayer() === id;
 
     state.addCondition(id,'dead');
     state.removeFromTurnOrder({ type:(isMonster ? 'monster' : 'character'), id:id });
@@ -132,6 +136,9 @@ global.BattleSystem = (function() {
         BattleInterface.moveForwardOnDeath(column);
       }
     }
+
+    if (state.getMonsters().filter(id => state.isAlive(id)).length === 0) { state.battleWon(); }
+    if (isPlayer) { state.battleLost(); }
   }
 
   return Object.freeze({

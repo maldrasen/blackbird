@@ -37,6 +37,7 @@
       font-family: "habibi", sans-serif;
       text-align: center;
       overflow: hidden;
+      background-color: black;
 
       &.dead {
         filter: grayscale(1);

@@ -33,6 +33,24 @@ global.BattleInterface = (function() {
     FormationPanel.moveForwardOnDeath(columnData);
   }
 
+  // I think battles should always have a previous mode, unless it was started as a fixture. We could also advance
+  // time here, but the time that battles take is pretty insignificant. We'd have to get it from the last turn order
+  // before it gets overwritten.
+  function showVictory() {
+    if (Tests.running() === false) {
+      BattleSystem.endBattle();
+      GameState.setGameMode(GameMode.location);
+    }
+  }
+
+  function showGameOver() {
+    if (Tests.running() === false) {
+      BattleSystem.endBattle();
+      GameState.setGameMode(GameMode.location);
+    }
+  }
+
+
   return Object.freeze({
     showCharacterCommands,
     showCharacterResult,
@@ -40,6 +58,8 @@ global.BattleInterface = (function() {
     showDamageEffect,
     killEntity,
     moveForwardOnDeath,
+    showVictory,
+    showGameOver,
   });
 
 })();

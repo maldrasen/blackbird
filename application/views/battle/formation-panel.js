@@ -192,13 +192,17 @@ global.FormationPanel = (function() {
     });
   }
 
+  // If the data type is an object, rather than a string it's a combined data type, for now we can assume it's
+  // one of the physical damage types, at least for now. Otherwise we can find the type with the highest percentage.
   function getDamageColor(data) {
-    if ([DamageType.crush, DamageType.pierce, DamageType.slash].includes(data.type)) {
+    const type = (typeof data.type === 'object') ? DamageType.pierce : data.type;
+
+    if ([DamageType.crush, DamageType.pierce, DamageType.slash].includes(type)) {
       if (data.killed) { return `rgb(200,25,25)`; }
       if (data.isCrit) { return `rgb(150,20,20)`; }
       return `rgb(75,10,10)`;
     }
-    throw new Error(`TODO: Implement colors for damage type ${data.type}`)
+    throw new Error(`TODO: Implement colors for damage type ${type}`)
   }
 
   function killEntity(id) {
@@ -218,11 +222,10 @@ global.FormationPanel = (function() {
     },_battleKillEffectTime);
   }
 
-  // Moves the character in the back rank to the front. The character in the front should be dead, so it's removed
-  // from the formation, replaced by the character that was behind.
+  // This function animates moving a character from the back rank to the front. This should only be called once a
+  // character has died and has already been removed from the formation. Because of the animations being played the
+  // UI might lag a little behind the actual formation, though I don't think this will be a problem.
   function moveForwardOnDeath(columnData) {
-    MainContent.halt();
-
     const isMonster = (columnData.side === 'monster');
     const formationId = isMonster ? `#monsterFormation` : `#partyFormation`;
     const element = isMonster ? getMonsterElement(columnData.back.id) : getCharacterElement(columnData.back.id);
@@ -253,7 +256,6 @@ global.FormationPanel = (function() {
       X.addClass(targetElement,'occupied');
       X.removeClass(element,'moving');
       element.removeAttribute('style');
-      MainContent.unhalt();
     },_battleKillEffectTime + 512);
   }
 

@@ -13,9 +13,9 @@ global.BattleText = (function() {
   ];
 
   function init() {
-    X.onCodeDown('Space', isTextVisible, advanceBattle);
-    X.onCodeDown('Enter', isTextVisible, advanceBattle);
-    X.onClick('#textPanel', advanceBattle);
+    X.onCodeDown('Space', isTextVisible, BattleSystem.advanceBattle);
+    X.onCodeDown('Enter', isTextVisible, BattleSystem.advanceBattle);
+    X.onClick('#textPanel', BattleSystem.advanceBattle);
   }
 
   function build() { ScrollingPanel({ id:'#textScroll' }); }
@@ -36,12 +36,6 @@ global.BattleText = (function() {
       if (message.color === 'important') { classname += `fg-strong `; }
       X.append('#battleText',X.createElement(`<div class="${classname}">${message.text}</div>`));
     });
-  }
-
-  function advanceBattle() {
-    if (MainContent.isHalted() === false) {
-      BattleSystem.advanceBattle();
-    }
   }
 
   // TODO: The description and start phrases will work for most encounter types, though some will need their own start
