@@ -179,6 +179,7 @@
     "application/views/dungeon/dungeon-viewport.js",
     "application/views/dungeon/feature-viewer.js",
     "application/views/dungeon/feature-widget.js",
+    "application/views/effects/flash-square.js",
     "application/views/elements/alert.js",
     "application/views/elements/bar-display.js",
     "application/views/elements/casement.js",

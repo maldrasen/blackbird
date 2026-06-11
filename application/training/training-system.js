@@ -78,8 +78,6 @@ global.TrainingSystem = (function() {
     const comparative = CharacterMath.saturatingGrowthCurve(sensations.desire, 100, rValue);
     const arousalData = ArousalComponent.lookup(entity);
 
-    console.log("No Arousal Data...",arousalData)
-
     if (comparative < arousalData.arousal) {
       const difference = arousalData.arousal - comparative;
       arousalData.arousal -= (difference/2);

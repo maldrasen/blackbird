@@ -27,7 +27,7 @@ global.FormationPanel = (function() {
 
       for (let p=0; p<5; p++) {
         const monsterId = formation[`${r}.${p}`];
-        const positionElement = X.createElement(`<div class='position' data-position='${r}.${p}'></div>`)
+        const positionElement = buildPositionElement(r,p);
         rankElement.appendChild(positionElement);
 
         if (monsterId) {
@@ -51,7 +51,7 @@ global.FormationPanel = (function() {
 
       for (let p=0; p<5; p++) {
         const characterId = formation[`${r}.${p}`];
-        const positionElement = X.createElement(`<div class='position' data-position='${r}.${p}'></div>`)
+        const positionElement = buildPositionElement(r,p);
         rankElement.appendChild(positionElement);
 
         if (characterId) {
@@ -64,6 +64,15 @@ global.FormationPanel = (function() {
     state.getCharacters().forEach(character => {
       addHealthBar(getCharacterElement(character), character);
     });
+  }
+
+  function buildPositionElement(r, p) {
+    return X.createElement(`<div class='position' data-position='${r}.${p}'></div>`)
+  }
+
+  // Look up position element given an entity ID.
+  function getPositionElement(entity) {
+    return X.first(`#formationPanel [data-id="${entity}"]`).closest('.position');
   }
 
   function buildMonsterElement(monsterId) {
@@ -170,6 +179,25 @@ global.FormationPanel = (function() {
     targetModeCallback = null;
   }
 
+
+  // Data: { entity, damage, type, isCrit, killed }
+  function showDamageEffect(data) {
+    FlashSquare.flash({
+      element: getPositionElement(data.entity),
+      color: getDamageColor(data),
+      duration: _battleDamageEffectTime,
+    });
+  }
+
+  function getDamageColor(data) {
+    if ([DamageType.crush, DamageType.pierce, DamageType.slash].includes(data.type)) {
+      if (data.killed) { return `rgb(200,25,25)`; }
+      if (data.isCrit) { return `rgb(150,20,20)`; }
+      return `rgb(75,10,10)`;
+    }
+    throw new Error(`TODO: Implement colors for damage type ${data.type}`)
+  }
+
   return Object.freeze({
     init,
     build,
@@ -178,6 +206,7 @@ global.FormationPanel = (function() {
     highlightActingCharacter,
     updateAll,
     startTargeting,
+    showDamageEffect,
   });
 
 })();

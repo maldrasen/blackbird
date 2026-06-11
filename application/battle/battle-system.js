@@ -61,18 +61,46 @@ global.BattleSystem = (function() {
     BattleInterface.showCharacterResult(result);
   }
 
-  // TODO: This will need to take into account conditions like vulnerable, once
-  //       we have conditions being applied.
-  function applyDamage(entity, damage) {
-    const health = HealthComponent.lookup(entity);
-    health.currentHealth -= damage;
+  // When damage is applied to a character most of the time all we need to do is reduce their health and play the hit
+  // effect. If a character dies from this damage though we need to show a death effect, then once the effect has
+  // played, if a character is behind the character that died that character must move up. If the death clears a colum
+  // we need to move everyone in towards the center. I think we need to animate the moves to make it clear who went
+  // where. As these animations are playing though we need to lock the interface, preventing the battle from advancing
+  // until all the movement animations are done playing. If no movement is required though, we don't need to lock
+  // anything.
+  //
+  // Data: { entity, damage, type, isCrit }
+  //
+  // TODO: This will also need to take into account conditions like vulnerable, once we have conditions being applied.
+  //
+  function applyDamage(data) {
+    let killed = false;
+
+    const health = HealthComponent.lookup(data.entity);
+    health.currentHealth -= data.damage;
 
     if (health.currentHealth <= 0) {
       health.currentHealth = 0;
-      console.log(`Oh no, ${entity} is dead. What now?`);
+      killed = true;
+      killEntity(data.entity);
     }
 
-    HealthComponent.update(entity, health);
+    BattleInterface.showDamageEffect({ killed, ...data });
+    HealthComponent.update(data.entity, health);
+  }
+
+  // Remove from turn order.
+  // Remove monster from formation once the death animation finishes. (Characters could battle res?)
+  // Or maybe leave as corpse? Corpse explosion, create zombie all have potential.
+  function killEntity(id) {
+    (MonsterComponent.lookup(id) ? killMonster(id) : killCharacter(id));
+  }
+
+  function killMonster(id) {
+    console.log("TODO: Kill Monster")
+  }
+  function killCharacter(id) {
+    console.log("TODO: Kill Character")
   }
 
   return Object.freeze({

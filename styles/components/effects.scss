@@ -3,12 +3,17 @@
 
 #effectArea {
   @include layout.full-screen;
-    z-index: variables.$z-effects;
-    pointer-events: none;
+  z-index: variables.$z-effects;
+  pointer-events: none;
 
   .flash-square {
     position: absolute;
-    background-color: rgba(250,250,250,0.9);
-    box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
+    transition-property: opacity;
+    transition-timing-function: ease-in;
+    transition-duration: 500ms;
+    z-index: 1;
+  }
+  .fade {
+    opacity: 0;
   }
 }
