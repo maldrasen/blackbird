@@ -76,7 +76,7 @@ global.BasicAttack = (function() {
         text: weaver.weave(`Attack hit {T:baseName's} ${hitLocation} for ${damage} damage!`)
       });
 
-      BattleSystem.applyDamage({
+      BattleDamage.applyDamage({
         entity: target,
         damage: damage,
         damageTypes: baseWeapon.getDamageTypes(),
