@@ -1,5 +1,13 @@
 @use "../variables";
 
+$roll-border: rgba(57,59,73,0.75);
+$roll-title: rgb(80,84,115);
+$roll-low: rgb(120,120,150);
+$roll-low-bright: rgb(150,150,200);
+$roll-high: rgb(200,200,250);
+$roll-high-bright: rgb(250,250,250);
+
+
 #battleView {
 
   #formationPanel {
@@ -25,7 +33,7 @@
       overflow: hidden;
     }
     .position.acting {
-      border-color: rgba(100,33,0,0.75);
+      border-color: rgba(250,180,160,0.75);
     }
 
     .monster, .character {
@@ -89,8 +97,42 @@
       font-size: variables.$fs-bigger;
       //font-family: "habibi", sans-serif;
     }
+
+    .roll-display {
+      display: inline-block;
+      padding: 5px;
+      margin: 10px;
+      text-align: left;
+      border: 1px solid $roll-border;
+      border-radius: 10px;
+      font-size: variables.$fs-small;
+
+      .title {
+        color: $roll-title;
+        border-bottom: 1px solid $roll-border;
+        font-family: roboto-bold, sans-serif;
+      }
+
+
+
+      .attack-roll, .defend-roll {
+        margin: 0 20px;
+        font-family: roboto, sans-serif;
+        &.low {
+          color: $roll-low;
+          .bright { color: $roll-low-bright; }
+        }
+        &.high {
+          color: $roll-high;
+          .bright { color: $roll-high-bright; }
+        }
+      }
+    }
   }
 }
+
+
+
 
 #battleView.normal-mode {
   #formationPanel {

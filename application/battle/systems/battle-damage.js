@@ -24,6 +24,10 @@ global.BattleDamage = (function() {
   // the front rank. If a column was completely emptied then we need to move the side columns inward. We check if all
   // the monsters or the player were killed and end the battle if so.
   function killEntity(id) {
+
+    console.log(`=== ${id} was killed ===`)
+
+    const state = BattleSystem.getState();
     const isMonster = state.isMonster(id);
     const isInFront = state.isInFront(id);
     const column = state.getColumnContaining(id);
@@ -59,6 +63,10 @@ global.BattleDamage = (function() {
     if (isMonster && isColumnEmpty(id, column)) {
       FormationManager.moveInwardOnDeath(parseInt(column.front.position[2]));
     }
+
+
+    console.log(" - Monster Formation",state.getMonsterFormation())
+
   }
 
   // Called when a monster is killed and we need to check to see if the column is empty. We pass in the id of the

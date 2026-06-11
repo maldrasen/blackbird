@@ -168,7 +168,9 @@ global.FormationPanel = (function() {
 
   function inspectPosition(event) {
     const position = event.target.closest('.position').dataset.position;
-    console.log("Inspect Position",position);
+    const id = (event.target.closest('.monster') || event.target.closest('.character')).dataset.id;
+    console.log("Strange...",event.target)
+    console.log(`Inspect ${id} - Position`,position);
   }
 
   // Targeting always returns a position because some abilities (like AoE attacks) might target an empty position.
@@ -223,6 +225,12 @@ global.FormationPanel = (function() {
   function moveInwardOnDeath(moves) {
     moves.forEach(move => {
       const element = getMonsterElement(move.id);
+
+      // Saw this happen, but only once...
+      if (element == null) {
+        throw new Error(`Couldn't find monster element [${move.id}]`)
+      }
+
       const target = X.first(`#monsterFormation [data-position='${move.to}']`);
       moveEntity(element,target);
     });

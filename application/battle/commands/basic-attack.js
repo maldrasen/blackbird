@@ -56,7 +56,10 @@ global.BasicAttack = (function() {
     const weaver = Weaver(context);
 
     const result = {
-      messages: [{ text:weaver.weave(attackText) }],
+      messages: [
+        { text:weaver.weave(attackText) },
+        { element:'roll-display', title:'Attack Roll', attack:attackRoll, defend:defendRoll },
+      ],
       time: 1000,
     }
 
