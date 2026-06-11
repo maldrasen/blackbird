@@ -90,10 +90,21 @@ global.BattleSystem = (function() {
   }
 
   // Remove from turn order.
-  // Remove monster from formation once the death animation finishes. (Characters could battle res?)
-  // Or maybe leave as corpse? Corpse explosion, create zombie all have potential.
+  // Remove monster from formation once the death animation finishes.
   function killEntity(id) {
-    (MonsterComponent.lookup(id) ? killMonster(id) : killCharacter(id));
+
+    console.log(`=== ${id} was killed ===`);
+
+    if (state.isInFront(id)) {
+      const column = state.getColumnContaining(id);
+      if (column.back.id != null) {
+        console.log(`Entity:${id} was killed. Entity:${column.back.id} is behind them and must move forward.`);
+        FormationManager.moveForwardOnDeath(column);
+      }
+    }
+
+    // May need to do something different for monsters and players.
+    // (state.isMonster(id) ? killMonster(id) : killCharacter(id));
   }
 
   function killMonster(id) {

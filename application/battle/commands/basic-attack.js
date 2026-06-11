@@ -32,9 +32,7 @@ global.BasicAttack = (function() {
   // fumbles. An attacker can crit (doing the best they can) but still miss their target.
 
   function execute(attacker, target) {
-    const state = BattleSystem.getState();
     const attack = findBasicAttack(attacker);
-
     const baseWeapon = BaseWeapon.lookup(attack.base);
     const attackRoll = SkillCheck(attacker, baseWeapon.getSkill());
     const defendRoll = SkillCheck(target, 'dodge');

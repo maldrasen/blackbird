@@ -60,6 +60,34 @@ global.BattleState = function(data) {
     throw new Error(`Entity[${id}] is not in a battle formation.`);
   }
 
+  function isInFront(id) {
+    return getPositionOf(id)[0] === '0';
+  }
+
+  function isInBack(id) {
+    return getPositionOf(id)[0] === '1';
+  }
+
+  // Get the column that contains the entity, returning if this is a character or a monster, their ids and positions.
+  function getColumnContaining(entity) {
+    const position = getPositionOf(entity);
+    const inFront = isInFront(entity);
+    const monster = isMonster(entity);
+
+    const formation = monster ? monsterFormation : partyFormation;
+    const otherPosition = `${inFront ? '1' : '0'}.${position[2]}`;
+    const first = { id:entity, position:position };
+    const second = { id:formation[otherPosition], position:otherPosition };
+
+    const column = { side:monster ? 'monster' : 'party' };
+    column.front = inFront ? first : second;
+    column.back = inFront ? second : first;
+
+    return column;
+  }
+
+
+
   // Will either accept a rank and position or a string in the format r.p
   function getMonsterAtPosition(rank, position=null) {
     if (position == null) { return monsterFormation[rank] || null }
@@ -176,6 +204,9 @@ global.BattleState = function(data) {
     getPartyFormation: () => { return { ...partyFormation }; },
 
     getPositionOf,
+    isInFront,
+    isInBack,
+    getColumnContaining,
     getMonsterAtPosition,
     getCharacterAtPosition,
     isMonsterRankOccupied,

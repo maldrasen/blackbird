@@ -43,6 +43,6 @@ global.BattleHelper = (function() {
     isAttackWithinRange,
     distanceBetweenPositions,
     randomHitLocation,
-  })
+  });
 
 })();
