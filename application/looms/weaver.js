@@ -103,6 +103,8 @@ global.Weaver = function(context) {
     switch(key) {
       case 'abl': return `color: rgb(160,120,150)`; // Ability
       case 'act': return `color: rgb(150,150,200)`; // Acting Character or Monster
+      case 'pst': return `color: rgb(120,190,110)`; // Positive Status
+      case 'nst': return `color: rgb(190,100,180)`; // Negative Status
       case 'tar': return `color: rgb(200,150,120)`; // Target
       default: return `color:red`;
     }

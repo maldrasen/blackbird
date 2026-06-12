@@ -33,9 +33,10 @@ global.BasicAttack = (function() {
 
   function execute(attacker, target) {
     const attack = findBasicAttack(attacker);
+    const defendSkill = 'dodge';
     const baseWeapon = BaseWeapon.lookup(attack.base);
     const attackRoll = SkillCheck(attacker, baseWeapon.getSkill());
-    const defendRoll = SkillCheck(target, 'dodge');
+    const defendRoll = SkillCheck(target, defendSkill);
     const hitLocation = BattleHelper.randomHitLocation();
 
     // TODO: Assume defend with dodge for now. Characters will block when they have a shield equipped, or parry with a
@@ -63,20 +64,40 @@ global.BasicAttack = (function() {
       time: 1000,
     }
 
+    // TODO: Assuming crit damage is x2, could be more for different weapons, or with different abilities. Crit damage
+    //       reduction could also change this.
     function processHit() {
-      // Because the hit happens these status effects only apply to this single
-      // attack, so they're not really status effects then are they?
-      if (context.attack === 'crit') { addStatus(attacker,'A','do-extra-damage') }
-      if (context.attack === 'fumble') { addStatus(attacker,'A','do-less-damage') }
-      if (context.defend === 'crit') { addStatus(target,'T','take-less-damage') }
-      if (context.defend === 'fumble') { addStatus(target,'T','take-more-damage') }
-
       const strength = AttributesComponent.lookup(attacker).strength;
       const damageRoll = Random.between(baseWeapon.getHigh(), baseWeapon.getLow())
-      const damage = Math.round((damageRoll / 100) * strength);
+      let damage = Math.round((damageRoll / 100) * strength);
+
+      if (context.attack === 'crit') {
+        result.messages.push({
+          text: weaver.weave(`[CRIT HIT]`)
+        });
+        damage = damage*2;
+      }
+      if (context.attack === 'fumble') {
+        result.messages.push({
+          text: weaver.weave(`[FUMBLE HIT]`)
+        });
+        damage = Math.ceil(damage/2);
+      }
+      if (context.defend === 'crit') {
+        result.messages.push({
+          text: weaver.weave(`[CRIT DEFEND]`)
+        });
+        damage = Math.ceil(damage/2);
+      }
+      if (context.defend === 'fumble') {
+        result.messages.push({
+          text: weaver.weave(`[FUMBLE DEFEND]`)
+        });
+        damage = damage*2;
+      }
 
       result.messages.push({
-        text: weaver.weave(`Attack hit {T:baseName's} ${hitLocation} for ${damage} damage!`)
+        text: weaver.weave(`Hit {T:baseName's} ${hitLocation} for ${damage} damage!`)
       });
 
       BattleDamage.applyDamage({
@@ -90,22 +111,38 @@ global.BasicAttack = (function() {
     }
 
     function processMiss() {
-      if (context.attack === 'crit') { addStatus(attacker,'A','increase-hit-chance'); }
-      if (context.attack === 'fumble') { addStatus(attacker,'A','become-easier-to-hit'); }
-      if (context.defend === 'crit') { addStatus(target,'T','become-harder-to-hit') }
-      if (context.defend === 'fumble') { addStatus(target,'T','take-more-damage') }
+      if (context.attack === 'fumble') { addStatus(attacker,'off-balance'); }
+      if (context.defend === 'crit') { addStatus(target,'poised'); }
+      if (context.defend === 'fumble') { addStatus(target,'vulnerable'); }
 
       result.messages.push({
-        text: weaver.weave(`Attack missed {T:baseName's} ${hitLocation}`)
+        text: weaver.weave(`Missed {T:baseName's} ${hitLocation}`)
       });
 
       return result;
     }
 
-    function addStatus(entity, key, status) {
-      result.messages.push({
-        text: weaver.weave(`Add Status to {${key}:baseName} - ${status}`)
-      });
+    function addStatus(entity, status) {
+      let message;
+
+      if (status === 'poised') {
+        message = {
+          'dodge': `{S/tar}{T:baseName}{/S} leaps away with stunning agility, and is now {S/pst}Poised{/S} and ready to defend {T:him}self.`,
+          'block': `{S/tar}{T:baseName}{/S} braces {T:him}self, becoming {S/pst}Poised{/S} and harder to hit.`,
+          'parry': `{S/tar}{T:baseName}{/S} flourishes {T:his} blade, {T:his} {S/pst}Poised{/S} stance ready to defend against any attack.`,
+        }[defendSkill];
+      }
+      if (status === 'off-balance') {
+        message = `{S/act}{A:baseName's}{/S} clumsy attack leaves {A:him} overextended and {S/nst}Off Balance{/S}.`;
+      }
+      if (status === 'vulnerable') {
+        message = `Though the attack missed {S/tar}{T:baseName}{/S}, it left {T:him} in a {S/nst}Vulnerable{/S} position.`;
+      }
+      if (message == null) {
+        throw new Error(`A basic attack shouldn't add the ${status} status.`)
+      }
+
+      result.messages.push({ text: weaver.weave(message) });
     }
 
     return (attackRoll.value > defendRoll.value) ? processHit() : processMiss();

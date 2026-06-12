@@ -17,6 +17,7 @@ global.StatusEffect = (function() {
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return statusEffect.name; },
+      getCategory: () => { return statusEffect.category; },
       getDamageType: () => { return statusEffect.damageType; },
     });
   }

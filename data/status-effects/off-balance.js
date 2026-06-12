@@ -1,5 +1,5 @@
-StatusEffect.register('enrage',{
-  name: 'Enrage',
+StatusEffect.register('off-balance',{
+  name: 'Off Balance',
   category: 'negative',
   damageType: DamageType.psychic,
 });
