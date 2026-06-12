@@ -169,8 +169,7 @@ global.FormationPanel = (function() {
   function inspectPosition(event) {
     const position = event.target.closest('.position').dataset.position;
     const id = (event.target.closest('.monster') || event.target.closest('.character')).dataset.id;
-    console.log("Strange...",event.target)
-    console.log(`Inspect ${id} - Position`,position);
+    console.log(`Inspect[${id}] (${position})`)
   }
 
   // Targeting always returns a position because some abilities (like AoE attacks) might target an empty position.
@@ -236,37 +235,45 @@ global.FormationPanel = (function() {
     });
   }
 
-  // Chromium seems to have a problem starting a bunch of transitions at the same time. Adding a slight delay offset
-  // to each one doesn't seem to help. Not sure how to fix this other than rewriting it using tween.js or something.
-  // Could use a different effect entirely, but I'll wait to see how lot it takes to annoy me.
   function moveEntity(element, targetElement) {
     X.removeClass(element.closest('.position'),'occupied');
 
     const targetCoords = X.getPosition(targetElement);
     const currentCoords = X.getPosition(element);
 
-    setTimeout(() => {
-      X.addClass(element,'moving');
-      element.setAttribute('style',[
+    function detach() {
+      X.addClass(element, 'moving');
+      element.setAttribute('style', [
         `left:${currentCoords.left}px;`,
         `top:${currentCoords.top}px;`,
-      ].join(' '))
-    },_battleKillEffectTime + 10)
+      ].join(' '));
+    }
 
-    setTimeout(() => {
+    function move() {
       element.setAttribute('style',[
         `left:${targetCoords.left + 1}px;`,
         `top:${targetCoords.top + 1}px;`,
       ].join(' '));
+    }
 
-    },_battleKillEffectTime + 15);
-
-    setTimeout(() => {
+    function attach() {
       targetElement.appendChild(element);
       X.addClass(targetElement,'occupied');
       X.removeClass(element,'moving');
       element.removeAttribute('style');
-    },_battleKillEffectTime + 520);
+    }
+
+    // Yes, we need to request two animation frames between detach and move.
+    setTimeout(() => {
+      detach();
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => { move(); });
+      });
+    }, _battleKillEffectTime);
+
+    setTimeout(() => {
+      attach();
+    },_battleKillEffectTime + 600);
   }
 
   return Object.freeze({
