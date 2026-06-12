@@ -10,6 +10,7 @@
     "application/battle/commands/change-equipment.js",
     "application/battle/commands/use-item.js",
     "application/battle/systems/battle-damage.js",
+    "application/battle/systems/battle-status-effect.js",
     "application/battle/systems/character-commands.js",
     "application/battle/systems/encounter-builder.js",
     "application/battle/systems/formation-manager.js",

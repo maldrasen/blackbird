@@ -347,6 +347,15 @@ global.BattleCommand = Object.freeze({
   useItem: 'use-item',
 });
 
+global.StatusEffectDurationType = Object.freeze({
+  fixedTime: 'fixed-time',         // The specified time has elapsed.
+  fixedCount: 'fixed-count',       // The effect has been triggered a set number of times.
+  special: 'special',              // Some other conditions will need to be met
+  turnCount: 'turn-count',         // Effect will last until a set number of player turns have passed.
+  untilCured: 'until-cured',       // Effect will persist until it is cured
+  untilResisted: 'until-resisted', // Effect will persist until a resist roll is passed
+});
+
 // =====================
 //   Items & Equipment
 // =====================

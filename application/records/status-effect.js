@@ -19,8 +19,10 @@ global.StatusEffect = (function() {
       getName: () => { return statusEffect.name; },
       getCategory: () => { return statusEffect.category; },
       getDamageType: () => { return statusEffect.damageType; },
+      getDurationType: () => { return statusEffect.durationType; },
     });
   }
+
 
   return Object.freeze({
     register,

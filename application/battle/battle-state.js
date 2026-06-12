@@ -201,6 +201,22 @@ global.BattleState = function(data) {
     turnOrder.splice(index, 1)
   }
 
+  function setActingCharacter(id) {
+    FormationPanel.highlightActingCharacter(id);
+    actingCharacter = id;
+    actingMonster = null;
+  }
+
+  function setActingMonster(id) {
+    FormationPanel.highlightActingMonster(id);
+    actingCharacter = null;
+    actingMonster = id;
+  }
+
+  // ===================================
+  //    Status Effects and Conditions
+  // ===================================
+
   // Conditions are for character states that are not status effects; status effects are their own entities that
   // are part of the turn order. Currently the only status I can think of is "dead" so this might just be used to
   // track deaths.
@@ -213,16 +229,8 @@ global.BattleState = function(data) {
     return conditions[id] == null || conditions[id].includes('dead') === false;
   }
 
-  function setActingCharacter(id) {
-    FormationPanel.highlightActingCharacter(id);
-    actingCharacter = id;
-    actingMonster = null;
-  }
-
-  function setActingMonster(id) {
-    FormationPanel.highlightActingMonster(id);
-    actingCharacter = null;
-    actingMonster = id;
+  function addStatus(statusEffect) {
+    console.log("Add Status Effect:",statusEffect.getName())
   }
 
   return Object.freeze({
@@ -253,14 +261,15 @@ global.BattleState = function(data) {
     getAmbushState: () => { return ambushState; },
     getNext,
     removeFromTurnOrder,
-
-    addCondition,
-    isAlive,
-
     setActingCharacter,
     getActingCharacter: () => { return actingCharacter; },
     setActingMonster,
     getActingMonster: () => { return actingMonster; },
+
+    addCondition,
+    isAlive,
+    addStatus,
+
     battleWon: () => { interrupt = 'victory' },
     battleLost: () => { interrupt = 'game-over' },
     getInterrupt: () => { return interrupt; },

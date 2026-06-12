@@ -143,6 +143,7 @@ global.BasicAttack = (function() {
       }
 
       result.messages.push({ text: weaver.weave(message) });
+      BattleSystem.getState().addStatus(BattleStatusEffect(entity, status, { duration:1 }));
     }
 
     return (attackRoll.value > defendRoll.value) ? processHit() : processMiss();
