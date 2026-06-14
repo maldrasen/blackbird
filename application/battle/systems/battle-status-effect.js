@@ -21,6 +21,7 @@ global.BattleStatusEffect = function(id, code, options={}) {
   // can overwrite it.
 
   return Object.freeze({
+    getCode: () => { return code; },
     getEntity: () => { return entity; },
     getStatus: () => { return status; },
     getName: () => { return status.getName(); },
@@ -29,6 +30,8 @@ global.BattleStatusEffect = function(id, code, options={}) {
     getDamageType: () => { return status.getDamageType(); },
     getDuration: () => { return duration; },
     setDuration: d => { duration = d; },
+    extendDuration: d => { duration += d; },
+    reduceDuration: d => { duration -= d; },
   });
 }
 

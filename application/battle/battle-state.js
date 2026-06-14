@@ -15,6 +15,7 @@ global.BattleState = function(data) {
   const partyFormation = { ...PartyConfiguration.getConfiguration() };
   const monsterFormation = {};
   const conditions = {};
+  const statusEffects = {};
 
   let ambushState = 'normal';
   let actingMonster;
@@ -230,7 +231,38 @@ global.BattleState = function(data) {
   }
 
   function addStatus(statusEffect) {
-    console.log("Add Status Effect:",statusEffect.getName())
+    const entity = statusEffect.getEntity();
+    const code = statusEffect.getCode();
+
+    if (statusEffects[entity] == null) {
+      statusEffects[entity] = {}
+    }
+
+    // If the character already has this status effect we should simply set the effect's duration. (but only if it's
+    // longer) We don't want to extend the duration as being blinded twice in the same turn wouldn't result in being
+    // blinded for twice as long. This just renews the timer on the existing effect.
+    if (statusEffects[entity][code] != null) {
+      if (statusEffects[entity][code].getDuration() < statusEffect.getDuration()) {
+        return statusEffects[entity][code].setDuration(statusEffect.getDuration())
+      }
+    }
+
+    statusEffects[entity][code] = statusEffect;
+
+    if (statusEffect.getDurationType() === StatusEffectDurationType.fixedTime) {
+      // TODO: If a status effect has a fixed time it is removed after a given time has passed. That removal time
+      //       needs to be added to the turn order because the effect goes away independent of the character's actions.
+      //       These status effects (poison and burn) can also trigger periodically, in which case the next trigger
+      //       time is also added to the turn order.
+    }
+  }
+
+  function getStatusEffects(id) {
+    return statusEffects[id] || {};
+  }
+
+  function hasStatusEffect(id, code) {
+    return getStatusEffects(id)[code];
   }
 
   return Object.freeze({
@@ -269,6 +301,8 @@ global.BattleState = function(data) {
     addCondition,
     isAlive,
     addStatus,
+    getStatusEffects,
+    hasStatusEffect,
 
     battleWon: () => { interrupt = 'victory' },
     battleLost: () => { interrupt = 'game-over' },
