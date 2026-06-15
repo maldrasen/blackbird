@@ -80,12 +80,32 @@ $roll-high-bright: rgb(250,250,250);
   }
 
   #commandPanel {
+    display: flex;
+    flex-direction: column;
+
     #title {
       margin: 10px;
       font-size: variables.$fs-bigger;
       border-bottom: variables.$border-heavy;
     }
-    #cancelArea { display:none; }
+
+    #commandArea {
+      margin: 0 10px;
+      flex-grow: 1;
+    }
+
+    #utilityArea {
+      margin: 10px;
+    }
+
+    #cancelArea {
+      margin: 0 10px;
+      display:none;
+    }
+
+    .commands {
+      a { margin-right: 5px }
+    }
   }
 
   #textPanel {

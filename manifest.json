@@ -7,6 +7,7 @@
     "application/battle/battle-state.js",
     "application/battle/battle-system.js",
     "application/battle/commands/basic-attack.js",
+    "application/battle/commands/basic-defend.js",
     "application/battle/commands/change-equipment.js",
     "application/battle/commands/use-item.js",
     "application/battle/systems/battle-damage.js",

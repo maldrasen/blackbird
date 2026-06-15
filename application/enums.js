@@ -343,6 +343,7 @@ global.ThreatWeight = Object.freeze({
 
 global.BattleCommand = Object.freeze({
   basicAttack: 'basic-attack',
+  basicDefend: 'basic-defend',
   changeEquipment: 'change-equipment',
   useItem: 'use-item',
 });

@@ -36,6 +36,7 @@ global.CommandPanel = (function() {
       case BattleCommand.basicAttack: return TargetingController.startBasicAttackTargeting();
       case BattleCommand.changeEquipment: return ChangeEquipment.start();
       case BattleCommand.useItem: return UseItem.start();
+      case BattleCommand.basicDefend: return BasicDefend.execute();
       default: throw new Error(`Unrecognized Command: ${command}`);
     }
   }
