@@ -47,6 +47,25 @@ $roll-high-bright: rgb(250,250,250);
       overflow: hidden;
       background-color: black;
 
+      .name {
+        height: 20px;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      .status-panel {
+        display: flex;
+        height: 67px;
+        overflow: hidden;
+      }
+      .status-effect-icon {
+        margin-right: 5px;
+        height: 32px;
+        width: 32px;
+        background-size: 32px 32px;
+        border: variables.$border-normal;
+        border-radius: 3px;
+      }
+
       &.dead {
         filter: grayscale(1);
         transition-property: opacity;

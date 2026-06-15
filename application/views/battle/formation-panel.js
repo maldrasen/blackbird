@@ -81,7 +81,7 @@ global.FormationPanel = (function() {
 
     return X.createElement(`<div class="monster" data-id="${monsterId}">
       <div class='name'>${monster.getName()}</div>
-      <div class='status'></div>
+      <div class='status-panel'></div>
       <div class='health-bar'></div>
     </div>`);
   }
@@ -89,7 +89,7 @@ global.FormationPanel = (function() {
   function buildCharacterElement(characterId) {
     return X.createElement(`<div class="character" data-id="${characterId}">
       <div class='name'>${Character(characterId).getName()}</div>
-      <div class='status'></div>
+      <div class='status-panel'></div>
       <div class='health-bar'></div>
     </div>`);
   }
@@ -127,17 +127,33 @@ global.FormationPanel = (function() {
   }
 
   function updateAll(state) {
-    state.getMonsters().forEach(monster => {
-      if (state.isAlive(monster)) {
-        const health = HealthComponent.lookup(monster);
-        healthBars[monster].setCurrentValue(health.currentHealth);
-      }
-    });
-    state.getCharacters().forEach(character => {
-      if (state.isAlive(character)) {
-        const health = HealthComponent.lookup(character);
-        healthBars[character].setCurrentValue(health.currentHealth);
-      }
+    state.getMonsters().forEach(id => { updateEntity(id); });
+    state.getCharacters().forEach(id => { updateEntity(id); });
+  }
+
+  function updateEntity(id) {
+    if (BattleSystem.getState().isAlive(id)) {
+      updateStatusPanel(id,getPositionElement(id));
+      updateHealthBar(id);
+    }
+  }
+
+  function updateHealthBar(id) {
+    const health = HealthComponent.lookup(id);
+    healthBars[id].setCurrentValue(health.currentHealth);
+  }
+
+  function updateStatusPanel(id, position) {
+    const state = BattleSystem.getState();
+    const statusPanel = position.querySelector('.status-panel');
+    const statusEffects = state.getStatusEffects(id);
+
+    X.empty(statusPanel);
+
+    Object.entries(statusEffects).forEach(([code, effect]) => {
+      const icon = X.createElement(`<div class='status-effect-icon' data-name='${effect.getName()}'></div>`)
+      icon.style['background-image'] = X.assetURL(`ai-icons/${code}.png`);
+      statusPanel.appendChild(icon);
     });
   }
 
@@ -283,6 +299,7 @@ global.FormationPanel = (function() {
     highlightActingMonster,
     highlightActingCharacter,
     updateAll,
+    updateEntity,
     startTargeting,
     showDamageEffect,
     killEntity,
