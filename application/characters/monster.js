@@ -17,10 +17,6 @@ global.Monster = function(id) {
     const state = BattleSystem.getState();
     const threatTable = {};
 
-    console.log("=== Populate Threat Table ===")
-
-    console.log(state.getCharacters());
-
     // We start with some random "I just don't like your face" threat.
     state.getCharacters().forEach(id => {
       threatTable[id] = Random.roll(500);
