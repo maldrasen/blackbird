@@ -187,13 +187,15 @@ global.BattleState = function(data) {
   }
 
   function setActingCharacter(id) {
-    FormationPanel.highlightActingCharacter(id);
+    if (getCharacters().includes(id) === false) { throw new Error(`${id} is not a character.`); }
+    FormationPanel.highlightActing(id);
     actingCharacter = id;
     actingMonster = null;
   }
 
   function setActingMonster(id) {
-    FormationPanel.highlightActingMonster(id);
+    if (getMonsters().includes(id) === false) { throw new Error(`${id} is not a monster.`); }
+    FormationPanel.highlightActing(id);
     actingCharacter = null;
     actingMonster = id;
   }

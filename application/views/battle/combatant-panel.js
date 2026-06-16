@@ -40,8 +40,8 @@ global.CombatantPanel = function(type, entity) {
     element.querySelector('.health-bar').appendChild(healthBar.getElement());
   }
 
-  function update() {
-    if (BattleSystem.getState().isAlive(entity)) {
+  function update(state) {
+    if (state.isAlive(entity)) {
       updateHealthBar();
       updateStatusPanel();
     }

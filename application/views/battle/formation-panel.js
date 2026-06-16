@@ -7,9 +7,13 @@ global.FormationPanel = (function() {
 
   function init() {
     // X.onClick('#battleView.target-mode .position.valid-target', targetSelected);
-    // X.onClick('#battleView.normal-mode .position.occupied', inspectPosition);
+    X.onClick('#battleView.normal-mode .position.occupied', inspectPosition);
     // X.onClick('#commandPanel .cancel-button', stopTargeting);
   }
+
+  // ==============
+  //    Building
+  // ==============
 
   function build() {
     const state = BattleSystem.getState();
@@ -20,7 +24,6 @@ global.FormationPanel = (function() {
     buildRank('party',1);
 
     buildCombatantPanels(state);
-
     updateAll(state);
   }
 
@@ -69,34 +72,39 @@ global.FormationPanel = (function() {
 
   function updateAll(state) {
     Object.values(combatantPanels).forEach(combatantPanel => {
-      combatantPanel.update();
+      combatantPanel.update(state);
     });
   }
+
+
+
+  // =======================
+  //    Entity Inspecting
+  // =======================
+
+  function inspectPosition(event) {
+    const position = event.target.closest('.position').dataset.position;
+    const id = event.target.closest('.combatant').dataset.id;
+    console.log(`TODO: Inspect[${id}] (${position})`);
+  }
+
+  // ======================
+  //    Entity Targeting
+  // ======================
+
+  // =====================
+  //    Entity Movement
+  // =====================
+
+
+
+
 
 
 
 
   /*
 
-  // Look up position element given an entity ID.
-  // function getPositionElement(entity) {
-  //   return X.first(`#formationPanel [data-id="${entity}"]`).closest('.position');
-  // }
-
-
-  function getMonsterElement(id) { return X.first(`.monster[data-id='${id}']`); }
-  function getCharacterElement(id) { return X.first(`.character[data-id='${id}']`); }
-  function clearHighlight() { X.removeClass('.position.acting','acting'); }
-
-  function highlightActingMonster(id) {
-    clearHighlight();
-    X.addClass(getMonsterElement(id).parentElement,'acting');
-  }
-
-  function highlightActingCharacter(id) {
-    clearHighlight();
-    X.addClass(getCharacterElement(id).parentElement,'acting');
-  }
 
 
 
@@ -125,11 +133,6 @@ global.FormationPanel = (function() {
     X.addClass('#battleView','normal-mode');
   }
 
-  function inspectPosition(event) {
-    const position = event.target.closest('.position').dataset.position;
-    const id = (event.target.closest('.monster') || event.target.closest('.character')).dataset.id;
-    console.log(`Inspect[${id}] (${position})`)
-  }
 
   // Targeting always returns a position because some abilities (like AoE attacks) might target an empty position.
   function targetSelected(event) {
@@ -143,14 +146,8 @@ global.FormationPanel = (function() {
     targetModeCallback = null;
   }
 
-  // Data: { entity, damage, damageTypes, isCrit, killed }
-  function showDamageEffect(data) {
-    FlashSquare.flash({
-      element: getPositionElement(data.entity),
-      color: BattleView.getDamageColor(data),
-      duration: _battleDamageEffectTime,
-    });
-  }
+
+
 
   function killEntity(id) {
     const state = BattleSystem.getState();
@@ -235,21 +232,39 @@ global.FormationPanel = (function() {
     },_battleKillEffectTime + 600);
   }
 */
+
+  // Data: { entity, damage, damageTypes, isCrit, killed }
+  function showDamageEffect(data) {
+    FlashSquare.flash({
+      element: combatantPanels[data.entity].getElement(),
+      color: BattleView.getDamageColor(data),
+      duration: _battleDamageEffectTime,
+    });
+  }
+
+  function highlightActing(id) {
+    clearHighlight();
+    X.addClass(combatantPanels[id].getElement().parentElement, 'acting')
+  }
+
+  function clearHighlight() { X.removeClass('.position.acting','acting'); }
+
   return Object.freeze({
     init,
     build,
     getPositionPanel,
     getCombatantPanel,
-    // clearHighlight,
-    // highlightActingMonster,
-    // highlightActingCharacter,
-    // updateAll,
+    updateAll,
+
     // updateEntity,
     // startTargeting,
-    // showDamageEffect,
     // killEntity,
     // moveForwardOnDeath,
     // moveInwardOnDeath,
+
+    showDamageEffect,
+    highlightActing,
+    clearHighlight,
   });
 
 })();

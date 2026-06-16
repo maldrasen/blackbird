@@ -33,7 +33,7 @@ global.EncounterBuilder = (function() {
   // doesn't matter what the dex cap ends up being as only the difference between the characters' dex matters. But then
   // could you bring a super clumsy character to juice the player's relative dex?
   function rollReactionTimes(state) {
-    Object.values(state.getMonsterFormation()).forEach(id => {
+    Object.keys(state.getMonsterFormation()).forEach(id => {
       state.setTurnOrder({
         type: 'monster',
         id: id,
@@ -41,7 +41,7 @@ global.EncounterBuilder = (function() {
       });
     });
 
-    Object.values(state.getPartyFormation()).forEach(id => {
+    Object.keys(state.getPartyFormation()).forEach(id => {
       state.setTurnOrder({
         type: 'character',
         id: id,
