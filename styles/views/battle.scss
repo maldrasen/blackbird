@@ -10,6 +10,88 @@ $roll-high-bright: rgb(250,250,250);
 
 #battleView {
 
+
+
+
+
+  .position {
+    box-sizing: border-box;
+    height: 120px;
+    width: 120px;
+    background-color: rgba(0,0,0,0.6);
+    margin: 2px;
+    border: variables.$border-light;
+    box-shadow: variables.$shadow-frame;
+    overflow: hidden;
+  }
+  .position.acting {
+    border-color: rgba(250,180,160,0.75);
+  }
+
+
+
+
+
+
+
+
+  .combatant {
+    box-sizing: border-box;
+    height: 118px;
+    width: 118px;
+    padding: 5px;
+    font-size: variables.$fs-tiny;
+    font-family: "habibi", sans-serif;
+    text-align: center;
+    overflow: hidden;
+    background-color: black;
+
+    .name {
+      height: 20px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .status-panel {
+      display: flex;
+      height: 67px;
+      overflow: hidden;
+    }
+    .status-effect-icon {
+      margin-right: 5px;
+      height: 32px;
+      width: 32px;
+      background-size: 32px 32px;
+      border: variables.$border-normal;
+      border-radius: 3px;
+    }
+
+    &.dead {
+      filter: grayscale(1);
+      transition-property: opacity;
+      transition-timing-function: ease-out;
+      transition-duration: 1000ms;
+      opacity: 1;
+    }
+    &.dead.removed {
+      opacity: 0;
+    }
+
+    &.moving {
+      position: absolute;
+      z-index: variables.$z-effects;
+      transition-property: left, top;
+      transition-duration: 500ms;
+      transition-timing-function: ease-in-out;
+    }
+  }
+
+
+
+
+
+
+
+
   #formationPanel {
     margin: 50px;
 
@@ -22,69 +104,7 @@ $roll-high-bright: rgb(250,250,250);
       justify-content: center;
     }
 
-    .position {
-      box-sizing: border-box;
-      height: 120px;
-      width: 120px;
-      background-color: rgba(0,0,0,0.6);
-      margin: 2px;
-      border: variables.$border-light;
-      box-shadow: variables.$shadow-frame;
-      overflow: hidden;
-    }
-    .position.acting {
-      border-color: rgba(250,180,160,0.75);
-    }
 
-    .monster, .character {
-      box-sizing: border-box;
-      height: 118px;
-      width: 118px;
-      padding: 5px;
-      font-size: variables.$fs-tiny;
-      font-family: "habibi", sans-serif;
-      text-align: center;
-      overflow: hidden;
-      background-color: black;
-
-      .name {
-        height: 20px;
-        white-space: nowrap;
-        overflow: hidden;
-      }
-      .status-panel {
-        display: flex;
-        height: 67px;
-        overflow: hidden;
-      }
-      .status-effect-icon {
-        margin-right: 5px;
-        height: 32px;
-        width: 32px;
-        background-size: 32px 32px;
-        border: variables.$border-normal;
-        border-radius: 3px;
-      }
-
-      &.dead {
-        filter: grayscale(1);
-        transition-property: opacity;
-        transition-timing-function: ease-out;
-        transition-duration: 1000ms;
-        opacity: 1;
-      }
-      &.dead.removed {
-        opacity: 0;
-      }
-
-      &.moving {
-        position: absolute;
-        z-index: variables.$z-effects;
-        transition-property: left, top;
-        transition-duration: 500ms;
-        transition-timing-function: ease-in-out;
-      }
-    }
 
   }
 
@@ -174,29 +194,24 @@ $roll-high-bright: rgb(250,250,250);
 
 
 #battleView.normal-mode {
-  #formationPanel {
-    .position.occupied:hover {
-      background-color: rgba(30,30,45,0.66);
-      cursor: pointer;
-    }
+  .position.occupied:hover {
+    background-color: rgba(30,30,45,0.66);
+    cursor: pointer;
   }
 }
 
 #battleView.target-mode {
-
   #commandPanel {
     #commandArea { display:none; }
     #utilityArea { display:none; }
     #cancelArea { display:block; }
   }
 
-  #formationPanel {
-    .position.valid-target {
-      background-color: rgba(20,20,30,0.66);
-      cursor: pointer;
-    }
-    .position.valid-target:hover { background-color: rgba(40,40,60,0.66); }
-    .position.invalid-target { opacity: 0.4; }
-    .position.invalid-target:hover { background-color: rgba(0,0,0,0.6); }
+  .position.valid-target {
+    background-color: rgba(20,20,30,0.66);
+    cursor: pointer;
   }
+  .position.valid-target:hover { background-color: rgba(40,40,60,0.66); }
+  .position.invalid-target { opacity: 0.4; }
+  .position.invalid-target:hover { background-color: rgba(0,0,0,0.6); }
 }

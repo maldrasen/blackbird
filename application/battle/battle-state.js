@@ -45,7 +45,7 @@ global.BattleState = function(data) {
   }
 
   function addMonster(id, position) {
-    if (position.match(/\d\.\d/) === false) { throw `Position[${position}] is invalid` }
+    if (position.match(/[MP]\.\d\.\d/) === false) { throw `Position[${position}] is invalid` }
     monsterFormation[position] = id;
   }
 
@@ -74,11 +74,11 @@ global.BattleState = function(data) {
   }
 
   function isInFront(id) {
-    return getPositionOf(id)[0] === '0';
+    return getPositionOf(id)[2] === '0';
   }
 
   function isInBack(id) {
-    return getPositionOf(id)[0] === '1';
+    return getPositionOf(id)[2] === '1';
   }
 
   // Get the column that contains the entity, returning if this is a character or a monster, their ids and positions.
@@ -88,7 +88,7 @@ global.BattleState = function(data) {
     const monster = isMonster(entity);
 
     const formation = monster ? monsterFormation : partyFormation;
-    const otherPosition = `${inFront ? '1' : '0'}.${position[2]}`;
+    const otherPosition = `${inFront ? '1' : '0'}.${position[4]}`;
     const first = { id:entity, position:position };
     const second = { id:formation[otherPosition], position:otherPosition };
 
@@ -102,20 +102,13 @@ global.BattleState = function(data) {
   // Will either accept a rank and position or a string in the format r.p
   function getMonsterAtPosition(rank, position=null) {
     if (position == null) { return monsterFormation[rank] || null }
-    return monsterFormation[`${rank}.${position}`] || null;
+    return monsterFormation[`M.${rank}.${position}`] || null;
   }
 
   // Will either accept a rank and position or a string in the format r.p
   function getCharacterAtPosition(rank, position=null) {
     if (position == null) { return partyFormation[rank] || null }
-    return partyFormation[`${rank}.${position}`] || null;
-  }
-
-  function isMonsterRankOccupied(rank) {
-    for (let p=0; p<getMaxMonsterColumn(); p++) {
-      if (getMonsterAtPosition(rank, p)) { return true; }
-    }
-    return false;
+    return partyFormation[`P.${rank}.${position}`] || null;
   }
 
   function getMonsters() { return Object.values(monsterFormation); }
@@ -282,7 +275,6 @@ global.BattleState = function(data) {
     getColumnContaining,
     getMonsterAtPosition,
     getCharacterAtPosition,
-    isMonsterRankOccupied,
     getMonsters,
     getCharacters,
     isMonster,

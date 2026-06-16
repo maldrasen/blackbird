@@ -3,34 +3,23 @@ global.BattleFixtures = (function() {
   // TODO: We'll need more control over the characters in the party for the tests.
   function prepareForBattle() {
     const player = CharacterFixtures.randomPlayer();
-    const attributes = AttributesComponent.lookup(player);
-    const characters = CharacterFixtures.randomCharacters(2, { triggers:['strong','skillful'] });
+    const characters = CharacterFixtures.randomCharacters(3, { triggers:[] });
 
-    attributes.strength = 50;
-    attributes.vitality = 50;
-    attributes.dexterity = 50;
-    AttributesComponent.update(player,attributes);
+    PartyConfiguration.setCharacter(player,'C.0.2');
+    PartyConfiguration.setCharacter(characters[0],'C.0.3');
+    PartyConfiguration.setCharacter(characters[1],'C.0.1');
+    PartyConfiguration.setCharacter(characters[2],'C.1.2');
 
-    PartyConfiguration.setCharacter(player,'0.1');
-    PartyConfiguration.setCharacter(characters[0],'0.2');
-    PartyConfiguration.setCharacter(characters[1],'1.1');
-
-    equipAxe(player);
-    equipSpear(characters[0]);
-    equipSpear(characters[1]);
+    equipWeapon(player,'broad-axe',EquipmentSlot.primary);
+    equipWeapon(characters[0],'mace',EquipmentSlot.primary);
+    equipWeapon(characters[1],'dagger',EquipmentSlot.primary);
+    equipWeapon(characters[2],'spear',EquipmentSlot.primary);
   }
 
-  // TODO: Also equip a shield or offhand
-  function equipAxe(id) {
-    const axe = WeaponFactory.build('broad-axe');
-    InventoryManager(id).addItem(axe);
-    EquipmentManager(id).equipItem(axe, EquipmentSlot.primary);
-  }
-
-  function equipSpear(id) {
-    const spear = WeaponFactory.build('spear');
-    InventoryManager(id).addItem(spear);
-    EquipmentManager(id).equipItem(spear, EquipmentSlot.primary);
+  function equipWeapon(id, code, slot) {
+    const weapon = WeaponFactory.build(code);
+    InventoryManager(id).addItem(weapon);
+    EquipmentManager(id).equipItem(weapon, slot);
   }
 
   return Object.freeze({

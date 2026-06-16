@@ -9,7 +9,7 @@ global.EncounterBuilder = (function() {
       for (let p=0; p<formation[r].length; p++) {
         if (formation[r][p]) {
           const monster = MonsterFactory.build(formation[r][p]);
-          state.addMonster(monster,`${r}.${p}`);
+          state.addMonster(monster,`M.${r}.${p}`);
         }
       }
     }

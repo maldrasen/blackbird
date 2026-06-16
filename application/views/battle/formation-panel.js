@@ -1,116 +1,89 @@
 global.FormationPanel = (function() {
 
-  const healthBars = {};
+  const positionPanels = {};
+  const combatantPanels = {};
 
   let targetModeCallback;
 
   function init() {
-    X.onClick('#battleView.target-mode .position.valid-target', targetSelected);
-    X.onClick('#battleView.normal-mode .position.occupied', inspectPosition);
-    X.onClick('#commandPanel .cancel-button', stopTargeting);
+    // X.onClick('#battleView.target-mode .position.valid-target', targetSelected);
+    // X.onClick('#battleView.normal-mode .position.occupied', inspectPosition);
+    // X.onClick('#commandPanel .cancel-button', stopTargeting);
   }
 
   function build() {
     const state = BattleSystem.getState();
 
-    buildMonsterFormation(state);
-    buildPartyFormation(state);
+    buildPositionPanels();
+    buildCombatantPanels(state);
+
     updateAll(state);
   }
 
-  function buildMonsterFormation(state) {
-    const formation = state.getMonsterFormation();
+  function buildPositionPanels() {
+    for (let r=1; r>=0; r--) {
+      const partyRank = X.createElement(`<div class='rank'></div>`);
+      const monsterRank = X.createElement(`<div class='rank'></div>`);
 
-    for (let r=1; r >= 0; r--) {
-      const rankElement = X.createElement(`<div class='rank'></div>`);
-      X.first('#monsterFormation').appendChild(rankElement);
+      X.first('#partyFormation').appendChild(partyRank);
+      X.first('#monsterFormation').appendChild(monsterRank);
 
       for (let p=0; p<5; p++) {
-        const monsterId = formation[`${r}.${p}`];
-        const positionElement = buildPositionElement(r,p);
-        rankElement.appendChild(positionElement);
+        const partyPanel = PositionPanel('P',r,p);
+        const monsterPanel = PositionPanel('M',r,p);
 
-        if (monsterId) {
-          X.addClass(positionElement, 'occupied');
-          positionElement.appendChild(buildMonsterElement(monsterId));
-        }
+        positionPanels[`P.${r}.${p}`] = partyPanel;
+        positionPanels[`M.${r}.${p}`] = monsterPanel;
+
+        partyRank.appendChild(partyPanel.getElement());
+        monsterRank.appendChild(monsterPanel.getElement());
       }
     }
+  }
+
+  function buildCombatantPanels(state) {
+    const monsterFormation = state.getMonsterFormation();
+    const partyFormation = state.getPartyFormation();
+
+    console.log("M:",monsterFormation)
+    console.log("P:",partyFormation)
 
     state.getMonsters().forEach(monster => {
-      addHealthBar(getMonsterElement(monster), monster, true)
+      combatantPanels[monster] = CombatantPanel('monster', monster);
+      combatantPanels[monster].build(monsterFormation[monster]);
     });
-  }
-
-  function buildPartyFormation(state) {
-    const formation = state.getPartyFormation();
-
-    for (let r=0; r<2; r++) {
-      const rankElement = X.createElement(`<div class='rank'></div>`);
-      X.first('#partyFormation').appendChild(rankElement);
-
-      for (let p=0; p<5; p++) {
-        const characterId = formation[`${r}.${p}`];
-        const positionElement = buildPositionElement(r,p);
-        rankElement.appendChild(positionElement);
-
-        if (characterId) {
-          X.addClass(positionElement, 'occupied');
-          positionElement.appendChild(buildCharacterElement(characterId))
-        }
-      }
-    }
-
     state.getCharacters().forEach(character => {
-      addHealthBar(getCharacterElement(character), character);
+      combatantPanels[character] = CombatantPanel('character', character);
+      combatantPanels[character].build(partyFormation[character]);
     });
   }
 
-  function buildPositionElement(r, p) {
-    return X.createElement(`<div class='position' data-position='${r}.${p}'></div>`)
+  function getPositionPanel(side, rank, position) {
+    return positionPanels[`${side}.${rank}.${position}`];
   }
+
+  function getCombatantPanel(id) {
+    return combatantPanels[id];
+  }
+
+  function updateAll(state) {
+    console.log("=== Update All ===");
+
+    Object.values(combatantPanels).forEach(combatantPanel => {
+      combatantPanel.update();
+    });
+  }
+
+
+
+
+  /*
 
   // Look up position element given an entity ID.
-  function getPositionElement(entity) {
-    return X.first(`#formationPanel [data-id="${entity}"]`).closest('.position');
-  }
+  // function getPositionElement(entity) {
+  //   return X.first(`#formationPanel [data-id="${entity}"]`).closest('.position');
+  // }
 
-  function buildMonsterElement(monsterId) {
-    const monsterComponent = MonsterComponent.lookup(monsterId);
-    const monster = BaseMonster.lookup(monsterComponent.code);
-
-    return X.createElement(`<div class="monster" data-id="${monsterId}">
-      <div class='name'>${monster.getName()}</div>
-      <div class='status-panel'></div>
-      <div class='health-bar'></div>
-    </div>`);
-  }
-
-  function buildCharacterElement(characterId) {
-    return X.createElement(`<div class="character" data-id="${characterId}">
-      <div class='name'>${Character(characterId).getName()}</div>
-      <div class='status-panel'></div>
-      <div class='health-bar'></div>
-    </div>`);
-  }
-
-  function addHealthBar(element, entity, hideValues=false) {
-    const health = HealthComponent.lookup(entity);
-    const healthBar = BarDisplay({
-      label: 'Health',
-      currentValue: health.currentHealth,
-      minValue: 0,
-      maxValue: health.maxHealth,
-      color: 'health',
-    });
-
-    if (hideValues) {
-      healthBar.hideValues();
-    }
-    healthBars[entity] = healthBar;
-
-    element.querySelector('.health-bar').appendChild(healthBar.getElement());
-  }
 
   function getMonsterElement(id) { return X.first(`.monster[data-id='${id}']`); }
   function getCharacterElement(id) { return X.first(`.character[data-id='${id}']`); }
@@ -126,36 +99,7 @@ global.FormationPanel = (function() {
     X.addClass(getCharacterElement(id).parentElement,'acting');
   }
 
-  function updateAll(state) {
-    state.getMonsters().forEach(id => { updateEntity(id); });
-    state.getCharacters().forEach(id => { updateEntity(id); });
-  }
 
-  function updateEntity(id) {
-    if (BattleSystem.getState().isAlive(id)) {
-      updateStatusPanel(id,getPositionElement(id));
-      updateHealthBar(id);
-    }
-  }
-
-  function updateHealthBar(id) {
-    const health = HealthComponent.lookup(id);
-    healthBars[id].setCurrentValue(health.currentHealth);
-  }
-
-  function updateStatusPanel(id, position) {
-    const state = BattleSystem.getState();
-    const statusPanel = position.querySelector('.status-panel');
-    const statusEffects = state.getStatusEffects(id);
-
-    X.empty(statusPanel);
-
-    Object.entries(statusEffects).forEach(([code, effect]) => {
-      const icon = X.createElement(`<div class='status-effect-icon' data-name='${effect.getName()}'></div>`)
-      icon.style['background-image'] = X.assetURL(`ai-icons/${code}.png`);
-      statusPanel.appendChild(icon);
-    });
-  }
 
   function startTargeting(monsterPositions, characterPositions, callback) {
     targetModeCallback = callback;
@@ -291,20 +235,22 @@ global.FormationPanel = (function() {
       attach();
     },_battleKillEffectTime + 600);
   }
-
+*/
   return Object.freeze({
     init,
     build,
-    clearHighlight,
-    highlightActingMonster,
-    highlightActingCharacter,
-    updateAll,
-    updateEntity,
-    startTargeting,
-    showDamageEffect,
-    killEntity,
-    moveForwardOnDeath,
-    moveInwardOnDeath,
+    getPositionPanel,
+    getCombatantPanel,
+    // clearHighlight,
+    // highlightActingMonster,
+    // highlightActingCharacter,
+    // updateAll,
+    // updateEntity,
+    // startTargeting,
+    // showDamageEffect,
+    // killEntity,
+    // moveForwardOnDeath,
+    // moveInwardOnDeath,
   });
 
 })();

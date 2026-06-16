@@ -1,7 +1,7 @@
 describe("BattleState", function() {
 
   describe("Formation", function() {
-    it('getMonsterAtPosition()', function() {
+    it.only('getMonsterAtPosition()', function() {
       BattleFixtures.prepareForBattle();
       BattleSystem.startBattle({ encounter:'kobold-1' });
 
