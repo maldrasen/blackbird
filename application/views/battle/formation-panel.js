@@ -14,52 +14,53 @@ global.FormationPanel = (function() {
   function build() {
     const state = BattleSystem.getState();
 
-    buildPositionPanels();
+    buildRank('monster',1);
+    buildRank('monster',0);
+    buildRank('party',0);
+    buildRank('party',1);
+
     buildCombatantPanels(state);
 
     updateAll(state);
   }
 
-  function buildPositionPanels() {
-    for (let r=1; r>=0; r--) {
-      const partyRank = X.createElement(`<div class='rank'></div>`);
-      const monsterRank = X.createElement(`<div class='rank'></div>`);
+  function buildRank(type, rank) {
+    const parent = (type === 'monster') ? X.first('#monsterFormation') : X.first('#partyFormation');
+    const side = (type === 'monster') ? 'M' : 'P';
+    const rankElement = X.createElement(`<div class='rank'></div>`);
 
-      X.first('#partyFormation').appendChild(partyRank);
-      X.first('#monsterFormation').appendChild(monsterRank);
-
-      for (let p=0; p<5; p++) {
-        const partyPanel = PositionPanel('P',r,p);
-        const monsterPanel = PositionPanel('M',r,p);
-
-        positionPanels[`P.${r}.${p}`] = partyPanel;
-        positionPanels[`M.${r}.${p}`] = monsterPanel;
-
-        partyRank.appendChild(partyPanel.getElement());
-        monsterRank.appendChild(monsterPanel.getElement());
-      }
+    for (let p=0; p<5; p++) {
+      const positionPanel = PositionPanel(side,rank,p);
+      positionPanels[`${side}.${rank}.${p}`] = positionPanel;
+      rankElement.appendChild(positionPanel.getElement());
     }
+
+    parent.appendChild(rankElement);
   }
 
   function buildCombatantPanels(state) {
     const monsterFormation = state.getMonsterFormation();
     const partyFormation = state.getPartyFormation();
 
-    console.log("M:",monsterFormation)
-    console.log("P:",partyFormation)
-
     state.getMonsters().forEach(monster => {
-      combatantPanels[monster] = CombatantPanel('monster', monster);
-      combatantPanels[monster].build(monsterFormation[monster]);
+      buildCombatantPanel(monster, 'monster', monsterFormation);
     });
     state.getCharacters().forEach(character => {
-      combatantPanels[character] = CombatantPanel('character', character);
-      combatantPanels[character].build(partyFormation[character]);
+      buildCombatantPanel(character, 'character', partyFormation);
     });
   }
 
-  function getPositionPanel(side, rank, position) {
-    return positionPanels[`${side}.${rank}.${position}`];
+  function buildCombatantPanel(entity, type, formation) {
+    const positionPanel = positionPanels[formation[entity]]
+    const combatantPanel = CombatantPanel(type, entity);
+
+    combatantPanel.build();
+    positionPanel.setCombatantPanel(combatantPanel);
+    combatantPanels[entity] = combatantPanel;
+  }
+
+  function getPositionPanel(side, rank=null, position=null) {
+    return positionPanels[side] || positionPanels[`${side}.${rank}.${position}`];
   }
 
   function getCombatantPanel(id) {
@@ -67,8 +68,6 @@ global.FormationPanel = (function() {
   }
 
   function updateAll(state) {
-    console.log("=== Update All ===");
-
     Object.values(combatantPanels).forEach(combatantPanel => {
       combatantPanel.update();
     });
