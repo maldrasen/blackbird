@@ -5,10 +5,10 @@ global.BattleFixtures = (function() {
     const player = CharacterFixtures.randomPlayer();
     const characters = CharacterFixtures.randomCharacters(3, { triggers:[] });
 
-    PartyConfiguration.setCharacter(player,'C.0.2');
-    PartyConfiguration.setCharacter(characters[0],'C.0.3');
-    PartyConfiguration.setCharacter(characters[1],'C.0.1');
-    PartyConfiguration.setCharacter(characters[2],'C.1.2');
+    PartyConfiguration.setCharacter(player,'P.0.2');
+    PartyConfiguration.setCharacter(characters[0],'P.0.3');
+    PartyConfiguration.setCharacter(characters[1],'P.0.1');
+    PartyConfiguration.setCharacter(characters[2],'P.1.2');
 
     equipWeapon(player,'broad-axe',EquipmentSlot.primary);
     equipWeapon(characters[0],'mace',EquipmentSlot.primary);

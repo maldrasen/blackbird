@@ -1,8 +1,8 @@
 global.PartyConfiguration = (function() {
 
   const positions = [
-    'C.0.0','C.0.1','C.0.2','C.0.3','C.0.4',
-    'C.1.0','C.1.1','C.1.2','C.1.3','C.1.4'];
+    'P.0.0','P.0.1','P.0.2','P.0.3','P.0.4',
+    'P.1.0','P.1.1','P.1.2','P.1.3','P.1.4'];
 
   // If the character is already somewhere in the formation then they are being moved to a new position. If another
   // character was already in the position they are being moved to then we need to move the old character to the new
@@ -15,6 +15,10 @@ global.PartyConfiguration = (function() {
   function setCharacter(id, position) {
     const configuration = GameState.getPartyConfiguration() || {};
     const previous = configuration[position] ? configuration[position] : null;
+
+    if (positions.includes(position)===false) {
+      throw new Error(`Invalid Position: ${position}`);
+    }
 
     positions.forEach(code => {
       if (configuration[code] === id) {
