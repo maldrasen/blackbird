@@ -11,17 +11,12 @@ global.FormationManager = (function() {
   // Call the BattleInterface with a summary of who is moving where.
   function moveInwardOnDeath(columnIndex) {
     const state = BattleSystem.getState();
-    const formation = Object.entries(state.getMonsterFormation()).map(([k,v]) => [v,k]);
+    const formation = ObjectHelper.reverse(state.getMonsterFormation());
     const moves = [];
 
-    // This might not work...
-    // Could really use a spec
-    console.log("=== Move Inward ===")
-    console.log("Reversed Formation:",formation);
-
     function gatherMoves(from, to) {
-      if (formation[`0.${from}`]) { moves.push({ id:formation[`M.0.${from}`], to:`M.0.${to}` }); }
-      if (formation[`1.${from}`]) { moves.push({ id:formation[`M.1.${from}`], to:`M.1.${to}` }); }
+      if (formation[`M.0.${from}`]) { moves.push({ id:formation[`M.0.${from}`], to:`M.0.${to}` }); }
+      if (formation[`M.1.${from}`]) { moves.push({ id:formation[`M.1.${from}`], to:`M.1.${to}` }); }
     }
 
     if (columnIndex === 0 || columnIndex === 4) { return; }
@@ -37,8 +32,6 @@ global.FormationManager = (function() {
         gatherMoves(4,3);
       }
     }
-
-    console.log("Moves:",moves)
 
     if (moves.length > 0) {
       BattleInterface.moveInwardOnDeath(moves);

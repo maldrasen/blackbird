@@ -22,6 +22,11 @@ global.ObjectHelper = (function() {
     return Object.fromEntries(Object.entries(object).filter(([key, value]) => allowedKeys.includes(key)));
   }
 
+  // Reverses the keys and values of an object.
+  function reverse(object) {
+    return Object.fromEntries(Object.entries(object).map(([k,v]) => [v,k]));
+  }
+
   // Filter an object's properties, allowing the properties that match the selector function.
   function select(object, selector) {
     return Object.fromEntries(Object.entries(object).filter(([key, value]) => selector(key, value)));
@@ -35,6 +40,7 @@ global.ObjectHelper = (function() {
   return Object.freeze({
     fetch,
     filter,
+    reverse,
     select,
     unfloat,
   });

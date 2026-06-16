@@ -78,11 +78,10 @@ global.BattleState = function(data) {
     const position = getPositionOf(entity);
     const inFront = isInFront(entity);
     const monster = isMonster(entity);
+    const otherPosition = `${monster ? 'M' : 'P'}.${inFront ? '1' : '0'}.${position[4]}`;
 
-    const formation = monster ? monsterFormation : partyFormation;
-    const otherPosition = `${inFront ? '1' : '0'}.${position[4]}`;
     const first = { id:entity, position:position };
-    const second = { id:formation[otherPosition], position:otherPosition };
+    const second = { id:getEntityAtPosition(otherPosition), position:otherPosition };
 
     const column = { side:monster ? 'monster' : 'party' };
     column.front = inFront ? first : second;

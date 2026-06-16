@@ -133,19 +133,15 @@ global.FormationPanel = (function() {
   //       Movement
   // =====================
 
-
-  /*
-
   function killEntity(id) {
-    const state = BattleSystem.getState();
-    const element = state.isMonster(id) ? getMonsterElement(id) : getCharacterElement(id);
+    const element = combatantPanels[id].getElement();
     const position = element.closest('.position');
 
     X.addClass(element,'dead');
 
-    setTimeout(()=>{
+    requestAnimationFrame(() => {
       X.addClass(element,'removed');
-    },1);
+    });
 
     setTimeout(()=>{
       element.remove();
@@ -157,23 +153,15 @@ global.FormationPanel = (function() {
   // character has died and has already been removed from the formation. Because of the animations being played the
   // UI might lag a little behind the actual formation, though I don't think this will be a problem.
   function moveForwardOnDeath(columnData) {
-    const isMonster = (columnData.side === 'monster');
-    const formationId = isMonster ? `#monsterFormation` : `#partyFormation`;
-    const element = isMonster ? getMonsterElement(columnData.back.id) : getCharacterElement(columnData.back.id);
-    const target = X.first(`${formationId} [data-position='${columnData.front.position}']`)
+    const element = combatantPanels[columnData.back.id].getElement();
+    const target = positionPanels[columnData.front.position].getElement();
     moveEntity(element,target)
   }
 
   function moveInwardOnDeath(moves) {
     moves.forEach(move => {
-      const element = getMonsterElement(move.id);
-
-      // Saw this happen, but only once...
-      if (element == null) {
-        throw new Error(`Couldn't find monster element [${move.id}]`)
-      }
-
-      const target = X.first(`#monsterFormation [data-position='${move.to}']`);
+      const element = combatantPanels[move.id].getElement();
+      const target = positionPanels[move.to].getElement();
       moveEntity(element,target);
     });
   }
@@ -218,7 +206,6 @@ global.FormationPanel = (function() {
       attach();
     },_battleKillEffectTime + 600);
   }
-*/
 
   // ===============
   //     Effects
@@ -249,9 +236,10 @@ global.FormationPanel = (function() {
     // updateEntity,
 
     startTargeting,
-    // killEntity,
-    // moveForwardOnDeath,
-    // moveInwardOnDeath,
+
+    killEntity,
+    moveForwardOnDeath,
+    moveInwardOnDeath,
 
     showDamageEffect,
     highlightActing,

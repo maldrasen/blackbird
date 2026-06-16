@@ -47,6 +47,7 @@ global.CombatantPanel = function(type, entity) {
     }
   }
 
+
   function updateHealthBar() {
     healthBar.setCurrentValue(HealthComponent.lookup(entity).currentHealth);
   }

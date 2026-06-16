@@ -57,7 +57,7 @@ global.BattleDamage = (function() {
 
     // If a monster was killed we force them to move in towards the center rank.
     if (isMonster && isColumnEmpty(id, column)) {
-      FormationManager.moveInwardOnDeath(parseInt(column.front.position[2]));
+      FormationManager.moveInwardOnDeath(parseInt(column.front.position[4]));
     }
   }
 

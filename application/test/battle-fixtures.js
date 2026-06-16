@@ -3,7 +3,7 @@ global.BattleFixtures = (function() {
   // TODO: We'll need more control over the characters in the party for the tests.
   function prepareForBattle() {
     const player = CharacterFixtures.randomPlayer();
-    const characters = CharacterFixtures.randomCharacters(3, { triggers:[] });
+    const characters = CharacterFixtures.randomCharacters(3, { species:'equian', triggers:['strong'] });
 
     PartyConfiguration.setCharacter(player,'P.0.2');
     PartyConfiguration.setCharacter(characters[0],'P.0.3');
