@@ -19,8 +19,11 @@ global._humanDeviationRatio = 100 / 1750; // (Actual standard deviation is aroun
 global._humanFemaleRatio = 1500 / 1750;   // (Actual female average height is 1620, but again I want the male/female ratio to be more noticeable.)
 
 // === Battle ===
+global._positionPattern = /([PM])\.(\d)\.(\d)/;
 global._battleDamageEffectTime = 500;
 global._battleKillEffectTime = 1000;
+
+
 
 // === Dungeon ===
 global._tileSize = 30;

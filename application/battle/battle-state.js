@@ -32,7 +32,7 @@ global.BattleState = function(data) {
   //       monsters into a 'dead pile' I think they can all be safely deleted. Monsters that are incapacitated
   //       shouldn't take up space in the formation either though. Something to think about.
   function cleanup() {
-    Object.values(monsterFormation).forEach(id => {
+    Object.keys(monsterFormation).forEach(id => {
       Registry.deleteEntity(id);
     });
   }
@@ -46,20 +46,12 @@ global.BattleState = function(data) {
 
   function addMonster(id, position) {
     if (position.match(/[MP]\.\d\.\d/) === false) { throw `Position[${position}] is invalid` }
-    monsterFormation[position] = id;
+    monsterFormation[id] = position;
   }
 
   function getPositionOf(id) {
-    const monsters = Object.entries(monsterFormation);
-    const characters = Object.entries(partyFormation);
-
-    for (let i=0; i<monsters.length; i++) {
-      if (monsters[i][1] === id) { return monsters[i][0]; }
-    }
-    for (let i=0; i<characters.length; i++) {
-      if (characters[i][1] === id) { return characters[i][0]; }
-    }
-
+    if (monsterFormation[id]) { return monsterFormation[id]; }
+    if (partyFormation[id]) { return partyFormation[id]; }
     throw new Error(`Entity[${id}] is not in a battle formation.`);
   }
 
@@ -99,20 +91,25 @@ global.BattleState = function(data) {
     return column;
   }
 
-  // Will either accept a rank and position or a string in the format r.p
-  function getMonsterAtPosition(rank, position=null) {
-    if (position == null) { return monsterFormation[rank] || null }
-    return monsterFormation[`M.${rank}.${position}`] || null;
+  function getEntityAtPosition(side, rank, position) {
+    const id = (rank == null) ? side : `${side}.${rank}.${position}`;
+    const monsters = Object.entries(monsterFormation);
+    const characters = Object.entries(partyFormation);
+
+    for (let i=0; i<monsters.length; i++) {
+      if (monsters[i][1] === id) { return monsters[i][0]; }
+    }
+    for (let i=0; i<characters.length; i++) {
+      if (characters[i][1] === id) { return characters[i][0]; }
+    }
+
+    return null;
   }
 
-  // Will either accept a rank and position or a string in the format r.p
-  function getCharacterAtPosition(rank, position=null) {
-    if (position == null) { return partyFormation[rank] || null }
-    return partyFormation[`P.${rank}.${position}`] || null;
-  }
 
-  function getMonsters() { return Object.values(monsterFormation); }
-  function getCharacters() { return Object.values(partyFormation); }
+
+  function getMonsters() { return Object.keys(monsterFormation); }
+  function getCharacters() { return Object.keys(partyFormation); }
   function isMonster(id) { return getMonsters().includes(id); }
 
   function removeFromFormation(id) {
@@ -120,6 +117,10 @@ global.BattleState = function(data) {
     const position = getPositionOf(id);
     delete formation[position];
   }
+
+
+
+
 
   // === Turn Order ====================================================================================================
 
@@ -273,8 +274,7 @@ global.BattleState = function(data) {
     isInFront,
     isInBack,
     getColumnContaining,
-    getMonsterAtPosition,
-    getCharacterAtPosition,
+    getEntityAtPosition,
     getMonsters,
     getCharacters,
     isMonster,

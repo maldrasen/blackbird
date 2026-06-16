@@ -21,7 +21,7 @@ global.ThreatGenerators = (function() {
     const state = BattleSystem.getState();
     const position = state.getPositionOf(monsterId);
 
-    Object.entries(state.getPartyFormation()).forEach(([pos, id]) => {
+    Object.entries(state.getPartyFormation()).forEach(([id, pos]) => {
       const distance = BattleHelper.distanceBetweenPositions(position, pos);
 
       let threat = 0;
