@@ -6,9 +6,9 @@ global.FormationPanel = (function() {
   let targetModeCallback;
 
   function init() {
-    // X.onClick('#battleView.target-mode .position.valid-target', targetSelected);
+    X.onClick('#battleView.target-mode .position.valid-target', targetSelected);
     X.onClick('#battleView.normal-mode .position.occupied', inspectPosition);
-    // X.onClick('#commandPanel .cancel-button', stopTargeting);
+    X.onClick('#commandPanel .cancel-button', stopTargeting);
   }
 
   // ==============
@@ -76,10 +76,8 @@ global.FormationPanel = (function() {
     });
   }
 
-
-
   // =======================
-  //    Entity Inspecting
+  //       Inspecting
   // =======================
 
   function inspectPosition(event) {
@@ -89,24 +87,8 @@ global.FormationPanel = (function() {
   }
 
   // ======================
-  //    Entity Targeting
+  //       Targeting
   // ======================
-
-  // =====================
-  //    Entity Movement
-  // =====================
-
-
-
-
-
-
-
-
-  /*
-
-
-
 
   function startTargeting(monsterPositions, characterPositions, callback) {
     targetModeCallback = callback;
@@ -119,6 +101,7 @@ global.FormationPanel = (function() {
         'valid-target' :
         'invalid-target');
     });
+
     X.each('#partyFormation .position', element => {
       X.addClass(element, characterPositions.includes(element.dataset.position) ?
         'valid-target' :
@@ -133,7 +116,6 @@ global.FormationPanel = (function() {
     X.addClass('#battleView','normal-mode');
   }
 
-
   // Targeting always returns a position because some abilities (like AoE attacks) might target an empty position.
   function targetSelected(event) {
     const position = event.target.closest('.position').dataset.position;
@@ -147,7 +129,12 @@ global.FormationPanel = (function() {
   }
 
 
+  // =====================
+  //       Movement
+  // =====================
 
+
+  /*
 
   function killEntity(id) {
     const state = BattleSystem.getState();
@@ -233,6 +220,10 @@ global.FormationPanel = (function() {
   }
 */
 
+  // ===============
+  //     Effects
+  // ===============
+
   // Data: { entity, damage, damageTypes, isCrit, killed }
   function showDamageEffect(data) {
     FlashSquare.flash({
@@ -255,9 +246,9 @@ global.FormationPanel = (function() {
     getPositionPanel,
     getCombatantPanel,
     updateAll,
-
     // updateEntity,
-    // startTargeting,
+
+    startTargeting,
     // killEntity,
     // moveForwardOnDeath,
     // moveInwardOnDeath,
