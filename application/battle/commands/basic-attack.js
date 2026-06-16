@@ -10,6 +10,9 @@ global.BasicAttack = (function() {
   //       weapons equipped? A basic attack can also attack multiple times at higher levels. Need to handle that. Some
   //       monsters might have multiple basic attacks as well, claw/claw/bite for instance.
 
+  // TODO: Assume defend with dodge for now. Characters will block when they have a shield equipped, or parry with a
+  //       sword equipped.
+
   // When we execute the basic attack we first find the monster attack, or equipped weapon. Then we make attack and
   // defend rolls using the base weapon skill type for attacker. Because there are three possible states for each roll
   // (crit, fumble, or normal) we're left with a table with 9 possible outcomes for each attack.
@@ -38,9 +41,6 @@ global.BasicAttack = (function() {
     const attackRoll = SkillCheck(attacker, baseWeapon.getSkill());
     const defendRoll = SkillCheck(target, defendSkill);
     const hitLocation = BattleHelper.randomHitLocation();
-
-    // TODO: Assume defend with dodge for now. Characters will block when they have a shield equipped, or parry with a
-    //       sword equipped.
 
     if (attackRoll.crit && defendRoll.crit) {
       return execute(attacker, target);

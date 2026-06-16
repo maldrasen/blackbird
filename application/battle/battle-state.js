@@ -45,7 +45,7 @@ global.BattleState = function(data) {
   }
 
   function addMonster(id, position) {
-    if (position.match(/[MP]\.\d\.\d/) === false) { throw `Position[${position}] is invalid` }
+    if (position.match(_positionPattern) == null) { throw new Error(`Invalid Position: ${position}`); }
     monsterFormation[id] = position;
   }
 
@@ -56,13 +56,13 @@ global.BattleState = function(data) {
   }
 
   function setMonsterPosition(id, position) {
-    delete monsterFormation[getPositionOf(id)];
-    monsterFormation[position] = id;
+    delete monsterFormation[id];
+    monsterFormation[id] = position;
   }
 
   function setCharacterPosition(id, position) {
-    delete partyFormation[getPositionOf(id)];
-    partyFormation[position] = id;
+    delete partyFormation[id];
+    partyFormation[id] = position;
   }
 
   function isInFront(id) {
@@ -91,6 +91,7 @@ global.BattleState = function(data) {
     return column;
   }
 
+  // Argument is either a position key "M.0.1" or the side, rank, and position that forms the key.
   function getEntityAtPosition(side, rank, position) {
     const id = (rank == null) ? side : `${side}.${rank}.${position}`;
     const monsters = Object.entries(monsterFormation);
@@ -105,7 +106,6 @@ global.BattleState = function(data) {
 
     return null;
   }
-
 
   function getMonsters() { return Object.keys(monsterFormation); }
   function getCharacters() { return Object.keys(partyFormation); }

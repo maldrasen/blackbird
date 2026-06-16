@@ -7,7 +7,7 @@ global.TargetingController = (function() {
     FormationPanel.startTargeting(positions, [], position => {
       BattleSystem.finishCharacterTurn(BasicAttack.execute(
         state.getActingCharacter(),
-        state.getMonsterAtPosition(position)
+        state.getEntityAtPosition(position)
       ));
     });
   }

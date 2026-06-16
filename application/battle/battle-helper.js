@@ -20,13 +20,17 @@ global.BattleHelper = (function() {
   // Distance between positions returns an object with both rank difference and position difference as the rank
   // (vertical) distance is usually more significant than the position (horizontal) distance.
   function distanceBetweenPositions(p1, p2) {
-    const m1 = p1.match(/(\d)\.(\d)/);
-    const m2 = p2.match(/(\d)\.(\d)/);
+    const m1 = p1.match(_positionPattern);
+    const m2 = p2.match(_positionPattern);
 
-    return {
-      rank: parseInt(m1[1]) + parseInt(m2[1]),
-      position: Math.abs(parseInt(m1[2]) - parseInt(m2[2])),
+    if (m1[1] !== m2[1]) {
+      return {
+        rank: parseInt(m1[2]) + parseInt(m2[2]),
+        position: Math.abs(parseInt(m1[3]) - parseInt(m2[3])),
+      }
     }
+
+    throw new Error(`TODO: Distance between positions on same side.`);
   }
 
   function randomHitLocation() {
