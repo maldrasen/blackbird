@@ -6,6 +6,7 @@ BaseWeapon.register('hatchet', {
   hands: WeaponHandedness.one,
   low: 20,
   high: 40,
+  speed: 1000,
   attackText:'basic-swing',
 });
 
@@ -16,6 +17,7 @@ BaseWeapon.register('cleaver', {
   hands: WeaponHandedness.one,
   low: 30,
   high: 60,
+  speed: 1000,
   attackText:'basic-swing',
 });
 
@@ -26,6 +28,7 @@ BaseWeapon.register('hand-axe', {
   hands: WeaponHandedness.one,
   low: 40,
   high: 80,
+  speed: 1000,
   attackText:'basic-swing',
 });
 
@@ -36,6 +39,7 @@ BaseWeapon.register('broad-axe', {
   hands: WeaponHandedness.main,
   low: 60,
   high: 120,
+  speed: 1200,
   attackText:'basic-swing',
 });
 
@@ -46,6 +50,7 @@ BaseWeapon.register('war-axe', {
   hands: WeaponHandedness.main,
   low: 80,
   high: 160,
+  speed: 1200,
   attackText:'basic-swing',
 });
 
@@ -56,6 +61,7 @@ BaseWeapon.register('goosewing', {
   hands: WeaponHandedness.two,
   low: 100,
   high: 200,
+  speed: 1800,
   attackText:'basic-swing',
 });
 
@@ -66,6 +72,7 @@ BaseWeapon.register('battle-axe', {
   hands: WeaponHandedness.two,
   low: 100,
   high: 300,
+  speed: 1800,
   attackText:'basic-swing',
 });
 
@@ -76,5 +83,6 @@ BaseWeapon.register('labrys', {
   hands: WeaponHandedness.two,
   low: 100,
   high: 400,
+  speed: 2000,
   attackText:'basic-swing',
 });

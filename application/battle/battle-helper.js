@@ -41,6 +41,61 @@ global.BattleHelper = (function() {
     throw new Error(`TODO: Distance between positions on same side.`);
   }
 
+
+  // Determining the weapons that a monster or a character has equipped takes a little work, as they're both managed in
+  // completely different ways. The basic monster attacks, as defined on the base monster, will usually include a base
+  // weapon and a name. They can also define main and off-hand weapons.
+  //
+  //     Single:  { base:B, name:N }
+  //     Dual:    { main:{ base:B, name:N }, off:{ base:B, name:N }}
+  //
+  // The weapon data for normal characters is found in the Equipment manager. In either case we distill the weapon data
+  // down to the properties we need to make the attack roll.
+
+  function compileWeaponData(id) {
+    const state = BattleSystem.getState();
+    const primaryWeapon = {};
+    const secondaryWeapon = {};
+
+    if (state.isMonster(id)) {
+      const monsterAttack = Monster(id).getBasicAttack();
+      if (monsterAttack.main) {
+        primaryWeapon.base = monsterAttack.main.base;
+        primaryWeapon.name = monsterAttack.main.name || BaseWeapon.lookup(primaryWeapon.base).getName();
+      }
+      if (monsterAttack.off) {
+        secondaryWeapon.base = monsterAttack.off.base;
+        secondaryWeapon.name = monsterAttack.off.name || BaseWeapon.lookup(secondaryWeapon.base).getName();
+      }
+      if (monsterAttack.base) {
+        primaryWeapon.base = monsterAttack.base;
+        primaryWeapon.name = monsterAttack.name || BaseWeapon.lookup(primaryWeapon.base).getName();
+      }
+    }
+
+    if (state.isCharacter(id)) {
+      const equipment = EquipmentManager(id);
+      const main = equipment.getSlot(EquipmentSlot.primary);
+      const off = equipment.getSlot(EquipmentSlot.secondary);
+
+      if (main && WeaponComponent.lookup(main)) {
+        const mainWeapon = Weapon(main);
+        primaryWeapon.base = mainWeapon.getBaseWeapon().getCode();
+        primaryWeapon.name = mainWeapon.getName();
+      }
+      if (off && WeaponComponent.lookup(off)) {
+        const offWeapon = Weapon(off);
+        secondaryWeapon.base = offWeapon.getBaseWeapon().getCode();
+        secondaryWeapon.name = offWeapon.getName();
+      }
+    }
+
+    return {
+      primary: primaryWeapon.base ? primaryWeapon : null,
+      secondary: secondaryWeapon.base ? secondaryWeapon : null,
+    }
+  }
+
   function randomHitLocation() {
     return Random.fromFrequencyMap({
       chest: 35,
@@ -55,6 +110,7 @@ global.BattleHelper = (function() {
     isAttackWithinRange,
     parsePosition,
     distanceBetweenPositions,
+    compileWeaponData,
     randomHitLocation,
   });
 

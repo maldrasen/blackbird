@@ -35,34 +35,34 @@ global.BasicAttack = (function() {
   // fumbles. An attacker can crit (doing the best they can) but still miss their target.
 
   function execute(attacker, target) {
-    const attack = findBasicAttack(attacker);
-    const defendSkill = 'dodge';
-    const baseWeapon = BaseWeapon.lookup(attack.base);
-    const attackRoll = SkillCheck(attacker, baseWeapon.getSkill());
-    const defendRoll = SkillCheck(target, defendSkill);
-    const hitLocation = BattleHelper.randomHitLocation();
 
-    if (attackRoll.crit && defendRoll.crit) {
+    const weaponData = BattleHelper.compileWeaponData(attacker);
+    const attacks = calculateAttacks(attacker, weaponData);
+
+    const attackRoll = PhysicalAttackRoll(attacker, target);
+    const defendRoll = DefendRoll(attacker, target)
+
+    if (attackRoll.isCrit() && defendRoll.isCrit()) {
       return execute(attacker, target);
     }
 
     const context = buildContext({
       A: attacker,
       T: target,
-      hitLocation: hitLocation,
+      hitLocation: attackRoll.getHitLocation(),
     }, attackRoll, defendRoll);
 
-    const attackTextKey = attack.attackText || baseWeapon.getAttackText();
-    const attackText = Random.from(Dialog.lookupTemplate(DialogCategory.attackText, attackTextKey, context));
     const weaver = Weaver(context);
 
     const result = {
       messages: [
-        { text:weaver.weave(attackText) },
+        { text:weaver.weave(attackRoll.getAttackText()) },
         { element:'roll-display', title:'Attack Roll', attack:attackRoll, defend:defendRoll },
       ],
       time: 1000,
     }
+
+    return result;
 
     // TODO: Assuming crit damage is x2, could be more for different weapons, or with different abilities. Crit damage
     //       reduction could also change this.
@@ -150,40 +150,48 @@ global.BasicAttack = (function() {
   }
 
 
-  // A basic attack will have a base weapon at a bare minimum. To give monster attacks different flavors we also can
-  // include a weapon 'name' and the 'attackText' attributes. If the name or attackText properties are null then the
-  // basic attack will use the default text for the weapon.
-  //
-  // TODO: It's possible a character won't have a primary weapon equipped. We could add a 'fist' base weapon, or make
-  //       martial arts a more complex system or we don't allow unequipped characters to make basic attacks.
-  function findBasicAttack(attacker) {
-    if (BattleSystem.getState().isMonster(attacker)) {
-      return Monster(attacker).getBasicAttack();
+  function calculateAttacks(attacker, weapons) {
+    const attacks = [];
+    const state = BattleSystem.getState();
+    const speedFactor = state.isMonster(attacker) ?
+      Monster(attacker).getSpeedFactor():
+      Character(attacker).getSpeedFactor();
+
+    let hand = 'primary';
+    let time = 0;
+
+    while(time < 1000) {
+      const weapon = weapons[hand];
+      const baseWeapon = BaseWeapon.lookup(weapon.base);
+
+      let strikeTime = baseWeapon.getSpeed() * speedFactor;
+      if (weapons.primary && weapons.secondary) {
+        strikeTime = Math.round(strikeTime * 0.75);
+      }
+
+      attacks.push({ base:weapon.base, name:weapon.name, hand:hand, time:strikeTime });
+      time += strikeTime;
+      hand = (hand === 'primary' && weapons.secondary) ? 'secondary' : 'primary';
     }
 
-    const weaponId = EquipmentManager(attacker).getSlot(EquipmentSlot.primary);
-    if (weaponId) {
-      return { base: WeaponComponent.lookup(weaponId).base };
-    }
-
-    return null;
+    return attacks;
   }
-
 
   // The context is used to select the attack text, so it needs to know if the attack roll or defend rolls are crits
   // or fumbles. This function just puts those values into a better format.
   function buildContext(context, attackRoll, defendRoll) {
-    if (attackRoll.crit) { context.attack = 'crit'; }
-    if (attackRoll.fumble) { context.attack = 'fumble'; }
+    if (attackRoll.isCrit()) { context.attack = 'crit'; }
+    if (attackRoll.isFumble()) { context.attack = 'fumble'; }
     if (context.attack == null) { context.attack = 'normal'; }
-    if (defendRoll.crit) { context.defend = 'crit'; }
-    if (defendRoll.fumble) { context.defend = 'fumble'; }
+    if (defendRoll.isCrit()) { context.defend = 'crit'; }
+    if (defendRoll.isFumble()) { context.defend = 'fumble'; }
     if (context.defend == null) { context.defend = 'normal'; }
     return context;
   }
 
   return Object.freeze({
     execute,
+    calculateAttacks,
   });
 
 })();

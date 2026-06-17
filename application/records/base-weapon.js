@@ -24,7 +24,7 @@ global.BaseWeapon = (function() {
     }
 
     return Object.freeze({
-      getCode: () => { return weapon.code; },
+      getCode: () => { return code; },
       getName: () => { return weapon.name; },
       getType: () => { return weapon.type; },
       getSkill,
@@ -33,6 +33,7 @@ global.BaseWeapon = (function() {
       getReach: () => { return weapon.reach || WeaponReach.close },
       getLow: () => { return weapon.low; },
       getHigh: () => { return weapon.high; },
+      getSpeed: () => { return weapon.speed },
       getAttackText: () => { return weapon.attackText; },
     });
   }

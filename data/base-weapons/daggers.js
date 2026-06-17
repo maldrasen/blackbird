@@ -9,6 +9,7 @@ BaseWeapon.register('knife', {
   hands: WeaponHandedness.one,
   low: 20,
   high: 30,
+  speed: 500,
   attackText:'basic-thrust',
 });
 
@@ -19,6 +20,7 @@ BaseWeapon.register('dirk', {
   hands: WeaponHandedness.one,
   low: 40,
   high: 60,
+  speed: 500,
   attackText:'basic-thrust',
 });
 
@@ -32,6 +34,7 @@ BaseWeapon.register('dagger', {
   hands: WeaponHandedness.one,
   low: 50,
   high: 75,
+  speed: 500,
   attackText:'basic-thrust',
 });
 
@@ -42,6 +45,7 @@ BaseWeapon.register('poignard', {
   hands: WeaponHandedness.one,
   low: 70,
   high: 90,
+  speed: 500,
   attackText:'basic-thrust',
 });
 
@@ -52,6 +56,7 @@ BaseWeapon.register('baselard', {
   hands: WeaponHandedness.one,
   low: 80,
   high: 100,
+  speed: 500,
   attackText:'basic-thrust',
 });
 
@@ -62,5 +67,6 @@ BaseWeapon.register('stiletto', {
   hands: WeaponHandedness.one,
   low: 100,
   high: 120,
+  speed: 500,
   attackText:'basic-thrust',
 });

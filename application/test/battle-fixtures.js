@@ -24,6 +24,7 @@ global.BattleFixtures = (function() {
 
   return Object.freeze({
     prepareForBattle,
+    equipWeapon,
   })
 
 })();

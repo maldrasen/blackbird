@@ -7,6 +7,7 @@ BaseWeapon.register('spear', {
   reach: WeaponReach.extended,
   low: 50,
   high: 100,
+  speed: 1200,
   attackText:'basic-thrust',
 });
 

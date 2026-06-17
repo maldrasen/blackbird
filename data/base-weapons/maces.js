@@ -6,6 +6,7 @@ BaseWeapon.register('hammer', {
   hands: WeaponHandedness.one,
   low: 10,
   high: 50,
+  speed: 1000,
   attackText:'basic-swing',
 });
 
@@ -16,6 +17,7 @@ BaseWeapon.register('mace', {
   hands: WeaponHandedness.one,
   low: 20,
   high: 100,
+  speed: 1000,
   attackText:'basic-swing',
 });
 
@@ -26,6 +28,7 @@ BaseWeapon.register('warhammer', {
   hands: WeaponHandedness.primary,
   low: 30,
   high: 150,
+  speed: 1200,
   attackText:'basic-swing',
 });
 
@@ -39,6 +42,7 @@ BaseWeapon.register('morning-star', {
   hands: WeaponHandedness.primary,
   low: 50,
   high: 200,
+  speed: 1200,
   attackText:'basic-swing',
 });
 
@@ -49,5 +53,6 @@ BaseWeapon.register('maul', {
   hands: WeaponHandedness.two,
   low: 100,
   high: 500,
+  speed: 2400,
   attackText:'basic-swing',
 });
