@@ -7,7 +7,7 @@ global.FormationPanel = (function() {
 
   function init() {
     X.onClick('#battleView.target-mode .position.valid-target', targetSelected);
-    X.onClick('#battleView.normal-mode .position.occupied', inspectPosition);
+    X.onClick('#battleView.normal-mode .position:has(.combatant)', inspectPosition);
     X.onClick('#commandPanel .cancel-button', stopTargeting);
   }
 
@@ -58,7 +58,7 @@ global.FormationPanel = (function() {
     const combatantPanel = CombatantPanel(type, entity);
 
     combatantPanel.build();
-    positionPanel.setCombatantPanel(combatantPanel);
+    X.append(positionPanel.getElement(),combatantPanel.getElement());
     combatantPanels[entity] = combatantPanel;
   }
 
@@ -153,45 +153,42 @@ global.FormationPanel = (function() {
   // character has died and has already been removed from the formation. Because of the animations being played the
   // UI might lag a little behind the actual formation, though I don't think this will be a problem.
   function moveForwardOnDeath(columnData) {
-    const element = combatantPanels[columnData.back.id].getElement();
+    const combatant = combatantPanels[columnData.back.id].getElement();
     const target = positionPanels[columnData.front.position].getElement();
-    moveEntity(element,target)
+    moveEntity(combatant,target);
   }
 
   function moveInwardOnDeath(moves) {
     moves.forEach(move => {
-      const element = combatantPanels[move.id].getElement();
+      const combatant = combatantPanels[move.id].getElement();
       const target = positionPanels[move.to].getElement();
-      moveEntity(element,target);
+      moveEntity(combatant,target);
     });
   }
 
-  function moveEntity(element, targetElement) {
-    X.removeClass(element.closest('.position'),'occupied');
-
-    const targetCoords = X.getPosition(targetElement);
-    const currentCoords = X.getPosition(element);
+  function moveEntity(combatant, target) {
+    const currentCoords = X.getPosition(combatant);
+    const targetCoords = X.getPosition(target);
 
     function detach() {
-      X.addClass(element, 'moving');
-      element.setAttribute('style', [
+      X.addClass(combatant, 'moving');
+      combatant.setAttribute('style', [
         `left:${currentCoords.left}px;`,
         `top:${currentCoords.top}px;`,
       ].join(' '));
     }
 
     function move() {
-      element.setAttribute('style',[
+      combatant.setAttribute('style',[
         `left:${targetCoords.left + 1}px;`,
         `top:${targetCoords.top + 1}px;`,
       ].join(' '));
     }
 
     function attach() {
-      targetElement.appendChild(element);
-      X.addClass(targetElement,'occupied');
-      X.removeClass(element,'moving');
-      element.removeAttribute('style');
+      target.appendChild(combatant);
+      X.removeClass(combatant,'moving');
+      combatant.removeAttribute('style');
     }
 
     // Yes, we need to request two animation frames between detach and move.
@@ -204,7 +201,28 @@ global.FormationPanel = (function() {
 
     setTimeout(() => {
       attach();
+      requestAnimationFrame(() => {
+        validatePositions();
+      });
     },_battleKillEffectTime + 600);
+  }
+
+  function validatePositions() {
+    const state = BattleSystem.getState();
+
+    Object.entries(state.getMonsterFormation()).forEach(([id, position]) => {
+      const elementPosition = getCombatantPanel(id).getPosition();
+      if (elementPosition !== position) {
+        throw new Error(`Monster[${id}] should be at ${position} but is at ${elementPosition}`);
+      }
+    });
+
+    Object.entries(state.getPartyFormation()).forEach(([id, position]) => {
+      const elementPosition = getCombatantPanel(id).getPosition();
+      if (elementPosition !== position) {
+        throw new Error(`Monster[${id}] should be at ${position} but is at ${elementPosition}`);
+      }
+    });
   }
 
   // ===============

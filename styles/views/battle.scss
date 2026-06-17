@@ -191,7 +191,7 @@ $roll-high-bright: rgb(250,250,250);
 
 
 #battleView.normal-mode {
-  .position.occupied:hover {
+  .position:has(.combatant):hover {
     background-color: rgba(30,30,45,0.66);
     cursor: pointer;
   }

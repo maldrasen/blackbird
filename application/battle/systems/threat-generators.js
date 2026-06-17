@@ -19,7 +19,7 @@ global.ThreatGenerators = (function() {
   // Characters that are closet in position have some initial threat.
   function closest(threatTable, weight, monsterId) {
     const state = BattleSystem.getState();
-    const position = state.getPositionOf(monsterId);
+    const position = state.getPosition(monsterId);
 
     Object.entries(state.getPartyFormation()).forEach(([id, pos]) => {
       const distance = BattleHelper.distanceBetweenPositions(position, pos);

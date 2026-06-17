@@ -11,7 +11,7 @@ global.BattleFixtures = (function() {
     PartyConfiguration.setCharacter(characters[2],'P.1.2');
 
     equipWeapon(player,'broad-axe',EquipmentSlot.primary);
-    equipWeapon(characters[0],'mace',EquipmentSlot.primary);
+    equipWeapon(characters[0],'spear',EquipmentSlot.primary);
     equipWeapon(characters[1],'dagger',EquipmentSlot.primary);
     equipWeapon(characters[2],'spear',EquipmentSlot.primary);
   }

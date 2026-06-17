@@ -16,12 +16,12 @@ global.TargetingController = (function() {
     const state = BattleSystem.getState();
     const acting = state.getActingCharacter();
     const reach = getBasicAttackReach(acting);
-    const position = state.getPositionOf(acting)
+    const position = state.getPosition(acting)
     const inRange = [];
 
     state.getMonsters().forEach(monster => {
       if (state.isAlive(monster)) {
-        const monsterPosition = state.getPositionOf(monster)
+        const monsterPosition = state.getPosition(monster)
         if (BattleHelper.isAttackWithinRange(reach, position, monsterPosition)) {
           inRange.push({ monster:monster, position:monsterPosition });
         }

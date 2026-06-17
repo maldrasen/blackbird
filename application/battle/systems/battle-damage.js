@@ -44,7 +44,6 @@ global.BattleDamage = (function() {
     }
 
     if (isInFront) {
-
       // No other character is behind this one, it can be removed.
       if (column.back.id == null) { state.removeFromFormation(id); }
 

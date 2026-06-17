@@ -40,8 +40,8 @@ global.MonsterSimulator = (function() {
   //       WeaponReach?) We'll need a way to reference the monster's abilities. I think they should just come from a
   //       record though. I don't think abilities will need to have their own components.
   function getPossibleActions(state, monster, target) {
-    const monsterPosition = state.getPositionOf(monster.getEntity());
-    const targetPosition = state.getPositionOf(target);
+    const monsterPosition = state.getPosition(monster.getEntity());
+    const targetPosition = state.getPosition(target);
     const actions = [];
 
     if (isBasicAttackInRange(monster, monsterPosition, targetPosition)) {

@@ -2,9 +2,9 @@ global.FormationManager = (function() {
 
   // This would overwrite the other entity, so only call this in the case of the death of an entity.
   function moveForwardOnDeath(column) {
-    column.side === 'monster' ?
-      BattleSystem.getState().setMonsterPosition(column.back.id, column.front.position) :
-      BattleSystem.getState().setCharacterPosition(column.back.id, column.front.position);
+    const state = BattleSystem.getState();
+    state.removeFromFormation(column.front.id);
+    state.setPosition(column.back.id, column.front.position);
   }
 
   // We only force monsters into the center, so unlike moving forward we can ignore the character formation.
@@ -36,7 +36,7 @@ global.FormationManager = (function() {
     if (moves.length > 0) {
       BattleInterface.moveInwardOnDeath(moves);
       moves.forEach(move => {
-        state.setMonsterPosition(move.id, move.to);
+        state.setPosition(move.id, move.to);
       });
     }
   }

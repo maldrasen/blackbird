@@ -47,7 +47,6 @@ global.CombatantPanel = function(type, entity) {
     }
   }
 
-
   function updateHealthBar() {
     healthBar.setCurrentValue(HealthComponent.lookup(entity).currentHealth);
   }
@@ -66,10 +65,15 @@ global.CombatantPanel = function(type, entity) {
     });
   }
 
+  function getPosition() {
+    return X.hasClass(element,'removed') ? null : element.closest('.position').dataset['position'];
+  }
+
   return Object.freeze({
     getType: () => { return type; },
     getEntity: () => { return entity; },
     getElement: () => { return element; },
+    getPosition,
     build,
     update,
   });
