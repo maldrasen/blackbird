@@ -8,7 +8,7 @@ BaseWeapon.register('spear', {
   low: 50,
   high: 100,
   speed: 1200,
-  attackText:'basic-thrust',
+  textKey: 'basic-thrust',
 });
 
 // Pike

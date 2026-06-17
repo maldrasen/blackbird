@@ -1,5 +1,5 @@
 global.WeaponComponent = (function() {
-  const $properties = ['base','name'];
+  const $properties = ['base','name','textKey'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.weapon,data);

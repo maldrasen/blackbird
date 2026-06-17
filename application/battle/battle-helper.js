@@ -41,13 +41,12 @@ global.BattleHelper = (function() {
     throw new Error(`TODO: Distance between positions on same side.`);
   }
 
-
   // Determining the weapons that a monster or a character has equipped takes a little work, as they're both managed in
   // completely different ways. The basic monster attacks, as defined on the base monster, will usually include a base
   // weapon and a name. They can also define main and off-hand weapons.
   //
-  //     Single:  { base:B, name:N }
-  //     Dual:    { main:{ base:B, name:N }, off:{ base:B, name:N }}
+  //     Single:  { base:B, name:N, textKey:K }
+  //     Dual:    { main:{ base:B, name:N, textKey:K }, off:{ base:B, name:N, textKey:K }}
   //
   // The weapon data for normal characters is found in the Equipment manager. In either case we distill the weapon data
   // down to the properties we need to make the attack roll.
@@ -60,16 +59,22 @@ global.BattleHelper = (function() {
     if (state.isMonster(id)) {
       const monsterAttack = Monster(id).getBasicAttack();
       if (monsterAttack.main) {
+        const base = BaseWeapon.lookup(monsterAttack.main.base);
         primaryWeapon.base = monsterAttack.main.base;
-        primaryWeapon.name = monsterAttack.main.name || BaseWeapon.lookup(primaryWeapon.base).getName();
+        primaryWeapon.name = monsterAttack.main.name || base.getName();
+        primaryWeapon.textKey = monsterAttack.main.textKey || base.getTextKey();
       }
       if (monsterAttack.off) {
+        const base = BaseWeapon.lookup(monsterAttack.off.base);
         secondaryWeapon.base = monsterAttack.off.base;
-        secondaryWeapon.name = monsterAttack.off.name || BaseWeapon.lookup(secondaryWeapon.base).getName();
+        secondaryWeapon.name = monsterAttack.off.name || base.getName();
+        secondaryWeapon.textKey = monsterAttack.off.textKey || base.getTextKey()
       }
       if (monsterAttack.base) {
+        const base = BaseWeapon.lookup(monsterAttack.base);
         primaryWeapon.base = monsterAttack.base;
-        primaryWeapon.name = monsterAttack.name || BaseWeapon.lookup(primaryWeapon.base).getName();
+        primaryWeapon.name = monsterAttack.name || base.getName();
+        primaryWeapon.textKey = monsterAttack.textKey || base.getTextKey();
       }
     }
 
@@ -82,11 +87,13 @@ global.BattleHelper = (function() {
         const mainWeapon = Weapon(main);
         primaryWeapon.base = mainWeapon.getBaseWeapon().getCode();
         primaryWeapon.name = mainWeapon.getName();
+        primaryWeapon.textKey = mainWeapon.getTextKey();
       }
       if (off && WeaponComponent.lookup(off)) {
         const offWeapon = Weapon(off);
         secondaryWeapon.base = offWeapon.getBaseWeapon().getCode();
         secondaryWeapon.name = offWeapon.getName();
+        secondaryWeapon.textKey = offWeapon.getTextKey();
       }
     }
 

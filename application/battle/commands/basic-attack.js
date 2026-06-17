@@ -35,34 +35,43 @@ global.BasicAttack = (function() {
   // fumbles. An attacker can crit (doing the best they can) but still miss their target.
 
   function execute(attacker, target) {
-
     const weaponData = BattleHelper.compileWeaponData(attacker);
     const attacks = calculateAttacks(attacker, weaponData);
 
-    const attackRoll = PhysicalAttackRoll(attacker, target);
-    const defendRoll = DefendRoll(attacker, target)
+    const rolls = attacks.map(attack => {
+      const attackRoll = PhysicalAttackRoll(attacker, target, attack);
+      const defendRoll = DefendRoll(attacker, target, attackRoll);
+      return { attack:attackRoll, defend:defendRoll };
+    });
 
-    if (attackRoll.isCrit() && defendRoll.isCrit()) {
-      return execute(attacker, target);
+    console.log("=== ROLLS ===")
+    console.log(rolls);
+
+    return {
+      messages:[{ text:`Work in progress` }],
+      time: totalTime(attacks),
     }
 
-    const context = buildContext({
-      A: attacker,
-      T: target,
-      hitLocation: attackRoll.getHitLocation(),
-    }, attackRoll, defendRoll);
+    // if (attackRoll.isCrit() && defendRoll.isCrit()) {
+    //   return execute(attacker, target);
+    // }
 
-    const weaver = Weaver(context);
+    // const context = buildContext({
+    //   A: attacker,
+    //   T: target,
+    //   hitLocation: attackRoll.getHitLocation(),
+    // }, attackRoll, defendRoll);
 
-    const result = {
-      messages: [
-        { text:weaver.weave(attackRoll.getAttackText()) },
-        { element:'roll-display', title:'Attack Roll', attack:attackRoll, defend:defendRoll },
-      ],
-      time: 1000,
-    }
+    // const weaver = Weaver(context);
 
-    return result;
+    // const result = {
+    //   messages: [
+    //     { text:weaver.weave(attackRoll.getAttackText()) },
+    //     { element:'roll-display', title:'Attack Roll', attack:attackRoll, defend:defendRoll },
+    //   ],
+    //   time: 1000,
+    // }
+
 
     // TODO: Assuming crit damage is x2, could be more for different weapons, or with different abilities. Crit damage
     //       reduction could also change this.
@@ -169,12 +178,26 @@ global.BasicAttack = (function() {
         strikeTime = Math.round(strikeTime * 0.75);
       }
 
-      attacks.push({ base:weapon.base, name:weapon.name, hand:hand, time:strikeTime });
+      attacks.push({
+        code: 'basic-attack',
+        base: weapon.base,
+        name: weapon.name,
+        textKey: weapon.textKey,
+        hand: hand,
+        time: strikeTime
+      });
+
       time += strikeTime;
       hand = (hand === 'primary' && weapons.secondary) ? 'secondary' : 'primary';
     }
 
     return attacks;
+  }
+
+  function totalTime(attacks) {
+    return attacks.reduce((total, attack) => {
+      return total + attack.time
+    },0);
   }
 
   // The context is used to select the attack text, so it needs to know if the attack roll or defend rolls are crits
@@ -192,6 +215,7 @@ global.BasicAttack = (function() {
   return Object.freeze({
     execute,
     calculateAttacks,
+    totalTime,
   });
 
 })();

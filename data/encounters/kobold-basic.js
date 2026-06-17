@@ -13,13 +13,24 @@ Encounter.register('kobold-sneak-sluts',{
 Encounter.register('kobold-trappers',{
   description: `a small group of spear wielding kobolds.`,
   formation:[
-    [0,0,1,0,0],
     [0,1,1,1,0],
+    [0,0,1,0,0],
   ],
   monsters:{
     1: { code:'kobold-trapper' },
   }
 });
+
+Encounter.register('kobold-tossers',{
+  description: `a small group of spear wielding kobolds.`,
+  formation:[
+    [0,1,1,1,0],
+  ],
+  monsters:{
+    1: { code:'kobold-tosser' },
+  }
+});
+
 
 Encounter.register('kobold-1',{
   description: `a small group of weak looking kobolds`,

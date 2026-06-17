@@ -7,7 +7,7 @@ BaseWeapon.register('hatchet', {
   low: 20,
   high: 40,
   speed: 1000,
-  attackText:'basic-swing',
+  textKey: 'basic-swing',
 });
 
 BaseWeapon.register('cleaver', {
@@ -18,7 +18,7 @@ BaseWeapon.register('cleaver', {
   low: 30,
   high: 60,
   speed: 1000,
-  attackText:'basic-swing',
+  textKey: 'basic-swing',
 });
 
 BaseWeapon.register('hand-axe', {
@@ -29,7 +29,7 @@ BaseWeapon.register('hand-axe', {
   low: 40,
   high: 80,
   speed: 1000,
-  attackText:'basic-swing',
+  textKey: 'basic-swing',
 });
 
 BaseWeapon.register('broad-axe', {
@@ -40,7 +40,7 @@ BaseWeapon.register('broad-axe', {
   low: 60,
   high: 120,
   speed: 1200,
-  attackText:'basic-swing',
+  textKey: 'basic-swing',
 });
 
 BaseWeapon.register('war-axe', {
@@ -51,7 +51,7 @@ BaseWeapon.register('war-axe', {
   low: 80,
   high: 160,
   speed: 1200,
-  attackText:'basic-swing',
+  textKey: 'basic-swing',
 });
 
 BaseWeapon.register('goosewing', {
@@ -62,7 +62,7 @@ BaseWeapon.register('goosewing', {
   low: 100,
   high: 200,
   speed: 1800,
-  attackText:'basic-swing',
+  textKey: 'basic-swing',
 });
 
 BaseWeapon.register('battle-axe', {
@@ -73,7 +73,7 @@ BaseWeapon.register('battle-axe', {
   low: 100,
   high: 300,
   speed: 1800,
-  attackText:'basic-swing',
+  textKey: 'basic-swing',
 });
 
 BaseWeapon.register('labrys', {
@@ -84,5 +84,5 @@ BaseWeapon.register('labrys', {
   low: 100,
   high: 400,
   speed: 2000,
-  attackText:'basic-swing',
+  textKey: 'basic-swing',
 });

@@ -10,7 +10,6 @@ describe("BasicAttack", function() {
   }
 
   describe("calculateAttacks()", function() {
-
     it("a single primary attack", function() {
       prepare({ encounter: 'kobold-trappers' });
 

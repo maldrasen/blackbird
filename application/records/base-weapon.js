@@ -34,7 +34,7 @@ global.BaseWeapon = (function() {
       getLow: () => { return weapon.low; },
       getHigh: () => { return weapon.high; },
       getSpeed: () => { return weapon.speed },
-      getAttackText: () => { return weapon.attackText; },
+      getTextKey: () => { return weapon.textKey; },
     });
   }
 
