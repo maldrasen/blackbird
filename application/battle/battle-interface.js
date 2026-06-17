@@ -18,6 +18,11 @@ global.BattleInterface = (function() {
     BattleView.update();
   }
 
+  function updateCombatantView(id) {
+    if (Tests.running()) { return; }
+    FormationPanel.updateCombatant(id)
+  }
+
   function showDamageEffect(data) {
     if (Tests.running()) { return; }
     FormationPanel.showDamageEffect(data);
@@ -60,6 +65,7 @@ global.BattleInterface = (function() {
     showCharacterCommands,
     showCharacterResult,
     showMonsterResult,
+    updateCombatantView,
     showDamageEffect,
     killEntity,
     moveForwardOnDeath,

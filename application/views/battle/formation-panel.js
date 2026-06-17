@@ -76,6 +76,10 @@ global.FormationPanel = (function() {
     });
   }
 
+  function updateCombatant(id) {
+    combatantPanels[id].update(BattleSystem.getState());
+  }
+
   // =======================
   //       Inspecting
   // =======================
@@ -257,6 +261,7 @@ global.FormationPanel = (function() {
     getPositionPanel,
     getCombatantPanel,
     updateAll,
+    updateCombatant,
     startTargeting,
     killEntity,
     moveForwardOnDeath,

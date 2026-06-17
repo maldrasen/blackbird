@@ -242,6 +242,15 @@ global.BattleState = function(data) {
     }
   }
 
+  // TODO: We also need to remove the effect from the turn order once we're adding them.
+  function removeStatus(entity, code) {
+    if (statusEffects[entity][code] == null) {
+      throw new Error(`Entity[${entity}] does not have ${code}`);
+    }
+    delete statusEffects[entity][code];
+    BattleInterface.updateCombatantView(entity);
+  }
+
   function getStatusEffects(id) {
     return statusEffects[id] || {};
   }
@@ -283,6 +292,7 @@ global.BattleState = function(data) {
     addCondition,
     isAlive,
     addStatus,
+    removeStatus,
     getStatusEffects,
     hasStatusEffect,
 

@@ -174,13 +174,14 @@ $roll-high-bright: rgb(250,250,250);
       overflow: hidden;
     }
     .status-panel {
-      display: flex;
+      text-align: right;
       padding: 5px;
       height: 128px;
       overflow: hidden;
     }
     .status-effect-icon {
-      margin-right: 5px;
+      display: inline-block;
+      margin-left: 4px;
       height: 32px;
       width: 32px;
       background-size: 32px 32px;
@@ -214,9 +215,9 @@ $roll-high-bright: rgb(250,250,250);
 #battleView.inspect-mode {
   .position:has(.combatant):hover {
     cursor: pointer;
-    border-color: rgb(73, 97, 94);
+    border-color: rgb(57, 64, 63);
     .background-cover {
-      background-color: rgba(52, 73, 71, 0.5);
+      background-color: rgba(26, 28, 28, 0.5);
     }
   }
 }

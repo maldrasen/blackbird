@@ -19,16 +19,19 @@ global.BattleSystem = (function() {
   function advanceBattle() {
     const next = state.getNext();
     const interrupt = state.getInterrupt();
+    const id = next.id
 
     if (interrupt === 'victory') { return BattleInterface.showVictory(); }
     if (interrupt === 'game-over') { return BattleInterface.showGameOver(); }
 
     if (next.type === 'monster') {
-      state.setActingMonster(next.id);
-      finishMonsterTurn(MonsterSimulator.executeBattleTurn(next.id));
+      state.setActingMonster(id);
+      StatusEffectSystem.processStartTurn(id);
+      finishMonsterTurn(MonsterSimulator.executeBattleTurn(id));
     }
     if (next.type === 'character') {
-      state.setActingCharacter(next.id);
+      state.setActingCharacter(id);
+      StatusEffectSystem.processStartTurn(id);
       startCharacterTurn();
     }
   }

@@ -71,6 +71,12 @@ global.CombatantPanel = function(type, entity) {
 
     X.empty(statusPanel);
 
+    // If we detect that we have more than 12 status effects we can add a class
+    // to the icons to display them at a smaller size.
+    if (Object.keys(statusEffects).length > 12) {
+      throw new Error(`We can only display 12 status effects. Do something about that.`)
+    }
+
     Object.entries(statusEffects).forEach(([code, effect]) => {
       const icon = X.createElement(`<div class='status-effect-icon' data-name='${effect.getName()}'></div>`)
       icon.style['background-image'] = X.assetURL(`ai-icons/${code}.png`);
