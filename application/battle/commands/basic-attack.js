@@ -1,18 +1,5 @@
 global.BasicAttack = (function() {
 
-  // TODO: Still need to consider basic attack time. Setting it to a second for now. The basic attack command means,
-  //       attack for 1 second, so a single attack command can have multiple swings or stabs in that time.
-
-  // TODO: Skill checks need a way to have modifiers passed to them. There's no way to adjust crit or fumble chances,
-  //       and it would be good to build in an advantage / disadvantage type system as well.
-
-  // TODO: This assumes we're always attacking with the primary weapon. How do with handle characters with multiple
-  //       weapons equipped? A basic attack can also attack multiple times at higher levels. Need to handle that. Some
-  //       monsters might have multiple basic attacks as well, claw/claw/bite for instance.
-
-  // TODO: Assume defend with dodge for now. Characters will block when they have a shield equipped, or parry with a
-  //       sword equipped.
-
   // When we execute the basic attack we first find the monster attack, or equipped weapon. Then we make attack and
   // defend rolls using the base weapon skill type for attacker. Because there are three possible states for each roll
   // (crit, fumble, or normal) we're left with a table with 9 possible outcomes for each attack.
@@ -37,126 +24,140 @@ global.BasicAttack = (function() {
   function execute(attacker, target) {
     const weaponData = BattleHelper.compileWeaponData(attacker);
     const attacks = calculateAttacks(attacker, weaponData);
+    const messages = []
+    const time = totalTime(attacks);
 
     const rolls = attacks.map(attack => {
       const attackRoll = PhysicalAttackRoll(attacker, target, attack);
-      const defendRoll = DefendRoll(attacker, target, attackRoll);
+      const defendRoll = DefendRoll(target, attacker, attackRoll);
       return { attack:attackRoll, defend:defendRoll };
     });
 
-    console.log("=== ROLLS ===")
-    console.log(rolls);
-
-    return {
-      messages:[{ text:`Work in progress` }],
-      time: totalTime(attacks),
+    for (let i=0; i<attacks.length; i++) {
+      if (rolls[i].attack.isCrit() && rolls[i].defend.isCrit()) {
+        return execute(attacker, target);
+      }
     }
 
-    // if (attackRoll.isCrit() && defendRoll.isCrit()) {
-    //   return execute(attacker, target);
-    // }
+    rolls.forEach(roll => {
+      compileMessages(attacker, target, roll).forEach(message => {
+        messages.push(message);
+      })
+    });
 
-    // const context = buildContext({
-    //   A: attacker,
-    //   T: target,
-    //   hitLocation: attackRoll.getHitLocation(),
-    // }, attackRoll, defendRoll);
-
-    // const weaver = Weaver(context);
-
-    // const result = {
-    //   messages: [
-    //     { text:weaver.weave(attackRoll.getAttackText()) },
-    //     { element:'roll-display', title:'Attack Roll', attack:attackRoll, defend:defendRoll },
-    //   ],
-    //   time: 1000,
-    // }
-
-
-    // TODO: Assuming crit damage is x2, could be more for different weapons, or with different abilities. Crit damage
-    //       reduction could also change this.
-    function processHit() {
-      const strength = AttributesComponent.lookup(attacker).strength;
-      const damageRoll = Random.between(baseWeapon.getHigh(), baseWeapon.getLow())
-      let damage = Math.round((damageRoll / 100) * strength);
-
-      if (context.attack === 'crit') {
-        result.messages.push({
-          text: weaver.weave(`[CRIT HIT]`)
-        });
-        damage = damage*2;
-      }
-      if (context.attack === 'fumble') {
-        result.messages.push({
-          text: weaver.weave(`[FUMBLE HIT]`)
-        });
-        damage = Math.ceil(damage/2);
-      }
-      if (context.defend === 'crit') {
-        result.messages.push({
-          text: weaver.weave(`[CRIT DEFEND]`)
-        });
-        damage = Math.ceil(damage/2);
-      }
-      if (context.defend === 'fumble') {
-        result.messages.push({
-          text: weaver.weave(`[FUMBLE DEFEND]`)
-        });
-        damage = damage*2;
-      }
-
-      result.messages.push({
-        text: weaver.weave(`Hit {T:baseName's} ${hitLocation} for ${damage} damage!`)
-      });
-
-      BattleDamage.applyDamage({
-        entity: target,
-        damage: damage,
-        damageTypes: baseWeapon.getDamageTypes(),
-        isCrit: context.attack === 'crit',
-      });
-
-      return result;
-    }
-
-    function processMiss() {
-      if (context.attack === 'fumble') { addStatus(attacker,'off-balance'); }
-      if (context.defend === 'crit') { addStatus(target,'poised'); }
-      if (context.defend === 'fumble') { addStatus(target,'vulnerable'); }
-
-      result.messages.push({
-        text: weaver.weave(`Missed {T:baseName's} ${hitLocation}`)
-      });
-
-      return result;
-    }
-
-    function addStatus(entity, status) {
-      let message;
-
-      if (status === 'poised') {
-        message = {
-          'dodge': `{S/tar}{T:baseName}{/S} leaps away with stunning agility, and is now {S/pst}Poised{/S} and ready to defend {T:him}self.`,
-          'block': `{S/tar}{T:baseName}{/S} braces {T:him}self, becoming {S/pst}Poised{/S} and harder to hit.`,
-          'parry': `{S/tar}{T:baseName}{/S} flourishes {T:his} blade, {T:his} {S/pst}Poised{/S} stance ready to defend against any attack.`,
-        }[defendSkill];
-      }
-      if (status === 'off-balance') {
-        message = `{S/act}{A:baseName's}{/S} clumsy attack leaves {A:him} overextended and {S/nst}Off Balance{/S}.`;
-      }
-      if (status === 'vulnerable') {
-        message = `Though the attack missed {S/tar}{T:baseName}{/S}, it left {T:him} in a {S/nst}Vulnerable{/S} position.`;
-      }
-      if (message == null) {
-        throw new Error(`A basic attack shouldn't add the ${status} status.`)
-      }
-
-      result.messages.push({ text: weaver.weave(message) });
-      BattleSystem.getState().addStatus(BattleStatusEffect(entity, status, { duration:1 }));
-    }
-
-    return (attackRoll.value > defendRoll.value) ? processHit() : processMiss();
+    return { messages, time };
   }
+
+  function compileMessages(attacker, target, roll) {
+    const context = buildContext(attacker, target, roll.attack, roll.defend);
+    const attackText = Random.from(Dialog.lookupTemplate(DialogCategory.attackText, roll.attack.getTextKey(), context));
+    const messages = [{ text:Weaver(context).weave(attackText), rollDetails:roll }];
+
+    (roll.attack.getFinalValue() > roll.defend.getFinalValue()) ?
+      processHit(messages, context, roll):
+      processMiss(messages, context, roll);
+
+    return messages;
+  }
+
+  function processHit(messages, context, roll) {
+    messages.push({ text:`Hit for ${roll.attack.getFinalValue()} damage!` });
+  }
+
+  function processMiss(messages, context, roll) {
+    messages.push({ text:`Miss.` });
+  }
+
+
+
+/*
+  // TODO: Assuming crit damage is x2, could be more for different weapons, or with different abilities. Crit damage
+  //       reduction could also change this.
+  function processHit() {
+    const strength = AttributesComponent.lookup(attacker).strength;
+    const damageRoll = Random.between(baseWeapon.getHigh(), baseWeapon.getLow())
+    let damage = Math.round((damageRoll / 100) * strength);
+
+    if (context.attack === 'crit') {
+      result.messages.push({
+        text: weaver.weave(`[CRIT HIT]`)
+      });
+      damage = damage*2;
+    }
+    if (context.attack === 'fumble') {
+      result.messages.push({
+        text: weaver.weave(`[FUMBLE HIT]`)
+      });
+      damage = Math.ceil(damage/2);
+    }
+    if (context.defend === 'crit') {
+      result.messages.push({
+        text: weaver.weave(`[CRIT DEFEND]`)
+      });
+      damage = Math.ceil(damage/2);
+    }
+    if (context.defend === 'fumble') {
+      result.messages.push({
+        text: weaver.weave(`[FUMBLE DEFEND]`)
+      });
+      damage = damage*2;
+    }
+
+    result.messages.push({
+      text: weaver.weave(`Hit {T:baseName's} ${hitLocation} for ${damage} damage!`)
+    });
+
+    BattleDamage.applyDamage({
+      entity: target,
+      damage: damage,
+      damageTypes: baseWeapon.getDamageTypes(),
+      isCrit: context.attack === 'crit',
+    });
+
+    return result;
+  }
+
+  function processMiss() {
+    if (context.attack === 'fumble') { addStatus(attacker,'off-balance'); }
+    if (context.defend === 'crit') { addStatus(target,'poised'); }
+    if (context.defend === 'fumble') { addStatus(target,'vulnerable'); }
+
+    result.messages.push({
+      text: weaver.weave(`Missed {T:baseName's} ${hitLocation}`)
+    });
+
+    return result;
+  }
+
+  function addStatus(entity, status) {
+    let message;
+
+    if (status === 'poised') {
+      message = {
+        'dodge': `{S/tar}{T:baseName}{/S} leaps away with stunning agility, and is now {S/pst}Poised{/S} and ready to defend {T:him}self.`,
+        'block': `{S/tar}{T:baseName}{/S} braces {T:him}self, becoming {S/pst}Poised{/S} and harder to hit.`,
+        'parry': `{S/tar}{T:baseName}{/S} flourishes {T:his} blade, {T:his} {S/pst}Poised{/S} stance ready to defend against any attack.`,
+      }[defendSkill];
+    }
+    if (status === 'off-balance') {
+      message = `{S/act}{A:baseName's}{/S} clumsy attack leaves {A:him} overextended and {S/nst}Off Balance{/S}.`;
+    }
+    if (status === 'vulnerable') {
+      message = `Though the attack missed {S/tar}{T:baseName}{/S}, it left {T:him} in a {S/nst}Vulnerable{/S} position.`;
+    }
+    if (message == null) {
+      throw new Error(`A basic attack shouldn't add the ${status} status.`)
+    }
+
+    result.messages.push({ text: weaver.weave(message) });
+    BattleSystem.getState().addStatus(BattleStatusEffect(entity, status, { duration:1 }));
+  }
+
+*/
+
+
+
+
 
 
   function calculateAttacks(attacker, weapons) {
@@ -202,7 +203,13 @@ global.BasicAttack = (function() {
 
   // The context is used to select the attack text, so it needs to know if the attack roll or defend rolls are crits
   // or fumbles. This function just puts those values into a better format.
-  function buildContext(context, attackRoll, defendRoll) {
+  function buildContext(attacker, target, attackRoll, defendRoll) {
+    const context = {
+      A:attacker,
+      T:target,
+      hitLocation: attackRoll.getHitLocation(),
+    };
+
     if (attackRoll.isCrit()) { context.attack = 'crit'; }
     if (attackRoll.isFumble()) { context.attack = 'fumble'; }
     if (context.attack == null) { context.attack = 'normal'; }

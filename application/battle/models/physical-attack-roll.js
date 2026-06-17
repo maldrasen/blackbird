@@ -1,23 +1,23 @@
 global.PhysicalAttackRoll = function(attacker, target, attack) {
-  const state = BattleSystem.getState();
   const hitLocation = BattleHelper.randomHitLocation();
   const baseWeapon = BaseWeapon.lookup(attack.base);
   const check = SkillCheck(attacker, baseWeapon.getSkill());
 
-  console.log("Roll Attack:",attack);
-  console.log("   HitLocation:",hitLocation);
-  console.log("   Base:",baseWeapon.getName());
-  console.log("Check:",check);
+  // TODO: The attack roll will need to take all of the status effects and feats and whatever into consideration
+  //       to turn the check value into a final value. We need to save all the modifiers as they're applied in case
+  //       we want to show them in the text panel or in the log at the very least.
 
-  const attackTextKey = attack.textKey || baseWeapon.getAttackText();
-  // const attackText = Random.from(Dialog.lookupTemplate(DialogCategory.attackText, attackTextKey, context));
-
-
-
-
+  let modifiers = [];
+  let finalValue = Math.ceil(check.value);
 
   return Object.freeze({
     getHitLocation: () => { return hitLocation; },
+    getRollValue: () => { return check.value; },
+    isCrit: () => { return check.crit === true; },
+    isFumble: () => { return check.fumble === true; },
+    getFinalValue: () => { return finalValue },
+    getModifiers: () => { return modifiers },
+    getTextKey: () => { return attack.textKey },
   });
 
 }
