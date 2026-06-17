@@ -7,7 +7,7 @@ global.FormationPanel = (function() {
 
   function init() {
     X.onClick('#battleView.target-mode .position.valid-target', targetSelected);
-    X.onClick('#battleView.normal-mode .position:has(.combatant)', inspectPosition);
+    X.onClick('#battleView.inspect-mode .position:has(.combatant)', inspectPosition);
     X.onClick('#commandPanel .cancel-button', stopTargeting);
   }
 
@@ -94,7 +94,7 @@ global.FormationPanel = (function() {
     targetModeCallback = callback;
 
     X.addClass('#battleView','target-mode');
-    X.removeClass('#battleView','normal-mode');
+    X.removeClass('#battleView','inspect-mode');
 
     X.each('#monsterFormation .position', element => {
       X.addClass(element, monsterPositions.includes(element.dataset.position) ?
@@ -113,7 +113,7 @@ global.FormationPanel = (function() {
     X.removeClass('.position.valid-target','valid-target')
     X.removeClass('.position.invalid-target','invalid-target')
     X.removeClass('#battleView','target-mode');
-    X.addClass('#battleView','normal-mode');
+    X.addClass('#battleView','inspect-mode');
   }
 
   // Targeting always returns a position because some abilities (like AoE attacks) might target an empty position.
@@ -128,15 +128,14 @@ global.FormationPanel = (function() {
     targetModeCallback = null;
   }
 
-
   // =====================
   //       Movement
   // =====================
 
   function killEntity(id) {
     const element = combatantPanels[id].getElement();
-    const position = element.closest('.position');
 
+    X.removeClass('#battleView','inspect-mode');
     X.addClass(element,'dead');
 
     requestAnimationFrame(() => {
@@ -145,8 +144,11 @@ global.FormationPanel = (function() {
 
     setTimeout(()=>{
       element.remove();
-      X.removeClass(position,'occupied');
     },_battleKillEffectTime);
+
+    setTimeout(()=>{
+      X.addClass('#battleView','inspect-mode');
+    },_battleKillEffectTime + 600);
   }
 
   // This function animates moving a character from the back rank to the front. This should only be called once a
@@ -191,7 +193,9 @@ global.FormationPanel = (function() {
       combatant.removeAttribute('style');
     }
 
-    // Yes, we need to request two animation frames between detach and move.
+    // Yes, we need to request two animation frames between detach and move,
+    // or attach and validate.
+
     setTimeout(() => {
       detach();
       requestAnimationFrame(() => {
@@ -202,7 +206,7 @@ global.FormationPanel = (function() {
     setTimeout(() => {
       attach();
       requestAnimationFrame(() => {
-        validatePositions();
+        requestAnimationFrame(() => { validatePositions(); });
       });
     },_battleKillEffectTime + 600);
   }
@@ -240,10 +244,12 @@ global.FormationPanel = (function() {
 
   function highlightActing(id) {
     clearHighlight();
-    X.addClass(combatantPanels[id].getElement().parentElement, 'acting')
+    X.addClass(combatantPanels[id].getElement(), 'acting')
   }
 
-  function clearHighlight() { X.removeClass('.position.acting','acting'); }
+  function clearHighlight() {
+    X.removeClass('.combatant.acting','acting');
+  }
 
   return Object.freeze({
     init,
@@ -251,14 +257,10 @@ global.FormationPanel = (function() {
     getPositionPanel,
     getCombatantPanel,
     updateAll,
-    // updateEntity,
-
     startTargeting,
-
     killEntity,
     moveForwardOnDeath,
     moveInwardOnDeath,
-
     showDamageEffect,
     highlightActing,
     clearHighlight,
