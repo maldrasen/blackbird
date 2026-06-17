@@ -6,13 +6,18 @@ global.CombatantPanel = function(type, entity) {
   let healthBar;
 
   const element = X.createElement(`<div class='combatant ${type}' data-id="${entity}">
-    <div class='name'></div>
-    <div class='status-panel'></div>
-    <div class='health-bar'></div>
+    <div class='fill content'>
+      <div class='name'></div>
+      <div class='status-panel'></div>
+      <div class='health-bar'></div>
+    </div>
+    <div class='fill background-cover'></div>
+    <div class='fill background'></div>
   </div>`);
 
   function build() {
     setName();
+    setImage();
     addHealthBar();
   }
 
@@ -20,6 +25,17 @@ global.CombatantPanel = function(type, entity) {
     const name = element.querySelector('.name');
     if (type === 'character') { name.textContent = Character(entity).getName(); }
     if (type === 'monster') { name.textContent = Monster(entity).getBaseMonster().getName(); }
+  }
+
+  function setImage() {
+    if (type === 'monster') {
+      const code = Monster(entity).getBaseMonster().getCode()
+      element.querySelector('.background').style['background-image'] = X.assetURL(`temp-art/${code}.png`);
+    }
+    if (type === 'character') {
+      const code = GameState.getPlayer() === entity ? 'player' : 'character'
+      element.querySelector('.background').style['background-image'] = X.assetURL(`temp-art/${code}.png`);
+    }
   }
 
   function addHealthBar() {
@@ -32,10 +48,7 @@ global.CombatantPanel = function(type, entity) {
       maxValue: health.maxHealth,
       color: 'health',
     });
-
-    if (type === 'monster') {
-      healthBar.hideValues();
-    }
+    healthBar.hideTextRow();
 
     element.querySelector('.health-bar').appendChild(healthBar.getElement());
   }
