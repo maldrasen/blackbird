@@ -408,3 +408,8 @@ global.ArmorEnchantments = Object.freeze({
 global.WeaponEnchantments = Object.freeze({
   endanger: 'endanger',
 });
+
+global.ResistResult = Object.freeze({
+  pass: 'pass',
+  fail: 'fail',
+});

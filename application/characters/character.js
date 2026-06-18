@@ -11,7 +11,8 @@ global.Character = function(id) {
     return name;
   }
 
-  function getSpeciesName() { return Species.lookup(ActorComponent.lookup(id).species).getName(); }
+  function getSpecies() { return ActorComponent.lookup(id).species; }
+  function getSpeciesName() { return Species.lookup(getSpecies()).getName(); }
   function getGenderName() { return GenderName[ActorComponent.lookup(id).gender] }
   function isMale() { return ActorComponent.lookup(id).gender === Gender.male; }
   function isFemale() { return ActorComponent.lookup(id).gender === Gender.female; }
@@ -169,6 +170,12 @@ global.Character = function(id) {
     return exposed
   }
 
+  // TODO: There are a lot of different factors that will influence resistance, including a character's equipment.
+  //       Currently though, only the character's species carries any innate resistance.
+  function getResistance(type) {
+    return Species.lookup(getSpecies()).getResistances()[type] || 0;
+  }
+
   // ===============
   //   Orgasm Data
   // ===============
@@ -213,6 +220,7 @@ global.Character = function(id) {
     isPlayer,
     getName,
     getFullName,
+    getSpecies,
     getSpeciesName,
     getGenderName,
     isMale,
@@ -251,6 +259,7 @@ global.Character = function(id) {
     isPussyEmpty,
     areBreastsExposed,
     isCrotchExposed,
+    getResistance,
 
     // Orgasm Data
     getOrgasmThreshold,

@@ -5,9 +5,20 @@ global.Monster = function(id) {
   function getBrain() { return MonsterBrain.lookup(getBaseMonster().getBrain()); }
   function getBasicAttack() { return monsterComponent().basicAttack; }
   function getBaseName() { return getBaseMonster().getName(); }
+  function getSpecies() { return getBaseMonster().getSpecies(); }
 
   // TODO: Need to determine how monster speed is calculated.
   function getSpeedFactor() { return 1; }
+
+  function getResistance(type) {
+    const baseResist = getBaseMonster().getResistances()[type] || 0;
+    return baseResist + getSpeciesResist(type);
+  }
+
+  function getSpeciesResist(type) {
+    if (getSpecies() == null) { return 0; }
+    return Species.lookup(getSpecies()).getResistances()[type] || 0;
+  }
 
   // ==========
   //   Threat
@@ -56,9 +67,11 @@ global.Monster = function(id) {
     getEntity: () => { return id },
     getBaseMonster,
     getBaseName,
+    getSpecies,
     getBrain,
     getBasicAttack,
     getSpeedFactor,
+    getResistance,
 
     populateThreatTable,
     getThreatTable,

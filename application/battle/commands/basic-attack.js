@@ -91,7 +91,7 @@ global.BasicAttack = (function() {
       if (weapon.hasEnchantment()) {
         const message = weapon.getEnchantment().processOnHit({ attacker, target, damageTypes });
         if (message) {
-          messages.push(weaver.weave(message.message));
+          messages.push({ text:weaver.weave(message) });
         }
       }
     }
