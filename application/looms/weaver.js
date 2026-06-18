@@ -1,7 +1,5 @@
 global.Weaver = function(context) {
 
-  const $context = context;
-
   // === Weaver String Replacement Formats ===
   // Regular Expressions for Life!
   //
@@ -71,7 +69,7 @@ global.Weaver = function(context) {
   }
 
   function contextValue(key) {
-    return $context[key] ?  $context[key] : formatError(`[context.${key}==null]`)
+    return context[key] ?  context[key] : formatError(`[context.${key}==null]`)
   }
 
   function actorValue(subject, token) {
@@ -136,5 +134,4 @@ global.Weaver = function(context) {
     formatError,
     formatWarning,
   });
-
 };

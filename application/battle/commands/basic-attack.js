@@ -186,6 +186,7 @@ global.BasicAttack = (function() {
       A:attacker,
       T:target,
       hitLocation: attackRoll.getHitLocation(),
+      weaponName: attackRoll.getWeaponName(),
     };
 
     if (attackRoll.isCrit()) { context.attack = 'crit'; }

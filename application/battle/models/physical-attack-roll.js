@@ -19,6 +19,7 @@ global.PhysicalAttackRoll = function(attacker, target, attack) {
     getFinalValue: () => { return finalValue },
     getModifiers: () => { return modifiers },
     getTextKey: () => { return attack.textKey },
+    getWeaponName: () => { return attack.name },
   });
 
 }
