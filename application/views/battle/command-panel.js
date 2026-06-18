@@ -38,6 +38,7 @@ global.CommandPanel = (function() {
       case BattleCommand.changeEquipment: return ChangeEquipment.start();
       case BattleCommand.useItem: return UseItem.start();
       case BattleCommand.basicDefend: return BattleSystem.finishCharacterTurn(BasicDefend.execute(id));
+      case BattleCommand.hide: return BattleSystem.finishCharacterTurn(Hide.execute(id));
       default: throw new Error(`Unrecognized Command: ${command}`);
     }
   }

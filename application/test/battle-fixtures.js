@@ -27,12 +27,21 @@ global.BattleFixtures = (function() {
     equipWeapon(characters[3], { base:'spear'}, EquipmentSlot.primary);
     equipWeapon(characters[4], { base:'dagger'}, EquipmentSlot.primary);
     equipWeapon(characters[4], { base:'dagger'}, EquipmentSlot.secondary);
+
+    setSkill(characters[2], 'stealth', 1);
+    setSkill(characters[4], 'stealth', 20);
   }
 
   function equipWeapon(id, weaponData, slot) {
     const weapon = WeaponFactory.build(weaponData.base, weaponData)
     InventoryManager(id).addItem(weapon);
     EquipmentManager(id).equipItem(weapon, slot);
+  }
+
+  function setSkill(id, code, value) {
+    const skills = SkillsComponent.lookup(id);
+    skills[code] = value;
+    SkillsComponent.update(id, skills);
   }
 
   return Object.freeze({

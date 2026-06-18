@@ -9,6 +9,7 @@
     "application/battle/commands/basic-attack.js",
     "application/battle/commands/basic-defend.js",
     "application/battle/commands/change-equipment.js",
+    "application/battle/commands/hide.js",
     "application/battle/commands/use-item.js",
     "application/battle/models/battle-status-effect.js",
     "application/battle/models/defend-roll.js",

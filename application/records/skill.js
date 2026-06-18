@@ -17,7 +17,7 @@ global.Skill = (function() {
     const skill = { ...$skills[code] };
 
     return Object.freeze({
-      getCode: () => { return skill.code; },
+      getCode: () => { return code; },
       getName: () => { return skill.name; },
       getFactor: () => { return skill.factor; },
       getAttributes: () => { return skill.attributes; }
