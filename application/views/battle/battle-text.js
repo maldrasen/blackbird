@@ -38,6 +38,7 @@ global.BattleText = (function() {
         let classname = ``;
         if (message.size === 'large') { classname += `fs-huge `; }
         if (message.color === 'important') { classname += `fg-strong `; }
+        if (message.color === 'miss') { classname += `fg-miss `; }
         X.append('#battleText',X.createElement(`<div class="${classname}">${message.text}</div>`));
       }
     });

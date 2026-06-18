@@ -103,7 +103,6 @@ global.BasicAttack = (function() {
       isCrit: context.attack === 'crit',
     });
 
-    // Get total damage from actual damage types object...
     messages.push({ text:`Hit for ${actualDamage} damage!` });
 
     Console.log(`Damage Roll [${attacker}]`,{ system:'BattleSystem', level:3, data:{
@@ -113,6 +112,7 @@ global.BasicAttack = (function() {
 
     if (BattleSystem.getState().isAlive(target) === false) {
       Console.log(`[${target}] was killed`,{ system:'BattleSystem', level:2 });
+      messages.push({ text:weaver.weave(`{S/tar}{T:baseName}{/S} was killed!`), color:'important' });
     }
   }
 
@@ -124,9 +124,8 @@ global.BasicAttack = (function() {
     if (context.defend === 'crit')   { messages.push(addStatus(target,'poised',context,roll)); }
     if (context.defend === 'fumble') { messages.push(addStatus(target,'vulnerable',context,roll)); }
 
-    messages.push({ text:`Miss.` });
+    messages.push({ text:`Miss`, color:'miss' });
   }
-
 
   // The rolled damage value is rather complex because we need to divide the base damage into it's damage type
   // components so that additional damage from enchantments can be added or so that damage values can be resisted. We

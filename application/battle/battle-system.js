@@ -43,7 +43,7 @@ global.BattleSystem = (function() {
   }
 
   function finishMonsterTurn(result) {
-    Validate.atLeast("BattleSystem.finishMonsterTurn(result.time)",result,1);
+    Validate.atLeast("BattleSystem.finishMonsterTurn(result.time)",result.time,1);
 
     const next = state.getNext();
     const acting = state.getActingMonster();

@@ -4,7 +4,8 @@ global.Fixtures = (function() {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
-      encounter: `kobold-${Random.between(1,4)}`,
+      encounter: `kobold-4`,
+      // encounter: `kobold-${Random.between(1,4)}`,
     });
 
     GameState.setGameMode(GameMode.battle);
