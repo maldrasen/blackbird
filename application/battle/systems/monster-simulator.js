@@ -1,13 +1,13 @@
 global.MonsterSimulator = (function() {
 
-  // TODO: We'll eventually use the monster brain to decide what actions to take.
+  // This function must return an object in the format: { time, messages }
   function executeBattleTurn(id) {
     const monster = Monster(id);
     const targetData = pickTarget(monster);
     const ability = pickAction(targetData);
 
-    if (ability === 'pass') {
-      return executePass(monster);
+    if (ability === 'defend') {
+      return BasicDefend.execute(id);
     }
     if (ability === 'basic-attack') {
       return BasicAttack.execute(id, targetData.target);
@@ -64,7 +64,7 @@ global.MonsterSimulator = (function() {
   // in the action list. A monster with a buff ability should always use it if the buff isn't active. A monster with a
   // heal ability should use it at low health.
   //
-  // When there is no action a monster can take it should just pass the turn or defend or something.
+  // When there is no action a monster can take it should just defend this turn.
   //
   // A more advanced option would have it move to a new position that turn. A monster though should only ever be able
   // to move towards the center or a rank closer. A monster in the middle position in the back could move to the front
@@ -72,7 +72,7 @@ global.MonsterSimulator = (function() {
   // front. In fact, if a ranged monster finds themselves in the front rank they should attempt to move behind another
   // monster if there's space.
   function pickAction(targetData) {
-    if (targetData == null) { return 'pass'; }
+    if (targetData == null) { return 'defend'; }
     return targetData.possibleActions[0];
   }
 
@@ -89,17 +89,6 @@ global.MonsterSimulator = (function() {
     });
 
     return target;
-  }
-
-  // TODO: Passing a turn could take any amount of time really, but monsters will most often need to pass when their
-  //       abilities are all on cooldown. We could have them wait for just slightly longer than their shortest cooldown
-  //       remaining.
-  //
-  // When a monster passes no messages are added to the log. There's nothing interesting about a monster not attacking.
-  // The battle controller will need to immeadietly advance the combat if it sees that a monster is passing.
-  function executePass(monster) {
-    console.log(`Monster[${monster.getEntity()}] passes.`)
-    return { time:500 };
   }
 
   return Object.freeze({

@@ -31,12 +31,13 @@ global.CommandPanel = (function() {
 
   function executeCommand(event) {
     const command = event.target.dataset.command;
+    const id = BattleSystem.getState().getActingCharacter();
 
     switch(command) {
       case BattleCommand.basicAttack: return TargetingController.startBasicAttackTargeting();
       case BattleCommand.changeEquipment: return ChangeEquipment.start();
       case BattleCommand.useItem: return UseItem.start();
-      case BattleCommand.basicDefend: return BasicDefend.execute();
+      case BattleCommand.basicDefend: return BattleSystem.finishCharacterTurn(BasicDefend.execute(id));
       default: throw new Error(`Unrecognized Command: ${command}`);
     }
   }
