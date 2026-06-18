@@ -266,6 +266,7 @@
     "data/base-weapons/bows.js",
     "data/base-weapons/daggers.js",
     "data/base-weapons/maces.js",
+    "data/base-weapons/other.js",
     "data/base-weapons/polearms.js",
     "data/base-weapons/shields.js",
     "data/base-weapons/swords.js",

@@ -12,6 +12,7 @@ global.PhysicalAttackRoll = function(attacker, target, attack) {
 
   return Object.freeze({
     getHitLocation: () => { return hitLocation; },
+    getBaseWeapon: () => { return baseWeapon; },
     getRollValue: () => { return check.value; },
     isCrit: () => { return check.crit === true; },
     isFumble: () => { return check.fumble === true; },

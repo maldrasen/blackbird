@@ -14,9 +14,11 @@ global.BaseWeapon = (function() {
 
     const weapon = { ...$weapons[code] };
 
-    // Except for block, all the weapon skills just happen to be the weapon type +s
+    // Except for martial arts and block, all the weapon skills are weapon type +s
     function getSkill() {
-      return (weapon.type === 'shield') ? 'block' : `${weapon.type}s`;
+      if (weapon.type === 'shield') { return 'block'; }
+      if (weapon.type === 'fist') { return 'martial-arts'; }
+      return `${weapon.type}s`;
     }
 
     function getDamageTypes() {

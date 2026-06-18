@@ -60,52 +60,38 @@ global.BasicAttack = (function() {
     return messages;
   }
 
-  function processHit(messages, context, roll) {
-    messages.push({ text:`Hit for ${roll.attack.getFinalValue()} damage!` });
-  }
-
-  function processMiss(messages, context, roll) {
-    messages.push({ text:`Miss.` });
-  }
-
-
-
-/*
+  //
   // TODO: Assuming crit damage is x2, could be more for different weapons, or with different abilities. Crit damage
   //       reduction could also change this.
-  function processHit() {
-    const strength = AttributesComponent.lookup(attacker).strength;
+  function processHit(messages, context, roll) {
+    const attacker = context.A;
+    const target = context.T;
+
+    const baseWeapon = roll.attack.getBaseWeapon();
     const damageRoll = Random.between(baseWeapon.getHigh(), baseWeapon.getLow())
+    const strength = AttributesComponent.lookup(attacker).strength;
+    const weaver = Weaver(context);
+
     let damage = Math.round((damageRoll / 100) * strength);
 
     if (context.attack === 'crit') {
-      result.messages.push({
-        text: weaver.weave(`[CRIT HIT]`)
-      });
+      messages.push({ text: weaver.weave(`[CRIT HIT]`) });
       damage = damage*2;
     }
     if (context.attack === 'fumble') {
-      result.messages.push({
-        text: weaver.weave(`[FUMBLE HIT]`)
-      });
+      messages.push({ text: weaver.weave(`[FUMBLE HIT]`) });
       damage = Math.ceil(damage/2);
     }
     if (context.defend === 'crit') {
-      result.messages.push({
-        text: weaver.weave(`[CRIT DEFEND]`)
-      });
+      messages.push({ text: weaver.weave(`[CRIT DEFEND]`) });
       damage = Math.ceil(damage/2);
     }
     if (context.defend === 'fumble') {
-      result.messages.push({
-        text: weaver.weave(`[FUMBLE DEFEND]`)
-      });
+      messages.push({ text: weaver.weave(`[FUMBLE DEFEND]`) });
       damage = damage*2;
     }
 
-    result.messages.push({
-      text: weaver.weave(`Hit {T:baseName's} ${hitLocation} for ${damage} damage!`)
-    });
+    messages.push({ text:`Hit for ${damage} damage!` });
 
     BattleDamage.applyDamage({
       entity: target,
@@ -113,23 +99,22 @@ global.BasicAttack = (function() {
       damageTypes: baseWeapon.getDamageTypes(),
       isCrit: context.attack === 'crit',
     });
-
-    return result;
   }
 
-  function processMiss() {
-    if (context.attack === 'fumble') { addStatus(attacker,'off-balance'); }
-    if (context.defend === 'crit') { addStatus(target,'poised'); }
-    if (context.defend === 'fumble') { addStatus(target,'vulnerable'); }
+  function processMiss(messages, context, roll) {
+    const attacker = context.A;
+    const target = context.T;
 
-    result.messages.push({
-      text: weaver.weave(`Missed {T:baseName's} ${hitLocation}`)
-    });
+    if (context.attack === 'fumble') { messages.push(addStatus(attacker,'off-balance',context,roll)); }
+    if (context.defend === 'crit')   { messages.push(addStatus(target,'poised',context,roll)); }
+    if (context.defend === 'fumble') { messages.push(addStatus(target,'vulnerable',context,roll)); }
 
-    return result;
+    messages.push({ text:`Miss.` });
   }
 
-  function addStatus(entity, status) {
+  function addStatus(entity, status, context, roll) {
+    const defendSkill = roll.defend.getDefendSkill();
+    const weaver = Weaver(context);
     let message;
 
     if (status === 'poised') {
@@ -149,16 +134,9 @@ global.BasicAttack = (function() {
       throw new Error(`A basic attack shouldn't add the ${status} status.`)
     }
 
-    result.messages.push({ text: weaver.weave(message) });
     BattleSystem.getState().addStatus(BattleStatusEffect(entity, status, { duration:1 }));
+    return { text: weaver.weave(message) };
   }
-
-*/
-
-
-
-
-
 
   function calculateAttacks(attacker, weapons) {
     const attacks = [];

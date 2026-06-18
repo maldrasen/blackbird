@@ -14,6 +14,7 @@ global.DefendRoll = function(defender, attacker, attackRoll) {
 
   return Object.freeze({
     getRollValue: () => { return defendRoll.value },
+    getDefendSkill: () => { return defendSkill },
     isCrit: () => { return defendRoll.crit === true; },
     isFumble: () => { return defendRoll.fumble === true; },
     getFinalValue: () => { return finalValue },

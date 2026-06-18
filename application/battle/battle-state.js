@@ -52,7 +52,7 @@ global.BattleState = function(data) {
   function getPosition(id) {
     if (monsterFormation[id]) { return monsterFormation[id]; }
     if (partyFormation[id]) { return partyFormation[id]; }
-    throw new Error(`Entity[${id}] is not in a battle formation.`);
+    throw new Error(`Entity:${id} is not in a formation.`)
   }
 
   function setPosition(id, position) {
