@@ -62,7 +62,7 @@ BaseWeapon.register('goosewing', {
   low: 100,
   high: 200,
   speed: 1800,
-  textKey: 'basic-swing',
+  textKey: 'heavy-axe',
 });
 
 BaseWeapon.register('battle-axe', {
@@ -73,7 +73,7 @@ BaseWeapon.register('battle-axe', {
   low: 100,
   high: 300,
   speed: 1800,
-  textKey: 'basic-swing',
+  textKey: 'heavy-axe',
 });
 
 BaseWeapon.register('labrys', {
@@ -84,5 +84,5 @@ BaseWeapon.register('labrys', {
   low: 100,
   high: 400,
   speed: 2000,
-  textKey: 'basic-swing',
+  textKey: 'heavy-axe',
 });

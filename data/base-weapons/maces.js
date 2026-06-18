@@ -29,7 +29,7 @@ BaseWeapon.register('warhammer', {
   low: 30,
   high: 150,
   speed: 1200,
-  textKey: 'basic-swing',
+  textKey: 'heavy-mace',
 });
 
 BaseWeapon.register('morning-star', {
@@ -43,7 +43,7 @@ BaseWeapon.register('morning-star', {
   low: 50,
   high: 200,
   speed: 1200,
-  textKey: 'basic-swing',
+  textKey: 'heavy-mace',
 });
 
 BaseWeapon.register('maul', {
@@ -54,5 +54,5 @@ BaseWeapon.register('maul', {
   low: 100,
   high: 500,
   speed: 2400,
-  textKey: 'basic-swing',
+  textKey: 'heavy-mace',
 });
