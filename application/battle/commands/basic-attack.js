@@ -60,9 +60,12 @@ global.BasicAttack = (function() {
     return messages;
   }
 
-  //
   // TODO: Assuming crit damage is x2, could be more for different weapons, or with different abilities. Crit damage
   //       reduction could also change this.
+
+  // TODO: Exploding crits should be possible when rolling damage. Need to be able to look up a damage crit chance
+  //       which should be handled separately from the hit critical chance.
+
   function processHit(messages, context, roll) {
     const attacker = context.A;
     const target = context.T;
@@ -75,19 +78,19 @@ global.BasicAttack = (function() {
     let damage = Math.round((damageRoll / 100) * strength);
 
     if (context.attack === 'crit') {
-      messages.push({ text: weaver.weave(`[CRIT HIT]`) });
+      messages.push({ text: weaver.weave(`The attack caught {T:him} by surprise!`) });
       damage = damage*2;
     }
     if (context.attack === 'fumble') {
-      messages.push({ text: weaver.weave(`[FUMBLE HIT]`) });
+      messages.push({ text: weaver.weave(`It was only a glancing blow.`) });
       damage = Math.ceil(damage/2);
     }
     if (context.defend === 'crit') {
-      messages.push({ text: weaver.weave(`[CRIT DEFEND]`) });
+      messages.push({ text: weaver.weave(`{S/tar}{T:name}{/S} was almost able to avoid it.`) });
       damage = Math.ceil(damage/2);
     }
     if (context.defend === 'fumble') {
-      messages.push({ text: weaver.weave(`[FUMBLE DEFEND]`) });
+      messages.push({ text: weaver.weave(`{S/tar}{T:name}{/S} was left wide open!`) });
       damage = damage*2;
     }
 
