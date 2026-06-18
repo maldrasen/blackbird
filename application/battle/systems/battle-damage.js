@@ -3,18 +3,22 @@ global.BattleDamage = (function() {
   // Some actions can contain multiple hits, so we need to check to see if the target is alive before applying damage
   // in case they were already killed, which would remove them from the formation and cause problems if we try and
   // remove them again.
-  //    Data: { entity, damage, damageTypes, isCrit }
-  //
-  // TODO: This will also need to take into account conditions like vulnerable, once we have conditions being applied.
-  // TODO: The damage types really only matter when calculating damage resistances.
+  //    Data: { entity, damage, damageTypes, hitLocation, isCrit }
   //
   function applyDamage(data) {
-    if (BattleSystem.getState().isAlive(data.entity) === false) { return false; }
+    if (BattleSystem.getState().isAlive(data.entity) === false) {
+      throw new Error(`[${data.entity}] is already dead. Damage should not have been applied.`);
+    }
 
     let killed = false;
+    let actualDamage = data.damage;
+
+    // TODO: The actual damage done will need to be reduced by the armor of the hit location, the character's
+    //       resistances to certain damage types.
+    // TODO: This will also need to take into account conditions like vulnerable which increase the raw damage
 
     const health = HealthComponent.lookup(data.entity);
-    health.currentHealth -= data.damage;
+    health.currentHealth -= actualDamage;
 
     if (health.currentHealth <= 0) {
       health.currentHealth = 0;
@@ -24,6 +28,8 @@ global.BattleDamage = (function() {
 
     BattleInterface.showDamageEffect({ killed, ...data });
     HealthComponent.update(data.entity, health);
+
+    return actualDamage;
   }
 
   // There's a lot that needs to be done when an entity is killed. The entities are removed from the turn order and

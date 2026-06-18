@@ -113,12 +113,22 @@ global.BattleHelper = (function() {
     });
   }
 
+  // I'll be logging the roll values every time we make a skill check from the various roll classes (PhysicalAttackRoll,
+  // DefendRoll, etc.) This function takes all the skill check variables and flattens them in a format for the log.
+  function compileSkillCheckRollData(skill, check, mode=RollMode.normal) {
+    const data = { skill, value:check.value, type:'normal', mode };
+    if (data.crit) { data.type='crit'; }
+    if (data.fumble) { data.type='fumble'; }
+    return data;
+  }
+
   return Object.freeze({
     isAttackWithinRange,
     parsePosition,
     distanceBetweenPositions,
     compileWeaponData,
     randomHitLocation,
+    compileSkillCheckRollData,
   });
 
 })();

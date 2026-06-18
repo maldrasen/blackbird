@@ -49,13 +49,18 @@ global.BasicAttack = (function() {
   }
 
   function compileMessages(attacker, target, roll) {
+    const state = BattleSystem.getState();
     const context = buildContext(attacker, target, roll.attack, roll.defend);
     const attackText = Random.from(Dialog.lookupTemplate(DialogCategory.attackText, roll.attack.getTextKey(), context));
-    const messages = [{ text:Weaver(context).weave(attackText), rollDetails:roll }];
+    const messages = [];
 
-    (roll.attack.getFinalValue() > roll.defend.getFinalValue()) ?
-      processHit(messages, context, roll):
-      processMiss(messages, context, roll);
+    if (state.isAlive(target)) {
+      messages.push({ text:Weaver(context).weave(attackText), rollDetails:roll });
+
+      (roll.attack.getFinalValue() > roll.defend.getFinalValue()) ?
+        processHit(messages, context, roll):
+        processMiss(messages, context, roll);
+    }
 
     return messages;
   }
@@ -86,22 +91,33 @@ global.BasicAttack = (function() {
       damage = Math.ceil(damage/2);
     }
     if (context.defend === 'crit') {
-      messages.push({ text: weaver.weave(`{S/tar}{T:name}{/S} was almost able to avoid it.`) });
+      messages.push({ text: weaver.weave(`{S/tar}{T:baseName}{/S} was almost able to avoid it.`) });
       damage = Math.ceil(damage/2);
     }
     if (context.defend === 'fumble') {
-      messages.push({ text: weaver.weave(`{S/tar}{T:name}{/S} was left wide open!`) });
+      messages.push({ text: weaver.weave(`{S/tar}{T:baseName}{/S} was left wide open!`) });
       damage = damage*2;
     }
 
-    messages.push({ text:`Hit for ${damage} damage!` });
-
-    BattleDamage.applyDamage({
+    const damageTypes = baseWeapon.getDamageTypes();
+    const actualDamage = BattleDamage.applyDamage({
       entity: target,
       damage: damage,
-      damageTypes: baseWeapon.getDamageTypes(),
+      damageTypes: damageTypes,
+      hitLocation: context.hitLocation,
       isCrit: context.attack === 'crit',
     });
+
+    messages.push({ text:`Hit for ${actualDamage} damage!` });
+
+    Console.log(`Damage Roll [${attacker}]`,{ system:'BattleSystem', level:3, data:{
+      damage: actualDamage,
+      hitLocation: context.hitLocation,
+    }});
+
+    if (BattleSystem.getState().isAlive(target) === false) {
+      Console.log(`[${target}] was killed`,{ system:'BattleSystem', level:2 });
+    }
   }
 
   function processMiss(messages, context, roll) {

@@ -235,6 +235,17 @@ global.BattleState = function(data) {
 
     statusEffects[entity][code] = statusEffect;
 
+    // TODO: We need to make a more general way of removing opposing status effects (if there are any) Becoming poised
+    //       might also clear a stunned effect for instance, or perhaps it's impossible to become poised while stunned.
+    //       Something to think about at least.
+
+    if (code === 'poised' && hasStatusEffect(entity, 'off-balance')) {
+      removeStatus(entity, 'off-balance');
+    }
+    if (code === 'off-balance' && hasStatusEffect(entity, 'poised')) {
+      removeStatus(entity, 'poised');
+    }
+
     if (statusEffect.getDurationType() === StatusEffectDurationType.fixedTime) {
       // TODO: If a status effect has a fixed time it is removed after a given time has passed. That removal time
       //       needs to be added to the turn order because the effect goes away independent of the character's actions.

@@ -21,6 +21,8 @@ global.BattleSystem = (function() {
     const interrupt = state.getInterrupt();
     const id = next.id
 
+    Console.log(`Advancing Battle`,{ system:'BattleSystem', level:1, data:{ acting:id }});
+
     if (interrupt === 'victory') { return BattleInterface.showVictory(); }
     if (interrupt === 'game-over') { return BattleInterface.showGameOver(); }
 

@@ -157,6 +157,12 @@ global.VirginityType = Object.freeze({
   anal: 'anal',
 });
 
+global.RollMode = Object.freeze({
+  normal: 'normal',
+  advantage: 'advantage',
+  disadvantage: 'disadvantage',
+})
+
 // ===============
 //   Personality
 // ===============
