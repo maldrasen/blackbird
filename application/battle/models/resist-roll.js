@@ -5,9 +5,6 @@ global.ResistRoll = function(target, type, power) {
   //       or that a character with 1000 resistance to an effect can still fail to resist an effect. Still, 10% might
   //       be a bit too high. Maybe 5% or 3% is more reasonable?
 
-
-  console.log("RESIST ROLL:",target,type,power)
-
   const critical = Random.roll(10);
 
   if (critical === 0) {
