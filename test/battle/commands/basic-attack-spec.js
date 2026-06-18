@@ -23,7 +23,7 @@ describe("BasicAttack", function() {
     });
 
     it("a single fast weapon", function() {
-      prepare({ playerMainWeapon:'dagger' });
+      prepare({ playerMainWeapon:{ base:'dagger' }});
 
       const player = GameState.getPlayer();
       const weapons = BattleHelper.compileWeaponData(player);

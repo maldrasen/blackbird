@@ -4,7 +4,7 @@ BaseWeapon.register('fist', {
   type: 'fist',
   damageType: DamageType.crush,
   hands: WeaponHandedness.one,
-  reach: WeaponReach.close,
+  reach: WeaponReach.short,
   low: 50,
   high: 100,
   speed: 500,

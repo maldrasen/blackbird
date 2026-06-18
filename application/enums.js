@@ -400,3 +400,11 @@ global.WeaponReach = Object.freeze({
   extended: 'extended',
   long: 'long',
 });
+
+global.ArmorEnchantments = Object.freeze({
+  resist: 'resist',
+});
+
+global.WeaponEnchantments = Object.freeze({
+  endanger: 'endanger',
+});
