@@ -1,9 +1,16 @@
 global.BattleDamage = (function() {
 
-  // Data: { entity, damage, damageTypes, isCrit }
+  // Some actions can contain multiple hits, so we need to check to see if the target is alive before applying damage
+  // in case they were already killed, which would remove them from the formation and cause problems if we try and
+  // remove them again.
+  //    Data: { entity, damage, damageTypes, isCrit }
+  //
   // TODO: This will also need to take into account conditions like vulnerable, once we have conditions being applied.
   // TODO: The damage types really only matter when calculating damage resistances.
+  //
   function applyDamage(data) {
+    if (BattleSystem.getState().isAlive(data.entity) === false) { return false; }
+
     let killed = false;
 
     const health = HealthComponent.lookup(data.entity);

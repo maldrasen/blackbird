@@ -6,6 +6,9 @@ global.Monster = function(id) {
   function getBasicAttack() { return monsterComponent().basicAttack; }
   function getBaseName() { return getBaseMonster().getName(); }
 
+  // TODO: Need to determine how monster speed is calculated.
+  function getSpeedFactor() { return 1; }
+
   // ==========
   //   Threat
   // ==========
@@ -55,6 +58,7 @@ global.Monster = function(id) {
     getBaseName,
     getBrain,
     getBasicAttack,
+    getSpeedFactor,
 
     populateThreatTable,
     getThreatTable,

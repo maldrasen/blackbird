@@ -53,8 +53,9 @@ global.MonsterSimulator = (function() {
 
   function isBasicAttackInRange(monster, p1, p2) {
     const basicAttack = monster.getBasicAttack();
-    return (basicAttack == null) ? false :
-      BattleHelper.isAttackWithinRange(BaseWeapon.lookup(basicAttack.base).getReach(), p1, p2);
+    if (basicAttack == null) { return false; }
+    const baseWeapon = BaseWeapon.lookup(basicAttack.main ? basicAttack.main.base : basicAttack.base);
+    return BattleHelper.isAttackWithinRange(baseWeapon.getReach(), p1, p2);
   }
 
   // Target data has a list of possible actions that can be used against the target. This function will be used to

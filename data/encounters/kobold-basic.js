@@ -1,4 +1,37 @@
 
+Encounter.register('kobold-sneak-sluts',{
+  description: `some naked, knife wielding, kobold sluts.`,
+  formation:[
+    [2,1,1,1,2],
+  ],
+  monsters:{
+    1: { code:'kobold-sneak-slut' },
+    2: { code:'kobold-sneak-slut', chance:33, }
+  }
+});
+
+Encounter.register('kobold-trappers',{
+  description: `a small group of spear wielding kobolds.`,
+  formation:[
+    [0,1,1,1,0],
+    [0,0,1,0,0],
+  ],
+  monsters:{
+    1: { code:'kobold-trapper' },
+  }
+});
+
+Encounter.register('kobold-tossers',{
+  description: `a small group of spear wielding kobolds.`,
+  formation:[
+    [0,1,1,1,0],
+  ],
+  monsters:{
+    1: { code:'kobold-tosser' },
+  }
+});
+
+
 Encounter.register('kobold-1',{
   description: `a small group of weak looking kobolds`,
   formation:[
@@ -48,3 +81,4 @@ Encounter.register('kobold-4',{
     3:{ codeMap:{ 'kobold-sneak-slut':10, 'kobold-tosser':20 }, chance:50 },
   }
 });
+

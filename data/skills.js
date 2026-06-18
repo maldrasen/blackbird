@@ -99,6 +99,11 @@ Skill.register('grappling',{
   factor: 1.25,
   attributes: [Attrib.strength, Attrib.dexterity] });
 
+Skill.register('martial-arts', {
+  name: 'Martial Arts',
+  factor: 1.5,
+  attributes: [Attrib.strength, Attrib.dexterity] });
+
 Skill.register('maces',{
   name: "Maces",
   factor: 1,

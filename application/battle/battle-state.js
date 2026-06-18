@@ -52,7 +52,7 @@ global.BattleState = function(data) {
   function getPosition(id) {
     if (monsterFormation[id]) { return monsterFormation[id]; }
     if (partyFormation[id]) { return partyFormation[id]; }
-    throw new Error(`Entity[${id}] is not in a battle formation.`);
+    throw new Error(`Entity:${id} is not in a formation.`)
   }
 
   function setPosition(id, position) {
@@ -109,6 +109,7 @@ global.BattleState = function(data) {
   function getMonsters() { return Object.keys(monsterFormation); }
   function getCharacters() { return Object.keys(partyFormation); }
   function isMonster(id) { return getMonsters().includes(id); }
+  function isCharacter(id) { return getCharacters().includes(id); }
   function removeFromFormation(id) { delete (isMonster(id) ? monsterFormation : partyFormation)[id]; }
 
   // === Turn Order ====================================================================================================
@@ -277,6 +278,7 @@ global.BattleState = function(data) {
     getMonsters,
     getCharacters,
     isMonster,
+    isCharacter,
 
     setTurnOrder,
     getTurnOrder: () => { return [ ...turnOrder ]; },
