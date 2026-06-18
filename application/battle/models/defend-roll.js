@@ -38,6 +38,7 @@ global.DefendRoll = function(defender, attacker, attackRoll) {
   let finalValue = defendRoll.value;
 
   // TODO: This finalValue will have other modifiers that adjust its value.
+  // TODO: We might nees to take armor enchantments into account here.
 
   Console.log(`Defend Roll [${defender}]`,{ system:'BattleSystem', level:3, data:modifiers })
 

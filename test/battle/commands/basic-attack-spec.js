@@ -9,6 +9,27 @@ describe("BasicAttack", function() {
     }
   }
 
+  describe("rollDamage()", function() {
+    it("a normal attack with a single damage type", function() {
+      const horse = CharacterFixtures.genericMale({ attributes:{ strength:50 } });
+      const complexDamage = BasicAttack.rollDamage(horse, BaseWeapon.lookup('maul'), 'normal', 'normal');
+
+      expect(complexDamage.messages.length).to.equal(0);
+      expect(Object.keys(complexDamage.damage).length).to.equal(1);
+      expect(complexDamage.damage.crush).to.be.greaterThan(50);
+    });
+
+    it("a super crit hit with two damage types", function() {
+      const horse = CharacterFixtures.genericMale({ attributes:{ strength:50 } });
+      const complexDamage = BasicAttack.rollDamage(horse, BaseWeapon.lookup('morning-star'), 'crit', 'fumble');
+
+      expect(complexDamage.messages.length).to.equal(2);
+      expect(Object.keys(complexDamage.damage).length).to.equal(2);
+      expect(complexDamage.damage.pierce).to.be.greaterThan(50);
+      expect(complexDamage.damage.crush).to.be.greaterThan(50);
+    });
+  })
+
   describe("calculateAttacks()", function() {
     it("a single primary attack", function() {
       prepare({ encounter: 'kobold-trappers' });

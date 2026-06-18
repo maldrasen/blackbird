@@ -241,9 +241,15 @@ global.FormationPanel = (function() {
   function showDamageEffect(data) {
     FlashSquare.flash({
       element: combatantPanels[data.entity].getElement(),
-      color: BattleView.getDamageColor(data),
+      color: getDamageColor(data),
       duration: _battleDamageEffectTime,
     });
+  }
+
+  function getDamageColor(data) {
+    if (data.killed) { return `rgb(200,25,25)`; }
+    if (data.isCrit) { return `rgb(150,20,20)`; }
+    return `rgb(75,10,10)`;
   }
 
   function highlightActing(id) {

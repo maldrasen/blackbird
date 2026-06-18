@@ -10,12 +10,19 @@ global.BattleDamage = (function() {
       throw new Error(`[${data.entity}] is already dead. Damage should not have been applied.`);
     }
 
+    let actualDamage = 0;
     let killed = false;
-    let actualDamage = data.damage;
 
     // TODO: The actual damage done will need to be reduced by the armor of the hit location, the character's
-    //       resistances to certain damage types.
-    // TODO: This will also need to take into account conditions like vulnerable which increase the raw damage
+    //       resistances to certain damage types. I don't think we need to modify the damageTypes object here,
+    //       because once we get the total actual damage that should be all that matters.
+
+    // TODO: This will also need to take into account conditions like vulnerable which increase the raw damage of all
+    //       damage types (or just doubles the final actual damage)
+
+    Object.entries(data.damageTypes).forEach(([type, damage]) => {
+      actualDamage += damage;
+    });
 
     const health = HealthComponent.lookup(data.entity);
     health.currentHealth -= actualDamage;

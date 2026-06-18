@@ -74,40 +74,36 @@ global.BasicAttack = (function() {
   function processHit(messages, context, roll) {
     const attacker = context.A;
     const target = context.T;
-
-    const baseWeapon = roll.attack.getBaseWeapon();
-    const damageRoll = Random.between(baseWeapon.getHigh(), baseWeapon.getLow())
-    const strength = AttributesComponent.lookup(attacker).strength;
     const weaver = Weaver(context);
+    const baseWeapon = roll.attack.getBaseWeapon();
 
-    let damage = Math.round((damageRoll / 100) * strength);
+    const damageRoll = rollDamage(attacker, baseWeapon, context.attack, context.defend);
+    const damageTypes = damageRoll.damage;
+    damageRoll.messages.forEach(m => {
+      messages.push(weaver.weave(m));
+    });
 
-    if (context.attack === 'crit') {
-      messages.push({ text: weaver.weave(`The attack caught {T:him} by surprise!`) });
-      damage = damage*2;
-    }
-    if (context.attack === 'fumble') {
-      messages.push({ text: weaver.weave(`It was only a glancing blow.`) });
-      damage = Math.ceil(damage/2);
-    }
-    if (context.defend === 'crit') {
-      messages.push({ text: weaver.weave(`{S/tar}{T:baseName}{/S} was almost able to avoid it.`) });
-      damage = Math.ceil(damage/2);
-    }
-    if (context.defend === 'fumble') {
-      messages.push({ text: weaver.weave(`{S/tar}{T:baseName}{/S} was left wide open!`) });
-      damage = damage*2;
+    // If the hit comes from a real weapon with a weapon enchantment, we process the on hit effect of the enchantment.
+    // This can add a message or modify the raw attack damage. If the damage is adjusted by the enchantment the
+    // damageTypes object is modified from within the processOnHit() function.
+    if (roll.attack.getWeapon()) {
+      const weapon = Weapon(roll.attack.getWeapon());
+      if (weapon.hasEnchantment()) {
+        const message = weapon.getEnchantment().processOnHit({ attacker, target, damageTypes });
+        if (message) {
+          messages.push(weaver.weave(message.message));
+        }
+      }
     }
 
-    const damageTypes = baseWeapon.getDamageTypes();
     const actualDamage = BattleDamage.applyDamage({
       entity: target,
-      damage: damage,
       damageTypes: damageTypes,
       hitLocation: context.hitLocation,
       isCrit: context.attack === 'crit',
     });
 
+    // Get total damage from actual damage types object...
     messages.push({ text:`Hit for ${actualDamage} damage!` });
 
     Console.log(`Damage Roll [${attacker}]`,{ system:'BattleSystem', level:3, data:{
@@ -129,6 +125,46 @@ global.BasicAttack = (function() {
     if (context.defend === 'fumble') { messages.push(addStatus(target,'vulnerable',context,roll)); }
 
     messages.push({ text:`Miss.` });
+  }
+
+
+  // The rolled damage value is rather complex because we need to divide the base damage into it's damage type
+  // components so that additional damage from enchantments can be added or so that damage values can be resisted. We
+  // also increase damage depending on the attack and defense crit and fumble states, and include a message when that
+  // happens.
+  //   - attacker: Attacker entity id.
+  //   - baseWeapon: BaseWeapon record
+  //   - attack: ['crit','fumble','normal']
+  //   - defend: ['crit','fumble','normal']
+  function rollDamage(attacker, baseWeapon, attack, defend) {
+    const strength = AttributesComponent.lookup(attacker).strength;
+    const damageRoll = Random.between(baseWeapon.getHigh(), baseWeapon.getLow());
+    const result = { messages:[], damage:{} };
+
+    let rawDamage = Math.round((damageRoll / 100) * strength);
+
+    if (attack === 'crit') {
+      result.messages.push(`The attack caught {T:him} by surprise!`);
+      rawDamage = rawDamage*2;
+    }
+    if (attack === 'fumble') {
+      result.messages.push(`It was only a glancing blow.`);
+      rawDamage = Math.ceil(rawDamage/2);
+    }
+    if (defend === 'crit') {
+      result.messages.push(`{S/tar}{T:baseName}{/S} was almost able to avoid it.`);
+      rawDamage = Math.ceil(rawDamage/2);
+    }
+    if (defend === 'fumble') {
+      result.messages.push(`{S/tar}{T:baseName}{/S} was left wide open!`);
+      rawDamage = rawDamage*2;
+    }
+
+    baseWeapon.getDamageTypes().forEach(damageType => {
+      result.damage[damageType.type] = Math.round(rawDamage * (damageType.percent/100));
+    });
+
+    return result;
   }
 
   function addStatus(entity, status, context, roll) {
@@ -178,6 +214,7 @@ global.BasicAttack = (function() {
 
       attacks.push({
         code: 'basic-attack',
+        weapon: weapon.weapon,
         base: weapon.base,
         name: weapon.name,
         textKey: weapon.textKey,
@@ -219,6 +256,7 @@ global.BasicAttack = (function() {
 
   return Object.freeze({
     execute,
+    rollDamage,
     calculateAttacks,
     totalTime,
   });

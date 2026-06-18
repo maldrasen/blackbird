@@ -7,6 +7,9 @@ global.PhysicalAttackRoll = function(attacker, target, attack) {
   //       to turn the check value into a final value. We need to save all the modifiers as they're applied in case
   //       we want to show them in the text panel or in the log at the very least.
 
+  // TODO: We'll also need to take weapon enchantments into account as well which we can get from attack.weapon if the
+  //       attack is using a real weapon.
+
   const check = SkillCheck(attacker, attackSkill);
   const modifiers = [BattleHelper.compileSkillCheckRollData(attackSkill, check)];
   const finalValue = Math.ceil(check.value);
@@ -15,6 +18,7 @@ global.PhysicalAttackRoll = function(attacker, target, attack) {
 
   return Object.freeze({
     getHitLocation: () => { return hitLocation; },
+    getWeapon: () => { return attack.weapon; },
     getBaseWeapon: () => { return baseWeapon; },
     getRollValue: () => { return check.value; },
     isCrit: () => { return check.crit === true; },

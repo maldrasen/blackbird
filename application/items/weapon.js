@@ -12,10 +12,17 @@ global.Weapon = function(id) {
     return component.textKey || BaseWeapon.lookup(component.base).getTextKey();
   }
 
+  function getEnchantment() {
+    const component = getComponent();
+    return component.enchantment ? WeaponEnchantment(component.enchantment) : null;
+  }
+
   return Object.freeze({
     getId: () => { return id; },
     getBaseWeapon: () => { return BaseWeapon.lookup(getComponent().base); },
-    getTextKey,
     getName,
+    getTextKey,
+    hasEnchantment: () => { return getComponent().enchantment != null; },
+    getEnchantment,
   });
 }

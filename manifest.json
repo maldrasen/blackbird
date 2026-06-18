@@ -117,6 +117,7 @@
     "application/items/factories/weapon-factory.js",
     "application/items/inventory-manager.js",
     "application/items/item.js",
+    "application/items/weapon-enchantment.js",
     "application/items/weapon.js",
     "application/loader.js",
     "application/looms/actor-loom.js",
