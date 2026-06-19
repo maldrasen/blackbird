@@ -6,14 +6,15 @@ global.Monster = function(id) {
   function getBasicAttack() { return monsterComponent().basicAttack; }
   function getBaseName() { return getBaseMonster().getName(); }
   function getSpecies() { return getBaseMonster().getSpecies(); }
-
-  // TODO: Need to determine how monster speed is calculated.
-  function getSpeedFactor() { return 1; }
+  function getSkill(code) { return getBaseMonster().getSkills()[code]; }
 
   function getResistance(type) {
     const baseResist = getBaseMonster().getResistances()[type] || 0;
     return baseResist + getSpeciesResist(type);
   }
+
+  // TODO: Need to determine how monster speed is calculated.
+  function getSpeedFactor() { return 1; }
 
   function getSpeciesResist(type) {
     if (getSpecies() == null) { return 0; }
@@ -67,11 +68,12 @@ global.Monster = function(id) {
     getEntity: () => { return id },
     getBaseMonster,
     getBaseName,
-    getSpecies,
     getBrain,
     getBasicAttack,
-    getSpeedFactor,
     getResistance,
+    getSpeedFactor,
+    getSpecies,
+    getSkill,
 
     populateThreatTable,
     getThreatTable,

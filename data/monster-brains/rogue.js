@@ -6,6 +6,12 @@ MonsterBrain.register('rogue',{
     leastHealth: 75,
   },
 
+  prioritizedAbilities: [
+    'hide',
+    'sneak-attack',
+    'basic-attack',
+  ],
+
   attributeGrowth: {
     strength: 50,
     dexterity: 100,

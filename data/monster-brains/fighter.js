@@ -6,6 +6,10 @@ MonsterBrain.register('fighter',{
     leastHealth: 100,
   },
 
+  prioritizedAbilities: [
+    'basic-attack',
+  ],
+
   attributeGrowth: {
     strength: 100,
     dexterity: 60,

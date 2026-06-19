@@ -7,6 +7,10 @@ MonsterBrain.register('coward',{
     leastHealth: 75,
   },
 
+  prioritizedAbilities: [
+    'basic-attack',
+  ],
+
   attributeGrowth: {
     strength: 30,
     dexterity: 80,

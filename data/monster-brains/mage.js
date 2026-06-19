@@ -4,6 +4,8 @@ MonsterBrain.register('mage',{
     leastHealth: 100,
   },
 
+  prioritizedAbilities: [],
+
   attributeGrowth: {
     strength: 10,
     dexterity: 10,

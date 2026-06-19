@@ -17,6 +17,7 @@ global.MonsterBrain = (function() {
     return Object.freeze({
       getCode: () => { return code; },
       getThreatWeights: () => { return brain.threatWeights; },
+      getPrioritizedAbilities: () => { return brain.prioritizedAbilities; },
       getAttributeGrowth: () => { return brain.attributeGrowth; },
     });
   }

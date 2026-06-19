@@ -5,6 +5,10 @@ MonsterBrain.register('hunter',{
     leastHealth: 100,
   },
 
+  prioritizedAbilities: [
+    'basic-attack',
+  ],
+
   attributeGrowth: {
     strength: 20,
     dexterity: 100,

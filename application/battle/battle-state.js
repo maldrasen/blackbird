@@ -268,7 +268,7 @@ global.BattleState = function(data) {
   }
 
   function hasStatusEffect(id, code) {
-    return getStatusEffects(id)[code];
+    return getStatusEffects(id)[code] != null;
   }
 
   return Object.freeze({

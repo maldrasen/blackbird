@@ -7,6 +7,10 @@ BaseMonster.register('kobold-sneak-slut',{
   brain: 'rogue',
   level: 3,
 
+  skills: {
+    stealth: 10,
+  },
+
   // Adds a preference for attacking women on top of rogue weights.
   threatWeights: {
     closest: 10,
