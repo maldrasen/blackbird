@@ -6,10 +6,6 @@
 - Magic is frowned upon in Wolgur, thanks to the influence of the church. Most people believe magic is evil and anyone using it has been corrupted by the dungeon. Magic can only be obtained by delving in the dungeon and receiving mana and spells in shrines and such.
 - Magic isn't used openly by people. Characters who would be considered wizards don't dress or act like they are. Almost anyone who has delved in the dungeon long enough has some magic, but they don't practice it openly.
 
-
-### The Great Rhysh Dungeon
-
-
 ### The Player's Estate
 - Much of the game's progression is seen though upgrading the player's home estate. They start in a tiny hovel and upgrade the place steadily over the course of the game.
 - The town has a few basic services, but most artisans are employed by different houses and only work for those houses. As a solo person, you don't have access to services like alchemy or enchanting until you recruit someone to do this work. With this system the player doesn't have "professions", but they recruit a character and train them up in a very similar system, but this also puts a person in the player's home that they can interact with and get quests from and such.

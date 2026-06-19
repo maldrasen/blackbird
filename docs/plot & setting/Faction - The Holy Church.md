@@ -15,6 +15,7 @@
 - Priests and priestesses who "show promise" are groomed by the upper levels of the clergy into eventually learning the true nature of the church. 
 - There are secret sects within these middle layers that serve different purposes. Some are concubine like nuns, or assassins, or any other secret work the church can't be public about. 
 - Though their official stance is no dungeon corruption the templars of the church are obviously enhanced with dungeon magic. They wear armor that they never remove. The church plays it off as the power of God or whatever. Inside of their armor the templars are terribly disfigured and monstrous.
+- The church should have a branch called the choir, a secret cabal of sex wizards or some such.
 
 ### History of the Church
 There's actually a kernel of truth behind the teachings of the church. The dungeon is evil and the powers that the adventurers gain by delving the dungeon are corrupting. Their goal, to destroy the dungeons, though is impossible, at least the way they're going about it. The church may have spent their early years actually pursuing this impossible goal. Eventually though, as it happens with every organization, only the worst people manage to get put in charge. The current leadership, like the nobility, only want to live lives of excess and depravity, which has led to its current state.
