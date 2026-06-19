@@ -23,11 +23,16 @@ global.GameState = (function() {
   }
 
   // Start a new game. This could take an argument for a specific scenario to play.
-  //
-  // TODO: We'll eventually want to map the game time onto an actual data,
-  //       and we'll want to start the scenario on a specific date and time.
-  // TODO: Also assuming we'll start the game in the so called filthy hovel.
-  //       That'll probable change as I actually write the game story.
+
+  // TODO: We'll eventually want to map the game time onto an actual data, and we'll want to start the scenario on a
+  //       specific date and time.
+
+  // TODO: We should start the game sometime on day 8888. We will store the time as minutes from epoch (day 1), but
+  //       will need functions to pull the day and time from that single number.
+
+  // TODO: Also assuming we'll start the game in the so called filthy hovel. That'll probable change as I actually
+  //       write the game story.
+
   function initialize(options) {
     Registry.clear();
 
