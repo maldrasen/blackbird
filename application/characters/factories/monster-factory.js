@@ -22,10 +22,19 @@ global.MonsterFactory = (function() {
       monsterId = Registry.createEntity();
     }
 
+    addSkills(monsterBase, monsterId);
     addLevels(monsterBase, monsterId);
 
     MonsterComponent.create(monsterId, monsterData);
     return monsterId;
+  }
+
+  function addSkills(monsterBase, monsterId) {
+    const skills = SkillsComponent.lookup(monsterId);
+    Object.entries(monsterBase.getSkills()).forEach(([code,value]) => {
+      skills[code] = value;
+    });
+    SkillsComponent.update(monsterId, skills);
   }
 
   // TODO: Eventually we'll want to unify the leveling into a class that works for both monsters and characters. We

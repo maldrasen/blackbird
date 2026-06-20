@@ -18,6 +18,15 @@ global.AttributesComponent = (function() {
     Registry.deleteComponent(id,ComponentType.attributes);
   }
 
+  // An attribute check is a very simplified version of a skill check. Unlike the skill checks, attribute checks don't
+  // have crits or fumbles, they only work off of a single attribute, and don't have any factors like the skill factor.
+  function check(id, attribute) {
+    const value = lookup(id)[attribute];
+    const plus = Math.floor(value * 0.25);
+    const rand = Math.ceil(value * 0.75);
+    return Random.between(1,rand) + plus
+  }
+
   function validate(id) {
     const attributes = Object.keys(Attrib);
     const attributeComponent = lookup(id);
@@ -74,6 +83,7 @@ global.AttributesComponent = (function() {
     update,
     lookup,
     destroy,
+    check,
     createWrapper,
   });
 

@@ -66,6 +66,9 @@ global.ActorLoom = (function() {
     return MonsterComponent.lookup(id) ? Monster(id).getBaseName() : Character(id).getName();
   }
 
-  return Object.freeze({ weave });
+  return Object.freeze({
+    weave,
+    findBaseName,
+  });
 
 })();

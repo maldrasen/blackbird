@@ -6,7 +6,7 @@ global.Monster = function(id) {
   function getBasicAttack() { return monsterComponent().basicAttack; }
   function getBaseName() { return getBaseMonster().getName(); }
   function getSpecies() { return getBaseMonster().getSpecies(); }
-  function getSkill(code) { return getBaseMonster().getSkills()[code]; }
+  function getSkill(code) { return SkillsComponent.lookup(id)[code]; }
 
   function getResistance(type) {
     const baseResist = getBaseMonster().getResistances()[type] || 0;

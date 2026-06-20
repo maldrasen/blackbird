@@ -1,4 +1,4 @@
-describe.only('CalendarHelper', function() {
+describe('CalendarHelper', function() {
 
   it('for day 1', function() {
     const info = CalendarHelper.dayInfo(1);
