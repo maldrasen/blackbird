@@ -6,6 +6,7 @@ Name.register('name',Gender.male,[
   { name:"Abezethibou", triggers:['~maniac','magical']},
   { name:"Abraxas" },
   { name:"Abyzou" },
+  { name:"Accipiter" },
   { name:"Acheron" },
   { name:"Ackartorrak" },
   { name:"Adareth" },
