@@ -2,7 +2,10 @@ global.TargetingController = (function() {
 
   function startBasicAttackTargeting() {
     const state = BattleSystem.getState()
-    const monsters = getMonstersInRange();
+    const monsters = getMonstersInRange().filter(m => {
+      return state.hasStatusEffect(m.monster, 'hidden') === false;
+    });
+
     const positions = monsters.map(mon => mon.position);
     FormationPanel.startTargeting(positions, [], position => {
       BattleSystem.finishCharacterTurn(BasicAttack.execute(

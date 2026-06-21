@@ -212,6 +212,14 @@ $roll-high-bright: rgb(250,250,250);
       transition-timing-function: ease-in-out;
     }
   }
+
+  .monster.hidden {
+    transition-property: opacity;
+    transition-timing-function: ease-out;
+    transition-duration: 1000ms;
+    opacity: 0;
+  }
+
 }
 
 #battleView.inspect-mode {

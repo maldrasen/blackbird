@@ -82,3 +82,15 @@ Encounter.register('kobold-4',{
   }
 });
 
+Encounter.register('kobold-5',{
+  description: `a group of shifty looking kobolds`,
+  formation:[
+    [0,1,1,1,0],
+    [0,2,2,2,0],
+  ],
+  monsters:{
+    1:{ code:'kobold-trapper' },
+    2:{ code:'kobold-sneak-slut' },
+  }
+});
+

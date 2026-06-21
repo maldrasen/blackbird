@@ -68,6 +68,9 @@ global.CombatantPanel = function(type, entity) {
     const state = BattleSystem.getState();
     const statusPanel = element.querySelector('.status-panel');
     const statusEffects = state.getStatusEffects(entity);
+    const isMonster = state.isMonster(entity);
+
+    let isHidden = false;
 
     X.empty(statusPanel);
 
@@ -78,10 +81,24 @@ global.CombatantPanel = function(type, entity) {
     }
 
     Object.entries(statusEffects).forEach(([code, effect]) => {
-      const icon = X.createElement(`<div class='status-effect-icon' data-name='${effect.getName()}'></div>`)
-      icon.style['background-image'] = X.assetURL(`ai-icons/${code}.png`);
-      statusPanel.appendChild(icon);
+      let includeStatus = true;
+
+      if (isMonster && effect.getCode() === 'hidden') {
+        includeStatus = false;
+        isHidden = true;
+        X.addClass(element,'hidden');
+      }
+
+      if (includeStatus) {
+        const icon = X.createElement(`<div class='status-effect-icon' data-name='${effect.getName()}'></div>`)
+        icon.style['background-image'] = X.assetURL(`ai-icons/${code}.png`);
+        statusPanel.appendChild(icon);
+      }
     });
+
+    if (isHidden === false && X.hasClass(element, 'hidden')) {
+      X.removeClass(element,'hidden');
+    }
   }
 
   function getPosition() {
