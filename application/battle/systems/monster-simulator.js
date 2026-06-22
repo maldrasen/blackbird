@@ -9,20 +9,13 @@ global.MonsterSimulator = (function() {
 
   // Executing an ability must return an object in the format { time, messages }
 
-  function executeBattleTurn(id) {
-    const monster = Monster(id);
-    const { target, ability } = pickAbility(monster);
-
-    if (ability == null) {
-      return BasicDefend.execute(id);
-    }
-
-    switch (ability) {
-      case 'defend': return BasicDefend.execute(id);
-      case 'basic-attack': return BasicAttack.execute(id, target);
-      case 'hide': return Hide.execute(id);
-      case 'sneak-attack': return SneakAttack.execute(id, target);
-      default: throw new Error(`Failed to execute ability ${ability}`);
+  function executeBattleTurn() {
+    switch (pickCommand()) {
+      case 'defend': return BasicDefend.execute();
+      case 'basic-attack': return BasicAttack.execute();
+      case 'hide': return Hide.execute();
+      case 'sneak-attack': return SneakAttack.execute();
+      default: BasicDefend.execute();
     }
   }
 
@@ -31,72 +24,77 @@ global.MonsterSimulator = (function() {
   // highest priority action from the possible actions. If it has nothing that can hit that target, and has no actions
   // that don't require a target, it checks the next highest threat target. If the monster can't hit any target with
   // any action this function returns null, indicating that the monster should just defend this turn.
-  function pickAbility(monster) {
-    const state = BattleSystem.getState();
-    const characters = state.getCharacters().filter(id => state.isAlive(id));
+  function pickCommand() {
+    const round = BattleSystem.getRound();
+    const characters = getTargetableCharacters();
 
     while (characters.length > 0) {
-      const target = getHighestThreatFrom(monster, characters);
-      const possibleActions = getPossibleActions(state, monster, target);
+      const target = getHighestThreatFrom(round.getActingMonster(), characters);
+      round.setTarget(target);
 
-      if (possibleActions.length > 0) {
-        return { target, ability:possibleActions[0] };
+      const possibleCommands = getPossibleCommands();
+      if (possibleCommands.length > 0) {
+        return possibleCommands[0];
       }
 
+      round.clearTarget();
       ArrayHelper.remove(characters, target);
     }
   }
 
-  function getPossibleActions(state, monster, target) {
-    const actions = [];
-    const environment = { state, monster, target,
-      monsterPosition: state.getPosition(monster.getEntity()),
-      targetPosition: state.getPosition(target),
-    };
-
-    monster.getBrain().getPrioritizedAbilities().forEach(abilityCode => {
-      if (canUseAbility(abilityCode, environment)) {
-        actions.push(abilityCode);
-      }
-    });
-
-    return actions;
+  // A character can be targeted if they are alive and are not hidden.
+  function getTargetableCharacters() {
+    const state = BattleSystem.getState();
+    return state.getCharacters().filter(id => state.canBeTargeted(id));
   }
 
-  function canUseAbility(ability, environment) {
+  function getPossibleCommands() {
+    const round = BattleSystem.getRound();
+    const commands = [];
+
+    round.getActingMonster().getBrain().getPrioritizedAbilities().forEach(code => {
+      if (canUseAbility(code)) { commands.push(code); }
+    });
+
+    return commands;
+  }
+
+  function canUseAbility(ability) {
     switch (ability) {
-      case 'basic-attack': return canUseBasicAttack(environment);
-      case 'hide': return canHide(environment);
-      case 'sneak-attack': return canSneakAttack(environment);
+      case 'basic-attack': return canUseBasicAttack();
+      case 'hide': return canHide();
+      case 'sneak-attack': return canSneakAttack();
       default: throw new Error(`Can a monster use ${ability}?`);
     }
   }
 
-  function canUseBasicAttack(environment) {
-    const monster = environment.monster;
-    const p1 = environment.monsterPosition;
-    const p2 = environment.targetPosition;
+  function canUseBasicAttack() {
+    const round = BattleSystem.getRound();
+    const monster = round.getActingMonster();
     const basicAttack = monster.getBasicAttack();
+
     if (basicAttack == null) { return false; }
+
+    const p1 = round.getActingPosition();
+    const p2 = round.getTargetPosition();
     const baseWeapon = BaseWeapon.lookup(basicAttack.main ? basicAttack.main.base : basicAttack.base);
+
     return BattleHelper.isAttackWithinRange(baseWeapon.getReach(), p1, p2);
   }
 
-  function canHide(environment) {
-    const state = environment.state;
-    const monster = environment.monster;
-    const id = monster.getEntity();
+  function canHide() {
+    const state = BattleSystem.getState();
+    const acting = BattleSystem.getRound().getActing();
 
-    return (state.hasStatusEffect(id, 'hidden') === false) &&
-      state.isInBack(id) && (monster.getSkill('stealth') > 0);
+    return (state.hasStatusEffect(acting, 'hidden') === false) &&
+      state.isInBack(acting) && (Monster(acting).getSkill('stealth') > 0);
   }
 
-  function canSneakAttack(environment) {
-    const state = environment.state;
-    const monster = environment.monster;
+  function canSneakAttack() {
+    const monster = BattleSystem.getRound().getActingMonster();
     const basicAttack = monster.getBasicAttack();
 
-    return state.hasStatusEffect(monster.getEntity(), 'hidden') && (basicAttack != null);
+    return BattleSystem.getState().hasStatusEffect(monster.getEntity(), 'hidden') && (basicAttack != null);
   }
 
   // Pick the highest threat monster that is a member of the characters array.
@@ -116,7 +114,7 @@ global.MonsterSimulator = (function() {
 
   return Object.freeze({
     executeBattleTurn,
-    pickAbility,
+    pickCommand,
   });
 
 })();

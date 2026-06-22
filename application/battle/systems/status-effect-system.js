@@ -1,9 +1,11 @@
 global.StatusEffectSystem = (function() {
 
-  function processStartTurn(id) {
+  function processStartRound() {
     const state = BattleSystem.getState();
-    Object.values(state.getStatusEffects(id)).forEach(statusEffect => {
-      reduceEffectTime(state, id, statusEffect);
+    const acting = BattleSystem.getRound().getActing();
+
+    Object.values(state.getStatusEffects(acting)).forEach(statusEffect => {
+      reduceEffectTime(state, acting, statusEffect);
     });
   }
 
@@ -20,7 +22,7 @@ global.StatusEffectSystem = (function() {
   }
 
   return Object.freeze({
-    processStartTurn,
+    processStartRound,
   })
 
 })();

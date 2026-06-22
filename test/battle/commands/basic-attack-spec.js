@@ -9,24 +9,34 @@ describe("BasicAttack", function() {
     }
   }
 
+  function setPlayerAttribute(data) {
+    const attributes = AttributesComponent.lookup(GameState.getPlayer());
+    Object.entries(data).forEach(([key,value]) => { attributes[key] = value; });
+    AttributesComponent.update(GameState.getPlayer(),attributes);
+  }
+
   describe("rollDamage()", function() {
     it("a normal attack with a single damage type", function() {
-      const horse = CharacterFixtures.genericMale({ attributes:{ strength:50 } });
-      const complexDamage = BasicAttack.rollDamage(horse, BaseWeapon.lookup('maul'), 'normal', 'normal');
+      prepare();
+      setPlayerAttribute({ strength:50 });
+      BattleSystem.specRound(GameState.getPlayer(), { target:BattleSystem.getState().getMonsters()[0] });
 
-      expect(complexDamage.messages.length).to.equal(0);
-      expect(Object.keys(complexDamage.damage).length).to.equal(1);
-      expect(complexDamage.damage.crush).to.be.greaterThan(50);
+      const complexDamage = BasicAttack.rollDamage(GameState.getPlayer(), BaseWeapon.lookup('maul'), 'normal', 'normal');
+      expect(BattleSystem.getRound().getMessages().length).to.equal(0);
+      expect(Object.keys(complexDamage).length).to.equal(1);
+      expect(complexDamage.crush).to.be.greaterThan(50);
     });
 
     it("a super crit hit with two damage types", function() {
-      const horse = CharacterFixtures.genericMale({ attributes:{ strength:50 } });
-      const complexDamage = BasicAttack.rollDamage(horse, BaseWeapon.lookup('morning-star'), 'crit', 'fumble');
+      prepare();
+      setPlayerAttribute({ strength:50 });
+      BattleSystem.specRound(GameState.getPlayer(), { target:BattleSystem.getState().getMonsters()[0] });
 
-      expect(complexDamage.messages.length).to.equal(2);
-      expect(Object.keys(complexDamage.damage).length).to.equal(2);
-      expect(complexDamage.damage.pierce).to.be.greaterThan(50);
-      expect(complexDamage.damage.crush).to.be.greaterThan(50);
+      const complexDamage = BasicAttack.rollDamage(GameState.getPlayer(), BaseWeapon.lookup('morning-star'), 'crit', 'fumble');
+      expect(BattleSystem.getRound().getMessages().length).to.equal(2);
+      expect(Object.keys(complexDamage).length).to.equal(2);
+      expect(complexDamage.pierce).to.be.greaterThan(50);
+      expect(complexDamage.crush).to.be.greaterThan(50);
     });
   })
 
@@ -34,9 +44,8 @@ describe("BasicAttack", function() {
     it("a single primary attack", function() {
       prepare({ encounter: 'kobold-trappers' });
 
-      const kobold = BattleSystem.getState().getMonsters()[0];
-      const weapons = BattleHelper.compileWeaponData(kobold);
-      const attacks = BasicAttack.calculateAttacks(kobold, weapons);
+      BattleSystem.specRound(BattleSystem.getState().getMonsters()[0]);
+      const attacks = BasicAttack.calculateAttacks();
 
       expect(attacks.length).to.equal(1)
       expect(attacks[0].base).to.equal('spear');
@@ -46,9 +55,8 @@ describe("BasicAttack", function() {
     it("a single fast weapon", function() {
       prepare({ playerMainWeapon:{ base:'dagger' }});
 
-      const player = GameState.getPlayer();
-      const weapons = BattleHelper.compileWeaponData(player);
-      const attacks = BasicAttack.calculateAttacks(player, weapons);
+      BattleSystem.specRound(GameState.getPlayer());
+      const attacks = BasicAttack.calculateAttacks();
 
       expect(attacks.length).to.equal(2)
       expect(attacks[0].base).to.equal('dagger');
@@ -60,9 +68,8 @@ describe("BasicAttack", function() {
     it("dual wielded weapons", function() {
       prepare({ encounter: 'kobold-sneak-sluts' });
 
-      const kobold = BattleSystem.getState().getMonsters()[0];
-      const weapons = BattleHelper.compileWeaponData(kobold);
-      const attacks = BasicAttack.calculateAttacks(kobold, weapons);
+      BattleSystem.specRound(BattleSystem.getState().getMonsters()[0]);
+      const attacks = BasicAttack.calculateAttacks();
 
       expect(attacks.length).to.equal(3)
       expect(attacks[0].base).to.equal('knife');

@@ -32,6 +32,7 @@ Encounter.register('kobold-tossers',{
 });
 
 
+
 Encounter.register('kobold-1',{
   description: `a small group of weak looking kobolds`,
   formation:[

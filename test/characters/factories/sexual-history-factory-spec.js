@@ -11,7 +11,7 @@ describe("SexualHistoryFactory", function() {
     let firsts = SexualHistoryFactory.build({
       personality:{ archetype:ArchetypeCode.slut },
       sensitivities:{ cock:10, pussy:10 },
-      sexualPreferences:{ androphilic:-90, gynophilic:20 },
+      sexualPreferences:{ androphilic:-100, gynophilic:50 },
     }).firsts;
 
     expect(firsts.anal).to.be.undefined;

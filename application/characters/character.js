@@ -36,9 +36,6 @@ global.Character = function(id) {
   function isStrongerThan(value) { return compareAttributes(value, Attrib.strength); }
   function isTougherThan(value) { return compareAttributes(value, Attrib.vitality); }
 
-  // TODO: Need to determine how character speed is calculated.
-  function getSpeedFactor() { return 1; }
-
   // ===============
   //   Body Values
   // ===============
@@ -236,7 +233,6 @@ global.Character = function(id) {
     isSmarterThan,
     isStrongerThan,
     isTougherThan,
-    getSpeedFactor,
 
     // Body Data
     isTallerThan,

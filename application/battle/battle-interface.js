@@ -5,16 +5,16 @@ global.BattleInterface = (function() {
     CommandPanel.showCommands(CharacterCommands.getCommands());
   }
 
-  function showMonsterResult(result) {
+  function showMonsterResult() {
     if (Tests.running()) { return; }
-    BattleText.setMessages(result.messages);
+    BattleText.setMessages(BattleSystem.getRound().getMessages());
     BattleView.update();
   }
 
-  function showCharacterResult(result) {
+  function showCharacterResult() {
     if (Tests.running()) { return; }
     CommandPanel.hide();
-    BattleText.setMessages(result.messages);
+    BattleText.setMessages(BattleSystem.getRound().getMessages());
     BattleView.update();
   }
 
@@ -59,7 +59,6 @@ global.BattleInterface = (function() {
       GameState.setGameMode(GameMode.location);
     }
   }
-
 
   return Object.freeze({
     showCharacterCommands,

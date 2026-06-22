@@ -4,6 +4,7 @@
     "application/enums.js",
     "application/battle/battle-helper.js",
     "application/battle/battle-interface.js",
+    "application/battle/battle-round.js",
     "application/battle/battle-state.js",
     "application/battle/battle-system.js",
     "application/battle/commands/basic-attack.js",
