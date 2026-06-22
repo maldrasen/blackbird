@@ -34,9 +34,8 @@ describe("BasicAttack", function() {
     it("a single primary attack", function() {
       prepare({ encounter: 'kobold-trappers' });
 
-      const kobold = BattleSystem.getState().getMonsters()[0];
-      const weapons = BattleHelper.compileWeaponData(kobold);
-      const attacks = BasicAttack.calculateAttacks(kobold, weapons);
+      BattleSystem.specRound(BattleSystem.getState().getMonsters()[0]);
+      const attacks = BasicAttack.calculateAttacks();
 
       expect(attacks.length).to.equal(1)
       expect(attacks[0].base).to.equal('spear');
@@ -46,9 +45,8 @@ describe("BasicAttack", function() {
     it("a single fast weapon", function() {
       prepare({ playerMainWeapon:{ base:'dagger' }});
 
-      const player = GameState.getPlayer();
-      const weapons = BattleHelper.compileWeaponData(player);
-      const attacks = BasicAttack.calculateAttacks(player, weapons);
+      BattleSystem.specRound(GameState.getPlayer());
+      const attacks = BasicAttack.calculateAttacks();
 
       expect(attacks.length).to.equal(2)
       expect(attacks[0].base).to.equal('dagger');
@@ -60,9 +58,8 @@ describe("BasicAttack", function() {
     it("dual wielded weapons", function() {
       prepare({ encounter: 'kobold-sneak-sluts' });
 
-      const kobold = BattleSystem.getState().getMonsters()[0];
-      const weapons = BattleHelper.compileWeaponData(kobold);
-      const attacks = BasicAttack.calculateAttacks(kobold, weapons);
+      BattleSystem.specRound(BattleSystem.getState().getMonsters()[0]);
+      const attacks = BasicAttack.calculateAttacks();
 
       expect(attacks.length).to.equal(3)
       expect(attacks[0].base).to.equal('knife');

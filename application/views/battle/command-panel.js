@@ -15,8 +15,7 @@ global.CommandPanel = (function() {
   }
 
   function showCommands(commands) {
-    const state = BattleSystem.getState();
-    const character = Character(state.getActingCharacter());
+    const character = BattleSystem.getRound().getActingCharacter();
 
     show();
     X.fill('#commandPanel #title',X.createElement(`<span class='name'>${character.getName()}</span>`));
@@ -31,14 +30,13 @@ global.CommandPanel = (function() {
 
   function executeCommand(event) {
     const command = event.target.dataset.command;
-    const id = BattleSystem.getState().getActingCharacter();
 
     switch(command) {
       case BattleCommand.basicAttack: return TargetingController.startBasicAttackTargeting();
       case BattleCommand.changeEquipment: return ChangeEquipment.start();
       case BattleCommand.useItem: return UseItem.start();
-      case BattleCommand.basicDefend: return BattleSystem.finishCharacterTurn(BasicDefend.execute(id));
-      case BattleCommand.hide: return BattleSystem.finishCharacterTurn(Hide.execute(id));
+      case BattleCommand.basicDefend: return BasicDefend.execute();
+      case BattleCommand.hide: return Hide.execute();
       default: throw new Error(`Unrecognized Command: ${command}`);
     }
   }

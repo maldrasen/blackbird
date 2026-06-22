@@ -1,5 +1,6 @@
 global.BattleSystem = (function() {
   let state;
+  let round;
 
   function startBattle(data) {
     state = BattleState(data);
@@ -16,75 +17,73 @@ global.BattleSystem = (function() {
     state = null;
   }
 
+  function startRound() {
+    round = BattleRound(state.getNext().id);
+    round.compileWeaponData();
+    StatusEffectSystem.processStartRound();
+  }
+
+  function specRound(acting) {
+    round = BattleRound(acting);
+    round.compileWeaponData();
+    StatusEffectSystem.processStartRound();
+  }
+
   function advanceBattle() {
-    const next = state.getNext();
-    const interrupt = state.getInterrupt();
-    const id = next.id
+    startRound();
 
-    Console.log(`Advancing Battle`,{ system:'BattleSystem', level:1, data:{ acting:id }});
+    Console.log(`Advancing Battle`,{ system:'BattleSystem', level:1, data:{ acting:round.getActing() }});
 
-    if (interrupt === 'victory') { return BattleInterface.showVictory(); }
-    if (interrupt === 'game-over') { return BattleInterface.showGameOver(); }
-
-    if (next.type === 'monster') {
-      state.setActingMonster(id);
-      StatusEffectSystem.processStartTurn(id);
-      finishMonsterTurn(MonsterSimulator.executeBattleTurn(id));
+    switch (state.getInterrupt()) {
+      case 'victory': return BattleInterface.showVictory();
+      case 'game-over': return BattleInterface.showGameOver();
     }
-    if (next.type === 'character') {
-      state.setActingCharacter(id);
-      StatusEffectSystem.processStartTurn(id);
-      startCharacterTurn();
+
+    if (round.isActingMonster()) {
+      MonsterSimulator.executeBattleTurn();
+      finishMonsterRound();
+    }
+    if (round.isActingCharacter()) {
+      startCharacterRound();
     }
   }
 
-  function startCharacterTurn() {
+  function startCharacterRound() {
     BattleInterface.showCharacterCommands();
   }
 
-  function finishMonsterTurn(result) {
-    Validate.atLeast("BattleSystem.finishMonsterTurn(result.time)",result.time,1);
+  function finishMonsterRound() {
+    const round = BattleSystem.getRound();
+    console.log("--- Finish Monster Round ---")
+    console.log("Messages:",round.getMessages());
+    console.log("Time:",round.getTime())
+    round.validate();
 
-    const next = state.getNext();
-    const acting = state.getActingMonster();
-
-    if (next.id !== acting) {
-      throw new Error(`BattleSystem Error: The next monster is not the acting monster.`);
-    }
-
-    next.time += result.time;
-    state.setTurnOrder(next);
-
-    // If no messages have been set then this monster has either skipped their turn or
-    // they're doing something silently. Either way we can simply advance the battle.
-    if (result.messages == null || result.messages.length === 0) {
-      return advanceBattle();
-    }
-
-    BattleInterface.showMonsterResult(result);
+    BattleSystem.getState().updateTime(round.getActing(), round.getTime());
+    round.getMessages().length === 0 ? advanceBattle() : BattleInterface.showMonsterResult();
   }
 
-  function finishCharacterTurn(result) {
-    const next = state.getNext();
-    const acting = state.getActingCharacter();
+  function finishCharacterRound() {
+    const round = BattleSystem.getRound();
+    console.log("--- Finish Character Round ---")
+    console.log("Messages:",round.getMessages());
+    console.log("Time:",round.getTime())
+    round.validate();
 
-    if (next.id !== acting) {
-      throw new Error(`BattleSystem Error: The next character is not the acting character.`);
-    }
-
-    next.time += result.time;
-    state.setTurnOrder(next);
-
-    BattleInterface.showCharacterResult(result);
+    BattleSystem.getState().updateTime(round.getActing(), round.getTime());
+    BattleInterface.showCharacterResult();
   }
 
   return Object.freeze({
     startBattle,
     endBattle,
     advanceBattle,
-    finishCharacterTurn,
+    startRound,
+    specRound,
+    finishCharacterRound,
 
-    getState: () => { return state },
+    getState: () => { return state; },
+    getRound: () => { return round; },
   });
 
 })()

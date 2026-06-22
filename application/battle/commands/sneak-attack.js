@@ -1,7 +1,9 @@
 global.SneakAttack = (function() {
 
-  function execute(attacker, target) {
-    return { messages:[{ text:'TODO: Sneak Attack' }], time:1000 };
+  function execute() {
+    const round = BattleSystem.getRound();
+    round.setTime(1000);
+    round.addMessage({ text:'TODO: Sneak Attack' })
   }
 
   return Object.freeze({

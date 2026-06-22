@@ -21,31 +21,32 @@ global.BasicAttack = (function() {
   // By separating the rolls and the status effects like this we also separate the actual to-hit from the crits and
   // fumbles. An attacker can crit (doing the best they can) but still miss their target.
 
-  function execute(attacker, target) {
-    const weaponData = BattleHelper.compileWeaponData(attacker);
-    const attacks = calculateAttacks(attacker, weaponData);
-    const messages = []
-    const time = totalTime(attacks);
+  function execute() {
+    const round = BattleSystem.getRound();
+    const acting = round.getActing();
+    const target = round.getTarget();
+    const attacks = calculateAttacks();
+
+    round.setTime(totalTime(attacks),false);
 
     const rolls = attacks.map(attack => {
-      const attackRoll = PhysicalAttackRoll(attacker, target, attack);
-      const defendRoll = DefendRoll(target, attacker, attackRoll);
+      const attackRoll = PhysicalAttackRoll(acting, target, attack);
+      const defendRoll = DefendRoll(target, acting, attackRoll);
       return { attack:attackRoll, defend:defendRoll };
     });
 
     for (let i=0; i<attacks.length; i++) {
       if (rolls[i].attack.isCrit() && rolls[i].defend.isCrit()) {
-        return execute(attacker, target);
+        return execute(acting, target);
       }
     }
 
     rolls.forEach(roll => {
-      compileMessages(attacker, target, roll).forEach(message => {
-        messages.push(message);
-      })
+      console.log("Handle this roll:",roll)
+      // compileMessages(acting, target, roll).forEach(message => {
+      //   round.addMessage(message)
+      // })
     });
-
-    return { messages, time };
   }
 
   function compileMessages(attacker, target, roll) {
@@ -192,12 +193,21 @@ global.BasicAttack = (function() {
     return { text: weaver.weave(message) };
   }
 
-  function calculateAttacks(attacker, weapons) {
+  // To calculate the weapon attacks we alternate between a character's equipped primary and secondary weapons, adding
+  // attacks to a list until we have enough attacks to fill one second. The attacks may take more than one second. If
+  // a character's primary weapon strike takes 900ms, they will attack twice but only every 1800ms. Alternatively, a
+  // character with a weapon speed of 1200ms will attack once every 1200ms, so it might seem like they attack more
+  // often, but really they're getting fewer hits in. It's just that they get to choose their actions more frequently.
+  // A character that has both a primary and a secondary weapon equipped will use them each 75% faster.
+  function calculateAttacks() {
+    const round = BattleSystem.getRound();
+    const speedFactor = round.getSpeedFactor();
+
     const attacks = [];
-    const state = BattleSystem.getState();
-    const speedFactor = state.isMonster(attacker) ?
-      Monster(attacker).getSpeedFactor():
-      Character(attacker).getSpeedFactor();
+    const weapons = {
+      primary: round.getPrimaryWeapon(),
+      secondary: round.getSecondaryWeapon(),
+    }
 
     let hand = 'primary';
     let time = 0;

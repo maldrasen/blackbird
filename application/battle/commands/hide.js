@@ -1,10 +1,13 @@
 global.Hide = (function() {
 
-  function execute(id) {
+  function execute() {
     const state = BattleSystem.getState();
-    const observers = getObservers(state, state.getPosition(id));
-    const stealthRoll = SkillCheck(id,'stealth');
-    const weaver = Weaver({ C:id });
+    const round = BattleSystem.getRound();
+    const acting = round.getActing();
+
+    const observers = getObservers(state, round.getActingPosition());
+    const stealthRoll = SkillCheck(acting,'stealth');
+    const weaver = Weaver({ C:acting });
 
     let isHidden = true;
     let message;
@@ -21,12 +24,14 @@ global.Hide = (function() {
 
     if (isHidden) {
       message = { text: weaver.weave(`{C:baseName} hides in the shadows.`) };
-      state.addStatus(BattleStatusEffect(id,'hidden'));
+      state.addStatus(BattleStatusEffect(acting,'hidden'));
     }
 
-    return {
-      time: 1000,
-      messages: [message],
+    round.setTime(1000);
+    round.addMessage(message);
+
+    if (round.isActingCharacter()) {
+      BattleSystem.finishCharacterRound()
     }
   }
 

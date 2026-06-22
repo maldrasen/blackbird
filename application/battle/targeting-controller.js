@@ -8,22 +8,25 @@ global.TargetingController = (function() {
 
     const positions = monsters.map(mon => mon.position);
     FormationPanel.startTargeting(positions, [], position => {
-      BattleSystem.finishCharacterTurn(BasicAttack.execute(
-        state.getActingCharacter(),
-        state.getEntityAtPosition(position)
-      ));
+
+      console.log("Position in callback:",position);
+
+      BasicAttack.execute();
+      BattleSystem.finishCharacterRound();
     });
   }
 
   function getMonstersInRange() {
     const state = BattleSystem.getState();
-    const acting = state.getActingCharacter();
-    const reach = getBasicAttackReach(acting);
-    const position = state.getPosition(acting)
+    const round = BattleSystem.getRound();
+    const acting = round.getActing();
+    const reach = getBasicAttackReach(acting); // TODO: Move reach into round data...
+    const position = round.getActingPosition();
+
     const inRange = [];
 
     state.getMonsters().forEach(monster => {
-      if (state.isAlive(monster)) {
+      if (state.canBeTargeted(monster)) {
         const monsterPosition = state.getPosition(monster)
         if (BattleHelper.isAttackWithinRange(reach, position, monsterPosition)) {
           inRange.push({ monster:monster, position:monsterPosition });

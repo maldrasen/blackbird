@@ -18,8 +18,7 @@ global.BattleState = function(data) {
   const statusEffects = {};
 
   let ambushState = 'normal';
-  let actingMonster;
-  let actingCharacter;
+  let battleRound;
   let interrupt;
 
   // The cleanup() function needs to be called after the battle to remove the temporary monsters that were built.
@@ -137,6 +136,17 @@ global.BattleState = function(data) {
     turnOrder.sort((a,b) => { return a.time - b.time });
   }
 
+  function updateTime(acting, time) {
+    const next = getNext();
+
+    if (next.id !== acting) {
+      throw new Error(`BattleState Error: The next monster is not the acting monster.`);
+    }
+
+    next.time += time;
+    setTurnOrder(next);
+  }
+
   // Setting the ambush state also adjusts the turn order accordingly.
   // State can be normal, party-ambushed, monsters-ambushed
   function setAmbushState(state) {
@@ -205,15 +215,23 @@ global.BattleState = function(data) {
   // ===================================
 
   // Conditions are for character states that are not status effects; status effects are their own entities that
-  // are part of the turn order. Currently the only status I can think of is "dead" so this might just be used to
+  // are part of the turn order. Currently, the only status I can think of is "dead" so this might just be used to
   // track deaths.
   function addCondition(id, key) {
     if (conditions[id]==null) { conditions[id]=[] }
     conditions[id].push(key);
   }
 
+  function canBeTargeted(id) {
+    return isAlive(id) && isHidden(id) === false
+  }
+
   function isAlive(id) {
     return conditions[id] == null || conditions[id].includes('dead') === false;
+  }
+
+  function isHidden(id) {
+    return hasStatusEffect(id, 'hidden')
   }
 
   function addStatus(statusEffect) {
@@ -275,11 +293,11 @@ global.BattleState = function(data) {
     cleanup,
     getAfterBattle: () => { return afterBattle; },
     getEncounter: () => { return encounter; },
+
     addMonster,
     getMonsterFormation: () => { return { ...monsterFormation }; },
     getPartyFormation: () => { return { ...partyFormation }; },
     removeFromFormation,
-
     getPosition,
     setPosition,
     isInFront,
@@ -292,18 +310,17 @@ global.BattleState = function(data) {
     isCharacter,
 
     setTurnOrder,
+    updateTime,
     getTurnOrder: () => { return [ ...turnOrder ]; },
     setAmbushState,
     getAmbushState: () => { return ambushState; },
     getNext,
     removeFromTurnOrder,
-    setActingCharacter,
-    getActingCharacter: () => { return actingCharacter; },
-    setActingMonster,
-    getActingMonster: () => { return actingMonster; },
 
     addCondition,
+    canBeTargeted,
     isAlive,
+    isHidden,
     addStatus,
     removeStatus,
     getStatusEffects,

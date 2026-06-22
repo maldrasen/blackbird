@@ -13,9 +13,6 @@ global.Monster = function(id) {
     return baseResist + getSpeciesResist(type);
   }
 
-  // TODO: Need to determine how monster speed is calculated.
-  function getSpeedFactor() { return 1; }
-
   function getSpeciesResist(type) {
     if (getSpecies() == null) { return 0; }
     return Species.lookup(getSpecies()).getResistances()[type] || 0;
@@ -71,7 +68,6 @@ global.Monster = function(id) {
     getBrain,
     getBasicAttack,
     getResistance,
-    getSpeedFactor,
     getSpecies,
     getSkill,
 
