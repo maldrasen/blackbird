@@ -61,7 +61,7 @@ Dialog.register(DialogCategory.attackText, 'heavy-mace', context => {
 Dialog.register(DialogCategory.attackText, 'quick-stab', context => {
   return [
     `${attackerName} darts forward, stabbing {A:his} ${weaponName} at ${targetsHitLocation}.`,
-    `${attackerName} thrusts {A:his} ${weaponName} quickly at ${targetsHitLocation}.`,
+    `${attackerName} quickly thrusts {A:his} ${weaponName} at ${targetsHitLocation}.`,
     `Lunging forward, ${attackerName} drives {A:his} ${weaponName} straight for ${targetsHitLocation}.`,
     `${attackerName} feints ${Random.from(['left','right'])} then stabs {A:his} ${weaponName} at ${targetsHitLocation}.`,
   ];

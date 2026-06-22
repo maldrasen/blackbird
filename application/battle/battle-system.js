@@ -23,9 +23,10 @@ global.BattleSystem = (function() {
     StatusEffectSystem.processStartRound();
   }
 
-  function specRound(acting) {
+  function specRound(acting,options={}) {
     round = BattleRound(acting);
     round.compileWeaponData();
+    if (options.target) { round.setTarget(options.target); }
     StatusEffectSystem.processStartRound();
   }
 

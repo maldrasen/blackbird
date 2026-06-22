@@ -93,8 +93,11 @@ global.BattleRound = function(acting) {
     targetPosition = null;
   }
 
-  // TODO: Weave the messages as they are added.
-  function addMessage(message) {
+  function addMessage(message, weaver=null) {
+    if (weaver == null) {
+      weaver = Weaver({ A:acting, T:target });
+    }
+    message.text = weaver.weave(message.text);
     messages.push(message);
   }
 

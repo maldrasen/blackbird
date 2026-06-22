@@ -9,24 +9,34 @@ describe("BasicAttack", function() {
     }
   }
 
+  function setPlayerAttribute(data) {
+    const attributes = AttributesComponent.lookup(GameState.getPlayer());
+    Object.entries(data).forEach(([key,value]) => { attributes[key] = value; });
+    AttributesComponent.update(GameState.getPlayer(),attributes);
+  }
+
   describe("rollDamage()", function() {
     it("a normal attack with a single damage type", function() {
-      const horse = CharacterFixtures.genericMale({ attributes:{ strength:50 } });
-      const complexDamage = BasicAttack.rollDamage(horse, BaseWeapon.lookup('maul'), 'normal', 'normal');
+      prepare();
+      setPlayerAttribute({ strength:50 });
+      BattleSystem.specRound(GameState.getPlayer(), { target:BattleSystem.getState().getMonsters()[0] });
 
-      expect(complexDamage.messages.length).to.equal(0);
-      expect(Object.keys(complexDamage.damage).length).to.equal(1);
-      expect(complexDamage.damage.crush).to.be.greaterThan(50);
+      const complexDamage = BasicAttack.rollDamage(GameState.getPlayer(), BaseWeapon.lookup('maul'), 'normal', 'normal');
+      expect(BattleSystem.getRound().getMessages().length).to.equal(0);
+      expect(Object.keys(complexDamage).length).to.equal(1);
+      expect(complexDamage.crush).to.be.greaterThan(50);
     });
 
     it("a super crit hit with two damage types", function() {
-      const horse = CharacterFixtures.genericMale({ attributes:{ strength:50 } });
-      const complexDamage = BasicAttack.rollDamage(horse, BaseWeapon.lookup('morning-star'), 'crit', 'fumble');
+      prepare();
+      setPlayerAttribute({ strength:50 });
+      BattleSystem.specRound(GameState.getPlayer(), { target:BattleSystem.getState().getMonsters()[0] });
 
-      expect(complexDamage.messages.length).to.equal(2);
-      expect(Object.keys(complexDamage.damage).length).to.equal(2);
-      expect(complexDamage.damage.pierce).to.be.greaterThan(50);
-      expect(complexDamage.damage.crush).to.be.greaterThan(50);
+      const complexDamage = BasicAttack.rollDamage(GameState.getPlayer(), BaseWeapon.lookup('morning-star'), 'crit', 'fumble');
+      expect(BattleSystem.getRound().getMessages().length).to.equal(2);
+      expect(Object.keys(complexDamage).length).to.equal(2);
+      expect(complexDamage.pierce).to.be.greaterThan(50);
+      expect(complexDamage.crush).to.be.greaterThan(50);
     });
   })
 
