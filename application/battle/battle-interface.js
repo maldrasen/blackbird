@@ -23,6 +23,11 @@ global.BattleInterface = (function() {
     FormationPanel.updateCombatant(id)
   }
 
+  function highlightActing() {
+    if (Tests.running()) { return; }
+    FormationPanel.highlightActing(BattleSystem.getRound().getActing());
+  }
+
   function showDamageEffect(data) {
     if (Tests.running()) { return; }
     FormationPanel.showDamageEffect(data);
@@ -65,6 +70,7 @@ global.BattleInterface = (function() {
     showCharacterResult,
     showMonsterResult,
     updateCombatantView,
+    highlightActing,
     showDamageEffect,
     killEntity,
     moveForwardOnDeath,

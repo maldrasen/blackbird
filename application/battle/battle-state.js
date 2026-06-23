@@ -18,7 +18,6 @@ global.BattleState = function(data) {
   const statusEffects = {};
 
   let ambushState = 'normal';
-  let battleRound;
   let interrupt;
 
   // The cleanup() function needs to be called after the battle to remove the temporary monsters that were built.
@@ -194,20 +193,6 @@ global.BattleState = function(data) {
     }
 
     turnOrder.splice(index, 1)
-  }
-
-  function setActingCharacter(id) {
-    if (getCharacters().includes(id) === false) { throw new Error(`${id} is not a character.`); }
-    FormationPanel.highlightActing(id);
-    actingCharacter = id;
-    actingMonster = null;
-  }
-
-  function setActingMonster(id) {
-    if (getMonsters().includes(id) === false) { throw new Error(`${id} is not a monster.`); }
-    FormationPanel.highlightActing(id);
-    actingCharacter = null;
-    actingMonster = id;
   }
 
   // ===================================

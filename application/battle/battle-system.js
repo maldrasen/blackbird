@@ -20,6 +20,7 @@ global.BattleSystem = (function() {
   function startRound() {
     round = BattleRound(state.getNext().id);
     round.compileWeaponData();
+    BattleInterface.highlightActing();
     StatusEffectSystem.processStartRound();
   }
 

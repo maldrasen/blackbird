@@ -96,9 +96,22 @@ global.CombatantPanel = function(type, entity) {
       }
     });
 
-    if (isHidden === false && X.hasClass(element, 'hidden')) {
-      X.removeClass(element,'hidden');
-    }
+    if (isMonster && isHidden === false && X.hasClass(element, 'hidden')) { unhideMonster(); }
+  }
+
+  // Unhiding the monster has to first add the unhiding class so that the fade in transition will play properly.
+  // Once the transition has played (it should take 500ms, but that value is buried in the SCSS file) we need to
+  // remove both the hidden and unhidden classes. A potential trap here is what happens if the monster gets hidden
+  // again while the transition is being played. It's unlikely, but just to make sure we check to see if the monster
+  // is currently hidden, only remove the class if it's not hidden.
+  function unhideMonster() {
+    X.addClass(element, 'unhiding');
+    setTimeout(() => {
+      X.removeClass(element,'unhiding');
+      if (BattleSystem.getState().hasStatusEffect(entity,'hidden') === false) {
+        X.removeClass(element,'hidden');
+      }
+    },500);
   }
 
   function getPosition() {
