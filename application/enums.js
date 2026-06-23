@@ -352,6 +352,7 @@ global.BattleCommand = Object.freeze({
   basicDefend: 'basic-defend',
   changeEquipment: 'change-equipment',
   hide: 'hide',
+  sneakAttack: 'sneak-attack',
   useItem: 'use-item',
 });
 

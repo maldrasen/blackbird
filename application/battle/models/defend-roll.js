@@ -8,7 +8,6 @@ global.DefendRoll = function(defender, attacker, attackRoll) {
 
   const state = BattleSystem.getState();
   const defendSkill = 'dodge';
-  const modifiers = [];
 
   function rollDefendSkill() {
     const offBalance = state.hasStatusEffect(defender, 'off-balance')
@@ -19,28 +18,21 @@ global.DefendRoll = function(defender, attacker, attackRoll) {
     }
 
     if (offBalance) {
-      const check = SkillCheck(defender, defendSkill, RollMode.disadvantage);
-      modifiers.push(BattleHelper.compileSkillCheckRollData(defendSkill, check, RollMode.disadvantage));
-      return check;
+      return SkillCheck(defender, defendSkill, RollMode.disadvantage);
     }
     if (poised) {
-      const check = SkillCheck(defender, defendSkill, RollMode.advantage);
-      modifiers.push(BattleHelper.compileSkillCheckRollData(defendSkill, check, RollMode.advantage));
-      return check;
+      return SkillCheck(defender, defendSkill, RollMode.advantage);
     }
-
-    const check = SkillCheck(defender, defendSkill);
-    modifiers.push(BattleHelper.compileSkillCheckRollData(defendSkill, check));
-    return check;
+    return SkillCheck(defender, defendSkill);
   }
-
-  const defendRoll = rollDefendSkill();
-  let finalValue = defendRoll.value;
 
   // TODO: This finalValue will have other modifiers that adjust its value.
   // TODO: We might nees to take armor enchantments into account here.
 
-  Console.log(`Defend Roll [${defender}]`,{ system:'BattleSystem', level:3, data:modifiers })
+  const defendRoll = rollDefendSkill();
+  let finalValue = defendRoll.value;
+
+  Console.log(`Defend Roll [${defender}]`,{ system:'BattleSystem', level:3, data:{ defendRoll, finalValue }});
 
   return Object.freeze({
     getRollValue: () => { return defendRoll.value },
@@ -48,6 +40,5 @@ global.DefendRoll = function(defender, attacker, attackRoll) {
     isCrit: () => { return defendRoll.crit === true; },
     isFumble: () => { return defendRoll.fumble === true; },
     getFinalValue: () => { return finalValue },
-    getModifiers: () => { return modifiers },
   });
 }

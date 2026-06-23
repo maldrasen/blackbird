@@ -33,6 +33,7 @@ global.CommandPanel = (function() {
 
     switch(command) {
       case BattleCommand.basicAttack: return TargetingController.startBasicAttackTargeting();
+      case BattleCommand.sneakAttack: return TargetingController.startSneakAttack();
       case BattleCommand.changeEquipment: return ChangeEquipment.start();
       case BattleCommand.useItem: return UseItem.start();
       case BattleCommand.basicDefend: return BasicDefend.execute();

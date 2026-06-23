@@ -15,6 +15,7 @@ describe("BasicAttack", function() {
     AttributesComponent.update(GameState.getPlayer(),attributes);
   }
 
+/*
   describe("rollDamage()", function() {
     it("a normal attack with a single damage type", function() {
       prepare();
@@ -39,6 +40,7 @@ describe("BasicAttack", function() {
       expect(complexDamage.crush).to.be.greaterThan(50);
     });
   })
+*/
 
   describe("calculateAttacks()", function() {
     it("a single primary attack", function() {

@@ -49,121 +49,10 @@ global.BasicAttack = (function() {
       if (state.isAlive(context.T)) {
         round.addMessage({ text:attackText }, Weaver(context));
         (roll.attack.getFinalValue() > roll.defend.getFinalValue()) ?
-          processHit(context, roll):
-          processMiss(context, roll);
+          PhysicalAttackSystem.processHit(roll.attack, roll.defend):
+          PhysicalAttackSystem.processMiss(roll.attack, roll.defend);
       }
     });
-  }
-
-  // TODO: Assuming crit damage is x2, could be more for different weapons, or with different abilities. Crit damage
-  //       reduction could also change this.
-
-  // TODO: Exploding crits should be possible when rolling damage. Need to be able to look up a damage crit chance
-  //       which should be handled separately from the hit critical chance.
-
-  function processHit(context, roll) {
-    const attacker = context.A;
-    const target = context.T;
-    const damageTypes = rollDamage(attacker, roll.attack.getBaseWeapon(), context.attack, context.defend);
-
-    // If the hit comes from a real weapon with a weapon enchantment, we process the on hit effect of the enchantment.
-    // This can add a message or modify the raw attack damage. If the damage is adjusted by the enchantment the
-    // damageTypes object is modified from within the processOnHit() function.
-    if (roll.attack.getWeapon()) {
-      const weapon = Weapon(roll.attack.getWeapon());
-      if (weapon.hasEnchantment()) {
-        weapon.getEnchantment().processOnHit(context, damageTypes);
-      }
-    }
-
-    const actualDamage = BattleDamage.applyDamage({
-      entity: target,
-      damageTypes: damageTypes,
-      hitLocation: context.hitLocation,
-      isCrit: context.attack === 'crit',
-    });
-
-    BattleSystem.getRound().addMessage({ text:`Hit for ${actualDamage} damage!` });
-
-    Console.log(`Damage Roll [${attacker}]`,{ system:'BattleSystem', level:3, data:{
-      damage: actualDamage,
-      hitLocation: context.hitLocation,
-    }});
-
-    if (BattleSystem.getState().isAlive(target) === false) {
-      Console.log(`[${target}] was killed`,{ system:'BattleSystem', level:2 });
-      BattleSystem.getRound().addMessage({ text:`{S/tar}{T:baseName}{/S} was killed!`, color:'important' });
-    }
-  }
-
-  function processMiss(context, roll) {
-    if (context.defend === 'crit')   { addStatus(context.T, 'poised', { skill:roll.defend.getDefendSkill() }); }
-    if (context.attack === 'fumble') { addStatus(context.A, 'off-balance'); }
-    if (context.defend === 'fumble') { addStatus(context.T, 'vulnerable'); }
-    BattleSystem.getRound().addMessage({ text:`Miss`, color:'miss' });
-  }
-
-  // The rolled damage value is rather complex because we need to divide the base damage into it's damage type
-  // components so that additional damage from enchantments can be added or so that damage values can be resisted. We
-  // could aalso increase damage within this function depending on the attack and defense crit and fumble states.
-  //   - attacker: Attacker entity id.
-  //   - baseWeapon: BaseWeapon record
-  //   - attack: ['crit','fumble','normal']
-  //   - defend: ['crit','fumble','normal']
-  function rollDamage(attacker, baseWeapon, attack, defend) {
-    const round = BattleSystem.getRound();
-    const strength = AttributesComponent.lookup(attacker).strength;
-    const damageRoll = Random.between(baseWeapon.getHigh(), baseWeapon.getLow());
-    const damage = {};
-
-    let rawDamage = Math.round((damageRoll / 100) * strength);
-
-    if (attack === 'crit') {
-      round.addMessage({ text:`The attack caught {T:him} by surprise!` });
-      rawDamage = rawDamage*2;
-    }
-    if (attack === 'fumble') {
-      round.addMessage({ text:`It was only a glancing blow.` });
-      rawDamage = Math.ceil(rawDamage/2);
-    }
-    if (defend === 'crit') {
-      round.addMessage({ text:`{S/tar}{T:baseName}{/S} was almost able to avoid it.` });
-      rawDamage = Math.ceil(rawDamage/2);
-    }
-    if (defend === 'fumble') {
-      round.addMessage({ text:`{S/tar}{T:baseName}{/S} was left wide open!` });
-      rawDamage = rawDamage*2;
-    }
-
-    baseWeapon.getDamageTypes().forEach(damageType => {
-      damage[damageType.type] = Math.round(rawDamage * (damageType.percent/100));
-    });
-
-    return damage;
-  }
-
-  function addStatus(entity, status, options={}) {
-    let message;
-
-    if (status === 'poised') {
-      message = {
-        'dodge': `{S/tar}{T:baseName}{/S} leaps away with stunning agility, and is now {S/pst}Poised{/S} and ready to defend {T:him}self.`,
-        'block': `{S/tar}{T:baseName}{/S} braces {T:him}self, becoming {S/pst}Poised{/S} and harder to hit.`,
-        'parry': `{S/tar}{T:baseName}{/S} flourishes {T:his} blade, {T:his} {S/pst}Poised{/S} stance ready to defend against any attack.`,
-      }[options.skill];
-    }
-    if (status === 'off-balance') {
-      message = `{S/act}{A:baseName's}{/S} clumsy attack leaves {A:him} overextended and {S/nst}Off Balance{/S}.`;
-    }
-    if (status === 'vulnerable') {
-      message = `Though the attack missed {S/tar}{T:baseName}{/S}, it left {T:him} in a {S/nst}Vulnerable{/S} position.`;
-    }
-    if (message == null) {
-      throw new Error(`A basic attack shouldn't add the ${status} status.`)
-    }
-
-    BattleSystem.getState().addStatus(BattleStatusEffect(entity, status, { duration:1 }));
-    BattleSystem.getRound().addMessage({ text:message });
   }
 
   // To calculate the weapon attacks we alternate between a character's equipped primary and secondary weapons, adding
@@ -242,7 +131,6 @@ global.BasicAttack = (function() {
 
   return Object.freeze({
     execute,
-    rollDamage,
     calculateAttacks,
     totalTime,
   });

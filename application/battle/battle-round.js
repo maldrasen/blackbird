@@ -4,6 +4,7 @@ global.BattleRound = function(acting) {
   const actingIsMonster = state.isMonster(acting);
   const actingPosition = state.getPosition(acting);
   const messages = [];
+  const context = {};
 
   let primaryWeapon = {};
   let secondaryWeapon = {};
@@ -93,9 +94,19 @@ global.BattleRound = function(acting) {
     targetPosition = null;
   }
 
+  function addToContext(key, value) {
+    if (key === 'A') { throw new Error(`Blasphemous Key: The acting entity is automatically included in the round context.`) }
+    if (key === 'T') { throw new Error(`Blasphemous Key: The target entity set with the setTarget() function.`) }
+    context[key] = value;
+  }
+
+  function getContext() {
+    return { ...context, A:acting, T:target };
+  }
+
   function addMessage(message, weaver=null) {
     if (weaver == null) {
-      weaver = Weaver({ A:acting, T:target });
+      weaver = Weaver(getContext());
     }
     message.text = weaver.weave(message.text);
     messages.push(message);
@@ -132,6 +143,8 @@ global.BattleRound = function(acting) {
     getTarget: () => { return target; },
     getTargetPosition: () => { return targetPosition; },
 
+    addToContext,
+    getContext,
     addMessage,
     getMessages: () => { return messages; },
 

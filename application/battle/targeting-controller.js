@@ -19,6 +19,26 @@ global.TargetingController = (function() {
     });
   }
 
+  // Sneak attack can target any monster.
+  function startSneakAttack() {
+    FormationPanel.startTargeting(getTargetableMonsters(), [], position => {
+      console.log("Targeted:",position);
+    })
+  }
+
+  function getTargetableMonsters() {
+    const state = BattleSystem.getState();
+    const monsters = [];
+
+    state.getMonsters().forEach(monster => {
+      if (state.canBeTargeted(monster)) {
+        monsters.push(state.getPosition(monster));
+      }
+    });
+
+    return monsters;
+  }
+
   function getMonstersInRange() {
     const state = BattleSystem.getState();
     const round = BattleSystem.getRound();
@@ -48,6 +68,7 @@ global.TargetingController = (function() {
 
   return Object.freeze({
     getMonstersInRange,
+    startSneakAttack,
     startBasicAttackTargeting,
   });
 

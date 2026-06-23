@@ -55,9 +55,6 @@ global.BattleSystem = (function() {
 
   function finishMonsterRound() {
     const round = BattleSystem.getRound();
-    console.log("--- Finish Monster Round ---")
-    console.log("Messages:",round.getMessages());
-    console.log("Time:",round.getTime())
     round.validate();
 
     BattleSystem.getState().updateTime(round.getActing(), round.getTime());
@@ -66,9 +63,6 @@ global.BattleSystem = (function() {
 
   function finishCharacterRound() {
     const round = BattleSystem.getRound();
-    console.log("--- Finish Character Round ---")
-    console.log("Messages:",round.getMessages());
-    console.log("Time:",round.getTime())
     round.validate();
 
     BattleSystem.getState().updateTime(round.getActing(), round.getTime());

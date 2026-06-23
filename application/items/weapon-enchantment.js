@@ -1,8 +1,8 @@
 global.WeaponEnchantment = function(enchantment) {
 
-  function processOnHit(context, damageTypes) {
+  function processOnHit(damageTypes) {
     switch (enchantment.type) {
-      case WeaponEnchantments.endanger: return endangerOnHit(context);
+      case WeaponEnchantments.endanger: return endangerOnHit();
     }
   }
 
@@ -15,7 +15,7 @@ global.WeaponEnchantment = function(enchantment) {
   // TODO: Right now, endanger only triggers when a specific species is hit. We can have other triggers as well though,
   //       making a whole slew of possible endangerment enchantments.
 
-  function endangerOnHit(context) {
+  function endangerOnHit() {
     const state = BattleSystem.getState();
     const round = BattleSystem.getRound();
     const target = round.getTarget();
@@ -28,7 +28,7 @@ global.WeaponEnchantment = function(enchantment) {
       if (ResistRoll(target, DamageType.shock, enchantment.power) === ResistResult.fail) {
         state.addStatus( BattleStatusEffect(target, 'vulnerable', { duration:1 }));
         round.addMessage({ text:`A spiderweb of glowing blue energy wraps around {S/tar}{T:baseName's}{/S} 
-          {@hitLocation}, the cursed blightning making {T:him} {S/nst}Vulnerable{/S}.` },Weaver(context));
+          {@hitLocation}, the cursed blightning making {T:him} {S/nst}Vulnerable{/S}.` });
       }
     }
   }
