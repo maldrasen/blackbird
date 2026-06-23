@@ -22,8 +22,10 @@ global.TargetingController = (function() {
   // Sneak attack can target any monster.
   function startSneakAttack() {
     FormationPanel.startTargeting(getTargetableMonsters(), [], position => {
-      console.log("Targeted:",position);
-    })
+      BattleSystem.getRound().setTarget(BattleSystem.getState().getEntityAtPosition(position));
+      SneakAttack.execute();
+      BattleSystem.finishCharacterRound();
+    });
   }
 
   function getTargetableMonsters() {
