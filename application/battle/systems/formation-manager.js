@@ -7,9 +7,7 @@ global.FormationManager = (function() {
     state.removeFromFormation(column.front.id);
     state.setPosition(moving, column.front.position);
 
-
     if (state.hasStatusEffect(moving, 'hidden')) {
-      console.log("=== UNHIDE ===")
       state.removeStatus(moving, 'hidden');
     }
   }

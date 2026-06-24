@@ -16,6 +16,7 @@ global.BattleState = function(data) {
   const monsterFormation = {};
   const conditions = {};
   const statusEffects = {};
+  const skillImprovements = {};
 
   let ambushState = 'normal';
   let interrupt;
@@ -274,6 +275,22 @@ global.BattleState = function(data) {
     return getStatusEffects(id)[code] != null;
   }
 
+  // ==============================
+  //    Leveling Up / Battle End
+  // ==============================
+
+  // When a character improves a skill we add it to an array of skill improvements to be displayed at the end of the
+  // battle. I think it's better to show all the improvements in the level up screen rather than during the battle
+  // itself. While it's possible for a monster to get captured and added to the party, I don't think we bother showing
+  // their skill improvements in the level up screen yet.
+  function skillImproved(id, code, level) {
+    if (isCharacter(id)) {
+      if (skillImprovements[id] == null) { skillImprovements[id] = {}; }
+      skillImprovements[id][code] = level;
+      console.log("Skill Improved:",skillImprovements[id]);
+    }
+  }
+
   return Object.freeze({
     cleanup,
     getAfterBattle: () => { return afterBattle; },
@@ -314,6 +331,9 @@ global.BattleState = function(data) {
     battleWon: () => { interrupt = 'victory' },
     battleLost: () => { interrupt = 'game-over' },
     getInterrupt: () => { return interrupt; },
+
+    skillImproved,
+    getSkillImprovements: () => { return skillImprovements; },
   });
 
 }
