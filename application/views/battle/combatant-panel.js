@@ -91,7 +91,7 @@ global.CombatantPanel = function(type, entity) {
 
       if (includeStatus) {
         const icon = X.createElement(`<div class='status-effect-icon' data-name='${effect.getName()}'></div>`)
-        icon.style['background-image'] = X.assetURL(`ai-icons/${code}.png`);
+        icon.style['background-image'] = X.assetURL(`icons/${code}.png`);
         statusPanel.appendChild(icon);
       }
     });
