@@ -34,7 +34,7 @@ global.BreastsFactory = (function() {
 
   // The breast size categories describe relative breast size in relation to the character's body. Breast volume is
   // an absolute measurement for calculations like breast weight, milk volume, etc. Volume scales on a cubic ratio,
-  // so a stacked halfling is still pretty small in terms of absolute volume.
+  // so a stacked havlin is still pretty small in terms of absolute volume.
   //
   // I've split this method out because triggers that change the breast size category will need to recalculate all of
   // these values and save them on the breast component. If breasts change size outside the character factory we'll

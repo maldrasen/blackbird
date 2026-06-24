@@ -16,7 +16,7 @@ describe("SexualPreferencesFactory", function() {
     const preferences = {};
 
     SexualPreferencesFactory.makeAdjustments(preferences,{
-      actor:{ gender:Gender.female, species:SpeciesCode.halfling },
+      actor:{ gender:Gender.female, species:SpeciesCode.havlin },
       personality:{ archetype:ArchetypeCode.reserved },
       sensitivities:{ pussy:2, cervix:1 },
     },[]);

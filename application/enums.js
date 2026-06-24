@@ -134,7 +134,7 @@ global.GenderName = Object.freeze({
 global.SpeciesCode = Object.freeze({
   elf: 'elf',
   equian: 'equian',
-  halfling: 'halfling',
+  havlin: 'havlin',
   human: 'human',
   kobold: 'kobold',
   lupin: 'lupin',

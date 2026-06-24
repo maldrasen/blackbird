@@ -1,5 +1,5 @@
-Species.register(SpeciesCode.halfling, {
-  name: 'Halfling',
+Species.register(SpeciesCode.havlin, {
+  name: 'Havlin',
   genderRatio: { female:40, futa:20, male:40, enby:5 },
 
   attributes: {
@@ -16,13 +16,13 @@ Species.register(SpeciesCode.halfling, {
   },
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.halfling),
-    female: ArchetypeDistribution(Gender.female,SpeciesCode.halfling),
-    futa:   ArchetypeDistribution(Gender.futa,SpeciesCode.halfling),
-    male:   ArchetypeDistribution(Gender.male,SpeciesCode.halfling),
+    enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.havlin),
+    female: ArchetypeDistribution(Gender.female,SpeciesCode.havlin),
+    futa:   ArchetypeDistribution(Gender.futa,SpeciesCode.havlin),
+    male:   ArchetypeDistribution(Gender.male,SpeciesCode.havlin),
   },
 
-  // Because of their relatively shallow pussies, halflings have an unusually
+  // Because of their relatively shallow pussies, havlins have an unusually
   // sensitive cervix.
   sensitivities: {
     cock:     { Z:0,   F:1,  D:5,  C:100, B:40, A:15 },
@@ -37,7 +37,7 @@ Species.register(SpeciesCode.halfling, {
   },
 
   // Because of their small size, gaping, stretching and cervix play are big
-  // kinks among halflings.
+  // kinks among havlins.
   sexualPreferences: {
     'size-queen':  { chance:33, strength:30 },
     'gape-queen':  { chance:10, strength:30 },
@@ -51,7 +51,7 @@ Species.register(SpeciesCode.halfling, {
     earShape: 'human',
     smellFamily: 'earthy',
 
-    // Because halflings are scaled down they need relatively larger cock and breast
+    // Because havlins are scaled down they need relatively larger cock and breast
     // sizes so that they don't seem ridiculously small compared to other species.
 
     breasts: {

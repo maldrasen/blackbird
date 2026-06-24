@@ -3,7 +3,7 @@
 // location. If the player is exploring the dungeon it will mostly be monster girls. There will be a world generation
 // step as well (similar to HHS) that populates the city with NPCs. That will come from a city species frequency map.
 const SpeciesFrequency = {
-  elf:10, equian:10, halfling:10, human:10, kobold:10, lupin:10, nymph:10, sylph:10, vermen:10,
+  elf:10, equian:10, havlin:10, human:10, kobold:10, lupin:10, nymph:10, sylph:10, vermen:10,
 };
 
 global.CharacterFactory = (function() {

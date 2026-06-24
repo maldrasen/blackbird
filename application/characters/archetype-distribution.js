@@ -123,7 +123,7 @@ global.ArchetypeDistribution = function(gender, species=SpeciesCode.human) {
     distribution.sweet *=       1.2;
     distribution.timid *=       0.0;
   }
-  if (species === SpeciesCode.halfling) {
+  if (species === SpeciesCode.havlin) {
     distribution.bastard *=     0.2;
     distribution.bimbo *=       1.2;
     distribution.bitch *=       0.8;

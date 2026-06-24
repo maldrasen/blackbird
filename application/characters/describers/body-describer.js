@@ -10,7 +10,7 @@ global.BodyDescriber = (function() {
     switch (ActorComponent.lookup(id).species) {
       case SpeciesCode.elf: return describeElf(id);
       case SpeciesCode.equian: return describeEquian(id);
-      case SpeciesCode.halfling: return describeHalfling(id);
+      case SpeciesCode.havlin: return describeHavlin(id);
       case SpeciesCode.human: return describeHuman(id);
       case SpeciesCode.kobold: return describeKobold(id);
       case SpeciesCode.lupin: return describeLupin(id);
@@ -44,9 +44,9 @@ global.BodyDescriber = (function() {
     return Random.from(options);
   }
 
-  function describeHalfling(id) {
+  function describeHavlin(id) {
     return Random.from([
-      { text:`{C:name} is a halfling, looking remarkably similar to a human, though {C:he} only stands about half as
+      { text:`{C:name} is a havlin, looking remarkably similar to a human, though {C:he} only stands about half as
           tall.` },
     ]);
   }
