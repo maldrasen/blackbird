@@ -93,6 +93,7 @@ global.PhysicalAttackSystem = (function() {
   }
 
   return Object.freeze({
+    updateContext,
     processHit,
     processMiss,
   })

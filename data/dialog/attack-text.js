@@ -1,5 +1,6 @@
 
 const attackerName = `{S/act}{A:baseName}{/S}`;
+const targetName = `{S/tar}{T:baseName's}{/S}`;
 const weaponName = `{S/abl}{@weaponName}{/S}`;
 const targetsHitLocation = `{S/tar}{T:baseName's}{/S} {@hitLocation}`;
 
@@ -97,5 +98,30 @@ Dialog.register(DialogCategory.attackText, 'claw', context => {
 Dialog.register(DialogCategory.attackText, 'bite', context => {
   return [
     `${attackerName} bites down ferociously on ${targetsHitLocation}.`,
+  ];
+});
+
+Dialog.register(DialogCategory.attackText, 'sneak-attack-pierce', context => {
+  return [
+    `${attackerName} appears behind ${targetName}, driving {A:his} ${weaponName} into {T:his} {@hitLocation}.`,
+    `Unseen, ${attackerName} strikes from behind, plunging {A:his} ${weaponName} into ${targetsHitLocation}.`,
+    `${attackerName} moves with practiced silence, waiting for the perfect opportunity. Suddenly {A:he} strikes, thrusting {A:his} ${weaponName} into ${targetsHitLocation}.`,
+    `${attackerName} closes in unnoticed, suddenly striking ${targetName} from the shadows, thrusting {A:his} ${weaponName} into {T:his} {@hitLocation}.`,
+  ];
+});
+
+Dialog.register(DialogCategory.attackText, 'sneak-attack-ranged', context => {
+  return [
+    `From the shadows, ${attackerName} looses an arrow from {A:his} ${weaponName}, aiming for ${targetsHitLocation}.`,
+    `${attackerName} draws {A:his} ${weaponName} unseen and fires, aiming for ${targetsHitLocation}.`,
+    `Hidden from view, ${attackerName} takes careful aim with {A:his} ${weaponName} and fires an arrow at ${targetsHitLocation}.`,
+    `${attackerName} fires {A:his} ${weaponName} from the shadows, the arrow burying itself in ${targetsHitLocation} without warning.`,
+  ];
+});
+
+Dialog.register(DialogCategory.attackText, 'sneak-attack-swing', context => {
+  return [
+    `${attackerName} bursts from the shadows, swinging {A:his} ${weaponName} at ${targetsHitLocation} before ${targetName} knows {A:he}'s there.`,
+    `Unseen until the last instant, ${attackerName} swings {A:his} ${weaponName} into ${targetsHitLocation} with brutal force.`,
   ];
 });
