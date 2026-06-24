@@ -18,12 +18,11 @@ global.BattleText = (function() {
     X.onCodeDown('Space', isTextVisible, BattleSystem.advanceBattle);
     X.onCodeDown('Enter', isTextVisible, BattleSystem.advanceBattle);
 
+    // We advance the text if the text panel was clicked, but not if it was clicked on the scrolling panel track or
+    // thumbwheel, otherwise a user might skip the text when they were just trying to scroll it.
     X.onMouseDown('#textPanel', event => {
-      const target = event.target;
-      if (X.hasClass(target,'scrolling-panel-thumbwheel')) { return false; }
-      if (X.hasClass(target,'scrolling-panel-track')) { return false; }
-
-      console.log("Event Target:",event.target);
+      if (X.hasClass(event.target, 'scrolling-panel-thumbwheel')) { return false; }
+      if (X.hasClass(event.target, 'scrolling-panel-track')) { return false; }
       BattleSystem.advanceBattle();
     });
   }
