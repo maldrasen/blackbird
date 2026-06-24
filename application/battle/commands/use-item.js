@@ -6,13 +6,13 @@ global.UseItem = (function() {
   //       picked.
 
   function start() {
-    const state = BattleSystem.getState();
-    const character = Character(state.getActingCharacter());
+    const round = BattleSystem.getRound();
 
-    BattleSystem.finishCharacterTurn({
-      time: 500,
-      messages: [{ text:`TODO: ${character.getName()} uses item...` }],
-    });
+    round.clearTarget();
+    round.setTime(500);
+    round.addMessage({ text:`TODO: {A:name} uses item...` });
+
+    BattleSystem.finishCharacterRound();
   }
 
   return Object.freeze({

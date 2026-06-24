@@ -31,17 +31,17 @@ global.DamageRoll = function(attacker, attackRoll, defendRoll, options={}) {
   let message;
   if (attackType === 'crit') {
     if (defendType === 'crit') { throw new Error(`The attack and defend cannot both be crits. This should have been rerolled.`); }
-    if (defendType === 'fumble') { message = `(SUPER CRIT) Seeing an opening, {A:baseName} struck {D:baseName} a decisive blow!`; }
-    if (defendType === 'normal') { message = `(Attack Crit) The attack caught {T:him} by surprise!`; }
+    if (defendType === 'fumble') { message = `Seeing an opening, {A:baseName} strikes {T:baseName} with a decisive blow!`; }
+    if (defendType === 'normal') { message = `The attack catches {T:him} by surprise!`; }
   }
   if (attackType === 'fumble') {
-    if (defendType === 'crit') { message = `(SUPER DEFEND) {T:baseName} shrugs off {A:his} clumsy attack.` }
-    if (defendType === 'fumble') { message = `(EVERYONE SUCKED) {A:baseName's} attack was clumsy, but {T:baseName} was too distracted to properly defend against it.`; }
-    if (defendType === 'normal') { message = `(Attack Fumble) It was only a glancing blow.`; }
+    if (defendType === 'crit') { message = `{T:baseName} shrugs off {A:baseName's} clumsy attack.` }
+    if (defendType === 'fumble') { message = `{A:baseName's} attack was clumsy, but {T:baseName} was too distracted to properly defend against it.`; }
+    if (defendType === 'normal') { message = `It was only a glancing blow.`; }
   }
   if (attackType === 'normal') {
-    if (defendType === 'crit') { message = `(Defend Crit) {S/tar}{T:baseName}{/S} was almost able to avoid it.` }
-    if (defendType === 'fumble') { message = `(Defend Fumble) {S/tar}{T:baseName}{/S} was left wide open!`; }
+    if (defendType === 'crit') { message = `{S/tar}{T:baseName}{/S} was almost able to avoid it.` }
+    if (defendType === 'fumble') { message = `{S/tar}{T:baseName}{/S} was left wide open!`; }
   }
 
   return Object.freeze({

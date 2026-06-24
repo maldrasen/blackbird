@@ -58,6 +58,7 @@ global.BattleSystem = (function() {
     const round = BattleSystem.getRound();
     round.validate();
 
+    StealthSystem.processRound();
     BattleSystem.getState().updateTime(round.getActing(), round.getTime());
     round.getMessages().length === 0 ? advanceBattle() : BattleInterface.showMonsterResult();
   }
@@ -66,6 +67,7 @@ global.BattleSystem = (function() {
     const round = BattleSystem.getRound();
     round.validate();
 
+    StealthSystem.processRound();
     BattleSystem.getState().updateTime(round.getActing(), round.getTime());
     BattleInterface.showCharacterResult();
   }

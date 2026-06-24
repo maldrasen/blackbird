@@ -27,6 +27,7 @@
     "application/battle/systems/party-configuration.js",
     "application/battle/systems/physical-attack-system.js",
     "application/battle/systems/status-effect-system.js",
+    "application/battle/systems/stealth-system.js",
     "application/battle/systems/threat-generators.js",
     "application/battle/targeting-controller.js",
     "application/browser.js",

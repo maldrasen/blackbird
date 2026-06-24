@@ -60,6 +60,14 @@ global.X = (function() {
     });
   }
 
+  function onMouseDown(selector, callback) {
+    window.addEventListener('mousedown', event => {
+      if (event.target.matches(".disabled") === false && event.target.closest(selector)) {
+        callback(event);
+      }
+    });
+  }
+
   function onCodeDown(code, when, callback) {
     let active = false;
 
@@ -137,6 +145,7 @@ global.X = (function() {
     copyElement,
     loadDocument,
     onClick,
+    onMouseDown,
     onCodeDown,
     onResize,
     hasClass,

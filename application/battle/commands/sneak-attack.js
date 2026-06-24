@@ -11,8 +11,6 @@ global.SneakAttack = (function() {
     round.setTime(BaseWeapon.lookup(weapon.base).getSpeed());
     round.addMessage({ text:`Sneak Attack - {A:baseName} attacking {T:baseName}` });
 
-    BattleSystem.getState().removeStatus(acting,'hidden');
-
     const actualHitValue = attackRoll.getFinalValue() * getSneakAttackAccuracyBonus(acting);
     if (actualHitValue > defendRoll.getFinalValue()) {
       PhysicalAttackSystem.processHit(attackRoll, defendRoll, { damageFactor:getSneakAttackDamageBonus(acting) });

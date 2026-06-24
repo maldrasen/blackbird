@@ -186,8 +186,8 @@ global.FormationPanel = (function() {
 
     function move() {
       combatant.setAttribute('style',[
-        `left:${targetCoords.left + 1}px;`,
-        `top:${targetCoords.top + 1}px;`,
+        `left:${targetCoords.left + 0.5}px;`,
+        `top:${targetCoords.top + 0.5}px;`,
       ].join(' '));
     }
 

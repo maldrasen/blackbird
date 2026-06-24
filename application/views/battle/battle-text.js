@@ -12,13 +12,26 @@ global.BattleText = (function() {
     `You ambush XXX!`
   ];
 
+  let scrollingPanel;
+
   function init() {
     X.onCodeDown('Space', isTextVisible, BattleSystem.advanceBattle);
     X.onCodeDown('Enter', isTextVisible, BattleSystem.advanceBattle);
-    X.onClick('#textPanel', BattleSystem.advanceBattle);
+
+    X.onMouseDown('#textPanel', event => {
+      const target = event.target;
+      if (X.hasClass(target,'scrolling-panel-thumbwheel')) { return false; }
+      if (X.hasClass(target,'scrolling-panel-track')) { return false; }
+
+      console.log("Event Target:",event.target);
+      BattleSystem.advanceBattle();
+    });
   }
 
-  function build() { ScrollingPanel({ id:'#textScroll' }); }
+  function build() {
+    scrollingPanel = ScrollingPanel({ id:'#textScroll' });
+  }
+
   function clear() { X.empty('#battleText'); }
   function hide() { X.addClass('#textPanel','hide'); }
   function show() { X.removeClass('#textPanel','hide'); }
@@ -42,6 +55,8 @@ global.BattleText = (function() {
         X.append('#battleText',X.createElement(`<div class="${classname}">${message.text}</div>`));
       }
     });
+
+    scrollingPanel.resize();
   }
 
   // TODO: The description and start phrases will work for most encounter types, though some will need their own start
