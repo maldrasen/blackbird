@@ -52,14 +52,14 @@ global.BattleRound = function(acting) {
 
       if (main && WeaponComponent.lookup(main)) {
         const mainWeapon = Weapon(main);
-        primaryWeapon.weapon = main;
+        primaryWeapon.id = main;
         primaryWeapon.base = mainWeapon.getBaseWeapon().getCode();
         primaryWeapon.name = mainWeapon.getName();
         primaryWeapon.textKey = mainWeapon.getTextKey();
       }
       if (off && WeaponComponent.lookup(off)) {
         const offWeapon = Weapon(off);
-        secondaryWeapon.weapon = off;
+        secondaryWeapon.id = off;
         secondaryWeapon.base = offWeapon.getBaseWeapon().getCode();
         secondaryWeapon.name = offWeapon.getName();
         secondaryWeapon.textKey = offWeapon.getTextKey();

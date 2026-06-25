@@ -5,7 +5,7 @@
 global.PhysicalAttackRoll = function(attacker, target, weaponData) {
   const hitLocation = BattleHelper.randomHitLocation();
   const baseWeapon = BaseWeapon.lookup(weaponData.base);
-  const weapon = (weaponData.weapon) ? Weapon(weaponData.weapon) : null;
+  const weapon = (weaponData.id) ? Weapon(weaponData.id) : null;
   const attackSkill = baseWeapon.getSkill();
 
   let textKey = weaponData.textKey;

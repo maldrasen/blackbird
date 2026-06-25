@@ -85,7 +85,7 @@ global.BasicAttack = (function() {
 
       attacks.push({
         code: 'basic-attack',
-        weapon: weapon.weapon,
+        id: weapon.id,
         base: weapon.base,
         name: weapon.name,
         textKey: weapon.textKey,
