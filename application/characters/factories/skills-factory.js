@@ -1,10 +1,11 @@
 global.SkillsFactory = (function() {
 
-  function build(triggers) {
+  function build(triggers, defaultSkills) {
     const skillsData = {};
+    const defaults = defaultSkills || {}
 
     SkillsComponent.getSkills().forEach(skillCode => {
-      skillsData[skillCode] = 0;
+      skillsData[skillCode] = defaults[skillCode] || 0;
     });
 
     [...triggers].forEach(trigger => {

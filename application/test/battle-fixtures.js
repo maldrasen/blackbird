@@ -6,30 +6,39 @@ global.BattleFixtures = (function() {
     enchantment:{ type:WeaponEnchantments.endanger, species:'kobold', power:100 }
   }
 
-  // TODO: We'll need more control over the characters in the party for the tests.
   function prepareForBattle() {
+    addPlayer('P.0.2');
+    addTank('P.0.3');
+    addRogue('P.1.2');
+    addRogue('P.1.3');
+  }
+
+  function addPlayer(position) {
     const player = CharacterFixtures.randomPlayer();
-    const characters = CharacterFixtures.randomCharacters(5, { species:'elf' });
-
-    PartyConfiguration.setCharacter(player,'P.0.2');
-    PartyConfiguration.setCharacter(characters[0],'P.0.3');
-    PartyConfiguration.setCharacter(characters[1],'P.0.1');
-    PartyConfiguration.setCharacter(characters[2],'P.1.1');
-    PartyConfiguration.setCharacter(characters[3],'P.1.2');
-    PartyConfiguration.setCharacter(characters[4],'P.1.3');
-
+    setSkill(player,'swords',Random.between(20,40));
     equipWeapon(player, koboldFucker, EquipmentSlot.primary);
-    equipWeapon(characters[0], { base:'longsword'}, EquipmentSlot.primary);
-    equipWeapon(characters[1], { base:'dagger'}, EquipmentSlot.primary);
-    equipWeapon(characters[1], { base:'dagger'}, EquipmentSlot.secondary);
-    equipWeapon(characters[2], { base:'dagger'}, EquipmentSlot.primary);
-    equipWeapon(characters[2], { base:'dagger'}, EquipmentSlot.secondary);
-    equipWeapon(characters[3], { base:'spear'}, EquipmentSlot.primary);
-    equipWeapon(characters[4], { base:'dagger'}, EquipmentSlot.primary);
-    equipWeapon(characters[4], { base:'dagger'}, EquipmentSlot.secondary);
+    PartyConfiguration.setCharacter(player,position);
+  }
 
-    setSkill(characters[2], 'stealth', 1);
-    setSkill(characters[4], 'stealth', 20);
+  function addTank(position) {
+    const tank = CharacterFixtures.randomCharacters(1,{ skills: {
+      block: Random.between(10,20),
+      swords: Random.between(10,20),
+    }})[0];
+
+    equipWeapon(tank, { base:'longsword'}, EquipmentSlot.primary);
+    PartyConfiguration.setCharacter(tank,position);
+  }
+
+  function addRogue(position) {
+    const rogue = CharacterFixtures.randomCharacters(1,{ skills:{
+      stealth: Random.between(10,20),
+      daggers: Random.between(10,20),
+    }})[0];
+
+    equipWeapon(rogue, { base:'dagger'}, EquipmentSlot.primary);
+    equipWeapon(rogue, { base:'dagger'}, EquipmentSlot.secondary);
+    PartyConfiguration.setCharacter(rogue,position);
   }
 
   function equipWeapon(id, weaponData, slot) {

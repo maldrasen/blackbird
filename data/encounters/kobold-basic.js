@@ -31,7 +31,15 @@ Encounter.register('kobold-tossers',{
   }
 });
 
-
+Encounter.register('kobold-dick-punchers',{
+  description: `a small group of unarmed kobolds.`,
+  formation:[
+    [1,1,1,1,1],
+  ],
+  monsters:{
+    1: { code:'kobold-dick-puncher' },
+  }
+});
 
 Encounter.register('kobold-1',{
   description: `a small group of weak looking kobolds`,

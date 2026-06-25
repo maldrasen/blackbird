@@ -92,7 +92,7 @@ global.CharacterFactory = (function() {
     const personalityData = PersonalityFactory.buildPersonality(actorData, triggers);
     const aspectsData = AspectsFactory.build(triggers, actorData);
     const sensitivitiesData = SensitivitiesFactory.build(triggers, actorData, breastsData, cockData, pussyData);
-    const skillsData = SkillsFactory.build(triggers);
+    const skillsData = SkillsFactory.build(triggers, options.skills);
 
     const sexualPreferences = SexualityFactory.build({
       sexuality: options.sexuality,

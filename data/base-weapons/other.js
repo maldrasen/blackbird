@@ -5,8 +5,8 @@ BaseWeapon.register('fist', {
   damageType: DamageType.crush,
   hands: WeaponHandedness.one,
   reach: WeaponReach.short,
-  low: 50,
-  high: 100,
+  low: 25,
+  high: 50,
   speed: 500,
   textKey: 'punch',
 });
