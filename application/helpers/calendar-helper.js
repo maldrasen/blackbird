@@ -155,52 +155,52 @@ global.CalendarHelper = (function() {
 
   const holidayNames = {
     Spring:{
-      white:  'Dawnlight',
-      red:    '-',
-      pink:   'Slutsmarch',
-      orange: '-',
-      brown:  '-',
-      yellow: '-',
-      green:  '-',
-      blue:   '-',
-      purple: '-',
-      black:  'The Dance of the Dead',
+      white:  'Dawnlight', // New Years Day, celebrated early in the morning.
+      red:    'The Blood Orgy of Saint Theladin', // A blood themed orgy.
+      pink:   'Slutsmarch', // A naked parade with public sex.
+      orange: null,
+      brown:  'Leery Duckings', // A day when it's traditional to throw donkey shit at people.
+      yellow: null,
+      green:  'The Blossoming', // A spring and flower themed feast.
+      blue:   null,
+      purple: null,
+      black:  'The Dance Macabre', // A formal ball, and a reminder that all are mortal.
     },
     Summer:{
-      white:  '-',
-      red:    '-',
-      pink:   'Castaway',
-      orange: '-',
-      brown:  '-',
-      yellow: '-',
-      green:  '-',
-      blue:   '-',
-      purple: '-',
-      black:  '-',
+      white:  'The Orgy of Saint Harris', // A very normal orgy.
+      red:    'Cacophony', // Fireworks and explosions and shit.
+      pink:   'Fullbright', // The longest day of the year. (Day 163)
+      orange: null,
+      brown:  'Castaway', // A day when everyone is supposed to cast off their clothing, and spend the day in the nude.
+      yellow: null,
+      green:  'Hallarinbrimbore', // - an animal themed holiday
+      blue:   null,
+      purple: 'Oblivant', // A celebration of the nobility, a day when bribery is encouraged for favors later in the year.
+      black:  'The Grim Feast', // A death themed feast
     },
     Autumn:{
-      white:  '-',
-      red:    'Bloodfeast',
-      pink:   'The Orgy of Saint Grant',
-      orange: '-',
-      brown:  '-',
-      yellow: '-',
-      green:  '-',
-      blue:   'The Feast of Chalcedony',
-      purple: '-',
-      black:  '-',
+      white:  null,
+      red:    'Bloodfeast', // A feast for the hunters, where raw red meat is consumed
+      pink:   'The Orgy of Saint Victoria', // A female only orgy.
+      orange: 'Hayward', // - a harvest themed holiday featuring Jolly Jack Pumpkins as a mascot.
+      brown:  `Gan'Battar`, // The centaur's day of breeding, observed locally.
+      yellow: null,
+      green:  'Frolicsome', // - Jumping into piles of leaves.
+      blue:   'The Chalcedony Feast', // To honor the fae folk.
+      purple: 'Dicksout', // Dicks out for Harambe,
+      black:  'The Deathknells', // A musical event, honoring the day.
     },
     Winter:{
-      white:  'Wintersmite',
-      red:    '-',
-      pink:   'The Long Dawn',
-      orange: '-',
-      brown:  '-',
-      yellow: '-',
-      green:  '-',
-      blue:   '-',
-      purple: '-',
-      black:  'Deadwinter',
+      white:  'Wintersmite', // A day for fighting in honor of the brutality of winter.
+      red:    null,
+      pink:   'The Long Dawn', // The shortest day of the year, where the sun barely crests the horizon. (day 343, 180 days after Fullbright)
+      orange: 'Silenca', // A day of silent contemplation
+      brown:  null,
+      yellow: 'Hearthlight', // A day to stay home and relax around the fire.
+      green:  'Evergreen', // A day when the trees are honored.
+      blue:   null,
+      purple: 'The Orgy of Saint Grant', // A male only orgy
+      black:  'Deadwinter', // Honoring the dead, celebrated privately.
     },
   };
 
@@ -255,7 +255,7 @@ global.CalendarHelper = (function() {
   function dayName(dayNumber) {
     const info = dayInfo(dayNumber);
     switch (info.lesser) {
-      case 'holiday': return holidayNames[seasonName(dayNumber)][info.color];
+      case 'holiday': return holidayNames[seasonName(dayNumber)][info.color] || `[TODO: Holiday/${seasonName(dayNumber)}/${info.color}]`;
       case 'paragon': return paragonDayNames[info.color];
       case 'crystal': return `Day of ${commonDayNames[info.lesser][info.color]}`;
       default: return `Day of The ${commonDayNames[info.lesser][info.color]}`;
