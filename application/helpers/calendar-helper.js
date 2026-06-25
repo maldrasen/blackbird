@@ -1,9 +1,237 @@
 global.CalendarHelper = (function() {
+
+  // We define these as constants rather than using the array lengths because it's important that they remain the same.
   const highCount = 53;
   const lowCount = 191;
   const lesserCount = 9;
   const colorCount = 10;
+
+  // We add an offset to the year so that the game doesn't start right at the beginning of an age.
   const yearStart = 1974;
+
+  // ----------------
+  //    Honorifics
+  // ----------------
+
+  const higherHonorifics = [
+    'Maiden',
+    'Weaver',
+    'Vixen',
+    'Hermit',
+    'Dryad',
+    'Priestess',
+    'Twins',
+    'Raven',
+    'Wellspring',
+    'Judge',
+    'Rat',
+    'Naga',
+    'Incubus',
+    'Blacksmith',
+    'Lovers',
+    'Stallion',
+    'Sacrifice',
+    'Centaur',
+    'Archivist',
+    'Snake',
+    'Ragpicker',
+    'Prisoner',
+    'Sailor',
+    'Rakshasa',
+    'Flame Keeper',
+    'Mother',
+    'Nymph',
+    'Cupbearer',
+    'Fairies',
+    'Hare',
+    'Hunter',
+    'Kobold',
+    'Shepard',
+    'Farmer',
+    'Slave',
+    'Wolf',
+    'Corpse',
+    'Knight',
+    'Succubus',
+    'Troll',
+    'Spectre',
+    'Magician',
+    'Goat',
+    'Sylph',
+    'Traveler',
+    'Contortionist',
+    'Spider',
+    'Otter',
+    'Scrivener',
+    'Whore',
+    'Warrior',
+    'Cutpurse',
+    'Crone',
+  ];
+
+  // There's room for 191 lower honorifics, though we might not need them all. As we're adding them, we should cluster
+  // them around the 60s.
+  const lowerHonorifics = {
+    y1:'Birth of The',
+    y2:'of Dubious Consent',
+    y6:'Twisted',
+    y9:'of Many Colors',
+    y10:'Lucky',
+    y11:'Rotting',
+    y12:'Tranquil',
+    y13:'Dirty',
+    y17:'Grateful',
+    y21:'Lustful',
+    y22:'Sleeping',
+    y29:'Inverted',
+    y30:'Lunar',
+    y31:'of the Greenwood',
+    y35:'Frolicking',
+    y36:'Raging',
+    y37:'Bloody',
+    y38:'Eloquent',
+    y39:'Laughing',
+    y40:'Pure',
+    y41:'Blind',
+    y42:'Mangled',
+    y43:'Giant',
+    y44:'Greedy',
+    y45:'Unspeakable',
+    y50:'Gilded',
+    y51:'Curserotten',
+    y62:'Piebald',
+    y63:'Fecund',
+    y64:'Perverted',
+    y65:'Solar',
+    y66:'Drumming',
+    y67:'Thrice Damned',
+    y68:'Lonely',
+    y69:'Bound',
+    y70:'Effulgent',
+    y71:'Bountiful',
+    y72:'Generous',
+    y75:'Filthy',
+    y76:'Burning',
+    y77:'Holy',
+    y78:'Envious',
+    y79:'Screaming',
+    y80:'Turgid',
+    y81:'Accursed',
+    y87:'of The Deep',
+    y88:'Indefatigable',
+    y89:'Horned',
+    y90:'Weeping',
+    y91:'Bathing',
+    y92:'Drunken',
+    y93:'Silent',
+    y94:'Wounded',
+    y95:'Dancing',
+    y96:'Ecstatic',
+    y99:'Singing',
+    y100:'Radiant',
+    y111:'Clockwork',
+    y118:'Dream of The',
+    y120:'Cosmic',
+    y121:'Beaten',
+    y127:'Tormented',
+    y131:'Diseased',
+    y132:'Exhausted',
+    y142:'Corrupted',
+    y150:'Spectral',
+    y154:'Unholy',
+    y166:'Crystalline',
+    y180:'of the Beyond',
+    y181:'Cerulean',
+    y190:'of Ill Intent',
+    y191:'Death',
+  }
+
+  const lesserHonorifics = ['holiday','fish','crystal','monster','flower','bird','place','animal','paragon'];
+  const colorNames = ['white','red','pink','orange','brown','yellow','green','blue','purple','black'];
+
+  // ---------------
+  //    Day Names
+  // ---------------
+
+  const holidayNames = {
+    Spring:{
+      white:  'Dawnlight',
+      red:    '-',
+      pink:   'Slutsmarch',
+      orange: '-',
+      brown:  '-',
+      yellow: '-',
+      green:  '-',
+      blue:   '-',
+      purple: '-',
+      black:  'The Dance of the Dead',
+    },
+    Summer:{
+      white:  '-',
+      red:    '-',
+      pink:   'Castaway',
+      orange: '-',
+      brown:  '-',
+      yellow: '-',
+      green:  '-',
+      blue:   '-',
+      purple: '-',
+      black:  '-',
+    },
+    Autumn:{
+      white:  '-',
+      red:    'Bloodfeast',
+      pink:   'The Orgy of Saint Grant',
+      orange: '-',
+      brown:  '-',
+      yellow: '-',
+      green:  '-',
+      blue:   'The Feast of Chalcedony',
+      purple: '-',
+      black:  '-',
+    },
+    Winter:{
+      white:  'Wintersmite',
+      red:    '-',
+      pink:   'The Long Dawn',
+      orange: '-',
+      brown:  '-',
+      yellow: '-',
+      green:  '-',
+      blue:   '-',
+      purple: '-',
+      black:  'Deadwinter',
+    },
+  };
+
+  const commonDayNames = {
+    fish:    { white:'Tuna',   red:'Snapper', pink:'Salmon',      orange:'Carp',     brown:'Trout',         yellow:'Yellowtail', green:'Bass',    blue:'Shark',     purple:'Squid',    black:'Marlin'   },
+    crystal: { white:'Pearl',  red:'Ruby',    pink:'Quartz',      orange:'Topaz',    brown:'Agate',         yellow:'Citrine',    green:'Emerald', blue:'Sapphire',  purple:'Amethyst', black:'Obsidian' },
+    monster: { white:'Yeti',   red:'Dragon',  pink:'Abomination', orange:'Djinn',    brown:'Manticore',     yellow:'Griffin',    green:'Goblin',  blue:'Leviathan', purple:'Hydra',    black:'Revenant' },
+    flower:  { white:'Lily',   red:'Poppy',   pink:'Rose',        orange:'Marigold', brown:'Chrysanthemum', yellow:'Daffodil',   green:'Orchid',  blue:'Iris',      purple:'Petunia',  black:'Pansy'    },
+    bird:    { white:'Dove',   red:'Robin',   pink:'Tit',         orange:'Heron',    brown:'Partridge',     yellow:'Canary',     green:'Ibis',    blue:'Peacock',   purple:'Pigeon',   black:'Raven'    },
+    place:   { white:'Shrine', red:'Farm',    pink:'Brothel',     orange:'Tavern',   brown:'Mountain',      yellow:'Field',      green:'Grove',   blue:'Lake',      purple:'Meadow',   black:'Cave'     },
+    animal:  { white:'Hare',   red:'Fox',     pink:'Pig',         orange:'Tiger',    brown:'Bear',          yellow:'Lion',       green:'Toad',    blue:'Butterfly', purple:'Serpent',  black:'Panther'  },
+  }
+
+  const paragonDayNames = {
+    white:  `Snowfall`,
+    red:    `Bloodmoon`,
+    pink:   `Risingsun`,
+    orange: `Settingsun`,
+    brown:  `Filthrot`,
+    yellow: `Goldenglow`,
+    green:  `Greengrass`,
+    blue:   `Skyblue`,
+    purple: `Moonshade`,
+    black:  `Nightsky`,
+  }
+
+  function fullDate(day) {
+    let dayNumber = (day%360) || 360;
+    let yearNumber = Math.floor(day/360) + yearStart;
+    return `${dayName(dayNumber)}, ${seasonName(dayNumber)}, ${yearName(yearNumber)}`;
+  }
 
   function dayInfo(dayNumber) {
     let lesser = (dayNumber % lesserCount) || lesserCount;
@@ -11,8 +239,8 @@ global.CalendarHelper = (function() {
     return {
       lesserIndex: lesser,
       colorIndex: color,
-      lesser: lesserHonorific(lesser),
-      color: colorName(color),
+      lesser: lesserHonorifics[lesser-1],
+      color: colorNames[color-1],
     };
   }
 
@@ -25,38 +253,13 @@ global.CalendarHelper = (function() {
   }
 
   function dayName(dayNumber) {
-    let info = dayInfo(dayNumber);
-
-    // TODO: Exceptions to rules. Probably will end up changing these to be less crude, but this is from an old
-    //       version of the game.
-    if (info.lesser === 'drink'   && info.color === 'pink')   { return "Day of Pussy's Nectar" }
-    if (info.lesser === 'drink'   && info.color === 'yellow') { return "Day of Piss" }
-    if (info.lesser === 'drink'   && info.color === 'green')  { return "Day of Flower's Nectar" }
-    if (info.lesser === 'drink'   && info.color === 'purple') { return "Day of Vile Poisons" }
-    if (info.lesser === 'drink'   && info.color === 'black')  { return "Day of Bile" }
-    if (info.lesser === 'food'    && info.color === 'brown')  { return "Day of Shit" }
-    if (info.lesser === 'food'    && info.color === 'orange') { return "Day of Orange" }
-    if (info.lesser === 'paragon' && info.color === 'red')    { return "Day of Blood" }
-    if (info.lesser === 'paragon' && info.color === 'pink')   { return "Festival of the Spread Pussy" }
-    if (info.lesser === 'paragon' && info.color === 'purple') { return "Festival of the Swollen Cock" }
-
-    let name = {
-      drink:   { white:"Milksday",   red:"Winesday", pink:"-",        orange:"Honeysday", brown:"Beersday",      yellow:"-",          green:"-",       blue:"Watersday", purple:"-",         black:"-"           },
-      fish:    { white:'Tuna',       red:'Snapper',  pink:'Salmon',   orange:'Carp',      brown:'Trout',         yellow:'Yellowtail', green:'Bass',    blue:'Shark',     purple:'Squid',     black:'Marlin'      },
-      crystal: { white:'Pearl',      red:'Ruby',     pink:'Quartz',   orange:'Topaz',     brown:'Agate',         yellow:'Citrine',    green:'Emerald', blue:'Sapphire',  purple:'Amethyst',  black:'Obsidian'    },
-      flower:  { white:'Lily',       red:'Poppy',    pink:'Rose',     orange:'Marigold',  brown:'Chrysanthemum', yellow:'Daffodil',   green:'Orchid',  blue:'Iris',      purple:'Petunia',   black:'Pansy'       },
-      bird:    { white:'Dove',       red:'Robin',    pink:'Tit',      orange:'Heron',     brown:'Partridge',     yellow:'Canary',     green:'Ibis',    blue:'Peacock',   purple:'Pigeon',    black:'Raven'       },
-      food:    { white:"Cakesday",   red:"Beefsday", pink:"Porksday", orange:"-",         brown:"-",             yellow:"Lemonsday",  green:"Peasday", blue:"Berrysday", purple:"Grapesday", black:"Puddingsday" },
-      place:   { white:'Home',       red:'Farm',     pink:'Brothel',  orange:'Tavern',    brown:'Mountain',      yellow:'Field',      green:'Grove',   blue:'Lake',      purple:'Meadow',    black:'Cave'        },
-      animal:  { white:'White Hart', red:'Fox',      pink:'Pig',      orange:'Tiger',     brown:'Bear',          yellow:'Lion',       green:'Toad',    blue:'Dragon',    purple:'Serpent',   black:'Panther'     },
-      paragon: { white:'Snow',       red:'-',        pink:'-',        orange:'Sunset',    brown:'Wood',          yellow:'Sun',        green:'Grass',   blue:'Sky',       purple:'-',         black:'Night'       },
-    }[info.lesser][info.color];
-
-    if (info.lesser === 'drink')   { return name; }
-    if (info.lesser === 'food')    { return name; }
-    if (info.lesser === 'crystal') { return `Day of ${name}`; }
-
-    return `Day of The ${name}`;
+    const info = dayInfo(dayNumber);
+    switch (info.lesser) {
+      case 'holiday': return holidayNames[seasonName(dayNumber)][info.color];
+      case 'paragon': return paragonDayNames[info.color];
+      case 'crystal': return `Day of ${commonDayNames[info.lesser][info.color]}`;
+      default: return `Day of The ${commonDayNames[info.lesser][info.color]}`;
+    }
   }
 
   // The year has 4, 90 day seasons.
@@ -71,141 +274,17 @@ global.CalendarHelper = (function() {
 
   function yearName(yearNumber) {
     let info = yearInfo(yearNumber);
-    let lower = lowerHonorific(info.low);
-    let higher = higherHonorific(info.high);
+    let lower = lowerHonorifics[`y${info.low}`] || `Unknown(${info.low})`;
+    let higher = higherHonorifics[info.high - 1];
     return "Year of The " + (lower.match(/^of/) ? (higher+" "+lower) : (lower+' '+higher));
   }
 
-  function fullDate(day) {
-    let dayNumber = (day%360) || 360;
-    let yearNumber = Math.floor(day/360) + yearStart;
-
-    return `${dayName(dayNumber)}, ${seasonName(dayNumber)}, ${yearName(yearNumber)}, 13th Age of Angoria`;
+  function allDays() {
+    for (let i=1; i<=360; i++) { console.log(`(${i}) ${CalendarHelper.dayName(i)}`) }
   }
 
-  function higherHonorific(i) {
-    return [
-      'Maiden',
-      'White King',
-      'Oak',
-      'Gnome',
-      'Hermit',
-      'Wellspring',
-      'Fox',
-      'High Priestess',
-      'Red Duke',
-      'Oracle',
-      'Bear',
-      'Dryad',
-      'Raven',
-      'Rat',
-      'Twins',
-      'Judge',
-      'Hierophant',
-      'Blacksmith',
-      'Doctor',
-      'Stallion',
-      'Snake',
-      'Nymph',
-      'Iron Bull',
-      'Cupbearer',
-      'Demon',
-      'Fairies',
-      'Mother',
-      'Dragon',
-      'Wizard',
-      'Hare',
-      'Maker',
-      'Hunter',
-      'Flame Keeper',
-      'Farmer',
-      'Goblin',
-      'Sailor',
-      'Lovers',
-      'White Hart',
-      'Hung Man',
-      'Wolf',
-      'Thief',
-      'Traveler',
-      'Spider',
-      'Whore',
-      'Green Knight',
-      'Demoness',
-      'Otter',
-      'Sylph',
-      'Titan',
-      'Serpent',
-      'Warrior',
-      'Black Queen',
-      'Crone',
-    ][i-1];
-  }
-
-  function lowerHonorific(i) {
-    return {
-      y1:'Birth of The',
-      y6:'Twisted',
-      y10:'Lucky',
-      y11:'Rotting',
-      y12:'Tranquil',
-      y13:'Dirty',
-      y17:'Grateful',
-      y21:'Lustful',
-      y22:'Sleeping',
-      y30:'Lunar',
-      y31:'of the Greenwood',
-      y33:'Harmonic',
-      y36:'Raging',
-      y37:'Bloody',
-      y38:'Eloquent',
-      y39:'Laughing',
-      y40:'Pure',
-      y41:'Blind',
-      y42:'Mangled',
-      y43:'Giant',
-      y44:'Greedy',
-      y45:'Unspeakable',
-      y64:'Perverted',
-      y65:'Solar',
-      y66:'Drumming',
-      y69:'Bound',
-      y70:'Effulgent',
-      y76:'Burnt',
-      y77:'Holy',
-      y78:'Envious',
-      y81:'Accursed',
-      y87:'of The Deep',
-      y88:'Indefatigable',
-      y89:'Horned',
-      y90:'Weeping',
-      y91:'Bathing',
-      y92:'Drunken',
-      y93:'Silent',
-      y94:'Wounded',
-      y95:'Dancing',
-      y96:'Ecstasy',
-      y99:'Singing',
-      y100:'Radiant',
-      y111:'Clockwork',
-      y118:'Dream of The',
-      y120:'Cosmic',
-      y127:'Tormented',
-      y131:'Diseased',
-      y142:'Corrupted',
-      y150:'Spectral',
-      y154:'Unholy',
-      y166:'Crystalline',
-      y180:'of the Beyond',
-      y191:'Death',
-    }[`y${i}`] || `Unknown(${i})`
-  }
-
-  function lesserHonorific(i) {
-    return ['drink','fish','crystal','flower','bird','food','place','animal','paragon'][i-1];
-  }
-
-  function colorName(i) {
-    return ['white','red','pink','orange','brown','yellow','green','blue','purple','black'][i-1];
+  function allYears() {
+    for (let i=1; i<=10123; i++) { console.log(`(${i}) ${CalendarHelper.yearName(i)}`) }
   }
 
   return Object.freeze({
@@ -214,7 +293,9 @@ global.CalendarHelper = (function() {
     dayName,
     seasonName,
     yearName,
-    fullDate
+    fullDate,
+    allDays,
+    allYears,
   });
 
 })();
