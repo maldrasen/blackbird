@@ -2,11 +2,14 @@
 // Weapon data should include { base, id, name, textKey } with everything but the base property being optional as most
 // monsters won't be using actual weapons with weapon components.
 
-global.PhysicalAttackRoll = function(attacker, target, weaponData) {
-  const hitLocation = BattleHelper.randomHitLocation();
+global.PhysicalAttackRoll = function(attacker, target, weaponData, hitLocation=null) {
   const baseWeapon = BaseWeapon.lookup(weaponData.base);
   const weapon = (weaponData.id) ? Weapon(weaponData.id) : null;
   const attackSkill = baseWeapon.getSkill();
+
+  if (hitLocation== null) {
+    hitLocation = BattleHelper.randomHitLocation();
+  }
 
   let textKey = weaponData.textKey;
   if (textKey == null) {

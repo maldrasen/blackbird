@@ -10,12 +10,16 @@ global.MonsterSimulator = (function() {
   // Executing an ability must return an object in the format { time, messages }
 
   function executeBattleTurn() {
-    switch (pickCommand()) {
-      case 'defend': return BasicDefend.execute();
-      case 'basic-attack': return BasicAttack.execute();
-      case 'hide': return Hide.execute();
-      case 'sneak-attack': return SneakAttack.execute();
-      default: BasicDefend.execute();
+    const command = pickCommand();
+    switch (command) {
+      case StandardAbility.basicDefend: return BasicDefend.execute();
+      case StandardAbility.basicAttack: return BasicAttack.execute();
+      case StandardAbility.hide: return Hide.execute();
+      case StandardAbility.sneakAttack: return SneakAttack.execute();
+    }
+
+    if (Ability.exists(command)) {
+      Ability.lookup(command).execute();
     }
   }
 
