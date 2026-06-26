@@ -14,9 +14,10 @@ global.BattleState = function(data) {
   //       the front rank.
   const partyFormation = { ...PartyConfiguration.getConfiguration() };
   const monsterFormation = {};
+  const abilityCooldowns = {};
   const conditions = {};
-  const statusEffects = {};
   const skillImprovements = {};
+  const statusEffects = {};
 
   let ambushState = 'normal';
   let interrupt;
@@ -143,6 +144,9 @@ global.BattleState = function(data) {
       throw new Error(`BattleState Error: The next monster is not the acting monster.`);
     }
 
+    // Every turn that someone acts we reduce the cooldown on their skills used.
+    reduceCooldowns(next.id);
+
     next.time += time;
     setTurnOrder(next);
   }
@@ -194,6 +198,34 @@ global.BattleState = function(data) {
     }
 
     turnOrder.splice(index, 1)
+  }
+
+  // =======================
+  //    Ability Cooldowns
+  // =======================
+
+  function setCooldown(id, code, time) {
+    if (abilityCooldowns[id] == null) { abilityCooldowns[id] = {}; }
+    abilityCooldowns[id][code] = time;
+  }
+
+  function isOnCooldown(id, code) {
+    return abilityCooldowns[id] != null && abilityCooldowns[id][code] != null;
+  }
+
+  function reduceCooldowns(id) {
+    const time = BattleSystem.getRound().getTime();
+    Object.keys(abilityCooldowns[id]||[]).forEach(code => {
+      const remaining = abilityCooldowns[id][code];
+      if (remaining > time) {
+        abilityCooldowns[id][code] = remaining - time;
+      } else {
+        delete abilityCooldowns[id][code];
+      }
+    });
+
+    console.log(`${id} Cooldowns: ${JSON.stringify(abilityCooldowns[id])}`)
+
   }
 
   // ===================================
@@ -318,6 +350,10 @@ global.BattleState = function(data) {
     getAmbushState: () => { return ambushState; },
     getNext,
     removeFromTurnOrder,
+
+    setCooldown,
+    isOnCooldown,
+    reduceCooldowns,
 
     addCondition,
     canBeTargeted,

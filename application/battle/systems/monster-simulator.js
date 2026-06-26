@@ -10,7 +10,10 @@ global.MonsterSimulator = (function() {
   // Executing an ability must return an object in the format { time, messages }
 
   function executeBattleTurn() {
-    const command = pickCommand();
+    const command = pickCommand() || StandardAbility.basicDefend;
+
+    BattleSystem.getRound().setCommand(command);
+
     switch (command) {
       case StandardAbility.basicDefend: return BasicDefend.execute();
       case StandardAbility.basicAttack: return BasicAttack.execute();
@@ -53,11 +56,13 @@ global.MonsterSimulator = (function() {
   }
 
   function getPossibleCommands() {
+    const state = BattleSystem.getState();
     const round = BattleSystem.getRound();
+    const acting = round.getActing();
     const commands = [];
 
-    round.getActingMonster().getPrioritizedAbilities().forEach(ability => {
-      if (canUseAbility(ability.code)) { commands.push(ability); }
+      round.getActingMonster().getPrioritizedAbilities().forEach(ability => {
+      if (canUseAbility(ability.code) && !state.isOnCooldown(acting, ability.code)) { commands.push(ability); }
     });
 
     return commands.sort((a,b) => { return b.priority - a.priority }).map(a => a.code);
