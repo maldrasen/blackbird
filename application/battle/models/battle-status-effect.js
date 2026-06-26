@@ -28,6 +28,7 @@ global.BattleStatusEffect = function(id, code, options={}) {
     getCategory: () => { return status.getCategory(); },
     getDurationType: () => { return status.getDurationType(); },
     getDamageType: () => { return status.getDamageType(); },
+    getRemovedAt: () => { return status.getRemovedAt(); },
     getDuration: () => { return duration; },
     setDuration: d => { duration = d; },
     extendDuration: d => { duration += d; },

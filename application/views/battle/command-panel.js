@@ -38,6 +38,7 @@ global.CommandPanel = (function() {
       case BattleCommand.useItem: return UseItem.start();
       case BattleCommand.basicDefend: return BasicDefend.execute();
       case BattleCommand.hide: return Hide.execute();
+      case BattleCommand.pass: return Pass.execute();
       default: throw new Error(`Unrecognized Command: ${command}`);
     }
   }

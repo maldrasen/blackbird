@@ -55,17 +55,20 @@ global.BattleSystem = (function() {
   }
 
   function finishMonsterRound() {
-    round.validate();
-    StealthSystem.processRound();
-    state.updateTime(round.getActing(), round.getTime());
+    finishRound();
     round.getMessages().length === 0 ? advanceBattle() : BattleInterface.showMonsterResult();
   }
 
   function finishCharacterRound() {
+    finishRound();
+    BattleInterface.showCharacterResult();
+  }
+
+  function finishRound() {
     round.validate();
     StealthSystem.processRound();
+    StatusEffectSystem.processEndRound();
     state.updateTime(round.getActing(), round.getTime());
-    BattleInterface.showCharacterResult();
   }
 
   return Object.freeze({

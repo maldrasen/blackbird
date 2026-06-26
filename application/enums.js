@@ -354,6 +354,7 @@ global.BattleCommand = Object.freeze({
   hide: 'hide',
   sneakAttack: 'sneak-attack',
   useItem: 'use-item',
+  pass: 'pass',
 });
 
 global.StatusEffectDurationType = Object.freeze({

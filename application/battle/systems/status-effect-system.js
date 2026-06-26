@@ -1,11 +1,21 @@
 global.StatusEffectSystem = (function() {
 
-  function processStartRound() {
+  // Status effects that influence a character's commands need to be removed at the end of the round. A character that
+  // gets stunned for instance should lose their next turn, but if a stun effect only lasts a single round, and it's
+  // removed before we show the character commands, they never lose the ability to act. The same would be true for
+  // effects like silence and blind that should persist during a character's turn.
+
+  function processStartRound() { reduceAllEffectTime('start-of-round'); }
+  function processEndRound() { reduceAllEffectTime('end-of-round'); }
+
+  function reduceAllEffectTime(removedAt) {
     const state = BattleSystem.getState();
     const acting = BattleSystem.getRound().getActing();
 
     Object.values(state.getStatusEffects(acting)).forEach(statusEffect => {
-      reduceEffectTime(state, acting, statusEffect);
+      if (statusEffect.getRemovedAt() === removedAt) {
+        reduceEffectTime(state, acting, statusEffect);
+      }
     });
   }
 
@@ -23,6 +33,7 @@ global.StatusEffectSystem = (function() {
 
   return Object.freeze({
     processStartRound,
+    processEndRound,
   })
 
 })();
