@@ -415,3 +415,14 @@ global.ResistResult = Object.freeze({
   pass: 'pass',
   fail: 'fail',
 });
+
+global.StandardAbility = Object.freeze({
+  basicAttack: 'basic-attack',
+  basicDefend: 'basic-defend',
+  hide: 'hide',
+  sneakAttack: 'sneak-attack',
+});
+
+global.AbilityType = Object.freeze({
+  physicalAttack: 'physical-attack',
+});

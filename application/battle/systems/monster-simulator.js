@@ -52,20 +52,22 @@ global.MonsterSimulator = (function() {
     const round = BattleSystem.getRound();
     const commands = [];
 
-    round.getActingMonster().getBrain().getPrioritizedAbilities().forEach(code => {
-      if (canUseAbility(code)) { commands.push(code); }
+    round.getActingMonster().getPrioritizedAbilities().forEach(ability => {
+      if (canUseAbility(ability.code)) { commands.push(ability); }
     });
 
-    return commands;
+    return commands.sort((a,b) => { return b.priority - a.priority }).map(a => a.code);
   }
 
-  function canUseAbility(ability) {
-    switch (ability) {
-      case 'basic-attack': return canUseBasicAttack();
-      case 'hide': return canHide();
-      case 'sneak-attack': return canSneakAttack();
-      default: throw new Error(`Can a monster use ${ability}?`);
+  function canUseAbility(code) {
+    switch (code) {
+      case StandardAbility.basicAttack: return canUseBasicAttack();
+      case StandardAbility.basicDefend: return true;
+      case StandardAbility.hide: return canHide();
+      case StandardAbility.sneakAttack: return canSneakAttack();
     }
+
+    return Ability.lookup(code).canBeUsed();
   }
 
   function canUseBasicAttack() {

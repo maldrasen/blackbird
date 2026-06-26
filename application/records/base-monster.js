@@ -38,9 +38,9 @@ global.BaseMonster = (function() {
       getBrain: () => { return monster.brain; },
       getThreatWeights,
       getLevel: () => { return monster.level || 0; },
-      getAttackTable: () => { return monster.attackTable; }
+      getAttackTable: () => { return monster.attackTable; },
+      getPrioritizedAbilities: () => { return monster.prioritizedAbilities||[] },
     });
-
   }
 
   return Object.freeze({

@@ -8,6 +8,10 @@ global.Monster = function(id) {
   function getSpecies() { return getBaseMonster().getSpecies(); }
   function getSkill(code) { return SkillsComponent.lookup(id)[code]; }
 
+  function getPrioritizedAbilities() {
+    return [...getBrain().getPrioritizedAbilities(), ...getBaseMonster().getPrioritizedAbilities()];
+  }
+
   function getResistance(type) {
     const baseResist = getBaseMonster().getResistances()[type] || 0;
     return baseResist + getSpeciesResist(type);
@@ -70,6 +74,7 @@ global.Monster = function(id) {
     getResistance,
     getSpecies,
     getSkill,
+    getPrioritizedAbilities,
 
     populateThreatTable,
     getThreatTable,

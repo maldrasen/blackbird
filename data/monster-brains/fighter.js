@@ -7,7 +7,7 @@ MonsterBrain.register('fighter',{
   },
 
   prioritizedAbilities: [
-    'basic-attack',
+    { code:StandardAbility.basicAttack, priority:50 },
   ],
 
   attributeGrowth: {

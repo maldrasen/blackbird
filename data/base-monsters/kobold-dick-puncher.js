@@ -20,4 +20,8 @@ BaseMonster.register('kobold-dick-puncher',{
     { main:{ base:'fist' }, off:{ base:'fist' }}
   ],
 
+  prioritizedAbilities:[
+    { code:'dick-punch', priority:100 },
+  ],
+
 });

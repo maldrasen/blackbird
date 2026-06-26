@@ -7,9 +7,9 @@ MonsterBrain.register('rogue',{
   },
 
   prioritizedAbilities: [
-    'hide',
-    'sneak-attack',
-    'basic-attack',
+    { code:StandardAbility.hide, priority:50 },
+    { code:StandardAbility.sneakAttack, priority:30 },
+    { code:StandardAbility.basicAttack, priority:10 },
   ],
 
   attributeGrowth: {

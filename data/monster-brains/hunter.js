@@ -6,7 +6,7 @@ MonsterBrain.register('hunter',{
   },
 
   prioritizedAbilities: [
-    'basic-attack',
+    { code:StandardAbility.basicAttack, priority:50 },
   ],
 
   attributeGrowth: {
