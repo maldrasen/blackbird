@@ -1,5 +1,12 @@
 global.CharacterMath = (function() {
 
+  // The speed factor is used frequently and comes from a lot of different values. As such we should cache it after
+  // calculating it.
+  function calculateSpeedFactor(id) {
+    let speed = 1;
+    return speed;
+  }
+
   // Function that takes the values from the Feelings or Control components and maps them onto a range of values that
   // can be used in the consent or sensation calculations. These values are measured on a scale from -1000 to 1000,
   // with the extreme ends corresponding to extreme feelings. A simple cubic curve doesn't really work well for low
@@ -57,6 +64,7 @@ global.CharacterMath = (function() {
   }
 
   return Object.freeze({
+    calculateSpeedFactor,
     emotionBaseValue,
     personalityFactorValue,
     applyFactorScale,

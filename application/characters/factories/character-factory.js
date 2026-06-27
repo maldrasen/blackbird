@@ -149,6 +149,8 @@ global.CharacterFactory = (function() {
     if (cockData) { CockComponent.create(characterId, cockData); }
     if (pussyData) { PussyComponent.create(characterId, pussyData); }
 
+    CacheComponent.build(characterId);
+
     Console.log('CharacterData',{ system:'CharacterFactory', data:{
       attributes: attributesData,
       personality: personalityData,

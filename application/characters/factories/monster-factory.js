@@ -26,6 +26,7 @@ global.MonsterFactory = (function() {
     addLevels(monsterBase, monsterId);
 
     MonsterComponent.create(monsterId, monsterData);
+
     return monsterId;
   }
 
