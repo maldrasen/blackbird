@@ -1,6 +1,9 @@
-global.Hide = (function() {
+Ability.register('hide',{
+  name: 'Hide',
 
-  function execute() {
+  canBeUsed: () => { return true; },
+
+  execute: () => {
     const state = BattleSystem.getState();
     const round = BattleSystem.getRound();
     const acting = round.getActing();
@@ -30,20 +33,6 @@ global.Hide = (function() {
     round.clearTarget();
     round.setTime(1000);
     round.addMessage(message);
+  },
 
-    if (round.isActingCharacter()) {
-      BattleSystem.finishCharacterRound()
-    }
-  }
-
-  // TODO: I need to wait until we have abilities with friendly targets before I can implement this. This will pretty
-  //       much do the same stuff that hide does though, only it removes hidden on fail rather than adding it on
-  //       success. No need for a message unless the hide check failed.
-  function stayHidden() { throw new Error(`Not yet implemented.`); }
-
-  return Object.freeze({
-    execute,
-    stayHidden,
-  })
-
-})();
+});

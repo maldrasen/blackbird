@@ -14,9 +14,13 @@ global.StealthSystem = (function() {
     const targetPosition = round.getTargetPosition();
 
     if (state.hasStatusEffect(acting,'hidden') && targetPosition != null) {
-      (actingPosition[0] !== targetPosition[0]) ? state.removeStatus(acting,'hidden') : Hide.stayHidden();
+      (actingPosition[0] !== targetPosition[0]) ? state.removeStatus(acting,'hidden') : stayHidden();
     }
   }
+
+  // Stay hidden will need to do everything the hide ability does, adding a message if the hiding fails, and without
+  // changing the time that the executed ability takes.
+  function stayHidden() { throw new Error(`Implement this`); }
 
   // Given the hiding character's position, get the entity closest to them on the other side of the formation (this
   // will be the front row in the same position) as well as the entities in the three positions surrounding the

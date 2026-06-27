@@ -10,12 +10,20 @@ global.Ability = (function() {
 
     const ability = { ...abilities[code] };
 
+    function execute() {
+      ability.execute();
+
+      if (BattleSystem.getRound().isActingCharacter()) {
+        BattleSystem.finishCharacterRound();
+      }
+    }
+
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return ability.name },
       getType: () => { return ability.type },
       canBeUsed: () => { return ability.canBeUsed(); },
-      execute: () => { return ability.execute(); },
+      execute,
     });
   }
 

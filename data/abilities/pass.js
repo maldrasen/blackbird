@@ -1,6 +1,16 @@
-global.Pass = (function() {
+Ability.register('pass',{
+  name: 'Pass',
 
-  function execute() {
+  // There might be other reasons a character has to pass. Being stunned is the only one we have now though.
+  canBeUsed: () => {
+    const round = BattleSystem.getRound();
+    const state = BattleSystem.getState();
+    const acting = round.getActing();
+
+    return state.hasStatusEffect(acting,'stun');
+  },
+
+  execute: () => {
     const round = BattleSystem.getRound();
     const state = BattleSystem.getState();
     const acting = round.getActing();
@@ -17,14 +27,6 @@ global.Pass = (function() {
     if (round.getMessages().length === 0) {
       throw new Error(`Entity:${acting} passed their turn, but no message was added.`);
     }
+  },
 
-    if (round.isActingCharacter()) {
-      BattleSystem.finishCharacterRound()
-    }
-  }
-
-  return Object.freeze({
-    execute,
-  });
-
-})()
+});

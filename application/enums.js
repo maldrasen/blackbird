@@ -423,7 +423,3 @@ global.StandardAbility = Object.freeze({
   hide: 'hide',
   sneakAttack: 'sneak-attack',
 });
-
-global.AbilityType = Object.freeze({
-  physicalAttack: 'physical-attack',
-});

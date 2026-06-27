@@ -1,6 +1,5 @@
 Ability.register('dick-punch',{
   name: 'Dick Punch',
-  type: AbilityType.physicalAttack,
 
   canBeUsed: () => {
     const round = BattleSystem.getRound();

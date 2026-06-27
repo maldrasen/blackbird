@@ -15,7 +15,6 @@ global.TargetingController = (function() {
       round.setTarget(id);
 
       BasicAttack.execute();
-      BattleSystem.finishCharacterRound();
     });
   }
 
@@ -24,7 +23,6 @@ global.TargetingController = (function() {
     FormationPanel.startTargeting(getTargetableMonsters(), [], position => {
       BattleSystem.getRound().setTarget(BattleSystem.getState().getEntityAtPosition(position));
       SneakAttack.execute();
-      BattleSystem.finishCharacterRound();
     });
   }
 
