@@ -21,7 +21,7 @@ global.MonsterSystem = (function() {
     const characters = getTargetableCharacters();
 
     while (characters.length > 0) {
-      const target = getHighestThreatFrom(round.getActingMonster(), characters);
+      const target = getHighestThreat(round.getActingMonster(), characters);
       round.setTarget(target);
 
       const possibleAbilities = getPossibleAbilities();
@@ -47,54 +47,16 @@ global.MonsterSystem = (function() {
     const abilities = [];
 
     round.getActingMonster().getPrioritizedAbilities().forEach(ability => {
-      if (canUseAbility(ability.code) && !state.isOnCooldown(acting, ability.code)) { abilities.push(ability); }
+      if (Ability.lookup(ability.code).canBeUsed() && !state.isOnCooldown(acting, ability.code)) {
+        abilities.push(ability);
+      }
     });
 
     return abilities.sort((a,b) => { return b.priority - a.priority }).map(a => a.code);
   }
 
-  function canUseAbility(code) {
-    switch (code) {
-      case StandardAbility.basicAttack: return canUseBasicAttack();
-      case StandardAbility.basicDefend: return true;
-      case StandardAbility.hide: return canHide();
-      case StandardAbility.sneakAttack: return canSneakAttack();
-    }
-
-    return Ability.lookup(code).canBeUsed();
-  }
-
-  function canUseBasicAttack() {
-    const round = BattleSystem.getRound();
-    const monster = round.getActingMonster();
-    const basicAttack = monster.getBasicAttack();
-
-    if (basicAttack == null) { return false; }
-
-    const p1 = round.getActingPosition();
-    const p2 = round.getTargetPosition();
-    const baseWeapon = BaseWeapon.lookup(basicAttack.main ? basicAttack.main.base : basicAttack.base);
-
-    return BattleHelper.isAttackWithinRange(baseWeapon.getReach(), p1, p2);
-  }
-
-  function canHide() {
-    const state = BattleSystem.getState();
-    const acting = BattleSystem.getRound().getActing();
-
-    return (state.hasStatusEffect(acting, 'hidden') === false) &&
-      state.isInBack(acting) && (Monster(acting).getSkill('stealth') > 0);
-  }
-
-  function canSneakAttack() {
-    const monster = BattleSystem.getRound().getActingMonster();
-    const basicAttack = monster.getBasicAttack();
-
-    return BattleSystem.getState().hasStatusEffect(monster.getEntity(), 'hidden') && (basicAttack != null);
-  }
-
   // Pick the highest threat monster that is a member of the characters array.
-  function getHighestThreatFrom(monster, characters) {
+  function getHighestThreat(monster, characters) {
     let threat = 0;
     let target = null;
 

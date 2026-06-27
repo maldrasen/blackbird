@@ -7,9 +7,9 @@ MonsterType.register('rogue',{
   },
 
   prioritizedAbilities: [
-    { code:StandardAbility.hide, priority:50 },
-    { code:StandardAbility.sneakAttack, priority:30 },
-    { code:StandardAbility.basicAttack, priority:10 },
+    { code:'hide', priority:50 },
+    { code:'sneak-attack', priority:30 },
+    { code:'basic-attack', priority:10 },
   ],
 
   attributeGrowth: {

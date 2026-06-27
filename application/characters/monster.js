@@ -2,22 +2,28 @@ global.Monster = function(id) {
 
   function monsterComponent() { return MonsterComponent.lookup(id); }
   function getBaseMonster() { return BaseMonster.lookup(monsterComponent().code); }
-  function getBrain() { return MonsterBrain.lookup(getBaseMonster().getBrain()); }
+  function getType() { return MonsterType.lookup(getBaseMonster().getType()); }
   function getBasicAttack() { return monsterComponent().basicAttack; }
   function getBaseName() { return getBaseMonster().getName(); }
   function getSpecies() { return getBaseMonster().getSpecies(); }
   function getSkill(code) { return SkillsComponent.lookup(id)[code]; }
 
-  // The prioritized abilities have the ability code and a priority level: { code, priority }
+  // When building the list of abilities and their priorities we first build the ability map from the two arrays.
+  // Because object keys act like a set, and this will allow ability priorities defined in the base monster to
+  // override the abilities set in the more generalized monster type.
   function getPrioritizedAbilities() {
-    const abilities = [];
+    const abilityMap = {}
 
-    console.log("=== Getting Prioritised Abilities ===")
+    getType().getPrioritizedAbilities().forEach(ability => {
+      abilityMap[ability.code] = ability.priority;
+    });
+    getBaseMonster().getPrioritizedAbilities().forEach(ability => {
+      abilityMap[ability.code] = ability.priority;
+    });
 
-    // return [...getBrain().getPrioritizedAbilities(), ...getBaseMonster().getPrioritizedAbilities()];
-
-
-    return abilities;
+    return Object.keys(abilityMap).map(code => {
+      return { code:code, priority:abilityMap[code] }
+    });
   }
 
   function getResistance(type) {
@@ -77,7 +83,7 @@ global.Monster = function(id) {
     getEntity: () => { return id },
     getBaseMonster,
     getBaseName,
-    getBrain,
+    getType,
     getBasicAttack,
     getResistance,
     getSpecies,

@@ -5,7 +5,7 @@ MonsterType.register('mage',{
   },
 
   prioritizedAbilities: [
-    { code:StandardAbility.basicDefend, priority:20 },
+    { code:'basic-attack', priority:20 },
   ],
 
   attributeGrowth: {

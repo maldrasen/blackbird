@@ -3,7 +3,21 @@ Ability.register('basic-attack',{
   category: 'basic',
   needsTarget: true,
 
-  canBeUsed: () => { return true; },
+  canBeUsed: () => {
+
+    // Monster Version...
+    const round = BattleSystem.getRound();
+    const monster = round.getActingMonster();
+    const basicAttack = monster.getBasicAttack();
+
+    if (basicAttack == null) { return false; }
+
+    const p1 = round.getActingPosition();
+    const p2 = round.getTargetPosition();
+    const baseWeapon = BaseWeapon.lookup(basicAttack.main ? basicAttack.main.base : basicAttack.base);
+
+    return BattleHelper.isAttackWithinRange(baseWeapon.getReach(), p1, p2);
+  },
 
   execute: () => { executeBasicAttack(); },
 });

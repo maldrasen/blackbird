@@ -3,7 +3,15 @@ Ability.register('sneak-attack',{
   category: 'basic',
   needsTarget: true,
 
-  canBeUsed: () => { return true; },
+  canBeUsed: () => {
+
+    // Monster Version...
+    const monster = BattleSystem.getRound().getActingMonster();
+    const basicAttack = monster.getBasicAttack();
+
+    return BattleSystem.getState().hasStatusEffect(monster.getEntity(), 'hidden') && (basicAttack != null);
+
+  },
 
   execute: () => {
     const round = BattleSystem.getRound();

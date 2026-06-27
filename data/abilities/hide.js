@@ -3,7 +3,15 @@ Ability.register('hide',{
   category: 'basic',
   needsTarget: false,
 
-  canBeUsed: () => { return true; },
+  canBeUsed: () => {
+
+    // Monster Version...
+    const state = BattleSystem.getState();
+    const acting = BattleSystem.getRound().getActing();
+
+    return (state.hasStatusEffect(acting, 'hidden') === false) &&
+      state.isInBack(acting) && (Monster(acting).getSkill('stealth') > 0);
+  },
 
   execute: () => {
     const state = BattleSystem.getState();

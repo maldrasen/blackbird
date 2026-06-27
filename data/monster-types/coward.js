@@ -8,7 +8,7 @@ MonsterType.register('coward',{
   },
 
   prioritizedAbilities: [
-    { code:StandardAbility.basicAttack, priority:50 },
+    { code:'basic-attack', priority:50 },
   ],
 
   attributeGrowth: {
