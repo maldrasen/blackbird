@@ -8,8 +8,16 @@ global.Monster = function(id) {
   function getSpecies() { return getBaseMonster().getSpecies(); }
   function getSkill(code) { return SkillsComponent.lookup(id)[code]; }
 
+  // The prioritized abilities have the ability code and a priority level: { code, priority }
   function getPrioritizedAbilities() {
-    return [...getBrain().getPrioritizedAbilities(), ...getBaseMonster().getPrioritizedAbilities()];
+    const abilities = [];
+
+    console.log("=== Getting Prioritised Abilities ===")
+
+    // return [...getBrain().getPrioritizedAbilities(), ...getBaseMonster().getPrioritizedAbilities()];
+
+
+    return abilities;
   }
 
   function getResistance(type) {

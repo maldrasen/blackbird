@@ -11,7 +11,7 @@ global.BattleRound = function(acting) {
   let target;
   let targetPosition;
   let time;
-  let command;
+  let ability;
 
   // Determining the weapons that the acting entity has equipped takes a little work, as they're both managed in
   // completely different ways. The basic monster attacks, as defined on the base monster, will usually include a base
@@ -123,7 +123,7 @@ global.BattleRound = function(acting) {
   // Each round will need to take some time in order for the battle turns to advance.
   function validate() {
     if (time == null) {
-      throw new Error(`BattleRound.time was not set by the ${command} command.`)
+      throw new Error(`BattleRound.time was not set by the ${ability} ability.`)
     }
   }
 
@@ -134,8 +134,8 @@ global.BattleRound = function(acting) {
     getActingPosition: () => { return actingPosition; },
     isActingMonster: () => { return actingIsMonster; },
     isActingCharacter: () => { return actingIsMonster === false; },
-    setCommand: c => { command = c; },
-    getCommand: () => { return command; },
+    setAbility: code => { ability = code; },
+    getAbility: () => { return ability; },
 
     compileWeaponData,
     getPrimaryWeapon: () => { return primaryWeapon; },

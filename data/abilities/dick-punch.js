@@ -1,5 +1,7 @@
 Ability.register('dick-punch',{
   name: 'Dick Punch',
+  category: 'physical',
+  needsTarget: true,
 
   canBeUsed: () => {
     const round = BattleSystem.getRound();

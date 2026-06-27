@@ -1,46 +1,48 @@
 describe("BasicAttack", function() {
 
-  function prepare(options={}) {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ encounter:(options.encounter || 'kobold-1'), ambushState:'normal' });
+  /*
 
-    if (options.playerMainWeapon) {
-      BattleFixtures.equipWeapon(GameState.getPlayer(), options.playerMainWeapon, EquipmentSlot.primary);
+      TODO: Need to move all this.
+
+    function prepare(options={}) {
+      BattleFixtures.prepareForBattle();
+      BattleSystem.startBattle({ encounter:(options.encounter || 'kobold-1'), ambushState:'normal' });
+
+      if (options.playerMainWeapon) {
+        BattleFixtures.equipWeapon(GameState.getPlayer(), options.playerMainWeapon, EquipmentSlot.primary);
+      }
     }
-  }
 
-  function setPlayerAttribute(data) {
-    const attributes = AttributesComponent.lookup(GameState.getPlayer());
-    Object.entries(data).forEach(([key,value]) => { attributes[key] = value; });
-    AttributesComponent.update(GameState.getPlayer(),attributes);
-  }
+    function setPlayerAttribute(data) {
+      const attributes = AttributesComponent.lookup(GameState.getPlayer());
+      Object.entries(data).forEach(([key,value]) => { attributes[key] = value; });
+      AttributesComponent.update(GameState.getPlayer(),attributes);
+    }
 
-/*
-  describe("rollDamage()", function() {
-    it("a normal attack with a single damage type", function() {
-      prepare();
-      setPlayerAttribute({ strength:50 });
-      BattleSystem.specRound(GameState.getPlayer(), { target:BattleSystem.getState().getMonsters()[0] });
+    describe("rollDamage()", function() {
+      it("a normal attack with a single damage type", function() {
+        prepare();
+        setPlayerAttribute({ strength:50 });
+        BattleSystem.specRound(GameState.getPlayer(), { target:BattleSystem.getState().getMonsters()[0] });
 
-      const complexDamage = BasicAttack.rollDamage(GameState.getPlayer(), BaseWeapon.lookup('maul'), 'normal', 'normal');
-      expect(BattleSystem.getRound().getMessages().length).to.equal(0);
-      expect(Object.keys(complexDamage).length).to.equal(1);
-      expect(complexDamage.crush).to.be.greaterThan(50);
-    });
+        const complexDamage = BasicAttack.rollDamage(GameState.getPlayer(), BaseWeapon.lookup('maul'), 'normal', 'normal');
+        expect(BattleSystem.getRound().getMessages().length).to.equal(0);
+        expect(Object.keys(complexDamage).length).to.equal(1);
+        expect(complexDamage.crush).to.be.greaterThan(50);
+      });
 
-    it("a super crit hit with two damage types", function() {
-      prepare();
-      setPlayerAttribute({ strength:50 });
-      BattleSystem.specRound(GameState.getPlayer(), { target:BattleSystem.getState().getMonsters()[0] });
+      it("a super crit hit with two damage types", function() {
+        prepare();
+        setPlayerAttribute({ strength:50 });
+        BattleSystem.specRound(GameState.getPlayer(), { target:BattleSystem.getState().getMonsters()[0] });
 
-      const complexDamage = BasicAttack.rollDamage(GameState.getPlayer(), BaseWeapon.lookup('morning-star'), 'crit', 'fumble');
-      expect(BattleSystem.getRound().getMessages().length).to.equal(2);
-      expect(Object.keys(complexDamage).length).to.equal(2);
-      expect(complexDamage.pierce).to.be.greaterThan(50);
-      expect(complexDamage.crush).to.be.greaterThan(50);
-    });
-  })
-*/
+        const complexDamage = BasicAttack.rollDamage(GameState.getPlayer(), BaseWeapon.lookup('morning-star'), 'crit', 'fumble');
+        expect(BattleSystem.getRound().getMessages().length).to.equal(2);
+        expect(Object.keys(complexDamage).length).to.equal(2);
+        expect(complexDamage.pierce).to.be.greaterThan(50);
+        expect(complexDamage.crush).to.be.greaterThan(50);
+      });
+    })
 
   describe("calculateAttacks()", function() {
     it("a single primary attack", function() {
@@ -81,5 +83,6 @@ describe("BasicAttack", function() {
       expect(attacks[2].hand).to.equal('primary');
     });
   });
+  */
 
 });

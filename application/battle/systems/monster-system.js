@@ -1,4 +1,4 @@
-global.MonsterSimulator = (function() {
+global.MonsterSystem = (function() {
 
   // TODO: Rather than having a monster defend if no abilities are available a more advanced option would have it move
   //       to a new position that turn. A monster though should only ever be able to move towards the center or a rank
@@ -7,23 +7,8 @@ global.MonsterSimulator = (function() {
   //       monster finds themselves in the front rank they should attempt to move behind another monster if there's
   //       space. If no move is possible than they should defend.
 
-  // Executing an ability must return an object in the format { time, messages }
-
   function executeBattleTurn() {
-    const command = pickCommand() || StandardAbility.basicDefend;
-
-    BattleSystem.getRound().setCommand(command);
-
-    switch (command) {
-      case StandardAbility.basicDefend: return BasicDefend.execute();
-      case StandardAbility.basicAttack: return BasicAttack.execute();
-      case StandardAbility.hide: return Hide.execute();
-      case StandardAbility.sneakAttack: return SneakAttack.execute();
-    }
-
-    if (Ability.exists(command)) {
-      Ability.lookup(command).execute();
-    }
+    Ability.lookup(pickAbility() || 'basic-defend').execute();
   }
 
   // When a monster picks a target it first picks the highest threat target from its threat table. If the monster has
@@ -31,7 +16,7 @@ global.MonsterSimulator = (function() {
   // highest priority action from the possible actions. If it has nothing that can hit that target, and has no actions
   // that don't require a target, it checks the next highest threat target. If the monster can't hit any target with
   // any action this function returns null, indicating that the monster should just defend this turn.
-  function pickCommand() {
+  function pickAbility() {
     const round = BattleSystem.getRound();
     const characters = getTargetableCharacters();
 
@@ -39,9 +24,9 @@ global.MonsterSimulator = (function() {
       const target = getHighestThreatFrom(round.getActingMonster(), characters);
       round.setTarget(target);
 
-      const possibleCommands = getPossibleCommands();
-      if (possibleCommands.length > 0) {
-        return possibleCommands[0];
+      const possibleAbilities = getPossibleAbilities();
+      if (possibleAbilities.length > 0) {
+        return possibleAbilities[0];
       }
 
       round.clearTarget();
@@ -55,17 +40,17 @@ global.MonsterSimulator = (function() {
     return state.getCharacters().filter(id => state.canBeTargeted(id));
   }
 
-  function getPossibleCommands() {
+  function getPossibleAbilities() {
     const state = BattleSystem.getState();
     const round = BattleSystem.getRound();
     const acting = round.getActing();
-    const commands = [];
+    const abilities = [];
 
-      round.getActingMonster().getPrioritizedAbilities().forEach(ability => {
-      if (canUseAbility(ability.code) && !state.isOnCooldown(acting, ability.code)) { commands.push(ability); }
+    round.getActingMonster().getPrioritizedAbilities().forEach(ability => {
+      if (canUseAbility(ability.code) && !state.isOnCooldown(acting, ability.code)) { abilities.push(ability); }
     });
 
-    return commands.sort((a,b) => { return b.priority - a.priority }).map(a => a.code);
+    return abilities.sort((a,b) => { return b.priority - a.priority }).map(a => a.code);
   }
 
   function canUseAbility(code) {
@@ -125,7 +110,7 @@ global.MonsterSimulator = (function() {
 
   return Object.freeze({
     executeBattleTurn,
-    pickCommand,
+    pickAbility,
   });
 
 })();

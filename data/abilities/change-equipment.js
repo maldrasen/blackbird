@@ -1,5 +1,7 @@
 Ability.register('change-equipment',{
   name: 'Change Equipment',
+  category: 'utility',
+  needsTarget: false,
 
   canBeUsed: () => { return true; },
 

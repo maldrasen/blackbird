@@ -42,7 +42,7 @@ global.BattleSystem = (function() {
     }
 
     if (round.isActingMonster()) {
-      MonsterSimulator.executeBattleTurn();
+      MonsterSystem.executeBattleTurn();
       finishMonsterRound();
     }
     if (round.isActingCharacter()) {

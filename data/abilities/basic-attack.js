@@ -1,5 +1,7 @@
 Ability.register('basic-attack',{
   name: 'Attack',
+  category: 'basic',
+  needsTarget: true,
 
   canBeUsed: () => { return true; },
 

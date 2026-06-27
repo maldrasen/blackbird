@@ -1,5 +1,10 @@
 Ability.register('use-item',{
   name: 'Use Item',
+  category: 'utility',
+
+  // TODO: Use Item might need a target. We first need to select the item and when the item is selected bring up the
+  //       targeting interface if it needs one.
+  needsTarget: false,
 
   canBeUsed: () => { return true; },
 

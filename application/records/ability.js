@@ -11,9 +11,12 @@ global.Ability = (function() {
     const ability = { ...abilities[code] };
 
     function execute() {
+      const round = BattleSystem.getRound();
+      round.setAbility(code);
+
       ability.execute();
 
-      if (BattleSystem.getRound().isActingCharacter()) {
+      if (round.isActingCharacter()) {
         BattleSystem.finishCharacterRound();
       }
     }
@@ -21,7 +24,9 @@ global.Ability = (function() {
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return ability.name },
+      getCategory: () => { return ability.category },
       getType: () => { return ability.type },
+      needsTarget: () => { return ability.needsTarget; },
       canBeUsed: () => { return ability.canBeUsed(); },
       execute,
     });

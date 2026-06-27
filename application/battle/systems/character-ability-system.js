@@ -1,6 +1,9 @@
-global.CharacterCommands = (function() {
+global.CharacterAbilitySystem = (function() {
 
-  function getCommands() {
+  function getAbilities() {
+    return ['basic-defend'];
+
+    /*
     const acting = BattleSystem.getRound().getActing();
     const situation = getSituation(acting);
     const commands = [];
@@ -19,6 +22,7 @@ global.CharacterCommands = (function() {
     }
 
     return commands;
+     */
   }
 
   function canAct(acting) {
@@ -48,7 +52,7 @@ global.CharacterCommands = (function() {
   }
 
   return Object.freeze({
-    getCommands,
+    getAbilities,
     getSituation,
   })
 

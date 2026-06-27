@@ -14,7 +14,7 @@ global.CommandPanel = (function() {
     X.addClass('#commandPanel','hide');
   }
 
-  function showCommands(commands) {
+  function showCommands(abilities) {
     const character = BattleSystem.getRound().getActingCharacter();
 
     show();
@@ -22,25 +22,21 @@ global.CommandPanel = (function() {
     X.empty(`#commandPanel #commandArea`);
     X.empty(`#commandPanel #utilityArea`);
 
-    commands.forEach(command => {
-      const area = (command.layout === 'utility') ? '#utilityArea' : '#commandArea';
-      X.append(area, X.createElement(`<a class='button button-primary command' data-command='${command.command}'>${command.name}</a>`));
+    abilities.forEach(code => {
+      const ability = Ability.lookup(code);
+      X.append(getCommandArea(ability.getCategory()), X.createElement(`<a class='button button-primary command' data-ability='${code}'>${ability.getName()}</a>`));
     });
   }
 
-  function executeCommand(event) {
-    const command = event.target.dataset.command;
+  function getCommandArea(category) {
+    if (category === 'basic') { return '#commandArea'; }
+    if (category === 'utility') { return '#utilityArea'; }
+    throw new Error(`We need an area for this category: ${category}`);
+  }
 
-    switch(command) {
-      case BattleCommand.basicAttack: return TargetingController.startBasicAttackTargeting();
-      case BattleCommand.sneakAttack: return TargetingController.startSneakAttack();
-      case BattleCommand.changeEquipment: return ChangeEquipment.start();
-      case BattleCommand.useItem: return UseItem.start();
-      case BattleCommand.basicDefend: return BasicDefend.execute();
-      case BattleCommand.hide: return Hide.execute();
-      case BattleCommand.pass: return Pass.execute();
-      default: throw new Error(`Unrecognized Command: ${command}`);
-    }
+  function executeCommand(event) {
+    const ability = Ability.lookup(event.target.dataset.ability);
+    ability.needsTarget() ? TargetingController.startTargeting(ability.getCode()) : ability.execute();
   }
 
   return Object.freeze({
