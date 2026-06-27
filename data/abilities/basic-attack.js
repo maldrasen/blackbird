@@ -1,26 +1,40 @@
 Ability.register('basic-attack',{
   name: 'Attack',
   category: 'basic',
-  needsTarget: true,
+  targetingMode: TargetingMode.enemyInWeaponRange,
 
   canBeUsed: () => {
-
-    // Monster Version...
-    const round = BattleSystem.getRound();
-    const monster = round.getActingMonster();
-    const basicAttack = monster.getBasicAttack();
-
-    if (basicAttack == null) { return false; }
-
-    const p1 = round.getActingPosition();
-    const p2 = round.getTargetPosition();
-    const baseWeapon = BaseWeapon.lookup(basicAttack.main ? basicAttack.main.base : basicAttack.base);
-
-    return BattleHelper.isAttackWithinRange(baseWeapon.getReach(), p1, p2);
+    return BattleSystem.getRound().isActingMonster() ? canMonsterAttack() : canCharacterAttack();
   },
 
   execute: () => { executeBasicAttack(); },
 });
+
+function canMonsterAttack() {
+  const round = BattleSystem.getRound();
+  const monster = round.getActingMonster();
+  const basicAttack = monster.getBasicAttack();
+
+  if (basicAttack == null) { return false; }
+  if (isHidden()) { return false; }
+
+  const p1 = round.getActingPosition();
+  const p2 = round.getTargetPosition();
+  const baseWeapon = BaseWeapon.lookup(basicAttack.main ? basicAttack.main.base : basicAttack.base);
+
+  return BattleHelper.isAttackWithinRange(baseWeapon.getReach(), p1, p2);
+}
+
+function canCharacterAttack() {
+  const inRange = TargetingController.getMonstersInRange().length > 0;
+  return inRange && !isHidden();
+}
+
+function isHidden() {
+  const round = BattleSystem.getRound();
+  const acting = round.getActing();
+  return BattleSystem.getState().hasStatusEffect(acting,'hidden');
+}
 
 function executeBasicAttack() {
   const state = BattleSystem.getState();

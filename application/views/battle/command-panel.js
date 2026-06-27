@@ -36,7 +36,7 @@ global.CommandPanel = (function() {
 
   function executeCommand(event) {
     const ability = Ability.lookup(event.target.dataset.ability);
-    ability.needsTarget() ? TargetingController.startTargeting(ability.getCode()) : ability.execute();
+    ability.getTargetingMode() != null ? TargetingController.startTargeting(ability.getCode()) : ability.execute();
   }
 
   return Object.freeze({

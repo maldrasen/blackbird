@@ -1,59 +1,61 @@
 global.CharacterAbilitySystem = (function() {
 
   function getAbilities() {
-    return ['basic-defend'];
-
-    /*
     const acting = BattleSystem.getRound().getActing();
-    const situation = getSituation(acting);
-    const commands = [];
 
-    if (canAct(acting)) {
-      if (canBasicAttack(situation)) { commands.push({ command:BattleCommand.basicAttack, name:'Attack' }); }
-      if (canHide(situation)) { commands.push({ command:BattleCommand.hide, name:'Hide' }); }
-      if (situation.isHidden) { commands.push({ command:BattleCommand.sneakAttack, name:'Sneak Attack' }); }
-
-      commands.push({ command:BattleCommand.basicDefend, name:'Defend' });
-      commands.push({ command:BattleCommand.changeEquipment, name:'Change Equipment', layout:'utility' });
-      commands.push({ command:BattleCommand.useItem, name:'Use Item', layout:'utility' });
-    }
-    if (commands.length === 0) {
-      commands.push({ command:BattleCommand.pass, name:'Pass' });
+    if (stunned(acting)) {
+      return ['pass'];
     }
 
-    return commands;
-     */
+    const abilities = getAllAbilities(acting).filter(code => Ability.lookup(code).canBeUsed());
+
+    console.log("Filtered:",abilities)
+
+    return abilities
   }
 
-  function canAct(acting) {
-    return BattleSystem.getState().hasStatusEffect(acting,'stun') === false;
-  }
-
-  function canBasicAttack(situation) { return situation.monstersAreInRange && situation.isNotHidden; }
-  function canHide(situation) { return situation.isNotHidden && situation.isInBack && situation.hasHideSkill; }
-
-  function getSituation(acting) {
-    const state = BattleSystem.getState();
+  function getAllAbilities(acting) {
     const skills = SkillsComponent.lookup(acting);
 
-    const situation = {
-      state: state,
-      isHidden: state.hasStatusEffect(acting,'hidden'),
-      isInFront: BattleSystem.getState().isInFront(acting),
-      monstersInRange: TargetingController.getMonstersInRange(),
-      hasHideSkill: skills.stealth > 0,
+    const abilities = [
+      'basic-attack',
+      'basic-defend',
+      'change-equipment',
+      'use-item',
+    ]
+
+    if (skills.stealth > 0) {
+      // abilities.push('hide');
+      // abilities.push('sneak-attack');
     }
 
-    situation.isNotHidden = situation.isHidden === false;
-    situation.isInBack = situation.isInFront === false;
-    situation.monstersAreInRange = situation.monstersInRange.length > 0;
-
-    return situation;
+    return abilities;
   }
+
+  function stunned(acting) {
+    return BattleSystem.getState().hasStatusEffect(acting,'stun');
+  }
+
+  // function canHide(situation) { return situation.isNotHidden && situation.isInBack && situation.hasHideSkill; }
+  //
+  // function getSituation(acting) {
+  //   const state = BattleSystem.getState();
+  //
+  //   const situation = {
+  //     state: state,
+  //     isInFront: BattleSystem.getState().isInFront(acting),
+  //     monstersInRange: TargetingController.getMonstersInRange(),
+  //   }
+  //
+  //   situation.isNotHidden = situation.isHidden === false;
+  //   situation.isInBack = situation.isInFront === false;
+  //   situation.monstersAreInRange = situation.monstersInRange.length > 0;
+  //
+  //   return situation;
+  // }
 
   return Object.freeze({
     getAbilities,
-    getSituation,
   })
 
 })();

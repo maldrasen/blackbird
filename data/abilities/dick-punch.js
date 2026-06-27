@@ -1,7 +1,7 @@
 Ability.register('dick-punch',{
   name: 'Dick Punch',
   category: 'physical',
-  needsTarget: true,
+  targetingMode: TargetingMode.enemyInWeaponRange,
 
   canBeUsed: () => {
     const round = BattleSystem.getRound();

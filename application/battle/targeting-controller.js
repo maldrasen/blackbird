@@ -1,38 +1,40 @@
 global.TargetingController = (function() {
 
-  function startBasicAttackTargeting() {
+  function startTargeting(abilityCode) {
+    BattleSystem.getRound().setAbility(abilityCode);
+    switch(Ability.lookup(abilityCode).getTargetingMode()) {
+      case TargetingMode.anyEnemy: return targetAnyEnemy();
+      case TargetingMode.enemyInWeaponRange: return targetEnemyInWeaponRange();
+    }
+  }
+
+  function targetAnyEnemy() {
+    FormationPanel.startTargeting(monsterPositions(getTargetableMonsters()), [], position => {
+      executeWithTargetAt(position);
+    });
+  }
+
+  function targetEnemyInWeaponRange() {
+    FormationPanel.startTargeting(monsterPositions(getMonstersInRange()), [], position => {
+      executeWithTargetAt(position);
+    });
+  }
+
+  function executeWithTargetAt(position) {
     const state = BattleSystem.getState();
     const round = BattleSystem.getRound();
-
-    const monsters = getMonstersInRange().filter(m => {
-      return state.hasStatusEffect(m.monster, 'hidden') === false;
-    });
-
-    const positions = monsters.map(mon => mon.position);
-    FormationPanel.startTargeting(positions, [], position => {
-      const id = state.getEntityAtPosition(position)
-
-      round.setTarget(id);
-
-      BasicAttack.execute();
-    });
+    round.setTarget(state.getEntityAtPosition(position));
+    Ability.lookup(round.getAbility()).execute();
   }
 
-  // Sneak attack can target any monster.
-  function startSneakAttack() {
-    FormationPanel.startTargeting(getTargetableMonsters(), [], position => {
-      BattleSystem.getRound().setTarget(BattleSystem.getState().getEntityAtPosition(position));
-      SneakAttack.execute();
-    });
-  }
-
+  // All monsters that can be targeted. A monster can be targeted if it is alive and not hidden.
   function getTargetableMonsters() {
     const state = BattleSystem.getState();
     const monsters = [];
 
     state.getMonsters().forEach(monster => {
       if (state.canBeTargeted(monster)) {
-        monsters.push(state.getPosition(monster));
+        monsters.push(monster);
       }
     });
 
@@ -42,34 +44,21 @@ global.TargetingController = (function() {
   function getMonstersInRange() {
     const state = BattleSystem.getState();
     const round = BattleSystem.getRound();
-    const acting = round.getActing();
-    const reach = getBasicAttackReach(acting); // TODO: Move reach into round data...
     const position = round.getActingPosition();
+    const reach = round.getPrimaryWeapon().reach;
 
-    const inRange = [];
-
-    state.getMonsters().forEach(monster => {
-      if (state.canBeTargeted(monster)) {
-        const monsterPosition = state.getPosition(monster)
-        if (BattleHelper.isAttackWithinRange(reach, position, monsterPosition)) {
-          inRange.push({ monster:monster, position:monsterPosition });
-        }
-      }
-    });
-
-    return inRange;
+    return getTargetableMonsters().filter(monster =>
+      BattleHelper.isAttackWithinRange(reach, position, state.getPosition(monster)));
   }
 
-  // If a character doesn't have a weapon equipped then they are attacking with their fists, which has a close range.
-  function getBasicAttackReach(id) {
-    const weaponId = EquipmentManager(id).getSlot(EquipmentSlot.primary);
-    return (weaponId == null) ? WeaponReach.close : Weapon(weaponId).getBaseWeapon().getReach();
+  function monsterPositions(monsters) {
+    const state = BattleSystem.getState();
+    return monsters.map(id => state.getPosition(id));
   }
 
   return Object.freeze({
+    startTargeting,
     getMonstersInRange,
-    startSneakAttack,
-    startBasicAttackTargeting,
   });
 
 })()

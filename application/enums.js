@@ -423,3 +423,8 @@ global.StandardAbility = Object.freeze({
   hide: 'hide',
   sneakAttack: 'sneak-attack',
 });
+
+global.TargetingMode = Object.freeze({
+  enemyInWeaponRange: 'enemy-in-weapon-range',
+  anyEnemy: 'any-enemy',
+});

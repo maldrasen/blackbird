@@ -1,7 +1,6 @@
 Ability.register('basic-defend',{
   name: 'Defend',
   category: 'basic',
-  needsTarget: false,
 
   canBeUsed: () => { return true; },
 

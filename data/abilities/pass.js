@@ -1,7 +1,6 @@
 Ability.register('pass',{
   name: 'Pass',
   category: 'basic',
-  needsTarget: false,
 
   // There might be other reasons a character has to pass. Being stunned is the only one we have now though.
   canBeUsed: () => {

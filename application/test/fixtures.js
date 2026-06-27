@@ -4,7 +4,6 @@ global.Fixtures = (function() {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
-      // encounter: `kobold-dick-punchers`,
       encounter: `kobold-${Random.between(1,5)}`,
     });
 

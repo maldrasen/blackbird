@@ -25,8 +25,7 @@ global.Ability = (function() {
       getCode: () => { return code; },
       getName: () => { return ability.name },
       getCategory: () => { return ability.category },
-      getType: () => { return ability.type },
-      needsTarget: () => { return ability.needsTarget; },
+      getTargetingMode: () => { return ability.targetingMode },
       canBeUsed: () => { return ability.canBeUsed(); },
       execute,
     });

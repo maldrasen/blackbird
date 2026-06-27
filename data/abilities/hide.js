@@ -1,7 +1,6 @@
 Ability.register('hide',{
   name: 'Hide',
   category: 'basic',
-  needsTarget: false,
 
   canBeUsed: () => {
 

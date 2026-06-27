@@ -13,6 +13,13 @@ global.BattleRound = function(acting) {
   let time;
   let ability;
 
+  function setAbility(code) {
+    if (ability != null && ability !== code) {
+      throw new Error(`Ability has already been set to ${ability}`);
+    }
+    ability = code;
+  }
+
   // Determining the weapons that the acting entity has equipped takes a little work, as they're both managed in
   // completely different ways. The basic monster attacks, as defined on the base monster, will usually include a base
   // weapon and a name. They can also define main and off-hand weapons.
@@ -29,18 +36,21 @@ global.BattleRound = function(acting) {
       if (monsterAttack.main) {
         const base = BaseWeapon.lookup(monsterAttack.main.base);
         primaryWeapon.base = monsterAttack.main.base;
+        primaryWeapon.reach = base.getReach();
         primaryWeapon.name = monsterAttack.main.name || base.getName();
         primaryWeapon.textKey = monsterAttack.main.textKey || base.getTextKey();
       }
       if (monsterAttack.off) {
         const base = BaseWeapon.lookup(monsterAttack.off.base);
         secondaryWeapon.base = monsterAttack.off.base;
+        secondaryWeapon.reach = base.getReach();
         secondaryWeapon.name = monsterAttack.off.name || base.getName();
         secondaryWeapon.textKey = monsterAttack.off.textKey || base.getTextKey()
       }
       if (monsterAttack.base) {
         const base = BaseWeapon.lookup(monsterAttack.base);
         primaryWeapon.base = monsterAttack.base;
+        primaryWeapon.reach = base.getReach();
         primaryWeapon.name = monsterAttack.name || base.getName();
         primaryWeapon.textKey = monsterAttack.textKey || base.getTextKey();
       }
@@ -55,6 +65,7 @@ global.BattleRound = function(acting) {
         const mainWeapon = Weapon(main);
         primaryWeapon.id = main;
         primaryWeapon.base = mainWeapon.getBaseWeapon().getCode();
+        primaryWeapon.reach = mainWeapon.getBaseWeapon().getReach();
         primaryWeapon.name = mainWeapon.getName();
         primaryWeapon.textKey = mainWeapon.getTextKey();
       }
@@ -62,6 +73,7 @@ global.BattleRound = function(acting) {
         const offWeapon = Weapon(off);
         secondaryWeapon.id = off;
         secondaryWeapon.base = offWeapon.getBaseWeapon().getCode();
+        secondaryWeapon.reach = offWeapon.getBaseWeapon().getReach();
         secondaryWeapon.name = offWeapon.getName();
         secondaryWeapon.textKey = offWeapon.getTextKey();
       }
@@ -134,7 +146,7 @@ global.BattleRound = function(acting) {
     getActingPosition: () => { return actingPosition; },
     isActingMonster: () => { return actingIsMonster; },
     isActingCharacter: () => { return actingIsMonster === false; },
-    setAbility: code => { ability = code; },
+    setAbility,
     getAbility: () => { return ability; },
 
     compileWeaponData,

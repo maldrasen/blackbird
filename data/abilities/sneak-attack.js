@@ -1,7 +1,7 @@
 Ability.register('sneak-attack',{
   name: 'Sneak Attack',
   category: 'basic',
-  needsTarget: true,
+  targetingMode: TargetingMode.anyEnemy,
 
   canBeUsed: () => {
 
