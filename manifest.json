@@ -446,6 +446,7 @@
     "test/characters/character-spec.js",
     "test/characters/describers/body-describer-spec.js",
     "test/characters/describers/breast-describer-spec.js",
+    "test/characters/factories/body-factory-spec.js",
     "test/characters/factories/character-factory-spec.js",
     "test/characters/factories/monster-factory-spec.js",
     "test/characters/factories/sexual-history-factory-spec.js",
