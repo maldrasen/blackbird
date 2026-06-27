@@ -1,4 +1,4 @@
-MonsterBrain.register('rogue',{
+MonsterType.register('rogue',{
 
   threatWeights: {
     closest: 25,

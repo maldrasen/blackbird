@@ -1,6 +1,6 @@
 BaseMonster.register('flamescale-kobold',{
   name: 'Flamescale Kobold',
   species: SpeciesCode.kobold,
-  brain: 'fighter',
+  type: 'fighter',
   triggers: ['red-hair'],
 });

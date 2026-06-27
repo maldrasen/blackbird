@@ -1,6 +1,6 @@
 BaseMonster.register('flamescale-screamer',{
   name: 'Flamescale Screamer',
   species: SpeciesCode.kobold,
-  brain: 'mage',
+  type: 'mage',
   triggers: ['red-hair'],
 });

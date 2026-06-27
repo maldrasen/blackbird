@@ -42,8 +42,8 @@ global.MonsterFactory = (function() {
   //       other attribute dependent properties. (Like mana pools maybe?)
   function addLevels(monsterBase, monsterId) {
     const attributes = AttributesComponent.lookup(monsterId);
-    const brain = MonsterBrain.lookup(monsterBase.getBrain());
-    const attributeGrowth = brain.getAttributeGrowth();
+    const type = MonsterType.lookup(monsterBase.getType());
+    const attributeGrowth = type.getAttributeGrowth();
     const startingVitality = attributes[Attrib.vitality];
 
     if (attributeGrowth) {

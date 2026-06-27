@@ -1,6 +1,6 @@
 BaseMonster.register('deepdark-whisperer',{
   name: 'Deepdark Whisperer',
   species: SpeciesCode.kobold,
-  brain: 'rogue',
+  type: 'rogue',
   triggers: ['black-hair'],
 });

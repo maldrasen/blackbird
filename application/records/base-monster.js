@@ -24,20 +24,21 @@ global.BaseMonster = (function() {
     }
 
     function getThreatWeights() {
-      return monster.threatWeights || MonsterBrain.lookup(monster.brain).getThreatWeights();
+      return monster.threatWeights || MonsterType.lookup(monster.type).getThreatWeights();
     }
 
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return monster.name; },
       getSpecies: () => { return monster.species; },
-      getSkills: () => { return monster.skills || {}; },
       getGenderRatio,
+      getType: () => { return monster.type; },
+      getLevel: () => { return monster.level || 0; },
+
+      getSkills: () => { return monster.skills || {}; },
       getResistances: () => { return monster.resistances || {}; },
       getTriggers: () => { return monster.triggers || [] },
-      getBrain: () => { return monster.brain; },
       getThreatWeights,
-      getLevel: () => { return monster.level || 0; },
       getAttackTable: () => { return monster.attackTable; },
       getPrioritizedAbilities: () => { return monster.prioritizedAbilities||[] },
     });

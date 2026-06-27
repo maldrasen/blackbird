@@ -2,9 +2,8 @@ BaseMonster.register('kobold-runt',{
   name: 'Kobold Runt',
   species: SpeciesCode.kobold,
   genderRatio: { female:100 },
+  type: 'coward',
   triggers:[],
-
-  brain: 'coward',
   level: 1,
 
   attackTable:[

@@ -1,7 +1,6 @@
-MonsterBrain.register('fighter',{
+MonsterType.register('hunter',{
 
   threatWeights: {
-    closest: 50,
     leastArmor: 75,
     leastHealth: 100,
   },
@@ -11,10 +10,10 @@ MonsterBrain.register('fighter',{
   ],
 
   attributeGrowth: {
-    strength: 100,
-    dexterity: 60,
-    vitality: 80,
-    intelligence: 20,
+    strength: 20,
+    dexterity: 100,
+    vitality: 30,
+    intelligence: 50,
     beauty: 10,
   },
 

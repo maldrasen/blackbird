@@ -51,7 +51,7 @@ global.EncounterBuilder = (function() {
   }
 
   // Monsters decide their target based on their threat table, but these tables need to have some value for each
-  // character. The monster brains set different weights on the functions used to determine threat, that way different
+  // character. The monster types set different weights on the functions used to determine threat, that way different
   // monsters will have different target priorities. They could simply target the closest first, or the least armored,
   // or the most injured.
   function populateThreatTables(state) {

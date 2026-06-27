@@ -3,7 +3,7 @@ global.MonsterSystem = (function() {
   // TODO: Rather than having a monster defend if no abilities are available a more advanced option would have it move
   //       to a new position that turn. A monster though should only ever be able to move towards the center or a rank
   //       closer. A monster in the middle position in the back could move to the front rank. This behavior should be
-  //       determined by the brain. Only a front line fighter should attempt to move to the front. In fact, if a ranged
+  //       determined by the type. Only a front line fighter should attempt to move to the front. In fact, if a ranged
   //       monster finds themselves in the front rank they should attempt to move behind another monster if there's
   //       space. If no move is possible than they should defend.
 

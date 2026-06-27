@@ -2,9 +2,8 @@ BaseMonster.register('kobold-dick-puncher',{
   name: 'Kobold Dick Puncher',
   species: SpeciesCode.kobold,
   genderRatio: { male:100 },
+  type: 'fighter',
   triggers:[],
-
-  brain: 'fighter',
   level: 5,
 
   // Adds a preference for attacking men on top of fighter weights.

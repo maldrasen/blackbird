@@ -1,4 +1,4 @@
-MonsterBrain.register('mage',{
+MonsterType.register('mage',{
 
   threatWeights: {
     leastHealth: 100,
