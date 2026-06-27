@@ -323,7 +323,6 @@ global.BattleState = function(data) {
     if (isCharacter(id)) {
       if (skillImprovements[id] == null) { skillImprovements[id] = {}; }
       skillImprovements[id][code] = level;
-      console.log("Skill Improved:",skillImprovements[id]);
     }
   }
 

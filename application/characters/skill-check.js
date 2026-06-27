@@ -81,5 +81,7 @@ global.SkillCheck = function(id, code, mode=RollMode.normal) {
     improveSkill();
   }
 
+  result.mode = mode;
+
   return result;
 }

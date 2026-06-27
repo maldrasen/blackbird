@@ -4,13 +4,9 @@ Ability.register('sneak-attack',{
   targetingMode: TargetingMode.anyEnemy,
 
   canBeUsed: () => {
-
-    // Monster Version...
-    const monster = BattleSystem.getRound().getActingMonster();
-    const basicAttack = monster.getBasicAttack();
-
-    return BattleSystem.getState().hasStatusEffect(monster.getEntity(), 'hidden') && (basicAttack != null);
-
+    const state = BattleSystem.getState()
+    const round = BattleSystem.getRound();
+    return state.hasStatusEffect(round.getActing(),'hidden');
   },
 
   execute: () => {

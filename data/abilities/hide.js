@@ -3,13 +3,13 @@ Ability.register('hide',{
   category: 'basic',
 
   canBeUsed: () => {
-
-    // Monster Version...
     const state = BattleSystem.getState();
     const acting = BattleSystem.getRound().getActing();
+    const hasSkill = SkillsComponent.lookup(acting)['stealth'] > 0;
+    const notHidden = state.hasStatusEffect(acting,'hidden') === false;
+    const inBack = state.isInBack(acting);
 
-    return (state.hasStatusEffect(acting, 'hidden') === false) &&
-      state.isInBack(acting) && (Monster(acting).getSkill('stealth') > 0);
+    return notHidden && inBack && hasSkill;
   },
 
   execute: () => {
