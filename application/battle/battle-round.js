@@ -129,7 +129,7 @@ global.BattleRound = function(acting) {
   // the basic attack) we've already applied the scale to calculate the number of attacks, so we don't want the scale
   // applied twice.
   function addTime(t, applySpeed=true) {
-    time += applySpeed ? (getSpeedFactor() * t) : t;
+    time += Math.ceil(applySpeed ? (getSpeedFactor() * t) : t);
   }
 
   // Each round will need to take some time in order for the battle turns to advance.

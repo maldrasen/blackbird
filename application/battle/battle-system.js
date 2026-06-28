@@ -31,6 +31,18 @@ global.BattleSystem = (function() {
     StatusEffectSystem.processStartRound();
   }
 
+  // Useful function for debugging turn order. Eventually I'd like to just have a turn order widget on the side of the
+  // battle view, although having the order hidden does add a certain uncertainty.
+  function printTurnOrder() {
+    console.log("");
+    console.log("=== Turn Order ===")
+    state.getTurnOrder().forEach(entry => {
+      const name = entry.type === 'character' ? Character(entry.id).getName() : `${Monster(entry.id).getBaseName()} [${state.getPosition(entry.id)}]`;
+      console.log(`[${entry.time}] ${name}`);
+    });
+    console.log("");
+  }
+
   function advanceBattle() {
     startRound();
 
