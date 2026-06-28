@@ -9,12 +9,12 @@ global.ResistRoll = function(target, type, power) {
 
   if (critical === 0) {
     Console.log(`Resist Roll [${target}] - Fumble`,{ system:'BattleSystem', level:3 });
-    return ResistRoll.fail;
+    return ResistResult.fail;
   }
 
   if (critical === 9) {
     Console.log(`Resist Roll [${target}] - Critical`,{ system:'BattleSystem', level:3 });
-    return ResistRoll.pass;
+    return ResistResult.pass;
   }
 
   const resistance = (BattleSystem.getState().isMonster(target)) ?

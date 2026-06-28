@@ -59,6 +59,7 @@ global.Random = (function() {
   // Rolls between the new numbers inclusive, meaning min or max value could be
   // chosen.
   function between(min, max) {
+    if (max <= min) { throw new Error(`Min(${min}) should be less than Max(${max})`); }
     if ($stubQueues.between.length > 0) { return stubbedValue('between',{ min:min, max:max }); }
     return Random.roll(max-min+1,min);
   }

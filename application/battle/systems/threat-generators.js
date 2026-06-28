@@ -54,8 +54,8 @@ global.ThreatGenerators = (function() {
   function killMen(threatTable, weight) {
     BattleSystem.getState().getCharacters().forEach(id => {
       switch (ActorComponent.lookup(id).gender) {
-        case Gender.male: threatTable += Math.round(100 * weight); break;
-        case Gender.futa: threatTable += Math.round(50 * weight); break;
+        case Gender.male: threatTable[id] += Math.round(100 * weight); break;
+        case Gender.futa: threatTable[id] += Math.round(50 * weight); break;
       }
     });
   }
@@ -63,8 +63,8 @@ global.ThreatGenerators = (function() {
   function killWomen(threatTable, weight) {
     BattleSystem.getState().getCharacters().forEach(id => {
       switch (ActorComponent.lookup(id).gender) {
-        case Gender.female: threatTable += Math.round(100 * weight); break;
-        case Gender.futa: threatTable += Math.round(50 * weight); break;
+        case Gender.female: threatTable[id] += Math.round(100 * weight); break;
+        case Gender.futa: threatTable[id] += Math.round(50 * weight); break;
       }
     });
   }

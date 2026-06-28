@@ -17,14 +17,6 @@ global.BattleHelper = (function() {
     }
   }
 
-  function parsePosition(position) {
-    const match = _positionPattern.match(position);
-    if (match) {
-      return { side:match[1], rank:match[2], position:match[3] };
-    }
-    throw new Error(`Invalid Position: ${position}`);
-  }
-
   // Distance between positions returns an object with both rank difference and position difference as the rank
   // (vertical) distance is usually more significant than the position (horizontal) distance.
   function distanceBetweenPositions(p1, p2) {
@@ -65,7 +57,6 @@ global.BattleHelper = (function() {
 
   return Object.freeze({
     isAttackWithinRange,
-    parsePosition,
     distanceBetweenPositions,
     randomHitLocation,
     getRollType,

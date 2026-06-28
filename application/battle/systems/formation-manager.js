@@ -60,7 +60,7 @@ global.FormationManager = (function() {
     if (formation['M.0.3']) { count++ }
     if (formation['M.1.3']) { count++ }
     if (formation['M.0.4']) { count++ }
-    if (formation['M.1.5']) { count++ }
+    if (formation['M.1.4']) { count++ }
     return count;
   }
 

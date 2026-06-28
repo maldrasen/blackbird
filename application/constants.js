@@ -23,8 +23,6 @@ global._positionPattern = /([PM])\.(\d)\.(\d)/;
 global._battleDamageEffectTime = 500;
 global._battleKillEffectTime = 1000;
 
-
-
 // === Dungeon ===
 global._tileSize = 30;
 
@@ -34,5 +32,3 @@ global._scaleThresholds = [100, 600, 3600, 13600, 43600, 103600, 203600, 453600]
 
 // A third flavor of null.
 global._nothing = 'nothing';
-
-
