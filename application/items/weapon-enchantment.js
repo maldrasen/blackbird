@@ -27,8 +27,8 @@ global.WeaponEnchantment = function(enchantment) {
     if (species === enchantment.species) {
       if (ResistRoll(target, DamageType.shock, enchantment.power) === ResistResult.fail) {
         state.addStatus( BattleStatusEffect(target, 'vulnerable', { duration:1 }));
-        round.addMessage({ text:`A spiderweb of glowing blue energy wraps around {S/tar}{T:baseName's}{/S} 
-          {@hitLocation}, the cursed blightning making {T:him} {S/nst}Vulnerable{/S}.` });
+        round.addMessage({ text:`A trail of glowing blue energy burns against {T:targetName's} flesh, the cursemark
+          leaving {T:him} {S/nst}Vulnerable{/S}.` });
       }
     }
   }

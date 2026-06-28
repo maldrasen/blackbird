@@ -40,7 +40,7 @@ global.PhysicalAttackSystem = (function() {
 
     if (BattleSystem.getState().isAlive(target) === false) {
       Console.log(`[${target}] was killed`,{ system:'BattleSystem', level:2 });
-      round.addMessage({ text:`{S/tar}{T:baseName}{/S} was killed!`, color:'important' });
+      round.addMessage({ text:`{T:TargetName} was killed!`, color:'important' });
     }
   }
 
@@ -71,20 +71,20 @@ global.PhysicalAttackSystem = (function() {
 
   function addPoisedStatus(entity, skill) {
     const message = {
-      'dodge': `{S/tar}{T:baseName}{/S} leaps away with stunning agility, and is now {S/pst}Poised{/S} and ready to defend {T:him}self.`,
-      'block': `{S/tar}{T:baseName}{/S} braces {T:him}self, becoming {S/pst}Poised{/S} and harder to hit.`,
-      'parry': `{S/tar}{T:baseName}{/S} flourishes {T:his} blade, {T:his} {S/pst}Poised{/S} stance ready to defend against any attack.`,
+      'dodge': `{T:TargetName}{/T} leaps away with stunning agility, and is now {S/pst}Poised{/S} and ready to defend {T:him}self.`,
+      'block': `{T:TargetName}{/T} braces {T:him}self, becoming {S/pst}Poised{/S} and harder to hit.`,
+      'parry': `{T:TargetName}{/T} flourishes {T:his} blade, {T:his} {S/pst}Poised{/S} stance ready to defend against any attack.`,
     }[skill];
 
     addStatus(entity, 'poised', message);
   }
 
   function addOffBalanceStatus(entity) {
-    addStatus(entity, 'off-balance', `{S/act}{A:baseName's}{/S} clumsy attack leaves {A:him} overextended and {S/nst}Off Balance{/S}.`);
+    addStatus(entity, 'off-balance', `{A:ActingName's} clumsy attack leaves {A:him} overextended and {S/nst}Off Balance{/S}.`);
   }
 
   function addVulnerableStatus(entity) {
-    addStatus(entity, 'vulnerable', `Though the attack missed {S/tar}{T:baseName}{/S}, it left {T:him} in a {S/nst}Vulnerable{/S} position.`);
+    addStatus(entity, 'vulnerable', `Though the attack missed {T:targetName}, it left {T:him} in a {S/nst}Vulnerable{/S} position.`);
   }
 
   function addStatus(entity, code, message) {

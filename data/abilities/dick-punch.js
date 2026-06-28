@@ -64,11 +64,12 @@ function getArmorFactor(target) {
 function addStunEffect(acting, target) {
   const resist = ResistRoll(target,DamageType.shock,AttributesComponent.createWrapper({ id:acting }).getStrength());
   if (resist === ResistResult.fail) {
-    BattleSystem.getRound().addMessage({ text:`{S/tar}{T:baseName}{/S} groans and clutches {T:his} crotch, doubling over in pain.` });
+    BattleSystem.getRound().addMessage({ text:`{T:targetName} groans and clutches {T:his} crotch, doubling over in pain.` });
     BattleSystem.getState().addStatus(BattleStatusEffect(target,'stun',{ duration:1 }));
   }
 }
 
+// TODO: We need some ball crushingly vivid attack text here.
 function getAttackText() {
-  return `{S/act}{A:baseName}{/S} punches {S/tar}{T:baseName}{/S} in the dick.`
+  return `{A:ActingName} punches {T:targetName} in the dick.`
 }

@@ -30,6 +30,7 @@ global.BaseMonster = (function() {
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return monster.name; },
+      getNameType: () => { return monster.nameType || 'common' },
       getSpecies: () => { return monster.species; },
       getGenderRatio,
       getType: () => { return monster.type; },

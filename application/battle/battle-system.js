@@ -37,7 +37,7 @@ global.BattleSystem = (function() {
     console.log("");
     console.log("=== Turn Order ===")
     state.getTurnOrder().forEach(entry => {
-      const name = entry.type === 'character' ? Character(entry.id).getName() : `${Monster(entry.id).getBaseName()} [${state.getPosition(entry.id)}]`;
+      const name = entry.type === 'character' ? Character(entry.id).getName() : `${Monster(entry.id).getBaseMonster().getName()} [${state.getPosition(entry.id)}]`;
       console.log(`[${entry.time}] ${name}`);
     });
     console.log("");

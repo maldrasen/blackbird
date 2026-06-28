@@ -4,7 +4,6 @@ global.Monster = function(id) {
   function getBaseMonster() { return BaseMonster.lookup(monsterComponent().code); }
   function getType() { return MonsterType.lookup(getBaseMonster().getType()); }
   function getBasicAttack() { return monsterComponent().basicAttack; }
-  function getBaseName() { return getBaseMonster().getName(); }
   function getSpecies() { return getBaseMonster().getSpecies(); }
   function getSkill(code) { return SkillsComponent.lookup(id)[code]; }
 
@@ -82,7 +81,6 @@ global.Monster = function(id) {
   return Object.freeze({
     getEntity: () => { return id },
     getBaseMonster,
-    getBaseName,
     getType,
     getBasicAttack,
     getResistance,

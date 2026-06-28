@@ -39,8 +39,16 @@ global.ActorLoom = (function() {
       case `name`: return Character(id).getName();
       case `name's`: return EnglishHelper.possessive(Character(id).getName());
       case `fullName`: return Character(id).getFullName();
-      case `baseName`: return findBaseName(id);
-      case `baseName's`: return EnglishHelper.possessive(findBaseName(id));
+
+      case `actingName`: return compileName(id, 'act', false);
+      case `actingName's`: return EnglishHelper.possessive(compileName(id, 'act', false));
+      case `ActingName`: return compileName(id, 'act', true);
+      case `ActingName's`: return EnglishHelper.possessive(compileName(id, 'act', true));
+      case `targetName`: return compileName(id, 'tar', false);
+      case `targetName's`: return EnglishHelper.possessive(compileName(id, 'tar', false));
+      case `TargetName`: return compileName(id, 'tar', true);
+      case `TargetName's`: return EnglishHelper.possessive(compileName(id, 'tar', true));
+
       default: return Weaver({}).formatWarning(`[Actor:${token}]`)
     }
   }
@@ -61,14 +69,25 @@ global.ActorLoom = (function() {
   // Monsters have both names and base names because the monster factory builds the monster with an actor component.
   // (Which has the actor name) In the battle UI though it doesn't make sense to call monsters by their first name, so
   // we call them by the name of the base monster they're derived from. The attack text is used by both the characters
-  // and monsters though, so when the attack text is for a character we use the character's actual name.
-  function findBaseName(id) {
-    return MonsterComponent.lookup(id) ? Monster(id).getBaseName() : Character(id).getName();
+  // and monsters though, so when the attack text is for a character we use the character's actual name. Also, monsters
+  // can have common names like "Kobold Dick Puncher" or proper names like "Old Greg" so this function prefixes common
+  // names with "the" so that they read better. The 'tag' is used to color the name text, and is optional.
+  function compileName(id, tag=null, capitalize=false) {
+    const the = capitalize ? 'The' : 'the';
+    const start = tag ? `{S/${tag}}` : '';
+    const end = tag ? `{/S}` : '';
+
+    if (MonsterComponent.lookup(id)) {
+      const base = Monster(id).getBaseMonster();
+      return (base.getNameType() === 'proper') ? `${start}${base.getName()}${end}` : `${the} ${start}${base.getName()}${end}`
+    }
+
+    return `${start}${Character(id).getName()}${end}`;
   }
 
   return Object.freeze({
     weave,
-    findBaseName,
+    compileName,
   });
 
 })();

@@ -19,7 +19,7 @@ Ability.register('hide',{
 
     const observers = StealthSystem.getObservers(round.getActingPosition());
     const stealthRoll = SkillCheck(acting,'stealth');
-    const weaver = Weaver({ C:acting });
+    const weaver = Weaver({ A:acting });
 
     let isHidden = true;
     let message;
@@ -29,13 +29,13 @@ Ability.register('hide',{
       if (isHidden && check > stealthRoll.value) {
         isHidden = false;
         message = {
-          text: weaver.weave(`{C:baseName} tries to hide, but ${ActorLoom.findBaseName(observer.id)} spots {C:him}.`)
+          text: weaver.weave(`{A:ActingName} tries to hide, but ${ActorLoom.compileName(observer.id)} spots {A:him}.`)
         };
       }
     });
 
     if (isHidden) {
-      message = { text: weaver.weave(`{C:baseName} hides in the shadows.`) };
+      message = { text: weaver.weave(`{A:ActingName} hides in the shadows.`) };
       state.addStatus(BattleStatusEffect(acting,'hidden'));
     }
 
