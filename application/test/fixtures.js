@@ -11,7 +11,9 @@ global.Fixtures = (function() {
   }
 
   function setupDungeon() {
+    BattleFixtures.prepareForBattle();
     DungeonSystem.createDungeon();
+    DungeonSystem.setLevel(1);
     GameState.setGameMode(GameMode.dungeon);
   }
 
