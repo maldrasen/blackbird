@@ -11,7 +11,7 @@ Ability.register('use-item',{
     const round = BattleSystem.getRound();
 
     round.clearTarget();
-    round.setTime(500);
+    round.addTime(1000);
     round.addMessage({ text:`TODO: {A:name} uses item...` });
   },
 

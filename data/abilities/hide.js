@@ -40,7 +40,7 @@ Ability.register('hide',{
     }
 
     round.clearTarget();
-    round.setTime(1000);
+    round.addTime(1000);
     round.addMessage(message);
   },
 

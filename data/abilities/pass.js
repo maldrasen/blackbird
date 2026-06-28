@@ -16,7 +16,7 @@ Ability.register('pass',{
     const state = BattleSystem.getState();
     const acting = round.getActing();
 
-    round.setTime(500);
+    round.addTime(1000,false);
 
     if (state.hasStatusEffect(acting,'stun')) {
       const duration = state.getStatusEffects(acting)['stun'].getDuration();

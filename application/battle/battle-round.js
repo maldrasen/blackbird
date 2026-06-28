@@ -10,7 +10,7 @@ global.BattleRound = function(acting) {
   let secondaryWeapon = {};
   let target;
   let targetPosition;
-  let time;
+  let time = 0;
   let ability;
 
   function setAbility(code) {
@@ -83,14 +83,6 @@ global.BattleRound = function(acting) {
     if (secondaryWeapon.base == null) { secondaryWeapon = null; }
   }
 
-  // TODO: We need to determine how the speed factor is calculated. It think we should only need this for the acting
-  //       character. Speed effects how long actions take, but I don't think it effects anything else. If we want
-  //       speed to give characters a bonus to evation or something we should add that to the haste status effect
-  //       rather than tying it to the actual action speed.
-  function getSpeedFactor() {
-    return 1;
-  }
-
   function setTarget(id) {
     target = id;
     targetPosition = state.getPosition(id);
@@ -125,16 +117,24 @@ global.BattleRound = function(acting) {
     messages.push(message);
   }
 
+  // ==========
+  //    Time
+  // ==========
+
+  function getSpeedFactor() {
+    return CacheComponent.lookup(acting).speedFactor;
+  }
+
   // When the action time is set we usually want to apply the standard time scale. Sometimes though (as in the case of
   // the basic attack) we've already applied the scale to calculate the number of attacks, so we don't want the scale
   // applied twice.
-  function setTime(t, applySpeed=true) {
-    time = applySpeed ? (getSpeedFactor() * t) : t;
+  function addTime(t, applySpeed=true) {
+    time += applySpeed ? (getSpeedFactor() * t) : t;
   }
 
   // Each round will need to take some time in order for the battle turns to advance.
   function validate() {
-    if (time == null) {
+    if (time === 0) {
       throw new Error(`BattleRound.time was not set by the ${ability} ability.`)
     }
   }
@@ -152,7 +152,6 @@ global.BattleRound = function(acting) {
     compileWeaponData,
     getPrimaryWeapon: () => { return primaryWeapon; },
     getSecondaryWeapon: () => { return secondaryWeapon; },
-    getSpeedFactor,
 
     setTarget,
     setTargetPosition,
@@ -165,7 +164,8 @@ global.BattleRound = function(acting) {
     addMessage,
     getMessages: () => { return messages; },
 
-    setTime,
+    getSpeedFactor,
+    addTime,
     getTime: () => { return time; },
     validate,
   });

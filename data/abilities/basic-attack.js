@@ -43,8 +43,6 @@ function executeBasicAttack() {
   const target = round.getTarget();
   const attacks = calculateAttacks();
 
-  round.setTime(totalTime(attacks),false);
-
   const rolls = attacks.map(attack => {
     const attackRoll = PhysicalAttackRoll(acting, target, attack);
     const defendRoll = DefendRoll(target, acting, attackRoll);
@@ -63,6 +61,8 @@ function executeBasicAttack() {
 
     if (state.isAlive(context.T)) {
       round.addMessage({ text:attackText }, Weaver(context));
+      round.addTime(roll.attack.getBaseWeapon().getSpeed());
+
       (roll.attack.getFinalValue() > roll.defend.getFinalValue()) ?
         PhysicalAttackSystem.processHit(roll.attack, roll.defend):
         PhysicalAttackSystem.processMiss(roll.attack, roll.defend);
@@ -105,7 +105,6 @@ function calculateAttacks() {
       name: weapon.name,
       textKey: weapon.textKey,
       hand: hand,
-      time: strikeTime
     });
 
     time += strikeTime;
@@ -113,12 +112,6 @@ function calculateAttacks() {
   }
 
   return attacks;
-}
-
-function totalTime(attacks) {
-  return attacks.reduce((total, attack) => {
-    return total + attack.time
-  },0);
 }
 
 // Because the context needs to include the hit location, crit, and fumble states, it will be different for each

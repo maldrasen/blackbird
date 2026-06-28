@@ -19,9 +19,9 @@ Ability.register('dick-punch',{
     const attackRoll = PhysicalAttackRoll(acting, target, round.getPrimaryWeapon(), EquipmentSlot.legs);
     const defendRoll = DefendRoll(target, acting, attackRoll);
 
-    round.setTime(400);
+    round.addTime(500);
     round.addMessage({ text:getAttackText() });
-    state.setCooldown(acting, 'dick-punch', 800);
+    state.setCooldown(acting, 'dick-punch', 1000);
 
     if (attackRoll.getFinalValue() > defendRoll.getFinalValue()) {
       const armorFactor = getArmorFactor(target);
@@ -32,7 +32,6 @@ Ability.register('dick-punch',{
       PhysicalAttackSystem.processMiss(attackRoll, defendRoll);
     }
   }
-
 });
 
 // Dick punch does extra damage to larger cocks, based on the cock size category rather than absolute length.

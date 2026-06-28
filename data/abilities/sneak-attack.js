@@ -19,7 +19,7 @@ Ability.register('sneak-attack',{
 
     PhysicalAttackSystem.updateContext(attackRoll);
 
-    round.setTime(BaseWeapon.lookup(weapon.base).getSpeed());
+    round.addTime(BaseWeapon.lookup(weapon.base).getSpeed());
     round.addMessage({ text:getAttackText(weapon) });
 
     const actualHitValue = attackRoll.getFinalValue() * getSneakAttackAccuracyBonus(acting);
