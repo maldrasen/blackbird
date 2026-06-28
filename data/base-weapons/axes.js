@@ -1,6 +1,6 @@
 
 BaseWeapon.register('hatchet', {
-  name: 'Hatchet',
+  name: 'hatchet',
   type: 'axe',
   damageType: DamageType.slash,
   hands: WeaponHandedness.one,
@@ -11,7 +11,7 @@ BaseWeapon.register('hatchet', {
 });
 
 BaseWeapon.register('cleaver', {
-  name: 'Cleaver',
+  name: 'cleaver',
   type: 'axe',
   damageType: DamageType.slash,
   hands: WeaponHandedness.one,
@@ -22,7 +22,7 @@ BaseWeapon.register('cleaver', {
 });
 
 BaseWeapon.register('hand-axe', {
-  name: 'Hand Axe',
+  name: 'hand axe',
   type: 'axe',
   damageType: DamageType.slash,
   hands: WeaponHandedness.one,
@@ -33,7 +33,7 @@ BaseWeapon.register('hand-axe', {
 });
 
 BaseWeapon.register('broad-axe', {
-  name: 'Broad Axe',
+  name: 'broad axe',
   type: 'axe',
   damageType: DamageType.slash,
   hands: WeaponHandedness.main,
@@ -44,7 +44,7 @@ BaseWeapon.register('broad-axe', {
 });
 
 BaseWeapon.register('war-axe', {
-  name: 'War Axe',
+  name: 'war axe',
   type: 'axe',
   damageType: DamageType.slash,
   hands: WeaponHandedness.main,
@@ -55,7 +55,7 @@ BaseWeapon.register('war-axe', {
 });
 
 BaseWeapon.register('goosewing', {
-  name: 'Goosewing',
+  name: 'goosewing',
   type: 'axe',
   damageType: DamageType.slash,
   hands: WeaponHandedness.two,
@@ -66,7 +66,7 @@ BaseWeapon.register('goosewing', {
 });
 
 BaseWeapon.register('battle-axe', {
-  name: 'Battle Axe',
+  name: 'battle axe',
   type: 'axe',
   damageType: DamageType.slash,
   hands: WeaponHandedness.two,
@@ -77,7 +77,7 @@ BaseWeapon.register('battle-axe', {
 });
 
 BaseWeapon.register('labrys', {
-  name: 'Labrys',
+  name: 'labrys',
   type: 'axe',
   damageType: DamageType.slash,
   hands: WeaponHandedness.two,

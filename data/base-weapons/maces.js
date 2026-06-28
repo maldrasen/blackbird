@@ -1,6 +1,6 @@
 
 BaseWeapon.register('hammer', {
-  name: 'Hammer',
+  name: 'hammer',
   type: 'mace',
   damageType: DamageType.crush,
   hands: WeaponHandedness.one,
@@ -11,7 +11,7 @@ BaseWeapon.register('hammer', {
 });
 
 BaseWeapon.register('mace', {
-  name: 'Mace',
+  name: 'mace',
   type: 'mace',
   damageType: DamageType.crush,
   hands: WeaponHandedness.one,
@@ -22,7 +22,7 @@ BaseWeapon.register('mace', {
 });
 
 BaseWeapon.register('warhammer', {
-  name: 'Warhammer',
+  name: 'warhammer',
   type: 'mace',
   damageType: DamageType.crush,
   hands: WeaponHandedness.primary,
@@ -33,7 +33,7 @@ BaseWeapon.register('warhammer', {
 });
 
 BaseWeapon.register('morning-star', {
-  name: 'Morning Star',
+  name: 'morning star',
   type: 'mace',
   damageTypes: [
     { type:DamageType.crush, percent:50 },
@@ -47,7 +47,7 @@ BaseWeapon.register('morning-star', {
 });
 
 BaseWeapon.register('maul', {
-  name: 'Maul',
+  name: 'maul',
   type: 'mace',
   damageType: DamageType.crush,
   hands: WeaponHandedness.two,

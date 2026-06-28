@@ -1,6 +1,6 @@
 
 BaseWeapon.register('spear', {
-  name: 'Spear',
+  name: 'spear',
   type: 'polearm',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.two,

@@ -67,6 +67,8 @@ global.PhysicalAttackSystem = (function() {
     const round = BattleSystem.getRound();
     round.addToContext('hitLocation',attackRoll.getHitLocation());
     round.addToContext('weaponName', attackRoll.getWeaponName());
+    round.addToContext('baseWeapon', attackRoll.getBaseWeaponCode());
+    round.addToContext('weapon', attackRoll.getWeaponId());
   }
 
   function addPoisedStatus(entity, skill) {

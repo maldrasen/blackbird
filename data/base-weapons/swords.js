@@ -8,7 +8,7 @@
 // Broadsword
 
 BaseWeapon.register('longsword', {
-  name: 'Longsword',
+  name: 'longsword',
   type: 'sword',
   damageType: DamageType.slash,
   hands: WeaponHandedness.main,

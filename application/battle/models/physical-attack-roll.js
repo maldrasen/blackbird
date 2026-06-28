@@ -16,11 +16,6 @@ global.PhysicalAttackRoll = function(attacker, target, weaponData, hitLocation=n
     textKey = (weapon != null) ? weapon.getTextKey() : baseWeapon.getTextKey();
   }
 
-  let weaponName = weaponData.name;
-  if (weaponName == null) {
-    weaponName = (weapon != null) ? weapon.getName() : baseWeapon.getName();
-  }
-
   // TODO: The attack roll will need to take all of the status effects and feats and whatever into consideration
   //       to turn the check value into a final value.
 
@@ -33,15 +28,17 @@ global.PhysicalAttackRoll = function(attacker, target, weaponData, hitLocation=n
   Console.log(`Attack Roll [${attacker}]`,{ system:'BattleSystem', level:3, data:{ check, finalValue }});
 
   return Object.freeze({
-    getHitLocation: () => { return hitLocation; },
+    getWeaponName: () => { return weaponData.name; },
     getBaseWeapon: () => { return baseWeapon; },
+    getBaseWeaponCode: () => { return weaponData.base },
     getWeapon: () => { return weapon; },
+    getWeaponId: () => { return weaponData.id || null },
+    getHitLocation: () => { return hitLocation; },
     getRollValue: () => { return check.value; },
     isCrit: () => { return check.crit === true; },
     isFumble: () => { return check.fumble === true; },
     getFinalValue: () => { return finalValue },
     getTextKey: () => { return textKey; },
-    getWeaponName: () => { return weaponName; },
   });
 
 }

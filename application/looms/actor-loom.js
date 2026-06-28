@@ -40,14 +40,14 @@ global.ActorLoom = (function() {
       case `name's`: return EnglishHelper.possessive(Character(id).getName());
       case `fullName`: return Character(id).getFullName();
 
-      case `actingName`: return compileName(id, 'act', false);
-      case `actingName's`: return EnglishHelper.possessive(compileName(id, 'act', false));
-      case `ActingName`: return compileName(id, 'act', true);
-      case `ActingName's`: return EnglishHelper.possessive(compileName(id, 'act', true));
-      case `targetName`: return compileName(id, 'tar', false);
-      case `targetName's`: return EnglishHelper.possessive(compileName(id, 'tar', false));
-      case `TargetName`: return compileName(id, 'tar', true);
-      case `TargetName's`: return EnglishHelper.possessive(compileName(id, 'tar', true));
+      case `actingName`:   return compileName(id, 'act', false, false);
+      case `actingName's`: return compileName(id, 'act', false, true);
+      case `ActingName`:   return compileName(id, 'act', true,  false);
+      case `ActingName's`: return compileName(id, 'act', true,  true);
+      case `targetName`:   return compileName(id, 'tar', false, false);
+      case `targetName's`: return compileName(id, 'tar', false, true);
+      case `TargetName`:   return compileName(id, 'tar', true,  false);
+      case `TargetName's`: return compileName(id, 'tar', true,  true);
 
       default: return Weaver({}).formatWarning(`[Actor:${token}]`)
     }
@@ -56,12 +56,13 @@ global.ActorLoom = (function() {
   function speciesValue(id, token) {
     const actor = ActorComponent.lookup(id);
     const species = Species.lookup(actor.species);
-    switch (token) {
-      case `elf`: return species.getName().toLocaleLowerCase();
-      case `elves`: return EnglishHelper.pluralize(species.getName()).toLocaleLowerCase();
-      case `elven`: return species.getAdjective().toLocaleLowerCase();
-      case `anElf`: return EnglishHelper.a_an(species.getName());
+    const name = species.getName();
 
+    switch (token) {
+      case `elf`: return name.toLocaleLowerCase();
+      case `elves`: return EnglishHelper.pluralize(name).toLocaleLowerCase();
+      case `elven`: return species.getAdjective().toLocaleLowerCase();
+      case `anElf`: return `${EnglishHelper.a_an(name)} ${name}`;
       default: return Weaver({}).formatWarning(`[Species:${token}]`);
     }
   }
@@ -72,17 +73,20 @@ global.ActorLoom = (function() {
   // and monsters though, so when the attack text is for a character we use the character's actual name. Also, monsters
   // can have common names like "Kobold Dick Puncher" or proper names like "Old Greg" so this function prefixes common
   // names with "the" so that they read better. The 'tag' is used to color the name text, and is optional.
-  function compileName(id, tag=null, capitalize=false) {
+  function compileName(id, tag, capitalize, possessive) {
     const the = capitalize ? 'The' : 'the';
     const start = tag ? `{S/${tag}}` : '';
     const end = tag ? `{/S}` : '';
 
     if (MonsterComponent.lookup(id)) {
       const base = Monster(id).getBaseMonster();
-      return (base.getNameType() === 'proper') ? `${start}${base.getName()}${end}` : `${the} ${start}${base.getName()}${end}`
+      const name = possessive ? EnglishHelper.possessive(base.getName()) : base.getName()
+      return (base.getNameType() === 'proper') ? `${start}${name}${end}` : `${the} ${start}${name}${end}`
     }
 
-    return `${start}${Character(id).getName()}${end}`;
+    const character = Character(id);
+    const name = possessive ? EnglishHelper.possessive(character.getName()) : character.getName()
+    return `${start}${name}${end}`;
   }
 
   return Object.freeze({

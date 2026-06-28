@@ -91,7 +91,7 @@ global.BreastsLoom = (function() {
     if (token === 'anApple') {
       const comparison = BreastsDescriber.sizeShapeComparison(shape, volume);
       if (comparison == null) { return `[Comparison:${shape},${volume}]` }
-      return EnglishHelper.a_an(comparison);
+      return `${EnglishHelper.a_an(comparison)} ${comparison}`;
     }
 
     return Weaver.formatWarning(`[Breasts:${token}]`);

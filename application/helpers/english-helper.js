@@ -41,19 +41,11 @@ global.EnglishHelper = (function() {
   }
 
   // Simple possessive logic that works for most words. (Add exceptions to this when we find them.)
-  function possessive(word) {
-    return word.endsWith('s') ? `${word}'` : `${word}'s`;
-  }
+  function possessive(word) { return word.endsWith('s') ? `${word}'` : `${word}'s`; }
 
-  // Prepends 'a' or 'an' to the beginning of the string.
-  function a_an(string) {
-    return string.match(/^[aeiou]/i) ? `an ${string}` : `a ${string}`;
-  }
-
-  // Prepends 'A' or 'An' to the beginning of the string.
-  function A_An(string) {
-    return string.match(/^[aeiou]/i) ? `An ${string}` : `A ${string}`;
-  }
+  // These no longer prepend because the weapon names inject a style tag between the "a" and the name.
+  function a_an(string) { return string.match(/^[aeiou]/i) ? `an` : `a`; }
+  function A_An(string) { return string.match(/^[aeiou]/i) ? `An` : `A`; }
 
   // Returns a positive number in English. If a 'whenOne' option is specified then that is returned for 'one' in cases
   // where "a" or "an" would sound better in a phrase, i.e. 'a big black cock' is better than 'one big black cock'. The

@@ -126,6 +126,8 @@ function buildAttackContext(roll) {
     T: round.getTarget(),
     hitLocation: attackRoll.getHitLocation(),
     weaponName: attackRoll.getWeaponName(),
+    baseWeapon: attackRoll.getBaseWeaponCode(),
+    weapon: attackRoll.getWeaponId(),
   };
 
   if (attackRoll.isCrit()) { context.attack = 'crit'; }

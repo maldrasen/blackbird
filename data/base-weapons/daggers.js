@@ -1,6 +1,6 @@
 
 BaseWeapon.register('knife', {
-  name: 'Knife',
+  name: 'knife',
   type: 'dagger',
   damageTypes: [
     { type:DamageType.slash, percent:60 },
@@ -15,7 +15,7 @@ BaseWeapon.register('knife', {
 });
 
 BaseWeapon.register('dirk', {
-  name: 'Dirk',
+  name: 'dirk',
   type: 'dagger',
   damageTypes: DamageType.pierce,
   hands: WeaponHandedness.one,
@@ -27,7 +27,7 @@ BaseWeapon.register('dirk', {
 });
 
 BaseWeapon.register('dagger', {
-  name: 'Dagger',
+  name: 'dagger',
   type: 'dagger',
   damageTypes: [
     { type:DamageType.slash, percent:60 },
@@ -42,7 +42,7 @@ BaseWeapon.register('dagger', {
 });
 
 BaseWeapon.register('poignard', {
-  name: 'Poignard',
+  name: 'poignard',
   type: 'dagger',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.one,
@@ -54,7 +54,7 @@ BaseWeapon.register('poignard', {
 });
 
 BaseWeapon.register('baselard', {
-  name: 'Baselard',
+  name: 'baselard',
   type: 'dagger',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.one,
@@ -66,7 +66,7 @@ BaseWeapon.register('baselard', {
 });
 
 BaseWeapon.register('stiletto', {
-  name: 'Stiletto',
+  name: 'stiletto',
   type: 'dagger',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.one,

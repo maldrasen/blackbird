@@ -83,7 +83,13 @@ global.Weaver = function(context) {
   }
 
   function functionValue(name, argumentList) {
-    return formatWarning(`[${name}(${JSON.stringify(argumentList)})]`)
+    try {
+      return FunctionLoom.weave(context, name, argumentList);
+    }
+    catch (error) {
+      onError('Function', error, { context, name, argumentList });
+      return formatError(`[${name}(${argumentList.join(',')})]`);
+    }
   }
 
   function utilityValue(utility, argument) {
@@ -97,6 +103,7 @@ global.Weaver = function(context) {
   }
 
   // TODO: Define these colors somewhere else.
+  // TODO: Weapon color should use the rarity of the weapon, which the 'hisWeaponName' function loom should have.
   function styleFor(key) {
     switch(key) {
       case 'abl': return `color: rgb(160,120,150)`; // Ability
@@ -104,6 +111,7 @@ global.Weaver = function(context) {
       case 'pst': return `color: rgb(120,190,110)`; // Positive Status
       case 'nst': return `color: rgb(190,100,180)`; // Negative Status
       case 'tar': return `color: rgb(200,150,120)`; // Target
+      case 'wep': return `color: rgb(100,150,60)`;  // Weapon
       default: return `color:red`;
     }
   }

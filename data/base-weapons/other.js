@@ -1,6 +1,6 @@
 
 BaseWeapon.register('fist', {
-  name: 'Fist',
+  name: 'fist',
   type: 'fist',
   damageType: DamageType.crush,
   hands: WeaponHandedness.one,
