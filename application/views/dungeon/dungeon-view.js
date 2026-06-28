@@ -6,14 +6,19 @@ global.DungeonView = (function() {
 
   function show() {
     MainContent.setMainContent("views/dungeon.html");
+    drawDungeon();
+  }
 
-    // TODO: Should actually center this once we know the dimensions
+  // TODO: The Viewport should be centered this once we know the dimensions
+  function drawDungeon() {
+    DungeonFloorView.drawDungeon();
     DungeonViewport.setLocation({ x:0, y:0 });
   }
 
   return Object.freeze({
     init,
     show,
+    drawDungeon,
   });
 
 })();

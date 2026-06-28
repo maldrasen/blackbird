@@ -15,7 +15,7 @@ global.DungeonSystem = (function() {
   function setLevel(level) {
     Console.log("Changing Level",{ system:'DungeonSystem', level:1, data:{ level }});
     dungeonFloor = DungeonFloor(level);
-    FloorFactory.buildFloor();
+    FloorFactory().buildFloor();
   }
 
   return Object.freeze({

@@ -66,9 +66,8 @@ global.MainMenu = (function() {
     const stateOptions = {};
 
     let setup;
-    if (fixture === 'battle') { setup = Fixtures.setupBattle; }
     if (fixture === 'dungeon') { setup = Fixtures.setupDungeon; }
-    if (fixture === 'feature') { setup = Fixtures.setupFeature; }
+    if (fixture === 'battle') { setup = Fixtures.setupBattle; }
     if (fixture === 'training') { setup = Fixtures.setupTraining; }
     if (fixture === 'reports') { setup = ReportFixture.show; }
     if (setup == null) { throw new Error(`Bad fixture code: ${fixture}`); }

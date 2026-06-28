@@ -1,18 +1,13 @@
-global.Feature = () => {
+global.Feature = function(type) {
 
   const rooms = [];
   const doors = [];
 
   let position;
-  let footprint;
 
   // Set the position of the feature within the floor.
   function setPosition(x,y) {
     position = [x,y];
-  }
-
-  function compileFootprint() {
-    throw new Error(`Implement compileFootprint()`);
   }
 
   function getBounds() {
@@ -21,12 +16,13 @@ global.Feature = () => {
   }
 
   return Object.freeze({
+    getType: () => { return type; },
     getRooms: () => { return [...rooms]; },
     getDoors: () => { return [...doors]; },
     addRoom: (room) => { rooms.push(room); },
     addDoor: (door) => { doors.push(door); },
     setPosition,
-    compileFootprint,
+    getPosition: () => { return [...position]; },
     getBounds,
   });
 }

@@ -1,13 +1,111 @@
-global.FloorFactory = (function() {
+global.FloorFactory = function() {
+  const floor = DungeonSystem.getDungeonFloor();
+  const theme = DungeonTheme.lookup(floor.getTheme());
+  const grid = buildGrid();
+  const features = [];
 
   function buildFloor() {
-    const floor = DungeonSystem.getDungeonFloor();
-    console.log("=== Build Floor ===");
-    console.log(`Level:${floor.getLevel()} Theme:${floor.getTheme()}`);
+    placeFeatures();
+
+    floor.setFeatures(features);
   }
+
+  // =======================
+  //    Feature Placement
+  // =======================
+
+  // This placement strategy builds a super dense dungeon. We randomly add features to the dungon, randomizing their
+  // positions and checking to see if they fit. Once 1000 features fail to fit into the dungeon we stop trying to add
+  // more features. Probably the least efficient way to do this, but still fast enough to not be noticible.
+
+  function placeFeatures() {
+    let guard = 0
+
+    while(guard < 1000) {
+      const feature = theme.getRandomFeature();
+      setRandomPosition(feature);
+
+      if (featureCanFit(feature)) {
+        placeFeature(feature);
+        features.push(feature);
+      }
+      else {
+        guard += 1;
+      }
+    }
+
+    Console.log(`Created a Dungeon Floor [level:${floor.getLevel()}/${floor.getTheme()}] - Features:${features.length}`);
+  }
+
+  function featureCanFit(feature) {
+    const rooms = feature.getRooms();
+
+    for (let i=0; i<rooms.length; i++) {
+      if (boxCanFit(feature.getPosition(), rooms[i].getMainBox()) === false) { return false; }
+      if (boxCanFit(feature.getPosition(), rooms[i].getSubBox()) === false) { return false; }
+    }
+
+    return true;
+  }
+
+  function boxCanFit(position, box) {
+    if (box != null) {
+      const xMin = position[0] + box.x;
+      const xMax = position[0] + box.x + box.width;
+      const yMin = position[1] + box.y;
+      const yMax = position[1] + box.y + box.height;
+
+      for (let y=yMin; y<yMax; y++) {
+        for (let x=xMin; x<xMax; x++) {
+          if (grid[y][x] != null) { return false; }
+        }
+      }
+    }
+
+    return true;
+  }
+
+  function placeFeature(feature) {
+    feature.getRooms().forEach(room => {
+      placeBox(feature.getPosition(), room.getMainBox());
+      placeBox(feature.getPosition(), room.getSubBox());
+    });
+  }
+
+  function placeBox(position, box) {
+    if (box != null) {
+      const xMin = position[0] + box.x;
+      const xMax = position[0] + box.x + box.width;
+      const yMin = position[1] + box.y;
+      const yMax = position[1] + box.y + box.height;
+
+      for (let y=yMin; y<yMax; y++) {
+        for (let x=xMin; x<xMax; x++) {
+          grid[y][x] = 'X'
+        }
+      }
+    }
+  }
+
+  function setRandomPosition(feature) {
+    const bounds = feature.getBounds();
+    const xPos = Random.between(0,getFloorSize() - bounds.xMax);
+    const yPos = Random.between(0,getFloorSize() - bounds.yMax);
+    feature.setPosition(xPos,yPos);
+  }
+
+  function buildGrid() {
+    const g = new Array(getFloorSize());
+    for (let y=0; y<getFloorSize(); y++) { g[y] = new Array(getFloorSize()); }
+    return g;
+  }
+
+  // Theoretically the size of the floor should come from the floor theme, as well as any specific building and room
+  // layout instructions. For now we can assume a 100x100 dungeon using the standard layout algorithm.
+  function getFloorSize() { return 50; }
 
   return Object.freeze({
     buildFloor,
-  })
+  });
 
-})();
+};

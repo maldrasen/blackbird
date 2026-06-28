@@ -13,25 +13,17 @@
   }
   #dungeonFloor {
     position: absolute;
-    height: 200px;
-    width: 200px;
+    height: 800px;
+    width: 800px;
     background-color: rgb(60,60,60);
   }
 }
 
-.feature-widget {
+#dungeonFloor .feature {
   position: absolute;
 
-  box-sizing: border-box;
-
-  .room-container {
-    border: variables.$border-normal;
-  }
   .room-box {
     position: absolute;
-    background-color: rgba(80,70,60,0.2);
-  }
-
-  .hidden-room {
+    background-color: #222;
   }
 }

@@ -4,7 +4,6 @@ global.Room = () => {
   let mainBox;
   let subBox;
   let position = [0,0];
-  let footprint;
 
   // Main box is always placed at (0,0);
   function setMainBox(width, height) {
@@ -81,10 +80,9 @@ global.Room = () => {
   }
 
   return Object.freeze({
-    getSubBox: () => { return { ...subBox }; },
-    getMainBox: () => { return { ...mainBox }; },
+    getSubBox: () => { return subBox ? { ...subBox } : null; },
+    getMainBox: () => { return mainBox ? { ...mainBox } : null; },
     getPosition: () => { return position; },
-    getFootprint: () => { return footprint; },
     setMainBox,
     setSubBox,
     setPosition,
