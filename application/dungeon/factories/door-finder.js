@@ -2,9 +2,11 @@ global.DoorFinder = function(grid) {
   const floor = DungeonSystem.getDungeonFloor();
   const floorHeight = floor.getFloorHeight();
   const floorWidth = floor.getFloorWidth();
-  const features = floor.getFeatures();
+  const connections = FeatureGraph();
+
+  // The doors object is a list of doors that we have selected to connect all the adjacent rooms. There should only
+  // ever be one door between two rooms. The door key is a string `{FROM}-{TO}`, where from is less than to.
   const doors = {};
-  const connections = {};
 
   function execute() {
     for (let y=0; y<floorHeight; y++) {
@@ -45,11 +47,7 @@ global.DoorFinder = function(grid) {
     const key = (from < to) ? `${from}-${to}` : `${to}-${from}`;
     if (doors[key] == null) { doors[key] = [] }
     doors[key].push(Door({x,y},direction,from,to))
-
-    if (connections[from] == null) { connections[from] = []; }
-    if (connections[to] == null) { connections[to] = []; }
-    if (connections[from].includes(to) === false) { connections[from].push(to); }
-    if (connections[to].includes(from) === false) { connections[to].push(from); }
+    connections.addEdge(from,to);
   }
 
   return Object.freeze({

@@ -69,10 +69,10 @@ global.FeaturePlacer = function() {
 
   function boxCanFit(position, box) {
     if (box != null) {
-      const xMin = position[0] + box.x;
-      const xMax = position[0] + box.x + box.width;
-      const yMin = position[1] + box.y;
-      const yMax = position[1] + box.y + box.height;
+      const xMin = position.x + box.x;
+      const xMax = position.x + box.x + box.width;
+      const yMin = position.y + box.y;
+      const yMax = position.y + box.y + box.height;
 
       for (let y=yMin; y<yMax; y++) {
         for (let x=xMin; x<xMax; x++) {
@@ -93,10 +93,10 @@ global.FeaturePlacer = function() {
 
   function placeBox(index, position, box) {
     if (box != null) {
-      const xMin = position[0] + box.x;
-      const xMax = position[0] + box.x + box.width;
-      const yMin = position[1] + box.y;
-      const yMax = position[1] + box.y + box.height;
+      const xMin = position.x + box.x;
+      const xMax = position.x + box.x + box.width;
+      const yMin = position.y + box.y;
+      const yMax = position.y + box.y + box.height;
 
       for (let y=yMin; y<yMax; y++) {
         for (let x=xMin; x<xMax; x++) {

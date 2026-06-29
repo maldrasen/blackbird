@@ -10,10 +10,15 @@ global.FloorFactory = function() {
     const [connections,doors] = DoorFinder(grid).execute();
     floor.setDoors(doors);
 
-    // Disable a few doors where there are too many connections
+    const forest = connections.getSpanningForest();
+
+    forest.forEach(island => {
+      console.log(`[Island] ${JSON.stringify(island.getVertices())}`);
+    })
 
     // Now connect disconnected areas.
     // Will need to be able to add tunnels between rooms, adding a new room type that snakes through the empty space.
+    // Finally prune redundant doors.
   }
 
   return Object.freeze({
