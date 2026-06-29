@@ -91,6 +91,7 @@
     "application/dungeon/dungeon-system.js",
     "application/dungeon/factories/corridor-factory.js",
     "application/dungeon/factories/door-finder.js",
+    "application/dungeon/factories/feature-graph-helper.js",
     "application/dungeon/factories/feature-placer.js",
     "application/dungeon/factories/floor-factory.js",
     "application/dungeon/factories/room-factory.js",

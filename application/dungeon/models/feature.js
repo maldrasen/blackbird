@@ -25,6 +25,17 @@ global.Feature = function(type) {
     throw new Error(`Implement calculation for more than one room.`);
   }
 
+  // Combine position and bounds to get a location box.
+  function getLocation() {
+    const bounds = getBounds();
+    return {
+      xMin: bounds.xMin + position.x,
+      xMax: bounds.xMax + position.x,
+      yMin: bounds.yMin + position.y,
+      yMax: bounds.yMax + position.y,
+    };
+  }
+
   return Object.freeze({
     getType: () => { return type; },
     getRooms: () => { return [...rooms]; },
@@ -37,5 +48,6 @@ global.Feature = function(type) {
     getIndex: () => { return index; },
     getBounds,
     getCenter,
+    getLocation,
   });
 }

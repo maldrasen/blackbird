@@ -8,7 +8,7 @@ global.DungeonFloor = function(level) {
   // Theoretically the size of the floor should come from the floor theme, as well as any specific building and room
   // layout instructions.
   function getFloorWidth() { return 60; }
-  function getFloorHeight() { return 30; }
+  function getFloorHeight() { return 40; }
 
   return Object.freeze({
     getLevel: () => { return level; },

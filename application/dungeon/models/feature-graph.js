@@ -67,6 +67,27 @@ global.FeatureGraph = function() {
     return trees;
   }
 
+  function getBounds() {
+    const floor = DungeonSystem.getDungeonFloor();
+    const features = floor.getFeatures();
+
+    let xMin = 1000;
+    let yMin = 1000;
+    let xMax = 0;
+    let yMax = 0;
+
+    getVertices().forEach(index => {
+      const location = features[index].getLocation();
+
+      if (location.xMin < xMin) { xMin = location.xMin; }
+      if (location.xMax > xMax) { xMax = location.xMax; }
+      if (location.yMin < yMin) { yMin = location.yMin; }
+      if (location.yMax > yMax) { yMax = location.yMax; }
+    });
+
+    return { xMin, xMax, yMin, yMax };
+  }
+
   return Object.freeze({
     addVertex,
     getVertices,
@@ -75,6 +96,7 @@ global.FeatureGraph = function() {
     removeEdge,
     getSpanningTree,
     getSpanningForest,
+    getBounds,
   });
 
 }

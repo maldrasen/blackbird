@@ -12,14 +12,25 @@ global.FloorFactory = function() {
 
     const forest = connections.getSpanningForest();
 
-    forest.forEach(island => {
-      console.log(`[Island] ${JSON.stringify(island.getVertices())}`);
-    })
+    // Change to a loop once we have this working
+    if (forest.length > 1) {
+      const [first, second] = FeatureGraphHelper.getClosestDisconnectedFeatures(forest);
+      const result = CorridorFactory(grid).digBetween(first, second);
 
-    // Now connect disconnected areas.
-    // Will need to be able to add tunnels between rooms, adding a new room type that snakes through the empty space.
+      if (result) {
+        connections.addEdge(first, second);
+        // Add the result.feature to features. Add the result.doors to doors.
+        // Rebuild the forest, loop until forest length is 1
+      }
+
+      if (result == null) {
+        // blacklist the [first,second] combo and find the next closest pair of rooms.
+      }
+    }
+
     // Finally prune redundant doors.
   }
+
 
   return Object.freeze({
     buildFloor,
