@@ -26,3 +26,17 @@
   .inner { background-color: #222; }
   .outer { background-color: #111; }
 }
+
+#dungeonFloor .door {
+  position: absolute;
+  background-color: #333;
+  box-shadow: 0 0 2px rgb(0,0,0) inset;
+}
+#dungeonFloor .door.S {
+  height: 4px;
+  width: 12px;
+}
+#dungeonFloor .door.E {
+  height: 12px;
+  width: 4px;
+}

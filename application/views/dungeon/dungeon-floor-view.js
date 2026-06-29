@@ -14,6 +14,10 @@ global.DungeonFloorView = (function() {
     floor.getFeatures().forEach(feature => {
       addFeatureElement(feature);
     });
+
+    floor.getDoors().forEach(door => {
+      addDoorElement(door);
+    });
   }
 
   function addFeatureElement(feature) {
@@ -48,6 +52,29 @@ global.DungeonFloorView = (function() {
       roomBox.style['width'] = `${(box.width * gridSize) - (2 * offset)}px`;
       featureElement.appendChild(roomBox);
     }
+  }
+
+  function addDoorElement(door) {
+    const position = door.getPosition();
+    const direction = door.getDirection();
+
+    let xOffset = -2;
+    let yOffset = 2;
+    let left = position.x + 1;
+    let top = position.y;
+
+    if (direction === 'S') {
+      xOffset = 2;
+      yOffset = -2;
+      left = position.x;
+      top = position.y + 1;
+    }
+
+    const doorElement = X.createElement(`<div class='door ${direction}' data-from='${door.getFrom()}' data-to='${door.getTo()}'></div>`);
+    doorElement.style['left'] = `${(left * gridSize) + xOffset}px`;
+    doorElement.style['top'] = `${(top * gridSize) + yOffset}px`;
+
+    X.first('#dungeonFloor').appendChild(doorElement);
   }
 
   return Object.freeze({
