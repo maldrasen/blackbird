@@ -3,9 +3,14 @@ global.DungeonFloorView = (function() {
   const gridSize = 16;
 
   function drawDungeon() {
+    const floor = DungeonSystem.getDungeonFloor();
+
     X.empty('#dungeonFloor');
 
-    const floor = DungeonSystem.getDungeonFloor();
+    const floorElement = X.first('#dungeonFloor');
+    floorElement.style['height'] = `${floor.getFloorHeight() * gridSize}px`;
+    floorElement.style['width'] = `${floor.getFloorWidth() * gridSize}px`;
+
     floor.getFeatures().forEach(feature => {
       addFeatureElement(feature);
     });

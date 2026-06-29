@@ -2,12 +2,13 @@ global.FeaturePlacer = function() {
 
   const floor = DungeonSystem.getDungeonFloor();
   const theme = DungeonTheme.lookup(floor.getTheme());
-  const floorSize = floor.getFloorSize();
+  const floorHeight = floor.getFloorHeight();
+  const floorWidth = floor.getFloorWidth();
   const grid = buildGrid();
 
   function buildGrid() {
-    const g = new Array(floorSize);
-    for (let y=0; y<floorSize; y++) { g[y] = new Array(floorSize); }
+    const g = new Array(floorHeight);
+    for (let y=0; y<floorHeight; y++) { g[y] = new Array(floorWidth); }
     return g;
   }
 
@@ -50,8 +51,8 @@ global.FeaturePlacer = function() {
 
   function setRandomPosition(feature) {
     const bounds = feature.getBounds();
-    const xPos = Random.between(0,floorSize - bounds.xMax);
-    const yPos = Random.between(0,floorSize - bounds.yMax);
+    const xPos = Random.between(0,floorWidth - bounds.xMax);
+    const yPos = Random.between(0,floorHeight - bounds.yMax);
     feature.setPosition(xPos,yPos);
   }
 

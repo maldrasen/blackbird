@@ -1,7 +1,7 @@
 global.DungeonViewport = (function() {
 
-  let $dragContext;
-  let $currentLocation = { x:0, y:0 };
+  let dragContext;
+  let currentLocation = { x:0, y:0 };
 
   function init() {
     window.addEventListener('mouseup', stopDrag);
@@ -12,13 +12,13 @@ global.DungeonViewport = (function() {
   }
 
   function isDragging() {
-    return $dragContext != null;
+    return dragContext != null;
   }
 
   function startDrag() {
     const position = MouseMonitor.getPosition();
 
-    $dragContext = {
+    dragContext = {
       startLocation: getLocation(),
       origin: {
         x: position.x,
@@ -42,24 +42,27 @@ global.DungeonViewport = (function() {
       // TODO: Prevent dragging the dungeon out of view.
 
       setLocation({
-        x: $dragContext.startLocation.x + position.x - $dragContext.origin.x,
-        y: $dragContext.startLocation.y + position.y - $dragContext.origin.y,
+        x: dragContext.startLocation.x + position.x - dragContext.origin.x,
+        y: dragContext.startLocation.y + position.y - dragContext.origin.y,
       });
     }
   }
 
   function stopDrag() {
-    $dragContext = null;
+    dragContext = null;
   }
 
   function getLocation() {
-    return { ...$currentLocation };
+    return { ...currentLocation };
   }
 
   function setLocation(position) {
-    $currentLocation.x = position.x;
-    $currentLocation.y = position.y;
-    X.first('#dungeonFloor').setAttribute(`style`,`top:${$currentLocation.y}px;left:${$currentLocation.x}px`);
+    currentLocation.x = position.x;
+    currentLocation.y = position.y;
+
+    const floorElement = X.first('#dungeonFloor');
+    floorElement.style['top'] = `${currentLocation.y}px`;
+    floorElement.style['left'] = `${currentLocation.x}px`;
   }
 
   return Object.freeze({
