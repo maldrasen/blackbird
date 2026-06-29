@@ -15,7 +15,7 @@ global.DungeonFloorView = (function() {
     const position = feature.getPosition();
     const bounds = feature.getBounds();
 
-    const featureElement = X.createElement(`<div class='feature'></div>`);
+    const featureElement = X.createElement(`<div class='feature' data-index='${feature.getIndex()}'></div>`);
     featureElement.style['left'] = `${(position[0] * gridSize)}px`;
     featureElement.style['top'] = `${(position[1] * gridSize)}px`;
     featureElement.style['height'] = `${bounds.yMax * gridSize}px`;

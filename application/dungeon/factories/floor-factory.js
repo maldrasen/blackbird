@@ -7,6 +7,21 @@ global.FloorFactory = function() {
   function buildFloor() {
     placeFeatures();
 
+    // Double check to make sure I added the features to the array with the correct indices.
+    for (let i=0; i<features.length; i++) {
+      if (features[i].getIndex() !== i) {
+        throw new Error(`The feature index ${features[i].getIndex()} did not match the array index ${i}`);
+      }
+    }
+
+    // Go through the grid and find features that are next to each other. Because we store the feature indices in the
+    // grid it should be easy to check the adjacent cells to see what walls are shared between the two. We want to
+    // store this information first as:
+    // { featureIndex:{ neighbors:[{ sharedWalls:[] }] }}
+
+    // Once we have this information we can add doors between features at their connecting walls. We don't want every
+    // room connected like this. Maybe connect 75% of rooms like this. Then we connect more as we look for islands.
+
     floor.setFeatures(features);
   }
 
@@ -20,14 +35,17 @@ global.FloorFactory = function() {
 
   function placeFeatures() {
     let guard = 0
+    let index = 0;
 
     while(guard < 1000) {
       const feature = theme.getRandomFeature();
       setRandomPosition(feature);
 
       if (featureCanFit(feature)) {
-        placeFeature(feature);
+        feature.setIndex(index);
+        placeFeature(index, feature);
         features.push(feature);
+        index += 1;
       }
       else {
         guard += 1;
@@ -65,14 +83,14 @@ global.FloorFactory = function() {
     return true;
   }
 
-  function placeFeature(feature) {
+  function placeFeature(index, feature) {
     feature.getRooms().forEach(room => {
-      placeBox(feature.getPosition(), room.getMainBox());
-      placeBox(feature.getPosition(), room.getSubBox());
+      placeBox(index, feature.getPosition(), room.getMainBox());
+      placeBox(index, feature.getPosition(), room.getSubBox());
     });
   }
 
-  function placeBox(position, box) {
+  function placeBox(index, position, box) {
     if (box != null) {
       const xMin = position[0] + box.x;
       const xMax = position[0] + box.x + box.width;
@@ -81,7 +99,7 @@ global.FloorFactory = function() {
 
       for (let y=yMin; y<yMax; y++) {
         for (let x=xMin; x<xMax; x++) {
-          grid[y][x] = 'X'
+          grid[y][x] = index;
         }
       }
     }

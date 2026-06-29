@@ -4,6 +4,7 @@ global.Feature = function(type) {
   const doors = [];
 
   let position;
+  let index;
 
   // Set the position of the feature within the floor.
   function setPosition(x,y) {
@@ -23,6 +24,8 @@ global.Feature = function(type) {
     addDoor: (door) => { doors.push(door); },
     setPosition,
     getPosition: () => { return [...position]; },
+    setIndex: i => { index = i; },
+    getIndex: () => { return index; },
     getBounds,
   });
 }
