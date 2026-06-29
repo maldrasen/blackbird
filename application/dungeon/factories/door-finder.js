@@ -29,8 +29,8 @@ global.DoorFinder = function(grid) {
     const southCell = cellSouthOf(x,y);
     const eastCell = cellEastOf(x,y);
 
-    if (southCell && southCell !== thisCell) { addDoor(x,y,'S',thisCell,southCell); }
-    if (eastCell && eastCell !== thisCell) { addDoor(x,y,'E',thisCell,eastCell); }
+    if (southCell != null && southCell !== thisCell) { addDoor(x,y,'S',thisCell,southCell); }
+    if (eastCell != null && eastCell !== thisCell) { addDoor(x,y,'E',thisCell,eastCell); }
   }
 
   function cellSouthOf(x,y) {
@@ -55,5 +55,4 @@ global.DoorFinder = function(grid) {
   return Object.freeze({
     execute,
   });
-
 }
