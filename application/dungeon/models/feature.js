@@ -5,6 +5,7 @@ global.Feature = function(type) {
 
   let position;
   let index;
+  let footprint;
 
   let highlight = false;
 
@@ -41,6 +42,49 @@ global.Feature = function(type) {
     return featureBounds;
   }
 
+  function getFootprint() {
+    if (footprint == null) {
+      const bounds = getBounds();
+      const height = bounds.yMax;
+      const width = bounds.xMax;
+
+      footprint = new Array(height).fill(new Array(width).fill(false));
+
+      function addBox(pos,box) {
+        if (box) {
+          const xPos = pos[0] + box.x;
+          const yPos = pos[1] + box.y;
+
+          console.log(`Add box: X:${xPos} Y:${yPos} H:${box.height} W:${box.width}`)
+
+          for (let y = yPos; y < yPos + box.height; y++) {
+            for (let x = xPos; x < xPos + box.width; x++) {
+              console.log(`Cell At (${x},${y})`);
+              footprint[y][x] = true;
+            }
+          }
+        }
+      }
+
+      rooms.forEach(room => {
+        addBox(room.getPosition(), room.getMainBox());
+        addBox(room.getPosition(), room.getSubBox());
+      });
+    }
+
+    return footprint;
+  }
+
+  function inspect() {
+    console.log(`=== Feature[${index}] ===`)
+    console.log(JSON.stringify(getLocation()));
+
+    const footprint = getFootprint();
+    for (let y=0; y<footprint.length; y++) {
+      console.log(`${y}`,footprint[y].map(cell => (cell === true) ? '[]' : '  ').join(''));
+    }
+  }
+
   // Combine position and bounds to get a location box. The lower bounds are inclusive, but the upper bounds are
   // exclusive so if a feature box is at { xMin:4, xMax:8, yMin:8, yMax:12} nothing will be in column 12 or row 8
   // within the grid. The location maths are all easier with this being the case though.
@@ -64,9 +108,11 @@ global.Feature = function(type) {
     getPosition: () => { return {...position}; },
     setIndex: i => { index = i; },
     getIndex: () => { return index; },
-    getBounds,
     getCenter,
+    getBounds,
+    getFootprint,
     getLocation,
+    inspect,
 
     setHighlight: h => { highlight = h; },
     getHighlight: () => { return highlight; },
