@@ -40,10 +40,10 @@ global.CorridorFactory = function(grid) {
       throw new Error('Handle special case: Overlapping Features')
     }
     if (['N','S','E','W'].includes(alignment)) {
-      attemptStraightCorridor();
+      attemptStraightCorridor(alignment);
     }
     if (['NE','NW','SE','SW'].includes(alignment)) {
-      attemptBendyCorridor();
+      attemptBendyCorridor(alignment);
     }
 
     return {
@@ -52,12 +52,65 @@ global.CorridorFactory = function(grid) {
     }
   }
 
-  function attemptStraightCorridor() {
-    console.log("=== Attempt Straight Corridor ===");
+  function attemptStraightCorridor(alignment) {
+    const origins = findOverlapOriginTiles(alignment);
+
+    const rays = origins.map(origin => {
+      let cursor = {...origin};
+      let last = {...origin};
+      let searching = true;
+
+      while(searching) {
+        switch(alignment) {
+          case 'N': cursor = { y:cursor.y-1, x:cursor.x }; break;
+          case 'S': cursor = { y:cursor.y+1, x:cursor.x }; break;
+          case 'E': cursor = { y:cursor.y, x:cursor.x+1 }; break;
+          case 'W': cursor = { y:cursor.y, x:cursor.x-1 }; break;
+        }
+
+        (grid[cursor.y][cursor.x] != null) ? (searching = false) : (last = cursor);
+      }
+
+      console.log("Cast ray from ",origin);
+      console.log("Ending At",last);
+
+      return [origin,last]
+    });
+
+    console.log("Rays:",rays);
   }
 
-  function attemptBendyCorridor() {
+  function attemptBendyCorridor(alignment) {
     console.log("=== Attempt Bendy Corridor ===");
+  }
+
+  function findOverlapOriginTiles(alignment) {
+    const a = originFeature.getLocation();
+    const b = targetFeature.getLocation();
+    const tiles = [];
+
+    if (alignment === 'N') {
+      for (let x = Math.max(a.xMin, b.xMin); x < Math.min(a.xMax, b.xMax); x++) {
+        tiles.push({ x, y:a.yMin - 1 });
+      }
+    }
+    if (alignment === 'S') {
+      for (let x = Math.max(a.xMin, b.xMin); x < Math.min(a.xMax, b.xMax); x++) {
+        tiles.push({ x, y:a.yMax });
+      }
+    }
+    if (alignment === 'E') {
+      for (let y = Math.max(a.yMin, b.yMin); y < Math.min(a.yMax, b.yMax); y++) {
+        tiles.push({ x:a.xMin - 1, y });
+      }
+    }
+    if (alignment === 'W') {
+      for (let y = Math.max(a.yMin, b.yMin); y < Math.min(a.yMax, b.yMax); y++) {
+        tiles.push({ x:a.xMax, y });
+      }
+    }
+
+    return tiles;
   }
 
   // Alignment can be one of eight values. A cardinal direction (N,S,E,W) indicates that the two features are at least
