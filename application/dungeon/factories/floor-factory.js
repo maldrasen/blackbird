@@ -18,12 +18,14 @@ global.FloorFactory = function() {
       const result = CorridorFactory(grid).digBetween(first, second);
 
       if (result) {
+        floor.addFeature(result.feature);
+        result.doors.forEach(door => floor.addDoor(door));
         connections.addEdge(first, second);
-        // Add the result.feature to features. Add the result.doors to doors.
         // Rebuild the forest, loop until forest length is 1
       }
 
       if (result == null) {
+        console.warn(`Cannot find a path between features ${first} and ${second}.`);
         // blacklist the [first,second] combo and find the next closest pair of rooms.
       }
     }

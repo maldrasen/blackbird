@@ -30,8 +30,10 @@ global.CorridorFactory = function(grid) {
     targetFeature.setHighlight(true);
 
     const alignment = getFeatureAlignment();
-
-    let result;
+    const strategies = [
+      attemptSingleTurnCorridor,
+      attemptDoglegCorridor
+    ];
 
     console.log("=== Dig Between ===")
     console.log(`[${first}]`, originFeature.getLocation());
@@ -39,22 +41,20 @@ global.CorridorFactory = function(grid) {
     console.log("Alignment:",alignment);
 
     if (alignment === 'O') {
-      throw new Error('Handle Special Case: Overlapping Features')
-    }
-    if (['N','S','E','W'].includes(alignment)) {
-      result = attemptStraightCorridor(alignment);
-      if (result == null) {
-        throw new Error('Handle Special Case: Aligned rooms with no straight lines between them.');
-      }
-    }
-    if (['NE','NW','SE','SW'].includes(alignment)) {
-      return attemptBendyCorridor(alignment);
+      throw new Error('Handle Special Case: Overlapping Features');
     }
 
-    if (result) {
-      floor.addFeature(result.feature);
-      result.doors.forEach(door => floor.addDoor(door));
+    if (['N','S','E','W'].includes(alignment)) {
+      strategies.push(attemptStraightCorridor);
     }
+
+    Random.shuffle(strategies);
+
+    let result;
+    while(strategies.length > 0 && result == null) {
+      result = (strategies.shift())(alignment);
+    }
+    return result
   }
 
   function attemptStraightCorridor(alignment) {
@@ -108,8 +108,18 @@ global.CorridorFactory = function(grid) {
     }
   }
 
-  function attemptBendyCorridor(alignment) {
+  // To find a single turn path, we get all the start tiles for the origin and target features. For a SE alignment we
+  // get all the edge tiles on the S and E sides of the origin, and all the tiles on the N and W sides of the target.
+  // We then take every permutation of origin start tile and target end tile and draw an L shape between them. If there
+  // are no collisions we add it to a list of possible solutions and pick one at random.
+  function attemptSingleTurnCorridor(alignment) {
+    console.log("=== Attempt Single Turn Corridor ===");
+    return null;
+  }
+
+  function attemptDoglegCorridor(alignment) {
     console.log("=== Attempt Bendy Corridor ===");
+    return null;
   }
 
   function buildRoomBetween(start,end) {
@@ -146,10 +156,10 @@ global.CorridorFactory = function(grid) {
   // overlapping tiles. Then we draw a line through the grid from the origin tiles to the feature. A ray will fail if
   // it encounters a feature other than the target.
   function corridorRayCast(alignment) {
-    const originTiles = findOverlappingOriginTiles(alignment);
+    const startTiles = findOverlappingStartTiles(alignment);
     const rays = []
 
-    originTiles.forEach(start => {
+    startTiles.forEach(start => {
       let cursor = {...start};
       let end = {...start};
 
@@ -181,7 +191,7 @@ global.CorridorFactory = function(grid) {
   // the north we get the grid coordinates along the just beyond the bounds in the direction of the target feature.
   // Once we find an edge we search inward until we find an occupied cell. While searching this way, it's possible
   // that a cell might contain a feature other than this one. If so we don't add it as an origin cell.
-  function findOverlappingOriginTiles(alignment) {
+  function findOverlappingStartTiles(alignment) {
     const origin = originFeature.getLocation();
     const target = targetFeature.getLocation();
     const tiles = [];
