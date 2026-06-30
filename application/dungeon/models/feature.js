@@ -48,18 +48,14 @@ global.Feature = function(type) {
       const height = bounds.yMax;
       const width = bounds.xMax;
 
-      footprint = new Array(height).fill(new Array(width).fill(false));
+      footprint = Array.from({ length: height }, () => new Array(width).fill(false));
 
       function addBox(pos,box) {
         if (box) {
           const xPos = pos[0] + box.x;
           const yPos = pos[1] + box.y;
-
-          console.log(`Add box: X:${xPos} Y:${yPos} H:${box.height} W:${box.width}`)
-
           for (let y = yPos; y < yPos + box.height; y++) {
             for (let x = xPos; x < xPos + box.width; x++) {
-              console.log(`Cell At (${x},${y})`);
               footprint[y][x] = true;
             }
           }
