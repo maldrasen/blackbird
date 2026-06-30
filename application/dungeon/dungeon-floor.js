@@ -10,15 +10,28 @@ global.DungeonFloor = function(level) {
   function getFloorWidth() { return 60; }
   function getFloorHeight() { return 40; }
 
+  function addFeature(feature) {
+    feature.setIndex(features.length);
+    features.push(feature);
+  }
+
+  function addDoor(door) {
+    doors.push(door);
+  }
+
   return Object.freeze({
     getLevel: () => { return level; },
     getTheme: () => { return theme; },
-    setFeatures: f => { features = f; },
-    getFeatures: () => { return features; },
-    setDoors: d => { doors = d; },
-    getDoors: () => { return doors; },
     getFloorWidth,
     getFloorHeight,
+
+    setFeatures: f => { features = f; },
+    getFeatures: () => { return features; },
+    addFeature,
+
+    setDoors: d => { doors = d; },
+    getDoors: () => { return doors; },
+    addDoor,
   });
 
 }
