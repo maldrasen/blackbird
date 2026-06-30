@@ -85,32 +85,76 @@ global.CorridorFactory = function(grid) {
   }
 
   function findOverlapOriginTiles(alignment) {
-    const a = originFeature.getLocation();
-    const b = targetFeature.getLocation();
+    const originBoxes = getAbsoluteBoxes(originFeature);
+    const targetBoxes = getAbsoluteBoxes(targetFeature);
     const tiles = [];
 
-    if (alignment === 'N') {
-      for (let x = Math.max(a.xMin, b.xMin); x < Math.min(a.xMax, b.xMax); x++) {
-        tiles.push({ x, y:a.yMin - 1 });
+    if (alignment === 'N' || alignment === 'S') {
+      const targetXSet = new Set();
+      for (const box of targetBoxes) {
+        for (let x = box.xMin; x < box.xMax; x++) { targetXSet.add(x); }
+      }
+
+      const edgeY = {};
+      for (const box of originBoxes) {
+        for (let x = box.xMin; x < box.xMax; x++) {
+          if (!targetXSet.has(x)) { continue; }
+          if (alignment === 'N') {
+            if (edgeY[x] === undefined || box.yMin < edgeY[x]) { edgeY[x] = box.yMin; }
+          } else {
+            if (edgeY[x] === undefined || box.yMax > edgeY[x]) { edgeY[x] = box.yMax; }
+          }
+        }
+      }
+
+      for (const [x, y] of Object.entries(edgeY)) {
+        tiles.push({ x: Number(x), y: alignment === 'N' ? y - 1 : y });
       }
     }
-    if (alignment === 'S') {
-      for (let x = Math.max(a.xMin, b.xMin); x < Math.min(a.xMax, b.xMax); x++) {
-        tiles.push({ x, y:a.yMax });
+
+    if (alignment === 'E' || alignment === 'W') {
+      const targetYSet = new Set();
+      for (const box of targetBoxes) {
+        for (let y = box.yMin; y < box.yMax; y++) { targetYSet.add(y); }
       }
-    }
-    if (alignment === 'E') {
-      for (let y = Math.max(a.yMin, b.yMin); y < Math.min(a.yMax, b.yMax); y++) {
-        tiles.push({ x:a.xMin - 1, y });
+
+      const edgeX = {};
+      for (const box of originBoxes) {
+        for (let y = box.yMin; y < box.yMax; y++) {
+          if (!targetYSet.has(y)) { continue; }
+          if (alignment === 'E') {
+            if (edgeX[y] === undefined || box.xMin < edgeX[y]) { edgeX[y] = box.xMin; }
+          } else {
+            if (edgeX[y] === undefined || box.xMax > edgeX[y]) { edgeX[y] = box.xMax; }
+          }
+        }
       }
-    }
-    if (alignment === 'W') {
-      for (let y = Math.max(a.yMin, b.yMin); y < Math.min(a.yMax, b.yMax); y++) {
-        tiles.push({ x:a.xMax, y });
+
+      for (const [y, x] of Object.entries(edgeX)) {
+        tiles.push({ x: alignment === 'E' ? x - 1 : x, y: Number(y) });
       }
     }
 
     return tiles;
+  }
+
+  function getAbsoluteBoxes(feature) {
+    const pos = feature.getPosition();
+    const boxes = [];
+    for (const room of feature.getRooms()) {
+      const rPos = room.getPosition();
+      const offset = { x: pos.x + rPos[0], y: pos.y + rPos[1] };
+      for (const box of [room.getMainBox(), room.getSubBox()]) {
+        if (box == null) { continue; }
+        boxes.push({
+          xMin: offset.x + box.x,
+          xMax: offset.x + box.x + box.width,
+          yMin: offset.y + box.y,
+          yMax: offset.y + box.y + box.height,
+        });
+      }
+    }
+    return boxes;
   }
 
   // Alignment can be one of eight values. A cardinal direction (N,S,E,W) indicates that the two features are at least
