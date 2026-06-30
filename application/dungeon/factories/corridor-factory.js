@@ -31,33 +31,205 @@ global.CorridorFactory = function(grid) {
 
     const alignment = getFeatureAlignment();
 
+    let result;
+
     console.log("=== Dig Between ===")
     console.log(`[${first}]`, originFeature.getLocation());
     console.log(`[${second}]`,targetFeature.getLocation());
     console.log("Alignment:",alignment);
 
     if (alignment === 'O') {
-      throw new Error('Handle special case: Overlapping Features')
+      throw new Error('Handle Special Case: Overlapping Features')
     }
     if (['N','S','E','W'].includes(alignment)) {
-      attemptStraightCorridor();
+      result = attemptStraightCorridor(alignment);
+      if (result == null) {
+        throw new Error('Handle Special Case: Aligned rooms with no straight lines between them.');
+      }
     }
     if (['NE','NW','SE','SW'].includes(alignment)) {
-      attemptBendyCorridor();
+      return attemptBendyCorridor(alignment);
     }
 
-    return {
-      feature: null,
-      doors: [],
+    if (result) {
+      floor.addFeature(result.feature);
+      result.doors.forEach(door => floor.addDoor(door));
     }
   }
 
-  function attemptStraightCorridor() {
-    console.log("=== Attempt Straight Corridor ===");
+  function attemptStraightCorridor(alignment) {
+    const ray = corridorRayCast(alignment);
+    if (ray) {
+      const index = features.length;
+      const { start, end } = ray;
+
+      const isVertical = start.x === end.x;
+      const x = isVertical ? start.x : Math.min(start.x, end.x);
+      const y = isVertical ? Math.min(start.y, end.y) : start.y;
+
+      const feature = Feature('corridor');
+      feature.setPosition(x, y);
+      feature.setIndex(index);
+      feature.addRoom(buildRoomBetween(start, end));
+
+      addFeatureToGrid(feature)
+
+      let originDoorPosition;
+      let targetDoorPosition;
+      let direction;
+
+      switch(alignment) {
+        case 'N': // corridor is above origin; target is above corridor
+          originDoorPosition = { x:start.x, y:start.y };
+          targetDoorPosition = { x:end.x, y:end.y-1 };
+          direction = 'S';
+          break;
+        case 'S': // origin is above corridor; corridor is above target
+          originDoorPosition = { x:start.x, y:start.y-1};
+          targetDoorPosition = { x:end.x, y:end.y };
+          direction = 'S';
+          break;
+        case 'E': // corridor is left of origin; target is left of corridor
+          originDoorPosition = { x:start.x, y:start.y };
+          targetDoorPosition = { x:end.x-1, y:end.y };
+          direction = 'E';
+          break;
+        case 'W': // origin is left of corridor; corridor is left of target
+          originDoorPosition = { x:start.x-1, y:start.y };
+          targetDoorPosition = { x:end.x, y:end.y };
+          direction = 'E';
+          break;
+      }
+
+      return { feature, doors:[
+        Door(originDoorPosition, direction, originFeature, feature),
+        Door(targetDoorPosition, direction, targetFeature, feature)
+      ]};
+    }
   }
 
-  function attemptBendyCorridor() {
+  function attemptBendyCorridor(alignment) {
     console.log("=== Attempt Bendy Corridor ===");
+  }
+
+  function buildRoomBetween(start,end) {
+    const isVertical = start.x === end.x;
+    const width  = isVertical ? 1 : Math.abs(end.x - start.x) + 1;
+    const height = isVertical ? Math.abs(end.y - start.y) + 1 : 1;
+
+    const room = Room();
+    room.setMainBox(width, height);
+
+    return room;
+  }
+
+  // Corridors can be composed of many rooms, but each room only has one box. This is to allow for "dog leg" shaped
+  // features with two turns. When a feature is added we need to set the cells that it covers in the floor grid.
+  function addFeatureToGrid(feature) {
+    const position = feature.getPosition();
+    const index = feature.getIndex();
+
+    feature.getRooms().forEach(room => {
+      const box = room.getMainBox();
+      const yMin = position.y + box.y;
+      const xMin = position.x + box.x;
+
+      for (let y=yMin; y<(yMin + box.height); y++) {
+        for (let x=xMin; x<(xMin + box.width); x++) {
+          grid[y][x] = index;
+        }
+      }
+    });
+  }
+
+  // If two features are aligned we can attempt to find a straight path between them. We first find all the
+  // overlapping tiles. Then we draw a line through the grid from the origin tiles to the feature. A ray will fail if
+  // it encounters a feature other than the target.
+  function corridorRayCast(alignment) {
+    const originTiles = findOverlappingOriginTiles(alignment);
+    const rays = []
+
+    originTiles.forEach(start => {
+      let cursor = {...start};
+      let end = {...start};
+
+      while(true) {
+        switch(alignment) {
+          case 'N': cursor = { y:cursor.y-1, x:cursor.x }; break;
+          case 'S': cursor = { y:cursor.y+1, x:cursor.x }; break;
+          case 'E': cursor = { y:cursor.y, x:cursor.x-1 }; break;
+          case 'W': cursor = { y:cursor.y, x:cursor.x+1 }; break;
+        }
+
+        let cell = grid[cursor.y][cursor.x];
+        if (cell == null) { end = cursor; }
+
+        // A ray is only valid if it finds the target feature at the end.
+        if (cell != null) {
+          if (cell === targetFeature.getIndex()) {
+            rays.push({ start, end });
+          }
+          return;
+        }
+      }
+    });
+
+    return (rays.length > 0) ? Random.from(rays) : null;
+  }
+
+  // To find the overlap origin tiles, we find the aligned edge of the origin feature. If the target feature is to
+  // the north we get the grid coordinates along the just beyond the bounds in the direction of the target feature.
+  // Once we find an edge we search inward until we find an occupied cell. While searching this way, it's possible
+  // that a cell might contain a feature other than this one. If so we don't add it as an origin cell.
+  function findOverlappingOriginTiles(alignment) {
+    const origin = originFeature.getLocation();
+    const target = targetFeature.getLocation();
+    const tiles = [];
+
+    const northSearch = (start, end) => {
+      for (let x=start; x<end; x++) {
+        for (let y=origin.yMin; y < origin.yMax; y++) {
+          if (grid[y][x] != null) { addTileIfValid(x,y); break; }}}}
+
+    const southSearch = (start, end) => {
+      for (let x=start; x<end; x++) {
+        for (let y=origin.yMax-1; y >= origin.yMin; y--) {
+          if (grid[y][x] != null) { addTileIfValid(x,y); break; }}}}
+
+    const eastSearch = (start, end) => {
+      for (let y=start; y<end; y++) {
+        for (let x=origin.xMin; x < origin.xMax; x++) {
+          if (grid[y][x] != null) { addTileIfValid(x,y); break; }}}}
+
+    const westSearch = (start, end) => {
+      for (let y=start; y<end; y++) {
+        for (let x=origin.xMax-1; x >= origin.xMin; x--) {
+          if (grid[y][x] != null) { addTileIfValid(x,y); break; }}}}
+
+    const addTileIfValid = (x,y) => {
+      if (grid[y][x] === originFeature.getIndex()) {
+        switch(alignment) {
+          case 'N': tiles.push({ x, y:y-1 }); break;
+          case 'S': tiles.push({ x, y:y+1 }); break;
+          case 'E': tiles.push({ x:x-1, y }); break;
+          case 'W': tiles.push({ x:x+1, y }); break;
+        }
+      }
+    }
+
+    if (alignment === 'N' || alignment === 'S') {
+      const start = Math.max(origin.xMin, target.xMin);
+      const end   = Math.min(origin.xMax, target.xMax);
+      (alignment === 'N') ? northSearch(start, end) : southSearch(start, end);
+    }
+
+    if (alignment === 'E' || alignment === 'W') {
+      const start = Math.max(origin.yMin, target.yMin);
+      const end   = Math.min(origin.yMax, target.yMax);
+      (alignment === 'E') ? eastSearch(start, end) : westSearch(start, end);
+    }
+
+    return tiles;
   }
 
   // Alignment can be one of eight values. A cardinal direction (N,S,E,W) indicates that the two features are at least
