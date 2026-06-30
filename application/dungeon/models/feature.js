@@ -6,6 +6,8 @@ global.Feature = function(type) {
   let position;
   let index;
 
+  let highlight = false;
+
   // Set the position of the feature within the floor.
   function setPosition(x,y) {
     position = {x,y};
@@ -25,7 +27,9 @@ global.Feature = function(type) {
     throw new Error(`Implement calculation for more than one room.`);
   }
 
-  // Combine position and bounds to get a location box.
+  // Combine position and bounds to get a location box. The lower bounds are inclusive, but the upper bounds are
+  // exclusive so if a feature box is at { xMin:4, xMax:8, yMin:8, yMax:12} nothing will be in column 12 or row 8
+  // within the grid. The location maths are all easier with this being the case though.
   function getLocation() {
     const bounds = getBounds();
     return {
@@ -49,5 +53,8 @@ global.Feature = function(type) {
     getBounds,
     getCenter,
     getLocation,
+
+    setHighlight: h => { highlight = h; },
+    getHighlight: () => { return highlight; },
   });
 }

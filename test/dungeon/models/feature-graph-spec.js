@@ -58,7 +58,7 @@ describe("FeatureGraphSpec", function() {
     expect(treeB.getEdges(10)).to.deep.equal([11,13]);
   });
 
-  it.only('getSpanningForest()', function() {
+  it('getSpanningForest()', function() {
     const forest = getDisconnectedGraph().getSpanningForest();
     expect(forest.length).to.equal(4);
     expect(forest[3].getVertices()).to.deep.equal([30]);

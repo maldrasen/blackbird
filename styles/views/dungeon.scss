@@ -25,6 +25,8 @@
   }
   .inner { background-color: #222; }
   .outer { background-color: #111; }
+
+  &.highlight .inner { background-color: #224; }
 }
 
 #dungeonFloor .door {

@@ -4,6 +4,12 @@ global.DoorFinder = function(grid) {
   const floorWidth = floor.getFloorWidth();
   const connections = FeatureGraph();
 
+  // Before we start, ensure that all the features have vertices in the connection graph, so that features without
+  // doors will appear as disconnected islands.
+  for (let i=0; i<floor.getFeatures().length; i++) {
+    connections.addVertex(i);
+  }
+
   // The doors object is a list of doors that we have selected to connect all the adjacent rooms. There should only
   // ever be one door between two rooms. The door key is a string `{FROM}-{TO}`, where from is less than to.
   const doors = {};
