@@ -22,9 +22,23 @@ global.Feature = function(type) {
     }
   }
 
+  // The bounds of the feature only describes it size, using the bounds from each room to find the overall bounding
+  // box for the feature. To get the bounds translated by the position use getLocation().
   function getBounds() {
-    if (rooms.length === 1) { return rooms[0].getBounds(); }
-    throw new Error(`Implement calculation for more than one room.`);
+    const featureBounds = {
+      xMin: Infinity,
+      xMax: -Infinity,
+      yMin: Infinity,
+      yMax: -Infinity,
+    };
+    rooms.forEach(room => {
+      const roomBounds = room.getBounds();
+      if (roomBounds.xMin < featureBounds.xMin) { featureBounds.xMin = roomBounds.xMin; }
+      if (roomBounds.xMax > featureBounds.xMax) { featureBounds.xMax = roomBounds.xMax; }
+      if (roomBounds.yMin < featureBounds.yMin) { featureBounds.yMin = roomBounds.yMin; }
+      if (roomBounds.yMax > featureBounds.yMax) { featureBounds.yMax = roomBounds.yMax; }
+    });
+    return featureBounds;
   }
 
   // Combine position and bounds to get a location box. The lower bounds are inclusive, but the upper bounds are
