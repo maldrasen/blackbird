@@ -84,78 +84,83 @@ global.CorridorFactory = function(grid) {
     console.log("=== Attempt Bendy Corridor ===");
   }
 
+  // To find the overlap origin tiles, we find the aligned edge of the origin feature. If the target feature is to
+  // the north we get the grid coordinates along the just beyond the bounds in the direction of the target feature.
+  // Once we find an edge we search inward until we find an occupied cell.
+
   function findOverlapOriginTiles(alignment) {
-    const originBoxes = getAbsoluteBoxes(originFeature);
-    const targetBoxes = getAbsoluteBoxes(targetFeature);
+    const origin = originFeature.getLocation();
+    const index = originFeature.getIndex();
+    const target = targetFeature.getLocation();
     const tiles = [];
 
-    if (alignment === 'N' || alignment === 'S') {
-      const targetXSet = new Set();
-      for (const box of targetBoxes) {
-        for (let x = box.xMin; x < box.xMax; x++) { targetXSet.add(x); }
-      }
+    console.log(`Find overlap ${alignment}`)
+    console.log(`Origin index: ${originFeature.getIndex()}`)
 
-      const edgeY = {};
-      for (const box of originBoxes) {
-        for (let x = box.xMin; x < box.xMax; x++) {
-          if (!targetXSet.has(x)) { continue; }
-          if (alignment === 'N') {
-            if (edgeY[x] === undefined || box.yMin < edgeY[x]) { edgeY[x] = box.yMin; }
-          } else {
-            if (edgeY[x] === undefined || box.yMax > edgeY[x]) { edgeY[x] = box.yMax; }
+    if (alignment === 'N' || alignment === 'S') {
+      const start = Math.max(origin.xMin, target.xMin);
+      const end   = Math.min(origin.xMax, target.xMax);
+
+      console.log("Start:",start);
+      console.log("End:",end);
+
+      for (let x=start; x<end; x++) {
+        console.log("   X:",x)
+
+        if (alignment === 'N') {
+          for (let y=origin.yMin; y < origin.yMax; y++) {
+            const cell = grid[y][x];
+            if (cell != null && cell !== index) {
+              console.log(`    Blocked by other feature. Invalid Origin.`)
+              break;
+            }
+            console.log("     Y:",y)
+            if (grid[y][x] != null) {
+              console.log(`    Blocked [${x},${y}] - ${grid[y][x]}`)
+              tiles.push({ x, y:y-1 });
+              break;
+            }
           }
         }
-      }
-
-      for (const [x, y] of Object.entries(edgeY)) {
-        tiles.push({ x: Number(x), y: alignment === 'N' ? y - 1 : y });
+        if (alignment === 'S') {
+          for (let y=origin.yMax-1; y >= origin.yMin; y--) {
+            console.log("     Y:",y)
+            if (grid[y][x] != null) {
+              console.log(`    Blocked [${x},${y}] - ${grid[y][x]}`)
+              tiles.push({ x, y:y+1 });
+              break;
+            }
+          }
+        }
       }
     }
 
     if (alignment === 'E' || alignment === 'W') {
-      const targetYSet = new Set();
-      for (const box of targetBoxes) {
-        for (let y = box.yMin; y < box.yMax; y++) { targetYSet.add(y); }
-      }
+      const start = Math.max(origin.yMin, target.yMin);
+      const end   = Math.min(origin.yMax, target.yMax);
 
-      const edgeX = {};
-      for (const box of originBoxes) {
-        for (let y = box.yMin; y < box.yMax; y++) {
-          if (!targetYSet.has(y)) { continue; }
-          if (alignment === 'E') {
-            if (edgeX[y] === undefined || box.xMin < edgeX[y]) { edgeX[y] = box.xMin; }
-          } else {
-            if (edgeX[y] === undefined || box.xMax > edgeX[y]) { edgeX[y] = box.xMax; }
+      for (let y=start; y<end; y++) {
+        if (alignment === 'E') {
+          for (let x=origin.xMin; x < origin.xMax; x++) {
+            if (grid[y][x] != null) { tiles.push({ x:x-1, y }); break; }
           }
         }
-      }
-
-      for (const [y, x] of Object.entries(edgeX)) {
-        tiles.push({ x: alignment === 'E' ? x - 1 : x, y: Number(y) });
+        if (alignment === 'W') {
+          for (let x=origin.xMax-1; x >= origin.xMin; x--) {
+            if (grid[y][x] != null) { tiles.push({ x:x+1, y }); break; }
+          }
+        }
       }
     }
 
     return tiles;
   }
 
-  function getAbsoluteBoxes(feature) {
-    const pos = feature.getPosition();
-    const boxes = [];
-    for (const room of feature.getRooms()) {
-      const rPos = room.getPosition();
-      const offset = { x: pos.x + rPos[0], y: pos.y + rPos[1] };
-      for (const box of [room.getMainBox(), room.getSubBox()]) {
-        if (box == null) { continue; }
-        boxes.push({
-          xMin: offset.x + box.x,
-          xMax: offset.x + box.x + box.width,
-          yMin: offset.y + box.y,
-          yMax: offset.y + box.y + box.height,
-        });
-      }
-    }
-    return boxes;
+  function tileSearch() {
+
   }
+
+
 
   // Alignment can be one of eight values. A cardinal direction (N,S,E,W) indicates that the two features are at least
   // somewhat aligned and share at least a pair of tiles on a single axis. Other alignments (NE,NW,SE,SW) indicate that
