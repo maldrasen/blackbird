@@ -53,14 +53,29 @@ global.CorridorFactory = function(grid) {
   }
 
   function attemptStraightCorridor(alignment) {
-    const origins = findOverlapOriginTiles(alignment);
+    const ray = corridorRayCast(alignment);
+    if (ray) {
+      console.log(`Start Point:(${ray.start.x},${ray.start.y})`)
+      console.log(`End Point:(${ray.end.x},${ray.end.y})`)
+    }
+  }
 
-    const rays = origins.map(origin => {
-      let cursor = {...origin};
-      let last = {...origin};
-      let searching = true;
+  function attemptBendyCorridor(alignment) {
+    console.log("=== Attempt Bendy Corridor ===");
+  }
 
-      while(searching) {
+  // If two features are aligned we can attempt to find a straight path between them. We first find all the
+  // overlapping tiles. Then we draw a line through the grid from the origin tiles to the feature. A ray will fail if
+  // it encounters a feature other than the target.
+  function corridorRayCast(alignment) {
+    const originTiles = findOverlappingOriginTiles(alignment);
+    const rays = []
+
+    originTiles.forEach(start => {
+      let cursor = {...start};
+      let end = {...start};
+
+      while(true) {
         switch(alignment) {
           case 'N': cursor = { y:cursor.y-1, x:cursor.x }; break;
           case 'S': cursor = { y:cursor.y+1, x:cursor.x }; break;
@@ -68,103 +83,76 @@ global.CorridorFactory = function(grid) {
           case 'W': cursor = { y:cursor.y, x:cursor.x-1 }; break;
         }
 
-        (grid[cursor.y][cursor.x] != null) ? (searching = false) : (last = cursor);
+        let cell = grid[cursor.y][cursor.x];
+        if (cell == null) { end = cursor; }
+
+        // A ray is only valid if it finds the target feature at the end.
+        if (cell != null) {
+          if (cell === targetFeature.getIndex()) {
+            rays.push({ start, end });
+          }
+          return;
+        }
       }
-
-      console.log("Cast ray from ",origin);
-      console.log("Ending At",last);
-
-      return [origin,last]
     });
 
-    console.log("Rays:",rays);
-  }
-
-  function attemptBendyCorridor(alignment) {
-    console.log("=== Attempt Bendy Corridor ===");
+    return (rays.length > 0) ? Random.from(rays) : null;
   }
 
   // To find the overlap origin tiles, we find the aligned edge of the origin feature. If the target feature is to
   // the north we get the grid coordinates along the just beyond the bounds in the direction of the target feature.
-  // Once we find an edge we search inward until we find an occupied cell.
-
-  function findOverlapOriginTiles(alignment) {
+  // Once we find an edge we search inward until we find an occupied cell. While searching this way, it's possible
+  // that a cell might contain a feature other than this one. If so we don't add it as an origin cell.
+  function findOverlappingOriginTiles(alignment) {
     const origin = originFeature.getLocation();
-    const index = originFeature.getIndex();
     const target = targetFeature.getLocation();
+    const tiles = [];
 
-    console.log(`Find overlap ${alignment}`)
-    console.log(`Origin index: ${originFeature.getIndex()}`)
+    const northSearch = (start, end) => {
+      for (let x=start; x<end; x++) {
+        for (let y=origin.yMin; y < origin.yMax; y++) {
+          if (grid[y][x] != null) { addTileIfValid(x,y); break; }}}}
+
+    const southSearch = (start, end) => {
+      for (let x=start; x<end; x++) {
+        for (let y=origin.yMax-1; y >= origin.yMin; y--) {
+          if (grid[y][x] != null) { addTileIfValid(x,y); break; }}}}
+
+    const eastSearch = (start, end) => {
+      for (let y=start; y<end; y++) {
+        for (let x=origin.xMin; x < origin.xMax; x++) {
+          if (grid[y][x] != null) { addTileIfValid(x,y); break; }}}}
+
+    const westSearch = (start, end) => {
+      for (let y=start; y<end; y++) {
+        for (let x=origin.xMax-1; x >= origin.xMin; x--) {
+          if (grid[y][x] != null) { addTileIfValid(x,y); break; }}}}
+
+    const addTileIfValid = (x,y) => {
+      if (grid[y][x] === originFeature.getIndex()) {
+        switch(alignment) {
+          case 'N': tiles.push({ x, y:y-1 }); break;
+          case 'S': tiles.push({ x, y:y+1 }); break;
+          case 'E': tiles.push({ x:x-1, y }); break;
+          case 'W': tiles.push({ x:x+1, y }); break;
+        }
+      }
+    }
 
     if (alignment === 'N' || alignment === 'S') {
       const start = Math.max(origin.xMin, target.xMin);
       const end   = Math.min(origin.xMax, target.xMax);
-      console.log("Start:",start);
-      console.log("End:",end);
-      return verticalTileSearch(index, start, end, alignment);
+      (alignment === 'N') ? northSearch(start, end) : southSearch(start, end);
     }
 
     if (alignment === 'E' || alignment === 'W') {
       const start = Math.max(origin.yMin, target.yMin);
       const end   = Math.min(origin.yMax, target.yMax);
-      console.log("Start:",start);
-      console.log("End:",end);
-      return horizontalTileSearch(index, start, end, alignment);
+      (alignment === 'E') ? eastSearch(start, end) : westSearch(start, end);
     }
-  }
 
-  function verticalTileSearch(index, start, end, alignment) {
-    const tiles = [];
-    for (let x=start; x<end; x++) {
-      console.log("   X:",x)
-
-      if (alignment === 'N') {
-        for (let y=origin.yMin; y < origin.yMax; y++) {
-          const cell = grid[y][x];
-          if (cell != null && cell !== index) {
-            console.log(`    Blocked by other feature. Invalid Origin.`)
-            break;
-          }
-          console.log("     Y:",y)
-          if (grid[y][x] != null) {
-            console.log(`    Blocked [${x},${y}] - ${grid[y][x]}`)
-            tiles.push({ x, y:y-1 });
-            break;
-          }
-        }
-      }
-      if (alignment === 'S') {
-        for (let y=origin.yMax-1; y >= origin.yMin; y--) {
-          console.log("     Y:",y)
-          if (grid[y][x] != null) {
-            console.log(`    Blocked [${x},${y}] - ${grid[y][x]}`)
-            tiles.push({ x, y:y+1 });
-            break;
-          }
-        }
-      }
-    }
     return tiles;
   }
-
-  function horizontalTileSearch(index, start, end, alignment) {
-    const tiles = [];
-    for (let y=start; y<end; y++) {
-      if (alignment === 'E') {
-        for (let x=origin.xMin; x < origin.xMax; x++) {
-          if (grid[y][x] != null) { tiles.push({ x:x-1, y }); break; }
-        }
-      }
-      if (alignment === 'W') {
-        for (let x=origin.xMax-1; x >= origin.xMin; x--) {
-          if (grid[y][x] != null) { tiles.push({ x:x+1, y }); break; }
-        }
-      }
-    }
-    return tiles;
-  }
-
-
 
   // Alignment can be one of eight values. A cardinal direction (N,S,E,W) indicates that the two features are at least
   // somewhat aligned and share at least a pair of tiles on a single axis. Other alignments (NE,NW,SE,SW) indicate that
