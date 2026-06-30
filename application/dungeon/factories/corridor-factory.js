@@ -92,7 +92,6 @@ global.CorridorFactory = function(grid) {
     const origin = originFeature.getLocation();
     const index = originFeature.getIndex();
     const target = targetFeature.getLocation();
-    const tiles = [];
 
     console.log(`Find overlap ${alignment}`)
     console.log(`Origin index: ${originFeature.getIndex()}`)
@@ -100,64 +99,69 @@ global.CorridorFactory = function(grid) {
     if (alignment === 'N' || alignment === 'S') {
       const start = Math.max(origin.xMin, target.xMin);
       const end   = Math.min(origin.xMax, target.xMax);
-
       console.log("Start:",start);
       console.log("End:",end);
-
-      for (let x=start; x<end; x++) {
-        console.log("   X:",x)
-
-        if (alignment === 'N') {
-          for (let y=origin.yMin; y < origin.yMax; y++) {
-            const cell = grid[y][x];
-            if (cell != null && cell !== index) {
-              console.log(`    Blocked by other feature. Invalid Origin.`)
-              break;
-            }
-            console.log("     Y:",y)
-            if (grid[y][x] != null) {
-              console.log(`    Blocked [${x},${y}] - ${grid[y][x]}`)
-              tiles.push({ x, y:y-1 });
-              break;
-            }
-          }
-        }
-        if (alignment === 'S') {
-          for (let y=origin.yMax-1; y >= origin.yMin; y--) {
-            console.log("     Y:",y)
-            if (grid[y][x] != null) {
-              console.log(`    Blocked [${x},${y}] - ${grid[y][x]}`)
-              tiles.push({ x, y:y+1 });
-              break;
-            }
-          }
-        }
-      }
+      return verticalTileSearch(index, start, end, alignment);
     }
 
     if (alignment === 'E' || alignment === 'W') {
       const start = Math.max(origin.yMin, target.yMin);
       const end   = Math.min(origin.yMax, target.yMax);
+      console.log("Start:",start);
+      console.log("End:",end);
+      return horizontalTileSearch(index, start, end, alignment);
+    }
+  }
 
-      for (let y=start; y<end; y++) {
-        if (alignment === 'E') {
-          for (let x=origin.xMin; x < origin.xMax; x++) {
-            if (grid[y][x] != null) { tiles.push({ x:x-1, y }); break; }
+  function verticalTileSearch(index, start, end, alignment) {
+    const tiles = [];
+    for (let x=start; x<end; x++) {
+      console.log("   X:",x)
+
+      if (alignment === 'N') {
+        for (let y=origin.yMin; y < origin.yMax; y++) {
+          const cell = grid[y][x];
+          if (cell != null && cell !== index) {
+            console.log(`    Blocked by other feature. Invalid Origin.`)
+            break;
+          }
+          console.log("     Y:",y)
+          if (grid[y][x] != null) {
+            console.log(`    Blocked [${x},${y}] - ${grid[y][x]}`)
+            tiles.push({ x, y:y-1 });
+            break;
           }
         }
-        if (alignment === 'W') {
-          for (let x=origin.xMax-1; x >= origin.xMin; x--) {
-            if (grid[y][x] != null) { tiles.push({ x:x+1, y }); break; }
+      }
+      if (alignment === 'S') {
+        for (let y=origin.yMax-1; y >= origin.yMin; y--) {
+          console.log("     Y:",y)
+          if (grid[y][x] != null) {
+            console.log(`    Blocked [${x},${y}] - ${grid[y][x]}`)
+            tiles.push({ x, y:y+1 });
+            break;
           }
         }
       }
     }
-
     return tiles;
   }
 
-  function tileSearch() {
-
+  function horizontalTileSearch(index, start, end, alignment) {
+    const tiles = [];
+    for (let y=start; y<end; y++) {
+      if (alignment === 'E') {
+        for (let x=origin.xMin; x < origin.xMax; x++) {
+          if (grid[y][x] != null) { tiles.push({ x:x-1, y }); break; }
+        }
+      }
+      if (alignment === 'W') {
+        for (let x=origin.xMax-1; x >= origin.xMin; x--) {
+          if (grid[y][x] != null) { tiles.push({ x:x+1, y }); break; }
+        }
+      }
+    }
+    return tiles;
   }
 
 
