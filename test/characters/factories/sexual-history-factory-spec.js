@@ -8,6 +8,8 @@ describe("SexualHistoryFactory", function() {
   });
 
   it('when androphobic', function() {
+    Random.stubRoll(50,50,50,50,50,1000);
+
     let firsts = SexualHistoryFactory.build({
       personality:{ archetype:ArchetypeCode.slut },
       sensitivities:{ cock:10, pussy:10 },
@@ -19,6 +21,8 @@ describe("SexualHistoryFactory", function() {
   });
 
   it('with positive preferences', function() {
+    Random.stubRoll(50,50,50,50,50,1000);
+
     let firsts = SexualHistoryFactory.build({
       personality:{ archetype:ArchetypeCode.slut },
       sensitivities:{ pussy:10 },
