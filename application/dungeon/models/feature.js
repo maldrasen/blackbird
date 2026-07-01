@@ -102,13 +102,13 @@ global.Feature = function(type) {
 
     const findEastTiles = () => {
       for (let y = 0; y < height; y++) {
-        for (let x = 0; x < width; x++) {
-          if (footprint[y][x]) { tiles.push({ x: x - 1, y }); break; }}}}
+        for (let x = width - 1; x >= 0; x--) {
+          if (footprint[y][x]) { tiles.push({ x: x + 1, y }); break; }}}}
 
     const findWestTiles = () => {
       for (let y = 0; y < height; y++) {
-        for (let x = width - 1; x >= 0; x--) {
-          if (footprint[y][x]) { tiles.push({ x: x + 1, y }); break; }}}}
+        for (let x = 0; x < width; x++) {
+          if (footprint[y][x]) { tiles.push({ x: x - 1, y }); break; }}}}
 
     switch(direction) {
       case 'N': findNorthTiles(); break;

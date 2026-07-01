@@ -74,8 +74,8 @@ global.CorridorFactory = function() {
     // These directions are only true if the locations don't overlap at all.
     const isNorth = b.yMax <= a.yMin;
     const isSouth = b.yMin >= a.yMax;
-    const isEast = b.xMax >= a.xMin;
-    const isWest = b.xMin <= a.xMax;
+    const isEast = b.xMin >= a.xMax;
+    const isWest = b.xMax <= a.xMin;
 
     if (xOverlap) { return isNorth ? 'N' : 'S'; }
     if (yOverlap) { return isEast ?  'E' : 'W'; }

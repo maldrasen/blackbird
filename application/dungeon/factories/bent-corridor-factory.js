@@ -2,6 +2,10 @@ global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
   const floor = DungeonSystem.getDungeonFloor();
   const grid = floor.getFloorGrid();
 
+  // We need to track the room origin position between building a main box and setting a sub box. Better to just set
+  // a temp variable like this than to pass the value between the functions (though that would be more proper)
+  let mainOrigin;
+
   // To find a bent path, we get all the start tiles for the origin and target features. For a SE alignment we get all
   // the edge tiles on the S and E sides of the origin, and all the tiles on the N and W sides of the target. We then
   // take every permutation of origin start tile and target end tile and draw an L shape between them. If there are no
@@ -56,15 +60,24 @@ global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
     }
   }
 
-  function setMainBox(room,start,end) {
+  function setMainBox(room, start, end) {
+    const width = Math.abs(end.x - start.x) + 1;
+    const height = Math.abs(end.y - start.y) + 1;
 
+    mainOrigin = { x: Math.min(start.x,end.x), y: Math.min(start.y,end.y) };
+    room.setMainBox(width, height);
   }
 
-  function setSubBox(room,start,end) {
+  // Start and end here are the two ends of the sub box's leg (the corner shared with the main box, and the far end).
+  // The sub box position needs to be relative to the main box's local origin, which may not be the same as this leg's
+  // own min corner if the main box's leg runs in the opposite direction along an axis.
+  function setSubBox(room, start, end) {
+    const width = Math.abs(end.x - start.x) + 1;
+    const height = Math.abs(end.y - start.y) + 1;
+    const subOrigin = { x: Math.min(start.x,end.x), y: Math.min(start.y,end.y) };
 
+    room.setSubBox(subOrigin.x - mainOrigin.x, subOrigin.y - mainOrigin.y, width, height);
   }
-
-
 
   // A bent path starts at the start position, and moves one tile at a time (horizontally or vertically) until the
   // corner is reached, then it moves to the end position. If grid location along the path is already occupied this
