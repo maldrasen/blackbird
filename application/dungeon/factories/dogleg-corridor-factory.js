@@ -26,13 +26,12 @@ global.DoglegCorridorFactory = function(originFeature, targetFeature, alignment)
       if (validPaths.length > 0) {
         const path = Random.from(validPaths);
         const feature = buildFeature(path);
+        const doors = [
+          FloorFactorySupport.buildDoor(path[0][0], feature.getIndex(), originFeature.getIndex()),
+          FloorFactorySupport.buildDoor(path[2][1], feature.getIndex(), targetFeature.getIndex()),
+        ];
 
-        console.log("Choose Path:",path);
-
-        return {
-          feature,
-          doors:[],
-        }
+        return { feature, doors };
       }
     }
   }
@@ -46,7 +45,7 @@ global.DoglegCorridorFactory = function(originFeature, targetFeature, alignment)
     });
 
     const start = path[0][0];
-    const end = path[path.length-1][1];
+    const end = path[2][1];
     const feature = Feature('corridor');
 
     feature.setPosition(Math.min(start.x,end.x), Math.min(start.y,end.y));
