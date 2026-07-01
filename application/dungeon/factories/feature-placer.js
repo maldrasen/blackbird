@@ -54,24 +54,24 @@ global.FeaturePlacer = function() {
     const rooms = feature.getRooms();
 
     for (let i=0; i<rooms.length; i++) {
-      if (boxCanFit(feature.getPosition(), rooms[i].getMainBox()) === false) { return false; }
-      if (boxCanFit(feature.getPosition(), rooms[i].getSubBox()) === false) { return false; }
+      const boxes = rooms[i].getBoxes();
+      for (let j=0; j<boxes.length; j++) {
+        if (boxCanFit(feature.getPosition(), boxes[j]) === false) { return false; }
+      }
     }
 
     return true;
   }
 
   function boxCanFit(position, box) {
-    if (box != null) {
-      const xMin = position.x + box.x;
-      const xMax = position.x + box.x + box.width;
-      const yMin = position.y + box.y;
-      const yMax = position.y + box.y + box.height;
+    const xMin = position.x + box.x;
+    const xMax = position.x + box.x + box.width;
+    const yMin = position.y + box.y;
+    const yMax = position.y + box.y + box.height;
 
-      for (let y=yMin; y<yMax; y++) {
-        for (let x=xMin; x<xMax; x++) {
-          if (grid[y][x] != null) { return false; }
-        }
+    for (let y=yMin; y<yMax; y++) {
+      for (let x=xMin; x<xMax; x++) {
+        if (grid[y][x] != null) { return false; }
       }
     }
 
@@ -80,22 +80,19 @@ global.FeaturePlacer = function() {
 
   function placeFeature(index, feature) {
     feature.getRooms().forEach(room => {
-      placeBox(index, feature.getPosition(), room.getMainBox());
-      placeBox(index, feature.getPosition(), room.getSubBox());
+      room.getBoxes().forEach(box => placeBox(index, feature.getPosition(), box));
     });
   }
 
   function placeBox(index, position, box) {
-    if (box != null) {
-      const xMin = position.x + box.x;
-      const xMax = position.x + box.x + box.width;
-      const yMin = position.y + box.y;
-      const yMax = position.y + box.y + box.height;
+    const xMin = position.x + box.x;
+    const xMax = position.x + box.x + box.width;
+    const yMin = position.y + box.y;
+    const yMax = position.y + box.y + box.height;
 
-      for (let y=yMin; y<yMax; y++) {
-        for (let x=xMin; x<xMax; x++) {
-          grid[y][x] = index;
-        }
+    for (let y=yMin; y<yMax; y++) {
+      for (let x=xMin; x<xMax; x++) {
+        grid[y][x] = index;
       }
     }
   }

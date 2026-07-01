@@ -1,9 +1,5 @@
 global.FloorFactorySupport = (function() {
 
-  // We need to track the room origin position between building a main box and setting a sub box. Better to just set
-  // a temp variable like this than to pass the value between the functions (though that would be more proper)
-  let mainOrigin;
-
   // The number of empty tiles between origin and target along a single cardinal axis.
   function getGapBetweenFeatures(originFeature, targetFeature, direction) {
     const origin = originFeature.getLocation();
@@ -27,22 +23,16 @@ global.FloorFactorySupport = (function() {
     filter(tile => floorGrid[tile.y][tile.x] == null);
   }
 
-  function setMainBox(room, start, end) {
+  // Add a box to the room for a straight segment between two absolute grid points (start/end), positioned relative
+  // to a fixed anchor. Room's addBox() re-pins the room's own origin to (0,0) after every call, so every segment of
+  // a multi-box room (a bent corridor's two legs, a dogleg's three) has to be expressed relative to the SAME anchor
+  // every time (typically the first segment's own origin) rather than shifting anchors between calls.
+  function addSegment(room, anchor, start, end) {
+    const x = Math.min(start.x, end.x) - anchor.x;
+    const y = Math.min(start.y, end.y) - anchor.y;
     const width = Math.abs(end.x - start.x) + 1;
     const height = Math.abs(end.y - start.y) + 1;
-
-    mainOrigin = { x: Math.min(start.x,end.x), y: Math.min(start.y,end.y) };
-    room.setMainBox(width, height);
-  }
-
-  // Setting a room's sub box reads from the `mainOrigin` variable, that should have been set when setMainBox() is
-  // called. That is to say, always call setMainBox() before this.
-  function setSubBox(room, start, end) {
-    const width = Math.abs(end.x - start.x) + 1;
-    const height = Math.abs(end.y - start.y) + 1;
-    const subOrigin = { x: Math.min(start.x,end.x), y: Math.min(start.y,end.y) };
-
-    room.setSubBox(subOrigin.x - mainOrigin.x, subOrigin.y - mainOrigin.y, width, height);
+    room.addBox(x, y, width, height);
   }
 
   // Doors are only ever stored on a tile's S or E wall. Given an empty point that touches the feature at toIndex,
@@ -68,8 +58,7 @@ global.FloorFactorySupport = (function() {
   return Object.freeze({
     getGapBetweenFeatures,
     getStartTiles,
-    setMainBox,
-    setSubBox,
+    addSegment,
     buildDoor,
   });
 

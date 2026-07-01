@@ -44,22 +44,19 @@ global.FloorFactory = function() {
     const index = feature.getIndex();
     const floorGrid = DungeonSystem.getDungeonFloor().getFloorGrid();
 
-    function addBox(box) {
-      if (box) {
-        const yMin = position.y + box.y;
-        const xMin = position.x + box.x;
+    function fillBox(box) {
+      const yMin = position.y + box.y;
+      const xMin = position.x + box.x;
 
-        for (let y=yMin; y<(yMin + box.height); y++) {
-          for (let x=xMin; x<(xMin + box.width); x++) {
-            floorGrid[y][x] = index;
-          }
+      for (let y=yMin; y<(yMin + box.height); y++) {
+        for (let x=xMin; x<(xMin + box.width); x++) {
+          floorGrid[y][x] = index;
         }
       }
     }
 
     feature.getRooms().forEach(room => {
-      addBox(room.getMainBox());
-      addBox(room.getSubBox());
+      room.getBoxes().forEach(fillBox);
     });
   }
 

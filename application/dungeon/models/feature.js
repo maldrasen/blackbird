@@ -62,21 +62,18 @@ global.Feature = function(type) {
 
       footprint = Array.from({ length: height }, () => new Array(width).fill(false));
 
-      function addBox(pos,box) {
-        if (box) {
-          const xPos = pos.x + box.x;
-          const yPos = pos.y + box.y;
-          for (let y = yPos; y < yPos + box.height; y++) {
-            for (let x = xPos; x < xPos + box.width; x++) {
-              footprint[y][x] = true;
-            }
+      function paintBox(pos,box) {
+        const xPos = pos.x + box.x;
+        const yPos = pos.y + box.y;
+        for (let y = yPos; y < yPos + box.height; y++) {
+          for (let x = xPos; x < xPos + box.width; x++) {
+            footprint[y][x] = true;
           }
         }
       }
 
       rooms.forEach(room => {
-        addBox(room.getPosition(), room.getMainBox());
-        addBox(room.getPosition(), room.getSubBox());
+        room.getBoxes().forEach(box => paintBox(room.getPosition(), box));
       });
     }
 

@@ -86,8 +86,7 @@ global.StraightCorridorFactory = function(originFeature, targetFeature, alignmen
     const height = isVertical ? Math.abs(end.y - start.y) + 1 : 1;
 
     const room = Room();
-    room.setMainBox(width, height);
-
+    room.addBox(0, 0, width, height);
     return room;
   }
 

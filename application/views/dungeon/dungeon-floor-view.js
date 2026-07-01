@@ -35,27 +35,25 @@ global.DungeonFloorView = (function() {
     }
 
     feature.getRooms().forEach(room => {
-      addRoomBox(featureElement, room.getMainBox());
-      addRoomBox(featureElement, room.getSubBox());
-      addRoomBox(featureElement, room.getMainBox(), true);
-      addRoomBox(featureElement, room.getSubBox(), true);
+      room.getBoxes().forEach(box => {
+        addRoomBox(featureElement, box);
+        addRoomBox(featureElement, box, true);
+      });
     });
 
     X.first('#dungeonFloor').appendChild(featureElement)
   }
 
   function addRoomBox(featureElement, box, innerBox=false) {
-    if (box) {
-      const offset = innerBox ? 2 : 0
-      const classname = innerBox ? 'inner' : 'outer';
+    const offset = innerBox ? 2 : 0
+    const classname = innerBox ? 'inner' : 'outer';
 
-      const roomBox = X.createElement(`<div class='${classname} room-box'></div>`);
-      roomBox.style['left'] = `${(box.x * gridSize) + offset}px`;
-      roomBox.style['top'] = `${(box.y * gridSize) + offset}px`;
-      roomBox.style['height'] = `${(box.height * gridSize) - (2 * offset)}px`;
-      roomBox.style['width'] = `${(box.width * gridSize) - (2 * offset)}px`;
-      featureElement.appendChild(roomBox);
-    }
+    const roomBox = X.createElement(`<div class='${classname} room-box'></div>`);
+    roomBox.style['left'] = `${(box.x * gridSize) + offset}px`;
+    roomBox.style['top'] = `${(box.y * gridSize) + offset}px`;
+    roomBox.style['height'] = `${(box.height * gridSize) - (2 * offset)}px`;
+    roomBox.style['width'] = `${(box.width * gridSize) - (2 * offset)}px`;
+    featureElement.appendChild(roomBox);
   }
 
   function addDoorElement(door) {

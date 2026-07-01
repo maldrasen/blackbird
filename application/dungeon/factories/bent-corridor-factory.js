@@ -48,12 +48,18 @@ global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
     const index = floor.getFeatures().length;
     const room = Room();
 
+    const end = path.corner || path.end;
+    const anchor = {
+      x: Math.min(path.start.x, end.x),
+      y: Math.min(path.start.y, end.y),
+    };
+
     if (path.corner) {
-      FloorFactorySupport.setMainBox(room, path.start, path.corner);
-      FloorFactorySupport.setSubBox(room, path.corner, path.end);
+      FloorFactorySupport.addSegment(room, anchor, path.start, path.corner);
+      FloorFactorySupport.addSegment(room, anchor, path.corner, path.end);
     }
     if (path.corner == null) {
-      FloorFactorySupport.setMainBox(room, path.start, path.end);
+      FloorFactorySupport.addSegment(room, anchor, path.start, path.end);
     }
 
     const feature = Feature('corridor');

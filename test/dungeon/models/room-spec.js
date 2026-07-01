@@ -1,8 +1,3 @@
-// This spec describes the intended Room API once boxes become a flat array (addBox) instead of the current fixed
-// mainBox/subBox pair. Every box is just a position (offset from the room's own origin) and dimensions - there's no
-// "main" box anymore, since a shape like a dogleg corridor's three segments has no privileged box among them. Adding
-// a box can still shift the room's origin (and every existing box with it) to keep the room's overall bounds pinned
-// at (0,0), the same way setSubBox() does today, just generalized to any number of boxes added in any order.
 describe("Room", function() {
 
   describe("addBox()", function() {
