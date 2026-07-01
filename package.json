@@ -26,7 +26,8 @@
   "scripts": {
     "start": "electron . --development",
     "dist": "electron-builder",
-    "sass": "sass"
+    "sass": "sass",
+    "test": "node bin/run-tests.js"
   },
 
   "devDependencies": {

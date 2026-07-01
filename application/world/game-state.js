@@ -58,12 +58,14 @@ global.GameState = (function() {
   function getGameMode() { return $gameMode; }
   function setGameMode(mode) {
     $gameMode = mode;
-    switch(mode) {
-      case GameMode.battle: return BattleView.show();
-      case GameMode.dungeon: return DungeonView.show();
-      case GameMode.episode: return EpisodeView.show();
-      case GameMode.location: return LocationView.show();
-      case GameMode.training: return TrainingView.show();
+    if (HEADLESS === false) {
+      switch(mode) {
+        case GameMode.battle: return BattleView.show();
+        case GameMode.dungeon: return DungeonView.show();
+        case GameMode.episode: return EpisodeView.show();
+        case GameMode.location: return LocationView.show();
+        case GameMode.training: return TrainingView.show();
+      }
     }
   }
 
