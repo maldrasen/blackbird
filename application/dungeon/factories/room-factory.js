@@ -4,10 +4,9 @@ global.RoomFactory = (function() {
   //   size: [min,max]
   function buildSingleRoom(options) {
     const room = Room();
-    room.setMainBox(
-      Random.between(options.size[0],options.size[1]),
-      Random.between(options.size[0],options.size[1]),
-    );
+    room.addBox(0, 0,
+      Random.between(options.size[0], options.size[1]),
+      Random.between(options.size[0], options.size[1]));
     return room;
   }
 
@@ -27,20 +26,20 @@ global.RoomFactory = (function() {
 
     switch (rotation) {
       case 'NE':
-        room.setMainBox(totalWidth-notchWidth, totalHeight);
-        room.setSubBox(0, 0, totalWidth, totalHeight-notchHeight);
+        room.addBox(0, 0, totalWidth-notchWidth, totalHeight);
+        room.addBox(0, 0, totalWidth, totalHeight-notchHeight);
         break;
       case 'NW':
-        room.setMainBox(totalWidth-notchWidth, totalHeight);
-        room.setSubBox(-notchWidth, 0, totalWidth, totalHeight-notchHeight);
+        room.addBox(0, 0, totalWidth-notchWidth, totalHeight);
+        room.addBox(-notchWidth, 0, totalWidth, totalHeight-notchHeight);
         break;
       case 'SE':
-        room.setMainBox(totalWidth-notchWidth, totalHeight);
-        room.setSubBox(0, notchHeight, totalWidth, totalHeight-notchHeight);
+        room.addBox(0, 0, totalWidth-notchWidth, totalHeight);
+        room.addBox(0, notchHeight, totalWidth, totalHeight-notchHeight);
         break;
       case 'SW':
-        room.setMainBox(totalWidth-notchWidth, totalHeight);
-        room.setSubBox(-notchWidth, notchHeight, totalWidth, totalHeight-notchHeight);
+        room.addBox(0, 0, totalWidth-notchWidth, totalHeight);
+        room.addBox(-notchWidth, notchHeight, totalWidth, totalHeight-notchHeight);
         break;
     }
 
@@ -64,20 +63,20 @@ global.RoomFactory = (function() {
 
     switch(rotation) {
       case 'N':
-        room.setMainBox(totalWidth, totalHeight-notchHeight);
-        room.setSubBox(notchWidth, 0, legWidth, totalHeight);
+        room.addBox(0, 0, totalWidth, totalHeight-notchHeight);
+        room.addBox(notchWidth, 0, legWidth, totalHeight);
         break;
       case 'S':
-        room.setMainBox(totalWidth, totalHeight-notchHeight);
-        room.setSubBox(notchWidth, -notchHeight, legWidth, totalHeight);
+        room.addBox(0, 0, totalWidth, totalHeight-notchHeight);
+        room.addBox(notchWidth, -notchHeight, legWidth, totalHeight);
         break;
       case 'E':
-        room.setMainBox(totalWidth-notchWidth, totalHeight);
-        room.setSubBox(0, notchHeight, totalWidth, legHeight);
+        room.addBox(0, 0, totalWidth-notchWidth, totalHeight);
+        room.addBox(0, notchHeight, totalWidth, legHeight);
         break;
       case 'W':
-        room.setMainBox(totalWidth-notchWidth, totalHeight);
-        room.setSubBox(-notchWidth, notchHeight, totalWidth, legHeight);
+        room.addBox(0, 0, totalWidth-notchWidth, totalHeight);
+        room.addBox(-notchWidth, notchHeight, totalWidth, legHeight);
         break;
     }
 
@@ -103,8 +102,8 @@ global.RoomFactory = (function() {
     const subHeight = totalHeight;
 
     const room = Room(options);
-    room.setMainBox(mainWidth,mainHeight);
-    room.setSubBox(notchWidth,-notchHeight,subWidth,subHeight);
+    room.addBox(0, 0, mainWidth, mainHeight);
+    room.addBox(notchWidth, -notchHeight, subWidth, subHeight);
     return room;
   }
 
