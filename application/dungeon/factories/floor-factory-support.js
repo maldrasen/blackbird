@@ -1,5 +1,9 @@
 global.FloorFactorySupport = (function() {
 
+  // We need to track the room origin position between building a main box and setting a sub box. Better to just set
+  // a temp variable like this than to pass the value between the functions (though that would be more proper)
+  let mainOrigin;
+
   // Get the start tiles for a feature in a given direction where the starting tiles are empty.
   function getStartTiles(feature, direction) {
     const position = feature.getPosition();
@@ -10,41 +14,28 @@ global.FloorFactorySupport = (function() {
     filter(tile => floorGrid[tile.y][tile.x] == null);
   }
 
-  function buildRoomBetween(start,end) {
-    const isVertical = start.x === end.x;
-    const width  = isVertical ? 1 : Math.abs(end.x - start.x) + 1;
-    const height = isVertical ? Math.abs(end.y - start.y) + 1 : 1;
+  function setMainBox(room, start, end) {
+    const width = Math.abs(end.x - start.x) + 1;
+    const height = Math.abs(end.y - start.y) + 1;
 
-    const room = Room();
+    mainOrigin = { x: Math.min(start.x,end.x), y: Math.min(start.y,end.y) };
     room.setMainBox(width, height);
-
-    return room;
   }
 
-  // Corridors can be composed of many rooms, but each room only has one box. This is to allow for "dog leg" shaped
-  // features with two turns. When a feature is added we need to set the cells that it covers in the floor grid.
-  function addFeatureToGrid(feature) {
-    const position = feature.getPosition();
-    const index = feature.getIndex();
-    const floorGrid = DungeonSystem.getDungeonFloor().getFloorGrid();
+  // Setting a room's sub box reads from the `mainOrigin` variable, that should have been set when setMainBox() is
+  // called. That is to say, always call setMainBox() before this.
+  function setSubBox(room, start, end) {
+    const width = Math.abs(end.x - start.x) + 1;
+    const height = Math.abs(end.y - start.y) + 1;
+    const subOrigin = { x: Math.min(start.x,end.x), y: Math.min(start.y,end.y) };
 
-    feature.getRooms().forEach(room => {
-      const box = room.getMainBox();
-      const yMin = position.y + box.y;
-      const xMin = position.x + box.x;
-
-      for (let y=yMin; y<(yMin + box.height); y++) {
-        for (let x=xMin; x<(xMin + box.width); x++) {
-          floorGrid[y][x] = index;
-        }
-      }
-    });
+    room.setSubBox(subOrigin.x - mainOrigin.x, subOrigin.y - mainOrigin.y, width, height);
   }
 
   return Object.freeze({
     getStartTiles,
-    buildRoomBetween,
-    addFeatureToGrid,
+    setMainBox,
+    setSubBox,
   });
 
 })();

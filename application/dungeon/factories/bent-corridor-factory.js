@@ -2,9 +2,6 @@ global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
   const floor = DungeonSystem.getDungeonFloor();
   const grid = floor.getFloorGrid();
 
-  // We need to track the room origin position between building a main box and setting a sub box. Better to just set
-  // a temp variable like this than to pass the value between the functions (though that would be more proper)
-  let mainOrigin;
 
   // To find a bent path, we get all the start tiles for the origin and target features. For a SE alignment we get all
   // the edge tiles on the S and E sides of the origin, and all the tiles on the N and W sides of the target. We then
@@ -34,24 +31,7 @@ global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
 
     if (validPaths.length > 0) {
       const path = Random.from(validPaths);
-      const index = floor.getFeatures().length;
-      const room = Room();
-
-      if (path.corner) {
-        setMainBox(room, path.start, path.corner);
-        setSubBox(room, path.corner, path.end);
-      }
-      if (path.corner == null) {
-        setMainBox(room, path.start, path.end);
-      }
-
-      const feature = Feature('corridor');
-      const x = Math.min(path.start.x, path.end.x);
-      const y = Math.min(path.start.y, path.end.y);
-
-      feature.setPosition(x,y);
-      feature.setIndex(index);
-      feature.addRoom(room);
+      const feature = buildFeature(path);
 
       return {
         feature,
@@ -60,23 +40,27 @@ global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
     }
   }
 
-  function setMainBox(room, start, end) {
-    const width = Math.abs(end.x - start.x) + 1;
-    const height = Math.abs(end.y - start.y) + 1;
+  function buildFeature(path) {
+    const index = floor.getFeatures().length;
+    const room = Room();
 
-    mainOrigin = { x: Math.min(start.x,end.x), y: Math.min(start.y,end.y) };
-    room.setMainBox(width, height);
-  }
+    if (path.corner) {
+      FloorFactorySupport.setMainBox(room, path.start, path.corner);
+      FloorFactorySupport.setSubBox(room, path.corner, path.end);
+    }
+    if (path.corner == null) {
+      FloorFactorySupport.setMainBox(room, path.start, path.end);
+    }
 
-  // Start and end here are the two ends of the sub box's leg (the corner shared with the main box, and the far end).
-  // The sub box position needs to be relative to the main box's local origin, which may not be the same as this leg's
-  // own min corner if the main box's leg runs in the opposite direction along an axis.
-  function setSubBox(room, start, end) {
-    const width = Math.abs(end.x - start.x) + 1;
-    const height = Math.abs(end.y - start.y) + 1;
-    const subOrigin = { x: Math.min(start.x,end.x), y: Math.min(start.y,end.y) };
+    const feature = Feature('corridor');
+    const x = Math.min(path.start.x, path.end.x);
+    const y = Math.min(path.start.y, path.end.y);
 
-    room.setSubBox(subOrigin.x - mainOrigin.x, subOrigin.y - mainOrigin.y, width, height);
+    feature.setPosition(x,y);
+    feature.setIndex(index);
+    feature.addRoom(room);
+
+    return feature;
   }
 
   // A bent path starts at the start position, and moves one tile at a time (horizontally or vertically) until the

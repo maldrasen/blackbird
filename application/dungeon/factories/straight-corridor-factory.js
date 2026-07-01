@@ -18,9 +18,7 @@ global.StraightCorridorFactory = function(originFeature, targetFeature, alignmen
       const feature = Feature('corridor');
       feature.setPosition(x, y);
       feature.setIndex(index);
-      feature.addRoom(FloorFactorySupport.buildRoomBetween(start, end));
-
-      FloorFactorySupport.addFeatureToGrid(feature)
+      feature.addRoom(buildRoomBetween(start, end));
 
       let originDoorPosition;
       let targetDoorPosition;
@@ -105,6 +103,17 @@ global.StraightCorridorFactory = function(originFeature, targetFeature, alignmen
     map(tile => ({ x: tile.x + position.x, y: tile.y + position.y })).
     filter(tile => grid[tile.y][tile.x] == null).
     filter(inTargetOverlap);
+  }
+
+  function buildRoomBetween(start,end) {
+    const isVertical = start.x === end.x;
+    const width  = isVertical ? 1 : Math.abs(end.x - start.x) + 1;
+    const height = isVertical ? Math.abs(end.y - start.y) + 1 : 1;
+
+    const room = Room();
+    room.setMainBox(width, height);
+
+    return room;
   }
 
   return Object.freeze({
