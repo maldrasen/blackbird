@@ -1,37 +1,22 @@
-global.Room = () => {
+global.Room = function() {
 
   // The room model will also manage the contents of the room.
-  let mainBox;
-  let subBox;
+  const boxes = [];
   let position = { x:0, y:0 };
 
-  // Main box is always placed at (0,0);
-  function setMainBox(width, height) {
-    mainBox = { x:0, y:0, width, height };
-  }
-
-  // We need to recalculate the origin whenever we set a sub box, ensuring
-  // that even if the box is to the left or below the main box, the room
-  // origin will always remain at (0,0)
-  function setSubBox(x, y, width, height) {
-    if (mainBox == null) { throw new Error(`Main box must be set first.`); }
-
-    subBox = { x, y, width, height };
+  // Add a box to the room, positioned as an offset from the room's own origin. There's no "main" box - a box is
+  // just a shape, and a room can be made up of any number of them (a single box, an L made of two, a dogleg made of
+  // three, etc). Adding a box can push the room's bounds below (0,0), so every box gets shifted back to keep the
+  // room's overall origin pinned at (0,0).
+  function addBox(x, y, width, height) {
+    boxes.push({ x, y, width, height });
 
     const bounds = getBounds();
+    const xAdjust = -bounds.xMin;
+    const yAdjust = -bounds.yMin;
 
-    if (bounds.xMin > 0) { throw new Error('This should never happen'); }
-    if (bounds.yMin > 0) { throw new Error('This should never happen'); }
-
-    if (bounds.xMin < 0) {
-      const xAdjust = - subBox.x;
-      mainBox.x += xAdjust;
-      subBox.x += xAdjust;
-    }
-    if (bounds.yMin < 0) {
-      const yAdjust = - subBox.y;
-      mainBox.y += yAdjust;
-      subBox.y += yAdjust;
+    if (xAdjust !== 0 || yAdjust !== 0) {
+      boxes.forEach(box => { box.x += xAdjust; box.y += yAdjust; });
     }
   }
 
@@ -42,62 +27,41 @@ global.Room = () => {
 
   // Return the room bounds in an object { xMin, xMax, yMin, yMax }
   function getBounds() {
-    // When there is only one box the room origin is always at (0,0)
-    if (subBox == null) {
-      return { xMin:0, xMax:mainBox.width, yMin:0, yMax:mainBox.height };
-    }
+    const bounds = { xMin:Infinity, xMax:-Infinity, yMin:Infinity, yMax:-Infinity };
 
-    // This needs to work both before and after we recalculate the room origin point.
-    return {
-      xMin: Math.min(mainBox.x, subBox.x),
-      xMax: Math.max((mainBox.x + mainBox.width), (subBox.x + subBox.width)),
-      yMin: Math.min(mainBox.y, subBox.y),
-      yMax: Math.max((mainBox.y + mainBox.height), (subBox.y + subBox.height)),
-    };
-  }
+    boxes.forEach(box => {
+      if (box.x < bounds.xMin) { bounds.xMin = box.x; }
+      if (box.y < bounds.yMin) { bounds.yMin = box.y; }
+      if (box.x + box.width  > bounds.xMax) { bounds.xMax = box.x + box.width; }
+      if (box.y + box.height > bounds.yMax) { bounds.yMax = box.y + box.height; }
+    });
 
-  function containsTile(x,y) {
-    return boxContains(mainBox,x,y) || boxContains(subBox,x,y);
-  }
-
-  function boxContains(box,x,y) {
-    if (box == null) { return false; }
-    if (x < box.x) { return false; }
-    if (y < box.y) { return false; }
-    if (x > box.x + box.width-1) { return false; }
-    if (y > box.y + box.height-1) { return false; }
-    return true;
+    return bounds;
   }
 
   // Get a string representation of this room.
   function inspect() {
     let inspection = `Room{${position[0]},${position[1]}}`;
-    inspection += ` M:(${mainBox.x},${mainBox.y})[${mainBox.width},${mainBox.height}]`;
-    if (subBox) {
-      inspection += ` S:(${subBox.x},${subBox.y})[${subBox.width},${subBox.height}]`;
-    }
+    boxes.forEach(box => {
+      inspection += ` (${box.x},${box.y})[${box.width},${box.height}]`;
+    });
     return inspection;
   }
 
   function pack() {
     return {
       position,
-      mainBox,
-      subBox,
+      boxes,
     }
   }
 
   return Object.freeze({
-    getSubBox: () => { return subBox ? { ...subBox } : null; },
-    getMainBox: () => { return mainBox ? { ...mainBox } : null; },
-    getPosition: () => { return position; },
-    setMainBox,
-    setSubBox,
     setPosition,
+    getPosition: () => { return {...position}; },
+    addBox,
+    getBoxes: () => { return boxes.map(box => ({...box})); },
     getBounds,
-    containsTile,
     inspect,
     pack,
   });
 }
-

@@ -467,7 +467,7 @@
     "test/dungeon/dungeon-system-spec.js",
     "test/dungeon/factories/room-factory-spec.js",
     "test/dungeon/models/feature-graph-spec.js",
-    "test/dungeon/room-spec.js",
+    "test/dungeon/models/room-spec.js",
     "test/helpers/calendar-helper-spec.js",
     "test/helpers/currency-helper-spec.js",
     "test/helpers/english-helper-spec.js",
