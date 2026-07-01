@@ -1,4 +1,5 @@
 global.DoglegCorridorFactory = function(originFeature, targetFeature, alignment) {
+  const floor = DungeonSystem.getDungeonFloor();
 
   function build() {
     const opposite = { N:'S', S:'N', E:'W', W:'E' };
@@ -24,9 +25,40 @@ global.DoglegCorridorFactory = function(originFeature, targetFeature, alignment)
 
       if (validPaths.length > 0) {
         const path = Random.from(validPaths);
+        const feature = buildFeature(path);
+
         console.log("Choose Path:",path);
+
+        return {
+          feature,
+          doors:[],
+        }
       }
     }
+  }
+
+  function buildFeature(path) {
+    const index = floor.getFeatures().length;
+    const room = Room();
+    const anchor = { x:Infinity, y:Infinity };
+
+    path.forEach(segment => {
+      segment.forEach(point => {
+        if (point.x < anchor.x) { anchor.x = point.x; }
+        if (point.y < anchor.y) { anchor.y = point.y; }
+      });
+    });
+
+    path.forEach(segment => {
+      FloorFactorySupport.addSegment(room, anchor, segment[0], segment[1]);
+    });
+
+    const feature = Feature('corridor');
+    feature.setPosition(anchor.x,anchor.y);
+    feature.setIndex(index);
+    feature.addRoom(room);
+
+    return feature;
   }
 
   function validatePath(path) {
