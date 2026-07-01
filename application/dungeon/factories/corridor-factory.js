@@ -187,59 +187,20 @@ global.CorridorFactory = function(grid) {
     return (rays.length > 0) ? Random.from(rays) : null;
   }
 
-  // To find the overlap origin tiles, we find the aligned edge of the origin feature. If the target feature is to
-  // the north we get the grid coordinates along the just beyond the bounds in the direction of the target feature.
-  // Once we find an edge we search inward until we find an occupied cell. While searching this way, it's possible
-  // that a cell might contain a feature other than this one. If so we don't add it as an origin cell.
+  // The overlapping start tiles are the edge tiles in the direction of the target feature where the tiles are empty
+  // and intersect with the target feature bounds.
   function findOverlappingStartTiles(alignment) {
-    const origin = originFeature.getLocation();
+    const pos = originFeature.getPosition();
     const target = targetFeature.getLocation();
-    const tiles = [];
 
-    const northSearch = (start, end) => {
-      for (let x=start; x<end; x++) {
-        for (let y=origin.yMin; y < origin.yMax; y++) {
-          if (grid[y][x] != null) { addTileIfValid(x,y); break; }}}}
+    const inTargetOverlap = ['N','S'].includes(alignment) ?
+      (tile) => tile.x >= target.xMin && tile.x < target.xMax :
+      (tile) => tile.y >= target.yMin && tile.y < target.yMax;
 
-    const southSearch = (start, end) => {
-      for (let x=start; x<end; x++) {
-        for (let y=origin.yMax-1; y >= origin.yMin; y--) {
-          if (grid[y][x] != null) { addTileIfValid(x,y); break; }}}}
-
-    const eastSearch = (start, end) => {
-      for (let y=start; y<end; y++) {
-        for (let x=origin.xMin; x < origin.xMax; x++) {
-          if (grid[y][x] != null) { addTileIfValid(x,y); break; }}}}
-
-    const westSearch = (start, end) => {
-      for (let y=start; y<end; y++) {
-        for (let x=origin.xMax-1; x >= origin.xMin; x--) {
-          if (grid[y][x] != null) { addTileIfValid(x,y); break; }}}}
-
-    const addTileIfValid = (x,y) => {
-      if (grid[y][x] === originFeature.getIndex()) {
-        switch(alignment) {
-          case 'N': tiles.push({ x, y:y-1 }); break;
-          case 'S': tiles.push({ x, y:y+1 }); break;
-          case 'E': tiles.push({ x:x-1, y }); break;
-          case 'W': tiles.push({ x:x+1, y }); break;
-        }
-      }
-    }
-
-    if (alignment === 'N' || alignment === 'S') {
-      const start = Math.max(origin.xMin, target.xMin);
-      const end   = Math.min(origin.xMax, target.xMax);
-      (alignment === 'N') ? northSearch(start, end) : southSearch(start, end);
-    }
-
-    if (alignment === 'E' || alignment === 'W') {
-      const start = Math.max(origin.yMin, target.yMin);
-      const end   = Math.min(origin.yMax, target.yMax);
-      (alignment === 'E') ? eastSearch(start, end) : westSearch(start, end);
-    }
-
-    return tiles;
+    return originFeature.getEdgeTiles(alignment).
+      map(tile => ({ x: tile.x + pos.x, y: tile.y + pos.y })).
+      filter(tile => grid[tile.y][tile.x] == null).
+      filter(inTargetOverlap);
   }
 
   // Alignment can be one of eight values. A cardinal direction (N,S,E,W) indicates that the two features are at least
