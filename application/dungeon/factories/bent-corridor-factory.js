@@ -30,19 +30,50 @@ global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
 
     if (validPaths.length > 0) {
       const path = Random.from(validPaths);
-      console.log("TODO: Build Selected Path:",path);
+      const index = floor.getFeatures().length;
+      const room = Room();
+
+      if (path.corner) {
+        setMainBox(room, path.start, path.corner);
+        setSubBox(room, path.corner, path.end);
+      }
+      if (path.corner == null) {
+        setMainBox(room, path.start, path.end);
+      }
+
+      const feature = Feature('corridor');
+      const x = Math.min(path.start.x, path.end.x);
+      const y = Math.min(path.start.y, path.end.y);
+
+      feature.setPosition(x,y);
+      feature.setIndex(index);
+      feature.addRoom(room);
+
+      return {
+        feature,
+        doors: [],
+      }
     }
   }
+
+  function setMainBox(room,start,end) {
+
+  }
+
+  function setSubBox(room,start,end) {
+
+  }
+
+
 
   // A bent path starts at the start position, and moves one tile at a time (horizontally or vertically) until the
   // corner is reached, then it moves to the end position. If grid location along the path is already occupied this
   // path isn't valid and will return null. If an uninterrupted bent path exists this returns { start, corner, end }
-  // where each value is an {x,y} position. A single tile corridor will only have { start } and if the corridor is a
-  // straight line it will only have { start, end }
+  // where each value is an {x,y} position. Single tile and straight line corridors will only return { start, end }
   function buildBentPath(start, end, direction) {
 
     // A single tile corridor just has the start position.
-    if (start.x === end.x && start.y === end.y) { return { start }; }
+    if (start.x === end.x && start.y === end.y) { return { start, end }; }
 
     const corner = (direction === 'H') ?
       { x: end.x, y: start.y }:
