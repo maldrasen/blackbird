@@ -3,6 +3,7 @@
 .tmp*
 
 /.idea
+/debug/*.json
 /docs/.obsidian
 /dist
 /lib/*.js

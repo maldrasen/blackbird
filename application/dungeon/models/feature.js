@@ -6,7 +6,6 @@ global.Feature = function(type) {
   let position;
   let index;
   let footprint;
-
   let highlight = false;
 
   // Set the position of the feature within the floor.
@@ -132,6 +131,15 @@ global.Feature = function(type) {
     }
   }
 
+  function pack() {
+    return {
+      position,
+      index,
+      doors: doors.map(door => door.pack()),
+      rooms: rooms.map(room => room.pack()),
+    }
+  }
+
   return Object.freeze({
     getType: () => { return type; },
     getRooms: () => { return [...rooms]; },
@@ -148,7 +156,9 @@ global.Feature = function(type) {
     getFootprint,
     getEdgeTiles,
     inspect,
+    pack,
 
+    // TODO: Highlight is just temporary for now. Shows what features are being built.
     setHighlight: h => { highlight = h; },
     getHighlight: () => { return highlight; },
   });

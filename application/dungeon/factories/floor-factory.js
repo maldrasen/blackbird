@@ -31,6 +31,11 @@ global.FloorFactory = function() {
     }
 
     // Finally prune redundant doors.
+
+    if (Environment.isDevelopment) {
+      FileHelper.writeJSON(`${ROOT}/debug/floor-state.json`, floor.pack()).then(r => console.log('Saved Floor State'));
+    }
+
   }
 
 

@@ -79,6 +79,14 @@ global.Room = () => {
     return inspection;
   }
 
+  function pack() {
+    return {
+      position,
+      mainBox,
+      subBox,
+    }
+  }
+
   return Object.freeze({
     getSubBox: () => { return subBox ? { ...subBox } : null; },
     getMainBox: () => { return mainBox ? { ...mainBox } : null; },
@@ -89,6 +97,7 @@ global.Room = () => {
     getBounds,
     containsTile,
     inspect,
+    pack,
   });
 }
 

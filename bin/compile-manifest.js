@@ -4,7 +4,7 @@ global.fs = require('fs');
 require('../application/helpers/file-helper.js');
 
 const ROOT = require('path').normalize(`${__dirname}`).replace(/\\/g,"/").replace(/\/bin/,'');
-const blacklist = ['loader.js']
+const blacklist = ['application/loader.js','application/environment.js']
 
 console.log("=== Compiling manifest.json ===");
 
