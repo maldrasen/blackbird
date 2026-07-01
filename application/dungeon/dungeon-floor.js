@@ -1,6 +1,7 @@
 global.DungeonFloor = function(level) {
 
   const theme = DungeonThemeSystem.pickTheme(level);
+  const floorGrid = Array.from({ length:getFloorHeight() }, () => new Array(getFloorWidth()));
 
   let features;
   let doors;
@@ -22,6 +23,7 @@ global.DungeonFloor = function(level) {
   return Object.freeze({
     getLevel: () => { return level; },
     getTheme: () => { return theme; },
+    getFloorGrid: () => { return floorGrid; },
     getFloorWidth,
     getFloorHeight,
 

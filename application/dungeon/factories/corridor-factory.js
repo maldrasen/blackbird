@@ -1,5 +1,6 @@
-global.CorridorFactory = function(grid) {
+global.CorridorFactory = function() {
   const floor = DungeonSystem.getDungeonFloor();
+  const grid = floor.getFloorGrid();
   const features = floor.getFeatures();
 
   let originFeature;
@@ -30,9 +31,9 @@ global.CorridorFactory = function(grid) {
     targetFeature.setHighlight(true);
 
     const alignment = getFeatureAlignment();
-    const strategies = [
-      attemptBentCorridor,
-      attemptDoglegCorridor
+    const corridorFactories = [
+      BentCorridorFactory,
+      DoglegCorridorFactory,
     ];
 
     console.log("=== Dig Between ===")
@@ -45,239 +46,16 @@ global.CorridorFactory = function(grid) {
     }
 
     if (['N','S','E','W'].includes(alignment)) {
-      strategies.push(attemptStraightCorridor);
+      corridorFactories.push(StraightCorridorFactory);
     }
 
-    Random.shuffle(strategies);
+    Random.shuffle(corridorFactories);
 
     let result;
-    while(strategies.length > 0 && result == null) {
-      result = (strategies.shift())(alignment);
+    while(corridorFactories.length > 0 && result == null) {
+      (corridorFactories.shift())(originFeature, targetFeature, alignment).build();
     }
     return result
-  }
-
-  function attemptStraightCorridor(alignment) {
-    const ray = corridorRayCast(alignment);
-    if (ray) {
-      const index = features.length;
-      const { start, end } = ray;
-
-      const isVertical = start.x === end.x;
-      const x = isVertical ? start.x : Math.min(start.x, end.x);
-      const y = isVertical ? Math.min(start.y, end.y) : start.y;
-
-      const feature = Feature('corridor');
-      feature.setPosition(x, y);
-      feature.setIndex(index);
-      feature.addRoom(buildRoomBetween(start, end));
-
-      addFeatureToGrid(feature)
-
-      let originDoorPosition;
-      let targetDoorPosition;
-      let direction;
-
-      switch(alignment) {
-        case 'N': // corridor is above origin; target is above corridor
-          originDoorPosition = { x:start.x, y:start.y };
-          targetDoorPosition = { x:end.x, y:end.y-1 };
-          direction = 'S';
-          break;
-        case 'S': // origin is above corridor; corridor is above target
-          originDoorPosition = { x:start.x, y:start.y-1};
-          targetDoorPosition = { x:end.x, y:end.y };
-          direction = 'S';
-          break;
-        case 'E': // corridor is left of origin; target is left of corridor
-          originDoorPosition = { x:start.x, y:start.y };
-          targetDoorPosition = { x:end.x-1, y:end.y };
-          direction = 'E';
-          break;
-        case 'W': // origin is left of corridor; corridor is left of target
-          originDoorPosition = { x:start.x-1, y:start.y };
-          targetDoorPosition = { x:end.x, y:end.y };
-          direction = 'E';
-          break;
-      }
-
-      return { feature, doors:[
-        Door(originDoorPosition, direction, originFeature, feature),
-        Door(targetDoorPosition, direction, targetFeature, feature)
-      ]};
-    }
-  }
-
-  // To find a bent path, we get all the start tiles for the origin and target features. For a SE alignment we get all
-  // the edge tiles on the S and E sides of the origin, and all the tiles on the N and W sides of the target. We then
-  // take every permutation of origin start tile and target end tile and draw an L shape between them. If there are no
-  // collisions we add it to a list of possible solutions and pick one at random.
-  function attemptBentCorridor(alignment) {
-    console.log("=== Attempt Single Turn Corridor ===");
-
-    const opposite = { N:'S', S:'N', E:'W', W:'E' };
-    const originTiles = getStartTiles(originFeature, alignment[0]);
-    const targetTiles = getStartTiles(targetFeature, opposite[alignment[0]]);
-    const validPaths = [];
-
-    if (alignment.length === 2) {
-      originTiles.push(...getStartTiles(originFeature, alignment[1]))
-      targetTiles.push(...getStartTiles(targetFeature, opposite[alignment[1]]));
-    }
-
-    originTiles.forEach(originTile => {
-      targetTiles.forEach(targetTile => {
-        const hPath = buildBentPath(originTile, targetTile, 'H');
-        const vPath = buildBentPath(originTile, targetTile, 'V');
-        if (hPath) { validPaths.push(hPath); }
-        if (vPath) { validPaths.push(vPath); }
-      });
-    });
-
-    if (validPaths.length > 0) {
-      const path = Random.from(validPaths);
-      console.log("Selected Path:",path);
-    }
-  }
-
-  function attemptDoglegCorridor(alignment) {
-    console.log("=== Attempt Bendy Corridor ===");
-    return null;
-  }
-
-  // A bent path starts at the start position, and moves one tile at a time (horizontally or vertically) until the
-  // corner is reached, then it moves to the end position. If grid location along the path is already occupied this
-  // path isn't valid and will return null. If an uninterrupted bent path exists this returns { start, corner, end }
-  // where each value is an {x,y} position. A single tile corridor will only have { start } and if the corridor is a
-  // straight line it will only have { start, end }
-  function buildBentPath(start, end, direction) {
-
-    // A single tile corridor just has the start position.
-    if (start.x === end.x && start.y === end.y) { return { start }; }
-
-    const corner = (direction === 'H') ?
-      { x: end.x, y: start.y }:
-      { x: start.x, y: end.y };
-
-    // We should already know that start and end are empty, but just in case...
-    if (grid[start.y][start.x] != null) { return null; }
-    if (grid[end.y][end.x] != null) { return null; }
-    if (grid[corner.y][corner.x] != null)  { return null; }
-
-    function step(n) {
-      if (n > 0) { return 1 }
-      if (n < 0) { return -1 }
-      return 0;
-    }
-
-    function searchSegment(from, to) {
-      const dx = step(to.x - from.x);
-      const dy = step(to.y - from.y);
-      let cursor = { x: from.x + dx, y: from.y + dy };
-
-      while (cursor.x !== to.x || cursor.y !== to.y) {
-        if (grid[cursor.y][cursor.x] != null) { return false; }
-        cursor = { x: cursor.x + dx, y: cursor.y + dy };
-      }
-
-      return true;
-    }
-
-    if (searchSegment(start, corner) === false) { return null; }
-    if (searchSegment(corner, end) === false)   { return null; }
-
-    const sameX = start.x === corner.x && end.x === corner.x;
-    const sameY = start.y === corner.y && end.y === corner.y;
-    return (sameX || sameY) ? { start, end } : { start, corner, end };
-  }
-
-  function buildRoomBetween(start,end) {
-    const isVertical = start.x === end.x;
-    const width  = isVertical ? 1 : Math.abs(end.x - start.x) + 1;
-    const height = isVertical ? Math.abs(end.y - start.y) + 1 : 1;
-
-    const room = Room();
-    room.setMainBox(width, height);
-
-    return room;
-  }
-
-  // Corridors can be composed of many rooms, but each room only has one box. This is to allow for "dog leg" shaped
-  // features with two turns. When a feature is added we need to set the cells that it covers in the floor grid.
-  function addFeatureToGrid(feature) {
-    const position = feature.getPosition();
-    const index = feature.getIndex();
-
-    feature.getRooms().forEach(room => {
-      const box = room.getMainBox();
-      const yMin = position.y + box.y;
-      const xMin = position.x + box.x;
-
-      for (let y=yMin; y<(yMin + box.height); y++) {
-        for (let x=xMin; x<(xMin + box.width); x++) {
-          grid[y][x] = index;
-        }
-      }
-    });
-  }
-
-  // If two features are aligned we can attempt to find a straight path between them. We first find all the
-  // overlapping tiles. Then we draw a line through the grid from the origin tiles to the feature. A ray will fail if
-  // it encounters a feature other than the target.
-  function corridorRayCast(alignment) {
-    const startTiles = getOverlappingStartTiles(alignment);
-    const rays = []
-
-    startTiles.forEach(start => {
-      let cursor = {...start};
-      let end = {...start};
-
-      while(true) {
-        switch(alignment) {
-          case 'N': cursor = { y:cursor.y-1, x:cursor.x }; break;
-          case 'S': cursor = { y:cursor.y+1, x:cursor.x }; break;
-          case 'E': cursor = { y:cursor.y, x:cursor.x-1 }; break;
-          case 'W': cursor = { y:cursor.y, x:cursor.x+1 }; break;
-        }
-
-        let cell = grid[cursor.y][cursor.x];
-        if (cell == null) { end = cursor; }
-
-        // A ray is only valid if it finds the target feature at the end.
-        if (cell != null) {
-          if (cell === targetFeature.getIndex()) {
-            rays.push({ start, end });
-          }
-          return;
-        }
-      }
-    });
-
-    return (rays.length > 0) ? Random.from(rays) : null;
-  }
-
-  // Get the start tiles for a feature in a given direction where the starting tiles are empty.
-  function getStartTiles(feature, direction) {
-    const position = feature.getPosition();
-    return feature.getEdgeTiles(direction).
-      map(tile => ({ x: tile.x + position.x, y: tile.y + position.y })).
-      filter(tile => grid[tile.y][tile.x] == null);
-  }
-
-  // The overlapping start tiles are the edge tiles in the direction of the target feature where the tiles are empty
-  // and intersect with the target feature bounds.
-  function getOverlappingStartTiles(alignment) {
-    const position = originFeature.getPosition();
-    const target = targetFeature.getLocation();
-
-    const inTargetOverlap = ['N','S'].includes(alignment) ?
-      (tile) => tile.x >= target.xMin && tile.x < target.xMax :
-      (tile) => tile.y >= target.yMin && tile.y < target.yMax;
-
-    return originFeature.getEdgeTiles(alignment).
-      map(tile => ({ x: tile.x + position.x, y: tile.y + position.y })).
-      filter(tile => grid[tile.y][tile.x] == null).
-      filter(inTargetOverlap);
   }
 
   // Alignment can be one of eight values. A cardinal direction (N,S,E,W) indicates that the two features are at least
@@ -311,7 +89,7 @@ global.CorridorFactory = function(grid) {
   }
 
   return Object.freeze({
-    digBetween
+    digBetween,
   });
 
 }

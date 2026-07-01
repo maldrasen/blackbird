@@ -14,19 +14,19 @@ global.FloorFactory = function() {
 
     // Change to a loop once we have this working
     if (forest.length > 1) {
-      const [first, second] = FeatureGraphHelper.getClosestDisconnectedFeatures(forest);
-      const result = CorridorFactory(grid).digBetween(first, second);
+      const [origin, target] = FeatureGraphHelper.getClosestDisconnectedFeatures(forest);
+      const result = CorridorFactory().digBetween(origin, target);
 
       if (result) {
         floor.addFeature(result.feature);
         result.doors.forEach(door => floor.addDoor(door));
-        connections.addEdge(first, second);
+        connections.addEdge(origin, target);
         // Rebuild the forest, loop until forest length is 1
       }
 
       if (result == null) {
-        console.warn(`Cannot find a path between features ${first} and ${second}.`);
-        // blacklist the [first,second] combo and find the next closest pair of rooms.
+        console.warn(`Cannot find a path between features ${origin} and ${target}.`);
+        // blacklist the [origin,target] combo and find the next closest pair of rooms.
       }
     }
 

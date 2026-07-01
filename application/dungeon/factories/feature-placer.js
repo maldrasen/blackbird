@@ -1,16 +1,9 @@
 global.FeaturePlacer = function() {
-
   const floor = DungeonSystem.getDungeonFloor();
   const theme = DungeonTheme.lookup(floor.getTheme());
-  const floorHeight = floor.getFloorHeight();
   const floorWidth = floor.getFloorWidth();
-  const grid = buildGrid();
-
-  function buildGrid() {
-    const g = new Array(floorHeight);
-    for (let y=0; y<floorHeight; y++) { g[y] = new Array(floorWidth); }
-    return g;
-  }
+  const floorHeight = floor.getFloorHeight();
+  const grid = floor.getFloorGrid();
 
   // This feature placer builds a super dense dungeon. We randomly add features to the dungon, randomizing their
   // positions and checking to see if they fit. Once 1000 features fail to fit into the dungeon we stop trying to add
