@@ -1,0 +1,1 @@
+cd "D:/Work/projects/blackbird" && npm run coverage 2>&1 | tail -6; ls coverage 2>/dev/null

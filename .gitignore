@@ -11,7 +11,7 @@
 /assets/ai-assets/*.jpg
 /node_modules
 
-/package-lock.json
+/coverage
 
 /styles/blackbird.css
 /styles/blackbird.css.map
