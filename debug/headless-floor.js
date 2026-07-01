@@ -3,6 +3,7 @@ global.fs = require('fs');
 global.ROOT = require('path').normalize(__dirname + '/..').replace(/\\/g, '/');
 global.DATA = ROOT;
 global.ENVIRONMENT = 'development';
+global.HEADLESS = true;
 
 require(`${ROOT}/application/environment.js`);
 require(`${ROOT}/application/views/general/console.js`);
