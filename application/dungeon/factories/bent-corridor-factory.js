@@ -33,9 +33,14 @@ global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
       const path = Random.from(validPaths);
       const feature = buildFeature(path);
 
+      const doors = [
+        FloorFactorySupport.buildDoor(path.start, feature.getIndex(), originFeature.getIndex()),
+        FloorFactorySupport.buildDoor(path.end, feature.getIndex(), targetFeature.getIndex()),
+      ];
+
       return {
         feature,
-        doors: [],
+        doors,
       }
     }
   }

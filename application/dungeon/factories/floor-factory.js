@@ -39,23 +39,27 @@ global.FloorFactory = function() {
 
   }
 
-  // Corridors can be composed of many rooms, but each room only has one box. This is to allow for "dog leg" shaped
-  // features with two turns. When a feature is added we need to set the cells that it covers in the floor grid.
   function addFeatureToGrid(feature) {
     const position = feature.getPosition();
     const index = feature.getIndex();
     const floorGrid = DungeonSystem.getDungeonFloor().getFloorGrid();
 
-    feature.getRooms().forEach(room => {
-      const box = room.getMainBox();
-      const yMin = position.y + box.y;
-      const xMin = position.x + box.x;
+    function addBox(box) {
+      if (box) {
+        const yMin = position.y + box.y;
+        const xMin = position.x + box.x;
 
-      for (let y=yMin; y<(yMin + box.height); y++) {
-        for (let x=xMin; x<(xMin + box.width); x++) {
-          floorGrid[y][x] = index;
+        for (let y=yMin; y<(yMin + box.height); y++) {
+          for (let x=xMin; x<(xMin + box.width); x++) {
+            floorGrid[y][x] = index;
+          }
         }
       }
+    }
+
+    feature.getRooms().forEach(room => {
+      addBox(room.getMainBox());
+      addBox(room.getSubBox());
     });
   }
 

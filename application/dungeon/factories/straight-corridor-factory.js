@@ -20,37 +20,12 @@ global.StraightCorridorFactory = function(originFeature, targetFeature, alignmen
       feature.setIndex(index);
       feature.addRoom(buildRoomBetween(start, end));
 
-      let originDoorPosition;
-      let targetDoorPosition;
-      let direction;
+      const doors = [
+        FloorFactorySupport.buildDoor(start, feature.getIndex(), originFeature.getIndex()),
+        FloorFactorySupport.buildDoor(end, feature.getIndex(), targetFeature.getIndex()),
+      ];
 
-      switch(alignment) {
-        case 'N':
-          originDoorPosition = { x:start.x, y:start.y };
-          targetDoorPosition = { x:end.x, y:end.y-1 };
-          direction = 'S';
-          break;
-        case 'S':
-          originDoorPosition = { x:start.x, y:start.y-1};
-          targetDoorPosition = { x:end.x, y:end.y };
-          direction = 'S';
-          break;
-        case 'E':
-          originDoorPosition = { x:start.x, y:start.y };
-          targetDoorPosition = { x:end.x-1, y:end.y };
-          direction = 'E';
-          break;
-        case 'W':
-          originDoorPosition = { x:start.x-1, y:start.y };
-          targetDoorPosition = { x:end.x, y:end.y };
-          direction = 'E';
-          break;
-      }
-
-      return { feature, doors:[
-        Door(originDoorPosition, direction, originFeature, feature),
-        Door(targetDoorPosition, direction, targetFeature, feature)
-      ]};
+      return { feature, doors };
     }
   }
 
@@ -69,8 +44,8 @@ global.StraightCorridorFactory = function(originFeature, targetFeature, alignmen
         switch(alignment) {
           case 'N': cursor = { y:cursor.y-1, x:cursor.x }; break;
           case 'S': cursor = { y:cursor.y+1, x:cursor.x }; break;
-          case 'E': cursor = { y:cursor.y, x:cursor.x-1 }; break;
-          case 'W': cursor = { y:cursor.y, x:cursor.x+1 }; break;
+          case 'E': cursor = { y:cursor.y, x:cursor.x+1 }; break;
+          case 'W': cursor = { y:cursor.y, x:cursor.x-1 }; break;
         }
 
         let cell = grid[cursor.y][cursor.x];
