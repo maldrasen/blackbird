@@ -40,21 +40,16 @@ global.DoglegCorridorFactory = function(originFeature, targetFeature, alignment)
   function buildFeature(path) {
     const index = floor.getFeatures().length;
     const room = Room();
-    const anchor = { x:Infinity, y:Infinity };
 
     path.forEach(segment => {
-      segment.forEach(point => {
-        if (point.x < anchor.x) { anchor.x = point.x; }
-        if (point.y < anchor.y) { anchor.y = point.y; }
-      });
+      FloorFactorySupport.addSegment(room, segment[0], segment[1]);
     });
 
-    path.forEach(segment => {
-      FloorFactorySupport.addSegment(room, anchor, segment[0], segment[1]);
-    });
-
+    const start = path[0][0];
+    const end = path[path.length-1][1];
     const feature = Feature('corridor');
-    feature.setPosition(anchor.x,anchor.y);
+
+    feature.setPosition(Math.min(start.x,end.x), Math.min(start.y,end.y));
     feature.setIndex(index);
     feature.addRoom(room);
 

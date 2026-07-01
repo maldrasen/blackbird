@@ -4,20 +4,12 @@ global.Room = function() {
   const boxes = [];
   let position = { x:0, y:0 };
 
-  // Add a box to the room, positioned as an offset from the room's own origin. There's no "main" box - a box is
-  // just a shape, and a room can be made up of any number of them (a single box, an L made of two, a dogleg made of
-  // three, etc). Adding a box can push the room's bounds below (0,0), so every box gets shifted back to keep the
-  // room's overall origin pinned at (0,0).
+  // Add a box to the room. Boxes can be added in any order using any shared coordinate system (eg. plain absolute
+  // grid coordinates) - the room's own origin isn't pinned to (0,0) until something actually reads the boxes/bounds,
+  // so there's no need to keep re-normalizing (and no risk of earlier boxes drifting out of sync with later ones)
+  // as more boxes get added.
   function addBox(x, y, width, height) {
     boxes.push({ x, y, width, height });
-
-    const bounds = getBounds();
-    const xAdjust = -bounds.xMin;
-    const yAdjust = -bounds.yMin;
-
-    if (xAdjust !== 0 || yAdjust !== 0) {
-      boxes.forEach(box => { box.x += xAdjust; box.y += yAdjust; });
-    }
   }
 
   // Position of this room within the feature.
@@ -25,8 +17,8 @@ global.Room = function() {
     position = {x,y};
   }
 
-  // Return the room bounds in an object { xMin, xMax, yMin, yMax }
-  function getBounds() {
+  // The raw bounds of the stored boxes, before normalizing the room's origin to (0,0).
+  function rawBounds() {
     const bounds = { xMin:Infinity, xMax:-Infinity, yMin:Infinity, yMax:-Infinity };
 
     boxes.forEach(box => {
@@ -39,19 +31,22 @@ global.Room = function() {
     return bounds;
   }
 
-  // Get a string representation of this room.
-  function inspect() {
-    let inspection = `Room{${position[0]},${position[1]}}`;
-    boxes.forEach(box => {
-      inspection += ` (${box.x},${box.y})[${box.width},${box.height}]`;
-    });
-    return inspection;
+  // Return the room bounds in an object { xMin, xMax, yMin, yMax }, normalized so xMin/yMin are always 0.
+  function getBounds() {
+    const raw = rawBounds();
+    return { xMin:0, yMin:0, xMax: raw.xMax - raw.xMin, yMax: raw.yMax - raw.yMin };
+  }
+
+  // Return every box, shifted so the room's overall bounds start at (0,0).
+  function getBoxes() {
+    const raw = rawBounds();
+    return boxes.map(box => ({ x: box.x - raw.xMin, y: box.y - raw.yMin, width: box.width, height: box.height }));
   }
 
   function pack() {
     return {
       position,
-      boxes,
+      boxes: getBoxes(),
     }
   }
 
@@ -59,9 +54,8 @@ global.Room = function() {
     setPosition,
     getPosition: () => { return {...position}; },
     addBox,
-    getBoxes: () => { return boxes.map(box => ({...box})); },
+    getBoxes,
     getBounds,
-    inspect,
     pack,
   });
 }
