@@ -14,7 +14,8 @@ listed file in order; each file attaches itself to the global object rather than
 ## Headless execution
 Not everything requires the full Electron GUI. Most of the game's systems should be headless-safe. I've written most of 
 the application to be decoupled from the DOM, with only the modules in `application/views` needing to be run from 
-within the client.
+within the client. The `bin/run-headless.js` file can be used as a shared bootstrap for loading the application in a 
+headless mode. 
 
 ## Debugging dungeon generation
 Whenever a floor is generated in development mode, the FloorFactory writes the initial floor state to 

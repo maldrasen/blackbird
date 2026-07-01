@@ -58,7 +58,6 @@ global.Console = (function() {
       append(options);
     }
 
-    if (type === LogType.info && HEADLESS) { console.log(message, options.data); }
     if (type === LogType.warning) { console.warn(message); }
     if (type === LogType.error) { console.error(message); }
   }
