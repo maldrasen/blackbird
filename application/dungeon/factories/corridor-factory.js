@@ -53,7 +53,7 @@ global.CorridorFactory = function() {
 
     let result;
     while(corridorFactories.length > 0 && result == null) {
-      (corridorFactories.shift())(originFeature, targetFeature, alignment).build();
+      result = (corridorFactories.shift())(originFeature, targetFeature, alignment).build();
     }
     return result
   }
