@@ -35,6 +35,27 @@ global.FloorFactorySupport = (function() {
     room.addBox(x, y, width, height);
   }
 
+  // Walks every cell from `from` to `to` (inclusive of both ends) one tile at a time, along whichever of the four
+  // directions the segment actually runs in, failing as soon as it finds an occupied cell.
+  function segmentIsClear(from, to) {
+    const grid = DungeonSystem.getDungeonFloor().getFloorGrid();
+    const dx = step(to.x - from.x);
+    const dy = step(to.y - from.y);
+    let cursor = { x:from.x, y:from.y };
+
+    while (true) {
+      if (grid[cursor.y][cursor.x] != null) { return false; }
+      if (cursor.x === to.x && cursor.y === to.y) { return true; }
+      cursor = { x:cursor.x + dx, y:cursor.y + dy };
+    }
+  }
+
+  function step(n) {
+    if (n > 0) { return 1; }
+    if (n < 0) { return -1; }
+    return 0;
+  }
+
   // Doors are only ever stored on a tile's S or E wall. Given an empty point that touches the feature at toIndex,
   // this finds which side toIndex is on and derives the door's real position/direction from that. A feature to the
   // N or W needs the door tile shifted onto that feature so it can be expressed as S/E facing.
@@ -59,6 +80,7 @@ global.FloorFactorySupport = (function() {
     getGapBetweenFeatures,
     getStartTiles,
     addSegment,
+    segmentIsClear,
     buildDoor,
   });
 

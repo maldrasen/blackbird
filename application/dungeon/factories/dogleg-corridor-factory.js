@@ -1,6 +1,4 @@
 global.DoglegCorridorFactory = function(originFeature, targetFeature, alignment) {
-  const floor = DungeonSystem.getDungeonFloor();
-  const grid = floor.getFloorGrid();
 
   function build() {
     const opposite = { N:'S', S:'N', E:'W', W:'E' };
@@ -18,7 +16,7 @@ global.DoglegCorridorFactory = function(originFeature, targetFeature, alignment)
       originTiles.forEach(start => {
         targetTiles.forEach(end => {
           const path = buildPath(start, end, cardinalDirection);
-          if (path) {
+          if (validatePath(path)) {
             validPaths.push(path);
           }
         });
@@ -29,6 +27,13 @@ global.DoglegCorridorFactory = function(originFeature, targetFeature, alignment)
         console.log("Choose Path:",path);
       }
     }
+  }
+
+  function validatePath(path) {
+    for (let i=0; i<path.length; i++) {
+      if (FloorFactorySupport.segmentIsClear(path[i][0], path[i][1]) === false) { return false; }
+    }
+    return true;
   }
 
   function buildPath(start, end, direction) {
@@ -56,7 +61,7 @@ global.DoglegCorridorFactory = function(originFeature, targetFeature, alignment)
       secondTurn = { x:firstTurn.x, y:end.y };
     }
 
-    return [start, firstTurn, secondTurn, end];
+    return [[start,firstTurn],[firstTurn,secondTurn],[secondTurn,end]];
   }
 
   // If the alignment is an ordinal direction (like NE) we want to choose one of the cardinal directions instead.

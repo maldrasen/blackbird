@@ -1,6 +1,5 @@
 global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
   const floor = DungeonSystem.getDungeonFloor();
-  const grid = floor.getFloorGrid();
 
   // To find a bent path, we get all the start tiles for the origin and target features. For a SE alignment we get all
   // the edge tiles on the S and E sides of the origin, and all the tiles on the N and W sides of the target. We then
@@ -86,32 +85,8 @@ global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
       { x: end.x, y: start.y }:
       { x: start.x, y: end.y };
 
-    // We should already know that start and end are empty, but just in case...
-    if (grid[start.y][start.x] != null) { return null; }
-    if (grid[end.y][end.x] != null) { return null; }
-    if (grid[corner.y][corner.x] != null)  { return null; }
-
-    function step(n) {
-      if (n > 0) { return 1 }
-      if (n < 0) { return -1 }
-      return 0;
-    }
-
-    function searchSegment(from, to) {
-      const dx = step(to.x - from.x);
-      const dy = step(to.y - from.y);
-      let cursor = { x: from.x + dx, y: from.y + dy };
-
-      while (cursor.x !== to.x || cursor.y !== to.y) {
-        if (grid[cursor.y][cursor.x] != null) { return false; }
-        cursor = { x: cursor.x + dx, y: cursor.y + dy };
-      }
-
-      return true;
-    }
-
-    if (searchSegment(start, corner) === false) { return null; }
-    if (searchSegment(corner, end) === false)   { return null; }
+    if (FloorFactorySupport.segmentIsClear(start, corner) === false) { return null; }
+    if (FloorFactorySupport.segmentIsClear(corner, end) === false)   { return null; }
 
     const sameX = start.x === corner.x && end.x === corner.x;
     const sameY = start.y === corner.y && end.y === corner.y;
