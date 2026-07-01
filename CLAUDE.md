@@ -1,6 +1,10 @@
 # Blackbird
 An erotic Electron-based Era-like dungeon crawler.
 
+## Current Task
+Rather than using any kind of sensible project planning, I'm using the `/docs/0. Todo List.md` document to keep track
+of my current and future tasks. The `/docs` director also has all of my planning and design documentation. 
+
 ## Running the app
 The app is normally started with the `bin/start.sh` script which regenerates the `manifest.json` and compiles the 
 SCSS before it launches Electron.
