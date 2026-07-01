@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rm debug/*.json
+rm -f debug/*.json
 
 bin/compile-style.sh
 bin/compile-manifest.sh

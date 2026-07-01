@@ -14,7 +14,49 @@ global.DoglegCorridorFactory = function(originFeature, targetFeature, alignment)
       console.log(`=== Building Dogleg Corridor (${cardinalDirection}) ===`);
       console.log("Origin Tiles:",originTiles);
       console.log("Target Tiles:",targetTiles);
+
+      originTiles.forEach(start => {
+        targetTiles.forEach(end => {
+          const path = buildPath(start, end, cardinalDirection);
+          if (path) {
+            validPaths.push(path);
+          }
+        });
+      });
+
+      if (validPaths.length > 0) {
+        const path = Random.from(validPaths);
+        console.log("Choose Path:",path);
+      }
     }
+  }
+
+  function buildPath(start, end, direction) {
+    let firstTurn;
+    let secondTurn;
+
+    if (direction === 'N') {
+      const legLength = 1 + Random.roll(start.y - end.y - 2);
+      firstTurn = { x:start.x, y:start.y - legLength };
+      secondTurn = { x:end.x, y:firstTurn.y };
+    }
+    if (direction === 'S') {
+      const legLength = 1 + Random.roll(end.y - start.y - 2);
+      firstTurn = { x:start.x, y:start.y + legLength };
+      secondTurn = { x:end.x, y:firstTurn.y };
+    }
+    if (direction === 'E') {
+      const legLength = 1 + Random.roll(end.x - start.x - 2);
+      firstTurn = { x:start.x + legLength, y:start.y };
+      secondTurn = { x:firstTurn.x, y:end.y };
+    }
+    if (direction === 'W') {
+      const legLength = 1 + Random.roll(start.x - end.x - 2);
+      firstTurn = { x:start.x - legLength, y:start.y };
+      secondTurn = { x:firstTurn.x, y:end.y };
+    }
+
+    return [start, firstTurn, secondTurn, end];
   }
 
   // If the alignment is an ordinal direction (like NE) we want to choose one of the cardinal directions instead.
