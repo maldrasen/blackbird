@@ -1,16 +1,10 @@
 global.Console = (function() {
 
-  const $entryLimit = 1000;
-
-  let $scrollingPanel;
-
-  // TODO: We can still consider adding autocomplete for some commands at some
-  //       point. If we know we're starting an addItem command it might be
-  //       nice to autocomplete the item code as it's being typed. Depends on
-  //       how often I use this console I suppose.
+  const entryLimit = 1000;
+  let scrollingPanel;
 
   function init() {
-    $scrollingPanel = ScrollingPanel({ id:'#consoleLog' });
+    scrollingPanel = ScrollingPanel({ id:'#consoleLog' });
 
     window.addEventListener('keydown', event => {
       if (event.code === KeyCodes.Backquote) {
@@ -44,7 +38,7 @@ global.Console = (function() {
     X.removeClass('#console','hide');
     X.first('#commandInput').focus();
     setTimeout(() => {
-      $scrollingPanel.resize();
+      scrollingPanel.resize();
     },1);
   }
 
@@ -54,25 +48,25 @@ global.Console = (function() {
 
   function isVisible() { return !X.hasClass('#console','hide'); }
 
-  // === Entry Elements ========================================================
-  // We want this log() function to look just like the one in the Logger class
-  // but delegate to the append() function so that log messages from the client
-  // and the server and handled in the same way.
   function log(message, options={}) {
-    if (Tests.running() === false) {
+    const type = options.type || LogType.info;
+
+    if (HEADLESS === false && Tests.running() === false) {
       options.time = TimeHelper.getTimeString();
       options.message = message;
-      options.type = options.type || LogType.info;
+      options.type = type;
       append(options);
     }
-    if (options.type === LogType.warning) { console.warn(message); }
-    if (options.type === LogType.error) { console.error(message); }
+
+    if (type === LogType.info && HEADLESS) { console.log(message, options.data); }
+    if (type === LogType.warning) { console.warn(message); }
+    if (type === LogType.error) { console.error(message); }
   }
 
   function logError(message, error, options={}) {
     if (options.data == null) { options.data = {};}
 
-    if (Tests.running()) {
+    if (HEADLESS || Tests.running()) {
       console.error('=== Error ===');
       console.error(message);
       console.error(JSON.stringify(error));
@@ -104,12 +98,12 @@ global.Console = (function() {
     X.addClass(entryElement, `level-${logData.level || 2}`)
     X.first('#consoleLog').appendChild(entryElement);
 
-    if ($scrollingPanel) { $scrollingPanel.resize(); }
+    if (scrollingPanel) { scrollingPanel.resize(); }
     if (logData.type === LogType.error) { Alert.showFromLog(logData); }
   }
 
   function trimEntries() {
-    if (X.first('#consoleLog').querySelectorAll('.entry').length > $entryLimit) {
+    if (X.first('#consoleLog').querySelectorAll('.entry').length > entryLimit) {
       X.first('#consoleLog .entry').remove();
     }
   }

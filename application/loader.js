@@ -6,6 +6,7 @@ Electron.ipcRenderer.invoke("boot.start");
 Electron.ipcRenderer.on("boot.setContext", (event, context) => {
   window.ROOT = context.ROOT;
   window.DATA = context.DATA;
+  window.HEADLESS = typeof document !== 'object';
   window.Environment = context.Environment;
   Loader.startLoading();
 });

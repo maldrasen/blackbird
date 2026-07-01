@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm debug/*.json
+
 bin/compile-style.sh
 bin/compile-manifest.sh
 
