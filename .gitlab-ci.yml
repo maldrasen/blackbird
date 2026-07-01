@@ -1,0 +1,19 @@
+image: node:22
+
+stages:
+  - test
+
+variables:
+  ELECTRON_SKIP_BINARY_DOWNLOAD: "1"
+
+test:
+  stage: test
+  script:
+    - npm ci --ignore-scripts
+    - npm run coverage
+  coverage: '/^All files\s*\|\s*([\d.]+)/'
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml

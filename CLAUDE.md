@@ -23,3 +23,6 @@ Whenever a floor is generated in development mode, the FloorFactory writes the i
 
 ## Testing
 Tests use Mocha + Chai, loaded in-app (not headless Node) via the `testFileList` in `manifest.json`.
+
+## Version Control
+Don't run or offer to run any git commands. I'll take care of all the version control tasks myself.
