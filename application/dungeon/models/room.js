@@ -3,7 +3,7 @@ global.Room = () => {
   // The room model will also manage the contents of the room.
   let mainBox;
   let subBox;
-  let position = [0,0];
+  let position = { x:0, y:0 };
 
   // Main box is always placed at (0,0);
   function setMainBox(width, height) {
@@ -37,7 +37,7 @@ global.Room = () => {
 
   // Position of this room within the feature.
   function setPosition(x,y) {
-    position = [x,y];
+    position = {x,y};
   }
 
   // Return the room bounds in an object { xMin, xMax, yMin, yMax }
