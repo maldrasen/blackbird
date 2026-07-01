@@ -4,6 +4,19 @@ global.FloorFactorySupport = (function() {
   // a temp variable like this than to pass the value between the functions (though that would be more proper)
   let mainOrigin;
 
+  // The number of empty tiles between origin and target along a single cardinal axis.
+  function getGapBetweenFeatures(originFeature, targetFeature, direction) {
+    const origin = originFeature.getLocation();
+    const target = targetFeature.getLocation();
+
+    switch (direction) {
+      case 'N': return origin.yMin - target.yMax;
+      case 'S': return target.yMin - origin.yMax;
+      case 'E': return target.xMin - origin.xMax;
+      case 'W': return origin.xMin - target.xMax;
+    }
+  }
+
   // Get the start tiles for a feature in a given direction where the starting tiles are empty.
   function getStartTiles(feature, direction) {
     const position = feature.getPosition();
@@ -53,6 +66,7 @@ global.FloorFactorySupport = (function() {
   }
 
   return Object.freeze({
+    getGapBetweenFeatures,
     getStartTiles,
     setMainBox,
     setSubBox,

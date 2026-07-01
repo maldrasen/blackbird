@@ -2,7 +2,6 @@ global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
   const floor = DungeonSystem.getDungeonFloor();
   const grid = floor.getFloorGrid();
 
-
   // To find a bent path, we get all the start tiles for the origin and target features. For a SE alignment we get all
   // the edge tiles on the S and E sides of the origin, and all the tiles on the N and W sides of the target. We then
   // take every permutation of origin start tile and target end tile and draw an L shape between them. If there are no
@@ -116,5 +115,4 @@ global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
   return Object.freeze({
     build,
   });
-
 }

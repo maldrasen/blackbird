@@ -1,7 +1,4 @@
 global.CorridorFactory = function() {
-  const floor = DungeonSystem.getDungeonFloor();
-  const grid = floor.getFloorGrid();
-  const features = floor.getFeatures();
 
   let originFeature;
   let targetFeature;
@@ -24,6 +21,9 @@ global.CorridorFactory = function() {
   // no disconnected trees.
 
   function digBetween(first, second) {
+    const floor = DungeonSystem.getDungeonFloor();
+    const features = floor.getFeatures();
+
     originFeature = features[first];
     targetFeature = features[second];
 
@@ -32,8 +32,8 @@ global.CorridorFactory = function() {
 
     const alignment = getFeatureAlignment();
     const corridorFactories = [
-      BentCorridorFactory,
       DoglegCorridorFactory,
+      BentCorridorFactory,
     ];
 
     console.log("=== Dig Between ===")
@@ -49,7 +49,8 @@ global.CorridorFactory = function() {
       corridorFactories.push(StraightCorridorFactory);
     }
 
-    Random.shuffle(corridorFactories);
+    // For now, always try dogleg first.
+    // Random.shuffle(corridorFactories);
 
     let result;
     while(corridorFactories.length > 0 && result == null) {
@@ -91,5 +92,4 @@ global.CorridorFactory = function() {
   return Object.freeze({
     digBetween,
   });
-
 }
