@@ -114,12 +114,42 @@ global.CorridorFactory = function(grid) {
   // are no collisions we add it to a list of possible solutions and pick one at random.
   function attemptSingleTurnCorridor(alignment) {
     console.log("=== Attempt Single Turn Corridor ===");
-    return null;
+
+    const opposite = { N:'S', S:'N', E:'W', W:'E' };
+    const originTiles = getStartTiles(originFeature, alignment[0]);
+    const targetTiles = getStartTiles(targetFeature, opposite[alignment[0]]);
+    const validPaths = [];
+
+    if (alignment.length === 2) {
+      originTiles.push(...getStartTiles(originFeature, alignment[1]))
+      targetTiles.push(...getStartTiles(targetFeature, opposite[alignment[1]]));
+    }
+
+    originTiles.forEach(originTile => {
+      targetTiles.forEach(targetTile => {
+        const hPath = buildSingleTurnPath(originTile, targetTile, 'H');
+        const vPath = buildSingleTurnPath(originTile, targetTile, 'V');
+        if (hPath) { validPaths.push(hPath); }
+        if (vPath) { validPaths.push(vPath); }
+      });
+    });
+
+    if (validPaths.length > 0) {
+      const path = Random.from(validPaths);
+    }
   }
 
   function attemptDoglegCorridor(alignment) {
     console.log("=== Attempt Bendy Corridor ===");
     return null;
+  }
+
+  // A single turn path should start at the start tile, and move one tile at a time (horizontally or vertically) until
+  // the corner is reached. A corner is when start.x == end.x when moving horizontally, or start.y == end.y when moving
+  // vertically. After the corner, move to the end position. If grid location along the path is already occupied this
+  // path isn't valid and should return null. Returns { start, corner, end } where each value is an {x,y} position.
+  function buildSingleTurnPath(start, end, direction) {
+
   }
 
   function buildRoomBetween(start,end) {
@@ -156,7 +186,7 @@ global.CorridorFactory = function(grid) {
   // overlapping tiles. Then we draw a line through the grid from the origin tiles to the feature. A ray will fail if
   // it encounters a feature other than the target.
   function corridorRayCast(alignment) {
-    const startTiles = findOverlappingStartTiles(alignment);
+    const startTiles = getOverlappingStartTiles(alignment);
     const rays = []
 
     startTiles.forEach(start => {
@@ -187,10 +217,18 @@ global.CorridorFactory = function(grid) {
     return (rays.length > 0) ? Random.from(rays) : null;
   }
 
+  // Get the start tiles for a feature in a given direction where the starting tiles are empty.
+  function getStartTiles(feature, direction) {
+    const position = feature.getPosition();
+    return feature.getEdgeTiles(direction).
+      map(tile => ({ x: tile.x + position.x, y: tile.y + position.y })).
+      filter(tile => grid[tile.y][tile.x] == null);
+  }
+
   // The overlapping start tiles are the edge tiles in the direction of the target feature where the tiles are empty
   // and intersect with the target feature bounds.
-  function findOverlappingStartTiles(alignment) {
-    const pos = originFeature.getPosition();
+  function getOverlappingStartTiles(alignment) {
+    const position = originFeature.getPosition();
     const target = targetFeature.getLocation();
 
     const inTargetOverlap = ['N','S'].includes(alignment) ?
@@ -198,7 +236,7 @@ global.CorridorFactory = function(grid) {
       (tile) => tile.y >= target.yMin && tile.y < target.yMax;
 
     return originFeature.getEdgeTiles(alignment).
-      map(tile => ({ x: tile.x + pos.x, y: tile.y + pos.y })).
+      map(tile => ({ x: tile.x + position.x, y: tile.y + position.y })).
       filter(tile => grid[tile.y][tile.x] == null).
       filter(inTargetOverlap);
   }
@@ -219,8 +257,8 @@ global.CorridorFactory = function(grid) {
     // These directions are only true if the locations don't overlap at all.
     const isNorth = b.yMax <= a.yMin;
     const isSouth = b.yMin >= a.yMax;
-    const isEast = b.xMax <= a.xMin;
-    const isWest = b.xMin >= a.xMax;
+    const isEast = b.xMax >= a.xMin;
+    const isWest = b.xMin <= a.xMax;
 
     if (xOverlap) { return isNorth ? 'N' : 'S'; }
     if (yOverlap) { return isEast ?  'E' : 'W'; }
