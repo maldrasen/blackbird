@@ -57,7 +57,6 @@ window.Loader = (function() {
       MainContent.loadStyles();
       MainContent.loadMainContent();
 
-      DungeonSystem.init();
       Views.initAll();
 
       await WorldState.loadState();

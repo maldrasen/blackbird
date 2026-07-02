@@ -34,6 +34,7 @@ global.DungeonThemeSystem = (function() {
   }
 
   function pickTheme(level) {
+    if (Object.keys(rarityRanges).length === 0) { init(); }
     return Random.from(rarityRanges[getRandomRarity()][level]);
   }
 

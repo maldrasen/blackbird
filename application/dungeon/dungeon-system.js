@@ -3,10 +3,6 @@ global.DungeonSystem = (function() {
   let dungeonState;
   let dungeonFloor;
 
-  function init() {
-    DungeonThemeSystem.init();
-  }
-
   function createDungeon() {
     Console.log("Creating Dungeon",{ system:'DungeonSystem', level:1 });
     dungeonState = DungeonState();
@@ -19,7 +15,6 @@ global.DungeonSystem = (function() {
   }
 
   return Object.freeze({
-    init,
     getDungeonState: () => { return dungeonState; },
     getDungeonFloor: () => { return dungeonFloor; },
     createDungeon,
