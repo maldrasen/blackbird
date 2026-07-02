@@ -1,26 +1,10 @@
 # Code Analysis — Bug Hunt (2026-07-01)
 
-A full pass over `application/` and `data/`, cross-referenced against the design docs. The test suite passes
-(235 passing, 14 pending) and no file has syntax errors, so everything below was found by reading, not by the
-runner. Findings are grouped by severity. File references include line numbers as of this analysis.
+A full pass over `application/` and `data/`, cross-referenced against the design docs. The test suite passes (235 passing, 14 pending) and no file has syntax errors, so everything below was found by reading, not by the runner. Findings are grouped by severity. File references include line numbers as of this analysis.
 
-Both bugs from the todo list were root-caused (see the first two items in Section 2).
 
 ---
 # 1. Crashes Waiting to Happen
-
-### 1.1 `positionUsedHands()` calls a function that doesn't exist
-`application/training/training-system.js:232` calls `action.usesSlot('player', TrainingSlot.hands)`, but
-`action` here is a `PersistedAction`, and `usesSlot()` only exists on `SexAction`. This throws a TypeError
-every time a position shift happens while the partner's attitude is violent, resistant, or fearful (called
-from `position-controller.js:67`). Fix: `action.getSexAction().usesSlot(...)`, or add a `usesSlot` passthrough
-to `PersistedAction`.
-
-### 1.2 Double-remove crash in `checkPersistedActions()`
-`application/training/training-system.js:150-160`. If a persisted action both fails `willContinue()` *and*
-uses the same slots as the new action, `removePersistedAction()` is called twice. The second call throws
-`Action:${code} has not been persisted`. The two `if` blocks need to be an `if / else if` (or the loop should
-`continue` after the first removal).
 
 ### 1.3 `applyFactorScale()` guard blows up on strong preferences
 `application/training/sensation-results/sensation-preferences.js:14-17` computes

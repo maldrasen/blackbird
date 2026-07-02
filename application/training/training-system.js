@@ -149,12 +149,10 @@ global.TrainingSystem = (function() {
 
   function checkPersistedActions(sexAction) {
     [...state.getPersistedActions()].forEach(persistedAction => {
-
       if (willContinue(persistedAction) === false) {
         state.removePersistedAction(persistedAction.getCode());
       }
-
-      if (actionsUseSameSlots(sexAction, persistedAction)) {
+      else if (actionsUseSameSlots(sexAction, persistedAction)) {
         state.removePersistedAction(persistedAction.getCode());
       }
     });
@@ -229,7 +227,7 @@ global.TrainingSystem = (function() {
   // normally use the player's hands.
   function positionUsedHands() {
     state.getPersistedActions().forEach(action => {
-      if (action.usesSlot('player',TrainingSlot.hands)) {
+      if (action.getSexAction().usesSlot('player',TrainingSlot.hands)) {
         state.removePersistedAction(action.getCode());
       }
     });
