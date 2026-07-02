@@ -2,23 +2,6 @@
 
 A full pass over `application/` and `data/`, cross-referenced against the design docs. The test suite passes (235 passing, 14 pending) and no file has syntax errors, so everything below was found by reading, not by the runner. Findings are grouped by severity. File references include line numbers as of this analysis.
 
-
----
-# 1. Crashes Waiting to Happen
-
-
-
-### 1.7 `changePosition()` has no fallback for an impossible alignment
-`application/training/position-controller.js:92`: `Random.from(valid)` throws `Empty array` if no registered
-position satisfies the action's alignment. Data probably covers everything today, but one new action/position
-combination away from a crash.
-
-### 1.8 Scale values past the top threshold throw
-`LetterGradeHelper.scaleValue()` (`letter-grade-helper.js:63`) throws once a training scale value reaches
-453,600 (the last `_scaleThresholds` entry). Session scales accumulate without bound in
-`TrainingState.updateScales()`, so a long enough session can hit this via `SensationScales.apply()`.
-Clamp to SSS instead of throwing.
-
 ---
 # 2. Wrong Behavior (no crash, wrong results)
 

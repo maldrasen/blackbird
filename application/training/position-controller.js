@@ -89,6 +89,10 @@ global.PositionController = (function() {
       }
     });
 
+    if (valid.length === 0) {
+      throw new Error(`There are no valid positions for SexAction[${sexAction.getCode()}]`);
+    }
+
     const positionData = Random.from(valid);
     const position = SexPosition.lookup(positionData.code);
     const positionContext = { A:positionData.first, B:positionData.second, attitude:state.getAttitude() };
