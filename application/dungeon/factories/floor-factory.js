@@ -26,7 +26,8 @@ global.FloorFactory = function() {
       if (result) {
         floor.addFeature(result.feature);
         result.doors.forEach(door => floor.addDoor(door));
-        connections.addEdge(origin, target);
+        connections.addEdge(origin, result.feature.getIndex());
+        connections.addEdge(result.feature.getIndex(), target);
         addFeatureToGrid(result.feature);
         forest = connections.getSpanningForest();
       }
@@ -36,10 +37,15 @@ global.FloorFactory = function() {
       }
     }
 
-    // Finally prune redundant doors.
+    // Get rid of some of the redundant doors, so that clusters of rooms aren't all
+    // connected, but there are at least some loops between rooms.
+    const spanningTree = connections.getSpanningTree(0);
+    floor.setDoors(floor.getDoors().filter(door => {
+      return (spanningTree.getEdges(door.getFrom()).includes(door.getTo())) ? true : (Random.roll(100) < 50);
+    }));
 
     if (Environment.isDevelopment) {
-      FileHelper.writeJSON(`${ROOT}/debug/floor-state.json`, floor.pack()).then(r => console.log('Saved Floor State'));
+      FileHelper.writeJSON(`${ROOT}/debug/floor-state.json`, floor.pack());
     }
   }
 
