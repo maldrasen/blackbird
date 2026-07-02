@@ -13,6 +13,10 @@ Now that we have a minimum version of the Dungeon and the Battle systems I shoul
 
 ---
 # Priority Tasks
+
+### Negotiation System
+Now that we have the battle system in a working state, we can actually start working on the negotiation system. We can start a negotiation with a monster when it's the last remaining monster. Negotiation can be Shin Megami Tensei style, the monster asking questions, the responses from the player will influence the character's initial feelings component if the negotiation works. Sometimes the monster will just use the negotiation as a chance to get a sneak attack in, or accept the character's bribes and try to run off. Could even have a training challenge to see if the player is able to sexually satisfy them.
+
 ### Training Systems
 Still working on getting the training system in a workable state. That's the primary focus of the game, so I want to make that work before including anything else like day to day exploration, events, combat, anything that's not directly related to training, stubbing things out as needed.
 ##### Next Steps

@@ -6,23 +6,7 @@ A full pass over `application/` and `data/`, cross-referenced against the design
 ---
 # 1. Crashes Waiting to Happen
 
-### 1.3 `applyFactorScale()` guard blows up on strong preferences
-`application/training/sensation-results/sensation-preferences.js:14-17` computes
-`factorValue = personalityFactorValue(pref) * sensations.factor` and *then* passes it to
-`CharacterMath.applyFactorScale()`, which throws if the factor is outside [0.5, 2]
-(`character-math.js:103`). `personalityFactorValue` maxes at 2.0, and most `-slut` preferences have
-`sensations.factor: 1.5`, so any partner with (for example) `anal-slut` above ~58 crashes `fuck-anus`
-(which passes `scale:3`). Either apply the scale *before* multiplying by `sensations.factor`, or clamp/widen
-the guard. This is a real crash in ordinary play, not an edge case.
 
-### 1.4 Feelings components are never created outside of test fixtures
-`ConsentResult.applyBaseFactor()` (`consent-result.js:34`) does
-`FeelingsComponent.findByTarget(...)` and immediately dereferences `.affection`. `findByTarget` returns
-`null` when no feelings exist — and nothing in production code ever calls `FeelingsComponent.create()`;
-only `application/test/character-fixtures.js` and `test/` fixtures do. Any real (non-fixture) character
-entering training will crash the first consent calculation. Either the CharacterFactory (or whatever
-capture/recruit flow eventually exists) needs to create baseline feelings, or `applyBaseFactor` needs a
-zero-feelings fallback.
 
 ### 1.5 Preference cap typo corrupts the component and rejects characters
 `application/characters/factories/sexual-preferences-factory.js:207`:
