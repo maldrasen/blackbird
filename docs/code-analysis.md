@@ -6,11 +6,6 @@ A full pass over `application/` and `data/`, cross-referenced against the design
 # 2. Wrong Behavior (no crash, wrong results)
 
 
-### 2.2 ROOT CAUSE of the todo bug: kebab-case breast shape
-`StringHelper.titlecaseAll()` (`string-helper.js:19-24`) splits on whitespace and camelCase but not hyphens,
-so `tear-drop` renders as "Tear-drop" and multi-word kebab values stay glued together. Displayed at
-`character-body-panel.js:105` (and any other kebab-cased value passed through it). Add a hyphen split (or
-replace `-` with a space first).
 
 ### 2.3 `getUses()` can corrupt registered sex action data
 `sex-action.js:76-96`. `lookup()` makes a *shallow* copy, so `action.uses` is the same object stored in the

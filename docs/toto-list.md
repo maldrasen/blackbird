@@ -1,11 +1,6 @@
 Just as good as project management!
 
 ---
-# Bugs
-- Somehow fuck anus and masturbate anus don't interfere with each other?
-- Breast shape in character view is in kabab case.
-
----
 # Current Task
 
 ### Return to Training

@@ -74,7 +74,7 @@ global.SexAction = (function() {
     // These arrays represent the parts that each participant in the action are using, which is important for
     // determining what persisted actions can happen at the same time.
     function getUses() {
-      const uses = action.uses || { player:[], partner:[] };
+      const uses = action.uses ? structuredClone(action.uses) : { player:[], partner:[] };
 
       if (action.alignment) {
         const player = action.alignment.player;
