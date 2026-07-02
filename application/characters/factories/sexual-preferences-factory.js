@@ -204,7 +204,7 @@ global.SexualPreferencesFactory = (function() {
     if (Random.roll(100) < chance) {
       if (preferences[code] == null) { preferences[code] = 0; }
       preferences[code] += amount;
-      if (preferences[code] > 100) { preferences.code = 100; }
+      if (preferences[code] > 100) { preferences[code] = 100; }
     }
   }
 

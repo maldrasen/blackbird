@@ -6,18 +6,6 @@ A full pass over `application/` and `data/`, cross-referenced against the design
 ---
 # 1. Crashes Waiting to Happen
 
-
-
-### 1.5 Preference cap typo corrupts the component and rejects characters
-`application/characters/factories/sexual-preferences-factory.js:207`:
-```js
-if (preferences[code] > 100) { preferences.code = 100; }
-```
-This should be `preferences[code] = 100`. As written it (a) leaves the actual value above 100 and (b) injects
-a junk `code` property. Both make `SexualPreferencesComponent.validate()` throw at creation time, so pervert
-archetypes that stack preferences past 100 get silently rejected and rerolled (and could exhaust the
-10-attempt build loop). Note the *other* cap at line 110 does it correctly.
-
 ### 1.6 `pickAbility()` can loop forever
 `application/battle/systems/monster-system.js:23-34`. If a targetable character isn't in the monster's threat
 table, `getHighestThreat()` returns `null`, `round.setTarget(null)` throws in `getPosition`, or — if it got
