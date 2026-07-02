@@ -24,6 +24,11 @@ global.MonsterSystem = (function() {
       const target = getHighestThreat(round.getActingMonster(), characters);
       round.setTarget(target);
 
+      // It's unlikely that getHighestThreat will ever return null, but it's technically possible, and could be more
+      // possible if we add abilities that remove a character's threat. If there's no character with any threat this
+      // function returns null and the monster will do a no target action.
+      if (target == null) { return null; }
+
       const possibleAbilities = getPossibleAbilities();
       if (possibleAbilities.length > 0) {
         return possibleAbilities[0];
@@ -61,7 +66,7 @@ global.MonsterSystem = (function() {
     let target = null;
 
     Object.entries(monster.getThreatTable()).forEach(([id,th]) => {
-      if (characters.includes(id) && th > threat) {
+      if (characters.includes(id) && th >= threat) {
         threat = th;
         target = id;
       }

@@ -6,12 +6,7 @@ A full pass over `application/` and `data/`, cross-referenced against the design
 ---
 # 1. Crashes Waiting to Happen
 
-### 1.6 `pickAbility()` can loop forever
-`application/battle/systems/monster-system.js:23-34`. If a targetable character isn't in the monster's threat
-table, `getHighestThreat()` returns `null`, `round.setTarget(null)` throws in `getPosition`, or — if it got
-past that — `ArrayHelper.remove(characters, null)` removes nothing and the `while` never terminates. Safe today
-if the EncounterBuilder always populates full threat tables, but one missing entry hangs the game. Guard for a
-null target.
+
 
 ### 1.7 `changePosition()` has no fallback for an impossible alignment
 `application/training/position-controller.js:92`: `Random.from(valid)` throws `Empty array` if no registered
