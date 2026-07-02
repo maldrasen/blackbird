@@ -4,8 +4,6 @@ global.StraightCorridorFactory = function(originFeature, targetFeature, alignmen
   const features = floor.getFeatures();
 
   function build() {
-    console.log("=== Building Straight Corridor ===")
-
     const ray = corridorRayCast(alignment);
     if (ray) {
       const index = features.length;

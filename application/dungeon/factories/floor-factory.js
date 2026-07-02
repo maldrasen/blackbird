@@ -10,10 +10,9 @@ global.FloorFactory = function() {
     const [connections,doors] = DoorFinder(grid).execute();
     floor.setDoors(doors);
 
-    const forest = connections.getSpanningForest();
+    let forest = connections.getSpanningForest();
 
-    // Change to a loop once we have this working
-    if (forest.length > 1) {
+    while (forest.length > 1) {
       const [origin, target] = FeatureGraphHelper.getClosestDisconnectedFeatures(forest);
       const result = CorridorFactory().digBetween(origin, target);
 
@@ -22,12 +21,11 @@ global.FloorFactory = function() {
         result.doors.forEach(door => floor.addDoor(door));
         connections.addEdge(origin, target);
         addFeatureToGrid(result.feature);
-        // Rebuild the forest, loop until forest length is 1
+        forest = connections.getSpanningForest();
       }
 
       if (result == null) {
-        console.warn(`Cannot find a path between features ${origin} and ${target}.`);
-        // blacklist the [origin,target] combo and find the next closest pair of rooms.
+        throw new Error(`Cannot find a path between features ${origin} and ${target}.`);
       }
     }
 
@@ -36,7 +34,6 @@ global.FloorFactory = function() {
     if (Environment.isDevelopment) {
       FileHelper.writeJSON(`${ROOT}/debug/floor-state.json`, floor.pack()).then(r => console.log('Saved Floor State'));
     }
-
   }
 
   function addFeatureToGrid(feature) {

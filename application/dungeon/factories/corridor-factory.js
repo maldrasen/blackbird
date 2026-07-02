@@ -36,11 +36,6 @@ global.CorridorFactory = function() {
       BentCorridorFactory,
     ];
 
-    console.log("=== Dig Between ===")
-    console.log(`[${first}]`, originFeature.getLocation());
-    console.log(`[${second}]`,targetFeature.getLocation());
-    console.log("Alignment:",alignment);
-
     if (alignment === 'O') {
       throw new Error('Handle Special Case: Overlapping Features');
     }
@@ -49,8 +44,7 @@ global.CorridorFactory = function() {
       corridorFactories.push(StraightCorridorFactory);
     }
 
-    // For now, always try dogleg first.
-    // Random.shuffle(corridorFactories);
+    Random.shuffle(corridorFactories);
 
     let result;
     while(corridorFactories.length > 0 && result == null) {
@@ -85,8 +79,6 @@ global.CorridorFactory = function() {
     if (isNorth && isEast) { return 'NE'; }
     if (isSouth && isWest) { return 'SW'; }
     if (isSouth && isEast) { return 'SE'; }
-
-    throw new Error(`Something has gone horribly wrong here.`);
   }
 
   return Object.freeze({

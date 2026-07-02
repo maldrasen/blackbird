@@ -6,8 +6,6 @@ global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
   // take every permutation of origin start tile and target end tile and draw an L shape between them. If there are no
   // collisions we add it to a list of possible solutions and pick one at random.
   function build() {
-    console.log("=== Building Bent Corridor ===")
-
     const opposite = { N:'S', S:'N', E:'W', W:'E' };
     const originTiles = FloorFactorySupport.getStartTiles(originFeature, alignment[0]);
     const targetTiles = FloorFactorySupport.getStartTiles(targetFeature, opposite[alignment[0]]);

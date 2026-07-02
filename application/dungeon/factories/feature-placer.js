@@ -13,8 +13,7 @@ global.FeaturePlacer = function() {
     let guard = 0
     let index = 0;
 
-    while(guard < 1) {
-    // while(guard < 1000) { // TODO: Making the dungeon a lot less dense so we can work on the dog legs.
+    while(guard < 1000) {
       const feature = theme.getRandomFeature();
       setRandomPosition(feature);
 
