@@ -1,10 +1,10 @@
 global.FeatureGraphHelper = (function() {
 
   // Finding the closest disconnected features requires comparing every feature in every tree against every feature in
-  // every other tree, and returning the two indices of the closest pair. There might be a more efficient way to do
-  // this, but with a dungeon floor having at most around 100 features, doing 10,000 comparisons doesn't actually take
-  // a noticeable amount of time.
-  function getClosestDisconnectedFeatures(forest) {
+  // every other tree, and returning the two indices of the closest pair. The blacklist is an optional set of feature
+  // pair keys already known to be unconnectable, skipped when scanning for the closest pair. This returns null if
+  // every candidate pair is blacklisted. (Which would be a fatal condition in the floor generation.)
+  function getClosestDisconnectedFeatures(forest, blacklist=new Set()) {
     const features = DungeonSystem.getDungeonFloor().getFeatures();
 
     let leastDistance = 10000;
@@ -18,6 +18,8 @@ global.FeatureGraphHelper = (function() {
 
         vertsA.forEach(a => {
           vertsB.forEach(b => {
+            if (blacklist.has(pairKey(a,b))) { return; }
+
             const distance = boxDistance(features[a].getLocation(), features[b].getLocation());
 
             if (distance < leastDistance) {
@@ -30,7 +32,12 @@ global.FeatureGraphHelper = (function() {
       }
     }
 
-    return [first,second];
+    return (first != null) ? [first,second] : null;
+  }
+
+  // A canonical, order-independent key for a pair of feature indices.
+  function pairKey(a,b) {
+    return (a < b) ? `${a}-${b}` : `${b}-${a}`;
   }
 
   function boxDistance(a, b) {
@@ -41,6 +48,7 @@ global.FeatureGraphHelper = (function() {
 
   return Object.freeze({
     getClosestDisconnectedFeatures,
+    pairKey,
   });
 
 })();

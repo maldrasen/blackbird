@@ -465,6 +465,7 @@
     "test/characters/skill-check-spec.js",
     "test/components/feelings-component-spec.js",
     "test/dungeon/dungeon-system-spec.js",
+    "test/dungeon/factories/floor-factory-spec.js",
     "test/dungeon/factories/room-factory-spec.js",
     "test/dungeon/models/feature-graph-spec.js",
     "test/dungeon/models/room-spec.js",

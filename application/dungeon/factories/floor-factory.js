@@ -1,5 +1,6 @@
 global.FloorFactory = function() {
   const floor = DungeonSystem.getDungeonFloor();
+  const blacklist = new Set();
 
   function buildFloor() {
     const [features, grid] = FeaturePlacer().packFeatures();
@@ -13,7 +14,13 @@ global.FloorFactory = function() {
     let forest = connections.getSpanningForest();
 
     while (forest.length > 1) {
-      const [origin, target] = FeatureGraphHelper.getClosestDisconnectedFeatures(forest);
+      const pair = FeatureGraphHelper.getClosestDisconnectedFeatures(forest, blacklist);
+
+      if (pair == null) {
+        throw new Error('Cannot find a path between any of the remaining disconnected features.');
+      }
+
+      const [origin, target] = pair;
       const result = CorridorFactory().digBetween(origin, target);
 
       if (result) {
@@ -25,7 +32,7 @@ global.FloorFactory = function() {
       }
 
       if (result == null) {
-        throw new Error(`Cannot find a path between features ${origin} and ${target}.`);
+        blacklist.add(FeatureGraphHelper.pairKey(origin, target));
       }
     }
 
