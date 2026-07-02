@@ -5,17 +5,6 @@ A full pass over `application/` and `data/`, cross-referenced against the design
 ---
 # 2. Wrong Behavior (no crash, wrong results)
 
-### 2.1 ROOT CAUSE of the todo bug: "fuck anus and masturbate anus don't interfere"
-`application/records/sex-action.js:83-84`:
-```js
-if (player.ass) { uses.player.push(action.alignment.target); }
-if (partner.ass) { uses.player.push(action.alignment.target); }   // <-- should be uses.partner
-```
-The second line marks the *player* as using the target orifice when it's the **partner's** ass/pussy being
-used. So `fuck-anus` (alignment `giveFucking(ass)`) ends up with `partner: []` — the partner's anus is never
-occupied, and `masturbate-anus` (`partner: [ass, hands]`) doesn't conflict with it in
-`actionsUseSameSlots()`. Same bug affects `fuck-pussy`, `insert-cock-*`, `finger-*`, `suck-anus/pussy`,
-`get-rimming`, etc.
 
 ### 2.2 ROOT CAUSE of the todo bug: kebab-case breast shape
 `StringHelper.titlecaseAll()` (`string-helper.js:19-24`) splits on whitespace and camelCase but not hyphens,

@@ -81,7 +81,7 @@ global.SexAction = (function() {
         const partner = action.alignment.partner;
 
         if (player.ass) { uses.player.push(action.alignment.target); }
-        if (partner.ass) { uses.player.push(action.alignment.target); }
+        if (partner.ass) { uses.partner.push(action.alignment.target); }
         if (player.cock) { uses.player.push(TrainingSlot.cock); }
         if (partner.cock) { uses.partner.push(TrainingSlot.cock); }
         if (player.hands) { uses.player.push(TrainingSlot.hands); }
