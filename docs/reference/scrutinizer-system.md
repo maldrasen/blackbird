@@ -1,5 +1,6 @@
-Like the Weaver and Looms we need a way to easily define requirement objects. The CentralScrutinizer works like the Weaver, taking in the current context, and an array of requirements, checking to make sure that all the requirements pass. (We could also add an or mode as well, to check if any requirement passes, though we haven't needed that yet.) Like the Weaver, the Scrutinizers have a simple internal DSL.
+Like the Weaver and Looms we need a way to easily define requirement objects. The `CentralScrutinizer` works like the Weaver, taking in the current context, and an array of requirements, checking to make sure that all the requirements pass. (We could also add an or mode as well, to check if any requirement passes, though we haven't needed that yet.) Like the Weaver, the Scrutinizers have a simple internal DSL.
 
+(We may end up getting rid of this as it's really just a way to pass closures around, and there are much better ways to do that than string parsing)
 #### Cock Scrutinizer
 - `A:has-cock` Character A has a cock component.
 #### Breast Scrutinizer

@@ -34,8 +34,10 @@ Categorized by damage type that resists the effect.
 - *Hidden* The character is in stealth. 
 - *Poised* The character is well prepared to defend themself. 
 
-# Binding
-Binding is the primary way a player captures monsters in the dungeon. There should be three levels, *Arms Bound*, *Legs Bound* and then *Fully Bound*. A fully bound character can't act and can be captured at the end of battle. Binding actions could use rope, or spider silk, or magic, but should all cost some resource. A monster bound with rope could be set free in a single action by another monster if they cut the rope, so binding actions need to be planned. Magic bounds should be harder to dispel though.
+# Binding (Work in Progress)
+Binding will be an alternate way of capturing monsters. Negotiation will be the preferred way and a monster who is negotiated with will have better starting feelings. Some monsters can't be negotiated with though.
+
+Binds should have three levels, *Arms Bound*, *Legs Bound* and then *Fully Bound*. A fully bound character can't act and can be captured at the end of battle. Binding actions could use rope, or spider silk, or magic, but should all cost some resource. A monster bound with rope could be set free in a single action by another monster if they cut the rope, so binding actions need to be planned. Magic bounds should be harder to dispel though.
 
 Some monsters should also bind characters as well. Binding normally just prevents a character from acting and can be removed by the characters in the same way. If the entire party is bound or can't act that leads to a game over, though we could have an event describing what the monsters do to the captured characters.  
 

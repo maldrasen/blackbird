@@ -1,3 +1,4 @@
+# The Action Consent Model
 The first step needed for the sex actions is calculating all of the consent values for all of the available commands. We need to do this for all the available commands because we color the command text according to the consent level. That way the player will have an idea of how an action will be received before they choose it. (That's all the detail they'll get though as actions are performed when the action button is clicked.)
 
 ### Consent Result Model

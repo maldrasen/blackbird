@@ -1,7 +1,5 @@
 # Character Factory Triggers
-These triggers are used by the `CharacterFactory` to randomly add make adjustments to the body, sexual preferences and 
-other components. They are either passed into the factory to make a character that matches the trigger, added by the 
-randomly selected name, or randomly added by the body factory.
+These triggers are used by the `CharacterFactory` to randomly add make adjustments to the body, sexual preferences and other components. They are either passed into the factory to make a character that matches the trigger, added by the randomly selected name, or randomly added by the body factory.
 
 ### Attribute triggers 
 Adds or removes 2d10 from associated stat

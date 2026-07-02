@@ -1,28 +1,28 @@
-## Personality Archetypes
-I've moved to a system where each character has a single personality defining character archetype.
+# Personality Archetypes
+Each character has a single personality defining character archetype. These architypes should be used when generating dialog.
 
-- `bastard` - Cruel, mocking, entitled males. Loves putting others down. Essentially bitches, but the male version.
-- `bimbo` - Loves sex and is kind of stupid. Airheaded, cock-obsessed, giggles at everything lewd.
+- `bastard` - Cruel, mocking, entitled males. Loves putting others down. Essentially bitches, but the male version. They rarely ask and mostly tell.
+- `bimbo` - Loves sex and is kind of stupid. Airheaded, cock-obsessed, and giggles at everything lewd. Their voices are breathy, they use simple vocabulary, and trail off mid thought. They're genuinely delighted, not performing
 - `bitch` - Sharp-tongued, mean-spirited women. Cutting insults are default.
 - `brat` - Playful, disobedient, and insulting. The teasing is meant to provoke punishment, so they are almost always humiliation sluts or masochists. 
-- `flowerChild` - Peaceful, nature loving, free love enjoying, stoners and hippies. Very open sexually.
-- `innocent` - timid and inexperienced, with no strong sexual preferences. Blushes easily.
-- `nice` - Gentle, considerate, and kind men.
-- `pervert` - Up for anything, lewd, sometimes gross.  Will ask for more unusual acts.
+- `flowerChild` - Peaceful, nature loving, free love enjoying, stoners and hippies. Very open sexually. Loose, unhurried, and casually affectionate.
+- `innocent` - Timid and inexperienced, with no strong sexual preferences. Blushes easily. Their voices are halting and apologetic, with lots of hedging. Easily flustered into silence.
+- `nice` - Gentle, considerate, and kind men. Warm and soft spoken.
+- `pervert` - Up for anything, lewd, sometimes gross.  Will ask for more unusual acts. They're eager and a little too specific.
 - `playful` - Playful, fun loving. Bouncy, giggly, treats sex like a fun game.
-- `prude` - Uninterested in sex, cold, unfeeling, frigid, angry.
+- `prude` - Uninterested in sex, curt, cold, unfeeling, frigid, angry. Minimal engagement during sex and might narrate disapproval even while complying.
 - `maniac` - Powerful (usually magical) prideful, haughty, slightly unhinged. Dangerous magic user who believes in their own superiority.
-- `reserved` - No strong personality in any direction, they are unemotional and stoic. Naturally submissive due to not having a strong ego.
-- `savage` - Wild, natural, feral, and animalistic. A violent version of the flower child.
+- `reserved` - No strong personality in any direction, they are unemotional and stoic. Naturally submissive due to not having a strong ego. They have a flat affect, and use few words. They don't editorialize on how they feel. Their text should describe, not quote much.
+- `savage` - Wild, natural, feral, and animalistic. A violent version of the flower child. More physical description than dialog.
 - `serious` - Disciplined, no-nonsense, violent when they need to be, takes situations seriously.
 - `slut` - Insatiable, indiscriminate, always horny and available for anything with anyone.
 - `sweet` - Soft, affectionate, kind women. Loves being cherished. Will often be affection-sluts.
-- `timid` - Nervous, jumpy, easily scared but can get excitable.
+- `timid` - Nervous, jumpy, easily scared but can get excitable once they're past the initial fear.
 
 ### Personality Flavors
 The archetypes are primarily used to choose a dialog tree for the events and training text. The archetypes can be adjusted by adding "flavors" as a way to mix in additional personality details. The tormented flavor for instance can be added to any archetype to create a masochist version of this character.
-- `submissive` - Views the player as their master.
-- `tormented` - Submissive, and also craves pain, humiliation, and abuse.
+- `submissive` - Views the player as their master. They defer to the player, even when the base archetype wouldn't normally defer to anyone.
+- `tormented` - Submissive, and also craves pain, humiliation, and abuse. Their reactions to rough treatment should read as wanted, not just endured
 
 ### Species Specific Dialog
 The vermen and kobolds are a unique enough that they should have their own dialog trees, though we should find a way to combine them so that we avoid having four different archetypes.

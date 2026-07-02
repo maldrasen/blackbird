@@ -1,5 +1,4 @@
 Blackbird generates a lot of text. It could be said that generating text is what this program primarily does. As such, building and evaluating text templates is fairly central to this applications workings. Almost every action will build a template string that gets displayed when the action is complete. These template strings are written in an internal format. The Weaver takes these templates, sequentially replacing each token by passing the token to the matching looms. 
-
 #### Weaver Context
 A weaver is created with the context to use for token replacement. This is most often used to specify the actors within the context. The actor tokens use a letter prefix to indicate which actor is being referenced, and by convention the player character should be actor `P`. Likewise the training partner will be the `T` actor.
 
