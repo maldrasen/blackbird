@@ -1,5 +1,11 @@
 describe("StringHelper", function() {
 
+  describe('titlecaseAll()', function() {
+    it('converts strings to titlecase', function() {
+      expect(StringHelper.titlecaseAll('big floppy donkey-dick')).to.equal('Big Floppy Donkey Dick');
+    });
+  })
+
   describe('longestCommonSubstring()', function() {
     it('finds the longest substring', function() {
       expect(StringHelper.longestCommonSubstring('dogcock','horsecock')).to.equal(4);

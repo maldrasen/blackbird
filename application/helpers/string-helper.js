@@ -15,9 +15,9 @@ global.StringHelper = (function() {
     return `${word.charAt(0).toUpperCase()}${word.substring(1)}`;
   }
 
-  // Converts strings like "title case" or "titleCase" to "Title Case"
+  // Converts strings like "title-case", "title case" or "titleCase" to "Title Case"
   function titlecaseAll(phrase) {
-    return phrase.split(/\s+/).
+    return phrase.replace(`-`,' ').split(/\s+/).
       flatMap(word => word.split(/(?<=[a-z])(?=[A-Z])/)).
       map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).
       join(' ');
