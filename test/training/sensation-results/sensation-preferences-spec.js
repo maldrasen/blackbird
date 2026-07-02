@@ -12,4 +12,16 @@ describe("SensationPreferences", function() {
     expect(result.getPartnerSensations().anus).to.equal(185);
   });
 
+  it("with a strong body preference", function() {
+    const state = TrainingFixtures.standardTrainingState({},{
+      arousal: { arousal:100 },
+      sexualPreferences:{ 'anal-slut':100 } });
+
+    const result = SensationResult('suck-anus',state);
+    SensationBaseline.apply(result);
+    SensationPreferences.apply(result, { type:'preference', code:'anal-slut', scale:2.5 });
+
+    expect(result.getPartnerSensations().anus).to.equal(200);
+  });
+
 });
