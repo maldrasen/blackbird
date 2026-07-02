@@ -10,9 +10,6 @@ global.CorridorFactory = function() {
     originFeature = features[first];
     targetFeature = features[second];
 
-    originFeature.setHighlight(true);
-    targetFeature.setHighlight(true);
-
     const alignment = getFeatureAlignment();
     const corridorFactories = [
       DoglegCorridorFactory,

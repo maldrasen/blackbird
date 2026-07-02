@@ -30,10 +30,6 @@ global.DungeonFloorView = (function() {
     featureElement.style['height'] = `${bounds.yMax * gridSize}px`;
     featureElement.style['width'] = `${bounds.xMax * gridSize}px`;
 
-    if (feature.getHighlight()) {
-      X.addClass(featureElement,'highlight');
-    }
-
     feature.getRooms().forEach(room => {
       room.getBoxes().forEach(box => {
         addRoomBox(featureElement, box);

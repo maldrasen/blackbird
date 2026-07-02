@@ -9,7 +9,7 @@
     right: 10px;
     overflow: hidden;
     border: variables.$border-normal;
-    background-color: #000;
+    background-color: #111;
   }
   #dungeonFloor {
     position: absolute;
@@ -31,8 +31,6 @@
     background-color: #111;
     z-index: 10;
   }
-
-  &.highlight .inner { background-color: #224; }
 }
 
 #dungeonFloor .door {

@@ -6,7 +6,6 @@ global.Feature = function(type) {
   let position;
   let index;
   let footprint;
-  let highlight = false;
 
   // Set the position of the feature within the floor.
   function setPosition(x,y) {
@@ -154,9 +153,5 @@ global.Feature = function(type) {
     getEdgeTiles,
     inspect,
     pack,
-
-    // TODO: Highlight is just temporary for now. Shows what features are being built.
-    setHighlight: h => { highlight = h; },
-    getHighlight: () => { return highlight; },
   });
 }
