@@ -15,6 +15,7 @@ global.BattleState = function(data) {
   const partyFormation = { ...PartyConfiguration.getConfiguration() };
   const monsterFormation = {};
   const abilityCooldowns = {};
+  const deadPile = [];
   const conditions = {};
   const skillImprovements = {};
   const statusEffects = {};
@@ -22,17 +23,9 @@ global.BattleState = function(data) {
   let ambushState = 'normal';
   let interrupt;
 
-  // The cleanup() function needs to be called after the battle to remove the temporary monsters that were built.
-  //
-  // TODO: If a monster is to be made permanent it should either be removed from the array or in some way should
-  //       be flagged as persistent. Sometimes monsters will need to be used in a follow on event, so maybe cleanup
-  //       should be done after that event instead.
-  //
-  // TODO: Actually, we'll need to change this as dead monsters should be removed from the formation. If we move dead
-  //       monsters into a 'dead pile' I think they can all be safely deleted. Monsters that are incapacitated
-  //       shouldn't take up space in the formation either though. Something to think about.
+  // The cleanup() function needs to be called after the battle to remove the monsters that were killed.
   function cleanup() {
-    Object.keys(monsterFormation).forEach(id => {
+    deadPile.forEach(id => {
       Registry.deleteEntity(id);
     });
   }
@@ -111,6 +104,7 @@ global.BattleState = function(data) {
   function isMonster(id) { return getMonsters().includes(id); }
   function isCharacter(id) { return getCharacters().includes(id); }
   function removeFromFormation(id) { delete (isMonster(id) ? monsterFormation : partyFormation)[id]; }
+  function addToDeadPile(id) { deadPile.push(id); }
 
   // === Turn Order ====================================================================================================
 
@@ -347,6 +341,7 @@ global.BattleState = function(data) {
     getMonsterFormation: () => { return { ...monsterFormation }; },
     getPartyFormation: () => { return { ...partyFormation }; },
     removeFromFormation,
+    addToDeadPile,
     getPosition,
     setPosition,
     isInFront,

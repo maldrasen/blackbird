@@ -1,10 +1,5 @@
 # 3. Architecture & Robustness Concerns
 
-### 3.2 Dead monsters escape battle cleanup
-`battle-state.js:34-38`: `cleanup()` iterates `monsterFormation`, but dead monsters get
-`removeFromFormation()`'d and are then never deleted from the Registry. The TODO at line 31 already gestures
-at this — until the dead-pile exists, entity leaks accumulate per battle.
-
 ### 3.3 `lookupNormalOf()` works by accident
 `cock-component.js:68-70`: `of()` returns an *array* of entity ids, and `lookup(of(parent))` only works
 because a one-element array string-coerces to its element when used as an object key. Zero matches → key `""`

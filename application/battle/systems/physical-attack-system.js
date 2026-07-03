@@ -25,7 +25,7 @@ global.PhysicalAttackSystem = (function() {
       }
     }
 
-    const actualDamage = BattleDamage.applyDamage({
+    const actualDamage = BattleDamageSystem.applyDamage({
       entity: target,
       damageTypes: damageTypes,
       hitLocation: attackRoll.getHitLocation(),

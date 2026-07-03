@@ -20,6 +20,9 @@ Still working on getting the training system in a workable state. That's the pri
 - All non-consenting actions should require the use of your hands. This should be as simple as adding hands to the uses array for the player.
 - Implement the enlighten view.
 
+### Random Seeds
+In order to make bugs more reproducible, we should give the random class a seed. We should turn Random into an object and call `Random(seed).roll()` rather than just `Random.roll()`
+
 ### Attitudes
 When building a character's dialog it would be most useful to have some kind of general attitude value. The attitude should be based off of the feelings, current marks, control, and perhaps personality. Basically, doing the heavy lifting of figuring out where in that multidimensional space their current attitude lies, and flattening it into a single value we can switch off of. For example:
 - Resistant (low control, no fear or respect)
@@ -40,6 +43,9 @@ A character can have multiple descriptions, a description for each body part, a 
 
 ### Change how the character heights are generated
 The variables like the deviation ratio are confusing. Better to just have the average male height, an average female height, and an actual deviation.
+
+### Project Stuff
+Need to work adding some open source software project docs. I think once I have the minimum viable product version of the app, I'll actually post an early alpha somewhere. This might get people to actually look at the project, maybe want to contribute. I'll probably need a code of conduct and contributing instructions. I also want to add an AI disclaimer, describing my use of Claude. I'll need credits for assets used. I don't think I'll include a link to a coffee or anything like that. Support will come in the form of content contributions, or if people want I'll tell them to donate to a charity or something. 
 
 ---
 
