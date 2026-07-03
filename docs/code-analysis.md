@@ -1,21 +1,4 @@
-# Code Analysis — Bug Hunt (2026-07-01)
-
-A full pass over `application/` and `data/`, cross-referenced against the design docs. The test suite passes (235 passing, 14 pending) and no file has syntax errors, so everything below was found by reading, not by the runner. Findings are grouped by severity. File references include line numbers as of this analysis.
-
----
-
-
-
----
 # 3. Architecture & Robustness Concerns
-
-### 3.1 Feelings entities leak and `hasParent()` is wrong
-`feelings-component.js:56` returns `hasParent: false` even though every feelings component has a
-`_parentId`. `Registry.findChildEntities()` builds its child-type list from `hasParent()`, so feelings
-entities are **not** deleted when their character is deleted. Separately, feelings whose `target` is a
-deleted character dangle forever (nothing scans targets). If the `false` is deliberate (to survive some
-operation), it deserves a comment; otherwise flip it to `true` and handle target cleanup wherever characters
-are removed.
 
 ### 3.2 Dead monsters escape battle cleanup
 `battle-state.js:34-38`: `cleanup()` iterates `monsterFormation`, but dead monsters get

@@ -53,7 +53,7 @@ global.FeelingsComponent = (function() {
   }
 
   return Object.freeze({
-    hasParent: () => { return false; },
+    hasParent: () => { return true; },
     create,
     update,
     lookup,

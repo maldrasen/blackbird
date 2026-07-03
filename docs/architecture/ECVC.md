@@ -7,6 +7,10 @@ When an Entity Id is removed from the Registry the associated components are als
 
 ### Components
 The components are simple data objects associated with an Entity Id. The components themselves shouldn't have any complicated business logic, mostly just the CRUD functions for that component. The actual 'programming' of the components belongs to the systems. A few components do have 'wrapper' classes that can be used to add simple calculation functions, though they should be limited to accessing component data, never mutating it. Each component also needs to validate its own data, both on create and update.
+##### Character Components
+Almost all of the components in the game are associated with characters. The Battle, Dungeon and Training states don't persist after the battle's been won or the dungeon has been exited. The Monster characters used in the battle system share many of the same components, but are either deleted after the battle or fully become persisted characters.
+
+Once a character has become 'real' like this I don't think we ever delete them. There are components like feelings and memory that can reference another character entity. Even if a character were to permanently die, I don't think we want to delete those references. This would allow characters to 'remember' other party members that may have died.
 
 ### Data Objects
 In addition to the Components, Blackbird has three different types of data objects:
