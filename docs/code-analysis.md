@@ -3,17 +3,7 @@
 A full pass over `application/` and `data/`, cross-referenced against the design docs. The test suite passes (235 passing, 14 pending) and no file has syntax errors, so everything below was found by reading, not by the runner. Findings are grouped by severity. File references include line numbers as of this analysis.
 
 ---
-# 2. Wrong Behavior (no crash, wrong results)
 
-### 2.8 Reverted actions skip the slot-conflict check
-`willContinue()` (`training-system.js:184`) pushes the revert action into persisted actions *while*
-`checkPersistedActions()` iterates a snapshot — so the freshly added revert action is never checked against
-the incoming action's slots and can end up sharing a slot with it.
-
-### 2.9 Futa cases lose information in `attitudeTowardsTraining()`
-`personality.js:29-32`. `results.touching` is assigned twice when the partner has both a cock and breasts
-(the breasts result overwrites the cock result), and `results.service` likewise for a futa player. Should
-take the max of the two consents, not the last one evaluated.
 
 
 ---

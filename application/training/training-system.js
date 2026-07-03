@@ -151,57 +151,64 @@ global.TrainingSystem = (function() {
     HealthComponent.update(partner, partnerHealth);
   }
 
+  // When the next action is selected we need to check all the persisted actions to see if they should still continue.
+  // The new action may interfere with the existing persisted actions, or other events (loss of consent, an orgasm)
+  // may remove an action.
   function checkPersistedActions(sexAction) {
+    const reverts = [];
+
     [...state.getPersistedActions()].forEach(persistedAction => {
       if (willContinue(persistedAction) === false) {
         state.removePersistedAction(persistedAction.getCode());
+
+        const revert = persistedAction.getSexAction().getPersist().revert;
+        if (revert !== _nothing) { reverts.push(revert); }
       }
-      else if (actionsUseSameSlots(sexAction, persistedAction)) {
+      else if (actionsUseSameSlots(sexAction, persistedAction.getSexAction())) {
         state.removePersistedAction(persistedAction.getCode());
       }
     });
+
+    // A revert only persists if its slots are still free, checked against both the incoming action and everything
+    // that survived the sweep (including reverts that were admitted just before it).
+    reverts.forEach(code => {
+      const revertAction = SexAction.lookup(code);
+      const conflict = actionsUseSameSlots(sexAction, revertAction) ||
+        state.getPersistedActions().some(other => actionsUseSameSlots(revertAction, other.getSexAction()));
+
+      if (conflict === false) { state.addPersistedAction(code); }
+    });
   }
 
+  // There are a few situations that may stop a persisted action from being performed. Currently this only happens
+  // when the consent value of the action drops below the 'when' consent threshold.
+  //
   // TODO: When we stop a persisted action because the action's consent value dropped below the action threshold we
-  //   should set some kind of state value so that we can show something about that in the output. If this action
-  //   reverts to something else, I think we can add it to the persisted actions. The consent might be too low still,
-  //   but we revert new actions the same way.
-
+  //       should set some kind of state value so that we can show something about that in the output.
+  //
   // TODO: Other state changes could also change this action. If the persisted action is using a cock, and the cock
-  //   haver has an orgasm, then the action should either stop entirely or change to a post orgasm version.
+  //       haver has an orgasm, then the action should either stop entirely or change to a post orgasm version.
 
   function willContinue(persistedAction) {
     const persistData = persistedAction.getSexAction().getPersist();
-    if (persistData.revert && persistData.when) {
-      console.log(`Recalculate Consent: ${persistedAction.getCode()}`);
 
+    if (persistData.revert && persistData.when) {
       const consentResult = ConsentResult(state.getPartner(), state.getPlayer());
       consentResult.setSexAction(persistedAction.getCode());
       consentResult.applyFactors();
-
-      if (consentResult.getConsent() < persistData.when) {
-        console.log(` - ${persistedAction.getCode()} Consent Dropped Below Threshold!`)
-        if (persistData.revert !== _nothing) {
-          console.log(`   Revert persisted ${persistData.revert}`);
-          state.addPersistedAction(persistData.revert);
-        }
-        return false;
-      }
+      return consentResult.getConsent() >= persistData.when;
     }
+
     return true;
   }
 
-  // A persisted action can't use the same slots as another action.
-  function actionsUseSameSlots(sexAction, persistedAction) {
-    const actionUses = sexAction.getUses();
-    const persistedUses = persistedAction.getSexAction().getUses();
+  // An action can't use the same slots as another action.
+  function actionsUseSameSlots(actionA, actionB) {
+    const aUses = actionA.getUses();
+    const bUses = actionB.getUses();
 
-    for (let i=0; i<actionUses.player.length; i++) {
-      if (persistedUses.player.includes(actionUses.player[i])) { return true; }}
-    for (let i=0; i<actionUses.partner.length; i++) {
-      if (persistedUses.partner.includes(actionUses.partner[i])) { return true; }}
-
-    return false;
+    return aUses.player.some(slot => bUses.player.includes(slot)) ||
+           aUses.partner.some(slot => bUses.partner.includes(slot));
   }
 
   function persistAction(sexAction, consentResult) {
@@ -210,7 +217,7 @@ global.TrainingSystem = (function() {
 
     let persistCode = persistData.action;
     if (persistData.revert && persistData.when) {
-      if (consentResult.getConsent() <= persistData.when) {
+      if (consentResult.getConsent() < persistData.when) {
         persistCode = persistData.revert;
       }
     }

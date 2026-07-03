@@ -69,6 +69,19 @@ We have the dungeon being built, now we need to party to navigate the dungeon. T
 ### Stamina
 We probably need to do something when a partner's stamina gets low. Once it's in a 'low' zone, the stamina should start effecting both the consent and sensation results. 
 
+### Refactor how SexActions define their persistence
+The way persistence is defined is a bit too terse and confusing. We should make the keys a bit more self-explanatory. Something more like:
+
+```
+persist: {
+  becomes: 'get-deepthroat',
+  minimumConsent: Consent.willing,
+  fallback: 'get-blowjob',
+}
+```
+
+The current revert and when keys controls whether the stop-check runs at all. An action with when but no revert never gets its consent rechecked. Only the presence of a fallback determines when a persisted action will stop. The original thinking was that the actions are 'partner driven' need to have their consent checked because it's their decision to keep going or not, while some actions are more player driven, so it's up to the player to decide to keep going or not. We could specify that an action is playerDriven or partnerDriven, and that it's the partnerDriven actions that need the consent values to be checked every round. Or we could have a system where if the partner stops consenting to an action the player is doing we have them do something to try and stop them, which would fold into the Denial Reactions system that I have yet to add.
+
 ### Action Slot Sharing
 It should be possible for multiple actions to use the same "slot". A player can be thrusting a dildo into their partner's pussy while licking their clit. That's two persisted actions that both target the pussy. Any kind of "double anal" type actions would also run into this problem. I think the way to handle this is for these "combined actions" to just be a type of follow on event. Anal sex could have an "add another cock" follow on that changes the anal sex action into a double anal action. This action still has exclusive use of the anus though. This means that every possible combination would need to be a separate action type, but I think that makes sense.
 

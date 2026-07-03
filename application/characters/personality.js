@@ -24,12 +24,20 @@ global.Personality = function(id) {
     const character = Character(id);
     const results = {};
 
+    let touchingBreasts = 0;
+    let touchingCock = 0;
+    let serviceCock = 0;
+    let servicePussy = 0;
+
+    if (character.hasNormalCock()) { touchingCock = consentForAction('fondle-cock'); }
+    if (character.hasBreasts())    { touchingBreasts = consentForAction('fondle-breasts'); }
+    if (player.hasNormalCock())    { serviceCock = consentForAction('get-handjob'); }
+    if (player.hasNormalPussy())   { servicePussy = consentForAction('get-cunnilingus'); }
+
     results.emotional = consentForAction('kiss');
     results.performance = consentForAction('striptease');
-    if (character.hasNormalCock()) { results.touching = consentForAction('fondle-cock')}
-    if (character.hasBreasts())    { results.touching = consentForAction('fondle-breasts')}
-    if (player.hasNormalCock())    { results.service = consentForAction('get-handjob')}
-    if (player.hasNormalPussy())   { results.service = consentForAction('get-cunnilingus')}
+    results.touching = Math.max(touchingBreasts, touchingCock);
+    results.service = Math.max(serviceCock, servicePussy);
 
     const highest = highestBaseClass(results);
 
