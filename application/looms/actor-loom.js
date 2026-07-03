@@ -39,7 +39,8 @@ global.ActorLoom = (function() {
       case `name`: return Character(id).getName();
       case `name's`: return EnglishHelper.possessive(Character(id).getName());
       case `fullName`: return Character(id).getFullName();
-
+      case `meanName`: return meanName(id);
+      case `niceName`: return niceName(id);
       case `actingName`:   return compileName(id, 'act', false, false);
       case `actingName's`: return compileName(id, 'act', false, true);
       case `ActingName`:   return compileName(id, 'act', true,  false);
@@ -66,6 +67,10 @@ global.ActorLoom = (function() {
       default: return Weaver.formatWarning(`[Species:${token}]`);
     }
   }
+
+  // TODO: Stubs for insulting names (Asshole, Sheepfucker) and nice names (Honey, Darling).
+  function meanName(id) { return `[MEAN_NAME]`; }
+  function niceName(id) { return `[NICE_NAME]`; }
 
   // Monsters have both names and base names because the monster factory builds the monster with an actor component.
   // (Which has the actor name) In the battle UI though it doesn't make sense to call monsters by their first name, so

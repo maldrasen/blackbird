@@ -16,20 +16,6 @@ the incoming action's slots and can end up sharing a slot with it.
 take the max of the two consents, not the last one evaluated.
 
 
-
-
-### 2.16 Data uses weaver tokens that don't exist yet
-These render as warning/error spans in real text today:
-- `{T:meanName}` — used throughout `data/dialog/bastard/propose-training.js` (and `{T:niceName}` in others);
-  `ActorLoom` implements neither.
-- `{A:cock.thick}`, `{A:cock.sixInch}`, `{A:cock.thickCock}`, `{A:cock.bigCock}` — used in
-  `data/sex-positions/centipede.js`, `straddle.js`, and several dialogs; `CockLoom` is an empty stub.
-- `{A:breasts.thickNipples}` returns the literal `[THICK NIPPLES]` (`breasts-loom.js:165`).
-
-### 2.17 `EpisodeState.getChoices()` references an undefined variable
-`episode-state.js:36` returns `choices`, which is never declared — ReferenceError if anything ever calls it.
-Currently nothing does.
-
 ---
 # 3. Architecture & Robustness Concerns
 

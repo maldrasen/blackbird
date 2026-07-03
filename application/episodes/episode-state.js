@@ -1,6 +1,4 @@
-global.EpisodeState = function(cd, ctx) {
-  const code = cd;
-  const context = ctx;
+global.EpisodeState = function(code, context) {
   const properties = {};
 
   let nextPage = null;
@@ -33,7 +31,6 @@ global.EpisodeState = function(cd, ctx) {
   return Object.freeze({
     getCode: () => { return code; },
     getContext: () => { return context; },
-    getChoices: () => { return choices; },
     getEpisode: () => { return Episode.lookup(code); },
     getNextPage,
 
