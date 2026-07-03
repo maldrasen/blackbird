@@ -7,6 +7,9 @@ global.Fixtures = (function() {
       encounter: `kobold-${Random.between(1,5)}`,
     });
 
+    // So the battle has a mode to return to.
+    GameState.setGameMode(GameMode.location);
+    GameState.markReturnMode();
     GameState.setGameMode(GameMode.battle);
   }
 

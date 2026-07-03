@@ -16,7 +16,8 @@ global.TrainingInterface = (function() {
 
   function endTraining(state) {
     if (Tests.running()) { return; }
-    EnlightenController.startEnlightenment({
+
+    EnlightenSystem.startEnlightenment('training',{
       partner: state.getPartner(),
       anima: state.getAnima(),
       animus: state.getAnimus(),

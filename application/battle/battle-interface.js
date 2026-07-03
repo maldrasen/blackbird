@@ -48,16 +48,18 @@ global.BattleInterface = (function() {
     FormationPanel.moveInwardOnDeath(moves);
   }
 
-  // I think battles should always have a previous mode, unless it was started as a fixture. We could also advance
-  // time here, but the time that battles take is pretty insignificant. We'd have to get it from the last turn order
-  // before it gets overwritten.
+  // TODO: The battle enlighten view will need a list of the monsters killed to generate loot and experience, and a
+  //       list of skills increased during the battle.
   function showVictory() {
     if (Tests.running() === false) {
       BattleSystem.endBattle();
-      GameState.setGameMode(GameMode.location);
+      EnlightenSystem.startEnlightenment('battle',{});
+      GameState.setGameMode(GameMode.enlighten);
     }
   }
 
+  // TODO: Rather than going back to the location we need to show an actual game over screen. This will kick the
+  //       player back to the main menu and reset the game state, allowing the last saved game to be loaded.
   function showGameOver() {
     if (Tests.running() === false) {
       BattleSystem.endBattle();

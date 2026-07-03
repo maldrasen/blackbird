@@ -6,7 +6,6 @@ global.EnlightenView = (function() {
 
   function show() {
     MainContent.setMainContent("views/enlighten.html");
-    MainContent.setBackground(`backgrounds/training.jpg`);
     GameStateFrame.hide();
   }
 
