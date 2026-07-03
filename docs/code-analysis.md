@@ -18,26 +18,6 @@ take the max of the two consents, not the last one evaluated.
 
 
 
-### 2.12 Pussy "Depth" row displays the width
-`character-body-panel.js:181` — `pussyDepth` is computed from `pussy.maxPussyWidth`; copy-paste from the
-line above.
-
-### 2.13 Stray `{/T}` tokens in battle status messages
-`physical-attack-system.js:76-78` — the poised messages contain `{T:TargetName}{/T}`. There is no `{/T}`
-token; the weaver renders it as a warning span in the battle log. `compileName()` already wraps names in
-`{S/tar}...{/S}`, so the `{/T}`s should just be deleted.
-
-### 2.14 Player baseline label is a literal `${name}`
-`sensation-baseline.js:51` uses single quotes: `'${name} Baseline'`. Partner line (46) uses backticks
-correctly. UI shows the literal string for all player baseline sensations.
-
-### 2.15 `Weaver.formatWarning` called statically in five looms
-`breasts-loom.js:97`, `body-loom.js:10`, `utility-loom.js:4`, `cock-loom.js:9`, `pussy-loom.js:4`.
-`formatWarning` is an instance method (`Weaver(context).formatWarning`), not a static. An unknown token in
-those looms throws a TypeError, which the weaver's try/catch converts into an *error* span plus a confusing
-console error, instead of the intended warning span. Either make `formatWarning`/`formatError` static
-properties on `Weaver`, or call `Weaver({}).formatWarning(...)` like `actor-loom.js:52` does.
-
 ### 2.16 Data uses weaver tokens that don't exist yet
 These render as warning/error spans in real text today:
 - `{T:meanName}` — used throughout `data/dialog/bastard/propose-training.js` (and `{T:niceName}` in others);

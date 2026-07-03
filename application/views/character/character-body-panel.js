@@ -178,7 +178,7 @@ global.CharacterBodyPanel = (function() {
     }
 
     const pussyWidth = MeasurementHelper.inchesWithFractions(pussy.maxPussyWidth, true)
-    const pussyDepth = MeasurementHelper.inchesWithFractions(pussy.maxPussyWidth, true)
+    const pussyDepth = MeasurementHelper.inchesWithFractions(pussy.maxPussyDepth, true)
 
     list.add(`<li>Shape</li>`);
     list.add(`<li>${StringHelper.titlecaseAll(pussy.shape)}</li>`);

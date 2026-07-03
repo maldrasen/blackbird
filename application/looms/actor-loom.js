@@ -49,7 +49,7 @@ global.ActorLoom = (function() {
       case `TargetName`:   return compileName(id, 'tar', true,  false);
       case `TargetName's`: return compileName(id, 'tar', true,  true);
 
-      default: return Weaver({}).formatWarning(`[Actor:${token}]`)
+      default: return Weaver.formatWarning(`[Actor:${token}]`)
     }
   }
 
@@ -63,7 +63,7 @@ global.ActorLoom = (function() {
       case `elves`: return EnglishHelper.pluralize(name).toLocaleLowerCase();
       case `elven`: return species.getAdjective().toLocaleLowerCase();
       case `anElf`: return `${EnglishHelper.a_an(name)} ${name}`;
-      default: return Weaver({}).formatWarning(`[Species:${token}]`);
+      default: return Weaver.formatWarning(`[Species:${token}]`);
     }
   }
 

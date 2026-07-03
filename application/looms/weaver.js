@@ -69,7 +69,7 @@ global.Weaver = function(context) {
   }
 
   function contextValue(key) {
-    return context[key] ?  context[key] : formatError(`[context.${key}==null]`)
+    return context[key] ?  context[key] : Weaver.formatError(`[context.${key}==null]`)
   }
 
   function actorValue(subject, token) {
@@ -78,7 +78,7 @@ global.Weaver = function(context) {
     }
     catch (error) {
       onError('Actor', error, { subject, token });
-      return formatError(`[${subject}:${token}]`);
+      return Weaver.formatError(`[${subject}:${token}]`);
     }
   }
 
@@ -88,7 +88,7 @@ global.Weaver = function(context) {
     }
     catch (error) {
       onError('Function', error, { context, name, argumentList });
-      return formatError(`[${name}(${argumentList.join(',')})]`);
+      return Weaver.formatError(`[${name}(${argumentList.join(',')})]`);
     }
   }
 
@@ -98,7 +98,7 @@ global.Weaver = function(context) {
     }
     catch (error) {
       onError('Utility', error, { utility, argument });
-      return formatError(`[${utility}|${argument}]`);
+      return Weaver.formatError(`[${utility}|${argument}]`);
     }
   }
 
@@ -127,11 +127,8 @@ global.Weaver = function(context) {
     if (key === 'Cock') { return StringHelper.titlecase(simpleValue('cock')); }
     if (key === 'Pussy') { return StringHelper.titlecase(simpleValue('pussy')); }
 
-    return formatWarning(`[${key}]`);
+    return Weaver.formatWarning(`[${key}]`);
   }
-
-  function formatWarning(message) { return `<span class='weaver-warning'>${message}</span>` }
-  function formatError(message) { return `<span class='weaver-error'>${message}</span>` }
 
   function onError(type, error, data) {
     Console.logError(`Weaver:${type}Error thrown.`, error, { system:'Weaver', ...data });
@@ -139,7 +136,9 @@ global.Weaver = function(context) {
 
   return Object.freeze({
     weave,
-    formatError,
-    formatWarning,
   });
 };
+
+Weaver.formatWarning = (message) => { return `<span class='weaver-warning'>${message}</span>`; }
+Weaver.formatError = (message) => { return `<span class='weaver-error'>${message}</span>`; }
+

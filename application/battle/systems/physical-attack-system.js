@@ -73,9 +73,9 @@ global.PhysicalAttackSystem = (function() {
 
   function addPoisedStatus(entity, skill) {
     const message = {
-      'dodge': `{T:TargetName}{/T} leaps away with stunning agility, and is now {S/pst}Poised{/S} and ready to defend {T:him}self.`,
-      'block': `{T:TargetName}{/T} braces {T:him}self, becoming {S/pst}Poised{/S} and harder to hit.`,
-      'parry': `{T:TargetName}{/T} flourishes {T:his} blade, {T:his} {S/pst}Poised{/S} stance ready to defend against any attack.`,
+      'dodge': `{T:TargetName} leaps away with stunning agility, and is now {S/pst}Poised{/S} and ready to defend {T:him}self.`,
+      'block': `{T:TargetName} braces {T:him}self, becoming {S/pst}Poised{/S} and harder to hit.`,
+      'parry': `{T:TargetName} flourishes {T:his} blade, {T:his} {S/pst}Poised{/S} stance ready to defend against any attack.`,
     }[skill];
 
     addStatus(entity, 'poised', message);

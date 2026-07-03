@@ -48,7 +48,7 @@ global.SensationBaseline = (function() {
 
     Object.keys(playerBaseline).forEach(key => {
       const value = Math.ceil(strength * playerBaseline[key]);
-      result.addPlayerSensation(key,'${name} Baseline', value);
+      result.addPlayerSensation(key,`${name} Baseline`, value);
     });
   }
 
