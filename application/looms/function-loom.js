@@ -2,11 +2,27 @@ global.FunctionLoom = (function() {
 
   function weave(context, name, argumentList) {
     switch(name) {
+      case `unequip`: return unequip(context,argumentList);
+      case `setPosition`: return setPosition(context,argumentList);
       case `aWeaponName`: return compileWeaponName(context,argumentList,'a');
       case `hisWeaponName`: return compileWeaponName(context,argumentList,'his');
       case `theWeaponName`: return compileWeaponName(context,argumentList,'the');
       default: throw new Error(`Unknown Loom Function: ${name}`);
     }
+  }
+
+  // If the propose training dialog specifies that scene should start in a position, we can update the position in the
+  // training state.
+  function setPosition(context, argumentList) {
+    console.warn(`[TODO: Set the starting position to ${argumentList[0]}]`);
+    return '';
+  }
+
+  // If the action text specifies that a character removes a piece of clothing we can have them unequip that slot.
+  function unequip(context, argumentList) {
+    const equipment = EquipmentManager(context[argumentList[0]]);
+    equipment.equipItem(null, argumentList[1]);
+    return '';
   }
 
   // This function gets a weapon's name from the context, prefixing the name with "a", "his", "the", or nothing if the

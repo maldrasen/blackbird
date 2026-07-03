@@ -1,4 +1,4 @@
-The Anima and Animus are 'gems' or 'experience points' awarded during a training session. They both have transient 'scales' that only exist within a training session. These scales receive the sensation values. When the scales overflow the overflow is converted into the associated Anima or Animus. 
+The Anima and Animus are the 'gems' or 'experience points' awarded during a training session. They both have transient 'scales' that only exist within a training session. These scales receive the sensation values. When the scales overflow the overflow is converted into the associated Anima or Animus. 
 
 The Animus represent the accumulated physical sensations. They have a one to one mapping with the character's sensitivity scales, and can be spent to raise the sensitivities, though they are also used when upgrading other associated sexual preferences as well.
 
@@ -46,27 +46,33 @@ The Anima represent the accumulated emotional responses to the actions performed
 	- Reduces the amount of experience gained.
 	- Can create hate marks
 
-Sex actions themselves have an map of emotion vectors
+### Sensations
+Each SexAction has values specifying the player and the partner's sensations.
+
 ```
-analStretching: {
-  dificulty: 100,
-  usesPartner: 'anus'    // Here, we know to use the analSensitivity scale
-  sensations: {
-    loving: 0.0,
-    lustful: 0.3,
-    dominating: 0.7,
-    degrading: 0.6,
-    painful: 0.8 }
+get-deepthroat: {
+  partnerSensations: {  
+    throat:     80,  
+    anger:      50,  
+    desire:     30,  
+    shame:      100,  
+    submission: 300,  
+    suffering:  200,  
+  },
+  playerSensations: {  
+    cock:   100,  
+    desire: 100,  
+  },
 },
 ```
 
 We use these values calculate the action sensation values from a combination of:
 - The character's feelings towards the player (affection/respect/fear), 
-- The consent value for the action (eager/accepting/reluctant/rape),
+- The consent value for the action (eager/accepting/reluctant/unwilling),
 - The pleasure stimulus from the body parts involved (Clitoral Sensitivity etc)
 - The related sexual preferences of the character (Cum Dump, Rope Bunny, etc.)
 
-This calculation will tell us how well that action was received. If the partner enjoyed it, it yields positive values (Comfort/Desire) and/or (Submission/Shame/Suffering) if applicable. If the partner didn't enjoy it than anger is increased. Enjoyment needs to be on a 0-1 scale so that actions will cause a mix of positive and negative emotions if they weren't 100% enjoyed.
+This calculation will tell us how well that action was received. If the partner enjoyed it, it yields positive values (Comfort/Desire) and/or (Submission/Shame/Suffering) if applicable. If the partner didn't enjoy it than anger is increased. 
 
 If an action targets a body part with a high sensitivity then pleasure is increased when the action is enjoyable, or pain/anger is increased when it is not. Scale values are also increased by factors such as action difficulty and player skill at performing these actions. 
 

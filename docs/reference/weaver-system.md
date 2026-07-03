@@ -46,10 +46,15 @@ A weaver is created with the context to use for token replacement. This is most 
 - `{A:equipped.<slot>}` short name of the item in the equipped \<slot>
 
 ## Function Tokens
-Function tokens are used to perform some kind of action on the context, changing the state in a minor way. This could be used to change positions or equipment or other simple things without too large of an effect.
+Some function tokens are used to perform some kind of action on the context, changing the state in a minor way. This could be used to change positions or equipment or other simple things that don't have too large of an effect. These function may return an empty string as they change the state rather than producing text.
 
-- `unequip(A,<slot>)` Unequip the item in the equipped \<slot>
-- `setPosition(<position>)`
+- `unequip(A,<slot>)` If the action text specifies that a character removes a piece of clothing we can have them unequip that slot.
+- `setPosition(<position>)` If the propose training dialog specifies that scene should start in a position, we can update the position in the training state. (It might be possible for this function to change the position from a sex action as well, though we would need to be very careful with persisted actions, perhaps only selecting that kind of text when there are no persisted actions)
+
+Other functions are just complicated enough that they special handling. Weapon name needs to determine if the name is a proper or a common name and give it the specified prefix.
+- `aWeaponName(A)` - "an axe", "a dagger", "Stabitha"
+- `hisWeaponName(A)` - "his sword", "Sexcalibur"
+- `theWeaponName(A)` - "the goosewing", "Goosewang"
 
 ## Utility Tokens
 None yet, but these will be used for general things like the time of day, or the location name. 
