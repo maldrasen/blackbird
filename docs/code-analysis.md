@@ -5,12 +5,6 @@ A full pass over `application/` and `data/`, cross-referenced against the design
 ---
 # 2. Wrong Behavior (no crash, wrong results)
 
-### 2.7 Persist threshold semantics: `<=` vs `<`
-`training-system.js:180` and `:211` treat `consent <= persist.when` as "stop/revert." With
-`masturbate-anus` declaring `when: Consent.willing`, the action stops even when the partner *is* willing —
-it only ever persists at eager. If the intent is "stops when it drops below willing," these should be `<`.
-Worth deciding on purpose, since every persist definition reads differently under the two interpretations.
-
 ### 2.8 Reverted actions skip the slot-conflict check
 `willContinue()` (`training-system.js:184`) pushes the revert action into persisted actions *while*
 `checkPersistedActions()` iterates a snapshot — so the freshly added revert action is never checked against

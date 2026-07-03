@@ -179,7 +179,7 @@ global.TrainingSystem = (function() {
       consentResult.setSexAction(persistedAction.getCode());
       consentResult.applyFactors();
 
-      if (consentResult.getConsent() <= persistData.when) {
+      if (consentResult.getConsent() < persistData.when) {
         console.log(` - ${persistedAction.getCode()} Consent Dropped Below Threshold!`)
         if (persistData.revert !== _nothing) {
           console.log(`   Revert persisted ${persistData.revert}`);
