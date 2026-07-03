@@ -31,26 +31,32 @@ global.MouthComponent = (function() {
       }
     });
 
+    if (withPlacement(mouthComponent._parentId,mouthComponent.placement).length > 1) {
+      throw new Error(`Each mouth should have a unique placement.`);
+    }
+
     Validate.exists(_parentId,mouthComponent._parentId);
     Validate.exists('Mouth.placement',mouthComponent.placement);
     Validate.atLeast('Mouth.maxMouthWidth',mouthComponent.maxMouthWidth,32);
     Validate.atLeast('Mouth.maxThroatWidth',mouthComponent.maxThroatWidth,26);
-    Validate.atLeast('Mouth.comfortableThroatDepth',mouthComponent.tongueLength,0);
+    Validate.atLeast('Mouth.comfortableThroatDepth',mouthComponent.comfortableThroatDepth,0);
     Validate.atLeast('Mouth.tongueLength',mouthComponent.tongueLength,50);
     Validate.isIn('Mouth.tongueShape',mouthComponent.tongueShape,MouthData.TongueShapes);
   }
 
-  function of(parent, placement='normal') {
+  function belongsTo(parent) {
     return Registry.findComponentsWith(ComponentType.mouth, mouthData => {
-      if (placement === mouthData.placement) {
-        return mouthData[_parentId] === parent;
-      }
+      return mouthData[_parentId] === parent;
     });
+  }
+
+  function withPlacement(parent, placement) {
+    return belongsTo(parent).filter(id => placement === lookup(id).placement);
   }
 
   // Used to get the single normal 'face' mouth component, given a parent.
   function lookupNormalOf(parent) {
-    return lookup(of(parent));
+    return lookup(withPlacement(parent,'normal')[0]);
   }
 
   return Object.freeze({
@@ -59,7 +65,6 @@ global.MouthComponent = (function() {
     update,
     lookup,
     destroy,
-    of,
     lookupNormalOf,
   });
 

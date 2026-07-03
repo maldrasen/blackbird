@@ -35,6 +35,10 @@ global.AnusComponent = (function() {
       }
     });
 
+    if (withPlacement(anusComponent._parentId,anusComponent.placement).length > 1) {
+      throw new Error(`Each anus should have a unique placement.`);
+    }
+
     Validate.exists(`Anus._parentId`,anusComponent._parentId);
     Validate.exists('Anus.placement',anusComponent.placement);
     Validate.isIn('Anus.shape',anusComponent.shape,AnusData.AnusShapes);
@@ -43,17 +47,19 @@ global.AnusComponent = (function() {
     Validate.atLeast('Anus.prolapseLength',anusComponent.prolapseLength,0);
   }
 
-  function of(parent, placement='normal') {
+  function belongsTo(parent) {
     return Registry.findComponentsWith(ComponentType.anus, anusData => {
-      if (placement === anusData.placement) {
-        return anusData[_parentId] === parent;
-      }
+      return anusData[_parentId] === parent;
     });
   }
 
-  // Used to get the single normal 'face' mouth component, given a parent.
+  function withPlacement(parent, placement) {
+    return belongsTo(parent).filter(id => placement === lookup(id).placement);
+  }
+
+  // Used to get the single normal anus component, given a parent.
   function lookupNormalOf(parent) {
-    return lookup(of(parent));
+    return lookup(withPlacement(parent,'normal')[0]);
   }
 
   return Object.freeze({
@@ -62,7 +68,6 @@ global.AnusComponent = (function() {
     update,
     lookup,
     destroy,
-    of,
     lookupNormalOf,
   });
 

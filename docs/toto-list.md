@@ -20,6 +20,9 @@ Still working on getting the training system in a workable state. That's the pri
 - All non-consenting actions should require the use of your hands. This should be as simple as adding hands to the uses array for the player.
 - Implement the enlighten view.
 
+### Refactor Scrutinizers
+I had originally written the scrutinizers when I thought the data objects would be in JSON, and so the conditions were represented as strings. The conditions would be better if they were closures and the scrutinizer can build closures from arguments.
+
 ### Random Seeds
 In order to make bugs more reproducible, we should give the random class a seed. We should turn Random into an object and call `Random(seed).roll()` rather than just `Random.roll()`
 

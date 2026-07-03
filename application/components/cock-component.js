@@ -47,6 +47,10 @@ global.CockComponent = (function() {
       }
     });
 
+    if (withPlacement(cockComponent._parentId,cockComponent.placement).length > 1) {
+      throw new Error(`Each cock should have a unique placement.`);
+    }
+
     Validate.exists(`Cock._parentId`,cockComponent._parentId);
     Validate.exists('Cock.placement',cockComponent.placement);
     Validate.atLeast('Cock.count', cockComponent.count, 1);
@@ -56,17 +60,19 @@ global.CockComponent = (function() {
     Validate.atLeast('Cock.width',cockComponent.width,12);
   }
 
-  function of(parent, placement='normal') {
+  function belongsTo(parent) {
     return Registry.findComponentsWith(ComponentType.cock, cockData => {
-      if (placement === cockData.placement) {
-        return cockData[_parentId] === parent;
-      }
+      return cockData[_parentId] === parent;
     });
   }
 
-  // Used to get the single normal 'face' mouth component, given a parent.
+  function withPlacement(parent, placement) {
+    return belongsTo(parent).filter(id => placement === lookup(id).placement);
+  }
+
+  // Used to get the single normal cock component, given a parent.
   function lookupNormalOf(parent) {
-    return lookup(of(parent));
+    return lookup(withPlacement(parent,'normal')[0]);
   }
 
   return Object.freeze({
@@ -75,7 +81,6 @@ global.CockComponent = (function() {
     update,
     lookup,
     destroy,
-    of,
     lookupNormalOf,
   });
 
