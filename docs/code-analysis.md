@@ -1,18 +1,5 @@
 # 3. Architecture & Robustness Concerns
 
-### 3.5 Enlighten mode is half-wired
-`GameState.setGameMode()` (`game-state.js:59-70`) has no `GameMode.enlighten` case — it works today only
-because `EnlightenController.startEnlightenment()` calls `EnlightenView.show()` itself, inverting the pattern
-every other mode uses. Also `EnlightenController` stores `$anima/$animus/$anger` but exposes no getters, so
-the enlighten view can't actually read the data it's supposed to display. (Both presumably part of the
-"Implement the enlighten view" todo — noting so it doesn't get lost.)
-
-### 3.6 Consent factor order is data-defined and unguarded
-`ConsentResult` applies factors in array order; gender and preference factors are multiplicative. A data file
-that lists a multiplicative factor before the base factor multiplies zero and silently produces a garbage
-consent value. Every current action lists `base` first, but nothing enforces it — a cheap `applyFactors()`
-sort (additive first) or a validation would remove the trap.
-
 ### 3.7 Unvalidated component ranges
 - `ArousalComponent.validate()` only checks `arousal >= 0`; `pleasure`, `edging`, `refectory` are
   unconstrained.
