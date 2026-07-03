@@ -9,9 +9,9 @@ global.SensationBaseline = (function() {
   // produce anger and suffering, even if it normally wouldn't. Likewise, a reluctant action should always produce some
   // submission and shame.
   //
-  // If we're repeating the same action that was performed the previous round, all the baseline sensations suffer a
-  // 50% penalty to discourage spamming the same action. The original Era games had a similar mechanic. All the
-  // currently persisted actions also add to the sensation baseline, though at reduced rate as well.
+  // If we're repeating the same action that was performed the previous round, all the baseline sensations (other than
+  // anger) suffer a 50% penalty to discourage spamming the same action. The original Era games had a similar mechanic.
+  // All the currently persisted actions also add to the sensation baseline, though at reduced rate as well.
 
   function apply(result) {
     const sexAction = result.getSexAction();
