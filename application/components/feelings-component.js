@@ -32,9 +32,9 @@ global.FeelingsComponent = (function() {
 
     Validate.exists('Feelings._parentId',feelingsComponent._parentId);
     Validate.exists('Feelings.target',feelingsComponent.target);
-    Validate.exists('Feelings.affection',feelingsComponent.affection);
-    Validate.exists('Feelings.fear',feelingsComponent.fear);
-    Validate.exists('Feelings.respect',feelingsComponent.respect);
+    Validate.between('Feelings.affection',feelingsComponent.affection,0,1000);
+    Validate.between('Feelings.fear',feelingsComponent.fear,0,1000);
+    Validate.between('Feelings.respect',feelingsComponent.respect,0,1000);
 
     // We need to validate that exactly one feelings component for the target character exists.
     Validate.equals('Feelings.uniqueness',Registry.findComponentsWith(ComponentType.feelings, component => {

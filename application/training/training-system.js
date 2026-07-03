@@ -91,9 +91,6 @@ global.TrainingSystem = (function() {
       arousalData.arousal += (difference/2);
     }
 
-    if (arousalData.refractory == null) { arousalData.refractory = 0; }
-    if (arousalData.pleasure == null) { arousalData.pleasure = 0; }
-
     arousalData.pleasure *= pleasureDecayRate;
 
     AnimusComponent.getProperties().forEach(key => {
@@ -105,11 +102,11 @@ global.TrainingSystem = (function() {
       }
     });
 
-    const isOrgasm = character.rollForOrgasm(mostIntense);
+    const isOrgasm = (arousalData.refractory === 0) ? character.rollForOrgasm(mostIntense) : false;
 
-    // TODO: Everything else that needs to happen when a character orgasms.
-    //       We need something to hold that information so that it can be
-    //       displayed in the UI.
+    // TODO: Everything else that needs to happen when a character orgasms. Pleasure and arousal should be dropped
+    //       dramatically, possibly down to 0, though I think some characters will have an arousal floor of some sort.
+    //       We need something to hold the orgasm information so that it can be displayed in the UI.
 
     if (isOrgasm) {
       arousalData.edging = 0;
@@ -117,7 +114,7 @@ global.TrainingSystem = (function() {
     }
     if (isOrgasm === false) {
       arousalData.edging = calculateEdging(character.getOrgasmThreshold(), arousalData);
-      arousalData.refractory = arousalData.refractory === 0 ? 0 : arousalData.refractory - 1;
+      arousalData.refractory = (arousalData.refractory === 0) ? 0 : arousalData.refractory - 1;
     }
 
     ArousalComponent.update(entity, ObjectHelper.unfloat(arousalData));

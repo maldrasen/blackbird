@@ -1,7 +1,12 @@
 global.ArousalComponent = (function() {
   const $properties = ['arousal','pleasure','edging','refractory'];
 
-  function create(id,data) {
+  function create(id,data={}) {
+    if (data.arousal == null) { data.arousal = 0; }
+    if (data.pleasure == null) { data.pleasure = 0; }
+    if (data.edging == null) { data.edging = 0; }
+    if (data.refractory == null) { data.refractory = 0; }
+
     Registry.createComponent(id,ComponentType.arousal,data);
     validate(id);
   }
@@ -28,7 +33,10 @@ global.ArousalComponent = (function() {
       }
     });
 
-    Validate.atLeast('Arousal.arousal',arousalComponent.arousal,0);
+    Validate.between('Arousal.arousal',arousalComponent.arousal,0,100);
+    Validate.atLeast('Arousal.pleasure',arousalComponent.arousal,0);
+    Validate.atLeast('Arousal.edging',arousalComponent.arousal,0);
+    Validate.atLeast('Arousal.refractory',arousalComponent.arousal,0);
   }
 
   return Object.freeze({

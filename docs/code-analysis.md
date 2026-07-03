@@ -1,14 +1,5 @@
 # 3. Architecture & Robustness Concerns
 
-### 3.7 Unvalidated component ranges
-- `ArousalComponent.validate()` only checks `arousal >= 0`; `pleasure`, `edging`, `refectory` are
-  unconstrained.
-- `FeelingsComponent` has no range validation, but `CharacterMath.emotionBaseValue()` /`PiecewiseCurve`
-  **throws** for |value| > 1000. Anything that nudges affection/fear/respect past ±1000 turns into a consent
-  crash later. Validate at ±1000 or clamp in the curve.
-- Spelling: `refectory` (a monastery dining hall) is used throughout for `refractory`. Cosmetic, but it's a
-  persisted property name — cheaper to rename now than after save files exist.
-
 ### 3.8 Skill improvement fires from any `SkillCheck`
 `skill-check.js:80` improves skills as a side effect of every check, including checks made while building
 sensation results. The battle path reports improvements via `battleState.skillImproved()`, but the training
