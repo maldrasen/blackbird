@@ -18,6 +18,7 @@ global.TrainingSystem = (function() {
     ArousalComponent.update(state.getPlayer(), { arousal:0 });
     ArousalComponent.update(state.getPartner(), { arousal:0 });
     TrainingInterface.endTraining(state);
+    state = null;
   }
 
   function handleSexAction(code) {

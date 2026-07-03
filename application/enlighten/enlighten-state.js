@@ -1,6 +1,8 @@
 global.EnlightenState = function(from,data) {
   Validate.isIn('EnlightenState.from',from,['battle','training']);
 
+  const skillImprovements = data.skillImprovements;
+
   function getAnima() { return data.anima ? { ...data.anima } : null; }
   function getAnimus() { return data.animus ? { ...data.animus } : null; }
   function getAnger() { return data.anger; }
@@ -12,5 +14,6 @@ global.EnlightenState = function(from,data) {
     getAnimus,
     getAnger,
     getPartner,
+    getSkillImprovements: () => { return skillImprovements },
   });
 }

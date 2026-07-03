@@ -40,6 +40,7 @@ global.TrainingState = function(data) {
   };
 
   const possibleActions = SexAction.getPossible(context);
+  const skillImprovements = {};
 
   // ============
   //    Scales
@@ -113,6 +114,11 @@ global.TrainingState = function(data) {
     return (position.first === partner) ? alignment.first : alignment.second
   }
 
+  function skillImproved(id, code, level) {
+    if (skillImprovements[id]==null) { skillImprovements[id] = {}; }
+    skillImprovements[id][code] = level;
+  }
+
   return Object.freeze({
     getPlayer: () => { return player; },
     getPartner: () => { return partner; },
@@ -150,6 +156,8 @@ global.TrainingState = function(data) {
     clearMessages: () => { messages = {}; },
     getMessages: () => { return messages },
     addMessage: (type, message) => { messages[type] = message; },
+    skillImproved,
+    getSkillImprovements: () => { return skillImprovements; },
   });
 }
 

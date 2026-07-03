@@ -48,23 +48,26 @@ global.BattleInterface = (function() {
     FormationPanel.moveInwardOnDeath(moves);
   }
 
-  // TODO: The battle enlighten view will need a list of the monsters killed to generate loot and experience, and a
-  //       list of skills increased during the battle.
+  // TODO: The battle enlighten view will also need the list of the monsters killed to generate loot and experience.
   function showVictory() {
-    if (Tests.running() === false) {
-      BattleSystem.endBattle();
-      EnlightenSystem.startEnlightenment('battle',{});
-      GameState.setGameMode(GameMode.enlighten);
-    }
+    if (Tests.running()) { return; }
+
+    const state = BattleSystem.getState();
+
+    BattleSystem.endBattle();
+    EnlightenSystem.startEnlightenment('battle',{
+      skillImprovements: state.getSkillImprovements(),
+    });
+    GameState.setGameMode(GameMode.enlighten);
   }
 
   // TODO: Rather than going back to the location we need to show an actual game over screen. This will kick the
   //       player back to the main menu and reset the game state, allowing the last saved game to be loaded.
   function showGameOver() {
-    if (Tests.running() === false) {
-      BattleSystem.endBattle();
-      GameState.setGameMode(GameMode.location);
-    }
+    if (Tests.running()) { return; }
+
+    BattleSystem.endBattle();
+    GameState.setGameMode(GameMode.location);
   }
 
   return Object.freeze({

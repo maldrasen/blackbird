@@ -1,10 +1,6 @@
 # 3. Architecture & Robustness Concerns
 
-### 3.8 Skill improvement fires from any `SkillCheck`
-`skill-check.js:80` improves skills as a side effect of every check, including checks made while building
-sensation results. The battle path reports improvements via `battleState.skillImproved()`, but the training
-path silently mutates skills with no notification (the TODO at line 43 acknowledges this). Worth doing before
-balancing training, since every sex action currently rolls 1-3 skill checks with improvement chances.
+
 
 ### 3.9 Registry trivia
 `registry.js:58-61`: `findChildEntities()` always returns an array, so `compileEntityData()` appends

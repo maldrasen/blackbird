@@ -8,6 +8,7 @@ global.BattleView = (function() {
 
   function show() {
     MainContent.setMainContent("views/battle.html");
+    GameStateFrame.hide();
     FormationPanel.build();
     BattleText.build();
     BattleText.showBattleStartText();

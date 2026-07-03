@@ -18,6 +18,7 @@ global.TrainingInterface = (function() {
     if (Tests.running()) { return; }
 
     EnlightenSystem.startEnlightenment('training',{
+      skillImprovements: state.getSkillImprovements(),
       partner: state.getPartner(),
       anima: state.getAnima(),
       animus: state.getAnimus(),

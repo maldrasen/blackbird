@@ -1,8 +1,7 @@
-// Skill checks can roll against one attribute, or an average of attributes.
-// The attribute roll is then multiplied by the level and skill factor to
-// get the final value.
-
 /**
+ * Skill checks can roll against one attribute, or an average of attributes. The attribute roll is then multiplied by
+ * the level and skill factor to get the final value.
+ *
  * @function
  * @global
  * @param {string} id - Entity ID
@@ -40,22 +39,20 @@ global.SkillCheck = function(id, code, mode=RollMode.normal) {
   // a character with 90 points in a skill should have a 1% chance to improve it. Each time a skill is improved it goes
   // up by a single point.
 
-  // TODO: The training state will need a similar function as will any mode that has the possibility of a character
-  //       using and improving their skills.
-
   function improveSkill() {
     const improveChance = Math.ceil((100 - level)/10);
-    const improveRoll = Random.roll(100);
+    const improveRoll = Random.roll(Math.round(100 * skill.getFactor()));
 
     if (improveRoll < improveChance) {
       const skills = SkillsComponent.lookup(id);
       const battleState = BattleSystem.getState();
+      const trainingState = TrainingSystem.getState();
+
       skills[code] = skills[code] + 1;
       SkillsComponent.update(id, skills);
 
-      if (battleState) {
-        battleState.skillImproved(id, code, skills[code]);
-      }
+      if (battleState) { battleState.skillImproved(id, code, skills[code]); }
+      if (trainingState) { trainingState.skillImproved(id, code, skills[code]); }
     }
   }
 

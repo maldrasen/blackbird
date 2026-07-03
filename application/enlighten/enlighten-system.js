@@ -7,6 +7,7 @@ global.EnlightenSystem = (function() {
 
   function startEnlightenment(from,data) {
     state = EnlightenState(from,data);
+    console.log("Show Skill Improvements:",state.getSkillImprovements());
   }
 
   return Object.freeze({
