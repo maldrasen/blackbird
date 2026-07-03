@@ -1,18 +1,5 @@
 # 3. Architecture & Robustness Concerns
 
-### 3.3 `lookupNormalOf()` works by accident
-`cock-component.js:68-70`: `of()` returns an *array* of entity ids, and `lookup(of(parent))` only works
-because a one-element array string-coerces to its element when used as an object key. Zero matches → key `""`
-→ undefined (fine); **two matches → key `"A,B"` → undefined** — so a two-cock character (the component
-validates `count`, and the todo list plans multi-cock bodies) silently has "no cock." Same pattern exists in
-the other `lookupNormalOf` components (mouth, anus, pussy). Should be `lookup(of(parent)[0])` with an
-explicit multi-result policy.
-
-### 3.4 `GameState.initialize()` relies on `reset()` having run
-`game-state.js:36-42` clears the registry but leaves `$player`, `$partyConfiguration`, `$currentFloor`,
-`$returnMode` stale from any previous game. Harmless while every path calls `reset()` first; cheap to zero
-them in `initialize()` too.
-
 ### 3.5 Enlighten mode is half-wired
 `GameState.setGameMode()` (`game-state.js:59-70`) has no `GameMode.enlighten` case — it works today only
 because `EnlightenController.startEnlightenment()` calls `EnlightenView.show()` itself, inverting the pattern

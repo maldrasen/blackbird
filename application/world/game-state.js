@@ -34,7 +34,7 @@ global.GameState = (function() {
   //       write the game story.
 
   function initialize(options) {
-    Registry.clear();
+    reset();
 
     $gameTime = options.time || 0;
     $gameMode = GameMode.location;
