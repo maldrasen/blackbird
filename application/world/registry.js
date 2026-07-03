@@ -56,7 +56,7 @@ global.Registry = (function() {
 
     // Recursively add child data.
     let children = findChildEntities(id);
-    if (children) {
+    if (children.length > 0) {
       data.children = children.map(childID => compileEntityData(childID));
     }
 
