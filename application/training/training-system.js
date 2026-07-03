@@ -11,7 +11,11 @@ global.TrainingSystem = (function() {
     TrainingInterface.startTraining();
   }
 
+  // TODO: I don't think we actually want to drop arousal all the way to 0 after training. It makes sense that there
+  //       should be a large drop. Erections should go away. But I think some characters will have a floor for arousal
+  //       so that particularly horny characters are always at least a little aroused.
   function endTraining() {
+    ArousalComponent.update(state.getPlayer(), { arousal:0 });
     ArousalComponent.update(state.getPartner(), { arousal:0 });
     TrainingInterface.endTraining(state);
   }

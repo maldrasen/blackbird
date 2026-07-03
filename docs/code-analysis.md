@@ -5,15 +5,6 @@ A full pass over `application/` and `data/`, cross-referenced against the design
 ---
 # 2. Wrong Behavior (no crash, wrong results)
 
-### 2.5 Re-applying a status effect can *shorten* it
-`battle-state.js:267-276`. The comment says renew-only-if-longer, but when the existing effect's duration is
-longer, the code falls through and replaces it with the new shorter effect. Missing `return` — the
-replacement at line 276 should only happen for genuinely new effects.
-
-### 2.6 Only the partner's arousal is reset after training
-`training-system.js:15`. `endTraining()` zeroes the partner's arousal but not the player's, so player arousal
-(and pleasure/edging) leaks into the next scene.
-
 ### 2.7 Persist threshold semantics: `<=` vs `<`
 `training-system.js:180` and `:211` treat `consent <= persist.when` as "stop/revert." With
 `masturbate-anus` declaring `when: Consent.willing`, the action stops even when the partner *is* willing —
