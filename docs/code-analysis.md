@@ -16,9 +16,7 @@ the incoming action's slots and can end up sharing a slot with it.
 take the max of the two consents, not the last one evaluated.
 
 
-### 2.11 `Character.getSpeedFactor()` returns nothing
-`character.js:38` — missing `return`. Latent (battle reads the CacheComponent directly via
-`BattleRound.getSpeedFactor()`), but it's a wrapper API that silently returns `undefined`.
+
 
 ### 2.12 Pussy "Depth" row displays the width
 `character-body-panel.js:181` — `pussyDepth` is computed from `pussy.maxPussyWidth`; copy-paste from the

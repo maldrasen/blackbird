@@ -35,7 +35,7 @@ global.Character = function(id) {
   function isSmarterThan(value) { return compareAttributes(value, Attrib.intelligence); }
   function isStrongerThan(value) { return compareAttributes(value, Attrib.strength); }
   function isTougherThan(value) { return compareAttributes(value, Attrib.vitality); }
-  function getSpeedFactor() { CacheComponent.lookup(id).speedFactor; }
+  function getSpeedFactor() { return CacheComponent.lookup(id).speedFactor; }
 
   // ===============
   //   Body Values
