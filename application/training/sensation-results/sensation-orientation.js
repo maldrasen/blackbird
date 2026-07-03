@@ -47,9 +47,9 @@ global.SensationOrientation = (function() {
 
       result.addToPlayerSkills('degradation');
 
-      if (shameFactor < 0) { applyDegradationOnTop(orientation.masochism, shameFactor, check); }
-      if (shameFactor === 0) { applyDegradation(orientation.masochism, shameFactor, check); }
-      if (shameFactor > 0) { applyDegradationOnBottom(orientation.masochism, shameFactor, check); }
+      if (shameFactor < 0) { applyDegradationOnTop(orientation.shame, shameFactor, check); }
+      if (shameFactor === 0) { applyDegradation(orientation.shame, shameFactor, check); }
+      if (shameFactor > 0) { applyDegradationOnBottom(orientation.shame, shameFactor, check); }
     }
 
     // TODO: We need to consider the effect affection-slut would have on the

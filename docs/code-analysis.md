@@ -15,10 +15,6 @@ the incoming action's slots and can end up sharing a slot with it.
 (the breasts result overwrites the cock result), and `results.service` likewise for a futa player. Should
 take the max of the two consents, not the last one evaluated.
 
-### 2.10 Shame branch reads the wrong orientation value
-`sensation-orientation.js:50-52` passes `orientation.masochism` into the degradation handlers instead of
-`orientation.shame`. Harmless today because all the handlers are empty stubs — it will be very confusing the
-day they're implemented.
 
 ### 2.11 `Character.getSpeedFactor()` returns nothing
 `character.js:38` — missing `return`. Latent (battle reads the CacheComponent directly via
