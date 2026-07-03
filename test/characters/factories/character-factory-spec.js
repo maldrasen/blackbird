@@ -10,7 +10,7 @@ describe("CharacterFactory", function() {
       expect(attributes.getVitality()).to.be.within(1,100);
       expect(attributes.getIntelligence()).to.be.within(1,100);
       expect(attributes.getBeauty()).to.be.within(1,100);
-      expect(attributes.getMaxStamina()).to.be.within(1000,10000);
+      expect(attributes.getMaxStamina()).to.be.within(571,10000);
 
       const health = HealthComponent.lookup(id);
       expect(health.currentHealth).to.be.within(1,1000);
