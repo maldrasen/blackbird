@@ -1,13 +1,13 @@
 describe("BattleState", function() {
 
   describe("Formation", function() {
-    it('getMonsterAtPosition()', function() {
+    it('getEntityAtPosition()', function() {
       BattleFixtures.prepareForBattle();
       BattleSystem.startBattle({ encounter:'kobold-1' });
 
       const state = BattleSystem.getState();
-      // expect(state.getMonsterAtPosition(0,3)).to.not.be.null;
-      // expect(state.getMonsterAtPosition(1,3)).to.be.null;
+      expect(state.getEntityAtPosition('M',0,3)).to.not.be.null;
+      expect(state.getEntityAtPosition('M',1,3)).to.be.null;
     });
   })
 
@@ -40,6 +40,71 @@ describe("BattleState", function() {
       const ids = state.getTurnOrder().map(data => { return data.id });
 
       expect(ids.includes(second.id)).to.be.false;
+    });
+  });
+
+  describe("addStatus()", function() {
+    it('adds a new status effect', function() {
+      BattleFixtures.prepareForBattle();
+      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+
+      const state = BattleSystem.getState();
+      const entity = state.getCharacters()[0];
+
+      state.addStatus(BattleStatusEffect(entity,'blind',{ duration:1000 }));
+
+      expect(state.hasStatusEffect(entity,'blind')).to.be.true;
+      expect(state.getStatusEffects(entity)['blind'].getDuration()).to.equal(1000);
+    });
+
+    it('renews the duration when the effect is reapplied with a longer duration', function() {
+      BattleFixtures.prepareForBattle();
+      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+
+      const state = BattleSystem.getState();
+      const entity = state.getCharacters()[0];
+      const original = BattleStatusEffect(entity,'blind',{ duration:1000 });
+
+      state.addStatus(original);
+      state.addStatus(BattleStatusEffect(entity,'blind',{ duration:2000 }));
+
+      // The original effect is renewed, not replaced.
+      expect(state.getStatusEffects(entity)['blind']).to.equal(original);
+      expect(original.getDuration()).to.equal(2000);
+    });
+
+    it('keeps the longer duration when the effect is reapplied with a shorter duration', function() {
+      BattleFixtures.prepareForBattle();
+      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+
+      const state = BattleSystem.getState();
+      const entity = state.getCharacters()[0];
+      const original = BattleStatusEffect(entity,'blind',{ duration:2000 });
+
+      state.addStatus(original);
+      state.addStatus(BattleStatusEffect(entity,'blind',{ duration:500 }));
+
+      expect(state.getStatusEffects(entity)['blind']).to.equal(original);
+      expect(original.getDuration()).to.equal(2000);
+    });
+
+    it('removes an opposing status effect', function() {
+      BattleFixtures.prepareForBattle();
+      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+
+      const state = BattleSystem.getState();
+      const entity = state.getCharacters()[0];
+
+      state.addStatus(BattleStatusEffect(entity,'off-balance',{ duration:1 }));
+      state.addStatus(BattleStatusEffect(entity,'poised',{ duration:1 }));
+
+      expect(state.hasStatusEffect(entity,'off-balance')).to.be.false;
+      expect(state.hasStatusEffect(entity,'poised')).to.be.true;
+
+      state.addStatus(BattleStatusEffect(entity,'off-balance',{ duration:1 }));
+
+      expect(state.hasStatusEffect(entity,'poised')).to.be.false;
+      expect(state.hasStatusEffect(entity,'off-balance')).to.be.true;
     });
   });
 

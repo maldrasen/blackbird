@@ -59,7 +59,7 @@ describe('EquipmentManager', function() {
       expect(EquipmentComponent.lookup(horse).primary).to.equal(choppa);
 
       EquipmentManager(horse).equipItem(null, EquipmentSlot.primary);
-      expect(EquipmentComponent.lookup(horse).primary).to.be.null;
+      expect(EquipmentComponent.lookup(horse).primary).to.be.undefined;
     });
   })
 

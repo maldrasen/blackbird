@@ -135,7 +135,7 @@ global.Character = function(id) {
 
   // TODO: Should isNaked() be false if a person is only wearing a hat?
   function isNaked() {
-    return Object.keys(ObjectHelper.select(EquipmentComponent.lookup(id), ([_,i]) => i != null)).length === 0;
+    return Object.keys(ObjectHelper.select(EquipmentComponent.lookup(id), (key,value) => value != null)).length === 0;
   }
 
   function isEquipped(slot) { return EquipmentComponent.lookup(id)[slot] != null; }

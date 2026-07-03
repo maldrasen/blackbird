@@ -117,4 +117,23 @@ describe("Character", function() {
     });
   });
 
+  describe("Equipment", function() {
+    it("isNaked()", function() {
+      const entity = CharacterFixtures.genericMale({});
+      const character = Character(entity);
+      const asslessChaps = ArmorFactory.build('chaps');
+      const equipment = EquipmentManager(entity);
+      const inventory = InventoryManager(entity);
+
+      expect(character.isNaked()).to.be.true;
+
+      inventory.addItem(asslessChaps)
+      equipment.equipItem(asslessChaps,EquipmentSlot.legs);
+      expect(character.isNaked()).to.be.false;
+
+      equipment.equipItem(null,EquipmentSlot.legs);
+      expect(character.isNaked()).to.be.true;
+    });
+  });
+
 });

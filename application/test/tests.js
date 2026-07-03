@@ -82,6 +82,9 @@ global.Tests = (function() {
 
   return {
     running,
+    rootBefore,
+    rootAfter,
+    reset,
     load,
   };
 

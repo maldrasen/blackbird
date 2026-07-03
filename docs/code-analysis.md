@@ -5,27 +5,6 @@ A full pass over `application/` and `data/`, cross-referenced against the design
 ---
 # 2. Wrong Behavior (no crash, wrong results)
 
-
-
-### 2.3 `getUses()` can corrupt registered sex action data
-`sex-action.js:76-96`. `lookup()` makes a *shallow* copy, so `action.uses` is the same object stored in the
-registry. If an action ever defines both `uses` *and* `alignment`, every `getUses()` call pushes alignment
-slots into the shared registered arrays — permanently and repeatedly. No current action has both, but it's a
-landmine. Also, for `uses`-only actions the raw registered object is returned to callers. Deep-copy `uses`
-at the top of `getUses()`.
-
-### 2.4 `Character.isNaked()` is broken twice over
-`character.js:137-139`:
-```js
-ObjectHelper.select(EquipmentComponent.lookup(id), ([_,i]) => i != null)
-```
-`ObjectHelper.select` calls `selector(key, value)` — the lambda destructures the *key string's characters*,
-so `i` is the second letter of the slot name and is never null. Every existing key counts as "equipped."
-Compounding it, `EquipmentManager.equipItem(null, slot)` (`equipment-manager.js:48`) unequips by setting the
-slot to `null` but leaves the key, so anyone who ever wore anything is never naked again. Result: the
-striptease `T:equipment.not-naked` availability condition stays true after the partner is fully stripped.
-Fix the selector to `(key, value) => value != null` (and/or delete slot keys on unequip).
-
 ### 2.5 Re-applying a status effect can *shorten* it
 `battle-state.js:267-276`. The comment says renew-only-if-longer, but when the existing effect's duration is
 longer, the code falls through and replaces it with the new shorter effect. Missing `return` — the
@@ -189,14 +168,3 @@ should orphan-check.
 above (and the doc) say *all* baselines are penalized. Almost certainly intentional (spamming shouldn't
 discount anger) — worth one comment line so it doesn't read as a bug.
 
----
-# 5. Suggested Fix Order
-
-1. **Training crashes first** (1.1, 1.2, 1.3, 1.4) — all four sit directly in the sex-action loop you're
-   about to build on.
-2. **The two todo-list bugs** (2.1, 2.2) — one-line fixes, both root-caused.
-3. **isNaked / equipment** (2.4) — striptease behavior is visibly wrong.
-4. **Preference cap typo** (1.5) — one line, stops character-creation churn.
-5. **Consent/persist semantics decisions** (2.7, 4.3) — not code fixes, design decisions; cheapest to settle
-   before writing more actions.
-6. Everything in Section 3 as the systems get touched; Section 4 doc updates whenever convenient.

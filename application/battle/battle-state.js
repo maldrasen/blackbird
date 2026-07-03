@@ -257,23 +257,35 @@ global.BattleState = function(data) {
   }
 
   function addStatus(statusEffect) {
-    const entity = statusEffect.getEntity();
-    const code = statusEffect.getCode();
+    const existing = getStatusEffects(statusEffect.getEntity())[statusEffect.getCode()];
+    existing ? updateExistingStatus(statusEffect, existing) : addNewStatus(statusEffect);
+  }
+
+  // If the character already has this status effect we set the effect's duration if it's longer. We don't want to add
+  // the duration as being blinded twice in the same turn wouldn't result in being blinded for twice as long. This just
+  // updates the timer on the existing effect.
+  function updateExistingStatus(newEffect, existingEffect) {
+    if (existingEffect.getDuration() < newEffect.getDuration()) {
+      existingEffect.setDuration(newEffect.getDuration())
+    }
+
+    if (existingEffect.getDurationType() === StatusEffectDurationType.fixedTime) {
+      // TODO: If the status effect is a fixed time status effect we might also need to update the removal
+      //       time of the effect, which would be found in the turn order rather than in the statusEffects object.
+    }
+  }
+
+  // When we add a new status effect we remove opposing status effects and may need to schedule the expiration of
+  // if this effect has a fixed time.
+  function addNewStatus(newEffect) {
+    const entity = newEffect.getEntity();
+    const code = newEffect.getCode();
 
     if (statusEffects[entity] == null) {
       statusEffects[entity] = {}
     }
 
-    // If the character already has this status effect we should simply set the effect's duration. (but only if it's
-    // longer) We don't want to extend the duration as being blinded twice in the same turn wouldn't result in being
-    // blinded for twice as long. This just renews the timer on the existing effect.
-    if (statusEffects[entity][code] != null) {
-      if (statusEffects[entity][code].getDuration() < statusEffect.getDuration()) {
-        return statusEffects[entity][code].setDuration(statusEffect.getDuration())
-      }
-    }
-
-    statusEffects[entity][code] = statusEffect;
+    statusEffects[entity][code] = newEffect;
 
     // TODO: We need to make a more general way of removing opposing status effects (if there are any) Becoming poised
     //       might also clear a stunned effect for instance, or perhaps it's impossible to become poised while stunned.
@@ -286,7 +298,7 @@ global.BattleState = function(data) {
       removeStatus(entity, 'poised');
     }
 
-    if (statusEffect.getDurationType() === StatusEffectDurationType.fixedTime) {
+    if (newEffect.getDurationType() === StatusEffectDurationType.fixedTime) {
       // TODO: If a status effect has a fixed time it is removed after a given time has passed. That removal time
       //       needs to be added to the turn order because the effect goes away independent of the character's actions.
       //       These status effects (poison and burn) can also trigger periodically, in which case the next trigger
