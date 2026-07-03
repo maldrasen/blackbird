@@ -91,7 +91,7 @@ global.TrainingSystem = (function() {
       arousalData.arousal += (difference/2);
     }
 
-    if (arousalData.refectory == null) { arousalData.refectory = 0; }
+    if (arousalData.refractory == null) { arousalData.refractory = 0; }
     if (arousalData.pleasure == null) { arousalData.pleasure = 0; }
 
     arousalData.pleasure *= pleasureDecayRate;
@@ -113,11 +113,11 @@ global.TrainingSystem = (function() {
 
     if (isOrgasm) {
       arousalData.edging = 0;
-      arousalData.refectory = character.rollRefectoryPeriod();
+      arousalData.refractory = character.rollRefractoryPeriod();
     }
     if (isOrgasm === false) {
       arousalData.edging = calculateEdging(character.getOrgasmThreshold(), arousalData);
-      arousalData.refectory = arousalData.refectory === 0 ? 0 : arousalData.refectory - 1;
+      arousalData.refractory = arousalData.refractory === 0 ? 0 : arousalData.refractory - 1;
     }
 
     ArousalComponent.update(entity, ObjectHelper.unfloat(arousalData));

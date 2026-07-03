@@ -109,10 +109,10 @@ describe("Character", function() {
       });
     });
 
-    describe("rollRefectoryPeriod()", function() {
+    describe("rollRefractoryPeriod()", function() {
       it("just randomly picks a number (for now)", function() {
         Random.stubBetween(10);
-        expect(Character(CharacterFixtures.genericMale({})).rollRefectoryPeriod()).to.equal(10);
+        expect(Character(CharacterFixtures.genericMale({})).rollRefractoryPeriod()).to.equal(10);
       });
     });
   });

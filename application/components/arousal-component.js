@@ -1,5 +1,5 @@
 global.ArousalComponent = (function() {
-  const $properties = ['arousal','pleasure','edging','refectory'];
+  const $properties = ['arousal','pleasure','edging','refractory'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.arousal,data);

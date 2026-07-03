@@ -210,7 +210,7 @@ global.Character = function(id) {
 
   // TODO: I'm not sure yet what kind of character properties influence this, probably at least an aspect or two.
   //       Equipment, or drugs and such might as well.
-  function rollRefectoryPeriod() {
+  function rollRefractoryPeriod() {
     return Random.between(6,12);
   }
 
@@ -264,7 +264,7 @@ global.Character = function(id) {
     // Orgasm Data
     getOrgasmThreshold,
     rollForOrgasm,
-    rollRefectoryPeriod,
+    rollRefractoryPeriod,
   });
 
 }
