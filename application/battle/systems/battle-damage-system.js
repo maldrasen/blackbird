@@ -28,7 +28,7 @@ global.BattleDamage = (function() {
     //       2 damage, or 0 if the damage was less than 20... Seems overly powerful though. Still, I'm not sure how the
     //       resistance values will scale at all. Should effect resistance and damage reduction be two different stats?
 
-    Object.entries(damageTypes).forEach(([type, damage]) => {
+    Object.values(damageTypes).forEach(damage => {
       actualDamage += damage;
     });
 
@@ -51,6 +51,11 @@ global.BattleDamage = (function() {
     return actualDamage;
   }
 
+  // TODO: This function is Just a stub for now, but it's situation that will come up.
+  function disableEntity(id) {
+    throw new Error(`Implement disableEntity()`);
+  }
+
   // There's a lot that needs to be done when an entity is killed. The entities are removed from the turn order and
   // the formations. If a character was in the back row, and the character in front of them was killed they move to
   // the front rank. If a column was completely emptied then we need to move the side columns inward. We check if all
@@ -69,6 +74,11 @@ global.BattleDamage = (function() {
     // If the battle is over we don't need to worry about adjusting the positions.
     if (state.getMonsters().filter(id => state.isAlive(id)).length === 0) { return state.battleWon(); }
     if (GameState.getPlayer() === id) { return state.battleLost(); }
+
+    // Dead monsters are deleted after the battle.
+    if (isMonster) {
+      state.addToDeadPile(id);
+    }
 
     // If this character is in the back rank they can be safely removed.
     if (isInFront === false) {

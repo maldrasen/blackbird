@@ -46,6 +46,10 @@ global.StraightCorridorFactory = function(originFeature, targetFeature, alignmen
           case 'W': cursor = { y:cursor.y, x:cursor.x-1 }; break;
         }
 
+        // A ray that leaves the grid without finding the target fails. Off-grid cells read as undefined, which would
+        // otherwise pass the empty cell check and let the ray march on forever.
+        if (isOnGrid(cursor) === false) { return; }
+
         let cell = grid[cursor.y][cursor.x];
         if (cell == null) { end = cursor; }
 
@@ -73,9 +77,16 @@ global.StraightCorridorFactory = function(originFeature, targetFeature, alignmen
       (tile) => tile.y >= target.yMin && tile.y < target.yMax;
 
     return originFeature.getEdgeTiles(alignment).
-    map(tile => ({ x: tile.x + position.x, y: tile.y + position.y })).
-    filter(tile => grid[tile.y][tile.x] == null).
-    filter(inTargetOverlap);
+        map(tile => ({ x: tile.x + position.x, y: tile.y + position.y })).
+        filter(isOnGrid).
+        filter(tile => grid[tile.y][tile.x] == null).
+        filter(inTargetOverlap);
+  }
+
+  // Edge tiles sit one step outside the feature footprint, so a feature flush against the grid border produces tiles
+  // that are off the grid entirely.
+  function isOnGrid(tile) {
+    return tile.x >= 0 && tile.y >= 0 && tile.x < floor.getFloorWidth() && tile.y < floor.getFloorHeight();
   }
 
   function buildRoomBetween(start,end) {

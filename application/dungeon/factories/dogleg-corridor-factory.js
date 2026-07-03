@@ -10,10 +10,6 @@ global.DoglegCorridorFactory = function(originFeature, targetFeature, alignment)
       const targetTiles = FloorFactorySupport.getStartTiles(targetFeature, opposite[cardinalDirection]);
       const validPaths = [];
 
-      console.log(`=== Building Dogleg Corridor (${cardinalDirection}) ===`);
-      console.log("Origin Tiles:",originTiles);
-      console.log("Target Tiles:",targetTiles);
-
       originTiles.forEach(start => {
         targetTiles.forEach(end => {
           const path = buildPath(start, end, cardinalDirection);

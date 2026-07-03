@@ -3,8 +3,8 @@ global.DungeonFloor = function(level) {
   const theme = DungeonThemeSystem.pickTheme(level);
   const floorGrid = Array.from({ length:getFloorHeight() }, () => new Array(getFloorWidth()).fill(null));
 
-  let features;
-  let doors;
+  let features = [];
+  let doors = [];
 
   // Theoretically the size of the floor should come from the floor theme, as well as any specific building and room
   // layout instructions.

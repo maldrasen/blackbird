@@ -2,7 +2,23 @@ global.FloorFactory = function() {
   const floor = DungeonSystem.getDungeonFloor();
   const blacklist = new Set();
 
+  // Floor generation failures are nearly impossible to hunt down after the fact because the randomly generated state
+  // is lost when the factory dies, so we dump whatever state we have before rethrowing. The error always propagates;
+  // retrying has to happen in DungeonSystem with a fresh DungeonFloor because this floor's grid is already littered
+  // with the failed attempt's features.
   function buildFloor() {
+    try {
+      build();
+    }
+    catch (error) {
+      if (Environment.isDevelopment) {
+        FileHelper.writeJSON(`${ROOT}/debug/floor-failure-state.json`, { error:error.stack, floor:floor.pack() });
+      }
+      throw error;
+    }
+  }
+
+  function build() {
     const [features, grid] = FeaturePlacer().packFeatures();
     floor.setFeatures(features);
 

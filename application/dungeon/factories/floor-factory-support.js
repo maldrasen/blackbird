@@ -13,14 +13,21 @@ global.FloorFactorySupport = (function() {
     }
   }
 
-  // Get the start tiles for a feature in a given direction where the starting tiles are empty.
+  // Get the start tiles for a feature in a given direction, where the starting tiles are empty. It's possible, through
+  // feature overlap shenanigans, for the direction to the target feature to point to the edge, while the origin
+  // feature itself is up against the edge of the grid. Edge tiles sit one step outside the feature footprint, so a
+  // feature flush against the grid border produces tiles that are off the grid entirely and must be discarded.
   function getStartTiles(feature, direction) {
+    const floor = DungeonSystem.getDungeonFloor();
+    const floorGrid = floor.getFloorGrid();
+    const height = floor.getFloorHeight();
+    const width = floor.getFloorWidth();
     const position = feature.getPosition();
-    const floorGrid = DungeonSystem.getDungeonFloor().getFloorGrid();
 
     return feature.getEdgeTiles(direction).
-    map(tile => ({ x: tile.x + position.x, y: tile.y + position.y })).
-    filter(tile => floorGrid[tile.y][tile.x] == null);
+        map(tile => ({ x: tile.x + position.x, y: tile.y + position.y })).
+        filter(tile => tile.x >= 0 && tile.y >= 0 && tile.x < width && tile.y < height).
+        filter(tile => floorGrid[tile.y][tile.x] == null);
   }
 
   // Add a box to the room for a straight segment between two absolute grid points. Room normalizes its own origin
