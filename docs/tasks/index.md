@@ -10,7 +10,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [007] Position Attitude Requirement #training — [007-position-attitude-requirement.md](007-position-attitude-requirement.md)
 - [008] Position Change Text #training — [008-position-change-text.md](008-position-change-text.md)
 - [009] Descriptions #character — [009-descriptions.md](009-descriptions.md)
-- [010] Change how the character heights are generated #character — [010-change-how-the-character-heights-are-generated.md](010-change-how-the-character-heights-are-generated.md)
 - [011] Project Stuff — [011-project-stuff.md](011-project-stuff.md)
 
 ## Priority 3
