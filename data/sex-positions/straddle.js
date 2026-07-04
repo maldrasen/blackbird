@@ -289,68 +289,123 @@ function moveCowgirl(context) {
   if (a.isPlayer() && context.attitude === Attitude.loving) {
     options.push(`You roll onto your back as {B:name} smiles warmly down, shifting forward to straddle your hips,
       facing you now.`);
+    options.push(`{B:name} gazes at you fondly as you roll onto your back, {B:he} shifts forward and settles astride
+      your hips, taking your hand in {B:his}.`);
+    if (b.hasNormalCock() && b.isCrotchExposed()) {
+      options.push(`You roll onto your back as {B:name} shifts forward, {B:his} {B:cock.thickCock} swaying gently as
+        {B:he} settles astride your hips, smiling down at you.`);
+    }
+    if (a.hasNormalCock() && a.isCrotchExposed()) {
+      options.push(`You roll onto your back, your {A:cock.thickCock} standing between you, as {B:name} smiles
+        warmly and settles astride your hips.`);
+    }
   }
 
   if (a.isPlayer() && context.attitude === Attitude.lustful) {
     options.push(`You roll onto your back as {B:name} grins hungrily, scooting eagerly forward to straddle your
       waist, facing you.`);
+    options.push(`{B:name} licks {B:his} lips hungrily as you roll onto your back, quickly scooting forward to
+      straddle your hips.`);
     if (a.hasNormalCock() && a.isCrotchExposed()) {
       options.push(`You roll onto your back, your {A:cock.thickCock} standing up between you as {B:name} scoots
         eagerly forward to straddle your hips, facing you.`);
+    }
+    if (b.hasNormalCock() && b.isCrotchExposed()) {
+      options.push(`{B:name}'s {B:cock.bigCock} bounces as {B:he} scoots eagerly forward, settling astride your
+        hips with a hungry grin.`);
     }
   }
 
   if (a.isPlayer() && context.attitude === Attitude.accepting) {
     options.push(`You roll onto your back, letting {B:name} shift forward to straddle your hips facing you.`);
+    options.push(`{B:name} shifts forward without complaint as you roll onto your back, settling astride your hips
+      to face you.`);
+    if (a.hasNormalCock() && a.isCrotchExposed()) {
+      options.push(`You roll onto your back, your {A:cock.thickCock} resting between you, as {B:name} settles
+        astride your hips.`);
+    }
   }
 
   if (a.isPlayer() && context.attitude === Attitude.fearful) {
     options.push(`You roll onto your back as {B:name} shifts forward nervously, {B:his} hands trembling slightly as
       {B:he} settles astride your hips, now facing you directly.`);
+    options.push(`{B:name} bites {B:his} lip nervously as {B:he} shifts forward, avoiding your eyes as {B:he} settles
+      astride your hips.`);
+    if (b.hasNormalCock() && b.isCrotchExposed()) {
+      options.push(`{B:name}'s {B:cock.sixInch} long {cock} trembles as {B:he} nervously shifts forward and settles
+        astride your hips.`);
+    }
   }
 
   if (a.isPlayer() && context.attitude === Attitude.resistant) {
     options.push(`You roll onto your back as {B:name} reluctantly slides forward, jaw tight and eyes averted as
       {B:he} settles astride your hips, facing you.`);
+    options.push(`{B:name} exhales sharply, forcing {B:him}self to shift forward and settle astride your hips
+      despite {B:his} obvious discomfort.`);
   }
 
   if (a.isPlayer() && context.attitude === Attitude.violent) {
     options.push(`You're forced onto your back as {B:name} shifts forward, straddling your hips while pinning you
       with {B:his} weight.`);
+    options.push(`{B:name} shoves you onto your back and scoots forward roughly, pinning your hips beneath {B:him}
+      as {B:he} settles into place.`);
   }
 
   if (b.isPlayer() && context.attitude === Attitude.loving) {
     options.push(`{A:name} rolls onto {A:his} back beneath you, smiling up as you shift yourself forward, straddling
       {A:his} hips to face {A:him}.`);
+    options.push(`{A:name} reaches up to cup your cheek as {A:he} rolls onto {A:his} back, smiling as you shift
+      forward to straddle {A:his} hips.`);
+    if (a.hasNormalCock() && a.isCrotchExposed()) {
+      options.push(`{A:name} rolls onto {A:his} back, {A:his} {A:cock.thickCock} lying against {A:his} stomach, as
+        you shift forward to straddle {A:his} hips, smiling down at {A:him}.`);
+    }
+    if (a.hasBreasts() && a.areBreastsExposed()) {
+      options.push(`{A:name} rolls onto {A:his} back, {A:his} {A:breasts.softBreasts} settling against {A:his}
+        chest, as you shift forward to straddle {A:his} hips.`);
+    }
   }
 
   if (b.isPlayer() && context.attitude === Attitude.lustful) {
     options.push(`{A:name} flips onto {A:his} back with an eager grin as you scoot forward, straddling {A:his} waist
       to face {A:him} properly.`);
+    options.push(`{A:name} moans softly, flipping onto {A:his} back eagerly as you scoot forward, quickly settling
+      astride {A:his} hips.`);
     if (a.hasNormalCock() && a.isCrotchExposed()) {
       options.push(`{A:name} rolls onto {A:his} back, {A:his} {A:cock.thickCock} standing between you as you shift
         forward to straddle {A:his} hips.`);
+    }
+    if (a.hasBreasts() && a.breastsAreAtLeast('big') && a.areBreastsExposed()) {
+      options.push(`{A:his} {A:breasts.bigSoftBreasts} settle against {A:his} chest as {A:name} flips onto {A:his}
+        back with a hungry grin, watching you settle astride {A:his} hips.`);
     }
   }
 
   if (b.isPlayer() && context.attitude === Attitude.accepting) {
     options.push(`{A:name} rolls onto {A:his} back, letting you shift forward to straddle {A:his} hips facing
       {A:him}.`);
+    options.push(`{A:name} rolls onto {A:his} back without protest, letting you settle astride {A:his} hips.`);
   }
 
   if (b.isPlayer() && context.attitude === Attitude.fearful) {
     options.push(`{A:name} nervously turns onto {A:his} back beneath you as you shift forward, straddling {A:his}
       hips to face {A:him}.`);
+    options.push(`{A:name's} hands tremble slightly as {A:he} turns onto {A:his} back, avoiding your eyes as you
+      shift forward to straddle {A:his} hips.`);
   }
 
   if (b.isPlayer() && context.attitude === Attitude.resistant) {
     options.push(`{A:name} reluctantly rolls onto {A:his} back as you scoot forward, straddling {A:his} hips and
       forcing {A:him} to look up at you.`);
+    options.push(`{A:name} huffs and turns away, tension in {A:his} body as {A:he} reluctantly rolls onto {A:his}
+      back while you settle astride {A:his} hips.`);
   }
 
   if (b.isPlayer() && context.attitude === Attitude.violent) {
     options.push(`{A:name} thrashes as you force {A:him} onto {A:his} back, but you shift forward anyway, straddling
       {A:his} hips and pinning {A:him} beneath your weight.`);
+    options.push(`{A:name} kicks and twists as you force {A:him} onto {A:his} back, but you settle astride {A:his}
+      hips anyway, pinning {A:him} down.`);
   }
 
   return Random.from(options);
@@ -362,72 +417,116 @@ function moveDoggyStyle(context) {
   const options = [];
 
   if (a.isPlayer() && context.attitude === Attitude.loving) {
-    options.push(`You slide back along {B:name's} back, your hands caressing {B:his} shoulders as {B:he} 
+    options.push(`You slide back along {B:name's} back, your hands caressing {B:his} shoulders as {B:he}
       affectionately raises {B:his} hips and bend forward, exposing {B:him}self completely before you.`);
-    options.push(`{B:name} arches {B:his} back and lifts {B:his} hips as you ease backward, positioning {B:him}self 
+    options.push(`{B:name} arches {B:his} back and lifts {B:his} hips as you ease backward, positioning {B:him}self
       to be taken roughly.`);
     options.push(`You slide your weight back while {B:name} raises {B:his} hips, bending over so {B:his} rounded ass
       pushes up toward you.`);
-    options.push(`{B:name} smiles at you, raising {B:his} hips while spreading {B:his} thighs and arching {B:his} 
+    options.push(`{B:name} smiles at you, raising {B:his} hips while spreading {B:his} thighs and arching {B:his}
       back, knowing how completely exposed it makes {B:him} look in front of you.`);
+    if (b.hasNormalCock() && b.isCrotchExposed()) {
+      options.push(`{B:name} raises {B:his} hips, {B:his} {B:cock.thickCock} swaying beneath {B:him} as {B:he} bends
+        forward, presenting {B:him}self fully to you.`);
+    }
+    if (b.hasBreasts() && b.areBreastsExposed()) {
+      options.push(`{B:name} bends forward with a warm smile, {B:his} {B:breasts.softBreasts} swaying gently as
+        {B:he} raises {B:his} hips for you.`);
+    }
   }
 
   if (a.isPlayer() && context.attitude === Attitude.lustful) {
     options.push(`{B:name} has a hungry look in {B:his} eyes as you slide back behind {B:him}. {B:He} lets out a low
       moan as {B:he} raises {B:his} ass into the air and spreads {B:his} legs slightly.`);
-    options.push(`{B:name} arches {B:his} back and raises {B:his} ass upward as you slide back, {B:his} thighs 
+    options.push(`{B:name} arches {B:his} back and raises {B:his} ass upward as you slide back, {B:his} thighs
       parting for you as you position yourself behind {B:him}.`);
     if (a.hasNormalCock() && a.isCrotchExposed()) {
-      options.push(`{B:name} raises {B:his} ass as you position yourself behind {B:him}, letting your 
+      options.push(`{B:name} raises {B:his} ass as you position yourself behind {B:him}, letting your
         {A:cock.thickCock} rest heavily between {B:his} ass cheeks.`);
+    }
+    if (b.hasNormalPussy() && b.isCrotchExposed()) {
+      options.push(`{B:name} spreads {B:his} legs, {B:his} glistening {pussy} on full display as {B:he} raises
+        {B:his} ass for you.`);
     }
   }
 
   if (a.isPlayer() && context.attitude === Attitude.accepting) {
-    options.push(`{B:name} raises {B:his} hips as you slide back, bending over and lifting {B:his} ass into position.`);
+    options.push(`{B:name} raises {B:his} hips as you slide back, bending over and lifting {B:his} ass into
+      position.`);
+    options.push(`{B:name} bends over without complaint, raising {B:his} hips as you position yourself behind
+      {B:him}.`);
+    if (b.hasNormalCock() && b.isCrotchExposed()) {
+      options.push(`{B:name} raises {B:his} hips, {B:his} {B:cock.thickCock} hanging beneath {B:him}, as you
+        position yourself behind {B:him}.`);
+    }
   }
 
   if (a.isPlayer() && context.attitude === Attitude.fearful) {
-    options.push(`{B:name} quickly lifts {B:his} hips, bending forward as you slide backward, taking position behind 
+    options.push(`{B:name} quickly lifts {B:his} hips, bending forward as you slide backward, taking position behind
       {B:him}.`);
-    options.push(`With nervous obedience, {B:name} arches {B:his} back and raises {B:his} hips submissively as you 
+    options.push(`With nervous obedience, {B:name} arches {B:his} back and raises {B:his} hips submissively as you
       slide behind {B:him}.`);
+    if (b.hasNormalPussy() && b.isCrotchExposed()) {
+      options.push(`{B:name} spreads {B:his} legs hesitantly, exposing {B:his} {pussy} as {B:he} raises {B:his} hips
+        with a nervous breath.`);
+    }
   }
 
   if (a.isPlayer() && context.attitude === Attitude.resistant) {
     options.push(`{B:name} exhales softly as you take hold of the back of {B:his} head, pushing {B:his} face down.
-      Reluctantly, {B:he} raises {B:his} ass upward as you position yourself behind {B:him}."`);
+      Reluctantly, {B:he} raises {B:his} ass upward as you position yourself behind {B:him}.`);
+    options.push(`{B:name} grumbles, dragging {B:his} own hips up reluctantly as you position yourself behind
+      {B:him}.`);
+    if (b.hasNormalCock() && b.isCrotchExposed()) {
+      options.push(`{B:name} raises {B:his} hips reluctantly, {B:his} {B:cock.thickCock} hanging beneath {B:him} as
+        you position yourself behind {B:him}.`);
+    }
   }
 
   if (a.isPlayer() && context.attitude === Attitude.violent) {
-    options.push(`{B:name} thrashes as you slide back, but with a firm grip on {B:his} hips you pull {B:his} ass 
+    options.push(`{B:name} thrashes as you slide back, but with a firm grip on {B:his} hips you pull {B:his} ass
       upward as you position yourself behind {B:him}.`);
+    options.push(`{B:name} snarls and tries to twist away, but you grip {B:his} hips and force them upward as you
+      position yourself behind {B:him}.`);
   }
 
   if (b.isPlayer() && context.attitude === Attitude.loving) {
     options.push(`You feel {A:name} sliding along your back, {A:his} hands resting on your hips as your raise your ass
       high into the air.`);
+    options.push(`{A:name} presses a fond kiss to your lower back as {A:he} positions {A:him}self behind you, hands
+      resting warmly on your hips.`);
     if (a.hasBreasts() && a.areBreastsExposed()) {
-      options.push(`You feel {A:name} sliding backwards, dragging {A:his} stiff nipples along your back as {A:he} 
-        positions {A:him}self behind you.`);
+      options.push(`You feel {A:name} sliding backwards, dragging {A:his} hard {A:breasts.thickNipples} along your
+        back as {A:he} positions {A:him}self behind you.`);
     }
     if (a.hasNormalCock() && a.isCrotchExposed()) {
-      options.push(`{A:name} lets the hot flesh of {A:his} cock drag across your back as {A:he} positions {A:him}self 
-        behind you.`);
+      options.push(`{A:name} lets {A:his} {A:cock.thickCock} drag hotly across your back as {A:he} positions
+        {A:him}self behind you.`);
     }
   }
 
   if (b.isPlayer() && context.attitude === Attitude.lustful) {
     options.push(`{A:name} squeezes your hips as {A:he} positions himself behind you, watching hungrily as you raise
        your ass into the air and spread your legs slightly.`);
+    options.push(`{A:name} growls appreciatively as {A:he} positions {A:him}self behind you, gripping your hips
+      hard.`);
     if (a.hasNormalCock() && a.isCrotchExposed()) {
-      options.push(`{A:name} squeezes your hips as you raise your ass into the air, spreading your ass cheeks as 
+      options.push(`{A:name} squeezes your hips as you raise your ass into the air, spreading your ass cheeks as
         {A:he} slaps {A:his} {A:cock.thickCock} between them.`);
+    }
+    if (a.hasBreasts() && a.areBreastsExposed()) {
+      options.push(`{A:his} hard {A:breasts.thickNipples} drag along your back as {A:he} settles hungrily behind
+        you.`);
     }
   }
 
   if (b.isPlayer() && context.attitude === Attitude.accepting) {
     options.push(`{A:name} watches as you raise your ass up into the air, positioning {A:him}self behind you.`);
+    options.push(`{A:name} positions {A:him}self behind you without comment as you raise your ass for {A:him}.`);
+    if (a.hasNormalCock() && a.isCrotchExposed()) {
+      options.push(`{A:name} positions {A:him}self behind you, {A:his} {A:cock.thickCock} brushing against your
+        thigh.`);
+    }
   }
 
   if (b.isPlayer() && context.attitude === Attitude.fearful) {
