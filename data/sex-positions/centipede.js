@@ -91,8 +91,8 @@ function rearrange(context) {
   }
 
   if (a.isPlayer() && context.attitude === Attitude.resistant) {
-    options.push(`{B:name} grumbles as you push {B:him} down into a kneeling position, reluctantly raising {B:his}
-      ass for you.`);
+    options.push(`{B:name} grumbles, reluctantly raising {B:his} ass as you push {B:him} down into a kneeling
+      position.`);
     options.push(`With a huff, {B:name} lowers {B:him}self to {B:his} knees, clearly unhappy about it.`);
     if (b.hasNormalCock() && b.isCrotchExposed()) {
       options.push(`{B:name} bends over reluctantly, {B:his} {B:cock.thickCock} swaying as {B:he} settles unhappily
@@ -349,7 +349,8 @@ function moveKneelingService(context) {
       reluctantly pressed to your ass.`);
     options.push(`With a huff, {B:name} follows you up, clearly unhappy about staying in position.`);
     if (a.hasNormalCock() && a.isCrotchExposed()) {
-      options.push(`Your {A:cock.thickCock} sways reluctantly as you rise, {B:name} grumbling but staying close.`);
+      options.push(`Your {A:cock.thickCock} sways gently as you rise, {B:name} grumbling reluctantly but staying
+        close.`);
     }
   }
 
@@ -416,7 +417,7 @@ function moveKneelingService(context) {
       keeping your face pressed to {A:his} ass.`);
     options.push(`{A:name} huffs, clearly unhappy about standing, as you follow closely on your knees.`);
     if (a.hasNormalCock() && a.isCrotchExposed()) {
-      options.push(`{A:his} {A:cock.thickCock} sways reluctantly as {A:he} grumbles and rises, and you stay
+      options.push(`{A:his} {A:cock.thickCock} sways as {A:he} grumbles and rises reluctantly, and you stay
         close.`);
     }
   }
@@ -493,7 +494,8 @@ function moveMissionary(context) {
       {B:him}.`);
     options.push(`With a huff, {B:name} lies down beneath you, clearly unhappy about it.`);
     if (b.hasNormalCock() && b.isCrotchExposed()) {
-      options.push(`{B:name's} {B:cock.thickCock} shifts reluctantly beneath {B:him} as you settle on top.`);
+      options.push(`{B:name} settles down reluctantly, {B:his} {B:cock.thickCock} shifting beneath {B:him} as you
+        settle on top.`);
     }
   }
 
@@ -553,7 +555,7 @@ function moveMissionary(context) {
     options.push(`{A:name} grumbles as {A:he} lowers {A:him}self on top of you, reluctantly settling into place.`);
     options.push(`With a huff, {A:name} lies down on top of you, clearly unhappy about it.`);
     if (a.hasNormalCock() && a.isCrotchExposed()) {
-      options.push(`{A:his} {A:cock.thickCock} shifts reluctantly as {A:he} settles on top of you.`);
+      options.push(`{A:his} {A:cock.thickCock} shifts as {A:he} settles reluctantly on top of you.`);
     }
   }
 
@@ -629,8 +631,8 @@ function moveStraddle(context) {
       straddle {B:his} waist.`);
     options.push(`With a huff, {B:name} lies down as you settle astride {B:his} hips.`);
     if (b.hasNormalCock() && b.isCrotchExposed()) {
-      options.push(`{B:name's} {B:cock.thickCock} shifts reluctantly beneath {B:him} as you climb up to straddle
-        {B:his} waist.`);
+      options.push(`{B:name} lies down reluctantly, {B:his} {B:cock.thickCock} shifting beneath {B:him} as you
+        climb up to straddle {B:his} waist.`);
     }
   }
 
@@ -693,7 +695,7 @@ function moveStraddle(context) {
     options.push(`{A:name} grumbles as {A:he} climbs up to straddle your waist, clearly reluctant about it.`);
     options.push(`With a huff, {A:name} settles astride your hips, unhappy about the whole thing.`);
     if (a.hasNormalCock() && a.isCrotchExposed()) {
-      options.push(`{A:his} {A:cock.thickCock} shifts reluctantly as {A:he} climbs up to straddle your waist.`);
+      options.push(`{A:his} {A:cock.thickCock} shifts as {A:he} climbs up reluctantly to straddle your waist.`);
     }
   }
 
