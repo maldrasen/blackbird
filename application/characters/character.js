@@ -89,6 +89,15 @@ global.Character = function(id) {
     return cock.length >= value;
   }
 
+  // TODO: A character's erection state may have to be defined elsewhere. For now we can define erect as having
+  //       arousal above 25. If a character has multiple cocks all the cocks will be at the same level of erectness,
+  //       but in the future we could make erect state part of the cock component itself. If that's the case we'll
+  //       need to specify which cock is erect, defaulting to the normal one.
+  function isFullyErect() {
+    if (hasNormalCock() === false) { return false; }
+    return ArousalComponent.lookup(id).arousal >= 25;
+  }
+
   // ======================
   //   Sexual Preferences
   // ======================
@@ -249,6 +258,7 @@ global.Character = function(id) {
     hasNormalPussy,
     breastsAreAtLeast,
     cockIsAtLeast,
+    isFullyErect,
 
     // Sexual Preferences
     hasSexualPreference,

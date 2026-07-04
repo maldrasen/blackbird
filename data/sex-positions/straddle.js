@@ -189,7 +189,7 @@ function moveCentipede(context) {
       spreading {B:him}self open as you press your face hungrily against {B:his} ass.`);
     options.push(`{B:name} whines impatiently as you climb off, practically throwing {B:him}self onto {B:his} knees
       and spreading {B:his} thighs for you.`);
-    if (b.hasNormalCock() && b.isCrotchExposed()) {
+    if (b.isFullyErect() && b.isCrotchExposed()) {
       options.push(`{B:name} rocks {B:his} hips as {B:he} rises onto {B:his} knees, {B:his} {B:cock.bigCock} already
         hard and bobbing as you settle in behind {B:him}.`);
     }
@@ -295,7 +295,7 @@ function moveCowgirl(context) {
       options.push(`You roll onto your back as {B:name} shifts forward, {B:his} {B:cock.thickCock} swaying gently as
         {B:he} settles astride your hips, smiling down at you.`);
     }
-    if (a.hasNormalCock() && a.isCrotchExposed()) {
+    if (a.isFullyErect() && a.isCrotchExposed()) {
       options.push(`You roll onto your back, your {A:cock.thickCock} standing between you, as {B:name} smiles
         warmly and settles astride your hips.`);
     }
@@ -306,7 +306,7 @@ function moveCowgirl(context) {
       waist, facing you.`);
     options.push(`{B:name} licks {B:his} lips hungrily as you roll onto your back, quickly scooting forward to
       straddle your hips.`);
-    if (a.hasNormalCock() && a.isCrotchExposed()) {
+    if (a.isFullyErect() && a.isCrotchExposed()) {
       options.push(`You roll onto your back, your {A:cock.thickCock} standing up between you as {B:name} scoots
         eagerly forward to straddle your hips, facing you.`);
     }
@@ -371,7 +371,7 @@ function moveCowgirl(context) {
       to face {A:him} properly.`);
     options.push(`{A:name} moans softly, flipping onto {A:his} back eagerly as you scoot forward, quickly settling
       astride {A:his} hips.`);
-    if (a.hasNormalCock() && a.isCrotchExposed()) {
+    if (a.isFullyErect() && a.isCrotchExposed()) {
       options.push(`{A:name} rolls onto {A:his} back, {A:his} {A:cock.thickCock} standing between you as you shift
         forward to straddle {A:his} hips.`);
     }
@@ -595,8 +595,8 @@ function moveMissionary(context) {
       options.push(`Fearful but obedient, {B:name} rolls over without resistance. With your hands on {B:his} knees 
         you spread {B:his} legs wide to expose {B:his} quivering snatch to your gaze.`);
     }
-    if (b.hasNormalCock() && b.isCrotchExposed()) {
-      options.push(`Fearful but obedient, {B:name} rolls over without resistance. With your hands on {B:his} knees 
+    if (b.isFullyErect() && b.isCrotchExposed()) {
+      options.push(`Fearful but obedient, {B:name} rolls over without resistance. With your hands on {B:his} knees
         you spread {B:his} legs wide to expose {B:his} throbbing cock to your gaze.`);
     }
   }
@@ -678,8 +678,8 @@ function moveMissionary(context) {
       options.push(`{A:name's} eyes widen as you start to turn over underneath {A:him}, wrapping your legs around 
         {A:his} waist to pull {A:him} in towards you.`);
     }
-    if (b.hasNormalCock() && b.isCrotchExposed()) {
-      options.push(`{A:name's} eyes widen as you turn over underneath {A:him}, your {B:cock.sixInch} long cock 
+    if (b.isFullyErect() && b.isCrotchExposed()) {
+      options.push(`{A:name's} eyes widen as you turn over underneath {A:him}, your {B:cock.sixInch} long cock
         raising up underneath {A:him}.`)
     }
   }
