@@ -480,6 +480,7 @@
     "test/records/encounter-spec.js",
     "test/records/name-spec.js",
     "test/records/sex-action-spec.js",
+    "test/records/sex-position-spec.js",
     "test/training/consent-result-spec.js",
     "test/training/position-controller-spec.js",
     "test/training/sensation-results/sensation-arousal-spec.js",
