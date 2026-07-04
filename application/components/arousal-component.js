@@ -34,9 +34,9 @@ global.ArousalComponent = (function() {
     });
 
     Validate.between('Arousal.arousal',arousalComponent.arousal,0,100);
-    Validate.atLeast('Arousal.pleasure',arousalComponent.arousal,0);
-    Validate.atLeast('Arousal.edging',arousalComponent.arousal,0);
-    Validate.atLeast('Arousal.refractory',arousalComponent.arousal,0);
+    Validate.atLeast('Arousal.pleasure',arousalComponent.pleasure,0);
+    Validate.atLeast('Arousal.edging',arousalComponent.edging,0);
+    Validate.atLeast('Arousal.refractory',arousalComponent.refractory,0);
   }
 
   return Object.freeze({
