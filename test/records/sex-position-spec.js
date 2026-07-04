@@ -13,16 +13,16 @@ describe("SexPosition", function() {
     }
 
     function spotCheck(code) {
-      const context = randomSetup();
-      const move = Random.from(SexPosition.lookup(code).getMoves());
-      const direction = Character(context.A).isPlayer() ? `A`:`B`;
-      const key = `${direction}:[${code}->${move.code}|${context.attitude}]`;
-
       let attempts = 10;
 
       // TODO: Eventually we want to assert that the text has no weaver warnings or errors.
 
       while (attempts > 0) {
+        const context = randomSetup();
+        const move = Random.from(SexPosition.lookup(code).getMoves());
+        const direction = Character(context.A).isPlayer() ? `A`:`B`;
+        const key = `${direction}:[${code}->${move.code}|${context.attitude}]`;
+
         try {
           console.log(`${key} ${Weaver(context).weave(move.generator(context))}`);
           return;
@@ -32,7 +32,7 @@ describe("SexPosition", function() {
         }
       }
 
-      throw new Error(`Unable to generate move text for ${key} after 10 attempts.`)
+      throw new Error(`Unable to generate move text for ${code} after 10 attempts.`)
     }
 
     it('centipede', function() { spotCheck('centipede'); });
