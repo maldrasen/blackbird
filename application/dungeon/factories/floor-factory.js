@@ -7,14 +7,20 @@ global.FloorFactory = function() {
   // retrying has to happen in DungeonSystem with a fresh DungeonFloor because this floor's grid is already littered
   // with the failed attempt's features.
   function buildFloor() {
+    const seed = Random.getSeed();
+
     try {
       build();
     }
     catch (error) {
       if (Environment.isDevelopment) {
-        FileHelper.writeJSON(`${ROOT}/debug/floor-failure-state.json`, { error:error.stack, floor:floor.pack() });
+        FileHelper.writeJSON(`${ROOT}/debug/floor-failure-state.json`, { error:error.stack, seed, floor:floor.pack() });
       }
       throw error;
+    }
+
+    if (Environment.isDevelopment) {
+      FileHelper.writeJSON(`${ROOT}/debug/floor-state.json`, { seed, floor:floor.pack() });
     }
   }
 
@@ -59,10 +65,6 @@ global.FloorFactory = function() {
     floor.setDoors(floor.getDoors().filter(door => {
       return (spanningTree.getEdges(door.getFrom()).includes(door.getTo())) ? true : (Random.roll(100) < 50);
     }));
-
-    if (Environment.isDevelopment) {
-      FileHelper.writeJSON(`${ROOT}/debug/floor-state.json`, floor.pack());
-    }
   }
 
   function addFeatureToGrid(feature) {

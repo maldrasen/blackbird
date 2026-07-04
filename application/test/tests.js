@@ -8,6 +8,7 @@ global.Tests = (function() {
 
   let $testScrollingPanel;
   let $running = false;
+  let $currentSeed;
 
   function load() {
     if (Environment.isDevelopment) {
@@ -46,8 +47,8 @@ global.Tests = (function() {
       rootHooks: {
         beforeAll: rootBefore,
         afterAll: rootAfter,
-        beforeEach: reset,
-        afterEach: reset,
+        beforeEach: beforeEachTest,
+        afterEach: afterEachTest,
       }
     });
     mocha.checkLeaks();
@@ -60,6 +61,21 @@ global.Tests = (function() {
   function reset() {
     Random.stubReset();
     GameState.reset();
+  }
+
+  // Every spec gets its own fresh seed so a failure can be reproduced in isolation: rerunning just that spec (e.g. via
+  // --grep) with SEED set to the reported value recreates exactly the randomness that caused the failure, regardless
+  // of what ran before it.
+  function beforeEachTest() {
+    reset();
+    $currentSeed = process.env.SEED ? Random.seed(Number(process.env.SEED)) : Random.reseed();
+  }
+
+  function afterEachTest() {
+    if (this.currentTest && this.currentTest.state === 'failed') {
+      console.error(`Failing spec used Random seed ${$currentSeed} - "${this.currentTest.fullTitle()}"`);
+    }
+    reset();
   }
 
   function rootBefore() { $running = true; }
@@ -85,6 +101,8 @@ global.Tests = (function() {
     rootBefore,
     rootAfter,
     reset,
+    beforeEachTest,
+    afterEachTest,
     load,
   };
 

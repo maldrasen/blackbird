@@ -1,5 +1,34 @@
 global.Random = (function() {
 
+  // ===============================================
+  //    Mulberry32 Pseudo Random Number Generator
+  // ===============================================
+  // This technique is used to achieve deterministic randomness. A run can be reproduced exactly by recording the seed
+  // then every run that uses the same seed will produce the same random numbers.
+
+  let $seed = generateSeed();
+
+  function generateSeed() {
+    return (Date.now() ^ Math.floor(Math.random() * 0xFFFFFFFF)) >>> 0;
+  }
+
+  function nextFloat() {
+    $seed = ($seed + 0x6D2B79F5) | 0;
+    let t = Math.imul($seed ^ ($seed >>> 15), 1 | $seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  }
+
+  function seed(value) { $seed = value >>> 0; return $seed; }
+  function getSeed() { return $seed; }
+  function reseed() { return seed(generateSeed()); }
+
+  // ==================
+  //    Random Stubs
+  // ==================
+  // These stubs are used by the specs when we want to specify the values that the Random number functions would
+  // produce.
+
   const $stubQueues = { roll:[], rollDice:[], flipCoin:[], between:[], from:[] };
 
   function stubRoll(...values) { $stubQueues.roll.push(...values); }
@@ -30,11 +59,15 @@ global.Random = (function() {
     return value;
   }
 
+  // ======================
+  //    Random Functions
+  // ======================
+
   // Random number between 0 and the limit exclusive, (meaning upTo(100) will
   // return between 0 and 99) plus an optional 'plus' value.
   function roll(limit, plus=0) {
     if ($stubQueues.roll.length > 0) { return stubbedValue('roll',{ min:plus, max:(limit+plus-1) }); }
-    return Math.floor(Math.random() * limit) + plus;
+    return Math.floor(nextFloat() * limit) + plus;
   }
 
   // Simulate rolling dice. Options:
@@ -99,7 +132,7 @@ global.Random = (function() {
 
   // Normal distribution using the Box–Muller transform
   function normalDistribution(average, deviation) {
-    const multiplier = Math.sqrt(-2.0 * Math.log(Math.random())) * Math.cos(2.0 * Math.PI * Math.random());
+    const multiplier = Math.sqrt(-2.0 * Math.log(nextFloat())) * Math.cos(2.0 * Math.PI * nextFloat());
     return Math.round(average + (multiplier * deviation));
   }
 
@@ -116,23 +149,26 @@ global.Random = (function() {
     console.log(`Normal Distribution (${average},${deviation}) = [${min}-${max}]`)
   }
 
-
   // Randomize an array, usually so it can be iterated through in a random order.
   function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
+      const j = Math.floor(nextFloat() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
   }
 
+  // Create a new random identifier for an entity.
   function identifier() {
-    return (Math.random() + 1).toString(36).substring(2,10).toUpperCase();
+    return (nextFloat() + 1).toString(36).substring(2,10).toUpperCase();
   }
 
   return Object.freeze({
-    stubReset,
+    seed,
+    getSeed,
+    reseed,
 
+    stubReset,
     stubRoll,
     stubRollDice,
     stubFlipCoin,
