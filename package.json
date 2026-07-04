@@ -27,7 +27,7 @@
     "coverage": "c8 npm test"
   },
   "c8": {
-    "reporter": ["text", "cobertura"],
+    "reporter": ["text", "cobertura", "html"],
     "include": ["application/**"],
     "exclude": ["application/views/**", "application/test/**"]
   },
