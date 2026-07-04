@@ -87,6 +87,7 @@ describe("PositionController", function() {
       });
 
       const sexAction = SexAction.lookup('suck-pussy');
+      TrainingSystem.getState().determineAttitude(sexAction);
       PositionController.shiftPosition(sexAction, PositionController.findAlignedPosition(sexAction));
 
       const state = TrainingSystem.getState();
