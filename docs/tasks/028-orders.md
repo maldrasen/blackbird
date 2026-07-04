@@ -5,6 +5,7 @@ priority: 4
 created: 2026-07-03
 tags: [training]
 ---
+---
 When interacting with a character we can give them simple orders. Orders will need to go though the same consent calculations to see if they agree to follow the order. And we'll also need to get the attitude to see what the character's response should be. 
 
 Orders could be fairly simple, such as 'follow me' which would have the character follow you when you move locations, 'stop following' or 'stay here' to place them in the current location. If they're told to stay someplace, they might just immediately leave if their control is too low, or wait for like 15 minutes, or an hour, or they'll wait there until they starve to death if their control is up in the obsessive range.

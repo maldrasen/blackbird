@@ -5,6 +5,7 @@ priority: 3
 created: 2026-07-03
 tags: [training]
 ---
+---
 The way persistence is defined is a bit too terse and confusing. We should make the keys a bit more self-explanatory. Something more like:
 
 ```

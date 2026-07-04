@@ -5,6 +5,7 @@ priority: 3
 created: 2026-07-03
 tags: [training]
 ---
+---
 The consent calculations are only about half finished, in a state where it's good enough to move onto other tasks in the training system. I'll need to go back and implement the rest of this.
 - Apply personality factors, once they've been reworked.
 - Need to also read current scale values, as the current anima and animus values should effect consent.

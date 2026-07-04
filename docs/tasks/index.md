@@ -36,7 +36,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [035] Update Consent Calculations #training — [035-update-consent-calculations.md](035-update-consent-calculations.md)
 - [036] Update Sensation Calculations #training — [036-update-sensation-calculations.md](036-update-sensation-calculations.md)
 - [037] Denial Reactions #training — [037-denial-reactions.md](037-denial-reactions.md)
-- [038] SexAction : isAvailable(), and isEnabled() #training — [038-sexaction-isavailable-and-isenabled.md](038-sexaction-isavailable-and-isenabled.md)
+- [38] SexAction isAvailable() and isEnabled() — [038-sexaction-isavailable-and-isenabled.md](038-sexaction-isavailable-and-isenabled.md)
 
 ## Priority 4
 

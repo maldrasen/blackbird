@@ -5,6 +5,7 @@ priority: 4
 created: 2026-07-03
 tags: [training]
 ---
+---
 Drugs or alcohol can be used as mood enhancers. Drugging a person against their will would of course produce anger, but you could be sneaky about it, if we had some kind of slight of hand skill. A strong enough drug and they won't even remember. A drugged character doesn't receive as much anima or animus, the amount reduced should depend on drug strength.
 
 We're going to have a variety of drugs with different methods for giving them to the partner. They could be drunk, injected, inserted like a suppository, maybe even smoked or snorted. The way a drug is taken effects the consent values for the action, and also the effect in some cases. A sensitivity drug might be localized to only work on the part where it is inserted or injected.
