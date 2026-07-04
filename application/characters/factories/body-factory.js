@@ -50,7 +50,7 @@ global.BodyFactory = (function() {
   // height is used in a lot of other places, so it can't be changed later during character creation.
   function getRandomHeight(species, gender, triggers) {
     const averageHeight = species.getAverageHeight(gender);
-    const deviation = averageHeight * species.getHeightDeviationRatio();
+    const deviation = species.getHeightDeviation();
     const fuzz = 1 + (Random.roll(100)-50)/1000; // 0.9 - 1.1
 
     // If this character is short, set height around two standard deviations below average.

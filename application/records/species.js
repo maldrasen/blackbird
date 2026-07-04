@@ -12,16 +12,20 @@ global.Species = (function() {
     const species = { ...$speciesMap[code] };
 
     function getAverageHeight(gender=Gender.male) {
-      const maleAverage = species.body.averageHeight || _humanMaleHeight;
-      const femaleHeightRatio = species.body.femaleHeightRatio || _humanFemaleRatio;
-      const futaHeightRatio = 1-(1-femaleHeightRatio)/2;
+      const maleHeight = species.body.maleHeight;
+      const femaleHeight = species.body.femaleHeight;
+      const futaHeight = (maleHeight + femaleHeight) / 2;
 
       switch (gender) {
-        case Gender.male: return maleAverage;
-        case Gender.female: return maleAverage * femaleHeightRatio;
-        case Gender.futa: return maleAverage * futaHeightRatio;
-        case Gender.enby: return maleAverage * futaHeightRatio;
+        case Gender.male: return maleHeight;
+        case Gender.female: return femaleHeight;
+        case Gender.futa: return futaHeight;
+        case Gender.enby: return futaHeight;
       }
+    }
+
+    function genderRatio() {
+      return getAverageHeight() / species.body.maleHeight
     }
 
     return Object.freeze({
@@ -38,10 +42,10 @@ global.Species = (function() {
       getAspects: () => { return species.aspects; },
       getBody: () => { return species.body; },
       getAverageHeight: getAverageHeight,
-      getHeightDeviationRatio: () => { return species.body.heightDeviationRatio || _humanDeviationRatio; },
-      getLengthRatio: () => { return getAverageHeight() / _humanMaleHeight; },
-      getAreaRatio: () => { return (getAverageHeight() / _humanMaleHeight) ** 2; },
-      getVolumeRatio: () => { return (getAverageHeight() / _humanMaleHeight) ** 3; },
+      getHeightDeviation: () => { return species.body.heightDeviation; },
+      getLengthRatio: () => { return genderRatio(); },
+      getAreaRatio: () => { return genderRatio() ** 2; },
+      getVolumeRatio: () => { return genderRatio() ** 3; },
       getMutability: () => { return species.body.mutability || 0; },
       getSkinType: () => { return species.body.skinType || 'skin'; },
       getEyeShape: () => { return species.body.eyeShape || 'round'; },
