@@ -10,12 +10,12 @@ describe("SensationResult", function() {
 
     const result = SensationResult.build('masturbate-pussy',state);
     const pussySensations = result.getResponse().partner.pussy;
-    expect(pussySensations.length).to.equal(7);
-    expect(pussySensations[5].label).to.equal('Pussy Slut');
-    expect(Math.round(pussySensations[5].value * 100)).to.equal(188)
-    expect(pussySensations[6].label).to.equal('Masturbator');
-    expect(Math.round(pussySensations[6].value * 100)).to.equal(273)
-    expect(Math.round(result.getPartnerSensations().pussy)).to.equal(2364);
+    expect(pussySensations.length).to.equal(8);
+    expect(pussySensations[6].label).to.equal('Pussy Slut');
+    expect(Math.round(pussySensations[6].value * 100)).to.equal(188)
+    expect(pussySensations[7].label).to.equal('Masturbator');
+    expect(Math.round(pussySensations[7].value * 100)).to.equal(273)
+    expect(Math.round(result.getPartnerSensations().pussy)).to.equal(3073);
   });
 
 });

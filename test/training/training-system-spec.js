@@ -21,7 +21,7 @@ describe("TrainingSystem", function() {
 
       expect(Math.round(playerArousal.arousal)).to.be.greaterThan(50);
       expect(Math.round(partnerArousal.arousal)).to.be.greaterThan(25);
-      expect(Math.round(partnerArousal.pleasure)).to.equal(60);
+      expect(Math.round(partnerArousal.pleasure)).to.equal(66);
       expect(HealthComponent.lookup(context.P).currentStamina).to.equal(60);
       expect(HealthComponent.lookup(context.T).currentStamina).to.equal(0);
     });
