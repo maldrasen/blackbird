@@ -27,25 +27,37 @@ global.Random = (function() {
   //    Random Stubs
   // ==================
   // These stubs are used by the specs when we want to specify the values that the Random number functions would
-  // produce.
+  // produce. A queue starts out undefined, meaning it hasn't been stubbed and real random values are used. Once a
+  // stub* function is called it becomes a real (possibly empty) array, and stays in play for the rest of the spec: if
+  // it runs dry the spec is relying on more random calls than it stubbed, so we throw instead of quietly falling back
+  // to real randomness.
 
-  const $stubQueues = { roll:[], rollDice:[], flipCoin:[], between:[], from:[] };
+  const $stubQueues = { roll:undefined, rollDice:undefined, flipCoin:undefined, between:undefined, from:undefined };
 
-  function stubRoll(...values) { $stubQueues.roll.push(...values); }
-  function stubRollDice(...values) { $stubQueues.rollDice.push(...values); }
-  function stubFlipCoin(...values) { $stubQueues.flipCoin.push(...values); }
-  function stubBetween(...values) { $stubQueues.between.push(...values); }
-  function stubFrom(...values) { $stubQueues.from.push(...values); }
+  function stubQueue(name) {
+    if ($stubQueues[name] == null) { $stubQueues[name] = []; }
+    return $stubQueues[name];
+  }
+
+  function stubRoll(...values) { stubQueue('roll').push(...values); }
+  function stubRollDice(...values) { stubQueue('rollDice').push(...values); }
+  function stubFlipCoin(...values) { stubQueue('flipCoin').push(...values); }
+  function stubBetween(...values) { stubQueue('between').push(...values); }
+  function stubFrom(...values) { stubQueue('from').push(...values); }
 
   function stubReset() {
-    $stubQueues.roll = [];
-    $stubQueues.rollDice = [];
-    $stubQueues.flipCoin = [];
-    $stubQueues.between = [];
-    $stubQueues.from = [];
+    $stubQueues.roll = undefined;
+    $stubQueues.rollDice = undefined;
+    $stubQueues.flipCoin = undefined;
+    $stubQueues.between = undefined;
+    $stubQueues.from = undefined;
   }
 
   function stubbedValue(name, limits={}) {
+    if ($stubQueues[name].length === 0) {
+      throw new Error(`Random.${name}() ran out of stubbed values`);
+    }
+
     const value = $stubQueues[name].shift();
 
     if (limits.min != null && value < limits.min) {
@@ -66,14 +78,14 @@ global.Random = (function() {
   // Random number between 0 and the limit exclusive, (meaning upTo(100) will
   // return between 0 and 99) plus an optional 'plus' value.
   function roll(limit, plus=0) {
-    if ($stubQueues.roll.length > 0) { return stubbedValue('roll',{ min:plus, max:(limit+plus-1) }); }
+    if ($stubQueues.roll != null) { return stubbedValue('roll',{ min:plus, max:(limit+plus-1) }); }
     return Math.floor(nextFloat() * limit) + plus;
   }
 
   // Simulate rolling dice. Options:
   //   { x:(dice count), d:(dice faces), p:(plus or minus) }
   function rollDice(options) {
-    if ($stubQueues.rollDice.length > 0) { return stubbedValue('rollDice'); }
+    if ($stubQueues.rollDice != null) { return stubbedValue('rollDice'); }
 
     let total = options.p || 0;
     for (let x = 0; x<(options.x || 1); x++) {
@@ -85,7 +97,7 @@ global.Random = (function() {
 
   // Boolean Heads or tails, 50% probability.
   function flipCoin() {
-    if ($stubQueues.flipCoin.length > 0) { return stubbedValue('flipCoin'); }
+    if ($stubQueues.flipCoin != null) { return stubbedValue('flipCoin'); }
     return Random.roll(2) === 0;
   }
 
@@ -94,13 +106,13 @@ global.Random = (function() {
   function between(min, max) {
     if (max === min) { return min; }
     if (max < min) { throw new Error(`Min(${min}) should be less than Max(${max})`); }
-    if ($stubQueues.between.length > 0) { return stubbedValue('between',{ min:min, max:max }); }
+    if ($stubQueues.between != null) { return stubbedValue('between',{ min:min, max:max }); }
     return Random.roll(max-min+1,min);
   }
 
   // Select a random element in an array.
   function from(array) {
-    if ($stubQueues.from.length > 0) { return stubbedValue('from',{ within:array }); }
+    if ($stubQueues.from != null) { return stubbedValue('from',{ within:array }); }
     if (array && array.length) {
       return array[Random.roll(array.length)];
     } else {
