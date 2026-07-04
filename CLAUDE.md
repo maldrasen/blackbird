@@ -17,6 +17,9 @@ matter, with an `index.md` that lists all the current tasks and their priority.
 The `/docs` directory also contains the planning and design documentation, some of which should be referenced when 
 applicable to the current task.
 
+#### System References
+- `/docs/reference/architecture.md` Overall project architecture.
+
 #### Writing References
 - `/docs/reference/writing-guide.md` When generating text content, reference this for style and tone.
 - `/docs/reference/personality-system.md` Generated text may also depend on the personality of the character.
@@ -31,10 +34,7 @@ applicable to the current task.
 #### Battle System References
 - `/docs/reference/status-effects.md` Status effects reference.
 
-## Architecture 
-Overall architecture is described in `/docs/architecture/ecvc.md`
-
-### Running the app
+## Running the app
 The app is normally started with the `bin/start.sh` script which regenerates the `manifest.json` and compiles the 
 SCSS before it launches Electron.
 
