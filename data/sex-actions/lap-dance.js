@@ -21,8 +21,8 @@ SexAction.register('lap-dance',{
   },
 
   persist: { action:'lap-grinding' },
-  availableWhen:{
-    conditions:['T:unbound']
+  availableWhen: {
+    isPossible: (context) => Character(context.T).isUnbound(),
   },
 
   consentTarget: 18,

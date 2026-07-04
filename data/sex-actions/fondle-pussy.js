@@ -11,7 +11,7 @@ SexAction.register('fondle-pussy',{
   playerStamina: 30,
   partnerStamina: 40,
 
-  requires: ['T:has-pussy'],
+  isPossible: (context) => Character(context.T).hasNormalPussy(),
   alignment: SexAlignment.giveFondling(HandAlignment.cock),
   persist: { action:'fondle-pussy' },
 

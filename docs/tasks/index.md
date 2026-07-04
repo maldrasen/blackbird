@@ -6,7 +6,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 - [002] Negotiation System #battle — [002-negotiation-system.md](002-negotiation-system.md)
 - [003] Training Systems #training — [003-training-systems.md](003-training-systems.md)
-- [004] Refactor Scrutinizers — [004-refactor-scrutinizers.md](004-refactor-scrutinizers.md)
 - [005] Random Seeds — [005-random-seeds.md](005-random-seeds.md)
 - [006] Attitudes #training — [006-attitudes.md](006-attitudes.md)
 - [007] Position Attitude Requirement #training — [007-position-attitude-requirement.md](007-position-attitude-requirement.md)

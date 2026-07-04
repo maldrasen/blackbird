@@ -11,7 +11,7 @@ SexAction.register('suck-nipples',{
   playerStamina: 40,
   partnerStamina: 30,
 
-  requires: ['T:has-breasts'],
+  isPossible: (context) => Character(context.T).hasBreasts(),
   alignment: SexAlignment.giveOral(TrainingSlot.breasts),
   persist: { action:'suck-nipples' },
 

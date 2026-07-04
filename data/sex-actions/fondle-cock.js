@@ -11,7 +11,7 @@ SexAction.register('fondle-cock',{
   playerStamina: 30,
   partnerStamina: 40,
 
-  requires: ['T:has-cock'],
+  isPossible: (context) => Character(context.T).hasNormalCock(),
   alignment: SexAlignment.giveFondling(HandAlignment.cock),
   persist: { action:'fondle-cock' },
 

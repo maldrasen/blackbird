@@ -127,7 +127,7 @@ global.SexAction = (function() {
     // as the initial action filter. Actions that are filtered here are no longer considered when determining which
     // actions are visible.
     function isPossible(context) {
-      if (action.requires && CentralScrutinizer(context).allConditionsPass(action.requires) === false) { return false; }
+      if (action.isPossible && action.isPossible(context) === false) { return false; }
 
       const player = Character(context.P);
       const partner = Character(context.T);
@@ -189,8 +189,7 @@ global.SexAction = (function() {
     // conditions that might change during training. For instance, strip-tease is only available once, when the
     // partner is still wearing clothes and becomes unavailable and hidden once they're naked.
     function availableConditionsMet(context) {
-      return (action.availableWhen && action.availableWhen.conditions) ?
-        CentralScrutinizer(context).allConditionsPass(action.availableWhen.conditions) : true;
+      return (action.availableWhen && action.availableWhen.isPossible) ? action.availableWhen.isPossible(context) : true;
     }
 
     function isPersisted() { return TrainingSystem.getState().isActionPersisted(code); }

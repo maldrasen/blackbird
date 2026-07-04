@@ -15,8 +15,7 @@ SexAction.register('give-titfuck',{
   playerStamina: 60,
   partnerStamina: 30,
 
-  requires:['P:breasts-at-least-big'],
-
+  isPossible: (context) => Character(context.P).hasBreasts() && Character(context.P).breastsAreAtLeast('big'),
   alignment: SexAlignment.giveTitfuck(),
   persist: { action:'give-titfuck' },
 

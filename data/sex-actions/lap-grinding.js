@@ -22,8 +22,9 @@ SexAction.register('lap-grinding',{
     player: [TrainingSlot.cock],
     partner: [TrainingSlot.ass],
   },
-  availableWhen:{
-    conditions:['T:unbound'],
+
+  availableWhen: {
+    isPossible: (context) => Character(context.T).isUnbound(),
     persistedAction: 'lap-grinding',
   },
 

@@ -22,7 +22,7 @@ SexAction.register('striptease',{
   },
 
   availableWhen:{
-    conditions:['T:unbound','T:equipment.not-naked']
+    isPossible: (context) => Character(context.T).isNaked() === false && Character(context.T).isUnbound(),
   },
 
   consentTarget: 10,

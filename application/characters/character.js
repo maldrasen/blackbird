@@ -169,6 +169,11 @@ global.Character = function(id) {
     return exposed
   }
 
+  // TODO: We'll eventually have a bondage system. This function should return true when a character is completely
+  //       unbound and has no movement restrictions. We need other functions to test if legs or arms are bound. If a
+  //       character is in something like breast bondage they may not have any movement restrictions.
+  function isUnbound() { return true; }
+
   // TODO: There are a lot of different factors that will influence resistance, including a character's equipment.
   //       Currently though, only the character's species carries any innate resistance.
   function getResistance(type) {
@@ -259,6 +264,7 @@ global.Character = function(id) {
     isPussyEmpty,
     areBreastsExposed,
     isCrotchExposed,
+    isUnbound,
     getResistance,
 
     // Orgasm Data
