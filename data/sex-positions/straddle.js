@@ -29,32 +29,58 @@ function rearrange(context) {
   const options = [];
 
   if (a.isPlayer() && context.attitude === Attitude.loving) {
-    return `[Rearrange to straddle with player on top with partner attitude ${context.attitude}]`;
+    options.push(`{B:name} settles onto {B:his} stomach with a warm smile, glancing back over {B:his} shoulder as you
+      climb astride {B:his} hips.`);
+    options.push(`You guide {B:name} down onto {B:his} stomach, straddling {B:his} hips as {B:he} stretches out
+      beneath you, resting {B:his} cheek against folded arms.`);
   }
+
   if (a.isPlayer() && context.attitude === Attitude.lustful) {
-    return `[Rearrange to straddle with player on top with partner attitude ${context.attitude}]`;
+    options.push(`{B:name} flops eagerly onto {B:his} stomach, arching {B:his} back as you swing a leg over to
+      straddle {B:his} hips.`);
+    if (a.hasNormalCock() && a.isCrotchExposed()) {
+      options.push(`{B:name} lies face down beneath you, and you settle astride {B:his} hips, letting your
+        {A:cock.thickCock} rest against the small of {B:his} back.`);
+    }
   }
+
   if (a.isPlayer() && context.attitude === Attitude.accepting) {
-    return `[Rearrange to straddle with player on top with partner attitude ${context.attitude}]`;
+    options.push(`{B:name} lies down on {B:his} stomach without complaint, letting you settle astride {B:his} hips.`);
   }
+
   if (a.isPlayer() && context.attitude === Attitude.fearful) {
-    return `[Rearrange to straddle with player on top with partner attitude ${context.attitude}]`;
+    options.push(`{B:name} lowers {B:him}self face-down with a nervous breath, tensing as you climb on top to
+      straddle {B:his} hips.`);
   }
+
   if (a.isPlayer() && context.attitude === Attitude.resistant) {
-    return `[Rearrange to straddle with player on top with partner attitude ${context.attitude}]`;
+    options.push(`{B:name} grumbles as you push {B:him} down onto {B:his} stomach, straddling {B:his} hips despite
+      {B:his} half-hearted squirming.`);
   }
+
   if (a.isPlayer() && context.attitude === Attitude.violent) {
-    return `[Rearrange to straddle with player on top with partner attitude ${context.attitude}]`;
+    options.push(`{B:name} thrashes as you shove {B:him} face-down, pinning {B:him} beneath your weight as you
+      straddle {B:his} hips.`);
   }
+
   if (b.isPlayer() && context.attitude === Attitude.loving) {
-    return `[Rearrange to straddle with player on bottom with partner attitude ${context.attitude}]`;
+    options.push(`You settle onto your stomach as {A:name} smiles warmly down at you, climbing astride your hips and
+      trailing a fond hand along your spine.`);
   }
+
   if (b.isPlayer() && context.attitude === Attitude.lustful) {
-    return `[Rearrange to straddle with player on bottom with partner attitude ${context.attitude}]`;
+    options.push(`You settle onto your stomach as {A:name} climbs eagerly astride your hips, a hungry grin on
+      {A:his} face.`);
+    if (b.hasNormalCock() && b.isCrotchExposed()) {
+      options.push(`You lie face down, your {B:cock.sixInch} long {cock} trapped beneath you, as {A:name} settles
+        astride your hips with a hungry grin.`);
+    }
   }
+
   if (b.isPlayer() && context.attitude === Attitude.accepting) {
-    return `[Rearrange to straddle with player on bottom with partner attitude ${context.attitude}]`;
+    options.push(`You lie down on your stomach, letting {A:name} settle astride your hips.`);
   }
+
   if (b.isPlayer() && context.attitude === Attitude.fearful) {
     throw new Error('Having the player straddled by the partner, lying on their stomach and being fearful seems incompatible.');
   }
@@ -74,32 +100,55 @@ function moveCentipede(context) {
   const options = [];
 
   if (a.isPlayer() && context.attitude === Attitude.loving) {
-    return `[Shift to centipede with player in back with partner attitude ${context.attitude}]`;
+    options.push(`You slide down along {B:name's} back, placing a soft kiss between {B:his} shoulder blades. {B:He}
+      sighs happily and rises onto {B:his} knees, arching back into your touch as you settle behind {B:him},
+      pressing your face between {B:his} ass cheeks.`);
+    options.push(`Trailing your fingers down {B:name's} spine, you climb off. {B:He} smiles over {B:his} shoulder and
+      rises onto {B:his} knees for you, and you kneel behind {B:him}, nuzzling into the cleft of {B:his} ass.`);
   }
+
   if (a.isPlayer() && context.attitude === Attitude.lustful) {
-    return `[Shift to centipede with player in back with partner attitude ${context.attitude}]`;
+    options.push(`You climb off {B:name}, and {B:he} moans with need, eagerly rising onto {B:his} knees and arching
+      {B:his} back before you bury your face between {B:his} spread cheeks.`);
+    options.push(`{B:name} can't wait, hauling {B:his} own hips up onto {B:his} knees the moment you slide back,
+      spreading {B:him}self open as you press your face hungrily against {B:his} ass.`);
   }
+
   if (a.isPlayer() && context.attitude === Attitude.accepting) {
-    return `[Shift to centipede with player in back with partner attitude ${context.attitude}]`;
+    options.push(`You climb off of {B:name}, guiding {B:him} up onto {B:his} knees before settling in behind {B:him},
+      your face pressed to {B:his} ass.`);
   }
+
   if (a.isPlayer() && context.attitude === Attitude.fearful) {
-    return `[Shift to centipede with player in back with partner attitude ${context.attitude}]`;
+    options.push(`You climb off {B:name}, coaxing {B:him} onto {B:his} knees. {B:His} hands tremble as {B:he} obeys,
+      and you settle in behind {B:him}, pressing your face against {B:his} ass.`);
   }
+
   if (a.isPlayer() && context.attitude === Attitude.resistant) {
-    return `[Shift to centipede with player in back with partner attitude ${context.attitude}]`;
+    options.push(`You climb off {B:name} and haul {B:him} up onto {B:his} knees. {B:He} grumbles under {B:his}
+      breath but doesn't fight you as you press your face against {B:his} ass.`);
   }
+
   if (a.isPlayer() && context.attitude === Attitude.violent) {
-    return `[Shift to centipede with player in back with partner attitude ${context.attitude}]`;
+    options.push(`{B:name} thrashes as you climb off {B:him}, but you wrench {B:him} up onto {B:his} knees anyway,
+      forcing your face hard against {B:his} ass despite {B:his} struggling.`);
   }
+
   if (b.isPlayer() && context.attitude === Attitude.loving) {
-    return `[Shift to centipede with player in front with partner attitude ${context.attitude}]`;
+    options.push(`{A:name} slides off of you, gently guiding you up onto your knees. You shiver as {A:he} settles in
+      behind you, pressing {A:his} face lovingly against your ass.`);
   }
+
   if (b.isPlayer() && context.attitude === Attitude.lustful) {
-    return `[Shift to centipede with player in front with partner attitude ${context.attitude}]`;
+    options.push(`{A:name} climbs off you eagerly, hauling you up onto your knees before burying {A:his} face
+      hungrily between your cheeks.`);
   }
+
   if (b.isPlayer() && context.attitude === Attitude.accepting) {
-    return `[Shift to centipede with player in front with partner attitude ${context.attitude}]`;
+    options.push(`{A:name} climbs off of you, guiding you up onto your knees before kneeling behind you, pressing
+      {A:his} face to your ass.`);
   }
+
   if (b.isPlayer() && context.attitude === Attitude.fearful) {
     throw new Error('Having the player bend over and being fearful seems incompatible.');
   }
@@ -119,40 +168,70 @@ function moveCowgirl(context) {
   const options = [];
 
   if (a.isPlayer() && context.attitude === Attitude.loving) {
-    return `[Shift to cowgirl with player on bottom with partner attitude ${context.attitude}]`;
+    options.push(`You roll onto your back as {B:name} smiles warmly down, shifting forward to straddle your hips,
+      facing you now.`);
   }
+
   if (a.isPlayer() && context.attitude === Attitude.lustful) {
-    return `[Shift to cowgirl with player on bottom with partner attitude ${context.attitude}]`;
+    options.push(`You roll onto your back as {B:name} grins hungrily, scooting eagerly forward to straddle your
+      waist, facing you.`);
+    if (a.hasNormalCock() && a.isCrotchExposed()) {
+      options.push(`You roll onto your back, your {A:cock.thickCock} standing up between you as {B:name} scoots
+        eagerly forward to straddle your hips, facing you.`);
+    }
   }
+
   if (a.isPlayer() && context.attitude === Attitude.accepting) {
-    return `[Shift to cowgirl with player on bottom with partner attitude ${context.attitude}]`;
+    options.push(`You roll onto your back, letting {B:name} shift forward to straddle your hips facing you.`);
   }
+
   if (a.isPlayer() && context.attitude === Attitude.fearful) {
-    return `[Shift to cowgirl with player on bottom with partner attitude ${context.attitude}]`;
+    options.push(`You roll onto your back as {B:name} shifts forward nervously, {B:his} hands trembling slightly as
+      {B:he} settles astride your hips, now facing you directly.`);
   }
+
   if (a.isPlayer() && context.attitude === Attitude.resistant) {
-    return `[Shift to cowgirl with player on bottom with partner attitude ${context.attitude}]`;
+    options.push(`You roll onto your back as {B:name} reluctantly slides forward, jaw tight and eyes averted as
+      {B:he} settles astride your hips, facing you.`);
   }
+
   if (a.isPlayer() && context.attitude === Attitude.violent) {
-    return `[Shift to cowgirl with player on bottom with partner attitude ${context.attitude}]`;
+    options.push(`You're forced onto your back as {B:name} shifts forward, straddling your hips while pinning you
+      with {B:his} weight.`);
   }
+
   if (b.isPlayer() && context.attitude === Attitude.loving) {
-    return `[Shift to cowgirl with player on top with partner attitude ${context.attitude}]`;
+    options.push(`{A:name} rolls onto {A:his} back beneath you, smiling up as you shift yourself forward, straddling
+      {A:his} hips to face {A:him}.`);
   }
+
   if (b.isPlayer() && context.attitude === Attitude.lustful) {
-    return `[Shift to cowgirl with player on top with partner attitude ${context.attitude}]`;
+    options.push(`{A:name} flips onto {A:his} back with an eager grin as you scoot forward, straddling {A:his} waist
+      to face {A:him} properly.`);
+    if (a.hasNormalCock() && a.isCrotchExposed()) {
+      options.push(`{A:name} rolls onto {A:his} back, {A:his} {A:cock.thickCock} standing between you as you shift
+        forward to straddle {A:his} hips.`);
+    }
   }
+
   if (b.isPlayer() && context.attitude === Attitude.accepting) {
-    return `[Shift to cowgirl with player on top with partner attitude ${context.attitude}]`;
+    options.push(`{A:name} rolls onto {A:his} back, letting you shift forward to straddle {A:his} hips facing
+      {A:him}.`);
   }
+
   if (b.isPlayer() && context.attitude === Attitude.fearful) {
-    return `[Shift to cowgirl with player on top with partner attitude ${context.attitude}]`;
+    options.push(`{A:name} nervously turns onto {A:his} back beneath you as you shift forward, straddling {A:his}
+      hips to face {A:him}.`);
   }
+
   if (b.isPlayer() && context.attitude === Attitude.resistant) {
-    return `[Shift to cowgirl with player on top with partner attitude ${context.attitude}]`;
+    options.push(`{A:name} reluctantly rolls onto {A:his} back as you scoot forward, straddling {A:his} hips and
+      forcing {A:him} to look up at you.`);
   }
+
   if (b.isPlayer() && context.attitude === Attitude.violent) {
-    return `[Shift to cowgirl with player on top with partner attitude ${context.attitude}]`;
+    options.push(`{A:name} thrashes as you force {A:him} onto {A:his} back, but you shift forward anyway, straddling
+      {A:his} hips and pinning {A:him} beneath your weight.`);
   }
 
   return Random.from(options);
