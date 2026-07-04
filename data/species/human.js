@@ -34,6 +34,9 @@ Species.register(SpeciesCode.human, {
   },
 
   body: {
+    maleHeight: 1750,
+    femaleHeight: 1500,   // (Actual female average height is 1620, but I want the male/female difference to be more noticeable.)
+    heightDeviation: 100, // (Actual standard deviation is around 70, but I want to make it a bit more extreme)
     mutability: 50,
     earShape: 'human',
     smellFamily: 'all',

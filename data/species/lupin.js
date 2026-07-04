@@ -47,7 +47,9 @@ Species.register(SpeciesCode.lupin, {
   },
 
   body: {
-    averageHeight: 1875,
+    maleHeight: 1875,
+    femaleHeight: 1610,
+    heightDeviation: 107,
     skinType: 'fur',
     earShape: 'dog',
     tailShape: 'dog',

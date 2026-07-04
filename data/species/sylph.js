@@ -65,7 +65,9 @@ Species.register(SpeciesCode.sylph, {
   },
 
   body: {
-    averageHeight: 1400,
+    maleHeight: 1400,
+    femaleHeight: 1200,
+    heightDeviation: 80,
     mutability: 25,
     earShape: 'elf',
     smellFamily: 'floral',

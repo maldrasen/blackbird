@@ -42,7 +42,9 @@ Species.register(SpeciesCode.nymph, {
   },
 
   body: {
-    averageHeight: 1500,
+    maleHeight: 1500,
+    femaleHeight: 1285,
+    heightDeviation: 86,
     mutability: 25,
     earShape: 'elf',
     smellFamily: 'lusty',

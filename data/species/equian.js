@@ -47,7 +47,9 @@ Species.register(SpeciesCode.equian, {
   },
 
   body: {
-    averageHeight: 2000,
+    maleHeight: 2000,
+    femaleHeight: 1715,
+    heightDeviation: 114,
     skinType: 'fur&hair',
     earShape: 'horse',
     tailShape: 'horse',

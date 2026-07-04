@@ -42,7 +42,9 @@ Species.register(SpeciesCode.elf, {
   },
 
   body: {
-    averageHeight: 1650,
+    maleHeight: 1650,
+    femaleHeight: 1415,
+    heightDeviation: 94,
     mutability: 50,
     earShape: 'elf',
     smellFamily: 'floral',

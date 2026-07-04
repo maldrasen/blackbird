@@ -38,7 +38,9 @@ Species.register(SpeciesCode.vermen, {
   },
 
   body: {
-    averageHeight: 800,
+    maleHeight: 800,
+    femaleHeight: 685,
+    heightDeviation: 46,
     skinType: 'fur',
     earShape: 'rat',
     tailShape: 'rat',

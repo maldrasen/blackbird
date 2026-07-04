@@ -46,7 +46,9 @@ Species.register(SpeciesCode.havlin, {
   },
 
   body: {
-    averageHeight: 900,
+    maleHeight: 900,
+    femaleHeight: 770,
+    heightDeviation: 51,
     mutability: 50,
     earShape: 'human',
     smellFamily: 'earthy',

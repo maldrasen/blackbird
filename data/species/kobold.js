@@ -39,7 +39,9 @@ Species.register(SpeciesCode.kobold, {
   },
 
   body: {
-    averageHeight: 800,
+    maleHeight: 800,
+    femaleHeight: 685,
+    heightDeviation: 46,
     skinType: 'scales',
     eyeShape: 'dragon',
     tailShape: 'dragon',
