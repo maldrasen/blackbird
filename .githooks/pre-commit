@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Regenerates docs/tasks/index.md whenever a task file is part of the commit.
+if git diff --cached --name-only | grep '^docs/tasks/.*\.md$' | grep -v 'docs/tasks/index\.md$' | grep -q .; then
+  node bin/compile-task-index.js
+  git add docs/tasks/index.md
+fi

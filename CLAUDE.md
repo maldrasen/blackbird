@@ -4,13 +4,18 @@ or Shin Megami Tensei series, though with heavy adult themes and content and a t
 Japanese Era games. (https://wiki.eragames.rip/index.php/Main_Page) The goal of this project is to make an Era game
 for an English speaking audience.
 
-## Documentation
-The `/docs` directory contains the planning and design documentation, some of which should be referenced when 
-applicable to the current task.
+### Project Goal
+The current goal I'm working towards is to have a minimum viable product. All the game's systems will need to be
+present. All the obvious stubs need to be implemented. Once all the systems are in place I can switch the focus to
+adding content.
 
 #### Project Planning
-Rather than using any kind of sensible project planning, I'm using the `/docs/todo-list.md` document to keep track
-of my current and future tasks.
+Blackbird keeps track of development tasks in the `/docs/tasks` directory. Each task is a Markdown file with YAML front 
+matter, with an `index.md` that lists all the current tasks and their priority.
+
+## Documentation
+The `/docs` directory also contains the planning and design documentation, some of which should be referenced when 
+applicable to the current task.
 
 #### Writing References
 - `/docs/reference/writing-guide.md` When generating text content, reference this for style and tone.
