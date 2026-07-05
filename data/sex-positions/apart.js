@@ -60,6 +60,8 @@ rearrange.add(`{B:name} grumbles as {B:he} reluctantly steps back, in no hurry t
 rearrange.add(`With a huff, {B:name} moves away, arms crossed, clearly not thrilled about the show ahead.`,
   [forStriptease, isResistant]);
 
+
+
 rearrange.add(`{B:name} settles down with a warm smile, stretching {B:his} legs out toward you as you kneel to take {B:his} foot in your hands.`,
   [forFootMassage, isLoving]);
 rearrange.add(`With obvious affection, {B:name} sits back and offers you {B:his} foot, clearly looking forward to your touch.`,

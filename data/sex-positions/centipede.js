@@ -124,6 +124,8 @@ rearrange.add(`You bend over, your {B:cock.thickCock} hanging plainly between yo
 rearrange.add(`You bend over, your {pussy} visible between your legs, as {A:name} kneels behind you.`,
   [playerB, isAccepting, bVisiblePussy]);
 
+
+
 doggyStyle.add(`You raise up behind {B:name}, taking hold of {B:his} hips as {B:he} arches {B:his} back invitingly for you.`,
   [playerA, isLoving]);
 doggyStyle.add(`{B:name} shifts eagerly, keeping {B:his} ass raised as you rise up and take hold of {B:his} hips.`,
@@ -188,6 +190,8 @@ doggyStyle.add(`You feel {A:name} rise up behind you without comment, taking hol
   [playerB, isAccepting]);
 doggyStyle.add(`{A:name} rises up, {A:his} {A:cock.thickCock} hanging behind you, as {A:he} takes hold of your hips.`,
   [playerB, isAccepting, aVisibleCock]);
+
+
 
 // Moving into kneeling-service, "a" is always the one rising from bent-over to standing (was the receiver in
 // centipede), while "b" stays on their knees behind them (was already kneeling, giving oral, in centipede).
@@ -272,6 +276,8 @@ kneelingService.add(`{A:name} tries to pull away, but you keep a firm grip on {A
 kneelingService.add(`{A:His} {A:cock.thickCock} swings as {A:he} struggles to rise, unable to pull {A:his} ass free of your grip.`,
   [playerB, isViolent, aVisibleCock]);
 
+
+
 missionary.add(`{B:name} lowers {B:him}self flat onto {B:his} stomach with a contented sigh as you settle on top of {B:him}.`,
   [playerA, isLoving]);
 missionary.add(`With obvious affection, {B:name} stretches out beneath you, letting you cover {B:his} body with your own.`,
@@ -352,6 +358,8 @@ missionary.add(`{A:name} struggles, but you keep pulling {A:him} down on top of 
   [playerB, isViolent]);
 missionary.add(`{A:His} {A:cock.thickCock} is trapped as {A:he} thrashes on top of you, unable to break free.`,
   [playerB, isViolent, aVisibleCock]);
+
+
 
 straddle.add(`You climb up onto {B:name's} back, straddling {B:his} waist as {B:he} settles down flat with a contented sigh.`,
   [playerA, isLoving]);

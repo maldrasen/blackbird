@@ -131,6 +131,8 @@ rearrange.add(`{A:name} struggles, but you settle astride {A:him} regardless.`,
 rearrange.add(`{A:his} {A:cock.thickCock} swings as {A:he} thrashes beneath you.`,
   [playerB, isViolent, aVisibleCock]);
 
+
+
 cowgirlReversed.add(`{B:name} smiles and turns around atop you, still straddling your hips but now facing your feet.`,
   [playerA, isLoving]);
 cowgirlReversed.add(`With a playful grin, {B:name} spins around, keeping {B:his} hips settled on yours as {B:he} faces away.`,
@@ -187,6 +189,8 @@ cowgirlReversed.add(`{A:name} thrashes as you turn around atop {A:him} anyway.`,
   [playerB, isViolent]);
 cowgirlReversed.add(`{A:name} struggles, but you spin around regardless.`,
   [playerB, isViolent]);
+
+
 
 // Moving into face-sitting, "a" is always the one shifting forward to sit on "b's" face.
 faceSitting.add(`You scoot forward, settling your hips over {B:name's} face as {B:he} tilts {B:his} head back with a warm smile, welcoming you.`,
@@ -245,6 +249,8 @@ faceSitting.add(`{A:name} thrashes as you grab {A:his} hips and pull {A:him} dow
   [playerB, isViolent]);
 faceSitting.add(`{A:name} struggles, but you pull {A:him} down onto your face regardless.`,
   [playerB, isViolent]);
+
+
 
 // Moving into straddle, "a" stays on top while "b" turns from face-up to face-down beneath them.
 straddle.add(`{B:name} smiles and rolls onto {B:his} stomach beneath you as you shift back to straddle {B:his} waist.`,
