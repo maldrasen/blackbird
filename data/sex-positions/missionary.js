@@ -103,7 +103,7 @@ rearrange.add(`You lie back, spreading your legs as {A:name} settles between the
   [playerB, isLoving, aVisibleCock]);
 rearrange.add(`{A:his} {A:breasts.bigSoftBreasts} sway forward as {A:name} leans down warmly, settling between your spread legs.`,
   [playerB, isLoving, aBigBreasts]);
-rearrange.add(`You lie back as {A:name} licks {A:his} lips hungrily, quickly settling between your spread legs.`,
+rearrange.add(`You lie back as {A:name} licks {A:his} lips hungrily, pushing {A:his} body between your spread legs.`,
   [playerB, isLustful]);
 rearrange.add(`{A:name} groans with want, urging you onto your back before settling eagerly between your thighs.`,
   [playerB, isLustful]);
