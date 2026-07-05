@@ -1,23 +1,26 @@
 global.WeaverPackage = function(id) {
   const options = [];
 
-  function add(text, requires=null) {
-    options.push({ text, requires });
+  // Add a template string written in the Weaver token format to the WeaverPackage
+  //  - The requirement can be omitted, a single function, or an array of functions that all need to pass.
+  //  - Weight defaults to 100. If nothing in the package has weight then all options are equally likely. Rare lines
+  //    can be added alongside them with something like weight:10 or frequent lines with weight:200
+  function add(text, requires=null, weight=100) {
+    options.push({ text, requires, weight });
   }
 
-  // The requirement can be omitted, a single function, or an array of functions that all need to pass.
   function meetsRequirement(option, context) {
     if (option.requires == null) { return true; }
     if (Array.isArray(option.requires)) { return option.requires.every(requirement => requirement(context)); }
     return option.requires(context);
   }
 
-  function pick(context) {
+  function pick(context={}) {
     const valid = [];
 
     options.forEach((option, index) => {
       if (meetsRequirement(option, context)) {
-        valid.push({ index, text:option.text });
+        valid.push({ index, text:option.text, weight:option.weight });
       }
     });
 
@@ -25,7 +28,11 @@ global.WeaverPackage = function(id) {
       throw new Error(`WeaverPackage(${id}) has no valid options.`);
     }
 
-    const chosen = Random.from(valid);
+    const frequencyMap = {};
+    valid.forEach(option => { frequencyMap[option.index] = option.weight; });
+
+    const chosenIndex = Number(Random.fromFrequencyMap(frequencyMap));
+    const chosen = valid.find(option => option.index === chosenIndex);
     return `<span data-package='${id}' data-option='${chosen.index}'>${chosen.text}</span>`;
   }
 
@@ -33,5 +40,4 @@ global.WeaverPackage = function(id) {
     add,
     pick
   });
-
 };

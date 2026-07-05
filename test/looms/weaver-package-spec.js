@@ -25,7 +25,9 @@ describe("WeaverPackage", function() {
     pkg.add('second',isYes);
     pkg.add('third',isYes);
 
-    Random.stubRoll(1);
+    // Options default to weight:100 each, so with 'second' and 'third' both valid the frequency map is {1:100,2:100}
+    // and Random.roll() is called with a total of 200. A stubbed roll of 150 falls in the second bucket ('third').
+    Random.stubRoll(150);
 
     expect(pkg.pick()).to.equal(`<span data-package='test.package' data-option='2'>third</span>`);
   });
@@ -34,6 +36,18 @@ describe("WeaverPackage", function() {
     const pkg = WeaverPackage('test.package');
     pkg.add('nope', () => false);
     expect(() => pkg.pick()).to.throw();
+  });
+
+  it('favors options with a higher weight', function() {
+    const pkg = WeaverPackage('test.package');
+    pkg.add('common', null, 100);
+    pkg.add('rare', null, 10);
+
+    // Frequency map is {0:100,1:10}, total 110. A stubbed roll of 105 lands past the first bucket (0-99), in the
+    // second ('rare').
+    Random.stubRoll(105);
+
+    expect(pkg.pick()).to.equal(`<span data-package='test.package' data-option='1'>rare</span>`);
   });
 
 });
