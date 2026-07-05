@@ -13,9 +13,7 @@ describe("WeaverPackage", function() {
 
     Random.stubRoll(0);
 
-    console.log(pkg.pick())
-
-    // expect(pkg.pick()).to.equal(`<span data-package='test.package' data-option='1'>yep</span>`);
+    expect(pkg.pick()).to.equal(`<span data-package='test.package' data-option='1'>yep</span>`);
   });
 
   it('keeps the data-option index tied to the original add() order, not the filtered list', function() {

@@ -10,12 +10,12 @@ global.WeaverPackage = function(id) {
 
     options.forEach((option, index) => {
 
-      console.log("Wat?",option)
-      console.log(option.requires)
+      console.log("???",option.requires, option.requires == null, typeof option.requires)
 
       // When there is no requirement
       if (options.requires == null) {
         console.log("No Requirements")
+        throw new Error('This should not happen...')
         valid.push({ index, text:option.text });
       }
 
