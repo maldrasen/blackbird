@@ -28,6 +28,7 @@ global.WeaverRequirements = (function() {
   return Object.freeze({
     playerIs: key => { return (context) => { return GameState.getPlayer() === context[key] }},
     withAttitude: code => { return (context) => { return context.attitude === code }},
+    withAction: code => { return (context) => { return context.action === code }},
     visibleBreasts: key => { return (context) => { return visibleBreasts(context,key); }},
     minimumBreastSize: (key,size) => { return (context) => { return minimumBreastSize(context,key,size); }},
     visibleCock: key => { return (context) => { return visibleCock(context,key); }},
