@@ -3,6 +3,11 @@
 // I wanted to separate bastards and bitches though as there's a definite gender difference between the two dialog
 // trees.
 
+const eager = WeaverPackage('bastard.propose-training.eager');
+const willing = WeaverPackage('bastard.propose-training.willing');
+const reluctant = WeaverPackage('bastard.propose-training.reluctant');
+const unwilling = WeaverPackage('bastard.propose-training.unwilling');
+
 Dialog.register(ArchetypeCode.bastard, DialogKeys.proposeTraining_Eager, context => {
   const partner = Character(context.T);
   const options = [];
@@ -84,4 +89,3 @@ Dialog.register(ArchetypeCode.bastard, DialogKeys.proposeTraining_Unwilling, con
 
   return Random.from(options);
 });
-
