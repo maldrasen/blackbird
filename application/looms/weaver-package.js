@@ -5,44 +5,24 @@ global.WeaverPackage = function(id) {
     options.push({ text, requires });
   }
 
+  // The requirement can be omitted, a single function, or an array of functions that all need to pass.
+  function meetsRequirement(option, context) {
+    if (option.requires == null) { return true; }
+    if (Array.isArray(option.requires)) { return option.requires.every(requirement => requirement(context)); }
+    return option.requires(context);
+  }
+
   function pick(context) {
     const valid = [];
 
     options.forEach((option, index) => {
-
-      console.log("???",option.requires, option.requires == null, typeof option.requires)
-
-      // When there is no requirement
-      if (options.requires == null) {
-        console.log("No Requirements")
-        throw new Error('This should not happen...')
+      if (meetsRequirement(option, context)) {
         valid.push({ index, text:option.text });
       }
-
-      // When the requirement is a single function.
-      if (options.requires != null && typeof option.requires === 'function') {
-
-        console.log("Single Function")
-
-        if (option.requires(context)) {
-          valid.push({ index, text:option.text });
-        }
-      }
-
-      // When the requirement is an array of functions.
-      if (options.requires != null && typeof option.requires === 'object') {
-
-        console.log("Function Array")
-
-        if (option.requires.every(requirement => requirement(context))) {
-          valid.push({ index, text:option.text });
-        }
-      }
-
     });
 
     if (valid.length === 0) {
-      throw new Error(`TextPackage(${id}) has no valid options.`);
+      throw new Error(`WeaverPackage(${id}) has no valid options.`);
     }
 
     const chosen = Random.from(valid);

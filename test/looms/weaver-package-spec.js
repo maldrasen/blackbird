@@ -1,15 +1,18 @@
 describe("WeaverPackage", function() {
 
+  function isYes() { return true; }
+  function isNo() { return false; }
+
   it('picks an option with no requires closure', function() {
     const pkg = WeaverPackage('test.package');
     pkg.add('hello');
     expect(pkg.pick()).to.equal(`<span data-package='test.package' data-option='0'>hello</span>`);
   });
 
-  it.only('excludes options whose requires() returns false', function() {
+  it('excludes options whose requires() returns false', function() {
     const pkg = WeaverPackage('test.package');
-    pkg.add('nope', () => false);
-    pkg.add('yep', () => true);
+    pkg.add('nope',isNo);
+    pkg.add('yep',[isYes,isYes]);
 
     Random.stubRoll(0);
 
@@ -18,9 +21,9 @@ describe("WeaverPackage", function() {
 
   it('keeps the data-option index tied to the original add() order, not the filtered list', function() {
     const pkg = WeaverPackage('test.package');
-    pkg.add('filtered-out', () => false);
-    pkg.add('second', () => true);
-    pkg.add('third', () => true);
+    pkg.add('filtered-out',[isYes,isNo]);
+    pkg.add('second',isYes);
+    pkg.add('third',isYes);
 
     Random.stubRoll(1);
 
