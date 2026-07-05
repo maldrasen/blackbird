@@ -1,14 +1,17 @@
 global.Dialog = (function() {
 
-  const dialog = {};
+  const dialogs = {};
 
-  Object.values(DialogCategory).forEach(category => { dialog[category] = {}; });
-  Object.values(ArchetypeCode).forEach(archetype => { dialog[archetype] = {}; });
-  Object.values(SexStyle).forEach(style => { dialog[style] = {}; })
+  Object.values(DialogCategory).forEach(category => { dialogs[category] = {}; });
+  Object.values(ArchetypeCode).forEach(archetype => { dialogs[archetype] = {}; });
+  Object.values(SexStyle).forEach(style => { dialogs[style] = {}; })
 
-  // The type should be a personality archetype, or an archetype's sex style.
-  function register(type, code, weaverPackage) {
-    dialog[type][code] = weaverPackage
+  // When registered, Dialogs need a type or category and a code. Dialog options for different personality archetypes
+  // are stored under their types, with the dialog code, while other dialog categories only have a single object for
+  // their dialog options. The dialogData can be a function called to pick a specific weaver package given a context,
+  // or the weaver package itself.
+  function register(type, code, dialog) {
+    dialogs[type][code] = dialog;
   }
 
   // TODO: We could include a fallback option to get a generic version of the
@@ -17,16 +20,10 @@ global.Dialog = (function() {
   //   have more anal related dialog but fall back on slut for most dialog.
   //   Same could be done with a big-titted bimbo or a big-cock himbo.
   function lookupTemplate(type, code, context={}) {
-    const weaverPackage = dialog[type][code];
+    const dialog = dialogs[type][code];
 
-    // TODO: Until we get update all of the Dialogs.
-    if (typeof weaverPackage === 'function') {
-      return weaverPackage(context);
-    }
-
-    if (typeof weaverPackage === 'object') {
-      return weaverPackage.pick(context);
-    }
+    if (typeof dialog === 'function') { return dialog(context); }
+    if (typeof dialog === 'object') { return dialog.pick(context); }
 
     return `<span class='dialog-error'>[Missing Dialog Template ${type}:${code}]</span>`
   }

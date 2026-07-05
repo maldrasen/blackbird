@@ -15,7 +15,7 @@ global.WeaverPackage = function(id) {
     return option.requires(context);
   }
 
-  function pick(context={}) {
+  function getValidOptions(context) {
     const valid = [];
 
     options.forEach((option, index) => {
@@ -23,6 +23,12 @@ global.WeaverPackage = function(id) {
         valid.push({ index, text:option.text, weight:option.weight });
       }
     });
+
+    return valid;
+  }
+
+  function pick(context={}) {
+    const valid = getValidOptions(context);
 
     if (valid.length === 0) {
       throw new Error(`WeaverPackage(${id}) has no valid options.`);
@@ -38,6 +44,7 @@ global.WeaverPackage = function(id) {
 
   return Object.freeze({
     add,
+    getValidOptions,
     pick
   });
 };
