@@ -51,12 +51,17 @@ global.PositionController = (function() {
     return canShift.length > 0 ? Random.from(canShift) : null;
   }
 
+  // TODO: Once every SexPosition's moves use a WeaverPackage, this can drop the `generator` fallback.
+  function getMoveMessage(move, moveContext) {
+    return (move.package != null) ? move.package.pick(moveContext) : move.generator(moveContext);
+  }
+
   function shiftPosition(sexAction, move) {
     const state = TrainingSystem.getState();
     const context = state.getPositionContext();
     const attitude = state.getAttitude();
     const [first, second] = move.swap ? [context.B, context.A] : [context.A, context.B];
-    const message = move.generator({ A:first, B:second, attitude:attitude, action:sexAction.getCode() });
+    const message = getMoveMessage(move, { A:first, B:second, attitude:attitude, action:sexAction.getCode() });
 
     state.addMessage(TrainingMessage.shiftPosition, message);
     state.setPositionData({ code:move.code, first:first, second:second });

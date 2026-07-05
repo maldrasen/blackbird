@@ -15,9 +15,12 @@ global.SexPosition = (function() {
     const position = { ...$sexPositions[code] };
 
     function getRearrange(context) {
-      return (typeof position.generateRearrange === 'function') ?
-        Weaver(context).weave(position.generateRearrange(context)):
-        Weaver.formatWarning(`[SexPosition(${code}).generateRearrange()]`);
+      if (position.rearrangePackage != null) { return Weaver(context).weave(position.rearrangePackage.pick(context)); }
+
+      // TODO: Get rid of this once we've converted all the position files.
+      if (typeof position.generateRearrange === 'function') { return Weaver(context).weave(position.generateRearrange(context)); }
+
+      return Weaver.formatWarning(`[SexPosition(${code}).generateRearrange()]`);
     }
 
     return Object.freeze({
