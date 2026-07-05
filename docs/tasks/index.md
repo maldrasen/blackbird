@@ -11,8 +11,8 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [008] Position Change Text #training — [008-position-change-text.md](008-position-change-text.md)
 - [009] Descriptions #character — [009-descriptions.md](009-descriptions.md)
 - [011] Project Stuff — [011-project-stuff.md](011-project-stuff.md)
+- [045] Implement the Enlighten View — [045-implement-the-enlighten-view.md](045-implement-the-enlighten-view.md)
 - [046] Create Text Packages — [046-create-text-packages.md](046-create-text-packages.md)
-- [45] Implement the Enlighten View — [045-implement-the-enlighten-view.md](045-implement-the-enlighten-view.md)
 
 ## Priority 3
 
@@ -35,8 +35,8 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [035] Update Consent Calculations #training — [035-update-consent-calculations.md](035-update-consent-calculations.md)
 - [036] Update Sensation Calculations #training — [036-update-sensation-calculations.md](036-update-sensation-calculations.md)
 - [037] Denial Reactions #training — [037-denial-reactions.md](037-denial-reactions.md)
-- [38] SexAction isAvailable() and isEnabled() — [038-sexaction-isavailable-and-isenabled.md](038-sexaction-isavailable-and-isenabled.md)
-- [44] Unwilling Actions Require Hands — [044-unwilling-actions-require-hands.md](044-unwilling-actions-require-hands.md)
+- [038] SexAction isAvailable() and isEnabled() — [038-sexaction-isavailable-and-isenabled.md](038-sexaction-isavailable-and-isenabled.md)
+- [044] Unwilling Actions Require Hands — [044-unwilling-actions-require-hands.md](044-unwilling-actions-require-hands.md)
 
 ## Priority 4
 

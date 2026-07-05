@@ -26,10 +26,10 @@ const files = fs.readdirSync(TASKS_DIR).filter(name => name.endsWith('.md') && n
 
 const tasks = files.map(name => {
   const frontmatter = parseFrontmatter(fs.readFileSync(`${TASKS_DIR}/${name}`, 'utf8'));
-  return { file: name, ...frontmatter };
+  return frontmatter && { file: name, ...frontmatter };
 }).filter(Boolean);
 
-tasks.sort((a, b) => Number(a.priority) - Number(b.priority) || a.id.localeCompare(b.id));
+tasks.sort((a, b) => Number(a.priority) - Number(b.priority) || Number(a.id) - Number(b.id));
 
 let output = '# Task Index\n\nGenerated automatically by `bin/compile-task-index.js`. Do not edit by hand.\n';
 
