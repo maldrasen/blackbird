@@ -106,7 +106,7 @@ global.Character = function(id) {
   // anti-preferences and at what strength.
   function hasSexualPreference(code, threshold) {
     const value = SexualPreferencesComponent.lookup(id)[code];
-    return (value != null) ? value > threshold : false;
+    return (value != null) ? value >= threshold : false;
   }
 
   function isGay() {
