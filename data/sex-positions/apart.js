@@ -30,20 +30,15 @@ function rearrangeForStriptease(context) {
   const options = [];
 
   if (context.attitude === Attitude.loving) {
-    options.push(`{B:name} steps back with a warm smile, putting a little distance between you as {B:he} settles
-      into position, clearly happy to put on a show just for you.`);
-    options.push(`With obvious affection, {B:name} backs a few steps away, {B:his} eyes locked on yours as {B:he}
-      gets ready to perform, fingers already toying with the hem of {B:his} clothes.`);
-    options.push(`{B:name} smiles warmly, taking a few steps back and giving you an inviting little twirl to show
-      off what {B:he}'s about to take off.`);
+    options.push(`{B:name} steps back with a warm smile, putting a little distance between you as {B:he} settles into position, clearly happy to put on a show just for you.`);
+    options.push(`With obvious affection, {B:name} backs a few steps away, {B:his} eyes locked on yours as {B:he} gets ready to perform, fingers already toying with the hem of {B:his} clothes.`);
+    options.push(`{B:name} smiles warmly, taking a few steps back and giving you an inviting little twirl to show off what {B:he}'s about to take off.`);
   }
 
   if (context.attitude === Attitude.lustful) {
     options.push(`{B:name} steps back with a hungry grin, clearly eager to put on a show for you.`);
-    options.push(`With a needy exhale, {B:name} backs away, already biting {B:his} lip in anticipation of
-      performing, fingers toying with a button.`);
-    options.push(`{B:name} steps back and strikes a teasing pose, already tugging at {B:his} clothes with obvious
-      impatience.`);
+    options.push(`With a needy exhale, {B:name} backs away, already biting {B:his} lip in anticipation of performing, fingers toying with a button.`);
+    options.push(`{B:name} steps back and strikes a teasing pose, already tugging at {B:his} clothes with obvious impatience.`);
   }
 
   if (context.attitude === Attitude.accepting) {
@@ -68,17 +63,15 @@ function rearrangeForStriptease(context) {
   return Random.from(options);
 }
 
-// The player is always in the A position for a forced position. Unlike the striptease, a foot massage doesn't
-// require the partner's active participation to happen, so a violent attitude just means physically resisting
-// rather than refusing outright.
+// The massage-feet action is technically in the apart position, but only because there's no actual "foot massage
+// position". Going in to this position and out of this position will always require the players to rearrange into
+// whatever the next position is.
 function rearrangeForFootMassage(context) {
   const options = [];
 
   if (context.attitude === Attitude.loving) {
-    options.push(`{B:name} settles down with a warm smile, stretching {B:his} legs out toward you as you kneel to
-      take {B:his} foot in your hands.`);
-    options.push(`With obvious affection, {B:name} sits back and offers you {B:his} foot, clearly looking forward
-      to your touch.`);
+    options.push(`{B:name} settles down with a warm smile, stretching {B:his} legs out toward you as you kneel to take {B:his} foot in your hands.`);
+    options.push(`With obvious affection, {B:name} sits back and offers you {B:his} foot, clearly looking forward to your touch.`);
   }
 
   if (context.attitude === Attitude.lustful) {
@@ -102,10 +95,8 @@ function rearrangeForFootMassage(context) {
   }
 
   if (context.attitude === Attitude.violent) {
-    options.push(`{B:name} tries to pull away, but you catch {B:his} ankle and force {B:him} to sit as you take
-      {B:his} foot in your hands.`);
-    options.push(`{B:name} thrashes as you pull {B:him} down and pin {B:his} leg still, forcing {B:his} foot into
-      your grip.`);
+    options.push(`{B:name} tries to pull away, but you catch {B:his} ankle and force {B:him} to sit as you take {B:his} foot in your hands.`);
+    options.push(`{B:name} thrashes as you pull {B:him} down and pin {B:his} leg still, forcing {B:his} foot into your grip.`);
   }
 
   return Random.from(options);
