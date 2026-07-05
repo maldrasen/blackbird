@@ -1,3 +1,12 @@
+const playerA = WeaverRequirements.playerIs('A');
+const playerB = WeaverRequirements.playerIs('B');
+
+const rearrange = WeaverPackage('kneeling-service.rearrange');
+const centipede = WeaverPackage('kneeling-service.move-to-centipede');
+const kneeling = WeaverPackage('kneeling-service.move-to-kneeling');
+const standingReversed = WeaverPackage('kneeling-service.move-to-standing-reversed');
+const lapSittingReversed = WeaverPackage('kneeling-service.move-to-lap-sitting-reversed');
+
 // First standing with Second on knees behind first. (Rimming Position)
 SexPosition.register('kneeling-service',{
   name: 'Service Kneeling',
@@ -15,86 +24,26 @@ SexPosition.register('kneeling-service',{
   },
 
   moves:[
-    { code:'centipede', generator:moveCentipede, swap:true },
-    { code:'kneeling', generator:moveKneeling },
-    { code:'standing-reversed', generator:moveStanding, swap:true },
-    { code:'lap-sitting-reversed', generator:moveLapSitting, swap:true },
+    { code:'centipede', package:centipede, swap:true },
+    { code:'kneeling', package:kneeling },
+    { code:'standing-reversed', package:standingReversed, swap:true },
+    { code:'lap-sitting-reversed', package:lapSittingReversed, swap:true },
   ],
 
-  generateRearrange: rearrange
+  rearrangePackage: rearrange,
 });
 
-function rearrange(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
+rearrange.add(`[Rearrange to kneeling service with player standing with partner attitude {@attitude}]`, [playerA]);
+rearrange.add(`[Rearrange to kneeling service with player on knees with partner attitude {@attitude}]`, [playerB]);
 
-  if (a.isPlayer()) {
-    return `[Rearrange to kneeling service with player standing with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Rearrange to kneeling service with player on knees with partner attitude ${context.attitude}]`;
-  }
+centipede.add(`You bend over, kneeling on the ground, presenting your ass to {B:name}.`, [playerA]);
+centipede.add(`{A:name} bends over, kneeling on the ground, presenting {A:his} ass to you.`, [playerB]);
 
-  return Random.from(options);
-}
+kneeling.add(`[Shift to kneeling with player standing with partner attitude {@attitude}]`, [playerA]);
+kneeling.add(`[Shift to kneeling with player kneeling with partner attitude {@attitude}]`, [playerB]);
 
-function moveCentipede(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
+standingReversed.add(`[Shift to standing reversed with player standing behind with partner attitude {@attitude}]`, [playerA]);
+standingReversed.add(`[Shift to standing reversed with player standing in front with partner attitude {@attitude}]`, [playerB]);
 
-  if (a.isPlayer()) {
-    options.push('You bend over, kneeling on the ground, presenting your ass to {B:name}.');
-  }
-  if (b.isPlayer()) {
-    options.push('{A:name} bends over, kneeling on the ground, presenting {A:his} ass to you.');
-  }
-
-  return Random.from(options);
-}
-
-function moveKneeling(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to kneeling with player standing with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to kneeling with player kneeling with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
-
-function moveStanding(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to standing reversed with player standing behind with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to standing reversed with player standing in front with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
-
-function moveLapSitting(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to lap sitting reversed with player on bottom with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to lap sitting reversed with player on top with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
+lapSittingReversed.add(`[Shift to lap sitting reversed with player on bottom with partner attitude {@attitude}]`, [playerA]);
+lapSittingReversed.add(`[Shift to lap sitting reversed with player on top with partner attitude {@attitude}]`, [playerB]);

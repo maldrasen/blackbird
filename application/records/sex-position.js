@@ -14,21 +14,12 @@ global.SexPosition = (function() {
 
     const position = { ...$sexPositions[code] };
 
-    function getRearrange(context) {
-      if (position.rearrangePackage != null) { return Weaver(context).weave(position.rearrangePackage.pick(context)); }
-
-      // TODO: Get rid of this once we've converted all the position files.
-      if (typeof position.generateRearrange === 'function') { return Weaver(context).weave(position.generateRearrange(context)); }
-
-      return Weaver.formatWarning(`[SexPosition(${code}).generateRearrange()]`);
-    }
-
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return position.name; },
       getAlignment: () => { return position.alignment; },
       getMoves: () => { return position.moves; },
-      getRearrange,
+      getRearrangePackage: () => { return position.rearrangePackage },
     });
   }
 

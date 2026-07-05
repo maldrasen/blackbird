@@ -44,8 +44,6 @@ SexPosition.register('missionary',{
     },
   },
 
-  // TODO: Rather than returning a generator (which just calls the package with the context) we should return the package.
-
   // We can move from standing to missionary, but not back to standing.
   moves:[
     { code:'lap-sitting', package:lapSitting, swap:true },

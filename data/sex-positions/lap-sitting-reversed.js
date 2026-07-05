@@ -1,3 +1,11 @@
+const playerA = WeaverRequirements.playerIs('A');
+const playerB = WeaverRequirements.playerIs('B');
+
+const rearrange = WeaverPackage('lap-sitting-reversed.rearrange');
+const faceSittingReversed = WeaverPackage('lap-sitting-reversed.move-to-face-sitting-reversed');
+const lapSitting = WeaverPackage('lap-sitting-reversed.move-to-lap-sitting');
+const standingReversed = WeaverPackage('lap-sitting-reversed.move-to-standing-reversed');
+
 // Second straddling First's lap facing away from them.
 SexPosition.register('lap-sitting-reversed',{
   name: 'Reverse Lap Sitting',
@@ -14,70 +22,22 @@ SexPosition.register('lap-sitting-reversed',{
   },
 
   moves:[
-    { code:'face-sitting-reversed', generator:moveFaceSitting, swap:true },
-    { code:'lap-sitting', generator:moveLapSitting },
-    { code:'standing-reversed', generator:moveStanding },
+    { code:'face-sitting-reversed', package:faceSittingReversed, swap:true },
+    { code:'lap-sitting', package:lapSitting },
+    { code:'standing-reversed', package:standingReversed },
   ],
 
-  generateRearrange: rearrange
+  rearrangePackage: rearrange,
 });
 
-function rearrange(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
+rearrange.add(`[Rearrange to reverse lap sitting with player on bottom with partner attitude {@attitude}]`, [playerA]);
+rearrange.add(`[Rearrange to reverse lap sitting with player on top with partner attitude {@attitude}]`, [playerB]);
 
-  if (a.isPlayer()) {
-    return `[Rearrange to reverse lap sitting with player on bottom with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Rearrange to reverse lap sitting with player on top with partner attitude ${context.attitude}]`;
-  }
+faceSittingReversed.add(`[Shift to face sitting reversed with player on top with partner attitude {@attitude}]`, [playerA]);
+faceSittingReversed.add(`[Shift to face sitting reversed with player on bottom with partner attitude {@attitude}]`, [playerB]);
 
-  return Random.from(options);
-}
+lapSitting.add(`[Shift to lap sitting reversed with player on bottom with partner attitude {@attitude}]`, [playerA]);
+lapSitting.add(`[Shift to lap sitting reversed with player on top with partner attitude {@attitude}]`, [playerB]);
 
-function moveFaceSitting(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to face sitting reversed with player on top with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to face sitting reversed with player on bottom with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
-
-function moveLapSitting(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to lap sitting reversed with player on bottom with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to lap sitting reversed with player on top with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
-
-function moveStanding(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to standing reversed with player standing behind with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to standing reversed with player standing in front with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
+standingReversed.add(`[Shift to standing reversed with player standing behind with partner attitude {@attitude}]`, [playerA]);
+standingReversed.add(`[Shift to standing reversed with player standing in front with partner attitude {@attitude}]`, [playerB]);

@@ -1,3 +1,12 @@
+const playerA = WeaverRequirements.playerIs('A');
+const playerB = WeaverRequirements.playerIs('B');
+
+const rearrange = WeaverPackage('face-sitting-reversed.rearrange');
+const cowgirlReversed = WeaverPackage('face-sitting-reversed.move-to-cowgirl-reversed');
+const lapSittingReversed = WeaverPackage('face-sitting-reversed.move-to-lap-sitting-reversed');
+const faceSitting = WeaverPackage('face-sitting-reversed.move-to-face-sitting');
+const sixtyNine = WeaverPackage('face-sitting-reversed.move-to-sixty-nine');
+
 // First sitting on second's face, facing second's feet.
 SexPosition.register('face-sitting-reversed',{
   name: 'Reversed Face Sitting',
@@ -16,86 +25,26 @@ SexPosition.register('face-sitting-reversed',{
   },
 
   moves:[
-    { code:'cowgirl-reversed', generator:moveCowgirl, swap:true },
-    { code:'lap-sitting-reversed', generator:moveLapSitting, swap:true },
-    { code:'face-sitting', generator:moveFaceSitting },
-    { code:'sixty-nine', generator:moveSixtyNine },
+    { code:'cowgirl-reversed', package:cowgirlReversed, swap:true },
+    { code:'lap-sitting-reversed', package:lapSittingReversed, swap:true },
+    { code:'face-sitting', package:faceSitting },
+    { code:'sixty-nine', package:sixtyNine },
   ],
 
-  generateRearrange: rearrange
+  rearrangePackage: rearrange,
 });
 
-function rearrange(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
+rearrange.add(`[Rearrange to reverse face sitting with player on top with partner attitude {@attitude}]`, [playerA]);
+rearrange.add(`[Rearrange to reverse face sitting with player on bottom with partner attitude {@attitude}]`, [playerB]);
 
-  if (a.isPlayer()) {
-    return `[Rearrange to reverse face sitting with player on top with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Rearrange to reverse face sitting with player on bottom with partner attitude ${context.attitude}]`;
-  }
+cowgirlReversed.add(`[Shift to cowgirl reversed with player on bottom with partner attitude {@attitude}]`, [playerA]);
+cowgirlReversed.add(`[Shift to cowgirl reversed with player on top with partner attitude {@attitude}]`, [playerB]);
 
-  return Random.from(options);
-}
+lapSittingReversed.add(`[Shift to lap sitting reversed with player on bottom with partner attitude {@attitude}]`, [playerA]);
+lapSittingReversed.add(`[Shift to lap sitting reversed with player on top with partner attitude {@attitude}]`, [playerB]);
 
-function moveCowgirl(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
+faceSitting.add(`[Shift to face sitting with player on top with partner attitude {@attitude}]`, [playerA]);
+faceSitting.add(`[Shift to face sitting with player on bottom with partner attitude {@attitude}]`, [playerB]);
 
-  if (a.isPlayer()) {
-    return `[Shift to cowgirl reversed with player on bottom with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to cowgirl reversed with player on top with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
-
-function moveLapSitting(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to lap sitting reversed with player on bottom with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to lap sitting reversed with player on top with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
-
-function moveFaceSitting(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to face sitting with player on top with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to face sitting with player on bottom with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
-
-function moveSixtyNine(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to sixty nine with player on top with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to sixty nine with player on bottom with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
+sixtyNine.add(`[Shift to sixty nine with player on top with partner attitude {@attitude}]`, [playerA]);
+sixtyNine.add(`[Shift to sixty nine with player on bottom with partner attitude {@attitude}]`, [playerB]);

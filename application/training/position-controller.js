@@ -51,19 +51,14 @@ global.PositionController = (function() {
     return canShift.length > 0 ? Random.from(canShift) : null;
   }
 
-  // TODO: Once every SexPosition's moves use a WeaverPackage, this can drop the `generator` fallback.
-  function getMoveMessage(move, moveContext) {
-    return (move.package != null) ? move.package.pick(moveContext) : move.generator(moveContext);
-  }
-
   function shiftPosition(sexAction, move) {
     const state = TrainingSystem.getState();
     const context = state.getPositionContext();
     const attitude = state.getAttitude();
     const [first, second] = move.swap ? [context.B, context.A] : [context.A, context.B];
-    const message = getMoveMessage(move, { A:first, B:second, attitude:attitude, action:sexAction.getCode() });
+    const moveContext = { A:first, B:second, attitude:attitude, action:sexAction.getCode(), previousPosition:context };
 
-    state.addMessage(TrainingMessage.shiftPosition, message);
+    state.addMessage(TrainingMessage.shiftPosition, getMoveMessage(move, moveContext));
     state.setPositionData({ code:move.code, first:first, second:second });
 
     TrainingSystem.checkPersistedActions(sexAction);
@@ -103,7 +98,7 @@ global.PositionController = (function() {
     const positionContext = { A:positionData.first, B:positionData.second, attitude:state.getAttitude() };
 
     state.removeAllPersistedActions();
-    state.addMessage(TrainingMessage.changePosition, position.getRearrange(positionContext));
+    state.addMessage(TrainingMessage.changePosition, getRearrangeMessage(position, positionContext));
     state.setPositionData(positionData)
   }
 
@@ -120,9 +115,17 @@ global.PositionController = (function() {
       const positionContext = { A:first, B:second, attitude:state.getAttitude(), action:sexAction.getCode() };
 
       state.removeAllPersistedActions();
-      state.addMessage(TrainingMessage.changePosition, position.getRearrange(positionContext));
+      state.addMessage(TrainingMessage.changePosition, getRearrangeMessage(position, positionContext));
       state.setPositionData({ code:forcePosition.code, first:first, second:second });
     }
+  }
+
+  function getRearrangeMessage(position, context) {
+    return Weaver(context).weave(position.getRearrangePackage().pick(context));
+  }
+
+  function getMoveMessage(move, context) {
+    return Weaver(context).weave(move.package.pick(context));
   }
 
   return Object.freeze({

@@ -1,3 +1,12 @@
+const playerA = WeaverRequirements.playerIs('A');
+const playerB = WeaverRequirements.playerIs('B');
+
+const rearrange = WeaverPackage('lap-sitting.rearrange');
+const faceSitting = WeaverPackage('lap-sitting.move-to-face-sitting');
+const lapSittingReversed = WeaverPackage('lap-sitting.move-to-lap-sitting-reversed');
+const missionary = WeaverPackage('lap-sitting.move-to-missionary');
+const standing = WeaverPackage('lap-sitting.move-to-standing');
+
 // Second straddling First's lap facing them.
 SexPosition.register('lap-sitting',{
   name: 'Lap Sitting',
@@ -17,78 +26,25 @@ SexPosition.register('lap-sitting',{
   },
 
   moves:[
-    { code:'face-sitting', generator:moveFaceSitting, swap:true },
-    { code:'lap-sitting-reversed', generator:moveLapSitting },
-    { code:'missionary', generator:moveMissionary, swap:true },
-    { code:'standing', generator:moveStanding },
+    { code:'face-sitting', package:faceSitting, swap:true },
+    { code:'lap-sitting-reversed', package:lapSittingReversed },
+    { code:'missionary', package:missionary, swap:true },
+    { code:'standing', package:standing },
   ],
 
-  generateRearrange: rearrange
+  rearrangePackage: rearrange,
 });
 
-function rearrange(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
+rearrange.add(`[Rearrange to lap sitting with player on bottom with partner attitude {@attitude}]`, [playerA]);
+rearrange.add(`[Rearrange to lap sitting with player on top with partner attitude {@attitude}]`, [playerB]);
 
-  if (a.isPlayer()) {
-    return `[Rearrange to lap sitting with player on bottom with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Rearrange to lap sitting with player on top with partner attitude ${context.attitude}]`;
-  }
+faceSitting.add(`[Shift to face sitting with player on top with partner attitude {@attitude}]`, [playerA]);
+faceSitting.add(`[Shift to face sitting with player on bottom with partner attitude {@attitude}]`, [playerB]);
 
-  return Random.from(options);
-}
+lapSittingReversed.add(`[Shift to lap sitting reversed with player on bottom with partner attitude {@attitude}]`, [playerA]);
+lapSittingReversed.add(`[Shift to lap sitting reversed with player on top with partner attitude {@attitude}]`, [playerB]);
 
+missionary.add(`[Shift to missionary with player on top with partner attitude {@attitude}]`, [playerA]);
+missionary.add(`[Shift to missionary with player on bottom with partner attitude {@attitude}]`, [playerB]);
 
-function moveFaceSitting(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to face sitting with player on top with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to face sitting with player on bottom with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
-
-function moveLapSitting(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to lap sitting reversed with player on bottom with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to lap sitting reversed with player on top with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
-
-function moveMissionary(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to missionary with player on top with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to missionary with player on bottom with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
-
-function moveStanding(context) {
-  return `[Shift to standing with partner attitude ${context.attitude}]`;
-  // const options = [];
-  // return Random.from(options);
-}
+standing.add(`[Shift to standing with partner attitude {@attitude}]`);

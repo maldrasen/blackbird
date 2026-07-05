@@ -1,3 +1,11 @@
+const playerA = WeaverRequirements.playerIs('A');
+const playerB = WeaverRequirements.playerIs('B');
+
+const rearrange = WeaverPackage('face-sitting.rearrange');
+const cowgirl = WeaverPackage('face-sitting.move-to-cowgirl');
+const lapSitting = WeaverPackage('face-sitting.move-to-lap-sitting');
+const faceSittingReversed = WeaverPackage('face-sitting.move-to-face-sitting-reversed');
+
 // First sitting on second's face, facing forward. Cock sucking could
 // technically be possible from this position, but it would require too many
 // checks for things like throat depth, and the angle is weird.
@@ -16,70 +24,22 @@ SexPosition.register('face-sitting',{
   },
 
   moves:[
-    { code:'cowgirl', generator:moveCowgirl, swap:true },
-    { code:'lap-sitting', generator:moveLapSitting, swap:true },
-    { code:'face-sitting-reversed', generator:moveFaceSitting },
+    { code:'cowgirl', package:cowgirl, swap:true },
+    { code:'lap-sitting', package:lapSitting, swap:true },
+    { code:'face-sitting-reversed', package:faceSittingReversed },
   ],
 
-  generateRearrange: rearrange
+  rearrangePackage: rearrange,
 });
 
-function rearrange(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
+rearrange.add(`[Rearrange to face sitting with player on top with partner attitude {@attitude}]`, [playerA]);
+rearrange.add(`[Rearrange to face sitting with player on bottom with partner attitude {@attitude}]`, [playerB]);
 
-  if (a.isPlayer()) {
-    return `[Rearrange to face sitting with player on top with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Rearrange to face sitting with player on bottom with partner attitude ${context.attitude}]`;
-  }
+cowgirl.add(`[Shift to cowgirl with player on bottom with partner attitude {@attitude}]`, [playerA]);
+cowgirl.add(`[Shift to cowgirl with player on top with partner attitude {@attitude}]`, [playerB]);
 
-  return Random.from(options);
-}
+lapSitting.add(`[Shift to lap sitting with player on bottom with partner attitude {@attitude}]`, [playerA]);
+lapSitting.add(`[Shift to lap sitting with player on top with partner attitude {@attitude}]`, [playerB]);
 
-function moveCowgirl(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to cowgirl with player on bottom with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to cowgirl with player on top with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
-
-function moveLapSitting(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to lap sitting with player on bottom with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to lap sitting with player on top with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
-
-function moveFaceSitting(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to face sitting reversed with player on top with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to face sitting reversed with player on bottom with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
+faceSittingReversed.add(`[Shift to face sitting reversed with player on top with partner attitude {@attitude}]`, [playerA]);
+faceSittingReversed.add(`[Shift to face sitting reversed with player on bottom with partner attitude {@attitude}]`, [playerB]);

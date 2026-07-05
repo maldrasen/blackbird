@@ -1,3 +1,10 @@
+const playerA = WeaverRequirements.playerIs('A');
+const playerB = WeaverRequirements.playerIs('B');
+
+const rearrange = WeaverPackage('spooning.rearrange');
+const doggyStyle = WeaverPackage('spooning.move-to-doggy-style');
+const missionaryReversed = WeaverPackage('spooning.move-to-missionary-reversed');
+
 // First lying on side behind Second. Second has back to first.
 SexPosition.register('spooning',{
   name: 'Spooning',
@@ -15,54 +22,18 @@ SexPosition.register('spooning',{
 
   // We can move from standing reversed to spooning, but not back to standing.
   moves:[
-    { code:'doggy-style', generator:moveDoggyStyle },
-    { code:'missionary-reversed', generator:moveMissionary },
+    { code:'doggy-style', package:doggyStyle },
+    { code:'missionary-reversed', package:missionaryReversed },
   ],
 
-  generateRearrange: rearrange
+  rearrangePackage: rearrange,
 });
 
-function rearrange(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
+rearrange.add(`[Rearrange to spooning with player behind partner with partner attitude {@attitude}]`, [playerA]);
+rearrange.add(`[Rearrange to spooning with player in front of partner with partner attitude {@attitude}]`, [playerB]);
 
-  if (a.isPlayer()) {
-    return `[Rearrange to spooning with player behind partner with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Rearrange to spooning with player in front of partner with partner attitude ${context.attitude}]`;
-  }
+doggyStyle.add(`[Shift to doggy style with player in back with partner attitude {@attitude}]`, [playerA]);
+doggyStyle.add(`[Shift to doggy style with player in front with partner attitude {@attitude}]`, [playerB]);
 
-  return Random.from(options);
-}
-
-function moveDoggyStyle(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to doggy style with player in back with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to doggy style with player in front with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
-
-function moveMissionary(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to missionary with player on top with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to missionary with player on bottom with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
+missionaryReversed.add(`[Shift to missionary with player on top with partner attitude {@attitude}]`, [playerA]);
+missionaryReversed.add(`[Shift to missionary with player on bottom with partner attitude {@attitude}]`, [playerB]);

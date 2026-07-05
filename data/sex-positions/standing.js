@@ -1,3 +1,12 @@
+const playerA = WeaverRequirements.playerIs('A');
+const playerB = WeaverRequirements.playerIs('B');
+
+const rearrange = WeaverPackage('standing.rearrange');
+const kneeling = WeaverPackage('standing.move-to-kneeling');
+const lapSitting = WeaverPackage('standing.move-to-lap-sitting');
+const missionary = WeaverPackage('standing.move-to-missionary');
+const standingReversed = WeaverPackage('standing.move-to-standing-reversed');
+
 // First and Second standing in front of each other, facing each other.
 SexPosition.register('standing',{
   name: 'Standing',
@@ -22,81 +31,32 @@ SexPosition.register('standing',{
   // partner. This becomes important when we need to determine if this position works for how the next action needs
   // the character's parts to be aligned. Standing reversed A>B might work where standing reversed B>A would not. So,
   // when considering if a move works or not, we need to look at which roles the actors end up in each possible
-  // position. That gives us the correct alignment map to look at.
+  // position. That gives us the correct alignment map to look at. Both directions share the same package; the
+  // playerIs requirements sort out which text fits the roles the actors ended up in.
   moves:[
-    { code:'kneeling', generator:moveKneeling },
-    { code:'kneeling', generator:moveKneeling, swap:true },
-    { code:'lap-sitting', generator:moveLapSitting },
-    { code:'lap-sitting', generator:moveLapSitting, swap:true },
-    { code:'missionary', generator:moveMissionary },
-    { code:'missionary', generator:moveMissionary, swap:true },
-    { code:'standing-reversed', generator:moveStandingReversed },
-    { code:'standing-reversed', generator:moveStandingReversed, swap:true },
+    { code:'kneeling', package:kneeling },
+    { code:'kneeling', package:kneeling, swap:true },
+    { code:'lap-sitting', package:lapSitting },
+    { code:'lap-sitting', package:lapSitting, swap:true },
+    { code:'missionary', package:missionary },
+    { code:'missionary', package:missionary, swap:true },
+    { code:'standing-reversed', package:standingReversed },
+    { code:'standing-reversed', package:standingReversed, swap:true },
   ],
 
-  generateRearrange: rearrange
+  rearrangePackage: rearrange,
 });
 
-function rearrange(context) {
-  return `[Rearrange to standing with partner attitude ${context.attitude}]`;
-}
+rearrange.add(`[Rearrange to standing with partner attitude {@attitude}]`);
 
-function moveKneeling(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
+kneeling.add(`[Shift to kneeling with player still standing with partner attitude {@attitude}]`, [playerA]);
+kneeling.add(`[Shift to kneeling with player kneeling with partner attitude {@attitude}]`, [playerB]);
 
-  if (a.isPlayer()) {
-    return `[Shift to kneeling with player still standing with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to kneeling with player kneeling with partner attitude ${context.attitude}]`;
-  }
+lapSitting.add(`[Shift to lap sitting with player on bottom with partner attitude {@attitude}]`, [playerA]);
+lapSitting.add(`[Shift to lap sitting with player on top with partner attitude {@attitude}]`, [playerB]);
 
-  return Random.from(options);
-}
+missionary.add(`[Shift to missionary with player on top with partner attitude {@attitude}]`, [playerA]);
+missionary.add(`[Shift to missionary with player on bottom with partner attitude {@attitude}]`, [playerB]);
 
-function moveLapSitting(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to lap sitting with player on bottom with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to lap sitting with player on top with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
-
-function moveMissionary(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to missionary with player on top with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to missionary with player on bottom with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
-
-function moveStandingReversed(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to standing reversed with player standing behind with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to standing reversed with player standing in front with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
+standingReversed.add(`[Shift to standing reversed with player standing behind with partner attitude {@attitude}]`, [playerA]);
+standingReversed.add(`[Shift to standing reversed with player standing in front with partner attitude {@attitude}]`, [playerB]);

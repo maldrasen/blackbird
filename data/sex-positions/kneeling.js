@@ -1,3 +1,10 @@
+const playerA = WeaverRequirements.playerIs('A');
+const playerB = WeaverRequirements.playerIs('B');
+
+const rearrange = WeaverPackage('kneeling.rearrange');
+const standing = WeaverPackage('kneeling.move-to-standing');
+const kneelingService = WeaverPackage('kneeling.move-to-kneeling-service');
+
 // First standing in front of second. Second on knees in front of first.
 SexPosition.register('kneeling',{
   name: 'Kneeling',
@@ -16,57 +23,19 @@ SexPosition.register('kneeling',{
   },
 
   moves:[
-    { code:'standing', generator:moveStanding },
-    { code:'kneeling-service', generator:moveKneelingService },
+    { code:'standing', package:standing },
+    { code:'kneeling-service', package:kneelingService },
   ],
 
-  generateRearrange: rearrange
+  rearrangePackage: rearrange,
 });
 
-function rearrange(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
+rearrange.add(`[Rearrange to kneeling with player standing with partner attitude {@attitude}]`, [playerA]);
+rearrange.add(`[Rearrange to kneeling with player on knees with partner attitude {@attitude}]`, [playerB]);
 
-  if (a.isPlayer()) {
-    return `[Rearrange to kneeling with player standing with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Rearrange to kneeling with player on knees with partner attitude ${context.attitude}]`;
-  }
+// The context now includes the previousPosition so that we can figure out which character is standing. We'll need a
+// new closure that figures out which character wasn't standing in the last position.
+standing.add(`[Shift to standing with partner attitude {@attitude}]`);
 
-  return Random.from(options);
-}
-
-function moveStanding(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  // What was previous context? No way to know who stood up.
-
-  if (a.isPlayer()) {
-    return `[Shift to standing with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to standing with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-}
-
-function moveKneelingService(context) {
-  const a = Character(context.A);
-  const b = Character(context.B);
-  const options = [];
-
-  if (a.isPlayer()) {
-    return `[Shift to kneeling service with player standing with partner attitude ${context.attitude}]`;
-  }
-  if (b.isPlayer()) {
-    return `[Shift to kneeling service with player kneeling with partner attitude ${context.attitude}]`;
-  }
-
-  return Random.from(options);
-
-}
+kneelingService.add(`[Shift to kneeling service with player standing with partner attitude {@attitude}]`, [playerA]);
+kneelingService.add(`[Shift to kneeling service with player kneeling with partner attitude {@attitude}]`, [playerB]);

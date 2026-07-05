@@ -24,9 +24,7 @@ describe("SexPosition", function() {
         const key = `${direction}:[${code}->${move.code}|${context.attitude}]`;
 
         try {
-          // TODO: Only call package once all positions have been converted.
-          const text = move.package != null ? move.package.pick(context) : move.generator(context);
-          console.log(`${key} ${Weaver(context).weave(text)}`);
+          console.log(`${key} ${Weaver(context).weave(move.package.pick(context))}`);
           return;
         }
         catch(error) {
