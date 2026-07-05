@@ -7,8 +7,8 @@ global.Dialog = (function() {
   Object.values(SexStyle).forEach(style => { dialog[style] = {}; })
 
   // The type should be a personality archetype, or an archetype's sex style.
-  function register(type, code, template) {
-    dialog[type][code] = template
+  function register(type, code, weaverPackage) {
+    dialog[type][code] = weaverPackage
   }
 
   // TODO: We could include a fallback option to get a generic version of the
@@ -17,10 +17,15 @@ global.Dialog = (function() {
   //   have more anal related dialog but fall back on slut for most dialog.
   //   Same could be done with a big-titted bimbo or a big-cock himbo.
   function lookupTemplate(type, code, context={}) {
-    const generator = dialog[type][code];
+    const weaverPackage = dialog[type][code];
 
-    if (typeof generator === 'function') {
-      return generator(context)
+    // TODO: Until we get update all of the Dialogs.
+    if (typeof weaverPackage === 'function') {
+      return weaverPackage(context);
+    }
+
+    if (typeof weaverPackage === 'object') {
+      return weaverPackage.pick(context);
     }
 
     return `<span class='dialog-error'>[Missing Dialog Template ${type}:${code}]</span>`
