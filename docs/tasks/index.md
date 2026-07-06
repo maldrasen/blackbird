@@ -35,6 +35,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [037] Denial Reactions #training — [037-denial-reactions.md](037-denial-reactions.md)
 - [038] SexAction isAvailable() and isEnabled() — [038-sexaction-isavailable-and-isenabled.md](038-sexaction-isavailable-and-isenabled.md)
 - [044] Unwilling Actions Require Hands — [044-unwilling-actions-require-hands.md](044-unwilling-actions-require-hands.md)
+- [47] Add New Species — [047-add-new-species.md](047-add-new-species.md)
 
 ## Priority 4
 
