@@ -8,7 +8,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [003] Training Systems #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
 - [006] Attitudes #training — [006-attitudes.md](006-attitudes.md)
 - [007] Position Attitude Requirement #training — [007-position-attitude-requirement.md](007-position-attitude-requirement.md)
-- [008] Position Change Text #training — [008-position-change-text.md](008-position-change-text.md)
 - [009] Descriptions #character — [009-descriptions.md](009-descriptions.md)
 - [011] Project Stuff — [011-project-stuff.md](011-project-stuff.md)
 - [045] Implement the Enlighten View — [045-implement-the-enlighten-view.md](045-implement-the-enlighten-view.md)
