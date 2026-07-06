@@ -26,6 +26,14 @@ A weaver is created with the context to use for token replacement. This is most 
 - `{A:cock.thickCock}` A phrase that doesn't rely on size.
 - `{A:cock.thick}` An adjective that doesn't rely on size.
 
+#### Pussy Tokens
+- `{A:pussy.tightWetPussy}` A phrase like "tight dripping cunt" or "snug wet pussy"
+- `{A:pussy.tightPussy}` A phrase like "tight pussy" or "loose cunt"
+- `{A:pussy.wetPussy}` A phrase like "wet pussy" or "dripping cunt"
+- `{A:pussy.tight}` Just an adjective describing how tight the pussy is.
+- `{A:pussy.wet}` Just an adjective describing how wet the pussy is. This depends on the character's current arousal.
+- `{A:pussy.pussy}` A single word for "pussy" that takes the pussy shape into consideration.
+
 #### Breast Tokens
 - `{A:breasts.bigSoftBreasts}`A phrase like "big firm tits" or "large soft breasts"
 - `{A:breasts.bigBreasts}`A phrase like "big tits" or "large breasts"
