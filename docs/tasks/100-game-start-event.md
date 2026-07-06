@@ -18,7 +18,7 @@ We should start with character creation right away. Character creation will also
 - It sat empty for 15 years. Your brother may be living there now. 
 - You may or may not have fucked sheep. Everyone seems to assume you have though.
 
-During character creation, in the last story is used to select a quirk (or perk or however we're going to be referring to these, I haven't actually added any yet) This story should detail you traveling to the city, finding your family home in ruins, no sign of your brother except for a makeshift camp in the home's living room. 
+During character creation, in the last story is used to select an aspect. This story should detail you traveling to the city, finding your family home in ruins, no sign of your brother except for a makeshift camp in the home's living room. 
 
 We also need to name the character at some point. Perhaps when you get to Wolgur and the guard asks for your name.
 
@@ -40,4 +40,4 @@ As you play the game you fix and upgrade the player's family home. You build roo
 Eventually we'll unlock more scenarios which allow you to play the other species in the game, allowing characters to start with some magic, or party members, people already living in the player's house. All that.
 
 ##### Second Scenario
-After you accept the first character's death, the second scenario will give you the option to play as the first character's younger brother or sister. The character creation will be similar but with slightly different options, and an expanded options for quirks. 
+After you accept the first character's death, the second scenario will give you the option to play as the first character's younger brother or sister. The character creation will be similar but with slightly different options, and an expanded options for aspects. 

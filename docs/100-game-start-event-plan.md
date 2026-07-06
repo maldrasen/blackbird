@@ -121,4 +121,9 @@ All of the episode text (story `contentFunction`s in `character-creation.js`) is
 - [x] 3. `PlayerFactory.build()` changes (name, adjustAttributes)
 - [x] 4. `data/locations/family-home-living-room.js`
 - [x] 5. `game-controller.js` + `main-menu.js` wiring (no standalone `GameStart` module — see revised section 5 above)
-- [ ] 6. Tests (`player-factory-spec.js`, `game-start-spec.js`)
+- [~] 6. Tests — skipped for now. Manual smoke test confirmed the flow works end to end (episode → triggers/name accumulation → `PlayerFactory.build()` → location placement). A generic "doesn't blow up" spec wouldn't have caught the `adjustAttributes` gap anyway; these paths will get plenty of exercise through actual play. Revisit if a similar silent-no-op bug shows up again.
+
+## Next session
+Pick back up once the episode's real prose (stories 1-3 + naming) is written in `data/episodes/character-creation.js`, replacing the `TODO` placeholder text and button labels. At that point:
+- Story 3's placeholder aspect triggers (`flexible:1`/`premature:1`/`productive:1`) will need revisiting — likely once the `Aspect` data record (name/description, binary-vs-leveled) mentioned earlier exists.
+- The placeholder `wood.jpg` background (episode + `family-home-living-room` location) may want real art.
