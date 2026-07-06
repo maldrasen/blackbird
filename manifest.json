@@ -336,6 +336,7 @@
     "data/dungeon-themes/temple.js",
     "data/dungeon-themes/warrens.js",
     "data/encounters/kobold-basic.js",
+    "data/episodes/character-creation.js",
     "data/episodes/propose-training.js",
     "data/feature-types/cross-room.js",
     "data/feature-types/leg-room.js",
