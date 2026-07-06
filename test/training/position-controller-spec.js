@@ -103,7 +103,10 @@ describe("PositionController", function() {
       const context = TrainingFixtures.standardTrainingState({}).getContext();
 
       TrainingSystem.startTraining({ player:context.P, partner:context.T });
-      PositionController.changePosition(SexAction.lookup('give-titfuck'));
+
+      const sexAction = SexAction.lookup('give-titfuck');
+      TrainingSystem.getState().determineAttitude(sexAction);
+      PositionController.changePosition(sexAction);
 
       const state = TrainingSystem.getState();
       expect(state.getMessages()[TrainingMessage.changePosition]).to.not.be.null;
