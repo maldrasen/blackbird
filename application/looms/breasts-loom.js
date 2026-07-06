@@ -1,5 +1,8 @@
 global.BreastsLoom = (function() {
 
+  const breastsWord = { tits:10, breasts:8, mounds:2 };
+  const breastWord = { tit:10, breast:8 };
+
   const sizeWords = {
     zero:    { flat:10 },
     tiny:    { tiny:10, little:6 },
@@ -64,18 +67,18 @@ global.BreastsLoom = (function() {
     const shape = breasts.breastShape;
     const volume = breasts.absoluteBreastVolume;
 
-    if (token === 'bigSoftBreasts') { return `${sizeWord(size)} ${firmnessWord(firmness)} ${breastsWord(breasts)}`; }
-    if (token === 'bigBreasts') { return `${sizeWord(size)} ${breastsWord(breasts)}`; }
-    if (token === 'softBreasts') { return `${firmnessWord(firmness)} ${breastsWord(breasts)}`; }
-    if (token === 'bigRoundBreasts') { return `${sizeWord(size)} ${shapeWord(shape)} ${breastsWord(breasts)}`; }
+    if (token === 'bigSoftBreasts') { return `${sizeWord(size)} ${firmnessWord(firmness)} ${getBreastsWord(breasts)}`; }
+    if (token === 'bigBreasts') { return `${sizeWord(size)} ${getBreastsWord(breasts)}`; }
+    if (token === 'softBreasts') { return `${firmnessWord(firmness)} ${getBreastsWord(breasts)}`; }
+    if (token === 'bigRoundBreasts') { return `${sizeWord(size)} ${shapeWord(shape)} ${getBreastsWord(breasts)}`; }
     if (token === 'bigSoft') { return `${sizeWord(size)} ${firmnessWord(firmness)}`; }
     if (token === 'bigRound') { return `${sizeWord(size)} ${shapeWord(shape)}`; }
 
     if (token === 'big') { return sizeWord(size); }
     if (token === 'soft') { return firmnessWord(firmness); }
     if (token === 'round') { return shapeWord(shape); }
-    if (token === 'breast') { return breastWord(breasts); }
-    if (token === 'breasts') { return breastsWord(breasts); }
+    if (token === 'breast') { return getBreastWord(breasts); }
+    if (token === 'breasts') { return getBreastsWord(breasts); }
     if (token === 'thickNipples') { return shortNippleDescription(breasts); }
 
     if (token === 'apple') {
@@ -101,7 +104,7 @@ global.BreastsLoom = (function() {
   // breast size and shape and shape into consideration as well. This is needed for words like "udder", which imply a
   // certain size, or "hanger" which imply a large saggy tit. These words are all easily pluralizable so the
   // breastsWord() function can just call this and add an 's' to the output.
-  function breastWord(breasts) {
+  function getBreastWord(breasts) {
     const options = { tit:20, breast:18 };
 
     if (['zero','tiny','small'].includes(breasts.breastSize)) {
@@ -130,8 +133,8 @@ global.BreastsLoom = (function() {
     return Random.fromFrequencyMap(options);
   }
 
-  function breastsWord(breasts) {
-    return EnglishHelper.pluralize(breastWord(breasts));
+  function getBreastsWord(breasts) {
+    return EnglishHelper.pluralize(getBreastWord(breasts));
   }
 
   function sizeWord(size) {
@@ -165,6 +168,10 @@ global.BreastsLoom = (function() {
     return `[THICK NIPPLES]`;
   }
 
-  return Object.freeze({ weave });
+  return Object.freeze({
+    breastWord,
+    breastsWord,
+    weave
+  });
 
 })();
