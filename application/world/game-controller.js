@@ -6,21 +6,27 @@ global.GameController = (function() {
 
   async function startNewGame(options={}) {
     GameState.initialize(options);
+
+    if (options.setup) { return options.setup(); }
+
+    EpisodeSystem.startEpisode(getGameStartEpisode(), {});
+    GameState.setGameMode(GameMode.episode);
+  }
+
+  // TODO: Once a lineage exists this should return whatever scenario the
+  //       lineage has unlocked instead of always the first one.
+  function getGameStartEpisode() {
+    return 'character-creation';
   }
 
   async function loadLastGame() {
     console.log("TODO: Load Last Game");
   }
 
-  async function openGame(setup) {
+  async function openGame() {
     console.clear();
     MainContent.showCover();
     MainContent.removeStylesheet('mocha');
-
-    if (typeof setup === 'function') {
-      setup();
-    }
-
     MainContent.hideCover({ fadeTime:2500 });
   }
 

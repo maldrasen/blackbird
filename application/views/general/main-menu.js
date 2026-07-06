@@ -51,19 +51,16 @@ global.MainMenu = (function() {
     }
   }
 
-  // TODO: Start a real new game.
   async function startGame() {
     close();
     await GameController.startNewGame();
     await GameController.openGame();
   }
 
-  // TODO: We could also get any game setup we wanted from the Fixtures module here.
   async function startFixture(event) {
     close();
 
     const fixture = event.target.dataset.fixture
-    const stateOptions = {};
 
     let setup;
     if (fixture === 'dungeon') { setup = Fixtures.setupDungeon; }
@@ -72,8 +69,8 @@ global.MainMenu = (function() {
     if (fixture === 'reports') { setup = ReportFixture.show; }
     if (setup == null) { throw new Error(`Bad fixture code: ${fixture}`); }
 
-    await GameController.startNewGame(stateOptions);
-    await GameController.openGame(setup);
+    await GameController.startNewGame({ setup });
+    await GameController.openGame();
   }
 
   async function continueGame() {
