@@ -70,9 +70,10 @@ global.MeasurementHelper = (function() {
     return `${length.feet}${prime}${length.inches}${doublePrime}`;
   }
 
-  function feetAndInchesInEnglish(mm, singular=false) {
+  function feetAndInchesInEnglish(mm, singularFoot=false, singularInch=false) {
     const length = feetAndInches(mm);
-    const feet = singular ? 'foot' : 'feet';
+    const feet = singularFoot ? 'foot' : 'feet';
+    const inches = singularInch ? 'inch' : 'inches';
     const phrase = `${EnglishHelper.numberInEnglish(length.feet)} ${feet}`;
 
     if (length.inches === 1) {
@@ -80,7 +81,7 @@ global.MeasurementHelper = (function() {
     }
 
     if (length.inches > 1) {
-      return `${phrase}, ${EnglishHelper.numberInEnglish(length.inches)} inches`;
+      return `${phrase}, ${EnglishHelper.numberInEnglish(length.inches)} ${inches}`;
     }
 
     return phrase;
