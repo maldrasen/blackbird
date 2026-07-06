@@ -92,6 +92,7 @@ global.WeaverRequirements = (function() {
     playerIs: key =>                         { return (context) => { return GameState.getPlayer() === context[key] }},
     withAttitude: code =>                    { return (context) => { return context.attitude === code }},
     withAction: code =>                      { return (context) => { return context.action === code }},
+    withHitLocation: (...slots) =>           { return (context) => { return slots.includes(context.hitLocation) }},
     isAnusEmpty: key =>                      { return (context) => { return isAnusEmpty(context, key); }},
     visibleAnus: key =>                      { return (context) => { return visibleAnus(context, key); }},
     visibleBreasts: key =>                   { return (context) => { return visibleBreasts(context,key); }},

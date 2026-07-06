@@ -39,13 +39,13 @@ function getAttackText(weapon) {
   const damageTypes = base.getDamageTypes().map(t => t.type);
 
   if (type === 'bow') {
-    return Random.from(Dialog.lookupTemplate(DialogCategory.attackText, 'sneak-attack-ranged'));
+    return Dialog.lookupTemplate(DialogCategory.attackText, 'sneak-attack-ranged');
   }
   if (damageTypes.includes('pierce')) {
-    return Random.from(Dialog.lookupTemplate(DialogCategory.attackText, 'sneak-attack-pierce'));
+    return Dialog.lookupTemplate(DialogCategory.attackText, 'sneak-attack-pierce');
   }
   if (['axe','mace'].includes(type)) {
-    return Random.from(Dialog.lookupTemplate(DialogCategory.attackText, 'sneak-attack-swing'));
+    return Dialog.lookupTemplate(DialogCategory.attackText, 'sneak-attack-swing');
   }
 
   return `[TODO: Sneak attack with ${weapon.base}]`;

@@ -57,7 +57,7 @@ function executeBasicAttack() {
 
   rolls.forEach(roll => {
     const context = buildAttackContext(roll)
-    const attackText = Random.from(Dialog.lookupTemplate(DialogCategory.attackText, roll.attack.getTextKey(), context));
+    const attackText = Dialog.lookupTemplate(DialogCategory.attackText, roll.attack.getTextKey(), context);
 
     if (state.isAlive(context.T)) {
       round.addMessage({ text:attackText }, Weaver(context));
