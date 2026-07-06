@@ -127,6 +127,15 @@ describe('MeasurementHelper', function() {
   });
 
   describe('inchesWithFractions()', function() {
+    it('uses the singular inch so the phrase can modify a noun', function() {
+      expect(MeasurementHelper.inchesWithFractions(12, false, true)).to.equal('half inch');
+      expect(MeasurementHelper.inchesWithFractions(152, false, true)).to.equal('six inch');
+      expect(MeasurementHelper.inchesWithFractions(165, false, true)).to.equal('six and a half inch');
+      expect(MeasurementHelper.inchesWithFractions(203, false, true)).to.equal('eight inch');
+      expect(MeasurementHelper.inchesWithFractions(527, false, true)).to.equal('twenty and three-quarters inch');
+      expect(MeasurementHelper.inchesWithFractions(1120, true, true)).to.equal('forty-four and one-eighth inch');
+    });
+
     it('creates an english phrase for length with inches down to the quarter inch', function() {
       expect(MeasurementHelper.inchesWithFractions(4)).to.equal('quarter inch');
       expect(MeasurementHelper.inchesWithFractions(12)).to.equal('half inch');

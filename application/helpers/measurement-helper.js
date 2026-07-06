@@ -105,10 +105,12 @@ global.MeasurementHelper = (function() {
     return StringHelper.pack(`${feetPhrase} ${inchPhrase}`);
   }
 
-  function inchesWithFractions(mm, eighths=false) {
+  // The singular flag always uses the singular "inch" so that the phrase can modify a noun, as in "a six and a
+  // half inch long cock" or "an eight inch wide doorway".
+  function inchesWithFractions(mm, eighths=false, singular=false) {
     const length = feetInchesAndFraction(mm, eighths);
     const inches = (length.feet * 12) + length.inches;
-    const inchesWord = length.inches === 1 ? 'inch' : 'inches';
+    const inchesWord = (singular || length.inches === 1) ? 'inch' : 'inches';
 
     if (inches === 0) {
       return tinyFractionPhrase(length.index, eighths, mm);
