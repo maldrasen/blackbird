@@ -8,6 +8,7 @@ global.PlayerFactory = (function() {
     const genderCode = options.gender || Gender.male;
     const triggers = options.triggers || [];
 
+    // Eventually we'll want to set this style as an option in character creation as well.
     if (options.style) {
       if (options.style === 'domination') {
         triggers.push('domination<10,20>');
@@ -23,9 +24,10 @@ global.PlayerFactory = (function() {
       }
     }
 
-    const actorData = { name:'Greg', gender:genderCode, species:speciesCode };
+    const actorData = { name:options.name || 'Greg', gender:genderCode, species:speciesCode };
     const arousalData = { arousal:0 };
     const attributesData = AttributesFactory.rollAttributes(genderCode, speciesCode);
+    AttributesFactory.adjustAttributes(attributesData, triggers);
     const healthData = AttributesFactory.rollHealth(attributesData);
 
     let pussyData, breastsData, cockData;

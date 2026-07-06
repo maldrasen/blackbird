@@ -118,7 +118,7 @@ All of the episode text (story `contentFunction`s in `character-creation.js`) is
 ## Progress
 - [ ] 1. ~~`Quirk` record + `QuirksComponent`~~ — dropped; story 3 uses an existing aspect trigger instead, no new record/component needed
 - [x] 2. `data/episodes/character-creation.js` scaffold
-- [ ] 3. `PlayerFactory.build()` changes (name, adjustAttributes)
+- [x] 3. `PlayerFactory.build()` changes (name, adjustAttributes)
 - [x] 4. `data/locations/family-home-living-room.js`
 - [x] 5. `game-controller.js` + `main-menu.js` wiring (no standalone `GameStart` module — see revised section 5 above)
 - [ ] 6. Tests (`player-factory-spec.js`, `game-start-spec.js`)

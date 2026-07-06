@@ -342,6 +342,7 @@
     "data/feature-types/leg-room.js",
     "data/feature-types/rect-room.js",
     "data/feature-types/tea-room.js",
+    "data/locations/family-home-living-room.js",
     "data/locations/filthy-hovel.js",
     "data/monster-types/coward.js",
     "data/monster-types/fighter.js",
