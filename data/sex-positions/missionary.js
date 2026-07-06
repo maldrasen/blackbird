@@ -99,7 +99,7 @@ rearrange.add(`{A:name} gently guides you onto your back, {A:his} eyes full of w
   [playerB, isLoving]);
 rearrange.add(`You lie back, spreading your legs as {A:name} settles between them, {A:his} {A:cock.thickCock} resting warmly against you.`,
   [playerB, isLoving, aVisibleCock]);
-rearrange.add(`{A:His} {A:breasts.bigSoftBreasts} sway forward as {A:name} leans down warmly, settling between your spread legs.`,
+rearrange.add(`{A:name's} {A:breasts.bigSoftBreasts} sway forward as {A:he} leans down warmly, settling between your spread legs.`,
   [playerB, isLoving, aBigBreasts]);
 rearrange.add(`You lie back as {A:name} licks {A:his} lips hungrily, pushing {A:his} body between your spread legs.`,
   [playerB, isLustful]);
@@ -227,7 +227,7 @@ missionary.add(`{A:name} nuzzles your neck affectionately as you roll face-down 
   [playerB, isLoving]);
 missionary.add(`You turn over, feeling {A:name's} {A:cock.thickCock} pressing warmly against your lower back as {A:he} settles over you.`,
   [playerB, isLoving, aVisibleCock]);
-missionary.add(`{A:His} {A:breasts.softBreasts} press against your back as {A:name} settles warmly over you.`,
+missionary.add(`{A:name's} {A:breasts.softBreasts} press against your back as {A:he} settles warmly over you.`,
   [playerB, isLoving, aVisibleBreasts]);
 missionary.add(`You eagerly flip onto your stomach as {A:name} settles hungrily over your back.`,
   [playerB, isLustful]);

@@ -63,7 +63,7 @@ rearrange.add(`With a needy moan, {B:name} bends over, presenting {B:his} ass fo
   [playerA, isLustful]);
 rearrange.add(`{B:name} spreads {B:his} legs eagerly, {B:his} soaked {pussy} glistening as {B:he} bends over for you.`,
   [playerA, isLustful, bVisiblePussy]);
-rearrange.add(`{B:name} moans as {B:he} bends over, {B:his} hard {B:cock.bigCock} bobbing between {B:his} legs.`,
+rearrange.add(`{B:name} moans as {B:he} bends over, {B:his} {B:cock.bigHardCock} bobbing between {B:his} legs.`,
   [playerA, isLustful, bHardCock]);
 rearrange.add(`{B:name} bends over without complaint, settling into position in front of you.`,
   [playerA, isAccepting]);
@@ -95,7 +95,7 @@ rearrange.add(`{A:name} moans with need as you bend over, {A:his} eyes fixed on 
   [playerB, isLustful]);
 rearrange.add(`{A:name} settles hungrily behind you as you drop onto your knees, bending forward for {A:him}.`,
   [playerB, isLustful]);
-rearrange.add(`{A:name} moans as {A:he} settles behind you, {A:his} hard {A:cock.bigCock} pressing between your cheeks.`,
+rearrange.add(`{A:name} moans as {A:he} settles behind you, {A:his} {A:cock.bigHardCock} pressing between your cheeks.`,
   [playerB, isLustful, aHardCock]);
 rearrange.add(`You bend over, and {A:name} settles in behind you without comment.`,
   [playerB, isAccepting]);
@@ -166,7 +166,7 @@ missionary.add(`{B:name} moans and lowers {B:him}self flat, arching {B:his} hips
   [playerA, isLustful]);
 missionary.add(`Eager for more, {B:name} spreads out beneath you, pressing back against you as you lower yourself onto {B:his} back.`,
   [playerA, isLustful]);
-missionary.add(`{B:name} moans as you settle on top, your hard {A:cock.bigCock} pressing against {B:his} lower back.`,
+missionary.add(`{B:name} moans as you settle on top, your {A:cock.bigHardCock} pressing against {B:his} lower back.`,
   [playerA, isLustful, aHardCock]);
 missionary.add(`{B:name} lowers {B:him}self flat onto {B:his} stomach without complaint, letting you settle on top of {B:him}.`,
   [playerA, isAccepting]);
@@ -196,7 +196,7 @@ missionary.add(`You lower yourself flat, and {A:name} settles on top of you eage
   [playerB, isLustful]);
 missionary.add(`{A:name} presses down against you hungrily as you spread out beneath {A:him}.`,
   [playerB, isLustful]);
-missionary.add(`{A:name} settles on top of you with a moan, {A:his} hard {A:cock.bigCock} pressing eagerly against your lower back.`,
+missionary.add(`{A:name} settles on top of you with a moan, {A:his} {A:cock.bigHardCock} pressing eagerly against your lower back.`,
   [playerB, isLustful, aHardCock]);
 missionary.add(`You lower yourself flat, and {A:name} settles on top of you without comment.`,
   [playerB, isAccepting]);
@@ -206,7 +206,7 @@ missionary.add(`{A:name} settles on top of you nervously, {A:his} body tense.`,
   [playerB, isFearful]);
 missionary.add(`With a shaky breath, {A:name} lies down flat on top of you.`,
   [playerB, isFearful]);
-missionary.add(`{A:His} {A:cock.sixInch} long {cock} trembles nervously as {A:he} settles on top of you.`,
+missionary.add(`{A:name's} {A:cock.sixInch} long {cock} trembles nervously as {A:he} settles on top of you.`,
   [playerB, isFearful, aVisibleCock]);
 missionary.add(`{A:name} grumbles, reluctantly lowering {A:him}self on top of you.`,
   [playerB, isResistant]);
@@ -257,7 +257,7 @@ spooning.add(`You lower yourself onto your side, and {A:name} presses against yo
   [playerB, isLustful]);
 spooning.add(`{A:name} settles behind you hungrily, grinding {A:his} hips against your ass.`,
   [playerB, isLustful]);
-spooning.add(`{A:name} settles behind you, {A:his} hard {A:cock.bigCock} pressing against your ass.`,
+spooning.add(`{A:name} settles behind you, {A:his} {A:cock.bigHardCock} pressing against your ass.`,
   [playerB, isLustful, aHardCock]);
 spooning.add(`You lower yourself onto your side, and {A:name} settles in behind you without comment.`,
   [playerB, isAccepting]);
@@ -288,7 +288,7 @@ straddle.add(`{B:name} moans as {B:he} lowers {B:him}self flat, arching {B:his} 
   [playerA, isLustful]);
 straddle.add(`Eager for more, {B:name} spreads out beneath you as you rise up and settle astride {B:his} hips.`,
   [playerA, isLustful]);
-straddle.add(`{B:name} moans as you climb up, your hard {A:cock.bigCock} dragging along {B:his} back as you settle astride {B:his} hips.`,
+straddle.add(`{B:name} moans as you climb up, your {A:cock.bigHardCock} dragging along {B:his} back as you settle astride {B:his} hips.`,
   [playerA, isLustful, aHardCock]);
 straddle.add(`{B:name} lowers {B:him}self flat onto {B:his} stomach without complaint as you climb up to straddle {B:his} waist.`,
   [playerA, isAccepting]);
@@ -316,7 +316,7 @@ straddle.add(`You lower yourself flat, and {A:name} climbs up to straddle your w
   [playerB, isLustful]);
 straddle.add(`{A:name} rises up eagerly, settling astride your hips as you spread out beneath {A:him}.`,
   [playerB, isLustful]);
-straddle.add(`{A:name} climbs up with a hungry sound, {A:his} hard {A:cock.bigCock} dragging along your back as {A:he} settles astride your hips.`,
+straddle.add(`{A:name} climbs up with a hungry sound, {A:his} {A:cock.bigHardCock} dragging along your back as {A:he} settles astride your hips.`,
   [playerB, isLustful, aHardCock]);
 straddle.add(`You lower yourself flat, and {A:name} climbs up to straddle your waist without comment.`,
   [playerB, isAccepting]);

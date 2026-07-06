@@ -58,6 +58,7 @@ global.BreastsLoom = (function() {
   // {A:breasts.bigSoft} A longer adjective phrase without a word for breasts.
   // {A:breasts.bigRound} A longer adjective phrase describing the shape without a word for breasts.
   // {A:breasts:thickNipples} A phrase like 'long nipples' or 'dark teats'
+  // {A:breasts:hardThickNipples} Like thickNipples, but stiff with arousal. A phrase like 'long hard nipples'
   // {A:breasts.apples} A plural size comparison word.
   // {A:breasts.anApple} A singular size comparison prefixed with a or an.
   function weave(id, token) {
@@ -80,6 +81,7 @@ global.BreastsLoom = (function() {
     if (token === 'breast') { return getBreastWord(breasts); }
     if (token === 'breasts') { return getBreastsWord(breasts); }
     if (token === 'thickNipples') { return shortNippleDescription(breasts); }
+    if (token === 'hardThickNipples') { return hardNippleDescription(breasts); }
 
     if (token === 'apple') {
       const comparison = BreastsDescriber.sizeShapeComparison(shape, volume);
@@ -166,6 +168,10 @@ global.BreastsLoom = (function() {
   // nipples, teats, nubs, buds, peaks, tips
   function shortNippleDescription(breasts) {
     return `[THICK NIPPLES]`;
+  }
+
+  function hardNippleDescription(breasts) {
+    return `[HARD THICK NIPPLES]`;
   }
 
   return Object.freeze({

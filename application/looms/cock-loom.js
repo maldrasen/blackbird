@@ -19,6 +19,11 @@ global.CockLoom = (function() {
     titanic: { titanic:10, colossal:8, gargantuan:4 },
   };
 
+  const hardWords = {
+    hard: 5,
+    throbbing: 2,
+  }
+
   // {A:cock.thickSixInchLongCock} A long phrase that explicitly includes the length.
   // {A:cock.sixInch} A short phrase with just the length.
   // {A:cock.bigCock} A phrase like "huge cock" or "big dick"
@@ -31,6 +36,7 @@ global.CockLoom = (function() {
     if (token === 'thickSixInchLongCock') { return `${adjective(cock)} ${inchPhrase(id,cock)} long ${cockWord(cock)}`; }
     if (token === 'sixInch') { return inchPhrase(id,cock); }
     if (token === 'bigCock') { return `${sizeWord(cock.size)} ${cockWord()}`; }
+    if (token === 'bigHardCock') { return `${sizeWord(cock.size)} ${hardWord()} ${cockWord()}`; }
     if (token === 'big') { return sizeWord(cock.size); }
     if (token === 'thickCock') { return `${adjective(cock)} ${cockWord()}`; }
     if (token === 'thick') { return adjective(cock); }
@@ -40,6 +46,7 @@ global.CockLoom = (function() {
 
   function cockWord() { return Random.fromFrequencyMap(cockWords); }
   function sizeWord(size) { return Random.fromFrequencyMap(sizeWords[size]); }
+  function hardWord() { return Random.fromFrequencyMap(hardWords); }
 
   // TODO: The 'thick' tokens don't necessarily imply girth. Any adjective that describes this cock would work. We
   //       should look at the arousal state for other words like hard, or throbbing. If this is a horse or dog cock we

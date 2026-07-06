@@ -62,7 +62,7 @@ rearrange.add(`{B:name} climbs eagerly astride you, grinding {B:his} hips down w
   [playerA, isLustful]);
 rearrange.add(`With a needy moan, {B:name} straddles your hips, already rocking against you.`,
   [playerA, isLustful]);
-rearrange.add(`{B:name} straddles you, {B:his} hard {B:cock.bigCock} bobbing eagerly as {B:he} settles down.`,
+rearrange.add(`{B:name} straddles you, {B:his} {B:cock.bigHardCock} bobbing eagerly as {B:he} settles down.`,
   [playerA, isLustful, bHardCock]);
 rearrange.add(`{B:name} straddles you, {B:his} soaked {pussy} grinding eagerly against you.`,
   [playerA, isLustful, bVisiblePussy]);
@@ -102,21 +102,21 @@ rearrange.add(`{A:name} grins hungrily up at you as you climb astride {A:him}, {
   [playerB, isLustful]);
 rearrange.add(`{A:name} moans as you straddle {A:him}, {A:his} hips already rocking up against you.`,
   [playerB, isLustful]);
-rearrange.add(`{A:his} hard {A:cock.bigCock} bobs eagerly as you settle astride {A:him}.`,
+rearrange.add(`{A:name's} {A:cock.bigHardCock} bobs eagerly as you settle astride {A:him}.`,
   [playerB, isLustful, aHardCock]);
-rearrange.add(`{A:his} soaked {pussy} glistens with need as you settle astride {A:him}, {A:his} hips grinding up against you.`,
+rearrange.add(`{A:name's} soaked {pussy} glistens with need as you settle astride {A:him}, {A:his} hips grinding up against you.`,
   [playerB, isLustful, aVisiblePussy]);
 rearrange.add(`{A:name} lies back without complaint as you climb astride {A:him}, settling down onto {A:his} hips.`,
   [playerB, isAccepting]);
 rearrange.add(`{A:name} watches without protest as you straddle {A:him} and settle into place.`,
   [playerB, isAccepting]);
-rearrange.add(`{A:his} {A:cock.thickCock} rests against your stomach as you settle astride {A:him}.`,
+rearrange.add(`{A:name's} {A:cock.thickCock} rests against your stomach as you settle astride {A:him}.`,
   [playerB, isAccepting, aVisibleCock]);
 rearrange.add(`{A:name} lies nervously beneath you, {A:his} hands trembling as you settle onto {A:his} hips.`,
   [playerB, isFearful]);
 rearrange.add(`With a shaky breath, {A:name} watches you settle astride {A:him}, unsure what to expect.`,
   [playerB, isFearful]);
-rearrange.add(`{A:his} {A:cock.sixInch} long {cock} trembles as {A:he} nervously lies beneath you.`,
+rearrange.add(`{A:name's} {A:cock.sixInch} long {cock} trembles as {A:he} nervously lies beneath you.`,
   [playerB, isFearful, aVisibleCock]);
 rearrange.add(`{A:name} grumbles as you climb astride {A:him}, clearly reluctant.`,
   [playerB, isResistant]);
@@ -128,7 +128,7 @@ rearrange.add(`{A:name} thrashes as you climb astride {A:him} anyway, pinning {A
   [playerB, isViolent]);
 rearrange.add(`{A:name} struggles, but you settle astride {A:him} regardless.`,
   [playerB, isViolent]);
-rearrange.add(`{A:his} {A:cock.thickCock} swings as {A:he} thrashes beneath you.`,
+rearrange.add(`{A:name's} {A:cock.thickCock} swings as {A:he} thrashes beneath you.`,
   [playerB, isViolent, aVisibleCock]);
 
 
@@ -225,7 +225,7 @@ faceSitting.add(`{A:name} shifts forward with a warm smile, settling {A:his} hip
   [playerB, isLoving]);
 faceSitting.add(`With obvious affection, {A:name} scoots forward to sit astride your face.`,
   [playerB, isLoving]);
-faceSitting.add(`{A:His} {A:cock.thickCock} rests against your chest as {A:name} settles down gently to sit astride your face.`,
+faceSitting.add(`{A:name's} {A:cock.thickCock} rests against your chest as {A:he} settles down gently to sit astride your face.`,
   [playerB, isLoving, aVisibleCock]);
 faceSitting.add(`{A:name} moans eagerly as {A:he} scoots forward, settling {A:his} hips over your face.`,
   [playerB, isLustful]);

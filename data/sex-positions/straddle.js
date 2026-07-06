@@ -115,7 +115,7 @@ rearrange.add(`{A:name} practically pounces, straddling your hips the moment you
   [playerB, isLustful]);
 rearrange.add(`You lie face down, your {B:cock.sixInch} long {cock} trapped beneath you, as {A:name} settles astride your hips with a hungry grin.`,
   [playerB, isLustful, bVisibleCock]);
-rearrange.add(`{A:His} {A:breasts.bigBreasts} drag along your back as {A:name} leans down, moaning eagerly into your ear.`,
+rearrange.add(`{A:name's} {A:breasts.bigBreasts} drag along your back as {A:he} leans down, moaning eagerly into your ear.`,
   [playerB, isLustful, aVisibleBreasts, aBigBreasts]);
 rearrange.add(`You lie down on your stomach, letting {A:name} settle astride your hips.`,
   [playerB, isAccepting]);
@@ -235,7 +235,7 @@ cowgirl.add(`{A:name} moans softly, flipping onto {A:his} back eagerly as you sc
   [playerB, isLustful]);
 cowgirl.add(`{A:name} rolls onto {A:his} back, {A:his} {A:cock.thickCock} standing between you as you shift forward to straddle {A:his} hips.`,
   [playerB, isLustful, aHardCock]);
-cowgirl.add(`{A:His} {A:breasts.bigSoftBreasts} settle against {A:his} chest as {A:name} flips onto {A:his} back with a hungry grin, watching you settle astride {A:his} hips.`,
+cowgirl.add(`{A:name's} {A:breasts.bigSoftBreasts} settle against {A:his} chest as {A:he} flips onto {A:his} back with a hungry grin, watching you settle astride {A:his} hips.`,
   [playerB, isLustful, aVisibleBreasts, aBigBreasts]);
 cowgirl.add(`{A:name} rolls onto {A:his} back, letting you shift forward to straddle {A:his} hips facing {A:him}.`,
   [playerB, isAccepting]);
@@ -302,7 +302,7 @@ doggyStyle.add(`You feel {A:name} sliding along your back, {A:his} hands resting
   [playerB, isLoving]);
 doggyStyle.add(`{A:name} presses a fond kiss to your lower back as {A:he} positions {A:him}self behind you, hands resting warmly on your hips.`,
   [playerB, isLoving]);
-doggyStyle.add(`You feel {A:name} sliding backwards, dragging {A:his} hard {A:breasts.thickNipples} along your back as {A:he} positions {A:him}self behind you.`,
+doggyStyle.add(`You feel {A:name} sliding backwards, dragging {A:his} {A:breasts.hardThickNipples} along your back as {A:he} positions {A:him}self behind you.`,
   [playerB, isLoving, aVisibleBreasts]);
 doggyStyle.add(`{A:name} lets {A:his} {A:cock.thickCock} drag hotly across your back as {A:he} positions {A:him}self behind you.`,
   [playerB, isLoving, aVisibleCock]);
@@ -312,7 +312,7 @@ doggyStyle.add(`{A:name} growls appreciatively as {A:he} positions {A:him}self b
   [playerB, isLustful]);
 doggyStyle.add(`{A:name} squeezes your hips as you raise your ass into the air, spreading your cheeks apart before slapping {A:his} {A:cock.thickCock} between them.`,
   [playerB, isLustful, aVisibleCock]);
-doggyStyle.add(`{A:His} hard {A:breasts.thickNipples} drag along your back as {A:he} settles hungrily behind you.`,
+doggyStyle.add(`{A:name's} {A:breasts.hardThickNipples} drag along your back as {A:he} settles hungrily behind you.`,
   [playerB, isLustful, aVisibleBreasts]);
 doggyStyle.add(`{A:name} watches as you raise your ass up into the air, positioning {A:him}self behind you.`,
   [playerB, isAccepting]);
@@ -420,7 +420,7 @@ missionary.add(`{A:name} huffs and looks away as you turn over underneath {A:him
   [playerB, isResistant]);
 missionary.add(`{A:name} frowns as {A:he} feels your {B:cock.bigCock} sliding across {A:his} thigh as you turn over underneath {A:him}.`,
   [playerB, isResistant, bVisibleCock]);
-missionary.add(`{A:name} tries to back away as you turn over underneath {A:him}, but can't stop your flesh from brushing against {A:his} hard {A:breasts.inchLongNipples}.`,
+missionary.add(`{A:name} tries to back away as you turn over underneath {A:him}, but can't stop your flesh from brushing against {A:his} {A:breasts.hardThickNipples}.`,
   [playerB, isResistant, aVisibleBreasts]);
 missionary.add(`{A:name} winces as {A:his} {cock} brushes against your leg while you turn over underneath {A:him}.`,
   [playerB, isResistant, aVisibleCock]);

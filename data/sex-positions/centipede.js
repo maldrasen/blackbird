@@ -71,7 +71,7 @@ rearrange.add(`With a needy moan, {B:name} lowers {B:him}self in front of you, p
   [playerA, isLustful]);
 rearrange.add(`{B:name} spreads {B:his} legs eagerly, {B:his} soaked {pussy} glistening as you kneel behind {B:him}.`,
   [playerA, isLustful, bVisiblePussy]);
-rearrange.add(`{B:name} moans as {B:he} bends over, {B:his} hard {B:cock.bigCock} bobbing between {B:his} legs as you settle in behind {B:him}.`,
+rearrange.add(`{B:name} moans as {B:he} bends over, {B:his} {B:cock.bigHardCock} bobbing between {B:his} legs as you settle in behind {B:him}.`,
   [playerA, isLustful, bHardCock]);
 rearrange.add(`Gently placing your hand on {B:name's} back, you push {B:him} down into a kneeling position in front of you. Then, once {B:his} ass is raised, you kneel behind {B:him}, pressing your face between {B:his} ass cheeks.`,
   [playerA, isAccepting]);
@@ -113,7 +113,7 @@ rearrange.add(`{A:name} licks {A:his} lips as you lower yourself onto your knees
   [playerB, isLustful]);
 rearrange.add(`You spread your legs, baring your {pussy} as {A:name} kneels hungrily behind you.`,
   [playerB, isLustful, bVisiblePussy]);
-rearrange.add(`Your hard {B:cock.bigCock} bobs between your legs as you bend over, {A:name} settling in eagerly behind you.`,
+rearrange.add(`Your {B:cock.bigHardCock} bobs between your legs as you bend over, {A:name} settling in eagerly behind you.`,
   [playerB, isLustful, bHardCock]);
 rearrange.add(`You bend over in front of {A:name}, and {A:he} kneels behind you without comment, pressing {A:his} face to your ass.`,
   [playerB, isAccepting]);
@@ -140,7 +140,7 @@ doggyStyle.add(`You raise up behind {B:name}, grabbing {B:his} hips and letting 
   [playerA, isLustful, aVisibleCock]);
 doggyStyle.add(`{B:name} arches {B:his} back, {B:his} soaked {pussy} on full display as you rise up behind {B:him}.`,
   [playerA, isLustful, bVisiblePussy]);
-doggyStyle.add(`{B:name's} hard {B:cock.bigCock} bounces as you raise up behind {B:him}, gripping {B:his} hips.`,
+doggyStyle.add(`{B:name's} {B:cock.bigHardCock} bounces as you raise up behind {B:him}, gripping {B:his} hips.`,
   [playerA, isLustful, bHardCock]);
 doggyStyle.add(`You raise up and grab {B:name's} hips, positioning yourself behind {B:him}.`,
   [playerA, isAccepting]);
@@ -182,7 +182,7 @@ doggyStyle.add(`You feel {A:name} rise up eagerly behind you, {A:his} grip tight
   [playerB, isLustful]);
 doggyStyle.add(`{A:name} rises up behind you, letting {A:his} {A:cock.bigCock} rest heavily against the swell of your upturned ass.`,
   [playerB, isLustful, aVisibleCock]);
-doggyStyle.add(`{A:His} {A:breasts.softBreasts} drag against your back as {A:name} rises up hungrily behind you.`,
+doggyStyle.add(`{A:name's} {A:breasts.softBreasts} drag against your back as {A:he} rises up hungrily behind you.`,
   [playerB, isLustful, aVisibleBreasts]);
 doggyStyle.add(`{A:name} raises up and grabs your hips, positioning {A:him}self behind you.`,
   [playerB, isAccepting]);
@@ -207,7 +207,7 @@ kneelingService.add(`You rise to your feet as {B:name} moans, keeping {B:his} fa
   [playerA, isLustful]);
 kneelingService.add(`{B:name} follows you up eagerly on {B:his} knees, unwilling to break contact as you stand.`,
   [playerA, isLustful]);
-kneelingService.add(`Your hard {A:cock.bigCock} bounces as you rise, {B:name} moaning against your ass the whole way up.`,
+kneelingService.add(`Your {A:cock.bigHardCock} bounces as you rise, {B:name} moaning against your ass the whole way up.`,
   [playerA, isLustful, aHardCock]);
 kneelingService.add(`Your {pussy} is bared as you rise, {B:name} moaning hungrily against it.`,
   [playerA, isLustful, aVisiblePussy]);
@@ -239,41 +239,41 @@ kneelingService.add(`{A:name} rises slowly to {A:his} feet, taking care not to p
   [playerB, isLoving]);
 kneelingService.add(`{A:name} stands slowly, glancing back at you with a warm smile as you stay close behind on your knees.`,
   [playerB, isLoving]);
-kneelingService.add(`{A:His} {A:cock.thickCock} sways as {A:he} rises slowly, careful not to break the contact of your face against {A:his} ass.`,
+kneelingService.add(`{A:name's} {A:cock.thickCock} sways as {A:he} rises slowly, careful not to break the contact of your face against {A:his} ass.`,
   [playerB, isLoving, aVisibleCock]);
-kneelingService.add(`{A:His} {A:breasts.softBreasts} sway gently as {A:he} stands, {A:his} pace unhurried so you can follow, your face still pressed to {A:his} ass.`,
+kneelingService.add(`{A:name's} {A:breasts.softBreasts} sway gently as {A:he} stands, {A:his} pace unhurried so you can follow, your face still pressed to {A:his} ass.`,
   [playerB, isLoving, aVisibleBreasts]);
 kneelingService.add(`{A:name} rises to {A:his} feet with a needy groan, grinding {A:his} ass back against your face as you follow on your knees.`,
   [playerB, isLustful]);
 kneelingService.add(`{A:name} stands slowly, clearly savoring the drag of your face against {A:his} ass as you follow on your knees.`,
   [playerB, isLustful]);
-kneelingService.add(`{A:His} hard {A:cock.bigCock} bounces as {A:he} rises with an eager moan, your face still pressed to {A:his} ass.`,
+kneelingService.add(`{A:name's} {A:cock.bigHardCock} bounces as {A:he} rises with an eager moan, your face still pressed to {A:his} ass.`,
   [playerB, isLustful, aHardCock]);
-kneelingService.add(`{A:His} glistening {pussy} is bared as {A:he} rises with a hungry moan, pressing back against your face.`,
+kneelingService.add(`{A:name's} glistening {pussy} is bared as {A:he} rises with a hungry moan, pressing back against your face.`,
   [playerB, isLustful, aVisiblePussy]);
 kneelingService.add(`{A:name} rises to {A:his} feet without comment, and you follow on your knees, keeping your face against {A:his} ass.`,
   [playerB, isAccepting]);
 kneelingService.add(`{A:name} stands without protest, holding still as you stay close behind, your face pressed to {A:his} ass.`,
   [playerB, isAccepting]);
-kneelingService.add(`{A:His} {A:cock.thickCock} sways gently as {A:he} rises to {A:his} feet without complaint, and you follow on your knees.`,
+kneelingService.add(`{A:name's} {A:cock.thickCock} sways gently as {A:he} rises to {A:his} feet without complaint, and you follow on your knees.`,
   [playerB, isAccepting, aVisibleCock]);
 kneelingService.add(`{A:name} rises to {A:his} feet nervously, and you stay close on your knees, keeping your face pressed to {A:his} ass.`,
   [playerB, isFearful]);
 kneelingService.add(`With {A:his} breath shaky, {A:name} rises to {A:his} feet as you follow closely on your knees.`,
   [playerB, isFearful]);
-kneelingService.add(`{A:His} {A:cock.sixInch} long {cock} trembles as {A:he} rises nervously, and you stay close behind.`,
+kneelingService.add(`{A:name's} {A:cock.sixInch} long {cock} trembles as {A:he} rises nervously, and you stay close behind.`,
   [playerB, isFearful, aVisibleCock]);
 kneelingService.add(`{A:name} grumbles as {A:he} rises to {A:his} feet, and you stay reluctantly on your knees, keeping your face pressed to {A:his} ass.`,
   [playerB, isResistant]);
 kneelingService.add(`{A:name} huffs, clearly unhappy about standing, as you follow closely on your knees.`,
   [playerB, isResistant]);
-kneelingService.add(`{A:His} {A:cock.thickCock} sways as {A:he} grumbles and rises reluctantly, and you stay close.`,
+kneelingService.add(`{A:name's} {A:cock.thickCock} sways as {A:he} grumbles and rises reluctantly, and you stay close.`,
   [playerB, isResistant, aVisibleCock]);
 kneelingService.add(`{A:name} struggles as {A:he} rises, trying to twist away, but you hold {A:his} hips firmly, keeping your face pressed against {A:his} ass.`,
   [playerB, isViolent]);
 kneelingService.add(`{A:name} tries to pull away, but you keep a firm grip on {A:his} hips, following {A:him} up on your knees.`,
   [playerB, isViolent]);
-kneelingService.add(`{A:His} {A:cock.thickCock} swings as {A:he} struggles to rise, unable to pull {A:his} ass free of your grip.`,
+kneelingService.add(`{A:name's} {A:cock.thickCock} swings as {A:he} struggles to rise, unable to pull {A:his} ass free of your grip.`,
   [playerB, isViolent, aVisibleCock]);
 
 
@@ -290,7 +290,7 @@ missionary.add(`{B:name} moans and lowers {B:him}self flat, arching {B:his} hips
   [playerA, isLustful]);
 missionary.add(`Eager for more, {B:name} spreads out beneath you, pressing back against you as you lower yourself onto {B:his} back.`,
   [playerA, isLustful]);
-missionary.add(`{B:name} moans as you settle on top, your hard {A:cock.bigCock} pressing against {B:his} lower back.`,
+missionary.add(`{B:name} moans as you settle on top, your {A:cock.bigHardCock} pressing against {B:his} lower back.`,
   [playerA, isLustful, aHardCock]);
 missionary.add(`{B:name's} {B:cock.thickCock} is trapped beneath {B:him} as you settle on top, and {B:he} grinds back against you eagerly.`,
   [playerA, isLustful, bVisibleCock]);
@@ -324,13 +324,13 @@ missionary.add(`{A:name} covers your body with {A:his} own affectionately as you
   [playerB, isLoving]);
 missionary.add(`{A:name} settles on top of you, {A:his} {A:cock.thickCock} resting warmly against your lower back.`,
   [playerB, isLoving, aVisibleCock]);
-missionary.add(`{A:His} {A:breasts.softBreasts} press against your back as {A:name} settles affectionately on top of you.`,
+missionary.add(`{A:name's} {A:breasts.softBreasts} press against your back as {A:he} settles affectionately on top of you.`,
   [playerB, isLoving, aVisibleBreasts]);
 missionary.add(`You lower yourself flat, and {A:name} settles on top of you eagerly, grinding {A:his} hips down with a needy moan.`,
   [playerB, isLustful]);
 missionary.add(`{A:name} presses down against you hungrily as you spread out beneath {A:him}.`,
   [playerB, isLustful]);
-missionary.add(`{A:name} settles on top of you with a moan, {A:his} hard {A:cock.bigCock} pressing eagerly against your lower back.`,
+missionary.add(`{A:name} settles on top of you with a moan, {A:his} {A:cock.bigHardCock} pressing eagerly against your lower back.`,
   [playerB, isLustful, aHardCock]);
 missionary.add(`Your {B:cock.thickCock} is trapped beneath you as {A:name} settles eagerly on top, grinding against your ass.`,
   [playerB, isLustful, bVisibleCock]);
@@ -344,19 +344,19 @@ missionary.add(`{A:name} settles on top of you nervously, {A:his} body tense.`,
   [playerB, isFearful]);
 missionary.add(`With a shaky breath, {A:name} lies down flat on top of you.`,
   [playerB, isFearful]);
-missionary.add(`{A:His} {A:cock.sixInch} long {cock} trembles nervously as {A:he} settles on top of you.`,
+missionary.add(`{A:name's} {A:cock.sixInch} long {cock} trembles nervously as {A:he} settles on top of you.`,
   [playerB, isFearful, aVisibleCock]);
 missionary.add(`{A:name} grumbles as {A:he} lowers {A:him}self on top of you, reluctantly settling into place.`,
   [playerB, isResistant]);
 missionary.add(`With a huff, {A:name} lies down on top of you, clearly unhappy about it.`,
   [playerB, isResistant]);
-missionary.add(`{A:His} {A:cock.thickCock} shifts as {A:he} settles reluctantly on top of you.`,
+missionary.add(`{A:name's} {A:cock.thickCock} shifts as {A:he} settles reluctantly on top of you.`,
   [playerB, isResistant, aVisibleCock]);
 missionary.add(`{A:name} thrashes as you pull {A:him} down on top of you anyway, {A:his} struggles doing nothing to stop you.`,
   [playerB, isViolent]);
 missionary.add(`{A:name} struggles, but you keep pulling {A:him} down on top of you regardless.`,
   [playerB, isViolent]);
-missionary.add(`{A:His} {A:cock.thickCock} is trapped as {A:he} thrashes on top of you, unable to break free.`,
+missionary.add(`{A:name's} {A:cock.thickCock} is trapped as {A:he} thrashes on top of you, unable to break free.`,
   [playerB, isViolent, aVisibleCock]);
 
 
@@ -373,7 +373,7 @@ straddle.add(`{B:name} moans as {B:he} lowers {B:him}self flat, arching {B:his} 
   [playerA, isLustful]);
 straddle.add(`Eager for more, {B:name} spreads out beneath you as you rise up and settle astride {B:his} hips.`,
   [playerA, isLustful]);
-straddle.add(`{B:name} moans as you climb up, your hard {A:cock.bigCock} dragging along {B:his} back as you settle astride {B:his} hips.`,
+straddle.add(`{B:name} moans as you climb up, your {A:cock.bigHardCock} dragging along {B:his} back as you settle astride {B:his} hips.`,
   [playerA, isLustful, aHardCock]);
 straddle.add(`{B:name's} {B:cock.thickCock} is trapped beneath {B:him} as you climb up to straddle {B:his} waist, and {B:he} presses back up against you with a needy moan.`,
   [playerA, isLustful, bVisibleCock]);
@@ -407,13 +407,13 @@ straddle.add(`{A:name} rises up affectionately, swinging a leg over your hips as
   [playerB, isLoving]);
 straddle.add(`{A:name} climbs up onto your back, {A:his} {A:cock.thickCock} resting warmly along your spine as you settle down flat beneath {A:him}.`,
   [playerB, isLoving, aVisibleCock]);
-straddle.add(`{A:His} {A:breasts.softBreasts} press affectionately against your back as {A:name} settles astride your hips.`,
+straddle.add(`{A:name's} {A:breasts.softBreasts} press affectionately against your back as {A:he} settles astride your hips.`,
   [playerB, isLoving, aVisibleBreasts]);
 straddle.add(`You lower yourself flat, and {A:name} climbs up to straddle your waist with an eager little grind of {A:his} hips.`,
   [playerB, isLustful]);
 straddle.add(`{A:name} rises up eagerly, settling astride your hips as you spread out beneath {A:him}.`,
   [playerB, isLustful]);
-straddle.add(`{A:name} climbs up with a hungry sound, {A:his} hard {A:cock.bigCock} dragging along your back as {A:he} settles astride your hips.`,
+straddle.add(`{A:name} climbs up with a hungry sound, {A:his} {A:cock.bigHardCock} dragging along your back as {A:he} settles astride your hips.`,
   [playerB, isLustful, aHardCock]);
 straddle.add(`Your {B:cock.thickCock} is trapped beneath you as {A:name} climbs up eagerly to straddle your waist.`,
   [playerB, isLustful, bVisibleCock]);
@@ -427,17 +427,17 @@ straddle.add(`{A:name} climbs up nervously to straddle your waist as you lie fla
   [playerB, isFearful]);
 straddle.add(`With a shaky breath, {A:name} settles astride your hips.`,
   [playerB, isFearful]);
-straddle.add(`{A:His} {A:cock.sixInch} long {cock} trembles nervously as {A:he} climbs up to straddle your waist.`,
+straddle.add(`{A:name's} {A:cock.sixInch} long {cock} trembles nervously as {A:he} climbs up to straddle your waist.`,
   [playerB, isFearful, aVisibleCock]);
 straddle.add(`{A:name} grumbles as {A:he} climbs up to straddle your waist, clearly reluctant about it.`,
   [playerB, isResistant]);
 straddle.add(`With a huff, {A:name} settles astride your hips, unhappy about the whole thing.`,
   [playerB, isResistant]);
-straddle.add(`{A:His} {A:cock.thickCock} shifts as {A:he} climbs up reluctantly to straddle your waist.`,
+straddle.add(`{A:name's} {A:cock.thickCock} shifts as {A:he} climbs up reluctantly to straddle your waist.`,
   [playerB, isResistant, aVisibleCock]);
 straddle.add(`{A:name} thrashes as you pull {A:him} up to straddle you anyway, {A:his} struggles doing nothing to stop you.`,
   [playerB, isViolent]);
 straddle.add(`{A:name} struggles, but you keep pulling {A:him} onto your hips regardless.`,
   [playerB, isViolent]);
-straddle.add(`{A:His} {A:cock.thickCock} swings as {A:he} thrashes, unable to stop you from pulling {A:him} astride your hips.`,
+straddle.add(`{A:name's} {A:cock.thickCock} swings as {A:he} thrashes, unable to stop you from pulling {A:him} astride your hips.`,
   [playerB, isViolent, aVisibleCock]);
