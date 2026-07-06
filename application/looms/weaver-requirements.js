@@ -1,5 +1,12 @@
 global.WeaverRequirements = (function() {
 
+  // playerWas() checks the player's key in the previousPosition context rather than the current one. Move packages
+  // need this when the destination position is symmetric (like standing) and the current keys can't distinguish the
+  // roles the actors just left.
+  function playerWas(context, key) {
+    return context.previousPosition != null && GameState.getPlayer() === context.previousPosition[key];
+  }
+
   // === Body Parts ===
 
   function isAnusEmpty(context, key) {
@@ -89,10 +96,11 @@ global.WeaverRequirements = (function() {
   // Most of these functions are passthroughs to the Character wrapper, but these are all closures that can be added
   // to a WeaverPackage, whereas other systems will use the Character wrappers directly.
   return Object.freeze({
-    playerIs: key =>                         { return (context) => { return GameState.getPlayer() === context[key] }},
-    withAttitude: code =>                    { return (context) => { return context.attitude === code }},
-    withAction: code =>                      { return (context) => { return context.action === code }},
-    withHitLocation: (...slots) =>           { return (context) => { return slots.includes(context.hitLocation) }},
+    playerIs: key =>                         { return (context) => { return GameState.getPlayer() === context[key]; }},
+    playerWas: key =>                        { return (context) => { return playerWas(context, key); }},
+    withAttitude: code =>                    { return (context) => { return context.attitude === code; }},
+    withAction: code =>                      { return (context) => { return context.action === code; }},
+    withHitLocation: (...slots) =>           { return (context) => { return slots.includes(context.hitLocation); }},
     isAnusEmpty: key =>                      { return (context) => { return isAnusEmpty(context, key); }},
     visibleAnus: key =>                      { return (context) => { return visibleAnus(context, key); }},
     visibleBreasts: key =>                   { return (context) => { return visibleBreasts(context,key); }},
