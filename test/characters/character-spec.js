@@ -38,7 +38,7 @@ describe("Character", function() {
     });
 
     it("Compares cock sizes", function() {
-      const horse = CharacterFixtures.genericMale({ species:SpeciesCode.equian, cock:{ size:'huge' } });
+      const horse = CharacterFixtures.genericMale({ species:SpeciesCode.equian, cock:'huge' });
       const length = CockComponent.lookupNormalOf(horse).length;
 
       expect(Character(horse).cockIsAtLeast('big')).to.be.true;

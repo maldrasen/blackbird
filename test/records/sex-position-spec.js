@@ -21,7 +21,7 @@ describe("SexPosition", function() {
         const context = randomSetup();
         const move = Random.from(SexPosition.lookup(code).getMoves());
         const direction = Character(context.A).isPlayer() ? `A`:`B`;
-        const key = `${direction}:[${code}->${move.code}|${context.attitude}]`;
+        const key = `${direction}:[${context.attitude}]`;
 
         try {
           console.log(`${key} ${Weaver(context).weave(move.package.pick(context))}`);
