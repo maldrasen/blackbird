@@ -344,5 +344,101 @@ lapSitting.add(`{A:name} snarls and pushes at your shoulders, but you stay plant
 lapSitting.add(`{A:name's} {A:cock.thickCock} is trapped between your bodies as {A:he} struggles, unable to force you out of {A:his} lap.`,
   [playerB, isViolent, aVisibleCock]);
 
-faceSittingReversed.add(`[Shift to face sitting reversed with player on top with partner attitude {@attitude}]`, [playerA]);
-faceSittingReversed.add(`[Shift to face sitting reversed with player on bottom with partner attitude {@attitude}]`, [playerB]);
+// No swap moving into face-sitting-reversed: "a" stays the sitter, lifting up and turning around in place to
+// settle back down facing "b's" feet.
+faceSittingReversed.add(`You lift your hips and turn around above {B:name}, {B:his} hands steadying you warmly as you settle back down facing {B:his} feet.`,
+  [playerA, isLoving]);
+faceSittingReversed.add(`{B:name} hums happily against you as you swivel around atop {B:his} face, settling back down the other way.`,
+  [playerA, isLoving]);
+faceSittingReversed.add(`You turn around atop {B:name's} face, settling back down with {B:his} {B:cock.thickCock} now within easy reach of your hands.`,
+  [playerA, isLoving, bVisibleCock]);
+faceSittingReversed.add(`{B:name} sighs contentedly as you turn around above {B:him}, {B:his} {B:breasts.softBreasts} rising and falling below you as you settle facing {B:his} feet.`,
+  [playerA, isLoving, bVisibleBreasts]);
+faceSittingReversed.add(`{B:name} moans in protest as you lift away, {B:his} hands pulling your hips back down eagerly the moment you finish turning around.`,
+  [playerA, isLustful]);
+faceSittingReversed.add(`{B:name} grips your thighs hungrily as you swivel around atop {B:his} face, dragging you back down before you've even settled.`,
+  [playerA, isLustful]);
+faceSittingReversed.add(`{B:name} moans against your {pussy} as you settle back down, now facing {B:his} feet.`,
+  [playerA, isLustful, aVisiblePussy]);
+faceSittingReversed.add(`{B:name's} {B:cock.bigHardCock} stands eager below you as you turn around, settling back down to face it.`,
+  [playerA, isLustful, bHardCock]);
+faceSittingReversed.add(`You lift up and turn around atop {B:name}, and {B:he} waits quietly until you settle back down facing {B:his} feet.`,
+  [playerA, isAccepting]);
+faceSittingReversed.add(`{B:name} holds still as you swivel around above {B:his} face, settling back into place facing away.`,
+  [playerA, isAccepting]);
+faceSittingReversed.add(`{B:name} makes no complaint as you turn yourself around, {B:his} mouth finding you again as you settle back down.`,
+  [playerA, isAccepting]);
+faceSittingReversed.add(`{B:name} lies patiently as you turn around, {B:his} {B:cock.thickCock} resting against {B:his} stomach in front of you.`,
+  [playerA, isAccepting, bVisibleCock]);
+faceSittingReversed.add(`{B:name's} breath catches as your weight lifts, and {B:he} lies tense beneath you while you turn around and settle back down.`,
+  [playerA, isFearful]);
+faceSittingReversed.add(`{B:name} stays rigid beneath you as you swivel around atop {B:his} face, unsure what the new position means for {B:him}.`,
+  [playerA, isFearful]);
+faceSittingReversed.add(`With a nervous swallow, {B:name} holds still as you turn around above {B:his} face.`,
+  [playerA, isFearful]);
+faceSittingReversed.add(`{B:name's} {B:cock.sixInch} long {cock} trembles against {B:his} stomach as you turn to face down {B:his} body.`,
+  [playerA, isFearful, bVisibleCock]);
+faceSittingReversed.add(`{B:name} grumbles beneath you as you lift up and turn around, settling back down over {B:his} scowling face.`,
+  [playerA, isResistant]);
+faceSittingReversed.add(`{B:name} takes the chance to complain as your weight lifts, only to be muffled again as you settle back down facing {B:his} feet.`,
+  [playerA, isResistant]);
+faceSittingReversed.add(`With an annoyed huff against your skin, {B:name} holds grudgingly still as you turn around atop {B:his} face.`,
+  [playerA, isResistant]);
+faceSittingReversed.add(`{B:name} shifts unhappily beneath you as you turn around, {B:his} {B:cock.thickCock} lying against {B:his} stomach in front of you.`,
+  [playerA, isResistant, bVisibleCock]);
+faceSittingReversed.add(`{B:name} bucks hard the moment your weight lifts, but you pin {B:his} chest with a hand and settle back down facing {B:his} feet.`,
+  [playerA, isViolent]);
+faceSittingReversed.add(`{B:name} tries to twist free as you turn around, but your knees clamp {B:his} head in place until you settle back down.`,
+  [playerA, isViolent]);
+faceSittingReversed.add(`{B:name} thrashes beneath you mid-turn, {B:his} struggles doing nothing to stop you from settling back onto {B:his} face.`,
+  [playerA, isViolent]);
+faceSittingReversed.add(`{B:name's} {B:cock.thickCock} swings against {B:his} stomach as {B:he} bucks uselessly beneath you while you settle back down facing {B:his} feet.`,
+  [playerA, isViolent, bVisibleCock]);
+faceSittingReversed.add(`{A:name} lifts {A:his} hips and turns around above you with a fond glance back, settling {A:his} ass gently onto your mouth once more.`,
+  [playerB, isLoving]);
+faceSittingReversed.add(`{A:name} swivels around carefully atop your face, {A:his} hand braced gently on your chest as {A:he} settles back down facing your feet.`,
+  [playerB, isLoving]);
+faceSittingReversed.add(`{A:name} smiles down at you one last time before turning around, lowering {A:him}self back onto your waiting mouth.`,
+  [playerB, isLoving]);
+faceSittingReversed.add(`{A:name's} {A:cock.thickCock} swings past your face as {A:he} turns around above you, settling back down with a warm hum.`,
+  [playerB, isLoving, aVisibleCock]);
+faceSittingReversed.add(`{A:name} turns around eagerly atop your face, grinding back down onto your mouth the moment {A:he} settles.`,
+  [playerB, isLustful]);
+faceSittingReversed.add(`{A:name} moans as {A:he} swivels around above you, hardly lifting away before pressing {A:his} ass back down against your tongue.`,
+  [playerB, isLustful]);
+faceSittingReversed.add(`{A:name's} soaked {pussy} drags across your mouth as {A:he} turns, settling back down with a needy moan.`,
+  [playerB, isLustful, aVisiblePussy]);
+faceSittingReversed.add(`{A:name's} {A:cock.bigHardCock} bobs past your face as {A:he} turns around hungrily, settling back down facing your feet.`,
+  [playerB, isLustful, aHardCock]);
+faceSittingReversed.add(`{A:name} lifts up and turns around without comment, settling back down onto your face the other way.`,
+  [playerB, isAccepting]);
+faceSittingReversed.add(`{A:name} swivels around atop you, lowering {A:him}self back onto your mouth without protest.`,
+  [playerB, isAccepting]);
+faceSittingReversed.add(`{A:name} shifts {A:his} weight, turning {A:him}self around above you before settling back down, now facing your feet.`,
+  [playerB, isAccepting]);
+faceSittingReversed.add(`{A:name's} {A:cock.thickCock} passes over your face as {A:he} turns around, settling quietly back into place.`,
+  [playerB, isAccepting, aVisibleCock]);
+faceSittingReversed.add(`{A:name} turns around above you hesitantly, {A:his} thighs trembling against your cheeks as {A:he} lowers {A:him}self back down.`,
+  [playerB, isFearful]);
+faceSittingReversed.add(`{A:name} wobbles nervously through the turn, only settling back onto your mouth when you steady {A:his} hips.`,
+  [playerB, isFearful]);
+faceSittingReversed.add(`With a shaky breath, {A:name} swivels around atop your face, easing {A:him}self carefully back down.`,
+  [playerB, isFearful]);
+faceSittingReversed.add(`{A:name's} {A:cock.sixInch} long {cock} trembles as {A:he} nervously turns around above your face.`,
+  [playerB, isFearful, aVisibleCock]);
+faceSittingReversed.add(`{A:name} grumbles as you turn {A:him} around by the hips, settling back onto your face with obvious reluctance.`,
+  [playerB, isResistant]);
+faceSittingReversed.add(`With a huff, {A:name} turns {A:him}self around above you, clearly unhappy about settling back down.`,
+  [playerB, isResistant]);
+faceSittingReversed.add(`{A:name} mutters something sour as {A:he} swivels around, lowering {A:him}self grudgingly back onto your mouth.`,
+  [playerB, isResistant]);
+faceSittingReversed.add(`{A:name's} {A:cock.thickCock} sways as {A:he} reluctantly turns around, settling back down facing your feet.`,
+  [playerB, isResistant, aVisibleCock]);
+faceSittingReversed.add(`{A:name} tries to pull away the moment {A:he} lifts up, but your grip on {A:his} hips forces {A:him} around and back down onto your face.`,
+  [playerB, isViolent]);
+faceSittingReversed.add(`{A:name} thrashes as you turn {A:him} around above you, but your hands drag {A:him} back down regardless.`,
+  [playerB, isViolent]);
+faceSittingReversed.add(`{A:name} snarls and struggles through the turn, but you haul {A:his} hips back down onto your mouth anyway.`,
+  [playerB, isViolent]);
+faceSittingReversed.add(`{A:name's} {A:cock.thickCock} swings wildly as {A:he} fights the turn, but you drag {A:his} ass back down onto your mouth anyway.`,
+  [playerB, isViolent, aVisibleCock]);
