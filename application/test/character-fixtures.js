@@ -132,10 +132,36 @@ global.CharacterFixtures = (function() {
     return BreastsComponent.create(id, { ...defaultBreasts, ...options });
   }
 
-  function genericCock(id, options={}) {
-    const defaultCock = { count:1, placement:'normal', shape:'normal', minUrethraWidth:0, maxUrethraWidth:3,
-      size:'average', length:200, width:36, cumVolume:9, flaccidLength:120, testicleWidth:36 };
-    return CockComponent.create(id, { ...defaultCock, ...options });
+  // Cocks are complex enough that simply merging some default options with the argument options leads to some weird
+  // cocks where the ratios between the various properties aren't correct. Instead, I've used the CockFactory to build
+  // some actual components that we can use as canned cocks.
+  function genericCock(id, code) {
+    if (typeof code === 'object') { throw new Error('this uses a code now.') }
+
+    const smallCock = { count:1, size:'small', placement:'normal', shape:'normal', minUrethraWidth:0,
+      maxUrethraWidth:3, length:116, width:28, cumVolume:4, flaccidLength:77, testicleWidth:32 };
+
+    const averageCock = { count:1, size:'average', placement:'normal', shape:'normal', minUrethraWidth:0,
+      maxUrethraWidth:3, length:200, width:36, cumVolume:9, flaccidLength:120, testicleWidth:36 };
+
+    const huge = { count:1, size:'huge', placement:'normal', shape:'normal', minUrethraWidth:0,
+      maxUrethraWidth:5, length:403, width:58, cumVolume:36, flaccidLength:234, testicleWidth:48 };
+
+    const hugeHorse = { count:1, size:'huge', placement:'normal', shape:'horse', minUrethraWidth:0,
+      maxUrethraWidth:5, length:500, width:44, cumVolume:340, flaccidLength:120, testicleWidth:51,
+      headFlare:194 };
+
+    const hugeDog = { count:1, size:'huge', placement:'normal', shape:'dog', minUrethraWidth:0,
+      maxUrethraWidth:5, length:342, width:45, cumVolume:182, flaccidLength:120, testicleWidth:44,
+      knotRatio:136, knotFlare:143 };
+
+    switch (code) {
+      case 'small': return CockComponent.create(id, smallCock);
+      case 'huge': return CockComponent.create(id, huge);
+      case 'hugeHorse': return CockComponent.create(id, hugeHorse);
+      case 'hugeDog': return CockComponent.create(id, hugeDog);
+      default: return CockComponent.create(id, averageCock);
+    }
   }
 
   function genericMouth(id, options={}) {
