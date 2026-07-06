@@ -24,15 +24,13 @@ const tChestEquipped = WeaverRequirements.chestIsCovered('T');
 const eagerSpecial = WeaverPackage('bimbo.propose-training.eager.special');
 const eagerMotion = WeaverPackage('bimbo.propose-training.eager.motion');
 const eagerDialogue = WeaverPackage('bimbo.propose-training.eager.dialogue');
-
 const willingMotion = WeaverPackage('bimbo.propose-training.willing.motion');
 const willingDialogue = WeaverPackage('bimbo.propose-training.willing.dialogue');
-
 const reluctantMotion = WeaverPackage('bimbo.propose-training.reluctant.motion');
 const reluctantDialogue = WeaverPackage('bimbo.propose-training.reluctant.dialogue');
-
 const unwillingMotion = WeaverPackage('bimbo.propose-training.unwilling.motion');
 const unwillingDialogue = WeaverPackage('bimbo.propose-training.unwilling.dialogue');
+
 
 
 // Bimbo dialog is built from a motion fragment and a dialogue fragment that are each picked independently, so the
@@ -45,14 +43,16 @@ function motionAndDialogue(motion, dialogue) {
 // The eager dialog also has a couple of rare full-line moments that replace the motion+dialogue combo entirely.
 // They're gated behind a 1-in-6 roll on top of their own requirements.
 Dialog.register(ArchetypeCode.bimbo, DialogKeys.proposeTraining_Eager, context => {
-  return (Random.roll(6) < 1 && eagerSpecial.getValidOptions(context) > 0) ?
-      eagerSpecial.pick(context):
-      `${eagerMotion.pick(context)} "${eagerDialogue.pick(context)}"`;
+  return (Random.roll(6) < 1 && eagerSpecial.getValidOptions(context).length > 0) ?
+    eagerSpecial.pick(context):
+    `${eagerMotion.pick(context)} "${eagerDialogue.pick(context)}"`;
 });
 
 Dialog.register(ArchetypeCode.bimbo, DialogKeys.proposeTraining_Willing, motionAndDialogue(willingMotion, willingDialogue));
 Dialog.register(ArchetypeCode.bimbo, DialogKeys.proposeTraining_Reluctant, motionAndDialogue(reluctantMotion, reluctantDialogue));
 Dialog.register(ArchetypeCode.bimbo, DialogKeys.proposeTraining_Unwilling, motionAndDialogue(unwillingMotion, unwillingDialogue));
+
+
 
 eagerSpecial.add(`{T:name} grins widely and grabs {T:his} {T:breasts.bigRoundBreasts}, squeezing them together
   roughly, "Mmm, yes! I want you to fuck my titties really hard this time."`,
@@ -63,8 +63,6 @@ eagerSpecial.add(`{setPosition(kneeling-dominant)} {T:name} grins and drops to {
 eagerSpecial.add(`{setPosition(standing-reversed)} {T:name} grins broadly and turns around, bending over and reaching
   behind to spread {T:his} ass cheeks wide apart. "Mmmm, yes. Guess where I want it?"`,
   [tVisibleAnus, tAnalSlut, tConsentsAnal]);
-
-
 
 eagerMotion.add(`{T:name} presses {T:his} soft body against you, pushing your arm between {T:his} {T:breasts.bigSoftBreasts}.`);
 eagerMotion.add(`{T:name} bounces on {T:his} heels, eyes lighting up with excitement.`);
@@ -82,8 +80,6 @@ eagerMotion.add(`{T:name} grins and bounces on {T:his} heels, {T:his} {T:breasts
 eagerMotion.add(`{T:name} grins and presses {T:his} body against you, letting {T:his} {T:cock.thickSixInchLongCock}
   press firmly against your leg.`,
   [tVisibleCock]);
-
-
 
 eagerDialogue.add(`Time to make me cum again? Okay {T:niceName}.`);
 eagerDialogue.add(`Please {T:niceName}, my little butthole feels so empty right now.`,
@@ -111,8 +107,6 @@ willingMotion.add(`The bimbo nods slowly, {T:his} vacant eyes glazing over as {T
   "accidentally" exposing one of {T:his} {T:breasts:thickNipples}.`,
   [tChestEquipped]);
 
-
-
 willingDialogue.add(`Hehe, okay {T:niceName}. I love feeling all filled up and stuff.`);
 willingDialogue.add(`Umm, sure! That sounds fun.`);
 willingDialogue.add(`Um, okay! If it's your {cock}, I guess I'm in. Or umm... it's in!`,
@@ -136,8 +130,6 @@ reluctantMotion.add(`{T:name} reaches down, wrapping {T:his} hand around {T:his}
 reluctantMotion.add(`{T:name} shrugs, reaching up to cup {T:his} {T:breasts.bigRoundBreasts}, giving {T:his}
   {T:breasts.thickNipples} a gentle pull.`,
   [tBreastsVisible]);
-
-
 
 reluctantDialogue.add(`Umm... I don't wanna mess it up, but okay. If you really want to.`);
 reluctantDialogue.add(`Umm... I dunno, my pussy's a little scared.`);
@@ -168,8 +160,6 @@ unwillingMotion.add(`The bimbo shakes {T:his} head, {T:his} {T:breasts:bigBreast
   [tBigBreasts]);
 unwillingMotion.add(`{T:name} shakes {T:his} head, {T:his} {cock} hanging limp between {T:his} legs.`,
   [tVisibleCock]);
-
-
 
 unwillingDialogue.add(`Nope. Not with you. My pussy doesn't wanna.`);
 unwillingDialogue.add(`No, I don't wanna. I've got like, a headache or something.`);

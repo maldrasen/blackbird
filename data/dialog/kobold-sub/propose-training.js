@@ -3,20 +3,29 @@
 // can get away with it. It's possible that some kobold subs will be male. They can be trained into submission or are
 // generated that way. All the non-binary kobolds should be submissive, former males.
 
-Dialog.register(ArchetypeCode.koboldSub, DialogKeys.proposeTraining_Eager, context => {
-  return `{T:name} drops {T:his} gaze immediately, ears flat and tail slowly raising 
-      upward. "Of course master. Use this one however you want."`;
-});
+const eager = WeaverPackage('kobold-sub.propose-training.eager');
+const willing = WeaverPackage('kobold-sub.propose-training.willing');
+const reluctant = WeaverPackage('kobold-sub.propose-training.reluctant');
+const unwilling = WeaverPackage('kobold-sub.propose-training.unwilling');
 
-Dialog.register(ArchetypeCode.koboldSub, DialogKeys.proposeTraining_Willing, context => {
-  return `{T:name} nods briefly before turning around and lifting {T:his} tail."`;
-});
+Dialog.register(ArchetypeCode.koboldSub, DialogKeys.proposeTraining_Eager, eager);
+Dialog.register(ArchetypeCode.koboldSub, DialogKeys.proposeTraining_Willing, willing);
+Dialog.register(ArchetypeCode.koboldSub, DialogKeys.proposeTraining_Reluctant, reluctant);
+Dialog.register(ArchetypeCode.koboldSub, DialogKeys.proposeTraining_Unwilling, unwilling);
 
-Dialog.register(ArchetypeCode.koboldSub, DialogKeys.proposeTraining_Reluctant, context => {
-  return `{T:name} frowns a little and nods. "If that's what you want from me."`;
-});
 
-Dialog.register(ArchetypeCode.koboldSub, DialogKeys.proposeTraining_Unwilling, context => {
-  return `{T:name} backs against the wall, {T:his} claws scraping against the hard floor.
-      "No... don't hurt me."`;
-});
+
+eager.add(`{T:name} drops {T:his} gaze immediately, ears flat and tail slowly raising upward.
+  "Of course master. Use this one however you want."`);
+
+
+
+willing.add(`{T:name} nods briefly before turning around and lifting {T:his} tail.`);
+
+
+
+reluctant.add(`{T:name} frowns a little and nods. "If that's what you want from me."`);
+
+
+
+unwilling.add(`{T:name} backs against the wall, {T:his} claws scraping against the hard floor. "No... don't hurt me."`);

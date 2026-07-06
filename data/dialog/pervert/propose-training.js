@@ -4,22 +4,31 @@
 // no shame and are into some weird shit. Like sluts, pervert will have several child archetypes for specific kinds of
 // perverts, but will fall back to the pervert dialog when their specific fetishes aren't pertinent.
 
-Dialog.register(ArchetypeCode.pervert, DialogKeys.proposeTraining_Eager, context => {
-  return `TODO: Eager perverted suggestions.`
-});
+const eager = WeaverPackage('pervert.propose-training.eager');
+const willing = WeaverPackage('pervert.propose-training.willing');
+const reluctant = WeaverPackage('pervert.propose-training.reluctant');
+const unwilling = WeaverPackage('pervert.propose-training.unwilling');
+
+Dialog.register(ArchetypeCode.pervert, DialogKeys.proposeTraining_Eager, eager);
+Dialog.register(ArchetypeCode.pervert, DialogKeys.proposeTraining_Willing, willing);
+Dialog.register(ArchetypeCode.pervert, DialogKeys.proposeTraining_Reluctant, reluctant);
+Dialog.register(ArchetypeCode.pervert, DialogKeys.proposeTraining_Unwilling, unwilling);
+
+
+
+// TODO: Eager perverted suggestions.
+eager.add(`TODO: Eager perverted suggestions.`);
+
+
 
 // TODO: Suggestions here too.
-Dialog.register(ArchetypeCode.pervert, DialogKeys.proposeTraining_Willing, context => {
-  return `{T:name} leans against the wall with a slow grin. "Yeah, I'm in. 
-    I've got a few ideas if you want to hear them."`;
-});
+willing.add(`{T:name} leans against the wall with a slow grin. "Yeah, I'm in. I've got a few ideas if you want to hear them."`);
 
-Dialog.register(ArchetypeCode.pervert, DialogKeys.proposeTraining_Reluctant, context => {
-  return `{T:name} yawns and scratches the back of {T:his} neck. "Ehh sure, 
-    just try to make it interesting for me, K?"`;
-});
 
-Dialog.register(ArchetypeCode.pervert, DialogKeys.proposeTraining_Unwilling, context => {
-  return `{T:name} looks up and and down before laughing. "Haha, no. I'll 
-    happily suck off a horse or whatever. But you? No. Not interested."`;
-});
+
+reluctant.add(`{T:name} yawns and scratches the back of {T:his} neck. "Ehh sure, just try to make it interesting for me, K?"`);
+
+
+
+unwilling.add(`{T:name} looks up and and down before laughing. "Haha, no. I'll happily suck off a horse or whatever.
+  But you? No. Not interested."`);

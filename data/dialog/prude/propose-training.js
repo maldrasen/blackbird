@@ -4,20 +4,30 @@
 // possible, through training to cause a character to lose this archetype. Rather than having their personality
 // reverting back to serious, I think we'll also eventually need an ex-prude archetype.
 
-Dialog.register(ArchetypeCode.prude, DialogKeys.proposeTraining_Eager, context => {
-  return `{T:name} stiffens, then exhales slowly. "...Fine. That is my purpose here I suppose."`;
-});
+const eager = WeaverPackage('prude.propose-training.eager');
+const willing = WeaverPackage('prude.propose-training.willing');
+const reluctant = WeaverPackage('prude.propose-training.reluctant');
+const unwilling = WeaverPackage('prude.propose-training.unwilling');
 
-Dialog.register(ArchetypeCode.prude, DialogKeys.proposeTraining_Willing, context => {
-  return `{T:name} crosses {T:his} arms and looks away. "I suppose if it must 
-    happen, then it must. Just don't expect me to like it."`;
-});
+Dialog.register(ArchetypeCode.prude, DialogKeys.proposeTraining_Eager, eager);
+Dialog.register(ArchetypeCode.prude, DialogKeys.proposeTraining_Willing, willing);
+Dialog.register(ArchetypeCode.prude, DialogKeys.proposeTraining_Reluctant, reluctant);
+Dialog.register(ArchetypeCode.prude, DialogKeys.proposeTraining_Unwilling, unwilling);
 
-Dialog.register(ArchetypeCode.prude, DialogKeys.proposeTraining_Reluctant, context => {
-  return `{T:name}'s expression tightens with visible distaste. "What a deeply uncomfortable 
-    thing to ask of someone... Fine. Let's just... get it over with."`;
-});
 
-Dialog.register(ArchetypeCode.prude, DialogKeys.proposeTraining_Unwilling, context => {
-  return `{T:name} fixes you with a cold stare. "No. Absolutely not."`;
-});
+
+eager.add(`{T:name} stiffens, then exhales slowly. "...Fine. That is my purpose here I suppose."`);
+
+
+
+willing.add(`{T:name} crosses {T:his} arms and looks away. "I suppose if it must happen, then it must.
+  Just don't expect me to like it."`);
+
+
+
+reluctant.add(`{T:name}'s expression tightens with visible distaste. "What a deeply uncomfortable thing to ask
+  of someone... Fine. Let's just... get it over with."`);
+
+
+
+unwilling.add(`{T:name} fixes you with a cold stare. "No. Absolutely not."`);

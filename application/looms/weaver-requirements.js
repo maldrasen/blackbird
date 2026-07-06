@@ -48,6 +48,10 @@ global.WeaverRequirements = (function() {
     return Character(context[first]).isTallerThan(context[second]);
   }
 
+  function isMale(context, key) {
+    return Character(context[key]).isMale();
+  }
+
   // === Attributes ===
 
   function minimumStrength(context, key, min) {
@@ -57,7 +61,7 @@ global.WeaverRequirements = (function() {
   // === Equipment ===
 
   function chestIsCovered(context, key) {
-    return Character(context[key]).isEquipped(EquipmentSlot.legs);
+    return Character(context[key]).isEquipped(EquipmentSlot.chest);
   }
 
   function legsAreCovered(context, key) {
@@ -65,7 +69,7 @@ global.WeaverRequirements = (function() {
   }
 
   function isTopless(context, key) {
-    return Character(context[key]).isEquipped(EquipmentSlot.chest);
+    return Character(context[key]).isEquipped(EquipmentSlot.chest) === false;
   }
 
   // === Sexual Preferences and Consent Calculations ===
@@ -76,6 +80,10 @@ global.WeaverRequirements = (function() {
 
   function hasSexualPreference(context, key, code, threshold) {
     return Character(context[key]).hasSexualPreference(code, threshold);
+  }
+
+  function isStraight(context, key) {
+    return Character(context[key]).isStraight();
   }
 
   // Most of these functions are passthroughs to the Character wrapper, but these are all closures that can be added
@@ -94,12 +102,14 @@ global.WeaverRequirements = (function() {
     minimumCockSize: (key,size) =>           { return (context) => { return minimumCockSize(context, key, size); }},
     visiblePussy: key =>                     { return (context) => { return visiblePussy(context, key); }},
     isTallerThan: (first, second) =>         { return (context) => { return isTallerThan(context, first, second) }},
+    isMale: key =>                           { return (context) => { return isMale(context, key); }},
     minimumStrength: (key, min) =>           { return (context) => { return minimumStrength(context, key, min); }},
     chestIsCovered: key =>                   { return (context) => { return chestIsCovered(context, key); }},
     legsAreCovered: key =>                   { return (context) => { return legsAreCovered(context, key); }},
     isTopless: key =>                        { return (context) => { return isTopless(context, key); }},
     wouldConsentTo: (key, code, min) =>      { return (context) => { return wouldConsentTo(context, key, code, min); }},
     hasSexualPreference: (key, code, min) => { return (context) => { return hasSexualPreference(context, key, code, min); }},
+    isStraight: key =>                       { return (context) => { return isStraight(context, key); }},
   });
 
 })();
