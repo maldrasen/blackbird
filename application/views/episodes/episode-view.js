@@ -3,9 +3,22 @@ global.EpisodeView = (function() {
   function init() {
     X.onClick('#episodeButtons .continue-button', EpisodeSystem.nextPage);
     X.onCodeDown(KeyCodes.Space, isVisible, EpisodeSystem.nextPage);
+    X.onCodeDown(KeyCodes.Enter, isVisible, EpisodeSystem.nextPage);
+
     X.onClick('#episodePage', () => {
       if (X.hasClass('#episodeButtons','hide')) { EpisodeSystem.nextPage(); }
     });
+
+    for (let x=1; x<=9; x++) {
+      X.onCodeDown(`Digit${x}`, isVisible, () => selectOption(x));
+    }
+  }
+
+  // When an option is selected using a keyboard shortcut we invoke the button's click() function so that any event
+  // listeners will work the same, weather the button was clicked or the shortcut was used.
+  function selectOption(number) {
+    const button = X.all('#episodeButtons > a')[number - 1];
+    if (button) { button.click(); }
   }
 
   function show() {
