@@ -36,14 +36,14 @@
 
 #episodeView.episode-large-centered {
   .episode-frame {
-    height: 400px;
-    width: 800px;
+    height: 500px;
+    width: 1000px;
   }
 }
 
 #episodePage {
   flex-grow: 1;
-  margin: 20px;
+  margin: 20px 20px 0 20px;
   font-size: variables.$fs-bigger;
 }
 
@@ -58,6 +58,9 @@
 #episodeButtons.button-column {
   display: flex;
   flex-direction: column;
+  a { margin: 2px 10px; }
+  a:first-child { margin-top:0; }
+  a:last-child { margin-bottom:10px; }
 }
 
 /*

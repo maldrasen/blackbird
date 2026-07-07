@@ -37,8 +37,9 @@ global.EpisodeView = (function() {
     X.empty('#episodeButtons');
     X.addClass('#episodeButtons','hide');
 
-    episodePage.getButtons().forEach(buttonData => {
-      addButton(buttonData);
+    const buttons = episodePage.getButtons();
+    buttons.forEach((buttonData,index) => {
+      addButton(buttonData, (buttons.length > 1) ? index+1 : null);
     })
 
     // We need to get the content after the buttons are added because getting
@@ -50,15 +51,18 @@ global.EpisodeView = (function() {
     X.fill('#episodePage',X.createElement(content));
   }
 
-  function addButton(buttonData) {
+  // The index of a button is only included if there are more than one button on the page. (Not sure if
+  function addButton(buttonData, index) {
     X.removeClass('#episodeButtons','hide');
+
+    const shortcutLabel = index ? `<span class='fg-very-weak'>${index}. </span>` : '';
 
     if (buttonData.standard === 'continue') {
       return X.first('#episodeButtons').appendChild(X.createElement(
         `<a href='#' class='button continue-button'>Continue</a>`));
     }
 
-    const button = X.createElement(`<a href='#' class='button'>${buttonData.label}</a>`);
+    const button = X.createElement(`<a href='#' class='button'>${shortcutLabel}${buttonData.label}</a>`);
     if (buttonData.id) { button.id = buttonData.id; }
     if (buttonData.classname) { X.addClass(button,buttonData.classname); }
     if (typeof buttonData.callback === 'function') { button.addEventListener('click',buttonData.callback); }
