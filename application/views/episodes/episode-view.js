@@ -1,6 +1,7 @@
 global.EpisodeView = (function() {
 
   function init() {
+    X.onClick('#episodeButtons a', clickEpisodeButton);
     X.onClick('#episodeButtons .continue-button', EpisodeSystem.nextPage);
     X.onCodeDown(KeyCodes.Space, allowKeyAdvance, EpisodeSystem.nextPage);
     X.onCodeDown(KeyCodes.Enter, allowKeyAdvance, EpisodeSystem.nextPage);
@@ -34,6 +35,11 @@ global.EpisodeView = (function() {
     if (button) { button.click(); }
   }
 
+  function clickEpisodeButton(event) {
+    const button = event.target.closest('#episodeButtons a');
+    if (typeof button.onSelect === 'function') { button.onSelect(); }
+  }
+
   function show() {
     const episode = EpisodeSystem.getEpisode();
 
@@ -64,28 +70,26 @@ global.EpisodeView = (function() {
     X.fill('#episodePage',X.createElement(content));
   }
 
-  // The index of a button is only included if there are more than one button on the page. (Not sure if
+  // This function expects one of the standard button codes or button properties. A canned application button ignores
+  // the button properties, but gets own default values if the button has them. The other button properties are:
+  // { label, id, classname, callback } Only label is required. The index of a button (used for a keyboard shortcut)
+  // is only included if there are more than one button on the page.
   function addButton(buttonData, index) {
     X.removeClass('#episodeButtons','hide');
 
-    const shortcutLabel = index ? `<span class='fg-very-weak'>${index}. </span>` : '';
+    const buttons = X.first('#episodeButtons');
 
     if (buttonData.standard === 'continue') {
-      return X.first('#episodeButtons').appendChild(X.createElement(
-        `<a href='#' class='button continue-button'>Continue</a>`));
+      return buttons.appendChild(X.createElement(`<a href='#' class='button continue-button'>Continue</a>`));
     }
 
-    const button = X.createElement(`<a href='#' class='button ${buttonData.classname}'>${shortcutLabel}${buttonData.label}</a>`);
+    const shortcutLabel = index ? `<span class='fg-very-weak'>${index}. </span>` : '';
+    const button = X.createElement(`<a href='#' class='button'>${shortcutLabel}${buttonData.label}</a>`);
     if (buttonData.id) { button.id = buttonData.id; }
     if (buttonData.classname) { X.addClass(button,buttonData.classname); }
+    if (typeof buttonData.callback === 'function') { button.onSelect = buttonData.callback; }
 
-    if (typeof buttonData.callback === 'function') {
-      button.addEventListener('click',event => {
-        if (event.target.closest('.disabled') == null) { buttonData.callback(); }
-      });
-    }
-
-    X.first('#episodeButtons').appendChild(button);
+    buttons.appendChild(button);
   }
 
   function isVisible() {

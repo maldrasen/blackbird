@@ -189,9 +189,20 @@ const nameContent = `
     </div>
   </div>`;
 
-const nameButton = [
+const nameButtons = [
   { id:'nameSubmitButton', label:'Continue', classname:'disabled', callback:submitName },
 ];
+
+// The other game starts will have something similar, checking given name as the legacy name should be set. We'll
+// need to make this a general page function then. Page data will need to include a list of inputs and a validator
+// function for each one. We'd need to pass the button id as well.
+function bindNameInputs() {
+  X.first('#familyName').addEventListener('keyup', () => {
+    (X.first('#familyName').value.trim().length > 0) ?
+      X.removeClass('#nameSubmitButton','disabled') :
+      X.addClass('#nameSubmitButton','disabled');
+  });
+}
 
 function submitName() {
   const givenName = X.first('#givenName').value.trim() || 'Sheepfucker';
@@ -219,7 +230,7 @@ Episode.register('game-start-1', {
     { contentFunction:memoryResult },
     { content:regretContent, buttons:regretOptions },
     { contentFunction:regretResult },
-    { content:nameContent, buttons:nameButton },
+    { content:nameContent, buttons:nameButtons, onShow:bindNameInputs },
   ],
   endFunction: finishCharacterCreation,
 });

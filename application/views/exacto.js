@@ -54,7 +54,7 @@ global.X = (function() {
 
   function onClick(selector, callback) {
     window.addEventListener('click', event => {
-      if (event.target.matches(".disabled") === false && event.target.closest(selector)) {
+      if (event.target.closest(".disabled") == null && event.target.closest(selector)) {
         callback(event);
       }
     });
@@ -62,7 +62,7 @@ global.X = (function() {
 
   function onMouseDown(selector, callback) {
     window.addEventListener('mousedown', event => {
-      if (event.target.matches(".disabled") === false && event.target.closest(selector)) {
+      if (event.target.closest(".disabled") == null && event.target.closest(selector)) {
         callback(event);
       }
     });
