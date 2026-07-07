@@ -1,27 +1,42 @@
 
-// ===============
-//    Story 1
-// ===============
-// TODO: Real prose. Father was an adventurer who vanished in the dungeon shortly before the player was born.
+// =====================
+//    Choice 1 - Goal
+// =====================
 
-function storyOneContent() {
-  return `<div>
-    <p>TODO: Story 1 text.</p>
-  </div>`;
+const goalContent = `
+  <div><div>
+    You've been following the long winding road to Wolgur for three days now, stopping at the few established camps
+    between the distant farmlands and your new home. As you crest the next hill finally catch a glimpse of the city,
+    emerging from the thick mist that perpetually clings to the Rhysh valley. You're closer than you thought you were.
+    You adjust the heavy pack on your back and walk a little faster now that your goal is in sight.
+  </div><div>
+    Having lived your entire life in Borr, you're not sure what to expect from the dungeon city. You've heard the 
+    stories of course; tales of violence and utter decadence which, rather than dissuading you from this path, may have
+    actually hastened your decision to take up the life of a delver.
+  </div><div>
+    However, there's one thing above all others that you desire. What is it?
+  </div></div>`;
+
+const goalOptions = [
+  { id:'goal.glory',       label:'Glory',       callback:() => { choseGoal('glory', 'strong'); }},
+  { id:'goal.mastery',     label:'Mastery',     callback:() => { choseGoal('mastery', 'skillful'); }},
+  { id:'goal.immortality', label:'Immortality', callback:() => { choseGoal('immortality', 'healthy'); }},
+  { id:'goal.power',       label:'Power',       callback:() => { choseGoal('power', 'smart'); }},
+  { id:'goal.authority',   label:'Authority',   callback:() => { choseGoal('authority', 'beautiful'); }},
+]
+
+function choseGoal(goal, trigger) {
+  console.log(`Chose: ${goal} ${trigger}`);
+  addTrigger('strong');
+  EpisodeSystem.nextPage();
 }
 
-const storyOneButtons = [
-  { id:'story1OptionA', label:'TODO: Option A', callback:chooseStory1OptionA },
-  { id:'story1OptionB', label:'TODO: Option B', callback:chooseStory1OptionB },
-  { id:'story1OptionC', label:'TODO: Option C', callback:chooseStory1OptionC },
-];
-
-function chooseStory1OptionA() { addTrigger('strong'); EpisodeSystem.nextPage(); }
-function chooseStory1OptionB() { addTrigger('smart'); EpisodeSystem.nextPage(); }
-function chooseStory1OptionC() { addTrigger('beautiful'); EpisodeSystem.nextPage(); }
+function goalResult() {
+  return `Show text depending on choice`
+}
 
 // ===============
-//    Story 2
+//    Choice 2
 // ===============
 // TODO: Real prose. Older brother left to become an adventurer and hasn't been heard from since; the family home in
 //       Wolgur has sat empty ~15 years.
@@ -43,7 +58,7 @@ function chooseStory2OptionB() { addTrigger('healthy'); EpisodeSystem.nextPage()
 function chooseStory2OptionC() { addTrigger('weak'); EpisodeSystem.nextPage(); }
 
 // ===============
-//    Story 3 (aspect)
+//    Choice 3 (aspect)
 // ===============
 // TODO: Real prose. Traveling to Wolgur, finding the home in ruins with a squatter's camp and no brother in sight,
 //       landing on the sheep accusation. Response picks an aspect.
@@ -111,10 +126,11 @@ function finishCharacterCreation() {
 }
 
 Episode.register('character-creation', {
-  layout: 'centered',
+  layout: 'large-centered',
   background: 'backgrounds/wood.jpg', // TODO: placeholder background, no dedicated art yet
   pages: [
-    { contentFunction:storyOneContent, buttons:storyOneButtons },
+    { content:goalContent, buttons:goalOptions },
+    { contentFunction:goalResult },
     { contentFunction:storyTwoContent, buttons:storyTwoButtons },
     { contentFunction:storyThreeContent, buttons:storyThreeButtons },
     { contentFunction:namingContent, buttons:namingButtons },

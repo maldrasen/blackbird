@@ -4,6 +4,7 @@ global.Episode = (function() {
   const views = {
     'novel': `views/episode-novel.html`,
     'centered': `views/episode-centered.html`,
+    'large-centered': `views/episode-large-centered.html`,
   }
 
   function register(code,data) {

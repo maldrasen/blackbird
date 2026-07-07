@@ -24,7 +24,7 @@ global.GameController = (function() {
   }
 
   async function openGame() {
-    console.clear();
+    // console.clear();
     MainContent.showCover();
     MainContent.removeStylesheet('mocha');
     MainContent.hideCover({ fadeTime:2500 });
