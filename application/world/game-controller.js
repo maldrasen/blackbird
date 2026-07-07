@@ -16,7 +16,7 @@ global.GameController = (function() {
   // TODO: Once a lineage exists this should return whatever scenario the
   //       lineage has unlocked instead of always the first one.
   function getGameStartEpisode() {
-    return 'character-creation';
+    return 'game-start-1';
   }
 
   async function loadLastGame() {

@@ -142,7 +142,7 @@ function finishCharacterCreation() {
   GameState.setGameMode(GameMode.location);
 }
 
-Episode.register('character-creation', {
+Episode.register('game-start-1', {
   layout: 'large-centered',
   background: 'backgrounds/wood.jpg', // TODO: placeholder background, no dedicated art yet
   pages: [
