@@ -4,7 +4,7 @@
 // =====================
 
 const goalContent = `
-  <div><div>
+  <div>
     You've been following the long winding road to Wolgur for three days now, stopping at the few established camps
     between the distant farmlands and your new home. As you crest the next hill finally catch a glimpse of the city,
     emerging from the thick mist that perpetually clings to the Rhysh valley. You're closer than you thought you were.
@@ -15,7 +15,7 @@ const goalContent = `
     actually hastened your decision to take up the life of a delver.
   </div><div>
     However, there's one thing above all others that you desire. What is it?
-  </div></div>`;
+  </div>`;
 
 const goalOptions = [
   { id:'goal.glory',       label:'Glory',       callback:() => { choseGoal('glory', 'strong'); }},
