@@ -3,6 +3,15 @@
 //    Choice 1 - Goal
 // =====================
 
+// TODO: Find a place for this where it can be shared.
+const triggerForAttribute = {
+  strength: 'strong',
+  dexterity: 'skillful',
+  vitality: 'healthy',
+  intelligence: 'smart',
+  beauty: 'beautiful',
+}
+
 const goalContent = `
   <p>
     You've been following the long winding road to Wolgur for three days now, stopping at the few established camps
@@ -24,55 +33,60 @@ const goalPower = `The dungeon itself grants power to those who can overcome its
 const goalAuthority = `You may have come from nothing, but you will rise up in this world and take your position as its master.`;
 
 const goalOptions = [
-  { id:'goal.glory',       label:'Glory',       callback:() => { choseGoal('glory',       'strong',    Attrib.strength); }},
-  { id:'goal.mastery',     label:'Mastery',     callback:() => { choseGoal('mastery',     'skillful',  Attrib.dexterity); }},
-  { id:'goal.immortality', label:'Immortality', callback:() => { choseGoal('immortality', 'healthy',   Attrib.vitality); }},
-  { id:'goal.power',       label:'Power',       callback:() => { choseGoal('power',       'smart',     Attrib.intelligence); }},
-  { id:'goal.authority',   label:'Authority',   callback:() => { choseGoal('authority',   'beautiful', Attrib.beauty); }},
+  { id:'goal-glory',       label:'Glory',       callback:() => { choseGoal(Attrib.strength);     }},
+  { id:'goal-mastery',     label:'Mastery',     callback:() => { choseGoal(Attrib.dexterity);    }},
+  { id:'goal-immortality', label:'Immortality', callback:() => { choseGoal(Attrib.vitality);     }},
+  { id:'goal-power',       label:'Power',       callback:() => { choseGoal(Attrib.intelligence); }},
+  { id:'goal-authority',   label:'Authority',   callback:() => { choseGoal(Attrib.beauty);       }},
 ]
 
-function choseGoal(goal, trigger, attribute) {
-  const state = EpisodeSystem.getState();
-  addTrigger(trigger);
-  state.setPropertyValue('goal',goal);
-  state.setPropertyValue('goal-attribute',attribute);
+function choseGoal(goal) {
+  addTrigger(triggerForAttribute[goal]);
+  EpisodeSystem.getState().setPropertyValue('goal',goal);
   EpisodeSystem.nextPage();
 }
 
 function goalResult() {
-  const state = EpisodeSystem.getState();
-  const result = WeaverElements.resultBlock(`You've gained ${state.getProperty('goal-attribute')}`, { classname:'gain' });
+  const goal = EpisodeSystem.getState().getProperty('goal');
+  const result = WeaverElements.resultBlock(`You've gained ${goal}`, { classname:'gain' });
 
-  switch (EpisodeSystem.getState().getPropertyValue('goal')) {
-    case 'glory': return `${result} ${goalGlory}`;
-    case 'mastery': return `${result} ${goalMastery}`;
-    case 'immortality': return `${result} ${goalImmortality}`;
-    case 'power': return `${result} ${goalPower}`;
-    case 'authority': return `${result} ${goalAuthority}`;
+  switch (goal) {
+    case Attrib.strength: return `${result} ${goalGlory}`;
+    case Attrib.dexterity: return `${result} ${goalMastery}`;
+    case Attrib.vitality: return `${result} ${goalImmortality}`;
+    case Attrib.intelligence: return `${result} ${goalPower}`;
+    case Attrib.beauty: return `${result} ${goalAuthority}`;
   }
 }
 
 // ===============
 //    Choice 2
 // ===============
-// TODO: Real prose. Older brother left to become an adventurer and hasn't been heard from since; the family home in
-//       Wolgur has sat empty ~15 years.
 
-function storyTwoContent() {
-  return `<div>
-    <p>TODO: Story 2 text.</p>
-  </div>`;
+const memoryContent = `
+  <p>Your pulse quickens at the thought of what could be.</p>
+  <p>What memory from home will you cherish?</p>
+`
+
+// We don't allow the user to select the same attribute twice, so if they've added the strong trigger with the goal
+// choice we need to hide the strength option from the memory choice.
+function hideGoalOption() {
+  X.addClass(`#memory-${EpisodeSystem.getState().getProperty('goal')}`,'hide');
 }
 
-const storyTwoButtons = [
-  { id:'story2OptionA', label:'TODO: Option A', callback:chooseStory2OptionA },
-  { id:'story2OptionB', label:'TODO: Option B', callback:chooseStory2OptionB },
-  { id:'story2OptionC', label:'TODO: Option C', callback:chooseStory2OptionC },
+const memoryOptions = [
+  { id:'memory-strength',     label:'TODO: Option A', callback: () => { chooseMemory(Attrib.strength)     }},
+  { id:'memory-dexterity',    label:'TODO: Option B', callback: () => { chooseMemory(Attrib.dexterity)    }},
+  { id:'memory-vitality',     label:'TODO: Option C', callback: () => { chooseMemory(Attrib.vitality)     }},
+  { id:'memory-intelligence', label:'TODO: Option C', callback: () => { chooseMemory(Attrib.intelligence) }},
+  { id:'memory-beauty',       label:'TODO: Option C', callback: () => { chooseMemory(Attrib.beauty)       }},
 ];
 
-function chooseStory2OptionA() { addTrigger('skillful'); EpisodeSystem.nextPage(); }
-function chooseStory2OptionB() { addTrigger('healthy'); EpisodeSystem.nextPage(); }
-function chooseStory2OptionC() { addTrigger('weak'); EpisodeSystem.nextPage(); }
+function chooseMemory(memory) {
+  addTrigger(triggerForAttribute[memory]);
+  EpisodeSystem.getState().setPropertyValue('memory',memory);
+  EpisodeSystem.nextPage();
+}
 
 // ===============
 //    Choice 3 (aspect)
@@ -148,7 +162,7 @@ Episode.register('game-start-1', {
   pages: [
     { content:goalContent, buttons:goalOptions },
     { contentFunction:goalResult },
-    { contentFunction:storyTwoContent, buttons:storyTwoButtons },
+    { content:memoryContent, buttons:memoryOptions, onShow:hideGoalOption },
     { contentFunction:storyThreeContent, buttons:storyThreeButtons },
     { contentFunction:namingContent, buttons:namingButtons },
   ],

@@ -13,9 +13,14 @@ global.EpisodePage = function(data) {
     throw new Error(`A page should have content or a contentFunction`);
   }
 
+  function executeOnShow() {
+    if (typeof data.onShow === 'function') { data.onShow(); }
+  }
+
   return Object.freeze({
     getButtons: () => { return data.buttons || [] },
-    getContent
+    getContent,
+    executeOnShow,
   });
 
 };

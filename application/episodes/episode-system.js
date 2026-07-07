@@ -22,6 +22,7 @@ global.EpisodeSystem = (function() {
       return endEpisode();
     }
     EpisodeView.setPageContent(page);
+    page.executeOnShow();
   }
 
   return Object.freeze({
