@@ -13,19 +13,28 @@ global.EpisodePage = function(data) {
     throw new Error(`A page should have content or a contentFunction`);
   }
 
+  // A page can specify a function to run after the page has been shown. This can be used to play an effect, or can
+  // be used for hacky tweaks to the page output that isn't handled anywhere else.
   function executeOnShow() {
     if (typeof data.onShow === 'function') { data.onShow(); }
   }
 
-  function getButtons() {
-    return (data.buttons || []).filter(button => (button.requires == null) ? true :
-      button.requires.every(requirement => requirement(EpisodeSystem.getState())));
+  // Only render a button when it has no requirements or all its requirements are met.
+  function getButtons() { return (data.buttons || []).filter(button => checkRequirements(button.requires)); }
+
+  // Only render a page when it has no requirements or all its requirements are met.
+  function meetsRequirements() { return checkRequirements(data.requires); }
+
+  // Check page and button level requirements.
+  function checkRequirements(requires) {
+    return (requires == null) ? true : requires.every(requirement => requirement(EpisodeSystem.getState()));
   }
 
   return Object.freeze({
     getButtons,
     getContent,
     executeOnShow,
+    meetsRequirements,
   });
 
 };
