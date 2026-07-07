@@ -27,6 +27,7 @@ global.Weaver = function(context) {
 
   const OPEN_SPAN_PATTERN = /{S\/([^}]+)}/;
   const CLOSE_SPAN = `{\/S}`;
+  const QUOTE_PATTERN = /"([^"]+)"/
 
   function weave(source) {
     if (source == null) { return ''; }
@@ -42,6 +43,7 @@ global.Weaver = function(context) {
       let openSpanMatch = text.match(OPEN_SPAN_PATTERN);
       let closeSpanMatch = text.includes(CLOSE_SPAN);
       let simpleMatch = text.match(SIMPLE_PATTERN);
+      let quoteMatch = text.match(QUOTE_PATTERN);
 
       if (contextMatch) {
         text = text.replace(contextMatch[0], contextValue(contextMatch[1].trim()));
@@ -58,6 +60,8 @@ global.Weaver = function(context) {
         text = text.replace(CLOSE_SPAN, `</span>`);
       } else if (simpleMatch) {
         text = text.replace(simpleMatch[0], simpleValue(simpleMatch[1].trim()));
+      } else if (quoteMatch) {
+        text = text.replace(quoteMatch[0], quoteSpan(quoteMatch[1]));
       } else {
         weaving = false;
       }
@@ -114,6 +118,15 @@ global.Weaver = function(context) {
       case 'wep': return `color: rgb(100,150,60)`;  // Weapon
       default: return `color:red`;
     }
+  }
+
+  // The weaver replaces straight quotes with opening and closing quotes. Player responses should always be in button
+  // choices, never quoted text, so any quoted text belongs to another character. At some point we may want a different
+  // style for important characters. To do this we'll need to pass an additional speaker key parameter to the weave()
+  // function. Given that key, we'll look up the actor component from the id and if this actor has a 'quote-classname'
+  // attribute we'll add that to this span.
+  function quoteSpan(text) {
+    return `<span class='quote'>“${text}”</span>`;
   }
 
   function simpleValue(key) {

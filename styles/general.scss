@@ -100,3 +100,9 @@
   font-family:'roboto-mono', monospace;
   color: variables.$fg-warning;
 }
+
+// Default color for quoted dialogue. Once quoteSpan() in weaver.js is passing a speaker id we can give named
+// characters their own color here instead of falling back to this for everyone.
+.quote {
+  color: variables.$fg-strong;
+}
