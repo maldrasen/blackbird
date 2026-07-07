@@ -142,6 +142,7 @@
     "application/looms/function-loom.js",
     "application/looms/pussy-loom.js",
     "application/looms/utility-loom.js",
+    "application/looms/weaver-elements.js",
     "application/looms/weaver-package.js",
     "application/looms/weaver-requirements.js",
     "application/looms/weaver.js",

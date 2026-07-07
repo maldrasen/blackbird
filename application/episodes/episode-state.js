@@ -35,6 +35,7 @@ global.EpisodeState = function(code, context) {
     getNextPage,
 
     getProperties: () => { return properties },
+    getProperty: key => { return properties[key] },
     setPropertyValue: (key,value) => { properties[key] = value; },
     getPropertyValue: key => { return properties[key]; },
   });

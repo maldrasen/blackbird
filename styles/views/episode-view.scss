@@ -1,6 +1,12 @@
 @use "../layout";
 @use "../variables";
 
+#episodeView {
+  p:first-child { margin-top: 0; }
+  p { margin: 20px 0; }
+  p:last-child { margin-bottom: 0; }
+}
+
 #episodeView.center-area {
   display: flex;
   align-items: center;
@@ -30,7 +36,7 @@
 
 #episodeView.episode-large-centered {
   .episode-frame {
-    height: 600px;
+    height: 400px;
     width: 800px;
   }
 }
@@ -42,11 +48,11 @@
 }
 
 #episodeButtons.button-row {
-  //display: flex;
-  //justify-content: flex-end;
-  //padding: 5px;
-  //border-top: variables.$border-light;
-  //background-color: rgb(0,0,0.5);
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px;
+  border-top: variables.$border-light;
+  background-color: rgb(0,0,0.5);
 }
 
 #episodeButtons.button-column {

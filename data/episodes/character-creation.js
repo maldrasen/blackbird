@@ -4,35 +4,52 @@
 // =====================
 
 const goalContent = `
-  <div>
+  <p>
     You've been following the long winding road to Wolgur for three days now, stopping at the few established camps
-    between the distant farmlands and your new home. As you crest the next hill finally catch a glimpse of the city,
+    between the distant farmlands and your new home. You crest the next hill finally catch a glimpse of the city,
     emerging from the thick mist that perpetually clings to the Rhysh valley. You're closer than you thought you were.
     You adjust the heavy pack on your back and walk a little faster now that your goal is in sight.
-  </div><div>
+  </p><p>
     Having lived your entire life in Borr, you're not sure what to expect from the dungeon city. You've heard the 
     stories of course; tales of violence and utter decadence which, rather than dissuading you from this path, may have
     actually hastened your decision to take up the life of a delver.
-  </div><div>
+  </p><p>
     However, there's one thing above all others that you desire. What is it?
-  </div>`;
+  </p>`;
+
+const goalGlory = `Chose Glory`;
+const goalMastery = `Chose Mastery`;
+const goalImmortality = `Chose Immortality`;
+const goalPower = `Chose Power`;
+const goalAuthority = `Chose Authority`;
 
 const goalOptions = [
-  { id:'goal.glory',       label:'Glory',       callback:() => { choseGoal('glory', 'strong'); }},
-  { id:'goal.mastery',     label:'Mastery',     callback:() => { choseGoal('mastery', 'skillful'); }},
-  { id:'goal.immortality', label:'Immortality', callback:() => { choseGoal('immortality', 'healthy'); }},
-  { id:'goal.power',       label:'Power',       callback:() => { choseGoal('power', 'smart'); }},
-  { id:'goal.authority',   label:'Authority',   callback:() => { choseGoal('authority', 'beautiful'); }},
+  { id:'goal.glory',       label:'Glory',       callback:() => { choseGoal('glory',       'strong',    Attrib.strength); }},
+  { id:'goal.mastery',     label:'Mastery',     callback:() => { choseGoal('mastery',     'skillful',  Attrib.dexterity); }},
+  { id:'goal.immortality', label:'Immortality', callback:() => { choseGoal('immortality', 'healthy',   Attrib.vitality); }},
+  { id:'goal.power',       label:'Power',       callback:() => { choseGoal('power',       'smart',     Attrib.intelligence); }},
+  { id:'goal.authority',   label:'Authority',   callback:() => { choseGoal('authority',   'beautiful', Attrib.beauty); }},
 ]
 
-function choseGoal(goal, trigger) {
-  console.log(`Chose: ${goal} ${trigger}`);
-  addTrigger('strong');
+function choseGoal(goal, trigger, attribute) {
+  const state = EpisodeSystem.getState();
+  addTrigger(trigger);
+  state.setPropertyValue('goal',goal);
+  state.setPropertyValue('goal-attribute',attribute);
   EpisodeSystem.nextPage();
 }
 
 function goalResult() {
-  return `Show text depending on choice`
+  const state = EpisodeSystem.getState();
+  const result = WeaverElements.resultBlock(`You've gained ${state.getProperty('goal-attribute')}`, { classname:'gain' });
+
+  switch (EpisodeSystem.getState().getPropertyValue('goal')) {
+    case 'glory': return `${result} ${goalGlory}`;
+    case 'mastery': return `${result} ${goalMastery}`;
+    case 'immortality': return `${result} ${goalImmortality}`;
+    case 'power': return `${result} ${goalPower}`;
+    case 'authority': return `${result} ${goalAuthority}`;
+  }
 }
 
 // ===============
