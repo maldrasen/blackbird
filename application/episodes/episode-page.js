@@ -17,8 +17,13 @@ global.EpisodePage = function(data) {
     if (typeof data.onShow === 'function') { data.onShow(); }
   }
 
+  function getButtons() {
+    return (data.buttons || []).filter(button => (button.requires == null) ? true :
+      button.requires.every(requirement => requirement(EpisodeSystem.getState())));
+  }
+
   return Object.freeze({
-    getButtons: () => { return data.buttons || [] },
+    getButtons,
     getContent,
     executeOnShow,
   });

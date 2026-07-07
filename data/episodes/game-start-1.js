@@ -65,21 +65,20 @@ function goalResult() {
 
 const memoryContent = `
   <p>Your pulse quickens at the thought of what could be.</p>
-  <p>What memory from home will you cherish?</p>
-`
+  <p>What memory from home will you cherish?</p>`;
 
 // We don't allow the user to select the same attribute twice, so if they've added the strong trigger with the goal
-// choice we need to hide the strength option from the memory choice.
-function hideGoalOption() {
-  X.addClass(`#memory-${EpisodeSystem.getState().getProperty('goal')}`,'hide');
+// choice we need to leave the strength option out of the memory choice.
+function notGoal(attribute) {
+  return state => state.getProperty('goal') !== attribute;
 }
 
 const memoryOptions = [
-  { id:'memory-strength',     label:'TODO: Option A', callback: () => { chooseMemory(Attrib.strength)     }},
-  { id:'memory-dexterity',    label:'TODO: Option B', callback: () => { chooseMemory(Attrib.dexterity)    }},
-  { id:'memory-vitality',     label:'TODO: Option C', callback: () => { chooseMemory(Attrib.vitality)     }},
-  { id:'memory-intelligence', label:'TODO: Option C', callback: () => { chooseMemory(Attrib.intelligence) }},
-  { id:'memory-beauty',       label:'TODO: Option C', callback: () => { chooseMemory(Attrib.beauty)       }},
+  { id:'memory-strength',     label:'str', requires:[notGoal(Attrib.strength)],     callback: () => { chooseMemory(Attrib.strength)     }},
+  { id:'memory-dexterity',    label:'dex', requires:[notGoal(Attrib.dexterity)],    callback: () => { chooseMemory(Attrib.dexterity)    }},
+  { id:'memory-vitality',     label:'vit', requires:[notGoal(Attrib.vitality)],     callback: () => { chooseMemory(Attrib.vitality)     }},
+  { id:'memory-intelligence', label:'int', requires:[notGoal(Attrib.intelligence)], callback: () => { chooseMemory(Attrib.intelligence) }},
+  { id:'memory-beauty',       label:'but', requires:[notGoal(Attrib.beauty)],       callback: () => { chooseMemory(Attrib.beauty)       }},
 ];
 
 function chooseMemory(memory) {
@@ -162,7 +161,7 @@ Episode.register('game-start-1', {
   pages: [
     { content:goalContent, buttons:goalOptions },
     { contentFunction:goalResult },
-    { content:memoryContent, buttons:memoryOptions, onShow:hideGoalOption },
+    { content:memoryContent, buttons:memoryOptions },
     { contentFunction:storyThreeContent, buttons:storyThreeButtons },
     { contentFunction:namingContent, buttons:namingButtons },
   ],
