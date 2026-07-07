@@ -24,6 +24,23 @@ function notChosen(attribute) { return state => {
   return true;
 }}
 
+function addTrigger(trigger) {
+  const triggers = EpisodeSystem.getPropertyValue('triggers') || [];
+  triggers.push(trigger);
+  EpisodeSystem.setPropertyValue('triggers', triggers);
+}
+
+function finishCharacterCreation() {
+  const triggers = EpisodeSystem.getPropertyValue('triggers');
+  const name = EpisodeSystem.getPropertyValue('name');
+
+  const playerId = PlayerFactory.build({ name, triggers });
+
+  GameState.setPlayer(playerId);
+  GameState.setCurrentLocation('family-home-living-room');
+  GameState.setGameMode(GameMode.location);
+}
+
 // =====================
 //    Choice 1 - Goal
 // =====================
@@ -171,36 +188,24 @@ const nameContent = `
   </div>`;
 
 const nameButton = [
-  { id:'nameSubmitButton', label:'Continue', callback:submitName },
+  { id:'nameSubmitButton', label:'Continue', classname:'disabled', callback:submitName },
 ];
 
 function submitName() {
-  const input = X.first('#characterName');
-  const name = (input.value || '').trim() || 'Sheepfucker';
-  EpisodeSystem.setPropertyValue('name', name);
+  const givenName = X.first('#givenName').value.trim() || 'Sheepfucker';
+  const familyName = X.first('#familyName').value.trim();
+
+  console.log(`Given Name[${givenName}]`)
+  console.log(`Family Name[${familyName}]`)
+
+  EpisodeSystem.setPropertyValue('givenName', givenName);
+  EpisodeSystem.setPropertyValue('familyName', familyName);
   EpisodeSystem.nextPage();
 }
 
 // ===============
 //    Shared
 // ===============
-
-function addTrigger(trigger) {
-  const triggers = EpisodeSystem.getPropertyValue('triggers') || [];
-  triggers.push(trigger);
-  EpisodeSystem.setPropertyValue('triggers', triggers);
-}
-
-function finishCharacterCreation() {
-  const triggers = EpisodeSystem.getPropertyValue('triggers') || [];
-  const name = EpisodeSystem.getPropertyValue('name');
-
-  const playerId = PlayerFactory.build({ name, triggers });
-
-  GameState.setPlayer(playerId);
-  GameState.setCurrentLocation('family-home-living-room');
-  GameState.setGameMode(GameMode.location);
-}
 
 Episode.register('game-start-1', {
   layout: 'large-centered',

@@ -2,16 +2,29 @@ global.EpisodeView = (function() {
 
   function init() {
     X.onClick('#episodeButtons .continue-button', EpisodeSystem.nextPage);
-    X.onCodeDown(KeyCodes.Space, isVisible, EpisodeSystem.nextPage);
-    X.onCodeDown(KeyCodes.Enter, isVisible, EpisodeSystem.nextPage);
+    X.onCodeDown(KeyCodes.Space, allowKeyAdvance, EpisodeSystem.nextPage);
+    X.onCodeDown(KeyCodes.Enter, allowKeyAdvance, EpisodeSystem.nextPage);
 
     X.onClick('#episodePage', () => {
       if (X.hasClass('#episodeButtons','hide')) { EpisodeSystem.nextPage(); }
     });
 
     for (let x=1; x<=9; x++) {
-      X.onCodeDown(`Digit${x}`, isVisible, () => selectOption(x));
+      X.onCodeDown(`Digit${x}`, allowKeyChoice, () => selectOption(x));
     }
+  }
+
+  // We only allow advancing the text from the keyboard shortcuts (enter/space) if there are no buttons and no inputs
+  // on the page. When a page has option buttons, the nextPage() function would skip the option. (When there's only a
+  // single continue button we could allow the continue shortcut to click the continue button.)
+  function allowKeyAdvance() {
+    return isVisible() && X.hasClass('#episodeButtons','hide') && X.first('#episodeView input') == null;
+  }
+
+  // We only allow a keyboard shortcut if there are no inputs on the page, otherwise this event would consume the key
+  // presses, stoping the wired keys from entering text.
+  function allowKeyChoice() {
+    return isVisible() && X.first('#episodeView input') == null;
   }
 
   // When an option is selected using a keyboard shortcut we invoke the button's click() function so that any event
@@ -62,10 +75,16 @@ global.EpisodeView = (function() {
         `<a href='#' class='button continue-button'>Continue</a>`));
     }
 
-    const button = X.createElement(`<a href='#' class='button'>${shortcutLabel}${buttonData.label}</a>`);
+    const button = X.createElement(`<a href='#' class='button ${buttonData.classname}'>${shortcutLabel}${buttonData.label}</a>`);
     if (buttonData.id) { button.id = buttonData.id; }
     if (buttonData.classname) { X.addClass(button,buttonData.classname); }
-    if (typeof buttonData.callback === 'function') { button.addEventListener('click',buttonData.callback); }
+
+    if (typeof buttonData.callback === 'function') {
+      button.addEventListener('click',event => {
+        if (event.target.closest('.disabled') == null) { buttonData.callback(); }
+      });
+    }
+
     X.first('#episodeButtons').appendChild(button);
   }
 
