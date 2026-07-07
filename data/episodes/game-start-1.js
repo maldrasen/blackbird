@@ -1,16 +1,32 @@
 
-// =====================
-//    Choice 1 - Goal
-// =====================
-
-// TODO: Find a place for this where it can be shared.
-const triggerForAttribute = {
+// TODO: Find a place for these where they can be shared.
+const gainTriggerForAttribute = {
   strength: 'strong',
   dexterity: 'skillful',
   vitality: 'healthy',
   intelligence: 'smart',
   beauty: 'beautiful',
-}
+};
+
+const lossTriggerForAttribute = {
+  strength: 'weak',
+  dexterity: 'clumsy',
+  vitality: 'sickly',
+  intelligence: 'stupid',
+  beauty: 'ugly',
+};
+
+// We don't allow the user to select the same attribute twice, so if they've added the strong trigger with the goal
+// choice we need to leave the strength option out of subsequent choices.
+function notChosen(attribute) { return state => {
+  if (state.getProperty('goal') === attribute) { return false; }
+  if (state.getProperty('memory') === attribute) { return false; }
+  return true;
+}}
+
+// =====================
+//    Choice 1 - Goal
+// =====================
 
 const goalContent = `
   <p>
@@ -41,7 +57,7 @@ const goalOptions = [
 ]
 
 function choseGoal(goal) {
-  addTrigger(triggerForAttribute[goal]);
+  addTrigger(gainTriggerForAttribute[goal]);
   EpisodeSystem.getState().setPropertyValue('goal',goal);
   EpisodeSystem.nextPage();
 }
@@ -59,77 +75,108 @@ function goalResult() {
   }
 }
 
-// ===============
-//    Choice 2
-// ===============
+// =======================
+//    Choice 2 - Memory
+// =======================
 
 const memoryContent = `
   <p>Your pulse quickens at the thought of what could be.</p>
   <p>What memory from home will you cherish?</p>`;
 
-// We don't allow the user to select the same attribute twice, so if they've added the strong trigger with the goal
-// choice we need to leave the strength option out of the memory choice.
-function notGoal(attribute) {
-  return state => state.getProperty('goal') !== attribute;
-}
-
 const memoryOptions = [
-  { id:'memory-strength',     label:'str', requires:[notGoal(Attrib.strength)],     callback: () => { chooseMemory(Attrib.strength)     }},
-  { id:'memory-dexterity',    label:'dex', requires:[notGoal(Attrib.dexterity)],    callback: () => { chooseMemory(Attrib.dexterity)    }},
-  { id:'memory-vitality',     label:'vit', requires:[notGoal(Attrib.vitality)],     callback: () => { chooseMemory(Attrib.vitality)     }},
-  { id:'memory-intelligence', label:'int', requires:[notGoal(Attrib.intelligence)], callback: () => { chooseMemory(Attrib.intelligence) }},
-  { id:'memory-beauty',       label:'but', requires:[notGoal(Attrib.beauty)],       callback: () => { chooseMemory(Attrib.beauty)       }},
+  { id:'memory-strength',     label:'+str', requires:[notChosen(Attrib.strength)],     callback: () => { chooseMemory(Attrib.strength)     }},
+  { id:'memory-dexterity',    label:'+dex', requires:[notChosen(Attrib.dexterity)],    callback: () => { chooseMemory(Attrib.dexterity)    }},
+  { id:'memory-vitality',     label:'+vit', requires:[notChosen(Attrib.vitality)],     callback: () => { chooseMemory(Attrib.vitality)     }},
+  { id:'memory-intelligence', label:'+int', requires:[notChosen(Attrib.intelligence)], callback: () => { chooseMemory(Attrib.intelligence) }},
+  { id:'memory-beauty',       label:'+but', requires:[notChosen(Attrib.beauty)],       callback: () => { chooseMemory(Attrib.beauty)       }},
 ];
 
 function chooseMemory(memory) {
-  addTrigger(triggerForAttribute[memory]);
+  addTrigger(gainTriggerForAttribute[memory]);
   EpisodeSystem.getState().setPropertyValue('memory',memory);
   EpisodeSystem.nextPage();
 }
 
-// ===============
-//    Choice 3 (aspect)
-// ===============
-// TODO: Real prose. Traveling to Wolgur, finding the home in ruins with a squatter's camp and no brother in sight,
-//       landing on the sheep accusation. Response picks an aspect.
+function memoryResult() {
+  const memory = EpisodeSystem.getState().getProperty('memory');
+  const result = WeaverElements.resultBlock(`You've gained ${memory}`, { classname:'gain' });
 
-function storyThreeContent() {
-  return `<div>
-    <p>TODO: Story 3 text.</p>
-  </div>`;
+  switch (memory) {
+    case Attrib.strength: return `${result} [Strength Choice]`;
+    case Attrib.dexterity: return `${result} [Dexterity Choice]`;
+    case Attrib.vitality: return `${result} [Vitality Choice]`;
+    case Attrib.intelligence: return `${result} [Intelligence Choice]`;
+    case Attrib.beauty: return `${result} [Beauty Choice]`;
+  }
 }
 
-const storyThreeButtons = [
-  { id:'story3OptionA', label:'TODO: Option A', callback:chooseStory3OptionA },
-  { id:'story3OptionB', label:'TODO: Option B', callback:chooseStory3OptionB },
-  { id:'story3OptionC', label:'TODO: Option C', callback:chooseStory3OptionC },
+// =======================
+//    Choice 3 - Regret
+// =======================
+
+// TODO: Real prose. Traveling to Wolgur, finding the home in ruins with a squatter's camp and no brother in sight.
+
+const regretContent = `<p>What choice will you always regret?</p>`
+
+const regretOptions = [
+  { id:'regret-strength',     label:'-str', requires:[notChosen(Attrib.strength)],     callback: () => { chooseRegret(Attrib.strength); }},
+  { id:'regret-dexterity',    label:'-dex', requires:[notChosen(Attrib.dexterity)],    callback: () => { chooseRegret(Attrib.dexterity); }},
+  { id:'regret-vitality',     label:'-vit', requires:[notChosen(Attrib.vitality)],     callback: () => { chooseRegret(Attrib.vitality); }},
+  { id:'regret-intelligence', label:'-int', requires:[notChosen(Attrib.intelligence)], callback: () => { chooseRegret(Attrib.intelligence); }},
+  { id:'regret-beauty',       label:'-but', requires:[notChosen(Attrib.beauty)],       callback: () => { chooseRegret(Attrib.beauty); }},
 ];
 
-// TODO: These aspect codes are placeholders standing in for whatever this story actually grants. Replace once
-//       there's a proper Aspect record with names/descriptions to choose from.
-function chooseStory3OptionA() { addTrigger('flexible:1'); EpisodeSystem.nextPage(); }
-function chooseStory3OptionB() { addTrigger('premature:1'); EpisodeSystem.nextPage(); }
-function chooseStory3OptionC() { addTrigger('productive:1'); EpisodeSystem.nextPage(); }
+function chooseRegret(regret) {
+  addTrigger(lossTriggerForAttribute[regret]);
+  EpisodeSystem.getState().setPropertyValue('regret',regret);
+  EpisodeSystem.nextPage();
+}
+
+function regretResult() {
+  const regret = EpisodeSystem.getState().getProperty('regret');
+  const result = WeaverElements.resultBlock(`You've lost ${regret}`, { classname:'loss' });
+
+  switch (regret) {
+    case Attrib.strength: return `${result} [Strength Choice]`;
+    case Attrib.dexterity: return `${result} [Dexterity Choice]`;
+    case Attrib.vitality: return `${result} [Vitality Choice]`;
+    case Attrib.intelligence: return `${result} [Intelligence Choice]`;
+    case Attrib.beauty: return `${result} [Beauty Choice]`;
+  }
+}
 
 // ===============
 //    Naming
 // ===============
-// TODO: Real prose. A guard at the gate to Wolgur asks for the character's name.
 
-function namingContent() {
-  return `<div>
-    <p>TODO: Naming text.</p>
-    <input type='text' id='characterNameInput' placeholder='Enter your name' />
+// A guard at the gate to Wolgur asks for the character's name.
+
+const nameContent = `
+  <p>
+    The guard, a tall black furred lupin, looks you over with a contemptuous sneer. He takes a deep breath, taking in 
+    your scent. "All right sheep fucker, fill this in and be on your way."
+  </p>
+  <p> 
+    He hands you a scrap of paper, already partially filled in…
+  </p>
+  <div class='border-normal padding inline-fields'>
+    <div class='field-row'>
+      <label>Given Name:</label>
+      <input type='text' id='givenName' placeholder='Sheepfucker' />
+    </div>
+    <div class='field-row'>
+      <label>Family Name:</label>
+      <input type='text' id='familyName' placeholder='' />
+    </div>
   </div>`;
-}
 
-const namingButtons = [
+const nameButton = [
   { id:'nameSubmitButton', label:'Continue', callback:submitName },
 ];
 
 function submitName() {
-  const input = X.first('#characterNameInput');
-  const name = (input.value || '').trim() || 'Wanderer';
+  const input = X.first('#characterName');
+  const name = (input.value || '').trim() || 'Sheepfucker';
   EpisodeSystem.setPropertyValue('name', name);
   EpisodeSystem.nextPage();
 }
@@ -157,13 +204,15 @@ function finishCharacterCreation() {
 
 Episode.register('game-start-1', {
   layout: 'large-centered',
-  background: 'backgrounds/wood.jpg', // TODO: placeholder background, no dedicated art yet
+  background: 'backgrounds/wood.jpg',
   pages: [
     { content:goalContent, buttons:goalOptions },
     { contentFunction:goalResult },
     { content:memoryContent, buttons:memoryOptions },
-    { contentFunction:storyThreeContent, buttons:storyThreeButtons },
-    { contentFunction:namingContent, buttons:namingButtons },
+    { contentFunction:memoryResult },
+    { content:regretContent, buttons:regretOptions },
+    { contentFunction:regretResult },
+    { content:nameContent, buttons:nameButton },
   ],
   endFunction: finishCharacterCreation,
 });

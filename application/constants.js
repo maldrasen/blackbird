@@ -15,5 +15,8 @@ global._battleKillEffectTime = 1000;
 // The scale thresholds could be played with a bit, raised or lowered as needed as the levels aren't very even at all.
 global._scaleThresholds = [100, 600, 3600, 13600, 43600, 103600, 203600, 453600];
 
+// === Text ===
+global._ellipsis = '…';
+
 // A third flavor of null.
 global._nothing = 'nothing';
