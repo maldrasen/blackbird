@@ -30,11 +30,13 @@ function addTrigger(trigger) {
   EpisodeSystem.setPropertyValue('triggers', triggers);
 }
 
+// This episode also creates the legacy, which is given the family name.
 function finishCharacterCreation() {
   const triggers = EpisodeSystem.getPropertyValue('triggers');
-  const name = EpisodeSystem.getPropertyValue('name');
+  const givenName = EpisodeSystem.getPropertyValue('givenName');
+  const familyName = EpisodeSystem.getPropertyValue('familyName');
 
-  const playerId = PlayerFactory.build({ name, triggers });
+  const playerId = PlayerFactory.build({ name:givenName, triggers });
 
   GameState.setPlayer(playerId);
   GameState.setCurrentLocation('family-home-living-room');
