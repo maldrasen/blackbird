@@ -17,11 +17,11 @@ const goalContent = `
     However, there's one thing above all others that you desire. What is it?
   </p>`;
 
-const goalGlory = `Chose Glory`;
-const goalMastery = `Chose Mastery`;
-const goalImmortality = `Chose Immortality`;
-const goalPower = `Chose Power`;
-const goalAuthority = `Chose Authority`;
+const goalGlory = `You will walk the path of glory. The very stones of the dungeon will tremble at your approach.`;
+const goalMastery = `Only those who have mastered the delver's arts can hope to survive in such a world.`;
+const goalImmortality = `They say those who have delved the deepest have uncovered the secrets to eternal life.`;
+const goalPower = `The dungeon itself grants power to those who can overcome its challenges.`;
+const goalAuthority = `You may have come from nothing, but you will rise up in this world and take your position as its master.`;
 
 const goalOptions = [
   { id:'goal.glory',       label:'Glory',       callback:() => { choseGoal('glory',       'strong',    Attrib.strength); }},
