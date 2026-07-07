@@ -3,6 +3,9 @@ global.EpisodeView = (function() {
   function init() {
     X.onClick('#episodeButtons .continue-button', EpisodeSystem.nextPage);
     X.onCodeDown(KeyCodes.Space, isVisible, EpisodeSystem.nextPage);
+    X.onClick('#episodePage', () => {
+      if (X.hasClass('#episodeButtons','hide')) { EpisodeSystem.nextPage(); }
+    });
   }
 
   function show() {

@@ -18,6 +18,9 @@
   overflow: hidden;
 }
 
+// When there are no buttons on this page, then clicking the frame will advance the text.
+#episodeView .episode-frame:has(#episodeButtons.hide) { cursor: pointer; }
+
 #episodeView.episode-centered {
   .episode-frame {
     height: 300px;
