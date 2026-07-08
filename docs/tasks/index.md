@@ -50,6 +50,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [032] Body piercings #character — [032-body-piercings.md](032-body-piercings.md)
 - [033] Sexual Fantasies #training — [033-sexual-fantasies.md](033-sexual-fantasies.md)
 - [034] Character Portraits #character — [034-character-portraits.md](034-character-portraits.md)
+- [101] Look for a Community — [101-look-for-a-community.md](101-look-for-a-community.md)
 
 ## Priority 5
 
