@@ -17,7 +17,7 @@ const lossTriggerForAttribute = {
 };
 
 function largeNote(text) {
-  return `<div class='large-note' style='margin-top:160px'>${text}</div>`
+  return `<div class='large-note' style='margin:160px 80px'>${text}</div>`
 }
 
 // We don't allow the user to select the same attribute twice, so if they've added the strong trigger with the goal
@@ -65,11 +65,11 @@ const goalContent = `
     However, there's one thing above all others that you desire. What is it?
   </p>`;
 
-const goalGlory = `You will walk the path of glory. The very stones of the dungeon will tremble at your approach.`;
+const goalGlory = `You will walk the path of glory. The very stones of the dungeon will tremble at your approach, and they will know you by the corpses left in your wake.`;
 const goalMastery = `Only those who have mastered the delver's arts can hope to survive in such a world.`;
 const goalImmortality = `They say those who have delved the deepest have uncovered the secrets to eternal life.`;
-const goalPower = `The dungeon itself grants power to those who can overcome its challenges.`;
-const goalAuthority = `You may have come from nothing, but you will rise up in this world and take your position as its master.`;
+const goalPower = `They say the dungeon is filled with wonders, and true power can be found by those who can unravel its secrets.`;
+const goalAuthority = `You may have come from nothing, but you will gather allies, rise up in this world, and take your position as its master.`;
 
 const goalOptions = [
   { id:'goal-glory',       label:'Glory',       callback:() => { choseGoal(Attrib.strength);     }},
@@ -117,17 +117,17 @@ const memoryContent = `
     Whenever your thoughts turn to your brother an old memory resurfaces. What is it?
   </p>`;
 
-const mStr = ``;
-const mDex = `The two of you, deep in the woods, hiding in the bushes, watching as the woodnymphs bathe in a stream.`;
-const mVit = ``;
-const mInt = ``;
-const mBut = ``;
+const mStr = `The two of you were always wrestling. You've been pinned to the ground more often than you can count. One day, you finally manage to best him.`;
+const mDex = `You're a boy, being taught to ride for the first time. You kick the horse and it panics, carrying you off into the wood.`;
+const mVit = `It's winter, the night before the Long Dawn. Your brother has the blood itch, tied down to his bed while you tend to him.`;
+const mInt = `You're up late reading again. When your brother asks you what your book is about, and you're forced to make up something on the spot.`;
+const mBut = `The two of you are deep in the woods, hiding in the bushes, watching as the woodnymphs bathe in a stream.`;
 
-const memoryStr = ``
-const memoryDex = `Looking back on it, you're pretty sure that the nymphs knew you were there all along.`
-const memoryVit = ``
-const memoryInt = ``
-const memoryBut = ``
+const memoryStr = `A year later you were taller than he was. He was starting to regret all the times he made you eat dirt.`
+const memoryDex = `You somehow managed to hold on, and the horse forgave you… eventually.`;
+const memoryVit = `A horrifying disease, the way the sick will scratch at themselves. It's remarkable how you've never been seriously ill.`;
+const memoryInt = `It was actually a rather lurid tale about a nearsighted milkmaid and the farm's bull.`;
+const memoryBut = `Looking back on it, you're pretty sure that the nymphs knew you were there all along.`;
 
 const memoryOptions = [
   { id:'memory-strength',     label:mStr, requires:[notChosen(Attrib.strength)],     callback: () => { chooseMemory(Attrib.strength)     }},
