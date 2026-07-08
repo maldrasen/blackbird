@@ -16,7 +16,7 @@ We should start with character creation right away. Character creation will also
 - Your older brother set out to become an adventurer himself, but hasn't been heard from since. 
 - Your family own a home in Wolgur, but left it empty after leaving the city for the farms.
 - It sat empty for 15 years. Your brother may be living there now. 
-- You may or may not have fucked sheep. Everyone seems to assume you have though.
+- You may or may not have fucked sheep.
 
 During character creation, in the last story is used to select an aspect. This story should detail you traveling to the city, finding your family home in ruins, no sign of your brother except for a makeshift camp in the home's living room. 
 

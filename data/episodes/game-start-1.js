@@ -193,12 +193,22 @@ function regretResult() {
 //    Naming
 // ===============
 
-// A guard at the gate to Wolgur asks for the character's name.
-
 const nameContent = `
   <p>
-    The guard, a tall black furred lupin, looks you over with a contemptuous sneer. He takes a deep breath, taking in 
-    your scent. "All right sheep fucker, fill this in and be on your way."
+    Your steps carry you closer to the city gate, now looming in the swirling mists above you. Given that the city is
+    situated in a deep valley, the outer wall spans between the two rocky cliff faces on either side. What had been a
+    dirt path is now worn stone, dark and slick.
+  </p>
+  <p>
+    As you approach the gate you don't anticipate any problems. You should be able to enter the city freely as someone
+    whose family <i>technically</i> owns a home here. The condition of the home is… unknown at the moment. After your 
+    father died your mother abandoned the old home here in Wolgur, so it's been empty for almost two decades now.
+  </p>
+  <p>
+    You're met at the gate by one of the city guards, a tall black furred lupin. You give him your name and purpose 
+    for coming. Your house is unknown, forgotten, almost as bad as having no house at all. The guard looks you over 
+    with a contemptuous sneer. He takes a deep breath, taking in your scent. "All right sheep fucker, fill this in 
+    and be on your way."
   </p>
   <p> 
     He hands you a scrap of paper, already partially filled in…
@@ -241,9 +251,14 @@ function submitName() {
   EpisodeSystem.nextPage();
 }
 
-// ===============
-//    Shared
-// ===============
+
+const acceptName = `Sheepfucker, why not...`
+const changeName = `Ahh hell no...`
+
+
+// ==============
+//    Register
+// ==============
 
 Episode.register('game-start-1', {
   layout: 'large-centered',
@@ -256,7 +271,8 @@ Episode.register('game-start-1', {
     { content:regretContent, buttons:regretOptions, buttonsStyle:'column' },
     { contentFunction:regretResult },
     { content:nameContent, buttons:nameButtons, onShow:bindNameInputs },
+    { content:acceptName, requires:(state) => { return true; } },
+    { content:changeName, requires:(state) => { return false; } }
   ],
   endFunction: finishCharacterCreation,
 });
-
