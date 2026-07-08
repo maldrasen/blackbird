@@ -3,7 +3,7 @@
 
 #episodeView {
   p:first-child { margin-top: 0; }
-  p { margin: 20px 0; }
+  p { margin: 16px 0; }
   p:last-child { margin-bottom: 0; }
 }
 
@@ -22,7 +22,6 @@
   border: variables.$border-normal;
   box-shadow: variables.$shadow-frame;
   z-index: variables.$z-root;
-  overflow: hidden;
 }
 
 // When there are no buttons on this page, then clicking the frame will advance the text.
@@ -45,8 +44,16 @@
 #episodePage {
   flex-grow: 1;
   margin: 20px 20px 0 20px;
+  overflow: hidden;
   font-family: "habibi", sans-serif;
   font-size: variables.$fs-big;
+
+  // Habibi only ships a regular weight, so italics here are the browser's synthetic/oblique slant rather than a
+  // true italic face.
+  i {
+    font-family: "habibi", sans-serif;
+    font-style: italic;
+  }
 }
 
 #episodeButtons {
