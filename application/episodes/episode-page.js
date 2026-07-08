@@ -22,6 +22,15 @@ global.EpisodePage = function(data) {
   // Only render a button when it has no requirements or all its requirements are met.
   function getButtons() { return (data.buttons || []).filter(button => checkRequirements(button.requires)); }
 
+  // The classname for the #episodeButtons element which can display buttons in a row or a column. I'm assuming we'll
+  // have some other styles here as well.
+  function getButtonsStyle() {
+    switch(data.buttonsStyle) {
+      case "column": return 'button-column';
+      default: return 'button-row';
+    }
+  }
+
   // Only render a page when it has no requirements or all its requirements are met.
   function meetsRequirements() { return checkRequirements(data.requires); }
 
@@ -32,6 +41,7 @@ global.EpisodePage = function(data) {
 
   return Object.freeze({
     getButtons,
+    getButtonsStyle,
     getContent,
     executeOnShow,
     meetsRequirements,

@@ -16,3 +16,10 @@
 
 .result-block.gain { color: variables.$fg-success; }
 .result-block.loss { color: variables.$fg-warning; }
+
+.large-note {
+  padding: 20px;
+  text-align: center;
+  font-size: variables.$fs-bigger;
+  color: variables.$fg-strong;
+}

@@ -16,6 +16,10 @@ const lossTriggerForAttribute = {
   beauty: 'ugly',
 };
 
+function largeNote(text) {
+  return `<div class='large-note' style='margin-top:160px'>${text}</div>`
+}
+
 // We don't allow the user to select the same attribute twice, so if they've added the strong trigger with the goal
 // choice we need to leave the strength option out of subsequent choices.
 function notChosen(attribute) { return state => {
@@ -86,11 +90,11 @@ function goalResult() {
   const result = WeaverElements.resultBlock(`You've gained ${goal}`, { classname:'gain' });
 
   switch (goal) {
-    case Attrib.strength: return `${result} ${goalGlory}`;
-    case Attrib.dexterity: return `${result} ${goalMastery}`;
-    case Attrib.vitality: return `${result} ${goalImmortality}`;
-    case Attrib.intelligence: return `${result} ${goalPower}`;
-    case Attrib.beauty: return `${result} ${goalAuthority}`;
+    case Attrib.strength: return `${result} ${largeNote(goalGlory)}`;
+    case Attrib.dexterity: return `${result} ${largeNote(goalMastery)}`;
+    case Attrib.vitality: return `${result} ${largeNote(goalImmortality)}`;
+    case Attrib.intelligence: return `${result} ${largeNote(goalPower)}`;
+    case Attrib.beauty: return `${result} ${largeNote(goalAuthority)}`;
   }
 }
 
@@ -99,15 +103,38 @@ function goalResult() {
 // =======================
 
 const memoryContent = `
-  <p>Your pulse quickens at the thought of what could be.</p>
-  <p>What memory from home will you cherish?</p>`;
+  <p>
+    Your pulse quickens as you consider what could be. The thought of what you might find in Wolgur is sobering 
+    though. Your older brother set out to become a delver himself some three years ago, with promises to send money 
+    back home once he'd established himself. He hasn't been heard from since.
+  </p><p>
+    It's no mystery what must have happened. While the dungeon rewards the strong, or perhaps just the lucky, it
+    consumes the rest. Your father, a delver himself, disappeared into the Rhysh dungeon before you were born. Still,
+    you try to hold onto the hope that maybe your brother yet lives; that his silence is a sign of his success rather 
+    than his demise. 
+  </p>
+  <p>
+    Whenever your thoughts turn to your brother an old memory resurfaces. What is it?
+  </p>`;
+
+const mStr = ``;
+const mDex = `The two of you, deep in the woods, hiding in the bushes, watching as the woodnymphs bathe in a stream.`;
+const mVit = ``;
+const mInt = ``;
+const mBut = ``;
+
+const memoryStr = ``
+const memoryDex = `Looking back on it, you're pretty sure that the nymphs knew you were there all along.`
+const memoryVit = ``
+const memoryInt = ``
+const memoryBut = ``
 
 const memoryOptions = [
-  { id:'memory-strength',     label:'+str', requires:[notChosen(Attrib.strength)],     callback: () => { chooseMemory(Attrib.strength)     }},
-  { id:'memory-dexterity',    label:'+dex', requires:[notChosen(Attrib.dexterity)],    callback: () => { chooseMemory(Attrib.dexterity)    }},
-  { id:'memory-vitality',     label:'+vit', requires:[notChosen(Attrib.vitality)],     callback: () => { chooseMemory(Attrib.vitality)     }},
-  { id:'memory-intelligence', label:'+int', requires:[notChosen(Attrib.intelligence)], callback: () => { chooseMemory(Attrib.intelligence) }},
-  { id:'memory-beauty',       label:'+but', requires:[notChosen(Attrib.beauty)],       callback: () => { chooseMemory(Attrib.beauty)       }},
+  { id:'memory-strength',     label:mStr, requires:[notChosen(Attrib.strength)],     callback: () => { chooseMemory(Attrib.strength)     }},
+  { id:'memory-dexterity',    label:mDex, requires:[notChosen(Attrib.dexterity)],    callback: () => { chooseMemory(Attrib.dexterity)    }},
+  { id:'memory-vitality',     label:mVit, requires:[notChosen(Attrib.vitality)],     callback: () => { chooseMemory(Attrib.vitality)     }},
+  { id:'memory-intelligence', label:mInt, requires:[notChosen(Attrib.intelligence)], callback: () => { chooseMemory(Attrib.intelligence) }},
+  { id:'memory-beauty',       label:mBut, requires:[notChosen(Attrib.beauty)],       callback: () => { chooseMemory(Attrib.beauty)       }},
 ];
 
 function chooseMemory(memory) {
@@ -121,19 +148,17 @@ function memoryResult() {
   const result = WeaverElements.resultBlock(`You've gained ${memory}`, { classname:'gain' });
 
   switch (memory) {
-    case Attrib.strength: return `${result} [Strength Choice]`;
-    case Attrib.dexterity: return `${result} [Dexterity Choice]`;
-    case Attrib.vitality: return `${result} [Vitality Choice]`;
-    case Attrib.intelligence: return `${result} [Intelligence Choice]`;
-    case Attrib.beauty: return `${result} [Beauty Choice]`;
+    case Attrib.strength: return `${result} ${largeNote(memoryStr)}</div>`;
+    case Attrib.dexterity: return `${result} ${largeNote(memoryDex)}</div>`;
+    case Attrib.vitality: return `${result} ${largeNote(memoryVit)}</div>`;
+    case Attrib.intelligence: return `${result} ${largeNote(memoryInt)}</div>`;
+    case Attrib.beauty: return `${result} ${largeNote(memoryBut)}</div>`;
   }
 }
 
 // =======================
 //    Choice 3 - Regret
 // =======================
-
-// TODO: Real prose. Traveling to Wolgur, finding the home in ruins with a squatter's camp and no brother in sight.
 
 const regretContent = `<p>What choice will you always regret?</p>`
 
@@ -181,16 +206,16 @@ const nameContent = `
   <div class='border-normal padding inline-fields'>
     <div class='field-row'>
       <label>Given Name:</label>
-      <input type='text' id='givenName' placeholder='Sheepfucker' />
+      <input type='text' id='givenName' value='Sheepfucker'/>
     </div>
     <div class='field-row'>
       <label>Family Name:</label>
-      <input type='text' id='familyName' placeholder='' />
+      <input type='text' id='familyName'/>
     </div>
   </div>`;
 
 const nameButtons = [
-  { id:'nameSubmitButton', label:'Continue', classname:'disabled', callback:submitName },
+  { id:'nameSubmitButton', label:'Continue', classname:['button-primary','disabled'], callback:submitName },
 ];
 
 // The other game starts will have something similar, checking given name as the legacy name should be set. We'll
@@ -224,11 +249,11 @@ Episode.register('game-start-1', {
   layout: 'large-centered',
   background: 'backgrounds/wood.jpg',
   pages: [
-    { content:goalContent, buttons:goalOptions },
+    { content:goalContent, buttons:goalOptions, buttonsStyle:'column' },
     { contentFunction:goalResult },
-    { content:memoryContent, buttons:memoryOptions },
+    { content:memoryContent, buttons:memoryOptions, buttonsStyle:'column' },
     { contentFunction:memoryResult },
-    { content:regretContent, buttons:regretOptions },
+    { content:regretContent, buttons:regretOptions, buttonsStyle:'column' },
     { contentFunction:regretResult },
     { content:nameContent, buttons:nameButtons, onShow:bindNameInputs },
   ],

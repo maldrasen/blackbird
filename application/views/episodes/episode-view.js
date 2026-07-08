@@ -54,12 +54,14 @@ global.EpisodeView = (function() {
   function setPageContent(episodePage) {
     X.empty('#episodePage');
     X.empty('#episodeButtons');
+    X.first('#episodeButtons').removeAttribute('class');
     X.addClass('#episodeButtons','hide');
+    X.addClass('#episodeButtons',episodePage.getButtonsStyle());
 
     const buttons = episodePage.getButtons();
     buttons.forEach((buttonData,index) => {
       addButton(buttonData, (buttons.length > 1) ? index+1 : null);
-    })
+    });
 
     // We need to get the content after the buttons are added because getting
     // the content might call a contentFunction() which might need to modify
@@ -85,11 +87,21 @@ global.EpisodeView = (function() {
 
     const shortcutLabel = index ? `<span class='fg-very-weak'>${index}. </span>` : '';
     const button = X.createElement(`<a href='#' class='button'>${shortcutLabel}${buttonData.label}</a>`);
+
+    getButtonClassnames(buttonData).forEach(classname => {
+      X.addClass(button,classname);
+    });
+
     if (buttonData.id) { button.id = buttonData.id; }
-    if (buttonData.classname) { X.addClass(button,buttonData.classname); }
     if (typeof buttonData.callback === 'function') { button.onSelect = buttonData.callback; }
 
     buttons.appendChild(button);
+  }
+
+  // The classname property can be null, a single classname, or an array of classnames.
+  function getButtonClassnames(data) {
+    if (Array.isArray(data.classname)) { return data.classname; }
+    return typeof data.classname === 'string' ? [data.classname] : [];
   }
 
   function isVisible() {

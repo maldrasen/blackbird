@@ -45,23 +45,28 @@
 #episodePage {
   flex-grow: 1;
   margin: 20px 20px 0 20px;
-  font-size: variables.$fs-bigger;
+  font-family: "habibi", sans-serif;
+  font-size: variables.$fs-big;
+}
+
+#episodeButtons {
+  border-top: variables.$border-light;
+  background-color: rgb(0,0,0.5);
 }
 
 #episodeButtons.button-row {
   display: flex;
   justify-content: flex-end;
   padding: 5px;
-  border-top: variables.$border-light;
-  background-color: rgb(0,0,0.5);
 }
 
 #episodeButtons.button-column {
   display: flex;
   flex-direction: column;
-  a { margin: 2px 10px; }
+  padding: 10px;
+  a { margin: 2px 25px; }
   a:first-child { margin-top:0; }
-  a:last-child { margin-bottom:10px; }
+  a:last-child { margin-bottom:0; }
 }
 
 /*
