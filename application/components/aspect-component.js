@@ -37,7 +37,6 @@ global.AspectsComponent = (function() {
         Validate.between(`Aspect.${aspectCode}`, aspectsData[aspectCode], 1, 5);
       }
     });
-
   }
 
   return Object.freeze({

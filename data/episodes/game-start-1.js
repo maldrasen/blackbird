@@ -34,19 +34,6 @@ function addTrigger(trigger) {
   EpisodeSystem.setPropertyValue('triggers', triggers);
 }
 
-// This episode also creates the legacy, which is given the family name.
-function finishCharacterCreation() {
-  const triggers = EpisodeSystem.getPropertyValue('triggers');
-  const givenName = EpisodeSystem.getPropertyValue('givenName');
-  const familyName = EpisodeSystem.getPropertyValue('familyName');
-
-  const playerId = PlayerFactory.build({ name:givenName, triggers });
-
-  GameState.setPlayer(playerId);
-  GameState.setCurrentLocation('family-home-living-room');
-  GameState.setGameMode(GameMode.location);
-}
-
 // =====================
 //    Choice 1 - Goal
 // =====================
@@ -130,11 +117,11 @@ const memoryInt = `It was actually a rather lurid tale about a nearsighted milkm
 const memoryBut = `Looking back on it, you're pretty sure that the nymphs knew you were there all along.`;
 
 const memoryOptions = [
-  { id:'memory-strength',     label:mStr, requires:[notChosen(Attrib.strength)],     callback: () => { chooseMemory(Attrib.strength)     }},
-  { id:'memory-dexterity',    label:mDex, requires:[notChosen(Attrib.dexterity)],    callback: () => { chooseMemory(Attrib.dexterity)    }},
-  { id:'memory-vitality',     label:mVit, requires:[notChosen(Attrib.vitality)],     callback: () => { chooseMemory(Attrib.vitality)     }},
-  { id:'memory-intelligence', label:mInt, requires:[notChosen(Attrib.intelligence)], callback: () => { chooseMemory(Attrib.intelligence) }},
-  { id:'memory-beauty',       label:mBut, requires:[notChosen(Attrib.beauty)],       callback: () => { chooseMemory(Attrib.beauty)       }},
+  { id:'memory-strength',     label:mStr, requires:notChosen(Attrib.strength),     callback: () => { chooseMemory(Attrib.strength)     }},
+  { id:'memory-dexterity',    label:mDex, requires:notChosen(Attrib.dexterity),    callback: () => { chooseMemory(Attrib.dexterity)    }},
+  { id:'memory-vitality',     label:mVit, requires:notChosen(Attrib.vitality),     callback: () => { chooseMemory(Attrib.vitality)     }},
+  { id:'memory-intelligence', label:mInt, requires:notChosen(Attrib.intelligence), callback: () => { chooseMemory(Attrib.intelligence) }},
+  { id:'memory-beauty',       label:mBut, requires:notChosen(Attrib.beauty),       callback: () => { chooseMemory(Attrib.beauty)       }},
 ];
 
 function chooseMemory(memory) {
@@ -163,11 +150,11 @@ function memoryResult() {
 const regretContent = `<p>What choice will you always regret?</p>`
 
 const regretOptions = [
-  { id:'regret-strength',     label:'-str', requires:[notChosen(Attrib.strength)],     callback: () => { chooseRegret(Attrib.strength); }},
-  { id:'regret-dexterity',    label:'-dex', requires:[notChosen(Attrib.dexterity)],    callback: () => { chooseRegret(Attrib.dexterity); }},
-  { id:'regret-vitality',     label:'-vit', requires:[notChosen(Attrib.vitality)],     callback: () => { chooseRegret(Attrib.vitality); }},
-  { id:'regret-intelligence', label:'-int', requires:[notChosen(Attrib.intelligence)], callback: () => { chooseRegret(Attrib.intelligence); }},
-  { id:'regret-beauty',       label:'-but', requires:[notChosen(Attrib.beauty)],       callback: () => { chooseRegret(Attrib.beauty); }},
+  { id:'regret-strength',     label:'-str', requires:notChosen(Attrib.strength),     callback: () => { chooseRegret(Attrib.strength); }},
+  { id:'regret-dexterity',    label:'-dex', requires:notChosen(Attrib.dexterity),    callback: () => { chooseRegret(Attrib.dexterity); }},
+  { id:'regret-vitality',     label:'-vit', requires:notChosen(Attrib.vitality),     callback: () => { chooseRegret(Attrib.vitality); }},
+  { id:'regret-intelligence', label:'-int', requires:notChosen(Attrib.intelligence), callback: () => { chooseRegret(Attrib.intelligence); }},
+  { id:'regret-beauty',       label:'-but', requires:notChosen(Attrib.beauty),       callback: () => { chooseRegret(Attrib.beauty); }},
 ];
 
 function chooseRegret(regret) {
@@ -195,9 +182,9 @@ function regretResult() {
 
 const nameContent = `
   <p>
-    Your steps carry you closer to the city gate, now looming in the swirling mists above you. Given that the city is
-    situated in a deep valley, the outer wall spans between the two rocky cliff faces on either side. What had been a
-    dirt path is now worn stone, dark and slick.
+    Your steps carry you closer to the city gate, now looming in the swirling mists above you. The city is situated in 
+    a deep and narrow valley, its outer wall built to span between the two rocky cliff faces on either side. What had
+    been a dirt path is now worn stone, dark and slick.
   </p>
   <p>
     As you approach the gate you don't anticipate any problems. You should be able to enter the city freely as someone
@@ -243,22 +230,43 @@ function submitName() {
   const givenName = X.first('#givenName').value.trim() || 'Sheepfucker';
   const familyName = X.first('#familyName').value.trim();
 
-  console.log(`Given Name[${givenName}]`)
-  console.log(`Family Name[${familyName}]`)
-
   EpisodeSystem.setPropertyValue('givenName', givenName);
   EpisodeSystem.setPropertyValue('familyName', familyName);
   EpisodeSystem.nextPage();
 }
 
+const acceptContent = `<p>You look at the paper and sigh, just adding your family name to the form. It's fine. It 
+  doesn't matter what they call you, at least for now. Respect must be earned after all.</p>`;
 
-const acceptName = `Sheepfucker, why not...`
-const changeName = `Ahh hell no...`
+const changeContent = `<p>You frown, roughly crossing out the insult and writing in your actual name. Such things are
+  to be expected you suppose. You're coming to Wolgur as a nobody; to a city that only respects strength. You'll need
+  to prove yourself before anyone will treat you with respect.</p>`;
 
+const completeContent = `<p>[Walk into the city and arrive home.]</p>`;
 
-// ==============
-//    Register
-// ==============
+// =========================
+//    Finish and Register
+// =========================
+
+// TODO: This episode also needs to create the legacy, which is the given family name. I think the Legacy data is
+//       mostly part of the game state. We'll need some components for the house upgrades, but I think the family
+//       name just belongs to the game state.
+
+function finishCharacterCreation() {
+  const triggers = EpisodeSystem.getPropertyValue('triggers');
+  const givenName = EpisodeSystem.getPropertyValue('givenName');
+  const familyName = EpisodeSystem.getPropertyValue('familyName');
+  const playerId = PlayerFactory.build({ name:givenName, triggers });
+  const aspects = AspectsComponent.lookup(playerId);
+
+  if (givenName === 'Sheepfucker') {
+    aspects[AspectType.animalAttraction] = 1;
+  }
+
+  GameState.setPlayer(playerId);
+  GameState.setCurrentLocation('family-home-living-room');
+  GameState.setGameMode(GameMode.location);
+}
 
 Episode.register('game-start-1', {
   layout: 'large-centered',
@@ -271,8 +279,8 @@ Episode.register('game-start-1', {
     { content:regretContent, buttons:regretOptions, buttonsStyle:'column' },
     { contentFunction:regretResult },
     { content:nameContent, buttons:nameButtons, onShow:bindNameInputs },
-    { content:acceptName, requires:(state) => { return true; } },
-    { content:changeName, requires:(state) => { return false; } }
+    { content:`${acceptContent}${completeContent}`, requires:(state) => state.getProperty('givenName') === 'Sheepfucker' },
+    { content:`${changeContent}${completeContent}`, requires:(state) => state.getProperty('givenName') !== 'Sheepfucker' },
   ],
   endFunction: finishCharacterCreation,
 });

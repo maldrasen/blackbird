@@ -34,9 +34,12 @@ global.EpisodePage = function(data) {
   // Only render a page when it has no requirements or all its requirements are met.
   function meetsRequirements() { return checkRequirements(data.requires); }
 
-  // Check page and button level requirements.
+  // Check page and button level requirements. The requires property can be a single closure, an array of closures
+  // that all need to pass, or omitted entirely.
   function checkRequirements(requires) {
-    return (requires == null) ? true : requires.every(requirement => requirement(EpisodeSystem.getState()));
+    if (Array.isArray(requires)) { return requires.every(requirement => requirement(EpisodeSystem.getState())); }
+    if (requires == null) { return true; }
+    return requires(EpisodeSystem.getState());
   }
 
   return Object.freeze({
