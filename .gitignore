@@ -2,7 +2,7 @@
 .DS_Store
 .tmp*
 
-/.claude
+/.claude/worktrees
 /.idea
 /debug/*.json
 /docs/.obsidian

@@ -197,7 +197,7 @@ const nameContent = `
     with a contemptuous sneer. He takes a deep breath, taking in your scent. "All right sheep fucker, fill this in 
     and be on your way."
   </p>
-  <p> 
+  <p>
     He hands you a scrap of paper, already partially filled in…
   </p>
   <div class='border-normal padding inline-fields'>
