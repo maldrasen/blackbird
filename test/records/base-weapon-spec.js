@@ -133,16 +133,17 @@ describe("BaseWeapon", function() {
   });
 
   describe("getValue", function() {
+    // Value is the construction cost (materials + effort) nudged by a bounded factor from the weapon's DPS.
     it("prices a longsword from its steel and its forging effort", function() {
-      expect(BaseWeapon.lookup('longsword').getValue()).to.equal(665);
+      expect(BaseWeapon.lookup('longsword').getValue()).to.equal(640);
     });
 
     it("prices a heavy two handed sword higher", function() {
-      expect(BaseWeapon.lookup('claymore').getValue()).to.equal(925);
+      expect(BaseWeapon.lookup('claymore').getValue()).to.equal(920);
     });
 
     it("prices a spear cheaply - mostly a wooden shaft", function() {
-      expect(BaseWeapon.lookup('spear').getValue()).to.equal(220);
+      expect(BaseWeapon.lookup('spear').getValue()).to.equal(210);
     });
 
     it("is 0 for an unarmed strike", function() {

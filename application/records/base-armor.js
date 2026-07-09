@@ -42,15 +42,19 @@ global.BaseArmor = (function() {
       return map;
     }
 
-    // Value is derived the same way weapons are: the cost of the materials that go into the piece plus the labor to
-    // build it. Metal armor is expensive because it uses a lot of costly steel and a great deal of effort.
     function getMaterialCost() {
       return getMaterialParts().reduce((sum,entry) => sum + (Material.getCost(entry.material) * entry.amount), 0);
     }
 
+    function getTotalReduction() {
+      const reduction = getReductionMap();
+      return reduction[DamageType.crush] + reduction[DamageType.slash] + reduction[DamageType.pierce];
+    }
+
     function getValue() {
-      const raw = getMaterialCost() + ((armor.effort || 0) * _effortCost);
-      return Math.round(raw / 5) * 5;
+      const construction = getMaterialCost() + ((armor.effort || 0) * _effortCost);
+      const performance = ItemHelper.getArmorValueFactor(getTotalReduction());
+      return Math.round((construction * performance) / 5) * 5;
     }
 
     return Object.freeze({

@@ -16,8 +16,8 @@ global._battleKillEffectTime = 1000;
 global._scaleThresholds = [100, 600, 3600, 13600, 43600, 103600, 203600, 453600];
 
 // === Items & Equipment ===
-// Equipment value is (material cost + effort * _effortCost). This is the gold cost of a single point of build effort,
-// shared by the weapon and armor value formulas so their prices stay on the same scale.
+// Equipment value is (material cost + effort * _effortCost) scaled by a performance factor. This is the gold cost of a
+// single point of build effort, shared by the weapon and armor value formulas so their prices stay on the same scale.
 global._effortCost = 100;
 
 // === Text ===

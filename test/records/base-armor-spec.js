@@ -79,16 +79,17 @@ describe("BaseArmor", function() {
   });
 
   describe("getValue()", function() {
+    // Value is the construction cost (materials + effort) nudged by a bounded factor from the piece's total reduction.
     it("prices a full plate from its heavy steel and its effort", function() {
-      expect(BaseArmor.lookup('plate').getValue()).to.equal(1040);
+      expect(BaseArmor.lookup('plate').getValue()).to.equal(1185);
     });
 
     it("prices a steel-and-leather cuirass", function() {
-      expect(BaseArmor.lookup('cuirass').getValue()).to.equal(595);
+      expect(BaseArmor.lookup('cuirass').getValue()).to.equal(650);
     });
 
     it("prices a padded wool doublet cheaply", function() {
-      expect(BaseArmor.lookup('doublet').getValue()).to.equal(310);
+      expect(BaseArmor.lookup('doublet').getValue()).to.equal(285);
     });
   });
 

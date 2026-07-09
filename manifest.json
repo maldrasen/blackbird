@@ -126,6 +126,7 @@
     "application/helpers/string-helper.js",
     "application/helpers/time-helper.js",
     "application/helpers/validate.js",
+    "application/helpers/value-factor.js",
     "application/items/armor-enchantment.js",
     "application/items/armor.js",
     "application/items/equipment-manager.js",
