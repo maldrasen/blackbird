@@ -56,9 +56,10 @@ global.CharacterOverviewPanel = (function() {
     const list = ListBuilder(`div`,`tag-area`);
 
     keys.forEach(key => {
+      const aspect = Aspect.lookup(key);
       const value = aspects[key];
-      const stars = ['','★','★★','★★★'][value]
-      list.add(makeTag(Aspect.lookup(key).getName(), stars, `aspect-tag strength-${value}`));
+      const stars = aspect.isLeveled() ? ['','★','★★','★★★'][value] : '';
+      list.add(makeTag(aspect.getName(), stars, `aspect-tag strength-${value}`, { type:'aspect', code:key }));
     });
 
     X.fill('#characterOverlay .aspects-area', X.createElement(list.getList()));
@@ -80,7 +81,7 @@ global.CharacterOverviewPanel = (function() {
       const name = (value >= 0) ? preference.getName() : preference.getAntiname();
       const letter = LetterGradeHelper.preferenceValue(Math.abs(value));
 
-      list.add(makeTag(name, letter, `sexual-preference-tag strength-${letter}`));
+      list.add(makeTag(name, letter, `sexual-preference-tag strength-${letter}`, { type:'sexual-preference', code:key }));
     });
 
     X.fill('#characterOverlay .sexual-preferences-area', X.createElement(list.getList()));
@@ -94,7 +95,7 @@ global.CharacterOverviewPanel = (function() {
     keys.forEach(key => {
       const letter = LetterGradeHelper.sensitivityValue(sensitives[key]);
       const label = `${StringHelper.titlecase(key)} Sensitivity`
-      list.add(makeTag(label, letter, `sensitivity-tag strength-${letter}`));
+      list.add(makeTag(label, letter, `sensitivity-tag strength-${letter}`, { type:'sensitivity', code:key }));
     });
 
     X.fill('#characterOverlay .sensitivities-area',X.createElement(list.getList()));
@@ -136,7 +137,7 @@ global.CharacterOverviewPanel = (function() {
     keys.forEach(code => {
       const skill = Skill.lookup(code)
       if (skills[code] > 0) {
-        list.add(makeTag(skill.getName(), skills[code], 'skill-tag'));
+        list.add(makeTag(skill.getName(), skills[code], 'skill-tag', { type:'skill', code:code }));
       }
     });
 
@@ -196,11 +197,26 @@ global.CharacterOverviewPanel = (function() {
     return `${StringHelper.titlecase(feel)} ${letterData.letter} (${letterData.remainder}/${letterData.range})`;
   }
 
-  function makeTag(label,value,classname) {
-    return `<div class='${classname} tag'>
+  function makeTag(label, value, classname, tooltip) {
+    const tagClass = `${classname} tag tooltip-parent`;
+    const tagId = `tag-{${tooltip.type}-${tooltip.code}`;
+    const description = tooltipContent(tooltip);
+
+    Tooltip.register(tagId, { content:description, position:'bottom', delay:100 });
+
+    return `<div id='${tagId}' class='${tagClass}'>
       <span class='label'>${label}</span>
       <span class='value'>${value}</span>
     </div>`
+  }
+
+  // TODO: Aspects have a description, but eventually all the other tag types [sexual-preference, sensitivity, skill]
+  //       should also show a brief description.
+  function tooltipContent(tooltip) {
+    switch (tooltip.type) {
+      case 'aspect': return Aspect.lookup(tooltip.code).getDescription();
+      default: return `${tooltip.type}:${tooltip.code}`
+    }
   }
 
   return Object.freeze({
