@@ -15,6 +15,8 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [009] Descriptions #character — [009-descriptions.md](009-descriptions.md)
 - [011] Project Stuff — [011-project-stuff.md](011-project-stuff.md)
 - [045] Implement the Enlighten View — [045-implement-the-enlighten-view.md](045-implement-the-enlighten-view.md)
+- [102] Complete Equipment — [102-complete-equipment.md](102-complete-equipment.md)
+- [103] Character Equipper — [103-character-equipper.md](103-character-equipper.md)
 
 ## Priority 3
 
