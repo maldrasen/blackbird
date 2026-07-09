@@ -225,10 +225,7 @@ function completeContent() {
 // =========================
 //    Finish and Register
 // =========================
-
-// TODO: This episode also needs to create the legacy, which is the given family name. I think the Legacy data is
-//       mostly part of the game state. We'll need some components for the house upgrades, but I think the family
-//       name just belongs to the game state.
+// The starting equipment budget can be tuned later, once there's more equipment variety.
 
 function finishCharacterCreation() {
   const triggers = EpisodeSystem.getPropertyValue('triggers');
@@ -245,6 +242,7 @@ function finishCharacterCreation() {
     AspectsComponent.update(playerId, { [AspectType.animalAttraction]: 1 });
   }
 
+  CharacterEquipper.equip(playerId, Random.between(500,600));
   GameSystem.setGameMode(GameMode.location);
 }
 
