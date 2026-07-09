@@ -28,7 +28,7 @@ global.GameStateFrame = (function() {
   function update() {
     clear();
 
-    const player = GameState.getPlayer();
+    const player = GameSystem.getState().getPlayer();
 
     X.fill('#gameStateFrame .name',     getPlayerLink(player));
     X.fill('#gameStateFrame .status',   getStatusIcons(player));
@@ -98,17 +98,17 @@ global.GameStateFrame = (function() {
   //       the date math and format functions to do this. Clicking on the time
   //       could also give you a 'wait around' action if that's needed.
   function getTime() {
-    return `(time:${GameState.getGameTime()})`
+    return `(time:${GameSystem.getState().getGameTime()})`
   }
 
   function getLocationLink() {
-    const location = GameState.getCurrentLocation();
+    const location = GameSystem.getState().getCurrentLocation();
     const name = Location.lookup(location).getName()
     return X.createElement(`<a class='click-location' href='#'>${name}</a>`);
   }
 
   function playerClicked() {
-    CharacterOverlay.open({ id:GameState.getPlayer(), isPlayer:true });
+    CharacterOverlay.open({ id:GameSystem.getState().getPlayer(), isPlayer:true });
   }
 
   function locationClicked() {

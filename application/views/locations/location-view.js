@@ -1,7 +1,7 @@
 global.LocationView = (function() {
 
   function show() {
-    const location = Location.lookup(GameState.getCurrentLocation());
+    const location = Location.lookup(GameSystem.getState().getCurrentLocation());
     const characters = CharacterMovementSystem.getCharactersAtLocation(location.getCode());
 
     MainContent.setMainContent("views/location.html");

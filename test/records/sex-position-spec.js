@@ -7,7 +7,7 @@ describe("SexPosition", function() {
       const partner = CharacterFactory.build({});
       const attitude = Random.from(Object.values(Attitude));
 
-      GameState.setPlayer(player);
+      GameSystem.getState().setPlayer(player);
 
       return Random.flipCoin() ? { A:player, B:partner, attitude:attitude } : { A:partner, B:player, attitude:attitude }
     }

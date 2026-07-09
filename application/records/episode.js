@@ -25,7 +25,7 @@ global.Episode = (function() {
     }
 
     function getBackground() {
-      const location = GameState.getCurrentLocation();
+      const location = GameSystem.getState().getCurrentLocation();
       if (episode.background) { return episode.background; }
       if (location) { return Location.lookup(location).getBackground(); }
       return 'backgrounds/episode.jpg';

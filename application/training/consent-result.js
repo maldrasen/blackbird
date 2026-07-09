@@ -1,7 +1,7 @@
 global.ConsentResult = (characterId, targetId=null) => {
 
   const $characterId = characterId;
-  const $targetId = targetId || GameState.getPlayer();
+  const $targetId = targetId || GameSystem.getState().getPlayer();
 
   let $response, $consentValue, $sexAction;
 

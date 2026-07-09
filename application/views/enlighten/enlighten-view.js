@@ -11,7 +11,7 @@ global.EnlightenView = (function() {
 
   function complete() {
     GameStateFrame.show();
-    GameState.returnToPreviousMode();
+    GameSystem.returnToPreviousMode();
   }
 
   return Object.freeze({

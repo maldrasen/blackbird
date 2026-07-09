@@ -4,14 +4,14 @@ global.TrainingInterface = (function() {
   // is either denied by the partner or once the level up mode has concluded.
   function proposeTraining(characterId) {
     if (Tests.running()) { return; }
-    EpisodeSystem.startEpisode('propose-training', { P:GameState.getPlayer(), T:characterId });
-    GameState.markReturnMode();
-    GameState.setGameMode(GameMode.episode);
+    EpisodeSystem.startEpisode('propose-training', { P:GameSystem.getState().getPlayer(), T:characterId });
+    GameSystem.markReturnMode();
+    GameSystem.setGameMode(GameMode.episode);
   }
 
   function startTraining() {
     if (Tests.running()) { return; }
-    GameState.setGameMode(GameMode.training);
+    GameSystem.setGameMode(GameMode.training);
   }
 
   function endTraining(state) {
@@ -25,7 +25,7 @@ global.TrainingInterface = (function() {
       anger: state.getEssenceOfAnger(),
     });
 
-    GameState.setGameMode(GameMode.enlighten);
+    GameSystem.setGameMode(GameMode.enlighten);
   }
 
   function finishSexAction(result) {

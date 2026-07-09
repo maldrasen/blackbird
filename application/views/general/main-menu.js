@@ -53,8 +53,8 @@ global.MainMenu = (function() {
 
   async function startGame() {
     close();
-    await GameController.startNewGame();
-    await GameController.openGame();
+    await GameSystem.startNewGame();
+    await GameSystem.openGame();
   }
 
   async function startFixture(event) {
@@ -69,15 +69,15 @@ global.MainMenu = (function() {
     if (fixture === 'reports') { setup = ReportFixture.show; }
     if (setup == null) { throw new Error(`Bad fixture code: ${fixture}`); }
 
-    await GameController.startNewGame({ setup });
-    await GameController.openGame();
+    await GameSystem.startNewGame({ setup });
+    await GameSystem.openGame();
   }
 
   async function continueGame() {
     close();
 
-    await GameController.loadLastGame();
-    await GameController.openGame();
+    await GameSystem.loadLastGame();
+    await GameSystem.openGame();
   }
 
   function showLoadGame() {

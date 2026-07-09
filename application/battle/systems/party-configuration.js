@@ -6,7 +6,7 @@ global.PartyConfiguration = (function() {
   function setCharacter(id, position) {
     if (position.match(_positionPattern) == null) { throw new Error(`Invalid Position: ${position}`); }
 
-    const configuration = GameState.getPartyConfiguration() || {};
+    const configuration = GameSystem.getState().getPartyConfiguration() || {};
     const previousPosition = configuration[id];
     const displacedId = Object.keys(configuration).find(x => {
       return configuration[x] === position && x !== id
@@ -17,11 +17,11 @@ global.PartyConfiguration = (function() {
       configuration[displacedId] = previousPosition;
     }
 
-    GameState.setPartyConfiguration(configuration);
+    GameSystem.getState().setPartyConfiguration(configuration);
   }
 
   return Object.freeze({
-    getConfiguration: () => { return GameState.getPartyConfiguration() || {}; },
+    getConfiguration: () => { return GameSystem.getState().getPartyConfiguration() || {}; },
     setCharacter,
   });
 

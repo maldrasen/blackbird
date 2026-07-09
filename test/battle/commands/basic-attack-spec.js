@@ -9,23 +9,23 @@ describe("BasicAttack", function() {
       BattleSystem.startBattle({ encounter:(options.encounter || 'kobold-1'), ambushState:'normal' });
 
       if (options.playerMainWeapon) {
-        BattleFixtures.equipWeapon(GameState.getPlayer(), options.playerMainWeapon, EquipmentSlot.primary);
+        BattleFixtures.equipWeapon(GameSystem.getState().getPlayer(), options.playerMainWeapon, EquipmentSlot.primary);
       }
     }
 
     function setPlayerAttribute(data) {
-      const attributes = AttributesComponent.lookup(GameState.getPlayer());
+      const attributes = AttributesComponent.lookup(GameSystem.getState().getPlayer());
       Object.entries(data).forEach(([key,value]) => { attributes[key] = value; });
-      AttributesComponent.update(GameState.getPlayer(),attributes);
+      AttributesComponent.update(GameSystem.getState().getPlayer(),attributes);
     }
 
     describe("rollDamage()", function() {
       it("a normal attack with a single damage type", function() {
         prepare();
         setPlayerAttribute({ strength:50 });
-        BattleSystem.specRound(GameState.getPlayer(), { target:BattleSystem.getState().getMonsters()[0] });
+        BattleSystem.specRound(GameSystem.getState().getPlayer(), { target:BattleSystem.getState().getMonsters()[0] });
 
-        const complexDamage = BasicAttack.rollDamage(GameState.getPlayer(), BaseWeapon.lookup('maul'), 'normal', 'normal');
+        const complexDamage = BasicAttack.rollDamage(GameSystem.getState().getPlayer(), BaseWeapon.lookup('maul'), 'normal', 'normal');
         expect(BattleSystem.getRound().getMessages().length).to.equal(0);
         expect(Object.keys(complexDamage).length).to.equal(1);
         expect(complexDamage.crush).to.be.greaterThan(50);
@@ -34,9 +34,9 @@ describe("BasicAttack", function() {
       it("a super crit hit with two damage types", function() {
         prepare();
         setPlayerAttribute({ strength:50 });
-        BattleSystem.specRound(GameState.getPlayer(), { target:BattleSystem.getState().getMonsters()[0] });
+        BattleSystem.specRound(GameSystem.getState().getPlayer(), { target:BattleSystem.getState().getMonsters()[0] });
 
-        const complexDamage = BasicAttack.rollDamage(GameState.getPlayer(), BaseWeapon.lookup('morning-star'), 'crit', 'fumble');
+        const complexDamage = BasicAttack.rollDamage(GameSystem.getState().getPlayer(), BaseWeapon.lookup('morning-star'), 'crit', 'fumble');
         expect(BattleSystem.getRound().getMessages().length).to.equal(2);
         expect(Object.keys(complexDamage).length).to.equal(2);
         expect(complexDamage.pierce).to.be.greaterThan(50);
@@ -59,7 +59,7 @@ describe("BasicAttack", function() {
     it("a single fast weapon", function() {
       prepare({ playerMainWeapon:{ base:'dagger' }});
 
-      BattleSystem.specRound(GameState.getPlayer());
+      BattleSystem.specRound(GameSystem.getState().getPlayer());
       const attacks = BasicAttack.calculateAttacks();
 
       expect(attacks.length).to.equal(2)

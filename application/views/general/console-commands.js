@@ -72,7 +72,7 @@ global.ConsoleCommands = (function() {
       for (const requirement of command.requires) {
         switch (requirement) {
           case 'game.loaded':
-            if (!GameState.isLoaded()) { return `A Game must be loaded.`; }
+            if (!GameSystem.isLoaded()) { return `A Game must be loaded.`; }
             break;
           default: throw new Error(`Bad Requirement ${requirement}`);
         }

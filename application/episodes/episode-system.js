@@ -13,7 +13,7 @@ global.EpisodeSystem = (function() {
       return endFunction();
     }
 
-    GameState.returnToPreviousMode();
+    GameSystem.returnToPreviousMode();
   }
 
   function nextPage() {

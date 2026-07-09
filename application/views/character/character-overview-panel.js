@@ -20,7 +20,7 @@ global.CharacterOverviewPanel = (function() {
   // towards other characters are essentially hidden though.
   function fillFeelingsBars(id) {
     const control = ControlledComponent.lookup(id);
-    const feelings = FeelingsComponent.findByTarget(id, GameState.getPlayer());
+    const feelings = FeelingsComponent.findByTarget(id, GameSystem.getState().getPlayer());
     X.fill('#characterOverlay .feelings-panel .control', getControlBar(control));
     X.fill('#characterOverlay .feelings-panel .affection', getFeelingsBar(feelings, 'affection'));
     X.fill('#characterOverlay .feelings-panel .respect', getFeelingsBar(feelings, 'respect'));

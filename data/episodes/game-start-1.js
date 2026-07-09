@@ -235,15 +235,17 @@ function finishCharacterCreation() {
   const givenName = EpisodeSystem.getPropertyValue('givenName');
   const familyName = EpisodeSystem.getPropertyValue('familyName');
   const playerId = PlayerFactory.build({ name:givenName, triggers });
+  const state = GameSystem.getState();
+
+  state.setPlayer(playerId);
+  state.setLegacyName(familyName);
+  state.setCurrentLocation('family-home-living-room');
 
   if (givenName === 'Sheepfucker') {
     AspectsComponent.update(playerId, { [AspectType.animalAttraction]: 1 });
   }
 
-  GameState.setPlayer(playerId);
-  GameState.setLegacyName(familyName);
-  GameState.setCurrentLocation('family-home-living-room');
-  GameState.setGameMode(GameMode.location);
+  GameSystem.setGameMode(GameMode.location);
 }
 
 Episode.register('game-start-1', {

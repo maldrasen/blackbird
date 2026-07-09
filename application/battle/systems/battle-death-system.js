@@ -21,7 +21,7 @@ global.BattleDeathSystem = (function() {
   }
 
   function isBattleLost(killed) {
-    return GameState.getPlayer() === killed;
+    return GameSystem.getState().getPlayer() === killed;
   }
 
   // There's a lot that needs to be done when an entity is killed. The entities are removed from the turn order and

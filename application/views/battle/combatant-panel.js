@@ -33,7 +33,7 @@ global.CombatantPanel = function(type, entity) {
       element.querySelector('.background').style['background-image'] = X.assetURL(`temp-art/${code}.png`);
     }
     if (type === 'character') {
-      const code = GameState.getPlayer() === entity ? 'player' : 'character'
+      const code = GameSystem.getState().getPlayer() === entity ? 'player' : 'character'
       element.querySelector('.background').style['background-image'] = X.assetURL(`temp-art/${code}.png`);
     }
   }

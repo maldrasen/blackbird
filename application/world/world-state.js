@@ -1,15 +1,8 @@
 global.WorldState = (function() {
 
-  // The WorldState is used to save any game data that isn't associated with a single game.
-  //
-  // Currently, that's only a reference to the last played game, which we keep in order to continue a game.
-  //
-  // The WorldState will also store the game options, though there currently aren't any.
-  //
-  // I may include some rogue light elements in the future, things that would change or improve over successive runs.
-  // I'm still in the planning stages though. If I did something like that I would need some kind of mechanic that
-  // would force the current game to come to a conclusion of some sort. Still I can see the meta progression being used
-  // to unlock different scenarios, different starting species, or abilities.
+  // The WorldState is used to save any game data that isn't associated with a single game. Currently, that's only a
+  // reference to the last played game, which we keep in order to continue a game. The WorldState will also store the
+  // game settings, though there currently aren't any.
 
   const filePath = `${DATA}/World-State.json`;
   const worldStateRecorder = new StateRecorder(filePath);

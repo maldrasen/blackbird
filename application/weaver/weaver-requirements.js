@@ -4,7 +4,7 @@ global.WeaverRequirements = (function() {
   // need this when the destination position is symmetric (like standing) and the current keys can't distinguish the
   // roles the actors just left.
   function playerWas(context, key) {
-    return context.previousPosition != null && GameState.getPlayer() === context.previousPosition[key];
+    return context.previousPosition != null && GameSystem.getState().getPlayer() === context.previousPosition[key];
   }
 
   // === Body Parts ===
@@ -96,7 +96,7 @@ global.WeaverRequirements = (function() {
   // Most of these functions are passthroughs to the Character wrapper, but these are all closures that can be added
   // to a WeaverPackage, whereas other systems will use the Character wrappers directly.
   return Object.freeze({
-    playerIs: key =>                         { return (context) => { return GameState.getPlayer() === context[key]; }},
+    playerIs: key =>                         { return (context) => { return GameSystem.getState().getPlayer() === context[key]; }},
     playerWas: key =>                        { return (context) => { return playerWas(context, key); }},
     withAttitude: code =>                    { return (context) => { return context.attitude === code; }},
     withAction: code =>                      { return (context) => { return context.action === code; }},

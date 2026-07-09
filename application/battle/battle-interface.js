@@ -58,7 +58,7 @@ global.BattleInterface = (function() {
     EnlightenSystem.startEnlightenment('battle',{
       skillImprovements: state.getSkillImprovements(),
     });
-    GameState.setGameMode(GameMode.enlighten);
+    GameSystem.setGameMode(GameMode.enlighten);
   }
 
   // TODO: Rather than going back to the location we need to show an actual game over screen. This will kick the
@@ -67,7 +67,7 @@ global.BattleInterface = (function() {
     if (Tests.running()) { return; }
 
     BattleSystem.endBattle();
-    GameState.setGameMode(GameMode.location);
+    GameSystem.setGameMode(GameMode.location);
   }
 
   return Object.freeze({

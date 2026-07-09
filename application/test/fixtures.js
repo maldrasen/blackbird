@@ -8,23 +8,23 @@ global.Fixtures = (function() {
     });
 
     // So the battle has a mode to return to.
-    GameState.setGameMode(GameMode.location);
-    GameState.markReturnMode();
-    GameState.setGameMode(GameMode.battle);
+    GameSystem.setGameMode(GameMode.location);
+    GameSystem.markReturnMode();
+    GameSystem.setGameMode(GameMode.battle);
   }
 
   function setupDungeon() {
     BattleFixtures.prepareForBattle();
     DungeonSystem.createDungeon();
     DungeonSystem.setLevel(1);
-    GameState.setGameMode(GameMode.dungeon);
+    GameSystem.setGameMode(GameMode.dungeon);
   }
 
   // The training fixture actually puts the game into the location mode, with characters available to be trained.
   function setupTraining() {
     CharacterFixtures.randomPlayer();
     CharacterFixtures.randomCharacters(10, { triggers:[] });
-    GameState.setGameMode(GameMode.location);
+    GameSystem.setGameMode(GameMode.location);
   }
 
   return Object.freeze({

@@ -1,6 +1,6 @@
 global.Character = function(id) {
 
-  function isPlayer() { return id === GameState.getPlayer(); }
+  function isPlayer() { return id === GameSystem.getState().getPlayer(); }
   function getName() { return ActorComponent.lookup(id).name; }
 
   function getFullName() {

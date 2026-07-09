@@ -60,7 +60,7 @@ global.Tests = (function() {
 
   function reset() {
     Random.stubReset();
-    GameState.reset();
+    GameSystem.reset();
   }
 
   // Every spec gets its own fresh seed so a failure can be reproduced in isolation: rerunning just that spec (e.g. via

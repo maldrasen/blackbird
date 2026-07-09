@@ -6,7 +6,7 @@ global.CharacterFixtures = (function() {
     const player = PlayerFactory.build({
       style:Random.from(['domination','degradation','sadism'])
     });
-    GameState.setPlayer(player);
+    GameSystem.getState().setPlayer(player);
     return player;
   }
 
@@ -14,8 +14,8 @@ global.CharacterFixtures = (function() {
   // placeholder values for the control and feelings components. Should figure out what the default values there are.
   function randomCharacters(count, options={}) {
     const characters = []
-    const player = GameState.getPlayer();
-    const location = GameState.getCurrentLocation();
+    const player = GameSystem.getState().getPlayer();
+    const location = GameSystem.getState().getCurrentLocation();
 
     for (let i=0; i<count; i++) {
       characters.push(CharacterFactory.build(options));

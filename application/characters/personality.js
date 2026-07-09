@@ -20,7 +20,7 @@ global.Personality = function(id) {
   // then force the partner somehow. This would normally start the training with a high anger value, though a true
   // submissive partner would enjoy having the training session forced on them.
   function attitudeTowardsTraining() {
-    const player = Character(GameState.getPlayer());
+    const player = Character(GameSystem.getState().getPlayer());
     const character = Character(id);
     const results = {};
 

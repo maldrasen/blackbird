@@ -1,21 +1,22 @@
 describe('GameState', function() {
 
   it('packs game state', function() {
-    GameState.reset();
-    GameState.setCurrentLocation('the-piss-pits');
-    GameState.setPartyConfiguration({ whatever:'stuff' });
+    const state = GameState();
+    state.setCurrentLocation('the-piss-pits');
+    state.setPartyConfiguration({ whatever:'stuff' });
 
-    const packed = GameState.pack();
+    const packed = state.pack();
 
     expect(packed.currentLocation).to.equal('the-piss-pits');
     expect(packed.partyConfiguration.whatever).to.equal('stuff');
   });
 
-  it('unpacks game state', function() {
-    GameState.unpack({ currentLocation:'wherever', partyConfiguration:{ stuff:'thing' }});
+  // Constructing a state from packed data replaces the old unpack().
+  it('builds state from packed data', function() {
+    const state = GameState({ currentLocation:'wherever', partyConfiguration:{ stuff:'thing' }});
 
-    expect(GameState.getCurrentLocation()).to.equal('wherever');
-    expect(GameState.getPartyConfiguration().stuff).to.equal('thing');
+    expect(state.getCurrentLocation()).to.equal('wherever');
+    expect(state.getPartyConfiguration().stuff).to.equal('thing');
   });
 
 });
