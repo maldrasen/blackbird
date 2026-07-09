@@ -29,19 +29,19 @@ Ability.register('hide',{
       if (isHidden && check > stealthRoll.value) {
         isHidden = false;
         message = {
-          text: weaver.weave(`{A:ActingName} tries to hide, but ${ActorLoom.compileName(observer.id)} spots {A:him}.`)
+          text: `{A:ActingName} tries to hide, but ${ActorLoom.compileName(observer.id)} spots {A:him}.`
         };
       }
     });
 
     if (isHidden) {
-      message = { text: weaver.weave(`{A:ActingName} hides in the shadows.`) };
+      message = { text: `{A:ActingName} hides in the shadows.` };
       state.addStatus(BattleStatusEffect(acting,'hidden'));
     }
 
     round.clearTarget();
     round.addTime(1000);
-    round.addMessage(message);
+    round.addMessage(message, weaver);
   },
 
 });

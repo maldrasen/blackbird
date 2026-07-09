@@ -69,7 +69,7 @@ global.BaseWeapon = (function() {
     function getValue() {
       const construction = getMaterialCost() + ((weapon.effort || 0) * _effortCost);
       const performance = ItemHelper.getWeaponValueFactor(getDamagePerSecond());
-      return Math.round((construction * performance) / 5) * 5;
+      return Math.round(construction * performance);
     }
 
     return Object.freeze({

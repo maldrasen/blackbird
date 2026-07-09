@@ -1,4 +1,8 @@
 Blackbird generates a lot of text. It could be said that generating text is what this program primarily does. As such, building and evaluating text templates is fairly central to this applications workings. Almost every action will build a template string that gets displayed when the action is complete. These template strings are written in an internal format. The Weaver takes these templates, sequentially replacing each token by passing the token to the matching looms. 
+
+#### Weave Once
+`weave()` must only ever be given a **raw template**, never text that has already been woven. Weaving injects HTML (e.g. `<span style="...">` for colored weapon and actor names), and a second pass would treat those attribute quotes as authored dialogue and mangle the markup. To enforce this, `weave()` prefixes its result with an invisible zero-width marker character (U+2060 WORD JOINER) and throws if it is handed a source that already contains that marker. A zero-width prefix is used rather than a wrapper element because some templates emit block-level HTML (`<p>`, `<div>`, result blocks) that a wrapping `<span>` would nest illegally. So don't pre-weave text before passing it to something that weaves for you — `BattleRound.addMessage(message, weaver)` weaves `message.text` itself, so callers pass raw templates (see `data/abilities/basic-attack.js`).
+
 #### Weaver Context
 A weaver is created with the context to use for token replacement. This is most often used to specify the actors within the context. The actor tokens use a letter prefix to indicate which actor is being referenced, and by convention the player character should be actor `P`. Likewise the training partner will be the `T` actor.
 

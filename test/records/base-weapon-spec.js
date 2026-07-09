@@ -143,7 +143,7 @@ describe("BaseWeapon", function() {
     });
 
     it("prices a spear cheaply - mostly a wooden shaft", function() {
-      expect(BaseWeapon.lookup('spear').getValue()).to.equal(210);
+      expect(BaseWeapon.lookup('spear').getValue()).to.equal(208);
     });
 
     it("is 0 for an unarmed strike", function() {

@@ -19,6 +19,11 @@ global.Weaver = function(context) {
   //      - [FUNC] The function name
   //      - [ARGS] Comma separated list of arguments
 
+  // We must prevent templates from being woven twice because quotes within a woven element would be treated as
+  // quoted text, which then produces mangled HTML. Woven texts are prefixed with this invisible marker character.
+  // If the template string contains this element, we know it's already been woven, and we throw an error.
+  const WOVEN_MARKER = String.fromCharCode(0x2060); // U+2060 WORD JOINER
+
   const ACTOR_PATTERN = /{([^}]+):([^}]+)}/
   const CONTEXT_PATTERN = /{@([^}]+)}/
   const FUNCTION_PATTERN = /{(\w+)\(([^)]*)\)}/
@@ -27,12 +32,15 @@ global.Weaver = function(context) {
 
   const OPEN_SPAN_PATTERN = /{S\/([^}]+)}/;
   const CLOSE_SPAN = `{\/S}`;
-  const QUOTE_PATTERN = /"([^"]+)"/
+  const QUOTE_PATTERN = /"([^"]+)"/g
 
   function weave(source) {
-    if (source == null) { return ''; }
 
-    let text = `${source}`
+    if (source.includes(WOVEN_MARKER)) {
+      throw new Error(`Error: This template string has already been woven, and cannot be woven again.`);
+    }
+
+    let text = replaceQuotes(source);
     let weaving = true;
 
     while (weaving) {
@@ -43,7 +51,6 @@ global.Weaver = function(context) {
       let openSpanMatch = text.match(OPEN_SPAN_PATTERN);
       let closeSpanMatch = text.includes(CLOSE_SPAN);
       let simpleMatch = text.match(SIMPLE_PATTERN);
-      let quoteMatch = text.match(QUOTE_PATTERN);
 
       if (contextMatch) {
         text = text.replace(contextMatch[0], contextValue(contextMatch[1].trim()));
@@ -60,8 +67,6 @@ global.Weaver = function(context) {
         text = text.replace(CLOSE_SPAN, `</span>`);
       } else if (simpleMatch) {
         text = text.replace(simpleMatch[0], simpleValue(simpleMatch[1].trim()));
-      } else if (quoteMatch) {
-        text = text.replace(quoteMatch[0], quoteSpan(quoteMatch[1]));
       } else {
         weaving = false;
       }
@@ -69,7 +74,11 @@ global.Weaver = function(context) {
       text.replace(/\s+/g,' ');
     }
 
-    return StringHelper.pack(text);
+    return `${WOVEN_MARKER}${StringHelper.pack(text)}`
+  }
+
+  function replaceQuotes(text) {
+    return text.replace(QUOTE_PATTERN, (match, inner) => quoteSpan(inner));
   }
 
   function contextValue(key) {
@@ -154,4 +163,3 @@ global.Weaver = function(context) {
 
 Weaver.formatWarning = (message) => { return `<span class='weaver-warning'>${message}</span>`; }
 Weaver.formatError = (message) => { return `<span class='weaver-error'>${message}</span>`; }
-
