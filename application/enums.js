@@ -380,6 +380,26 @@ global.OutfitStyle = Object.freeze({
   slutty: 'slutty',
 });
 
+global.MaterialType = Object.freeze({
+  wool: 'wool',
+  silk: 'silk',
+  wood: 'wood',
+  bone: 'bone',
+  leather: 'leather',
+  iron: 'iron',
+  steel: 'steel',
+  silver: 'silver',
+});
+
+global.MaterialFactor = Object.freeze({
+  sharpness: 'sharpness',
+  heft: 'heft',
+  lash: 'lash',
+  tension: 'tension',
+  absorption: 'absorption',
+  potential: 'potential',
+});
+
 global.EquipmentSlot = Object.freeze({
   primary:'primary',
   secondary:'secondary',
