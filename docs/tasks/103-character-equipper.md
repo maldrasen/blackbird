@@ -14,6 +14,7 @@ The CharacterEquipper will take an entity and a budget as arguments. Budget isn'
 
 For now we can assume that every character is a melee fighter of some type. Magic focused characters will need entirely different considerations, but we can skip them for now.
 
+### Equipment type should match the character using it
 The equipper needs to first determine what kind of equipment the character would use. We should look at their skills first. If, of their martial skills, their sword skill is the highest they would have a sword. If they don't have any weapon skills (everything is less than 10) then we pick their weapon based on their highest attribute. 
 - If they have high strength, we pick a we weapon with a strength based skill. (axe, mace, polearm) 
 - If they have high dexterity we pick from (bow, dagger, whips) 
@@ -25,3 +26,6 @@ When picking armor we need to know if this character would be equipping heavy me
 Higher level characters would have a higher budget, but should also have skills we can use to determine what kind of character they are. We can look at their abilities and see what armor types would interfere with them. We can save higher level characters for later.
 
 Characters with high budgets and low skills are probably nobility or something and would go though a different selection pass for finery. 
+
+### Equipment Variety
+The chosen equipment will need a little variety between characters, so for each equipment slot, we should find all the base equipment that's within 80% - 100% of that slot's budget, and select randomly from that list. If there are no items for that slot within that budget, we can find the next cheapest thing, or nothing if there's nothing affordable in that slot within that budget.
