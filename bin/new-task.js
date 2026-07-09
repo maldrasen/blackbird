@@ -19,8 +19,14 @@ const slug = title
   .replace(/[^a-z0-9]+/g, '-')
   .replace(/^-+|-+$/g, '');
 
-const files = fs.readdirSync(TASKS_DIR).filter(name => name.endsWith('.md') && name !== 'index.md');
-const maxId = files.reduce((max, name) => {
+function collectTaskFiles(dir) {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
+    if (entry.isDirectory()) { return collectTaskFiles(path.join(dir, entry.name)); }
+    return entry.name.endsWith('.md') && entry.name !== 'index.md' ? [entry.name] : [];
+  });
+}
+
+const maxId = collectTaskFiles(TASKS_DIR).reduce((max, name) => {
   const match = name.match(/^(\d+)-/);
   return match ? Math.max(max, Number(match[1])) : max;
 }, 0);
