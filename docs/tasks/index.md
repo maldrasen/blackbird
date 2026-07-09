@@ -2,10 +2,6 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
-## Priority 1
-
-- [100] Game Start Event — [100-game-start-event.md](100-game-start-event.md)
-
 ## Priority 2
 
 - [002] Negotiation System #battle — [002-negotiation-system.md](002-negotiation-system.md)
