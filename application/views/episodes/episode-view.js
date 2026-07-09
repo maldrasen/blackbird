@@ -59,9 +59,7 @@ global.EpisodeView = (function() {
     X.addClass('#episodeButtons',episodePage.getButtonsStyle());
 
     const buttons = episodePage.getButtons();
-    buttons.forEach((buttonData,index) => {
-      addButton(buttonData, (buttons.length > 1) ? index+1 : null);
-    });
+    buttons.forEach(addButton);
 
     // We need to get the content after the buttons are added because getting
     // the content might call a contentFunction() which might need to modify
@@ -74,9 +72,8 @@ global.EpisodeView = (function() {
 
   // This function expects one of the standard button codes or button properties. A canned application button ignores
   // the button properties, but gets own default values if the button has them. The other button properties are:
-  // { label, id, classname, callback } Only label is required. The index of a button (used for a keyboard shortcut)
-  // is only included if there are more than one button on the page.
-  function addButton(buttonData, index) {
+  // { label, id, classname, callback } Only label is required.
+  function addButton(buttonData) {
     X.removeClass('#episodeButtons','hide');
 
     const buttons = X.first('#episodeButtons');
@@ -85,8 +82,7 @@ global.EpisodeView = (function() {
       return buttons.appendChild(X.createElement(`<a href='#' class='button continue-button'>Continue</a>`));
     }
 
-    const shortcutLabel = index ? `<span class='fg-very-weak'>${index}. </span>` : '';
-    const button = X.createElement(`<a href='#' class='button'>${shortcutLabel}${buttonData.label}</a>`);
+    const button = X.createElement(`<a href='#' class='button'>${buttonData.label}</a>`);
 
     getButtonClassnames(buttonData).forEach(classname => {
       X.addClass(button,classname);
