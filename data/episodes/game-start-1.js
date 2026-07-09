@@ -241,6 +241,7 @@ function finishCharacterCreation() {
   }
 
   GameState.setPlayer(playerId);
+  GameState.setLegacyName(familyName);
   GameState.setCurrentLocation('family-home-living-room');
   GameState.setGameMode(GameMode.location);
 }

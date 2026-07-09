@@ -7,6 +7,7 @@ global.GameState = (function() {
   let $currentFloor;
   let $player;
   let $partyConfiguration;
+  let $legacyName;
 
   // Reset is used to remove the loaded game from the state and leave it blank. This is done when the application is
   // started or when we quit a game and go back to the main menu.
@@ -20,6 +21,7 @@ global.GameState = (function() {
     $currentFloor = null;
     $player = null;
     $partyConfiguration = null;
+    $legacyName = null;
   }
 
   // Start a new game. This could take an argument for a specific scenario to play.
@@ -92,6 +94,9 @@ global.GameState = (function() {
   function getPartyConfiguration() { return $partyConfiguration; }
   function setPartyConfiguration(config) { $partyConfiguration = config; }
 
+  function getLegacyName() { return $legacyName; }
+  function setLegacyName(name) { $legacyName = name; }
+
   // ===================
   //    Save and Load
   // ===================
@@ -104,6 +109,7 @@ global.GameState = (function() {
       currentFloor: $currentFloor,
       player: $player,
       partyConfiguration: $partyConfiguration,
+      legacyName: $legacyName,
     }
   }
 
@@ -119,6 +125,7 @@ global.GameState = (function() {
     $currentFloor = data.currentFloor;
     $player = data.player;
     $partyConfiguration = data.partyConfiguration;
+    $legacyName = data.legacyName;
   }
 
   return Object.freeze({
@@ -140,6 +147,8 @@ global.GameState = (function() {
     setPlayer,
     getPartyConfiguration,
     setPartyConfiguration,
+    getLegacyName,
+    setLegacyName,
 
     pack,
     unpack,
