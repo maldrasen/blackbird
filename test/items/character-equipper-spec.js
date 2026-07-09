@@ -97,4 +97,41 @@ describe('CharacterEquipper', function() {
     });
   });
 
+  it('leaves a preset weapon loadout alone', function() {
+    const horse = CharacterFixtures.genericMale({ skills:{ swords:30 } });
+    const preset = WeaponFactory.build('short-sword');
+    InventoryManager(horse).addItem(preset);
+    EquipmentManager(horse).equipItem(preset, EquipmentSlot.primary);
+
+    const equipped = CharacterEquipper(horse).equip(1500);
+    const equipment = EquipmentManager(horse);
+
+    // The preset primary is untouched and no off-hand is forced in beside it.
+    expect(equipment.getSlot(EquipmentSlot.primary)).to.equal(preset);
+    expect(equipment.getSlot(EquipmentSlot.secondary)).to.equal(null);
+    expect(equipped.primary).to.be.undefined;
+    expect(equipped.secondary).to.be.undefined;
+
+    // Armor is still filled in around the preset weapon.
+    expect(armorCode(equipped.chest)).to.equal('plate');
+  });
+
+  it('skips armor slots that are already filled', function() {
+    const horse = CharacterFixtures.genericMale({ skills:{ swords:30 } });
+    const preset = ArmorFactory.build('doublet');
+    InventoryManager(horse).addItem(preset);
+    EquipmentManager(horse).equipItem(preset, EquipmentSlot.chest);
+
+    const equipped = CharacterEquipper(horse).equip(1500);
+    const equipment = EquipmentManager(horse);
+
+    // The preset chest piece survives even though a generous budget would have bought plate.
+    expect(equipment.getSlot(EquipmentSlot.chest)).to.equal(preset);
+    expect(equipped.chest).to.be.undefined;
+
+    // The rest of the armor is still randomized around it.
+    expect(armorCode(equipped.legs)).to.equal('plate-mail');
+    expect(armorCode(equipped.head)).to.be.oneOf(['armet','bascinet']);
+  });
+
 });

@@ -66,13 +66,18 @@ global.CharacterEquipper = function(id) {
 
   // === Weapons ===================================================================================================
 
+  // A preset primary weapon means the loadout is intentional, so we leave both hands alone. Otherwise we pick a
+  // primary and, unless it's two-handed or the off-hand is already filled, an appropriate secondary.
   function equipWeapons(budget) {
+    if (isFilled(EquipmentSlot.primary)) { return; }
+
     const weaponType = determineWeaponType();
     const primaryCode = selectByBudget(weaponCandidates(weaponType), budget * SlotBudgetPercent.primary);
     if (primaryCode == null) { return; }
 
     giveWeapon(primaryCode, EquipmentSlot.primary);
     if (BaseWeapon.lookup(primaryCode).getHands() === WeaponHandedness.two) { return; }
+    if (isFilled(EquipmentSlot.secondary)) { return; }
 
     const offhandType = isDexterous(weaponType) ? 'dagger' : 'shield';
     const secondaryCode = selectByBudget(weaponCandidates(offhandType), budget * SlotBudgetPercent.secondary);
@@ -121,6 +126,7 @@ global.CharacterEquipper = function(id) {
 
   function equipArmor(budget) {
     ArmorSlots.forEach(slot => {
+      if (isFilled(slot)) { return; }
       const code = selectByBudget(armorCandidates(slot), budget * SlotBudgetPercent[slot]);
       if (code) {
         giveArmor(code, slot);
@@ -158,6 +164,8 @@ global.CharacterEquipper = function(id) {
   }
 
   // === Giving ====================================================================================================
+
+  function isFilled(slot) { return equipmentManager.getSlot(slot) != null; }
 
   function giveWeapon(code, slot) { give(WeaponFactory.build(code), slot); }
   function giveArmor(code, slot) { give(ArmorFactory.build(code), slot); }
