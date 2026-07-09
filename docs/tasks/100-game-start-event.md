@@ -6,7 +6,7 @@ created: 2026-07-06
 tags: []
 ---
 ---
-Now that we have at least a working version of the game's primary systems we can start work on the actual new game event. I have an idea of the initial scenario (the lonely shepard) that is played when the game is first started. Additional scenarios are unlocked through game play, but for the first run you're limited to being a human male, the least interesting thing to be.
+Now that we have at least a working version of the game's primary systems we can start work on the actual new game event. I have an idea of the initial scenario (the lonely shepherd) that is played when the game is first started. Additional scenarios are unlocked through game play, but for the first run you're limited to being a human male, the least interesting thing to be.
 
 ### Character Creation
 We should start with character creation right away. Character creation will also serve to tell the character's backstory. We'll go though a couple of quick stories from the character's past and ask how they responded to a particular situation or another. Their responses add to the character's initial stats. So if you reacted to getting bullied by beating someone up, you'll get points in strength, but maybe get points subtracted from beauty. We do maybe three of these stories. The stories are doin double duty, letting us explain the character's origin in the farmlands around Wolgur without reading too much like a block of exposition. 

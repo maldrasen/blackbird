@@ -95,10 +95,10 @@ const memoryContent = `
     Whenever your thoughts turn to your brother an old memory resurfaces. What is it?
   </p>`;
 
-const mStr = `The two of you were always wrestling. You've been pinned to the ground more often than you can count. One day, you finally manage to best him.`;
+const mStr = `The two of you are always wrestling. You've been pinned to the ground more often than you can count. One day, you finally manage to best him.`;
 const mDex = `You're a boy, being taught to ride for the first time. You kick the horse and it panics, carrying you off into the wood.`;
 const mVit = `It's winter, the night before the Long Dawn. Your brother has the blood itch, tied down to his bed while you tend to him.`;
-const mInt = `You're up late reading again. When your brother asks you what your book is about, and you're forced to make up something on the spot.`;
+const mInt = `You're up late reading again. Your brother asks you what your book is about, and you're forced to make up something on the spot.`;
 const mBut = `The two of you are deep in the woods, hiding in the bushes, watching as the woodnymphs bathe in a stream.`;
 
 const memoryStr = `A year later you were taller than he was. He was starting to regret all the times he made you eat dirt.`
@@ -126,11 +126,11 @@ function memoryResult() {
   const result = WeaverElements.resultBlock(`You've gained ${memory}`, { classname:'gain' });
 
   switch (memory) {
-    case Attrib.strength: return `${result} ${largeNote(memoryStr)}</div>`;
-    case Attrib.dexterity: return `${result} ${largeNote(memoryDex)}</div>`;
-    case Attrib.vitality: return `${result} ${largeNote(memoryVit)}</div>`;
-    case Attrib.intelligence: return `${result} ${largeNote(memoryInt)}</div>`;
-    case Attrib.beauty: return `${result} ${largeNote(memoryBut)}</div>`;
+    case Attrib.strength: return `${result} ${largeNote(memoryStr)}`;
+    case Attrib.dexterity: return `${result} ${largeNote(memoryDex)}`;
+    case Attrib.vitality: return `${result} ${largeNote(memoryVit)}`;
+    case Attrib.intelligence: return `${result} ${largeNote(memoryInt)}`;
+    case Attrib.beauty: return `${result} ${largeNote(memoryBut)}`;
   }
 }
 
@@ -140,7 +140,7 @@ function memoryResult() {
 
 const nameContent = `
   <p>
-    As you reminisce about the past Your steps carry you closer to the city gate, now looming in the swirling mists 
+    As you reminisce about the past your steps carry you closer to the city gate, now looming in the swirling mists 
     above you. The city is situated in a deep and narrow valley, its outer wall built to span between the two rocky
     cliff faces on either side. The dirt path you had been following is now worn stone, dark and slick.
   </p>
@@ -210,13 +210,13 @@ function completeContent() {
       ${topContent}
     </p>
     <p>
-      You step through the gate onto Wolgur's main thoroughfare. The city has conformed to the shape of the narrow 
-      mountain valley it lies within, long and narrow. Short streets frequently branch off of the main road, pushing
-      up against stone cliff walls. The narrow side streets are dark, shadowed by tall stone buildings.
+      You step through the gate onto Wolgur's main thoroughfare. The city has conformed to the shape of the deep
+      mountain valley it lies within, long and narrow. Short streets frequently branch off the main road, pushing
+      up against stone cliff walls. The side streets are dark, shadowed by tall stone buildings.
     </p>
     <p>
       The ${familyName} family home is located a short distance from the city gates, putting it on the opposite end
-      of town as the dungeon entrance. It isn't difficult to find, a single left turn down Steeleye street, forth 
+      of town from the dungeon entrance. It isn't difficult to find, a single left turn down Steeleye Street, fourth
       door on the right. The old key fits the lock, but takes all your strength to turn. The lock gives way with a 
       metallic groan. It's clear no one's opened this door for a long time. Cautiously you step into your new home.    
     </p>`;
