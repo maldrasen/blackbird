@@ -24,17 +24,14 @@ global.AspectsComponent = (function() {
 
   // This component needs early validation (before it's made into a component)
   function validateData(aspectsData) {
-    const properties = Object.keys(AspectType);
+    const codes = Aspect.getAllCodes();
 
-    Object.keys(aspectsData).forEach(key => {
-      if (properties.includes(key) === false) {
-        throw new Error(`Aspect component does not have a ${key} property.`);
+    Object.keys(aspectsData).forEach(code => {
+      if (codes.includes(code) === false) {
+        throw new Error(`Aspect component does not have a ${code} property.`);
       }
-    });
-
-    properties.forEach(aspectCode => {
-      if (aspectsData[aspectCode] != null) {
-        Validate.between(`Aspect.${aspectCode}`, aspectsData[aspectCode], 1, 5);
+      if (aspectsData[code] != null) {
+        Validate.between(`Aspect.${code}`, aspectsData[code], 1, Aspect.lookup(code).getMaxLevel());
       }
     });
   }

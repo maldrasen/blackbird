@@ -215,9 +215,11 @@ global.Character = function(id) {
   //
   // mostIntense:{ code, value }
   //
+  // Pleasure is passed in rather than looked up, because callers mutate the arousal component's pleasure in place and
+  // roll for orgasm before persisting it — looking it up here would read stale, pre-update state.
+  //
   // A character's arousal and a high edging value should also affect the trigger threshold.
-  function rollForOrgasm(mostIntense) {
-    const pleasure = ArousalComponent.lookup(id).pleasure;
+  function rollForOrgasm(pleasure, mostIntense) {
     const threshold = getOrgasmThreshold();
     return (pleasure > threshold);
   }

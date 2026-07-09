@@ -72,8 +72,11 @@ global.Registry = (function() {
     components[type][id] = data;
   }
 
+  // Returns a shallow clone so callers can't mutate stored component state in place — all writes must go back
+  // through updateComponent(). A missing component still returns undefined (not an empty object) so null checks
+  // keep working. Note the clone is shallow: nested objects/arrays are still shared by reference.
   function lookupComponent(id, type) {
-    return components[type][id];
+    if (components[type][id] != null) { return { ...components[type][id] }; }
   }
 
   function updateComponent(id,type,data) {

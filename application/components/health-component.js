@@ -38,6 +38,7 @@ global.HealthComponent = (function() {
     }
 
     healthComponent.currentStamina = Math.floor(healthComponent.currentStamina);
+    Registry.updateComponent(id, ComponentType.health, healthComponent);
   }
 
   function validate(id) {

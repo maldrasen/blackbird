@@ -103,7 +103,7 @@ global.TrainingSystem = (function() {
       }
     });
 
-    const isOrgasm = (arousalData.refractory === 0) ? character.rollForOrgasm(mostIntense) : false;
+    const isOrgasm = (arousalData.refractory === 0) ? character.rollForOrgasm(arousalData.pleasure, mostIntense) : false;
 
     // TODO: Everything else that needs to happen when a character orgasms. Pleasure and arousal should be dropped
     //       dramatically, possibly down to 0, though I think some characters will have an arousal floor of some sort.

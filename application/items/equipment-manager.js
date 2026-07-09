@@ -45,7 +45,7 @@ global.EquipmentManager = function(characterId) {
     }
 
     const equipment = fetch();
-    (itemId == null) ? delete equipment[slot] : equipment[slot] = itemId;
+    equipment[slot] = itemId;
     update(equipment);
   }
 

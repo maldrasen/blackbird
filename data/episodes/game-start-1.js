@@ -235,10 +235,9 @@ function finishCharacterCreation() {
   const givenName = EpisodeSystem.getPropertyValue('givenName');
   const familyName = EpisodeSystem.getPropertyValue('familyName');
   const playerId = PlayerFactory.build({ name:givenName, triggers });
-  const aspects = AspectsComponent.lookup(playerId);
 
   if (givenName === 'Sheepfucker') {
-    aspects[AspectType.animalAttraction] = 1;
+    AspectsComponent.update(playerId, { [AspectType.animalAttraction]: 1 });
   }
 
   GameState.setPlayer(playerId);

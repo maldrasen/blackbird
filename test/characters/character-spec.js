@@ -104,8 +104,8 @@ describe("Character", function() {
       it("always orgasms when pleasure is above threshold (for now)", function() {
         const lady = Character(CharacterFixtures.genericFemale({ arousal:{ arousal:1, pleasure:10001 } }));
         const ladyboy = Character(CharacterFixtures.genericMale({ arousal:{ arousal:99, pleasure:9999 } }));
-        expect(lady.rollForOrgasm({})).to.be.true;
-        expect(ladyboy.rollForOrgasm({})).to.be.false;
+        expect(lady.rollForOrgasm(10001)).to.be.true;
+        expect(ladyboy.rollForOrgasm(9999)).to.be.false;
       });
     });
 
