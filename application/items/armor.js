@@ -7,9 +7,16 @@ global.Armor = function(id) {
     return component.name || BaseArmor.lookup(component.base).getName();
   }
 
+  function getEnchantment() {
+    const component = getComponent();
+    return component.enchantment ? ArmorEnchantment(id, component.enchantment) : null;
+  }
+
   return Object.freeze({
     getId: () => { return id; },
-    getBaseWeapon: () => { return BaseArmor.lookup(getComponent().base); },
+    getBaseArmor: () => { return BaseArmor.lookup(getComponent().base); },
     getName,
+    hasEnchantment: () => { return getComponent().enchantment != null; },
+    getEnchantment,
   });
 }

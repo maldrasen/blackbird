@@ -1,4 +1,11 @@
-global.WeaponEnchantment = function(enchantment) {
+global.WeaponEnchantment = function(id, enchantment) {
+  const weapon = Weapon(id);
+
+  function getPower() {
+    const material = weapon ? weapon.getBaseWeapon().getPrimaryMaterial() : null;
+    const potential = (material == null) ? 1 : Material.getFactor(material, MaterialFactor.potential);
+    return Math.round(enchantment.power * potential);
+  }
 
   function processOnHit(damageTypes) {
     switch (enchantment.type) {
@@ -25,7 +32,7 @@ global.WeaponEnchantment = function(enchantment) {
       Character(target).getSpecies();
 
     if (species === enchantment.species) {
-      if (ResistRoll(target, DamageType.shock, enchantment.power) === ResistResult.fail) {
+      if (ResistRoll(target, DamageType.shock, getPower()) === ResistResult.fail) {
         state.addStatus( BattleStatusEffect(target, 'vulnerable', { duration:1 }));
         round.addMessage({ text:`A trail of glowing blue energy burns against {T:targetName's} flesh, the cursemark
           leaving {T:him} {S/nst}Vulnerable{/S}.` });
@@ -34,6 +41,8 @@ global.WeaponEnchantment = function(enchantment) {
   }
 
   return Object.freeze({
+    getType: () => { return enchantment.type; },
+    getPower,
     processOnHit,
   });
 }

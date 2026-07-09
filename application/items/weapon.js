@@ -18,7 +18,7 @@ global.Weapon = function(id) {
 
   function getEnchantment() {
     const component = getComponent();
-    return component.enchantment ? WeaponEnchantment(component.enchantment) : null;
+    return component.enchantment ? WeaponEnchantment(id, component.enchantment) : null;
   }
 
   return Object.freeze({
