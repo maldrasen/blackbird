@@ -1,25 +1,24 @@
 // The CharacterEquipper outfits an existing character with weapons and armor appropriate to their skills and
 // attributes. The budget isn't a total to spend, it's the most the character would pay for any single item. Each
 // equipment slot uses a percentage of that budget, so characters end up with roughly comparable gear in every slot.
-//
-// Every character is assumed to be a melee fighter for now. Magic users, ability-aware armor selection for higher
-// level characters, and a finery pass for wealthy non-fighters can all come later.
 global.CharacterEquipper = (function() {
 
-  const _minimumWeaponSkill = 10;
-  const _budgetWindow = 0.8;
+  const minimumWeaponSkill = 10;
+  const budgetWindow = 0.8;
 
   const SlotBudgetPercent = Object.freeze({
     primary: 1.0,
     secondary: 0.5,
     chest: 1.0,
-    legs: 0.6,
-    head: 0.4,
-    feet: 0.3,
-    hands: 0.2,
+    legs: 0.8,
+    head: 0.3,
+    feet: 0.5,
+    hands: 0.25,
   });
 
-  // The underchest and underlegs slots are skipped for now. There's no base armor registered for them yet.
+  // TODO: The underchest and underlegs slots are skipped for now. There's no base armor registered for them yet.
+  //       We'll also want slots for rings, amulet, and body piercings. Cloaks are a possibility as well.
+
   const ArmorSlots = [
     EquipmentSlot.chest,
     EquipmentSlot.legs,
@@ -43,8 +42,16 @@ global.CharacterEquipper = (function() {
   const StrengthWeaponTypes = ['axe','mace','polearm'];
   const DexterityWeaponTypes = ['bow','dagger','whip'];
 
-  // Equips the character with a weapon, an off-hand item, and armor for every slot, then returns a map of the slots
-  // that were actually filled to the new item ids. Slots with nothing affordable are simply left empty.
+  // The equip() function equips the character with a weapon, an off-hand item, and armor for every slot, then returns
+  // a map of the slots that were actually filled with the new item ids. Slots with nothing affordable are simply left
+  // empty.
+  //
+  // TODO: At the moment, we assume every character is a melee fighter for now. Magic users, specific armors for
+  //       ranged fighters and rogues, ability-aware armor selection for higher level characters, and a finery pass
+  //       for wealthy non-fighters can all come later.
+  //
+  // TODO: If a character is equipped with a bow, we'll also need to add arrows to their inventory.
+  //
   function equip(characterId, budget) {
     const equipped = {};
     equipWeapons(characterId, budget, equipped);
@@ -84,7 +91,7 @@ global.CharacterEquipper = (function() {
       return (skills[code] || 0) > (skills[winner] || 0) ? code : winner;
     });
 
-    if ((skills[best] || 0) < _minimumWeaponSkill) { return null; }
+    if ((skills[best] || 0) < minimumWeaponSkill) { return null; }
     return WeaponTypeBySkill[best];
   }
 
@@ -121,17 +128,17 @@ global.CharacterEquipper = (function() {
   // === Selection =================================================================================================
 
   function weaponCandidates(type) {
-    return BaseWeapon.getAllCodes()
-      .map(code => BaseWeapon.lookup(code))
-      .filter(weapon => weapon.getType() === type)
-      .map(weapon => ({ code:weapon.getCode(), value:weapon.getValue() }));
+    return BaseWeapon.getAllCodes().
+      map(code => BaseWeapon.lookup(code)).
+      filter(weapon => weapon.getType() === type).
+      map(weapon => ({ code:weapon.getCode(), value:weapon.getValue() }));
   }
 
   function armorCandidates(slot) {
-    return BaseArmor.getAllCodes()
-      .map(code => BaseArmor.lookup(code))
-      .filter(armor => armor.getSlots().includes(slot))
-      .map(armor => ({ code:armor.getCode(), value:armor.getValue() }));
+    return BaseArmor.getAllCodes().
+      map(code => BaseArmor.lookup(code)).
+      filter(armor => armor.getSlots().includes(slot)).
+      map(armor => ({ code:armor.getCode(), value:armor.getValue() }));
   }
 
   // Pick a random item valued within 80% - 100% of the slot's budget. When nothing falls in that window we settle
@@ -140,7 +147,7 @@ global.CharacterEquipper = (function() {
     const affordable = candidates.filter(item => item.value <= slotBudget);
     if (affordable.length === 0) { return null; }
 
-    const inWindow = affordable.filter(item => item.value >= slotBudget * _budgetWindow);
+    const inWindow = affordable.filter(item => item.value >= slotBudget * budgetWindow);
     if (inWindow.length > 0) { return Random.from(inWindow.map(item => item.code)); }
 
     const bestValue = Math.max(...affordable.map(item => item.value));
