@@ -4,6 +4,8 @@ global.ReportFixture = (function() {
     X.onClick('#mainList .show-sub-list', showSubList);
     X.onClick('#sexActionReports .sort-actions', sortSexActions);
     X.onClick('#archetypeReports .count-archetypes', countArchetypes);
+    X.onClick('#weaponReports .report-weapons', reportWeapons);
+    X.onClick('#armorReports .report-armor', reportArmor);
 
     MainContent.setMainContent('views/reports.html');
     MainContent.setBackground('backgrounds/reports.jpg');
@@ -87,6 +89,109 @@ global.ReportFixture = (function() {
     }).sort();
 
     setOutput(results);
+  }
+
+  // === Base Weapon and Armor balancing tables ===
+  // Weapons and armor derive a lot of their numbers (damage after the material factor, DPS, value), so these dump the
+  // whole set into a fixed-width table to make it easy to eyeball the balance. The data-sort attribute picks the sort.
+
+  function reportWeapons(event) {
+    const weapons = BaseWeapon.getAllCodes().map(code => {
+      const weapon = BaseWeapon.lookup(code);
+      return {
+        code:      code,
+        type:      weapon.getType(),
+        hands:     weapon.getHands(),
+        reach:     weapon.getReach(),
+        damage:    `${weapon.getLow()}-${weapon.getHigh()}`,
+        dps:       weapon.getDamagePerSecond(),
+        speed:     weapon.getSpeed(),
+        types:     damageTypeString(weapon),
+        material:  weapon.getPrimaryMaterial() || '-',
+        value:     weapon.getValue(),
+      };
+    });
+
+    sortReport(weapons, event.target.dataset.sort, weapon => weapon.type);
+
+    setOutput(formatTable([
+      { label:'code',         width:18 },
+      { label:'type',         width:9 },
+      { label:'hands',        width:6 },
+      { label:'reach',        width:9 },
+      { label:'damage',       width:9 },
+      { label:'dps',          width:7, align:'right' },
+      { label:'speed',        width:6, align:'right' },
+      { label:'damage types', width:20 },
+      { label:'material',     width:9 },
+      { label:'value',        width:6, align:'right' },
+    ], weapons.map(weapon => [
+      weapon.code, weapon.type, weapon.hands, weapon.reach, weapon.damage,
+      weapon.dps.toFixed(1), weapon.speed, weapon.types, weapon.material, weapon.value,
+    ])));
+  }
+
+  function reportArmor(event) {
+    const armors = BaseArmor.getAllCodes().map(code => {
+      const armor = BaseArmor.lookup(code);
+      const reduction = armor.getReductionMap();
+      return {
+        code:      code,
+        slot:      armor.getSlots().join(','),
+        crush:     reduction.crush,
+        slash:     reduction.slash,
+        pierce:    reduction.pierce,
+        total:     reduction.crush + reduction.slash + reduction.pierce,
+        material:  armor.getPrimaryMaterial() || '-',
+        value:     armor.getValue(),
+      };
+    });
+
+    sortReport(armors, event.target.dataset.sort, armor => armor.slot);
+
+    setOutput(formatTable([
+      { label:'code',     width:14 },
+      { label:'slot',     width:8 },
+      { label:'crush',    width:6, align:'right' },
+      { label:'slash',    width:6, align:'right' },
+      { label:'pierce',   width:7, align:'right' },
+      { label:'total',    width:6, align:'right' },
+      { label:'material', width:9 },
+      { label:'value',    width:6, align:'right' },
+    ], armors.map(armor => [
+      armor.code, armor.slot, armor.crush, armor.slash, armor.pierce, armor.total, armor.material, armor.value,
+    ])));
+  }
+
+  // Sort a report array in place. 'value' and 'dps'/'reduction' sort high to low; 'group' sorts by the given grouping
+  // key (weapon type, armor slot) then by value within the group.
+  function sortReport(entries, sort, groupBy) {
+    const byValue = (a,b) => b.value - a.value;
+
+    switch (sort) {
+      case 'value':     entries.sort(byValue); break;
+      case 'dps':       entries.sort((a,b) => b.dps - a.dps); break;
+      case 'reduction': entries.sort((a,b) => b.total - a.total); break;
+      default:          entries.sort((a,b) => `${groupBy(a)}`.localeCompare(`${groupBy(b)}`) || byValue(a,b));
+    }
+  }
+
+  function damageTypeString(weapon) {
+    return weapon.getDamageTypes().map(entry => {
+      return entry.percent === 100 ? entry.type : `${entry.type}:${entry.percent}`;
+    }).join('/');
+  }
+
+  // Build a fixed-width text table from a set of column definitions ({ label, width, align }) and an array of rows,
+  // each row an array of cell values in column order.
+  function formatTable(columns, rows) {
+    const line = cells => columns.map((column,index) => {
+      const cell = `${cells[index]}`;
+      return column.align === 'right' ? cell.padStart(column.width) : cell.padEnd(column.width);
+    }).join(' ');
+
+    const header = line(columns.map(column => column.label));
+    return [header, '-'.repeat(header.length), ...rows.map(line)];
   }
 
   // Turn a number into a string of set length. The leading 0s are needed to

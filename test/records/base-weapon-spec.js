@@ -134,15 +134,15 @@ describe("BaseWeapon", function() {
 
   describe("getValue", function() {
     it("prices a longsword from its steel and its forging effort", function() {
-      expect(BaseWeapon.lookup('longsword').getValue()).to.equal(645);
+      expect(BaseWeapon.lookup('longsword').getValue()).to.equal(665);
     });
 
     it("prices a heavy two handed sword higher", function() {
-      expect(BaseWeapon.lookup('claymore').getValue()).to.equal(885);
+      expect(BaseWeapon.lookup('claymore').getValue()).to.equal(925);
     });
 
     it("prices a spear cheaply - mostly a wooden shaft", function() {
-      expect(BaseWeapon.lookup('spear').getValue()).to.equal(215);
+      expect(BaseWeapon.lookup('spear').getValue()).to.equal(220);
     });
 
     it("is 0 for an unarmed strike", function() {

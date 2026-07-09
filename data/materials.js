@@ -21,7 +21,7 @@
 
 Material.register(MaterialType.wool, {
   name: 'Wool',
-  cost: 2,
+  cost: 3,
   factors: {
     absorption: 0.2,
     potential: 0.9,
@@ -30,7 +30,7 @@ Material.register(MaterialType.wool, {
 
 Material.register(MaterialType.silk, {
   name: 'Silk',
-  cost: 8,
+  cost: 12,
   factors: {
     absorption: 0.12,
     potential: 1.8,
@@ -61,7 +61,7 @@ Material.register(MaterialType.bone, {
 
 Material.register(MaterialType.leather, {
   name: 'Leather',
-  cost: 3,
+  cost: 4,
   factors: {
     absorption: 0.35,
     lash: 1.0,
@@ -71,7 +71,7 @@ Material.register(MaterialType.leather, {
 
 Material.register(MaterialType.iron, {
   name: 'Iron',
-  cost: 6,
+  cost: 8,
   factors: {
     absorption: 0.75,
     heft: 1.0,
@@ -84,7 +84,7 @@ Material.register(MaterialType.iron, {
 
 Material.register(MaterialType.steel, {
   name: 'Steel',
-  cost: 14,
+  cost: 20,
   factors: {
     absorption: 1.0,
     heft: 1.0,
@@ -97,7 +97,7 @@ Material.register(MaterialType.steel, {
 
 Material.register(MaterialType.silver, {
   name: 'Silver',
-  cost: 30,
+  cost: 50,
   factors: {
     absorption: 0.6,
     heft: 1.0,

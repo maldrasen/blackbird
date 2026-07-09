@@ -18,7 +18,7 @@ BaseArmor.register('hauberk', {
   slots: [EquipmentSlot.chest],
   reduction: { crush: 18, slash: 30, pierce: 20 },
   materials: {
-    mail: { material:MaterialType.steel, amount:4 },
+    mail: { material:MaterialType.steel, amount:6 },
   },
   effort: 6,
 });
@@ -28,8 +28,8 @@ BaseArmor.register('cuirass', {
   slots: [EquipmentSlot.chest],
   reduction: { crush: 25, slash: 35, pierce: 30 },
   materials: {
-    plates:  { material:MaterialType.steel, amount:3 },
-    backing: { material:MaterialType.leather, amount:2 },
+    plates:  { material:MaterialType.steel, amount:4 },
+    backing: { material:MaterialType.leather, amount:4 },
   },
   effort: 5,
 });
@@ -39,7 +39,7 @@ BaseArmor.register('breastplate', {
   slots: [EquipmentSlot.chest],
   reduction: { crush: 32, slash: 45, pierce: 40 },
   materials: {
-    body: { material:MaterialType.steel, amount:5 },
+    body: { material:MaterialType.steel, amount:8 },
   },
   effort: 6,
 });
@@ -49,7 +49,7 @@ BaseArmor.register('plate', {
   slots: [EquipmentSlot.chest],
   reduction: { crush: 40, slash: 50, pierce: 48 },
   materials: {
-    body: { material:MaterialType.steel, amount:7 },
+    body: { material:MaterialType.steel, amount:12 },
   },
   effort: 8,
 });

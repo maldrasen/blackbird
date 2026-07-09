@@ -7,7 +7,7 @@ BaseArmor.register('boots', {
   slots: [EquipmentSlot.feet],
   reduction: { crush: 11, slash: 20, pierce: 14 },
   materials: {
-    body: { material:MaterialType.leather, amount:1 },
+    body: { material:MaterialType.leather, amount:3 },
   },
   effort: 2,
 });
@@ -17,7 +17,7 @@ BaseArmor.register('buskins', {
   slots: [EquipmentSlot.feet],
   reduction: { crush: 9, slash: 17, pierce: 11 },
   materials: {
-    body: { material:MaterialType.leather, amount:1 },
+    body: { material:MaterialType.leather, amount:2 },
   },
   effort: 2,
 });
@@ -37,7 +37,7 @@ BaseArmor.register('sollerets', {
   slots: [EquipmentSlot.feet],
   reduction: { crush: 13, slash: 17, pierce: 15 },
   materials: {
-    body: { material:MaterialType.steel, amount:2 },
+    body: { material:MaterialType.steel, amount:3 },
   },
   effort: 4,
 });

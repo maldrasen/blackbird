@@ -52,14 +52,14 @@ describe("BaseArmor", function() {
   describe("getMaterialParts()", function() {
     it("lists each part with its material and amount, primary first", function() {
       expect(BaseArmor.lookup('cuirass').getMaterialParts()).to.deep.equal([
-        { part:'plates', material:MaterialType.steel, amount:3 },
-        { part:'backing', material:MaterialType.leather, amount:2 },
+        { part:'plates', material:MaterialType.steel, amount:4 },
+        { part:'backing', material:MaterialType.leather, amount:4 },
       ]);
     });
 
     it("handles a single part piece", function() {
       expect(BaseArmor.lookup('gloves').getMaterialParts()).to.deep.equal([
-        { part:'body', material:MaterialType.leather, amount:1 },
+        { part:'body', material:MaterialType.leather, amount:2 },
       ]);
     });
   });
@@ -80,11 +80,11 @@ describe("BaseArmor", function() {
 
   describe("getValue()", function() {
     it("prices a full plate from its heavy steel and its effort", function() {
-      expect(BaseArmor.lookup('plate').getValue()).to.equal(900);
+      expect(BaseArmor.lookup('plate').getValue()).to.equal(1040);
     });
 
     it("prices a steel-and-leather cuirass", function() {
-      expect(BaseArmor.lookup('cuirass').getValue()).to.equal(550);
+      expect(BaseArmor.lookup('cuirass').getValue()).to.equal(595);
     });
 
     it("prices a padded wool doublet cheaply", function() {
