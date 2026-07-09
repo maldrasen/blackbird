@@ -1,19 +1,10 @@
 
-// TODO: Find a place for these where they can be shared.
 const gainTriggerForAttribute = {
   strength: 'strong',
   dexterity: 'skillful',
   vitality: 'healthy',
   intelligence: 'smart',
   beauty: 'beautiful',
-};
-
-const lossTriggerForAttribute = {
-  strength: 'weak',
-  dexterity: 'clumsy',
-  vitality: 'sickly',
-  intelligence: 'stupid',
-  beauty: 'ugly',
 };
 
 function largeNote(text) {
@@ -41,7 +32,7 @@ function addTrigger(trigger) {
 const goalContent = `
   <p>
     You've been following the long winding road to Wolgur for three days now, stopping at the few established camps
-    between the distant farmlands and your new home. You crest the next hill finally catch a glimpse of the city,
+    between the distant farmlands and your new home. You crest the next hill and finally catch a glimpse of the city,
     emerging from the thick mist that perpetually clings to the Rhysh valley. You're closer than you thought you were.
     You adjust the heavy pack on your back and walk a little faster now that your goal is in sight.
   </p><p>
@@ -53,9 +44,9 @@ const goalContent = `
   </p>`;
 
 const goalGlory = `You will walk the path of glory. The very stones of the dungeon will tremble at your approach, and they will know you by the corpses left in your wake.`;
-const goalMastery = `Only those who have mastered the delver's arts can hope to survive in such a world.`;
+const goalMastery = `Only those who have mastered the delver's arts can hope to survive in such a world as this.`;
 const goalImmortality = `They say those who have delved the deepest have uncovered the secrets to eternal life.`;
-const goalPower = `They say the dungeon is filled with wonders, and true power can be found by those who can unravel its secrets.`;
+const goalPower = `They say the dungeon is filled with wonders. True power can be found by those who can unravel its secrets.`;
 const goalAuthority = `You may have come from nothing, but you will gather allies, rise up in this world, and take your position as its master.`;
 
 const goalOptions = [
@@ -143,59 +134,26 @@ function memoryResult() {
   }
 }
 
-// =======================
-//    Choice 3 - Regret
-// =======================
-
-const regretContent = `<p>What choice will you always regret?</p>`
-
-const regretOptions = [
-  { id:'regret-strength',     label:'-str', requires:notChosen(Attrib.strength),     callback: () => { chooseRegret(Attrib.strength); }},
-  { id:'regret-dexterity',    label:'-dex', requires:notChosen(Attrib.dexterity),    callback: () => { chooseRegret(Attrib.dexterity); }},
-  { id:'regret-vitality',     label:'-vit', requires:notChosen(Attrib.vitality),     callback: () => { chooseRegret(Attrib.vitality); }},
-  { id:'regret-intelligence', label:'-int', requires:notChosen(Attrib.intelligence), callback: () => { chooseRegret(Attrib.intelligence); }},
-  { id:'regret-beauty',       label:'-but', requires:notChosen(Attrib.beauty),       callback: () => { chooseRegret(Attrib.beauty); }},
-];
-
-function chooseRegret(regret) {
-  addTrigger(lossTriggerForAttribute[regret]);
-  EpisodeSystem.getState().setPropertyValue('regret',regret);
-  EpisodeSystem.nextPage();
-}
-
-function regretResult() {
-  const regret = EpisodeSystem.getState().getProperty('regret');
-  const result = WeaverElements.resultBlock(`You've lost ${regret}`, { classname:'loss' });
-
-  switch (regret) {
-    case Attrib.strength: return `${result} [Strength Choice]`;
-    case Attrib.dexterity: return `${result} [Dexterity Choice]`;
-    case Attrib.vitality: return `${result} [Vitality Choice]`;
-    case Attrib.intelligence: return `${result} [Intelligence Choice]`;
-    case Attrib.beauty: return `${result} [Beauty Choice]`;
-  }
-}
-
 // ===============
 //    Naming
 // ===============
 
 const nameContent = `
   <p>
-    Your steps carry you closer to the city gate, now looming in the swirling mists above you. The city is situated in 
-    a deep and narrow valley, its outer wall built to span between the two rocky cliff faces on either side. What had
-    been a dirt path is now worn stone, dark and slick.
+    As you reminisce about the past Your steps carry you closer to the city gate, now looming in the swirling mists 
+    above you. The city is situated in a deep and narrow valley, its outer wall built to span between the two rocky
+    cliff faces on either side. The dirt path you had been following is now worn stone, dark and slick.
   </p>
   <p>
     As you approach the gate you don't anticipate any problems. You should be able to enter the city freely as someone
-    whose family <i>technically</i> owns a home here. The condition of the home is… unknown at the moment. After your 
+    whose family <i>technically</i> owns a home here. The condition of that home is… unknown at the moment. After your 
     father died your mother abandoned the old home here in Wolgur, so it's been empty for almost two decades now.
   </p>
   <p>
     You're met at the gate by one of the city guards, a tall black furred lupin. You give him your name and purpose 
-    for coming. Your house is unknown, forgotten, almost as bad as having no house at all. The guard looks you over 
-    with a contemptuous sneer. He takes a deep breath, taking in your scent. "All right sheep fucker, fill this in 
-    and be on your way."
+    for coming. Your house name is unknown, forgotten, almost as bad as having no house at all. The guard looks you
+    over with a contemptuous sneer. He takes a deep breath, taking in your scent. "All right sheep fucker, fill this
+    in and be on your way."
   </p>
   <p>
     He hands you a scrap of paper, already partially filled in…
@@ -235,14 +193,34 @@ function submitName() {
   EpisodeSystem.nextPage();
 }
 
-const acceptContent = `<p>You look at the paper and sigh, just adding your family name to the form. It's fine. It 
-  doesn't matter what they call you, at least for now. Respect must be earned after all.</p>`;
+const acceptContent = `You look at the paper and sigh, just adding your family name to the form. It's fine. It 
+  doesn't matter what they call you, at least for now. Respect must be earned after all.`;
 
-const changeContent = `<p>You frown, roughly crossing out the insult and writing in your actual name. Such things are
+const changeContent = `You frown, roughly crossing out the insult and writing in your actual name. Such things are
   to be expected you suppose. You're coming to Wolgur as a nobody; to a city that only respects strength. You'll need
-  to prove yourself before anyone will treat you with respect.</p>`;
+  to prove yourself before anyone will treat you with respect.`;
 
-const completeContent = `<p>[Walk into the city and arrive home.]</p>`;
+function completeContent() {
+  const state = EpisodeSystem.getState();
+  const topContent = (state.getProperty('givenName') === 'Sheepfucker') ? acceptContent : changeContent
+  const familyName = state.getProperty('familyName');
+
+  return `
+    <p>
+      ${topContent}
+    </p>
+    <p>
+      You step through the gate onto Wolgur's main thoroughfare. The city has conformed to the shape of the narrow 
+      mountain valley it lies within, long and narrow. Short streets frequently branch off of the main road, pushing
+      up against stone cliff walls. The narrow side streets are dark, shadowed by tall stone buildings.
+    </p>
+    <p>
+      The ${familyName} family home is located a short distance from the city gates, putting it on the opposite end
+      of town as the dungeon entrance. It isn't difficult to find, a single left turn down Steeleye street, forth 
+      door on the right. The old key fits the lock, but takes all your strength to turn. The lock gives way with a 
+      metallic groan. It's clear no one's opened this door for a long time. Cautiously you step into your new home.    
+    </p>`;
+}
 
 // =========================
 //    Finish and Register
@@ -276,11 +254,8 @@ Episode.register('game-start-1', {
     { contentFunction:goalResult },
     { content:memoryContent, buttons:memoryOptions, buttonsStyle:'column' },
     { contentFunction:memoryResult },
-    { content:regretContent, buttons:regretOptions, buttonsStyle:'column' },
-    { contentFunction:regretResult },
     { content:nameContent, buttons:nameButtons, onShow:bindNameInputs },
-    { content:`${acceptContent}${completeContent}`, requires:(state) => state.getProperty('givenName') === 'Sheepfucker' },
-    { content:`${changeContent}${completeContent}`, requires:(state) => state.getProperty('givenName') !== 'Sheepfucker' },
+    { contentFunction:completeContent },
   ],
   endFunction: finishCharacterCreation,
 });
