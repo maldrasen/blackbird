@@ -490,6 +490,8 @@
     "test/items/factories/weapon-factory-spec.js",
     "test/items/inventory-manager-spec.js",
     "test/looms/weaver-package-spec.js",
+    "test/records/base-armor-spec.js",
+    "test/records/base-weapon-spec.js",
     "test/records/encounter-spec.js",
     "test/records/name-spec.js",
     "test/records/sex-action-spec.js",
