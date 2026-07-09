@@ -1,10 +1,16 @@
 // The CharacterEquipper outfits an existing character with weapons and armor appropriate to their skills and
 // attributes. The budget isn't a total to spend, it's the most the character would pay for any single item. Each
 // equipment slot uses a percentage of that budget, so characters end up with roughly comparable gear in every slot.
-global.CharacterEquipper = (function() {
-
+global.CharacterEquipper = function(id) {
   const minimumWeaponSkill = 10;
   const budgetWindow = 0.8;
+
+  const skillsComponent = SkillsComponent.lookup(id);
+  const attributesComponent = AttributesComponent.lookup(id);
+  const inventoryManager = InventoryManager(id);
+  const equipmentManager = EquipmentManager(id);
+
+  const equipment = {};
 
   const SlotBudgetPercent = Object.freeze({
     primary: 1.0,
@@ -52,76 +58,73 @@ global.CharacterEquipper = (function() {
   //
   // TODO: If a character is equipped with a bow, we'll also need to add arrows to their inventory.
   //
-  function equip(characterId, budget) {
-    const equipped = {};
-    equipWeapons(characterId, budget, equipped);
-    equipArmor(characterId, budget, equipped);
-    return equipped;
+  function equip(budget) {
+    equipWeapons(budget);
+    equipArmor(budget);
+    return equipment;
   }
 
   // === Weapons ===================================================================================================
 
-  function equipWeapons(characterId, budget, equipped) {
-    const weaponType = determineWeaponType(characterId);
+  function equipWeapons(budget) {
+    const weaponType = determineWeaponType();
     const primaryCode = selectByBudget(weaponCandidates(weaponType), budget * SlotBudgetPercent.primary);
     if (primaryCode == null) { return; }
 
-    equipped.primary = giveWeapon(characterId, primaryCode, EquipmentSlot.primary);
+    giveWeapon(primaryCode, EquipmentSlot.primary);
     if (BaseWeapon.lookup(primaryCode).getHands() === WeaponHandedness.two) { return; }
 
-    const offhandType = isDexterous(characterId, weaponType) ? 'dagger' : 'shield';
+    const offhandType = isDexterous(weaponType) ? 'dagger' : 'shield';
     const secondaryCode = selectByBudget(weaponCandidates(offhandType), budget * SlotBudgetPercent.secondary);
     if (secondaryCode == null) { return; }
 
-    equipped.secondary = giveWeapon(characterId, secondaryCode, EquipmentSlot.secondary);
+    giveWeapon(secondaryCode, EquipmentSlot.secondary);
   }
 
   // A character who's trained with a weapon uses that kind of weapon. Untrained characters get whatever suits their
   // attributes.
-  function determineWeaponType(characterId) {
-    const skilledType = typeFromSkills(SkillsComponent.lookup(characterId));
-    if (skilledType) { return skilledType; }
-    return typeFromAttributes(AttributesComponent.lookup(characterId));
+  function determineWeaponType() {
+    const skilledType = typeFromSkills();
+    return skilledType ? skilledType : typeFromAttributes();
   }
 
   // The highest weapon skill determines the weapon type, but only when it clears the minimum. Anything lower and
   // they're not really trained in anything.
-  function typeFromSkills(skills) {
+  function typeFromSkills() {
     const best = Object.keys(WeaponTypeBySkill).reduce((winner, code) => {
-      return (skills[code] || 0) > (skills[winner] || 0) ? code : winner;
+      return (skillsComponent[code] || 0) > (skillsComponent[winner] || 0) ? code : winner;
     });
 
-    if ((skills[best] || 0) < minimumWeaponSkill) { return null; }
+    if ((skillsComponent[best] || 0) < minimumWeaponSkill) { return null; }
     return WeaponTypeBySkill[best];
   }
 
   // Strong characters get a strength weapon and agile characters get a dexterity weapon, but when strength and
   // dexterity are within 10% of each other we give them a sword.
-  function typeFromAttributes(attributes) {
-    if (isBalanced(attributes)) { return 'sword'; }
-    if (attributes.strength > attributes.dexterity) { return Random.from(StrengthWeaponTypes); }
-    return Random.from(DexterityWeaponTypes);
+  function typeFromAttributes() {
+    if (isBalanced()) { return 'sword'; }
+    return Random.from(attributesComponent.strength > attributesComponent.dexterity ? StrengthWeaponTypes : DexterityWeaponTypes);
   }
 
-  function isBalanced({ strength, dexterity }) {
-    return Math.abs(strength - dexterity) <= Math.max(strength, dexterity) * 0.1;
+  function isBalanced() {
+    return Math.abs(attributesComponent.strength - attributesComponent.dexterity) <=
+      Math.max(attributesComponent.strength, attributesComponent.dexterity) * 0.1;
   }
 
-  // High dexterity characters fight with an off-hand dagger rather than a shield. Anyone using a dexterity weapon
-  // counts, as does anyone whose dexterity beats their strength.
-  function isDexterous(characterId, weaponType) {
-    if (DexterityWeaponTypes.includes(weaponType)) { return true; }
-    const attributes = AttributesComponent.lookup(characterId);
-    return attributes.dexterity > attributes.strength;
+  // High dexterity characters prefer an off-hand dagger to a shield. Anyone using a dexterity weapon counts, as does
+  // anyone whose dexterity beats their strength.
+  function isDexterous(weaponType) {
+    return (DexterityWeaponTypes.includes(weaponType)) ? true : (attributesComponent.dexterity > attributesComponent.strength);
   }
 
   // === Armor =====================================================================================================
 
-  function equipArmor(characterId, budget, equipped) {
+  function equipArmor(budget) {
     ArmorSlots.forEach(slot => {
       const code = selectByBudget(armorCandidates(slot), budget * SlotBudgetPercent[slot]);
-      if (code == null) { return; }
-      equipped[slot] = giveArmor(characterId, code, slot);
+      if (code) {
+        giveArmor(code, slot);
+      }
     });
   }
 
@@ -156,18 +159,17 @@ global.CharacterEquipper = (function() {
 
   // === Giving ====================================================================================================
 
-  function giveWeapon(characterId, code, slot) { return give(characterId, WeaponFactory.build(code), slot); }
-  function giveArmor(characterId, code, slot) { return give(characterId, ArmorFactory.build(code), slot); }
+  function giveWeapon(code, slot) { give(WeaponFactory.build(code), slot); }
+  function giveArmor(code, slot) { give(ArmorFactory.build(code), slot); }
 
-  // An item has to be in the character's inventory before it can be equipped.
-  function give(characterId, itemId, slot) {
-    InventoryManager(characterId).addItem(itemId);
-    EquipmentManager(characterId).equipItem(itemId, slot);
-    return itemId;
+  function give(itemId, slot) {
+    inventoryManager.addItem(itemId);
+    equipmentManager.equipItem(itemId, slot);
+    equipment[slot] = itemId;
   }
 
   return Object.freeze({
     equip,
   });
 
-})();
+}

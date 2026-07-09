@@ -1,4 +1,4 @@
-describe.only('CharacterEquipper', function() {
+describe('CharacterEquipper', function() {
 
   function weaponCode(itemId) { return WeaponComponent.lookup(itemId).base; }
   function armorCode(itemId) { return ArmorComponent.lookup(itemId).base; }
@@ -6,7 +6,7 @@ describe.only('CharacterEquipper', function() {
 
   it('picks the weapon type from the highest martial skill', function() {
     const horse = CharacterFixtures.genericMale({ skills:{ swords:30, axes:15 } });
-    const equipped = CharacterEquipper.equip(horse, 700);
+    const equipped = CharacterEquipper(horse).equip(700);
 
     expect(weaponType(equipped.primary)).to.equal('sword');
     expect(['saber','longsword','falchion','broadsword']).to.include(weaponCode(equipped.primary));
@@ -16,7 +16,7 @@ describe.only('CharacterEquipper', function() {
 
   it('falls back to strength weapons when unskilled', function() {
     const horse = CharacterFixtures.genericMale({ attributes:{ strength:50, dexterity:20 } });
-    const equipped = CharacterEquipper.equip(horse, 500);
+    const equipped = CharacterEquipper(horse).equip(500);
     const primary = WeaponComponent.lookup(equipped.primary).base;
 
     expect(primary).to.be.oneOf(['broad-axe','halberd','glaive','morning-star','warhammer']);
@@ -37,7 +37,7 @@ describe.only('CharacterEquipper', function() {
 
   it('gives high dexterity characters an off-hand dagger', function() {
     const horse = CharacterFixtures.genericMale({ attributes:{ strength:20, dexterity:50 } });
-    const equipped = CharacterEquipper.equip(horse, 500);
+    const equipped = CharacterEquipper(horse).equip(500);
     const primary = WeaponComponent.lookup(equipped.primary).base;
 
     expect(weaponCode(equipped.primary)).to.be.oneOf(['ball-and-chain','baselard','flail','longbow','poignard','sickle-and-chain']);
@@ -52,7 +52,7 @@ describe.only('CharacterEquipper', function() {
 
   it('gives swords to characters with balanced attributes', function() {
     const horse = CharacterFixtures.genericMale({ attributes:{ strength:40, dexterity:38 } });
-    const equipped = CharacterEquipper.equip(horse, 450);
+    const equipped = CharacterEquipper(horse).equip(450);
 
     expect(weaponCode(equipped.primary)).to.be.oneOf(['short-sword']);
     expect(weaponType(equipped.secondary)).to.be.oneOf(['shield']);
@@ -61,7 +61,7 @@ describe.only('CharacterEquipper', function() {
 
   it('falls back to the next cheapest item when nothing is in the budget window', function() {
     const horse = CharacterFixtures.genericMale({ skills:{ daggers:30 } });
-    const equipped = CharacterEquipper.equip(horse, 450);
+    const equipped = CharacterEquipper(horse).equip(450);
 
     expect(weaponCode(equipped.primary)).to.equal('dagger');
     expect(weaponCode(equipped.secondary)).to.equal('knife');
@@ -69,7 +69,7 @@ describe.only('CharacterEquipper', function() {
 
   it('equips nothing when the budget is too small', function() {
     const horse = CharacterFixtures.genericMale({ skills:{ swords:30 } });
-    const equipped = CharacterEquipper.equip(horse, 1);
+    const equipped = CharacterEquipper(horse).equip(1);
 
     expect(equipped).to.deep.equal({});
     expect(EquipmentManager(horse).getSlot(EquipmentSlot.primary)).to.equal(null);
@@ -79,7 +79,7 @@ describe.only('CharacterEquipper', function() {
 
   it('fills every armor slot and adds items to inventory with a generous budget', function() {
     const horse = CharacterFixtures.genericMale({ skills:{ swords:30 } });
-    const equipped = CharacterEquipper.equip(horse, 1500);
+    const equipped = CharacterEquipper(horse).equip(1500);
 
     expect(weaponCode(equipped.primary)).to.equal('claymore');
     expect(armorCode(equipped.chest)).to.equal('plate');

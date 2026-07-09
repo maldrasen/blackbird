@@ -242,7 +242,7 @@ function finishCharacterCreation() {
     AspectsComponent.update(playerId, { [AspectType.animalAttraction]: 1 });
   }
 
-  CharacterEquipper.equip(playerId, Random.between(500,600));
+  CharacterEquipper(playerId).equip(Random.between(500,600));
   GameSystem.setGameMode(GameMode.location);
 }
 
