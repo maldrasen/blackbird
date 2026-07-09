@@ -89,8 +89,7 @@ global.CharacterEquipper = function(id) {
   // A character who's trained with a weapon uses that kind of weapon. Untrained characters get whatever suits their
   // attributes.
   function determineWeaponType() {
-    const skilledType = typeFromSkills();
-    return skilledType ? skilledType : typeFromAttributes();
+    return typeFromSkills() || typeFromAttributes();
   }
 
   // The highest weapon skill determines the weapon type, but only when it clears the minimum. Anything lower and
@@ -119,7 +118,7 @@ global.CharacterEquipper = function(id) {
   // High dexterity characters prefer an off-hand dagger to a shield. Anyone using a dexterity weapon counts, as does
   // anyone whose dexterity beats their strength.
   function isDexterous(weaponType) {
-    return (DexterityWeaponTypes.includes(weaponType)) ? true : (attributesComponent.dexterity > attributesComponent.strength);
+    return DexterityWeaponTypes.includes(weaponType) || (attributesComponent.dexterity > attributesComponent.strength);
   }
 
   // === Armor =====================================================================================================
@@ -166,7 +165,6 @@ global.CharacterEquipper = function(id) {
   // === Giving ====================================================================================================
 
   function isFilled(slot) { return equipmentManager.getSlot(slot) != null; }
-
   function giveWeapon(code, slot) { give(WeaponFactory.build(code), slot); }
   function giveArmor(code, slot) { give(ArmorFactory.build(code), slot); }
 
