@@ -4,7 +4,13 @@ global.fs = require('fs');
 require('../application/helpers/file-helper.js');
 
 const ROOT = require('path').normalize(`${__dirname}`).replace(/\\/g,"/").replace(/\/bin/,'');
-const blacklist = ['application/loader.js','application/environment.js']
+const blacklist = [
+  'application/browser.js',
+  'application/browser-shim.js',
+  'application/loader.js',
+  'application/environment.js',
+  'application/server.js',
+]
 
 console.log("=== Compiling manifest.json ===");
 
@@ -20,8 +26,6 @@ const testFileList = [];
 addFiles(testFileList,'test');
 
 console.log(`Writing lists of ${fileList.length} source files and ${testFileList.length} test files.`)
-console.log(fileList);
-console.log(testFileList);
 
 // Finally write this file list as a JSON file.
 FileHelper.writeJSON(`${ROOT}/manifest.json`, { fileList, testFileList });

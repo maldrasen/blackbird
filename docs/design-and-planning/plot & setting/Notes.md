@@ -2,7 +2,7 @@
 - The game takes place in the city of Wolgur (pronounced Vulgar), a dungeon town built around the great Rhysh dungeon. 
 - Wolgur is primarily a dungeon town. People only come to Wolgur to delve the dungeon, or to trade with or support those who do. 
 - The people of Wolgur view the dungeon as an economic resource. More like a mine than something that's actually dangerous.
-- Wolgur is completely human dominated, and all the other species are considered sub-human, and can be owned. Slavery is common enough that it's generally accepted that people explore the dungeon to capture slaves. It is at least not unusual for people in Wolgur to own or travel with slaves.
+- In Wolgur, species from the dungeon (kobolds, vermen, etc) are considered sub-human, and can be owned. Slavery is common enough that it's generally accepted that people explore the dungeon to capture slaves. It is at least not unusual for people in Wolgur to own or travel with slaves.
 - Magic is frowned upon in Wolgur, thanks to the influence of the church. Most people believe magic is evil and anyone using it has been corrupted by the dungeon. Magic can only be obtained by delving in the dungeon and receiving mana and spells in shrines and such.
 - Magic isn't used openly by people. Characters who would be considered wizards don't dress or act like they are. Almost anyone who has delved in the dungeon long enough has some magic, but they don't practice it openly.
 

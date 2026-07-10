@@ -1,15 +1,21 @@
-window.Electron = require("electron")
-window.fs = require("fs");
 
-Electron.ipcRenderer.invoke("boot.start");
+// When running in a plain browser (served by bin/serve.js) there is no require; browser-shim.js has already set up
+// fs, ROOT, DATA, HEADLESS, and Environment, and we start loading at the bottom of this file instead of waiting for
+// the boot handshake.
+if (typeof require !== 'undefined') {
+  window.Electron = require("electron");
+  window.fs = require("fs");
 
-Electron.ipcRenderer.on("boot.setContext", (event, context) => {
-  window.ROOT = context.ROOT;
-  window.DATA = context.DATA;
-  window.HEADLESS = typeof document !== 'object';
-  window.Environment = context.Environment;
-  Loader.startLoading();
-});
+  Electron.ipcRenderer.invoke("boot.start");
+
+  Electron.ipcRenderer.on("boot.setContext", (event, context) => {
+    window.ROOT = context.ROOT;
+    window.DATA = context.DATA;
+    window.HEADLESS = typeof document !== 'object';
+    window.Environment = context.Environment;
+    Loader.startLoading();
+  });
+}
 
 window.Loader = (function() {
 
@@ -29,8 +35,7 @@ window.Loader = (function() {
 
     try {
       appendItem(`Loading from ${ROOT}/application`);
-      const manifest = require(`${ROOT}/manifest.json`);
-      loadAll(manifest.fileList).then(finishLoading);
+      loadAll(JSON.parse(fs.readFileSync(`${ROOT}/manifest.json`)).fileList).then(finishLoading);
       fakeScroll();
     }
     catch(error) {
@@ -62,7 +67,9 @@ window.Loader = (function() {
       await WorldState.loadState();
       MainMenu.openFully();
 
-      if (Environment.isDevelopment) {
+      // We want to run the tests every time we open the electron app, but because we load mocha and chai through
+      // require, we don't run the tests in the in browser / localhost version of the app.
+      if (Environment.isDevelopment && !window.IS_BROWSER) {
         Tests.load();
       }
 
@@ -163,3 +170,5 @@ window.Loader = (function() {
   });
 
 })();
+
+if (window.IS_BROWSER) { Loader.startLoading(); }

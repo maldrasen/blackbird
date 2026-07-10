@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "blackbird-browser",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["bin/serve.js"],
+      "port": 8300
+    }
+  ]
+}
