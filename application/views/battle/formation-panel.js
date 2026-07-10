@@ -3,9 +3,6 @@ global.FormationPanel = (function() {
   const positionPanels = {};
   const combatantPanels = {};
 
-  let targetModeCallback;
-  let cancelTargetingCallback;
-
   function init() {
     X.onClick('#battleView.target-mode .position.valid-target', targetSelected);
     X.onClick('#battleView.inspect-mode .position:has(.combatant)', inspectPosition);
@@ -95,10 +92,7 @@ global.FormationPanel = (function() {
   //       Targeting
   // ======================
 
-  function startTargeting(monsterPositions, characterPositions, callback, onCancel=null) {
-    targetModeCallback = callback;
-    cancelTargetingCallback = onCancel;
-
+  function startTargeting(monsterPositions, characterPositions) {
     X.addClass('#battleView','target-mode');
     X.removeClass('#battleView','inspect-mode');
 
@@ -115,13 +109,9 @@ global.FormationPanel = (function() {
     });
   }
 
-  // Invoked by the back button. Lets the caller undo any state it set up for targeting (such as the round's selected
-  // ability) before we tear down the targeting UI.
   function cancelTargeting() {
-    if (cancelTargetingCallback) { cancelTargetingCallback(); }
-    cancelTargetingCallback = null;
-    targetModeCallback = null;
     stopTargeting();
+    TargetingController.cancelTargeting();
   }
 
   function stopTargeting() {
@@ -139,9 +129,7 @@ global.FormationPanel = (function() {
     event.stopImmediatePropagation();
     stopTargeting();
 
-    cancelTargetingCallback = null;
-    targetModeCallback(position);
-    targetModeCallback = null;
+    TargetingController.targetSelected(position);
   }
 
   // =====================
