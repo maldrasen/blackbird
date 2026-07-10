@@ -11,13 +11,19 @@ global.TargetingController = (function() {
   function targetAnyEnemy() {
     FormationPanel.startTargeting(monsterPositions(getTargetableMonsters()), [], position => {
       executeWithTargetAt(position);
-    });
+    }, cancelTargeting);
   }
 
   function targetEnemyInWeaponRange() {
     FormationPanel.startTargeting(monsterPositions(getMonstersInRange()), [], position => {
       executeWithTargetAt(position);
-    });
+    }, cancelTargeting);
+  }
+
+  // When the player backs out of targeting we clear the ability set in startTargeting() so a different command can be
+  // selected without tripping the round's "ability already set" guard.
+  function cancelTargeting() {
+    BattleSystem.getRound().clearAbility();
   }
 
   function executeWithTargetAt(position) {

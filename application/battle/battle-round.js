@@ -20,6 +20,11 @@ global.BattleRound = function(acting) {
     ability = code;
   }
 
+  // Called when the player backs out of targeting so a different ability can be selected.
+  function clearAbility() {
+    ability = null;
+  }
+
   // Determining the weapons that the acting entity has equipped takes a little work, as they're both managed in
   // completely different ways. The basic monster attacks, as defined on the base monster, will usually include a base
   // weapon and a name. They can also define main and off-hand weapons.
@@ -147,6 +152,7 @@ global.BattleRound = function(acting) {
     isActingMonster: () => { return actingIsMonster; },
     isActingCharacter: () => { return actingIsMonster === false; },
     setAbility,
+    clearAbility,
     getAbility: () => { return ability; },
 
     compileWeaponData,
