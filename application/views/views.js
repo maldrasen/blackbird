@@ -13,6 +13,7 @@ global.Views = (function() {
     GeneralOverlay.init();
     MainMenu.init();
     MouseMonitor.init();
+    NegotiationOverlay.init();
     OptionsOverlay.init();
     ScrollingPanel.init();
     TabController.init();

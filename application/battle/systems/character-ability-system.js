@@ -21,7 +21,16 @@ global.CharacterAbilitySystem = (function() {
       abilities.push('sneak-attack');
     }
 
+    if (livingMonsterCount() === 1) {
+      abilities.push(BattleCommand.negotiate);
+    }
+
     return abilities;
+  }
+
+  function livingMonsterCount() {
+    const state = BattleSystem.getState();
+    return state.getMonsters().filter(id => state.isAlive(id)).length;
   }
 
   function stunned(acting) {

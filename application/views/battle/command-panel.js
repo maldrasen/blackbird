@@ -36,6 +36,10 @@ global.CommandPanel = (function() {
 
   function executeCommand(event) {
     const ability = Ability.lookup(event.target.dataset.ability);
+    if (ability.hasOverlay()) {
+      return ability.openOverlay();
+    }
+
     ability.getTargetingMode() != null ? TargetingController.startTargeting(ability.getCode()) : ability.execute();
   }
 

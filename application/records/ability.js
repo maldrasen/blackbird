@@ -26,6 +26,8 @@ global.Ability = (function() {
       getName: () => { return ability.name },
       getCategory: () => { return ability.category },
       getTargetingMode: () => { return ability.targetingMode },
+      hasOverlay: () => { return typeof ability.overlay === 'function' },
+      openOverlay: () => { ability.overlay() },
       canBeUsed: () => { return ability.canBeUsed(); },
       execute,
     });

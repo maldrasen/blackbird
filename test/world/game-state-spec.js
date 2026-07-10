@@ -19,4 +19,32 @@ describe('GameState', function() {
     expect(state.getPartyConfiguration().stuff).to.equal('thing');
   });
 
+  it('tracks the roster of owned characters without duplicates', function() {
+    const goblin = Registry.createEntity();
+    const slime = Registry.createEntity();
+    const imp = Registry.createEntity();
+
+    const state = GameState();
+    state.addToRoster(goblin);
+    state.addToRoster(slime);
+    state.addToRoster(goblin);
+
+    expect(state.getRoster()).to.eql([goblin,slime]);
+    expect(state.isInRoster(slime)).to.equal(true);
+    expect(state.isInRoster(imp)).to.equal(false);
+
+    state.removeFromRoster(goblin);
+    expect(state.getRoster()).to.eql([slime]);
+  });
+
+  it('packs and restores the roster', function() {
+    const goblin = Registry.createEntity();
+    const slime = Registry.createEntity();
+
+    const state = GameState({ roster:[goblin,slime] });
+
+    expect(state.getRoster()).to.eql([goblin,slime]);
+    expect(state.pack().roster).to.eql([goblin,slime]);
+  });
+
 });

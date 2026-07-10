@@ -8,6 +8,10 @@ global.GameState = function(data={}) {
   let $partyConfiguration = data.partyConfiguration || null;
   let $legacyName = data.legacyName || null;
 
+  // The roster holds every character the player owns (recruited monsters and the like). It's distinct from the
+  // partyConfiguration, which only maps a subset of those characters to their positions in the battle formation.
+  let $roster = data.roster || [];
+
   function pack() {
     return {
       gameTime: $gameTime,
@@ -17,6 +21,7 @@ global.GameState = function(data={}) {
       player: $player,
       partyConfiguration: $partyConfiguration,
       legacyName: $legacyName,
+      roster: $roster,
     };
   }
 
@@ -33,6 +38,10 @@ global.GameState = function(data={}) {
     setPartyConfiguration: party => { $partyConfiguration = party; },
     getLegacyName: () => { return $legacyName; },
     setLegacyName: name => { $legacyName = name; },
+    getRoster: () => { return $roster; },
+    addToRoster: id => { if ($roster.includes(id) === false) { $roster.push(id); } },
+    removeFromRoster: id => { $roster = $roster.filter(x => x !== id); },
+    isInRoster: id => { return $roster.includes(id); },
     pack,
   });
 

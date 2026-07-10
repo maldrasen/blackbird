@@ -202,6 +202,14 @@ global.SexStyle = {
   submissive: 'submissive',
 };
 
+global.NegotiationTone = Object.freeze({
+  dominant: 'dominant',
+  kind: 'kind',
+  boastful: 'boastful',
+  honest: 'honest',
+  lewd: 'lewd',
+});
+
 // ============
 //   Training
 // ============
@@ -354,6 +362,7 @@ global.BattleCommand = Object.freeze({
   basicDefend: 'basic-defend',
   changeEquipment: 'change-equipment',
   hide: 'hide',
+  negotiate: 'negotiate',
   sneakAttack: 'sneak-attack',
   useItem: 'use-item',
   pass: 'pass',
