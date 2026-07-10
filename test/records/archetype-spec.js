@@ -1,4 +1,10 @@
 describe("Archetype", function() {
+
+  // Loader.boot() runs this validation on every launch; running it here keeps headless test runs honest too.
+  it("validates the shipped archetypes", function() {
+    expect(() => Archetype.validate()).to.not.throw();
+  });
+
   describe("getSupertype()", function() {
 
     it("returns the archetype's negotiation supertype", function() {

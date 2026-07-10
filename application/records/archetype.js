@@ -16,13 +16,17 @@ global.Archetype = (function() {
     $archetypes[code] = data;
   }
 
-  // An archetype's supertype may be null, but only deliberately so — a null-supertype archetype gets no baseline
-  // negotiation reactions and must register its own reaction to every question.
-  function validate(code,data) {
-    Validate.exists(`${code}.name`, data.name);
-    if (data.supertype != null) {
-      Validate.isIn(`${code}.supertype`, data.supertype, Object.values(NegotiationSupertype));
-    }
+  // Runs from Loader.boot() once every file has loaded, so it's free to reference other record types. An archetype's
+  // supertype may be null, but only deliberately so — a null-supertype archetype gets no baseline negotiation
+  // reactions and must register its own reaction to every question.
+  function validate() {
+    Object.keys($archetypes).forEach(code => {
+      const archetype = $archetypes[code];
+      Validate.exists(`${code}.name`, archetype.name);
+      if (archetype.supertype != null) {
+        Validate.isIn(`${code}.supertype`, archetype.supertype, Object.values(NegotiationSupertype));
+      }
+    });
   }
 
   function lookup(code) {
@@ -52,6 +56,7 @@ global.Archetype = (function() {
 
   return Object.freeze({
     register,
+    validate,
     lookup,
   });
 
