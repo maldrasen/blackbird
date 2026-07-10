@@ -1,5 +1,6 @@
 Archetype.register(ArchetypeCode.maniac, {
   name: 'Maniac',
+  supertype: NegotiationSupertype.fierce,
 
   // Should we also add sexual preferences to archetypes? What kind of
   // preferences would a maniac have? Top is a possibility, but so is something

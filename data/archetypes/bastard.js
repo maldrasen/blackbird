@@ -1,6 +1,7 @@
 Archetype.register(ArchetypeCode.bastard, {
   name: 'Bastard',
   requires: 'gender.male',
+  supertype: NegotiationSupertype.fierce,
 
   outfitStyles: [OutfitStyle.sensible],
   denialStyle: DenialStyle.violent,

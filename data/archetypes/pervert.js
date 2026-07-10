@@ -1,5 +1,6 @@
 Archetype.register(ArchetypeCode.pervert, {
   name: 'Pervert',
+  supertype: NegotiationSupertype.lewd,
 
   outfitStyles: [OutfitStyle.flirty, OutfitStyle.slutty],
   denialStyle: DenialStyle.angry,

@@ -1,6 +1,7 @@
 Archetype.register(ArchetypeCode.vermenDom, {
   name: 'Dominant Vermen',
   requires: 'species.vermen',
+  supertype: NegotiationSupertype.fierce,
 
   outfitStyles: [OutfitStyle.barbaric],
   denialStyle: DenialStyle.violent,

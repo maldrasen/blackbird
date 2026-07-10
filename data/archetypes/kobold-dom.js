@@ -1,6 +1,7 @@
 Archetype.register(ArchetypeCode.koboldDom, {
   name: 'Dominant Kobold',
   requires: 'species.kobold',
+  supertype: NegotiationSupertype.fierce,
 
   outfitStyles: [OutfitStyle.barbaric],
   denialStyle: DenialStyle.violent,

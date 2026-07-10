@@ -1,6 +1,7 @@
 Archetype.register(ArchetypeCode.koboldSub, {
   name: 'Submissive Kobold',
   requires: 'species.kobold',
+  supertype: NegotiationSupertype.timid,
 
   outfitStyles: [OutfitStyle.barbaric],
   denialStyle: DenialStyle.horny,

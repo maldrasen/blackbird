@@ -1,5 +1,6 @@
 Archetype.register(ArchetypeCode.innocent, {
   name: 'Innocent',
+  supertype: NegotiationSupertype.timid,
 
   outfitStyles: [OutfitStyle.sensible, OutfitStyle.flirty],
   denialStyle: DenialStyle.frightened,

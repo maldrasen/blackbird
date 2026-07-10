@@ -1,5 +1,6 @@
 Archetype.register(ArchetypeCode.playful, {
   name: 'Playful',
+  supertype: null,
 
   outfitStyles: [OutfitStyle.flirty],
   denialStyle: DenialStyle.frightened,

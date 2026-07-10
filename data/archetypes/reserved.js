@@ -1,5 +1,6 @@
 Archetype.register(ArchetypeCode.reserved, {
   name: 'Reserved',
+  supertype: null,
 
   outfitStyles: [OutfitStyle.sensible],
   denialStyle: DenialStyle.horny,

@@ -1,5 +1,6 @@
 Archetype.register(ArchetypeCode.serious, {
   name: 'Serious',
+  supertype: null,
 
   outfitStyles: [OutfitStyle.sensible],
   denialStyle: DenialStyle.violent,

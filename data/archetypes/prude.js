@@ -1,6 +1,7 @@
 Archetype.register(ArchetypeCode.prude, {
   name: 'Prude',
   parent: 'serious',
+  supertype: NegotiationSupertype.timid,
 
   outfitStyles: [OutfitStyle.sensible],
   denialStyle: DenialStyle.violent,

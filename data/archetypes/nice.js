@@ -1,6 +1,7 @@
 Archetype.register(ArchetypeCode.nice, {
   name: 'Nice Guy',
   requires: 'gender.male',
+  supertype: NegotiationSupertype.warm,
 
   outfitStyles: [OutfitStyle.sensible],
   denialStyle: DenialStyle.angry,

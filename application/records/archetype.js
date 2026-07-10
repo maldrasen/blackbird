@@ -16,6 +16,15 @@ global.Archetype = (function() {
     $archetypes[code] = data;
   }
 
+  // An archetype's supertype may be null, but only deliberately so — a null-supertype archetype gets no baseline
+  // negotiation reactions and must register its own reaction to every question.
+  function validate(code,data) {
+    Validate.exists(`${code}.name`, data.name);
+    if (data.supertype != null) {
+      Validate.isIn(`${code}.supertype`, data.supertype, Object.values(NegotiationSupertype));
+    }
+  }
+
   function lookup(code) {
     if ($archetypes[code] == null) { throw new Error(`Bad archetype code [${code}]`); }
 
@@ -29,6 +38,7 @@ global.Archetype = (function() {
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return archetype.name; },
+      getSupertype: () => { return archetype.supertype || null; },
       getRequires: () => { return archetype.requires; },
       getOutfitStyles: () => { return archetype.outfitStyles; },
       getDenialStyle: () => { return archetype.denialStyle; },

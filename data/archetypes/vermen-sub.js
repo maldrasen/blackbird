@@ -1,6 +1,7 @@
 Archetype.register(ArchetypeCode.vermenSub, {
   name: 'Submissive Vermen',
   requires: 'species.vermen',
+  supertype: NegotiationSupertype.timid,
 
   outfitStyles: [OutfitStyle.barbaric],
   denialStyle: DenialStyle.horny,

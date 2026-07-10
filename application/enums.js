@@ -210,6 +210,13 @@ global.NegotiationTone = Object.freeze({
   lewd: 'lewd',
 });
 
+global.NegotiationSupertype = Object.freeze({
+  fierce: 'fierce',
+  timid: 'timid',
+  warm: 'warm',
+  lewd: 'lewd',
+});
+
 // ============
 //   Training
 // ============

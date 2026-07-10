@@ -1,5 +1,6 @@
 Archetype.register(ArchetypeCode.timid, {
   name: 'Timid',
+  supertype: NegotiationSupertype.timid,
 
   outfitStyles: [OutfitStyle.sensible],
   denialStyle: DenialStyle.frightened,

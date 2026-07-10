@@ -1,6 +1,7 @@
 Archetype.register(ArchetypeCode.bimbo, {
   name: 'Bimbo',
   requires: 'gender.not-male',
+  supertype: NegotiationSupertype.lewd,
 
   outfitStyles: [OutfitStyle.flirty, OutfitStyle.slutty],
   denialStyle: DenialStyle.frightened,

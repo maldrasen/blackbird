@@ -1,5 +1,6 @@
 Archetype.register(ArchetypeCode.flowerChild, {
   name: 'Flower Child',
+  supertype: NegotiationSupertype.warm,
 
   outfitStyles: [OutfitStyle.natural],
   denialStyle: DenialStyle.frightened,

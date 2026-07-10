@@ -1,5 +1,6 @@
 Archetype.register(ArchetypeCode.savage, {
   name: 'Savage',
+  supertype: NegotiationSupertype.fierce,
 
   outfitStyles: [OutfitStyle.natural, OutfitStyle.barbaric],
   denialStyle: DenialStyle.violent,

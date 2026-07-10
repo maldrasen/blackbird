@@ -1,5 +1,6 @@
 Archetype.register(ArchetypeCode.brat, {
   name: 'Brat',
+  supertype: null,
 
   outfitStyles: [OutfitStyle.flirty],
   denialStyle: DenialStyle.angry,
