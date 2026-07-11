@@ -4,7 +4,8 @@ global.Fixtures = (function() {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
-      encounter: `kobold-${Random.between(1,5)}`,
+      // encounter: `kobold-${Random.between(1,5)}`,
+      encounter: 'negotiation-fixture'
     });
 
     // So the battle has a mode to return to.

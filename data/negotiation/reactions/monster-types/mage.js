@@ -1,0 +1,2 @@
+
+// TODO: Mage type responses

@@ -203,11 +203,12 @@ global.SexStyle = {
 };
 
 global.NegotiationTone = Object.freeze({
-  dominant: 'dominant',
-  kind: 'kind',
   boastful: 'boastful',
+  dominant: 'dominant',
   honest: 'honest',
+  kind: 'kind',
   lewd: 'lewd',
+  sly: 'sly',
 });
 
 global.NegotiationSupertype = Object.freeze({
