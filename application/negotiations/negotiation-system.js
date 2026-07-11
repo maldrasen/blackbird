@@ -27,8 +27,9 @@ global.NegotiationSystem = (function() {
 
     if (state.isResolved()) {
       switch (state.getResolution()) {
+        case 'angry': return monsterAttacks();
         case 'leave': return monsterLeaves();
-        case 'satisfied': return recruitMonster();
+        case 'satisfied': return monsterJoins();
       }
     }
 
@@ -60,9 +61,10 @@ global.NegotiationSystem = (function() {
       return NegotiationOverlay.renderResolution();
     }
 
-    // TODO: When the monster turns angry, end the negotiation and the player's turn. The monster should then
-    //       immediately attack.
-    if (isAngry()) { return; }
+    if (isAngry()) {
+      state.setResolution("angry");
+      return NegotiationOverlay.renderResolution();
+    }
 
     advance();
   }
@@ -85,18 +87,30 @@ global.NegotiationSystem = (function() {
   // continues with the player ending their turn and the monster moving to the top of the turn order. We'll evenually
   // have other results as well, the monster running away or tricking the player in some way.
 
-  function isSatisfied() { return state.getInteractionCount() > 3; }
-  function isAngry() { return false; }
+  function isSatisfied() { return Random.roll(100) < 20; }
+  function isAngry() { return Random.roll(100) < 20; }
 
   function monsterLeaves() {
     NegotiationOverlay.close();
     BattleInterface.showVictory();
   }
 
+  // TODO: When the monster turns angry, end the negotiation and the player's turn. The monster should then
+  //       immediately attack.
+  function monsterAttacks() {
+    NegotiationOverlay.close();
+
+    const battleRound = BattleSystem.getRound();
+    battleRound.addTime(60000);
+    battleRound.addMessage({ text:`Negotiations have broken down.` });
+
+    BattleSystem.finishCharacterRound();
+  }
+
   // Pull the monster out of the battle so it survives cleanup, then promote it. Removing the last monster leaves the
   // battle won, so we hand off to the normal victory flow.
-  function recruitMonster() {
-    // Get Feelings
+  function monsterJoins() {
+    // Get clamped feelings
     // const battleState = BattleSystem.getState();
     // battleState.removeFromTurnOrder({ type:'monster', id:monster });
     // battleState.removeFromFormation(monster);
@@ -105,7 +119,6 @@ global.NegotiationSystem = (function() {
     NegotiationOverlay.close();
     BattleInterface.showVictory();
   }
-
 
   return Object.freeze({
     start,
