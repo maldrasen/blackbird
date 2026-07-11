@@ -6,9 +6,9 @@ global.NegotiationOverlay = (function() {
   }
 
   // TODO: We need to forbid the GeneralOverlay from closing this window until the negotiation is resolved.
-  function open() {
+  function open(options) {
     GeneralOverlay.open(build(), { classname:'small', hideFooter:'true' });
-    displayGreeting();
+    displayGreeting(options.greeting);
   }
 
   function build() {
@@ -41,8 +41,8 @@ global.NegotiationOverlay = (function() {
     NegotiationSystem.answer(tone);
   }
 
-  function displayGreeting() {
-    X.fill('#dialog', X.createElement(`<p class='greeting'>${NegotiationSystem.getGreeting()}</p>`));
+  function displayGreeting(greeting) {
+    X.fill('#dialog', X.createElement(`<p class='greeting'>${weave(greeting)}</p>`));
   }
 
   function renderQuestion(data) {
@@ -63,8 +63,11 @@ global.NegotiationOverlay = (function() {
     X.append('#answers', buildButton('No','no'))
   }
 
-  function renderResolution(text) {
+  function renderResolution() {
     clear();
+
+    const text = NegotiationSystem.getState().getResolutionText();
+
     X.append('#dialog', X.createElement(`<p class='request'>${weave(text)}</p>`));
   }
 

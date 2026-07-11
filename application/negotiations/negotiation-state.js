@@ -7,11 +7,11 @@ global.NegotiationState = function() {
 
   let currentQuestion;
   let currentRequest;
-
   let interactionCount = 0;
   let affection = 0;
   let fear = 0;
   let respect = 0;
+  let resolution;
 
   function pickQuestion() {
     interactionCount += 1;
@@ -27,6 +27,12 @@ global.NegotiationState = function() {
     return currentRequest;
   }
 
+  function applyFeelings(response) {
+    affection += response.affection || 0;
+    fear += response.fear || 0;
+    respect += response.respect || 0;
+  }
+
   return Object.freeze({
     getContext: () => { return {...context}; },
     getMonster: () => { return monster; },
@@ -36,6 +42,14 @@ global.NegotiationState = function() {
     pickRequest,
     getCurrentQuestion: () => { return currentQuestion; },
     getCurrentRequest: () => { return currentRequest; },
+
+    setResolution: code => { resolution = code; },
+    getResolution: () => { return resolution; },
+    getResolutionText: () => { return `[Text For : ${resolution}]` },
+    isResolved: () => { return resolution != null; },
+
+    applyFeelings,
+    getFeelings: () => { return { affection, fear, respect }},
   });
 
 };

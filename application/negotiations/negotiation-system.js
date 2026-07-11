@@ -9,13 +9,27 @@ global.NegotiationSystem = (function() {
     const round = BattleSystem.getRound();
     round.setAbility(BattleCommand.negotiate);
 
-    NegotiationOverlay.open();
+    NegotiationOverlay.open({ greeting:getGreeting() });
+
+  }
+
+  // TODO: The greeting still pulls from the old temp script. Greetings should work like the responses though with
+  //       different greetings for Supertypes, archetypes, monster types, and specific monsters.
+  function getGreeting() {
+    return NegotiationScript.greeting;
   }
 
   function advance() {
 
     if (state.getInteractionCount() >= 5) {
-      complete();
+      return forceResolution();
+    }
+
+    if (state.isResolved()) {
+      switch (state.getResolution()) {
+        case 'leave': return monsterLeaves();
+        case 'satisfied': return recruitMonster();
+      }
     }
 
     const type = Random.fromFrequencyMap({
@@ -35,70 +49,69 @@ global.NegotiationSystem = (function() {
     const request = state.getCurrentRequest();
 
     if (question) {
-      console.log("Answered With:",code)
+      state.applyFeelings(question.reaction.responses[code]);
     }
     if (request) {
-      console.log("Answered With:",code)
+      // TODO: Apply feelings when requests are met or denied.
     }
+
+    if (isSatisfied()) {
+      state.setResolution("satisfied");
+      return NegotiationOverlay.renderResolution();
+    }
+
+    // TODO: When the monster turns angry, end the negotiation and the player's turn. The monster should then
+    //       immediately attack.
+    if (isAngry()) { return; }
 
     advance();
   }
 
-  function complete() {
-    console.log("=== Finish This ===")
-    NegotiationOverlay.renderResolution(`TODO: Resolution`);
+  // TODO: If after five questions or requests, you still haven't convinced the monster to join you, or angered them
+  //       enough that they attack you, we should just resolve this negotiation with the monster leaving. No gifts, no
+  //       tricks, but also no new party member.
+  function forceResolution() {
+    state.setResolution("leave");
+    NegotiationOverlay.renderResolution();
   }
 
-  // === Resolution ====================================================================================================
+  // TODO: Monsters will have different conditions and thresholds that are used to determine when they are satisfied
+  //       or angry with the negotiation. With this we can make some monsters harder to recruit than others by
+  //       increasing the thresholds, or make some monsters only respond to affection or respect. The Monster wrapper
+  //       should have the isSatisfied() and isAngry() functions. The wrapper delegates to the baseMonster then to the
+  //       personality archetype, then to the supertype, mimicking the property weights.
 
-  // The monster joins when it likes the player more than it fears them. Anything else and it would rather keep fighting.
-  function accepted() {
-    const feelings = state.clampedFeelings();
-    return feelings.affection >= feelings.fear;
+  // When a monster is satisfied the negotiation is over and they join the party. If they're angry then the fight
+  // continues with the player ending their turn and the monster moving to the top of the turn order. We'll evenually
+  // have other results as well, the monster running away or tricking the player in some way.
+
+  function isSatisfied() { return state.getInteractionCount() > 3; }
+  function isAngry() { return false; }
+
+  function monsterLeaves() {
+    NegotiationOverlay.close();
+    BattleInterface.showVictory();
   }
 
-  function recruit() {
-    const battleState = BattleSystem.getState();
-    const monster = state.getMonster();
+  // Pull the monster out of the battle so it survives cleanup, then promote it. Removing the last monster leaves the
+  // battle won, so we hand off to the normal victory flow.
+  function recruitMonster() {
+    // Get Feelings
+    // const battleState = BattleSystem.getState();
+    // battleState.removeFromTurnOrder({ type:'monster', id:monster });
+    // battleState.removeFromFormation(monster);
+    // RecruitmentSystem.recruit(monster, { ...state.clampedFeelings(), control:0 });
 
-    // Pull the monster out of the battle so it survives cleanup, then promote it. Removing the last monster leaves the
-    // battle won, so we hand off to the normal victory flow.
-    battleState.removeFromTurnOrder({ type:'monster', id:monster });
-    battleState.removeFromFormation(monster);
-    RecruitmentSystem.recruit(monster, { ...state.clampedFeelings(), control:0 });
-
-    if (HEADLESS === false) {
-      NegotiationOverlay.close();
-      BattleInterface.showVictory();
-    }
+    NegotiationOverlay.close();
+    BattleInterface.showVictory();
   }
 
-  function decline() {
-    const round = BattleSystem.getRound();
-    round.addTime(1000);
-    round.addMessage({ text:NegotiationScript.declineMessage });
-
-    if (HEADLESS === false) { NegotiationOverlay.close(); }
-    BattleSystem.finishCharacterRound();
-  }
-
-  function render() {
-    if (HEADLESS === false) { NegotiationOverlay.render(); }
-  }
-
-  // TODO: The greeting still pulls from the old temp script. Greetings should work like the responses though with
-  //       different greetings for Supertypes, archetypes, monster types, and specific monsters.
-  function getGreeting() {
-    return Weaver(state.getContext()).weave(NegotiationScript.greeting);
-  }
 
   return Object.freeze({
     start,
     advance,
     answer,
-    complete,
     getState: () => { return state; },
-    getGreeting,
   });
 
 })();
