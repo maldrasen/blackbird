@@ -14,15 +14,12 @@ global.NegotiationOpening = function(monsterId) {
     }
   });
 
+  // The most fitting reaction to a question is the reaction with the highest weight of the currently valid reactions.
   function mostFittingReaction(question) {
-    let best;
-    question.getReactions().forEach(reaction => {
-      if (matches(reaction) && (best == null || reaction.weight > best.weight)) { best = reaction; }
-    });
-    return best;
+    return question.getReactions().filter(isValid).sort((a,b) => b.weight - a.weight)[0];
   }
 
-  function matches(reaction) {
+  function isValid(reaction) {
     return matchesTarget(reaction) && meetsRequirements(reaction);
   }
 
