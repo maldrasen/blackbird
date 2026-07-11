@@ -8,45 +8,94 @@ global.NegotiationSystem = (function() {
 
     const round = BattleSystem.getRound();
     round.setAbility(BattleCommand.negotiate);
-    // round.setTarget(state.getMonster()); // Is this necessary? Negotiate isn't actually targeted.
 
     NegotiationOverlay.open();
   }
 
+  // === Player Interaction ============================================================================================
+  // These are invoked by the overlay's answer / continue buttons.
+
+  // The continue button drives both the greeting → questions and response → next question transitions.
+  // TODO: Requests — advance should eventually pick between asking a question and making a request.
   function advance() {
-    const contentType = Random.fromFrequencyMap({
-      request: 50,
-      question: 50,
-    });
+    if (state.getStage() === 'response') { return nextQuestion(); }
+    state.setStage(state.getQuestions().length > 0 ? 'question' : 'resolution');
+    render();
+  }
 
-    console.log("=== Advance ===");
-    if (contentType === 'question') {
-      const question = state.pickQuestion();
-      console.log("Question:",question);
+  function answer(tone) {
+    const response = state.getCurrentQuestion().reaction.responses[tone];
+    state.addFeelings(response);
+
+    if (response.text) {
+      state.setStage('response');
+      state.setResponseText(response.text);
+      return render();
     }
 
-    if (contentType === 'request') {
-      console.log("TODO: Requests");
-    }
+    nextQuestion();
+  }
+
+  function nextQuestion() {
+    state.advanceIndex();
+    state.setStage(state.getIndex() >= state.getQuestions().length ? 'resolution' : 'question');
+    render();
   }
 
   function complete() {
-    console.log("=== Complete ===");
+    accepted() ? recruit() : decline();
+  }
+
+  // === Resolution ====================================================================================================
+
+  // The monster joins when it likes the player more than it fears them. Anything else and it would rather keep fighting.
+  function accepted() {
+    const feelings = state.clampedFeelings();
+    return feelings.affection >= feelings.fear;
+  }
+
+  function recruit() {
+    const battleState = BattleSystem.getState();
+    const monster = state.getMonster();
+
+    // Pull the monster out of the battle so it survives cleanup, then promote it. Removing the last monster leaves the
+    // battle won, so we hand off to the normal victory flow.
+    battleState.removeFromTurnOrder({ type:'monster', id:monster });
+    battleState.removeFromFormation(monster);
+    RecruitmentSystem.recruit(monster, { ...state.clampedFeelings(), control:0 });
+
+    if (HEADLESS === false) {
+      NegotiationOverlay.close();
+      BattleInterface.showVictory();
+    }
+  }
+
+  function decline() {
+    const round = BattleSystem.getRound();
+    round.addTime(1000);
+    round.addMessage({ text:NegotiationScript.declineMessage });
+
+    if (HEADLESS === false) { NegotiationOverlay.close(); }
+    BattleSystem.finishCharacterRound();
+  }
+
+  function render() {
+    if (HEADLESS === false) { NegotiationOverlay.render(); }
   }
 
   // TODO: The greeting still pulls from the old temp script. Greetings should work like the responses though with
   //       different greetings for Supertypes, archetypes, monster types, and specific monsters.
   function getGreeting() {
-    return Weaver(NegotiationSystem.getState().getContext()).weave(NegotiationScript.greeting);
+    return Weaver(state.getContext()).weave(NegotiationScript.greeting);
   }
 
   return Object.freeze({
     start,
     advance,
+    answer,
     complete,
     getState: () => { return state; },
     getGreeting,
   });
 
 })();
-

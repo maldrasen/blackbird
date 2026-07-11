@@ -1,49 +1,51 @@
-global.NegotiationOpening = function(monsterId) {
+// A negotiation opening collects the questions a monster can be asked, resolving the single winning reaction for
+// each one. The most specific matching reaction takes a question outright; a tie within the same specificity goes to
+// the first registered so resolution stays deterministic. Authors should partition same-specificity reactions with
+// requires instead of leaning on this. A question with no matching reaction is dropped from the opening.
+global.NegotiationOpening = function(context) {
+
   const questions = [];
 
   NegotiationQuestion.getAllCodes().forEach(questionCode => {
-    const reaction = mostFittingReaction(NegotiationQuestion.lookup((questionCode)));
+    const reaction = winningReaction(NegotiationQuestion.lookup(questionCode));
     if (reaction) {
       questions.push({ questionCode, reaction });
     }
   });
 
-  function mostFittingReaction(question) {
-    let fitting;
+  function winningReaction(question) {
+    let winner;
 
     question.getReactions().forEach(reaction => {
-      if (fitting == null || beats(question,reaction)) { fitting = reaction; }
+      if (matches(reaction) && (winner == null || beats(reaction,winner))) { winner = reaction; }
     });
 
-    return fitting;
+    return winner;
   }
 
-  function beats(question, reaction) {
-    return true;
+  function matches(reaction) {
+    return matchesTarget(reaction) && meetsRequirements(reaction);
   }
 
-  // Resolves the single winning reaction for each question the monster in the context can be asked. The most specific
-  // matching reaction takes a question outright; a tie within the same specificity is broken by code so resolution
-  // stays deterministic. Authors should partition same-specificity reactions with requires instead of leaning on this.
-  // function resolve(context) {
-  //   const winners = {};
-  //   getMatching(context).forEach(reaction => {
-  //     const current = winners[reaction.getQuestion()];
-  //     if (current == null || beats(reaction,current)) { winners[reaction.getQuestion()] = reaction; }
-  //   });
-  //   return winners;
-  // }
-  //
-  // function getMatching(context) {
-  //   return getAllCodes().map(lookup).filter(reaction => reaction.matches(context));
-  // }
-  //
-  // function beats(challenger,current) {
-  //   if (challenger.getSpecificity() !== current.getSpecificity()) {
-  //     return challenger.getSpecificity() < current.getSpecificity();
-  //   }
-  //   return challenger.getCode() < current.getCode();
-  // }
+  function matchesTarget(reaction) {
+    if (reaction.monster != null) { return Monster(context.T).getBaseMonster().getCode() === reaction.monster; }
+    if (reaction.species != null) { return Monster(context.T).getSpecies() === reaction.species; }
+    if (reaction.archetype != null) { return Personality(context.T).getArchetype() === reaction.archetype; }
+    return Archetype.lookup(Personality(context.T).getArchetype()).getSupertype() === reaction.supertype;
+  }
+
+  function meetsRequirements(reaction) {
+    if (reaction.requires == null) { return true; }
+    return [].concat(reaction.requires).every(requirement => requirement(context));
+  }
+
+  function beats(challenger,current) {
+    return specificity(challenger) < specificity(current);
+  }
+
+  function specificity(reaction) {
+    return NegotiationQuestion.MATCH_KEYS.findIndex(key => reaction[key] != null);
+  }
 
   return Object.freeze({
     getQuestions: () => { return questions },

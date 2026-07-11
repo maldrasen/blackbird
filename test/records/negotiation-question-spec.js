@@ -24,9 +24,31 @@ describe('NegotiationQuestion', function() {
     expect(() => NegotiationQuestion.lookup('why-not-zoidberg')).to.throw(`Bad negotiation question code`);
   });
 
-  // Loader.boot() runs this validation on every launch; running it here keeps headless test runs honest too.
-  it('validates the shipped questions', function() {
+  // Loader.boot() runs this validation on every launch; running it here keeps headless test runs honest too. This is
+  // also what enforces the coverage invariant: every supertype, and every null-supertype archetype, must have an
+  // unconditional reaction to every question.
+  it('validates the shipped questions and their reactions', function() {
     expect(() => NegotiationQuestion.validate()).to.not.throw();
+  });
+
+  describe('reactions', function() {
+
+    function reactionFor(questionCode, matchKey, matchValue) {
+      return NegotiationQuestion.lookup(questionCode).getReactions().find(reaction =>
+        reaction[matchKey] === matchValue);
+    }
+
+    it('registers reactions onto their question', function() {
+      const reaction = reactionFor('why-follow','supertype',NegotiationSupertype.fierce);
+      expect(reaction.responses[NegotiationTone.dominant]).to.eql({ affection:20, fear:20, respect:60 });
+    });
+
+    it('keeps the reaction values from the old bitch negotiation block', function() {
+      const reaction = reactionFor('why-follow','archetype',ArchetypeCode.bitch);
+      expect(reaction.responses[NegotiationTone.kind]).to.deep.include({ affection:-20, respect:-40 });
+      expect(reaction.responses[NegotiationTone.dominant]).to.deep.include({ affection:20, fear:20, respect:80 });
+    });
+
   });
 
 });

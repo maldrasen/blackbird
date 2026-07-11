@@ -84,11 +84,9 @@ window.Loader = (function() {
     }
   }
 
-  // TODO: Turn off validate for now.
   function validateData() {
-    // Archetype.validate();
-    // NegotiationQuestion.validate();
-    // NegotiationReaction.validate();
+    Archetype.validate();
+    NegotiationQuestion.validate();
   }
 
   // Load all files in the manifest.json file. We use async/await here because

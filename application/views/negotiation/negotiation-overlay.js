@@ -1,7 +1,7 @@
 global.NegotiationOverlay = (function() {
 
-  // The negotiation overlay is a modal drawn over the live battle view. The NegotiationController drives it, handing us
-  // finished HTML to render for each stage. Answer and continue clicks are delegated back to the controller. Dismissing
+  // The negotiation overlay is a modal drawn over the live battle view. The NegotiationSystem drives it, telling us to
+  // render whenever its state changes stage. Answer and continue clicks are delegated back to the system. Dismissing
   // the overlay (the Escape key, via the WindowManager) simply closes it — the character's turn isn't spent, so the
   // player is free to pick a different command.
 
@@ -24,13 +24,12 @@ global.NegotiationOverlay = (function() {
     </div>`);
   }
 
-
   function close() {
     GeneralOverlay.close();
   }
 
   function answer(event) {
-    NegotiationController.answer(event.target.dataset.tone);
+    NegotiationSystem.answer(event.target.dataset.tone);
   }
 
   // We register the clickAdvance event on the generalOverlay because we want a click anywhere on the overlay to
@@ -48,20 +47,17 @@ global.NegotiationOverlay = (function() {
     NegotiationSystem.complete()
   }
 
-
-
-
   function displayGreeting() {
     X.fill('#dialog', X.createElement(`<p class='greeting'>${NegotiationSystem.getGreeting()}</p>`));
   }
 
-
-
+  // TODO: Render the question, response, and resolution stages from the negotiation state.
+  function render() {
+  }
 
   // function render(content) {
   //   X.fill('#negotiationOverlayContent', X.createElement(`<div class='negotiation' style='padding:40px'>${content}</div>`));
   // }
-
 
   // function render() {
   //   NegotiationOverlay.render(content());
@@ -92,20 +88,12 @@ global.NegotiationOverlay = (function() {
   // function answerRow(buttons) {
   //   return `<div class='negotiation-answers' style='display:flex; flex-direction:column; gap:10px; align-items:flex-start'>${buttons}</div>`;
   // }
-  //
-
-
-
-
-
-
-
-
 
   return Object.freeze({
     init,
     open,
     close,
+    render,
   });
 
 })();

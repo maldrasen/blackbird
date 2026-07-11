@@ -513,7 +513,6 @@
     "test/records/encounter-spec.js",
     "test/records/name-spec.js",
     "test/records/negotiation-question-spec.js",
-    "test/records/negotiation-reaction-spec.js",
     "test/records/sex-action-spec.js",
     "test/records/sex-position-spec.js",
     "test/training/consent-result-spec.js",
