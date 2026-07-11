@@ -14,7 +14,20 @@ global.NegotiationSystem = (function() {
   }
 
   function advance() {
+    const contentType = Random.fromFrequencyMap({
+      request: 50,
+      question: 50,
+    });
+
     console.log("=== Advance ===");
+    if (contentType === 'question') {
+      const question = state.pickQuestion();
+      console.log("Question:",question);
+    }
+
+    if (contentType === 'request') {
+      console.log("TODO: Requests");
+    }
   }
 
   function complete() {
