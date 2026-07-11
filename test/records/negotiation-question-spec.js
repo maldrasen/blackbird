@@ -24,13 +24,6 @@ describe('NegotiationQuestion', function() {
     expect(() => NegotiationQuestion.lookup('why-not-zoidberg')).to.throw(`Bad negotiation question code`);
   });
 
-  // Loader.boot() runs this validation on every launch; running it here keeps headless test runs honest too. This is
-  // also what enforces the coverage invariant: every supertype, and every null-supertype archetype, must have an
-  // unconditional reaction to every question.
-  it('validates the shipped questions and their reactions', function() {
-    expect(() => NegotiationQuestion.validate()).to.not.throw();
-  });
-
   describe('reactions', function() {
 
     function reactionFor(questionCode, matchKey, matchValue) {

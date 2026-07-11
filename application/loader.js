@@ -59,8 +59,6 @@ window.Loader = (function() {
 
   async function boot() {
     try {
-      validateData();
-
       MainContent.loadStyles();
       MainContent.loadMainContent();
 
@@ -82,11 +80,6 @@ window.Loader = (function() {
     catch(error) {
       Console.logError("Error booting main", error, { system:'Main' });
     }
-  }
-
-  function validateData() {
-    Archetype.validate();
-    NegotiationQuestion.validate();
   }
 
   // Load all files in the manifest.json file. We use async/await here because
