@@ -2,6 +2,19 @@ describe("SexPosition", function() {
 
   describe("getMoves() text generation", function() {
 
+    // Because there are so many possible permutations when changing position, we only spot check the position change
+    // text. Given a position to change from, we randomly pick a new position from the possible moves, randomly put
+    // characters into the context, and randomly pick the text from the package. With all this randomness, we'll
+    // sometimes random ourselves into a situation that can't happen in real gameplay, so the textFor() function will
+    // try again. If, after 10 trys, it can't find valid position text that indicates that there's a real problem with
+    // that position. We also check to make sure that there are no weaver errors or warnings in the generated text.
+
+    function spotCheck(code) {
+      const text = textFor(code);
+      if (text.includes('weaver-error')) { throw new Error(`SexPosition change weaver error: ${text}`); }
+      if (text.includes('weaver-warning')) { throw new Error(`SexPosition change weaver warning: ${text}`); }
+    }
+
     function randomSetup() {
       const player = PlayerFactory.build({});
       const partner = CharacterFactory.build({});
@@ -12,20 +25,15 @@ describe("SexPosition", function() {
       return Random.flipCoin() ? { A:player, B:partner, attitude:attitude } : { A:partner, B:player, attitude:attitude }
     }
 
-    function spotCheck(code) {
+    function textFor(code) {
       let attempts = 10;
-
-      // TODO: Eventually we want to assert that the text has no weaver warnings or errors.
 
       while (attempts > 0) {
         const context = randomSetup();
         const move = Random.from(SexPosition.lookup(code).getMoves());
-        const direction = Character(context.A).isPlayer() ? `A`:`B`;
-        const key = `${direction}:[${context.attitude}]`;
 
         try {
-          console.log(`${key} ${Weaver(context).weave(move.package.pick(context))}`);
-          return;
+          return Weaver(context).weave(move.package.pick(context));
         }
         catch(error) {
           attempts -= 1;
