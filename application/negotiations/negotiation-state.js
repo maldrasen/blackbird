@@ -5,7 +5,7 @@ global.NegotiationState = function() {
   const battleState = BattleSystem.getState();
   const monster = battleState.getMonsters().find(id => battleState.isAlive(id));
   const context = { A:GameSystem.getState().getPlayer(), T:monster };
-  const opening = NegotiationOpening(context);
+  const opening = NegotiationOpening(monster);
   const questions = selectQuestions(opening.getQuestions());
 
   let $stage = 'greeting';

@@ -1,54 +1,49 @@
-// A negotiation opening collects the questions a monster can be asked, resolving the single winning reaction for
-// each one. The most specific matching reaction takes a question outright; a tie within the same specificity goes to
-// the first registered so resolution stays deterministic. Authors should partition same-specificity reactions with
-// requires instead of leaning on this. A question with no matching reaction is dropped from the opening.
-global.NegotiationOpening = function(context) {
-
+global.NegotiationOpening = function(monsterId) {
+  const monster = Monster(monsterId);
+  const baseMonster = monster.getBaseMonster().getCode();
+  const gender = monster.getGender();
+  const species = monster.getSpecies();
+  const archetype = monster.getArchetype();
+  const supertype = Archetype.lookup(archetype).getSupertype();
   const questions = [];
 
   NegotiationQuestion.getAllCodes().forEach(questionCode => {
-    const reaction = winningReaction(NegotiationQuestion.lookup(questionCode));
+    const reaction = mostFittingReaction(NegotiationQuestion.lookup(questionCode));
     if (reaction) {
       questions.push({ questionCode, reaction });
     }
   });
 
-  function winningReaction(question) {
-    let winner;
-
+  function mostFittingReaction(question) {
+    let best;
     question.getReactions().forEach(reaction => {
-      if (matches(reaction) && (winner == null || beats(reaction,winner))) { winner = reaction; }
+      if (matches(reaction) && (best == null || reaction.weight > best.weight)) { best = reaction; }
     });
-
-    return winner;
+    return best;
   }
 
   function matches(reaction) {
     return matchesTarget(reaction) && meetsRequirements(reaction);
   }
 
+  // Every reaction should have one or more properties to specify what kind of monster it applies to. When there are
+  // multiple properties they must all be true for the reaction to be considered valid.
   function matchesTarget(reaction) {
-    if (reaction.monster != null) { return Monster(context.T).getBaseMonster().getCode() === reaction.monster; }
-    if (reaction.species != null) { return Monster(context.T).getSpecies() === reaction.species; }
-    if (reaction.archetype != null) { return Personality(context.T).getArchetype() === reaction.archetype; }
-    return Archetype.lookup(Personality(context.T).getArchetype()).getSupertype() === reaction.supertype;
+    let match = true;
+    if (reaction.gender != null    && gender !== reaction.gender)       { match = false; }
+    if (reaction.monster != null   && baseMonster !== reaction.monster) { match = false; }
+    if (reaction.species != null   && species !== reaction.species)     { match = false; }
+    if (reaction.archetype != null && archetype !== reaction.archetype) { match = false; }
+    if (reaction.supertype != null && supertype !== reaction.supertype) { match = false; }
+    return match;
   }
 
   function meetsRequirements(reaction) {
     if (reaction.requires == null) { return true; }
-    return [].concat(reaction.requires).every(requirement => requirement(context));
-  }
-
-  function beats(challenger,current) {
-    return specificity(challenger) < specificity(current);
-  }
-
-  function specificity(reaction) {
-    return NegotiationQuestion.MATCH_KEYS.findIndex(key => reaction[key] != null);
+    return [].concat(reaction.requires).every(requirement => requirement(monster));
   }
 
   return Object.freeze({
     getQuestions: () => { return questions },
   });
-
 }

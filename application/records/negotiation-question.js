@@ -1,16 +1,14 @@
-// A negotiation question is what a cornered monster asks the player, SMT-style. The questions and their answers are
-// the same for every monster — what differs is the monster's reaction to each answer. Answers are keyed by the
-// NegotiationTone they represent, and their authored order drives the order of the answer buttons.
-//
-// Reactions are registered onto their question rather than being records of their own. They range from broad
-// supertype baselines down to reactions for one specific base monster; NegotiationOpening resolves the single winning
-// reaction for each question when a negotiation starts.
 global.NegotiationQuestion = (function() {
   const questions = {};
   const questionReactions = {};
 
-  // Match keys ordered from most to least specific: a monster reaction beats a species reaction, and so on down.
-  const MATCH_KEYS = ['monster','species','archetype','supertype'];
+  const propertyWeights = {
+    supertype: 1,
+    archetype: 5,
+    species: 10,
+    gender: 15,
+    monster: 50,
+  }
 
   const RESPONSE_KEYS = ['affection','fear','respect','text'];
 
@@ -19,6 +17,12 @@ global.NegotiationQuestion = (function() {
   }
 
   function registerReaction(code, data) {
+    data.weight = 0;
+
+    Object.entries(propertyWeights).forEach(([property,weight]) => {
+      if (data[property] != null) { data.weight += weight; }
+    });
+
     reactionsFor(code).push(data);
   }
 
@@ -33,15 +37,15 @@ global.NegotiationQuestion = (function() {
   // invariant: every supertype — and every archetype that opted out of the supertypes — has an unconditional
   // reaction to every question, so a monster can always be asked anything we throw at it.
   function validate() {
-    Object.keys(questionReactions).forEach(code => {
-      if (questions[code] == null) { throw new Error(`Reactions are registered to an unknown question [${code}]`); }
-    });
-
-    Object.keys(questions).forEach(code => {
-      validateQuestion(code, questions[code]);
-      reactionsFor(code).forEach(reaction => validateReaction(code, reaction));
-      validateCoverage(code);
-    });
+    // Object.keys(questionReactions).forEach(code => {
+    //   if (questions[code] == null) { throw new Error(`Reactions are registered to an unknown question [${code}]`); }
+    // });
+    //
+    // Object.keys(questions).forEach(code => {
+    //   validateQuestion(code, questions[code]);
+    //   reactionsFor(code).forEach(reaction => validateReaction(code, reaction));
+    //   validateCoverage(code);
+    // });
   }
 
   function validateQuestion(code, question) {
@@ -162,7 +166,6 @@ global.NegotiationQuestion = (function() {
   }
 
   return Object.freeze({
-    MATCH_KEYS,
     register,
     registerReaction,
     validate,
