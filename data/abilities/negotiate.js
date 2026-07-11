@@ -6,7 +6,7 @@
 Ability.register(BattleCommand.negotiate, {
   name: 'Negotiate',
   category: 'utility',
-  overlay: NegotiationController.start,
+  overlay: NegotiationSystem.start,
 
   canBeUsed: () => { return true; },
   execute: () => {},
