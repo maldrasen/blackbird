@@ -1,18 +1,18 @@
 global.Location = (function() {
-  const $locations = {};
+  const locations = {};
 
   function register(code,data) {
-    $locations[code] = data;
+    locations[code] = data;
   }
 
   function getAllCodes() {
-    return Object.keys($locations);
+    return Object.keys(locations);
   }
 
   function lookup(code) {
-    if ($locations[code] == null) { throw new Error(`Bad location code [${code}]`); }
+    if (locations[code] == null) { throw new Error(`Bad location code [${code}]`); }
 
-    const location = { ...$locations[code] };
+    const location = { ...locations[code] };
 
     return Object.freeze({
       getCode: () => { return code; },

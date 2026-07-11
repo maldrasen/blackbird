@@ -12,10 +12,6 @@ global.NegotiationSystem = (function() {
     NegotiationOverlay.open();
   }
 
-  // === Player Interaction ============================================================================================
-  // These are invoked by the overlay's answer / continue buttons.
-
-  // The continue button drives both the greeting → questions and response → next question transitions.
   // TODO: Requests — advance should eventually pick between asking a question and making a request.
   function advance() {
     if (state.getStage() === 'response') { return nextQuestion(); }

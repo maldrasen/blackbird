@@ -1,10 +1,5 @@
 global.NegotiationOverlay = (function() {
 
-  // The negotiation overlay is a modal drawn over the live battle view. The NegotiationSystem drives it, telling us to
-  // render whenever its state changes stage. Answer and continue clicks are delegated back to the system. Dismissing
-  // the overlay (the Escape key, via the WindowManager) simply closes it — the character's turn isn't spent, so the
-  // player is free to pick a different command.
-
   function init() {
     X.onClick(`#generalOverlay .overlay`, clickAdvance);
     X.onClick('#negotiation .negotiation-answer', answer);
@@ -12,6 +7,7 @@ global.NegotiationOverlay = (function() {
     X.onClick('#negotiation .negotiation-finish', complete);
   }
 
+  // TODO: We need to forbid the GeneralOverlay from closing this window until the negotiation is resolved.
   function open() {
     GeneralOverlay.open(build(), { classname:'small', hideFooter:'true' });
     displayGreeting();
@@ -51,7 +47,6 @@ global.NegotiationOverlay = (function() {
     X.fill('#dialog', X.createElement(`<p class='greeting'>${NegotiationSystem.getGreeting()}</p>`));
   }
 
-  // TODO: Render the question, response, and resolution stages from the negotiation state.
   function render() {
   }
 
