@@ -5,12 +5,17 @@ global.NegotiationState = function() {
   const opening = NegotiationOpening(monster);
   const questions = Random.shuffle(opening.getQuestions());
 
+  // Having just killed all their friends, monsters will start out with some fear and respect, but almost no affection.
+  // These values are randomized so that each negotiation starts out on slightly different footing. The target feeling
+  // thresholds for the negotiation should always be above 100, or at 0 for a negative resolution.
+
+  let affection = 10;
+  let fear = Random.roll(80);
+  let respect = Random.roll(40);
+
   let currentQuestion;
   let currentRequest;
   let interactionCount = 0;
-  let affection = 0;
-  let fear = 0;
-  let respect = 0;
   let resolution;
 
   function pickQuestion() {
@@ -33,6 +38,14 @@ global.NegotiationState = function() {
     respect += response.respect || 0;
   }
 
+  function getFeelings() {
+    return {
+      affection: Math.min(0, affection),
+      fear: Math.min(0, fear),
+      respect: Math.min(0, respect),
+    }
+  }
+
   return Object.freeze({
     getContext: () => { return {...context}; },
     getMonster: () => { return monster; },
@@ -43,13 +56,13 @@ global.NegotiationState = function() {
     getCurrentQuestion: () => { return currentQuestion; },
     getCurrentRequest: () => { return currentRequest; },
 
+    applyFeelings,
+    getFeelings,
+
     setResolution: code => { resolution = code; },
     getResolution: () => { return resolution; },
     getResolutionText: () => { return `[Text For : ${resolution}]` },
     isResolved: () => { return resolution != null; },
-
-    applyFeelings,
-    getFeelings: () => { return { affection, fear, respect }},
   });
 
 };

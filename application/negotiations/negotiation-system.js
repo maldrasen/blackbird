@@ -2,6 +2,7 @@ global.NegotiationSystem = (function() {
   let state;
 
   // TODO: Limit the negotiate ability to only the player.
+  // TODO: If the negotiation fails and we go back to the battle, we can't start another negotiation
   // TODO: There should also be a version that the monster starts when there's only one monster remaining.
   function start() {
     state = NegotiationState();
@@ -21,7 +22,7 @@ global.NegotiationSystem = (function() {
 
   function advance() {
 
-    if (state.getInteractionCount() >= 5) {
+    if (state.isResolved() === false && state.getInteractionCount() >= 5) {
       return forceResolution();
     }
 
@@ -91,6 +92,10 @@ global.NegotiationSystem = (function() {
   function isAngry() { return Random.roll(100) < 20; }
 
   function monsterLeaves() {
+    console.log("===Monster Leaves===")
+
+    removeMonsterFromBattle();
+
     NegotiationOverlay.close();
     BattleInterface.showVictory();
   }
@@ -98,6 +103,7 @@ global.NegotiationSystem = (function() {
   // TODO: When the monster turns angry, end the negotiation and the player's turn. The monster should then
   //       immediately attack.
   function monsterAttacks() {
+    console.log("===Monster Attacks===")
     NegotiationOverlay.close();
 
     const battleRound = BattleSystem.getRound();
@@ -110,14 +116,19 @@ global.NegotiationSystem = (function() {
   // Pull the monster out of the battle so it survives cleanup, then promote it. Removing the last monster leaves the
   // battle won, so we hand off to the normal victory flow.
   function monsterJoins() {
-    // Get clamped feelings
-    // const battleState = BattleSystem.getState();
-    // battleState.removeFromTurnOrder({ type:'monster', id:monster });
-    // battleState.removeFromFormation(monster);
-    // RecruitmentSystem.recruit(monster, { ...state.clampedFeelings(), control:0 });
+    console.log("===Monster Joins===")
 
+    removeMonsterFromBattle();
+
+    RecruitmentSystem.recruit(state.getMonster(), state.getFeelings());
     NegotiationOverlay.close();
     BattleInterface.showVictory();
+  }
+
+  function removeMonsterFromBattle() {
+    const battleState = BattleSystem.getState();
+    battleState.removeFromTurnOrder({ type:'monster', id:state.getMonster() });
+    battleState.removeFromFormation(state.getMonster());
   }
 
   return Object.freeze({

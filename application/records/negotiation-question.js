@@ -42,7 +42,6 @@ global.NegotiationQuestion = (function() {
       getCode: () => { return code; },
       getText: () => { return question.text; },
       getAnswers: () => { return question.answers; },
-      getTones: () => { return Object.keys(question.answers); },
       getReactions: () => { return reactions; }
     });
   }
