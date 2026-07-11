@@ -86,6 +86,8 @@ window.Loader = (function() {
 
   function validateData() {
     Archetype.validate();
+    NegotiationQuestion.validate();
+    NegotiationReaction.validate();
   }
 
   // Load all files in the manifest.json file. We use async/await here because

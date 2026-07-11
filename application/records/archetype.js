@@ -1,19 +1,12 @@
 global.Archetype = (function() {
   const $archetypes = {};
 
-  // Fallback negotiation reactions for archetypes that don't specify their own (or that only specify some tones). An
-  // archetype's own negotiation block overrides these per tone. Values are deltas applied to the recruited monster's
-  // starting affection, fear, and respect.
-  const DEFAULT_NEGOTIATION = {
-    dominant: { affection:-10, fear: 30, respect: 50 },
-    kind:     { affection: 40, fear:-20, respect:  0 },
-    boastful: { affection:-10, fear:  0, respect: 20 },
-    honest:   { affection: 20, fear:  0, respect: 20 },
-    lewd:     { affection: 20, fear:  0, respect:-10 },
-  };
-
   function register(code,data) {
     $archetypes[code] = data;
+  }
+
+  function getAllCodes() {
+    return Object.keys($archetypes);
   }
 
   // Runs from Loader.boot() once every file has loaded, so it's free to reference other record types. An archetype's
@@ -34,11 +27,6 @@ global.Archetype = (function() {
 
     const archetype = { ...$archetypes[code] };
 
-    function negotiationDelta(tone) {
-      const negotiation = archetype.negotiation || {};
-      return negotiation[tone] || DEFAULT_NEGOTIATION[tone] || { affection:0, fear:0, respect:0 };
-    }
-
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return archetype.name; },
@@ -50,13 +38,13 @@ global.Archetype = (function() {
       getSexualityRatio: () => { return archetype.sexualityRatio; },
       getSexualPreferences: () => { return archetype.sexualPreferences||{}; },
       getVirginChances: () => { return { ...archetype.virginChances }; },
-      negotiationDelta,
     });
   }
 
   return Object.freeze({
     register,
     validate,
+    getAllCodes,
     lookup,
   });
 

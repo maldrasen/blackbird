@@ -1,15 +1,20 @@
 global.NegotiationController = (function() {
 
-  // Every monster starts a negotiation from a neutral baseline; the tone of the player's answers pushes these feelings
-  // up or down (per Archetype.negotiationDelta) and the final values decide both whether the monster joins and what it
+  // Every monster starts a negotiation from a neutral baseline; the monster's resolved NegotiationReaction to each
+  // answer pushes these feelings up or down, and the final values decide both whether the monster joins and what it
   // feels towards the player once recruited.
   const BASE = { affection:100, fear:100, respect:100 };
 
+  const QUESTION_COUNT = 3;
+
   let $monster;
   let $context;
-  let $stage;    // 'greeting' | 'question' | 'resolution'
-  let $index;    // current question index while in the 'question' stage
-  let $feelings; // running affection/fear/respect totals
+  let $stage;        // 'greeting' | 'question' | 'response' | 'resolution'
+  let $index;        // current index into $questions
+  let $questions;    // codes of the questions this monster will ask
+  let $reactions;    // question code → winning NegotiationReaction wrapper
+  let $responseText; // woven monster line shown in the 'response' stage
+  let $feelings;     // running affection/fear/respect totals
 
   // Negotiate is only offered when a single monster remains, so the sole living monster is our target.
   function start() {
@@ -20,6 +25,9 @@ global.NegotiationController = (function() {
     $index = 0;
     $feelings = { ...BASE };
 
+    $reactions = NegotiationReaction.resolve($context);
+    $questions = selectQuestions(Object.keys($reactions));
+
     const round = BattleSystem.getRound();
     round.setAbility(BattleCommand.negotiate);
     round.setTarget($monster);
@@ -28,23 +36,48 @@ global.NegotiationController = (function() {
     render();
   }
 
+  // Picks with Random.from() rather than Random.shuffle() so that specs can stub each pick. The coverage validation
+  // guarantees a monster can always be asked every question, but requirements could thin the list below the usual
+  // count, in which case the negotiation just gets shorter.
+  function selectQuestions(codes) {
+    const remaining = [...codes];
+    const selected = [];
+    while (selected.length < QUESTION_COUNT && remaining.length > 0) {
+      const pick = Random.from(remaining);
+      selected.push(pick);
+      ArrayHelper.remove(remaining, pick);
+    }
+    return selected;
+  }
+
   // === Player Interaction ============================================================================================
   // These are invoked by the overlay's answer / continue buttons.
 
+  // The continue button drives both the greeting → questions and response → next question transitions.
   function advance() {
-    $stage = 'question';
-    $index = 0;
+    if ($stage === 'response') { return nextQuestion(); }
+    $stage = $questions.length > 0 ? 'question' : 'resolution';
     render();
   }
 
   function answer(tone) {
-    const delta = Archetype.lookup(Personality($monster).getArchetype()).negotiationDelta(tone);
-    $feelings.affection += delta.affection;
-    $feelings.fear += delta.fear;
-    $feelings.respect += delta.respect;
+    const response = $reactions[$questions[$index]].getResponse(tone);
+    $feelings.affection += response.affection || 0;
+    $feelings.fear += response.fear || 0;
+    $feelings.respect += response.respect || 0;
 
+    if (response.text) {
+      $stage = 'response';
+      $responseText = response.text;
+      return render();
+    }
+
+    nextQuestion();
+  }
+
+  function nextQuestion() {
     $index += 1;
-    if ($index >= NegotiationScript.questions.length) { $stage = 'resolution'; }
+    $stage = $index >= $questions.length ? 'resolution' : 'question';
     render();
   }
 
@@ -100,17 +133,18 @@ global.NegotiationController = (function() {
 
   function content() {
     if ($stage === 'greeting') { return monsterLine(NegotiationScript.greeting) + continueButton('negotiation-advance'); }
+    if ($stage === 'response') { return monsterLine($responseText) + continueButton('negotiation-advance'); }
     if ($stage === 'resolution') { return resolutionContent(); }
     return questionContent();
   }
 
   function questionContent() {
-    const question = NegotiationScript.questions[$index];
-    const answers = question.answers.map(answer =>
-      `<a href='#' class='button negotiation-answer' data-tone='${answer.tone}'>${answer.label}</a>`
+    const question = NegotiationQuestion.lookup($questions[$index]);
+    const answers = Object.entries(question.getAnswers()).map(([tone,label]) =>
+      `<a href='#' class='button negotiation-answer' data-tone='${tone}'>${label}</a>`
     ).join('');
 
-    return monsterLine(question.text) + answerRow(answers);
+    return monsterLine(question.getText()) + answerRow(answers);
   }
 
   function resolutionContent() {
