@@ -12,34 +12,41 @@ global.NegotiationSystem = (function() {
     NegotiationOverlay.open();
   }
 
-  // TODO: Requests — advance should eventually pick between asking a question and making a request.
   function advance() {
-    if (state.getStage() === 'response') { return nextQuestion(); }
-    state.setStage(state.getQuestions().length > 0 ? 'question' : 'resolution');
-    render();
-  }
 
-  function answer(tone) {
-    const response = state.getCurrentQuestion().reaction.responses[tone];
-    state.addFeelings(response);
-
-    if (response.text) {
-      state.setStage('response');
-      state.setResponseText(response.text);
-      return render();
+    if (state.getInteractionCount() >= 5) {
+      complete();
     }
 
-    nextQuestion();
+    const type = Random.fromFrequencyMap({
+      request: 50,
+      question: 50,
+    });
+
+    if (type === 'question' && state.getQuestions().length > 0) {
+      return NegotiationOverlay.renderQuestion(state.pickQuestion());
+    }
+
+    NegotiationOverlay.renderRequest(state.pickRequest());
   }
 
-  function nextQuestion() {
-    state.advanceIndex();
-    state.setStage(state.getIndex() >= state.getQuestions().length ? 'resolution' : 'question');
-    render();
+  function answer(code) {
+    const question = state.getCurrentQuestion();
+    const request = state.getCurrentRequest();
+
+    if (question) {
+      console.log("Answered With:",code)
+    }
+    if (request) {
+      console.log("Answered With:",code)
+    }
+
+    advance();
   }
 
   function complete() {
-    accepted() ? recruit() : decline();
+    console.log("=== Finish This ===")
+    NegotiationOverlay.renderResolution(`TODO: Resolution`);
   }
 
   // === Resolution ====================================================================================================

@@ -159,7 +159,7 @@
     "application/records/monster-type.js",
     "application/records/name.js",
     "application/records/negotiation-question.js",
-    "application/records/negotiation-reaction.js",
+    "application/records/negotiation-request.js",
     "application/records/sex-action.js",
     "application/records/sex-position.js",
     "application/records/sexual-preference.js",
