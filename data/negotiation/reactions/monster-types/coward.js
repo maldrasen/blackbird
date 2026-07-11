@@ -1,2 +1,0 @@
-
-// TODO: Coward type responses

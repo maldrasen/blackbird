@@ -1,9 +1,10 @@
+
 // A negotiation reaction defines how a monster responds to the answers of one NegotiationQuestion. Reactions range
 // from broad supertype baselines down to reactions for one specific base monster; when a negotiation starts, the most
 // specific reaction the monster matches wins each question outright. Codes follow the pattern
 // `<question>--<match-type>-<match-value>` (e.g. `why-follow--archetype-bitch`) — the match type is part of the code
 // because values collide across types (timid is both an archetype and a supertype).
-global.NegotiationReaction = (function() {
+global.OldNegotiationReaction = (function() {
   const $reactions = {};
 
   // Match keys ordered from most to least specific: a monster reaction beats a species reaction, and so on down.
@@ -19,12 +20,12 @@ global.NegotiationReaction = (function() {
   // invariant: every supertype — and every archetype that opted out of the supertypes — has an unconditional
   // reaction to every question, so a monster can always be asked anything we throw at it.
   function validate() {
-    Object.keys($reactions).forEach(code => validateReaction(code,$reactions[code]));
-
-    NegotiationQuestion.getAllCodes().forEach(question => {
-      Object.values(NegotiationSupertype).forEach(supertype => ensureCovered(question,'supertype',supertype));
-      nullSupertypeArchetypes().forEach(archetype => ensureCovered(question,'archetype',archetype));
-    });
+    // Object.keys($reactions).forEach(code => validateReaction(code,$reactions[code]));
+    //
+    // NegotiationQuestion.getAllCodes().forEach(question => {
+    //   Object.values(NegotiationSupertype).forEach(supertype => ensureCovered(question,'supertype',supertype));
+    //   nullSupertypeArchetypes().forEach(archetype => ensureCovered(question,'archetype',archetype));
+    // });
   }
 
   function validateReaction(code,reaction) {
@@ -102,31 +103,6 @@ global.NegotiationReaction = (function() {
     return Object.keys($reactions);
   }
 
-  // === Resolution ====================================================================================================
-
-  function getMatching(context) {
-    return getAllCodes().map(lookup).filter(reaction => reaction.matches(context));
-  }
-
-  // Resolves the single winning reaction for each question the monster in the context can be asked. The most specific
-  // matching reaction takes a question outright; a tie within the same specificity is broken by code so resolution
-  // stays deterministic. Authors should partition same-specificity reactions with requires instead of leaning on this.
-  function resolve(context) {
-    const winners = {};
-    getMatching(context).forEach(reaction => {
-      const current = winners[reaction.getQuestion()];
-      if (current == null || beats(reaction,current)) { winners[reaction.getQuestion()] = reaction; }
-    });
-    return winners;
-  }
-
-  function beats(challenger,current) {
-    if (challenger.getSpecificity() !== current.getSpecificity()) {
-      return challenger.getSpecificity() < current.getSpecificity();
-    }
-    return challenger.getCode() < current.getCode();
-  }
-
   function lookup(code) {
     if ($reactions[code] == null) { throw new Error(`Bad negotiation reaction code [${code}]`); }
 
@@ -172,8 +148,6 @@ global.NegotiationReaction = (function() {
     register,
     validate,
     getAllCodes,
-    getMatching,
-    resolve,
     lookup,
   });
 

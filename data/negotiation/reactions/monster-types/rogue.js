@@ -1,2 +1,0 @@
-
-// TODO: Rogue type responses

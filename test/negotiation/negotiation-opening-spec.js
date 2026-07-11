@@ -4,6 +4,8 @@ describe.only("NegotiationOpening", function() {
     const monster = MonsterFactory.build('kobold-runt');
     const opening = NegotiationOpening(monster);
 
+    console.log(opening.getQuestions());
+
   });
 
 });
