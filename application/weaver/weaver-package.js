@@ -59,13 +59,7 @@ global.WeaverPackage = function(id) {
   }
 
   function pickWeightedOption(options) {
-    const weights = {};
-
-    options.forEach((option, index) => {
-      weights[index] = option.weight;
-    });
-
-    return options[parseInt(Random.fromFrequencyMap(weights))];
+    return options[parseInt(Random.fromFrequencyMap(Object.fromEntries(options.map((option, index) => [index, option.weight]))))];
   }
 
   function formatHasOptions(format, context) {
