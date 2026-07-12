@@ -86,5 +86,7 @@ Species.register(SpeciesCode.kobold, {
 greetingPackage.defineFormat(`{{movement}}, "{{dialog}}"`);
 greetingPackage.addPart('movement',`The kobold eyes you suspiciously, thinking that you must be up to something`);
 greetingPackage.addPart('movement',`The kobold grips {hisWeaponName(T)} firmly, slowly approaching you`);
+greetingPackage.addPart('movement',`The kobold snarls, pressing {T:his} back against the wall`);
 greetingPackage.addPart('dialog',`You want something smoothskin?`);
 greetingPackage.addPart('dialog',`You want talk? Fine, we can talk.`);
+greetingPackage.addPart('dialog',`What do you want {A:species.elf}?`);
