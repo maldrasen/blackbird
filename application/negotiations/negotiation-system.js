@@ -4,6 +4,7 @@ global.NegotiationSystem = (function() {
   // TODO: There should also be a version that the monster starts when there's only one monster remaining.
   function start() {
     state = NegotiationState();
+    BattleSystem.getState().setNegotiationAttempted();
 
     const round = BattleSystem.getRound();
     round.setAbility(BattleCommand.negotiate);

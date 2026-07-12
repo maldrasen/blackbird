@@ -21,6 +21,7 @@ global.BattleState = function(data) {
   const statusEffects = {};
 
   let ambushState = 'normal';
+  let negotiationAttempted = false;
   let interrupt;
 
   // The cleanup() function needs to be called after the battle to remove the monsters that were killed.
@@ -388,6 +389,9 @@ global.BattleState = function(data) {
     removeStatus,
     getStatusEffects,
     hasStatusEffect,
+
+    setNegotiationAttempted: () => { negotiationAttempted = true; },
+    hasAttemptedNegotiation: () => { return negotiationAttempted; },
 
     battleWon: () => { interrupt = 'victory' },
     battleLost: () => { interrupt = 'game-over' },

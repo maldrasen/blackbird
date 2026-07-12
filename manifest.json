@@ -470,6 +470,7 @@
     "test/battle/battle-calculator-spec.js",
     "test/battle/battle-helper-spec.js",
     "test/battle/battle-state-spec.js",
+    "test/battle/character-ability-system-spec.js",
     "test/battle/commands/basic-attack-spec.js",
     "test/battle/monster-system-spec.js",
     "test/battle/systems/recruitment-system-spec.js",

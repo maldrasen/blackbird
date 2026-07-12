@@ -21,11 +21,17 @@ global.CharacterAbilitySystem = (function() {
       abilities.push('sneak-attack');
     }
 
-    if (acting === GameSystem.getState().getPlayer() && livingMonsterCount() === 1) {
+    if (canNegotiate(acting)) {
       abilities.push(BattleCommand.negotiate);
     }
 
     return abilities;
+  }
+
+  function canNegotiate(acting) {
+    if (acting !== GameSystem.getState().getPlayer()) { return false; }
+    if (BattleSystem.getState().hasAttemptedNegotiation()) { return false; }
+    return livingMonsterCount() === 1;
   }
 
   function livingMonsterCount() {
