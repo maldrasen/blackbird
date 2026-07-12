@@ -194,6 +194,20 @@ global.BattleState = function(data) {
     turnOrder.splice(index, 1)
   }
 
+  // Data: { type, id, code } or { type, id }
+  function moveToTopOfTurnOrder(data) {
+    const key = buildKey(data);
+    const index = turnOrderIndex(key);
+
+    if (index < 0) {
+      throw new Error(`Key:${key} is not in turn order.`);
+    }
+
+    const [entry] = turnOrder.splice(index, 1);
+    if (turnOrder.length > 0) { entry.time = Math.max(0,turnOrder[0].time - 500); }
+    turnOrder.unshift(entry);
+  }
+
   // =======================
   //    Ability Cooldowns
   // =======================
@@ -360,6 +374,7 @@ global.BattleState = function(data) {
     getAmbushState: () => { return ambushState; },
     getNext,
     removeFromTurnOrder,
+    moveToTopOfTurnOrder,
 
     setCooldown,
     isOnCooldown,

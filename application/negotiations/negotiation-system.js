@@ -106,6 +106,7 @@ global.NegotiationSystem = (function() {
     battleRound.addMessage({ text:`Negotiations have broken down.` });
 
     BattleSystem.finishCharacterRound();
+    BattleSystem.getState().moveToTopOfTurnOrder({ type:'monster', id:state.getMonster() });
   }
 
   function monsterJoins() {

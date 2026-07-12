@@ -27,6 +27,21 @@ describe("BattleState", function() {
       expect(next.id).to.equal(last.id);
     });
 
+    it('moves an entity to the top of the turn order', function() {
+      BattleFixtures.prepareForBattle();
+      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+
+      const state = BattleSystem.getState();
+      const order = state.getTurnOrder();
+      const last = order[order.length-1];
+
+      state.moveToTopOfTurnOrder(last);
+
+      const newOrder = state.getTurnOrder();
+      expect(newOrder[0].id).to.equal(last.id);
+      expect(newOrder[0].time).to.equal(Math.max(0, newOrder[1].time - 500));
+    });
+
     it('entities can be removed from the turn order', function() {
       BattleFixtures.prepareForBattle();
       BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
