@@ -1,3 +1,5 @@
+const greetingPackage = WeaverPackage('kobold-dick-puncher-greeting');
+
 BaseMonster.register('kobold-dick-puncher',{
   name: 'Kobold Dick Puncher',
   species: SpeciesCode.kobold,
@@ -23,4 +25,9 @@ BaseMonster.register('kobold-dick-puncher',{
     { code:'dick-punch', priority:100 },
   ],
 
+  negotiationGreeting: greetingPackage,
 });
+
+greetingPackage.add(`The kobold cracks his knuckles and smiles. With surprising boldness he steps closer to you,
+  putting the small lizard man right at eye level with your crotch. "Don't think I'll back down just cause you killed
+  off the others. Didn't like them anyway, and I got plenty of fight left in me."`);
