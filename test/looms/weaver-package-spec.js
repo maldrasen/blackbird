@@ -25,8 +25,6 @@ describe("WeaverPackage", function() {
     pkg.add('second',isYes);
     pkg.add('third',isYes);
 
-    // Options default to weight:100 each, so with 'second' and 'third' both valid the frequency map is {1:100,2:100}
-    // and Random.roll() is called with a total of 200. A stubbed roll of 150 falls in the second bucket ('third').
     Random.stubRoll(150);
 
     expect(pkg.pick()).to.equal(`<span data-package='test.package' data-option='2'>third</span>`);
@@ -43,11 +41,54 @@ describe("WeaverPackage", function() {
     pkg.add('common', null, 100);
     pkg.add('rare', null, 10);
 
-    // Frequency map is {0:100,1:10}, total 110. A stubbed roll of 105 lands past the first bucket (0-99), in the
-    // second ('rare').
     Random.stubRoll(105);
 
     expect(pkg.pick()).to.equal(`<span data-package='test.package' data-option='1'>rare</span>`);
+  });
+
+  it('assembles a multipart format from its parts', function() {
+    const pkg = WeaverPackage('test.package');
+    pkg.defineFormat('{{motion}}, "{{dialogue}}"');
+    pkg.addPart('motion', 'Herp');
+    pkg.addPart('dialogue', "Derp?");
+
+    Random.stubRoll(0, 0, 0);
+
+    expect(pkg.pick()).to.equal(`<span data-package='test.package' data-format='0' data-parts='0,0'>Herp, "Derp?"</span>`);
+  });
+
+  it('picks between a single option and a format', function() {
+    const pkg = WeaverPackage('test.package');
+    pkg.add('whole line', null, 100);
+    pkg.defineFormat('{{motion}}', 100);
+    pkg.addPart('motion', 'a fragment');
+
+    Random.stubRoll(150, 0);
+
+    expect(pkg.pick()).to.equal(`<span data-package='test.package' data-format='0' data-parts='0'>a fragment</span>`);
+  });
+
+  it('excludes a format when one of its keys has no valid part', function() {
+    const pkg = WeaverPackage('test.package');
+    pkg.add('fallback');
+    pkg.defineFormat('{{motion}} {{dialogue}}');
+    pkg.addPart('motion', 'a fragment');
+    pkg.addPart('dialogue', 'gated', isNo);
+
+    Random.stubRoll(0);
+
+    expect(pkg.pick()).to.equal(`<span data-package='test.package' data-option='0'>fallback</span>`);
+  });
+
+  it('weights parts within a key independently', function() {
+    const pkg = WeaverPackage('test.package');
+    pkg.defineFormat('{{motion}}');
+    pkg.addPart('motion', 'common', null, 100);
+    pkg.addPart('motion', 'rare', null, 10);
+
+    Random.stubRoll(0, 105);
+
+    expect(pkg.pick()).to.equal(`<span data-package='test.package' data-format='0' data-parts='1'>rare</span>`);
   });
 
 });
