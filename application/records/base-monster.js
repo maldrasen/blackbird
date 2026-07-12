@@ -27,6 +27,12 @@ global.BaseMonster = (function() {
       return monster.threatWeights || MonsterType.lookup(monster.type).getThreatWeights();
     }
 
+    function getNegotiationGreeting(context) {
+      return monster.negotiationGreeting ?
+          monster.negotiationGreeting.pick(context):
+          Species.lookup(monster.species).getNegotiationGreeting(context);
+    }
+
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return monster.name; },
@@ -42,6 +48,7 @@ global.BaseMonster = (function() {
       getThreatWeights,
       getAttackTable: () => { return monster.attackTable; },
       getPrioritizedAbilities: () => { return monster.prioritizedAbilities||[] },
+      getNegotiationGreeting,
     });
   }
 

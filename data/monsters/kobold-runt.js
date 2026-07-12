@@ -1,3 +1,6 @@
+
+const greetingPackage = WeaverPackage('kobold-runt-greeting');
+
 BaseMonster.register('kobold-runt',{
   name: 'Kobold Runt',
   species: SpeciesCode.kobold,
@@ -20,5 +23,9 @@ BaseMonster.register('kobold-runt',{
   // canned armor pieces. Something like a kobold may have a leather chest, and nothing else. We don't want to make an
   // item entity for each one if there's no inventory yet.
 
+  negotiationGreeting: greetingPackage,
+
 });
+
+greetingPackage.add('Huh... Wat?');
 

@@ -9,14 +9,8 @@ global.NegotiationSystem = (function() {
     const round = BattleSystem.getRound();
     round.setAbility(BattleCommand.negotiate);
 
-    NegotiationOverlay.open({ greeting:getGreeting() });
+    NegotiationOverlay.open({ greeting:state.getGreeting() });
 
-  }
-
-  // TODO: The greetings should work like the responses with different greetings for the supertypes, archetypes,
-  //       monster types, and specific monsters.
-  function getGreeting() {
-    return `({T:TargetName} greets you)`;
   }
 
   function advance() {

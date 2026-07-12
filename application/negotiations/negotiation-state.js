@@ -60,6 +60,7 @@ global.NegotiationState = function() {
     getContext: () => { return {...context}; },
     getMonster: () => { return monster; },
     getInteractionCount: () => { return interactionCount; },
+    getGreeting: () => { return Monster(monster).getBaseMonster().getNegotiationGreeting(context); },
     getQuestions: () => { return questions; },
     pickQuestion,
     pickRequest,
