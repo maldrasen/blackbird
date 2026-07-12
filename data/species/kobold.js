@@ -1,3 +1,5 @@
+const greetingPackage = WeaverPackage('kobold-greeting');
+
 Species.register(SpeciesCode.kobold, {
   name: 'Kobold',
   genderRatio: { female:40, futa:20, male:40, enby:10 },
@@ -78,4 +80,11 @@ Species.register(SpeciesCode.kobold, {
     }
   },
 
+  negotiationGreeting: greetingPackage,
 });
+
+greetingPackage.defineFormat(`{{movement}}, "{{dialog}}"`);
+greetingPackage.addPart('movement',`The kobold eyes you suspiciously, thinking that you must be up to something`);
+greetingPackage.addPart('movement',`The kobold grips {hisWeaponName(T)} firmly, slowly approaching you`);
+greetingPackage.addPart('dialog',`You want something smoothskin?`);
+greetingPackage.addPart('dialog',`You want talk? Fine, we can talk.`);

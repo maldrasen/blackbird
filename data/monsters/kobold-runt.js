@@ -1,4 +1,3 @@
-
 const greetingPackage = WeaverPackage('kobold-runt-greeting');
 
 BaseMonster.register('kobold-runt',{
@@ -24,9 +23,8 @@ BaseMonster.register('kobold-runt',{
   // item entity for each one if there's no inventory yet.
 
   negotiationGreeting: greetingPackage,
-
 });
 
-greetingPackage.add(`The kobold looks shocked as you lower your weapon. {T:He} looks around as though you must be
+greetingPackage.add(`The kobold looks shocked as you lower your weapon. {T:He} looks around, thinking you must be
   talking to someone else, but seeing that {T:he's} the only one left standing, {T:he} nervously turns to face you.
-  "You… want talk? Um… okay."`);
+  "Huh, what… you want talk? Uhh… okay."`);

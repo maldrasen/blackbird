@@ -27,7 +27,11 @@ global.WeaverPackage = function(id) {
   }
 
   function pick(context={}) {
-    const weights = { whole:100 };
+    const weights = {};
+
+    if (validFrom(wholes,context).length > 0) {
+      weights['whole'] = 100;
+    }
 
     formats.forEach((format, index) => {
       if (formatHasOptions(format, context)) {

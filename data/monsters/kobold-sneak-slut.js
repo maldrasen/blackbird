@@ -1,3 +1,5 @@
+const greetingPackage = WeaverPackage('kobold-sneak-slut-greeting');
+
 BaseMonster.register('kobold-sneak-slut',{
   name: 'Kobold Sneak Slut',
   species: SpeciesCode.kobold,
@@ -22,4 +24,8 @@ BaseMonster.register('kobold-sneak-slut',{
     { main:{ base:'knife', name:'bone knife' }, off:{ base:'knife', name:'bone knife' }},
   ],
 
+  negotiationGreeting: greetingPackage,
 });
+
+greetingPackage.add(`The kobold snarls, looking about frantically as {T:he} realizes that you've got {T:him} cornered.
+  {T:His} expression suddenly changes, giving you a sultry smile. "You're strong. I like the strong ones."`);
