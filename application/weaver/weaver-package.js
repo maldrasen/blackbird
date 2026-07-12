@@ -37,7 +37,7 @@ global.WeaverPackage = function(id) {
 
     const key = Random.fromFrequencyMap(weights)
 
-    return (key === 'whole') ? renderWhole(context) : renderFormat(parseInt(key), context);
+    return (key === 'whole') ? renderWhole(context) : renderFormat(key, context);
   }
 
   function renderWhole(context) {
@@ -59,7 +59,7 @@ global.WeaverPackage = function(id) {
   }
 
   function pickWeightedOption(options) {
-    return options[parseInt(Random.fromFrequencyMap(Object.fromEntries(options.map((option, index) => [index, option.weight]))))];
+    return options[Random.fromFrequencyMap(Object.fromEntries(options.map((option, index) => [index, option.weight])))];
   }
 
   function formatHasOptions(format, context) {
