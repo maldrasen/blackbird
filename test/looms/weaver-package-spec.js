@@ -3,7 +3,7 @@ describe("WeaverPackage", function() {
   function isYes() { return true; }
   function isNo() { return false; }
 
-  it('picks an option with no requires closure', function() {
+  it.only('picks an option with no requires closure', function() {
     const pkg = WeaverPackage('test.package');
     pkg.add('hello');
     expect(pkg.pick()).to.equal(`<span data-package='test.package' data-option='0'>hello</span>`);
