@@ -11,7 +11,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [011] Project Stuff — [011-project-stuff.md](011-project-stuff.md)
 - [045] Implement the Enlighten View — [045-implement-the-enlighten-view.md](045-implement-the-enlighten-view.md)
 - [105] Add Negotiation Requests — [105-add-negotiation-requests.md](105-add-negotiation-requests.md)
-- [106] Add Negotiation Greetings — [106-add-negotiation-greetings.md](106-add-negotiation-greetings.md)
 - [107] Add Negotiation Resolution Text — [107-add-negotiation-resolution-text.md](107-add-negotiation-resolution-text.md)
 - [108] Complete Negotiation Questions — [108-complete-negotiation-questions.md](108-complete-negotiation-questions.md)
 
