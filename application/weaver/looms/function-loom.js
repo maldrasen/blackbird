@@ -25,24 +25,29 @@ global.FunctionLoom = (function() {
     return '';
   }
 
-  // This function gets a weapon's name from the context, prefixing the name with "a", "his", "the", or nothing if the
-  // weapon has a proper name. Text with a dagger named Stabitha for instance should read "He thrust Stabitha" rather
-  // than "He thrust the Stabitha" or "He thrust his Stabitha"
-  //
-  // The context should contain the base weapon code in baseWeapon and optionally the weapon entity id in { weapon }
-  // The first element of the argument list should have the actor token to convert it to {A:his} if the prefix is his.
+  // This function gets a weapon's name from the context, or by looking up primary weapon data from the actor key. The
+  // function prefixes the name with "a", "his", "the", or nothing if the weapon has a proper name. Text with a dagger
+  // named Stabitha for instance should read "He thrust Stabitha" rather than "He thrust the Stabitha" or "He thrust
+  // his Stabitha"
   function compileWeaponName(context,argumentList,prefix) {
-    if (context['baseWeapon'] == null) { throw `At a minimum, baseWeapon should have been in the context.` }
-
+    let base = context.baseWeapon;
+    let weaponId = context.weapon;
     let name = context.weaponName;
     let nameType = context.weaponNameType || 'common';
 
-    if (name == null) {
-      name = BaseWeapon.lookup(context.baseWeapon).getName();
+    if (base == null) {
+      const resolved = resolvePrimaryWeapon(context[argumentList[0]]);
+      base = resolved.base;
+      weaponId = resolved.id;
+      name = resolved.name;
     }
 
-    if (context.weapon) {
-      const weapon = Weapon(context.weapon);
+    if (name == null) {
+      name = BaseWeapon.lookup(base).getName();
+    }
+
+    if (weaponId) {
+      const weapon = Weapon(weaponId);
       name = weapon.getName();
       nameType = weapon.getNameType();
     }
@@ -53,6 +58,24 @@ global.FunctionLoom = (function() {
     if (prefix === 'his') { return `{${argumentList[0]}:his} ${weaponName}`; }
 
     return `the ${weaponName}`;
+  }
+
+  function resolvePrimaryWeapon(actorId) {
+
+    if (MonsterComponent.lookup(actorId)) {
+      const attack = Monster(actorId).getBasicAttack();
+      const primary = attack.main || attack;
+      if (primary.base) {
+        return { base:primary.base, name:primary.name };
+      }
+    }
+
+    const weaponId = EquipmentManager(actorId).getSlot(EquipmentSlot.primary);
+    if (weaponId) {
+      return { base:Weapon(weaponId).getBaseWeapon().getCode(), id:weaponId };
+    }
+
+    throw `Unable to determine a weapon for {${actorId}}.`
   }
 
   return Object.freeze({ weave });
