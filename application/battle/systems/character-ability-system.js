@@ -21,7 +21,7 @@ global.CharacterAbilitySystem = (function() {
       abilities.push('sneak-attack');
     }
 
-    if (livingMonsterCount() === 1) {
+    if (acting === GameSystem.getState().getPlayer() && livingMonsterCount() === 1) {
       abilities.push(BattleCommand.negotiate);
     }
 

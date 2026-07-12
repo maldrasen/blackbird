@@ -38,11 +38,21 @@ global.NegotiationState = function() {
     respect += response.respect || 0;
   }
 
+  // TODO: The resolution text should come from the base monsters and the personality archetypes.
+  function getResolutionText() {
+    switch(resolution) {
+      case 'angry': return `{T:TargetName} attacks.`;
+      case 'leave': return `{T:TargetName} leaves.`;
+      case 'satisfied': return `{T:name} {T:targetName} joins the party.`;
+      default: throw new Error(`Add resolution text for ${resolution}`);
+    }
+  }
+
   function getFeelings() {
     return {
-      affection: Math.min(0, affection),
-      fear: Math.min(0, fear),
-      respect: Math.min(0, respect),
+      affection: Math.max(0, affection),
+      fear: Math.max(0, fear),
+      respect: Math.max(0, respect),
     }
   }
 
@@ -61,8 +71,8 @@ global.NegotiationState = function() {
 
     setResolution: code => { resolution = code; },
     getResolution: () => { return resolution; },
-    getResolutionText: () => { return `[Text For : ${resolution}]` },
     isResolved: () => { return resolution != null; },
+    getResolutionText,
   });
 
 };

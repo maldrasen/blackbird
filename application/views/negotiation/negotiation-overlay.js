@@ -5,9 +5,8 @@ global.NegotiationOverlay = (function() {
     X.onClick('#negotiation .answer', answer);
   }
 
-  // TODO: We need to forbid the GeneralOverlay from closing this window until the negotiation is resolved.
   function open(options) {
-    GeneralOverlay.open(build(), { classname:'small', hideFooter:'true' });
+    GeneralOverlay.open(build(), { classname:'small', hideFooter:true, preventClose:true });
     displayGreeting(options.greeting);
   }
 

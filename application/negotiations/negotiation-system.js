@@ -1,8 +1,6 @@
 global.NegotiationSystem = (function() {
   let state;
 
-  // TODO: Limit the negotiate ability to only the player.
-  // TODO: If the negotiation fails and we go back to the battle, we can't start another negotiation
   // TODO: There should also be a version that the monster starts when there's only one monster remaining.
   function start() {
     state = NegotiationState();
@@ -14,10 +12,10 @@ global.NegotiationSystem = (function() {
 
   }
 
-  // TODO: The greeting still pulls from the old temp script. Greetings should work like the responses though with
-  //       different greetings for Supertypes, archetypes, monster types, and specific monsters.
+  // TODO: The greetings should work like the responses with different greetings for the supertypes, archetypes,
+  //       monster types, and specific monsters.
   function getGreeting() {
-    return NegotiationScript.greeting;
+    return `({T:TargetName} greets you)`;
   }
 
   function advance() {
@@ -70,9 +68,9 @@ global.NegotiationSystem = (function() {
     advance();
   }
 
-  // TODO: If after five questions or requests, you still haven't convinced the monster to join you, or angered them
-  //       enough that they attack you, we should just resolve this negotiation with the monster leaving. No gifts, no
-  //       tricks, but also no new party member.
+  // If after five questions or requests, you still haven't convinced the monster to join you, or angered them enough
+  // that they attack you, the negotiation resolves with the monster leaving. No gifts, no tricks, but also no new
+  // party member.
   function forceResolution() {
     state.setResolution("leave");
     NegotiationOverlay.renderResolution();
@@ -92,10 +90,7 @@ global.NegotiationSystem = (function() {
   function isAngry() { return Random.roll(100) < 20; }
 
   function monsterLeaves() {
-    console.log("===Monster Leaves===")
-
     removeMonsterFromBattle();
-
     NegotiationOverlay.close();
     BattleInterface.showVictory();
   }
@@ -107,19 +102,14 @@ global.NegotiationSystem = (function() {
     NegotiationOverlay.close();
 
     const battleRound = BattleSystem.getRound();
-    battleRound.addTime(60000);
+    battleRound.addTime(1200);
     battleRound.addMessage({ text:`Negotiations have broken down.` });
 
     BattleSystem.finishCharacterRound();
   }
 
-  // Pull the monster out of the battle so it survives cleanup, then promote it. Removing the last monster leaves the
-  // battle won, so we hand off to the normal victory flow.
   function monsterJoins() {
-    console.log("===Monster Joins===")
-
     removeMonsterFromBattle();
-
     RecruitmentSystem.recruit(state.getMonster(), state.getFeelings());
     NegotiationOverlay.close();
     BattleInterface.showVictory();
