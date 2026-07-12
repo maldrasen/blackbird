@@ -3,7 +3,7 @@ describe("WeaverPackage", function() {
   function isYes() { return true; }
   function isNo() { return false; }
 
-  it.only('picks an option with no requires closure', function() {
+  it('picks an option with no requires closure', function() {
     const pkg = WeaverPackage('test.package');
     pkg.add('hello');
     expect(pkg.pick()).to.equal(`<span data-package='test.package' data-option='0'>hello</span>`);
@@ -14,7 +14,7 @@ describe("WeaverPackage", function() {
     pkg.add('nope',isNo);
     pkg.add('yep',[isYes,isYes]);
 
-    Random.stubRoll(0);
+    Random.stubRoll(0, 0);
 
     expect(pkg.pick()).to.equal(`<span data-package='test.package' data-option='1'>yep</span>`);
   });
@@ -25,7 +25,7 @@ describe("WeaverPackage", function() {
     pkg.add('second',isYes);
     pkg.add('third',isYes);
 
-    Random.stubRoll(150);
+    Random.stubRoll(0, 150);
 
     expect(pkg.pick()).to.equal(`<span data-package='test.package' data-option='2'>third</span>`);
   });
@@ -41,7 +41,7 @@ describe("WeaverPackage", function() {
     pkg.add('common', null, 100);
     pkg.add('rare', null, 10);
 
-    Random.stubRoll(105);
+    Random.stubRoll(0, 105);
 
     expect(pkg.pick()).to.equal(`<span data-package='test.package' data-option='1'>rare</span>`);
   });
@@ -63,7 +63,7 @@ describe("WeaverPackage", function() {
     pkg.defineFormat('{{motion}}', 100);
     pkg.addPart('motion', 'a fragment');
 
-    Random.stubRoll(150, 0);
+    Random.stubRoll(0, 0);
 
     expect(pkg.pick()).to.equal(`<span data-package='test.package' data-format='0' data-parts='0'>a fragment</span>`);
   });
@@ -75,7 +75,7 @@ describe("WeaverPackage", function() {
     pkg.addPart('motion', 'a fragment');
     pkg.addPart('dialogue', 'gated', isNo);
 
-    Random.stubRoll(0);
+    Random.stubRoll(0, 0);
 
     expect(pkg.pick()).to.equal(`<span data-package='test.package' data-option='0'>fallback</span>`);
   });
