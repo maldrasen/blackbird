@@ -14,7 +14,9 @@ global.GeneralOverlay = (function() {
    *    locked overlay, so the escape key won't close it either.
    */
   function open(content, options={}) {
-    locked = options.preventClose === true;
+    if (isOpen()) { throw new Error(`The GeneralOverlay is already open.`); }
+
+    locked = (options.preventClose === true);
 
     X.loadDocument('#generalOverlay','views/general-overlay.html');
     X.fill('#generalOverlayContent',content);
@@ -42,10 +44,15 @@ global.GeneralOverlay = (function() {
     X.addClass('#overlayCover','hide');
   }
 
+  function isOpen() {
+    return X.hasClass('#generalOverlay','hide') === false;
+  }
+
   return Object.freeze({
     init,
     open,
     close,
+    isOpen,
     isLocked: () => { return locked; },
   })
 
