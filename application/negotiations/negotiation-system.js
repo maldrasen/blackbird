@@ -98,7 +98,6 @@ global.NegotiationSystem = (function() {
   // TODO: When the monster turns angry, end the negotiation and the player's turn. The monster should then
   //       immediately attack.
   function monsterAttacks() {
-    console.log("===Monster Attacks===")
     NegotiationOverlay.close();
 
     const battleRound = BattleSystem.getRound();
@@ -106,7 +105,7 @@ global.NegotiationSystem = (function() {
     battleRound.addMessage({ text:`Negotiations have broken down.` });
 
     BattleSystem.finishCharacterRound();
-    BattleSystem.getState().moveToTopOfTurnOrder({ type:'monster', id:state.getMonster() });
+    BattleSystem.getState().moveToTopOfTurnOrder({ type:'monster', id:state.getMonster() }, 500);
   }
 
   function monsterJoins() {

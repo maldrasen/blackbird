@@ -35,11 +35,11 @@ describe("BattleState", function() {
       const order = state.getTurnOrder();
       const last = order[order.length-1];
 
-      state.moveToTopOfTurnOrder(last);
+      state.moveToTopOfTurnOrder(last, 50);
 
       const newOrder = state.getTurnOrder();
       expect(newOrder[0].id).to.equal(last.id);
-      expect(newOrder[0].time).to.equal(Math.max(0, newOrder[1].time - 500));
+      expect(newOrder[0].time).to.equal(Math.max(0, newOrder[1].time - 50));
     });
 
     it('entities can be removed from the turn order', function() {
