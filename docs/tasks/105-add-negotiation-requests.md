@@ -12,3 +12,14 @@ We've started work on the Negotiation system. In addition to asking questions th
 Agreeing to a request will usually result in positive feelings, though sometimes agreeing to a request will have the opposite effect. Letting a monster stab you will just cause them to lose respect for you.
 
 Unlike the questions though a request will sometimes have to have a random value. Like "Give me 50 mana" needs to randomly select the mana amount to ask for. The feelings awarded by the request should be tied to this random value, though we'll need a factor to define by how much. 
+
+### Violent Requests
+- Can I cut you, just a little bit?
+- Really, I just want to punch you in the face, okay?
+- Let me slap your tits around for a little.
+### Lewd requests
+- Hmm, lets if you're a good kisser.
+- I want to see what your working with. So pull your dick out for me.
+- Umm, show me your tits.
+- I want to fuck, umm, that one over there. He says pointing at {character name}.
+- How about you suck me off first.
