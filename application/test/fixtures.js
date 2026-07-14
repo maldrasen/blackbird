@@ -1,6 +1,13 @@
 global.Fixtures = (function() {
 
+  function setupGame() {
+    const state = GameSystem.getState();
+    state.setGameTime(15 * 60);
+    state.setCurrentLocation('ruined-living-room');
+  }
+
   function setupBattle() {
+    setupGame();
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
@@ -21,10 +28,7 @@ global.Fixtures = (function() {
 
   // The training fixture actually puts the game into the location mode, with characters available to be trained.
   function setupTraining() {
-    const state = GameSystem.getState();
-    state.setGameTime(15 * 60);
-    state.setCurrentLocation('ruined-living-room');
-
+    setupGame();
     CharacterFixtures.randomPlayer();
     CharacterFixtures.randomCharacters(10, { species:'lupin',gender:'futa',triggers:['~bimbo'] });
     GameSystem.setGameMode(GameMode.location);

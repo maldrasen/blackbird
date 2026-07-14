@@ -1,5 +1,5 @@
 Location.register('ruined-living-room',{
   name: 'A Ruined Living Room',
   district: 'home',
-  background: 'backgrounds/wood.jpg'
+  background: 'backgrounds/battle.jpg'
 });

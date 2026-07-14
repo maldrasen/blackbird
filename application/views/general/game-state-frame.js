@@ -2,7 +2,6 @@ global.GameStateFrame = (function() {
 
   function init() {
     X.onClick('#gameStateFrame .click-player', playerClicked);
-    X.onClick('#gameStateFrame .click-location', locationClicked);
   }
 
   function show() {
@@ -36,8 +35,8 @@ global.GameStateFrame = (function() {
     X.fill('#gameStateFrame .stamina',  getStaminaBar(player));
     X.fill('#gameStateFrame .mana',     getManaBar(player));
     X.fill('#gameStateFrame .arousal',  getArousalBar(player));
-    X.fill('#gameStateFrame .location', getLocationLink())
-    X.fill('#gameStateFrame .time',     getTime())
+    X.fill('#gameStateFrame .location', getLocationName());
+    X.fill('#gameStateFrame .time',     getTime());
   }
 
   function getPlayerLink(player) {
@@ -97,18 +96,12 @@ global.GameStateFrame = (function() {
     return TimeHelper.getTimeOfDay(GameSystem.getState().getGameTime());
   }
 
-  function getLocationLink() {
-    const location = GameSystem.getState().getCurrentLocation();
-    const name = Location.lookup(location).getName()
-    return X.createElement(`<a class='click-location' href='#'>${name}</a>`);
+  function getLocationName() {
+    return Location.lookup(GameSystem.getState().getCurrentLocation()).getName();
   }
 
   function playerClicked() {
     CharacterOverlay.open({ id:GameSystem.getState().getPlayer(), isPlayer:true });
-  }
-
-  function locationClicked() {
-    NavigationOverlay.showLocalMap();
   }
 
   return Object.freeze({

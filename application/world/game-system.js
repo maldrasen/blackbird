@@ -54,6 +54,8 @@ global.GameSystem = (function() {
     state.setGameMode(mode);
 
     if (HEADLESS === false) {
+      LocationView.close();
+
       switch (mode) {
         case GameMode.battle: return BattleView.show();
         case GameMode.dungeon: return DungeonView.show();

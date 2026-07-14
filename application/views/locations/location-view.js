@@ -14,7 +14,12 @@ global.LocationView = (function() {
   function show() {
     MainContent.setMainContent("views/location.html");
     GameStateFrame.show();
+    showLocationControls();
     update();
+  }
+
+  function close() {
+    hideLocationControls();
   }
 
   // Game state frame will need to update.
@@ -34,12 +39,8 @@ global.LocationView = (function() {
     buildActionList(location.getActions());
   }
 
-
-
-
-
-
-
+  function showLocationControls() { X.removeClass('#locationControls','hide'); }
+  function hideLocationControls() { X.addClass('#locationControls','hide'); }
 
   function characterClicked(event) {
     const characterId = event.target.getAttribute('data-id');
@@ -86,6 +87,7 @@ global.LocationView = (function() {
   return Object.freeze({
     init,
     show,
+    close,
     update,
   });
 
