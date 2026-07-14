@@ -4,8 +4,8 @@ global.Fixtures = (function() {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
-      // encounter: `kobold-${Random.between(1,5)}`,
-      encounter: 'negotiation-fixture'
+      encounter: `kobold-${Random.between(1,5)}`,
+      // encounter: 'negotiation-fixture'
     });
 
     // So the battle has a mode to return to.
@@ -16,13 +16,15 @@ global.Fixtures = (function() {
 
   function setupDungeon() {
     BattleFixtures.prepareForBattle();
-    DungeonSystem.createDungeon();
-    DungeonSystem.setLevel(1);
-    GameSystem.setGameMode(GameMode.dungeon);
+    DungeonSystem.enterDungeon();
   }
 
   // The training fixture actually puts the game into the location mode, with characters available to be trained.
   function setupTraining() {
+    const state = GameSystem.getState();
+    state.setGameTime(15 * 60);
+    state.setCurrentLocation('ruined-living-room');
+
     CharacterFixtures.randomPlayer();
     CharacterFixtures.randomCharacters(10, { species:'lupin',gender:'futa',triggers:['~bimbo'] });
     GameSystem.setGameMode(GameMode.location);
