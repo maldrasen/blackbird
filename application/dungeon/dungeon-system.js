@@ -3,6 +3,18 @@ global.DungeonSystem = (function() {
   let dungeonState;
   let dungeonFloor;
 
+  function enterDungeon() {
+    createDungeon();
+    setLevel(1);
+    GameSystem.setGameMode(GameMode.dungeon);
+  }
+
+  function exitDungeon() {
+    dungeonState = null;
+    dungeonFloor = null;
+    GameSystem.setGameMode(GameMode.location);
+  }
+
   function createDungeon() {
     Console.log("Creating Dungeon",{ system:'DungeonSystem', level:1 });
     dungeonState = DungeonState();
@@ -31,6 +43,8 @@ global.DungeonSystem = (function() {
     getDungeonFloor: () => { return dungeonFloor; },
     createDungeon,
     setLevel,
+    enterDungeon,
+    exitDungeon,
   });
 
 })();
