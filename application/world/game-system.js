@@ -14,16 +14,12 @@ global.GameSystem = (function() {
   // TODO: None of these are truly async yet. loadLastGame will be once it reads a save file, and startNewGame will be
   //       once it has to consult a lineage for the unlocked starting scenario.
 
-  async function startNewGame(options={}) {
+  async function startNewGame(setup=null) {
     Registry.clear();
-    state = GameState({
-      gameTime: options.time || 0,
-      gameMode: GameMode.location,
-      currentLocation: options.location || 'filthy-hovel',
-    });
+    state = GameState();
     loaded = true;
 
-    if (options.setup) { return options.setup(); }
+    if (typeof setup === "function") { return setup(); }
 
     EpisodeSystem.startEpisode(getGameStartEpisode(), {});
     setGameMode(GameMode.episode);
