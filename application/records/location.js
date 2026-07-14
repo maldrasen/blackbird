@@ -17,7 +17,9 @@ global.Location = (function() {
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return location.name; },
+      getDistrict: () => { return location.district; },
       getBackground: () => { return location.background; },
+      getActions: () => { return location.actions || []; },
     });
   }
 
