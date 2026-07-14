@@ -54,6 +54,7 @@ global.GameSystem = (function() {
     state.setGameMode(mode);
 
     if (HEADLESS === false) {
+      GameStateFrame.hide();
       LocationView.close();
 
       switch (mode) {

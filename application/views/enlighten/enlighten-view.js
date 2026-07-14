@@ -6,11 +6,9 @@ global.EnlightenView = (function() {
 
   function show() {
     MainContent.setMainContent("views/enlighten.html");
-    GameStateFrame.hide();
   }
 
   function complete() {
-    GameStateFrame.show();
     GameSystem.returnToPreviousMode();
   }
 
