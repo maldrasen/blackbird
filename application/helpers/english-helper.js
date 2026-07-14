@@ -40,6 +40,9 @@ global.EnglishHelper = (function() {
     throw new Error(`${letter} is not a letter`);
   }
 
+  // "1 minute" or "10 minutes"
+  function quantify(count, word) { return `${count} ${count === 1 ? word : pluralize(word)}`; }
+
   // Simple possessive logic that works for most words. (Add exceptions to this when we find them.)
   function possessive(word) { return word.endsWith('s') ? `${word}'` : `${word}'s`; }
 
@@ -94,6 +97,7 @@ global.EnglishHelper = (function() {
 
   return Object.freeze({
     pluralize,
+    quantify,
     possessive,
     a_an,
     A_An,
