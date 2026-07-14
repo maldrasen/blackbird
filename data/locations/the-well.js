@@ -3,6 +3,6 @@ Location.register('the-well',{
   district: 'dungeon',
   background: 'backgrounds/dungeon.jpg',
   actions: [
-    { label:'Enter the Dungeon', onClick: () => { DungeonSystem.enterDungeon(); }},
+    { label:'Enter the Dungeon', actionCode:'enter-the-dungeon' },
   ],
 });

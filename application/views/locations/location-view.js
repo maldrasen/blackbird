@@ -7,7 +7,7 @@ global.LocationView = (function() {
 
     X.onClick('#locationControls .open-map', NavigationOverlay.open);
     X.onClick('#characterList a', characterClicked);
-    X.onClick('#locationActions a', actionClicked);
+    X.onClick('#actionList a', actionClicked);
   }
 
   function show() {
@@ -21,45 +21,32 @@ global.LocationView = (function() {
     hideLocationControls();
   }
 
-  // Game state frame will need to update.
   function update() {
     if (HEADLESS) { return; }
 
-    const location = Location.lookup(GameSystem.getState().getCurrentLocation());
-    const characters = CharacterMovementSystem.getCharactersAtLocation(location.getCode());
+    const locationCode = GameSystem.getState().getCurrentLocation();
+    const location = Location.lookup(locationCode);
+    const characters = CharacterMovementSystem.getCharactersAtLocation(locationCode);
 
     MainContent.setBackground(location.getBackground());
 
-    console.log("Location Changed:",location)
-
-    X.first('#locationName').innerText = location.getName();
-
+    setLocationName(location.getName());
     buildCharacterList(characters);
     buildActionList(location.getActions());
   }
 
   function showLocationControls() { X.removeClass('#locationControls','hide'); }
   function hideLocationControls() { X.addClass('#locationControls','hide'); }
+  function setLocationName(name) { X.first('#locationName').innerText = name; }
 
-  function characterClicked(event) {
-    const characterId = event.target.getAttribute('data-id');
-
-    CharacterOverlay.open({ id:characterId });
-
-    CharacterOverlay.addInteraction('Start Training', () => {
-      CharacterOverlay.close();
-      TrainingInterface.proposeTraining(characterId);
-    });
-  }
-
-  function actionClicked(event) {
-    const location = Location.lookup(GameSystem.getState().getCurrentLocation());
-    location.getActions()[event.target.dataset.index].onClick();
-  }
+  // =====================
+  //    Characters List
+  // =====================
 
   function buildCharacterList(characters) {
     const characterList = X.first('#characterList');
 
+    X.empty(characterList);
     characters.forEach(id => {
       characterList.appendChild(buildCharacterItem(id));
     });
@@ -74,13 +61,47 @@ global.LocationView = (function() {
       (${actor.gender} ${actor.species}) - ${personality.archetype}</li>`);
   }
 
-  function buildActionList(actions) {
-    const actionList = X.first('#locationActions');
+  function characterClicked(event) {
+    const characterId = event.target.getAttribute('data-id');
 
-    actions.forEach((action,index) => {
-      actionList.appendChild(X.createElement(
-        `<a href='#' class='button' data-index='${index}'>${action.label}</a>`));
+    CharacterOverlay.open({ id:characterId });
+
+    CharacterOverlay.addInteraction('Start Training', () => {
+      CharacterOverlay.close();
+      TrainingInterface.proposeTraining(characterId);
     });
+  }
+
+  // =================
+  //    Action List
+  // =================
+
+  // TODO: We'll eventually need to look at location actions and make them a bit more robust. They'll probably need
+  //       requirements at the very least. Currently, actions have a label and a code. The code is picked up by the
+  //       actionClicked() handler and executed. This however puts the business logic for the buttons in the view.
+  //       The view may need to perform some work when an action is clicked, so I think the first event handler is
+  //       still valid, but actions should then be passed to the location system, or something else entirely. This
+  //       might be fine though if the actions don't need to do anything complicated. We'll figure it out when we get
+  //       to it.
+
+  function buildActionList(actions) {
+    const actionList = X.first('#actionList');
+
+    X.empty(actionList);
+    actions.forEach(action => {
+      actionList.appendChild(buildActionItem(action));
+    });
+  }
+
+  function buildActionItem(action) {
+    return X.createElement(`<li><a href='#' class='button' data-code='${action.actionCode}'>${action.label}</a></li>`);
+  }
+
+  function actionClicked(event) {
+    switch (event.target.dataset.code) {
+      case 'enter-the-dungeon': return DungeonSystem.enterDungeon();
+      default: throw new Error(`No handler for: ${event.target.dataset.code}`);
+    }
   }
 
   return Object.freeze({
