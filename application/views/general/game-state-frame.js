@@ -93,12 +93,8 @@ global.GameStateFrame = (function() {
     }).getElement();
   }
 
-  // TODO: The raw game time is the number of minutes since some date in the
-  //       past. We'll need to first determine the game start time and have all
-  //       the date math and format functions to do this. Clicking on the time
-  //       could also give you a 'wait around' action if that's needed.
   function getTime() {
-    return `(time:${GameSystem.getState().getGameTime()})`
+    return TimeHelper.getTimeOfDay(GameSystem.getState().getGameTime());
   }
 
   function getLocationLink() {
@@ -112,7 +108,7 @@ global.GameStateFrame = (function() {
   }
 
   function locationClicked() {
-    console.log("TODO: Show like a map or something I guess.")
+    NavigationOverlay.showLocalMap();
   }
 
   return Object.freeze({
