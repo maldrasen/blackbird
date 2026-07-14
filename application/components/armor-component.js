@@ -1,5 +1,5 @@
 global.ArmorComponent = (function() {
-  const $properties = ['base','name','enchantment'];
+  const properties = ['base','name','enchantment'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.armor,data);
@@ -23,7 +23,7 @@ global.ArmorComponent = (function() {
     const armorComponent = lookup(id);
 
     Object.keys(armorComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Armor component does not have a ${key} property.`);
       }
     });

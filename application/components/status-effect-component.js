@@ -1,5 +1,5 @@
 global.StatusEffectComponent = (function() {
-  const $properties = [_parentId,'code'];
+  const properties = [_parentId,'code'];
 
   function create(id,data) {
     const entity = Registry.createEntity();
@@ -25,7 +25,7 @@ global.StatusEffectComponent = (function() {
     const statusEffectComponent = lookup(id);
 
     Object.keys(statusEffectComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Status Effect component does not have a ${key} property.`);
       }
     });

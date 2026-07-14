@@ -1,5 +1,5 @@
 global.Browser = (function() {
-  let $mainWindow;
+  let mainWindow;
 
   function init() {
     Electron.app.whenReady().then(createWindow);
@@ -8,7 +8,7 @@ global.Browser = (function() {
   }
 
   function createWindow() {
-    $mainWindow = new Electron.BrowserWindow({
+    mainWindow = new Electron.BrowserWindow({
       title: 'Blackbird',
       icon: `${ROOT}/assets/icon.png`,
       width: 1920,
@@ -23,30 +23,30 @@ global.Browser = (function() {
       },
     });
 
-    $mainWindow.loadURL(`file://${ROOT}/views/loading.html`);
+    mainWindow.loadURL(`file://${ROOT}/views/loading.html`);
 
     if (Environment.isDevelopment()) {
-      $mainWindow.webContents.openDevTools();
+      mainWindow.webContents.openDevTools();
     }
 
-    $mainWindow.setMenu(null);
+    mainWindow.setMenu(null);
 
-    $mainWindow.on('closed', () => {
-      $mainWindow = null;
+    mainWindow.on('closed', () => {
+      mainWindow = null;
       Electron.app.quit();
     });
   }
 
   // Mac specific window handling.
   function activate() {
-    if ($mainWindow === null) { createWindow(); }
+    if (mainWindow === null) { createWindow(); }
   }
 
   // Send a message to the client. The content of the message will be
   // serialized to JSON.
   function send(message, content) {
-    if ($mainWindow && $mainWindow.webContents) {
-      $mainWindow.webContents.send(message, content);
+    if (mainWindow && mainWindow.webContents) {
+      mainWindow.webContents.send(message, content);
     }
   }
 

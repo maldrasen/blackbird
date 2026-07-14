@@ -1,5 +1,5 @@
 global.FeelingsComponent = (function() {
-  const $properties = [_parentId, 'target', 'affection', 'fear', 'respect'];
+  const properties = [_parentId, 'target', 'affection', 'fear', 'respect'];
 
   function create(id,data) {
     const entity = Registry.createEntity();
@@ -25,7 +25,7 @@ global.FeelingsComponent = (function() {
     const feelingsComponent = lookup(id)
 
     Object.keys(feelingsComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Feelings component does not have a ${key} property.`);
       }
     });

@@ -1,5 +1,5 @@
 global.HealthComponent = (function() {
-  const $properties = ['currentStamina','currentHealth','maxHealth'];
+  const properties = ['currentStamina','currentHealth','maxHealth'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.health,data);
@@ -44,7 +44,7 @@ global.HealthComponent = (function() {
   function validate(id) {
     const healthComponent = lookup(id);
     Object.keys(healthComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Health component does not have a ${key} property.`);
       }
     });

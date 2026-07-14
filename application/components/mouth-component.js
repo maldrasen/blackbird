@@ -1,5 +1,5 @@
 global.MouthComponent = (function() {
-  const $properties = [_parentId,'placement','maxMouthWidth','maxThroatWidth','comfortableThroatDepth','tongueLength',
+  const properties = [_parentId,'placement','maxMouthWidth','maxThroatWidth','comfortableThroatDepth','tongueLength',
     'tongueShape'];
 
   function create(id,data) {
@@ -26,7 +26,7 @@ global.MouthComponent = (function() {
     const mouthComponent = lookup(id);
 
     Object.keys(mouthComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Mouth component does not have a ${key} property.`);
       }
     });

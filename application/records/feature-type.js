@@ -1,18 +1,18 @@
 global.FeatureType = (function() {
-  const $featureTypes = {};
+  const featureTypes = {};
 
   function register(code,data) {
-    $featureTypes[code] = data;
+    featureTypes[code] = data;
   }
 
   function getAllCodes() {
-    return Object.keys($featureTypes);
+    return Object.keys(featureTypes);
   }
 
   function lookup(code) {
-    if ($featureTypes[code] == null) { throw new Error(`Bad feature code [${code}]`); }
+    if (featureTypes[code] == null) { throw new Error(`Bad feature code [${code}]`); }
 
-    const featureType = { ...$featureTypes[code] };
+    const featureType = { ...featureTypes[code] };
 
     return Object.freeze({
       getCode: () => { return code; },

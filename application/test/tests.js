@@ -3,12 +3,12 @@ global.Tests = (function() {
   // Not a great way to do this. Mocha probably has some events I could hook into instead, but just setting a few
   // timeouts that anticipate how long it's going take for mocha to load and then run all the tests is quick and
   // dirty and probably work 99% of the time. Good enough for non-production code.
-  const $mochaLoadTime = 500;
-  const $mochaTestTime = 100;
+  const mochaLoadTime = 500;
+  const mochaTestTime = 100;
 
-  let $testScrollingPanel;
-  let $running = false;
-  let $currentSeed;
+  let testScrollingPanel;
+  let isRunning = false;
+  let currentSeed;
 
   function load() {
     if (Environment.isDevelopment) {
@@ -17,7 +17,7 @@ global.Tests = (function() {
       runTests();
 
       X.onClick('#mocha li.test', () => {
-        $testScrollingPanel.resize();
+        testScrollingPanel.resize();
       });
     }
   }
@@ -33,7 +33,7 @@ global.Tests = (function() {
 
     X.first('#mainContent').appendChild(testFrame);
 
-    $testScrollingPanel = ScrollingPanel({ selector:'#testFrame .scroll' });
+    testScrollingPanel = ScrollingPanel({ selector:'#testFrame .scroll' });
   }
 
   function loadMocha() {
@@ -68,23 +68,23 @@ global.Tests = (function() {
   // of what ran before it.
   function beforeEachTest() {
     reset();
-    $currentSeed = process.env.SEED ? Random.seed(Number(process.env.SEED)) : Random.reseed();
+    currentSeed = process.env.SEED ? Random.seed(Number(process.env.SEED)) : Random.reseed();
   }
 
   function afterEachTest() {
     if (this.currentTest && this.currentTest.state === 'failed') {
-      console.error(`Failing spec used Random seed ${$currentSeed} - "${this.currentTest.fullTitle()}"`);
+      console.error(`Failing spec used Random seed ${currentSeed} - "${this.currentTest.fullTitle()}"`);
     }
     reset();
   }
 
-  function rootBefore() { $running = true; }
-  function rootAfter() { $running = false; }
-  function running() { return $running; }
+  function rootBefore() { isRunning = true; }
+  function rootAfter() { isRunning = false; }
+  function running() { return isRunning; }
 
   function runTests() {
-    setTimeout(mocha.run,$mochaLoadTime);
-    setTimeout(resizeReport,$mochaLoadTime + $mochaTestTime);
+    setTimeout(mocha.run,mochaLoadTime);
+    setTimeout(resizeReport,mochaLoadTime + mochaTestTime);
   }
 
   function resizeReport() {
@@ -93,7 +93,7 @@ global.Tests = (function() {
       X.addClass('#mainMenu','hide');
     }
 
-    $testScrollingPanel.resize();
+    testScrollingPanel.resize();
   }
 
   return {

@@ -1,5 +1,5 @@
 global.CockComponent = (function() {
-  const $properties = [
+  const properties = [
     _parentId,
     'placement',
     'count',
@@ -42,7 +42,7 @@ global.CockComponent = (function() {
     const cockComponent = lookup(id);
 
     Object.keys(cockComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Cock component does not have a ${key} property.`);
       }
     });

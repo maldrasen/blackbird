@@ -1,5 +1,5 @@
 global.SexualHistoryComponent =  (function() {
-  const $properties = ['actions','firsts'];
+  const properties = ['actions','firsts'];
 
   function create(id,data) {
     Registry.createComponent(id, ComponentType.sexualHistory, data);
@@ -23,7 +23,7 @@ global.SexualHistoryComponent =  (function() {
     const historyComponent = SexualHistoryComponent.lookup(id);
 
     Object.keys(historyComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Sexual history component does not have a ${key} property.`);
       }
     });

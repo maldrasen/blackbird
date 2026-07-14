@@ -1,20 +1,19 @@
-global.ConsentResult = (characterId, targetId=null) => {
+global.ConsentResult = (characterId, target=null) => {
 
-  const $characterId = characterId;
-  const $targetId = targetId || GameSystem.getState().getPlayer();
+  const targetId = target || GameSystem.getState().getPlayer();
 
-  let $response, $consentValue, $sexAction;
+  let response, consentValue, sexAction;
 
   // Setting the sex action also resets the results so that the same
   // ConsentResult object can be used for multiple actions
   function setSexAction(code) {
-    $response = { additive:[], multiplicative:[] };
-    $consentValue = 0;
-    $sexAction = SexAction.lookup(code);
+    response = { additive:[], multiplicative:[] };
+    consentValue = 0;
+    sexAction = SexAction.lookup(code);
   }
 
   function applyFactors() {
-    $sexAction.getConsentFactors().forEach(factor => {
+    sexAction.getConsentFactors().forEach(factor => {
       applyFactor(factor);
     });
   }
@@ -31,7 +30,7 @@ global.ConsentResult = (characterId, targetId=null) => {
   }
 
   function applyBaseFactor(factor) {
-    const feelings = FeelingsComponent.findByTarget($characterId, $targetId);
+    const feelings = FeelingsComponent.findByTarget(characterId, targetId);
     const affectionBase = CharacterMath.emotionBaseValue(feelings.affection);
     const fearBase = CharacterMath.emotionBaseValue(feelings.fear);
     const respectBase = CharacterMath.emotionBaseValue(feelings.respect);
@@ -57,8 +56,8 @@ global.ConsentResult = (characterId, targetId=null) => {
       default: throw new Error(`Unrecognized BaseClass (${factor.baseClass})`);
     }
 
-    $consentValue += baseValue;
-    $response.additive.push({
+    consentValue += baseValue;
+    response.additive.push({
       label: StringHelper.titlecaseAll(factor.baseClass),
       value: baseValue });
   }
@@ -70,15 +69,15 @@ global.ConsentResult = (characterId, targetId=null) => {
   // The arousal value is used as an additive base value, so we expect the midrange values to be around 10 or so.
   // These values can be adjusted further by supplying a strength factor the arousal is multiplied by.
   function applyArousalFactor(factor) {
-    const component = ArousalComponent.lookup($characterId);
+    const component = ArousalComponent.lookup(characterId);
 
     let arousal = Math.pow(component.arousal,2) * 0.01;
     if (factor.strength) {
       arousal *= factor.strength;
     }
 
-    $consentValue += arousal;
-    $response.additive.push({
+    consentValue += arousal;
+    response.additive.push({
       label: 'Arousal',
       value: arousal });
   }
@@ -94,8 +93,8 @@ global.ConsentResult = (characterId, targetId=null) => {
   // of logical space, though they also kind of have both. Also, it should be fine to scale the factor twice for the
   // non-binary characters here. When you reduce the range, the resulting range remains within the legal limits.
   function applyGenderFactor(factor) {
-    const preferences = SexualPreferencesComponent.lookup($characterId);
-    const gender = ActorComponent.lookup($targetId).gender;
+    const preferences = SexualPreferencesComponent.lookup(characterId);
+    const gender = ActorComponent.lookup(targetId).gender;
 
     let maleFactor = 1;
     let femaleFactor = 1;
@@ -120,15 +119,15 @@ global.ConsentResult = (characterId, targetId=null) => {
     maleFactor = CharacterMath.applyFactorScale(maleFactor, factor.scale || 2);
     femaleFactor = CharacterMath.applyFactorScale(femaleFactor, factor.scale || 2);
 
-    $consentValue = $consentValue * (maleFactor * femaleFactor);
-    $response.multiplicative.push({
+    consentValue = consentValue * (maleFactor * femaleFactor);
+    response.multiplicative.push({
       label: 'Gender',
       value: (maleFactor * femaleFactor),
     });
   }
 
   function applyPreferenceFactor(factor) {
-    const preferences = SexualPreferencesComponent.lookup($characterId);
+    const preferences = SexualPreferencesComponent.lookup(characterId);
     if (preferences[factor.code] == null) { return; }
 
     const preferenceValue = factor.conflicting ? -1 * preferences[factor.code] : preferences[factor.code]
@@ -138,20 +137,20 @@ global.ConsentResult = (characterId, targetId=null) => {
       factorValue = CharacterMath.applyFactorScale(factorValue, factor.scale);
     }
 
-    $consentValue = $consentValue * factorValue;
-    $response.multiplicative.push({
+    consentValue = consentValue * factorValue;
+    response.multiplicative.push({
       label: SexualPreference.lookup(factor.code).getName(),
       value: factorValue,
     });
   }
 
   function getConsentValue() {
-    if ($response.additive.length > 0) { return $consentValue; }
+    if (response.additive.length > 0) { return consentValue; }
     throw new Error(`No factors have been applied to the ConsentResult.`);
   }
 
   function getConsent() {
-    const target = $sexAction.getConsentTarget();
+    const target = sexAction.getConsentTarget();
     const value = getConsentValue();
     if (value < target)        { return Consent.unwilling; }
     if (value < (target*1.25)) { return Consent.reluctant; }
@@ -178,9 +177,9 @@ global.ConsentResult = (characterId, targetId=null) => {
   }
 
   return Object.freeze({
-    getCharacter: () => { return $characterId; },
-    getTarget: () => { return $targetId; },
-    getResponse: () => { return $response },
+    getCharacter: () => { return characterId; },
+    getTarget: () => { return targetId; },
+    getResponse: () => { return response },
     getConsentValue,
     getConsentClassname,
     getConsentLabel,

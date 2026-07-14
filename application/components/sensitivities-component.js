@@ -1,7 +1,7 @@
 global.SensitivitiesComponent = (function() {
 
   // The Sensitivities are upgraded by spending animus, they effect the scale of sensations during sex acts.
-  const $properties = [
+  const properties = [
     'anus',
     'cervix',
     'cock',
@@ -36,7 +36,7 @@ global.SensitivitiesComponent = (function() {
 
     Object.keys(sensitivitiesComponent).forEach(key => {
       Validate.between(`Sensitivities.${key}`, sensitivitiesComponent[key], 1, 8);
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Sensitivities component does not have a ${key} property.`);
       }
     });

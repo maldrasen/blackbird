@@ -1,5 +1,5 @@
 global.BodyComponent = (function() {
-  const $properties = [
+  const properties = [
     'height',
     'skinType',
     'skinColor',
@@ -37,7 +37,7 @@ global.BodyComponent = (function() {
     const bodyComponent = lookup(id)
 
     Object.keys(bodyComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Body component does not have a ${key} property.`);
       }
     });

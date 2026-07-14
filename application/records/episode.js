@@ -1,5 +1,5 @@
 global.Episode = (function() {
-  const $episodes = {};
+  const episodes = {};
 
   const views = {
     'novel': `views/episode-novel.html`,
@@ -8,17 +8,17 @@ global.Episode = (function() {
   }
 
   function register(code,data) {
-    $episodes[code] = data;
+    episodes[code] = data;
   }
 
   function getAllCodes() {
-    return Object.keys($episodes);
+    return Object.keys(episodes);
   }
 
   function lookup(code) {
-    if ($episodes[code] == null) { throw new Error(`Bad episode code [${code}]`); }
+    if (episodes[code] == null) { throw new Error(`Bad episode code [${code}]`); }
 
-    const episode = { ...$episodes[code] };
+    const episode = { ...episodes[code] };
 
     function getLayout() {
       return episode.layout || 'novel';

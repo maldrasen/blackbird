@@ -1,14 +1,14 @@
 global.Article = (function() {
-  const $articles = {};
+  const articles = {};
 
   function register(code,data) {
-    $articles[code] = data;
+    articles[code] = data;
   }
 
   function lookup(code) {
-    if ($articles[code] == null) { throw new Error(`Bad article code [${code}]`); }
+    if (articles[code] == null) { throw new Error(`Bad article code [${code}]`); }
 
-    const article = { ...$articles[code] };
+    const article = { ...articles[code] };
 
     return Object.freeze({
       getCode: () => { return code; },

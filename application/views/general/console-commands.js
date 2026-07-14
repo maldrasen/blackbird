@@ -1,6 +1,6 @@
 global.ConsoleCommands = (function() {
 
-  const $commands = {
+  const commands = {
     help: {
       commandFunction: printHelp,
       description:`Prints this list of console commands.` },
@@ -9,8 +9,8 @@ global.ConsoleCommands = (function() {
       description:`Print all the component data for a given entity ID.` },
   }
 
-  const $commandHistory = [];
-  let $commandHistoryPointer;
+  const commandHistory = [];
+  let commandHistoryPointer;
 
   function sendCommand(input) {
     const command = input.value;
@@ -22,19 +22,19 @@ global.ConsoleCommands = (function() {
       catch (error) {
         Console.logError(`Error running command`,error,{ system:'Console' });
       }
-      $commandHistory.push(command);
-      $commandHistoryPointer = null;
+      commandHistory.push(command);
+      commandHistoryPointer = null;
     }
   }
 
   function loadPreviousCommand() {
-    if ($commandHistoryPointer == null) {
-      $commandHistoryPointer = $commandHistory.length;
+    if (commandHistoryPointer == null) {
+      commandHistoryPointer = commandHistory.length;
     }
-    $commandHistoryPointer -= 1;
+    commandHistoryPointer -= 1;
 
-    if ($commandHistoryPointer >= 0) {
-      const command = $commandHistory[$commandHistoryPointer];
+    if (commandHistoryPointer >= 0) {
+      const command = commandHistory[commandHistoryPointer];
       if (command) {
         const input = X.first('#commandInput');
         input.value = command;
@@ -45,14 +45,14 @@ global.ConsoleCommands = (function() {
       }
     }
 
-    if ($commandHistoryPointer === 0) {
-      $commandHistoryPointer = null;
+    if (commandHistoryPointer === 0) {
+      commandHistoryPointer = null;
     }
   }
 
   function executeCommand(commandString) {
     const args = commandString.split(" ");
-    const command = $commands[args[0]];
+    const command = commands[args[0]];
     args.shift();
 
     if (command == null) {
@@ -83,8 +83,8 @@ global.ConsoleCommands = (function() {
 
   function printHelp() {
     let list = `<pre class='padding'>\n=== Console Help ===\n`;
-    Object.keys($commands).forEach(name => {
-      list += `${name.padEnd(12)} ${$commands[name].description}\n`
+    Object.keys(commands).forEach(name => {
+      list += `${name.padEnd(12)} ${commands[name].description}\n`
     });
     return `${list}</pre>`;
   }

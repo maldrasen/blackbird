@@ -1,6 +1,6 @@
 global.Name = (function() {
 
-  const $nameData = {
+  const nameData = {
     title: {},
     name: {},
     surname: {},
@@ -8,10 +8,10 @@ global.Name = (function() {
 
   function register(type, gender, names) {
     if (gender !== Gender.enby) {
-      return $nameData[type][gender] = names;
+      return nameData[type][gender] = names;
     }
-    $nameData[type][Gender.male] = $nameData[type][Gender.male].concat(names);
-    $nameData[type][Gender.female] = $nameData[type][Gender.female].concat(names);
+    nameData[type][Gender.male] = nameData[type][Gender.male].concat(names);
+    nameData[type][Gender.female] = nameData[type][Gender.female].concat(names);
   }
 
   // Get a random name from the normal name lists based on the character's gender. (Some species, demonic entities and
@@ -19,10 +19,10 @@ global.Name = (function() {
   // will randomly pick one to use. Once we decide which name list to use we enter a while loop, picking names randomly
   // until we find unique character name.
   function getRandom(genderCode, speciesCode) {
-    let list = $nameData.name.female;
+    let list = nameData.name.female;
 
-    if (genderCode === Gender.male) { list = $nameData.name.male; }
-    if (genderCode === Gender.enby) { list = Random.roll(10) < 5 ? $nameData.name.male : $nameData.name.female }
+    if (genderCode === Gender.male) { list = nameData.name.male; }
+    if (genderCode === Gender.enby) { list = Random.roll(10) < 5 ? nameData.name.male : nameData.name.female }
 
     while(true) {
       let names = {
@@ -45,16 +45,16 @@ global.Name = (function() {
   }
 
   function getRandomTitle(genderCode) {
-    let list = $nameData.title.female;
-    if (genderCode === Gender.male) { list = $nameData.title.male; }
-    if (genderCode === Gender.enby) { list = Random.roll(10) < 5 ? $nameData.title.male : $nameData.title.female }
+    let list = nameData.title.female;
+    if (genderCode === Gender.male) { list = nameData.title.male; }
+    if (genderCode === Gender.enby) { list = Random.roll(10) < 5 ? nameData.title.male : nameData.title.female }
     return Random.from(list);
   }
 
   function getRandomSurname(genderCode) {
-    let list = $nameData.surname.female;
-    if (genderCode === Gender.male) { list = $nameData.surname.male; }
-    if (genderCode === Gender.enby) { list = Random.roll(10) < 5 ? $nameData.surname.male : $nameData.surname.female }
+    let list = nameData.surname.female;
+    if (genderCode === Gender.male) { list = nameData.surname.male; }
+    if (genderCode === Gender.enby) { list = Random.roll(10) < 5 ? nameData.surname.male : nameData.surname.female }
     return Random.from(list);
   }
 

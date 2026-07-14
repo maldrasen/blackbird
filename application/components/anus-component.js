@@ -4,7 +4,7 @@
 //       e.g. shitting nipples, then there's no reason to have a strangely placed anus  
 
 global.AnusComponent = (function() {
-  const $properties = [_parentId,'placement','shape','minWidth','maxWidth','prolapseLength'];
+  const properties = [_parentId,'placement','shape','minWidth','maxWidth','prolapseLength'];
 
   function create(id,data) {
     const entity = Registry.createEntity();
@@ -30,7 +30,7 @@ global.AnusComponent = (function() {
     const anusComponent = lookup(id);
 
     Object.keys(anusComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Anus component does not have a ${key} property.`);
       }
     });

@@ -1,5 +1,5 @@
 global.WeaponComponent = (function() {
-  const $properties = ['base','name','nameType','textKey','enchantment'];
+  const properties = ['base','name','nameType','textKey','enchantment'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.weapon,data);
@@ -23,7 +23,7 @@ global.WeaponComponent = (function() {
     const weaponComponent = lookup(id);
 
     Object.keys(weaponComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Weapon component does not have a ${key} property.`);
       }
     });

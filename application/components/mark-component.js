@@ -1,5 +1,5 @@
 global.MarkComponent = (function() {
-  const $properties = [_parentId,'type','memory'];
+  const properties = [_parentId,'type','memory'];
 
   function create(id,data) {
     const entity = Registry.createEntity();
@@ -25,7 +25,7 @@ global.MarkComponent = (function() {
     const markComponent = lookup(id);
 
     Object.keys(markComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Mark component does not have a ${key} property.`);
       }
     });

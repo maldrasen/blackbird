@@ -1,5 +1,5 @@
 global.DescriptionComponent = (function() {
-  const $properties = [_parentId, 'template'];
+  const properties = [_parentId, 'template'];
 
   function create(id,data) {
     if (of(id) != null) { throw new Error(`A description for this component already exists.`); }
@@ -27,7 +27,7 @@ global.DescriptionComponent = (function() {
     const descriptionComponent = lookup(id);
 
     Object.keys(descriptionComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Description component does not have a ${key} property.`);
       }
     });

@@ -1,20 +1,20 @@
 global.Skill = (function() {
-  const $skills = {};
+  const skills = {};
 
   // The skill register() function also needs to add the skill code as a property of the Skills component.
   function register(code,data) {
-    $skills[code] = data;
+    skills[code] = data;
     SkillsComponent.addSkill(code);
   }
 
   function getAllCodes() {
-    return Object.keys($skills);
+    return Object.keys(skills);
   }
 
   function lookup(code) {
-    if ($skills[code] == null) { throw new Error(`Bad skill code [${code}]`); }
+    if (skills[code] == null) { throw new Error(`Bad skill code [${code}]`); }
 
-    const skill = { ...$skills[code] };
+    const skill = { ...skills[code] };
 
     return Object.freeze({
       getCode: () => { return code; },

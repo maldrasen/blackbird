@@ -1,5 +1,5 @@
 global.CacheComponent = (function() {
-  const $properties = ['speedFactor'];
+  const properties = ['speedFactor'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.cache,data);
@@ -29,7 +29,7 @@ global.CacheComponent = (function() {
     const cacheComponent = lookup(id);
 
     Object.keys(cacheComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Cache component does not have a ${key} property.`);
       }
     });

@@ -1,11 +1,10 @@
 global.StateRecorder = function(filepath) {
-  const $filepath = filepath;
 
   function loadState() {
     return new Promise(resolve => {
-      fs.exists($filepath, exists => {
+      fs.exists(filepath, exists => {
         if (!exists) { return resolve(null); }
-        FileHelper.readJSON($filepath).then(data => {
+        FileHelper.readJSON(filepath).then(data => {
           resolve(data);
         });
       });
@@ -13,7 +12,7 @@ global.StateRecorder = function(filepath) {
   }
 
   function saveState(data) {
-    if (data) { return FileHelper.writeJSON($filepath, data); }
+    if (data) { return FileHelper.writeJSON(filepath, data); }
   }
 
   return Object.freeze({

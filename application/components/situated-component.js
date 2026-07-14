@@ -1,5 +1,5 @@
 global.SituatedComponent = (function() {
-  const $properties = ['currentLocation'];
+  const properties = ['currentLocation'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.situated,data);
@@ -23,7 +23,7 @@ global.SituatedComponent = (function() {
     const situatedComponent = lookup(id);
 
     Object.keys(situatedComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Situated component does not have a ${key} property.`);
       }
     });

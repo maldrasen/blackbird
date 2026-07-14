@@ -1,5 +1,5 @@
 global.ActorComponent = (function() {
-  const $properties = ['title','name','surname','gender','species'];
+  const properties = ['title','name','surname','gender','species'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.actor,data);
@@ -23,7 +23,7 @@ global.ActorComponent = (function() {
     const actorComponent = lookup(id)
 
     Object.keys(actorComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Actor component does not have a ${key} property.`);
       }
     });

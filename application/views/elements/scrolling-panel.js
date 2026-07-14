@@ -1,68 +1,68 @@
 
 const STEP_DISTANCE = 50;
 
-const $$scrollingPanels = {};
-let $$panelIndex = 0;
-let $$activeGrab = null;
+const scrollingPanels = {};
+let panelIndex = 0;
+let activeGrab = null;
 
 global.ScrollingPanel = function(options) {
-  const $id = options.id || nextID();
-  const $wrappedContent = determineWrappedContent(options)
+  const id = options.id || nextID();
+  const wrappedContent = determineWrappedContent(options)
 
-  let $scrollingPanel;
-  let $scrollingPanelContent;
-  let $scrollingPanelTrack;
-  let $scrollingPanelThumb;
-  let $contentHeight;
+  let scrollingPanel;
+  let scrollingPanelContent;
+  let scrollingPanelTrack;
+  let scrollingPanelThumb;
+  let manualContentHeight;
 
-  function getID() { return $id; }
-  function getWrappedContent() { return $wrappedContent; }
+  function getID() { return id; }
+  function getWrappedContent() { return wrappedContent; }
 
   function build() {
-    $scrollingPanelContent = X.createElement(`<div class='scrolling-panel-content'></div>`);
+    scrollingPanelContent = X.createElement(`<div class='scrolling-panel-content'></div>`);
 
-    $scrollingPanelThumb = X.createElement(`<div class='scrolling-panel-thumbwheel'></div>`);
-    $scrollingPanelThumb.addEventListener('mousedown', startDrag);
+    scrollingPanelThumb = X.createElement(`<div class='scrolling-panel-thumbwheel'></div>`);
+    scrollingPanelThumb.addEventListener('mousedown', startDrag);
 
-    $scrollingPanelTrack = X.createElement(`<div class='scrolling-panel-track'></div>`);
-    $scrollingPanelTrack.appendChild($scrollingPanelThumb);
-    $scrollingPanelTrack.addEventListener('click', trackClicked);
+    scrollingPanelTrack = X.createElement(`<div class='scrolling-panel-track'></div>`);
+    scrollingPanelTrack.appendChild(scrollingPanelThumb);
+    scrollingPanelTrack.addEventListener('click', trackClicked);
 
-    $scrollingPanel = X.createElement(`<div class='scrolling-panel'></div>`);
-    $scrollingPanel.dataset.id = $id;
-    $scrollingPanel.dataset.scrollPosition = 0;
-    $scrollingPanel.dataset.thumbPosition = 0;
-    $scrollingPanel.appendChild($scrollingPanelContent);
-    $scrollingPanel.appendChild($scrollingPanelTrack);
-    $scrollingPanel.addEventListener('wheel', event => {
+    scrollingPanel = X.createElement(`<div class='scrolling-panel'></div>`);
+    scrollingPanel.dataset.id = id;
+    scrollingPanel.dataset.scrollPosition = 0;
+    scrollingPanel.dataset.thumbPosition = 0;
+    scrollingPanel.appendChild(scrollingPanelContent);
+    scrollingPanel.appendChild(scrollingPanelTrack);
+    scrollingPanel.addEventListener('wheel', event => {
       event.preventDefault();
       event.stopPropagation();
       (event.deltaY > 0) ? stepDown(STEP_DISTANCE) : stepUp(STEP_DISTANCE);
     },{ passive:false });
 
-    const parent = $wrappedContent.parentNode;
-    parent.removeChild($wrappedContent);
-    parent.appendChild($scrollingPanel);
+    const parent = wrappedContent.parentNode;
+    parent.removeChild(wrappedContent);
+    parent.appendChild(scrollingPanel);
 
-    $scrollingPanelContent.appendChild($wrappedContent);
+    scrollingPanelContent.appendChild(wrappedContent);
 
     resize();
   }
 
   function setHeight(height) {
-    $scrollingPanel.style['height'] = `${height}px`;
+    scrollingPanel.style['height'] = `${height}px`;
   }
 
   // If the scrolling panel is within an element with a fixed position the
   // height of the scrolling panel content will always be the height of the
   // scrolling panel. In this situation the content height must be set manually.
-  function setContentHeight(height) { $contentHeight = height; }
+  function setContentHeight(height) { manualContentHeight = height; }
 
   function resize() {
-    if ($scrollingPanel.clientHeight === 0) { return; }
+    if (scrollingPanel.clientHeight === 0) { return; }
 
-    let contentHeight = $contentHeight || $scrollingPanelContent.scrollHeight;
-    let visibleHeight = $scrollingPanel.clientHeight;
+    let contentHeight = manualContentHeight || scrollingPanelContent.scrollHeight;
+    let visibleHeight = scrollingPanel.clientHeight;
 
     if (visibleHeight >= contentHeight) {
       setThumbPosition(0);
@@ -77,22 +77,22 @@ global.ScrollingPanel = function(options) {
     }
 
     let thumbExtent = visibleHeight - thumbHeight;
-    let thumbPosition = $scrollingPanel.dataset.scrollPosition * thumbExtent;
+    let thumbPosition = scrollingPanel.dataset.scrollPosition * thumbExtent;
 
     setThumbPosition(thumbPosition);
     setThumbExtent(thumbExtent);
 
-    $scrollingPanelThumb.style['height'] = `${thumbHeight}px`;
+    scrollingPanelThumb.style['height'] = `${thumbHeight}px`;
   }
 
-  function isActive() { return X.hasClass($scrollingPanelTrack,'off') === false; }
-  function showTrack() { X.removeClass($scrollingPanelTrack,'off'); }
-  function hideTrack() { X.addClass($scrollingPanelTrack,'off'); }
+  function isActive() { return X.hasClass(scrollingPanelTrack,'off') === false; }
+  function showTrack() { X.removeClass(scrollingPanelTrack,'off'); }
+  function hideTrack() { X.addClass(scrollingPanelTrack,'off'); }
 
   function trackClicked(event) {
     if (X.hasClass(event.target,'scrolling-panel-track')) {
       let clickAt = event.pageY;
-      let thumbPosition = X.getPosition($scrollingPanelThumb).top;
+      let thumbPosition = X.getPosition(scrollingPanelThumb).top;
       (clickAt < thumbPosition) ? stepUp(getPageDistance()) : stepDown(getPageDistance());
     }
   }
@@ -127,19 +127,19 @@ global.ScrollingPanel = function(options) {
   function setThumbPosition(position) {
     if (typeof position !== 'number' || isNaN(position)) { throw new Error(`Thumb position is not a number`); }
 
-    $scrollingPanel.dataset.thumbPosition = position;
-    $scrollingPanelThumb.style['top'] = `${position}px`;
+    scrollingPanel.dataset.thumbPosition = position;
+    scrollingPanelThumb.style['top'] = `${position}px`;
     positionView();
   }
 
   function setThumbExtent(extent) {
     if (typeof extent !== 'number' || isNaN(extent)) { throw new Error(`Thumb extent is not a number`); }
-    $scrollingPanel.dataset.thumbExtent = extent;
+    scrollingPanel.dataset.thumbExtent = extent;
   }
 
-  function getPageDistance() { return X.getPosition($scrollingPanelThumb).height * 0.9; }
-  function getThumbPosition() { return parseInt($scrollingPanel.dataset.thumbPosition || 0); }
-  function getThumbExtent() { return parseFloat($scrollingPanel.dataset.thumbExtent || 1); }
+  function getPageDistance() { return X.getPosition(scrollingPanelThumb).height * 0.9; }
+  function getThumbPosition() { return parseInt(scrollingPanel.dataset.thumbPosition || 0); }
+  function getThumbExtent() { return parseFloat(scrollingPanel.dataset.thumbExtent || 1); }
 
   // Read the thumb-position and set view offset
   function positionView() {
@@ -152,16 +152,16 @@ global.ScrollingPanel = function(options) {
       scrollPosition = 1;
     }
 
-    $scrollingPanel.dataset.scrollPosition = scrollPosition;
+    scrollingPanel.dataset.scrollPosition = scrollPosition;
 
     if (scrollPosition > 0) {
-      let contentHeight = $contentHeight || $scrollingPanelContent.scrollHeight;
-      let visibleHeight = $scrollingPanel.clientHeight;
+      let contentHeight = manualContentHeight || scrollingPanelContent.scrollHeight;
+      let visibleHeight = scrollingPanel.clientHeight;
 
       contentOffset = (contentHeight - visibleHeight) * -scrollPosition
     }
 
-    $scrollingPanelContent.style['top'] = `${contentOffset}px`;
+    scrollingPanelContent.style['top'] = `${contentOffset}px`;
   }
 
   // === Drag and Drop =========================================================
@@ -170,7 +170,7 @@ global.ScrollingPanel = function(options) {
     let body = X.first('body');
     let scrollTop = body.scrollTop;
 
-    $$activeGrab = {
+    activeGrab = {
       position: (event.pageY - X.getPosition(event.target).top + scrollTop)
     };
 
@@ -180,9 +180,9 @@ global.ScrollingPanel = function(options) {
   }
 
   function moveThumb(event) {
-    let panelTop = X.getPosition($scrollingPanel).top;
+    let panelTop = X.getPosition(scrollingPanel).top;
     let scrollTop = X.first('body').scrollTop;
-    let top = event.pageY - $$activeGrab.position - panelTop + scrollTop;
+    let top = event.pageY - activeGrab.position - panelTop + scrollTop;
     let limit = getThumbExtent();
 
     if (top < 0) { top = 0; }
@@ -198,14 +198,14 @@ global.ScrollingPanel = function(options) {
     body.removeEventListener('mouseup', stopDrag);
     body.removeEventListener('mouseleave', stopDrag);
 
-    $$activeGrab = null;
+    activeGrab = null;
   }
 
   // ===========================================================================
 
   build()
 
-  const $self = Object.freeze({
+  const self = Object.freeze({
     getID,
     getWrappedContent,
     setHeight,
@@ -219,9 +219,9 @@ global.ScrollingPanel = function(options) {
     scrollToBottom,
   });
 
-  $$scrollingPanels[$id] = $self;
+  scrollingPanels[id] = self;
 
-  return $self;
+  return self;
 }
 
 // Wrapped content could be found with an id, a selector, or the element.
@@ -239,7 +239,7 @@ function activeScrollingPanel() {
   const root = document.elementFromPoint(position.x, position.y);
   if (root) {
     const element = root.closest('.scrolling-panel');
-    return element ? $$scrollingPanels[element.dataset.id] : null;
+    return element ? scrollingPanels[element.dataset.id] : null;
   }
 }
 
@@ -261,11 +261,11 @@ function handleKeyPress(event) {
 }
 
 function nextID() {
-  return `panel-${$$panelIndex++}`;
+  return `panel-${panelIndex++}`;
 }
 
 function resizeAll() {
-  Object.values($$scrollingPanels).forEach(scrollingPanel => scrollingPanel.resize());
+  Object.values(scrollingPanels).forEach(scrollingPanel => scrollingPanel.resize());
 }
 
 ScrollingPanel.init = function() {
@@ -281,9 +281,9 @@ ScrollingPanel.init = function() {
 // temporary scrolling panel, I'll just look for orphaned panels every 10
 // seconds or so and delete them.
 window.setInterval(() => {
-  Object.keys($$scrollingPanels).forEach(key => {
-    if ($$scrollingPanels[key].getWrappedContent().closest('body') == null) {
-      delete $$scrollingPanels[key];
+  Object.keys(scrollingPanels).forEach(key => {
+    if (scrollingPanels[key].getWrappedContent().closest('body') == null) {
+      delete scrollingPanels[key];
     }
   });
 },10000);

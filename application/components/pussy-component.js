@@ -1,5 +1,5 @@
 global.PussyComponent = (function() {
-  const $properties = [
+  const properties = [
     _parentId,
     'placement',
     'shape',
@@ -41,7 +41,7 @@ global.PussyComponent = (function() {
     const pussyComponent = lookup(id);
 
     Object.keys(pussyComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Pussy component does not have a ${key} property.`);
       }
     });

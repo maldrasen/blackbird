@@ -1,5 +1,5 @@
 global.EquipmentComponent = (function() {
-  const $properties = Object.keys(EquipmentSlot);
+  const properties = Object.keys(EquipmentSlot);
 
   function create(id) {
     Registry.createComponent(id,ComponentType.equipment,{});
@@ -26,7 +26,7 @@ global.EquipmentComponent = (function() {
 
     Object.keys(equipmentComponent).forEach(slot => {
 
-      if ($properties.includes(slot) === false) {
+      if (properties.includes(slot) === false) {
         throw new Error(`Equipment component does not have a ${slot} slot.`);
       }
 

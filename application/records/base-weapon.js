@@ -1,18 +1,18 @@
 global.BaseWeapon = (function() {
-  const $weapons = {};
+  const weapons = {};
 
   function register(code,data) {
-    $weapons[code] = data;
+    weapons[code] = data;
   }
 
   function getAllCodes() {
-    return Object.keys($weapons);
+    return Object.keys(weapons);
   }
 
   function lookup(code) {
-    if ($weapons[code] == null) { throw new Error(`Bad base weapon code [${code}]`); }
+    if (weapons[code] == null) { throw new Error(`Bad base weapon code [${code}]`); }
 
-    const weapon = { ...$weapons[code] };
+    const weapon = { ...weapons[code] };
 
     // Except for martial arts and block, all the weapon skills are weapon type +s
     function getSkill() {

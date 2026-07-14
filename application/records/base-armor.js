@@ -1,19 +1,19 @@
 global.BaseArmor = (function() {
-  const $armors = {};
+  const armors = {};
 
   // The skill register() function also needs to add the skill code as a property of the Skills component.
   function register(code,data) {
-    $armors[code] = data;
+    armors[code] = data;
   }
 
   function getAllCodes() {
-    return Object.keys($armors);
+    return Object.keys(armors);
   }
 
   function lookup(code) {
-    if ($armors[code] == null) { throw new Error(`Bad base armor code [${code}]`); }
+    if (armors[code] == null) { throw new Error(`Bad base armor code [${code}]`); }
 
-    const armor = { ...$armors[code] };
+    const armor = { ...armors[code] };
 
     // Materials is an object keyed by the part it makes up ({ body:{...}, backing:{...} }), the same shape weapons
     // use. The first part listed is the primary one - its material's absorption is what scales the armor's reduction.

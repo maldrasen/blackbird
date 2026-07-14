@@ -1,5 +1,5 @@
 global.MonsterComponent = (function() {
-  const $properties = ['code','basicAttack','threatTable','abilityCooldowns'];
+  const properties = ['code','basicAttack','threatTable','abilityCooldowns'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.monster,data);
@@ -22,7 +22,7 @@ global.MonsterComponent = (function() {
   function validate(id) {
     const monsterComponent = lookup(id);
     Object.keys(monsterComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Monster component does not have a ${key} property.`);
       }
     });

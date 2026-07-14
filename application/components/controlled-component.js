@@ -1,5 +1,5 @@
 global.ControlledComponent = (function() {
-  const $properties = ['control'];
+  const properties = ['control'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.controlled,data);
@@ -24,7 +24,7 @@ global.ControlledComponent = (function() {
     const controlledComponent = lookup(id);
 
     Object.keys(controlledComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Controlled component does not have a ${key} property.`);
       }
     });

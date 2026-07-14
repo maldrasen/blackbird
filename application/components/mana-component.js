@@ -1,5 +1,5 @@
 global.ManaComponent = (function() {
-  const $properties = ['red_mana','yellow_mana','green_mana','blue_mana','black_mana'];
+  const properties = ['red_mana','yellow_mana','green_mana','blue_mana','black_mana'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.mana,data);
@@ -23,7 +23,7 @@ global.ManaComponent = (function() {
     const manaComponent = lookup(id)
 
     Object.keys(manaComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Mana component does not have a ${key} property.`);
       }
     });

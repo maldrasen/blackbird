@@ -1,18 +1,18 @@
 global.SexPosition = (function() {
-  const $sexPositions = {};
+  const sexPositions = {};
 
   function register(code,data) {
-    $sexPositions[code] = data;
+    sexPositions[code] = data;
   }
 
   function getAllCodes() {
-    return Object.keys($sexPositions);
+    return Object.keys(sexPositions);
   }
 
   function lookup(code) {
-    if ($sexPositions[code] == null) { throw new Error(`Bad sex position code [${code}]`); }
+    if (sexPositions[code] == null) { throw new Error(`Bad sex position code [${code}]`); }
 
-    const position = { ...$sexPositions[code] };
+    const position = { ...sexPositions[code] };
 
     return Object.freeze({
       getCode: () => { return code; },

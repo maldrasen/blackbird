@@ -8,9 +8,9 @@ global.TrainingCategoryToggles = (function() {
 
   function build() {
     const state = TrainingSystem.getState();
-    let $mainCategories = new Set();
-    let $partnerCategories = new Set();
-    let $playerCategories = new Set();
+    let mainCategories = new Set();
+    let partnerCategories = new Set();
+    let playerCategories = new Set();
 
     const player = state.getPlayer();
     const partner = state.getPartner();
@@ -22,38 +22,38 @@ global.TrainingCategoryToggles = (function() {
 
     state.getPossibleActions().forEach(code => {
       const action = SexAction.lookup(code);
-      $mainCategories.add(action.getMainCategory());
-      $partnerCategories.add(action.getPartnerCategory());
-      $playerCategories.add(action.getPlayerCategory());
+      mainCategories.add(action.getMainCategory());
+      partnerCategories.add(action.getPartnerCategory());
+      playerCategories.add(action.getPlayerCategory());
     });
 
-    $mainCategories = [...$mainCategories].sort();
-    $partnerCategories = [...$partnerCategories].sort();
-    $playerCategories = [...$playerCategories].sort();
+    mainCategories = [...mainCategories].sort();
+    partnerCategories = [...partnerCategories].sort();
+    playerCategories = [...playerCategories].sort();
 
     // Let's try not filtering by the none category. This might make these
     // actions difficult to find though as they'll  never appear under any of
     // the part filters.
-    ArrayHelper.remove($partnerCategories,SexAction.PartCategory.none);
-    ArrayHelper.remove($playerCategories,SexAction.PartCategory.none);
+    ArrayHelper.remove(partnerCategories,SexAction.PartCategory.none);
+    ArrayHelper.remove(playerCategories,SexAction.PartCategory.none);
 
     const mainToggles = X.first('#mainToggles');
     const partnerToggles = X.first('#partnerToggles');
     const playerToggles = X.first('#playerToggles');
 
-    $mainCategories.forEach(code => {
+    mainCategories.forEach(code => {
       mainToggles.appendChild(X.createElement(
         `<li><a data-type="main" data-code="${code}" href="#"
           class='no-underline off'>${StringHelper.titlecaseAll(code)}</a></li>`));
     });
 
-    $partnerCategories.forEach(code => {
+    partnerCategories.forEach(code => {
       partnerToggles.appendChild(X.createElement(
         `<li><a data-type="partner" data-code="${code}" href="#"
           class='no-underline off'>${StringHelper.titlecaseAll(code)}</a></li>`));
     });
 
-    $playerCategories.forEach(code => {
+    playerCategories.forEach(code => {
       playerToggles.appendChild(X.createElement(
         `<li><a data-type="player" data-code="${code}" href="#"
           class='no-underline off'>${StringHelper.titlecaseAll(code)}</a></li>`));

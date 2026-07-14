@@ -1,18 +1,18 @@
 global.SexualPreference = (function() {
-  const $sexualPreferences = {};
+  const sexualPreferences = {};
 
   function register(code,data) {
-    $sexualPreferences[code] = data;
+    sexualPreferences[code] = data;
   }
 
   function getAllCodes() {
-    return Object.keys($sexualPreferences);
+    return Object.keys(sexualPreferences);
   }
 
   function lookup(code) {
-    if ($sexualPreferences[code] == null) { throw new Error(`Bad sexual preference code [${code}]`); }
+    if (sexualPreferences[code] == null) { throw new Error(`Bad sexual preference code [${code}]`); }
 
-    const preference = { ...$sexualPreferences[code] };
+    const preference = { ...sexualPreferences[code] };
 
     return Object.freeze({
       getCode: () => { return code; },

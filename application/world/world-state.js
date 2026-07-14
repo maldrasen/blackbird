@@ -10,14 +10,14 @@ global.WorldState = (function() {
     options:{},
   }
 
-  let $worldState;
+  let worldState;
 
   function getValue(key) {
-    return $worldState[key];
+    return worldState[key];
   }
 
   async function setValue(key,value) {
-    $worldState[key] = value;
+    worldState[key] = value;
     await saveState();
   }
 
@@ -31,17 +31,17 @@ global.WorldState = (function() {
 
   async function saveState() {
     localLog("Saving World State");
-    await worldStateRecorder.saveState($worldState);
+    await worldStateRecorder.saveState(worldState);
   }
 
   // If the world state doesn't exist yet, then save the default state as the world state.
   async function loadState() {
     if (fs.existsSync(filePath) === false) {
-      $worldState = defaultState;
+      worldState = defaultState;
       return await saveState();
     }
 
-    $worldState = await worldStateRecorder.loadState();
+    worldState = await worldStateRecorder.loadState();
     localLog("Loaded World State");
   }
 

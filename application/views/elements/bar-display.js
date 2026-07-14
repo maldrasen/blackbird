@@ -12,52 +12,52 @@ global.BarDisplay = function(options) {
     <div class='bar-track'><div class='bar'></div></div>
   </div>`);
 
-  let $element;
-  let $max = options.maxValue;
-  let $min = options.minValue;
-  let $current = options.currentValue;
-  let $label = options.label;
-  let $color = options.color;
+  let element;
+  let max = options.maxValue;
+  let min = options.minValue;
+  let current = options.currentValue;
+  let label = options.label;
+  let color = options.color;
 
   function getElement() {
-    if ($element == null) {
-      $element = X.createElement(template)
-      setLabel($label);
-      setColor($color);
-      setMinValue($min);
-      setMaxValue($max);
-      setCurrentValue($current);
+    if (element == null) {
+      element = X.createElement(template)
+      setLabel(label);
+      setColor(color);
+      setMinValue(min);
+      setMaxValue(max);
+      setCurrentValue(current);
     }
-    return $element;
+    return element;
   }
 
-  function setLabel(label) {
-    $label = label;
+  function setLabel(value) {
+    label = value;
     getElement().querySelector('.label').replaceChildren(label);
   }
 
-  function setColor(color) {
-    $color = color;
+  function setColor(value) {
+    color = value;
     const track = getElement().querySelector('.bar-track');
-    track.setAttribute('class',`bar-track bar-display-bg-${$color}`);
+    track.setAttribute('class',`bar-track bar-display-bg-${color}`);
     const bar = getElement().querySelector('.bar');
-    bar.setAttribute('class',`bar bar-display-fg-${$color}`);
+    bar.setAttribute('class',`bar bar-display-fg-${color}`);
   }
 
-  function setMinValue(min) {
-    $min = min;
+  function setMinValue(value) {
+    min = value;
   }
 
-  function setMaxValue(max) {
-    $max = max;
-    getElement().querySelector('.max').replaceChildren($max);
+  function setMaxValue(value) {
+    max = value;
+    getElement().querySelector('.max').replaceChildren(max);
   }
 
-  function setCurrentValue(current) {
-    $current = current;
+  function setCurrentValue(value) {
+    current = value;
 
-    let width = ($max > 0) ? Math.round(($current / $max) * 100) : 0;
-    getElement().querySelector('.current').replaceChildren($current);
+    let width = (max > 0) ? Math.round((current / max) * 100) : 0;
+    getElement().querySelector('.current').replaceChildren(current);
     getElement().querySelector('.bar').setAttribute(`style`,`width:${width}%`);
   }
 

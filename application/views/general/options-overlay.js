@@ -1,7 +1,7 @@
 global.OptionsOverlay = (function() {
 
-  let $isDirty = false;
-  let $isBuilt = false;
+  let isDirty = false;
+  let isBuilt = false;
 
   function init() {
     X.onClick('#optionsOverlay a.close-button', () => {
@@ -20,7 +20,7 @@ global.OptionsOverlay = (function() {
   }
 
   function open() {
-    if ($isBuilt === false) { OptionsOverlay.build(); }
+    if (isBuilt === false) { OptionsOverlay.build(); }
 
     MainMenu.hide();
     X.removeClass('#optionsOverlay','hide');
@@ -33,7 +33,7 @@ global.OptionsOverlay = (function() {
   }
 
   function save() {
-    if ($isDirty) {
+    if (isDirty) {
       WorldState.setOptions(pack()).then(saveSuccessful);
     }
   }

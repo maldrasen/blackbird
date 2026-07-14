@@ -1,18 +1,18 @@
 global.BaseMonster = (function() {
-  const $monsters = {};
+  const monsters = {};
 
   function register(code,data) {
-    $monsters[code] = data;
+    monsters[code] = data;
   }
 
   function getAllCodes() {
-    return Object.keys($monsters);
+    return Object.keys(monsters);
   }
 
   function lookup(code) {
-    if ($monsters[code] == null) { throw new Error(`Bad monster code [${code}]`); }
+    if (monsters[code] == null) { throw new Error(`Bad monster code [${code}]`); }
 
-    const monster = { ...$monsters[code] };
+    const monster = { ...monsters[code] };
 
     // Base monsters can have their own gender ratio, like the kobold sneak sluts who are mostly female. If a gender
     // ratio isn't defined we fallback to the species ratio. If the monster doesn't have a species we can assume it's

@@ -1,7 +1,7 @@
 global.Confirmation = (function() {
 
-  let $yesFunction;
-  let $noFunction;
+  let yesFunction;
+  let noFunction;
 
   function init() {
     X.onClick('#confirmationDialog .no-button', cancel);
@@ -15,8 +15,8 @@ global.Confirmation = (function() {
   //   onCancel: function
   function show(options) {
     // ClockManager.forcePause();
-    $yesFunction = options.onConfirm;
-    $noFunction = options.onCancel;
+    yesFunction = options.onConfirm;
+    noFunction = options.onCancel;
 
     if (options.element) {
       X.fill('#confirmationDialog .confirm-window .content', options.element);
@@ -34,12 +34,12 @@ global.Confirmation = (function() {
   }
 
   function cancel() {
-    if (typeof $noFunction === 'function') { $noFunction(); }
+    if (typeof noFunction === 'function') { noFunction(); }
     hide()
   }
 
   function confirm() {
-    if (typeof $yesFunction === 'function') { $yesFunction(); }
+    if (typeof yesFunction === 'function') { yesFunction(); }
     hide()
   }
 

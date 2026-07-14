@@ -2,9 +2,9 @@ global.Casement = (function() {
   const BAR_HEIGHT = 20;
   const BORDER_WIDTH = 3;
 
-  const $$currentCasements = {};
-  let $$casementCounter = 100;
-  let $$dragContext;
+  const currentCasements = {};
+  let casementCounter = 100;
+  let dragContext;
 
   function init() {
     X.onClick('.casement-window .close-button',event => {
@@ -13,11 +13,11 @@ global.Casement = (function() {
   }
 
   function findCasement(event) {
-    return $$currentCasements[event.target.closest('.casement-window').getAttribute('id')]
+    return currentCasements[event.target.closest('.casement-window').getAttribute('id')]
   }
 
   function getAssociatedCasements(association) {
-    return Object.values($$currentCasements).filter(casement => {
+    return Object.values(currentCasements).filter(casement => {
       return casement.getAssociatedWith() === association;
     });
   }
@@ -41,7 +41,7 @@ global.Casement = (function() {
   //    resizable        (true by default)
   //
   function fromString(html,options={}) {
-    const index = $$casementCounter++;
+    const index = casementCounter++;
     const id = `casement-${index}`;
 
     const enableScrollingPanel = options.scrollingPanel !== false;
@@ -78,31 +78,31 @@ global.Casement = (function() {
     X.first('#casementsArea').appendChild(casementWindow);
 
     const casement = buildCasement({ id, casementContent, casementWindow, scrollingPanel });
-    $$currentCasements[id] = casement;
+    currentCasements[id] = casement;
     WindowManager.push(casement);
 
     return casement;
   }
 
   function buildCasement(options) {
-    const $id = options.id;
-    const $casementContent = options.casementContent;
-    const $casementWindow = options.casementWindow;
-    const $scrollingPanel = options.scrollingPanel;
+    const id = options.id;
+    const casementContent = options.casementContent;
+    const casementWindow = options.casementWindow;
+    const scrollingPanel = options.scrollingPanel;
 
-    let $associatedWith;
-    let $bounds = {};
+    let associatedWith;
+    let bounds = {};
 
-    let $minHeight = 200;
-    let $minWidth = 300;
+    let minHeight = 200;
+    let minWidth = 300;
 
-    function getID() { return $id }
-    function getCasementContent() { return $casementContent; }
-    function getCasementWindow() { return $casementWindow; }
+    function getID() { return id }
+    function getCasementContent() { return casementContent; }
+    function getCasementWindow() { return casementWindow; }
 
     function wireEvents() {
-      const casementBar = $casementWindow.querySelector('.casement-bar');
-      const resizeHandle = $casementWindow.querySelector('.resize-handle');
+      const casementBar = casementWindow.querySelector('.casement-bar');
+      const resizeHandle = casementWindow.querySelector('.resize-handle');
 
       casementBar.addEventListener('mousedown', event => startMoveDrag(event));
 
@@ -111,94 +111,94 @@ global.Casement = (function() {
       }
     }
 
-    function setAssociatedWith(association) { $associatedWith = association; }
-    function getAssociatedWith() { return $associatedWith; }
+    function setAssociatedWith(association) { associatedWith = association; }
+    function getAssociatedWith() { return associatedWith; }
     function setZIndex(index) { getCasementWindow().style['z-index'] = index; }
     function getZIndex() { return getCasementWindow().style['z-index'] }
 
     function setTitle(title) {
-      $casementWindow.querySelector('h1.title').innerHTML = title;
+      casementWindow.querySelector('h1.title').innerHTML = title;
     }
 
     function setBackground(color) {
-      $casementWindow.querySelector('.casement-container').style['background-color'] = color;
+      casementWindow.querySelector('.casement-container').style['background-color'] = color;
     }
 
     // We can only set the minimum height and width to values greater than the
     // scrolling panel's minimum height and width.
-    function setMinimumHeight(height) { if (height >= 200) { $minHeight = height } }
-    function setMinimumWidth(width) { if (width >= 300) { $minWidth = width; } }
+    function setMinimumHeight(height) { if (height >= 200) { minHeight = height } }
+    function setMinimumWidth(width) { if (width >= 300) { minWidth = width; } }
 
-    function getBounds() { return $bounds; }
-    function setBounds(bounds) {
-      Validate.exists("top", bounds.top);
-      Validate.exists("left", bounds.left);
-      Validate.exists("height", bounds.height);
-      Validate.exists("width", bounds.width);
+    function getBounds() { return bounds; }
+    function setBounds(value) {
+      Validate.exists("top", value.top);
+      Validate.exists("left", value.left);
+      Validate.exists("height", value.height);
+      Validate.exists("width", value.width);
 
-      $bounds = bounds;
+      bounds = value;
       reposition();
     }
 
     function setLocation(point) {
-      $bounds.left = point.x;
-      $bounds.top = point.y;
+      bounds.left = point.x;
+      bounds.top = point.y;
       reposition();
     }
 
     function setSize(size) {
-      $bounds.height = size.height;
-      $bounds.width = size.width;
+      bounds.height = size.height;
+      bounds.width = size.width;
       reposition();
     }
 
     function reposition() {
-      if (Object.keys($bounds).length !== 4) {
+      if (Object.keys(bounds).length !== 4) {
         throw new Error(`Casement bounds have not been set.`);
       }
 
-      if ($bounds.height < $minHeight) { $bounds.height = $minHeight; }
-      if ($bounds.width < $minWidth) { $bounds.width = $minWidth; }
-      if ($bounds.height > window.innerHeight - 100) { $bounds.height = window.innerHeight - 100; }
-      if ($bounds.width > window.innerWidth - 100) { $bounds.width = window.innerWidth - 100; }
+      if (bounds.height < minHeight) { bounds.height = minHeight; }
+      if (bounds.width < minWidth) { bounds.width = minWidth; }
+      if (bounds.height > window.innerHeight - 100) { bounds.height = window.innerHeight - 100; }
+      if (bounds.width > window.innerWidth - 100) { bounds.width = window.innerWidth - 100; }
 
-      if ($bounds.top < 0) { $bounds.top = 0; }
-      if ($bounds.left < 0) { $bounds.left = 0; }
-      if ($bounds.left + $bounds.width + (BORDER_WIDTH*2) > window.innerWidth) {
-        $bounds.left = window.innerWidth - $bounds.width - (BORDER_WIDTH*2); }
-      if ($bounds.top + $bounds.height + (BORDER_WIDTH*2) > window.innerHeight) {
-        $bounds.top = window.innerHeight - $bounds.height - (BORDER_WIDTH*2);
+      if (bounds.top < 0) { bounds.top = 0; }
+      if (bounds.left < 0) { bounds.left = 0; }
+      if (bounds.left + bounds.width + (BORDER_WIDTH*2) > window.innerWidth) {
+        bounds.left = window.innerWidth - bounds.width - (BORDER_WIDTH*2); }
+      if (bounds.top + bounds.height + (BORDER_WIDTH*2) > window.innerHeight) {
+        bounds.top = window.innerHeight - bounds.height - (BORDER_WIDTH*2);
       }
 
-      $casementWindow.style['top'] = `${$bounds.top}px`;
-      $casementWindow.style['left'] = `${$bounds.left}px`;
-      $casementWindow.style['height'] = `${$bounds.height}px`;
-      $casementWindow.style['width'] = `${$bounds.width}px`;
+      casementWindow.style['top'] = `${bounds.top}px`;
+      casementWindow.style['left'] = `${bounds.left}px`;
+      casementWindow.style['height'] = `${bounds.height}px`;
+      casementWindow.style['width'] = `${bounds.width}px`;
 
-      if ($scrollingPanel) {
-        $scrollingPanel.setHeight($bounds.height - BAR_HEIGHT);
-        $scrollingPanel.resize();
+      if (scrollingPanel) {
+        scrollingPanel.setHeight(bounds.height - BAR_HEIGHT);
+        scrollingPanel.resize();
       }
     }
 
     // The scrolling panel needs to be resized if the size of the content
     // changes.
     function contentResized() {
-      if ($scrollingPanel) { $scrollingPanel.resize(); }
+      if (scrollingPanel) { scrollingPanel.resize(); }
     }
 
     function close() {
-      $casementWindow.remove();
-      delete $$currentCasements[$id];
-      if (Object.keys($$currentCasements).length === 0) {
-        $$casementCounter = 100;
+      casementWindow.remove();
+      delete currentCasements[id];
+      if (Object.keys(currentCasements).length === 0) {
+        casementCounter = 100;
       }
-      WindowManager.remove($self);
+      WindowManager.remove(self);
     }
 
     wireEvents();
 
-    const $self = Object.freeze({
+    const self = Object.freeze({
       getID,
       getCasementContent,
       getCasementWindow,
@@ -218,14 +218,14 @@ global.Casement = (function() {
       close,
     });
 
-    return $self;
+    return self;
   }
 
   function startMoveDrag(event) {
     const casement = findCasement(event);
     const bounds = casement.getBounds();
 
-    $$dragContext = {
+    dragContext = {
       moving: true,
       casement: casement,
       origin: {
@@ -244,7 +244,7 @@ global.Casement = (function() {
     const casement = findCasement(event);
     const bounds = casement.getBounds();
 
-    $$dragContext = {
+    dragContext = {
       resizing: true,
       casement: casement,
       origin: { x:event.clientX, y:event.clientY },
@@ -258,26 +258,26 @@ global.Casement = (function() {
   }
 
   function moveWindow(event) {
-    $$dragContext.casement.setLocation({
-      x: event.clientX + $$dragContext.origin.x,
-      y: event.clientY + $$dragContext.origin.y,
+    dragContext.casement.setLocation({
+      x: event.clientX + dragContext.origin.x,
+      y: event.clientY + dragContext.origin.y,
     });
   }
 
   function resizeWindow(event) {
     if (event.clientX + BORDER_WIDTH < window.innerWidth && event.clientY + BORDER_WIDTH < window.innerHeight) {
-      const width = (event.clientX - $$dragContext.origin.x) + $$dragContext.size.width;
-      const height = (event.clientY - $$dragContext.origin.y) + $$dragContext.size.height;
-      $$dragContext.casement.setSize({ height,width });
+      const width = (event.clientX - dragContext.origin.x) + dragContext.size.width;
+      const height = (event.clientY - dragContext.origin.y) + dragContext.size.height;
+      dragContext.casement.setSize({ height,width });
     }
   }
 
   function stopDrag() {
-    if ($$dragContext) {
+    if (dragContext) {
       document.removeEventListener('mouseup', stopDrag);
-      if ($$dragContext.moving) { document.removeEventListener('mousemove', moveWindow); }
-      if ($$dragContext.resizing) { document.removeEventListener('mousemove', resizeWindow); }
-      $$dragContext = null;
+      if (dragContext.moving) { document.removeEventListener('mousemove', moveWindow); }
+      if (dragContext.resizing) { document.removeEventListener('mousemove', resizeWindow); }
+      dragContext = null;
     }
   }
 
@@ -285,17 +285,17 @@ global.Casement = (function() {
   // their current z-index, reassign a new z-index in order, then finally
   // assign the topCasement the highest z-index.
   function reorderWindows(topCasement) {
-    $$casementCounter = 100;
+    casementCounter = 100;
 
-    Object.keys($$currentCasements).filter(key => {
+    Object.keys(currentCasements).filter(key => {
       return key !== topCasement.getID();
     }).toSorted((a,b) => {
-      return $$currentCasements[a].getZIndex() - $$currentCasements[b].getZIndex();
+      return currentCasements[a].getZIndex() - currentCasements[b].getZIndex();
     }).forEach(id => {
-      $$currentCasements[id].setZIndex(4000 + $$casementCounter++);
+      currentCasements[id].setZIndex(4000 + casementCounter++);
     });
 
-    topCasement.setZIndex(4000 + $$casementCounter++);
+    topCasement.setZIndex(4000 + casementCounter++);
   }
 
   return Object.freeze({

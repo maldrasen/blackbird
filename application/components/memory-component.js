@@ -1,5 +1,5 @@
 global.MemoryComponent = (function() {
-  const $properties = [_parentId,'time','type','details'];
+  const properties = [_parentId,'time','type','details'];
 
   function create(id,data) {
     const entity = Registry.createEntity();
@@ -25,7 +25,7 @@ global.MemoryComponent = (function() {
     const memoryComponent = lookup(id)
 
     Object.keys(memoryComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Memory component does not have a ${key} property.`);
       }
     });

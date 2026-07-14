@@ -2,7 +2,7 @@ global.AnimaComponent = (function() {
 
   // Anima is like experience or gems, earned through training, spent to
   // upgrade sexual preferences and other components.
-  const $properties = [
+  const properties = [
     'comfort',
     'desire',
     'shame',
@@ -12,7 +12,7 @@ global.AnimaComponent = (function() {
 
   function createBaseline(id) {
     const baseline = {};
-    $properties.forEach(key => { baseline[key] = 0 });
+    properties.forEach(key => { baseline[key] = 0 });
     create(id, baseline);
   }
 
@@ -38,19 +38,19 @@ global.AnimaComponent = (function() {
     const animaComponent = lookup(id);
 
     Object.keys(animaComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Anima component does not have a ${key} property.`);
       }
     });
 
-    $properties.forEach(key => {
+    properties.forEach(key => {
       Validate.atLeast(`Anima.${key}`, animaComponent[key], 0);
     });
   }
 
   return Object.freeze({
     hasParent: () => { return false; },
-    getProperties: () => { return [...$properties]; },
+    getProperties: () => { return [...properties]; },
     createBaseline,
     create,
     update,

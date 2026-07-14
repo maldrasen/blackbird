@@ -1,15 +1,15 @@
 global.Aspect = (function() {
 
-  const $aspects = {};
+  const aspects = {};
 
-  function register(code,data) { $aspects[code] = data; }
-  function getAllCodes() { return Object.keys($aspects); }
+  function register(code,data) { aspects[code] = data; }
+  function getAllCodes() { return Object.keys(aspects); }
 
   // The lookup() function returns a wrapper for the aspect data object.
   function lookup(code) {
-    if ($aspects[code] == null) { throw new Error(`Bad aspect code [${code}]`); }
+    if (aspects[code] == null) { throw new Error(`Bad aspect code [${code}]`); }
 
-    const aspect = { ...$aspects[code] };
+    const aspect = { ...aspects[code] };
 
     return Object.freeze({
       getCode: () => { return code; },

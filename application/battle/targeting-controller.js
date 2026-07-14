@@ -2,10 +2,10 @@ global.TargetingController = (function() {
 
   // The ability waiting on a target. This is targeting state, not battle state, so it lives here rather than on the
   // round; the round isn't touched until a target is actually committed.
-  let $pendingAbility;
+  let pendingAbility;
 
   function startTargeting(abilityCode) {
-    $pendingAbility = abilityCode;
+    pendingAbility = abilityCode;
     switch(Ability.lookup(abilityCode).getTargetingMode()) {
       case TargetingMode.anyEnemy: return FormationPanel.startTargeting(monsterPositions(getTargetableMonsters()), []);
       case TargetingMode.enemyInWeaponRange: return FormationPanel.startTargeting(monsterPositions(getMonstersInRange()), []);
@@ -16,16 +16,16 @@ global.TargetingController = (function() {
   function targetSelected(position) {
     const state = BattleSystem.getState();
     const round = BattleSystem.getRound();
-    const ability = $pendingAbility;
+    const ability = pendingAbility;
 
-    $pendingAbility = null;
+    pendingAbility = null;
     round.setTarget(state.getEntityAtPosition(position));
     Ability.lookup(ability).execute();
   }
 
   // Invoked by the FormationPanel's back button. Nothing was set on the round, so there's nothing to undo.
   function cancelTargeting() {
-    $pendingAbility = null;
+    pendingAbility = null;
   }
 
   // All monsters that can be targeted. A monster can be targeted if it is alive and not hidden.

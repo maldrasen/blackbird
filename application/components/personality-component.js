@@ -1,5 +1,5 @@
 global.PersonalityComponent = (function() {
-  const $properties = ['archetype','sanity','broken'];
+  const properties = ['archetype','sanity','broken'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.personality,data);
@@ -23,7 +23,7 @@ global.PersonalityComponent = (function() {
     const personalityComponent = lookup(id)
 
     Object.keys(personalityComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Personality component does not have a ${key} property.`);
       }
     });

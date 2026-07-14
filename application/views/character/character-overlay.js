@@ -7,7 +7,7 @@ global.CharacterOverlay = (function() {
   // shown. The WindowManager calls the close() function when the window is popped off the stack. The close() function
   // should empty the overlay, and hide it and the cover.
 
-  let $id, $character, $isPlayer;
+  let id, character, isPlayer;
 
   function init() {
     X.onClick(`#characterOverlay .close-button`, close);
@@ -21,9 +21,9 @@ global.CharacterOverlay = (function() {
   //   isPlayer   true if we're viewing the player character (they have fewer options)
   //
   function open(options) {
-    $isPlayer = (options.isPlayer === true);
-    $id = options.id;
-    $character = Character($id);
+    isPlayer = (options.isPlayer === true);
+    id = options.id;
+    character = Character(id);
 
     X.loadDocument('#characterOverlay','views/character-overlay.html');
 
@@ -33,7 +33,7 @@ global.CharacterOverlay = (function() {
     X.removeClass('#characterOverlay','hide');
     X.removeClass('#overlayCover','hide');
 
-    Console.log(`Open Character Overlay [${$id}]`,{ system:'CharacterOverlay' });
+    Console.log(`Open Character Overlay [${id}]`,{ system:'CharacterOverlay' });
   }
 
   function close() {
@@ -46,22 +46,22 @@ global.CharacterOverlay = (function() {
     fillHeader();
     fillPortrait();
 
-    CharacterOverviewPanel.fillHealthBars($id);
-    CharacterOverviewPanel.fillManaBars($id);
-    CharacterOverviewPanel.fillAttributes($id);
-    CharacterOverviewPanel.fillAspects($id);
-    CharacterOverviewPanel.fillSexualPreferences($id);
-    CharacterOverviewPanel.fillSensitivities($id);
-    CharacterOverviewPanel.fillSkills($id);
+    CharacterOverviewPanel.fillHealthBars(id);
+    CharacterOverviewPanel.fillManaBars(id);
+    CharacterOverviewPanel.fillAttributes(id);
+    CharacterOverviewPanel.fillAspects(id);
+    CharacterOverviewPanel.fillSexualPreferences(id);
+    CharacterOverviewPanel.fillSensitivities(id);
+    CharacterOverviewPanel.fillSkills(id);
 
-    if ($isPlayer === false) {
-      CharacterOverviewPanel.fillPersonality($id);
-      CharacterOverviewPanel.fillFeelingsBars($id);
-      CharacterOverviewPanel.fillMarks($id);
-      CharacterOverviewPanel.fillAnima($id);
-      CharacterOverviewPanel.fillAnimus($id);
+    if (isPlayer === false) {
+      CharacterOverviewPanel.fillPersonality(id);
+      CharacterOverviewPanel.fillFeelingsBars(id);
+      CharacterOverviewPanel.fillMarks(id);
+      CharacterOverviewPanel.fillAnima(id);
+      CharacterOverviewPanel.fillAnimus(id);
     }
-    if ($isPlayer) {
+    if (isPlayer) {
       X.addClass('#characterOverlay .personality-panel','hide');
       X.addClass('#characterOverlay .feelings-panel','hide');
       X.addClass('#characterOverlay .marks-panel','hide');
@@ -69,17 +69,17 @@ global.CharacterOverlay = (function() {
       X.addClass('#characterOverlay .animus-panel','hide');
     }
 
-    CharacterBodyPanel.fillAnus($id);
-    CharacterBodyPanel.fillBody($id);
-    CharacterBodyPanel.fillBreasts($id);
-    CharacterBodyPanel.fillCock($id);
-    CharacterBodyPanel.fillPussy($id);
+    CharacterBodyPanel.fillAnus(id);
+    CharacterBodyPanel.fillBody(id);
+    CharacterBodyPanel.fillBreasts(id);
+    CharacterBodyPanel.fillCock(id);
+    CharacterBodyPanel.fillPussy(id);
   }
 
   function fillHeader() {
-    X.fill('#characterOverlay .header-panel .full-name', $character.getFullName());
-    X.fill('#characterOverlay .header-panel .species', $character.getSpeciesName());
-    X.fill('#characterOverlay .header-panel .gender', $character.getGenderName());
+    X.fill('#characterOverlay .header-panel .full-name', character.getFullName());
+    X.fill('#characterOverlay .header-panel .species', character.getSpeciesName());
+    X.fill('#characterOverlay .header-panel .gender', character.getGenderName());
   }
 
   // Yak shaving, completely temporary, mostly wrong, but fun to look at pictures. The real version of this will allow
@@ -87,7 +87,7 @@ global.CharacterOverlay = (function() {
   // defaults. There will be an option to upload a portrait as well. When we upload a portrait we set its scale and
   // location within a viewport with the correct aspect ratio. Future plan stuff.
   function fillPortrait() {
-    let gender = ActorComponent.lookup($id).gender;
+    let gender = ActorComponent.lookup(id).gender;
     if (gender === Gender.enby) { gender = Gender.female; }
 
     function pickRandom() {

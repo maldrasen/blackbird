@@ -1,18 +1,18 @@
 global.Encounter = (function() {
-  const $encounters = {};
+  const encounters = {};
 
   function register(code,data) {
-    $encounters[code] = data;
+    encounters[code] = data;
   }
 
   function getAllCodes() {
-    return Object.keys($encounters);
+    return Object.keys(encounters);
   }
 
   function lookup(code) {
-    if ($encounters[code] == null) { throw new Error(`Bad encounter code [${code}]`); }
+    if (encounters[code] == null) { throw new Error(`Bad encounter code [${code}]`); }
 
-    const encounter = { ...$encounters[code] };
+    const encounter = { ...encounters[code] };
 
     // The formation in the encounter defines what monsters are possibly present in each position. Building the
     // formation loops through the formation array and picks which monster codes should be built in each position.

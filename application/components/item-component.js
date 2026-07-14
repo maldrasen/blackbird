@@ -1,5 +1,5 @@
 global.ItemComponent = (function() {
-  const $properties = [
+  const properties = [
     'type',
   ];
 
@@ -26,7 +26,7 @@ global.ItemComponent = (function() {
     const itemComponent = lookup(id);
 
     Object.keys(itemComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Item component does not have a ${key} property.`);
       }
     });

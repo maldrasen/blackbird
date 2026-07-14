@@ -6,21 +6,21 @@ global.Random = (function() {
   // This technique is used to achieve deterministic randomness. A run can be reproduced exactly by recording the seed
   // then every run that uses the same seed will produce the same random numbers.
 
-  let $seed = generateSeed();
+  let currentSeed = generateSeed();
 
   function generateSeed() {
     return (Date.now() ^ Math.floor(Math.random() * 0xFFFFFFFF)) >>> 0;
   }
 
   function nextFloat() {
-    $seed = ($seed + 0x6D2B79F5) | 0;
-    let t = Math.imul($seed ^ ($seed >>> 15), 1 | $seed);
+    currentSeed = (currentSeed + 0x6D2B79F5) | 0;
+    let t = Math.imul(currentSeed ^ (currentSeed >>> 15), 1 | currentSeed);
     t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   }
 
-  function seed(value) { $seed = value >>> 0; return $seed; }
-  function getSeed() { return $seed; }
+  function seed(value) { currentSeed = value >>> 0; return currentSeed; }
+  function getSeed() { return currentSeed; }
   function reseed() { return seed(generateSeed()); }
 
   // ==================
@@ -32,11 +32,11 @@ global.Random = (function() {
   // it runs dry the spec is relying on more random calls than it stubbed, so we throw instead of quietly falling back
   // to real randomness.
 
-  const $stubQueues = { roll:undefined, rollDice:undefined, flipCoin:undefined, between:undefined, from:undefined };
+  const stubQueues = { roll:undefined, rollDice:undefined, flipCoin:undefined, between:undefined, from:undefined };
 
   function stubQueue(name) {
-    if ($stubQueues[name] == null) { $stubQueues[name] = []; }
-    return $stubQueues[name];
+    if (stubQueues[name] == null) { stubQueues[name] = []; }
+    return stubQueues[name];
   }
 
   function stubRoll(...values) { stubQueue('roll').push(...values); }
@@ -46,19 +46,19 @@ global.Random = (function() {
   function stubFrom(...values) { stubQueue('from').push(...values); }
 
   function stubReset() {
-    $stubQueues.roll = undefined;
-    $stubQueues.rollDice = undefined;
-    $stubQueues.flipCoin = undefined;
-    $stubQueues.between = undefined;
-    $stubQueues.from = undefined;
+    stubQueues.roll = undefined;
+    stubQueues.rollDice = undefined;
+    stubQueues.flipCoin = undefined;
+    stubQueues.between = undefined;
+    stubQueues.from = undefined;
   }
 
   function stubbedValue(name, limits={}) {
-    if ($stubQueues[name].length === 0) {
+    if (stubQueues[name].length === 0) {
       throw new Error(`Random.${name}() ran out of stubbed values`);
     }
 
-    const value = $stubQueues[name].shift();
+    const value = stubQueues[name].shift();
 
     if (limits.min != null && value < limits.min) {
       throw new Error(`Stubbed value ${value} is below minimum of ${limits.min}`); }
@@ -78,14 +78,14 @@ global.Random = (function() {
   // Random number between 0 and the limit exclusive, (meaning upTo(100) will
   // return between 0 and 99) plus an optional 'plus' value.
   function roll(limit, plus=0) {
-    if ($stubQueues.roll != null) { return stubbedValue('roll',{ min:plus, max:(limit+plus-1) }); }
+    if (stubQueues.roll != null) { return stubbedValue('roll',{ min:plus, max:(limit+plus-1) }); }
     return Math.floor(nextFloat() * limit) + plus;
   }
 
   // Simulate rolling dice. Options:
   //   { x:(dice count), d:(dice faces), p:(plus or minus) }
   function rollDice(options) {
-    if ($stubQueues.rollDice != null) { return stubbedValue('rollDice'); }
+    if (stubQueues.rollDice != null) { return stubbedValue('rollDice'); }
 
     let total = options.p || 0;
     for (let x = 0; x<(options.x || 1); x++) {
@@ -97,7 +97,7 @@ global.Random = (function() {
 
   // Boolean Heads or tails, 50% probability.
   function flipCoin() {
-    if ($stubQueues.flipCoin != null) { return stubbedValue('flipCoin'); }
+    if (stubQueues.flipCoin != null) { return stubbedValue('flipCoin'); }
     return Random.roll(2) === 0;
   }
 
@@ -106,13 +106,13 @@ global.Random = (function() {
   function between(min, max) {
     if (max === min) { return min; }
     if (max < min) { throw new Error(`Min(${min}) should be less than Max(${max})`); }
-    if ($stubQueues.between != null) { return stubbedValue('between',{ min:min, max:max }); }
+    if (stubQueues.between != null) { return stubbedValue('between',{ min:min, max:max }); }
     return Random.roll(max-min+1,min);
   }
 
   // Select a random element in an array.
   function from(array) {
-    if ($stubQueues.from != null) { return stubbedValue('from',{ within:array }); }
+    if (stubQueues.from != null) { return stubbedValue('from',{ within:array }); }
     if (array && array.length) {
       return array[Random.roll(array.length)];
     } else {

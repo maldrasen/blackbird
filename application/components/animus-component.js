@@ -2,7 +2,7 @@ global.AnimusComponent = (function() {
 
   // Animus Totals (Animus is like experience or gems, earned through training,
   // spent to upgrade sensitivity levels and other components)
-  const $properties = [
+  const properties = [
     'anus',
     'cervix',
     'cock',
@@ -16,7 +16,7 @@ global.AnimusComponent = (function() {
 
   function createBaseline(id) {
     const baseline = {};
-    $properties.forEach(key => { baseline[key] = 0 });
+    properties.forEach(key => { baseline[key] = 0 });
     create(id, baseline);
   }
 
@@ -42,20 +42,20 @@ global.AnimusComponent = (function() {
     const animusComponent = lookup(id);
 
     Object.keys(animusComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Animus component does not have a ${key} property.`);
       }
     });
 
-    $properties.forEach(key => {
+    properties.forEach(key => {
       Validate.atLeast(`Animus.${key}`, animusComponent[key], 0);
     });
   }
 
   return Object.freeze({
-    has: key => { return $properties.includes(key); },
+    has: key => { return properties.includes(key); },
     hasParent: () => { return false; },
-    getProperties: () => { return [...$properties]; },
+    getProperties: () => { return [...properties]; },
     createBaseline,
     create,
     update,

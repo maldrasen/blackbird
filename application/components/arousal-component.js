@@ -1,5 +1,5 @@
 global.ArousalComponent = (function() {
-  const $properties = ['arousal','pleasure','edging','refractory'];
+  const properties = ['arousal','pleasure','edging','refractory'];
 
   function create(id,data={}) {
     if (data.arousal == null) { data.arousal = 0; }
@@ -28,7 +28,7 @@ global.ArousalComponent = (function() {
     const arousalComponent = lookup(id)
 
     Object.keys(arousalComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Arousal component does not have a ${key} property.`);
       }
     });

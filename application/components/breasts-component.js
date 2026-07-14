@@ -1,5 +1,5 @@
 global.BreastsComponent = (function() {
-  const $properties = [
+  const properties = [
     'breastCount',
     'breastSize',
     'breastFirmness',
@@ -39,7 +39,7 @@ global.BreastsComponent = (function() {
     const breastsComponent = lookup(id);
 
     Object.keys(breastsComponent).forEach(key => {
-      if ($properties.includes(key) === false) {
+      if (properties.includes(key) === false) {
         throw new Error(`Breasts component does not have a ${key} property.`);
       }
     });
