@@ -11,6 +11,7 @@ global.Views = (function() {
     EpisodeView.init();
     GameStateFrame.init();
     GeneralOverlay.init();
+    LocationView.init();
     MainMenu.init();
     MouseMonitor.init();
     NegotiationOverlay.init();
