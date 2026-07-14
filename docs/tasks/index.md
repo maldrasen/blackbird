@@ -2,6 +2,10 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
+## Priority 1
+
+- [109] General Navigation — [109-general-navigation.md](109-general-navigation.md)
+
 ## Priority 2
 
 - [003] Training Systems #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
@@ -13,6 +17,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [105] Add Negotiation Requests — [105-add-negotiation-requests.md](105-add-negotiation-requests.md)
 - [107] Add Negotiation Resolution Text — [107-add-negotiation-resolution-text.md](107-add-negotiation-resolution-text.md)
 - [108] Complete Negotiation Questions — [108-complete-negotiation-questions.md](108-complete-negotiation-questions.md)
+- [110] Navigation Events — [110-navigation-events.md](110-navigation-events.md)
 
 ## Priority 3
 

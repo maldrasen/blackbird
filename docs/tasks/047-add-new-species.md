@@ -22,3 +22,8 @@ The capriens are goat people. They're going to be a bit more complex as the capr
 And because of this dimorphism gender is going to get messy. Probably need to take another look at the body factory to determine how gender is figured out. With the other species we don't need to explicitly decide if a character is a trans woman. A character's gender can be female, and if they have a dick that doesn't contradict anything about their femaleness. A trans caprien though may have an entirely different head structure. So what effect would that have on the species view of gender?
 
 And because biology is messy, we should also rarely build bare chested, human faced males or fur covered females with goat heads.
+
+### Fauns
+Deer people.
+
+
