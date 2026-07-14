@@ -236,7 +236,8 @@ function finishCharacterCreation() {
 
   state.setPlayer(playerId);
   state.setLegacyName(familyName);
-  state.setCurrentLocation('family-home-living-room');
+  state.setCurrentLocation('ruined-living-room');
+  state.setGameTime(60 * 13);
 
   if (givenName === 'Sheepfucker') {
     AspectsComponent.update(playerId, { [AspectType.animalAttraction]: 1 });
