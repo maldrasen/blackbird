@@ -1,18 +1,45 @@
 global.LocationView = (function() {
 
+  // Bound once. X.onClick attaches a delegated listener to the window, so binding these in show() would stack up a new
+  // listener every time the player moves.
+  function init() {
+    NavigationOverlay.init();
+
+    X.onClick('#characterList a', characterClicked);
+    X.onClick('#locationActions a', actionClicked);
+    X.onClick('.local-map-button', NavigationOverlay.showLocalMap);
+    X.onClick('.city-map-button', NavigationOverlay.showCityMap);
+  }
+
   function show() {
+    MainContent.setMainContent("views/location.html");
+    GameStateFrame.show();
+    update();
+  }
+
+  // Game state frame will need to update.
+  function update() {
+    if (HEADLESS) { return; }
+
     const location = Location.lookup(GameSystem.getState().getCurrentLocation());
     const characters = CharacterMovementSystem.getCharactersAtLocation(location.getCode());
 
-    MainContent.setMainContent("views/location.html");
     MainContent.setBackground(location.getBackground());
 
+    console.log("Location Changed:",location)
+
     X.first('#locationName').innerText = location.getName();
-    X.onClick('#characterList a', characterClicked);
 
     buildCharacterList(characters);
-    GameStateFrame.show();
+    buildActionList(location.getActions());
   }
+
+
+
+
+
+
+
 
   function characterClicked(event) {
     const characterId = event.target.getAttribute('data-id');
@@ -23,6 +50,11 @@ global.LocationView = (function() {
       CharacterOverlay.close();
       TrainingInterface.proposeTraining(characterId);
     });
+  }
+
+  function actionClicked(event) {
+    const location = Location.lookup(GameSystem.getState().getCurrentLocation());
+    location.getActions()[event.target.dataset.index].onClick();
   }
 
   function buildCharacterList(characters) {
@@ -42,8 +74,19 @@ global.LocationView = (function() {
       (${actor.gender} ${actor.species}) - ${personality.archetype}</li>`);
   }
 
+  function buildActionList(actions) {
+    const actionList = X.first('#locationActions');
+
+    actions.forEach((action,index) => {
+      actionList.appendChild(X.createElement(
+        `<a href='#' class='button' data-index='${index}'>${action.label}</a>`));
+    });
+  }
+
   return Object.freeze({
-    show
+    init,
+    show,
+    update,
   });
 
 })();
