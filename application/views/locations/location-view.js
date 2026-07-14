@@ -28,11 +28,12 @@ global.LocationView = (function() {
     const location = Location.lookup(locationCode);
     const characters = CharacterMovementSystem.getCharactersAtLocation(locationCode);
 
-    MainContent.setBackground(location.getBackground());
-
     setLocationName(location.getName());
     buildCharacterList(characters);
     buildActionList(location.getActions());
+
+    GameStateFrame.update();
+    MainContent.setBackground(location.getBackground());
   }
 
   function showLocationControls() { X.removeClass('#locationControls','hide'); }
