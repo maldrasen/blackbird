@@ -4,7 +4,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 ## Priority 1
 
-- [109] General Navigation — [109-general-navigation.md](109-general-navigation.md)
+- [018] Dungeon Navigation #dungeon — [018-dungeon-navigation.md](018-dungeon-navigation.md)
 
 ## Priority 2
 
@@ -27,7 +27,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [015] Battle Encounter Tables #battle #dungeon — [015-battle-encounter-tables.md](015-battle-encounter-tables.md)
 - [016] Battle Character Inspect #battle — [016-battle-character-inspect.md](016-battle-character-inspect.md)
 - [017] Battle Victory Mode and Game Over Mode #battle — [017-battle-victory-mode-and-game-over-mode.md](017-battle-victory-mode-and-game-over-mode.md)
-- [018] Dungeon Navigation #dungeon — [018-dungeon-navigation.md](018-dungeon-navigation.md)
 - [019] Stamina #training — [019-stamina.md](019-stamina.md)
 - [020] Refactor how SexActions define their persistence #training — [020-refactor-how-sexactions-define-their-persistence.md](020-refactor-how-sexactions-define-their-persistence.md)
 - [021] Action Slot Sharing #training — [021-action-slot-sharing.md](021-action-slot-sharing.md)
