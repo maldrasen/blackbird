@@ -69,7 +69,7 @@ global.MainMenu = (function() {
     if (fixture === 'reports') { setup = ReportFixture.show; }
     if (setup == null) { throw new Error(`Bad fixture code: ${fixture}`); }
 
-    await GameSystem.startNewGame({ setup });
+    await GameSystem.startNewGame(setup);
     await GameSystem.openGame();
   }
 
