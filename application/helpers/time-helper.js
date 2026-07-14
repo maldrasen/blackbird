@@ -1,17 +1,20 @@
 global.TimeHelper = (function() {
 
+  // TODO: For more exact times we need the names of the hours, because of course we wouldn't use anything as mundane as numbers.
+
   const timesOfDay = [
     { start:       0, name:'The Dead of Night' },
     { start:  3 * 60, name:'The Witching Hour' },
     { start:  4 * 60, name:'Early Morning' },
     { start:  6 * 60, name:'Morning' },
-    { start:  9 * 60, name:'Late Morning' },
-    { start: 12 * 60, name:'Midday' },
+    { start:  9 * 60, name:'Midmorning' },
+    { start: 12 * 60, name:'Highnoon' },
     { start: 13 * 60, name:'Afternoon' },
-    { start: 16 * 60, name:'Late Afternoon' },
-    { start: 18 * 60, name:'Evening' },
+    { start: 15 * 60, name:'Midafternoon' },
+    { start: 18 * 60, name:'Dusk' },
+    { start: 19 * 60, name:'Evening' },
     { start: 21 * 60, name:'Late Evening' },
-    { start: 23 * 60, name:'Night' },
+    { start: 22 * 60, name:'Night' },
   ];
 
   function getMinuteOfDay(time) {
