@@ -10,8 +10,7 @@ global.GeneralOverlay = (function() {
    * - `content` A single HTML element.
    * - `options.classname` [small, narrow] Optional class name for the overlay.
    * - `options.hideFooter` True if footer should be hidden.
-   * - `options.preventClose` True if the overlay can only be closed programmatically. The WindowManager won't pop a
-   *    locked overlay, so the escape key won't close it either.
+   * - `options.preventClose` True if the overlay can only be closed programmatically.
    */
   function open(content, options={}) {
     if (isOpen()) { throw new Error(`The GeneralOverlay is already open.`); }
@@ -37,6 +36,7 @@ global.GeneralOverlay = (function() {
     ScrollingPanel({ id:'#generalOverlayScroll' });
   }
 
+  // The close() function should only be called by the WindowManager.
   function close() {
     locked = false;
     X.empty('#generalOverlay');

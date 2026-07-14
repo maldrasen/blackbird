@@ -5,10 +5,9 @@ global.LocationView = (function() {
   function init() {
     NavigationOverlay.init();
 
+    X.onClick('#locationControls .open-map', NavigationOverlay.open);
     X.onClick('#characterList a', characterClicked);
     X.onClick('#locationActions a', actionClicked);
-    X.onClick('.local-map-button', NavigationOverlay.showLocalMap);
-    X.onClick('.city-map-button', NavigationOverlay.showCityMap);
   }
 
   function show() {

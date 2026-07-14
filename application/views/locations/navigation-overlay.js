@@ -1,71 +1,60 @@
 global.NavigationOverlay = (function() {
 
   // TODO: Both maps are just lists of links for now. They become actual maps once we know what the house and the city
-  //       actually look like.
+  //       actually look like. The city map should eventually be a large image with each unlocked exit absolute
+  //       positioned on top of its location on the map. For now this just builds a list of district links.
 
   function init() {
-    X.onClick('#navigationMap a.local-destination', event => {
-      GeneralOverlay.close();
-      NavigationSystem.moveToLocation(event.target.dataset.code);
-    });
-
-    X.onClick('#navigationMap a.district-destination', event => {
-      GeneralOverlay.close();
-      NavigationSystem.travelToDistrict(event.target.dataset.code);
-    });
+    X.onClick('#cityMap .move-district', clickDistrict);
+    X.onClick('#districtMap .move-location', clickLocation);
   }
 
-  function showLocalMap() {
-    const district = District.lookup(NavigationSystem.getCurrentDistrict());
-    const moveTime = district.getMoveTime();
+  function open() {
+    const exits = NavigationSystem.getLocalDestinations();
+    GeneralOverlay.open(exits.length === 0 ? buildCityMap() : buildDistrictMap(exits));
+  }
 
-    open(district.getName(), NavigationSystem.getLocalDestinations().map(code => {
-      return {
-        code,
-        classname: 'local-destination',
-        name: Location.lookup(code).getName(),
-        time: moveTime,
-      };
+  function buildCityMap() {
+    return buildShittyMap('cityMap', 'Wolgur', NavigationSystem.getDistrictDestinations().map(code => {
+      return { code, label:District.lookup(code).getName(), classname:'move-district' };
     }));
   }
 
-  function showCityMap() {
-    open('Wolgur', NavigationSystem.getDistrictDestinations().map(code => {
-      return {
-        code,
-        classname: 'district-destination',
-        name: District.lookup(code).getName(),
-      };
+  // TODO: When we show a district map, we also need a way to back out of the map to show the city map.
+  function buildDistrictMap(exits) {
+    const districtCode = GameSystem.getState().getCurrentDistrict();
+    const districtName = District.lookup(districtCode).getName();
+    return buildShittyMap(`${districtCode}Map`, districtName, exits.map(code => {
+      return { code, label:Location.lookup(code).getName(), classname:'move-location' };
     }));
   }
 
-  function open(title, destinations) {
-    GeneralOverlay.open(buildMap(title, destinations), { classname:'narrow' });
-  }
+  function buildShittyMap(id, label, exits) {
+    const template = X.createElement(`<div id='${id}' class='padding'>
+      <h4 class='border-bottom margin-bottom'>${label}</h4>
+      <ul class='exits'></ul>
+    </div>`);
 
-  function buildMap(title, destinations) {
-    const map = X.createElement(`<div id='navigationMap'><h3>${title}</h3><ul></ul></div>`);
-    const list = map.querySelector('ul');
-
-    if (destinations.length === 0) {
-      list.appendChild(X.createElement(`<li>There's nowhere else to go.</li>`));
-    }
-
-    destinations.forEach(destination => {
-      list.appendChild(buildDestination(destination));
+    exits.forEach(exit => {
+      X.append(template.querySelector('.exits'), X.createElement(`<li><a href='#' class='${exit.classname}' data-code='${exit.code}'>${exit.label}</a></li>`))
     });
 
-    return map;
+    return template;
   }
 
-  function buildDestination(destination) {
-    return X.createElement(`<li><a href='#' class='${destination.classname}' data-code='${destination.code}'>${destination.name}</a></li>`);
+  function clickDistrict(event) {
+    WindowManager.pop();
+    NavigationSystem.moveToDistrict(event.target.dataset.code);
+  }
+
+  function clickLocation(event) {
+    WindowManager.pop();
+    NavigationSystem.moveWithinLocation(event.target.dataset.code);
   }
 
   return Object.freeze({
     init,
-    showLocalMap,
-    showCityMap,
+    open,
   });
 
 })();

@@ -23,7 +23,7 @@ global.NegotiationOverlay = (function() {
   }
 
   function close() {
-    GeneralOverlay.close();
+    WindowManager.pop();
   }
 
   // We register the advance event on the generalOverlay because we want a click anywhere on the overlay to advance
