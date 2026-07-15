@@ -39,12 +39,18 @@ global.BattleDeathSystem = (function() {
 
     BattleInterface.killEntity(id);
 
+    // Dead monsters are deleted after the battle. This has to happen before the battle won check, otherwise the
+    // monster whose death ends the battle never makes it into the dead pile.
+    if (isMonster) { state.addToDeadPile(id); }
+
     // If the battle is over we don't need to worry about adjusting the positions.
     if (isBattleWon()) { return state.battleWon(); }
     if (isBattleLost(id)) { return state.battleLost(); }
 
-    // Dead monsters are deleted after the battle.
-    if (isMonster) { state.addToDeadPile(id); }
+    // Dead characters leave the party configuration so the next battle doesn't start with a corpse in the formation.
+    // This has to happen before anyone moves forward into their spot, otherwise setCharacter() would swap the dead
+    // character into the mover's old position.
+    if (isMonster === false) { PartyConfiguration.removeCharacter(id); }
 
     // If this character is in the back rank they can be safely removed.
     if (isInFront === false) { state.removeFromFormation(id); }

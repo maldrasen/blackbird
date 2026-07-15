@@ -18,6 +18,12 @@ describe("PartyConfiguration", function() {
     expect(PartyConfiguration.getConfiguration()['horse']).to.equal('P.0.2');
   });
 
+  it('removing a character', function() {
+    PartyConfiguration.setCharacter('horse', 'P.0.1');
+    PartyConfiguration.removeCharacter('horse');
+    expect(PartyConfiguration.getConfiguration()).to.not.have.property('horse');
+  });
+
   it('swapping a character', function() {
     PartyConfiguration.setCharacter('rabbit','P.0.1');
     PartyConfiguration.setCharacter('horse','P.0.2');

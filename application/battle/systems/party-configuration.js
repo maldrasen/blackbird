@@ -25,9 +25,16 @@ global.PartyConfiguration = (function() {
     GameSystem.getState().setPartyConfiguration(configuration);
   }
 
+  function removeCharacter(id) {
+    const configuration = GameSystem.getState().getPartyConfiguration() || {};
+    delete configuration[id];
+    GameSystem.getState().setPartyConfiguration(configuration);
+  }
+
   return Object.freeze({
     getConfiguration: () => { return GameSystem.getState().getPartyConfiguration() || {}; },
     setCharacter,
+    removeCharacter,
   });
 
 })();
