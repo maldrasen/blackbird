@@ -20,6 +20,7 @@ global.BattleState = function(data) {
   const monsterFormation = {};
   const abilityCooldowns = {};
   const deadPile = [];
+  const fledPile = [];
   const conditions = {};
   const skillImprovements = {};
   const statusEffects = {};
@@ -28,9 +29,9 @@ global.BattleState = function(data) {
   let negotiationAttempted = false;
   let interrupt;
 
-  // The cleanup() function needs to be called after the battle to remove the monsters that were killed.
+  // The cleanup() function needs to be called after the battle to remove the monsters who were killed or ran away.
   function cleanup() {
-    deadPile.forEach(id => {
+    [...deadPile, ...fledPile].forEach(id => {
       Registry.deleteEntity(id);
     });
   }
@@ -110,6 +111,7 @@ global.BattleState = function(data) {
   function isCharacter(id) { return getCharacters().includes(id); }
   function removeFromFormation(id) { delete (isMonster(id) ? monsterFormation : partyFormation)[id]; }
   function addToDeadPile(id) { deadPile.push(id); }
+  function addToFledPile(id) { fledPile.push(id); }
 
   // === Turn Order ====================================================================================================
 
@@ -361,6 +363,9 @@ global.BattleState = function(data) {
     getPartyFormation: () => { return { ...partyFormation }; },
     removeFromFormation,
     addToDeadPile,
+    addToFledPile,
+    getDeadPile: () => { return [ ...deadPile ]; },
+    getFledPile: () => { return [ ...fledPile ]; },
     getPosition,
     setPosition,
     isInFront,

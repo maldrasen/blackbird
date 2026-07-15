@@ -1,7 +1,7 @@
 global.FormationPanel = (function() {
 
-  const positionPanels = {};
-  const combatantPanels = {};
+  let positionPanels = {};
+  let combatantPanels = {};
 
   function init() {
     X.onClick('#battleView.target-mode .position.valid-target', targetSelected);
@@ -15,6 +15,9 @@ global.FormationPanel = (function() {
 
   function build() {
     const state = BattleSystem.getState();
+
+    positionPanels = {};
+    combatantPanels = {};
 
     buildRank('monster',1);
     buildRank('monster',0);
