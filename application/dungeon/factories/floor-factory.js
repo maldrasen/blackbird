@@ -69,8 +69,6 @@ global.FloorFactory = function() {
     placeStairs();
   }
 
-  // Stairs go into two different rooms, preferring rooms that are far apart so that finding the down stairs takes
-  // some exploring.
   function placeStairs() {
     const rooms = floor.getFeatures().filter(feature => feature.getType() !== 'corridor');
     const upRoom = Random.from(rooms);

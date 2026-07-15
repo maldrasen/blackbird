@@ -4,6 +4,10 @@ global.BattleState = function(data) {
 
   // TODO: Should check if the after battle return point is a valid point. Returning to the main menu should not be
   //       possible during a normal game for instance. This will usually be set to the dungeon or a running event.
+  //       The enlighten view will need this. Not sure if we should send it as a new argument for an enlighten state,
+  //       or if the battle and training states should still exist until we close the enlighten view, and clean up
+  //       everything then.
+
   const afterBattle = data.afterBattle || 'dungeon';
   const encounter = findEncounter(data);
   const turnOrder = [];
