@@ -24,7 +24,7 @@ global.DungeonSystem = (function() {
   // the whole floor away and start over from scratch with a fresh DungeonFloor. The party arrives on a feature with
   // the stairs in the direction they just came through, an upstairs when descending or a downstairs when climbing.
   function setLevel(level, arrival='up') {
-    Console.log("Changing Level",{ system:'DungeonSystem', level:1, data:{ level }});
+    Console.log("Changing Level",{ system:'DungeonSystem', level:1, data:{ level, arrival }});
 
     for (let attempt=0; attempt<5; attempt++) {
       dungeonFloor = DungeonFloor(level);

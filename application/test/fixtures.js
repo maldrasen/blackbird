@@ -1,9 +1,9 @@
 global.Fixtures = (function() {
 
-  function setupGame() {
+  function setupGame(options={}) {
     const state = GameSystem.getState();
-    state.setGameTime(15 * 60);
-    state.setCurrentLocation('ruined-living-room');
+    state.setGameTime(options.time || (15*60));
+    state.setCurrentLocation(options.location || 'ruined-living-room');
   }
 
   function setupBattle() {
@@ -22,6 +22,7 @@ global.Fixtures = (function() {
   }
 
   function setupDungeon() {
+    setupGame({ location:'the-well' });
     BattleFixtures.prepareForBattle();
     DungeonSystem.enterDungeon();
   }
