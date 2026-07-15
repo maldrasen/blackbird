@@ -345,6 +345,7 @@
     "data/episodes/propose-training.js",
     "data/feature-types/cross-room.js",
     "data/feature-types/leg-room.js",
+    "data/feature-types/nested-room.js",
     "data/feature-types/rect-room.js",
     "data/feature-types/tea-room.js",
     "data/locations/ruined-living-room.js",

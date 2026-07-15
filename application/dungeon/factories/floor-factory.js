@@ -32,6 +32,8 @@ global.FloorFactory = function() {
     const [connections,doors] = DoorFinder(grid).execute();
     floor.setDoors(doors);
 
+    const featureDoors = buildFeatureDoors(connections);
+
     let forest = connections.getSpanningForest();
 
     while (forest.length > 1) {
@@ -72,11 +74,44 @@ global.FloorFactory = function() {
       return (spanningTree.getEdges(door.getFrom()).includes(door.getTo())) ? true : (Random.roll(100) < 50);
     }));
 
+    featureDoors.forEach(door => floor.addDoor(door));
+
     placeStairs();
   }
 
+  // Multi-room features join their own rooms with authored doors. Their edges go into the connection graph before
+  // the corridors are dug so a feature's rooms don't read as disconnected islands, but the doors themselves only
+  // join the floor after the redundant door trimming, as authored doors must never be trimmed.
+  function buildFeatureDoors(connections) {
+    const featureDoors = [];
+
+    floor.getFeatures().forEach(feature => {
+      const position = feature.getPosition();
+      const rooms = feature.getRooms();
+
+      feature.getDoors().forEach(spec => {
+        const door = Door(
+          { x: position.x + spec.position.x, y: position.y + spec.position.y },
+          spec.direction,
+          rooms[spec.from].getIndex(),
+          rooms[spec.to].getIndex());
+
+        connections.addEdge(door.getFrom(), door.getTo());
+        featureDoors.push(door);
+      });
+    });
+
+    return featureDoors;
+  }
+
+  // Stairs only go in rooms of single-room features for now. In a multi-room feature the rooms overlap, so a room's
+  // center tile can land on a tile another room owns. Once the center calculations read the grid instead of the
+  // room's own boxes this restriction can be lifted.
   function placeStairs() {
-    const rooms = floor.getRooms().filter(room => floor.getFeatureForRoom(room.getIndex()).getType() !== 'corridor');
+    const rooms = floor.getRooms().filter(room => {
+      const feature = floor.getFeatureForRoom(room.getIndex());
+      return feature.getType() !== 'corridor' && feature.getRooms().length === 1;
+    });
     const upRoom = Random.from(rooms);
     const downRoom = pickDownStairsRoom(rooms, upRoom);
 

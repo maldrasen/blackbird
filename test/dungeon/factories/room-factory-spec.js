@@ -105,6 +105,64 @@ describe("RoomFactory", function() {
     });
   });
 
+  describe("buildNestedRooms", function() {
+    // outer:7x7, inner:3x2 -> inner sits at (2,2), door center column is x:3, center row is y:2.
+    it("builds single box rooms with the inner room centered", function() {
+      Random.stubFrom('N');
+      Random.stubBetween(7,7,3,2);
+      const { outer, inner } = RoomFactory.buildNestedRooms({ outerSize:[5,9], innerSize:[2,4] });
+
+      expect(outer.getBoxes()).to.deep.equal([{ x:0, y:0, width:7, height:7 }]);
+      expect(inner.getBoxes()).to.deep.equal([{ x:0, y:0, width:3, height:2 }]);
+      expect(inner.getPosition()).to.deep.equal({ x:2, y:2 });
+    });
+
+    it("puts a north wall door on the outer tile above the inner room", function() {
+      Random.stubFrom('N');
+      Random.stubBetween(7,7,3,2);
+      const { door } = RoomFactory.buildNestedRooms({ outerSize:[5,9], innerSize:[2,4] });
+      expect(door).to.deep.equal({ position:{ x:3, y:1 }, direction:'S', from:0, to:1 });
+    });
+
+    it("puts a south wall door on the inner room's bottom tile", function() {
+      Random.stubFrom('S');
+      Random.stubBetween(7,7,3,2);
+      const { door } = RoomFactory.buildNestedRooms({ outerSize:[5,9], innerSize:[2,4] });
+      expect(door).to.deep.equal({ position:{ x:3, y:3 }, direction:'S', from:1, to:0 });
+    });
+
+    it("puts an east wall door on the inner room's right tile", function() {
+      Random.stubFrom('E');
+      Random.stubBetween(7,7,3,2);
+      const { door } = RoomFactory.buildNestedRooms({ outerSize:[5,9], innerSize:[2,4] });
+      expect(door).to.deep.equal({ position:{ x:4, y:2 }, direction:'E', from:1, to:0 });
+    });
+
+    it("puts a west wall door on the outer tile left of the inner room", function() {
+      Random.stubFrom('W');
+      Random.stubBetween(7,7,3,2);
+      const { door } = RoomFactory.buildNestedRooms({ outerSize:[5,9], innerSize:[2,4] });
+      expect(door).to.deep.equal({ position:{ x:1, y:2 }, direction:'E', from:0, to:1 });
+    });
+
+    it("clamps the inner room to fit inside the outer roll", function() {
+      Random.stubFrom('N');
+      Random.stubBetween(5,5,4,4);
+      const { inner } = RoomFactory.buildNestedRooms({ outerSize:[5,9], innerSize:[2,4] });
+      expect(inner.getBoxes()).to.deep.equal([{ x:0, y:0, width:3, height:3 }]);
+    });
+
+    it("rejects outer rooms smaller than 3", function() {
+      expect(() => RoomFactory.buildNestedRooms({ outerSize:[2,4], innerSize:[1,1] }))
+        .to.throw('Minimum outer size needs to be at least 3');
+    });
+
+    it("rejects inner rooms that cannot fit in the smallest outer room", function() {
+      expect(() => RoomFactory.buildNestedRooms({ outerSize:[5,9], innerSize:[4,4] }))
+        .to.throw('Minimum inner size needs to be at least 2 smaller than the minimum outer size');
+    });
+  });
+
   describe("buildCrossRoom", function() {
     it("builds the cross shape from a horizontal and vertical box", function() {
       Random.stubBetween(6,6,1,2);

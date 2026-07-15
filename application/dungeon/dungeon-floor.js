@@ -1,6 +1,6 @@
-global.DungeonFloor = function(level) {
+global.DungeonFloor = function(level, forcedTheme) {
 
-  const theme = DungeonThemeSystem.pickTheme(level);
+  const theme = forcedTheme || DungeonThemeSystem.pickTheme(level);
   const floorGrid = Array.from({ length:getFloorHeight() }, () => new Array(getFloorWidth()).fill(null));
   const stairs = { up:null, down:null };
   const revealed = new Set();

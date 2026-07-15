@@ -18,8 +18,11 @@
   }
 }
 
+// The rooms are layered by their depth within their feature, so that nested rooms paint over the rooms containing
+// them.
 #dungeonFloor .room {
   position: absolute;
+  z-index: calc(10 + var(--depth, 0));
 
   .room-box {
     position: absolute;
@@ -36,6 +39,17 @@
   &.current .inner {
     background-color: #2e3140;
   }
+
+  // Unrevealed rooms are painted in the floor color rather than hidden completely, so a nested room reads as part
+  // of the unexplored dark instead of leaving a visible hole in the room around it.
+  &.unrevealed {
+    .inner {
+      background-color: #111;
+    }
+    .stairs {
+      display: none;
+    }
+  }
 }
 
 #dungeonFloor .door {
@@ -46,6 +60,8 @@
   cursor: pointer;
 }
 
+// Pads render above everything. Instead of being covered by the rooms, they're only shown on the unexplored side
+// of a door, and removed from a room's tiles when it's revealed.
 #dungeonFloor .door-pad {
   position: absolute;
   font-size: 20px;
@@ -55,7 +71,7 @@
   cursor: pointer;
   color: rgb(126,104,86);
   opacity: 0.2;
-  z-index: 5;
+  z-index: 200;
 }
 #dungeonFloor .door-pad:hover {
   opacity: 0.3;

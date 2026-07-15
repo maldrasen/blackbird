@@ -27,6 +27,13 @@
       });
     });
 
+    it("uses a forced theme when one is given", function() {
+      DungeonSystem.createDungeon();
+      DungeonSystem.setLevel(1, 'up', 'dungeon');
+
+      expect(DungeonSystem.getDungeonFloor().getTheme()).to.equal('dungeon');
+    });
+
     it("starts the party at the up stairs", function() {
       DungeonSystem.createDungeon();
       DungeonSystem.setLevel(1);

@@ -5,8 +5,8 @@ global.DoorFinder = function(grid) {
   const connections = FeatureGraph();
 
   // Before we start, ensure that all the rooms have vertices in the connection graph, so that rooms without doors
-  // will appear as disconnected islands. Once multi-room features exist, their internal doors will also need to be
-  // added as edges here so a feature's own rooms don't read as disconnected.
+  // will appear as disconnected islands. The edges for feature-internal doors are added by the FloorFactory after
+  // the found doors.
   for (let i=0; i<floor.getRooms().length; i++) {
     connections.addVertex(i);
   }
@@ -38,8 +38,14 @@ global.DoorFinder = function(grid) {
     const southCell = cellSouthOf(x,y);
     const eastCell = cellEastOf(x,y);
 
-    if (southCell != null && southCell !== thisCell) { addDoor(x,y,'S',thisCell,southCell); }
-    if (eastCell != null && eastCell !== thisCell) { addDoor(x,y,'E',thisCell,eastCell); }
+    if (canConnect(thisCell,southCell)) { addDoor(x,y,'S',thisCell,southCell); }
+    if (canConnect(thisCell,eastCell)) { addDoor(x,y,'E',thisCell,eastCell); }
+  }
+
+  // Rooms within the same feature are joined by the feature's own authored doors, never by found ones.
+  function canConnect(from, to) {
+    if (to == null || to === from) { return false; }
+    return floor.getRooms()[from].getFeatureIndex() !== floor.getRooms()[to].getFeatureIndex();
   }
 
   function cellSouthOf(x,y) {
