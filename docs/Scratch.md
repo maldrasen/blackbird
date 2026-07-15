@@ -1,12 +1,9 @@
 ```
-application/dungeon/factories/room-factory.js
-application/dungeon/models/feature.js
 application/views/dungeon/dungeon-floor-view.js
-
 styles/views/dungeon.scss
-
-test/dungeon/dungeon-system-spec.js
 ```
+
+*TODO*: Door looks like an unnecessary model. Could be turned into a plain object.
 
 *TODO*: When we build the floor we need to check the room type. If it's a nested room it needs to have extra padding. Doors need to be bumped in the direction of the room by 2px.
 
