@@ -1,5 +1,10 @@
 global.DungeonNavigationSystem = (function() {
 
+  function canMoveTo(index) {
+    const currentIndex = DungeonSystem.getDungeonFloor().getLocation();
+    return getAdjacentFeatureIndices(currentIndex).includes(index);
+  }
+
   function getAdjacentFeatureIndices(index) {
     const adjacent = new Set();
 
@@ -11,15 +16,22 @@ global.DungeonNavigationSystem = (function() {
     return [...adjacent].sort((a,b) => a-b);
   }
 
-  function canMoveTo(index) {
-    const currentIndex = DungeonSystem.getDungeonFloor().getLocation();
-    return getAdjacentFeatureIndices(currentIndex).includes(index);
-  }
-
-  // Every move rolls for a random encounter, so the move result tells the caller whether a battle breaks out in the
-  // new room. The roll happens against the pre-move state — entering an unexplored room is dangerous, backtracking
-  // through rooms we've already seen is much safer.
-  // TODO: The encounter rates should come from the dungeon theme once themes define them.
+  // TODO: When entering a new room, we need to read the room's contents to actually determine what happens on
+  //       entering a new room. It's sometimes a battle, sometimes an event, sometimes we want to print a description,
+  //       or nothing may happen. Since we don't have any room contents yet, we're simply starting a battle sometimes,
+  //       though this is a temporary behavior.
+  //
+  // TODO: When backtracking through the revealed rooms though we do want to keep this slim chance of a random
+  //       encounter. This random encounter rate should come from the dungeon theme. This base encounter rate could
+  //       also by changed by items the party uses or events. Maybe they use something that makes them quieter, or
+  //       they trip an alarm in an event. We'll need to add a property to the floor state that keeps track of dungeon
+  //       conditions like this.
+  //
+  // TODO: Moving from room to room should also advance the game time. Opening a new room should take at least a
+  //       minute. Backtracking could be faster but then game time would have to become a float. The minimum time
+  //       anything can take is a minute. Would that really be a problem if we allow for more granular time? We could
+  //       still save the time as an int, as the extra seconds don't really matter.
+  //
   function moveToFeature(index) {
     const floor = DungeonSystem.getDungeonFloor();
 
@@ -35,8 +47,28 @@ global.DungeonNavigationSystem = (function() {
     return { encounter };
   }
 
+  // =============
+  //    Pathing
+  // =============
+
+  function getPathToFeature(index) {
+    return findPath(DungeonSystem.getDungeonFloor().getLocation(), index);
+  }
+
+  function getPathThroughDoor(from, to) {
+    const currentIndex = DungeonSystem.getDungeonFloor().getLocation();
+    const pathToFrom = findPath(currentIndex, from);
+    const pathToTo = findPath(currentIndex, to);
+
+    if (pathToFrom == null && pathToTo == null) { return null; }
+    if (pathToFrom == null) { return [...pathToTo, from]; }
+    if (pathToTo == null) { return [...pathToFrom, to]; }
+
+    return (pathToFrom.length <= pathToTo.length) ? [...pathToFrom, to] : [...pathToTo, from];
+  }
+
   // A breadth first search through the revealed features, returning the path as the indices of the features to step
-  // through, not including the starting feature. Returns null when no path exists.
+  // through, not including the starting feature.
   function findPath(fromIndex, toIndex) {
     const floor = DungeonSystem.getDungeonFloor();
 
@@ -57,8 +89,6 @@ global.DungeonNavigationSystem = (function() {
         queue.push(neighbor);
       }
     }
-
-    return null;
   }
 
   function buildPath(cameFrom, toIndex) {
@@ -73,29 +103,10 @@ global.DungeonNavigationSystem = (function() {
     return path;
   }
 
-  function getPathToFeature(index) {
-    return findPath(DungeonSystem.getDungeonFloor().getLocation(), index);
-  }
-
-  // Clicking a door means walking to its near side and stepping through it. The near side is whichever side is fewer
-  // rooms away; an unrevealed side can never be pathed to, so it's always the far side.
-  function getPathThroughDoor(from, to) {
-    const currentIndex = DungeonSystem.getDungeonFloor().getLocation();
-    const pathToFrom = findPath(currentIndex, from);
-    const pathToTo = findPath(currentIndex, to);
-
-    if (pathToFrom == null && pathToTo == null) { return null; }
-    if (pathToFrom == null) { return [...pathToTo, from]; }
-    if (pathToTo == null) { return [...pathToFrom, to]; }
-
-    return (pathToFrom.length <= pathToTo.length) ? [...pathToFrom, to] : [...pathToTo, from];
-  }
-
   return Object.freeze({
-    getAdjacentFeatureIndices,
     canMoveTo,
+    getAdjacentFeatureIndices,
     moveToFeature,
-    findPath,
     getPathToFeature,
     getPathThroughDoor,
   });
