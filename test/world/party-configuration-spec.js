@@ -9,6 +9,7 @@ describe("PartyConfiguration", function() {
     PartyConfiguration.setCharacter('horse', 'P.1.1');
     PartyConfiguration.setCharacter('goat', 'P.1.1');
     expect(PartyConfiguration.getConfiguration()['goat']).to.equal('P.1.1');
+    expect(PartyConfiguration.getConfiguration()).to.not.have.property('horse');
   });
 
   it('moving a character', function() {

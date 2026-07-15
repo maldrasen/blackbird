@@ -13,8 +13,13 @@ global.PartyConfiguration = (function() {
     });
 
     configuration[id] = position;
+
     if (displacedId) {
-      configuration[displacedId] = previousPosition;
+      if (previousPosition) {
+        configuration[displacedId] = previousPosition;
+      } else {
+        delete configuration[displacedId];
+      }
     }
 
     GameSystem.getState().setPartyConfiguration(configuration);

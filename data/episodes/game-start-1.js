@@ -236,6 +236,7 @@ function finishCharacterCreation() {
 
   state.setPlayer(playerId);
   state.setLegacyName(familyName);
+  PartyConfiguration.setCharacter(playerId, 'P.0.2');
   state.setCurrentLocation('ruined-living-room');
   state.setGameTime(60 * 13);
 
