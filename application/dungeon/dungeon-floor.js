@@ -2,7 +2,10 @@ global.DungeonFloor = function(level) {
 
   const theme = DungeonThemeSystem.pickTheme(level);
   const floorGrid = Array.from({ length:getFloorHeight() }, () => new Array(getFloorWidth()).fill(null));
+  const stairs = { up:null, down:null };
+  const revealed = new Set();
 
+  let location = null;
   let features = [];
   let doors = [];
 
@@ -10,6 +13,11 @@ global.DungeonFloor = function(level) {
   // layout instructions.
   function getFloorWidth() { return 60; }
   function getFloorHeight() { return 40; }
+
+  function setLocation(index) {
+    location = index;
+    revealed.add(index);
+  }
 
   function addFeature(feature) {
     feature.setIndex(features.length);
@@ -24,6 +32,7 @@ global.DungeonFloor = function(level) {
     return {
       theme,
       floorGrid,
+      stairs,
       features: features.map(feature => feature.pack()),
       doors: doors.map(door => door.pack()),
     }
@@ -36,13 +45,19 @@ global.DungeonFloor = function(level) {
     getFloorWidth,
     getFloorHeight,
 
+    setLocation,
+    getLocation: () => { return location; },
+
     setFeatures: f => { features = f; },
     getFeatures: () => { return features; },
     addFeature,
+    isRevealed: index => { return revealed.has(index); },
 
     setDoors: d => { doors = d; },
     getDoors: () => { return doors; },
     addDoor,
+    setStairs: (direction, data) => { stairs[direction] = data; },
+    getStairs: direction => { return stairs[direction]; },
 
     pack,
   });

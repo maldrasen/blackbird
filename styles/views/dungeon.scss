@@ -14,6 +14,7 @@
   #dungeonFloor {
     position: absolute;
     background-color: #111;
+    transform-origin: 0 0;
   }
 }
 
@@ -31,6 +32,10 @@
     background-color: #111;
     z-index: 10;
   }
+
+  &.current .inner {
+    background-color: #2e3140;
+  }
 }
 
 #dungeonFloor .door {
@@ -39,11 +44,29 @@
   box-shadow: 0 0 2px rgb(0,0,0) inset;
   z-index: 100;
 }
-#dungeonFloor .door.S {
-  height: 4px;
-  width: 12px;
+
+#dungeonFloor .door-pad {
+  position: absolute;
+  z-index: 5;
 }
-#dungeonFloor .door.E {
-  height: 12px;
-  width: 4px;
+
+#dungeonFloor .stairs {
+  position: absolute;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #776f5e;
+  cursor: pointer;
+
+  &:hover {
+    color: #b0a68e;
+  }
+}
+
+#dungeonFloor .feature.hidden,
+#dungeonFloor .door.hidden,
+#dungeonFloor .door-pad.hidden {
+  display: none;
 }

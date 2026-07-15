@@ -53,7 +53,7 @@ global.GameSystem = (function() {
   function setGameMode(mode) {
     state.setGameMode(mode);
 
-    if (HEADLESS === false) {
+    if (HEADLESS === false && Tests.running() === false) {
       GameStateFrame.hide();
       LocationView.close();
 

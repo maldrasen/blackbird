@@ -1,7 +1,14 @@
 global.DungeonView = (function() {
 
+  const panDuration = 300;
+  const stepPause = 100;
+
   function init() {
     DungeonViewport.init();
+    X.onClick('#dungeonFloor .door', doorClicked);
+    X.onClick('#dungeonFloor .door-pad', doorClicked);
+    X.onClick('#dungeonFloor .stairs', stairsClicked);
+    X.onClick('#dungeonFloor .feature', featureClicked);
   }
 
   function show() {
@@ -9,10 +16,87 @@ global.DungeonView = (function() {
     drawDungeon();
   }
 
-  // TODO: The Viewport should be centered this once we know the dimensions
   function drawDungeon() {
     DungeonFloorView.drawDungeon();
-    DungeonViewport.setLocation({ x:0, y:0 });
+    DungeonViewport.reset();
+    DungeonViewport.centerOn(getCurrentFeature().getCenter());
+  }
+
+  function getCurrentFeature() {
+    const floor = DungeonSystem.getDungeonFloor();
+    return floor.getFeatures()[floor.getLocation()];
+  }
+
+  function featureClicked(event) {
+    if (DungeonViewport.didDrag()) { return; }
+    if (event.target.closest('.stairs')) { return; }
+
+    const index = parseInt(event.target.closest('.feature').dataset.index);
+    walkPath(DungeonNavigationSystem.getPathToFeature(index));
+  }
+
+  // Clicking stairs walks the party to the stairs room first, then takes the stairs. Climbing out of level 1 leaves
+  // the dungeon and switches the game mode, so the dungeon only redraws when we're still in it.
+  async function stairsClicked(event) {
+    if (DungeonViewport.didDrag()) { return; }
+
+    const direction = event.target.closest('.stairs').dataset.direction;
+    const stairs = DungeonSystem.getDungeonFloor().getStairs(direction);
+    const path = DungeonNavigationSystem.getPathToFeature(stairs.featureIndex);
+    const arrived = await walkPath(path);
+    if (arrived === false) { return; }
+
+    (direction === 'up') ? DungeonSystem.goUpStairs() : DungeonSystem.goDownStairs();
+
+    if (GameSystem.getState().getGameMode() === GameMode.dungeon) { drawDungeon(); }
+  }
+
+  function doorClicked(event) {
+    if (DungeonViewport.didDrag()) { return; }
+
+    const doorElement = event.target.closest('.door, .door-pad');
+    walkPath(DungeonNavigationSystem.getPathThroughDoor(
+      parseInt(doorElement.dataset.from),
+      parseInt(doorElement.dataset.to)));
+  }
+
+  // Walk the party through the features in the path one room at a time, panning the viewport along with them. The
+  // halt cover blocks user interaction until the party arrives. A random encounter stops the party in the room that
+  // triggered it, abandoning the rest of the path, so this resolves false when the party never arrived.
+  async function walkPath(path) {
+    if (path == null) { return false; }
+
+    if (path.length > 0) {
+      MainContent.halt();
+
+      for (const index of path) {
+        const result = DungeonNavigationSystem.moveToFeature(index);
+        DungeonFloorView.updateNavigation();
+        await DungeonViewport.panTo(getCurrentFeature().getCenter(), panDuration);
+        await pause(stepPause);
+
+        if (result.encounter) {
+          MainContent.unhalt();
+          startEncounter();
+          return false;
+        }
+      }
+
+      MainContent.unhalt();
+    }
+
+    return true;
+  }
+
+  // TODO: Pick the encounter from the dungeon theme's encounter tables once they exist (task 015).
+  function startEncounter() {
+    GameSystem.markReturnMode();
+    BattleSystem.startBattle({ encounter:`kobold-${Random.between(1,5)}` });
+    GameSystem.setGameMode(GameMode.battle);
+  }
+
+  function pause(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
   }
 
   return Object.freeze({

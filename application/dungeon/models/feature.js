@@ -21,6 +21,31 @@ global.Feature = function(type) {
     }
   }
 
+  // The footprint tile closest to the center of the bounds, in floor coordinates. The true center can fall outside
+  // an L-shaped room, so this always snaps to a real tile.
+  function getCenterTile() {
+    const footprint = getFootprint();
+    const bounds = getBounds();
+    const center = { x: bounds.xMax / 2, y: bounds.yMax / 2 };
+
+    let closest;
+    let closestDistance = Infinity;
+
+    for (let y=0; y<footprint.length; y++) {
+      for (let x=0; x<footprint[y].length; x++) {
+        if (footprint[y][x]) {
+          const distance = ((x + 0.5) - center.x)**2 + ((y + 0.5) - center.y)**2;
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            closest = { x, y };
+          }
+        }
+      }
+    }
+
+    return { x: closest.x + position.x, y: closest.y + position.y };
+  }
+
   // The bounds of the feature only describes it size, using the bounds from each room to find the overall bounding
   // box for the feature. To get the bounds translated by the position use getLocation().
   function getBounds() {
@@ -147,6 +172,7 @@ global.Feature = function(type) {
     setIndex: i => { index = i; },
     getIndex: () => { return index; },
     getCenter,
+    getCenterTile,
     getBounds,
     getLocation,
     getFootprint,

@@ -1,6 +1,8 @@
 global.DungeonFloorView = (function() {
 
-  const gridSize = 16;
+  const gridSize = 32;
+  const doorLength = 24;
+  const doorThickness = 8;
 
   function drawDungeon() {
     const floor = DungeonSystem.getDungeonFloor();
@@ -17,6 +19,25 @@ global.DungeonFloorView = (function() {
 
     floor.getDoors().forEach(door => {
       addDoorElement(door);
+    });
+
+    updateNavigation();
+  }
+
+  // Moving the party never redraws the floor, it only toggles the visibility classes.
+  function updateNavigation() {
+    const floor = DungeonSystem.getDungeonFloor();
+
+    X.each('#dungeonFloor .feature', element => {
+      const index = parseInt(element.dataset.index);
+      element.classList.toggle('hidden', floor.isRevealed(index) === false);
+      element.classList.toggle('current', index === floor.getLocation());
+    });
+
+    X.each('#dungeonFloor .door, #dungeonFloor .door-pad', element => {
+      const revealed = floor.isRevealed(parseInt(element.dataset.from))
+                    || floor.isRevealed(parseInt(element.dataset.to));
+      element.classList.toggle('hidden', revealed === false);
     });
   }
 
@@ -37,7 +58,27 @@ global.DungeonFloorView = (function() {
       });
     });
 
+    addStairsElement(featureElement, feature, 'up');
+    addStairsElement(featureElement, feature, 'down');
+
     X.first('#dungeonFloor').appendChild(featureElement)
+  }
+
+  // Stairs are children of their feature element, so they show and hide along with their room.
+  function addStairsElement(featureElement, feature, direction) {
+    const stairs = DungeonSystem.getDungeonFloor().getStairs(direction);
+    if (stairs.featureIndex !== feature.getIndex()) { return; }
+
+    const position = feature.getPosition();
+    const glyph = (direction === 'up') ? '▲' : '▼';
+
+    const stairsElement = X.createElement(`<div class='stairs ${direction}' data-direction='${direction}'>${glyph}</div>`);
+    stairsElement.style['left'] = `${(stairs.position.x - position.x) * gridSize}px`;
+    stairsElement.style['top'] = `${(stairs.position.y - position.y) * gridSize}px`;
+    stairsElement.style['height'] = `${gridSize}px`;
+    stairsElement.style['width'] = `${gridSize}px`;
+
+    featureElement.appendChild(stairsElement);
   }
 
   function addRoomBox(featureElement, box, innerBox=false) {
@@ -56,27 +97,48 @@ global.DungeonFloorView = (function() {
     const position = door.getPosition();
     const direction = door.getDirection();
 
-    let xOffset = -2;
-    let yOffset = 2;
-    let left = position.x + 1;
-    let top = position.y;
+    const wallOffset = doorThickness / 2;
+    const insetOffset = (gridSize - doorLength) / 2;
+
+    let left = ((position.x + 1) * gridSize) - wallOffset;
+    let top = (position.y * gridSize) + insetOffset;
 
     if (direction === 'S') {
-      xOffset = 2;
-      yOffset = -2;
-      left = position.x;
-      top = position.y + 1;
+      left = (position.x * gridSize) + insetOffset;
+      top = ((position.y + 1) * gridSize) - wallOffset;
     }
 
     const doorElement = X.createElement(`<div class='door ${direction}' data-from='${door.getFrom()}' data-to='${door.getTo()}'></div>`);
-    doorElement.style['left'] = `${(left * gridSize) + xOffset}px`;
-    doorElement.style['top'] = `${(top * gridSize) + yOffset}px`;
+    doorElement.style['left'] = `${left}px`;
+    doorElement.style['top'] = `${top}px`;
+    doorElement.style['height'] = `${(direction === 'S') ? doorThickness : doorLength}px`;
+    doorElement.style['width'] = `${(direction === 'S') ? doorLength : doorThickness}px`;
 
     X.first('#dungeonFloor').appendChild(doorElement);
+
+    addDoorPad(door, position.x, position.y);
+    addDoorPad(door,
+      (direction === 'S') ? position.x : position.x + 1,
+      (direction === 'S') ? position.y + 1 : position.y);
+  }
+
+  // The doors themselves are small targets, so both tiles flanking a door get a full-tile click pad. The pads sit
+  // under the room boxes, so the pad on an unexplored side gives a clickable square of dark space beside the door,
+  // while the pads inside drawn rooms are covered up and never receive clicks.
+  function addDoorPad(door, tileX, tileY) {
+    const padElement = X.createElement(`<div class='door-pad' data-from='${door.getFrom()}' data-to='${door.getTo()}'></div>`);
+    padElement.style['left'] = `${tileX * gridSize}px`;
+    padElement.style['top'] = `${tileY * gridSize}px`;
+    padElement.style['height'] = `${gridSize}px`;
+    padElement.style['width'] = `${gridSize}px`;
+
+    X.first('#dungeonFloor').appendChild(padElement);
   }
 
   return Object.freeze({
     drawDungeon,
+    updateNavigation,
+    getGridSize: () => { return gridSize; },
   });
 
 })();

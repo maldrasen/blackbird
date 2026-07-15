@@ -65,6 +65,42 @@ global.FloorFactory = function() {
     floor.setDoors(floor.getDoors().filter(door => {
       return (spanningTree.getEdges(door.getFrom()).includes(door.getTo())) ? true : (Random.roll(100) < 50);
     }));
+
+    placeStairs();
+  }
+
+  // Stairs go into two different rooms, preferring rooms that are far apart so that finding the down stairs takes
+  // some exploring.
+  function placeStairs() {
+    const rooms = floor.getFeatures().filter(feature => feature.getType() !== 'corridor');
+    const upRoom = Random.from(rooms);
+    const downRoom = pickDownStairsRoom(rooms, upRoom);
+
+    floor.setStairs('up', { featureIndex: upRoom.getIndex(), position: upRoom.getCenterTile() });
+    floor.setStairs('down', { featureIndex: downRoom.getIndex(), position: downRoom.getCenterTile() });
+  }
+
+  function pickDownStairsRoom(rooms, upRoom) {
+    const upCenter = upRoom.getCenter();
+
+    let farthest;
+    let farthestDistance = -1;
+
+    const distantRooms = rooms.filter(room => {
+      if (room === upRoom) { return false; }
+
+      const center = room.getCenter();
+      const distance = ((center.x - upCenter.x) ** 2) + ((center.y - upCenter.y) ** 2);
+
+      if (distance > farthestDistance) {
+        farthestDistance = distance;
+        farthest = room;
+      }
+
+      return distance >= (20 ** 2);
+    });
+
+    return (distantRooms.length > 0) ? Random.from(distantRooms) : farthest;
   }
 
   function addFeatureToGrid(feature) {
