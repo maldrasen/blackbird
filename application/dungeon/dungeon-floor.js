@@ -1,6 +1,10 @@
-global.DungeonFloor = function(level, forcedTheme) {
+global.DungeonFloor = function(level, theme=null) {
 
-  const theme = forcedTheme || DungeonThemeSystem.pickTheme(level);
+  // The floor theme is usually picked at random, given the level of the dungeon. In order for the fixtures to more
+  // easily test one theme or another we take a theme as an optional parameter. A real game should never set the theme
+  // like this.
+  if (theme == null) { theme = DungeonThemeSystem.pickTheme(level); }
+
   const floorGrid = Array.from({ length:getFloorHeight() }, () => new Array(getFloorWidth()).fill(null));
   const stairs = { up:null, down:null };
   const revealed = new Set();

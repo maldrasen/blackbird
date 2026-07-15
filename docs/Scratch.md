@@ -1,5 +1,4 @@
 ```
-application/dungeon/dungeon-floor.js
 application/dungeon/dungeon-system.js
 application/dungeon/factories/door-finder.js
 application/dungeon/factories/floor-factory.js
@@ -15,6 +14,7 @@ styles/views/dungeon.scss
 test/dungeon/dungeon-system-spec.js
 ```
 
+*TODO*: When we build the floor we need to check the room type. If it's a nested room it needs to have extra padding. Doors need to be bumped in the direction of the room by 2px.
 
 *TODO*: Dungeon with multiple up and down stairs. Also stairs don't need to be far away. They could be right next to each other.
 
