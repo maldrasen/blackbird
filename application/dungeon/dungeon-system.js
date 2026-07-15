@@ -3,9 +3,9 @@ global.DungeonSystem = (function() {
   let dungeonState;
   let dungeonFloor;
 
-  function enterDungeon(theme) {
+  function enterDungeon() {
     createDungeon();
-    setLevel(1, 'up', theme);
+    setLevel(1, 'up');
     GameSystem.setGameMode(GameMode.dungeon);
   }
 
@@ -23,7 +23,6 @@ global.DungeonSystem = (function() {
   // Floor generation can very rarely build a floor whose features cannot all be connected. In production we throw
   // the whole floor away and start over from scratch with a fresh DungeonFloor. The party arrives in a room with
   // the stairs in the direction they just came through, an upstairs when descending or a downstairs when climbing.
-  // The theme is normally picked at random for the level; forcing one is for the fixtures and tests.
   function setLevel(level, arrival='up', theme=null) {
     Console.log("Changing Level",{ system:'DungeonSystem', level:1, data:{ level, arrival }});
 
@@ -52,10 +51,9 @@ global.DungeonSystem = (function() {
 
   // TODO: Pick the encounter from the dungeon theme's encounter tables once they exist (task 015).
   function startRandomEncounter() {
-    console.log("Battle Skipped")
-    // GameSystem.markReturnMode();
-    // BattleSystem.startBattle({ encounter:`kobold-${Random.between(1,5)}` });
-    // GameSystem.setGameMode(GameMode.battle);
+    GameSystem.markReturnMode();
+    BattleSystem.startBattle({ encounter:`kobold-${Random.between(1,5)}` });
+    GameSystem.setGameMode(GameMode.battle);
   }
 
   return Object.freeze({

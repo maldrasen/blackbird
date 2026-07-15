@@ -24,7 +24,9 @@ global.Fixtures = (function() {
   function setupDungeon() {
     setupGame({ location:'the-well' });
     BattleFixtures.prepareForBattle();
-    DungeonSystem.enterDungeon('dungeon');
+    DungeonSystem.createDungeon();
+    DungeonSystem.setLevel(1,'up','dungeon');
+    GameSystem.setGameMode(GameMode.dungeon);
   }
 
   // The training fixture actually puts the game into the location mode, with characters available to be trained.
