@@ -69,7 +69,6 @@ global.FeatureGraph = function() {
 
   function getBounds() {
     const floor = DungeonSystem.getDungeonFloor();
-    const features = floor.getFeatures();
 
     let xMin = 1000;
     let yMin = 1000;
@@ -77,7 +76,7 @@ global.FeatureGraph = function() {
     let yMax = 0;
 
     getVertices().forEach(index => {
-      const location = features[index].getLocation();
+      const location = floor.getFeatureForRoom(index).getLocation();
 
       if (location.xMin < xMin) { xMin = location.xMin; }
       if (location.xMax > xMax) { xMax = location.xMax; }

@@ -1,12 +1,10 @@
 global.StraightCorridorFactory = function(originFeature, targetFeature, alignment) {
   const floor = DungeonSystem.getDungeonFloor();
   const grid = floor.getFloorGrid();
-  const features = floor.getFeatures();
 
   function build() {
     const ray = corridorRayCast(alignment);
     if (ray) {
-      const index = features.length;
       const { start, end } = ray;
 
       const isVertical = start.x === end.x;
@@ -15,15 +13,16 @@ global.StraightCorridorFactory = function(originFeature, targetFeature, alignmen
 
       const feature = Feature('corridor');
       feature.setPosition(x, y);
-      feature.setIndex(index);
       feature.addRoom(buildRoomBetween(start, end));
 
-      const doors = [
-        FloorFactorySupport.buildDoor(start, feature.getIndex(), originFeature.getIndex()),
-        FloorFactorySupport.buildDoor(end, feature.getIndex(), targetFeature.getIndex()),
+      // The doors can't be built until the corridor's room has been registered with the floor and given its global
+      // room index, so we return the door tiles and the features they open into instead.
+      const doorTiles = [
+        { point:start, feature:originFeature },
+        { point:end, feature:targetFeature },
       ];
 
-      return { feature, doors };
+      return { feature, doorTiles };
     }
   }
 
@@ -53,9 +52,9 @@ global.StraightCorridorFactory = function(originFeature, targetFeature, alignmen
         let cell = grid[cursor.y][cursor.x];
         if (cell == null) { end = cursor; }
 
-        // A ray is only valid if it finds the target feature at the end.
+        // A ray is only valid if it finds a room of the target feature at the end.
         if (cell != null) {
-          if (cell === targetFeature.getIndex()) {
+          if (floor.getFeatureForRoom(cell) === targetFeature) {
             rays.push({ start, end });
           }
           return;

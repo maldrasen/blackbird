@@ -7,7 +7,7 @@ global.DungeonView = (function() {
     X.onClick('#dungeonFloor .door', doorClicked);
     X.onClick('#dungeonFloor .door-pad', doorClicked);
     X.onClick('#dungeonFloor .stairs', stairsClicked);
-    X.onClick('#dungeonFloor .feature', featureClicked);
+    X.onClick('#dungeonFloor .room', roomClicked);
   }
 
   function show() {
@@ -18,20 +18,20 @@ global.DungeonView = (function() {
   function drawDungeon() {
     DungeonFloorView.drawDungeon();
     DungeonViewport.reset();
-    DungeonViewport.centerOn(getCurrentFeature().getCenter());
+    DungeonViewport.centerOn(getCurrentRoom().getFloorCenter());
   }
 
-  function getCurrentFeature() {
+  function getCurrentRoom() {
     const floor = DungeonSystem.getDungeonFloor();
-    return floor.getFeatures()[floor.getLocation()];
+    return floor.getRooms()[floor.getLocation()];
   }
 
-  function featureClicked(event) {
+  function roomClicked(event) {
     if (DungeonViewport.didDrag()) { return; }
     if (event.target.closest('.stairs')) { return; }
 
-    const index = parseInt(event.target.closest('.feature').dataset.index);
-    walkPath(DungeonNavigationSystem.getPathToFeature(index));
+    const index = parseInt(event.target.closest('.room').dataset.index);
+    walkPath(DungeonNavigationSystem.getPathToRoom(index));
   }
 
   async function stairsClicked(event) {
@@ -39,7 +39,7 @@ global.DungeonView = (function() {
 
     const direction = event.target.closest('.stairs').dataset.direction;
     const stairs = DungeonSystem.getDungeonFloor().getStairs(direction);
-    const path = DungeonNavigationSystem.getPathToFeature(stairs.featureIndex);
+    const path = DungeonNavigationSystem.getPathToRoom(stairs.roomIndex);
     const arrived = await walkPath(path);
     if (arrived === false) { return; }
 
@@ -67,9 +67,9 @@ global.DungeonView = (function() {
       MainContent.halt();
 
       for (const index of path) {
-        const result = DungeonNavigationSystem.moveToFeature(index);
+        const result = DungeonNavigationSystem.moveToRoom(index);
         DungeonFloorView.updateLocation(index, result.revealed);
-        await DungeonViewport.panTo(getCurrentFeature().getCenter(), panDuration);
+        await DungeonViewport.panTo(getCurrentRoom().getFloorCenter(), panDuration);
 
         if (result.encounter) {
           MainContent.unhalt();

@@ -13,8 +13,8 @@ global.DungeonFloorView = (function() {
     floorElement.style['height'] = `${floor.getFloorHeight() * gridSize}px`;
     floorElement.style['width'] = `${floor.getFloorWidth() * gridSize}px`;
 
-    floor.getFeatures().forEach(feature => {
-      addFeatureElement(floor, feature);
+    floor.getRooms().forEach(room => {
+      addRoomElement(floor, room);
     });
 
     floor.getDoors().forEach(door => {
@@ -22,14 +22,14 @@ global.DungeonFloorView = (function() {
     });
   }
 
-  // Doors and door pads are visible when either of their features is revealed, so revealing a feature can only
-  // unhide the doors that touch it.
+  // Doors and door pads are visible when either of their rooms is revealed, so revealing a room can only unhide the
+  // doors that touch it.
   function updateLocation(index, revealed) {
-    X.removeClass('#dungeonFloor .feature.current','current');
-    X.addClass(`#dungeonFloor .feature[data-index='${index}']`,'current');
+    X.removeClass('#dungeonFloor .room.current','current');
+    X.addClass(`#dungeonFloor .room[data-index='${index}']`,'current');
 
     if (revealed) {
-      X.removeClass(`#dungeonFloor .feature[data-index='${index}']`,'hide');
+      X.removeClass(`#dungeonFloor .room[data-index='${index}']`,'hide');
       X.removeClass([
         `#dungeonFloor .door[data-from='${index}']`,
         `#dungeonFloor .door[data-to='${index}']`,
@@ -39,39 +39,37 @@ global.DungeonFloorView = (function() {
     }
   }
 
-  function addFeatureElement(floor, feature) {
-    const index = feature.getIndex();
-    const position = feature.getPosition();
-    const bounds = feature.getBounds();
+  function addRoomElement(floor, room) {
+    const index = room.getIndex();
+    const position = room.getFloorPosition();
+    const bounds = room.getBounds();
 
-    let classname = 'feature';
+    let classname = 'room';
     if (floor.isRevealed(index) === false) { classname += ' hide'; }
     if (index === floor.getLocation()) { classname += ' current'; }
 
-    const featureElement = X.createElement(`<div class='${classname}' data-index='${index}'></div>`);
-    featureElement.style['left'] = `${(position.x * gridSize)}px`;
-    featureElement.style['top'] = `${(position.y * gridSize)}px`;
-    featureElement.style['height'] = `${bounds.yMax * gridSize}px`;
-    featureElement.style['width'] = `${bounds.xMax * gridSize}px`;
+    const roomElement = X.createElement(`<div class='${classname}' data-index='${index}'></div>`);
+    roomElement.style['left'] = `${(position.x * gridSize)}px`;
+    roomElement.style['top'] = `${(position.y * gridSize)}px`;
+    roomElement.style['height'] = `${bounds.yMax * gridSize}px`;
+    roomElement.style['width'] = `${bounds.xMax * gridSize}px`;
 
-    feature.getRooms().forEach(room => {
-      room.getBoxes().forEach(box => {
-        addRoomBox(featureElement, box);
-        addRoomBox(featureElement, box, true);
-      });
+    room.getBoxes().forEach(box => {
+      addRoomBox(roomElement, box);
+      addRoomBox(roomElement, box, true);
     });
 
-    addStairsElement(featureElement, feature, 'up');
-    addStairsElement(featureElement, feature, 'down');
+    addStairsElement(roomElement, room, 'up');
+    addStairsElement(roomElement, room, 'down');
 
-    X.first('#dungeonFloor').appendChild(featureElement)
+    X.first('#dungeonFloor').appendChild(roomElement)
   }
 
-  function addStairsElement(featureElement, feature, direction) {
+  function addStairsElement(roomElement, room, direction) {
     const stairs = DungeonSystem.getDungeonFloor().getStairs(direction);
-    if (stairs.featureIndex !== feature.getIndex()) { return; }
+    if (stairs.roomIndex !== room.getIndex()) { return; }
 
-    const position = feature.getPosition();
+    const position = room.getFloorPosition();
     const glyph = (direction === 'up') ? '▲' : '▼';
 
     const stairsElement = X.createElement(`<div class='stairs ${direction}' data-direction='${direction}'>${glyph}</div>`);
@@ -80,7 +78,7 @@ global.DungeonFloorView = (function() {
     stairsElement.style['height'] = `${gridSize}px`;
     stairsElement.style['width'] = `${gridSize}px`;
 
-    featureElement.appendChild(stairsElement);
+    roomElement.appendChild(stairsElement);
   }
 
   function addRoomBox(featureElement, box, innerBox=false) {

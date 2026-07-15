@@ -2,10 +2,10 @@ global.DungeonNavigationSystem = (function() {
 
   function canMoveTo(index) {
     const currentIndex = DungeonSystem.getDungeonFloor().getLocation();
-    return getAdjacentFeatureIndices(currentIndex).includes(index);
+    return getAdjacentRoomIndices(currentIndex).includes(index);
   }
 
-  function getAdjacentFeatureIndices(index) {
+  function getAdjacentRoomIndices(index) {
     const adjacent = new Set();
 
     DungeonSystem.getDungeonFloor().getDoors().forEach(door => {
@@ -32,11 +32,11 @@ global.DungeonNavigationSystem = (function() {
   //       anything can take is a minute. Would that really be a problem if we allow for more granular time? We could
   //       still save the time as an int, as the extra seconds don't really matter.
   //
-  function moveToFeature(index) {
+  function moveToRoom(index) {
     const floor = DungeonSystem.getDungeonFloor();
 
     if (canMoveTo(index) === false) {
-      throw new Error(`Cannot move to feature ${index} from feature ${floor.getLocation()}`);
+      throw new Error(`Cannot move to room ${index} from room ${floor.getLocation()}`);
     }
 
     const revealed = floor.isRevealed(index) === false;
@@ -51,7 +51,7 @@ global.DungeonNavigationSystem = (function() {
   //    Pathing
   // =============
 
-  function getPathToFeature(index) {
+  function getPathToRoom(index) {
     return findPath(DungeonSystem.getDungeonFloor().getLocation(), index);
   }
 
@@ -67,8 +67,8 @@ global.DungeonNavigationSystem = (function() {
     return (pathToFrom.length <= pathToTo.length) ? [...pathToFrom, to] : [...pathToTo, from];
   }
 
-  // A breadth first search through the revealed features, returning the path as the indices of the features to step
-  // through, not including the starting feature.
+  // A breadth first search through the revealed rooms, returning the path as the indices of the rooms to step
+  // through, not including the starting room.
   function findPath(fromIndex, toIndex) {
     const floor = DungeonSystem.getDungeonFloor();
 
@@ -80,7 +80,7 @@ global.DungeonNavigationSystem = (function() {
     while (queue.length > 0) {
       const current = queue.shift();
 
-      for (const neighbor of getAdjacentFeatureIndices(current)) {
+      for (const neighbor of getAdjacentRoomIndices(current)) {
         if (cameFrom.has(neighbor)) { continue; }
         if (floor.isRevealed(neighbor) === false) { continue; }
 
@@ -105,9 +105,9 @@ global.DungeonNavigationSystem = (function() {
 
   return Object.freeze({
     canMoveTo,
-    getAdjacentFeatureIndices,
-    moveToFeature,
-    getPathToFeature,
+    getAdjacentRoomIndices,
+    moveToRoom,
+    getPathToRoom,
     getPathThroughDoor,
   });
 

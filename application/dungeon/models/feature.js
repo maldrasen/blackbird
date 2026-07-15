@@ -21,33 +21,9 @@ global.Feature = function(type) {
     }
   }
 
-  // The footprint tile closest to the center of the bounds, in floor coordinates. The true center can fall outside
-  // an L-shaped room, so this always snaps to a real tile.
-  function getCenterTile() {
-    const footprint = getFootprint();
-    const bounds = getBounds();
-    const center = { x: bounds.xMax / 2, y: bounds.yMax / 2 };
-
-    let closest;
-    let closestDistance = Infinity;
-
-    for (let y=0; y<footprint.length; y++) {
-      for (let x=0; x<footprint[y].length; x++) {
-        if (footprint[y][x]) {
-          const distance = ((x + 0.5) - center.x)**2 + ((y + 0.5) - center.y)**2;
-          if (distance < closestDistance) {
-            closestDistance = distance;
-            closest = { x, y };
-          }
-        }
-      }
-    }
-
-    return { x: closest.x + position.x, y: closest.y + position.y };
-  }
-
-  // The bounds of the feature only describes it size, using the bounds from each room to find the overall bounding
-  // box for the feature. To get the bounds translated by the position use getLocation().
+  // The bounds of the feature only describes it size, using the bounds from each room (offset by the room's position
+  // within the feature) to find the overall bounding box. To get the bounds translated by the position use
+  // getLocation().
   function getBounds() {
     const featureBounds = {
       xMin: Infinity,
@@ -56,11 +32,12 @@ global.Feature = function(type) {
       yMax: -Infinity,
     };
     rooms.forEach(room => {
+      const roomPosition = room.getPosition();
       const roomBounds = room.getBounds();
-      if (roomBounds.xMin < featureBounds.xMin) { featureBounds.xMin = roomBounds.xMin; }
-      if (roomBounds.xMax > featureBounds.xMax) { featureBounds.xMax = roomBounds.xMax; }
-      if (roomBounds.yMin < featureBounds.yMin) { featureBounds.yMin = roomBounds.yMin; }
-      if (roomBounds.yMax > featureBounds.yMax) { featureBounds.yMax = roomBounds.yMax; }
+      if (roomPosition.x + roomBounds.xMin < featureBounds.xMin) { featureBounds.xMin = roomPosition.x + roomBounds.xMin; }
+      if (roomPosition.x + roomBounds.xMax > featureBounds.xMax) { featureBounds.xMax = roomPosition.x + roomBounds.xMax; }
+      if (roomPosition.y + roomBounds.yMin < featureBounds.yMin) { featureBounds.yMin = roomPosition.y + roomBounds.yMin; }
+      if (roomPosition.y + roomBounds.yMax > featureBounds.yMax) { featureBounds.yMax = roomPosition.y + roomBounds.yMax; }
     });
     return featureBounds;
   }
@@ -172,7 +149,6 @@ global.Feature = function(type) {
     setIndex: i => { index = i; },
     getIndex: () => { return index; },
     getCenter,
-    getCenterTile,
     getBounds,
     getLocation,
     getFootprint,

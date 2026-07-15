@@ -8,3 +8,4 @@ TODO: Moving between rooms advances the game time.
 TODO: The panning is a little too jerky, and not fun to watch. I think we'll eventually need to extend this by making the current room a camera target, and panning towards it, but the pan itself needs to have acceleration and velocity as it moves towards the target. Vector math stuff. Camera motion should be its own module.
 
 
+OK, so this isn't all just theoretical, let's add a feature type with multiple rooms. I'm thinking a nested room would be a good simple example. We want a rectangular feature with another room in the center. The center room will need a single door centered on a random wall. The builder function can take  `outerSize:[min,max]` and `innerSize:[min,max]` properties. It can't have an outer size less than 3. Inner size needs to be at least 2 smaller than outer size.

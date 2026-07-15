@@ -26,7 +26,6 @@ global.FloorFactory = function() {
 
   function build() {
     const [features, grid] = FeaturePlacer().packFeatures();
-    floor.setFeatures(features);
 
     Console.log(`Created a Dungeon Floor [level:${floor.getLevel()}/${floor.getTheme()}] - Features:${features.length}`);
 
@@ -36,7 +35,7 @@ global.FloorFactory = function() {
     let forest = connections.getSpanningForest();
 
     while (forest.length > 1) {
-      const pair = FeatureGraphHelper.getClosestDisconnectedFeatures(forest, blacklist);
+      const pair = FeatureGraphHelper.getClosestDisconnectedRooms(forest, blacklist);
 
       if (pair == null) {
         throw new Error('Cannot find a path between any of the remaining disconnected features.');
@@ -45,12 +44,19 @@ global.FloorFactory = function() {
       const [origin, target] = pair;
       const result = CorridorFactory().digBetween(origin, target);
 
+      // The corridor's room only gets its global index when the feature is registered, and its door tiles can only
+      // be resolved to rooms once the corridor is painted into the grid, so both happen before the doors are built.
       if (result) {
         floor.addFeature(result.feature);
-        result.doors.forEach(door => floor.addDoor(door));
-        connections.addEdge(origin, result.feature.getIndex());
-        connections.addEdge(result.feature.getIndex(), target);
         addFeatureToGrid(result.feature);
+
+        const corridorRoom = result.feature.getRooms()[0];
+        result.doorTiles.forEach(doorTile => {
+          const door = FloorFactorySupport.buildDoorToFeature(doorTile.point, corridorRoom.getIndex(), doorTile.feature);
+          floor.addDoor(door);
+          connections.addEdge(door.getFrom(), door.getTo());
+        });
+
         forest = connections.getSpanningForest();
       }
 
@@ -70,16 +76,16 @@ global.FloorFactory = function() {
   }
 
   function placeStairs() {
-    const rooms = floor.getFeatures().filter(feature => feature.getType() !== 'corridor');
+    const rooms = floor.getRooms().filter(room => floor.getFeatureForRoom(room.getIndex()).getType() !== 'corridor');
     const upRoom = Random.from(rooms);
     const downRoom = pickDownStairsRoom(rooms, upRoom);
 
-    floor.setStairs('up', { featureIndex: upRoom.getIndex(), position: upRoom.getCenterTile() });
-    floor.setStairs('down', { featureIndex: downRoom.getIndex(), position: downRoom.getCenterTile() });
+    floor.setStairs('up', { roomIndex: upRoom.getIndex(), position: upRoom.getCenterTile() });
+    floor.setStairs('down', { roomIndex: downRoom.getIndex(), position: downRoom.getCenterTile() });
   }
 
   function pickDownStairsRoom(rooms, upRoom) {
-    const upCenter = upRoom.getCenter();
+    const upCenter = upRoom.getFloorCenter();
 
     let farthest;
     let farthestDistance = -1;
@@ -87,7 +93,7 @@ global.FloorFactory = function() {
     const distantRooms = rooms.filter(room => {
       if (room === upRoom) { return false; }
 
-      const center = room.getCenter();
+      const center = room.getFloorCenter();
       const distance = ((center.x - upCenter.x) ** 2) + ((center.y - upCenter.y) ** 2);
 
       if (distance > farthestDistance) {
@@ -102,23 +108,22 @@ global.FloorFactory = function() {
   }
 
   function addFeatureToGrid(feature) {
-    const position = feature.getPosition();
-    const index = feature.getIndex();
     const floorGrid = DungeonSystem.getDungeonFloor().getFloorGrid();
 
-    function fillBox(box) {
-      const yMin = position.y + box.y;
-      const xMin = position.x + box.x;
-
-      for (let y=yMin; y<(yMin + box.height); y++) {
-        for (let x=xMin; x<(xMin + box.width); x++) {
-          floorGrid[y][x] = index;
-        }
-      }
-    }
-
     feature.getRooms().forEach(room => {
-      room.getBoxes().forEach(fillBox);
+      const position = room.getFloorPosition();
+      const index = room.getIndex();
+
+      room.getBoxes().forEach(box => {
+        const yMin = position.y + box.y;
+        const xMin = position.x + box.x;
+
+        for (let y=yMin; y<(yMin + box.height); y++) {
+          for (let x=xMin; x<(xMin + box.width); x++) {
+            floorGrid[y][x] = index;
+          }
+        }
+      });
     });
   }
 

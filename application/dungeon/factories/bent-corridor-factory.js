@@ -1,5 +1,4 @@
 global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
-  const floor = DungeonSystem.getDungeonFloor();
 
   // To find a bent path, we get all the start tiles for the origin and target features. For a SE alignment we get all
   // the edge tiles on the S and E sides of the origin, and all the tiles on the N and W sides of the target. We then
@@ -29,20 +28,19 @@ global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
       const path = Random.from(validPaths);
       const feature = buildFeature(path);
 
-      const doors = [
-        FloorFactorySupport.buildDoor(path.start, feature.getIndex(), originFeature.getIndex()),
-        FloorFactorySupport.buildDoor(path.end, feature.getIndex(), targetFeature.getIndex()),
+      const doorTiles = [
+        { point:path.start, feature:originFeature },
+        { point:path.end, feature:targetFeature },
       ];
 
       return {
         feature,
-        doors,
+        doorTiles,
       }
     }
   }
 
   function buildFeature(path) {
-    const index = floor.getFeatures().length;
     const room = Room();
 
     if (path.corner) {
@@ -58,7 +56,6 @@ global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
     const y = Math.min(path.start.y, path.end.y);
 
     feature.setPosition(x,y);
-    feature.setIndex(index);
     feature.addRoom(room);
 
     return feature;

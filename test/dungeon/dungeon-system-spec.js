@@ -1,4 +1,4 @@
-describe("DungeonSystem", function() {
+﻿describe("DungeonSystem", function() {
 
   describe("setLevel()", function() {
 
@@ -13,17 +13,17 @@ describe("DungeonSystem", function() {
       const up = floor.getStairs('up');
       const down = floor.getStairs('down');
 
-      expect(up.featureIndex).to.not.equal(down.featureIndex);
+      expect(up.roomIndex).to.not.equal(down.roomIndex);
 
       [up,down].forEach(stairs => {
-        const feature = floor.getFeatures()[stairs.featureIndex];
-        expect(feature.getType()).to.not.equal('corridor');
+        const room = floor.getRooms()[stairs.roomIndex];
+        expect(floor.getFeatureForRoom(stairs.roomIndex).getType()).to.not.equal('corridor');
 
         const local = {
-          x: stairs.position.x - feature.getPosition().x,
-          y: stairs.position.y - feature.getPosition().y,
+          x: stairs.position.x - room.getFloorPosition().x,
+          y: stairs.position.y - room.getFloorPosition().y,
         };
-        expect(feature.getFootprint()[local.y][local.x]).to.equal(true);
+        expect(room.getFootprint()[local.y][local.x]).to.equal(true);
       });
     });
 
@@ -32,7 +32,7 @@ describe("DungeonSystem", function() {
       DungeonSystem.setLevel(1);
 
       const floor = DungeonSystem.getDungeonFloor();
-      expect(floor.getLocation()).to.equal(floor.getStairs('up').featureIndex);
+      expect(floor.getLocation()).to.equal(floor.getStairs('up').roomIndex);
     });
 
   });
@@ -46,7 +46,7 @@ describe("DungeonSystem", function() {
 
       const floor = DungeonSystem.getDungeonFloor();
       expect(floor.getLevel()).to.equal(2);
-      expect(floor.getLocation()).to.equal(floor.getStairs('up').featureIndex);
+      expect(floor.getLocation()).to.equal(floor.getStairs('up').roomIndex);
       expect(floor.isRevealed(floor.getLocation())).to.be.true;
     });
 
@@ -57,7 +57,7 @@ describe("DungeonSystem", function() {
 
       const floor = DungeonSystem.getDungeonFloor();
       expect(floor.getLevel()).to.equal(1);
-      expect(floor.getLocation()).to.equal(floor.getStairs('down').featureIndex);
+      expect(floor.getLocation()).to.equal(floor.getStairs('down').roomIndex);
     });
 
     it("leaves the dungeon when climbing out of level 1", function() {
@@ -73,3 +73,4 @@ describe("DungeonSystem", function() {
   });
 
 });
+

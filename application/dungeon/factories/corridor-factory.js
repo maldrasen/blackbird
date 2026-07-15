@@ -5,10 +5,9 @@ global.CorridorFactory = function() {
 
   function digBetween(first, second) {
     const floor = DungeonSystem.getDungeonFloor();
-    const features = floor.getFeatures();
 
-    originFeature = features[first];
-    targetFeature = features[second];
+    originFeature = floor.getFeatureForRoom(first);
+    targetFeature = floor.getFeatureForRoom(second);
 
     const alignment = getFeatureAlignment();
     const corridorFactories = [

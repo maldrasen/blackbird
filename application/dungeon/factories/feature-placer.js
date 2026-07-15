@@ -11,17 +11,15 @@ global.FeaturePlacer = function() {
   function packFeatures() {
     const features = [];
     let guard = 0
-    let index = 0;
 
     while(guard < 1000) {
       const feature = theme.getRandomFeature();
       setRandomPosition(feature);
 
       if (featureCanFit(feature)) {
-        feature.setIndex(index);
-        placeFeature(index, feature);
+        floor.addFeature(feature);
+        placeFeature(feature);
         features.push(feature);
-        index += 1;
       }
       else {
         guard += 1;
@@ -50,12 +48,15 @@ global.FeaturePlacer = function() {
   }
 
   function featureCanFit(feature) {
+    const featurePosition = feature.getPosition();
     const rooms = feature.getRooms();
 
     for (let i=0; i<rooms.length; i++) {
+      const roomPosition = rooms[i].getPosition();
+      const position = { x: featurePosition.x + roomPosition.x, y: featurePosition.y + roomPosition.y };
       const boxes = rooms[i].getBoxes();
       for (let j=0; j<boxes.length; j++) {
-        if (boxCanFit(feature.getPosition(), boxes[j]) === false) { return false; }
+        if (boxCanFit(position, boxes[j]) === false) { return false; }
       }
     }
 
@@ -77,9 +78,10 @@ global.FeaturePlacer = function() {
     return true;
   }
 
-  function placeFeature(index, feature) {
+  // The grid cells hold the room's floor-global index, as rooms are the unit of navigation.
+  function placeFeature(feature) {
     feature.getRooms().forEach(room => {
-      room.getBoxes().forEach(box => placeBox(index, feature.getPosition(), box));
+      room.getBoxes().forEach(box => placeBox(room.getIndex(), room.getFloorPosition(), box));
     });
   }
 

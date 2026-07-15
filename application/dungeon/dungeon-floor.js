@@ -7,6 +7,7 @@ global.DungeonFloor = function(level) {
 
   let location = null;
   let features = [];
+  let rooms = [];
   let doors = [];
 
   // Theoretically the size of the floor should come from the floor theme, as well as any specific building and room
@@ -22,6 +23,19 @@ global.DungeonFloor = function(level) {
   function addFeature(feature) {
     feature.setIndex(features.length);
     features.push(feature);
+
+    const featurePosition = feature.getPosition();
+    feature.getRooms().forEach(room => {
+      const roomPosition = room.getPosition();
+      room.setIndex(rooms.length);
+      room.setFeatureIndex(feature.getIndex());
+      room.setFloorPosition(featurePosition.x + roomPosition.x, featurePosition.y + roomPosition.y);
+      rooms.push(room);
+    });
+  }
+
+  function getFeatureForRoom(roomIndex) {
+    return features[rooms[roomIndex].getFeatureIndex()];
   }
 
   function addDoor(door) {
@@ -48,8 +62,9 @@ global.DungeonFloor = function(level) {
     setLocation,
     getLocation: () => { return location; },
 
-    setFeatures: f => { features = f; },
     getFeatures: () => { return features; },
+    getRooms: () => { return rooms; },
+    getFeatureForRoom,
     addFeature,
     isRevealed: index => { return revealed.has(index); },
 

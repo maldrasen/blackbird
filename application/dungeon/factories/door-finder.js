@@ -4,9 +4,10 @@ global.DoorFinder = function(grid) {
   const floorWidth = floor.getFloorWidth();
   const connections = FeatureGraph();
 
-  // Before we start, ensure that all the features have vertices in the connection graph, so that features without
-  // doors will appear as disconnected islands.
-  for (let i=0; i<floor.getFeatures().length; i++) {
+  // Before we start, ensure that all the rooms have vertices in the connection graph, so that rooms without doors
+  // will appear as disconnected islands. Once multi-room features exist, their internal doors will also need to be
+  // added as edges here so a feature's own rooms don't read as disconnected.
+  for (let i=0; i<floor.getRooms().length; i++) {
     connections.addVertex(i);
   }
 

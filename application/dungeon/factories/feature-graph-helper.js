@@ -1,11 +1,12 @@
 global.FeatureGraphHelper = (function() {
 
-  // Finding the closest disconnected features requires comparing every feature in every tree against every feature in
-  // every other tree, and returning the two indices of the closest pair. The blacklist is an optional set of feature
-  // pair keys already known to be unconnectable, skipped when scanning for the closest pair. This returns null if
-  // every candidate pair is blacklisted. (Which would be a fatal condition in the floor generation.)
-  function getClosestDisconnectedFeatures(forest, blacklist=new Set()) {
-    const features = DungeonSystem.getDungeonFloor().getFeatures();
+  // Finding the closest disconnected rooms requires comparing every room in every tree against every room in every
+  // other tree, and returning the two room indices of the closest pair. Distance is measured between the features
+  // containing the rooms, since corridors are dug between features. The blacklist is an optional set of room pair
+  // keys already known to be unconnectable, skipped when scanning for the closest pair. This returns null if every
+  // candidate pair is blacklisted. (Which would be a fatal condition in the floor generation.)
+  function getClosestDisconnectedRooms(forest, blacklist=new Set()) {
+    const floor = DungeonSystem.getDungeonFloor();
 
     let leastDistance = 10000;
     let first;
@@ -20,7 +21,7 @@ global.FeatureGraphHelper = (function() {
           vertsB.forEach(b => {
             if (blacklist.has(pairKey(a,b))) { return; }
 
-            const distance = boxDistance(features[a].getLocation(), features[b].getLocation());
+            const distance = boxDistance(floor.getFeatureForRoom(a).getLocation(), floor.getFeatureForRoom(b).getLocation());
 
             if (distance < leastDistance) {
               leastDistance = distance;
@@ -35,7 +36,7 @@ global.FeatureGraphHelper = (function() {
     return (first != null) ? [first,second] : null;
   }
 
-  // A canonical, order-independent key for a pair of feature indices.
+  // A canonical, order-independent key for a pair of room indices.
   function pairKey(a,b) {
     return (a < b) ? `${a}-${b}` : `${b}-${a}`;
   }
@@ -47,7 +48,7 @@ global.FeatureGraphHelper = (function() {
   }
 
   return Object.freeze({
-    getClosestDisconnectedFeatures,
+    getClosestDisconnectedRooms,
     pairKey,
   });
 
