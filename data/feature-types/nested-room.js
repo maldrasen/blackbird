@@ -1,8 +1,6 @@
 
 function buildNestedDoor(innerX, innerY, innerWidth, innerHeight) {
-  // const wall = Random.from(['N','S','E','W']);
-  const wall = 'S'
-
+  const wall = Random.from(['N','S','E','W']);
   const centerX = innerX + Math.floor((innerWidth - 1) / 2);
   const centerY = innerY + Math.floor((innerHeight - 1) / 2);
 
@@ -14,8 +12,8 @@ function buildNestedDoor(innerX, innerY, innerWidth, innerHeight) {
   }
 }
 
-function maxPadding(options, height, width) {
-  const maxPossible = Math.floor(Math.min(width, height) / 2);
+function maxPadding(options, size) {
+  const maxPossible = Math.floor((size - 1) / 2);
   const maxAllowed = options.padding[1];
   return Math.min(maxAllowed, maxPossible);
 }
@@ -31,16 +29,15 @@ FeatureType.register('nested-room',{
 
     const outer = Room();
     const inner = Room();
-    const height = Random.between(options.size[0], options.size[1]);
-    const width = Random.between(options.size[0], options.size[1]);
-    const padding = Random.between(options.padding[0],maxPadding(options, height, width));
-    const innerWidth = width - (padding*2);
-    const innerHeight = height - (padding*2);
+    const size = Random.between(options.size[0], options.size[1]);
+    const padding = Random.between(options.padding[0],maxPadding(options, size));
+    const innerSize = size - (padding*2);
 
-    outer.addBox(0, 0, width, height);
-    inner.addBox(padding, padding, innerWidth, innerHeight);
+    outer.addBox(0, 0, size, size);
+    inner.addBox(0, 0, innerSize, innerSize);
+    inner.setPosition(padding, padding);
 
-    const door = buildNestedDoor(padding, padding, innerWidth, innerHeight);
+    const door = buildNestedDoor(padding, padding, innerSize, innerSize);
 
     const feature = Feature('nested-room');
     feature.addRoom(outer);
