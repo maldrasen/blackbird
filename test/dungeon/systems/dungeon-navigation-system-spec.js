@@ -70,7 +70,7 @@ describe("DungeonNavigationSystem", function() {
 
   it("cannot find a path to an unrevealed feature", function() {
     const adjacent = DungeonNavigationSystem.getAdjacentFeatureIndices(start);
-    expect(DungeonNavigationSystem.getPathToFeature(adjacent[0])).to.be.null;
+    expect(DungeonNavigationSystem.getPathToFeature(adjacent[0])).to.be.undefined;
   });
 
   it("walks a path back through the revealed features", function() {

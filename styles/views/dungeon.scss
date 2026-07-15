@@ -43,11 +43,22 @@
   background-color: #333;
   box-shadow: 0 0 2px rgb(0,0,0) inset;
   z-index: 100;
+  cursor: pointer;
 }
 
 #dungeonFloor .door-pad {
   position: absolute;
+  font-size: 20px;
+  font-family: "roboto-mono-bold", monospace;
+  text-align: center;
+  line-height: 32px;
+  cursor: pointer;
+  color: rgb(126,104,86);
+  opacity: 0.2;
   z-index: 5;
+}
+#dungeonFloor .door-pad:hover {
+  opacity: 0.3;
 }
 
 #dungeonFloor .stairs {
@@ -56,17 +67,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 26px;
   color: #776f5e;
   cursor: pointer;
 
   &:hover {
     color: #b0a68e;
   }
-}
-
-#dungeonFloor .feature.hidden,
-#dungeonFloor .door.hidden,
-#dungeonFloor .door-pad.hidden {
-  display: none;
 }

@@ -49,6 +49,14 @@ global.DungeonSystem = (function() {
     (dungeonFloor.getLevel() === 1) ? exitDungeon() : setLevel(dungeonFloor.getLevel() - 1, 'down');
   }
 
+  // TODO: Pick the encounter from the dungeon theme's encounter tables once they exist (task 015).
+  function startRandomEncounter() {
+    console.log("Battle Started... skipping it for now.")
+    // GameSystem.markReturnMode();
+    // BattleSystem.startBattle({ encounter:`kobold-${Random.between(1,5)}` });
+    // GameSystem.setGameMode(GameMode.battle);
+  }
+
   return Object.freeze({
     getDungeonState: () => { return dungeonState; },
     getDungeonFloor: () => { return dungeonFloor; },
@@ -58,6 +66,7 @@ global.DungeonSystem = (function() {
     goUpStairs,
     enterDungeon,
     exitDungeon,
+    startRandomEncounter,
   });
 
 })();

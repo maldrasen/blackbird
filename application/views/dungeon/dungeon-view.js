@@ -1,7 +1,6 @@
 global.DungeonView = (function() {
 
-  const panDuration = 300;
-  const stepPause = 100;
+  const panDuration = 250;
 
   function init() {
     DungeonViewport.init();
@@ -35,8 +34,6 @@ global.DungeonView = (function() {
     walkPath(DungeonNavigationSystem.getPathToFeature(index));
   }
 
-  // Clicking stairs walks the party to the stairs room first, then takes the stairs. Climbing out of level 1 leaves
-  // the dungeon and switches the game mode, so the dungeon only redraws when we're still in it.
   async function stairsClicked(event) {
     if (DungeonViewport.didDrag()) { return; }
 
@@ -73,11 +70,10 @@ global.DungeonView = (function() {
         const result = DungeonNavigationSystem.moveToFeature(index);
         DungeonFloorView.updateNavigation();
         await DungeonViewport.panTo(getCurrentFeature().getCenter(), panDuration);
-        await pause(stepPause);
 
         if (result.encounter) {
           MainContent.unhalt();
-          startEncounter();
+          DungeonSystem.startRandomEncounter();
           return false;
         }
       }
@@ -86,17 +82,6 @@ global.DungeonView = (function() {
     }
 
     return true;
-  }
-
-  // TODO: Pick the encounter from the dungeon theme's encounter tables once they exist (task 015).
-  function startEncounter() {
-    GameSystem.markReturnMode();
-    BattleSystem.startBattle({ encounter:`kobold-${Random.between(1,5)}` });
-    GameSystem.setGameMode(GameMode.battle);
-  }
-
-  function pause(time) {
-    return new Promise(resolve => setTimeout(resolve, time));
   }
 
   return Object.freeze({
