@@ -98,7 +98,6 @@
     "application/dungeon/factories/feature-placer.js",
     "application/dungeon/factories/floor-factory-support.js",
     "application/dungeon/factories/floor-factory.js",
-    "application/dungeon/factories/room-factory.js",
     "application/dungeon/factories/straight-corridor-factory.js",
     "application/dungeon/models/door.js",
     "application/dungeon/models/feature-graph.js",
