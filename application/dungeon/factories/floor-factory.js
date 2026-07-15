@@ -104,9 +104,17 @@ global.FloorFactory = function() {
     return featureDoors;
   }
 
-  // Stairs only go in rooms of single-room features for now. In a multi-room feature the rooms overlap, so a room's
-  // center tile can land on a tile another room owns. Once the center calculations read the grid instead of the
-  // room's own boxes this restriction can be lifted.
+  // TODO: A room should have a property that we can use to forbid a room from having stairs. The nested room will
+  //       mark the outer room as not allowing stairs, but the inner room can have stairs. We also want to change this
+  //       center tile function, perhaps even get rid of it. The stairs should be placed in the center of a room's main
+  //       box. Because the rooms are displayed as HTML elements, we don't care about the grid once the dungeon layout
+  //       is complete. Stairs should be placed in the actual middle of an element.
+
+  // TODO: Dungeon floors can have more than two stairs, and should only require the entry stairs. It's possible that
+  //       you've found a dead end floor and need to go back up in order to go further down, something you'll only
+  //       know by fully exploring a floor. That should be rare though. The dungeon theme can define how many stairs
+  //       a floor can have.
+
   function placeStairs() {
     const rooms = floor.getRooms().filter(room => {
       const feature = floor.getFeatureForRoom(room.getIndex());

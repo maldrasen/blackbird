@@ -1,6 +1,4 @@
 ```
-application/dungeon/factories/door-finder.js
-application/dungeon/factories/floor-factory.js
 application/dungeon/factories/room-factory.js
 application/dungeon/models/feature.js
 application/views/dungeon/dungeon-floor-view.js
