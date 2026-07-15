@@ -27,7 +27,7 @@
       });
     });
 
-    it.only("uses a forced theme when one is given", function() {
+    it("uses a forced theme when one is given", function() {
       DungeonSystem.createDungeon();
       DungeonSystem.setLevel(1, 'up', 'dungeon');
 

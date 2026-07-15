@@ -7,13 +7,12 @@ application/dungeon/factories/room-factory.js
 application/dungeon/models/feature.js
 application/test/fixtures.js
 application/views/dungeon/dungeon-floor-view.js
-data/dungeon-themes/dungeon.js
-styles/views/dungeon.scss
-test/dungeon/dungeon-system-spec.js
 
-test/dungeon/factories/room-factory-spec.js
- 
-data/feature-types/nested-room.js
+data/dungeon-themes/dungeon.js
+
+styles/views/dungeon.scss
+
+test/dungeon/dungeon-system-spec.js
 ```
 
 
