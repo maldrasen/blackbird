@@ -1,4 +1,4 @@
-﻿describe("DungeonSystem", function() {
+﻿describe.only("DungeonSystem", function() {
 
   describe("setLevel()", function() {
 

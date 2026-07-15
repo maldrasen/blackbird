@@ -19,7 +19,7 @@ DungeonTheme.register('dungeon',{
     // { code:'leg-room',     rarity:1, type:'leg-room',   size:[3,8]},
     // { code:'tea-room',     rarity:1, type:'tea-room',   size:[3,8]},
     { code:'cross-room',   rarity:1, type:'cross-room', size:[3,9]},
-    { code:'nested-room',  rarity:1, type:'nested-room', outerSize:[5,9], innerSize:[2,4]},
+    { code:'nested-room',  rarity:1, type:'nested-room', size:[3,7], padding:[1,3]},
   ]
 
 });
