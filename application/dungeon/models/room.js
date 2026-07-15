@@ -1,4 +1,4 @@
-global.Room = function() {
+global.Room = function(type='normal') {
 
   // The room model will also manage the contents of the room.
   const boxes = [];
@@ -103,6 +103,7 @@ global.Room = function() {
   }
 
   return Object.freeze({
+    getType: () => { return type },
     setIndex: i => { index = i; },
     getIndex: () => { return index; },
     setFeatureIndex: i => { featureIndex = i; },

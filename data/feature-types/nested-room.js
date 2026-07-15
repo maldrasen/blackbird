@@ -1,14 +1,13 @@
 
-function buildNestedDoor(innerX, innerY, innerWidth, innerHeight) {
+function buildNestedDoor(offset, size) {
   const wall = Random.from(['N','S','E','W']);
-  const centerX = innerX + Math.floor((innerWidth - 1) / 2);
-  const centerY = innerY + Math.floor((innerHeight - 1) / 2);
+  const center = offset + Math.floor((size - 1) / 2);
 
   switch (wall) {
-    case 'N': return { position:{ x:centerX, y:innerY - 1 }, direction:'S', from:0, to:1 };
-    case 'S': return { position:{ x:centerX, y:innerY + innerHeight - 1 }, direction:'S', from:1, to:0 };
-    case 'E': return { position:{ x:innerX + innerWidth - 1, y:centerY }, direction:'E', from:1, to:0 };
-    case 'W': return { position:{ x:innerX - 1, y:centerY }, direction:'E', from:0, to:1 };
+    case 'N': return { position:{ x:center, y:offset - 1 }, direction:'S', from:0, to:1 };
+    case 'S': return { position:{ x:center, y:offset + size - 1 }, direction:'S', from:1, to:0 };
+    case 'E': return { position:{ x:offset + size - 1, y:center }, direction:'E', from:1, to:0 };
+    case 'W': return { position:{ x:offset - 1, y:center }, direction:'E', from:0, to:1 };
   }
 }
 
@@ -28,7 +27,7 @@ FeatureType.register('nested-room',{
     if (options.size[0] < 3) { throw new Error(`Minimum outer size needs to be at least 3`); }
 
     const outer = Room();
-    const inner = Room();
+    const inner = Room('nested');
     const size = Random.between(options.size[0], options.size[1]);
     const padding = Random.between(options.padding[0],maxPadding(options, size));
     const innerSize = size - (padding*2);
@@ -37,12 +36,10 @@ FeatureType.register('nested-room',{
     inner.addBox(0, 0, innerSize, innerSize);
     inner.setPosition(padding, padding);
 
-    const door = buildNestedDoor(padding, padding, innerSize, innerSize);
-
     const feature = Feature('nested-room');
     feature.addRoom(outer);
     feature.addRoom(inner);
-    feature.addDoor(door);
+    feature.addDoor(buildNestedDoor(padding, innerSize));
 
     return feature;
   }
