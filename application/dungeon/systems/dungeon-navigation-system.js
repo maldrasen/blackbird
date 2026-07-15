@@ -39,12 +39,12 @@ global.DungeonNavigationSystem = (function() {
       throw new Error(`Cannot move to feature ${index} from feature ${floor.getLocation()}`);
     }
 
-    const chance = floor.isRevealed(index) ? 2 : 20;
-    const encounter = Random.roll(100) < chance;
+    const revealed = floor.isRevealed(index) === false;
+    const encounter = Random.roll(100) < (revealed ? 20 : 2);
 
     floor.setLocation(index);
 
-    return { encounter };
+    return { encounter, revealed };
   }
 
   // =============

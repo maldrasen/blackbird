@@ -68,7 +68,7 @@ global.DungeonView = (function() {
 
       for (const index of path) {
         const result = DungeonNavigationSystem.moveToFeature(index);
-        DungeonFloorView.updateNavigation();
+        DungeonFloorView.updateLocation(index, result.revealed);
         await DungeonViewport.panTo(getCurrentFeature().getCenter(), panDuration);
 
         if (result.encounter) {

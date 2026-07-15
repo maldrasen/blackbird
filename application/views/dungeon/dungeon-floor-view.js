@@ -14,39 +14,41 @@ global.DungeonFloorView = (function() {
     floorElement.style['width'] = `${floor.getFloorWidth() * gridSize}px`;
 
     floor.getFeatures().forEach(feature => {
-      addFeatureElement(feature);
+      addFeatureElement(floor, feature);
     });
 
     floor.getDoors().forEach(door => {
-      addDoorElement(door);
-    });
-
-    updateNavigation();
-  }
-
-  // TODO: When we change rooms we only need to update the visibility of a newly revealed room. This is looping though
-  //       every feature, door, and door pad every time we change room, including when pathing through already
-  //       revealed rooms.
-  function updateNavigation() {
-    const floor = DungeonSystem.getDungeonFloor();
-
-    X.each('#dungeonFloor .feature', element => {
-      const index = parseInt(element.dataset.index);
-      element.classList.toggle('hide', floor.isRevealed(index) === false);
-      element.classList.toggle('current', index === floor.getLocation());
-    });
-
-    X.each('#dungeonFloor .door, #dungeonFloor .door-pad', element => {
-      const revealed = floor.isRevealed(parseInt(element.dataset.from)) || floor.isRevealed(parseInt(element.dataset.to));
-      element.classList.toggle('hide', revealed === false);
+      addDoorElement(floor, door);
     });
   }
 
-  function addFeatureElement(feature) {
+  // Doors and door pads are visible when either of their features is revealed, so revealing a feature can only
+  // unhide the doors that touch it.
+  function updateLocation(index, revealed) {
+    X.removeClass('#dungeonFloor .feature.current','current');
+    X.addClass(`#dungeonFloor .feature[data-index='${index}']`,'current');
+
+    if (revealed) {
+      X.removeClass(`#dungeonFloor .feature[data-index='${index}']`,'hide');
+      X.removeClass([
+        `#dungeonFloor .door[data-from='${index}']`,
+        `#dungeonFloor .door[data-to='${index}']`,
+        `#dungeonFloor .door-pad[data-from='${index}']`,
+        `#dungeonFloor .door-pad[data-to='${index}']`,
+      ].join(','),'hide');
+    }
+  }
+
+  function addFeatureElement(floor, feature) {
+    const index = feature.getIndex();
     const position = feature.getPosition();
     const bounds = feature.getBounds();
 
-    const featureElement = X.createElement(`<div class='feature' data-index='${feature.getIndex()}'></div>`);
+    let classname = 'feature';
+    if (floor.isRevealed(index) === false) { classname += ' hide'; }
+    if (index === floor.getLocation()) { classname += ' current'; }
+
+    const featureElement = X.createElement(`<div class='${classname}' data-index='${index}'></div>`);
     featureElement.style['left'] = `${(position.x * gridSize)}px`;
     featureElement.style['top'] = `${(position.y * gridSize)}px`;
     featureElement.style['height'] = `${bounds.yMax * gridSize}px`;
@@ -93,9 +95,10 @@ global.DungeonFloorView = (function() {
     featureElement.appendChild(roomBox);
   }
 
-  function addDoorElement(door) {
+  function addDoorElement(floor, door) {
     const position = door.getPosition();
     const direction = door.getDirection();
+    const hide = (floor.isRevealed(door.getFrom()) || floor.isRevealed(door.getTo())) ? '' : ' hide';
 
     const wallOffset = doorThickness / 2;
     const insetOffset = (gridSize - doorLength) / 2;
@@ -108,7 +111,7 @@ global.DungeonFloorView = (function() {
       top = ((position.y + 1) * gridSize) - wallOffset;
     }
 
-    const doorElement = X.createElement(`<div class='door ${direction}' data-from='${door.getFrom()}' data-to='${door.getTo()}'></div>`);
+    const doorElement = X.createElement(`<div class='door ${direction}${hide}' data-from='${door.getFrom()}' data-to='${door.getTo()}'></div>`);
     doorElement.style['left'] = `${left}px`;
     doorElement.style['top'] = `${top}px`;
     doorElement.style['height'] = `${(direction === 'S') ? doorThickness : doorLength}px`;
@@ -116,14 +119,14 @@ global.DungeonFloorView = (function() {
 
     X.first('#dungeonFloor').appendChild(doorElement);
 
-    addDoorPad(door, position.x, position.y);
-    addDoorPad(door,
+    addDoorPad(door, hide, position.x, position.y);
+    addDoorPad(door, hide,
       (direction === 'S') ? position.x : position.x + 1,
       (direction === 'S') ? position.y + 1 : position.y);
   }
 
-  function addDoorPad(door, tileX, tileY) {
-    const padElement = X.createElement(`<div class='door-pad' data-from='${door.getFrom()}' data-to='${door.getTo()}'>?</div>`);
+  function addDoorPad(door, hide, tileX, tileY) {
+    const padElement = X.createElement(`<div class='door-pad${hide}' data-from='${door.getFrom()}' data-to='${door.getTo()}'>?</div>`);
     padElement.style['left'] = `${tileX * gridSize}px`;
     padElement.style['top'] = `${tileY * gridSize}px`;
     padElement.style['height'] = `${gridSize}px`;
@@ -134,7 +137,7 @@ global.DungeonFloorView = (function() {
 
   return Object.freeze({
     drawDungeon,
-    updateNavigation,
+    updateLocation,
     getGridSize: () => { return gridSize; },
   });
 
