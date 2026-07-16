@@ -6,7 +6,7 @@ global.DungeonFloor = function(level, theme=null) {
   if (theme == null) { theme = DungeonThemeSystem.pickTheme(level); }
 
   const floorGrid = Array.from({ length:getFloorHeight() }, () => new Array(getFloorWidth()).fill(null));
-  const stairs = { up:null, down:null };
+  const stairs = { up:[], down:[] };
   const revealed = new Set();
 
   let location = null;
@@ -75,7 +75,7 @@ global.DungeonFloor = function(level, theme=null) {
     setDoors: d => { doors = d; },
     getDoors: () => { return doors; },
     addDoor,
-    setStairs: (direction, data) => { stairs[direction] = data; },
+    addStairs: (direction, data) => { stairs[direction].push(data); },
     getStairs: direction => { return stairs[direction]; },
 
     pack,

@@ -30,7 +30,7 @@ global.DungeonSystem = (function() {
       dungeonFloor = DungeonFloor(level, theme);
       try {
         FloorFactory().buildFloor();
-        dungeonFloor.setLocation(dungeonFloor.getStairs(arrival).roomIndex);
+        dungeonFloor.setLocation(Random.from(dungeonFloor.getStairs(arrival)).roomIndex);
         return;
       }
       catch (error) {
@@ -51,9 +51,10 @@ global.DungeonSystem = (function() {
 
   // TODO: Pick the encounter from the dungeon theme's encounter tables once they exist (task 015).
   function startRandomEncounter() {
-    GameSystem.markReturnMode();
-    BattleSystem.startBattle({ encounter:`kobold-${Random.between(1,5)}` });
-    GameSystem.setGameMode(GameMode.battle);
+    console.log("Skipping encounter");
+    // GameSystem.markReturnMode();
+    // BattleSystem.startBattle({ encounter:`kobold-${Random.between(1,5)}` });
+    // GameSystem.setGameMode(GameMode.battle);
   }
 
   return Object.freeze({

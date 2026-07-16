@@ -37,9 +37,10 @@ global.DungeonView = (function() {
   async function stairsClicked(event) {
     if (DungeonViewport.didDrag()) { return; }
 
-    const direction = event.target.closest('.stairs').dataset.direction;
-    const stairs = DungeonSystem.getDungeonFloor().getStairs(direction);
-    const path = DungeonNavigationSystem.getPathToRoom(stairs.roomIndex);
+    const stairsElement = event.target.closest('.stairs');
+    const direction = stairsElement.dataset.direction;
+    const roomIndex = parseInt(stairsElement.closest('.room').dataset.index);
+    const path = DungeonNavigationSystem.getPathToRoom(roomIndex);
     const arrived = await walkPath(path);
     if (arrived === false) { return; }
 

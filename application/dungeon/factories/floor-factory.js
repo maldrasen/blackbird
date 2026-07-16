@@ -110,44 +110,22 @@ global.FloorFactory = function() {
   //       box. Because the rooms are displayed as HTML elements, we don't care about the grid once the dungeon layout
   //       is complete. Stairs should be placed in the actual middle of an element.
 
-  // TODO: Dungeon floors can have more than two stairs, and should only require the entry stairs. It's possible that
-  //       you've found a dead end floor and need to go back up in order to go further down, something you'll only
-  //       know by fully exploring a floor. That should be rare though. The dungeon theme can define how many stairs
-  //       a floor can have.
-
   function placeStairs() {
-    const rooms = floor.getRooms().filter(room => {
+    const rooms = Random.shuffle(floor.getRooms().filter(room => {
       const feature = floor.getFeatureForRoom(room.getIndex());
       return feature.getType() !== 'corridor' && feature.getRooms().length === 1;
-    });
-    const upRoom = Random.from(rooms);
-    const downRoom = pickDownStairsRoom(rooms, upRoom);
+    }));
 
-    floor.setStairs('up', { roomIndex: upRoom.getIndex(), position: upRoom.getCenterTile() });
-    floor.setStairs('down', { roomIndex: downRoom.getIndex(), position: downRoom.getCenterTile() });
-  }
+    const limit = Math.floor(rooms.length / 2);
 
-  function pickDownStairsRoom(rooms, upRoom) {
-    const upCenter = upRoom.getFloorCenter();
+    ['up','down'].forEach(direction => {
+      const count = Math.max(1, Math.min(Random.between(2,3), limit));
 
-    let farthest;
-    let farthestDistance = -1;
-
-    const distantRooms = rooms.filter(room => {
-      if (room === upRoom) { return false; }
-
-      const center = room.getFloorCenter();
-      const distance = ((center.x - upCenter.x) ** 2) + ((center.y - upCenter.y) ** 2);
-
-      if (distance > farthestDistance) {
-        farthestDistance = distance;
-        farthest = room;
+      for (let i=0; i<count; i++) {
+        const room = rooms.pop();
+        floor.addStairs(direction, { roomIndex: room.getIndex(), position: room.getCenterTile() });
       }
-
-      return distance >= (20 ** 2);
     });
-
-    return (distantRooms.length > 0) ? Random.from(distantRooms) : farthest;
   }
 
   function addFeatureToGrid(feature) {

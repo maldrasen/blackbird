@@ -83,8 +83,10 @@ global.DungeonFloorView = (function() {
   }
 
   function addStairsElement(roomElement, room, direction) {
-    const stairs = DungeonSystem.getDungeonFloor().getStairs(direction);
-    if (stairs.roomIndex !== room.getIndex()) { return; }
+    const stairs = DungeonSystem.getDungeonFloor().getStairs(direction).find(entry => {
+      return entry.roomIndex === room.getIndex();
+    });
+    if (stairs == null) { return; }
 
     const position = room.getFloorPosition();
     const glyph = (direction === 'up') ? '▲' : '▼';

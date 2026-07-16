@@ -5,7 +5,7 @@
     it("ensures that rooms don't overlap")
     it("connects every room in the dungeon")
 
-    it("places the stairs in two different rooms", function() {
+    it("places each staircase in its own room", function() {
       DungeonSystem.createDungeon();
       DungeonSystem.setLevel(1);
 
@@ -13,9 +13,13 @@
       const up = floor.getStairs('up');
       const down = floor.getStairs('down');
 
-      expect(up.roomIndex).to.not.equal(down.roomIndex);
+      expect(up.length).to.be.at.least(1);
+      expect(down.length).to.be.at.least(1);
 
-      [up,down].forEach(stairs => {
+      const roomIndexes = [...up,...down].map(stairs => stairs.roomIndex);
+      expect(new Set(roomIndexes).size).to.equal(roomIndexes.length);
+
+      [...up,...down].forEach(stairs => {
         const room = floor.getRooms()[stairs.roomIndex];
         expect(floor.getFeatureForRoom(stairs.roomIndex).getType()).to.not.equal('corridor');
 
@@ -39,7 +43,7 @@
       DungeonSystem.setLevel(1);
 
       const floor = DungeonSystem.getDungeonFloor();
-      expect(floor.getLocation()).to.equal(floor.getStairs('up').roomIndex);
+      expect(floor.getStairs('up').map(stairs => stairs.roomIndex)).to.include(floor.getLocation());
     });
 
   });
@@ -53,7 +57,7 @@
 
       const floor = DungeonSystem.getDungeonFloor();
       expect(floor.getLevel()).to.equal(2);
-      expect(floor.getLocation()).to.equal(floor.getStairs('up').roomIndex);
+      expect(floor.getStairs('up').map(stairs => stairs.roomIndex)).to.include(floor.getLocation());
       expect(floor.isRevealed(floor.getLocation())).to.be.true;
     });
 
@@ -64,7 +68,7 @@
 
       const floor = DungeonSystem.getDungeonFloor();
       expect(floor.getLevel()).to.equal(1);
-      expect(floor.getLocation()).to.equal(floor.getStairs('down').roomIndex);
+      expect(floor.getStairs('down').map(stairs => stairs.roomIndex)).to.include(floor.getLocation());
     });
 
     it("leaves the dungeon when climbing out of level 1", function() {
