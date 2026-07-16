@@ -4,7 +4,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 ## Priority 1
 
-- [018] Dungeon Navigation #dungeon — [018-dungeon-navigation.md](018-dungeon-navigation.md)
 - [111] Add a Viewport Camera — [111-add-a-viewport-camera.md](111-add-a-viewport-camera.md)
 
 ## Priority 2
