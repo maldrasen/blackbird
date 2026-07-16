@@ -95,10 +95,10 @@ global.FloorFactorySupport = (function() {
     const west  = point.x > 0 ? grid[point.y][point.x-1] : null;
     const east  = point.x+1 < floor.getFloorWidth() ? grid[point.y][point.x+1] : null;
 
-    if (south === toIndex) { return Door(point, 'S', fromIndex, toIndex); }
-    if (east  === toIndex) { return Door(point, 'E', fromIndex, toIndex); }
-    if (north === toIndex) { return Door({ x:point.x, y:point.y-1 }, 'S', toIndex, fromIndex); }
-    if (west  === toIndex) { return Door({ x:point.x-1, y:point.y }, 'E', toIndex, fromIndex); }
+    if (south === toIndex) { return { position:point, direction:'S', from:fromIndex, to:toIndex }; }
+    if (east  === toIndex) { return { position:point, direction:'E', from:fromIndex, to:toIndex }; }
+    if (north === toIndex) { return { position:{ x:point.x, y:point.y-1 }, direction:'S', from:toIndex, to:fromIndex }; }
+    if (west  === toIndex) { return { position:{ x:point.x-1, y:point.y }, direction:'E', from:toIndex, to:fromIndex }; }
 
     throw new Error(`Room[${toIndex}] is not adjacent to (${point.x},${point.y})`);
   }

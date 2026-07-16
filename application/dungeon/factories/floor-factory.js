@@ -56,7 +56,7 @@ global.FloorFactory = function() {
         result.doorTiles.forEach(doorTile => {
           const door = FloorFactorySupport.buildDoorToFeature(doorTile.point, corridorRoom.getIndex(), doorTile.feature);
           floor.addDoor(door);
-          connections.addEdge(door.getFrom(), door.getTo());
+          connections.addEdge(door.from, door.to);
         });
 
         forest = connections.getSpanningForest();
@@ -71,7 +71,7 @@ global.FloorFactory = function() {
     // connected, but there are at least some loops between rooms.
     const spanningTree = connections.getSpanningTree(0);
     floor.setDoors(floor.getDoors().filter(door => {
-      return (spanningTree.getEdges(door.getFrom()).includes(door.getTo())) ? true : (Random.roll(100) < 50);
+      return (spanningTree.getEdges(door.from).includes(door.to)) ? true : (Random.roll(100) < 50);
     }));
 
     featureDoors.forEach(door => floor.addDoor(door));
@@ -90,13 +90,14 @@ global.FloorFactory = function() {
       const rooms = feature.getRooms();
 
       feature.getDoors().forEach(spec => {
-        const door = Door(
-          { x: position.x + spec.position.x, y: position.y + spec.position.y },
-          spec.direction,
-          rooms[spec.from].getIndex(),
-          rooms[spec.to].getIndex());
+        const door = {
+          position: { x: position.x + spec.position.x, y: position.y + spec.position.y },
+          direction: spec.direction,
+          from: rooms[spec.from].getIndex(),
+          to: rooms[spec.to].getIndex(),
+        };
 
-        connections.addEdge(door.getFrom(), door.getTo());
+        connections.addEdge(door.from, door.to);
         featureDoors.push(door);
       });
     });

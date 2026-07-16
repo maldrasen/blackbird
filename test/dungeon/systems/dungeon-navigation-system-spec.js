@@ -22,8 +22,8 @@ describe("DungeonNavigationSystem", function() {
 
     adjacent.forEach(index => {
       const connected = doors.some(door =>
-        (door.getFrom() === start && door.getTo() === index) ||
-        (door.getFrom() === index && door.getTo() === start));
+        (door.from === start && door.to === index) ||
+        (door.from === index && door.to === start));
       expect(connected).to.equal(true);
     });
   });
@@ -100,10 +100,10 @@ describe("DungeonNavigationSystem", function() {
   });
 
   it("paths through a door on the current room", function() {
-    const door = floor.getDoors().find(d => d.getFrom() === start || d.getTo() === start);
-    const far = (door.getFrom() === start) ? door.getTo() : door.getFrom();
+    const door = floor.getDoors().find(d => d.from === start || d.to === start);
+    const far = (door.from === start) ? door.to : door.from;
 
-    expect(DungeonNavigationSystem.getPathThroughDoor(door.getFrom(), door.getTo())).to.eql([far]);
+    expect(DungeonNavigationSystem.getPathThroughDoor(door.from, door.to)).to.eql([far]);
   });
 
   it("paths through a distant door via its revealed side", function() {
@@ -112,12 +112,12 @@ describe("DungeonNavigationSystem", function() {
     DungeonNavigationSystem.moveToRoom(start);
 
     const door = floor.getDoors().find(d =>
-      (d.getFrom() === first && floor.isRevealed(d.getTo()) === false) ||
-      (d.getTo() === first && floor.isRevealed(d.getFrom()) === false));
+      (d.from === first && floor.isRevealed(d.to) === false) ||
+      (d.to === first && floor.isRevealed(d.from) === false));
     if (door == null) { return this.skip(); }
 
-    const far = (door.getFrom() === first) ? door.getTo() : door.getFrom();
-    expect(DungeonNavigationSystem.getPathThroughDoor(door.getFrom(), door.getTo())).to.eql([first, far]);
+    const far = (door.from === first) ? door.to : door.from;
+    expect(DungeonNavigationSystem.getPathThroughDoor(door.from, door.to)).to.eql([first, far]);
   });
 
   it("cannot move to a room without a connecting door", function() {

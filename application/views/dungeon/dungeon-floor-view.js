@@ -112,9 +112,9 @@ global.DungeonFloorView = (function() {
   }
 
   function addDoorElement(floor, door) {
-    const position = door.getPosition();
-    const direction = door.getDirection();
-    const hide = (floor.isRevealed(door.getFrom()) || floor.isRevealed(door.getTo())) ? '' : ' hide';
+    const position = door.position;
+    const direction = door.direction;
+    const hide = (floor.isRevealed(door.from) || floor.isRevealed(door.to)) ? '' : ' hide';
 
     const wallOffset = doorThickness / 2;
     const insetOffset = (gridSize - doorLength) / 2;
@@ -127,7 +127,7 @@ global.DungeonFloorView = (function() {
       top = ((position.y + 1) * gridSize) - wallOffset;
     }
 
-    const doorElement = X.createElement(`<div class='door ${direction}${hide}' data-from='${door.getFrom()}' data-to='${door.getTo()}'></div>`);
+    const doorElement = X.createElement(`<div class='door ${direction}${hide}' data-from='${door.from}' data-to='${door.to}'></div>`);
     doorElement.style['left'] = `${left}px`;
     doorElement.style['top'] = `${top}px`;
     doorElement.style['height'] = `${(direction === 'S') ? doorThickness : doorLength}px`;
@@ -136,15 +136,15 @@ global.DungeonFloorView = (function() {
     X.first('#dungeonFloor').appendChild(doorElement);
 
     // The door's position tile belongs to the from room, and the tile on its S/E side belongs to the to room.
-    addDoorPad(floor, door, door.getFrom(), door.getTo(), position.x, position.y);
-    addDoorPad(floor, door, door.getTo(), door.getFrom(),
+    addDoorPad(floor, door, door.from, door.to, position.x, position.y);
+    addDoorPad(floor, door, door.to, door.from,
       (direction === 'S') ? position.x : position.x + 1,
       (direction === 'S') ? position.y + 1 : position.y);
   }
 
   function addDoorPad(floor, door, ownRoom, otherRoom, tileX, tileY) {
     const hide = padIsHidden(floor, ownRoom, otherRoom) ? ' hide' : '';
-    const padElement = X.createElement(`<div class='door-pad${hide}' data-from='${door.getFrom()}' data-to='${door.getTo()}' data-room='${ownRoom}'>?</div>`);
+    const padElement = X.createElement(`<div class='door-pad${hide}' data-from='${door.from}' data-to='${door.to}' data-room='${ownRoom}'>?</div>`);
     padElement.style['left'] = `${tileX * gridSize}px`;
     padElement.style['top'] = `${tileY * gridSize}px`;
     padElement.style['height'] = `${gridSize}px`;

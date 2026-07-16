@@ -52,7 +52,7 @@ global.DungeonFloor = function(level, theme=null) {
       floorGrid,
       stairs,
       features: features.map(feature => feature.pack()),
-      doors: doors.map(door => door.pack()),
+      doors,
     }
   }
 

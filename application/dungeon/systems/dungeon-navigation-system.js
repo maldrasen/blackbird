@@ -9,8 +9,8 @@ global.DungeonNavigationSystem = (function() {
     const adjacent = new Set();
 
     DungeonSystem.getDungeonFloor().getDoors().forEach(door => {
-      if (door.getFrom() === index) { adjacent.add(door.getTo()); }
-      if (door.getTo() === index) { adjacent.add(door.getFrom()); }
+      if (door.from === index) { adjacent.add(door.to); }
+      if (door.to === index) { adjacent.add(door.from); }
     });
 
     return [...adjacent].sort((a,b) => a-b);
