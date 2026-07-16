@@ -1,7 +1,5 @@
 global.DungeonView = (function() {
 
-  const panDuration = 250;
-
   function init() {
     DungeonViewport.init();
     X.onClick('#dungeonFloor .door', doorClicked);
@@ -70,7 +68,7 @@ global.DungeonView = (function() {
       for (const index of path) {
         const result = DungeonNavigationSystem.moveToRoom(index);
         DungeonFloorView.updateLocation(index, result.revealed);
-        await DungeonViewport.panTo(getCurrentRoom().getFloorCenter(), panDuration);
+        await DungeonViewport.panTo(getCurrentRoom().getFloorCenter());
 
         if (result.encounter) {
           MainContent.unhalt();

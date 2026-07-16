@@ -23,6 +23,8 @@ global.DungeonViewport = (function() {
   }
 
   function startDrag() {
+    DungeonCamera.stop();
+
     const position = MouseMonitor.getPosition();
 
     dragContext = {
@@ -84,30 +86,27 @@ global.DungeonViewport = (function() {
     floorElement.style['left'] = `${currentLocation.x}px`;
   }
 
-  // Pan the viewport to center a tile position, animating the floor's top/left. Resolves once the transition ends.
-  function panTo(tilePosition, duration) {
-    return new Promise(resolve => {
-      const floorElement = X.first('#dungeonFloor');
-      floorElement.style['transition'] = `top ${duration}ms ease-in-out, left ${duration}ms ease-in-out`;
-
-      centerOn(tilePosition);
-
-      setTimeout(() => {
-        floorElement.style['transition'] = '';
-        resolve();
-      }, duration);
-    });
+  // Glide the camera over to center a tile position. Resolves once the camera is within a tile of the target, so a
+  // walking party isn't held up waiting for the camera's soft landing.
+  function panTo(tilePosition) {
+    const nearDistance = DungeonFloorView.getGridSize() * currentScale;
+    return DungeonCamera.moveTo(locationCentering(tilePosition), nearDistance);
   }
 
   // Center the viewport on a position given in tile coordinates.
   function centerOn(tilePosition) {
+    setLocation(locationCentering(tilePosition));
+  }
+
+  // The floor location that puts the given tile position at the center of the viewport.
+  function locationCentering(tilePosition) {
     const viewport = X.first('#dungeonViewport');
     const gridSize = DungeonFloorView.getGridSize();
 
-    setLocation({
+    return {
       x: (viewport.clientWidth / 2) - (tilePosition.x * gridSize * currentScale),
       y: (viewport.clientHeight / 2) - (tilePosition.y * gridSize * currentScale),
-    });
+    };
   }
 
   function zoom(step) {
@@ -116,8 +115,11 @@ global.DungeonViewport = (function() {
     setScale(scaleSteps[index]);
   }
 
-  // Change the scale while keeping the point at the center of the viewport fixed in place.
+  // Change the scale while keeping the point at the center of the viewport fixed in place. A moving camera's target
+  // was computed for the old scale, so it stops rather than chase a stale location.
   function setScale(scale) {
+    DungeonCamera.stop();
+
     const viewport = X.first('#dungeonViewport');
     const center = { x: viewport.clientWidth/2, y: viewport.clientHeight/2 };
     const factor = scale / currentScale;
@@ -136,6 +138,7 @@ global.DungeonViewport = (function() {
   function reset() {
     currentScale = 1;
     stopDrag();
+    DungeonCamera.stop();
   }
 
   return Object.freeze({
