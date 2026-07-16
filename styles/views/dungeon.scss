@@ -40,15 +40,9 @@
     background-color: #2e3140;
   }
 
-  // Unrevealed rooms are painted in the floor color rather than hidden completely, so a nested room reads as part
-  // of the unexplored dark instead of leaving a visible hole in the room around it.
   &.unrevealed {
-    .inner {
-      background-color: #111;
-    }
-    .stairs {
-      display: none;
-    }
+    .inner { display: none; }
+    .stairs { display: none; }
   }
 }
 
