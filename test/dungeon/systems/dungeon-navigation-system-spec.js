@@ -64,6 +64,19 @@ describe("DungeonNavigationSystem", function() {
     expect(DungeonNavigationSystem.moveToRoom(start).encounter).to.equal(false);
   });
 
+  it("advances the game time as the party moves", function() {
+    const target = DungeonNavigationSystem.getAdjacentRoomIndices(start)[0];
+    const state = GameSystem.getState();
+    state.setGameTime(100);
+
+    DungeonNavigationSystem.moveToRoom(target);
+    expect(state.getGameTime()).to.equal(101);
+
+    DungeonNavigationSystem.moveToRoom(start);
+    DungeonNavigationSystem.moveToRoom(target);
+    expect(state.getGameTime()).to.equal(101.5);
+  });
+
   it("can still hit an encounter while backtracking", function() {
     const target = DungeonNavigationSystem.getAdjacentRoomIndices(start)[0];
 

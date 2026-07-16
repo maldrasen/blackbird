@@ -5,6 +5,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 ## Priority 1
 
 - [018] Dungeon Navigation #dungeon — [018-dungeon-navigation.md](018-dungeon-navigation.md)
+- [111] Add a Viewport Camera — [111-add-a-viewport-camera.md](111-add-a-viewport-camera.md)
 
 ## Priority 2
 
@@ -18,6 +19,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [107] Add Negotiation Resolution Text — [107-add-negotiation-resolution-text.md](107-add-negotiation-resolution-text.md)
 - [108] Complete Negotiation Questions — [108-complete-negotiation-questions.md](108-complete-negotiation-questions.md)
 - [110] Navigation Events — [110-navigation-events.md](110-navigation-events.md)
+- [112] Room Graphics — [112-room-graphics.md](112-room-graphics.md)
 
 ## Priority 3
 

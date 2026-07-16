@@ -1,7 +1,7 @@
 global.GameState = function(data={}) {
 
   let gameMode = data.gameMode || GameMode.location;
-  let gameTime = data.gameTime;
+  let gameTime = data.gameTime || 0;
   let location = data.location;
   let player = data.player;
   let party = data.party;
@@ -10,7 +10,7 @@ global.GameState = function(data={}) {
 
   function pack() {
     return {
-      gameTime: gameTime,
+      gameTime: Math.round(gameTime),
       gameMode: gameMode,
       location: location,
       player: player,

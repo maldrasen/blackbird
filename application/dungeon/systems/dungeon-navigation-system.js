@@ -1,4 +1,6 @@
 global.DungeonNavigationSystem = (function() {
+  const exploreTime = 1;
+  const backtrackTime = 0.2;
 
   function canMoveTo(index) {
     const currentIndex = DungeonSystem.getDungeonFloor().getLocation();
@@ -26,12 +28,7 @@ global.DungeonNavigationSystem = (function() {
   //       also by changed by items the party uses or events. Maybe they use something that makes them quieter, or
   //       they trip an alarm in an event. We'll need to add a property to the floor state that keeps track of dungeon
   //       conditions like this.
-  //
-  // TODO: Moving from room to room should also advance the game time. Opening a new room should take at least a
-  //       minute. Backtracking could be faster but then game time would have to become a float. The minimum time
-  //       anything can take is a minute. Would that really be a problem if we allow for more granular time? We could
-  //       still save the time as an int, as the extra seconds don't really matter.
-  //
+
   function moveToRoom(index) {
     const floor = DungeonSystem.getDungeonFloor();
 
@@ -43,6 +40,7 @@ global.DungeonNavigationSystem = (function() {
     const encounter = Random.roll(100) < (revealed ? 20 : 2);
 
     floor.setLocation(index);
+    GameSystem.getState().advanceGameTime(revealed ? exploreTime : backtrackTime);
 
     return { encounter, revealed };
   }
