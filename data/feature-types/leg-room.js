@@ -41,6 +41,8 @@ FeatureType.register('leg-room',{
         break;
     }
 
+    room.allowStairs();
+
     const feature = Feature('leg-room');
     feature.addRoom(room);
     return feature;

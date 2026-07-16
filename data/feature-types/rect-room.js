@@ -4,6 +4,7 @@ FeatureType.register('rect-room',{
   //   size:      [min,max]
   build: function(options) {
     const room = Room();
+    room.allowStairs();
     room.addBox(0, 0,
       Random.between(options.size[0], options.size[1]),
       Random.between(options.size[0], options.size[1]));

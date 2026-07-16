@@ -28,6 +28,7 @@ FeatureType.register('cross-room',{
     const room = Room(options);
     room.addBox(0, 0, mainWidth, mainHeight);
     room.addBox(notchWidth, -notchHeight, subWidth, subHeight);
+    room.allowStairs();
 
     const feature = Feature('cross-room');
     feature.addRoom(room);

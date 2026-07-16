@@ -6,6 +6,7 @@ global.Room = function(type='normal') {
   let index;
   let featureIndex;
   let floorPosition;
+  let stairsAllowed = false;
 
   // Add a box to the room. Boxes can be added in any order using any shared coordinate system (eg. plain absolute
   // grid coordinates) - the room's own origin isn't pinned to (0,0) until something actually reads the boxes/bounds,
@@ -119,5 +120,7 @@ global.Room = function(type='normal') {
     getCenterTile,
     getFloorCenter,
     pack,
+    allowStairs: () => { stairsAllowed = true; },
+    stairsAreAllowed: () => { return stairsAllowed; },
   });
 }

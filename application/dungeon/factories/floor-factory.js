@@ -104,18 +104,8 @@ global.FloorFactory = function() {
     return featureDoors;
   }
 
-  // TODO: A room should have a property that we can use to forbid a room from having stairs. The nested room will
-  //       mark the outer room as not allowing stairs, but the inner room can have stairs. We also want to change this
-  //       center tile function, perhaps even get rid of it. The stairs should be placed in the center of a room's main
-  //       box. Because the rooms are displayed as HTML elements, we don't care about the grid once the dungeon layout
-  //       is complete. Stairs should be placed in the actual middle of an element.
-
   function placeStairs() {
-    const rooms = Random.shuffle(floor.getRooms().filter(room => {
-      const feature = floor.getFeatureForRoom(room.getIndex());
-      return feature.getType() !== 'corridor' && feature.getRooms().length === 1;
-    }));
-
+    const rooms = Random.shuffle(floor.getRooms().filter(room => room.stairsAreAllowed()));
     const limit = Math.floor(rooms.length / 2);
 
     ['up','down'].forEach(direction => {
