@@ -30,7 +30,7 @@ global.DungeonSystem = (function() {
       dungeonFloor = DungeonFloor(level, theme);
       try {
         FloorFactory().buildFloor();
-        dungeonFloor.setLocation(Random.from(dungeonFloor.getStairs(arrival)).roomIndex);
+        dungeonFloor.setLocation(Random.from(dungeonFloor.getStairs(arrival)));
         return;
       }
       catch (error) {

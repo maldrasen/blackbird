@@ -5,8 +5,6 @@ styles/views/dungeon.scss
 
 *TODO*: Door looks like an unnecessary model. Could be turned into a plain object.
 
-*TODO*: We don't really need this getCenterTile() function. When we add the stairs element to the room in the UI, we want to center an icon in the middle of the main box. The rooms are elements at this point, so we don't really need to align with the grid at all. In a 2x2 room we still want to place the stairs, or any other room icon, in the center of the main box. With the nested rooms we'll need some why to know if a room is allowed to contain stairs. Corridor features should be forbidden from having stairs.
-
 *TODO*: Moving between rooms advances the game time.
 
 ### Big Tasks

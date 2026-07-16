@@ -112,8 +112,7 @@ global.FloorFactory = function() {
       const count = Math.max(1, Math.min(Random.between(2,3), limit));
 
       for (let i=0; i<count; i++) {
-        const room = rooms.pop();
-        floor.addStairs(direction, { roomIndex: room.getIndex(), position: room.getCenterTile() });
+        floor.addStairs(direction, rooms.pop().getIndex());
       }
     });
   }

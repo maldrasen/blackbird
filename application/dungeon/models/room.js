@@ -62,31 +62,6 @@ global.Room = function(type='normal') {
     return footprint;
   }
 
-  // The footprint tile closest to the center of the bounds, in floor coordinates. The true center can fall outside
-  // an L-shaped room, so this always snaps to a real tile.
-  function getCenterTile() {
-    const footprint = getFootprint();
-    const bounds = getBounds();
-    const center = { x: bounds.xMax / 2, y: bounds.yMax / 2 };
-
-    let closest;
-    let closestDistance = Infinity;
-
-    for (let y=0; y<footprint.length; y++) {
-      for (let x=0; x<footprint[y].length; x++) {
-        if (footprint[y][x]) {
-          const distance = ((x + 0.5) - center.x)**2 + ((y + 0.5) - center.y)**2;
-          if (distance < closestDistance) {
-            closestDistance = distance;
-            closest = { x, y };
-          }
-        }
-      }
-    }
-
-    return { x: closest.x + floorPosition.x, y: closest.y + floorPosition.y };
-  }
-
   // Center of bounds in floor coordinates, which can fall outside the room itself if the room is L-shaped.
   function getFloorCenter() {
     const bounds = getBounds();
@@ -117,7 +92,6 @@ global.Room = function(type='normal') {
     getBoxes,
     getBounds,
     getFootprint,
-    getCenterTile,
     getFloorCenter,
     pack,
     allowStairs: () => { stairsAllowed = true; },

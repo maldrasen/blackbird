@@ -16,18 +16,11 @@
       expect(up.length).to.be.at.least(1);
       expect(down.length).to.be.at.least(1);
 
-      const roomIndexes = [...up,...down].map(stairs => stairs.roomIndex);
+      const roomIndexes = [...up,...down];
       expect(new Set(roomIndexes).size).to.equal(roomIndexes.length);
 
-      [...up,...down].forEach(stairs => {
-        const room = floor.getRooms()[stairs.roomIndex];
-        expect(floor.getFeatureForRoom(stairs.roomIndex).getType()).to.not.equal('corridor');
-
-        const local = {
-          x: stairs.position.x - room.getFloorPosition().x,
-          y: stairs.position.y - room.getFloorPosition().y,
-        };
-        expect(room.getFootprint()[local.y][local.x]).to.equal(true);
+      roomIndexes.forEach(index => {
+        expect(floor.getRooms()[index].stairsAreAllowed()).to.equal(true);
       });
     });
 
@@ -43,7 +36,7 @@
       DungeonSystem.setLevel(1);
 
       const floor = DungeonSystem.getDungeonFloor();
-      expect(floor.getStairs('up').map(stairs => stairs.roomIndex)).to.include(floor.getLocation());
+      expect(floor.getStairs('up')).to.include(floor.getLocation());
     });
 
   });
@@ -57,7 +50,7 @@
 
       const floor = DungeonSystem.getDungeonFloor();
       expect(floor.getLevel()).to.equal(2);
-      expect(floor.getStairs('up').map(stairs => stairs.roomIndex)).to.include(floor.getLocation());
+      expect(floor.getStairs('up')).to.include(floor.getLocation());
       expect(floor.isRevealed(floor.getLocation())).to.be.true;
     });
 
@@ -68,7 +61,7 @@
 
       const floor = DungeonSystem.getDungeonFloor();
       expect(floor.getLevel()).to.equal(1);
-      expect(floor.getStairs('down').map(stairs => stairs.roomIndex)).to.include(floor.getLocation());
+      expect(floor.getStairs('down')).to.include(floor.getLocation());
     });
 
     it("leaves the dungeon when climbing out of level 1", function() {

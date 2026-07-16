@@ -82,18 +82,17 @@ global.DungeonFloorView = (function() {
     X.first('#dungeonFloor').appendChild(roomElement)
   }
 
+  // The stairs glyph is centered on the room's main box, ignoring the grid entirely — once the floor is built the
+  // rooms are just elements, and element geometry is all that matters.
   function addStairsElement(roomElement, room, direction) {
-    const stairs = DungeonSystem.getDungeonFloor().getStairs(direction).find(entry => {
-      return entry.roomIndex === room.getIndex();
-    });
-    if (stairs == null) { return; }
+    if (DungeonSystem.getDungeonFloor().getStairs(direction).includes(room.getIndex()) === false) { return; }
 
-    const position = room.getFloorPosition();
+    const box = room.getBoxes()[0];
     const glyph = (direction === 'up') ? '▲' : '▼';
 
     const stairsElement = X.createElement(`<div class='stairs ${direction}' data-direction='${direction}'>${glyph}</div>`);
-    stairsElement.style['left'] = `${(stairs.position.x - position.x) * gridSize}px`;
-    stairsElement.style['top'] = `${(stairs.position.y - position.y) * gridSize}px`;
+    stairsElement.style['left'] = `${((box.x + (box.width / 2)) * gridSize) - (gridSize / 2)}px`;
+    stairsElement.style['top'] = `${((box.y + (box.height / 2)) * gridSize) - (gridSize / 2)}px`;
     stairsElement.style['height'] = `${gridSize}px`;
     stairsElement.style['width'] = `${gridSize}px`;
 
