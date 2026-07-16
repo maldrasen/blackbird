@@ -6,6 +6,7 @@ global.DungeonViewport = (function() {
   let dragMoved = false;
   let currentLocation = { x:0, y:0 };
   let currentScale = 1;
+  let scaleTarget = 1;
 
   function init() {
     window.addEventListener('mouseup', stopDrag);
@@ -89,7 +90,7 @@ global.DungeonViewport = (function() {
   // Glide the camera over to center a tile position. The camera chases the target on its own; callers never wait
   // on it.
   function panTo(tilePosition) {
-    DungeonCamera.moveTo(locationCentering(tilePosition));
+    DungeonCamera.moveTo(tilePosition);
   }
 
   // Center the viewport on a position given in tile coordinates.
@@ -108,34 +109,44 @@ global.DungeonViewport = (function() {
     };
   }
 
-  function zoom(step) {
-    const index = scaleSteps.indexOf(currentScale) + step;
-    if (index < 0 || index >= scaleSteps.length) { return; }
-    setScale(scaleSteps[index]);
-  }
-
-  // Change the scale while keeping the point at the center of the viewport fixed in place. A moving camera's target
-  // was computed for the old scale, so it stops rather than chase a stale location.
-  function setScale(scale) {
-    DungeonCamera.stop();
-
-    const viewport = X.first('#dungeonViewport');
-    const center = { x: viewport.clientWidth/2, y: viewport.clientHeight/2 };
-    const factor = scale / currentScale;
-
+  // Apply one frame of camera motion: the scale, and the location that centers the camera's focus at that scale.
+  function applyCamera(focus, scale) {
     currentScale = scale;
     X.first('#dungeonFloor').style['transform'] = `scale(${scale})`;
+    setLocation(locationCentering(focus));
+  }
 
-    setLocation({
-      x: center.x - ((center.x - currentLocation.x) * factor),
-      y: center.y - ((center.y - currentLocation.y) * factor),
-    });
+  // The camera state implied by whatever the viewport is currently showing (the inverse of locationCentering), so
+  // the camera can pick up seamlessly after drags and instant centering.
+  function deriveCamera() {
+    const viewport = X.first('#dungeonViewport');
+    const gridSize = DungeonFloorView.getGridSize();
+
+    return {
+      focus: {
+        x: ((viewport.clientWidth / 2) - currentLocation.x) / (gridSize * currentScale),
+        y: ((viewport.clientHeight / 2) - currentLocation.y) / (gridSize * currentScale),
+      },
+      scale: currentScale,
+    };
+  }
+
+  // The wheel steps the scale target through the fixed stops while the camera glides the actual scale toward it, so
+  // scaleTarget rather than currentScale (usually somewhere between stops, mid-glide) tracks the position in the
+  // list. With no pan in play the zoom anchors on the center of the viewport.
+  function zoom(step) {
+    const index = scaleSteps.indexOf(scaleTarget) + step;
+    if (index < 0 || index >= scaleSteps.length) { return; }
+
+    scaleTarget = scaleSteps[index];
+    DungeonCamera.zoomTo(scaleTarget);
   }
 
   // The floor element is rebuilt every time the dungeon view is shown, dropping any applied transform, so the scale
   // has to start over at 1.
   function reset() {
     currentScale = 1;
+    scaleTarget = 1;
     stopDrag();
     DungeonCamera.stop();
   }
@@ -153,7 +164,8 @@ global.DungeonViewport = (function() {
     centerOn,
     panTo,
     zoom,
-    setScale,
+    applyCamera,
+    deriveCamera,
     getScale: () => { return currentScale; },
   });
 
