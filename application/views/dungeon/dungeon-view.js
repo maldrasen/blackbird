@@ -2,6 +2,9 @@ global.DungeonView = (function() {
 
   const stepTime = 250;
 
+  let currentWalk = 0;
+  let walking = false;
+
   function init() {
     DungeonViewport.init();
     X.onClick('#dungeonFloor .door', doorClicked);
@@ -59,38 +62,52 @@ global.DungeonView = (function() {
   }
 
   // Walk the party through the features in the path one room at a time on a steady beat, pointing the camera at each
-  // new room as they go — the camera chases the party on its own and is never waited on. The halt cover blocks user
-  // interaction until the party arrives. A random encounter stops the party in the room that triggered it, abandoning
-  // the rest of the path, so this resolves false when the party never arrived.
+  // new room as they go — the camera chases the party on its own and is never waited on. The party is never locked
+  // in: clicking a new destination mid-walk starts a fresh walk that supersedes this one, and escape abandons the
+  // path outright. A random encounter also stops the party in the room that triggered it. This resolves false
+  // whenever the party never arrived.
   async function walkPath(path) {
     if (path == null) { return false; }
+    if (path.length === 0) { return true; }
 
-    if (path.length > 0) {
-      MainContent.halt();
+    const walkId = ++currentWalk;
+    walking = true;
 
-      for (const index of path) {
-        const result = DungeonNavigationSystem.moveToRoom(index);
-        DungeonFloorView.updateLocation(index, result.revealed);
-        DungeonViewport.panTo(getCurrentRoom().getFloorCenter());
-        await new Promise(resolve => setTimeout(resolve, stepTime));
+    for (const index of path) {
+      const result = DungeonNavigationSystem.moveToRoom(index);
+      DungeonFloorView.updateLocation(index, result.revealed);
+      DungeonViewport.panTo(getCurrentRoom().getFloorCenter());
+      await new Promise(resolve => setTimeout(resolve, stepTime));
 
-        if (result.encounter) {
-          MainContent.unhalt();
-          DungeonSystem.startRandomEncounter();
-          return false;
-        }
+      // A newer walk owns the party now; any encounter rolled on this step is quietly forgotten.
+      if (walkId !== currentWalk) { return false; }
+
+      if (result.encounter) {
+        walking = false;
+        DungeonSystem.startRandomEncounter();
+        return false;
       }
-
-      MainContent.unhalt();
     }
 
+    walking = false;
     return true;
+  }
+
+  function isWalking() {
+    return walking;
+  }
+
+  function stopWalking() {
+    currentWalk += 1;
+    walking = false;
   }
 
   return Object.freeze({
     init,
     show,
     drawDungeon,
+    isWalking,
+    stopWalking,
   });
 
 })();

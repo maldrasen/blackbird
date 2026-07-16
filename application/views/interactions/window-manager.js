@@ -8,6 +8,7 @@ global.WindowManager = (function() {
       if (selectVisible()) { return removeSelect(); }
       if (Confirmation.isVisible()) { return Confirmation.cancel(); }
       if (windowStack.length > 0) { return pop() }
+      if (DungeonView.isWalking()) { return DungeonView.stopWalking(); }
 
       if (!MainMenu.isVisible()) {
         MainMenu.open();
