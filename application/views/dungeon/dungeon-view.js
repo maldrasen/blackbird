@@ -61,11 +61,10 @@ global.DungeonView = (function() {
       parseInt(doorElement.dataset.to)));
   }
 
-  // Walk the party through the features in the path one room at a time on a steady beat, pointing the camera at each
-  // new room as they go — the camera chases the party on its own and is never waited on. The party is never locked
-  // in: clicking a new destination mid-walk starts a fresh walk that supersedes this one, and escape abandons the
-  // path outright. A random encounter also stops the party in the room that triggered it. This resolves false
-  // whenever the party never arrived.
+  // Walk the party through the path one room at a time on a steady beat, targeting the camera at each new room as
+  // they go. Clicking a new destination mid-walk starts a fresh walk that supersedes this one, and escape abandons the
+  // path outright. A random encounter also stops the party in the room that triggered it. This resolves false if the
+  // party will never arrive.
   async function walkPath(path) {
     if (path == null) { return false; }
     if (path.length === 0) { return true; }

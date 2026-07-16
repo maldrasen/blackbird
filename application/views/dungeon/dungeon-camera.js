@@ -1,13 +1,9 @@
 global.DungeonCamera = (function() {
 
-  // Camera motion is a critically damped spring: the viewport accelerates toward its target and brakes as it
-  // arrives, never overshooting. Retargeting mid-flight keeps the current velocity, so panning through a string of
-  // rooms flows as one continuous motion instead of easing to a stop at every room along the way.
-  //
-  // The camera works in floor coordinate space, not pixels: its state is a focus point (the floor position sitting
-  // at the center of the viewport, in tile units) plus the scale, each springing toward its own target. The pixel
-  // projection happens once per frame in DungeonViewport.applyCamera, so panning and zooming compose naturally —
-  // a pan target can never be invalidated by a zoom in flight.
+  // The camera motion uses a critically damped spring, the viewport accelerates toward its target and brakes as it
+  // arrives. Retargeting towards a new room mid-flight keeps the current velocity, so panning through a string of
+  // rooms flows as one continuous motion.
+
   const smoothTime = 300;
   const settleDistance = 0.02;
   const settleSpeed = 0.0005;
@@ -22,21 +18,16 @@ global.DungeonCamera = (function() {
   let frameId = null;
   let lastTimestamp = null;
 
-  // Glide toward centering a floor position. Nothing ever waits on the camera arriving; it just chases the latest
-  // target.
   function moveTo(point) {
     focusTarget = { ...point };
     start();
   }
 
-  // Glide the scale toward a new value. With no focus target in play the focus stays put, so the zoom anchors on
-  // whatever is at the center of the viewport, and while walking it anchors on the party.
   function zoomTo(value) {
     scaleTarget = value;
     start();
   }
 
-  // Abandon the current targets, leaving the viewport wherever it is.
   function stop() {
     focusTarget = null;
     scaleTarget = null;
@@ -53,8 +44,6 @@ global.DungeonCamera = (function() {
     return focusTarget != null || scaleTarget != null;
   }
 
-  // Waking the camera adopts whatever the viewport is currently showing, so motion picks up seamlessly from drags,
-  // instant centering, and floor redraws.
   function start() {
     if (frameId != null) { return; }
 
@@ -68,8 +57,6 @@ global.DungeonCamera = (function() {
   function step(timestamp) {
     if (isMoving() === false) { return stop(); }
 
-    // The first frame only records the clock, and a long gap between frames (an inactive tab) is capped so the
-    // spring math stays stable.
     const dt = (lastTimestamp == null) ? 0 : Math.min(timestamp - lastTimestamp, 50);
     lastTimestamp = timestamp;
 
@@ -107,8 +94,8 @@ global.DungeonCamera = (function() {
     }
   }
 
-  // Advance one scalar of the spring, storing the new velocity. (The standard SmoothDamp formulation, a stable
-  // approximation of a critically damped spring.)
+  // Advance one scalar of the spring, storing the new velocity. This is the standard SmoothDamp function, a stable
+  // approximation of a critically damped spring.
   function dampen(current, targetValue, axis, dt) {
     const omega = 2 / smoothTime;
     const x = omega * dt;
@@ -129,8 +116,7 @@ global.DungeonCamera = (function() {
   }
 
   function scaleHasSettled() {
-    return Math.abs(scale - scaleTarget) < settleScale
-        && Math.abs(velocity.scale) < settleScaleSpeed;
+    return Math.abs(scale - scaleTarget) < settleScale && Math.abs(velocity.scale) < settleScaleSpeed;
   }
 
   return Object.freeze({
