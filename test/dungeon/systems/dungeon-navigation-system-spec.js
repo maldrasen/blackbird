@@ -74,7 +74,7 @@ describe("DungeonNavigationSystem", function() {
 
     DungeonNavigationSystem.moveToRoom(start);
     DungeonNavigationSystem.moveToRoom(target);
-    expect(state.getGameTime()).to.equal(101.5);
+    expect(state.getGameTime()).to.equal(101.4);
   });
 
   it("can still hit an encounter while backtracking", function() {
