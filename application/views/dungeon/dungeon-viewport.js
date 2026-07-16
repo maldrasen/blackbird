@@ -86,11 +86,10 @@ global.DungeonViewport = (function() {
     floorElement.style['left'] = `${currentLocation.x}px`;
   }
 
-  // Glide the camera over to center a tile position. Resolves once the camera is within a tile of the target, so a
-  // walking party isn't held up waiting for the camera's soft landing.
+  // Glide the camera over to center a tile position. The camera chases the target on its own; callers never wait
+  // on it.
   function panTo(tilePosition) {
-    const nearDistance = DungeonFloorView.getGridSize() * currentScale;
-    return DungeonCamera.moveTo(locationCentering(tilePosition), nearDistance);
+    DungeonCamera.moveTo(locationCentering(tilePosition));
   }
 
   // Center the viewport on a position given in tile coordinates.

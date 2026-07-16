@@ -3,7 +3,7 @@ global.DungeonCamera = (function() {
   // Camera motion is a critically damped spring: the viewport accelerates toward its target and brakes as it
   // arrives, never overshooting. Retargeting mid-flight keeps the current velocity, so panning through a string of
   // rooms flows as one continuous motion instead of easing to a stop at every room along the way.
-  const smoothTime = 250;
+  const smoothTime = 300;
   const settleDistance = 0.5;
   const settleSpeed = 0.01;
 
@@ -11,24 +11,18 @@ global.DungeonCamera = (function() {
   let target = null;
   let frameId = null;
   let lastTimestamp = null;
-  let resolvers = [];
 
-  // Glide toward a location, resolving when the camera is within nearDistance pixels of the target (or has fully
-  // settled) so that callers pacing themselves on the camera don't have to wait out the final soft landing.
-  function moveTo(location, nearDistance=0) {
-    target = { ...location, nearDistance };
+  // Glide toward a location. Nothing ever waits on the camera arriving; it just chases the latest target.
+  function moveTo(location) {
+    target = { ...location };
 
-    return new Promise(resolve => {
-      resolvers.push(resolve);
-      if (frameId == null) {
-        lastTimestamp = null;
-        frameId = requestAnimationFrame(step);
-      }
-    });
+    if (frameId == null) {
+      lastTimestamp = null;
+      frameId = requestAnimationFrame(step);
+    }
   }
 
-  // Abandon the current target, leaving the viewport wherever it is. Anything still waiting on the camera is
-  // released, since the camera will never arrive.
+  // Abandon the current target, leaving the viewport wherever it is.
   function stop() {
     target = null;
     velocity = { x:0, y:0 };
@@ -38,9 +32,6 @@ global.DungeonCamera = (function() {
       cancelAnimationFrame(frameId);
       frameId = null;
     }
-
-    resolvers.forEach(resolve => resolve());
-    resolvers = [];
   }
 
   function isMoving() {
@@ -65,7 +56,6 @@ global.DungeonCamera = (function() {
       DungeonViewport.setLocation(next);
 
       if (hasSettled(next)) { return arrive(); }
-      if (isNear(next)) { release(); }
     }
 
     frameId = requestAnimationFrame(step);
@@ -91,10 +81,6 @@ global.DungeonCamera = (function() {
         && Math.abs(velocity.y) < settleSpeed;
   }
 
-  function isNear(location) {
-    return distanceToTarget(location) <= target.nearDistance;
-  }
-
   function distanceToTarget(location) {
     return Math.sqrt(((location.x - target.x) ** 2) + ((location.y - target.y) ** 2));
   }
@@ -102,11 +88,6 @@ global.DungeonCamera = (function() {
   function arrive() {
     DungeonViewport.setLocation({ x:target.x, y:target.y });
     stop();
-  }
-
-  function release() {
-    resolvers.forEach(resolve => resolve());
-    resolvers = [];
   }
 
   return Object.freeze({

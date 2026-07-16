@@ -1,5 +1,7 @@
 global.DungeonView = (function() {
 
+  const stepTime = 250;
+
   function init() {
     DungeonViewport.init();
     X.onClick('#dungeonFloor .door', doorClicked);
@@ -56,9 +58,10 @@ global.DungeonView = (function() {
       parseInt(doorElement.dataset.to)));
   }
 
-  // Walk the party through the features in the path one room at a time, panning the viewport along with them. The
-  // halt cover blocks user interaction until the party arrives. A random encounter stops the party in the room that
-  // triggered it, abandoning the rest of the path, so this resolves false when the party never arrived.
+  // Walk the party through the features in the path one room at a time on a steady beat, pointing the camera at each
+  // new room as they go — the camera chases the party on its own and is never waited on. The halt cover blocks user
+  // interaction until the party arrives. A random encounter stops the party in the room that triggered it, abandoning
+  // the rest of the path, so this resolves false when the party never arrived.
   async function walkPath(path) {
     if (path == null) { return false; }
 
@@ -68,7 +71,8 @@ global.DungeonView = (function() {
       for (const index of path) {
         const result = DungeonNavigationSystem.moveToRoom(index);
         DungeonFloorView.updateLocation(index, result.revealed);
-        await DungeonViewport.panTo(getCurrentRoom().getFloorCenter());
+        DungeonViewport.panTo(getCurrentRoom().getFloorCenter());
+        await new Promise(resolve => setTimeout(resolve, stepTime));
 
         if (result.encounter) {
           MainContent.unhalt();
