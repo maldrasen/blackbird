@@ -1,6 +1,11 @@
 global.DungeonDoorView = (function() {
 
-  const doorLength = 32;
+  // The door must fit inside the wall face on any tile, without ever needing occlusion: the worst case is a
+  // corner tile, where the face's base only spans from the corner miter (wallInset + depth into the tile) to the
+  // far side wall line. The door's base is centered in that worst-case stretch, so a door in a corner sits with
+  // even space on both sides; and since the lean parallels the miter diagonal, the top edge keeps the same
+  // clearance. The width caps at gridSize - 2*(wallInset + depth) + lean, currently 26.
+  const doorLength = 20;
   const doorLintel = 6;
 
   // A door is a single solid parallelogram lying on the wall face it belongs to: its base edge stands on the wall
@@ -41,7 +46,8 @@ global.DungeonDoorView = (function() {
     const lean = (height * westWallDepth) / northWallDepth;
     const top = wallInset + doorLintel;
     const base = wallInset + northWallDepth;
-    const left = (gridSize - doorLength - lean) / 2;
+    const baseLeft = ((base + gridSize - wallInset) - doorLength) / 2;
+    const left = baseLeft - lean;
 
     return {
       offsetX: 0,
@@ -53,7 +59,7 @@ global.DungeonDoorView = (function() {
         [0, wallInset, gridSize, wallInset],
         [0, base, gridSize, base],
       ],
-      slab: `${left},${top} ${left + doorLength},${top} ${left + lean + doorLength},${base} ${left + lean},${base}`,
+      slab: `${left},${top} ${left + doorLength},${top} ${baseLeft + doorLength},${base} ${baseLeft},${base}`,
     };
   }
 
@@ -63,7 +69,8 @@ global.DungeonDoorView = (function() {
     const lean = (height * northWallDepth) / westWallDepth;
     const top = wallInset + doorLintel;
     const base = wallInset + westWallDepth;
-    const start = (gridSize - doorLength - lean) / 2;
+    const baseTop = ((base + gridSize - wallInset) - doorLength) / 2;
+    const start = baseTop - lean;
 
     return {
       offsetX: wallInset - 1,
@@ -75,7 +82,7 @@ global.DungeonDoorView = (function() {
         [wallInset, 0, wallInset, gridSize],
         [base, 0, base, gridSize],
       ],
-      slab: `${top},${start} ${base},${start + lean} ${base},${start + lean + doorLength} ${top},${start + doorLength}`,
+      slab: `${top},${start} ${base},${baseTop} ${base},${baseTop + doorLength} ${top},${start + doorLength}`,
     };
   }
 

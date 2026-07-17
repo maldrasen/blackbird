@@ -121,8 +121,10 @@ global.DungeonRoomView = (function() {
 
   // The exterior faces of any rooms nested inside this one are part of this room's view of its own interior, so
   // they reveal along with this room whether or not the nested room has been entered. Seen from outside, the
-  // nested structure shows its south and east faces. The lines are outset from the nested outline so the nested
-  // room's footprint, which paints above this room, never covers them.
+  // nested structure shows its south and east faces. The lines are outset by the wall inset, giving the nested
+  // room the same breathing room on its outside that neighboring rooms give each other — which also lands the
+  // exterior face bands exactly where an interior band would sit on the adjacent tiles, so doors on the nested
+  // room's south and east sides line up with no special casing.
   function nestedWalls(floor, room, gridSize) {
     const feature = floor.getFeatureForRoom(room.getIndex());
     const position = room.getFloorPosition();
@@ -135,7 +137,7 @@ global.DungeonRoomView = (function() {
         y: ((nestedPosition.y - position.y) + vertex.y) * gridSize,
       }));
 
-      const wallLine = GeometryHelper.insetOutline(outline, -1);
+      const wallLine = GeometryHelper.insetOutline(outline, -wallInset);
 
       return [
         `<polygon class='nested-wall' points='${points(wallLine)}'/>`,
