@@ -60,16 +60,16 @@ global.DungeonFloorView = (function() {
     const wallOffset = doorThickness / 2;
     const insetOffset = (gridSize - doorLength) / 2;
 
-    let left = ((position.x + 1) * gridSize) - wallOffset;
+    let left = (position.x * gridSize) - wallOffset;
     let top = (position.y * gridSize) + insetOffset;
 
-    if (direction === 'S') {
+    if (direction === 'N') {
       left = (position.x * gridSize) + insetOffset;
-      top = ((position.y + 1) * gridSize) - wallOffset;
+      top = (position.y * gridSize) - wallOffset;
     }
 
-    const width = (direction === 'S') ? doorLength : doorThickness;
-    const height = (direction === 'S') ? doorThickness : doorLength;
+    const width = (direction === 'N') ? doorLength : doorThickness;
+    const height = (direction === 'N') ? doorThickness : doorLength;
 
     const doorElement = X.createElement([
       `<svg class='door ${direction}${hide}' data-from='${door.from}' data-to='${door.to}' viewBox='0 0 ${width} ${height}'>`,
@@ -85,8 +85,8 @@ global.DungeonFloorView = (function() {
 
     addDoorPad(floor, door, door.from, door.to, position.x, position.y);
     addDoorPad(floor, door, door.to, door.from,
-      (direction === 'S') ? position.x : position.x + 1,
-      (direction === 'S') ? position.y + 1 : position.y);
+      (direction === 'N') ? position.x : position.x - 1,
+      (direction === 'N') ? position.y - 1 : position.y);
   }
 
   function addDoorPad(floor, door, ownRoom, otherRoom, tileX, tileY) {

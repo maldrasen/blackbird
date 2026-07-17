@@ -33,13 +33,14 @@ global.DoorFinder = function(grid) {
     return [connections,trimmedDoors];
   }
 
+  // Doors live on the north or west wall of their position tile, so every tile checks its own N and W neighbors.
   function findDoorsAt(x,y) {
     const thisCell = grid[y][x];
-    const southCell = cellSouthOf(x,y);
-    const eastCell = cellEastOf(x,y);
+    const northCell = cellNorthOf(x,y);
+    const westCell = cellWestOf(x,y);
 
-    if (canConnect(thisCell,southCell)) { addDoor(x,y,'S',thisCell,southCell); }
-    if (canConnect(thisCell,eastCell)) { addDoor(x,y,'E',thisCell,eastCell); }
+    if (canConnect(thisCell,northCell)) { addDoor(x,y,'N',thisCell,northCell); }
+    if (canConnect(thisCell,westCell)) { addDoor(x,y,'W',thisCell,westCell); }
   }
 
   // Rooms within the same feature are joined by the feature's own authored doors, never by found ones.
@@ -48,12 +49,12 @@ global.DoorFinder = function(grid) {
     return floor.getRooms()[from].getFeatureIndex() !== floor.getRooms()[to].getFeatureIndex();
   }
 
-  function cellSouthOf(x,y) {
-    return (y+1 < floorHeight) ? grid[y+1][x] : null;
+  function cellNorthOf(x,y) {
+    return (y > 0) ? grid[y-1][x] : null;
   }
 
-  function cellEastOf(x,y) {
-    return (x+1 < floorWidth) ? grid[y][x+1] : null;
+  function cellWestOf(x,y) {
+    return (x > 0) ? grid[y][x-1] : null;
   }
 
   function addDoor(x, y, direction, from, to) {

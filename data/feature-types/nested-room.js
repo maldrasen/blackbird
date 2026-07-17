@@ -4,10 +4,10 @@ function buildNestedDoor(offset, size) {
   const center = offset + Math.floor((size - 1) / 2);
 
   switch (wall) {
-    case 'N': return { position:{ x:center, y:offset - 1 }, direction:'S', from:0, to:1 };
-    case 'S': return { position:{ x:center, y:offset + size - 1 }, direction:'S', from:1, to:0 };
-    case 'E': return { position:{ x:offset + size - 1, y:center }, direction:'E', from:1, to:0 };
-    case 'W': return { position:{ x:offset - 1, y:center }, direction:'E', from:0, to:1 };
+    case 'N': return { position:{ x:center, y:offset }, direction:'N', from:1, to:0 };
+    case 'S': return { position:{ x:center, y:offset + size }, direction:'N', from:0, to:1 };
+    case 'E': return { position:{ x:offset + size, y:center }, direction:'W', from:0, to:1 };
+    case 'W': return { position:{ x:offset, y:center }, direction:'W', from:1, to:0 };
   }
 }
 

@@ -83,9 +83,9 @@ global.FloorFactorySupport = (function() {
     return buildDoor(point, fromRoomIndex, toRoomIndex);
   }
 
-  // Doors are only ever stored on a tile's S or E wall. Given a point that touches the room at toIndex, this finds
-  // which side toIndex is on and derives the door's real position/direction from that. A room to the N or W needs
-  // the door tile shifted onto that room so it can be expressed as S/E facing.
+  // Doors are only ever stored on a tile's N or W wall. Given a point that touches the room at toIndex, this finds
+  // which side toIndex is on and derives the door's real position/direction from that. A room to the S or E needs
+  // the door tile shifted onto that room so it can be expressed as N/W facing.
   function buildDoor(point, fromIndex, toIndex) {
     const floor = DungeonSystem.getDungeonFloor();
     const grid = floor.getFloorGrid();
@@ -95,10 +95,10 @@ global.FloorFactorySupport = (function() {
     const west  = point.x > 0 ? grid[point.y][point.x-1] : null;
     const east  = point.x+1 < floor.getFloorWidth() ? grid[point.y][point.x+1] : null;
 
-    if (south === toIndex) { return { position:point, direction:'S', from:fromIndex, to:toIndex }; }
-    if (east  === toIndex) { return { position:point, direction:'E', from:fromIndex, to:toIndex }; }
-    if (north === toIndex) { return { position:{ x:point.x, y:point.y-1 }, direction:'S', from:toIndex, to:fromIndex }; }
-    if (west  === toIndex) { return { position:{ x:point.x-1, y:point.y }, direction:'E', from:toIndex, to:fromIndex }; }
+    if (north === toIndex) { return { position:point, direction:'N', from:fromIndex, to:toIndex }; }
+    if (west  === toIndex) { return { position:point, direction:'W', from:fromIndex, to:toIndex }; }
+    if (south === toIndex) { return { position:{ x:point.x, y:point.y+1 }, direction:'N', from:toIndex, to:fromIndex }; }
+    if (east  === toIndex) { return { position:{ x:point.x+1, y:point.y }, direction:'W', from:toIndex, to:fromIndex }; }
 
     throw new Error(`Room[${toIndex}] is not adjacent to (${point.x},${point.y})`);
   }

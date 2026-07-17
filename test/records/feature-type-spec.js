@@ -121,32 +121,32 @@ describe("FeatureType", function() {
       expect(inner.getPosition()).to.deep.equal({ x:2, y:2 });
     });
 
-    it("puts a north wall door on the outer tile above the inner room", function() {
+    it("puts a north wall door on the inner room's top tile", function() {
       Random.stubFrom('N');
       Random.stubBetween(7,2);
       const door = buildFeature('nested-room',{ size:[5,9], padding:[1,3] }).getDoors()[0];
-      expect(door).to.deep.equal({ position:{ x:3, y:1 }, direction:'S', from:0, to:1 });
+      expect(door).to.deep.equal({ position:{ x:3, y:2 }, direction:'N', from:1, to:0 });
     });
 
-    it("puts a south wall door on the inner room's bottom tile", function() {
+    it("puts a south wall door on the outer tile below the inner room", function() {
       Random.stubFrom('S');
       Random.stubBetween(7,2);
       const door = buildFeature('nested-room',{ size:[5,9], padding:[1,3] }).getDoors()[0];
-      expect(door).to.deep.equal({ position:{ x:3, y:4 }, direction:'S', from:1, to:0 });
+      expect(door).to.deep.equal({ position:{ x:3, y:5 }, direction:'N', from:0, to:1 });
     });
 
-    it("puts an east wall door on the inner room's right tile", function() {
+    it("puts an east wall door on the outer tile right of the inner room", function() {
       Random.stubFrom('E');
       Random.stubBetween(7,2);
       const door = buildFeature('nested-room',{ size:[5,9], padding:[1,3] }).getDoors()[0];
-      expect(door).to.deep.equal({ position:{ x:4, y:3 }, direction:'E', from:1, to:0 });
+      expect(door).to.deep.equal({ position:{ x:5, y:3 }, direction:'W', from:0, to:1 });
     });
 
-    it("puts a west wall door on the outer tile left of the inner room", function() {
+    it("puts a west wall door on the inner room's left tile", function() {
       Random.stubFrom('W');
       Random.stubBetween(7,2);
       const door = buildFeature('nested-room',{ size:[5,9], padding:[1,3] }).getDoors()[0];
-      expect(door).to.deep.equal({ position:{ x:1, y:3 }, direction:'E', from:0, to:1 });
+      expect(door).to.deep.equal({ position:{ x:2, y:3 }, direction:'W', from:1, to:0 });
     });
 
     // A 4 tile outer caps the padding at 1 even though the options allow up to 3, keeping a 2x2 inner room. The
