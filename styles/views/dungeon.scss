@@ -27,7 +27,7 @@
   // The footprint alone is the hidden state: a blank patch of background that keeps unrevealed nested rooms from
   // showing as holes. The walls line only appears once the room is revealed.
   .footprint { fill: variables.$bg-dungeon; }
-  .walls {
+  .walls, .nested-wall {
     fill: none;
     stroke: variables.$fg-dungeon-wall;
     stroke-width: 2;
@@ -39,6 +39,7 @@
 
   &.unrevealed {
     .walls { display: none; }
+    .nested-wall { display: none; }
     .stairs { display: none; }
   }
 

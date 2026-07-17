@@ -45,6 +45,16 @@ describe("GeometryHelper", function() {
       ]);
     });
 
+    it('expands the outline when the inset is negative', function() {
+      const room = Room();
+      room.addBox(0,0,2,3);
+      const outline = scale(GeometryHelper.traceOutline(room.getFootprint()));
+
+      expect(GeometryHelper.insetOutline(outline, -1)).to.deep.equal([
+        { x:-1, y:-1 }, { x:129, y:-1 }, { x:129, y:193 }, { x:-1, y:193 },
+      ]);
+    });
+
     it('pushes the concave corner of an L-shaped room further into the room', function() {
       const room = Room();
       room.addBox(0,0,3,1);
