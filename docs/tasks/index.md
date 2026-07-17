@@ -4,7 +4,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 ## Priority 1
 
-- [112] Room Graphics `21pt` — [112-room-graphics.md](112-room-graphics.md)
 - [117] After battle control flow `5pt` — [117-after-battle-control-flow.md](117-after-battle-control-flow.md)
 
 ## Priority 2
