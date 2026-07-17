@@ -1,8 +1,8 @@
 global.DungeonRoomView = (function() {
 
-  const wallInset = 8;
+  const wallInset = 6;
   const northWallDepth = 20;
-  const westWallDepth = 10;
+  const westWallDepth = 20;
 
   // The conceit of the oblique perspective: every edge that would be vertical in the world projects to the same
   // diagonal. A vertical corner edge is only drawn where it's actually visible, though: inside a room that's just

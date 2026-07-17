@@ -15,10 +15,10 @@ global.DungeonFloorView = (function() {
       floorElement.appendChild(DungeonRoomView.build(floor, room));
     });
 
-    // floor.getDoors().forEach(door => {
-    //   floorElement.appendChild(DungeonDoorView.build(floor, door));
-    //   addDoorPads(floor, door);
-    // });
+    floor.getDoors().forEach(door => {
+      floorElement.appendChild(DungeonDoorView.build(floor, door));
+      addDoorPads(floor, door);
+    });
   }
 
   // Doors are visible when either of their rooms is revealed, so revealing a room can only unhide the doors that

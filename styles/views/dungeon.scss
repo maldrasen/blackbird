@@ -63,25 +63,13 @@
   }
 }
 
-// Doors paint above the rooms: the mouth erases the wall lines crossing the passage, then the closed passage is
-// drawn back over it.
+// Doors paint above the rooms: a single solid parallelogram lying on the wall face.
 #dungeonFloor .door {
   position: absolute;
   z-index: 100;
   cursor: pointer;
 
-  // The mouth's stroke matches its fill, bleeding the erasure past the rect to swallow flush wall lines.
-  .mouth {
-    fill: variables.$bg-dungeon;
-    stroke: variables.$bg-dungeon;
-    stroke-width: 2;
-  }
-  .jamb, .slab {
-    fill: none;
-    stroke: variables.$fg-dungeon-wall;
-    stroke-width: 2;
-    stroke-linecap: square;
-  }
+  .slab { fill: variables.$fg-dungeon-wall; }
 }
 
 // Pads render above everything. Instead of being covered by the rooms, they're only shown on the unexplored side
