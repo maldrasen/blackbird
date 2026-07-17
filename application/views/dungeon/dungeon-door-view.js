@@ -41,11 +41,11 @@ global.DungeonDoorView = (function() {
   }
 
   function northGeometry(gridSize, metrics) {
-    const { wallInset, northWallDepth, westWallDepth } = metrics;
-    const height = northWallDepth - doorLintel;
-    const lean = (height * westWallDepth) / northWallDepth;
+    const { wallInset, wallDepth } = metrics;
+    const height = wallDepth - doorLintel;
+    const lean = (height * wallDepth) / wallDepth;
     const top = wallInset + doorLintel;
-    const base = wallInset + northWallDepth;
+    const base = wallInset + wallDepth;
     const left = (gridSize - doorLength) / 2;
     const baseLeft = left + lean;
 
@@ -53,8 +53,8 @@ global.DungeonDoorView = (function() {
       offsetX: 0,
       offsetY: wallInset - 1,
       width: gridSize,
-      height: northWallDepth + 2,
-      viewBox: `0 ${wallInset - 1} ${gridSize} ${northWallDepth + 2}`,
+      height: wallDepth + 2,
+      viewBox: `0 ${wallInset - 1} ${gridSize} ${wallDepth + 2}`,
       frames: [
         [0, wallInset, gridSize, wallInset],
         [0, base, gridSize, base],
@@ -64,20 +64,20 @@ global.DungeonDoorView = (function() {
   }
 
   function westGeometry(gridSize, metrics) {
-    const { wallInset, northWallDepth, westWallDepth } = metrics;
-    const height = westWallDepth - doorLintel;
-    const lean = (height * northWallDepth) / westWallDepth;
+    const { wallInset, wallDepth } = metrics;
+    const height = wallDepth - doorLintel;
+    const lean = (height * wallDepth) / wallDepth;
     const top = wallInset + doorLintel;
-    const base = wallInset + westWallDepth;
+    const base = wallInset + wallDepth;
     const start = (gridSize - doorLength) / 2;
     const baseTop = start + lean;
 
     return {
       offsetX: wallInset - 1,
       offsetY: 0,
-      width: westWallDepth + 2,
+      width: wallDepth + 2,
       height: gridSize,
-      viewBox: `${wallInset - 1} 0 ${westWallDepth + 2} ${gridSize}`,
+      viewBox: `${wallInset - 1} 0 ${wallDepth + 2} ${gridSize}`,
       frames: [
         [wallInset, 0, wallInset, gridSize],
         [base, 0, base, gridSize],

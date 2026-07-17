@@ -1,16 +1,15 @@
 global.DungeonRoomView = (function() {
 
   const wallInset = 6;
-  const northWallDepth = 20;
-  const westWallDepth = 20;
+  const wallDepth = 20;
 
   // The conceit of the oblique perspective: every edge that would be vertical in the world projects to the same
   // diagonal. A vertical corner edge is only drawn where it's actually visible, though: inside a room that's just
   // the NW-type corners where two visible faces meet. Where a face ends against a faceless side wall (NE and SW),
   // the edge is hidden behind that wall, so the base line simply ends on the wall line. Nested exteriors are
   // convex solids, so every face-end edge sits on their silhouette and all of their corners draw.
-  const wallTopShift = { x: -westWallDepth, y: -northWallDepth };
-  const wallBaseShift = { x: westWallDepth, y: northWallDepth };
+  const wallTopShift = { x: -wallDepth, y: -wallDepth };
+  const wallBaseShift = { x: wallDepth, y: wallDepth };
   const noShift = { x: 0, y: 0 };
 
   const roomWallShifts = { E: wallTopShift, N: wallTopShift, S: noShift, W: noShift };
@@ -21,8 +20,8 @@ global.DungeonRoomView = (function() {
   // edges run N.
   const wallFaceDirections = ['E','N'];
   const wallBaseInsets = {
-    E: wallInset + northWallDepth,
-    N: wallInset + westWallDepth,
+    E: wallInset + wallDepth,
+    N: wallInset + wallDepth,
     S: wallInset,
     W: wallInset,
   };
@@ -167,7 +166,7 @@ global.DungeonRoomView = (function() {
 
   return Object.freeze({
     build,
-    getWallMetrics: () => { return { wallInset, northWallDepth, westWallDepth }; },
+    getWallMetrics: () => { return { wallInset, wallDepth }; },
   });
 
 })();
