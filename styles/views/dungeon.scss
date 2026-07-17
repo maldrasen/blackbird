@@ -24,44 +24,53 @@
   position: absolute;
   z-index: calc(10 + var(--depth, 0));
 
-  .room-box {
-    position: absolute;
-  }
-  .inner {
-    background-color: #222;
-    z-index: 50;
-  }
-  .outer {
-    background-color: #111;
-    z-index: 10;
+  // The stroke is a placeholder border keeping adjacent rooms distinct until the walls are drawn in.
+  .floor {
+    fill: #222;
+    stroke: #111;
+    stroke-width: 8;
   }
 
-  &.current .inner {
-    background-color: #2e3140;
+  &.current .floor {
+    fill: #2e3140;
   }
 
+  // An unrevealed room paints its floor in the background color, so nested rooms stay hidden without the map
+  // showing holes where they're hiding.
   &.unrevealed {
-    .inner { display: none; }
+    .floor { fill: #111; stroke: none; }
     .stairs { display: none; }
+  }
+
+  .stairs {
+    font-size: 52px;
+    fill: #776f5e;
+    text-anchor: middle;
+    dominant-baseline: central;
+    cursor: pointer;
+
+    &:hover {
+      fill: #b0a68e;
+    }
   }
 }
 
 #dungeonFloor .door {
   position: absolute;
-  background-color: #333;
-  box-shadow: 0 0 2px rgb(0,0,0) inset;
   z-index: 100;
   cursor: pointer;
+
+  rect { fill: #333; }
 }
 
 // Pads render above everything. Instead of being covered by the rooms, they're only shown on the unexplored side
 // of a door, and removed from a room's tiles when it's revealed.
 #dungeonFloor .door-pad {
   position: absolute;
-  font-size: 20px;
+  font-size: 40px;
   font-family: "roboto-mono-bold", monospace;
   text-align: center;
-  line-height: 32px;
+  line-height: 64px;
   cursor: pointer;
   color: rgb(126,104,86);
   opacity: 0.2;
@@ -69,19 +78,4 @@
 }
 #dungeonFloor .door-pad:hover {
   opacity: 0.3;
-}
-
-#dungeonFloor .stairs {
-  position: absolute;
-  z-index: 60;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  color: #776f5e;
-  cursor: pointer;
-
-  &:hover {
-    color: #b0a68e;
-  }
 }

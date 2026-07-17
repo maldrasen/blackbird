@@ -1,8 +1,8 @@
 global.DungeonFloorView = (function() {
 
-  const gridSize = 32;
-  const doorLength = 24;
-  const doorThickness = 8;
+  const gridSize = 64;
+  const doorLength = 48;
+  const doorThickness = 16;
 
   function drawDungeon() {
     const floor = DungeonSystem.getDungeonFloor();
@@ -14,7 +14,7 @@ global.DungeonFloorView = (function() {
     floorElement.style['width'] = `${floor.getFloorWidth() * gridSize}px`;
 
     floor.getRooms().forEach(room => {
-      addRoomElement(floor, room);
+      floorElement.appendChild(DungeonRoomView.build(floor, room));
     });
 
     floor.getDoors().forEach(door => {
@@ -52,65 +52,6 @@ global.DungeonFloorView = (function() {
     return floor.isRevealed(ownRoom) || floor.isRevealed(otherRoom) === false;
   }
 
-  // Rooms of a multi-room feature overlap, with later rooms painted inside earlier ones. The room's depth within
-  // its feature drives the z-index layering in the stylesheet. Unrevealed rooms still render (in the floor color),
-  // so the map doesn't show holes where nested rooms are hiding.
-  function addRoomElement(floor, room) {
-    const index = room.getIndex();
-    const position = room.getFloorPosition();
-    const bounds = room.getBounds();
-
-    let classname = 'room';
-    if (floor.isRevealed(index) === false) { classname += ' unrevealed'; }
-    if (index === floor.getLocation()) { classname += ' current'; }
-
-    const roomElement = X.createElement(`<div class='${classname}' data-index='${index}'></div>`);
-    roomElement.style['left'] = `${(position.x * gridSize)}px`;
-    roomElement.style['top'] = `${(position.y * gridSize)}px`;
-    roomElement.style['height'] = `${bounds.yMax * gridSize}px`;
-    roomElement.style['width'] = `${bounds.xMax * gridSize}px`;
-    roomElement.style.setProperty('--depth', roomDepth(floor, index));
-
-    room.getBoxes().forEach(box => {
-      addRoomBox(roomElement, box);
-      addRoomBox(roomElement, box, true);
-    });
-
-    addStairsElement(roomElement, room, 'up');
-    addStairsElement(roomElement, room, 'down');
-
-    X.first('#dungeonFloor').appendChild(roomElement)
-  }
-
-  // The stairs glyph is centered on the room's main box, ignoring the grid entirely — once the floor is built the
-  // rooms are just elements, and element geometry is all that matters.
-  function addStairsElement(roomElement, room, direction) {
-    if (DungeonSystem.getDungeonFloor().getStairs(direction).includes(room.getIndex()) === false) { return; }
-
-    const box = room.getBoxes()[0];
-    const glyph = (direction === 'up') ? '▲' : '▼';
-
-    const stairsElement = X.createElement(`<div class='stairs ${direction}' data-direction='${direction}'>${glyph}</div>`);
-    stairsElement.style['left'] = `${((box.x + (box.width / 2)) * gridSize) - (gridSize / 2)}px`;
-    stairsElement.style['top'] = `${((box.y + (box.height / 2)) * gridSize) - (gridSize / 2)}px`;
-    stairsElement.style['height'] = `${gridSize}px`;
-    stairsElement.style['width'] = `${gridSize}px`;
-
-    roomElement.appendChild(stairsElement);
-  }
-
-  function addRoomBox(featureElement, box, innerBox=false) {
-    const offset = innerBox ? 2 : 0
-    const classname = innerBox ? 'inner' : 'outer';
-
-    const roomBox = X.createElement(`<div class='${classname} room-box'></div>`);
-    roomBox.style['left'] = `${(box.x * gridSize) + offset}px`;
-    roomBox.style['top'] = `${(box.y * gridSize) + offset}px`;
-    roomBox.style['height'] = `${(box.height * gridSize) - (2 * offset)}px`;
-    roomBox.style['width'] = `${(box.width * gridSize) - (2 * offset)}px`;
-    featureElement.appendChild(roomBox);
-  }
-
   function addDoorElement(floor, door) {
     const position = door.position;
     const direction = door.direction;
@@ -127,15 +68,21 @@ global.DungeonFloorView = (function() {
       top = ((position.y + 1) * gridSize) - wallOffset;
     }
 
-    const doorElement = X.createElement(`<div class='door ${direction}${hide}' data-from='${door.from}' data-to='${door.to}'></div>`);
+    const width = (direction === 'S') ? doorLength : doorThickness;
+    const height = (direction === 'S') ? doorThickness : doorLength;
+
+    const doorElement = X.createElement([
+      `<svg class='door ${direction}${hide}' data-from='${door.from}' data-to='${door.to}' viewBox='0 0 ${width} ${height}'>`,
+      `<rect x='0' y='0' width='${width}' height='${height}'/>`,
+      `</svg>`,
+    ].join(''));
     doorElement.style['left'] = `${left}px`;
     doorElement.style['top'] = `${top}px`;
-    doorElement.style['height'] = `${(direction === 'S') ? doorThickness : doorLength}px`;
-    doorElement.style['width'] = `${(direction === 'S') ? doorLength : doorThickness}px`;
+    doorElement.style['height'] = `${height}px`;
+    doorElement.style['width'] = `${width}px`;
 
     X.first('#dungeonFloor').appendChild(doorElement);
 
-    // The door's position tile belongs to the from room, and the tile on its S/E side belongs to the to room.
     addDoorPad(floor, door, door.from, door.to, position.x, position.y);
     addDoorPad(floor, door, door.to, door.from,
       (direction === 'S') ? position.x : position.x + 1,
@@ -151,11 +98,6 @@ global.DungeonFloorView = (function() {
     padElement.style['width'] = `${gridSize}px`;
 
     X.first('#dungeonFloor').appendChild(padElement);
-  }
-
-  // How deeply the room is nested within its feature: the position of the room in the feature's room order.
-  function roomDepth(floor, index) {
-    return floor.getFeatureForRoom(index).getRooms().findIndex(room => room.getIndex() === index);
   }
 
   return Object.freeze({

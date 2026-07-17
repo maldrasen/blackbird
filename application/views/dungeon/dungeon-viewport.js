@@ -1,12 +1,13 @@
 global.DungeonViewport = (function() {
 
-  const scaleSteps = [0.5, 0.75, 1, 1.5, 2];
+  const scaleSteps = [0.25, 0.375, 0.5, 0.75, 1];
+  const defaultScale = 0.5;
 
   let dragContext;
   let dragMoved = false;
   let currentLocation = { x:0, y:0 };
-  let currentScale = 1;
-  let scaleTarget = 1;
+  let currentScale = defaultScale;
+  let scaleTarget = defaultScale;
 
   function init() {
     window.addEventListener('mouseup', stopDrag);
@@ -143,10 +144,11 @@ global.DungeonViewport = (function() {
   }
 
   // The floor element is rebuilt every time the dungeon view is shown, dropping any applied transform, so the scale
-  // has to start over at 1.
+  // has to start over at the default, applied explicitly because a bare element renders at scale 1.
   function reset() {
-    currentScale = 1;
-    scaleTarget = 1;
+    currentScale = defaultScale;
+    scaleTarget = defaultScale;
+    X.first('#dungeonFloor').style['transform'] = `scale(${defaultScale})`;
     stopDrag();
     DungeonCamera.stop();
   }
