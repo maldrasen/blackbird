@@ -42,6 +42,7 @@ title: ${title}
 priority:
 created: ${created}
 tags: []
+points: 0
 ---
 ---
 `;

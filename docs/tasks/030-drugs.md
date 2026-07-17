@@ -3,6 +3,7 @@ id: 030
 title: Drugs
 priority: 4
 created: 2026-07-03
+points: 13
 tags: [training]
 ---
 ---
@@ -13,3 +14,6 @@ We're going to have a variety of drugs with different methods for giving them to
 This drug action though is very complex. I think I need to have a single 'use drug' action that starts an event. In the event you select which drug from your inventory, and where and how you want to administer it. The final choice in this event should use the same consent results, which would mean that the consent result model needs to also calculate consent for arbritrary event actions as well. That shouldn't be too involved, just using the same consent factors and target value.
 
 Drugged should be a priority status effect that appears early in the sex action text tree, as the drugged version of a personality might be wholly different from their normal personality. Although some drugs, that only effect sensitivity, won't change personality at all.
+
+---
+**Notes (Claude):** Complex, as you note — recommend splitting into: (a) generalize the consent model (`consent-result.js`) to score arbitrary event actions, not just `SexAction`s — a reusable prerequisite that also helps [[028-orders]]; (b) drug items + a "use drug" event to pick drug / site / method, where the method affects both consent and effect (some effects localized to the injected part), needing a sleight-of-hand skill for covert dosing; (c) a `drugged` status effect placed high in the sex-action text tree so a drugged personality reads differently, plus reduced anima/animus scaled by drug strength.

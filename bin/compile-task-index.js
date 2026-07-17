@@ -40,7 +40,8 @@ priorities.forEach(priority => {
   tasks.filter(task => task.priority === priority).forEach(task => {
     const tags = (task.tags || '[]').replace(/^\[|\]$/g, '').split(',').map(tag => tag.trim()).filter(Boolean);
     const tagText = tags.length ? ` ${tags.map(tag => `#${tag}`).join(' ')}` : '';
-    output += `- [${task.id}] ${task.title}${tagText} — [${task.file}](${task.file})\n`;
+    const pointText = task.points ? ` \`${task.points}pt\`` : '';
+    output += `- [${task.id}] ${task.title}${pointText}${tagText} — [${task.file}](${task.file})\n`;
   });
 });
 

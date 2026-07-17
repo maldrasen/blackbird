@@ -3,6 +3,7 @@ id: 104
 title: Lineage and Meta-Progression
 priority: 4
 created: 2026-07-09
+points: 21
 tags:
 ---
 ---
@@ -34,3 +35,6 @@ The first run is deliberately the least interesting option: human male, "the lon
 - How the lineage is represented and serialized (it replaces the character as the save-file root).
 - What exactly transfers to a new character on accept-death (home upgrades, NPC state, unlocked scenarios) and how it's applied at character creation.
 - How unlocks are tracked and which conditions unlock which scenarios.
+
+---
+**Notes (Claude):** Foundational rogue-lite layer, none of it built, with a dependency chain (unlocks need accept-death; accept-death needs the lineage to write into). Recommend splitting into: (a) the lineage container + serialization — it *replaces* the character as the save-file root, so it likely wants to exist early even if mostly empty (home upgrades, NPC dispositions); (b) the accept-death transition (mark the character dead, start a new run in the same lineage); (c) scenario-unlock tracking and applying unlocks at character creation. This deserves a proper design pass before estimating the splits. Related: [[project_game_start_event_task100]], and the home-upgrade layer needed by [[116-capture-monsters]].

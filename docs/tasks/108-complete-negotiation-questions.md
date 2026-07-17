@@ -3,6 +3,7 @@ id: 108
 title: Complete Negotiation Questions
 priority: 2
 created: 2026-07-12
+points: 8
 tags:
   - battle
 ---
@@ -107,4 +108,7 @@ Oh, of course the humans would take credit for fucking red.
 ##### You should be ashamed of yourself.
 
 ##### Cocky one aren't you? You really think you could handle someone like me?
+
+---
+**Notes (Claude):** The framework is done ([[project_recruitment_negotiation_system]]) — this is content. Write 8 complete, unique questions to start (the file has a big brainstorm list plus 3 built examples in `data/negotiation/questions/`). Each question is substantial: 4 tone answers plus reaction/feelings maps per supertype and per archetype (see `what-want.js`, ~110 lines each). Low complexity, high endurance — batch it, stop at 8, extend later. Score is the endurance, not difficulty.
 

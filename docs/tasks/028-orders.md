@@ -3,6 +3,7 @@ id: 028
 title: Orders
 priority: 4
 created: 2026-07-03
+points: 13
 tags: [training]
 ---
 ---
@@ -15,3 +16,6 @@ Other orders will be more complex, and need more of a response from the characte
 Characters can obey or refuse orders. Either way I should add a memory record for the order. That way I can also have a punish or reward option, that will look at the last order. If they've refused the last order I can punish them for it, and say why they're being either punished or rewarded. 
 
 Orders are essentially like mini training opportunities. They use the same consent models and can adjust anima, preferences, feelings, etc. But really only for a single action. Ordering a character to give you a quick blowjob, should also obviously be a thing.
+
+---
+**Notes (Claude):** A broad new interaction system — recommend splitting into: (a) simple movement orders (follow / stay / come here) with control-based compliance duration; (b) the clothing/equipment change UI — an RPG paperdoll where each change can fire an event (its own sizeable UI task on top of `equipment-manager`/`character-equipper`); (c) memory records + a punish/reward option keyed off the last order. All orders run the consent model and an attitude-driven response ([[006-attitudes]]) and can adjust anima/feelings for a single action. Depends on 006 and memory records.

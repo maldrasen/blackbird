@@ -3,6 +3,7 @@ id: 047
 title: Add New Species
 priority: 3
 created: 2026-07-06
+points: 13
 tags:
   - character
 ---
@@ -22,6 +23,9 @@ The capriens are goat people. They're going to be a bit more complex as the capr
 And because of this dimorphism gender is going to get messy. Probably need to take another look at the body factory to determine how gender is figured out. With the other species we don't need to explicitly decide if a character is a trans woman. A character's gender can be female, and if they have a dick that doesn't contradict anything about their femaleness. A trans caprien though may have an entirely different head structure. So what effect would that have on the species view of gender?
 
 And because biology is messy, we should also rarely build bare chested, human faced males or fur covered females with goat heads.
+
+---
+**Notes (Claude):** Four species — recommend splitting by difficulty. Vulpins / Fauns / Gnolls are cheap (reuse the lupin body; Gnolls add a female pseudo-penis + matriarchy flavor); group them as one task and pull [[041-more-species]] in too. Capriens are the expensive part: strong sexual dimorphism (goat-headed furred males vs horned human-faced females) forces a rethink of how `body-factory` decides gender/head structure, plus rare "off" combinations. Split Capriens (+ the gender-model rework) into their own task — that's where the real design work lives.
 
 ### Fauns
 Deer people.
