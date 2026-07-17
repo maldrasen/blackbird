@@ -18,6 +18,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [107] Add Negotiation Resolution Text — [107-add-negotiation-resolution-text.md](107-add-negotiation-resolution-text.md)
 - [108] Complete Negotiation Questions — [108-complete-negotiation-questions.md](108-complete-negotiation-questions.md)
 - [110] Navigation Events — [110-navigation-events.md](110-navigation-events.md)
+- [114] Rework death mechanics — [114-rework-death-mechanics.md](114-rework-death-mechanics.md)
 
 ## Priority 3
 
@@ -42,6 +43,8 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [038] SexAction isAvailable() and isEnabled() — [038-sexaction-isavailable-and-isenabled.md](038-sexaction-isavailable-and-isenabled.md)
 - [044] Unwilling Actions Require Hands — [044-unwilling-actions-require-hands.md](044-unwilling-actions-require-hands.md)
 - [047] Add New Species — [047-add-new-species.md](047-add-new-species.md)
+- [113] Add statistics component — [113-add-statistics-component.md](113-add-statistics-component.md)
+- [116] Capture Monsters — [116-capture-monsters.md](116-capture-monsters.md)
 
 ## Priority 4
 
@@ -54,6 +57,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [034] Character Portraits #character — [034-character-portraits.md](034-character-portraits.md)
 - [101] Look for a Community — [101-look-for-a-community.md](101-look-for-a-community.md)
 - [104] Lineage and Meta-Progression — [104-lineage-and-meta-progression.md](104-lineage-and-meta-progression.md)
+- [115] Add deathblow messages — [115-add-deathblow-messages.md](115-add-deathblow-messages.md)
 
 ## Priority 5
 
