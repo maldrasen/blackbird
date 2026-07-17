@@ -9,11 +9,11 @@
     right: 10px;
     overflow: hidden;
     border: variables.$border-normal;
-    background-color: #111;
+    background-color: variables.$bg-dungeon;
   }
   #dungeonFloor {
     position: absolute;
-    background-color: #111;
+    background-color: variables.$bg-dungeon;
     transform-origin: 0 0;
   }
 }
@@ -25,17 +25,16 @@
   z-index: calc(10 + var(--depth, 0));
 
   // The footprint alone is the hidden state: a blank patch of background that keeps unrevealed nested rooms from
-  // showing as holes. The walls line only appears once the room is revealed. The wall color is a placeholder
-  // until the themes get their own palettes.
-  .footprint { fill: #111; }
+  // showing as holes. The walls line only appears once the room is revealed.
+  .footprint { fill: variables.$bg-dungeon; }
   .walls {
     fill: none;
-    stroke: #666;
+    stroke: variables.$fg-dungeon-wall;
     stroke-width: 2;
   }
 
   &.current .walls {
-    fill: #2e3140;
+    stroke: variables.$fg-dungeon-wall-current;
   }
 
   &.unrevealed {
@@ -45,13 +44,13 @@
 
   .stairs {
     font-size: 52px;
-    fill: #776f5e;
+    fill: variables.$fg-dungeon-stairs;
     text-anchor: middle;
     dominant-baseline: central;
     cursor: pointer;
 
     &:hover {
-      fill: #b0a68e;
+      fill: variables.$fg-dungeon-stairs-hover;
     }
   }
 }
@@ -65,7 +64,7 @@
   text-align: center;
   line-height: 64px;
   cursor: pointer;
-  color: rgb(126,104,86);
+  color: variables.$fg-dungeon-pad;
   opacity: 0.2;
   z-index: 200;
 }

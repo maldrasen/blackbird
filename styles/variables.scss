@@ -139,6 +139,15 @@ $shadow-scrolling-panel-track: 2px 2px 4px rgb(0,0,0) inset;
 $shadow-scrolling-panel-thumb: -2px -2px 5px rgba(0,0,0,0.4) inset,
                                2px 2px 5px rgba(100,100,250,0.2) inset;
 
+// === Dungeon ===
+// Placeholder palette until the dungeon themes get their own.
+$bg-dungeon:              #111;
+$fg-dungeon-wall:         #666;
+$fg-dungeon-wall-current: #9ac;
+$fg-dungeon-pad:          rgb(126,104,86);
+$fg-dungeon-stairs:       #776f5e;
+$fg-dungeon-stairs-hover: #b0a68e;
+
 // === Casement ===
 $casementBorderColor: rgb(47,37,34);
 $casementTopGradient: linear-gradient(rgb(47,37,34) 0%, rgb(0,0,0) 100%);
