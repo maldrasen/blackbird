@@ -1,10 +1,10 @@
 global.DungeonDoorView = (function() {
 
-  // The door must fit inside the wall face on any tile, without ever needing occlusion: the worst case is a
-  // corner tile, where the face's base only spans from the corner miter (wallInset + depth into the tile) to the
-  // far side wall line. The door's base is centered in that worst-case stretch, so a door in a corner sits with
-  // even space on both sides; and since the lean parallels the miter diagonal, the top edge keeps the same
-  // clearance. The width caps at gridSize - 2*(wallInset + depth) + lean, currently 26.
+  // The slab's TOP edge is centered on the tile and the base trails the lean: the top edge is the door's most
+  // visible part (the base sinks into the wall base line), so this is what reads as centered. The door must also
+  // fit inside the wall face on any tile without ever needing occlusion; the worst case is a corner tile, where
+  // the face's base only spans from the corner miter (wallInset + depth into the tile) to the far side wall line.
+  // With top-edge centering the width caps at gridSize - 2*wallInset - 2*lean, currently 24.
   const doorLength = 20;
   const doorLintel = 6;
 
@@ -46,8 +46,8 @@ global.DungeonDoorView = (function() {
     const lean = (height * westWallDepth) / northWallDepth;
     const top = wallInset + doorLintel;
     const base = wallInset + northWallDepth;
-    const baseLeft = ((base + gridSize - wallInset) - doorLength) / 2;
-    const left = baseLeft - lean;
+    const left = (gridSize - doorLength) / 2;
+    const baseLeft = left + lean;
 
     return {
       offsetX: 0,
@@ -69,8 +69,8 @@ global.DungeonDoorView = (function() {
     const lean = (height * northWallDepth) / westWallDepth;
     const top = wallInset + doorLintel;
     const base = wallInset + westWallDepth;
-    const baseTop = ((base + gridSize - wallInset) - doorLength) / 2;
-    const start = baseTop - lean;
+    const start = (gridSize - doorLength) / 2;
+    const baseTop = start + lean;
 
     return {
       offsetX: wallInset - 1,
