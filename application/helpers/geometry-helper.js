@@ -91,15 +91,15 @@ global.GeometryHelper = (function() {
     return (to.y > from.y) ? 'S' : 'N';
   }
 
-  // Collect the maximal runs of consecutive edges walked in the given directions, each returned as a vertex chain.
-  // Runs crossing the outline's starting vertex come back whole.
+  // Collect the maximal runs of consecutive edges walked in the given directions, each returned as the chain of
+  // vertex indices along the run. Runs crossing the outline's starting vertex come back whole.
   function outlineRuns(vertices, directions) {
     const count = vertices.length;
     const included = i => directions.includes(edgeDirection(vertices[i], vertices[(i + 1) % count]));
 
     let start = 0;
     while (start < count && included(start)) { start++; }
-    if (start === count) { return [vertices.concat([vertices[0]])]; }
+    if (start === count) { return [vertices.map((vertex, i) => i).concat([0])]; }
 
     const runs = [];
     let run = null;
@@ -113,12 +113,22 @@ global.GeometryHelper = (function() {
         continue;
       }
 
-      if (run == null) { run = [vertices[edge]]; }
-      run.push(vertices[(edge + 1) % count]);
+      if (run == null) { run = [edge]; }
+      run.push((edge + 1) % count);
     }
 
     if (run != null) { runs.push(run); }
     return runs;
+  }
+
+  // A vertex of a clockwise outline is convex when the walk turns right there, and concave (a corner pointing
+  // into the shape's interior) when it turns left.
+  function vertexIsConvex(vertices, index) {
+    const previous = vertices[(index + vertices.length - 1) % vertices.length];
+    const vertex = vertices[index];
+    const next = vertices[(index + 1) % vertices.length];
+
+    return ((vertex.x - previous.x) * (next.y - vertex.y)) - ((vertex.y - previous.y) * (next.x - vertex.x)) > 0;
   }
 
   // The top-left corner of the topmost-leftmost filled cell, which is always a convex corner of the outline.
@@ -147,6 +157,7 @@ global.GeometryHelper = (function() {
     insetOutline,
     shiftOutline,
     outlineRuns,
+    vertexIsConvex,
     edgeDirection,
   });
 

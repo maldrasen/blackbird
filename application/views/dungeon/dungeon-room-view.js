@@ -50,12 +50,12 @@ global.DungeonRoomView = (function() {
     // sliver of background always separates directly adjacent rooms.
     const outline = GeometryHelper.traceOutline(room.getFootprint())
       .map(vertex => ({ x: vertex.x * gridSize, y: vertex.y * gridSize }));
+    const wallLine = GeometryHelper.insetOutline(outline, wallInset);
     const wallBase = GeometryHelper.insetOutline(outline, wallBaseInsets);
     const content = [
       `<polygon class='footprint' points='${points(outline)}'/>`,
-      `<polygon class='walls' points='${points(GeometryHelper.insetOutline(outline, wallInset))}'/>`,
-      ...GeometryHelper.outlineRuns(wallBase, wallFaceDirections).map(run =>
-        `<polyline class='wall-base' points='${points(run)}'/>`),
+      `<polygon class='walls' points='${points(wallLine)}'/>`,
+      ...wallFaceLines(outline, wallLine, wallBase),
       ...cornerLines(wallBase, roomWallShifts),
       ...nestedWalls(floor, room, gridSize),
       stairsGlyph(floor, room, 'up', gridSize),
@@ -71,6 +71,37 @@ global.DungeonRoomView = (function() {
     roomElement.style.setProperty('--depth', roomDepth(floor, index));
 
     return roomElement;
+  }
+
+  // The base of each visible wall face is the face's ceiling segment dropped by the vertical projection. How a
+  // face's base ends depends on the corner it ends at: at a convex corner the face's end edge is hidden behind
+  // the side wall, so the base is trimmed back to meet the side wall's line; at a concave corner the face wraps
+  // a protrusion into the room, its end edge stands exposed, so the base keeps its projected length and the
+  // slanted end edge connects it back to the ceiling corner.
+  function wallFaceLines(outline, wallLine, wallBase) {
+    const shapes = [];
+
+    GeometryHelper.outlineRuns(outline, wallFaceDirections).forEach(indices => {
+      const base = indices.map(index => ({
+        x: wallLine[index].x + wallBaseShift.x,
+        y: wallLine[index].y + wallBaseShift.y,
+      }));
+
+      [0, indices.length - 1].forEach(position => {
+        const index = indices[position];
+
+        if (GeometryHelper.vertexIsConvex(outline, index)) {
+          base[position] = wallBase[index];
+          return;
+        }
+
+        shapes.push(`<line class='wall-corner' x1='${wallLine[index].x}' y1='${wallLine[index].y}' x2='${base[position].x}' y2='${base[position].y}'/>`);
+      });
+
+      shapes.push(`<polyline class='wall-base' points='${points(base)}'/>`);
+    });
+
+    return shapes;
   }
 
   // Where two shifted walls meet, their faces share a vertical corner edge that the shifted polygon's single

@@ -78,15 +78,13 @@ describe("GeometryHelper", function() {
   });
 
   describe("outlineRuns()", function() {
-    const scale = vertices => vertices.map(vertex => ({ x: vertex.x * 64, y: vertex.y * 64 }));
-
-    it('returns the west and north edges of a single box room as one connected run', function() {
+    it('returns the west and north edges of a single box room as one connected run of vertex indices', function() {
       const room = Room();
       room.addBox(0,0,2,3);
-      const outline = scale(GeometryHelper.traceOutline(room.getFootprint()));
+      const outline = GeometryHelper.traceOutline(room.getFootprint());
 
       expect(GeometryHelper.outlineRuns(outline, ['E','N'])).to.deep.equal([
-        [ { x:0, y:192 }, { x:0, y:0 }, { x:128, y:0 } ],
+        [3, 0, 1],
       ]);
     });
 
@@ -94,11 +92,24 @@ describe("GeometryHelper", function() {
       const room = Room();
       room.addBox(0,0,3,1);
       room.addBox(2,0,1,3);
-      const outline = scale(GeometryHelper.traceOutline(room.getFootprint()));
+      const outline = GeometryHelper.traceOutline(room.getFootprint());
 
       expect(GeometryHelper.outlineRuns(outline, ['E','N'])).to.deep.equal([
-        [ { x:128, y:192 }, { x:128, y:64 } ],
-        [ { x:0, y:64 }, { x:0, y:0 }, { x:192, y:0 } ],
+        [3, 4],
+        [5, 0, 1],
+      ]);
+    });
+  });
+
+  describe("vertexIsConvex()", function() {
+    it('tells the convex corners of an L-shaped room from the concave one', function() {
+      const room = Room();
+      room.addBox(0,0,3,1);
+      room.addBox(2,0,1,3);
+      const outline = GeometryHelper.traceOutline(room.getFootprint());
+
+      expect(outline.map((vertex, i) => GeometryHelper.vertexIsConvex(outline, i))).to.deep.equal([
+        true, true, true, true, false, true,
       ]);
     });
   });
