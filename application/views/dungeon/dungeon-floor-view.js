@@ -36,6 +36,7 @@ global.DungeonFloorView = (function() {
         `#dungeonFloor .door[data-from='${index}']`,
         `#dungeonFloor .door[data-to='${index}']`,
       ].join(','),'hide');
+      X.addClass(`#dungeonFloor .door[data-from='${index}']`,'anchored');
 
       X.each(`#dungeonFloor .door-pad[data-from='${index}'], #dungeonFloor .door-pad[data-to='${index}']`, pad => {
         const own = parseInt(pad.dataset.room);

@@ -70,6 +70,15 @@
   cursor: pointer;
 
   .slab { fill: variables.$fg-dungeon-wall; }
+
+  // A door on an unexplored room's wall would float in the blank, so it carries a tile's width of wall and floor
+  // line until revealing the room anchors it and the room's own wall lines take over.
+  .frame {
+    fill: none;
+    stroke: variables.$fg-dungeon-wall;
+    stroke-width: 2;
+  }
+  &.anchored .frame { display: none; }
 }
 
 // Pads render above everything. Instead of being covered by the rooms, they're only shown on the unexplored side
