@@ -47,18 +47,41 @@ global.GeometryHelper = (function() {
 
   // Shrink a clockwise rectilinear outline by moving every edge toward the interior. A vertex joins a horizontal
   // and a vertical edge, and each edge's shift only affects one axis, so the new vertex is the old one moved by
-  // both adjacent edge shifts. The inset must be less than half the outline's narrowest span.
+  // both adjacent edge shifts. The inset is either a single number for every edge or a per-direction map like
+  // { E:28, S:8, W:8, N:18 }, keyed by the direction the edge is walked in; negative amounts move edges outward.
+  // Every inset must stay less than half the outline's narrowest span.
   function insetOutline(vertices, inset) {
+    const amounts = (typeof inset === 'number') ? { E:inset, S:inset, W:inset, N:inset } : inset;
+
     return vertices.map((vertex, i) => {
       const previous = vertices[(i + vertices.length - 1) % vertices.length];
       const next = vertices[(i + 1) % vertices.length];
-      const incoming = insetShifts[edgeDirection(previous, vertex)];
-      const outgoing = insetShifts[edgeDirection(vertex, next)];
+      const incoming = edgeDirection(previous, vertex);
+      const outgoing = edgeDirection(vertex, next);
 
       return {
-        x: vertex.x + ((incoming.x + outgoing.x) * inset),
-        y: vertex.y + ((incoming.y + outgoing.y) * inset),
+        x: vertex.x + (insetShifts[incoming].x * amounts[incoming]) + (insetShifts[outgoing].x * amounts[outgoing]),
+        y: vertex.y + (insetShifts[incoming].y * amounts[incoming]) + (insetShifts[outgoing].y * amounts[outgoing]),
       };
+    });
+  }
+
+  // Translate each edge of a clockwise outline by the vector given for its walk direction, e.g. projecting wall
+  // tops to wall bases in an oblique perspective. Where two edges with the same shift meet, the vertex stays a
+  // single mitered point; where edges with different shifts meet, the vertex splits into both shifted copies and
+  // the polygon gains the slanted joining edge between them.
+  function shiftOutline(vertices, shifts) {
+    return vertices.flatMap((vertex, i) => {
+      const previous = vertices[(i + vertices.length - 1) % vertices.length];
+      const next = vertices[(i + 1) % vertices.length];
+      const incoming = shifts[edgeDirection(previous, vertex)];
+      const outgoing = shifts[edgeDirection(vertex, next)];
+
+      const arrival = { x: vertex.x + incoming.x, y: vertex.y + incoming.y };
+      const departure = { x: vertex.x + outgoing.x, y: vertex.y + outgoing.y };
+
+      if (arrival.x === departure.x && arrival.y === departure.y) { return [arrival]; }
+      return [arrival, departure];
     });
   }
 
@@ -66,6 +89,36 @@ global.GeometryHelper = (function() {
     if (to.x > from.x) { return 'E'; }
     if (to.x < from.x) { return 'W'; }
     return (to.y > from.y) ? 'S' : 'N';
+  }
+
+  // Collect the maximal runs of consecutive edges walked in the given directions, each returned as a vertex chain.
+  // Runs crossing the outline's starting vertex come back whole.
+  function outlineRuns(vertices, directions) {
+    const count = vertices.length;
+    const included = i => directions.includes(edgeDirection(vertices[i], vertices[(i + 1) % count]));
+
+    let start = 0;
+    while (start < count && included(start)) { start++; }
+    if (start === count) { return [vertices.concat([vertices[0]])]; }
+
+    const runs = [];
+    let run = null;
+
+    for (let step = 1; step <= count; step++) {
+      const edge = (start + step) % count;
+
+      if (included(edge) === false) {
+        if (run != null) { runs.push(run); }
+        run = null;
+        continue;
+      }
+
+      if (run == null) { run = [vertices[edge]]; }
+      run.push(vertices[(edge + 1) % count]);
+    }
+
+    if (run != null) { runs.push(run); }
+    return runs;
   }
 
   // The top-left corner of the topmost-leftmost filled cell, which is always a convex corner of the outline.
@@ -92,6 +145,9 @@ global.GeometryHelper = (function() {
   return Object.freeze({
     traceOutline,
     insetOutline,
+    shiftOutline,
+    outlineRuns,
+    edgeDirection,
   });
 
 })();

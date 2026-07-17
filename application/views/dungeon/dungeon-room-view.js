@@ -1,6 +1,31 @@
 global.DungeonRoomView = (function() {
 
   const wallInset = 8;
+  const northWallDepth = 20;
+  const westWallDepth = 10;
+
+  // The conceit of the oblique perspective: every edge that would be vertical in the world projects to the same
+  // diagonal. A vertical corner edge is only drawn where it's actually visible, though: inside a room that's just
+  // the NW-type corners where two visible faces meet. Where a face ends against a faceless side wall (NE and SW),
+  // the edge is hidden behind that wall, so the base line simply ends on the wall line. Nested exteriors are
+  // convex solids, so every face-end edge sits on their silhouette and all of their corners draw.
+  const wallTopShift = { x: -westWallDepth, y: -northWallDepth };
+  const wallBaseShift = { x: westWallDepth, y: northWallDepth };
+  const noShift = { x: 0, y: 0 };
+
+  const roomWallShifts = { E: wallTopShift, N: wallTopShift, S: noShift, W: noShift };
+  const nestedWallShifts = { E: noShift, N: noShift, S: wallBaseShift, W: wallBaseShift };
+
+  // North walls show their face at full depth and west walls foreshortened; south and east walls face away, so
+  // the boundary line there is the wall base itself. Edges are keyed by walk direction: top edges run E, left
+  // edges run N.
+  const wallFaceDirections = ['E','N'];
+  const wallBaseInsets = {
+    E: wallInset + northWallDepth,
+    N: wallInset + westWallDepth,
+    S: wallInset,
+    W: wallInset,
+  };
 
   function points(vertices) {
     return vertices.map(vertex => `${vertex.x},${vertex.y}`).join(' ');
@@ -25,9 +50,13 @@ global.DungeonRoomView = (function() {
     // sliver of background always separates directly adjacent rooms.
     const outline = GeometryHelper.traceOutline(room.getFootprint())
       .map(vertex => ({ x: vertex.x * gridSize, y: vertex.y * gridSize }));
+    const wallBase = GeometryHelper.insetOutline(outline, wallBaseInsets);
     const content = [
       `<polygon class='footprint' points='${points(outline)}'/>`,
       `<polygon class='walls' points='${points(GeometryHelper.insetOutline(outline, wallInset))}'/>`,
+      ...GeometryHelper.outlineRuns(wallBase, wallFaceDirections).map(run =>
+        `<polyline class='wall-base' points='${points(run)}'/>`),
+      ...cornerLines(wallBase, roomWallShifts),
       ...nestedWalls(floor, room, gridSize),
       stairsGlyph(floor, room, 'up', gridSize),
       stairsGlyph(floor, room, 'down', gridSize),
@@ -44,22 +73,44 @@ global.DungeonRoomView = (function() {
     return roomElement;
   }
 
+  // Where two shifted walls meet, their faces share a vertical corner edge that the shifted polygon's single
+  // mitered vertex can't show, so it's drawn as its own line from the anchor vertex along its shift. Every other
+  // kind of corner is already covered: the slanted end edge of a lone face is part of the shifted polygon.
+  function cornerLines(anchor, shifts, classname='wall-corner') {
+    return anchor.flatMap((vertex, i) => {
+      const previous = anchor[(i + anchor.length - 1) % anchor.length];
+      const next = anchor[(i + 1) % anchor.length];
+      const incoming = shifts[GeometryHelper.edgeDirection(previous, vertex)];
+      const outgoing = shifts[GeometryHelper.edgeDirection(vertex, next)];
+
+      if (incoming !== outgoing || incoming === noShift) { return []; }
+      return [`<line class='${classname}' x1='${vertex.x}' y1='${vertex.y}' x2='${vertex.x + incoming.x}' y2='${vertex.y + incoming.y}'/>`];
+    });
+  }
+
   // The exterior faces of any rooms nested inside this one are part of this room's view of its own interior, so
-  // they reveal along with this room whether or not the nested room has been entered. The line is outset by half
-  // its stroke width so the nested room's footprint, which paints above this room, never covers it.
+  // they reveal along with this room whether or not the nested room has been entered. Seen from outside, the
+  // nested structure shows its south and east faces. The lines are outset from the nested outline so the nested
+  // room's footprint, which paints above this room, never covers them.
   function nestedWalls(floor, room, gridSize) {
     const feature = floor.getFeatureForRoom(room.getIndex());
     const position = room.getFloorPosition();
     const depth = roomDepth(floor, room.getIndex());
 
-    return feature.getRooms().slice(depth + 1).map(nested => {
+    return feature.getRooms().slice(depth + 1).flatMap(nested => {
       const nestedPosition = nested.getFloorPosition();
       const outline = GeometryHelper.traceOutline(nested.getFootprint()).map(vertex => ({
         x: ((nestedPosition.x - position.x) + vertex.x) * gridSize,
         y: ((nestedPosition.y - position.y) + vertex.y) * gridSize,
       }));
 
-      return `<polygon class='nested-wall' points='${points(GeometryHelper.insetOutline(outline, -1))}'/>`;
+      const wallLine = GeometryHelper.insetOutline(outline, -1);
+
+      return [
+        `<polygon class='nested-wall' points='${points(wallLine)}'/>`,
+        `<polygon class='nested-wall' points='${points(GeometryHelper.shiftOutline(wallLine, nestedWallShifts))}'/>`,
+        ...cornerLines(wallLine, nestedWallShifts, 'nested-wall'),
+      ];
     });
   }
 
@@ -83,6 +134,7 @@ global.DungeonRoomView = (function() {
 
   return Object.freeze({
     build,
+    getWallMetrics: () => { return { wallInset, northWallDepth, westWallDepth }; },
   });
 
 })();

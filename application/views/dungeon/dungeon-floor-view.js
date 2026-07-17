@@ -15,13 +15,15 @@ global.DungeonFloorView = (function() {
       floorElement.appendChild(DungeonRoomView.build(floor, room));
     });
 
-    floor.getDoors().forEach(door => {
-      addDoorPads(floor, door);
-    });
+    // floor.getDoors().forEach(door => {
+    //   floorElement.appendChild(DungeonDoorView.build(floor, door));
+    //   addDoorPads(floor, door);
+    // });
   }
 
-  // Revealing a room recomputes the pads of the doors that touch it: the pads sitting on its own tiles are removed
-  // and the pads leading into its unexplored neighbors are shown.
+  // Doors are visible when either of their rooms is revealed, so revealing a room can only unhide the doors that
+  // touch it. The pads of those doors are recomputed: the pads sitting on the revealed room's own tiles are
+  // removed and the pads leading into its unexplored neighbors are shown.
   function updateLocation(index, revealed) {
     X.removeClass('#dungeonFloor .room.current','current');
     X.addClass(`#dungeonFloor .room[data-index='${index}']`,'current');
@@ -30,6 +32,10 @@ global.DungeonFloorView = (function() {
       const floor = DungeonSystem.getDungeonFloor();
 
       X.removeClass(`#dungeonFloor .room[data-index='${index}']`,'unrevealed');
+      X.removeClass([
+        `#dungeonFloor .door[data-from='${index}']`,
+        `#dungeonFloor .door[data-to='${index}']`,
+      ].join(','),'hide');
 
       X.each(`#dungeonFloor .door-pad[data-from='${index}'], #dungeonFloor .door-pad[data-to='${index}']`, pad => {
         const own = parseInt(pad.dataset.room);

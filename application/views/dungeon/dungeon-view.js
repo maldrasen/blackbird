@@ -7,6 +7,7 @@ global.DungeonView = (function() {
 
   function init() {
     DungeonViewport.init();
+    X.onClick('#dungeonFloor .door', doorClicked);
     X.onClick('#dungeonFloor .door-pad', doorClicked);
     X.onClick('#dungeonFloor .stairs', stairsClicked);
     X.onClick('#dungeonFloor .room', roomClicked);
