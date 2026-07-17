@@ -46,6 +46,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [047] Add New Species `13pt` — [047-add-new-species.md](047-add-new-species.md)
 - [113] Add statistics component `5pt` — [113-add-statistics-component.md](113-add-statistics-component.md)
 - [116] Capture Monsters `8pt` — [116-capture-monsters.md](116-capture-monsters.md)
+- [120] Improve Door Rendering `8pt` — [120-improve-door-rendering.md](120-improve-door-rendering.md)
 
 ## Priority 4
 
@@ -59,6 +60,8 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [101] Look for a Community `1pt` — [101-look-for-a-community.md](101-look-for-a-community.md)
 - [104] Lineage and Meta-Progression `21pt` — [104-lineage-and-meta-progression.md](104-lineage-and-meta-progression.md)
 - [115] Add deathblow messages `5pt` — [115-add-deathblow-messages.md](115-add-deathblow-messages.md)
+- [118] Room floor and wall textures `5pt` — [118-room-floor-and-wall-textures.md](118-room-floor-and-wall-textures.md)
+- [119] Dungeon color themes `3pt` — [119-dungeon-color-themes.md](119-dungeon-color-themes.md)
 
 ## Priority 5
 
