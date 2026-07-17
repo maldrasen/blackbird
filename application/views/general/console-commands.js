@@ -7,6 +7,10 @@ global.ConsoleCommands = (function() {
     entityData: {
       commandFunction: printEntityData,
       description:`Print all the component data for a given entity ID.` },
+    reveal: {
+      commandFunction: DungeonCommands.revealAll,
+      description:`Reveal all the rooms on the current dungeon floor.`
+    }
   }
 
   const commandHistory = [];

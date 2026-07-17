@@ -87,6 +87,7 @@
     "application/components/status-effect-component.js",
     "application/components/weapon-component.js",
     "application/dialog-keys.js",
+    "application/dungeon/dungeon-commands.js",
     "application/dungeon/dungeon-floor.js",
     "application/dungeon/dungeon-state.js",
     "application/dungeon/dungeon-system.js",

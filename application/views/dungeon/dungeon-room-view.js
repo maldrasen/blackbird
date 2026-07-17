@@ -1,8 +1,13 @@
 global.DungeonRoomView = (function() {
 
+  const wallInset = 8;
+
+  function points(vertices) {
+    return vertices.map(vertex => `${vertex.x},${vertex.y}`).join(' ');
+  }
+
   // Build a room as a single SVG in room-local coordinates. Rooms of a multi-room feature overlap, with later rooms
   // painted inside earlier ones; the room's depth within its feature drives the z-index layering in the stylesheet.
-  // Unrevealed rooms still render (in the floor color), so the map doesn't show holes where nested rooms are hiding.
   function build(floor, room) {
     const gridSize = DungeonFloorView.getGridSize();
     const index = room.getIndex();
@@ -15,14 +20,14 @@ global.DungeonRoomView = (function() {
     if (floor.isRevealed(index) === false) { classname += ' unrevealed'; }
     if (index === floor.getLocation()) { classname += ' current'; }
 
-    // Strokes straddle the outline, and while the SVG viewport clips away the outside half along the bounds, the
-    // edges of notches sit inside the viewport and would show at double width. Clipping the floor to its own shape
-    // keeps every stroke a uniform inner stroke.
-    const points = GeometryHelper.traceOutline(room.getFootprint())
-      .map(vertex => `${vertex.x * gridSize},${vertex.y * gridSize}`).join(' ');
+    // The footprint is the room's whole grid shape in the background color: on its own it's the hidden state,
+    // keeping unrevealed nested rooms from showing as holes. The revealed room is drawn inside it, inset so a
+    // sliver of background always separates directly adjacent rooms.
+    const outline = GeometryHelper.traceOutline(room.getFootprint())
+      .map(vertex => ({ x: vertex.x * gridSize, y: vertex.y * gridSize }));
     const content = [
-      `<clipPath id='roomClip${index}'><polygon points='${points}'/></clipPath>`,
-      `<polygon class='floor' clip-path='url(#roomClip${index})' points='${points}'/>`,
+      `<polygon class='footprint' points='${points(outline)}'/>`,
+      `<polygon class='walls' points='${points(GeometryHelper.insetOutline(outline, wallInset))}'/>`,
       stairsGlyph(floor, room, 'up', gridSize),
       stairsGlyph(floor, room, 'down', gridSize),
     ].join('');

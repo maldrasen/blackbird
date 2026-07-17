@@ -32,4 +32,29 @@ describe("GeometryHelper", function() {
     });
   });
 
+  describe("insetOutline()", function() {
+    const scale = vertices => vertices.map(vertex => ({ x: vertex.x * 64, y: vertex.y * 64 }));
+
+    it('shrinks a single box room evenly on every side', function() {
+      const room = Room();
+      room.addBox(0,0,2,3);
+      const outline = scale(GeometryHelper.traceOutline(room.getFootprint()));
+
+      expect(GeometryHelper.insetOutline(outline, 8)).to.deep.equal([
+        { x:8, y:8 }, { x:120, y:8 }, { x:120, y:184 }, { x:8, y:184 },
+      ]);
+    });
+
+    it('pushes the concave corner of an L-shaped room further into the room', function() {
+      const room = Room();
+      room.addBox(0,0,3,1);
+      room.addBox(2,0,1,3);
+      const outline = scale(GeometryHelper.traceOutline(room.getFootprint()));
+
+      expect(GeometryHelper.insetOutline(outline, 8)).to.deep.equal([
+        { x:8, y:8 }, { x:184, y:8 }, { x:184, y:184 }, { x:136, y:184 }, { x:136, y:56 }, { x:8, y:56 },
+      ]);
+    });
+  });
+
 });

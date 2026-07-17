@@ -36,6 +36,38 @@ global.GeometryHelper = (function() {
     throw `The footprint outline never closed.`;
   }
 
+  // Each edge of a clockwise outline shifts toward the interior on its own axis: top edges (E) move down, right
+  // edges (S) move left, bottom edges (W) move up, left edges (N) move right.
+  const insetShifts = {
+    E: { x:0,  y:1  },
+    S: { x:-1, y:0  },
+    W: { x:0,  y:-1 },
+    N: { x:1,  y:0  },
+  };
+
+  // Shrink a clockwise rectilinear outline by moving every edge toward the interior. A vertex joins a horizontal
+  // and a vertical edge, and each edge's shift only affects one axis, so the new vertex is the old one moved by
+  // both adjacent edge shifts. The inset must be less than half the outline's narrowest span.
+  function insetOutline(vertices, inset) {
+    return vertices.map((vertex, i) => {
+      const previous = vertices[(i + vertices.length - 1) % vertices.length];
+      const next = vertices[(i + 1) % vertices.length];
+      const incoming = insetShifts[edgeDirection(previous, vertex)];
+      const outgoing = insetShifts[edgeDirection(vertex, next)];
+
+      return {
+        x: vertex.x + ((incoming.x + outgoing.x) * inset),
+        y: vertex.y + ((incoming.y + outgoing.y) * inset),
+      };
+    });
+  }
+
+  function edgeDirection(from, to) {
+    if (to.x > from.x) { return 'E'; }
+    if (to.x < from.x) { return 'W'; }
+    return (to.y > from.y) ? 'S' : 'N';
+  }
+
   // The top-left corner of the topmost-leftmost filled cell, which is always a convex corner of the outline.
   function startCorner(footprint) {
     for (let y = 0; y < footprint.length; y++) {
@@ -59,6 +91,7 @@ global.GeometryHelper = (function() {
 
   return Object.freeze({
     traceOutline,
+    insetOutline,
   });
 
 })();

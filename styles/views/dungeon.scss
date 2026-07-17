@@ -24,21 +24,22 @@
   position: absolute;
   z-index: calc(10 + var(--depth, 0));
 
-  // The stroke is a placeholder border keeping adjacent rooms distinct until the walls are drawn in.
-  .floor {
-    fill: #222;
-    stroke: #111;
-    stroke-width: 8;
+  // The footprint alone is the hidden state: a blank patch of background that keeps unrevealed nested rooms from
+  // showing as holes. The walls line only appears once the room is revealed. The wall color is a placeholder
+  // until the themes get their own palettes.
+  .footprint { fill: #111; }
+  .walls {
+    fill: none;
+    stroke: #666;
+    stroke-width: 2;
   }
 
-  &.current .floor {
+  &.current .walls {
     fill: #2e3140;
   }
 
-  // An unrevealed room paints its floor in the background color, so nested rooms stay hidden without the map
-  // showing holes where they're hiding.
   &.unrevealed {
-    .floor { fill: #111; stroke: none; }
+    .walls { display: none; }
     .stairs { display: none; }
   }
 
@@ -53,14 +54,6 @@
       fill: #b0a68e;
     }
   }
-}
-
-#dungeonFloor .door {
-  position: absolute;
-  z-index: 100;
-  cursor: pointer;
-
-  rect { fill: #333; }
 }
 
 // Pads render above everything. Instead of being covered by the rooms, they're only shown on the unexplored side

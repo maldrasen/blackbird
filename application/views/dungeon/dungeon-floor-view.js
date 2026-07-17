@@ -1,8 +1,6 @@
 global.DungeonFloorView = (function() {
 
   const gridSize = 64;
-  const doorLength = 48;
-  const doorThickness = 16;
 
   function drawDungeon() {
     const floor = DungeonSystem.getDungeonFloor();
@@ -18,13 +16,12 @@ global.DungeonFloorView = (function() {
     });
 
     floor.getDoors().forEach(door => {
-      addDoorElement(floor, door);
+      addDoorPads(floor, door);
     });
   }
 
-  // Doors are visible when either of their rooms is revealed, so revealing a room can only unhide the doors that
-  // touch it. The pads of those doors are recomputed: revealing a room removes the pads sitting on its own tiles
-  // and shows the pads leading into its unexplored neighbors.
+  // Revealing a room recomputes the pads of the doors that touch it: the pads sitting on its own tiles are removed
+  // and the pads leading into its unexplored neighbors are shown.
   function updateLocation(index, revealed) {
     X.removeClass('#dungeonFloor .room.current','current');
     X.addClass(`#dungeonFloor .room[data-index='${index}']`,'current');
@@ -33,10 +30,6 @@ global.DungeonFloorView = (function() {
       const floor = DungeonSystem.getDungeonFloor();
 
       X.removeClass(`#dungeonFloor .room[data-index='${index}']`,'unrevealed');
-      X.removeClass([
-        `#dungeonFloor .door[data-from='${index}']`,
-        `#dungeonFloor .door[data-to='${index}']`,
-      ].join(','),'hide');
 
       X.each(`#dungeonFloor .door-pad[data-from='${index}'], #dungeonFloor .door-pad[data-to='${index}']`, pad => {
         const own = parseInt(pad.dataset.room);
@@ -52,36 +45,11 @@ global.DungeonFloorView = (function() {
     return floor.isRevealed(ownRoom) || floor.isRevealed(otherRoom) === false;
   }
 
-  function addDoorElement(floor, door) {
+  // Doors themselves aren't drawn yet; they'll eventually be painted into the walls. Their pads still render as the
+  // affordance for stepping into unexplored neighbors.
+  function addDoorPads(floor, door) {
     const position = door.position;
     const direction = door.direction;
-    const hide = (floor.isRevealed(door.from) || floor.isRevealed(door.to)) ? '' : ' hide';
-
-    const wallOffset = doorThickness / 2;
-    const insetOffset = (gridSize - doorLength) / 2;
-
-    let left = (position.x * gridSize) - wallOffset;
-    let top = (position.y * gridSize) + insetOffset;
-
-    if (direction === 'N') {
-      left = (position.x * gridSize) + insetOffset;
-      top = (position.y * gridSize) - wallOffset;
-    }
-
-    const width = (direction === 'N') ? doorLength : doorThickness;
-    const height = (direction === 'N') ? doorThickness : doorLength;
-
-    const doorElement = X.createElement([
-      `<svg class='door ${direction}${hide}' data-from='${door.from}' data-to='${door.to}' viewBox='0 0 ${width} ${height}'>`,
-      `<rect x='0' y='0' width='${width}' height='${height}'/>`,
-      `</svg>`,
-    ].join(''));
-    doorElement.style['left'] = `${left}px`;
-    doorElement.style['top'] = `${top}px`;
-    doorElement.style['height'] = `${height}px`;
-    doorElement.style['width'] = `${width}px`;
-
-    X.first('#dungeonFloor').appendChild(doorElement);
 
     addDoorPad(floor, door, door.from, door.to, position.x, position.y);
     addDoorPad(floor, door, door.to, door.from,

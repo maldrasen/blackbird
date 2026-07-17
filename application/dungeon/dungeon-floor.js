@@ -70,6 +70,7 @@ global.DungeonFloor = function(level, theme=null) {
     getRooms: () => { return rooms; },
     getFeatureForRoom,
     addFeature,
+    revealRoom: index => { revealed.add(index); },
     isRevealed: index => { return revealed.has(index); },
 
     setDoors: d => { doors = d; },
