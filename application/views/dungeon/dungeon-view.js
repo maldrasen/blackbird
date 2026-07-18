@@ -8,6 +8,7 @@ global.DungeonView = (function() {
   function init() {
     DungeonViewport.init();
     X.onClick('#dungeonFloor .door', doorClicked);
+    X.onClick('#dungeonFloor .hanging-door', doorClicked);
     X.onClick('#dungeonFloor .door-pad', doorClicked);
     X.onClick('#dungeonFloor .stairs', stairsClicked);
     X.onClick('#dungeonFloor .room', roomClicked);
@@ -55,7 +56,7 @@ global.DungeonView = (function() {
   function doorClicked(event) {
     if (DungeonViewport.didDrag()) { return; }
 
-    const doorElement = event.target.closest('.door, .door-pad');
+    const doorElement = event.target.closest('.door, .hanging-door, .door-pad');
     walkPath(DungeonNavigationSystem.getPathThroughDoor(
       parseInt(doorElement.dataset.from),
       parseInt(doorElement.dataset.to)));

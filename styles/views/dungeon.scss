@@ -76,22 +76,21 @@
   }
 }
 
-// Doors paint above the rooms: a single solid parallelogram lying on the wall face.
-#dungeonFloor .door {
+// Doors paint above the rooms: a single solid parallelogram lying on the wall face. The real door only shows once
+// the room owning its wall draws the walls that occlude it; until then the hanging door stands in, carrying its
+// own tile's wall lines so it doesn't float in the blank.
+#dungeonFloor .door, #dungeonFloor .hanging-door {
   position: absolute;
   z-index: 100;
   cursor: pointer;
 
   .slab { fill: variables.$fg-dungeon-wall; }
+}
 
-  // A door on an unexplored room's wall would float in the blank, so it carries a tile's width of wall and floor
-  // line until revealing the room anchors it and the room's own wall lines take over.
-  .frame {
-    fill: none;
-    stroke: variables.$fg-dungeon-wall;
-    stroke-width: 2;
-  }
-  &.anchored .frame { display: none; }
+#dungeonFloor .hanging-door .frame {
+  fill: none;
+  stroke: variables.$fg-dungeon-wall;
+  stroke-width: 2;
 }
 
 // Pads render above everything. Instead of being covered by the rooms, they're only shown on the unexplored side

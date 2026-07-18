@@ -3,39 +3,61 @@ global.DungeonDoorView = (function() {
   const doorLength = 80;
   const doorLintel = 6;
 
-  // A door is a single solid parallelogram lying on the wall face it belongs to: its base edge stands on the wall
-  // base, its top edge stops short of the wall line to leave the lintel, and its sides lean with the projection
-  // of vertical edges. Every slab is physically centered on its tile, so it leans exactly the way the wall grid's
-  // cell does and its base lands centered on the floor grid's cell. Where a side wall stands in front of the face
-  // — the ends of narrow walls, most visibly — the slab is clipped by the face polygon, hiding the part of the
-  // door that stands behind the wall. While the room owning the wall is unexplored that wall is invisible, so the
-  // door also carries a tile's width of wall and floor line — the frame — drawn exactly where the room's own
-  // lines will land, so nothing shifts when revealing the room anchors the door.
+  // A door is a single solid parallelogram lying on the wall face it belongs to: its base edge stands just above
+  // the wall base line's stroke, its top edge stops short of the wall line to leave the lintel, and its sides
+  // lean with the projection of vertical edges. Every slab is physically centered on its tile, so it leans
+  // exactly the way the wall grid's cell does and its base lands centered on the floor grid's cell. Where a side
+  // wall stands in front of the face — the ends of narrow walls, most visibly — the slab is clipped by the face
+  // polygon, hiding the part of the door that stands behind the wall. The real door therefore only shows once the
+  // room owning its wall is revealed and the walls that occlude it are drawn.
   function build(floor, door) {
     const gridSize = DungeonFloorView.getGridSize();
     const metrics = DungeonRoomView.getWallMetrics();
 
     let classname = `door ${door.direction}`;
-    if (floor.isRevealed(door.from) === false && floor.isRevealed(door.to) === false) { classname += ' hide'; }
-    if (floor.isRevealed(door.from)) { classname += ' anchored'; }
+    if (floor.isRevealed(door.from) === false) { classname += ' hide'; }
 
-    const geometry = (door.direction === 'N')
-      ? northGeometry(gridSize, metrics)
-      : westGeometry(gridSize, metrics);
+    const geometry = doorGeometry(door, gridSize, metrics);
+    return doorElement(door, classname, geometry,
+      slabElements(floor, door, gridSize, metrics, geometry.slab));
+  }
 
-    const doorElement = X.createElement([
-      `<svg class='${classname}' data-from='${door.from}' data-to='${door.to}' viewBox='${geometry.viewBox}'>`,
+  // While the room owning the wall is unexplored, the hanging door stands in for the real one: the same slab,
+  // unclipped — there are no walls to occlude it yet — packaged with the wall lines of its own tile so it doesn't
+  // float in the blank. The lines land exactly where the room will draw them: the wall line above, and the wall
+  // base below it shifted a wall's depth along the lean, its ends meeting the floor grid's tile lines. Revealing
+  // the room removes the hanging door, uncovering the real one.
+  function buildHanging(floor, door) {
+    const gridSize = DungeonFloorView.getGridSize();
+    const metrics = DungeonRoomView.getWallMetrics();
+
+    let classname = `hanging-door ${door.direction}`;
+    if (floor.isRevealed(door.to) === false) { classname += ' hide'; }
+
+    const geometry = doorGeometry(door, gridSize, metrics);
+    return doorElement(door, classname, geometry, [
       ...geometry.frames.map(line =>
         `<line class='frame' x1='${line[0]}' y1='${line[1]}' x2='${line[2]}' y2='${line[3]}'/>`),
-      ...slabElements(floor, door, gridSize, metrics, geometry.slab),
+      `<polygon class='slab' points='${geometry.slab}'/>`,
+    ]);
+  }
+
+  function doorGeometry(door, gridSize, metrics) {
+    return (door.direction === 'N') ? northGeometry(gridSize, metrics) : westGeometry(gridSize, metrics);
+  }
+
+  function doorElement(door, classname, geometry, content) {
+    const gridSize = DungeonFloorView.getGridSize();
+    const element = X.createElement([
+      `<svg class='${classname}' data-from='${door.from}' data-to='${door.to}' viewBox='${geometry.viewBox}'>`,
+      ...content,
       `</svg>`,
     ].join(''));
-    doorElement.style['left'] = `${(door.position.x * gridSize) + geometry.offsetX}px`;
-    doorElement.style['top'] = `${(door.position.y * gridSize) + geometry.offsetY}px`;
-    doorElement.style['height'] = `${geometry.height}px`;
-    doorElement.style['width'] = `${geometry.width}px`;
-
-    return doorElement;
+    element.style['left'] = `${(door.position.x * gridSize) + geometry.offsetX}px`;
+    element.style['top'] = `${(door.position.y * gridSize) + geometry.offsetY}px`;
+    element.style['height'] = `${geometry.height}px`;
+    element.style['width'] = `${geometry.width}px`;
+    return element;
   }
 
   // The slab, clipped by the polygon of the face it lies on so the parts of the door standing behind a side wall
@@ -107,10 +129,10 @@ global.DungeonDoorView = (function() {
   function northGeometry(gridSize, metrics) {
     const { wallInset, wallDepth } = metrics;
     const start = (gridSize - doorLength) / 2;
-    const top = wallInset + doorLintel;
-    const base = wallInset + wallDepth;
-    const topLeft = start + doorLintel;
-    const baseLeft = start + wallDepth;
+    const top = wallInset + doorLintel - 1;
+    const base = wallInset + wallDepth - 1;
+    const topLeft = start + doorLintel - 1;
+    const baseLeft = start + wallDepth - 1;
 
     return {
       offsetX: -wallDepth,
@@ -120,7 +142,7 @@ global.DungeonDoorView = (function() {
       viewBox: `${-wallDepth} ${wallInset - 1} ${gridSize + (wallDepth * 2)} ${wallDepth + 2}`,
       frames: [
         [0, wallInset, gridSize, wallInset],
-        [0, base, gridSize, base],
+        [wallDepth, wallInset + wallDepth, gridSize + wallDepth, wallInset + wallDepth],
       ],
       slab: `${topLeft},${top} ${topLeft + doorLength},${top} ${baseLeft + doorLength},${base} ${baseLeft},${base}`,
     };
@@ -129,10 +151,10 @@ global.DungeonDoorView = (function() {
   function westGeometry(gridSize, metrics) {
     const { wallInset, wallDepth } = metrics;
     const start = (gridSize - doorLength) / 2;
-    const top = wallInset + doorLintel;
-    const base = wallInset + wallDepth;
-    const topStart = start + doorLintel;
-    const baseStart = start + wallDepth;
+    const top = wallInset + doorLintel - 1;
+    const base = wallInset + wallDepth - 1;
+    const topStart = start + doorLintel - 1;
+    const baseStart = start + wallDepth - 1;
 
     return {
       offsetX: wallInset - 1,
@@ -142,7 +164,7 @@ global.DungeonDoorView = (function() {
       viewBox: `${wallInset - 1} ${-wallDepth} ${wallDepth + 2} ${gridSize + (wallDepth * 2)}`,
       frames: [
         [wallInset, 0, wallInset, gridSize],
-        [base, 0, base, gridSize],
+        [wallInset + wallDepth, wallDepth, wallInset + wallDepth, gridSize + wallDepth],
       ],
       slab: `${top},${topStart} ${base},${baseStart} ${base},${baseStart + doorLength} ${top},${topStart + doorLength}`,
     };
@@ -150,6 +172,7 @@ global.DungeonDoorView = (function() {
 
   return Object.freeze({
     build,
+    buildHanging,
   });
 
 })();
