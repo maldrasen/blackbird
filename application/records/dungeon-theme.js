@@ -30,6 +30,8 @@ global.DungeonTheme = (function() {
       getRarity: () => { return theme.rarity; },
       getRange: () => { return theme.range; },
       getRandomFeature: getRandomFeature,
+      getFloorTextureFunction: () => { return theme.getFloorTexture().paint },
+      getWallTextureFunction: () => { return theme.getWallTexture().paint },
     });
   }
 

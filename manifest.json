@@ -207,6 +207,8 @@
     "application/views/dungeon/dungeon-room-view.js",
     "application/views/dungeon/dungeon-view.js",
     "application/views/dungeon/dungeon-viewport.js",
+    "application/views/dungeon/floor-textures/dungeon-floor-grid.js",
+    "application/views/dungeon/wall-textures/dungeon-wall-grid.js",
     "application/views/effects/flash-square.js",
     "application/views/elements/alert.js",
     "application/views/elements/bar-display.js",

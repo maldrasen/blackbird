@@ -20,6 +20,8 @@ DungeonTheme.register('dungeon',{
     { code:'tea-room',     rarity:1, type:'tea-room',   size:[3,8]},
     { code:'cross-room',   rarity:1, type:'cross-room', size:[3,9]},
     { code:'nested-room',  rarity:1, type:'nested-room', size:[3,7], padding:[1,3]},
-  ]
+  ],
 
+  getFloorTexture: () => { return DungeonFloorGrid; },
+  getWallTexture: () => { return DungeonWallGrid; },
 });
