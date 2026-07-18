@@ -19,10 +19,11 @@
 }
 
 // The rooms are layered by their depth within their feature, so that nested rooms paint over the rooms containing
-// them.
+// them. Revealed rooms also stack above the hanging doors while unrevealed footprints stay below them, so a
+// hanging door shows over the blank but every wall that's actually been drawn occludes it.
 #dungeonFloor .room {
   position: absolute;
-  z-index: calc(10 + var(--depth, 0));
+  z-index: calc(40 + var(--depth, 0));
 
   // The footprint alone is the hidden state: a blank patch of background that keeps unrevealed nested rooms from
   // showing as holes. The walls line only appears once the room is revealed.
@@ -52,6 +53,8 @@
   }
 
   &.unrevealed {
+    z-index: calc(10 + var(--depth, 0));
+
     .floor { display: none; }
     .wall-face { display: none; }
     .walls { display: none; }
@@ -81,16 +84,22 @@
 // own tile's wall lines so it doesn't float in the blank.
 #dungeonFloor .door, #dungeonFloor .hanging-door {
   position: absolute;
-  z-index: 100;
   cursor: pointer;
 
   .slab { fill: variables.$fg-dungeon-wall; }
 }
 
-#dungeonFloor .hanging-door .frame {
-  fill: none;
-  stroke: variables.$fg-dungeon-wall;
-  stroke-width: 2;
+// The real door paints above the rooms; its clip keeps it on the visible face. The unclipped hanging door slots
+// between the unrevealed footprints and the revealed rooms, so it never paints over a drawn wall.
+#dungeonFloor .door { z-index: 100; }
+#dungeonFloor .hanging-door {
+  z-index: 30;
+
+  .frame {
+    fill: none;
+    stroke: variables.$fg-dungeon-wall;
+    stroke-width: 2;
+  }
 }
 
 // Pads render above everything. Instead of being covered by the rooms, they're only shown on the unexplored side
