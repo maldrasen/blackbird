@@ -59,7 +59,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [101] Look for a Community `1pt` — [101-look-for-a-community.md](101-look-for-a-community.md)
 - [104] Lineage and Meta-Progression `21pt` — [104-lineage-and-meta-progression.md](104-lineage-and-meta-progression.md)
 - [115] Add deathblow messages `5pt` — [115-add-deathblow-messages.md](115-add-deathblow-messages.md)
-- [118] Room floor and wall textures `5pt` — [118-room-floor-and-wall-textures.md](118-room-floor-and-wall-textures.md)
 - [119] Dungeon color themes `3pt` — [119-dungeon-color-themes.md](119-dungeon-color-themes.md)
 
 ## Priority 5

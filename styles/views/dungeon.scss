@@ -28,6 +28,7 @@
   // showing as holes. The walls line only appears once the room is revealed.
   .footprint { fill: variables.$bg-dungeon; }
   .floor { fill: variables.$bg-dungeon-floor; }
+  .wall-face { fill: variables.$bg-dungeon-wall-face; }
   // Square line caps extend a free line end half a stroke width, so lines meeting at right angles join without a
   // notch in the corner. Caps don't apply to the closed polygons.
   .walls, .wall-base, .wall-corner, .nested-wall {
@@ -52,6 +53,7 @@
 
   &.unrevealed {
     .floor { display: none; }
+    .wall-face { display: none; }
     .walls { display: none; }
     .wall-base { display: none; }
     .wall-corner { display: none; }

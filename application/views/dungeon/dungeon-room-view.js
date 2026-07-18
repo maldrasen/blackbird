@@ -52,6 +52,7 @@ global.DungeonRoomView = (function() {
     const geometry = getRoomGeometry(room);
     const content = [
       `<polygon class='footprint' points='${points(geometry.outline)}'/>`,
+      ...wallFacePolygons(geometry.faces),
       `<polygon class='floor' points='${points(geometry.floor)}'/>`,
       `<polygon class='walls' points='${points(geometry.wallLine)}'/>`,
       ...wallFaceLines(geometry.faces),
@@ -174,6 +175,12 @@ global.DungeonRoomView = (function() {
     ]);
   }
 
+  // Each face closes into a polygon — the ceiling out and the base back — so the wall band can carry a fill.
+  function wallFacePolygons(faces) {
+    return faces.map(face =>
+      `<polygon class='wall-face' points='${points(face.ceiling.concat([...face.base].reverse()))}'/>`);
+  }
+
   // Where two shifted walls meet, their faces share a vertical corner edge that the shifted polygon's single
   // mitered vertex can't show, so it's drawn as its own line from the anchor vertex along its shift. Every other
   // kind of corner is already covered: the slanted end edge of a lone face is part of the shifted polygon.
@@ -201,6 +208,7 @@ global.DungeonRoomView = (function() {
     return getNestedGeometry(floor, room).flatMap(nested => [
       `<polygon class='nested-wall' points='${points(GeometryHelper.shiftOutline(nested.wallLine, nestedWallShifts))}'/>`,
       `<polygon class='nested-wall' points='${points(nested.wallLine)}'/>`,
+      ...wallFacePolygons(nested.faces),
       ...cornerLines(nested.wallLine, nestedWallShifts, 'nested-wall'),
     ]);
   }
