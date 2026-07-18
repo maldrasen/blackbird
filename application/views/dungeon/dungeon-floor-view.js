@@ -1,5 +1,11 @@
-global.DungeonFloorView = (function() {
 
+// === AI Disclaimer ===
+// Yeah, so most of the floor view, the rooms, the doors, the wall and floor textures, were all vibe coded. I really
+// don't know how most of this works. The thing is, building SVGs programmatically sucks. The dungeon graphics are one
+// of those rare tasks that's difficult to write, but easy to verify. Bugs in this code will be loud and visible, so
+// even if I'm not sure how most of it works, I'm happy with how it looks.
+
+global.DungeonFloorView = (function() {
   const gridSize = 64;
 
   function drawDungeon() {

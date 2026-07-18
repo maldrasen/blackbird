@@ -1,5 +1,4 @@
 global.DungeonRoomView = (function() {
-
   const wallInset = 6;
   const wallDepth = 20;
 
