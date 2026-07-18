@@ -2,16 +2,15 @@ global.DungeonDoorView = (function() {
 
   const doorLength = 80;
   const doorLintel = 6;
-  const doorMargin = 2;
 
   // A door is a single solid parallelogram lying on the wall face it belongs to: its base edge stands on the wall
   // base, its top edge stops short of the wall line to leave the lintel, and its sides lean with the projection
-  // of vertical edges. The slab is physically centered on its tile, so it leans exactly the way the wall grid's
-  // cell does and its base lands centered on the floor grid's cell. Near a corner, where part of the wall cell
-  // hides behind a side wall, the slab slides along the wall just far enough to stay on the visible face. While
-  // the room owning the wall is unexplored that wall is invisible, so the door also carries a tile's width of
-  // wall and floor line — the frame — drawn exactly where the room's own lines will land, so nothing shifts when
-  // revealing the room anchors the door.
+  // of vertical edges. Every slab is physically centered on its tile, so it leans exactly the way the wall grid's
+  // cell does and its base lands centered on the floor grid's cell. Where a side wall stands in front of the face
+  // — the ends of narrow walls, most visibly — the slab is clipped by the face polygon, hiding the part of the
+  // door that stands behind the wall. While the room owning the wall is unexplored that wall is invisible, so the
+  // door also carries a tile's width of wall and floor line — the frame — drawn exactly where the room's own
+  // lines will land, so nothing shifts when revealing the room anchors the door.
   function build(floor, door) {
     const gridSize = DungeonFloorView.getGridSize();
     const metrics = DungeonRoomView.getWallMetrics();
@@ -20,16 +19,15 @@ global.DungeonDoorView = (function() {
     if (floor.isRevealed(door.from) === false && floor.isRevealed(door.to) === false) { classname += ' hide'; }
     if (floor.isRevealed(door.from)) { classname += ' anchored'; }
 
-    const start = slabStart(floor, door, gridSize, metrics);
     const geometry = (door.direction === 'N')
-      ? northGeometry(gridSize, metrics, start)
-      : westGeometry(gridSize, metrics, start);
+      ? northGeometry(gridSize, metrics)
+      : westGeometry(gridSize, metrics);
 
     const doorElement = X.createElement([
       `<svg class='${classname}' data-from='${door.from}' data-to='${door.to}' viewBox='${geometry.viewBox}'>`,
       ...geometry.frames.map(line =>
         `<line class='frame' x1='${line[0]}' y1='${line[1]}' x2='${line[2]}' y2='${line[3]}'/>`),
-      `<polygon class='slab' points='${geometry.slab}'/>`,
+      ...slabElements(floor, door, gridSize, metrics, geometry.slab),
       `</svg>`,
     ].join(''));
     doorElement.style['left'] = `${(door.position.x * gridSize) + geometry.offsetX}px`;
@@ -40,39 +38,23 @@ global.DungeonDoorView = (function() {
     return doorElement;
   }
 
-  // Where the slab starts along its wall, in tile-local unsheared wall coordinates: the coordinate runs along the
-  // wall with the lean removed, so an edge at start recovers its leaning position as x = start + (y - wallInset).
-  // The slab is centered on the tile unless the face's occluded boundary pushes it aside.
-  function slabStart(floor, door, gridSize, metrics) {
-    const centered = (gridSize - doorLength) / 2;
+  // The slab, clipped by the polygon of the face it lies on so the parts of the door standing behind a side wall
+  // stay hidden. The face polygon is in floor pixels and the door's viewBox puts its tile's origin at 0,0, so the
+  // clip is just the polygon shifted onto the tile.
+  function slabElements(floor, door, gridSize, metrics, slab) {
     const face = findWallFace(floor, door, gridSize, metrics);
-    if (face == null) { return centered; }
+    if (face == null) { return [`<polygon class='slab' points='${slab}'/>`]; }
 
-    const north = door.direction === 'N';
+    const clipId = `doorClip-${door.position.x}-${door.position.y}-${door.direction}`;
     const tileX = door.position.x * gridSize;
     const tileY = door.position.y * gridSize;
+    const points = face.ceiling.concat([...face.base].reverse())
+      .map(point => `${point.x - tileX},${point.y - tileY}`).join(' ');
 
-    // Unshearing turns the slab into an axis-aligned rectangle while every face boundary edge stays a straight
-    // line, so the room available to the slab is an interval scan across the face polygon at the slab's top and
-    // base heights. The base scan runs half a pixel above the base line, where the polygon's own vertices sit.
-    const unshear = north
-      ? point => ({ a: point.x - point.y, b: point.y })
-      : point => ({ a: point.y - point.x, b: point.x });
-    const polygon = face.ceiling.concat([...face.base].reverse()).map(unshear);
-
-    const offset = (north ? tileX - tileY : tileY - tileX) - metrics.wallInset;
-    const band = north ? tileY : tileX;
-    const target = offset + (gridSize / 2);
-
-    const topSpan = spanAt(polygon, band + metrics.wallInset + doorLintel, target);
-    const baseSpan = spanAt(polygon, band + metrics.wallInset + metrics.wallDepth - 0.5, target);
-    if (topSpan == null || baseSpan == null) { return centered; }
-
-    const lo = Math.max(topSpan[0], baseSpan[0]) + doorMargin - offset;
-    const hi = Math.min(topSpan[1], baseSpan[1]) - doorMargin - offset;
-
-    if (hi - lo < doorLength) { return (lo + hi - doorLength) / 2; }
-    return Math.min(Math.max(centered, lo), hi - doorLength);
+    return [
+      `<clipPath id='${clipId}'><polygon points='${points}'/></clipPath>`,
+      `<polygon class='slab' clip-path='url(#${clipId})' points='${slab}'/>`,
+    ];
   }
 
   // The face polygon the door lies on, in floor pixels: the wall face whose ceiling runs through the door tile's
@@ -120,38 +102,22 @@ global.DungeonDoorView = (function() {
     return Math.min(from, to) <= value && value <= Math.max(from, to);
   }
 
-  // The a-interval the polygon covers at height b: the crossing pair containing the target coordinate, falling
-  // back to the nearest pair.
-  function spanAt(polygon, b, target) {
-    const crossings = [];
-    polygon.forEach((point, i) => {
-      const next = polygon[(i + 1) % polygon.length];
-      if ((point.b < b) === (next.b < b)) { return; }
-      crossings.push(point.a + ((next.a - point.a) * ((b - point.b) / (next.b - point.b))));
-    });
-    crossings.sort((p, q) => p - q);
-
-    let best = null;
-    for (let i = 0; i + 1 < crossings.length; i += 2) {
-      const distance = Math.max(crossings[i] - target, target - crossings[i + 1], 0);
-      if (best == null || distance < best.distance) { best = { distance, span: [crossings[i], crossings[i + 1]] }; }
-    }
-    return (best == null) ? null : best.span;
-  }
-
-  function northGeometry(gridSize, metrics, start) {
+  // The door's viewBox reaches a wall's depth past the tile on both sides, because the base edge of a centered
+  // slab trails the lean into the neighboring tile and must not be cut off by the element's own bounds.
+  function northGeometry(gridSize, metrics) {
     const { wallInset, wallDepth } = metrics;
+    const start = (gridSize - doorLength) / 2;
     const top = wallInset + doorLintel;
     const base = wallInset + wallDepth;
     const topLeft = start + doorLintel;
     const baseLeft = start + wallDepth;
 
     return {
-      offsetX: 0,
+      offsetX: -wallDepth,
       offsetY: wallInset - 1,
-      width: gridSize,
+      width: gridSize + (wallDepth * 2),
       height: wallDepth + 2,
-      viewBox: `0 ${wallInset - 1} ${gridSize} ${wallDepth + 2}`,
+      viewBox: `${-wallDepth} ${wallInset - 1} ${gridSize + (wallDepth * 2)} ${wallDepth + 2}`,
       frames: [
         [0, wallInset, gridSize, wallInset],
         [0, base, gridSize, base],
@@ -160,8 +126,9 @@ global.DungeonDoorView = (function() {
     };
   }
 
-  function westGeometry(gridSize, metrics, start) {
+  function westGeometry(gridSize, metrics) {
     const { wallInset, wallDepth } = metrics;
+    const start = (gridSize - doorLength) / 2;
     const top = wallInset + doorLintel;
     const base = wallInset + wallDepth;
     const topStart = start + doorLintel;
@@ -169,10 +136,10 @@ global.DungeonDoorView = (function() {
 
     return {
       offsetX: wallInset - 1,
-      offsetY: 0,
+      offsetY: -wallDepth,
       width: wallDepth + 2,
-      height: gridSize,
-      viewBox: `${wallInset - 1} 0 ${wallDepth + 2} ${gridSize}`,
+      height: gridSize + (wallDepth * 2),
+      viewBox: `${wallInset - 1} ${-wallDepth} ${wallDepth + 2} ${gridSize + (wallDepth * 2)}`,
       frames: [
         [wallInset, 0, wallInset, gridSize],
         [base, 0, base, gridSize],
