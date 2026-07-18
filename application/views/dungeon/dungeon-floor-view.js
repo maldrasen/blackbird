@@ -6,7 +6,7 @@
 // even if I'm not sure how most of it works, I'm happy with how it looks.
 
 global.DungeonFloorView = (function() {
-  const gridSize = 64;
+  const gridSize = 128;
 
   function drawDungeon() {
     const floor = DungeonSystem.getDungeonFloor();

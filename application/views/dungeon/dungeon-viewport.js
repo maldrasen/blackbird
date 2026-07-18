@@ -1,6 +1,6 @@
 global.DungeonViewport = (function() {
 
-  const scaleSteps = [0.25, 0.375, 0.5, 0.75, 1];
+  const scaleSteps = [0.125, 0.25, 0.375, 0.5, 0.75, 1];
   const defaultScale = 0.5;
 
   let dragContext;

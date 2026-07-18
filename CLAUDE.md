@@ -36,7 +36,8 @@ applicable to the current task.
 
 ## Running the app
 The app is normally started with the `bin/start.sh` script which regenerates the `manifest.json` and compiles the
-SCSS before it launches Electron.
+SCSS before it launches Electron. There is a launch configuration to run the game on localhost, but only use it when
+it's absolutely necessary. The Claude browser barely works most of the time, so it's usually a waste of time. 
 
 ### Headless execution
 Not everything requires the full Electron GUI. Most of the game's systems should be headless-safe. I've written most of
