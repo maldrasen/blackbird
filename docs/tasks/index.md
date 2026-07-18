@@ -45,7 +45,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [047] Add New Species `13pt` — [047-add-new-species.md](047-add-new-species.md)
 - [113] Add statistics component `5pt` — [113-add-statistics-component.md](113-add-statistics-component.md)
 - [116] Capture Monsters `8pt` — [116-capture-monsters.md](116-capture-monsters.md)
-- [120] Improve Door Rendering `8pt` — [120-improve-door-rendering.md](120-improve-door-rendering.md)
 
 ## Priority 4
 
