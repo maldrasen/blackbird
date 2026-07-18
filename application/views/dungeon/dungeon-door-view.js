@@ -1,7 +1,7 @@
 global.DungeonDoorView = (function() {
 
-  const doorLength = 80;
-  const doorLintel = 6;
+  const doorLength = 60;
+  const doorLintel = 10;
 
   // A door is a single solid parallelogram lying on the wall face it belongs to: its base edge stands just above
   // the wall base line's stroke, its top edge stops short of the wall line to leave the lintel, and its sides

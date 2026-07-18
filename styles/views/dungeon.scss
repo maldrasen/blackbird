@@ -25,6 +25,12 @@
   position: absolute;
   z-index: calc(40 + var(--depth, 0));
 
+  // The SVG element is a transparent box larger than what it paints, so it only takes clicks on its painted
+  // shapes: anywhere else the click falls through to whatever is stacked beneath — most importantly to the
+  // hanging doors sitting under a neighboring room's empty corner.
+  pointer-events: none;
+  polygon, line, text { pointer-events: visiblePainted; }
+
   // The footprint alone is the hidden state: a blank patch of background that keeps unrevealed nested rooms from
   // showing as holes. The walls line only appears once the room is revealed.
   .footprint { fill: variables.$bg-dungeon; }
@@ -86,7 +92,10 @@
   position: absolute;
   cursor: pointer;
 
-  .slab { fill: variables.$fg-dungeon-wall; }
+  // Only the slab itself is clickable: the door element's transparent box reaches well past the tile and must
+  // not steal clicks from the rooms below, and the occluded part of a clipped slab belongs to the wall hiding it.
+  pointer-events: none;
+  .slab { fill: variables.$fg-dungeon-wall; pointer-events: visiblePainted; }
 }
 
 // The real door paints above the rooms; its clip keeps it on the visible face. The unclipped hanging door slots
@@ -100,21 +109,4 @@
     stroke: variables.$fg-dungeon-wall;
     stroke-width: 2;
   }
-}
-
-// Pads render above everything. Instead of being covered by the rooms, they're only shown on the unexplored side
-// of a door, and removed from a room's tiles when it's revealed.
-#dungeonFloor .door-pad {
-  position: absolute;
-  font-size: 40px;
-  font-family: "roboto-mono-bold", monospace;
-  text-align: center;
-  line-height: 64px;
-  cursor: pointer;
-  color: variables.$fg-dungeon-pad;
-  opacity: 0.2;
-  z-index: 200;
-}
-#dungeonFloor .door-pad:hover {
-  opacity: 0.3;
 }
