@@ -36,9 +36,7 @@ applicable to the current task.
 
 ## Running the app
 The app is normally started with the `bin/start.sh` script which regenerates the `manifest.json` and compiles the
-SCSS before it launches Electron. A localhost version of the app can be accessed by running `node bin/serve.js` and
-navigating to `http://localhost:8300`. This version of the app is only included so that Claude can assist with tasks
-that directly involve the user interface. Running headless is more efficient for most tasks.
+SCSS before it launches Electron.
 
 ### Headless execution
 Not everything requires the full Electron GUI. Most of the game's systems should be headless-safe. I've written most of

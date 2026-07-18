@@ -46,16 +46,15 @@ global.DungeonRoomView = (function() {
 
     // The footprint is the room's whole grid shape in the background color: on its own it's the hidden state,
     // keeping unrevealed nested rooms from showing as holes. The revealed room is drawn inside it, inset so a
-    // sliver of background always separates directly adjacent rooms.
-    const outline = GeometryHelper.traceOutline(room.getFootprint())
-      .map(vertex => ({ x: vertex.x * gridSize, y: vertex.y * gridSize }));
-    const wallLine = GeometryHelper.insetOutline(outline, wallInset);
-    const wallBase = GeometryHelper.insetOutline(outline, wallBaseInsets);
+    // sliver of background always separates directly adjacent rooms. The floor is the interior region the wall
+    // bands leave uncovered; the textures paint themselves in right after it, under the wall lines.
+    const geometry = getRoomGeometry(room);
     const content = [
-      `<polygon class='footprint' points='${points(outline)}'/>`,
-      `<polygon class='walls' points='${points(wallLine)}'/>`,
-      ...wallFaceLines(outline, wallLine, wallBase),
-      ...cornerLines(wallBase, roomWallShifts),
+      `<polygon class='footprint' points='${points(geometry.outline)}'/>`,
+      `<polygon class='floor' points='${points(geometry.floor)}'/>`,
+      `<polygon class='walls' points='${points(geometry.wallLine)}'/>`,
+      ...wallFaceLines(geometry.faces),
+      ...cornerLines(geometry.wallBase, roomWallShifts),
       ...nestedWalls(floor, room, gridSize),
       stairsGlyph(floor, room, 'up', gridSize),
       stairsGlyph(floor, room, 'down', gridSize),
@@ -72,19 +71,53 @@ global.DungeonRoomView = (function() {
     return roomElement;
   }
 
+  // The room's wall geometry in room-local pixels, for anything that paints on or into the walls: the outline,
+  // the wall and wall base lines, and the visible wall faces with their occlusion already worked out.
+  function getRoomGeometry(room) {
+    const gridSize = DungeonFloorView.getGridSize();
+    const outline = GeometryHelper.traceOutline(room.getFootprint())
+      .map(vertex => ({ x: vertex.x * gridSize, y: vertex.y * gridSize }));
+    const wallLine = GeometryHelper.insetOutline(outline, wallInset);
+    const wallBase = GeometryHelper.insetOutline(outline, wallBaseInsets);
+
+    return {
+      outline, wallLine, wallBase,
+      floor: floorOutline(outline, wallLine, wallBase),
+      faces: wallFaces(outline, wallLine, wallBase),
+    };
+  }
+
+  // The floor is the interior region the wall bands leave uncovered. Mostly that's the wall base outline, but at
+  // the inside NE and SW corners a wall face ends exposed and its slanted corner edge cuts across the wall base's
+  // square corner, so the floor follows the slant between the wall line vertex and the face's base corner.
+  function floorOutline(outline, wallLine, wallBase) {
+    return outline.flatMap((vertex, i) => {
+      const previous = outline[(i + outline.length - 1) % outline.length];
+      const next = outline[(i + 1) % outline.length];
+      const incoming = GeometryHelper.edgeDirection(previous, vertex);
+      const outgoing = GeometryHelper.edgeDirection(vertex, next);
+      const slant = { x: wallLine[i].x + wallBaseShift.x, y: wallLine[i].y + wallBaseShift.y };
+
+      if (incoming === 'S' && outgoing === 'E') { return [wallLine[i], slant]; }
+      if (incoming === 'N' && outgoing === 'W') { return [slant, wallLine[i]]; }
+      return [wallBase[i]];
+    });
+  }
+
   // The base of each visible wall face is the face's ceiling segment dropped by the vertical projection. How a
   // face's base ends depends on the corner it ends at: at a convex corner the face's end edge is hidden behind
   // the side wall, so the base is trimmed back to meet the side wall's line; at a concave corner the face wraps
   // a protrusion into the room, its end edge stands exposed, so the base keeps its projected length and the
-  // slanted end edge connects it back to the ceiling corner.
-  function wallFaceLines(outline, wallLine, wallBase) {
-    const shapes = [];
-
-    GeometryHelper.outlineRuns(outline, wallFaceDirections).forEach(indices => {
+  // slanted end edge connects it back to the ceiling corner. Each face run is returned as its ceiling and base
+  // polylines plus the exposed corner edges, top vertex first.
+  function wallFaces(outline, wallLine, wallBase) {
+    return GeometryHelper.outlineRuns(outline, wallFaceDirections).map(indices => {
+      const ceiling = indices.map(index => wallLine[index]);
       const base = indices.map(index => ({
         x: wallLine[index].x + wallBaseShift.x,
         y: wallLine[index].y + wallBaseShift.y,
       }));
+      const corners = [];
 
       [0, indices.length - 1].forEach(position => {
         const index = indices[position];
@@ -94,13 +127,19 @@ global.DungeonRoomView = (function() {
           return;
         }
 
-        shapes.push(`<line class='wall-corner' x1='${wallLine[index].x}' y1='${wallLine[index].y}' x2='${base[position].x}' y2='${base[position].y}'/>`);
+        corners.push([ceiling[position], base[position]]);
       });
 
-      shapes.push(`<polyline class='wall-base' points='${points(base)}'/>`);
+      return { ceiling, base, corners };
     });
+  }
 
-    return shapes;
+  function wallFaceLines(faces) {
+    return faces.flatMap(face => [
+      ...face.corners.map(corner =>
+        `<line class='wall-corner' x1='${corner[0].x}' y1='${corner[0].y}' x2='${corner[1].x}' y2='${corner[1].y}'/>`),
+      `<polyline class='wall-base' points='${points(face.base)}'/>`,
+    ]);
   }
 
   // Where two shifted walls meet, their faces share a vertical corner edge that the shifted polygon's single
@@ -166,6 +205,7 @@ global.DungeonRoomView = (function() {
 
   return Object.freeze({
     build,
+    getRoomGeometry,
     getWallMetrics: () => { return { wallInset, wallDepth }; },
   });
 

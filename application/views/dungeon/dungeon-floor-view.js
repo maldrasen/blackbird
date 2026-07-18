@@ -4,6 +4,9 @@ global.DungeonFloorView = (function() {
 
   function drawDungeon() {
     const floor = DungeonSystem.getDungeonFloor();
+    const theme = DungeonTheme.lookup(floor.getTheme());
+    const paintFloorTexture = theme.getFloorTextureFunction();
+    const paintWallTexture = theme.getWallTextureFunction();
 
     X.empty('#dungeonFloor');
 
@@ -13,6 +16,8 @@ global.DungeonFloorView = (function() {
 
     floor.getRooms().forEach(room => {
       floorElement.appendChild(DungeonRoomView.build(floor, room));
+      paintFloorTexture(room);
+      paintWallTexture(room);
     });
 
     floor.getDoors().forEach(door => {
