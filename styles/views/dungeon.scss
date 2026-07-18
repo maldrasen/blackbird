@@ -51,6 +51,7 @@
   }
 
   &.unrevealed {
+    .floor { display: none; }
     .walls { display: none; }
     .wall-base { display: none; }
     .wall-corner { display: none; }

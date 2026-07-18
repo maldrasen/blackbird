@@ -17,8 +17,9 @@ global.DungeonRoomView = (function() {
 
   // North walls show their face at full depth and west walls foreshortened; south and east walls face away, so
   // the boundary line there is the wall base itself. Edges are keyed by walk direction: top edges run E, left
-  // edges run N.
+  // edges run N. Nested exteriors are seen from the other side, showing their south and east faces.
   const wallFaceDirections = ['E','N'];
+  const nestedFaceDirections = ['S','W'];
   const wallBaseInsets = {
     E: wallInset + wallDepth,
     N: wallInset + wallDepth,
@@ -55,7 +56,7 @@ global.DungeonRoomView = (function() {
       `<polygon class='walls' points='${points(geometry.wallLine)}'/>`,
       ...wallFaceLines(geometry.faces),
       ...cornerLines(geometry.wallBase, roomWallShifts),
-      ...nestedWalls(floor, room, gridSize),
+      ...nestedWalls(floor, room),
       stairsGlyph(floor, room, 'up', gridSize),
       stairsGlyph(floor, room, 'down', gridSize),
     ].join('');
@@ -134,6 +135,37 @@ global.DungeonRoomView = (function() {
     });
   }
 
+  // The exterior wall geometry of the rooms nested inside this one, in this room's local pixels: each nested
+  // room's ceiling outline plus its visible exterior faces. Nested exteriors are convex solids, so the faces
+  // keep their full projected length at both ends — there are no occlusion trims.
+  function getNestedGeometry(floor, room) {
+    const gridSize = DungeonFloorView.getGridSize();
+    const feature = floor.getFeatureForRoom(room.getIndex());
+    const position = room.getFloorPosition();
+    const depth = roomDepth(floor, room.getIndex());
+
+    return feature.getRooms().slice(depth + 1).map(nested => {
+      const nestedPosition = nested.getFloorPosition();
+      const outline = GeometryHelper.traceOutline(nested.getFootprint()).map(vertex => ({
+        x: ((nestedPosition.x - position.x) + vertex.x) * gridSize,
+        y: ((nestedPosition.y - position.y) + vertex.y) * gridSize,
+      }));
+      const wallLine = GeometryHelper.insetOutline(outline, -wallInset);
+
+      return { outline, wallLine, faces: nestedFaces(outline, wallLine) };
+    });
+  }
+
+  function nestedFaces(outline, wallLine) {
+    return GeometryHelper.outlineRuns(outline, nestedFaceDirections).map(indices => ({
+      ceiling: indices.map(index => wallLine[index]),
+      base: indices.map(index => ({
+        x: wallLine[index].x + wallBaseShift.x,
+        y: wallLine[index].y + wallBaseShift.y,
+      })),
+    }));
+  }
+
   function wallFaceLines(faces) {
     return faces.flatMap(face => [
       ...face.corners.map(corner =>
@@ -163,26 +195,14 @@ global.DungeonRoomView = (function() {
   // room the same breathing room on its outside that neighboring rooms give each other — which also lands the
   // exterior face bands exactly where an interior band would sit on the adjacent tiles, so doors on the nested
   // room's south and east sides line up with no special casing.
-  function nestedWalls(floor, room, gridSize) {
-    const feature = floor.getFeatureForRoom(room.getIndex());
-    const position = room.getFloorPosition();
-    const depth = roomDepth(floor, room.getIndex());
-
-    return feature.getRooms().slice(depth + 1).flatMap(nested => {
-      const nestedPosition = nested.getFloorPosition();
-      const outline = GeometryHelper.traceOutline(nested.getFootprint()).map(vertex => ({
-        x: ((nestedPosition.x - position.x) + vertex.x) * gridSize,
-        y: ((nestedPosition.y - position.y) + vertex.y) * gridSize,
-      }));
-
-      const wallLine = GeometryHelper.insetOutline(outline, -wallInset);
-
-      return [
-        `<polygon class='nested-wall' points='${points(wallLine)}'/>`,
-        `<polygon class='nested-wall' points='${points(GeometryHelper.shiftOutline(wallLine, nestedWallShifts))}'/>`,
-        ...cornerLines(wallLine, nestedWallShifts, 'nested-wall'),
-      ];
-    });
+  function nestedWalls(floor, room) {
+    // The projected solid covers the whole ceiling outline, so it's drawn first: its fill occludes the floor
+    // texture beneath it without painting over the ceiling outline's own lines.
+    return getNestedGeometry(floor, room).flatMap(nested => [
+      `<polygon class='nested-wall' points='${points(GeometryHelper.shiftOutline(nested.wallLine, nestedWallShifts))}'/>`,
+      `<polygon class='nested-wall' points='${points(nested.wallLine)}'/>`,
+      ...cornerLines(nested.wallLine, nestedWallShifts, 'nested-wall'),
+    ]);
   }
 
   // The stairs glyph is centered on the room's main box, ignoring the grid entirely — once the floor is built the
@@ -206,6 +226,7 @@ global.DungeonRoomView = (function() {
   return Object.freeze({
     build,
     getRoomGeometry,
+    getNestedGeometry,
     getWallMetrics: () => { return { wallInset, wallDepth }; },
   });
 
