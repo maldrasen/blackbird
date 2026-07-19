@@ -1,9 +1,7 @@
 global.ExperienceComponent = (function() {
   const properties = ['level','essence'];
 
-  // The essence property is the lifetime essence earned. Level up eligibility is determined by comparing it against
-  // the cumulative level cost from the EssenceSystem, so nothing is subtracted when a character levels.
-  function create(id,data={}) {
+  function create(id, data={}) {
     if (data.level == null) { data.level = 0; }
     if (data.essence == null) { data.essence = 0; }
 

@@ -41,19 +41,6 @@ global.HealthComponent = (function() {
     Registry.updateComponent(id, ComponentType.health, healthComponent);
   }
 
-  // When vitality is raised we roll more health, scaled by the species health factor, the same way the baseline
-  // health was first rolled in the AttributesFactory.
-  function growMaxHealth(id, vitalityIncrease) {
-    const factor = Species.lookup(Character(id).getSpecies()).getHealthFactor();
-    const healthComponent = lookup(id);
-    const addedHealth = Math.ceil(Random.rollDice({ x:vitalityIncrease, d:10 }) * factor);
-
-    healthComponent.maxHealth += addedHealth;
-    healthComponent.currentHealth += addedHealth;
-
-    update(id, healthComponent);
-  }
-
   function validate(id) {
     const healthComponent = lookup(id);
     Object.keys(healthComponent).forEach(key => {
@@ -69,7 +56,6 @@ global.HealthComponent = (function() {
     update,
     lookup,
     destroy,
-    growMaxHealth,
   });
 
 })();

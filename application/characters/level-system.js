@@ -10,7 +10,7 @@ global.LevelSystem = (function() {
     incrementLevel(id);
 
     if (attribute === Attrib.vitality) {
-      HealthComponent.growMaxHealth(id, increase);
+      growMaxHealth(id, increase);
     }
 
     return increase;
@@ -28,6 +28,17 @@ global.LevelSystem = (function() {
     const experience = ExperienceComponent.lookup(id);
     experience.level += 1;
     ExperienceComponent.update(id, experience);
+  }
+
+  function growMaxHealth(id, vitalityIncrease) {
+    const factor = Species.lookup(Character(id).getSpecies()).getHealthFactor();
+    const health = HealthComponent.lookup(id);
+    const addedHealth = Math.ceil(Random.rollDice({ x:vitalityIncrease, d:10 }) * factor);
+
+    health.maxHealth += addedHealth;
+    health.currentHealth += addedHealth;
+
+    HealthComponent.update(id, health);
   }
 
   return Object.freeze({
