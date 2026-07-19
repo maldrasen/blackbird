@@ -38,12 +38,16 @@ global.MonsterFactory = (function() {
     SkillsComponent.update(monsterId, skills);
   }
 
+  // Only monsters that have a defined attributeGrowth map can add levels. We level monsters this way for species that
+  // can be recruited to the party, that way a kobold runt recruited at level 1 can have the same attributes as a
+  // level 10 kobold recruited later. Non-recruitable monsters will have their attributes defined as a map of
+  // attribute ranges.
   function addLevels(monsterBase, monsterId) {
     const attributeGrowth = MonsterType.lookup(monsterBase.getType()).getAttributeGrowth();
-    if (attributeGrowth == null) { return; }
-
-    for (let i=0; i<monsterBase.getLevel(); i++) {
-      LevelSystem.levelUp(monsterId, Random.fromFrequencyMap(attributeGrowth));
+    if (attributeGrowth) {
+      for (let i=0; i<monsterBase.getLevel(); i++) {
+        LevelSystem.levelUp(monsterId, Random.fromFrequencyMap(attributeGrowth));
+      }
     }
   }
 

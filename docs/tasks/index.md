@@ -2,6 +2,10 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
+## Priority 
+
+- [125] Implement equipment interface `5pt` — [125-implement-equipment-and-inventory-interfaces.md](125-implement-equipment-and-inventory-interfaces.md)
+
 ## Priority 2
 
 - [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
