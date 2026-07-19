@@ -10,11 +10,10 @@ Species.register(SpeciesCode.sylph, {
     beauty: 'B',
   },
 
+  healthFactor: 0.4,
   resistances: {
     psychic: 20,
   },
-
-  healthFactor: 0.4,
 
   archetypes: {
     enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.sylph),

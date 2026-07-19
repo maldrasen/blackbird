@@ -1,7 +1,6 @@
 Species.register(SpeciesCode.human, {
   name: 'Human',
   genderRatio: { female:40, futa:20, male:40, enby:5 },
-  healthFactor: 1.0,
 
   attributes: {
     strength: 'C',
@@ -11,6 +10,7 @@ Species.register(SpeciesCode.human, {
     beauty: 'C',
   },
 
+  healthFactor: 1.0,
   resistances: {},
 
   archetypes: {

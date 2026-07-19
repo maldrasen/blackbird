@@ -1,7 +1,6 @@
 Species.register(SpeciesCode.nymph, {
   name: 'Nymph',
   genderRatio: { female:60, futa:40, male:0, enby:0 },
-  healthFactor: 1.0,
 
   attributes: {
     strength: 'D',
@@ -11,6 +10,7 @@ Species.register(SpeciesCode.nymph, {
     beauty: 'A',
   },
 
+  healthFactor: 1.0,
   resistances: {
     nature: 20,
   },
