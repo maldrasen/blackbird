@@ -17,3 +17,10 @@ Then we show the level up view for every character that leveled up that battle:
 - It may be possible to unlock new aspects or special abilities. We'll need to tag some aspects  as being battle related. They provide passive bonuses, but should have some requirements that have to be met before they can be unlocked, minimum attribute or skill levels. The same is true for abilities, though they're active rather than passive, and will show up in the character's command panel. Hide and sneak attack will need to be unlocked this way and require a minimum dexterity. We need a data record for abilities like this first though.
 
 Before we can start this we actually need to figure out the essence and level up mechanics. 
+
+**Update (2026-07-19):** The mechanics from task 123 are in place. `EssenceSystem` prices killed monsters and knows
+the level thresholds (`canLevelUp`), and `LevelSystem.levelUp(id, attribute)` is the unified leveling path: the
+chosen attribute gains a random roll plus the species grade base, vitality growth rolls extra health, and the
+`ExperienceComponent` level increments. Monster auto leveling in the MonsterFactory already routes through it. The
+enlighten view just needs to award essence from the dead pile, let the player pick the attribute, and call
+`LevelSystem.levelUp`.
