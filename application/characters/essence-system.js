@@ -15,9 +15,6 @@ global.EssenceSystem = (function() {
   //    Monster Essence Values
   // ============================
 
-  // TODO: The monsters health should also factor into the essence values. Although, if we did that then the vitality
-  //       attribute gets included twice. As it is though the specie's health factor isn't taken into account.
-
   // A monster's essence value is determined by their attributes and abilities. Attributes are worth more as they
   // determine the potency of the abilities. Even a monster without abilities, with only a basic attack can be very
   // dangerous, but a weak monster with lots of abilities is still weak.
