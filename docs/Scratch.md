@@ -7,13 +7,7 @@ characters/factories/monster-factory.js
 characters/factories/player-factory.js
 characters/level-system.js
 
-data/species/human.js
-data/species/nymph.js
-
-docs/reference/character-factory-triggers.md
-
 test/characters/level-system-spec.js
-
 ```
 
 ### Game Over
