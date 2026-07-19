@@ -57,6 +57,7 @@ global.CharacterFactory = (function() {
     assertGenderInSpecies(genderCode, species);
 
     const actorData = { gender:genderCode, species:speciesCode };
+    const experienceData = { level:1, essence:EssenceSystem.totalEssenceToLevel(1, speciesCode) };
 
     // It's very important for triggers to be a clone here. The character factory might add incompatible triggers that
     // cause the character to be rejected. If we change the original triggers array, when a character is rejected we
@@ -84,8 +85,6 @@ global.CharacterFactory = (function() {
     // Add random mutators like strange hair colors or tails and shit.
     TriggerFactory.addRandomTriggers(triggers, species);
 
-    // Aspects need to be built before the attributes because the attribute aspects (strong, sickly) influence the
-    // size of the creation increases rolled by the level system.
     const aspectsData = AspectsFactory.build(triggers, actorData);
     const attributesData = LevelSystem.buildAttributes(actorData, aspectsData);
     const healthData = LevelSystem.buildHealth(attributesData, species.getHealthFactor());
@@ -142,10 +141,7 @@ global.CharacterFactory = (function() {
     SexualHistoryComponent.create(characterId, sexualHistoryData);
     AspectsComponent.create(characterId, aspectsData);
     EquipmentComponent.create(characterId);
-    ExperienceComponent.create(characterId, {
-      level: 1,
-      essence: EssenceSystem.totalEssenceToLevel(1, speciesCode),
-    });
+    ExperienceComponent.create(characterId, experienceData);
     InventoryComponent.create(characterId);
 
     if (breastsData) { BreastsComponent.create(characterId, breastsData); }
