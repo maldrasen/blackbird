@@ -45,7 +45,7 @@ global.MonsterFactory = (function() {
   function addLevels(monsterBase, monsterId) {
     const attributeGrowth = MonsterType.lookup(monsterBase.getType()).getAttributeGrowth();
     if (attributeGrowth) {
-      while (ExperienceComponent.lookup(monsterId).level < monsterBase.getLevel()) {
+      for (let i=1; i<monsterBase.getLevel(); i++) {
         LevelSystem.levelUp(monsterId, Random.fromFrequencyMap(attributeGrowth));
       }
     }
