@@ -4,7 +4,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 ## Priority 1
 
-- [117] After battle control flow `5pt` — [117-after-battle-control-flow.md](117-after-battle-control-flow.md)
+- [123] Add Essence and Level Mechanics `3pt` — [123-add-essence-and-level-mechanics.md](123-add-essence-and-level-mechanics.md)
 
 ## Priority 2
 
@@ -13,12 +13,13 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [007] Position Attitude Requirement `3pt` #training — [007-position-attitude-requirement.md](007-position-attitude-requirement.md)
 - [009] Descriptions `13pt` #character — [009-descriptions.md](009-descriptions.md)
 - [011] Project Stuff `3pt` — [011-project-stuff.md](011-project-stuff.md)
-- [045] Implement the Enlighten View `13pt` — [045-implement-the-enlighten-view.md](045-implement-the-enlighten-view.md)
 - [105] Add Negotiation Requests `8pt` — [105-add-negotiation-requests.md](105-add-negotiation-requests.md)
 - [107] Add Negotiation Resolution Text `5pt` — [107-add-negotiation-resolution-text.md](107-add-negotiation-resolution-text.md)
 - [108] Complete Negotiation Questions `8pt` — [108-complete-negotiation-questions.md](108-complete-negotiation-questions.md)
 - [110] Navigation Events `8pt` — [110-navigation-events.md](110-navigation-events.md)
 - [114] Rework death mechanics `8pt` — [114-rework-death-mechanics.md](114-rework-death-mechanics.md)
+- [117] After battle control flow `5pt` — [117-battle-enlighten-view.md](117-battle-enlighten-view.md)
+- [122] Training Enlighten View `5pt` — [122-training-enlighten-view.md](122-training-enlighten-view.md)
 
 ## Priority 3
 
@@ -27,7 +28,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [014] Bows & Arrows `5pt` #battle — [014-bows-arrows.md](014-bows-arrows.md)
 - [015] Battle Encounter Tables `8pt` #battle #dungeon — [015-battle-encounter-tables.md](015-battle-encounter-tables.md)
 - [016] Battle Character Inspect `5pt` #battle — [016-battle-character-inspect.md](016-battle-character-inspect.md)
-- [17] Game Over Episode `3pt` — [017-game-over-episode.md](017-game-over-episode.md)
 - [019] Stamina `3pt` #training — [019-stamina.md](019-stamina.md)
 - [020] Refactor how SexActions define their persistence `5pt` #training — [020-refactor-how-sexactions-define-their-persistence.md](020-refactor-how-sexactions-define-their-persistence.md)
 - [021] Action Slot Sharing `8pt` #training — [021-action-slot-sharing.md](021-action-slot-sharing.md)
@@ -44,7 +44,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [044] Unwilling Actions Require Hands `3pt` — [044-unwilling-actions-require-hands.md](044-unwilling-actions-require-hands.md)
 - [047] Add New Species `13pt` — [047-add-new-species.md](047-add-new-species.md)
 - [113] Add statistics component `5pt` — [113-add-statistics-component.md](113-add-statistics-component.md)
-- [116] Capture Monsters `8pt` — [116-capture-monsters.md](116-capture-monsters.md)
+- [121] Add Capture Mechanics `8pt` — [121-add-capture-mechanics.md](121-add-capture-mechanics.md)
 
 ## Priority 4
 

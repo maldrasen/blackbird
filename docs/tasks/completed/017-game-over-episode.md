@@ -9,3 +9,5 @@ tags:
 ---
 ---
 Adding a GameOver episode should be easy, just a single page and a confirm button that kicks you back to the main menu. The confirm button should go through the same path as a quit game button, completely resetting the game state. 
+
+(Moved to 117)
