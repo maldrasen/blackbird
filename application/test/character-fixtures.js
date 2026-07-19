@@ -63,6 +63,7 @@ global.CharacterFixtures = (function() {
 
     EquipmentComponent.create(id);
     InventoryComponent.create(id);
+    ExperienceComponent.create(id);
 
     return id;
   }
@@ -90,6 +91,7 @@ global.CharacterFixtures = (function() {
 
     EquipmentComponent.create(id);
     InventoryComponent.create(id);
+    ExperienceComponent.create(id);
 
     return id;
   }

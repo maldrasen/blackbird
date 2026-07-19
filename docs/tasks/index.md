@@ -46,6 +46,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [113] Add statistics component `5pt` — [113-add-statistics-component.md](113-add-statistics-component.md)
 - [121] Add Capture Mechanics `8pt` — [121-add-capture-mechanics.md](121-add-capture-mechanics.md)
 - [124] Make reports headless `2pt` — [124-make-reports-headless.md](124-make-reports-headless.md)
+- [126] Attribute triggers should also be aspects `2pt` — [126-attribute-triggers-should-also-be-aspects.md](126-attribute-triggers-should-also-be-aspects.md)
 
 ## Priority 4
 

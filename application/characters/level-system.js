@@ -1,13 +1,7 @@
 global.LevelSystem = (function() {
 
-  const attributeRollMax = 5;
-
-  // Level up a character or monster, raising the chosen attribute. Characters pick the attribute in the enlighten
-  // view, monsters pick from their type's attribute growth frequency map, but both come through here. The increase
-  // is a random amount plus the base amount from the species letter grade, so a species grows fastest in the
-  // attributes it's naturally good at.
   function levelUp(id, attribute) {
-    const increase = Random.between(1,attributeRollMax) + speciesGradeBase(id, attribute);
+    const increase = Random.between(1,5) + attributeBonus(id, attribute);
     const attributes = AttributesComponent.lookup(id);
 
     attributes[attribute] += increase;
@@ -16,32 +10,22 @@ global.LevelSystem = (function() {
     incrementLevel(id);
 
     if (attribute === Attrib.vitality) {
-      HealthComponent.growMaxHealth(id, increase, getHealthFactor(id));
+      HealthComponent.growMaxHealth(id, increase);
     }
 
     return increase;
   }
 
-  function speciesGradeBase(id, attribute) {
-    const species = getSpecies(id);
-    return species == null ? 0 : LetterGradeHelper.attributeBase(species.getAttributes()[attribute]);
+  function attributeBonus(id, attribute) {
+    return LetterGradeHelper.attributeBase(getSpecies(id).getAttributes()[attribute]);
   }
 
-  function getHealthFactor(id) {
-    const species = getSpecies(id);
-    return (species == null) ? 1 : (species.getHealthFactor() || 1);
-  }
-
-  // Monsters without a species, like plain animals, won't have an actor component.
   function getSpecies(id) {
-    const actor = ActorComponent.lookup(id);
-    return (actor == null || actor.species == null) ? null : Species.lookup(actor.species);
+    return Species.lookup(Character(id).getSpecies());
   }
 
   function incrementLevel(id) {
     const experience = ExperienceComponent.lookup(id);
-    if (experience == null) { return; }
-
     experience.level += 1;
     ExperienceComponent.update(id, experience);
   }
