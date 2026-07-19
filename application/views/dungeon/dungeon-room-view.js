@@ -176,8 +176,8 @@ global.DungeonRoomView = (function() {
 
     const box = room.getBoxes()[0];
     const glyph = (direction === 'up') ? '▲' : '▼';
-    const x = (box.x + (box.width / 2)) * gridSize;
-    const y = (box.y + (box.height / 2)) * gridSize;
+    const x = wallDepth + ((box.x + (box.width / 2)) * gridSize);
+    const y = wallDepth + ((box.y + (box.height / 2)) * gridSize);
 
     return `<text class='stairs ${direction}' data-direction='${direction}' x='${x}' y='${y}'>${glyph}</text>`;
   }
