@@ -11,8 +11,11 @@ global.DungeonDoorView = (function() {
     if (floor.isRevealed(door.from) === false) { classname += ' hide'; }
 
     const geometry = doorGeometry(door, gridSize, metrics);
-    return doorElement(door, classname, geometry,
-      slabElements(floor, door, gridSize, metrics, geometry.slab));
+    const clip = buildClipPath(floor, door, gridSize, metrics, 'door');
+
+    return doorElement(door, classname, geometry, clip == null
+      ? [`<polygon class='slab' points='${geometry.slab}'/>`]
+      : [clip.element, `<polygon class='slab' clip-path='url(#${clip.id})' points='${geometry.slab}'/>`]);
   }
 
   function buildHanging(floor, door) {
@@ -25,17 +28,16 @@ global.DungeonDoorView = (function() {
     if (floor.isRevealed(door.to) === false) { classname += ' hide'; }
 
     const geometry = doorGeometry(door, gridSize, metrics);
+    const clip = raised ? buildClipPath(floor, door, gridSize, metrics, 'hanging') : null;
     const content = [
       ...geometry.frames.map(line =>
         `<line class='frame' x1='${line[0]}' y1='${line[1]}' x2='${line[2]}' y2='${line[3]}'/>`),
       `<polygon class='slab' points='${geometry.slab}'/>`,
     ];
 
-    // A raised hanging door reuses the clip path defined by the real door for the same tile. The real door element
-    // always exists and is only ever hidden, while the hanging door is removed once the from room is revealed.
-    return doorElement(door, classname, geometry, raised
-      ? [`<g clip-path='url(#${clipId(door)})'>`, ...content, `</g>`]
-      : content);
+    return doorElement(door, classname, geometry, clip == null
+      ? content
+      : [clip.element, `<g clip-path='url(#${clip.id})'>`, ...content, `</g>`]);
   }
 
   function doorGeometry(door, gridSize, metrics) {
@@ -56,23 +58,36 @@ global.DungeonDoorView = (function() {
     return element;
   }
 
-  function slabElements(floor, door, gridSize, metrics, slab) {
+  // The real door and a raised hanging door clip to the same wall face, but each defines its own copy of the
+  // clipPath. They can't share one: the browser won't resolve a clip reference into a display:none element, and
+  // one of the pair is always hidden.
+  function buildClipPath(floor, door, gridSize, metrics, kind) {
     const face = findWallFace(floor, door, gridSize, metrics);
-    if (face == null) { return [`<polygon class='slab' points='${slab}'/>`]; }
+    if (face == null) { return null; }
+
+    const id = `doorClip-${kind}-${door.position.x}-${door.position.y}-${door.direction}`;
+    const across = (door.direction === 'N') ? 'y' : 'x';
+    const along = (door.direction === 'N') ? 'x' : 'y';
+    const ceiling = adjustPolyline(face.ceiling, across, along, -1);
+    const base = adjustPolyline(face.base, across, along, 1);
 
     const tileX = door.position.x * gridSize;
     const tileY = door.position.y * gridSize;
-    const points = face.ceiling.concat([...face.base].reverse())
+    const points = ceiling.concat(base.reverse())
       .map(point => `${point.x - tileX},${point.y - tileY}`).join(' ');
 
-    return [
-      `<clipPath id='${clipId(door)}'><polygon points='${points}'/></clipPath>`,
-      `<polygon class='slab' clip-path='url(#${clipId(door)})' points='${slab}'/>`,
-    ];
+    return { id, element: `<clipPath id='${id}'><polygon points='${points}'/></clipPath>` };
   }
 
-  function clipId(door) {
-    return `doorClip-${door.position.x}-${door.position.y}-${door.direction}`;
+  // The wall strokes are 2px wide, centered on the face geometry, so the clip boundary would otherwise cut every
+  // stroke in half: push the polyline half a stroke outward across the wall to keep the frame lines whole, and pull
+  // its ends half a stroke inward so the slab stops at the corner lines instead of covering them.
+  function adjustPolyline(points, across, along, acrossShift) {
+    const adjusted = points.map(point => ({ ...point, [across]: point[across] + acrossShift }));
+    const sign = Math.sign(adjusted[adjusted.length - 1][along] - adjusted[0][along]);
+    adjusted[0][along] += sign;
+    adjusted[adjusted.length - 1][along] -= sign;
+    return adjusted;
   }
 
   function findWallFace(floor, door, gridSize, metrics) {
