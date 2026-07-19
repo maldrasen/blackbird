@@ -12,7 +12,7 @@ global.DungeonDoorView = (function() {
 
     const geometry = doorGeometry(door, gridSize, metrics);
     return doorElement(door, classname, geometry,
-      slabElements(floor, door, gridSize, metrics, geometry.slab, 'door'));
+      slabElements(floor, door, gridSize, metrics, geometry.slab));
   }
 
   function buildHanging(floor, door) {
@@ -25,15 +25,17 @@ global.DungeonDoorView = (function() {
     if (floor.isRevealed(door.to) === false) { classname += ' hide'; }
 
     const geometry = doorGeometry(door, gridSize, metrics);
-    const slab = raised
-      ? slabElements(floor, door, gridSize, metrics, geometry.slab, 'hanging')
-      : [`<polygon class='slab' points='${geometry.slab}'/>`];
-
-    return doorElement(door, classname, geometry, [
+    const content = [
       ...geometry.frames.map(line =>
         `<line class='frame' x1='${line[0]}' y1='${line[1]}' x2='${line[2]}' y2='${line[3]}'/>`),
-      ...slab,
-    ]);
+      `<polygon class='slab' points='${geometry.slab}'/>`,
+    ];
+
+    // A raised hanging door reuses the clip path defined by the real door for the same tile. The real door element
+    // always exists and is only ever hidden, while the hanging door is removed once the from room is revealed.
+    return doorElement(door, classname, geometry, raised
+      ? [`<g clip-path='url(#${clipId(door)})'>`, ...content, `</g>`]
+      : content);
   }
 
   function doorGeometry(door, gridSize, metrics) {
@@ -54,20 +56,23 @@ global.DungeonDoorView = (function() {
     return element;
   }
 
-  function slabElements(floor, door, gridSize, metrics, slab, kind) {
+  function slabElements(floor, door, gridSize, metrics, slab) {
     const face = findWallFace(floor, door, gridSize, metrics);
     if (face == null) { return [`<polygon class='slab' points='${slab}'/>`]; }
 
-    const clipId = `doorClip-${kind}-${door.position.x}-${door.position.y}-${door.direction}`;
     const tileX = door.position.x * gridSize;
     const tileY = door.position.y * gridSize;
     const points = face.ceiling.concat([...face.base].reverse())
       .map(point => `${point.x - tileX},${point.y - tileY}`).join(' ');
 
     return [
-      `<clipPath id='${clipId}'><polygon points='${points}'/></clipPath>`,
-      `<polygon class='slab' clip-path='url(#${clipId})' points='${slab}'/>`,
+      `<clipPath id='${clipId(door)}'><polygon points='${points}'/></clipPath>`,
+      `<polygon class='slab' clip-path='url(#${clipId(door)})' points='${slab}'/>`,
     ];
+  }
+
+  function clipId(door) {
+    return `doorClip-${door.position.x}-${door.position.y}-${door.direction}`;
   }
 
   function findWallFace(floor, door, gridSize, metrics) {
