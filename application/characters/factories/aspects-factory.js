@@ -35,10 +35,20 @@ global.AspectsFactory = (function() {
     }
   }
 
+  const attributeTriggers = [
+    'strong','weak','skillful','clumsy','healthy','sickly','smart','stupid','beautiful','ugly'];
+
   // This function mutates both the aspectsData object and the triggers array,
   // adding aspects to the former while removing them from the latter.
   function applyTriggers(aspectsData, triggers) {
     [...triggers].forEach(trigger => {
+      if (attributeTriggers.includes(trigger)) {
+        aspectsData[trigger] = 1;
+        Console.log(`Applied ${trigger}`,{ system:'AspectsFactory', level:3 });
+        ArrayHelper.remove(triggers, trigger);
+        return;
+      }
+
       const match = trigger.match(/(.+):(\d)/);
       if (match) {
         aspectsData[match[1]] = parseInt(match[2]);

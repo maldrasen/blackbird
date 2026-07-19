@@ -2,7 +2,8 @@
 These triggers are used by the `CharacterFactory` to randomly add make adjustments to the body, sexual preferences and other components. They are either passed into the factory to make a character that matches the trigger, added by the randomly selected name, or randomly added by the body factory.
 
 ### Attribute triggers 
-Adds or removes 2d10 from associated stat
+Adds the matching attribute aspect (e.g. `strong` → the Strong aspect). Attribute aspects add or remove 2 points from
+the increase whenever the associated attribute is raised, both at character creation and on level up.
 - `strong` / `weak`
 - `skillful` / `clumsy`
 - `healthy` / `sickly`

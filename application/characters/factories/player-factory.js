@@ -26,9 +26,9 @@ global.PlayerFactory = (function() {
 
     const actorData = { name:options.name || 'Greg', gender:genderCode, species:speciesCode };
     const arousalData = { arousal:0 };
-    const attributesData = AttributesFactory.rollAttributes(genderCode, speciesCode);
-    AttributesFactory.adjustAttributes(attributesData, triggers);
-    const healthData = AttributesFactory.rollHealth(attributesData);
+    const aspectsData = AspectsFactory.build(triggers, actorData);
+    const attributesData = LevelSystem.buildAttributes(actorData, aspectsData);
+    const healthData = LevelSystem.buildHealth(attributesData, Species.lookup(speciesCode).getHealthFactor());
 
     let pussyData, breastsData, cockData;
     const bodyData = BodyFactory.build(actorData,triggers);
@@ -43,7 +43,6 @@ global.PlayerFactory = (function() {
       cockData = CockFactory.build(actorData);
     }
 
-    const aspectsData = AspectsFactory.build(triggers, actorData);
     const skillsData = SkillsFactory.build(triggers);
 
     // Triggers are applied in the same way, though I'm not sure if player
