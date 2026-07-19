@@ -1,7 +1,5 @@
 
 ```
-characters/factories/monster-factory.js
-characters/factories/player-factory.js
 characters/level-system.js
 
 test/characters/level-system-spec.js

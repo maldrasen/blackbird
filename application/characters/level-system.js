@@ -59,12 +59,10 @@ global.LevelSystem = (function() {
     return 0;
   }
 
-  // ===========================
+  // ========================
   //    Character Creation
-  // ===========================
+  // ========================
 
-  // Characters start with a baseline in every attribute plus a single creation increase. These are starting values,
-  // not levels, so characters built this way still start at level 1.
   function buildAttributes(actorData, aspectsData) {
     const attributes = {};
     Object.keys(Attrib).forEach(code => {
@@ -80,9 +78,9 @@ global.LevelSystem = (function() {
     return { currentStamina:stamina, currentHealth:health, maxHealth:health };
   }
 
-  // ===========================
+  // ==============
   //    Leveling
-  // ===========================
+  // ==============
 
   function getSpecies(id) {
     return Species.lookup(Character(id).getSpecies());
