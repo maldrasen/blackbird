@@ -504,6 +504,7 @@
     "test/characters/level-system-spec.js",
     "test/characters/personality-spec.js",
     "test/characters/skill-check-spec.js",
+    "test/components/experience-component-spec.js",
     "test/components/feelings-component-spec.js",
     "test/dungeon/dungeon-system-spec.js",
     "test/dungeon/factories/floor-factory-spec.js",

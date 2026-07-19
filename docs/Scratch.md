@@ -1,8 +1,4 @@
-### Experience Component
-Validate that the character has enough essence for their current level. Any character that has an experience component will also have a species.
 
-### Monsters need essence in the experience component
-If they're added as a party member they'll need both levels and essence. Essence value should be the lowest they need for the level they are. If monsters have an experience component the level up system can validate that the character has enough essence to go up a level.
 
 ### Use level system when setting initial attributes
 Look into adjusting this attribute bonus. Right now it's a simple 1-5 depending on the species. At character creation a vermin may have a beauty between 1-10 and gain 2-6 when raising beauty. An equin could have a strength between 5 and 50, but only get 6-10 when leveling up. The level up ranges should be comparable to the character creation ranges. Probably better to change how character creation works though. Perhaps characters start with 1 level of each attribute, and maybe an extra roll for their max attribute, essentially starting them at level 5 or 6. Sounds more correct than what we're doing now.
