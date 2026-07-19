@@ -2,10 +2,6 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
-## Priority 1
-
-- [123] Add Essence and Level Mechanics `3pt` — [123-add-essence-and-level-mechanics.md](123-add-essence-and-level-mechanics.md)
-
 ## Priority 2
 
 - [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
@@ -45,6 +41,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [047] Add New Species `13pt` — [047-add-new-species.md](047-add-new-species.md)
 - [113] Add statistics component `5pt` — [113-add-statistics-component.md](113-add-statistics-component.md)
 - [121] Add Capture Mechanics `8pt` — [121-add-capture-mechanics.md](121-add-capture-mechanics.md)
+- [124] Make reports headless `2pt` — [124-make-reports-headless.md](124-make-reports-headless.md)
 
 ## Priority 4
 
