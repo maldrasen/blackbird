@@ -36,6 +36,7 @@ FeatureType.register('nested-room',{
     inner.addBox(0, 0, innerSize, innerSize);
     inner.setPosition(padding, padding);
     inner.allowStairs();
+    inner.markOverlapping();
 
     const feature = Feature('nested-room');
     feature.addRoom(outer);

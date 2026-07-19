@@ -7,6 +7,7 @@ global.Room = function(type='normal') {
   let featureIndex;
   let floorPosition;
   let stairsAllowed = false;
+  let overlapping = false;
 
   // Add a box to the room. Boxes can be added in any order using any shared coordinate system (eg. plain absolute
   // grid coordinates) - the room's own origin isn't pinned to (0,0) until something actually reads the boxes/bounds,
@@ -71,6 +72,12 @@ global.Room = function(type='normal') {
     };
   }
 
+  // The isOverlapping() function takes a door as an argument (the door object has a position and a direction) though
+  // currently the only overlapping room is the nested room where every tile is overlapping. We need to know this in
+  // order to draw the 'hanging' door above an overlapping room. Hanging doors are normally the lowest in the z-order,
+  // but need to be pulled on top of the overlapping room in this case.
+  function isOverlapping(door) { return overlapping; }
+
   function pack() {
     return {
       position,
@@ -93,8 +100,10 @@ global.Room = function(type='normal') {
     getBounds,
     getFootprint,
     getFloorCenter,
-    pack,
     allowStairs: () => { stairsAllowed = true; },
     stairsAreAllowed: () => { return stairsAllowed; },
+    markOverlapping: () => { overlapping = true; },
+    isOverlapping,
+    pack,
   });
 }

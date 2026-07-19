@@ -7,31 +7,33 @@ global.DungeonDoorView = (function() {
     const gridSize = DungeonFloorView.getGridSize();
     const metrics = DungeonRoomView.getWallMetrics();
 
-    let classname = `door ${door.direction} ${fromRoomType(floor, door)}`;
+    let classname = `door ${door.direction}`;
     if (floor.isRevealed(door.from) === false) { classname += ' hide'; }
 
     const geometry = doorGeometry(door, gridSize, metrics);
     return doorElement(door, classname, geometry,
-      slabElements(floor, door, gridSize, metrics, geometry.slab));
+      slabElements(floor, door, gridSize, metrics, geometry.slab, 'door'));
   }
 
   function buildHanging(floor, door) {
     const gridSize = DungeonFloorView.getGridSize();
     const metrics = DungeonRoomView.getWallMetrics();
+    const raised = floor.getRooms()[door.from].isOverlapping(door);
 
-    let classname = `hanging-door ${door.direction} ${fromRoomType(floor, door)}`;
+    let classname = `hanging-door ${door.direction}`;
+    if (raised) { classname += ' raised'; }
     if (floor.isRevealed(door.to) === false) { classname += ' hide'; }
 
     const geometry = doorGeometry(door, gridSize, metrics);
+    const slab = raised
+      ? slabElements(floor, door, gridSize, metrics, geometry.slab, 'hanging')
+      : [`<polygon class='slab' points='${geometry.slab}'/>`];
+
     return doorElement(door, classname, geometry, [
       ...geometry.frames.map(line =>
         `<line class='frame' x1='${line[0]}' y1='${line[1]}' x2='${line[2]}' y2='${line[3]}'/>`),
-      `<polygon class='slab' points='${geometry.slab}'/>`,
+      ...slab,
     ]);
-  }
-
-  function fromRoomType(floor, door) {
-    return floor.getRooms()[door.from].getType();
   }
 
   function doorGeometry(door, gridSize, metrics) {
@@ -52,11 +54,11 @@ global.DungeonDoorView = (function() {
     return element;
   }
 
-  function slabElements(floor, door, gridSize, metrics, slab) {
+  function slabElements(floor, door, gridSize, metrics, slab, kind) {
     const face = findWallFace(floor, door, gridSize, metrics);
     if (face == null) { return [`<polygon class='slab' points='${slab}'/>`]; }
 
-    const clipId = `doorClip-${door.position.x}-${door.position.y}-${door.direction}`;
+    const clipId = `doorClip-${kind}-${door.position.x}-${door.position.y}-${door.direction}`;
     const tileX = door.position.x * gridSize;
     const tileY = door.position.y * gridSize;
     const points = face.ceiling.concat([...face.base].reverse())
