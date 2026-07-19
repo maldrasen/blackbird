@@ -1,6 +1,5 @@
 
 ```
-characters/factories/aspects-factory.js
 characters/factories/attributes-factory.js
 characters/factories/character-factory.js
 characters/factories/monster-factory.js

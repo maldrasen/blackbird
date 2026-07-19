@@ -35,21 +35,21 @@ global.AspectsFactory = (function() {
     }
   }
 
-  const attributeTriggers = [
-    'strong','weak','skillful','clumsy','healthy','sickly','smart','stupid','beautiful','ugly'];
-
-  // This function mutates both the aspectsData object and the triggers array,
-  // adding aspects to the former while removing them from the latter.
+  // This function mutates both the aspectsData object and the triggers array, adding aspects to the former while
+  // removing them from the latter. Aspect triggers will have the format `(aspectCode):(1-5 optional)` unless it's
+  // one of the unleveled aspects, which are just `(aspectCode)`
   function applyTriggers(aspectsData, triggers) {
+    const unleveledCodes = Aspect.getAllUnleveledCodes();
+
     [...triggers].forEach(trigger => {
-      if (attributeTriggers.includes(trigger)) {
+      const match = trigger.match(/(.+):(\d)/);
+
+      if (unleveledCodes.includes(trigger)) {
         aspectsData[trigger] = 1;
         Console.log(`Applied ${trigger}`,{ system:'AspectsFactory', level:3 });
         ArrayHelper.remove(triggers, trigger);
-        return;
       }
 
-      const match = trigger.match(/(.+):(\d)/);
       if (match) {
         aspectsData[match[1]] = parseInt(match[2]);
         Console.log(`Applied ${trigger}`,{ system:'AspectsFactory', level:3 });

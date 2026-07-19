@@ -5,6 +5,13 @@ global.Aspect = (function() {
   function register(code,data) { aspects[code] = data; }
   function getAllCodes() { return Object.keys(aspects); }
 
+  function getAllUnleveledCodes() {
+    return getAllCodes().
+      map(code => Aspect.lookup(code)).
+      filter(aspect => aspect.isLeveled() === false).
+      map(aspect => aspect.getCode());
+  }
+
   // The lookup() function returns a wrapper for the aspect data object.
   function lookup(code) {
     if (aspects[code] == null) { throw new Error(`Bad aspect code [${code}]`); }
@@ -23,6 +30,7 @@ global.Aspect = (function() {
   return Object.freeze({
     register,
     getAllCodes,
+    getAllUnleveledCodes,
     lookup,
   });
 
