@@ -1,6 +1,7 @@
 Ability.register('hide',{
   name: 'Hide',
   category: 'basic',
+  essence: 10,
 
   canBeUsed: () => {
     const state = BattleSystem.getState();

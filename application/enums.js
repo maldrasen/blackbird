@@ -90,6 +90,7 @@ global.ComponentType = Object.freeze({
   controlled: 'ControlledComponent',
   description: 'DescriptionComponent',
   equipment: 'EquipmentComponent',
+  experience: 'ExperienceComponent',
   feelings: 'FeelingsComponent',
   health: 'HealthComponent',
   inventory: 'InventoryComponent',

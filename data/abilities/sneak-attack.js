@@ -2,6 +2,7 @@ Ability.register('sneak-attack',{
   name: 'Sneak Attack',
   category: 'basic',
   targetingMode: TargetingMode.anyEnemy,
+  essence: 25,
 
   canBeUsed: () => {
     const state = BattleSystem.getState()

@@ -1,5 +1,13 @@
 global.LetterGradeHelper = (function() {
 
+  // Maps a species attribute grade to the number of d10s rolled for that attribute. Also serves as the generic
+  // numeric value of a letter grade when comparing species to each other.
+  const gradeLevels = { F:1, D:2, C:3, B:4, A:5, S:6, SS:7, SSS:8 };
+
+  function gradeLevel(letter) {
+    return gradeLevels[letter];
+  }
+
   // Value will be between -1000 and 1000. Values over 600 is within the
   // unobtainable S ranks. The feelings bars are a bit more complicated as we
   // take a raw value and covert it to a letter grade and a bar showing the
@@ -65,6 +73,7 @@ global.LetterGradeHelper = (function() {
   }
 
   return Object.freeze({
+    gradeLevel,
     feelingValue,
     sensitivityValue,
     preferenceValue,

@@ -143,6 +143,7 @@ global.CharacterFactory = (function() {
     SexualHistoryComponent.create(characterId, sexualHistoryData);
     AspectsComponent.create(characterId, aspectsData);
     EquipmentComponent.create(characterId);
+    ExperienceComponent.create(characterId);
     InventoryComponent.create(characterId);
 
     if (breastsData) { BreastsComponent.create(characterId, breastsData); }

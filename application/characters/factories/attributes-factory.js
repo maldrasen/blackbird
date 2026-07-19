@@ -15,12 +15,11 @@ global.AttributesFactory = (function() {
   };
 
   function rollAttributes(sex,species) {
-    const diceLevels = { F:1, D:2, C:3, B:4, A:5, S:6, SS:7, SSS:8 }
     const speciesMap = Species.lookup(species).getAttributes();
     const attributes = {};
 
     Object.keys(Attrib).forEach(code => {
-      let dice = diceLevels[speciesMap[code]];
+      let dice = LetterGradeHelper.gradeLevel(speciesMap[code]);
 
       if (code === Attrib.strength && [Gender.male,Gender.futa].includes(sex)) { dice += 1 }
       if (code === Attrib.beauty && [Gender.female,Gender.futa].includes(sex)) { dice += 1 }

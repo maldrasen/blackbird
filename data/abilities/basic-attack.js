@@ -2,6 +2,7 @@ Ability.register('basic-attack',{
   name: 'Attack',
   category: 'basic',
   targetingMode: TargetingMode.enemyInWeaponRange,
+  essence: 10,
 
   canBeUsed: () => {
     return BattleSystem.getRound().isActingMonster() ? canMonsterAttack() : canCharacterAttack();
