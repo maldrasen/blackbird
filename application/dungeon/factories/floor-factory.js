@@ -106,15 +106,17 @@ global.FloorFactory = function() {
   }
 
   function placeStairs() {
+    const chance = DungeonTheme.lookup(DungeonSystem.getDungeonFloor().getTheme()).getExtraStairChance();
     const rooms = Random.shuffle(floor.getRooms().filter(room => room.stairsAreAllowed()));
     const limit = Math.floor(rooms.length / 2);
+    const stairs = ['up','down'];
 
-    ['up','down'].forEach(direction => {
-      const count = Math.max(1, Math.min(Random.between(2,3), limit));
+    while (Random.roll(100) < chance && stairs.length < limit) {
+      stairs.push(Random.flipCoin() ? 'up' : 'down')
+    }
 
-      for (let i=0; i<count; i++) {
-        floor.addStairs(direction, rooms.pop().getIndex());
-      }
+    stairs.forEach(direction => {
+      floor.addStairs(direction, rooms.pop().getIndex());
     });
   }
 
