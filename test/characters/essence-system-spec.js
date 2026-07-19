@@ -1,4 +1,4 @@
-describe.only("EssenceSystem", function() {
+describe("EssenceSystem", function() {
 
   function buildMonster(attributes) {
     const id = Registry.createEntity();
@@ -7,40 +7,39 @@ describe.only("EssenceSystem", function() {
     return id;
   }
 
-/*
   describe("monsterEssenceValue()", function() {
     it("computes essence from the attribute total and ability scores", function() {
       const id = buildMonster({ strength:20, dexterity:15, vitality:15, intelligence:10, beauty:10 });
-      expect(EssenceSystem.monsterEssenceValue(id)).to.equal(76);
+      expect(EssenceSystem.monsterEssenceValue(id)).to.equal(155);
     });
 
     it("scales superlinearly with the attribute total", function() {
       const id = buildMonster({ strength:40, dexterity:30, vitality:30, intelligence:20, beauty:20 });
-      expect(EssenceSystem.monsterEssenceValue(id)).to.equal(215);
+      expect(EssenceSystem.monsterEssenceValue(id)).to.equal(437);
     });
   });
 
   describe("essenceToLevel()", function() {
     it("costs the base amount for a human's first level", function() {
-      expect(EssenceSystem.essenceToLevel(1,SpeciesCode.human)).to.equal(250);
+      expect(EssenceSystem.essenceToLevel(1,SpeciesCode.human)).to.equal(780);
     });
 
     it("costs superlinearly more for higher levels", function() {
-      expect(EssenceSystem.essenceToLevel(2,SpeciesCode.human)).to.equal(616);
+      expect(EssenceSystem.essenceToLevel(2,SpeciesCode.human)).to.equal(1673);
     });
 
     it("costs less for species with lower grade totals", function() {
-      expect(EssenceSystem.essenceToLevel(1,SpeciesCode.kobold)).to.equal(229);
+      expect(EssenceSystem.essenceToLevel(1,SpeciesCode.kobold)).to.equal(733);
     });
 
     it("costs more for species with higher grade totals", function() {
-      expect(EssenceSystem.essenceToLevel(1,SpeciesCode.elf)).to.equal(260);
+      expect(EssenceSystem.essenceToLevel(1,SpeciesCode.elf)).to.equal(804);
     });
   });
 
   describe("totalEssenceToLevel()", function() {
     it("sums the individual level costs", function() {
-      expect(EssenceSystem.totalEssenceToLevel(3,SpeciesCode.human)).to.equal(1909);
+      expect(EssenceSystem.totalEssenceToLevel(3,SpeciesCode.human)).to.equal(5066);
     });
   });
 
@@ -53,12 +52,11 @@ describe.only("EssenceSystem", function() {
       expect(EssenceSystem.canLevelUp(id)).to.equal(false);
 
       const experience = ExperienceComponent.lookup(id);
-      experience.essence = 250;
+      experience.essence = 780;
       ExperienceComponent.update(id, experience);
 
       expect(EssenceSystem.canLevelUp(id)).to.equal(true);
     });
   });
-*/
 
 });

@@ -2,7 +2,8 @@ global.EssenceSystem = (function() {
 
   // Essence Knobs
   const attributePowerExponent = 1.5;
-  const essenceScale = 10;
+  const essenceScale = 0.12;
+  const abilityScale = 0.02;
 
   // Level Knobs
   const baseLevelCost = 250;
@@ -24,7 +25,7 @@ global.EssenceSystem = (function() {
   function attributeFactor(monsterId) {
     const attributes = AttributesComponent.lookup(monsterId);
     const attributeSum = Object.keys(Attrib).reduce((sum,code) => sum + attributes[code], 0);
-    return (attributeSum ** attributePowerExponent) / essenceScale;
+    return (attributeSum ** attributePowerExponent) * essenceScale;
   }
 
   function abilityFactor(monsterId) {
@@ -32,7 +33,7 @@ global.EssenceSystem = (function() {
       return sum + Ability.lookup(ability.code).getEssence();
     },0);
 
-    return 1 + (scoreSum / 100);
+    return 1 + (scoreSum * abilityScale);
   }
 
   // ========================
