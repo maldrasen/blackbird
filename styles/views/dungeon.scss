@@ -110,3 +110,7 @@
     stroke-width: 2;
   }
 }
+
+// A nested room's hanging door lies inside its revealed container, which would otherwise paint over it, so it
+// raises above the revealed rooms while staying under the real doors.
+#dungeonFloor .hanging-door.nested { z-index: 60; }

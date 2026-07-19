@@ -7,7 +7,7 @@ global.DungeonDoorView = (function() {
     const gridSize = DungeonFloorView.getGridSize();
     const metrics = DungeonRoomView.getWallMetrics();
 
-    let classname = `door ${door.direction}`;
+    let classname = `door ${door.direction} ${fromRoomType(floor, door)}`;
     if (floor.isRevealed(door.from) === false) { classname += ' hide'; }
 
     const geometry = doorGeometry(door, gridSize, metrics);
@@ -19,7 +19,7 @@ global.DungeonDoorView = (function() {
     const gridSize = DungeonFloorView.getGridSize();
     const metrics = DungeonRoomView.getWallMetrics();
 
-    let classname = `hanging-door ${door.direction}`;
+    let classname = `hanging-door ${door.direction} ${fromRoomType(floor, door)}`;
     if (floor.isRevealed(door.to) === false) { classname += ' hide'; }
 
     const geometry = doorGeometry(door, gridSize, metrics);
@@ -28,6 +28,10 @@ global.DungeonDoorView = (function() {
         `<line class='frame' x1='${line[0]}' y1='${line[1]}' x2='${line[2]}' y2='${line[3]}'/>`),
       `<polygon class='slab' points='${geometry.slab}'/>`,
     ]);
+  }
+
+  function fromRoomType(floor, door) {
+    return floor.getRooms()[door.from].getType();
   }
 
   function doorGeometry(door, gridSize, metrics) {
