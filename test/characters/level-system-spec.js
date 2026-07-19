@@ -1,4 +1,4 @@
-describe.only("LevelSystem", function() {
+describe("LevelSystem", function() {
 
   describe("levelUp()", function() {
 
@@ -17,6 +17,19 @@ describe.only("LevelSystem", function() {
       expect(ExperienceComponent.lookup(id).level).to.equal(1);
     });
 
+    it("floors essence at the minimum for the new level", function() {
+      const id = CharacterFixtures.genericMale({ actor: { species:'human' }});
+      LevelSystem.levelUp(id, Attrib.strength);
+      expect(ExperienceComponent.lookup(id).essence).to.equal(780);
+    });
+
+    it("leaves essence alone when it already covers the new level", function() {
+      const id = CharacterFixtures.genericMale({ actor: { species:'human' }});
+      ExperienceComponent.update(id, { level:0, essence:1000 });
+      LevelSystem.levelUp(id, Attrib.strength);
+      expect(ExperienceComponent.lookup(id).essence).to.equal(1000);
+    });
+
     it("grows max and current health when vitality is raised", function() {
       const id = CharacterFixtures.genericMale({ actor:{ species:'equian' }});
       const start = HealthComponent.lookup(id).maxHealth;
@@ -32,6 +45,11 @@ describe.only("LevelSystem", function() {
     it("levels monsters through the same path", function() {
       const id = MonsterFactory.build('kobold-dick-puncher');
       expect(ExperienceComponent.lookup(id).level).to.equal(5);
+    });
+
+    it("seeds leveled monsters with the minimum essence for their level", function() {
+      const id = MonsterFactory.build('kobold-dick-puncher');
+      expect(ExperienceComponent.lookup(id).essence).to.equal(12424);
     });
   });
 

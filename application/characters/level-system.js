@@ -24,9 +24,16 @@ global.LevelSystem = (function() {
     return Species.lookup(Character(id).getSpecies());
   }
 
+  // The levelUp() function can be called to add levels to a new monster. When we do this a monster needs to also
+  // have the minimum essence needed to reach that level in case this monster is later turned into a party member.
+  // For normal characters, we need to make sure to call canLevelUp() before allowing characters to level.
   function incrementLevel(id) {
     const experience = ExperienceComponent.lookup(id);
     experience.level += 1;
+
+    const minimum = EssenceSystem.totalEssenceToLevel(experience.level, Character(id).getSpecies());
+    if (experience.essence < minimum) { experience.essence = minimum; }
+
     ExperienceComponent.update(id, experience);
   }
 
