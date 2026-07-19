@@ -1,36 +1,30 @@
-// Builds a batch of every base monster and reports the essence range for each, since the rolled attributes make the
-// value random. Usage: node bin/essence-report.js [trials]
+// Usage: node bin/essence-report.js
 
 require('./run-headless.js');
 
-const trials = Number(process.argv[2]) || 10;
+const pad = StringHelper.pad;
+const padn = StringHelper.padNumber;
 
 const rows = BaseMonster.getAllCodes().map(code => {
   const base = BaseMonster.lookup(code);
   const values = [];
 
-  for (let i=0; i<trials; i++) {
+  for (let i=0; i<100; i++) {
     values.push(EssenceSystem.monsterEssenceValue(MonsterFactory.build(code)));
   }
 
   return {
-    name: base.getName(),
-    type: base.getType(),
+    code,
     level: base.getLevel(),
     min: Math.min(...values),
     max: Math.max(...values),
   };
 });
 
-rows.sort((a,b) => a.min - b.min);
-
-console.log(`\n=== Monster Essence Report (${trials} builds each) ===\n`);
-console.log(pad('Monster',28) + pad('Type',10) + padNumber('Level',6) + padNumber('Min',6) + padNumber('Max',6));
+console.log(`\n=== Monster Essence Report ===\n`);
+console.log(pad('Monster',20) + padn('Level',6) + padn('Min',6) + padn('Max',6));
+console.log(pad('-------',20) + padn('-----',6) + padn('---',6) + padn('---',6));
 
 rows.forEach(row => {
-  console.log(pad(row.name,28) + pad(row.type,10) +
-    padNumber(row.level,6) + padNumber(row.min,6) + padNumber(row.max,6));
+  console.log(pad(row.code,20) + padn(row.level,6) + padn(row.min,6) + padn(row.max,6));
 });
-
-function pad(value, width) { return String(value).padEnd(width); }
-function padNumber(value, width) { return String(value).padStart(width); }

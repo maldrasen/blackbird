@@ -1,5 +1,4 @@
-// Prints the essence cost of each level for every species, along with the species cost factors and the lifetime
-// totals. Usage: node bin/level-report.js [maxLevel]
+// Usage: node bin/level-report.js [maxLevel]
 
 require('./run-headless.js');
 

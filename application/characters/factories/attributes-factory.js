@@ -19,7 +19,7 @@ global.AttributesFactory = (function() {
     const attributes = {};
 
     Object.keys(Attrib).forEach(code => {
-      let dice = LetterGradeHelper.gradeLevel(speciesMap[code]);
+      let dice = LetterGradeHelper.attributeBase(speciesMap[code]);
 
       if (code === Attrib.strength && [Gender.male,Gender.futa].includes(sex)) { dice += 1 }
       if (code === Attrib.beauty && [Gender.female,Gender.futa].includes(sex)) { dice += 1 }

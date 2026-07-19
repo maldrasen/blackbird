@@ -4,14 +4,30 @@ global.LetterGradeHelper = (function() {
   // numeric value of a letter grade when comparing species to each other.
   const gradeLevels = { F:1, D:2, C:3, B:4, A:5, S:6, SS:7, SSS:8 };
 
-  function gradeLevel(letter) {
+  // The number of "dice" that a character with this level attribute will roll at character creation.
+  function attributeBase(letter) {
     return gradeLevels[letter];
   }
 
-  // Value will be between -1000 and 1000. Values over 600 is within the
-  // unobtainable S ranks. The feelings bars are a bit more complicated as we
-  // take a raw value and covert it to a letter grade and a bar showing the
-  // progress to the next level.
+  // The influence this attribute level will have on the essence needed to level. This is one of the knobs we have
+  // that influences how fast a character levels. Species with naturally high attributes level slower, but not too
+  // much slower.
+  function attributeScore(letter) {
+    return {
+      F:   10,
+      D:   15,
+      C:   20,
+      B:   25,
+      A:   30,
+      S:   35,
+      SS:  40,
+      SSS: 45
+    }[letter];
+  }
+
+  // Value will be between -1000 and 1000. Values over 600 is within the unobtainable S ranks. The feelings bars are
+  // a bit more complicated as we take a raw value and covert it to a letter grade and a bar showing the progress to
+  // the next level.
   //
   // TODO: We'll need to figure out how this will handle negative values.
   //
@@ -31,11 +47,10 @@ global.LetterGradeHelper = (function() {
     return ['','F','D','C','B','A','S','SS','SSS'][value];
   }
 
-  // Value will be between 0-100 (for now, S ranks will be implemented later)
-  // Sexual preferences themselves are measured between -100 and 100, but this
-  // function should always get the absolute value. Negative sexual preferences
-  // are displayed with their antiname and a positive value. The preferences
-  // could also be used for skill letter as they're on the same scale.
+  // Value will be between 0-100 (for now, S ranks will be implemented later) Sexual preferences themselves are
+  // measured between -100 and 100, but this function should always get the absolute value. Negative sexual
+  // preferences are displayed with their antiname and a positive value. The preferences could also be used for skill
+  // letter as they're on the same scale.
   function preferenceValue(value) {
     if (value <= 20) { return `F`; }
     if (value <= 40) { return `D`; }
@@ -47,9 +62,8 @@ global.LetterGradeHelper = (function() {
     return `SSS`
   }
 
-  // Like the feelingValue, the scaleValue needs to determine the current range
-  // within the scale and return the letter, the next threshold, as well as the
-  // current position within the range and the size of the range we're in.
+  // Like the feelingValue, the scaleValue needs to determine the current range within the scale and return the
+  // letter, the next threshold, as well as the current position within the range and the size of the range we're in.
   function scaleValue(value) {
     const letters = ['F','D','C','B','A','S','SS','SSS'];
 
@@ -73,7 +87,8 @@ global.LetterGradeHelper = (function() {
   }
 
   return Object.freeze({
-    gradeLevel,
+    attributeBase,
+    attributeScore,
     feelingValue,
     sensitivityValue,
     preferenceValue,

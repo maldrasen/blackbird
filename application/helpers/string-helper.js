@@ -45,12 +45,17 @@ global.StringHelper = (function() {
     return longest;
   }
 
+  function pad(value, width) { return String(value).padEnd(width); }
+  function padNumber(value, width) { return String(value).padStart(width); }
+
   return Object.freeze({
     formatNumber,
     pack,
     titlecase,
     titlecaseAll,
     longestCommonSubstring,
+    pad,
+    padNumber,
   });
 
 })();

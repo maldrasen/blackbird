@@ -24,7 +24,7 @@ global.LevelSystem = (function() {
 
   function speciesGradeBase(id, attribute) {
     const species = getSpecies(id);
-    return species == null ? 0 : LetterGradeHelper.gradeLevel(species.getAttributes()[attribute]);
+    return species == null ? 0 : LetterGradeHelper.attributeBase(species.getAttributes()[attribute]);
   }
 
   function getHealthFactor(id) {
