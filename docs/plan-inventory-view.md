@@ -1,19 +1,13 @@
-# Plan 3: Inventory View (Task 125 UI)
-
-Depends on: `plan-item-bug-fixes.md`, `plan-equipment-single-slot.md`.
+# Inventory View (Task 125 UI)
 
 ## Context
 
-Wire the existing managers into a UI: a scrolling inventory list (equipped items sorted to top by slot, with
-slot icons), a verb button row (Equip / Use / Drop / Trade), and a trade panel listing reachable inventories.
-Built as its own reusable view, mounted for now in the character overlay's equipment tab. The overlay also
-gets gated to player/roster characters only.
+Wire the existing managers into a UI: a scrolling inventory list (equipped items sorted to top by slot, with slot icons), a verb button row (Equip / Use / Drop / Trade), and a trade panel listing reachable inventories. Built as its own reusable view, mounted for now in the character overlay's equipment tab. In the future we'll also need inventories for other containers. The overlay also gets gated to player/roster characters only.
 
 **Decisions already made:**
 - Drop destroys the item (with a Confirmation dialog).
-- Ambiguous equips (multiple valid slots — one-hand weapons) open a slot-picker popup.
-- Slot icons wire to `assets/icons/slot-<slot>.png`; the art will be supplied later. Missing images render as
-  empty squares in the meantime.
+- Ambiguous equips (multiple valid slots — one-hand weapons) open a slot-picker chooser element.
+- Slot icons wire to `assets/icons/slot-<slot>.png`; the art will be supplied later. Missing images render as empty squares in the meantime.
 - Use is an always-disabled stub (no consumable items exist yet).
 
 ## Step 1 — EquipmentManager additions
