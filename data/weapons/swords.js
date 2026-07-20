@@ -1,10 +1,9 @@
 
-// Swords are a worked steel blade with a leather-wrapped grip. The low/high numbers describe the damage for each
-// blade shape at steel quality; the amount of steel a blade needs plus the smith effort to forge and temper it is
-// what gives swords a premium over axes or spears of comparable damage.
+// TODO: We need better sword icons across the board really.
 
 BaseWeapon.register('short-sword', {
   name: 'short sword',
+  icon: 'weapons/sword-04.png',
   type: 'sword',
   damageType: DamageType.slash,
   hands: WeaponHandedness.one,
@@ -20,8 +19,10 @@ BaseWeapon.register('short-sword', {
   textKey: 'basic-swing',
 });
 
+// TODO: Better cutlass icon.
 BaseWeapon.register('cutlass', {
   name: 'cutlass',
+  icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.slash,
   hands: WeaponHandedness.one,
@@ -37,8 +38,10 @@ BaseWeapon.register('cutlass', {
   textKey: 'basic-swing',
 });
 
+// TODO: Better saber icon.
 BaseWeapon.register('saber', {
   name: 'saber',
+  icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.slash,
   hands: WeaponHandedness.one,
@@ -54,8 +57,10 @@ BaseWeapon.register('saber', {
   textKey: 'basic-swing',
 });
 
+// TODO: Better scimitar icon. Why do I have no curved sword icons?
 BaseWeapon.register('scimitar', {
   name: 'scimitar',
+  icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.slash,
   hands: WeaponHandedness.one,
@@ -73,6 +78,7 @@ BaseWeapon.register('scimitar', {
 
 BaseWeapon.register('rapier', {
   name: 'rapier',
+  icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.main,
@@ -90,6 +96,7 @@ BaseWeapon.register('rapier', {
 
 BaseWeapon.register('estoc', {
   name: 'estoc',
+  icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.main,
@@ -107,6 +114,7 @@ BaseWeapon.register('estoc', {
 
 BaseWeapon.register('longsword', {
   name: 'longsword',
+  icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.slash,
   hands: WeaponHandedness.main,
@@ -124,6 +132,7 @@ BaseWeapon.register('longsword', {
 
 BaseWeapon.register('broadsword', {
   name: 'broadsword',
+  icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.slash,
   hands: WeaponHandedness.main,
@@ -141,6 +150,7 @@ BaseWeapon.register('broadsword', {
 
 BaseWeapon.register('falchion', {
   name: 'falchion',
+  icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.slash,
   hands: WeaponHandedness.main,
@@ -158,6 +168,7 @@ BaseWeapon.register('falchion', {
 
 BaseWeapon.register('bastard-sword', {
   name: 'bastard sword',
+  icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.slash,
   hands: WeaponHandedness.main,
@@ -175,6 +186,7 @@ BaseWeapon.register('bastard-sword', {
 
 BaseWeapon.register('claymore', {
   name: 'claymore',
+  icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.slash,
   hands: WeaponHandedness.two,

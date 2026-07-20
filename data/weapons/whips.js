@@ -1,11 +1,7 @@
 
-// Type should be whip for all these - the associated skill derives to 'whips'. A whip's damage rides on the lash of
-// its primary cord or chain (leather for a bullwhip, steel for a chain whip). The flails (ball and chain, flail) deal
-// crush instead, which no material improves. There is no whip-specific attack text yet, so these reuse the closest
-// existing packages.
-
 BaseWeapon.register('bullwhip', {
   name: 'bullwhip',
+  icon: 'weapons/whip-01.png',
   type: 'whip',
   damageType: DamageType.slash,
   hands: WeaponHandedness.main,
@@ -23,6 +19,7 @@ BaseWeapon.register('bullwhip', {
 
 BaseWeapon.register('chain-whip', {
   name: 'chain whip',
+  icon: 'weapons/chain-01.png',
   type: 'whip',
   damageType: DamageType.slash,
   hands: WeaponHandedness.main,
@@ -38,8 +35,10 @@ BaseWeapon.register('chain-whip', {
   textKey: 'basic-swing',
 });
 
+// TODO: Need a better sickle and chain
 BaseWeapon.register('sickle-and-chain', {
   name: 'sickle and chain',
+  icon: 'weapons/chain-01.png',
   type: 'whip',
   damageType: DamageType.slash,
   hands: WeaponHandedness.two,
@@ -56,8 +55,10 @@ BaseWeapon.register('sickle-and-chain', {
   textKey: 'basic-swing',
 });
 
+// TODO: Need a better ball and chain
 BaseWeapon.register('ball-and-chain', {
   name: 'ball and chain',
+  icon: 'weapons/chain-01.png',
   type: 'whip',
   damageType: DamageType.crush,
   hands: WeaponHandedness.main,
@@ -76,6 +77,7 @@ BaseWeapon.register('ball-and-chain', {
 
 BaseWeapon.register('flail', {
   name: 'flail',
+  icon: 'weapons/flail-01.png',
   type: 'whip',
   damageType: DamageType.crush,
   hands: WeaponHandedness.main,
@@ -92,8 +94,10 @@ BaseWeapon.register('flail', {
   textKey: 'heavy-mace',
 });
 
+// TODO: Needs a better icon.
 BaseWeapon.register('cat-o-nine-tails', {
   name: "cat o' nine tails",
+  icon: 'weapons/whip-01.png',
   type: 'whip',
   damageType: DamageType.slash,
   hands: WeaponHandedness.main,

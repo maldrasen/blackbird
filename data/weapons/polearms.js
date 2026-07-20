@@ -1,10 +1,7 @@
 
-// Polearms are a steel head on a long wooden shaft; the head is the primary, damage-bearing part. Simple spears are
-// the cheapest weapons in the armory because most of the weapon is a cheap wooden shaft and the steel head is small.
-// The heavier polearms (halberd, glaive) use a bigger head and cost more.
-
 BaseWeapon.register('spear', {
   name: 'spear',
+  icon: 'weapons/spear-01.png',
   type: 'polearm',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.two,
@@ -22,6 +19,7 @@ BaseWeapon.register('spear', {
 
 BaseWeapon.register('pike', {
   name: 'pike',
+  icon: 'weapons/spear-01.png',
   type: 'polearm',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.two,
@@ -39,6 +37,7 @@ BaseWeapon.register('pike', {
 
 BaseWeapon.register('halberd', {
   name: 'halberd',
+  icon: 'weapons/halberd-01.png',
   type: 'polearm',
   damageTypes: [
     { type:DamageType.slash, percent:60 },
@@ -59,6 +58,7 @@ BaseWeapon.register('halberd', {
 
 BaseWeapon.register('glaive', {
   name: 'glaive',
+  icon: 'weapons/glaive-01.png',
   type: 'polearm',
   damageType: DamageType.slash,
   hands: WeaponHandedness.two,
@@ -76,6 +76,7 @@ BaseWeapon.register('glaive', {
 
 BaseWeapon.register('scythe', {
   name: 'scythe',
+  icon: 'weapons/scythe-01.png',
   type: 'polearm',
   damageType: DamageType.slash,
   hands: WeaponHandedness.two,
@@ -93,6 +94,7 @@ BaseWeapon.register('scythe', {
 
 BaseWeapon.register('trident', {
   name: 'trident',
+  icon: 'weapons/trident-01.png',
   type: 'polearm',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.two,
@@ -108,8 +110,10 @@ BaseWeapon.register('trident', {
   textKey: 'basic-thrust',
 });
 
+// TODO: We need an actual ranseur icon.
 BaseWeapon.register('ranseur', {
   name: 'ranseur',
+  icon: 'weapons/trident-01.png',
   type: 'polearm',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.two,

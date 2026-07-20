@@ -1,9 +1,7 @@
 
-// Maces are a steel head on a wooden haft. They deal crush damage, which no material improves - a heavier head just
-// means a bigger, more expensive lump of steel. Value comes from that head size plus the effort to make it.
-
 BaseWeapon.register('hammer', {
   name: 'hammer',
+  icon: 'weapons/hammer-02.png',
   type: 'mace',
   damageType: DamageType.crush,
   hands: WeaponHandedness.one,
@@ -20,6 +18,7 @@ BaseWeapon.register('hammer', {
 
 BaseWeapon.register('mace', {
   name: 'mace',
+  icon: 'weapons/mace-01.png',
   type: 'mace',
   damageType: DamageType.crush,
   hands: WeaponHandedness.one,
@@ -36,6 +35,7 @@ BaseWeapon.register('mace', {
 
 BaseWeapon.register('warhammer', {
   name: 'warhammer',
+  icon: 'weapons/hammer-04.png',
   type: 'mace',
   damageType: DamageType.crush,
   hands: WeaponHandedness.main,
@@ -50,8 +50,10 @@ BaseWeapon.register('warhammer', {
   textKey: 'heavy-mace',
 });
 
+// TODO: Need an icon with more spikes.
 BaseWeapon.register('morning-star', {
   name: 'morning star',
+  icon: 'weapons/mace-01.png',
   type: 'mace',
   damageTypes: [
     { type:DamageType.crush, percent:50 },
@@ -71,6 +73,7 @@ BaseWeapon.register('morning-star', {
 
 BaseWeapon.register('maul', {
   name: 'maul',
+  icon: 'weapons/hammer-03.png',
   type: 'mace',
   damageType: DamageType.crush,
   hands: WeaponHandedness.two,

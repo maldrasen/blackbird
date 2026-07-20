@@ -1,10 +1,7 @@
 
-// Axes are a steel head on a wooden haft. The low/high numbers describe each head shape; the head is the primary,
-// damage-bearing part. They come in cheaper than swords because a head uses less steel than a blade and takes less
-// smith effort - not because they are made of a lesser metal.
-
 BaseWeapon.register('hatchet', {
   name: 'hatchet',
+  icon: 'weapons/axe-06.png',
   type: 'axe',
   damageType: DamageType.slash,
   hands: WeaponHandedness.one,
@@ -21,6 +18,7 @@ BaseWeapon.register('hatchet', {
 
 BaseWeapon.register('cleaver', {
   name: 'cleaver',
+  icon: 'weapons/cleaver-01.png',
   type: 'axe',
   damageType: DamageType.slash,
   hands: WeaponHandedness.one,
@@ -37,6 +35,7 @@ BaseWeapon.register('cleaver', {
 
 BaseWeapon.register('hand-axe', {
   name: 'hand axe',
+  icon: 'weapons/axe-07.png',
   type: 'axe',
   damageType: DamageType.slash,
   hands: WeaponHandedness.one,
@@ -53,6 +52,7 @@ BaseWeapon.register('hand-axe', {
 
 BaseWeapon.register('broad-axe', {
   name: 'broad axe',
+  icon: 'weapons/axe-04.png',
   type: 'axe',
   damageType: DamageType.slash,
   hands: WeaponHandedness.main,
@@ -69,6 +69,7 @@ BaseWeapon.register('broad-axe', {
 
 BaseWeapon.register('war-axe', {
   name: 'war axe',
+  icon: 'weapons/axe-03.png',
   type: 'axe',
   damageType: DamageType.slash,
   hands: WeaponHandedness.main,
@@ -83,8 +84,10 @@ BaseWeapon.register('war-axe', {
   textKey: 'basic-swing',
 });
 
+// TODO: Need a better goosewing icon.
 BaseWeapon.register('goosewing', {
   name: 'goosewing',
+  icon: 'weapons/axe-01.png',
   type: 'axe',
   damageType: DamageType.slash,
   hands: WeaponHandedness.two,
@@ -101,6 +104,7 @@ BaseWeapon.register('goosewing', {
 
 BaseWeapon.register('battle-axe', {
   name: 'battle axe',
+  icon: 'weapons/axe-02.png',
   type: 'axe',
   damageType: DamageType.slash,
   hands: WeaponHandedness.two,
@@ -117,6 +121,7 @@ BaseWeapon.register('battle-axe', {
 
 BaseWeapon.register('labrys', {
   name: 'labrys',
+  icon: 'weapons/axe-05.png',
   type: 'axe',
   damageType: DamageType.slash,
   hands: WeaponHandedness.two,

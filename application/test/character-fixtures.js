@@ -24,6 +24,7 @@ global.CharacterFixtures = (function() {
     characters.forEach(id => {
       ControlledComponent.create(id,{ control:0 });
       ArousalComponent.update(id,{ arousal:Random.between(0,25) });
+      GameSystem.getState().addToRoster(id);
 
       if (location) {
         SituatedComponent.create(id,{ currentLocation:location });

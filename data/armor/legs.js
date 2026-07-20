@@ -4,6 +4,7 @@
 
 BaseArmor.register('leggings', {
   name: 'Leggings',
+  icon: 'armor/legs-03.png',
   slot: EquipmentSlot.legs,
   reduction: { crush: 33, slash: 53, pierce: 27 },
   materials: {
@@ -14,6 +15,7 @@ BaseArmor.register('leggings', {
 
 BaseArmor.register('chaps', {
   name: 'Chaps',
+  icon: 'armor/legs-03.png',
   slot: EquipmentSlot.legs,
   reduction: { crush: 23, slash: 34, pierce: 23 },
   materials: {
@@ -24,6 +26,7 @@ BaseArmor.register('chaps', {
 
 BaseArmor.register('greaves', {
   name: 'Greaves',
+  icon: 'armor/legs-01.png',
   slot: EquipmentSlot.legs,
   reduction: { crush: 14, slash: 18, pierce: 16 },
   materials: {
@@ -32,8 +35,10 @@ BaseArmor.register('greaves', {
   effort: 4,
 });
 
+// TODO: Need a better chainmail icon.
 BaseArmor.register('chainmail', {
   name: 'Chainmail',
+  icon: 'armor/legs-03.png',
   slot: EquipmentSlot.legs,
   reduction: { crush: 16, slash: 28, pierce: 20 },
   materials: {
@@ -42,8 +47,10 @@ BaseArmor.register('chainmail', {
   effort: 5,
 });
 
+// TODO: Need a better plate legs icon.
 BaseArmor.register('plate-mail', {
   name: 'Plate Mail',
+  icon: 'armor/legs-03.png',
   slot: EquipmentSlot.legs,
   reduction: { crush: 26, slash: 38, pierce: 34 },
   materials: {

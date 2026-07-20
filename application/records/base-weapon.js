@@ -75,6 +75,7 @@ global.BaseWeapon = (function() {
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return weapon.name; },
+      getIcon: () => { return weapon.icon; },
       getType: () => { return weapon.type; },
       getSkill,
       getDamageTypes,

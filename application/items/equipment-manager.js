@@ -4,6 +4,14 @@ global.EquipmentManager = function(characterId) {
   function update(equipment) { EquipmentComponent.update(characterId, equipment); }
   function getSlot(slot) { return fetch()[slot] || null; }
 
+  function getEquippedSlot(itemId) {
+    return Object.values(EquipmentSlot).find(slot => fetch()[slot] === itemId) || null;
+  }
+
+  function getValidSlots(itemId) {
+    return Object.values(EquipmentSlot).filter(slot => canEquipItem(itemId, slot));
+  }
+
   // This function only checks to see if the equipment slots match. It's possible that equipment could also have other
   // requirements in the future such as minimum attribute levels or unlocked skills. The game doesn't really have
   // classes at all, so what happens when you equip a person with a wand when they have no idea how to use it? We
@@ -45,10 +53,18 @@ global.EquipmentManager = function(characterId) {
     update(equipment);
   }
 
+  function unequipItem(itemId) {
+    const slot = getEquippedSlot(itemId);
+    if (slot != null) { equipItem(null, slot); }
+  }
+
   return Object.freeze({
     getSlot,
+    getEquippedSlot,
+    getValidSlots,
     canEquipItem,
     equipItem,
+    unequipItem,
   });
 
 }

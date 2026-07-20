@@ -38,6 +38,37 @@ global.InventoryManager = function(characterId) {
     update(inventory);
   }
 
+  // Rows for the inventory view. Equipped items come first, in equipment slot declaration order, followed by the
+  // unequipped items in alphabetical order.
+  function listItems() {
+    const equipment = EquipmentManager(characterId);
+    const slotOrder = Object.values(EquipmentSlot);
+
+    const rows = fetch().items.map(itemId => ({
+      itemId: itemId,
+      name: Item(itemId).getName(),
+      icon: Item(itemId).getIcon(),
+      type: ItemComponent.lookup(itemId).type,
+      slot: equipment.getEquippedSlot(itemId),
+    }));
+
+    const equipped = rows.filter(row => row.slot != null);
+    const unequipped = rows.filter(row => row.slot == null);
+
+    equipped.sort((a,b) => slotOrder.indexOf(a.slot) - slotOrder.indexOf(b.slot));
+    unequipped.sort((a,b) => a.name.localeCompare(b.name));
+
+    return [...equipped, ...unequipped];
+  }
+
+  // Dropping an item destroys it. The item is unequipped first because equipped items must remain in their owner's
+  // inventory to stay valid.
+  function dropItem(itemId) {
+    EquipmentManager(characterId).unequipItem(itemId);
+    removeItem(itemId);
+    Registry.deleteEntity(itemId);
+  }
+
   function getArticleQuantity(code) {
     return fetch().articles[code] || 0
   }
@@ -57,6 +88,8 @@ global.InventoryManager = function(characterId) {
     hasItem,
     addItem,
     removeItem,
+    listItems,
+    dropItem,
     getArticleQuantity,
     setArticleQuantity,
   });

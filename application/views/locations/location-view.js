@@ -62,8 +62,11 @@ global.LocationView = (function() {
       (${actor.gender} ${actor.species}) - ${personality.archetype}</li>`);
   }
 
+  // Only roster characters can be inspected. Monster and NPC inspect panels are future tasks.
   function characterClicked(event) {
     const characterId = event.target.getAttribute('data-id');
+
+    if (GameSystem.getState().isInRoster(characterId) === false) { return; }
 
     CharacterOverlay.open({ id:characterId });
 

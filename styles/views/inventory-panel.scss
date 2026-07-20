@@ -1,0 +1,70 @@
+@use "../variables";
+
+.inventory-panel {
+  display: flex;
+
+  .inventory-main {
+    flex-grow: 1;
+  }
+
+  // The ScrollingPanel needs an explicit height on its frame to size itself.
+  .item-list-frame {
+    height: 400px;
+    background-color: rgb(0,0,0);
+    border: variables.$border-light;
+  }
+
+  .item-row {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    padding: 0 8px;
+    cursor: pointer;
+
+    .item-icon {
+      height: 24px;
+      width: 24px;
+      margin-right: 8px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+  .item-row.equipped .item-name {
+    font-family: 'roboto-bold', sans-serif;
+    color: variables.$fg-strong;
+  }
+  .item-row:hover {
+    background-color: variables.$select-shade;
+  }
+  .item-row.selected {
+    background-color: variables.$select-shade;
+    color: variables.$fg-strong;
+  }
+
+  .verb-row {
+    margin-top: 10px;
+  }
+
+  .trade-panel {
+    width: 200px;
+    margin-left: 10px;
+    padding: 8px;
+    background-color: rgb(0,0,0);
+    border: variables.$border-light;
+
+    .trade-title {
+      padding-bottom: 5px;
+      border-bottom: variables.$border-light;
+      color: variables.$fg-weak;
+    }
+
+    .trade-destination {
+      padding: 5px 8px;
+      cursor: pointer;
+    }
+    .trade-destination:hover {
+      background-color: variables.$select-shade;
+    }
+  }
+}

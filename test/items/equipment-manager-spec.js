@@ -63,6 +63,53 @@ describe('EquipmentManager', function() {
     });
   })
 
+  it('getEquippedSlot()', function() {
+    const horse = CharacterFixtures.genericMale({});
+    const helm = ArmorFactory.build('helm');
+    const hatchet = WeaponFactory.build('hatchet');
+
+    const inventory = InventoryManager(horse);
+    inventory.addItem(helm);
+    inventory.addItem(hatchet);
+
+    const equipment = EquipmentManager(horse);
+    equipment.equipItem(helm, EquipmentSlot.head);
+
+    expect(equipment.getEquippedSlot(helm)).to.equal(EquipmentSlot.head);
+    expect(equipment.getEquippedSlot(hatchet)).to.equal(null);
+  });
+
+  it('getValidSlots()', function() {
+    const horse = CharacterFixtures.genericMale({});
+    const oneHand = WeaponFactory.build('hatchet');
+    const mainHand = WeaponFactory.build('broad-axe');
+    const helm = ArmorFactory.build('helm');
+
+    const inventory = InventoryManager(horse);
+    inventory.addItem(oneHand);
+    inventory.addItem(mainHand);
+    inventory.addItem(helm);
+
+    const equipment = EquipmentManager(horse);
+    expect(equipment.getValidSlots(oneHand)).to.deep.equal([EquipmentSlot.primary, EquipmentSlot.secondary]);
+    expect(equipment.getValidSlots(mainHand)).to.deep.equal([EquipmentSlot.primary]);
+    expect(equipment.getValidSlots(helm)).to.deep.equal([EquipmentSlot.head]);
+  });
+
+  it('unequipItem()', function() {
+    const horse = CharacterFixtures.genericMale({});
+    const helm = ArmorFactory.build('helm');
+
+    InventoryManager(horse).addItem(helm);
+
+    const equipment = EquipmentManager(horse);
+    equipment.equipItem(helm, EquipmentSlot.head);
+    equipment.unequipItem(helm);
+
+    expect(EquipmentComponent.lookup(horse).head).to.not.exist;
+    expect(() => equipment.unequipItem(helm)).to.not.throw();
+  });
+
   it('getSlot()', function() {
     const horse = CharacterFixtures.genericMale({});
     const chest = ArmorFactory.build('hauberk');

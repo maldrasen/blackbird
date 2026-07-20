@@ -8,9 +8,16 @@ global.CharacterOverlay = (function() {
   // should empty the overlay, and hide it and the cover.
 
   let id, character, isPlayer;
+  let inventoryPanel;
 
   function init() {
     X.onClick(`#characterOverlay .close-button`, close);
+
+    // The ScrollingPanel can't size itself while the tab content is hidden. TabController's delegated listener
+    // handles the same click, so the resize is deferred until after the tab content is visible.
+    X.onClick(`#characterOverlay .tab[data-tab='equipment']`, () => {
+      if (inventoryPanel) { setTimeout(() => inventoryPanel.resize(), 0); }
+    });
   }
 
   // Because the CharacterOverlay displays available character actions, we might need some other options here.
@@ -45,6 +52,9 @@ global.CharacterOverlay = (function() {
   function update() {
     fillHeader();
     fillPortrait();
+
+    inventoryPanel = InventoryPanel(id);
+    X.fill('#equipmentTab', inventoryPanel.getElement());
 
     CharacterOverviewPanel.fillHealthBars(id);
     CharacterOverviewPanel.fillManaBars(id);

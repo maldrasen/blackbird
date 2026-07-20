@@ -2,8 +2,13 @@
 // Head armor. The coif is a steel mail hood; the rest are steel helms of increasing coverage. All are steel, so
 // their reduction profile is what they actually turn away.
 
+// TODO: For now we're using the same head armor icon for all the helmet types, though styles like a bascinet,
+//       sallet, or armet all have distinct styles. Before devoting too much time to this though, we may eventually
+//       have real graphics for all the equipment pieces, so a generic head armor icon is fine.
+
 BaseArmor.register('coif', {
   name: 'Coif',
+  icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 10, slash: 20, pierce: 14 },
   materials: {
@@ -14,6 +19,7 @@ BaseArmor.register('coif', {
 
 BaseArmor.register('helm', {
   name: 'Helm',
+  icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 14, slash: 20, pierce: 16 },
   materials: {
@@ -24,6 +30,7 @@ BaseArmor.register('helm', {
 
 BaseArmor.register('bascinet', {
   name: 'Bascinet',
+  icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 16, slash: 24, pierce: 20 },
   materials: {
@@ -34,6 +41,7 @@ BaseArmor.register('bascinet', {
 
 BaseArmor.register('sallet', {
   name: 'Sallet',
+  icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 16, slash: 25, pierce: 21 },
   materials: {
@@ -44,6 +52,7 @@ BaseArmor.register('sallet', {
 
 BaseArmor.register('armet', {
   name: 'Armet',
+  icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 20, slash: 28, pierce: 24 },
   materials: {
@@ -54,6 +63,7 @@ BaseArmor.register('armet', {
 
 BaseArmor.register('heaume', {
   name: 'Heaume',
+  icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 22, slash: 30, pierce: 26 },
   materials: {

@@ -5,6 +5,7 @@
 
 BaseArmor.register('doublet', {
   name: 'Doublet',
+  icon: 'armor/coat-01.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 40, slash: 60, pierce: 33 },
   materials: {
@@ -15,6 +16,7 @@ BaseArmor.register('doublet', {
 
 BaseArmor.register('hauberk', {
   name: 'Hauberk',
+  icon: 'armor/chest-08.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 18, slash: 30, pierce: 20 },
   materials: {
@@ -25,6 +27,7 @@ BaseArmor.register('hauberk', {
 
 BaseArmor.register('cuirass', {
   name: 'Cuirass',
+  icon: 'armor/chest-07.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 25, slash: 35, pierce: 30 },
   materials: {
@@ -36,6 +39,7 @@ BaseArmor.register('cuirass', {
 
 BaseArmor.register('breastplate', {
   name: 'Breastplate',
+  icon: 'armor/chest-04.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 32, slash: 45, pierce: 40 },
   materials: {
@@ -46,6 +50,7 @@ BaseArmor.register('breastplate', {
 
 BaseArmor.register('plate', {
   name: 'Plate',
+  icon: 'armor/chest-03.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 40, slash: 50, pierce: 48 },
   materials: {

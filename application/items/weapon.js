@@ -7,6 +7,10 @@ global.Weapon = function(id) {
     return component.name || BaseWeapon.lookup(component.base).getName();
   }
 
+  function getIcon() {
+    return BaseWeapon.lookup(getComponent().base).getIcon();
+  }
+
   function getNameType() {
     return getComponent().nameType || 'common';
   }
@@ -25,6 +29,7 @@ global.Weapon = function(id) {
     getId: () => { return id; },
     getBaseWeapon: () => { return BaseWeapon.lookup(getComponent().base); },
     getName,
+    getIcon,
     getNameType,
     getTextKey,
     hasEnchantment: () => { return getComponent().enchantment != null; },

@@ -1,9 +1,7 @@
 
-// Daggers are a small steel blade with a leather-wrapped grip. They use little steel, so their value comes mostly
-// from the fine work that goes into them - the effort climbs as the blades get more refined.
-
 BaseWeapon.register('knife', {
   name: 'knife',
+  icon: 'weapons/dagger-02.png',
   type: 'dagger',
   damageTypes: [
     { type:DamageType.slash, percent:60 },
@@ -24,6 +22,7 @@ BaseWeapon.register('knife', {
 
 BaseWeapon.register('dirk', {
   name: 'dirk',
+  icon: 'weapons/dagger-02.png',
   type: 'dagger',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.one,
@@ -41,6 +40,7 @@ BaseWeapon.register('dirk', {
 
 BaseWeapon.register('dagger', {
   name: 'dagger',
+  icon: 'weapons/dagger-02.png',
   type: 'dagger',
   damageTypes: [
     { type:DamageType.slash, percent:60 },
@@ -61,6 +61,7 @@ BaseWeapon.register('dagger', {
 
 BaseWeapon.register('poignard', {
   name: 'poignard',
+  icon: 'weapons/dagger-07.png',
   type: 'dagger',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.one,
@@ -78,6 +79,7 @@ BaseWeapon.register('poignard', {
 
 BaseWeapon.register('baselard', {
   name: 'baselard',
+  icon: 'weapons/dagger-05.png',
   type: 'dagger',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.one,
@@ -95,6 +97,7 @@ BaseWeapon.register('baselard', {
 
 BaseWeapon.register('stiletto', {
   name: 'stiletto',
+  icon: 'weapons/dagger-07.png',
   type: 'dagger',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.one,

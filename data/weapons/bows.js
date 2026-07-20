@@ -1,10 +1,7 @@
 
-// Type should be bow, even for crossbows. Bows are ranged, so they use the long reach and the 'shoot' attack text.
-// A bow's damage rides on the tension of its stave (or a crossbow's steel prod), which is the primary part. Bows are
-// defined without their arrows - ammunition is a separate item with its own properties, added on top of the bow.
-
 BaseWeapon.register('shortbow', {
   name: 'shortbow',
+  icon: 'weapons/bow-02.png',
   type: 'bow',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.two,
@@ -22,6 +19,7 @@ BaseWeapon.register('shortbow', {
 
 BaseWeapon.register('longbow', {
   name: 'longbow',
+  icon: 'weapons/bow-02.png',
   type: 'bow',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.two,
@@ -39,6 +37,7 @@ BaseWeapon.register('longbow', {
 
 BaseWeapon.register('recursive-bow', {
   name: 'recursive bow',
+  icon: 'weapons/bow-01.png',
   type: 'bow',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.two,
@@ -56,6 +55,7 @@ BaseWeapon.register('recursive-bow', {
 
 BaseWeapon.register('crossbow', {
   name: 'crossbow',
+  icon: 'weapons/crossbow-01.png',
   type: 'bow',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.two,
@@ -74,6 +74,7 @@ BaseWeapon.register('crossbow', {
 
 BaseWeapon.register('arbalest', {
   name: 'arbalest',
+  icon: 'weapons/crossbow-01.png',
   type: 'bow',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.two,
