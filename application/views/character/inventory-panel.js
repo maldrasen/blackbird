@@ -78,6 +78,7 @@ global.InventoryPanel = function(options) {
 
     if (item.slot) {
       X.addClass(itemElement,'equipped');
+      itemElement.textContent = `[${item.name}]`;
       itemElement.setAttribute('data-slot', item.slot);
     }
 
