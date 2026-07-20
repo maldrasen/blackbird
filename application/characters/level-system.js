@@ -34,8 +34,6 @@ global.LevelSystem = (function() {
     return increase;
   }
 
-  // The amount an attribute goes up when raised, used both on level up and when rolling a character's initial
-  // attributes. Attribute aspects only apply when their attribute is the one being raised.
   function attributeIncrease(attribute, actorData, aspectsData) {
     const grade = Species.lookup(actorData.species).getAttributes()[attribute];
     const increase = Random.between(1,5)
