@@ -1,10 +1,10 @@
 global.InventoryPanel = function(options) {
 
   let selected;
-  let slotChooser;
-
   let inventoryPanel;
-  let scrollingPanel;
+  let itemScrollingPanel;
+  let tradeScrollingPanel;
+  let slotChooser;
   let characterId;
   let inventoryManager;
   let equipmentManager;
@@ -26,29 +26,38 @@ global.InventoryPanel = function(options) {
       inventoryPanel.setAttribute('data-character', characterId);
     }
 
-    const itemList = inventoryPanel.querySelector('.item-list');
-    scrollingPanel = ScrollingPanel({ element:itemList });
+    inventoryPanel.querySelector('.equip-button').addEventListener('click',equipSelected);
+    inventoryPanel.querySelector('.use-button').addEventListener('click',useSelected);
+    inventoryPanel.querySelector('.drop-button').addEventListener('click',dropSelected);
+    inventoryPanel.querySelector('.trade-button').addEventListener('click',toggleTradePanel);
 
+    itemScrollingPanel = ScrollingPanel({ element:inventoryPanel.querySelector('.item-list') });
+    tradeScrollingPanel = ScrollingPanel({ element:inventoryPanel.querySelector('.destination-list') });
+
+    buildTradePanel();
     update();
   }
 
-  function resize() {
-    setTimeout(() => { scrollingPanel.resize(); },0);
-  }
-
-  // TODO: call a deselect function after move instead
-  // if (items.find(row => row.itemId === selected) == null) { selected = null; }
-
   function update() {
     const itemList = inventoryPanel.querySelector('.item-list');
+    const items = inventoryManager.listItems();
 
     X.empty(itemList);
-    inventoryManager.listItems().forEach(item => {
+    items.forEach(item => {
       itemList.appendChild(buildItemElement(item));
     });
 
+    if (items.find(item => item.itemId === selected) == null) { selected = null; }
+
     updateButtons();
-    scrollingPanel.resize();
+    resize();
+  }
+
+  function resize() {
+    setTimeout(() => {
+      itemScrollingPanel.resize();
+      tradeScrollingPanel.resize();
+    },0);
   }
 
   // TODO: We also want to change the text color to represent the rarity of the item, WoW, PoE, etc, style.
@@ -82,8 +91,13 @@ global.InventoryPanel = function(options) {
       } else {
         X.removeClass(`.item-list .selected`,`selected`);
         X.addClass(itemElement,`selected`);
-        selected = { item:item, element:itemElement };
+        selected = item.itemId;
       }
+
+      // Chooser should close itself on mouseout.
+      // closeSlotPicker();
+      // hideTradePanel();
+
       updateButtons();
     }
   }
@@ -112,97 +126,110 @@ global.InventoryPanel = function(options) {
   }
 
   function canEquipSelection() {
-    return selected && equipmentManager.getValidSlots(selected.item.itemId).length > 0;
+    return selected && equipmentManager.getValidSlots(selected).length > 0;
   }
 
   function getReachableInventories() {
-    return [];
+    return InventorySystem.getReachableInventories(characterId);
+  }
+
+
+  // === Equip ===
+
+  function equipSelected() {
+    const slots = equipmentManager.getValidSlots(selected);
+
+    if (isSelectionEquipped()) {
+      equipmentManager.unequipItem(selected);
+      return update();
+    }
+
+    if (slots.length === 1) {
+      equipmentManager.equipItem(selected, slots[0]);
+      return update();
+    }
+
+    console.log("TODO: Open Chooser :",slots)
+  }
+
+  // === Trade ===
+
+  function buildTradePanel() {
+
+  }
+
+  function toggleTradePanel() {
+
+  }
+
+  function tradeSelected() {
+    hideTradePanel();
+
+    if (X.hasClass(getTradePanel(),'hide') === false) { return hideTradePanel(); }
+
+    const destinationList = inventoryPanel.querySelector('.trade-destinations');
+    X.empty(destinationList);
+
+    getReachableInventories().forEach(destination => {
+      const destinationElement = X.createElement(
+        `<div class='trade-destination' data-destination-id='${destination.id}'></div>`);
+      destinationElement.textContent = destination.name;
+      destinationList.appendChild(destinationElement);
+    });
+
+    X.removeClass(getTradePanel(),'hide');
+  }
+
+
+  function hideTradePanel() {
+    X.addClass(inventoryPanel.querySelector('.trade-panel'),'hide');
+  }
+
+  function destinationClicked(destinationId) {
+    InventorySystem.transferItem(selected, characterId, destinationId);
+    selected = null;
+    hideTradePanel();
+    update();
+  }
+
+  function getTradePanel() {
+    return inventoryPanel.querySelector('.trade-panel');
   }
 
 
 
 
+
+  // === Drop ===
+
+  // TODO: This text will need to differentiate between proper and common names. I could run the text through the
+  //       weaver, but then I'd been a different versions for weapons and armor and items. Really need need a version
+  //       of getName() that takes a prefix, so that getName('the') becomes "the name" for common names and "name" for
+  //       proper names. Then maybe we look at the function loom to see if it can use that function instead. We'll
+  //       also need to handle proper armor names at some point..
+
+  function dropSelected() {
+    Confirmation.show({
+      text: `Drop the ${Item(selected).getName()}? It will be destroyed`,
+      onConfirm: () => {
+        inventoryManager.dropItem(selected);
+        selected = null;
+        update();
+      },
+    });
+  }
+
+  function useSelected() { throw new Error(`TODO: How do I shoop whoop?`) }
 
   return Object.freeze({
     buildInto,
     resize,
     update,
   });
-
 }
-
-InventoryPanel.init = function() {
-  X.onClick('.inventory-panel .item-row', selectItem);
-  X.onClick('.inventory-panel .equip-button', equipSelected);
-  X.onClick('.inventory-panel .use-button', useSelected);
-  X.onClick('.inventory-panel .drop-button', dropSelected);
-  X.onClick('.inventory-panel .trade-button', tradeSelected);
-}
-
-function selectItem(event) {
-  // selectedItemId = (selectedItemId === itemId) ? null : itemId;
-  //
-  // closeSlotPicker();
-  // hideTradePanel();
-  //
-  // element.querySelectorAll('.item-row').forEach(row => {
-  //   (row.dataset.itemId === selectedItemId) ? X.addClass(row,'selected') : X.removeClass(row,'selected');
-  // });
-  //
-  // updateVerbs();
-}
-
-function equipSelected(event) { console.log("Equip") }
-function useSelected(event) { console.log("Use") }
-function dropSelected(event) { console.log("Drop") }
-function tradeSelected(event) { console.log("Trade") }
-
-// We'd need to find selected.
 
 
 /*
-    const slot = event.target.closest('[data-slot]');
-    if (slot) { return slotPicked(slot.dataset.slot); }
-    const row = event.target.closest('[data-item-id]');
-    if (row) { return rowClicked(row.dataset.itemId); }
-    const destination = event.target.closest('[data-destination-id]');
-    if (destination) { return destinationClicked(destination.dataset.destinationId); }
-
-
-  // === Item List =============================================================
-
-  function rowClicked(itemId) {
-  }
-
-  // === Verbs =================================================================
-
-  function verbClicked(verb) {
-    if (selectedItemId == null) { return; }
-    if (verb === 'equip') { return equipClicked(); }
-    if (verb === 'drop') { return dropClicked(); }
-    if (verb === 'trade') { return tradeClicked(); }
-  }
-
-  // === Equipping =============================================================
-
-  function equipClicked() {
-    const equipment = EquipmentManager(characterId);
-
-    if (isSelectionEquipped()) {
-      equipment.unequipItem(selectedItemId);
-      return refresh();
-    }
-
-    const slots = equipment.getValidSlots(selectedItemId);
-    if (slots.length === 0) { return; }
-    if (slots.length === 1) {
-      equipment.equipItem(selectedItemId, slots[0]);
-      return refresh();
-    }
-
-    openSlotPicker(slots);
-  }
-
   function openSlotPicker(slots) {
     closeSlotPicker();
 
@@ -246,61 +273,4 @@ function tradeSelected(event) { console.log("Trade") }
     refresh();
   }
 
-  // === Dropping ==============================================================
-
-  function dropClicked() {
-    Confirmation.show({
-      text: `Drop the ${Item(selectedItemId).getName()}? It will be destroyed.`,
-      onConfirm: () => {
-        InventoryManager(characterId).dropItem(selectedItemId);
-        selectedItemId = null;
-        refresh();
-      },
-    });
-  }
-
-  // === Trading ===============================================================
-
-  function getReachableInventories() {
-    return InventorySystem.getReachableInventories(characterId);
-  }
-
-  function tradeClicked() {
-    if (X.hasClass(element.querySelector('.trade-panel'),'hide') === false) { return hideTradePanel(); }
-
-    const destinationList = element.querySelector('.trade-destinations');
-    X.empty(destinationList);
-
-    getReachableInventories().forEach(destination => {
-      const destinationElement = X.createElement(
-        `<div class='trade-destination' data-destination-id='${destination.id}'></div>`);
-      destinationElement.textContent = destination.name;
-      destinationList.appendChild(destinationElement);
-    });
-
-    X.removeClass(element.querySelector('.trade-panel'),'hide');
-  }
-
-  function hideTradePanel() {
-    X.addClass(element.querySelector('.trade-panel'),'hide');
-  }
-
-  function destinationClicked(destinationId) {
-    InventorySystem.transferItem(selectedItemId, characterId, destinationId);
-    selectedItemId = null;
-    hideTradePanel();
-    refresh();
-  }
-
-  // ===========================================================================
-
-  refresh();
-
-  return Object.freeze({
-    getElement: () => { return element; },
-    refresh,
-    resize: () => { scrollingPanel.resize(); },
-  });
-
-}
 */

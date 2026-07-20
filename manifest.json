@@ -218,6 +218,7 @@
     "application/views/elements/alert.js",
     "application/views/elements/bar-display.js",
     "application/views/elements/casement.js",
+    "application/views/elements/chooser.js",
     "application/views/elements/confirmation.js",
     "application/views/elements/general-overlay.js",
     "application/views/elements/scrolling-panel.js",
