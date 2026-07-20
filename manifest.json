@@ -27,6 +27,7 @@
     "application/battle/systems/threat-generators.js",
     "application/battle/targeting-controller.js",
     "application/characters/archetype-distribution.js",
+    "application/characters/attributes.js",
     "application/characters/character-math.js",
     "application/characters/character-movement-system.js",
     "application/characters/character.js",
