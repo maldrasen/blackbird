@@ -60,7 +60,7 @@ global.BaseArmor = (function() {
     return Object.freeze({
       getCode: () => { return code; },
       getName: () => { return armor.name; },
-      getSlots: () => { return armor.slots; },
+      getSlot: () => { return armor.slot; },
       getReduction,
       getReductionMap,
       getMaterials: () => { return armor.materials || {}; },

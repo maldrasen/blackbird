@@ -4,7 +4,7 @@
 
 BaseArmor.register('gloves', {
   name: 'Gloves',
-  slots: [EquipmentSlot.hands],
+  slot: EquipmentSlot.hands,
   reduction: { crush: 14, slash: 23, pierce: 14 },
   materials: {
     body: { material:MaterialType.leather, amount:2 },
@@ -14,7 +14,7 @@ BaseArmor.register('gloves', {
 
 BaseArmor.register('bracers', {
   name: 'Bracers',
-  slots: [EquipmentSlot.hands],
+  slot: EquipmentSlot.hands,
   reduction: { crush: 11, slash: 20, pierce: 17 },
   materials: {
     body: { material:MaterialType.leather, amount:2 },
@@ -24,7 +24,7 @@ BaseArmor.register('bracers', {
 
 BaseArmor.register('vambraces', {
   name: 'Vambraces',
-  slots: [EquipmentSlot.hands],
+  slot: EquipmentSlot.hands,
   reduction: { crush: 12, slash: 16, pierce: 14 },
   materials: {
     body: { material:MaterialType.steel, amount:2 },
@@ -34,7 +34,7 @@ BaseArmor.register('vambraces', {
 
 BaseArmor.register('gauntlets', {
   name: 'Gauntlets',
-  slots: [EquipmentSlot.hands],
+  slot: EquipmentSlot.hands,
   reduction: { crush: 14, slash: 18, pierce: 15 },
   materials: {
     body: { material:MaterialType.steel, amount:3 },

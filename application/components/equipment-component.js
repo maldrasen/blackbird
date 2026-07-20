@@ -38,7 +38,7 @@ global.EquipmentComponent = (function() {
           const armor = ArmorComponent.lookup(itemId);
           const base = BaseArmor.lookup(armor.base);
 
-          if (base.getSlots().includes(slot) === false) {
+          if (base.getSlot() !== slot) {
             throw new Error(`Armor:${itemId} (${armor.base}) cannot be equipped in ${slot}`);
           }
         }

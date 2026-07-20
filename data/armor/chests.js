@@ -5,7 +5,7 @@
 
 BaseArmor.register('doublet', {
   name: 'Doublet',
-  slots: [EquipmentSlot.chest],
+  slot: EquipmentSlot.chest,
   reduction: { crush: 40, slash: 60, pierce: 33 },
   materials: {
     padding: { material:MaterialType.wool, amount:4 },
@@ -15,7 +15,7 @@ BaseArmor.register('doublet', {
 
 BaseArmor.register('hauberk', {
   name: 'Hauberk',
-  slots: [EquipmentSlot.chest],
+  slot: EquipmentSlot.chest,
   reduction: { crush: 18, slash: 30, pierce: 20 },
   materials: {
     mail: { material:MaterialType.steel, amount:6 },
@@ -25,7 +25,7 @@ BaseArmor.register('hauberk', {
 
 BaseArmor.register('cuirass', {
   name: 'Cuirass',
-  slots: [EquipmentSlot.chest],
+  slot: EquipmentSlot.chest,
   reduction: { crush: 25, slash: 35, pierce: 30 },
   materials: {
     plates:  { material:MaterialType.steel, amount:4 },
@@ -36,7 +36,7 @@ BaseArmor.register('cuirass', {
 
 BaseArmor.register('breastplate', {
   name: 'Breastplate',
-  slots: [EquipmentSlot.chest],
+  slot: EquipmentSlot.chest,
   reduction: { crush: 32, slash: 45, pierce: 40 },
   materials: {
     body: { material:MaterialType.steel, amount:8 },
@@ -46,7 +46,7 @@ BaseArmor.register('breastplate', {
 
 BaseArmor.register('plate', {
   name: 'Plate',
-  slots: [EquipmentSlot.chest],
+  slot: EquipmentSlot.chest,
   reduction: { crush: 40, slash: 50, pierce: 48 },
   materials: {
     body: { material:MaterialType.steel, amount:12 },

@@ -145,7 +145,7 @@ global.CharacterEquipper = function(id) {
   function armorCandidates(slot) {
     return BaseArmor.getAllCodes().
       map(code => BaseArmor.lookup(code)).
-      filter(armor => armor.getSlots().includes(slot)).
+      filter(armor => armor.getSlot() === slot).
       map(armor => ({ code:armor.getCode(), value:armor.getValue() }));
   }
 

@@ -137,7 +137,7 @@ global.ReportFixture = (function() {
       const reduction = armor.getReductionMap();
       return {
         code:      code,
-        slot:      armor.getSlots().join(','),
+        slot:      armor.getSlot(),
         crush:     reduction.crush,
         slash:     reduction.slash,
         pierce:    reduction.pierce,

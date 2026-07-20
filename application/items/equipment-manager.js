@@ -12,14 +12,10 @@ global.EquipmentManager = function(characterId) {
   function canEquipItem(itemId, slot) {
     const item = ItemComponent.lookup(itemId);
 
-    // Though this function takes a single slot an armor piece can be equipped across multiple slots. This function
-    // will sometimes be called from the UI, when a player drags an item into an armor slot. The armor should be
-    // equipped when it's put into any slot that it can go into, and on equip it should replace the equipment in the
-    // slots that it spans.
     if (item.type === 'armor') {
       const armor = ArmorComponent.lookup(itemId);
       const base = BaseArmor.lookup(armor.base);
-      return base.getSlots().includes(slot);
+      return base.getSlot() === slot;
     }
 
     if (item.type === 'weapon') {

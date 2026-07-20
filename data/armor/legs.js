@@ -4,7 +4,7 @@
 
 BaseArmor.register('leggings', {
   name: 'Leggings',
-  slots: [EquipmentSlot.legs],
+  slot: EquipmentSlot.legs,
   reduction: { crush: 33, slash: 53, pierce: 27 },
   materials: {
     padding: { material:MaterialType.wool, amount:4 },
@@ -14,7 +14,7 @@ BaseArmor.register('leggings', {
 
 BaseArmor.register('chaps', {
   name: 'Chaps',
-  slots: [EquipmentSlot.legs],
+  slot: EquipmentSlot.legs,
   reduction: { crush: 23, slash: 34, pierce: 23 },
   materials: {
     body: { material:MaterialType.leather, amount:4 },
@@ -24,7 +24,7 @@ BaseArmor.register('chaps', {
 
 BaseArmor.register('greaves', {
   name: 'Greaves',
-  slots: [EquipmentSlot.legs],
+  slot: EquipmentSlot.legs,
   reduction: { crush: 14, slash: 18, pierce: 16 },
   materials: {
     body: { material:MaterialType.steel, amount:4 },
@@ -34,7 +34,7 @@ BaseArmor.register('greaves', {
 
 BaseArmor.register('chainmail', {
   name: 'Chainmail',
-  slots: [EquipmentSlot.legs],
+  slot: EquipmentSlot.legs,
   reduction: { crush: 16, slash: 28, pierce: 20 },
   materials: {
     mail: { material:MaterialType.steel, amount:6 },
@@ -44,7 +44,7 @@ BaseArmor.register('chainmail', {
 
 BaseArmor.register('plate-mail', {
   name: 'Plate Mail',
-  slots: [EquipmentSlot.legs],
+  slot: EquipmentSlot.legs,
   reduction: { crush: 26, slash: 38, pierce: 34 },
   materials: {
     body: { material:MaterialType.steel, amount:10 },
