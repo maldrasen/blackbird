@@ -534,6 +534,7 @@
     "test/items/factories/outfit-factory-spec.js",
     "test/items/factories/weapon-factory-spec.js",
     "test/items/inventory-manager-spec.js",
+    "test/items/item-spec.js",
     "test/looms/weaver-package-spec.js",
     "test/negotiation/negotiation-opening-spec.js",
     "test/records/archetype-spec.js",

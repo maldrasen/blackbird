@@ -17,8 +17,10 @@ global.InventoryManager = function(characterId) {
   function addItem(itemId) {
     if (ItemComponent.lookup(itemId) == null) { throw new Error(`Item:${itemId} does not exist.`); }
 
-    Registry.findEntitiesWithComponents([ComponentType.inventory]).forEach(invId => {
-      if (hasItem(invId, itemId)) { throw new Error(`Inventory:${invId} already has Item:${itemId}`); }
+    Registry.findEntitiesWithComponents([ComponentType.inventory]).forEach(ownerId => {
+      if (InventoryComponent.lookup(ownerId).items.includes(itemId)) {
+        throw new Error(`Inventory:${ownerId} already has Item:${itemId}`);
+      }
     });
 
     const inventory = fetch();
