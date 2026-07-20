@@ -65,6 +65,7 @@ global.InventoryPanel = function(options) {
   }
 
   // TODO: We also want to change the text color to represent the rarity of the item, WoW, PoE, etc, style.
+
   function buildItemElement(item) {
     const itemElement = X.createElement(`<li class='item-row' data-item-id='${item.itemId}'>
       <div class='item-icon'></div>
@@ -97,10 +98,6 @@ global.InventoryPanel = function(options) {
         X.addClass(itemElement,`selected`);
         setSelected(item.itemId);
       }
-
-      // Chooser should close itself on mouseout.
-      // closeSlotPicker();
-      // hideTradePanel();
 
       updateButtons();
     }
@@ -136,9 +133,6 @@ global.InventoryPanel = function(options) {
     return InventorySystem.getReachableInventories(characterId);
   }
 
-
-  // === Equip ===
-
   function equipSelected() {
     const slots = equipmentManager.getValidSlots(selected);
 
@@ -155,14 +149,12 @@ global.InventoryPanel = function(options) {
     console.log("TODO: Open Chooser :",slots)
   }
 
-  // === Trade ===
-
   function buildTradePanel() {
     const destinationList = inventoryPanel.querySelector('.destination-list');
     getReachableInventories().forEach(inventory => {
-      destinationList.appendChild(X.createElement(`
-        <li class='destination' data-id='${inventory.id}'>${inventory.name}</li>
-      `));
+      const destination = X.createElement(`<li class='destination' data-id='${inventory.id}'>${inventory.name}</li>`);
+      destination.addEventListener('click', () => { clickDestination(inventory.id); })
+      destinationList.appendChild(destination);
     });
   }
 
@@ -175,20 +167,14 @@ global.InventoryPanel = function(options) {
   function toggleTradePanel() {
     const frame = inventoryPanel.querySelector('.trade-frame');
     X.hasClass(frame,'hide') ? X.removeClass(frame,'hide') : X.addClass(frame,'hide');
+    resize();
   }
 
-  function destinationClicked(destinationId) {
-    InventorySystem.transferItem(selected, characterId, destinationId);
+  function clickDestination(inventoryId) {
+    InventorySystem.transferItem(selected, characterId, inventoryId);
     setSelected(null);
     update();
   }
-
-
-
-
-
-
-  // === Drop ===
 
   // TODO: This text will need to differentiate between proper and common names. I could run the text through the
   //       weaver, but then I'd been a different versions for weapons and armor and items. Really need need a version
