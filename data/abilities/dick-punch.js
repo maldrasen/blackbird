@@ -63,7 +63,7 @@ function getArmorFactor(target) {
 // stun effect if the resistance roll is failed. The power of the stun effect is based on the attacking character's
 // strength.
 function addStunEffect(acting, target) {
-  const resist = ResistRoll(target,DamageType.shock,AttributesComponent.createWrapper({ id:acting }).getStrength());
+  const resist = ResistRoll(target, DamageType.shock, Attributes(acting).getStrength());
   if (resist === ResistResult.fail) {
     BattleSystem.getRound().addMessage({ text:`{T:targetName} groans and clutches {T:his} crotch, doubling over in pain.` });
     BattleSystem.getState().addStatus(BattleStatusEffect(target,'stun',{ duration:1 }));

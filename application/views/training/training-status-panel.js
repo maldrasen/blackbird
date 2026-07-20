@@ -22,7 +22,7 @@ global.TrainingStatusPanel = (function() {
       label: 'Stamina',
       currentValue: Math.round(health.currentStamina),
       minValue: 0,
-      maxValue: Math.round(AttributesComponent.createWrapper({ id:partner }).getMaxStamina()),
+      maxValue: Math.round(Attributes(partner).getMaxStamina()),
       color: 'stamina',
     });
 

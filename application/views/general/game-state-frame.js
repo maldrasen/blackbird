@@ -62,7 +62,7 @@ global.GameStateFrame = (function() {
 
   function getStaminaBar(player) {
     const current = Math.round(HealthComponent.lookup(player).currentStamina);
-    const max = Math.round(AttributesComponent.createWrapper({ id:player }).getMaxStamina());
+    const max = Math.round(Attributes(player).getMaxStamina());
     return BarDisplay({
       label: 'Stamina',
       currentValue: current,

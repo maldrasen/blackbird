@@ -26,7 +26,7 @@ global.HealthComponent = (function() {
   // higher or lower than it should be able to go. Other components may benefit from a moderate function like this too.
   function moderate(id) {
     const healthComponent = lookup(id);
-    const maxStamina = AttributesComponent.createWrapper({ id:id }).getMaxStamina();
+    const maxStamina = Attributes(id).getMaxStamina();
 
     if (healthComponent.currentHealth < 0) { healthComponent.currentHealth = 0 }
     if (healthComponent.currentHealth > healthComponent.maxHealth) {

@@ -73,7 +73,7 @@ global.LevelSystem = (function() {
 
   function buildHealth(attributes, healthFactor=1.0) {
     const health = Math.round(Random.rollDice({ x:attributes.vitality, d:10 }) * healthFactor);
-    const stamina = AttributesComponent.createWrapper({ data:attributes }).getMaxStamina();
+    const stamina = Attributes(attributes).getMaxStamina();
 
     return { currentStamina:stamina, currentHealth:health, maxHealth:health };
   }
