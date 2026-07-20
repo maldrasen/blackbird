@@ -101,7 +101,7 @@ global.GameStateFrame = (function() {
   }
 
   function playerClicked() {
-    CharacterOverlay.open({ id:GameSystem.getState().getPlayer(), isPlayer:true });
+    CharacterOverlay.open(GameSystem.getState().getPlayer());
   }
 
   return Object.freeze({

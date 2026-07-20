@@ -7,34 +7,22 @@ global.CharacterOverlay = (function() {
   // shown. The WindowManager calls the close() function when the window is popped off the stack. The close() function
   // should empty the overlay, and hide it and the cover.
 
-  let id, character, isPlayer;
+  let character
   let inventoryPanel;
 
   function init() {
     X.onClick(`#characterOverlay .close-button`, close);
-
-    // The ScrollingPanel can't size itself while the tab content is hidden. TabController's delegated listener
-    // handles the same click, so the resize is deferred until after the tab content is visible.
-    X.onClick(`#characterOverlay .tab[data-tab='equipment']`, () => {
-      if (inventoryPanel) { setTimeout(() => inventoryPanel.resize(), 0); }
-    });
+    X.onClick(`#characterOverlay .tab[data-tab='inventory']`, () => { inventoryPanel.resize() });
   }
 
-  // Because the CharacterOverlay displays available character actions, we might need some other options here.
-  // Everything I need now though I can determine from the current state and the character data I think.
-  //
-  // Options
-  //   id*        Character entity id.
-  //   isPlayer   true if we're viewing the player character (they have fewer options)
-  //
-  function open(options) {
-    isPlayer = (options.isPlayer === true);
-    id = options.id;
+  function open(id) {
     character = Character(id);
 
     X.loadDocument('#characterOverlay','views/character-overlay.html');
 
     update();
+    inventoryPanel = InventoryPanel({ character:id });
+    inventoryPanel.buildInto(`#inventoryTab`);
 
     WindowManager.push(CharacterOverlay)
     X.removeClass('#characterOverlay','hide');
@@ -50,11 +38,10 @@ global.CharacterOverlay = (function() {
   }
 
   function update() {
+    const id = character.getEntity();
+
     fillHeader();
     fillPortrait();
-
-    inventoryPanel = InventoryPanel(id);
-    X.fill('#equipmentTab', inventoryPanel.getElement());
 
     CharacterOverviewPanel.fillHealthBars(id);
     CharacterOverviewPanel.fillManaBars(id);
@@ -64,14 +51,14 @@ global.CharacterOverlay = (function() {
     CharacterOverviewPanel.fillSensitivities(id);
     CharacterOverviewPanel.fillSkills(id);
 
-    if (isPlayer === false) {
+    if (character.isPlayer() === false) {
       CharacterOverviewPanel.fillPersonality(id);
       CharacterOverviewPanel.fillFeelingsBars(id);
       CharacterOverviewPanel.fillMarks(id);
       CharacterOverviewPanel.fillAnima(id);
       CharacterOverviewPanel.fillAnimus(id);
     }
-    if (isPlayer) {
+    if (character.isPlayer()) {
       X.addClass('#characterOverlay .personality-panel','hide');
       X.addClass('#characterOverlay .feelings-panel','hide');
       X.addClass('#characterOverlay .marks-panel','hide');
@@ -97,21 +84,18 @@ global.CharacterOverlay = (function() {
   // defaults. There will be an option to upload a portrait as well. When we upload a portrait we set its scale and
   // location within a viewport with the correct aspect ratio. Future plan stuff.
   function fillPortrait() {
-    let gender = ActorComponent.lookup(id).gender;
-    if (gender === Gender.enby) { gender = Gender.female; }
-
     function pickRandom() {
-      if (gender === Gender.female) {
+      if (character.isFemale() || character.isEnby()) {
         const roll = Random.between(1,35);
         const file = (roll < 10) ? `female-0${roll}.jpg` : `female-${roll}.jpg`
         return X.assetURL(`ai-assets/${file}`);
       }
-      if (gender === Gender.futa) {
+      if (character.isFuta()) {
         const roll = Random.between(1,20);
         const file = (roll < 10) ? `futa-0${roll}.jpg` : `futa-${roll}.jpg`
         return X.assetURL(`ai-assets/${file}`);
       }
-      if (gender === Gender.male) {
+      if (character.isMale()) {
         const roll = Random.between(1,13);
         const file = (roll < 10) ? `male-0${roll}.jpg` : `male-${roll}.jpg`
         return X.assetURL(`ai-assets/${file}`);

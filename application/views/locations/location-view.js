@@ -68,7 +68,7 @@ global.LocationView = (function() {
 
     if (GameSystem.getState().isInRoster(characterId) === false) { return; }
 
-    CharacterOverlay.open({ id:characterId });
+    CharacterOverlay.open(characterId);
 
     CharacterOverlay.addInteraction('Start Training', () => {
       CharacterOverlay.close();

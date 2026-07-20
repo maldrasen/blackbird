@@ -1,75 +1,152 @@
-global.InventoryPanel = function(characterId) {
+// let inventoryPanel;
+// inventoryPanel = InventoryPanel(id);
+// X.fill('#equipmentTab', inventoryPanel.getElement());
+//   if (inventoryPanel) { setTimeout(() => inventoryPanel.resize(), 0); }
+// });
 
-  let selectedItemId = null;
-  let slotPicker = null;
+global.InventoryPanel = function(options) {
 
-  const element = X.createElement(`<div class='inventory-panel'>
-    <div class='inventory-main'>
-      <div class='item-list-frame'>
-        <div class='item-list'></div>
-      </div>
-      <div class='verb-row button-row'>
-        <a href='#' class='button' data-verb='equip'>Equip</a>
-        <a href='#' class='button disabled' data-verb='use'>Use</a>
-        <a href='#' class='button' data-verb='drop'>Drop</a>
-        <a href='#' class='button' data-verb='trade'>Trade</a>
-      </div>
-    </div>
-    <div class='trade-panel hide'>
-      <div class='trade-title'>Give to...</div>
-      <div class='trade-destinations'></div>
-    </div>
-  </div>`);
+  let selected;
+  let slotChooser;
 
-  const itemList = element.querySelector('.item-list');
-  const scrollingPanel = ScrollingPanel({ element:itemList });
+  let inventoryPanel;
+  let scrollingPanel;
+  let characterId;
+  let inventoryManager;
+  let equipmentManager;
 
-  // A single delegated listener on the panel root. The panel is rebuilt every time the overlay opens, so window
-  // level listeners (X.onClick) would stack up a new listener on each open.
-  element.addEventListener('click', event => {
-    if (event.target.closest('.disabled')) { return; }
+  // I'm anticipating needing inventory panels for non-character inventories. A room like an armory or a container
+  // like a chest would have their own inventory. It's also possible that a container would have its own interface,
+  // given that the 'verbs' would all be different. There's no equip, there should be a "take all", etc.
+  if (options.character) {
+    characterId = options.character;
+    inventoryManager = InventoryManager(characterId);
+    equipmentManager = EquipmentManager(characterId);
+  }
 
-    const slot = event.target.closest('[data-slot]');
-    if (slot) { return slotPicked(slot.dataset.slot); }
+  function buildInto(container) {
+    X.loadDocument(container,'views/inventory-panel.html');
 
-    const row = event.target.closest('[data-item-id]');
-    if (row) { return rowClicked(row.dataset.itemId); }
+    inventoryPanel = X.first(container).querySelector('.inventory-panel');
+    if (characterId) {
+      inventoryPanel.setAttribute('data-character', characterId);
+    }
 
-    const verb = event.target.closest('[data-verb]');
-    if (verb) { return verbClicked(verb.dataset.verb); }
+    const itemList = inventoryPanel.querySelector('.item-list');
+    scrollingPanel = ScrollingPanel({ element:itemList });
 
-    const destination = event.target.closest('[data-destination-id]');
-    if (destination) { return destinationClicked(destination.dataset.destinationId); }
-  });
+    update();
+  }
 
-  // === Item List =============================================================
+  function resize() {
+    setTimeout(() => { scrollingPanel.resize(); },0);
+  }
 
-  function refresh() {
-    const rows = InventoryManager(characterId).listItems();
+  // TODO: call a deselect function after move instead
+  // if (items.find(row => row.itemId === selected) == null) { selected = null; }
 
-    if (rows.find(row => row.itemId === selectedItemId) == null) { selectedItemId = null; }
+  function update() {
+    const itemList = inventoryPanel.querySelector('.item-list');
 
     X.empty(itemList);
-    rows.forEach(row => itemList.appendChild(buildRow(row)));
+    inventoryManager.listItems().forEach(item => {
+      itemList.appendChild(buildItemElement(item));
+    });
 
-    updateVerbs();
+    updateButtons();
     scrollingPanel.resize();
   }
 
-  function buildRow(row) {
-    const rowElement = X.createElement(`<div class='item-row' data-item-id='${row.itemId}'>
+  // TODO: We also want to change the text color to represent the rarity of the item, WoW, PoE, etc, style.
+  function buildItemElement(item) {
+    const itemElement = X.createElement(`<li class='item-row' data-item-id='${item.itemId}'>
       <div class='item-icon'></div>
       <div class='item-name'></div>
-    </div>`);
+    </li>`);
 
-    rowElement.querySelector('.item-icon').style['background-image'] = X.assetURL(`icons/${row.icon}`);
-    rowElement.querySelector('.item-name').textContent = row.name;
+    itemElement.querySelector('.item-icon').style['background-image'] = X.assetURL(`icons/${item.icon}`);
+    itemElement.querySelector('.item-name').textContent = item.name;
 
-    if (row.slot) { X.addClass(rowElement,'equipped'); }
-    if (row.itemId === selectedItemId) { X.addClass(rowElement,'selected'); }
+    if (item.slot) {
+      X.addClass(itemElement,'equipped');
+      itemElement.setAttribute('data-slot', item.slot);
+    }
 
-    return rowElement;
+    if (item.itemId === selected) {
+      X.addClass(itemElement,'selected');
+    }
+
+    return itemElement;
   }
+
+  // === Inventory Button State ===
+
+  function updateButtons() {
+    const isEquipped = isSelectionEquipped();
+
+    enabledButton('.equip-button', isEquipped || canEquipSelection());
+    enabledButton('.use-button', false);
+    enabledButton('.drop-button', selected != null);
+    enabledButton('.trade-button', selected != null && getReachableInventories().length > 0);
+
+    inventoryPanel.querySelector(`.equip-button`).textContent = isEquipped ? 'Unequip' : 'Equip';
+  }
+
+  function enabledButton(selector, enabled) {
+    enabled ?
+      X.removeClass(inventoryPanel.querySelector(selector),'disabled'):
+      X.addClass(inventoryPanel.querySelector(selector),'disabled');
+  }
+
+  function isSelectionEquipped() {
+    return selected && equipmentManager.getEquippedSlot(selected) != null;
+  }
+
+  function canEquipSelection() {
+    return selected && equipmentManager.getValidSlots(selected).length > 0;
+  }
+
+  function getReachableInventories() {
+    return [];
+  }
+
+
+
+
+
+  return Object.freeze({
+    buildInto,
+    resize,
+    update,
+  });
+
+}
+
+InventoryPanel.init = function() {
+  X.onClick('.inventory-panel .equip-button', equipSelected);
+  X.onClick('.inventory-panel .use-button', useSelected);
+  X.onClick('.inventory-panel .drop-button', dropSelected);
+  X.onClick('.inventory-panel .trade-button', tradeSelected);
+}
+
+function equipSelected(event) { console.log("Equip") }
+function useSelected(event) { console.log("Use") }
+function dropSelected(event) { console.log("Drop") }
+function tradeSelected(event) { console.log("Trade") }
+
+// We'd need to find selected.
+
+
+/*
+    const slot = event.target.closest('[data-slot]');
+    if (slot) { return slotPicked(slot.dataset.slot); }
+    const row = event.target.closest('[data-item-id]');
+    if (row) { return rowClicked(row.dataset.itemId); }
+    const destination = event.target.closest('[data-destination-id]');
+    if (destination) { return destinationClicked(destination.dataset.destinationId); }
+
+
+  // === Item List =============================================================
 
   function rowClicked(itemId) {
     selectedItemId = (selectedItemId === itemId) ? null : itemId;
@@ -85,37 +162,6 @@ global.InventoryPanel = function(characterId) {
   }
 
   // === Verbs =================================================================
-
-  function updateVerbs() {
-    setVerbEnabled('use', false);
-    setVerbEnabled('drop', selectedItemId != null);
-    setVerbEnabled('trade', selectedItemId != null && getReachableInventories().length > 0);
-    updateEquipVerb();
-  }
-
-  function updateEquipVerb() {
-    const button = element.querySelector(`[data-verb='equip']`);
-    const equipped = isSelectionEquipped();
-
-    button.textContent = equipped ? 'Unequip' : 'Equip';
-    setVerbEnabled('equip', equipped || canEquipSelection());
-  }
-
-  function isSelectionEquipped() {
-    if (selectedItemId == null) { return false; }
-    return EquipmentManager(characterId).getEquippedSlot(selectedItemId) != null;
-  }
-
-  function canEquipSelection() {
-    if (selectedItemId == null) { return false; }
-    return EquipmentManager(characterId).getValidSlots(selectedItemId).length > 0;
-  }
-
-  function setVerbEnabled(verb, enabled) {
-    const button = element.querySelector(`[data-verb='${verb}']`);
-    if (enabled) { X.removeClass(button,'disabled'); }
-    if (enabled === false) { X.addClass(button,'disabled'); }
-  }
 
   function verbClicked(verb) {
     if (selectedItemId == null) { return; }
@@ -244,3 +290,4 @@ global.InventoryPanel = function(characterId) {
   });
 
 }
+*/

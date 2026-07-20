@@ -34,16 +34,10 @@
     font-family: 'roboto-bold', sans-serif;
     color: variables.$fg-strong;
   }
-  .item-row:hover {
-    background-color: variables.$select-shade;
-  }
+
   .item-row.selected {
     background-color: variables.$select-shade;
     color: variables.$fg-strong;
-  }
-
-  .verb-row {
-    margin-top: 10px;
   }
 
   .trade-panel {

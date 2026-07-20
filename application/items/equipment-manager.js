@@ -53,6 +53,7 @@ global.EquipmentManager = function(characterId) {
     update(equipment);
   }
 
+  // TODO: I should know the slot here... That's a smell to track down.
   function unequipItem(itemId) {
     const slot = getEquippedSlot(itemId);
     if (slot != null) { equipItem(null, slot); }

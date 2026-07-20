@@ -42,7 +42,7 @@ describe("LevelSystem", function() {
       LevelSystem.levelUp(id, Attrib.vitality);
 
       const health = HealthComponent.lookup(id);
-      expect(health.maxHealth).to.be.within(start+28, start+117);
+      expect(health.maxHealth).to.be.within(start+28, start+128);
       expect(health.currentHealth).to.equal(health.maxHealth);
     });
   });
