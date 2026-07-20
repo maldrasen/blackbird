@@ -34,6 +34,14 @@ global.Fixtures = (function() {
     setupGame();
     CharacterFixtures.randomPlayer();
     CharacterFixtures.randomCharacters(10, { species:'lupin',gender:'futa',triggers:['~bimbo'] });
+
+    // TEMP: Inventory Testing
+    const player = GameSystem.getState().getPlayer();
+    const inventory = InventoryManager(player);
+    BaseArmor.getAllCodes().forEach(code => {
+      inventory.addItem(ArmorFactory.build(code));
+    });
+
     GameSystem.setGameMode(GameMode.location);
   }
 
