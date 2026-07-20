@@ -37,6 +37,8 @@ global.CharacterFixtures = (function() {
           fear: Random.between(0,200)
         });
       }
+
+      CharacterEquipper(id).equip(Random.roll(1000));
     });
 
     return characters;
