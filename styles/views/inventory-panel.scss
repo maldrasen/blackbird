@@ -17,7 +17,7 @@
       height: 30px;
       padding: 0 6px;
       cursor: pointer;
-      font-family: 'roboto-light', sans-serif;
+      //font-family: 'roboto-light', sans-serif;
 
       .item-icon {
         height: 24px;
@@ -33,8 +33,11 @@
       background-color: variables.$select-shade;
     }
 
+    .item-name { opacity: 0.75; }
+
     .item-row.equipped .item-name {
       font-family: 'roboto-bold', sans-serif;
+      opacity: 1;
     }
 
     .item-row.selected {
@@ -64,7 +67,7 @@
     .destination {
       padding: 5px 10px;
       cursor: pointer;
-      font-family: 'roboto-light', sans-serif;
+      //font-family: 'roboto-light', sans-serif;
     }
 
     .destination:hover {

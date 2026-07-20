@@ -78,7 +78,6 @@ global.InventoryPanel = function(options) {
 
     if (item.slot) {
       X.addClass(itemElement,'equipped');
-      itemElement.textContent = `[${item.name}]`;
       itemElement.setAttribute('data-slot', item.slot);
     }
 
@@ -172,9 +171,11 @@ global.InventoryPanel = function(options) {
   }
 
   function clickDestination(inventoryId) {
-    InventorySystem.transferItem(selected, characterId, inventoryId);
-    setSelected(null);
-    update();
+    if (selected) {
+      InventorySystem.transferItem(selected, characterId, inventoryId);
+      setSelected(null);
+      update();
+    }
   }
 
   // TODO: This text will need to differentiate between proper and common names. I could run the text through the
