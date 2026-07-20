@@ -1,9 +1,3 @@
-// let inventoryPanel;
-// inventoryPanel = InventoryPanel(id);
-// X.fill('#equipmentTab', inventoryPanel.getElement());
-//   if (inventoryPanel) { setTimeout(() => inventoryPanel.resize(), 0); }
-// });
-
 global.InventoryPanel = function(options) {
 
   let selected;
@@ -66,6 +60,7 @@ global.InventoryPanel = function(options) {
 
     itemElement.querySelector('.item-icon').style['background-image'] = X.assetURL(`icons/${item.icon}`);
     itemElement.querySelector('.item-name').textContent = item.name;
+    itemElement.addEventListener('click', clickItemElement(item, itemElement));
 
     if (item.slot) {
       X.addClass(itemElement,'equipped');
@@ -77,6 +72,20 @@ global.InventoryPanel = function(options) {
     }
 
     return itemElement;
+  }
+
+  function clickItemElement(item, itemElement) {
+    return () => {
+      if (X.hasClass(itemElement,`selected`)) {
+        X.removeClass(itemElement,`selected`)
+        selected = null;
+      } else {
+        X.removeClass(`.item-list .selected`,`selected`);
+        X.addClass(itemElement,`selected`);
+        selected = { item:item, element:itemElement };
+      }
+      updateButtons();
+    }
   }
 
   // === Inventory Button State ===
@@ -103,7 +112,7 @@ global.InventoryPanel = function(options) {
   }
 
   function canEquipSelection() {
-    return selected && equipmentManager.getValidSlots(selected).length > 0;
+    return selected && equipmentManager.getValidSlots(selected.item.itemId).length > 0;
   }
 
   function getReachableInventories() {
@@ -123,10 +132,24 @@ global.InventoryPanel = function(options) {
 }
 
 InventoryPanel.init = function() {
+  X.onClick('.inventory-panel .item-row', selectItem);
   X.onClick('.inventory-panel .equip-button', equipSelected);
   X.onClick('.inventory-panel .use-button', useSelected);
   X.onClick('.inventory-panel .drop-button', dropSelected);
   X.onClick('.inventory-panel .trade-button', tradeSelected);
+}
+
+function selectItem(event) {
+  // selectedItemId = (selectedItemId === itemId) ? null : itemId;
+  //
+  // closeSlotPicker();
+  // hideTradePanel();
+  //
+  // element.querySelectorAll('.item-row').forEach(row => {
+  //   (row.dataset.itemId === selectedItemId) ? X.addClass(row,'selected') : X.removeClass(row,'selected');
+  // });
+  //
+  // updateVerbs();
 }
 
 function equipSelected(event) { console.log("Equip") }
@@ -149,16 +172,6 @@ function tradeSelected(event) { console.log("Trade") }
   // === Item List =============================================================
 
   function rowClicked(itemId) {
-    selectedItemId = (selectedItemId === itemId) ? null : itemId;
-
-    closeSlotPicker();
-    hideTradePanel();
-
-    element.querySelectorAll('.item-row').forEach(row => {
-      (row.dataset.itemId === selectedItemId) ? X.addClass(row,'selected') : X.removeClass(row,'selected');
-    });
-
-    updateVerbs();
   }
 
   // === Verbs =================================================================
