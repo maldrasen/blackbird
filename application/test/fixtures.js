@@ -33,7 +33,7 @@ global.Fixtures = (function() {
   function setupTraining() {
     setupGame();
     CharacterFixtures.randomPlayer();
-    CharacterFixtures.randomCharacters(10, { species:'lupin',gender:'futa',triggers:['~bimbo'] });
+    CharacterFixtures.randomCharacters(30, { triggers:[] });
 
     // TEMP: Inventory Testing
     const player = GameSystem.getState().getPlayer();

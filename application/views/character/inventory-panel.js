@@ -4,7 +4,6 @@ global.InventoryPanel = function(options) {
   let inventoryPanel;
   let itemScrollingPanel;
   let tradeScrollingPanel;
-  let slotChooser;
   let characterId;
   let inventoryManager;
   let equipmentManager;
@@ -47,10 +46,15 @@ global.InventoryPanel = function(options) {
       itemList.appendChild(buildItemElement(item));
     });
 
-    if (items.find(item => item.itemId === selected) == null) { selected = null; }
-
+    updateTradeTitle()
     updateButtons();
     resize();
+  }
+
+  function setSelected(id) {
+    selected = id;
+    updateTradeTitle()
+    updateButtons();
   }
 
   function resize() {
@@ -87,11 +91,11 @@ global.InventoryPanel = function(options) {
     return () => {
       if (X.hasClass(itemElement,`selected`)) {
         X.removeClass(itemElement,`selected`)
-        selected = null;
+        setSelected(null);
       } else {
         X.removeClass(`.item-list .selected`,`selected`);
         X.addClass(itemElement,`selected`);
-        selected = item.itemId;
+        setSelected(item.itemId);
       }
 
       // Chooser should close itself on mouseout.
@@ -110,7 +114,6 @@ global.InventoryPanel = function(options) {
     enabledButton('.equip-button', isEquipped || canEquipSelection());
     enabledButton('.use-button', false);
     enabledButton('.drop-button', selected != null);
-    enabledButton('.trade-button', selected != null && getReachableInventories().length > 0);
 
     inventoryPanel.querySelector(`.equip-button`).textContent = isEquipped ? 'Unequip' : 'Equip';
   }
@@ -155,46 +158,31 @@ global.InventoryPanel = function(options) {
   // === Trade ===
 
   function buildTradePanel() {
+    const destinationList = inventoryPanel.querySelector('.destination-list');
+    getReachableInventories().forEach(inventory => {
+      destinationList.appendChild(X.createElement(`
+        <li class='destination' data-id='${inventory.id}'>${inventory.name}</li>
+      `));
+    });
+  }
 
+  function updateTradeTitle() {
+    inventoryPanel.querySelector(`.trade-title`).textContent = (selected == null) ?
+      `Select an item to trade.`:
+      `Give ${Item(selected).getName()} to…`;
   }
 
   function toggleTradePanel() {
-
-  }
-
-  function tradeSelected() {
-    hideTradePanel();
-
-    if (X.hasClass(getTradePanel(),'hide') === false) { return hideTradePanel(); }
-
-    const destinationList = inventoryPanel.querySelector('.trade-destinations');
-    X.empty(destinationList);
-
-    getReachableInventories().forEach(destination => {
-      const destinationElement = X.createElement(
-        `<div class='trade-destination' data-destination-id='${destination.id}'></div>`);
-      destinationElement.textContent = destination.name;
-      destinationList.appendChild(destinationElement);
-    });
-
-    X.removeClass(getTradePanel(),'hide');
-  }
-
-
-  function hideTradePanel() {
-    X.addClass(inventoryPanel.querySelector('.trade-panel'),'hide');
+    const frame = inventoryPanel.querySelector('.trade-frame');
+    X.hasClass(frame,'hide') ? X.removeClass(frame,'hide') : X.addClass(frame,'hide');
   }
 
   function destinationClicked(destinationId) {
     InventorySystem.transferItem(selected, characterId, destinationId);
-    selected = null;
-    hideTradePanel();
+    setSelected(null);
     update();
   }
 
-  function getTradePanel() {
-    return inventoryPanel.querySelector('.trade-panel');
-  }
 
 
 

@@ -1,20 +1,23 @@
 <div class='inventory-panel'>
 
   <div class='inventory-main'>
-    <div class='item-list-frame'>
+    <div class='inventory-frame'>
       <ul class='item-list'></ul>
     </div>
-    <div class='button-row small-padding-top'>
-      <a href='#' class='button button-small equip-button'>Equip</a>
-      <a href='#' class='button button-small use-button'>Use</a>
-      <a href='#' class='button button-small drop-button'>Drop</a>
-      <a href='#' class='button button-small trade-button'>Trade</a>
+
+    <div class='trade-frame hide'>
+      <div class='trade-title'></div>
+      <div class='destination-list-frame'>
+        <ul class='destination-list'></ul>
+      </div>
     </div>
   </div>
 
-  <div class='trade-panel hide'>
-    <div class='trade-title'>Give to...</div>
-    <ul class='destination-list'></ul>
+  <div class='button-row padding-top'>
+    <a href='#' class='button trade-button float-right'>Trade</a>
+    <a href='#' class='button equip-button'>Equip</a>
+    <a href='#' class='button use-button'>Use</a>
+    <a href='#' class='button drop-button'>Drop</a>
   </div>
 
 </div>
