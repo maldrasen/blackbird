@@ -4,7 +4,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 ## Priority 
 
-- [125] Implement equipment interface `5pt` — [125-implement-equipment-and-inventory-interfaces.md](125-implement-equipment-and-inventory-interfaces.md)
+- [125] Implement equipment interface `8pt` — [125-implement-equipment-and-inventory-interfaces.md](125-implement-equipment-and-inventory-interfaces.md)
 
 ## Priority 2
 
