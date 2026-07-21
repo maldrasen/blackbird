@@ -366,6 +366,13 @@ global.ThreatWeight = Object.freeze({
   killWomen: 'killWomen',
 });
 
+global.BattleCondition = Object.freeze({
+  active: 'active',
+  dead: 'dead',
+  knockedOut: 'knocked-out',
+  fled: 'fled',
+});
+
 global.BattleCommand = Object.freeze({
   basicAttack: 'basic-attack',
   basicDefend: 'basic-defend',

@@ -1,8 +1,8 @@
 global.BattleDamageSystem = (function() {
 
-  // Some actions can contain multiple hits, so we need to check to see if the target is alive before applying damage
-  // in case they were already killed, which would remove them from the formation and cause problems if we try and
-  // remove them again.
+  // Some actions can contain multiple hits, so we need to check to see if the target is still up before applying
+  // damage in case they were already killed or knocked out, which would remove them from the formation and cause
+  // problems if we try and remove them again.
   //    Data: { entity, damage, damageTypes, hitLocation, isCrit }
   //
   function applyDamage(data) {
@@ -10,12 +10,11 @@ global.BattleDamageSystem = (function() {
     const target = data.entity;
     const damageTypes = data.damageTypes;
 
-    if (state.isAlive(target) === false) {
-      throw new Error(`[${target}] is already dead. Damage should not have been applied.`);
+    if (state.isDown(target)) {
+      throw new Error(`[${target}] is already down. Damage should not have been applied.`);
     }
 
     let actualDamage = 0;
-    let killed = false;
 
     // TODO: The actual damage done will need to be reduced by the armor of the hit location, the character's
     //       resistances to certain damage types. I don't think we need to modify the damageTypes object here,
@@ -39,16 +38,27 @@ global.BattleDamageSystem = (function() {
     const health = HealthComponent.lookup(target);
     health.currentHealth -= actualDamage;
 
-    if (health.currentHealth <= 0) {
-      health.currentHealth = 0;
-      killed = true;
-      BattleDeathSystem.killEntity(target);
-    }
-
-    BattleInterface.showDamageEffect({ killed, ...data });
+    const outcome = resolveDamageOutcome(state, target, health);
     HealthComponent.update(target, health);
 
+    BattleInterface.showDamageEffect({
+      killed: outcome === 'killed',
+      knockedOut: outcome === 'knocked-out',
+      ...data });
+
+    if (outcome === 'killed') { BattleDeathSystem.killEntity(target); }
+    if (outcome === 'knocked-out') { BattleDeathSystem.knockOutEntity(target); }
+
     return actualDamage;
+  }
+
+  // Monsters simply die at zero health. Characters brought to zero or below are knocked out, keeping their negative
+  // health, and are only killed when that health falls below the negative of their vitality.
+  function resolveDamageOutcome(state, target, health) {
+    if (health.currentHealth > 0) { return null; }
+    if (state.isMonster(target)) { health.currentHealth = 0; return 'killed'; }
+    if (health.currentHealth < -Attributes(target).getVitality()) { return 'killed'; }
+    return 'knocked-out';
   }
 
   return Object.freeze({

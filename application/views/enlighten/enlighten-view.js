@@ -24,6 +24,11 @@ global.EnlightenView = (function() {
     const state = EnlightenSystem.getState();
 
     X.fill('#enlightenView .essence-summary', essenceSummary(state.getEssenceAwards()));
+
+    if (state.getRevived().length > 0) {
+      X.fill('#enlightenView .revived-summary', revivedSummary(state.getRevived()));
+    }
+
     X.fill('#enlightenView .results-table-area', buildResultsTable(state));
 
     const footer = EnlightenSystem.hasPendingLevelUps() ? '.button-advance' : '.button-complete';
@@ -34,6 +39,15 @@ global.EnlightenView = (function() {
     const text = essenceAwards.total === 0
       ? `No essence was gathered from the battle.`
       : `The party absorbs ${essenceAwards.total} essence — ${essenceAwards.share} for each member.`;
+
+    return X.createElement(`<p>${text}</p>`);
+  }
+
+  function revivedSummary(revived) {
+    const names = EnglishHelper.joinList(revived.map(id => Character(id).getName()));
+    const text = revived.length === 1
+      ? `${names} went down in the fight, but we were able to save them. They return with 1 health.`
+      : `${names} went down in the fight, but we were able to save them. They return with 1 health each.`;
 
     return X.createElement(`<p>${text}</p>`);
   }

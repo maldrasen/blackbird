@@ -56,8 +56,11 @@ global.BarDisplay = function(options) {
   function setCurrentValue(value) {
     current = value;
 
-    let width = (max > 0) ? Math.round((current / max) * 100) : 0;
-    getElement().querySelector('.current').replaceChildren(current);
+    // Values can range outside of the bar, health is negative for a knocked out character for instance, but the
+    // display never goes below the bar's minimum.
+    const displayed = (min == null) ? current : Math.max(min, current);
+    let width = (max > 0) ? Math.round((displayed / max) * 100) : 0;
+    getElement().querySelector('.current').replaceChildren(displayed);
     getElement().querySelector('.bar').setAttribute(`style`,`width:${width}%`);
   }
 

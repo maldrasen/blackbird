@@ -26,22 +26,18 @@ global.BattleDeathSystem = (function() {
 
   // There's a lot that needs to be done when an entity is killed. The entities are removed from the turn order and
   // the formations. If a character was in the back row, and the character in front of them was killed they move to
-  // the front rank. If a column was completely emptied then we need to move the side columns inward. We check if all
-  // the monsters or the player were killed and end the battle if so.
+  // the front rank. If a column was completely emptied then we need to move the side columns inward. The battle ends
+  // when all the monsters are dead, when the player is killed, or when the party formation has been emptied.
   function killEntity(id) {
     const state = BattleSystem.getState();
     const isMonster = state.isMonster(id);
     const isInFront = state.isInFront(id);
     const column = state.getColumnContaining(id);
 
-    state.addCondition(id,'dead');
+    state.setCombatantCondition(id, BattleCondition.dead);
     state.removeFromTurnOrder({ type:(isMonster ? 'monster' : 'character'), id:id });
 
     BattleInterface.killEntity(id);
-
-    // Dead monsters are deleted after the battle. This has to happen before the battle won check, otherwise the
-    // monster whose death ends the battle never makes it into the dead pile.
-    if (isMonster) { state.addToDeadPile(id); }
 
     // If the battle is over we don't need to worry about adjusting the positions.
     if (isBattleWon()) { return state.battleWon(); }
@@ -70,6 +66,53 @@ global.BattleDeathSystem = (function() {
     if (isMonster && isColumnEmpty(id, column)) {
       FormationManager.moveInwardOnDeath(parseInt(column.front.position[4]));
     }
+
+    // The battle is lost when the last standing character goes down, even if the player is only knocked out.
+    if (isMonster === false && state.getCharacters().length === 0) { return state.battleLost(); }
+  }
+
+  // Knocking a character out looks like a death in battle: they leave the turn order and the formation, and anyone
+  // behind them moves forward. The difference is that nothing here is persistent. The character keeps their place in
+  // the party configuration and the forward move only touches the transient battle formation, so after the battle
+  // everyone is revived back into their original positions. Only characters can be knocked out; monsters die at zero.
+  function knockOutEntity(id) {
+    const state = BattleSystem.getState();
+    const isInFront = state.isInFront(id);
+    const column = state.getColumnContaining(id);
+
+    state.setCombatantCondition(id, BattleCondition.knockedOut);
+    state.removeFromTurnOrder({ type:'character', id:id });
+
+    BattleInterface.knockOutEntity(id);
+
+    if (isInFront === false) { state.removeFromFormation(id); }
+
+    if (isInFront) {
+      if (column.back.id == null) { state.removeFromFormation(id); }
+
+      if (column.back.id) {
+        FormationManager.moveForwardOnKnockOut(column);
+        BattleInterface.moveForwardOnDeath(column);
+      }
+    }
+
+    if (state.getCharacters().length === 0) { return state.battleLost(); }
+  }
+
+  // There are no mechanics for reviving a knocked out character during a battle, but when a battle is won they're
+  // saved, waking up with a single point of health. Their party configuration entry was never touched, so they
+  // return to their original position automatically.
+  function reviveKnockedOut() {
+    const state = BattleSystem.getState();
+    const revived = state.getKnockedOut();
+
+    revived.forEach(id => {
+      const health = HealthComponent.lookup(id);
+      health.currentHealth = 1;
+      HealthComponent.update(id, health);
+    });
+
+    return revived;
   }
 
   // When a monster is killed we need to check to see if the column is empty. We pass in the id of the monster that
@@ -83,6 +126,8 @@ global.BattleDeathSystem = (function() {
   return Object.freeze({
     disableEntity,
     killEntity,
+    knockOutEntity,
+    reviveKnockedOut,
   });
 
 })();

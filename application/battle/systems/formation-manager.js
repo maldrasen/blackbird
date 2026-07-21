@@ -3,12 +3,22 @@ global.FormationManager = (function() {
   // This would overwrite the other entity, so only call this in the case of the death of an entity. Repositioning
   // during a battle normally reverts afterwards, but a move forced by a death persists in the party configuration.
   function moveForwardOnDeath(column) {
+    moveForward(column, true);
+  }
+
+  // A knock-out only vacates the front rank for the rest of the battle, so the move forward stays in the transient
+  // battle formation. The knocked out character keeps their party configuration position for their revival.
+  function moveForwardOnKnockOut(column) {
+    moveForward(column, false);
+  }
+
+  function moveForward(column, persist) {
     const state = BattleSystem.getState();
     const moving = column.back.id;
     state.removeFromFormation(column.front.id);
     state.setPosition(moving, column.front.position);
 
-    if (column.side === 'party') {
+    if (persist && column.side === 'party') {
       PartyConfiguration.setCharacter(moving, column.front.position);
     }
 
@@ -72,6 +82,7 @@ global.FormationManager = (function() {
 
   return Object.freeze({
     moveForwardOnDeath,
+    moveForwardOnKnockOut,
     moveInwardOnDeath,
   });
 

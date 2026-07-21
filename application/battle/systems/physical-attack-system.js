@@ -38,7 +38,15 @@ global.PhysicalAttackSystem = (function() {
       actualDamage, damageTypes
     }});
 
-    if (BattleSystem.getState().isAlive(target) === false) {
+    const state = BattleSystem.getState();
+
+    if (state.isKnockedOut(target)) {
+      Console.log(`[${target}] was knocked out`,{ system:'BattleSystem', level:2 });
+      round.addMessage({ text:`{T:TargetName} was knocked out!`, color:'important' });
+      return;
+    }
+
+    if (state.isAlive(target) === false) {
       Console.log(`[${target}] was killed`,{ system:'BattleSystem', level:2 });
       round.addMessage({ text:`{T:TargetName} was killed!`, color:'important' });
     }

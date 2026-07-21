@@ -60,7 +60,7 @@ function executeBasicAttack() {
     const context = buildAttackContext(roll)
     const attackText = Dialog.lookupTemplate(DialogCategory.attackText, roll.attack.getTextKey(), context);
 
-    if (state.isAlive(context.T)) {
+    if (state.isDown(context.T) === false) {
       round.addMessage({ text:attackText }, Weaver(context));
       round.addTime(roll.attack.getBaseWeapon().getSpeed());
 

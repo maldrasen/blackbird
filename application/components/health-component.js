@@ -22,13 +22,12 @@ global.HealthComponent = (function() {
   }
 
   // Rather than moderating the health values every time we need to change them, it makes more sense to just clamp
-  // these values in the component itself. It's not really a problem if something tries to set health to a value
-  // higher or lower than it should be able to go. Other components may benefit from a moderate function like this too.
+  // these values in the component itself. Health has no floor because negative health is meaningful: a character at
+  // zero or below is knocked out, and one who falls below -vitality is dead. Only the ceiling is clamped.
   function moderate(id) {
     const healthComponent = lookup(id);
     const maxStamina = Attributes(id).getMaxStamina();
 
-    if (healthComponent.currentHealth < 0) { healthComponent.currentHealth = 0 }
     if (healthComponent.currentHealth > healthComponent.maxHealth) {
       healthComponent.currentHealth = healthComponent.maxHealth; }
 

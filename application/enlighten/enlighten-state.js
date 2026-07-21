@@ -4,6 +4,7 @@ global.EnlightenState = function(from,data) {
   const skillImprovements = data.skillImprovements;
   const essenceAwards = data.essenceAwards || null;
   const levelUpQueue = [...(data.party || [])];
+  const revived = [...(data.revived || [])];
   let levelUpIndex = 0;
 
   function getAnima() { return data.anima ? { ...data.anima } : null; }
@@ -23,6 +24,7 @@ global.EnlightenState = function(from,data) {
     getPartner,
     getSkillImprovements: () => { return skillImprovements },
     getEssenceAwards,
+    getRevived: () => { return [...revived] },
     getLevelUpQueue: () => { return [...levelUpQueue] },
     getLevelUpIndex: () => { return levelUpIndex },
     advanceLevelUpQueue: () => { levelUpIndex += 1 },

@@ -12,18 +12,19 @@ global.BattleState = function(data) {
   const encounter = findEncounter(data);
   const turnOrder = [];
 
-  // TODO: The party formation is a copy of the formation in the configuration, that way if party characters are moved
-  //       around they'll return to their original positions after the battle. If a character is killed or disabled
-  //       though we'll need to make a persistent change to put any character that was behind the fallen character into
-  //       the front rank.
+  // The party formation is a copy of the formation in the configuration, that way if party characters are moved
+  // around they'll return to their original positions after the battle. Deaths are the exception: a killed character
+  // leaves the party configuration, and anyone forced forward into their place moves permanently. Knock-outs never
+  // touch the configuration, so a revived character wakes up back in their original position.
   const partyFormation = { ...PartyConfiguration.getConfiguration() };
   const monsterFormation = {};
+  const monsterIds = [];
   const abilityCooldowns = {};
-  const deadPile = [];
-  const fledPile = [];
-  const conditions = {};
+  const combatantConditions = {};
   const skillImprovements = {};
   const statusEffects = {};
+
+  Object.keys(partyFormation).forEach(id => { combatantConditions[id] = BattleCondition.active; });
 
   let ambushState = 'normal';
   let negotiationAttempted = false;
@@ -31,7 +32,7 @@ global.BattleState = function(data) {
 
   // The cleanup() function needs to be called after the battle to remove the monsters who were killed or ran away.
   function cleanup() {
-    [...deadPile, ...fledPile].forEach(id => {
+    [...getDeadMonsters(), ...getFledMonsters()].forEach(id => {
       Registry.deleteEntity(id);
     });
   }
@@ -46,6 +47,8 @@ global.BattleState = function(data) {
   function addMonster(id, position) {
     if (position.match(_positionPattern) == null) { throw new Error(`Invalid Position: ${position}`); }
     monsterFormation[id] = position;
+    monsterIds.push(id);
+    combatantConditions[id] = BattleCondition.active;
   }
 
   function getPosition(id) {
@@ -110,8 +113,23 @@ global.BattleState = function(data) {
   function isMonster(id) { return getMonsters().includes(id); }
   function isCharacter(id) { return getCharacters().includes(id); }
   function removeFromFormation(id) { delete (isMonster(id) ? monsterFormation : partyFormation)[id]; }
-  function addToDeadPile(id) { deadPile.push(id); }
-  function addToFledPile(id) { fledPile.push(id); }
+
+  // Every combatant has exactly one condition, so a knocked out character can't also be dead. The dead and fled
+  // monster lists are derived from the monster roster rather than the formations because dead monsters have already
+  // been removed from their formation.
+  function setCombatantCondition(id, condition) {
+    Validate.isIn('BattleCondition', condition, Object.values(BattleCondition));
+    if (combatantConditions[id] == null) { throw new Error(`Entity:${id} is not in this battle.`); }
+    combatantConditions[id] = condition;
+  }
+
+  function getCombatantCondition(id) { return combatantConditions[id]; }
+  function getDeadMonsters() { return monsterIds.filter(id => combatantConditions[id] === BattleCondition.dead); }
+  function getFledMonsters() { return monsterIds.filter(id => combatantConditions[id] === BattleCondition.fled); }
+
+  function getKnockedOut() {
+    return Object.keys(combatantConditions).filter(id => isKnockedOut(id));
+  }
 
   // === Turn Order ====================================================================================================
 
@@ -251,20 +269,21 @@ global.BattleState = function(data) {
   //    Status Effects and Conditions
   // ===================================
 
-  // Conditions are for character states that are not status effects; status effects are their own entities that
-  // are part of the turn order. Currently, the only status I can think of is "dead" so this might just be used to
-  // track deaths.
-  function addCondition(id, key) {
-    if (conditions[id]==null) { conditions[id]=[] }
-    conditions[id].push(key);
-  }
-
   function canBeTargeted(id) {
-    return isAlive(id) && isHidden(id) === false
+    return isDown(id) === false && isHidden(id) === false
   }
 
   function isAlive(id) {
-    return conditions[id] == null || conditions[id].includes('dead') === false;
+    return getCombatantCondition(id) !== BattleCondition.dead;
+  }
+
+  function isKnockedOut(id) {
+    return getCombatantCondition(id) === BattleCondition.knockedOut;
+  }
+
+  // A downed combatant is out of the fight, whether they can be revived or not.
+  function isDown(id) {
+    return isAlive(id) === false || isKnockedOut(id);
   }
 
   function isHidden(id) {
@@ -362,10 +381,11 @@ global.BattleState = function(data) {
     getMonsterFormation: () => { return { ...monsterFormation }; },
     getPartyFormation: () => { return { ...partyFormation }; },
     removeFromFormation,
-    addToDeadPile,
-    addToFledPile,
-    getDeadPile: () => { return [ ...deadPile ]; },
-    getFledPile: () => { return [ ...fledPile ]; },
+    setCombatantCondition,
+    getCombatantCondition,
+    getDeadMonsters,
+    getFledMonsters,
+    getKnockedOut,
     getPosition,
     setPosition,
     isInFront,
@@ -390,9 +410,10 @@ global.BattleState = function(data) {
     isOnCooldown,
     reduceCooldowns,
 
-    addCondition,
     canBeTargeted,
     isAlive,
+    isKnockedOut,
+    isDown,
     isHidden,
     addStatus,
     removeStatus,

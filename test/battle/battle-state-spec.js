@@ -11,6 +11,65 @@ describe("BattleState", function() {
     });
   })
 
+  describe("Combatant Conditions", function() {
+    it('starts every combatant as active', function() {
+      BattleFixtures.prepareForBattle();
+      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+
+      const state = BattleSystem.getState();
+      expect(state.getCombatantCondition(state.getCharacters()[0])).to.equal(BattleCondition.active);
+      expect(state.getCombatantCondition(state.getMonsters()[0])).to.equal(BattleCondition.active);
+    });
+
+    it('conditions are mutually exclusive', function() {
+      BattleFixtures.prepareForBattle();
+      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+
+      const state = BattleSystem.getState();
+      const monster = state.getMonsters()[0];
+
+      state.setCombatantCondition(monster, BattleCondition.dead);
+      state.setCombatantCondition(monster, BattleCondition.fled);
+
+      expect(state.getDeadMonsters()).to.deep.equal([]);
+      expect(state.getFledMonsters()).to.deep.equal([monster]);
+    });
+
+    it('throws for entities that are not in the battle', function() {
+      BattleFixtures.prepareForBattle();
+      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+
+      const state = BattleSystem.getState();
+      expect(() => state.setCombatantCondition('nobody', BattleCondition.dead)).to.throw('not in this battle');
+      expect(() => state.setCombatantCondition(state.getMonsters()[0], 'sleepy')).to.throw('not in list');
+    });
+
+    it('only monsters are listed in the dead and fled monster lists', function() {
+      BattleFixtures.prepareForBattle();
+      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+
+      const state = BattleSystem.getState();
+      state.setCombatantCondition(state.getCharacters()[0], BattleCondition.dead);
+
+      expect(state.getDeadMonsters()).to.deep.equal([]);
+      expect(state.getFledMonsters()).to.deep.equal([]);
+    });
+
+    it('lists the knocked out characters', function() {
+      BattleFixtures.prepareForBattle();
+      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+
+      const state = BattleSystem.getState();
+      const character = state.getCharacters()[0];
+      state.setCombatantCondition(character, BattleCondition.knockedOut);
+
+      expect(state.getKnockedOut()).to.deep.equal([character]);
+      expect(state.isKnockedOut(character)).to.be.true;
+      expect(state.isAlive(character)).to.be.true;
+      expect(state.isDown(character)).to.be.true;
+    });
+  });
+
   describe("Turn Order", function() {
     it('moves the character within the turn order after acting', function() {
       BattleFixtures.prepareForBattle();

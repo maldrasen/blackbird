@@ -38,6 +38,11 @@ global.BattleInterface = (function() {
     FormationPanel.killEntity(id);
   }
 
+  function knockOutEntity(id) {
+    if (Tests.running()) { return; }
+    FormationPanel.killEntity(id);
+  }
+
   function moveForwardOnDeath(columnData) {
     if (Tests.running()) { return; }
     FormationPanel.moveForwardOnDeath(columnData);
@@ -48,19 +53,23 @@ global.BattleInterface = (function() {
     FormationPanel.moveInwardOnDeath(moves);
   }
 
-  // Essence has to be awarded before endBattle(), which deletes the dead monsters from the registry.
+  // Essence has to be awarded before endBattle(), which deletes the dead monsters from the registry. Knocked out
+  // characters were removed from the battle formation, so they're revived and added back into the party here to
+  // share in the battle's rewards.
   function showVictory() {
     if (Tests.running()) { return; }
 
     const state = BattleSystem.getState();
-    const survivors = state.getCharacters().filter(id => state.isAlive(id));
-    const essenceAwards = EssenceSystem.awardBattleEssence(state.getDeadPile(), survivors);
+    const revived = BattleDeathSystem.reviveKnockedOut();
+    const party = [...state.getCharacters().filter(id => state.isAlive(id)), ...revived];
+    const essenceAwards = EssenceSystem.awardBattleEssence(state.getDeadMonsters(), party);
 
     BattleSystem.endBattle();
     EnlightenSystem.startEnlightenment('battle',{
       skillImprovements: state.getSkillImprovements(),
       essenceAwards,
-      party: survivors,
+      party,
+      revived,
     });
     GameSystem.setGameMode(GameMode.enlighten);
   }
@@ -81,6 +90,7 @@ global.BattleInterface = (function() {
     highlightActing,
     showDamageEffect,
     killEntity,
+    knockOutEntity,
     moveForwardOnDeath,
     moveInwardOnDeath,
     showVictory,

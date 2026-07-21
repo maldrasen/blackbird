@@ -22,6 +22,17 @@ describe("EnlightenSystem", function() {
       expect(state.getEssenceAwards()).to.deep.equal(essenceAwards);
       expect(state.getLevelUpQueue()).to.deep.equal(party);
       expect(state.getSkillImprovements()[party[0]].blades).to.equal(2);
+      expect(state.getRevived()).to.deep.equal([]);
+    });
+
+    it("exposes the characters revived after the battle", function() {
+      const party = [buildCharacter(), buildCharacter()];
+
+      EnlightenSystem.startEnlightenment('battle', { party, revived:[party[1]] });
+
+      const state = EnlightenSystem.getState();
+      expect(state.getRevived()).to.deep.equal([party[1]]);
+      expect(state.getLevelUpQueue()).to.deep.equal(party);
     });
 
     it("leaves the training branch unchanged", function() {

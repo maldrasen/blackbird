@@ -50,6 +50,13 @@ global.EnglishHelper = (function() {
   function a_an(string) { return string.match(/^[aeiou]/i) ? `an` : `a`; }
   function A_An(string) { return string.match(/^[aeiou]/i) ? `An` : `A`; }
 
+  // Joins a list into an English phrase: "Ada", "Ada and Bree", or "Ada, Bree, and Cass".
+  function joinList(items) {
+    if (items.length <= 1) { return items.join(''); }
+    if (items.length === 2) { return `${items[0]} and ${items[1]}`; }
+    return `${items.slice(0,-1).join(', ')}, and ${items[items.length-1]}`;
+  }
+
   // Returns a positive number in English. If a 'whenOne' option is specified then that is returned for 'one' in cases
   // where "a" or "an" would sound better in a phrase, i.e. 'a big black cock' is better than 'one big black cock'. The
   // whenZero options is the same, but for zero.
@@ -101,6 +108,7 @@ global.EnglishHelper = (function() {
     possessive,
     a_an,
     A_An,
+    joinList,
     numberInEnglish,
     NumberInEnglish,
   });
