@@ -46,6 +46,15 @@ global.GameSystem = (function() {
     returnMode = null;
   }
 
+  function quitToMainMenu() {
+    reset();
+
+    if (HEADLESS === false && Tests.running() === false) {
+      MainContent.clearMainContent();
+      MainMenu.openFully();
+    }
+  }
+
   // ===============
   //    Game Mode
   // ===============
@@ -85,6 +94,7 @@ global.GameSystem = (function() {
     loadLastGame,
     openGame,
     reset,
+    quitToMainMenu,
 
     setGameMode,
     getReturnMode,

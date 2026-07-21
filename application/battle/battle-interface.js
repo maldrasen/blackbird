@@ -61,13 +61,12 @@ global.BattleInterface = (function() {
     GameSystem.setGameMode(GameMode.enlighten);
   }
 
-  // TODO: Rather than going back to the location we need to show an actual game over screen. This will kick the
-  //       player back to the main menu and reset the game state, allowing the last saved game to be loaded.
   function showGameOver() {
     if (Tests.running()) { return; }
 
     BattleSystem.endBattle();
-    GameSystem.setGameMode(GameMode.location);
+    EpisodeSystem.startEpisode('game-over', {});
+    GameSystem.setGameMode(GameMode.episode);
   }
 
   return Object.freeze({

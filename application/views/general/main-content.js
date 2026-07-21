@@ -44,6 +44,10 @@ global.MainContent = (function() {
     }
   }
 
+  function clearMainContent() {
+    X.empty('#mainContent');
+  }
+
   function showCover() {
     X.removeClass('#mainCover','hide');
   }
@@ -95,6 +99,7 @@ global.MainContent = (function() {
     loadMainContent,
     loadStyles,
     setMainContent,
+    clearMainContent,
     addStylesheet,
     removeStylesheet,
     addScriptTag,
