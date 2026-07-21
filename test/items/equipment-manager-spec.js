@@ -17,7 +17,7 @@ describe('EquipmentManager', function() {
     expect(equipment.canEquipItem(mainHand,EquipmentSlot.primary)).to.be.true;
     expect(equipment.canEquipItem(mainHand,EquipmentSlot.secondary)).to.be.false;
     expect(equipment.canEquipItem(twoHand,EquipmentSlot.primary)).to.be.true;
-    expect(equipment.canEquipItem(twoHand,EquipmentSlot.secondary)).to.be.true;
+    expect(equipment.canEquipItem(twoHand,EquipmentSlot.secondary)).to.be.false;
     expect(equipment.canEquipItem(twoHand,EquipmentSlot.head)).to.be.false;
   });
 
@@ -48,6 +48,24 @@ describe('EquipmentManager', function() {
       const equipped = EquipmentComponent.lookup(horse);
       expect(equipped.primary).to.equal(right);
       expect(equipped.secondary).to.equal(left);
+    });
+
+    it("unequips the secondary slot when equipping a two-handed weapon", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const dagger = WeaponFactory.build('dagger');
+      const maul = WeaponFactory.build('goosewing');
+
+      const inventory = InventoryManager(horse);
+      inventory.addItem(dagger);
+      inventory.addItem(maul);
+
+      const equipment = EquipmentManager(horse);
+      equipment.equipItem(dagger, EquipmentSlot.secondary);
+      equipment.equipItem(maul, EquipmentSlot.primary);
+
+      const equipped = EquipmentComponent.lookup(horse);
+      expect(equipped.primary).to.equal(maul);
+      expect(equipped.secondary).to.equal(null);
     });
 
     it("unequips an item", function() {

@@ -34,7 +34,7 @@ global.EquipmentManager = function(characterId) {
       if (hands === WeaponHandedness.main) { return EquipmentSlot.primary === slot; }
       if (hands === WeaponHandedness.off)  { return EquipmentSlot.secondary === slot; }
       if (hands === WeaponHandedness.one)  { return [EquipmentSlot.primary, EquipmentSlot.secondary].includes(slot); }
-      if (hands === WeaponHandedness.two)  { return [EquipmentSlot.primary, EquipmentSlot.secondary].includes(slot); }
+      if (hands === WeaponHandedness.two)  { return EquipmentSlot.primary === slot; }
     }
 
     return false;
@@ -50,7 +50,17 @@ global.EquipmentManager = function(characterId) {
 
     const equipment = fetch();
     equipment[slot] = itemId;
+    if (isTwoHandedWeapon(itemId)) { equipment[EquipmentSlot.secondary] = null; }
     update(equipment);
+  }
+
+  // A two-handed weapon needs both hands, so equipping one clears the secondary slot.
+  function isTwoHandedWeapon(itemId) {
+    if (itemId == null) { return false; }
+    if (ItemComponent.lookup(itemId).type !== 'weapon') { return false; }
+
+    const weapon = WeaponComponent.lookup(itemId);
+    return BaseWeapon.lookup(weapon.base).getHands() === WeaponHandedness.two;
   }
 
   // TODO: I should know the slot here... That's a smell to track down.
