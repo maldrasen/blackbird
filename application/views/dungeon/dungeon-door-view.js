@@ -12,10 +12,11 @@ global.DungeonDoorView = (function() {
 
     const geometry = doorGeometry(door, gridSize, metrics);
     const clip = buildClipPath(floor, door, gridSize, metrics, 'door');
+    const target = `<polygon class='click-target' points='${geometry.target}'/>`;
 
     return doorElement(door, classname, geometry, clip == null
-      ? [`<polygon class='slab' points='${geometry.slab}'/>`]
-      : [clip.element, `<polygon class='slab' clip-path='url(#${clip.id})' points='${geometry.slab}'/>`]);
+      ? [`<polygon class='slab' points='${geometry.slab}'/>`, target]
+      : [clip.element, `<polygon class='slab' clip-path='url(#${clip.id})' points='${geometry.slab}'/>`, target]);
   }
 
   function buildHanging(floor, door) {
@@ -35,9 +36,11 @@ global.DungeonDoorView = (function() {
       `<polygon class='slab' points='${geometry.slab}'/>`,
     ];
 
+    const target = `<polygon class='click-target' points='${geometry.target}'/>`;
+
     return doorElement(door, classname, geometry, clip == null
-      ? content
-      : [clip.element, `<g clip-path='url(#${clip.id})'>`, ...content, `</g>`]);
+      ? [...content, target]
+      : [clip.element, `<g clip-path='url(#${clip.id})'>`, ...content, `</g>`, target]);
   }
 
   function doorGeometry(door, gridSize, metrics) {
@@ -150,6 +153,8 @@ global.DungeonDoorView = (function() {
         [wallDepth, wallInset + wallDepth, gridSize + wallDepth, wallInset + wallDepth],
       ],
       slab: `${topLeft},${top} ${topLeft + doorLength},${top} ${baseLeft + doorLength},${base} ${baseLeft},${base}`,
+      target: `0,${wallInset} ${gridSize},${wallInset} ` +
+        `${gridSize + wallDepth},${wallInset + wallDepth} ${wallDepth},${wallInset + wallDepth}`,
     };
   }
 
@@ -172,6 +177,8 @@ global.DungeonDoorView = (function() {
         [wallInset + wallDepth, wallDepth, wallInset + wallDepth, gridSize + wallDepth],
       ],
       slab: `${top},${topStart} ${base},${baseStart} ${base},${baseStart + doorLength} ${top},${topStart + doorLength}`,
+      target: `${wallInset},0 ${wallInset},${gridSize} ` +
+        `${wallInset + wallDepth},${gridSize + wallDepth} ${wallInset + wallDepth},${wallDepth}`,
     };
   }
 

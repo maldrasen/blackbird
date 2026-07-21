@@ -79,7 +79,12 @@
   cursor: pointer;
 
   pointer-events: none;
-  .slab { fill: variables.$fg-dungeon-wall; pointer-events: visiblePainted; }
+  .slab { fill: variables.$fg-dungeon-wall; }
+
+  .click-target {
+    fill: none;
+    pointer-events: fill;
+  }
 }
 
 #dungeonFloor .door { z-index: 100; }
