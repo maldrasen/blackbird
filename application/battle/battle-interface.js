@@ -48,15 +48,19 @@ global.BattleInterface = (function() {
     FormationPanel.moveInwardOnDeath(moves);
   }
 
-  // TODO: The battle enlighten view will also need the list of the monsters killed to generate loot and experience.
+  // Essence has to be awarded before endBattle(), which deletes the dead monsters from the registry.
   function showVictory() {
     if (Tests.running()) { return; }
 
     const state = BattleSystem.getState();
+    const survivors = state.getCharacters().filter(id => state.isAlive(id));
+    const essenceAwards = EssenceSystem.awardBattleEssence(state.getDeadPile(), survivors);
 
     BattleSystem.endBattle();
     EnlightenSystem.startEnlightenment('battle',{
       skillImprovements: state.getSkillImprovements(),
+      essenceAwards,
+      party: survivors,
     });
     GameSystem.setGameMode(GameMode.enlighten);
   }
