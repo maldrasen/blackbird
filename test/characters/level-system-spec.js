@@ -37,12 +37,16 @@ describe("LevelSystem", function() {
     });
 
     it("grows max and current health when vitality is raised", function() {
+      Random.stubBetween(3);
+      Random.stubRollDice(45);
+
       const id = CharacterFixtures.genericMale({ actor:{ species:'equian' }});
       const start = HealthComponent.lookup(id).maxHealth;
-      LevelSystem.levelUp(id, Attrib.vitality);
+      const increase = LevelSystem.levelUp(id, Attrib.vitality);
+      expect(increase).to.equal(8);
 
       const health = HealthComponent.lookup(id);
-      expect(health.maxHealth).to.be.within(start+28, start+128);
+      expect(health.maxHealth).to.equal(start + 72);
       expect(health.currentHealth).to.equal(health.maxHealth);
     });
   });

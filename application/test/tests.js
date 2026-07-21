@@ -78,7 +78,10 @@ global.Tests = (function() {
     reset();
   }
 
-  function rootBefore() { isRunning = true; }
+  function rootBefore() {
+    isRunning = true;
+    console.log(`Test run starting with Random seed ${Random.getSeed()}`);
+  }
   function rootAfter() { isRunning = false; }
   function running() { return isRunning; }
 

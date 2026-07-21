@@ -6,8 +6,11 @@ describe("BattleDamageSystem", function() {
     return BattleSystem.getState();
   }
 
+  // The max is pinned as well, otherwise a randomly generated character can roll a max below the current health
+  // we're setting and moderate() would clamp it back down.
   function setHealth(id, current) {
     const health = HealthComponent.lookup(id);
+    health.maxHealth = 100;
     health.currentHealth = current;
     HealthComponent.update(id, health);
   }
