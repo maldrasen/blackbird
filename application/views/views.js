@@ -17,6 +17,7 @@ global.Views = (function() {
     NegotiationOverlay.init();
     OptionsOverlay.init();
     ScrollingPanel.init();
+    Select.init();
     TabController.init();
     Tooltip.init();
     TrainingView.init();

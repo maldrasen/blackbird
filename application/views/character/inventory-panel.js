@@ -146,7 +146,14 @@ global.InventoryPanel = function(options) {
       return update();
     }
 
-    console.log("TODO: Open Chooser :",slots)
+    Select.open({
+      anchor: inventoryPanel.querySelector(`.equip-button`),
+      items: slots.map(slot => { return { label:StringHelper.titlecase(slot), value:slot } }),
+      callback: value => {
+        equipmentManager.equipItem(selected, value);
+        update();
+      },
+    })
   }
 
   function buildTradePanel() {
@@ -203,50 +210,3 @@ global.InventoryPanel = function(options) {
     update,
   });
 }
-
-
-/*
-  function openSlotPicker(slots) {
-    closeSlotPicker();
-
-    const equipment = EquipmentManager(characterId);
-    slotPicker = X.createElement(`<div class='item-select-window slot-picker'></div>`);
-
-    slots.forEach(slot => {
-      const occupantId = equipment.getSlot(slot);
-      const slotElement = X.createElement(`<div class='item-element' data-slot='${slot}'>
-        <div class='name'>${StringHelper.titlecaseAll(slot)}</div>
-        <div class='${occupantId ? 'occupant' : 'empty'}'></div>
-      </div>`);
-
-      slotElement.querySelector(occupantId ? '.occupant' : '.empty').textContent =
-        occupantId ? Item(occupantId).getName() : 'empty';
-
-      slotPicker.appendChild(slotElement);
-    });
-
-    const anchor = X.getPosition(element.querySelector(`[data-verb='equip']`));
-    slotPicker.style['left'] = `${anchor.left}px`;
-    slotPicker.style['top'] = `${anchor.bottom + 5}px`;
-
-    element.appendChild(slotPicker);
-
-    // Deferred so the click that opened the picker doesn't immediately close it.
-    setTimeout(() => window.addEventListener('click', closeSlotPicker, { once:true }), 0);
-  }
-
-  function closeSlotPicker() {
-    window.removeEventListener('click', closeSlotPicker);
-    if (slotPicker) {
-      slotPicker.remove();
-      slotPicker = null;
-    }
-  }
-
-  function slotPicked(slot) {
-    EquipmentManager(characterId).equipItem(selectedItemId, slot);
-    closeSlotPicker();
-    refresh();
-  }
-
-*/

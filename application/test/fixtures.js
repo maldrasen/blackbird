@@ -38,8 +38,8 @@ global.Fixtures = (function() {
     // TEMP: Inventory Testing
     const player = GameSystem.getState().getPlayer();
     const inventory = InventoryManager(player);
-    BaseArmor.getAllCodes().forEach(code => {
-      inventory.addItem(ArmorFactory.build(code));
+    BaseWeapon.getAllCodes().forEach(code => {
+      if (code !== 'fist') { inventory.addItem(WeaponFactory.build(code)); }
     });
 
     GameSystem.setGameMode(GameMode.location);

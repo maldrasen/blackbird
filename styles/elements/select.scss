@@ -1,14 +1,20 @@
 @use "../variables";
 
-#selectArea {
+#selectFrame {
   position: absolute;
-  inset:0;
+  padding: 10px;
   z-index: variables.$z-select;
 
   .select {
-    position: fixed;
     background-color: rgb(10,10,10);
     border: variables.$border-normal;
+    border-radius: 3px;
     box-shadow: variables.$shadow-frame;
+  }
+  .select li {
+    padding: 5px 10px;
+  }
+  .select li:hover {
+    background-color: variables.$select-shade;
   }
 }
