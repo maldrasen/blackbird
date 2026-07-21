@@ -5,7 +5,7 @@ global.WindowManager = (function() {
   function init() {
     X.onCodeDown(KeyCodes.Escape,true,() => {
       if (Console.isVisible()) { return Console.hide(); }
-      if (selectVisible()) { return removeSelect(); }
+      if (Select.isOpen()) { return Select.close(); }
       if (Confirmation.isVisible()) { return Confirmation.cancel(); }
       if (windowStack.length > 0) { return pop() }
       if (DungeonView.isWalking()) { return DungeonView.stopWalking(); }
@@ -33,15 +33,6 @@ global.WindowManager = (function() {
     if (index >= 0) {
       windowStack.splice(index,1);
     }
-  }
-
-  function selectVisible() {
-    return X.hasClass('#selectArea','hide') === false;
-  }
-
-  function removeSelect() {
-    X.addClass('#selectArea','hide');
-    X.first('#selectArea').innerHTML = '';
   }
 
   return Object.freeze({

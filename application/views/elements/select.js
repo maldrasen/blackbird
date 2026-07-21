@@ -16,12 +16,10 @@ global.Select = (function() {
     selectFrame.style['top'] = `${position.bottom - position.height - 10}px`;
 
     options.items.forEach(item => {
-      const element = X.createElement(`<li>
-        <a href='#' data-value='${item.value}'>${item.label || item.value}</a>
-      </li>`);
+      const element = X.createElement(`<li>${item.label || item.value}</li>`);
 
-      element.addEventListener('click', event => {
-        options.callback(event.target.dataset.value);
+      element.addEventListener('click', () => {
+        options.callback(item.value);
         close();
       });
 
@@ -45,10 +43,15 @@ global.Select = (function() {
     }
   }
 
+  function isOpen() {
+    return X.hasClass('#selectFrame','hide') === false;
+  }
+
   return Object.freeze({
     init,
     open,
     close,
+    isOpen,
   });
 
 })();

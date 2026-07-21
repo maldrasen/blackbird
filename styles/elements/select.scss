@@ -13,8 +13,11 @@
   }
   .select li {
     padding: 5px 10px;
+    color: variables.$fg-link;
+    cursor: pointer;
   }
   .select li:hover {
     background-color: variables.$select-shade;
+    color: variables.$fg-link-hover;
   }
 }
