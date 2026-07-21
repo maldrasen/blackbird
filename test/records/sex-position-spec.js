@@ -25,15 +25,20 @@ describe("SexPosition", function() {
       return Random.flipCoin() ? { A:player, B:partner, attitude:attitude } : { A:partner, B:player, attitude:attitude }
     }
 
+    // The move context mirrors PositionController.shiftPosition(): swap edges reverse the roles, and the source
+    // arrangement rides along as previousPosition for the playerWas() requirements that symmetric destinations
+    // like standing depend on. Without it those moves can never render and the spec only survives on retries.
     function textFor(code) {
       let attempts = 10;
 
       while (attempts > 0) {
         const context = randomSetup();
         const move = Random.from(SexPosition.lookup(code).getMoves());
+        const [first, second] = move.swap ? [context.B, context.A] : [context.A, context.B];
+        const moveContext = { A:first, B:second, attitude:context.attitude, previousPosition:context };
 
         try {
-          return Weaver(context).weave(move.package.pick(context));
+          return Weaver(moveContext).weave(move.package.pick(moveContext));
         }
         catch(error) {
           attempts -= 1;
