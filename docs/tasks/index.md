@@ -2,6 +2,10 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
+## Priority 1
+
+- [117] After battle control flow `5pt` — [117-battle-enlighten-view.md](117-battle-enlighten-view.md)
+
 ## Priority 2
 
 - [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
@@ -14,7 +18,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [108] Complete Negotiation Questions `8pt` — [108-complete-negotiation-questions.md](108-complete-negotiation-questions.md)
 - [110] Navigation Events `8pt` — [110-navigation-events.md](110-navigation-events.md)
 - [114] Rework death mechanics `8pt` — [114-rework-death-mechanics.md](114-rework-death-mechanics.md)
-- [117] After battle control flow `5pt` — [117-battle-enlighten-view.md](117-battle-enlighten-view.md)
 - [122] Training Enlighten View `5pt` — [122-training-enlighten-view.md](122-training-enlighten-view.md)
 
 ## Priority 3
