@@ -18,6 +18,11 @@ global.DungeonView = (function() {
     drawDungeon();
   }
 
+  function close() {
+    DungeonCamera.stop();
+    DungeonViewport.stopDrag();
+  }
+
   function drawDungeon() {
     DungeonFloorView.drawDungeon();
     DungeonViewport.reset();
@@ -104,6 +109,7 @@ global.DungeonView = (function() {
   return Object.freeze({
     init,
     show,
+    close,
     drawDungeon,
     isWalking,
     stopWalking,

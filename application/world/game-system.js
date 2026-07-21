@@ -65,6 +65,7 @@ global.GameSystem = (function() {
     if (HEADLESS === false && Tests.running() === false) {
       GameStateFrame.hide();
       LocationView.close();
+      DungeonView.close();
 
       switch (mode) {
         case GameMode.battle: return BattleView.show();
