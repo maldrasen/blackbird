@@ -50,11 +50,19 @@ global.EquipmentManager = function(characterId) {
 
     const equipment = fetch();
     equipment[slot] = itemId;
-    if (isTwoHandedWeapon(itemId)) { equipment[EquipmentSlot.secondary] = null; }
+
+    if (isTwoHandedWeapon(itemId)) {
+      equipment[EquipmentSlot.secondary] = null;
+    }
+    if (itemId != null && slot === EquipmentSlot.secondary && isTwoHandedWeapon(equipment[EquipmentSlot.primary])) {
+      equipment[EquipmentSlot.primary] = null;
+    }
+
     update(equipment);
   }
 
-  // A two-handed weapon needs both hands, so equipping one clears the secondary slot.
+  // A two-handed weapon needs both hands, so equipping one clears the secondary slot, and equipping an off-hand
+  // item clears a two-handed primary.
   function isTwoHandedWeapon(itemId) {
     if (itemId == null) { return false; }
     if (ItemComponent.lookup(itemId).type !== 'weapon') { return false; }

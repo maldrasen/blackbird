@@ -68,6 +68,24 @@ describe('EquipmentManager', function() {
       expect(equipped.secondary).to.equal(null);
     });
 
+    it("unequips a two-handed primary when equipping an off-hand item", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const dagger = WeaponFactory.build('dagger');
+      const maul = WeaponFactory.build('goosewing');
+
+      const inventory = InventoryManager(horse);
+      inventory.addItem(dagger);
+      inventory.addItem(maul);
+
+      const equipment = EquipmentManager(horse);
+      equipment.equipItem(maul, EquipmentSlot.primary);
+      equipment.equipItem(dagger, EquipmentSlot.secondary);
+
+      const equipped = EquipmentComponent.lookup(horse);
+      expect(equipped.primary).to.equal(null);
+      expect(equipped.secondary).to.equal(dagger);
+    });
+
     it("unequips an item", function() {
       const horse = CharacterFixtures.genericMale({});
       const choppa = WeaponFactory.build('battle-axe');
