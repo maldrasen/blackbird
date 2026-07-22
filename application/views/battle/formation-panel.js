@@ -240,7 +240,7 @@ global.FormationPanel = (function() {
   //     Effects
   // ===============
 
-  // Data: { entity, damage, damageTypes, isCrit, killed }
+  // Data: { entity, damage, damageTypes, isCrit, killed, knockedOut }
   function showDamageEffect(data) {
     FlashSquare.flash({
       element: combatantPanels[data.entity].getElement(),

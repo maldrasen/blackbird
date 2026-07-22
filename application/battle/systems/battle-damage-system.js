@@ -40,11 +40,7 @@ global.BattleDamageSystem = (function() {
 
     const outcome = resolveDamageOutcome(state, target, health);
     HealthComponent.update(target, health);
-
-    BattleInterface.showDamageEffect({
-      killed: outcome === 'killed',
-      knockedOut: outcome === 'knocked-out',
-      ...data });
+    BattleInterface.showDamageEffect({ killed:['killed','knocked-out'].includes(outcome), ...data });
 
     if (outcome === 'killed') { BattleDeathSystem.killEntity(target); }
     if (outcome === 'knocked-out') { BattleDeathSystem.knockOutEntity(target); }
