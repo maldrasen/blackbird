@@ -83,7 +83,7 @@ global.BattleDeathSystem = (function() {
     state.setCombatantCondition(id, BattleCondition.knockedOut);
     state.removeFromTurnOrder({ type:'character', id:id });
 
-    BattleInterface.knockOutEntity(id);
+    BattleInterface.killEntity(id);
 
     if (isInFront === false) { state.removeFromFormation(id); }
 
