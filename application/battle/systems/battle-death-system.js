@@ -1,28 +1,7 @@
 global.BattleDeathSystem = (function() {
 
-  // TODO: This function is Just a stub for now, but it's situation that will come up. When a monster or character is
-  //       disabled, but not killed, they need to remain in the battle formation. Being paralysed for instance should
-  //       force a character behind that character to move forward in the formation. A paralysed character can't act
-  //       as a blocker, but they are still physically in the formation. When the battle is over we delete dead
-  //       monsters, but monsters who are alive but disabled will carry over into a follow on event where we decide
-  //       what to do with them. If they're added to the party we make them permanent, or we delete them.
-
-  function disableEntity(id) {
-    throw new Error(`Implement disableEntity()`);
-  }
-
-  // TODO: These function will need also need to change. If all of the living monsters are disabled (fully bound,
-  //       paralysed, turned to stone, whatever) then the battle is also won, and we start a follow on event with the
-  //       living monsters, currently in the monster formation in the state.
-
-  function isBattleWon() {
-    const state = BattleSystem.getState();
-    return state.getActiveMonsters().length === 0
-  }
-
-  function isBattleLost(killed) {
-    return GameSystem.getState().getPlayer() === killed;
-  }
+  function isBattleWon() { return BattleSystem.getState().getActiveMonsters().length === 0; }
+  function isBattleLost(killed) { return GameSystem.getState().getPlayer() === killed; }
 
   // There's a lot that needs to be done when an entity is killed. The entities are removed from the turn order and
   // the formations. If a character was in the back row, and the character in front of them was killed they move to
@@ -31,7 +10,6 @@ global.BattleDeathSystem = (function() {
   function killEntity(id) {
     const state = BattleSystem.getState();
     const isMonster = state.isMonster(id);
-    const isInFront = state.isInFront(id);
     const column = state.getColumnContaining(id);
 
     state.setCondition(id, BattleCondition.dead);
@@ -48,19 +26,7 @@ global.BattleDeathSystem = (function() {
     // character into the mover's old position.
     if (isMonster === false) { PartyConfiguration.removeCharacter(id); }
 
-    // If this character is in the back rank they can be safely removed.
-    if (isInFront === false) { state.removeFromFormation(id); }
-
-    if (isInFront) {
-      // No other character is behind this one, it can be removed.
-      if (column.back.id == null) { state.removeFromFormation(id); }
-
-      // A character is in the rank behind this one, it must move forward.
-      if (column.back.id) {
-        FormationManager.moveForwardOnDeath(column);
-        BattleInterface.moveForwardOnDeath(column);
-      }
-    }
+    removeFromFormation(id, FormationManager.moveForwardOnDeath);
 
     // If a monster was killed we force them to move in towards the center rank.
     if (isMonster && isColumnEmpty(id, column)) {
@@ -77,26 +43,31 @@ global.BattleDeathSystem = (function() {
   // everyone is revived back into their original positions. Only characters can be knocked out; monsters die at zero.
   function knockOutEntity(id) {
     const state = BattleSystem.getState();
-    const isInFront = state.isInFront(id);
-    const column = state.getColumnContaining(id);
 
     state.setCondition(id, BattleCondition.knockedOut);
     state.removeFromTurnOrder({ type:'character', id:id });
 
     BattleInterface.killEntity(id);
 
-    if (isInFront === false) { state.removeFromFormation(id); }
-
-    if (isInFront) {
-      if (column.back.id == null) { state.removeFromFormation(id); }
-
-      if (column.back.id) {
-        FormationManager.moveForwardOnKnockOut(column);
-        BattleInterface.moveForwardOnDeath(column);
-      }
-    }
+    removeFromFormation(id, FormationManager.moveForwardOnKnockOut);
 
     if (state.getActiveCharacters().length === 0) { state.battleLost(); }
+  }
+
+  // Removing a downed entity from the formation works the same way for a death and a knock out, except for how the
+  // entity behind them is moved forward, so the caller passes in the appropriate FormationManager move function.
+  function removeFromFormation(id, moveForward) {
+    const state = BattleSystem.getState();
+    const column = state.getColumnContaining(id);
+
+    // An entity in the back rank, or with no one behind them, can simply be removed.
+    if (state.isInFront(id) === false || column.back.id == null) {
+      return state.removeFromFormation(id);
+    }
+
+    // An entity in the rank behind this one must move forward.
+    moveForward(column);
+    BattleInterface.moveForwardOnDeath(column);
   }
 
   // There are no mechanics for reviving a knocked out character during a battle, but when a battle is won they're
@@ -124,7 +95,6 @@ global.BattleDeathSystem = (function() {
   }
 
   return Object.freeze({
-    disableEntity,
     killEntity,
     knockOutEntity,
     reviveKnockedOut,
