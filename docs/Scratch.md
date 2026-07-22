@@ -1,7 +1,4 @@
 ```
-application/battle/systems/battle-damage-system.js
-application/battle/systems/battle-death-system.js
-application/battle/systems/formation-manager.js
 application/battle/systems/physical-attack-system.js
 application/components/health-component.js
 application/dungeon/dungeon-system.js
