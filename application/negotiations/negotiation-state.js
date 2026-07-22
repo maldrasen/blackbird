@@ -1,6 +1,6 @@
 global.NegotiationState = function() {
   const battleState = BattleSystem.getState();
-  const monster = battleState.getActiveMonsters().find(id => battleState.isAlive(id));
+  const monster = battleState.getActiveMonsters()[0];
   const context = { A:GameSystem.getState().getPlayer(), T:monster };
   const opening = NegotiationOpening(monster);
   const questions = Random.shuffle(opening.getQuestions());

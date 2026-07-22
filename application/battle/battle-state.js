@@ -105,8 +105,8 @@ global.BattleState = function(data) {
     return null;
   }
 
-  function getActiveMonsters() { return Object.keys(monsterFormation); }
-  function getActiveCharacters() { return Object.keys(partyFormation); }
+  function getActiveMonsters() { return monsterIds.filter(id => getCondition(id) === BattleCondition.active); }
+  function getActiveCharacters() { return characterIds.filter(id => getCondition(id) === BattleCondition.active); }
   function isMonster(id) { return monsterIds.includes(id); }
   function isCharacter(id) { return characterIds.includes(id); }
   function removeFromFormation(id) { delete (isMonster(id) ? monsterFormation : partyFormation)[id]; }
@@ -249,46 +249,21 @@ global.BattleState = function(data) {
   //    Status Effects and Conditions
   // ===================================
 
-  function canBeTargeted(id) {
-    return isDown(id) === false && isHidden(id) === false
-  }
-
-
-
-
-
+  function getCondition(id) { return conditions[id]; }
   function setCondition(id, condition) {
     Validate.isIn('BattleState.conditions', condition, Object.values(BattleCondition));
     Validate.exists('BattleState.conditions', conditions[id]);
     conditions[id] = condition;
   }
 
+  function canBeTargeted(id) { return isDown(id) === false && isHidden(id) === false }
   function getKnockedOut() { return Object.keys(conditions).filter(id => isKnockedOut(id)); }
-  function getCondition(id) { return conditions[id]; }
   function getDeadMonsters() { return monsterIds.filter(id => { return getCondition(id) === BattleCondition.dead }); }
   function getFledMonsters() { return monsterIds.filter(id => { return conditions[id] === BattleCondition.fled }); }
-
-  function isAlive(id) {
-    return getCondition(id) !== BattleCondition.dead;
-  }
-
-  function isKnockedOut(id) {
-    return getCondition(id) === BattleCondition.knockedOut;
-  }
-
-  // A downed combatant is out of the fight, whether they can be revived or not.
-  function isDown(id) {
-    return isAlive(id) === false || isKnockedOut(id);
-  }
-
-
-
-
-
-
-  function isHidden(id) {
-    return hasStatusEffect(id, 'hidden')
-  }
+  function isAlive(id) { return getCondition(id) !== BattleCondition.dead; }
+  function isDown(id) { return isAlive(id) === false || isKnockedOut(id); }
+  function isKnockedOut(id) { return getCondition(id) === BattleCondition.knockedOut; }
+  function isHidden(id) { return hasStatusEffect(id, 'hidden'); }
 
   function addStatus(statusEffect) {
     const existing = getStatusEffects(statusEffect.getEntity())[statusEffect.getCode()];

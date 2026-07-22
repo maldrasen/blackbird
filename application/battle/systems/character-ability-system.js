@@ -36,7 +36,7 @@ global.CharacterAbilitySystem = (function() {
 
   function livingMonsterCount() {
     const state = BattleSystem.getState();
-    return state.getActiveMonsters().filter(id => state.isAlive(id)).length;
+    return state.getActiveMonsters().length;
   }
 
   function stunned(acting) {

@@ -17,7 +17,7 @@ global.BattleDeathSystem = (function() {
 
   function isBattleWon() {
     const state = BattleSystem.getState();
-    return state.getActiveMonsters().filter(id => state.isAlive(id)).length === 0
+    return state.getActiveMonsters().length === 0
   }
 
   function isBattleLost(killed) {
