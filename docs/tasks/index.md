@@ -42,6 +42,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [121] Add Capture Mechanics `8pt` — [121-add-capture-mechanics.md](121-add-capture-mechanics.md)
 - [124] Make reports headless `2pt` — [124-make-reports-headless.md](124-make-reports-headless.md)
 - [128] Random weapon and armor generation `8pt` — [128-random-item-generation.md](128-random-item-generation.md)
+- [129] Enlighten View Essence Bars `5pt` — [129-enlighten-view-essence-bars.md](129-enlighten-view-essence-bars.md)
 
 ## Priority 4
 

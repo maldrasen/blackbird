@@ -73,14 +73,14 @@ global.Tests = (function() {
 
   function afterEachTest() {
     if (this.currentTest && this.currentTest.state === 'failed') {
-      console.error(`Failing spec used Random seed ${currentSeed} - "${this.currentTest.fullTitle()}"`);
+      console.error(`Test Failed - Seed ⟪ ${currentSeed} ⟫ - "${this.currentTest.fullTitle()}"`);
     }
     reset();
   }
 
   function rootBefore() {
     isRunning = true;
-    console.log(`Test run starting with Random seed ${Random.getSeed()}`);
+    console.log(`⟪ Random Test Seed : ${Random.getSeed()} ⟫\n`);
   }
   function rootAfter() { isRunning = false; }
   function running() { return isRunning; }

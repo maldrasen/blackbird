@@ -50,7 +50,7 @@ global.EnglishHelper = (function() {
   function a_an(string) { return string.match(/^[aeiou]/i) ? `an` : `a`; }
   function A_An(string) { return string.match(/^[aeiou]/i) ? `An` : `A`; }
 
-  // Joins a list into an English phrase: "Ada", "Ada and Bree", or "Ada, Bree, and Cass".
+  // Joins a list into an English phrase: "Whips", "Whips and chains", or "Whips, chains, and party hats".
   function joinList(items) {
     if (items.length <= 1) { return items.join(''); }
     if (items.length === 2) { return `${items[0]} and ${items[1]}`; }

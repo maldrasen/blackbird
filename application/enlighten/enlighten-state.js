@@ -1,10 +1,11 @@
-global.EnlightenState = function(from,data) {
-  Validate.isIn('EnlightenState.from',from,['battle','training']);
+global.EnlightenState = function(from, data) {
+  Validate.isIn('EnlightenState.from', from, ['battle','training']);
 
   const skillImprovements = data.skillImprovements;
   const essenceAwards = data.essenceAwards || null;
   const levelUpQueue = [...(data.party || [])];
   const revived = [...(data.revived || [])];
+
   let levelUpIndex = 0;
 
   function getAnima() { return data.anima ? { ...data.anima } : null; }

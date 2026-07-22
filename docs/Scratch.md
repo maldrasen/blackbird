@@ -1,12 +1,4 @@
 ```
-application/battle/systems/physical-attack-system.js
-application/components/health-component.js
-application/dungeon/dungeon-system.js
-application/enlighten/enlighten-state.js
-application/enums.js                                                           application/helpers/english-helper.js
-application/negotiations/negotiation-system.js
-application/test/tests.js
-
 application/views/elements/bar-display.js
 application/views/enlighten/enlighten-view.js
 bin/soak-tests.js
