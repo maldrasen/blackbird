@@ -33,7 +33,7 @@ global.TargetingController = (function() {
     const state = BattleSystem.getState();
     const monsters = [];
 
-    state.getMonsters().forEach(monster => {
+    state.getActiveMonsters().forEach(monster => {
       if (state.canBeTargeted(monster)) {
         monsters.push(monster);
       }

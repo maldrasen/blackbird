@@ -53,7 +53,7 @@ global.BattleInterface = (function() {
 
     const state = BattleSystem.getState();
     const revived = BattleDeathSystem.reviveKnockedOut();
-    const party = [...state.getCharacters().filter(id => state.isAlive(id)), ...revived];
+    const party = [...state.getActiveCharacters().filter(id => state.isAlive(id)), ...revived];
     const essenceAwards = EssenceSystem.awardBattleEssence(state.getDeadMonsters(), party);
 
     BattleSystem.endBattle();

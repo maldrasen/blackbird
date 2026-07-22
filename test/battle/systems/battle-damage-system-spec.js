@@ -33,7 +33,7 @@ describe("BattleDamageSystem", function() {
     expect(state.isKnockedOut(target)).to.be.true;
     expect(state.isAlive(target)).to.be.true;
     expect(state.getKnockedOut()).to.deep.equal([target]);
-    expect(state.getCharacters().includes(target)).to.be.false;
+    expect(state.getActiveCharacters().includes(target)).to.be.false;
     expect(state.getTurnOrder().map(entry => entry.id).includes(target)).to.be.false;
     expect(PartyConfiguration.getConfiguration()[target]).to.equal('P.1.2');
   });
@@ -67,7 +67,7 @@ describe("BattleDamageSystem", function() {
 
   it("kills a monster at zero, clamping their health", function() {
     const state = startBattle();
-    const target = state.getMonsters()[0];
+    const target = state.getActiveMonsters()[0];
 
     BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:9999 }});
 

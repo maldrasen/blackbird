@@ -49,7 +49,7 @@ global.Monster = function(id) {
     const threatTable = {};
 
     // We start with some random "I just don't like your face" threat.
-    state.getCharacters().forEach(id => {
+    state.getActiveCharacters().forEach(id => {
       threatTable[id] = 1 + Random.roll(500);
     });
 

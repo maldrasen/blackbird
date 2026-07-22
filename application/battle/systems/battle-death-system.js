@@ -17,7 +17,7 @@ global.BattleDeathSystem = (function() {
 
   function isBattleWon() {
     const state = BattleSystem.getState();
-    return state.getMonsters().filter(id => state.isAlive(id)).length === 0
+    return state.getActiveMonsters().filter(id => state.isAlive(id)).length === 0
   }
 
   function isBattleLost(killed) {
@@ -68,7 +68,7 @@ global.BattleDeathSystem = (function() {
     }
 
     // The battle is lost when the last standing character goes down, even if the player is only knocked out.
-    if (isMonster === false && state.getCharacters().length === 0) { return state.battleLost(); }
+    if (isMonster === false && state.getActiveCharacters().length === 0) { return state.battleLost(); }
   }
 
   // Knocking a character out looks like a death in battle: they leave the turn order and the formation, and anyone
@@ -96,7 +96,7 @@ global.BattleDeathSystem = (function() {
       }
     }
 
-    if (state.getCharacters().length === 0) { return state.battleLost(); }
+    if (state.getActiveCharacters().length === 0) { return state.battleLost(); }
   }
 
   // There are no mechanics for reviving a knocked out character during a battle, but when a battle is won they're

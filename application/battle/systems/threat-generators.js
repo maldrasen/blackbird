@@ -42,7 +42,7 @@ global.ThreatGenerators = (function() {
   // Finish him! Threat generates is the inverse of health percentage. A completely healthy character generates 0
   // threat, and threat approaches 100 as they become more injured.
   function leastHealth(threatTable, weight) {
-    BattleSystem.getState().getCharacters().forEach(id => {
+    BattleSystem.getState().getActiveCharacters().forEach(id => {
       const health = HealthComponent.lookup(id);
       threatTable[id] += Math.round((1 - (health.currentHealth / health.maxHealth)) * threatBase * weight);
     });
@@ -52,7 +52,7 @@ global.ThreatGenerators = (function() {
   // kidnap the women. Maybe they want to kill the women so they can kidnap the men. Who knows? For these functions a
   // futa is both male and female while an enby is neither male nor female.
   function killMen(threatTable, weight) {
-    BattleSystem.getState().getCharacters().forEach(id => {
+    BattleSystem.getState().getActiveCharacters().forEach(id => {
       switch (ActorComponent.lookup(id).gender) {
         case Gender.male: threatTable[id] += Math.round(100 * weight); break;
         case Gender.futa: threatTable[id] += Math.round(50 * weight); break;
@@ -61,7 +61,7 @@ global.ThreatGenerators = (function() {
   }
 
   function killWomen(threatTable, weight) {
-    BattleSystem.getState().getCharacters().forEach(id => {
+    BattleSystem.getState().getActiveCharacters().forEach(id => {
       switch (ActorComponent.lookup(id).gender) {
         case Gender.female: threatTable[id] += Math.round(100 * weight); break;
         case Gender.futa: threatTable[id] += Math.round(50 * weight); break;

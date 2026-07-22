@@ -23,7 +23,7 @@ describe("BasicAttack", function() {
       it("a normal attack with a single damage type", function() {
         prepare();
         setPlayerAttribute({ strength:50 });
-        BattleSystem.specRound(GameSystem.getState().getPlayer(), { target:BattleSystem.getState().getMonsters()[0] });
+        BattleSystem.specRound(GameSystem.getState().getPlayer(), { target:BattleSystem.getState().getActiveMonsters()[0] });
 
         const complexDamage = BasicAttack.rollDamage(GameSystem.getState().getPlayer(), BaseWeapon.lookup('maul'), 'normal', 'normal');
         expect(BattleSystem.getRound().getMessages().length).to.equal(0);
@@ -34,7 +34,7 @@ describe("BasicAttack", function() {
       it("a super crit hit with two damage types", function() {
         prepare();
         setPlayerAttribute({ strength:50 });
-        BattleSystem.specRound(GameSystem.getState().getPlayer(), { target:BattleSystem.getState().getMonsters()[0] });
+        BattleSystem.specRound(GameSystem.getState().getPlayer(), { target:BattleSystem.getState().getActiveMonsters()[0] });
 
         const complexDamage = BasicAttack.rollDamage(GameSystem.getState().getPlayer(), BaseWeapon.lookup('morning-star'), 'crit', 'fumble');
         expect(BattleSystem.getRound().getMessages().length).to.equal(2);
@@ -48,7 +48,7 @@ describe("BasicAttack", function() {
     it("a single primary attack", function() {
       prepare({ encounter: 'kobold-trappers' });
 
-      BattleSystem.specRound(BattleSystem.getState().getMonsters()[0]);
+      BattleSystem.specRound(BattleSystem.getState().getActiveMonsters()[0]);
       const attacks = BasicAttack.calculateAttacks();
 
       expect(attacks.length).to.equal(1)
@@ -72,7 +72,7 @@ describe("BasicAttack", function() {
     it("dual wielded weapons", function() {
       prepare({ encounter: 'kobold-sneak-sluts' });
 
-      BattleSystem.specRound(BattleSystem.getState().getMonsters()[0]);
+      BattleSystem.specRound(BattleSystem.getState().getActiveMonsters()[0]);
       const attacks = BasicAttack.calculateAttacks();
 
       expect(attacks.length).to.equal(3)

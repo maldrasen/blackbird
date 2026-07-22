@@ -17,8 +17,8 @@ describe("BattleState", function() {
       BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
 
       const state = BattleSystem.getState();
-      expect(state.getCondition(state.getCharacters()[0])).to.equal(BattleCondition.active);
-      expect(state.getCondition(state.getMonsters()[0])).to.equal(BattleCondition.active);
+      expect(state.getCondition(state.getActiveCharacters()[0])).to.equal(BattleCondition.active);
+      expect(state.getCondition(state.getActiveMonsters()[0])).to.equal(BattleCondition.active);
     });
 
     it('conditions are mutually exclusive', function() {
@@ -26,7 +26,7 @@ describe("BattleState", function() {
       BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
 
       const state = BattleSystem.getState();
-      const monster = state.getMonsters()[0];
+      const monster = state.getActiveMonsters()[0];
 
       state.setCondition(monster, BattleCondition.dead);
       state.setCondition(monster, BattleCondition.fled);
@@ -41,7 +41,7 @@ describe("BattleState", function() {
 
       const state = BattleSystem.getState();
       expect(() => state.setCondition('nobody', BattleCondition.dead)).to.throw('Validate.exists');
-      expect(() => state.setCondition(state.getMonsters()[0], 'sleepy')).to.throw('not in list');
+      expect(() => state.setCondition(state.getActiveMonsters()[0], 'sleepy')).to.throw('not in list');
     });
 
     it('only monsters are listed in the dead and fled monster lists', function() {
@@ -49,7 +49,7 @@ describe("BattleState", function() {
       BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
 
       const state = BattleSystem.getState();
-      state.setCondition(state.getCharacters()[0], BattleCondition.dead);
+      state.setCondition(state.getActiveCharacters()[0], BattleCondition.dead);
 
       expect(state.getDeadMonsters()).to.deep.equal([]);
       expect(state.getFledMonsters()).to.deep.equal([]);
@@ -60,7 +60,7 @@ describe("BattleState", function() {
       BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
 
       const state = BattleSystem.getState();
-      const character = state.getCharacters()[0];
+      const character = state.getActiveCharacters()[0];
       state.setCondition(character, BattleCondition.knockedOut);
 
       expect(state.getKnockedOut()).to.deep.equal([character]);
@@ -123,7 +123,7 @@ describe("BattleState", function() {
       BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
 
       const state = BattleSystem.getState();
-      const entity = state.getCharacters()[0];
+      const entity = state.getActiveCharacters()[0];
 
       state.addStatus(BattleStatusEffect(entity,'blind',{ duration:1000 }));
 
@@ -136,7 +136,7 @@ describe("BattleState", function() {
       BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
 
       const state = BattleSystem.getState();
-      const entity = state.getCharacters()[0];
+      const entity = state.getActiveCharacters()[0];
       const original = BattleStatusEffect(entity,'blind',{ duration:1000 });
 
       state.addStatus(original);
@@ -152,7 +152,7 @@ describe("BattleState", function() {
       BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
 
       const state = BattleSystem.getState();
-      const entity = state.getCharacters()[0];
+      const entity = state.getActiveCharacters()[0];
       const original = BattleStatusEffect(entity,'blind',{ duration:2000 });
 
       state.addStatus(original);
@@ -167,7 +167,7 @@ describe("BattleState", function() {
       BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
 
       const state = BattleSystem.getState();
-      const entity = state.getCharacters()[0];
+      const entity = state.getActiveCharacters()[0];
 
       state.addStatus(BattleStatusEffect(entity,'off-balance',{ duration:1 }));
       state.addStatus(BattleStatusEffect(entity,'poised',{ duration:1 }));

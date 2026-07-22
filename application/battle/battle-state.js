@@ -105,10 +105,10 @@ global.BattleState = function(data) {
     return null;
   }
 
-  function getMonsters() { return Object.keys(monsterFormation); }
-  function getCharacters() { return Object.keys(partyFormation); }
-  function isMonster(id) { return getMonsters().includes(id); }
-  function isCharacter(id) { return getCharacters().includes(id); }
+  function getActiveMonsters() { return Object.keys(monsterFormation); }
+  function getActiveCharacters() { return Object.keys(partyFormation); }
+  function isMonster(id) { return monsterIds.includes(id); }
+  function isCharacter(id) { return characterIds.includes(id); }
   function removeFromFormation(id) { delete (isMonster(id) ? monsterFormation : partyFormation)[id]; }
 
   // === Turn Order ====================================================================================================
@@ -392,8 +392,8 @@ global.BattleState = function(data) {
     isInBack,
     getColumnContaining,
     getEntityAtPosition,
-    getMonsters,
-    getCharacters,
+    getActiveMonsters,
+    getActiveCharacters,
     isMonster,
     isCharacter,
 

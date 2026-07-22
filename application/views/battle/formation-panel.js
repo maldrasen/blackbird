@@ -46,10 +46,10 @@ global.FormationPanel = (function() {
     const monsterFormation = state.getMonsterFormation();
     const partyFormation = state.getPartyFormation();
 
-    state.getMonsters().forEach(monster => {
+    state.getActiveMonsters().forEach(monster => {
       buildCombatantPanel(monster, 'monster', monsterFormation);
     });
-    state.getCharacters().forEach(character => {
+    state.getActiveCharacters().forEach(character => {
       buildCombatantPanel(character, 'character', partyFormation);
     });
   }

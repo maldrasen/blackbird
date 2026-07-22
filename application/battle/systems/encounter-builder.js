@@ -55,7 +55,7 @@ global.EncounterBuilder = (function() {
   // monsters will have different target priorities. They could simply target the closest first, or the least armored,
   // or the most injured.
   function populateThreatTables(state) {
-    state.getMonsters().forEach(id => {
+    state.getActiveMonsters().forEach(id => {
       Monster(id).populateThreatTable();
     });
   }

@@ -42,7 +42,7 @@ global.MonsterSystem = (function() {
   // A character can be targeted if they are alive and are not hidden.
   function getTargetableCharacters() {
     const state = BattleSystem.getState();
-    return state.getCharacters().filter(id => state.canBeTargeted(id));
+    return state.getActiveCharacters().filter(id => state.canBeTargeted(id));
   }
 
   function getPossibleAbilities() {
