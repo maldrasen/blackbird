@@ -1,5 +1,4 @@
 ```
-application/battle/battle-interface.js
 application/battle/battle-state.js
 application/battle/systems/battle-damage-system.js
 application/battle/systems/battle-death-system.js

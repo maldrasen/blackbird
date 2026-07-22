@@ -87,7 +87,7 @@ global.NegotiationSystem = (function() {
   // Monsters who leave a negotiation are marked as fled so that their entities are deleted when the battle is
   // cleaned up. Monsters who join the party are recruited instead, so their entities are kept.
   function monsterLeaves() {
-    BattleSystem.getState().setCombatantCondition(state.getMonster(), BattleCondition.fled);
+    BattleSystem.getState().setCondition(state.getMonster(), BattleCondition.fled);
     removeMonsterFromBattle();
     NegotiationOverlay.close();
     BattleInterface.showVictory();

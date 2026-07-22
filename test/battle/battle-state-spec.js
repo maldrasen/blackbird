@@ -17,8 +17,8 @@ describe("BattleState", function() {
       BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
 
       const state = BattleSystem.getState();
-      expect(state.getCombatantCondition(state.getCharacters()[0])).to.equal(BattleCondition.active);
-      expect(state.getCombatantCondition(state.getMonsters()[0])).to.equal(BattleCondition.active);
+      expect(state.getCondition(state.getCharacters()[0])).to.equal(BattleCondition.active);
+      expect(state.getCondition(state.getMonsters()[0])).to.equal(BattleCondition.active);
     });
 
     it('conditions are mutually exclusive', function() {
@@ -28,8 +28,8 @@ describe("BattleState", function() {
       const state = BattleSystem.getState();
       const monster = state.getMonsters()[0];
 
-      state.setCombatantCondition(monster, BattleCondition.dead);
-      state.setCombatantCondition(monster, BattleCondition.fled);
+      state.setCondition(monster, BattleCondition.dead);
+      state.setCondition(monster, BattleCondition.fled);
 
       expect(state.getDeadMonsters()).to.deep.equal([]);
       expect(state.getFledMonsters()).to.deep.equal([monster]);
@@ -40,8 +40,8 @@ describe("BattleState", function() {
       BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
 
       const state = BattleSystem.getState();
-      expect(() => state.setCombatantCondition('nobody', BattleCondition.dead)).to.throw('not in this battle');
-      expect(() => state.setCombatantCondition(state.getMonsters()[0], 'sleepy')).to.throw('not in list');
+      expect(() => state.setCondition('nobody', BattleCondition.dead)).to.throw('Validate.exists');
+      expect(() => state.setCondition(state.getMonsters()[0], 'sleepy')).to.throw('not in list');
     });
 
     it('only monsters are listed in the dead and fled monster lists', function() {
@@ -49,7 +49,7 @@ describe("BattleState", function() {
       BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
 
       const state = BattleSystem.getState();
-      state.setCombatantCondition(state.getCharacters()[0], BattleCondition.dead);
+      state.setCondition(state.getCharacters()[0], BattleCondition.dead);
 
       expect(state.getDeadMonsters()).to.deep.equal([]);
       expect(state.getFledMonsters()).to.deep.equal([]);
@@ -61,7 +61,7 @@ describe("BattleState", function() {
 
       const state = BattleSystem.getState();
       const character = state.getCharacters()[0];
-      state.setCombatantCondition(character, BattleCondition.knockedOut);
+      state.setCondition(character, BattleCondition.knockedOut);
 
       expect(state.getKnockedOut()).to.deep.equal([character]);
       expect(state.isKnockedOut(character)).to.be.true;

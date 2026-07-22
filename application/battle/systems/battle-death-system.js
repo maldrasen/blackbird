@@ -34,7 +34,7 @@ global.BattleDeathSystem = (function() {
     const isInFront = state.isInFront(id);
     const column = state.getColumnContaining(id);
 
-    state.setCombatantCondition(id, BattleCondition.dead);
+    state.setCondition(id, BattleCondition.dead);
     state.removeFromTurnOrder({ type:(isMonster ? 'monster' : 'character'), id:id });
 
     BattleInterface.killEntity(id);
@@ -80,7 +80,7 @@ global.BattleDeathSystem = (function() {
     const isInFront = state.isInFront(id);
     const column = state.getColumnContaining(id);
 
-    state.setCombatantCondition(id, BattleCondition.knockedOut);
+    state.setCondition(id, BattleCondition.knockedOut);
     state.removeFromTurnOrder({ type:'character', id:id });
 
     BattleInterface.killEntity(id);
