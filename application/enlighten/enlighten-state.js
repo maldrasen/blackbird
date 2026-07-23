@@ -10,21 +10,24 @@ global.EnlightenState = function(from, data) {
       const experience = ExperienceComponent.lookup(id);
       const actor = ActorComponent.lookup(id);
 
-      essence.start = experience.essence;
-      essence.end = experience.essence + essenceGained;
-      essence.needed = EssenceSystem.totalEssenceToLevel(experience.level + 1, actor.species);
+      essence[id] = {
+        start:  experience.essence,
+        end:    experience.essence + essenceGained,
+        needed: EssenceSystem.totalEssenceToLevel(experience.level + 1, actor.species),
+      };
     });
   }
 
   return Object.freeze({
     getFrom: () => { return from },
-    getAnima: () => { return { ...data.anima }},
-    getAnimus: () => { return { ...data.animus }},
+    getAnima: () => { return data.anima },
+    getAnimus: () => { return data.animus },
     getAnger: () => { return data.anger },
     getPartner: () => { return data.partner },
-    getSkillImprovements: () => { return { ...data.skillImprovements }},
-    getRevived: () => { return [...data.revived] },
-    getLoot: () => { return [...data.loot] },
+    getSkillImprovements: () => { return data.skillImprovements },
+    getRevived: () => { return data.revived },
+    getLoot: () => { return data.loot },
+    getEssence: () => { return essence; },
   });
 
 }

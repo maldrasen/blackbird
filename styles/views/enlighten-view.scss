@@ -18,15 +18,13 @@
     border-bottom: variables.$border-normal;
   }
 
-  .skill-improvements {
-
-    .characters {
-      display: grid;
-      grid-template-columns: max-content 1fr;
-      gap: 5px 20px;
-      align-items: baseline;
-    }
-
-    .character { display: contents; }
+  .characters {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 5px 20px;
+    align-items: baseline;
   }
+  .character { display: contents; }
+
+
 }

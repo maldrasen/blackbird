@@ -21,6 +21,7 @@ global.EnlightenView = (function() {
   function showBattleResults() {
     showSkillImprovements();
     showRevives();
+    showExperienceBars();
 
     // X.fill('#enlightenView .essence-summary', essenceSummary(state.getEssenceAwards()));
     // X.fill('#enlightenView .results-table-area', buildResultsTable(state));
@@ -68,6 +69,23 @@ global.EnlightenView = (function() {
     return `${names} went down in the fight, but you were able to save them.`;
   }
 
+  function showExperienceBars() {
+    const essence = EnlightenSystem.getState().getEssence();
+    X.removeClass('#enlightenView .essence-bars','hide');
+
+    console.log("Essence ?",essence);
+
+    Object.keys(essence).forEach(id => {
+      console.log(`Essence for ${id}`,essence[id]);
+
+      const item = X.createElement(`<li class='character'>
+        <span class='name'>${Character(id).getName()}</span>
+        <div class='bar'>===</div>
+      </li>`);
+
+      X.first('#enlightenView .essence-bars .characters').appendChild(item);
+    });
+  }
 
 
 

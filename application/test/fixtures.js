@@ -11,8 +11,8 @@ global.Fixtures = (function() {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
-      // encounter: 'kobold-1'
-      encounter: `kobold-${Random.between(1,5)}`,
+      encounter: 'kobold-1'
+      // encounter: `kobold-${Random.between(1,5)}`,
       // encounter: 'negotiation-fixture'
     });
 
