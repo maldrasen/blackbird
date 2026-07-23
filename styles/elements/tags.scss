@@ -1,27 +1,13 @@
 @use "../variables";
 
 .skill-tag {
-  display: inline-block;
-
-  height: 22px;
-  line-height: 22px;
-  padding: 1px 5px;
+  display: inline-flex;
   margin-left: 5px;
 
-  box-sizing: border-box;
   border: variables.$border-normal;
   box-shadow: variables.$shadow-dark;
   border-radius: 4px;
 
-  span {
-    display: inline-block;
-    position: relative;
-    top: -1px;
-    height: 21px;
-  }
-
-  .label {
-    padding-right: 5px;
-    border-right: variables.$border-normal;
-  }
+  span { padding: 1px 6px; }
+  .label { border-right: variables.$border-normal; }
 }
