@@ -76,20 +76,20 @@ global.BattleSystem = (function() {
     BattleInterface.showGameOver();
   }
 
-  // WIP, untangle this mess
+  // TODO: Generate loot from dead monsters.
   function battleWon() {
+    const totalEssence = state.getTotalEssence();
+    const skillImprovements = state.getSkillImprovements();
     const revived = BattleDeathSystem.reviveKnockedOut();
-    const party = [...state.getActiveCharacters(), ...revived];
-    const essenceAwards = EssenceSystem.awardBattleEssence(state.getDeadMonsters(), party);
-    const improvements = state.getSkillImprovements();
+    const loot = [];
 
     endBattle();
 
-    EnlightenSystem.startEnlightenment('battle',{
-      skillImprovements: improvements,
-      essenceAwards,
-      party,
+    EnlightenSystem.startEnlightenment('battle', {
+      skillImprovements,
+      totalEssence,
       revived,
+      loot,
     });
 
     GameSystem.setGameMode(GameMode.enlighten);

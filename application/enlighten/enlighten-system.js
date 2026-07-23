@@ -1,8 +1,8 @@
 global.EnlightenSystem = (function() {
   let state;
 
-  function startEnlightenment(from,data) {
-    state = EnlightenState(from,data);
+  function startEnlightenment(from, data) {
+    state = EnlightenState(from, data);
   }
 
   function finishEnlightenment() {

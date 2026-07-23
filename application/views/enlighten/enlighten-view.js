@@ -11,8 +11,10 @@ global.EnlightenView = (function() {
   function show() {
     MainContent.setMainContent("views/enlighten.html");
 
-    if (EnlightenSystem.getState().getFrom() === 'training') { return showTrainingResults(); }
-    showBattleResults();
+    switch (EnlightenSystem.getState().getFrom()) {
+      case 'training': return showTrainingResults();
+      case 'battle': return showBattleResults();
+    }
   }
 
   // TODO: The training enlighten view is task 122.
@@ -23,16 +25,16 @@ global.EnlightenView = (function() {
   function showBattleResults() {
     const state = EnlightenSystem.getState();
 
-    X.fill('#enlightenView .essence-summary', essenceSummary(state.getEssenceAwards()));
-
-    if (state.getRevived().length > 0) {
-      X.fill('#enlightenView .revived-summary', revivedSummary(state.getRevived()));
-    }
-
-    X.fill('#enlightenView .results-table-area', buildResultsTable(state));
-
-    const footer = EnlightenSystem.hasPendingLevelUps() ? '.button-advance' : '.button-complete';
-    X.removeClass(`#enlightenView ${footer}`,'hide');
+    // X.fill('#enlightenView .essence-summary', essenceSummary(state.getEssenceAwards()));
+    //
+    // if (state.getRevived().length > 0) {
+    //   X.fill('#enlightenView .revived-summary', revivedSummary(state.getRevived()));
+    // }
+    //
+    // X.fill('#enlightenView .results-table-area', buildResultsTable(state));
+    //
+    // const footer = EnlightenSystem.hasPendingLevelUps() ? '.button-advance' : '.button-complete';
+    // X.removeClass(`#enlightenView ${footer}`,'hide');
   }
 
   function essenceSummary(essenceAwards) {

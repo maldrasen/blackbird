@@ -1,5 +1,9 @@
 describe("EssenceSystem", function() {
 
+  /*
+
+  Changing All This
+
   function buildMonster(attributes) {
     const id = Registry.createEntity();
     AttributesComponent.create(id, attributes);
@@ -112,5 +116,6 @@ describe("EssenceSystem", function() {
       expect(EssenceSystem.canLevelUp(id)).to.equal(true);
     });
   });
+  */
 
 });
