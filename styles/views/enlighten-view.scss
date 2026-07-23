@@ -3,18 +3,22 @@
 #enlightenView {
 
   .title {
+    margin-bottom: 10px;
     font-size: variables.$fs-big;
     font-family: "habibi", serif;
     color: variables.$fg-strong;
     border-bottom: variables.$border-normal;
   }
 
-  .character {
-    margin: 5px;
-  }
-
   .skill-improvements {
-    .skill-list { display: inline-block; }
+    .characters {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      gap: 5px 20px;
+      align-items: baseline;
+    }
+
+    .character { display: contents; }
   }
 
 }
