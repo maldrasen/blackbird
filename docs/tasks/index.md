@@ -13,7 +13,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [107] Add Negotiation Resolution Text `5pt` — [107-add-negotiation-resolution-text.md](107-add-negotiation-resolution-text.md)
 - [108] Complete Negotiation Questions `8pt` — [108-complete-negotiation-questions.md](108-complete-negotiation-questions.md)
 - [110] Navigation Events `8pt` — [110-navigation-events.md](110-navigation-events.md)
-- [114] Rework death mechanics `8pt` — [114-rework-death-mechanics.md](114-rework-death-mechanics.md)
 - [122] Training Enlighten View `5pt` — [122-training-enlighten-view.md](122-training-enlighten-view.md)
 - [131] Oath and nightgaunt episodes `13pt` — [131-oath-and-nightgaunt-episodes.md](131-oath-and-nightgaunt-episodes.md)
 - [134] Implement conversation skill `5pt` — [134-implement-conversation-skill.md](134-implement-conversation-skill.md)
