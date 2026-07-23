@@ -1,0 +1,20 @@
+@use "../variables";
+
+#enlightenView {
+
+  .title {
+    font-size: variables.$fs-big;
+    font-family: "habibi", serif;
+    color: variables.$fg-strong;
+    border-bottom: variables.$border-normal;
+  }
+
+  .character {
+    margin: 5px;
+  }
+
+  .skill-improvements {
+    .skill-list { display: inline-block; }
+  }
+
+}

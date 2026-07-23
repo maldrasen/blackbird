@@ -351,6 +351,11 @@ global.BattleState = function(data) {
     }
   }
 
+  // === TEMP ===
+  const player = GameSystem.getState().getPlayer();
+  skillImproved(player,'scouting',1);
+  skillImproved(player,'conversation',2);
+
   return Object.freeze({
     cleanup,
     getAfterBattle: () => { return afterBattle; },

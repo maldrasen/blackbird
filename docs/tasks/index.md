@@ -16,6 +16,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [114] Rework death mechanics `8pt` — [114-rework-death-mechanics.md](114-rework-death-mechanics.md)
 - [122] Training Enlighten View `5pt` — [122-training-enlighten-view.md](122-training-enlighten-view.md)
 - [131] Oath and nightgaunt episodes `13pt` — [131-oath-and-nightgaunt-episodes.md](131-oath-and-nightgaunt-episodes.md)
+- [134] Implement conversation skill `5pt` — [134-implement-conversation-skill.md](134-implement-conversation-skill.md)
 
 ## Priority 3
 
@@ -45,6 +46,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [128] Random weapon and armor generation `8pt` — [128-random-item-generation.md](128-random-item-generation.md)
 - [129] Enlighten View Essence Bars `5pt` — [129-enlighten-view-essence-bars.md](129-enlighten-view-essence-bars.md)
 - [130] Accept death in game over event `8pt` — [130-accept-death-in-game-over-event.md](130-accept-death-in-game-over-event.md)
+- [133] Remove tests from Electron `3pt` — [133-remove-tests-from-electron.md](133-remove-tests-from-electron.md)
 
 ## Priority 4
 
@@ -60,6 +62,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [115] Add deathblow messages `5pt` — [115-add-deathblow-messages.md](115-add-deathblow-messages.md)
 - [119] Dungeon color themes `3pt` — [119-dungeon-color-themes.md](119-dungeon-color-themes.md)
 - [127] Add a Health factor to the EssenceSystem `2pt` — [127-base-monster-health-factors.md](127-base-monster-health-factors.md)
+- [132] Console improvements `3pt` — [132-console-improvements.md](132-console-improvements.md)
 
 ## Priority 5
 

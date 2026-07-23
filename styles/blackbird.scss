@@ -26,12 +26,14 @@
 @use 'elements/select';
 @use 'elements/slide-window';
 @use 'elements/tabs';
+@use 'elements/tags';
 @use 'elements/tooltip';
 @use 'elements/weaver-elements';
 
 @use 'views/battle';
 @use 'views/character-overlay';
 @use 'views/dungeon';
+@use 'views/enlighten-view';
 @use 'views/episode-view';
 @use 'views/feature-viewer';
 @use 'views/inventory-panel';

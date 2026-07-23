@@ -35,8 +35,26 @@ global.EnlightenView = (function() {
 
   function showSkillImprovements() {
     const improvements = EnlightenSystem.getState().getSkillImprovements();
-    console.log(improvements);
+    if (Object.keys(improvements).length > 0) {
+      X.removeClass('#enlightenView .skill-improvements','hide');
+      Object.keys(improvements).forEach(id => {
+        X.first('#enlightenView .skill-improvements .characters').appendChild(buildSkillCharacterItem(id, improvements[id]));
+      });
+    }
   }
+
+  function buildSkillCharacterItem(id, improvements) {
+    const item = X.createElement(`<li class='character'>
+      <span class='name'>${Character(id).getName()}</span>
+      <ul class='skill-list'></ul>
+    </li>`);
+
+    Object.entries(improvements).forEach(([code,value]) =>
+      item.querySelector('.skill-list').appendChild(TagElements.buildSkillTag(code,value)));
+
+    return item;
+  }
+
 
 
 

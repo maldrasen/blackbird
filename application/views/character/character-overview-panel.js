@@ -199,7 +199,7 @@ global.CharacterOverviewPanel = (function() {
 
   function makeTag(label, value, classname, tooltip) {
     const tagClass = `${classname} tag tooltip-parent`;
-    const tagId = `tag-{${tooltip.type}-${tooltip.code}`;
+    const tagId = `tag-${tooltip.type}-${tooltip.code}`;
     const description = tooltipContent(tooltip);
 
     Tooltip.register(tagId, { content:description, position:'bottom', delay:100 });
