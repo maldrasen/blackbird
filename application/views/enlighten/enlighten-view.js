@@ -43,12 +43,10 @@ global.EnlightenView = (function() {
     return X.createElement(`<p>${text}</p>`);
   }
 
+  // TODO: I think this deserves more flavorful text, but this is fine for now.
   function revivedSummary(revived) {
     const names = EnglishHelper.joinList(revived.map(id => Character(id).getName()));
-    const text = revived.length === 1
-      ? `${names} went down in the fight, but we were able to save them. They return with 1 health.`
-      : `${names} went down in the fight, but we were able to save them. They return with 1 health each.`;
-
+    const text = `${names} went down in the fight, but you were able to save them.`;
     return X.createElement(`<p>${text}</p>`);
   }
 

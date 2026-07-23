@@ -53,11 +53,11 @@ global.BarDisplay = function(options) {
     getElement().querySelector('.max').replaceChildren(max);
   }
 
+  // Values can range outside the bar, health is negative for a knocked out character for instance, but the display
+  // never goes below the bar's minimum.
   function setCurrentValue(value) {
     current = value;
 
-    // Values can range outside of the bar, health is negative for a knocked out character for instance, but the
-    // display never goes below the bar's minimum.
     const displayed = (min == null) ? current : Math.max(min, current);
     let width = (max > 0) ? Math.round((displayed / max) * 100) : 0;
     getElement().querySelector('.current').replaceChildren(displayed);
