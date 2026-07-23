@@ -45,6 +45,10 @@
       gap: 15px 20px;
     }
 
+    .name {
+      margin-bottom: -5px;
+    }
+
     .bar {
       transition: width 500ms ease-out;
       &.snap { transition: none; }
@@ -52,10 +56,6 @@
 
     .full .bar {
       animation: essence-bar-flash 0.6s ease-out;
-    }
-
-    .level-up-button {
-      font-size: variables.$fs-small;
     }
   }
 

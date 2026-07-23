@@ -96,7 +96,7 @@ global.EnlightenView = (function() {
     const bounds = levelBounds(id);
 
     essenceBars[id] = BarDisplay({
-      label: '',
+      label: 'Essence',
       currentValue: startingEssence,
       minValue: bounds.floor,
       maxValue: bounds.ceiling,

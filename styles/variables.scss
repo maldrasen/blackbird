@@ -28,79 +28,79 @@ $shadow-portrait-highlight: 0px 0px 15px rgba(200,200,250,0.75) inset;
 $shadow-small-highlight: 0px 0px 10px rgba(200,200,250,0.5) inset;
 
 $border-transparent: 1px solid transparent;
-$border-very-light:  1px solid rgba(250,250,250,0.05);
-$border-light:       1px solid rgba(250,250,250,0.1);
-$border-normal:      1px solid rgba(250,250,250,0.2);
-$border-heavy:       2px solid rgba(250,250,250,0.3);
-$border-portrait:    1px solid rgb(30,30,30);
+$border-very-light:  1px solid rgb(250 250 250 / 0.05);
+$border-light:       1px solid rgb(250 250 250 / 0.1);
+$border-normal:      1px solid rgb(250 250 250 / 0.2);
+$border-heavy:       2px solid rgb(250 250 250 / 0.3);
+$border-portrait:    1px solid rgb(30 30 30);
 
-$bg-root:            rgb(30,30,30);
-$bg-light:           rgba(0,0,0,0.50);
-$bg-frame:           rgba(0,0,0,0.666);
-$bg-dark:            rgba(0,0,0,0.8);
-$bg-very-dark:       rgba(0,0,0,0.9);
+$bg-root:            rgb(30 30 30);
+$bg-light:           rgb(0 0 0 / 0.5);
+$bg-frame:           rgb(0 0 0 / 0.666);
+$bg-dark:            rgb(0 0 0 / 0.8);
+$bg-very-dark:       rgb(0 0 0 / 0.9);
 
-$fg-body:            rgb(180,170,160);
-$fg-strong:          rgb(240,230,220);
-$fg-very-strong:     rgb(250, 250, 250);
-$fg-weak:            rgb(180, 150, 120);
-$fg-very-weak:       rgba(180, 150, 120, 0.5);
-$fg-link:            rgb(200,200,200);
-$fg-link-hover:      rgb(225,225,225);
-$fg-link-active:     rgb(255,255,255);
+$fg-body:            rgb(180 170 160);
+$fg-strong:          rgb(240 230 220);
+$fg-very-strong:     rgb(250 250 250);
+$fg-weak:            rgb(180 150 120);
+$fg-very-weak:       rgb(180 150 120 / 0.5);
+$fg-link:            rgb(200 200 200);
+$fg-link-hover:      rgb(225 225 225);
+$fg-link-active:     rgb(255 255 255);
 
-$select-active:       rgba(150,150,200,0.2);
-$select-shade:       rgba(150,150,200,0.1);
+$select-active: rgb(150 150 200 / 0.2);
+$select-shade:  rgb(150 150 200 / 0.1);
 
 // === Logs and Alerts ===
-$fg-info: rgb(180,200,220);
-$fg-success: rgb(100,250,100);
-$fg-warning: rgb(250,250,100);
-$fg-error: rgb(250,100,100);
+$fg-info:    rgb(180 200 220);
+$fg-success: rgb(100 250 100);
+$fg-warning: rgb(250 250 100);
+$fg-error:   rgb(250 100 100);
 
-$fg-info-bright: rgb(250,250,250);
-$fg-success-bright: rgb(150,250,150);
-$fg-warning-bright: rgb(250,250,150);
-$fg-error-bright: rgb(250,150,150);
+$fg-info-bright:    rgb(250 250 250);
+$fg-success-bright: rgb(150 250 150);
+$fg-warning-bright: rgb(250 250 150);
+$fg-error-bright:   rgb(250 150 150);
 
 // === Buttons ===
-$bg-button:           rgba(0,0,0,0.666);
-$fg-button-default:   rgb(200, 200, 200);
-$fg-button-primary:   rgb(150, 150, 250);
-$fg-button-secondary: rgb(128, 175, 213);
-$fg-button-danger:    rgb(250, 100, 100);
-$fg-button-warning:   rgb(153, 112, 77);
-$fg-button-success:   rgb(127, 201, 127);
+$bg-button:           rgb(0 0 0 / 0.666);
+$fg-button-default:   rgb(200 200 200);
+$fg-button-primary:   rgb(150 150 250);
+$fg-button-secondary: rgb(125 175 210);
+$fg-button-danger:    rgb(250 100 100);
+$fg-button-warning:   rgb(177 129 70);
+$fg-button-success:   rgb(127 201 127);
 
 // === Consent ===
-$fg-disabled:      rgb(60,60,60);
-$fg-disabled-b:    rgba(60,60,60,0.5);
-$fg-unwilling:     rgb(143,75,70);
-$fg-unwilling-b:   rgba(143,75,70,0.5);
-$fg-reluctant:     rgb(145,104,67);
-$fg-reluctant-b:   rgba(145,104,67,0.5);
-$fg-willing:       rgb(149,146,87);
-$fg-willing-b:     rgba(149,146,87,0.5);
-$fg-eager:         rgb(133,156,130);
-$fg-eager-b:       rgba(133,156,130,0.5);
+$fg-disabled:    rgb(60 60 60);
+$fg-disabled-b:  rgb(60 60 60 / 0.5);
+$fg-unwilling:   rgb(148 78 73);
+$fg-unwilling-b: rgb(147 77 72 / 0.5);
+$fg-reluctant:   rgb(150 107 69);
+$fg-reluctant-b: rgb(145 104 67 / 0.5);
+$fg-willing:     rgb(150 147 88);
+$fg-willing-b:   rgb(150 146 87 / 0.5);
+$fg-eager:       rgb(135 158 132);
+$fg-eager-b:     rgb(135 158 132 / 0.5);
 
 // === Other Attributes and Bars ===
 
-$fg-strength-bright: rgb(192 145 145);
-$fg-strength: rgb(187,87,87);
-$bg-strength: rgb(43,20,20);
-$fg-dexterity-bright: rgb(149 185 137);
-$fg-dexterity: rgb(101,178,78);
-$bg-dexterity: rgb(25,43,18);
-$fg-vitality-bright: rgb(189 169 130);
-$fg-vitality: rgb(188,143,60);
-$bg-vitality: rgb(66,50,21);
-$fg-intelligence-bright: rgb(148 155 202);
-$fg-intelligence: rgb(90,105,198);
-$bg-intelligence: rgb(25,32,57);
-$fg-beauty-bright: rgb(176 135 192);
-$fg-beauty: rgb(155,77,185);
-$bg-beauty: rgb(36,18,43);
+$fg-strength-bright:     rgb(192 146 146);
+$fg-strength:            rgb(188 88 88);
+$bg-strength:            rgb(43 20 20);
+$fg-dexterity-bright:    rgb(149 185 137);
+$fg-dexterity:           rgb(103 181 79);
+$bg-dexterity:           rgb(26 44 19);
+$fg-vitality-bright:     rgb(191 171 131);
+$fg-vitality:            rgb(191 145 61);
+$bg-vitality:            rgb(68 52 22);
+$fg-intelligence-bright: rgb(147 154 201);
+$fg-intelligence:        rgb(88 103 195);
+$bg-intelligence:        rgb(26 33 58);
+$fg-beauty-bright:       rgb(180 139 197);
+$fg-beauty:              rgb(157 78 188);
+$bg-beauty:              rgb(37 19 44);
 
 $fg-rank-F: #6e6454;
 $bg-rank-F: #2b2521;
@@ -119,59 +119,59 @@ $bg-rank-SS: #3c0c3c;
 $fg-rank-SSS: #2080FF;
 $bg-rank-SSS: #081c39;
 
-$fg-essence:  rgb(140,110,205);
-$bg-essence:  rgb(35,28,52);
-$fg-health:   rgb(198,107,107);
-$bg-health:   rgb(60,36,36);
-$fg-stamina:  rgb(197,194,101);
-$bg-stamina:  rgb(63,63,40);
-$fg-mana:     rgb(90,127,140);
-$bg-mana:     rgb(42,56,61);
-$fg-arousal:  rgb(222,131,180);
-$bg-arousal:  rgb(90,53,77);
-$fg-pleasure: rgb(183,101,202);
-$bg-pleasure: rgb(49,28,57);
-$fg-plain:    rgb(120,109,104);
-$bg-plain:    rgb(43,37,35);
+$fg-essence:  rgb(136 204 140);
+$bg-essence:  rgb(30 36 30);
+$fg-health:   rgb(202 110 110);
+$bg-health:   rgb(44 27 27);
+$fg-stamina:  rgb(217 212 127);
+$bg-stamina:  rgb(43 43 27);
+$fg-mana:     rgb(91 129 142);
+$bg-mana:     rgb(29 38 41);
+$fg-arousal:  rgb(225 133 182);
+$bg-arousal:  rgb(41 29 36);
+$fg-pleasure: rgb(186 103 205);
+$bg-pleasure: rgb(40 24 46);
+$fg-plain:    rgb(121 110 105);
+$bg-plain:    rgb(36 31 30);
 
 // === Forms ===
 $bg-input: rgba(0,0,0,0.8);
-$bg-input-active: rgba(30,30,50);
-$border-input: 1px solid rgba(180,170,160,0.5);
-$border-input-hover: 1px solid rgba(180,170,160,0.75);
-$border-input-focus: 1px solid rgba(180,170,160,0.75);
+$bg-input-active: rgb(28 28 47);
+$border-input: 1px solid rgb(179 169 160 / 0.5);
+$border-input-hover: 1px solid rgb(181 171 160 / 0.75);
+$border-input-focus: 1px solid rgb(178 168 159 / 0.75);
 
 // === Radio Buttons ===
-$fg-radio-button-on: rgb(250,250,250);
-$bg-radio-button-on: rgba(100,50,0,0.05);
-$glow-radio-button-on:  0 0 3px rgb(200,100,50);
+$fg-radio-button-on: rgb(250 250 250);
+$bg-radio-button-on: rgb(100 50 0 / 0.05);
+$glow-radio-button-on:  0 0 3px rgb(200 100 50);
 
 // === Scrolling Panel ===
-$bg-scrolling-panel-track: rgba(0,0,0,0.2);
-$bg-scrolling-panel-thumb: rgb(28,30,40);
-$bg-scrolling-panel-thumb-hover: rgb(52,55,73);
+$bg-scrolling-panel-track: rgb(0 0 0 / 0.2);
+$bg-scrolling-panel-thumb: rgb(30 30 40);
+$bg-scrolling-panel-thumb-hover: rgb(54 57 76);
 
-$border-scrolling-panel-thumb-top: 1px solid rgba(100,100,250,0.1);
-$border-scrolling-panel-thumb-bottom: 1px solid rgba(0,0,0,0.5);
+$border-scrolling-panel-thumb-top: 1px solid rgb(100 100 250 / 0.1);
+$border-scrolling-panel-thumb-bottom: 1px solid rgb(0 0 0 / 0.5);
 
-$shadow-scrolling-panel-track: 2px 2px 4px rgb(0,0,0) inset;
-$shadow-scrolling-panel-thumb: -2px -2px 5px rgba(0,0,0,0.4) inset,
-                               2px 2px 5px rgba(100,100,250,0.2) inset;
+$shadow-scrolling-panel-track: 2px 2px 4px rgb(0 0 0) inset;
+$shadow-scrolling-panel-thumb: -2px -2px 5px rgb(0 0 0 / 0.4) inset,
+                               2px 2px 5px rgb(100 100 250 / 0.2) inset;
 
 // === Dungeon ===
 // Placeholder palette until the dungeon themes get their own.
-$bg-dungeon:              rgb(10,10,10);
-$bg-dungeon-floor:        rgb(0,0,0);
-$bg-dungeon-wall-face:    rgb(0,0,0);
-$fg-dungeon-wall:         rgb(80,80,80);
-$fg-dungeon-wall-current: rgb(180,180,200);
-$fg-dungeon-grid:         rgb(30,30,30);
-$fg-dungeon-stairs:       #776f5e;
-$fg-dungeon-stairs-hover: #b0a68e;
+$bg-dungeon:              rgb(10 10 10);
+$bg-dungeon-floor:        rgb(0 0 0);
+$bg-dungeon-wall-face:    rgb(0 0 0);
+$fg-dungeon-wall:         rgb(80 80 80);
+$fg-dungeon-wall-current: rgb(180 180 200);
+$fg-dungeon-grid:         rgb(30 30 30);
+$fg-dungeon-stairs:       rgb(119 110 94);
+$fg-dungeon-stairs-hover: rgb(177 167 151);
 
 // === Casement ===
-$casementBorderColor: rgb(47,37,34);
-$casementTopGradient: linear-gradient(rgb(47,37,34) 0%, rgb(0,0,0) 100%);
+$casementBorderColor: rgb(47 37 34);
+$casementTopGradient: linear-gradient(rgb(47 37 34) 0%, rgb(0 0 0) 100%);
 
 // === Z-Indices ===
 $z-background: 0;
