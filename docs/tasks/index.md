@@ -47,6 +47,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [129] Enlighten View Essence Bars `5pt` — [129-enlighten-view-essence-bars.md](129-enlighten-view-essence-bars.md)
 - [130] Accept death in game over event `8pt` — [130-accept-death-in-game-over-event.md](130-accept-death-in-game-over-event.md)
 - [133] Remove tests from Electron `3pt` — [133-remove-tests-from-electron.md](133-remove-tests-from-electron.md)
+- [135] Upgrade Electron `3pt` — [135-upgrade-electron.md](135-upgrade-electron.md)
 
 ## Priority 4
 
