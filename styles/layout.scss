@@ -35,6 +35,13 @@
   box-shadow: variables.$shadow-frame;
 }
 
+.inner-frame {
+  padding: 10px;
+  background-color: #000;
+  border: variables.$border-light;
+  box-shadow: variables.$shadow-dark;
+}
+
 .bottom-frame {
   position: absolute;
   bottom: 0;

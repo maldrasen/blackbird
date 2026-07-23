@@ -13,12 +13,6 @@ global.EnlightenState = function(from, data) {
       essence.start = experience.essence;
       essence.end = experience.essence + essenceGained;
       essence.needed = EssenceSystem.totalEssenceToLevel(experience.level + 1, actor.species);
-
-      console.log(`Experience for ${id}`)
-      console.log("   Start:",essence.start);
-      console.log("   End:",essence.end);
-      console.log("   Needed:",essence.needed);
-      console.log("Level?",experience.level);
     });
   }
 

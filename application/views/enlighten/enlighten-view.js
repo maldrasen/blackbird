@@ -1,11 +1,7 @@
 global.EnlightenView = (function() {
-  const arrow = `→`;
 
   function init() {
-    X.onClick('#enlightenView .button-complete', complete);
-    X.onClick('#enlightenView .button-advance', showLevelUpPhase);
-    X.onClick('#enlightenView .button-next-level', showLevelUpPhase);
-    X.onClick('#enlightenView .attribute-pick', pickAttribute);
+    X.onClick('#enlightenView .continue-button', finish);
   }
 
   function show() {
@@ -19,11 +15,11 @@ global.EnlightenView = (function() {
 
   // TODO: The training enlighten view is task 122.
   function showTrainingResults() {
-    X.removeClass('#enlightenView .button-complete','hide');
+    showSkillImprovements();
   }
 
   function showBattleResults() {
-    const state = EnlightenSystem.getState();
+    showSkillImprovements();
 
     // X.fill('#enlightenView .essence-summary', essenceSummary(state.getEssenceAwards()));
     //
@@ -37,6 +33,15 @@ global.EnlightenView = (function() {
     // X.removeClass(`#enlightenView ${footer}`,'hide');
   }
 
+  function showSkillImprovements() {
+    const improvements = EnlightenSystem.getState().getSkillImprovements();
+    console.log(improvements);
+  }
+
+
+
+
+/*
   function essenceSummary(essenceAwards) {
     const text = essenceAwards.total === 0
       ? `No essence was gathered from the battle.`
@@ -79,10 +84,6 @@ global.EnlightenView = (function() {
       return `${Skill.lookup(code).getName()} ${arrow} ${level}`;
     }).join(', ');
   }
-
-  // ==================
-  //    Level Up Phase
-  // ==================
 
   function showLevelUpPhase() {
     const id = EnlightenSystem.getCurrentLevelUp();
@@ -133,8 +134,9 @@ global.EnlightenView = (function() {
     X.removeClass('#enlightenView .enlighten-results','hide');
     X.removeClass('#enlightenView .button-complete','hide');
   }
+*/
 
-  function complete() {
+  function finish() {
     EnlightenSystem.finishEnlightenment();
     GameSystem.returnToPreviousMode();
   }
