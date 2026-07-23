@@ -1,3 +1,15 @@
+Initial idea for how the dungeon would start granting you power, but with the "accept death" mechanic to unlock new scenarios, this becomes stale. I think I want to take a few of the ideas here. Rather than a succubus you should encounter a nightgaunt, somewhere on the first floor of the dungeon. It offers you the ability to speak with monsters.
+
+We should also have an event when you first get to the dungeon, where a priest from the church insists that you take an oath before entering the dungeon, to not accept any of the corrupting powers offered by the dungeon. 
+
+This creates a difficult problem. We may need a "canTalkToMonsters" check in almost every event. The game is exceedingly difficult if you don't take any companions, but not impossible yet. If you crank the difficulty low enough there's nothing preventing you from soloing the first several levels with a pure melee build. One solution to this would be to make the nightgaunt encounter non-negotiable. If you don't accept its offer it just kills you. The nightgaunt should also unlock the ability to absorb essence though. The game really would be impossible locked at level 1 with no healing. Perhaps you can refuse once... and it'll get aggressive, making it clear you don't have a choice. Refuse again and he kills you horribly.
+
+If we go with this path though, every character would then need to find the nightgaunt on the first floor before they can start to level at all. This gives us the option of having a brief encounter with it at the start of every game. It's a agent of the dungeon, so it might give a few world building type hints. 
+
+We need to make sure that the floor generation always adds the nightgaunt room on the first floor when the character hasn't met it yet, but can't generate it after. The gaunt should have a unique room, with a unique graphic as well. 
+
+---
+
 The first time you die you're 'rescued' by Lily the Succubus. You're already naked and disarmed when you wake, and she's already straddling you, riding your cock.
 - Confront her - She'll keep fucking you, explaining how she revived you, and will offer you the deal.
 - Attack her - She's into that shit. She'll let you abuse her however you want, you can try beating her, choking her, nothing you can do causes her any permanent harm, though she might orgasm a few times. Eventually, once you decide it's pointless, or after you've raped her for a bit, she'll make you her offer.
