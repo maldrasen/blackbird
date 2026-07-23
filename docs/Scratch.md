@@ -1,0 +1,1 @@
+*Bug:* Our player character starts at level 0.

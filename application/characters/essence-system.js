@@ -36,25 +36,6 @@ global.EssenceSystem = (function() {
     return 1 + (scoreSum * abilityScale);
   }
 
-  // The essence from the battle's dead pile is split evenly among the surviving party members, discarding any
-  // remainder. Must be called before the battle state cleanup deletes the dead monsters from the registry.
-  // function awardBattleEssence(deadPile, survivors) {
-  //   const total = deadPile.reduce((sum,id) => sum + monsterEssenceValue(id), 0);
-  //   const share = survivors.length === 0 ? 0 : Math.floor(total / survivors.length);
-  //   const awards = {};
-  //
-  //   survivors.forEach(id => {
-  //     awards[id] = share;
-  //     if (share === 0) { return; }
-  //
-  //     const experience = ExperienceComponent.lookup(id);
-  //     experience.essence += share;
-  //     ExperienceComponent.update(id, experience);
-  //   });
-  //
-  //   return { total, share, awards };
-  // }
-
   // ========================
   //    Character Leveling
   // ========================
@@ -87,7 +68,6 @@ global.EssenceSystem = (function() {
 
   return Object.freeze({
     monsterEssenceValue,
-    // awardBattleEssence,
     essenceToLevel,
     totalEssenceToLevel,
     speciesCostFactor,
