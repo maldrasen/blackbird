@@ -2,6 +2,13 @@
 
 #enlightenView {
 
+  .panel {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: variables.$border-light;
+    box-shadow: variables.$shadow-frame;
+    background-color: #111;
+  }
 
   .title {
     margin-bottom: 10px;
@@ -12,7 +19,6 @@
   }
 
   .skill-improvements {
-    background-color: #111;
 
     .characters {
       display: grid;

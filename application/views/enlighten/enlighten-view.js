@@ -20,13 +20,9 @@ global.EnlightenView = (function() {
 
   function showBattleResults() {
     showSkillImprovements();
+    showRevives();
 
     // X.fill('#enlightenView .essence-summary', essenceSummary(state.getEssenceAwards()));
-    //
-    // if (state.getRevived().length > 0) {
-    //   X.fill('#enlightenView .revived-summary', revivedSummary(state.getRevived()));
-    // }
-    //
     // X.fill('#enlightenView .results-table-area', buildResultsTable(state));
     //
     // const footer = EnlightenSystem.hasPendingLevelUps() ? '.button-advance' : '.button-complete';
@@ -55,6 +51,19 @@ global.EnlightenView = (function() {
     return item;
   }
 
+  function showRevives() {
+    const revived = EnlightenSystem.getState().getRevived();
+    if (revived.length > 0) {
+      X.removeClass('#enlightenView .revived','hide');
+      X.first('#enlightenView .revived').textContent = revivedSummary(revived);
+    }
+  }
+
+  // TODO: I think this deserves more flavorful text, but this is fine for now.
+  function revivedSummary(revived) {
+    const names = EnglishHelper.joinList(revived.map(id => Character(id).getName()));
+    return `${names} went down in the fight, but you were able to save them.`;
+  }
 
 
 
@@ -68,40 +77,6 @@ global.EnlightenView = (function() {
     return X.createElement(`<p>${text}</p>`);
   }
 
-  // TODO: I think this deserves more flavorful text, but this is fine for now.
-  function revivedSummary(revived) {
-    const names = EnglishHelper.joinList(revived.map(id => Character(id).getName()));
-    const text = `${names} went down in the fight, but you were able to save them.`;
-    return X.createElement(`<p>${text}</p>`);
-  }
-
-  function buildResultsTable(state) {
-    const awards = state.getEssenceAwards().awards;
-    const skillImprovements = state.getSkillImprovements() || {};
-    const characters = [...new Set([...Object.keys(awards), ...Object.keys(skillImprovements)])];
-
-    const builder = TableBuilder({ classname:'enlighten-results-table' });
-
-    builder.addRow({ classname:'header' });
-    ['Character','Essence','Skills'].forEach(text => { builder.addCell(text, { classname:text.toLowerCase() }); });
-
-    characters.forEach(id => {
-      builder.addRow();
-      builder.addCell(Character(id).getName(), { classname:'character' });
-      builder.addCell(`${awards[id] || 0}`, { classname:'essence' });
-      builder.addCell(skillSummary(skillImprovements[id]), { classname:'skills' });
-    });
-
-    return builder.getTable();
-  }
-
-  function skillSummary(improvements) {
-    if (improvements == null) { return ''; }
-
-    return Object.entries(improvements).map(([code,level]) => {
-      return `${Skill.lookup(code).getName()} ${arrow} ${level}`;
-    }).join(', ');
-  }
 
   function showLevelUpPhase() {
     const id = EnlightenSystem.getCurrentLevelUp();
