@@ -61,6 +61,9 @@ global.EnlightenView = (function() {
 
   // TODO: I think this deserves more flavorful text, but this is fine for now.
   function revivedSummary(revived) {
+    if (revived.length === 1) {
+      return Weaver({ A:revived[0] }).weave(`{A:name} went down in the fight, but we were able to save {A:him}.`);
+    }
     const names = EnglishHelper.joinList(revived.map(id => Character(id).getName()));
     return `${names} went down in the fight, but you were able to save them.`;
   }
