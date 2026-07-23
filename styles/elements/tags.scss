@@ -5,9 +5,70 @@
   margin-left: 5px;
 
   border: variables.$border-normal;
-  box-shadow: variables.$shadow-dark;
+  box-shadow: variables.$shadow-button;
   border-radius: 4px;
+  background-color: #000;
 
   span { padding: 1px 6px; }
-  .label { border-right: variables.$border-normal; }
+  .label { border-right: 1px solid; }
+}
+
+.skill-tag.strength {
+  border-color: variables.$bg-strength;
+  .label {
+    color: variables.$fg-strength-bright;
+    border-color: variables.$bg-strength;
+  }
+  .value {
+    color: variables.$fg-strength;
+    background-color: variables.$bg-strength;
+  }
+}
+
+.skill-tag.dexterity {
+  border-color: variables.$bg-dexterity;
+  .label {
+    color: variables.$fg-dexterity-bright;
+    border-color: variables.$bg-dexterity;
+  }
+  .value {
+    color: variables.$fg-dexterity;
+    background-color: variables.$bg-dexterity;
+  }
+}
+
+.skill-tag.vitality {
+  border-color: variables.$bg-vitality;
+  .label {
+    color: variables.$fg-vitality-bright;
+    border-color: variables.$bg-vitality;
+  }
+  .value {
+    color: variables.$fg-vitality;
+    background-color: variables.$bg-vitality;
+  }
+}
+
+.skill-tag.intelligence {
+  border-color: variables.$bg-intelligence;
+  .label {
+    color: variables.$fg-intelligence-bright;
+    border-color: variables.$bg-intelligence;
+  }
+  .value {
+    color: variables.$fg-intelligence;
+    background-color: variables.$bg-intelligence;
+  }
+}
+
+.skill-tag.beauty {
+  border-color: variables.$bg-beauty;
+  .label {
+    color: variables.$fg-beauty-bright;
+    border-color: variables.$bg-beauty;
+  }
+  .value {
+    color: variables.$fg-beauty;
+    background-color: variables.$bg-beauty;
+  }
 }
