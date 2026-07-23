@@ -48,28 +48,8 @@ global.BattleInterface = (function() {
     FormationPanel.moveInwardOnDeath(moves);
   }
 
-  function showVictory() {
-    if (Tests.running()) { return; }
-
-    const state = BattleSystem.getState();
-    const revived = BattleDeathSystem.reviveKnockedOut();
-    const party = [...state.getActiveCharacters(), ...revived];
-    const essenceAwards = EssenceSystem.awardBattleEssence(state.getDeadMonsters(), party);
-
-    BattleSystem.endBattle();
-    EnlightenSystem.startEnlightenment('battle',{
-      skillImprovements: state.getSkillImprovements(),
-      essenceAwards,
-      party,
-      revived,
-    });
-    GameSystem.setGameMode(GameMode.enlighten);
-  }
-
   function showGameOver() {
     if (Tests.running()) { return; }
-
-    BattleSystem.endBattle();
     EpisodeSystem.startEpisode('game-over', {});
     GameSystem.setGameMode(GameMode.episode);
   }
@@ -84,7 +64,6 @@ global.BattleInterface = (function() {
     killEntity,
     moveForwardOnDeath,
     moveInwardOnDeath,
-    showVictory,
     showGameOver,
   });
 

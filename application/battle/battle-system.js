@@ -31,26 +31,14 @@ global.BattleSystem = (function() {
     StatusEffectSystem.processStartRound();
   }
 
-  // Useful function for debugging turn order. Eventually I'd like to just have a turn order widget on the side of the
-  // battle view, although having the order hidden does add a certain uncertainty.
-  function printTurnOrder() {
-    console.log("");
-    console.log("=== Turn Order ===")
-    state.getTurnOrder().forEach(entry => {
-      const name = entry.type === 'character' ? Character(entry.id).getName() : `${Monster(entry.id).getBaseMonster().getName()} [${state.getPosition(entry.id)}]`;
-      console.log(`[${entry.time}] ${name}`);
-    });
-    console.log("");
-  }
-
   function advanceBattle() {
     startRound();
 
     Console.log(`Advancing Battle`,{ system:'BattleSystem', level:1, data:{ acting:round.getActing() }});
 
     switch (state.getInterrupt()) {
-      case 'victory': return BattleInterface.showVictory();
-      case 'game-over': return BattleInterface.showGameOver();
+      case 'victory': return battleWon();
+      case 'game-over': return battleLost();
     }
 
     if (round.isActingMonster()) {
@@ -81,6 +69,30 @@ global.BattleSystem = (function() {
     StealthSystem.processRound();
     StatusEffectSystem.processEndRound();
     state.updateTime(round.getActing(), round.getTime());
+  }
+
+  function battleLost() {
+    endBattle();
+    BattleInterface.showGameOver();
+  }
+
+  // WIP, untangle this mess
+  function battleWon() {
+    const revived = BattleDeathSystem.reviveKnockedOut();
+    const party = [...state.getActiveCharacters(), ...revived];
+    const essenceAwards = EssenceSystem.awardBattleEssence(state.getDeadMonsters(), party);
+    const improvements = state.getSkillImprovements();
+
+    endBattle();
+
+    EnlightenSystem.startEnlightenment('battle',{
+      skillImprovements: improvements,
+      essenceAwards,
+      party,
+      revived,
+    });
+
+    GameSystem.setGameMode(GameMode.enlighten);
   }
 
   return Object.freeze({

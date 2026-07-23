@@ -90,7 +90,7 @@ global.NegotiationSystem = (function() {
     BattleSystem.getState().setCondition(state.getMonster(), BattleCondition.fled);
     removeMonsterFromBattle();
     NegotiationOverlay.close();
-    BattleInterface.showVictory();
+    BattleSystem.battleWon();
   }
 
   // TODO: When the monster turns angry, end the negotiation and the player's turn. The monster should then
@@ -110,7 +110,7 @@ global.NegotiationSystem = (function() {
     removeMonsterFromBattle();
     RecruitmentSystem.recruit(state.getMonster(), state.getFeelings());
     NegotiationOverlay.close();
-    BattleInterface.showVictory();
+    BattleSystem.battleWon();
   }
 
   function removeMonsterFromBattle() {
