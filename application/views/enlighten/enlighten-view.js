@@ -1,7 +1,12 @@
 global.EnlightenView = (function() {
 
+  let essenceBars = {};
+
   function init() {
     X.onClick('#enlightenView .continue-button', finish);
+    X.onClick('#enlightenView .level-up-button', openLevelUp);
+    X.onClick('#levelUpOverlay .attribute-pick', pickAttribute);
+    X.onClick('#levelUpOverlay .confirm-button', confirmLevelUp);
   }
 
   function show() {
@@ -21,13 +26,7 @@ global.EnlightenView = (function() {
   function showBattleResults() {
     showSkillImprovements();
     showRevives();
-    showExperienceBars();
-
-    // X.fill('#enlightenView .essence-summary', essenceSummary(state.getEssenceAwards()));
-    // X.fill('#enlightenView .results-table-area', buildResultsTable(state));
-    //
-    // const footer = EnlightenSystem.hasPendingLevelUps() ? '.button-advance' : '.button-complete';
-    // X.removeClass(`#enlightenView ${footer}`,'hide');
+    showEssenceBars();
   }
 
   function showSkillImprovements() {
@@ -35,7 +34,7 @@ global.EnlightenView = (function() {
     if (Object.keys(improvements).length > 0) {
       X.removeClass('#enlightenView .skill-improvements','hide');
       Object.keys(improvements).forEach(id => {
-        X.first('#enlightenView .skill-improvements .characters').appendChild(buildSkillCharacterItem(id, improvements[id]));
+        X.first('#enlightenView .skill-improvements .character-grid').appendChild(buildSkillCharacterItem(id, improvements[id]));
       });
     }
   }
@@ -69,86 +68,147 @@ global.EnlightenView = (function() {
     return `${names} went down in the fight, but you were able to save them.`;
   }
 
-  function showExperienceBars() {
+  // ====================
+  //    Essence Bars
+  // ====================
+
+  function showEssenceBars() {
+    essenceBars = {};
+
     const essence = EnlightenSystem.getState().getEssence();
     X.removeClass('#enlightenView .essence-bars','hide');
 
-    console.log("Essence ?",essence);
-
     Object.keys(essence).forEach(id => {
-      console.log(`Essence for ${id}`,essence[id]);
-
-      const item = X.createElement(`<li class='character'>
-        <span class='name'>${Character(id).getName()}</span>
-        <div class='bar'>===</div>
-      </li>`);
-
-      X.first('#enlightenView .essence-bars .characters').appendChild(item);
+      X.append('#enlightenView .essence-bars .character-grid', buildEssenceRow(id, essence[id].start));
+      animateEssenceBar(id, essence[id].start);
     });
   }
 
+  function buildEssenceRow(id, startingEssence) {
+    const row = X.createElement(`<li class='character'>
+      <div class='name'>${Character(id).getName()}</div>
+      <div class='bar-cell'></div>
+      <div class='actions'>
+        <a href='#' class='button button-small button-primary level-up-button hide' data-id='${id}'>Level Up</a>
+      </div>
+    </li>`);
 
+    const bounds = levelBounds(id);
 
-/*
-  function essenceSummary(essenceAwards) {
-    const text = essenceAwards.total === 0
-      ? `No essence was gathered from the battle.`
-      : `The party absorbs ${essenceAwards.total} essence — ${essenceAwards.share} for each member.`;
+    essenceBars[id] = BarDisplay({
+      label: '',
+      currentValue: startingEssence,
+      minValue: bounds.floor,
+      maxValue: bounds.ceiling,
+      color: 'essence',
+    });
 
-    return X.createElement(`<p>${text}</p>`);
+    row.querySelector('.bar-cell').appendChild(essenceBars[id].getElement());
+    return row;
   }
 
+  // The bar fills from the character's essence before the battle to their current banked total, measured through
+  // the current level. Filling the bar completely means the character can level up, which raises the bounds and
+  // runs the animation again from empty.
+  function animateEssenceBar(id, fromEssence) {
+    const bar = essenceBars[id];
+    const { floor, ceiling } = levelBounds(id);
+    const target = Math.min(ExperienceComponent.lookup(id).essence, ceiling);
+    const willMove = barPercent(target,floor,ceiling) > barPercent(fromEssence,floor,ceiling);
 
-  function showLevelUpPhase() {
-    const id = EnlightenSystem.getCurrentLevelUp();
-    if (id == null) { return showLevelUpsComplete(); }
+    bar.setMinValue(floor);
+    bar.setMaxValue(ceiling);
 
+    const fill = bar.getElement().querySelector('.bar');
+    X.addClass(fill,'snap');
+    bar.setCurrentValue(fromEssence);
+
+    if (willMove === false) {
+      bar.setCurrentValue(target);
+      return onBarFilled(id, target === ceiling);
+    }
+
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      X.removeClass(fill,'snap');
+      fill.addEventListener('transitionend', () => onBarFilled(id, target === ceiling), { once:true });
+      bar.setCurrentValue(target);
+    }));
+  }
+
+  function barPercent(value, floor, ceiling) {
+    return Math.round(((value - floor) / (ceiling - floor)) * 100);
+  }
+
+  function onBarFilled(id, canLevel) {
+    if (canLevel === false) { return; }
+    X.addClass(essenceBars[id].getElement(),'full');
+    X.removeClass(`#enlightenView .level-up-button[data-id='${id}']`,'hide');
+  }
+
+  function levelBounds(id) {
     const experience = ExperienceComponent.lookup(id);
+    const species = Character(id).getSpecies();
 
-    X.addClass('#enlightenView .enlighten-results','hide');
-    X.addClass('#enlightenView .button-advance','hide');
-    X.addClass('#enlightenView .level-up-result','hide');
-    X.removeClass('#enlightenView .enlighten-level-up','hide');
-
-    X.first('#enlightenView .level-up-title').innerHTML = Character(id).getName();
-    X.first('#enlightenView .level-up-summary').innerHTML = `Level ${experience.level} ${arrow} ${experience.level + 1}. Choose an attribute to raise.`;
-
-    fillAttributePicks(id);
+    return {
+      floor: EssenceSystem.totalEssenceToLevel(experience.level, species),
+      ceiling: EssenceSystem.totalEssenceToLevel(experience.level + 1, species),
+    };
   }
 
-  function fillAttributePicks(id) {
+  // ========================
+  //    Level Up Overlay
+  // ========================
+
+  function openLevelUp(event) {
+    const id = event.target.closest('.level-up-button').dataset.id;
+    GeneralOverlay.open(buildLevelUpContent(id), { classname:'small', hideFooter:true });
+  }
+
+  function buildLevelUpContent(id) {
+    const experience = ExperienceComponent.lookup(id);
     const attributes = AttributesComponent.lookup(id);
-    X.empty('#enlightenView .attribute-picks');
+
+    const content = X.createElement(`<div id='levelUpOverlay' data-id='${id}'>
+      <div class='title'>${Character(id).getName()}</div>
+      <p class='summary'>Level ${experience.level} → ${experience.level + 1}. Choose an attribute to raise.</p>
+      <ul class='attribute-picks'></ul>
+      <div class='button-row align-right'>
+        <a href='#' class='button button-primary confirm-button disabled'>Confirm</a>
+      </div>
+    </div>`);
 
     Object.keys(Attrib).forEach(code => {
-      X.append('#enlightenView .attribute-picks', X.createElement(
-        `<a href='#' class='button attribute-pick' data-attribute='${code}'>${StringHelper.titlecase(code)} (${attributes[code]})</a>`));
+      X.append(content.querySelector('.attribute-picks'), X.createElement(`<li>
+        <a href='#' class='attribute-pick' data-attribute='${code}'>
+          <span class='attribute-name'>${StringHelper.titlecase(code)}</span>
+          <span class='attribute-value'>${attributes[code]}</span>
+        </a>
+      </li>`));
     });
+
+    return content;
   }
 
   function pickAttribute(event) {
-    const attribute = event.target.closest('.attribute-pick').dataset.attribute;
-    const result = EnlightenSystem.chooseLevelUpAttribute(attribute);
-
-    X.empty('#enlightenView .attribute-picks');
-    X.fill('#enlightenView .level-up-result', buildLevelUpResult(result));
-    X.removeClass('#enlightenView .level-up-result','hide');
+    X.removeClass('#levelUpOverlay .attribute-pick','selected');
+    X.addClass(event.target.closest('.attribute-pick'),'selected');
+    X.removeClass('#levelUpOverlay .confirm-button','disabled');
   }
 
-  function buildLevelUpResult(result) {
-    const element = X.createElement(`<div class='result-content'></div>`);
-    element.appendChild(X.createElement(
-      `<p>+${result.increase} ${StringHelper.titlecase(result.attribute)}, reaching level ${result.level}.</p>`));
-    element.appendChild(X.createElement(`<a href='#' class='button button-next-level'>Continue</a>`));
-    return element;
+  function confirmLevelUp() {
+    const id = X.first('#levelUpOverlay').dataset.id;
+    const attribute = X.first('#levelUpOverlay .attribute-pick.selected').dataset.attribute;
+
+    EnlightenSystem.chooseLevelUpAttribute(id, attribute);
+    WindowManager.pop();
+    resumeEssenceBar(id);
   }
 
-  function showLevelUpsComplete() {
-    X.addClass('#enlightenView .enlighten-level-up','hide');
-    X.removeClass('#enlightenView .enlighten-results','hide');
-    X.removeClass('#enlightenView .button-complete','hide');
+  function resumeEssenceBar(id) {
+    X.removeClass(essenceBars[id].getElement(),'full');
+    X.addClass(`#enlightenView .level-up-button[data-id='${id}']`,'hide');
+    animateEssenceBar(id, levelBounds(id).floor);
   }
-*/
 
   function finish() {
     EnlightenSystem.finishEnlightenment();

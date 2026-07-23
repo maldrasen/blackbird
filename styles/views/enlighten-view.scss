@@ -12,19 +12,98 @@
 
   .title {
     margin-bottom: 10px;
+    font-size: variables.$fs-bigger;
+    font-family: "habibi", serif;
+    color: variables.$fg-strong;
+    border-bottom: variables.$border-normal;
+  }
+
+  .character-grid {
+    display: grid;
+    .character { display: contents; }
+    .name {
+      font-size: variables.$fs-big;
+      font-family: "habibi", serif;
+    }
+  }
+
+  .skill-improvements {
+    .character-grid {
+      grid-template-columns: max-content 1fr;
+      align-items: baseline;
+      gap: 5px 20px;
+    }
+  }
+
+  .essence-bars {
+
+    // We need the width column width to remain the same when a level up button is shown
+    // and when they're all hidden. As of writing, the level up button was 62px wide.
+    .character-grid {
+      grid-template-columns: max-content 1fr 62px;
+      align-items: end;
+      gap: 15px 20px;
+    }
+
+    .bar {
+      transition: width 500ms ease-out;
+      &.snap { transition: none; }
+    }
+
+    .full .bar {
+      animation: essence-bar-flash 0.6s ease-out;
+    }
+
+    .level-up-button {
+      font-size: variables.$fs-small;
+    }
+  }
+
+}
+
+@keyframes essence-bar-flash {
+  0%   { background-color: variables.$fg-essence; }
+  20%  { background-color: rgb(255,255,255); box-shadow: 0 0 12px rgba(255,255,255,0.9); }
+  100% { background-color: variables.$fg-essence; }
+}
+
+#levelUpOverlay {
+
+  .title {
     font-size: variables.$fs-big;
     font-family: "habibi", serif;
     color: variables.$fg-strong;
     border-bottom: variables.$border-normal;
   }
 
-  .characters {
-    display: grid;
-    grid-template-columns: max-content 1fr;
-    gap: 5px 20px;
-    align-items: baseline;
+  .summary {
+    margin: 10px 0;
   }
-  .character { display: contents; }
 
+  .attribute-picks {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 15px 0;
+  }
+
+  .attribute-pick {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10px;
+    border: variables.$border-light;
+    color: variables.$fg-link;
+
+    &:hover {
+      border: variables.$border-normal;
+      color: variables.$fg-link-hover;
+    }
+
+    &.selected {
+      background-color: variables.$select-active;
+      border: variables.$border-normal;
+      color: variables.$fg-link-active;
+    }
+  }
 
 }

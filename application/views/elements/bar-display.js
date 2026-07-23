@@ -54,12 +54,14 @@ global.BarDisplay = function(options) {
   }
 
   // Values can range outside the bar, health is negative for a knocked out character for instance, but the display
-  // never goes below the bar's minimum.
+  // never goes below the bar's minimum. The minimum is also the bar's zero point, so a bar can show progress through
+  // a range that doesn't start at zero, like the essence within the current level.
   function setCurrentValue(value) {
     current = value;
 
     const displayed = (min == null) ? current : Math.max(min, current);
-    let width = (max > 0) ? Math.round((displayed / max) * 100) : 0;
+    const floor = (min == null) ? 0 : min;
+    let width = (max > floor) ? Math.round(((displayed - floor) / (max - floor)) * 100) : 0;
     getElement().querySelector('.current').replaceChildren(displayed);
     getElement().querySelector('.bar').setAttribute(`style`,`width:${width}%`);
   }

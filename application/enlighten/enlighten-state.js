@@ -8,12 +8,10 @@ global.EnlightenState = function(from, data) {
 
     party.forEach(id => {
       const experience = ExperienceComponent.lookup(id);
-      const actor = ActorComponent.lookup(id);
 
       essence[id] = {
-        start:  experience.essence,
-        end:    experience.essence + essenceGained,
-        needed: EssenceSystem.totalEssenceToLevel(experience.level + 1, actor.species),
+        start: experience.essence,
+        end:   experience.essence + essenceGained,
       };
     });
   }

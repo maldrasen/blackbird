@@ -3,32 +3,27 @@ global.EnlightenSystem = (function() {
 
   function startEnlightenment(from, data) {
     state = EnlightenState(from, data);
+    bankEssence();
+  }
+
+  // Each character's share of the essence is banked as soon as enlightenment starts. The essence bars in the view
+  // are only an animation played over values that have already been saved.
+  function bankEssence() {
+    Object.entries(state.getEssence()).forEach(([id, essence]) => {
+      const experience = ExperienceComponent.lookup(id);
+      experience.essence = essence.end;
+      ExperienceComponent.update(id, experience);
+    });
   }
 
   function finishEnlightenment() {
     state = null;
   }
 
-  // The first queued character that can still level, skipping past those who can't. A character stays current until
-  // their banked essence no longer covers the next level, so they can level multiple times in one visit.
-  function getCurrentLevelUp() {
-    const queue = state.getLevelUpQueue();
-
-    for (let i=state.getLevelUpIndex(); i<queue.length; i++) {
-      if (EssenceSystem.canLevelUp(queue[i])) { return queue[i]; }
-      state.advanceLevelUpQueue();
+  function chooseLevelUpAttribute(id, attribute) {
+    if (EssenceSystem.canLevelUp(id) === false) {
+      throw new Error(`${Character(id).getName()} doesn't have the essence needed to level up.`);
     }
-
-    return null;
-  }
-
-  function hasPendingLevelUps() {
-    return getCurrentLevelUp() != null;
-  }
-
-  function chooseLevelUpAttribute(attribute) {
-    const id = getCurrentLevelUp();
-    if (id == null) { throw new Error(`No character is waiting to level up.`); }
 
     const increase = LevelSystem.levelUp(id, attribute);
     return { id, attribute, increase, level:ExperienceComponent.lookup(id).level };
@@ -38,8 +33,6 @@ global.EnlightenSystem = (function() {
     getState: () => { return state; },
     startEnlightenment,
     finishEnlightenment,
-    getCurrentLevelUp,
-    hasPendingLevelUps,
     chooseLevelUpAttribute,
   });
 

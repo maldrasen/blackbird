@@ -1,46 +1,38 @@
 describe("EnlightenSystem", function() {
 
-  /*
-
-And Changing All this
+  // Elf essence costs: 804 total to reach level 2, 2526 total to reach level 3.
 
   function buildCharacter(essence=0) {
-    const id = CharacterFixtures.genericMale({ actor: { species:'human' }});
-    ExperienceComponent.update(id, { level:0, essence:essence });
+    const id = CharacterFixtures.genericMale({});
+    ExperienceComponent.update(id, { level:1, essence:essence });
     return id;
   }
 
+  function startBattleEnlightenment(party, totalEssence) {
+    const configuration = {};
+    party.forEach((id,index) => { configuration[id] = `p-${index}`; });
+    GameSystem.getState().setPartyConfiguration(configuration);
+
+    EnlightenSystem.startEnlightenment('battle', { totalEssence, skillImprovements:{}, revived:[], loot:[] });
+  }
+
   describe("startEnlightenment()", function() {
-    it("exposes the battle payload", function() {
-      const party = [buildCharacter(), buildCharacter()];
-      const essenceAwards = { total:592, share:296, awards:{ [party[0]]:296, [party[1]]:296 } };
+    it("splits the battle essence between the party and banks it", function() {
+      const first = buildCharacter(100);
+      const second = buildCharacter(200);
 
-      EnlightenSystem.startEnlightenment('battle', {
-        skillImprovements: { [party[0]]: { blades:2 } },
-        essenceAwards,
-        party,
-      });
+      startBattleEnlightenment([first,second], 1001);
 
-      const state = EnlightenSystem.getState();
-      expect(state.getFrom()).to.equal('battle');
-      expect(state.getEssenceAwards()).to.deep.equal(essenceAwards);
-      expect(state.getLevelUpQueue()).to.deep.equal(party);
-      expect(state.getSkillImprovements()[party[0]].blades).to.equal(2);
-      expect(state.getRevived()).to.deep.equal([]);
+      const essence = EnlightenSystem.getState().getEssence();
+      expect(essence[first]).to.deep.equal({ start:100, end:600 });
+      expect(essence[second]).to.deep.equal({ start:200, end:700 });
+      expect(ExperienceComponent.lookup(first).essence).to.equal(600);
+      expect(ExperienceComponent.lookup(second).essence).to.equal(700);
     });
 
-    it("exposes the characters revived after the battle", function() {
-      const party = [buildCharacter(), buildCharacter()];
+    it("banks no essence when enlightenment comes from training", function() {
+      const partner = buildCharacter(100);
 
-      EnlightenSystem.startEnlightenment('battle', { party, revived:[party[1]] });
-
-      const state = EnlightenSystem.getState();
-      expect(state.getRevived()).to.deep.equal([party[1]]);
-      expect(state.getLevelUpQueue()).to.deep.equal(party);
-    });
-
-    it("leaves the training branch unchanged", function() {
-      const partner = buildCharacter();
       EnlightenSystem.startEnlightenment('training', {
         partner,
         anima: { fire:5 },
@@ -49,61 +41,43 @@ And Changing All this
         skillImprovements: {},
       });
 
-      const state = EnlightenSystem.getState();
-      expect(state.getFrom()).to.equal('training');
-      expect(state.getPartner()).to.equal(partner);
-      expect(state.getAnima()).to.deep.equal({ fire:5 });
-      expect(state.getEssenceAwards()).to.equal(null);
-      expect(state.getLevelUpQueue()).to.deep.equal([]);
-      expect(EnlightenSystem.hasPendingLevelUps()).to.equal(false);
+      expect(EnlightenSystem.getState().getEssence()).to.deep.equal({});
+      expect(ExperienceComponent.lookup(partner).essence).to.equal(100);
     });
   });
 
-  describe("level up queue", function() {
-    it("walks the queue in order, keeping a character current until their essence is spent", function() {
-      const twice = buildCharacter(2453);
-      const once = buildCharacter(780);
-      EnlightenSystem.startEnlightenment('battle', { party:[twice,once] });
-
-      expect(EnlightenSystem.getCurrentLevelUp()).to.equal(twice);
-      expect(EnlightenSystem.chooseLevelUpAttribute(Attrib.strength).id).to.equal(twice);
-      expect(EnlightenSystem.getCurrentLevelUp()).to.equal(twice);
-
-      expect(EnlightenSystem.chooseLevelUpAttribute(Attrib.strength).level).to.equal(2);
-      expect(EnlightenSystem.getCurrentLevelUp()).to.equal(once);
-
-      EnlightenSystem.chooseLevelUpAttribute(Attrib.intelligence);
-      expect(EnlightenSystem.getCurrentLevelUp()).to.equal(null);
-      expect(EnlightenSystem.hasPendingLevelUps()).to.equal(false);
-    });
-
-    it("skips characters that cannot level", function() {
-      const broke = buildCharacter();
-      const eligible = buildCharacter(780);
-      EnlightenSystem.startEnlightenment('battle', { party:[broke,eligible] });
-
-      expect(EnlightenSystem.getCurrentLevelUp()).to.equal(eligible);
-    });
-
-    it("throws when no character is waiting to level", function() {
-      EnlightenSystem.startEnlightenment('battle', { party:[buildCharacter()] });
-      expect(() => EnlightenSystem.chooseLevelUpAttribute(Attrib.strength)).to.throw('waiting to level');
-    });
-
-    it("levels through the LevelSystem", function() {
-      const id = buildCharacter(780);
-      EnlightenSystem.startEnlightenment('battle', { party:[id] });
+  describe("chooseLevelUpAttribute()", function() {
+    it("levels a character through the LevelSystem", function() {
+      const id = buildCharacter();
+      startBattleEnlightenment([id], 804);
 
       const start = AttributesComponent.lookup(id).strength;
-      const result = EnlightenSystem.chooseLevelUpAttribute(Attrib.strength);
+      const result = EnlightenSystem.chooseLevelUpAttribute(id, Attrib.strength);
 
-      expect(result.increase).to.be.within(5,9);
-      expect(result.level).to.equal(1);
+      expect(result.id).to.equal(id);
+      expect(result.level).to.equal(2);
+      expect(result.increase).to.be.at.least(1);
       expect(AttributesComponent.lookup(id).strength).to.equal(start + result.increase);
-      expect(ExperienceComponent.lookup(id).level).to.equal(1);
+      expect(ExperienceComponent.lookup(id).level).to.equal(2);
+    });
+
+    it("levels a character multiple times when they have the essence", function() {
+      const id = buildCharacter();
+      startBattleEnlightenment([id], 2526);
+
+      EnlightenSystem.chooseLevelUpAttribute(id, Attrib.strength);
+      EnlightenSystem.chooseLevelUpAttribute(id, Attrib.dexterity);
+
+      expect(ExperienceComponent.lookup(id).level).to.equal(3);
+      expect(() => EnlightenSystem.chooseLevelUpAttribute(id, Attrib.vitality)).to.throw('essence needed');
+    });
+
+    it("throws when the character lacks the essence to level", function() {
+      const id = buildCharacter();
+      startBattleEnlightenment([id], 803);
+
+      expect(() => EnlightenSystem.chooseLevelUpAttribute(id, Attrib.strength)).to.throw('essence needed');
     });
   });
-
-   */
 
 });
