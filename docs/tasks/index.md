@@ -15,6 +15,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [110] Navigation Events `8pt` — [110-navigation-events.md](110-navigation-events.md)
 - [114] Rework death mechanics `8pt` — [114-rework-death-mechanics.md](114-rework-death-mechanics.md)
 - [122] Training Enlighten View `5pt` — [122-training-enlighten-view.md](122-training-enlighten-view.md)
+- [131] Oath and nightgaunt episodes `13pt` — [131-oath-and-nightgaunt-episodes.md](131-oath-and-nightgaunt-episodes.md)
 
 ## Priority 3
 
