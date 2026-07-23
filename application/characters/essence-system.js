@@ -42,12 +42,14 @@ global.EssenceSystem = (function() {
 
   function totalEssenceToLevel(level, speciesCode) {
     let total = 0;
-    for (let i=1; i<=level; i++) { total += essenceToLevel(i,speciesCode); }
+    for (let i=2; i<=level; i++) { total += essenceToLevel(i,speciesCode); }
     return total;
   }
 
+  // The essence needed to reach this level from the level before it. Characters start at level 1, so the first level
+  // is free.
   function essenceToLevel(level, speciesCode) {
-    return Math.round(baseLevelCost * (level ** levelCostExponent) * speciesCostFactor(speciesCode));
+    return Math.round(baseLevelCost * ((level-1) ** levelCostExponent) * speciesCostFactor(speciesCode));
   }
 
   function speciesCostFactor(speciesCode) {

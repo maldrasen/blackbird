@@ -20,7 +20,7 @@ describe("LevelSystem", function() {
     it("increments the experience level", function() {
       const id = CharacterFixtures.genericMale({});
       LevelSystem.levelUp(id, Attrib.intelligence);
-      expect(ExperienceComponent.lookup(id).level).to.equal(1);
+      expect(ExperienceComponent.lookup(id).level).to.equal(2);
     });
 
     it("floors essence at the minimum for the new level", function() {
@@ -31,7 +31,7 @@ describe("LevelSystem", function() {
 
     it("leaves essence alone when it already covers the new level", function() {
       const id = CharacterFixtures.genericMale({ actor: { species:'human' }});
-      ExperienceComponent.update(id, { level:0, essence:1000 });
+      ExperienceComponent.update(id, { level:1, essence:1000 });
       LevelSystem.levelUp(id, Attrib.strength);
       expect(ExperienceComponent.lookup(id).essence).to.equal(1000);
     });
@@ -89,7 +89,7 @@ describe("LevelSystem", function() {
 
     it("seeds leveled monsters with the minimum essence for their level", function() {
       const id = MonsterFactory.build('kobold-dick-puncher');
-      expect(ExperienceComponent.lookup(id).essence).to.equal(12424);
+      expect(ExperienceComponent.lookup(id).essence).to.equal(8122);
     });
   });
 

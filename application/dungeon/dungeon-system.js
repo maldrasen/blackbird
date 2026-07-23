@@ -54,7 +54,8 @@ global.DungeonSystem = (function() {
   // TODO: Pick the encounter from the dungeon theme's encounter tables once they exist (task 015).
   function startRandomEncounter() {
     GameSystem.markReturnMode();
-    BattleSystem.startBattle({ encounter:`kobold-${Random.between(1,5)}` });
+    // BattleSystem.startBattle({ encounter:`kobold-${Random.between(1,5)}` });
+    BattleSystem.startBattle({ encounter:`kobold-1` });
     GameSystem.setGameMode(GameMode.battle);
   }
 

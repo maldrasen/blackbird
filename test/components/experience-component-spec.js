@@ -10,8 +10,8 @@ describe("ExperienceComponent", function() {
 
     it("accepts a character with enough essence for their level", function() {
       const id = CharacterFixtures.genericMale({ actor: { species:'human' }});
-      ExperienceComponent.update(id, { level:1, essence:780 });
-      expect(ExperienceComponent.lookup(id).level).to.equal(1);
+      ExperienceComponent.update(id, { level:2, essence:780 });
+      expect(ExperienceComponent.lookup(id).level).to.equal(2);
     });
 
   });

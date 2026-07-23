@@ -2,7 +2,7 @@ global.ExperienceComponent = (function() {
   const properties = ['level','essence'];
 
   function create(id, data={}) {
-    if (data.level == null) { data.level = 0; }
+    if (data.level == null) { data.level = 1; }
     if (data.essence == null) { data.essence = 0; }
 
     Registry.createComponent(id,ComponentType.experience,data);
@@ -31,10 +31,10 @@ global.ExperienceComponent = (function() {
       }
     });
 
-    Validate.atLeast('Experience.level',experienceComponent.level,0);
+    Validate.atLeast('Experience.level',experienceComponent.level,1);
     Validate.atLeast('Experience.essence',experienceComponent.essence,0);
 
-    if (experienceComponent.level > 0) {
+    if (experienceComponent.level > 1) {
       const species = ActorComponent.lookup(id).species;
       const minimum = EssenceSystem.totalEssenceToLevel(experienceComponent.level, species);
       Validate.atLeast('Experience.essence', experienceComponent.essence, minimum);
