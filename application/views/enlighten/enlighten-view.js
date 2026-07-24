@@ -19,6 +19,7 @@ global.EnlightenView = (function() {
   // TODO: The training enlighten view is task 122.
   function showTrainingResults() {
     showSkillImprovements();
+    updateContinueButton();
   }
 
   function showBattleResults() {
@@ -121,8 +122,17 @@ global.EnlightenView = (function() {
   }
 
   function onBarFilled(id, canLevel) {
-    if (canLevel === false) { return; }
-    X.removeClass(`#enlightenView .level-up-button[data-id='${id}']`,'hide');
+    if (canLevel === true) {
+      X.removeClass(`#enlightenView .level-up-button[data-id='${id}']`,'hide');
+    }
+    updateContinueButton();
+  }
+
+  // The continue button stays disabled until every pending level up has been resolved.
+  function updateContinueButton() {
+    if (X.first('#enlightenView .level-up-button:not(.hide)') == null) {
+      X.removeClass('#enlightenView .continue-button','disabled');
+    }
   }
 
   function levelBounds(id) {
