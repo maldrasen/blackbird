@@ -15,16 +15,16 @@ Ability.register('sneak-attack',{
     const acting = round.getActing();
     const target = round.getTarget();
     const weapon = round.getPrimaryWeapon();
-    const attackRoll = PhysicalAttackRoll(acting, target, weapon);
-    const defendRoll = DefendRoll(target, acting, attackRoll);
+    const contest = PhysicalAttackContest(acting, target, weapon);
+    const attackRoll = contest.getAttackRoll();
+    const defendRoll = contest.getDefendRoll();
 
     PhysicalAttackSystem.updateContext(attackRoll);
 
     round.addTime(BaseWeapon.lookup(weapon.base).getSpeed());
     round.addMessage({ text:getAttackText(weapon) });
 
-    const actualHitValue = attackRoll.getFinalValue() * getSneakAttackAccuracyBonus(acting);
-    if (actualHitValue > defendRoll.getFinalValue()) {
+    if (contest.isHit(getSneakAttackAccuracyBonus(acting))) {
       PhysicalAttackSystem.processHit(attackRoll, defendRoll, { damageFactor:getSneakAttackDamageBonus(acting) });
     } else {
       PhysicalAttackSystem.processMiss(attackRoll, defendRoll);

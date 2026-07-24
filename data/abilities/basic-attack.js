@@ -45,16 +45,9 @@ function executeBasicAttack() {
   const attacks = calculateAttacks();
 
   const rolls = attacks.map(attack => {
-    const attackRoll = PhysicalAttackRoll(acting, target, attack);
-    const defendRoll = DefendRoll(target, acting, attackRoll);
-    return { attack:attackRoll, defend:defendRoll };
+    const contest = PhysicalAttackContest(acting, target, attack);
+    return { attack:contest.getAttackRoll(), defend:contest.getDefendRoll() };
   });
-
-  for (let i=0; i<attacks.length; i++) {
-    if (rolls[i].attack.isCrit() && rolls[i].defend.isCrit()) {
-      return executeBasicAttack(acting, target);
-    }
-  }
 
   rolls.forEach(roll => {
     const context = buildAttackContext(roll)

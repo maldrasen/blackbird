@@ -22,7 +22,3 @@ damage-roll.js:34 Uncaught Error: The attack and defend cannot both be crits. Th
 ```
 
 This is a bigger problem than it looks at first. Every ability that makes a physical attack is going to have to handle this. I think we need to combine the physical attack roll and defend roll into a single unit so that they always come in a pair. 
-
-
-
-

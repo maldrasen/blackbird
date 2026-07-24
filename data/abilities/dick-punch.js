@@ -17,14 +17,15 @@ Ability.register('dick-punch',{
     const state = BattleSystem.getState();
     const acting = round.getActing();
     const target = round.getTarget();
-    const attackRoll = PhysicalAttackRoll(acting, target, round.getPrimaryWeapon(), EquipmentSlot.legs);
-    const defendRoll = DefendRoll(target, acting, attackRoll);
+    const contest = PhysicalAttackContest(acting, target, round.getPrimaryWeapon(), EquipmentSlot.legs);
+    const attackRoll = contest.getAttackRoll();
+    const defendRoll = contest.getDefendRoll();
 
     round.addTime(500);
     round.addMessage({ text:getAttackText() });
     state.setCooldown(acting, 'dick-punch', 1000);
 
-    if (attackRoll.getFinalValue() > defendRoll.getFinalValue()) {
+    if (contest.isHit()) {
       const armorFactor = getArmorFactor(target);
       const sizeFactor = getSizeFactor(CockComponent.lookupNormalOf(target).size);
       if (armorFactor === 1) { addStunEffect(acting,target); }
