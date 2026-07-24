@@ -4,6 +4,9 @@ global.ConsoleCommands = (function() {
     help: {
       commandFunction: printHelp,
       description:`Prints this list of console commands.` },
+    clear: {
+      commandFunction: clearConsole,
+      description:`Clear the console log.` },
     entityData: {
       commandFunction: printEntityData,
       description:`Print all the component data for a given entity ID.` },
@@ -81,7 +84,9 @@ global.ConsoleCommands = (function() {
 
     const valid = meetsRequirements(command);
     if (valid === true) {
-      return Console.log(command.commandFunction(args) || 'Success',{ system:"Console" });
+      const result = command.commandFunction(args);
+      if (result === null) { return; }
+      return Console.log(result || 'Success',{ system:"Console" });
     }
 
     Console.log(`Invalid Command: ${valid}`, { system:'Console', type:LogType.warning })
@@ -109,12 +114,17 @@ global.ConsoleCommands = (function() {
     return `${list}</pre>`;
   }
 
+  function clearConsole() {
+    Console.clear();
+    return null;
+  }
+
   function printRoster() {
     const state = GameSystem.getState();
 
     let list = `<pre class='padding'>\n=== Roster ===\n`;
     state.getRoster().forEach(id => {
-      list += `${Character(id).getFullName().padEnd(24)} ${entityLink(id)}\n`
+      list += `${Character(id).getFullName().padEnd(24)} ${id}\n`
     });
 
     return `${list}</pre>`;
@@ -126,10 +136,6 @@ global.ConsoleCommands = (function() {
       return `Available states: ${Object.keys(stateDumps).join(', ')}`;
     }
     return `<pre class='json-dump'>${JSON.stringify(dumpFunction(),null,2)}</pre>`
-  }
-
-  function entityLink(id) {
-    return `<a class='entity-link' data-entity-id='${id}'>${id}</a>`;
   }
 
   function printEntityData(args) {

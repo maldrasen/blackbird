@@ -51,6 +51,11 @@ global.Console = (function() {
     X.addClass('#console','hide');
   }
 
+  function clear() {
+    X.empty('#consoleLog');
+    if (scrollingPanel) { scrollingPanel.resize(); }
+  }
+
   function isVisible() { return !X.hasClass('#console','hide'); }
 
   function log(message, options={}) {
@@ -114,15 +119,23 @@ global.Console = (function() {
 
   function addSegment(element, classname, content) {
     if (content) {
-      element.appendChild(X.createElement(`<span class='${classname}'>${content}</span>`));
+      element.appendChild(X.createElement(`<span class='${classname}'>${linkifyEntityIds(content)}</span>`));
     }
   }
 
   function addDataSegment(element, data) {
     if (data) {
       if (typeof data !== 'string') { data = JSON.stringify(data,null,1) }
-      element.appendChild(X.createElement(`<span class='data'> ${data}</span>`));
+      element.appendChild(X.createElement(`<span class='data'> ${linkifyEntityIds(data)}</span>`));
     }
+  }
+
+  // Anything in a log message that looks like an entity id becomes a link that prints that entity's data.
+  function linkifyEntityIds(text) {
+    return `${text}`.replace(/∈[0-9A-Z]{5,8}/g, id => {
+      if (Registry.entityExists(id) === false) { return id; }
+      return `<a class='entity-link' data-entity-id='${id}'>${id}</a>`;
+    });
   }
 
   function errorToString(error) {
@@ -132,6 +145,7 @@ global.Console = (function() {
   return Object.freeze({
     init,
     hide,
+    clear,
     isVisible,
     append,
     log,

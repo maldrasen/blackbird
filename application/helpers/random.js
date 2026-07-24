@@ -170,9 +170,9 @@ global.Random = (function() {
     return array;
   }
 
-  // Create a new random identifier for an entity.
+  // Create a new random identifier for an entity. The ∈ prefix makes entity ids recognizable in log messages.
   function identifier() {
-    return (nextFloat() + 1).toString(36).substring(2,10).toUpperCase();
+    return `∈${(nextFloat() + 1).toString(36).substring(2,10).toUpperCase()}`;
   }
 
   return Object.freeze({
