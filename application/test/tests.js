@@ -39,4 +39,3 @@ global.Tests = (function() {
   };
 
 })();
-q

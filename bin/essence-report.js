@@ -2,8 +2,8 @@
 
 require('./run-headless.js');
 
-const pad = StringHelper.pad;
-const padn = StringHelper.padNumber;
+const pad = ReportHelper.pad;
+const padn = ReportHelper.padNumber;
 
 const rows = BaseMonster.getAllCodes().map(code => {
   const base = BaseMonster.lookup(code);
