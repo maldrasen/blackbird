@@ -1,7 +1,10 @@
 global.EssenceSystem = (function() {
 
   // Essence Knobs
-  const attributePowerExponent = 1.5;
+  // const attributePowerExponent = 1.5;
+
+  // TEMP dev value
+  const attributePowerExponent = 2.5;
   const essenceScale = 0.12;
   const abilityScale = 0.02;
 
