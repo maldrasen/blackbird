@@ -14,13 +14,13 @@ global.MouthFactory = (function() {
     };
 
     if (mouthDef.mouthWidth) {
-      mouthData.maxMouthWidth = Math.round(Random.normalDistribution(mouthDef.mouthWidth,mouthDef.mouthWidthDev));
+      mouthData.maxMouthWidth = Math.max(32,Math.round(Random.normalDistribution(mouthDef.mouthWidth,mouthDef.mouthWidthDev)));
     }
     if (mouthDef.throatWidth) {
-      mouthData.maxThroatWidth = Math.round(Random.normalDistribution(mouthDef.throatWidth,mouthDef.throatWidthDev));
+      mouthData.maxThroatWidth = Math.max(26,Math.round(Random.normalDistribution(mouthDef.throatWidth,mouthDef.throatWidthDev)));
     }
     if (mouthDef.tongueLength) {
-      mouthData.tongueLength = Math.round(Random.normalDistribution(mouthDef.tongueLength,mouthDef.tongueLengthDev));
+      mouthData.tongueLength = Math.max(50,Math.round(Random.normalDistribution(mouthDef.tongueLength,mouthDef.tongueLengthDev)));
     }
 
     const throatDepth = BodyComponent.createWrapper({ data:body }).getThroatDepth();
