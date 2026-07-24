@@ -1,6 +1,6 @@
-// Usage: node bin/essence-report.js
+// Usage: node bin/reports/essence-report.js
 
-require('./run-headless.js');
+require('../run-headless.js');
 
 const pad = ReportHelper.pad;
 const padn = ReportHelper.padNumber;

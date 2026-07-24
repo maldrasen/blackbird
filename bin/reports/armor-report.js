@@ -1,6 +1,6 @@
-// Usage: node bin/armor-report.js [slot|reduction|value]
+// Usage: node bin/reports/armor-report.js [slot|reduction|value]
 
-require('./run-headless.js');
+require('../run-headless.js');
 
 const sort = process.argv[2] || 'slot';
 

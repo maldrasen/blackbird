@@ -1,6 +1,6 @@
-// Usage: node bin/weapon-report.js [type|dps|value]
+// Usage: node bin/reports/weapon-report.js [type|dps|value]
 
-require('./run-headless.js');
+require('../run-headless.js');
 
 const sort = process.argv[2] || 'type';
 

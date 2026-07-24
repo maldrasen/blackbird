@@ -1,6 +1,6 @@
-// Usage: node bin/level-report.js [maxLevel]
+// Usage: node bin/reports/level-report.js [maxLevel]
 
-require('./run-headless.js');
+require('../run-headless.js');
 
 const maxLevel = Number(process.argv[2]) || 100;
 const speciesCodes = Species.getAllCodes();
