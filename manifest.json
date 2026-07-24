@@ -227,6 +227,7 @@
     "application/views/elements/tag-elements.js",
     "application/views/elements/tooltip.js",
     "application/views/enlighten/enlighten-view.js",
+    "application/views/enlighten/level-up-overlay.js",
     "application/views/episodes/episode-view.js",
     "application/views/exacto.js",
     "application/views/general/console-commands.js",
