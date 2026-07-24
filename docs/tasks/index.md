@@ -21,6 +21,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [131] Oath and nightgaunt episodes `13pt` — [131-oath-and-nightgaunt-episodes.md](131-oath-and-nightgaunt-episodes.md)
 - [134] Implement conversation skill `5pt` — [134-implement-conversation-skill.md](134-implement-conversation-skill.md)
 - [136] Difficulty Sliders `5pt` — [136-difficulty-sliders.md](136-difficulty-sliders.md)
+- [138] Style Level Up Overlay `3pt` — [138-style-level-up-overlay.md](138-style-level-up-overlay.md)
 
 ## Priority 3
 
@@ -48,7 +49,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [121] Add Capture Mechanics `8pt` — [121-add-capture-mechanics.md](121-add-capture-mechanics.md)
 - [124] Make reports headless `2pt` — [124-make-reports-headless.md](124-make-reports-headless.md)
 - [128] Random weapon and armor generation `8pt` — [128-random-item-generation.md](128-random-item-generation.md)
-- [129] Enlighten View Essence Bars `5pt` — [129-enlighten-view-essence-bars.md](129-enlighten-view-essence-bars.md)
 - [130] Accept death in game over event `8pt` — [130-accept-death-in-game-over-event.md](130-accept-death-in-game-over-event.md)
 - [133] Remove tests from Electron `3pt` — [133-remove-tests-from-electron.md](133-remove-tests-from-electron.md)
 - [135] Upgrade Electron `3pt` — [135-upgrade-electron.md](135-upgrade-electron.md)
