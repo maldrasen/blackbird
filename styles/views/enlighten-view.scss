@@ -45,26 +45,9 @@
       gap: 15px 20px;
     }
 
-    .name {
-      margin-bottom: -5px;
-    }
-
-    .bar {
-      transition: width 500ms ease-out;
-      &.snap { transition: none; }
-    }
-
-    .full .bar {
-      animation: essence-bar-flash 0.6s ease-out;
-    }
+    // TODO: Setting the negative margin here is a hack. Need to update electron though to fix.
+    .name { margin-bottom: -5px; }
   }
-
-}
-
-@keyframes essence-bar-flash {
-  0%   { background-color: variables.$fg-essence; }
-  20%  { background-color: rgb(255,255,255); box-shadow: 0 0 12px rgba(255,255,255,0.9); }
-  100% { background-color: variables.$fg-essence; }
 }
 
 #levelUpOverlay {

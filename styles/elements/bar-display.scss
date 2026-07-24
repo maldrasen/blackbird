@@ -33,6 +33,12 @@
     height: 7px;
     width: 100%;
     box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+
+    &.animate { transition: width 500ms ease-out; }
+  }
+
+  &.full .bar {
+    animation: bar-display-flash 0.6s ease-out;
   }
 
   // TODO: This is fine for now, but maybe a gradient would look cool?
@@ -68,6 +74,7 @@
   .bar-display-bg-rank-SSS { background-color: variables.$bg-rank-SSS; }
 }
 
-
-
-
+// With no 0% or 100% frames the flash starts from and returns to the bar's own color, whatever that is.
+@keyframes bar-display-flash {
+  20% { background-color: rgb(255,255,255); box-shadow: 0 0 12px rgba(255,255,255,0.9); }
+}

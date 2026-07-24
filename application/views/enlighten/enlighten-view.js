@@ -101,6 +101,7 @@ global.EnlightenView = (function() {
       minValue: bounds.floor,
       maxValue: bounds.ceiling,
       color: 'essence',
+      flashOnFull: true,
     });
 
     row.querySelector('.bar-cell').appendChild(essenceBars[id].getElement());
@@ -114,34 +115,15 @@ global.EnlightenView = (function() {
     const bar = essenceBars[id];
     const { floor, ceiling } = levelBounds(id);
     const target = Math.min(ExperienceComponent.lookup(id).essence, ceiling);
-    const willMove = barPercent(target,floor,ceiling) > barPercent(fromEssence,floor,ceiling);
 
     bar.setMinValue(floor);
     bar.setMaxValue(ceiling);
-
-    const fill = bar.getElement().querySelector('.bar');
-    X.addClass(fill,'snap');
     bar.setCurrentValue(fromEssence);
-
-    if (willMove === false) {
-      bar.setCurrentValue(target);
-      return onBarFilled(id, target === ceiling);
-    }
-
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      X.removeClass(fill,'snap');
-      fill.addEventListener('transitionend', () => onBarFilled(id, target === ceiling), { once:true });
-      bar.setCurrentValue(target);
-    }));
-  }
-
-  function barPercent(value, floor, ceiling) {
-    return Math.round(((value - floor) / (ceiling - floor)) * 100);
+    bar.setCurrentValue(target, { animate:true, onComplete:() => onBarFilled(id, target === ceiling) });
   }
 
   function onBarFilled(id, canLevel) {
     if (canLevel === false) { return; }
-    X.addClass(essenceBars[id].getElement(),'full');
     X.removeClass(`#enlightenView .level-up-button[data-id='${id}']`,'hide');
   }
 
@@ -205,7 +187,6 @@ global.EnlightenView = (function() {
   }
 
   function resumeEssenceBar(id) {
-    X.removeClass(essenceBars[id].getElement(),'full');
     X.addClass(`#enlightenView .level-up-button[data-id='${id}']`,'hide');
     animateEssenceBar(id, levelBounds(id).floor);
   }

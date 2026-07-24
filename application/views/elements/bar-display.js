@@ -18,6 +18,7 @@ global.BarDisplay = function(options) {
   let current = options.currentValue;
   let label = options.label;
   let color = options.color;
+  let flashOnFull = options.flashOnFull === true;
 
   function getElement() {
     if (element == null) {
@@ -56,14 +57,55 @@ global.BarDisplay = function(options) {
   // Values can range outside the bar, health is negative for a knocked out character for instance, but the display
   // never goes below the bar's minimum. The minimum is also the bar's zero point, so a bar can show progress through
   // a range that doesn't start at zero, like the essence within the current level.
-  function setCurrentValue(value) {
+  //
+  // Pass { animate:true } to transition the bar to the new width instead of snapping, and onComplete to be told
+  // when the transition has finished.
+  function setCurrentValue(value, animationOptions={}) {
     current = value;
 
     const displayed = (min == null) ? current : Math.max(min, current);
     const floor = (min == null) ? 0 : min;
-    let width = (max > floor) ? Math.round(((displayed - floor) / (max - floor)) * 100) : 0;
+    const width = (max > floor) ? Math.round(((displayed - floor) / (max - floor)) * 100) : 0;
     getElement().querySelector('.current').replaceChildren(displayed);
+
+    if (animationOptions.animate === true) {
+      return animateBarWidth(width, animationOptions.onComplete);
+    }
+
+    setBarWidth(width);
+  }
+
+  function setBarWidth(width) {
     getElement().querySelector('.bar').setAttribute(`style`,`width:${width}%`);
+    updateFullState(width);
+  }
+
+  // The starting width needs to be committed to the DOM in an earlier frame than the width we're transitioning to,
+  // hence the double requestAnimationFrame. A transition to the width the bar is already at never fires
+  // transitionend, so that case completes immediately.
+  function animateBarWidth(width, onComplete) {
+    const bar = getElement().querySelector('.bar');
+
+    if (bar.style.width === `${width}%`) {
+      setBarWidth(width);
+      if (onComplete) { onComplete(); }
+      return;
+    }
+
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      X.addClass(bar,'animate');
+      bar.addEventListener('transitionend', () => {
+        X.removeClass(bar,'animate');
+        updateFullState(width);
+        if (onComplete) { onComplete(); }
+      }, { once:true });
+      bar.setAttribute(`style`,`width:${width}%`);
+    }));
+  }
+
+  function updateFullState(width) {
+    if (flashOnFull === false) { return; }
+    (width >= 100) ? X.addClass(getElement(),'full') : X.removeClass(getElement(),'full');
   }
 
   function hide() { X.addClass(getElement(),'hide'); }
