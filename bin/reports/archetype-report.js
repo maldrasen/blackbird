@@ -4,6 +4,7 @@ require('../run-headless.js');
 
 const count = Number(process.argv[2]) || 1000;
 const genders = [Gender.male, Gender.female, Gender.futa, Gender.enby];
+const dontInclude = ['kobold','vermen'];
 const rows = [];
 
 // When the registry fills with characters the name pool runs dry, forcing surnames whose triggers kobolds and vermen
@@ -16,7 +17,7 @@ function buildCharacter(speciesCode, gender) {
   throw new Error(`Cannot build a ${gender} ${speciesCode} even with an empty registry.`);
 }
 
-Species.getAllCodes().forEach(speciesCode => {
+Species.getAllCodes().filter(code => !dontInclude.includes(code)).forEach(speciesCode => {
   const ratio = Species.lookup(speciesCode).getGenderRatio();
 
   genders.forEach(gender => {
