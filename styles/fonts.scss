@@ -8,18 +8,6 @@
   src: url("../assets/fonts/Habibi-Regular.ttf");
 }
 
-// === Libre Baskerville ===
-
-@font-face {
-  font-family: baskerville;
-  src: url("../assets/fonts/LibreBaskerville-Regular.ttf");
-}
-
-@font-face {
-  font-family: baskerville-bold;
-  src: url("../assets/fonts/LibreBaskerville-Bold.ttf");
-}
-
 // === Roboto ===
 
 @font-face {
@@ -122,8 +110,6 @@
 }
 
 .font-habibi { font-family:'habibi', sans-serif }
-.font-baskerville  { font-family:'baskerville', serif }
-.font-baskerville-bold { font-family:'baskerville-bold', serif }
 .font-roboto-bold { font-family:'roboto-bold', sans-serif }
 .font-roboto-medium { font-family:'roboto-medium', sans-serif }
 .font-roboto { font-family:'roboto', sans-serif }
