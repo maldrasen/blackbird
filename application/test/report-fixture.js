@@ -3,7 +3,6 @@ global.ReportFixture = (function() {
   function show() {
     X.onClick('#mainList .show-sub-list', showSubList);
     X.onClick('#sexActionReports .sort-actions', sortSexActions);
-    X.onClick('#archetypeReports .count-archetypes', countArchetypes);
 
     MainContent.setMainContent('views/reports.html');
     MainContent.setBackground('backgrounds/reports.jpg');
@@ -14,29 +13,6 @@ global.ReportFixture = (function() {
     X.addClass('#output','hide');
     X.removeClass(`#${event.target.dataset.sub}`,'hide');
     X.removeClass('#subLists','hide');
-  }
-
-  function countArchetypes(event) {
-    Registry.clear();
-
-    const gender = (event.target.dataset.gender === 'M') ? Gender.male : Gender.female;
-    const species = event.target.dataset.species;
-    const archetypeTable = {};
-
-    for (let i=0; i<1000; i++) {
-      const id = CharacterFactory.build({ gender:gender, species:species });
-      const archetype = Personality(id).getArchetype();
-      if (archetypeTable[archetype] == null) { archetypeTable[archetype] = 0; }
-      archetypeTable[archetype] += 1;
-    }
-
-    const sorted = Object.keys(archetypeTable).map(code => {
-      return { code:code, count:archetypeTable[code] }
-    }).sort((a,b) => { return b.count - a.count });
-
-    setOutput(sorted.map(entry => {
-      return `${entry.code} - ${entry.count}`;
-    }));
   }
 
   function sortSexActions(event) {
