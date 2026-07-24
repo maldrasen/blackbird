@@ -23,6 +23,12 @@ global.StringHelper = (function() {
       join(' ');
   }
 
+  // Capitalizes a common name like "plate mail" for display, leaving a proper name like "Crown of Sorrows" alone.
+  // Names starting with an uppercase letter are assumed to be proper names.
+  function titlecaseName(name) {
+    return /^[a-z]/.test(name) ? titlecaseAll(name) : name;
+  }
+
   // Common algorithm used to find the length of the longest matching substring between two strings. We use this in
   // character creation to reject names like "Dancer Moondancer" where the name and the surname are too similar.
   // Written by AI, but tested.
@@ -53,6 +59,7 @@ global.StringHelper = (function() {
     pack,
     titlecase,
     titlecaseAll,
+    titlecaseName,
     longestCommonSubstring,
     pad,
     padNumber,
