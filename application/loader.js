@@ -67,12 +67,6 @@ window.Loader = (function() {
       await WorldState.loadState();
       MainMenu.openFully();
 
-      // We want to run the tests every time we open the electron app, but because we load mocha and chai through
-      // require, we don't run the tests in the in browser / localhost version of the app.
-      if (Environment.isDevelopment && !window.IS_BROWSER) {
-        Tests.load();
-      }
-
       Console.log("Blackbird Started",{ system:'Main', level:1, data:{
         environment: Environment.name,
       }});

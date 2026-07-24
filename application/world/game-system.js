@@ -35,7 +35,6 @@ global.GameSystem = (function() {
 
   async function openGame() {
     MainContent.showCover();
-    MainContent.removeStylesheet('mocha');
     MainContent.hideCover({ fadeTime:2500 });
   }
 
