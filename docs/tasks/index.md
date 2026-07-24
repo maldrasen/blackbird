@@ -2,10 +2,6 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
-## Priority 1
-
-- [137] Double Crit Bug `8pt` — [137-double-crit-bug.md](137-double-crit-bug.md)
-
 ## Priority 2
 
 - [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
