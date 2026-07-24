@@ -7,7 +7,7 @@
 //       have real graphics for all the equipment pieces, so a generic head armor icon is fine.
 
 BaseArmor.register('coif', {
-  name: 'Coif',
+  name: 'coif',
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 10, slash: 20, pierce: 14 },
@@ -18,7 +18,7 @@ BaseArmor.register('coif', {
 });
 
 BaseArmor.register('helm', {
-  name: 'Helm',
+  name: 'helm',
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 14, slash: 20, pierce: 16 },
@@ -29,7 +29,7 @@ BaseArmor.register('helm', {
 });
 
 BaseArmor.register('bascinet', {
-  name: 'Bascinet',
+  name: 'bascinet',
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 16, slash: 24, pierce: 20 },
@@ -40,7 +40,7 @@ BaseArmor.register('bascinet', {
 });
 
 BaseArmor.register('sallet', {
-  name: 'Sallet',
+  name: 'sallet',
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 16, slash: 25, pierce: 21 },
@@ -51,7 +51,7 @@ BaseArmor.register('sallet', {
 });
 
 BaseArmor.register('armet', {
-  name: 'Armet',
+  name: 'armet',
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 20, slash: 28, pierce: 24 },
@@ -62,7 +62,7 @@ BaseArmor.register('armet', {
 });
 
 BaseArmor.register('heaume', {
-  name: 'Heaume',
+  name: 'heaume',
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 22, slash: 30, pierce: 26 },

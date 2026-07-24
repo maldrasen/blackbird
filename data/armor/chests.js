@@ -4,7 +4,7 @@
 // really turns away. Across all armor, plate turns cuts (slash) best and blunt trauma (crush) worst.
 
 BaseArmor.register('doublet', {
-  name: 'Doublet',
+  name: 'doublet',
   icon: 'armor/coat-01.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 40, slash: 60, pierce: 33 },
@@ -15,7 +15,7 @@ BaseArmor.register('doublet', {
 });
 
 BaseArmor.register('hauberk', {
-  name: 'Hauberk',
+  name: 'hauberk',
   icon: 'armor/chest-08.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 18, slash: 30, pierce: 20 },
@@ -26,7 +26,7 @@ BaseArmor.register('hauberk', {
 });
 
 BaseArmor.register('cuirass', {
-  name: 'Cuirass',
+  name: 'cuirass',
   icon: 'armor/chest-07.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 25, slash: 35, pierce: 30 },
@@ -38,7 +38,7 @@ BaseArmor.register('cuirass', {
 });
 
 BaseArmor.register('breastplate', {
-  name: 'Breastplate',
+  name: 'breastplate',
   icon: 'armor/chest-04.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 32, slash: 45, pierce: 40 },
@@ -49,7 +49,7 @@ BaseArmor.register('breastplate', {
 });
 
 BaseArmor.register('plate', {
-  name: 'Plate',
+  name: 'plate',
   icon: 'armor/chest-03.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 40, slash: 50, pierce: 48 },

@@ -3,7 +3,7 @@
 // soft material's absorption); greaves, chainmail, and plate-mail are steel.
 
 BaseArmor.register('leggings', {
-  name: 'Leggings',
+  name: 'leggings',
   icon: 'armor/legs-03.png',
   slot: EquipmentSlot.legs,
   reduction: { crush: 33, slash: 53, pierce: 27 },
@@ -14,7 +14,7 @@ BaseArmor.register('leggings', {
 });
 
 BaseArmor.register('chaps', {
-  name: 'Chaps',
+  name: 'chaps',
   icon: 'armor/legs-03.png',
   slot: EquipmentSlot.legs,
   reduction: { crush: 23, slash: 34, pierce: 23 },
@@ -25,7 +25,7 @@ BaseArmor.register('chaps', {
 });
 
 BaseArmor.register('greaves', {
-  name: 'Greaves',
+  name: 'greaves',
   icon: 'armor/legs-01.png',
   slot: EquipmentSlot.legs,
   reduction: { crush: 14, slash: 18, pierce: 16 },
@@ -37,7 +37,7 @@ BaseArmor.register('greaves', {
 
 // TODO: Need a better chainmail icon.
 BaseArmor.register('chainmail', {
-  name: 'Chainmail',
+  name: 'chainmail',
   icon: 'armor/legs-03.png',
   slot: EquipmentSlot.legs,
   reduction: { crush: 16, slash: 28, pierce: 20 },
@@ -49,7 +49,7 @@ BaseArmor.register('chainmail', {
 
 // TODO: Need a better plate legs icon.
 BaseArmor.register('plate-mail', {
-  name: 'Plate Mail',
+  name: 'plate mail',
   icon: 'armor/legs-03.png',
   slot: EquipmentSlot.legs,
   reduction: { crush: 26, slash: 38, pierce: 34 },

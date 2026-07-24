@@ -6,7 +6,7 @@ describe('Item', function() {
       const helm = ArmorFactory.build('helm');
 
       expect(Item(hatchet).getName()).to.equal('hatchet');
-      expect(Item(helm).getName()).to.equal('Helm');
+      expect(Item(helm).getName()).to.equal('helm');
     });
 
     it('returns custom names', function() {

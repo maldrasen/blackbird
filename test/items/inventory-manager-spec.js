@@ -44,7 +44,7 @@ describe('InventoryManager', function() {
     const rows = inventory.listItems();
 
     expect(rows.map(row => row.name)).to.deep.equal([
-      'cleaver', 'Hauberk', 'Helm', 'battle axe', 'Boots', 'hatchet']);
+      'cleaver', 'hauberk', 'helm', 'battle axe', 'boots', 'hatchet']);
 
     expect(rows[0].slot).to.equal(EquipmentSlot.primary);
     expect(rows[1].slot).to.equal(EquipmentSlot.chest);

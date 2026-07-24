@@ -73,7 +73,7 @@ global.InventoryPanel = function(options) {
     </li>`);
 
     itemElement.querySelector('.item-icon').style['background-image'] = X.assetURL(`icons/${item.icon}`);
-    itemElement.querySelector('.item-name').textContent = item.name;
+    itemElement.querySelector('.item-name').textContent = StringHelper.titlecase(item.name);
     itemElement.addEventListener('click', clickItemElement(item, itemElement));
 
     if (item.slot) {

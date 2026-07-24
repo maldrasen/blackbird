@@ -3,7 +3,7 @@
 // absorption); vambraces and gauntlets are steel.
 
 BaseArmor.register('gloves', {
-  name: 'Gloves',
+  name: 'gloves',
   icon: 'armor/hands-02.png',
   slot: EquipmentSlot.hands,
   reduction: { crush: 14, slash: 23, pierce: 14 },
@@ -15,7 +15,7 @@ BaseArmor.register('gloves', {
 
 // TODO: Need an icon for bracers and these are obviously gloves.
 BaseArmor.register('bracers', {
-  name: 'Bracers',
+  name: 'bracers',
   icon: 'armor/hands-03.png',
   slot: EquipmentSlot.hands,
   reduction: { crush: 11, slash: 20, pierce: 17 },
@@ -27,7 +27,7 @@ BaseArmor.register('bracers', {
 
 // TODO: Could use the same bracers icon, but these are gloves.
 BaseArmor.register('vambraces', {
-  name: 'Vambraces',
+  name: 'vambraces',
   icon: 'armor/hands-03.png',
   slot: EquipmentSlot.hands,
   reduction: { crush: 12, slash: 16, pierce: 14 },
@@ -38,7 +38,7 @@ BaseArmor.register('vambraces', {
 });
 
 BaseArmor.register('gauntlets', {
-  name: 'Gauntlets',
+  name: 'gauntlets',
   icon: 'armor/hands-01.png',
   slot: EquipmentSlot.hands,
   reduction: { crush: 14, slash: 18, pierce: 15 },
