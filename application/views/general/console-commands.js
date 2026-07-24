@@ -111,12 +111,12 @@ global.ConsoleCommands = (function() {
 
   function printRoster() {
     const state = GameSystem.getState();
-    const ids = [state.getPlayer(), ...state.getRoster().filter(id => id !== state.getPlayer())];
 
     let list = `<pre class='padding'>\n=== Roster ===\n`;
-    ids.forEach(id => {
+    state.getRoster().forEach(id => {
       list += `${Character(id).getFullName().padEnd(24)} ${entityLink(id)}\n`
     });
+
     return `${list}</pre>`;
   }
 
