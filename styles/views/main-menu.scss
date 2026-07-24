@@ -6,17 +6,16 @@
   z-index: variables.$z-main-menu;
 
   .base-frame {
-    width: 290px;
+    width: 281px;
   }
 
   h3 {
-    font-family: aleo-light;
+    font-family: 'habibi', serif;
     font-size: 30px;
   }
 
   ul {
     a.button {
-      font-family: aleo-light;
       position: relative;
       margin-bottom: 5px;
       width: 260px;

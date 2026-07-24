@@ -21,7 +21,7 @@
   }
   .name {
     font-size: 10px;
-    font-family: 'roboto-medium';
+    font-family: 'roboto-medium', sans-serif;
     color: variables.$fg-strong;
     text-align: center;
     padding: 2px 0;
@@ -50,7 +50,7 @@
     cursor: pointer;
 
     .name {
-      font-family: 'aleo-bold';
+      font-family: 'habibi', serif;
       color: variables.$fg-strong;
       margin: 0 10px;
     }
