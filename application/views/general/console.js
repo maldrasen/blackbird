@@ -14,6 +14,11 @@ global.Console = (function() {
       }
     })
 
+    X.onClick('#console .entity-link', event => {
+      const id = event.target.closest('.entity-link').dataset.entityId;
+      ConsoleCommands.run(`entityData ${id}`);
+    });
+
     X.first('#commandInput').addEventListener('keydown', event => {
       event.stopPropagation();
       if (event.code === KeyCodes.Backquote) {

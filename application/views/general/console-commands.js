@@ -10,7 +10,19 @@ global.ConsoleCommands = (function() {
     reveal: {
       commandFunction: DungeonCommands.revealAll,
       description:`Reveal all the rooms on the current dungeon floor.`
-    }
+    },
+    roster: {
+      commandFunction: printRoster,
+      requires: ['game.loaded'],
+      description:`Print the character roster with entity IDs.` },
+    state: {
+      commandFunction: printState,
+      requires: ['game.loaded'],
+      description:`Print a state object. Usage: state <name>` },
+  }
+
+  const stateDumps = {
+    game: () => GameSystem.getState().pack(),
   }
 
   const commandHistory = [];
@@ -20,15 +32,19 @@ global.ConsoleCommands = (function() {
     const command = input.value;
     if (command.length) {
       input.value = '';
-      try {
-        executeCommand(command);
-      }
-      catch (error) {
-        Console.logError(`Error running command`,error,{ system:'Console' });
-      }
-      commandHistory.push(command);
-      commandHistoryPointer = null;
+      run(command);
     }
+  }
+
+  function run(command) {
+    try {
+      executeCommand(command);
+    }
+    catch (error) {
+      Console.logError(`Error running command`,error,{ system:'Console' });
+    }
+    commandHistory.push(command);
+    commandHistoryPointer = null;
   }
 
   function loadPreviousCommand() {
@@ -93,6 +109,29 @@ global.ConsoleCommands = (function() {
     return `${list}</pre>`;
   }
 
+  function printRoster() {
+    const state = GameSystem.getState();
+    const ids = [state.getPlayer(), ...state.getRoster().filter(id => id !== state.getPlayer())];
+
+    let list = `<pre class='padding'>\n=== Roster ===\n`;
+    ids.forEach(id => {
+      list += `${Character(id).getFullName().padEnd(24)} ${entityLink(id)}\n`
+    });
+    return `${list}</pre>`;
+  }
+
+  function printState(args) {
+    const dumpFunction = stateDumps[args[0]];
+    if (dumpFunction == null) {
+      return `Available states: ${Object.keys(stateDumps).join(', ')}`;
+    }
+    return `<pre class='json-dump'>${JSON.stringify(dumpFunction(),null,2)}</pre>`
+  }
+
+  function entityLink(id) {
+    return `<a class='entity-link' data-entity-id='${id}'>${id}</a>`;
+  }
+
   function printEntityData(args) {
     const id = args[0]
     if (Registry.entityExists(id) === false) {
@@ -103,6 +142,7 @@ global.ConsoleCommands = (function() {
 
   return Object.freeze({
     sendCommand,
+    run,
     loadPreviousCommand,
   });
 

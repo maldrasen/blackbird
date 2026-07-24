@@ -43,6 +43,12 @@
     margin: 0 10px;
     font-family: "roboto-mono", monospace;
     font-size: 14px;
+    user-select: text;
+    cursor: text;
+  }
+
+  .entity-link {
+    cursor: pointer;
   }
 
   .entry.level-2 { opacity:0.666; }
