@@ -60,7 +60,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [115] Add deathblow messages `5pt` — [115-add-deathblow-messages.md](115-add-deathblow-messages.md)
 - [119] Dungeon color themes `3pt` — [119-dungeon-color-themes.md](119-dungeon-color-themes.md)
 - [127] Add a Health factor to the EssenceSystem `2pt` — [127-base-monster-health-factors.md](127-base-monster-health-factors.md)
-- [132] Console improvements `3pt` — [132-console-improvements.md](132-console-improvements.md)
 
 ## Priority 5
 
