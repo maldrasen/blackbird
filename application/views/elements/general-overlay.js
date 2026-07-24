@@ -44,7 +44,6 @@ global.GeneralOverlay = (function() {
 
   // The close() function should only be called by the WindowManager.
   function close() {
-    locked = false;
     X.empty('#generalOverlay');
     X.addClass('#generalOverlay','hide');
     X.addClass('#overlayCover','hide');
@@ -60,6 +59,7 @@ global.GeneralOverlay = (function() {
     setFooterContent,
     close,
     isOpen,
+    unlock: () => { locked = false; },
     isLocked: () => { return locked; },
   })
 

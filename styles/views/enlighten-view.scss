@@ -89,4 +89,22 @@
     }
   }
 
+  .attribute-picks.disabled .attribute-pick {
+    cursor: default;
+
+    &:not(.selected) {
+      color: variables.$fg-weak;
+
+      &:hover {
+        border: variables.$border-light;
+        color: variables.$fg-weak;
+      }
+    }
+  }
+
+  .attribute-value .increase {
+    margin-left: 5px;
+    color: variables.$fg-success;
+  }
+
 }

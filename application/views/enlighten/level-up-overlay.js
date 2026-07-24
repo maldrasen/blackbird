@@ -6,7 +6,7 @@ global.LevelUpOverlay = (function() {
   }
 
   function open(id) {
-    GeneralOverlay.open(build(id), { classname:'small' });
+    GeneralOverlay.open(build(id), { classname:'small', preventClose:true });
     GeneralOverlay.setFooterContent(buildConfirmButton());
   }
 
@@ -36,17 +36,28 @@ global.LevelUpOverlay = (function() {
     return X.createElement(`<a id='levelUpConfirm' href='#' class='button button-primary disabled'>Confirm</a>`);
   }
 
+  // Picking an attribute levels up immediately so the player can see the result. Disabling the entire pick list
+  // prevents a second level up, though the picked attribute stays highlighted.
   function pickAttribute(event) {
-    X.removeClass('#levelUpOverlay .attribute-pick','selected');
-    X.addClass(event.target.closest('.attribute-pick'),'selected');
+    const id = X.first('#levelUpOverlay').dataset.id;
+    const pick = event.target.closest('.attribute-pick');
+    const result = EnlightenSystem.chooseLevelUpAttribute(id, pick.dataset.attribute);
+
+    X.addClass('#levelUpOverlay .attribute-picks','disabled');
+    X.addClass(pick,'selected');
+
+    X.fill(pick.querySelector('.attribute-value'), [
+      `${AttributesComponent.lookup(id)[result.attribute]}`,
+      X.createElement(`<span class='increase'>+${result.increase}</span>`),
+    ]);
+
+    X.fill('#levelUpOverlay .summary', `${StringHelper.titlecase(result.attribute)} increased by ${result.increase}.`);
     X.removeClass('#levelUpConfirm','disabled');
   }
 
   function confirmLevelUp() {
     const id = X.first('#levelUpOverlay').dataset.id;
-    const attribute = X.first('#levelUpOverlay .attribute-pick.selected').dataset.attribute;
-
-    EnlightenSystem.chooseLevelUpAttribute(id, attribute);
+    GeneralOverlay.unlock();
     WindowManager.pop();
     EnlightenView.resume(id);
   }
