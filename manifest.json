@@ -177,7 +177,6 @@
     "application/test/character-fixtures.js",
     "application/test/fixtures.js",
     "application/test/item-fixtures.js",
-    "application/test/report-fixture.js",
     "application/test/tests.js",
     "application/test/training-fixtures.js",
     "application/training/consent-result.js",

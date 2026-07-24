@@ -66,7 +66,6 @@ global.MainMenu = (function() {
     if (fixture === 'dungeon') { setup = Fixtures.setupDungeon; }
     if (fixture === 'battle') { setup = Fixtures.setupBattle; }
     if (fixture === 'training') { setup = Fixtures.setupTraining; }
-    if (fixture === 'reports') { setup = ReportFixture.show; }
     if (setup == null) { throw new Error(`Bad fixture code: ${fixture}`); }
 
     await GameSystem.startNewGame(setup);
