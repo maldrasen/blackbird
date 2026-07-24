@@ -2,11 +2,12 @@ global.LevelUpOverlay = (function() {
 
   function init() {
     X.onClick('#levelUpOverlay .attribute-pick', pickAttribute);
-    X.onClick('#levelUpOverlay .confirm-button', confirmLevelUp);
+    X.onClick('#levelUpConfirm', confirmLevelUp);
   }
 
   function open(id) {
     GeneralOverlay.open(build(id), { classname:'small' });
+    GeneralOverlay.setFooterContent(buildConfirmButton());
   }
 
   function build(id) {
@@ -17,9 +18,6 @@ global.LevelUpOverlay = (function() {
       <div class='title'>${Character(id).getName()}</div>
       <p class='summary'>Level ${experience.level} → ${experience.level + 1}. Choose an attribute to raise.</p>
       <ul class='attribute-picks'></ul>
-      <div class='button-row align-right'>
-        <a href='#' class='button button-primary confirm-button disabled'>Confirm</a>
-      </div>
     </div>`);
 
     Object.keys(Attrib).forEach(code => {
@@ -34,10 +32,14 @@ global.LevelUpOverlay = (function() {
     return content;
   }
 
+  function buildConfirmButton() {
+    return X.createElement(`<a id='levelUpConfirm' href='#' class='button button-primary disabled'>Confirm</a>`);
+  }
+
   function pickAttribute(event) {
     X.removeClass('#levelUpOverlay .attribute-pick','selected');
     X.addClass(event.target.closest('.attribute-pick'),'selected');
-    X.removeClass('#levelUpOverlay .confirm-button','disabled');
+    X.removeClass('#levelUpConfirm','disabled');
   }
 
   function confirmLevelUp() {

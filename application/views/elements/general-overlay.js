@@ -36,6 +36,12 @@ global.GeneralOverlay = (function() {
     ScrollingPanel({ id:'#generalOverlayScroll' });
   }
 
+  // The overlay footer is a button row, so it expects the content to be a button or an array of buttons, though I
+  // suppose you could just shove anything you wanted into it, you filthy bastard.
+  function setFooterContent(buttons) {
+    X.fill('#generalOverlay .overlay-footer', buttons);
+  }
+
   // The close() function should only be called by the WindowManager.
   function close() {
     locked = false;
@@ -51,6 +57,7 @@ global.GeneralOverlay = (function() {
   return Object.freeze({
     init,
     open,
+    setFooterContent,
     close,
     isOpen,
     isLocked: () => { return locked; },

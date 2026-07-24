@@ -31,7 +31,7 @@ global.X = (function() {
   }
 
   function fill(arg, element) {
-    (typeof arg === 'string' ? first(arg) : arg).replaceChildren(element);
+    (typeof arg === 'string' ? first(arg) : arg).replaceChildren(...[].concat(element));
   }
 
   function append(arg, element) {
