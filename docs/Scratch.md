@@ -1,5 +1,4 @@
 ```
-data/abilities/basic-attack.js
 data/abilities/dick-punch.js
 data/abilities/sneak-attack.js
 data/weapons/polearms.js

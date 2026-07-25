@@ -46,9 +46,10 @@ function executeBasicAttack() {
 
   const contests = attacks.map(attack => {
     const contest = PhysicalAttackContest(acting, target);
-    contest.setWeaponData(attack);
-    contest.setAbility('basic-attack');
-    contest.roll();
+          contest.setWeaponData(attack);
+          contest.setAbility('basic-attack');
+          contest.roll();
+
     return contest;
   });
 
