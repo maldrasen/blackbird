@@ -18,6 +18,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [134] Implement conversation skill `5pt` — [134-implement-conversation-skill.md](134-implement-conversation-skill.md)
 - [136] Difficulty Sliders `5pt` — [136-difficulty-sliders.md](136-difficulty-sliders.md)
 - [138] Style Level Up Overlay `3pt` — [138-style-level-up-overlay.md](138-style-level-up-overlay.md)
+- [141] Monster equipment `5pt` — [141-monster-equipment.md](141-monster-equipment.md)
 
 ## Priority 3
 

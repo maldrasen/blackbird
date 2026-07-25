@@ -71,7 +71,7 @@ describe("DefendRoll", function() {
     expect(roll.getDefendSkill()).to.equal('dodge');
   });
 
-  it("blocks over parrying when both are possible", function() {
+  it("parries over blocking when both are possible", function() {
     const state = startBattle();
     const defender = pinnedDefender(state);
     equipItem(defender, 'longsword', EquipmentSlot.primary);
@@ -79,10 +79,10 @@ describe("DefendRoll", function() {
     setParry(defender, 25);
 
     const roll = DefendRoll(defender, null, attackAgainst(state, defender));
-    expect(roll.getDefendSkill()).to.equal('block');
+    expect(roll.getDefendSkill()).to.equal('parry');
   });
 
-  it("always dodges arrows", function() {
+  it("blocks arrows when parry is possible", function() {
     const state = startBattle();
     const defender = pinnedDefender(state);
     equipItem(defender, 'longsword', EquipmentSlot.primary);
@@ -90,7 +90,7 @@ describe("DefendRoll", function() {
     setParry(defender, 25);
 
     const roll = DefendRoll(defender, null, attackAgainst(state, defender, 'shortbow'));
-    expect(roll.getDefendSkill()).to.equal('dodge');
+    expect(roll.getDefendSkill()).to.equal('block');
   });
 
   it("always dodges as an unequipped monster", function() {

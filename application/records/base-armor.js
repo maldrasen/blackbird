@@ -1,7 +1,6 @@
 global.BaseArmor = (function() {
   const armors = {};
 
-  // The skill register() function also needs to add the skill code as a property of the Skills component.
   function register(code,data) {
     armors[code] = data;
   }
