@@ -10,7 +10,7 @@ global.DefendRoll = function(defender, attacker, attackRoll) {
     const hasShield = equipment.getEquippedShield();
     const canParry = attackRoll.isRangedAttack() === false && hasSword && SkillsComponent.lookup(defender).parry > 0
 
-    if (hasShield && canParry) { return chooseDefense(defender); }
+    if (hasShield && canParry) { return chooseDefenseSkill(defender); }
     if (canParry) { return 'parry'; }
     if (hasShield) { return 'block'; }
 
@@ -19,7 +19,7 @@ global.DefendRoll = function(defender, attacker, attackRoll) {
 
   // When a character can both block or parry an attack, they have a chance of doing either. A high strength character
   // will block more often and a high dex character will parry more often.
-  function chooseDefense(defender) {
+  function chooseDefenseSkill(defender) {
     const attributes = AttributesComponent.lookup(defender);
     return Random.fromFrequencyMap({
       parry: attributes.dexterity,
