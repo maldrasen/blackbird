@@ -10,14 +10,20 @@ global.FlashSquare = (function() {
 
   function buildFlashStyle(options) {
     const position = X.getPosition(options.element);
-    return [
+    const styles = [
       `height:${position.height}px;`,
       `width:${position.width}px;`,
       `top:${position.top}px;`,
       `left:${position.left}px;`,
       `background-color:${options.color};`,
       `transition-duration:${options.duration}ms;`
-    ].join(' ');
+    ];
+
+    if (options.boxShadow) {
+      styles.push(`box-shadow:${options.boxShadow};`);
+    }
+
+    return styles.join(' ');
   }
 
   return Object.freeze({

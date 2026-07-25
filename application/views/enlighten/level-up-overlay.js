@@ -53,6 +53,13 @@ global.LevelUpOverlay = (function() {
       `${newValue}`,
     ]);
 
+    FlashSquare.flash({
+      element: pick,
+      color: `rgb(186 255 148)`,
+      boxShadow: `0 0 20px rgba(186 255 148)`,
+      duration: 500,
+    });
+
     checkState();
   }
 
