@@ -8,14 +8,19 @@ global.DefendRoll = function(defender, attacker, attackRoll) {
     const equipment = EquipmentManager(defender);
     const hasSword = equipment.hasEquippedWeaponType('sword')
     const hasShield = equipment.getEquippedShield();
-    const isRangedAttack = attackRoll.getBaseWeapon().getType() === 'bow';
-    const canParry = isRangedAttack === false && hasSword && SkillsComponent.lookup(defender).parry > 0
+    const canParry = isRangedAttack() === false && hasSword && SkillsComponent.lookup(defender).parry > 0
 
     if (hasShield && canParry) { return chooseDefense(defender); }
     if (canParry) { return 'parry'; }
     if (hasShield) { return 'block'; }
 
     return 'dodge';
+  }
+
+  // FIXME: Actually, this needs to look at the attack targeting mode. Not every ranged attack will be weapon based,
+  //        but every long range attack should have TagetingMode.anyEnemy
+  function isRangedAttack() {
+    return attackRoll.getBaseWeapon().getType() === 'bow';
   }
 
   // When a character can both block or parry an attack, they have a chance of doing either. A high strength character
