@@ -21,13 +21,22 @@ describe("BattleDamageSystem", function() {
     AttributesComponent.update(id, attributes);
   }
 
+  // The outcome tests aim their damage at a bared chest so the randomly equipped fixture characters can't
+  // mitigate the hard-coded damage numbers.
+  function bareChest(id) {
+    const equipment = EquipmentManager(id);
+    equipment.equipItem(null, EquipmentSlot.chest);
+    equipment.equipItem(null, EquipmentSlot.secondary);
+  }
+
   it("knocks a character out at zero or below", function() {
     const state = startBattle();
     const target = state.getEntityAtPosition('P',1,2);
     setHealth(target, 5);
     setVitality(target, 15);
+    bareChest(target);
 
-    BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:10 }});
+    BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:10 }, hitLocation:EquipmentSlot.chest });
 
     expect(HealthComponent.lookup(target).currentHealth).to.equal(-5);
     expect(state.isKnockedOut(target)).to.be.true;
@@ -43,8 +52,9 @@ describe("BattleDamageSystem", function() {
     const target = state.getEntityAtPosition('P',1,2);
     setHealth(target, 5);
     setVitality(target, 15);
+    bareChest(target);
 
-    BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:20 }});
+    BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:20 }, hitLocation:EquipmentSlot.chest });
 
     expect(HealthComponent.lookup(target).currentHealth).to.equal(-15);
     expect(state.isKnockedOut(target)).to.be.true;
@@ -56,8 +66,9 @@ describe("BattleDamageSystem", function() {
     const target = state.getEntityAtPosition('P',1,2);
     setHealth(target, 5);
     setVitality(target, 15);
+    bareChest(target);
 
-    BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:21 }});
+    BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:21 }, hitLocation:EquipmentSlot.chest });
 
     expect(HealthComponent.lookup(target).currentHealth).to.equal(-16);
     expect(state.isKnockedOut(target)).to.be.false;
@@ -69,7 +80,7 @@ describe("BattleDamageSystem", function() {
     const state = startBattle();
     const target = state.getActiveMonsters()[0];
 
-    BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:9999 }});
+    BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:9999 }, hitLocation:EquipmentSlot.chest });
 
     expect(HealthComponent.lookup(target).currentHealth).to.equal(0);
     expect(state.isAlive(target)).to.be.false;
@@ -81,12 +92,22 @@ describe("BattleDamageSystem", function() {
     const target = state.getEntityAtPosition('P',1,2);
     setHealth(target, 5);
     setVitality(target, 15);
+    bareChest(target);
 
-    BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:10 }});
+    BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:10 }, hitLocation:EquipmentSlot.chest });
+
+    expect(() => {
+      BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:10 }, hitLocation:EquipmentSlot.chest });
+    }).to.throw('already down');
+  });
+
+  it("throws when damage has no hit location", function() {
+    const state = startBattle();
+    const target = state.getEntityAtPosition('P',1,2);
 
     expect(() => {
       BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:10 }});
-    }).to.throw('already down');
+    }).to.throw('requires a hit location');
   });
 
   describe("armor mitigation", function() {
@@ -172,17 +193,6 @@ describe("BattleDamageSystem", function() {
         entity:target, damageTypes:{ slash:10 }, hitLocation:EquipmentSlot.chest });
 
       expect(damage).to.equal(10);
-    });
-
-    it("never mitigates elemental damage", function() {
-      const state = startBattle();
-      const target = pinnedTarget(state);
-      equipItem(target, ArmorFactory.build('breastplate'), EquipmentSlot.chest);
-
-      const damage = BattleDamageSystem.applyDamage({
-        entity:target, damageTypes:{ fire:40 }, hitLocation:EquipmentSlot.chest });
-
-      expect(damage).to.equal(40);
     });
   });
 

@@ -38,12 +38,24 @@ global.BattleDamageSystem = (function() {
     return actualDamage;
   }
 
-  // Attacks without a hit location bypass armor entirely, and monsters have no equipment to mitigate with. Armor
-  // profiles only cover the physical damage types, so elemental damage always passes through untouched.
+  // TODO: Monsters will either need armor equipped or will have a natural armor object that defines resistances on
+  //       all their hit locations. Actual nude monsters with no armor at all will be rare, though not impossible.
+
+  // TODO: This function will also need to handle the spell resistance reduction. Some spells will still have a
+  //       hitLocation, but an AoE spell, targeting several positions wouldn't. In that case we'd need to get an
+  //       average damage resistance. A "blade tornado" spell for instance would deal slashing damage, so we'd still
+  //       want to use character's armor's slash resistance, but average it across all locations. Other resistance
+  //       types should be additive though. A character that has a 20% percent fire damage resistance amulet and a 10%
+  //       fire damage resistance cloak should have an 30% overall fire damage resistance across every hit location.
+  //       This is the same resistance used to resist status effects.
+
   function getReductionPercent(target, hitLocation, type) {
-    if (hitLocation == null) { return 0; }
-    if (EquipmentComponent.lookup(target) == null) { return 0; }
-    return EquipmentManager(target).getDamageReduction(hitLocation, type);
+    if ([DamageType.crush, DamageType.pierce, DamageType.slash].includes(type)) {
+      if (hitLocation == null) { throw new Error(`applyDamage() requires a hit location.`); }
+      if (EquipmentComponent.lookup(target) == null) { return 0; }
+      return EquipmentManager(target).getDamageReduction(hitLocation, type);
+    }
+    throw new Error(`TODO: Equipment elemental resistances.`);
   }
 
   // Monsters simply die at zero health. Characters brought to zero or below are knocked out, keeping their negative

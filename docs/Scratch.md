@@ -1,5 +1,4 @@
 ```
-application/battle/models/physical-attack-roll.js
 application/battle/systems/battle-damage-system.js
 application/battle/systems/physical-attack-system.js
 application/helpers/item-helper.js
