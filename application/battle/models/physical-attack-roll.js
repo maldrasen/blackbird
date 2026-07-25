@@ -1,11 +1,19 @@
 
-// Weapon data should include { base, id, name, textKey } with everything but the base property being optional as most
-// monsters won't be using actual weapons with weapon components.
+// Weapon data should include { base, code, id, name, textKey } with everything but the base property being optional
+// as most monsters won't be using actual weapons with weapon components. The code is the ability making the attack.
 
 global.PhysicalAttackRoll = function(attacker, target, weaponData, hitLocation=null) {
   const baseWeapon = BaseWeapon.lookup(weaponData.base);
   const weapon = (weaponData.id) ? Weapon(weaponData.id) : null;
+  const ability = (weaponData.code) ? Ability.lookup(weaponData.code) : null;
   const attackSkill = baseWeapon.getSkill();
+
+  // An ability that can target any enemy attacks at long range no matter what weapon is in hand. When the ability
+  // targets within weapon range - or the roll is a plain weapon attack - the weapon's reach decides instead.
+  function isRangedAttack() {
+    if (ability != null && ability.getTargetingMode() === TargetingMode.anyEnemy) { return true; }
+    return baseWeapon.getReach() === WeaponReach.long;
+  }
 
   if (hitLocation== null) {
     hitLocation = BattleHelper.randomHitLocation();
@@ -30,6 +38,8 @@ global.PhysicalAttackRoll = function(attacker, target, weaponData, hitLocation=n
   return Object.freeze({
     getWeaponName: () => { return weaponData.name; },
     getBaseWeapon: () => { return baseWeapon; },
+    getAbility: () => { return ability; },
+    isRangedAttack,
     getBaseWeaponCode: () => { return weaponData.base },
     getWeapon: () => { return weapon; },
     getWeaponId: () => { return weaponData.id || null },

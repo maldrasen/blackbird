@@ -23,7 +23,7 @@ BaseWeapon.register('pike', {
   type: 'polearm',
   damageType: DamageType.pierce,
   hands: WeaponHandedness.two,
-  reach: WeaponReach.long,
+  reach: WeaponReach.extended,
   low: 40,
   high: 90,
   speed: 1400,

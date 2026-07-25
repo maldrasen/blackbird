@@ -17,7 +17,8 @@ Ability.register('dick-punch',{
     const state = BattleSystem.getState();
     const acting = round.getActing();
     const target = round.getTarget();
-    const contest = PhysicalAttackContest(acting, target, round.getPrimaryWeapon(), EquipmentSlot.legs);
+    const contest = PhysicalAttackContest(acting, target,
+      { ...round.getPrimaryWeapon(), code:'dick-punch' }, EquipmentSlot.legs);
     const attackRoll = contest.getAttackRoll();
     const defendRoll = contest.getDefendRoll();
 
