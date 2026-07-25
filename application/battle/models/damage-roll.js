@@ -1,12 +1,3 @@
-
-// The rolled damage value is rather complex because we need to divide the base damage into it's damage type
-// components so that additional damage from enchantments can be added or so that damage values can be resisted. We
-// could also increase damage within this function depending on the attack and defense crit and fumble states.
-//   - attacker: Attacker entity id.
-//   - baseWeapon: BaseWeapon record
-//   - attack: ['crit','fumble','normal'] (We can also pass an attack roll, rather than a string here)
-//   - defend: ['crit','fumble','normal'] (We can also pass a defend roll, rather than a string here)
-
 global.DamageRoll = function(attacker, attackRoll, defendRoll) {
   const baseWeapon = attackRoll.getBaseWeapon();
   const strength = AttributesComponent.lookup(attacker).strength;
@@ -15,7 +6,6 @@ global.DamageRoll = function(attacker, attackRoll, defendRoll) {
   const damageRoll = Random.between(baseWeapon.getLow(), baseWeapon.getHigh());
   const ability = attackRoll.getAbility();
   const damageFactor = (ability == null) ? 1 : ability.getDamageBonus(attacker);
-
   const damageTypes = {};
 
   let rawDamage = Math.round((damageRoll / 100) * strength * damageFactor);

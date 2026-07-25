@@ -1,23 +1,35 @@
-
-// An attack roll is configured with its setters before roll() executes it. Weapon data should include
-// { base, id, name, textKey } with everything but the base property being optional as most monsters won't be using
-// actual weapons with weapon components. The ability is the code of the ability making the attack, and the hit
-// location is rolled randomly when one isn't set.
-
 global.PhysicalAttackRoll = function(attacker, target) {
   let weaponData = {};
-  let ability = null;
+  let abilityCode = null;
   let hitLocation = null;
 
   let baseWeapon;
   let weapon;
-  let textKey;
   let check;
   let finalValue;
 
-  function setWeaponData(data) { weaponData = data; }
-  function setAbility(code) { ability = (code) ? Ability.lookup(code) : null; }
+  function setAbility(code) { abilityCode = code; }
+  function getAbility() { return (abilityCode == null) ? null : Ability.lookup(abilityCode); }
   function setHitLocation(location) { hitLocation = location; }
+
+  // Weapon data should include { base, id, name, textKey } with everything but the base property being optional as
+  // some monsters won't be using actual weapons with weapon components.
+  function setWeaponData(data) {
+    weaponData = data;
+    baseWeapon = BaseWeapon.lookup(weaponData.base);
+    weapon = (weaponData.id) ? Weapon(weaponData.id) : null;
+  }
+
+  // An ability that can target any enemy is always long range. Otherwise, the weapon's reach determines the range.
+  function isRangedAttack() {
+    if (abilityCode != null && getAbility().getTargetingMode() === TargetingMode.anyEnemy) { return true; }
+    return baseWeapon.getReach() === WeaponReach.long;
+  }
+
+  function getTextKey() {
+    if (weaponData.textKey) { return weaponData.textKey; }
+    return (weapon != null) ? weapon.getTextKey() : baseWeapon.getTextKey();
+  }
 
   // TODO: The attack roll will need to take all of the status effects and feats and whatever into consideration
   //       to turn the check value into a final value.
@@ -26,17 +38,8 @@ global.PhysicalAttackRoll = function(attacker, target) {
   //       which we can get from attack.weapon if the attack is using a real weapon.
 
   function roll() {
-    baseWeapon = BaseWeapon.lookup(weaponData.base);
-    weapon = (weaponData.id) ? Weapon(weaponData.id) : null;
-
-    if (hitLocation == null) {
-      hitLocation = BattleHelper.randomHitLocation();
-    }
-
-    textKey = weaponData.textKey;
-    if (textKey == null) {
-      textKey = (weapon != null) ? weapon.getTextKey() : baseWeapon.getTextKey();
-    }
+    if (baseWeapon == null) { throw new Error(`A PhysicalAttackRoll must have a base weapon. Call setWeaponData() before roll().`); }
+    if (hitLocation == null) { hitLocation = BattleHelper.randomHitLocation(); }
 
     check = SkillCheck(attacker, baseWeapon.getSkill());
     finalValue = Math.ceil(check.value);
@@ -44,31 +47,27 @@ global.PhysicalAttackRoll = function(attacker, target) {
     Console.log(`Attack Roll [${attacker}]`,{ system:'BattleSystem', level:3, data:{ check, finalValue }});
   }
 
-  // An ability that can target any enemy attacks at long range no matter what weapon is in hand. When the ability
-  // targets within weapon range - or the roll is a plain weapon attack - the weapon's reach decides instead.
-  function isRangedAttack() {
-    if (ability != null && ability.getTargetingMode() === TargetingMode.anyEnemy) { return true; }
-    return baseWeapon.getReach() === WeaponReach.long;
-  }
-
   return Object.freeze({
-    setWeaponData,
     setAbility,
+    getAbility,
+    getAbilityCode: () => { return abilityCode; },
+
     setHitLocation,
-    roll,
-    getWeaponName: () => { return weaponData.name; },
-    getBaseWeapon: () => { return baseWeapon; },
-    getAbility: () => { return ability; },
-    isRangedAttack,
-    getBaseWeaponCode: () => { return weaponData.base },
-    getWeapon: () => { return weapon; },
-    getWeaponId: () => { return weaponData.id || null },
     getHitLocation: () => { return hitLocation; },
+
+    setWeaponData,
+    getBaseWeapon: () => { return baseWeapon; },
+    getWeaponName: () => { return weaponData.name; },
+    getBaseWeaponCode: () => { return weaponData.base },
+    getWeaponId: () => { return weaponData.id || null },
+    getWeapon: () => { return weapon; },
+    isRangedAttack,
+    getTextKey,
+
+    roll,
     getRollValue: () => { return check.value; },
     isCrit: () => { return check.crit === true; },
     isFumble: () => { return check.fumble === true; },
     getFinalValue: () => { return finalValue },
-    getTextKey: () => { return textKey; },
   });
-
 }
