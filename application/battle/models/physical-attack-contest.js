@@ -36,6 +36,10 @@ global.PhysicalAttackContest = function(attacker, target) {
     }
   }
 
+  function isHit(accuracyFactor=1) {
+    return attackRoll.getFinalValue() * accuracyFactor > defendRoll.getFinalValue();
+  }
+
   return Object.freeze({
     setWeaponData,
     setAbility,
@@ -43,6 +47,6 @@ global.PhysicalAttackContest = function(attacker, target) {
     roll,
     getAttackRoll: () => { return attackRoll; },
     getDefendRoll: () => { return defendRoll; },
-    isHit: (accuracyFactor=1) => { return attackRoll.getFinalValue() * accuracyFactor > defendRoll.getFinalValue(); },
+    isHit,
   });
 }
