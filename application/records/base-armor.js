@@ -13,6 +13,7 @@ global.BaseArmor = (function() {
     if (armors[code] == null) { throw new Error(`Bad base armor code [${code}]`); }
 
     const armor = { ...armors[code] };
+    const reduction = HasReduction(armor);
 
     // Materials is an object keyed by the part it makes up ({ body:{...}, backing:{...} }), the same shape weapons
     // use. The first part listed is the primary one - its material's absorption is what scales the armor's reduction.
@@ -25,40 +26,22 @@ global.BaseArmor = (function() {
       return parts.length ? parts[0].material : null;
     }
 
-    // The reduction profile is scaled by how well the primary material actually absorbs a blow, so the same
-    // breastplate shape protects far less when it is boiled leather instead of steel plate.
-    function getReduction(type) {
-      return ItemHelper.getScaledReduction(armor.reduction, getPrimaryMaterial(), type);
-    }
-
-    function getReductionMap() {
-      const map = {};
-      [DamageType.crush, DamageType.slash, DamageType.pierce].forEach(type => { map[type] = getReduction(type); });
-      return map;
-    }
-
     function getMaterialCost() {
       return getMaterialParts().reduce((sum,entry) => sum + (Material.getCost(entry.material) * entry.amount), 0);
     }
 
-    function getTotalReduction() {
-      const reduction = getReductionMap();
-      return reduction[DamageType.crush] + reduction[DamageType.slash] + reduction[DamageType.pierce];
-    }
-
     function getValue() {
       const construction = getMaterialCost() + ((armor.effort || 0) * _effortCost);
-      const performance = ItemHelper.getArmorValueFactor(getTotalReduction());
+      const performance = ItemHelper.getArmorValueFactor(reduction.getTotalReduction());
       return Math.round((construction * performance) / 5) * 5;
     }
 
     return Object.freeze({
+      ...reduction,
       getCode: () => { return code; },
       getName: () => { return armor.name; },
       getIcon: () => { return armor.icon; },
       getSlot: () => { return armor.slot; },
-      getReduction,
-      getReductionMap,
       getMaterials: () => { return armor.materials || {}; },
       getMaterialParts,
       getPrimaryMaterial,

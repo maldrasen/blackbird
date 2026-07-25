@@ -13,6 +13,7 @@ global.BaseWeapon = (function() {
     if (weapons[code] == null) { throw new Error(`Bad base weapon code [${code}]`); }
 
     const weapon = { ...weapons[code] };
+    const reduction = HasReduction(weapon);
 
     // Except for martial arts and block, all the weapon skills are weapon type +s
     function getSkill() {
@@ -62,32 +63,18 @@ global.BaseWeapon = (function() {
       return average / (weapon.speed / 1000);
     }
 
-    // Only shields carry a reduction profile, applied to every hit location as a whole-body bonus.
-    function getReduction(type) {
-      return ItemHelper.getScaledReduction(weapon.reduction, getPrimaryMaterial(), type);
-    }
-
-    function getReductionMap() {
-      const map = {};
-      [DamageType.crush, DamageType.slash, DamageType.pierce].forEach(type => { map[type] = getReduction(type); });
-      return map;
-    }
-
-    function getTotalReduction() {
-      const reduction = getReductionMap();
-      return reduction[DamageType.crush] + reduction[DamageType.slash] + reduction[DamageType.pierce];
-    }
-
     function getMaterialCost() {
       return getMaterialParts().reduce((sum,entry) => sum + (Material.getCost(entry.material) * entry.amount), 0);
     }
 
-    // A shield is mostly armor that happens to be swung, so its value weighs its reduction over its damage.
+    // A shield's value comes from both it's reduction and the damage it can do. Because the shield's reduction is
+    // applied over the entire body the reduction it provides is much more valuable than a normal armor piece, giving
+    // shields a higher overall performance factor.
     function getPerformanceFactor() {
       if (weapon.type !== 'shield') { return ItemHelper.getWeaponValueFactor(getDamagePerSecond()); }
 
-      return (0.75 * ItemHelper.getArmorValueFactor(getTotalReduction()))
-           + (0.25 * ItemHelper.getWeaponValueFactor(getDamagePerSecond()));
+      return (1.5 * ItemHelper.getArmorValueFactor(reduction.getTotalReduction()))
+           + (0.5 * ItemHelper.getWeaponValueFactor(getDamagePerSecond()));
     }
 
     function getValue() {
@@ -96,6 +83,7 @@ global.BaseWeapon = (function() {
     }
 
     return Object.freeze({
+      ...reduction,
       getCode: () => { return code; },
       getName: () => { return weapon.name; },
       getIcon: () => { return weapon.icon; },
@@ -108,9 +96,6 @@ global.BaseWeapon = (function() {
       getHigh,
       getSpeed: () => { return weapon.speed },
       getDamagePerSecond,
-      getReduction,
-      getReductionMap,
-      getTotalReduction,
       getMaterials: () => { return weapon.materials || {}; },
       getMaterialParts,
       getPrimaryMaterial,
