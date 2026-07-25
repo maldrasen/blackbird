@@ -174,13 +174,14 @@ describe("BaseWeapon", function() {
       expect(BaseWeapon.lookup('fist').getValue()).to.equal(0);
     });
 
-    // A shield's performance factor blends its reduction (75%) with its damage (25%).
+    // A shield's performance factor weighs its whole-body reduction (1.5) over its damage (0.5), so shields carry
+    // a premium above their construction cost.
     it("prices a heavy steel shield mostly from its reduction", function() {
-      expect(BaseWeapon.lookup('tower-shield').getValue()).to.equal(502);
+      expect(BaseWeapon.lookup('tower-shield').getValue()).to.equal(1004);
     });
 
     it("prices a small buckler cheaply", function() {
-      expect(BaseWeapon.lookup('buckler').getValue()).to.equal(193);
+      expect(BaseWeapon.lookup('buckler').getValue()).to.equal(387);
     });
   });
 

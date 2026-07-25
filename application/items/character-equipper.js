@@ -15,6 +15,7 @@ global.CharacterEquipper = function(id) {
   const SlotBudgetPercent = Object.freeze({
     primary: 1.0,
     secondary: 0.5,
+    shield: 1.0,
     chest: 1.0,
     legs: 0.8,
     head: 0.3,
@@ -80,7 +81,8 @@ global.CharacterEquipper = function(id) {
     if (isFilled(EquipmentSlot.secondary)) { return; }
 
     const offhandType = isDexterous(weaponType) ? 'dagger' : 'shield';
-    const secondaryCode = selectByBudget(weaponCandidates(offhandType), budget * SlotBudgetPercent.secondary);
+    const offhandPercent = (offhandType === 'shield') ? SlotBudgetPercent.shield : SlotBudgetPercent.secondary;
+    const secondaryCode = selectByBudget(weaponCandidates(offhandType), budget * offhandPercent);
     if (secondaryCode == null) { return; }
 
     giveWeapon(secondaryCode, EquipmentSlot.secondary);

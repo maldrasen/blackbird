@@ -11,14 +11,10 @@
 // shape protects far less when it is boiled leather instead of steel plate.
 
 global.HasReduction = function(item) {
-
-  function getPrimaryMaterial() {
-    const parts = Object.values(item.materials || {});
-    return parts.length ? parts[0].material : null;
-  }
+  const materials = HasMaterials(item);
 
   function getReduction(type) {
-    return ItemHelper.getScaledReduction(item.reduction, getPrimaryMaterial(), type);
+    return ItemHelper.getScaledReduction(item.reduction, materials.getPrimaryMaterial(), type);
   }
 
   function getReductionMap() {

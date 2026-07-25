@@ -13,6 +13,7 @@ global.BaseWeapon = (function() {
     if (weapons[code] == null) { throw new Error(`Bad base weapon code [${code}]`); }
 
     const weapon = { ...weapons[code] };
+    const materials = HasMaterials(weapon);
     const reduction = HasReduction(weapon);
 
     // Except for martial arts and block, all the weapon skills are weapon type +s
@@ -26,15 +27,6 @@ global.BaseWeapon = (function() {
       return weapon.damageTypes ? weapon.damageTypes : [{ type:weapon.damageType, percent:100 }];
     }
 
-    function getMaterialParts() {
-      return Object.entries(weapon.materials || {}).map(([part,entry]) => ({ part, ...entry }));
-    }
-
-    function getPrimaryMaterial() {
-      const parts = getMaterialParts();
-      return parts.length ? parts[0].material : null;
-    }
-
     function getDamageStat() {
       switch (weapon.type) {
         case 'whip': return MaterialFactor.lash;
@@ -45,11 +37,11 @@ global.BaseWeapon = (function() {
 
     function damageTypeFactor(type) {
       const statKey = (type === DamageType.crush) ? MaterialFactor.heft : getDamageStat();
-      return Material.getFactor(getPrimaryMaterial(),statKey);
+      return Material.getFactor(materials.getPrimaryMaterial(),statKey);
     }
 
     function getDamageFactor() {
-      if (getPrimaryMaterial() == null) { return 1; }
+      if (materials.getPrimaryMaterial() == null) { return 1; }
       return getDamageTypes().reduce((blend,dt) => {
         return blend + ((dt.percent / 100) * damageTypeFactor(dt.type));
       }, 0);
@@ -63,10 +55,6 @@ global.BaseWeapon = (function() {
       return average / (weapon.speed / 1000);
     }
 
-    function getMaterialCost() {
-      return getMaterialParts().reduce((sum,entry) => sum + (Material.getCost(entry.material) * entry.amount), 0);
-    }
-
     // A shield's value comes from both it's reduction and the damage it can do. Because the shield's reduction is
     // applied over the entire body the reduction it provides is much more valuable than a normal armor piece, giving
     // shields a higher overall performance factor.
@@ -78,11 +66,12 @@ global.BaseWeapon = (function() {
     }
 
     function getValue() {
-      const construction = getMaterialCost() + ((weapon.effort || 0) * _effortCost);
+      const construction = materials.getMaterialCost() + ((weapon.effort || 0) * _effortCost);
       return Math.round(construction * getPerformanceFactor());
     }
 
     return Object.freeze({
+      ...materials,
       ...reduction,
       getCode: () => { return code; },
       getName: () => { return weapon.name; },
@@ -96,9 +85,6 @@ global.BaseWeapon = (function() {
       getHigh,
       getSpeed: () => { return weapon.speed },
       getDamagePerSecond,
-      getMaterials: () => { return weapon.materials || {}; },
-      getMaterialParts,
-      getPrimaryMaterial,
       getDamageStat,
       getDamageFactor,
       getEffort: () => { return weapon.effort || 0; },
