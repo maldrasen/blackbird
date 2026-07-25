@@ -19,6 +19,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [136] Difficulty Sliders `5pt` — [136-difficulty-sliders.md](136-difficulty-sliders.md)
 - [138] Style Level Up Overlay `3pt` — [138-style-level-up-overlay.md](138-style-level-up-overlay.md)
 - [141] Monster equipment `5pt` — [141-monster-equipment.md](141-monster-equipment.md)
+- [142] Item detail panel `5pt` — [142-item-detail-panel.md](142-item-detail-panel.md)
 
 ## Priority 3
 

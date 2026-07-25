@@ -1,6 +1,4 @@
 ```
-application/battle/systems/battle-damage-system.js
-application/battle/systems/physical-attack-system.js
 application/helpers/item-helper.js
 application/items/equipment-manager.js
 application/records/ability.js
