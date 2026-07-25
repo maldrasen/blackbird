@@ -1,5 +1,4 @@
 ```
-application/helpers/item-helper.js
 application/items/equipment-manager.js
 application/records/ability.js
 application/records/base-armor.js

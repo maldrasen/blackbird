@@ -72,16 +72,15 @@ global.EquipmentManager = function(characterId) {
     return BaseWeapon.lookup(weapon.base).getHands() === WeaponHandedness.two;
   }
 
-  // The worn piece at a hit location. Hit locations (chest/feet/hands/head/legs) are exactly the armor slot keys.
+  // The id of the armor worn at a hit location. Hit locations (chest/feet/hands/head/legs) are exactly the armor
+  // slot keys.
   function getArmorAt(slot) {
     const itemId = fetch()[slot];
     if (itemId == null) { return null; }
-
-    const armor = ArmorComponent.lookup(itemId);
-    return armor ? BaseArmor.lookup(armor.base) : null;
+    return ArmorComponent.lookup(itemId) ? itemId : null;
   }
 
-  // Shields live in the secondary weapon slot; anything else there (a dagger, nothing) means no shield.
+  // The id of the shield in the secondary weapon slot; anything else there (a dagger, nothing) means no shield.
   function getEquippedShield() {
     const itemId = fetch()[EquipmentSlot.secondary];
     if (itemId == null) { return null; }
@@ -89,8 +88,7 @@ global.EquipmentManager = function(characterId) {
     const weapon = WeaponComponent.lookup(itemId);
     if (weapon == null) { return null; }
 
-    const base = BaseWeapon.lookup(weapon.base);
-    return base.getType() === 'shield' ? base : null;
+    return BaseWeapon.lookup(weapon.base).getType() === 'shield' ? itemId : null;
   }
 
   function hasEquippedWeaponType(type) {
@@ -105,14 +103,13 @@ global.EquipmentManager = function(characterId) {
 
   // Percent of a damage type absorbed at a hit location: the worn piece plus the whole-body shield bonus.
   function getDamageReduction(hitLocation, damageType) {
-    const armor = getArmorAt(hitLocation);
-    const shield = getEquippedShield();
-    const total = (armor ? armor.getReduction(damageType) : 0)
-                + (shield ? shield.getReduction(damageType) : 0);
+    const armorId = getArmorAt(hitLocation);
+    const shieldId = getEquippedShield();
+    const total = (armorId ? Armor(armorId).getReduction(damageType) : 0)
+                + (shieldId ? Weapon(shieldId).getReduction(damageType) : 0);
     return Math.min(total, maxReduction);
   }
 
-  // TODO: I should know the slot here... That's a smell to track down.
   function unequipItem(itemId) {
     const slot = getEquippedSlot(itemId);
     if (slot != null) { equipItem(null, slot); }

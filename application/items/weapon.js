@@ -25,6 +25,12 @@ global.Weapon = function(id) {
     return component.enchantment ? WeaponEnchantment(id, component.enchantment) : null;
   }
 
+  // Only shields carry a reduction profile. It starts at the base weapon's value, but individual pieces will
+  // eventually be able to override it, with enchantments for instance.
+  function getReduction(type) {
+    return BaseWeapon.lookup(getComponent().base).getReduction(type);
+  }
+
   return Object.freeze({
     getId: () => { return id; },
     getBaseWeapon: () => { return BaseWeapon.lookup(getComponent().base); },
@@ -32,6 +38,7 @@ global.Weapon = function(id) {
     getIcon,
     getNameType,
     getTextKey,
+    getReduction,
     hasEnchantment: () => { return getComponent().enchantment != null; },
     getEnchantment,
   });

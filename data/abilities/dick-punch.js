@@ -66,7 +66,7 @@ function getArmorFactor(target) {
   const pants = EquipmentManager(target).getSlot(EquipmentSlot.legs);
   if (pants == null) { return 1; }
 
-  const reduction = BaseArmor.lookup(ArmorComponent.lookup(pants).base).getReduction(DamageType.crush);
+  const reduction = Armor(pants).getReduction(DamageType.crush);
   return Math.max(0, 1 - (reduction/100));
 }
 

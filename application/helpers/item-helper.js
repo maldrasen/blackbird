@@ -22,6 +22,10 @@ global.ItemHelper = (function() {
   // A reduction profile describes how much of each physical damage type an item's shape turns away at steel quality.
   // The primary material's absorption scales that down to what the piece really deflects. The early return keeps
   // materials without an absorption factor legal on items that have no reduction profile.
+
+  // TODO: I'm going to need to look at these values to make sure it makes sense to do it this way. I need to add the
+  //       item details panel to the equipment tab in the character overlay in order to look at these values though.
+
   function getScaledReduction(profile, material, type) {
     const base = (profile || {})[type] || 0;
     if (base === 0) { return 0; }

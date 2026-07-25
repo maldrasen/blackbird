@@ -184,7 +184,7 @@ describe('EquipmentManager', function() {
     expect(equipment.getEquippedShield()).to.equal(null);
 
     equipment.equipItem(shield, EquipmentSlot.secondary);
-    expect(equipment.getEquippedShield().getCode()).to.equal('tower-shield');
+    expect(equipment.getEquippedShield()).to.equal(shield);
   });
 
   it('hasEquippedWeaponType()', function() {
