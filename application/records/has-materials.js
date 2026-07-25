@@ -22,10 +22,17 @@ global.HasMaterials = function(item) {
     return getMaterialParts().reduce((sum,entry) => sum + (Material.getCost(entry.material) * entry.amount), 0);
   }
 
+  // The isMetal() function currently only serves to dramatically reduce the damage the dick-punch ability can do.
+  // It's possible that metal armor could also increase electricity damage as well.
+  function isMetal() {
+    return [MaterialType.iron, MaterialType.steel, MaterialType.silver].includes(getPrimaryMaterial());
+  }
+
   return {
     getMaterials,
     getMaterialParts,
     getPrimaryMaterial,
     getMaterialCost,
+    isMetal,
   };
 }

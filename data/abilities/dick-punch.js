@@ -32,14 +32,13 @@ Ability.register('dick-punch',{
     state.setCooldown(acting, 'dick-punch', 1000);
 
     if (contest.isHit()) {
-      if (getArmorFactor(target) === 1) { addStunEffect(acting,target); }
+      if (getArmorFactor(target) > 0.5) { addStunEffect(acting,target); }
       PhysicalAttackSystem.processHit(attackRoll, defendRoll);
     } else {
       PhysicalAttackSystem.processMiss(attackRoll, defendRoll);
     }
   },
 
-  // Dick punch does extra damage to larger cocks, reduced by the crush protection of the target's leg armor.
   getDamageBonus: acting => {
     const target = BattleSystem.getRound().getTarget();
     const sizeFactor = getSizeFactor(CockComponent.lookupNormalOf(target).size);
@@ -61,19 +60,18 @@ function getSizeFactor(size) {
   }[size];
 }
 
-// Leg armor guards the groin beyond its normal damage reduction, so this factor stacks on top of the legs-slot
-// mitigation the damage system applies.
+// The dick punch ability does dramatically reduced damage to someone wearing metal pants. Metal pants also remove
+// the stun effect. Other materials, like leather and cloth will reduce the damage somewhat, but keeps the stun
+// effect. This does full damage to someone without pants, making this ability very effective against large naked
+// monsters.
 function getArmorFactor(target) {
   const pants = EquipmentManager(target).getSlot(EquipmentSlot.legs);
   if (pants == null) { return 1; }
-
-  const reduction = Armor(pants).getReduction(DamageType.crush);
-  return Math.max(0, 1 - (reduction/100));
+  return Armor(pants).isMetal() ? 0.25 : 0.75;
 }
 
-// When the attack does full damage (i.e. there's no damage mitigation from the equipped armor) the dick punch adds a
-// stun effect if the resistance roll is failed. The power of the stun effect is based on the attacking character's
-// strength.
+// The dick punch can add a stun effect if the resistance roll is failed. The power of the stun effect is based on the
+// attacking character's strength.
 function addStunEffect(acting, target) {
   const resist = ResistRoll(target, DamageType.shock, Attributes(acting).getStrength());
   if (resist === ResistResult.fail) {
@@ -82,7 +80,9 @@ function addStunEffect(acting, target) {
   }
 }
 
-// TODO: We need some ball crushingly vivid attack text here.
+// TODO: We need some ball crushingly vivid attack text here. The attack text also needs to describe how the attack
+//       wasn't effective if the defender is wearing metal pants, or only partly effective if they're wearing any
+//       pants.
 function getAttackText() {
   return `{A:ActingName} punches {T:targetName} in the dick.`
 }

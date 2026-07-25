@@ -1,6 +1,7 @@
 global.Armor = function(id) {
 
   function getComponent() { return ArmorComponent.lookup(id); }
+  function getBaseArmor() { return BaseArmor.lookup(getComponent().base); }
 
   function getName() {
     const component = getComponent();
@@ -8,7 +9,11 @@ global.Armor = function(id) {
   }
 
   function getIcon() {
-    return BaseArmor.lookup(getComponent().base).getIcon();
+    return getBaseArmor().getIcon();
+  }
+
+  function getReduction(type) {
+    return getBaseArmor().getReduction(type);
   }
 
   function getEnchantment() {
@@ -16,19 +21,18 @@ global.Armor = function(id) {
     return component.enchantment ? ArmorEnchantment(id, component.enchantment) : null;
   }
 
-  // The reduction starts at the base armor's value, but individual pieces will eventually be able to override it,
-  // with enchantments for instance.
-  function getReduction(type) {
-    return BaseArmor.lookup(getComponent().base).getReduction(type);
-  }
+  function getPrimaryMaterial() { return getBaseArmor().getPrimaryMaterial(); }
+  function isMetal() { return getBaseArmor().isMetal(); }
 
   return Object.freeze({
     getId: () => { return id; },
-    getBaseArmor: () => { return BaseArmor.lookup(getComponent().base); },
+    getBaseArmor,
     getName,
     getIcon,
     getReduction,
     hasEnchantment: () => { return getComponent().enchantment != null; },
     getEnchantment,
+    getPrimaryMaterial,
+    isMetal,
   });
 }
