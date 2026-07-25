@@ -30,6 +30,8 @@ global.Ability = (function() {
       hasOverlay: () => { return typeof ability.overlay === 'function' },
       openOverlay: () => { ability.overlay() },
       canBeUsed: () => { return ability.canBeUsed(); },
+      getAccuracyBonus: acting => { return typeof ability.getAccuracyBonus === 'function' ? ability.getAccuracyBonus(acting) : 1; },
+      getDamageBonus: acting => { return typeof ability.getDamageBonus === 'function' ? ability.getDamageBonus(acting) : 1; },
       execute,
     });
   }
