@@ -1,1 +1,0 @@
-*BUG* I was in a battle. I killed a kobold and the movement animation started playing. I clicked off the screen, hiding the browser window behind my IDE. When I activated the window the monster element that was moving got moved off the screen.

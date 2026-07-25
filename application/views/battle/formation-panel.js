@@ -2,6 +2,7 @@ global.FormationPanel = (function() {
 
   let positionPanels = {};
   let combatantPanels = {};
+  let movesInFlight = 0;
 
   function init() {
     X.onClick('#battleView.target-mode .position.valid-target', targetSelected);
@@ -18,6 +19,7 @@ global.FormationPanel = (function() {
 
     positionPanels = {};
     combatantPanels = {};
+    movesInFlight = 0;
 
     buildRank('monster',1);
     buildRank('monster',0);
@@ -179,6 +181,8 @@ global.FormationPanel = (function() {
     const currentCoords = X.getPosition(combatant);
     const targetCoords = X.getPosition(target);
 
+    movesInFlight += 1;
+
     function detach() {
       X.addClass(combatant, 'moving');
       combatant.setAttribute('style', [
@@ -187,7 +191,11 @@ global.FormationPanel = (function() {
       ].join(' '));
     }
 
+    // When the window is hidden the queued animation frames don't fire until it's visible again, so this can run
+    // after attach() has already put the combatant back into the flow. Applying the stale coordinates then would
+    // shove the element off screen, so bail out unless we're still mid-move.
     function move() {
+      if (X.hasClass(combatant,'moving') === false) { return; }
       combatant.setAttribute('style',[
         `left:${targetCoords.left + 0.5}px;`,
         `top:${targetCoords.top + 0.5}px;`,
@@ -212,13 +220,17 @@ global.FormationPanel = (function() {
 
     setTimeout(() => {
       attach();
+      movesInFlight -= 1;
       requestAnimationFrame(() => {
         requestAnimationFrame(() => { validatePositions(); });
       });
     },_battleKillEffectTime + 600);
   }
 
+  // The battle state updates its formations as soon as an entity dies, but the panels only catch up once the move
+  // animations complete, so only validate when no moves are still in flight.
   function validatePositions() {
+    if (movesInFlight > 0) { return; }
     const state = BattleSystem.getState();
 
     Object.entries(state.getMonsterFormation()).forEach(([id, position]) => {
@@ -231,7 +243,7 @@ global.FormationPanel = (function() {
     Object.entries(state.getPartyFormation()).forEach(([id, position]) => {
       const elementPosition = getCombatantPanel(id).getPosition();
       if (elementPosition !== position) {
-        throw new Error(`Monster[${id}] should be at ${position} but is at ${elementPosition}`);
+        throw new Error(`Character[${id}] should be at ${position} but is at ${elementPosition}`);
       }
     });
   }
