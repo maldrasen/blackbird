@@ -44,6 +44,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [121] Add Capture Mechanics `8pt` — [121-add-capture-mechanics.md](121-add-capture-mechanics.md)
 - [128] Random weapon and armor generation `8pt` — [128-random-item-generation.md](128-random-item-generation.md)
 - [130] Accept death in game over event `8pt` — [130-accept-death-in-game-over-event.md](130-accept-death-in-game-over-event.md)
+- [139] Fix Stamina `3pt` — [139-fix-stamina.md](139-fix-stamina.md)
 
 ## Priority 4
 
