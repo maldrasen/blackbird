@@ -1,3 +1,8 @@
+
+// TODO: I'm including the attacker in the arguments because some defense abilities may need to look at the attacker's
+//       attributes, such as an ability where they get a defense bonus against people who are less good looking, or a
+//       defense penality against creatures that are much smaller than the defender.
+
 global.DefendRoll = function(defender, attacker, attackRoll) {
   const state = BattleSystem.getState();
   const defendSkill = determineDefendSkill();
@@ -6,9 +11,9 @@ global.DefendRoll = function(defender, attacker, attackRoll) {
     if (EquipmentComponent.lookup(defender) == null) { return 'dodge'; }
 
     const equipment = EquipmentManager(defender);
-    const hasSword = equipment.hasEquippedWeaponType('sword')
+    const hasSword = equipment.hasEquippedWeaponType('sword');
     const hasShield = equipment.getEquippedShield();
-    const canParry = attackRoll.isRangedAttack() === false && hasSword && SkillsComponent.lookup(defender).parry > 0
+    const canParry = attackRoll.isRangedAttack() === false && hasSword && SkillsComponent.lookup(defender).parry > 0;
 
     if (hasShield && canParry) { return chooseDefenseSkill(defender); }
     if (canParry) { return 'parry'; }
