@@ -2,21 +2,30 @@ global.DefendRoll = function(defender, attacker, attackRoll) {
   const state = BattleSystem.getState();
   const defendSkill = determineDefendSkill();
 
-  // A defender with no equipment can only dodge. A character with a sword and shield will parry if they can. If a
-  // character can't parry and has a shield they'll block.
   function determineDefendSkill() {
     if (EquipmentComponent.lookup(defender) == null) { return 'dodge'; }
 
     const equipment = EquipmentManager(defender);
     const hasSword = equipment.hasEquippedWeaponType('sword')
     const hasShield = equipment.getEquippedShield();
-    const canParry = SkillsComponent.lookup(defender).parry > 0;
     const isRangedAttack = attackRoll.getBaseWeapon().getType() === 'bow';
+    const canParry = isRangedAttack === false && hasSword && SkillsComponent.lookup(defender).parry > 0
 
-    if (hasSword && canParry && !isRangedAttack) { return 'parry'; }
+    if (hasShield && canParry) { return chooseDefense(defender); }
+    if (canParry) { return 'parry'; }
     if (hasShield) { return 'block'; }
 
     return 'dodge';
+  }
+
+  // When a character can both block or parry an attack, they have a chance of doing either. A high strength character
+  // will block more often and a high dex character will parry more often.
+  function chooseDefense(defender) {
+    const attributes = AttributesComponent.lookup(defender);
+    return Random.fromFrequencyMap({
+      parry: attributes.dexterity,
+      block: attributes.strength,
+    });
   }
 
   function rollDefendSkill() {

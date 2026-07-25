@@ -1,5 +1,4 @@
 ```
-application/battle/models/defend-roll.js
 application/battle/systems/battle-damage-system.js
 application/helpers/item-helper.js
 application/items/equipment-manager.js
