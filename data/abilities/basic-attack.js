@@ -45,7 +45,10 @@ function executeBasicAttack() {
   const attacks = calculateAttacks();
 
   const rolls = attacks.map(attack => {
-    const contest = PhysicalAttackContest(acting, target, attack);
+    const contest = PhysicalAttackContest(acting, target);
+    contest.setWeaponData(attack);
+    contest.setAbility('basic-attack');
+    contest.roll();
     return { attack:contest.getAttackRoll(), defend:contest.getDefendRoll() };
   });
 
@@ -93,7 +96,6 @@ function calculateAttacks() {
     }
 
     attacks.push({
-      code: 'basic-attack',
       id: weapon.id,
       base: weapon.base,
       name: weapon.name,

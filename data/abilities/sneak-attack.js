@@ -15,7 +15,10 @@ Ability.register('sneak-attack',{
     const acting = round.getActing();
     const target = round.getTarget();
     const weapon = round.getPrimaryWeapon();
-    const contest = PhysicalAttackContest(acting, target, { ...weapon, code:'sneak-attack' });
+    const contest = PhysicalAttackContest(acting, target);
+    contest.setWeaponData(weapon);
+    contest.setAbility('sneak-attack');
+    contest.roll();
     const attackRoll = contest.getAttackRoll();
     const defendRoll = contest.getDefendRoll();
 

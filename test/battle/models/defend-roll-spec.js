@@ -38,9 +38,14 @@ describe("DefendRoll", function() {
     AttributesComponent.update(id, attributes);
   }
 
-  function attackAgainst(state, defender, base='longsword') {
+  function attackAgainst(state, defender, base='longsword', abilityCode=null) {
     const attacker = state.getActiveMonsters()[0];
-    return PhysicalAttackRoll(attacker, defender, { base }, EquipmentSlot.chest);
+    const attackRoll = PhysicalAttackRoll(attacker, defender);
+    attackRoll.setWeaponData({ base });
+    attackRoll.setAbility(abilityCode);
+    attackRoll.setHitLocation(EquipmentSlot.chest);
+    attackRoll.roll();
+    return attackRoll;
   }
 
   it("dodges bare handed", function() {
@@ -117,7 +122,7 @@ describe("DefendRoll", function() {
     equipItem(defender, 'longsword', EquipmentSlot.primary);
     setParry(defender, 25);
 
-    const roll = DefendRoll(defender, null, attackAgainst(state, defender, 'bullwhip'));
+    const roll = DefendRoll(defender, null, attackAgainst(state, defender, 'longbow'));
     expect(roll.getDefendSkill()).to.equal('dodge');
   });
 
@@ -127,11 +132,7 @@ describe("DefendRoll", function() {
     equipItem(defender, 'longsword', EquipmentSlot.primary);
     setParry(defender, 25);
 
-    const attacker = state.getActiveMonsters()[0];
-    const attackRoll = PhysicalAttackRoll(attacker, defender,
-      { base:'dagger', code:'sneak-attack' }, EquipmentSlot.chest);
-
-    const roll = DefendRoll(defender, null, attackRoll);
+    const roll = DefendRoll(defender, null, attackAgainst(state, defender, 'dagger', 'sneak-attack'));
     expect(roll.getDefendSkill()).to.equal('dodge');
   });
 
@@ -150,7 +151,11 @@ describe("DefendRoll", function() {
     const state = startBattle();
     const attacker = state.getEntityAtPosition('P',1,2);
     const defender = state.getActiveMonsters()[0];
-    const attackRoll = PhysicalAttackRoll(attacker, defender, { base:'longsword' }, EquipmentSlot.chest);
+
+    const attackRoll = PhysicalAttackRoll(attacker, defender);
+    attackRoll.setWeaponData({ base:'longsword' });
+    attackRoll.setHitLocation(EquipmentSlot.chest);
+    attackRoll.roll();
 
     const roll = DefendRoll(defender, attacker, attackRoll);
     expect(roll.getDefendSkill()).to.equal('dodge');
