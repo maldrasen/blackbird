@@ -7,9 +7,7 @@ global.PhysicalAttackSystem = (function() {
     const attacker = round.getActing();
     const target = round.getTarget();
 
-    const ability = attackRoll.getAbility();
-    const damageFactor = (ability == null) ? 1 : ability.getDamageBonus(attacker);
-    const damageRoll = DamageRoll(attacker, attackRoll, defendRoll, damageFactor);
+    const damageRoll = DamageRoll(attacker, attackRoll, defendRoll);
     const damageTypes = damageRoll.getDamageTypes();
 
     if (damageRoll.hasMessage()) {
