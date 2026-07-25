@@ -57,8 +57,9 @@ listed file in order; each file attaches itself to the global object rather than
 ## Other 
 
 ### Version Control
-Don't run or offer to run any git commands. I'll take care of all the version control tasks myself. Work only in the
-main project directory, not in git worktree subdirectories.
+Don't run or offer to run any git commands that would check in code. I'll take care of all the version control tasks
+myself. Work only in the main project directory, not in git worktree subdirectories. Using git for read only commands
+like `git diff` or `git log` is allowed.
 
 ### Comments
 There's no need to add comments when it's clear what something does.
