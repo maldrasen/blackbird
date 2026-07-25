@@ -37,6 +37,8 @@ global.PhysicalAttackContest = function(attacker, target) {
   }
 
   function isHit() {
+    if (attackRoll == null) { throw new Error(`The contest hasn't been rolled. Call roll() before isHit().`); }
+
     const ability = attackRoll.getAbility();
     const accuracyFactor = (ability == null) ? 1 : ability.getAccuracyBonus(attacker);
     return attackRoll.getFinalValue() * accuracyFactor > defendRoll.getFinalValue();
