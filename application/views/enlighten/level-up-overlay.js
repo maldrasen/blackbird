@@ -48,9 +48,6 @@ global.LevelUpOverlay = (function() {
       if (X.hasClass(item,'selected') === false) { X.addClass(item,'unselected'); }
     });
 
-    console.log(`ID:${id} ${attribute}`);
-    console.log(` > ${increase}`);
-
     X.fill(pick.querySelector('.attribute-value'), [
       X.createElement(`<span class='increase'>(+${increase})</span>`),
       `${newValue}`,

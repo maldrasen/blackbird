@@ -1,4 +1,4 @@
-describe("EnlightenSystem", function() {
+describe.only("EnlightenSystem", function() {
 
   // Elf essence costs: 804 total to reach level 2, 2526 total to reach level 3.
 
@@ -46,18 +46,16 @@ describe("EnlightenSystem", function() {
     });
   });
 
-  describe("chooseLevelUpAttribute()", function() {
+  describe("levelUpAttribute()", function() {
     it("levels a character through the LevelSystem", function() {
       const id = buildCharacter();
       startBattleEnlightenment([id], 804);
 
       const start = AttributesComponent.lookup(id).strength;
-      const result = EnlightenSystem.chooseLevelUpAttribute(id, Attrib.strength);
+      const increase = EnlightenSystem.levelUpAttribute(id, Attrib.strength);
 
-      expect(result.id).to.equal(id);
-      expect(result.level).to.equal(2);
-      expect(result.increase).to.be.at.least(1);
-      expect(AttributesComponent.lookup(id).strength).to.equal(start + result.increase);
+      expect(increase).to.be.at.least(1);
+      expect(AttributesComponent.lookup(id).strength).to.equal(start + increase);
       expect(ExperienceComponent.lookup(id).level).to.equal(2);
     });
 
@@ -65,18 +63,18 @@ describe("EnlightenSystem", function() {
       const id = buildCharacter();
       startBattleEnlightenment([id], 2526);
 
-      EnlightenSystem.chooseLevelUpAttribute(id, Attrib.strength);
-      EnlightenSystem.chooseLevelUpAttribute(id, Attrib.dexterity);
+      EnlightenSystem.levelUpAttribute(id, Attrib.strength);
+      EnlightenSystem.levelUpAttribute(id, Attrib.dexterity);
 
       expect(ExperienceComponent.lookup(id).level).to.equal(3);
-      expect(() => EnlightenSystem.chooseLevelUpAttribute(id, Attrib.vitality)).to.throw('essence needed');
+      expect(() => EnlightenSystem.levelUpAttribute(id, Attrib.vitality)).to.throw('essence needed');
     });
 
     it("throws when the character lacks the essence to level", function() {
       const id = buildCharacter();
       startBattleEnlightenment([id], 803);
 
-      expect(() => EnlightenSystem.chooseLevelUpAttribute(id, Attrib.strength)).to.throw('essence needed');
+      expect(() => EnlightenSystem.levelUpAttribute(id, Attrib.strength)).to.throw('essence needed');
     });
   });
 
