@@ -16,19 +16,9 @@ global.BattleDamageSystem = (function() {
 
     let actualDamage = 0;
 
-    // TODO: The actual damage done will need to be reduced by the armor of the hit location, the character's
-    //       resistances to certain damage types. I don't think we need to modify the damageTypes object here,
-    //       because once we get the total actual damage that should be all that matters.
-
-    // TODO: How does resistance reduce damage? When rolling to resist an effect we make opposed rolls, so the scales
-    //       of the numbers don't matter. However... if a character has 20 resistance (or a -15) resistance to a damage
-    //       type that should either reduce (or raise) by a percent or do a flat reduction... A flat reduction would
-    //       scale better. Meaning if a character has 20 fire resistance, and took 22 fire damage, they'd actually take
-    //       2 damage, or 0 if the damage was less than 20... Seems overly powerful though. Still, I'm not sure how the
-    //       resistance values will scale at all. Should effect resistance and damage reduction be two different stats?
-
-    Object.values(damageTypes).forEach(damage => {
-      actualDamage += damage;
+    Object.entries(damageTypes).forEach(([type, damage]) => {
+      const reduction = getReductionPercent(target, data.hitLocation, type);
+      actualDamage += Math.round(damage * (1 - reduction/100));
     });
 
     if (state.hasStatusEffect(target,'vulnerable')) {
@@ -46,6 +36,14 @@ global.BattleDamageSystem = (function() {
     if (outcome === 'knocked-out') { BattleDeathSystem.knockOutEntity(target); }
 
     return actualDamage;
+  }
+
+  // Attacks without a hit location bypass armor entirely, and monsters have no equipment to mitigate with. Armor
+  // profiles only cover the physical damage types, so elemental damage always passes through untouched.
+  function getReductionPercent(target, hitLocation, type) {
+    if (hitLocation == null) { return 0; }
+    if (EquipmentComponent.lookup(target) == null) { return 0; }
+    return EquipmentManager(target).getDamageReduction(hitLocation, type);
   }
 
   // Monsters simply die at zero health. Characters brought to zero or below are knocked out, keeping their negative

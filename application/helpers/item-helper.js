@@ -19,9 +19,21 @@ global.ItemHelper = (function() {
     return 1 + (valuePerformanceAmplitude * Math.tanh((metric - weaponValueDpsMidpoint) / weaponValueDpsSpread));
   }
 
+  // A reduction profile describes how much of each physical damage type an item's shape turns away at steel quality.
+  // The primary material's absorption scales that down to what the piece really deflects. The early return keeps
+  // materials without an absorption factor legal on items that have no reduction profile.
+  function getScaledReduction(profile, material, type) {
+    const base = (profile || {})[type] || 0;
+    if (base === 0) { return 0; }
+
+    const absorption = (material == null) ? 1 : Material.getFactor(material, MaterialFactor.absorption);
+    return Math.round(base * absorption);
+  }
+
   return Object.freeze({
     getArmorValueFactor,
     getWeaponValueFactor,
+    getScaledReduction,
   });
 
 })();

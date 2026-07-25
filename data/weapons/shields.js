@@ -1,8 +1,8 @@
 
-// TODO: Shield damage reduction should apply to the entire body, adding a small amount of reduction to every slot.
-//       We need to add reduction to all of these just like the armor has. They're really only classified as weapons
-//       because they take up a weapon slot. The shields all have damage data for an eventual shield bash ability,
-//       though that hasn't been written yet.
+// Shields are classified as weapons because they take up a weapon slot, and their damage data feeds an eventual
+// shield bash ability. Unlike armor, a shield's reduction is a small whole-body bonus added to every hit location.
+// Profiles are authored at steel quality and scaled by the primary (face) material's absorption, same as armor:
+// slash is turned best and crush worst.
 
 BaseWeapon.register('buckler', {
   name: 'buckler',
@@ -14,6 +14,7 @@ BaseWeapon.register('buckler', {
   low: 5,
   high: 15,
   speed: 800,
+  reduction: { crush:3, slash:5, pierce:4 },
   materials: {
     face: { material:MaterialType.steel, amount:1 },
   },
@@ -31,6 +32,7 @@ BaseWeapon.register('targe', {
   low: 8,
   high: 20,
   speed: 900,
+  reduction: { crush:10, slash:15, pierce:13 },
   materials: {
     face: { material:MaterialType.wood, amount:2 },
     rim:  { material:MaterialType.iron, amount:1 },
@@ -49,6 +51,7 @@ BaseWeapon.register('round-shield', {
   low: 10,
   high: 25,
   speed: 1000,
+  reduction: { crush:15, slash:20, pierce:18 },
   materials: {
     face: { material:MaterialType.wood, amount:3 },
     boss: { material:MaterialType.iron, amount:1 },
@@ -68,6 +71,7 @@ BaseWeapon.register('kite-shield', {
   low: 12,
   high: 30,
   speed: 1100,
+  reduction: { crush:20, slash:25, pierce:23 },
   materials: {
     face: { material:MaterialType.wood, amount:3 },
     rim:  { material:MaterialType.steel, amount:1 },
@@ -86,6 +90,7 @@ BaseWeapon.register('heater-shield', {
   low: 12,
   high: 30,
   speed: 1100,
+  reduction: { crush:8, slash:11, pierce:10 },
   materials: {
     face: { material:MaterialType.steel, amount:2 },
   },
@@ -104,6 +109,7 @@ BaseWeapon.register('tower-shield', {
   low: 15,
   high: 40,
   speed: 1300,
+  reduction: { crush:12, slash:16, pierce:14 },
   materials: {
     face:  { material:MaterialType.steel, amount:2 },
     frame: { material:MaterialType.wood, amount:2 },

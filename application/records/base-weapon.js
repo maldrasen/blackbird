@@ -62,14 +62,37 @@ global.BaseWeapon = (function() {
       return average / (weapon.speed / 1000);
     }
 
+    // Only shields carry a reduction profile, applied to every hit location as a whole-body bonus.
+    function getReduction(type) {
+      return ItemHelper.getScaledReduction(weapon.reduction, getPrimaryMaterial(), type);
+    }
+
+    function getReductionMap() {
+      const map = {};
+      [DamageType.crush, DamageType.slash, DamageType.pierce].forEach(type => { map[type] = getReduction(type); });
+      return map;
+    }
+
+    function getTotalReduction() {
+      const reduction = getReductionMap();
+      return reduction[DamageType.crush] + reduction[DamageType.slash] + reduction[DamageType.pierce];
+    }
+
     function getMaterialCost() {
       return getMaterialParts().reduce((sum,entry) => sum + (Material.getCost(entry.material) * entry.amount), 0);
     }
 
+    // A shield is mostly armor that happens to be swung, so its value weighs its reduction over its damage.
+    function getPerformanceFactor() {
+      if (weapon.type !== 'shield') { return ItemHelper.getWeaponValueFactor(getDamagePerSecond()); }
+
+      return (0.75 * ItemHelper.getArmorValueFactor(getTotalReduction()))
+           + (0.25 * ItemHelper.getWeaponValueFactor(getDamagePerSecond()));
+    }
+
     function getValue() {
       const construction = getMaterialCost() + ((weapon.effort || 0) * _effortCost);
-      const performance = ItemHelper.getWeaponValueFactor(getDamagePerSecond());
-      return Math.round(construction * performance);
+      return Math.round(construction * getPerformanceFactor());
     }
 
     return Object.freeze({
@@ -85,6 +108,9 @@ global.BaseWeapon = (function() {
       getHigh,
       getSpeed: () => { return weapon.speed },
       getDamagePerSecond,
+      getReduction,
+      getReductionMap,
+      getTotalReduction,
       getMaterials: () => { return weapon.materials || {}; },
       getMaterialParts,
       getPrimaryMaterial,

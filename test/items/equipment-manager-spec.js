@@ -168,4 +168,87 @@ describe('EquipmentManager', function() {
     expect(equipment.getSlot(EquipmentSlot.head)).to.equal(null);
   });
 
+  it('getEquippedShield()', function() {
+    const horse = CharacterFixtures.genericMale({});
+    const dagger = WeaponFactory.build('dagger');
+    const shield = WeaponFactory.build('tower-shield');
+
+    const inventory = InventoryManager(horse);
+    inventory.addItem(dagger);
+    inventory.addItem(shield);
+
+    const equipment = EquipmentManager(horse);
+    expect(equipment.getEquippedShield()).to.equal(null);
+
+    equipment.equipItem(dagger, EquipmentSlot.secondary);
+    expect(equipment.getEquippedShield()).to.equal(null);
+
+    equipment.equipItem(shield, EquipmentSlot.secondary);
+    expect(equipment.getEquippedShield().getCode()).to.equal('tower-shield');
+  });
+
+  it('hasEquippedWeaponType()', function() {
+    const horse = CharacterFixtures.genericMale({});
+    const sword = WeaponFactory.build('longsword');
+    const offSword = WeaponFactory.build('short-sword');
+
+    const inventory = InventoryManager(horse);
+    inventory.addItem(sword);
+    inventory.addItem(offSword);
+
+    const equipment = EquipmentManager(horse);
+    expect(equipment.hasEquippedWeaponType('sword')).to.be.false;
+
+    equipment.equipItem(sword, EquipmentSlot.primary);
+    expect(equipment.hasEquippedWeaponType('sword')).to.be.true;
+    expect(equipment.hasEquippedWeaponType('axe')).to.be.false;
+
+    equipment.equipItem(null, EquipmentSlot.primary);
+    equipment.equipItem(offSword, EquipmentSlot.secondary);
+    expect(equipment.hasEquippedWeaponType('sword')).to.be.true;
+  });
+
+  describe('getDamageReduction()', function() {
+    function equipGear(horse, codes) {
+      const inventory = InventoryManager(horse);
+      const equipment = EquipmentManager(horse);
+
+      codes.forEach(([factory, code, slot]) => {
+        const item = factory.build(code);
+        inventory.addItem(item);
+        equipment.equipItem(item, slot);
+      });
+
+      return equipment;
+    }
+
+    it("uses the worn piece at the hit location", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const equipment = equipGear(horse, [[ArmorFactory, 'breastplate', EquipmentSlot.chest]]);
+
+      expect(equipment.getDamageReduction(EquipmentSlot.chest, DamageType.slash)).to.equal(45);
+      expect(equipment.getDamageReduction(EquipmentSlot.chest, DamageType.crush)).to.equal(32);
+      expect(equipment.getDamageReduction(EquipmentSlot.head, DamageType.slash)).to.equal(0);
+    });
+
+    it("adds the shield bonus to every hit location", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const equipment = equipGear(horse, [
+        [ArmorFactory, 'breastplate', EquipmentSlot.chest],
+        [WeaponFactory, 'tower-shield', EquipmentSlot.secondary],
+      ]);
+
+      expect(equipment.getDamageReduction(EquipmentSlot.chest, DamageType.slash)).to.equal(61);
+      expect(equipment.getDamageReduction(EquipmentSlot.head, DamageType.slash)).to.equal(16);
+      expect(equipment.getDamageReduction(EquipmentSlot.feet, DamageType.crush)).to.equal(12);
+    });
+
+    it("covers a bare body with only a shield", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const equipment = equipGear(horse, [[WeaponFactory, 'buckler', EquipmentSlot.secondary]]);
+
+      expect(equipment.getDamageReduction(EquipmentSlot.legs, DamageType.pierce)).to.equal(4);
+    });
+  });
+
 });

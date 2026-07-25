@@ -132,6 +132,30 @@ describe("BaseWeapon", function() {
     });
   });
 
+  describe("getReduction", function() {
+    // Shields are the only weapons with a reduction profile, authored at steel quality and scaled by the face
+    // material's absorption just like armor.
+    it("returns the authored profile for a steel shield", function() {
+      const buckler = BaseWeapon.lookup('buckler');
+      expect(buckler.getReduction(DamageType.crush)).to.equal(3);
+      expect(buckler.getReduction(DamageType.slash)).to.equal(5);
+      expect(buckler.getReduction(DamageType.pierce)).to.equal(4);
+    });
+
+    it("scales a wooden shield down by its absorption", function() {
+      expect(BaseWeapon.lookup('targe').getReductionMap()).to.deep.equal({ crush:4, slash:6, pierce:5 });
+    });
+
+    it("maps all three physical damage types", function() {
+      expect(BaseWeapon.lookup('heater-shield').getReductionMap()).to.deep.equal({ crush:8, slash:11, pierce:10 });
+    });
+
+    it("is zero for a weapon without a profile", function() {
+      expect(BaseWeapon.lookup('longsword').getReductionMap()).to.deep.equal({ crush:0, slash:0, pierce:0 });
+      expect(BaseWeapon.lookup('longsword').getTotalReduction()).to.equal(0);
+    });
+  });
+
   describe("getValue", function() {
     // Value is the construction cost (materials + effort) nudged by a bounded factor from the weapon's DPS.
     it("prices a longsword from its steel and its forging effort", function() {
@@ -148,6 +172,15 @@ describe("BaseWeapon", function() {
 
     it("is 0 for an unarmed strike", function() {
       expect(BaseWeapon.lookup('fist').getValue()).to.equal(0);
+    });
+
+    // A shield's performance factor blends its reduction (75%) with its damage (25%).
+    it("prices a heavy steel shield mostly from its reduction", function() {
+      expect(BaseWeapon.lookup('tower-shield').getValue()).to.equal(502);
+    });
+
+    it("prices a small buckler cheaply", function() {
+      expect(BaseWeapon.lookup('buckler').getValue()).to.equal(193);
     });
   });
 

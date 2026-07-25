@@ -22,7 +22,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 ## Priority 3
 
 - [012] Character Abilities `8pt` #battle — [012-character-abilities.md](012-character-abilities.md)
-- [013] Shields & Armor `8pt` #battle — [013-shields-armor.md](013-shields-armor.md)
 - [014] Bows & Arrows `5pt` #battle — [014-bows-arrows.md](014-bows-arrows.md)
 - [015] Battle Encounter Tables `8pt` #battle #dungeon — [015-battle-encounter-tables.md](015-battle-encounter-tables.md)
 - [016] Battle Character Inspect `5pt` #battle — [016-battle-character-inspect.md](016-battle-character-inspect.md)

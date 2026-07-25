@@ -26,14 +26,10 @@ global.BaseArmor = (function() {
       return parts.length ? parts[0].material : null;
     }
 
-    // The reduction profile describes how much of each physical damage type the armor's shape turns away at steel
-    // quality. That profile is then scaled by how well the primary material actually absorbs a blow, so the same
+    // The reduction profile is scaled by how well the primary material actually absorbs a blow, so the same
     // breastplate shape protects far less when it is boiled leather instead of steel plate.
     function getReduction(type) {
-      const base = (armor.reduction || {})[type] || 0;
-      const material = getPrimaryMaterial();
-      const absorption = (material == null) ? 1 : Material.getFactor(material,MaterialFactor.absorption);
-      return Math.round(base * absorption);
+      return ItemHelper.getScaledReduction(armor.reduction, getPrimaryMaterial(), type);
     }
 
     function getReductionMap() {

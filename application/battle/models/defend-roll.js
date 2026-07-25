@@ -3,11 +3,25 @@ global.DefendRoll = function(defender, attacker, attackRoll) {
   // TODO: Including the attacker and the attackRoll in the arguments because some defense abilities may trigger
   //       depending on things like the attacker's gender, or the hit location of the attack roll.
 
-  // TODO: Change the defend skill to block if they have a shield equipped, or parry if they have a sword and the
-  //       parry skill.
-
   const state = BattleSystem.getState();
-  const defendSkill = 'dodge';
+
+  // Arrows cannot be parried or blocked. Spells and grapples can't either, but neither exists in this attack pipeline
+  // yet. Monsters carry no equipment, so they always dodge, even when their attack data includes a shield.
+  function determineDefendSkill() {
+    if (attackRoll.getBaseWeapon().getType() === 'bow') { return 'dodge'; }
+    if (EquipmentComponent.lookup(defender) == null) { return 'dodge'; }
+
+    const equipment = EquipmentManager(defender);
+    if (equipment.getEquippedShield()) { return 'block'; }
+    if (equipment.hasEquippedWeaponType('sword') && isParryTrained()) { return 'parry'; }
+    return 'dodge';
+  }
+
+  function isParryTrained() {
+    return SkillsComponent.lookup(defender).parry > 0;
+  }
+
+  const defendSkill = determineDefendSkill();
 
   function rollDefendSkill() {
     const offBalance = state.hasStatusEffect(defender, 'off-balance');

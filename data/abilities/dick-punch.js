@@ -50,14 +50,14 @@ function getSizeFactor(size) {
   }[size];
 }
 
-// TODO: We haven't actually implemented armor yet. When a character can have armor equipped though the leg armor
-//       will reduce the ability's damage, beyond what the leg armor's normal damage reduction would be, especially if
-//       it's made out of metal.
-
+// Leg armor guards the groin beyond its normal damage reduction, so this factor stacks on top of the legs-slot
+// mitigation the damage system applies.
 function getArmorFactor(target) {
   const pants = EquipmentManager(target).getSlot(EquipmentSlot.legs);
   if (pants == null) { return 1; }
-  throw new Error(`Actually implement this.`);
+
+  const reduction = BaseArmor.lookup(ArmorComponent.lookup(pants).base).getReduction(DamageType.crush);
+  return Math.max(0, 1 - (reduction/100));
 }
 
 // When the attack does full damage (i.e. there's no damage mitigation from the equipped armor) the dick punch adds a
