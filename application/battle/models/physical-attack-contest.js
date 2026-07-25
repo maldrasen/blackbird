@@ -37,7 +37,8 @@ global.PhysicalAttackContest = function(attacker, target) {
   }
 
   function isHit() {
-    const accuracyFactor = Ability.lookup(abilityCode).getAccuracyBonus(attacker);
+    const ability = attackRoll.getAbility();
+    const accuracyFactor = (ability == null) ? 1 : ability.getAccuracyBonus(attacker);
     return attackRoll.getFinalValue() * accuracyFactor > defendRoll.getFinalValue();
   }
 

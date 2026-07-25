@@ -31,14 +31,19 @@ Ability.register('dick-punch',{
     state.setCooldown(acting, 'dick-punch', 1000);
 
     if (contest.isHit()) {
-      const armorFactor = getArmorFactor(target);
-      const sizeFactor = getSizeFactor(CockComponent.lookupNormalOf(target).size);
-      if (armorFactor === 1) { addStunEffect(acting,target); }
-      PhysicalAttackSystem.processHit(attackRoll, defendRoll, { damageFactor:(armorFactor * sizeFactor) });
+      if (getArmorFactor(target) === 1) { addStunEffect(acting,target); }
+      PhysicalAttackSystem.processHit(attackRoll, defendRoll);
     } else {
       PhysicalAttackSystem.processMiss(attackRoll, defendRoll);
     }
-  }
+  },
+
+  // Dick punch does extra damage to larger cocks, reduced by the crush protection of the target's leg armor.
+  getDamageBonus: acting => {
+    const target = BattleSystem.getRound().getTarget();
+    const sizeFactor = getSizeFactor(CockComponent.lookupNormalOf(target).size);
+    return getArmorFactor(target) * sizeFactor;
+  },
 });
 
 // Dick punch does extra damage to larger cocks, based on the cock size category rather than absolute length.

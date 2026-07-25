@@ -27,8 +27,8 @@ Ability.register('sneak-attack',{
     round.addTime(BaseWeapon.lookup(weapon.base).getSpeed());
     round.addMessage({ text:getAttackText(weapon) });
 
-    if (contest.isHit(getSneakAttackAccuracyBonus(acting))) {
-      PhysicalAttackSystem.processHit(attackRoll, defendRoll, { damageFactor:getSneakAttackDamageBonus(acting) });
+    if (contest.isHit()) {
+      PhysicalAttackSystem.processHit(attackRoll, defendRoll);
     } else {
       PhysicalAttackSystem.processMiss(attackRoll, defendRoll);
     }

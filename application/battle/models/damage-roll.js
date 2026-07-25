@@ -7,7 +7,7 @@
 //   - attack: ['crit','fumble','normal'] (We can also pass an attack roll, rather than a string here)
 //   - defend: ['crit','fumble','normal'] (We can also pass a defend roll, rather than a string here)
 
-global.DamageRoll = function(attacker, attackRoll, defendRoll, options={}) {
+global.DamageRoll = function(attacker, attackRoll, defendRoll, damageFactor=1) {
   const baseWeapon = attackRoll.getBaseWeapon();
   const strength = AttributesComponent.lookup(attacker).strength;
   const attackType = BattleHelper.getRollType(attackRoll);
@@ -16,8 +16,7 @@ global.DamageRoll = function(attacker, attackRoll, defendRoll, options={}) {
 
   const damageTypes = {};
 
-  let rawDamage = Math.round((damageRoll / 100) * strength);
-  if (options.damageFactor) { rawDamage = rawDamage * options.damageFactor; }
+  let rawDamage = Math.round((damageRoll / 100) * strength * damageFactor);
   if (attackType === 'crit') { rawDamage = rawDamage*2; }
   if (attackType === 'fumble') { rawDamage = Math.ceil(rawDamage/2); }
   if (defendType === 'crit') { rawDamage = Math.ceil(rawDamage/2); }

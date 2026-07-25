@@ -49,7 +49,7 @@ function executeBasicAttack() {
     contest.setWeaponData(attack);
     contest.setAbility('basic-attack');
     contest.roll();
-    return { attack:contest.getAttackRoll(), defend:contest.getDefendRoll() };
+    return { contest, attack:contest.getAttackRoll(), defend:contest.getDefendRoll() };
   });
 
   rolls.forEach(roll => {
@@ -60,7 +60,7 @@ function executeBasicAttack() {
       round.addMessage({ text:attackText }, Weaver(context));
       round.addTime(roll.attack.getBaseWeapon().getSpeed());
 
-      (roll.attack.getFinalValue() > roll.defend.getFinalValue()) ?
+      roll.contest.isHit() ?
         PhysicalAttackSystem.processHit(roll.attack, roll.defend):
         PhysicalAttackSystem.processMiss(roll.attack, roll.defend);
     }

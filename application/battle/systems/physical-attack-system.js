@@ -1,14 +1,15 @@
 global.PhysicalAttackSystem = (function() {
 
-  // Options: { damageFactor }
-  function processHit(attackRoll, defendRoll, options={}) {
+  function processHit(attackRoll, defendRoll) {
     updateContext(attackRoll);
 
     const round = BattleSystem.getRound();
     const attacker = round.getActing();
     const target = round.getTarget();
 
-    const damageRoll = DamageRoll(attacker, attackRoll, defendRoll, options);
+    const ability = attackRoll.getAbility();
+    const damageFactor = (ability == null) ? 1 : ability.getDamageBonus(attacker);
+    const damageRoll = DamageRoll(attacker, attackRoll, defendRoll, damageFactor);
     const damageTypes = damageRoll.getDamageTypes();
 
     if (damageRoll.hasMessage()) {
