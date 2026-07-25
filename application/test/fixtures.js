@@ -16,7 +16,6 @@ global.Fixtures = (function() {
       // encounter: 'negotiation-fixture',
     });
 
-    // So the battle has a mode to return to.
     GameSystem.setGameMode(GameMode.location);
     GameSystem.markReturnMode();
     GameSystem.setGameMode(GameMode.battle);
@@ -30,7 +29,6 @@ global.Fixtures = (function() {
     GameSystem.setGameMode(GameMode.dungeon);
   }
 
-  // The training fixture actually puts the game into the location mode, with characters available to be trained.
   function setupTraining() {
     setupGame();
     CharacterFixtures.randomPlayer();

@@ -50,60 +50,45 @@
 }
 
 #levelUpOverlay {
+  padding: 10px;
 
   .title {
+    margin-bottom: 10px;
     font-size: variables.$fs-big;
     font-family: "habibi", serif;
     color: variables.$fg-strong;
     border-bottom: variables.$border-normal;
   }
 
-  .summary {
-    margin: 10px 0;
+  .note {
+    font-family: "habibi", serif;
+    color: variables.$fg-weak;
+    border-bottom: variables.$border-light;
   }
 
-  .attribute-picks {
+  .attributes {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    margin: 15px 0;
-  }
+    margin: 20px 100px;
 
-  .attribute-pick {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px 10px;
-    border: variables.$border-light;
-    color: variables.$fg-link;
-
-    &:hover {
-      border: variables.$border-normal;
-      color: variables.$fg-link-hover;
+    li {
+      display: flex;
+      justify-content: space-between;
+      padding: 2px 0;
     }
+    li.selected { color: variables.$fg-strong; }
+    li.unselected { opacity: 0.5; }
 
-    &.selected {
-      background-color: variables.$select-active;
-      border: variables.$border-normal;
-      color: variables.$fg-link-active;
+    .increase {
+      font-family: "roboto-mono", monospace;
+      font-size: variables.$fs-tiny;
+      margin-right: 10px;
+      opacity: 0.75;
     }
   }
 
-  .attribute-picks.disabled .attribute-pick {
-    cursor: default;
-
-    &:not(.selected) {
-      color: variables.$fg-weak;
-
-      &:hover {
-        border: variables.$border-light;
-        color: variables.$fg-weak;
-      }
-    }
+  .attributes.enabled {
+    .pick { cursor: pointer; }
+    .pick:hover { color: variables.$fg-link-hover; }
   }
-
-  .attribute-value .increase {
-    margin-left: 5px;
-    color: variables.$fg-success;
-  }
-
 }

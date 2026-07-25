@@ -20,20 +20,18 @@ global.EnlightenSystem = (function() {
     state = null;
   }
 
-  function chooseLevelUpAttribute(id, attribute) {
+  function levelUpAttribute(id, attribute) {
     if (EssenceSystem.canLevelUp(id) === false) {
       throw new Error(`${Character(id).getName()} doesn't have the essence needed to level up.`);
     }
-
-    const increase = LevelSystem.levelUp(id, attribute);
-    return { id, attribute, increase, level:ExperienceComponent.lookup(id).level };
+    return LevelSystem.levelUp(id, attribute);
   }
 
   return Object.freeze({
     getState: () => { return state; },
     startEnlightenment,
     finishEnlightenment,
-    chooseLevelUpAttribute,
+    levelUpAttribute,
   });
 
 })();
