@@ -44,25 +44,26 @@ function executeBasicAttack() {
   const target = round.getTarget();
   const attacks = calculateAttacks();
 
-  const rolls = attacks.map(attack => {
+  const contests = attacks.map(attack => {
     const contest = PhysicalAttackContest(acting, target);
     contest.setWeaponData(attack);
     contest.setAbility('basic-attack');
     contest.roll();
-    return { contest, attack:contest.getAttackRoll(), defend:contest.getDefendRoll() };
+    return contest;
   });
 
-  rolls.forEach(roll => {
-    const context = buildAttackContext(roll)
-    const attackText = Dialog.lookupTemplate(DialogCategory.attackText, roll.attack.getTextKey(), context);
+  contests.forEach(contest => {
+    const attackRoll = contest.getAttackRoll();
+    const context = buildAttackContext(contest);
+    const attackText = Dialog.lookupTemplate(DialogCategory.attackText, attackRoll.getTextKey(), context);
 
     if (state.isDown(context.T) === false) {
       round.addMessage({ text:attackText }, Weaver(context));
-      round.addTime(roll.attack.getBaseWeapon().getSpeed());
+      round.addTime(attackRoll.getBaseWeapon().getSpeed());
 
-      roll.contest.isHit() ?
-        PhysicalAttackSystem.processHit(roll.attack, roll.defend):
-        PhysicalAttackSystem.processMiss(roll.attack, roll.defend);
+      contest.isHit() ?
+        PhysicalAttackSystem.processHit(attackRoll, contest.getDefendRoll()):
+        PhysicalAttackSystem.processMiss(attackRoll, contest.getDefendRoll());
     }
   });
 }
@@ -110,12 +111,10 @@ function calculateAttacks() {
   return attacks;
 }
 
-// Because the context needs to include the hit location, crit, and fumble states, it will be different for each
-// attack.
-function buildAttackContext(roll) {
+function buildAttackContext(contest) {
   const round = BattleSystem.getRound();
-  const attackRoll = roll.attack;
-  const defendRoll = roll.defend;
+  const attackRoll = contest.getAttackRoll();
+  const defendRoll = contest.getDefendRoll();
 
   const context = {
     A: round.getActing(),

@@ -1,8 +1,4 @@
 ```
-application/records/ability.js
-application/records/base-armor.js
-application/records/base-weapon.js
-
 data/abilities/basic-attack.js
 data/abilities/dick-punch.js
 data/abilities/sneak-attack.js
