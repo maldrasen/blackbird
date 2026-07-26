@@ -1,10 +1,10 @@
 Archetype.register(ArchetypeCode.vermenDom, {
   name: 'Dominant Vermen',
   requires: 'species.vermen',
-  supertype: NegotiationSupertype.fierce,
 
   outfitStyles: [OutfitStyle.barbaric],
   denialStyle: DenialStyle.violent,
+  negotiationStyle: NegotiationStyle.fierce,
   sexStyle: SexStyle.rough,
   sexualityRatio: { straight:80, gay:10, bi:10 },
   sexualPreferences: {

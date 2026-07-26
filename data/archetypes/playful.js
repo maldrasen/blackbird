@@ -1,9 +1,9 @@
 Archetype.register(ArchetypeCode.playful, {
   name: 'Playful',
-  supertype: null,
 
   outfitStyles: [OutfitStyle.flirty],
   denialStyle: DenialStyle.frightened,
+  negotiationStyle: NegotiationStyle.playful,
   sexStyle: SexStyle.frisky,
   sexualityRatio: { straight:20, gay:20, bi:80 },
   sexualPreferences: {

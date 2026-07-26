@@ -1,10 +1,10 @@
 Archetype.register(ArchetypeCode.nice, {
   name: 'Nice Guy',
   requires: 'gender.male',
-  supertype: NegotiationSupertype.warm,
 
   outfitStyles: [OutfitStyle.sensible],
   denialStyle: DenialStyle.angry,
+  negotiationStyle: NegotiationStyle.warm,
   sexStyle: SexStyle.gentle,
   sexualityRatio: { straight:40, gay:20, bi:40, ace:5 },
   sexualPreferences:{

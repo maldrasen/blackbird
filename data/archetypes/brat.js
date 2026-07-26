@@ -1,9 +1,9 @@
 Archetype.register(ArchetypeCode.brat, {
   name: 'Brat',
-  supertype: null,
 
   outfitStyles: [OutfitStyle.flirty],
   denialStyle: DenialStyle.angry,
+  negotiationStyle: NegotiationStyle.brat,
   sexStyle: SexStyle.frisky,
   sexualityRatio: { straight:30, gay:20, bi:60 },
   sexualPreferences: {

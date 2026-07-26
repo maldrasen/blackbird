@@ -1,9 +1,9 @@
 Archetype.register(ArchetypeCode.serious, {
   name: 'Serious',
-  supertype: null,
 
   outfitStyles: [OutfitStyle.sensible],
   denialStyle: DenialStyle.violent,
+  negotiationStyle: NegotiationStyle.serious,
   sexStyle: SexStyle.gentle,
   sexualityRatio: { straight:60, gay:20, bi:20, ace:5 },
 

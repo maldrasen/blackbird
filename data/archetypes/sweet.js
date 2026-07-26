@@ -1,10 +1,10 @@
 Archetype.register(ArchetypeCode.sweet, {
   name: 'Sweet',
   requires: 'gender.not-male',
-  supertype: NegotiationSupertype.warm,
 
   outfitStyles: [OutfitStyle.flirty, OutfitStyle.sensible],
   denialStyle: DenialStyle.frightened,
+  negotiationStyle: NegotiationStyle.warm,
   sexStyle: SexStyle.gentle,
   sexualityRatio: { straight:40, gay:20, bi:30, ace:5 },
   sexualPreferences:{

@@ -1,10 +1,10 @@
 Archetype.register(ArchetypeCode.prude, {
   name: 'Prude',
   parent: 'serious',
-  supertype: NegotiationSupertype.timid,
 
   outfitStyles: [OutfitStyle.sensible],
   denialStyle: DenialStyle.violent,
+  negotiationStyle: NegotiationStyle.serious,
   sexStyle: SexStyle.bashful,
   sexualityRatio: { straight:75, ace:25 },
 

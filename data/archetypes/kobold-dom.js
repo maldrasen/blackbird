@@ -1,10 +1,10 @@
 Archetype.register(ArchetypeCode.koboldDom, {
   name: 'Dominant Kobold',
   requires: 'species.kobold',
-  supertype: NegotiationSupertype.fierce,
 
   outfitStyles: [OutfitStyle.barbaric],
   denialStyle: DenialStyle.violent,
+  negotiationStyle: NegotiationStyle.fierce,
   sexStyle: SexStyle.rough,
   sexualityRatio: { straight:80, gay:10, bi:10 },
   sexualPreferences: {

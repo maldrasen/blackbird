@@ -1,9 +1,9 @@
 Archetype.register(ArchetypeCode.flowerChild, {
   name: 'Flower Child',
-  supertype: NegotiationSupertype.warm,
 
   outfitStyles: [OutfitStyle.natural],
   denialStyle: DenialStyle.frightened,
+  negotiationStyle: NegotiationStyle.warm,
   sexStyle: SexStyle.gentle,
   sexualityRatio: { straight:10, gay:10, bi:80 },
   sexualPreferences: {

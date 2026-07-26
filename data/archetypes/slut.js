@@ -1,9 +1,9 @@
 Archetype.register(ArchetypeCode.slut, {
   name: 'Slut',
-  supertype: NegotiationSupertype.lewd,
 
   outfitStyles: [OutfitStyle.slutty],
   denialStyle: DenialStyle.horny,
+  negotiationStyle: NegotiationStyle.lewd,
   sexStyle: SexStyle.shameless,
   sexualityRatio: { bi:100 },
   sexualPreferences: {
