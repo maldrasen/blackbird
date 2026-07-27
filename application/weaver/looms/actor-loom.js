@@ -36,6 +36,7 @@ global.ActorLoom = (function() {
       case `Hers`: return StringHelper.titlecase(weave(id,'hers'));
       case `Man`: return StringHelper.titlecase(weave(id,'man'));
       case `Men`: return StringHelper.titlecase(weave(id,'men'));
+      case `ling`: return lingSuffix(ActorComponent.lookup(id).gender);
       case `name`: return Character(id).getName();
       case `name's`: return EnglishHelper.possessive(Character(id).getName());
       case `fullName`: return Character(id).getFullName();
@@ -66,6 +67,13 @@ global.ActorLoom = (function() {
       case `anElf`: return `${EnglishHelper.a_an(name)} ${name}`;
       default: return Weaver.formatWarning(`[Species:${token}]`);
     }
+  }
+
+  // The "-ling" suffix is kind of a weird case, meant to represent a gendered diminutive. Words like slavegirl or
+  // poolboy, but with a non-binary gender neither slavegirl and slaveboy really work, so we settle on slaveling in
+  // these cases.
+  function lingSuffix(gender) {
+    return { male:'boy', female:'girl', futa:'gurl', enby:'ling' }[gender];
   }
 
   // TODO: Stubs for insulting names (Asshole, Sheepfucker) and nice names (Honey, Darling).

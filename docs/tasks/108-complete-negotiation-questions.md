@@ -13,8 +13,6 @@ This will end up being more of a rolling task. Every once and a while I'll take 
 - The {kobold} tries to leave
 - The {kobold} steps closer
 - The {kobold} snarls at you.
-- I see. So you want to become one of my minions. 
-- What's the matter? You tired of fighting?
 - Yeah... I really don't need this right now.
 - Well? You just going to stand there?
 - We should get to know each other better. I know, let's make out.

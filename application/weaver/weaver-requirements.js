@@ -7,6 +7,10 @@ global.WeaverRequirements = (function() {
     return context.previousPosition != null && GameSystem.getState().getPlayer() === context.previousPosition[key];
   }
 
+  function isSpecies(context, key, code) {
+    return Character(context[key]).getSpecies() === code;
+  }
+
   // === Body Parts ===
 
   function isAnusEmpty(context, key) {
@@ -65,6 +69,10 @@ global.WeaverRequirements = (function() {
     return Character(context[key]).isStrongerThan(min);
   }
 
+  function minimumIntelligence(context, key, min) {
+    return Character(context[key]).isSmarterThan(min);
+  }
+
   // === Equipment ===
 
   function chestIsCovered(context, key) {
@@ -98,6 +106,7 @@ global.WeaverRequirements = (function() {
   return Object.freeze({
     playerIs: key =>                         { return (context) => { return GameSystem.getState().getPlayer() === context[key]; }},
     playerWas: key =>                        { return (context) => { return playerWas(context, key); }},
+    isSpecies: (key, code) =>                { return (context) => { return isSpecies(context, key, code); }},
     withAttitude: code =>                    { return (context) => { return context.attitude === code; }},
     withAction: code =>                      { return (context) => { return context.action === code; }},
     withHitLocation: (...slots) =>           { return (context) => { return slots.includes(context.hitLocation); }},
@@ -106,6 +115,7 @@ global.WeaverRequirements = (function() {
     visibleBreasts: key =>                   { return (context) => { return visibleBreasts(context,key); }},
     minimumBreastSize: (key,size) =>         { return (context) => { return minimumBreastSize(context,key,size); }},
     hasCock: key =>                          { return (context) => { return hasCock(context, key); }},
+    hasNoCock: key =>                        { return (context) => { return hasCock(context, key) === false; }},
     visibleCock: key =>                      { return (context) => { return visibleCock(context, key); }},
     visibleHardCock: key =>                  { return (context) => { return visibleHardCock(context, key) }},
     minimumCockSize: (key,size) =>           { return (context) => { return minimumCockSize(context, key, size); }},
@@ -113,6 +123,7 @@ global.WeaverRequirements = (function() {
     isTallerThan: (first, second) =>         { return (context) => { return isTallerThan(context, first, second) }},
     isMale: key =>                           { return (context) => { return isMale(context, key); }},
     minimumStrength: (key, min) =>           { return (context) => { return minimumStrength(context, key, min); }},
+    minimumIntelligence: (key, min) =>       { return (context) => { return minimumIntelligence(context, key, min); }},
     chestIsCovered: key =>                   { return (context) => { return chestIsCovered(context, key); }},
     legsAreCovered: key =>                   { return (context) => { return legsAreCovered(context, key); }},
     isTopless: key =>                        { return (context) => { return isTopless(context, key); }},
