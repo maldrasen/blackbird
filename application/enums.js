@@ -212,11 +212,15 @@ global.NegotiationTone = Object.freeze({
   sly: 'sly',
 });
 
-global.NegotiationSupertype = Object.freeze({
+global.NegotiationStyle = Object.freeze({
+  brat: 'brat',
   fierce: 'fierce',
+  lewd: 'lewd',
+  playful: 'playful',
+  reserved: 'reserved',
+  serious: 'serious',
   timid: 'timid',
   warm: 'warm',
-  lewd: 'lewd',
 });
 
 // ============
