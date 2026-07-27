@@ -7,12 +7,12 @@ NegotiationQuestion.register('get-out-cocks-out', {
     WeaverRequirements.hasCock('A'),
     WeaverRequirements.hasCock('T'),
   ],
-  answers: [
-    { key:'no',        text:`"What? Here?"` },
-    { key:'you-first', text:`"You first."` },
-    { key:'yes',       text:`Whip it out.` },
-    { key:'dick-slap', text:`Whip it out, and slap {T:him} across the face with it.` },
-  ],
+  answers: {
+    'no':        { text:`"What? Here?"` },
+    'you-first': { text:`"You first."` },
+    'yes':       { text:`Whip it out.` },
+    'dick-slap': { text:`Whip it out, and slap {T:him} across the face with it.` },
+  }
 });
 
 const dickSlapLose = `The kobold dodges out of the way and snarls, "Ha! Too slow asshole."`

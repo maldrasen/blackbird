@@ -45,27 +45,34 @@ global.NegotiationSystem = (function() {
      */
   }
 
-  function answer(code) {
+  function answer(key) {
     const question = state.getCurrentQuestion();
     const request = state.getCurrentRequest();
 
+    if (key == null) {
+      throw new Error(`Key should not be null here...`);
+    }
+
     if (question) {
-      state.applyFeelings(question.reaction.responses[code]);
+      console.log("Apply Feelings:",question)
+
+      // state.applyFeelings(question.reaction.responses[code]);
     }
     if (request) {
       // TODO: Apply feelings when requests are met or denied.
     }
 
-    if (isSatisfied()) {
-      state.setResolution("satisfied");
-      return NegotiationOverlay.renderResolution();
-    }
 
-    if (isAngry()) {
-      state.setResolution("angry");
-      return NegotiationOverlay.renderResolution();
-    }
-
+    // if (isSatisfied()) {
+    //   state.setResolution("satisfied");
+    //   return NegotiationOverlay.renderResolution();
+    // }
+    //
+    // if (isAngry()) {
+    //   state.setResolution("angry");
+    //   return NegotiationOverlay.renderResolution();
+    // }
+    //
     advance();
   }
 

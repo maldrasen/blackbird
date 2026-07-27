@@ -78,6 +78,8 @@ global.NegotiationState = function() {
     getContext: () => { return {...context}; },
     getMonster: () => { return monster; },
     getGreeting: () => { return Monster(monster).getBaseMonster().getNegotiationGreeting(context); },
+    getCurrentQuestion: () => { return currentQuestion; },
+    getCurrentRequest: () => { return currentRequest; },
     setStage: code => { stage = code; },
     getStage: () => { return stage; },
     getInteractionCount: () => { return interactionCount; },

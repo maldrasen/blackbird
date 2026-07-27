@@ -28,8 +28,7 @@ global.NegotiationOverlay = (function() {
   }
 
   function answer(event) {
-    const tone = event.target.dataset.tone;
-    NegotiationSystem.answer(tone);
+    NegotiationSystem.answer(event.target.dataset.key);
   }
 
   function displayGreeting() {
@@ -45,8 +44,8 @@ global.NegotiationOverlay = (function() {
     clear();
 
     X.append('#negotiationFrame .dialog', X.createElement(`<p class='question'>${weave(question.getText())}</p>`));
-    question.getAnswers().forEach(answer => {
-      X.append('#negotiationFrame .options', buildButton(answer.key, weave(answer.text)));
+    Object.entries(question.getAnswers()).forEach(([key, answer]) => {
+      X.append('#negotiationFrame .options', buildButton(key, weave(answer.text)));
     });
   }
 
