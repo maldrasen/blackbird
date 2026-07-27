@@ -4,13 +4,16 @@ global.NegotiationSystem = (function() {
   // TODO: There should also be a version that the monster starts when there's only one monster remaining.
   function start() {
     state = NegotiationState();
+
     BattleSystem.getState().setNegotiationAttempted();
     BattleSystem.getRound().setAbility(BattleCommand.negotiate);
     NegotiationOverlay.open();
   }
 
   function advance() {
+    console.log("--- Advance ---")
 
+    /*
     if (state.isResolved() === false && state.getInteractionCount() >= 5) {
       return forceResolution();
     }
@@ -33,6 +36,8 @@ global.NegotiationSystem = (function() {
     }
 
     NegotiationOverlay.renderRequest(state.pickRequest());
+
+     */
   }
 
   function answer(code) {

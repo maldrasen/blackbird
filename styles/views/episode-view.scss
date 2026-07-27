@@ -21,6 +21,7 @@
   background-color: rgba(0,0,0,0.70);
   border: variables.$border-normal;
   box-shadow: variables.$shadow-frame;
+  backdrop-filter: blur(5px);
   z-index: variables.$z-root;
 }
 

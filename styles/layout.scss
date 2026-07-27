@@ -33,6 +33,7 @@
   border: variables.$border-normal;
   background-color: variables.$bg-frame;
   box-shadow: variables.$shadow-frame;
+  backdrop-filter: blur(5px);
 }
 
 .inner-frame {
@@ -73,10 +74,11 @@
   left: 50px;
   right: 50px;
   min-width: 800px;
-  background-color: rgba(0,0,0,0.70);
+  background-color: rgba(0,0,0,0.5);
   border: variables.$border-normal;
   border-bottom: variables.$border-light;
   box-shadow: variables.$shadow-overlay;
+  backdrop-filter: blur(5px);
   z-index: variables.$z-overlay;
   overflow: hidden;
 }
@@ -111,9 +113,10 @@
   padding: 5px;
   margin-top: 5px;
 
-  background-color: rgba(0,0,0,0.80);
+  background-color: rgba(0,0,0,0.75);
   border: variables.$border-normal;
   border-top: none;
+  backdrop-filter: blur(5px);
 
   z-index: variables.$z-overlay-footer;
 }

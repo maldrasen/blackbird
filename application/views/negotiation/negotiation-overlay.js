@@ -1,36 +1,28 @@
 global.NegotiationOverlay = (function() {
 
   function init() {
-    X.onClick(`#generalOverlay .overlay`, advance);
-    X.onClick('#negotiation .answer', answer);
+    X.onClick(`#negotiationFrame`, advance);
+    X.onClick('#negotiationFrame .answer', answer);
   }
 
   function open() {
-    GeneralOverlay.open(build(), { classname:'small', hideFooter:true, preventClose:true });
+    X.removeClass('#negotiationOverlay','hide');
     displayGreeting();
   }
 
-  function build() {
-    return X.createElement(`<div id="negotiation">
-      <div id="dialog"></div>
-      <ul id="answers"></ul>
-    </div>`);
-  }
-
   function clear() {
-    X.empty(`#negotiation #dialog`);
-    X.empty(`#negotiation #answers`);
+    X.empty(`#negotiationFrame .dialog`);
+    X.empty(`#negotiationFrame .answers`);
   }
 
   function close() {
-    WindowManager.pop();
+    X.addClass('#negotiationOverlay','hide');
+    clear();
   }
 
-  // We register the advance event on the generalOverlay because we want a click anywhere on the overlay to advance
-  // the text as the negotiation element could be much smaller than the overlay. This registers a listener on any
-  // generalOverlay so we want to make sure the event only fires when this overlay has the negotiation element.
-  function advance(event) {
-    if (event.target.querySelector('#negotiation') && buttonCount() === 0) {
+  function advance() {
+    if (X.hasClass('#negotiationFrame','can-advance')) {
+      X.removeClass('#negotiationFrame','can-advance');
       NegotiationSystem.advance();
     }
   }
@@ -41,9 +33,10 @@ global.NegotiationOverlay = (function() {
   }
 
   function displayGreeting() {
-    X.fill('#dialog', X.createElement(`<p class='greeting'>
-      ${weave(NegotiationSystem.getState().getGreeting())}
-    </p>`));
+    X.addClass(`#negotiationFrame`,'can-advance');
+    X.fill('#negotiationFrame .dialog', X.createElement(`
+      <p class='greeting'>${weave(NegotiationSystem.getState().getGreeting())}</p>
+    `));
   }
 
   function renderQuestion(data) {
@@ -51,7 +44,7 @@ global.NegotiationOverlay = (function() {
 
     clear();
 
-    X.append('#dialog', X.createElement(`<p class='question'>${weave(question.getText())}</p>`));
+    X.append('#negotiationFrame .dialog', X.createElement(`<p class='question'>${weave(question.getText())}</p>`));
     Object.entries(question.getAnswers()).forEach(([tone,text]) => {
       X.append('#answers', buildButton(weave(text),tone));
     });
@@ -59,7 +52,7 @@ global.NegotiationOverlay = (function() {
 
   function renderRequest(request) {
     clear();
-    X.append('#dialog', X.createElement(`<p class='request'>${request}</p>`));
+    X.append('#negotiationFrame .dialog', X.createElement(`<p class='request'>${request}</p>`));
     X.append('#answers', buildButton('Yes','yes'))
     X.append('#answers', buildButton('No','no'))
   }
@@ -69,7 +62,7 @@ global.NegotiationOverlay = (function() {
 
     const text = NegotiationSystem.getState().getResolutionText();
 
-    X.append('#dialog', X.createElement(`<p class='request'>${weave(text)}</p>`));
+    X.append('#negotiationFrame .dialog', X.createElement(`<p class='request'>${weave(text)}</p>`));
   }
 
   function buildButton(label,tone) {
@@ -77,7 +70,7 @@ global.NegotiationOverlay = (function() {
   }
 
   function buttonCount() {
-    return document.querySelectorAll(`#negotiation .answer`).length;
+    return document.querySelectorAll(`#negotiationFrame .answer`).length;
   }
 
   function weave(text) {

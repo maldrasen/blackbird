@@ -2,6 +2,10 @@ global.NegotiationState = function() {
   const battleState = BattleSystem.getState();
   const monster = battleState.getActiveMonsters()[0];
   const context = { A:GameSystem.getState().getPlayer(), T:monster };
+
+  console.log("=== Building Negotiation State ===");
+
+  /*
   const opening = NegotiationOpening(monster);
   const questions = Random.shuffle(opening.getQuestions());
 
@@ -56,24 +60,28 @@ global.NegotiationState = function() {
     }
   }
 
+
+   */
   return Object.freeze({
     getContext: () => { return {...context}; },
     getMonster: () => { return monster; },
-    getInteractionCount: () => { return interactionCount; },
+
     getGreeting: () => { return Monster(monster).getBaseMonster().getNegotiationGreeting(context); },
-    getQuestions: () => { return questions; },
-    pickQuestion,
-    pickRequest,
-    getCurrentQuestion: () => { return currentQuestion; },
-    getCurrentRequest: () => { return currentRequest; },
 
-    applyFeelings,
-    getFeelings,
+    // getInteractionCount: () => { return interactionCount; },
+    // getQuestions: () => { return questions; },
+    // pickQuestion,
+    // pickRequest,
+    // getCurrentQuestion: () => { return currentQuestion; },
+    // getCurrentRequest: () => { return currentRequest; },
 
-    setResolution: code => { resolution = code; },
-    getResolution: () => { return resolution; },
-    isResolved: () => { return resolution != null; },
-    getResolutionText,
+    // applyFeelings,
+    // getFeelings,
+
+    // setResolution: code => { resolution = code; },
+    // getResolution: () => { return resolution; },
+    // isResolved: () => { return resolution != null; },
+    // getResolutionText,
   });
 
 };

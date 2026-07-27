@@ -69,6 +69,7 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
     background-color: $bg-top-panel;
     border: variables.$border-normal;
     box-shadow: variables.$shadow-frame;
+    backdrop-filter: blur(5px);
   }
 
   #statusRow {

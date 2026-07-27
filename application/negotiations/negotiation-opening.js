@@ -4,7 +4,10 @@ global.NegotiationOpening = function(monsterId) {
   const gender = monster.getGender();
   const species = monster.getSpecies();
   const archetype = monster.getArchetype();
-  const supertype = Archetype.lookup(archetype).getSupertype();
+  const style = archetype.getNegotiationStyle();
+
+  // const supertype = Archetype.lookup(archetype).getSupertype();
+  /*
   const questions = [];
 
   NegotiationQuestion.getAllCodes().forEach(questionCode => {
@@ -43,4 +46,5 @@ global.NegotiationOpening = function(monsterId) {
   return Object.freeze({
     getQuestions: () => { return questions },
   });
+   */
 }

@@ -8,7 +8,7 @@ global.GeneralOverlay = (function() {
 
   /**
    * - `content` A single HTML element.
-   * - `options.classname` [small, narrow] Optional class name for the overlay.
+   * - `options.classname` [tiny, small, narrow] Optional class name for the overlay.
    * - `options.hideFooter` True if footer should be hidden.
    * - `options.preventClose` True if the overlay can only be closed programmatically.
    */
@@ -24,7 +24,7 @@ global.GeneralOverlay = (function() {
     X.removeClass('#generalOverlay','hide');
     X.removeClass('#overlayCover','hide');
 
-    if (['small','narrow'].includes(options.classname)) {
+    if (['tiny','small','narrow'].includes(options.classname)) {
       X.addClass('#generalOverlay .overlay',options.classname)
       X.addClass('#generalOverlay .overlay-footer',options.classname)
     }
