@@ -5,9 +5,9 @@ global.NegotiationOverlay = (function() {
     X.onClick('#negotiation .answer', answer);
   }
 
-  function open(options) {
+  function open() {
     GeneralOverlay.open(build(), { classname:'small', hideFooter:true, preventClose:true });
-    displayGreeting(options.greeting);
+    displayGreeting();
   }
 
   function build() {
@@ -40,8 +40,10 @@ global.NegotiationOverlay = (function() {
     NegotiationSystem.answer(tone);
   }
 
-  function displayGreeting(greeting) {
-    X.fill('#dialog', X.createElement(`<p class='greeting'>${weave(greeting)}</p>`));
+  function displayGreeting() {
+    X.fill('#dialog', X.createElement(`<p class='greeting'>
+      ${weave(NegotiationSystem.getState().getGreeting())}
+    </p>`));
   }
 
   function renderQuestion(data) {

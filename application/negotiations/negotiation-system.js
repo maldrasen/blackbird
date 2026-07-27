@@ -5,12 +5,8 @@ global.NegotiationSystem = (function() {
   function start() {
     state = NegotiationState();
     BattleSystem.getState().setNegotiationAttempted();
-
-    const round = BattleSystem.getRound();
-    round.setAbility(BattleCommand.negotiate);
-
-    NegotiationOverlay.open({ greeting:state.getGreeting() });
-
+    BattleSystem.getRound().setAbility(BattleCommand.negotiate);
+    NegotiationOverlay.open();
   }
 
   function advance() {

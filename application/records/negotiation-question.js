@@ -1,4 +1,5 @@
 global.NegotiationQuestion = (function() {
+
   const questions = {};
   const questionReactions = {};
   const propertyWeights = {

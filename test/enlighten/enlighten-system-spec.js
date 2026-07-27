@@ -1,4 +1,4 @@
-describe.only("EnlightenSystem", function() {
+describe("EnlightenSystem", function() {
 
   // Elf essence costs: 804 total to reach level 2, 2526 total to reach level 3.
 

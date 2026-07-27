@@ -25,5 +25,3 @@ Unlike the questions though a request will sometimes have to have a random value
 - I want to fuck, umm, that one over there. He says pointing at {character name}.
 - How about you suck me off first.
 
----
-**Notes (Claude):** Request infra is a bare stub — `NegotiationRequest.lookup` only returns the code, `negotiation-system.answer()` has a TODO for applying request feelings, and `negotiation-state.pickRequest()` returns a placeholder string. Build: the request record shape (yes/no, per-supertype/archetype reactions with feelings maps, overridable like questions), a random-value mechanic (e.g. "give me 50 mana") with a feelings-scaling factor tied to the rolled amount, overlay rendering (`negotiation-overlay`), plus content (the violent/lewd lists). Mirror the question system that already works ([[project_recruitment_negotiation_system]]).
