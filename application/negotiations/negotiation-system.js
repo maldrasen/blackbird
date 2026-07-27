@@ -11,7 +11,12 @@ global.NegotiationSystem = (function() {
   }
 
   function advance() {
-    console.log("--- Advance ---")
+    console.log("--- Advance ---");
+
+    if (state.getStage() === 'question') {
+      return NegotiationOverlay.renderQuestion(state.pickQuestion());
+    }
+
 
     /*
     if (state.isResolved() === false && state.getInteractionCount() >= 5) {

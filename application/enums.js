@@ -204,6 +204,7 @@ global.SexStyle = {
 };
 
 global.NegotiationTone = Object.freeze({
+  modest: 'modest',
   boastful: 'boastful',
   dominant: 'dominant',
   honest: 'honest',
