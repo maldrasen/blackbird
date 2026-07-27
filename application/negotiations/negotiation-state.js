@@ -34,6 +34,11 @@ global.NegotiationState = function() {
   function pickQuestion() {
     interactionCount += 1;
     currentQuestion = questions.shift();
+
+    if (currentQuestion == null) {
+      throw new Error(`Error: There aren't enough valid questions for ${Monster(monster).getCode()}:[${Monster(monster).getArchetype()}]`);
+    }
+
     return currentQuestion;
   }
 

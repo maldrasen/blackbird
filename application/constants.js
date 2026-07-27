@@ -22,6 +22,7 @@ global._effortCost = 100;
 
 // === Text ===
 global._ellipsis = '…';
+global._interrobang = '‽';
 
 // A third flavor of null.
 global._nothing = 'nothing';

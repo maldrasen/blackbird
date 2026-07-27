@@ -13,7 +13,7 @@ global.Fixtures = (function() {
       afterBattle: 'returnTo.mainMenu',
       // encounter: 'kobold-1',
       // encounter: `kobold-${Random.between(1,5)}`,
-      encounter: 'negotiation-fixture',
+      encounter: `negotiation-fixture-${Random.between(1,3)}`,
     });
 
     GameSystem.setGameMode(GameMode.location);

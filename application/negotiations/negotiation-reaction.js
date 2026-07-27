@@ -1,16 +1,21 @@
 global.NegotiationReaction = (function() {
 
   const reactionMap = {
+    neutral: {},
     respect: { control:20, respect:10 },
     disrespect: { control:-20, respect:-10, fear:-5 },
     like: { control:10, affection:10, fear:-5 },
     love: { control:20, affection:20, respect:10, fear:-5 },
     dislike: { control:-10, affection:-10, },
     hate: {  control:-20, affection:-20, respect:-10 },
-    frightened: { control:10, fear:20 },
+    scare: { control:10, fear:20 },
   }
 
   function attack(message, options={}) {
+
+  }
+
+  function run(message) {
 
   }
 
@@ -35,16 +40,17 @@ global.NegotiationReaction = (function() {
 
   }
 
-  return Object.freeze({
+  const methods = {
     attack,
-    contest,
+    run,
+    contest
+  };
 
-    // TODO: Add these functions programmatically.
-    respect: (message, options={}) => reactWith(reactionMap.respect,message,options),
-    disrespect: (message, options={}) => reactWith(reactionMap.disrespect,message,options),
+  Object.keys(reactionMap).forEach(key => {
+    methods[key] = (message, options={}) => reactWith(reactionMap[key], message, options);
+  });
 
-  })
-
+  return Object.freeze(methods);
 
 })();
 
