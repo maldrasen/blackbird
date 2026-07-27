@@ -8,7 +8,7 @@ NegotiationQuestion.register('bone-jewelry-rumor', {
     { key:'no',    text:`"No, that's not true."` },
     { key:'maybe', text:`"Well, maybe some people do, but I wouldn't."` },
     { key:'yes',   text:`"I think you'd make a fine necklace."` },
-    { key:'soup',  text:`Of course not. We make soup out of them.` },
+    { key:'soup',  text:`"Of course not. We make soup out of them."` },
     { key:'lewd',  text:`"We only make sex toys that way."` }
   ],
 });

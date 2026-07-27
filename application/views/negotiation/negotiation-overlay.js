@@ -12,7 +12,7 @@ global.NegotiationOverlay = (function() {
 
   function clear() {
     X.empty(`#negotiationFrame .dialog`);
-    X.empty(`#negotiationFrame .answers`);
+    X.empty(`#negotiationFrame .options`);
   }
 
   function close() {
@@ -40,13 +40,13 @@ global.NegotiationOverlay = (function() {
   }
 
   function renderQuestion(data) {
-    const question = NegotiationQuestion.lookup(data.questionCode);
+    const question = NegotiationQuestion.lookup(data.question);
 
     clear();
 
     X.append('#negotiationFrame .dialog', X.createElement(`<p class='question'>${weave(question.getText())}</p>`));
-    Object.entries(question.getAnswers()).forEach(([tone,text]) => {
-      X.append('#answers', buildButton(weave(text),tone));
+    question.getAnswers().forEach(answer => {
+      X.append('#negotiationFrame .options', buildButton(answer.key, weave(answer.text)));
     });
   }
 
@@ -59,18 +59,12 @@ global.NegotiationOverlay = (function() {
 
   function renderResolution() {
     clear();
-
     const text = NegotiationSystem.getState().getResolutionText();
-
     X.append('#negotiationFrame .dialog', X.createElement(`<p class='request'>${weave(text)}</p>`));
   }
 
-  function buildButton(label,tone) {
-    return X.createElement(`<li><a href='#' class='button answer' data-tone='${tone}'>${label}</a></li>`);
-  }
-
-  function buttonCount() {
-    return document.querySelectorAll(`#negotiationFrame .answer`).length;
+  function buildButton(key, label) {
+    return X.createElement(`<li><a href='#' class='button answer' data-key='${key}'>${label}</a></li>`);
   }
 
   function weave(text) {

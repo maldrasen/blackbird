@@ -23,7 +23,15 @@
   }
 
   .dialog {
+    margin: 5px;
+    padding-bottom: 10px;
     font-family: 'habibi', serif;
     font-size: variables.$fs-big;
+    border-bottom: variables.$border-light;
+  }
+
+  .options a {
+    width: 570px;
+    margin: 10px 5px 0;
   }
 }
