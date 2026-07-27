@@ -3,11 +3,24 @@ global.NegotiationState = function() {
   const monster = battleState.getActiveMonsters()[0];
   const context = { A:GameSystem.getState().getPlayer(), T:monster };
 
+  const validQuestions = [];
+
   let stage = 'question';
   let interactionCount = 0;
   let current;
 
   console.log("=== Building Negotiation State ===");
+
+  NegotiationQuestion.getAllCodes().forEach(code => {
+    const question = NegotiationQuestion.lookup(code);
+    const reactionData = question.getReactionData(context);
+
+    if (reactionData) {
+      console.log("Is valid and has reaction data:",reactionData)
+      validQuestions.push({ question:code, reactionData });
+    }
+  });
+
 
   /*
   const opening = NegotiationOpening(monster);

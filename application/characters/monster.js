@@ -1,12 +1,14 @@
 global.Monster = function(id) {
 
   function monsterComponent() { return MonsterComponent.lookup(id); }
-  function getBaseMonster() { return BaseMonster.lookup(monsterComponent().code); }
+  function getCode() { return monsterComponent().code; }
+  function getBaseMonster() { return BaseMonster.lookup(getCode()); }
   function getType() { return MonsterType.lookup(getBaseMonster().getType()); }
   function getBasicAttack() { return monsterComponent().basicAttack; }
   function getSpecies() { return getBaseMonster().getSpecies(); }
   function getGender() { return ActorComponent.lookup(id).gender; }
   function getArchetype() { return PersonalityComponent.lookup(id).archetype; }
+  function getNegotiationStyle() { return Archetype.lookup(getArchetype()).getNegotiationStyle(); }
   function getSkill(code) { return SkillsComponent.lookup(id)[code]; }
 
   // When building the list of abilities and their priorities we first build the ability map from the two arrays.
@@ -82,6 +84,7 @@ global.Monster = function(id) {
 
   return Object.freeze({
     getEntity: () => { return id },
+    getCode,
     getBaseMonster,
     getType,
     getBasicAttack,
@@ -89,6 +92,7 @@ global.Monster = function(id) {
     getSpecies,
     getGender,
     getArchetype,
+    getNegotiationStyle,
     getSkill,
     getPrioritizedAbilities,
 
