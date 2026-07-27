@@ -49,19 +49,13 @@ global.NegotiationSystem = (function() {
     const question = state.getCurrentQuestion();
     const request = state.getCurrentRequest();
 
-    if (key == null) {
-      throw new Error(`Key should not be null here...`);
-    }
-
     if (question) {
       console.log("Apply Feelings:",question)
-
       // state.applyFeelings(question.reaction.responses[code]);
     }
     if (request) {
       // TODO: Apply feelings when requests are met or denied.
     }
-
 
     // if (isSatisfied()) {
     //   state.setResolution("satisfied");

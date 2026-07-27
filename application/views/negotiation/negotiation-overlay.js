@@ -28,7 +28,7 @@ global.NegotiationOverlay = (function() {
   }
 
   function answer(event) {
-    NegotiationSystem.answer(event.target.dataset.key);
+    NegotiationSystem.answer(event.target.closest('a').dataset.key);
   }
 
   function displayGreeting() {
