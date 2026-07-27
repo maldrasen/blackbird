@@ -49,9 +49,15 @@ global.NegotiationSystem = (function() {
     const question = state.getCurrentQuestion();
     const request = state.getCurrentRequest();
 
+    // TODO: The reaction here is built by the negotiation reaction object. The reaction must contain a message to
+    //       display. Most reactions will also have a feelings map, but other reactions may trigger an ability or
+    //       running away. A reaction like this will end the negotiation and perform the action within the ongoing
+    //       battle. (Need to implement the run away command first actually.)
+
     if (question) {
-      console.log("Apply Feelings:",question)
-      // state.applyFeelings(question.reaction.responses[code]);
+      const reaction = question.reactionData.reactions[key];
+      console.log("Reaction:",reaction);
+      // state.applyFeelings(reaction);
     }
     if (request) {
       // TODO: Apply feelings when requests are met or denied.

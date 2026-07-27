@@ -11,10 +11,13 @@ global.NegotiationReaction = (function() {
     scare: { control:10, fear:20 },
   }
 
-  function attack(message, options={}) {
+  // TODO: End the negotiation and do a basic attack. I think it's fair to say that every monster that can be
+  //       negotiated with will have a special attack.
+  function attack(message) {
 
   }
 
+  // TODO: Need to implement the run away command first.
   function run(message) {
 
   }
@@ -35,6 +38,8 @@ global.NegotiationReaction = (function() {
   function contest(options) {
 
   }
+
+  //
 
   function reactWith(emotions, message, options) {
 
