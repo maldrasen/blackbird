@@ -47,7 +47,7 @@ global.NegotiationQuestion = (function() {
         });
       }
 
-      return validReactions.length > 0 ? validReactions.sort((a,b) => b.weight - a.weight)[0].data : null;
+      return validReactions.length > 0 ? validReactions.sort((a,b) => b.weight - a.weight)[0] : null;
     }
 
     function isValid(context) {
