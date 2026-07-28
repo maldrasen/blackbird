@@ -25,6 +25,7 @@ global.WindowManager = (function() {
   function pop() {
     const modal = windowStack[windowStack.length - 1];
     if (modal.isLocked && modal.isLocked()) { return; }
+    Tooltip.close();
     windowStack.pop().close();
   }
 
