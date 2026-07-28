@@ -46,6 +46,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [128] Random weapon and armor generation `8pt` — [128-random-item-generation.md](128-random-item-generation.md)
 - [130] Accept death in game over event `8pt` — [130-accept-death-in-game-over-event.md](130-accept-death-in-game-over-event.md)
 - [139] Fix Stamina `3pt` — [139-fix-stamina.md](139-fix-stamina.md)
+- [143] Refactor Character Factory `3pt` — [143-refactor-character-factory.md](143-refactor-character-factory.md)
 
 ## Priority 4
 
