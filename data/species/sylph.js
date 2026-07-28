@@ -16,10 +16,10 @@ Species.register(SpeciesCode.sylph, {
   },
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.sylph),
-    female: ArchetypeDistribution(Gender.female,SpeciesCode.sylph),
-    futa:   ArchetypeDistribution(Gender.futa,SpeciesCode.sylph),
-    male:   ArchetypeDistribution(Gender.male,SpeciesCode.sylph),
+    enby:   ArchetypeDistribution(Gender.enby,   SpeciesCode.sylph),
+    female: ArchetypeDistribution(Gender.female, SpeciesCode.sylph),
+    futa:   ArchetypeDistribution(Gender.futa,   SpeciesCode.sylph),
+    male:   ArchetypeDistribution(Gender.male,   SpeciesCode.sylph),
   },
 
   // It's rare for a sylph to have a cock, but when they do they're exceedingly

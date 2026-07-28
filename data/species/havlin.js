@@ -16,10 +16,10 @@ Species.register(SpeciesCode.havlin, {
   },
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.havlin),
-    female: ArchetypeDistribution(Gender.female,SpeciesCode.havlin),
-    futa:   ArchetypeDistribution(Gender.futa,SpeciesCode.havlin),
-    male:   ArchetypeDistribution(Gender.male,SpeciesCode.havlin),
+    enby:   ArchetypeDistribution(Gender.enby,   SpeciesCode.havlin),
+    female: ArchetypeDistribution(Gender.female, SpeciesCode.havlin),
+    futa:   ArchetypeDistribution(Gender.futa,   SpeciesCode.havlin),
+    male:   ArchetypeDistribution(Gender.male,   SpeciesCode.havlin),
   },
 
   // Because of their relatively shallow pussies, havlins have an unusually

@@ -16,10 +16,10 @@ Species.register(SpeciesCode.nymph, {
   },
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.nymph),
-    female: ArchetypeDistribution(Gender.female,SpeciesCode.nymph),
-    futa:   ArchetypeDistribution(Gender.futa,SpeciesCode.nymph),
-    male:   ArchetypeDistribution(Gender.male,SpeciesCode.nymph),
+    enby:   ArchetypeDistribution(Gender.enby,   SpeciesCode.nymph),
+    female: ArchetypeDistribution(Gender.female, SpeciesCode.nymph),
+    futa:   ArchetypeDistribution(Gender.futa,   SpeciesCode.nymph),
+    male:   ArchetypeDistribution(Gender.male,   SpeciesCode.nymph),
   },
 
   // Nymphs have an overall boost to their sensitivities, and highly sensitive

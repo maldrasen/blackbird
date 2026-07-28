@@ -1,8 +1,6 @@
 
 
 ```
-data/species/kobold.js
-data/species/vermen.js
 docs/reference/personality-system.md
 test/characters/factories/sexual-preferences-factory-spec.js
 ```

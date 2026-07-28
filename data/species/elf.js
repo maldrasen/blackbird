@@ -17,10 +17,10 @@ Species.register(SpeciesCode.elf, {
   },
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.elf),
-    female: ArchetypeDistribution(Gender.female,SpeciesCode.elf),
-    futa:   ArchetypeDistribution(Gender.futa,SpeciesCode.elf),
-    male:   ArchetypeDistribution(Gender.male,SpeciesCode.elf),
+    enby:   ArchetypeDistribution(Gender.enby,   SpeciesCode.elf),
+    female: ArchetypeDistribution(Gender.female, SpeciesCode.elf),
+    futa:   ArchetypeDistribution(Gender.futa,   SpeciesCode.elf),
+    male:   ArchetypeDistribution(Gender.male,   SpeciesCode.elf),
   },
 
   sensitivities: {

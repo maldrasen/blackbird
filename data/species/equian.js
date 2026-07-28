@@ -17,10 +17,10 @@ Species.register(SpeciesCode.equian, {
   },
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.equian),
-    female: ArchetypeDistribution(Gender.female,SpeciesCode.equian),
-    futa:   ArchetypeDistribution(Gender.futa,SpeciesCode.equian),
-    male:   ArchetypeDistribution(Gender.male,SpeciesCode.equian),
+    enby:   ArchetypeDistribution(Gender.enby,   SpeciesCode.equian),
+    female: ArchetypeDistribution(Gender.female, SpeciesCode.equian),
+    futa:   ArchetypeDistribution(Gender.futa,   SpeciesCode.equian),
+    male:   ArchetypeDistribution(Gender.male,   SpeciesCode.equian),
   },
 
   // Huge cocks and clits and pussies, but as such their sensitivity is lower.
