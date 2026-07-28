@@ -1,8 +1,6 @@
 global.PersonalityFactory = (function() {
 
-  // Archetype selection priority: name triggers first, then the base monster's archetype map, then the species
-  // distribution. Names win because people are sometimes named for their personality.
-  function buildPersonality(actorData, triggers, monsterArchetypes) {
+  function buildPersonality(actorData, triggers, archetypeMap) {
     const archetypes = Species.lookup(actorData.species).getArchetypes();
     const personality = { sanity: 100 };
 
@@ -31,8 +29,8 @@ global.PersonalityFactory = (function() {
       }
     });
 
-    if (personality.archetype == null && monsterArchetypes != null) {
-      const valid = filterValidArchetypes(monsterArchetypes, actorData);
+    if (personality.archetype == null && archetypeMap != null) {
+      const valid = filterValidArchetypes(archetypeMap, actorData);
       if (Object.keys(valid).length > 0) {
         personality.archetype = Random.fromFrequencyMap(valid);
       }
