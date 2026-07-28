@@ -143,22 +143,22 @@ global.ArchetypeDistribution = function(gender, species=SpeciesCode.human) {
     distribution.timid *=       2.0;
   }
   if (species === SpeciesCode.kobold) {
-    distribution.bastard *=     0.5;
-    distribution.bimbo *=       0.6;
-    distribution.bitch *=       0.4;
-    distribution.brat *=        1.8;
-    distribution.flowerChild *= 0.3;
-    distribution.innocent *=    0.8;
-    distribution.maniac *=      1.6;
-    distribution.nice *=        0.4;
-    distribution.pervert *=     1.5;
-    distribution.playful *=     1.4;
-    distribution.prude *=       0.3;
-    distribution.reserved *=    0.5;
-    distribution.savage *=      1.5;
-    distribution.serious *=     0.4;
-    distribution.slut *=        1.4;
-    distribution.sweet *=       0.6;
+    distribution.bastard *=     2.5;
+    distribution.bimbo *=       0.5;
+    distribution.bitch *=       0.7;
+    distribution.brat *=        0.2;
+    distribution.flowerChild *= 0.0;
+    distribution.innocent *=    0.0;
+    distribution.maniac *=      1.8;
+    distribution.nice *=        0.0;
+    distribution.pervert *=     1.0;
+    distribution.playful *=     0.0;
+    distribution.prude *=       0.0;
+    distribution.reserved *=    0.0;
+    distribution.savage *=      0.5;
+    distribution.serious *=     0.0;
+    distribution.slut *=        1.0;
+    distribution.sweet *=       0.0;
     distribution.timid *=       2.5;
   }
   if (species === SpeciesCode.lupin) {
@@ -200,23 +200,23 @@ global.ArchetypeDistribution = function(gender, species=SpeciesCode.human) {
     distribution.timid *=       1.6;
   }
   if (species === SpeciesCode.vermen) {
-    distribution.bastard *=     1.8;
-    distribution.bimbo *=       0.3;
-    distribution.bitch *=       1.6;
-    distribution.brat *=        1.2;
-    distribution.flowerChild *= 0.2;
-    distribution.innocent *=    0.3;
-    distribution.maniac *=      1.8;
-    distribution.nice *=        0.3;
-    distribution.pervert *=     1.7;
-    distribution.playful *=     0.6;
-    distribution.prude *=       0.4;
-    distribution.reserved *=    0.8;
-    distribution.savage *=      2.2;
-    distribution.serious *=     0.7;
-    distribution.slut *=        1.2;
-    distribution.sweet *=       0.3;
-    distribution.timid *=       0.8;
+    distribution.bastard *=     2.2;
+    distribution.bimbo *=       0.5;
+    distribution.bitch *=       0.9;
+    distribution.brat *=        0.0;
+    distribution.flowerChild *= 0.0;
+    distribution.innocent *=    0.0;
+    distribution.maniac *=      2.0;
+    distribution.nice *=        0.0;
+    distribution.pervert *=     1.5;
+    distribution.playful *=     0.0;
+    distribution.prude *=       0.0;
+    distribution.reserved *=    0.0;
+    distribution.savage *=      0.4;
+    distribution.serious *=     0.0;
+    distribution.slut *=        1.5;
+    distribution.sweet *=       0.0;
+    distribution.timid *=       2.2;
   }
   if (species === SpeciesCode.sylph) {
     distribution.bastard *=     1.5;
