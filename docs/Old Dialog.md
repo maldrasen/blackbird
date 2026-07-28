@@ -1,2 +1,0 @@
-### New Tasks
-Character factory is due for a rewrite. With the other systems I've done what I can to separate the working state out into it's own object. The character factory works by passing all these data objects around into the various sub factories. It would be cleaner if there was a character factory state that all the factories could access, modifying their particular data block. Then, when everything is built and correct, we build the character from the factory state.
