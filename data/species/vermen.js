@@ -36,6 +36,12 @@ Species.register(SpeciesCode.vermen, {
     cervix:   { Z:5,   F:30,  D:20, C:5,   B:2,  A:1  },
   },
 
+  sexualPreferences: {
+    'perverted':   { chance:60, strength:[20,40] },
+    'beast-lover': { chance:60, strength:[20,30] },
+    'orgy-lover':  { chance:50, strength:[20,30] },
+  },
+
   body: {
     maleHeight: 800,
     femaleHeight: 685,

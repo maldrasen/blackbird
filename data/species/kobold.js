@@ -39,6 +39,10 @@ Species.register(SpeciesCode.kobold, {
     cervix:   { Z:100, F:10, D:5,  C:1,   B:0,  A:0  },
   },
 
+  sexualPreferences: {
+    'orgy-lover':  { chance:50, strength:[20,30] },
+  },
+
   body: {
     maleHeight: 800,
     femaleHeight: 685,
