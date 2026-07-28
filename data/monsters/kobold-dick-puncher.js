@@ -5,7 +5,7 @@ BaseMonster.register('kobold-dick-puncher',{
   species: SpeciesCode.kobold,
   genderRatio: { male:100 },
   type: 'fighter',
-  archetypes: { savage:80, maniac:40, bastard:30 },
+  archetypes: { bastard:10 },
   triggers:[],
   level: 5,
 

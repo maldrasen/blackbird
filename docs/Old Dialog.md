@@ -1,30 +1,9 @@
 
 
 ```
-application/characters/factories/personality-factory.js                        
-application/characters/factories/sexual-preferences-factory.js                 
-application/enums.js                                                           
-application/records/base-monster.js                                            
-bin/reports/archetype-report.js                                                
-data/archetypes/kobold-dom.js                                                  
-data/archetypes/kobold-sub.js                                                  
-data/archetypes/vermen-dom.js                                                  
-data/archetypes/vermen-sub.js                                                  
-data/dialog/kobold-dom/propose-training.js                                     
-data/dialog/kobold-sub/propose-training.js                                     
-data/monsters/deepdark-kobold.js                                               
-data/monsters/deepdark-whisperer.js                                            
-data/monsters/flamescale-kobold.js                                             
-data/monsters/flamescale-screamer.js                                           
-data/monsters/kobold-dick-puncher.js                                           
-data/monsters/kobold-runt.js                                                   
-data/monsters/kobold-sneak-slut.js                                             
-data/monsters/kobold-tosser.js                                                 
-data/monsters/kobold-trapper.js                                                
-data/species/kobold.js                                                         
-data/species/vermen.js                                                         
-docs/reference/personality-system.md                                           
-manifest.json                                                                  
+data/species/kobold.js
+data/species/vermen.js
+docs/reference/personality-system.md
 test/characters/factories/sexual-preferences-factory-spec.js
 ```
 
