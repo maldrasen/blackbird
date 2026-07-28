@@ -1,23 +1,4 @@
-
-
-```
-docs/reference/personality-system.md
-test/characters/factories/sexual-preferences-factory-spec.js
-```
-
-
 ### Dom
-```
-  eager.add(`{T:name} bares {T:his} teeth in a sharp grin. "Training? You want {T:name} to train you? Ha! Fine.  
-  Then this one will show you no mercy."`);  
-  
-willing.add(`{T:name} clicks {T:his} claws together, sizing you up. "Training? You mean sex yes?"`);  
-  
-reluctant.add(`{T:name} snorts a puff of hot air. "You have a lot to learn {P:species.name}. Kobolds never ask.  
-  We just take."`);  
-  
-unwilling.add(`{T:name} snarls, the spines on his head rising. "Try it {P:species.name}, and see what happens."`);
-```
 
 We can reflect these sexual preferences in the species, not the archetype
 ##### Kobold
@@ -41,16 +22,6 @@ sexualPreferences: {
 ```
 
 ### Sub
-```
-eager.add(`{T:name} drops {T:his} gaze immediately, ears flat and tail slowly raising upward.  
-  "Of course master. Use this one however you want."`);  
-  
-willing.add(`{T:name} nods briefly before turning around and lifting {T:his} tail.`);  
-  
-reluctant.add(`{T:name} frowns a little and nods. "If that's what you want from me."`);  
-  
-unwilling.add(`{T:name} backs against the wall, {T:his} claws scraping against the hard floor. "No... don't hurt me."`);
-```
 
 We can reflect these sexual preferences in the species, not the archetype
 ##### Kobold

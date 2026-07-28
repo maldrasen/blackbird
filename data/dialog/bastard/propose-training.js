@@ -9,6 +9,7 @@ const taller = WeaverRequirements.isTallerThan('T', 'P');
 const strong = WeaverRequirements.minimumStrength('T', 20);
 const wouldSuckWillingly = WeaverRequirements.wouldConsentTo('T', 'suck-cock', Consent.willing);
 const wouldSuckReluctantly = WeaverRequirements.wouldConsentTo('T', 'suck-cock', Consent.reluctant);
+const isKobold = WeaverRequirements.isSpecies('T', 'kobold');
 
 const eager = WeaverPackage('bastard.propose-training.eager');
 const willing = WeaverPackage('bastard.propose-training.willing');
@@ -19,8 +20,6 @@ Dialog.register(ArchetypeCode.bastard, DialogKeys.proposeTraining_Eager, eager);
 Dialog.register(ArchetypeCode.bastard, DialogKeys.proposeTraining_Willing, willing);
 Dialog.register(ArchetypeCode.bastard, DialogKeys.proposeTraining_Reluctant, reluctant);
 Dialog.register(ArchetypeCode.bastard, DialogKeys.proposeTraining_Unwilling, unwilling);
-
-
 
 eager.add(`{T:name} grabs your wrist roughly and presses your palm against his thick bulge. "You want to train this? 
   Ha! Bend over then {T:meanName}."`,
@@ -36,8 +35,9 @@ eager.add(`{T:name} chuckles low, rolling his shoulders so his muscles flex unde
   [strong, taller]);
 eager.add(`{T:name} leans against the wall with his arms crossed, his cocky grin never fading. "Heh, fine... I'll 
   still be the one making you beg by the end."`);
-
-
+eager.add(`{T:name} bares {T:his} teeth in a sharp grin. "Training? You want me to train you? Ha! Fine. This one will
+  show you no mercy."`,
+  isKobold);
 
 willing.add(`{T:name} grins and hooks a thumb in his waistband, tugging it low enough to show the root of his
   {T:cock.thick} cock. "All right, I'll let you suck me off"`,
@@ -46,19 +46,21 @@ willing.add(`{T:name} chuckles and cracks his neck, the sound sharp, then fixes 
   "Fine. I'll let you play with me. Just don't cry when I take charge instead."`,
   strong);
 willing.add(`{T:name} shrugs, looking you up and down. "Sure, we can let you pretend you're in charge for a bit."`);
-
-
+willing.add(`{T:name} clicks {T:his} claws together, sizing you up. "Training? No, I think maybe I'll just fuck you."`,
+  isKobold);
 
 reluctant.add(`{T:name} rubs the back of his neck, scowling. "Ugh, fine... I guess I could let you suck me off"`,
   wouldSuckReluctantly);
 reluctant.add(`{T:name} snorts, crossing his arms over his chest. "Yeah? All right {T:meanName}, let's see what you got."`);
 reluctant.add(`{T:name} shifts his weight, his jaw tight. "This is beneath me... but whatever. Just keep your voice 
   down when I start pounding you."`);
-
-
+reluctant.add(`{T:name} snorts, "You have a lot to learn {P:species.name}. A kobold never asks. We just take."`,
+  isKobold);
 
 unwilling.add(`{T:name} sneers, adjusting the thick bulge in his pants with zero shame. "You want some of this bitch? Heh, you wish."`,
   [legsCovered, bigCock]);
 unwilling.add(`{T:name} laughs, stepping closer so his full height towers over you. "You? Train me? Heh, cute. Fuck off {T:meanName}."`,
-  [taller]);
+  taller);
 unwilling.add(`{T:name} turns away from you, dismissing you with a wave. "I'm not some bitch you can collar. Take this little fantasy of yours somewhere else."`);
+unwilling.add(`{T:name} snarls, the spines on his head rising. "Try it {P:species.name}, and see what happens."`,
+  isKobold);
