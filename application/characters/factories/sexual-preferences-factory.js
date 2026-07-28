@@ -16,7 +16,6 @@ global.SexualPreferencesFactory = (function() {
     removeIncorrectPreferences(sexualPreferences, context);
   }
 
-  // We add the preferences specified by the triggers with +/- 10 to the specified value.
   function applyTriggers(sexualPreferences, context, triggers) {
     [...triggers].forEach(trigger => {
       const match = trigger.match(/([a-zA-Z-]+)\[(-?\d+)]/);
@@ -28,16 +27,22 @@ global.SexualPreferencesFactory = (function() {
     });
   }
 
-  // Most species (but not humans) have a few species level sexual preferences. Species preferences need to be added
-  // before the archetype preferences to properly remove most sexual preferences from innocents.
+  // Most species have a few species level sexual preferences. Species preferences need to be added before the
+  // archetype preferences to properly remove most sexual preferences from innocents.
   function applySpeciesPreferences(sexualPreferences, context) {
     const speciesPrefs = Species.lookup(context.actor.species).getSexualPreferences() || {};
 
     Object.keys(speciesPrefs).forEach(code => {
-      if (speciesPrefs[code].chance && Random.roll(100) < speciesPrefs[code].chance) {
-        sexualPreferences[code] = (Random.roll(20)-10) + speciesPrefs[code].strength;
-      }
+      const pref = speciesPrefs[code];
+      if (pref.genders && pref.genders.includes(context.actor.gender) === false) { return; }
+      if (pref.chance && Random.roll(100) < pref.chance) { sexualPreferences[code] = rollStrength(pref.strength); }
     });
+  }
+
+  // Strength can be a scalar (∓10) or a [min,max] array to allow for a wider range of values.
+  function rollStrength(strength) {
+    if (Array.isArray(strength)) { return Random.between(strength[0], strength[1]); }
+    return (Random.roll(20)-10) + strength;
   }
 
   function applyArchetypePreferences(sexualPreferences, context) {
