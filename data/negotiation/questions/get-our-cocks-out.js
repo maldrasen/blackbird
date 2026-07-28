@@ -27,8 +27,8 @@ NegotiationQuestion.registerReaction('get-out-cocks-out', {
     'yes':       NegotiationReaction.useAbility('dick-punch',`"Ha, idiot!" The little bastard punches you in the dick.`),
     'dick-slap': NegotiationReaction.contest({
       attribute: Attrib.dexterity,
-      win: { reaction:'respect', text:dickSlapWin },
-      loss: { complete:'failure', text:dickSlapLose },
+      win: NegotiationReaction.respect(dickSlapWin),
+      loss: NegotiationReaction.attack(dickSlapLose),
     }),
   }
 });

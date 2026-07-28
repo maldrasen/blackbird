@@ -11,21 +11,6 @@ global.NegotiationReaction = (function() {
     scare: { control:10, fear:20 },
   }
 
-  // Ends the negotiation and the monster attacks. Every monster that can be negotiated with should have a basic
-  // attack, but options.ability can specify a different attack for a specific monster.
-  function attack(message, options={}) {
-    return { type:'attack', message, options };
-  }
-
-  // Ends the negotiation and the monster attempts to run away.
-  function run(message) {
-    return { type:'run', message };
-  }
-
-  function useAbility(code, message) {
-    return { type:'ability', message };
-  }
-
   // A reaction contest will include exactly one property that specifies the contest type.
   //
   // random:(true or freqmap)
@@ -36,11 +21,38 @@ global.NegotiationReaction = (function() {
   //   An attribute contest will roll attributes for both characters, deciding who wins based on who rolled the
   //   highest.
   //
-  // The contest options will also include the win and loss paths with the arguments for the reactWith() function
-  //   win: { reaction, message, options }
-  //   loss: { reaction, message, options }
+  // The contest options also include the win and loss paths, each holding any other built reaction, so a branch can
+  // adjust feelings, end the negotiation, or even roll another contest.
+  //   win: NegotiationReaction.respect(`...`)
+  //   loss: NegotiationReaction.attack(`...`)
   function contest(options) {
+    if (options.win == null || options.loss == null) {
+      throw new Error(`A negotiation contest needs both a win and a loss reaction.`);
+    }
+    if (options.random == null && options.attribute == null) {
+      throw new Error(`A negotiation contest needs a random or attribute property.`);
+    }
+
     return { type:'contest', ...options };
+  }
+
+  function resolve(reaction, context) {
+    if (reaction.type !== 'contest') { return reaction; }
+    return resolve(winsContest(reaction, context) ? reaction.win : reaction.loss, context);
+  }
+
+  function winsContest(reaction, context) {
+    if (reaction.random === true) { return Random.flipCoin(); }
+    if (reaction.random != null) { return Random.fromFrequencyMap(reaction.random) === 'win'; }
+    return attributeContest(reaction.attribute, context);
+  }
+
+  function attributeContest(attribute, context) {
+    return rollAttribute(context.A, attribute) >= rollAttribute(context.T, attribute);
+  }
+
+  function rollAttribute(id, attribute) {
+    return Random.roll(AttributesComponent.lookup(id)[attribute]);
   }
 
   function reactWith(feelings, message) {
@@ -48,10 +60,11 @@ global.NegotiationReaction = (function() {
   }
 
   const methods = {
-    attack,
-    run,
+    attack:     (message, options={}) => { return { type:'attack', message, options }; },
+    run:        (message) =>             { return { type:'run', message }; },
+    useAbility: (code, message) =>       { return { type:'ability', code, message }; },
     contest,
-    useAbility,
+    resolve,
   };
 
   Object.keys(reactionMap).forEach(key => {
@@ -61,5 +74,3 @@ global.NegotiationReaction = (function() {
   return Object.freeze(methods);
 
 })();
-
-
