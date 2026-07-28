@@ -12,14 +12,15 @@ global.NegotiationReaction = (function() {
   }
 
   // TODO: End the negotiation and do a basic attack. I think it's fair to say that every monster that can be
-  //       negotiated with will have a special attack.
-  function attack(message) {
-
+  //       negotiated with will have a basic attack. We can specify a specific attack in the options as well, in case
+  //       a specific monster might try to use a bite attack or something instead.
+  function attack(message, options={}) {
+    throw new Error(`TODO: End negotiation and monster uses basic attack.`);
   }
 
   // TODO: Need to implement the run away command first.
   function run(message) {
-
+    throw new Error(`TODO: End negotiation and monster attempts to run away.`);
   }
 
   // A reaction contest will include exactly one property that specifies the contest type.
@@ -38,8 +39,6 @@ global.NegotiationReaction = (function() {
   function contest(options) {
 
   }
-
-  //
 
   function reactWith(emotions, message, options) {
 
