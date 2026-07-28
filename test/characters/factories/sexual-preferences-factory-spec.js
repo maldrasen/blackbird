@@ -27,21 +27,6 @@ describe("SexualPreferencesFactory", function() {
     expect(preferences['perverted']).to.equal(-22);
   });
 
-  it("applies dominated to kobolds and other gender dominated species", function() {
-    const preferences = {};
-
-    SexualPreferencesFactory.makeAdjustments(preferences,{
-      actor:{ gender:Gender.female, species:SpeciesCode.kobold },
-      personality:{ archetype:ArchetypeCode.koboldSub },
-    },[]);
-
-    const doms = ['dominant','sadistic','debaser'].filter(code => preferences[code] > 0);
-    const subs = ['submissive','masochistic','humiliation-slut'].filter(code => preferences[code] > 0);
-
-    expect(doms.length).to.equal(0);
-    expect(subs.length).to.be.within(1,3);
-  });
-
   // There's no telling what this will actually do. There's a bit too much
   // randomness to stub out without this being completely fragile. Just make
   // sure this doesn't blow up and check what the preferences look like if

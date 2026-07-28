@@ -5,6 +5,7 @@ BaseMonster.register('kobold-runt',{
   species: SpeciesCode.kobold,
   genderRatio: { female:100 },
   type: 'coward',
+  archetypes: { timid:100, innocent:30, sweet:20 },
   triggers:[],
   level: 1,
 

@@ -15,6 +15,7 @@ global.CharacterFactory = (function() {
   //   title: String (for unique characters)
   //   surname: String (for unique characters)
   //   triggers: Detailed in the documentation
+  //   archetypes: Archetype frequency map (from a base monster), used when no name trigger sets an archetype
   //   sexuality: (straight, gay, bi, ace)
   //
   // Note: If you specify the gender I'm also requiring the species to be set. By specifying the gender first you
@@ -88,7 +89,7 @@ global.CharacterFactory = (function() {
     const aspectsData = AspectsFactory.build(triggers, actorData);
     const attributesData = LevelSystem.buildAttributes(actorData, aspectsData);
     const healthData = LevelSystem.buildHealth(attributesData, species.getHealthFactor());
-    const personalityData = PersonalityFactory.buildPersonality(actorData, triggers);
+    const personalityData = PersonalityFactory.buildPersonality(actorData, triggers, options.archetypes);
     const sensitivitiesData = SensitivitiesFactory.build(triggers, actorData, breastsData, cockData, pussyData);
     const skillsData = SkillsFactory.build(triggers, options.skills);
 

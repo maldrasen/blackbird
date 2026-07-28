@@ -21,14 +21,6 @@ global.SexualPreferencesFactory = (function() {
     [...triggers].forEach(trigger => {
       const match = trigger.match(/([a-zA-Z-]+)\[(-?\d+)]/);
       if (match) {
-
-        // TODO: Seems like a bad idea to hard code this list when we will be
-        //       adding more species that have their own unique archetypes.
-
-        if ([SpeciesCode.kobold,SpeciesCode.vermen].includes(context.actor.species)) {
-          throw new Error(`Character Rejected: ${trigger} can't be applied to a ${context.actor.species}`);
-        }
-
         sexualPreferences[SexualPreference.lookup(match[1]).getCode()] = parseInt(match[2]) - 10 + Random.roll(20);
         Console.log(`Applied ${trigger}`,{ system:'SexualPreferencesFactory', level:3 });
         ArrayHelper.remove(triggers,trigger);

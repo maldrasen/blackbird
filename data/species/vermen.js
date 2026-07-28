@@ -17,10 +17,10 @@ Species.register(SpeciesCode.vermen, {
   },
 
   archetypes: {
-    enby:   { 'vermen-sub':100 },
-    female: { 'vermen-sub':100 },
-    futa:   { 'vermen-sub':100 },
-    male:   { 'vermen-dom':100 },
+    enby:   ArchetypeDistribution(Gender.enby,SpeciesCode.vermen),
+    female: ArchetypeDistribution(Gender.female,SpeciesCode.vermen),
+    futa:   ArchetypeDistribution(Gender.futa,SpeciesCode.vermen),
+    male:   ArchetypeDistribution(Gender.male,SpeciesCode.vermen),
   },
 
   // Vermen have strange bodies with multiple nipples and unusual erogenous zones.

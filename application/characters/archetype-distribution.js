@@ -142,6 +142,25 @@ global.ArchetypeDistribution = function(gender, species=SpeciesCode.human) {
     distribution.sweet *=       1.8;
     distribution.timid *=       2.0;
   }
+  if (species === SpeciesCode.kobold) {
+    distribution.bastard *=     0.5;
+    distribution.bimbo *=       0.6;
+    distribution.bitch *=       0.4;
+    distribution.brat *=        1.8;
+    distribution.flowerChild *= 0.3;
+    distribution.innocent *=    0.8;
+    distribution.maniac *=      1.6;
+    distribution.nice *=        0.4;
+    distribution.pervert *=     1.5;
+    distribution.playful *=     1.4;
+    distribution.prude *=       0.3;
+    distribution.reserved *=    0.5;
+    distribution.savage *=      1.5;
+    distribution.serious *=     0.4;
+    distribution.slut *=        1.4;
+    distribution.sweet *=       0.6;
+    distribution.timid *=       2.5;
+  }
   if (species === SpeciesCode.lupin) {
     distribution.bastard *=     1.1;
     distribution.bimbo *=       1.2;
@@ -179,6 +198,25 @@ global.ArchetypeDistribution = function(gender, species=SpeciesCode.human) {
     distribution.slut *=        1.6;
     distribution.sweet *=       2.2;
     distribution.timid *=       1.6;
+  }
+  if (species === SpeciesCode.vermen) {
+    distribution.bastard *=     1.8;
+    distribution.bimbo *=       0.3;
+    distribution.bitch *=       1.6;
+    distribution.brat *=        1.2;
+    distribution.flowerChild *= 0.2;
+    distribution.innocent *=    0.3;
+    distribution.maniac *=      1.8;
+    distribution.nice *=        0.3;
+    distribution.pervert *=     1.7;
+    distribution.playful *=     0.6;
+    distribution.prude *=       0.4;
+    distribution.reserved *=    0.8;
+    distribution.savage *=      2.2;
+    distribution.serious *=     0.7;
+    distribution.slut *=        1.2;
+    distribution.sweet *=       0.3;
+    distribution.timid *=       0.8;
   }
   if (species === SpeciesCode.sylph) {
     distribution.bastard *=     1.5;

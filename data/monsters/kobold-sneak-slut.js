@@ -5,6 +5,7 @@ BaseMonster.register('kobold-sneak-slut',{
   species: SpeciesCode.kobold,
   genderRatio: { male:5, female:60, futa:20, enby:5 },
   type: 'rogue',
+  archetypes: { slut:100, pervert:40, playful:30 },
   triggers: [],
   level: 3,
 

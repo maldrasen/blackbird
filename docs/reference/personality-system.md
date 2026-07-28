@@ -24,10 +24,11 @@ The archetypes are primarily used to choose a dialog tree for the events and tra
 - `submissive` - Views the player as their master. They defer to the player, even when the base archetype wouldn't normally defer to anyone.
 - `tormented` - Submissive, and also craves pain, humiliation, and abuse. Their reactions to rough treatment should read as wanted, not just endured
 
-### Species Specific Dialog
-The vermen and kobolds are a unique enough that they should have their own dialog trees, though we should find a way to combine them so that we avoid having four different archetypes.
-- `demiDom` - Dominant kobolds and vermen.
-- `demiSub` - Submissive kobolds and vermen.
+### Archetype Selection
+Kobolds and vermen used to have their own gender-locked archetypes (kobold-dom, kobold-sub, vermen-dom, vermen-sub), but those have been removed and every species now draws from the shared archetype pool. The character factory picks an archetype with the following priority:
+1. **Name** - A name, title, or surname can carry an `~archetype` trigger. Names win because people are sometimes named for their personality.
+2. **Base monster** - A base monster can define an `archetypes` frequency map (the kobold runt skews timid, the sneak slut skews slut). Entries not valid for the character's species and gender are filtered out before rolling.
+3. **Species and gender** - The `ArchetypeDistribution` frequency map, which applies species specific multipliers to a per-gender standard distribution.
 
 ### Sex Styles
 In order to cut the massive amount of dialog I'm going to have to write, the personality archetypes each have a sexStyle, and there are far fewer styles than there are archetypes. There are only so many ways to suck a cock after all.

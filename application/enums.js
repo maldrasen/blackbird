@@ -177,8 +177,6 @@ global.ArchetypeCode = {
   brat: 'brat',
   flowerChild: 'flower-child',
   innocent: 'innocent',
-  koboldDom: 'kobold-dom',
-  koboldSub: 'kobold-sub',
   maniac: 'maniac',
   nice: 'nice',
   pervert: 'pervert',
@@ -190,8 +188,6 @@ global.ArchetypeCode = {
   slut: 'slut',
   sweet: 'sweet',
   timid: 'timid',
-  vermenDom: 'vermen-dom',
-  vermenSub: 'vermen-sub',
 };
 
 global.SexStyle = {

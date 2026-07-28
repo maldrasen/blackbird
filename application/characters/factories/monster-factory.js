@@ -12,7 +12,8 @@ global.MonsterFactory = (function() {
       monsterId = CharacterFactory.build({
         species: monsterSpecies,
         gender: Random.fromFrequencyMap(monsterBase.getGenderRatio()),
-        triggers: monsterBase.getTriggers()
+        triggers: monsterBase.getTriggers(),
+        archetypes: monsterBase.getArchetypes(),
       });
       addBasicAttack(monsterData, monsterBase);
     }

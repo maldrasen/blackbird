@@ -1,6 +1,8 @@
 global.PersonalityFactory = (function() {
 
-  function buildPersonality(actorData, triggers) {
+  // Archetype selection priority: name triggers first, then the base monster's archetype map, then the species
+  // distribution. Names win because people are sometimes named for their personality.
+  function buildPersonality(actorData, triggers, monsterArchetypes) {
     const archetypes = Species.lookup(actorData.species).getArchetypes();
     const personality = { sanity: 100 };
 
@@ -29,11 +31,29 @@ global.PersonalityFactory = (function() {
       }
     });
 
+    if (personality.archetype == null && monsterArchetypes != null) {
+      const valid = filterValidArchetypes(monsterArchetypes, actorData);
+      if (Object.keys(valid).length > 0) {
+        personality.archetype = Random.fromFrequencyMap(valid);
+      }
+    }
+
     if (personality.archetype == null) {
       personality.archetype = Random.fromFrequencyMap(archetypes[actorData.gender]);
     }
 
     return personality;
+  }
+
+  // The species archetype map for a gender already excludes archetypes that gender can't have, so filtering against
+  // it covers both the species and gender requirements.
+  function filterValidArchetypes(frequencyMap, actor) {
+    const available = Object.keys(Species.lookup(actor.species).getArchetypes()[actor.gender]);
+    const valid = {};
+    Object.entries(frequencyMap).forEach(([code,frequency]) => {
+      if (available.includes(code)) { valid[code] = frequency; }
+    });
+    return valid;
   }
 
   function assertValid(code, actor) {
@@ -46,10 +66,6 @@ global.PersonalityFactory = (function() {
       throw new Error(`Character Rejected: Archetype[${code}] must be male.`); }
     if (requires === 'gender.not-male' && actor.gender === Gender.male) {
       throw new Error(`Character Rejected: Archetype[${code}] must not be male.`); }
-    if (requires === 'species.kobold' && actor.species !== SpeciesCode.kobold) {
-      throw new Error(`Character Rejected: Archetype[${code}] must be a Kobold.`); }
-    if (requires === 'species.vermen' && actor.species !== SpeciesCode.vermen) {
-      throw new Error(`Character Rejected: Archetype[${code}] must be a Vermen.`); }
   }
 
   return Object.freeze({

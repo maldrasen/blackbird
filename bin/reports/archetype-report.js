@@ -4,11 +4,10 @@ require('../run-headless.js');
 
 const count = Number(process.argv[2]) || 1000;
 const genders = [Gender.male, Gender.female, Gender.futa, Gender.enby];
-const dontInclude = ['kobold','vermen'];
 const rows = [];
 
-// When the registry fills with characters the name pool runs dry, forcing surnames whose triggers kobolds and vermen
-// reject, until the factory starts failing outright. Clearing the registry resets the name pool, so retry after that.
+// When the registry fills with characters the name pool runs dry and the factory can start failing outright.
+// Clearing the registry resets the name pool, so retry after that.
 function buildCharacter(speciesCode, gender) {
   for (let attempt=0; attempt<3; attempt++) {
     try { return CharacterFactory.build({ gender:gender, species:speciesCode }); }
@@ -17,7 +16,7 @@ function buildCharacter(speciesCode, gender) {
   throw new Error(`Cannot build a ${gender} ${speciesCode} even with an empty registry.`);
 }
 
-Species.getAllCodes().filter(code => !dontInclude.includes(code)).forEach(speciesCode => {
+Species.getAllCodes().forEach(speciesCode => {
   const ratio = Species.lookup(speciesCode).getGenderRatio();
 
   genders.forEach(gender => {

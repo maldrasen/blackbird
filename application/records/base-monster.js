@@ -45,6 +45,7 @@ global.BaseMonster = (function() {
       getSkills: () => { return monster.skills || {}; },
       getResistances: () => { return monster.resistances || {}; },
       getTriggers: () => { return monster.triggers || [] },
+      getArchetypes: () => { return monster.archetypes; },
       getThreatWeights,
       getAttackTable: () => { return monster.attackTable; },
       getPrioritizedAbilities: () => { return monster.prioritizedAbilities||[] },
