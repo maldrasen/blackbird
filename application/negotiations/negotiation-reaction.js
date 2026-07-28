@@ -60,9 +60,9 @@ global.NegotiationReaction = (function() {
   }
 
   const methods = {
-    attack:     (message, options={}) => { return { type:'attack', message, options }; },
-    run:        (message) =>             { return { type:'run', message }; },
-    useAbility: (code, message) =>       { return { type:'ability', code, message }; },
+    attack:  (message, options={}) => { return { type:'attack', message, options }; },
+    run:     (message) =>             { return { type:'run', message }; },
+    ability: (code, message) =>       { return { type:'ability', code, message }; },
     contest,
     resolve,
   };

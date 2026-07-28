@@ -24,7 +24,7 @@ NegotiationQuestion.registerReaction('get-out-cocks-out', {
   reactions: {
     'no':        NegotiationReaction.attack(`"Don't you know where the fuck you even are? This is Rhysh motherfucker!"`),
     'you-first': NegotiationReaction.respect(`"Heh, you'd like that wouldn't you? Fine. Let's " `),
-    'yes':       NegotiationReaction.useAbility('dick-punch',`"Ha, idiot!" The little bastard punches you in the dick.`),
+    'yes':       NegotiationReaction.ability('dick-punch',`"Ha, idiot!" The little bastard punches you in the dick.`),
     'dick-slap': NegotiationReaction.contest({
       attribute: Attrib.dexterity,
       win: NegotiationReaction.respect(dickSlapWin),
