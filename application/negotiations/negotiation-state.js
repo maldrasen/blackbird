@@ -3,7 +3,6 @@ global.NegotiationState = function() {
   const monster = battleState.getActiveMonsters()[0];
   const context = { A:GameSystem.getState().getPlayer(), T:monster };
 
-  let stage = 'question';
   let interactionCount = 0;
   let questions = [];
   let requests = [];
@@ -96,10 +95,7 @@ global.NegotiationState = function() {
     getGreeting: () => { return Monster(monster).getBaseMonster().getNegotiationGreeting(context); },
     getCurrentQuestion: () => { return currentQuestion; },
     getCurrentRequest: () => { return currentRequest; },
-    setStage: code => { stage = code; },
-    getStage: () => { return stage; },
     getInteractionCount: () => { return interactionCount; },
-    hasQuestions: () => { return questions.length > 0; },
     pickQuestion,
     applyFeelings,
     getFeelings,

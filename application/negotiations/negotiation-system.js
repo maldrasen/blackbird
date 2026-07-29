@@ -12,7 +12,9 @@ global.NegotiationSystem = (function() {
 
   function advance() {
     if (state.isResolved()) { return executeResolution(); }
-    if (state.getInteractionCount() >= 5 || state.hasQuestions() === false) { return forceResolution(); }
+    if (state.getInteractionCount() >= 5) { return forceResolution(); }
+
+    // TODO: Or make a request..
     NegotiationOverlay.renderQuestion(state.pickQuestion());
   }
 
