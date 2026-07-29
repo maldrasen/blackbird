@@ -11,8 +11,8 @@ NegotiationQuestion.register('is-this-the-kind-of-life', {
 NegotiationQuestion.registerReaction('is-this-the-kind-of-life', {
   style: NegotiationStyle.timid,
   reactions: {
-    'only-way': NegotiationReaction.neutral(`{T:baseName} shakes his head, "Or, you could just… stay out of the dungeon where you don't belong."`),
+    'only-way': NegotiationReaction.neutral(`{T:TargetName} shakes his head, "Or, you could just… stay out of the dungeon where you don't belong."`),
     'retire': NegotiationReaction.like(`"Hmm, that does sound nice."`),
-    'love-it': NegotiationReaction.run(`{T:baseName's} eyes grow even wider, "Sex slave? That's what you want me for?"`),
+    'love-it': NegotiationReaction.run(`{T:TargetName's} eyes grow even wider, "Sex slave? That's what you want me for?"`),
   }
 });

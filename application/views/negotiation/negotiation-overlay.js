@@ -49,10 +49,10 @@ global.NegotiationOverlay = (function() {
     });
   }
 
-  function renderReaction(message) {
+  function renderDialog(message) {
     clear();
     X.addClass('#negotiationFrame','can-advance');
-    X.append('#negotiationFrame .dialog', X.createElement(`<p class='reaction'>${weave(message)}</p>`));
+    X.append('#negotiationFrame .dialog', X.createElement(`<p>${weave(message)}</p>`));
   }
 
   function renderRequest(request) {
@@ -82,7 +82,7 @@ global.NegotiationOverlay = (function() {
     open,
     close,
     renderQuestion,
-    renderReaction,
+    renderDialog,
     renderRequest,
     renderResolution,
   });

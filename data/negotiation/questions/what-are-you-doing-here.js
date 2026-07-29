@@ -9,7 +9,7 @@ NegotiationQuestion.register('what-are-you-doing-here', {
   }
 });
 
-const timidSexToys = `{T:baseName} looks thoughtful, seemingly unaware that you're talking about {T:him}. "Sex toys? 
+const timidSexToys = `{T:TargetName} looks thoughtful, seemingly unaware that you're talking about {T:him}. "Sex toys? 
   Hmm, you know, every once and a while we find a big box full of them. Um… it's probably going to be hard to find any 
   that haven't been used already."`
 

@@ -13,8 +13,6 @@ global.NegotiationSystem = (function() {
   function advance() {
     if (state.isResolved()) { return executeResolution(); }
     if (state.getInteractionCount() >= 5) { return forceResolution(); }
-
-    // TODO: Or make a request..
     NegotiationOverlay.renderQuestion(state.pickQuestion());
   }
 
@@ -24,41 +22,55 @@ global.NegotiationSystem = (function() {
     const reaction = NegotiationReaction.resolve(question.reactionData.reactions[key], state.getContext());
 
     applyReaction(reaction);
-    NegotiationOverlay.renderReaction(reaction.message);
   }
 
   // Most reactions adjust the monster's feelings, which can resolve the negotiation when a feeling is pushed out of
   // bounds. The other reaction types resolve the negotiation directly. Either way the resolution isn't executed until
   // the player advances past the monster's reply.
   function applyReaction(reaction) {
+    NegotiationOverlay.renderDialog(reaction.message);
+
     switch (reaction.type) {
-      case 'feelings': return state.applyFeelings(reaction.feelings);
-      case 'attack':   return state.setResolution('angry');
-      case 'run':      return state.setResolution('leave');
-      case 'ability':  return state.setResolution('ability', reaction.code);
+      case 'feelings': return weContinue(reaction);
+      case 'attack':   return attack(reaction);
+      case 'run':      return run(reaction);
+      case 'ability':  return useAbility(reaction);
     }
     throw new Error(`Unknown reaction type [${reaction.type}]`);
   }
 
-  function executeResolution() {
+  function weContinue(reaction) {
+    state.applyFeelings(reaction.feelings);
     switch (state.getResolution()) {
-      case 'angry':     return monsterAttacks();
-      case 'leave':     return monsterLeaves();
-      case 'satisfied': return monsterJoins();
-      case 'ability':   return monsterUsesAbility(state.getResolutionData());
+      case 'satisfied': return reactThenJoin(reaction);
+      case 'angry': return reactThenAttack(reaction);
     }
-    throw new Error(`Unknown resolution [${state.getResolution()}]`);
   }
 
-  // If after five questions you still haven't convinced the monster to join you, or angered them enough that they
-  // attack you, the negotiation resolves with the monster leaving. No gifts, no tricks, but also no new party member.
-  function forceResolution() {
-    state.setResolution('leave');
-    NegotiationOverlay.renderResolution();
+  function reactThenJoin(reaction) {
+    console.log("React then join:",reaction)
   }
 
-  // Monsters who leave a negotiation are marked as fled so that their entities are deleted when the battle is
-  // cleaned up. Monsters who join the party are recruited instead, so their entities are kept.
+  function reactThenAttack(reaction) {
+    console.log("React then attack:",reaction)
+  }
+
+  function attack(reaction) {
+    console.log("And attack:",reaction)
+  }
+
+  function run(reaction) {
+    console.log("And run:",reaction)
+  }
+
+  function useAbility(reaction) {
+    console.log("And Use Ability:",reaction)
+  }
+
+  /*
+
+  // Hmm, run should be an actual ability, but if they run in a negotiation should they just always leave like this,
+  // or should their be a chance they don't get away?
   function monsterLeaves() {
     BattleSystem.getState().setCondition(state.getMonster(), BattleCondition.fled);
     removeMonsterFromBattle();
@@ -112,6 +124,7 @@ global.NegotiationSystem = (function() {
     battleState.removeFromTurnOrder({ type:'monster', id:state.getMonster() });
     battleState.removeFromFormation(state.getMonster());
   }
+*/
 
   return Object.freeze({
     start,
