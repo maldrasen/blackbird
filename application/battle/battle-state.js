@@ -20,13 +20,13 @@ global.BattleState = function(data) {
   const conditions = {};
   const skillImprovements = {};
   const statusEffects = {};
-  const forcedAbilities = {};
 
   characterIds.forEach(id => { conditions[id] = BattleCondition.active; });
 
   let ambushState = 'normal';
   let negotiationAttempted = false;
   let interrupt;
+  let forcedAbility;
 
   // The cleanup() function needs to be called after the battle to remove the monsters who were killed or ran away.
   function cleanup() {
@@ -257,15 +257,6 @@ global.BattleState = function(data) {
     conditions[id] = condition;
   }
 
-  // A negotiation can force a monster's next ability. The forced ability is taken when the monster acts, so it's
-  // only ever used once.
-  function setForcedAbility(id, data) { forcedAbilities[id] = data; }
-  function takeForcedAbility(id) {
-    const data = forcedAbilities[id];
-    delete forcedAbilities[id];
-    return data;
-  }
-
   function canBeTargeted(id) { return isDown(id) === false && isHidden(id) === false }
   function getKnockedOut() { return Object.keys(conditions).filter(id => isKnockedOut(id)); }
   function getDeadMonsters() { return monsterIds.filter(id => { return getCondition(id) === BattleCondition.dead }); }
@@ -342,9 +333,17 @@ global.BattleState = function(data) {
     return getStatusEffects(id)[code] != null;
   }
 
-  // ==============================
-  //    Leveling Up / Battle End
-  // ==============================
+  // ============================================
+  //    Leveling Up / Negotiation / Battle End
+  // ============================================
+
+  // A failed negotiation can force a monster to use one of their abilities. This ability is used once when the monster
+  // acts and is cleared after use. A forced ability will bypass ability cooldowns.
+  function takeForcedAbility() {
+    const ability = forcedAbility;
+    forcedAbility = null;
+    return ability;
+  }
 
   function getTotalEssence() {
     return getDeadMonsters().reduce((sum,id) => sum + EssenceSystem.monsterEssenceValue(id), 0);
@@ -398,8 +397,6 @@ global.BattleState = function(data) {
     setCooldown,
     isOnCooldown,
     reduceCooldowns,
-    setForcedAbility,
-    takeForcedAbility,
 
     canBeTargeted,
     isAlive,
@@ -413,6 +410,9 @@ global.BattleState = function(data) {
 
     setNegotiationAttempted: () => { negotiationAttempted = true; },
     hasAttemptedNegotiation: () => { return negotiationAttempted; },
+    setForcedAbility: (ability) => { forcedAbility = ability; },
+    getForcedAbility: () => { return forcedAbility; },
+    takeForcedAbility,
 
     battleWon: () => { interrupt = 'victory' },
     battleLost: () => { interrupt = 'game-over' },
