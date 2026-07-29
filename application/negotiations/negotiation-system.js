@@ -31,15 +31,15 @@ global.NegotiationSystem = (function() {
     NegotiationOverlay.renderDialog(reaction.message);
 
     switch (reaction.type) {
-      case 'feelings': return weContinue(reaction);
-      case 'attack':   return attack(reaction);
-      case 'run':      return run(reaction);
-      case 'ability':  return useAbility(reaction);
+      case 'feelings': return monsterContinues(reaction);
+      case 'ability':  return monsterUsesAbility(reaction.code);
+      case 'attack':   return monsterUsesAbility('basic-attack');
+      case 'run':      return monsterRuns();
     }
     throw new Error(`Unknown reaction type [${reaction.type}]`);
   }
 
-  function weContinue(reaction) {
+  function monsterContinues(reaction) {
     state.applyFeelings(reaction.feelings);
     switch (state.getResolution()) {
       case 'satisfied': return reactThenJoin(reaction);
@@ -49,82 +49,56 @@ global.NegotiationSystem = (function() {
 
   function reactThenJoin(reaction) {
     console.log("React then join:",reaction)
+    // BattleSystem.getState().setCondition(state.getMonster(), BattleCondition.recruited);
+    // removeMonsterFromBattle();
+    // finishNegotiation();
+    // RecruitmentSystem.recruit(state.getMonster(), state.getFeelings());
   }
 
   function reactThenAttack(reaction) {
     console.log("React then attack:",reaction)
   }
 
-  function attack(reaction) {
-    console.log("And attack:",reaction)
+  function monsterUsesAbility(ability) {
+    BattleSystem.getState().setForcedAbility(ability);
+    finishNegotiation();
   }
 
-  function run(reaction) {
-    console.log("And run:",reaction)
-  }
+  // TODO: Run should also be an ability that a monster can use. If a monster tries to escape there should be a chance
+  //       that they fail and that the battle continues. A monster might also choose to run as their action, outside
+  //       of the negotiation system entirely.
 
-  function useAbility(reaction) {
-    console.log("And Use Ability:",reaction)
-  }
-
-  /*
-
-  // Hmm, run should be an actual ability, but if they run in a negotiation should they just always leave like this,
-  // or should their be a chance they don't get away?
-  function monsterLeaves() {
+  function monsterRuns() {
     BattleSystem.getState().setCondition(state.getMonster(), BattleCondition.fled);
     removeMonsterFromBattle();
     finishNegotiation();
   }
 
-  // The monster is recruited after the negotiation round is finished because the resolution message needs to be
-  // woven while the monster still has its monster wrapper.
-  function monsterJoins() {
-    BattleSystem.getState().setCondition(state.getMonster(), BattleCondition.recruited);
-    removeMonsterFromBattle();
-    finishNegotiation();
-    RecruitmentSystem.recruit(state.getMonster(), state.getFeelings());
-  }
-
-  function monsterAttacks() {
-    const battleRound = BattleSystem.getRound();
-
-    NegotiationOverlay.close();
-    battleRound.addTime(1200);
-    battleRound.addMessage({ text:`Negotiations have broken down.` });
-
-    BattleSystem.finishCharacterRound();
-    BattleSystem.getState().moveToTopOfTurnOrder({ type:'monster', id:state.getMonster() }, 500);
-  }
-
-  function monsterUsesAbility(code) {
-    BattleSystem.getState().setForcedAbility(state.getMonster(), {
-      ability: code,
-      target: GameSystem.getState().getPlayer(),
-    });
-    monsterAttacks();
-  }
-
-  // Ending the negotiation with the monster gone also ends the player's turn. The battle is only won when this was
-  // the last active monster; otherwise the fight continues without them.
-  function finishNegotiation() {
-    const battleState = BattleSystem.getState();
-    const battleRound = BattleSystem.getRound();
-
-    NegotiationOverlay.close();
-    battleRound.addTime(1200);
-    battleRound.addMessage({ text:state.getResolutionText() }, Weaver(state.getContext()));
-
-    if (battleState.getActiveMonsters().length === 0) { battleState.battleWon(); }
-    BattleSystem.finishCharacterRound();
-  }
-
+  // TODO: This function should just be in the battle state.
   function removeMonsterFromBattle() {
     const battleState = BattleSystem.getState();
     battleState.removeFromTurnOrder({ type:'monster', id:state.getMonster() });
     battleState.removeFromFormation(state.getMonster());
   }
-*/
+
+  function finishNegotiation() {
+    const battleState = BattleSystem.getState();
+    const battleRound = BattleSystem.getRound();
+    const battleOver = battleState.getActiveMonsters().length === 0;
+
+    NegotiationOverlay.close();
+    battleRound.addTime(1200);
+    battleRound.addMessage({ text:`(TODO: Skip)` });
+
+    (battleOver) ?
+      battleState.battleWon() :
+      battleState.moveToTopOfTurnOrder({ type:'monster', id:state.getMonster() }, 500);
+
+    // TODO: This should be skip the character round. When the negotiation ends with a monster still fighting then
+    //       we should display the result's from the monster's attack or whatever ability it uses. If the battle is
+    //       over then the enlighten view will display without displaying the message at all.
+    BattleSystem.finishCharacterRound();
+  }
 
   return Object.freeze({
     start,
