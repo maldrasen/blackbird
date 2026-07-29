@@ -10,7 +10,6 @@ global.NegotiationState = function() {
   let currentQuestion;
   let currentRequest;
   let resolution;
-  let resolutionData;
 
   // Having just killed all their compatriots, monsters will start out with some fear and respect, but almost no
   // control or affection. These values are randomized so that each negotiation starts out on slightly different
@@ -52,25 +51,22 @@ global.NegotiationState = function() {
     affection += response.affection || 0;
     fear += response.fear || 0;
     respect += response.respect || 0;
-
-    checkBounds();
   }
 
-  // TODO: Monsters will have different conditions and thresholds that are used to determine when they are satisfied
-  //       or angry with the negotiation. With this we can make some monsters harder to recruit than others by
-  //       increasing the thresholds, or make some monsters only respond to affection or respect.
+  // TODO: Monsters will have different conditions and thresholds that are used to determine these states. We can make
+  //       some monsters harder to recruit than others by increasing the thresholds, or make some monsters only
+  //       respond to affection or respect.
 
-  // Affection or respect passing 100 wins the monster over, and any feeling turning negative sours the negotiation
-  // completely. Control doesn't factor into the resolution yet, and high fear doesn't scare a monster into running
-  // for now.
-  function checkBounds() {
-    if (affection < 0 || respect < 0 || fear < 0) { return setResolution('angry'); }
-    if (affection > 100 || respect > 100) { return setResolution('satisfied'); }
-  }
+  function getResolution() {
+    const affectionThreshold = 100;
+    const respectThreshold = 100;
 
-  function setResolution(code, data) {
-    resolution = code;
-    resolutionData = data;
+    console.log("Determining Resolution:",getFeelings());
+
+    if (fear < 0 && respect < 0) { return 'angry' }
+    if (affection < 0 && respect < 0) { return 'angry'; }
+    if (affection > affectionThreshold || respect > respectThreshold) { return 'satisfied'; }
+    return 'unresolved'
   }
 
   // The feelings component doesn't allow for negative values, so we clamp them here before they're applied to the
@@ -84,12 +80,12 @@ global.NegotiationState = function() {
     }
   }
 
-  // TODO: The resolution text should come from the base monsters and the personality archetypes.
+  // TODO: These are just temporary strings, the actual resolution text should come from the base monsters and the
+  //       personality archetypes.
   function getResolutionText() {
     switch(resolution) {
       case 'angry': return `{T:TargetName} attacks.`;
-      case 'leave': return `{T:TargetName} leaves.`;
-      case 'satisfied': return `{T:name} {T:targetName} joins the party.`;
+      case 'satisfied': return `{T:name} {T:TargetName} joins the party.`;
       default: throw new Error(`Add resolution text for ${resolution}`);
     }
   }
@@ -107,10 +103,10 @@ global.NegotiationState = function() {
     pickQuestion,
     applyFeelings,
     getFeelings,
-    setResolution,
-    getResolution: () => { return resolution; },
-    getResolutionData: () => { return resolutionData; },
-    isResolved: () => { return resolution != null; },
+    setResolutionData: data => { resolution = data; },
+    getResolutionData: () => { return resolution; },
+    isResolved: () => { return getResolution() !== 'unresolved'; },
+    getResolution,
     getResolutionText,
   });
 
