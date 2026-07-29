@@ -11,15 +11,16 @@ global.MonsterSystem = (function() {
     Ability.lookup(pickForcedAbility() || pickAbility() || 'basic-defend').execute();
   }
 
-  // A negotiation can end with the monster using a specific ability against the negotiator, bypassing the normal
-  // threat and priority checks.
+  // When a negotiation ends with the monster using a specific ability we assume that this ability will target the
+  // player. If this ability doesn't need a target this is probably harmless, setting a target that the ability will
+  // never need to look at. If the monster uses something like an AoE attack that target's a position instead of a
+  // character though this will need to change.
   function pickForcedAbility() {
-    const round = BattleSystem.getRound();
-    const forced = BattleSystem.getState().takeForcedAbility(round.getActing());
-    if (forced == null) { return null; }
-
-    round.setTarget(forced.target);
-    return forced.ability;
+    const state = BattleSystem.getState();
+    if (state.getForcedAbility()) {
+      BattleSystem.getRound().setTarget(GameSystem.getState().getPlayer());
+      return state.takeForcedAbility();
+    }
   }
 
   // When a monster picks a target it first picks the highest threat target from its threat table. If the monster has
