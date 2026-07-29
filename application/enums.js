@@ -372,6 +372,7 @@ global.BattleCondition = Object.freeze({
   dead: 'dead',
   knockedOut: 'knocked-out',
   fled: 'fled',
+  recruited: 'recruited',
 });
 
 global.BattleCommand = Object.freeze({

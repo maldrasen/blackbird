@@ -10,6 +10,7 @@ global.NegotiationState = function() {
   let currentQuestion;
   let currentRequest;
   let resolution;
+  let resolutionData;
 
   // Having just killed all their compatriots, monsters will start out with some fear and respect, but almost no
   // control or affection. These values are randomized so that each negotiation starts out on slightly different
@@ -51,6 +52,25 @@ global.NegotiationState = function() {
     affection += response.affection || 0;
     fear += response.fear || 0;
     respect += response.respect || 0;
+
+    checkBounds();
+  }
+
+  // TODO: Monsters will have different conditions and thresholds that are used to determine when they are satisfied
+  //       or angry with the negotiation. With this we can make some monsters harder to recruit than others by
+  //       increasing the thresholds, or make some monsters only respond to affection or respect.
+
+  // Affection or respect passing 100 wins the monster over, and any feeling turning negative sours the negotiation
+  // completely. Control doesn't factor into the resolution yet, and high fear doesn't scare a monster into running
+  // for now.
+  function checkBounds() {
+    if (affection < 0 || respect < 0 || fear < 0) { return setResolution('angry'); }
+    if (affection > 100 || respect > 100) { return setResolution('satisfied'); }
+  }
+
+  function setResolution(code, data) {
+    resolution = code;
+    resolutionData = data;
   }
 
   // The feelings component doesn't allow for negative values, so we clamp them here before they're applied to the
@@ -83,11 +103,13 @@ global.NegotiationState = function() {
     setStage: code => { stage = code; },
     getStage: () => { return stage; },
     getInteractionCount: () => { return interactionCount; },
+    hasQuestions: () => { return questions.length > 0; },
     pickQuestion,
     applyFeelings,
     getFeelings,
-    setResolution: code => { resolution = code; },
+    setResolution,
     getResolution: () => { return resolution; },
+    getResolutionData: () => { return resolutionData; },
     isResolved: () => { return resolution != null; },
     getResolutionText,
   });

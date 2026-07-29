@@ -49,6 +49,12 @@ global.NegotiationOverlay = (function() {
     });
   }
 
+  function renderReaction(message) {
+    clear();
+    X.addClass('#negotiationFrame','can-advance');
+    X.append('#negotiationFrame .dialog', X.createElement(`<p class='reaction'>${weave(message)}</p>`));
+  }
+
   function renderRequest(request) {
     clear();
     X.append('#negotiationFrame .dialog', X.createElement(`<p class='request'>${request}</p>`));
@@ -58,6 +64,7 @@ global.NegotiationOverlay = (function() {
 
   function renderResolution() {
     clear();
+    X.addClass('#negotiationFrame','can-advance');
     const text = NegotiationSystem.getState().getResolutionText();
     X.append('#negotiationFrame .dialog', X.createElement(`<p class='request'>${weave(text)}</p>`));
   }
@@ -75,6 +82,7 @@ global.NegotiationOverlay = (function() {
     open,
     close,
     renderQuestion,
+    renderReaction,
     renderRequest,
     renderResolution,
   });

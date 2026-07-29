@@ -20,6 +20,7 @@ global.BattleState = function(data) {
   const conditions = {};
   const skillImprovements = {};
   const statusEffects = {};
+  const forcedAbilities = {};
 
   characterIds.forEach(id => { conditions[id] = BattleCondition.active; });
 
@@ -256,6 +257,15 @@ global.BattleState = function(data) {
     conditions[id] = condition;
   }
 
+  // A negotiation can force a monster's next ability. The forced ability is taken when the monster acts, so it's
+  // only ever used once.
+  function setForcedAbility(id, data) { forcedAbilities[id] = data; }
+  function takeForcedAbility(id) {
+    const data = forcedAbilities[id];
+    delete forcedAbilities[id];
+    return data;
+  }
+
   function canBeTargeted(id) { return isDown(id) === false && isHidden(id) === false }
   function getKnockedOut() { return Object.keys(conditions).filter(id => isKnockedOut(id)); }
   function getDeadMonsters() { return monsterIds.filter(id => { return getCondition(id) === BattleCondition.dead }); }
@@ -388,6 +398,8 @@ global.BattleState = function(data) {
     setCooldown,
     isOnCooldown,
     reduceCooldowns,
+    setForcedAbility,
+    takeForcedAbility,
 
     canBeTargeted,
     isAlive,

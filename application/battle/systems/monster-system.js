@@ -8,7 +8,18 @@ global.MonsterSystem = (function() {
   //       space. If no move is possible than they should defend.
 
   function executeBattleTurn() {
-    Ability.lookup(pickAbility() || 'basic-defend').execute();
+    Ability.lookup(pickForcedAbility() || pickAbility() || 'basic-defend').execute();
+  }
+
+  // A negotiation can end with the monster using a specific ability against the negotiator, bypassing the normal
+  // threat and priority checks.
+  function pickForcedAbility() {
+    const round = BattleSystem.getRound();
+    const forced = BattleSystem.getState().takeForcedAbility(round.getActing());
+    if (forced == null) { return null; }
+
+    round.setTarget(forced.target);
+    return forced.ability;
   }
 
   // When a monster picks a target it first picks the highest threat target from its threat table. If the monster has

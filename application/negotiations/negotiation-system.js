@@ -11,107 +11,71 @@ global.NegotiationSystem = (function() {
   }
 
   function advance() {
-    console.log("--- Advance ---");
-
-    if (state.getStage() === 'question') {
-      return NegotiationOverlay.renderQuestion(state.pickQuestion());
-    }
-
-
-    /*
-    if (state.isResolved() === false && state.getInteractionCount() >= 5) {
-      return forceResolution();
-    }
-
-    if (state.isResolved()) {
-      switch (state.getResolution()) {
-        case 'angry': return monsterAttacks();
-        case 'leave': return monsterLeaves();
-        case 'satisfied': return monsterJoins();
-      }
-    }
-
-    const type = Random.fromFrequencyMap({
-      request: 50,
-      question: 50,
-    });
-
-    if (type === 'question' && state.getQuestions().length > 0) {
-      return NegotiationOverlay.renderQuestion(state.pickQuestion());
-    }
-
-    NegotiationOverlay.renderRequest(state.pickRequest());
-
-     */
+    if (state.isResolved()) { return executeResolution(); }
+    if (state.getInteractionCount() >= 5 || state.hasQuestions() === false) { return forceResolution(); }
+    NegotiationOverlay.renderQuestion(state.pickQuestion());
   }
 
+  // TODO: Requests are answered here as well once they're implemented. (Task 105)
   function answer(key) {
     const question = state.getCurrentQuestion();
-    const request = state.getCurrentRequest();
+    const reaction = NegotiationReaction.resolve(question.reactionData.reactions[key], state.getContext());
 
-    // TODO: The reaction here is built by the negotiation reaction object. The reaction must contain a message to
-    //       display. Most reactions will also have a feelings map, but other reactions may trigger an ability or
-    //       running away. A reaction like this will end the negotiation and perform the action within the ongoing
-    //       battle. (Need to implement the run away command first actually.)
-
-    if (question) {
-      const reaction = question.reactionData.reactions[key];
-      console.log("Reaction:",reaction);
-      // state.applyFeelings(reaction);
-    }
-    if (request) {
-      // TODO: Apply feelings when requests are met or denied.
-    }
-
-    // if (isSatisfied()) {
-    //   state.setResolution("satisfied");
-    //   return NegotiationOverlay.renderResolution();
-    // }
-    //
-    // if (isAngry()) {
-    //   state.setResolution("angry");
-    //   return NegotiationOverlay.renderResolution();
-    // }
-    //
-    advance();
+    applyReaction(reaction);
+    NegotiationOverlay.renderReaction(reaction.message);
   }
 
-  // If after five questions or requests, you still haven't convinced the monster to join you, or angered them enough
-  // that they attack you, the negotiation resolves with the monster leaving. No gifts, no tricks, but also no new
-  // party member.
+  // Most reactions adjust the monster's feelings, which can resolve the negotiation when a feeling is pushed out of
+  // bounds. The other reaction types resolve the negotiation directly. Either way the resolution isn't executed until
+  // the player advances past the monster's reply.
+  function applyReaction(reaction) {
+    switch (reaction.type) {
+      case 'feelings': return state.applyFeelings(reaction.feelings);
+      case 'attack':   return state.setResolution('angry');
+      case 'run':      return state.setResolution('leave');
+      case 'ability':  return state.setResolution('ability', reaction.code);
+    }
+    throw new Error(`Unknown reaction type [${reaction.type}]`);
+  }
+
+  function executeResolution() {
+    switch (state.getResolution()) {
+      case 'angry':     return monsterAttacks();
+      case 'leave':     return monsterLeaves();
+      case 'satisfied': return monsterJoins();
+      case 'ability':   return monsterUsesAbility(state.getResolutionData());
+    }
+    throw new Error(`Unknown resolution [${state.getResolution()}]`);
+  }
+
+  // If after five questions you still haven't convinced the monster to join you, or angered them enough that they
+  // attack you, the negotiation resolves with the monster leaving. No gifts, no tricks, but also no new party member.
   function forceResolution() {
-    state.setResolution("leave");
+    state.setResolution('leave');
     NegotiationOverlay.renderResolution();
   }
-
-  // TODO: Monsters will have different conditions and thresholds that are used to determine when they are satisfied
-  //       or angry with the negotiation. With this we can make some monsters harder to recruit than others by
-  //       increasing the thresholds, or make some monsters only respond to affection or respect. The Monster wrapper
-  //       should have the isSatisfied() and isAngry() functions. The wrapper delegates to the baseMonster then to the
-  //       personality archetype, then to the supertype, mimicking the property weights.
-
-  // When a monster is satisfied the negotiation is over and they join the party. If they're angry then the fight
-  // continues with the player ending their turn and the monster moving to the top of the turn order. We'll evenually
-  // have other results as well, the monster running away or tricking the player in some way.
-
-  function isSatisfied() { return Random.roll(100) < 20; }
-  function isAngry() { return Random.roll(100) < 20; }
 
   // Monsters who leave a negotiation are marked as fled so that their entities are deleted when the battle is
   // cleaned up. Monsters who join the party are recruited instead, so their entities are kept.
   function monsterLeaves() {
     BattleSystem.getState().setCondition(state.getMonster(), BattleCondition.fled);
     removeMonsterFromBattle();
-    NegotiationOverlay.close();
-    BattleSystem.battleWon();
+    finishNegotiation();
   }
 
-  // TODO: When the monster turns angry, end the negotiation and the player's turn. The monster should then
-  //       immediately attack.
-  function monsterAttacks() {
-    NegotiationOverlay.close();
+  // The monster is recruited after the negotiation round is finished because the resolution message needs to be
+  // woven while the monster still has its monster wrapper.
+  function monsterJoins() {
+    BattleSystem.getState().setCondition(state.getMonster(), BattleCondition.recruited);
+    removeMonsterFromBattle();
+    finishNegotiation();
+    RecruitmentSystem.recruit(state.getMonster(), state.getFeelings());
+  }
 
+  function monsterAttacks() {
     const battleRound = BattleSystem.getRound();
+
+    NegotiationOverlay.close();
     battleRound.addTime(1200);
     battleRound.addMessage({ text:`Negotiations have broken down.` });
 
@@ -119,11 +83,26 @@ global.NegotiationSystem = (function() {
     BattleSystem.getState().moveToTopOfTurnOrder({ type:'monster', id:state.getMonster() }, 500);
   }
 
-  function monsterJoins() {
-    removeMonsterFromBattle();
-    RecruitmentSystem.recruit(state.getMonster(), state.getFeelings());
+  function monsterUsesAbility(code) {
+    BattleSystem.getState().setForcedAbility(state.getMonster(), {
+      ability: code,
+      target: GameSystem.getState().getPlayer(),
+    });
+    monsterAttacks();
+  }
+
+  // Ending the negotiation with the monster gone also ends the player's turn. The battle is only won when this was
+  // the last active monster; otherwise the fight continues without them.
+  function finishNegotiation() {
+    const battleState = BattleSystem.getState();
+    const battleRound = BattleSystem.getRound();
+
     NegotiationOverlay.close();
-    BattleSystem.battleWon();
+    battleRound.addTime(1200);
+    battleRound.addMessage({ text:state.getResolutionText() }, Weaver(state.getContext()));
+
+    if (battleState.getActiveMonsters().length === 0) { battleState.battleWon(); }
+    BattleSystem.finishCharacterRound();
   }
 
   function removeMonsterFromBattle() {
