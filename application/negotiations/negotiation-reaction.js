@@ -1,14 +1,17 @@
 global.NegotiationReaction = (function() {
 
   const reactionMap = {
-    neutral: {},
-    respect: { control:20, respect:10 },
-    disrespect: { control:-20, respect:-10, fear:-5 },
-    like: { control:10, affection:10, fear:-5 },
-    love: { control:20, affection:20, respect:10, fear:-5 },
-    dislike: { control:-10, affection:-10, },
-    hate: {  control:-20, affection:-20, respect:-10 },
-    scare: { control:10, fear:20 },
+    neutral:      { control: 10                                          },
+    respect:      { control: 20,                  respect: 30            },
+    greatRespect: { control: 50,                  respect: 50,           },
+    disrespect:   { control:-20,                  respect:-30,  fear:-20 },
+    like:         { control: 20,  affection: 30,  respect: 10,  fear:-10 },
+    lust:         { control: 30,  affection: 40,                         },
+    love:         { control: 40,  affection: 50,  respect: 20,  fear:-10 },
+    dislike:      { control:-20,  affection:-20,                         },
+    hate:         { control:-50,  affection:-50,  respect:-50            },
+    frighten:     { control: 20,  affection:-10,                fear:30  },
+    terrify:      { control: 30,  affection:-20,                fear:50  },
   }
 
   // A reaction contest will include exactly one property that specifies the contest type.
