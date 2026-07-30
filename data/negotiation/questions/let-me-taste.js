@@ -21,9 +21,9 @@ const koboldSuck = `{T:TargetName's} eyes widen as your {P:thickCock} fills {T:h
   you're fully hard though, giving you a wide toothy grin.`;
 
 const koboldPissWin = `{T:TargetName's} eyes widen in shock as your hot piss suddenly fills {T:his} wide open mouth. 
-  Rather than pulling away though he slowly closes his eyes and swallows obediently, gulping down mouthfuls of urine 
-  until you've completely emptied your bladder into {T:his} waiting maw. You shake your cock off, slapping your wet
-  member against the lizard's scaled face. Once you're finished marking {T:him} {T:he} gives you a simple nod, 
+  Rather than pulling away though {T:he} slowly closes {T:his} eyes and swallows obediently, gulping down mouthfuls of
+  urine until you've completely emptied your bladder into {T:his} waiting maw. You shake your cock off, slapping your
+  wet member against the lizard's scaled face. Once you're finished marking {T:him} {T:he} gives you a simple nod, 
   acknowledging your ownership of {T:him} now.`
 
 const koboldPissLoss = `{T:TargetName} lets out an angry screech and scurries away from you. {T:He} spits on the 

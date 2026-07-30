@@ -104,6 +104,11 @@ global.NegotiationState = function() {
 
   // TODO: These are just temporary strings, the actual resolution text should come from the base monsters and the
   //       personality archetypes.
+
+  // TODO: The join text should include the name as well as the target name i.e. "Stinkfist, the kobold dick puncher,
+  //       joins the party!" This only applies when a monster has both a proper and a common name though, so adding
+  //       this back in would be part of the base monster text todo.
+
   function getResolutionText() {
     switch(getResolution().type) {
       case 'join': return `{T:TargetName} joins the party.`;
