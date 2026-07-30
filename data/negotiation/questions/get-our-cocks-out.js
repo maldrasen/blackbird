@@ -1,7 +1,7 @@
 
 NegotiationQuestion.register('get-out-cocks-out', {
   text: `Only one way to settle this, with our cocks out like real men.`,
-  requires: [
+  staticRequirements: [
     WeaverRequirements.notVisibleCock('P'),
     WeaverRequirements.isMale('P'),
     WeaverRequirements.isMale('T'),

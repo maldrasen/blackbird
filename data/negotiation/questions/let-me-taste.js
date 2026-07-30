@@ -1,7 +1,7 @@
 
 NegotiationQuestion.register('let-me-taste', {
   text: `{T:TargetName} smiles, staring at your {P:thickSixInchLongCock}, "Okay… let me taste it."`,
-  requires: [
+  dynamicRequirements: [
     NegotiationRequirements.isTrue('playerCockOut'),
   ],
   answers: {

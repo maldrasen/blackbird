@@ -1,7 +1,7 @@
 
 NegotiationQuestion.register('show-it-to-me', {
   text: `Hmm, I want to know what you're working with. Why don't you whip it out for me?`,
-  requires: [
+  staticRequirements: [
     WeaverRequirements.notVisibleCock('P'),
     WeaverRequirements.hasCock('P'),
   ],

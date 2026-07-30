@@ -14,7 +14,7 @@ const questionUma = `"Uma umauma umaaaaaa uma uma um."`;
 
 NegotiationQuestion.register('do-universals-exist', {
   text: `Do you think universals exist as real and distinct entities, or only as mental constructs?`,
-  requires: [
+  staticRequirements: [
     WeaverRequirements.minimumIntelligence('P',20),
     WeaverRequirements.minimumIntelligence('T',20),
   ],
