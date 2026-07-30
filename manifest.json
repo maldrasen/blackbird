@@ -555,6 +555,7 @@
     "test/items/inventory-system-spec.js",
     "test/items/item-spec.js",
     "test/looms/weaver-package-spec.js",
+    "test/negotiations/negotiation-reaction-spec.js",
     "test/negotiations/negotiation-state-spec.js",
     "test/records/base-armor-spec.js",
     "test/records/base-weapon-spec.js",

@@ -45,7 +45,7 @@ global.NegotiationReaction = (function() {
     }
     if (reaction.options) {
       if (reaction.options.flags) { NegotiationSystem.getState().setFlags(reaction.options.flags); }
-      if (reaction.options.givePreferences) { givePreferences(reaction.options.givePreferences); }
+      if (reaction.options.givePreferences) { givePreferences(reaction.options.givePreferences, context); }
     }
     return reaction;
   }
@@ -70,9 +70,33 @@ global.NegotiationReaction = (function() {
   // there.
 
   // When adding a sexual preference we need to check its requirements. If the preference is incompatible with this
-  // character we should through an exception. That's a check that should have happened in the question itself. It may
-  // also be possible to remove a preference with this. Setting a preference to 0 should delete it.
-  function givePreferences(preferences) { throw new Error(`TODO: Implement this.`); }
+  // character we throw an exception; that's a check that should have happened in the question authoring. Setting a
+  // preference to 0 deletes it.
+  function givePreferences(preferences, context) {
+    Object.keys(preferences).forEach(code => {
+      const requires = SexualPreference.lookup(code).getRequires();
+      if (meetsRequirement(context.T, requires) === false) {
+        throw new Error(`Sexual preference [${code}] is incompatible with Character[${context.T}]`);
+      }
+      if (preferences[code] === 0) {
+        SexualPreferencesComponent.deletePreference(context.T, code);
+      } else {
+        SexualPreferencesComponent.update(context.T, { [code]: preferences[code] });
+      }
+    });
+  }
+
+  function meetsRequirement(id, requires) {
+    switch (requires) {
+      case undefined:          return true;
+      case 'breasts':          return Character(id).hasBreasts();
+      case 'cock':             return Character(id).hasNormalCock();
+      case 'pussy':            return Character(id).hasNormalPussy();
+      case 'erogenousCervix':  return SensitivitiesComponent.lookup(id).cervix != null;
+      case 'erogenousUrethra': return SensitivitiesComponent.lookup(id).urethra != null;
+    }
+    throw new Error(`Unknown sexual preference requirement [${requires}]`);
+  }
 
   function reactWith(feelings, message, options) {
     return { type:'feelings', feelings, message, options };
