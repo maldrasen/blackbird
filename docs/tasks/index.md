@@ -5,7 +5,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 ## Priority 1
 
 - [143] Refactor Character Factory `3pt` — [143-refactor-character-factory.md](143-refactor-character-factory.md)
-- [147] Negotiation Interface Shim `1pt` — [147-negotiation-interface-shim.md](147-negotiation-interface-shim.md)
 - [148] Negotiation Stage Machine `5pt` — [148-negotiation-stage-machine.md](148-negotiation-stage-machine.md)
 - [149] Recruit Control Passthrough `1pt` — [149-recruit-control-passthrough.md](149-recruit-control-passthrough.md)
 - [150] Unify record requires into requirement predicates `3pt` — [150-unify-requires-predicates.md](150-unify-requires-predicates.md)
