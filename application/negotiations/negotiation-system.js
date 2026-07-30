@@ -7,7 +7,7 @@ global.NegotiationSystem = (function() {
 
     BattleSystem.getState().setNegotiationAttempted();
     BattleSystem.getRound().setAbility(BattleCommand.negotiate);
-    if (Tests.running() === false) { NegotiationOverlay.open(); }
+    NegotiationInterface.open();
   }
 
   // TODO: When the negotiation is growing too long we need to look at the feelings map in the state and decide where
@@ -17,7 +17,7 @@ global.NegotiationSystem = (function() {
   function advance() {
     if (state.isResolved()) { return showResolution(); }
     if (state.getInteractionCount() >= 5) { return forceResolution(); }
-    NegotiationOverlay.renderQuestion(state.pickQuestion());
+    NegotiationInterface.renderQuestion(state.pickQuestion());
   }
 
   // TODO: A reaction can also be a follow on question.
@@ -36,7 +36,7 @@ global.NegotiationSystem = (function() {
   // bounds. The other reaction types resolve the negotiation directly. Either way the resolution isn't executed until
   // the player advances past the monster's reply.
   function applyReaction(reaction) {
-    NegotiationOverlay.renderDialog(reaction.message);
+    NegotiationInterface.renderDialog(reaction.message);
 
     switch (reaction.type) {
       case 'feelings': return monsterContinues(reaction);
@@ -94,7 +94,7 @@ global.NegotiationSystem = (function() {
     const battleRound = BattleSystem.getRound();
     const battleOver = battleState.getActiveMonsters().length === 0;
 
-    NegotiationOverlay.close();
+    NegotiationInterface.close();
     battleRound.addTime(1200);
     battleRound.addMessage({ text:`(TODO: Skip)` });
 

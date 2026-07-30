@@ -55,12 +55,7 @@ global.NegotiationOverlay = (function() {
     X.append('#negotiationFrame .dialog', X.createElement(`<p>${weave(message)}</p>`));
   }
 
-  function renderRequest(request) {
-    clear();
-    X.append('#negotiationFrame .dialog', X.createElement(`<p class='request'>${request}</p>`));
-    X.append('#answers', buildButton('Yes','yes'))
-    X.append('#answers', buildButton('No','no'))
-  }
+  // TODO: Requests return in task 105.
 
   function renderResolution() {
     clear();
@@ -83,7 +78,6 @@ global.NegotiationOverlay = (function() {
     close,
     renderQuestion,
     renderDialog,
-    renderRequest,
     renderResolution,
   });
 
