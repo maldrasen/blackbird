@@ -119,17 +119,25 @@ describe("DungeonNavigationSystem", function() {
     expect(DungeonNavigationSystem.getPathThroughDoor(door.from, door.to)).to.eql([far]);
   });
 
+  // The first room adjacent to the start can be a dead end, so this searches the start room's neighbors for one with
+  // a door leading onward. Only the start and that neighbor get revealed, so the door's far side stays unrevealed.
   it("paths through a distant door via its revealed side", function() {
-    const first = DungeonNavigationSystem.getAdjacentRoomIndices(start)[0];
+    function doorLeadingOnward(index) {
+      return floor.getDoors().find(door =>
+        (door.from === index && door.to !== start) ||
+        (door.to === index && door.from !== start));
+    }
+
+    const first = DungeonNavigationSystem.getAdjacentRoomIndices(start).find(index => doorLeadingOnward(index));
+    expect(first, `every room adjacent to the start is a dead end`).to.not.be.undefined;
+
     DungeonNavigationSystem.moveToRoom(first);
     DungeonNavigationSystem.moveToRoom(start);
 
-    const door = floor.getDoors().find(d =>
-      (d.from === first && floor.isRevealed(d.to) === false) ||
-      (d.to === first && floor.isRevealed(d.from) === false));
-    if (door == null) { return this.skip(); }
-
+    const door = doorLeadingOnward(first);
     const far = (door.from === first) ? door.to : door.from;
+
+    expect(floor.isRevealed(far)).to.equal(false);
     expect(DungeonNavigationSystem.getPathThroughDoor(door.from, door.to)).to.eql([first, far]);
   });
 
