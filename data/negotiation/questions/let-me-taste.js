@@ -5,11 +5,11 @@ NegotiationQuestion.register('let-me-taste', {
     NegotiationRequirements.isTrue('playerCockOut'),
   ],
   answers: {
-    no: `You frown and shake your head, "No, I don't think so."`,
-    beg: `You cross you arms over your chest and shake your head, "Beg me for it."`,
-    lick: `You smile down at {T:him} and nod, "Hmm, okay. But just a lick."`,
-    suck: `You give {T:him} a lustful smile, grab {T:him} by the back of the head, and shove your cock into {T:his} mouth.`,
-    piss: `Looking down into {T:targetName's} open mouth, you decide to piss into it.`
+    no  : { text:`You frown and shake your head, "No, I don't think so."` },
+    beg:  { text:`You cross you arms over your chest and shake your head, "Beg me for it."` },
+    lick: { text:`You smile down at {T:him} and nod, "Hmm, okay. But just a lick."` },
+    suck: { text:`You give {T:him} a lustful smile, grab {T:him} by the back of the head, and shove your cock into {T:his} mouth.` },
+    piss: { text:`Looking down into {T:targetName's} open mouth, you decide to piss into it.` },
   }
 });
 
