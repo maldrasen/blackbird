@@ -7,11 +7,8 @@ global.NegotiationSystem = (function() {
 
     BattleSystem.getState().setNegotiationAttempted();
     BattleSystem.getRound().setAbility(BattleCommand.negotiate);
-    NegotiationOverlay.open();
+    if (Tests.running() === false) { NegotiationOverlay.open(); }
   }
-
-  // TODO: resolution looks at the feelings thresholds, but actions like join force the resolution. So isResolved
-  //       would need to look a the resolution data and use it first.
 
   // TODO: When the negotiation is growing too long we need to look at the feelings map in the state and decide where
   //       we currently land. This should be considered a losing state, so the battle can continue, or if fear is high
@@ -52,9 +49,9 @@ global.NegotiationSystem = (function() {
 
   function monsterContinues(reaction) {
     state.applyFeelings(reaction.feelings);
-    switch (state.getResolution()) {
-      case 'satisfied': return reactThenJoin(reaction);
-      case 'angry': return reactThenAttack(reaction);
+    switch (state.getResolution().type) {
+      case 'join': return reactThenJoin(reaction);
+      case 'attack': return reactThenAttack(reaction);
     }
   }
 

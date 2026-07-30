@@ -12,11 +12,10 @@ global.NegotiationState = function() {
     playerHard: false,
   }
 
+  // TODO: Requests return in task 105.
   let interactionCount = 0;
   let questions = [];
-  let requests = [];
   let currentQuestion;
-  let currentRequest;
   let resolution;
 
   // Having just killed all their compatriots, monsters will start out with some fear and respect, but almost no
@@ -36,8 +35,6 @@ global.NegotiationState = function() {
       }
     }
   });
-
-  // TODO: Also determine which requests are applicable here.
 
   // The dynamic requirements are checked here rather than when the pool is built because the flags they look at
   // change as the negotiation plays out. A question that isn't available now may be available a few answers from now.
@@ -59,27 +56,38 @@ global.NegotiationState = function() {
   //       be able to reduce negative feelings and increase positive feelings. (Or the opposite if they're bad at
   //       communication.) We can try making this an opposed beauty roll, see how that works out.
 
+  // TODO: Monsters will have different conditions and thresholds that are used to determine these states. We can make
+  //       some monsters harder to recruit than others by increasing the thresholds, or make some monsters only
+  //       respond to affection or respect.
+
+  function getAffectionThreshold() { return 100; }
+  function getRespectThreshold() { return 100; }
+  function getFearThreshold() { return 100; }
+
   function applyFeelings(response) {
     control += response.control || 0;
     affection += response.affection || 0;
     fear += response.fear || 0;
     respect += response.respect || 0;
+
+    if (fear < 0 && respect < 0) { return setResolution({ type:'attack' }); }
+    if (affection < 0 && respect < 0) { return setResolution({ type:'attack' }); }
+    if (affection > getAffectionThreshold() || respect > getRespectThreshold()) { setResolution({ type:'join' }); }
   }
 
-  // TODO: Monsters will have different conditions and thresholds that are used to determine these states. We can make
-  //       some monsters harder to recruit than others by increasing the thresholds, or make some monsters only
-  //       respond to affection or respect.
+  // The early return here ensures that when a resolution forces a particular outcome, it can't also contain a feelings
+  // map that would change that outcome.
+  function setResolution(data) {
+    if (resolution) { return; }
+    resolution = data;
+  }
 
   function getResolution() {
-    const affectionThreshold = 100;
-    const respectThreshold = 100;
+    return resolution || { type:'unresolved' };
+  }
 
-    console.log("Determining Resolution:",getFeelings());
-
-    if (fear < 0 && respect < 0) { return 'angry' }
-    if (affection < 0 && respect < 0) { return 'angry'; }
-    if (affection > affectionThreshold || respect > respectThreshold) { return 'satisfied'; }
-    return 'unresolved'
+  function resolveFromTimeout() {
+    setResolution(fear >= getFearThreshold() ? { type:'run' } : { type:'stalemate' });
   }
 
   // The feelings component doesn't allow for negative values, so we clamp them here before they're applied to the
@@ -96,10 +104,13 @@ global.NegotiationState = function() {
   // TODO: These are just temporary strings, the actual resolution text should come from the base monsters and the
   //       personality archetypes.
   function getResolutionText() {
-    switch(resolution) {
-      case 'angry': return `{T:TargetName} attacks.`;
-      case 'satisfied': return `{T:name} {T:TargetName} joins the party.`;
-      default: throw new Error(`Add resolution text for ${resolution}`);
+    switch(getResolution().type) {
+      case 'join': return `{T:TargetName} joins the party.`;
+      case 'attack': return `{T:TargetName} attacks.`;
+      case 'ability': return `{T:TargetName} acts.`;
+      case 'run': return `{T:TargetName} runs away.`;
+      case 'stalemate': return `{T:TargetName} loses interest in talking.`;
+      default: throw new Error(`Add resolution text for ${getResolution().type}`);
     }
   }
 
@@ -111,16 +122,16 @@ global.NegotiationState = function() {
     setFlag: (flag,value) => { flags[flag] = value; },
     setFlags: newFlags => { Object.entries(newFlags).forEach(([key,value]) => { flags[key] = value; }); },
     getCurrentQuestion: () => { return currentQuestion; },
-    getCurrentRequest: () => { return currentRequest; },
     getInteractionCount: () => { return interactionCount; },
     pickQuestion,
     applyFeelings,
     getFeelings,
-    setResolutionData: data => { resolution = data; },
-    getResolutionData: () => { return resolution; },
-    isResolved: () => { return getResolution() !== 'unresolved'; },
+    setResolution,
     getResolution,
+    resolveFromTimeout,
     getResolutionText,
+    // TODO: Interim alias for NegotiationSystem.advance(); removed in task 148.
+    isResolved: () => { return getResolution().type !== 'unresolved'; },
   });
 
 };
