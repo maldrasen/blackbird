@@ -41,7 +41,7 @@ global.NegotiationQuestion = (function() {
       const validReactions = [];
       const monster = Monster(context.T);
 
-      if (reactions[code] != null && isValid(context)) {
+      if (reactions[code] != null) {
         reactions[code].forEach(reactionData => {
           if (matchesTarget(reactionData, monster)) { validReactions.push(reactionData); }
         });
@@ -50,11 +50,12 @@ global.NegotiationQuestion = (function() {
       return validReactions.length > 0 ? validReactions.sort((a,b) => b.weight - a.weight)[0] : null;
     }
 
-    function isValid(context) {
-      if (question.requires == null) { return true; }
-      return (typeof question.requires === 'function') ?
-        question.requires(context):
-        question.requires.every(requirement => requirement(context));
+    function isPossible(context) {
+      return (question.staticRequirements || []).every(requirement => requirement(context));
+    }
+
+    function isAvailable(context) {
+      return (question.dynamicRequirements || []).every(requirement => requirement(context));
     }
 
     // Every reaction should have one or more properties to specify what kind of monster it applies to. When there are
@@ -74,6 +75,8 @@ global.NegotiationQuestion = (function() {
       getText: () => { return question.text; },
       getAnswers: () => { return question.answers; },
       getReactionData,
+      isPossible,
+      isAvailable,
     });
   }
 
