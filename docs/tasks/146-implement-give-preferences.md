@@ -18,9 +18,9 @@ just add sexual preferences to the character as if they were always there. Incom
 belongs in the question authoring), and setting a preference to 0 deletes it.
 
 ### Component facts (verified)
-- `SexualPreferencesComponent` has `create/lookup/destroy`. `lookup` returns a clone (mutations must round-trip);
-  `update` merges keys and cannot delete — so deletion is `destroy` + re-`create` with the edited copy. `create`
-  revalidates codes and value ranges.
+- `SexualPreferencesComponent` has `create/lookup/deletePreference/destroy`. `lookup` returns a clone (mutations must
+  round-trip); `update` merges keys and validates. `deletePreference(id,code)` removes a single preference key
+  (backed by `Registry.deleteComponentKey`).
 - Preference requirement values in `data/sexual-preferences/*.js`: `breasts`, `cock`, `pussy`, `erogenousCervix`,
   `erogenousUrethra`.
 - Do NOT copy the `senses.breasts` check from `sexual-preferences-factory.js:136` — `breasts` isn't a legal
@@ -33,8 +33,8 @@ belongs in the question authoring), and setting a preference to 0 deletes it.
   plus a `meetsRequirement(id, requires)` switch — `breasts` → `Character(id).hasBreasts()`, `cock` →
   `hasNormalCock()`, `pussy` → `hasNormalPussy()`, `erogenousCervix`/`erogenousUrethra` →
   `SensitivitiesComponent.lookup(id).cervix|urethra != null`; unknown requirement or incompatible preference throws.
-- Value 0 deletes the key; anything else sets it. Apply by `destroy` + `create` with the edited copy so create's
-  validation runs.
+- Value 0 deletes the key via `SexualPreferencesComponent.deletePreference`; anything else sets it via `update`
+  (which validates).
 
 ### Tests
 New `test/negotiations/negotiation-reaction-spec.js` (regenerate the manifest). Real records only. Cover:

@@ -14,6 +14,10 @@ global.SexualPreferencesComponent = (function() {
     return Registry.lookupComponent(id,ComponentType.sexualPreferences);
   }
 
+  function deletePreference(id,code) {
+    Registry.deleteComponentKey(id,ComponentType.sexualPreferences,code);
+  }
+
   function destroy(id) {
     Registry.deleteComponent(id,ComponentType.sexualPreferences);
   }
@@ -41,6 +45,7 @@ global.SexualPreferencesComponent = (function() {
     create,
     update,
     lookup,
+    deletePreference,
     destroy,
   });
 

@@ -93,6 +93,12 @@ global.Registry = (function() {
     delete components[type][id];
   }
 
+  // updateComponent() merges keys and can never remove one, so key removal needs its own primitive.
+  function deleteComponentKey(id,type,key) {
+    if (components[type][id] == null) { throw new Error(`Entity[${id}] does not have ${type}`); }
+    delete components[type][id][key];
+  }
+
   // === Queries =======================================================================================================
 
   function findChildEntities(id) {
@@ -153,6 +159,7 @@ global.Registry = (function() {
     lookupComponent,
     updateComponent,
     deleteComponent,
+    deleteComponentKey,
     findChildEntities,
     findEntitiesWithComponents,
     findComponentsWith,
