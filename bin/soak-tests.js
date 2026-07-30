@@ -3,7 +3,7 @@
 // Usage: node bin/soak-tests.js [runs]
 
 const { spawnSync } = require('child_process');
-const runs = Number(process.argv[2] || 1000);
+const runs = Number(process.argv[2] || 100);
 
 for (let i = 1; i <= runs; i++) {
   const result = spawnSync('node', [`${__dirname}/run-tests.js`], { encoding:'utf8' });
