@@ -10,14 +10,22 @@ global.NegotiationSystem = (function() {
     NegotiationOverlay.open();
   }
 
+  // TODO: resolution looks at the feelings thresholds, but actions like join force the resolution. So isResolved
+  //       would need to look a the resolution data and use it first.
+
+  // TODO: When the negotiation is growing too long we need to look at the feelings map in the state and decide where
+  //       we currently land. This should be considered a losing state, so the battle can continue, or if fear is high
+  //       enough we can have the monster run.
+
   function advance() {
-    if (state.isResolved()) { return executeResolution(); }
+    if (state.isResolved()) { return showResolution(); }
     if (state.getInteractionCount() >= 5) { return forceResolution(); }
     NegotiationOverlay.renderQuestion(state.pickQuestion());
   }
 
   // TODO: A reaction can also be a follow on question.
   // TODO: Requests are answered here as well once they're implemented. (Task 105)
+  // TODO: Answer level requirements (how-do-you-murder)
   function answer(key) {
     const question = state.getCurrentQuestion();
     const reaction = NegotiationReaction.resolve(question.reactionData.reactions[key], state.getContext());
