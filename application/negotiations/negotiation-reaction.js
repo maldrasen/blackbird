@@ -40,13 +40,14 @@ global.NegotiationReaction = (function() {
   }
 
   function resolve(reaction, context) {
-    if (reaction.type !== 'contest') { return reaction; }
+    if (reaction.type === 'contest') {
+      return resolve(winsContest(reaction, context) ? reaction.win : reaction.loss, context);
+    }
     if (reaction.options) {
       if (reaction.options.flags) { NegotiationSystem.getState().setFlags(reaction.options.flags); }
       if (reaction.options.givePreferences) { givePreferences(reaction.options.givePreferences); }
     }
-
-    return resolve(winsContest(reaction, context) ? reaction.win : reaction.loss, context);
+    return reaction;
   }
 
   function winsContest(reaction, context) {
