@@ -28,24 +28,29 @@ global.NegotiationState = function() {
   let respect = Random.roll(40);
 
   NegotiationQuestion.getAllCodes().forEach(code => {
-    const reactionData = NegotiationQuestion.lookup(code).getReactionData(context);
-    if (reactionData) {
-      questions.push({ question:code, reactionData });
+    const question = NegotiationQuestion.lookup(code);
+    if (question.isPossible(context)) {
+      const reactionData = question.getReactionData(context);
+      if (reactionData) {
+        questions.push({ question:code, reactionData });
+      }
     }
   });
 
   // TODO: Also determine which requests are applicable here.
 
-  questions = Random.shuffle(questions);
-
-  // TODO: Also force a resolution when we run out of questions here.
+  // The dynamic requirements are checked here rather than when the pool is built because the flags they look at
+  // change as the negotiation plays out. A question that isn't available now may be available a few answers from now.
   function pickQuestion() {
-    interactionCount += 1;
-    currentQuestion = questions.shift();
+    const available = questions.filter(entry => NegotiationQuestion.lookup(entry.question).isAvailable(context));
 
-    if (currentQuestion == null) {
+    if (available.length === 0) {
       throw new Error(`Error: There aren't enough valid questions for ${Monster(monster).getCode()}:[${Monster(monster).getArchetype()}]`);
     }
+
+    interactionCount += 1;
+    currentQuestion = Random.from(available);
+    questions = questions.filter(entry => entry !== currentQuestion);
 
     return currentQuestion;
   }
@@ -104,7 +109,7 @@ global.NegotiationState = function() {
     getGreeting: () => { return Monster(monster).getBaseMonster().getNegotiationGreeting(context); },
     getFlag: flag => { return flags[flag]; },
     setFlag: (flag,value) => { flags[flag] = value; },
-    setFlags: flags => { Object.entries(flags).forEach((key,value) => { flags[key] = value; }); },
+    setFlags: newFlags => { Object.entries(newFlags).forEach(([key,value]) => { flags[key] = value; }); },
     getCurrentQuestion: () => { return currentQuestion; },
     getCurrentRequest: () => { return currentRequest; },
     getInteractionCount: () => { return interactionCount; },
