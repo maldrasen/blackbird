@@ -9,6 +9,7 @@ global.NegotiationState = function() {
     playerAssOut: playerCharacter.isCrotchExposed(),
     playerCockOut: playerCharacter.hasNormalCock() && playerCharacter.isCrotchExposed(),
     playerTitsOut: playerCharacter.hasBreasts() && playerCharacter.areBreastsExposed(),
+    playerHard: false,
   }
 
   let interactionCount = 0;

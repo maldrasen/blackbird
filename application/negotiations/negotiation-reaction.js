@@ -41,7 +41,11 @@ global.NegotiationReaction = (function() {
 
   function resolve(reaction, context) {
     if (reaction.type !== 'contest') { return reaction; }
-    if (reaction.options && reaction.options.flags) { NegotiationSystem.getState().setFlags(reaction.options.flags); }
+    if (reaction.options) {
+      if (reaction.options.flags) { NegotiationSystem.getState().setFlags(reaction.options.flags); }
+      if (reaction.options.givePreferences) { givePreferences(reaction.options.givePreferences); }
+    }
+
     return resolve(winsContest(reaction, context) ? reaction.win : reaction.loss, context);
   }
 
@@ -59,6 +63,16 @@ global.NegotiationReaction = (function() {
     return Random.roll(AttributesComponent.lookup(id)[attribute]);
   }
 
+  // The negotiation questions can tell a story. Depending on how the negotiation plays out it may 'reveal' certain
+  // character traits, aspects, or sexual preferences. Because the monsters aren't full characters during a
+  // negotiation, mechanically we can just add sexual preferences or aspects to the character as if they were always
+  // there.
+
+  // When adding a sexual preference we need to check its requirements. If the preference is incompatible with this
+  // character we should through an exception. That's a check that should have happened in the question itself. It may
+  // also be possible to remove a preference with this. Setting a preference to 0 should delete it.
+  function givePreferences(preferences) { throw new Error(`TODO: Implement this.`); }
+
   function reactWith(feelings, message, options) {
     return { type:'feelings', feelings, message, options };
   }
@@ -67,6 +81,7 @@ global.NegotiationReaction = (function() {
     attack:  (message, options={}) => { return { type:'attack', message, options }; },
     run:     (message) =>             { return { type:'run', message }; },
     ability: (code, message) =>       { return { type:'ability', code, message }; },
+    join:    (message, options={}) => { return { type:'join', message, options }; },
     contest,
     resolve,
   };
