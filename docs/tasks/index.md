@@ -4,7 +4,11 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 ## Priority 1
 
-- [144] Complete Negotiation Rewrite `13pt` — [144-complete-negotiation-rewrite.md](144-complete-negotiation-rewrite.md)
+- [145] Negotiation Resolution State `3pt` — [145-negotiation-resolution-state.md](145-negotiation-resolution-state.md)
+- [146] Implement givePreferences `2pt` — [146-implement-give-preferences.md](146-implement-give-preferences.md)
+- [147] Negotiation Interface Shim `1pt` — [147-negotiation-interface-shim.md](147-negotiation-interface-shim.md)
+- [148] Negotiation Stage Machine `5pt` — [148-negotiation-stage-machine.md](148-negotiation-stage-machine.md)
+- [149] Recruit Control Passthrough `1pt` — [149-recruit-control-passthrough.md](149-recruit-control-passthrough.md)
 
 ## Priority 2
 
