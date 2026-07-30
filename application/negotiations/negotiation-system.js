@@ -22,6 +22,8 @@ global.NegotiationSystem = (function() {
     const question = state.getCurrentQuestion();
     const reaction = NegotiationReaction.resolve(question.reactionData.reactions[key], state.getContext());
 
+    console.log("Got Reaction:",reaction);
+
     applyReaction(reaction);
   }
 

@@ -2,9 +2,10 @@
 NegotiationQuestion.register('get-out-cocks-out', {
   text: `Only one way to settle this, with our cocks out like real men.`,
   requires: [
-    WeaverRequirements.isMale('A'),
+    WeaverRequirements.notVisibleCock('P'),
+    WeaverRequirements.isMale('P'),
     WeaverRequirements.isMale('T'),
-    WeaverRequirements.hasCock('A'),
+    WeaverRequirements.hasCock('P'),
     WeaverRequirements.hasCock('T'),
   ],
   answers: {
@@ -16,7 +17,7 @@ NegotiationQuestion.register('get-out-cocks-out', {
 });
 
 const dickSlapLose = `The kobold dodges out of the way and snarls, "Ha! Too slow asshole."`
-const dickSlapWin = `The kobold's head snaps back as you slap him across the face with your {A:thickSixInchLongCock}. 
+const dickSlapWin = `The kobold's head snaps back as you slap him across the face with your {P:thickSixInchLongCock}. 
   He looks momentarily stunned, but wipes his face with his arm and gives you a smile.`
 
 NegotiationQuestion.registerReaction('get-out-cocks-out', {
@@ -27,7 +28,7 @@ NegotiationQuestion.registerReaction('get-out-cocks-out', {
     'yes':       NegotiationReaction.ability('dick-punch',`"Ha, idiot!" The little bastard punches you in the dick.`),
     'dick-slap': NegotiationReaction.contest({
       attribute: Attrib.dexterity,
-      win: NegotiationReaction.greatRespect(dickSlapWin),
+      win: NegotiationReaction.greatRespect(dickSlapWin, { flags:{ playerCockOut:true }}),
       loss: NegotiationReaction.attack(dickSlapLose),
     }),
   }

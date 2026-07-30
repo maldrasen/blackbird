@@ -1,7 +1,15 @@
 global.NegotiationState = function() {
   const battleState = BattleSystem.getState();
   const monster = battleState.getActiveMonsters()[0];
-  const context = { A:GameSystem.getState().getPlayer(), T:monster };
+  const player = GameSystem.getState().getPlayer();
+  const playerCharacter = Character(player);
+  const context = { P:player, T:monster };
+
+  const flags = {
+    playerAssOut: playerCharacter.isCrotchExposed(),
+    playerCockOut: playerCharacter.hasNormalCock() && playerCharacter.isCrotchExposed(),
+    playerTitsOut: playerCharacter.hasBreasts() && playerCharacter.areBreastsExposed(),
+  }
 
   let interactionCount = 0;
   let questions = [];
@@ -93,6 +101,9 @@ global.NegotiationState = function() {
     getContext: () => { return {...context}; },
     getMonster: () => { return monster; },
     getGreeting: () => { return Monster(monster).getBaseMonster().getNegotiationGreeting(context); },
+    getFlag: flag => { return flags[flag]; },
+    setFlag: (flag,value) => { flags[flag] = value; },
+    setFlags: flags => { Object.entries(flags).forEach((key,value) => { flags[key] = value; }); },
     getCurrentQuestion: () => { return currentQuestion; },
     getCurrentRequest: () => { return currentRequest; },
     getInteractionCount: () => { return interactionCount; },

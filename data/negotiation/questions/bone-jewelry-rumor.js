@@ -2,7 +2,7 @@
 NegotiationQuestion.register('bone-jewelry-rumor', {
   text: `You know, I heard this rumor that humans make jewelry from {T:species.elf} bones.`,
   requires: [
-    WeaverRequirements.isSpecies('A','human'),
+    WeaverRequirements.isSpecies('P','human'),
   ],
   answers: {
     'no':    { text: `"No, that's not true."`},

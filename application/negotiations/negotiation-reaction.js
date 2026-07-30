@@ -41,6 +41,7 @@ global.NegotiationReaction = (function() {
 
   function resolve(reaction, context) {
     if (reaction.type !== 'contest') { return reaction; }
+    if (reaction.options && reaction.options.flags) { NegotiationSystem.getState().setFlags(reaction.options.flags); }
     return resolve(winsContest(reaction, context) ? reaction.win : reaction.loss, context);
   }
 
@@ -51,15 +52,15 @@ global.NegotiationReaction = (function() {
   }
 
   function attributeContest(attribute, context) {
-    return rollAttribute(context.A, attribute) >= rollAttribute(context.T, attribute);
+    return rollAttribute(context.P, attribute) >= rollAttribute(context.T, attribute);
   }
 
   function rollAttribute(id, attribute) {
     return Random.roll(AttributesComponent.lookup(id)[attribute]);
   }
 
-  function reactWith(feelings, message) {
-    return { type:'feelings', feelings, message };
+  function reactWith(feelings, message, options) {
+    return { type:'feelings', feelings, message, options };
   }
 
   const methods = {
@@ -71,7 +72,7 @@ global.NegotiationReaction = (function() {
   };
 
   Object.keys(reactionMap).forEach(key => {
-    methods[key] = message => reactWith(reactionMap[key], message);
+    methods[key] = (message, options={}) => reactWith(reactionMap[key], message, options);
   });
 
   return Object.freeze(methods);

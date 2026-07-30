@@ -117,6 +117,7 @@ global.WeaverRequirements = (function() {
     hasCock: key =>                          { return (context) => { return hasCock(context, key); }},
     hasNoCock: key =>                        { return (context) => { return hasCock(context, key) === false; }},
     visibleCock: key =>                      { return (context) => { return visibleCock(context, key); }},
+    notVisibleCock: key =>                   { return (context) => { return visibleCock(context, key) === false; }},
     visibleHardCock: key =>                  { return (context) => { return visibleHardCock(context, key) }},
     minimumCockSize: (key,size) =>           { return (context) => { return minimumCockSize(context, key, size); }},
     visiblePussy: key =>                     { return (context) => { return visiblePussy(context, key); }},
