@@ -102,6 +102,7 @@ global.BattleSystem = (function() {
     startRound,
     specRound,
     finishCharacterRound,
+    finishRound,
 
     getState: () => { return state; },
     getRound: () => { return round; },

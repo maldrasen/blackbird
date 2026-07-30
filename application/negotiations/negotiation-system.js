@@ -1,4 +1,8 @@
 global.NegotiationSystem = (function() {
+
+  const MAX_INTERACTIONS = 5;
+  const NEGOTIATION_TIME = 1200;
+
   let state;
 
   // TODO: There should also be a version that the monster starts when there's only one monster remaining.
@@ -10,14 +14,21 @@ global.NegotiationSystem = (function() {
     NegotiationInterface.open();
   }
 
-  // TODO: When the negotiation is growing too long we need to look at the feelings map in the state and decide where
-  //       we currently land. This should be considered a losing state, so the battle can continue, or if fear is high
-  //       enough we can have the monster run.
-
   function advance() {
-    if (state.isResolved()) { return showResolution(); }
-    if (state.getInteractionCount() >= 5) { return forceResolution(); }
+    if (state.hasShownResolution()) { return executeResolution(); }
+    if (state.hasResolution()) { return showResolution(); }
+    if (state.getInteractionCount() >= MAX_INTERACTIONS) { return forceResolution(); }
     NegotiationInterface.renderQuestion(state.pickQuestion());
+  }
+
+  function forceResolution() {
+    state.resolveFromTimeout();
+    showResolution();
+  }
+
+  function showResolution() {
+    state.markResolutionShown();
+    NegotiationInterface.renderResolution();
   }
 
   // TODO: A reaction can also be a follow on question.
@@ -27,48 +38,51 @@ global.NegotiationSystem = (function() {
     const question = state.getCurrentQuestion();
     const reaction = NegotiationReaction.resolve(question.reactionData.reactions[key], state.getContext());
 
-    console.log("Got Reaction:",reaction);
-
     applyReaction(reaction);
   }
 
-  // Most reactions adjust the monster's feelings, which can resolve the negotiation when a feeling is pushed out of
-  // bounds. The other reaction types resolve the negotiation directly. Either way the resolution isn't executed until
-  // the player advances past the monster's reply.
+  // The monster's reply is always rendered, but nothing executes yet. Feelings adjustments can resolve the negotiation
+  // when a feeling is pushed out of bounds; the other reaction types resolve it directly. Either way the resolution
+  // waits until the player has advanced past the reply and the resolution text.
   function applyReaction(reaction) {
     NegotiationInterface.renderDialog(reaction.message);
 
     switch (reaction.type) {
-      case 'feelings': return monsterContinues(reaction);
-      case 'ability':  return monsterUsesAbility(reaction.code);
-      case 'attack':   return monsterUsesAbility('basic-attack');
-      case 'run':      return monsterRuns();
+      case 'feelings': return state.applyFeelings(reaction.feelings);
+      case 'join':     return state.setResolution({ type:'join' });
+      case 'attack':   return state.setResolution({ type:'attack' });
+      case 'ability':  return state.setResolution({ type:'ability', code:reaction.code });
+      case 'run':      return state.setResolution({ type:'run' });
     }
     throw new Error(`Unknown reaction type [${reaction.type}]`);
   }
 
-  function monsterContinues(reaction) {
-    state.applyFeelings(reaction.feelings);
-    switch (state.getResolution().type) {
-      case 'join': return reactThenJoin(reaction);
-      case 'attack': return reactThenAttack(reaction);
+  function executeResolution() {
+    const resolution = state.getResolution();
+
+    switch (resolution.type) {
+      case 'join':      return resolveJoin();
+      case 'attack':    return resolveAbility('basic-attack');
+      case 'ability':   return resolveAbility(resolution.code);
+      case 'run':       return resolveRun();
+      case 'stalemate': return finishNegotiation();
     }
+    throw new Error(`Unknown resolution type [${resolution.type}]`);
   }
 
-  function reactThenJoin(reaction) {
-    console.log("React then join:",reaction)
-    // BattleSystem.getState().setCondition(state.getMonster(), BattleCondition.recruited);
-    // removeMonsterFromBattle();
-    // finishNegotiation();
-    // RecruitmentSystem.recruit(state.getMonster(), state.getFeelings());
+  // The monster is recruited after the negotiation finishes so that its MonsterComponent survives the victory path.
+  function resolveJoin() {
+    const monster = state.getMonster();
+    const battleState = BattleSystem.getState();
+
+    battleState.setCondition(monster, BattleCondition.recruited);
+    battleState.removeFromBattle(monster);
+    finishNegotiation();
+    RecruitmentSystem.recruit(monster, state.getFeelings());
   }
 
-  function reactThenAttack(reaction) {
-    console.log("React then attack:",reaction)
-  }
-
-  function monsterUsesAbility(ability) {
-    BattleSystem.getState().setForcedAbility(ability);
+  function resolveAbility(code) {
+    BattleSystem.getState().setForcedAbility(code);
     finishNegotiation();
   }
 
@@ -76,36 +90,32 @@ global.NegotiationSystem = (function() {
   //       that they fail and that the battle continues. A monster might also choose to run as their action, outside
   //       of the negotiation system entirely.
 
-  function monsterRuns() {
-    BattleSystem.getState().setCondition(state.getMonster(), BattleCondition.fled);
-    removeMonsterFromBattle();
+  function resolveRun() {
+    const monster = state.getMonster();
+    const battleState = BattleSystem.getState();
+
+    battleState.setCondition(monster, BattleCondition.fled);
+    battleState.removeFromBattle(monster);
     finishNegotiation();
   }
 
-  // TODO: This function should just be in the battle state.
-  function removeMonsterFromBattle() {
-    const battleState = BattleSystem.getState();
-    battleState.removeFromTurnOrder({ type:'monster', id:state.getMonster() });
-    battleState.removeFromFormation(state.getMonster());
+  // The player's round is finished while they're still first in the turn order because updateTime() requires the
+  // acting entity to be next. Only after the round is closed out can the monster's response be scheduled.
+  function finishNegotiation() {
+    NegotiationInterface.close();
+    BattleSystem.getRound().addTime(NEGOTIATION_TIME);
+    BattleSystem.finishRound();
+    scheduleMonsterResponse();
+    BattleSystem.advanceBattle();
   }
 
-  function finishNegotiation() {
+  function scheduleMonsterResponse() {
     const battleState = BattleSystem.getState();
-    const battleRound = BattleSystem.getRound();
-    const battleOver = battleState.getActiveMonsters().length === 0;
 
-    NegotiationInterface.close();
-    battleRound.addTime(1200);
-    battleRound.addMessage({ text:`(TODO: Skip)` });
+    if (battleState.getActiveMonsters().length === 0) { return battleState.battleWon(); }
+    if (battleState.getCondition(state.getMonster()) !== BattleCondition.active) { return; }
 
-    (battleOver) ?
-      battleState.battleWon() :
-      battleState.moveToTopOfTurnOrder({ type:'monster', id:state.getMonster() }, 500);
-
-    // TODO: This should be skip the character round. When the negotiation ends with a monster still fighting then
-    //       we should display the result's from the monster's attack or whatever ability it uses. If the battle is
-    //       over then the enlighten view will display without displaying the message at all.
-    BattleSystem.finishCharacterRound();
+    battleState.moveToTopOfTurnOrder({ type:'monster', id:state.getMonster() }, 500);
   }
 
   return Object.freeze({

@@ -112,6 +112,11 @@ global.BattleState = function(data) {
   function isCharacter(id) { return characterIds.includes(id); }
   function removeFromFormation(id) { delete (isMonster(id) ? monsterFormation : partyFormation)[id]; }
 
+  function removeFromBattle(id) {
+    removeFromTurnOrder({ type:isMonster(id) ? 'monster' : 'character', id });
+    removeFromFormation(id);
+  }
+
   // === Turn Order ====================================================================================================
 
   // The turn order is modeled as a simple queue, ordered by the time value of the actors in the array. Once an entity
@@ -369,6 +374,7 @@ global.BattleState = function(data) {
     getMonsterFormation: () => { return { ...monsterFormation }; },
     getPartyFormation: () => { return { ...partyFormation }; },
     removeFromFormation,
+    removeFromBattle,
     setCondition,
     getCondition,
     getDeadMonsters,

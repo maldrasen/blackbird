@@ -51,14 +51,14 @@ describe("NegotiationState", function() {
       state.applyFeelings({ control:5, affection:-30, fear:-50, respect:5 });
       expect(state.getFeelings()).to.deep.equal({ control:15, affection:0, fear:0, respect:25 });
       expect(state.getResolution()).to.deep.equal({ type:'unresolved' });
-      expect(state.isResolved()).to.equal(false);
+      expect(state.hasResolution()).to.equal(false);
     });
 
     it('resolves to join when affection passes its threshold', function() {
       const state = buildState(40, 20);
       state.applyFeelings({ affection:95 });
       expect(state.getResolution()).to.deep.equal({ type:'join' });
-      expect(state.isResolved()).to.equal(true);
+      expect(state.hasResolution()).to.equal(true);
     });
 
     it('resolves to join when respect passes its threshold', function() {

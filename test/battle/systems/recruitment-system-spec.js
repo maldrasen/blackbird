@@ -14,7 +14,7 @@ describe("RecruitmentSystem", function() {
     expect(feelings.fear).to.equal(50);
     expect(feelings.respect).to.equal(200);
 
-    expect(ControlledComponent.lookup(monster).control).to.equal(100);
+    expect(ControlledComponent.lookup(monster).control).to.equal(0);
     expect(MonsterComponent.lookup(monster)).to.be.undefined;
     expect(GameSystem.getState().isInRoster(monster)).to.equal(true);
   });

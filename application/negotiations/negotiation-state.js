@@ -17,6 +17,7 @@ global.NegotiationState = function() {
   let questions = [];
   let currentQuestion;
   let resolution;
+  let resolutionShown = false;
 
   // Having just killed all their compatriots, monsters will start out with some fear and respect, but almost no
   // control or affection. These values are randomized so that each negotiation starts out on slightly different
@@ -130,8 +131,9 @@ global.NegotiationState = function() {
     getResolution,
     resolveFromTimeout,
     getResolutionText,
-    // TODO: Interim alias for NegotiationSystem.advance(); removed in task 148.
-    isResolved: () => { return getResolution().type !== 'unresolved'; },
+    hasResolution: () => { return getResolution().type !== 'unresolved'; },
+    markResolutionShown: () => { resolutionShown = true; },
+    hasShownResolution: () => { return resolutionShown; },
   });
 
 };
