@@ -1,17 +1,26 @@
 describe("NegotiationState", function() {
 
-  // The negotiation-fixture-2 encounter holds a single kobold-sneak-slut (archetype slut, style lewd) and the player
-  // fixture is a male human. The state is started through NegotiationSystem because the dynamic question requirements
-  // read the flags through the system's state. The constructor rolls starting fear then respect, so both are stubbed
-  // to make the feelings math exact.
+  // The negotiation-fixture-2 encounter holds a single kobold-sneak-slut and the player fixture is a male human. The
+  // sneak slut favors the slut archetype, but a randomly drawn name can carry a trigger that overrides it, so the
+  // archetype is pinned to slut (style lewd) before the question pool is built. The state is started through
+  // NegotiationSystem because the dynamic question requirements read the flags through the system's state. The
+  // constructor rolls starting fear then respect, so both are stubbed to make the feelings math exact.
   function buildState(fear, respect) {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({ encounter:'negotiation-fixture-2', ambushState:'normal' });
     BattleSystem.specRound(GameSystem.getState().getPlayer());
+    setArchetype(ArchetypeCode.slut);
     Random.stubRoll(fear, respect);
     NegotiationSystem.start();
     Random.stubReset();
     return NegotiationSystem.getState();
+  }
+
+  function setArchetype(archetype) {
+    const monster = BattleSystem.getState().getActiveMonsters()[0];
+    const personality = PersonalityComponent.lookup(monster);
+    personality.archetype = archetype;
+    PersonalityComponent.update(monster, personality);
   }
 
   describe("pickQuestion()", function() {
