@@ -16,6 +16,7 @@ global.NegotiationSystem = (function() {
     NegotiationOverlay.renderQuestion(state.pickQuestion());
   }
 
+  // TODO: A reaction can also be a follow on question.
   // TODO: Requests are answered here as well once they're implemented. (Task 105)
   function answer(key) {
     const question = state.getCurrentQuestion();
