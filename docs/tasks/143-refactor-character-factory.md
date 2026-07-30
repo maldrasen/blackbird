@@ -1,7 +1,7 @@
 ---
 id: 143
 title: Refactor Character Factory
-priority: 3
+priority: 1
 created: 2026-07-28
 tags:
   - character
