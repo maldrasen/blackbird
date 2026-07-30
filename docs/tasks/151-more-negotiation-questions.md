@@ -1,7 +1,7 @@
 ---
 id: 151
 title: More Negotiation Questions
-priority: 1
+priority: 2
 created: 2026-07-30
 tags: []
 points: 5

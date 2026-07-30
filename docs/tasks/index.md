@@ -5,10 +5,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 ## Priority 1
 
 - [143] Refactor Character Factory `3pt` — [143-refactor-character-factory.md](143-refactor-character-factory.md)
-- [148] Negotiation Stage Machine `5pt` — [148-negotiation-stage-machine.md](148-negotiation-stage-machine.md)
-- [149] Recruit Control Passthrough `1pt` — [149-recruit-control-passthrough.md](149-recruit-control-passthrough.md)
 - [150] Unify record requires into requirement predicates `3pt` — [150-unify-requires-predicates.md](150-unify-requires-predicates.md)
-- [151] More Negotiation Questions `5pt` — [151-more-negotiation-questions.md](151-more-negotiation-questions.md)
 
 ## Priority 2
 
@@ -26,6 +23,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [136] Difficulty Sliders `5pt` — [136-difficulty-sliders.md](136-difficulty-sliders.md)
 - [141] Monster equipment `5pt` — [141-monster-equipment.md](141-monster-equipment.md)
 - [142] Item detail panel `5pt` — [142-item-detail-panel.md](142-item-detail-panel.md)
+- [151] More Negotiation Questions `5pt` — [151-more-negotiation-questions.md](151-more-negotiation-questions.md)
 
 ## Priority 3
 
