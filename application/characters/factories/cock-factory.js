@@ -1,7 +1,10 @@
 global.CockFactory = (function() {
 
-  function build(actor) {
-    const species = Species.lookup(actor.species);
+  function build() {
+    const state = CharacterFactory.getState();
+    if (state.shouldHaveCock() === false) { return; }
+
+    const species = state.getSpecies();
     const cockDef = species.getBody().cock;
 
     const cockData = {
@@ -22,7 +25,7 @@ global.CockFactory = (function() {
     applyCockKnot(cockData, shapeData);
     applyHeadFlare(cockData, shapeData);
 
-    return cockData;
+    state.setCock(cockData);
   }
 
   // Calculate the base length from the size category's length ranges. Use the base length to calculate the
@@ -73,36 +76,39 @@ global.CockFactory = (function() {
 
   // This is ugly, but even if the character doesn't have a cock (and the trigger is ignored) we still need to remove
   // that trigger, and only that trigger.
-  function applyTriggers(cockData, actorData, triggers) {
+  function applyTriggers() {
+    const state = CharacterFactory.getState();
+    const cockData = state.getCock();
+    const species = state.getSpecies();
 
     function andRemove(trigger) {
       Console.log(`Applied ${trigger}`,{ system:'CockFactory', level:3 });
-      ArrayHelper.remove(triggers, trigger);
+      state.removeTrigger(trigger);
     }
 
-    [...triggers].forEach(trigger => {
+    state.getTriggers().forEach(trigger => {
       if (trigger === 'big-cock') {
-        if (cockData) { makeCockBig(cockData, actorData); }
+        if (cockData) { makeCockBig(cockData, species); }
         andRemove(trigger);
       }
       if (trigger === 'huge-cock') {
-        if (cockData) { makeCockHuge(cockData, actorData); }
+        if (cockData) { makeCockHuge(cockData, species); }
         andRemove(trigger);
       }
       if (trigger === 'big-balls') {
-        if (cockData && cockData.testicleWidth) { makeBallsBig(cockData, actorData); }
+        if (cockData && cockData.testicleWidth) { makeBallsBig(cockData, species); }
         andRemove(trigger);
       }
       if (trigger === 'huge-balls') {
-        if (cockData && cockData.testicleWidth) { makeBallsHuge(cockData, actorData); }
+        if (cockData && cockData.testicleWidth) { makeBallsHuge(cockData, species); }
         andRemove(trigger);
       }
       if (trigger === 'dog-cock') {
-        if (cockData) { changeCockShape('dog', cockData, actorData); }
+        if (cockData) { changeCockShape('dog', cockData); }
         andRemove(trigger);
       }
       if (trigger === 'horse-cock') {
-        if (cockData) { changeCockShape('horse', cockData, actorData); }
+        if (cockData) { changeCockShape('horse', cockData); }
         andRemove(trigger);
       }
       if (trigger === 'two-cocks') {
@@ -114,49 +120,49 @@ global.CockFactory = (function() {
         andRemove(trigger);
       }
     });
+
+    state.setCock(cockData);
   }
 
   // Increase size to big (or huge if the size is already big, or monster if already huge)
-  function makeCockBig(cockData, actorData) {
+  function makeCockBig(cockData, species) {
     let newSize = 'big'
     switch(cockData.size) {
       case 'big':  newSize = 'huge';    break;
       case 'huge': newSize = 'monster'; break;
     }
-    changeCockSizeTo(newSize, cockData, actorData);
+    changeCockSizeTo(newSize, cockData, species);
   }
 
-  function makeBallsBig(cockData, actorData) {
+  function makeBallsBig(cockData, species) {
     let newSize = 'big'
     switch(cockData.size) {
       case 'big':  newSize = 'huge';    break;
       case 'huge': newSize = 'monster'; break;
     }
-    changeBallsSizeTo(newSize, cockData, actorData);
+    changeBallsSizeTo(newSize, cockData, species);
   }
 
   // Increase size to huge (or monster if the size is already huge)
-  function makeCockHuge(cockData, actorData) {
-    changeCockSizeTo((cockData.size === 'huge') ? 'monster' : 'huge', cockData, actorData);
+  function makeCockHuge(cockData, species) {
+    changeCockSizeTo((cockData.size === 'huge') ? 'monster' : 'huge', cockData, species);
   }
 
-  function makeBallsHuge(cockData, actorData) {
-    changeBallsSizeTo((cockData.size === 'huge') ? 'monster' : 'huge', cockData, actorData);
+  function makeBallsHuge(cockData, species) {
+    changeBallsSizeTo((cockData.size === 'huge') ? 'monster' : 'huge', cockData, species);
   }
 
-  function changeCockSizeTo(newSize, cockData, actorData) {
+  function changeCockSizeTo(newSize, cockData, species) {
     const sizeData = CockData.CockSizes[newSize];
     const shapeData = CockData.CockShapes[cockData.shape];
-    const species = Species.lookup(actorData.species);
 
     cockData.size = newSize;
     Object.assign(cockData, cockOfSize(sizeData, shapeData, species));
   }
 
-  function changeBallsSizeTo(newSize, cockData, actorData) {
+  function changeBallsSizeTo(newSize, cockData, species) {
     const sizeData = CockData.CockSizes[newSize];
     const shapeData = CockData.CockShapes[cockData.shape];
-    const species = Species.lookup(actorData.species);
 
     cockData.testicleWidth = ballsOfSize(sizeData, shapeData, species).testicleWidth;
   }
@@ -164,7 +170,7 @@ global.CockFactory = (function() {
   // Change the shape without changing the size. Also applies knots and flares if they need to exist. However this
   // function doesn't try to remove already existing features. Some triggers might add cock features without changing
   // the shape, so we want to maintain those features. Instead, we reject characters with shapes other than normal.
-  function changeCockShape(newShape, cockData, actorData) {
+  function changeCockShape(newShape, cockData) {
     if (cockData.shape === newShape) { return }
     if (cockData.shape !== 'normal') {
       throw new Error(`Character Rejected: Can't change ${cockData.shape} cock to ${newShape} cock.`);

@@ -1,33 +1,52 @@
 describe("SexualHistoryFactory", function() {
+
+  afterEach(function() { CharacterFactory.endBuild(); });
+
   it('when innocent', function() {
-    const firsts = SexualHistoryFactory.build({
-      personality:{ archetype:ArchetypeCode.innocent },
-    }).firsts;
+    const state = CharacterFactory.startBuild({
+      species: SpeciesCode.human,
+      gender: Gender.female,
+      triggers: [],
+    });
+    state.setPersonality({ archetype:ArchetypeCode.innocent });
+
+    SexualHistoryFactory.build();
+    const firsts = state.getSexualHistory().firsts;
 
     expect(Object.keys(firsts).length).to.equal(0)
   });
 
   it('when androphobic', function() {
-    Random.stubRoll(50,50,50,50,50,1000);
+    const state = CharacterFactory.startBuild({
+      species: SpeciesCode.human,
+      gender: Gender.female,
+      triggers: [],
+    });
+    state.setPersonality({ archetype:ArchetypeCode.slut });
+    state.setSensitivities({ cock:10, pussy:10 });
+    state.setSexualPreferences({ androphilic:-100, gynophilic:50 });
 
-    let firsts = SexualHistoryFactory.build({
-      personality:{ archetype:ArchetypeCode.slut },
-      sensitivities:{ cock:10, pussy:10 },
-      sexualPreferences:{ androphilic:-100, gynophilic:50 },
-    }).firsts;
+    Random.stubRoll(50,50,50,50,50,1000);
+    SexualHistoryFactory.build();
+    const firsts = state.getSexualHistory().firsts;
 
     expect(firsts.anal).to.be.undefined;
     expect(firsts.cock).to.equal('UNKNOWN');
   });
 
   it('with positive preferences', function() {
-    Random.stubRoll(50,50,50,50,50,1000);
+    const state = CharacterFactory.startBuild({
+      species: SpeciesCode.human,
+      gender: Gender.female,
+      triggers: [],
+    });
+    state.setPersonality({ archetype:ArchetypeCode.slut });
+    state.setSensitivities({ pussy:10 });
+    state.setSexualPreferences({ androphilic:10, gynophilic:10, 'cock-lover':75, 'cum-dump':75 });
 
-    let firsts = SexualHistoryFactory.build({
-      personality:{ archetype:ArchetypeCode.slut },
-      sensitivities:{ pussy:10 },
-      sexualPreferences:{ androphilic:10, gynophilic:10, 'cock-lover':75, 'cum-dump':75 },
-    }).firsts;
+    Random.stubRoll(50,50,50,50,50,1000);
+    SexualHistoryFactory.build();
+    const firsts = state.getSexualHistory().firsts;
 
     expect(firsts.cock).to.be.undefined;
     expect(firsts.pussy).to.equal('UNKNOWN');

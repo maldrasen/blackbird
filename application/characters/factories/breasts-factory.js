@@ -1,7 +1,10 @@
 global.BreastsFactory = (function() {
 
-  function build(actor) {
-    const species = Species.lookup(actor.species);
+  function build() {
+    const state = CharacterFactory.getState();
+    if (state.shouldHaveBreasts() === false) { return; }
+
+    const species = state.getSpecies();
     const breastsData = {
       breastCount: 2,
       breastSize: Random.fromFrequencyMap(species.getBody().breasts),
@@ -29,7 +32,7 @@ global.BreastsFactory = (function() {
     if (breastsData.nippleWidth < 2) { breastsData.nippleWidth = 2;}
     if (breastsData.areolaWidth < breastsData.nippleWidth * 2) { breastsData.areolaWidth = breastsData.nippleWidth * 2 }
 
-    return breastsData;
+    state.setBreasts(breastsData);
   }
 
   // The breast size categories describe relative breast size in relation to the character's body. Breast volume is
@@ -56,42 +59,45 @@ global.BreastsFactory = (function() {
 
   // === Triggers ======================================================================================================
 
-  function applyTriggers(breastsData, actorData, triggers) {
+  function applyTriggers() {
+    const state = CharacterFactory.getState();
+    const breastsData = state.getBreasts();
+    const species = state.getSpecies();
 
     function andRemove(trigger) {
       Console.log(`Applied ${trigger}`,{ system:'BreastFactory', level:3 });
-      ArrayHelper.remove(triggers, trigger);
+      state.removeTrigger(trigger);
     }
 
-    [...triggers].forEach(trigger => {
+    state.getTriggers().forEach(trigger => {
 
       if (trigger === 'flat-chest') {
-        if (breastsData) { changeBreastSize('zero', breastsData, actorData); }
+        if (breastsData) { changeBreastSize('zero', breastsData, species); }
         andRemove(trigger);
       }
 
       if (trigger === 'small-tits') {
-        if (breastsData) { changeBreastSize('small', breastsData, actorData); }
+        if (breastsData) { changeBreastSize('small', breastsData, species); }
         andRemove(trigger);
       }
 
       if (trigger === 'average-tits') {
-        if (breastsData) { changeBreastSize('average', breastsData, actorData); }
+        if (breastsData) { changeBreastSize('average', breastsData, species); }
         andRemove(trigger);
       }
 
       if (trigger === 'big-tits') {
-        if (breastsData) { changeBreastSize('big', breastsData, actorData); }
+        if (breastsData) { changeBreastSize('big', breastsData, species); }
         andRemove(trigger);
       }
 
       if (trigger === 'huge-tits') {
-        if (breastsData) { changeBreastSize('huge', breastsData, actorData); }
+        if (breastsData) { changeBreastSize('huge', breastsData, species); }
         andRemove(trigger);
       }
 
       if (trigger === 'cow-tits') {
-        if (breastsData) { changeNipplesToTeats(breastsData, actorData); }
+        if (breastsData) { changeNipplesToTeats(breastsData, species); }
         andRemove(trigger);
       }
 
@@ -100,13 +106,14 @@ global.BreastsFactory = (function() {
         andRemove(trigger);
       }
     });
+
+    state.setBreasts(breastsData);
   }
 
   // This function will change the nipple shape to teat. Then set nipple length to 2.0 - 4.5 in long (around 3" though)
   // Then we either add a little to nipple width, or between 0.5 - 0.75 inches wide, whatever's thicker. If increasing
   // the nipple width makes the nipple wider than the areola we need to make it bigger as well.
-  function changeNipplesToTeats(breastsData, actorData) {
-    const species = Species.lookup(actorData.species);
+  function changeNipplesToTeats(breastsData, species) {
     const ratio = species.getLengthRatio();
 
     breastsData.nippleShape = 'teat';
@@ -118,8 +125,8 @@ global.BreastsFactory = (function() {
     }
   }
 
-  function changeBreastSize(size, breastsData, actorData) {
-    const newTits = buildBreasts(Species.lookup(actorData.species), size, breastsData.breastFirmness);
+  function changeBreastSize(size, breastsData, species) {
+    const newTits = buildBreasts(species, size, breastsData.breastFirmness);
 
     breastsData.breastSize = size;
     breastsData.breastShape = newTits.breastShape;

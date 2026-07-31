@@ -1,23 +1,24 @@
 global.SkillsFactory = (function() {
 
-  function build(triggers, defaultSkills) {
+  function build() {
+    const state = CharacterFactory.getState();
     const skillsData = {};
-    const defaults = defaultSkills || {}
+    const defaults = state.getDefaultSkills() || {}
 
     SkillsComponent.getSkills().forEach(skillCode => {
       skillsData[skillCode] = defaults[skillCode] || 0;
     });
 
-    [...triggers].forEach(trigger => {
+    state.getTriggers().forEach(trigger => {
       const match = trigger.match(/^([a-z\-]+)<(\d+),(\d+)>$/)
       if (match) {
         skillsData[match[1]] = Random.between(parseInt(match[2]),parseInt(match[3]));
         Console.log(`Applied ${trigger}`,{ system:'SkillsFactory', level:3 });
-        ArrayHelper.remove(triggers, trigger);
+        state.removeTrigger(trigger);
       }
     });
 
-    return skillsData;
+    state.setSkills(skillsData);
   }
 
   return Object.freeze({

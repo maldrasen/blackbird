@@ -39,6 +39,7 @@
     "application/characters/factories/aspects-factory.js",
     "application/characters/factories/body-factory.js",
     "application/characters/factories/breasts-factory.js",
+    "application/characters/factories/character-factory-state.js",
     "application/characters/factories/character-factory.js",
     "application/characters/factories/cock-factory.js",
     "application/characters/factories/monster-factory.js",

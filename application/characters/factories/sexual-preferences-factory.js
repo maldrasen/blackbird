@@ -9,20 +9,30 @@ global.SexualPreferencesFactory = (function() {
     'slut':['anal-slut','breast-slut','cock-slut','oral-slut','pussy-slut'],
     'other-parts':['ass-lover','cock-lover','pussy-lover','breast-lover']};
 
-  function makeAdjustments(sexualPreferences, context, triggers) {
-    applyTriggers(sexualPreferences, context, triggers);
+  function makeAdjustments() {
+    const state = CharacterFactory.getState();
+    const sexualPreferences = state.getSexualPreferences();
+    const context = {
+      actor: state.getActor(),
+      personality: state.getPersonality(),
+      sensitivities: state.getSensitivities(),
+    };
+
+    applyTriggers(sexualPreferences, state);
     applySpeciesPreferences(sexualPreferences, context);
     applyArchetypePreferences(sexualPreferences, context);
     removeIncorrectPreferences(sexualPreferences, context);
+
+    state.setSexualPreferences(sexualPreferences);
   }
 
-  function applyTriggers(sexualPreferences, context, triggers) {
-    [...triggers].forEach(trigger => {
+  function applyTriggers(sexualPreferences, state) {
+    state.getTriggers().forEach(trigger => {
       const match = trigger.match(/([a-zA-Z-]+)\[(-?\d+)]/);
       if (match) {
         sexualPreferences[SexualPreference.lookup(match[1]).getCode()] = parseInt(match[2]) - 10 + Random.roll(20);
         Console.log(`Applied ${trigger}`,{ system:'SexualPreferencesFactory', level:3 });
-        ArrayHelper.remove(triggers,trigger);
+        state.removeTrigger(trigger);
       }
     });
   }

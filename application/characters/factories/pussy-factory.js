@@ -1,7 +1,10 @@
 global.PussyFactory = (function() {
 
-  function build(actor) {
-    const species = Species.lookup(actor.species);
+  function build() {
+    const state = CharacterFactory.getState();
+    if (state.shouldHavePussy() === false) { return; }
+
+    const species = state.getSpecies();
     const pussyDef = species.getBody().pussy || {};
     const pussyData = {
       placement: 'normal',
@@ -43,19 +46,21 @@ global.PussyFactory = (function() {
       pussyData.innerLabiaLength = Math.max(0, Math.round(Random.normalDistribution(mean,deviation) * species.getLengthRatio()));
     }
 
-    return pussyData;
+    state.setPussy(pussyData);
   }
 
   // === Apply Triggers ================================================================================================
 
-  function applyTriggers(pussyData, triggers) {
+  function applyTriggers() {
+    const state = CharacterFactory.getState();
+    const pussyData = state.getPussy();
 
     function andRemove(trigger) {
       Console.log(`Applied ${trigger}`,{ system:'PussyFactory', level:3 });
-      ArrayHelper.remove(triggers, trigger);
+      state.removeTrigger(trigger);
     }
 
-    [...triggers].forEach(trigger => {
+    state.getTriggers().forEach(trigger => {
 
       if (trigger === 'dog-pussy') {
         if (pussyData) { changeShapeTo('dog', pussyData) }
@@ -68,6 +73,8 @@ global.PussyFactory = (function() {
       }
 
     });
+
+    state.setPussy(pussyData);
   }
 
   function changeShapeTo(newShape, pussyData) {

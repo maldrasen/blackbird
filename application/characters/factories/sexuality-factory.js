@@ -3,22 +3,23 @@ global.SexualityFactory = (function() {
   // Sexuality has to key off of biological sex because I have no idea who a straight non-binary person is supposed to
   // be attracted to. A straight futa is gynophilic, a gay futa is androphilic (because of butt stuff). Bi is positive
   // in both. Ace is negative in both.
-  function build(context, triggers) {
-    const preferences = applySexualityTriggers(triggers);
+  function build() {
+    const state = CharacterFactory.getState();
+    const preferences = applySexualityTriggers(state);
 
     if (preferences.androphilic == null || preferences.gynophilic == null) {
-      const sexuality = context.sexuality || randomSexuality(context)
-      const baseline = buildBaselineSexuality(sexuality, context.sex);
+      const sexuality = state.getSexuality() || randomSexuality(state);
+      const baseline = buildBaselineSexuality(sexuality, state.getBiologicalSex());
       if (preferences.androphilic == null) { preferences.androphilic = baseline.androphilic; }
       if (preferences.gynophilic == null) { preferences.gynophilic = baseline.gynophilic; }
     }
 
-    return preferences;
+    state.setSexualPreferences(preferences);
   }
 
   // If the triggers include androphilic or gynophilic, we use the trigger value (+/- 10) rather before picking a
-  // value at random.
-  function applySexualityTriggers(triggers) {
+  // value at random. The triggers are left in place; the sexual preferences factory consumes them.
+  function applySexualityTriggers(state) {
     const preferences = {};
 
     const applyTrigger = (code, trigger) => {
@@ -26,7 +27,7 @@ global.SexualityFactory = (function() {
       preferences[code] += -10 + Random.roll(20);
     };
 
-    [...triggers].forEach(trigger => {
+    state.getTriggers().forEach(trigger => {
       if (trigger.match(/androphilic/)) { applyTrigger('androphilic', trigger); }
       if (trigger.match(/gynophilic/)) { applyTrigger('gynophilic', trigger); }
     });
@@ -36,10 +37,10 @@ global.SexualityFactory = (function() {
 
   // We normally use the personality archetype when picking a random sexuality. If this character is a sylph, nymph or
   // other species where there is an extreme gender imbalance, we return bi if straight was randomly selected.
-  function randomSexuality(context) {
-    const archetype = Archetype.lookup(context.personality.archetype);
+  function randomSexuality(state) {
+    const archetype = Archetype.lookup(state.getPersonality().archetype);
     const sexuality = Random.fromFrequencyMap(archetype.getSexualityRatio());
-    const menAreRare = [SpeciesCode.sylph, SpeciesCode.nymph].includes(context.actor.species)
+    const menAreRare = [SpeciesCode.sylph, SpeciesCode.nymph].includes(state.getSpeciesCode())
     return (sexuality === 'straight' && menAreRare) ? 'bi' : sexuality;
   }
 

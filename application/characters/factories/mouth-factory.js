@@ -1,7 +1,11 @@
 global.MouthFactory = (function() {
 
-  function build(actor,body) {
-    const species = Species.lookup(actor.species);
+  function build() {
+    const state = CharacterFactory.getState();
+    const body = state.getBody();
+    if (body == null) { throw new Error(`The mouth cannot be built before the body.`); }
+
+    const species = state.getSpecies();
     const lengthRatio = species.getLengthRatio();
     const mouthDef = species.getBody().mouth || {};
 
@@ -34,21 +38,23 @@ global.MouthFactory = (function() {
     // gagging/puking should happen. At mouthDepth + throatDepth the cock enters into the stomach.
     mouthData.comfortableThroatDepth = Math.round((100-gagReflex)/100 * throatDepth);
 
-    return mouthData;
+    state.setMouth(mouthData);
   }
 
   // === Triggers ======================================================================================================
 
-  // Seems overkill for one trigger, but it follows the same pattern
-  // as the others, and it will be easy to add more if necessary.
-  function applyTriggers(mouthData, triggers) {
+  // Seems overkill for one trigger, but it follows the same pattern as the others, and it will be easy to add more if
+  // necessary.
+  function applyTriggers() {
+    const state = CharacterFactory.getState();
+    const mouthData = state.getMouth();
 
     function andRemove(trigger) {
       Console.log(`Applied ${trigger}`,{ system:'MouthFactory', level:3 });
-      ArrayHelper.remove(triggers, trigger);
+      state.removeTrigger(trigger);
     }
 
-    [...triggers].forEach(trigger => {
+    state.getTriggers().forEach(trigger => {
 
       if (trigger === 'forked-tongue') {
         mouthData.tongueShape = 'forked';
@@ -56,6 +62,8 @@ global.MouthFactory = (function() {
       }
 
     });
+
+    state.setMouth(mouthData);
   }
 
   return Object.freeze({ build, applyTriggers });

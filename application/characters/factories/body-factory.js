@@ -1,9 +1,10 @@
 global.BodyFactory = (function() {
 
-  function build(actor, triggers) {
-    const species = Species.lookup(actor.species);
+  function build() {
+    const state = CharacterFactory.getState();
+    const species = state.getSpecies();
     const bodyData = {
-      height: getRandomHeight(species, actor.gender, triggers),
+      height: getRandomHeight(species, state.getGender(), state),
       skinType: species.getSkinType(),
       eyeShape: species.getEyeShape(),
       eyeColor: Random.from(BodyData.CommonEyeColors),
@@ -33,7 +34,7 @@ global.BodyFactory = (function() {
       bodyData.hairColor = Random.from(BodyData.CommonHairColors);
     }
 
-    return bodyData;
+    state.setBody(bodyData);
   }
 
   function getRandomSmell(species) {
@@ -48,47 +49,47 @@ global.BodyFactory = (function() {
   // Randomly determine the character's height. This function also applies the 'short' or 'tall' triggers. Because
   // this is done so early in the process, only names should add tall or short. We apply it early because the character
   // height is used in a lot of other places, so it can't be changed later during character creation.
-  function getRandomHeight(species, gender, triggers) {
+  function getRandomHeight(species, gender, state) {
     const averageHeight = species.getAverageHeight(gender);
     const deviation = species.getHeightDeviation();
     const fuzz = 1 + (Random.roll(100)-50)/1000; // 0.9 - 1.1
 
     // If this character is short, set height around two standard deviations below average.
-    if (triggers.includes('short')) {
+    if (state.takeTrigger('short')) {
       Console.log(`Applied Short`,{ system:'BodyFactory', level:3 });
-      ArrayHelper.remove(triggers,'short');
       return Math.round(averageHeight - (deviation * 2 * fuzz));
     }
 
     // If this character is tall, set height around two standard deviations above average.
-    if (triggers.includes('tall')) {
+    if (state.takeTrigger('tall')) {
       Console.log(`Applied Tall`,{ system:'BodyFactory', level:3 });
-      ArrayHelper.remove(triggers,'tall');
       return Math.round(averageHeight + (deviation * 2 * fuzz));
     }
 
     return Random.normalDistribution(averageHeight, deviation);
   }
 
-  function applyTriggers(bodyData, triggers) {
+  function applyTriggers() {
+    const state = CharacterFactory.getState();
+    const bodyData = state.getBody();
 
     function andRemove(trigger) {
       Console.log(`Applied ${trigger}`,{ system:'BodyFactory', level:3 });
-      ArrayHelper.remove(triggers, trigger);
+      state.removeTrigger(trigger);
     }
 
     // (Converts 'red-hairs' type trigger into 'darkRed-hair')
-    pickSingleHairColor(triggers);
+    pickSingleHairColor(state);
 
-    checkDuplicates(triggers,'tail');
-    checkDuplicates(triggers,'ears');
-    checkDuplicates(triggers,'eyes');
-    checkDuplicates(triggers,'eyeColor');
-    checkDuplicates(triggers,'hair');
-    checkDuplicates(triggers,'horn');
-    checkDuplicates(triggers,'skin');
+    checkDuplicates(state,'tail');
+    checkDuplicates(state,'ears');
+    checkDuplicates(state,'eyes');
+    checkDuplicates(state,'eyeColor');
+    checkDuplicates(state,'hair');
+    checkDuplicates(state,'horn');
+    checkDuplicates(state,'skin');
 
-    [...triggers].forEach(trigger => {
+    state.getTriggers().forEach(trigger => {
 
       // These triggers include the value that the body property should be set to.
       const match = trigger.match(/(.*)-(tail|ears|eyes|eyeColor|hair|horn)$/);
@@ -114,41 +115,43 @@ global.BodyFactory = (function() {
         andRemove(trigger);
       }
     });
+
+    state.setBody(bodyData);
   }
 
-  // Leave the ArrayHelper.remove() function inside of each if statement. If we
+  // Leave the removeTrigger() call inside of each if statement. If we
   // add a different (color)-hairs trigger, and it isn't matched, an error will
   // then be generated for an unresolved trigger if it's not matched here.
-  function pickSingleHairColor(triggers) {
-    [...triggers].forEach(trigger => {
+  function pickSingleHairColor(state) {
+    state.getTriggers().forEach(trigger => {
       const match = trigger.match(/(.*)-hairs$/);
       if (match) {
         if (match[1] === 'black') {
-          triggers.push(`${Random.from(['blackBrown','black','jetBlack'])}-hair`);
-          ArrayHelper.remove(triggers,trigger)
+          state.addTrigger(`${Random.from(['blackBrown','black','jetBlack'])}-hair`);
+          state.removeTrigger(trigger);
         }
         if (match[1] === 'blue') {
-          triggers.push(`${Random.from(['lightBlue','blue','darkBlue'])}-hair`);
-          ArrayHelper.remove(triggers,trigger)
+          state.addTrigger(`${Random.from(['lightBlue','blue','darkBlue'])}-hair`);
+          state.removeTrigger(trigger);
         }
         if (match[1] === 'green') {
-          triggers.push(`${Random.from(['lightGreen','green','darkGreen'])}-hair`);
-          ArrayHelper.remove(triggers,trigger)
+          state.addTrigger(`${Random.from(['lightGreen','green','darkGreen'])}-hair`);
+          state.removeTrigger(trigger);
         }
         if (match[1] === 'purple') {
-          triggers.push(`${Random.from(['lightPurple','purple','darkPurple'])}-hair`);
-          ArrayHelper.remove(triggers,trigger)
+          state.addTrigger(`${Random.from(['lightPurple','purple','darkPurple'])}-hair`);
+          state.removeTrigger(trigger);
         }
         if (match[1] === 'red') {
-          triggers.push(`${Random.from(['copper','auburn','darkRed','red'])}-hair`);
-          ArrayHelper.remove(triggers,trigger)
+          state.addTrigger(`${Random.from(['copper','auburn','darkRed','red'])}-hair`);
+          state.removeTrigger(trigger);
         }
       }
     });
   }
 
-  function checkDuplicates(triggers, type) {
-    if (triggers.filter(trigger => trigger.match(new RegExp(`-${type}$`))).length > 1) {
+  function checkDuplicates(state, type) {
+    if (state.getTriggers().filter(trigger => trigger.match(new RegExp(`-${type}$`))).length > 1) {
       throw new Error(`Character Rejected: Triggers array contains more than one ${type} trigger.`);
     }
   }

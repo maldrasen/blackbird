@@ -6,23 +6,27 @@ global.SexualHistoryFactory = (function() {
   // even have some influences from things like species. (Is rape or incest common in this species?) If we pick
   // something 'interesting' though we should use that same value everywhere. Outside of this factory the values in the
   // firsts array will be set to an entity id (usually the player.)
-  function build(context) {
+  function build() {
+    const state = CharacterFactory.getState();
     const history = { actions:{}, firsts:{} };
-    const archetype = Archetype.lookup(context.personality.archetype);
+    const archetype = Archetype.lookup(state.getPersonality().archetype);
     const virginityChances = archetype.getVirginChances();
     const taker = 'UNKNOWN';
 
     // If they are a complete virgin, they have no history at all.
-    if (Random.roll(100) < virginityChances.complete) { return history; }
+    if (Random.roll(100) < virginityChances.complete) { return state.setSexualHistory(history); }
 
-    const androphilia = context.sexualPreferences['androphilic'];
-    const cockLover = context.sexualPreferences['cock-lover'];
-    const cumDump = context.sexualPreferences['cum-dump'];
-    const breathPlayer = context.sexualPreferences['breath-player'];
-    const analSlut = context.sexualPreferences['anal-slut'];
-    const cockSlut = context.sexualPreferences['cock-slut'];
-    const oralSlut = context.sexualPreferences['oral-slut'];
-    const pussySlut = context.sexualPreferences['pussy-slut'];
+    const sexualPreferences = state.getSexualPreferences();
+    const sensitivities = state.getSensitivities();
+
+    const androphilia = sexualPreferences['androphilic'];
+    const cockLover = sexualPreferences['cock-lover'];
+    const cumDump = sexualPreferences['cum-dump'];
+    const breathPlayer = sexualPreferences['breath-player'];
+    const analSlut = sexualPreferences['anal-slut'];
+    const cockSlut = sexualPreferences['cock-slut'];
+    const oralSlut = sexualPreferences['oral-slut'];
+    const pussySlut = sexualPreferences['pussy-slut'];
 
     if (androphilia == null) {
       throw new Error(`Androphilic preference should have been set.`);
@@ -58,15 +62,15 @@ global.SexualHistoryFactory = (function() {
       const target = Math.round(virginityChances[key]);
 
       let allowed = (key !== 'complete');
-      if (key === 'cock' && context.sensitivities.cock == null) { allowed = false; }
-      if (key === 'pussy' && context.sensitivities.pussy == null) { allowed = false; }
+      if (key === 'cock' && sensitivities.cock == null) { allowed = false; }
+      if (key === 'pussy' && sensitivities.pussy == null) { allowed = false; }
 
       if (allowed && target < 100 && Random.roll(100) > target) {
         history.firsts[key] = taker;
       }
     });
 
-    return history;
+    state.setSexualHistory(history);
   }
 
   // Just a guess on the math here. Preference value will be from 1-100, so the values (1,25,50,75,100) would translate

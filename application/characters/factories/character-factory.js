@@ -1,41 +1,40 @@
-
-// This map is just a placeholder. For a randomly generated character the actual species will largely depend on
-// location. If the player is exploring the dungeon it will mostly be monster girls. There will be a world generation
-// step as well (similar to HHS) that populates the city with NPCs. That will come from a city species frequency map.
-const SpeciesFrequency = {
-  elf:10, equian:10, havlin:10, human:10, kobold:10, lupin:10, nymph:10, sylph:10, vermen:10,
-};
-
 global.CharacterFactory = (function() {
 
+  let state;
+
   // Build a random character given the options:
-  //   gender: Gender code
-  //   species: Species code
-  //   name: String (for unique characters)
-  //   title: String (for unique characters)
-  //   surname: String (for unique characters)
-  //   triggers: Detailed in the documentation
+  //   gender:     Gender code
+  //   species:    Species code
+  //   name:       String (for unique characters)
+  //   title:      String (for unique characters)
+  //   surname:    String (for unique characters)
+  //   triggers:   Detailed in the documentation
   //   archetypes: Archetype frequency map (from a base monster), used when no name trigger sets an archetype
-  //   sexuality: (straight, gay, bi, ace)
+  //   sexuality:  (straight, gay, bi, ace)
+  //   skills:     Default skills map
   //
-  // Note: If you specify the gender I'm also requiring the species to be set. By specifying the gender first you
-  // bypass selecting gender based on the species ratio, so you get far too many male sylphs for instance.
   function build(options={}) {
     if (options.gender && options.species == null) {
-      throw new Error(`If you specify a gender, you should also specify a species.`); }
+      throw new Error(`If you specify a gender, you should also specify a species.`);
+    }
 
-    for (let attempts=0; attempts<10; attempts++) {
-      let characterId = Registry.createEntity();
-      try {
-        return buildLoop(characterId, options);
-      }
-      catch(error) {
-        Registry.deleteEntity(characterId);
+    try {
+      for (let attempts=0; attempts<10; attempts++) {
+        let characterId = Registry.createEntity();
+        try {
+          return buildLoop(characterId, options);
+        }
+        catch(error) {
+          Registry.deleteEntity(characterId);
 
-        error.message.match(/Character Rejected/) ?
-          Console.log(error.message, { System:'CharacterFactory', level:3 }):
-          Console.log(error,{ system:'CharacterFactory', type:LogType.warning, data:{ options }});
+          error.message.match(/Character Rejected/) ?
+            Console.log(error.message, { System:'CharacterFactory', level:3 }):
+            Console.log(error,{ system:'CharacterFactory', type:LogType.warning, data:{ options }});
+        }
       }
+    }
+    finally {
+      endBuild();
     }
 
     Console.log(`Cannot create a character using these options: ${JSON.stringify(options)}`,{
@@ -47,124 +46,65 @@ global.CharacterFactory = (function() {
     throw new Error(`Cannot create character.`);
   }
 
+  function startBuild(options={}) {
+    state = CharacterFactoryState(options);
+    return state;
+  }
+
+  function getState() { return state; }
+  function endBuild() { state = null; }
+
   // The buildLoop() will throw an exception to reject a character. This can happen when we randomly pick incompatible
   // traits, and it's easier to start over from scratch than to figure out how to back out of bad decisions.
   function buildLoop(characterId, options) {
-    const speciesCode = options.species || Random.fromFrequencyMap(SpeciesFrequency);
-    const species = Species.lookup(speciesCode);
-    const genderCode = options.gender || Random.fromFrequencyMap(species.getGenderRatio());
-    const biologicalSex = getBiologicalSex(species,genderCode);
+    startBuild(options);
 
-    assertGenderInSpecies(genderCode, species);
+    assertGenderInSpecies(state.getGender(), state.getSpecies());
+    buildNames();
+    state.dedupeTriggers();
 
-    const actorData = { gender:genderCode, species:speciesCode };
-    const experienceData = { level:1, essence:EssenceSystem.totalEssenceToLevel(1, speciesCode) };
-
-    // It's very important for triggers to be a clone here. The character factory might add incompatible triggers that
-    // cause the character to be rejected. If we change the original triggers array, when a character is rejected we
-    // must call build() with the original options again, otherwise this will just try to make a character with the
-    // same incompatible triggers.
-    let triggers = [...options.triggers||[]];
-
-    buildNames(options, actorData, triggers);
-
-    // Two names can add the same trigger, so we need to make them unique before continuing.
-    triggers = [...new Set(triggers)]
-
-    // Log start of character creation.
-    Console.log(StringHelper.pack(`Building[${characterId}]: ${actorData.title||''}
-      ${actorData.name} ${actorData.surname||''} [${genderCode} ${speciesCode}]`),
+    const actor = state.getActor();
+    Console.log(StringHelper.pack(`Building[${characterId}]: ${actor.title||''}
+      ${actor.name} ${actor.surname||''} [${actor.gender} ${actor.species}]`),
       { system:'CharacterFactory', level:1 });
 
-    const bodyData = BodyFactory.build(actorData, triggers);
-    const anusData = AnusFactory.build(actorData);
-    const mouthData = MouthFactory.build(actorData, bodyData);
-    const pussyData = buildPussy(biologicalSex, actorData);
-    const cockData = buildCock(biologicalSex, actorData);
-    const breastsData = buildBreasts(biologicalSex, actorData);
+    BodyFactory.build();
+    AnusFactory.build();
+    MouthFactory.build();
+    PussyFactory.build();
+    CockFactory.build();
+    BreastsFactory.build();
 
     // Add random mutators like strange hair colors or tails and shit.
-    TriggerFactory.addRandomTriggers(triggers, species);
+    TriggerFactory.addRandomTriggers();
 
-    const aspectsData = AspectsFactory.build(triggers, actorData);
-    const attributesData = LevelSystem.buildAttributes(actorData, aspectsData);
-    const healthData = LevelSystem.buildHealth(attributesData, species.getHealthFactor());
-    const personalityData = PersonalityFactory.buildPersonality(actorData, triggers, options.archetypes);
-    const sensitivitiesData = SensitivitiesFactory.build(triggers, actorData, breastsData, cockData, pussyData);
-    const skillsData = SkillsFactory.build(triggers, options.skills);
+    AspectsFactory.build();
+    state.setAttributes(LevelSystem.buildAttributes(state.getActor(), state.getAspects()));
+    state.setHealth(LevelSystem.buildHealth(state.getAttributes(), state.getSpecies().getHealthFactor()));
+    PersonalityFactory.build();
+    SensitivitiesFactory.build();
+    SkillsFactory.build();
 
-    const sexualPreferences = SexualityFactory.build({
-      sexuality: options.sexuality,
-      actor: actorData,
-      personality: personalityData,
-      sex: biologicalSex
-    }, triggers);
+    SexualityFactory.build();
+    SexualPreferencesFactory.makeAdjustments();
+    SexualHistoryFactory.build();
 
-    SexualPreferencesFactory.makeAdjustments(sexualPreferences, {
-      actor: actorData,
-      personality: personalityData,
-      sensitivities: sensitivitiesData,
-    }, triggers);
-
-    const sexualHistoryData = SexualHistoryFactory.build({
-      personality: personalityData,
-      sensitivities: sensitivitiesData,
-      sexualPreferences: sexualPreferences,
-    });
-
-    BodyFactory.applyTriggers(bodyData, triggers);
-    AnusFactory.applyTriggers(anusData, triggers);
-    MouthFactory.applyTriggers(mouthData, triggers);
-    BreastsFactory.applyTriggers(breastsData, actorData, triggers);
-    CockFactory.applyTriggers(cockData, actorData, triggers);
-    PussyFactory.applyTriggers(pussyData, triggers);
+    BodyFactory.applyTriggers();
+    AnusFactory.applyTriggers();
+    MouthFactory.applyTriggers();
+    BreastsFactory.applyTriggers();
+    CockFactory.applyTriggers();
+    PussyFactory.applyTriggers();
 
     // TODO: Add archetype flavors here
-    applyMagical(triggers);
+    applyMagical();
 
+    const triggers = state.getTriggers();
     if (triggers.length > 0) {
       throw new Error(`Unresolved Triggers: ${JSON.stringify(triggers)}`);
     }
 
-    ActorComponent.create(characterId, actorData);
-    AnimaComponent.createBaseline(characterId);
-    AnimusComponent.createBaseline(characterId);
-    AnusComponent.create(characterId, anusData);
-    ArousalComponent.create(characterId);
-    AttributesComponent.create(characterId, attributesData);
-    BodyComponent.create(characterId, bodyData);
-    HealthComponent.create(characterId, healthData);
-    MouthComponent.create(characterId, mouthData);
-    PersonalityComponent.create(characterId, personalityData);
-    SkillsComponent.create(characterId, skillsData);
-    SensitivitiesComponent.create(characterId, sensitivitiesData);
-    SexualPreferencesComponent.create(characterId, sexualPreferences);
-    SexualHistoryComponent.create(characterId, sexualHistoryData);
-    AspectsComponent.create(characterId, aspectsData);
-    EquipmentComponent.create(characterId);
-    ExperienceComponent.create(characterId, experienceData);
-    InventoryComponent.create(characterId);
-
-    if (breastsData) { BreastsComponent.create(characterId, breastsData); }
-    if (cockData) { CockComponent.create(characterId, cockData); }
-    if (pussyData) { PussyComponent.create(characterId, pussyData); }
-
-    CacheComponent.build(characterId);
-
-    Console.log('CharacterData',{ system:'CharacterFactory', data:{
-      attributes: attributesData,
-      personality: personalityData,
-      body: bodyData,
-      anus: anusData,
-      breasts: breastsData || {},
-      cock: cockData || {},
-      mouth: mouthData,
-      pussy: pussyData,
-      sensitivitiesData: sensitivitiesData,
-      sexualPreferences: sexualPreferences,
-      sexualHistory: sexualHistoryData,
-      aspects: aspectsData,
-    }});
+    createComponents(characterId);
 
     return characterId;
   }
@@ -176,72 +116,81 @@ global.CharacterFactory = (function() {
     }
   }
 
-  function buildNames(options, actorData, triggers) {
-    if (options.name) { actorData.name = options.name; }
-    if (options.title) { actorData.title = options.title; }
-    if (options.surname) { actorData.surname = options.surname; }
+  // Names passed in through the options are set on the actor when the state is created, so this only needs to pick a
+  // random name for a character who doesn't have one yet.
+  function buildNames() {
+    if (state.getName() == null) {
+      const actor = state.getActor();
+      const nameData = Name.getRandom(actor.gender, actor.species);
+      state.addTriggers(nameData.name.triggers||[]);
+      state.setActorData('name', nameData.name.name);
 
-    if (actorData.name == null) {
-      const nameData = Name.getRandom(actorData.gender, actorData.species);
-      triggers.push(...(nameData.name.triggers||[]))
-
-      actorData.name = nameData.name.name;
       if (nameData.title) {
-        actorData.title = nameData.title.name;
-        triggers.push(...(nameData.title.triggers||[]))
+        state.setActorData('title', nameData.title.name);
+        state.addTriggers(nameData.title.triggers||[]);
       }
       if (nameData.surname) {
-        actorData.surname = nameData.surname.name;
-        triggers.push(...(nameData.surname.triggers||[]))
+        state.setActorData('surname', nameData.surname.name);
+        state.addTriggers(nameData.surname.triggers||[]);
       }
     }
 
-    if (StringHelper.longestCommonSubstring(actorData.name, actorData.surname||'') > 3) {
-      throw new Error(`Character Rejected: Name[${actorData.name}] and Surname[${actorData.surname}] are too similar.`);
+    const named = state.getActor();
+    if (StringHelper.longestCommonSubstring(named.name, named.surname||'') > 3) {
+      throw new Error(`Character Rejected: Name[${named.name}] and Surname[${named.surname}] are too similar.`);
     }
   }
 
-  function buildPussy(sex, actorData) {
-    return [Gender.futa, Gender.female].includes(sex) ? PussyFactory.build(actorData) : null;
-  }
-
-  function buildBreasts(sex, actorData) {
-    return (Species.lookup(actorData.species).getBody().breasts && [Gender.futa, Gender.female].includes(sex)) ?
-      BreastsFactory.build(actorData) : null;
-  }
-
-  function buildCock(sex, actorData) {
-    return [Gender.futa, Gender.male].includes(sex) ? CockFactory.build(actorData) : null;
-  }
-
-  // TODO: The magical trigger will need to randomly select a spell or two to give to a character, then it will need to
-  //       add mana enough to cast their spells. The function will need to produce a mana component and a list of known
-  //       spells.
-  function applyMagical(triggers) {
-    if (triggers.includes('magical')) {
+  function applyMagical() {
+    if (state.takeTrigger('magical')) {
       Console.log(`Applied Magical`,{ system:'CharacterFactory', level:3 });
-      ArrayHelper.remove(triggers, 'magical');
     }
   }
 
-  // If a character is non-binary I still need to know their biological sex to build their various naughty bits. This
-  // value needs to be randomly chosen from the species gender ratio map with the enby option removed. Non-binary
-  // Kobolds and Vermens however are always biologically male.
-  function getBiologicalSex(species, gender) {
-    if (gender !== Gender.enby) { return gender; }
+  // Once every data block in the state has been built and every trigger consumed, the character is assembled from
+  // the state.
+  function createComponents(characterId) {
+    ActorComponent.create(characterId, state.getActor());
+    AnimaComponent.createBaseline(characterId);
+    AnimusComponent.createBaseline(characterId);
+    AnusComponent.create(characterId, state.getAnus());
+    ArousalComponent.create(characterId);
+    AttributesComponent.create(characterId, state.getAttributes());
+    BodyComponent.create(characterId, state.getBody());
+    HealthComponent.create(characterId, state.getHealth());
+    MouthComponent.create(characterId, state.getMouth());
+    PersonalityComponent.create(characterId, state.getPersonality());
+    SkillsComponent.create(characterId, state.getSkills());
+    SensitivitiesComponent.create(characterId, state.getSensitivities());
+    SexualPreferencesComponent.create(characterId, state.getSexualPreferences());
+    SexualHistoryComponent.create(characterId, state.getSexualHistory());
+    AspectsComponent.create(characterId, state.getAspects());
+    EquipmentComponent.create(characterId);
+    ExperienceComponent.create(characterId, state.getExperience());
+    InventoryComponent.create(characterId);
 
-    if ([SpeciesCode.kobold,SpeciesCode.vermen].includes(species.getCode())) {
-      return Gender.male;
-    }
+    if (state.getBreasts()) { BreastsComponent.create(characterId, state.getBreasts()); }
+    if (state.getCock()) { CockComponent.create(characterId, state.getCock()); }
+    if (state.getPussy()) { PussyComponent.create(characterId, state.getPussy()); }
 
-    const ratios = species.getGenderRatio();
-    return Random.fromFrequencyMap({
-      male: ratios.male,
-      female: ratios.female,
-      futa: ratios.futa,
-    });
+    CacheComponent.build(characterId);
+
+    Console.log('CharacterData',{ system:'CharacterFactory', data:{
+      attributes: state.getAttributes(),
+      personality: state.getPersonality(),
+      body: state.getBody(),
+      anus: state.getAnus(),
+      breasts: state.getBreasts() || {},
+      cock: state.getCock() || {},
+      mouth: state.getMouth(),
+      pussy: state.getPussy(),
+      sensitivitiesData: state.getSensitivities(),
+      sexualPreferences: state.getSexualPreferences(),
+      sexualHistory: state.getSexualHistory(),
+      aspects: state.getAspects(),
+    }});
   }
 
-  return Object.freeze({ build });
+  return Object.freeze({ build, startBuild, getState, endBuild });
 
 })();
