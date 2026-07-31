@@ -1,4 +1,7 @@
 
+// TODO: It makes no sense for 'how-do-you-taste' to come after this question. Questions need to have a way to remove
+//       other similar questions when asked. The reverse order is fine, so this isn't a symmetrical relationship.
+
 NegotiationQuestion.register('let-me-taste', {
   text: `{T:TargetName} smiles, staring at your {P:thickSixInchLongCock}, "Okay… let me taste it."`,
   dynamicRequirements: [
@@ -10,7 +13,8 @@ NegotiationQuestion.register('let-me-taste', {
     lick: { text:`You smile down at {T:him} and nod, "Hmm, okay. But just a lick."` },
     suck: { text:`You give {T:him} a lustful smile, grab {T:him} by the back of the head, and shove your cock into {T:his} mouth.` },
     piss: { text:`Looking down into {T:targetName's} open mouth, you decide to piss into it.` },
-  }
+  },
+  removes: ['how-do-you-taste'],
 });
 
 const koboldLick = `{T:TargetName} extends {T:his} long forked tongue, wrapping it tightly around your shaft, rubbing 
@@ -37,7 +41,7 @@ NegotiationQuestion.registerReaction('let-me-taste', {
     no: NegotiationReaction.attack(`{T:TargetName} snarls, "No? Maybe I'll just bite it off then."`),
     beg: NegotiationReaction.contest({
       random: true,
-      win: NegotiationReaction.join(`{T:TargetName} falls to {T:his} knees, "Please master. This one needs your thick cock filling {T:his} mouth."`),
+      win: NegotiationReaction.join(`{T:TargetName} smiles and falls to {T:his} knees, "Please master. This one needs your thick cock filling {T:his} mouth."`),
       loss: NegotiationReaction.greatRespect(`{T:TargetName} smiles and shakes {T:his} head, "Mmm, beg you? Maybe some day…"`),
     }),
     lick: NegotiationReaction.love(koboldLick),

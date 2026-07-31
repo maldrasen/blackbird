@@ -7,6 +7,7 @@ global.FunctionLoom = (function() {
       case `aWeaponName`: return compileWeaponName(context,argumentList,'a');
       case `hisWeaponName`: return compileWeaponName(context,argumentList,'his');
       case `theWeaponName`: return compileWeaponName(context,argumentList,'the');
+      case `yourWeaponName`: return compileWeaponName(context,argumentList,'your');
       default: throw new Error(`Unknown Loom Function: ${name}`);
     }
   }
@@ -56,6 +57,7 @@ global.FunctionLoom = (function() {
     if (nameType === 'proper') { return weaponName; }
     if (prefix === 'a') { return `${EnglishHelper.a_an(name)} ${weaponName}`; }
     if (prefix === 'his') { return `{${argumentList[0]}:his} ${weaponName}`; }
+    if (prefix === 'your') { return `your ${weaponName}`; }
 
     return `the ${weaponName}`;
   }
