@@ -1,9 +1,11 @@
 global.CharacterRequirements = (function() {
 
-  // Every builder here returns a closure with the shape (context) => boolean, so records can carry requirement
+  // Every function here returns a closure with the shape (context) => boolean, so records can carry requirement
   // predicates that any system evaluates the same way. The key names which character in a weaver style context the
   // predicate applies to. When the key is null the predicate is about "the subject": the character currently being
-  // built when a factory build is live, otherwise the context itself is a character id.
+  // built when a factory build is live, otherwise the context is a character id. Only some of these functions are
+  // defined in the CharacterFactoryState, and most of these functions don't need that kind of flexibility, and will
+  // always use the context[key] form.
   function subject(context, key) {
     if (key != null) { return Character(context[key]); }
     const state = CharacterFactory.getState();
