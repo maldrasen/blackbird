@@ -31,8 +31,8 @@ global.PlayerFactory = (function() {
       });
 
       AspectsFactory.build();
-      state.setAttributes(LevelSystem.buildAttributes(state.getActor(), state.getAspects()));
-      state.setHealth(LevelSystem.buildHealth(state.getAttributes(), state.getSpecies().getHealthFactor()));
+      AttributesFactory.build();
+      HealthFactory.build();
 
       BodyFactory.build();
       AnusFactory.build();

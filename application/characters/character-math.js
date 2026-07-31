@@ -1,5 +1,46 @@
 global.CharacterMath = (function() {
 
+  const positiveAspects = {
+    strength: 'strong',
+    dexterity: 'skillful',
+    vitality: 'healthy',
+    intelligence: 'smart',
+    beauty: 'beautiful',
+  };
+
+  const negativeAspects = {
+    strength: 'weak',
+    dexterity: 'clumsy',
+    vitality: 'sickly',
+    intelligence: 'stupid',
+    beauty: 'ugly',
+  };
+
+  // Roll a single attribute increase from the species grade, attribute aspects, and gender. This is shared by the
+  // attributes factory when rolling a new character's attributes and by the level system when leveling one up.
+  function attributeIncrease(attribute, actorData, aspectsData) {
+    const grade = Species.lookup(actorData.species).getAttributes()[attribute];
+    const increase = Random.between(1,5)
+      + LetterGradeHelper.attributeBase(grade)
+      + aspectModifier(attribute, aspectsData)
+      + genderBonus(attribute, actorData.gender);
+
+    return (increase < 1) ? 1 : increase;
+  }
+
+  function aspectModifier(attribute, aspectsData) {
+    let modifier = 0;
+    if (aspectsData[positiveAspects[attribute]]) { modifier += 2; }
+    if (aspectsData[negativeAspects[attribute]]) { modifier -= 2; }
+    return modifier;
+  }
+
+  function genderBonus(attribute, gender) {
+    if (attribute === Attrib.strength && gender === Gender.male) { return 1; }
+    if (attribute === Attrib.beauty && gender !== Gender.male) { return 1; }
+    return 0;
+  }
+
   // The speed factor is used frequently and comes from a lot of different factors. As such we cache it after
   // calculating it. Dexterity and body size are the primary influences on speed. We also take breast size into
   // consideration, as having a pair of huge swinging milkers will slow a person down significantly.
@@ -128,6 +169,7 @@ global.CharacterMath = (function() {
   }
 
   return Object.freeze({
+    attributeIncrease,
     calculateSpeedFactor,
     emotionBaseValue,
     personalityFactorValue,

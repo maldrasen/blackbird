@@ -51,36 +51,6 @@ describe("LevelSystem", function() {
     });
   });
 
-  describe("buildAttributes()", function() {
-    it("rolls each attribute from the baseline plus a single creation increase", function() {
-      const attributes = LevelSystem.buildAttributes({ species:'human', gender:Gender.female }, {});
-      expect(attributes.strength).to.be.within(9,13);
-      expect(attributes.beauty).to.be.within(10,14);
-    });
-
-    it("applies the male strength bonus", function() {
-      const attributes = LevelSystem.buildAttributes({ species:'human', gender:Gender.male }, {});
-      expect(attributes.strength).to.be.within(10,14);
-      expect(attributes.beauty).to.be.within(9,13);
-    });
-
-    it("applies attribute aspect modifiers", function() {
-      const attributes = LevelSystem.buildAttributes({ species:'human', gender:Gender.female }, { strong:1, sickly:1 });
-      expect(attributes.strength).to.be.within(11,15);
-      expect(attributes.vitality).to.be.within(7,11);
-    });
-  });
-
-  describe("buildHealth()", function() {
-    it("rolls health from vitality and the species health factor", function() {
-      const attributes = { strength:10, dexterity:10, vitality:10, intelligence:10, beauty:10 };
-      const health = LevelSystem.buildHealth(attributes, 2.0);
-
-      expect(health.maxHealth).to.be.within(20,200);
-      expect(health.currentHealth).to.equal(health.maxHealth);
-    });
-  });
-
   describe("monster leveling", function() {
     it("levels monsters through the same path", function() {
       const id = MonsterFactory.build('kobold-dick-puncher');

@@ -1,25 +1,7 @@
 global.LevelSystem = (function() {
 
-  const attributeBaseline = 5;
-
-  const positiveAspects = {
-    strength: 'strong',
-    dexterity: 'skillful',
-    vitality: 'healthy',
-    intelligence: 'smart',
-    beauty: 'beautiful',
-  };
-
-  const negativeAspects = {
-    strength: 'weak',
-    dexterity: 'clumsy',
-    vitality: 'sickly',
-    intelligence: 'stupid',
-    beauty: 'ugly',
-  };
-
   function levelUp(id, attribute) {
-    const increase = attributeIncrease(attribute, ActorComponent.lookup(id), AspectsComponent.lookup(id));
+    const increase = CharacterMath.attributeIncrease(attribute, ActorComponent.lookup(id), AspectsComponent.lookup(id));
     const attributes = AttributesComponent.lookup(id);
 
     attributes[attribute] += increase;
@@ -33,52 +15,6 @@ global.LevelSystem = (function() {
 
     return increase;
   }
-
-  function attributeIncrease(attribute, actorData, aspectsData) {
-    const grade = Species.lookup(actorData.species).getAttributes()[attribute];
-    const increase = Random.between(1,5)
-      + LetterGradeHelper.attributeBase(grade)
-      + aspectModifier(attribute, aspectsData)
-      + genderBonus(attribute, actorData.gender);
-
-    return (increase < 1) ? 1 : increase;
-  }
-
-  function aspectModifier(attribute, aspectsData) {
-    let modifier = 0;
-    if (aspectsData[positiveAspects[attribute]]) { modifier += 2; }
-    if (aspectsData[negativeAspects[attribute]]) { modifier -= 2; }
-    return modifier;
-  }
-
-  function genderBonus(attribute, gender) {
-    if (attribute === Attrib.strength && gender === Gender.male) { return 1; }
-    if (attribute === Attrib.beauty && gender !== Gender.male) { return 1; }
-    return 0;
-  }
-
-  // ========================
-  //    Character Creation
-  // ========================
-
-  function buildAttributes(actorData, aspectsData) {
-    const attributes = {};
-    Object.keys(Attrib).forEach(code => {
-      attributes[code] = attributeBaseline + attributeIncrease(code, actorData, aspectsData);
-    });
-    return attributes;
-  }
-
-  function buildHealth(attributes, healthFactor=1.0) {
-    const health = Math.round(Random.rollDice({ x:attributes.vitality, d:10 }) * healthFactor);
-    const stamina = Attributes(attributes).getMaxStamina();
-
-    return { currentStamina:stamina, currentHealth:health, maxHealth:health };
-  }
-
-  // ==============
-  //    Leveling
-  // ==============
 
   function getSpecies(id) {
     return Species.lookup(Character(id).getSpecies());
@@ -110,8 +46,6 @@ global.LevelSystem = (function() {
 
   return Object.freeze({
     levelUp,
-    buildAttributes,
-    buildHealth,
   });
 
 })();

@@ -79,8 +79,8 @@ global.CharacterFactory = (function() {
     TriggerFactory.addRandomTriggers();
 
     AspectsFactory.build();
-    state.setAttributes(LevelSystem.buildAttributes(state.getActor(), state.getAspects()));
-    state.setHealth(LevelSystem.buildHealth(state.getAttributes(), state.getSpecies().getHealthFactor()));
+    AttributesFactory.build();
+    HealthFactory.build();
     PersonalityFactory.build();
     SensitivitiesFactory.build();
     SkillsFactory.build();
@@ -166,7 +166,7 @@ global.CharacterFactory = (function() {
     SexualHistoryComponent.create(characterId, state.getSexualHistory());
     AspectsComponent.create(characterId, state.getAspects());
     EquipmentComponent.create(characterId);
-    ExperienceComponent.create(characterId, state.getExperience());
+    ExperienceComponent.create(characterId);
     InventoryComponent.create(characterId);
 
     if (state.getBreasts()) { BreastsComponent.create(characterId, state.getBreasts()); }

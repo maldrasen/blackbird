@@ -20,8 +20,6 @@ global.CharacterFactoryState = function(options={}) {
   if (options.title) { actorData.title = options.title; }
   if (options.surname) { actorData.surname = options.surname; }
 
-  const experienceData = { level:1, essence:EssenceSystem.totalEssenceToLevel(1, speciesCode) };
-
   // It's very important for triggers to be cloned from the options here. The factory might add incompatible triggers
   // that cause the character to be rejected. A rejected character is retried with a fresh state built from the
   // original options, so the original triggers array must never be changed.
@@ -116,7 +114,6 @@ global.CharacterFactoryState = function(options={}) {
     getArchetypes: () => { return options.archetypes ? { ...options.archetypes } : null; },
     getSexuality: () => { return options.sexuality; },
     getDefaultSkills: () => { return options.skills ? { ...options.skills } : null; },
-    getExperience: () => { return { ...experienceData }; },
 
     getActor: () => { return { ...actorData }; },
     getName: () => { return actorData.name; },
