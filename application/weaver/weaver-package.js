@@ -76,9 +76,7 @@ global.WeaverPackage = function(id) {
   }
 
   function meetsRequirement(part, context) {
-    if (part.requires == null) { return true; }
-    if (Array.isArray(part.requires)) { return part.requires.every(requirement => requirement(context)); }
-    return part.requires(context);
+    return CharacterRequirements.met(part.requires, context);
   }
 
   return Object.freeze({

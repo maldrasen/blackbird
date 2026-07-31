@@ -59,14 +59,11 @@ global.PersonalityFactory = (function() {
 
   function assertValid(code, actor) {
     const available = Object.keys(Species.lookup(actor.species).getArchetypes()[actor.gender]);
-    const requires = Archetype.lookup(code).getRequires();
 
     if (available.includes(code) === false) {
       throw new Error(`Character Rejected: Species[${actor.species}] cannot be an Archetype[${code}].`); }
-    if (requires === 'gender.male' && actor.gender !== Gender.male) {
-      throw new Error(`Character Rejected: Archetype[${code}] must be male.`); }
-    if (requires === 'gender.not-male' && actor.gender === Gender.male) {
-      throw new Error(`Character Rejected: Archetype[${code}] must not be male.`); }
+    if (CharacterRequirements.met(Archetype.lookup(code).getRequires(), null) === false) {
+      throw new Error(`Character Rejected: Archetype[${code}] requirements not met.`); }
   }
 
   return Object.freeze({

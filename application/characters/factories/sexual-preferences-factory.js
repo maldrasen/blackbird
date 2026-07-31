@@ -21,7 +21,7 @@ global.SexualPreferencesFactory = (function() {
     applyTriggers(sexualPreferences, state);
     applySpeciesPreferences(sexualPreferences, context);
     applyArchetypePreferences(sexualPreferences, context);
-    removeIncorrectPreferences(sexualPreferences, context);
+    removeIncorrectPreferences(sexualPreferences);
 
     state.setSexualPreferences(sexualPreferences);
   }
@@ -138,16 +138,11 @@ global.SexualPreferencesFactory = (function() {
   // It's possible that we've added preferences (like cervix-slut) to characters that don't have the matching
   // requirements (like a cervix and the cervix within the sensitivities object). Rather than check every time, we can
   // just remove everything that isn't applicable at the end.
-  function removeIncorrectPreferences(sexualPreferences, context) {
+  function removeIncorrectPreferences(sexualPreferences) {
     Object.keys(sexualPreferences).forEach(code => {
-      const preference = SexualPreference.lookup(code);
-      const senses = context.sensitivities;
+      const requires = SexualPreference.lookup(code).getRequires();
 
-      if (preference.getRequires() === 'breasts' && senses.breasts == null) { delete sexualPreferences[code]; }
-      if (preference.getRequires() === 'cock' && senses.cock == null) { delete sexualPreferences[code]; }
-      if (preference.getRequires() === 'pussy' && senses.pussy == null) { delete sexualPreferences[code]; }
-      if (preference.getRequires() === 'erogenousCervix' && senses.cervix == null) { delete sexualPreferences[code]; }
-      if (preference.getRequires() === 'erogenousUrethra' && senses.urethra == null) { delete sexualPreferences[code]; }
+      if (CharacterRequirements.met(requires, null) === false) { delete sexualPreferences[code]; }
 
       // If you don't like men, you don't love cocks, cum and getting pregnant.
       if (sexualPreferences.androphilic < 0) {

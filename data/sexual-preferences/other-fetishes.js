@@ -33,7 +33,7 @@ SexualPreference.register('stretcher',{
 SexualPreference.register('stud',{
   name: 'Stud',
   description: 'A love of impregnating others.',
-  requires: 'cock',
+  requires: CharacterRequirements.hasCock(),
 });
 
 SexualPreference.register('voyeur',{

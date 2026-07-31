@@ -1,6 +1,6 @@
 Archetype.register(ArchetypeCode.sweet, {
   name: 'Sweet',
-  requires: 'gender.not-male',
+  requires: CharacterRequirements.isNotMale(),
 
   outfitStyles: [OutfitStyle.flirty, OutfitStyle.sensible],
   denialStyle: DenialStyle.frightened,

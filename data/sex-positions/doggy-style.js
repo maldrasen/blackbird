@@ -1,19 +1,19 @@
-const playerA = WeaverRequirements.playerIs('A');
-const playerB = WeaverRequirements.playerIs('B');
+const playerA = CharacterRequirements.playerIs('A');
+const playerB = CharacterRequirements.playerIs('B');
 
-const isLoving = WeaverRequirements.withAttitude(Attitude.loving);
-const isLustful = WeaverRequirements.withAttitude(Attitude.lustful);
-const isAccepting = WeaverRequirements.withAttitude(Attitude.accepting);
-const isFearful = WeaverRequirements.withAttitude(Attitude.fearful);
-const isResistant = WeaverRequirements.withAttitude(Attitude.resistant);
-const isViolent = WeaverRequirements.withAttitude(Attitude.violent);
+const isLoving = CharacterRequirements.withAttitude(Attitude.loving);
+const isLustful = CharacterRequirements.withAttitude(Attitude.lustful);
+const isAccepting = CharacterRequirements.withAttitude(Attitude.accepting);
+const isFearful = CharacterRequirements.withAttitude(Attitude.fearful);
+const isResistant = CharacterRequirements.withAttitude(Attitude.resistant);
+const isViolent = CharacterRequirements.withAttitude(Attitude.violent);
 
-const aVisibleCock = WeaverRequirements.visibleCock('A');
-const bVisibleCock = WeaverRequirements.visibleCock('B');
-const aHardCock = WeaverRequirements.visibleHardCock('A');
-const bHardCock = WeaverRequirements.visibleHardCock('B');
-const bVisiblePussy = WeaverRequirements.visiblePussy('B');
-const bVisibleBreasts = WeaverRequirements.visibleBreasts('B');
+const aVisibleCock = CharacterRequirements.visibleCock('A');
+const bVisibleCock = CharacterRequirements.visibleCock('B');
+const aHardCock = CharacterRequirements.visibleHardCock('A');
+const bHardCock = CharacterRequirements.visibleHardCock('B');
+const bVisiblePussy = CharacterRequirements.visiblePussy('B');
+const bVisibleBreasts = CharacterRequirements.visibleBreasts('B');
 
 const rearrange = WeaverPackage('doggy-style.rearrange');
 const centipede = WeaverPackage('doggy-style.move-to-centipede');

@@ -1,4 +1,21 @@
-global.WeaverRequirements = (function() {
+global.CharacterRequirements = (function() {
+
+  // Every builder here returns a closure with the shape (context) => boolean, so records can carry requirement
+  // predicates that any system evaluates the same way. The key names which character in a weaver style context the
+  // predicate applies to. When the key is null the predicate is about "the subject": the character currently being
+  // built when a factory build is live, otherwise the context itself is a character id.
+  function subject(context, key) {
+    if (key != null) { return Character(context[key]); }
+    const state = CharacterFactory.getState();
+    return state != null ? state : Character(context);
+  }
+
+  // Evaluates a record's requires property: null means unconditional, an array must pass every predicate.
+  function met(requires, context) {
+    if (requires == null) { return true; }
+    if (Array.isArray(requires)) { return requires.every(requirement => requirement(context)); }
+    return requires(context);
+  }
 
   // playerWas() checks the player's key in the previousPosition context rather than the current one. Move packages
   // need this when the destination position is symmetric (like standing) and the current keys can't distinguish the
@@ -11,6 +28,11 @@ global.WeaverRequirements = (function() {
     return Character(context[key]).getSpecies() === code;
   }
 
+  // Be careful not to confuse isMale() with hasCock(). Some men don't have dicks, and some women do.
+  function isMale(context, key) {
+    return subject(context, key).isMale();
+  }
+
   // === Body Parts ===
 
   function isAnusEmpty(context, key) {
@@ -19,6 +41,10 @@ global.WeaverRequirements = (function() {
 
   function visibleAnus(context, key) {
     return Character(context[key]).isCrotchExposed();
+  }
+
+  function hasBreasts(context, key) {
+    return subject(context, key).hasBreasts();
   }
 
   function visibleBreasts(context, key) {
@@ -32,7 +58,7 @@ global.WeaverRequirements = (function() {
   }
 
   function hasCock(context, key) {
-    return Character(context[key]).hasNormalCock();
+    return subject(context, key).hasNormalCock();
   }
 
   function visibleCock(context, key) {
@@ -50,17 +76,21 @@ global.WeaverRequirements = (function() {
     return character.hasNormalCock() && character.cockIsAtLeast(size);
   }
 
+  function hasPussy(context, key) {
+    return subject(context, key).hasNormalPussy();
+  }
+
   function visiblePussy(context, key) {
     const character = Character(context[key]);
     return character.hasNormalPussy() && character.isCrotchExposed();
   }
 
-  function isTallerThan(context, first, second) {
-    return Character(context[first]).isTallerThan(context[second]);
+  function erogenousZone(context, key, zone) {
+    return subject(context, key).hasSensitivity(zone);
   }
 
-  function isMale(context, key) {
-    return Character(context[key]).isMale();
+  function isTallerThan(context, first, second) {
+    return Character(context[first]).isTallerThan(context[second]);
   }
 
   // === Attributes ===
@@ -102,27 +132,37 @@ global.WeaverRequirements = (function() {
   }
 
   // Most of these functions are passthroughs to the Character wrapper, but these are all closures that can be added
-  // to a WeaverPackage, whereas other systems will use the Character wrappers directly.
+  // to a record or a WeaverPackage, whereas other systems will use the Character wrappers directly.
   return Object.freeze({
+    met,
+
     playerIs: key =>                         { return (context) => { return GameSystem.getState().getPlayer() === context[key]; }},
     playerWas: key =>                        { return (context) => { return playerWas(context, key); }},
     isSpecies: (key, code) =>                { return (context) => { return isSpecies(context, key, code); }},
+    isMale: key =>                           { return (context) => { return isMale(context, key); }},
+    isNotMale: key =>                        { return (context) => { return isMale(context, key) === false; }},
+
+    // No subject with these...
     withAttitude: code =>                    { return (context) => { return context.attitude === code; }},
     withAction: code =>                      { return (context) => { return context.action === code; }},
     withHitLocation: (...slots) =>           { return (context) => { return slots.includes(context.hitLocation); }},
+
     isAnusEmpty: key =>                      { return (context) => { return isAnusEmpty(context, key); }},
     visibleAnus: key =>                      { return (context) => { return visibleAnus(context, key); }},
-    visibleBreasts: key =>                   { return (context) => { return visibleBreasts(context,key); }},
-    minimumBreastSize: (key,size) =>         { return (context) => { return minimumBreastSize(context,key,size); }},
+    hasBreasts: key =>                       { return (context) => { return hasBreasts(context, key); }},
+    visibleBreasts: key =>                   { return (context) => { return visibleBreasts(context, key); }},
+    minimumBreastSize: (key, size) =>        { return (context) => { return minimumBreastSize(context, key, size); }},
     hasCock: key =>                          { return (context) => { return hasCock(context, key); }},
     hasNoCock: key =>                        { return (context) => { return hasCock(context, key) === false; }},
     visibleCock: key =>                      { return (context) => { return visibleCock(context, key); }},
     notVisibleCock: key =>                   { return (context) => { return visibleCock(context, key) === false; }},
     visibleHardCock: key =>                  { return (context) => { return visibleHardCock(context, key) }},
-    minimumCockSize: (key,size) =>           { return (context) => { return minimumCockSize(context, key, size); }},
+    minimumCockSize: (key, size) =>          { return (context) => { return minimumCockSize(context, key, size); }},
+    hasPussy: key =>                         { return (context) => { return hasPussy(context, key); }},
     visiblePussy: key =>                     { return (context) => { return visiblePussy(context, key); }},
+    erogenousCervix: key =>                  { return (context) => { return erogenousZone(context, key, 'cervix'); }},
+    erogenousUrethra: key =>                 { return (context) => { return erogenousZone(context, key, 'urethra'); }},
     isTallerThan: (first, second) =>         { return (context) => { return isTallerThan(context, first, second) }},
-    isMale: key =>                           { return (context) => { return isMale(context, key); }},
     minimumStrength: (key, min) =>           { return (context) => { return minimumStrength(context, key, min); }},
     minimumIntelligence: (key, min) =>       { return (context) => { return minimumIntelligence(context, key, min); }},
     chestIsCovered: key =>                   { return (context) => { return chestIsCovered(context, key); }},

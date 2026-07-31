@@ -2,7 +2,7 @@
 NegotiationQuestion.register('how-do-you-taste', {
   text: `So what do humans taste like anyway?`,
   staticRequirements: [
-    WeaverRequirements.isSpecies('P','human'),
+    CharacterRequirements.isSpecies('P','human'),
   ],
   answers: {
     bad:     { text:`"Uh... really bad. You wouldn't like it at all."` },

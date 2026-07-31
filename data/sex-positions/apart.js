@@ -1,12 +1,12 @@
 
-const isLoving = WeaverRequirements.withAttitude(Attitude.loving);
-const isLustful = WeaverRequirements.withAttitude(Attitude.lustful);
-const isAccepting = WeaverRequirements.withAttitude(Attitude.accepting);
-const isFearful = WeaverRequirements.withAttitude(Attitude.fearful);
-const isResistant = WeaverRequirements.withAttitude(Attitude.resistant);
-const isViolent = WeaverRequirements.withAttitude(Attitude.violent);
-const forStriptease = WeaverRequirements.withAction('striptease');
-const forFootMassage = WeaverRequirements.withAction('massage-feet');
+const isLoving = CharacterRequirements.withAttitude(Attitude.loving);
+const isLustful = CharacterRequirements.withAttitude(Attitude.lustful);
+const isAccepting = CharacterRequirements.withAttitude(Attitude.accepting);
+const isFearful = CharacterRequirements.withAttitude(Attitude.fearful);
+const isResistant = CharacterRequirements.withAttitude(Attitude.resistant);
+const isViolent = CharacterRequirements.withAttitude(Attitude.violent);
+const forStriptease = CharacterRequirements.withAction('striptease');
+const forFootMassage = CharacterRequirements.withAction('massage-feet');
 
 const rearrange = WeaverPackage('apart.rearrange');
 

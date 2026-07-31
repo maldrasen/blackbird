@@ -82,6 +82,7 @@ global.CharacterFactoryState = function(options={}) {
   function shouldHaveBreasts() { return Boolean(species.getBody().breasts) && [Gender.futa, Gender.female].includes(biologicalSex); }
 
   // These predicates mirror the ones on Character(), so that requirements can be checked against a character mid-build.
+  function isMale() { return genderCode === Gender.male; }
   function hasBreasts() { return blocks.breasts != null; }
   function hasNormalCock() { return blocks.cock != null && blocks.cock.placement === 'normal'; }
   function hasNormalPussy() { return blocks.pussy != null && blocks.pussy.placement === 'normal'; }
@@ -180,6 +181,7 @@ global.CharacterFactoryState = function(options={}) {
     shouldHavePussy,
     shouldHaveCock,
     shouldHaveBreasts,
+    isMale,
     hasBreasts,
     hasNormalCock,
     hasNormalPussy,

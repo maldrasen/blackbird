@@ -2,12 +2,12 @@
 // The serious characters are more interested in exploring the dungeon than they are in being trained for sex, but they
 // know it's part of the arrangement. They're violent when they need to be, and take situations seriously.
 
-const strong = WeaverRequirements.minimumStrength('T', 20);
-const taller = WeaverRequirements.isTallerThan('T', 'P');
-const bigCock = WeaverRequirements.minimumCockSize('T', 'big');
-const legsCovered = WeaverRequirements.legsAreCovered('T');
-const bigBreasts = WeaverRequirements.minimumBreastSize('T', 'big');
-const chestCovered = WeaverRequirements.chestIsCovered('T');
+const strong = CharacterRequirements.minimumStrength('T', 20);
+const taller = CharacterRequirements.isTallerThan('T', 'P');
+const bigCock = CharacterRequirements.minimumCockSize('T', 'big');
+const legsCovered = CharacterRequirements.legsAreCovered('T');
+const bigBreasts = CharacterRequirements.minimumBreastSize('T', 'big');
+const chestCovered = CharacterRequirements.chestIsCovered('T');
 
 const eager = WeaverPackage('serious.propose-training.eager');
 const willing = WeaverPackage('serious.propose-training.willing');

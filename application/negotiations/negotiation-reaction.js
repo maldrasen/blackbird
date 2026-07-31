@@ -75,7 +75,7 @@ global.NegotiationReaction = (function() {
   function givePreferences(preferences, context) {
     Object.keys(preferences).forEach(code => {
       const requires = SexualPreference.lookup(code).getRequires();
-      if (meetsRequirement(context.T, requires) === false) {
+      if (CharacterRequirements.met(requires, context.T) === false) {
         throw new Error(`Sexual preference [${code}] is incompatible with Character[${context.T}]`);
       }
       if (preferences[code] === 0) {
@@ -84,18 +84,6 @@ global.NegotiationReaction = (function() {
         SexualPreferencesComponent.update(context.T, { [code]: preferences[code] });
       }
     });
-  }
-
-  function meetsRequirement(id, requires) {
-    switch (requires) {
-      case undefined:          return true;
-      case 'breasts':          return Character(id).hasBreasts();
-      case 'cock':             return Character(id).hasNormalCock();
-      case 'pussy':            return Character(id).hasNormalPussy();
-      case 'erogenousCervix':  return SensitivitiesComponent.lookup(id).cervix != null;
-      case 'erogenousUrethra': return SensitivitiesComponent.lookup(id).urethra != null;
-    }
-    throw new Error(`Unknown sexual preference requirement [${requires}]`);
   }
 
   function reactWith(feelings, message, options) {

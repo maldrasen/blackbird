@@ -1,6 +1,6 @@
 Archetype.register(ArchetypeCode.bitch, {
   name: 'Bitch',
-  requires: 'gender.not-male',
+  requires: CharacterRequirements.isNotMale(),
 
   outfitStyles: [OutfitStyle.sensible],
   denialStyle: DenialStyle.violent,

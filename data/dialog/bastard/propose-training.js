@@ -3,13 +3,13 @@
 // I wanted to separate bastards and bitches though as there's a definite gender difference between the two dialog
 // trees.
 
-const legsCovered = WeaverRequirements.legsAreCovered('T');
-const bigCock = WeaverRequirements.minimumCockSize('T', 'big');
-const taller = WeaverRequirements.isTallerThan('T', 'P');
-const strong = WeaverRequirements.minimumStrength('T', 20);
-const wouldSuckWillingly = WeaverRequirements.wouldConsentTo('T', 'suck-cock', Consent.willing);
-const wouldSuckReluctantly = WeaverRequirements.wouldConsentTo('T', 'suck-cock', Consent.reluctant);
-const isKobold = WeaverRequirements.isSpecies('T', 'kobold');
+const legsCovered = CharacterRequirements.legsAreCovered('T');
+const bigCock = CharacterRequirements.minimumCockSize('T', 'big');
+const taller = CharacterRequirements.isTallerThan('T', 'P');
+const strong = CharacterRequirements.minimumStrength('T', 20);
+const wouldSuckWillingly = CharacterRequirements.wouldConsentTo('T', 'suck-cock', Consent.willing);
+const wouldSuckReluctantly = CharacterRequirements.wouldConsentTo('T', 'suck-cock', Consent.reluctant);
+const isKobold = CharacterRequirements.isSpecies('T', 'kobold');
 
 const eager = WeaverPackage('bastard.propose-training.eager');
 const willing = WeaverPackage('bastard.propose-training.willing');

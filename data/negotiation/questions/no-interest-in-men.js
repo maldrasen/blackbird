@@ -2,9 +2,9 @@
 NegotiationQuestion.register('no-interest-men', {
   text: `The {T:species.elf} crosses his arms over his chest and frowns, "Just so you know, I've got no interest in men like you."`,
   staticRequirements: [
-    WeaverRequirements.isMale('P'),
-    WeaverRequirements.isMale('T'),
-    WeaverRequirements.isStraight('T'),
+    CharacterRequirements.isMale('P'),
+    CharacterRequirements.isMale('T'),
+    CharacterRequirements.isStraight('T'),
   ],
   answers: {
     noNeed: { text:`You shake your head, "I don't need you for that."` },

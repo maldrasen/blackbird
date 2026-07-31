@@ -2,10 +2,6 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
-## Priority 1
-
-- [150] Unify record requires into requirement predicates `3pt` — [150-unify-requires-predicates.md](150-unify-requires-predicates.md)
-
 ## Priority 2
 
 - [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)

@@ -3,11 +3,11 @@
 // either going to end up in the serious or nice archetype, and as such we'll need a lot of variety in these dialog
 // trees.
 
-const legsCovered = WeaverRequirements.legsAreCovered('T');
-const hugeCock = WeaverRequirements.minimumCockSize('T', 'huge');
-const bigCock = WeaverRequirements.minimumCockSize('T', 'big');
+const legsCovered = CharacterRequirements.legsAreCovered('T');
+const hugeCock = CharacterRequirements.minimumCockSize('T', 'huge');
+const bigCock = CharacterRequirements.minimumCockSize('T', 'big');
 
-const noHomo = [WeaverRequirements.isMale('P'), WeaverRequirements.isStraight('T')];
+const noHomo = [CharacterRequirements.isMale('P'), CharacterRequirements.isStraight('T')];
 const maybeHomo = context => noHomo.some(requirement => requirement(context) === false);
 
 const eager = WeaverPackage('nice.propose-training.eager');

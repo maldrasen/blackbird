@@ -1,8 +1,8 @@
 
 const targetsHitLocation = `{T:targetName's} {@hitLocation}`;
 
-const isLowAttack = WeaverRequirements.withHitLocation(EquipmentSlot.legs, EquipmentSlot.feet);
-const isHighAttack = WeaverRequirements.withHitLocation(EquipmentSlot.chest, EquipmentSlot.head);
+const isLowAttack = CharacterRequirements.withHitLocation(EquipmentSlot.legs, EquipmentSlot.feet);
+const isHighAttack = CharacterRequirements.withHitLocation(EquipmentSlot.chest, EquipmentSlot.head);
 
 const basicSwing = WeaverPackage('attack-text.basic-swing');
 const basicThrust = WeaverPackage('attack-text.basic-thrust');

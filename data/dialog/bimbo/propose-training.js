@@ -2,24 +2,24 @@
 // characters never get too smart. Bimbos will also always be females or futas so we know they at least have tits,
 // though not always necessarily large tits.
 
-const pHasCock = WeaverRequirements.hasCock('P');
-const pBigCock = WeaverRequirements.minimumCockSize('P', 'big');
-const pHugeCock = WeaverRequirements.minimumCockSize('P', 'huge');
+const pHasCock = CharacterRequirements.hasCock('P');
+const pBigCock = CharacterRequirements.minimumCockSize('P', 'big');
+const pHugeCock = CharacterRequirements.minimumCockSize('P', 'huge');
 
-const tHasCock = WeaverRequirements.hasCock('T');
-const tVisibleCock = WeaverRequirements.visibleCock('T');
-const tVisibleAnus = WeaverRequirements.visibleAnus('T');
-const tBigBreasts = WeaverRequirements.minimumBreastSize('T', 'big');
-const tHugeBreasts = WeaverRequirements.minimumBreastSize('T', 'huge');
-const tBreastsVisible = WeaverRequirements.visibleBreasts('T');
-const tConsentsTitfuck = WeaverRequirements.wouldConsentTo('T', 'get-titfuck', Consent.willing);
-const tConsentsBlowjob = WeaverRequirements.wouldConsentTo('T', 'get-blowjob', Consent.willing);
-const tConsentsRimming = WeaverRequirements.wouldConsentTo('T', 'get-rimming', Consent.willing);
-const tConsentsAnal = WeaverRequirements.wouldConsentTo('T', 'fuck-anus', Consent.willing);
-const tAnalSlut = WeaverRequirements.hasSexualPreference('T', 'anal-slut', 30);
-const tAnusEmpty = WeaverRequirements.isAnusEmpty('T');
-const tCockLover = WeaverRequirements.hasSexualPreference('T', 'cock-lover', 20);
-const tChestEquipped = WeaverRequirements.chestIsCovered('T');
+const tHasCock = CharacterRequirements.hasCock('T');
+const tVisibleCock = CharacterRequirements.visibleCock('T');
+const tVisibleAnus = CharacterRequirements.visibleAnus('T');
+const tBigBreasts = CharacterRequirements.minimumBreastSize('T', 'big');
+const tHugeBreasts = CharacterRequirements.minimumBreastSize('T', 'huge');
+const tBreastsVisible = CharacterRequirements.visibleBreasts('T');
+const tConsentsTitfuck = CharacterRequirements.wouldConsentTo('T', 'get-titfuck', Consent.willing);
+const tConsentsBlowjob = CharacterRequirements.wouldConsentTo('T', 'get-blowjob', Consent.willing);
+const tConsentsRimming = CharacterRequirements.wouldConsentTo('T', 'get-rimming', Consent.willing);
+const tConsentsAnal = CharacterRequirements.wouldConsentTo('T', 'fuck-anus', Consent.willing);
+const tAnalSlut = CharacterRequirements.hasSexualPreference('T', 'anal-slut', 30);
+const tAnusEmpty = CharacterRequirements.isAnusEmpty('T');
+const tCockLover = CharacterRequirements.hasSexualPreference('T', 'cock-lover', 20);
+const tChestEquipped = CharacterRequirements.chestIsCovered('T');
 
 const eager = WeaverPackage('bimbo.propose-training.eager');
 const willing = WeaverPackage('bimbo.propose-training.willing');

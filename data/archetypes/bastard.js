@@ -1,6 +1,6 @@
 Archetype.register(ArchetypeCode.bastard, {
   name: 'Bastard',
-  requires: 'gender.male',
+  requires: CharacterRequirements.isMale(),
 
   outfitStyles: [OutfitStyle.sensible],
   denialStyle: DenialStyle.violent,

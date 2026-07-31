@@ -3,7 +3,7 @@ const eager = WeaverPackage('timid.propose-training.eager');
 const willing = WeaverPackage('timid.propose-training.willing');
 const reluctant = WeaverPackage('timid.propose-training.reluctant');
 const unwilling = WeaverPackage('timid.propose-training.unwilling');
-const isKobold = WeaverRequirements.isSpecies('T', 'kobold');
+const isKobold = CharacterRequirements.isSpecies('T', 'kobold');
 
 Dialog.register(ArchetypeCode.timid, DialogKeys.proposeTraining_Eager, eager);
 Dialog.register(ArchetypeCode.timid, DialogKeys.proposeTraining_Willing, willing);

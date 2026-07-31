@@ -84,11 +84,9 @@ global.CharacterFactory = (function() {
     PersonalityFactory.build();
     SensitivitiesFactory.build();
     SkillsFactory.build();
-
     SexualityFactory.build();
     SexualPreferencesFactory.makeAdjustments();
     SexualHistoryFactory.build();
-
     BodyFactory.applyTriggers();
     AnusFactory.applyTriggers();
     MouthFactory.applyTriggers();

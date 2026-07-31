@@ -6,8 +6,8 @@
 NegotiationQuestion.register('show-it-to-me', {
   text: `Hmm, I want to know what you're working with. Why don't you whip it out for me?`,
   staticRequirements: [
-    WeaverRequirements.notVisibleCock('P'),
-    WeaverRequirements.hasCock('P'),
+    CharacterRequirements.notVisibleCock('P'),
+    CharacterRequirements.hasCock('P'),
   ],
   answers: {
     threaten: { text:`You raise your weapon, pointing it at {T:him}.` },
