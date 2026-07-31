@@ -1,8 +1,8 @@
 const playerA = CharacterRequirements.playerIs('A');
 const playerB = CharacterRequirements.playerIs('B');
 
-const playerWasBehind = CharacterRequirements.playerWas('A');
-const playerWasInFront = CharacterRequirements.playerWas('B');
+const playerWasBehind = TrainingRequirements.playerWas('A');
+const playerWasInFront = TrainingRequirements.playerWas('B');
 
 const isLoving = TrainingRequirements.withAttitude(Attitude.loving);
 const isLustful = TrainingRequirements.withAttitude(Attitude.lustful);

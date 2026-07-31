@@ -10,13 +10,6 @@ global.CharacterRequirements = (function() {
     return state != null ? state : Character(context);
   }
 
-  // playerWas() checks the player's key in the previousPosition context rather than the current one. Move packages
-  // need this when the destination position is symmetric (like standing) and the current keys can't distinguish the
-  // roles the actors just left.
-  function playerWas(context, key) {
-    return context.previousPosition != null && GameSystem.getState().getPlayer() === context.previousPosition[key];
-  }
-
   function isSpecies(context, key, code) {
     return Character(context[key]).getSpecies() === code;
   }
@@ -124,11 +117,8 @@ global.CharacterRequirements = (function() {
     return Character(context[key]).isStraight();
   }
 
-  // Most of these functions are passthroughs to the Character wrapper, but these are all closures that can be added
-  // to a record or a WeaverPackage, whereas other systems will use the Character wrappers directly.
   return Object.freeze({
     playerIs: key =>                         { return (context) => { return GameSystem.getState().getPlayer() === context[key]; }},
-    playerWas: key =>                        { return (context) => { return playerWas(context, key); }},
     isSpecies: (key, code) =>                { return (context) => { return isSpecies(context, key, code); }},
     isMale: key =>                           { return (context) => { return isMale(context, key); }},
     isNotMale: key =>                        { return (context) => { return isMale(context, key) === false; }},
