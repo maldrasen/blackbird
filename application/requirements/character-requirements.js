@@ -132,12 +132,6 @@ global.CharacterRequirements = (function() {
     isSpecies: (key, code) =>                { return (context) => { return isSpecies(context, key, code); }},
     isMale: key =>                           { return (context) => { return isMale(context, key); }},
     isNotMale: key =>                        { return (context) => { return isMale(context, key) === false; }},
-
-    // No subject with these...
-    withAttitude: code =>                    { return (context) => { return context.attitude === code; }},
-    withAction: code =>                      { return (context) => { return context.action === code; }},
-    withHitLocation: (...slots) =>           { return (context) => { return slots.includes(context.hitLocation); }},
-
     isAnusEmpty: key =>                      { return (context) => { return isAnusEmpty(context, key); }},
     visibleAnus: key =>                      { return (context) => { return visibleAnus(context, key); }},
     hasBreasts: key =>                       { return (context) => { return hasBreasts(context, key); }},

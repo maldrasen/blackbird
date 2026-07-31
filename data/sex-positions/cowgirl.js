@@ -1,12 +1,12 @@
 const playerA = CharacterRequirements.playerIs('A');
 const playerB = CharacterRequirements.playerIs('B');
 
-const isLoving = CharacterRequirements.withAttitude(Attitude.loving);
-const isLustful = CharacterRequirements.withAttitude(Attitude.lustful);
-const isAccepting = CharacterRequirements.withAttitude(Attitude.accepting);
-const isFearful = CharacterRequirements.withAttitude(Attitude.fearful);
-const isResistant = CharacterRequirements.withAttitude(Attitude.resistant);
-const isViolent = CharacterRequirements.withAttitude(Attitude.violent);
+const isLoving = TrainingRequirements.withAttitude(Attitude.loving);
+const isLustful = TrainingRequirements.withAttitude(Attitude.lustful);
+const isAccepting = TrainingRequirements.withAttitude(Attitude.accepting);
+const isFearful = TrainingRequirements.withAttitude(Attitude.fearful);
+const isResistant = TrainingRequirements.withAttitude(Attitude.resistant);
+const isViolent = TrainingRequirements.withAttitude(Attitude.violent);
 
 const aVisiblePussy = CharacterRequirements.visiblePussy('A');
 const bVisiblePussy = CharacterRequirements.visiblePussy('B');
