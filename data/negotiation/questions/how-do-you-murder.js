@@ -6,7 +6,7 @@ NegotiationQuestion.register('how-do-you-murder', {
     unknown: { text:`"That's something that no one would ever find out."` },
     cruel:   { text:`"Oh I'd take my time, and make it as painful as possible."` },
     cock:    { text:`"Suffocation. I'd deepthroat someone, feeling them choking on my cock with their last breath."`, requires:WeaverRequirements.hasCock('P') },
-    ass:     { text:`"Suffocation. I'd like to see someone struggling under me while I'm sitting on their face.`, requires:WeaverRequirements.hasNoCock('P') }
+    ass:     { text:`"Suffocation. I'd like to see someone struggling under me while I'm sitting on their face."`, requires:WeaverRequirements.hasNoCock('P') }
   }
 });
 
