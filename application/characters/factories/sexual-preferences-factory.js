@@ -142,7 +142,7 @@ global.SexualPreferencesFactory = (function() {
     Object.keys(sexualPreferences).forEach(code => {
       const requires = SexualPreference.lookup(code).getRequires();
 
-      if (CharacterRequirements.met(requires, null) === false) { delete sexualPreferences[code]; }
+      if (Requirements.met(requires) === false) { delete sexualPreferences[code]; }
 
       // If you don't like men, you don't love cocks, cum and getting pregnant.
       if (sexualPreferences.androphilic < 0) {

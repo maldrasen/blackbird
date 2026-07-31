@@ -75,7 +75,7 @@ global.NegotiationReaction = (function() {
   function givePreferences(preferences, context) {
     Object.keys(preferences).forEach(code => {
       const requires = SexualPreference.lookup(code).getRequires();
-      if (CharacterRequirements.met(requires, context.T) === false) {
+      if (Requirements.met(requires, context.T) === false) {
         throw new Error(`Sexual preference [${code}] is incompatible with Character[${context.T}]`);
       }
       if (preferences[code] === 0) {

@@ -181,6 +181,7 @@
     "application/records/status-effect.js",
     "application/requirements/character-requirements.js",
     "application/requirements/negotiation-requirements.js",
+    "application/requirements/requirements.js",
     "application/test/battle-fixtures.js",
     "application/test/character-fixtures.js",
     "application/test/fixtures.js",

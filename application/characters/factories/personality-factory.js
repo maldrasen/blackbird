@@ -62,7 +62,7 @@ global.PersonalityFactory = (function() {
 
     if (available.includes(code) === false) {
       throw new Error(`Character Rejected: Species[${actor.species}] cannot be an Archetype[${code}].`); }
-    if (CharacterRequirements.met(Archetype.lookup(code).getRequires(), null) === false) {
+    if (Requirements.met(Archetype.lookup(code).getRequires()) === false) {
       throw new Error(`Character Rejected: Archetype[${code}] requirements not met.`); }
   }
 
