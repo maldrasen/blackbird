@@ -8,12 +8,14 @@ reviewed and approved. Implement one unit, stop, wait. This is a guideline, not 
 review at once" rule is inherently fuzzy. When a change sits near the boundary, do the smaller piece and ask.
 
 ## What counts as one unit
-A unit is the smallest change that leaves the repo in a coherent state; the tests pass, the app still loads. Mechanical
-follow-through required for that coherence (updating callsites, regenerating the manifest, adjusting tests that only 
-cover the changed code) belongs to the unit, not the next one. If you find yourself writing "and then", it's two units.
+A unit is the smallest change that can be described as a single step. After a step has been implemented it's important
+that the app still loads, but an in progress feature doesn't need to be functional until it's complete. The test suite
+is allowed to be failing while a task is in progress, provided that the tests all pass once it's complete. Mechanical
+follow-through required for coherence (updating callsites, regenerating the manifest, adjusting tests that only
+cover the changed code) can belong to the current step.
 
 A unit is not:
-- "Implement [feature]"
+- Implement "feature"
 - Changes spanning unrelated modules
 
 ## Stop protocol
