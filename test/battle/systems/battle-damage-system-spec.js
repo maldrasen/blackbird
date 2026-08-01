@@ -208,9 +208,9 @@ describe("BattleDamageSystem", function() {
       expect(damage).to.equal(100);
     });
 
-    // The kobold trappers always wear a leather doublet, which covers the chest and replaces their natural armor
-    // there. The secondary slot is cleared because a trapper can roll a shield loadout.
-    it("covers a hit location with worn armor instead of natural armor", function() {
+    // The kobold trappers always wear a leather doublet over their scales, so the chest takes both reductions.
+    // The secondary slot is cleared because a trapper can roll a shield loadout.
+    it("stacks natural armor with worn armor", function() {
       BattleFixtures.prepareForBattle();
       BattleSystem.startBattle({ encounter:'kobold-trappers', ambushState:'normal' });
       const target = BattleSystem.getState().getActiveMonsters()[0];
@@ -219,7 +219,7 @@ describe("BattleDamageSystem", function() {
       const damage = BattleDamageSystem.applyDamage({
         entity:target, damageTypes:{ slash:100 }, hitLocation:EquipmentSlot.chest });
 
-      expect(damage).to.equal(79);
+      expect(damage).to.equal(74);
     });
   });
 

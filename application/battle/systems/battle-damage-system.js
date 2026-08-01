@@ -50,33 +50,18 @@ global.BattleDamageSystem = (function() {
   function getReductionPercent(target, hitLocation, type) {
     if ([DamageType.crush, DamageType.pierce, DamageType.slash].includes(type)) {
       if (hitLocation == null) { throw new Error(`applyDamage() requires a hit location.`); }
-      const reduction = getEquippedReduction(target, hitLocation, type) + getNaturalReduction(target, hitLocation, type);
+      const reduction = getEquippedReduction(target, hitLocation, type) + getNaturalReduction(target, type);
       return Math.min(reduction, maxReduction);
     }
     throw new Error(`TODO: Equipment elemental resistances.`);
   }
 
   function getEquippedReduction(target, hitLocation, type) {
-    if (EquipmentComponent.lookup(target) == null) { return 0; }
-    return EquipmentManager(target).getDamageReduction(hitLocation, type);
+    return EquipmentComponent.lookup(target) ? EquipmentManager(target).getDamageReduction(hitLocation, type) : 0;
   }
 
-  // TODO: If a monster is wearing armor on a hit location then the worn armor value is used. If they have natural
-  //       armor there, then the natural armor us used. A real question here is should natural armor reduction be
-  //       added to worn armor reduction. With this system a dragon who puts on a pair of leather gloves would take
-  //       extra damage. This might just be academic though. Monsters should either wear armor or have natural armor.
-  //       Then there's no conflict. But if we ever give a species like kobolds natural armor for their scales then
-  //       this will create a conflict.
-
-  function getNaturalReduction(target, hitLocation, type) {
-    if (MonsterComponent.lookup(target) == null) { return 0; }
-    if (getArmorAt(target, hitLocation) != null) { return 0; }
-    return Monster(target).getNaturalArmor()[type] || 0;
-  }
-
-  function getArmorAt(target, hitLocation) {
-    if (EquipmentComponent.lookup(target) == null) { return null; }
-    return EquipmentManager(target).getArmorAt(hitLocation);
+  function getNaturalReduction(target, type) {
+    return MonsterComponent.lookup(target) ? (Monster(target).getNaturalArmor()[type] || 0) : 0
   }
 
   // Monsters simply die at zero health. Characters brought to zero or below are knocked out, keeping their negative
