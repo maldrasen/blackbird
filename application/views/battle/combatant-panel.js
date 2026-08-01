@@ -4,6 +4,7 @@ global.CombatantPanel = function(type, entity) {
   Validate.exists('CombatantPanel.entity',entity);
 
   let healthBar;
+  let positionKey;
 
   const element = X.createElement(`<div class='combatant ${type}' data-id="${entity}">
     <div class='fill content'>
@@ -114,15 +115,17 @@ global.CombatantPanel = function(type, entity) {
     },500);
   }
 
-  function getPosition() {
-    return X.hasClass(element,'removed') ? null : element.closest('.position').dataset['position'];
+  function setPosition(key) {
+    positionKey = key;
+    element.dataset.position = key;
   }
 
   return Object.freeze({
     getType: () => { return type; },
     getEntity: () => { return entity; },
     getElement: () => { return element; },
-    getPosition,
+    getPosition: () => { return positionKey; },
+    setPosition,
     build,
     update,
   });

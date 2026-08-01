@@ -231,7 +231,7 @@ $roll-high-bright: rgb(250,250,250);
 }
 
 #battleView.inspect-mode {
-  .position:has(.combatant):hover {
+  .combatant:hover {
     cursor: pointer;
     border-color: rgb(57, 64, 63);
     .background-cover {
@@ -256,6 +256,21 @@ $roll-high-bright: rgb(250,250,250);
   }
 
   .position.valid-target:hover {
+    border-color: rgb(166,109,45);
+    .background-cover {
+      background-color: rgba(76,45,10,0.5);
+    }
+  }
+
+  .combatant.valid-target {
+    cursor: pointer;
+    border-color: rgb(99,65,26);
+    .background-cover {
+      background-color: rgba(53,32,9,0.5);
+    }
+  }
+
+  .combatant.valid-target:hover {
     border-color: rgb(166,109,45);
     .background-cover {
       background-color: rgba(76,45,10,0.5);

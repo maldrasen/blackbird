@@ -5,8 +5,8 @@ global.FormationPanel = (function() {
   let movesInFlight = 0;
 
   function init() {
-    X.onClick('#battleView.target-mode .position.valid-target', targetSelected);
-    X.onClick('#battleView.inspect-mode .position:has(.combatant)', inspectPosition);
+    X.onClick('#battleView.target-mode .valid-target', targetSelected);
+    X.onClick('#battleView.inspect-mode .combatant', inspectPosition);
     X.onClick('#commandPanel .cancel-button', cancelTargeting);
   }
 
@@ -61,6 +61,7 @@ global.FormationPanel = (function() {
     const combatantPanel = CombatantPanel(type, entity);
 
     combatantPanel.build();
+    combatantPanel.setPosition(formation[entity]);
     X.append(positionPanel.getElement(),combatantPanel.getElement());
     combatantPanels[entity] = combatantPanel;
   }
@@ -88,9 +89,8 @@ global.FormationPanel = (function() {
   // =======================
 
   function inspectPosition(event) {
-    const position = event.target.closest('.position').dataset.position;
-    const id = event.target.closest('.combatant').dataset.id;
-    console.log(`TODO: Inspect[${id}] (${position})`);
+    const combatant = event.target.closest('.combatant');
+    console.log(`TODO: Inspect[${combatant.dataset.id}] (${combatant.dataset.position})`);
   }
 
   // ======================
@@ -112,6 +112,13 @@ global.FormationPanel = (function() {
         'valid-target' :
         'invalid-target');
     });
+
+    const validPositions = [...monsterPositions, ...characterPositions];
+    Object.values(combatantPanels).forEach(combatantPanel => {
+      X.addClass(combatantPanel.getElement(), validPositions.includes(combatantPanel.getPosition()) ?
+        'valid-target' :
+        'invalid-target');
+    });
   }
 
   function cancelTargeting() {
@@ -120,15 +127,15 @@ global.FormationPanel = (function() {
   }
 
   function stopTargeting() {
-    X.removeClass('.position.valid-target','valid-target')
-    X.removeClass('.position.invalid-target','invalid-target')
+    X.removeClass('.valid-target','valid-target')
+    X.removeClass('.invalid-target','invalid-target')
     X.removeClass('#battleView','target-mode');
     X.addClass('#battleView','inspect-mode');
   }
 
   // Targeting always returns a position because some abilities (like AoE attacks) might target an empty position.
   function targetSelected(event) {
-    const position = event.target.closest('.position').dataset.position;
+    const position = event.target.closest('[data-position]').dataset.position;
 
     event.stopPropagation();
     event.stopImmediatePropagation();
@@ -164,20 +171,18 @@ global.FormationPanel = (function() {
   // character has died and has already been removed from the formation. Because of the animations being played the
   // UI might lag a little behind the actual formation, though I don't think this will be a problem.
   function moveForwardOnDeath(columnData) {
-    const combatant = combatantPanels[columnData.back.id].getElement();
-    const target = positionPanels[columnData.front.position].getElement();
-    moveEntity(combatant,target);
+    moveEntity(combatantPanels[columnData.back.id], columnData.front.position);
   }
 
   function moveInwardOnDeath(moves) {
     moves.forEach(move => {
-      const combatant = combatantPanels[move.id].getElement();
-      const target = positionPanels[move.to].getElement();
-      moveEntity(combatant,target);
+      moveEntity(combatantPanels[move.id], move.to);
     });
   }
 
-  function moveEntity(combatant, target) {
+  function moveEntity(combatantPanel, targetKey) {
+    const combatant = combatantPanel.getElement();
+    const target = positionPanels[targetKey].getElement();
     const currentCoords = X.getPosition(combatant);
     const targetCoords = X.getPosition(target);
 
@@ -204,6 +209,7 @@ global.FormationPanel = (function() {
 
     function attach() {
       target.appendChild(combatant);
+      combatantPanel.setPosition(targetKey);
       X.removeClass(combatant,'moving');
       combatant.removeAttribute('style');
     }
