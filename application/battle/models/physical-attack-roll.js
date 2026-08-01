@@ -12,12 +12,14 @@ global.PhysicalAttackRoll = function(attacker, target) {
   function getAbility() { return (abilityCode == null) ? null : Ability.lookup(abilityCode); }
   function setHitLocation(location) { hitLocation = location; }
 
-  // Weapon data should include { base, id, name, textKey } with everything but the base property being optional as
-  // some monsters won't be using actual weapons with weapon components.
+  // TODO: We'll need to look at this again once we've added some monsters that only have natural attacks. Because all
+  //       weapons are real weapons now, there shouldn't ever be a need for a base weapon that exists without a weapon
+  //       component.
+
   function setWeaponData(data) {
     weaponData = data;
-    baseWeapon = BaseWeapon.lookup(weaponData.base);
     weapon = (weaponData.id) ? Weapon(weaponData.id) : null;
+    baseWeapon = (weapon != null) ? weapon.getBaseWeapon() : BaseWeapon.lookup(weaponData.base);
   }
 
   // An ability that can target any enemy is always long range. Otherwise, the weapon's reach determines the range.

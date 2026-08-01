@@ -31,8 +31,20 @@ global.BattleState = function(data) {
   // The cleanup() function needs to be called after the battle to remove the monsters who were killed or ran away.
   function cleanup() {
     [...getDeadMonsters(), ...getFledMonsters()].forEach(id => {
+      deleteCarriedItems(id);
       Registry.deleteEntity(id);
     });
+  }
+
+  // TODO: Rare items in the monster's inventory should be dropped as loot, though we need to start building rare
+  //       items (task 128) before concerning ourselves with that.
+
+  // A monster's equipment items are their own entities, not children of the monster, so they're deleted explicitly.
+  function deleteCarriedItems(id) {
+    const inventory = InventoryComponent.lookup(id);
+    if (inventory) {
+      inventory.items.forEach(itemId => Registry.deleteEntity(itemId));
+    }
   }
 
   // The encounter code might be set directly in the battle data. If not, fall back by picking an encounter from the

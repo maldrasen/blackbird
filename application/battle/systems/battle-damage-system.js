@@ -1,4 +1,5 @@
 global.BattleDamageSystem = (function() {
+  const maxReduction = 80;
 
   // Some actions can contain multiple hits, so we need to check to see if the target is still up before applying
   // damage in case they were already killed or knocked out, which would remove them from the formation and cause
@@ -38,9 +39,6 @@ global.BattleDamageSystem = (function() {
     return actualDamage;
   }
 
-  // TODO: Monsters will either need armor equipped or will have a natural armor object that defines resistances on
-  //       all their hit locations. Actual nude monsters with no armor at all will be rare, though not impossible.
-
   // TODO: This function will also need to handle the spell resistance reduction. Some spells will still have a
   //       hitLocation, but an AoE spell, targeting several positions wouldn't. In that case we'd need to get an
   //       average damage resistance. A "blade tornado" spell for instance would deal slashing damage, so we'd still
@@ -52,10 +50,33 @@ global.BattleDamageSystem = (function() {
   function getReductionPercent(target, hitLocation, type) {
     if ([DamageType.crush, DamageType.pierce, DamageType.slash].includes(type)) {
       if (hitLocation == null) { throw new Error(`applyDamage() requires a hit location.`); }
-      if (EquipmentComponent.lookup(target) == null) { return 0; }
-      return EquipmentManager(target).getDamageReduction(hitLocation, type);
+      const reduction = getEquippedReduction(target, hitLocation, type) + getNaturalReduction(target, hitLocation, type);
+      return Math.min(reduction, maxReduction);
     }
     throw new Error(`TODO: Equipment elemental resistances.`);
+  }
+
+  function getEquippedReduction(target, hitLocation, type) {
+    if (EquipmentComponent.lookup(target) == null) { return 0; }
+    return EquipmentManager(target).getDamageReduction(hitLocation, type);
+  }
+
+  // TODO: If a monster is wearing armor on a hit location then the worn armor value is used. If they have natural
+  //       armor there, then the natural armor us used. A real question here is should natural armor reduction be
+  //       added to worn armor reduction. With this system a dragon who puts on a pair of leather gloves would take
+  //       extra damage. This might just be academic though. Monsters should either wear armor or have natural armor.
+  //       Then there's no conflict. But if we ever give a species like kobolds natural armor for their scales then
+  //       this will create a conflict.
+
+  function getNaturalReduction(target, hitLocation, type) {
+    if (MonsterComponent.lookup(target) == null) { return 0; }
+    if (getArmorAt(target, hitLocation) != null) { return 0; }
+    return Monster(target).getNaturalArmor()[type] || 0;
+  }
+
+  function getArmorAt(target, hitLocation) {
+    if (EquipmentComponent.lookup(target) == null) { return null; }
+    return EquipmentManager(target).getArmorAt(hitLocation);
   }
 
   // Monsters simply die at zero health. Characters brought to zero or below are knocked out, keeping their negative
