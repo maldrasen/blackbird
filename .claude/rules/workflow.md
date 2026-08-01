@@ -32,8 +32,8 @@ At each stop, output:
 4. Anything you discovered that invalidates the plan
 
 Do not begin the next unit until I have had a chance to review and approve what was changed or added. Approved code 
-will be committed. You're clear to proceed with implementation when the working directory is clear. (When `git status` 
-is empty)
+will be committed. You're clear to proceed with implementation when the working tree (as reported by `git status`) is
+clean. 
 
 ## Approval semantics
 
