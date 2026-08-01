@@ -16,9 +16,7 @@ BaseMonster.register('kobold-runt',{
     ],
   },
 
-  abilities:[
-    // bite attack.
-  ],
+  // TODO: The runt should get a low priority bite attack ability, like the dick puncher's punch.
 
   negotiationGreeting: greetingPackage,
 });

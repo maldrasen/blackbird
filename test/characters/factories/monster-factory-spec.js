@@ -6,10 +6,13 @@ describe("MonsterFactory", function() {
       expect(BodyComponent.lookup(id).scaleColor).to.equal('black');
     });
 
-    it("adds natural attacks from the attack table", function() {
+    it("leaves a natural fighter's hands empty", function() {
       const id = MonsterFactory.build('kobold-dick-puncher');
-      const monster = MonsterComponent.lookup(id);
-      expect(monster.basicAttack.main.base).to.equal('fist');
+      const equipment = EquipmentComponent.lookup(id);
+
+      expect(equipment.primary).to.be.undefined;
+      expect(InventoryComponent.lookup(id).items).to.be.empty;
+      expect(Monster(id).getPrioritizedAbilities().map(a => a.code)).to.include('punch');
     });
 
     it("equips real weapons", function() {

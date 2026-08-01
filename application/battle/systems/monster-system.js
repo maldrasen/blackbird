@@ -15,11 +15,19 @@ global.MonsterSystem = (function() {
   // player. If this ability doesn't need a target this is probably harmless, setting a target that the ability will
   // never need to look at. If the monster uses something like an AoE attack that target's a position instead of a
   // character though this will need to change.
+  //
+  // A forced ability the monster can't actually use - a negotiation forcing basic-attack on a monster with no
+  // weapon, or an attack out of range - falls through to the normal ability selection instead.
   function pickForcedAbility() {
     const state = BattleSystem.getState();
     if (state.getForcedAbility()) {
-      BattleSystem.getRound().setTarget(GameSystem.getState().getPlayer());
-      return state.takeForcedAbility();
+      const round = BattleSystem.getRound();
+      round.setTarget(GameSystem.getState().getPlayer());
+
+      const code = state.takeForcedAbility();
+      if (Ability.lookup(code).canBeUsed()) { return code; }
+
+      round.clearTarget();
     }
   }
 

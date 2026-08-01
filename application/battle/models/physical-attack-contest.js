@@ -2,6 +2,7 @@ global.PhysicalAttackContest = function(attacker, target) {
   const maxAttempts = 5;
 
   let weaponData = null;
+  let naturalAttack = null;
   let abilityCode = null;
   let hitLocation = null;
 
@@ -9,12 +10,13 @@ global.PhysicalAttackContest = function(attacker, target) {
   let defendRoll;
 
   function setWeaponData(data) { weaponData = data; }
+  function setNaturalAttack(profile) { naturalAttack = profile; }
   function setAbility(code) { abilityCode = code; }
   function setHitLocation(location) { hitLocation = location; }
 
   function buildAttackRoll() {
     const attack = PhysicalAttackRoll(attacker, target);
-    attack.setWeaponData(weaponData);
+    naturalAttack ? attack.setNaturalAttack(naturalAttack) : attack.setWeaponData(weaponData);
     attack.setAbility(abilityCode);
     attack.setHitLocation(hitLocation);
     attack.roll();
@@ -46,6 +48,7 @@ global.PhysicalAttackContest = function(attacker, target) {
 
   return Object.freeze({
     setWeaponData,
+    setNaturalAttack,
     setAbility,
     setHitLocation,
     roll,

@@ -1,3 +1,15 @@
+// A dick punch is always thrown with a fist, whatever the attacker might be holding.
+const dickPunchAttack = {
+  skill: 'martial-arts',
+  name: 'fist',
+  textKey: 'punch',
+  damageType: DamageType.crush,
+  low: 25,
+  high: 50,
+  speed: 500,
+  reach: WeaponReach.short,
+};
+
 Ability.register('dick-punch',{
   name: 'Dick Punch',
   category: 'physical',
@@ -19,7 +31,7 @@ Ability.register('dick-punch',{
     const target = round.getTarget();
 
     const contest = PhysicalAttackContest(acting, target);
-          contest.setWeaponData(round.getPrimaryWeapon());
+          contest.setNaturalAttack(dickPunchAttack);
           contest.setAbility('dick-punch');
           contest.setHitLocation(EquipmentSlot.legs);
           contest.roll();

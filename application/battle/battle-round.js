@@ -20,50 +20,22 @@ global.BattleRound = function(acting) {
     ability = code;
   }
 
-  // Any entity with real weapons equipped, character or monster, reads them from the equipment manager. A monster
-  // with an empty primary hand falls back to the basic attack defined on its base monster, which will usually
-  // include a base weapon and a name. It can also define main and off-hand attacks.
-  //
-  //     Single:  { base:B, name:N, textKey:K }
-  //     Dual:    { main:{ base:B, name:N, textKey:K }, off:{ base:B, name:N, textKey:K }}
-  //
-  // In either case we distill the weapon data down to the properties we need to make an attack roll or use in a
-  // physical ability. A monster that carries a shield but fights with a natural attack ends up with an equipped
-  // secondary and a basic attack primary.
+  // Every weapon is a real weapon now, so any entity, character or monster, reads them from the equipment manager,
+  // distilled down to the properties we need to make an attack roll or use in a physical ability. An entity with
+  // nothing in hand ends up with null weapons - they fight with natural attack abilities (punch, bite) instead.
 
   function compileWeaponData() {
-    compileFromEquipment();
-    if (actingIsMonster && primaryWeapon.base == null) { compileFromBasicAttack(); }
+    if (EquipmentComponent.lookup(acting) != null) {
+      const equipment = EquipmentManager(acting);
+      const main = equipment.getSlot(EquipmentSlot.primary);
+      const off = equipment.getSlot(EquipmentSlot.secondary);
+
+      if (main && WeaponComponent.lookup(main)) { primaryWeapon = distillWeapon(main); }
+      if (off && WeaponComponent.lookup(off)) { secondaryWeapon = distillWeapon(off); }
+    }
 
     if (primaryWeapon.base == null) { primaryWeapon = null; }
     if (secondaryWeapon.base == null) { secondaryWeapon = null; }
-  }
-
-  function compileFromEquipment() {
-    if (EquipmentComponent.lookup(acting) == null) { return; }
-
-    const equipment = EquipmentManager(acting);
-    const main = equipment.getSlot(EquipmentSlot.primary);
-    const off = equipment.getSlot(EquipmentSlot.secondary);
-
-    if (main && WeaponComponent.lookup(main)) { primaryWeapon = distillWeapon(main); }
-    if (off && WeaponComponent.lookup(off)) { secondaryWeapon = distillWeapon(off); }
-  }
-
-  // TODO: I'd like to take a closer look at this function. When we moved to monsters using real equipment this was
-  //       left in place because monsters that use natural attacks (fists, claws, teeth, etc) would still need a way
-  //       to define their basic attack data. The shape of this still reads like it should hold weapon data though
-  //       which should no longer be the case. However before I can dive into how natural weapons are defined, I need
-  //       some more "animal" type monsters. I don't think that a beast with bite and claw attacks will look the same
-  //       as a kobold with a main and off hand weapon.
-
-  function compileFromBasicAttack() {
-    const monsterAttack = Monster(acting).getBasicAttack();
-    if (monsterAttack == null) { return; }
-
-    if (monsterAttack.main) { primaryWeapon = distillAttack(monsterAttack.main); }
-    if (monsterAttack.base) { primaryWeapon = distillAttack(monsterAttack); }
-    if (monsterAttack.off && secondaryWeapon.base == null) { secondaryWeapon = distillAttack(monsterAttack.off); }
   }
 
   function distillWeapon(itemId) {
@@ -75,16 +47,6 @@ global.BattleRound = function(acting) {
       reach: baseWeapon.getReach(),
       name: weapon.getName(),
       textKey: weapon.getTextKey(),
-    };
-  }
-
-  function distillAttack(attack) {
-    const base = BaseWeapon.lookup(attack.base);
-    return {
-      base: attack.base,
-      reach: base.getReach(),
-      name: attack.name || base.getName(),
-      textKey: attack.textKey || base.getTextKey(),
     };
   }
 

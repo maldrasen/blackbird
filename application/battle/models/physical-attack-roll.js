@@ -22,6 +22,14 @@ global.PhysicalAttackRoll = function(attacker, target) {
     baseWeapon = (weapon != null) ? weapon.getBaseWeapon() : BaseWeapon.lookup(weaponData.base);
   }
 
+  // A natural attack profile - a punch, a bite, a claw - stands in for the base weapon, so the roll doesn't care
+  // that no real weapon is involved.
+  function setNaturalAttack(profile) {
+    weaponData = { name:profile.name, textKey:profile.textKey };
+    baseWeapon = NaturalAttack(profile);
+    weapon = null;
+  }
+
   // An ability that can target any enemy is always long range. Otherwise, the weapon's reach determines the range.
   function isRangedAttack() {
     if (abilityCode != null && getAbility().getTargetingMode() === TargetingMode.anyEnemy) { return true; }
@@ -58,6 +66,7 @@ global.PhysicalAttackRoll = function(attacker, target) {
     getHitLocation: () => { return hitLocation; },
 
     setWeaponData,
+    setNaturalAttack,
     getBaseWeapon: () => { return baseWeapon; },
     getWeaponName: () => { return weaponData.name; },
     getBaseWeaponCode: () => { return weaponData.base },

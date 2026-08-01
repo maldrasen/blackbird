@@ -63,16 +63,9 @@ global.FunctionLoom = (function() {
   }
 
   function resolvePrimaryWeapon(actorId) {
+    const equipment = EquipmentComponent.lookup(actorId);
+    const weaponId = equipment ? EquipmentManager(actorId).getSlot(EquipmentSlot.primary) : null;
 
-    if (MonsterComponent.lookup(actorId)) {
-      const attack = Monster(actorId).getBasicAttack();
-      const primary = attack.main || attack;
-      if (primary.base) {
-        return { base:primary.base, name:primary.name };
-      }
-    }
-
-    const weaponId = EquipmentManager(actorId).getSlot(EquipmentSlot.primary);
     if (weaponId) {
       return { base:Weapon(weaponId).getBaseWeapon().getCode(), id:weaponId };
     }

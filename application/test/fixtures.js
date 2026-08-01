@@ -38,7 +38,7 @@ global.Fixtures = (function() {
     const player = GameSystem.getState().getPlayer();
     const inventory = InventoryManager(player);
     BaseWeapon.getAllCodes().forEach(code => {
-      if (code !== 'fist') { inventory.addItem(WeaponFactory.build(code)); }
+      inventory.addItem(WeaponFactory.build(code));
     });
 
     GameSystem.setGameMode(GameMode.location);

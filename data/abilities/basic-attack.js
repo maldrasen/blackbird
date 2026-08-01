@@ -11,7 +11,8 @@ Ability.register('basic-attack',{
   execute: () => { executeBasicAttack(); },
 });
 
-// The round's compiled weapon data covers both a monster's real equipped weapons and its basic attack fallback.
+// A basic attack always uses a real equipped weapon. An entity with empty hands can't make one - they fight with
+// natural attack abilities (punch, bite) instead.
 function canMonsterAttack() {
   const round = BattleSystem.getRound();
   const weapon = round.getPrimaryWeapon();
@@ -26,6 +27,8 @@ function canMonsterAttack() {
 }
 
 function canCharacterAttack() {
+  if (BattleSystem.getRound().getPrimaryWeapon() == null) { return false; }
+
   const inRange = TargetingController.getMonstersInRange().length > 0;
   return inRange && !isHidden();
 }

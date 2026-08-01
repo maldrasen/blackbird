@@ -17,13 +17,11 @@ BaseMonster.register('kobold-dick-puncher',{
     killMen: 100,
   },
 
-  // The dick puncher fights with his fists, so he's the one kobold that still uses the natural attack table.
-  attackTable:[
-    { main:{ base:'fist' }, off:{ base:'fist' }}
-  ],
-
+  // The dick puncher fights bare-handed: dick punches when he can, ordinary punches when he can't. He carries no
+  // equipment, so the fighter type's basic-attack never applies.
   prioritizedAbilities:[
     { code:'dick-punch', priority:100 },
+    { code:'punch', priority:50 },
   ],
 
   negotiationGreeting: greetingPackage,

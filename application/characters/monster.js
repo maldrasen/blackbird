@@ -4,7 +4,6 @@ global.Monster = function(id) {
   function getCode() { return monsterComponent().code; }
   function getBaseMonster() { return BaseMonster.lookup(getCode()); }
   function getType() { return MonsterType.lookup(getBaseMonster().getType()); }
-  function getBasicAttack() { return monsterComponent().basicAttack; }
   function getSpecies() { return getBaseMonster().getSpecies(); }
   function getGender() { return ActorComponent.lookup(id).gender; }
   function getArchetype() { return PersonalityComponent.lookup(id).archetype; }
@@ -83,7 +82,6 @@ global.Monster = function(id) {
     getCode,
     getBaseMonster,
     getType,
-    getBasicAttack,
     getResistance,
     getSpecies,
     getGender,

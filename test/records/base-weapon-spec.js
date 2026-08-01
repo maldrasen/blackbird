@@ -70,9 +70,6 @@ describe("BaseWeapon", function() {
       ]);
     });
 
-    it("is empty for an unarmed strike", function() {
-      expect(BaseWeapon.lookup('fist').getMaterialParts()).to.deep.equal([]);
-    });
   });
 
   describe("getPrimaryMaterial", function() {
@@ -88,9 +85,6 @@ describe("BaseWeapon", function() {
       expect(BaseWeapon.lookup('shortbow').getPrimaryMaterial()).to.equal(MaterialType.wood);
     });
 
-    it("is null for an unarmed strike", function() {
-      expect(BaseWeapon.lookup('fist').getPrimaryMaterial()).to.be.null;
-    });
   });
 
   describe("getDamageStat", function() {
@@ -127,9 +121,6 @@ describe("BaseWeapon", function() {
       expect(BaseWeapon.lookup('shortbow').getDamageFactor()).to.equal(1);
     });
 
-    it("is 1.0 for an unarmed strike with no material", function() {
-      expect(BaseWeapon.lookup('fist').getDamageFactor()).to.equal(1);
-    });
   });
 
   describe("getReduction", function() {
@@ -199,10 +190,6 @@ describe("BaseWeapon", function() {
 
     it("prices a spear cheaply - mostly a wooden shaft", function() {
       expect(BaseWeapon.lookup('spear').getValue()).to.equal(208);
-    });
-
-    it("is 0 for an unarmed strike", function() {
-      expect(BaseWeapon.lookup('fist').getValue()).to.equal(0);
     });
 
     // A shield's performance factor weighs its whole-body reduction (1.5) over its damage (0.5), so shields carry

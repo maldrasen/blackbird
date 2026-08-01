@@ -15,7 +15,6 @@ global.MonsterFactory = (function() {
         triggers: monsterBase.getTriggers(),
         archetypes: monsterBase.getArchetypes(),
       });
-      addBasicAttack(monsterData, monsterBase);
       addEquipment(monsterBase, monsterId);
     }
 
@@ -50,17 +49,6 @@ global.MonsterFactory = (function() {
       for (let i=1; i<monsterBase.getLevel(); i++) {
         LevelSystem.levelUp(monsterId, Random.fromFrequencyMap(attributeGrowth));
       }
-    }
-  }
-
-  // TODO: The basic attack table will need to be looked into as it should no longer have any base weapons. Monsters
-  //       should still have a basic attack option, but it should be reserved for natural attacks. Fists, claws, and
-  //       bite attacks.
-
-  function addBasicAttack(monsterData, monsterBase) {
-    const attackTable = monsterBase.getAttackTable();
-    if (attackTable) {
-      monsterData.basicAttack = Random.from(attackTable);
     }
   }
 

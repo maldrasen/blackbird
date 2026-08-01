@@ -31,10 +31,9 @@ global.BaseWeapon = (function() {
     const materials = HasMaterials(weapon);
     const reduction = HasReduction(weapon);
 
-    // Except for martial arts and block, all the weapon skills are weapon type +s
+    // Except for block, all the weapon skills are weapon type +s
     function getSkill() {
       if (weapon.type === 'shield') { return 'block'; }
-      if (weapon.type === 'fist') { return 'martial-arts'; }
       return `${weapon.type}s`;
     }
 
