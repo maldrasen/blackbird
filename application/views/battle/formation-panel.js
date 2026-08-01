@@ -2,12 +2,13 @@ global.FormationPanel = (function() {
 
   let positionPanels = {};
   let combatantPanels = {};
-  let movesInFlight = 0;
+  let pendingMoves = new Map();
 
   function init() {
     X.onClick('#battleView.target-mode .valid-target', targetSelected);
     X.onClick('#battleView.inspect-mode .combatant', inspectPosition);
     X.onClick('#commandPanel .cancel-button', cancelTargeting);
+    X.onResize(() => X.first('#combatantLayer') != null, handleResize);
   }
 
   // ==============
@@ -19,7 +20,7 @@ global.FormationPanel = (function() {
 
     positionPanels = {};
     combatantPanels = {};
-    movesInFlight = 0;
+    cancelPendingMoves();
 
     buildRank('monster',1);
     buildRank('monster',0);
@@ -57,13 +58,13 @@ global.FormationPanel = (function() {
   }
 
   function buildCombatantPanel(entity, type, formation) {
-    const positionPanel = positionPanels[formation[entity]]
     const combatantPanel = CombatantPanel(type, entity);
 
     combatantPanel.build();
     combatantPanel.setPosition(formation[entity]);
-    X.append(positionPanel.getElement(),combatantPanel.getElement());
+    X.append('#combatantLayer',combatantPanel.getElement());
     combatantPanels[entity] = combatantPanel;
+    placeCombatant(combatantPanel);
   }
 
   function getPositionPanel(side, rank=null, position=null) {
@@ -180,63 +181,73 @@ global.FormationPanel = (function() {
     });
   }
 
+  // The move is delayed so it plays after the death fade of the entity that freed the position. Coordinates are
+  // resolved when the timer fires, not when the move is scheduled, so a resize during the delay can't leave the
+  // combatant at a stale location.
   function moveEntity(combatantPanel, targetKey) {
-    const combatant = combatantPanel.getElement();
-    const target = positionPanels[targetKey].getElement();
-    const currentCoords = X.getPosition(combatant);
-    const targetCoords = X.getPosition(target);
+    const id = combatantPanel.getEntity();
 
-    movesInFlight += 1;
-
-    function detach() {
-      X.addClass(combatant, 'moving');
-      combatant.setAttribute('style', [
-        `left:${currentCoords.left}px;`,
-        `top:${currentCoords.top}px;`,
-      ].join(' '));
-    }
-
-    // When the window is hidden the queued animation frames don't fire until it's visible again, so this can run
-    // after attach() has already put the combatant back into the flow. Applying the stale coordinates then would
-    // shove the element off screen, so bail out unless we're still mid-move.
-    function move() {
-      if (X.hasClass(combatant,'moving') === false) { return; }
-      combatant.setAttribute('style',[
-        `left:${targetCoords.left + 0.5}px;`,
-        `top:${targetCoords.top + 0.5}px;`,
-      ].join(' '));
-    }
-
-    function attach() {
-      target.appendChild(combatant);
+    const timer = setTimeout(() => {
       combatantPanel.setPosition(targetKey);
-      X.removeClass(combatant,'moving');
-      combatant.removeAttribute('style');
-    }
-
-    // Yes, we need to request two animation frames between detach and move,
-    // or attach and validate.
-
-    setTimeout(() => {
-      detach();
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => { move(); });
-      });
+      placeCombatant(combatantPanel);
+      pendingMoves.delete(id);
+      validatePositions();
     }, _battleKillEffectTime);
 
-    setTimeout(() => {
-      attach();
-      movesInFlight -= 1;
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => { validatePositions(); });
+    pendingMoves.set(id, { timer });
+  }
+
+  function combatantCoords(positionKey) {
+    const positionCoords = X.getPosition(positionPanels[positionKey].getElement());
+    const layerCoords = X.getPosition(X.first('#combatantLayer'));
+
+    // The combatant sits inside the position's 1px border.
+    return {
+      left: positionCoords.left - layerCoords.left + 1,
+      top: positionCoords.top - layerCoords.top + 1,
+    };
+  }
+
+  function placeCombatant(combatantPanel) {
+    const coords = combatantCoords(combatantPanel.getPosition());
+    const element = combatantPanel.getElement();
+
+    element.style.left = `${coords.left}px`;
+    element.style.top = `${coords.top}px`;
+  }
+
+  // The battle state is always the source of truth for positions, so this both realigns the panels after a window
+  // resize and snaps any interrupted moves to where they were headed.
+  function placeAllCombatants() {
+    const state = BattleSystem.getState();
+
+    const placeAll = formation => {
+      Object.entries(formation).forEach(([id, position]) => {
+        const combatantPanel = combatantPanels[id];
+        combatantPanel.setPosition(position);
+        placeCombatant(combatantPanel);
       });
-    },_battleKillEffectTime + 600);
+    };
+
+    placeAll(state.getMonsterFormation());
+    placeAll(state.getPartyFormation());
+  }
+
+  function cancelPendingMoves() {
+    pendingMoves.forEach(move => { clearTimeout(move.timer); });
+    pendingMoves.clear();
+  }
+
+  function handleResize() {
+    cancelPendingMoves();
+    placeAllCombatants();
+    validatePositions();
   }
 
   // The battle state updates its formations as soon as an entity dies, but the panels only catch up once the move
   // animations complete, so only validate when no moves are still in flight.
   function validatePositions() {
-    if (movesInFlight > 0) { return; }
+    if (pendingMoves.size > 0) { return; }
     const state = BattleSystem.getState();
 
     Object.entries(state.getMonsterFormation()).forEach(([id, position]) => {

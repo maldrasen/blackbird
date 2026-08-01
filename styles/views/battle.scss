@@ -17,6 +17,7 @@ $roll-high-bright: rgb(250,250,250);
   flex-direction: column;
 
   #formationPanel {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,6 +35,16 @@ $roll-high-bright: rgb(250,250,250);
       display: grid;
       grid-template-columns: repeat(5, 140px);
       gap: 10px;
+    }
+  }
+
+  #combatantLayer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    .combatant {
+      pointer-events: auto;
     }
   }
 
@@ -142,7 +153,7 @@ $roll-high-bright: rgb(250,250,250);
   }
 
   .combatant {
-    position: relative;
+    position: absolute;
     box-sizing: border-box;
     height: 138px;
     width: 138px;
@@ -207,13 +218,6 @@ $roll-high-bright: rgb(250,250,250);
     }
     &.dead.removed {
       opacity: 0;
-    }
-    &.moving {
-      position: absolute;
-      z-index: variables.$z-effects;
-      transition-property: left, top;
-      transition-duration: 500ms;
-      transition-timing-function: ease-in-out;
     }
   }
 
