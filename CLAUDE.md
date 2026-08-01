@@ -63,3 +63,6 @@ like `git diff` or `git log` is allowed.
 
 ### Comments
 There's no need to add comments when it's clear what something does.
+
+## Rules
+@.claude/rules/workflow.md
