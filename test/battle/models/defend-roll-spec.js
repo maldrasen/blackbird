@@ -147,7 +147,7 @@ describe("DefendRoll", function() {
     expect(roll.getDefendSkill()).to.equal('block');
   });
 
-  it("always dodges as an unequipped monster", function() {
+  it("dodges as a monster without a shield", function() {
     const state = startBattle();
     const attacker = state.getEntityAtPosition('P',1,2);
     const defender = state.getActiveMonsters()[0];
@@ -159,6 +159,21 @@ describe("DefendRoll", function() {
 
     const roll = DefendRoll(defender, attacker, attackRoll);
     expect(roll.getDefendSkill()).to.equal('dodge');
+  });
+
+  it("blocks as a monster with a shield equipped", function() {
+    const state = startBattle();
+    const attacker = state.getEntityAtPosition('P',1,2);
+    const defender = state.getActiveMonsters()[0];
+    equipItem(defender, 'targe', EquipmentSlot.secondary);
+
+    const attackRoll = PhysicalAttackRoll(attacker, defender);
+    attackRoll.setWeaponData({ base:'longsword' });
+    attackRoll.setHitLocation(EquipmentSlot.chest);
+    attackRoll.roll();
+
+    const roll = DefendRoll(defender, attacker, attackRoll);
+    expect(roll.getDefendSkill()).to.equal('block');
   });
 
 });

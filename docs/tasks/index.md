@@ -16,7 +16,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [131] Oath and nightgaunt episodes `13pt` — [131-oath-and-nightgaunt-episodes.md](131-oath-and-nightgaunt-episodes.md)
 - [134] Implement conversation skill `5pt` — [134-implement-conversation-skill.md](134-implement-conversation-skill.md)
 - [136] Difficulty Sliders `5pt` — [136-difficulty-sliders.md](136-difficulty-sliders.md)
-- [141] Monster equipment `5pt` — [141-monster-equipment.md](141-monster-equipment.md)
 - [142] Item detail panel `5pt` — [142-item-detail-panel.md](142-item-detail-panel.md)
 - [151] More Negotiation Questions `5pt` — [151-more-negotiation-questions.md](151-more-negotiation-questions.md)
 

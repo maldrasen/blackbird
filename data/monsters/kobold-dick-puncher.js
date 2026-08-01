@@ -17,10 +17,12 @@ BaseMonster.register('kobold-dick-puncher',{
     killMen: 100,
   },
 
-  // We don't really have a 'punching' basic attack, but we can fake it with a hammer.
+  // The dick puncher fights with his fists, so he's the one kobold that still uses the natural attack table.
   attackTable:[
     { main:{ base:'fist' }, off:{ base:'fist' }}
   ],
+
+  naturalArmor: { slash:5, pierce:5 },
 
   prioritizedAbilities:[
     { code:'dick-punch', priority:100 },

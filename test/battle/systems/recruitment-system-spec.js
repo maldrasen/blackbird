@@ -19,4 +19,18 @@ describe("RecruitmentSystem", function() {
     expect(GameSystem.getState().isInRoster(monster)).to.equal(true);
   });
 
+  it("keeps the equipment the monster fought with", function() {
+    const player = Registry.createEntity();
+    GameSystem.getState().setPlayer(player);
+
+    const monster = MonsterFactory.build('kobold-trapper');
+    const primary = EquipmentComponent.lookup(monster).primary;
+
+    RecruitmentSystem.recruit(monster, { affection:300, fear:50, respect:200, control:0 });
+
+    expect(EquipmentComponent.lookup(monster).primary).to.equal(primary);
+    expect(InventoryManager(monster).hasItem(primary)).to.be.true;
+    expect(WeaponComponent.lookup(primary).material).to.equal(MaterialType.bone);
+  });
+
 });

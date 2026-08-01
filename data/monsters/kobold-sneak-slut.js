@@ -21,9 +21,13 @@ BaseMonster.register('kobold-sneak-slut',{
     killWomen: 100,
   },
 
-  attackTable:[
-    { main:{ base:'knife', name:'bone knife' }, off:{ base:'knife', name:'bone knife' }},
-  ],
+  equipment: {
+    loadouts:[
+      { main:{ base:'knife', material:MaterialType.bone }, off:{ base:'knife', material:MaterialType.bone }},
+    ],
+  },
+
+  naturalArmor: { slash:5, pierce:5 },
 
   negotiationGreeting: greetingPackage,
 });

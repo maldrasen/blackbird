@@ -16,6 +16,7 @@ global.MonsterFactory = (function() {
         archetypes: monsterBase.getArchetypes(),
       });
       addBasicAttack(monsterData, monsterBase);
+      addEquipment(monsterBase, monsterId);
     }
 
     // We need to build the battle applicable components that the character builder would have built from scratch.
@@ -52,13 +53,21 @@ global.MonsterFactory = (function() {
     }
   }
 
-  // Pick a weapon attack from the table if this monster has a weapon attack. Some monsters won't have any weapon
-  // attacks and will only have other natural attacks (bite, claw) and some monsters might only have abilities, like
-  // a poison spit or something.
+  // TODO: The basic attack table will need to be looked into as it should no longer have any base weapons. Monsters
+  //       should still have a basic attack option, but it should be reserved for natural attacks. Fists, claws, and
+  //       bite attacks.
+
   function addBasicAttack(monsterData, monsterBase) {
     const attackTable = monsterBase.getAttackTable();
     if (attackTable) {
       monsterData.basicAttack = Random.from(attackTable);
+    }
+  }
+
+  function addEquipment(monsterBase, monsterId) {
+    const equipment = monsterBase.getEquipment();
+    if (equipment) {
+      CharacterEquipper(monsterId).equipLoadout(equipment);
     }
   }
 

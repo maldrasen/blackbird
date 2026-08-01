@@ -128,4 +128,65 @@ describe('CharacterEquipper', function() {
     expect(armorCode(equipped.head)).to.be.oneOf(['armet','bascinet']);
   });
 
+  describe('equipLoadout()', function() {
+    it('equips the listed weapons and armor with material overrides', function() {
+      const horse = CharacterFixtures.genericMale({});
+      const equipped = CharacterEquipper(horse).equipLoadout({
+        loadouts:[
+          { main:{ base:'knife', material:MaterialType.bone }, off:{ base:'targe' }},
+        ],
+        armor:[
+          { base:'doublet', material:MaterialType.leather },
+        ],
+      });
+
+      expect(weaponCode(equipped.primary)).to.equal('knife');
+      expect(WeaponComponent.lookup(equipped.primary).material).to.equal(MaterialType.bone);
+      expect(Weapon(equipped.primary).getName()).to.equal('bone knife');
+      expect(weaponCode(equipped.secondary)).to.equal('targe');
+      expect(armorCode(equipped.chest)).to.equal('doublet');
+      expect(Armor(equipped.chest).getName()).to.equal('leather doublet');
+      expect(InventoryManager(horse).hasItem(equipped.primary)).to.be.true;
+    });
+
+    it('picks one loadout from the possible loadouts', function() {
+      const horse = CharacterFixtures.genericMale({});
+      const equipped = CharacterEquipper(horse).equipLoadout({
+        loadouts:[
+          { main:{ base:'hammer', material:MaterialType.bone, name:'bone club' }},
+          { main:{ base:'spear', material:MaterialType.bone }},
+        ],
+      });
+
+      expect(weaponCode(equipped.primary)).to.be.oneOf(['hammer','spear']);
+      expect(equipped.secondary).to.be.undefined;
+    });
+
+    it('skips the off-hand when the main weapon is two-handed', function() {
+      const horse = CharacterFixtures.genericMale({});
+      const equipped = CharacterEquipper(horse).equipLoadout({
+        loadouts:[
+          { main:{ base:'spear', material:MaterialType.bone }, off:{ base:'targe' }},
+        ],
+      });
+
+      expect(weaponCode(equipped.primary)).to.equal('spear');
+      expect(equipped.secondary).to.be.undefined;
+      expect(EquipmentManager(horse).getSlot(EquipmentSlot.secondary)).to.equal(null);
+    });
+
+    it('picks one armor piece when a slot has choices', function() {
+      const horse = CharacterFixtures.genericMale({});
+      const equipped = CharacterEquipper(horse).equipLoadout({
+        armor:[
+          { base:'doublet' },
+          { base:'cuirass' },
+        ],
+      });
+
+      expect(armorCode(equipped.chest)).to.be.oneOf(['doublet','cuirass']);
+      expect(InventoryComponent.lookup(horse).items.length).to.equal(1);
+    });
+  });
+
 });

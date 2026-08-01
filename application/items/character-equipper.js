@@ -65,6 +65,50 @@ global.CharacterEquipper = function(id) {
     return equipment;
   }
 
+  // The equipLoadout() function is the list driven alternative to equip(). Instead of shopping against a budget, the
+  // caller provides the exact gear the character can have: a list of possible weapon loadouts (one is picked at
+  // random) and the armor they wear. Monsters use this to fight with real equipment, equipment they keep if they're
+  // recruited into the party. Every entry is a factory options object with a base code, so materials and names can
+  // be overridden.
+  //
+  //     loadouts: [{ main:{ base:B, material:M, name:N }, off:{ base:B, material:M, name:N }}]
+  //     armor:    [{ base:B, material:M, name:N }]
+  //
+  function equipLoadout(spec) {
+    equipLoadoutWeapons(spec.loadouts || []);
+    equipLoadoutArmor(spec.armor || []);
+    return equipment;
+  }
+
+  function equipLoadoutWeapons(loadouts) {
+    if (loadouts.length === 0 || isFilled(EquipmentSlot.primary)) { return; }
+
+    const loadout = Random.from(loadouts);
+    if (loadout.main) {
+      giveWeapon(loadout.main.base, EquipmentSlot.primary, loadout.main);
+      if (BaseWeapon.lookup(loadout.main.base).getHands() === WeaponHandedness.two) { return; }
+    }
+    if (loadout.off && isFilled(EquipmentSlot.secondary) === false) {
+      giveWeapon(loadout.off.base, EquipmentSlot.secondary, loadout.off);
+    }
+  }
+
+  // Armor entries are grouped by the slot their base fills; when a slot has more than one possible piece, one is
+  // picked at random.
+  function equipLoadoutArmor(entries) {
+    const grouped = {};
+    entries.forEach(entry => {
+      const slot = BaseArmor.lookup(entry.base).getSlot();
+      grouped[slot] = [...(grouped[slot] || []), entry];
+    });
+
+    Object.entries(grouped).forEach(([slot,choices]) => {
+      if (isFilled(slot)) { return; }
+      const choice = Random.from(choices);
+      giveArmor(choice.base, slot, choice);
+    });
+  }
+
   // === Weapons ===================================================================================================
 
   // A preset primary weapon means the loadout is intentional, so we leave both hands alone. Otherwise we pick a
@@ -167,8 +211,8 @@ global.CharacterEquipper = function(id) {
   // === Giving ====================================================================================================
 
   function isFilled(slot) { return equipmentManager.getSlot(slot) != null; }
-  function giveWeapon(code, slot) { give(WeaponFactory.build(code), slot); }
-  function giveArmor(code, slot) { give(ArmorFactory.build(code), slot); }
+  function giveWeapon(code, slot, options={}) { give(WeaponFactory.build(code, options), slot); }
+  function giveArmor(code, slot, options={}) { give(ArmorFactory.build(code, options), slot); }
 
   function give(itemId, slot) {
     inventoryManager.addItem(itemId);
@@ -178,6 +222,7 @@ global.CharacterEquipper = function(id) {
 
   return Object.freeze({
     equip,
+    equipLoadout,
   });
 
 }

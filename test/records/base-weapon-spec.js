@@ -156,6 +156,32 @@ describe("BaseWeapon", function() {
     });
   });
 
+  describe("material overrides", function() {
+    // Substituting bone (0.65 sharpness, cost 2) for the spear's steel tip scales the authored 50-100 pierce damage
+    // and the price down with it.
+    it("substitutes the primary part's material", function() {
+      expect(BaseWeapon.lookup('spear', { material:MaterialType.bone }).getMaterialParts()).to.deep.equal([
+        { part:'tip', material:MaterialType.bone, amount:1 },
+        { part:'shaft', material:MaterialType.wood, amount:2 },
+      ]);
+    });
+
+    it("scales the damage to the substituted material", function() {
+      const boneSpear = BaseWeapon.lookup('spear', { material:MaterialType.bone });
+      expect(boneSpear.getLow()).to.equal(33);
+      expect(boneSpear.getHigh()).to.equal(65);
+    });
+
+    it("prices the weapon at the substituted material", function() {
+      expect(BaseWeapon.lookup('spear', { material:MaterialType.bone }).getValue()).to.equal(183);
+    });
+
+    it("does not touch the registered record", function() {
+      BaseWeapon.lookup('spear', { material:MaterialType.bone });
+      expect(BaseWeapon.lookup('spear').getPrimaryMaterial()).to.equal(MaterialType.steel);
+    });
+  });
+
   describe("getValue", function() {
     // Value is the construction cost (materials + effort) nudged by a bounded factor from the weapon's DPS.
     it("prices a longsword from its steel and its forging effort", function() {

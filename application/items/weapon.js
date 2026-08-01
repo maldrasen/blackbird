@@ -2,9 +2,18 @@ global.Weapon = function(id) {
 
   function getComponent() { return WeaponComponent.lookup(id); }
 
+  function getBaseWeapon() {
+    const component = getComponent();
+    return BaseWeapon.lookup(component.base, { material:component.material });
+  }
+
+  // A weapon with a material override and no explicit name describes itself with the material - "bone spear".
   function getName() {
     const component = getComponent();
-    return component.name || BaseWeapon.lookup(component.base).getName();
+    if (component.name) { return component.name; }
+
+    const baseName = BaseWeapon.lookup(component.base).getName();
+    return component.material ? `${Material.lookup(component.material).getName().toLowerCase()} ${baseName}` : baseName;
   }
 
   function getIcon() {
@@ -28,12 +37,12 @@ global.Weapon = function(id) {
   // Only shields carry a reduction profile. It starts at the base weapon's value, but individual pieces will
   // eventually be able to override it, with enchantments for instance.
   function getReduction(type) {
-    return BaseWeapon.lookup(getComponent().base).getReduction(type);
+    return getBaseWeapon().getReduction(type);
   }
 
   return Object.freeze({
     getId: () => { return id; },
-    getBaseWeapon: () => { return BaseWeapon.lookup(getComponent().base); },
+    getBaseWeapon,
     getName,
     getIcon,
     getNameType,

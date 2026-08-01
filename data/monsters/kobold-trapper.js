@@ -6,8 +6,16 @@ BaseMonster.register('kobold-trapper',{
   triggers: [],
   level: 3,
 
-  attackTable:[
-    { base:'spear', name:'bone spear' },
-  ],
+  equipment: {
+    loadouts:[
+      { main:{ base:'spear', material:MaterialType.bone }},
+      { main:{ base:'hammer', material:MaterialType.bone, name:'bone club' }, off:{ base:'targe' }},
+    ],
+    armor:[
+      { base:'doublet', material:MaterialType.leather },
+    ],
+  },
+
+  naturalArmor: { slash:5, pierce:5 },
 
 });

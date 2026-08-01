@@ -1,11 +1,19 @@
 global.Armor = function(id) {
 
   function getComponent() { return ArmorComponent.lookup(id); }
-  function getBaseArmor() { return BaseArmor.lookup(getComponent().base); }
 
+  function getBaseArmor() {
+    const component = getComponent();
+    return BaseArmor.lookup(component.base, { material:component.material });
+  }
+
+  // As with weapons, a material override with no explicit name describes itself with the material - "bone cuirass".
   function getName() {
     const component = getComponent();
-    return component.name || BaseArmor.lookup(component.base).getName();
+    if (component.name) { return component.name; }
+
+    const baseName = BaseArmor.lookup(component.base).getName();
+    return component.material ? `${Material.lookup(component.material).getName().toLowerCase()} ${baseName}` : baseName;
   }
 
   function getIcon() {

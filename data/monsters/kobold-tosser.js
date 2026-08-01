@@ -6,8 +6,12 @@ BaseMonster.register('kobold-tosser',{
   triggers: [],
   level: 5,
 
-  attackTable:[
-    { base:'spear', name:'bone spear' },
-  ],
+  equipment: {
+    loadouts:[
+      { main:{ base:'spear', material:MaterialType.bone }},
+    ],
+  },
+
+  naturalArmor: { slash:5, pierce:5 },
 
 });

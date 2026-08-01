@@ -185,14 +185,41 @@ describe("BattleDamageSystem", function() {
       expect(damage).to.equal(110);
     });
 
-    it("passes full damage through to an unequipped monster", function() {
+    // The kobold runts in the kobold-1 encounter have a naturalArmor of { slash:5, pierce:5 } and wear no armor.
+    it("applies a monster's natural armor at uncovered locations", function() {
       const state = startBattle();
       const target = state.getActiveMonsters()[0];
+      EquipmentManager(target).equipItem(null, EquipmentSlot.secondary);
 
       const damage = BattleDamageSystem.applyDamage({
-        entity:target, damageTypes:{ slash:10 }, hitLocation:EquipmentSlot.chest });
+        entity:target, damageTypes:{ slash:100 }, hitLocation:EquipmentSlot.chest });
 
-      expect(damage).to.equal(10);
+      expect(damage).to.equal(95);
+    });
+
+    it("passes damage types the natural armor lacks straight through", function() {
+      const state = startBattle();
+      const target = state.getActiveMonsters()[0];
+      EquipmentManager(target).equipItem(null, EquipmentSlot.secondary);
+
+      const damage = BattleDamageSystem.applyDamage({
+        entity:target, damageTypes:{ crush:100 }, hitLocation:EquipmentSlot.chest });
+
+      expect(damage).to.equal(100);
+    });
+
+    // The kobold trappers always wear a leather doublet, which covers the chest and replaces their natural armor
+    // there. The secondary slot is cleared because a trapper can roll a shield loadout.
+    it("covers a hit location with worn armor instead of natural armor", function() {
+      BattleFixtures.prepareForBattle();
+      BattleSystem.startBattle({ encounter:'kobold-trappers', ambushState:'normal' });
+      const target = BattleSystem.getState().getActiveMonsters()[0];
+      EquipmentManager(target).equipItem(null, EquipmentSlot.secondary);
+
+      const damage = BattleDamageSystem.applyDamage({
+        entity:target, damageTypes:{ slash:100 }, hitLocation:EquipmentSlot.chest });
+
+      expect(damage).to.equal(79);
     });
   });
 

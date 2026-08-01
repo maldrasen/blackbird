@@ -9,10 +9,15 @@ global.BaseArmor = (function() {
     return Object.keys(armors);
   }
 
-  function lookup(code) {
+  // As with BaseWeapon, an item instance can override the material of the primary part, scaling the reduction and
+  // value to the substituted material.
+  function lookup(code, options={}) {
     if (armors[code] == null) { throw new Error(`Bad base armor code [${code}]`); }
 
     const armor = { ...armors[code] };
+    if (options.material) {
+      armor.materials = ItemHelper.substitutePrimaryMaterial(armor.materials, options.material);
+    }
     const materials = HasMaterials(armor);
     const reduction = HasReduction(armor);
 

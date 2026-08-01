@@ -9,10 +9,15 @@ global.BaseWeapon = (function() {
     return Object.keys(weapons);
   }
 
-  function lookup(code) {
+  // An item instance can override the material its primary part is made from, changing the damage, reduction, and
+  // value calculations below. A bone tipped spear pierces at bone's sharpness, not steel's.
+  function lookup(code, options={}) {
     if (weapons[code] == null) { throw new Error(`Bad base weapon code [${code}]`); }
 
     const weapon = { ...weapons[code] };
+    if (options.material) {
+      weapon.materials = ItemHelper.substitutePrimaryMaterial(weapon.materials, options.material);
+    }
     const materials = HasMaterials(weapon);
     const reduction = HasReduction(weapon);
 

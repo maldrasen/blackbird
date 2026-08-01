@@ -48,6 +48,8 @@ global.BaseMonster = (function() {
       getArchetypes: () => { return monster.archetypes; },
       getThreatWeights,
       getAttackTable: () => { return monster.attackTable; },
+      getEquipment: () => { return monster.equipment; },
+      getNaturalArmor: () => { return monster.naturalArmor || {}; },
       getPrioritizedAbilities: () => { return monster.prioritizedAbilities||[] },
       getNegotiationGreeting,
     });

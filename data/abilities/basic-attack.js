@@ -11,19 +11,18 @@ Ability.register('basic-attack',{
   execute: () => { executeBasicAttack(); },
 });
 
+// The round's compiled weapon data covers both a monster's real equipped weapons and its basic attack fallback.
 function canMonsterAttack() {
   const round = BattleSystem.getRound();
-  const monster = round.getActingMonster();
-  const basicAttack = monster.getBasicAttack();
+  const weapon = round.getPrimaryWeapon();
 
-  if (basicAttack == null) { return false; }
+  if (weapon == null) { return false; }
   if (isHidden()) { return false; }
 
   const p1 = round.getActingPosition();
   const p2 = round.getTargetPosition();
-  const baseWeapon = BaseWeapon.lookup(basicAttack.main ? basicAttack.main.base : basicAttack.base);
 
-  return BattleHelper.isAttackWithinRange(baseWeapon.getReach(), p1, p2);
+  return BattleHelper.isAttackWithinRange(weapon.reach, p1, p2);
 }
 
 function canCharacterAttack() {
