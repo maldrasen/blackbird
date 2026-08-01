@@ -187,7 +187,7 @@ global.Character = function(id) {
   // TODO: There are a lot of different factors that will influence resistance, including a character's equipment.
   //       Currently though, only the character's species carries any innate resistance.
   function getResistance(type) {
-    return Species.lookup(getSpecies()).getResistances()[type] || 0;
+    return Species.lookup(getSpecies()).getResistance(type);
   }
 
   // ===============

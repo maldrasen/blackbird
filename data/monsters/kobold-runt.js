@@ -16,8 +16,6 @@ BaseMonster.register('kobold-runt',{
     ],
   },
 
-  naturalArmor: { slash:5, pierce:5 },
-
   abilities:[
     // bite attack.
   ],

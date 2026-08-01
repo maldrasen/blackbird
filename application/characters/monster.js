@@ -5,7 +5,6 @@ global.Monster = function(id) {
   function getBaseMonster() { return BaseMonster.lookup(getCode()); }
   function getType() { return MonsterType.lookup(getBaseMonster().getType()); }
   function getBasicAttack() { return monsterComponent().basicAttack; }
-  function getNaturalArmor() { return getBaseMonster().getNaturalArmor(); }
   function getSpecies() { return getBaseMonster().getSpecies(); }
   function getGender() { return ActorComponent.lookup(id).gender; }
   function getArchetype() { return PersonalityComponent.lookup(id).archetype; }
@@ -31,13 +30,9 @@ global.Monster = function(id) {
   }
 
   function getResistance(type) {
-    const baseResist = getBaseMonster().getResistances()[type] || 0;
-    return baseResist + getSpeciesResist(type);
-  }
-
-  function getSpeciesResist(type) {
-    if (getSpecies() == null) { return 0; }
-    return Species.lookup(getSpecies()).getResistances()[type] || 0;
+    const speciesResistance = getSpecies() ? Species.lookup(getSpecies()).getResistance(type) : 0;
+    const monsterResistance = getBaseMonster().getResistance(type);
+    return speciesResistance + monsterResistance;
   }
 
   // ==========
@@ -89,7 +84,6 @@ global.Monster = function(id) {
     getBaseMonster,
     getType,
     getBasicAttack,
-    getNaturalArmor,
     getResistance,
     getSpecies,
     getGender,

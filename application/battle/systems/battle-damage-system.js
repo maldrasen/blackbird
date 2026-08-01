@@ -50,7 +50,7 @@ global.BattleDamageSystem = (function() {
   function getReductionPercent(target, hitLocation, type) {
     if ([DamageType.crush, DamageType.pierce, DamageType.slash].includes(type)) {
       if (hitLocation == null) { throw new Error(`applyDamage() requires a hit location.`); }
-      const reduction = getEquippedReduction(target, hitLocation, type) + getNaturalReduction(target, type);
+      const reduction = getEquippedReduction(target, hitLocation, type) + getInnateResistance(target, type);
       return Math.min(reduction, maxReduction);
     }
     throw new Error(`TODO: Equipment elemental resistances.`);
@@ -60,8 +60,10 @@ global.BattleDamageSystem = (function() {
     return EquipmentComponent.lookup(target) ? EquipmentManager(target).getDamageReduction(hitLocation, type) : 0;
   }
 
-  function getNaturalReduction(target, type) {
-    return MonsterComponent.lookup(target) ? (Monster(target).getNaturalArmor()[type] || 0) : 0
+  function getInnateResistance(target, type) {
+    return BattleSystem.getState().isMonster(target) ?
+      Monster(target).getResistance(type) :
+      Character(target).getResistance(type);
   }
 
   // Monsters simply die at zero health. Characters brought to zero or below are knocked out, keeping their negative

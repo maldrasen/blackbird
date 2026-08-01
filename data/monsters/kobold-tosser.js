@@ -12,6 +12,4 @@ BaseMonster.register('kobold-tosser',{
     ],
   },
 
-  naturalArmor: { slash:5, pierce:5 },
-
 });

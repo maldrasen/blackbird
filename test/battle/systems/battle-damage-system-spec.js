@@ -22,11 +22,19 @@ describe("BattleDamageSystem", function() {
   }
 
   // The outcome tests aim their damage at a bared chest so the randomly equipped fixture characters can't
-  // mitigate the hard-coded damage numbers.
+  // mitigate the hard-coded damage numbers. The species is pinned to human for the same reason - a randomly
+  // rolled kobold or equian would resist part of the damage innately.
   function bareChest(id) {
     const equipment = EquipmentManager(id);
     equipment.equipItem(null, EquipmentSlot.chest);
     equipment.equipItem(null, EquipmentSlot.secondary);
+    makeHuman(id);
+  }
+
+  function makeHuman(id) {
+    const actor = ActorComponent.lookup(id);
+    actor.species = SpeciesCode.human;
+    ActorComponent.update(id, actor);
   }
 
   it("knocks a character out at zero or below", function() {
@@ -123,6 +131,7 @@ describe("BattleDamageSystem", function() {
       setHealth(target, 100);
       setVitality(target, 15);
       EquipmentManager(target).equipItem(null, EquipmentSlot.secondary);
+      makeHuman(target);
       return target;
     }
 
@@ -185,8 +194,9 @@ describe("BattleDamageSystem", function() {
       expect(damage).to.equal(110);
     });
 
-    // The kobold runts in the kobold-1 encounter have a naturalArmor of { slash:5, pierce:5 } and wear no armor.
-    it("applies a monster's natural armor at uncovered locations", function() {
+    // The kobold species resists 10 slash - their scales - which reduces physical damage at every hit location.
+    // The kobold runts in the kobold-1 encounter wear nothing over them.
+    it("applies a creature's innate resistance to physical damage", function() {
       const state = startBattle();
       const target = state.getActiveMonsters()[0];
       EquipmentManager(target).equipItem(null, EquipmentSlot.secondary);
@@ -194,10 +204,10 @@ describe("BattleDamageSystem", function() {
       const damage = BattleDamageSystem.applyDamage({
         entity:target, damageTypes:{ slash:100 }, hitLocation:EquipmentSlot.chest });
 
-      expect(damage).to.equal(95);
+      expect(damage).to.equal(90);
     });
 
-    it("passes damage types the natural armor lacks straight through", function() {
+    it("passes damage types the creature doesn't resist straight through", function() {
       const state = startBattle();
       const target = state.getActiveMonsters()[0];
       EquipmentManager(target).equipItem(null, EquipmentSlot.secondary);
@@ -210,7 +220,7 @@ describe("BattleDamageSystem", function() {
 
     // The kobold trappers always wear a leather doublet over their scales, so the chest takes both reductions.
     // The secondary slot is cleared because a trapper can roll a shield loadout.
-    it("stacks natural armor with worn armor", function() {
+    it("stacks innate resistance with worn armor", function() {
       BattleFixtures.prepareForBattle();
       BattleSystem.startBattle({ encounter:'kobold-trappers', ambushState:'normal' });
       const target = BattleSystem.getState().getActiveMonsters()[0];
@@ -219,7 +229,7 @@ describe("BattleDamageSystem", function() {
       const damage = BattleDamageSystem.applyDamage({
         entity:target, damageTypes:{ slash:100 }, hitLocation:EquipmentSlot.chest });
 
-      expect(damage).to.equal(74);
+      expect(damage).to.equal(69);
     });
   });
 

@@ -16,6 +16,4 @@ BaseMonster.register('kobold-trapper',{
     ],
   },
 
-  naturalArmor: { slash:5, pierce:5 },
-
 });

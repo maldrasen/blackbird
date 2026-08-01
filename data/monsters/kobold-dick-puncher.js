@@ -22,8 +22,6 @@ BaseMonster.register('kobold-dick-puncher',{
     { main:{ base:'fist' }, off:{ base:'fist' }}
   ],
 
-  naturalArmor: { slash:5, pierce:5 },
-
   prioritizedAbilities:[
     { code:'dick-punch', priority:100 },
   ],

@@ -27,8 +27,6 @@ BaseMonster.register('kobold-sneak-slut',{
     ],
   },
 
-  naturalArmor: { slash:5, pierce:5 },
-
   negotiationGreeting: greetingPackage,
 });
 
