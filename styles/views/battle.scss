@@ -45,6 +45,10 @@ $roll-high-bright: rgb(250,250,250);
 
     .combatant {
       pointer-events: auto;
+
+      &.moving {
+        z-index: 5;
+      }
     }
   }
 

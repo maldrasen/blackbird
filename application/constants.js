@@ -10,6 +10,7 @@ global._parentId = '_parentId'
 global._positionPattern = /([PM])\.(\d)\.(\d)/;
 global._battleDamageEffectTime = 500;
 global._battleKillEffectTime = 1000;
+global._battleMoveEffectTime = 500;
 
 // === Training ===
 // The scale thresholds could be played with a bit, raised or lowered as needed as the levels aren't very even at all.

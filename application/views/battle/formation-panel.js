@@ -163,9 +163,10 @@ global.FormationPanel = (function() {
       element.remove();
     },_battleKillEffectTime);
 
+    // Inspect mode stays off long enough to cover any follow-up death moves.
     setTimeout(()=>{
       X.addClass('#battleView','inspect-mode');
-    },_battleKillEffectTime + 600);
+    },_battleKillEffectTime + _battleMoveEffectTime + 100);
   }
 
   // This function animates moving a character from the back rank to the front. This should only be called once a
@@ -186,15 +187,26 @@ global.FormationPanel = (function() {
   // combatant at a stale location.
   function moveEntity(combatantPanel, targetKey) {
     const id = combatantPanel.getEntity();
+    const element = combatantPanel.getElement();
+    const record = {};
 
-    const timer = setTimeout(() => {
+    record.timer = setTimeout(() => {
       combatantPanel.setPosition(targetKey);
-      placeCombatant(combatantPanel);
-      pendingMoves.delete(id);
-      validatePositions();
+      X.addClass(element,'moving');
+
+      record.animation = MoveAnimation.move({
+        element,
+        ...combatantCoords(targetKey),
+        duration: _battleMoveEffectTime,
+        onComplete: () => {
+          X.removeClass(element,'moving');
+          pendingMoves.delete(id);
+          validatePositions();
+        },
+      });
     }, _battleKillEffectTime);
 
-    pendingMoves.set(id, { timer });
+    pendingMoves.set(id, record);
   }
 
   function combatantCoords(positionKey) {
@@ -233,9 +245,15 @@ global.FormationPanel = (function() {
     placeAll(state.getPartyFormation());
   }
 
+  // Cancelling an animation leaves the element at its destination because MoveAnimation commits the target
+  // coordinates up front, and it skips the onComplete callback.
   function cancelPendingMoves() {
-    pendingMoves.forEach(move => { clearTimeout(move.timer); });
+    pendingMoves.forEach(move => {
+      clearTimeout(move.timer);
+      if (move.animation) { move.animation.cancel(); }
+    });
     pendingMoves.clear();
+    X.removeClass('.combatant.moving','moving');
   }
 
   function handleResize() {
