@@ -21,6 +21,7 @@ Ability.register('punch', {
 
   canBeUsed: () => {
     const round = BattleSystem.getRound();
+    if (BattleSystem.getState().hasStatusEffect(round.getActing(),'hidden')) { return false; }
     return BattleHelper.isAttackWithinRange(punchAttack.reach,
       round.getActingPosition(),
       round.getTargetPosition());

@@ -36,7 +36,7 @@ global.FunctionLoom = (function() {
     let name = context.weaponName;
     let nameType = context.weaponNameType || 'common';
 
-    if (base == null) {
+    if (base == null && name == null) {
       const resolved = resolvePrimaryWeapon(context[argumentList[0]]);
       base = resolved.base;
       weaponId = resolved.id;
