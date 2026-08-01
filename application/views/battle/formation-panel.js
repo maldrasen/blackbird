@@ -213,10 +213,9 @@ global.FormationPanel = (function() {
     const positionCoords = X.getPosition(positionPanels[positionKey].getElement());
     const layerCoords = X.getPosition(X.first('#combatantLayer'));
 
-    // The combatant sits inside the position's 1px border.
     return {
-      left: positionCoords.left - layerCoords.left + 1,
-      top: positionCoords.top - layerCoords.top + 1,
+      left: positionCoords.left - layerCoords.left,
+      top: positionCoords.top - layerCoords.top,
     };
   }
 
