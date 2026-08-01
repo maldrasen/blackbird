@@ -11,8 +11,8 @@ BaseMonster.register('kobold-runt',{
 
   equipment: {
     loadouts:[
-      { main:{ base:'hammer', material:MaterialType.bone, name:'bone club' }},
-      { main:{ base:'spear', material:MaterialType.bone }},
+      { main:{ base:'bone-club' }},
+      { main:{ base:'bone-spear' }},
     ],
   },
 

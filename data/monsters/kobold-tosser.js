@@ -8,7 +8,7 @@ BaseMonster.register('kobold-tosser',{
 
   equipment: {
     loadouts:[
-      { main:{ base:'spear', material:MaterialType.bone }},
+      { main:{ base:'bone-spear' }},
     ],
   },
 

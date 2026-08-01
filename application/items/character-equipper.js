@@ -68,11 +68,11 @@ global.CharacterEquipper = function(id) {
   // The equipLoadout() function is the list driven alternative to equip(). Instead of shopping against a budget, the
   // caller provides the exact gear the character can have: a list of possible weapon loadouts (one is picked at
   // random) and the armor they wear. Monsters use this to fight with real equipment, equipment they keep if they're
-  // recruited into the party. Every entry is a factory options object with a base code, so materials and names can
-  // be overridden.
+  // recruited into the party. Every entry is a factory options object with a base code (which may be a registered
+  // variant like bone-spear), so names and text keys can be overridden.
   //
-  //     loadouts: [{ main:{ base:B, material:M, name:N }, off:{ base:B, material:M, name:N }}]
-  //     armor:    [{ base:B, material:M, name:N }]
+  //     loadouts: [{ main:{ base:B, name:N }, off:{ base:B, name:N }}]
+  //     armor:    [{ base:B, name:N }]
   //
   function equipLoadout(spec) {
     equipLoadoutWeapons(spec.loadouts || []);

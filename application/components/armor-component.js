@@ -1,5 +1,5 @@
 global.ArmorComponent = (function() {
-  const properties = ['base','name','material','enchantment'];
+  const properties = ['base','name','enchantment'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.armor,data);
@@ -29,10 +29,6 @@ global.ArmorComponent = (function() {
     });
 
     Validate.exists('Armor.base',armorComponent.base);
-
-    if (armorComponent.material) {
-      Validate.isIn('Armor.material',armorComponent.material,Object.values(MaterialType));
-    }
   }
 
   return Object.freeze({

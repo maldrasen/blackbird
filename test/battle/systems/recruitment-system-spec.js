@@ -30,7 +30,7 @@ describe("RecruitmentSystem", function() {
 
     expect(EquipmentComponent.lookup(monster).primary).to.equal(primary);
     expect(InventoryManager(monster).hasItem(primary)).to.be.true;
-    expect(WeaponComponent.lookup(primary).material).to.equal(MaterialType.bone);
+    expect(WeaponComponent.lookup(primary).base).to.be.oneOf(['bone-spear','bone-club']);
   });
 
 });

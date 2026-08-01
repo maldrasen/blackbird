@@ -16,6 +16,8 @@ BaseWeapon.register('hammer', {
   textKey: 'basic-swing',
 });
 
+BaseWeapon.registerVariant('bone-club', 'hammer', { material:MaterialType.bone, name:'bone club' });
+
 BaseWeapon.register('mace', {
   name: 'mace',
   icon: 'weapons/mace-01.png',

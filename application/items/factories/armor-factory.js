@@ -17,7 +17,6 @@ global.ArmorFactory = (function() {
   function customizeArmor(id, options) {
     const armorComponent = ArmorComponent.lookup(id);
     if (options.name) { armorComponent.name = options.name; }
-    if (options.material) { armorComponent.material = options.material; }
     if (options.enchantment) { armorComponent.enchantment = options.enchantment; }
     ArmorComponent.update(id, armorComponent);
   }

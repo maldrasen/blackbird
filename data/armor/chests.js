@@ -14,6 +14,8 @@ BaseArmor.register('doublet', {
   effort: 3,
 });
 
+BaseArmor.registerVariant('leather-doublet', 'doublet', { material:MaterialType.leather });
+
 BaseArmor.register('hauberk', {
   name: 'hauberk',
   icon: 'armor/chest-08.png',

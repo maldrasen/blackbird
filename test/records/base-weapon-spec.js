@@ -156,29 +156,34 @@ describe("BaseWeapon", function() {
     });
   });
 
-  describe("material overrides", function() {
-    // Substituting bone (0.65 sharpness, cost 2) for the spear's steel tip scales the authored 50-100 pierce damage
-    // and the price down with it.
+  describe("registered variants", function() {
+    // The bone spear is derived from the spear at registration: same shape, bone (0.65 sharpness, cost 2) swapped in
+    // for the steel tip, which scales the authored 50-100 pierce damage and the price down with it.
     it("substitutes the primary part's material", function() {
-      expect(BaseWeapon.lookup('spear', { material:MaterialType.bone }).getMaterialParts()).to.deep.equal([
+      expect(BaseWeapon.lookup('bone-spear').getMaterialParts()).to.deep.equal([
         { part:'tip', material:MaterialType.bone, amount:1 },
         { part:'shaft', material:MaterialType.wood, amount:2 },
       ]);
     });
 
+    it("names itself after its material unless a name is given", function() {
+      expect(BaseWeapon.lookup('bone-spear').getName()).to.equal('bone spear');
+      expect(BaseWeapon.lookup('bone-club').getName()).to.equal('bone club');
+    });
+
     it("scales the damage to the substituted material", function() {
-      const boneSpear = BaseWeapon.lookup('spear', { material:MaterialType.bone });
+      const boneSpear = BaseWeapon.lookup('bone-spear');
       expect(boneSpear.getLow()).to.equal(33);
       expect(boneSpear.getHigh()).to.equal(65);
     });
 
     it("prices the weapon at the substituted material", function() {
-      expect(BaseWeapon.lookup('spear', { material:MaterialType.bone }).getValue()).to.equal(183);
+      expect(BaseWeapon.lookup('bone-spear').getValue()).to.equal(183);
     });
 
-    it("does not touch the registered record", function() {
-      BaseWeapon.lookup('spear', { material:MaterialType.bone });
+    it("does not touch the record it was derived from", function() {
       expect(BaseWeapon.lookup('spear').getPrimaryMaterial()).to.equal(MaterialType.steel);
+      expect(BaseWeapon.lookup('spear').getName()).to.equal('spear');
     });
   });
 

@@ -20,7 +20,7 @@ describe('CharacterEquipper', function() {
     const primary = WeaponComponent.lookup(equipped.primary).base;
 
     expect(primary).to.be.oneOf(['broad-axe','halberd','glaive','morning-star','warhammer']);
-    expect(armorCode(equipped.chest)).to.be.oneOf(['doublet']);
+    expect(armorCode(equipped.chest)).to.be.oneOf(['leather-doublet']);
     expect(armorCode(equipped.legs)).to.be.oneOf(['chaps']);
     expect(armorCode(equipped.feet)).to.be.oneOf(['boots']);
     expect(equipped.head).to.be.undefined
@@ -64,7 +64,7 @@ describe('CharacterEquipper', function() {
     const equipped = CharacterEquipper(horse).equip(450);
 
     expect(weaponCode(equipped.primary)).to.equal('dagger');
-    expect(weaponCode(equipped.secondary)).to.equal('knife');
+    expect(weaponCode(equipped.secondary)).to.be.oneOf(['knife','bone-knife']);
   });
 
   it('equips nothing when the budget is too small', function() {
@@ -129,22 +129,21 @@ describe('CharacterEquipper', function() {
   });
 
   describe('equipLoadout()', function() {
-    it('equips the listed weapons and armor with material overrides', function() {
+    it('equips the listed weapons and armor', function() {
       const horse = CharacterFixtures.genericMale({});
       const equipped = CharacterEquipper(horse).equipLoadout({
         loadouts:[
-          { main:{ base:'knife', material:MaterialType.bone }, off:{ base:'targe' }},
+          { main:{ base:'bone-knife' }, off:{ base:'targe' }},
         ],
         armor:[
-          { base:'doublet', material:MaterialType.leather },
+          { base:'leather-doublet' },
         ],
       });
 
-      expect(weaponCode(equipped.primary)).to.equal('knife');
-      expect(WeaponComponent.lookup(equipped.primary).material).to.equal(MaterialType.bone);
+      expect(weaponCode(equipped.primary)).to.equal('bone-knife');
       expect(Weapon(equipped.primary).getName()).to.equal('bone knife');
       expect(weaponCode(equipped.secondary)).to.equal('targe');
-      expect(armorCode(equipped.chest)).to.equal('doublet');
+      expect(armorCode(equipped.chest)).to.equal('leather-doublet');
       expect(Armor(equipped.chest).getName()).to.equal('leather doublet');
       expect(InventoryManager(horse).hasItem(equipped.primary)).to.be.true;
     });
@@ -153,12 +152,12 @@ describe('CharacterEquipper', function() {
       const horse = CharacterFixtures.genericMale({});
       const equipped = CharacterEquipper(horse).equipLoadout({
         loadouts:[
-          { main:{ base:'hammer', material:MaterialType.bone, name:'bone club' }},
-          { main:{ base:'spear', material:MaterialType.bone }},
+          { main:{ base:'bone-club' }},
+          { main:{ base:'bone-spear' }},
         ],
       });
 
-      expect(weaponCode(equipped.primary)).to.be.oneOf(['hammer','spear']);
+      expect(weaponCode(equipped.primary)).to.be.oneOf(['bone-club','bone-spear']);
       expect(equipped.secondary).to.be.undefined;
     });
 
@@ -166,11 +165,11 @@ describe('CharacterEquipper', function() {
       const horse = CharacterFixtures.genericMale({});
       const equipped = CharacterEquipper(horse).equipLoadout({
         loadouts:[
-          { main:{ base:'spear', material:MaterialType.bone }, off:{ base:'targe' }},
+          { main:{ base:'bone-spear' }, off:{ base:'targe' }},
         ],
       });
 
-      expect(weaponCode(equipped.primary)).to.equal('spear');
+      expect(weaponCode(equipped.primary)).to.equal('bone-spear');
       expect(equipped.secondary).to.be.undefined;
       expect(EquipmentManager(horse).getSlot(EquipmentSlot.secondary)).to.equal(null);
     });

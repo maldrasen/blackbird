@@ -1,5 +1,5 @@
 global.WeaponComponent = (function() {
-  const properties = ['base','name','nameType','textKey','material','enchantment'];
+  const properties = ['base','name','nameType','textKey','enchantment'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.weapon,data);
@@ -34,10 +34,6 @@ global.WeaponComponent = (function() {
     // no prefix. The difference between "He swings his spiked dildo bat" and "He thrusts Stabitha forward."
     if (weaponComponent.nameType) {
       Validate.isIn('Weapon.nameType',weaponComponent.nameType,['common','proper']);
-    }
-
-    if (weaponComponent.material) {
-      Validate.isIn('Weapon.material',weaponComponent.material,Object.values(MaterialType));
     }
   }
 

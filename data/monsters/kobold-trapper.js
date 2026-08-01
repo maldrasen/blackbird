@@ -8,11 +8,11 @@ BaseMonster.register('kobold-trapper',{
 
   equipment: {
     loadouts:[
-      { main:{ base:'spear', material:MaterialType.bone }},
-      { main:{ base:'hammer', material:MaterialType.bone, name:'bone club' }, off:{ base:'targe' }},
+      { main:{ base:'bone-spear' }},
+      { main:{ base:'bone-club' }, off:{ base:'targe' }},
     ],
     armor:[
-      { base:'doublet', material:MaterialType.leather },
+      { base:'leather-doublet' },
     ],
   },
 

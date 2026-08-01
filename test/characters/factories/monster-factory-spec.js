@@ -12,13 +12,11 @@ describe("MonsterFactory", function() {
       expect(monster.basicAttack.main.base).to.equal('fist');
     });
 
-    it("equips real weapons with material overrides", function() {
+    it("equips real weapons", function() {
       const id = MonsterFactory.build('kobold-tosser');
       const primary = EquipmentComponent.lookup(id).primary;
-      const weapon = WeaponComponent.lookup(primary);
 
-      expect(weapon.base).to.equal('spear');
-      expect(weapon.material).to.equal(MaterialType.bone);
+      expect(WeaponComponent.lookup(primary).base).to.equal('bone-spear');
       expect(Weapon(primary).getName()).to.equal('bone spear');
       expect(InventoryComponent.lookup(id).items).to.include(primary);
     });
@@ -26,10 +24,8 @@ describe("MonsterFactory", function() {
     it("equips armor", function() {
       const id = MonsterFactory.build('kobold-trapper');
       const chest = EquipmentComponent.lookup(id).chest;
-      const armor = ArmorComponent.lookup(chest);
 
-      expect(armor.base).to.equal('doublet');
-      expect(armor.material).to.equal(MaterialType.leather);
+      expect(ArmorComponent.lookup(chest).base).to.equal('leather-doublet');
       expect(Armor(chest).getName()).to.equal('leather doublet');
     });
 

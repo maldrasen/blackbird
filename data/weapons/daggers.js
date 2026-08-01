@@ -20,6 +20,8 @@ BaseWeapon.register('knife', {
   textKey: 'quick-stab',
 });
 
+BaseWeapon.registerVariant('bone-knife', 'knife', { material:MaterialType.bone });
+
 BaseWeapon.register('dirk', {
   name: 'dirk',
   icon: 'weapons/dagger-02.png',

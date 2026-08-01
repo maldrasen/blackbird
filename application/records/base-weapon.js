@@ -5,19 +5,29 @@ global.BaseWeapon = (function() {
     weapons[code] = data;
   }
 
+  // A variant is a registered record derived from another: the same weapon with the primary part's material swapped.
+  // Variants are real records - immutable, canonical, and listed in getAllCodes() - so a bone spear hits and prices
+  // at bone quality everywhere. Unless a name is given, the variant names itself after its material ("bone spear").
+  // Register a variant in the same data file as its base, after it, so the base always exists first.
+  function registerVariant(code, baseCode, options) {
+    if (weapons[baseCode] == null) { throw new Error(`Bad base weapon code [${baseCode}]`); }
+
+    const base = weapons[baseCode];
+    weapons[code] = {
+      ...base,
+      name: options.name || `${options.material} ${base.name}`,
+      materials: ItemHelper.substitutePrimaryMaterial(base.materials, options.material),
+    };
+  }
+
   function getAllCodes() {
     return Object.keys(weapons);
   }
 
-  // An item instance can override the material its primary part is made from, changing the damage, reduction, and
-  // value calculations below. A bone tipped spear pierces at bone's sharpness, not steel's.
-  function lookup(code, options={}) {
+  function lookup(code) {
     if (weapons[code] == null) { throw new Error(`Bad base weapon code [${code}]`); }
 
     const weapon = { ...weapons[code] };
-    if (options.material) {
-      weapon.materials = ItemHelper.substitutePrimaryMaterial(weapon.materials, options.material);
-    }
     const materials = HasMaterials(weapon);
     const reduction = HasReduction(weapon);
 
@@ -100,6 +110,7 @@ global.BaseWeapon = (function() {
 
   return Object.freeze({
     register,
+    registerVariant,
     getAllCodes,
     lookup,
   });

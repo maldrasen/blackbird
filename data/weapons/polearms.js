@@ -17,6 +17,8 @@ BaseWeapon.register('spear', {
   textKey: 'basic-thrust',
 });
 
+BaseWeapon.registerVariant('bone-spear', 'spear', { material:MaterialType.bone });
+
 BaseWeapon.register('pike', {
   name: 'pike',
   icon: 'weapons/spear-01.png',

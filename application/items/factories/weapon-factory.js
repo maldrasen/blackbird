@@ -20,7 +20,6 @@ global.WeaponFactory = (function() {
     const weaponComponent = WeaponComponent.lookup(id);
     if (options.name) { weaponComponent.name = options.name; }
     if (options.textKey) { weaponComponent.textKey = options.textKey; }
-    if (options.material) { weaponComponent.material = options.material; }
     if (options.enchantment) { weaponComponent.enchantment = options.enchantment; }
     WeaponComponent.update(id, weaponComponent);
   }

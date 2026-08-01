@@ -23,7 +23,7 @@ BaseMonster.register('kobold-sneak-slut',{
 
   equipment: {
     loadouts:[
-      { main:{ base:'knife', material:MaterialType.bone }, off:{ base:'knife', material:MaterialType.bone }},
+      { main:{ base:'bone-knife' }, off:{ base:'bone-knife' }},
     ],
   },
 
