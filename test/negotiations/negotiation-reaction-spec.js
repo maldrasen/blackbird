@@ -25,7 +25,8 @@ describe("NegotiationReaction", function() {
       expect(NegotiationReaction.run('msg')).to.deep.equal({ type:'run', message:'msg' });
       expect(NegotiationReaction.ability('dick-punch','msg')).to.deep.equal({
         type:'ability', code:'dick-punch', message:'msg' });
-      expect(NegotiationReaction.join('msg')).to.deep.equal({ type:'join', message:'msg', options:{} });
+      expect(NegotiationReaction.join('msg')).to.deep.equal({
+        type:'join', feelings:{ control:40, affection:50, respect:20, fear:-10 }, message:'msg', options:{} });
     });
 
     it('hoists join feelings out of the options', function() {
