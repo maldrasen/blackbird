@@ -75,6 +75,52 @@ describe("NegotiationSystem", function() {
     expect(GameSystem.getState().isInRoster(monster)).to.equal(false);
   });
 
+  describe("answer()", function() {
+    function setBrains(id, value) {
+      const attributes = AttributesComponent.lookup(id);
+      attributes.intelligence = value;
+      attributes.beauty = value;
+      AttributesComponent.update(id, attributes);
+    }
+
+    // Boots the negotiation like the NegotiationState spec: the negotiation-fixture-2 kobold-sneak-slut with the
+    // archetype pinned to slut so the question pool is deterministic. The player is made brilliant and the monster
+    // dim, so the player wins the influence contest past the 100 point cap: helping feelings double and hurting ones
+    // zero out. Each skill check consumes a crit and a value roll (between) then an improve roll (roll) — the
+    // player's improve roll succeeds while the monster's misses.
+    it("moderates a feelings reaction and records the conversation improvement", function() {
+      BattleFixtures.prepareForBattle();
+      BattleSystem.startBattle({ encounter:'negotiation-fixture-2', ambushState:'normal' });
+
+      const player = GameSystem.getState().getPlayer();
+      BattleSystem.specRound(player);
+
+      const monster = BattleSystem.getState().getActiveMonsters()[0];
+      const personality = PersonalityComponent.lookup(monster);
+      personality.archetype = ArchetypeCode.slut;
+      PersonalityComponent.update(monster, personality);
+
+      Random.stubRoll(40, 20);
+      NegotiationSystem.start();
+      Random.stubReset();
+
+      setBrains(player, 100);
+      setBrains(monster, 20);
+
+      const state = NegotiationSystem.getState();
+      for (let i=0; i<2; i++) { if (state.pickQuestion().question === 'how-do-you-taste') { break; } }
+
+      Random.stubBetween(50,75, 50,1);
+      Random.stubRoll(5, 149);
+      NegotiationSystem.answer('findOut');
+
+      expect(state.getFeelings()).to.deep.equal({ control:70, affection:90, fear:40, respect:20 });
+      expect(state.hasResolution()).to.equal(false);
+      expect(SkillsComponent.lookup(player).conversation).to.equal(1);
+      expect(BattleSystem.getState().getSkillImprovements()).to.deep.equal({ [player]:{ conversation:1 } });
+    });
+  });
+
   it("continues the battle with the monster acting first after a stalemate timeout", function() {
     const state = startNegotiation();
     const battleState = BattleSystem.getState();

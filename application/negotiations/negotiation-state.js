@@ -53,10 +53,6 @@ global.NegotiationState = function() {
     return currentQuestion;
   }
 
-  // TODO: We should use the player's communication skill when applying the feelings. A skilled communicator should
-  //       be able to reduce negative feelings and increase positive feelings. (Or the opposite if they're bad at
-  //       communication.) We can try making this an opposed beauty roll, see how that works out.
-
   // TODO: Monsters will have different conditions and thresholds that are used to determine these states. We can make
   //       some monsters harder to recruit than others by increasing the thresholds, or make some monsters only
   //       respond to affection or respect.

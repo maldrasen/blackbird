@@ -38,7 +38,11 @@ global.NegotiationSystem = (function() {
     const question = state.getCurrentQuestion();
     const reaction = NegotiationReaction.resolve(question.reactionData.reactions[key], state.getContext());
 
-    applyReaction(reaction);
+    applyReaction(reaction.type === 'feelings' ? moderateReaction(reaction) : reaction);
+  }
+
+  function moderateReaction(reaction) {
+    return { ...reaction, feelings:NegotiationInfluence.moderateFeelings(reaction.feelings, state.getContext()) };
   }
 
   // The monster's reply is always rendered, but nothing executes yet. Feelings adjustments can resolve the negotiation
