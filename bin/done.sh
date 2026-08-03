@@ -1,3 +1,3 @@
 #!/bin/bash
 
-mv docs/tasks/$@*.md docs/tasks/complete
+mv docs/tasks/$@*.md docs/tasks/completed
