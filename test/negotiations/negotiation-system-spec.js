@@ -86,9 +86,8 @@ describe("NegotiationSystem", function() {
     // Boots the negotiation like the NegotiationState spec: the negotiation-fixture-2 kobold-sneak-slut with the
     // archetype pinned to slut so the question pool is deterministic. The player is made brilliant and the monster
     // dim, so the player wins the influence contest past the 100 point cap: helping feelings double and hurting ones
-    // zero out. Each skill check consumes a crit and a value roll (between) then an improve roll (roll) — the
-    // player's improve roll succeeds while the monster's misses.
-    it("moderates a feelings reaction and records the conversation improvement", function() {
+    // zero out. Each skill check consumes a crit and a value roll (between) then an improve roll (roll).
+    function bootNegotiation() {
       BattleFixtures.prepareForBattle();
       BattleSystem.startBattle({ encounter:'negotiation-fixture-2', ambushState:'normal' });
 
@@ -107,8 +106,17 @@ describe("NegotiationSystem", function() {
       setBrains(player, 100);
       setBrains(monster, 20);
 
-      const state = NegotiationSystem.getState();
-      for (let i=0; i<2; i++) { if (state.pickQuestion().question === 'how-do-you-taste') { break; } }
+      return { state:NegotiationSystem.getState(), player, monster };
+    }
+
+    function pickUntil(state, question, poolSize) {
+      for (let i=0; i<poolSize; i++) { if (state.pickQuestion().question === question) { return; } }
+      throw new Error(`Question ${question} was not in the pool`);
+    }
+
+    it("moderates a feelings reaction and records the conversation improvement", function() {
+      const { state, player } = bootNegotiation();
+      pickUntil(state, 'how-do-you-taste', 2);
 
       Random.stubBetween(50,75, 50,1);
       Random.stubRoll(5, 149);
@@ -118,6 +126,22 @@ describe("NegotiationSystem", function() {
       expect(state.hasResolution()).to.equal(false);
       expect(SkillsComponent.lookup(player).conversation).to.equal(1);
       expect(BattleSystem.getState().getSkillImprovements()).to.deep.equal({ [player]:{ conversation:1 } });
+    });
+
+    // The frequency map contest consumes the first stubbed roll before the two improve rolls.
+    it("applies moderated feelings from a join reaction before it resolves", function() {
+      const { state, monster } = bootNegotiation();
+
+      state.setFlag('playerCockOut', true);
+      pickUntil(state, 'let-me-taste', 3);
+
+      Random.stubBetween(50,75, 50,1);
+      Random.stubRoll(3, 5, 149);
+      NegotiationSystem.answer('piss');
+
+      expect(state.getResolution()).to.deep.equal({ type:'join' });
+      expect(state.getFeelings()).to.deep.equal({ control:110, affection:90, fear:40, respect:100 });
+      expect(SexualPreferencesComponent.lookup(monster)['piss-slut']).to.equal(20);
     });
   });
 

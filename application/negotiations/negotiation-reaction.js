@@ -99,11 +99,24 @@ global.NegotiationReaction = (function() {
     return { type:'feelings', feelings, message, options };
   }
 
+  // A join reaction can carry an optional feelings map, so that when a monster automatically joins the party, they
+  // can start with somewhat high positive feelings. (Perhaps still not as much as going through an entire negotiation,
+  // but enough to be noticeable.) This will use the "love" feelings map by default if the feelings aren't included.
+  function joinReaction(message, options={}) {
+    const { feelings, ...remaining } = options;
+    return {
+      type: 'join',
+      message: message,
+      options: remaining,
+      feelings: (feelings == null) ? reactionMap.love : feelings
+    };
+  }
+
   const methods = {
     attack:  (message, options={}) => { return { type:'attack', message, options }; },
     run:     (message) =>             { return { type:'run', message }; },
     ability: (code, message) =>       { return { type:'ability', code, message }; },
-    join:    (message, options={}) => { return { type:'join', message, options }; },
+    join:    joinReaction,
     contest,
     resolve,
   };

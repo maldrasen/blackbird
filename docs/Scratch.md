@@ -1,0 +1,3 @@
+
+
+Other reaction types may need some default feelings maps as well. Join is the most obvious as that character will be joining the party. If you've upset a monster enough to attack you they should get some negative feelings, a loss of fear at least. I was thinking this wasn't necessary, because if a negotiation fails and the battle resumes, that monster can never be negotiated with to join the party, but once the capture mechanic is in place, these feelings actually should carry over onto captured monsters.

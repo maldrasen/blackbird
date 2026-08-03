@@ -27,6 +27,12 @@ describe("NegotiationReaction", function() {
         type:'ability', code:'dick-punch', message:'msg' });
       expect(NegotiationReaction.join('msg')).to.deep.equal({ type:'join', message:'msg', options:{} });
     });
+
+    it('hoists join feelings out of the options', function() {
+      expect(NegotiationReaction.join('msg', { feelings:{ affection:30 }, givePreferences:{ 'piss-slut':20 }}))
+        .to.deep.equal({
+          type:'join', feelings:{ affection:30 }, message:'msg', options:{ givePreferences:{ 'piss-slut':20 }} });
+    });
   });
 
   describe("resolve()", function() {

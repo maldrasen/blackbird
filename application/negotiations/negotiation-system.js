@@ -38,21 +38,24 @@ global.NegotiationSystem = (function() {
     const question = state.getCurrentQuestion();
     const reaction = NegotiationReaction.resolve(question.reactionData.reactions[key], state.getContext());
 
-    applyReaction(reaction.type === 'feelings' ? moderateReaction(reaction) : reaction);
+    applyReaction(reaction.feelings ? moderateReaction(reaction) : reaction);
   }
 
   function moderateReaction(reaction) {
     return { ...reaction, feelings:NegotiationInfluence.moderateFeelings(reaction.feelings, state.getContext()) };
   }
 
-  // The monster's reply is always rendered, but nothing executes yet. Feelings adjustments can resolve the negotiation
-  // when a feeling is pushed out of bounds; the other reaction types resolve it directly. Either way the resolution
-  // waits until the player has advanced past the reply and the resolution text.
+  // The monster's reply is always rendered, but nothing executes yet. Any reaction can carry a feelings map, so that
+  // a resolution like an automatic join still credits its feelings before it resolves. Feelings adjustments can
+  // resolve the negotiation when a feeling is pushed out of bounds; the other reaction types resolve it directly.
+  // Either way the resolution waits until the player has advanced past the reply and the resolution text.
   function applyReaction(reaction) {
     NegotiationInterface.renderDialog(reaction.message);
 
+    if (reaction.feelings) { state.applyFeelings(reaction.feelings); }
+
     switch (reaction.type) {
-      case 'feelings': return state.applyFeelings(reaction.feelings);
+      case 'feelings': return;
       case 'join':     return state.setResolution({ type:'join' });
       case 'attack':   return state.setResolution({ type:'attack' });
       case 'ability':  return state.setResolution({ type:'ability', code:reaction.code });
