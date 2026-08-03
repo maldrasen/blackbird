@@ -12,10 +12,9 @@ NegotiationQuestion.registerReaction('become-a-minion', {
   style: NegotiationStyle.fierce,
   reactions: {
     liar: NegotiationReaction.respect(`{T:He} chuckles and shakes {T:his} head, "Heh, fine. Not yet anyway."`),
-    // TODO: Placeholder win prose, rewrite as needed.
     backwards: NegotiationReaction.contest({
       skill: 'conversation',
-      win: NegotiationReaction.respect(`{T:He} squints at you for a long moment, then barks out a laugh, "Heh. Ballsy. Fine, maybe you're not a complete pussy."`),
+      win: NegotiationReaction.respect(`{T:TargetName} lets out a low growl and for a moment it looks like {T:He} might attack. {T:He} suddenly barks out a laugh, "You've got balls at least."`),
       loss: NegotiationReaction.dislike(`"Me mer me mi ma ma mackmards," {T:he} says mockingly, "Gods you sound like a douche."`),
     }),
     takeCharge: NegotiationReaction.disrespect(`{T:He} gives you a mocking grin, "You {P:species.elves} are such pussies."`),
