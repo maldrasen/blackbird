@@ -1,3 +1,3 @@
 #!/bin/bash
 
-exec $NODE_HOME/node ./bin/new-task.js "$@"
+exec node ./bin/new-task.js "$@"

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-exec $NODE_HOME/node ./bin/compile-manifest.js
+exec node ./bin/compile-manifest.js
