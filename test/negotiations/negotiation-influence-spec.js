@@ -29,16 +29,24 @@ describe("NegotiationInfluence", function() {
     });
 
     it('barely moderates a narrow win', function() {
+      // A 3 point margin sits in the linear zone, giving a strength of 0.03.
       Random.stubBetween(50,4, 50,3);
       expect(NegotiationInfluence.moderateFeelings({ control:10, affection:-20 }, { P:contestant(), T:contestant() }))
-        .to.deep.equal({ control:10, affection:-20 });
+        .to.deep.equal({ control:10, affection:-19 });
     });
 
-    it('squares the margin so the moderation ramps up slowly', function() {
-      // A 60 point margin (81 against 21) gives a strength of 0.36 rather than the linear 0.6.
+    it('tapers off on the winning side', function() {
+      // A 60 point margin (81 against 21) lands on the 0.85 exponent zone for a strength of 0.65.
       Random.stubBetween(50,2, 50,5);
       expect(NegotiationInfluence.moderateFeelings({ control:10, affection:-20 }, { P:contestant(100), T:contestant() }))
-        .to.deep.equal({ control:14, affection:-13 });
+        .to.deep.equal({ control:16, affection:-7 });
+    });
+
+    it('falls off a cliff on the losing side', function() {
+      // The same 60 point margin lost lands on the 1.5 exponent zone for a strength of -0.47.
+      Random.stubBetween(50,5, 50,2);
+      expect(NegotiationInfluence.moderateFeelings({ control:10, affection:-20 }, { P:contestant(), T:contestant(100) }))
+        .to.deep.equal({ control:5, affection:-29 });
     });
 
     it('does not mutate the reaction feelings', function() {
