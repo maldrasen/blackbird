@@ -1,7 +1,7 @@
 ---
 id: 105
 title: Add Negotiation Requests
-priority: 1
+priority: 2
 created: 2026-07-12
 points: 8
 tags:
@@ -14,6 +14,7 @@ Agreeing to a request will usually result in positive feelings, though sometimes
 
 Unlike the questions though a request will sometimes have to have a random value. Like "Give me 50 mana" needs to randomly select the mana amount to ask for. The feelings awarded by the request should be tied to this random value, though we'll need a factor to define by how much. 
 
+> I would actually like to implement character mana and loot generation before adding this. We have a few ideas of what requests could look like below, but I think these will be rarer. Most requests should be of the "give me an item" or "give me mana" variety.
 ### Violent Requests
 - Can I cut you, just a little bit?
 - Really, I just want to punch you in the face, okay?
