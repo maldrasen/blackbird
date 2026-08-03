@@ -16,4 +16,3 @@ NegotiationQuestion.registerReaction('become-a-minion', {
     takeCharge: NegotiationReaction.disrespect(`{T:He} gives you a mocking grin, "You {P:species.elves} are such pussies."`),
   }
 });
-

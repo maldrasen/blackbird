@@ -24,6 +24,10 @@ global.NegotiationReaction = (function() {
   //   An attribute contest will roll attributes for both characters, deciding who wins based on who rolled the
   //   highest.
   //
+  // skill:(Skill code)
+  //   A skill contest rolls a SkillCheck for both characters, deciding who wins based on who rolled the highest.
+  //   Ties go to the player.
+  //
   // The contest options also include the win and loss paths, each holding any other built reaction, so a branch can
   // adjust feelings, end the negotiation, or even roll another contest.
   //   win: NegotiationReaction.respect(`...`)
@@ -32,8 +36,8 @@ global.NegotiationReaction = (function() {
     if (options.win == null || options.loss == null) {
       throw new Error(`A negotiation contest needs both a win and a loss reaction.`);
     }
-    if (options.random == null && options.attribute == null) {
-      throw new Error(`A negotiation contest needs a random or attribute property.`);
+    if (options.random == null && options.attribute == null && options.skill == null) {
+      throw new Error(`A negotiation contest needs a random, attribute, or skill property.`);
     }
 
     return { type:'contest', ...options };
@@ -53,7 +57,12 @@ global.NegotiationReaction = (function() {
   function winsContest(reaction, context) {
     if (reaction.random === true) { return Random.flipCoin(); }
     if (reaction.random != null) { return Random.fromFrequencyMap(reaction.random) === 'win'; }
+    if (reaction.skill != null) { return skillContest(reaction.skill, context); }
     return attributeContest(reaction.attribute, context);
+  }
+
+  function skillContest(skill, context) {
+    return SkillCheck(context.P, skill).value >= SkillCheck(context.T, skill).value;
   }
 
   function attributeContest(attribute, context) {

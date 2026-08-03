@@ -1,8 +1,14 @@
 describe("NegotiationReaction", function() {
 
-  function contestant() {
+  function contestant(conversation=100) {
     const id = Registry.createEntity();
     AttributesComponent.create(id, { strength:10, dexterity:10, vitality:10, intelligence:10, beauty:10 });
+
+    const skills = {};
+    SkillsComponent.getSkills().forEach(code => { skills[code] = 0; });
+    skills.conversation = conversation;
+    SkillsComponent.create(id, skills);
+
     return id;
   }
 
@@ -40,7 +46,7 @@ describe("NegotiationReaction", function() {
       expect(() => NegotiationReaction.contest({
         win: NegotiationReaction.neutral('won'),
         loss: NegotiationReaction.neutral('lost'),
-      })).to.throw('random or attribute');
+      })).to.throw('random, attribute, or skill');
     });
 
     it('resolves a coin toss contest', function() {
@@ -83,6 +89,54 @@ describe("NegotiationReaction", function() {
       expect(NegotiationReaction.resolve(contest, context).message).to.equal('won');
       Random.stubRoll(3,7);
       expect(NegotiationReaction.resolve(contest, context).message).to.equal('lost');
+    });
+
+    // A SkillCheck consumes two between values, the crit roll then the value roll. Contestants default to level 100
+    // in conversation so the checks don't also consume an improve roll.
+    it('resolves a skill contest, with ties going to the player', function() {
+      const context = { P:contestant(), T:contestant() };
+      const contest = NegotiationReaction.contest({
+        skill: 'conversation',
+        win: NegotiationReaction.respect('won'),
+        loss: NegotiationReaction.dislike('lost'),
+      });
+
+      Random.stubBetween(50,6, 50,3);
+      expect(NegotiationReaction.resolve(contest, context).message).to.equal('won');
+      Random.stubBetween(50,5, 50,5);
+      expect(NegotiationReaction.resolve(contest, context).message).to.equal('won');
+      Random.stubBetween(50,3, 50,6);
+      expect(NegotiationReaction.resolve(contest, context).message).to.equal('lost');
+    });
+
+    it('consumes an improve roll for each contestant below skill level 100', function() {
+      const context = { P:contestant(0), T:contestant(0) };
+      const contest = NegotiationReaction.contest({
+        skill: 'conversation',
+        win: NegotiationReaction.respect('won'),
+        loss: NegotiationReaction.dislike('lost'),
+      });
+
+      Random.stubBetween(50,6, 50,3);
+      Random.stubRoll(149,149);
+      expect(NegotiationReaction.resolve(contest, context).message).to.equal('won');
+      expect(SkillsComponent.lookup(context.P).conversation).to.equal(0);
+      expect(SkillsComponent.lookup(context.T).conversation).to.equal(0);
+    });
+
+    it('improves the skill when the improve roll succeeds', function() {
+      const context = { P:contestant(0), T:contestant(0) };
+      const contest = NegotiationReaction.contest({
+        skill: 'conversation',
+        win: NegotiationReaction.respect('won'),
+        loss: NegotiationReaction.dislike('lost'),
+      });
+
+      Random.stubBetween(50,3, 50,6);
+      Random.stubRoll(5,149);
+      expect(NegotiationReaction.resolve(contest, context).message).to.equal('lost');
+      expect(SkillsComponent.lookup(context.P).conversation).to.equal(1);
+      expect(SkillsComponent.lookup(context.T).conversation).to.equal(0);
     });
 
     it('resolves nested contests recursively', function() {
