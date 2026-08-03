@@ -1,7 +1,7 @@
 ---
 id: 107
 title: Add Negotiation Resolution Text
-priority: 2
+priority: 1
 created: 2026-07-12
 points: 5
 tags:
