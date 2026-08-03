@@ -6,7 +6,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 - [105] Add Negotiation Requests `8pt` — [105-add-negotiation-requests.md](105-add-negotiation-requests.md)
 - [107] Add Negotiation Resolution Text `5pt` — [107-add-negotiation-resolution-text.md](107-add-negotiation-resolution-text.md)
-- [134] Implement conversation skill `5pt` — [134-implement-conversation-skill.md](134-implement-conversation-skill.md)
 - [151] More Negotiation Questions `5pt` — [151-more-negotiation-questions.md](151-more-negotiation-questions.md)
 
 ## Priority 2
