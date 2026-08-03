@@ -7,6 +7,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [105] Add Negotiation Requests `8pt` — [105-add-negotiation-requests.md](105-add-negotiation-requests.md)
 - [107] Add Negotiation Resolution Text `5pt` — [107-add-negotiation-resolution-text.md](107-add-negotiation-resolution-text.md)
 - [151] More Negotiation Questions `5pt` — [151-more-negotiation-questions.md](151-more-negotiation-questions.md)
+- [153] Map feelings onto other failing reactions `2pt` — [153-map-feelings-onto-other-failing-reactions.md](153-map-feelings-onto-other-failing-reactions.md)
 
 ## Priority 2
 
