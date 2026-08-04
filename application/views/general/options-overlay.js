@@ -2,7 +2,7 @@ global.OptionsOverlay = (function() {
 
   const difficulty = {
     damage:     { min:30, max:1000, step:10, input:'#damageInput' },
-    health:     { min:30, max:1000, step:10, input:'#healthInput' },
+    mitigation: { min:30, max:1000, step:10, input:'#mitigationInput' },
     resistance: { min:0,  max:100,  step:1,  input:'#resistanceInput' },
   }
 
@@ -76,7 +76,7 @@ global.OptionsOverlay = (function() {
     return {
       difficulty: {
         damage: sliders.damage.getValue(),
-        health: sliders.health.getValue(),
+        mitigation: sliders.mitigation.getValue(),
         resistance: sliders.resistance.getValue(),
       }
     };

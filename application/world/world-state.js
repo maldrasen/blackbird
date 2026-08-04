@@ -8,7 +8,7 @@ global.WorldState = (function() {
   const worldStateRecorder = new StateRecorder(filePath);
   const defaultState = {
     options:{
-      difficulty: { damage:100, health:100, resistance:0 }
+      difficulty: { damage:100, mitigation:100, resistance:0 }
     },
   }
 
