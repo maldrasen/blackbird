@@ -47,21 +47,22 @@ global.NegotiationSystem = (function() {
 
   // The monster's reply is always rendered, but nothing executes yet. Any reaction can carry a feelings map, so that
   // a resolution like an automatic join still credits its feelings before it resolves. Feelings adjustments can
-  // resolve the negotiation when a feeling is pushed out of bounds; the other reaction types resolve it directly.
+  // resolve the negotiation when a feeling is pushed out of bounds, so a resolution reaction sets its own resolution
+  // before its feelings apply — otherwise a run reaction's negative feelings could hijack the outcome into an attack.
   // Either way the resolution waits until the player has advanced past the reply and the resolution text.
   function applyReaction(reaction) {
     NegotiationInterface.renderDialog(reaction.message);
 
-    if (reaction.feelings) { state.applyFeelings(reaction.feelings); }
-
     switch (reaction.type) {
-      case 'feelings': return;
-      case 'join':     return state.setResolution({ type:'join' });
-      case 'attack':   return state.setResolution({ type:'attack' });
-      case 'ability':  return state.setResolution({ type:'ability', code:reaction.code });
-      case 'run':      return state.setResolution({ type:'run' });
+      case 'feelings': break;
+      case 'join':     state.setResolution({ type:'join' }); break;
+      case 'attack':   state.setResolution({ type:'attack' }); break;
+      case 'ability':  state.setResolution({ type:'ability', code:reaction.code }); break;
+      case 'run':      state.setResolution({ type:'run' }); break;
+      default: throw new Error(`Unknown reaction type [${reaction.type}]`);
     }
-    throw new Error(`Unknown reaction type [${reaction.type}]`);
+
+    if (reaction.feelings) { state.applyFeelings(reaction.feelings); }
   }
 
   function executeResolution() {

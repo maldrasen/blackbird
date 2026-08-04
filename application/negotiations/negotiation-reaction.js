@@ -14,6 +14,15 @@ global.NegotiationReaction = (function() {
     terrify:      { control: 30,  affection:-20,                fear:50  },
   }
 
+  // The reaction map is separate because so we can associate the type with the feelings without explicitly passing a
+  // default.
+  const resolutionMap = {
+    join:    reactionMap.love,
+    attack:  { affection:-40, respect:-20, fear:-30 },
+    ability: { affection:-40, respect:-20, fear:-30 },
+    run:     { affection:-20, fear:30 },
+  };
+
   // A reaction contest will include exactly one property that specifies the contest type.
   //
   // random:(true or freqmap)
@@ -99,24 +108,22 @@ global.NegotiationReaction = (function() {
     return { type:'feelings', feelings, message, options };
   }
 
-  // A join reaction can carry an optional feelings map, so that when a monster automatically joins the party, they
-  // can start with somewhat high positive feelings. (Perhaps still not as much as going through an entire negotiation,
-  // but enough to be noticeable.) This will use the "love" feelings map by default if the feelings aren't included.
-  function joinReaction(message, options={}) {
+  function resolutionReaction(type, message, options, extra={}) {
     const { feelings, ...remaining } = options;
     return {
-      type: 'join',
-      message: message,
+      type,
+      message,
       options: remaining,
-      feelings: (feelings == null) ? reactionMap.love : feelings
+      feelings: (feelings == null) ? resolutionMap[type] : feelings,
+      ...extra,
     };
   }
 
   const methods = {
-    attack:  (message, options={}) => { return { type:'attack', message, options }; },
-    run:     (message) =>             { return { type:'run', message }; },
-    ability: (code, message) =>       { return { type:'ability', code, message }; },
-    join:    joinReaction,
+    attack:  (message, options={}) =>       resolutionReaction('attack', message, options),
+    run:     (message, options={}) =>       resolutionReaction('run', message, options),
+    ability: (code, message, options={}) => resolutionReaction('ability', message, options, { code }),
+    join:    (message, options={}) =>       resolutionReaction('join', message, options),
     contest,
     resolve,
   };

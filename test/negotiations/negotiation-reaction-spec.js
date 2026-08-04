@@ -20,11 +20,14 @@ describe("NegotiationReaction", function() {
         type:'feelings', feelings:{ control:30, affection:-20, fear:50 }, message:'msg', options:{} });
     });
 
-    it('builds the resolution reactions', function() {
-      expect(NegotiationReaction.attack('msg')).to.deep.equal({ type:'attack', message:'msg', options:{} });
-      expect(NegotiationReaction.run('msg')).to.deep.equal({ type:'run', message:'msg' });
+    it('builds the resolution reactions with their default feelings maps', function() {
+      expect(NegotiationReaction.attack('msg')).to.deep.equal({
+        type:'attack', feelings:{ affection:-40, respect:-20, fear:-30 }, message:'msg', options:{} });
+      expect(NegotiationReaction.run('msg')).to.deep.equal({
+        type:'run', feelings:{ affection:-20, fear:30 }, message:'msg', options:{} });
       expect(NegotiationReaction.ability('dick-punch','msg')).to.deep.equal({
-        type:'ability', code:'dick-punch', message:'msg' });
+        type:'ability', code:'dick-punch', feelings:{ affection:-40, respect:-20, fear:-30 }, message:'msg',
+        options:{} });
       expect(NegotiationReaction.join('msg')).to.deep.equal({
         type:'join', feelings:{ control:40, affection:50, respect:20, fear:-10 }, message:'msg', options:{} });
     });
