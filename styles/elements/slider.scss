@@ -1,19 +1,26 @@
 @use "../variables";
 
 .slider {
-  display: flex;
+  height: 20px;
+  background-color: variables.$bg-scrolling-panel-track;
+  box-shadow: variables.$shadow-scrolling-panel-track;
 
-  .track {
-    background-color: #000;
-  }
   .knob {
-    background-color: #F00;
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    background-color: variables.$bg-scrolling-panel-thumb;
+    box-shadow: variables.$shadow-scrolling-panel-thumb
   }
-  .label-panel {
-    background-color: #200;
+  .knob:hover {
+    background-color: variables.$bg-scrolling-panel-thumb-hover;
   }
-  .value-panel {
-    background-color: #210;
-  }
+}
 
+// Used in the options overlay to display the difficulty sliders in a grid, but could be used elsewhere.
+.slider-grid {
+  display: grid;
+  grid-template-columns: 80px 1fr 80px;
+  column-gap: 10px;
+  row-gap: 5px;
 }

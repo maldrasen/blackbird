@@ -12,11 +12,19 @@
       <div class='tab-content active padding' data-tab='gameplay'>
         <h3 class="border-bottom margin-bottom">Gameplay</h3>
 
-        <div class='difficulty-area'>
+        <div class='options-area'>
           <p>These values effect your characters, so higher values will make the game easier.</p>
-          <div id='damageSlider'></div>
-          <div id='healthSlider'></div>
-          <div id='resistanceSlider'></div>
+          <div class='slider-grid'>
+            <div class='label'>Damage</div>
+            <div id='damageSlider'></div>
+            <input id='damageInput'/>
+            <div class='label'>Health</div>
+            <div id='healthSlider'></div>
+            <input id='healthInput'/>
+            <div class='label'>Resistance</div>
+            <div id='resistanceSlider'></div>
+            <input id='resistanceInput'/>
+          </div>
         </div>
 
       </div>

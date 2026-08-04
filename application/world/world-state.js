@@ -7,7 +7,9 @@ global.WorldState = (function() {
   const filePath = `${DATA}/World-State.json`;
   const worldStateRecorder = new StateRecorder(filePath);
   const defaultState = {
-    options:{},
+    options:{
+      difficulty: { damage:100, health:100, resistance:0 }
+    },
   }
 
   let worldState;
@@ -52,6 +54,9 @@ global.WorldState = (function() {
   return Object.freeze({
     getValue,
     setValue,
+
+    getOptions,
+    setOptions,
 
     getPreviousGame,
     setPreviousGame,
