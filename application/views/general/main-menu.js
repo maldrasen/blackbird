@@ -88,8 +88,6 @@ global.MainMenu = (function() {
     WindowManager.push(OptionsOverlay)
   }
 
-  function toString() { return `MainMenu` }
-
   return {
     init,
     openFully,
@@ -98,7 +96,6 @@ global.MainMenu = (function() {
     open,
     close,
     isVisible,
-    toString,
   };
 
 })();

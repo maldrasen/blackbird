@@ -1,10 +1,12 @@
 global.OptionsOverlay = (function() {
 
   const difficulty = {
-    damage:     { default:100, min:30, max:1000, step:10, input:'#damageInput' },
-    health:     { default:100, min:30, max:1000, step:10, input:'#healthInput' },
-    resistance: { default:0,   min:0,  max:100,  step:1,  input:'#resistanceInput' },
+    damage:     { min:30, max:1000, step:10, input:'#damageInput' },
+    health:     { min:30, max:1000, step:10, input:'#healthInput' },
+    resistance: { min:0,  max:100,  step:1,  input:'#resistanceInput' },
   }
+
+  const sliders = {};
 
   let isDirty = false;
   let isBuilt = false;
@@ -25,32 +27,17 @@ global.OptionsOverlay = (function() {
 
     const options = WorldState.getOptions();
 
-    X.first('#damageSlider').appendChild(Slider({
-      value: options.difficulty.damage,
-      min: difficulty.damage.min,
-      max: difficulty.damage.max,
-      step: difficulty.damage.step,
-      inputSelector: difficulty.damage.input,
-      onChange: markDirty,
-    }).getElement());
-
-    X.first('#healthSlider').appendChild(Slider({
-      value:options.difficulty.health,
-      min: difficulty.health.min,
-      max: difficulty.health.max,
-      step: difficulty.health.step,
-      inputSelector: difficulty.health.input,
-      onChange: markDirty,
-    }).getElement());
-
-    X.first('#resistanceSlider').appendChild(Slider({
-      value:options.difficulty.resistance,
-      min: difficulty.resistance.min,
-      max: difficulty.resistance.max,
-      step: difficulty.resistance.step,
-      inputSelector: difficulty.resistance.input,
-      onChange: markDirty,
-    }).getElement());
+    Object.keys(difficulty).forEach(key => {
+      sliders[key] = Slider({
+        value: options.difficulty[key],
+        min: difficulty[key].min,
+        max: difficulty[key].max,
+        step: difficulty[key].step,
+        inputSelector: difficulty[key].input,
+        onChange: markDirty,
+      });
+      X.first(`#${key}Slider`).appendChild(sliders[key].getElement());
+    });
 
     isBuilt = true;
   }
@@ -88,32 +75,18 @@ global.OptionsOverlay = (function() {
   function pack() {
     return {
       difficulty: {
-        damage: difficultyValue('damage'),
-        health: difficultyValue('health'),
-        resistance: difficultyValue('resistance'),
+        damage: sliders.damage.getValue(),
+        health: sliders.health.getValue(),
+        resistance: sliders.resistance.getValue(),
       }
     };
   }
-
-  // TODO: Is this necessary? The Slider's change handler validates, but can save every be invoked before change is fired?
-  function difficultyValue(key) {
-    const value = Number(X.first(difficulty[key].input).value);
-
-    if (isNaN(value)) { return difficulty[key].default; }
-    if (value < difficulty[key].min) { return difficulty[key].min; }
-    if (value > difficulty[key].max) { return difficulty[key].max; }
-    return value;
-  }
-
-  // TODO: Are we ever using this or the one in the MainMenu?
-  function toString() { return `OptionsOverlay` }
 
   return {
     init,
     build,
     open,
     close,
-    toString,
   };
 
 })();
