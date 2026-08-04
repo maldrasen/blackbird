@@ -11,4 +11,8 @@
     border: variables.$border-very-light;
     box-shadow: variables.$shadow-inset;
   }
+
+  .with-percent::after {
+    content: "%";
+  }
 }

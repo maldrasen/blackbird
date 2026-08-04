@@ -5,40 +5,31 @@
 // - `min`
 // - `max`
 // - `step`
-// - `inputSelector` - If this selector is set then the input value is updated as the slider moves, and editing the
-//                     input moves the slider.
-// - `onChange` - Called with the new value whenever the value changes.
-
-// Must match the .knob width in slider.scss
-const KNOB_WIDTH = 20;
-
-const LARGE_STEP_MULTIPLIER = 10;
-
+// - `inputSelector` - If this selector is set then the slider and input values are bound together.
+// - `onChange`
 global.Slider = function(options) {
-  const element = X.createElement(`<div class='slider' tabindex='0'><div class='knob'></div></div>`);
+  const element = X.createElement(`<div class='slider'><div class='knob'></div></div>`);
   const knob = element.querySelector('.knob');
   const input = options.inputSelector ? X.first(options.inputSelector) : null;
   const min = options.min;
   const max = options.max;
   const step = options.step || 1;
+  const knobWidth = 20;
 
   let value = snapToStep(options.value == null ? min : options.value);
   let activeGrab = null;
 
-  function getValue() { return value; }
-
   function setValue(newValue) {
     const snapped = snapToStep(newValue);
-    if (snapped === value) { return; }
+    if (snapped !== value) {
+      value = snapped;
+      updateInput();
+      positionKnob();
 
-    value = snapped;
-    updateInput();
-    positionKnob();
-
-    if (options.onChange) { options.onChange(value); }
+      if (options.onChange) { options.onChange(value); }
+    }
   }
 
-  // Snap a raw value to the nearest step, clamped to the [min,max] range.
   function snapToStep(raw) {
     let snapped = min + Math.round((raw - min) / step) * step;
     if (snapped < min) { snapped = min; }
@@ -50,38 +41,23 @@ global.Slider = function(options) {
     if (input) { input.value = value; }
   }
 
-  // The knob is positioned with calc() so that the slider doesn't need to be attached to the document to be built.
   function positionKnob() {
     const percent = (value - min) / (max - min);
-    knob.style['left'] = `calc(${percent * 100}% - ${percent * KNOB_WIDTH}px)`;
+    knob.style['left'] = `calc(${percent * 100}% - ${percent * knobWidth}px)`;
   }
 
-  // Convert a mouse event's horizontal position into a value, given the offset of the grab point from the left edge
-  // of the knob. Values outside the track are clamped by snapToStep().
   function valueAtPosition(event, grabOffset) {
     const track = X.getPosition(element);
-    const extent = track.width - KNOB_WIDTH;
+    const extent = track.width - knobWidth;
     const left = event.clientX - grabOffset - track.left;
     return min + (left / extent) * (max - min);
   }
 
-  // Grabbing the track snaps the knob to the cursor, then starts a drag just as if the knob itself had been grabbed.
   function trackGrabbed(event) {
     if (event.target === element) {
-      setValue(valueAtPosition(event, KNOB_WIDTH / 2));
+      setValue(valueAtPosition(event, knobWidth / 2));
       startDrag(event);
     }
-  }
-
-  function keyPressed(event) {
-    if (event.code !== KeyCodes.ArrowLeft && event.code !== KeyCodes.ArrowRight) { return; }
-
-    event.preventDefault();
-
-    const direction = event.code === KeyCodes.ArrowRight ? 1 : -1;
-    const distance = event.shiftKey ? step * LARGE_STEP_MULTIPLIER : step;
-
-    setValue(value + (direction * distance));
   }
 
   function inputChanged() {
@@ -123,7 +99,6 @@ global.Slider = function(options) {
 
   knob.addEventListener('mousedown', startDrag);
   element.addEventListener('mousedown', trackGrabbed);
-  element.addEventListener('keydown', keyPressed);
 
   if (input) {
     input.addEventListener('change', inputChanged);
@@ -134,7 +109,7 @@ global.Slider = function(options) {
 
   return Object.freeze({
     getElement: () => { return element; },
-    getValue,
+    getValue: () => { return value; },
     setValue,
   });
 
