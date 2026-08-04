@@ -65,9 +65,11 @@ global.Slider = function(options) {
     return min + (left / extent) * (max - min);
   }
 
-  function trackClicked(event) {
+  // Grabbing the track snaps the knob to the cursor, then starts a drag just as if the knob itself had been grabbed.
+  function trackGrabbed(event) {
     if (event.target === element) {
       setValue(valueAtPosition(event, KNOB_WIDTH / 2));
+      startDrag(event);
     }
   }
 
@@ -120,7 +122,7 @@ global.Slider = function(options) {
   // ===========================================================================
 
   knob.addEventListener('mousedown', startDrag);
-  element.addEventListener('click', trackClicked);
+  element.addEventListener('mousedown', trackGrabbed);
   element.addEventListener('keydown', keyPressed);
 
   if (input) {
