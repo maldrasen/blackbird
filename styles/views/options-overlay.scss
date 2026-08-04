@@ -12,7 +12,23 @@
     box-shadow: variables.$shadow-inset;
   }
 
-  .with-percent::after {
-    content: "%";
+  .with-percent {
+    position: relative;
+
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding-right: 16px;
+    }
+
+    &::after {
+      content: "%";
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: variables.$fg-strong;
+    }
   }
 }
