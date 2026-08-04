@@ -1,10 +1,11 @@
 global.GameSystem = (function() {
 
   let state = GameState();
+  let loaded = false;
   let returnMode;
 
   function getState() { return state; }
-  function isLoaded() { return state != null; }
+  function isLoaded() { return loaded; }
 
   // ===================
   //    Game Lifecycle
@@ -16,6 +17,7 @@ global.GameSystem = (function() {
   async function startNewGame(setup=null) {
     Registry.clear();
     state = GameState();
+    loaded = true;
 
     if (typeof setup === "function") { return setup(); }
 
@@ -30,7 +32,7 @@ global.GameSystem = (function() {
   }
 
   async function loadLastGame() {
-    console.log("TODO: Load Last Game");
+    loaded = true;
   }
 
   async function openGame() {
@@ -42,6 +44,7 @@ global.GameSystem = (function() {
   function reset() {
     Registry.clear();
     state = GameState();
+    loaded = false;
     returnMode = null;
   }
 

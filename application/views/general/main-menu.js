@@ -32,14 +32,12 @@ global.MainMenu = (function() {
   function open() {
     adjustMenu();
     show();
-    // When opened from other than main menu...
-    // X.removeClass('#menuCover','hide');
+    if (GameSystem.isLoaded()) { X.removeClass('#menuCover','hide'); }
   }
 
   function close() {
     hide();
-    // When opened from other than main menu...
-    // X.addClass('#menuCover','hide');
+    X.addClass('#menuCover','hide');
   }
 
   function isVisible() { return X.hasClass('#mainMenu','hide') === false; }
