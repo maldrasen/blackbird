@@ -1,6 +1,7 @@
 @use "../variables";
 
 .slider {
+  position: relative;
   height: 20px;
   background-color: variables.$bg-scrolling-panel-track;
   box-shadow: variables.$shadow-scrolling-panel-track;
