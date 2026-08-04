@@ -595,6 +595,7 @@
     "test/training/training-system-spec.js",
     "test/world/game-state-spec.js",
     "test/world/party-configuration-spec.js",
-    "test/world/registry-spec.js"
+    "test/world/registry-spec.js",
+    "test/world/world-state-spec.js"
   ]
 }

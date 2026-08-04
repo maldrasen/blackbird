@@ -14,12 +14,21 @@ global.WorldState = (function() {
 
   let worldState;
 
+  function getState() {
+    if (worldState == null) { worldState = structuredClone(defaultState); }
+    return worldState;
+  }
+
+  function reset() {
+    worldState = undefined;
+  }
+
   function getValue(key) {
-    return worldState[key];
+    return getState()[key];
   }
 
   async function setValue(key,value) {
-    worldState[key] = value;
+    getState()[key] = value;
     await saveState();
   }
 
@@ -32,6 +41,7 @@ global.WorldState = (function() {
   // === Save and Load =========================================================
 
   async function saveState() {
+    if (HEADLESS) { return; }
     localLog("Saving World State");
     await worldStateRecorder.saveState(worldState);
   }
@@ -39,12 +49,30 @@ global.WorldState = (function() {
   // If the world state doesn't exist yet, then save the default state as the world state.
   async function loadState() {
     if (fs.existsSync(filePath) === false) {
-      worldState = defaultState;
+      worldState = structuredClone(defaultState);
       return await saveState();
     }
 
-    worldState = await worldStateRecorder.loadState();
+    worldState = mergeDefaults(await worldStateRecorder.loadState());
     localLog("Loaded World State");
+  }
+
+  // A world state file written before an option existed won't contain it, so anything missing from the loaded state
+  // is filled in from the defaults.
+  function mergeDefaults(loaded) {
+    return merge(structuredClone(defaultState), loaded || {});
+  }
+
+  function merge(base, overrides) {
+    Object.entries(overrides).forEach(([key, value]) => {
+      const bothObjects = isPlainObject(value) && isPlainObject(base[key]);
+      base[key] = bothObjects ? merge(base[key], value) : value;
+    });
+    return base;
+  }
+
+  function isPlainObject(value) {
+    return value != null && typeof value === 'object' && Array.isArray(value) === false;
   }
 
   function localLog(message) {
@@ -52,6 +80,9 @@ global.WorldState = (function() {
   }
 
   return Object.freeze({
+    reset,
+    mergeDefaults,
+
     getValue,
     setValue,
 
