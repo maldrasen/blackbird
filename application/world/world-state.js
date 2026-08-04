@@ -60,19 +60,7 @@ global.WorldState = (function() {
   // A world state file written before an option existed won't contain it, so anything missing from the loaded state
   // is filled in from the defaults.
   function mergeDefaults(loaded) {
-    return merge(structuredClone(defaultState), loaded || {});
-  }
-
-  function merge(base, overrides) {
-    Object.entries(overrides).forEach(([key, value]) => {
-      const bothObjects = isPlainObject(value) && isPlainObject(base[key]);
-      base[key] = bothObjects ? merge(base[key], value) : value;
-    });
-    return base;
-  }
-
-  function isPlainObject(value) {
-    return value != null && typeof value === 'object' && Array.isArray(value) === false;
+    return ObjectHelper.merge(structuredClone(defaultState), loaded || {});
   }
 
   function localLog(message) {

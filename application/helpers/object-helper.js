@@ -37,12 +37,26 @@ global.ObjectHelper = (function() {
       [key, typeof value === 'number' ? Math.round(value) : value]));
   }
 
+  function merge(base, overrides) {
+    Object.entries(overrides).forEach(([key, value]) => {
+      const bothObjects = isPlainObject(value) && isPlainObject(base[key]);
+      base[key] = bothObjects ? merge(base[key], value) : value;
+    });
+    return base;
+  }
+
+  function isPlainObject(value) {
+    return value != null && typeof value === 'object' && Array.isArray(value) === false;
+  }
+
   return Object.freeze({
     fetch,
     filter,
     reverse,
     select,
     unfloat,
+    merge,
+    isPlainObject,
   });
 
 })();
