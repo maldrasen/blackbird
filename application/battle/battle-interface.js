@@ -7,6 +7,7 @@ global.BattleInterface = (function() {
 
   function showMonsterResult() {
     if (Tests.running()) { return; }
+    CommandPanel.hide();
     BattleText.setMessages(BattleSystem.getRound().getMessages());
     BattleView.update();
   }
