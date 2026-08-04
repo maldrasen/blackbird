@@ -233,4 +233,105 @@ describe("BattleDamageSystem", function() {
     });
   });
 
+  describe("difficulty scaling", function() {
+    function pinnedCharacter(state) {
+      const target = state.getEntityAtPosition('P',1,2);
+      setHealth(target, 100);
+      setVitality(target, 15);
+      bareChest(target);
+      return target;
+    }
+
+    // The kobold runts can roll a shield loadout, so the secondary slot is cleared. Their scales still resist
+    // 10 slash, making the base slash damage 90.
+    function bareMonster(state) {
+      const target = state.getActiveMonsters()[0];
+      EquipmentManager(target).equipItem(null, EquipmentSlot.secondary);
+      return target;
+    }
+
+    async function setDifficulty(difficulty) {
+      await WorldState.setOptions({ difficulty:{ damage:100, mitigation:100, resistance:0, ...difficulty } });
+    }
+
+    it("scales damage dealt to monsters by the damage option", async function() {
+      const state = startBattle();
+      const target = bareMonster(state);
+      await setDifficulty({ damage:150 });
+
+      const damage = BattleDamageSystem.applyDamage({
+        entity:target, damageTypes:{ slash:100 }, hitLocation:EquipmentSlot.chest });
+
+      expect(damage).to.equal(135);
+    });
+
+    it("rounds once after scaling", async function() {
+      const state = startBattle();
+      const target = bareMonster(state);
+      await setDifficulty({ damage:125 });
+
+      const damage = BattleDamageSystem.applyDamage({
+        entity:target, damageTypes:{ slash:100 }, hitLocation:EquipmentSlot.chest });
+
+      expect(damage).to.equal(113);
+    });
+
+    it("does not scale damage dealt to characters by the damage option", async function() {
+      const state = startBattle();
+      const target = pinnedCharacter(state);
+      await setDifficulty({ damage:500 });
+
+      const damage = BattleDamageSystem.applyDamage({
+        entity:target, damageTypes:{ crush:100 }, hitLocation:EquipmentSlot.chest });
+
+      expect(damage).to.equal(100);
+    });
+
+    it("divides damage dealt to characters by the mitigation option", async function() {
+      const state = startBattle();
+      const target = pinnedCharacter(state);
+      await setDifficulty({ mitigation:200 });
+
+      const damage = BattleDamageSystem.applyDamage({
+        entity:target, damageTypes:{ crush:100 }, hitLocation:EquipmentSlot.chest });
+
+      expect(damage).to.equal(50);
+      expect(HealthComponent.lookup(target).currentHealth).to.equal(50);
+    });
+
+    it("rounds the mitigated damage", async function() {
+      const state = startBattle();
+      const target = pinnedCharacter(state);
+      await setDifficulty({ mitigation:300 });
+
+      const damage = BattleDamageSystem.applyDamage({
+        entity:target, damageTypes:{ crush:100 }, hitLocation:EquipmentSlot.chest });
+
+      expect(damage).to.equal(33);
+    });
+
+    it("does not divide damage dealt to monsters by the mitigation option", async function() {
+      const state = startBattle();
+      const target = bareMonster(state);
+      await setDifficulty({ mitigation:200 });
+
+      const damage = BattleDamageSystem.applyDamage({
+        entity:target, damageTypes:{ crush:100 }, hitLocation:EquipmentSlot.chest });
+
+      expect(damage).to.equal(100);
+    });
+
+    it("composes the mitigation factor with vulnerable doubling", async function() {
+      const state = startBattle();
+      const target = pinnedCharacter(state);
+      state.addStatus(BattleStatusEffect(target, 'vulnerable', { duration:1 }));
+      await setDifficulty({ mitigation:400 });
+
+      const damage = BattleDamageSystem.applyDamage({
+        entity:target, damageTypes:{ crush:100 }, hitLocation:EquipmentSlot.chest });
+
+      expect(damage).to.equal(50);
+    });
+  });
+
 });

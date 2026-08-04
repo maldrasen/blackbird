@@ -26,6 +26,8 @@ global.BattleDamageSystem = (function() {
       actualDamage = actualDamage * 2;
     }
 
+    actualDamage = Math.round(actualDamage * getDifficultyFactor(state, target));
+
     const health = HealthComponent.lookup(target);
     health.currentHealth -= actualDamage;
 
@@ -37,6 +39,12 @@ global.BattleDamageSystem = (function() {
     if (outcome === 'knocked-out') { BattleDeathSystem.knockOutEntity(target); }
 
     return actualDamage;
+  }
+
+  // The difficulty options are player buffs. Damage dealt to monsters is scaled by the damage option, and damage
+  // dealt to party characters is divided by the mitigation option.
+  function getDifficultyFactor(state, target) {
+    return state.isMonster(target) ? Difficulty.getDamageFactor() : Difficulty.getMitigationFactor();
   }
 
   // TODO: This function will also need to handle the spell resistance reduction. Some spells will still have a
