@@ -19,7 +19,7 @@ global.ResistRoll = function(target, type, power) {
 
   const resistance = (BattleSystem.getState().isMonster(target)) ?
     Monster(target).getResistance(type) :
-    Character(target).getResistance(type);
+    Character(target).getResistance(type) + Difficulty.getResistance();
 
   const resistRoll = Random.roll(resistance);
   const powerRoll = Random.roll(power)
