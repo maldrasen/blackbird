@@ -1,7 +1,7 @@
 ---
 id: 136
 title: Difficulty Sliders
-priority: 2
+priority: 1
 created: 2026-07-24
 tags:
   - battle

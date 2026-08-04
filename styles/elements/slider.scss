@@ -1,0 +1,19 @@
+@use "../variables";
+
+.slider {
+  display: flex;
+
+  .track {
+    background-color: #000;
+  }
+  .knob {
+    background-color: #F00;
+  }
+  .label-panel {
+    background-color: #200;
+  }
+  .value-panel {
+    background-color: #210;
+  }
+
+}

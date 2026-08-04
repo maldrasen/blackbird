@@ -15,8 +15,19 @@ global.OptionsOverlay = (function() {
   }
 
   function build() {
-    console.log("We keep building this don't we?")
     X.loadDocument('#optionsOverlay','views/options-overlay.html');
+
+    X.first('#damageSlider').appendChild(Slider({
+      label:'Damage', value:100, min:20, max:1000, step:10
+    }).getElement());
+
+    X.first('#healthSlider').appendChild(Slider({
+      label:'Health', value:100, min:20, max:1000, step:10
+    }).getElement());
+
+    X.first('#resistanceSlider').appendChild(Slider({
+      label:'Resistance', value:100, min:20, max:1000, step:10
+    }).getElement());
   }
 
   function open() {

@@ -237,6 +237,7 @@
     "application/views/elements/general-overlay.js",
     "application/views/elements/scrolling-panel.js",
     "application/views/elements/select.js",
+    "application/views/elements/slider.js",
     "application/views/elements/tab-controller.js",
     "application/views/elements/tag-elements.js",
     "application/views/elements/tooltip.js",
