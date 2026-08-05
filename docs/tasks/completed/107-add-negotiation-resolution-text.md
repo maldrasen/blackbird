@@ -9,3 +9,5 @@ tags:
 ---
 ---
 Each monster will need resolution text as well, one for each way that a negotiation can be resolved. Unlike the greetings some of this text can be delegated down to the personality architype or supertype. The text should be implemented with WeaverPackages to give multiple options for each resolution type though. The supertypes should have a lot of options while the base monsters may only need one if they have any at all.
+
+> Actually, having half implemented this, I think it's better for resolutions to remain a simple one line. Going though the questions do enough to highlight the monster personality. The resolution text is more mechanical. It describes what happened. More of an alert than a part of a story.

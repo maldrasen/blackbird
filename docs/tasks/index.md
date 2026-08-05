@@ -4,7 +4,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 ## Priority 1
 
-- [107] Add Negotiation Resolution Text `5pt` — [107-add-negotiation-resolution-text.md](107-add-negotiation-resolution-text.md)
 - [151] More Negotiation Questions `5pt` — [151-more-negotiation-questions.md](151-more-negotiation-questions.md)
 
 ## Priority 2
