@@ -55,8 +55,6 @@ global.NegotiationOverlay = (function() {
     X.append('#negotiationFrame .dialog', X.createElement(`<p>${weave(message)}</p>`));
   }
 
-  // TODO: Requests return in task 105.
-
   function renderResolution() {
     clear();
     X.addClass('#negotiationFrame','can-advance');

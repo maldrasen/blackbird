@@ -1,7 +1,7 @@
 global.NegotiationSystem = (function() {
 
-  const MAX_INTERACTIONS = 5;
-  const NEGOTIATION_TIME = 1200;
+  const maxInteractions = 5
+  const negotiationTime = 1200;
 
   let state;
 
@@ -17,7 +17,7 @@ global.NegotiationSystem = (function() {
   function advance() {
     if (state.hasShownResolution()) { return executeResolution(); }
     if (state.hasResolution()) { return showResolution(); }
-    if (state.getInteractionCount() >= MAX_INTERACTIONS) { return forceResolution(); }
+    if (state.getInteractionCount() >= maxInteractions) { return forceResolution(); }
     NegotiationInterface.renderQuestion(state.pickQuestion());
   }
 
@@ -111,7 +111,7 @@ global.NegotiationSystem = (function() {
   // acting entity to be next. Only after the round is closed out can the monster's response be scheduled.
   function finishNegotiation() {
     NegotiationInterface.close();
-    BattleSystem.getRound().addTime(NEGOTIATION_TIME);
+    BattleSystem.getRound().addTime(negotiationTime);
     BattleSystem.finishRound();
     scheduleMonsterResponse();
     BattleSystem.advanceBattle();
