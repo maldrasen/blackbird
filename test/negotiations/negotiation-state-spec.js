@@ -28,15 +28,15 @@ describe("NegotiationState", function() {
       const state = buildState(40, 20);
 
       const picked = [];
-      for (let i=0; i<2; i++) { picked.push(state.pickQuestion().question); }
-      expect(picked.sort()).to.deep.equal(['how-do-you-taste','show-it-to-me']);
+      for (let i=0; i<3; i++) { picked.push(state.pickQuestion().question); }
+      expect(picked.sort()).to.deep.equal(['how-do-you-taste','show-it-to-me','what-is-best']);
 
       // let-me-taste is still in the pool, but its dynamic requirement keeps it unpickable.
       expect(() => state.pickQuestion()).to.throw(`aren't enough valid questions`);
 
       state.setFlag('playerCockOut', true);
       expect(state.pickQuestion().question).to.equal('let-me-taste');
-      expect(state.getInteractionCount()).to.equal(3);
+      expect(state.getInteractionCount()).to.equal(4);
 
       expect(() => state.pickQuestion()).to.throw(`aren't enough valid questions`);
     });
