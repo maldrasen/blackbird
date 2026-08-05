@@ -77,6 +77,10 @@ global.CharacterRequirements = (function() {
     return subject(context, key).hasSensitivity(zone);
   }
 
+  function hasTail(context, key) {
+    return Character(context[key]).hasTail();
+  }
+
   function isTallerThan(context, first, second) {
     return Character(context[first]).isTallerThan(context[second]);
   }
@@ -139,7 +143,8 @@ global.CharacterRequirements = (function() {
     visiblePussy: key =>                     { return (context) => { return visiblePussy(context, key); }},
     erogenousCervix: key =>                  { return (context) => { return erogenousZone(context, key, 'cervix'); }},
     erogenousUrethra: key =>                 { return (context) => { return erogenousZone(context, key, 'urethra'); }},
-    isTallerThan: (first, second) =>         { return (context) => { return isTallerThan(context, first, second) }},
+    hasTail: key =>                          { return (context) => { return hasTail(context, key); }},
+    isTallerThan: (first, second) =>         { return (context) => { return isTallerThan(context, first, second); }},
     minimumStrength: (key, min) =>           { return (context) => { return minimumStrength(context, key, min); }},
     minimumIntelligence: (key, min) =>       { return (context) => { return minimumIntelligence(context, key, min); }},
     chestIsCovered: key =>                   { return (context) => { return chestIsCovered(context, key); }},

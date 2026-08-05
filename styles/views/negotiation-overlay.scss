@@ -30,6 +30,15 @@
     border-bottom: variables.$border-light;
   }
 
+  .resolution {
+    text-align: center;
+    margin: 40px;
+    font-family: 'roboto', sans-serif;
+    &.attack { color: rgb(188 48 48);   }
+    &.run    { color: rgb(211 185 102); }
+    &.join   { color: rgb(149 161 212); }
+  }
+
   .options a {
     width: 570px;
     margin: 10px 5px 0;

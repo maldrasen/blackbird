@@ -104,22 +104,23 @@ global.NegotiationState = function() {
     }
   }
 
-  // TODO: These are just temporary strings, the actual resolution text should come from the base monsters and the
-  //       personality archetypes.
-
-  // TODO: The join text should include the name as well as the target name i.e. "Stinkfist, the kobold dick puncher,
-  //       joins the party!" This only applies when a monster has both a proper and a common name though, so adding
-  //       this back in would be part of the base monster text todo.
-
   function getResolutionText() {
     const type = getResolution().type;
+    const attackText = `{T:TargetName} attacks!`
+    const runText = `{T:TargetName} sprints off into the darkness!`
 
-    if (type === NegotiationResolutionType.unresolved) {
-      throw `There is no resolution text when the negotiation remains unresolved.`
+    const joinText = Monster(monster).getNameType() === 'common' ?
+      `{T:fullName} {T:TargetName} joins the party!` :
+      `{T:fullName} joins the party!`;
+
+    switch(type) {
+      case 'attack': return attackText;
+      case 'ability': return attackText;
+      case 'join': return joinText;
+      case 'run': return runText;
+      case 'unresolved': throw new Error(`There is no resolution text when the negotiation remains unresolved.`);
+      default: throw new Error(`Invalid resolution type ${type}`)
     }
-
-    return `(Resolution for ${type})`
-
   }
 
   return Object.freeze({

@@ -58,6 +58,7 @@ global.Character = function(id) {
   function hasNormalCock() { return CockComponent.lookupNormalOf(id) != null; }
   function hasNormalPussy() { return PussyComponent.lookupNormalOf(id) != null; }
   function hasSensitivity(code) { return SensitivitiesComponent.lookup(id)[code] != null; }
+  function hasTail() { return BodyComponent.lookup(id).tailShape != null; }
 
   // This function checks to see if a character's breasts are at least as big as the argument value. If the argument
   // is a string this function checks the breastSize category. If the argument is a number it checks the absolute
@@ -260,6 +261,7 @@ global.Character = function(id) {
     hasNormalCock,
     hasNormalPussy,
     hasSensitivity,
+    hasTail,
     breastsAreAtLeast,
     cockIsAtLeast,
     isFullyErect,

@@ -56,10 +56,13 @@ global.NegotiationOverlay = (function() {
   }
 
   function renderResolution() {
+    const state = NegotiationSystem.getState();
+    const text = state.getResolutionText();
+    const type = state.getResolution().type;
+
     clear();
     X.addClass('#negotiationFrame','can-advance');
-    const text = NegotiationSystem.getState().getResolutionText();
-    X.append('#negotiationFrame .dialog', X.createElement(`<p class='request'>${weave(text)}</p>`));
+    X.append('#negotiationFrame .dialog', X.createElement(`<div class='resolution ${type}'>${weave(text)}</div>`));
   }
 
   function buildButton(key, label) {

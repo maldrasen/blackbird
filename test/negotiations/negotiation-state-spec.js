@@ -114,7 +114,7 @@ describe("NegotiationState", function() {
 
   describe("getResolutionText()", function() {
     it('returns text for every resolution type', function() {
-      ['join','attack','ability','run','stalemate'].forEach(type => {
+      ['join','attack','ability','run'].forEach(type => {
         const state = buildState(40, 20);
         state.setResolution({ type });
         expect(state.getResolutionText()).to.be.a('string');
