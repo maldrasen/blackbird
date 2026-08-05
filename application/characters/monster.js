@@ -34,11 +34,9 @@ global.Monster = function(id) {
     return speciesResistance + monsterResistance;
   }
 
-  // TODO: We need to determine if this monster is using a common or a proper name. Unique monsters will have proper
-  //       names so templates like "{T:fullName} {T:targetName}" resolve to "Stinkfist the Kobold Dick Puncher" with
-  //       common names but resolve to "Glub Shitto Glub Shitto" with proper names. First though, we need some unique
-  //       monsters with proper names.
-  function getNameType() { return 'common' }
+  function getNameType() {
+    return getBaseMonster().getNameType();
+  }
 
   // ==========
   //   Threat

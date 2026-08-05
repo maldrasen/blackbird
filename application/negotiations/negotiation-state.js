@@ -80,15 +80,15 @@ global.NegotiationState = function() {
   }
 
   function getResolution() {
-    return resolution || { type:NegotiationResolutionType.unresolved };
+    return resolution || { type:'unresolved' };
   }
 
   function resolveFromTimeout() {
-    let type = NegotiationResolutionType.attack
+    let type = 'attack';
 
-    if (fear >= getFearThreshold() * 0.80) { type = NegotiationResolutionType.run; }
-    if (respect >= getRespectThreshold() * 0.75) { type = NegotiationResolutionType.join; }
-    if (affection >= getAffectionThreshold() * 0.66) { type = NegotiationResolutionType.join; }
+    if (fear >= getFearThreshold() * 0.80) { type = 'run'; }
+    if (respect >= getRespectThreshold() * 0.75) { type = 'join'; }
+    if (affection >= getAffectionThreshold() * 0.66) { type = 'join'; }
 
     setResolution({ type });
   }
@@ -106,11 +106,11 @@ global.NegotiationState = function() {
 
   function getResolutionText() {
     const type = getResolution().type;
-    const attackText = `{T:TargetName} attacks!`
-    const runText = `{T:TargetName} sprints off into the darkness!`
+    const attackText = `{T:TargetName} attacks!`;
+    const runText = `{T:TargetName} sprints off into the darkness!`;
 
     const joinText = Monster(monster).getNameType() === 'common' ?
-      `{T:fullName} {T:TargetName} joins the party!` :
+      `{T:fullName} {T:targetName} joins the party!` :
       `{T:fullName} joins the party!`;
 
     switch(type) {
@@ -119,7 +119,7 @@ global.NegotiationState = function() {
       case 'join': return joinText;
       case 'run': return runText;
       case 'unresolved': throw new Error(`There is no resolution text when the negotiation remains unresolved.`);
-      default: throw new Error(`Invalid resolution type ${type}`)
+      default: throw new Error(`Invalid resolution type ${type}`);
     }
   }
 

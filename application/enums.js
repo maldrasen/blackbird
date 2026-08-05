@@ -385,15 +385,6 @@ global.StatusEffectDurationType = Object.freeze({
   untilResisted: 'until-resisted', // Effect will persist until a resist roll is passed
 });
 
-// The resolution type is different from the reaction type. There are many ways a monster can react to a question, but
-// only a few ways for a negotiation to end. A reaction like attack, join, or run will force that resolution.
-global.NegotiationResolutionType = Object.freeze({
-  attack: 'attack',
-  join: 'join',
-  run: 'run',
-  unresolved: 'unresolved',
-});
-
 // =====================
 //   Items & Equipment
 // =====================
