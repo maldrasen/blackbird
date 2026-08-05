@@ -16,4 +16,35 @@ describe("NegotiationQuestion", function() {
     });
   });
 
+  // The negotiation-fixture-2 kobold-sneak-slut is pinned to the slut archetype so its style is lewd, and what-is-best
+  // only has a lewd reaction with static requirements: the player must have a cock.
+  describe("getReactionData()", function() {
+    function bootMonster() {
+      BattleFixtures.prepareForBattle();
+      BattleSystem.startBattle({ encounter:'negotiation-fixture-2', ambushState:'normal' });
+
+      const monster = BattleSystem.getState().getActiveMonsters()[0];
+      const personality = PersonalityComponent.lookup(monster);
+      personality.archetype = ArchetypeCode.slut;
+      PersonalityComponent.update(monster, personality);
+
+      return monster;
+    }
+
+    it('returns the matching reaction when its static requirements pass', function() {
+      const monster = bootMonster();
+      const context = { P:GameSystem.getState().getPlayer(), T:monster };
+
+      const reactionData = NegotiationQuestion.lookup('what-is-best').getReactionData(context);
+      expect(reactionData.style).to.equal(NegotiationStyle.lewd);
+    });
+
+    it('excludes a reaction whose static requirements fail', function() {
+      const monster = bootMonster();
+      const context = { P:CharacterFixtures.genericFemale({}), T:monster };
+
+      expect(NegotiationQuestion.lookup('what-is-best').getReactionData(context)).to.equal(null);
+    });
+  });
+
 });

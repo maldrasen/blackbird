@@ -36,14 +36,17 @@ global.NegotiationQuestion = (function() {
 
     // The reaction data for a question will be whatever reaction that's most applicable to the current monster. If a
     // question has no valid responses for the current monster then that's not question that this monster would be
-    // asking.
+    // asking. A reaction whose static requirements fail drops out before the weight sort, so a more specific but
+    // ineligible reaction falls through to the next most applicable one.
     function getReactionData(context) {
       const validReactions = [];
       const monster = Monster(context.T);
 
       if (reactions[code] != null) {
         reactions[code].forEach(reactionData => {
-          if (matchesTarget(reactionData, monster)) { validReactions.push(reactionData); }
+          if (matchesTarget(reactionData, monster) && Requirements.met(reactionData.staticRequirements, context)) {
+            validReactions.push(reactionData);
+          }
         });
       }
 

@@ -25,8 +25,6 @@ NegotiationQuestion.registerReaction('what-is-best', {
   }
 });
 
-// TODO: Do reactions have requirements yet?
-
 NegotiationQuestion.registerReaction('what-is-best', {
   style: NegotiationStyle.lewd,
   staticRequirements: [CharacterRequirements.hasCock('P')],
