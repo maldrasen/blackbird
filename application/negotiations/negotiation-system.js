@@ -33,7 +33,6 @@ global.NegotiationSystem = (function() {
 
   // TODO: A reaction can also be a follow on question.
   // TODO: Requests are answered here as well once they're implemented. (Task 105)
-  // TODO: Answer level requirements (how-do-you-murder)
   function answer(key) {
     const question = state.getCurrentQuestion();
     const reaction = NegotiationReaction.resolve(question.reactionData.reactions[key], state.getContext());

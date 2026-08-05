@@ -50,6 +50,12 @@ global.NegotiationQuestion = (function() {
       return validReactions.length > 0 ? validReactions.sort((a,b) => b.weight - a.weight)[0] : null;
     }
 
+    // Answers carry their own requires predicates. They're checked when the answers are rendered, so they can look at
+    // anything from the character's body to the negotiation flags.
+    function getAnswers(context) {
+      return ObjectHelper.select(question.answers, (key, answer) => Requirements.met(answer.requires, context));
+    }
+
     function isPossible(context) {
       return (question.staticRequirements || []).every(requirement => requirement(context));
     }
@@ -73,7 +79,7 @@ global.NegotiationQuestion = (function() {
     return Object.freeze({
       getCode: () => { return code; },
       getText: () => { return question.text; },
-      getAnswers: () => { return question.answers; },
+      getAnswers,
       getReactionData,
       isPossible,
       isAvailable,

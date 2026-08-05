@@ -572,6 +572,7 @@
     "test/items/item-spec.js",
     "test/looms/weaver-package-spec.js",
     "test/negotiations/negotiation-influence-spec.js",
+    "test/negotiations/negotiation-question-spec.js",
     "test/negotiations/negotiation-reaction-spec.js",
     "test/negotiations/negotiation-state-spec.js",
     "test/negotiations/negotiation-system-spec.js",

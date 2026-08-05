@@ -44,7 +44,7 @@ global.NegotiationOverlay = (function() {
     clear();
 
     X.append('#negotiationFrame .dialog', X.createElement(`<p class='question'>${weave(question.getText())}</p>`));
-    Object.entries(question.getAnswers()).forEach(([key, answer]) => {
+    Object.entries(question.getAnswers(NegotiationSystem.getState().getContext())).forEach(([key, answer]) => {
       X.append('#negotiationFrame .options', buildButton(key, weave(answer.text)));
     });
   }
