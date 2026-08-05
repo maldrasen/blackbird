@@ -91,18 +91,24 @@ describe("NegotiationState", function() {
   });
 
   describe("resolveFromTimeout()", function() {
-    // Starting fear caps at 79, one below the run threshold — the player has to actively frighten the monster.
-    it('resolves to run when fear reaches the run threshold', function() {
+    it('resolves to run when fear is high', function() {
       const state = buildState(70, 20);
-      state.applyFeelings({ fear:30 });
+      state.applyFeelings({ fear:10 });
       state.resolveFromTimeout();
       expect(state.getResolution()).to.deep.equal({ type:'run' });
     });
 
-    it('resolves to stalemate when fear is low', function() {
+    it('resolves to join when respect is high', function() {
+      const state = buildState(25, 25);
+      state.applyFeelings({ respect:50 });
+      state.resolveFromTimeout();
+      expect(state.getResolution()).to.deep.equal({ type:'join' });
+    });
+
+    it('resolves to attack otherwise', function() {
       const state = buildState(40, 20);
       state.resolveFromTimeout();
-      expect(state.getResolution()).to.deep.equal({ type:'stalemate' });
+      expect(state.getResolution()).to.deep.equal({ type:'attack' });
     });
   });
 
@@ -117,7 +123,7 @@ describe("NegotiationState", function() {
 
     it('throws before a resolution is set', function() {
       const state = buildState(40, 20);
-      expect(() => state.getResolutionText()).to.throw('Add resolution text for unresolved');
+      expect(() => state.getResolutionText()).to.throw('negotiation remains unresolved');
     });
   });
 

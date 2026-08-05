@@ -146,13 +146,13 @@ describe("NegotiationSystem", function() {
     });
   });
 
-  it("continues the battle with the monster acting first after a stalemate timeout", function() {
+  it("continues the battle with the monster acting first", function() {
     const state = startNegotiation();
     const battleState = BattleSystem.getState();
     const monster = state.getMonster();
 
     state.resolveFromTimeout();
-    expect(state.getResolution()).to.deep.equal({ type:'stalemate' });
+    expect(state.getResolution()).to.deep.equal({ type:'attack' });
 
     NegotiationSystem.advance();
     expect(state.hasShownResolution()).to.equal(true);

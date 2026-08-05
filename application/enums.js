@@ -199,16 +199,6 @@ global.SexStyle = {
   submissive: 'submissive',
 };
 
-global.NegotiationTone = Object.freeze({
-  modest: 'modest',
-  boastful: 'boastful',
-  dominant: 'dominant',
-  honest: 'honest',
-  kind: 'kind',
-  lewd: 'lewd',
-  sly: 'sly',
-});
-
 global.NegotiationStyle = Object.freeze({
   brat: 'brat',
   fierce: 'fierce',
@@ -393,6 +383,15 @@ global.StatusEffectDurationType = Object.freeze({
   turnCount: 'turn-count',         // Effect will last until a set number of player turns have passed.
   untilCured: 'until-cured',       // Effect will persist until it is cured
   untilResisted: 'until-resisted', // Effect will persist until a resist roll is passed
+});
+
+// The resolution type is different from the reaction type. There are many ways a monster can react to a question, but
+// only a few ways for a negotiation to end. A reaction like attack, join, or run will force that resolution.
+global.NegotiationResolutionType = Object.freeze({
+  attack: 'attack',
+  join: 'join',
+  run: 'run',
+  unresolved: 'unresolved',
 });
 
 // =====================

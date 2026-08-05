@@ -80,11 +80,17 @@ global.NegotiationState = function() {
   }
 
   function getResolution() {
-    return resolution || { type:'unresolved' };
+    return resolution || { type:NegotiationResolutionType.unresolved };
   }
 
   function resolveFromTimeout() {
-    setResolution(fear >= getFearThreshold() ? { type:'run' } : { type:'stalemate' });
+    let type = NegotiationResolutionType.attack
+
+    if (fear >= getFearThreshold() * 0.80) { type = NegotiationResolutionType.run; }
+    if (respect >= getRespectThreshold() * 0.75) { type = NegotiationResolutionType.join; }
+    if (affection >= getAffectionThreshold() * 0.66) { type = NegotiationResolutionType.join; }
+
+    setResolution({ type });
   }
 
   // The feelings component doesn't allow for negative values, so we clamp them here before they're applied to the
@@ -106,14 +112,14 @@ global.NegotiationState = function() {
   //       this back in would be part of the base monster text todo.
 
   function getResolutionText() {
-    switch(getResolution().type) {
-      case 'join': return `{T:TargetName} joins the party.`;
-      case 'attack': return `{T:TargetName} attacks.`;
-      case 'ability': return `{T:TargetName} acts.`;
-      case 'run': return `{T:TargetName} runs away.`;
-      case 'stalemate': return `{T:TargetName} loses interest in talking.`;
-      default: throw new Error(`Add resolution text for ${getResolution().type}`);
+    const type = getResolution().type;
+
+    if (type === NegotiationResolutionType.unresolved) {
+      throw `There is no resolution text when the negotiation remains unresolved.`
     }
+
+    return `(Resolution for ${type})`
+
   }
 
   return Object.freeze({

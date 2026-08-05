@@ -1,6 +1,6 @@
 global.NegotiationSystem = (function() {
 
-  const maxInteractions = 5
+  const maxInteractions = 3;
   const negotiationTime = 1200;
 
   let state;
@@ -73,7 +73,6 @@ global.NegotiationSystem = (function() {
       case 'attack':    return resolveAbility('basic-attack');
       case 'ability':   return resolveAbility(resolution.code);
       case 'run':       return resolveRun();
-      case 'stalemate': return finishNegotiation();
     }
     throw new Error(`Unknown resolution type [${resolution.type}]`);
   }
