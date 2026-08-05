@@ -1,6 +1,6 @@
 
 NegotiationQuestion.register('is-this-the-kind-of-life', {
-  text: `Is this really the kind of life you want?`,
+  text: `"Is this really the kind of life you want?"`,
   answers: {
     'only-way': { text:`"In this world, it's the only way to survive."` },
     'retire':   { text:`"I could see myself retiring someday, settling down and raising a family."` },

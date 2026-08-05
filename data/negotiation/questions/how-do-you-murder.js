@@ -1,6 +1,6 @@
 
 NegotiationQuestion.register('how-do-you-murder', {
-  text: `Hey, if you were going to commit murder, how would you do it?`,
+  text: `"Hey, if you were going to commit murder, how would you do it?"`,
   answers: {
     never:   { text:`"Murder? I would never do something like that."` },
     unknown: { text:`"That's something that no one would ever find out."` },

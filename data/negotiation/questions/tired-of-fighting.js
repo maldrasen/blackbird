@@ -1,6 +1,6 @@
 
 NegotiationQuestion.register('tired-of-fighting', {
-  text: `What's the matter? You tired of fighting?`,
+  text: `"What's the matter? You tired of fighting?"`,
   answers: {
     allDay:    { text:`"Tired? I could do this all day."` },
     tiresome:  { text:`"It is awfully tiresome though isn't it?"` },

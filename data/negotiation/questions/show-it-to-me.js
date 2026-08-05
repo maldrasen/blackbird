@@ -4,7 +4,7 @@
 //       We'd need both 2nd person 'you' phrases and 3rd person 'he' phrases.
 
 NegotiationQuestion.register('show-it-to-me', {
-  text: `Hmm, I want to know what you're working with. Why don't you whip it out for me?`,
+  text: `"Hmm, I want to know what you're working with. Why don't you whip it out for me?"`,
   staticRequirements: [
     CharacterRequirements.notVisibleCock('P'),
     CharacterRequirements.hasCock('P'),

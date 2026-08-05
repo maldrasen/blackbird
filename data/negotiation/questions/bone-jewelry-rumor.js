@@ -1,6 +1,6 @@
 
 NegotiationQuestion.register('bone-jewelry-rumor', {
-  text: `You know, I heard this rumor that humans make jewelry from {T:species.elf} bones.`,
+  text: `"You know, I heard this rumor that humans make jewelry from {T:species.elf} bones."`,
   staticRequirements: [
     CharacterRequirements.isSpecies('P','human'),
   ],

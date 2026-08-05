@@ -1,6 +1,6 @@
 
 NegotiationQuestion.register('get-out-cocks-out', {
-  text: `Only one way to settle this, with our cocks out like real men.`,
+  text: `"Only one way to settle this, with our cocks out like real men."`,
   staticRequirements: [
     CharacterRequirements.notVisibleCock('P'),
     CharacterRequirements.isMale('P'),

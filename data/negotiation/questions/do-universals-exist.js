@@ -13,7 +13,7 @@ const questionNothing = `"Nothing is neither distinct nor real. Everything you k
 const questionUma = `"Uma umauma umaaaaaa uma uma um."`;
 
 NegotiationQuestion.register('do-universals-exist', {
-  text: `Do you think universals exist as real and distinct entities, or only as mental constructs?`,
+  text: `"Do you think universals exist as real and distinct entities, or only as mental constructs?"`,
   staticRequirements: [
     CharacterRequirements.minimumIntelligence('P',20),
     CharacterRequirements.minimumIntelligence('T',20),

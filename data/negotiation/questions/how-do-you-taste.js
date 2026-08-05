@@ -1,6 +1,6 @@
 
 NegotiationQuestion.register('how-do-you-taste', {
-  text: `So what do humans taste like anyway?`,
+  text: `"So what do humans taste like anyway?"`,
   staticRequirements: [
     CharacterRequirements.isSpecies('P','human'),
   ],

@@ -1,6 +1,6 @@
 
 NegotiationQuestion.register('become-a-minion', {
-  text: `So… you want to become one of my minions huh?`,
+  text: `"So… you want to become one of my minions huh?"`,
   answers: {
     liar:       { text:`"Liar. You don't have fucking minions."` },
     backwards:  { text:`"I think you might have that backwards."` },
