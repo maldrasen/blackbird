@@ -1,6 +1,6 @@
 global.NegotiationSystem = (function() {
 
-  const maxInteractions = 3;
+  const maxInteractions = 5;
   const negotiationTime = 1200;
 
   let state;
