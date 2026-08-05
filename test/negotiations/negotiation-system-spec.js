@@ -109,14 +109,18 @@ describe("NegotiationSystem", function() {
       return { state:NegotiationSystem.getState(), player, monster };
     }
 
-    function pickUntil(state, question, poolSize) {
-      for (let i=0; i<poolSize; i++) { if (state.pickQuestion().question === question) { return; } }
+    // Draws until the wanted question comes up. The registered question count bounds the loop; a pool exhausted
+    // before the question is found fails the test through pickQuestion's own throw.
+    function pickUntil(state, question) {
+      for (let i=0; i<NegotiationQuestion.getAllCodes().length; i++) {
+        if (state.pickQuestion().question === question) { return; }
+      }
       throw new Error(`Question ${question} was not in the pool`);
     }
 
     it("moderates a feelings reaction and records the conversation improvement", function() {
       const { state, player } = bootNegotiation();
-      pickUntil(state, 'how-do-you-taste', 3);
+      pickUntil(state, 'how-do-you-taste');
 
       Random.stubBetween(50,75, 50,1);
       Random.stubRoll(5, 149);
@@ -134,7 +138,7 @@ describe("NegotiationSystem", function() {
       const { state, monster } = bootNegotiation();
 
       state.setFlag('playerCockOut', true);
-      pickUntil(state, 'let-me-taste', 4);
+      pickUntil(state, 'let-me-taste');
 
       Random.stubBetween(50,75, 50,1);
       Random.stubRoll(3, 5, 149);

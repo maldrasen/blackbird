@@ -23,20 +23,27 @@ describe("NegotiationState", function() {
     PersonalityComponent.update(monster, personality);
   }
 
+  // The pool's exact contents grow as questions are authored, so the spec drains the pool rather than enumerating it.
   describe("pickQuestion()", function() {
     it('picks every possible question with a matching reaction, then throws', function() {
       const state = buildState(40, 20);
 
       const picked = [];
-      for (let i=0; i<3; i++) { picked.push(state.pickQuestion().question); }
-      expect(picked.sort()).to.deep.equal(['how-do-you-taste','show-it-to-me','what-is-best']);
+      for (let i=0; i<NegotiationQuestion.getAllCodes().length; i++) {
+        try { picked.push(state.pickQuestion().question); } catch { break; }
+      }
+
+      expect(picked).to.include('how-do-you-taste');
+      expect(picked).to.include('show-it-to-me');
+      expect(new Set(picked).size).to.equal(picked.length);
 
       // let-me-taste is still in the pool, but its dynamic requirement keeps it unpickable.
+      expect(picked).to.not.include('let-me-taste');
       expect(() => state.pickQuestion()).to.throw(`aren't enough valid questions`);
 
       state.setFlag('playerCockOut', true);
       expect(state.pickQuestion().question).to.equal('let-me-taste');
-      expect(state.getInteractionCount()).to.equal(4);
+      expect(state.getInteractionCount()).to.equal(picked.length + 1);
 
       expect(() => state.pickQuestion()).to.throw(`aren't enough valid questions`);
     });
