@@ -29,6 +29,7 @@ global.NegotiationState = function() {
 
   NegotiationQuestion.getAllCodes().forEach(code => {
     const question = NegotiationQuestion.lookup(code);
+    if (question.isFollowUpOnly()) { return; }
     if (question.isPossible(context)) {
       const reactionData = question.getReactionData(context);
       if (reactionData) {

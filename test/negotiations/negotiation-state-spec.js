@@ -37,6 +37,9 @@ describe("NegotiationState", function() {
       expect(picked).to.include('show-it-to-me');
       expect(new Set(picked).size).to.equal(picked.length);
 
+      // Follow up questions are never added to the pool.
+      expect(picked).to.not.include('tired-of-fighting-other-way');
+
       // let-me-taste is still in the pool, but its dynamic requirement keeps it unpickable.
       expect(picked).to.not.include('let-me-taste');
       expect(() => state.pickQuestion()).to.throw(`aren't enough valid questions`);
