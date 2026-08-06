@@ -34,6 +34,19 @@ global.NegotiationState = function() {
   let fear = Random.roll(80);
   let respect = Random.roll(40);
 
+  // The M, F, and A keys hold other party members the questions can reference: a random man, a random non-male
+  // (futas are woman enough), and someone the monster would find attractive. A null key means no one in the party
+  // fills that role. These picks consume random rolls, so they're made after the starting feelings are rolled to
+  // keep the stub order in the specs stable.
+  const others = battleState.getActiveCharacters().filter(id => id !== player);
+  context.M = pickPartyReference(others.filter(id => Character(id).isMale()));
+  context.F = pickPartyReference(others.filter(id => Character(id).isMale() === false));
+  context.A = pickPartyReference(others.filter(id => monsterCharacter.isAttractedTo(id)));
+
+  function pickPartyReference(candidates) {
+    return candidates.length > 0 ? Random.from(candidates) : null;
+  }
+
   NegotiationQuestion.getAllCodes().forEach(code => {
     const question = NegotiationQuestion.lookup(code);
     if (question.isFollowUp()) { return; }

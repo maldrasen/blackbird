@@ -125,6 +125,16 @@ global.Character = function(id) {
     throw new Error(`Straight has no meaning when gender is ${getGenderName()}`);
   }
 
+  // A boolean gate on whether this character finds another character's gender attractive at all, using the same ±10
+  // dead zone as isStraight() and isGay(). Futas and enbies can appeal to either preference.
+  function isAttractedTo(otherId) {
+    const preferences = SexualPreferencesComponent.lookup(id);
+    const other = Character(otherId);
+    if (other.isMale()) { return preferences.androphilic >= 10; }
+    if (other.isFemale()) { return preferences.gynophilic >= 10; }
+    return preferences.androphilic >= 10 || preferences.gynophilic >= 10;
+  }
+
   // TODO: This is a little wrong because it tests to see if a character would consent to this sex action right the
   //   fuck now, and doesn't take into account the kind of arousal level that they could be worked up to. It would be
   //   more accurate if we also look into the sexual history to see if they've at least already done it a few times
@@ -270,6 +280,7 @@ global.Character = function(id) {
     hasSexualPreference,
     isStraight,
     isGay,
+    isAttractedTo,
     wouldConsentTo,
     hasDoneAction,
 

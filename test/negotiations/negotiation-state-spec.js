@@ -4,13 +4,15 @@ describe("NegotiationState", function() {
   // sneak slut favors the slut archetype, but a randomly drawn name can carry a trigger that overrides it, so the
   // archetype is pinned to slut (style lewd) before the question pool is built. The state is started through
   // NegotiationSystem because the dynamic question requirements read the flags through the system's state. The
-  // constructor rolls starting fear then respect, so both are stubbed to make the feelings math exact.
+  // constructor rolls starting fear then respect, so both are stubbed to make the feelings math exact. The party
+  // member picks for the M, F, and A context keys consume up to three more rolls, stubbed to 0 so each key holds
+  // the first matching candidate.
   function buildState(fear, respect) {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({ encounter:'negotiation-fixture-2', ambushState:'normal' });
     BattleSystem.specRound(GameSystem.getState().getPlayer());
     setArchetype(ArchetypeCode.slut);
-    Random.stubRoll(fear, respect);
+    Random.stubRoll(fear, respect, 0, 0, 0);
     NegotiationSystem.start();
     Random.stubReset();
     return NegotiationSystem.getState();
@@ -22,6 +24,23 @@ describe("NegotiationState", function() {
     personality.archetype = archetype;
     PersonalityComponent.update(monster, personality);
   }
+
+  // With the pick rolls stubbed to 0, each party reference key holds the first matching candidate, so the expected
+  // values can be derived from the fixture party directly.
+  describe("party member context", function() {
+    it('references other active party members, or null when no one fits the role', function() {
+      const state = buildState(40, 20);
+      const context = state.getContext();
+      const player = GameSystem.getState().getPlayer();
+      const monster = Character(state.getMonster());
+      const others = BattleSystem.getState().getActiveCharacters().filter(id => id !== player);
+
+      expect(others.length).to.equal(3);
+      expect(context.M).to.equal(others.find(id => Character(id).isMale()) || null);
+      expect(context.F).to.equal(others.find(id => Character(id).isMale() === false) || null);
+      expect(context.A).to.equal(others.find(id => monster.isAttractedTo(id)) || null);
+    });
+  });
 
   // The pool's exact contents grow as questions are authored, so the spec drains the pool rather than enumerating it.
   describe("pickQuestion()", function() {

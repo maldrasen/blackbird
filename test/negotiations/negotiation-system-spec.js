@@ -2,8 +2,9 @@ describe("NegotiationSystem", function() {
 
   // Each test boots a full battle around the negotiation-fixture-1 kobold-runt, moves the player to the front of the
   // turn order (finishRound() requires the acting entity to be next), and starts a negotiation. The state constructor
-  // rolls starting fear then respect, so both are stubbed to make the transferred feelings exact. Resolutions are set
-  // on the state directly — the reaction to resolution mapping is thin and the question path is Random-heavy.
+  // rolls starting fear then respect (stubbed to make the transferred feelings exact), then up to three more rolls
+  // for the party member context picks (stubbed to 0). Resolutions are set on the state directly — the reaction to
+  // resolution mapping is thin and the question path is Random-heavy.
   function startNegotiation() {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({ encounter:'negotiation-fixture-1', ambushState:'normal' });
@@ -12,7 +13,7 @@ describe("NegotiationSystem", function() {
     BattleSystem.getState().moveToTopOfTurnOrder({ type:'character', id:player });
     BattleSystem.specRound(player);
 
-    Random.stubRoll(40, 20);
+    Random.stubRoll(40, 20, 0, 0, 0);
     NegotiationSystem.start();
     Random.stubReset();
 
@@ -103,7 +104,7 @@ describe("NegotiationSystem", function() {
       const monster = BattleSystem.getState().getActiveMonsters()[0];
       setArchetype(monster, ArchetypeCode.slut);
 
-      Random.stubRoll(40, 20);
+      Random.stubRoll(40, 20, 0, 0, 0);
       NegotiationSystem.start();
       Random.stubReset();
 
