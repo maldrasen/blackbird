@@ -83,6 +83,12 @@ describe("NegotiationSystem", function() {
       AttributesComponent.update(id, attributes);
     }
 
+    function setArchetype(monster, archetype) {
+      const personality = PersonalityComponent.lookup(monster);
+      personality.archetype = archetype;
+      PersonalityComponent.update(monster, personality);
+    }
+
     // Boots the negotiation like the NegotiationState spec: the negotiation-fixture-2 kobold-sneak-slut with the
     // archetype pinned to slut so the question pool is deterministic. The player is made brilliant and the monster
     // dim, so the player wins the influence contest past the 100 point cap: helping feelings double and hurting ones
@@ -95,9 +101,7 @@ describe("NegotiationSystem", function() {
       BattleSystem.specRound(player);
 
       const monster = BattleSystem.getState().getActiveMonsters()[0];
-      const personality = PersonalityComponent.lookup(monster);
-      personality.archetype = ArchetypeCode.slut;
-      PersonalityComponent.update(monster, personality);
+      setArchetype(monster, ArchetypeCode.slut);
 
       Random.stubRoll(40, 20);
       NegotiationSystem.start();
@@ -147,6 +151,64 @@ describe("NegotiationSystem", function() {
       expect(state.getResolution()).to.deep.equal({ type:'join' });
       expect(state.getFeelings()).to.deep.equal({ control:90, affection:110, fear:40, respect:60 });
       expect(SexualPreferencesComponent.lookup(monster)['piss-slut']).to.equal(20);
+    });
+
+    // The pool entry for tired-of-fighting was captured while the monster was a slut, so answering otherWay resolves
+    // the lewd followUp reaction. The archetype is repinned to savage before answering because the forced question
+    // only carries a fierce reaction block, which setFollowUp reads live.
+    describe("follow up questions", function() {
+      it("forces the follow up question on the advance after the reaction", function() {
+        const { state, monster } = bootNegotiation();
+        pickUntil(state, 'tired-of-fighting');
+        setArchetype(monster, ArchetypeCode.savage);
+
+        const count = state.getInteractionCount();
+        NegotiationSystem.answer('otherWay');
+        expect(state.hasResolution()).to.equal(false);
+        expect(state.hasFollowUp()).to.equal(true);
+        expect(state.getCurrentQuestion().question).to.equal('tired-of-fighting');
+
+        NegotiationSystem.advance();
+        expect(state.getCurrentQuestion().question).to.equal('tired-of-fighting-other-way');
+        expect(state.getInteractionCount()).to.equal(count + 1);
+        expect(state.hasFollowUp()).to.equal(false);
+
+        Random.stubBetween(50,75, 50,1);
+        Random.stubRoll(5, 149);
+        NegotiationSystem.answer('luck');
+        expect(state.getResolution()).to.deep.equal({ type:'attack' });
+      });
+
+      // The question pool is too small to reach the interaction limit by draining it, so the count is driven to the
+      // limit by taking follow up questions directly.
+      it("bypasses the interaction limit without cutting the conversation short", function() {
+        const { state, monster } = bootNegotiation();
+        setArchetype(monster, ArchetypeCode.savage);
+
+        for (let i=0; i<5; i++) {
+          state.setFollowUp('tired-of-fighting-other-way');
+          state.takeFollowUpQuestion();
+        }
+        expect(state.getInteractionCount()).to.equal(5);
+
+        state.setFollowUp('tired-of-fighting-other-way');
+        NegotiationSystem.advance();
+
+        expect(state.hasResolution()).to.equal(false);
+        expect(state.getCurrentQuestion().question).to.equal('tired-of-fighting-other-way');
+        expect(state.getInteractionCount()).to.equal(6);
+      });
+
+      it("shows a resolution before a pending follow up question", function() {
+        const { state, monster } = bootNegotiation();
+        setArchetype(monster, ArchetypeCode.savage);
+
+        state.setFollowUp('tired-of-fighting-other-way');
+        state.setResolution({ type:'run' });
+
+        NegotiationSystem.advance();
+        expect(state.hasShownResolution()).to.equal(true);
+      });
     });
   });
 

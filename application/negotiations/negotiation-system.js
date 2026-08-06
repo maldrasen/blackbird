@@ -14,9 +14,12 @@ global.NegotiationSystem = (function() {
     NegotiationInterface.open();
   }
 
+  // A pending follow up question outranks the interaction limit so a conversation is never cut off mid-thread, but a
+  // resolution still ends the negotiation first.
   function advance() {
     if (state.hasShownResolution()) { return executeResolution(); }
     if (state.hasResolution()) { return showResolution(); }
+    if (state.hasFollowUp()) { return NegotiationInterface.renderQuestion(state.takeFollowUpQuestion()); }
     if (state.getInteractionCount() >= maxInteractions) { return forceResolution(); }
     NegotiationInterface.renderQuestion(state.pickQuestion());
   }
@@ -31,7 +34,6 @@ global.NegotiationSystem = (function() {
     NegotiationInterface.renderResolution();
   }
 
-  // TODO: A reaction can also be a follow on question.
   // TODO: Requests are answered here as well once they're implemented. (Task 105)
   function answer(key) {
     const question = state.getCurrentQuestion();
@@ -54,6 +56,7 @@ global.NegotiationSystem = (function() {
 
     switch (reaction.type) {
       case 'feelings': break;
+      case 'followUp': state.setFollowUp(reaction.question); break;
       case 'join':     state.setResolution({ type:'join' }); break;
       case 'attack':   state.setResolution({ type:'attack' }); break;
       case 'ability':  state.setResolution({ type:'ability', code:reaction.code }); break;

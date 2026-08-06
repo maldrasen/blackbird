@@ -26,11 +26,6 @@ NegotiationQuestion.registerReaction('tired-of-fighting', {
   }
 });
 
-// TODO: A follow up question isn't added to the pool. They're referenced by a followUp response type, and always
-//       picked as the next question. These will need to bypassing the interaction limit so that a conversation isn't
-//       stopped halfway though. They should still count as an interaction though. We still need to show the response
-//       text from the previous reaction before this question is shown.
-
 NegotiationQuestion.register('tired-of-fighting-other-way', {
   text: `"So what exactly did you have in mind?"`,
   followUpOnly: true,
