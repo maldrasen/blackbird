@@ -3,7 +3,6 @@
 rm -f debug/*.json
 
 bin/compile-style.sh
-bin/compile-manifest.sh
+bin/test.sh --quiet
 
-node bin/run-tests.js
 npm run start

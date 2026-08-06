@@ -46,8 +46,14 @@ within the client. The `bin/run-headless.js` file can be used as a shared bootst
 headless mode.
 
 ### Testing
-Tests are written with Mocha and Chai. Tests should only be run with `bin/test.sh --grep "<spec title>" --seed <seed>`
-so that permission to run the tests doesn't have to be granted every time.
+Tests are written with Mocha and Chai. Tests should only be run with `bin/test.sh` so that permission to run them
+doesn't have to be granted every time. Never wrap it in loops, pipes, or output filters — the flags cover those needs:
+- `--grep "<spec title>"` runs only matching specs
+- `--seed <seed>` reproduces a run with a fixed seed
+- `--seeds <seed,seed,...>` runs once per seed, printing a one-line summary for each
+- `--quiet` prints only the summary lines (a failing run still dumps its full output)
+
+Repeated random-seed runs to flush out flaky specs use `node bin/soak-tests.js [runs]`.
 
 ### Client loading model
 There is no bundler. The renderer (though application/loader.js) reads `manifest.json` and dynamically imports every
