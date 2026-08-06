@@ -16,6 +16,7 @@ global.NegotiationState = function() {
   let interactionCount = 0;
   let questions = [];
   let currentQuestion;
+  let pendingFollowUp;
   let resolution;
   let resolutionShown = false;
 
@@ -50,6 +51,27 @@ global.NegotiationState = function() {
     interactionCount += 1;
     currentQuestion = Random.from(available);
     questions = questions.filter(entry => entry !== currentQuestion);
+
+    return currentQuestion;
+  }
+
+  // The follow up question is validated eagerly, so that a bad question code or a monster with no matching reaction
+  // fails at answer time, pointing at the authoring error.
+  function setFollowUp(code) {
+    const reactionData = NegotiationQuestion.lookup(code).getReactionData(context);
+    if (reactionData == null) {
+      throw new Error(`Follow up question [${code}] has no reaction for ${Monster(monster).getCode()}:[${Monster(monster).getArchetype()}]`);
+    }
+    pendingFollowUp = { question:code, reactionData };
+  }
+
+  // The forced question bypasses the interaction limit, but still counts as an interaction. Its dynamic requirements
+  // aren't checked; a follow up question is explicit author intent.
+  function takeFollowUpQuestion() {
+    interactionCount += 1;
+    currentQuestion = pendingFollowUp;
+    questions = questions.filter(entry => entry.question !== currentQuestion.question);
+    pendingFollowUp = null;
 
     return currentQuestion;
   }
@@ -134,6 +156,9 @@ global.NegotiationState = function() {
     getCurrentQuestion: () => { return currentQuestion; },
     getInteractionCount: () => { return interactionCount; },
     pickQuestion,
+    setFollowUp,
+    hasFollowUp: () => { return pendingFollowUp != null; },
+    takeFollowUpQuestion,
     applyFeelings,
     getFeelings,
     setResolution,

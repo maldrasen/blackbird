@@ -52,6 +52,37 @@ describe("NegotiationState", function() {
     });
   });
 
+  // setFollowUp() reads the reaction data live, so the archetype can be repinned after the state is built to give the
+  // monster whatever style the test needs.
+  describe("followUp questions", function() {
+    it('forces the follow up question to be asked next', function() {
+      const state = buildState(40, 20);
+      setArchetype(ArchetypeCode.savage);
+      expect(state.hasFollowUp()).to.equal(false);
+
+      state.setFollowUp('tired-of-fighting-other-way');
+      expect(state.hasFollowUp()).to.equal(true);
+
+      const entry = state.takeFollowUpQuestion();
+      expect(entry.question).to.equal('tired-of-fighting-other-way');
+      expect(entry.reactionData.style).to.equal(NegotiationStyle.fierce);
+      expect(state.getCurrentQuestion()).to.equal(entry);
+      expect(state.getInteractionCount()).to.equal(1);
+      expect(state.hasFollowUp()).to.equal(false);
+    });
+
+    it('throws for an unknown question code', function() {
+      const state = buildState(40, 20);
+      expect(() => state.setFollowUp('tired-of-jogging')).to.throw('Bad negotiation question code');
+    });
+
+    it('throws when the monster has no reaction to the question', function() {
+      const state = buildState(40, 20);
+      setArchetype(ArchetypeCode.reserved);
+      expect(() => state.setFollowUp('tired-of-fighting-other-way')).to.throw('has no reaction');
+    });
+  });
+
   describe("applyFeelings()", function() {
     it('applies exact values, clamping negatives to 0 in getFeelings()', function() {
       const state = buildState(40, 20);
