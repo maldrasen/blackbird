@@ -1,10 +1,12 @@
 ---
 id: 155
 title: Encounter Builder
-priority:
+priority: 2
 created: 2026-08-06
-tags: []
-points: 0
+tags:
+  - battle
+  - dungeon
+points: 8
 ---
 ---
 The encounters are a bit dumb right now, simple data records with a little randomness. Then we have a bunch of different records with different monster formations. It would be better if we could have a builder that builds an encounter intelligently.

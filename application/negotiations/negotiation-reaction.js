@@ -138,13 +138,19 @@ global.NegotiationReaction = (function() {
   function givePreferences(preferences, context) {
     Object.keys(preferences).forEach(code => {
       const requires = SexualPreference.lookup(code).getRequires();
+      const currentValue = SexualPreferencesComponent.lookup(context.T)[code];
+      const newValue = preferences[code];
+
       if (Requirements.met(requires, context.T) === false) {
         throw new Error(`Sexual preference [${code}] is incompatible with Character[${context.T}]`);
       }
-      if (preferences[code] === 0) {
-        SexualPreferencesComponent.deletePreference(context.T, code);
-      } else {
+
+      if (newValue > 0 && (currentValue == null || currentValue < newValue)) {
         SexualPreferencesComponent.update(context.T, { [code]: preferences[code] });
+      }
+
+      if (newValue === 0) {
+        SexualPreferencesComponent.deletePreference(context.T, code);
       }
     });
   }
