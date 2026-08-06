@@ -53,6 +53,7 @@ global.NegotiationReaction = (function() {
         if (effects.givePreferences) { givePreferences(effects.givePreferences, context); }
         if (effects.giveStatusEffect) { giveStatusEffect(effects.giveStatusEffect, context); }
       },
+      withFeelings: (newFeelings) => buildReaction(type, message, newFeelings, effects, extra),
     };
 
     return Object.freeze(reaction);

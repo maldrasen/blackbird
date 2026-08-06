@@ -56,6 +56,21 @@ describe("NegotiationReaction", function() {
     });
   });
 
+  describe("withFeelings()", function() {
+    it('builds a new reaction with the feelings replaced', function() {
+      const reaction = NegotiationReaction.followUp('msg', {
+        question:'tired-of-fighting-other-way', flags:{ playerHard:true },
+      });
+      const moderated = reaction.withFeelings({ affection:10 });
+
+      expect(moderated).to.not.equal(reaction);
+      expect(moderated).to.deep.include({
+        type:'followUp', question:'tired-of-fighting-other-way', feelings:{ affection:10 }, message:'msg',
+        effects:{ flags:{ playerHard:true }} });
+      expect(reaction.feelings).to.equal(undefined);
+    });
+  });
+
   describe("resolve()", function() {
     it('returns non-contest reactions as they are', function() {
       const reaction = NegotiationReaction.like('msg');

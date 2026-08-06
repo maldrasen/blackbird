@@ -42,7 +42,7 @@ global.NegotiationSystem = (function() {
   }
 
   function moderateReaction(reaction) {
-    return { ...reaction, feelings:NegotiationInfluence.moderateFeelings(reaction.feelings, state.getContext()) };
+    return reaction.withFeelings(NegotiationInfluence.moderateFeelings(reaction.feelings, state.getContext()));
   }
 
   function applyReaction(reaction) {

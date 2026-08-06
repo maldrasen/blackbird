@@ -6,4 +6,7 @@ OK, we might actually need join resolution next between the last reaction and be
 
 We need a way to reduce the number of available questions in the fixtures, in case we're wanting to test a small subset of questions. I want to do this after the requests though, in case we want to isolate one question, we'll have requests to fill in the extra interactions.
 
-When a monster joins the party, they need to be put into the party configuration. 
+When a monster joins the party, they need to be put into the party configuration.
+
+Standardize the way tests are run.
+`npm test 2>$null | Select-String -Pattern 'passing|failing'`
