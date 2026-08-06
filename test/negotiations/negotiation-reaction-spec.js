@@ -37,12 +37,41 @@ describe("NegotiationReaction", function() {
         .to.deep.equal({
           type:'join', feelings:{ affection:30 }, message:'msg', options:{ givePreferences:{ 'piss-slut':20 }} });
     });
+
+    it('builds a followUp reaction with no default feelings', function() {
+      expect(NegotiationReaction.followUp('msg', { question:'tired-of-fighting-other-way' })).to.deep.equal({
+        type:'followUp', question:'tired-of-fighting-other-way', feelings:undefined, message:'msg', options:{} });
+    });
+
+    it('hoists the followUp question and feelings out of the options', function() {
+      expect(NegotiationReaction.followUp('msg', {
+        question:'tired-of-fighting-other-way', feelings:{ affection:10 }, flags:{ playerHard:true },
+      })).to.deep.equal({
+        type:'followUp', question:'tired-of-fighting-other-way', feelings:{ affection:10 }, message:'msg',
+        options:{ flags:{ playerHard:true }} });
+    });
+
+    it('requires a followUp question', function() {
+      expect(() => NegotiationReaction.followUp('msg')).to.throw('needs a question');
+    });
   });
 
   describe("resolve()", function() {
     it('returns non-contest reactions as they are', function() {
       const reaction = NegotiationReaction.like('msg');
       expect(NegotiationReaction.resolve(reaction, {})).to.equal(reaction);
+    });
+
+    it('returns a followUp from a contest branch intact', function() {
+      const followUp = NegotiationReaction.followUp('msg', { question:'tired-of-fighting-other-way' });
+      const contest = NegotiationReaction.contest({
+        random: true,
+        win: followUp,
+        loss: NegotiationReaction.dislike('lost'),
+      });
+
+      Random.stubFlipCoin(true);
+      expect(NegotiationReaction.resolve(contest, {})).to.equal(followUp);
     });
   });
 

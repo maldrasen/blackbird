@@ -113,6 +113,17 @@ global.NegotiationReaction = (function() {
     BattleSystem.getState().addStatus(BattleStatusEffect(entity, effect, {duration}));
   }
 
+  // A followUp reaction forces the named question to be asked next. The target question can't be validated here
+  // because data files may build a followUp before its question is registered; the negotiation state validates the
+  // code when the reaction is applied. There's no entry in the resolution map, so a followUp carries no default
+  // feelings.
+  function followUp(message, options={}) {
+    if (options.question == null) { throw new Error(`A followUp reaction needs a question.`); }
+
+    const { question, ...remaining } = options;
+    return resolutionReaction('followUp', message, remaining, { question });
+  }
+
   function reactWith(feelings, message, options) {
     return { type:'feelings', feelings, message, options };
   }
@@ -133,7 +144,7 @@ global.NegotiationReaction = (function() {
     run:      (message, options={}) =>       resolutionReaction('run', message, options),
     ability:  (code, message, options={}) => resolutionReaction('ability', message, options, { code }),
     join:     (message, options={}) =>       resolutionReaction('join', message, options),
-    followUp: (message, options) => { /* TODO */ },
+    followUp,
     contest,
     resolve,
   };
