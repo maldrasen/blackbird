@@ -229,7 +229,7 @@ describe("NegotiationReaction", function() {
       applyPreferences(id, { 'humiliation-slut':60 });
       expect(SexualPreferencesComponent.lookup(id)['humiliation-slut']).to.equal(60);
 
-      applyPreferences(id, { 'humiliation-slut':0 });
+      applyPreferences(id, { 'humiliation-slut':null });
       expect(SexualPreferencesComponent.lookup(id)).to.not.have.property('humiliation-slut');
       expect(SexualPreferencesComponent.lookup(id)['piss-slut']).to.equal(20);
     });

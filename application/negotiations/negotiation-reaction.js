@@ -134,7 +134,7 @@ global.NegotiationReaction = (function() {
 
   // When adding a sexual preference we need to check its requirements. If the preference is incompatible with this
   // character we throw an exception; that's a check that should have happened in the question authoring. Setting a
-  // preference to 0 deletes it.
+  // preference to null deletes it.
   function givePreferences(preferences, context) {
     Object.keys(preferences).forEach(code => {
       const requires = SexualPreference.lookup(code).getRequires();
@@ -149,7 +149,7 @@ global.NegotiationReaction = (function() {
         SexualPreferencesComponent.update(context.T, { [code]: preferences[code] });
       }
 
-      if (newValue === 0) {
+      if (newValue == null) {
         SexualPreferencesComponent.deletePreference(context.T, code);
       }
     });
