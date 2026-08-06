@@ -29,9 +29,13 @@ if (Object.values(Gender).includes(playerGender) === false) {
   process.exit(1);
 }
 
+// Negated requirements like notVisibleCock() wrap the positive predicate in a === false check, so the closure source
+// only names the inner call. Detect the negation and put the "not" back.
 function requirementLabel(requirement, index) {
-  const match = /return (\w+)\(/.exec(requirement.toString());
-  return `#${index+1} ${match ? match[1] : 'requirement'}`;
+  const source = requirement.toString();
+  const match = /return (\w+)\(/.exec(source);
+  const name = match ? match[1] : 'requirement';
+  return `#${index+1} ${source.includes('=== false') ? `not ${name}` : name}`;
 }
 
 function reactionLabel(reaction) {
