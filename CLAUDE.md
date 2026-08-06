@@ -53,7 +53,7 @@ doesn't have to be granted every time. Never wrap it in loops, pipes, or output 
 - `--seeds <seed,seed,...>` runs once per seed, printing a one-line summary for each
 - `--quiet` prints only the summary lines (a failing run still dumps its full output)
 
-Repeated random-seed runs to flush out flaky specs use `node bin/soak-tests.js [runs]`.
+Repeated random-seed runs to flush out flaky specs use `node bin/soak-tests.js [runs] [--grep "<spec title>"]`.
 
 ### Client loading model
 There is no bundler. The renderer (though application/loader.js) reads `manifest.json` and dynamically imports every
