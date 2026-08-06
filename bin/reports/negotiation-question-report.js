@@ -8,7 +8,7 @@
 
 require('../run-headless.js');
 
-const samples = Number(process.argv[2]) || 50;
+const samples = Number(process.argv[2]) || 100;
 const playerGenders = [Gender.male, Gender.female, Gender.futa, Gender.enby];
 
 function poolCount(context) {

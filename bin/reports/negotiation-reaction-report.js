@@ -13,7 +13,7 @@ require('../run-headless.js');
 
 const monsterCode = process.argv[2];
 const playerGender = process.argv[3] || Gender.male;
-const samples = Number(process.argv[4]) || 40;
+const samples = Number(process.argv[4]) || 100;
 
 if (monsterCode == null || BaseMonster.getAllCodes().includes(monsterCode) === false) {
   console.log(`Usage: node bin/reports/negotiation-reaction-report.js <monster> [playerGender] [samples]`);
