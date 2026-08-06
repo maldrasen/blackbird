@@ -8,7 +8,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 ## Priority 1
 
-- [151] More Negotiation Questions `5pt` — [151-more-negotiation-questions.md](151-more-negotiation-questions.md)
 - [160] Add a party configuration user interface `5pt` — [160-add-a-party-configuration-user-interface.md](160-add-a-party-configuration-user-interface.md)
 - [164] Question and reaction report `3pt` — [164-question-and-reaction-report.md](164-question-and-reaction-report.md)
 
@@ -57,6 +56,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [128] Random weapon and armor generation `8pt` — [128-random-item-generation.md](128-random-item-generation.md)
 - [130] Accept death in game over event `8pt` — [130-accept-death-in-game-over-event.md](130-accept-death-in-game-over-event.md)
 - [139] Fix Stamina `3pt` — [139-fix-stamina.md](139-fix-stamina.md)
+- [151] More Negotiation Questions `5pt` — [151-more-negotiation-questions.md](151-more-negotiation-questions.md)
 - [162] Battle enlightenment variation for no essence `2pt` — [162-battle-enlightenment-variation-for-no-essence.md](162-battle-enlightenment-variation-for-no-essence.md)
 
 ## Priority 4
@@ -76,6 +76,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [140] Modding support `3pt` — [140-modding-support.md](140-modding-support.md)
 - [152] Implement magical trigger `5pt` — [152-implement-magical-trigger.md](152-implement-magical-trigger.md)
 - [154] Build a project website `13pt` — [154-build-a-project-website.md](154-build-a-project-website.md)
+- [165] Steal reaction `3pt` — [165-steal-reaction.md](165-steal-reaction.md)
 
 ## Priority 5
 
