@@ -29,10 +29,6 @@ global.NegotiationQuestion = (function() {
     return Object.keys(questions);
   }
 
-  function getAllReactionCodes() {
-    return Object.keys(reactions);
-  }
-
   function getReactions(code) {
     return reactions[code] || [];
   }
@@ -90,6 +86,7 @@ global.NegotiationQuestion = (function() {
     return Object.freeze({
       getCode: () => { return code; },
       getText: () => { return question.text; },
+      getStaticRequirements: () => { return question.staticRequirements || []; },
       getAnswers,
       getReactionData,
       isFollowUp: () => { return question.followUp === true; },
@@ -102,7 +99,6 @@ global.NegotiationQuestion = (function() {
     register,
     registerReaction,
     getAllCodes,
-    getAllReactionCodes,
     getReactions,
     lookup,
   });
