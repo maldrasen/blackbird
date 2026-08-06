@@ -52,7 +52,7 @@ describe("NegotiationReaction", function() {
     });
 
     it('requires a followUp question', function() {
-      expect(() => NegotiationReaction.followUp('msg')).to.throw('needs a question');
+      expect(() => NegotiationReaction.followUp('msg')).to.throw('must point to a question');
     });
   });
 
