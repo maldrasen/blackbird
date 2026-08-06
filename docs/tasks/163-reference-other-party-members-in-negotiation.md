@@ -1,10 +1,11 @@
 ---
 id: 163
 title: Reference other party members in negotiation
-priority:
+priority: 1
 created: 2026-08-06
-tags: []
-points: 0
+tags:
+  - negotiation
+points: 2
 ---
 ---
 The `no-interest-in-men` negotiation question has an answer that references another female party member. When we build the negotiation state we should include other party members in the context for questions like this. We were also going to need these people for negotiation requests involving them.

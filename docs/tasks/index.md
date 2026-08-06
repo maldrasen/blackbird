@@ -2,13 +2,10 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
-## Priority 
-
-- [163] Reference other party members in negotiation `0pt` — [163-reference-other-party-members-in-negotiation.md](163-reference-other-party-members-in-negotiation.md)
-
 ## Priority 1
 
 - [160] Add a party configuration user interface `5pt` — [160-add-a-party-configuration-user-interface.md](160-add-a-party-configuration-user-interface.md)
+- [163] Reference other party members in negotiation `2pt` — [163-reference-other-party-members-in-negotiation.md](163-reference-other-party-members-in-negotiation.md)
 - [164] Question and reaction report `3pt` — [164-question-and-reaction-report.md](164-question-and-reaction-report.md)
 
 ## Priority 2
