@@ -3,7 +3,7 @@
 //   only kobolds there should be a requirement that to see if a character is much shorter than another, so that this
 //   will work with vermen and havlins.
 
-NegotiationQuestion.register('get-out-cocks-out', {
+NegotiationQuestion.register('get-our-cocks-out', {
   text: `"Only one way to settle this, with our cocks out like real men."`,
   staticRequirements: [
     CharacterRequirements.notVisibleCock('P'),
@@ -25,7 +25,7 @@ const dickSlapLose = `The kobold dodges out of the way and snarls, "Ha! Too slow
 const dickSlapWin = `The kobold's head snaps back as you slap him across the face with your {P:thickSixInchLongCock}. 
   He looks momentarily stunned, but wipes his face with his arm and gives you a smile.`
 
-NegotiationQuestion.registerReaction('get-out-cocks-out', {
+NegotiationQuestion.registerReaction('get-our-cocks-out', {
   monster: 'kobold-dick-puncher',
   reactions: {
     no:       NegotiationReaction.attack(`"Don't you know where the fuck you even are? This is Rhysh motherfucker!"`),
@@ -56,17 +56,17 @@ const lewdDickSlap = `{T:TargetName} reaches down to free {T:his} cock from it's
   mouth wide, letting you slap your cock against {T:his} tongue while {T:he} strokes {T:his} own cock. Finely {T:he} 
   gives the tip a wet kiss and smiles up at you, "I like the way you think."`;
 
-NegotiationQuestion.registerReaction('get-out-cocks-out', {
+NegotiationQuestion.registerReaction('get-our-cocks-out', {
   style: NegotiationStyle.lewd,
   reactions: {
     no:       NegotiationReaction.attack(lewdStripYou),
-    youFirst: NegotiationReaction.followUp(lewdShowYou, { question:'get-out-cocks-out-your-turn', feelings:NegotiationReaction.getFeelings('lust'), flags:{ monsterCockOut:true }}),
+    youFirst: NegotiationReaction.followUp(lewdShowYou, { question:'get-our-cocks-out-your-turn', feelings:NegotiationReaction.getFeelings('lust'), flags:{ monsterCockOut:true }}),
     yes:      NegotiationReaction.lust(lewdCocksOut,{ flags:cocksOut }),
     dickSlap: NegotiationReaction.love(lewdDickSlap,{ flags:hardCocksOut }),
   }
 });
 
-NegotiationQuestion.register('get-out-cocks-out-your-turn', {
+NegotiationQuestion.register('get-our-cocks-out-your-turn', {
   text: `{T:TargetName} is waiting, Pull your cock out?`,
   followUp: true,
   answers: {
@@ -75,7 +75,7 @@ NegotiationQuestion.register('get-out-cocks-out-your-turn', {
   }
 });
 
-NegotiationQuestion.registerReaction('get-out-cocks-out-your-turn', {
+NegotiationQuestion.registerReaction('get-our-cocks-out-your-turn', {
   style: NegotiationStyle.lewd,
   reactions: {
     yes: NegotiationReaction.lust(`{T:TargetName} grins, looking you over appreciatively, still stroking {T:his} hardening shaft, "Nice..."`,{ flags:{ playerCockOut:true, monsterCockHard:true }}),

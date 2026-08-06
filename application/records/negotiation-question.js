@@ -29,6 +29,14 @@ global.NegotiationQuestion = (function() {
     return Object.keys(questions);
   }
 
+  function getAllReactionCodes() {
+    return Object.keys(reactions);
+  }
+
+  function getReactions(code) {
+    return reactions[code] || [];
+  }
+
   function lookup(code) {
     if (questions[code] == null) { throw new Error(`Bad negotiation question code [${code}]`); }
 
@@ -94,6 +102,8 @@ global.NegotiationQuestion = (function() {
     register,
     registerReaction,
     getAllCodes,
+    getAllReactionCodes,
+    getReactions,
     lookup,
   });
 
