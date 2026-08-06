@@ -14,39 +14,39 @@ describe("NegotiationReaction", function() {
 
   describe("descriptors", function() {
     it('builds the feelings reactions from the reaction map', function() {
-      expect(NegotiationReaction.respect('msg')).to.deep.equal({
+      expect(NegotiationReaction.respect('msg')).to.deep.include({
         type:'feelings', feelings:{ control:20, respect:30 }, message:'msg', effects:{} });
-      expect(NegotiationReaction.terrify('msg')).to.deep.equal({
+      expect(NegotiationReaction.terrify('msg')).to.deep.include({
         type:'feelings', feelings:{ control:30, affection:-20, fear:50 }, message:'msg', effects:{} });
     });
 
     it('builds the resolution reactions with their default feelings maps', function() {
-      expect(NegotiationReaction.attack('msg')).to.deep.equal({
+      expect(NegotiationReaction.attack('msg')).to.deep.include({
         type:'attack', feelings:{ affection:-40, respect:-20, fear:-30 }, message:'msg', effects:{} });
-      expect(NegotiationReaction.run('msg')).to.deep.equal({
+      expect(NegotiationReaction.run('msg')).to.deep.include({
         type:'run', feelings:{ affection:-20, fear:30 }, message:'msg', effects:{} });
-      expect(NegotiationReaction.ability('dick-punch','msg')).to.deep.equal({
+      expect(NegotiationReaction.ability('dick-punch','msg')).to.deep.include({
         type:'ability', code:'dick-punch', feelings:{ affection:-40, respect:-20, fear:-30 }, message:'msg',
         effects:{} });
-      expect(NegotiationReaction.join('msg')).to.deep.equal({
+      expect(NegotiationReaction.join('msg')).to.deep.include({
         type:'join', feelings:{ control:40, affection:50, respect:20, fear:-10 }, message:'msg', effects:{} });
     });
 
     it('hoists join feelings out of the options', function() {
       expect(NegotiationReaction.join('msg', { feelings:{ affection:30 }, givePreferences:{ 'piss-slut':20 }}))
-        .to.deep.equal({
+        .to.deep.include({
           type:'join', feelings:{ affection:30 }, message:'msg', effects:{ givePreferences:{ 'piss-slut':20 }} });
     });
 
     it('builds a followUp reaction with no default feelings', function() {
-      expect(NegotiationReaction.followUp('msg', { question:'tired-of-fighting-other-way' })).to.deep.equal({
+      expect(NegotiationReaction.followUp('msg', { question:'tired-of-fighting-other-way' })).to.deep.include({
         type:'followUp', question:'tired-of-fighting-other-way', feelings:undefined, message:'msg', effects:{} });
     });
 
     it('hoists the followUp question and feelings out of the options', function() {
       expect(NegotiationReaction.followUp('msg', {
         question:'tired-of-fighting-other-way', feelings:{ affection:10 }, flags:{ playerHard:true },
-      })).to.deep.equal({
+      })).to.deep.include({
         type:'followUp', question:'tired-of-fighting-other-way', feelings:{ affection:10 }, message:'msg',
         effects:{ flags:{ playerHard:true }} });
     });
@@ -59,7 +59,7 @@ describe("NegotiationReaction", function() {
   describe("resolve()", function() {
     it('returns non-contest reactions as they are', function() {
       const reaction = NegotiationReaction.like('msg');
-      expect(NegotiationReaction.resolve(reaction, {})).to.equal(reaction);
+      expect(reaction.resolve({})).to.equal(reaction);
     });
 
     it('returns a followUp from a contest branch intact', function() {
@@ -71,7 +71,7 @@ describe("NegotiationReaction", function() {
       });
 
       Random.stubFlipCoin(true);
-      expect(NegotiationReaction.resolve(contest, {})).to.equal(followUp);
+      expect(contest.resolve({})).to.equal(followUp);
     });
   });
 
@@ -96,9 +96,9 @@ describe("NegotiationReaction", function() {
       });
 
       Random.stubFlipCoin(true);
-      expect(NegotiationReaction.resolve(contest, {}).message).to.equal('won');
+      expect(contest.resolve({}).message).to.equal('won');
       Random.stubFlipCoin(false);
-      expect(NegotiationReaction.resolve(contest, {}).message).to.equal('lost');
+      expect(contest.resolve({}).message).to.equal('lost');
     });
 
     it('resolves a frequency map contest', function() {
@@ -109,9 +109,9 @@ describe("NegotiationReaction", function() {
       });
 
       Random.stubRoll(3);
-      expect(NegotiationReaction.resolve(contest, {}).message).to.equal('won');
+      expect(contest.resolve({}).message).to.equal('won');
       Random.stubRoll(4);
-      expect(NegotiationReaction.resolve(contest, {}).message).to.equal('lost');
+      expect(contest.resolve({}).message).to.equal('lost');
     });
 
     it('resolves an attribute contest, with ties going to the player', function() {
@@ -123,11 +123,11 @@ describe("NegotiationReaction", function() {
       });
 
       Random.stubRoll(7,3);
-      expect(NegotiationReaction.resolve(contest, context).message).to.equal('won');
+      expect(contest.resolve(context).message).to.equal('won');
       Random.stubRoll(4,4);
-      expect(NegotiationReaction.resolve(contest, context).message).to.equal('won');
+      expect(contest.resolve(context).message).to.equal('won');
       Random.stubRoll(3,7);
-      expect(NegotiationReaction.resolve(contest, context).message).to.equal('lost');
+      expect(contest.resolve(context).message).to.equal('lost');
     });
 
     // A SkillCheck consumes two between values, the crit roll then the value roll. Contestants default to level 100
@@ -141,11 +141,11 @@ describe("NegotiationReaction", function() {
       });
 
       Random.stubBetween(50,6, 50,3);
-      expect(NegotiationReaction.resolve(contest, context).message).to.equal('won');
+      expect(contest.resolve(context).message).to.equal('won');
       Random.stubBetween(50,5, 50,5);
-      expect(NegotiationReaction.resolve(contest, context).message).to.equal('won');
+      expect(contest.resolve(context).message).to.equal('won');
       Random.stubBetween(50,3, 50,6);
-      expect(NegotiationReaction.resolve(contest, context).message).to.equal('lost');
+      expect(contest.resolve(context).message).to.equal('lost');
     });
 
     it('consumes an improve roll for each contestant below skill level 100', function() {
@@ -158,7 +158,7 @@ describe("NegotiationReaction", function() {
 
       Random.stubBetween(50,6, 50,3);
       Random.stubRoll(149,149);
-      expect(NegotiationReaction.resolve(contest, context).message).to.equal('won');
+      expect(contest.resolve(context).message).to.equal('won');
       expect(SkillsComponent.lookup(context.P).conversation).to.equal(0);
       expect(SkillsComponent.lookup(context.T).conversation).to.equal(0);
     });
@@ -173,7 +173,7 @@ describe("NegotiationReaction", function() {
 
       Random.stubBetween(50,3, 50,6);
       Random.stubRoll(5,149);
-      expect(NegotiationReaction.resolve(contest, context).message).to.equal('lost');
+      expect(contest.resolve(context).message).to.equal('lost');
       expect(SkillsComponent.lookup(context.P).conversation).to.equal(1);
       expect(SkillsComponent.lookup(context.T).conversation).to.equal(0);
     });
@@ -192,29 +192,29 @@ describe("NegotiationReaction", function() {
 
       Random.stubFlipCoin(true);
       Random.stubRoll(9);
-      expect(NegotiationReaction.resolve(outer, {}).message).to.equal('inner lost');
+      expect(outer.resolve({}).message).to.equal('inner lost');
 
       Random.stubFlipCoin(false);
-      expect(NegotiationReaction.resolve(outer, {}).message).to.equal('outer lost');
+      expect(outer.resolve({}).message).to.equal('outer lost');
     });
   });
 
   describe("givePreferences", function() {
-    function resolvePreferences(id, givePreferences) {
-      NegotiationReaction.resolve(NegotiationReaction.join('msg', { givePreferences }), { T:id });
+    function applyPreferences(id, givePreferences) {
+      NegotiationReaction.join('msg', { givePreferences }).applyEffects({ T:id });
     }
 
     it('grants, overwrites, and deletes preferences', function() {
       const id = MonsterFactory.build('kobold-sneak-slut');
 
-      resolvePreferences(id, { 'humiliation-slut':30, 'piss-slut':20 });
+      applyPreferences(id, { 'humiliation-slut':30, 'piss-slut':20 });
       expect(SexualPreferencesComponent.lookup(id)['humiliation-slut']).to.equal(30);
       expect(SexualPreferencesComponent.lookup(id)['piss-slut']).to.equal(20);
 
-      resolvePreferences(id, { 'humiliation-slut':60 });
+      applyPreferences(id, { 'humiliation-slut':60 });
       expect(SexualPreferencesComponent.lookup(id)['humiliation-slut']).to.equal(60);
 
-      resolvePreferences(id, { 'humiliation-slut':0 });
+      applyPreferences(id, { 'humiliation-slut':0 });
       expect(SexualPreferencesComponent.lookup(id)).to.not.have.property('humiliation-slut');
       expect(SexualPreferencesComponent.lookup(id)['piss-slut']).to.equal(20);
     });
@@ -226,12 +226,12 @@ describe("NegotiationReaction", function() {
       SensitivitiesComponent.destroy(id);
       SensitivitiesComponent.create(id, { throat:2 });
 
-      expect(() => resolvePreferences(id, { 'cervix-slut':30 })).to.throw('incompatible');
+      expect(() => applyPreferences(id, { 'cervix-slut':30 })).to.throw('incompatible');
     });
 
     it('throws for an unknown preference code', function() {
       const id = MonsterFactory.build('kobold-sneak-slut');
-      expect(() => resolvePreferences(id, { 'linoleum-slut':30 })).to.throw('Bad sexual preference code');
+      expect(() => applyPreferences(id, { 'linoleum-slut':30 })).to.throw('Bad sexual preference code');
     });
   });
 
@@ -247,14 +247,14 @@ describe("NegotiationReaction", function() {
       return { context:{ P:player, T:monster }, player, monster };
     }
 
-    function resolveStatusEffect(giveStatusEffect, context) {
-      NegotiationReaction.resolve(NegotiationReaction.attack('msg', { giveStatusEffect }), context);
+    function applyStatusEffect(giveStatusEffect, context) {
+      NegotiationReaction.attack('msg', { giveStatusEffect }).applyEffects(context);
     }
 
     it('applies a status effect to the player', function() {
       const { context, player } = startBattle();
 
-      resolveStatusEffect({ target:'player', effect:'off-balance', duration:1 }, context);
+      applyStatusEffect({ target:'player', effect:'off-balance', duration:1 }, context);
 
       const statusEffect = BattleSystem.getState().getStatusEffects(player)['off-balance'];
       expect(statusEffect).to.exist;
@@ -264,7 +264,7 @@ describe("NegotiationReaction", function() {
     it('applies a status effect to the monster', function() {
       const { context, monster } = startBattle();
 
-      resolveStatusEffect({ target:'target', effect:'vulnerable', duration:2 }, context);
+      applyStatusEffect({ target:'target', effect:'vulnerable', duration:2 }, context);
 
       const statusEffect = BattleSystem.getState().getStatusEffects(monster)['vulnerable'];
       expect(statusEffect).to.exist;
@@ -273,7 +273,7 @@ describe("NegotiationReaction", function() {
 
     it('throws for an unknown status effect code', function() {
       const { context } = startBattle();
-      expect(() => resolveStatusEffect({ target:'player', effect:'wobbly', duration:1 }, context))
+      expect(() => applyStatusEffect({ target:'player', effect:'wobbly', duration:1 }, context))
         .to.throw('Bad status effect code');
     });
   });

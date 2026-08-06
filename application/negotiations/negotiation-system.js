@@ -35,8 +35,9 @@ global.NegotiationSystem = (function() {
   // TODO: Requests are answered here as well once they're implemented. (Task 105)
   function answer(key) {
     const question = state.getCurrentQuestion();
-    const reaction = NegotiationReaction.resolve(question.reactionData.reactions[key], state.getContext());
+    const reaction = question.reactionData.reactions[key].resolve(state.getContext());
 
+    reaction.applyEffects(state.getContext());
     applyReaction(reaction.feelings ? moderateReaction(reaction) : reaction);
   }
 

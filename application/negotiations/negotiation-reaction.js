@@ -30,19 +30,32 @@ global.NegotiationReaction = (function() {
   // Every reaction shares one canonical shape: type, message, feelings, and the effects applied when the reaction is
   // resolved. The typed extras (a followUp's question, an ability's code) sit alongside them. Any option that isn't
   // an effect is an authoring mistake.
+  //
+  // resolve() walks contest branches until it lands on a terminal reaction like this one, so here it just returns
+  // itself. Applying the reaction's effects is a separate, explicit step for whoever resolved it.
   function buildReaction(type, message, feelings, options, extra={}) {
     const unknown = Object.keys(options).filter(key => effectKeys.includes(key) === false);
     if (unknown.length > 0) {
       throw new Error(`Unknown negotiation reaction option [${unknown.join(', ')}]`);
     }
 
-    return Object.freeze({
+    const effects = Object.freeze(ObjectHelper.filter(options, effectKeys));
+
+    const reaction = {
       type,
       message,
       feelings,
-      effects: Object.freeze(ObjectHelper.filter(options, effectKeys)),
+      effects,
       ...extra,
-    });
+      resolve: (context) => reaction,
+      applyEffects: (context) => {
+        if (effects.flags) { NegotiationSystem.getState().setFlags(effects.flags); }
+        if (effects.givePreferences) { givePreferences(effects.givePreferences, context); }
+        if (effects.giveStatusEffect) { giveStatusEffect(effects.giveStatusEffect, context); }
+      },
+    };
+
+    return Object.freeze(reaction);
   }
 
   // A reaction contest will include exactly one property that specifies the contest type.
@@ -76,7 +89,13 @@ global.NegotiationReaction = (function() {
       throw new Error(`Unknown negotiation contest option [${Object.keys(unknown).join(', ')}]`);
     }
 
-    return Object.freeze({ type:'contest', win, loss, random, attribute, skill });
+    const reaction = {
+      type: 'contest',
+      win, loss, random, attribute, skill,
+      resolve: (context) => (winsContest(reaction, context) ? win : loss).resolve(context),
+    };
+
+    return Object.freeze(reaction);
   }
 
   function followUp(message, options={}) {
@@ -86,16 +105,6 @@ global.NegotiationReaction = (function() {
 
     const { question, ...remaining } = options;
     return resolutionReaction('followUp', message, remaining, { question });
-  }
-
-  function resolve(reaction, context) {
-    if (reaction.type === 'contest') {
-      return resolve(winsContest(reaction, context) ? reaction.win : reaction.loss, context);
-    }
-    if (reaction.effects.flags) { NegotiationSystem.getState().setFlags(reaction.effects.flags); }
-    if (reaction.effects.givePreferences) { givePreferences(reaction.effects.givePreferences, context); }
-    if (reaction.effects.giveStatusEffect) { giveStatusEffect(reaction.effects.giveStatusEffect, context); }
-    return reaction;
   }
 
   function winsContest(reaction, context) {
@@ -160,7 +169,6 @@ global.NegotiationReaction = (function() {
     join:     (message, options={}) =>       resolutionReaction('join', message, options),
     followUp,
     contest,
-    resolve,
   };
 
   Object.keys(reactionMap).forEach(key => {
