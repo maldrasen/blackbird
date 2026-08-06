@@ -119,8 +119,12 @@ global.CharacterRequirements = (function() {
     return Character(context[key]).hasSexualPreference(code, threshold);
   }
 
+  // Character.isStraight() throws for genders where orientation has no meaning, but as a gating requirement the
+  // answer to "is this character straight?" is simply no.
   function isStraight(context, key) {
-    return Character(context[key]).isStraight();
+    const character = Character(context[key]);
+    if (character.isMale() === false && character.isFemale() === false) { return false; }
+    return character.isStraight();
   }
 
   return Object.freeze({
