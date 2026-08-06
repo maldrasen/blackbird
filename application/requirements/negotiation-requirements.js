@@ -6,6 +6,7 @@ global.NegotiationRequirements = (function() {
   return Object.freeze({
     isTrue: flag => { return () => { return checkFlag(flag,true); }},
     isFalse: flag => { return () => { return checkFlag(flag,false); }},
+    contextSet: key => { return (context) => { return context[key] != null; }},
   });
 
 })();
