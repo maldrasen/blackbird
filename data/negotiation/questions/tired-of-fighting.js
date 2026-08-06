@@ -20,7 +20,7 @@ NegotiationQuestion.registerReaction('tired-of-fighting', {
 NegotiationQuestion.registerReaction('tired-of-fighting', {
   style: NegotiationStyle.lewd,
   reactions: {
-    allDay:   NegotiationReaction.lust(`"All day? I do love a {A:man} with stamina."`),
+    allDay:   NegotiationReaction.lust(`"All day? I do love a {P:man} with stamina."`),
     tiresome: NegotiationReaction.like(`"Exactly. Wouldn't you rather be doing something else?"`),
     otherWay: NegotiationReaction.followUp(`{T:TargetName} smiles and licks {T:his} lips, "Some other way?"`, { question: 'tired-of-fighting-other-way' }),
   }
