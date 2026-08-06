@@ -25,6 +25,26 @@ global.NegotiationReaction = (function() {
     run:     { affection:-20, fear:30 },
   };
 
+  const effectKeys = ['flags', 'givePreferences', 'giveStatusEffect'];
+
+  // Every reaction shares one canonical shape: type, message, feelings, and the effects applied when the reaction is
+  // resolved. The typed extras (a followUp's question, an ability's code) sit alongside them. Any option that isn't
+  // an effect is an authoring mistake.
+  function buildReaction(type, message, feelings, options, extra={}) {
+    const unknown = Object.keys(options).filter(key => effectKeys.includes(key) === false);
+    if (unknown.length > 0) {
+      throw new Error(`Unknown negotiation reaction option [${unknown.join(', ')}]`);
+    }
+
+    return Object.freeze({
+      type,
+      message,
+      feelings,
+      effects: Object.freeze(ObjectHelper.filter(options, effectKeys)),
+      ...extra,
+    });
+  }
+
   // A reaction contest will include exactly one property that specifies the contest type.
   //
   // random:(true or freqmap)
@@ -51,7 +71,12 @@ global.NegotiationReaction = (function() {
       throw new Error(`A negotiation contest needs a random, attribute, or skill property.`);
     }
 
-    return { type:'contest', ...options };
+    const { win, loss, random, attribute, skill, ...unknown } = options;
+    if (Object.keys(unknown).length > 0) {
+      throw new Error(`Unknown negotiation contest option [${Object.keys(unknown).join(', ')}]`);
+    }
+
+    return Object.freeze({ type:'contest', win, loss, random, attribute, skill });
   }
 
   function followUp(message, options={}) {
@@ -67,11 +92,9 @@ global.NegotiationReaction = (function() {
     if (reaction.type === 'contest') {
       return resolve(winsContest(reaction, context) ? reaction.win : reaction.loss, context);
     }
-    if (reaction.options) {
-      if (reaction.options.flags) { NegotiationSystem.getState().setFlags(reaction.options.flags); }
-      if (reaction.options.givePreferences) { givePreferences(reaction.options.givePreferences, context); }
-      if (reaction.options.giveStatusEffect) { giveStatusEffect(reaction.options.giveStatusEffect, context); }
-    }
+    if (reaction.effects.flags) { NegotiationSystem.getState().setFlags(reaction.effects.flags); }
+    if (reaction.effects.givePreferences) { givePreferences(reaction.effects.givePreferences, context); }
+    if (reaction.effects.giveStatusEffect) { giveStatusEffect(reaction.effects.giveStatusEffect, context); }
     return reaction;
   }
 
@@ -122,18 +145,12 @@ global.NegotiationReaction = (function() {
   }
 
   function reactWith(feelings, message, options) {
-    return { type:'feelings', feelings, message, options };
+    return buildReaction('feelings', message, feelings, options);
   }
 
   function resolutionReaction(type, message, options, extra={}) {
     const { feelings, ...remaining } = options;
-    return {
-      type,
-      message,
-      options: remaining,
-      feelings: (feelings == null) ? resolutionMap[type] : feelings,
-      ...extra,
-    };
+    return buildReaction(type, message, (feelings == null) ? resolutionMap[type] : feelings, remaining, extra);
   }
 
   const methods = {

@@ -15,32 +15,32 @@ describe("NegotiationReaction", function() {
   describe("descriptors", function() {
     it('builds the feelings reactions from the reaction map', function() {
       expect(NegotiationReaction.respect('msg')).to.deep.equal({
-        type:'feelings', feelings:{ control:20, respect:30 }, message:'msg', options:{} });
+        type:'feelings', feelings:{ control:20, respect:30 }, message:'msg', effects:{} });
       expect(NegotiationReaction.terrify('msg')).to.deep.equal({
-        type:'feelings', feelings:{ control:30, affection:-20, fear:50 }, message:'msg', options:{} });
+        type:'feelings', feelings:{ control:30, affection:-20, fear:50 }, message:'msg', effects:{} });
     });
 
     it('builds the resolution reactions with their default feelings maps', function() {
       expect(NegotiationReaction.attack('msg')).to.deep.equal({
-        type:'attack', feelings:{ affection:-40, respect:-20, fear:-30 }, message:'msg', options:{} });
+        type:'attack', feelings:{ affection:-40, respect:-20, fear:-30 }, message:'msg', effects:{} });
       expect(NegotiationReaction.run('msg')).to.deep.equal({
-        type:'run', feelings:{ affection:-20, fear:30 }, message:'msg', options:{} });
+        type:'run', feelings:{ affection:-20, fear:30 }, message:'msg', effects:{} });
       expect(NegotiationReaction.ability('dick-punch','msg')).to.deep.equal({
         type:'ability', code:'dick-punch', feelings:{ affection:-40, respect:-20, fear:-30 }, message:'msg',
-        options:{} });
+        effects:{} });
       expect(NegotiationReaction.join('msg')).to.deep.equal({
-        type:'join', feelings:{ control:40, affection:50, respect:20, fear:-10 }, message:'msg', options:{} });
+        type:'join', feelings:{ control:40, affection:50, respect:20, fear:-10 }, message:'msg', effects:{} });
     });
 
     it('hoists join feelings out of the options', function() {
       expect(NegotiationReaction.join('msg', { feelings:{ affection:30 }, givePreferences:{ 'piss-slut':20 }}))
         .to.deep.equal({
-          type:'join', feelings:{ affection:30 }, message:'msg', options:{ givePreferences:{ 'piss-slut':20 }} });
+          type:'join', feelings:{ affection:30 }, message:'msg', effects:{ givePreferences:{ 'piss-slut':20 }} });
     });
 
     it('builds a followUp reaction with no default feelings', function() {
       expect(NegotiationReaction.followUp('msg', { question:'tired-of-fighting-other-way' })).to.deep.equal({
-        type:'followUp', question:'tired-of-fighting-other-way', feelings:undefined, message:'msg', options:{} });
+        type:'followUp', question:'tired-of-fighting-other-way', feelings:undefined, message:'msg', effects:{} });
     });
 
     it('hoists the followUp question and feelings out of the options', function() {
@@ -48,7 +48,7 @@ describe("NegotiationReaction", function() {
         question:'tired-of-fighting-other-way', feelings:{ affection:10 }, flags:{ playerHard:true },
       })).to.deep.equal({
         type:'followUp', question:'tired-of-fighting-other-way', feelings:{ affection:10 }, message:'msg',
-        options:{ flags:{ playerHard:true }} });
+        effects:{ flags:{ playerHard:true }} });
     });
 
     it('requires a followUp question', function() {
