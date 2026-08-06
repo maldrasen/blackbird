@@ -14,8 +14,6 @@ global.NegotiationSystem = (function() {
     NegotiationInterface.open();
   }
 
-  // A pending follow up question outranks the interaction limit so a conversation is never cut off mid-thread, but a
-  // resolution still ends the negotiation first.
   function advance() {
     if (state.hasShownResolution()) { return executeResolution(); }
     if (state.hasResolution()) { return showResolution(); }
@@ -46,11 +44,6 @@ global.NegotiationSystem = (function() {
     return { ...reaction, feelings:NegotiationInfluence.moderateFeelings(reaction.feelings, state.getContext()) };
   }
 
-  // The monster's reply is always rendered, but nothing executes yet. Any reaction can carry a feelings map, so that
-  // a resolution like an automatic join still credits its feelings before it resolves. Feelings adjustments can
-  // resolve the negotiation when a feeling is pushed out of bounds, so a resolution reaction sets its own resolution
-  // before its feelings apply — otherwise a run reaction's negative feelings could hijack the outcome into an attack.
-  // Either way the resolution waits until the player has advanced past the reply and the resolution text.
   function applyReaction(reaction) {
     NegotiationInterface.renderDialog(reaction.message);
 
@@ -79,7 +72,6 @@ global.NegotiationSystem = (function() {
     throw new Error(`Unknown resolution type [${resolution.type}]`);
   }
 
-  // The monster is recruited after the negotiation finishes so that its MonsterComponent survives the victory path.
   function resolveJoin() {
     const monster = state.getMonster();
     const battleState = BattleSystem.getState();
@@ -108,8 +100,6 @@ global.NegotiationSystem = (function() {
     finishNegotiation();
   }
 
-  // The player's round is finished while they're still first in the turn order because updateTime() requires the
-  // acting entity to be next. Only after the round is closed out can the monster's response be scheduled.
   function finishNegotiation() {
     NegotiationInterface.close();
     BattleSystem.getRound().addTime(negotiationTime);

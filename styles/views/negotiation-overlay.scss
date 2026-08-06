@@ -39,8 +39,12 @@
     &.join   { color: rgb(149 161 212); }
   }
 
+  // These questions can be long so the buttons may need to display wrapped text.
   .options a {
     width: 570px;
+    padding: 6px 10px;
     margin: 10px 5px 0;
+    line-height: 18px;
+    white-space: normal;
   }
 }

@@ -31,11 +31,11 @@ global.NegotiationState = function() {
   NegotiationQuestion.getAllCodes().forEach(code => {
     const question = NegotiationQuestion.lookup(code);
     if (question.isFollowUpOnly()) { return; }
-    if (question.isPossible(context)) {
-      const reactionData = question.getReactionData(context);
-      if (reactionData) {
-        questions.push({ question:code, reactionData });
-      }
+    if (question.isPossible(context) === false) { return; }
+
+    const reactionData = question.getReactionData(context);
+    if (reactionData) {
+      questions.push({ question:code, reactionData });
     }
   });
 
@@ -55,18 +55,14 @@ global.NegotiationState = function() {
     return currentQuestion;
   }
 
-  // The follow up question is validated eagerly, so that a bad question code or a monster with no matching reaction
-  // fails at answer time, pointing at the authoring error.
   function setFollowUp(code) {
     const reactionData = NegotiationQuestion.lookup(code).getReactionData(context);
     if (reactionData == null) {
-      throw new Error(`Follow up question [${code}] has no reaction for ${Monster(monster).getCode()}:[${Monster(monster).getArchetype()}]`);
+      throw new Error(`Follow up question [${code}] has no reaction that applies to ${Monster(monster).getCode()}`);
     }
     pendingFollowUp = { question:code, reactionData };
   }
 
-  // The forced question bypasses the interaction limit, but still counts as an interaction. Its dynamic requirements
-  // aren't checked; a follow up question is explicit author intent.
   function takeFollowUpQuestion() {
     interactionCount += 1;
     currentQuestion = pendingFollowUp;

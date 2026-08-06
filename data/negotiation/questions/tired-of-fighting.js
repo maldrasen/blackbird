@@ -69,12 +69,12 @@ NegotiationQuestion.registerReaction('tired-of-fighting-other-way', {
 
 const lewdStrengthWin = `You grab {T:targetName}, wrapping an arm around {T:his} neck while pinning {T:his} arms
  behind {T:him}. {T:He} smiles, pushing {T:his} ass back against you. "Oh no… You caught me…"`
-const lewdStrengthLoss = `You grab onto {T:targetName}, but {T:he}'s able to pull out of your grasp. {T:He} looks back 
+const lewdStrengthLoss = `You grab onto {T:targetName}, but {T:he}'s able to pull out of your grasp. {T:He} looks back
   at you and sneers, "Oh wow… that was fucking pathetic."`
-const lewdDexterityWin = `{T:TargetName} nods and darts off into the shadows. You give chase, and after a short sprint 
+const lewdDexterityWin = `{T:TargetName} grins and darts off into the shadows. You give chase, and after a short sprint
   around the room you quickly catch {T:him}, pinning {T:his} back against your chest. {T:He} grins up at you, pushing
   {T:his} ass against your crotch, "Oh no… You caught me…"`;
-const lewdDexterityLoss = `{T:TargetName} nods and darts off. {T:He} quickly outpaces you, and soon all you can see
+const lewdDexterityLoss = `{T:TargetName} grins and darts off. {T:He} quickly outpaces you, and soon all you can see
   is {T:him} flipping you off before {T:he} laughs and disappears into the shadows.`;
 
 const lewdStrengthContest = NegotiationReaction.contest({
