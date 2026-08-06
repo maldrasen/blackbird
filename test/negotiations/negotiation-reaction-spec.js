@@ -234,6 +234,31 @@ describe("NegotiationReaction", function() {
       expect(SexualPreferencesComponent.lookup(id)['piss-slut']).to.equal(20);
     });
 
+    it('ignores a preference weaker than the current value', function() {
+      const id = MonsterFactory.build('kobold-sneak-slut');
+
+      applyPreferences(id, { 'piss-slut':50 });
+      applyPreferences(id, { 'piss-slut':20 });
+      expect(SexualPreferencesComponent.lookup(id)['piss-slut']).to.equal(50);
+
+      applyPreferences(id, { perverted:null });
+      applyPreferences(id, { perverted:-50 });
+      applyPreferences(id, { perverted:-20 });
+      expect(SexualPreferencesComponent.lookup(id).perverted).to.equal(-50);
+    });
+
+    it('treats a negative preference as its own direction, allowing flips across zero', function() {
+      const id = MonsterFactory.build('kobold-sneak-slut');
+
+      applyPreferences(id, { perverted:null });
+      applyPreferences(id, { perverted:30 });
+      applyPreferences(id, { perverted:-60 });
+      expect(SexualPreferencesComponent.lookup(id).perverted).to.equal(-60);
+
+      applyPreferences(id, { perverted:10 });
+      expect(SexualPreferencesComponent.lookup(id).perverted).to.equal(10);
+    });
+
     // The sensitivities component is rebuilt without a cervix because a freshly built kobold has a small random
     // chance of rolling one.
     it('throws for an incompatible preference', function() {
