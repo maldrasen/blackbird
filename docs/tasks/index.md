@@ -2,6 +2,10 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
+## Priority 
+
+- [155] Encounter Builder `0pt` — [155-encounter-builder.md](155-encounter-builder.md)
+
 ## Priority 1
 
 - [151] More Negotiation Questions `5pt` — [151-more-negotiation-questions.md](151-more-negotiation-questions.md)
