@@ -5,7 +5,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 ## Priority 1
 
 - [160] Add a party configuration user interface `5pt` — [160-add-a-party-configuration-user-interface.md](160-add-a-party-configuration-user-interface.md)
-- [163] Reference other party members in negotiation `2pt` — [163-reference-other-party-members-in-negotiation.md](163-reference-other-party-members-in-negotiation.md)
 
 ## Priority 2
 
@@ -80,3 +79,4 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [041] More Species `5pt` #character — [041-more-species.md](041-more-species.md)
 - [042] All the way though `5pt` #training — [042-all-the-way-though.md](042-all-the-way-though.md)
 - [043] Additional Sex Actions / Body Part Types `21pt` #training — [043-additional-sex-actions-body-part-types.md](043-additional-sex-actions-body-part-types.md)
+- [166] Implement remember this effect `3pt` — [166-implement-remember-this-effect.md](166-implement-remember-this-effect.md)

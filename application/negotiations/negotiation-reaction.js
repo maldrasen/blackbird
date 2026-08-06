@@ -25,7 +25,7 @@ global.NegotiationReaction = (function() {
     run:     { affection:-20, fear:30 },
   };
 
-  const effectKeys = ['flags', 'givePreferences', 'giveStatusEffect'];
+  const effectKeys = ['flags', 'givePreferences', 'giveStatusEffect', 'rememberThis'];
 
   // Every reaction shares one canonical shape: type, message, feelings, and the effects applied when the reaction is
   // resolved. The typed extras (a followUp's question, an ability's code) sit alongside them. Any option that isn't
@@ -52,6 +52,7 @@ global.NegotiationReaction = (function() {
         if (effects.flags) { NegotiationSystem.getState().setFlags(effects.flags); }
         if (effects.givePreferences) { givePreferences(effects.givePreferences, context); }
         if (effects.giveStatusEffect) { giveStatusEffect(effects.giveStatusEffect, context); }
+        if (effects.rememberThis) { rememberThis(effects.rememberThis, context); }
       },
       withFeelings: (newFeelings) => buildReaction(type, message, newFeelings, effects, extra),
     };
@@ -155,6 +156,11 @@ global.NegotiationReaction = (function() {
       }
     });
   }
+
+  // TODO: Stub. The character referenced by the context key should remember what happened to them here. How they
+  //       feel about it depends on personality and relationship work that hasn't been built yet, so for now the
+  //       memory data is simply discarded. The properties besides key are arbitrary data describing the moment.
+  function rememberThis({ key, ...data }, context) {}
 
   function giveStatusEffect({ target, effect, duration }, context) {
     const entity = (target === 'player') ? context.P : context.T;

@@ -54,6 +54,13 @@ describe("NegotiationReaction", function() {
     it('requires a followUp question', function() {
       expect(() => NegotiationReaction.followUp('msg')).to.throw('must point to a question');
     });
+
+    // rememberThis is a stub effect: the reaction carries it, and applying it does nothing yet.
+    it('carries a rememberThis effect', function() {
+      const reaction = NegotiationReaction.love('msg', { rememberThis:{ key:'F', event:'offered-to-monster' }});
+      expect(reaction).to.deep.include({ effects:{ rememberThis:{ key:'F', event:'offered-to-monster' }}});
+      expect(() => reaction.applyEffects({ F:null })).to.not.throw();
+    });
   });
 
   describe("withFeelings()", function() {
