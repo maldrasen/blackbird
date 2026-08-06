@@ -46,7 +46,8 @@ within the client. The `bin/run-headless.js` file can be used as a shared bootst
 headless mode.
 
 ### Testing
-Tests are written with Mocha and Chai. They can be run with `bin/test.sh`. 
+Tests are written with Mocha and Chai. Tests should only be run with `bin/test.sh --grep "<spec title>" --seed <seed>`
+so that permission to run the tests doesn't have to be granted every time.
 
 ### Client loading model
 There is no bundler. The renderer (though application/loader.js) reads `manifest.json` and dynamically imports every

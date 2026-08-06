@@ -6,7 +6,7 @@
           {
             "type": "command",
             "shell": "bash",
-            "command": "npm test 1>&2 || exit 2",
+            "command": "bin/test.sh 1>&2 || exit 2",
             "statusMessage": "Running test suite..."
           }
         ]
