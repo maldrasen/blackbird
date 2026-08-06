@@ -22,7 +22,7 @@ global._scaleThresholds = [100, 600, 3600, 13600, 43600, 103600, 203600, 453600]
 global._effortCost = 100;
 
 // === Text ===
-global._ellipsis = '…';
+global._ellipsis = '';
 global._interrobang = '‽';
 
 // A third flavor of null.

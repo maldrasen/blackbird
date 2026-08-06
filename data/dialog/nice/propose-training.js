@@ -43,7 +43,7 @@ willing.add(`{T:name} rubs the back of his neck, a shy chuckle escaping. "Yeah, 
 
 
 
-reluctant.add(`{T:name} crosses his arms over his chest. "Alright, It's a lot to ask… but I'll try for you."`);
+reluctant.add(`{T:name} crosses his arms over his chest. "Alright, It's a lot to ask... but I'll try for you."`);
 reluctant.add(`{T:name} gives a small nod. "Alright... just don't push me too hard yet. I know the sort of things
   you're in to."`);
 reluctant.add(`{T:name} exhales slowly, shoulders dropping. "Well... I'm nervous, but I don't want to let you down."`);

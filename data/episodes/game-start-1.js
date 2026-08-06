@@ -102,7 +102,7 @@ const mInt = `You're up late reading again. Your brother asks you what your book
 const mBut = `The two of you are deep in the woods, hiding in the bushes, watching as the woodnymphs bathe in a stream.`;
 
 const memoryStr = `A year later you were taller than he was. He was starting to regret all the times he made you eat dirt.`
-const memoryDex = `You somehow managed to hold on, and the horse forgave you… eventually.`;
+const memoryDex = `You somehow managed to hold on, and the horse forgave you... eventually.`;
 const memoryVit = `A horrifying disease, the way the sick will scratch at themselves. It's remarkable how you've never been seriously ill.`;
 const memoryInt = `It was actually a rather lurid tale about a nearsighted milkmaid and the farm's bull.`;
 const memoryBut = `Looking back on it, you're pretty sure that the nymphs knew you were there all along.`;
@@ -146,8 +146,8 @@ const nameContent = `
   </p>
   <p>
     As you approach the gate you don't anticipate any problems. You should be able to enter the city freely as someone
-    whose family <i>technically</i> owns a home here. The condition of that home is… unknown at the moment. After your 
-    father died your mother abandoned the old home here in Wolgur, so it's been empty for almost two decades now.
+    whose family <i>technically</i> owns a home here. The condition of that home is... unknown at the moment. After 
+    your father died your mother abandoned the old home here in Wolgur, so it's been empty for almost two decades now.
   </p>
   <p>
     You're met at the gate by one of the city guards, a tall black furred lupin. You give him your name and purpose 
@@ -156,7 +156,7 @@ const nameContent = `
     in and be on your way."
   </p>
   <p>
-    He hands you a scrap of paper, already partially filled in…
+    He hands you a scrap of paper, already partially filled in...
   </p>
   <div class='border-normal padding inline-fields'>
     <div class='field-row'>

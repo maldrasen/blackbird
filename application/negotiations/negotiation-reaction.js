@@ -164,6 +164,7 @@ global.NegotiationReaction = (function() {
   }
 
   const methods = {
+    getFeelings: code => { return reactionMap[code] },
     attack:   (message, options={}) =>       resolutionReaction('attack', message, options),
     run:      (message, options={}) =>       resolutionReaction('run', message, options),
     ability:  (code, message, options={}) => resolutionReaction('ability', message, options, { code }),

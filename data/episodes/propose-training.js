@@ -2,7 +2,7 @@ Episode.register('propose-training',{
   layout: 'centered',
   pages: [{ contentFunction:generateContent, buttons:[
     { id:'proposeContinueButton', label:'Continue', callback:EpisodeSystem.endEpisode },
-    { id:'proposeNevermindButton', classname:'hide', label:'Never mind…', callback:EpisodeSystem.endEpisode },
+    { id:'proposeNevermindButton', classname:'hide', label:'Never mind...', callback:EpisodeSystem.endEpisode },
   ]}],
   endFunction: endProposition,
 });

@@ -16,9 +16,9 @@ NegotiationQuestion.register('bone-jewelry-rumor', {
 NegotiationQuestion.registerReaction('bone-jewelry-rumor', {
   style: NegotiationStyle.timid,
   reactions: {
-    no:    NegotiationReaction.neutral(`"Oh… so the others are trying to trick me again."`),
-    maybe: NegotiationReaction.like(`{T:targetName} nods and looks you over, "Hmm… well, maybe if you promise to keep people like that away from me."`),
-    yes:   NegotiationReaction.run(`"Oh, um… hey look over there! Someone left some bones in the corner there."`),
+    no:    NegotiationReaction.neutral(`"Oh... so the others are trying to trick me again."`),
+    maybe: NegotiationReaction.like(`{T:targetName} nods and looks you over, "Hmm... well, maybe if you promise to keep people like that away from me."`),
+    yes:   NegotiationReaction.run(`"Oh, um... hey look over there! Someone left some bones in the corner there."`),
     soup:  NegotiationReaction.run(`"Soup! Oh fuck that."`),
     lewd:  NegotiationReaction.dislike(`Sex toys? I guess you're into some freaky shit huh?`),
   }

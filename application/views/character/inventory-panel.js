@@ -168,7 +168,7 @@ global.InventoryPanel = function(options) {
   function updateTradeTitle() {
     inventoryPanel.querySelector(`.trade-title`).textContent = (selected == null) ?
       `Select an item to trade.`:
-      `Give ${Item(selected).getName()} to…`;
+      `Give ${Item(selected).getName()} to...`;
   }
 
   function toggleTradePanel() {

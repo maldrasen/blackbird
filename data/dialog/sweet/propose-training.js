@@ -45,7 +45,7 @@ reluctant.add(`{T:name} bites {T:his} lower lip, glancing away while {T:his} fin
 
 
 
-unwilling.add(`{T:name} shakes {T:his} head slowly, "No… not yet. Give me a little more time, please?"`);
+unwilling.add(`{T:name} shakes {T:his} head slowly, "No... not yet. Give me a little more time, please?"`);
 unwilling.add(`{T:name} whispers softly, trembling. "I can't. It's just... too much right now. Forgive me?"`);
 unwilling.add(`{T:name} shakes {T:his} head, {T:his} voice quiet but firm. "I'm sorry, I'm just not ready for that yet.
   Please don't be upset with me."`);

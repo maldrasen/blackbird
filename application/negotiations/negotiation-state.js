@@ -1,15 +1,21 @@
 global.NegotiationState = function() {
   const battleState = BattleSystem.getState();
-  const monster = battleState.getActiveMonsters()[0];
+  const monsterId = battleState.getActiveMonsters()[0];
+  const monster = Monster(monsterId);
+  const monsterCharacter = Character(monsterId);
   const player = GameSystem.getState().getPlayer();
   const playerCharacter = Character(player);
-  const context = { P:player, T:monster };
+  const context = { P:player, T:monsterId };
 
   const flags = {
     playerAssOut: playerCharacter.isCrotchExposed(),
     playerCockOut: playerCharacter.hasNormalCock() && playerCharacter.isCrotchExposed(),
     playerTitsOut: playerCharacter.hasBreasts() && playerCharacter.areBreastsExposed(),
     playerHard: false,
+    monsterAssOut: monsterCharacter.isCrotchExposed(),
+    monsterCockOut: monsterCharacter.hasNormalCock() && monsterCharacter.isCrotchExposed(),
+    monsterTitsOut: monsterCharacter.hasBreasts() && monsterCharacter.areBreastsExposed(),
+    monsterHard: false,
   }
 
   // TODO: Requests return in task 105.
@@ -45,7 +51,7 @@ global.NegotiationState = function() {
     const available = questions.filter(entry => NegotiationQuestion.lookup(entry.question).isAvailable(context));
 
     if (available.length === 0) {
-      throw new Error(`Error: There aren't enough valid questions for ${Monster(monster).getCode()}:[${Monster(monster).getArchetype()}]`);
+      throw new Error(`Error: There aren't enough valid questions for ${monster.getCode()}:[${monster.getArchetype()}]`);
     }
 
     interactionCount += 1;
@@ -58,7 +64,7 @@ global.NegotiationState = function() {
   function setFollowUp(code) {
     const reactionData = NegotiationQuestion.lookup(code).getReactionData(context);
     if (reactionData == null) {
-      throw new Error(`Follow up question [${code}] has no reaction that applies to ${Monster(monster).getCode()}`);
+      throw new Error(`Follow up question [${code}] has no reaction that applies to ${monster.getCode()}`);
     }
     pendingFollowUp = { question:code, reactionData };
   }
@@ -128,7 +134,7 @@ global.NegotiationState = function() {
     const attackText = `{T:TargetName} attacks!`;
     const runText = `{T:TargetName} sprints off into the darkness!`;
 
-    const joinText = Monster(monster).getNameType() === 'common' ?
+    const joinText = monster.getNameType() === 'common' ?
       `{T:fullName} {T:targetName} joins the party!` :
       `{T:fullName} joins the party!`;
 
@@ -144,8 +150,8 @@ global.NegotiationState = function() {
 
   return Object.freeze({
     getContext: () => { return {...context}; },
-    getMonster: () => { return monster; },
-    getGreeting: () => { return Monster(monster).getBaseMonster().getNegotiationGreeting(context); },
+    getMonster: () => { return monsterId; },
+    getGreeting: () => { return monster.getBaseMonster().getNegotiationGreeting(context); },
     getFlag: flag => { return flags[flag]; },
     setFlag: (flag,value) => { flags[flag] = value; },
     setFlags: newFlags => { Object.entries(newFlags).forEach(([key,value]) => { flags[key] = value; }); },

@@ -68,12 +68,12 @@ NegotiationQuestion.registerReaction('tired-of-fighting-other-way', {
 // TODO: We'll need to write the female player versions of this when we have female players.
 
 const lewdStrengthWin = `You grab {T:targetName}, wrapping an arm around {T:his} neck while pinning {T:his} arms
- behind {T:him}. {T:He} smiles, pushing {T:his} ass back against you. "Oh no… You caught me…"`
+ behind {T:him}. {T:He} smiles, pushing {T:his} ass back against you. "Oh no! You caught me..."`
 const lewdStrengthLoss = `You grab onto {T:targetName}, but {T:he}'s able to pull out of your grasp. {T:He} looks back
-  at you and sneers, "Oh wow… that was fucking pathetic."`
+  at you and sneers, "Oh wow... that was fucking pathetic."`
 const lewdDexterityWin = `{T:TargetName} grins and darts off into the shadows. You give chase, and after a short sprint
   around the room you quickly catch {T:him}, pinning {T:his} back against your chest. {T:He} grins up at you, pushing
-  {T:his} ass against your crotch, "Oh no… You caught me…"`;
+  {T:his} ass against your crotch, "Oh no! You caught me..."`;
 const lewdDexterityLoss = `{T:TargetName} grins and darts off. {T:He} quickly outpaces you, and soon all you can see
   is {T:him} flipping you off before {T:he} laughs and disappears into the shadows.`;
 
@@ -98,7 +98,7 @@ const frotWin = `${frottage} {T:TargetName} suddenly squeezes {T:his} eyes shut.
   of breath when {T:he} turns to you and says, "I guess you win."`;
 const frotLoss = `${frottage} {T:TargetName's} expert hand glides over your flesh. Soon, you find that you can't hold
   back and are suddenly cumming over {T:his} hand. {T:He} grins, bringing {T:his} fingers to {T:his} lips, licking 
-  your cum off of them. "Looks like I win." After a moment {T:he} looks confused. "Wait… what do I get if I win?"`;
+  your cum off of them. "Looks like I win." After a moment {T:he} looks confused. "Wait... what do I get if I win?"`;
 
 const finger = `You push your hand between {T:his} legs as {T:his} fingers tighten around your shaft. {T:He}'s already 
   wet as you push a pair of fingers into {T:him}.`;
@@ -107,7 +107,7 @@ const fingerWin = `${finger} It only takes a few minutes, but soon {T:he}'s moan
   continues to stroke your cock. {T:TargetName} is out of breath when {T:he} turns to you and says, "I guess you win."`
 const fingerLoss = `${finger} {T:TargetName's} expert hand glides over your flesh. Soon, you find that you can't hold
   back and are suddenly cumming over {T:his} hand. {T:He} grins, bringing {T:his} fingers to {T:his} lips, licking 
-  your cum off of them. "Looks like I win." After a moment {T:he} looks confused. "Wait… what do I get if I win?"`;
+  your cum off of them. "Looks like I win." After a moment {T:he} looks confused. "Wait... what do I get if I win?"`;
 
 const cockLover = { 'androphilic':30, 'cock-lover':20, 'cum-dump':10 };
 

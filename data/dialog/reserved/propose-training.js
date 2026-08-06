@@ -31,17 +31,17 @@ unwilling.add(`{T:name} shakes {T:his} head without any particular emotion. "No.
 
 // More options to work in later:
 // proposeTraining_Eager
-// "…Understood. Proceed whenever you're ready."
+// "Understood. Proceed whenever you're ready."
 // "I have no objections. You may begin the session."
-// "…Interesting proposal. I accept. Let's see what you can do."
+// "Interesting proposal. I accept. Let's see what you can do."
 // proposeTraining_Willing
-// "…Very well. I will cooperate."
+// "Very well. I will cooperate."
 // "If that's what you desire, then yes."
 // "I see no reason to refuse. Go ahead."
 // proposeTraining_Reluctant
-// "…This is somewhat outside my comfort zone."
-// "I would prefer not to, but… I suppose I can endure it."
-// "…Must we involve additional participants? …Fine. But keep them quiet."
+// "This is somewhat outside my comfort zone."
+// "I would prefer not to, but I suppose I can endure it."
+// "Must we involve additional participants? Fine. But keep them quiet."
 // proposeTraining_Unwilling
 // "No. I decline."
 // "That crosses a line I'm not willing to cross."

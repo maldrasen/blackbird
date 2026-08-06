@@ -19,12 +19,12 @@ NegotiationQuestion.registerReaction('how-do-you-murder', {
     cruel: NegotiationReaction.respect(`The {T:species.elf} grins, "Now we're talking. You let the others watch right?"`),
     cock: NegotiationReaction.contest({
       random: { win:3, loss:7 },
-      win: NegotiationReaction.lust(`{T:TargetName} actually blushes a little, "That's… Okay, so maybe I'm into that shit."`,{ givePreferences:{ 'androphilic':30, 'breath-player':20 }}),
+      win: NegotiationReaction.lust(`{T:TargetName} actually blushes a little, "That's... Okay, so maybe I'm into that shit."`,{ givePreferences:{ 'androphilic':30, 'breath-player':20 }}),
       loss: NegotiationReaction.dislike(`The {T:species.elf} frowns and shakes his head, "Nah, sounds like a good way to get your cock bitten off to me."`),
     }),
     ass: NegotiationReaction.contest({
       random: { win:3, loss:7 },
-      win: NegotiationReaction.lust(`{T:TargetName} actually blushes a little, "That's… Okay, so maybe I'm into that shit."`,{ givePreferences:{ 'gynophilic':30, 'breath-player':20 }}),
+      win: NegotiationReaction.lust(`{T:TargetName} actually blushes a little, "That's... Okay, so maybe I'm into that shit."`,{ givePreferences:{ 'gynophilic':30, 'breath-player':20 }}),
       loss: NegotiationReaction.dislike(`The {T:species.elf} frowns and shakes his head, "Nah, sounds like a good way to get your cunt bitten to me."`),
     }),
   }
