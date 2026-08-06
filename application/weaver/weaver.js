@@ -78,7 +78,7 @@ global.Weaver = function(context) {
   }
 
   function replaceQuotes(text) {
-    return text.replace(QUOTE_PATTERN, (match, inner) => quoteSpan(inner));
+    return text.replaceAll('...','…').replace(QUOTE_PATTERN, (match, inner) => quoteSpan(inner));
   }
 
   function contextValue(key) {
