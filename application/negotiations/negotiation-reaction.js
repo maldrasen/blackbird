@@ -54,6 +54,15 @@ global.NegotiationReaction = (function() {
     return { type:'contest', ...options };
   }
 
+  function followUp(message, options={}) {
+    if (options.question == null) {
+      throw new Error(`A followUp reaction must point to a question.`);
+    }
+
+    const { question, ...remaining } = options;
+    return resolutionReaction('followUp', message, remaining, { question });
+  }
+
   function resolve(reaction, context) {
     if (reaction.type === 'contest') {
       return resolve(winsContest(reaction, context) ? reaction.win : reaction.loss, context);
@@ -107,21 +116,9 @@ global.NegotiationReaction = (function() {
     });
   }
 
-  // The reaction's prose should narrate the status effect it applies, so no battle round message is added here.
   function giveStatusEffect({ target, effect, duration }, context) {
     const entity = (target === 'player') ? context.P : context.T;
     BattleSystem.getState().addStatus(BattleStatusEffect(entity, effect, {duration}));
-  }
-
-  // A followUp reaction forces the named question to be asked next. The target question can't be validated here
-  // because data files may build a followUp before its question is registered; the negotiation state validates the
-  // code when the reaction is applied. There's no entry in the resolution map, so a followUp carries no default
-  // feelings.
-  function followUp(message, options={}) {
-    if (options.question == null) { throw new Error(`A followUp reaction needs a question.`); }
-
-    const { question, ...remaining } = options;
-    return resolutionReaction('followUp', message, remaining, { question });
   }
 
   function reactWith(feelings, message, options) {
