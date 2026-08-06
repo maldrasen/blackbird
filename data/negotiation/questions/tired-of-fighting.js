@@ -98,7 +98,7 @@ const frotWin = `${frottage} {T:TargetName} suddenly squeezes {T:his} eyes shut.
   of breath when {T:he} turns to you and says, "I guess you win."`;
 const frotLoss = `${frottage} {T:TargetName's} expert hand glides over your flesh. Soon, you find that you can't hold
   back and are suddenly cumming over {T:his} hand. {T:He} grins, bringing {T:his} fingers to {T:his} lips, licking 
-  your cum off of them. "Looks like I win." After a moment {T:he} looks confused. "Wait… what do I get if I win?`;
+  your cum off of them. "Looks like I win." After a moment {T:he} looks confused. "Wait… what do I get if I win?"`;
 
 const finger = `You push your hand between {T:his} legs as {T:his} fingers tighten around your shaft. {T:He}'s already 
   wet as you push a pair of fingers into {T:him}.`;
@@ -107,11 +107,11 @@ const fingerWin = `${finger} It only takes a few minutes, but soon {T:he}'s moan
   continues to stroke your cock. {T:TargetName} is out of breath when {T:he} turns to you and says, "I guess you win."`
 const fingerLoss = `${finger} {T:TargetName's} expert hand glides over your flesh. Soon, you find that you can't hold
   back and are suddenly cumming over {T:his} hand. {T:He} grins, bringing {T:his} fingers to {T:his} lips, licking 
-  your cum off of them. "Looks like I win." After a moment {T:he} looks confused. "Wait… what do I get if I win?`;
+  your cum off of them. "Looks like I win." After a moment {T:he} looks confused. "Wait… what do I get if I win?"`;
 
 const cockLover = { 'androphilic':30, 'cock-lover':20, 'cum-dump':10 };
 
-NegotiationQuestion.registerReaction('tired-of-fighting-other-way-mm', {
+NegotiationQuestion.registerReaction('tired-of-fighting-other-way', {
   style: NegotiationStyle.lewd,
   staticRequirements: [
     CharacterRequirements.hasCock('P'),
@@ -123,13 +123,13 @@ NegotiationQuestion.registerReaction('tired-of-fighting-other-way-mm', {
     speed: lewdSpeedContest,
     cumFirst: NegotiationReaction.contest({
       skill: 'servicing',
-      win: NegotiationReaction.join(frotWin, { givePreference:cockLover }),
-      loss: NegotiationReaction.lust(frotLoss, { givePreference:cockLover }),
+      win: NegotiationReaction.join(frotWin, { givePreferences:cockLover }),
+      loss: NegotiationReaction.lust(frotLoss, { givePreferences:cockLover }),
     }),
   }
 });
 
-NegotiationQuestion.registerReaction('tired-of-fighting-other-way-mf', {
+NegotiationQuestion.registerReaction('tired-of-fighting-other-way', {
   style: NegotiationStyle.lewd,
   staticRequirements: [
     CharacterRequirements.hasCock('P'),
@@ -141,8 +141,8 @@ NegotiationQuestion.registerReaction('tired-of-fighting-other-way-mf', {
     speed: lewdSpeedContest,
     cumFirst: NegotiationReaction.contest({
       skill: 'servicing',
-      win: NegotiationReaction.join(fingerWin, { givePreference:cockLover }),
-      loss: NegotiationReaction.lust(fingerLoss, { givePreference:cockLover }),
+      win: NegotiationReaction.join(fingerWin, { givePreferences:cockLover }),
+      loss: NegotiationReaction.lust(fingerLoss, { givePreferences:cockLover }),
     }),
   }
 });
