@@ -12,6 +12,8 @@ global.NegotiationReaction = (function() {
     hate:         { control:-50,  affection:-50,  respect:-50            },
     frighten:     { control: 20,  affection:-10,                fear:30  },
     terrify:      { control: 30,  affection:-20,                fear:50  },
+    pity:         { control:-20,                  respect:-20,  fear:-40 },
+    contempt:     { control:-50,                  respect:-40,  fear:-60 },
   }
 
   // The reaction map is separate because so we can associate the type with the feelings without explicitly passing a
@@ -120,10 +122,11 @@ global.NegotiationReaction = (function() {
   }
 
   const methods = {
-    attack:  (message, options={}) =>       resolutionReaction('attack', message, options),
-    run:     (message, options={}) =>       resolutionReaction('run', message, options),
-    ability: (code, message, options={}) => resolutionReaction('ability', message, options, { code }),
-    join:    (message, options={}) =>       resolutionReaction('join', message, options),
+    attack:   (message, options={}) =>       resolutionReaction('attack', message, options),
+    run:      (message, options={}) =>       resolutionReaction('run', message, options),
+    ability:  (code, message, options={}) => resolutionReaction('ability', message, options, { code }),
+    join:     (message, options={}) =>       resolutionReaction('join', message, options),
+    followUp: (message, options) => { /* TODO */ },
     contest,
     resolve,
   };

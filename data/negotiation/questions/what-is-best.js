@@ -33,7 +33,7 @@ NegotiationQuestion.registerReaction('what-is-best', {
     conan: NegotiationReaction.dislike(`"Wow, real original."`),
     comfort: NegotiationReaction.contest({
       random: { win:3, loss:1 },
-      win: NegotiationReaction.like(`{T:TargetName} smiles, glancing between your legs, "Mmm, not bad… There's something I'd rather be sucking on though."`),
+      win: NegotiationReaction.lust(`{T:TargetName} smiles, glancing between your legs, "Mmm, not bad… There's something I'd rather be sucking on though."`),
       loss: NegotiationReaction.dislike(`"Into feet huh? Sorry not my thing hun."`),
     }),
     cock: NegotiationReaction.love(`{T:TargetName} grins and nods, "The bigger the better, am I right?"`, { givePreferences:horsePreferences }),
