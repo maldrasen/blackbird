@@ -2,6 +2,10 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
+## Priority 
+
+- [163] Reference other party members in negotiation `0pt` — [163-reference-other-party-members-in-negotiation.md](163-reference-other-party-members-in-negotiation.md)
+
 ## Priority 1
 
 - [151] More Negotiation Questions `5pt` — [151-more-negotiation-questions.md](151-more-negotiation-questions.md)
