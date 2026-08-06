@@ -21,9 +21,5 @@ global._scaleThresholds = [100, 600, 3600, 13600, 43600, 103600, 203600, 453600]
 // single point of build effort, shared by the weapon and armor value formulas so their prices stay on the same scale.
 global._effortCost = 100;
 
-// === Text ===
-global._ellipsis = '';
-global._interrobang = '‽';
-
 // A third flavor of null.
 global._nothing = 'nothing';
