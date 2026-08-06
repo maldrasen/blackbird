@@ -61,6 +61,7 @@ global.NegotiationReaction = (function() {
     if (reaction.options) {
       if (reaction.options.flags) { NegotiationSystem.getState().setFlags(reaction.options.flags); }
       if (reaction.options.givePreferences) { givePreferences(reaction.options.givePreferences, context); }
+      if (reaction.options.giveStatusEffect) { giveStatusEffect(reaction.options.giveStatusEffect, context); }
     }
     return reaction;
   }
@@ -104,6 +105,12 @@ global.NegotiationReaction = (function() {
         SexualPreferencesComponent.update(context.T, { [code]: preferences[code] });
       }
     });
+  }
+
+  // The reaction's prose should narrate the status effect it applies, so no battle round message is added here.
+  function giveStatusEffect({ target, effect, duration }, context) {
+    const entity = (target === 'player') ? context.P : context.T;
+    BattleSystem.getState().addStatus(BattleStatusEffect(entity, effect, {duration}));
   }
 
   function reactWith(feelings, message, options) {

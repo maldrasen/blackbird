@@ -206,4 +206,47 @@ describe("NegotiationReaction", function() {
     });
   });
 
+  // These specs boot a real battle because the status effects live on the battle state.
+  describe("giveStatusEffect", function() {
+    function startBattle() {
+      BattleFixtures.prepareForBattle();
+      BattleSystem.startBattle({ encounter:'negotiation-fixture-1', ambushState:'normal' });
+
+      const player = GameSystem.getState().getPlayer();
+      const monster = BattleSystem.getState().getActiveMonsters()[0];
+
+      return { context:{ P:player, T:monster }, player, monster };
+    }
+
+    function resolveStatusEffect(giveStatusEffect, context) {
+      NegotiationReaction.resolve(NegotiationReaction.attack('msg', { giveStatusEffect }), context);
+    }
+
+    it('applies a status effect to the player', function() {
+      const { context, player } = startBattle();
+
+      resolveStatusEffect({ target:'player', effect:'off-balance', duration:1 }, context);
+
+      const statusEffect = BattleSystem.getState().getStatusEffects(player)['off-balance'];
+      expect(statusEffect).to.exist;
+      expect(statusEffect.getDuration()).to.equal(1);
+    });
+
+    it('applies a status effect to the monster', function() {
+      const { context, monster } = startBattle();
+
+      resolveStatusEffect({ target:'target', effect:'vulnerable', duration:2 }, context);
+
+      const statusEffect = BattleSystem.getState().getStatusEffects(monster)['vulnerable'];
+      expect(statusEffect).to.exist;
+      expect(statusEffect.getDuration()).to.equal(2);
+    });
+
+    it('throws for an unknown status effect code', function() {
+      const { context } = startBattle();
+      expect(() => resolveStatusEffect({ target:'player', effect:'wobbly', duration:1 }, context))
+        .to.throw('Bad status effect code');
+    });
+  });
+
 });
