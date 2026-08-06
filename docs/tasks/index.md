@@ -62,6 +62,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [127] Add a Health factor to the EssenceSystem `2pt` — [127-base-monster-health-factors.md](127-base-monster-health-factors.md)
 - [140] Modding support `3pt` — [140-modding-support.md](140-modding-support.md)
 - [152] Implement magical trigger `5pt` — [152-implement-magical-trigger.md](152-implement-magical-trigger.md)
+- [154] Build a project website `13pt` — [154-build-a-project-website.md](154-build-a-project-website.md)
 
 ## Priority 5
 
