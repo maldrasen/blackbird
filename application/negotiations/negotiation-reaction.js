@@ -144,11 +144,12 @@ global.NegotiationReaction = (function() {
       if (Requirements.met(requires, context.T) === false) {
         throw new Error(`Sexual preference [${code}] is incompatible with Character[${context.T}]`);
       }
-
       if (newValue > 0 && (currentValue == null || currentValue < newValue)) {
         SexualPreferencesComponent.update(context.T, { [code]: preferences[code] });
       }
-
+      if (newValue < 0 && (currentValue == null || currentValue > newValue)) {
+        SexualPreferencesComponent.update(context.T, { [code]: preferences[code] });
+      }
       if (newValue == null) {
         SexualPreferencesComponent.deletePreference(context.T, code);
       }
