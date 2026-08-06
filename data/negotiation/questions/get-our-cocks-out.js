@@ -68,6 +68,7 @@ NegotiationQuestion.registerReaction('get-out-cocks-out', {
 
 NegotiationQuestion.register('get-out-cocks-out-your-turn', {
   text: `{T:TargetName} is waiting, Pull your cock out?`,
+  followUp: true,
   answers: {
     yes: { text:`You whip it out.` },
     no: { text:`"No, I don't think so."` },

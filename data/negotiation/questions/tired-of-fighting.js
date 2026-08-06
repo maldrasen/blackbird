@@ -28,7 +28,7 @@ NegotiationQuestion.registerReaction('tired-of-fighting', {
 
 NegotiationQuestion.register('tired-of-fighting-other-way', {
   text: `"So what exactly did you have in mind?"`,
-  followUpOnly: true,
+  followUp: true,
   answers: {
     strength: { text:`"I'll show you how much stronger than you I am."` },
     luck: { text:`You pull a coin from your pocket, "Feeling lucky? Lets settle this with a coin toss."` },

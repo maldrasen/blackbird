@@ -84,7 +84,7 @@ global.NegotiationQuestion = (function() {
       getText: () => { return question.text; },
       getAnswers,
       getReactionData,
-      isFollowUpOnly: () => { return question.followUpOnly === true; },
+      isFollowUp: () => { return question.followUp === true; },
       isPossible,
       isAvailable,
     });

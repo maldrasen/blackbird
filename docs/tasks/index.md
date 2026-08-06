@@ -52,6 +52,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [128] Random weapon and armor generation `8pt` — [128-random-item-generation.md](128-random-item-generation.md)
 - [130] Accept death in game over event `8pt` — [130-accept-death-in-game-over-event.md](130-accept-death-in-game-over-event.md)
 - [139] Fix Stamina `3pt` — [139-fix-stamina.md](139-fix-stamina.md)
+- [162] Battle enlightenment variation for no essence `2pt` — [162-battle-enlightenment-variation-for-no-essence.md](162-battle-enlightenment-variation-for-no-essence.md)
 
 ## Priority 4
 
