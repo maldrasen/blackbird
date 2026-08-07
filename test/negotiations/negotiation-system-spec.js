@@ -2,8 +2,9 @@ describe("NegotiationSystem", function() {
 
   // Each test boots a full battle around the negotiation-fixture-1 kobold-runt, moves the player to the front of the
   // turn order (finishRound() requires the acting entity to be next), and starts a negotiation. The state constructor
-  // rolls starting fear then respect, so both are stubbed to make the transferred feelings exact. Resolutions are set
-  // on the state directly — the reaction to resolution mapping is thin and the question path is Random-heavy.
+  // rolls the starting feelings randomly, so the exact fear and respect the transfer assertions rely on are set
+  // directly once the state is built. Resolutions are set on the state directly — the reaction to resolution mapping
+  // is thin and the question path is Random-heavy.
   function startNegotiation() {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({ encounter:'negotiation-fixture-1', ambushState:'normal' });
@@ -12,11 +13,11 @@ describe("NegotiationSystem", function() {
     BattleSystem.getState().moveToTopOfTurnOrder({ type:'character', id:player });
     BattleSystem.specRound(player);
 
-    Random.stubRoll(40, 20);
     NegotiationSystem.start();
-    Random.stubReset();
 
-    return NegotiationSystem.getState();
+    const state = NegotiationSystem.getState();
+    state.setFeelings({ fear:40, respect:20 });
+    return state;
   }
 
   it("shows an attack resolution on the first advance and executes it on the second", function() {
@@ -103,14 +104,15 @@ describe("NegotiationSystem", function() {
       const monster = BattleSystem.getState().getActiveMonsters()[0];
       setArchetype(monster, ArchetypeCode.slut);
 
-      Random.stubRoll(40, 20);
       NegotiationSystem.start();
-      Random.stubReset();
+
+      const state = NegotiationSystem.getState();
+      state.setFeelings({ fear:40, respect:20 });
 
       setBrains(player, 100);
       setBrains(monster, 20);
 
-      return { state:NegotiationSystem.getState(), player, monster };
+      return { state, player, monster };
     }
 
     // Draws until the wanted question comes up. The registered question count bounds the loop; a pool exhausted

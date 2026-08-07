@@ -7,6 +7,18 @@ global.NegotiationState = function() {
   const playerCharacter = Character(player);
   const context = { P:player, T:monsterId };
 
+  // The M, F, and A keys hold other party members the questions can reference: a random man, a random non-male
+  // (futas are woman enough), and someone the monster would find attractive. A null key means no one in the party
+  // fills that role.
+  const others = battleState.getActiveCharacters().filter(id => id !== player);
+  context.M = pickPartyReference(others.filter(id => Character(id).isMale()));
+  context.F = pickPartyReference(others.filter(id => Character(id).isMale() === false));
+  context.A = pickPartyReference(others.filter(id => monsterCharacter.isAttractedTo(id)));
+
+  function pickPartyReference(candidates) {
+    return candidates.length > 0 ? Random.from(candidates) : null;
+  }
+
   const flags = {
     playerAssOut: playerCharacter.isCrotchExposed(),
     playerCockOut: playerCharacter.hasNormalCock() && playerCharacter.isCrotchExposed(),
@@ -86,6 +98,15 @@ global.NegotiationState = function() {
   function getRespectThreshold() { return 100; }
   function getFearThreshold() { return 100; }
 
+  // Overwrites the feelings outright, skipping the resolution checks. The specs use this to replace the randomly
+  // rolled starting values with the exact values they care about.
+  function setFeelings(values) {
+    if (values.control != null) { control = values.control; }
+    if (values.affection != null) { affection = values.affection; }
+    if (values.fear != null) { fear = values.fear; }
+    if (values.respect != null) { respect = values.respect; }
+  }
+
   function applyFeelings(response) {
     control += response.control || 0;
     affection += response.affection || 0;
@@ -150,6 +171,7 @@ global.NegotiationState = function() {
 
   return Object.freeze({
     getContext: () => { return {...context}; },
+    setContext: newContext => { Object.entries(newContext).forEach(([key,value]) => { context[key] = value; }); },
     getMonster: () => { return monsterId; },
     getGreeting: () => { return monster.getBaseMonster().getNegotiationGreeting(context); },
     getFlag: flag => { return flags[flag]; },
@@ -161,6 +183,7 @@ global.NegotiationState = function() {
     setFollowUp,
     hasFollowUp: () => { return pendingFollowUp != null; },
     takeFollowUpQuestion,
+    setFeelings,
     applyFeelings,
     getFeelings,
     setResolution,

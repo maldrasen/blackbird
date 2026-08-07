@@ -4,16 +4,18 @@ describe("NegotiationState", function() {
   // sneak slut favors the slut archetype, but a randomly drawn name can carry a trigger that overrides it, so the
   // archetype is pinned to slut (style lewd) before the question pool is built. The state is started through
   // NegotiationSystem because the dynamic question requirements read the flags through the system's state. The
-  // constructor rolls starting fear then respect, so both are stubbed to make the feelings math exact.
+  // constructor rolls the starting fear and respect randomly, so the values the specs care about are set directly
+  // once the state is built.
   function buildState(fear, respect) {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({ encounter:'negotiation-fixture-2', ambushState:'normal' });
     BattleSystem.specRound(GameSystem.getState().getPlayer());
     setArchetype(ArchetypeCode.slut);
-    Random.stubRoll(fear, respect);
     NegotiationSystem.start();
-    Random.stubReset();
-    return NegotiationSystem.getState();
+
+    const state = NegotiationSystem.getState();
+    state.setFeelings({ fear, respect });
+    return state;
   }
 
   function setArchetype(archetype) {
@@ -22,6 +24,37 @@ describe("NegotiationState", function() {
     personality.archetype = archetype;
     PersonalityComponent.update(monster, personality);
   }
+
+  // The party references are picked randomly, so the spec checks that each pick came from the right candidate pool
+  // rather than pinning exact members. A pick from an empty pool must be null.
+  describe("party member context", function() {
+    function expectPickedFrom(pick, candidates) {
+      if (candidates.length === 0) { return expect(pick).to.equal(null); }
+      expect(candidates).to.include(pick);
+    }
+
+    it('references other active party members, or null when no one fits the role', function() {
+      const state = buildState(40, 20);
+      const context = state.getContext();
+      const player = GameSystem.getState().getPlayer();
+      const monster = Character(state.getMonster());
+      const others = BattleSystem.getState().getActiveCharacters().filter(id => id !== player);
+
+      expect(others.length).to.equal(3);
+      expectPickedFrom(context.M, others.filter(id => Character(id).isMale()));
+      expectPickedFrom(context.F, others.filter(id => Character(id).isMale() === false));
+      expectPickedFrom(context.A, others.filter(id => monster.isAttractedTo(id)));
+    });
+
+    it('setContext() overwrites the picked references', function() {
+      const state = buildState(40, 20);
+      const player = GameSystem.getState().getPlayer();
+
+      state.setContext({ F:player });
+      expect(state.getContext().F).to.equal(player);
+      expect(state.getContext().T).to.equal(state.getMonster());
+    });
+  });
 
   // The pool's exact contents grow as questions are authored, so the spec drains the pool rather than enumerating it.
   describe("pickQuestion()", function() {

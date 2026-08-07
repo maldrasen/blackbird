@@ -14,6 +14,17 @@ describe("NegotiationQuestion", function() {
       const answers = NegotiationQuestion.lookup('what-is-best').getAnswers({});
       expect(Object.keys(answers)).to.deep.equal(['bullshit','conan','comfort','cock']);
     });
+
+    // The entertain answer offers up a female party member, so it only shows when the F reference was filled.
+    it('filters answers gated on a party reference when the key is null', function() {
+      const question = NegotiationQuestion.lookup('no-interest-in-men');
+
+      const withGirl = question.getAnswers({ F:CharacterFixtures.genericFemale({}) });
+      expect(Object.keys(withGirl)).to.deep.equal(['noNeed','entertain','dontCare','noUse']);
+
+      const alone = question.getAnswers({ F:null });
+      expect(Object.keys(alone)).to.deep.equal(['noNeed','dontCare','noUse']);
+    });
   });
 
   // The negotiation-fixture-2 kobold-sneak-slut is pinned to the slut archetype so its style is lewd, and what-is-best
