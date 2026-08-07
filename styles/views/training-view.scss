@@ -136,7 +136,7 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
 
   #persistedRow {
     padding: 10px 10px 0;
-    #persistedActionScroll { max-height: 200px; }
+    #persistedActionScroll { max-height: 200px; overflow-y: auto; }
     #persistedActions { padding: 10px; }
 
     li {
