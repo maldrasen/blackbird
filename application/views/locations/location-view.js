@@ -6,6 +6,7 @@ global.LocationView = (function() {
     NavigationOverlay.init();
 
     X.onClick('#locationControls .open-map', NavigationOverlay.open);
+    X.onClick('#locationControls .open-party', openPartyOverlay);
     X.onClick('#locationView #characterList a', characterClicked);
     X.onClick('#locationView #actionList a', actionClicked);
   }
@@ -39,6 +40,10 @@ global.LocationView = (function() {
   function showLocationControls() { X.removeClass('#locationControls','hide'); }
   function hideLocationControls() { X.addClass('#locationControls','hide'); }
   function setLocationName(name) { X.first('#locationName').innerText = name; }
+
+  function openPartyOverlay() {
+    PartyOverlay.open(GameSystem.getState().getCurrentDistrict() === 'home' ? 'transfer' : 'normal');
+  }
 
   // =====================
   //    Characters List

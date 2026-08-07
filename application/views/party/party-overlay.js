@@ -1,23 +1,97 @@
 global.PartyOverlay = (function() {
 
+  let mode;
+
   let draft = {};
   let positionPanels = {};
   let atHome = false;
   let rosterScrollingPanel = null;
 
   function init() {
-    X.onClick('#locationControls .open-party', open);
     X.onClick('#partyOverlay .close-button', close);
     X.onClick('#partyOverlay .confirm-button', confirm);
     X.onResize(() => X.first('#partyOverlay .position') != null, refresh);
 
-    // A card dropped on an occupied position is actually dropped on the card covering it, so cards are targets too.
     DragonDrop.register({
       source: '#partyOverlay .party-card',
       targets: ['#partyCardLayer .party-card','#partyOverlay .position','#partyOverlay .roster-panel'],
       onDrop: cardDropped,
     });
   }
+
+  function open(m) {
+    mode = m;
+
+    X.loadDocument('#partyOverlay','views/party-overlay.html');
+    X.addClass(`#partyOverlay`,mode);
+
+    WindowManager.push(PartyOverlay);
+    X.removeClass('#partyOverlay','hide');
+    X.removeClass('#overlayCover','hide');
+
+    rosterScrollingPanel = ScrollingPanel({ selector:'#partyOverlay .roster-list' });
+
+    buildGrid();
+    buildDraft();
+    refresh();
+  }
+
+  function close() {
+    rosterScrollingPanel = null;
+    X.empty('#partyOverlay');
+    X.removeAttribute('#partyOverlay','class');
+    X.addClass('#partyOverlay','hide');
+    X.addClass('#overlayCover','hide');
+    WindowManager.remove(PartyOverlay);
+  }
+
+  function refresh() {
+    // placeCards();
+    if (mode === 'transfer') { buildRoster(); }
+    // highlightVacancies();
+    // updateConfirmButton();
+    // if (rosterScrollingPanel) { rosterScrollingPanel.resize(); }
+  }
+
+  function buildGrid() {
+    positionPanels = {};
+    buildRank(0,'.front-row');
+    buildRank(1,'.back-row');
+  }
+
+  function buildRank(rank, selector) {
+    const parent = X.first(`#partyOverlay ${selector}`);
+
+    for (let p=0; p<5; p++) {
+      const positionPanel = PositionPanel('P',rank,p);
+      positionPanels[`P.${rank}.${p}`] = positionPanel;
+      parent.appendChild(positionPanel.getElement());
+    }
+  }
+
+  function buildDraft() {
+    draft = { ...PartyConfiguration.getConfiguration() };
+
+    const player = GameSystem.getState().getPlayer();
+    if (draft[player] == null) { draft[player] = firstOpenPosition(); }
+  }
+
+
+
+  function buildRoster() {
+    const list = X.first('#partyOverlay .roster-list');
+
+    X.empty(list);
+    X.removeClass('#partyOverlay .roster-panel','hide');
+
+    GameSystem.getState().getRoster().filter(id => draft[id] == null).forEach(id => {
+      list.appendChild(PartyCard(id).getElement());
+    });
+  }
+
+
+
+
 
   function cardDropped(card, target) {
     if (target == null) { return; }
@@ -69,49 +143,7 @@ global.PartyOverlay = (function() {
     refresh();
   }
 
-  // The formation can be edited anywhere the party isn't otherwise engaged, which for now means while looking at a
-  // location or exploring the dungeon.
-  function canOpen() {
-    if (GameSystem.isLoaded() === false) { return false; }
-    if (X.hasClass('#partyOverlay','hide') === false) { return false; }
 
-    const mode = GameSystem.getState().getGameMode();
-    return mode === GameMode.location || mode === GameMode.dungeon;
-  }
-
-  function open() {
-    if (canOpen() === false) { return; }
-
-    X.loadDocument('#partyOverlay','views/party-overlay.html');
-
-    atHome = GameSystem.getState().getCurrentDistrict() === 'home';
-    if (atHome) {
-      X.removeClass('#partyOverlay','away');
-    } else {
-      X.addClass('#partyOverlay','away');
-    }
-
-    WindowManager.push(PartyOverlay);
-    X.removeClass('#partyOverlay','hide');
-    X.removeClass('#overlayCover','hide');
-
-    // The scrolling panel measures itself when built, so the overlay has to be visible first.
-    rosterScrollingPanel = ScrollingPanel({ selector:'#partyOverlay .roster-list' });
-
-    buildGrid();
-    buildDraft();
-    refresh();
-
-    Console.log(`Open Party Overlay`,{ system:'PartyOverlay' });
-  }
-
-  function close() {
-    rosterScrollingPanel = null;
-    X.empty('#partyOverlay');
-    X.addClass('#partyOverlay','hide');
-    X.addClass('#overlayCover','hide');
-    WindowManager.remove(PartyOverlay);
-  }
 
   function confirm() {
     PartyConfiguration.setConfiguration(draft);
@@ -120,33 +152,6 @@ global.PartyOverlay = (function() {
     if (GameSystem.getState().getGameMode() === GameMode.dungeon) { DungeonControls.update(); }
   }
 
-  // The grid has to be built after the overlay is shown, a hidden element has no size to measure card
-  // coordinates against.
-  function buildGrid() {
-    positionPanels = {};
-    buildRank(0,'.front-row');
-    buildRank(1,'.back-row');
-  }
-
-  function buildRank(rank, selector) {
-    const parent = X.first(`#partyOverlay ${selector}`);
-
-    for (let p=0; p<5; p++) {
-      const positionPanel = PositionPanel('P',rank,p);
-      positionPanels[`P.${rank}.${p}`] = positionPanel;
-      parent.appendChild(positionPanel.getElement());
-    }
-  }
-
-  // The overlay edits a draft copy of the party configuration. Nothing is persisted until the confirm button is
-  // pressed, and closing any other way discards the changes. A player who isn't in the saved configuration yet is
-  // seeded into the draft, as close to the center of the front rank as possible.
-  function buildDraft() {
-    draft = { ...PartyConfiguration.getConfiguration() };
-
-    const player = GameSystem.getState().getPlayer();
-    if (draft[player] == null) { draft[player] = firstOpenPosition(); }
-  }
 
   function firstOpenPosition() {
     const taken = Object.values(draft);
@@ -154,13 +159,9 @@ global.PartyOverlay = (function() {
     return centerOut.find(position => taken.includes(position) === false);
   }
 
-  function refresh() {
-    placeCards();
-    fillRoster();
-    highlightVacancies();
-    updateConfirmButton();
-    if (rosterScrollingPanel) { rosterScrollingPanel.resize(); }
-  }
+
+
+
 
   function placeCards() {
     X.empty('#partyCardLayer');
@@ -186,14 +187,6 @@ global.PartyOverlay = (function() {
     };
   }
 
-  function fillRoster() {
-    const list = X.first('#partyOverlay .roster-list');
-
-    X.empty(list);
-    GameSystem.getState().getRoster().filter(id => draft[id] == null).forEach(id => {
-      X.append(list, PartyCard(id).getElement());
-    });
-  }
 
   function highlightVacancies() {
     X.removeClass('#partyOverlay .position.exposed','exposed');
