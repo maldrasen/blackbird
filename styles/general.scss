@@ -6,8 +6,11 @@
   position: fixed !important;
   pointer-events: none !important;
   z-index: variables.$z-dragging !important;
-  cursor: grabbing !important;
 }
+
+// The dragged element has pointer-events disabled, so its own cursor rule would never apply. The cursor has to be
+// forced on whatever is under the pointer instead.
+body:has(.dragging), body:has(.dragging) * { cursor: grabbing !important; }
 
 .align-right { text-align: right; }
 .align-left { text-align: left; }
