@@ -35,6 +35,10 @@ describe("PartyConfiguration", function() {
 
   describe('setConfiguration', function() {
 
+    beforeEach(function() {
+      GameSystem.getState().setPlayer('horse');
+    });
+
     it('replaces the whole configuration', function() {
       PartyConfiguration.setCharacter('pig','P.0.4');
       PartyConfiguration.setConfiguration({ horse:'P.0.1', goat:'P.1.1' });
@@ -51,24 +55,36 @@ describe("PartyConfiguration", function() {
     });
 
     it('rejects malformed positions', function() {
-      expect(() => PartyConfiguration.setConfiguration({ horse:'front' })).to.throw('Invalid Position');
-      expect(() => PartyConfiguration.setConfiguration({ horse:'M.0.1' })).to.throw('Invalid Position');
+      expect(() => PartyConfiguration.setConfiguration({ horse:'front' })).to.throw('Invalid configuration');
+      expect(() => PartyConfiguration.setConfiguration({ horse:'M.0.1' })).to.throw('Invalid configuration');
     });
 
     it('rejects duplicate positions', function() {
-      expect(() => PartyConfiguration.setConfiguration({ horse:'P.0.1', goat:'P.0.1' })).to.throw('Duplicate');
+      expect(() => PartyConfiguration.setConfiguration({ horse:'P.0.1', goat:'P.0.1' })).to.throw('Invalid configuration');
     });
 
-    it('rejects an invalid formation', function() {
-      expect(() => PartyConfiguration.setConfiguration({ horse:'P.1.1' })).to.throw('Invalid formation');
+    it('rejects an exposed back row', function() {
+      expect(() => PartyConfiguration.setConfiguration({ horse:'P.1.1' })).to.throw('Invalid configuration');
+    });
+
+    it('rejects a configuration without the player', function() {
+      expect(() => PartyConfiguration.setConfiguration({ goat:'P.0.1' })).to.throw('Invalid configuration');
     });
 
   });
 
   describe('validity', function() {
 
-    it('an empty configuration is valid', function() {
-      expect(PartyConfiguration.isValid({})).to.equal(true);
+    beforeEach(function() {
+      GameSystem.getState().setPlayer('horse');
+    });
+
+    it('a configuration without the player is invalid', function() {
+      expect(PartyConfiguration.isValid({})).to.equal(false);
+      expect(PartyConfiguration.isValid({ goat:'P.0.1' })).to.equal(false);
+    });
+
+    it('an empty configuration has no vacant front positions', function() {
       expect(PartyConfiguration.getVacantFrontPositions({})).to.eql([]);
     });
 
@@ -83,9 +99,18 @@ describe("PartyConfiguration", function() {
     });
 
     it('an exposed back row character is invalid', function() {
-      const configuration = { goat:'P.1.2' };
+      const configuration = { horse:'P.0.1', goat:'P.1.2' };
       expect(PartyConfiguration.isValid(configuration)).to.equal(false);
       expect(PartyConfiguration.getVacantFrontPositions(configuration)).to.eql(['P.0.2']);
+    });
+
+    it('a malformed position is invalid', function() {
+      expect(PartyConfiguration.isValid({ horse:'front' })).to.equal(false);
+      expect(PartyConfiguration.isValid({ horse:'M.0.1' })).to.equal(false);
+    });
+
+    it('a duplicate position is invalid', function() {
+      expect(PartyConfiguration.isValid({ horse:'P.0.1', goat:'P.0.1' })).to.equal(false);
     });
 
     it('columns are checked independently', function() {
