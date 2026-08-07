@@ -197,10 +197,14 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
           color: variables.$fg-disabled;
         }
 
+        #actionListScroll {
+          max-height: 250px;
+          overflow-y: auto;
+        }
+
         ul {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-          max-height: 250px;
         }
       }
       .action-button-row {

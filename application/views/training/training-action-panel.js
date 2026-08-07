@@ -5,8 +5,6 @@ global.TrainingActionPanel = (function() {
   }
 
   function build() {
-    ScrollingPanel({ id:'#actionListScroll' });
-
     TrainingSystem.getState().getPossibleActions().forEach(code => {
       const action = SexAction.lookup(code);
       const actionList = X.first('#actionList');
