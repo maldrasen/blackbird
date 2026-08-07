@@ -4,7 +4,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 ## Priority 1
 
-- [160] Add a party configuration user interface `5pt` — [160-add-a-party-configuration-user-interface.md](160-add-a-party-configuration-user-interface.md)
 - [166] Remove the Scrolling Panel Element `5pt` — [166-remove-the-scrolling-panel-element.md](166-remove-the-scrolling-panel-element.md)
 
 ## Priority 2
