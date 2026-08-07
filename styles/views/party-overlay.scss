@@ -58,14 +58,14 @@ $bg-panel: rgb(20 20 25 / 50%);
   .formation-panel {
     position: relative;
     flex-shrink: 0;
-    margin: 20px 20px 0;
+    margin: 20px 20px 10px;
   }
 
   .rank-row {
     display: grid;
     grid-template-columns: repeat(5, 140px);
     gap: 10px;
-    margin-bottom: 15px;
+    margin: 10px;
   }
 
   .position {
@@ -115,24 +115,12 @@ $bg-panel: rgb(20 20 25 / 50%);
   }
 
 
-  /*
-
-  .header-panel {
-    padding: 10px 20px;
-    font-size: variables.$fs-bigger;
-    border-bottom: variables.$border-normal;
-  }
 
 
-  .rank-label {
-    margin-bottom: 5px;
-    font-size: variables.$fs-small;
-    color: variables.$fg-weak;
-  }
 
 
   .party-card.drop-target {
-    border-color: rgb(120,160,220);
+    border-color: variables.$select-active;
   }
 
   #partyCardLayer {
@@ -151,6 +139,26 @@ $bg-panel: rgb(20 20 25 / 50%);
     width: 140px;
     cursor: grab;
   }
+
+
+
+
+  /*
+
+  .header-panel {
+    padding: 10px 20px;
+    font-size: variables.$fs-bigger;
+    border-bottom: variables.$border-normal;
+  }
+
+
+  .rank-label {
+    margin-bottom: 5px;
+    font-size: variables.$fs-small;
+    color: variables.$fg-weak;
+  }
+
+
 
   .roster-panel {
     display: flex;

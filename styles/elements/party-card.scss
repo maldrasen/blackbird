@@ -1,7 +1,5 @@
 @use "../variables";
 
-/*
-
 // The card structure is shared between the party overlay and the dungeon controls. Sizing and positioning are left to
 // the views displaying the cards.
 .party-card {
@@ -40,10 +38,4 @@
     white-space: nowrap;
     overflow: hidden;
   }
-
-  &.player {
-    border: 1px solid rgba(200,170,80,0.8);
-  }
 }
-
- */
