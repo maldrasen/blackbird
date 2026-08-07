@@ -1,7 +1,7 @@
 // A general purpose drag and drop manager. A consumer registers a draggable element selector along with the targets
 // it can be dropped onto, then applies whatever the drop means when notified. The manager only moves the dragged
-// element visually, restoring its original inline styles when the drag ends, so an element that wasn't dropped
-// anywhere snaps back into place on its own.
+// element visually, restoring its original inline styles and DOM position when the drag ends, so an element that
+// wasn't dropped anywhere snaps back into place on its own.
 //
 // Registration options:
 // - `source` - A delegated selector for the draggable elements.
@@ -35,6 +35,7 @@ global.DragonDrop = (function() {
       element,
       target: null,
       offset: { x:(event.clientX - bounds.left), y:(event.clientY - bounds.top) },
+      home: { parent:element.parentNode, nextSibling:element.nextSibling },
       originalStyle: {
         left: element.style['left'],
         top: element.style['top'],
@@ -46,13 +47,11 @@ global.DragonDrop = (function() {
     element.style['width'] = `${bounds.width}px`;
     element.style['height'] = `${bounds.height}px`;
     X.addClass(element,'dragging');
-    moveElement(event);
 
-    // An ancestor with a transform or backdrop-filter hijacks the containing block for fixed positioning, so measure
-    // where the element actually landed and fold the difference into the offset.
-    const landed = X.getPosition(element);
-    dragContext.offset.x += landed.left - (event.clientX - dragContext.offset.x);
-    dragContext.offset.y += landed.top - (event.clientY - dragContext.offset.y);
+    // An ancestor with a transform or backdrop-filter hijacks the containing block for fixed positioning, keeping the
+    // dragged element trapped in that ancestor's stacking context and overflow clipping. Reparenting to the body for
+    // the duration of the drag makes fixed positioning genuinely viewport-relative.
+    document.body.appendChild(element);
     moveElement(event);
 
     document.addEventListener('mousemove', mouseMoved);
@@ -108,6 +107,7 @@ global.DragonDrop = (function() {
 
     const element = dragContext.element;
     X.removeClass(element,'dragging');
+    dragContext.home.parent.insertBefore(element, dragContext.home.nextSibling);
 
     // An element that positions itself with inline styles needs them put back, not cleared.
     Object.entries(dragContext.originalStyle).forEach(([property, value]) => {

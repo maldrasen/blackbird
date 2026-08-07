@@ -97,10 +97,12 @@ global.PartyOverlay = (function() {
       <div class='top-row'>
         <span class='name'>${character.getName()}</span>
       </div>
-      <div class='bottom-row'>
+      <div class='detail-row'>
         <span class='level'>Level ${character.getLevel()}</span>
+      </div>
+      <div class='detail-row'>
         <span class='gender'>${character.getGenderName()}</span>
-        <span class='species'>${character.getSpecies()}</span>
+        <span class='species'>${Species.lookup(character.getSpecies()).getName()}</span>
       </div>
     </div>`);
   }

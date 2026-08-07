@@ -128,13 +128,24 @@ $bg-panel: rgb(20 20 25 / 50%);
       position: relative;
       height: 80px;
       width: 80px;
+      .name { display: none; }
+    }
+
+    .details {
+      width: 190px;
+      margin-left: 10px;
+      font-family: 'habibi', serif;
+    }
+    .top-row {
+      color: variables.$fg-strong;
+      border-bottom: variables.$border-light;
+    }
+    .detail-row {
+      margin-left: 5px;
+      color: variables.$fg-weak;
+      font-size: small;
     }
   }
-
-
-
-
-
 
   .party-card.drop-target {
     border-color: variables.$select-active;
