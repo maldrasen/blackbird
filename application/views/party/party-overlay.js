@@ -12,7 +12,7 @@ global.PartyOverlay = (function() {
     X.onResize(() => X.first('#partyOverlay .position') != null, refresh);
 
     // A card dropped on an occupied position is actually dropped on the card covering it, so cards are targets too.
-    DragDrop.register({
+    DragonDrop.register({
       source: '#partyOverlay .party-card',
       targets: ['#partyCardLayer .party-card','#partyOverlay .position','#partyOverlay .roster-panel'],
       onDrop: cardDropped,

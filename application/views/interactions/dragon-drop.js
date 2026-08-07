@@ -13,7 +13,7 @@
 // While an element is being dragged it gets the `dragging` class, which disables pointer events so the element under
 // its center can be hit tested. The target currently under the dragged element gets the `drop-target` class, which
 // consumers can style for their own drop feedback.
-global.DragDrop = (function() {
+global.DragonDrop = (function() {
 
   let dragContext = null;
 
