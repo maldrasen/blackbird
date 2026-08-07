@@ -3,7 +3,7 @@ global.DungeonControls = (function() {
   let positionCells;
 
   function init() {
-    X.onClick('#dungeonControls .open-party', () => { PartyOverlay.open('dungeon') });
+    X.onClick('#dungeonControls .open-party', () => { PartyOverlay.open('normal') });
     X.onClick('#dungeonControls .party-card', openCharacterOverlay);
   }
 

@@ -4,27 +4,24 @@ $bg-panel: rgb(20 20 25 / 50%);
 
 #partyOverlay.normal {
   .overlay {
-    height: 375px;
+    height: 600px;
     width: 800px;
   }
-}
-
-#partyOverlay.dungeon {
-  .overlay {
-    height: 375px;
-    width: 800px;
+  .overlay-footer {
+    top: 646px;
+    width: 790px;
   }
 }
 
 #partyOverlay.transfer {
   .overlay {
     left: calc(50% - 150px);
-    height: 560px;
+    height: 600px;
     width: 800px;
   }
   .overlay-footer {
     left: calc(50% - 150px);
-    top: 606px;
+    top: 646px;
     width: 790px;
   }
   .roster-panel {
@@ -38,6 +35,13 @@ $bg-panel: rgb(20 20 25 / 50%);
 }
 
 #partyOverlay {
+
+  h2 {
+    font-size: variables.$fs-big;
+    font-family: 'habibi', serif;
+    border-bottom: variables.$border-normal;
+    margin-bottom: 20px;
+  }
 
   .overlay {
     left: 50%;
@@ -54,7 +58,7 @@ $bg-panel: rgb(20 20 25 / 50%);
   .formation-panel {
     position: relative;
     flex-shrink: 0;
-    padding: 20px;
+    margin: 20px 20px 0;
   }
 
   .rank-row {
@@ -83,6 +87,9 @@ $bg-panel: rgb(20 20 25 / 50%);
     box-shadow: 0 0 12px rgba(120,160,220,0.6) inset;
   }
 
+  .captives-panel {
+    margin: 0 20px;
+  }
 
   .roster-panel {
     position: absolute;
