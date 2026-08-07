@@ -20,6 +20,7 @@ global.Views = (function() {
     OptionsOverlay.init();
     PartyOverlay.init();
     ScrollingPanel.init();
+    ScrollKeys.init();
     Select.init();
     TabController.init();
     Tooltip.init();

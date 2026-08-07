@@ -256,6 +256,7 @@
     "application/views/general/table-builder.js",
     "application/views/interactions/dragon-drop.js",
     "application/views/interactions/mouse-monitor.js",
+    "application/views/interactions/scroll-keys.js",
     "application/views/interactions/window-manager.js",
     "application/views/locations/location-view.js",
     "application/views/locations/navigation-overlay.js",
