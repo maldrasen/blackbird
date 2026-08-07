@@ -199,7 +199,7 @@ global.PartyOverlay = (function() {
   function updateConfirmButton() {
     const button = X.first('#partyOverlay .confirm-button');
 
-    if (PartyConfiguration.isValidConfiguration(draft)) {
+    if (PartyConfiguration.isValid(draft)) {
       X.removeClass(button,'disabled');
     } else {
       X.addClass(button,'disabled');

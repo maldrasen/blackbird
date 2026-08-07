@@ -15,7 +15,7 @@ global.InventorySystem = (function() {
   }
 
   function partyProvider() {
-    return Object.keys(GameSystem.getState().getPartyConfiguration() || {});
+    return Object.keys(PartyConfiguration.getConfiguration());
   }
 
   function rosterProvider() {

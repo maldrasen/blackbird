@@ -1,8 +1,24 @@
 global.PartyConfiguration = (function() {
 
-  // The PartyConfiguration itself is stored in the GameState as it needs to persist outside the BattleSystem,
-  // though its really only applicable from within it. There might be some events during exploration, traps and
-  // such that target specific positions or the front rank.
+  function setConfiguration(configuration) {
+    const positions = Object.values(configuration);
+
+    positions.forEach(position => {
+      const match = position.match(_positionPattern);
+      if (match == null || match[1] !== 'P') { throw new Error(`Invalid Position: ${position}`); }
+    });
+
+    if (new Set(positions).size !== positions.length) {
+      throw new Error(`Duplicate positions in configuration`);
+    }
+
+    if (isValid(configuration) === false) {
+      throw new Error(`Invalid formation: vacant front positions [${getVacantFrontPositions(configuration)}]`);
+    }
+
+    GameSystem.getState().setPartyConfiguration({ ...configuration });
+  }
+
   function setCharacter(id, position) {
     if (position.match(_positionPattern) == null) { throw new Error(`Invalid Position: ${position}`); }
 
@@ -26,39 +42,16 @@ global.PartyConfiguration = (function() {
   }
 
   function removeCharacter(id) {
-    const configuration = GameSystem.getState().getPartyConfiguration() || {};
+    const configuration = GameSystem.getState().getPartyConfiguration();
     delete configuration[id];
     GameSystem.getState().setPartyConfiguration(configuration);
   }
 
-  // Replace the entire party configuration at once, as when saving an edited formation. The configuration is copied
-  // on the way in so the caller's draft never aliases the persisted state.
-  function setConfiguration(configuration) {
-    const positions = Object.values(configuration);
-
-    positions.forEach(position => {
-      const match = position.match(_positionPattern);
-      if (match == null || match[1] !== 'P') { throw new Error(`Invalid Position: ${position}`); }
-    });
-
-    if (new Set(positions).size !== positions.length) {
-      throw new Error(`Duplicate positions in configuration`);
-    }
-
-    if (isValidConfiguration(configuration) === false) {
-      throw new Error(`Invalid formation: vacant front positions [${getVacantFrontPositions(configuration)}]`);
-    }
-
-    GameSystem.getState().setPartyConfiguration({ ...configuration });
-  }
-
-  // A formation is only valid when no back row character is missing a character in front of them. These work on any
-  // configuration map, not just the persisted one, so a view can check an unsaved draft.
   function getVacantFrontPositions(configuration) {
     const positions = Object.values(configuration);
     const vacant = [];
 
-    for (let column = 0; column < 5; column++) {
+    for (let column=0; column<5; column++) {
       if (positions.includes(`P.1.${column}`) && positions.includes(`P.0.${column}`) === false) {
         vacant.push(`P.0.${column}`);
       }
@@ -67,17 +60,17 @@ global.PartyConfiguration = (function() {
     return vacant;
   }
 
-  function isValidConfiguration(configuration) {
+  function isValid(configuration) {
     return getVacantFrontPositions(configuration).length === 0;
   }
 
   return Object.freeze({
-    getConfiguration: () => { return GameSystem.getState().getPartyConfiguration() || {}; },
-    setCharacter,
     setConfiguration,
+    getConfiguration: () => { return GameSystem.getState().getPartyConfiguration(); },
+    setCharacter,
     removeCharacter,
     getVacantFrontPositions,
-    isValidConfiguration,
+    isValid,
   });
 
 })();

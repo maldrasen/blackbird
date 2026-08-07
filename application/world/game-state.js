@@ -4,7 +4,7 @@ global.GameState = function(data={}) {
   let gameTime = data.gameTime || 0;
   let location = data.location;
   let player = data.player;
-  let party = data.party;
+  let party = data.party || {};
   let legacyName = data.legacyName;
   let roster = data.roster || [];
 
@@ -19,8 +19,6 @@ global.GameState = function(data={}) {
       roster: roster,
     };
   }
-
-  // TODO: When setting the player create a default party configuration with the player in the center position.
 
   return Object.freeze({
     getGameTime: () => { return gameTime; },

@@ -68,29 +68,29 @@ describe("PartyConfiguration", function() {
   describe('validity', function() {
 
     it('an empty configuration is valid', function() {
-      expect(PartyConfiguration.isValidConfiguration({})).to.equal(true);
+      expect(PartyConfiguration.isValid({})).to.equal(true);
       expect(PartyConfiguration.getVacantFrontPositions({})).to.eql([]);
     });
 
     it('a front only configuration is valid', function() {
       const configuration = { horse:'P.0.1', goat:'P.0.2' };
-      expect(PartyConfiguration.isValidConfiguration(configuration)).to.equal(true);
+      expect(PartyConfiguration.isValid(configuration)).to.equal(true);
     });
 
     it('a covered back row character is valid', function() {
       const configuration = { horse:'P.0.2', goat:'P.1.2' };
-      expect(PartyConfiguration.isValidConfiguration(configuration)).to.equal(true);
+      expect(PartyConfiguration.isValid(configuration)).to.equal(true);
     });
 
     it('an exposed back row character is invalid', function() {
       const configuration = { goat:'P.1.2' };
-      expect(PartyConfiguration.isValidConfiguration(configuration)).to.equal(false);
+      expect(PartyConfiguration.isValid(configuration)).to.equal(false);
       expect(PartyConfiguration.getVacantFrontPositions(configuration)).to.eql(['P.0.2']);
     });
 
     it('columns are checked independently', function() {
       const configuration = { horse:'P.0.0', goat:'P.1.4' };
-      expect(PartyConfiguration.isValidConfiguration(configuration)).to.equal(false);
+      expect(PartyConfiguration.isValid(configuration)).to.equal(false);
       expect(PartyConfiguration.getVacantFrontPositions(configuration)).to.eql(['P.0.4']);
     });
 

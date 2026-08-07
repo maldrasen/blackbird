@@ -3,7 +3,7 @@ global.EnlightenState = function(from, data) {
   const essence = {};
 
   if (from === 'battle') {
-    const party = Object.keys(GameSystem.getState().getPartyConfiguration());
+    const party = Object.keys(PartyConfiguration.getConfiguration());
     const essenceGained = Math.floor(data.totalEssence / party.length);
 
     party.forEach(id => {
