@@ -11,8 +11,8 @@
 // - `canDrag(sourceElement)` - Optional. Return false to prevent the drag from starting.
 //
 // While an element is being dragged it gets the `dragging` class, which disables pointer events so the element under
-// the cursor can be hit tested. The target currently under the cursor gets the `drop-target` class, which consumers
-// can style for their own drop feedback.
+// its center can be hit tested. The target currently under the dragged element gets the `drop-target` class, which
+// consumers can style for their own drop feedback.
 global.DragDrop = (function() {
 
   let dragContext = null;
@@ -48,6 +48,13 @@ global.DragDrop = (function() {
     X.addClass(element,'dragging');
     moveElement(event);
 
+    // An ancestor with a transform or backdrop-filter hijacks the containing block for fixed positioning, so measure
+    // where the element actually landed and fold the difference into the offset.
+    const landed = X.getPosition(element);
+    dragContext.offset.x += landed.left - (event.clientX - dragContext.offset.x);
+    dragContext.offset.y += landed.top - (event.clientY - dragContext.offset.y);
+    moveElement(event);
+
     document.addEventListener('mousemove', mouseMoved);
     document.addEventListener('mouseup', dropped);
     document.addEventListener('mouseleave', cancelDrag);
@@ -55,7 +62,7 @@ global.DragDrop = (function() {
 
   function mouseMoved(event) {
     moveElement(event);
-    setTarget(findTarget(event));
+    setTarget(findTarget());
   }
 
   function moveElement(event) {
@@ -63,8 +70,10 @@ global.DragDrop = (function() {
     dragContext.element.style['top'] = `${event.clientY - dragContext.offset.y}px`;
   }
 
-  function findTarget(event) {
-    const hit = document.elementFromPoint(event.clientX, event.clientY);
+  // The dragged element's center, not the cursor, determines what it's being dragged over.
+  function findTarget() {
+    const bounds = X.getPosition(dragContext.element);
+    const hit = document.elementFromPoint(bounds.left + (bounds.width / 2), bounds.top + (bounds.height / 2));
     if (hit == null) { return null; }
 
     return dragContext.registration.targets
