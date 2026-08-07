@@ -1,11 +1,8 @@
 global.Console = (function() {
 
   const entryLimit = 1000;
-  let scrollingPanel;
 
   function init() {
-    scrollingPanel = ScrollingPanel({ id:'#consoleLog' });
-
     window.addEventListener('keydown', event => {
       if (event.code === KeyCodes.Backquote) {
         event.stopPropagation();
@@ -42,9 +39,9 @@ global.Console = (function() {
 
     X.removeClass('#console','hide');
     X.first('#commandInput').focus();
-    setTimeout(() => {
-      scrollingPanel.resize();
-    },1);
+
+    const container = logContainer();
+    container.scrollTop = container.scrollHeight;
   }
 
   function hide() {
@@ -53,7 +50,10 @@ global.Console = (function() {
 
   function clear() {
     X.empty('#consoleLog');
-    if (scrollingPanel) { scrollingPanel.resize(); }
+  }
+
+  function logContainer() {
+    return X.first('#console .console-log-container');
   }
 
   function isVisible() { return !X.hasClass('#console','hide'); }
@@ -105,9 +105,14 @@ global.Console = (function() {
     addDataSegment(entryElement, logData.data);
 
     X.addClass(entryElement, `level-${logData.level || 2}`)
+
+    // Stay pinned to the bottom when the newest entries were already visible.
+    const container = logContainer();
+    const pinned = container.scrollTop + container.clientHeight >= container.scrollHeight - 5;
+
     X.first('#consoleLog').appendChild(entryElement);
 
-    if (scrollingPanel) { scrollingPanel.resize(); }
+    if (pinned) { container.scrollTop = container.scrollHeight; }
     if (logData.type === LogType.error) { Alert.showFromLog(logData); }
   }
 
