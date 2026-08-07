@@ -1,24 +1,47 @@
 @use "../variables";
 
+// Temporary colors. Eventually we'll want to make this nicer looking. A background image or a tiling texture.
+$bg-panel: rgb(10 10 10);
+$bg-controls: rgb(5 5 5);
+
 #dungeonControls {
   position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 100px;
   z-index: variables.$z-dungeon-controls;
 
-  .controls-frame {
-    display: flex;
-    align-items: flex-end;
-    gap: 20px;
-    padding: 10px 15px;
-    background-color: rgba(0,0,0,0.75);
-    border: variables.$border-normal;
-    border-bottom: none;
-    box-shadow: 0 -5px 10px rgba(0,0,0,0.5);
+  border-top: variables.$border-normal;
+  background-color: $bg-controls;
+  box-shadow: 0px -10px 10px rgb(0 0 0 / 50%);
+
+  .left-panel {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 120px;
+    padding: 5px;
+    background-color: $bg-panel;
+
+    border-top: variables.$border-normal;
+    border-right: variables.$border-normal;
+    box-shadow: 5px -5px 5px rgb(0 0 0 / 50%);
   }
 
-  .formation-display {
+  .formation-panel {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 5px;
+    background-color: $bg-panel;
+
+    border-top: variables.$border-normal;
+    border-left: variables.$border-normal;
+    box-shadow: -5px -5px 5px rgb(0 0 0 / 50%);
+  }
+
+  .formation-grid {
     display: flex;
     flex-direction: column;
     gap: 4px;
