@@ -2,8 +2,6 @@ global.InventoryPanel = function(options) {
 
   let selected;
   let inventoryPanel;
-  let itemScrollingPanel;
-  let tradeScrollingPanel;
   let characterId;
   let inventoryManager;
   let equipmentManager;
@@ -30,9 +28,6 @@ global.InventoryPanel = function(options) {
     inventoryPanel.querySelector('.drop-button').addEventListener('click',dropSelected);
     inventoryPanel.querySelector('.trade-button').addEventListener('click',toggleTradePanel);
 
-    itemScrollingPanel = ScrollingPanel({ element:inventoryPanel.querySelector('.item-list') });
-    tradeScrollingPanel = ScrollingPanel({ element:inventoryPanel.querySelector('.destination-list') });
-
     buildTradePanel();
     update();
   }
@@ -48,20 +43,12 @@ global.InventoryPanel = function(options) {
 
     updateTradeTitle()
     updateButtons();
-    resize();
   }
 
   function setSelected(id) {
     selected = id;
     updateTradeTitle()
     updateButtons();
-  }
-
-  function resize() {
-    setTimeout(() => {
-      itemScrollingPanel.resize();
-      tradeScrollingPanel.resize();
-    },0);
   }
 
   // TODO: We also want to change the text color to represent the rarity of the item, WoW, PoE, etc, style.
@@ -174,7 +161,6 @@ global.InventoryPanel = function(options) {
   function toggleTradePanel() {
     const frame = inventoryPanel.querySelector('.trade-frame');
     X.hasClass(frame,'hide') ? X.removeClass(frame,'hide') : X.addClass(frame,'hide');
-    resize();
   }
 
   function clickDestination(inventoryId) {
@@ -206,7 +192,6 @@ global.InventoryPanel = function(options) {
 
   return Object.freeze({
     buildInto,
-    resize,
     update,
   });
 }

@@ -12,7 +12,6 @@ global.CharacterOverlay = (function() {
 
   function init() {
     X.onClick(`#characterOverlay .close-button`, close);
-    X.onClick(`#characterOverlay .tab[data-tab='inventory']`, () => { inventoryPanel.resize() });
   }
 
   function open(id) {
