@@ -82,7 +82,12 @@ global.PartyOverlay = (function() {
     X.empty(list);
     X.removeClass('#partyOverlay .roster-panel','hide');
 
-    GameSystem.getState().getRoster().filter(id => draft[id] == null).forEach(id => {
+    // How do i sort list?
+    const rosterCharacters = GameSystem.getState().getRoster().
+      filter(id => draft[id] == null).
+      sort((a,b) => Character(b).getFullName() - Character(a).getFullName());
+
+    rosterCharacters.forEach(id => {
       const item = X.createElement(`<li class='roster-item'></li>`)
       item.appendChild(PartyCard(id).getElement());
       item.appendChild(buildRosterDetails(id));
@@ -92,18 +97,10 @@ global.PartyOverlay = (function() {
 
   function buildRosterDetails(id) {
     const character = Character(id);
-
     return X.createElement(`<div class='details'>
-      <div class='top-row'>
-        <span class='name'>${character.getName()}</span>
-      </div>
-      <div class='detail-row'>
-        <span class='level'>Level ${character.getLevel()}</span>
-      </div>
-      <div class='detail-row'>
-        <span class='gender'>${character.getGenderName()}</span>
-        <span class='species'>${Species.lookup(character.getSpecies()).getName()}</span>
-      </div>
+      <div class='top-row'>${character.getFullName()}</div>
+      <div class='detail-row'>Level ${character.getLevel()}</div>
+      <div class='detail-row'>${character.getGenderName()} ${Species.lookup(character.getSpecies()).getName()}</div>
     </div>`);
   }
 
