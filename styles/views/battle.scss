@@ -102,6 +102,11 @@ $roll-high-bright: rgb(250,250,250);
 
 #battleView #textPanel {
 
+  #textScroll {
+    height: 100%;
+    overflow-y: auto;
+  }
+
   #battleText {
     text-align: center;
     padding: 20px;

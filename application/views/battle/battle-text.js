@@ -12,24 +12,20 @@ global.BattleText = (function() {
     `You ambush XXX!`
   ];
 
-  let scrollingPanel;
-
   function init() {
     X.onCodeDown('Space', isTextVisible, BattleSystem.advanceBattle);
     X.onCodeDown('Enter', isTextVisible, BattleSystem.advanceBattle);
 
-    // We advance the text if the text panel was clicked, but not if it was clicked on the scrolling panel track or
-    // thumbwheel, otherwise a user might skip the text when they were just trying to scroll it.
+    // We advance the text if the text panel was clicked, but not if the click was on the scrollbar, otherwise a user
+    // might skip the text when they were just trying to scroll it. Scrollbar clicks target the scrollable element
+    // itself, at an offset past its client width.
     X.onMouseDown('#textPanel', event => {
-      if (X.hasClass(event.target, 'scrolling-panel-thumbwheel')) { return false; }
-      if (X.hasClass(event.target, 'scrolling-panel-track')) { return false; }
+      if (event.target.id === 'textScroll' && event.offsetX >= event.target.clientWidth) { return false; }
       BattleSystem.advanceBattle();
     });
   }
 
-  function build() {
-    scrollingPanel = ScrollingPanel({ id:'#textScroll' });
-  }
+  function build() {}
 
   function clear() { X.empty('#battleText'); }
   function hide() { X.addClass('#textPanel','hide'); }
@@ -55,7 +51,7 @@ global.BattleText = (function() {
       }
     });
 
-    scrollingPanel.resize();
+    X.first('#textScroll').scrollTop = 0;
   }
 
   // TODO: The description and start phrases will work for most encounter types, though some will need their own start
