@@ -2,10 +2,11 @@
 
 .hide { display: none !important; }
 
+// Like .hide, these have to win against any more specific positioning rules the dragged element normally has.
 .dragging {
-  position: fixed;
-  pointer-events: none;
-  z-index: variables.$z-dragging;
+  position: fixed !important;
+  pointer-events: none !important;
+  z-index: variables.$z-dragging !important;
 }
 
 .align-right { text-align: right; }

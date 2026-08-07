@@ -7,6 +7,31 @@ global.PartyOverlay = (function() {
     X.onClick('#partyOverlay .close-button', close);
     X.onClick('#partyOverlay .confirm-button', confirm);
     X.onResize(() => X.first('#partyOverlay .position') != null, refresh);
+
+    // A card dropped on an occupied position is actually dropped on the card covering it, so cards are targets too.
+    DragDrop.register({
+      source: '#partyCardLayer .party-card',
+      targets: ['#partyCardLayer .party-card','#partyOverlay .position'],
+      onDrop: cardDropped,
+    });
+  }
+
+  function cardDropped(card, target) {
+    if (target == null) { return; }
+
+    const id = card.dataset.id;
+    const position = targetPosition(target);
+    const occupant = Object.keys(draft).find(x => draft[x] === position && x !== id);
+
+    if (occupant) { draft[occupant] = draft[id]; }
+    draft[id] = position;
+
+    refresh();
+  }
+
+  function targetPosition(target) {
+    if (X.hasClass(target,'position')) { return target.dataset.position; }
+    return draft[target.dataset.id];
   }
 
   function open() {
