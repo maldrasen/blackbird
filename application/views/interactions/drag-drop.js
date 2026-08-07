@@ -1,6 +1,6 @@
 // A general purpose drag and drop manager. A consumer registers a draggable element selector along with the targets
 // it can be dropped onto, then applies whatever the drop means when notified. The manager only moves the dragged
-// element visually, using inline styles that are cleared when the drag ends, so an element that wasn't dropped
+// element visually, restoring its original inline styles when the drag ends, so an element that wasn't dropped
 // anywhere snaps back into place on its own.
 //
 // Registration options:
@@ -35,6 +35,12 @@ global.DragDrop = (function() {
       element,
       target: null,
       offset: { x:(event.clientX - bounds.left), y:(event.clientY - bounds.top) },
+      originalStyle: {
+        left: element.style['left'],
+        top: element.style['top'],
+        width: element.style['width'],
+        height: element.style['height'],
+      },
     };
 
     element.style['width'] = `${bounds.width}px`;
@@ -93,7 +99,15 @@ global.DragDrop = (function() {
 
     const element = dragContext.element;
     X.removeClass(element,'dragging');
-    ['left','top','width','height'].forEach(property => element.style.removeProperty(property));
+
+    // An element that positions itself with inline styles needs them put back, not cleared.
+    Object.entries(dragContext.originalStyle).forEach(([property, value]) => {
+      if (value === '') {
+        element.style.removeProperty(property);
+      } else {
+        element.style[property] = value;
+      }
+    });
 
     dragContext = null;
   }

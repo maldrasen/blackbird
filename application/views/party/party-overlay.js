@@ -2,6 +2,7 @@ global.PartyOverlay = (function() {
 
   let draft = {};
   let positionPanels = {};
+  let atHome = false;
 
   function init() {
     X.onClick('#partyOverlay .close-button', close);
@@ -10,8 +11,8 @@ global.PartyOverlay = (function() {
 
     // A card dropped on an occupied position is actually dropped on the card covering it, so cards are targets too.
     DragDrop.register({
-      source: '#partyCardLayer .party-card',
-      targets: ['#partyCardLayer .party-card','#partyOverlay .position'],
+      source: '#partyOverlay .party-card',
+      targets: ['#partyCardLayer .party-card','#partyOverlay .position','#partyOverlay .roster-panel'],
       onDrop: cardDropped,
     });
   }
@@ -20,13 +21,12 @@ global.PartyOverlay = (function() {
     if (target == null) { return; }
 
     const id = card.dataset.id;
-    const position = targetPosition(target);
-    const occupant = Object.keys(draft).find(x => draft[x] === position && x !== id);
 
-    if (occupant) { draft[occupant] = draft[id]; }
-    draft[id] = position;
-
-    refresh();
+    if (X.hasClass(target,'roster-panel')) {
+      removeFromParty(id);
+    } else {
+      placeInParty(id, targetPosition(target));
+    }
   }
 
   function targetPosition(target) {
@@ -34,8 +34,48 @@ global.PartyOverlay = (function() {
     return draft[target.dataset.id];
   }
 
+  // Adding and removing party members can only be done at home, and the player can never be removed. Rejected drops
+  // need no cleanup, the card snaps back on its own.
+  function canRemove(id) {
+    return atHome && id !== GameSystem.getState().getPlayer();
+  }
+
+  function removeFromParty(id) {
+    if (draft[id] == null) { return; }
+    if (canRemove(id) === false) { return; }
+
+    delete draft[id];
+    refresh();
+  }
+
+  function placeInParty(id, position) {
+    const previous = draft[id];
+    if (previous == null && atHome === false) { return; }
+
+    const occupant = Object.keys(draft).find(x => draft[x] === position && x !== id);
+
+    if (occupant && previous == null) {
+      // A roster character dropped on an occupied position replaces the occupant, sending them back to the roster.
+      if (canRemove(occupant) === false) { return; }
+      delete draft[occupant];
+    }
+    if (occupant && previous != null) {
+      draft[occupant] = previous;
+    }
+
+    draft[id] = position;
+    refresh();
+  }
+
   function open() {
     X.loadDocument('#partyOverlay','views/party-overlay.html');
+
+    atHome = GameSystem.getState().getCurrentDistrict() === 'home';
+    if (atHome) {
+      X.removeClass('#partyOverlay','away');
+    } else {
+      X.addClass('#partyOverlay','away');
+    }
 
     WindowManager.push(PartyOverlay);
     X.removeClass('#partyOverlay','hide');
@@ -110,6 +150,7 @@ global.PartyOverlay = (function() {
 
       element.style['left'] = `${coords.left}px`;
       element.style['top'] = `${coords.top}px`;
+      if (id === GameSystem.getState().getPlayer()) { X.addClass(element,'player'); }
       X.append('#partyCardLayer', element);
     });
   }
