@@ -13,6 +13,7 @@ global.BattleState = function(data) {
   const turnOrder = [];
 
   const partyFormation = { ...PartyConfiguration.getConfiguration() };
+  const homePositions = { ...partyFormation };
   const monsterFormation = {};
   const characterIds = Object.keys(partyFormation);
   const monsterIds = [];
@@ -76,6 +77,12 @@ global.BattleState = function(data) {
       partyFormation[id] = position;
     }
   }
+
+  // The home positions record where each character returns to when the battle is won. A knock out never touches
+  // them, but a death deletes the fallen character's entry and moves the back filler's home forward. The victory
+  // commit then leaves the party configuration corpse-free with no exposed back row.
+  function setHomePosition(id, position) { homePositions[id] = position; }
+  function removeHomePosition(id) { delete homePositions[id]; }
 
   function isInFront(id) {
     return getPosition(id)[2] === '0';
@@ -385,6 +392,9 @@ global.BattleState = function(data) {
     addMonster,
     getMonsterFormation: () => { return { ...monsterFormation }; },
     getPartyFormation: () => { return { ...partyFormation }; },
+    getHomePositions: () => { return { ...homePositions }; },
+    setHomePosition,
+    removeHomePosition,
     removeFromFormation,
     removeFromBattle,
     setCondition,

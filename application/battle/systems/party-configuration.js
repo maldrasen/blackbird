@@ -34,12 +34,6 @@ global.PartyConfiguration = (function() {
     GameSystem.getState().setPartyConfiguration(configuration);
   }
 
-  function removeCharacter(id) {
-    const configuration = GameSystem.getState().getPartyConfiguration();
-    delete configuration[id];
-    GameSystem.getState().setPartyConfiguration(configuration);
-  }
-
   function getVacantFrontPositions(configuration) {
     const positions = Object.values(configuration);
     const vacant = [];
@@ -74,7 +68,6 @@ global.PartyConfiguration = (function() {
     setConfiguration,
     getConfiguration,
     setCharacter,
-    removeCharacter,
     getVacantFrontPositions,
     isValid,
   });

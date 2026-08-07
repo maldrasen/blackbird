@@ -21,10 +21,8 @@ global.BattleDeathSystem = (function() {
     if (isBattleWon()) { return state.battleWon(); }
     if (isBattleLost(id)) { return state.battleLost(); }
 
-    // Dead characters leave the party configuration so the next battle doesn't start with a corpse in the formation.
-    // This has to happen before anyone moves forward into their spot, otherwise setCharacter() would swap the dead
-    // character into the mover's old position.
-    if (isMonster === false) { PartyConfiguration.removeCharacter(id); }
+    // Dead characters lose their home position so the victory commit doesn't return a corpse to the formation.
+    if (isMonster === false) { state.removeHomePosition(id); }
 
     removeFromFormation(id, FormationManager.moveForwardOnDeath);
 

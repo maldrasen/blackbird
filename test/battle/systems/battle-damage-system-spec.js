@@ -81,7 +81,7 @@ describe("BattleDamageSystem", function() {
     expect(HealthComponent.lookup(target).currentHealth).to.equal(-16);
     expect(state.isKnockedOut(target)).to.be.false;
     expect(state.isAlive(target)).to.be.false;
-    expect(PartyConfiguration.getConfiguration()[target]).to.be.undefined;
+    expect(state.getHomePositions()[target]).to.be.undefined;
   });
 
   it("kills a monster at zero, clamping their health", function() {

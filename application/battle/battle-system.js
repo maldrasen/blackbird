@@ -83,6 +83,10 @@ global.BattleSystem = (function() {
     const revived = BattleDeathSystem.reviveKnockedOut();
     const loot = [];
 
+    // The survivors' home positions become the new party configuration. This is the only point where a battle
+    // writes the persistent configuration.
+    PartyConfiguration.setConfiguration(state.getHomePositions());
+
     endBattle();
 
     EnlightenSystem.startEnlightenment('battle', {

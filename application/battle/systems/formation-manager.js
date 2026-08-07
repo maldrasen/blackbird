@@ -10,7 +10,7 @@ global.FormationManager = (function() {
     state.setPosition(moving, column.front.position);
 
     if (persist && column.side === 'party') {
-      PartyConfiguration.setCharacter(moving, column.front.position);
+      state.setHomePosition(moving, column.front.position);
     }
 
     if (state.hasStatusEffect(moving, 'hidden')) {

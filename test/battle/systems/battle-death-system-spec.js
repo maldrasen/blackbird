@@ -16,8 +16,8 @@ describe("BattleDeathSystem", function() {
 
       expect(state.getPartyFormation()[back]).to.equal('P.0.3');
       expect(state.getPartyFormation()[front]).to.be.undefined;
-      expect(PartyConfiguration.getConfiguration()[front]).to.equal('P.0.3');
-      expect(PartyConfiguration.getConfiguration()[back]).to.equal('P.1.3');
+      expect(state.getHomePositions()[front]).to.equal('P.0.3');
+      expect(state.getHomePositions()[back]).to.equal('P.1.3');
     });
 
     it("does not end the battle when the player goes down with the party still standing", function() {
@@ -40,7 +40,7 @@ describe("BattleDeathSystem", function() {
   });
 
   describe("killEntity()", function() {
-    it("makes the forward move persistent when the front character dies", function() {
+    it("moves the character behind forward in the home positions when the front character dies", function() {
       const state = startBattle();
       const front = state.getEntityAtPosition('P',0,3);
       const back = state.getEntityAtPosition('P',1,3);
@@ -48,9 +48,20 @@ describe("BattleDeathSystem", function() {
       BattleDeathSystem.killEntity(front);
 
       expect(state.getPartyFormation()[back]).to.equal('P.0.3');
-      expect(PartyConfiguration.getConfiguration()[front]).to.be.undefined;
-      expect(PartyConfiguration.getConfiguration()[back]).to.equal('P.0.3');
+      expect(state.getHomePositions()[front]).to.be.undefined;
+      expect(state.getHomePositions()[back]).to.equal('P.0.3');
       expect(state.getInterrupt()).to.be.undefined;
+    });
+
+    it("does not touch the party configuration until the battle is won", function() {
+      const state = startBattle();
+      const front = state.getEntityAtPosition('P',0,3);
+      const back = state.getEntityAtPosition('P',1,3);
+
+      BattleDeathSystem.killEntity(front);
+
+      expect(PartyConfiguration.getConfiguration()[front]).to.equal('P.0.3');
+      expect(PartyConfiguration.getConfiguration()[back]).to.equal('P.1.3');
     });
 
     it("loses the battle when the player is killed", function() {
