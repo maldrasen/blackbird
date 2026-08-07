@@ -3,7 +3,6 @@ global.PartyOverlay = (function() {
   let mode;
   let draft;
   let positionPanels;
-
   let rosterScrollingPanel = null;
 
   function init() {
@@ -31,6 +30,7 @@ global.PartyOverlay = (function() {
 
     buildGrid();
     buildDraft();
+    buildCaptives();
     refresh();
   }
 
@@ -87,6 +87,17 @@ global.PartyOverlay = (function() {
       item.appendChild(PartyCard(id).getElement());
       list.appendChild(item);
     });
+  }
+
+  // TODO: Captives aren't implemented in the game yet. When they are though new captives are displayed in the party
+  //       formation. The max number of captives that the party can have at a time may change as the game progresses.
+
+  function buildCaptives() {
+    const maxCaptives = 4;
+    const captiveList = X.first('#partyOverlay #captiveList');
+    for (let i=0; i<maxCaptives; i++) {
+      captiveList.appendChild(X.createElement(`<li class='captive-panel'></li>`));
+    }
   }
 
   // ================
@@ -167,6 +178,10 @@ global.PartyOverlay = (function() {
     delete draft[id];
     refresh();
   }
+
+  // TODO: The maximum number of party members should start at 6, though like the max captives this number can change
+  //       over time. I'm thinking that the player may be able to learn leadership type special abilities to increase
+  //       the maximum party size up to 10.
 
   function placeInParty(id, position) {
     const previous = draft[id];

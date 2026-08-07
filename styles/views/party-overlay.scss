@@ -91,6 +91,20 @@ $bg-panel: rgb(20 20 25 / 50%);
     margin: 0 20px;
   }
 
+  #captiveList {
+    display: flex;
+    margin-left: 10px;
+  }
+
+  .captive-panel {
+    height: 100px;
+    width: 100px;
+    margin-right: 10px;
+    border: variables.$border-light;
+    box-shadow: variables.$shadow-frame;
+    background-color: rgb(0 0 0 / 50%);
+  }
+
   .roster-panel {
     position: absolute;
     display: none;
