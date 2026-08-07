@@ -1,0 +1,30 @@
+@use "../variables";
+
+// Global native scrollbar styling. Any element with overflow-y:auto gets the
+// same look the old ScrollingPanel element had.
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: variables.$bg-scrolling-panel-track;
+  box-shadow: variables.$shadow-scrolling-panel-track;
+}
+
+::-webkit-scrollbar-thumb {
+  min-height: 50px;
+  background-color: variables.$bg-scrolling-panel-thumb;
+  border-top: variables.$border-scrolling-panel-thumb-top;
+  border-left: variables.$border-scrolling-panel-thumb-top;
+  border-right: variables.$border-scrolling-panel-thumb-bottom;
+  border-bottom: variables.$border-scrolling-panel-thumb-bottom;
+  box-shadow: variables.$shadow-scrolling-panel-thumb;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: variables.$bg-scrolling-panel-thumb-hover;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
