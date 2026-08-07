@@ -108,11 +108,7 @@ $bg-panel: rgb(20 20 25 / 50%);
   .roster-panel {
     position: absolute;
     display: none;
-
-    // With border-left removed, content-box sizing would make the border box 301px wide, and translateX(-50%) would
-    // land the panel on a half pixel, smearing every 1px vertical line inside it.
     box-sizing: border-box;
-
     border: variables.$border-normal;
     border-left: none;
     box-shadow: variables.$shadow-frame;
