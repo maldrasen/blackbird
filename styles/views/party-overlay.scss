@@ -2,6 +2,11 @@
 
 #partyOverlay {
 
+  .overlay {
+    display: flex;
+    flex-direction: column;
+  }
+
   .header-panel {
     padding: 10px 20px;
     font-size: variables.$fs-bigger;
@@ -10,6 +15,7 @@
 
   .formation-panel {
     position: relative;
+    flex-shrink: 0;
     padding: 20px;
   }
 
@@ -26,9 +32,98 @@
     margin-bottom: 15px;
   }
 
+  .position {
+    box-sizing: border-box;
+    height: 140px;
+    width: 140px;
+    background-color: rgba(0,0,0,0.33);
+    border: 1px solid rgb(20,20,20);
+    box-shadow: variables.$shadow-frame;
+  }
+
+  .position.exposed {
+    border-color: rgb(255,140,0);
+    box-shadow: 0 0 12px rgba(255,140,0,0.6) inset;
+  }
+
+  #partyCardLayer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    .party-card {
+      position: absolute;
+      pointer-events: auto;
+    }
+  }
+
+  .party-card {
+    box-sizing: border-box;
+    height: 140px;
+    width: 140px;
+    padding: 5px;
+    font-size: variables.$fs-small;
+    font-family: "habibi", sans-serif;
+    text-align: center;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0);
+    cursor: grab;
+
+    .fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+    }
+    .content {
+      z-index: 10;
+    }
+    .background-cover {
+      background-color: rgba(20,20,20,0.5);
+      box-shadow: 0 25px 20px rgba(0,0,0,0.7) inset, 0 -35px 20px rgba(0,0,0,0.8) inset;
+      z-index: 8;
+    }
+    .background {
+      z-index: 6;
+      background-color: rgb(0,0,0);
+      background-size: cover;
+      background-position: center;
+    }
+    .name {
+      height: 20px;
+      margin-top: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+  }
+
   .roster-panel {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
     padding: 20px;
     border-top: variables.$border-light;
+    overflow: hidden;
+
+    .panel-label {
+      margin-bottom: 10px;
+    }
+  }
+
+  .roster-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 10px;
+    flex-grow: 1;
+    overflow-y: auto;
+
+    .party-card {
+      position: relative;
+      height: 90px;
+      width: 90px;
+    }
   }
 
 }
