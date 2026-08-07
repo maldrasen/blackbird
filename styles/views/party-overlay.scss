@@ -122,8 +122,12 @@ $bg-panel: rgb(20 20 25 / 50%);
 
     .roster-item {
       display: flex;
+      min-height: 80px;
       margin-bottom: 5px;
     }
+
+    // A dragged card is reparented to the body, leaving its details sitting alone in the row.
+    .roster-item:not(:has(.party-card)) .details { visibility: hidden; }
 
     .party-card {
       position: relative;
