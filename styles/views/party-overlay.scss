@@ -117,7 +117,7 @@ $bg-panel: rgb(20 20 25 / 50%);
     z-index: variables.$z-below-overlay;
   }
 
-  .roster-list {
+  #rosterList {
     padding: 10px;
 
     .roster-item {
