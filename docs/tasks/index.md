@@ -81,4 +81,4 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [041] More Species `5pt` #character — [041-more-species.md](041-more-species.md)
 - [042] All the way though `5pt` #training — [042-all-the-way-though.md](042-all-the-way-though.md)
 - [043] Additional Sex Actions / Body Part Types `21pt` #training — [043-additional-sex-actions-body-part-types.md](043-additional-sex-actions-body-part-types.md)
-- [166] Implement remember this effect `3pt` — [166-implement-remember-this-effect.md](166-implement-remember-this-effect.md)
+- [169] Implement remember this effect `3pt` — [169-implement-remember-this-effect.md](169-implement-remember-this-effect.md)
