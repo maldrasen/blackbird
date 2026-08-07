@@ -3,6 +3,7 @@ global.PartyOverlay = (function() {
   let draft = {};
   let positionPanels = {};
   let atHome = false;
+  let rosterScrollingPanel = null;
 
   function init() {
     X.onClick('#locationControls .open-party', open);
@@ -94,6 +95,9 @@ global.PartyOverlay = (function() {
     X.removeClass('#partyOverlay','hide');
     X.removeClass('#overlayCover','hide');
 
+    // The scrolling panel measures itself when built, so the overlay has to be visible first.
+    rosterScrollingPanel = ScrollingPanel({ selector:'#partyOverlay .roster-list' });
+
     buildGrid();
     buildDraft();
     refresh();
@@ -102,6 +106,7 @@ global.PartyOverlay = (function() {
   }
 
   function close() {
+    rosterScrollingPanel = null;
     X.empty('#partyOverlay');
     X.addClass('#partyOverlay','hide');
     X.addClass('#overlayCover','hide');
@@ -154,6 +159,7 @@ global.PartyOverlay = (function() {
     fillRoster();
     highlightVacancies();
     updateConfirmButton();
+    if (rosterScrollingPanel) { rosterScrollingPanel.resize(); }
   }
 
   function placeCards() {

@@ -85,13 +85,17 @@
     }
   }
 
+  .roster-panel .scrolling-panel {
+    flex-grow: 1;
+    height: auto;
+    min-height: 0;
+  }
+
   .roster-list {
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
     gap: 10px;
-    flex-grow: 1;
-    overflow-y: auto;
 
     .party-card {
       position: relative;
@@ -110,7 +114,7 @@
   }
 
   &.away {
-    .roster-list { display: none; }
+    .roster-panel .scrolling-panel { display: none; }
     .away-note { display: block; }
   }
 
