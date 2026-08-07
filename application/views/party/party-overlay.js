@@ -82,7 +82,8 @@ global.PartyOverlay = (function() {
     X.empty(list);
     X.removeClass('#partyOverlay .roster-panel','hide');
 
-    const roster = GameSystem.getState().getRoster().filter(id => draft[id] == null).
+    const roster = GameSystem.getState().getRoster().
+      filter(id => draft[id] == null).
       map(id => ({ id, name: Character(id).getFullName() })).
       sort((a,b) => a.name.localeCompare(b.name)).
       map(entry => entry.id);
