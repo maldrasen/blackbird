@@ -84,8 +84,11 @@ global.PartyOverlay = (function() {
     X.empty(list);
     X.removeClass('#partyOverlay .roster-panel','hide');
 
+
     GameSystem.getState().getRoster().filter(id => draft[id] == null).forEach(id => {
-      list.appendChild(PartyCard(id).getElement());
+      const item = X.createElement(`<li></li>`)
+      item.appendChild(PartyCard(id).getElement());
+      list.appendChild(item);
     });
   }
 

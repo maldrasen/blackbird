@@ -1,9 +1,9 @@
 @use "../variables";
 
+$bg-panel: rgb(20 20 25 / 50%);
+
 #partyOverlay.normal {
   .overlay {
-    left: 50%;
-    transform: translateX(-50%);
     height: 375px;
     width: 800px;
   }
@@ -18,17 +18,36 @@
 
 #partyOverlay.transfer {
   .overlay {
-    height: 375px;
+    left: calc(50% - 0px);
+    height: 560px;
     width: 800px;
   }
+  .overlay-footer {
+    top: 606px;
+    width: 790px;
+  }
+  .roster-panel {
+    display: block;
+    left: calc(50% + 550px);
+    top: 60px;
+    width: 300px;
+    height: 572px;
+    transform: translateX(-50%);
+  }
 }
-
 
 #partyOverlay {
 
   .overlay {
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
+    background-color: $bg-panel;
+  }
+  .overlay-footer {
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .formation-panel {
@@ -48,8 +67,8 @@
     box-sizing: border-box;
     height: 140px;
     width: 140px;
-    background-color: rgba(0,0,0,0.33);
-    border: 1px solid rgb(20,20,20);
+    background-color: rgba(0 0 0 / 50%);
+    border: variables.$border-light;
     box-shadow: variables.$shadow-frame;
   }
 
@@ -63,6 +82,29 @@
     box-shadow: 0 0 12px rgba(120,160,220,0.6) inset;
   }
 
+
+  .roster-panel {
+    position: absolute;
+    display: none;
+
+    border: variables.$border-normal;
+    border-left: none;
+    box-shadow: variables.$shadow-frame;
+    background-color: $bg-panel;
+    backdrop-filter: blur(5px);
+    z-index: variables.$z-below-overlay;
+  }
+
+  .roster-list {
+    padding: 10px;
+
+    .party-card {
+      position: relative;
+      height: 90px;
+      width: 90px;
+    }
+
+  }
 
 
   /*
@@ -121,18 +163,6 @@
     min-height: 0;
   }
 
-  .roster-list {
-    display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    gap: 10px;
-
-    .party-card {
-      position: relative;
-      height: 90px;
-      width: 90px;
-    }
-  }
 
   .roster-panel.drop-target {
     background-color: rgba(120,160,220,0.08);
