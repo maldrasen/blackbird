@@ -31,10 +31,31 @@ global.PartyConfiguration = (function() {
     GameSystem.getState().setPartyConfiguration(configuration);
   }
 
+  // A formation is only valid when no back row character is missing a character in front of them. These work on any
+  // configuration map, not just the persisted one, so a view can check an unsaved draft.
+  function getVacantFrontPositions(configuration) {
+    const positions = Object.values(configuration);
+    const vacant = [];
+
+    for (let column = 0; column < 5; column++) {
+      if (positions.includes(`P.1.${column}`) && positions.includes(`P.0.${column}`) === false) {
+        vacant.push(`P.0.${column}`);
+      }
+    }
+
+    return vacant;
+  }
+
+  function isValidConfiguration(configuration) {
+    return getVacantFrontPositions(configuration).length === 0;
+  }
+
   return Object.freeze({
     getConfiguration: () => { return GameSystem.getState().getPartyConfiguration() || {}; },
     setCharacter,
     removeCharacter,
+    getVacantFrontPositions,
+    isValidConfiguration,
   });
 
 })();
