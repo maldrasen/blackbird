@@ -259,6 +259,7 @@
     "application/views/locations/location-view.js",
     "application/views/locations/navigation-overlay.js",
     "application/views/negotiation/negotiation-overlay.js",
+    "application/views/party/party-overlay.js",
     "application/views/training/training-action-panel.js",
     "application/views/training/training-category-toggles.js",
     "application/views/training/training-output.js",

@@ -17,6 +17,7 @@ global.Views = (function() {
     MouseMonitor.init();
     NegotiationOverlay.init();
     OptionsOverlay.init();
+    PartyOverlay.init();
     ScrollingPanel.init();
     Select.init();
     TabController.init();
