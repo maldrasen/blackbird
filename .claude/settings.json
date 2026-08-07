@@ -7,6 +7,7 @@
       "Bash(bin/compile-manifest.sh)",
       "Bash(bash bin/compile-manifest.sh)",
       "Bash(bash bin/compile-style.sh)",
+      "Bash(node bin/compile-task-index.js)",
       "Bash(node --check:*)",
       "Bash(echo:*)",
       "Bash(grep:*)",

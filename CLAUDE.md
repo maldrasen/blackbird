@@ -71,5 +71,9 @@ like `git diff` or `git log` is allowed.
 ### Comments
 There's no need to add comments when it's clear what something does.
 
+### Markdown Format
+Don't wrap the text in the markdown files in the `docs` directory. I use Obsidian to edit these files which shows line
+breaks and has its own wrapping logic.
+
 ## Rules
 @.claude/rules/workflow.md
