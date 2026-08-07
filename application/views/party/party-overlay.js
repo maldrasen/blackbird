@@ -5,6 +5,7 @@ global.PartyOverlay = (function() {
   let atHome = false;
 
   function init() {
+    X.onClick('#locationControls .open-party', open);
     X.onClick('#partyOverlay .close-button', close);
     X.onClick('#partyOverlay .confirm-button', confirm);
     X.onResize(() => X.first('#partyOverlay .position') != null, refresh);
@@ -67,7 +68,19 @@ global.PartyOverlay = (function() {
     refresh();
   }
 
+  // The formation can be edited anywhere the party isn't otherwise engaged, which for now means while looking at a
+  // location or exploring the dungeon.
+  function canOpen() {
+    if (GameSystem.isLoaded() === false) { return false; }
+    if (X.hasClass('#partyOverlay','hide') === false) { return false; }
+
+    const mode = GameSystem.getState().getGameMode();
+    return mode === GameMode.location || mode === GameMode.dungeon;
+  }
+
   function open() {
+    if (canOpen() === false) { return; }
+
     X.loadDocument('#partyOverlay','views/party-overlay.html');
 
     atHome = GameSystem.getState().getCurrentDistrict() === 'home';

@@ -23,4 +23,9 @@
   border-top: none;
   box-shadow: -5px 5px 10px rgba(0,0,0,0.8);
   z-index: variables.$z-location-controls;
+
+  ul {
+    display: flex;
+    gap: 5px;
+  }
 }
