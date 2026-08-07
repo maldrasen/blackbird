@@ -82,12 +82,12 @@ global.PartyOverlay = (function() {
     X.empty(list);
     X.removeClass('#partyOverlay .roster-panel','hide');
 
-    // How do i sort list?
-    const rosterCharacters = GameSystem.getState().getRoster().
-      filter(id => draft[id] == null).
-      sort((a,b) => Character(b).getFullName() - Character(a).getFullName());
+    const roster = GameSystem.getState().getRoster().filter(id => draft[id] == null).
+      map(id => ({ id, name: Character(id).getFullName() })).
+      sort((a,b) => a.name.localeCompare(b.name)).
+      map(entry => entry.id);
 
-    rosterCharacters.forEach(id => {
+    roster.forEach(id => {
       const item = X.createElement(`<li class='roster-item'></li>`)
       item.appendChild(PartyCard(id).getElement());
       item.appendChild(buildRosterDetails(id));

@@ -36,7 +36,7 @@ global.GameState = function(data={}) {
     getLegacyName: () => { return legacyName; },
     setLegacyName: name => { legacyName = name; },
 
-    getRoster: () => { return roster; },
+    getRoster: () => { return [...roster]; },
     addToRoster: id => { if (roster.includes(id) === false) { roster.push(id); } },
     removeFromRoster: id => { roster = roster.filter(x => x !== id); },
     isInRoster: id => { return roster.includes(id); },
