@@ -32,8 +32,6 @@ global.GeneralOverlay = (function() {
       X.addClass('#generalOverlay .overlay','no-footer')
       X.addClass('#generalOverlay .overlay-footer','hide')
     }
-
-    ScrollingPanel({ id:'#generalOverlayScroll' });
   }
 
   // The overlay footer is a button row, so it expects the content to be a button or an array of buttons, though I

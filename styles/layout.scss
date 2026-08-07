@@ -87,6 +87,11 @@
   border-bottom: variables.$border-normal;
 }
 
+.overlay #generalOverlayScroll {
+  height: 100%;
+  overflow-y: auto;
+}
+
 .overlay.narrow {
   left: 200px;
   min-width: 400px;
