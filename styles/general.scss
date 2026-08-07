@@ -2,6 +2,12 @@
 
 .hide { display: none !important; }
 
+.dragging {
+  position: fixed;
+  pointer-events: none;
+  z-index: variables.$z-dragging;
+}
+
 .align-right { text-align: right; }
 .align-left { text-align: left; }
 .align-center { text-align: center; }
