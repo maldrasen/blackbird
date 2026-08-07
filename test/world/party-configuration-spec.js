@@ -33,6 +33,38 @@ describe("PartyConfiguration", function() {
     expect(PartyConfiguration.getConfiguration()['rabbit']).to.equal('P.0.2');
   });
 
+  describe('setConfiguration', function() {
+
+    it('replaces the whole configuration', function() {
+      PartyConfiguration.setCharacter('pig','P.0.4');
+      PartyConfiguration.setConfiguration({ horse:'P.0.1', goat:'P.1.1' });
+
+      expect(PartyConfiguration.getConfiguration()).to.eql({ horse:'P.0.1', goat:'P.1.1' });
+    });
+
+    it('copies the configuration it is given', function() {
+      const draft = { horse:'P.0.1' };
+      PartyConfiguration.setConfiguration(draft);
+      draft.goat = 'P.0.2';
+
+      expect(PartyConfiguration.getConfiguration()).to.eql({ horse:'P.0.1' });
+    });
+
+    it('rejects malformed positions', function() {
+      expect(() => PartyConfiguration.setConfiguration({ horse:'front' })).to.throw('Invalid Position');
+      expect(() => PartyConfiguration.setConfiguration({ horse:'M.0.1' })).to.throw('Invalid Position');
+    });
+
+    it('rejects duplicate positions', function() {
+      expect(() => PartyConfiguration.setConfiguration({ horse:'P.0.1', goat:'P.0.1' })).to.throw('Duplicate');
+    });
+
+    it('rejects an invalid formation', function() {
+      expect(() => PartyConfiguration.setConfiguration({ horse:'P.1.1' })).to.throw('Invalid formation');
+    });
+
+  });
+
   describe('validity', function() {
 
     it('an empty configuration is valid', function() {

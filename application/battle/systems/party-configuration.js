@@ -31,6 +31,27 @@ global.PartyConfiguration = (function() {
     GameSystem.getState().setPartyConfiguration(configuration);
   }
 
+  // Replace the entire party configuration at once, as when saving an edited formation. The configuration is copied
+  // on the way in so the caller's draft never aliases the persisted state.
+  function setConfiguration(configuration) {
+    const positions = Object.values(configuration);
+
+    positions.forEach(position => {
+      const match = position.match(_positionPattern);
+      if (match == null || match[1] !== 'P') { throw new Error(`Invalid Position: ${position}`); }
+    });
+
+    if (new Set(positions).size !== positions.length) {
+      throw new Error(`Duplicate positions in configuration`);
+    }
+
+    if (isValidConfiguration(configuration) === false) {
+      throw new Error(`Invalid formation: vacant front positions [${getVacantFrontPositions(configuration)}]`);
+    }
+
+    GameSystem.getState().setPartyConfiguration({ ...configuration });
+  }
+
   // A formation is only valid when no back row character is missing a character in front of them. These work on any
   // configuration map, not just the persisted one, so a view can check an unsaved draft.
   function getVacantFrontPositions(configuration) {
@@ -53,6 +74,7 @@ global.PartyConfiguration = (function() {
   return Object.freeze({
     getConfiguration: () => { return GameSystem.getState().getPartyConfiguration() || {}; },
     setCharacter,
+    setConfiguration,
     removeCharacter,
     getVacantFrontPositions,
     isValidConfiguration,
