@@ -6,7 +6,7 @@ global.CombatantPanel = function(type, entity) {
   let healthBar;
   let positionKey;
 
-  const element = X.createElement(`<div class='combatant ${type}' data-id="${entity}">
+  const element = X.createElement(`<div class='entity-card combatant ${type}' data-id="${entity}">
     <div class='fill content'>
       <div class='name'></div>
       <div class='status-panel'></div>

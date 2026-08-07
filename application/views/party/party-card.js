@@ -1,6 +1,6 @@
 global.PartyCard = function(id) {
 
-  const element = X.createElement(`<div class='party-card' data-id='${id}'>
+  const element = X.createElement(`<div class='entity-card party-card' data-id='${id}'>
     <div class='fill content'>
       <div class='name'></div>
     </div>

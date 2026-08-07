@@ -1,15 +1,15 @@
 @use "../variables";
 
-// The card structure is shared between the party overlay and the dungeon controls. Sizing and positioning are left to
-// the views displaying the cards.
-.party-card {
+// The card structure shared by the party cards and the battle combatants. Sizing and positioning are left to the
+// views displaying the cards.
+.entity-card {
   box-sizing: border-box;
   padding: 5px;
   font-size: variables.$fs-small;
   font-family: "habibi", sans-serif;
   text-align: center;
   overflow: hidden;
-  border: rgb(200 20 20); // Not Visible?
+  border: 1px solid rgb(20,20,20);
 
   .fill {
     position: absolute;
@@ -22,13 +22,13 @@
     z-index: 10;
   }
   .background-cover {
-    background-color: rgba(20 20 20 / 0.5);
-    box-shadow: 0 25px 20px rgba(0 0 0 / 0.7) inset, 0 -35px 20px rgba(0 0 0 / 0.8) inset;
+    background-color: rgba(20,20,20,0.5);
+    box-shadow: 0 25px 20px rgba(0,0,0,0.7) inset, 0 -35px 20px rgba(0,0,0,0.8) inset;
     z-index: 8;
   }
   .background {
     z-index: 6;
-    background-color: rgb(0 0 0);
+    background-color: rgb(0,0,0);
     background-size: cover;
     background-position: center;
   }
