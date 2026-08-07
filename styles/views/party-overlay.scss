@@ -120,12 +120,15 @@ $bg-panel: rgb(20 20 25 / 50%);
   .roster-list {
     padding: 10px;
 
-    .party-card {
-      position: relative;
-      height: 90px;
-      width: 90px;
+    .roster-item {
+      display: flex;
     }
 
+    .party-card {
+      position: relative;
+      height: 80px;
+      width: 80px;
+    }
   }
 
 
@@ -153,59 +156,4 @@ $bg-panel: rgb(20 20 25 / 50%);
     width: 140px;
     cursor: grab;
   }
-
-
-
-
-  /*
-
-  .header-panel {
-    padding: 10px 20px;
-    font-size: variables.$fs-bigger;
-    border-bottom: variables.$border-normal;
-  }
-
-
-  .rank-label {
-    margin-bottom: 5px;
-    font-size: variables.$fs-small;
-    color: variables.$fg-weak;
-  }
-
-
-
-  .roster-panel {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    padding: 20px;
-    border-top: variables.$border-light;
-    overflow: hidden;
-
-    .panel-label {
-      margin-bottom: 10px;
-    }
-  }
-
-  .roster-panel .scrolling-panel {
-    flex-grow: 1;
-    height: auto;
-    min-height: 0;
-  }
-
-
-  .roster-panel.drop-target {
-    background-color: rgba(120,160,220,0.08);
-  }
-
-  .away-note {
-    display: none;
-    color: variables.$fg-weak;
-  }
-
-  &.away {
-    .roster-panel .scrolling-panel { display: none; }
-    .away-note { display: block; }
-  }
-*/
 }

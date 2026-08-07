@@ -19,6 +19,7 @@ global.Character = function(id) {
   function isFuta() { return ActorComponent.lookup(id).gender === Gender.futa; }
   function isEnby() { return ActorComponent.lookup(id).gender === Gender.enby; }
   function getSkill(code) { return SkillsComponent.lookup(id)[code]; }
+  function getLevel() { return ExperienceComponent.lookup(id).level; }
 
   // ==============
   //   Attributes
@@ -245,6 +246,7 @@ global.Character = function(id) {
     isFuta,
     isEnby,
     getSkill,
+    getLevel,
 
     // Attributes
     isFasterThan,

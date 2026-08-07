@@ -26,7 +26,7 @@ global.PartyOverlay = (function() {
     X.removeClass('#partyOverlay','hide');
     X.removeClass('#overlayCover','hide');
 
-    rosterScrollingPanel = ScrollingPanel({ selector:'#partyOverlay .roster-list' });
+    rosterScrollingPanel = ScrollingPanel({ selector:'#partyOverlay #rosterList' });
 
     buildGrid();
     buildDraft();
@@ -77,16 +77,32 @@ global.PartyOverlay = (function() {
   }
 
   function buildRoster() {
-    const list = X.first('#partyOverlay .roster-list');
+    const list = X.first('#partyOverlay #rosterList');
 
     X.empty(list);
     X.removeClass('#partyOverlay .roster-panel','hide');
 
     GameSystem.getState().getRoster().filter(id => draft[id] == null).forEach(id => {
-      const item = X.createElement(`<li></li>`)
+      const item = X.createElement(`<li class='roster-item'></li>`)
       item.appendChild(PartyCard(id).getElement());
+      item.appendChild(buildRosterDetails(id));
       list.appendChild(item);
     });
+  }
+
+  function buildRosterDetails(id) {
+    const character = Character(id);
+
+    return X.createElement(`<div class='details'>
+      <div class='top-row'>
+        <span class='name'>${character.getName()}</span>
+      </div>
+      <div class='bottom-row'>
+        <span class='level'>Level ${character.getLevel()}</span>
+        <span class='gender'>${character.getGenderName()}</span>
+        <span class='species'>${character.getSpecies()}</span>
+      </div>
+    </div>`);
   }
 
   // TODO: Captives aren't implemented in the game yet. When they are though new captives are displayed in the party
