@@ -3,7 +3,6 @@ global.PartyOverlay = (function() {
   let mode;
   let draft;
   let positionPanels;
-  let rosterScrollingPanel = null;
 
   function init() {
     X.onClick('#partyOverlay .close-button', close);
@@ -26,8 +25,6 @@ global.PartyOverlay = (function() {
     X.removeClass('#partyOverlay','hide');
     X.removeClass('#overlayCover','hide');
 
-    rosterScrollingPanel = ScrollingPanel({ selector:'#partyOverlay #rosterList' });
-
     buildGrid();
     buildDraft();
     buildCaptives();
@@ -35,7 +32,6 @@ global.PartyOverlay = (function() {
   }
 
   function close() {
-    rosterScrollingPanel = null;
     X.empty('#partyOverlay');
     X.removeAttribute('#partyOverlay','class');
     X.addClass('#partyOverlay','hide');
@@ -124,7 +120,6 @@ global.PartyOverlay = (function() {
     placeCards();
     highlightVacancies();
     updateConfirmButton();
-    rosterScrollingPanel.resize();
     if (mode === 'transfer') { buildRoster(); }
   }
 
