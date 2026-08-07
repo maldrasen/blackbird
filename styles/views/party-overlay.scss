@@ -67,44 +67,9 @@
   }
 
   .party-card {
-    box-sizing: border-box;
     height: 140px;
     width: 140px;
-    padding: 5px;
-    font-size: variables.$fs-small;
-    font-family: "habibi", sans-serif;
-    text-align: center;
-    overflow: hidden;
-    border: 1px solid rgba(0,0,0,0);
     cursor: grab;
-
-    .fill {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-    }
-    .content {
-      z-index: 10;
-    }
-    .background-cover {
-      background-color: rgba(20,20,20,0.5);
-      box-shadow: 0 25px 20px rgba(0,0,0,0.7) inset, 0 -35px 20px rgba(0,0,0,0.8) inset;
-      z-index: 8;
-    }
-    .background {
-      z-index: 6;
-      background-color: rgb(0,0,0);
-      background-size: cover;
-      background-position: center;
-    }
-    .name {
-      height: 20px;
-      margin-top: 3px;
-      white-space: nowrap;
-      overflow: hidden;
-    }
   }
 
   .roster-panel {
@@ -137,10 +102,6 @@
 
   .roster-panel.drop-target {
     background-color: rgba(120,160,220,0.08);
-  }
-
-  .party-card.player {
-    border: 1px solid rgba(200,170,80,0.8);
   }
 
   .away-note {

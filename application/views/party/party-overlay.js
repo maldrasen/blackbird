@@ -111,6 +111,8 @@ global.PartyOverlay = (function() {
   function confirm() {
     PartyConfiguration.setConfiguration(draft);
     close();
+
+    if (GameSystem.getState().getGameMode() === GameMode.dungeon) { DungeonControls.update(); }
   }
 
   // The grid has to be built after the overlay is shown, a hidden element has no size to measure card

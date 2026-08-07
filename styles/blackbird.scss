@@ -20,6 +20,7 @@
 @use 'elements/confirmation';
 @use 'elements/icons';
 @use 'elements/notes';
+@use 'elements/party-card';
 @use 'elements/scrolling-panel';
 @use 'elements/select';
 @use 'elements/slider';
@@ -31,6 +32,7 @@
 @use 'views/battle';
 @use 'views/character-overlay';
 @use 'views/dungeon';
+@use 'views/dungeon-controls';
 @use 'views/enlighten-view';
 @use 'views/episode-view';
 @use 'views/feature-viewer';

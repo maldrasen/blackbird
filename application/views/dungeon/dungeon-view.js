@@ -15,6 +15,7 @@ global.DungeonView = (function() {
 
   function show() {
     MainContent.setMainContent("views/dungeon.html");
+    DungeonControls.build();
     drawDungeon();
   }
 

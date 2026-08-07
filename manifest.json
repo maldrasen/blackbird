@@ -221,6 +221,7 @@
     "application/views/character/character-overview-panel.js",
     "application/views/character/inventory-panel.js",
     "application/views/dungeon/dungeon-camera.js",
+    "application/views/dungeon/dungeon-controls.js",
     "application/views/dungeon/dungeon-door-view.js",
     "application/views/dungeon/dungeon-floor-view.js",
     "application/views/dungeon/dungeon-room-view.js",

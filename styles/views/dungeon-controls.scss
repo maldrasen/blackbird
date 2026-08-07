@@ -1,0 +1,47 @@
+@use "../variables";
+
+#dungeonControls {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: variables.$z-dungeon-controls;
+
+  .controls-frame {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+    padding: 10px 15px;
+    background-color: rgba(0,0,0,0.75);
+    border: variables.$border-normal;
+    border-bottom: none;
+    box-shadow: 0 -5px 10px rgba(0,0,0,0.5);
+  }
+
+  .formation-display {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .rank {
+      display: grid;
+      grid-template-columns: repeat(5, 70px);
+      gap: 4px;
+    }
+
+    .position {
+      box-sizing: border-box;
+      height: 70px;
+      width: 70px;
+      background-color: rgba(0,0,0,0.33);
+      border: 1px solid rgb(20,20,20);
+    }
+
+    .party-card {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      cursor: pointer;
+    }
+  }
+}
