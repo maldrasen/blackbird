@@ -16,3 +16,5 @@ const manifest = require(`${ROOT}/manifest.json`);
 manifest.fileList
   .filter(path => !path.startsWith('application/views'))
   .forEach(path => require(`${ROOT}/${path}`));
+
+ReferenceValidator.validate();

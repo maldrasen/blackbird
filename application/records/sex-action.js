@@ -20,21 +20,21 @@
 - `techniqueTarget`   Technique skill roll target. Rolls below the target halve the sensations and shame or anger the
                       partner; rolls above double the sensations and soothe anger.
 - `consentFactors`    Ordered factor array: a base factor first, then arousal, gender, and preference factors.
-  - base:       `{ baseClass }` [emotional, performance, penetration, reverseService, roughService, service,
-                touching] The starting consent value, derived from the partner's feelings.
-  - arousal:    `{ strength }` Adds the partner's arousal curve, multiplied by the strength (default 1).
-  - gender:     `{ scale }` Multiplies consent by the partner's attraction to the actor's gender.
-  - preference: `{ code, scale, conflicting }` Multiplies consent by the partner's preference value. A conflicting
-                preference inverts it.
+    - base:               `{ baseClass }` [emotional, performance, penetration, reverseService, roughService,
+                          service, touching] The starting consent value, derived from the partner's feelings.
+    - arousal:            `{ strength }` Adds the partner's arousal curve, multiplied by the strength (default 1).
+    - gender:             `{ scale }` Multiplies consent by the partner's attraction to the actor's gender.
+    - preference:         `{ code, scale, conflicting }` Multiplies consent by the partner's preference value. A
+                          conflicting preference inverts it.
 
 ### Sensation properties
-- `partnerSensations`  Map of sensation keys to baseline intensities. Physical keys [anus, cervix, clit, cock,
-                       nipple, prostate, pussy, throat, urethra] only apply when the partner has the part; emotional
-                       keys [anger, comfort, desire, shame, submission, suffering] always apply.
-- `playerSensations`   Same physical keys for the player. Desire is the only emotional key that applies.
-- `orientation`        `{ submission, masochism, shame }` Where the action falls in the BDSM matrix, driving the
-                       domination, sadism, and degradation skill effects.
-- `skills`             `{ player, partner }` Skill code arrays each role is practicing during the action.
+- `partnerSensations`   Map of sensation keys to baseline intensities. Physical keys [anus, cervix, clit, cock,
+                        nipple, prostate, pussy, throat, urethra] only apply when the partner has the part; emotional
+                        keys [anger, comfort, desire, shame, submission, suffering] always apply.
+- `playerSensations`    Same physical keys for the player. Desire is the only emotional key that applies.
+- `orientation`         `{ submission, masochism, shame }` Where the action falls in the BDSM matrix, driving the
+                        domination, sadism, and degradation skill effects.
+- `skills`              `{ player, partner }` Skill code arrays each role is practicing during the action.
 
 ### Persistence properties
 - `persist`        `{ action, revert, when }` Persists `action` (not always this action's own code) across rounds.
@@ -53,11 +53,11 @@
 ### availableWhen properties
 An action with no availableWhen is always visible. isPossible combines with one of the match conditions, which are
 checked in this order:
-- `previousAction`   Available only the round after this action code ran.
-- `persistedAction`  Available while this action code is persisted.
-- `player`/`partner` TrainingSlot array pair. Available while a persisted action uses these parts.
-- `isPossible`       Predicate, passed the training context. For conditions that change during training, like
-                     striptease needing a partner who is still clothed.
+- `previousAction`     Available only the round after this action code ran.
+- `persistedAction`    Available while this action code is persisted.
+- `player`/`partner`   TrainingSlot array pair. Available while a persisted action uses these parts.
+- `isPossible`         Predicate, passed the training context. For conditions that change during training, like
+                       striptease needing a partner who is still clothed.
 */
 global.SexAction = (function() {
   const sexActions = {};
@@ -270,6 +270,7 @@ global.SexAction = (function() {
       // Action persistence
       getPersist: () => { return action.persist; },
       getAlignment: () => { return action.alignment; },
+      getAvailableWhen: () => { return action.availableWhen; },
       getForcePosition: () => { return action.forcePosition; },
       getUses,
       usesSlot,

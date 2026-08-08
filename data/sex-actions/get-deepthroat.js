@@ -32,7 +32,7 @@ SexAction.register('get-deepthroat',{
     { type:'preference', code:'breath-player' },
     { type:'preference', code:'submissive' },
     { type:'preference', code:'masochistic' },
-    { type:'preference', code:'sadist', conflicting:true },
+    { type:'preference', code:'sadistic', conflicting:true },
     { type:'preference', code:'dominant', conflicting:true },
   ],
 

@@ -59,9 +59,9 @@ window.Loader = (function() {
 
   async function boot() {
     try {
+      ReferenceValidator.validate();
       MainContent.loadStyles();
       MainContent.loadMainContent();
-
       Views.initAll();
 
       await WorldState.loadState();
