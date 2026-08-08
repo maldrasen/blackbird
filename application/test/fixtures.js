@@ -33,7 +33,7 @@ global.Fixtures = (function() {
   function setupTraining() {
     setupGame();
     CharacterFixtures.randomPlayer();
-    CharacterFixtures.randomCharacters(30, { triggers:[] });
+    CharacterFixtures.randomCharacters(10, { triggers:[] });
 
     // TEMP: Inventory Testing
     const player = GameSystem.getState().getPlayer();
@@ -42,6 +42,7 @@ global.Fixtures = (function() {
       inventory.addItem(WeaponFactory.build(code));
     });
 
+    EpisodeQueue.push('debug-strange-mist');
     GameSystem.setGameMode(GameMode.location);
   }
 
