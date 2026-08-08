@@ -3,6 +3,10 @@ global.Resolution = function(type, message, feelings, options={}) {
   const effects = Object.freeze(ObjectHelper.filter(options, effectKeys));
   const extras = ObjectHelper.filter(options, ['question', 'code']);
 
+  const unknown = Object.keys(options).filter(key => [...effectKeys, 'question', 'code', 'feelings'].includes(key) === false);
+  if (unknown.length > 0) {
+    throw new Error(`Unknown negotiation reaction option [${unknown.join(', ')}]`); }
+
   if (type === 'followUp' && extras.question == null) {
     throw new Error(`A followUp reaction must point to a question.`); }
 
@@ -68,4 +72,3 @@ global.Resolution = function(type, message, feelings, options={}) {
 
   return Object.freeze(reaction);
 }
-
