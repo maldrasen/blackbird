@@ -12,16 +12,16 @@ describe('Episode', function() {
   function registerQueue(queue) { return register({ queue:{ global:true, ...queue } }); }
 
   it('rejects an unknown layout', function() {
-    expect(register({ layout:'sideways' })).to.throw(/unknown layout/);
+    expect(register({ layout:'sideways' })).to.throw(/layout\[sideways\] not in list/);
   });
 
   it('rejects an endFunction that is not a function', function() {
-    expect(register({ endFunction:'finish' })).to.throw(/endFunction must be a function/);
+    expect(register({ endFunction:'finish' })).to.throw(/endFunction is not a function/);
   });
 
   it('rejects a record with no pages', function() {
-    expect(register({ pages:null })).to.throw(/at least one page/);
-    expect(register({ pages:[] })).to.throw(/at least one page/);
+    expect(register({ pages:null })).to.throw(/pages is not an array/);
+    expect(register({ pages:[] })).to.throw(/pages.length is less than 1/);
   });
 
   it('rejects a page with neither content nor a contentFunction', function() {
@@ -34,70 +34,71 @@ describe('Episode', function() {
   });
 
   it('rejects a page with an unknown buttonsStyle', function() {
-    expect(registerPage({ content:`<p>Text</p>`, buttonsStyle:'grid' })).to.throw(/unknown buttonsStyle/);
+    expect(registerPage({ content:`<p>Text</p>`, buttonsStyle:'grid' })).to.throw(/buttonsStyle\[grid\] not in list/);
   });
 
   it('rejects a page onShow that is not a function', function() {
-    expect(registerPage({ content:`<p>Text</p>`, onShow:'playEffect' })).to.throw(/onShow must be a function/);
+    expect(registerPage({ content:`<p>Text</p>`, onShow:'playEffect' })).to.throw(/onShow is not a function/);
   });
 
   it('rejects page requires that are not functions', function() {
     expect(registerPage({ content:`<p>Text</p>`, requires:[() => true, 'hasPlayer'] }))
-      .to.throw(/page 0 requires must be a function/);
+      .to.throw(/pages\[0\].requires is not a function or an array of functions/);
   });
 
   it('rejects page buttons that are not an array', function() {
-    expect(registerPage({ content:`<p>Text</p>`, buttons:{ label:'Continue' } })).to.throw(/buttons must be an array/);
+    expect(registerPage({ content:`<p>Text</p>`, buttons:{ label:'Continue' } })).to.throw(/buttons is not an array/);
   });
 
   it('rejects an unknown standard button', function() {
-    expect(registerButton({ standard:'proceed' })).to.throw(/unknown standard button/);
+    expect(registerButton({ standard:'proceed' })).to.throw(/standard\[proceed\] not in list/);
   });
 
   it('rejects a button without a label', function() {
-    expect(registerButton({ id:'specButton' })).to.throw(/button 0 needs a label/);
+    expect(registerButton({ id:'specButton' })).to.throw(/buttons\[0\].label is not a string/);
   });
 
   it('rejects a button callback that is not a function', function() {
-    expect(registerButton({ label:'Continue', callback:'endEpisode' })).to.throw(/callback must be a function/);
+    expect(registerButton({ label:'Continue', callback:'endEpisode' })).to.throw(/callback is not a function/);
   });
 
   it('rejects a button classname that is not a string or string array', function() {
-    expect(registerButton({ label:'Continue', classname:['button-primary',7] })).to.throw(/classname must be a string/);
+    expect(registerButton({ label:'Continue', classname:['button-primary',7] }))
+      .to.throw(/classname is not a string or an array of strings/);
   });
 
   it('rejects a queue with no placement', function() {
-    expect(register({ queue:{ on:'enter' } })).to.throw(/exactly one of global, district, or location/);
+    expect(register({ queue:{ on:'enter' } })).to.throw(/needs one of global, district, or location/);
   });
 
   it('rejects a queue with multiple placements', function() {
-    expect(register({ queue:{ global:true, district:'dungeon' } }))
-      .to.throw(/exactly one of global, district, or location/);
+    expect(register({ queue:{ global:true, district:'dungeon' } })).to.throw(/cannot include both/);
   });
 
   it('rejects an unknown queue moment', function() {
-    expect(registerQueue({ on:'entre' })).to.throw(/queue on must be 'enter' or 'move'/);
+    expect(registerQueue({ on:'entre' })).to.throw(/queue.on\[entre\] not in list/);
   });
 
   it('rejects a queue chance outside 0 to 100', function() {
-    expect(registerQueue({ chance:101 })).to.throw(/chance must be a number from 0 to 100/);
-    expect(registerQueue({ chance:'25' })).to.throw(/chance must be a number from 0 to 100/);
+    expect(registerQueue({ chance:101 })).to.throw(/chance.101 greater than 100/);
+    expect(registerQueue({ chance:'25' })).to.throw(/chance is not a number/);
   });
 
   it('rejects a queue priority that is not a number', function() {
-    expect(registerQueue({ priority:'critical' })).to.throw(/priority must be a number/);
+    expect(registerQueue({ priority:'critical' })).to.throw(/priority is not a number/);
   });
 
-  it('rejects a queue repeat that is not a boolean', function() {
-    expect(registerQueue({ repeat:'yes' })).to.throw(/repeat must be a boolean/);
+  it('rejects a queue repeat that is not true', function() {
+    expect(registerQueue({ repeat:'yes' })).to.throw(/repeat is yes/);
+    expect(registerQueue({ repeat:false })).to.throw(/repeat is false/);
   });
 
   it('rejects a queue removeWhen that is not a function', function() {
-    expect(registerQueue({ removeWhen:true })).to.throw(/removeWhen must be a function/);
+    expect(registerQueue({ removeWhen:true })).to.throw(/removeWhen is not a function/);
   });
 
   it('rejects queue requires that are not functions', function() {
-    expect(registerQueue({ requires:'hasPlayer' })).to.throw(/queue requires must be a function/);
+    expect(registerQueue({ requires:'hasPlayer' })).to.throw(/queue.requires is not a function or an array of functions/);
   });
 
   it('does not store an episode that fails validation', function() {

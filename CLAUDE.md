@@ -47,7 +47,8 @@ headless mode.
 
 ### Testing
 Tests are written with Mocha and Chai. Tests should only be run with `bin/test.sh` so that permission to run them
-doesn't have to be granted every time. Never wrap it in loops, pipes, or output filters — the flags cover those needs:
+doesn't have to be granted every time. The test script compiles the manifest when it's run. Never wrap it in loops,
+pipes, or output filters — the flags cover those needs:
 - `--grep "<spec title>"` runs only matching specs
 - `--seed <seed>` reproduces a run with a fixed seed
 - `--seeds <seed,seed,...>` runs once per seed, printing a one-line summary for each

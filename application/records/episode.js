@@ -19,7 +19,7 @@
 //   priority      Number, higher fires first. Use an EpisodePriority value. Ties are broken by place specificity
 //                 (location > district > global), then queue order. Default 0.
 //   chance        Percent chance (0-100) to fire when eligible. Default 100.
-//   repeat        true keeps the episode in the queue after it fires. Default is one-shot.
+//   repeat        true keeps the episode in the queue after it fires. Omit for one-shot.
 //   requires      Predicate or array of predicates, passed the context {P:player}. All must pass to fire.
 //   removeWhen    Predicate, passed the same context. When true the episode is removed without firing.
 //
@@ -59,69 +59,59 @@ global.Episode = (function() {
   // Validates the record shape documented above, so that a malformed episode fails loudly at load time rather than
   // when it's first shown.
   function validate(code,data) {
-    const fail = message => { throw new Error(`Episode [${code}] ${message}`); };
+    const name = `Episode[${code}]`;
 
-    if (data.layout != null && views[data.layout] == null) { fail(`has an unknown layout [${data.layout}]`); }
-    if (data.endFunction != null && typeof data.endFunction !== 'function') { fail(`endFunction must be a function`); }
-    if (Array.isArray(data.pages) === false || data.pages.length === 0) { fail(`needs at least one page`); }
+    if (data.layout != null) { Validate.isIn(`${name}.layout`, data.layout, Object.keys(views)); }
+    if (data.endFunction != null) { Validate.isFunction(`${name}.endFunction`, data.endFunction); }
 
-    data.pages.forEach((page,index) => validatePage(page, message => fail(`page ${index} ${message}`)));
-    if (data.queue) { validateQueue(data.queue, fail); }
+    Validate.isArray(`${name}.pages`, data.pages);
+    Validate.atLeast(`${name}.pages.length`, data.pages.length, 1);
+    data.pages.forEach((page,index) => validatePage(`${name}.pages[${index}]`, page));
+
+    if (data.queue) { validateQueue(`${name}.queue`, data.queue); }
   }
 
-  function validatePage(page, fail) {
+  function validatePage(name, page) {
     const hasContent = typeof page.content === 'string';
     const hasContentFunction = typeof page.contentFunction === 'function';
-    if (hasContent === hasContentFunction) { fail(`needs exactly one of content or contentFunction`); }
-
-    if (page.buttonsStyle != null && ['row','column'].includes(page.buttonsStyle) === false) {
-      fail(`has an unknown buttonsStyle [${page.buttonsStyle}]`);
+    if (hasContent === hasContentFunction) {
+      throw new Error(`${name} needs exactly one of content or contentFunction`);
     }
-    if (page.onShow != null && typeof page.onShow !== 'function') { fail(`onShow must be a function`); }
-    if (validRequires(page.requires) === false) { fail(`requires must be a function or an array of functions`); }
-    if (page.buttons != null && Array.isArray(page.buttons) === false) { fail(`buttons must be an array`); }
 
-    (page.buttons || []).forEach((button,index) => validateButton(button, message => fail(`button ${index} ${message}`)));
+    if (page.buttonsStyle != null) { Validate.isIn(`${name}.buttonsStyle`, page.buttonsStyle, ['row','column']); }
+    if (page.onShow != null) { Validate.isFunction(`${name}.onShow`, page.onShow); }
+    if (page.requires != null) { Validate.singleOrArrayOf(`${name}.requires`, page.requires, 'function'); }
+
+    if (page.buttons != null) {
+      Validate.isArray(`${name}.buttons`, page.buttons);
+      page.buttons.forEach((button,index) => validateButton(`${name}.buttons[${index}]`, button));
+    }
   }
 
-  function validateButton(button, fail) {
+  function validateButton(name, button) {
     if (button.standard != null) {
-      if (button.standard !== 'continue') { fail(`has an unknown standard button [${button.standard}]`); }
+      Validate.isIn(`${name}.standard`, button.standard, ['continue']);
       return;
     }
 
-    if (typeof button.label !== 'string') { fail(`needs a label`); }
-    if (button.callback != null && typeof button.callback !== 'function') { fail(`callback must be a function`); }
-    if (validRequires(button.requires) === false) { fail(`requires must be a function or an array of functions`); }
-    if (validClassname(button.classname) === false) { fail(`classname must be a string or an array of strings`); }
+    Validate.isString(`${name}.label`, button.label);
+    if (button.callback != null) { Validate.isFunction(`${name}.callback`, button.callback); }
+    if (button.requires != null) { Validate.singleOrArrayOf(`${name}.requires`, button.requires, 'function'); }
+    if (button.classname != null) { Validate.singleOrArrayOf(`${name}.classname`, button.classname, 'string'); }
   }
 
-  function validateQueue(queue, fail) {
-    const placements = ['global','district','location'].filter(key => queue[key] != null);
-    if (placements.length !== 1) { fail(`queue needs exactly one of global, district, or location`); }
+  function validateQueue(name, queue) {
+    Validate.singleKeyFrom(name, queue, ['global','district','location']);
+    Validate.exists(name, queue.global || queue.district || queue.location,
+      `${name} needs one of global, district, or location`);
 
-    if (queue.on != null && ['enter','move'].includes(queue.on) === false) {
-      fail(`queue on must be 'enter' or 'move'`);
-    }
-    if (queue.chance != null && (typeof queue.chance !== 'number' || queue.chance < 0 || queue.chance > 100)) {
-      fail(`queue chance must be a number from 0 to 100`);
-    }
-    if (queue.priority != null && typeof queue.priority !== 'number') { fail(`queue priority must be a number`); }
-    if (queue.repeat != null && typeof queue.repeat !== 'boolean') { fail(`queue repeat must be a boolean`); }
-    if (queue.removeWhen != null && typeof queue.removeWhen !== 'function') { fail(`queue removeWhen must be a function`); }
-    if (validRequires(queue.requires) === false) { fail(`queue requires must be a function or an array of functions`); }
-  }
+    if (queue.on != null) { Validate.isIn(`${name}.on`, queue.on, ['enter','move']); }
+    if (queue.chance != null) { Validate.between(`${name}.chance`, queue.chance, 0, 100); }
+    if (queue.priority != null) { Validate.isNumber(`${name}.priority`, queue.priority); }
+    if (queue.removeWhen != null) { Validate.isFunction(`${name}.removeWhen`, queue.removeWhen); }
+    if (queue.requires != null) { Validate.singleOrArrayOf(`${name}.requires`, queue.requires, 'function'); }
 
-  function validRequires(requires) {
-    if (requires == null) { return true; }
-    if (Array.isArray(requires)) { return requires.every(entry => typeof entry === 'function'); }
-    return typeof requires === 'function';
-  }
-
-  function validClassname(classname) {
-    if (classname == null) { return true; }
-    if (Array.isArray(classname)) { return classname.every(entry => typeof entry === 'string'); }
-    return typeof classname === 'string';
+    Validate.trueOrNull(`${name}.repeat`, queue.repeat);
   }
 
   function getAllCodes() {
