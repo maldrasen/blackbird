@@ -31,7 +31,8 @@ global.NavigationSystem = (function() {
 
     state.advanceGameTime(time);
     state.setCurrentLocation(code);
-    LocationView.update();
+
+    if (HEADLESS === false && Tests.running() === false) { LocationView.update(); }
 
     const toDistrict = state.getCurrentDistrict();
     return { episode:EpisodeQueue.evaluateMove({
