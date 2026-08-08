@@ -7,6 +7,7 @@ global.CharacterFixtures = (function() {
       style:Random.from(['domination','degradation','sadism'])
     });
     GameSystem.getState().setPlayer(player);
+    PartyConfiguration.addCharacter(player);
     return player;
   }
 
