@@ -38,7 +38,7 @@ global.NegotiationReaction = (function() {
   };
 
   Object.keys(reactionMap).forEach(key => {
-    methods[key] = (message, options={}) => Resolution('feelings', reactionMap[key], message, options);
+    methods[key] = (message, options={}) => Resolution('feelings', message, reactionMap[key], options);
   });
 
   return Object.freeze(methods);

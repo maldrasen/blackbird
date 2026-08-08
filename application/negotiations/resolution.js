@@ -1,9 +1,13 @@
-global.Resolution = function(type, message, feelings, options) {
+global.Resolution = function(type, message, feelings, options={}) {
   const effectKeys = ['flags', 'givePreferences', 'giveStatusEffect', 'rememberThis'];
   const effects = Object.freeze(ObjectHelper.filter(options, effectKeys));
+  const extras = ObjectHelper.filter(options, ['question', 'code']);
 
-  if (type === 'followUp' && options.question == null) {
+  if (type === 'followUp' && extras.question == null) {
     throw new Error(`A followUp reaction must point to a question.`); }
+
+  if (type === 'ability' && extras.code == null) {
+    throw new Error(`An ability reaction must have an ability code.`); }
 
   // The negotiation questions can tell a story. Depending on how the negotiation plays out it may 'reveal' certain
   // character traits, aspects, or sexual preferences. Because the monsters aren't full characters during a
@@ -49,6 +53,8 @@ global.Resolution = function(type, message, feelings, options) {
     type,
     message,
     feelings,
+    effects,
+    ...extras,
     resolve: (context) => reaction,
     applyEffects: (context) => {
       if (effects.flags) { NegotiationSystem.getState().setFlags(effects.flags); }
@@ -56,7 +62,7 @@ global.Resolution = function(type, message, feelings, options) {
       if (effects.giveStatusEffect) { giveStatusEffect(context); }
       if (effects.rememberThis) { rememberThis(context); }
     },
-    withFeelings: (newFeelings) => Resolution(type, message, newFeelings, effects),
+    withFeelings: (newFeelings) => Resolution(type, message, newFeelings, { ...effects, ...extras }),
   };
 
   return Object.freeze(reaction);
