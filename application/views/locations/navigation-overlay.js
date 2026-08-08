@@ -44,12 +44,20 @@ global.NavigationOverlay = (function() {
 
   function clickDistrict(event) {
     WindowManager.pop();
-    NavigationSystem.moveToDistrict(event.target.dataset.code);
+    startQueuedEpisode(NavigationSystem.moveToDistrict(event.target.dataset.code));
   }
 
   function clickLocation(event) {
     WindowManager.pop();
-    NavigationSystem.moveWithinLocation(event.target.dataset.code);
+    startQueuedEpisode(NavigationSystem.moveWithinLocation(event.target.dataset.code));
+  }
+
+  function startQueuedEpisode(result) {
+    if (result.episode == null) { return; }
+
+    EpisodeSystem.startEpisode(result.episode, { P:GameSystem.getState().getPlayer() });
+    GameSystem.markReturnMode();
+    GameSystem.setGameMode(GameMode.episode);
   }
 
   return Object.freeze({

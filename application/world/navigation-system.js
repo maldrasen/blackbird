@@ -18,18 +18,27 @@ global.NavigationSystem = (function() {
   }
 
   function moveWithinLocation(code) {
-    arriveAt(code, District.lookup(Location.lookup(code).getDistrict()).getMoveTime());
+    return arriveAt(code, District.lookup(Location.lookup(code).getDistrict()).getMoveTime());
   }
 
   function moveToDistrict(code) {
-    arriveAt(District.lookup(code).getEntrance(), _travelTime);
+    return arriveAt(District.lookup(code).getEntrance(), _travelTime);
   }
 
   function arriveAt(code,time) {
     const state = GameSystem.getState();
+    const fromDistrict = state.getCurrentLocation() == null ? null : state.getCurrentDistrict();
+
     state.advanceGameTime(time);
     state.setCurrentLocation(code);
     LocationView.update();
+
+    const toDistrict = state.getCurrentDistrict();
+    return { episode:EpisodeQueue.evaluateMove({
+      toLocation: code,
+      toDistrict: toDistrict,
+      districtChanged: fromDistrict !== toDistrict,
+    })};
   }
 
   return Object.freeze({
