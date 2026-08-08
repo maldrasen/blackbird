@@ -1,3 +1,64 @@
+/*
+# SexAction Properties
+- `name`             Action name shown in the training action menu.
+- `description`      What the action will do, woven with the training context.
+- `persistedName`    Weaver template naming the action while it persists across rounds.
+- `mainCategory`     [foreplay, giving, performance, receiving, sex] Top level action menu grouping.
+- `playerCategory`   [ass, breasts, cock, hands, mouth, none, pussy] The part the player is using.
+- `partnerCategory`  [ass, breasts, cock, hands, mouth, none, pussy] The part the partner is using.
+- `direction`        An ActionDirection value. Who is acting on whom; mutual actions record the player as the actor.
+- `time`             Time the action takes.
+- `playerStamina`    Stamina the action costs the player. Negative for actions where the player just watches.
+- `partnerStamina`   Stamina the action costs the partner.
+- `isPossible`       Predicate, passed the training context. Filters out actions that can never happen in this
+                     training, like tail jobs for the tailless. Slots in the uses arrays are checked automatically.
+
+### Consent properties (See ConsentResult for how the factors combine.)
+- `consentTarget`     Consent value the factors need to reach. Below the target the partner is unwilling; 1.25x the
+                      target is reluctant, 2x willing, and beyond that eager.
+- `minimumConsent`    [Consent] The action is disabled below this consent level.
+- `techniqueTarget`   Technique skill roll target. Rolls below the target halve the sensations and shame or anger the
+                      partner; rolls above double the sensations and soothe anger.
+- `consentFactors`    Ordered factor array: a base factor first, then arousal, gender, and preference factors.
+  - base:       `{ baseClass }` [emotional, performance, penetration, reverseService, roughService, service,
+                touching] The starting consent value, derived from the partner's feelings.
+  - arousal:    `{ strength }` Adds the partner's arousal curve, multiplied by the strength (default 1).
+  - gender:     `{ scale }` Multiplies consent by the partner's attraction to the actor's gender.
+  - preference: `{ code, scale, conflicting }` Multiplies consent by the partner's preference value. A conflicting
+                preference inverts it.
+
+### Sensation properties
+- `partnerSensations`  Map of sensation keys to baseline intensities. Physical keys [anus, cervix, clit, cock,
+                       nipple, prostate, pussy, throat, urethra] only apply when the partner has the part; emotional
+                       keys [anger, comfort, desire, shame, submission, suffering] always apply.
+- `playerSensations`   Same physical keys for the player. Desire is the only emotional key that applies.
+- `orientation`        `{ submission, masochism, shame }` Where the action falls in the BDSM matrix, driving the
+                       domination, sadism, and degradation skill effects.
+- `skills`             `{ player, partner }` Skill code arrays each role is practicing during the action.
+
+### Persistence properties
+- `persist`        `{ action, revert, when }` Persists `action` (not always this action's own code) across rounds.
+                   With revert and when both set, consent is rechecked each round and the persisted action drops
+                   down to `revert` — or ends, when the revert is `_nothing` — below the `when` [Consent] level.
+- `alignment`      A SexAlignment object describing the parts each role needs aligned in the sex position. Within an
+                   alignment `ass` covers both orifices, with `target` naming the one this action uses. The uses
+                   arrays are derived from the alignment.
+- `uses`           `{ player, partner }` TrainingSlot arrays. Fallback for state-like actions with no alignment to
+                   derive the used parts from.
+- `penetration`    `{ player, partner }` The penetrating and penetrated parts. (Not consumed yet.)
+- `forcePosition`  `{ code, playerFirst, clearPersisted }` Moves training into the sex position `code` instead of
+                   finding an aligned position. playerFirst puts the player in the position's first role, and
+                   clearPersisted drops all persisted actions on the change.
+
+### availableWhen properties
+An action with no availableWhen is always visible. isPossible combines with one of the match conditions, which are
+checked in this order:
+- `previousAction`   Available only the round after this action code ran.
+- `persistedAction`  Available while this action code is persisted.
+- `player`/`partner` TrainingSlot array pair. Available while a persisted action uses these parts.
+- `isPossible`       Predicate, passed the training context. For conditions that change during training, like
+                     striptease needing a partner who is still clothed.
+*/
 global.SexAction = (function() {
   const sexActions = {};
 
