@@ -44,7 +44,6 @@ global.Casement = (function() {
     const index = casementCounter++;
     const id = `casement-${index}`;
 
-    const enableScrollingPanel = options.scrollingPanel !== false;
     const enableResize = options.resizable !== false;
 
     const casementWindow = X.createElement(`
@@ -61,7 +60,6 @@ global.Casement = (function() {
 
     const casementContent = casementWindow.querySelector('.casement-content');
     const casementContainer = casementWindow.querySelector('.casement-container');
-    let scrollingPanel = null;
 
     casementWindow.querySelector('.close-button').style['background-image'] = X.assetURL('ui/x-icon.png');
 
@@ -69,15 +67,13 @@ global.Casement = (function() {
       casementWindow.appendChild(X.createElement(`<div class='resize-handle'></div>`));
     }
 
-    if (enableScrollingPanel) {
-      scrollingPanel = ScrollingPanel({ element:casementContent });
-    } else {
+    if (options.scrollingPanel === false) {
       casementContainer.style.overflow = 'hidden';
     }
 
     X.first('#casementsArea').appendChild(casementWindow);
 
-    const casement = buildCasement({ id, casementContent, casementWindow, scrollingPanel });
+    const casement = buildCasement({ id, casementContent, casementWindow });
     currentCasements[id] = casement;
     WindowManager.push(casement);
 
@@ -88,7 +84,6 @@ global.Casement = (function() {
     const id = options.id;
     const casementContent = options.casementContent;
     const casementWindow = options.casementWindow;
-    const scrollingPanel = options.scrollingPanel;
 
     let associatedWith;
     let bounds = {};
@@ -124,8 +119,7 @@ global.Casement = (function() {
       casementWindow.querySelector('.casement-container').style['background-color'] = color;
     }
 
-    // We can only set the minimum height and width to values greater than the
-    // scrolling panel's minimum height and width.
+    // The minimums can only be raised above their default values.
     function setMinimumHeight(height) { if (height >= 200) { minHeight = height } }
     function setMinimumWidth(width) { if (width >= 300) { minWidth = width; } }
 
@@ -174,17 +168,6 @@ global.Casement = (function() {
       casementWindow.style['left'] = `${bounds.left}px`;
       casementWindow.style['height'] = `${bounds.height}px`;
       casementWindow.style['width'] = `${bounds.width}px`;
-
-      if (scrollingPanel) {
-        scrollingPanel.setHeight(bounds.height - BAR_HEIGHT);
-        scrollingPanel.resize();
-      }
-    }
-
-    // The scrolling panel needs to be resized if the size of the content
-    // changes.
-    function contentResized() {
-      if (scrollingPanel) { scrollingPanel.resize(); }
     }
 
     function close() {
@@ -214,7 +197,6 @@ global.Casement = (function() {
       getBounds,
       setLocation,
       setSize,
-      contentResized,
       close,
     });
 
