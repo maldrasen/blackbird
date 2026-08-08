@@ -7,6 +7,7 @@ global.GameState = function(data={}) {
   let party = data.party || {};
   let legacyName = data.legacyName;
   let roster = data.roster || [];
+  let episodeQueue = (data.episodeQueue || []).map(entry => ({ ...entry }));
 
   // TODO: Eventually this function will consult everything that might influence this value. It's not set in the state,
   //       but may need to read values from the player.
@@ -21,6 +22,7 @@ global.GameState = function(data={}) {
       party: party,
       legacyName: legacyName,
       roster: roster,
+      episodeQueue: episodeQueue.map(entry => ({ ...entry })),
     };
   }
 
@@ -40,6 +42,12 @@ global.GameState = function(data={}) {
     getPartySizeLimit,
     getLegacyName: () => { return legacyName; },
     setLegacyName: name => { legacyName = name; },
+
+    getEpisodeQueue: () => { return episodeQueue.map(entry => ({ ...entry })); },
+    pushEpisodeToQueue: (code,place) => {
+      if (episodeQueue.some(entry => entry.code === code) === false) { episodeQueue.push({ code, place }); }
+    },
+    removeEpisodeFromQueue: code => { episodeQueue = episodeQueue.filter(entry => entry.code !== code); },
 
     getRoster: () => { return [...roster]; },
     addToRoster: id => { if (roster.includes(id) === false) { roster.push(id); } },

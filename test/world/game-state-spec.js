@@ -45,6 +45,35 @@ describe('GameState', function() {
     expect(state.getRoster()).to.eql([slime]);
   });
 
+  it('tracks the episode queue without duplicate codes', function() {
+    const state = GameState();
+    state.pushEpisodeToQueue('game-over','global');
+    state.pushEpisodeToQueue('propose-training','district:dungeon');
+    state.pushEpisodeToQueue('game-over','location:the-well');
+
+    expect(state.getEpisodeQueue()).to.eql([
+      { code:'game-over', place:'global' },
+      { code:'propose-training', place:'district:dungeon' },
+    ]);
+
+    state.removeEpisodeFromQueue('game-over');
+    expect(state.getEpisodeQueue()).to.eql([{ code:'propose-training', place:'district:dungeon' }]);
+  });
+
+  it('packs and restores the episode queue', function() {
+    const state = GameState({ episodeQueue:[{ code:'game-over', place:'global' }] });
+    state.pushEpisodeToQueue('propose-training','location:the-well');
+
+    const packed = state.pack();
+    expect(packed.episodeQueue).to.eql([
+      { code:'game-over', place:'global' },
+      { code:'propose-training', place:'location:the-well' },
+    ]);
+
+    const restored = GameState(packed);
+    expect(restored.getEpisodeQueue()).to.eql(packed.episodeQueue);
+  });
+
   it('packs and restores the roster', function() {
     const goblin = Registry.createEntity();
     const slime = Registry.createEntity();
