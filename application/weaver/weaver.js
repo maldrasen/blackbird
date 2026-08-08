@@ -62,7 +62,7 @@ global.Weaver = function(context) {
       } else if (utilityMatch) {
         text = text.replace(utilityMatch[0], utilityValue(utilityMatch[1].trim(), utilityMatch[2].trim()));
       } else if (openSpanMatch) {
-        text = text.replace(openSpanMatch[0], `<span style="${styleFor(openSpanMatch[1])}">`)
+        text = text.replace(openSpanMatch[0], openSpan(openSpanMatch[1]));
       } else if (closeSpanMatch) {
         text = text.replace(CLOSE_SPAN, `</span>`);
       } else if (simpleMatch) {
@@ -115,19 +115,11 @@ global.Weaver = function(context) {
     }
   }
 
-  // TODO: Define these colors somewhere else.
-  // TODO: Weapon color should use the rarity of the weapon, which the 'hisWeaponName' function loom should have.
-  function styleFor(key) {
-    switch(key) {
-      case 'abl': return `color: rgb(160,120,150)`; // Ability
-      case 'act': return `color: rgb(150,150,200)`; // Acting Character or Monster
-      case 'pst': return `color: rgb(120,190,110)`; // Positive Status
-      case 'nst': return `color: rgb(190,100,180)`; // Negative Status
-      case 'tar': return `color: rgb(200,150,120)`; // Target
-      case 'wep': return `color: rgb(100,150,60)`;  // Weapon
-      default: return `color:red`;
-    }
-  }
+  // TODO: These spans styles are only used in the battle system in the battle text panel. It's possible they may be
+  //       used in the training or episode systems as well though. We'll either need to determine which system the key
+  //       belongs to, or share classnames across systems. The weapon color style (wep) should use the rarity of the
+  //       weapon. If we're getting the weapon name the context should have a weapon in it.
+  function openSpan(key) { return `<span class='bt-${key}'>` }
 
   // The weaver replaces straight quotes with opening and closing quotes. Player responses should always be in button
   // choices, never quoted text, so any quoted text belongs to another character. At some point we may want a different
