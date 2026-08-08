@@ -10,7 +10,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [009] Descriptions `13pt` #character — [009-descriptions.md](009-descriptions.md)
 - [011] Project Stuff `3pt` — [011-project-stuff.md](011-project-stuff.md)
 - [105] Add Negotiation Requests `8pt` — [105-add-negotiation-requests.md](105-add-negotiation-requests.md)
-- [110] Navigation Events `8pt` — [110-navigation-events.md](110-navigation-events.md)
 - [122] Training Enlighten View `5pt` — [122-training-enlighten-view.md](122-training-enlighten-view.md)
 - [131] Oath and nightgaunt episodes `13pt` — [131-oath-and-nightgaunt-episodes.md](131-oath-and-nightgaunt-episodes.md)
 - [142] Item detail panel `5pt` — [142-item-detail-panel.md](142-item-detail-panel.md)
