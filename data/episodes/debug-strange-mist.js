@@ -6,7 +6,7 @@ Episode.register('debug-strange-mist',{
     district: 'dungeon',
     on: 'enter',
     chance: 25,
-    priority: 5,
+    priority: EpisodePriority.flavor,
     repeat: true,
     removeWhen: () => GameSystem.getState().getGameTime() > 30 * 24 * 60,
     requires: [() => GameSystem.getState().getPlayer() != null],

@@ -12,20 +12,10 @@ global.Episode = (function() {
     episodes[code] = data;
   }
 
+  // The queue property is complex enough to need a validator.
   function validateQueue(queue) {
 
   }
-
-  // queue: {
-  //   district: 'dungeon',
-  //     on: 'enter',
-  //     chance: 25,
-  //     priority: 5,
-  //     repeat: true,
-  //     removeWhen: () => GameSystem.getState().getGameTime() > 30 * 24 * 60,
-  //     requires: [() => GameSystem.getState().getPlayer() != null],
-  // },
-
 
   function getAllCodes() {
     return Object.keys(episodes);
