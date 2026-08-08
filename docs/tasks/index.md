@@ -2,10 +2,6 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
-## Priority 1
-
-- [166] Remove the Scrolling Panel Element `5pt` — [166-remove-the-scrolling-panel-element.md](166-remove-the-scrolling-panel-element.md)
-
 ## Priority 2
 
 - [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
