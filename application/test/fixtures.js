@@ -42,7 +42,6 @@ global.Fixtures = (function() {
       inventory.addItem(WeaponFactory.build(code));
     });
 
-    EpisodeQueue.push('debug-strange-mist');
     GameSystem.setGameMode(GameMode.location);
   }
 

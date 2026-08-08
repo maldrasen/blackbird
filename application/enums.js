@@ -70,6 +70,13 @@ global.KeyCodes = Object.freeze({
   F11: 'F11',
 });
 
+global.EpisodePriority = Object.freeze({
+  critical: 10,
+  important: 8,
+  standard: 5,
+  flavor: 2,
+});
+
 // ==============
 //   Components
 // ==============

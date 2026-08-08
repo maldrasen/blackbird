@@ -1,16 +1,16 @@
-// TEMP: A placeholder navigation episode proving the episode queue works in game. Its queue settings exercise every
-//       non-default option. Task 131's oath episode replaces it as the real thing.
-Episode.register('debug-strange-mist',{
+Episode.register('take-the-dungeon-oath',{
   layout: 'centered',
+
   queue: {
     district: 'dungeon',
     on: 'enter',
     chance: 25,
-    priority: 5,
+    priority: EpisodePriority.critical,
     repeat: true,
     removeWhen: () => GameSystem.getState().getGameTime() > 30 * 24 * 60,
     requires: [() => GameSystem.getState().getPlayer() != null],
   },
+
   pages: [{
     content: `<p>A pale mist comes rolling up the street as you cross into the dungeon district, thick enough to chew
       and smelling faintly of wet stone. The locals don't so much as glance at it. A shopkeeper leans out to shoo it

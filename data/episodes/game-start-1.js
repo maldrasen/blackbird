@@ -244,6 +244,7 @@ function finishCharacterCreation() {
     AspectsComponent.update(playerId, { [AspectType.animalAttraction]: 1 });
   }
 
+  EpisodeQueue.seed(EpisodeBundles.defaultStart);
   CharacterEquipper(playerId).equip(Random.between(500,600));
   GameSystem.setGameMode(GameMode.location);
 }
