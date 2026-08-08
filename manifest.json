@@ -149,6 +149,7 @@
     "application/items/item.js",
     "application/items/weapon-enchantment.js",
     "application/items/weapon.js",
+    "application/negotiations/negotiation-contest.js",
     "application/negotiations/negotiation-influence.js",
     "application/negotiations/negotiation-interface.js",
     "application/negotiations/negotiation-reaction.js",

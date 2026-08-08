@@ -101,67 +101,6 @@ global.NegotiationReaction = (function() {
     return Object.freeze(reaction);
   }
 
-  // A reaction contest will include exactly one property that specifies the contest type.
-  //
-  // random:(true or freqmap)
-  //   A completely random roll. Either a coin toss when { random:true } or using the frequency map like:
-  //   { win:10, loss:3 }
-  //
-  // attribute:(Attribute)
-  //   An attribute contest will roll attributes for both characters, deciding who wins based on who rolled the
-  //   highest.
-  //
-  // skill:(Skill code)
-  //   A skill contest rolls a SkillCheck for both characters, deciding who wins based on who rolled the highest.
-  //   Ties go to the player.
-  //
-  // The contest options also include the win and loss paths, each holding any other built reaction, so a branch can
-  // adjust feelings, end the negotiation, or even roll another contest.
-  //   win: NegotiationReaction.respect(`...`)
-  //   loss: NegotiationReaction.attack(`...`)
-  function contest(options) {
-    if (options.win == null || options.loss == null) {
-      throw new Error(`A negotiation contest needs both a win and a loss reaction.`);
-    }
-    if (options.random == null && options.attribute == null && options.skill == null) {
-      throw new Error(`A negotiation contest needs a random, attribute, or skill property.`);
-    }
-
-    const { win, loss, random, attribute, skill, ...unknown } = options;
-    if (Object.keys(unknown).length > 0) {
-      throw new Error(`Unknown negotiation contest option [${Object.keys(unknown).join(', ')}]`);
-    }
-
-    const reaction = {
-      type: 'contest',
-      win, loss, random, attribute, skill,
-      resolve: (context) => (winsContest(reaction, context) ? win : loss).resolve(context),
-    };
-
-    return Object.freeze(reaction);
-  }
-
-  function winsContest(reaction, context) {
-    if (reaction.random === true) { return Random.flipCoin(); }
-    if (reaction.random != null) { return Random.fromFrequencyMap(reaction.random) === 'win'; }
-    if (reaction.skill != null) { return skillContest(reaction.skill, context); }
-    return attributeContest(reaction.attribute, context);
-  }
-
-  function skillContest(skill, context) {
-    return SkillCheck(context.P, skill).value >= SkillCheck(context.T, skill).value;
-  }
-
-  function attributeContest(attribute, context) {
-    return rollAttribute(context.P, attribute) >= rollAttribute(context.T, attribute);
-  }
-
-  function rollAttribute(id, attribute) {
-    return Random.roll(AttributesComponent.lookup(id)[attribute]);
-  }
-
-  // =======================
-
   function followUp(message, options={}) {
     if (options.question == null) {
       throw new Error(`A followUp reaction must point to a question.`);
@@ -187,7 +126,7 @@ global.NegotiationReaction = (function() {
     ability:  (code, message, options={}) => resolutionReaction('ability', message, options, { code }),
     join:     (message, options={}) =>       resolutionReaction('join', message, options),
     followUp,
-    contest,
+    contest: options => NegotiationContest(options),
   };
 
   Object.keys(reactionMap).forEach(key => {
