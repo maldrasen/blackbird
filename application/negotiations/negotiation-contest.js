@@ -21,16 +21,13 @@ global.NegotiationContest = function(options) {
   const { win, loss, random, attribute, skill, ...unknown } = options;
 
   if (win == null || loss == null) {
-    throw new Error(`A negotiation contest needs both a win and a loss reaction.`);
-  }
+    throw new Error(`A negotiation contest needs both a win and a loss reaction.`); }
 
   if (random == null && attribute == null && skill == null) {
-    throw new Error(`A negotiation contest needs a random, attribute, or skill property.`);
-  }
+    throw new Error(`A negotiation contest needs a random, attribute, or skill property.`); }
 
   if (Object.keys(unknown).length > 0) {
-    throw new Error(`Unknown negotiation contest option [${Object.keys(unknown).join(', ')}]`);
-  }
+    throw new Error(`Unknown negotiation contest option [${Object.keys(unknown).join(', ')}]`); }
 
   function winsContest(context) {
     if (random === true) { return Random.flipCoin(); }
@@ -51,10 +48,8 @@ global.NegotiationContest = function(options) {
     return Random.roll(AttributesComponent.lookup(id)[attribute]);
   }
 
-  // TODO: Some of these properties are only used internally, so they don't need to be part of the returned object.
   return Object.freeze({
     type: 'contest',
-    win, loss, random, attribute, skill,
     resolve: (context) => (winsContest(context) ? win : loss).resolve(context),
   });
 }
