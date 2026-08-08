@@ -14,13 +14,13 @@ const horsePreferences = { 'androphilic':30, 'beast-lover':30, 'cock-lover':20 }
 NegotiationQuestion.registerReaction('what-is-best', {
   style: NegotiationStyle.fierce,
   reactions: {
-    bullshit: NegotiationReaction.disrespect(`"The fuck are you talking about?"`),
-    conan:    NegotiationReaction.attack(`{T:TargetName} grins, {T:his} hand tightening around {T:his} weapon, "This guys gets it! Let's dance motherfucker!"`),
-    comfort:  NegotiationReaction.like(`Mmm, can't say that I'm really into toe sucking... doesn't sound too bad though. As long as I'm the one getting sucked.`),
+    bullshit: Reaction.disrespect(`"The fuck are you talking about?"`),
+    conan:    Reaction.attack(`{T:TargetName} grins, {T:his} hand tightening around {T:his} weapon, "This guys gets it! Let's dance motherfucker!"`),
+    comfort:  Reaction.like(`Mmm, can't say that I'm really into toe sucking... doesn't sound too bad though. As long as I'm the one getting sucked.`),
     cock:     NegotiationContest({
       random: { win:1, loss:5 },
-      win:  NegotiationReaction.love(`{T:TargetName's} eyes widen at your response, "Oh? So... you're into that too huh?"`, { givePreferences:horsePreferences }),
-      loss: NegotiationReaction.disrespect(`{T:TargetName} spits on the ground, "Great... another fucking pervert."`),
+      win:  Reaction.love(`{T:TargetName's} eyes widen at your response, "Oh? So... you're into that too huh?"`, { givePreferences:horsePreferences }),
+      loss: Reaction.disrespect(`{T:TargetName} spits on the ground, "Great... another fucking pervert."`),
     }),
   }
 });
@@ -29,13 +29,13 @@ NegotiationQuestion.registerReaction('what-is-best', {
   style: NegotiationStyle.lewd,
   staticRequirements: [CharacterRequirements.hasCock('P')],
   reactions: {
-    bullshit: NegotiationReaction.hate(`"Laaaaaame."`),
-    conan: NegotiationReaction.dislike(`"Wow, real original."`),
+    bullshit: Reaction.hate(`"Laaaaaame."`),
+    conan: Reaction.dislike(`"Wow, real original."`),
     comfort: NegotiationContest({
       random: { win:3, loss:1 },
-      win: NegotiationReaction.lust(`{T:TargetName} smiles, glancing between your legs, "Mmm, not bad... There's something I'd rather be sucking on though."`),
-      loss: NegotiationReaction.dislike(`"Into feet huh? Sorry not my thing hun."`),
+      win: Reaction.lust(`{T:TargetName} smiles, glancing between your legs, "Mmm, not bad... There's something I'd rather be sucking on though."`),
+      loss: Reaction.dislike(`"Into feet huh? Sorry not my thing hun."`),
     }),
-    cock: NegotiationReaction.love(`{T:TargetName} grins and nods, "The bigger the better, am I right?"`, { givePreferences:horsePreferences }),
+    cock: Reaction.love(`{T:TargetName} grins and nods, "The bigger the better, am I right?"`, { givePreferences:horsePreferences }),
   }
 });

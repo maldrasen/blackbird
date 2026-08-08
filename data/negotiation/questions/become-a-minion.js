@@ -11,12 +11,12 @@ NegotiationQuestion.register('become-a-minion', {
 NegotiationQuestion.registerReaction('become-a-minion', {
   style: NegotiationStyle.fierce,
   reactions: {
-    liar: NegotiationReaction.respect(`{T:He} chuckles and shakes {T:his} head, "Heh, fine. Not yet anyway."`),
+    liar: Reaction.respect(`{T:He} chuckles and shakes {T:his} head, "Heh, fine. Not yet anyway."`),
     backwards: NegotiationContest({
       skill: 'conversation',
-      win: NegotiationReaction.respect(`{T:TargetName} lets out a low growl and for a moment it looks like {T:He} might attack. {T:He} suddenly barks out a laugh, "You've got balls at least."`),
-      loss: NegotiationReaction.dislike(`"Me mer me mi ma ma mackmards," {T:he} says mockingly, "Gods you sound like a douche."`),
+      win: Reaction.respect(`{T:TargetName} lets out a low growl and for a moment it looks like {T:He} might attack. {T:He} suddenly barks out a laugh, "You've got balls at least."`),
+      loss: Reaction.dislike(`"Me mer me mi ma ma mackmards," {T:he} says mockingly, "Gods you sound like a douche."`),
     }),
-    takeCharge: NegotiationReaction.disrespect(`{T:He} gives you a mocking grin, "You {P:species.elves} are such pussies."`),
+    takeCharge: Reaction.disrespect(`{T:He} gives you a mocking grin, "You {P:species.elves} are such pussies."`),
   }
 });

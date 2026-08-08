@@ -19,8 +19,8 @@ NegotiationQuestion.register('show-it-to-me', {
 NegotiationQuestion.registerReaction('show-it-to-me', {
   style: NegotiationStyle.lewd,
   reactions: {
-    threaten: NegotiationReaction.hate(`{T:TargetName} backs away, "The fuck is wrong with you? You hate having fun or something?"`),
-    no: NegotiationReaction.dislike(`{T:TargetName} frowns, "That's what I'm trying to do asshole."`),
-    yes: NegotiationReaction.lust(`{T:TargetName} grins and steps a little closer, staring at your exposed shaft. "Mmm, that's more like it."`,{ flags:{ playerCockOut:true }}),
+    threaten: Reaction.hate(`{T:TargetName} backs away, "The fuck is wrong with you? You hate having fun or something?"`),
+    no: Reaction.dislike(`{T:TargetName} frowns, "That's what I'm trying to do asshole."`),
+    yes: Reaction.lust(`{T:TargetName} grins and steps a little closer, staring at your exposed shaft. "Mmm, that's more like it."`,{ flags:{ playerCockOut:true }}),
   }
 });

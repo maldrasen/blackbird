@@ -15,20 +15,20 @@ describe("NegotiationContest", function() {
   it('requires win and loss reactions and a contest type', function() {
     expect(() => NegotiationContest({
       random: true,
-      win: NegotiationReaction.neutral('won'),
+      win: Reaction.neutral('won'),
     })).to.throw('win and a loss');
 
     expect(() => NegotiationContest({
-      win: NegotiationReaction.neutral('won'),
-      loss: NegotiationReaction.neutral('lost'),
+      win: Reaction.neutral('won'),
+      loss: Reaction.neutral('lost'),
     })).to.throw('random, attribute, or skill');
   });
 
   it('resolves a coin toss contest', function() {
     const contest = NegotiationContest({
       random: true,
-      win: NegotiationReaction.respect('won'),
-      loss: NegotiationReaction.dislike('lost'),
+      win: Reaction.respect('won'),
+      loss: Reaction.dislike('lost'),
     });
 
     Random.stubFlipCoin(true);
@@ -40,8 +40,8 @@ describe("NegotiationContest", function() {
   it('resolves a frequency map contest', function() {
     const contest = NegotiationContest({
       random: { win:4, loss:6 },
-      win: NegotiationReaction.respect('won'),
-      loss: NegotiationReaction.dislike('lost'),
+      win: Reaction.respect('won'),
+      loss: Reaction.dislike('lost'),
     });
 
     Random.stubRoll(3);
@@ -54,8 +54,8 @@ describe("NegotiationContest", function() {
     const context = { P:contestant(), T:contestant() };
     const contest = NegotiationContest({
       attribute: Attrib.strength,
-      win: NegotiationReaction.respect('won'),
-      loss: NegotiationReaction.dislike('lost'),
+      win: Reaction.respect('won'),
+      loss: Reaction.dislike('lost'),
     });
 
     Random.stubRoll(7,3);
@@ -72,8 +72,8 @@ describe("NegotiationContest", function() {
     const context = { P:contestant(), T:contestant() };
     const contest = NegotiationContest({
       skill: 'conversation',
-      win: NegotiationReaction.respect('won'),
-      loss: NegotiationReaction.dislike('lost'),
+      win: Reaction.respect('won'),
+      loss: Reaction.dislike('lost'),
     });
 
     Random.stubBetween(50,6, 50,3);
@@ -88,8 +88,8 @@ describe("NegotiationContest", function() {
     const context = { P:contestant(0), T:contestant(0) };
     const contest = NegotiationContest({
       skill: 'conversation',
-      win: NegotiationReaction.respect('won'),
-      loss: NegotiationReaction.dislike('lost'),
+      win: Reaction.respect('won'),
+      loss: Reaction.dislike('lost'),
     });
 
     Random.stubBetween(50,6, 50,3);
@@ -103,8 +103,8 @@ describe("NegotiationContest", function() {
     const context = { P:contestant(0), T:contestant(0) };
     const contest = NegotiationContest({
       skill: 'conversation',
-      win: NegotiationReaction.respect('won'),
-      loss: NegotiationReaction.dislike('lost'),
+      win: Reaction.respect('won'),
+      loss: Reaction.dislike('lost'),
     });
 
     Random.stubBetween(50,3, 50,6);
@@ -117,13 +117,13 @@ describe("NegotiationContest", function() {
   it('resolves nested contests recursively', function() {
     const inner = NegotiationContest({
       random: { win:4, loss:6 },
-      win: NegotiationReaction.respect('inner won'),
-      loss: NegotiationReaction.dislike('inner lost'),
+      win: Reaction.respect('inner won'),
+      loss: Reaction.dislike('inner lost'),
     });
     const outer = NegotiationContest({
       random: true,
       win: inner,
-      loss: NegotiationReaction.hate('outer lost'),
+      loss: Reaction.hate('outer lost'),
     });
 
     Random.stubFlipCoin(true);

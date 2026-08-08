@@ -1,38 +1,38 @@
-describe("NegotiationReaction", function() {
+describe("Reaction", function() {
 
   describe("descriptors", function() {
     it('builds the feelings reactions from the reaction map', function() {
-      expect(NegotiationReaction.respect('msg')).to.deep.include({
+      expect(Reaction.respect('msg')).to.deep.include({
         type:'feelings', feelings:{ control:20, respect:30 }, message:'msg', effects:{} });
-      expect(NegotiationReaction.terrify('msg')).to.deep.include({
+      expect(Reaction.terrify('msg')).to.deep.include({
         type:'feelings', feelings:{ control:30, affection:-20, fear:50 }, message:'msg', effects:{} });
     });
 
     it('builds the resolution reactions with their default feelings maps', function() {
-      expect(NegotiationReaction.attack('msg')).to.deep.include({
+      expect(Reaction.attack('msg')).to.deep.include({
         type:'attack', feelings:{ affection:-40, respect:-20, fear:-30 }, message:'msg', effects:{} });
-      expect(NegotiationReaction.run('msg')).to.deep.include({
+      expect(Reaction.run('msg')).to.deep.include({
         type:'run', feelings:{ affection:-20, fear:30 }, message:'msg', effects:{} });
-      expect(NegotiationReaction.ability('msg',{ code:'dick-punch' })).to.deep.include({
+      expect(Reaction.ability('msg',{ code:'dick-punch' })).to.deep.include({
         type:'ability', code:'dick-punch', feelings:{ affection:-40, respect:-20, fear:-30 }, message:'msg',
         effects:{} });
-      expect(NegotiationReaction.join('msg')).to.deep.include({
+      expect(Reaction.join('msg')).to.deep.include({
         type:'join', feelings:{ control:40, affection:50, respect:20, fear:-10 }, message:'msg', effects:{} });
     });
 
     it('hoists join feelings out of the options', function() {
-      expect(NegotiationReaction.join('msg', { feelings:{ affection:30 }, givePreferences:{ 'piss-slut':20 }}))
+      expect(Reaction.join('msg', { feelings:{ affection:30 }, givePreferences:{ 'piss-slut':20 }}))
         .to.deep.include({
           type:'join', feelings:{ affection:30 }, message:'msg', effects:{ givePreferences:{ 'piss-slut':20 }} });
     });
 
     it('builds a followUp reaction with no default feelings', function() {
-      expect(NegotiationReaction.followUp('msg', { question:'tired-of-fighting-other-way' })).to.deep.include({
+      expect(Reaction.followUp('msg', { question:'tired-of-fighting-other-way' })).to.deep.include({
         type:'followUp', question:'tired-of-fighting-other-way', feelings:undefined, message:'msg', effects:{} });
     });
 
     it('hoists the followUp question and feelings out of the options', function() {
-      expect(NegotiationReaction.followUp('msg', {
+      expect(Reaction.followUp('msg', {
         question:'tired-of-fighting-other-way', feelings:{ affection:10 }, flags:{ playerHard:true },
       })).to.deep.include({
         type:'followUp', question:'tired-of-fighting-other-way', feelings:{ affection:10 }, message:'msg',
@@ -40,12 +40,12 @@ describe("NegotiationReaction", function() {
     });
 
     it('requires a followUp question', function() {
-      expect(() => NegotiationReaction.followUp('msg',{})).to.throw('must point to a question');
+      expect(() => Reaction.followUp('msg',{})).to.throw('must point to a question');
     });
 
     // rememberThis is a stub effect: the reaction carries it, and applying it does nothing yet.
     it('carries a rememberThis effect', function() {
-      const reaction = NegotiationReaction.love('msg', { rememberThis:{ key:'F', event:'offered-to-monster' }});
+      const reaction = Reaction.love('msg', { rememberThis:{ key:'F', event:'offered-to-monster' }});
       expect(reaction).to.deep.include({ effects:{ rememberThis:{ key:'F', event:'offered-to-monster' }}});
       expect(() => reaction.applyEffects({ F:null })).to.not.throw();
     });
@@ -53,7 +53,7 @@ describe("NegotiationReaction", function() {
 
   describe("withFeelings()", function() {
     it('builds a new reaction with the feelings replaced', function() {
-      const reaction = NegotiationReaction.followUp('msg', {
+      const reaction = Reaction.followUp('msg', {
         question:'tired-of-fighting-other-way', flags:{ playerHard:true },
       });
       const moderated = reaction.withFeelings({ affection:10 });
@@ -68,16 +68,16 @@ describe("NegotiationReaction", function() {
 
   describe("resolve()", function() {
     it('returns non-contest reactions as they are', function() {
-      const reaction = NegotiationReaction.like('msg');
+      const reaction = Reaction.like('msg');
       expect(reaction.resolve({})).to.equal(reaction);
     });
 
     it('returns a followUp from a contest branch intact', function() {
-      const followUp = NegotiationReaction.followUp('msg', { question:'tired-of-fighting-other-way' });
+      const followUp = Reaction.followUp('msg', { question:'tired-of-fighting-other-way' });
       const contest = NegotiationContest({
         random: true,
         win: followUp,
-        loss: NegotiationReaction.dislike('lost'),
+        loss: Reaction.dislike('lost'),
       });
 
       Random.stubFlipCoin(true);
@@ -87,7 +87,7 @@ describe("NegotiationReaction", function() {
 
   describe("givePreferences", function() {
     function applyPreferences(id, givePreferences) {
-      NegotiationReaction.join('msg', { givePreferences }).applyEffects({ T:id });
+      Reaction.join('msg', { givePreferences }).applyEffects({ T:id });
     }
 
     it('grants, overwrites, and deletes preferences', function() {
@@ -159,7 +159,7 @@ describe("NegotiationReaction", function() {
     }
 
     function applyStatusEffect(giveStatusEffect, context) {
-      NegotiationReaction.attack('msg', { giveStatusEffect }).applyEffects(context);
+      Reaction.attack('msg', { giveStatusEffect }).applyEffects(context);
     }
 
     it('applies a status effect to the player', function() {

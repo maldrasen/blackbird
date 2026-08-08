@@ -14,8 +14,8 @@
 //
 // The contest options also include the win and loss paths, each holding any other built reaction, so a branch can
 // adjust feelings, end the negotiation, or even roll another contest.
-//   win: NegotiationReaction.respect(`...`)
-//   loss: NegotiationReaction.attack(`...`)
+//   win: Reaction.respect(`...`)
+//   loss: Reaction.attack(`...`)
 //
 global.NegotiationContest = function(options) {
   const { win, loss, random, attribute, skill, ...unknown } = options;

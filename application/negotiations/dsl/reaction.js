@@ -1,4 +1,4 @@
-global.NegotiationReaction = (function() {
+global.Reaction = (function() {
 
   const reactionMap = {
     neutral:      { control: 10                                          },

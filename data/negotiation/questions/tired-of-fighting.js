@@ -11,18 +11,18 @@ NegotiationQuestion.register('tired-of-fighting', {
 NegotiationQuestion.registerReaction('tired-of-fighting', {
   style: NegotiationStyle.fierce,
   reactions: {
-    allDay:   NegotiationReaction.attack(`The {T:species.elf} grins, "Good. Don't pussy out on me just when things are getting good."`),
-    tiresome: NegotiationReaction.disrespect(`"Tiresome? Oh so sorry to interrupt your godsdamned tea time."`),
-    otherWay: NegotiationReaction.followUp(`{T:TargetName} looks intrigued, "Some other way huh?"`, { question: 'tired-of-fighting-other-way' }),
+    allDay:   Reaction.attack(`The {T:species.elf} grins, "Good. Don't pussy out on me just when things are getting good."`),
+    tiresome: Reaction.disrespect(`"Tiresome? Oh so sorry to interrupt your godsdamned tea time."`),
+    otherWay: Reaction.followUp(`{T:TargetName} looks intrigued, "Some other way huh?"`, { question: 'tired-of-fighting-other-way' }),
   }
 });
 
 NegotiationQuestion.registerReaction('tired-of-fighting', {
   style: NegotiationStyle.lewd,
   reactions: {
-    allDay:   NegotiationReaction.lust(`"All day? I do love a {P:man} with stamina."`),
-    tiresome: NegotiationReaction.like(`"Exactly. Wouldn't you rather be doing something else?"`),
-    otherWay: NegotiationReaction.followUp(`{T:TargetName} smiles and licks {T:his} lips, "Some other way?"`, { question: 'tired-of-fighting-other-way' }),
+    allDay:   Reaction.lust(`"All day? I do love a {P:man} with stamina."`),
+    tiresome: Reaction.like(`"Exactly. Wouldn't you rather be doing something else?"`),
+    otherWay: Reaction.followUp(`{T:TargetName} smiles and licks {T:his} lips, "Some other way?"`, { question: 'tired-of-fighting-other-way' }),
   }
 });
 
@@ -52,12 +52,12 @@ NegotiationQuestion.registerReaction('tired-of-fighting-other-way', {
   reactions: {
     strength: NegotiationContest({
       attribute: Attrib.strength,
-      win: NegotiationReaction.greatRespect(fierceStrengthWin),
-      loss: NegotiationReaction.attack(fierceStrengthLoss, { giveStatusEffect:{ target:'player', effect:'off-balance', duration:1 }}),
+      win: Reaction.greatRespect(fierceStrengthWin),
+      loss: Reaction.attack(fierceStrengthLoss, { giveStatusEffect:{ target:'player', effect:'off-balance', duration:1 }}),
     }),
-    luck: NegotiationReaction.attack(`{T:TargetName} snarls and knocks the coin from your hand, "Fuck that. We settle this for real."`),
-    speed: NegotiationReaction.attack(`{T:TargetName} shakes {T:his} head and takes a step closer to you, "The hell I will."`),
-    cumFirst: NegotiationReaction.disrespect(`{T:TargetName} laughs and shakes {T:his} head. "Ha! Well, that's one way to get a free handjob. I'll have to pass on that one."`),
+    luck: Reaction.attack(`{T:TargetName} snarls and knocks the coin from your hand, "Fuck that. We settle this for real."`),
+    speed: Reaction.attack(`{T:TargetName} shakes {T:his} head and takes a step closer to you, "The hell I will."`),
+    cumFirst: Reaction.disrespect(`{T:TargetName} laughs and shakes {T:his} head. "Ha! Well, that's one way to get a free handjob. I'll have to pass on that one."`),
   }
 });
 
@@ -79,17 +79,17 @@ const lewdDexterityLoss = `{T:TargetName} grins and darts off. {T:He} quickly ou
 
 const lewdStrengthContest = NegotiationContest({
   attribute: Attrib.strength,
-  win: NegotiationReaction.join(lewdStrengthWin, { givePreferences:{ submissive:10 }}),
-  loss: NegotiationReaction.contempt(lewdStrengthLoss),
+  win: Reaction.join(lewdStrengthWin, { givePreferences:{ submissive:10 }}),
+  loss: Reaction.contempt(lewdStrengthLoss),
 });
 
 const lewdSpeedContest = NegotiationContest({
   attribute: Attrib.dexterity,
-  win: NegotiationReaction.join(lewdDexterityWin, { givePreferences:{ submissive:10 }}),
-  loss: NegotiationReaction.run(lewdDexterityLoss),
+  win: Reaction.join(lewdDexterityWin, { givePreferences:{ submissive:10 }}),
+  loss: Reaction.run(lewdDexterityLoss),
 })
 
-const lewdLuck = NegotiationReaction.dislike(`"Really? That's the best you could come up with? Pass."`)
+const lewdLuck = Reaction.dislike(`"Really? That's the best you could come up with? Pass."`)
 
 const frottage = `The two of you stand just slightly apart, first stroking each others cocks, then rubbing them slowly 
   together.`;
@@ -123,8 +123,8 @@ NegotiationQuestion.registerReaction('tired-of-fighting-other-way', {
     speed: lewdSpeedContest,
     cumFirst: NegotiationContest({
       skill: 'servicing',
-      win: NegotiationReaction.join(frotWin, { givePreferences:cockLover }),
-      loss: NegotiationReaction.lust(frotLoss, { givePreferences:cockLover }),
+      win: Reaction.join(frotWin, { givePreferences:cockLover }),
+      loss: Reaction.lust(frotLoss, { givePreferences:cockLover }),
     }),
   }
 });
@@ -141,8 +141,8 @@ NegotiationQuestion.registerReaction('tired-of-fighting-other-way', {
     speed: lewdSpeedContest,
     cumFirst: NegotiationContest({
       skill: 'servicing',
-      win: NegotiationReaction.join(fingerWin, { givePreferences:cockLover }),
-      loss: NegotiationReaction.lust(fingerLoss, { givePreferences:cockLover }),
+      win: Reaction.join(fingerWin, { givePreferences:cockLover }),
+      loss: Reaction.lust(fingerLoss, { givePreferences:cockLover }),
     }),
   }
 });

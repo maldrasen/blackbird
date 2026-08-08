@@ -38,18 +38,18 @@ NegotiationQuestion.registerReaction('let-me-taste', {
   style: NegotiationStyle.lewd,
   species: 'kobold',
   reactions: {
-    no: NegotiationReaction.attack(`{T:TargetName} snarls, "No? Maybe I'll just bite it off then."`),
+    no: Reaction.attack(`{T:TargetName} snarls, "No? Maybe I'll just bite it off then."`),
     beg: NegotiationContest({
       random: true,
-      win: NegotiationReaction.join(`{T:TargetName} smiles and falls to {T:his} knees, "Please master. This one needs your thick cock filling {T:his} mouth."`),
-      loss: NegotiationReaction.greatRespect(`{T:TargetName} smiles and shakes {T:his} head, "Mmm, beg you? Maybe some day..."`),
+      win: Reaction.join(`{T:TargetName} smiles and falls to {T:his} knees, "Please master. This one needs your thick cock filling {T:his} mouth."`),
+      loss: Reaction.greatRespect(`{T:TargetName} smiles and shakes {T:his} head, "Mmm, beg you? Maybe some day..."`),
     }),
-    lick: NegotiationReaction.love(koboldLick),
-    suck: NegotiationReaction.respect(koboldSuck, { flags: { playerHard:true }}),
+    lick: Reaction.love(koboldLick),
+    suck: Reaction.respect(koboldSuck, { flags: { playerHard:true }}),
     piss: NegotiationContest({
       random: { win:4, loss:6 },
-      win: NegotiationReaction.join(koboldPissWin, { givePreferences: { 'humiliation-slut':30, 'piss-slut':20 }}),
-      loss: NegotiationReaction.attack(koboldPissLoss),
+      win: Reaction.join(koboldPissWin, { givePreferences: { 'humiliation-slut':30, 'piss-slut':20 }}),
+      loss: Reaction.attack(koboldPissLoss),
     })
   }
 });

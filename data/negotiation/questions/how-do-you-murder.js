@@ -14,18 +14,18 @@ NegotiationQuestion.register('how-do-you-murder', {
 NegotiationQuestion.registerReaction('how-do-you-murder', {
   style: NegotiationStyle.fierce,
   reactions: {
-    never: NegotiationReaction.attack(`"You're a fucking liar. Delvers like you come down here, rape and murder anything that gets in their way. Well I'm fucking sick of it."`),
-    unknown: NegotiationReaction.respect(`The {T:species.elf} chuckles and shakes his head, "Heh, one of those sneaky bastards huh? I prefer loud and covered in blood myself, but I can respect that."`),
-    cruel: NegotiationReaction.respect(`The {T:species.elf} grins, "Now we're talking. You let the others watch right?"`),
+    never: Reaction.attack(`"You're a fucking liar. Delvers like you come down here, rape and murder anything that gets in their way. Well I'm fucking sick of it."`),
+    unknown: Reaction.respect(`The {T:species.elf} chuckles and shakes his head, "Heh, one of those sneaky bastards huh? I prefer loud and covered in blood myself, but I can respect that."`),
+    cruel: Reaction.respect(`The {T:species.elf} grins, "Now we're talking. You let the others watch right?"`),
     cock: NegotiationContest({
       random: { win:3, loss:7 },
-      win: NegotiationReaction.lust(`{T:TargetName} actually blushes a little, "That's... Okay, so maybe I'm into that shit."`,{ givePreferences:{ 'androphilic':30, 'breath-player':20 }}),
-      loss: NegotiationReaction.dislike(`The {T:species.elf} frowns and shakes his head, "Nah, sounds like a good way to get your cock bitten off to me."`),
+      win: Reaction.lust(`{T:TargetName} actually blushes a little, "That's... Okay, so maybe I'm into that shit."`,{ givePreferences:{ 'androphilic':30, 'breath-player':20 }}),
+      loss: Reaction.dislike(`The {T:species.elf} frowns and shakes his head, "Nah, sounds like a good way to get your cock bitten off to me."`),
     }),
     ass: NegotiationContest({
       random: { win:3, loss:7 },
-      win: NegotiationReaction.lust(`{T:TargetName} actually blushes a little, "That's... Okay, so maybe I'm into that shit."`,{ givePreferences:{ 'gynophilic':30, 'breath-player':20 }}),
-      loss: NegotiationReaction.dislike(`The {T:species.elf} frowns and shakes his head, "Nah, sounds like a good way to get your cunt bitten to me."`),
+      win: Reaction.lust(`{T:TargetName} actually blushes a little, "That's... Okay, so maybe I'm into that shit."`,{ givePreferences:{ 'gynophilic':30, 'breath-player':20 }}),
+      loss: Reaction.dislike(`The {T:species.elf} frowns and shakes his head, "Nah, sounds like a good way to get your cunt bitten to me."`),
     }),
   }
 });

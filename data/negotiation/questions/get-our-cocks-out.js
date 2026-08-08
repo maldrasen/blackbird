@@ -28,13 +28,13 @@ const dickSlapWin = `The kobold's head snaps back as you slap him across the fac
 NegotiationQuestion.registerReaction('get-our-cocks-out', {
   monster: 'kobold-dick-puncher',
   reactions: {
-    no:       NegotiationReaction.attack(`"Don't you know where the fuck you even are? This is Rhysh motherfucker!"`),
-    youFirst: NegotiationReaction.respect(`"Heh, you'd like that wouldn't you? Fine. We can pretend to be civilized." `),
-    yes:      NegotiationReaction.ability(`"Ha, idiot!" The little bastard punches you in the dick.`,{ code:'dick-punch' }),
+    no:       Reaction.attack(`"Don't you know where the fuck you even are? This is Rhysh motherfucker!"`),
+    youFirst: Reaction.respect(`"Heh, you'd like that wouldn't you? Fine. We can pretend to be civilized." `),
+    yes:      Reaction.ability(`"Ha, idiot!" The little bastard punches you in the dick.`,{ code:'dick-punch' }),
     dickSlap: NegotiationContest({
       attribute: Attrib.dexterity,
-      win: NegotiationReaction.greatRespect(dickSlapWin, { flags:{ playerCockOut:true }}),
-      loss: NegotiationReaction.attack(dickSlapLose),
+      win: Reaction.greatRespect(dickSlapWin, { flags:{ playerCockOut:true }}),
+      loss: Reaction.attack(dickSlapLose),
     }),
   }
 });
@@ -59,10 +59,10 @@ const lewdDickSlap = `{T:TargetName} reaches down to free {T:his} cock from it's
 NegotiationQuestion.registerReaction('get-our-cocks-out', {
   style: NegotiationStyle.lewd,
   reactions: {
-    no:       NegotiationReaction.attack(lewdStripYou),
-    youFirst: NegotiationReaction.followUp(lewdShowYou, { question:'get-our-cocks-out-your-turn', feelings:NegotiationReaction.getFeelings('lust'), flags:{ monsterCockOut:true }}),
-    yes:      NegotiationReaction.lust(lewdCocksOut,{ flags:cocksOut }),
-    dickSlap: NegotiationReaction.love(lewdDickSlap,{ flags:hardCocksOut }),
+    no:       Reaction.attack(lewdStripYou),
+    youFirst: Reaction.followUp(lewdShowYou, { question:'get-our-cocks-out-your-turn', feelings:Reaction.getFeelings('lust'), flags:{ monsterCockOut:true }}),
+    yes:      Reaction.lust(lewdCocksOut,{ flags:cocksOut }),
+    dickSlap: Reaction.love(lewdDickSlap,{ flags:hardCocksOut }),
   }
 });
 
@@ -78,7 +78,7 @@ NegotiationQuestion.register('get-our-cocks-out-your-turn', {
 NegotiationQuestion.registerReaction('get-our-cocks-out-your-turn', {
   style: NegotiationStyle.lewd,
   reactions: {
-    yes: NegotiationReaction.lust(`{T:TargetName} grins, looking you over appreciatively, still stroking {T:his} hardening shaft, "Nice..."`,{ flags:{ playerCockOut:true, monsterCockHard:true }}),
-    no: NegotiationReaction.attack(`"Well fuck you then!" {T:TargetName} grabs onto {hisWeaponName(T)} and attacks, his dick swinging wildly as {T:he} charges you.`),
+    yes: Reaction.lust(`{T:TargetName} grins, looking you over appreciatively, still stroking {T:his} hardening shaft, "Nice..."`,{ flags:{ playerCockOut:true, monsterCockHard:true }}),
+    no: Reaction.attack(`"Well fuck you then!" {T:TargetName} grabs onto {hisWeaponName(T)} and attacks, his dick swinging wildly as {T:he} charges you.`),
   }
 });
