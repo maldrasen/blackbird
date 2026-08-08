@@ -34,6 +34,28 @@ global.PartyConfiguration = (function() {
     GameSystem.getState().setPartyConfiguration(configuration);
   }
 
+  function addCharacter(id) {
+    const configuration = getConfiguration();
+    const positions = Object.values(configuration);
+
+    const findPosition = () => {
+      for (const column of [2,1,3,0,4]) {
+        for (const row of [0,1]) {
+          const position = `P.${row}.${column}`;
+          if (positions.includes(position) === false) { return position; }
+        }
+      }
+    }
+
+    if (Object.keys(configuration).length >= GameSystem.getState().getPartySizeLimit()) {
+      throw new Error(`Cannot add ${id} to the party. The party is already full.`);
+    }
+
+    configuration[id] = findPosition();
+
+    GameSystem.getState().setPartyConfiguration(configuration);
+  }
+
   function getVacantFrontPositions(configuration) {
     const positions = Object.values(configuration);
     const vacant = [];
@@ -68,6 +90,7 @@ global.PartyConfiguration = (function() {
     setConfiguration,
     getConfiguration,
     setCharacter,
+    addCharacter,
     getVacantFrontPositions,
     isValid,
   });

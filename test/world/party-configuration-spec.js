@@ -27,6 +27,33 @@ describe("PartyConfiguration", function() {
     expect(PartyConfiguration.getConfiguration()['rabbit']).to.equal('P.0.2');
   });
 
+  describe('addCharacter', function() {
+    beforeEach(function() {
+      GameSystem.getState().setPlayer('horse');
+    });
+
+    it('adds the first character to the front center', function() {
+      PartyConfiguration.setConfiguration({ horse:'P.0.2' });
+      PartyConfiguration.addCharacter('goat');
+
+      expect(PartyConfiguration.getConfiguration()['goat']).to.equal('P.1.2');
+    });
+
+    it('fills the center column before moving outward', function() {
+      PartyConfiguration.setConfiguration({ horse:'P.0.2', goat:'P.1.2' });
+      PartyConfiguration.addCharacter('rabbit');
+
+      expect(PartyConfiguration.getConfiguration()['rabbit']).to.equal('P.0.1');
+    });
+
+    it('takes the front center when it is vacant', function() {
+      PartyConfiguration.setConfiguration({ horse:'P.0.1' });
+      PartyConfiguration.addCharacter('goat');
+
+      expect(PartyConfiguration.getConfiguration()['goat']).to.equal('P.0.2');
+    });
+  });
+
   describe('setConfiguration', function() {
 
     beforeEach(function() {

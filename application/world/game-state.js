@@ -8,6 +8,10 @@ global.GameState = function(data={}) {
   let legacyName = data.legacyName;
   let roster = data.roster || [];
 
+  // TODO: Eventually this function will consult everything that might influence this value. It's not set in the state,
+  //       but may need to read values from the player.
+  function getPartySizeLimit() { return 6; }
+
   function pack() {
     return {
       gameTime: Math.round(gameTime),
@@ -33,6 +37,7 @@ global.GameState = function(data={}) {
     setPlayer: id => { player = id; },
     getPartyConfiguration: () => { return party; },
     setPartyConfiguration: config => { party = config; },
+    getPartySizeLimit,
     getLegacyName: () => { return legacyName; },
     setLegacyName: name => { legacyName = name; },
 
