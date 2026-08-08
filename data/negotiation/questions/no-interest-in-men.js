@@ -19,7 +19,7 @@ NegotiationQuestion.registerReaction('no-interest-in-men', {
   reactions: {
     noNeed: NegotiationReaction.respect(`{T:TargetName} nods, "So long as we understand each other. I don't mind killing whoever needs killing, but I'm not one of your fuck holes."`),
     entertain: NegotiationReaction.love(`{T:TargetName} grins at {F:name}, "I see... Well, let's just say I'm starting to get interested."`, { rememberThis:{ key:'F', event:'offered-to-monster' }}),
-    dontCare: NegotiationReaction.contest({
+    dontCare: NegotiationContest({
       skill: 'conversation',
       win: NegotiationReaction.respect(`{T:TargetName} gives you a knowing smile, "The strong take what they want. Alright, I can respect that."`),
       loss: NegotiationReaction.attack(`{T:TargetName} snarls, "I'll kill you first."`),

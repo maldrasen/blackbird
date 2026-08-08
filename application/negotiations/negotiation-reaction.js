@@ -126,7 +126,6 @@ global.NegotiationReaction = (function() {
     ability:  (code, message, options={}) => resolutionReaction('ability', message, options, { code }),
     join:     (message, options={}) =>       resolutionReaction('join', message, options),
     followUp,
-    contest: options => NegotiationContest(options),
   };
 
   Object.keys(reactionMap).forEach(key => {

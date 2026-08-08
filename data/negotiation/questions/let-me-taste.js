@@ -39,14 +39,14 @@ NegotiationQuestion.registerReaction('let-me-taste', {
   species: 'kobold',
   reactions: {
     no: NegotiationReaction.attack(`{T:TargetName} snarls, "No? Maybe I'll just bite it off then."`),
-    beg: NegotiationReaction.contest({
+    beg: NegotiationContest({
       random: true,
       win: NegotiationReaction.join(`{T:TargetName} smiles and falls to {T:his} knees, "Please master. This one needs your thick cock filling {T:his} mouth."`),
       loss: NegotiationReaction.greatRespect(`{T:TargetName} smiles and shakes {T:his} head, "Mmm, beg you? Maybe some day..."`),
     }),
     lick: NegotiationReaction.love(koboldLick),
     suck: NegotiationReaction.respect(koboldSuck, { flags: { playerHard:true }}),
-    piss: NegotiationReaction.contest({
+    piss: NegotiationContest({
       random: { win:4, loss:6 },
       win: NegotiationReaction.join(koboldPissWin, { givePreferences: { 'humiliation-slut':30, 'piss-slut':20 }}),
       loss: NegotiationReaction.attack(koboldPissLoss),

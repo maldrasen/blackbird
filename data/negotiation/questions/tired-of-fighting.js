@@ -50,7 +50,7 @@ const fierceStrengthLoss = `${fierceStrength} You grit your teeth, but slowly {T
 NegotiationQuestion.registerReaction('tired-of-fighting-other-way', {
   style: NegotiationStyle.fierce,
   reactions: {
-    strength: NegotiationReaction.contest({
+    strength: NegotiationContest({
       attribute: Attrib.strength,
       win: NegotiationReaction.greatRespect(fierceStrengthWin),
       loss: NegotiationReaction.attack(fierceStrengthLoss, { giveStatusEffect:{ target:'player', effect:'off-balance', duration:1 }}),
@@ -77,13 +77,13 @@ const lewdDexterityWin = `{T:TargetName} grins and darts off into the shadows. Y
 const lewdDexterityLoss = `{T:TargetName} grins and darts off. {T:He} quickly outpaces you, and soon all you can see
   is {T:him} flipping you off before {T:he} laughs and disappears into the shadows.`;
 
-const lewdStrengthContest = NegotiationReaction.contest({
+const lewdStrengthContest = NegotiationContest({
   attribute: Attrib.strength,
   win: NegotiationReaction.join(lewdStrengthWin, { givePreferences:{ submissive:10 }}),
   loss: NegotiationReaction.contempt(lewdStrengthLoss),
 });
 
-const lewdSpeedContest = NegotiationReaction.contest({
+const lewdSpeedContest = NegotiationContest({
   attribute: Attrib.dexterity,
   win: NegotiationReaction.join(lewdDexterityWin, { givePreferences:{ submissive:10 }}),
   loss: NegotiationReaction.run(lewdDexterityLoss),
@@ -121,7 +121,7 @@ NegotiationQuestion.registerReaction('tired-of-fighting-other-way', {
     strength: lewdStrengthContest,
     luck: lewdLuck,
     speed: lewdSpeedContest,
-    cumFirst: NegotiationReaction.contest({
+    cumFirst: NegotiationContest({
       skill: 'servicing',
       win: NegotiationReaction.join(frotWin, { givePreferences:cockLover }),
       loss: NegotiationReaction.lust(frotLoss, { givePreferences:cockLover }),
@@ -139,7 +139,7 @@ NegotiationQuestion.registerReaction('tired-of-fighting-other-way', {
     strength: lewdStrengthContest,
     luck: lewdLuck,
     speed: lewdSpeedContest,
-    cumFirst: NegotiationReaction.contest({
+    cumFirst: NegotiationContest({
       skill: 'servicing',
       win: NegotiationReaction.join(fingerWin, { givePreferences:cockLover }),
       loss: NegotiationReaction.lust(fingerLoss, { givePreferences:cockLover }),
