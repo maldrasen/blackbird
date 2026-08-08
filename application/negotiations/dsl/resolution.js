@@ -18,9 +18,10 @@ global.Resolution = function(type, message, feelings, options={}) {
   // character we throw an exception; that's a check that should have happened in the question authoring. Setting a
   // preference to null deletes it.
   function givePreferences(context) {
-    Object.entries(effects.givePreferences).forEach(([code,newValue]) => {
+    Object.entries(effects.givePreferences).forEach(([code, value]) => {
       const requires = SexualPreference.lookup(code).getRequires();
       const currentValue = SexualPreferencesComponent.lookup(context.T)[code];
+      const newValue = (value-5) + Random.roll(10);
 
       if (Requirements.met(requires, context.T) === false) {
         throw new Error(`Sexual preference [${code}] is incompatible with Character[${context.T}]`);
