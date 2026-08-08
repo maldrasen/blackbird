@@ -7,7 +7,7 @@ global.GameState = function(data={}) {
   let party = data.party || {};
   let legacyName = data.legacyName;
   let roster = data.roster || [];
-  let episodeQueue = (data.episodeQueue || []).map(entry => ({ ...entry }));
+  let episodeQueue = data.episodeQueue || [];
 
   // TODO: Eventually this function will consult everything that might influence this value. It's not set in the state,
   //       but may need to read values from the player.
@@ -22,7 +22,7 @@ global.GameState = function(data={}) {
       party: party,
       legacyName: legacyName,
       roster: roster,
-      episodeQueue: episodeQueue.map(entry => ({ ...entry })),
+      episodeQueue: episodeQueue,
     };
   }
 
