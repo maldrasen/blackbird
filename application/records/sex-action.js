@@ -1,5 +1,4 @@
 global.SexAction = (function() {
-  const factorOrder = ['base','arousal','gender','preference'];
   const sexActions = {};
 
   const MainCategory = {
@@ -31,27 +30,8 @@ global.SexAction = (function() {
   };
 
   function register(code,data) {
-    validate(data);
+    SexActionValidator(code,data);
     sexActions[code] = data;
-  }
-
-  function validate(data) {
-    let factorIndex = 0;
-
-    if (data.consentFactors == null) {
-      throw new Error(`An action must have a consent factors array.`);
-    }
-    if (data.consentFactors[0].type !== 'base') {
-      throw new Error(`An action's consent factors must start with a base factor.`);
-    }
-
-    // Validate that the consent factors are in the proper order.
-    data.consentFactors.forEach(factor => {
-      let index = factorOrder.indexOf(factor.type);
-      if (index === -1) { throw new Error(`${factor.type} is not a factor type.`); }
-      if (index < factorIndex) { throw new Error(`A ${factorOrder[index]} factor should always be before a ${factorOrder[factorIndex]} factor.`); }
-      if (index > factorIndex) { factorIndex = index; }
-    });
   }
 
   function getAllCodes() {

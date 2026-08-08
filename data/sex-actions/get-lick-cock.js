@@ -44,6 +44,7 @@ SexAction.register('get-lick-cock',{
   },
   orientation: {
     submission: 1,
+    masochism: 0,
     shame: 1,
   },
 });
