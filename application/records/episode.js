@@ -52,13 +52,76 @@ global.Episode = (function() {
   }
 
   function register(code,data) {
-    if (data.queue) { validateQueue(data.queue) }
+    validate(code,data);
     episodes[code] = data;
   }
 
-  // The queue property is complex enough to need a validator.
-  function validateQueue(queue) {
+  // Validates the record shape documented above, so that a malformed episode fails loudly at load time rather than
+  // when it's first shown.
+  function validate(code,data) {
+    const fail = message => { throw new Error(`Episode [${code}] ${message}`); };
 
+    if (data.layout != null && views[data.layout] == null) { fail(`has an unknown layout [${data.layout}]`); }
+    if (data.endFunction != null && typeof data.endFunction !== 'function') { fail(`endFunction must be a function`); }
+    if (Array.isArray(data.pages) === false || data.pages.length === 0) { fail(`needs at least one page`); }
+
+    data.pages.forEach((page,index) => validatePage(page, message => fail(`page ${index} ${message}`)));
+    if (data.queue) { validateQueue(data.queue, fail); }
+  }
+
+  function validatePage(page, fail) {
+    const hasContent = typeof page.content === 'string';
+    const hasContentFunction = typeof page.contentFunction === 'function';
+    if (hasContent === hasContentFunction) { fail(`needs exactly one of content or contentFunction`); }
+
+    if (page.buttonsStyle != null && ['row','column'].includes(page.buttonsStyle) === false) {
+      fail(`has an unknown buttonsStyle [${page.buttonsStyle}]`);
+    }
+    if (page.onShow != null && typeof page.onShow !== 'function') { fail(`onShow must be a function`); }
+    if (validRequires(page.requires) === false) { fail(`requires must be a function or an array of functions`); }
+    if (page.buttons != null && Array.isArray(page.buttons) === false) { fail(`buttons must be an array`); }
+
+    (page.buttons || []).forEach((button,index) => validateButton(button, message => fail(`button ${index} ${message}`)));
+  }
+
+  function validateButton(button, fail) {
+    if (button.standard != null) {
+      if (button.standard !== 'continue') { fail(`has an unknown standard button [${button.standard}]`); }
+      return;
+    }
+
+    if (typeof button.label !== 'string') { fail(`needs a label`); }
+    if (button.callback != null && typeof button.callback !== 'function') { fail(`callback must be a function`); }
+    if (validRequires(button.requires) === false) { fail(`requires must be a function or an array of functions`); }
+    if (validClassname(button.classname) === false) { fail(`classname must be a string or an array of strings`); }
+  }
+
+  function validateQueue(queue, fail) {
+    const placements = ['global','district','location'].filter(key => queue[key] != null);
+    if (placements.length !== 1) { fail(`queue needs exactly one of global, district, or location`); }
+
+    if (queue.on != null && ['enter','move'].includes(queue.on) === false) {
+      fail(`queue on must be 'enter' or 'move'`);
+    }
+    if (queue.chance != null && (typeof queue.chance !== 'number' || queue.chance < 0 || queue.chance > 100)) {
+      fail(`queue chance must be a number from 0 to 100`);
+    }
+    if (queue.priority != null && typeof queue.priority !== 'number') { fail(`queue priority must be a number`); }
+    if (queue.repeat != null && typeof queue.repeat !== 'boolean') { fail(`queue repeat must be a boolean`); }
+    if (queue.removeWhen != null && typeof queue.removeWhen !== 'function') { fail(`queue removeWhen must be a function`); }
+    if (validRequires(queue.requires) === false) { fail(`queue requires must be a function or an array of functions`); }
+  }
+
+  function validRequires(requires) {
+    if (requires == null) { return true; }
+    if (Array.isArray(requires)) { return requires.every(entry => typeof entry === 'function'); }
+    return typeof requires === 'function';
+  }
+
+  function validClassname(classname) {
+    if (classname == null) { return true; }
+    if (Array.isArray(classname)) { return classname.every(entry => typeof entry === 'string'); }
+    return typeof classname === 'string';
   }
 
   function getAllCodes() {
