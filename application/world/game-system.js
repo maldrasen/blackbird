@@ -18,6 +18,7 @@ global.GameSystem = (function() {
     Registry.clear();
     state = GameState();
     loaded = true;
+    EpisodeQueue.seed();
 
     if (typeof setup === "function") { return setup(); }
 

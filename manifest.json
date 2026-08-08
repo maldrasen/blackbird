@@ -283,6 +283,7 @@
     "application/weaver/weaver-package.js",
     "application/weaver/weaver.js",
     "application/world/difficulty.js",
+    "application/world/episode-queue.js",
     "application/world/game-state.js",
     "application/world/game-system.js",
     "application/world/navigation-system.js",

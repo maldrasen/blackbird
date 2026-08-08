@@ -35,6 +35,7 @@ global.Episode = (function() {
       getCode: () => { return code; },
       getContent: () => { return views[getLayout()]; },
       getEndFunction: () => { return episode.endFunction; },
+      getQueue: () => { return episode.queue; },
       getPages: () => { return episode.pages; },
       getBackground,
       getLayout,
