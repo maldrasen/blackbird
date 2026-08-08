@@ -50,6 +50,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [162] Battle enlightenment variation for no essence `2pt` — [162-battle-enlightenment-variation-for-no-essence.md](162-battle-enlightenment-variation-for-no-essence.md)
 - [167] Update the inventory trading to use the drag and drop and entity cards. `3pt` — [167-update-the-inventory-trading-to-use-the-drag-and-drop-and-entity-cards.md](167-update-the-inventory-trading-to-use-the-drag-and-drop-and-entity-cards.md)
 - [168] Include health bars on entity cards in dungeon controls. `3pt` — [168-include-health-bars-on-entity-cards-in-dungeon-controls.md](168-include-health-bars-on-entity-cards-in-dungeon-controls.md)
+- [171] Anima Decay `2pt` — [171-anima-decay.md](171-anima-decay.md)
 
 ## Priority 4
 
