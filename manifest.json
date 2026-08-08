@@ -183,6 +183,7 @@
     "application/records/skill.js",
     "application/records/species.js",
     "application/records/status-effect.js",
+    "application/records/validators/episode-validator.js",
     "application/requirements/battle-requirements.js",
     "application/requirements/character-requirements.js",
     "application/requirements/negotiation-requirements.js",
