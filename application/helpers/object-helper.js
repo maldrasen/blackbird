@@ -17,7 +17,13 @@ global.ObjectHelper = (function() {
     return chain;
   }
 
-  // Filter an object, returning only the properties with keys in the allowedKeys array.
+  /**
+   * Filter an object, returning only the properties with keys in the allowedKeys array.
+   *
+   * @param {Object.<string, *>} object
+   * @param {string[]} allowedKeys
+   * @returns {Object.<string, *>}
+   */
   function filter(object, allowedKeys) {
     return Object.fromEntries(Object.entries(object).filter(([key, _]) => allowedKeys.includes(key)));
   }

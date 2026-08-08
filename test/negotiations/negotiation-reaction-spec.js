@@ -13,7 +13,7 @@ describe("NegotiationReaction", function() {
         type:'attack', feelings:{ affection:-40, respect:-20, fear:-30 }, message:'msg', effects:{} });
       expect(NegotiationReaction.run('msg')).to.deep.include({
         type:'run', feelings:{ affection:-20, fear:30 }, message:'msg', effects:{} });
-      expect(NegotiationReaction.ability('dick-punch','msg')).to.deep.include({
+      expect(NegotiationReaction.ability('msg',{ code:'dick-punch' })).to.deep.include({
         type:'ability', code:'dick-punch', feelings:{ affection:-40, respect:-20, fear:-30 }, message:'msg',
         effects:{} });
       expect(NegotiationReaction.join('msg')).to.deep.include({

@@ -155,6 +155,7 @@
     "application/negotiations/negotiation-reaction.js",
     "application/negotiations/negotiation-state.js",
     "application/negotiations/negotiation-system.js",
+    "application/negotiations/resolution.js",
     "application/records/ability.js",
     "application/records/archetype.js",
     "application/records/article.js",
