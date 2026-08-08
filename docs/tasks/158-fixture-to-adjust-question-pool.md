@@ -1,6 +1,6 @@
 ---
 id: 158
-title: Add a Fixture to Adjust the Question Poll for Testing
+title: Add a Fixture to Adjust the Question Pool for Testing
 priority: 2
 created: 2026-08-06
 tags:
