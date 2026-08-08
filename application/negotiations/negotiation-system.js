@@ -81,6 +81,7 @@ global.NegotiationSystem = (function() {
     battleState.removeFromBattle(monster);
     finishNegotiation();
     RecruitmentSystem.recruit(monster, state.getFeelings());
+    PartyConfiguration.addCharacter(monster);
   }
 
   function resolveAbility(code) {
