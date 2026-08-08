@@ -2,10 +2,8 @@ global.EpisodeQueue = (function() {
 
   const SPECIFICITY = { location:2, district:1, global:0 };
 
-  function seed() {
-    Episode.getAllCodes().forEach(code => {
-      if (Episode.lookup(code).getQueue() != null) { push(code); }
-    });
+  function seed(codes) {
+    codes.forEach(code => push(code));
   }
 
   function push(code, place) {

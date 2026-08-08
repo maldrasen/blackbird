@@ -18,7 +18,7 @@ global.GameSystem = (function() {
     Registry.clear();
     state = GameState();
     loaded = true;
-    EpisodeQueue.seed();
+    EpisodeQueue.seed(getStartingEpisodes());
 
     if (typeof setup === "function") { return setup(); }
 
@@ -30,6 +30,11 @@ global.GameSystem = (function() {
   //       first one.
   function getGameStartEpisode() {
     return 'game-start-1';
+  }
+
+  // TODO: Like the start episode, the starting episode queue should eventually come from the scenario.
+  function getStartingEpisodes() {
+    return [];
   }
 
   async function loadLastGame() {
