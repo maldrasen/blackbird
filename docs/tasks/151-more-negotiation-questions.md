@@ -50,3 +50,9 @@ I won't mark this as complete until we've actually run out of ideas here. We'll 
 - Cocky one aren't you? You really think you could handle someone like me?
 - (When the party has 4 women) Wow, you're a real ladies man.
 - (When the party has 3 men) You got kind of a sausage party going on there.
+
+Also, we should add questions that query the target's sexual preferences. Pose some questions only a masochist would ask.
+
+Dynamic questions should also test current feelings. Some questions should only be asked when affection is above 50.
+
+Multiple questions where the monster ends up in a 'grabbed' state, with a shared follow up question for what to do with a grabbed monster. Follow ups can also gate reactions to style so we end up with a many to many here.
