@@ -138,8 +138,9 @@ describe("NegotiationSystem", function() {
       expect(BattleSystem.getState().getSkillImprovements()).to.deep.equal({ [player]:{ conversation:1 } });
     });
 
-    // The frequency map contest consumes the first stubbed roll before the two improve rolls. The join carries the
-    // default love feelings map, so the doubled positives push affection past its threshold on the way in.
+    // The frequency map contest consumes the first stubbed roll, then the two preference fuzz rolls (pinned at 5 so
+    // the values land exactly), then the two improve rolls. The join carries the default love feelings map, so the
+    // doubled positives push affection past its threshold on the way in.
     it("applies moderated feelings from a join reaction before it resolves", function() {
       const { state, monster } = bootNegotiation();
 
@@ -147,7 +148,7 @@ describe("NegotiationSystem", function() {
       pickUntil(state, 'let-me-taste');
 
       Random.stubBetween(50,75, 50,1);
-      Random.stubRoll(3, 5, 149);
+      Random.stubRoll(3, 5, 5, 5, 149);
       NegotiationSystem.answer('piss');
 
       expect(state.getResolution()).to.deep.equal({ type:'join' });

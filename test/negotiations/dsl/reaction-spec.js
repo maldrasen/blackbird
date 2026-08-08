@@ -86,7 +86,10 @@ describe("Reaction", function() {
   });
 
   describe("givePreferences", function() {
+    // Stubbing the fuzz roll at 5 makes each preference land exactly on its authored value. Null values consume no
+    // roll because deletion skips the fuzz.
     function applyPreferences(id, givePreferences) {
+      Random.stubRoll(...Object.values(givePreferences).filter(value => value != null).map(() => 5));
       Reaction.join('msg', { givePreferences }).applyEffects({ T:id });
     }
 

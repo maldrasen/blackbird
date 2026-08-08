@@ -21,7 +21,7 @@ global.Resolution = function(type, message, feelings, options={}) {
     Object.entries(effects.givePreferences).forEach(([code, value]) => {
       const requires = SexualPreference.lookup(code).getRequires();
       const currentValue = SexualPreferencesComponent.lookup(context.T)[code];
-      const newValue = (value-5) + Random.roll(10);
+      const newValue = (value == null) ? null : (value-5) + Random.roll(11);
 
       if (Requirements.met(requires, context.T) === false) {
         throw new Error(`Sexual preference [${code}] is incompatible with Character[${context.T}]`);
