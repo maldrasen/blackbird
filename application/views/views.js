@@ -19,7 +19,6 @@ global.Views = (function() {
     NegotiationOverlay.init();
     OptionsOverlay.init();
     PartyOverlay.init();
-    ScrollingPanel.init();
     ScrollKeys.init();
     Select.init();
     TabController.init();

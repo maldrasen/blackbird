@@ -135,8 +135,24 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
   }
 
   #persistedRow {
-    padding: 10px 10px 0;
-    #persistedActionScroll { max-height: 200px; overflow-y: auto; }
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 0;
+    padding: 10px;
+
+    .persisted-actions-panel {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      min-height: 0;
+    }
+
+    #persistedActionScroll {
+      flex-grow: 1;
+      min-height: 0;
+      overflow-y: auto;
+    }
     #persistedActions { padding: 10px; }
 
     li {

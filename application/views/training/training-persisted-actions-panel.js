@@ -1,12 +1,7 @@
 global.TrainingPersistedActionsPanel = (function() {
 
   function init() {
-    window.addEventListener('resize', calculatePersistedHeight);
     X.onClick('#persistedActions .stop-action', stopAction);
-  }
-
-  function build() {
-    calculatePersistedHeight();
   }
 
   function update() {
@@ -34,8 +29,6 @@ global.TrainingPersistedActionsPanel = (function() {
         list.appendChild(buildPersistedActionItem(persistedAction));
       });
     }
-
-    calculatePersistedHeight();
   }
 
   function buildListHeader(title) {
@@ -61,25 +54,8 @@ global.TrainingPersistedActionsPanel = (function() {
     TrainingActionPanel.update();
   }
 
-  // Can't seem to make this layout work by just fucking around with the flex box stuff, so I guess I'll just brute
-  // force the height of the final element to force it to fill the proper space. We'll need to call this every round
-  // because the heights of many of the other panels will change.
-  function calculatePersistedHeight() {
-    const panel = X.first('#persistedActionScroll');
-    if (panel == null) { return; }
-
-    const status = X.getPosition(X.first('#statusRow')).height;
-    const scales = X.getPosition(X.first('#scalesRow')).height;
-    const action = X.getPosition(X.first('#actionRow')).height;
-    const heights = status + scales + action + 25
-
-    // The inline style would override the 200px cap from the stylesheet, so it has to be applied here too.
-    panel.style.maxHeight = `${Math.min(200, window.innerHeight - heights)}px`;
-  }
-
   return Object.freeze({
     init,
-    build,
     update,
   });
 

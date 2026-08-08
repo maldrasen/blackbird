@@ -16,7 +16,6 @@ global.TrainingView = (function() {
     TrainingActionPanel.build();
     TrainingStatusPanel.build();
     TrainingScalesPanel.build();
-    TrainingPersistedActionsPanel.build();
     TrainingActionPanel.update();
 
     GameStateFrame.show();

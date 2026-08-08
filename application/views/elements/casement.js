@@ -1,5 +1,4 @@
 global.Casement = (function() {
-  const BAR_HEIGHT = 20;
   const BORDER_WIDTH = 3;
 
   const currentCasements = {};
