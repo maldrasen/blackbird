@@ -19,7 +19,7 @@ global.ObjectHelper = (function() {
 
   // Filter an object, returning only the properties with keys in the allowedKeys array.
   function filter(object, allowedKeys) {
-    return Object.fromEntries(Object.entries(object).filter(([key, value]) => allowedKeys.includes(key)));
+    return Object.fromEntries(Object.entries(object).filter(([key, _]) => allowedKeys.includes(key)));
   }
 
   // Reverses the keys and values of an object.

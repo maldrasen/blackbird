@@ -1,4 +1,3 @@
-
 // A reaction contest will include exactly one property that specifies the contest type.
 //
 // random:(true or freqmap)
@@ -17,6 +16,7 @@
 // adjust feelings, end the negotiation, or even roll another contest.
 //   win: NegotiationReaction.respect(`...`)
 //   loss: NegotiationReaction.attack(`...`)
+//
 global.NegotiationContest = function(options) {
   const { win, loss, random, attribute, skill, ...unknown } = options;
 
