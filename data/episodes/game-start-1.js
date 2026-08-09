@@ -1,3 +1,26 @@
+/*
+# Event State
+This starting event was one of the first episodes written, and as one of the first episodes in the game it establishes
+a lot of important facts about the setting and your situation.
+
+## Facts
+- This first origin character is from Borr, one of the farming communities that supports Wolgur.
+- It's a three day walk to Borr, so somewhere between 20 and 30 miles away.
+- Wolgur is situated inside the Rhysh valley, a narrow mountain valley perpetually cloaked in mist.
+- Wolgur is known for violence and decadence.
+- People say that the dungeon can grant immortality.
+- Your brother left to become a delver three years go and hasn't been heard from.
+- Your father was a delver who disappeared in the dungeon.
+- The "Blood Itch" is some kind of disease. People with the blood itch need to be tied down to their bed.
+- Woodnymphs live in the woods near the farmlands.
+- Rhysh has a wall at one end, spanning the length of the valley with a large gate.
+- Entry to the city is controlled. You're able to enter because you own a home in the city.
+- Your father died around 20 years ago.
+- Your mother and father were living in the house at the time and abandoned it after he died.
+- Wolgur is a narrow city, squeezed into the shape of the valley with steep cliffs on either side.
+- Due to the lack of space, people build vertically, buildings are tall and made of stone.
+- Your home is located near the city gates, on Steeleye Street
+*/
 
 const gainTriggerForAttribute = {
   strength: 'strong',
@@ -32,11 +55,11 @@ function addTrigger(trigger) {
 const goalContent = `
   <p>
     You've been following the long winding road to Wolgur for three days now, stopping at the few established camps
-    between the distant farmlands and your new home. You crest the next hill and finally catch a glimpse of the city,
-    emerging from the thick mist that perpetually clings to the Rhysh valley. You're closer than you thought you were.
-    You adjust the heavy pack on your back and walk a little faster now that your goal is in sight.
+    between the farmlands and your new home. You crest the next hill and finally catch a glimpse of the city, emerging
+    from the thick mist that perpetually clings to the Rhysh valley. You're closer than you thought you were. You
+    adjust the heavy pack on your back and walk a little faster now that your goal is in sight.
   </p><p>
-    Having lived your entire life in Borr, you're not sure what to expect from the dungeon city. You've heard the 
+    Having lived your entire life in Borr, you're not sure what to expect from the dungeon city. You've heard the
     stories of course; tales of violence and utter decadence which, rather than dissuading you from this path, may have
     actually hastened your decision to take up the life of a delver.
   </p><p>

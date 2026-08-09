@@ -596,7 +596,6 @@
     "test/records/episode-spec.js",
     "test/records/feature-type-spec.js",
     "test/records/name-spec.js",
-    "test/records/reference-validator-spec.js",
     "test/records/sex-action-spec.js",
     "test/records/sex-position-spec.js",
     "test/training/consent-result-spec.js",

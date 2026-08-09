@@ -1,8 +1,9 @@
 
-const pages = [];
-pages.push(`This is page 1`);
-pages.push(`This is page 2`);
-pages.push(`This is page 3`);
+const pages = {};
+
+
+pages.travel = ``;
+
 
 Episode.register('take-the-dungeon-oath',{
   layout: 'centered',
@@ -14,9 +15,7 @@ Episode.register('take-the-dungeon-oath',{
   },
 
   pages: [
-    { content:pages[0] },
-    { content:pages[1] },
-    { content:pages[2] },
+    { content:pages.travel },
   ],
 
 });
