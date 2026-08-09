@@ -17,6 +17,7 @@ console.log("=== Compiling manifest.json ===");
 const fileList = [
   'application/constants.js',
   'application/enums.js',
+  'data/game-flags.js'
 ];
 
 addFiles(fileList,'application');
