@@ -20,7 +20,14 @@ global.EpisodePage = function(data) {
   }
 
   // Only render a button when it has no requirements or all its requirements are met.
-  function getButtons() { return (data.buttons || []).filter(button => checkRequirements(button.requires)); }
+  function getButtons() {
+    const buttons = (data.buttons || []).filter(button => checkRequirements(button.requires));
+    const weaver = Weaver(EpisodeSystem.getState().getContext());
+
+    buttons.forEach(button => { button.label = weaver.weave(button.label) });
+
+    return buttons;
+  }
 
   // The classname for the #episodeButtons element which can display buttons in a row or a column. I'm assuming we'll
   // have some other styles here as well.

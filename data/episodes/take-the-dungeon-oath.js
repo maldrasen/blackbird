@@ -17,6 +17,9 @@ district that's been unlocked, and this episode fires when you navigate there.
  */
 const pages = {};
 
+const theOath = `vow to do all in my power to destroy the Rhysh Dungeon, and to never
+  accept the corrupting endowments that it offers.`;
+
 pages.travel = `You walk through Wolgur's narrow streets, trying not to look like someone fresh from the farmlands.
   It's difficult though. You walk past several groups of adventurers. Dangerous looking people who surround themselves
   beautiful but inhuman creatures. Most of whom could pass for human except for a few noticeable features; the horns,
@@ -28,22 +31,38 @@ pages.empty = `Other than the small bands of delvers, the city seems surprisingl
   dark stone buildings, all behind gates and walls; nothing open to the public. Borr's central market was more lively
   than this place, with the notable exception of the brothels. You pass by several on your way to the dungeon. It's
   obvious what they are, given the barely dressed or sometimes entirely nude women who smile and wink in your direction
-  as you walk past.`
+  as you walk past.`;
 
 pages.thePit = `A short while later you find yourself at the gateway to the Great Rhysh Dungeon, a huge, perfectly
   circular hole in the ground. A few small streams cascade over the edge of the pit, the water plunging downward,
   splashing against the walls of the shaft, turning into a thick mist that makes the pit look bottomless. A pair of
   stairways cling to the sides of the pit, angling downward and meeting again at the opposite side of the pit at a
-  landing where the actual door to the dungeon sits.`
+  landing where the actual door to the dungeon sits.`;
 
 pages.approach = `A large man in polished armor is standing guard at the top of the pit where both stairways begin. The
   featureless helmet tilts downward as you approach. "New delver?" The man's voice is strange, reverberating, hollow.`;
 
 const approachOptions = [
-  { label:'Yes.' },
-  { label:'I just want to take a look.' },
-  { label:'How did you know?' },
+  { label:'Yes.', jump:'newYes' },
+  { label:'I just want to take a look.', jump:'newLook' },
+  { label:'How did you know?', jump:'newKnow' },
 ];
+
+pages.newYes = `The man in the armor nods. "Then you must take the delver's oath. Clasp your right hard over your 
+  heart and repeat after me. I, state your name, ${theOath}"`;
+
+const oathOptions = [
+  { label:'I, state your name...', jump:'oathSlap' },
+  { label:`I, {P:fullName}, ${theOath}`, jump:'oathTaken' },
+  { label:'What? Why do I have to do that?', jump:'oathWhy' },
+];
+
+pages.oathSlap = `(Oath Slap)`;
+pages.oathTaken = `(Oath Taken)`;
+pages.oathWhy = `(Oath Why)`;
+
+pages.newLook = `(New Look)`;
+pages.newKnow = `(New Know)`;
 
 Episode.register('take-the-dungeon-oath',{
 
@@ -57,7 +76,16 @@ Episode.register('take-the-dungeon-oath',{
     { content:pages.travel },
     { content:pages.empty },
     { content:pages.thePit },
+
     { content:pages.approach, buttons:approachOptions, buttonsStyle:'column' },
+    { content:pages.newYes,  label:'newYes', buttons:oathOptions, buttonsStyle:'column' },
+    { content:pages.newLook, label:'newLook', end:true },
+    { content:pages.newKnow, label:'newKnow', end:true },
+
+    { content:pages.oathSlap,  label:'oathSlap', end:true },
+    { content:pages.oathTaken,  label:'oathTaken', end:true },
+    { content:pages.oathWhy,  label:'oathWhy', end:true },
+
   ],
 
 });
