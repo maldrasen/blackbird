@@ -2,17 +2,15 @@
 @use "../variables";
 
 #episodeView {
-  p:first-child { margin-top: 0; }
-  p { margin: 16px 0; }
-  p:last-child { margin-bottom: 0; }
-}
-
-#episodeView.center-area {
+  @include layout.full-screen;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  .result-blocks { text-align:center; }
+  z-index: variables.$z-root;
+
+  p:first-child { margin-top: 0; }
+  p { margin: 16px 0; }
+  p:last-child { margin-bottom: 0; }
 }
 
 #episodeView .episode-frame {
@@ -22,57 +20,30 @@
   border: variables.$border-normal;
   box-shadow: variables.$shadow-frame;
   backdrop-filter: blur(5px);
-  z-index: variables.$z-root;
 }
 
 // When there are no buttons on this page, then clicking the frame will advance the text.
 #episodeView .episode-frame:has(#episodeButtons.hide) { cursor: pointer; }
 
-#episodeView.episode-centered {
+#episodeView.novel {
+  align-items: end;
+  .episode-frame {
+    margin: 50px;
+    height: 300px;
+  }
+}
+
+#episodeView.centered {
   .episode-frame {
     height: 300px;
     width: 600px;
   }
 }
 
-#episodeView.episode-large-centered {
+#episodeView.large-centered {
   .episode-frame {
     height: 500px;
     width: 1000px;
   }
 }
 
-#episodePage {
-  flex-grow: 1;
-  margin: 20px 20px 0 20px;
-  overflow: hidden;
-  font-family: "habibi", sans-serif;
-  font-size: variables.$fs-big;
-
-  // Habibi only ships a regular weight, so italics here are the browser's synthetic/oblique slant rather than a
-  // true italic face.
-  i {
-    font-family: "habibi", sans-serif;
-    font-style: italic;
-  }
-}
-
-#episodeButtons {
-  border-top: variables.$border-light;
-  background-color: rgb(0,0,0,0.33);
-}
-
-#episodeButtons.button-row {
-  display: flex;
-  justify-content: flex-end;
-  padding: 5px;
-}
-
-#episodeButtons.button-column {
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  a { margin: 2px 0; }
-  a:first-child { margin-top:0; }
-  a:last-child { margin-bottom:0; }
-}

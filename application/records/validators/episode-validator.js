@@ -1,7 +1,7 @@
 global.EpisodeValidator = function(code, data) {
   const name = `Episode[${code}]`;
 
-  if (data.layout != null) { Validate.isIn(`${name}.layout`, data.layout, Object.keys(Episode.getViews())); }
+  if (data.layout != null) { Validate.isIn(`${name}.layout`, data.layout, ['novel','centered','large-centered']); }
   if (data.endFunction != null) { Validate.isFunction(`${name}.endFunction`, data.endFunction); }
 
   Validate.isArray(`${name}.pages`, data.pages);

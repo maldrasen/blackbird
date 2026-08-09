@@ -39,12 +39,6 @@
 global.Episode = (function() {
   const episodes = {};
 
-  const views = {
-    'novel': `views/episode-novel.html`,
-    'centered': `views/episode-centered.html`,
-    'large-centered': `views/episode-large-centered.html`,
-  }
-
   function register(code,data) {
     EpisodeValidator(code,data);
     episodes[code] = data;
@@ -72,7 +66,6 @@ global.Episode = (function() {
 
     return Object.freeze({
       getCode: () => { return code; },
-      getView: () => { return views[getLayout()]; },
       getEndFunction: () => { return episode.endFunction; },
       getQueue: () => { return episode.queue; },
       getPages: () => { return episode.pages; },
@@ -84,7 +77,6 @@ global.Episode = (function() {
   return Object.freeze({
     register,
     getAllCodes,
-    getViews: () => { return views },
     lookup,
   });
 

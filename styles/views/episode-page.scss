@@ -1,0 +1,37 @@
+@use "../variables";
+
+#episodePage {
+  flex-grow: 1;
+  margin: 20px;
+  overflow: hidden;
+  font-family: "habibi", sans-serif;
+  font-size: variables.$fs-big;
+
+  i {
+    font-family: "habibi", sans-serif;
+    font-style: italic;
+  }
+
+  .result-blocks { text-align:center; }
+}
+
+#episodeButtons {
+  border-top: variables.$border-light;
+  background-color: rgb(0,0,0,0.33);
+}
+
+#episodeButtons.button-row {
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px;
+  .button { margin-left: 5px; }
+}
+
+#episodeButtons.button-column {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  a { margin: 2px 0; }
+  a:first-child { margin-top:0; }
+  a:last-child { margin-bottom:0; }
+}
