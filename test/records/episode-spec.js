@@ -41,6 +41,33 @@ describe('Episode', function() {
     expect(registerPage({ content:`<p>Text</p>`, onShow:'playEffect' })).to.throw(/onShow is not a function/);
   });
 
+  it('rejects a non-string page label', function() {
+    expect(registerPage({ content:`<p>Text</p>`, label:7 })).to.throw(/label is not a string/);
+  });
+
+  it('rejects duplicate page labels', function() {
+    expect(register({ pages:[
+      { content:`<p>Text</p>`, label:'again' },
+      { content:`<p>Text</p>`, label:'again' },
+    ]})).to.throw(/duplicate page label \[again\]/);
+  });
+
+  it('rejects a page jump to an unknown label', function() {
+    expect(registerPage({ content:`<p>Text</p>`, jump:'nowhere' })).to.throw(/jumps to an unknown label \[nowhere\]/);
+  });
+
+  it('rejects a page with both jump and end', function() {
+    expect(register({ pages:[
+      { content:`<p>Text</p>`, label:'here' },
+      { content:`<p>Text</p>`, jump:'here', end:true },
+    ]})).to.throw(/cannot have both jump and end/);
+  });
+
+  it('rejects an end that is not true', function() {
+    expect(registerPage({ content:`<p>Text</p>`, end:'yes' })).to.throw(/end is yes/);
+    expect(registerButton({ label:'Leave', end:false })).to.throw(/end is false/);
+  });
+
   it('rejects page requires that are not functions', function() {
     expect(registerPage({ content:`<p>Text</p>`, requires:[() => true, 'hasPlayer'] }))
       .to.throw(/pages\[0\].requires is not a function or an array of functions/);
@@ -60,6 +87,14 @@ describe('Episode', function() {
 
   it('rejects a button callback that is not a function', function() {
     expect(registerButton({ label:'Continue', callback:'endEpisode' })).to.throw(/callback is not a function/);
+  });
+
+  it('rejects a button jump to an unknown label', function() {
+    expect(registerButton({ label:'Approach', jump:'nowhere' })).to.throw(/jumps to an unknown label \[nowhere\]/);
+  });
+
+  it('rejects a button with both jump and end', function() {
+    expect(registerButton({ label:'Approach', jump:'here', end:true })).to.throw(/cannot have both jump and end/);
   });
 
   it('rejects a button classname that is not a string or string array', function() {

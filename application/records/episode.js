@@ -22,6 +22,10 @@
 - `content`          HTML string. Woven with the episode context before rendering.
 - `contentFunction`  () => HTML string, for content built at display time. Each page needs exactly one of
                      content or contentFunction.
+- `label`            String, unique within the episode. Names the page as a jump target.
+- `jump`             Page label. Advancing from this page jumps there (in either direction) instead of falling
+                     through to the next page in the array. Mutually exclusive with end.
+- `end`              true ends the episode when advancing from this page instead of falling through.
 - `requires`         Predicate or array of predicates, passed the EpisodeState. Unmet pages are skipped.
 - `buttons`          Array of button objects. (See below.) With no buttons a click (or space/enter)
                      advances to the next page.
@@ -31,7 +35,10 @@
 ### Button properties:
 - `standard`    ['continue'] Renders a canned button (only continue for now) all other properties are ignored.
 - `label`       Button text. Required unless standard is set.
-- `callback`    Called when the button is clicked or chosen with a number key.
+- `callback`    Called when the button is clicked or chosen with a number key. A side effect that runs before
+                jump or end; a button with neither is expected to advance the episode itself, if at all.
+- `jump`        Page label. Clicking jumps to that page. Mutually exclusive with end.
+- `end`         true ends the episode when clicked.
 - `requires`    Predicate or array of predicates, passed the EpisodeState. Unmet buttons aren't rendered.
 - `id`          Element id.
 - `classname`   Classname string or array of classnames.
