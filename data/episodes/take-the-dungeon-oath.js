@@ -44,7 +44,7 @@ pages.approach = `A large man in polished armor is standing guard at the top of 
 const approachOptions = [
   { label:'"Yes."', jump:'A.Yes' },
   { label:'"I just want to take a look."', jump:'B.Look' },
-  { label:'"How did you know?"', jump:'C.Know' },
+  { label:'"How did you know?"', jump:'C.Know', requires:ContextRequirements.unset('howDoYouKnow') },
 ];
 
 // A Branch - Yes I'm new
@@ -79,7 +79,7 @@ const slappedOptions = [
 const finalOptions = [
   { label:`"Very well."`, jump:'A.C.Yes' },
   { label:`"Laws need to have a reason to exist. You can't just slavishly follow them without reason."`, jump:'A.C.Killed' },
-  { label:'"No, I refuse."', jump:'refused' },
+  { label:'"No, I refuse."', jump:'Refused' },
 ];
 
 pages.oathTaken3 = `<p>"Now then. Clasp your right hard over your heart and repeat after me. I, state your name,
@@ -92,12 +92,29 @@ pages.killed = `<p>The man stares down at you for a moment and nods. "You're rig
   painlessly. The world spins as the upper half of your body tumbles down into the well like entrance of the dungeon,
   followed a short time later by your legs as the templar kicks them into the pit.</p>`
 
-pages.takingALook = `[Taking a Look]`;
-pages.howDoYouKnow = `[How do you know]`;
+// B Branch - Just taking a look
+
+pages.takingALook = `The man lets out a contemptuous snort, "This isn't a goddamned tourest attraction. If you're not
+  here to delve, then leave."`;
+
+// C Branch - How do you know.
+
+pages.howDoYouKnow = `<p>The armored man lets out a hollow sounding laugh, "Beyond the fact that I've never seen you,
+  not to mention the sorry state of your equipment? You're alone. A component delver would have at least a companion
+  or two with them. A man approaching The Well by himself is either fresh or a fool. Usually both."</p><p>"However,
+  before you can go get yourself killed, you must take the delver's oath."</p>`;
+
+const cOathOptions = [
+  { label:`"An oath? Why?"`, jump:'C.A.Why' },
+  { label:`"Alright, what's this oath?"`, jump:`C.B.WhatOath` },
+  { label:`"No, I won't be swearing any oaths."`, jump:'Refused' },
+];
+
+pages.whatOath = `[What Oath?]`;
+
 pages.refused = `"Then begone."`;
 
 Episode.register('take-the-dungeon-oath',{
-
   queue: {
     district: 'dungeon',
     on: 'enter',
@@ -111,17 +128,19 @@ Episode.register('take-the-dungeon-oath',{
 
     { content:pages.approach, buttons:approachOptions, buttonsStyle:'column' },
     { content:pages.yesNew, label:'A.Yes', buttons:oathOptions, buttonsStyle:'column' },
-    { content:pages.takingALook, label:'B.Look', end:true },
-    { content:pages.howDoYouKnow, label:'C.Know', end:true },
+    { content:pages.takingALook, label:'B.Look', end:true }, // TODO: Finish Branch
+    { content:pages.howDoYouKnow, label:'C.Know', buttons:cOathOptions, buttonsStyle:'column' },
 
     { content:pages.slapped, label:'A.A.Slapped', buttons:slappedOptions, buttonsStyle:'column', damage:5 }, // TODO: Take damage, show damage effect.
     { content:pages.oathTaken1, label:'A.B.Taken-1', setFlag:{[GameFlags.oathTaken]:true }, end:true },
     { content:pages.oathTaken2, label:'A.B.Taken-2', setFlag:{[GameFlags.oathTaken]:true }, end:true }, // TODO: Set a game state flag.
     { content:pages.becauseLaw, label:'A.C.Why', buttons:finalOptions,  buttonsStyle:'column' },
     { content:pages.oathTaken3, label:'A.C.Yes', setFlag:{[GameFlags.oathTaken]:true }, end:true },
-    { content:pages.killed, label:'A.C.Killed', gameOver:true }, // TODO: Trigger game over from poor choices.
+    { content:pages.killed, label:'A.C.Killed', gameOver:true }, // TODO: Trigger game over from poor choices. (Is error now, because it's falling through)
 
-    { content:pages.refused, label:'refused' },
+    { content:pages.becauseLaw, label:'C.A.Why', buttons:finalOptions, buttonsStyle:'column' },
+    { content:pages.whatOath, label:'C.B.WhatOath', end:true }, // TODO: Finish Branch
+    { content:pages.refused, label:'Refused' },
   ],
 
 });
