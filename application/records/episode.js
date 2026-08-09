@@ -72,7 +72,7 @@ global.Episode = (function() {
 
     return Object.freeze({
       getCode: () => { return code; },
-      getContent: () => { return views[getLayout()]; },
+      getView: () => { return views[getLayout()]; },
       getEndFunction: () => { return episode.endFunction; },
       getQueue: () => { return episode.queue; },
       getPages: () => { return episode.pages; },
