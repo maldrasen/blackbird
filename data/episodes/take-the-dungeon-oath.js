@@ -30,7 +30,7 @@ pages.empty = `Other than the small bands of delvers, the city seems surprisingl
   obvious what they are, given the barely dressed or sometimes entirely nude women who smile and wink in your direction
   as you walk past.`
 
-pages.thePit = `After a little while you find yourself at the gateway to the Great Rhysh Dungeon, a huge, perfectly
+pages.thePit = `A short while later you find yourself at the gateway to the Great Rhysh Dungeon, a huge, perfectly
   circular hole in the ground. A few small streams cascade over the edge of the pit, the water plunging downward,
   splashing against the walls of the shaft, turning into a thick mist that makes the pit look bottomless. A pair of
   stairways cling to the sides of the pit, angling downward and meeting again at the opposite side of the pit at a
@@ -57,7 +57,7 @@ Episode.register('take-the-dungeon-oath',{
     { content:pages.travel },
     { content:pages.empty },
     { content:pages.thePit },
-    { content:pages.approach, buttons:approachOptions },
+    { content:pages.approach, buttons:approachOptions, buttonsStyle:'column' },
   ],
 
 });
