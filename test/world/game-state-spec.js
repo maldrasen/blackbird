@@ -47,22 +47,22 @@ describe('GameState', function() {
 
   it('tracks the episode queue without duplicate codes', function() {
     const state = GameState();
-    state.pushEpisodeToQueue('game-over','global');
-    state.pushEpisodeToQueue('propose-training','district:dungeon');
-    state.pushEpisodeToQueue('game-over','location:the-well');
+    state.pushEpisode('game-over','global');
+    state.pushEpisode('propose-training','district:dungeon');
+    state.pushEpisode('game-over','location:the-well');
 
-    expect(state.getEpisodeQueue()).to.eql([
+    expect(state.getEpisodes()).to.eql([
       { code:'game-over', place:'global' },
       { code:'propose-training', place:'district:dungeon' },
     ]);
 
-    state.removeEpisodeFromQueue('game-over');
-    expect(state.getEpisodeQueue()).to.eql([{ code:'propose-training', place:'district:dungeon' }]);
+    state.removeEpisode('game-over');
+    expect(state.getEpisodes()).to.eql([{ code:'propose-training', place:'district:dungeon' }]);
   });
 
   it('packs and restores the episode queue', function() {
     const state = GameState({ episodeQueue:[{ code:'game-over', place:'global' }] });
-    state.pushEpisodeToQueue('propose-training','location:the-well');
+    state.pushEpisode('propose-training','location:the-well');
 
     const packed = state.pack();
     expect(packed.episodeQueue).to.eql([
@@ -71,7 +71,7 @@ describe('GameState', function() {
     ]);
 
     const restored = GameState(packed);
-    expect(restored.getEpisodeQueue()).to.eql(packed.episodeQueue);
+    expect(restored.getEpisodes()).to.eql(packed.episodeQueue);
   });
 
   it('packs and restores the roster', function() {

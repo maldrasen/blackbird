@@ -9,7 +9,7 @@ describe('EpisodeQueue', function() {
   it('seeds episodes with places from their queue metadata', function() {
     EpisodeQueue.seed(['debug-strange-mist']);
 
-    expect(GameSystem.getState().getEpisodeQueue()).to.eql([
+    expect(GameSystem.getState().getEpisodes()).to.eql([
       { code:'debug-strange-mist', place:'district:dungeon' },
     ]);
   });
@@ -17,7 +17,7 @@ describe('EpisodeQueue', function() {
   it('pushes an episode without queue metadata to an explicit place', function() {
     EpisodeQueue.push('game-over','global');
 
-    expect(GameSystem.getState().getEpisodeQueue()).to.eql([{ code:'game-over', place:'global' }]);
+    expect(GameSystem.getState().getEpisodes()).to.eql([{ code:'game-over', place:'global' }]);
   });
 
   it('throws when pushing an episode with no queue metadata and no place', function() {
@@ -28,7 +28,7 @@ describe('EpisodeQueue', function() {
     EpisodeQueue.push('game-over','global');
 
     expect(EpisodeQueue.evaluateMove(enterDungeon)).to.equal('game-over');
-    expect(GameSystem.getState().getEpisodeQueue()).to.eql([]);
+    expect(GameSystem.getState().getEpisodes()).to.eql([]);
   });
 
   it('fires at most one episode per move, front of the queue first', function() {
@@ -36,14 +36,14 @@ describe('EpisodeQueue', function() {
     EpisodeQueue.push('propose-training','global');
 
     expect(EpisodeQueue.evaluateMove(enterDungeon)).to.equal('game-over');
-    expect(GameSystem.getState().getEpisodeQueue()).to.eql([{ code:'propose-training', place:'global' }]);
+    expect(GameSystem.getState().getEpisodes()).to.eql([{ code:'propose-training', place:'global' }]);
   });
 
   it('returns null when nothing is eligible for the move', function() {
     EpisodeQueue.push('game-over','district:home');
 
     expect(EpisodeQueue.evaluateMove(enterDungeon)).to.equal(null);
-    expect(GameSystem.getState().getEpisodeQueue()).to.eql([{ code:'game-over', place:'district:home' }]);
+    expect(GameSystem.getState().getEpisodes()).to.eql([{ code:'game-over', place:'district:home' }]);
   });
 
   it('falls through to the next candidate when requirements fail', function() {
@@ -51,7 +51,7 @@ describe('EpisodeQueue', function() {
     EpisodeQueue.push('game-over','district:dungeon');
 
     expect(EpisodeQueue.evaluateMove(enterDungeon)).to.equal('game-over');
-    expect(GameSystem.getState().getEpisodeQueue()).to.eql([
+    expect(GameSystem.getState().getEpisodes()).to.eql([
       { code:'debug-strange-mist', place:'district:dungeon' },
     ]);
   });
@@ -62,7 +62,7 @@ describe('EpisodeQueue', function() {
     Random.stubRoll(24);
 
     expect(EpisodeQueue.evaluateMove(enterDungeon)).to.equal('debug-strange-mist');
-    expect(GameSystem.getState().getEpisodeQueue()).to.eql([
+    expect(GameSystem.getState().getEpisodes()).to.eql([
       { code:'debug-strange-mist', place:'district:dungeon' },
     ]);
   });
@@ -82,7 +82,7 @@ describe('EpisodeQueue', function() {
     Random.stubRoll(0);
 
     expect(EpisodeQueue.evaluateMove(enterDungeon)).to.equal(null);
-    expect(GameSystem.getState().getEpisodeQueue()).to.eql([]);
+    expect(GameSystem.getState().getEpisodes()).to.eql([]);
   });
 
   it('ranks priority over specificity', function() {
@@ -107,7 +107,7 @@ describe('EpisodeQueue', function() {
     Random.stubRoll(0);
 
     expect(EpisodeQueue.evaluateMove({ ...enterDungeon, districtChanged:false })).to.equal(null);
-    expect(GameSystem.getState().getEpisodeQueue()).to.eql([
+    expect(GameSystem.getState().getEpisodes()).to.eql([
       { code:'debug-strange-mist', place:'district:dungeon' },
     ]);
   });

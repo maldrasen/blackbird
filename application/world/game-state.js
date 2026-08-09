@@ -1,5 +1,7 @@
 global.GameState = function(data={}) {
 
+  const flags = data.flags || {};
+
   let gameMode = data.gameMode || GameMode.location;
   let gameTime = data.gameTime || 0;
   let location = data.location;
@@ -13,6 +15,23 @@ global.GameState = function(data={}) {
   //       but may need to read values from the player.
   function getPartySizeLimit() { return 6; }
 
+  // Only enqueue an episode when it's not already in the queue.
+  function pushEpisode(code, place) {
+    if (episodeQueue.some(entry => entry.code === code) === false) {
+      episodeQueue.push({ code, place });
+    }
+  }
+
+  function setFlag(key, value) {
+    if (flags[key] != null && value == null) {
+      return delete flags[key]; }
+
+    if (['boolean','number','string'].includes(typeof value) === false) {
+      throw new Error(`A flag must be a boolean, number, or string`); }
+
+    flags[key] = value;
+  }
+
   function pack() {
     return {
       gameTime: Math.round(gameTime),
@@ -23,6 +42,7 @@ global.GameState = function(data={}) {
       legacyName: legacyName,
       roster: roster,
       episodeQueue: episodeQueue,
+      flags: flags,
     };
   }
 
@@ -42,18 +62,15 @@ global.GameState = function(data={}) {
     getPartySizeLimit,
     getLegacyName: () => { return legacyName; },
     setLegacyName: name => { legacyName = name; },
-
-    getEpisodeQueue: () => { return episodeQueue.map(entry => ({ ...entry })); },
-    pushEpisodeToQueue: (code,place) => {
-      if (episodeQueue.some(entry => entry.code === code) === false) { episodeQueue.push({ code, place }); }
-    },
-    removeEpisodeFromQueue: code => { episodeQueue = episodeQueue.filter(entry => entry.code !== code); },
-
     getRoster: () => { return [...roster]; },
     addToRoster: id => { if (roster.includes(id) === false) { roster.push(id); } },
     removeFromRoster: id => { roster = roster.filter(x => x !== id); },
     isInRoster: id => { return roster.includes(id); },
-
+    getEpisodes: () => { return episodeQueue.map(entry => ({ ...entry })); },
+    removeEpisode: code => { episodeQueue = episodeQueue.filter(entry => entry.code !== code); },
+    pushEpisode,
+    setFlag,
+    getFlag: key => { return flags[key]; },
     pack,
   });
 

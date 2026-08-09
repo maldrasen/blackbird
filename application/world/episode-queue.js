@@ -7,7 +7,7 @@ global.EpisodeQueue = (function() {
   }
 
   function push(code, place) {
-    GameSystem.getState().pushEpisodeToQueue(code, place || placeFromMetadata(code));
+    GameSystem.getState().pushEpisode(code, place || placeFromMetadata(code));
   }
 
   function placeFromMetadata(code) {
@@ -25,14 +25,14 @@ global.EpisodeQueue = (function() {
     const state = GameSystem.getState();
     const context = { P:state.getPlayer() };
 
-    const candidates = state.getEpisodeQueue()
+    const candidates = state.getEpisodes()
       .map((entry,position) => buildCandidate(entry, position, move))
       .filter(candidate => candidate != null);
 
     const winner = pruneFinished(candidates, context).sort(byRank).find(candidate => isEligible(candidate, context));
     if (winner == null) { return null; }
 
-    if (winner.metadata.repeat !== true) { state.removeEpisodeFromQueue(winner.code); }
+    if (winner.metadata.repeat !== true) { state.removeEpisode(winner.code); }
     return winner.code;
   }
 
@@ -62,7 +62,7 @@ global.EpisodeQueue = (function() {
   function pruneFinished(candidates, context) {
     const finished = candidates.filter(candidate =>
       candidate.metadata.removeWhen != null && candidate.metadata.removeWhen(context));
-    finished.forEach(candidate => GameSystem.getState().removeEpisodeFromQueue(candidate.code));
+    finished.forEach(candidate => GameSystem.getState().removeEpisode(candidate.code));
     return candidates.filter(candidate => finished.includes(candidate) === false);
   }
 
