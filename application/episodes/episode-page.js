@@ -22,7 +22,7 @@ global.EpisodePage = function(data) {
   // Only render a button when it has no requirements or all its requirements are met.
   function getButtons() {
     const buttons = (data.buttons || []).filter(button => checkRequirements(button.requires));
-    const weaver = Weaver(EpisodeSystem.getState().getContext());
+    const weaver = Weaver(EpisodeSystem.getContext());
 
     buttons.forEach(button => { button.label = weaver.weave(button.label) });
 
@@ -44,9 +44,9 @@ global.EpisodePage = function(data) {
   // Check page and button level requirements. The requires property can be a single closure, an array of closures
   // that all need to pass, or omitted entirely.
   function checkRequirements(requires) {
-    if (Array.isArray(requires)) { return requires.every(requirement => requirement(EpisodeSystem.getState())); }
+    if (Array.isArray(requires)) { return requires.every(requirement => requirement(EpisodeSystem.getContext())); }
     if (requires == null) { return true; }
-    return requires(EpisodeSystem.getState());
+    return requires(EpisodeSystem.getContext());
   }
 
   return Object.freeze({

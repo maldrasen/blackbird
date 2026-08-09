@@ -1,6 +1,4 @@
-global.EpisodeState = function(code, context) {
-  const properties = {};
-
+global.EpisodeState = function(code, context = {}) {
   let nextPage = null;
   let pageIndex = null;
 
@@ -44,10 +42,8 @@ global.EpisodeState = function(code, context) {
     getNextPage,
     setNextPage: label => { nextPage = label; },
 
-    getProperties: () => { return properties },
-    getProperty: key => { return properties[key] },
-    setPropertyValue: (key,value) => { properties[key] = value; },
-    getPropertyValue: key => { return properties[key]; },
+    setPropertyValue: (key,value) => { context[key] = value; },
+    getPropertyValue: key => { return context[key]; },
   });
 
 }

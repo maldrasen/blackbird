@@ -36,9 +36,9 @@ function largeNote(text) {
 
 // We don't allow the user to select the same attribute twice, so if they've added the strong trigger with the goal
 // choice we need to leave the strength option out of subsequent choices.
-function notChosen(attribute) { return state => {
-  if (state.getProperty('goal') === attribute) { return false; }
-  if (state.getProperty('memory') === attribute) { return false; }
+function notChosen(attribute) { return context => {
+  if (context.goal === attribute) { return false; }
+  if (context.memory === attribute) { return false; }
   return true;
 }}
 
@@ -82,12 +82,12 @@ const goalOptions = [
 
 function choseGoal(goal) {
   addTrigger(gainTriggerForAttribute[goal]);
-  EpisodeSystem.getState().setPropertyValue('goal',goal);
+  EpisodeSystem.setPropertyValue('goal',goal);
   EpisodeSystem.nextPage();
 }
 
 function goalResult() {
-  const goal = EpisodeSystem.getState().getProperty('goal');
+  const goal = EpisodeSystem.getPropertyValue('goal');
   const result = WeaverElements.resultBlock(`You've gained ${goal}`, { classname:'gain' });
 
   switch (goal) {
@@ -140,12 +140,12 @@ const memoryOptions = [
 
 function chooseMemory(memory) {
   addTrigger(gainTriggerForAttribute[memory]);
-  EpisodeSystem.getState().setPropertyValue('memory',memory);
+  EpisodeSystem.setPropertyValue('memory',memory);
   EpisodeSystem.nextPage();
 }
 
 function memoryResult() {
-  const memory = EpisodeSystem.getState().getProperty('memory');
+  const memory = EpisodeSystem.getPropertyValue('memory');
   const result = WeaverElements.resultBlock(`You've gained ${memory}`, { classname:'gain' });
 
   switch (memory) {
@@ -224,9 +224,8 @@ const changeContent = `You frown, roughly crossing out the insult and writing in
   to prove yourself before anyone will treat you with respect.`;
 
 function completeContent() {
-  const state = EpisodeSystem.getState();
-  const topContent = (state.getProperty('givenName') === 'Sheepfucker') ? acceptContent : changeContent
-  const familyName = state.getProperty('familyName');
+  const topContent = (EpisodeSystem.getPropertyValue('givenName') === 'Sheepfucker') ? acceptContent : changeContent
+  const familyName = EpisodeSystem.getPropertyValue('familyName');
 
   return `
     <p>

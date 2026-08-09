@@ -36,7 +36,6 @@ global.EpisodeSystem = (function() {
     getPartner: () => { return state.getContext().T; },
     getPlayer: () => { return state.getContext().P; },
     getEpisode: () => { return state.getEpisode(); },
-    getProperties: () => { return state.getProperties() },
     setPropertyValue: (key, value) => { state.setPropertyValue(key, value); },
     getPropertyValue: key => { return state.getPropertyValue(key); },
 
