@@ -53,13 +53,18 @@ pages.newYes = `The man in the armor nods. "Then you must take the delver's oath
 
 const oathOptions = [
   { label:'I, state your name...', jump:'oathSlap' },
-  { label:`I, {P:fullName}, ${theOath}`, jump:'oathTaken' },
+  { label:`I, {P:fullName}, ${theOath}`, jump:'oathSheepfucker', requires:CharacterRequirements.isNamed('P','Sheepfucker') },
+  { label:`I, {P:fullName}, ${theOath}`, jump:'oathTaken',       requires:CharacterRequirements.isNotNamed('P','Sheepfucker') },
   { label:'What? Why do I have to do that?', jump:'oathWhy' },
 ];
 
-pages.oathSlap = `(Oath Slap)`;
-pages.oathTaken = `(Oath Taken)`;
-pages.oathWhy = `(Oath Why)`;
+pages.oathSlap = `The man in the armor slaps you hard across the face. "Try again."`;
+pages.oathSheepfucker = `The man is silent for a moment, the name that the guard gave you catching him by surprise
+  perhaps. After an uncomfortable pause he finally clears his throat and says, "Very well... Sheepfucker. You're free
+  to enter the dungeon."`
+pages.oathTaken = `The man in the armor nods, and without much ceremony steps aside. "Very well. You're free to enter
+  the dungeon."`;
+pages.oathWhy = `The man crosses his arms. "Because it is the law. Take the oath or leave."`;
 
 pages.newLook = `(New Look)`;
 pages.newKnow = `(New Know)`;
@@ -78,14 +83,14 @@ Episode.register('take-the-dungeon-oath',{
     { content:pages.thePit },
 
     { content:pages.approach, buttons:approachOptions, buttonsStyle:'column' },
-    { content:pages.newYes,  label:'newYes', buttons:oathOptions, buttonsStyle:'column' },
-    { content:pages.newLook, label:'newLook', end:true },
-    { content:pages.newKnow, label:'newKnow', end:true },
+    { content:pages.newYes,   label:'newYes', buttons:oathOptions, buttonsStyle:'column' },
+    { content:pages.newLook,  label:'newLook', end:true },
+    { content:pages.newKnow,  label:'newKnow', end:true },
 
-    { content:pages.oathSlap,  label:'oathSlap', end:true },
-    { content:pages.oathTaken,  label:'oathTaken', end:true },
-    { content:pages.oathWhy,  label:'oathWhy', end:true },
-
+    { content:pages.oathSlap,        label:'oathSlap',        end:true, damage:5 }, // TODO: Take damage, show damage effect.
+    { content:pages.oathSheepfucker, label:'oathSheepfucker', end:true, setFlag:{ takenOath:true }}, // TODO: Set a game state flag.
+    { content:pages.oathTaken,       label:'oathTaken',       end:true, setFlag:{ takenOath:true } },
+    { content:pages.oathWhy,         label:'oathWhy',         end:true },
   ],
 
 });

@@ -16,6 +16,10 @@ global.CharacterRequirements = (function() {
     return Character(context[key]).getSpecies() === code;
   }
 
+  function isNamed(context, key, name) {
+    return Character(context[key]).getName() === name
+  }
+
   // Be careful not to confuse isMale() with hasCock(). Some men don't have dicks, and some women do.
   function isMale(context, key) {
     return subject(context, key).isMale();
@@ -130,6 +134,8 @@ global.CharacterRequirements = (function() {
   return Object.freeze({
     playerIs: key =>                         { return (context) => { return GameSystem.getState().getPlayer() === context[key]; }},
     isSpecies: (key, code) =>                { return (context) => { return isSpecies(context, key, code); }},
+    isNamed: (key, name) =>                  { return (context) => { return isNamed(context, key, name); }},
+    isNotNamed: (key, name) =>               { return (context) => { return isNamed(context, key, name) === false; }},
     isMale: key =>                           { return (context) => { return isMale(context, key); }},
     isNotMale: key =>                        { return (context) => { return isMale(context, key) === false; }},
     isAnusEmpty: key =>                      { return (context) => { return isAnusEmpty(context, key); }},

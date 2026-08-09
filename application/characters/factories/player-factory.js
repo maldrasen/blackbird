@@ -27,6 +27,7 @@ global.PlayerFactory = (function() {
         species: options.species || SpeciesCode.human,
         gender: options.gender || Gender.male,
         name: options.name || 'Greg',
+        surname: options.surname,
         triggers: triggers,
       });
 

@@ -254,7 +254,7 @@ function finishCharacterCreation() {
   const triggers = EpisodeSystem.getPropertyValue('triggers');
   const givenName = EpisodeSystem.getPropertyValue('givenName');
   const familyName = EpisodeSystem.getPropertyValue('familyName');
-  const playerId = PlayerFactory.build({ name:givenName, triggers });
+  const playerId = PlayerFactory.build({ name:givenName, surname:familyName, triggers });
   const state = GameSystem.getState();
 
   state.setPlayer(playerId);
