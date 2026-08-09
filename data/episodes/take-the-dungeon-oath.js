@@ -88,8 +88,8 @@ Episode.register('take-the-dungeon-oath',{
     { content:pages.newKnow,  label:'newKnow', end:true },
 
     { content:pages.oathSlap,        label:'oathSlap',        end:true, damage:5 }, // TODO: Take damage, show damage effect.
-    { content:pages.oathSheepfucker, label:'oathSheepfucker', end:true, setFlag:{ takenOath:true }}, // TODO: Set a game state flag.
-    { content:pages.oathTaken,       label:'oathTaken',       end:true, setFlag:{ takenOath:true } },
+    { content:pages.oathSheepfucker, label:'oathSheepfucker', end:true, setFlag:{[GameFlags.oathTaken]:true }}, // TODO: Set a game state flag.
+    { content:pages.oathTaken,       label:'oathTaken',       end:true, setFlag:{[GameFlags.oathTaken]:true }},
     { content:pages.oathWhy,         label:'oathWhy',         end:true },
   ],
 
