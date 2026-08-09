@@ -73,7 +73,7 @@ global.EpisodeView = (function() {
 
   // This function expects one of the standard button codes or button properties. A canned application button ignores
   // the button properties, but gets own default values if the button has them. The other button properties are:
-  // { label, id, classname, callback } Only label is required.
+  // { label, id, classname, callback, jump, end } Only label is required.
   function addButton(buttonData) {
     X.removeClass('#episodeButtons','hide');
 
@@ -90,9 +90,33 @@ global.EpisodeView = (function() {
     });
 
     if (buttonData.id) { button.id = buttonData.id; }
-    if (typeof buttonData.callback === 'function') { button.onSelect = buttonData.callback; }
+
+    const onSelect = buttonAction(buttonData);
+    if (onSelect) { button.onSelect = onSelect; }
 
     buttons.appendChild(button);
+  }
+
+  // A button's callback is a side effect that runs before any declared navigation. Buttons with neither a jump nor an
+  // end are expected to advance the episode from their callback, if they advance it at all.
+  function buttonAction(buttonData) {
+    const callback = (typeof buttonData.callback === 'function') ? buttonData.callback : null;
+
+    if (buttonData.jump) {
+      return () => {
+        if (callback) { callback(); }
+        EpisodeSystem.jumpToPage(buttonData.jump);
+      };
+    }
+
+    if (buttonData.end) {
+      return () => {
+        if (callback) { callback(); }
+        EpisodeSystem.endEpisode();
+      };
+    }
+
+    return callback;
   }
 
   // The classname property can be null, a single classname, or an array of classnames.

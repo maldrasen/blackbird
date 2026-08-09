@@ -25,6 +25,11 @@ global.EpisodeSystem = (function() {
     page.executeOnShow();
   }
 
+  function jumpToPage(label) {
+    state.setNextPage(label);
+    nextPage();
+  }
+
   return Object.freeze({
     getState: () => { return state; },
     getContext: () => { return state.getContext(); },
@@ -38,6 +43,7 @@ global.EpisodeSystem = (function() {
     startEpisode,
     endEpisode,
     nextPage,
+    jumpToPage,
   });
 
 })();

@@ -4,24 +4,30 @@ global.EpisodeState = function(code, context) {
   let nextPage = null;
   let pageIndex = null;
 
-  // The state should always have the data we need to find the next page. If this page contains some kind of question,
-  // clicking an option will set the nextPage before calling this. If not, the EpisodePage model should have the index
-  // of the current page; then we can look up the next page from that. We skip forward past any pages whose
-  // requirements aren't met. Pages might need a goto type property to skip forward to a page id as well. Page gotos
-  // should only ever go forward though to keep things sane. This function should always return an EpisodePage or null.
+  // Clicking a button with a jump property sets nextPage before this is called; otherwise the current page may carry
+  // its own jump or end. A jump moves the cursor to the page with the matching label (in either direction), then the
+  // normal advance loop runs from there, skipping any pages whose requirements aren't met. Returning null ends the
+  // episode.
   function getNextPage() {
-    const episode = Episode.lookup(code);
+    const pages = Episode.lookup(code).getPages();
+
+    if (nextPage == null && pageIndex != null) {
+      const current = pages[pageIndex];
+      if (current.end) { return null; }
+      if (current.jump) { nextPage = current.jump; }
+    }
 
     if (nextPage != null) {
-      console.log(`TODO: Return an episode page with id:${nextPage}`);
+      const target = pages.findIndex(page => page.label === nextPage);
+      if (target < 0) { throw new Error(`No page with label [${nextPage}]`); }
+      pageIndex = target - 1;
       nextPage = null;
-      return;
     }
 
     let page = null;
     while (page == null) {
       pageIndex = (pageIndex == null) ? 0 : pageIndex+1;
-      const data = episode.getPages()[pageIndex];
+      const data = pages[pageIndex];
       if (data == null) { return null; }
 
       const candidate = EpisodePage(data);
@@ -36,6 +42,7 @@ global.EpisodeState = function(code, context) {
     getContext: () => { return context; },
     getEpisode: () => { return Episode.lookup(code); },
     getNextPage,
+    setNextPage: label => { nextPage = label; },
 
     getProperties: () => { return properties },
     getProperty: key => { return properties[key] },
