@@ -7,4 +7,4 @@ tags: []
 points: 5
 ---
 ---
-Need to finally look into saving and loading the games. Should already have most of what we need, as far as packing and unpacking the game state. This is mostly a UI task to build the save and load views. Not sure yet if I want to limit the number of save files. I'm leaning towards one save per legacy.
+Need to finally look into saving and loading the games. Should already have most of what we need, as far as packing and unpacking the game state. This is mostly a UI task to build the save and load views and to update the main menu. 
