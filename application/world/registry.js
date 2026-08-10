@@ -147,6 +147,20 @@ global.Registry = (function() {
     return results;
   }
 
+  // === Serialization =================================================================================================
+
+  // We need to convert the entities set into an array so it can be serialized.
+  function pack() {
+    const packedEntities = {};
+
+    Object.keys(entities).forEach(id => packedEntities[id] = [...entities[id]]);
+
+    return {
+      entities: packedEntities,
+      components: components,
+    };
+  }
+
   return Object.freeze({
     clear,
     dump,
@@ -163,6 +177,7 @@ global.Registry = (function() {
     findChildEntities,
     findEntitiesWithComponents,
     findComponentsWith,
+    pack,
   });
 
 })();

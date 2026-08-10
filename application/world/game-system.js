@@ -1,5 +1,7 @@
 global.GameSystem = (function() {
 
+  const saveDirectory = `${DATA}/Saves`;
+
   let state = GameState();
   let loaded = false;
   let returnMode;
@@ -19,9 +21,16 @@ global.GameSystem = (function() {
 
   async function saveGame() {
     if (canSave() === false) { throw new Error(`Cannot save the game in its current state.`); }
+    if (HEADLESS) { return; }
+
     WorldState.updateSaveMetadata();
 
-    // TODO: Serialize state to save file at state.getSaveKey
+    if (fs.existsSync(saveDirectory) === false) { fs.mkdirSync(saveDirectory); }
+
+    await FileHelper.writeJSON(`${saveDirectory}/${state.getSaveKey()}.json`, {
+      state: state.pack(),
+      registry: Registry.pack(),
+    });
   }
 
   // ===================
