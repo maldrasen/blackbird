@@ -1,6 +1,7 @@
 global.EpisodeState = function(code, context = {}) {
   let nextPage = null;
   let pageIndex = null;
+  let gameOver = false;
 
   // Clicking a button with a jump property sets nextPage before this is called; otherwise the current page may carry
   // its own jump or end. A jump moves the cursor to the page with the matching label (in either direction), then the
@@ -12,6 +13,7 @@ global.EpisodeState = function(code, context = {}) {
     if (nextPage == null && pageIndex != null) {
       const current = pages[pageIndex];
       if (current.end) { return null; }
+      if (current.gameOver) { gameOver = true; return null; }
       if (current.jump) { nextPage = current.jump; }
     }
 
@@ -41,6 +43,7 @@ global.EpisodeState = function(code, context = {}) {
     getEpisode: () => { return Episode.lookup(code); },
     getNextPage,
     setNextPage: label => { nextPage = label; },
+    isGameOver: () => { return gameOver; },
 
     setPropertyValue: (key,value) => { context[key] = value; },
     getPropertyValue: key => { return context[key]; },

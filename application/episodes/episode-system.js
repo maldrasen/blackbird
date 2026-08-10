@@ -19,7 +19,7 @@ global.EpisodeSystem = (function() {
   function nextPage() {
     const page = state.getNextPage();
     if (page == null) {
-      return endEpisode();
+      return state.isGameOver() ? showGameOver() : endEpisode();
     }
     applyFlags(page);
     EpisodeView.setPageContent(page);
@@ -46,6 +46,13 @@ global.EpisodeSystem = (function() {
     HealthComponent.update(player, health);
 
     EpisodeView.showDamageEffect();
+  }
+
+  // Advancing past a gameOver page abandons the current episode and starts the game-over episode in its place.
+  // Setting the game mode shows the episode view again, which renders the new episode's first page.
+  function showGameOver() {
+    startEpisode('game-over', {});
+    GameSystem.setGameMode(GameMode.episode);
   }
 
   function jumpToPage(label) {

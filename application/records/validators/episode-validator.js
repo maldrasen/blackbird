@@ -27,6 +27,11 @@ global.EpisodeValidator = function(code, data) {
     if (page.setFlag != null) { validateSetFlag(`${name}.setFlag`, page.setFlag); }
     if (page.damage != null) { Validate.atLeast(`${name}.damage`, page.damage, 1); }
 
+    Validate.trueOrNull(`${name}.gameOver`, page.gameOver);
+    if (page.gameOver != null && (page.jump != null || page.end != null)) {
+      throw new Error(`${name} cannot combine gameOver with jump or end`);
+    }
+
     if (page.buttons != null) {
       Validate.isArray(`${name}.buttons`, page.buttons);
       page.buttons.forEach((button,index) => validateButton(`${name}.buttons[${index}]`, button));

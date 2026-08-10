@@ -161,7 +161,7 @@ Episode.register('take-the-dungeon-oath',{
     { content:pages.oathTaken2, label:'A.B.Taken-2', setFlag:{[GameFlags.oathTaken]:true }, end:true },
     { content:pages.becauseLaw, label:'A.C.Why', buttons:finalButtons,  buttonsStyle:'column' },
     { content:pages.oathTaken3, label:'A.C.Yes', setFlag:{[GameFlags.oathTaken]:true }, end:true },
-    { content:pages.killed, label:'A.C.Killed', gameOver:true }, // TODO: Trigger game over from poor choices. (Is error now, because it's falling through)
+    { content:pages.killed, label:'A.C.Killed', gameOver:true },
 
     { content:pages.becauseLaw, label:'C.A.Why', buttons:finalButtons, buttonsStyle:'column' },
     { content:pages.whatOath, label:'C.B.WhatOath', buttons:whatOathButtons, buttonsStyle:'column' },
