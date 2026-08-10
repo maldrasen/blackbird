@@ -25,14 +25,14 @@ global.EpisodePage = function(data) {
     if (typeof data.onShow === 'function') { data.onShow(); }
   }
 
-  // Only render a button when it has no requirements or all its requirements are met.
+  // Only render a button when it has no requirements or all its requirements are met. The buttons are copied before
+  // their labels are woven so that the woven text is never written back into the registered record.
   function getButtons() {
-    const buttons = (data.buttons || []).filter(button => checkRequirements(button.requires));
     const weaver = Weaver(EpisodeSystem.getContext());
 
-    buttons.forEach(button => { button.label = weaver.weave(button.label) });
-
-    return buttons;
+    return (data.buttons || [])
+      .filter(button => checkRequirements(button.requires))
+      .map(button => button.label == null ? { ...button } : { ...button, label:weaver.weave(button.label) });
   }
 
   // The classname for the #episodeButtons element which can display buttons in a row or a column. I'm assuming we'll
