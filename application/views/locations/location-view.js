@@ -85,9 +85,9 @@ global.LocationView = (function() {
   //    Action List
   // =================
 
-  // TODO: We'll eventually need to look at location actions and make them a bit more robust. They'll probably need
-  //       requirements at the very least. Currently, actions have a label and a code. The code is picked up by the
-  //       actionClicked() handler and executed. This however puts the business logic for the buttons in the view.
+  // TODO: We'll eventually need to look at location actions and make them a bit more robust. Currently, actions have
+  //       a label, a code, and optional requirements. The code is picked up by the actionClicked() handler and
+  //       executed. This however puts the business logic for the buttons in the view.
   //       The view may need to perform some work when an action is clicked, so I think the first event handler is
   //       still valid, but actions should then be passed to the location system, or something else entirely. This
   //       might be fine though if the actions don't need to do anything complicated. We'll figure it out when we get
