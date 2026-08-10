@@ -42,6 +42,8 @@ global.MainMenu = (function() {
   function isVisible() { return X.hasClass('#mainMenu','hide') === false; }
 
   function adjustMenu() {
+    const previousGame = WorldState.getPreviousGame();
+
     if (WorldState.getPreviousGame()) {
       X.removeClass('#mainMenu a.load-button','disabled');
       X.removeClass('#mainMenu a.continue-button','disabled');
@@ -51,6 +53,7 @@ global.MainMenu = (function() {
       X.addClass('#mainMenu #startButton','hide');
       X.addClass('#mainMenu #continueButton','hide');
       X.addClass('#mainMenu #loadButton','hide');
+      X.addClass('#mainMenu .start-fixture','hide');
     }
     if (GameSystem.isLoaded() === false) {
       X.addClass('#mainMenu #saveButton','hide');
@@ -58,8 +61,22 @@ global.MainMenu = (function() {
       X.removeClass('#mainMenu #continueButton','hide');
       X.removeClass('#mainMenu #loadButton','hide');
     }
-    if (GameSystem.canSave()) { X.removeClass('#mainMenu #saveButton','disabled'); }
-    if (GameSystem.canSave() === false) { X.addClass('#mainMenu #saveButton','disabled'); }
+
+    GameSystem.canSave() ?
+      X.removeClass('#mainMenu #saveButton','disabled'):
+      X.addClass('#mainMenu #saveButton','disabled');
+
+    previousGame ?
+      X.removeClass('#mainMenu #continueButton','disabled'):
+      X.addClass('#mainMenu #continueButton','disabled');
+
+    Object.keys(WorldState.getSavedGames()).length > 0 ?
+      X.removeClass('#mainMenu #loadButton','disabled'):
+      X.addClass('#mainMenu #loadButton','disabled');
+
+    if (previousGame) {
+      X.fill('#continueButton .game-name', WorldState.getSavedGames()[previousGame].legacyName);
+    }
   }
 
   async function startGame() {

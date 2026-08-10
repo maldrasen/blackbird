@@ -39,7 +39,6 @@ global.WorldState = (function() {
   function getOptions() { return getValue('options'); }
   async function setOptions(options) { await setValue('options',options); }
 
-
   // === Save and Load =========================================================
 
   function updateSaveMetadata() {
@@ -86,6 +85,8 @@ global.WorldState = (function() {
     setPreviousGame,
     getOptions,
     setOptions,
+
+    getSavedGames: () => { return structuredClone(worldState.savedGames); },
 
     updateSaveMetadata,
     saveState,

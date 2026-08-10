@@ -24,6 +24,17 @@
       width: 260px;
     }
   }
+
+  .game-name {
+    float: right;
+    color: variables.$fg-weak;
+  }
+
+  .with-border {
+    margin-top: 15px;
+    padding-top: 20px;
+    border-top: variables.$border-normal;
+  }
 }
 
 #menuCover {
