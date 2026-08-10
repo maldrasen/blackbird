@@ -90,6 +90,15 @@ global.GameSystem = (function() {
     }
   }
 
+  // Ends the current game, resetting the state and returning to the main menu.
+  function endGame() {
+    reset();
+
+    if (HEADLESS === false && Tests.running() === false) {
+      Views.endGame();
+    }
+  }
+
   function reset() {
     Registry.clear();
 
@@ -144,6 +153,7 @@ global.GameSystem = (function() {
     startNewGame,
     loadLastGame,
     loadGame,
+    endGame,
     reset,
 
     setGameMode,

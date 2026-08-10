@@ -5,5 +5,5 @@ Episode.register('game-over',{
     content: `<h3>You Died</h3>`,
     buttons: [{ id:'gameOverConfirmButton', label:'Confirm', callback:EpisodeSystem.endEpisode }],
   }],
-  endFunction: GameSystem.quitToMainMenu,
+  endFunction: GameSystem.endGame,
 });

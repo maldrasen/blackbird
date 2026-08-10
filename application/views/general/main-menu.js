@@ -6,7 +6,7 @@ global.MainMenu = (function() {
     X.onClick('#mainMenu #continueButton', continueGame);
     X.onClick('#mainMenu #loadButton', LoadOverlay.open);
     X.onClick('#mainMenu #optionsButton', OptionsOverlay.open);
-    X.onClick('#mainMenu #quitButton', quit);
+    X.onClick('#mainMenu #quitButton', GameSystem.endGame);
     X.onClick('#mainMenu #exitButton', window.close);
     X.onClick('#mainMenu a.start-fixture', startFixture);
   }
@@ -82,16 +82,6 @@ global.MainMenu = (function() {
       fadeTime: 1000,
       type: LogType.success,
     });
-  }
-
-  function quit() {
-    GameSystem.reset();
-    MainContent.clearMainContent();
-
-    X.removeClass('#mainMenu','hide');
-    X.addClass('#menuCover','hide');
-
-    loadBaseMenu();
   }
 
   async function startFixture(event) {

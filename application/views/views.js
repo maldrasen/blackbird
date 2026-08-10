@@ -27,6 +27,17 @@ global.Views = (function() {
     WindowManager.init();
   }
 
-  return Object.freeze({ initAll });
+  // Handles the UI side of ending a game, dropping back to the base main menu.
+  function endGame() {
+    MainContent.clearMainContent();
+    MainMenu.close();
+    MainMenu.loadBaseMenu();
+    MainMenu.show();
+  }
+
+  return Object.freeze({
+    initAll,
+    endGame,
+  });
 
 })();
