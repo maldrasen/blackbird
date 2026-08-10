@@ -44,7 +44,8 @@ global.WorldState = (function() {
 
   function updateSaveMetadata() {
     const state = GameSystem.getState();
-    worldState.savedGames[state.getSaveKey()] = state.getSaveMetadata();
+    getState().previousGame = state.getSaveKey();
+    getState().savedGames[state.getSaveKey()] = state.getSaveMetadata();
     saveState();
   }
 
