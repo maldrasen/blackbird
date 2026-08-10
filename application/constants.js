@@ -12,6 +12,9 @@ global._battleDamageEffectTime = 500;
 global._battleKillEffectTime = 1000;
 global._battleMoveEffectTime = 500;
 
+// === Episodes ===
+global._episodeDamageEffectTime = 500;
+
 // === Training ===
 // The scale thresholds could be played with a bit, raised or lowered as needed as the levels aren't very even at all.
 global._scaleThresholds = [100, 600, 3600, 13600, 43600, 103600, 203600, 453600];

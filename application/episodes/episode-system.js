@@ -23,6 +23,7 @@ global.EpisodeSystem = (function() {
     }
     applyFlags(page);
     EpisodeView.setPageContent(page);
+    applyDamage(page);
     page.executeOnShow();
   }
 
@@ -30,6 +31,21 @@ global.EpisodeSystem = (function() {
     Object.entries(page.getFlags()).forEach(([key,value]) => {
       GameSystem.getState().setFlag(key,value);
     });
+  }
+
+  // Scripted episode damage goes straight to the player's health, skipping armor and the battle damage pipeline. The
+  // page clamps the damage so it can never drop the player below 1 health. This must run after setPageContent() so
+  // the page's damage result block is built from the same pre-damage health.
+  function applyDamage(page) {
+    const damage = page.getDamage();
+    if (damage == null || damage === 0) { return; }
+
+    const player = GameSystem.getState().getPlayer();
+    const health = HealthComponent.lookup(player);
+    health.currentHealth -= damage;
+    HealthComponent.update(player, health);
+
+    EpisodeView.showDamageEffect();
   }
 
   function jumpToPage(label) {

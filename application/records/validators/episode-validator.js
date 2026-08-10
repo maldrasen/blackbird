@@ -25,6 +25,7 @@ global.EpisodeValidator = function(code, data) {
     if (page.onShow != null) { Validate.isFunction(`${name}.onShow`, page.onShow); }
     if (page.requires != null) { Validate.singleOrArrayOf(`${name}.requires`, page.requires, 'function'); }
     if (page.setFlag != null) { validateSetFlag(`${name}.setFlag`, page.setFlag); }
+    if (page.damage != null) { Validate.atLeast(`${name}.damage`, page.damage, 1); }
 
     if (page.buttons != null) {
       Validate.isArray(`${name}.buttons`, page.buttons);

@@ -4,7 +4,13 @@ global.EpisodePage = function(data) {
   // out if the content is something like "<div></div> <div></div>" which would silently drop the second div, we just
   // always wrap the content in another div, because a webapp can't possibly have too many of those.
   function getContent() {
-    return `<div>${resolveContent()}</div>`;
+    return `<div>${damageBlock()}${resolveContent()}</div>`;
+  }
+
+  function damageBlock() {
+    const damage = getDamage();
+    if (damage == null || damage === 0) { return ''; }
+    return WeaverElements.resultBlock(`You've taken ${damage} damage`, { classname:'loss' });
   }
 
   function resolveContent() {
@@ -40,6 +46,15 @@ global.EpisodePage = function(data) {
 
   function getFlags() { return data.setFlag || {}; }
 
+  // Page damage is a scripted injury, not an attack, so it's clamped rather than lethal: it can leave the player at
+  // 1 health but never knock them out or kill them. The clamp lives here so the result block in the content and the
+  // damage applied by the system always report the same number.
+  function getDamage() {
+    if (data.damage == null) { return null; }
+    const health = HealthComponent.lookup(GameSystem.getState().getPlayer());
+    return Math.max(Math.min(data.damage, health.currentHealth - 1), 0);
+  }
+
   // Only render a page when it has no requirements or all its requirements are met.
   function meetsRequirements() { return checkRequirements(data.requires); }
 
@@ -55,6 +70,7 @@ global.EpisodePage = function(data) {
     getButtons,
     getButtonsStyle,
     getContent,
+    getDamage,
     getFlags,
     executeOnShow,
     meetsRequirements,

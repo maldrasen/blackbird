@@ -125,6 +125,14 @@ global.EpisodeView = (function() {
     return typeof data.classname === 'string' ? [data.classname] : [];
   }
 
+  function showDamageEffect() {
+    FlashSquare.flash({
+      element: X.first('#episodeView .episode-frame'),
+      color: 'rgb(75,10,10)',
+      duration: _episodeDamageEffectTime,
+    });
+  }
+
   function isVisible() {
     return X.first('#episodeView') != null;
   }
@@ -133,6 +141,7 @@ global.EpisodeView = (function() {
     init,
     show,
     setPageContent,
+    showDamageEffect,
     isVisible,
   }
 
