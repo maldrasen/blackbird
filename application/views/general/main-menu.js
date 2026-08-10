@@ -52,6 +52,7 @@ global.MainMenu = (function() {
   function close() {
     hide();
     X.addClass('#menuCover','hide');
+    WindowManager.remove(MainMenu);
   }
 
   function open() {
