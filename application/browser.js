@@ -4,7 +4,6 @@ global.Browser = (function() {
   function init() {
     Electron.app.whenReady().then(createWindow);
     Electron.app.on('window-all-closed', Electron.app.quit);
-    Electron.app.on('activate', activate);
   }
 
   function createWindow() {
@@ -35,11 +34,6 @@ global.Browser = (function() {
       mainWindow = null;
       Electron.app.quit();
     });
-  }
-
-  // Mac specific window handling.
-  function activate() {
-    if (mainWindow === null) { createWindow(); }
   }
 
   // Send a message to the client. The content of the message will be

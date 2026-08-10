@@ -6,14 +6,11 @@ global.MainMenu = (function() {
     X.onClick('#mainMenu #continueButton', continueGame);
     X.onClick('#mainMenu #loadButton', LoadOverlay.open);
     X.onClick('#mainMenu #optionsButton', OptionsOverlay.open);
-    X.onClick('#mainMenu #quitButton', window.close);
+    X.onClick('#mainMenu #quitButton', GameSystem.quitToMainMenu);
+    X.onClick('#mainMenu #exitButton', window.close);
 
     X.onClick('#mainMenu a.start-fixture', startFixture);
     X.first('#mainMenu a.close-menu-button').style['background-image'] = X.assetURL('ui/x-icon.png');
-
-    if (Environment.isDevelopment) {
-      X.removeClass('#mainMenu .start-fixture','hide');
-    }
   }
 
   function openFully() {
@@ -44,23 +41,28 @@ global.MainMenu = (function() {
   function adjustMenu() {
     const previousGame = WorldState.getPreviousGame();
 
-    if (WorldState.getPreviousGame()) {
-      X.removeClass('#mainMenu a.load-button','disabled');
-      X.removeClass('#mainMenu a.continue-button','disabled');
-    }
     if (GameSystem.isLoaded()) {
-      X.removeClass('#mainMenu #saveButton','hide');
       X.addClass('#mainMenu #startButton','hide');
+      X.removeClass('#mainMenu #saveButton','hide');
       X.addClass('#mainMenu #continueButton','hide');
       X.addClass('#mainMenu #loadButton','hide');
+      X.removeClass('#mainMenu #quitButton','hide');
+      X.addClass('#mainMenu #exitButton','hide');
       X.addClass('#mainMenu #separator','hide');
       X.addClass('#mainMenu .start-fixture','hide');
     }
     if (GameSystem.isLoaded() === false) {
-      X.addClass('#mainMenu #saveButton','hide');
       X.removeClass('#mainMenu #startButton','hide');
+      X.addClass('#mainMenu #saveButton','hide');
       X.removeClass('#mainMenu #continueButton','hide');
       X.removeClass('#mainMenu #loadButton','hide');
+      X.addClass('#mainMenu #quitButton','hide');
+      X.removeClass('#mainMenu #exitButton','hide');
+
+      if (Environment.isDevelopment) {
+        X.removeClass('#mainMenu #separator','hide');
+        X.removeClass('#mainMenu .start-fixture','hide');
+      }
     }
 
     GameSystem.canSave() ?
