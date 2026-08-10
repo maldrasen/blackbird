@@ -46,6 +46,7 @@ global.OptionsOverlay = (function() {
     if (isBuilt === false) { OptionsOverlay.build(); }
     MainMenu.hide();
     X.removeClass('#optionsOverlay','hide');
+    WindowManager.push(OptionsOverlay);
   }
 
   function close() {

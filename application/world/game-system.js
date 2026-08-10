@@ -7,6 +7,16 @@ global.GameSystem = (function() {
   function getState() { return state; }
   function isLoaded() { return loaded; }
 
+  // A game can only be saved when we're in the location view. So as not to couple this to the view though we check to
+  // see if any of the system states are present. These states are never persisted, so if they exist that indicates
+  // that we're in a non-savable state.
+  function canSave() {
+    if (BattleSystem.getState()) { return false; }
+    if (DungeonSystem.getDungeonState()) { return false; }
+    if (EpisodeSystem.getState()) { return false; }
+    return true;
+  }
+
   // ===================
   //    Game Lifecycle
   // ===================
@@ -98,6 +108,7 @@ global.GameSystem = (function() {
   return Object.freeze({
     getState,
     isLoaded,
+    canSave,
 
     startNewGame,
     loadLastGame,

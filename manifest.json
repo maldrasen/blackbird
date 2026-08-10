@@ -257,6 +257,7 @@
     "application/views/general/console.js",
     "application/views/general/game-state-frame.js",
     "application/views/general/list-builder.js",
+    "application/views/general/load-overlay.js",
     "application/views/general/main-content.js",
     "application/views/general/main-menu.js",
     "application/views/general/options-overlay.js",

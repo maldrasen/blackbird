@@ -1,18 +1,17 @@
 global.MainMenu = (function() {
 
   function init() {
-    X.onClick('#mainMenu a.start-button', startGame);
+    X.onClick('#mainMenu #startButton', startGame);
+    X.onClick('#mainMenu #saveButton', saveGame);
+    X.onClick('#mainMenu #continueButton', continueGame);
+    X.onClick('#mainMenu #loadButton', LoadOverlay.open);
+    X.onClick('#mainMenu #optionsButton', OptionsOverlay.open);
+    X.onClick('#mainMenu #quitButton', window.close);
+
     X.onClick('#mainMenu a.start-fixture', startFixture);
-
-    X.onClick('#mainMenu a.continue-button', continueGame);
-    X.onClick('#mainMenu a.load-button', showLoadGame);
-    X.onClick('#mainMenu a.options-button', showOptions);
-    X.onClick('#mainMenu a.quit-button', window.close);
-
     X.first('#mainMenu a.close-menu-button').style['background-image'] = X.assetURL('ui/x-icon.png');
 
-    // TODO: Show fixture in prod for now. Change this before an actual release though.
-    if (Environment.isDevelopment || Environment.isProduction) {
+    if (Environment.isDevelopment) {
       X.removeClass('#mainMenu .start-fixture','hide');
     }
   }
@@ -47,12 +46,30 @@ global.MainMenu = (function() {
       X.removeClass('#mainMenu a.load-button','disabled');
       X.removeClass('#mainMenu a.continue-button','disabled');
     }
+    if (GameSystem.isLoaded()) {
+      X.removeClass('#mainMenu #saveButton','hide');
+      X.addClass('#mainMenu #startButton','hide');
+      X.addClass('#mainMenu #continueButton','hide');
+      X.addClass('#mainMenu #loadButton','hide');
+    }
+    if (GameSystem.isLoaded() === false) {
+      X.addClass('#mainMenu #saveButton','hide');
+      X.removeClass('#mainMenu #startButton','hide');
+      X.removeClass('#mainMenu #continueButton','hide');
+      X.removeClass('#mainMenu #loadButton','hide');
+    }
+    if (GameSystem.canSave()) { X.removeClass('#mainMenu #saveButton','disabled'); }
+    if (GameSystem.canSave() === false) { X.addClass('#mainMenu #saveButton','disabled'); }
   }
 
   async function startGame() {
     close();
     await GameSystem.startNewGame();
     await GameSystem.openGame();
+  }
+
+  async function saveGame() {
+    // TODO: Implement Save
   }
 
   async function startFixture(event) {
@@ -75,15 +92,6 @@ global.MainMenu = (function() {
 
     await GameSystem.loadLastGame();
     await GameSystem.openGame();
-  }
-
-  function showLoadGame() {
-    console.log("TODO: Show Load Game")
-  }
-
-  function showOptions() {
-    OptionsOverlay.open();
-    WindowManager.push(OptionsOverlay)
   }
 
   return {
