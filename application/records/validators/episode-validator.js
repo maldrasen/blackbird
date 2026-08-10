@@ -24,6 +24,7 @@ global.EpisodeValidator = function(code, data) {
     if (page.buttonsStyle != null) { Validate.isIn(`${name}.buttonsStyle`, page.buttonsStyle, ['row','column']); }
     if (page.onShow != null) { Validate.isFunction(`${name}.onShow`, page.onShow); }
     if (page.requires != null) { Validate.singleOrArrayOf(`${name}.requires`, page.requires, 'function'); }
+    if (page.setFlag != null) { validateSetFlag(`${name}.setFlag`, page.setFlag); }
 
     if (page.buttons != null) {
       Validate.isArray(`${name}.buttons`, page.buttons);
@@ -42,6 +43,14 @@ global.EpisodeValidator = function(code, data) {
     if (button.callback != null) { Validate.isFunction(`${name}.callback`, button.callback); }
     if (button.requires != null) { Validate.singleOrArrayOf(`${name}.requires`, button.requires, 'function'); }
     if (button.classname != null) { Validate.singleOrArrayOf(`${name}.classname`, button.classname, 'string'); }
+  }
+
+  // Flag values must be types that GameState.setFlag() accepts.
+  function validateSetFlag(name, setFlag) {
+    if (typeof setFlag !== 'object' || Array.isArray(setFlag)) { throw new Error(`${name} is not an object`); }
+    Object.entries(setFlag).forEach(([key,value]) => {
+      Validate.isIn(`${name}.${key}`, typeof value, ['boolean','number','string']);
+    });
   }
 
   // Pages and buttons share the jump and end navigation properties.

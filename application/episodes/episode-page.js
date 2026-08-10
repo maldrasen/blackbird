@@ -38,6 +38,8 @@ global.EpisodePage = function(data) {
     }
   }
 
+  function getFlags() { return data.setFlag || {}; }
+
   // Only render a page when it has no requirements or all its requirements are met.
   function meetsRequirements() { return checkRequirements(data.requires); }
 
@@ -53,6 +55,7 @@ global.EpisodePage = function(data) {
     getButtons,
     getButtonsStyle,
     getContent,
+    getFlags,
     executeOnShow,
     meetsRequirements,
   });

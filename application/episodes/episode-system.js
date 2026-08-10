@@ -21,8 +21,15 @@ global.EpisodeSystem = (function() {
     if (page == null) {
       return endEpisode();
     }
+    applyFlags(page);
     EpisodeView.setPageContent(page);
     page.executeOnShow();
+  }
+
+  function applyFlags(page) {
+    Object.entries(page.getFlags()).forEach(([key,value]) => {
+      GameSystem.getState().setFlag(key,value);
+    });
   }
 
   function jumpToPage(label) {
