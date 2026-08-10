@@ -43,11 +43,11 @@ global.GameSystem = (function() {
     state = GameState();
     loaded = true;
     EpisodeQueue.seed(getStartingEpisodes());
+    openGame();
 
     if (typeof setup === "function") { return setup(); }
 
     EpisodeSystem.startEpisode(getGameStartEpisode(), {});
-    openGame();
     setGameMode(GameMode.episode);
   }
 
