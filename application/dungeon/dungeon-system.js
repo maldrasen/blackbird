@@ -9,15 +9,19 @@ global.DungeonSystem = (function() {
     GameSystem.setGameMode(GameMode.dungeon);
   }
 
-  function exitDungeon() {
-    dungeonState = null;
-    dungeonFloor = null;
-    GameSystem.setGameMode(GameMode.location);
-  }
-
   function createDungeon() {
     Console.log("Creating Dungeon",{ system:'DungeonSystem', level:1 });
     dungeonState = DungeonState();
+  }
+
+  function exitDungeon() {
+    reset();
+    GameSystem.setGameMode(GameMode.location);
+  }
+
+  function reset() {
+    dungeonState = null;
+    dungeonFloor = null;
   }
 
   // Floor generation can very rarely build a floor whose features cannot all be connected. When that happens we
@@ -62,12 +66,13 @@ global.DungeonSystem = (function() {
   return Object.freeze({
     getDungeonState: () => { return dungeonState; },
     getDungeonFloor: () => { return dungeonFloor; },
+    enterDungeon,
     createDungeon,
+    exitDungeon,
+    reset,
     setLevel,
     goDownStairs,
     goUpStairs,
-    enterDungeon,
-    exitDungeon,
     startRandomEncounter,
   });
 

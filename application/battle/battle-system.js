@@ -12,10 +12,10 @@ global.BattleSystem = (function() {
     state.setAmbushState(data.ambushState || EncounterBuilder.rollAmbush());
   }
 
-  function endBattle() {
-    state.cleanup();
+  function reset() {
+    if (state) { state.cleanup(); }
     state = null;
-    NegotiationSystem.reset();
+    round = null;
   }
 
   function startRound() {
@@ -73,7 +73,7 @@ global.BattleSystem = (function() {
   }
 
   function battleLost() {
-    endBattle();
+    reset();
     BattleInterface.showGameOver();
   }
 
@@ -88,7 +88,7 @@ global.BattleSystem = (function() {
     // writes the persistent configuration.
     PartyConfiguration.setConfiguration(state.getHomePositions());
 
-    endBattle();
+    reset();
 
     EnlightenSystem.startEnlightenment('battle', {
       skillImprovements,
@@ -102,7 +102,7 @@ global.BattleSystem = (function() {
 
   return Object.freeze({
     startBattle,
-    endBattle,
+    reset,
     advanceBattle,
     startRound,
     specRound,

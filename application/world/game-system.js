@@ -56,10 +56,14 @@ global.GameSystem = (function() {
     MainContent.hideCover({ fadeTime:2500 });
   }
 
-  // Clears the registry and drops back to a blank, unloaded state. Used between specs and when quitting to the menu.
   function reset() {
     Registry.clear();
+
     EpisodeSystem.reset();
+    BattleSystem.reset();
+    NegotiationSystem.reset();
+    DungeonSystem.reset();
+
     state = GameState();
     loaded = false;
     returnMode = null;
