@@ -44,7 +44,7 @@ pages.approach = `A large man in polished armor is standing guard at the top of 
 const approachButtons = [
   { label:'"Yes."', jump:'A.Yes' },
   { label:'"I just want to take a look."', jump:'B.Look' },
-  { label:'"How did you know?"', jump:'C.Know', requires:ContextRequirements.unset('howDoYouKnow') },
+  { label:'"How did you know?"', jump:'C.Know' },
 ];
 
 // A Branch - Yes I'm new
