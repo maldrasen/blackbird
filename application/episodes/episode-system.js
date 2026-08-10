@@ -5,15 +5,15 @@ global.EpisodeSystem = (function() {
     state = EpisodeState(code, context);
   }
 
+  // The end function runs before the state is cleared because it may still read the episode context. It may also
+  // start a new episode, in which case the new state is left alone.
   function endEpisode() {
-    const episode = state.getEpisode();
-    const endFunction = episode.getEndFunction();
+    const ending = state;
+    const endFunction = ending.getEpisode().getEndFunction();
 
-    if (typeof endFunction === 'function') {
-      return endFunction();
-    }
-
-    GameSystem.returnToPreviousMode();
+    const result = (typeof endFunction === 'function') ? endFunction() : GameSystem.returnToPreviousMode();
+    if (state === ending) { state = null; }
+    return result;
   }
 
   function nextPage() {
