@@ -59,6 +59,7 @@ global.GameSystem = (function() {
   // Clears the registry and drops back to a blank, unloaded state. Used between specs and when quitting to the menu.
   function reset() {
     Registry.clear();
+    EpisodeSystem.reset();
     state = GameState();
     loaded = false;
     returnMode = null;

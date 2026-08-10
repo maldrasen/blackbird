@@ -75,12 +75,13 @@ global.NegotiationSystem = (function() {
 
   function resolveJoin() {
     const monster = state.getMonster();
+    const feelings = state.getFeelings();
     const battleState = BattleSystem.getState();
 
     battleState.setCondition(monster, BattleCondition.recruited);
     battleState.removeFromBattle(monster);
     finishNegotiation();
-    RecruitmentSystem.recruit(monster, state.getFeelings());
+    RecruitmentSystem.recruit(monster, feelings);
     PartyConfiguration.addCharacter(monster);
   }
 
@@ -110,6 +111,10 @@ global.NegotiationSystem = (function() {
     BattleSystem.advanceBattle();
   }
 
+  function reset() {
+    state = null;
+  }
+
   function scheduleMonsterResponse() {
     const battleState = BattleSystem.getState();
 
@@ -123,6 +128,7 @@ global.NegotiationSystem = (function() {
     start,
     advance,
     answer,
+    reset,
     getState: () => { return state; },
   });
 

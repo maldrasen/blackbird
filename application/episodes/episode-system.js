@@ -60,6 +60,10 @@ global.EpisodeSystem = (function() {
     nextPage();
   }
 
+  function reset() {
+    state = null;
+  }
+
   return Object.freeze({
     getState: () => { return state; },
     getContext: () => { return state.getContext(); },
@@ -73,6 +77,7 @@ global.EpisodeSystem = (function() {
     endEpisode,
     nextPage,
     jumpToPage,
+    reset,
   });
 
 })();

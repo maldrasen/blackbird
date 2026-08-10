@@ -15,6 +15,7 @@ global.BattleSystem = (function() {
   function endBattle() {
     state.cleanup();
     state = null;
+    NegotiationSystem.reset();
   }
 
   function startRound() {

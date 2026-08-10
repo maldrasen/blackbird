@@ -5,6 +5,7 @@
       "Bash(bash bin/test.sh:*)",
       "Bash(node bin/soak-tests.js:*)",
       "Bash(bin/compile-manifest.sh)",
+      "Bash(bin/compile-style.sh)",
       "Bash(bash bin/compile-manifest.sh)",
       "Bash(bash bin/compile-style.sh)",
       "Bash(node bin/compile-task-index.js)",
