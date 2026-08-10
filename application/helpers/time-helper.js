@@ -21,6 +21,10 @@ global.TimeHelper = (function() {
     return time % (24 * 60);
   }
 
+  function getDayNumber(time) {
+    return Math.floor(time / (24 * 60)) + 1;
+  }
+
   function getTimeOfDay(time) {
     const minute = getMinuteOfDay(time);
     return timesOfDay.findLast(span => { return minute >= span.start; }).name;
@@ -49,6 +53,7 @@ global.TimeHelper = (function() {
 
   return Object.freeze({
     getMinuteOfDay,
+    getDayNumber,
     getTimeOfDay,
     getTimeString,
   });

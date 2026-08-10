@@ -4,4 +4,14 @@
   position: absolute;
   inset: 0;
   z-index: variables.$z-load-overlay;
+
+  #savedGameList {
+    li { margin-bottom: 5px; }
+    a { display: block; }
+
+    .details {
+      display: block;
+      color: variables.$fg-weak;
+    }
+  }
 }
