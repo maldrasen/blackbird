@@ -53,6 +53,7 @@ global.MainMenu = (function() {
       X.addClass('#mainMenu #startButton','hide');
       X.addClass('#mainMenu #continueButton','hide');
       X.addClass('#mainMenu #loadButton','hide');
+      X.addClass('#mainMenu #separator','hide');
       X.addClass('#mainMenu .start-fixture','hide');
     }
     if (GameSystem.isLoaded() === false) {
