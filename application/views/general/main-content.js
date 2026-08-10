@@ -40,6 +40,7 @@ global.MainContent = (function() {
 
   function clearMainContent() {
     X.empty('#mainContent');
+    X.empty('#gameStateFrame');
   }
 
   function showCover() {

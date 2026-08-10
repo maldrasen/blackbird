@@ -1,5 +1,6 @@
 <div id='application'>
   <div id='mainContent'></div>
+  <div id='gameStateFrame'></div>
   <div id='effectArea'></div>
   <div id='mainCover'></div>
   <div id='overlayCover' class='hide'></div>
@@ -20,30 +21,6 @@
 
   <div id='selectFrame' class='hide'>
     <ul class='select'></ul>
-  </div>
-
-  <div id='gameStateFrame' class='hide'>
-    <div class='left fixed-size'>
-      <div class='chunk name'>[Name]</div>
-      <div class='chunk status'>[Status]</div>
-    </div>
-    <div class='center'>
-      <div class='status-bar chunk health'>[Health]</div>
-      <div class='status-bar chunk stamina'>[Stamina]</div>
-      <div class='status-bar chunk mana'>[Mana]</div>
-      <div class='status-bar chunk arousal'>[Arousal]</div>
-    </div>
-    <div class='right fixed-size'>
-      <div class='chunk time'>[Time]</div>
-      <div class='chunk location'>[Location]</div>
-    </div>
-  </div>
-
-  <div id='locationControls' class='hide'>
-    <ul>
-      <li><a href='#' class='open-map button button-primary'>Move</a></li>
-      <li><a href='#' class='open-party button'>Party</a></li>
-    </ul>
   </div>
 
   <ul id='centerAlerts'></ul>
@@ -70,25 +47,7 @@
   </div>
 
   <div id='menuCover' class='hide'></div>
-  <div id='mainMenu'>
-    <div class='base-frame'>
-      <h3 class='border-bottom margin-bottom'>Blackbird</h3>
-      <a class='close-menu-button hide'></a>
-      <ul class='menu-items'>
-        <li><a href='#' id='startButton' class='button'>New Game</a></li>
-        <li><a href='#' id='saveButton' class='button'>Save Game</a></li>
-        <li><a href='#' id='continueButton' class='button'>Continue Game<span class='game-name'></span></a></li>
-        <li><a href='#' id='loadButton' class='button'>Load Game</a></li>
-        <li><a href='#' id='optionsButton' class='button'>Options</a></li>
-        <li><a href='#' id='quitButton' class='button'>Quit to Menu</a></li>
-        <li><a href='#' id='exitButton' class='button'>Exit Game</a></li>
-        <li id='separator' class='hide'></li>
-        <li><a href='#' class='hide start-fixture button' data-fixture='dungeon'>[Dungeon]</a></li>
-        <li><a href='#' class='hide start-fixture button' data-fixture='battle'>[Battle]</a></li>
-        <li><a href='#' class='hide start-fixture button' data-fixture='training'>[Training]</a></li>
-      </ul>
-    </div>
-  </div>
+  <div id='mainMenu'></div>
 
   <div id='preload' style='position:fixed; top:-10px; font-size:1px;'>
     <span class='font-habibi'>(.Y.)</span>

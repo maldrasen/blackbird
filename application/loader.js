@@ -65,7 +65,7 @@ window.Loader = (function() {
       Views.initAll();
 
       await WorldState.loadState();
-      MainMenu.openFully();
+      await MainMenu.loadBaseMenu();
 
       Console.log("Blackbird Started",{ system:'Main', level:1, data:{
         environment: Environment.name,

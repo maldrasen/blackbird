@@ -1,7 +1,6 @@
 @use "../variables";
 
 #locationView {
-
   h3 {
     font-family: "habibi", serif;
     color: variables.$fg-weak;
@@ -13,19 +12,3 @@
   }
 }
 
-#locationControls {
-  position: absolute;
-  top: 30px;
-  right: 0;
-  padding: 5px 15px 10px;
-  background-color: rgb(0,0,0);
-  border: variables.$border-normal;
-  border-top: none;
-  box-shadow: -5px 5px 10px rgba(0,0,0,0.8);
-  z-index: variables.$z-location-controls;
-
-  ul {
-    display: flex;
-    gap: 5px;
-  }
-}

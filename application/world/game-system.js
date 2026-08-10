@@ -47,6 +47,7 @@ global.GameSystem = (function() {
     if (typeof setup === "function") { return setup(); }
 
     EpisodeSystem.startEpisode(getGameStartEpisode(), {});
+    openGame();
     setGameMode(GameMode.episode);
   }
 
@@ -76,12 +77,17 @@ global.GameSystem = (function() {
     state = GameState(saveData.state);
     loaded = true;
 
+    openGame();
     setGameMode(state.getGameMode());
   }
 
-  async function openGame() {
-    MainContent.showCover();
-    MainContent.hideCover({ fadeTime:2500 });
+  function openGame() {
+    if (HEADLESS === false) {
+      MainContent.showCover();
+      MainMenu.loadGameMenu();
+      GameStateFrame.load();
+      MainContent.hideCover({ fadeTime:2500 });
+    }
   }
 
   function reset() {
@@ -95,15 +101,6 @@ global.GameSystem = (function() {
     state = GameState();
     loaded = false;
     returnMode = null;
-  }
-
-  function quitToMainMenu() {
-    reset();
-
-    if (HEADLESS === false && Tests.running() === false) {
-      MainContent.clearMainContent();
-      MainMenu.openFully();
-    }
   }
 
   // ===============
@@ -146,9 +143,8 @@ global.GameSystem = (function() {
 
     startNewGame,
     loadLastGame,
-    openGame,
+    loadGame,
     reset,
-    quitToMainMenu,
 
     setGameMode,
     getReturnMode,

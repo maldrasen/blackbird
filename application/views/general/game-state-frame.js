@@ -4,6 +4,10 @@ global.GameStateFrame = (function() {
     X.onClick('#gameStateFrame .click-player', playerClicked);
   }
 
+  function load() {
+    X.loadDocument('#gameStateFrame','views/game-state-frame.html');
+  }
+
   function show() {
     X.removeClass('#gameStateFrame','hide');
     update();
@@ -106,6 +110,7 @@ global.GameStateFrame = (function() {
 
   return Object.freeze({
     init,
+    load,
     show,
     hide,
     update,
