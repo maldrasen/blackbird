@@ -1,7 +1,7 @@
 ---
 id: 172
 title: Nightgaunt Episode
-priority: 1
+priority: 2
 created: 2026-08-08
 tags: []
 points: 8

@@ -4,7 +4,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 ## Priority 1
 
-- [172] Nightgaunt Episode `8pt` — [172-nightgaunt-episode.md](172-nightgaunt-episode.md)
+- [174] Save and Load Games `5pt` — [174-save-and-load-games.md](174-save-and-load-games.md)
 
 ## Priority 2
 
@@ -15,12 +15,12 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [011] Project Stuff `3pt` — [011-project-stuff.md](011-project-stuff.md)
 - [105] Add Negotiation Requests `8pt` — [105-add-negotiation-requests.md](105-add-negotiation-requests.md)
 - [122] Training Enlighten View `5pt` — [122-training-enlighten-view.md](122-training-enlighten-view.md)
-- [131] Oath and episode `5pt` — [131-oath-episode.md](131-oath-episode.md)
 - [142] Item detail panel `5pt` — [142-item-detail-panel.md](142-item-detail-panel.md)
 - [155] Encounter Builder `8pt` — [155-encounter-builder.md](155-encounter-builder.md)
 - [158] Add a Fixture to Adjust the Question Pool for Testing `3pt` — [158-fixture-to-adjust-question-pool.md](158-fixture-to-adjust-question-pool.md)
 - [161] Join Text `8pt` — [161-join-text.md](161-join-text.md)
 - [170] Character Locations `0pt` — [170-character-locations.md](170-character-locations.md)
+- [172] Nightgaunt Episode `8pt` — [172-nightgaunt-episode.md](172-nightgaunt-episode.md)
 
 ## Priority 3
 
