@@ -1,0 +1,7 @@
+@use "../variables";
+
+#loadOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: variables.$z-load-overlay;
+}
