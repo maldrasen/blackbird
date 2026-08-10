@@ -10,7 +10,7 @@ global.EpisodePage = function(data) {
   function damageBlock() {
     const damage = getDamage();
     if (damage == null || damage === 0) { return ''; }
-    return WeaverElements.resultBlock(`You've taken ${damage} damage`, { classname:'loss' });
+    return WeaverElements.resultBlock(`You've taken ${damage} damage`, { classname:'damage' });
   }
 
   function resolveContent() {

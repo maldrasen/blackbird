@@ -14,8 +14,9 @@
   font-size: variables.$fs-body;
 }
 
-.result-block.gain { color: variables.$fg-success; }
-.result-block.loss { color: variables.$fg-warning; }
+.result-block.gain { color: variables.$fg-button-success; }
+.result-block.loss { color: variables.$fg-button-warning; }
+.result-block.damage { color: variables.$fg-button-danger; }
 
 .large-note {
   padding: 20px;
