@@ -158,7 +158,7 @@ Episode.register('take-the-dungeon-oath',{
 
     { content:pages.slapped, label:'A.A.Slapped', buttons:slappedButtons, buttonsStyle:'column', damage:5 }, // TODO: Take damage, show damage effect.
     { content:pages.oathTaken1, label:'A.B.Taken-1', setFlag:{[GameFlags.oathTaken]:true }, end:true },
-    { content:pages.oathTaken2, label:'A.B.Taken-2', setFlag:{[GameFlags.oathTaken]:true }, end:true }, // TODO: Set a game state flag.
+    { content:pages.oathTaken2, label:'A.B.Taken-2', setFlag:{[GameFlags.oathTaken]:true }, end:true }, // TODO: Set a game state flag. We need to hide the enter the dungeon option if this isn't set.
     { content:pages.becauseLaw, label:'A.C.Why', buttons:finalButtons,  buttonsStyle:'column' },
     { content:pages.oathTaken3, label:'A.C.Yes', setFlag:{[GameFlags.oathTaken]:true }, end:true },
     { content:pages.killed, label:'A.C.Killed', gameOver:true }, // TODO: Trigger game over from poor choices. (Is error now, because it's falling through)
