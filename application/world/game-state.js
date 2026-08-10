@@ -35,6 +35,7 @@ global.GameState = function(data={}) {
 
   function getSaveMetadata() {
     return {
+      version: Environment.version,
       legacyName: legacyName,
       playerName: Character(player).getName(),
       locationName: Location.lookup(location).getName(),

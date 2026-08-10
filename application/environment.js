@@ -9,6 +9,7 @@ global.Environment = (function() {
   function pack() {
     return {
       name: ENVIRONMENT,
+      version: VERSION,
       isDevelopment: isDevelopment(),
       isProduction: isProduction(),
       isMac: (os.platform() === "darwin"),

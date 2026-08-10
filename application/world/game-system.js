@@ -28,6 +28,7 @@ global.GameSystem = (function() {
     if (fs.existsSync(saveDirectory) === false) { fs.mkdirSync(saveDirectory); }
 
     await FileHelper.writeJSON(`${saveDirectory}/${state.getSaveKey()}.json`, {
+      version: Environment.version,
       state: state.pack(),
       registry: Registry.pack(),
     });
