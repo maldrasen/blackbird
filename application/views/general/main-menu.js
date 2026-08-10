@@ -55,6 +55,7 @@ global.MainMenu = (function() {
   }
 
   function open() {
+    adjustGameMenu();
     show();
     X.removeClass('#menuCover','hide');
   }
