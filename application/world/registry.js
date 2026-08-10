@@ -161,6 +161,18 @@ global.Registry = (function() {
     };
   }
 
+  function unpack(packed) {
+    clear();
+
+    Object.keys(packed.entities).forEach(id => {
+      entities[id] = new Set(packed.entities[id]);
+    });
+
+    Object.keys(packed.components).forEach(type => {
+      components[type] = packed.components[type];
+    });
+  }
+
   return Object.freeze({
     clear,
     dump,
@@ -178,6 +190,7 @@ global.Registry = (function() {
     findEntitiesWithComponents,
     findComponentsWith,
     pack,
+    unpack,
   });
 
 })();

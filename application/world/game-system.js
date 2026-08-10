@@ -38,9 +38,6 @@ global.GameSystem = (function() {
   //    Game Lifecycle
   // ===================
 
-  // TODO: None of these are truly async yet. loadLastGame will be once it reads a save file, and startNewGame will be
-  //       once it has to consult a lineage for the unlocked starting scenario.
-
   async function startNewGame(setup=null) {
     Registry.clear();
     state = GameState();
@@ -65,7 +62,21 @@ global.GameSystem = (function() {
   }
 
   async function loadLastGame() {
+    await loadGame(WorldState.getPreviousGame());
+  }
+
+  async function loadGame(key) {
+    const saveData = await FileHelper.readJSON(`${saveDirectory}/${key}.json`);
+
+    if (saveData.version !== Environment.version) {
+      throw new Error(`Incorrect game version: ${saveData.version}`)
+    }
+
+    Registry.unpack(saveData.registry);
+    state = GameState(saveData.state);
     loaded = true;
+
+    setGameMode(state.getGameMode());
   }
 
   async function openGame() {
