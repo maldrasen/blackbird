@@ -1,5 +1,6 @@
 global.GameState = function(data={}) {
 
+  const saveKey = data.saveKey || Random.identifier().substring(1);
   const flags = data.flags || {};
 
   let gameMode = data.gameMode || GameMode.location;
@@ -32,8 +33,18 @@ global.GameState = function(data={}) {
     flags[key] = value;
   }
 
+  function getSaveMetadata() {
+    return {
+      legacyName: legacyName,
+      playerName: Character(player).getName(),
+      locationName: Location.lookup(location).getName(),
+      gameTime: Math.round(gameTime),
+    };
+  }
+
   function pack() {
     return {
+      saveKey: saveKey,
       gameTime: Math.round(gameTime),
       gameMode: gameMode,
       location: location,
@@ -47,6 +58,7 @@ global.GameState = function(data={}) {
   }
 
   return Object.freeze({
+    getSaveKey: () => { return saveKey; },
     getGameTime: () => { return gameTime; },
     setGameTime: time => { gameTime = time; },
     advanceGameTime: time => { gameTime += time; },
@@ -71,6 +83,7 @@ global.GameState = function(data={}) {
     pushEpisode,
     setFlag,
     getFlag: key => { return flags[key]; },
+    getSaveMetadata,
     pack,
   });
 

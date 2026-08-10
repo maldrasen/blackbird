@@ -17,6 +17,13 @@ global.GameSystem = (function() {
     return true;
   }
 
+  async function saveGame() {
+    if (canSave() === false) { throw new Error(`Cannot save the game in its current state.`); }
+    WorldState.updateSaveMetadata();
+
+    // TODO: Serialize state to save file at state.getSaveKey
+  }
+
   // ===================
   //    Game Lifecycle
   // ===================
@@ -114,6 +121,7 @@ global.GameSystem = (function() {
     getState,
     isLoaded,
     canSave,
+    saveGame,
 
     startNewGame,
     loadLastGame,

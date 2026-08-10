@@ -69,7 +69,15 @@ global.MainMenu = (function() {
   }
 
   async function saveGame() {
-    // TODO: Implement Save
+    close();
+
+    await GameSystem.saveGame();
+
+    Alert.show({
+      message: "Game Saved",
+      fadeTime: 1000,
+      type: LogType.success,
+    });
   }
 
   async function startFixture(event) {

@@ -10,6 +10,7 @@ global.WorldState = (function() {
     options:{
       difficulty: { damage:100, mitigation:100, resistance:0 }
     },
+    savedGames: {},
   }
 
   let worldState;
@@ -38,7 +39,14 @@ global.WorldState = (function() {
   function getOptions() { return getValue('options'); }
   async function setOptions(options) { await setValue('options',options); }
 
+
   // === Save and Load =========================================================
+
+  function updateSaveMetadata() {
+    const state = GameSystem.getState();
+    worldState.savedGames[state.getSaveKey()] = state.getSaveMetadata();
+    saveState();
+  }
 
   async function saveState() {
     if (HEADLESS) { return; }
@@ -73,13 +81,12 @@ global.WorldState = (function() {
 
     getValue,
     setValue,
-
+    getPreviousGame,
+    setPreviousGame,
     getOptions,
     setOptions,
 
-    getPreviousGame,
-    setPreviousGame,
-
+    updateSaveMetadata,
     saveState,
     loadState,
   });
