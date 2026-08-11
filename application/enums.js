@@ -70,6 +70,15 @@ global.KeyCodes = Object.freeze({
   F11: 'F11',
 });
 
+global.InventoryCategory = Object.freeze({
+  weapon: 'weapon',
+  armor: 'armor',
+  restoreHealth: 'restore-health',
+  restoreMana: 'restore-mana',
+  drug: 'drug',
+  mutagen: 'mutagen',
+});
+
 global.EpisodePriority = Object.freeze({
   critical: 10,
   important: 8,
@@ -150,6 +159,14 @@ global.SpeciesCode = Object.freeze({
   nymph: 'nymph',
   sylph: 'sylph',
   vermen: 'vermen',
+});
+
+global.Mana = Object.freeze({
+  red: 'red',
+  yellow: 'yellow',
+  green: 'green',
+  blue: 'blue',
+  black: 'black',
 });
 
 global.AspectType = Object.freeze({

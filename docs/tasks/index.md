@@ -2,6 +2,10 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
+## Priority 1
+
+- [175] Create some loot items `3pt` — [175-create-some-loot-items.md](175-create-some-loot-items.md)
+
 ## Priority 2
 
 - [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
@@ -17,6 +21,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [161] Join Text `8pt` — [161-join-text.md](161-join-text.md)
 - [170] Character Locations `0pt` — [170-character-locations.md](170-character-locations.md)
 - [172] Nightgaunt Episode `8pt` — [172-nightgaunt-episode.md](172-nightgaunt-episode.md)
+- [177] Add a status effects component `5pt` — [177-add-a-status-effects-component.md](177-add-a-status-effects-component.md)
 
 ## Priority 3
 
@@ -50,6 +55,8 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [168] Include health bars on entity cards in dungeon controls. `3pt` — [168-include-health-bars-on-entity-cards-in-dungeon-controls.md](168-include-health-bars-on-entity-cards-in-dungeon-controls.md)
 - [171] Anima Decay `2pt` — [171-anima-decay.md](171-anima-decay.md)
 - [173] Compile episode pages to a graph at registration `3pt` — [173-compile-episodes-to-graph.md](173-compile-episodes-to-graph.md)
+- [176] Implement potency item effect `8pt` — [176-implement-potency-item-effect.md](176-implement-potency-item-effect.md)
+- [179] Orchard Features `5pt` — [179-orchard-features.md](179-orchard-features.md)
 
 ## Priority 4
 
@@ -69,6 +76,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [152] Implement magical trigger `5pt` — [152-implement-magical-trigger.md](152-implement-magical-trigger.md)
 - [154] Build a project website `13pt` — [154-build-a-project-website.md](154-build-a-project-website.md)
 - [165] Steal reaction `3pt` — [165-steal-reaction.md](165-steal-reaction.md)
+- [178] Dungeon tripe episode `3pt` — [178-dungeon-tripe-episode.md](178-dungeon-tripe-episode.md)
 
 ## Priority 5
 

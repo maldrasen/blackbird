@@ -1,5 +1,5 @@
 global.ManaComponent = (function() {
-  const properties = ['red_mana','yellow_mana','green_mana','blue_mana','black_mana'];
+  const properties = ['red','yellow','green','blue','black'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.mana,data);
