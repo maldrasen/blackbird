@@ -70,6 +70,10 @@ global.KeyCodes = Object.freeze({
   F11: 'F11',
 });
 
+global.ArticleType = Object.freeze({
+  consumable: 'consumable',
+});
+
 global.InventoryCategory = Object.freeze({
   weapon: 'weapon',
   armor: 'armor',

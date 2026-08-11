@@ -2,13 +2,17 @@ global.Consumable = (function() {
   const consumables = {};
 
   function register(code,data) {
-    consumables[code] = data;
+    const { effects, stories, ...articleData } = data;
+
+    Article.register(code, { ...articleData, type:ArticleType.consumable });
+    consumables[code] = { effects, stories };
   }
 
   function lookup(code) {
     if (consumables[code] == null) { throw new Error(`Bad consumable code [${code}]`); }
 
     const consumable = { ...consumables[code] };
+    const article = Article.lookup(code);
 
     function consume(entity) {
       const context = { A:entity, I:code };
@@ -18,16 +22,16 @@ global.Consumable = (function() {
         return consumable.stories.pick(context);
       }
 
-      return `[TODO: ${entity} consumes ${consumable.name} with results:${JSON.stringify(results)}]`;
+      return `[TODO: ${entity} consumes ${article.getName()} with results:${JSON.stringify(results)}]`;
     }
 
     return Object.freeze({
       getCode: () => { return code; },
-      getName: () => { return consumable.name; },
-      getDescription: () => { return consumable.description; },
-      getCategory: () => { return consumable.category; },
-      getTags: () => { return [...consumable.tags]; },
-      getEffects: () => { return structuredClone(consumable.effects); },
+      getName: () => { return article.getName(); },
+      getDescription: () => { return article.getDescription(); },
+      getCategory: () => { return article.getCategory(); },
+      getTags: () => { return article.getTags(); },
+      getEffects: () => { return [...(consumable.effects||[])]; },
       consume,
     });
   }
