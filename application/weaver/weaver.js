@@ -4,20 +4,23 @@ global.Weaver = function(context) {
   // Regular Expressions for Life!
   //
   // Context Match: {@KEY}
-  //     - [KEY] A string value in the context object.
+  // - [KEY] A string value in the context object.
   //
-  // Actor Match: {A:LOOM}
-  //      - [A] Actor subject Code. There should be a single character code for
-  //            an Actor reference within the context's actor's object.
-  //      - [LOOM] Loom token. This is the Loom object and function to pass the actor into.
+  // Actor Match: {A:TOKEN}
+  // - [A] The actor subject code points to an entity in the context.
+  // - [TOKEN] Loom token.
+  //
+  // Item Match: {I.TOKEN}
+  // - [I] Item subject code. An item subject can be an entity (for Items) or a code for articles.
+  // - [TOKEN] Loom token.
   //
   // Utility Match: {UTIL} or {UTIL|ARG}
-  //      - [UTIL] The name of the utility.
-  //      - [ARG] Optional. The string argument to pass to the utility.
+  // - [UTIL] The name of the utility.
+  // - [ARG] Optional. The string argument to pass to the utility.
   //
   // Function Match: {FUNC()} or {FUNC(ARGS...)}
-  //      - [FUNC] The function name
-  //      - [ARGS] Comma separated list of arguments
+  // - [FUNC] The function name
+  // - [ARGS] Comma separated list of arguments
 
   // We must prevent templates from being woven twice because quotes within a woven element would be treated as
   // quoted text, which then produces mangled HTML. Woven texts are prefixed with this invisible marker character.
