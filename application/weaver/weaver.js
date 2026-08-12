@@ -31,6 +31,7 @@ global.Weaver = function(context) {
   const CONTEXT_PATTERN = /{@([^}]+)}/
   const FUNCTION_PATTERN = /{(\w+)\(([^)]*)\)}/
   const UTILITY_PATTERN = /{([^}]+)\|([^}]+)}/
+  const ITEM_PATTERN = /{([^}]+)\.([^}]+)}/
   const SIMPLE_PATTERN = /{([^}]+)}/
 
   const OPEN_SPAN_PATTERN = /{S\/([^}]+)}/;
@@ -51,6 +52,7 @@ global.Weaver = function(context) {
       let contextMatch = text.match(CONTEXT_PATTERN);
       let functionMatch = text.match(FUNCTION_PATTERN);
       let utilityMatch = text.match(UTILITY_PATTERN);
+      let itemMatch = text.match(ITEM_PATTERN);
       let openSpanMatch = text.match(OPEN_SPAN_PATTERN);
       let closeSpanMatch = text.includes(CLOSE_SPAN);
       let simpleMatch = text.match(SIMPLE_PATTERN);
@@ -64,6 +66,8 @@ global.Weaver = function(context) {
         text = text.replace(functionMatch[0],value||'');
       } else if (utilityMatch) {
         text = text.replace(utilityMatch[0], utilityValue(utilityMatch[1].trim(), utilityMatch[2].trim()));
+      } else if (itemMatch) {
+        text = text.replace(itemMatch[0], itemValue(itemMatch[1].trim(), itemMatch[2].trim()));
       } else if (openSpanMatch) {
         text = text.replace(openSpanMatch[0], openSpan(openSpanMatch[1]));
       } else if (closeSpanMatch) {
@@ -104,7 +108,7 @@ global.Weaver = function(context) {
     }
     catch (error) {
       onError('Item', error, { subject, token });
-      return Weaver.formatError(`[${subject}:${token}]`);
+      return Weaver.formatError(`[${subject}.${token}]`);
     }
   }
 
