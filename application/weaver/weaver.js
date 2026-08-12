@@ -98,6 +98,16 @@ global.Weaver = function(context) {
     }
   }
 
+  function itemValue(subject, token) {
+    try {
+      return ItemLoom.weave(context[subject], token)
+    }
+    catch (error) {
+      onError('Item', error, { subject, token });
+      return Weaver.formatError(`[${subject}:${token}]`);
+    }
+  }
+
   function functionValue(name, argumentList) {
     try {
       return FunctionLoom.weave(context, name, argumentList);
