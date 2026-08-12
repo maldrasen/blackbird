@@ -2,6 +2,10 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
+## Priority 
+
+- [182] Implement consumable weapons `0pt` — [182-implement-consumable-weapons.md](182-implement-consumable-weapons.md)
+
 ## Priority 1
 
 - [175] Create some loot items `3pt` — [175-create-some-loot-items.md](175-create-some-loot-items.md)

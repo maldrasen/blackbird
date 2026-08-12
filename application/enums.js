@@ -71,6 +71,7 @@ global.KeyCodes = Object.freeze({
 });
 
 global.ArticleType = Object.freeze({
+  ammunition: 'ammunition',
   consumable: 'consumable',
 });
 
@@ -80,7 +81,9 @@ global.InventoryCategory = Object.freeze({
   restoreHealth: 'restore-health',
   restoreMana: 'restore-mana',
   drug: 'drug',
+  grenades: 'grenades',
   mutagen: 'mutagen',
+  ammo: 'ammo',
 });
 
 global.EpisodePriority = Object.freeze({
