@@ -21,8 +21,60 @@ describe('InventoryManager', function() {
     });
   });
 
-  it('removeItem()')
-  it('setArticleQuantity()');
+  describe('removeItem()', function() {
+    it('removes only the given item', function() {
+      const horse = CharacterFixtures.genericMale({});
+      const hatchet = WeaponFactory.build('hatchet');
+      const cleaver = WeaponFactory.build('cleaver');
+
+      InventoryManager(horse).addItem(hatchet);
+      InventoryManager(horse).addItem(cleaver);
+      InventoryManager(horse).removeItem(hatchet);
+
+      expect(InventoryManager(horse).hasItem(hatchet)).to.equal(false);
+      expect(InventoryManager(horse).hasItem(cleaver)).to.equal(true);
+    });
+
+    it("throws when the item isn't in the inventory", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const hatchet = WeaponFactory.build('hatchet');
+
+      expect(() => InventoryManager(horse).removeItem(hatchet)).to.throw(
+        `Inventory:${horse} doesn't have Item:${hatchet} to remove.`);
+    });
+  });
+
+  describe('setArticleQuantity()', function() {
+    it('sets and overwrites the quantity', function() {
+      const horse = CharacterFixtures.genericMale({});
+      const inventory = InventoryManager(horse);
+
+      inventory.setArticleQuantity('dungeon-tripe', 3);
+      inventory.setArticleQuantity('rhysh-apple', 2);
+      inventory.setArticleQuantity('dungeon-tripe', 5);
+
+      expect(inventory.getArticleQuantity('dungeon-tripe')).to.equal(5);
+      expect(inventory.getArticleQuantity('rhysh-apple')).to.equal(2);
+    });
+
+    it('removes the article entry when the quantity reaches zero', function() {
+      const horse = CharacterFixtures.genericMale({});
+      const inventory = InventoryManager(horse);
+
+      inventory.setArticleQuantity('dungeon-tripe', 3);
+      inventory.setArticleQuantity('dungeon-tripe', 0);
+
+      expect(inventory.getArticleQuantity('dungeon-tripe')).to.equal(0);
+      expect(InventoryComponent.lookup(horse).articles).to.not.have.property('dungeon-tripe');
+    });
+
+    it('throws when the article code is unknown', function() {
+      const horse = CharacterFixtures.genericMale({});
+
+      expect(() => InventoryManager(horse).setArticleQuantity('polished-turnip', 1)).to.throw(
+        `Bad article code [polished-turnip]`);
+    });
+  });
 
   it('listItems()', function() {
     const horse = CharacterFixtures.genericMale({});
