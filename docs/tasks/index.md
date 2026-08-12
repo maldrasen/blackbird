@@ -77,6 +77,8 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [154] Build a project website `13pt` — [154-build-a-project-website.md](154-build-a-project-website.md)
 - [165] Steal reaction `3pt` — [165-steal-reaction.md](165-steal-reaction.md)
 - [178] Dungeon tripe episode `3pt` — [178-dungeon-tripe-episode.md](178-dungeon-tripe-episode.md)
+- [180] Add Jet Stream Drug `3pt` — [180-add-jet-stream-drug.md](180-add-jet-stream-drug.md)
+- [181] Add a Snootle Jar `3pt` — [181-add-a-snootle-jar.md](181-add-a-snootle-jar.md)
 
 ## Priority 5
 

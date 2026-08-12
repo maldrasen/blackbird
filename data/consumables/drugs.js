@@ -9,3 +9,4 @@ Consumable.register('powdered-satyrs-horn',{
     // TODO: Lustful status effect
   ]
 });
+
