@@ -31,8 +31,6 @@ describe("MonsterFactory", function() {
       expect(ArmorComponent.lookup(chest).base).to.equal('leather-doublet');
       expect(Armor(chest).getName()).to.equal('leather doublet');
     });
-
-    it("adds abilities");
   });
 
 });
