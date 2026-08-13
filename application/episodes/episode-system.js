@@ -22,7 +22,7 @@ global.EpisodeSystem = (function() {
       return state.isGameOver() ? showGameOver() : endEpisode();
     }
     applyFlags(page);
-    EpisodeView.setPageContent(page);
+    EpisodeInterface.showPage(page);
     applyDamage(page);
     page.executeOnShow();
   }
@@ -34,8 +34,8 @@ global.EpisodeSystem = (function() {
   }
 
   // Scripted episode damage goes straight to the player's health, skipping armor and the battle damage pipeline. The
-  // page clamps the damage so it can never drop the player below 1 health. This must run after setPageContent() so
-  // the page's damage result block is built from the same pre-damage health.
+  // page clamps the damage so it can never drop the player below 1 health. This must run after showPage() so the
+  // page's damage result block is built from the same pre-damage health.
   function applyDamage(page) {
     const damage = page.getDamage();
     if (damage == null || damage === 0) { return; }
@@ -45,7 +45,7 @@ global.EpisodeSystem = (function() {
     health.currentHealth -= damage;
     HealthComponent.update(player, health);
 
-    EpisodeView.showDamageEffect();
+    EpisodeInterface.showDamageEffect();
   }
 
   // Advancing past a gameOver page abandons the current episode and starts the game-over episode in its place.
