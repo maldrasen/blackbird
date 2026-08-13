@@ -14,9 +14,18 @@ global.BattleSystem = (function() {
 
   function reset() {
     if (state) { state.cleanup(); }
-    StatusEffectComponent.removeBattleEffects();
+    removeBattleEffects();
     state = null;
     round = null;
+  }
+
+  // It's more efficient to hit the registry directly here, deleting any status effect that should be cleared after
+  // the battle. This works just as well as looping through all the characters and monsters, though I'm assuming that
+  // removing battle status effects will never have some kind side effect.
+  function removeBattleEffects() {
+    Registry.findComponentsWith(ComponentType.statusEffect, data => {
+      return StatusEffectType.lookup(data.code).isClearedAfterBattle();
+    }).forEach(Registry.deleteEntity);
   }
 
   function startRound() {
