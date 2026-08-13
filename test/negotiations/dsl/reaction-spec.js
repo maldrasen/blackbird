@@ -170,7 +170,7 @@ describe("Reaction", function() {
 
       applyStatusEffect({ target:'player', effect:'off-balance', duration:1 }, context);
 
-      const statusEffect = StatusEffectComponent.findByCode(player,'off-balance');
+      const statusEffect = StatusEffects(player).get('off-balance');
       expect(statusEffect).to.exist;
       expect(statusEffect.count).to.equal(1);
     });
@@ -180,7 +180,7 @@ describe("Reaction", function() {
 
       applyStatusEffect({ target:'target', effect:'vulnerable', duration:2 }, context);
 
-      const statusEffect = StatusEffectComponent.findByCode(monster,'vulnerable');
+      const statusEffect = StatusEffects(monster).get('vulnerable');
       expect(statusEffect).to.exist;
       expect(statusEffect.count).to.equal(2);
     });

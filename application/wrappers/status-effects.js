@@ -1,0 +1,74 @@
+global.StatusEffects = function(parentId) {
+  const opposingCodes = { 'poised':'off-balance', 'off-balance':'poised' };
+
+  function apply(code, values={}) {
+    StatusEffectType.lookup(code);
+
+    const existing = findEntity(parentId, code);
+    if (existing) { return { id:renew(existing,values), removed:[] }; }
+
+    const id = StatusEffectComponent.create(parentId, { code, ...values });
+    return { id, removed:removeOpposing(parentId,code) };
+  }
+
+  // When a status effect is applied, and the character already has that status effect, we can increase the effect's
+  // duration and strength to the newly applied value, but these values are never reduced. This can lead to an
+  // unexpected outcome where a long lasting but weak poison is first applied, followed by a short duration, high
+  // strength poison, leaving the character with a long duration high damage poison. Not sure what to do in this case.
+  // We may either to recalculate the total damage and spread it out over the longer duration or have multiple poison
+  // types. I think I need to wait until we actually have multiple different types of poison (or burn or whatever
+  // status effects have different durations and strengths) before figuring this out though.
+  function renew(id, values) {
+    const current = StatusEffectComponent.lookup(id);
+    const renewed = {};
+
+    ['count','interval','duration','strength'].forEach(key => {
+      if (values[key] != null && (current[key] == null || values[key] > current[key])) {
+        renewed[key] = values[key];
+      }
+    });
+
+    if (Object.keys(renewed).length > 0) { StatusEffectComponent.update(id,renewed); }
+    return id;
+  }
+
+  function removeOpposing(parentId, code) {
+    const opposing = opposingCodes[code];
+    if (opposing && has(parentId,opposing)) {
+      remove(parentId,opposing);
+      return [opposing];
+    }
+    return [];
+  }
+
+  function remove(parentId, code) {
+    const entity = findEntity(parentId,code);
+    if (entity == null) { throw new Error(`Entity[${parentId}] does not have ${code}`); }
+    destroy(entity);
+  }
+
+  function has(parentId, code) {
+    return findEntity(parentId,code) != null;
+  }
+
+  function listFor(parentId) {
+    return of(parentId).map(lookup);
+  }
+
+  function get(code) {
+    const entity = findEntity(code);
+    return entity ? StatusEffectComponent.lookup(entity) : null;
+  }
+
+  function findEntity(code) {
+    return Registry.findComponentsWith(ComponentType.statusEffect, data => {
+      return data[_parentId] === parentId && data.code === code;
+    })[0];
+  }
+
+  return Object.freeze({
+    apply,
+    get,
+  });
+
+}

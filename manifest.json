@@ -299,7 +299,7 @@
     "application/wrappers/character.js",
     "application/wrappers/monster.js",
     "application/wrappers/personality.js",
-    "application/wrappers/status-effect.js",
+    "application/wrappers/status-effects.js",
     "data/abilities/basic-attack.js",
     "data/abilities/basic-defend.js",
     "data/abilities/change-equipment.js",
@@ -635,6 +635,6 @@
     "test/world/world-state-spec.js",
     "test/wrappers/character-spec.js",
     "test/wrappers/personality-spec.js",
-    "test/wrappers/status-effect-spec.js"
+    "test/wrappers/status-effects-spec.js"
   ]
 }

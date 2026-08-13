@@ -9,7 +9,7 @@ describe("BattleSystem", function() {
       const character = state.getActiveCharacters()[0];
 
       state.addStatus(character, 'poised', { count:1 });
-      StatusEffectComponent.apply(character, 'paralysis');
+      StatusEffects(character).apply('paralysis');
 
       BattleSystem.reset();
 

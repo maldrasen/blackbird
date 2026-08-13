@@ -205,7 +205,7 @@ describe("BattleDamageSystem", function() {
         entity:target, damageTypes:{ slash:20 }, hitLocation:EquipmentSlot.chest });
 
       expect(hit()).to.equal(22);
-      expect(StatusEffectComponent.findByCode(target,'vulnerable').count).to.equal(1);
+      expect(StatusEffects(target).get('vulnerable').count).to.equal(1);
 
       expect(hit()).to.equal(22);
       expect(state.hasStatusEffect(target,'vulnerable')).to.be.false;

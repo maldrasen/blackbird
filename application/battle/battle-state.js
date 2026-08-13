@@ -293,7 +293,7 @@ global.BattleState = function(data) {
   //       effect goes away independent of the character's actions. Periodic effects (poison and burn) also add their
   //       next trigger time to the turn order, and removing an effect needs to clear its turn order entries.
   function addStatus(entity, code, values={}) {
-    const { removed } = StatusEffectComponent.apply(entity, code, values);
+    const { removed } = StatusEffects(entity).apply(code, values);
     if (removed.length > 0) { BattleInterface.updateCombatantView(entity); }
   }
 

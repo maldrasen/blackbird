@@ -128,7 +128,7 @@ describe("BattleState", function() {
       state.addStatus(entity,'blind',{ duration:1000 });
 
       expect(state.hasStatusEffect(entity,'blind')).to.be.true;
-      expect(StatusEffectComponent.findByCode(entity,'blind').duration).to.equal(1000);
+      expect(StatusEffects(entity).get('blind').duration).to.equal(1000);
     });
 
     it('renews the duration when the effect is reapplied with a longer duration', function() {
@@ -143,7 +143,7 @@ describe("BattleState", function() {
 
       // The original effect is renewed, not replaced.
       expect(StatusEffectComponent.of(entity).length).to.equal(1);
-      expect(StatusEffectComponent.findByCode(entity,'blind').duration).to.equal(2000);
+      expect(StatusEffects(entity).get('blind').duration).to.equal(2000);
     });
 
     it('keeps the longer duration when the effect is reapplied with a shorter duration', function() {
@@ -156,7 +156,7 @@ describe("BattleState", function() {
       state.addStatus(entity,'blind',{ duration:2000 });
       state.addStatus(entity,'blind',{ duration:500 });
 
-      expect(StatusEffectComponent.findByCode(entity,'blind').duration).to.equal(2000);
+      expect(StatusEffects(entity).get('blind').duration).to.equal(2000);
     });
 
     it('removes an opposing status effect', function() {
