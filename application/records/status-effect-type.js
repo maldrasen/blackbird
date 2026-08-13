@@ -1,4 +1,4 @@
-global.StatusEffect = (function() {
+global.StatusEffectType = (function() {
   const statusEffects = {};
 
   function register(code,data) {

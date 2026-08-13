@@ -13,7 +13,7 @@ global.StatusEffectSystem = (function() {
 
     StatusEffectComponent.of(acting).forEach(id => {
       const statusEffect = StatusEffectComponent.lookup(id);
-      if (StatusEffect.lookup(statusEffect.code).getRemovedAt() === removedAt) {
+      if (StatusEffectType.lookup(statusEffect.code).getRemovedAt() === removedAt) {
         reduceEffectTime(acting, statusEffect);
       }
     });
@@ -22,7 +22,7 @@ global.StatusEffectSystem = (function() {
   // Reduce the remaining turn count of turn based status effects, removing them at the start of the turn if this is
   // their last turn. Because this can remove status effects this should be run last.
   function reduceEffectTime(acting, statusEffect) {
-    if (StatusEffect.lookup(statusEffect.code).getDurationType() === StatusEffectDurationType.turnCount) {
+    if (StatusEffectType.lookup(statusEffect.code).getDurationType() === StatusEffectDurationType.turnCount) {
       consumeStack(acting, statusEffect.code);
     }
   }

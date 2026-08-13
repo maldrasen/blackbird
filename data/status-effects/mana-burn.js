@@ -1,4 +1,4 @@
-StatusEffect.register('mana-burn',{
+StatusEffectType.register('mana-burn',{
   name: 'Mana Burn',
   category: 'negative',
   damageType: DamageType.fire,

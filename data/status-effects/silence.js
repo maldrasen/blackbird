@@ -1,4 +1,4 @@
-StatusEffect.register('silence',{
+StatusEffectType.register('silence',{
   name: 'Silence',
   category: 'negative',
   damageType: DamageType.arcane,

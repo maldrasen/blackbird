@@ -1,4 +1,4 @@
-StatusEffect.register('hidden',{
+StatusEffectType.register('hidden',{
   name: 'Hidden',
   category: 'positive',
   durationType: StatusEffectDurationType.special,

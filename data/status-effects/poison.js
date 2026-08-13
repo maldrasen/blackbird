@@ -1,4 +1,4 @@
-StatusEffect.register('poison',{
+StatusEffectType.register('poison',{
   name: 'Poison',
   category: 'negative',
   damageType: DamageType.nature,

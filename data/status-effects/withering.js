@@ -1,4 +1,4 @@
-StatusEffect.register('withering',{
+StatusEffectType.register('withering',{
   name: 'Withering',
   category: 'negative',
   damageType: DamageType.nature,

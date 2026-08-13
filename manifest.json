@@ -185,7 +185,7 @@
     "application/records/sexual-preference.js",
     "application/records/skill.js",
     "application/records/species.js",
-    "application/records/status-effect.js",
+    "application/records/status-effect-type.js",
     "application/records/validators/episode-validator.js",
     "application/records/validators/reference-validator.js",
     "application/records/validators/sex-action-validator.js",

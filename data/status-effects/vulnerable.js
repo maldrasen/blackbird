@@ -1,4 +1,4 @@
-StatusEffect.register('vulnerable',{
+StatusEffectType.register('vulnerable',{
   name: 'Vulnerable',
   category: 'negative',
   damageType: DamageType.shock,

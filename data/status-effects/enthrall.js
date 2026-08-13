@@ -1,4 +1,4 @@
-StatusEffect.register('enthrall',{
+StatusEffectType.register('enthrall',{
   name: 'Enthrall',
   category: 'negative',
   damageType: DamageType.psychic,

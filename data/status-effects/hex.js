@@ -1,4 +1,4 @@
-StatusEffect.register('hex',{
+StatusEffectType.register('hex',{
   name: 'Hex',
   category: 'negative',
   damageType: DamageType.corruption,

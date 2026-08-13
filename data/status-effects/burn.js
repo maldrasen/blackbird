@@ -1,4 +1,4 @@
-StatusEffect.register('burn',{
+StatusEffectType.register('burn',{
   name: 'Burn',
   category: 'negative',
   damageType: DamageType.fire,

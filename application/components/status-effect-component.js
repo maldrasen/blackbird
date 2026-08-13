@@ -41,7 +41,7 @@ global.StatusEffectComponent = (function() {
     });
 
     Validate.exists('StatusEffect._parentId',statusEffectComponent._parentId);
-    Validate.isIn('StatusEffect.code',statusEffectComponent.code,StatusEffect.getAllCodes());
+    Validate.isIn('StatusEffect.code',statusEffectComponent.code,StatusEffectType.getAllCodes());
 
     numericProperties.forEach(key => {
       if (statusEffectComponent[key] != null) {
@@ -59,7 +59,7 @@ global.StatusEffectComponent = (function() {
   // value, so a renewed effect is never weakened or shortened. Returns the removed opposing codes so battle callers
   // know when a combatant's status display needs to be refreshed.
   function apply(parentId, code, values={}) {
-    StatusEffect.lookup(code);
+    StatusEffectType.lookup(code);
 
     const existing = findEntity(parentId, code);
     if (existing) { return { id:renew(existing,values), removed:[] }; }
@@ -114,7 +114,7 @@ global.StatusEffectComponent = (function() {
   // entities, so this sweep clears the battle only effects left on the survivors.
   function removeBattleEffects() {
     Registry.findComponentsWith(ComponentType.statusEffect, data => {
-      return StatusEffect.lookup(data.code).isClearedAfterBattle();
+      return StatusEffectType.lookup(data.code).isClearedAfterBattle();
     }).forEach(destroy);
   }
 

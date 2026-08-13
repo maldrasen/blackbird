@@ -1,4 +1,4 @@
-StatusEffect.register('blind',{
+StatusEffectType.register('blind',{
   name: 'Blind',
   category: 'negative',
   damageType: DamageType.fire,

@@ -1,4 +1,4 @@
-StatusEffect.register('fear',{
+StatusEffectType.register('fear',{
   name: 'Fear',
   category: 'negative',
   damageType: DamageType.corruption,

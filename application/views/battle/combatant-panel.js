@@ -91,7 +91,7 @@ global.CombatantPanel = function(type, entity) {
       }
 
       if (includeStatus) {
-        const name = StatusEffect.lookup(effect.code).getName();
+        const name = StatusEffectType.lookup(effect.code).getName();
         const icon = X.createElement(`<div class='status-effect-icon' data-name='${name}'></div>`)
         icon.style['background-image'] = X.assetURL(`icons/${effect.code}.png`);
         statusPanel.appendChild(icon);

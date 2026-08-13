@@ -1,4 +1,4 @@
-StatusEffect.register('poised',{
+StatusEffectType.register('poised',{
   name: 'Poised',
   category: 'positive',
   durationType: StatusEffectDurationType.turnCount,

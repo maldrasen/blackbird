@@ -1,4 +1,4 @@
-StatusEffect.register('paralysis',{
+StatusEffectType.register('paralysis',{
   name: 'Paralysis',
   category: 'negative',
   damageType: DamageType.shock,

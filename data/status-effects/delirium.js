@@ -1,4 +1,4 @@
-StatusEffect.register('delirium',{
+StatusEffectType.register('delirium',{
   name: 'Delirium',
   category: 'negative',
   damageType: DamageType.psychic,

@@ -1,4 +1,4 @@
-StatusEffect.register('stun',{
+StatusEffectType.register('stun',{
   name: 'Stun',
   category: 'negative',
   damageType: DamageType.shock,
