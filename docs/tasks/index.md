@@ -15,7 +15,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [155] Encounter Builder `8pt` — [155-encounter-builder.md](155-encounter-builder.md)
 - [158] Add a Fixture to Adjust the Question Pool for Testing `3pt` — [158-fixture-to-adjust-question-pool.md](158-fixture-to-adjust-question-pool.md)
 - [161] Join Text `8pt` — [161-join-text.md](161-join-text.md)
-- [170] Character Locations `0pt` — [170-character-locations.md](170-character-locations.md)
+- [170] Character Locations `3pt` — [170-character-locations.md](170-character-locations.md)
 - [172] Nightgaunt Episode `8pt` — [172-nightgaunt-episode.md](172-nightgaunt-episode.md)
 
 ## Priority 3
