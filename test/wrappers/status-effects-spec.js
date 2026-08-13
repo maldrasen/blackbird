@@ -97,7 +97,7 @@ describe("StatusEffects", function() {
 
       wolfStatus.apply('stun', { count:1 });
       wolfStatus.apply('poison', { interval:500, strength:10 });
-      rabbitStatus.apply(rabbit, 'hidden');
+      rabbitStatus.apply('hidden');
 
       expect(StatusEffectComponent.of(wolf).length).to.equal(2);
       expect(wolfStatus.get('poison').interval).to.equal(500);

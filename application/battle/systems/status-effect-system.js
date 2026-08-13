@@ -30,7 +30,7 @@ global.StatusEffectSystem = (function() {
   // A stack is consumed when the effect triggers, or in the case of turn based effects, when a turn passes. Consuming
   // the last stack removes the effect. Removal goes through the battle state so the combatant view is refreshed.
   function consumeStack(entity, code) {
-    const id = StatusEffectComponent.findEntity(entity, code);
+    const id = StatusEffectComponent.of(entity).find(id => StatusEffectComponent.lookup(id).code === code);
     const count = StatusEffectComponent.lookup(id).count;
 
     (count > 1) ?

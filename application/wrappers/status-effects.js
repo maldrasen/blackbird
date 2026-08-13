@@ -34,21 +34,21 @@ global.StatusEffects = function(parentId) {
 
   function removeOpposing(code) {
     const opposing = opposingCodes[code];
-    if (opposing && has(parentId,opposing)) {
-      remove(parentId,opposing);
+    if (opposing && has(opposing)) {
+      remove(opposing);
       return [opposing];
     }
     return [];
   }
 
   function remove(code) {
-    const entity = findEntity(parentId,code);
+    const entity = findEntity(code);
     if (entity == null) { throw new Error(`Entity[${parentId}] does not have ${code}`); }
     StatusEffectComponent.destroy(entity);
   }
 
   function has(code) {
-    return findEntity(parentId,code) != null;
+    return findEntity(code) != null;
   }
 
   function list() {

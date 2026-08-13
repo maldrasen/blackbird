@@ -298,12 +298,12 @@ global.BattleState = function(data) {
   }
 
   function removeStatus(entity, code) {
-    StatusEffectComponent.remove(entity, code);
+    StatusEffects(entity).remove(code);
     BattleInterface.updateCombatantView(entity);
   }
 
   function getStatusEffects(id) {
-    return StatusEffectComponent.listFor(id);
+    return StatusEffects(id).list();
   }
 
   // ============================================
