@@ -4,11 +4,11 @@ global.StatusEffects = function(parentId) {
   function apply(code, values={}) {
     StatusEffectType.lookup(code);
 
-    const existing = findEntity(parentId, code);
+    const existing = findEntity(code);
     if (existing) { return { id:renew(existing,values), removed:[] }; }
 
     const id = StatusEffectComponent.create(parentId, { code, ...values });
-    return { id, removed:removeOpposing(parentId,code) };
+    return { id, removed:removeOpposing(code) };
   }
 
   // When a status effect is applied, and the character already has that status effect, we can increase the effect's
@@ -32,7 +32,7 @@ global.StatusEffects = function(parentId) {
     return id;
   }
 
-  function removeOpposing(parentId, code) {
+  function removeOpposing(code) {
     const opposing = opposingCodes[code];
     if (opposing && has(parentId,opposing)) {
       remove(parentId,opposing);
@@ -41,18 +41,18 @@ global.StatusEffects = function(parentId) {
     return [];
   }
 
-  function remove(parentId, code) {
+  function remove(code) {
     const entity = findEntity(parentId,code);
     if (entity == null) { throw new Error(`Entity[${parentId}] does not have ${code}`); }
-    destroy(entity);
+    StatusEffectComponent.destroy(entity);
   }
 
-  function has(parentId, code) {
+  function has(code) {
     return findEntity(parentId,code) != null;
   }
 
-  function listFor(parentId) {
-    return of(parentId).map(lookup);
+  function list() {
+    return StatusEffectComponent.of(parentId).map(StatusEffectComponent.lookup);
   }
 
   function get(code) {
@@ -69,6 +69,9 @@ global.StatusEffects = function(parentId) {
   return Object.freeze({
     apply,
     get,
+    has,
+    remove,
+    list
   });
 
 }

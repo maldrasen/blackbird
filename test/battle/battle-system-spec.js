@@ -13,8 +13,8 @@ describe("BattleSystem", function() {
 
       BattleSystem.reset();
 
-      expect(StatusEffectComponent.has(character,'poised')).to.be.false;
-      expect(StatusEffectComponent.has(character,'paralysis')).to.be.true;
+      expect(StatusEffects(character).has('poised')).to.be.false;
+      expect(StatusEffects(character).has('paralysis')).to.be.true;
     });
   });
 

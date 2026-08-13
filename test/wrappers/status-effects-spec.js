@@ -17,7 +17,7 @@ describe("StatusEffects", function() {
       expect(StatusEffectComponent.lookup(id)._parentId).to.equal(entity);
     });
 
-    it.only("renews an effect keeping the larger values", function() {
+    it("renews an effect keeping the larger values", function() {
       const entity = Registry.createEntity();
       const { id } = StatusEffects(entity).apply('blind', { duration:1000 });
 
@@ -36,18 +36,18 @@ describe("StatusEffects", function() {
     it("removes an opposing status effect", function() {
       const entity = Registry.createEntity();
 
-      StatusEffect.apply(entity, 'off-balance', { count:1 });
-      const poised = StatusEffect.apply(entity, 'poised', { count:1 });
+      StatusEffects(entity).apply('off-balance', { count:1 });
+      const poised = StatusEffects(entity).apply('poised', { count:1 });
 
       expect(poised.removed).to.deep.equal(['off-balance']);
-      expect(StatusEffect.has(entity,'off-balance')).to.be.false;
-      expect(StatusEffect.has(entity,'poised')).to.be.true;
+      expect(StatusEffects(entity).has('off-balance')).to.be.false;
+      expect(StatusEffects(entity).has('poised')).to.be.true;
 
-      const offBalance = StatusEffect.apply(entity, 'off-balance', { count:1 });
+      const offBalance = StatusEffects(entity).apply('off-balance', { count:1 });
 
       expect(offBalance.removed).to.deep.equal(['poised']);
-      expect(StatusEffect.has(entity,'poised')).to.be.false;
-      expect(StatusEffect.has(entity,'off-balance')).to.be.true;
+      expect(StatusEffects(entity).has('poised')).to.be.false;
+      expect(StatusEffects(entity).has('off-balance')).to.be.true;
     });
   });
 
@@ -55,27 +55,29 @@ describe("StatusEffects", function() {
     it("throws when the entity does not have the effect", function() {
       const entity = Registry.createEntity();
       expect(function() {
-        StatusEffect.remove(entity, 'stun');
+        StatusEffects(entity).remove('stun');
       }).to.throw(`Entity[${entity}] does not have stun`);
     });
 
     it("deletes the status effect entity entirely", function() {
       const entity = Registry.createEntity();
-      const { id } = StatusEffect.apply(entity, 'stun', { count:1 });
+      const { id } = StatusEffects(entity).apply('stun', { count:1 });
 
-      StatusEffect.remove(entity, 'stun');
+      StatusEffects(entity).remove('stun');
 
-      expect(StatusEffect.has(entity,'stun')).to.be.false;
+      expect(StatusEffects(entity).has('stun')).to.be.false;
       expect(Registry.entityExists(id)).to.be.false;
     });
   });
 
+  /* Moved to the Battle System
   describe("removeBattleEffects()", function() {
     it("removes battle only effects and keeps persistent effects", function() {
       const entity = Registry.createEntity();
+      const statusEffects = StatusEffects(entity)
 
-      const poised = StatusEffect.apply(entity, 'poised', { count:1 });
-      StatusEffect.apply(entity, 'paralysis');
+      const poised = statusEffects.apply('poised', { count:1 });
+      statusEffects.apply('paralysis');
 
       StatusEffect.removeBattleEffects();
 
@@ -84,22 +86,25 @@ describe("StatusEffects", function() {
       expect(Registry.entityExists(poised.id)).to.be.false;
     });
   });
+  */
 
   describe("queries", function() {
     it("finds the effects an entity has", function() {
       const wolf = Registry.createEntity();
       const rabbit = Registry.createEntity();
+      const wolfStatus = StatusEffects(wolf);
+      const rabbitStatus = StatusEffects(rabbit);
 
-      StatusEffect.apply(wolf, 'stun', { count:1 });
-      StatusEffect.apply(wolf, 'poison', { interval:500, strength:10 });
-      StatusEffect.apply(rabbit, 'hidden');
+      wolfStatus.apply('stun', { count:1 });
+      wolfStatus.apply('poison', { interval:500, strength:10 });
+      rabbitStatus.apply(rabbit, 'hidden');
 
-      expect(StatusEffect.of(wolf).length).to.equal(2);
-      expect(StatusEffect.get(wolf,'poison').interval).to.equal(500);
-      expect(StatusEffect.get(wolf,'hidden')).to.be.null;
-      expect(StatusEffect.has(rabbit,'hidden')).to.be.true;
+      expect(StatusEffectComponent.of(wolf).length).to.equal(2);
+      expect(wolfStatus.get('poison').interval).to.equal(500);
+      expect(wolfStatus.get('hidden')).to.be.null;
+      expect(rabbitStatus.has('hidden')).to.be.true;
 
-      const codes = StatusEffect.listFor(wolf).map(effect => effect.code);
+      const codes = StatusEffects(wolf).list().map(effect => effect.code);
       expect(codes).to.have.members(['stun','poison']);
     });
   });

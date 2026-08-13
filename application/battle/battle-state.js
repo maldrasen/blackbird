@@ -287,7 +287,7 @@ global.BattleState = function(data) {
   function isAlive(id) { return getCondition(id) !== BattleCondition.dead; }
   function isDown(id) { return isAlive(id) === false || isKnockedOut(id); }
   function isKnockedOut(id) { return getCondition(id) === BattleCondition.knockedOut; }
-  function isHidden(id) { return hasStatusEffect(id, 'hidden'); }
+  function isHidden(id) { return StatusEffects(id).has('hidden'); }
 
   // TODO: When a fixed time status effect is added its removal time needs to be added to the turn order because the
   //       effect goes away independent of the character's actions. Periodic effects (poison and burn) also add their
@@ -304,10 +304,6 @@ global.BattleState = function(data) {
 
   function getStatusEffects(id) {
     return StatusEffectComponent.listFor(id);
-  }
-
-  function hasStatusEffect(id, code) {
-    return StatusEffectComponent.has(id, code);
   }
 
   // ============================================
@@ -387,7 +383,7 @@ global.BattleState = function(data) {
     addStatus,
     removeStatus,
     getStatusEffects,
-    hasStatusEffect,
+    hasStatusEffect: (id,code)  => { return StatusEffects(id).has(code); }, // TODO: We can just get rid of this, call the wrapper directly.
 
     setNegotiationAttempted: () => { negotiationAttempted = true; },
     hasAttemptedNegotiation: () => { return negotiationAttempted; },
