@@ -12,9 +12,9 @@ global.Fixtures = (function() {
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
       // encounter: 'kobold-1',
-      // encounter: `kobold-${Random.between(1,5)}`,
+      encounter: `kobold-${Random.between(1,5)}`,
       // encounter: `negotiation-fixture-${Random.between(1,3)}`,
-      encounter: `negotiation-fixture-2`,
+      // encounter: `negotiation-fixture-2`,
     });
 
     GameSystem.setGameMode(GameMode.location);
