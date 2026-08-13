@@ -35,5 +35,3 @@ global.BattleStatusEffect = function(id, code, options={}) {
     reduceDuration: d => { duration -= d; },
   });
 }
-
-

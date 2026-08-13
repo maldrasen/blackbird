@@ -32,7 +32,6 @@ global.StatusEffectComponent = (function() {
 
     Validate.exists('StatusEffect._parentId',statusEffectComponent._parentId);
     Validate.exists('StatusEffect.code',statusEffectComponent.code);
-
   }
 
   function of(parent) {
