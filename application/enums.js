@@ -84,6 +84,7 @@ global.InventoryCategory = Object.freeze({
   grenades: 'grenades',
   mutagen: 'mutagen',
   ammo: 'ammo',
+  valuables: 'valuables',
 });
 
 global.EpisodePriority = Object.freeze({

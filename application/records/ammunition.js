@@ -11,7 +11,7 @@ global.Ammunition = (function() {
   function lookup(code) {
     if (ammunitionRecords[code] == null) { throw new Error(`Bad consumable code [${code}]`); }
 
-    const consumable = { ...ammunitionRecords[code] };
+    const ammunition = { ...ammunitionRecords[code] };
     const article = Article.lookup(code);
 
     return Object.freeze({
@@ -20,7 +20,7 @@ global.Ammunition = (function() {
       getDescription: () => { return article.getDescription(); },
       getCategory: () => { return article.getCategory(); },
       getTags: () => { return article.getTags(); },
-      getDamageTypes: () => {  }
+      getDamageTypes: () => { return { ...ammunition.damageTypes }},
     });
   }
 
