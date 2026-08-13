@@ -12,8 +12,8 @@ global.PartyConfiguration = (function() {
   }
 
   // Party members are situated at the in-party pseudo-location. Characters dropped from the party go back to the
-  // living room until characters have schedules and somewhere better to be. Characters without a situated component
-  // (the player) are left alone.
+  // living room until characters have schedules and somewhere better to be. The real version of this should get their
+  // location from their schedule rather than storing a previous location.
   function syncLocations(previous, next) {
     Object.keys(previous).filter(id => next[id] == null).forEach(id => setLocation(id,'ruined-living-room'));
     Object.keys(next).forEach(id => setLocation(id,SpecialLocation.inParty));
