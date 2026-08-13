@@ -2,10 +2,6 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
-## Priority 1
-
-- [184] Update Manifest Generation and Move Views `2pt` — [184-update-manifest-generation-and-move-views.md](184-update-manifest-generation-and-move-views.md)
-
 ## Priority 2
 
 - [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
