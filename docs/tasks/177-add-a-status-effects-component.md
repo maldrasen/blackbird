@@ -1,7 +1,7 @@
 ---
 id: 177
 title: Add a status effects component
-priority: 2
+priority: 1
 created: 2026-08-11
 tags:
   - battle

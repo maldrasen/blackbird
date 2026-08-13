@@ -6,6 +6,10 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 - [182] Implement consumable weapons `0pt` — [182-implement-consumable-weapons.md](182-implement-consumable-weapons.md)
 
+## Priority 1
+
+- [177] Add a status effects component `5pt` — [177-add-a-status-effects-component.md](177-add-a-status-effects-component.md)
+
 ## Priority 2
 
 - [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
@@ -21,7 +25,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [161] Join Text `8pt` — [161-join-text.md](161-join-text.md)
 - [170] Character Locations `0pt` — [170-character-locations.md](170-character-locations.md)
 - [172] Nightgaunt Episode `8pt` — [172-nightgaunt-episode.md](172-nightgaunt-episode.md)
-- [177] Add a status effects component `5pt` — [177-add-a-status-effects-component.md](177-add-a-status-effects-component.md)
 
 ## Priority 3
 
