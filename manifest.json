@@ -409,6 +409,7 @@
     "data/items/health-consumables.js",
     "data/items/mana-consumables.js",
     "data/items/mutagens.js",
+    "data/items/valuables.js",
     "data/locations/ruined-living-room.js",
     "data/locations/the-well.js",
     "data/materials.js",
