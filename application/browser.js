@@ -22,7 +22,7 @@ global.Browser = (function() {
       },
     });
 
-    mainWindow.loadURL(`file://${ROOT}/views/loading.html`);
+    mainWindow.loadURL(`file://${ROOT}/views/templates/loading.html`);
 
     if (Environment.isDevelopment()) {
       mainWindow.webContents.openDevTools();

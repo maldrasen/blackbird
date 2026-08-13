@@ -12,7 +12,7 @@ global.MainMenu = (function() {
   }
 
   function loadBaseMenu() {
-    X.loadDocument('#mainMenu','views/base-menu.html');
+    X.loadDocument('#mainMenu','views/templates/base-menu.html');
 
     const previousGame = WorldState.getPreviousGame();
 
@@ -39,7 +39,7 @@ global.MainMenu = (function() {
   }
 
   function loadGameMenu() {
-    X.loadDocument('#mainMenu','views/game-menu.html');
+    X.loadDocument('#mainMenu','views/templates/game-menu.html');
   }
 
   // Show, Hide, and Close

@@ -1,7 +1,7 @@
 global.MainContent = (function() {
 
   function loadMainContent() {
-    const mainContent = FileHelper.readFile('views/main-content.html');
+    const mainContent = FileHelper.readFile('views/templates/main-content.html');
     const mainElement = document.createElement("div");
     mainElement.innerHTML = mainContent;
 

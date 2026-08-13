@@ -16,7 +16,7 @@ global.InventoryPanel = function(options) {
   }
 
   function buildInto(container) {
-    X.loadDocument(container,'views/inventory-panel.html');
+    X.loadDocument(container,'views/templates/inventory-panel.html');
 
     inventoryPanel = X.first(container).querySelector('.inventory-panel');
     if (characterId) {

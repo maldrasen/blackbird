@@ -9,7 +9,7 @@ global.TrainingView = (function() {
   }
 
   function show() {
-    MainContent.setMainContent("views/training.html");
+    MainContent.setMainContent("views/templates/training.html");
     MainContent.setBackground(`backgrounds/training.jpg`);
 
     TrainingCategoryToggles.build();

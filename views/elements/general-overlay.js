@@ -17,7 +17,7 @@ global.GeneralOverlay = (function() {
 
     locked = (options.preventClose === true);
 
-    X.loadDocument('#generalOverlay','views/general-overlay.html');
+    X.loadDocument('#generalOverlay','views/templates/general-overlay.html');
     X.fill('#generalOverlayContent',content);
 
     WindowManager.push(GeneralOverlay);

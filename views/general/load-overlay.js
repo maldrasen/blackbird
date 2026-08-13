@@ -7,7 +7,7 @@ global.LoadOverlay = (function() {
 
   // The overlay is rebuilt every time it's opened because the list of saved games can change between opens.
   function open() {
-    X.loadDocument('#loadOverlay','views/load-overlay.html');
+    X.loadDocument('#loadOverlay','views/templates/load-overlay.html');
     buildSavedGameList();
     MainMenu.hide();
     X.removeClass('#loadOverlay','hide');

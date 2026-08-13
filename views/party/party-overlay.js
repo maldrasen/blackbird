@@ -18,7 +18,7 @@ global.PartyOverlay = (function() {
   function open(m) {
     mode = m;
 
-    X.loadDocument('#partyOverlay','views/party-overlay.html');
+    X.loadDocument('#partyOverlay','views/templates/party-overlay.html');
     X.addClass(`#partyOverlay`,mode);
 
     WindowManager.push(PartyOverlay);

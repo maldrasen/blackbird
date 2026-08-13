@@ -23,7 +23,7 @@ global.OptionsOverlay = (function() {
   }
 
   function build() {
-    X.loadDocument('#optionsOverlay','views/options-overlay.html');
+    X.loadDocument('#optionsOverlay','views/templates/options-overlay.html');
 
     const options = WorldState.getOptions();
 

@@ -1,5 +1,5 @@
 // This script starts a static webserver for running the client in a plain browser instead of Electron. It serves the
-// project root at http://localhost:8300/views/browser.html
+// project root at http://localhost:8300/views/templates/browser.html
 
 const http = require('node:http');
 const path = require('node:path');
@@ -31,7 +31,7 @@ const server = http.createServer((request, response) => {
   const urlPath = decodeURIComponent(new URL(request.url, `http://localhost:${PORT}`).pathname);
 
   if (urlPath === '/') {
-    response.writeHead(302, { Location: '/views/browser.html' });
+    response.writeHead(302, { Location: '/views/templates/browser.html' });
     return response.end();
   }
 

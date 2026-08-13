@@ -8,7 +8,7 @@ global.EnlightenView = (function() {
   }
 
   function show() {
-    MainContent.setMainContent("views/enlighten.html");
+    MainContent.setMainContent("views/templates/enlighten.html");
 
     switch (EnlightenSystem.getState().getFrom()) {
       case 'training': return showTrainingResults();

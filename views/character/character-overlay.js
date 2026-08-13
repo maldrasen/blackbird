@@ -17,7 +17,7 @@ global.CharacterOverlay = (function() {
   function open(id) {
     character = Character(id);
 
-    X.loadDocument('#characterOverlay','views/character-overlay.html');
+    X.loadDocument('#characterOverlay','views/templates/character-overlay.html');
 
     update();
     inventoryPanel = InventoryPanel({ character:id });

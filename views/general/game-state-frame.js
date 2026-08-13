@@ -5,7 +5,7 @@ global.GameStateFrame = (function() {
   }
 
   function load() {
-    X.loadDocument('#gameStateFrame','views/game-state-frame.html');
+    X.loadDocument('#gameStateFrame','views/templates/game-state-frame.html');
   }
 
   function show() {

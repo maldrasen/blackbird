@@ -43,7 +43,7 @@ global.EpisodeView = (function() {
   function show() {
     const episode = EpisodeSystem.getEpisode();
 
-    MainContent.setMainContent(`views/episode-view.html`);
+    MainContent.setMainContent(`views/templates/episode-view.html`);
     MainContent.setBackground(episode.getBackground());
     X.addClass('#episodeView',episode.getLayout());
 

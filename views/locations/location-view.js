@@ -12,7 +12,7 @@ global.LocationView = (function() {
   }
 
   function show() {
-    MainContent.setMainContent("views/location.html");
+    MainContent.setMainContent("views/templates/location.html");
     GameStateFrame.show();
     showLocationControls();
     update();
