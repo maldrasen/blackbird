@@ -94,6 +94,12 @@ global.EpisodePriority = Object.freeze({
   flavor: 2,
 });
 
+// A character in the party moves with the player, so their situated location is this pseudo-location rather than a
+// registered location code.
+global.SpecialLocation = Object.freeze({
+  inParty: '(in-party)',
+});
+
 // ==============
 //   Components
 // ==============

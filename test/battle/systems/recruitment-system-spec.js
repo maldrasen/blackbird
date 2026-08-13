@@ -15,6 +15,7 @@ describe("RecruitmentSystem", function() {
     expect(feelings.respect).to.equal(200);
 
     expect(ControlledComponent.lookup(monster).control).to.equal(0);
+    expect(SituatedComponent.lookup(monster).currentLocation).to.equal('(in-party)');
     expect(MonsterComponent.lookup(monster)).to.be.undefined;
     expect(GameSystem.getState().isInRoster(monster)).to.equal(true);
   });
