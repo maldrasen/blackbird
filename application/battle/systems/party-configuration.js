@@ -5,7 +5,24 @@ global.PartyConfiguration = (function() {
       throw new Error(`Invalid configuration: ${JSON.stringify(configuration)}`);
     }
 
+    const previous = getConfiguration();
+
     GameSystem.getState().setPartyConfiguration({ ...configuration });
+    syncLocations(previous, configuration);
+  }
+
+  // Party members are situated at the in-party pseudo-location. Characters dropped from the party go back to the
+  // living room until characters have schedules and somewhere better to be. Characters without a situated component
+  // (the player) are left alone.
+  function syncLocations(previous, next) {
+    Object.keys(previous).filter(id => next[id] == null).forEach(id => setLocation(id,'ruined-living-room'));
+    Object.keys(next).forEach(id => setLocation(id,SpecialLocation.inParty));
+  }
+
+  function setLocation(id, location) {
+    if (SituatedComponent.lookup(id)) {
+      SituatedComponent.update(id, { currentLocation:location });
+    }
   }
 
   function getConfiguration() {
@@ -54,6 +71,7 @@ global.PartyConfiguration = (function() {
     configuration[id] = findPosition();
 
     GameSystem.getState().setPartyConfiguration(configuration);
+    setLocation(id, SpecialLocation.inParty);
   }
 
   function getVacantFrontPositions(configuration) {

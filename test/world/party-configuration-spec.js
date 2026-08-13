@@ -94,6 +94,51 @@ describe("PartyConfiguration", function() {
 
   });
 
+  describe('location syncing', function() {
+
+    beforeEach(function() {
+      GameSystem.getState().setPlayer('horse');
+    });
+
+    it('situates party members in the party', function() {
+      const goat = Registry.createEntity();
+      SituatedComponent.create(goat, { currentLocation:'ruined-living-room' });
+
+      PartyConfiguration.setConfiguration({ horse:'P.0.2', [goat]:'P.1.2' });
+
+      expect(SituatedComponent.lookup(goat).currentLocation).to.equal('(in-party)');
+    });
+
+    it('sends removed members to the living room', function() {
+      const goat = Registry.createEntity();
+      SituatedComponent.create(goat, { currentLocation:SpecialLocation.inParty });
+
+      PartyConfiguration.setConfiguration({ horse:'P.0.2', [goat]:'P.1.2' });
+      PartyConfiguration.setConfiguration({ horse:'P.0.2' });
+
+      expect(SituatedComponent.lookup(goat).currentLocation).to.equal('ruined-living-room');
+    });
+
+    it('addCharacter situates the character in the party', function() {
+      const goat = Registry.createEntity();
+      SituatedComponent.create(goat, { currentLocation:'ruined-living-room' });
+
+      PartyConfiguration.setConfiguration({ horse:'P.0.2' });
+      PartyConfiguration.addCharacter(goat);
+
+      expect(SituatedComponent.lookup(goat).currentLocation).to.equal('(in-party)');
+    });
+
+    it('ignores characters without a situated component', function() {
+      PartyConfiguration.setConfiguration({ horse:'P.0.2', goat:'P.1.2' });
+      PartyConfiguration.setConfiguration({ horse:'P.0.2' });
+
+      expect(SituatedComponent.lookup('horse')).to.be.undefined;
+      expect(SituatedComponent.lookup('goat')).to.be.undefined;
+    });
+
+  });
+
   describe('validity', function() {
 
     beforeEach(function() {
