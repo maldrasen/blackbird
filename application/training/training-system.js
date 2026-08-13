@@ -227,7 +227,7 @@ global.TrainingSystem = (function() {
 
   function removePersistedAction(code) {
     state.removePersistedAction(code);
-    TrainingPersistedActionsPanel.update();
+    TrainingInterface.updatePersistedActions();
   }
 
   // Sometimes, when the sex positon shifts and the partner is being reluctant (fearful, resistant, or violent) the

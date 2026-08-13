@@ -34,11 +34,17 @@ global.TrainingInterface = (function() {
     TrainingOutput.show(result);
   }
 
+  function updatePersistedActions() {
+    if (Environment.viewPresent() === false) { return; }
+    TrainingPersistedActionsPanel.update();
+  }
+
   return Object.freeze({
     proposeTraining,
     startTraining,
     endTraining,
     finishSexAction,
+    updatePersistedActions,
   });
 
 })();
