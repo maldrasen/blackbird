@@ -5,7 +5,7 @@ global.Views = (function() {
     Casement.init();
     CharacterOverlay.init();
     Confirmation.init();
-    Console.init();
+    ConsoleView.init();
     DungeonControls.init();
     DungeonView.init();
     EnlightenView.init();

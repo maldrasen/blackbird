@@ -9,7 +9,6 @@ global.ENVIRONMENT = 'development';
 global.HEADLESS = true;
 
 require(`${ROOT}/application/environment.js`);
-require(`${ROOT}/application/views/general/console.js`);
 
 const manifest = require(`${ROOT}/manifest.json`);
 

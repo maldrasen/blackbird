@@ -4,7 +4,7 @@ global.WindowManager = (function() {
 
   function init() {
     X.onCodeDown(KeyCodes.Escape,true,() => {
-      if (Console.isVisible()) { return Console.hide(); }
+      if (ConsoleView.isVisible()) { return ConsoleView.hide(); }
       if (Select.isOpen()) { return Select.close(); }
       if (Confirmation.isVisible()) { return Confirmation.cancel(); }
       if (windowStack.length > 0) { return pop() }

@@ -115,7 +115,7 @@ global.ConsoleCommands = (function() {
   }
 
   function clearConsole() {
-    Console.clear();
+    ConsoleView.clear();
     return null;
   }
 

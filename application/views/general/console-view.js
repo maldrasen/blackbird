@@ -1,4 +1,4 @@
-global.Console = (function() {
+global.ConsoleView = (function() {
 
   const entryLimit = 1000;
 
@@ -58,41 +58,6 @@ global.Console = (function() {
 
   function isVisible() { return !X.hasClass('#console','hide'); }
 
-  function log(message, options={}) {
-    const type = options.type || LogType.info;
-
-    if (HEADLESS === false && Tests.running() === false) {
-      options.time = TimeHelper.getTimeString();
-      options.message = message;
-      options.type = type;
-      append(options);
-    }
-
-    if (type === LogType.warning) { console.warn(message); }
-    if (type === LogType.error) { console.error(message); }
-  }
-
-  function logError(message, error, options={}) {
-    if (options.data == null) { options.data = {};}
-
-    if (HEADLESS || Tests.running()) {
-      console.error('=== Error ===');
-      console.error(message);
-      console.error(JSON.stringify(error));
-      console.error(JSON.stringify(options));
-      return;
-    }
-
-    options.level = 1;
-    options.type = LogType.error;
-    options.data.error = errorToString(error)
-
-    Console.log(message, options);
-
-    console.error(message, options);
-    if (error) { console.error(error); }
-  }
-
   function append(logData) {
     trimEntries()
 
@@ -143,18 +108,12 @@ global.Console = (function() {
     });
   }
 
-  function errorToString(error) {
-    return JSON.stringify(error, Object.getOwnPropertyNames(error))
-  }
-
   return Object.freeze({
     init,
     hide,
     clear,
     isVisible,
     append,
-    log,
-    logError,
   });
 
 })();
