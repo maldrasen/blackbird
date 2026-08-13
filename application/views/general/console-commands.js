@@ -11,7 +11,7 @@ global.ConsoleCommands = (function() {
       commandFunction: printEntityData,
       description:`Print all the component data for a given entity ID.` },
     reveal: {
-      commandFunction: DungeonCommands.revealAll,
+      commandFunction: revealDungeon,
       description:`Reveal all the rooms on the current dungeon floor.`
     },
     roster: {
@@ -146,10 +146,19 @@ global.ConsoleCommands = (function() {
     return `<pre class='json-dump'>${JSON.stringify(Registry.compileEntityData(id),null,2)}</pre>`
   }
 
+  function revealDungeon() {
+    const floor = DungeonSystem.getDungeonFloor();
+    if (floor) {
+      floor.getRooms().forEach(room => floor.revealRoom(room.getIndex()));
+      DungeonFloorView.drawDungeon();
+    }
+  }
+
   return Object.freeze({
     sendCommand,
     run,
     loadPreviousCommand,
+    revealDungeon,
   });
 
 })();
