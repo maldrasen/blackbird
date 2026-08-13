@@ -2,5 +2,6 @@ StatusEffect.register('enthrall',{
   name: 'Enthrall',
   category: 'negative',
   damageType: DamageType.psychic,
-  durationType: StatusEffectDurationType.untilResisted
+  durationType: StatusEffectDurationType.untilResisted,
+  clearAfterBattle: true,
 });

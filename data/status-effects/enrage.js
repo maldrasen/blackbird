@@ -3,4 +3,5 @@ StatusEffect.register('enrage',{
   category: 'negative',
   damageType: DamageType.psychic,
   durationType: StatusEffectDurationType.fixedTime,
+  clearAfterBattle: true,
 });

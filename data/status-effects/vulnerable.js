@@ -3,4 +3,5 @@ StatusEffect.register('vulnerable',{
   category: 'negative',
   damageType: DamageType.shock,
   durationType: StatusEffectDurationType.turnCount,
+  clearAfterBattle: true,
 });

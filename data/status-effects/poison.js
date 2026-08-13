@@ -3,4 +3,5 @@ StatusEffect.register('poison',{
   category: 'negative',
   damageType: DamageType.nature,
   durationType: StatusEffectDurationType.untilResisted,
+  clearAfterBattle: true,
 });

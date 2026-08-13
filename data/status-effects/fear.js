@@ -3,4 +3,5 @@ StatusEffect.register('fear',{
   category: 'negative',
   damageType: DamageType.corruption,
   durationType: StatusEffectDurationType.fixedTime,
+  clearAfterBattle: true,
 });

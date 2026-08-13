@@ -3,4 +3,5 @@ StatusEffect.register('hex',{
   category: 'negative',
   damageType: DamageType.corruption,
   durationType: StatusEffectDurationType.fixedTime,
+  clearAfterBattle: true,
 });

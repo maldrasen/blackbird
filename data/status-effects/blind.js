@@ -3,4 +3,5 @@ StatusEffect.register('blind',{
   category: 'negative',
   damageType: DamageType.fire,
   durationType: StatusEffectDurationType.fixedTime,
+  clearAfterBattle: true,
 });

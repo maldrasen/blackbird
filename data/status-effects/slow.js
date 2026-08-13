@@ -3,4 +3,5 @@ StatusEffect.register('slow',{
   category: 'negative',
   damageType: DamageType.arcane,
   durationType: StatusEffectDurationType.fixedTime,
+  clearAfterBattle: true,
 });

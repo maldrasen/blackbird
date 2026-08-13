@@ -3,4 +3,5 @@ StatusEffect.register('off-balance',{
   category: 'negative',
   damageType: DamageType.psychic,
   durationType: StatusEffectDurationType.turnCount,
+  clearAfterBattle: true,
 });

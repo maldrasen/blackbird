@@ -4,4 +4,5 @@ StatusEffect.register('stun',{
   damageType: DamageType.shock,
   durationType: StatusEffectDurationType.turnCount,
   removedAt: 'end-of-round',
+  clearAfterBattle: true,
 });

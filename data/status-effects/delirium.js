@@ -3,4 +3,5 @@ StatusEffect.register('delirium',{
   category: 'negative',
   damageType: DamageType.psychic,
   durationType: StatusEffectDurationType.untilResisted,
+  clearAfterBattle: true,
 });

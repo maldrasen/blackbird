@@ -21,6 +21,7 @@ global.StatusEffect = (function() {
       getDamageType: () => { return statusEffect.damageType; },
       getDurationType: () => { return statusEffect.durationType; },
       getRemovedAt: () => { return statusEffect.removedAt || 'start-of-round' },
+      isClearedAfterBattle: () => { return statusEffect.clearAfterBattle === true; },
     });
   }
 

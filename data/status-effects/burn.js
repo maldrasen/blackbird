@@ -3,4 +3,5 @@ StatusEffect.register('burn',{
   category: 'negative',
   damageType: DamageType.fire,
   durationType: StatusEffectDurationType.fixedTime,
+  clearAfterBattle: true,
 });

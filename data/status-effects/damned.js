@@ -3,4 +3,5 @@ StatusEffect.register('damned',{
   category: 'negative',
   damageType: DamageType.corruption,
   durationType: StatusEffectDurationType.fixedCount,
+  clearAfterBattle: true,
 });
