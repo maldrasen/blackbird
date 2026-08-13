@@ -97,7 +97,7 @@ global.PhysicalAttackSystem = (function() {
   }
 
   function addStatus(entity, code, message) {
-    BattleSystem.getState().addStatus(entity, code, { count:1 });
+    BattleSystem.addStatus(entity, code, { count:1 });
     BattleSystem.getRound().addMessage({ text:message });
   }
 

@@ -12,7 +12,7 @@ Ability.register('basic-defend',{
     round.addTime(1000,false);
     round.addMessage({ text:`{A:ActingName} takes a defensive stance, becoming {S/pst}Poised{/S}.` });
 
-    BattleSystem.getState().addStatus(round.getActing(), 'poised', { count:1 });
+    BattleSystem.addStatus(round.getActing(), 'poised', { count:1 });
   },
 
 });

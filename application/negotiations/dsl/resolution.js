@@ -45,7 +45,7 @@ global.Resolution = function(type, message, feelings, options={}) {
   function giveStatusEffect(context) {
     const { target, effect, duration } = effects.giveStatusEffect;
     const entity = (target === 'player') ? context.P : context.T;
-    BattleSystem.getState().addStatus(entity, effect, { count:duration });
+    BattleSystem.addStatus(entity, effect, { count:duration });
   }
 
   // TODO: Stub. The character referenced by the context key should remember what happened to them here. How they

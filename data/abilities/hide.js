@@ -14,7 +14,6 @@ Ability.register('hide',{
   },
 
   execute: () => {
-    const state = BattleSystem.getState();
     const round = BattleSystem.getRound();
     const acting = round.getActing();
 
@@ -37,7 +36,7 @@ Ability.register('hide',{
 
     if (isHidden) {
       message = { text: `{A:ActingName} hides in the shadows.` };
-      state.addStatus(acting,'hidden');
+      BattleSystem.addStatus(acting,'hidden');
     }
 
     round.clearTarget();

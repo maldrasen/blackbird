@@ -186,7 +186,7 @@ describe("BattleDamageSystem", function() {
       const state = startBattle();
       const target = pinnedTarget(state);
       equipItem(target, ArmorFactory.build('breastplate'), EquipmentSlot.chest);
-      state.addStatus(target, 'vulnerable', { count:1 });
+      BattleSystem.addStatus(target, 'vulnerable', { count:1 });
 
       const damage = BattleDamageSystem.applyDamage({
         entity:target, damageTypes:{ slash:100 }, hitLocation:EquipmentSlot.chest });
@@ -199,7 +199,7 @@ describe("BattleDamageSystem", function() {
       const state = startBattle();
       const target = pinnedTarget(state);
       equipItem(target, ArmorFactory.build('breastplate'), EquipmentSlot.chest);
-      state.addStatus(target, 'vulnerable', { count:2 });
+      BattleSystem.addStatus(target, 'vulnerable', { count:2 });
 
       const hit = () => BattleDamageSystem.applyDamage({
         entity:target, damageTypes:{ slash:20 }, hitLocation:EquipmentSlot.chest });
@@ -217,7 +217,7 @@ describe("BattleDamageSystem", function() {
       const state = startBattle();
       const target = pinnedTarget(state);
       equipItem(target, ArmorFactory.build('breastplate'), EquipmentSlot.chest);
-      state.addStatus(target, 'damned', { count:1 });
+      BattleSystem.addStatus(target, 'damned', { count:1 });
 
       const hit = () => BattleDamageSystem.applyDamage({
         entity:target, damageTypes:{ slash:20 }, hitLocation:EquipmentSlot.chest });
@@ -232,8 +232,8 @@ describe("BattleDamageSystem", function() {
       const state = startBattle();
       const target = pinnedTarget(state);
       equipItem(target, ArmorFactory.build('breastplate'), EquipmentSlot.chest);
-      state.addStatus(target, 'vulnerable', { count:1 });
-      state.addStatus(target, 'damned', { count:1 });
+      BattleSystem.addStatus(target, 'vulnerable', { count:1 });
+      BattleSystem.addStatus(target, 'damned', { count:1 });
 
       const damage = BattleDamageSystem.applyDamage({
         entity:target, damageTypes:{ slash:10 }, hitLocation:EquipmentSlot.chest });
@@ -373,7 +373,7 @@ describe("BattleDamageSystem", function() {
     it("composes the mitigation factor with vulnerable doubling", async function() {
       const state = startBattle();
       const target = pinnedCharacter(state);
-      state.addStatus(target, 'vulnerable', { count:1 });
+      BattleSystem.addStatus(target, 'vulnerable', { count:1 });
       await setDifficulty({ mitigation:400 });
 
       const damage = BattleDamageSystem.applyDamage({

@@ -6,7 +6,6 @@ global.StealthSystem = (function() {
   // opponent's side) then the hidden status is removed.
 
   function processRound() {
-    const state = BattleSystem.getState();
     const round = BattleSystem.getRound();
 
     const acting = round.getActing();
@@ -14,7 +13,7 @@ global.StealthSystem = (function() {
     const targetPosition = round.getTargetPosition();
 
     if (StatusEffects(acting).has('hidden') && targetPosition != null) {
-      (actingPosition[0] !== targetPosition[0]) ? state.removeStatus(acting,'hidden') : stayHidden();
+      (actingPosition[0] !== targetPosition[0]) ? BattleSystem.removeStatus(acting,'hidden') : stayHidden();
     }
   }
 

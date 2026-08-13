@@ -289,19 +289,6 @@ global.BattleState = function(data) {
   function isKnockedOut(id) { return getCondition(id) === BattleCondition.knockedOut; }
   function isHidden(id) { return StatusEffects(id).has('hidden'); }
 
-  // TODO: When a fixed time status effect is added its removal time needs to be added to the turn order because the
-  //       effect goes away independent of the character's actions. Periodic effects (poison and burn) also add their
-  //       next trigger time to the turn order, and removing an effect needs to clear its turn order entries.
-  function addStatus(entity, code, values={}) {
-    const { removed } = StatusEffects(entity).apply(code, values);
-    if (removed.length > 0) { BattleInterface.updateCombatantView(entity); }
-  }
-
-  function removeStatus(entity, code) {
-    StatusEffects(entity).remove(code);
-    BattleInterface.updateCombatantView(entity);
-  }
-
   // ============================================
   //    Leveling Up / Negotiation / Battle End
   // ============================================
@@ -376,8 +363,6 @@ global.BattleState = function(data) {
     isKnockedOut,
     isDown,
     isHidden,
-    addStatus,
-    removeStatus,
 
     setNegotiationAttempted: () => { negotiationAttempted = true; },
     hasAttemptedNegotiation: () => { return negotiationAttempted; },

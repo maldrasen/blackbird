@@ -28,6 +28,19 @@ global.BattleSystem = (function() {
     }).forEach(Registry.deleteEntity);
   }
 
+  // TODO: When a fixed time status effect is added its removal time needs to be added to the turn order because the
+  //       effect goes away independent of the character's actions. Periodic effects (poison and burn) also add their
+  //       next trigger time to the turn order, and removing an effect needs to clear its turn order entries.
+  function addStatus(entity, code, values={}) {
+    const { removed } = StatusEffects(entity).apply(code, values);
+    if (removed.length > 0) { BattleInterface.updateCombatantView(entity); }
+  }
+
+  function removeStatus(entity, code) {
+    StatusEffects(entity).remove(code);
+    BattleInterface.updateCombatantView(entity);
+  }
+
   function startRound() {
     round = BattleRound(state.getNext().id);
     round.compileWeaponData();
@@ -113,6 +126,8 @@ global.BattleSystem = (function() {
   return Object.freeze({
     startBattle,
     reset,
+    addStatus,
+    removeStatus,
     advanceBattle,
     startRound,
     specRound,

@@ -14,7 +14,7 @@ global.FormationManager = (function() {
     }
 
     if (StatusEffects(moving).has('hidden')) {
-      state.removeStatus(moving, 'hidden');
+      BattleSystem.removeStatus(moving, 'hidden');
     }
   }
 
