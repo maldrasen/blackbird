@@ -302,10 +302,6 @@ global.BattleState = function(data) {
     BattleInterface.updateCombatantView(entity);
   }
 
-  function getStatusEffects(id) {
-    return StatusEffects(id).list();
-  }
-
   // ============================================
   //    Leveling Up / Negotiation / Battle End
   // ============================================
@@ -382,7 +378,8 @@ global.BattleState = function(data) {
     isHidden,
     addStatus,
     removeStatus,
-    getStatusEffects,
+
+    getStatusEffects: id => { return StatusEffects(id).list(); },
     hasStatusEffect: (id,code)  => { return StatusEffects(id).has(code); }, // TODO: We can just get rid of this, call the wrapper directly.
 
     setNegotiationAttempted: () => { negotiationAttempted = true; },
