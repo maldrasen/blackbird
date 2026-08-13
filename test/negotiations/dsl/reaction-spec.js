@@ -149,7 +149,7 @@ describe("Reaction", function() {
     });
   });
 
-  // These specs boot a real battle because the status effects live on the battle state.
+  // These specs boot a real battle because giveStatusEffect applies effects through the battle state.
   describe("giveStatusEffect", function() {
     function startBattle() {
       BattleFixtures.prepareForBattle();
@@ -170,9 +170,9 @@ describe("Reaction", function() {
 
       applyStatusEffect({ target:'player', effect:'off-balance', duration:1 }, context);
 
-      const statusEffect = BattleSystem.getState().getStatusEffects(player)['off-balance'];
+      const statusEffect = StatusEffectComponent.findByCode(player,'off-balance');
       expect(statusEffect).to.exist;
-      expect(statusEffect.getDuration()).to.equal(1);
+      expect(statusEffect.count).to.equal(1);
     });
 
     it('applies a status effect to the monster', function() {
@@ -180,9 +180,9 @@ describe("Reaction", function() {
 
       applyStatusEffect({ target:'target', effect:'vulnerable', duration:2 }, context);
 
-      const statusEffect = BattleSystem.getState().getStatusEffects(monster)['vulnerable'];
+      const statusEffect = StatusEffectComponent.findByCode(monster,'vulnerable');
       expect(statusEffect).to.exist;
-      expect(statusEffect.getDuration()).to.equal(2);
+      expect(statusEffect.count).to.equal(2);
     });
 
     it('throws for an unknown status effect code', function() {

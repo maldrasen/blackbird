@@ -12,22 +12,21 @@ global.StatusEffectSystem = (function() {
     const state = BattleSystem.getState();
     const acting = BattleSystem.getRound().getActing();
 
-    Object.values(state.getStatusEffects(acting)).forEach(statusEffect => {
-      if (statusEffect.getRemovedAt() === removedAt) {
-        reduceEffectTime(state, acting, statusEffect);
+    StatusEffectComponent.of(acting).forEach(id => {
+      const statusEffect = StatusEffectComponent.lookup(id);
+      if (StatusEffect.lookup(statusEffect.code).getRemovedAt() === removedAt) {
+        reduceEffectTime(state, acting, id, statusEffect);
       }
     });
   }
 
-  // Reduce the duration of turn based status effects, removing them at the start of the turn if this is their last
-  // turn. Because this can remove status effects this should be run last.
-  function reduceEffectTime(state, id, statusEffect) {
-    const duration = statusEffect.getDuration();
-
-    if (statusEffect.getDurationType() === StatusEffectDurationType.turnCount) {
-      (duration > 1) ?
-        statusEffect.setDuration(duration - 1) :
-        state.removeStatus(id, statusEffect.getCode());
+  // Reduce the remaining turn count of turn based status effects, removing them at the start of the turn if this is
+  // their last turn. Because this can remove status effects this should be run last.
+  function reduceEffectTime(state, acting, id, statusEffect) {
+    if (StatusEffect.lookup(statusEffect.code).getDurationType() === StatusEffectDurationType.turnCount) {
+      (statusEffect.count > 1) ?
+        StatusEffectComponent.update(id, { count:statusEffect.count - 1 }) :
+        state.removeStatus(acting, statusEffect.code);
     }
   }
 

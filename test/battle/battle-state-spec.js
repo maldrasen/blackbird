@@ -125,10 +125,10 @@ describe("BattleState", function() {
       const state = BattleSystem.getState();
       const entity = state.getActiveCharacters()[0];
 
-      state.addStatus(BattleStatusEffect(entity,'blind',{ duration:1000 }));
+      state.addStatus(entity,'blind',{ duration:1000 });
 
       expect(state.hasStatusEffect(entity,'blind')).to.be.true;
-      expect(state.getStatusEffects(entity)['blind'].getDuration()).to.equal(1000);
+      expect(StatusEffectComponent.findByCode(entity,'blind').duration).to.equal(1000);
     });
 
     it('renews the duration when the effect is reapplied with a longer duration', function() {
@@ -137,14 +137,13 @@ describe("BattleState", function() {
 
       const state = BattleSystem.getState();
       const entity = state.getActiveCharacters()[0];
-      const original = BattleStatusEffect(entity,'blind',{ duration:1000 });
 
-      state.addStatus(original);
-      state.addStatus(BattleStatusEffect(entity,'blind',{ duration:2000 }));
+      state.addStatus(entity,'blind',{ duration:1000 });
+      state.addStatus(entity,'blind',{ duration:2000 });
 
       // The original effect is renewed, not replaced.
-      expect(state.getStatusEffects(entity)['blind']).to.equal(original);
-      expect(original.getDuration()).to.equal(2000);
+      expect(StatusEffectComponent.of(entity).length).to.equal(1);
+      expect(StatusEffectComponent.findByCode(entity,'blind').duration).to.equal(2000);
     });
 
     it('keeps the longer duration when the effect is reapplied with a shorter duration', function() {
@@ -153,13 +152,11 @@ describe("BattleState", function() {
 
       const state = BattleSystem.getState();
       const entity = state.getActiveCharacters()[0];
-      const original = BattleStatusEffect(entity,'blind',{ duration:2000 });
 
-      state.addStatus(original);
-      state.addStatus(BattleStatusEffect(entity,'blind',{ duration:500 }));
+      state.addStatus(entity,'blind',{ duration:2000 });
+      state.addStatus(entity,'blind',{ duration:500 });
 
-      expect(state.getStatusEffects(entity)['blind']).to.equal(original);
-      expect(original.getDuration()).to.equal(2000);
+      expect(StatusEffectComponent.findByCode(entity,'blind').duration).to.equal(2000);
     });
 
     it('removes an opposing status effect', function() {
@@ -169,13 +166,13 @@ describe("BattleState", function() {
       const state = BattleSystem.getState();
       const entity = state.getActiveCharacters()[0];
 
-      state.addStatus(BattleStatusEffect(entity,'off-balance',{ duration:1 }));
-      state.addStatus(BattleStatusEffect(entity,'poised',{ duration:1 }));
+      state.addStatus(entity,'off-balance',{ count:1 });
+      state.addStatus(entity,'poised',{ count:1 });
 
       expect(state.hasStatusEffect(entity,'off-balance')).to.be.false;
       expect(state.hasStatusEffect(entity,'poised')).to.be.true;
 
-      state.addStatus(BattleStatusEffect(entity,'off-balance',{ duration:1 }));
+      state.addStatus(entity,'off-balance',{ count:1 });
 
       expect(state.hasStatusEffect(entity,'poised')).to.be.false;
       expect(state.hasStatusEffect(entity,'off-balance')).to.be.true;

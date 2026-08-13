@@ -88,7 +88,7 @@ function addStunEffect(acting, target) {
   const resist = ResistRoll(target, DamageType.shock, Attributes(acting).getStrength());
   if (resist === ResistResult.fail) {
     BattleSystem.getRound().addMessage({ text:`{T:targetName} groans and clutches {T:his} crotch, doubling over in pain.` });
-    BattleSystem.getState().addStatus(BattleStatusEffect(target,'stun',{ duration:1 }));
+    BattleSystem.getState().addStatus(target,'stun',{ count:1 });
   }
 }
 

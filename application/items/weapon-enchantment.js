@@ -33,7 +33,7 @@ global.WeaponEnchantment = function(id, enchantment) {
 
     if (species === enchantment.species) {
       if (ResistRoll(target, DamageType.shock, getPower()) === ResistResult.fail) {
-        state.addStatus( BattleStatusEffect(target, 'vulnerable', { duration:1 }));
+        state.addStatus(target, 'vulnerable', { count:1 });
         round.addMessage({ text:`A trail of glowing blue energy burns against {T:targetName's} flesh, the cursemark
           leaving {T:him} {S/nst}Vulnerable{/S}.` });
       }

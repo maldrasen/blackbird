@@ -37,7 +37,7 @@ Ability.register('hide',{
 
     if (isHidden) {
       message = { text: `{A:ActingName} hides in the shadows.` };
-      state.addStatus(BattleStatusEffect(acting,'hidden'));
+      state.addStatus(acting,'hidden');
     }
 
     round.clearTarget();
