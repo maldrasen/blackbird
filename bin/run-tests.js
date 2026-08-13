@@ -74,7 +74,7 @@ function runMocha(args) {
 
   if (args.grep != null) { mocha.grep(args.grep); }
 
-  require(`${ROOT}/manifest.json`).testFileList.forEach(path => {
+  require(`${ROOT}/manifest.json`).testFiles.forEach(path => {
     mocha.addFile(`${ROOT}/${path}`);
   });
 

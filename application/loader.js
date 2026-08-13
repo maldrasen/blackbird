@@ -35,7 +35,8 @@ window.Loader = (function() {
 
     try {
       appendItem(`Loading from ${ROOT}/application`);
-      loadAll(JSON.parse(fs.readFileSync(`${ROOT}/manifest.json`)).fileList).then(finishLoading);
+      const manifest = JSON.parse(fs.readFileSync(`${ROOT}/manifest.json`));
+      loadAll([...manifest.applicationFiles, ...manifest.dataFiles, ...manifest.viewFiles]).then(finishLoading);
       fakeScroll();
     }
     catch(error) {

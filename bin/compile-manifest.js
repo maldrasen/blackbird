@@ -14,28 +14,33 @@ const blacklist = [
 
 console.log("=== Compiling manifest.json ===");
 
-const fileList = [
+const applicationFiles = [
   'application/constants.js',
   'application/enums.js',
-  'data/game-flags.js'
 ];
+const dataFiles = ['data/game-flags.js'];
+const viewFiles = [];
+const testFiles = [];
 
-addFiles(fileList,'application');
-addFiles(fileList,'data');
+addFiles(applicationFiles,'application');
+addFiles(dataFiles,'data');
+addFiles(viewFiles,'views');
+addFiles(testFiles,'test');
 
-const testFileList = [];
-addFiles(testFileList,'test');
+const sourceCount = applicationFiles.length + dataFiles.length + viewFiles.length;
+console.log(`Writing lists of ${sourceCount} source files and ${testFiles.length} test files.`)
 
-console.log(`Writing lists of ${fileList.length} source files and ${testFileList.length} test files.`)
-
-// Finally write this file list as a JSON file.
-FileHelper.writeJSON(`${ROOT}/manifest.json`, { fileList, testFileList });
+// Finally write these file lists as a JSON file. The loader imports all three source lists, while headless boots load
+// only the application and data lists.
+FileHelper.writeJSON(`${ROOT}/manifest.json`, { applicationFiles, dataFiles, viewFiles, testFiles });
 
 // We convert the absolute file paths the FileHelper returns to relative paths when adding them to the manifest. Also,
-// we only include files that haven't been included yet. The fileList is initialized with the files that should be
-// loaded first.
+// we only include javascript files that haven't been included yet. Each list is initialized with the files that
+// should be loaded first.
 function addFiles(list, rootName) {
   FileHelper.recursiveFileList(`${ROOT}/${rootName}`).forEach(absolutePath => {
+    if (absolutePath.endsWith('.js') === false) { return; }
+
     const index = absolutePath.indexOf(rootName) + rootName.length + 1;
     const relativePath = rootName +'/'+ absolutePath.substring(index);
 
