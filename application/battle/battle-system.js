@@ -14,6 +14,7 @@ global.BattleSystem = (function() {
 
   function reset() {
     if (state) { state.cleanup(); }
+    StatusEffectComponent.removeBattleEffects();
     state = null;
     round = null;
   }

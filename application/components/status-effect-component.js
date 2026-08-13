@@ -110,6 +110,14 @@ global.StatusEffectComponent = (function() {
     return of(parentId).map(lookup);
   }
 
+  // Called when a battle is torn down. Effects on dead and fled monsters are already gone with their parent
+  // entities, so this sweep clears the battle only effects left on the survivors.
+  function removeBattleEffects() {
+    Registry.findComponentsWith(ComponentType.statusEffect, data => {
+      return StatusEffect.lookup(data.code).isClearedAfterBattle();
+    }).forEach(destroy);
+  }
+
   function findEntity(parentId, code) {
     return Registry.findComponentsWith(ComponentType.statusEffect, data => {
       return data[_parentId] === parentId && data.code === code;
@@ -134,6 +142,7 @@ global.StatusEffectComponent = (function() {
     findByCode,
     listFor,
     of,
+    removeBattleEffects,
   });
 
 })();

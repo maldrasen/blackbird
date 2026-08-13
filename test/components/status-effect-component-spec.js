@@ -115,6 +115,21 @@ describe("StatusEffectComponent", function() {
     });
   });
 
+  describe("removeBattleEffects()", function() {
+    it("removes battle only effects and keeps persistent effects", function() {
+      const entity = Registry.createEntity();
+
+      const poised = StatusEffectComponent.apply(entity, 'poised', { count:1 });
+      StatusEffectComponent.apply(entity, 'paralysis');
+
+      StatusEffectComponent.removeBattleEffects();
+
+      expect(StatusEffectComponent.has(entity,'poised')).to.be.false;
+      expect(StatusEffectComponent.has(entity,'paralysis')).to.be.true;
+      expect(Registry.entityExists(poised.id)).to.be.false;
+    });
+  });
+
   describe("queries", function() {
     it("finds the effects an entity has", function() {
       const wolf = Registry.createEntity();
