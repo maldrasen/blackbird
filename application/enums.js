@@ -3,37 +3,37 @@
 //   System
 // ==========
 
-global.LogType = Object.freeze({
+global.LogType = {
   info: 'info',
   success: 'success',
   warning: 'warning',
   error: 'error',
-});
+};
 
-global.GameMode = Object.freeze({
+global.GameMode = {
   battle: 'battle',
   dungeon: 'dungeon',
   enlighten: 'enlighten',
   episode: 'episode',
   location: 'location',
   training: 'training',
-});
+};
 
-global.DialogCategory = Object.freeze({
+global.DialogCategory = {
   attackText: 'attackText',
-});
+};
 
 // =========
 //   Views
 // =========
 
-global.AlertPosition = Object.freeze({
+global.AlertPosition = {
   side: 'side',
   center: 'center',
   event: 'event',
-});
+};
 
-global.KeyCodes = Object.freeze({
+global.KeyCodes = {
   Backquote: 'Backquote',
   Enter: 'Enter',
   Escape: 'Escape',
@@ -68,14 +68,14 @@ global.KeyCodes = Object.freeze({
   S: 'KeyS',
   W: 'KeyW',
   F11: 'F11',
-});
+};
 
-global.ArticleType = Object.freeze({
+global.ArticleType = {
   ammunition: 'ammunition',
   consumable: 'consumable',
-});
+};
 
-global.InventoryCategory = Object.freeze({
+global.InventoryCategory = {
   weapon: 'weapon',
   armor: 'armor',
   restoreHealth: 'restore-health',
@@ -85,26 +85,26 @@ global.InventoryCategory = Object.freeze({
   mutagen: 'mutagen',
   ammo: 'ammo',
   valuables: 'valuables',
-});
+};
 
-global.EpisodePriority = Object.freeze({
+global.EpisodePriority = {
   critical: 10,
   important: 8,
   standard: 5,
   flavor: 2,
-});
+};
 
 // A character in the party moves with the player, so their situated location is this pseudo-location rather than a
 // registered location code.
-global.SpecialLocation = Object.freeze({
+global.SpecialLocation = {
   inParty: '(in-party)',
-});
+};
 
 // ==============
 //   Components
 // ==============
 
-global.ComponentType = Object.freeze({
+global.ComponentType = {
   actor: 'ActorComponent',
   anima: 'AnimaComponent',
   animus: 'AnimusComponent',
@@ -139,31 +139,31 @@ global.ComponentType = Object.freeze({
   skills: 'SkillsComponent',
   statusEffect: 'StatusEffectComponent',
   weapon: 'WeaponComponent',
-});
+};
 
-global.Attrib = Object.freeze({
+global.Attrib = {
   strength: 'strength',
   dexterity: 'dexterity',
   vitality: 'vitality',
   intelligence: 'intelligence',
   beauty: 'beauty',
-});
+};
 
-global.Gender = Object.freeze({
+global.Gender = {
   male: 'male',
   female: 'female',
   futa: 'futa',
   enby: 'enby',
-});
+};
 
-global.GenderName = Object.freeze({
+global.GenderName = {
   male: 'Male',
   female: 'Female',
   futa: 'Futanari',
   enby: 'Non-Binary',
-});
+};
 
-global.SpeciesCode = Object.freeze({
+global.SpeciesCode = {
   elf: 'elf',
   equian: 'equian',
   havlin: 'havlin',
@@ -173,36 +173,36 @@ global.SpeciesCode = Object.freeze({
   nymph: 'nymph',
   sylph: 'sylph',
   vermen: 'vermen',
-});
+};
 
-global.Mana = Object.freeze({
+global.Mana = {
   red: 'red',
   yellow: 'yellow',
   green: 'green',
   blue: 'blue',
   black: 'black',
-});
+};
 
-global.AspectType = Object.freeze({
+global.AspectType = {
   flexible: 'flexible', // Makes larger insertions work and enables special positions (folded in half, self sucking)
   premature: 'premature', // Lowers orgasm thresholds (2000,1000,500)
   productive: 'productive', // Increases cum and milk volumes.
   animalAttraction: 'animal-attraction' // No mechanical effect yet.
-});
+};
 
-global.VirginityType = Object.freeze({
+global.VirginityType = {
   kiss: 'kiss',
   oral: 'oral',
   pussy: 'pussy',
   cock: 'cock',
   anal: 'anal',
-});
+};
 
-global.RollMode = Object.freeze({
+global.RollMode = {
   normal: 'normal',
   advantage: 'advantage',
   disadvantage: 'disadvantage',
-})
+};
 
 // ===============
 //   Personality
@@ -237,7 +237,7 @@ global.SexStyle = {
   submissive: 'submissive',
 };
 
-global.NegotiationStyle = Object.freeze({
+global.NegotiationStyle = {
   brat: 'brat',
   fierce: 'fierce',
   lewd: 'lewd',
@@ -246,19 +246,19 @@ global.NegotiationStyle = Object.freeze({
   serious: 'serious',
   timid: 'timid',
   warm: 'warm',
-});
+};
 
 // ============
 //   Training
 // ============
 
 // Consent uses numbers so that they can be compared.
-global.Consent = Object.freeze({
+global.Consent = {
   eager: 3,
   willing: 2,
   reluctant: 1,
   unwilling: 0,
-});
+};
 
 global.TrainingSlot = {
   ass: 'ass',
@@ -334,34 +334,34 @@ global.ScaleLabels = {
   suffering:  'Suffering',
 }
 
-global.DenialStyle = Object.freeze({
+global.DenialStyle = {
   angry: 'angry',
   frightened: 'frightened',
   horny: 'horny',
   violent: 'violent',
-});
+};
 
 // Will also need intoxicated, maybe hypnotized.
-global.Attitude = Object.freeze({
+global.Attitude = {
   loving: 'loving',
   lustful: 'lustful',
   accepting: 'accepting', // Willing, consenting, but not interested or into it.
   fearful: 'fearful',
   resistant: 'resistant', // Unhappy, trying to stop you.
   violent: 'violent',     // Angry, actively fighting back.
-});
+};
 
 // Currently the same as the consent values, but there should be more nuance,
 // depending on the action types they're willing to consent to. i.e., Willing
 // to suck you off, but won't kiss you.
-global.TrainingAttitude = Object.freeze({
+global.TrainingAttitude = {
   eager: 'eager',
   willing: 'willing',
   reluctant: 'reluctant',
   unwilling: 'unwilling',
-});
+};
 
-global.ActionDirection = Object.freeze({
+global.ActionDirection = {
   mutual: 'mutual',
   partnerToPlayer: 'partner-to-player',
   partnerToSelf: 'partner-to-self',
@@ -369,13 +369,13 @@ global.ActionDirection = Object.freeze({
   playerToPartner: 'player-to-partner',
   playerToSelf: 'player-to-self',
   playerToBoth: 'player-to-both',
-});
+};
 
 // ==========
 //   Battle
 // ==========
 
-global.DamageType = Object.freeze({
+global.DamageType = {
   crush: 'crush',
   slash: 'slash',
   pierce: 'pierce',
@@ -385,25 +385,25 @@ global.DamageType = Object.freeze({
   psychic: 'psychic',
   corruption: 'corruption',
   nature: 'nature',
-});
+};
 
-global.ThreatWeight = Object.freeze({
+global.ThreatWeight = {
   closest: 'closest',
   leastArmor: 'leastArmor',
   leastHealth: 'leastHealth',
   killMen: 'killMen',
   killWomen: 'killWomen',
-});
+};
 
-global.BattleCondition = Object.freeze({
+global.BattleCondition = {
   active: 'active',
   dead: 'dead',
   knockedOut: 'knocked-out',
   fled: 'fled',
   recruited: 'recruited',
-});
+};
 
-global.BattleCommand = Object.freeze({
+global.BattleCommand = {
   basicAttack: 'basic-attack',
   basicDefend: 'basic-defend',
   changeEquipment: 'change-equipment',
@@ -412,30 +412,30 @@ global.BattleCommand = Object.freeze({
   sneakAttack: 'sneak-attack',
   useItem: 'use-item',
   pass: 'pass',
-});
+};
 
-global.StatusEffectDurationType = Object.freeze({
+global.StatusEffectDurationType = {
   fixedTime: 'fixed-time',         // The specified time has elapsed.
   fixedCount: 'fixed-count',       // The effect has been triggered a set number of times.
   special: 'special',              // Some other conditions will need to be met
   turnCount: 'turn-count',         // Effect will last until a set number of player turns have passed.
   untilCured: 'until-cured',       // Effect will persist until it is cured
   untilResisted: 'until-resisted', // Effect will persist until a resist roll is passed
-});
+};
 
 // =====================
 //   Items & Equipment
 // =====================
 
-global.OutfitStyle = Object.freeze({
+global.OutfitStyle = {
   barbaric: 'barbaric',
   flirty: 'flirty',
   natural: 'natural',
   sensible: 'sensible',
   slutty: 'slutty',
-});
+};
 
-global.MaterialType = Object.freeze({
+global.MaterialType = {
   wool: 'wool',
   silk: 'silk',
   wood: 'wood',
@@ -444,18 +444,18 @@ global.MaterialType = Object.freeze({
   iron: 'iron',
   steel: 'steel',
   silver: 'silver',
-});
+};
 
-global.MaterialFactor = Object.freeze({
+global.MaterialFactor = {
   sharpness: 'sharpness',
   heft: 'heft',
   lash: 'lash',
   tension: 'tension',
   absorption: 'absorption',
   potential: 'potential',
-});
+};
 
-global.EquipmentSlot = Object.freeze({
+global.EquipmentSlot = {
   primary:'primary',
   secondary:'secondary',
   chest: 'chest',
@@ -465,43 +465,43 @@ global.EquipmentSlot = Object.freeze({
   legs: 'legs',
   underchest: 'underchest',
   underlegs: 'underlegs',
-});
+};
 
-global.WeaponHandedness = Object.freeze({
+global.WeaponHandedness = {
   one: 'one',
   main: 'main',
   off: 'off',
   two: 'two',
-});
+};
 
-global.WeaponReach = Object.freeze({
+global.WeaponReach = {
   short: 'short',
   close: 'close',
   extended: 'extended',
   long: 'long',
-});
+};
 
-global.ArmorEnchantments = Object.freeze({
+global.ArmorEnchantments = {
   resist: 'resist',
-});
+};
 
-global.WeaponEnchantments = Object.freeze({
+global.WeaponEnchantments = {
   endanger: 'endanger',
-});
+};
 
-global.ResistResult = Object.freeze({
+global.ResistResult = {
   pass: 'pass',
   fail: 'fail',
-});
+};
 
-global.StandardAbility = Object.freeze({
+global.StandardAbility = {
   basicAttack: 'basic-attack',
   basicDefend: 'basic-defend',
   hide: 'hide',
   sneakAttack: 'sneak-attack',
-});
+};
 
-global.TargetingMode = Object.freeze({
+global.TargetingMode = {
   enemyInWeaponRange: 'enemy-in-weapon-range',
   anyEnemy: 'any-enemy',
-});
+};
