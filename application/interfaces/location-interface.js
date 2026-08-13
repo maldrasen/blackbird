@@ -1,7 +1,7 @@
 global.LocationInterface = (function() {
 
   function update() {
-    if (HEADLESS || Tests.running()) { return; }
+    if (Environment.viewPresent() === false) { return; }
     LocationView.update();
   }
 

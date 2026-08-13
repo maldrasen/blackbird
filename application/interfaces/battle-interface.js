@@ -1,56 +1,56 @@
 global.BattleInterface = (function() {
 
   function showCharacterCommands() {
-    if (Tests.running()) { return; }
+    if (Environment.viewPresent() === false) { return; }
     CommandPanel.showCommands(CharacterAbilitySystem.getAbilities());
   }
 
   function showMonsterResult() {
-    if (Tests.running()) { return; }
+    if (Environment.viewPresent() === false) { return; }
     CommandPanel.hide();
     BattleText.setMessages(BattleSystem.getRound().getMessages());
     BattleView.update();
   }
 
   function showCharacterResult() {
-    if (Tests.running()) { return; }
+    if (Environment.viewPresent() === false) { return; }
     CommandPanel.hide();
     BattleText.setMessages(BattleSystem.getRound().getMessages());
     BattleView.update();
   }
 
   function updateCombatantView(id) {
-    if (Tests.running()) { return; }
+    if (Environment.viewPresent() === false) { return; }
     FormationPanel.updateCombatant(id)
   }
 
   function highlightActing() {
-    if (Tests.running()) { return; }
+    if (Environment.viewPresent() === false) { return; }
     FormationPanel.highlightActing(BattleSystem.getRound().getActing());
   }
 
   function showDamageEffect(data) {
-    if (Tests.running()) { return; }
+    if (Environment.viewPresent() === false) { return; }
     FormationPanel.showDamageEffect(data);
   }
 
   function killEntity(id) {
-    if (Tests.running()) { return; }
+    if (Environment.viewPresent() === false) { return; }
     FormationPanel.killEntity(id);
   }
 
   function moveForwardOnDeath(columnData) {
-    if (Tests.running()) { return; }
+    if (Environment.viewPresent() === false) { return; }
     FormationPanel.moveForwardOnDeath(columnData);
   }
 
   function moveInwardOnDeath(moves) {
-    if (Tests.running()) { return; }
+    if (Environment.viewPresent() === false) { return; }
     FormationPanel.moveInwardOnDeath(moves);
   }
 
   function showGameOver() {
-    if (Tests.running()) { return; }
+    if (Environment.viewPresent() === false) { return; }
     EpisodeSystem.startEpisode('game-over', {});
     GameSystem.setGameMode(GameMode.episode);
   }

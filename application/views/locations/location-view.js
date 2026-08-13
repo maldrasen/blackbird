@@ -23,8 +23,6 @@ global.LocationView = (function() {
   }
 
   function update() {
-    if (HEADLESS) { return; }
-
     const locationCode = GameSystem.getState().getCurrentLocation();
     const location = Location.lookup(locationCode);
     const characters = CharacterMovementSystem.getCharactersAtLocation(locationCode);

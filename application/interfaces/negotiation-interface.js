@@ -1,27 +1,27 @@
 global.NegotiationInterface = (function() {
 
   function open() {
-    if (Tests.running()) { return; }
+    if (Environment.viewPresent() === false) { return; }
     NegotiationOverlay.open();
   }
 
   function close() {
-    if (Tests.running()) { return; }
+    if (Environment.viewPresent() === false) { return; }
     NegotiationOverlay.close();
   }
 
   function renderQuestion(data) {
-    if (Tests.running()) { return; }
+    if (Environment.viewPresent() === false) { return; }
     NegotiationOverlay.renderQuestion(data);
   }
 
   function renderDialog(message) {
-    if (Tests.running()) { return; }
+    if (Environment.viewPresent() === false) { return; }
     NegotiationOverlay.renderDialog(message);
   }
 
   function renderResolution() {
-    if (Tests.running()) { return; }
+    if (Environment.viewPresent() === false) { return; }
     NegotiationOverlay.renderResolution();
   }
 
