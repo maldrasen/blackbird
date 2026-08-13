@@ -25,7 +25,6 @@ global.StatusEffect = (function() {
     });
   }
 
-
   return Object.freeze({
     register,
     getAllCodes,
