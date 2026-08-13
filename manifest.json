@@ -8,7 +8,6 @@
     "application/battle/battle-round.js",
     "application/battle/battle-state.js",
     "application/battle/battle-system.js",
-    "application/battle/models/battle-status-effect.js",
     "application/battle/models/damage-roll.js",
     "application/battle/models/defend-roll.js",
     "application/battle/models/magical-attack-roll.js",

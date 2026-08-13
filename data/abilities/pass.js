@@ -19,9 +19,9 @@ Ability.register('pass',{
     round.addTime(1000,false);
 
     if (state.hasStatusEffect(acting,'stun')) {
-      const duration = state.getStatusEffects(acting)['stun'].getDuration();
+      const count = StatusEffectComponent.findByCode(acting,'stun').count;
       round.addMessage({
-        text: (duration === 1) ? `{A:ActingName} recovers from being {S/nst}Stunned{/S}` : `{A:ActingName} can't act this turn.`
+        text: (count === 1) ? `{A:ActingName} recovers from being {S/nst}Stunned{/S}` : `{A:ActingName} can't act this turn.`
       });
     }
 
