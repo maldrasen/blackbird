@@ -292,6 +292,7 @@
     "application/world/episode-queue.js",
     "application/world/game-state.js",
     "application/world/game-system.js",
+    "application/world/location-interface.js",
     "application/world/navigation-system.js",
     "application/world/registry.js",
     "application/world/world-state.js",

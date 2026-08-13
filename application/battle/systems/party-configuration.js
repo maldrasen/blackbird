@@ -9,6 +9,7 @@ global.PartyConfiguration = (function() {
 
     GameSystem.getState().setPartyConfiguration({ ...configuration });
     syncLocations(previous, configuration);
+    LocationInterface.update();
   }
 
   // Party members are situated at the in-party pseudo-location. Characters dropped from the party go back to the
