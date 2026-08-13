@@ -1,5 +1,10 @@
 global.BattleInterface = (function() {
 
+  function startTargeting(positions, allies) {
+    if (Environment.viewPresent() === false) { return; }
+    FormationPanel.startTargeting(positions, allies);
+  }
+
   function showCharacterCommands() {
     if (Environment.viewPresent() === false) { return; }
     CommandPanel.showCommands(CharacterAbilitySystem.getAbilities());
@@ -56,6 +61,7 @@ global.BattleInterface = (function() {
   }
 
   return Object.freeze({
+    startTargeting,
     showCharacterCommands,
     showCharacterResult,
     showMonsterResult,

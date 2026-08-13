@@ -7,8 +7,8 @@ global.TargetingController = (function() {
   function startTargeting(abilityCode) {
     pendingAbility = abilityCode;
     switch(Ability.lookup(abilityCode).getTargetingMode()) {
-      case TargetingMode.anyEnemy: return FormationPanel.startTargeting(monsterPositions(getTargetableMonsters()), []);
-      case TargetingMode.enemyInWeaponRange: return FormationPanel.startTargeting(monsterPositions(getMonstersInRange()), []);
+      case TargetingMode.anyEnemy: return BattleInterface.startTargeting(monsterPositions(getTargetableMonsters()), []);
+      case TargetingMode.enemyInWeaponRange: return BattleInterface.startTargeting(monsterPositions(getMonstersInRange()), []);
     }
   }
 
