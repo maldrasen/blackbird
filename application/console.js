@@ -20,8 +20,8 @@ global.Console = (function() {
     if (Environment.viewPresent() === false) {
       console.error('=== Error ===');
       console.error(message);
-      console.error(JSON.stringify(error));
-      console.error(JSON.stringify(options));
+      if (error) { console.error(error); }
+      if (Object.keys(options.data).length > 0) { console.error(JSON.stringify(options.data, null, 2)); }
       return;
     }
 
