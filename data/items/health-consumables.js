@@ -1,4 +1,8 @@
 
+// TODO: Thinking about this, a person is unlikely to eat an apple in a single second. I think we need to
+//       differentiate between consumables that can be used during a battle, and those that take longer. Fast healing
+//       inside of combat should remain difficult.
+
 Consumable.register('dungeon-tripe',{
   name: 'Dungeon Tripe',
   description: `A bright orange lichen commonly found growing in patches along amber seams in the dungeon. By feeding 
