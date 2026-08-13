@@ -5,9 +5,8 @@ Ability.register('sneak-attack',{
   essence: 25,
 
   canBeUsed: () => {
-    const state = BattleSystem.getState()
     const round = BattleSystem.getRound();
-    return state.hasStatusEffect(round.getActing(),'hidden');
+    return StatusEffects(round.getActing()).has('hidden');
   },
 
   execute: () => {

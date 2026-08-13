@@ -40,7 +40,7 @@ global.CharacterAbilitySystem = (function() {
   }
 
   function stunned(acting) {
-    return BattleSystem.getState().hasStatusEffect(acting,'stun');
+    return StatusEffects(acting).has('stun');
   }
 
   return Object.freeze({

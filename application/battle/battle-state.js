@@ -379,9 +379,6 @@ global.BattleState = function(data) {
     addStatus,
     removeStatus,
 
-    getStatusEffects: id => { return StatusEffects(id).list(); },
-    hasStatusEffect: (id,code)  => { return StatusEffects(id).has(code); }, // TODO: We can just get rid of this, call the wrapper directly.
-
     setNegotiationAttempted: () => { negotiationAttempted = true; },
     hasAttemptedNegotiation: () => { return negotiationAttempted; },
     setForcedAbility: (ability) => { forcedAbility = ability; },

@@ -127,7 +127,7 @@ describe("BattleState", function() {
 
       state.addStatus(entity,'blind',{ duration:1000 });
 
-      expect(state.hasStatusEffect(entity,'blind')).to.be.true;
+      expect(StatusEffects(entity).has('blind')).to.be.true;
       expect(StatusEffects(entity).get('blind').duration).to.equal(1000);
     });
 
@@ -169,13 +169,13 @@ describe("BattleState", function() {
       state.addStatus(entity,'off-balance',{ count:1 });
       state.addStatus(entity,'poised',{ count:1 });
 
-      expect(state.hasStatusEffect(entity,'off-balance')).to.be.false;
-      expect(state.hasStatusEffect(entity,'poised')).to.be.true;
+      expect(StatusEffects(entity).has('off-balance')).to.be.false;
+      expect(StatusEffects(entity).has('poised')).to.be.true;
 
       state.addStatus(entity,'off-balance',{ count:1 });
 
-      expect(state.hasStatusEffect(entity,'poised')).to.be.false;
-      expect(state.hasStatusEffect(entity,'off-balance')).to.be.true;
+      expect(StatusEffects(entity).has('poised')).to.be.false;
+      expect(StatusEffects(entity).has('off-balance')).to.be.true;
     });
   });
 

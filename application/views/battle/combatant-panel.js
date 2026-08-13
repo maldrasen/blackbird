@@ -68,7 +68,7 @@ global.CombatantPanel = function(type, entity) {
   function updateStatusPanel() {
     const state = BattleSystem.getState();
     const statusPanel = element.querySelector('.status-panel');
-    const statusEffects = state.getStatusEffects(entity);
+    const statusEffects = StatusEffects(entity).list();
     const isMonster = state.isMonster(entity);
 
     let isHidden = false;
@@ -110,7 +110,7 @@ global.CombatantPanel = function(type, entity) {
     X.addClass(element, 'unhiding');
     setTimeout(() => {
       X.removeClass(element,'unhiding');
-      if (BattleSystem.getState().hasStatusEffect(entity,'hidden') === false) {
+      if (StatusEffects(entity).has('hidden') === false) {
         X.removeClass(element,'hidden');
       }
     },500);

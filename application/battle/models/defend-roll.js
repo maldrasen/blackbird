@@ -4,7 +4,6 @@
 //       defense penality against creatures that are much smaller than the defender.
 
 global.DefendRoll = function(defender, attacker, attackRoll) {
-  const state = BattleSystem.getState();
   const defendSkill = determineDefendSkill();
 
   function determineDefendSkill() {
@@ -33,9 +32,10 @@ global.DefendRoll = function(defender, attacker, attackRoll) {
   }
 
   function rollDefendSkill() {
-    const offBalance = state.hasStatusEffect(defender, 'off-balance');
-    const poised = state.hasStatusEffect(defender, 'poised');
-    const stunned = state.hasStatusEffect(defender, 'stun');
+    const statusEffects = StatusEffects(defender);
+    const offBalance = statusEffects.has('off-balance');
+    const poised = statusEffects.has('poised');
+    const stunned = statusEffects.has('stun');
 
     if (offBalance && poised) {
       throw new Error(`Entity:${defender} is both poised and off-balance, which is not be allowed.`)

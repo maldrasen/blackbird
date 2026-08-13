@@ -22,12 +22,12 @@ global.BattleDamageSystem = (function() {
       actualDamage += Math.round(damage * (1 - reduction/100));
     });
 
-    if (state.hasStatusEffect(target,'vulnerable')) {
+    if (StatusEffects(target).has('vulnerable')) {
       actualDamage = actualDamage * 2;
       StatusEffectSystem.consumeStack(target,'vulnerable');
     }
 
-    if (state.hasStatusEffect(target,'damned')) {
+    if (StatusEffects(target).has('damned')) {
       actualDamage = actualDamage * 4;
       StatusEffectSystem.consumeStack(target,'damned');
     }

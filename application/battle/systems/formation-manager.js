@@ -13,7 +13,7 @@ global.FormationManager = (function() {
       state.setHomePosition(moving, column.front.position);
     }
 
-    if (state.hasStatusEffect(moving, 'hidden')) {
+    if (StatusEffects(moving).has('hidden')) {
       state.removeStatus(moving, 'hidden');
     }
   }
