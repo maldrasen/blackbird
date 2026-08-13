@@ -9,30 +9,39 @@ global.StatusEffectSystem = (function() {
   function processEndRound() { reduceAllEffectTime('end-of-round'); }
 
   function reduceAllEffectTime(removedAt) {
-    const state = BattleSystem.getState();
     const acting = BattleSystem.getRound().getActing();
 
     StatusEffectComponent.of(acting).forEach(id => {
       const statusEffect = StatusEffectComponent.lookup(id);
       if (StatusEffect.lookup(statusEffect.code).getRemovedAt() === removedAt) {
-        reduceEffectTime(state, acting, id, statusEffect);
+        reduceEffectTime(acting, statusEffect);
       }
     });
   }
 
   // Reduce the remaining turn count of turn based status effects, removing them at the start of the turn if this is
   // their last turn. Because this can remove status effects this should be run last.
-  function reduceEffectTime(state, acting, id, statusEffect) {
+  function reduceEffectTime(acting, statusEffect) {
     if (StatusEffect.lookup(statusEffect.code).getDurationType() === StatusEffectDurationType.turnCount) {
-      (statusEffect.count > 1) ?
-        StatusEffectComponent.update(id, { count:statusEffect.count - 1 }) :
-        state.removeStatus(acting, statusEffect.code);
+      consumeStack(acting, statusEffect.code);
     }
+  }
+
+  // A stack is consumed when the effect triggers, or in the case of turn based effects, when a turn passes. Consuming
+  // the last stack removes the effect. Removal goes through the battle state so the combatant view is refreshed.
+  function consumeStack(entity, code) {
+    const id = StatusEffectComponent.findEntity(entity, code);
+    const count = StatusEffectComponent.lookup(id).count;
+
+    (count > 1) ?
+      StatusEffectComponent.update(id, { count:count - 1 }) :
+      BattleSystem.getState().removeStatus(entity, code);
   }
 
   return Object.freeze({
     processStartRound,
     processEndRound,
+    consumeStack,
   })
 
 })();

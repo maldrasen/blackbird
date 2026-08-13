@@ -140,6 +140,7 @@ global.StatusEffectComponent = (function() {
     remove,
     has,
     findByCode,
+    findEntity,
     listFor,
     of,
     removeBattleEffects,

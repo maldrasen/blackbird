@@ -192,6 +192,55 @@ describe("BattleDamageSystem", function() {
         entity:target, damageTypes:{ slash:100 }, hitLocation:EquipmentSlot.chest });
 
       expect(damage).to.equal(110);
+      expect(state.hasStatusEffect(target,'vulnerable')).to.be.false;
+    });
+
+    it("consumes one vulnerable stack per hit", function() {
+      const state = startBattle();
+      const target = pinnedTarget(state);
+      equipItem(target, ArmorFactory.build('breastplate'), EquipmentSlot.chest);
+      state.addStatus(target, 'vulnerable', { count:2 });
+
+      const hit = () => BattleDamageSystem.applyDamage({
+        entity:target, damageTypes:{ slash:20 }, hitLocation:EquipmentSlot.chest });
+
+      expect(hit()).to.equal(22);
+      expect(StatusEffectComponent.findByCode(target,'vulnerable').count).to.equal(1);
+
+      expect(hit()).to.equal(22);
+      expect(state.hasStatusEffect(target,'vulnerable')).to.be.false;
+
+      expect(hit()).to.equal(11);
+    });
+
+    it("quadruples damned damage and consumes it", function() {
+      const state = startBattle();
+      const target = pinnedTarget(state);
+      equipItem(target, ArmorFactory.build('breastplate'), EquipmentSlot.chest);
+      state.addStatus(target, 'damned', { count:1 });
+
+      const hit = () => BattleDamageSystem.applyDamage({
+        entity:target, damageTypes:{ slash:20 }, hitLocation:EquipmentSlot.chest });
+
+      expect(hit()).to.equal(44);
+      expect(state.hasStatusEffect(target,'damned')).to.be.false;
+
+      expect(hit()).to.equal(11);
+    });
+
+    it("composes vulnerable and damned multiplicatively", function() {
+      const state = startBattle();
+      const target = pinnedTarget(state);
+      equipItem(target, ArmorFactory.build('breastplate'), EquipmentSlot.chest);
+      state.addStatus(target, 'vulnerable', { count:1 });
+      state.addStatus(target, 'damned', { count:1 });
+
+      const damage = BattleDamageSystem.applyDamage({
+        entity:target, damageTypes:{ slash:10 }, hitLocation:EquipmentSlot.chest });
+
+      expect(damage).to.equal(48);
+      expect(state.hasStatusEffect(target,'vulnerable')).to.be.false;
+      expect(state.hasStatusEffect(target,'damned')).to.be.false;
     });
 
     // The kobold species resists 10 slash - their scales - which reduces physical damage at every hit location.
