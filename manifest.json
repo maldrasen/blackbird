@@ -134,6 +134,7 @@
     "application/helpers/time-helper.js",
     "application/helpers/validate.js",
     "application/interfaces/battle-interface.js",
+    "application/interfaces/game-interface.js",
     "application/interfaces/location-interface.js",
     "application/interfaces/negotiation-interface.js",
     "application/interfaces/training-interface.js",

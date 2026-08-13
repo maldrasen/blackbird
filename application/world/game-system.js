@@ -82,21 +82,13 @@ global.GameSystem = (function() {
   }
 
   function openGame() {
-    if (HEADLESS === false) {
-      MainContent.showCover();
-      MainMenu.loadGameMenu();
-      GameStateFrame.load();
-      MainContent.hideCover({ fadeTime:2500 });
-    }
+    GameInterface.openGame();
   }
 
   // Ends the current game, resetting the state and returning to the main menu.
   function endGame() {
     reset();
-
-    if (HEADLESS === false && Tests.running() === false) {
-      Views.endGame();
-    }
+    GameInterface.endGame();
   }
 
   function reset() {
@@ -118,21 +110,7 @@ global.GameSystem = (function() {
 
   function setGameMode(mode) {
     state.setGameMode(mode);
-
-    if (HEADLESS === false && Tests.running() === false) {
-      GameStateFrame.hide();
-      LocationView.close();
-      DungeonView.close();
-
-      switch (mode) {
-        case GameMode.battle: return BattleView.show();
-        case GameMode.dungeon: return DungeonView.show();
-        case GameMode.enlighten: return EnlightenView.show();
-        case GameMode.episode: return EpisodeView.show();
-        case GameMode.location: return LocationView.show();
-        case GameMode.training: return TrainingView.show();
-      }
-    }
+    GameInterface.showGameMode(mode);
   }
 
   // Return mode is transient and never persisted — it should be impossible to save from the modes it returns from
