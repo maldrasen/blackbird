@@ -280,14 +280,13 @@ global.BattleState = function(data) {
     conditions[id] = condition;
   }
 
-  function canBeTargeted(id) { return isDown(id) === false && isHidden(id) === false }
+  function canBeTargeted(id) { return isDown(id) === false && StatusEffects(id).has('hidden') === false }
   function getKnockedOut() { return Object.keys(conditions).filter(id => isKnockedOut(id)); }
   function getDeadMonsters() { return monsterIds.filter(id => { return getCondition(id) === BattleCondition.dead }); }
   function getFledMonsters() { return monsterIds.filter(id => { return conditions[id] === BattleCondition.fled }); }
   function isAlive(id) { return getCondition(id) !== BattleCondition.dead; }
   function isDown(id) { return isAlive(id) === false || isKnockedOut(id); }
   function isKnockedOut(id) { return getCondition(id) === BattleCondition.knockedOut; }
-  function isHidden(id) { return StatusEffects(id).has('hidden'); }
 
   // ============================================
   //    Leveling Up / Negotiation / Battle End
@@ -362,7 +361,6 @@ global.BattleState = function(data) {
     isAlive,
     isKnockedOut,
     isDown,
-    isHidden,
 
     setNegotiationAttempted: () => { negotiationAttempted = true; },
     hasAttemptedNegotiation: () => { return negotiationAttempted; },
