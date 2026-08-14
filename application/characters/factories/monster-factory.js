@@ -81,6 +81,19 @@ global.MonsterFactory = (function() {
     const skills = {};
     SkillsComponent.getSkills().forEach(code => { skills[code] = 0; });
     SkillsComponent.create(monsterId, skills);
+
+    addAttributes(monsterBase, monsterId);
+  }
+
+  function addAttributes(monsterBase, monsterId) {
+    const baseAttributes = MonsterType.lookup(monsterBase.getType()).getBaseAttributes();
+    const attributes = {};
+
+    Object.entries(baseAttributes).forEach(([code,range]) => {
+      attributes[code] = Random.between(range[0],range[1]);
+    });
+
+    AttributesComponent.create(monsterId, attributes);
   }
 
   return { build };

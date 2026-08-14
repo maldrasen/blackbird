@@ -43,6 +43,17 @@ describe("MonsterFactory", function() {
       expect(actor.species).to.be.undefined;
     });
 
+    it("builds an attributes component from the monster type's base attribute ranges", function() {
+      const id = MonsterFactory.build('rabid-skitterfang');
+      const attributes = AttributesComponent.lookup(id);
+
+      expect(attributes.strength).to.be.within(5,10);
+      expect(attributes.dexterity).to.be.within(15,25);
+      expect(attributes.vitality).to.be.within(5,10);
+      expect(attributes.intelligence).to.be.within(3,5);
+      expect(attributes.beauty).to.be.within(3,5);
+    });
+
     it("builds a skills component from the monster type's base skill ranges", function() {
       const id = MonsterFactory.build('rabid-skitterfang');
       const skills = SkillsComponent.lookup(id);
