@@ -73,8 +73,6 @@ global.SensitivitiesFactory = (function() {
     sensitivities[key] ? sensitivities[key] += 1 : sensitivities[key] = Random.between(1,2);
   }
 
-  return Object.freeze({
-    build,
-  })
+  return { build };
 
 })();

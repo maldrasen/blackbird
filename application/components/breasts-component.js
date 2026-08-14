@@ -60,12 +60,12 @@ global.BreastsComponent = (function() {
     Validate.atLeast('Breasts.orificeMaxWidth',breastsComponent.orificeMaxWidth,0);
   }
 
-  return Object.freeze({
+  return {
     hasParent: () => { return false; },
     create,
     update,
     lookup,
     destroy,
-  });
+  };
 
 })();

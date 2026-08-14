@@ -68,10 +68,10 @@ global.Name = (function() {
     }).length === 0;
   }
 
-  return Object.freeze({
+  return {
     register,
     getRandom,
     isUnique,
-  });
+  };
 
 })();

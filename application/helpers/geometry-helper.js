@@ -152,13 +152,13 @@ global.GeometryHelper = (function() {
     return ahead.turnRight;
   }
 
-  return Object.freeze({
+  return {
     traceOutline,
     insetOutline,
     shiftOutline,
     outlineRuns,
     vertexIsConvex,
     edgeDirection,
-  });
+  };
 
 })();

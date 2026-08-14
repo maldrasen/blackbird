@@ -40,7 +40,7 @@ global.SkillsComponent = (function() {
     });
   }
 
-  return Object.freeze({
+  return {
     hasParent: () => { return false; },
     addSkill,
     getSkills,
@@ -48,6 +48,6 @@ global.SkillsComponent = (function() {
     update,
     lookup,
     destroy,
-  });
+  };
 
 })();

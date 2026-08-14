@@ -84,7 +84,7 @@ global.BaseWeapon = (function() {
       return Math.round(construction * getPerformanceFactor());
     }
 
-    return Object.freeze({
+    return {
       ...materials,
       ...reduction,
       getCode: () => { return code; },
@@ -104,14 +104,14 @@ global.BaseWeapon = (function() {
       getEffort: () => { return weapon.effort || 0; },
       getValue,
       getTextKey: () => { return weapon.textKey; },
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     registerVariant,
     getAllCodes,
     lookup,
-  });
+  };
 
 })();

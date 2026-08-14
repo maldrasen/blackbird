@@ -44,13 +44,13 @@ global.ArrayHelper = (function() {
     return array;
   }
 
-  return Object.freeze({
+  return {
     find,
     remove,
     unique,
     compact,
     differenceInElements,
     shuffle,
-  });
+  };
 
 })();

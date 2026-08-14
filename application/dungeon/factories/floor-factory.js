@@ -140,8 +140,6 @@ global.FloorFactory = function() {
     });
   }
 
-  return Object.freeze({
-    buildFloor,
-  });
+  return { buildFloor };
 
 };

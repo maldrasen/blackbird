@@ -35,7 +35,7 @@ global.BaseArmor = (function() {
       return Math.round((construction * performance) / 5) * 5;
     }
 
-    return Object.freeze({
+    return {
       ...materials,
       ...reduction,
       getCode: () => { return code; },
@@ -44,14 +44,14 @@ global.BaseArmor = (function() {
       getSlot: () => { return armor.slot; },
       getEffort: () => { return armor.effort || 0; },
       getValue,
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     registerVariant,
     getAllCodes,
     lookup,
-  });
+  };
 
 })();

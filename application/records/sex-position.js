@@ -14,19 +14,19 @@ global.SexPosition = (function() {
 
     const position = { ...sexPositions[code] };
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
       getName: () => { return position.name; },
       getAlignment: () => { return position.alignment; },
       getMoves: () => { return position.moves; },
       getRearrangePackage: () => { return position.rearrangePackage },
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     getAllCodes,
     lookup,
-  });
+  };
 
 })();

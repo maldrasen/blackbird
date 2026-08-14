@@ -33,7 +33,7 @@ global.BaseMonster = (function() {
           Species.lookup(monster.species).getNegotiationGreeting(context);
     }
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
       getName: () => { return monster.name; },
       getNameType: () => { return monster.nameType || 'common' },
@@ -51,13 +51,13 @@ global.BaseMonster = (function() {
       getEquipment: () => { return monster.equipment; },
       getPrioritizedAbilities: () => { return monster.prioritizedAbilities||[] },
       getNegotiationGreeting,
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     getAllCodes,
     lookup,
-  });
+  };
 
 })();

@@ -59,8 +59,6 @@ global.MonsterFactory = (function() {
     }
   }
 
-  return Object.freeze({
-    build,
-  })
+  return { build };
 
 })();

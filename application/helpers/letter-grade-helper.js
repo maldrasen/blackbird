@@ -86,13 +86,13 @@ global.LetterGradeHelper = (function() {
     }
   }
 
-  return Object.freeze({
+  return {
     attributeBase,
     attributeScore,
     feelingValue,
     sensitivityValue,
     preferenceValue,
     scaleValue,
-  });
+  };
 
 })();

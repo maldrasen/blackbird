@@ -90,6 +90,9 @@ global.PussyFactory = (function() {
     }
   }
 
-  return Object.freeze({ build, applyTriggers });
+  return {
+    build,
+    applyTriggers
+  };
 
 })();

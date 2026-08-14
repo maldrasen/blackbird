@@ -14,7 +14,7 @@ global.StatusEffectType = (function() {
 
     const statusEffect = { ...statusEffects[code] };
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
       getName: () => { return statusEffect.name; },
       getCategory: () => { return statusEffect.category; },
@@ -22,13 +22,13 @@ global.StatusEffectType = (function() {
       getDurationType: () => { return statusEffect.durationType; },
       getRemovedAt: () => { return statusEffect.removedAt || 'start-of-round' },
       isClearedAfterBattle: () => { return statusEffect.clearAfterBattle === true; },
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     getAllCodes,
     lookup,
-  });
+  };
 
 })();

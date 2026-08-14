@@ -41,13 +41,13 @@ global.MemoryComponent = (function() {
     });
   }
 
-  return Object.freeze({
+  return {
     hasParent: () => { return true; },
     create,
     update,
     lookup,
     destroy,
     of,
-  });
+  };
 
 })();

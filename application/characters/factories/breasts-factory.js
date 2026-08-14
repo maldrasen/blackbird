@@ -134,6 +134,9 @@ global.BreastsFactory = (function() {
     breastsData.absoluteBreastVolume = newTits.absoluteVolume;
   }
 
-  return Object.freeze({ build, applyTriggers });
+  return {
+    build,
+    applyTriggers
+  };
 
 })();

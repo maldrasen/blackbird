@@ -287,7 +287,7 @@ global.CalendarHelper = (function() {
     for (let i=1; i<=10123; i++) { console.log(`(${i}) ${CalendarHelper.yearName(i)}`) }
   }
 
-  return Object.freeze({
+  return {
     dayInfo,
     yearInfo,
     dayName,
@@ -296,6 +296,6 @@ global.CalendarHelper = (function() {
     fullDate,
     allDays,
     allYears,
-  });
+  };
 
 })();

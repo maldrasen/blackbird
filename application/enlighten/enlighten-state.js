@@ -16,7 +16,7 @@ global.EnlightenState = function(from, data) {
     });
   }
 
-  return Object.freeze({
+  return {
     getFrom: () => { return from },
     getAnima: () => { return data.anima },
     getAnimus: () => { return data.animus },
@@ -26,6 +26,6 @@ global.EnlightenState = function(from, data) {
     getRevived: () => { return data.revived },
     getLoot: () => { return data.loot },
     getEssence: () => { return essence; },
-  });
+  };
 
 }

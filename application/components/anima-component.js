@@ -48,7 +48,7 @@ global.AnimaComponent = (function() {
     });
   }
 
-  return Object.freeze({
+  return {
     hasParent: () => { return false; },
     getProperties: () => { return [...properties]; },
     createBaseline,
@@ -56,6 +56,6 @@ global.AnimaComponent = (function() {
     update,
     lookup,
     destroy,
-  });
+  };
 
 })();

@@ -242,7 +242,7 @@ global.TrainingSystem = (function() {
     });
   }
 
-  return Object.freeze({
+  return {
     startTraining,
     endTraining,
     handleSexAction,
@@ -256,6 +256,6 @@ global.TrainingSystem = (function() {
 
     removePersistedAction,
     positionUsedHands,
-  });
+  };
 
 })();

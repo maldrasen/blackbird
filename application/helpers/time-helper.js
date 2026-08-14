@@ -51,11 +51,11 @@ global.TimeHelper = (function() {
   //    if (minutes === 3) { return `a few minutes`; }
   //    etc.
 
-  return Object.freeze({
+  return {
     getMinuteOfDay,
     getDayNumber,
     getTimeOfDay,
     getTimeString,
-  });
+  };
 
 })();

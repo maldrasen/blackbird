@@ -128,12 +128,12 @@ global.PositionController = (function() {
     return Weaver(context).weave(move.package.pick(context));
   }
 
-  return Object.freeze({
+  return {
     isPositionAligned,
     repositionIfNecessary,
     findAlignedPosition,
     shiftPosition,
     changePosition,
-  });
+  };
 
 })();

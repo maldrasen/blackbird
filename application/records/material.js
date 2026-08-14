@@ -22,12 +22,12 @@ global.Material = (function() {
       return factor;
     }
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
       getName: () => { return material.name; },
       getCost: () => { return material.cost; },
       getFactor,
-    });
+    };
   }
 
   function getCost(code) {
@@ -38,12 +38,12 @@ global.Material = (function() {
     return lookup(code).getFactor(name);
   }
 
-  return Object.freeze({
+  return {
     register,
     getAllCodes,
     lookup,
     getCost,
     getFactor,
-  });
+  };
 
 })();

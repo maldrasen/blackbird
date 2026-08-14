@@ -119,7 +119,7 @@ global.TrainingState = function(data) {
     skillImprovements[id][code] = level;
   }
 
-  return Object.freeze({
+  return {
     getPlayer: () => { return player; },
     getPartner: () => { return partner; },
     getContext: () => { return { ...context }; },
@@ -158,7 +158,7 @@ global.TrainingState = function(data) {
     addMessage: (type, message) => { messages[type] = message; },
     skillImproved,
     getSkillImprovements: () => { return skillImprovements; },
-  });
+  };
 }
 
 TrainingState.determineScaleLevel = function(value) {

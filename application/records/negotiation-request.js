@@ -14,15 +14,15 @@ global.NegotiationRequest = (function() {
 
     const request = { ...requests[code] };
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     getAllCodes,
     lookup,
-  });
+  };
 
 })();

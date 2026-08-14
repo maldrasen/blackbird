@@ -89,6 +89,6 @@ global.PlayerFactory = (function() {
     }
   }
 
-  return Object.freeze({ build });
+  return { build };
 
 })();

@@ -134,7 +134,7 @@ global.SexAlignment = (function()  {
     return alignment;
   }
 
-  return Object.freeze({
+  return {
     getFondling,
     getOral,
     getTitfuck,
@@ -145,6 +145,6 @@ global.SexAlignment = (function()  {
     giveTitfuck,
     frottage,
     kissing,
-  });
+  };
 
 })();

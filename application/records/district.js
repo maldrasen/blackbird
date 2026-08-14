@@ -20,19 +20,19 @@ global.District = (function() {
       });
     }
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
       getName: () => { return district.name; },
       getEntrance: () => { return district.entrance; },
       getMoveTime: () => { return district.moveTime; },
       getLocationCodes,
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     getAllCodes,
     lookup,
-  });
+  };
 
 })();

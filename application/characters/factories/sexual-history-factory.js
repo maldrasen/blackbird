@@ -80,8 +80,8 @@ global.SexualHistoryFactory = (function() {
     return 1 / (1+(value/30));
   }
 
-  return Object.freeze({
+  return {
     build
-  });
+  };
 
 })();

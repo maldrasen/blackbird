@@ -21,7 +21,7 @@ global.Ability = (function() {
       }
     }
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
       getName: () => { return ability.name },
       getCategory: () => { return ability.category },
@@ -33,14 +33,14 @@ global.Ability = (function() {
       getAccuracyBonus: acting => { return typeof ability.getAccuracyBonus === 'function' ? ability.getAccuracyBonus(acting) : 1; },
       getDamageBonus: acting => { return typeof ability.getDamageBonus === 'function' ? ability.getDamageBonus(acting) : 1; },
       execute,
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     getAllCodes,
     exists,
     lookup,
-  });
+  };
 
 })();

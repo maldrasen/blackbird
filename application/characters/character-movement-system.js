@@ -16,8 +16,8 @@ global.CharacterMovementSystem = (function() {
     });
   }
 
-  return Object.freeze({
+  return {
     getCharactersAtLocation,
-  });
+  };
 
 })();

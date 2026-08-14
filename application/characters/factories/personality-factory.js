@@ -66,8 +66,6 @@ global.PersonalityFactory = (function() {
       throw new Error(`Character Rejected: Archetype[${code}] requirements not met.`); }
   }
 
-  return Object.freeze({
-    build,
-  });
+  return { build };
 
 })();

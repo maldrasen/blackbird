@@ -51,13 +51,13 @@ global.StringHelper = (function() {
     return longest;
   }
 
-  return Object.freeze({
+  return {
     formatNumber,
     pack,
     titlecase,
     titlecaseAll,
     titlecaseName,
     longestCommonSubstring,
-  });
+  };
 
 })();

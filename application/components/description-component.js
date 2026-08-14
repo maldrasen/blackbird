@@ -43,13 +43,13 @@ global.DescriptionComponent = (function() {
     })[0];
   }
 
-  return Object.freeze({
+  return {
     hasParent: () => { return true; },
     create,
     update,
     lookup,
     destroy,
     of,
-  });
+  };
 
 })();

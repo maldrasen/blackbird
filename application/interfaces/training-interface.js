@@ -39,12 +39,12 @@ global.TrainingInterface = (function() {
     TrainingPersistedActionsPanel.update();
   }
 
-  return Object.freeze({
+  return {
     proposeTraining,
     startTraining,
     endTraining,
     finishSexAction,
     updatePersistedActions,
-  });
+  };
 
 })();

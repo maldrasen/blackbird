@@ -12,11 +12,11 @@ global.InventoryComponent = (function() {
     Registry.deleteComponent(id,ComponentType.inventory);
   }
 
-  return Object.freeze({
+  return {
     hasParent: () => { return false; },
     create,
     lookup,
     destroy,
-  });
+  };
 
 })();

@@ -24,6 +24,6 @@ global.SensationSensitivities = (function() {
     }
   }
 
-  return Object.freeze({ apply })
+  return { apply };
 
 })();

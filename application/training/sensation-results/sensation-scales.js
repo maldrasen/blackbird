@@ -28,6 +28,6 @@ global.SensationScales = (function() {
     }
   }
 
-  return Object.freeze({ apply })
+  return { apply };
 
 })();

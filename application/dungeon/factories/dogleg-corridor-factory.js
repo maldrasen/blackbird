@@ -98,8 +98,6 @@ global.DoglegCorridorFactory = function(originFeature, targetFeature, alignment)
     }
   }
 
-  return Object.freeze({
-    build,
-  });
+  return { build };
 
 }

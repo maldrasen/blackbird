@@ -37,7 +37,7 @@ global.EpisodeState = function(code, context = {}) {
     return page;
   }
 
-  return Object.freeze({
+  return {
     getCode: () => { return code; },
     getContext: () => { return context; },
     getEpisode: () => { return Episode.lookup(code); },
@@ -47,6 +47,6 @@ global.EpisodeState = function(code, context = {}) {
 
     setPropertyValue: (key,value) => { context[key] = value; },
     getPropertyValue: key => { return context[key]; },
-  });
+  };
 
 }

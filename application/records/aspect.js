@@ -18,20 +18,20 @@ global.Aspect = (function() {
 
     const aspect = { ...aspects[code] };
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
       getName: () => { return aspect.name; },
       getDescription: () => { return aspect.description; },
       isLeveled: () => { return aspect.leveled === true; },
       getMaxLevel: () => { return aspect.leveled ? 3 : 1; },
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     getAllCodes,
     getAllUnleveledCodes,
     lookup,
-  });
+  };
 
 })();

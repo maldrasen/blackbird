@@ -52,6 +52,6 @@ global.SensationBaseline = (function() {
     });
   }
 
-  return Object.freeze({ apply });
+  return { apply };
 
 })();

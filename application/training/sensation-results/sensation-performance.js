@@ -120,6 +120,6 @@ global.SensationPerformance = (function() {
     }
   }
 
-  return Object.freeze({ apply });
+  return { apply };
 
 })();

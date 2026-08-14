@@ -81,8 +81,8 @@ global.SexualityFactory = (function() {
     return preferences;
   }
 
-  return Object.freeze({
+  return {
     build
-  })
+  };
 
 })();

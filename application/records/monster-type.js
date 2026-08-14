@@ -14,18 +14,18 @@ global.MonsterType = (function() {
 
     const type = { ...types[code] };
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
       getThreatWeights: () => { return type.threatWeights; },
       getPrioritizedAbilities: () => { return type.prioritizedAbilities; },
       getAttributeGrowth: () => { return type.attributeGrowth; },
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     getAllCodes,
     lookup,
-  });
+  };
 
 })();

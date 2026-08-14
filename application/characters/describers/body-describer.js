@@ -128,10 +128,10 @@ global.BodyDescriber = (function() {
     return Random.from(options);
   }
 
-  return Object.freeze({
+  return {
     getTemplate,
     describeSpecies,
     describeHeight,
-  });
+  };
 
 })();

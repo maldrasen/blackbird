@@ -202,6 +202,9 @@ global.CockFactory = (function() {
     }
   }
 
-  return Object.freeze({ build, applyTriggers });
+  return {
+    build,
+    applyTriggers
+  };
 
 })();

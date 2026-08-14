@@ -14,20 +14,20 @@ global.SexualPreference = (function() {
 
     const preference = { ...sexualPreferences[code] };
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
       getName: () => { return preference.name; },
       getAntiname: () => { return preference.antiname || `Anti-${preference.name}` },
       getSensations: () => { return preference.sensations; },
       getRequires: () => { return preference.requires; },
       isNegativeAllowed: () => { return preference.antiname != null; },
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     getAllCodes,
     lookup,
-  });
+  };
 
 })();

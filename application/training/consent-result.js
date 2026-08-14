@@ -176,7 +176,7 @@ global.ConsentResult = (characterId, target=null) => {
     }
   }
 
-  return Object.freeze({
+  return {
     getCharacter: () => { return characterId; },
     getTarget: () => { return targetId; },
     getResponse: () => { return response },
@@ -187,5 +187,5 @@ global.ConsentResult = (characterId, target=null) => {
     applyFactors,
     applyFactor,
     setSexAction,
-  });
+  };
 }

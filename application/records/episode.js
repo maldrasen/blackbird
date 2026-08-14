@@ -71,20 +71,20 @@ global.Episode = (function() {
       return 'backgrounds/episode.jpg';
     }
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
       getEndFunction: () => { return episode.endFunction; },
       getQueue: () => { return episode.queue; },
       getPages: () => { return episode.pages; },
       getBackground,
       getLayout,
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     getAllCodes,
     lookup,
-  });
+  };
 
 })();

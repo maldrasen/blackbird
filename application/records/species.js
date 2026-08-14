@@ -34,7 +34,7 @@ global.Species = (function() {
           `[${species.name} Negotiation Greeting]`;
     }
 
-    return Object.freeze({
+    return {
       getCode: () => { return species.code; },
       getName: () => { return species.name; },
       getAdjective: () => { return species.adjective || species.name; },
@@ -61,13 +61,13 @@ global.Species = (function() {
       getHornShape: () => { return species.body.hornShape; },
       getSmellFamily: () => { return species.body.smellFamily; },
       getNegotiationGreeting,
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     getAllCodes,
     lookup,
-  });
+  };
 
 })();

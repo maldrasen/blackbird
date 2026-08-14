@@ -42,17 +42,17 @@ global.Encounter = (function() {
       throw `No code or codeMap in monster definition`;
     }
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
       getDescription: () => { return encounter.description; },
       buildFormation,
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     getAllCodes,
     lookup,
-  });
+  };
 
 })();

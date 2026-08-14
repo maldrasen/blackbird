@@ -168,13 +168,13 @@ global.CharacterMath = (function() {
     return max * (1 - Math.exp(-r * x));
   }
 
-  return Object.freeze({
+  return {
     attributeIncrease,
     calculateSpeedFactor,
     emotionBaseValue,
     personalityFactorValue,
     applyFactorScale,
     saturatingGrowthCurve,
-  })
+  };
 
 })();

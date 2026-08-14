@@ -71,11 +71,11 @@ global.EncounterBuilder = (function() {
     return 'normal';
   }
 
-  return Object.freeze({
+  return {
     buildMonsters,
     rollReactionTimes,
     populateThreatTables,
     rollAmbush,
-  });
+  };
 
 })();

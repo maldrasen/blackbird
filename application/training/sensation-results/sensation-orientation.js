@@ -85,6 +85,6 @@ global.SensationOrientation = (function() {
   function applyDegradation(level, factor, check) {}
   function applyDegradationOnBottom(level, factor, check) {}
 
-  return Object.freeze({ apply });
+  return { apply };
 
 })();

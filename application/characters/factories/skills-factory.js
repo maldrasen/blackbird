@@ -21,8 +21,6 @@ global.SkillsFactory = (function() {
     state.setSkills(skillsData);
   }
 
-  return Object.freeze({
-    build
-  });
+  return { build };
 
 })();

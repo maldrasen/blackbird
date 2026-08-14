@@ -14,16 +14,16 @@ global.FeatureType = (function() {
 
     const featureType = { ...featureTypes[code] };
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
       buildFeature: options => { return featureType.build(options) },
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     getAllCodes,
     lookup,
-  });
+  };
 
 })();

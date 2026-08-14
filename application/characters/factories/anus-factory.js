@@ -41,6 +41,9 @@ global.AnusFactory = (function() {
     state.setAnus(anusData);
   }
 
-  return Object.freeze({ build, applyTriggers });
+  return {
+    build,
+    applyTriggers
+  };
 
 })();

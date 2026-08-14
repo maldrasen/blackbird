@@ -171,7 +171,7 @@ global.MeasurementHelper = (function() {
     }
   }
 
-  return Object.freeze({
+  return {
     gramsToPounds,
     gramsToOunces,
     poundsWithFraction,
@@ -183,6 +183,6 @@ global.MeasurementHelper = (function() {
     feetAndInchesWithFractions,
     footAndInchesWithFractions,
     inchesWithFractions,
-  });
+  };
 
 })();

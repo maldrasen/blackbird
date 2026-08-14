@@ -29,6 +29,6 @@ global.SensationArousal = (function() {
     });
   }
 
-  return Object.freeze({ apply });
+  return { apply };
 
 })();

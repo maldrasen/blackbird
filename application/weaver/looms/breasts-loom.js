@@ -174,10 +174,10 @@ global.BreastsLoom = (function() {
     return `[HARD THICK NIPPLES]`;
   }
 
-  return Object.freeze({
+  return {
     breastWord,
     breastsWord,
     weave
-  });
+  };
 
 })();

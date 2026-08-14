@@ -14,7 +14,7 @@ global.Archetype = (function() {
 
     const archetype = { ...archetypes[code] };
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
       getName: () => { return archetype.name; },
       getRequires: () => { return archetype.requires; },
@@ -25,13 +25,13 @@ global.Archetype = (function() {
       getSexualityRatio: () => { return archetype.sexualityRatio; },
       getSexualPreferences: () => { return archetype.sexualPreferences||{}; },
       getVirginChances: () => { return { ...archetype.virginChances }; },
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     getAllCodes,
     lookup,
-  });
+  };
 
 })();

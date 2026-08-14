@@ -99,6 +99,6 @@ global.SensationTechnique = (function() {
     }
   }
 
-  return Object.freeze({ apply });
+  return { apply };
 
 })();

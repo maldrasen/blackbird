@@ -13,12 +13,12 @@ global.PersistedAction = function(code, context) {
     return allPlayer && allPartner
   }
 
-  return Object.freeze({
+  return {
     getCode: () => { return code; },
     getName,
     getSexAction: () => { return sexAction; },
     getPlayerParts: () => { return [...playerParts] },
     getPartnerParts: () => { return [...partnerParts] },
     usesParts,
-  });
+  };
 }

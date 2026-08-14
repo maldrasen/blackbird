@@ -11,7 +11,7 @@ global.Article = (function() {
 
     const article = { ...articles[code] };
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
       getType: () => { return article.type; },
       getCategory: () => { return article.category; },
@@ -20,12 +20,12 @@ global.Article = (function() {
       getIcon: () => { return article.icon; },
       getIconColor: () => { return article.iconColor; },
       getTags: () => { return [...(article.tags||[])]; },
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     lookup,
-  });
+  };
 
 })();

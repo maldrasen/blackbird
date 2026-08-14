@@ -83,7 +83,7 @@ global.NegotiationQuestion = (function() {
       return match;
     }
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
       getText: () => { return question.text; },
       getStaticRequirements: () => { return question.staticRequirements || []; },
@@ -92,15 +92,15 @@ global.NegotiationQuestion = (function() {
       isFollowUp: () => { return question.followUp === true; },
       isPossible,
       isAvailable,
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     registerReaction,
     getAllCodes,
     getReactions,
     lookup,
-  });
+  };
 
 })();

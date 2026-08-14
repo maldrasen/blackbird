@@ -56,6 +56,6 @@ global.PronounHelper = (function() {
     if (gender === Gender.enby) { return 'enbies'; }
   }
 
-  return Object.freeze({ he, hes, him, his, hers, man, men });
+  return { he, hes, him, his, hers, man, men };
 
 })();

@@ -172,7 +172,7 @@ global.SensationResult = function(code, state) {
     };
   }
 
-  return Object.freeze({
+  return {
     getConsentResult: () => { return consentResult; },
     getContext: () => { return context; },
     getState: () => { return state; },
@@ -196,7 +196,7 @@ global.SensationResult = function(code, state) {
     getSkillsUsed,
 
     getResponse,
-  });
+  };
 }
 
 SensationResult.build = function(code, state) {

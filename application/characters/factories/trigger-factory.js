@@ -73,8 +73,8 @@ global.TriggerFactory = (function() {
     state.addTrigger(`${aspectType}:${level}`);
   }
 
-  return Object.freeze({
+  return {
     addRandomTriggers,
-  });
+  };
 
 })();

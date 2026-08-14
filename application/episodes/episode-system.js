@@ -64,7 +64,7 @@ global.EpisodeSystem = (function() {
     state = null;
   }
 
-  return Object.freeze({
+  return {
     getState: () => { return state; },
     getContext: () => { return state.getContext(); },
     getPartner: () => { return state.getContext().T; },
@@ -78,6 +78,6 @@ global.EpisodeSystem = (function() {
     nextPage,
     jumpToPage,
     reset,
-  });
+  };
 
 })();

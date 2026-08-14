@@ -28,6 +28,6 @@ global.SensationPreferences = (function() {
     });
   }
 
-  return Object.freeze({ apply });
+  return { apply };
 
 })();

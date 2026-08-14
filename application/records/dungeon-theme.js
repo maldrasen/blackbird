@@ -24,7 +24,7 @@ global.DungeonTheme = (function() {
       return featureType.buildFeature(options);
     }
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
       getName: () => { return theme.name; },
       getRarity: () => { return theme.rarity; },
@@ -33,13 +33,13 @@ global.DungeonTheme = (function() {
       getExtraStairChance: () => { return theme.extraStairChance || 50 },
       getFloorTextureFunction: () => { return theme.getFloorTexture().paint },
       getWallTextureFunction: () => { return theme.getWallTexture().paint },
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     getAllCodes,
     lookup,
-  });
+  };
 
 })();

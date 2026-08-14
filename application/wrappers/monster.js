@@ -81,7 +81,7 @@ global.Monster = function(id) {
     MonsterComponent.update(id, component);
   }
 
-  return Object.freeze({
+  return {
     getEntity: () => { return id },
     getCode,
     getBaseMonster,
@@ -98,6 +98,6 @@ global.Monster = function(id) {
     populateThreatTable,
     getThreatTable,
     updateThreat,
-  });
+  };
 
 }

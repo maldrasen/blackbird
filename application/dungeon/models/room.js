@@ -89,7 +89,7 @@ global.Room = function(type='normal') {
     }
   }
 
-  return Object.freeze({
+  return {
     getType: () => { return type },
     setIndex: i => { index = i; },
     getIndex: () => { return index; },
@@ -109,5 +109,5 @@ global.Room = function(type='normal') {
     markOverlapping: () => { overlapping = true; },
     isOverlapping,
     pack,
-  });
+  };
 }

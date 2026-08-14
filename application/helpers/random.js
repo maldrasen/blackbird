@@ -175,7 +175,7 @@ global.Random = (function() {
     return `∈${(nextFloat() + 1).toString(36).substring(2,10).toUpperCase()}`;
   }
 
-  return Object.freeze({
+  return {
     seed,
     getSeed,
     reseed,
@@ -198,6 +198,6 @@ global.Random = (function() {
     testDistribution,
     shuffle,
     identifier,
-  });
+  };
 
 })();

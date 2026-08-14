@@ -28,9 +28,9 @@ global.Dialog = (function() {
     return `<span class='dialog-error'>[Missing Dialog Template ${type}:${code}]</span>`
   }
 
-  return Object.freeze({
+  return {
     register,
     lookupTemplate,
-  });
+  };
 
 })();

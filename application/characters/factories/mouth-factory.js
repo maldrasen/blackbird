@@ -66,6 +66,9 @@ global.MouthFactory = (function() {
     state.setMouth(mouthData);
   }
 
-  return Object.freeze({ build, applyTriggers });
+  return {
+    build,
+    applyTriggers
+  };
 
 })();

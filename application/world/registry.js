@@ -173,7 +173,7 @@ global.Registry = (function() {
     });
   }
 
-  return Object.freeze({
+  return {
     clear,
     dump,
     entityExists,
@@ -191,7 +191,7 @@ global.Registry = (function() {
     findComponentsWith,
     pack,
     unpack,
-  });
+  };
 
 })();
 

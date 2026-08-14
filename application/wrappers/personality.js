@@ -89,11 +89,11 @@ global.Personality = function(id) {
     return fetishes.sort((a,b) => { return b.value - a.value });
   }
 
-  return Object.freeze({
+  return {
     getArchetype,
     attitudeTowardsAction,
     attitudeTowardsTraining,
     getStrongestFetishes,
-  });
+  };
 
 }

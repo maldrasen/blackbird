@@ -141,6 +141,6 @@ global.SensationSkills = (function() {
     return base+1;                           // Between 1 and 2
   }
 
-  return Object.freeze({ apply });
+  return { apply };
 
 })()

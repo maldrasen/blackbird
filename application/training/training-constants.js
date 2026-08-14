@@ -1,4 +1,4 @@
-global.TrainingConstants = Object.freeze({
+global.TrainingConstants = {
 
   // Baseline penalty for repeated actions.
   repeatedBaselineFactor: 0.5,
@@ -39,4 +39,4 @@ global.TrainingConstants = Object.freeze({
     SSS: 5,
   },
 
-});
+};

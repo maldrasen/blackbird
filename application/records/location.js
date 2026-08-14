@@ -14,19 +14,19 @@ global.Location = (function() {
 
     const location = { ...locations[code] };
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
       getName: () => { return location.name; },
       getDistrict: () => { return location.district; },
       getBackground: () => { return location.background; },
       getActions: () => { return (location.actions || []).filter(action => Requirements.met(action.requires)); },
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     getAllCodes,
     lookup,
-  });
+  };
 
 })();

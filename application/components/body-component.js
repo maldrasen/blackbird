@@ -70,20 +70,20 @@ global.BodyComponent = (function() {
     function getThroatDepth() { return Math.round(body.height * 0.185); }
     function getTotalDepth() { return getMouthDepth() + getThroatDepth(); }
 
-    return Object.freeze({
+    return {
       getMouthDepth,
       getThroatDepth,
       getTotalDepth,
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     hasParent: () => { return false; },
     create,
     update,
     lookup,
     destroy,
     createWrapper,
-  });
+  };
 
 })();

@@ -82,12 +82,12 @@ global.CurrencyHelper = (function() {
     if (secondOption && secondOption.value <= remainingValue) { return secondOption; }
   }
 
-  return Object.freeze({
+  return {
     valueToCurrency,
     currencyToValue,
     findHighCoin,
     findChangeCoin,
     valueOf,
-  });
+  };
 
 })();

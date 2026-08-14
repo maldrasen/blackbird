@@ -66,7 +66,7 @@ global.EpisodePage = function(data) {
     return requires(EpisodeSystem.getContext());
   }
 
-  return Object.freeze({
+  return {
     getButtons,
     getButtonsStyle,
     getContent,
@@ -74,6 +74,6 @@ global.EpisodePage = function(data) {
     getFlags,
     executeOnShow,
     meetsRequirements,
-  });
+  };
 
 };
