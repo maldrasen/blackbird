@@ -1,4 +1,4 @@
-// The "Creature" type is a basic beast type that favors dexterity.
+// The "Creature" type is a basic beast type that favors strength and vitality.
 MonsterType.register('critter',{
 
   threatWeights: {
@@ -11,17 +11,17 @@ MonsterType.register('critter',{
   ],
 
   baseAttributes: {
-    strength:     [5,10],
-    dexterity:    [15,25],
-    vitality:     [5,10],
+    strength:     [15,25],
+    dexterity:    [5,10],
+    vitality:     [15,25],
     intelligence: [3,5],
     beauty:       [3,5],
   },
 
   attributeGrowth: {
-    strength:     100,
-    dexterity:    120,
-    vitality:     80,
+    strength:     120,
+    dexterity:    80,
+    vitality:     120,
     intelligence: 10,
     beauty:       10,
   },
