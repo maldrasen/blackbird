@@ -165,9 +165,7 @@ global.Weaver = function(context) {
     Console.logError(`Weaver:${type}Error thrown.`, error, { system:'Weaver', ...data });
   }
 
-  return Object.freeze({
-    weave,
-  });
+  return { weave };
 };
 
 Weaver.formatWarning = (message) => { return `<span class='weaver-warning'>${message}</span>`; }

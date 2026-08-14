@@ -31,7 +31,7 @@ global.Weapon = function(id) {
     return BaseWeapon.lookup(getComponent().base).getReduction(type);
   }
 
-  return Object.freeze({
+  return {
     getId: () => { return id; },
     getBaseWeapon: () => { return BaseWeapon.lookup(getComponent().base); },
     getName,
@@ -41,5 +41,5 @@ global.Weapon = function(id) {
     getReduction,
     hasEnchantment: () => { return getComponent().enchantment != null; },
     getEnchantment,
-  });
+  };
 }

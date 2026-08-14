@@ -14,8 +14,8 @@ global.RecruitmentSystem = (function() {
     GameSystem.getState().addToRoster(monsterId);
   }
 
-  return Object.freeze({
+  return {
     recruit,
-  });
+  };
 
 })();

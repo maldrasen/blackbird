@@ -200,7 +200,7 @@ global.CharacterFixtures = (function() {
     return SkillsComponent.create(id, skillsData);
   }
 
-  return Object.freeze({
+  return {
     randomPlayer,
     randomCharacters,
     genericMale,
@@ -217,6 +217,6 @@ global.CharacterFixtures = (function() {
     genericSexualPreferences,
     genericAspects,
     genericSkills,
-  });
+  };
 
 })();

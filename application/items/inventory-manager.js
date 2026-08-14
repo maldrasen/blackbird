@@ -84,7 +84,7 @@ global.InventoryManager = function(characterId) {
     update(inventory);
   }
 
-  return Object.freeze({
+  return {
     hasItem,
     addItem,
     removeItem,
@@ -92,6 +92,6 @@ global.InventoryManager = function(characterId) {
     dropItem,
     getArticleQuantity,
     setArticleQuantity,
-  });
+  };
 
 }

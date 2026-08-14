@@ -50,10 +50,10 @@ global.StealthSystem = (function() {
     return observers;
   }
 
-  return Object.freeze({
+  return {
     processRound,
     getObservers,
-  });
+  };
 
 })();
 

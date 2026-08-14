@@ -40,8 +40,6 @@ global.BodyLoom = (function() {
     return color;
   }
 
-  return Object.freeze({
-    weave
-  });
+  return { weave };
 
 })();

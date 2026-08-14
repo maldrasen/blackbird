@@ -16,10 +16,10 @@ global.Item = function(id) {
     }
   }
 
-  return Object.freeze({
+  return {
     getName,
     getIcon,
     isLewd: () => { return ItemComponent.lookup(id).isLewd === true; }
-  });
+  };
 
 }

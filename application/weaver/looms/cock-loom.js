@@ -70,9 +70,9 @@ global.CockLoom = (function() {
       MeasurementHelper.inchesWithFractions(cock.length, false, true);
   }
 
-  return Object.freeze({
+  return {
     cockWords,
     weave
-  });
+  };
 
 })();

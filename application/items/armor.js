@@ -24,7 +24,7 @@ global.Armor = function(id) {
   function getPrimaryMaterial() { return getBaseArmor().getPrimaryMaterial(); }
   function isMetal() { return getBaseArmor().isMetal(); }
 
-  return Object.freeze({
+  return {
     getId: () => { return id; },
     getBaseArmor,
     getName,
@@ -34,5 +34,5 @@ global.Armor = function(id) {
     getEnchantment,
     getPrimaryMaterial,
     isMetal,
-  });
+  };
 }

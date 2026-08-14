@@ -92,10 +92,10 @@ global.BattleDeathSystem = (function() {
     return backEmpty && frontEmpty;
   }
 
-  return Object.freeze({
+  return {
     killEntity,
     knockOutEntity,
     reviveKnockedOut,
-  });
+  };
 
 })();

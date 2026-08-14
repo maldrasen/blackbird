@@ -43,8 +43,8 @@ global.CharacterAbilitySystem = (function() {
     return StatusEffects(acting).has('stun');
   }
 
-  return Object.freeze({
+  return {
     getAbilities,
-  });
+  };
 
 })();

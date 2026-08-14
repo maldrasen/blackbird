@@ -79,10 +79,10 @@ global.WeaverPackage = function(id) {
     return Requirements.met(part.requires, context);
   }
 
-  return Object.freeze({
+  return {
     defineFormat,
     add,
     addPart,
     pick,
-  });
+  };
 };

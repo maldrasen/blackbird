@@ -10,8 +10,8 @@ global.ArmorEnchantment = function(id, enchantment) {
   // TODO: Dispatch the actual armor enchantment effects here once they exist (e.g. a resist enchantment boosting the
   //       wearer's resistance rolls), following the switch pattern WeaponEnchantment uses for its on-hit effects.
 
-  return Object.freeze({
+  return {
     getType: () => { return enchantment.type; },
     getPower,
-  });
+  };
 }

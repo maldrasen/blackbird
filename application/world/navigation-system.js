@@ -42,11 +42,11 @@ global.NavigationSystem = (function() {
     })};
   }
 
-  return Object.freeze({
+  return {
     getLocalDestinations,
     getDistrictDestinations,
     moveWithinLocation,
     moveToDistrict,
-  });
+  };
 
 })();

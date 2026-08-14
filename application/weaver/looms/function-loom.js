@@ -73,6 +73,6 @@ global.FunctionLoom = (function() {
     throw `Unable to determine a weapon for {${actorId}}.`
   }
 
-  return Object.freeze({ weave });
+  return { weave };
 
 })();

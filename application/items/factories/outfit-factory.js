@@ -5,6 +5,6 @@ global.OutfitFactory = (function() {
   //       Before starting this, I need to think about what the clothing options even really look like.
   function buildAndEquip(characterId) {}
 
-  return Object.freeze({ buildAndEquip });
+  return { buildAndEquip };
 
 })();

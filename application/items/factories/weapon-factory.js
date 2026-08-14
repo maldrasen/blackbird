@@ -24,8 +24,8 @@ global.WeaponFactory = (function() {
     WeaponComponent.update(id, weaponComponent);
   }
 
-  return Object.freeze({
+  return {
     build,
-  });
+  };
 
 })();

@@ -38,10 +38,10 @@ global.StatusEffectSystem = (function() {
       BattleSystem.removeStatus(entity, code);
   }
 
-  return Object.freeze({
+  return {
     processStartRound,
     processEndRound,
     consumeStack,
-  })
+  };
 
 })();

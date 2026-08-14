@@ -16,9 +16,9 @@ global.TrainingFixtures = (function() {
     return standardTrainingState(playerOptions, partnerOptions).getContext();
   }
 
-  return Object.freeze({
+  return {
     standardTrainingState,
     standardTrainingContext,
-  });
+  };
 
 })();

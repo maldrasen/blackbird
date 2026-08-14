@@ -56,11 +56,11 @@ global.DefendRoll = function(defender, attacker, attackRoll) {
 
   Console.log(`Defend Roll [${defender}]`,{ system:'BattleSystem', level:3, data:{ defendRoll, finalValue }});
 
-  return Object.freeze({
+  return {
     getRollValue: () => { return defendRoll.value },
     getDefendSkill: () => { return defendSkill },
     isCrit: () => { return defendRoll.crit === true; },
     isFumble: () => { return defendRoll.fumble === true; },
     getFinalValue: () => { return finalValue },
-  });
+  };
 }

@@ -50,9 +50,9 @@ global.PussyLoom = (function() {
     return Random.fromFrequencyMap({ dripping:10, soaked:6, drenched:4 });
   }
 
-  return Object.freeze({
+  return {
     pussyWords,
     weave
-  });
+  };
 
 })();

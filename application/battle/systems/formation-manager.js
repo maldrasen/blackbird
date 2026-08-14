@@ -71,10 +71,10 @@ global.FormationManager = (function() {
   }
 
 
-  return Object.freeze({
+  return {
     moveForwardOnDeath,
     moveForwardOnKnockOut,
     moveInwardOnDeath,
-  });
+  };
 
 })();

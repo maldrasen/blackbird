@@ -57,7 +57,7 @@ global.PhysicalAttackRoll = function(attacker, target) {
     Console.log(`Attack Roll [${attacker}]`,{ system:'BattleSystem', level:3, data:{ check, finalValue }});
   }
 
-  return Object.freeze({
+  return {
     setAbility,
     getAbility,
     getAbilityCode: () => { return abilityCode; },
@@ -80,5 +80,5 @@ global.PhysicalAttackRoll = function(attacker, target) {
     isCrit: () => { return check.crit === true; },
     isFumble: () => { return check.fumble === true; },
     getFinalValue: () => { return finalValue },
-  });
+  };
 }

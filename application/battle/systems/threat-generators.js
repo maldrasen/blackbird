@@ -69,12 +69,12 @@ global.ThreatGenerators = (function() {
     });
   }
 
-  return Object.freeze({
+  return {
     closest,
     leastArmor,
     leastHealth,
     killMen,
     killWomen,
-  });
+  };
 
 })();

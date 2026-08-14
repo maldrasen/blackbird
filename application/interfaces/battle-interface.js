@@ -60,7 +60,7 @@ global.BattleInterface = (function() {
     GameSystem.setGameMode(GameMode.episode);
   }
 
-  return Object.freeze({
+  return {
     startTargeting,
     showCharacterCommands,
     showCharacterResult,
@@ -72,6 +72,6 @@ global.BattleInterface = (function() {
     moveForwardOnDeath,
     moveInwardOnDeath,
     showGameOver,
-  });
+  };
 
 })();

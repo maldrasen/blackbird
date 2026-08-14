@@ -56,12 +56,12 @@ window.fs = (function() {
     callback(existsSync(path));
   }
 
-  return Object.freeze({
+  return {
     readFileSync,
     readFile,
     writeFile,
     existsSync,
     exists,
-  });
+  };
 
 })();

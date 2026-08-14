@@ -12,7 +12,7 @@ global.CharacterEquipper = function(id) {
 
   const equipment = {};
 
-  const SlotBudgetPercent = Object.freeze({
+  const SlotBudgetPercent = {
     primary: 1.0,
     secondary: 0.5,
     shield: 1.0,
@@ -21,7 +21,7 @@ global.CharacterEquipper = function(id) {
     head: 0.3,
     feet: 0.5,
     hands: 0.25,
-  });
+  };
 
   // TODO: The underchest and underlegs slots are skipped for now. There's no base armor registered for them yet.
   //       We'll also want slots for rings, amulet, and body piercings. Cloaks are a possibility as well.
@@ -36,7 +36,7 @@ global.CharacterEquipper = function(id) {
 
   // Only real weapon skills are considered when looking at what a character is trained in. Skills like block and
   // martial-arts are martial skills, but they don't map to a weapon we'd buy.
-  const WeaponTypeBySkill = Object.freeze({
+  const WeaponTypeBySkill = {
     axes: 'axe',
     bows: 'bow',
     daggers: 'dagger',
@@ -44,7 +44,7 @@ global.CharacterEquipper = function(id) {
     polearms: 'polearm',
     swords: 'sword',
     whips: 'whip',
-  });
+  };
 
   const StrengthWeaponTypes = ['axe','mace','polearm'];
   const DexterityWeaponTypes = ['bow','dagger','whip'];
@@ -220,9 +220,9 @@ global.CharacterEquipper = function(id) {
     equipment[slot] = itemId;
   }
 
-  return Object.freeze({
+  return {
     equip,
     equipLoadout,
-  });
+  };
 
 }

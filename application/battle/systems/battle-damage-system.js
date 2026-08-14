@@ -89,8 +89,8 @@ global.BattleDamageSystem = (function() {
     return 'knocked-out';
   }
 
-  return Object.freeze({
+  return {
     applyDamage,
-  });
+  };
 
 })();

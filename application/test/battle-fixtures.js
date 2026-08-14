@@ -56,9 +56,9 @@ global.BattleFixtures = (function() {
     SkillsComponent.update(id, skills);
   }
 
-  return Object.freeze({
+  return {
     prepareForBattle,
     equipWeapon,
-  })
+  };
 
 })();

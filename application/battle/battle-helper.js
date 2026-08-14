@@ -55,11 +55,11 @@ global.BattleHelper = (function() {
     return 'normal';
   }
 
-  return Object.freeze({
+  return {
     isAttackWithinRange,
     distanceBetweenPositions,
     randomHitLocation,
     getRollType,
-  });
+  };
 
 })();

@@ -47,9 +47,9 @@ global.DungeonThemeSystem = (function() {
     });
   }
 
-  return Object.freeze({
+  return {
     init,
     pickTheme,
-  });
+  };
 
 })();

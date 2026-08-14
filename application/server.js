@@ -14,5 +14,6 @@ global.Server = (function() {
     });
   }
 
-  return Object.freeze({ init });
+  return { init };
+
 })();

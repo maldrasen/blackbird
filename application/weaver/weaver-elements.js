@@ -13,8 +13,8 @@ global.WeaverElements = (function() {
     return `<ul class='result-blocks'><li class='result-block ${options.classname}'>${text}</li></ul>`;
   }
 
-  return Object.freeze({
+  return {
     resultBlock
-  });
+  };
 
 })();

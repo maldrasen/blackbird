@@ -15,8 +15,8 @@ global.ItemFixtures = (function() {
     equipment.equipItem(boots, EquipmentSlot.feet);
   }
 
-  return Object.freeze({
+  return {
     addRandomEquipment,
-  });
+  };
 
 })();

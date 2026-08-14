@@ -45,10 +45,10 @@ global.Fixtures = (function() {
     GameSystem.setGameMode(GameMode.location);
   }
 
-  return Object.freeze({
+  return {
     setupBattle,
     setupDungeon,
     setupTraining,
-  });
+  };
 
 })();

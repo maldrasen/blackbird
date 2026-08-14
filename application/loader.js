@@ -160,9 +160,9 @@ window.Loader = (function() {
     },startScroll);
   }
 
-  return Object.freeze({
+  return {
     startLoading,
-  });
+  };
 
 })();
 

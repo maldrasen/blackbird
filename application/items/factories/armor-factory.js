@@ -21,8 +21,8 @@ global.ArmorFactory = (function() {
     ArmorComponent.update(id, armorComponent);
   }
 
-  return Object.freeze({
+  return {
     build
-  });
+  };
 
 })();

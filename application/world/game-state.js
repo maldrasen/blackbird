@@ -59,7 +59,7 @@ global.GameState = function(data={}) {
     };
   }
 
-  return Object.freeze({
+  return {
     getSaveKey: () => { return saveKey; },
     getGameTime: () => { return gameTime; },
     setGameTime: time => { gameTime = time; },
@@ -87,6 +87,6 @@ global.GameState = function(data={}) {
     getFlag: key => { return flags[key]; },
     getSaveMetadata,
     pack,
-  });
+  };
 
 };

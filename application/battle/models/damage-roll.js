@@ -36,9 +36,9 @@ global.DamageRoll = function(attacker, attackRoll, defendRoll) {
     if (defendType === 'fumble') { message = `{T:TargetName} was left wide open!`; }
   }
 
-  return Object.freeze({
+  return {
     getDamageTypes: () => { return damageTypes },
     hasMessage: () => { return message != null; },
     getMessage: () => { return { text:message }; }
-  });
+  };
 }

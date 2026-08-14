@@ -102,9 +102,9 @@ global.ActorLoom = (function() {
     return `${start}${name}${end}`;
   }
 
-  return Object.freeze({
+  return {
     weave,
     compileName,
-  });
+  };
 
 })();

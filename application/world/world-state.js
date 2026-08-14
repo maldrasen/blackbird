@@ -75,7 +75,7 @@ global.WorldState = (function() {
     Console.log(message, { system:"WorldState", level:1 });
   }
 
-  return Object.freeze({
+  return {
     reset,
     mergeDefaults,
 
@@ -91,6 +91,6 @@ global.WorldState = (function() {
     updateSaveMetadata,
     saveState,
     loadState,
-  });
+  };
 
 })();

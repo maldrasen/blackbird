@@ -57,11 +57,11 @@ global.TargetingController = (function() {
     return monsters.map(id => state.getPosition(id));
   }
 
-  return Object.freeze({
+  return {
     startTargeting,
     targetSelected,
     cancelTargeting,
     getMonstersInRange,
-  });
+  };
 
 })()

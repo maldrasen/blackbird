@@ -40,9 +40,9 @@ global.WeaponEnchantment = function(id, enchantment) {
     }
   }
 
-  return Object.freeze({
+  return {
     getType: () => { return enchantment.type; },
     getPower,
     processOnHit,
-  });
+  };
 }

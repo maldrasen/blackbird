@@ -122,7 +122,7 @@ global.GameSystem = (function() {
     returnMode = null;
   }
 
-  return Object.freeze({
+  return {
     getState,
     isLoaded,
     canSave,
@@ -138,6 +138,6 @@ global.GameSystem = (function() {
     getReturnMode,
     markReturnMode,
     returnToPreviousMode,
-  });
+  };
 
 })();
