@@ -5,6 +5,8 @@ BaseMonster.register('rabid-skitterfang',{
   type: 'critter',
   level: 1,
 
+  healthFactor: 0.5,
+
   prioritizedAbilities: [
     { code:'beast-bite', priority:50 },
   ],

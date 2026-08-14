@@ -5,6 +5,8 @@ BaseMonster.register('revolting-cockroach',{
   type: 'critter',
   level: 1,
 
+  healthFactor: 1.2,
+
   prioritizedAbilities: [
     { code:'beast-bite', priority:50 },
   ],

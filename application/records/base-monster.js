@@ -23,6 +23,11 @@ global.BaseMonster = (function() {
       return { male:10, female:10 };
     }
 
+    function getHealthFactor() {
+      if (monster.species) { return Species.lookup(monster.species).getHealthFactor(); }
+      return monster.healthFactor || 1;
+    }
+
     function getThreatWeights() {
       return monster.threatWeights || MonsterType.lookup(monster.type).getThreatWeights();
     }
@@ -43,6 +48,8 @@ global.BaseMonster = (function() {
       getType: () => { return monster.type; },
       getLevel: () => { return monster.level || 0; },
 
+      getHealthFactor,
+
       getSkills: () => { return monster.skills || {}; },
       getResistances: () => { return monster.resistances || {}; },
       getResistance: type => { return (monster.resistances||{})[type] || 0; },
@@ -50,6 +57,7 @@ global.BaseMonster = (function() {
       getArchetypes: () => { return monster.archetypes; },
       getThreatWeights,
       getEquipment: () => { return monster.equipment; },
+
       getPrioritizedAbilities: () => { return monster.prioritizedAbilities||[] },
       getNegotiationGreeting,
     };

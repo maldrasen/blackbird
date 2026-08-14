@@ -83,6 +83,7 @@ global.MonsterFactory = (function() {
     SkillsComponent.create(monsterId, skills);
 
     addAttributes(monsterBase, monsterId);
+    addHealth(monsterBase, monsterId);
   }
 
   function addAttributes(monsterBase, monsterId) {
@@ -94,6 +95,14 @@ global.MonsterFactory = (function() {
     });
 
     AttributesComponent.create(monsterId, attributes);
+  }
+
+  function addHealth(monsterBase, monsterId) {
+    const vitality = AttributesComponent.lookup(monsterId).vitality;
+    const health = Math.round(Random.rollDice({ x:vitality, d:10 }) * monsterBase.getHealthFactor());
+    const stamina = Attributes(monsterId).getMaxStamina();
+
+    HealthComponent.create(monsterId, { currentStamina:stamina, currentHealth:health, maxHealth:health });
   }
 
   return { build };

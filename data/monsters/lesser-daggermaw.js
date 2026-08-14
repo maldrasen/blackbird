@@ -6,6 +6,8 @@ BaseMonster.register('lesser-daggermaw',{
   type: 'creature',
   level: 4,
 
+  healthFactor: 1.5,
+
   prioritizedAbilities: [
     { code:'beast-bite', priority:50 },
   ],

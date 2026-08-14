@@ -54,6 +54,15 @@ describe("MonsterFactory", function() {
       expect(attributes.beauty).to.be.within(3,5);
     });
 
+    it("builds a health component from the rolled vitality", function() {
+      const id = MonsterFactory.build('rabid-skitterfang');
+      const health = HealthComponent.lookup(id);
+
+      expect(health.maxHealth).to.be.within(5,100);
+      expect(health.currentHealth).to.equal(health.maxHealth);
+      expect(health.currentStamina).to.be.within(3000,4830);
+    });
+
     it("builds a skills component from the monster type's base skill ranges", function() {
       const id = MonsterFactory.build('rabid-skitterfang');
       const skills = SkillsComponent.lookup(id);
