@@ -141,7 +141,7 @@ global.Feature = function(type) {
   // Internal doors connect the feature's own rooms. They're stored as plain specs — the position is feature-local
   // and from/to are indices into the feature's room array — and are converted into real Door records with global
   // room indices when the floor is built.
-  return Object.freeze({
+  return {
     getType: () => { return type; },
     getRooms: () => { return [...rooms]; },
     getDoors: () => { return [...doors]; },
@@ -158,5 +158,5 @@ global.Feature = function(type) {
     getEdgeTiles,
     inspect,
     pack,
-  });
+  };
 }

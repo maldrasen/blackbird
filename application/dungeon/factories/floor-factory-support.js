@@ -103,12 +103,12 @@ global.FloorFactorySupport = (function() {
     throw new Error(`Room[${toIndex}] is not adjacent to (${point.x},${point.y})`);
   }
 
-  return Object.freeze({
+  return {
     getGapBetweenFeatures,
     getStartTiles,
     addSegment,
     segmentIsClear,
     buildDoorToFeature,
-  });
+  };
 
 })();

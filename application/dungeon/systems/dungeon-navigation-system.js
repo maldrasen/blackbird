@@ -101,12 +101,12 @@ global.DungeonNavigationSystem = (function() {
     return path;
   }
 
-  return Object.freeze({
+  return {
     canMoveTo,
     getAdjacentRoomIndices,
     moveToRoom,
     getPathToRoom,
     getPathThroughDoor,
-  });
+  };
 
 })();

@@ -105,13 +105,13 @@ global.PartyConfiguration = (function() {
     return getVacantFrontPositions(configuration).length === 0;
   }
 
-  return Object.freeze({
+  return {
     setConfiguration,
     getConfiguration,
     setCharacter,
     addCharacter,
     getVacantFrontPositions,
     isValid,
-  });
+  };
 
 })();

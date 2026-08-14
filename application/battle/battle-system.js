@@ -123,7 +123,7 @@ global.BattleSystem = (function() {
     GameSystem.setGameMode(GameMode.enlighten);
   }
 
-  return Object.freeze({
+  return {
     startBattle,
     reset,
     addStatus,
@@ -136,6 +136,6 @@ global.BattleSystem = (function() {
 
     getState: () => { return state; },
     getRound: () => { return round; },
-  });
+  };
 
 })()

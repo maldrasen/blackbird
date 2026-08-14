@@ -15,8 +15,8 @@ global.StateRecorder = function(filepath) {
     if (data) { return FileHelper.writeJSON(filepath, data); }
   }
 
-  return Object.freeze({
+  return {
     loadState,
     saveState,
-  });
+  };
 }

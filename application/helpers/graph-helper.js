@@ -7,8 +7,8 @@ global.GraphHelper = (function() {
 
   }
 
-  return Object.freeze({
+  return {
     buildMinimumSpanningTree
-  });
+  };
 
 })();

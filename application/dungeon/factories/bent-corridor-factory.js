@@ -82,7 +82,6 @@ global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
     return (sameX || sameY) ? { start, end } : { start, corner, end };
   }
 
-  return Object.freeze({
-    build,
-  });
+  return { build };
+
 }

@@ -87,7 +87,7 @@ global.FeatureGraph = function() {
     return { xMin, xMax, yMin, yMax };
   }
 
-  return Object.freeze({
+  return {
     addVertex,
     getVertices,
     getEdges,
@@ -96,6 +96,6 @@ global.FeatureGraph = function() {
     getSpanningTree,
     getSpanningForest,
     getBounds,
-  });
+  };
 
 }

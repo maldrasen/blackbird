@@ -63,7 +63,7 @@ global.DungeonSystem = (function() {
     GameSystem.setGameMode(GameMode.battle);
   }
 
-  return Object.freeze({
+  return {
     getDungeonState: () => { return dungeonState; },
     getDungeonFloor: () => { return dungeonFloor; },
     enterDungeon,
@@ -74,6 +74,6 @@ global.DungeonSystem = (function() {
     goDownStairs,
     goUpStairs,
     startRandomEncounter,
-  });
+  };
 
 })();

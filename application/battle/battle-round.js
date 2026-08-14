@@ -106,7 +106,7 @@ global.BattleRound = function(acting) {
     }
   }
 
-  return Object.freeze({
+  return {
     getActing: () => { return acting; },
     getActingMonster: () => { return Monster(acting); },
     getActingCharacter: () => { return Character(acting); },
@@ -135,6 +135,6 @@ global.BattleRound = function(acting) {
     addTime,
     getTime: () => { return time; },
     validate,
-  });
+  };
 
 }

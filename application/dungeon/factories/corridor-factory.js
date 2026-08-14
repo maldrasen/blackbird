@@ -100,7 +100,7 @@ global.CorridorFactory = function() {
     return (dy < 0 ? 'N' : 'S') + (dx > 0 ? 'E' : 'W');
   }
 
-  return Object.freeze({
+  return {
     digBetween,
-  });
+  };
 }

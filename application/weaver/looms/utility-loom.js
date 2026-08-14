@@ -4,6 +4,6 @@ global.UtilityLoom = (function() {
     return Weaver.formatWarning(`[Utility:${token}|${argument}]`);
   }
 
-  return Object.freeze({ weave });
+  return { weave };
 
 })();

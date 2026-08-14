@@ -90,7 +90,7 @@ global.Validate = (function() {
     });
   }
 
-  return Object.freeze({
+  return {
     between,
     atLeast,
     isIn,
@@ -103,6 +103,6 @@ global.Validate = (function() {
     isArray,
     singleOrArrayOf,
     singleKeyFrom
-  });
+  };
 
 })();

@@ -115,7 +115,7 @@ global.EquipmentManager = function(characterId) {
     if (slot != null) { equipItem(null, slot); }
   }
 
-  return Object.freeze({
+  return {
     getSlot,
     getEquippedSlot,
     getValidSlots,
@@ -126,6 +126,6 @@ global.EquipmentManager = function(characterId) {
     getEquippedShield,
     hasEquippedWeaponType,
     getDamageReduction,
-  });
+  };
 
 }

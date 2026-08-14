@@ -47,9 +47,9 @@ global.FeatureGraphHelper = (function() {
     return Math.round(Math.sqrt((dx * dx) + (dy * dy)));
   }
 
-  return Object.freeze({
+  return {
     getClosestDisconnectedRooms,
     pairKey,
-  });
+  };
 
 })();

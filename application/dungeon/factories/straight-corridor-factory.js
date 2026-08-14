@@ -98,7 +98,6 @@ global.StraightCorridorFactory = function(originFeature, targetFeature, alignmen
     return room;
   }
 
-  return Object.freeze({
-    build,
-  });
+  return { build };
+
 }

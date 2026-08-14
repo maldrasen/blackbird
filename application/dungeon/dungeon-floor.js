@@ -56,7 +56,7 @@ global.DungeonFloor = function(level, theme=null) {
     }
   }
 
-  return Object.freeze({
+  return {
     getLevel: () => { return level; },
     getTheme: () => { return theme; },
     getFloorGrid: () => { return floorGrid; },
@@ -80,6 +80,6 @@ global.DungeonFloor = function(level, theme=null) {
     getStairs: direction => { return stairs[direction]; },
 
     pack,
-  });
+  };
 
 }

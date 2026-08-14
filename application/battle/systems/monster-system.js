@@ -95,9 +95,9 @@ global.MonsterSystem = (function() {
     return target;
   }
 
-  return Object.freeze({
+  return {
     executeBattleTurn,
     pickAbility,
-  });
+  };
 
 })();

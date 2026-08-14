@@ -98,7 +98,7 @@ global.FeaturePlacer = function() {
     }
   }
 
-  return Object.freeze({
+  return {
     packFeatures,
-  });
+  };
 }

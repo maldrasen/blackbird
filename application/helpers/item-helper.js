@@ -48,11 +48,11 @@ global.ItemHelper = (function() {
     return substituted;
   }
 
-  return Object.freeze({
+  return {
     getArmorValueFactor,
     getWeaponValueFactor,
     getScaledReduction,
     substitutePrimaryMaterial,
-  });
+  };
 
 })();

@@ -55,7 +55,7 @@ global.ObjectHelper = (function() {
     return value != null && typeof value === 'object' && Array.isArray(value) === false;
   }
 
-  return Object.freeze({
+  return {
     fetch,
     filter,
     reverse,
@@ -63,6 +63,6 @@ global.ObjectHelper = (function() {
     unfloat,
     merge,
     isPlainObject,
-  });
+  };
 
 })();

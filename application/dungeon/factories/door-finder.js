@@ -64,7 +64,7 @@ global.DoorFinder = function(grid) {
     connections.addEdge(from,to);
   }
 
-  return Object.freeze({
+  return {
     execute,
-  });
+  };
 }

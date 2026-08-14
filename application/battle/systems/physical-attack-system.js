@@ -101,10 +101,10 @@ global.PhysicalAttackSystem = (function() {
     BattleSystem.getRound().addMessage({ text:message });
   }
 
-  return Object.freeze({
+  return {
     updateContext,
     processHit,
     processMiss,
-  })
+  };
 
 })();

@@ -102,7 +102,7 @@ global.EnglishHelper = (function() {
     return StringHelper.titlecase(EnglishHelper.numberInEnglish(number, options));
   }
 
-  return Object.freeze({
+  return {
     pluralize,
     quantify,
     possessive,
@@ -111,6 +111,6 @@ global.EnglishHelper = (function() {
     joinList,
     numberInEnglish,
     NumberInEnglish,
-  });
+  };
 
 })();
