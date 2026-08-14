@@ -43,14 +43,13 @@ describe("MonsterFactory", function() {
       expect(actor.species).to.be.undefined;
     });
 
-    it("builds a skills component with every skill at zero", function() {
+    it("builds a skills component from the monster type's base skill ranges", function() {
       const id = MonsterFactory.build('rabid-skitterfang');
       const skills = SkillsComponent.lookup(id);
 
-      expect(skills.dodge).to.equal(0);
-      SkillsComponent.getSkills().forEach(code => {
-        expect(skills[code]).to.equal(0);
-      });
+      expect(skills.dodge).to.be.within(10,20);
+      expect(skills.daggers).to.be.within(10,20);
+      expect(skills.stealth).to.equal(0);
     });
   });
 

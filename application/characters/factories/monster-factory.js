@@ -32,11 +32,19 @@ global.MonsterFactory = (function() {
     return monsterId;
   }
 
+  // Skills start with the type's base skill ranges, then any skills set directly on the base monster override the
+  // rolled values.
   function addSkills(monsterBase, monsterId) {
+    const baseSkills = MonsterType.lookup(monsterBase.getType()).getBaseSkills() || {};
     const skills = SkillsComponent.lookup(monsterId);
+
+    Object.entries(baseSkills).forEach(([code,range]) => {
+      skills[code] = Random.between(range[0],range[1]);
+    });
     Object.entries(monsterBase.getSkills()).forEach(([code,value]) => {
       skills[code] = value;
     });
+
     SkillsComponent.update(monsterId, skills);
   }
 
