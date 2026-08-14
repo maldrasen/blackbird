@@ -9,14 +9,16 @@ global.PronounHelper = (function() {
     if (gender === Gender.female) { return 'she'; }
     if (gender === Gender.futa) { return 'shi'; }
     if (gender === Gender.enby) { return 'ze'; }
+    if (gender === Gender.none) { return 'it'; }
   }
 
-  // Conjunction he's, she's, shi's, or ze's
+  // Conjunction he's, she's, shi's, ze's, or it's
   function hes(gender) {
     if (gender === Gender.male) { return `he's`; }
     if (gender === Gender.female) { return `she's`; }
     if (gender === Gender.futa) { return `shi's`; }
     if (gender === Gender.enby) { return `ze's`; }
+    if (gender === Gender.none) { return `it's`; }
   }
 
   function him(gender) {
@@ -24,6 +26,7 @@ global.PronounHelper = (function() {
     if (gender === Gender.female) { return 'her'; }
     if (gender === Gender.futa) { return 'hir'; }
     if (gender === Gender.enby) { return 'zem'; }
+    if (gender === Gender.none) { return 'it'; }
   }
 
   // Third-person determinator
@@ -32,6 +35,7 @@ global.PronounHelper = (function() {
     if (gender === Gender.female) { return 'her'; }
     if (gender === Gender.futa) { return 'hir'; }
     if (gender === Gender.enby) { return 'zir'; }
+    if (gender === Gender.none) { return 'its'; }
   }
 
   // Third-person possessive
@@ -40,6 +44,7 @@ global.PronounHelper = (function() {
     if (gender === Gender.female) { return 'hers'; }
     if (gender === Gender.futa) { return 'hirs'; }
     if (gender === Gender.enby) { return 'zirs'; }
+    if (gender === Gender.none) { return 'its'; }
   }
 
   function man(gender) {
@@ -47,6 +52,7 @@ global.PronounHelper = (function() {
     if (gender === Gender.female) { return 'woman'; }
     if (gender === Gender.futa) { return 'futa'; }
     if (gender === Gender.enby) { return 'enby'; }
+    if (gender === Gender.none) { return 'beast'; }
   }
 
   function men(gender) {
@@ -54,6 +60,7 @@ global.PronounHelper = (function() {
     if (gender === Gender.female) { return 'women'; }
     if (gender === Gender.futa) { return 'futas'; }
     if (gender === Gender.enby) { return 'enbies'; }
+    if (gender === Gender.none) { return 'beasts'; }
   }
 
   return { he, hes, him, his, hers, man, men };

@@ -154,6 +154,7 @@ global.Gender = {
   female: 'female',
   futa: 'futa',
   enby: 'enby',
+  none: 'none',
 };
 
 global.GenderName = {
@@ -161,6 +162,7 @@ global.GenderName = {
   female: 'Female',
   futa: 'Futanari',
   enby: 'Non-Binary',
+  none: 'None',
 };
 
 global.SpeciesCode = {
