@@ -69,6 +69,10 @@ global.MonsterFactory = (function() {
       name: monsterBase.getName(),
       gender: Random.fromFrequencyMap(monsterBase.getGenderRatio()),
     });
+
+    const skills = {};
+    SkillsComponent.getSkills().forEach(code => { skills[code] = 0; });
+    SkillsComponent.create(monsterId, skills);
   }
 
   return { build };

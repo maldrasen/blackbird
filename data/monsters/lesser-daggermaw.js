@@ -4,5 +4,5 @@ BaseMonster.register('lesser-daggermaw',{
     both end in wide circular arrays of teeth.`,
   genderRatio: { none:100 },
   type: 'creature',
-  level: 1,
+  level: 4,
 });

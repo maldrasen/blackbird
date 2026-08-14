@@ -33,4 +33,25 @@ describe("MonsterFactory", function() {
     });
   });
 
+  describe('Building a beast type monster', function() {
+    it("builds an actor component without a species", function() {
+      const id = MonsterFactory.build('rabid-skitterfang');
+      const actor = ActorComponent.lookup(id);
+
+      expect(actor.name).to.equal('Rabid Skitterfang');
+      expect(actor.gender).to.equal(Gender.none);
+      expect(actor.species).to.be.undefined;
+    });
+
+    it("builds a skills component with every skill at zero", function() {
+      const id = MonsterFactory.build('rabid-skitterfang');
+      const skills = SkillsComponent.lookup(id);
+
+      expect(skills.dodge).to.equal(0);
+      SkillsComponent.getSkills().forEach(code => {
+        expect(skills[code]).to.equal(0);
+      });
+    });
+  });
+
 });
