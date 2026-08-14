@@ -18,7 +18,10 @@ global.MonsterType = (function() {
       getCode: () => { return code; },
       getThreatWeights: () => { return type.threatWeights; },
       getPrioritizedAbilities: () => { return type.prioritizedAbilities; },
+      getBaseAttributes: () => { return type.baseAttributes; },
       getAttributeGrowth: () => { return type.attributeGrowth; },
+      getBaseSkills: () => { return type.baseSkills; },
+      getSkillGrowth: () => { return type.skillGrowth; }
     };
   }
 
