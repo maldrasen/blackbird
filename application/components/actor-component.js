@@ -28,8 +28,12 @@ global.ActorComponent = (function() {
       }
     });
 
-    Validate.isIn('Actor.gender',actorComponent.gender,Object.values(Gender));
-    Validate.isIn('Actor.species',actorComponent.species,Species.getAllCodes());
+    // A character has a species and will be one of the four standard genders, not none. A beast will have an actor
+    // component because the weaver templates will reference name and a gender, but beasts won't have a species.
+    if (actorComponent.species) {
+      Validate.isIn('Actor.gender',actorComponent.gender,['male','female','futa','enby']);
+      Validate.isIn('Actor.species',actorComponent.species,Species.getAllCodes());
+    }
   }
 
   return {
