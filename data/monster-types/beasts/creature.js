@@ -1,14 +1,10 @@
 // The "Creature" type is a basic beast type that favors strength and vitality.
-MonsterType.register('critter',{
+MonsterType.register('creature',{
 
   threatWeights: {
     closest: 75,
     leastArmor: 50,
   },
-
-  prioritizedAbilities: [
-    { code:'basic-attack', priority:50 },
-  ],
 
   baseAttributes: {
     strength:     [15,25],
@@ -24,6 +20,20 @@ MonsterType.register('critter',{
     vitality:     120,
     intelligence: 10,
     beauty:       10,
+  },
+
+  baseSkills: {
+    dodge:     [10,20],
+    maces:     [10,20],
+    grappling: [5,10],
+    daggers:   [0,5],
+  },
+
+  skillGrowth: {
+    dodge: 40,
+    maces: 40,
+    grappling: 20,
+    daggers: 10,
   },
 
 });

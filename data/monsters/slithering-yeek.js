@@ -6,6 +6,10 @@ BaseMonster.register('slithering-yeek',{
   type: 'critter',
   level: 3,
 
-  // Toxic, Venomous, and Poisonous
+  prioritizedAbilities: [
+    { code:'venomous-bite', priority:50 }, // TODO: We need to be able to set poison strength when an ability is defined.
+  ],
 
 });
+
+// TODO: Higher level yeek with a toxic grapple attack.

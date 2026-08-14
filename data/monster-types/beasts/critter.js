@@ -6,10 +6,6 @@ MonsterType.register('critter',{
     leastArmor: 50,
   },
 
-  prioritizedAbilities: [
-    { code:'basic-attack', priority:50 },
-  ],
-
   baseAttributes: {
     strength:     [5,10],
     dexterity:    [15,25],
@@ -24,6 +20,16 @@ MonsterType.register('critter',{
     vitality:     80,
     intelligence: 10,
     beauty:       10,
+  },
+
+  baseSkills: {
+    dodge: [10,20],
+    daggers: [10,20],
+  },
+
+  skillGrowth: {
+    dodge: 50,
+    daggers: 50,
   },
 
 });
