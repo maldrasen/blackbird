@@ -2,6 +2,10 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
+## Priority 1
+
+- [185] Add more monsters `5pt` — [185-add-more-monsters.md](185-add-more-monsters.md)
+
 ## Priority 2
 
 - [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)

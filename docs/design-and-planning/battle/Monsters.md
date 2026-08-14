@@ -16,11 +16,8 @@ Gaunts looks like they're dressed in robes or cloaks, with deep hoods to obscure
 ### Other
 Going to need some other small, unusual creatures to fill in the ranks. The names we give these monsters need to be descriptive enough that it's possible to understand vaguely what a monster is without reading a long description, but I also want to avoid overused monsters or giant rats and shit.
 
-- Rabid Skitterfang (Two legged rats, mostly mouth)
-- Revolting Cockroach (Yes, it breaks all the rules I made for myself, but I'm adding these so I can also add a Revolting Horsecockroach)
-- Slithering Yeek (Toxic, Venomous, and Poisonous)
+- Revolting Horsecockroach
 - Queen (something) and Consort (somethings)
-- Daggermaw (More like a giant lampry)
 - Gnawbones
 - Creeping Coins
 - Bandersnatch (with extra snatch)

@@ -37,6 +37,7 @@ global.BaseMonster = (function() {
       getCode: () => { return code; },
       getName: () => { return monster.name; },
       getNameType: () => { return monster.nameType || 'common' },
+      getDescription: () => { return monster.description },
       getSpecies: () => { return monster.species; },
       getGenderRatio,
       getType: () => { return monster.type; },
