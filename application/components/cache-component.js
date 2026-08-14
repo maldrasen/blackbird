@@ -35,13 +35,13 @@ global.CacheComponent = (function() {
     });
   }
 
-  return Object.freeze({
+  return {
     hasParent: () => { return false; },
     create,
     build,
     update,
     lookup,
     destroy,
-  });
+  };
 
 })();

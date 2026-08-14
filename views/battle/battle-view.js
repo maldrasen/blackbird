@@ -19,10 +19,10 @@ global.BattleView = (function() {
     FormationPanel.updateAll(state);
   }
 
-  return Object.freeze({
+  return {
     init,
     show,
     update,
-  });
+  };
 
 })();

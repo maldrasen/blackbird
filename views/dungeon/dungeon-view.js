@@ -107,13 +107,13 @@ global.DungeonView = (function() {
     walking = false;
   }
 
-  return Object.freeze({
+  return {
     init,
     show,
     close,
     drawDungeon,
     isWalking,
     stopWalking,
-  });
+  };
 
 })();

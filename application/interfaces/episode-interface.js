@@ -10,9 +10,9 @@ global.EpisodeInterface = (function() {
     EpisodeView.showDamageEffect();
   }
 
-  return Object.freeze({
+  return {
     showPage,
     showDamageEffect,
-  });
+  };
 
 })();

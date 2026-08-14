@@ -107,7 +107,7 @@ global.BattleText = (function() {
     X.append('#battleText',display);
   }
 
-  return Object.freeze({
+  return {
     init,
     build,
     clear,
@@ -115,6 +115,6 @@ global.BattleText = (function() {
     show,
     setMessages,
     showBattleStartText,
-  });
+  };
 
 })();

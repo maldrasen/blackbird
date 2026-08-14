@@ -29,12 +29,12 @@ global.SexualHistoryComponent =  (function() {
     });
   }
 
-  return Object.freeze({
+  return {
     hasParent: () => { return false; },
     create,
     update,
     lookup,
     destroy,
-  });
+  };
 
 })();

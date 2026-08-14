@@ -190,8 +190,8 @@ global.InventoryPanel = function(options) {
 
   function useSelected() { throw new Error(`TODO: How do I shoop whoop?`) }
 
-  return Object.freeze({
+  return {
     buildInto,
     update,
-  });
+  };
 }

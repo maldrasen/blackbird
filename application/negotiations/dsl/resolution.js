@@ -1,6 +1,6 @@
 global.Resolution = function(type, message, feelings, options={}) {
   const effectKeys = ['flags', 'givePreferences', 'giveStatusEffect', 'rememberThis'];
-  const effects = Object.freeze(ObjectHelper.filter(options, effectKeys));
+  const effects = ObjectHelper.filter(options, effectKeys);
   const extras = ObjectHelper.filter(options, ['question', 'code']);
 
   const unknown = Object.keys(options).filter(key => [...effectKeys, 'question', 'code', 'feelings'].includes(key) === false);
@@ -70,5 +70,5 @@ global.Resolution = function(type, message, feelings, options={}) {
     withFeelings: (newFeelings) => Resolution(type, message, newFeelings, { ...effects, ...extras }),
   };
 
-  return Object.freeze(reaction);
+  return reaction;
 }

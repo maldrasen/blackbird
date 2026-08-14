@@ -39,9 +39,9 @@ global.Console = (function() {
     return JSON.stringify(error, Object.getOwnPropertyNames(error))
   }
 
-  return Object.freeze({
+  return {
     log,
     logError,
-  });
+  };
 
 })();

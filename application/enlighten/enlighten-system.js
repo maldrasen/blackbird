@@ -27,11 +27,11 @@ global.EnlightenSystem = (function() {
     return LevelSystem.levelUp(id, attribute);
   }
 
-  return Object.freeze({
+  return {
     getState: () => { return state; },
     startEnlightenment,
     finishEnlightenment,
     levelUpAttribute,
-  });
+  };
 
 })();

@@ -68,12 +68,12 @@ global.EssenceSystem = (function() {
     return experience.essence >= totalEssenceToLevel(experience.level + 1, species);
   }
 
-  return Object.freeze({
+  return {
     monsterEssenceValue,
     essenceToLevel,
     totalEssenceToLevel,
     speciesCostFactor,
     canLevelUp,
-  });
+  };
 
 })();

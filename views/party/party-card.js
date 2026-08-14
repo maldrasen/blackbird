@@ -13,9 +13,9 @@ global.PartyCard = function(id) {
   const code = GameSystem.getState().getPlayer() === id ? 'player' : 'character';
   element.querySelector('.background').style['background-image'] = X.assetURL(`temp-art/${code}.png`);
 
-  return Object.freeze({
+  return {
     getEntity: () => { return id; },
     getElement: () => { return element; },
-  });
+  };
 
 }

@@ -20,8 +20,6 @@ global.ItemLoom = (function() {
     }
   }
 
-  return Object.freeze({
-    weave,
-  });
+  return { weave };
 
 })();

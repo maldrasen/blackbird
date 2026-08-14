@@ -62,13 +62,13 @@ global.AnusComponent = (function() {
     return lookup(withPlacement(parent,'normal')[0]);
   }
 
-  return Object.freeze({
+  return {
     hasParent: () => { return true; },
     create,
     update,
     lookup,
     destroy,
     lookupNormalOf,
-  });
+  };
 
 })();

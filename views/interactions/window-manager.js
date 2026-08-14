@@ -36,11 +36,11 @@ global.WindowManager = (function() {
     }
   }
 
-  return Object.freeze({
+  return {
     init,
     push,
     pop,
     remove,
-  });
+  };
 
 })();

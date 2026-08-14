@@ -243,7 +243,7 @@ global.Character = function(id) {
     return Random.between(6,12);
   }
 
-  return Object.freeze({
+  return {
     getEntity: () => { return id; },
     isPlayer,
     getName,
@@ -300,6 +300,6 @@ global.Character = function(id) {
     getOrgasmThreshold,
     rollForOrgasm,
     rollRefractoryPeriod,
-  });
+  };
 
 }

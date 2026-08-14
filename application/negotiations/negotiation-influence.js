@@ -41,8 +41,8 @@ global.NegotiationInfluence = (function() {
     return Math.round(value * factor) || 0;
   }
 
-  return Object.freeze({
+  return {
     moderateFeelings,
-  });
+  };
 
 })();

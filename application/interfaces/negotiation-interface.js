@@ -25,12 +25,12 @@ global.NegotiationInterface = (function() {
     NegotiationOverlay.renderResolution();
   }
 
-  return Object.freeze({
+  return {
     open,
     close,
     renderQuestion,
     renderDialog,
     renderResolution,
-  });
+  };
 
 })();

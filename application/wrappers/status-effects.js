@@ -66,12 +66,12 @@ global.StatusEffects = function(parentId) {
     })[0];
   }
 
-  return Object.freeze({
+  return {
     apply,
     get,
     has,
     remove,
     list
-  });
+  };
 
 }

@@ -8,8 +8,6 @@ global.Requirements = (function() {
     return requires(context);
   }
 
-  return Object.freeze({
-    met,
-  });
+  return { met };
 
 })();

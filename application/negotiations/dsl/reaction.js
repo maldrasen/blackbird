@@ -41,6 +41,6 @@ global.Reaction = (function() {
     methods[key] = (message, options={}) => Resolution('feelings', message, reactionMap[key], options);
   });
 
-  return Object.freeze(methods);
+  return methods;
 
 })();

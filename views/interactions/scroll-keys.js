@@ -35,6 +35,6 @@ global.ScrollKeys = (function() {
     if (event.code === KeyCodes.End)      { panel.scrollTop = panel.scrollHeight; }
   }
 
-  return Object.freeze({ init });
+  return { init };
 
 })();

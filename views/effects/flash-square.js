@@ -26,8 +26,6 @@ global.FlashSquare = (function() {
     return styles.join(' ');
   }
 
-  return Object.freeze({
-    flash
-  });
+  return { flash };
 
 })();

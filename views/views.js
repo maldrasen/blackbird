@@ -36,9 +36,9 @@ global.Views = (function() {
     MainMenu.show();
   }
 
-  return Object.freeze({
+  return {
     initAll,
     endGame,
-  });
+  };
 
 })();

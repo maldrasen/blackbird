@@ -144,6 +144,6 @@ global.TrainingOutput = (function() {
     return '';
   }
 
-  return Object.freeze({ show });
+  return { show };
 
 })();

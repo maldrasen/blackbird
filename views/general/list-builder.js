@@ -4,8 +4,8 @@
 global.ListBuilder = function(root, classname=null) {
   let html = classname ? `<${root} class='${classname}'>` : `<${root}>`;
 
-  return Object.freeze({
+  return {
     add: (string) => { html += `${string}`; },
     getList: () => { return `${html}</${root}>`; },
-  });
+  };
 }

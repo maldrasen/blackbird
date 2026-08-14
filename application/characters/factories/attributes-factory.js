@@ -15,6 +15,6 @@ global.AttributesFactory = (function() {
     state.setAttributes(attributes);
   }
 
-  return Object.freeze({ build });
+  return { build };
 
 })();

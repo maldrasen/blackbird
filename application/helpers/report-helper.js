@@ -21,10 +21,10 @@ global.ReportHelper = (function() {
     return [header, '-'.repeat(header.length), ...rows.map(line)];
   }
 
-  return Object.freeze({
+  return {
     pad,
     padNumber,
     formatTable,
-  });
+  };
 
 })();

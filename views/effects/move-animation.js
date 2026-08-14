@@ -25,8 +25,6 @@ global.MoveAnimation = (function() {
     return animation;
   }
 
-  return Object.freeze({
-    move,
-  });
+  return { move };
 
 })();

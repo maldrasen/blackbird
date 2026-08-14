@@ -48,8 +48,8 @@ global.NegotiationContest = function(options) {
     return Random.roll(AttributesComponent.lookup(id)[attribute]);
   }
 
-  return Object.freeze({
+  return {
     type: 'contest',
     resolve: (context) => (winsContest(context) ? win : loss).resolve(context),
-  });
+  };
 }

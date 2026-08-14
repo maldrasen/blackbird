@@ -54,9 +54,9 @@ global.TrainingPersistedActionsPanel = (function() {
     TrainingActionPanel.update();
   }
 
-  return Object.freeze({
+  return {
     init,
     update,
-  });
+  };
 
 })();

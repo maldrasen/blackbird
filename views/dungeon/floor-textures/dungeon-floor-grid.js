@@ -24,8 +24,8 @@ global.DungeonFloorGrid = (function() {
     ].join(''));
   }
 
-  return Object.freeze({
+  return {
     paint
-  });
+  };
 
 })();

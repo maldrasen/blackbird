@@ -315,7 +315,7 @@ global.BattleState = function(data) {
     }
   }
 
-  return Object.freeze({
+  return {
     cleanup,
     getAfterBattle: () => { return afterBattle; },
     getEncounter: () => { return encounter; },
@@ -375,6 +375,6 @@ global.BattleState = function(data) {
     getTotalEssence,
     skillImproved,
     getSkillImprovements: () => { return skillImprovements; },
-  });
+  };
 
 }

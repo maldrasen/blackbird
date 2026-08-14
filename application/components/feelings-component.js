@@ -52,13 +52,13 @@ global.FeelingsComponent = (function() {
     return entity ? lookup(entity) : null;
   }
 
-  return Object.freeze({
+  return {
     hasParent: () => { return true; },
     create,
     update,
     lookup,
     destroy,
     findByTarget,
-  });
+  };
 
 })();

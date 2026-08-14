@@ -219,7 +219,7 @@ global.CharacterOverviewPanel = (function() {
     }
   }
 
-  return Object.freeze({
+  return {
     fillHealthBars,
     fillManaBars,
     fillFeelingsBars,
@@ -232,6 +232,6 @@ global.CharacterOverviewPanel = (function() {
     fillAnima,
     fillAnimus,
     fillSkills,
-  });
+  };
 
 })();

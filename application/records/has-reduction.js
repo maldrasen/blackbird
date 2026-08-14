@@ -4,7 +4,7 @@
 // that lookup() returns:
 //
 //   const reduction = HasReduction(armor);
-//   return Object.freeze({ ...reduction, getCode, ... });
+//   return { ...reduction, getCode, ... };
 //
 // The reduction profile describes how much of each physical damage type the item's shape turns away at steel
 // quality, scaled by how well the primary (first listed) material actually absorbs a blow. The same breastplate

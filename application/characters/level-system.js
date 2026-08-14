@@ -44,8 +44,8 @@ global.LevelSystem = (function() {
     HealthComponent.update(id, health);
   }
 
-  return Object.freeze({
+  return {
     levelUp,
-  });
+  };
 
 })();

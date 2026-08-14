@@ -180,7 +180,7 @@ global.Casement = (function() {
 
     wireEvents();
 
-    const self = Object.freeze({
+    const self = {
       getID,
       getCasementContent,
       getCasementWindow,
@@ -197,7 +197,7 @@ global.Casement = (function() {
       setLocation,
       setSize,
       close,
-    });
+    };
 
     return self;
   }
@@ -279,11 +279,11 @@ global.Casement = (function() {
     topCasement.setZIndex(4000 + casementCounter++);
   }
 
-  return Object.freeze({
+  return {
     init,
     fromPath,
     fromString,
     getAssociatedCasements,
-  });
+  };
 
 })();

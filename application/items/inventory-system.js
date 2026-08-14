@@ -49,9 +49,9 @@ global.InventorySystem = (function() {
     InventoryManager(destinationId).addItem(itemId);
   }
 
-  return Object.freeze({
+  return {
     getReachableInventories,
     transferItem,
-  });
+  };
 
 })();

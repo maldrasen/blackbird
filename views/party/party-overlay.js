@@ -218,10 +218,10 @@ global.PartyOverlay = (function() {
     return id !== GameSystem.getState().getPlayer();
   }
 
-  return Object.freeze({
+  return {
     init,
     open,
     close,
-  });
+  };
 
 })();

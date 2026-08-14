@@ -60,9 +60,9 @@ global.NavigationOverlay = (function() {
     GameSystem.setGameMode(GameMode.episode);
   }
 
-  return Object.freeze({
+  return {
     init,
     open,
-  });
+  };
 
 })();

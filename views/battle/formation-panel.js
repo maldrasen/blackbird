@@ -310,7 +310,7 @@ global.FormationPanel = (function() {
     X.removeClass('.combatant.acting','acting');
   }
 
-  return Object.freeze({
+  return {
     init,
     build,
     getPositionPanel,
@@ -324,6 +324,6 @@ global.FormationPanel = (function() {
     showDamageEffect,
     highlightActing,
     clearHighlight,
-  });
+  };
 
 })();

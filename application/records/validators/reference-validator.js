@@ -60,10 +60,10 @@ global.ReferenceValidator = (function() {
     });
   }
 
-  return Object.freeze({
+  return {
     validate,
     validateEpisodeQueue,
     validateSexAction,
-  });
+  };
 
 })();

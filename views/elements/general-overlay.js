@@ -51,7 +51,7 @@ global.GeneralOverlay = (function() {
     return X.hasClass('#generalOverlay','hide') === false;
   }
 
-  return Object.freeze({
+  return {
     init,
     open,
     setFooterContent,
@@ -59,6 +59,6 @@ global.GeneralOverlay = (function() {
     isOpen,
     unlock: () => { locked = false; },
     isLocked: () => { return locked; },
-  })
+  };
 
 })();

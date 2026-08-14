@@ -47,10 +47,10 @@ global.TrainingScalesPanel = (function() {
     });
   }
 
-  return Object.freeze({
+  return {
     build,
     setScaleValue,
     update,
-  });
+  };
 
 })();

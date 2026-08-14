@@ -115,7 +115,7 @@ global.BarDisplay = function(options) {
   function hideValues() { X.addClass(getElement().querySelector('.value-label'),'hide'); }
   function showValues() { X.removeClass(getElement().querySelector('.value-label'),'hide'); }
 
-  return Object.freeze({
+  return {
     getElement,
     setLabel,
     setColor,
@@ -128,6 +128,6 @@ global.BarDisplay = function(options) {
     showTextRow,
     hideValues,
     showValues,
-  });
+  };
 
 }

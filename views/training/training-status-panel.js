@@ -86,9 +86,9 @@ global.TrainingStatusPanel = (function() {
     </ul>`);
   }
 
-  return Object.freeze({
+  return {
     build,
     update,
-  });
+  };
 
 })();

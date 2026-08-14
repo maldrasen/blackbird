@@ -138,12 +138,12 @@ global.Tooltip = (function() {
     frame.innerHTML = '';
   }
 
-  return Object.freeze({
+  return {
     init,
     register,
     unregister,
     add,
     close
-  });
+  };
 
 })();

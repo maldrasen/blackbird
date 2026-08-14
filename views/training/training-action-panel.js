@@ -110,10 +110,10 @@ global.TrainingActionPanel = (function() {
       </div>`;
   }
 
-  return Object.freeze({
+  return {
     init,
     build,
     update,
-  });
+  };
 
 })();

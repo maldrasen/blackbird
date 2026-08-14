@@ -169,7 +169,7 @@ global.NegotiationState = function() {
     }
   }
 
-  return Object.freeze({
+  return {
     getContext: () => { return {...context}; },
     setContext: newContext => { Object.entries(newContext).forEach(([key,value]) => { context[key] = value; }); },
     getMonster: () => { return monsterId; },
@@ -193,6 +193,6 @@ global.NegotiationState = function() {
     hasResolution: () => { return getResolution().type !== 'unresolved'; },
     markResolutionShown: () => { resolutionShown = true; },
     hasShownResolution: () => { return resolutionShown; },
-  });
+  };
 
 };

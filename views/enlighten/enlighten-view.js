@@ -159,10 +159,10 @@ global.EnlightenView = (function() {
     GameSystem.returnToPreviousMode();
   }
 
-  return Object.freeze({
+  return {
     init,
     show,
     resume,
-  });
+  };
 
 })();

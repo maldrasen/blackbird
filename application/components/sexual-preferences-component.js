@@ -40,13 +40,13 @@ global.SexualPreferencesComponent = (function() {
     });
   }
 
-  return Object.freeze({
+  return {
     hasParent: () => { return false; },
     create,
     update,
     lookup,
     deletePreference,
     destroy,
-  });
+  };
 
 })();

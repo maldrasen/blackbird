@@ -153,7 +153,7 @@ global.DungeonViewport = (function() {
     DungeonCamera.stop();
   }
 
-  return Object.freeze({
+  return {
     init,
     reset,
     isDragging,
@@ -169,6 +169,6 @@ global.DungeonViewport = (function() {
     applyCamera,
     deriveCamera,
     getScale: () => { return currentScale; },
-  });
+  };
 
 })();

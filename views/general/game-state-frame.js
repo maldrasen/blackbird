@@ -108,12 +108,12 @@ global.GameStateFrame = (function() {
     CharacterOverlay.open(GameSystem.getState().getPlayer());
   }
 
-  return Object.freeze({
+  return {
     init,
     load,
     show,
     hide,
     update,
-  })
+  };
 
 })();

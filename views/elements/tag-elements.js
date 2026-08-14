@@ -9,8 +9,8 @@ global.TagElements = (function() {
     </div>`);
   }
 
-  return Object.freeze({
+  return {
     buildSkillTag,
-  });
+  };
 
 })();

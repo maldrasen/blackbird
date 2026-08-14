@@ -25,7 +25,7 @@ global.Consumable = (function() {
       return `[TODO: ${entity} consumes ${article.getName()} with results:${JSON.stringify(results)}]`;
     }
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
       getName: () => { return article.getName(); },
       getDescription: () => { return article.getDescription(); },
@@ -33,12 +33,12 @@ global.Consumable = (function() {
       getTags: () => { return article.getTags(); },
       getEffects: () => { return [...(consumable.effects||[])]; },
       consume,
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     lookup,
-  });
+  };
 
 })();

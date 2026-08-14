@@ -47,11 +47,11 @@ global.Confirmation = (function() {
     return X.hasClass('#confirmationDialog','hide') === false;
   }
 
-  return Object.freeze({
+  return {
     init,
     show,
     cancel,
     isVisible,
-  });
+  };
 
 })();

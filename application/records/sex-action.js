@@ -247,7 +247,7 @@ global.SexAction = (function() {
       return true;
     }
 
-    return Object.freeze({
+    return {
 
       // Name, Description, Category, Direction
       getCode: () => { return code; },
@@ -288,10 +288,10 @@ global.SexAction = (function() {
       getPlayerSensations: () => { return { ...action.playerSensations }; },
       getSkills: () => { return { ...action.skills }; },
       getOrientation: () => { return { ...action.orientation }; },
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     BaseClass,
     MainCategory,
     PartCategory,
@@ -299,6 +299,6 @@ global.SexAction = (function() {
     getAllCodes,
     getPossible,
     lookup,
-  });
+  };
 
 })();

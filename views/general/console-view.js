@@ -108,12 +108,12 @@ global.ConsoleView = (function() {
     });
   }
 
-  return Object.freeze({
+  return {
     init,
     hide,
     clear,
     isVisible,
     append,
-  });
+  };
 
 })();

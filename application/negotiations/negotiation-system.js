@@ -124,12 +124,12 @@ global.NegotiationSystem = (function() {
     battleState.moveToTopOfTurnOrder({ type:'monster', id:state.getMonster() }, 500);
   }
 
-  return Object.freeze({
+  return {
     start,
     advance,
     answer,
     reset,
     getState: () => { return state; },
-  });
+  };
 
 })();

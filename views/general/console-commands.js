@@ -154,11 +154,11 @@ global.ConsoleCommands = (function() {
     }
   }
 
-  return Object.freeze({
+  return {
     sendCommand,
     run,
     loadPreviousCommand,
     revealDungeon,
-  });
+  };
 
 })();

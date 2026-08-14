@@ -33,8 +33,8 @@ global.PhysicalAttackContest = function(attacker, target) {
     // Extremely rare case when crit is around 3%, but what if there are modifiers that raise the crit chances? There
     // may be future abilities that guarantee a crit when attacking or defending. In this case we negate both crits.
     if (attackRoll.isCrit() && defendRoll.isCrit()) {
-      attackRoll = Object.freeze({ ...attackRoll, isCrit:() => false });
-      defendRoll = Object.freeze({ ...defendRoll, isCrit:() => false });
+      attackRoll = { ...attackRoll, isCrit:() => false };
+      defendRoll = { ...defendRoll, isCrit:() => false };
     }
   }
 
@@ -46,7 +46,7 @@ global.PhysicalAttackContest = function(attacker, target) {
     return attackRoll.getFinalValue() * accuracyFactor > defendRoll.getFinalValue();
   }
 
-  return Object.freeze({
+  return {
     setWeaponData,
     setNaturalAttack,
     setAbility,
@@ -55,5 +55,5 @@ global.PhysicalAttackContest = function(attacker, target) {
     getAttackRoll: () => { return attackRoll; },
     getDefendRoll: () => { return defendRoll; },
     isHit,
-  });
+  };
 }

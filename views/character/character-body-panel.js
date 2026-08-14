@@ -205,12 +205,12 @@ global.CharacterBodyPanel = (function() {
     X.fill('#characterOverlay .pussy-area',X.createElement(list.getList()))
   }
 
-  return Object.freeze({
+  return {
     fillAnus,
     fillBody,
     fillBreasts,
     fillCock,
     fillPussy,
-  });
+  };
 
 })();

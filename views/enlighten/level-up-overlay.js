@@ -78,9 +78,9 @@ global.LevelUpOverlay = (function() {
     EnlightenView.resume(id);
   }
 
-  return Object.freeze({
+  return {
     init,
     open,
-  });
+  };
 
 })();

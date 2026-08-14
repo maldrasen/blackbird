@@ -43,11 +43,11 @@ global.CommandPanel = (function() {
     ability.getTargetingMode() != null ? TargetingController.startTargeting(ability.getCode()) : ability.execute();
   }
 
-  return Object.freeze({
+  return {
     init,
     show,
     hide,
     showCommands,
-  })
+  };
 
 })();

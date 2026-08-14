@@ -210,6 +210,6 @@ global.SexualPreferencesFactory = (function() {
     }
   }
 
-  return Object.freeze({ makeAdjustments });
+  return { makeAdjustments };
 
 })();

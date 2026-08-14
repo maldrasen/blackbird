@@ -31,12 +31,12 @@ global.SituatedComponent = (function() {
     Validate.exists('Situated.currentLocation',situatedComponent.currentLocation);
   }
 
-  return Object.freeze({
+  return {
     hasParent: () => { return false; },
     create,
     update,
     lookup,
     destroy,
-  });
+  };
 
 })();

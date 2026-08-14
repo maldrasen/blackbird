@@ -31,12 +31,12 @@ global.ArmorComponent = (function() {
     Validate.exists('Armor.base',armorComponent.base);
   }
 
-  return Object.freeze({
+  return {
     hasParent: () => { return false; },
     create,
     update,
     lookup,
     destroy,
-  });
+  };
 
 })();

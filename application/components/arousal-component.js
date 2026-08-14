@@ -39,12 +39,12 @@ global.ArousalComponent = (function() {
     Validate.atLeast('Arousal.refractory',arousalComponent.refractory,0);
   }
 
-  return Object.freeze({
+  return {
     hasParent: () => { return false; },
     create,
     update,
     lookup,
     destroy,
-  });
+  };
 
 })();

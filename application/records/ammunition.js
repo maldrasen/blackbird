@@ -14,19 +14,19 @@ global.Ammunition = (function() {
     const ammunition = { ...ammunitionRecords[code] };
     const article = Article.lookup(code);
 
-    return Object.freeze({
+    return {
       getCode: () => { return code; },
       getName: () => { return article.getName(); },
       getDescription: () => { return article.getDescription(); },
       getCategory: () => { return article.getCategory(); },
       getTags: () => { return article.getTags(); },
       getDamageTypes: () => { return { ...ammunition.damageTypes }},
-    });
+    };
   }
 
-  return Object.freeze({
+  return {
     register,
     lookup,
-  });
+  };
 
 })();

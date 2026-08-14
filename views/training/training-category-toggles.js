@@ -166,10 +166,10 @@ global.TrainingCategoryToggles = (function() {
     return categories;
   }
 
-  return Object.freeze({
+  return {
     init,
     build,
     applyToggleFilters,
-  });
+  };
 
 })();

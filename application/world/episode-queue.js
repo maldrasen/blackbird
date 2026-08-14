@@ -79,10 +79,10 @@ global.EpisodeQueue = (function() {
     return Random.roll(100) < chance;
   }
 
-  return Object.freeze({
+  return {
     seed,
     push,
     evaluateMove,
-  });
+  };
 
 })();

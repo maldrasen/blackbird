@@ -32,12 +32,12 @@ global.PersonalityComponent = (function() {
     Validate.between('Personality.sanity',personalityComponent.sanity, 0, 100);
   }
 
-  return Object.freeze({
+  return {
     hasParent: () => { return false; },
     create,
     update,
     lookup,
     destroy,
-  });
+  };
 
 })();

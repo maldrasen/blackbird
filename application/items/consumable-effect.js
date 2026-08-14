@@ -7,11 +7,11 @@ global.ConsumableEffect = (function() {
   function addStatusEffect(entity, code, options) { return {}; }
   function increasePotency(entity, level) { return {}; }
 
-  return Object.freeze({
+  return {
     addHealth: (min, max) => { return entity => addHealth(entity, min, max); },
     addMana: (color, min, max) => { return entity => addMana(entity, color, min, max); },
     addStatusEffect: (code, options) => { return entity => addStatusEffect(entity, code, options); },
     increasePotency: level => { return entity => increasePotency(entity, level); }
-  });
+  };
 
 })();

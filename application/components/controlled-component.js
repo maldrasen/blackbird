@@ -32,12 +32,12 @@ global.ControlledComponent = (function() {
     Validate.between('Controlled.control',controlledComponent.control,-500,500)
   }
 
-  return Object.freeze({
+  return {
     hasParent: () => { return false; },
     create,
     update,
     lookup,
     destroy,
-  });
+  };
 
 })();

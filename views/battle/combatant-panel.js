@@ -121,7 +121,7 @@ global.CombatantPanel = function(type, entity) {
     element.dataset.position = key;
   }
 
-  return Object.freeze({
+  return {
     getType: () => { return type; },
     getEntity: () => { return entity; },
     getElement: () => { return element; },
@@ -129,5 +129,5 @@ global.CombatantPanel = function(type, entity) {
     setPosition,
     build,
     update,
-  });
+  };
 }

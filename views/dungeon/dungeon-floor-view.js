@@ -49,10 +49,10 @@ global.DungeonFloorView = (function() {
     }
   }
 
-  return Object.freeze({
+  return {
     drawDungeon,
     updateLocation,
     getGridSize: () => { return gridSize; },
-  });
+  };
 
 })();

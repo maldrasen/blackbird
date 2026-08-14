@@ -52,7 +52,7 @@ global.AnimusComponent = (function() {
     });
   }
 
-  return Object.freeze({
+  return {
     has: key => { return properties.includes(key); },
     hasParent: () => { return false; },
     getProperties: () => { return [...properties]; },
@@ -61,6 +61,6 @@ global.AnimusComponent = (function() {
     update,
     lookup,
     destroy,
-  });
+  };
 
 })();

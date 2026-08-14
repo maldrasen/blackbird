@@ -36,10 +36,10 @@ global.TrainingView = (function() {
     Confirmation.show({ text:`End Training?`, onConfirm:TrainingSystem.endTraining });
   }
 
-  return Object.freeze({
+  return {
     init,
     show,
     update,
-  });
+  };
 
 })();

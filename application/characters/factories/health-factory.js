@@ -9,6 +9,6 @@ global.HealthFactory = (function() {
     state.setHealth({ currentStamina:stamina, currentHealth:health, maxHealth:health });
   }
 
-  return Object.freeze({ build });
+  return { build };
 
 })();

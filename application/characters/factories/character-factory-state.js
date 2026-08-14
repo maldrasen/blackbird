@@ -107,7 +107,7 @@ global.CharacterFactoryState = function(options={}) {
     });
   }
 
-  return Object.freeze({
+  return {
     getSpeciesCode: () => { return speciesCode; },
     getSpecies: () => { return species; },
     getGender: () => { return genderCode; },
@@ -187,6 +187,6 @@ global.CharacterFactoryState = function(options={}) {
     hasNormalPussy,
     getSensitivity,
     hasSensitivity,
-  });
+  };
 
 }

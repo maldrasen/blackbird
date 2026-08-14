@@ -182,9 +182,9 @@ global.DungeonDoorView = (function() {
     };
   }
 
-  return Object.freeze({
+  return {
     build,
     buildHanging,
-  });
+  };
 
 })();

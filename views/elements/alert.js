@@ -87,10 +87,10 @@ global.Alert = (function() {
     }, 1000);
   }
 
-  return Object.freeze({
+  return {
     show,
     showFromLog,
-  });
+  };
 
 })();
 

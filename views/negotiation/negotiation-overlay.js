@@ -73,13 +73,13 @@ global.NegotiationOverlay = (function() {
     return Weaver(NegotiationSystem.getState().getContext()).weave(text);
   }
 
-  return Object.freeze({
+  return {
     init,
     open,
     close,
     renderQuestion,
     renderDialog,
     renderResolution,
-  });
+  };
 
 })();

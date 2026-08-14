@@ -10,12 +10,12 @@ global.Attributes = function(argument) {
     return Math.floor(-146738.78 / (attributes.vitality + 12.674) + 11302.33);
   }
 
-  return Object.freeze({
+  return {
     getStrength: () => { return attributes.strength; },
     getDexterity: () => { return attributes.dexterity; },
     getVitality: () => { return attributes.vitality; },
     getIntelligence: () => { return attributes.intelligence; },
     getBeauty: () => { return attributes.beauty; },
     getMaxStamina,
-  });
+  };
 }

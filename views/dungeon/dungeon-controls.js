@@ -40,10 +40,10 @@ global.DungeonControls = (function() {
     CharacterOverlay.open(event.target.closest('.party-card').dataset.id);
   }
 
-  return Object.freeze({
+  return {
     init,
     build,
     update,
-  });
+  };
 
 })();

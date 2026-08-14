@@ -131,7 +131,7 @@ global.CharacterRequirements = (function() {
     return character.isStraight();
   }
 
-  return Object.freeze({
+  return {
     playerIs: key =>                         { return (context) => { return GameSystem.getState().getPlayer() === context[key]; }},
     isSpecies: (key, code) =>                { return (context) => { return isSpecies(context, key, code); }},
     isNamed: (key, name) =>                  { return (context) => { return isNamed(context, key, name); }},
@@ -163,6 +163,6 @@ global.CharacterRequirements = (function() {
     wouldConsentTo: (key, code, min) =>      { return (context) => { return wouldConsentTo(context, key, code, min); }},
     hasSexualPreference: (key, code, min) => { return (context) => { return hasSexualPreference(context, key, code, min); }},
     isStraight: key =>                       { return (context) => { return isStraight(context, key); }},
-  });
+  };
 
 })();

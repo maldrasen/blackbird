@@ -32,12 +32,12 @@ global.ActorComponent = (function() {
     Validate.isIn('Actor.species',actorComponent.species,Species.getAllCodes());
   }
 
-  return Object.freeze({
+  return {
     hasParent: () => { return false; },
     create,
     update,
     lookup,
     destroy,
-  });
+  };
 
 })();

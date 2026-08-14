@@ -30,10 +30,10 @@ global.GameInterface = (function() {
     }
   }
 
-  return Object.freeze({
+  return {
     openGame,
     endGame,
     showGameMode,
-  });
+  };
 
 })();

@@ -12,7 +12,7 @@ global.NaturalAttack = function(profile) {
     return profile.damageTypes ? profile.damageTypes : [{ type:profile.damageType, percent:100 }];
   }
 
-  return Object.freeze({
+  return {
     getSkill: () => { return profile.skill; },
     getName: () => { return profile.name; },
     getTextKey: () => { return profile.textKey; },
@@ -21,5 +21,5 @@ global.NaturalAttack = function(profile) {
     getHigh: () => { return profile.high; },
     getSpeed: () => { return profile.speed; },
     getDamageTypes,
-  });
+  };
 }

@@ -5,8 +5,6 @@ global.LocationInterface = (function() {
     LocationView.update();
   }
 
-  return Object.freeze({
-    update,
-  });
+  return { update };
 
 })();

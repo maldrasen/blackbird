@@ -107,10 +107,10 @@ global.Slider = function(options) {
   updateInput();
   positionKnob();
 
-  return Object.freeze({
+  return {
     getElement: () => { return element; },
     getValue: () => { return value; },
     setValue,
-  });
+  };
 
 }

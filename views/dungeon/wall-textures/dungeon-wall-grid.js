@@ -48,8 +48,8 @@ global.DungeonWallGrid = (function() {
     return `<line x1='${x}' y1='${y}' x2='${x + wallDepth}' y2='${y + wallDepth}'/>`;
   }
 
-  return Object.freeze({
+  return {
     paint
-  });
+  };
 
 })();

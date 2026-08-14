@@ -114,11 +114,11 @@ global.CharacterOverlay = (function() {
     X.first('#characterOverlay .interaction-list').appendChild(link);
   }
 
-  return Object.freeze({
+  return {
     init,
     open,
     close,
     addInteraction,
-  });
+  };
 
 })();

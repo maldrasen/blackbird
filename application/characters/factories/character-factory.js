@@ -189,6 +189,11 @@ global.CharacterFactory = (function() {
     }});
   }
 
-  return Object.freeze({ build, startBuild, getState, endBuild });
+  return {
+    build,
+    startBuild,
+    getState,
+    endBuild
+  };
 
 })();

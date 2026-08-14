@@ -119,11 +119,11 @@ global.DungeonCamera = (function() {
     return Math.abs(scale - scaleTarget) < settleScale && Math.abs(velocity.scale) < settleScaleSpeed;
   }
 
-  return Object.freeze({
+  return {
     moveTo,
     zoomTo,
     stop,
     isMoving,
-  });
+  };
 
 })();

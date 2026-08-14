@@ -61,10 +61,10 @@ global.TableBuilder = function(options) {
     return X.createElement(`${table}</table>`);
   }
 
-  return Object.freeze({
+  return {
     addRow,
     addCell,
     getTable,
-  });
+  };
 
 }

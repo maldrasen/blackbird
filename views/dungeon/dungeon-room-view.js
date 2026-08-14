@@ -186,11 +186,11 @@ global.DungeonRoomView = (function() {
     return floor.getFeatureForRoom(index).getRooms().findIndex(room => room.getIndex() === index);
   }
 
-  return Object.freeze({
+  return {
     build,
     getRoomGeometry,
     getNestedGeometry,
     getWallMetrics: () => { return { wallInset, wallDepth }; },
-  });
+  };
 
 })();

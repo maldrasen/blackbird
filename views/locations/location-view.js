@@ -111,11 +111,11 @@ global.LocationView = (function() {
     }
   }
 
-  return Object.freeze({
+  return {
     init,
     show,
     close,
     update,
-  });
+  };
 
 })();

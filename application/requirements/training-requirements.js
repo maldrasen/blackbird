@@ -7,10 +7,10 @@ global.TrainingRequirements = (function() {
     return context.previousPosition != null && GameSystem.getState().getPlayer() === context.previousPosition[key];
   }
 
-  return Object.freeze({
+  return {
     playerWas: key =>     { return (context) => { return playerWas(context, key); }},
     withAttitude: code => { return (context) => { return context.attitude === code; }},
     withAction: code =>   { return (context) => { return context.action === code; }},
-  });
+  };
 
 })();

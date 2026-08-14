@@ -131,7 +131,7 @@ global.X = (function() {
     return `url('${ROOT}/assets/${path}')`;
   }
 
-  return Object.freeze({
+  return {
     all,
     first,
     body,
@@ -155,6 +155,6 @@ global.X = (function() {
     getPosition,
     windowDimensions,
     assetURL,
-  });
+  };
 
 })();

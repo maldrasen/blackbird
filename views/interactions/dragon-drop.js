@@ -121,9 +121,9 @@ global.DragonDrop = (function() {
     dragContext = null;
   }
 
-  return Object.freeze({
+  return {
     register,
     isDragging: () => { return dragContext != null; },
-  });
+  };
 
 })();

@@ -491,10 +491,10 @@ global.BreastsDescriber = (function() {
     return Random.from(options)
   }
 
-  return Object.freeze({
+  return {
     getTemplate,
     breastWeight,
     sizeShapeComparison,
-  });
+  };
 
 })();

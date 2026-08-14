@@ -47,11 +47,11 @@ global.Select = (function() {
     return X.hasClass('#selectFrame','hide') === false;
   }
 
-  return Object.freeze({
+  return {
     init,
     open,
     close,
     isOpen,
-  });
+  };
 
 })();
