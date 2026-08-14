@@ -21,6 +21,7 @@ global.MonsterFactory = (function() {
     // We need to build the battle applicable components that the character builder would have built from scratch.
     if (monsterSpecies == null) {
       monsterId = Registry.createEntity();
+      buildBeast(monsterBase, monsterId);
     }
 
     addSkills(monsterBase, monsterId);
@@ -57,6 +58,17 @@ global.MonsterFactory = (function() {
     if (equipment) {
       CharacterEquipper(monsterId).equipLoadout(equipment);
     }
+  }
+
+  // =========================
+  //    Beast Type Monsters
+  // =========================
+
+  function buildBeast(monsterBase, monsterId) {
+    ActorComponent.create(monsterId, {
+      name: monsterBase.getName(),
+      gender: Random.fromFrequencyMap(monsterBase.getGenderRatio()),
+    });
   }
 
   return { build };
