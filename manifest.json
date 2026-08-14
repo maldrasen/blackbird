@@ -119,7 +119,6 @@
     "application/helpers/english-helper.js",
     "application/helpers/file-helper.js",
     "application/helpers/geometry-helper.js",
-    "application/helpers/graph-helper.js",
     "application/helpers/item-helper.js",
     "application/helpers/letter-grade-helper.js",
     "application/helpers/measurement-helper.js",
