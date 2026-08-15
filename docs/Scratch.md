@@ -38,4 +38,3 @@ test/characters/factories/monster-factory-spec.js
 views/enlighten/enlighten-view.js
 ```
 
-Redo EssenceSystem spec

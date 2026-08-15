@@ -33,9 +33,9 @@ global.LevelSystem = (function() {
   function incrementLevel(id) {
     const experience = ExperienceComponent.lookup(id);
     if (experience) {
-      experience.level += 1;
+      const minimum = EssenceSystem.essenceToLevel(id, 1);
 
-      const minimum = EssenceSystem.essenceToLevel(id);
+      experience.level += 1;
       if (experience.essence < minimum) { experience.essence = minimum; }
 
       ExperienceComponent.update(id, experience);
