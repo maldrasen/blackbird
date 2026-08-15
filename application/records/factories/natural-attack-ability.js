@@ -1,20 +1,26 @@
-
-// A natural attack ability - a punch, a bite, a claw - is an unarmed strike an entity makes with part of its body
-// instead of an equipped weapon. Every one of them shares the same skeleton: check that the attacker isn't hidden
-// and that the target is in reach, run a physical attack contest against a NaturalAttack profile, describe the
-// strike, spend the attack's time, then resolve the hit or the miss. This factory owns that skeleton so the ability
-// records only carry what makes them different.
+// Every natural attack shares a similar skeleton: check that the attacker isn't hidden (Monsters that are hidden must
+// use a sneak attack variant in order to get the increased accuracy and damage) and that the target is in reach. The
+// ability then runs a physical attack contest, describes the attack, adds the attack's time, and finally resolve the
+// hit or miss. This factory builds that scaffolding so the ability records only carry what makes them different.
 //
-//     NaturalAttackAbility.register('venomous-bite', {
-//       name: 'Venomous Bite',
-//       essence: 25,
-//       attack: { skill:'daggers', name:'fangs', textKey:'bite', damageType:DamageType.pierce,
-//                 low:25, high:50, speed:500, reach:WeaponReach.short },
-//       onHit: (acting, target) => { addVenomEffect(target); },
-//     });
+// NaturalAttackAbility.register('venomous-bite', {
+//   name: 'Venomous Bite',
+//   essence: 25,
+//   attack: {
+//     skill:'daggers',
+//     name:'fangs',
+//     textKey:'bite',
+//     damageType:DamageType.pierce,
+//     low:25,
+//     high:50,
+//     speed:500,
+//     reach:WeaponReach.short
+//   },
+//   onHit: (acting, target) => { addVenomEffect(target); },
+// });
 //
 // Optional keys:
-//     canTarget         An extra usability check on the target, beyond reach.
+//     canTarget         An extra usability check on the target.
 //     hitLocation       Forces the strike to a location instead of rolling one.
 //     cooldown          Milliseconds before the attacker can use the ability again.
 //     onHit             Called with (acting, target) before the hit is processed.
@@ -87,8 +93,6 @@ global.NaturalAttackAbility = (function() {
       Dialog.lookupTemplate(DialogCategory.attackText, options.attack.textKey, context);
   }
 
-  return {
-    register,
-  };
+  return { register };
 
 })();
