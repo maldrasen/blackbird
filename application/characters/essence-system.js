@@ -40,39 +40,40 @@ global.EssenceSystem = (function() {
   //    Character Leveling
   // ========================
 
-  function totalEssenceToLevel(level, speciesCode) {
+  // The leveling costs are keyed on an attribute grade map rather than a species so that they work for beasts too.
+  // Character(id).getAttributeGrades() resolves the grades for an entity.
+  function totalEssenceToLevel(level, grades) {
     let total = 0;
-    for (let i=2; i<=level; i++) { total += essenceToLevel(i,speciesCode); }
+    for (let i=2; i<=level; i++) { total += essenceToLevel(i,grades); }
     return total;
   }
 
   // The essence needed to reach this level from the level before it. Characters start at level 1, so the first level
   // is free.
-  function essenceToLevel(level, speciesCode) {
-    return Math.round(baseLevelCost * ((level-1) ** levelCostExponent) * speciesCostFactor(speciesCode));
+  function essenceToLevel(level, grades) {
+    return Math.round(baseLevelCost * ((level-1) ** levelCostExponent) * costFactor(grades));
   }
 
-  function speciesCostFactor(speciesCode) {
-    return (speciesGradeTotal(speciesCode) / baselineGradeTotal) ** speciesCostExponent;
+  function costFactor(grades) {
+    return (gradeTotal(grades) / baselineGradeTotal) ** speciesCostExponent;
   }
 
-  function speciesGradeTotal(speciesCode) {
-    const grades = Species.lookup(speciesCode).getAttributes();
+  function gradeTotal(grades) {
     return Object.values(grades).reduce((sum,grade) => sum + LetterGradeHelper.attributeScore(grade), 0);
   }
 
   function canLevelUp(characterId) {
     const experience = ExperienceComponent.lookup(characterId);
-    const species = ActorComponent.lookup(characterId).species;
+    const grades = Character(characterId).getAttributeGrades();
 
-    return experience.essence >= totalEssenceToLevel(experience.level + 1, species);
+    return experience.essence >= totalEssenceToLevel(experience.level + 1, grades);
   }
 
   return {
     monsterEssenceValue,
     essenceToLevel,
     totalEssenceToLevel,
-    speciesCostFactor,
+    costFactor,
     canLevelUp,
   };
 

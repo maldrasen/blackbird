@@ -35,8 +35,8 @@ global.ExperienceComponent = (function() {
     Validate.atLeast('Experience.essence',experienceComponent.essence,0);
 
     if (experienceComponent.level > 1) {
-      const species = ActorComponent.lookup(id).species;
-      const minimum = EssenceSystem.totalEssenceToLevel(experienceComponent.level, species);
+      const grades = Character(id).getAttributeGrades();
+      const minimum = EssenceSystem.totalEssenceToLevel(experienceComponent.level, grades);
       Validate.atLeast('Experience.essence', experienceComponent.essence, minimum);
     }
   }

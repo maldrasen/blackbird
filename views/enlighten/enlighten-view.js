@@ -137,11 +137,11 @@ global.EnlightenView = (function() {
 
   function levelBounds(id) {
     const experience = ExperienceComponent.lookup(id);
-    const species = Character(id).getSpecies();
+    const grades = Character(id).getAttributeGrades();
 
     return {
-      floor: EssenceSystem.totalEssenceToLevel(experience.level, species),
-      ceiling: EssenceSystem.totalEssenceToLevel(experience.level + 1, species),
+      floor: EssenceSystem.totalEssenceToLevel(experience.level, grades),
+      ceiling: EssenceSystem.totalEssenceToLevel(experience.level + 1, grades),
     };
   }
 
