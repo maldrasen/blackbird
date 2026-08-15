@@ -24,10 +24,12 @@ global.MonsterFactory = (function() {
       buildBeast(monsterBase, monsterId);
     }
 
+    // The monster component is created before levels are added because leveling a beast looks up its base monster
+    // through the monster component.
+    MonsterComponent.create(monsterId, monsterData);
+
     addSkills(monsterBase, monsterId);
     addLevels(monsterBase, monsterId);
-
-    MonsterComponent.create(monsterId, monsterData);
 
     return monsterId;
   }

@@ -1,7 +1,7 @@
 global.LevelSystem = (function() {
 
   function levelUp(id, attribute) {
-    const increase = CharacterMath.attributeIncrease(attribute, ActorComponent.lookup(id), AspectsComponent.lookup(id));
+    const increase = CharacterMath.attributeIncrease(attribute, ActorComponent.lookup(id), AspectsComponent.lookup(id) || {});
     const attributes = AttributesComponent.lookup(id);
 
     attributes[attribute] += increase;
@@ -16,8 +16,12 @@ global.LevelSystem = (function() {
     return increase;
   }
 
-  function getSpecies(id) {
-    return Species.lookup(Character(id).getSpecies());
+  // Beasts don't have a species, so their health factor comes from their base monster record instead.
+  function getHealthFactor(id) {
+    const species = Character(id).getSpecies();
+    return species ?
+      Species.lookup(species).getHealthFactor() :
+      BaseMonster.lookup(MonsterComponent.lookup(id).code).getHealthFactor();
   }
 
   // The levelUp() function can be called to add levels to a new monster. When we do this a monster needs to also
@@ -34,7 +38,7 @@ global.LevelSystem = (function() {
   }
 
   function growMaxHealth(id, vitalityIncrease) {
-    const factor = getSpecies(id).getHealthFactor();
+    const factor = getHealthFactor(id);
     const health = HealthComponent.lookup(id);
     const addedHealth = Math.ceil(Random.rollDice({ x:vitalityIncrease, d:10 }) * factor);
 
