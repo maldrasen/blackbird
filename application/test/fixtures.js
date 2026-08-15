@@ -32,7 +32,7 @@ global.Fixtures = (function() {
   }
 
   function setupTraining() {
-    setupGame({ location:'ruined-living-room' });
+    setupGame();
     CharacterFixtures.randomPlayer();
     CharacterFixtures.randomCharacters(10, { triggers:[] });
 

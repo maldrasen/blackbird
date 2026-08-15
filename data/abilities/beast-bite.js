@@ -7,9 +7,9 @@ NaturalAttackAbility.register('beast-bite', {
     name: 'teeth',
     textKey: 'bite',
     damageType: DamageType.pierce,
-    low: 25,
-    high: 50,
-    speed: 500,
+    low: 20,
+    high: 40,
+    speed: 1000,
     reach: WeaponReach.short,
   },
 });

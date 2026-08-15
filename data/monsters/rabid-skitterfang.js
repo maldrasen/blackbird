@@ -5,7 +5,7 @@ BaseMonster.register('rabid-skitterfang',{
   type: 'critter',
   level: 1,
 
-  healthFactor: 0.5,
+  healthFactor: 0.25,
   speedFactor: 0.75,
 
   prioritizedAbilities: [
