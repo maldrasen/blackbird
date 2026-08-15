@@ -1,13 +1,16 @@
 global.EpisodeInterface = (function() {
 
+  function viewActive() {
+    if (Environment.viewPresent() === false) { return false }
+    return GameSystem.getState().getGameMode() === GameMode.episode;
+  }
+
   function showPage(page) {
-    if (Environment.viewPresent() === false) { return; }
-    EpisodeView.setPageContent(page);
+    if (viewActive()) { EpisodeView.setPageContent(page); }
   }
 
   function showDamageEffect() {
-    if (Environment.viewPresent() === false) { return; }
-    EpisodeView.showDamageEffect();
+    if (viewActive()) { EpisodeView.showDamageEffect(); }
   }
 
   return {
