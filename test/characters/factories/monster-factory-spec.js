@@ -71,6 +71,15 @@ describe("MonsterFactory", function() {
       expect(skills.daggers).to.be.within(10,20);
       expect(skills.stealth).to.equal(0);
     });
+
+    it("levels a beast at creation without tracking experience", function() {
+      const id = MonsterFactory.build('slithering-yeek');
+      const attributes = AttributesComponent.lookup(id);
+      const total = Object.values(attributes).reduce((sum,value) => sum + value, 0);
+
+      expect(ExperienceComponent.lookup(id)).to.be.undefined;
+      expect(total).to.be.within(47,83);
+    });
   });
 
 });
