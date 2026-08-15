@@ -9,6 +9,13 @@ describe("EssenceSystem", function() {
     return id;
   }
 
+  // Beasts need an actor before they can level, as the attribute increase reads their gender.
+  function buildBeast(code, attributes) {
+    const id = buildMonster(code, attributes);
+    ActorComponent.create(id, { name:'Chompy', gender:Gender.none });
+    return id;
+  }
+
   function buildCharacter(species, experience) {
     const id = CharacterFixtures.genericMale({ actor:{ species:species }});
     if (experience) { ExperienceComponent.update(id, experience); }
@@ -30,6 +37,30 @@ describe("EssenceSystem", function() {
     // The runt has no abilities of its own, so it's worth much less than the puncher despite identical attributes.
     it("counts the abilities the base monster adds to its type", function() {
       expect(EssenceSystem.monsterEssenceValue(buildMonster('kobold-runt', attributes))).to.equal(84);
+    });
+
+    // The beast types carry no abilities at all, leaving the base monster to supply every one of them. Matching the
+    // runt is a coincidence of both having a single ten essence ability on the same attributes.
+    it("values a beast off the abilities on its base monster alone", function() {
+      expect(EssenceSystem.monsterEssenceValue(buildMonster('rabid-skitterfang', attributes))).to.equal(84);
+    });
+
+    // A factory built daggermaw can't be pinned to a number here, as its rolled attributes swing the value between
+    // roughly 70 and 125. Levelling a fixed one by hand shows the same climb the factory gives it at level four.
+    it("climbs as a monster levels", function() {
+      const id = buildBeast('lesser-daggermaw', attributes);
+      Random.stubBetween(3,3,3);
+
+      expect(EssenceSystem.monsterEssenceValue(id)).to.equal(84);
+
+      LevelSystem.levelUp(id, Attrib.strength);
+      expect(EssenceSystem.monsterEssenceValue(id)).to.equal(99);
+
+      LevelSystem.levelUp(id, Attrib.strength);
+      expect(EssenceSystem.monsterEssenceValue(id)).to.equal(115);
+
+      LevelSystem.levelUp(id, Attrib.strength);
+      expect(EssenceSystem.monsterEssenceValue(id)).to.equal(131);
     });
   });
 
