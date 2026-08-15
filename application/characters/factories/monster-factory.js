@@ -88,12 +88,15 @@ global.MonsterFactory = (function() {
     addHealth(monsterBase, monsterId);
   }
 
+  // Beast attributes are rolled the same way character attributes are, with the attribute grades coming from the
+  // monster type rather than a species.
   function addAttributes(monsterBase, monsterId) {
-    const baseAttributes = MonsterType.lookup(monsterBase.getType()).getAttributes();
+    const grades = MonsterType.lookup(monsterBase.getType()).getAttributes();
+    const actor = ActorComponent.lookup(monsterId);
     const attributes = {};
 
-    Object.entries(baseAttributes).forEach(([code,range]) => {
-      attributes[code] = Random.between(range[0],range[1]);
+    Object.keys(Attrib).forEach(code => {
+      attributes[code] = CharacterMath.attributeBaseline + CharacterMath.attributeIncrease(code, grades, actor, {});
     });
 
     AttributesComponent.create(monsterId, attributes);

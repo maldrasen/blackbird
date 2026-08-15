@@ -1,7 +1,9 @@
 global.LevelSystem = (function() {
 
   function levelUp(id, attribute) {
-    const increase = CharacterMath.attributeIncrease(attribute, ActorComponent.lookup(id), AspectsComponent.lookup(id) || {});
+    const actor = ActorComponent.lookup(id);
+    const grades = Species.lookup(actor.species).getAttributes();
+    const increase = CharacterMath.attributeIncrease(attribute, grades, actor, AspectsComponent.lookup(id) || {});
     const attributes = AttributesComponent.lookup(id);
 
     attributes[attribute] += increase;

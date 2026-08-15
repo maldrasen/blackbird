@@ -16,10 +16,13 @@ global.CharacterMath = (function() {
     beauty: 'ugly',
   };
 
-  // Roll a single attribute increase from the species grade, attribute aspects, and gender. This is shared by the
-  // attributes factory when rolling a new character's attributes and by the level system when leveling one up.
-  function attributeIncrease(attribute, actorData, aspectsData) {
-    const grade = Species.lookup(actorData.species).getAttributes()[attribute];
+  const attributeBaseline = 5;
+
+  // Roll a single attribute increase from an attribute grade map, attribute aspects, and gender. This is shared by
+  // the attributes factory when rolling a new character's attributes and by the level system when leveling one up.
+  // The grades come from the species for characters and from the monster type for beasts.
+  function attributeIncrease(attribute, grades, actorData, aspectsData) {
+    const grade = grades[attribute];
     const increase = Random.between(1,5)
       + LetterGradeHelper.attributeBase(grade)
       + aspectModifier(attribute, aspectsData)
@@ -36,6 +39,7 @@ global.CharacterMath = (function() {
   }
 
   function genderBonus(attribute, gender) {
+    if (gender === Gender.none) { return 0; }
     if (attribute === Attrib.strength && gender === Gender.male) { return 1; }
     if (attribute === Attrib.beauty && gender !== Gender.male) { return 1; }
     return 0;
@@ -169,6 +173,7 @@ global.CharacterMath = (function() {
   }
 
   return {
+    attributeBaseline,
     attributeIncrease,
     calculateSpeedFactor,
     emotionBaseValue,
