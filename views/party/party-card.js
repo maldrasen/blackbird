@@ -9,9 +9,7 @@ global.PartyCard = function(id) {
   </div>`);
 
   element.querySelector('.name').textContent = Character(id).getName();
-
-  const code = GameSystem.getState().getPlayer() === id ? 'player' : 'character';
-  element.querySelector('.background').style['background-image'] = X.assetURL(`temp-art/${code}.png`);
+  element.querySelector('.background').style['background-image'] = X.assetURL(Character(id).getCardArt());
 
   return {
     getEntity: () => { return id; },

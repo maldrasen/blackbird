@@ -300,6 +300,8 @@ global.Character = function(id) {
     getOrgasmThreshold,
     rollForOrgasm,
     rollRefractoryPeriod,
+
+    getCardArt: () => { return `temp/entity.jpg` },
   };
 
 }

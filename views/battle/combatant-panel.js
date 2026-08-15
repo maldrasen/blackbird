@@ -30,12 +30,11 @@ global.CombatantPanel = function(type, entity) {
 
   function setImage() {
     if (type === 'monster') {
-      const code = Monster(entity).getBaseMonster().getCode()
-      element.querySelector('.background').style['background-image'] = X.assetURL(`temp-art/${code}.png`);
+      element.querySelector('.background').style['background-image'] = X.assetURL(Monster(entity).getCardArt());
     }
     if (type === 'character') {
       const code = GameSystem.getState().getPlayer() === entity ? 'player' : 'character'
-      element.querySelector('.background').style['background-image'] = X.assetURL(`temp-art/${code}.png`);
+      element.querySelector('.background').style['background-image'] = X.assetURL(Character(entity).getCardArt());
     }
   }
 

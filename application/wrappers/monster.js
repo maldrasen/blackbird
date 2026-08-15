@@ -102,6 +102,8 @@ global.Monster = function(id) {
     populateThreatTable,
     getThreatTable,
     updateThreat,
+
+    getCardArt: () => { return `temp/entity.jpg` },
   };
 
 }
