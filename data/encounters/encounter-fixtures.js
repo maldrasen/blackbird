@@ -24,3 +24,10 @@ Encounter.register('negotiation-fixture-4',{
   formation:[[0,0,1,0,0]],
   monsters: { 1: { code:'kobold-tosser' }}
 });
+
+
+Encounter.register('skitterfangs',{
+  description: `stuff`,
+  formation:[[1,1,1,1,1]],
+  monsters: { 1: { code:'rabid-skitterfang' }}
+});

@@ -18,7 +18,6 @@ global.LevelSystem = (function() {
     return increase;
   }
 
-  // Beasts don't have a species, so their health factor comes from their base monster record instead.
   function getHealthFactor(id) {
     const species = Character(id).getSpecies();
     return species ?

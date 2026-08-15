@@ -1,6 +1,6 @@
 
 
-Update CharacterMath.calculateSpeedFactor() 
+Update CharacterMath.calculateSpeedFactor()
 - A monster may not have a body component, so speed factor needs to be on base monster.
 - And the speed factor is put into the cache component.
 
@@ -9,10 +9,8 @@ Need to ensure that a monster has a species to enable negotiate
 ### To Review:
 ```
 application/characters/character-math.js
-application/characters/essence-system.js
 application/characters/factories/attributes-factory.js
 application/characters/factories/monster-factory.js
-application/characters/level-system.js
 application/components/actor-component.js
 application/components/experience-component.js
 application/enums.js
@@ -33,8 +31,5 @@ data/monsters/slithering-yeek.js
 
 docs/design-and-planning/battle/Monsters.md
 
-test/characters/factories/monster-factory-spec.js
-
-views/enlighten/enlighten-view.js
 ```
 
