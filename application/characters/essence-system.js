@@ -42,18 +42,20 @@ global.EssenceSystem = (function() {
 
   function canLevelUp(characterId) {
     const experience = ExperienceComponent.lookup(characterId);
-    const grades = CharacterMath.attributeGrades(characterId);
-
-    return experience.essence >= totalEssenceToLevel(experience.level + 1, grades);
+    return experience.essence >= essenceToLevel(characterId, 1);
   }
 
-  function totalEssenceToLevel(level, grades) {
+  function essenceToLevel(id, addLevels=0) {
+    const grades = CharacterMath.attributeGrades(id);
+    const experience = ExperienceComponent.lookup(id);
+    const level = experience.level + addLevels;
+
     let total = 0;
-    for (let i=2; i<=level; i++) { total += essenceToLevel(i,grades); }
+    for (let i=2; i<=level; i++) { total += essenceNeededFor(i, grades); }
     return total;
   }
 
-  function essenceToLevel(level, grades) {
+  function essenceNeededFor(level, grades) {
     return Math.round(baseLevelCost * ((level-1) ** levelCostExponent) * costFactor(grades));
   }
 
@@ -69,9 +71,7 @@ global.EssenceSystem = (function() {
   return {
     monsterEssenceValue,
     canLevelUp,
-    totalEssenceToLevel,
     essenceToLevel,
-    costFactor,
   };
 
 })();

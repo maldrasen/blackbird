@@ -32,14 +32,14 @@ global.LevelSystem = (function() {
   // can't be recruited and don't track experience at all, so they skip this.
   function incrementLevel(id) {
     const experience = ExperienceComponent.lookup(id);
-    if (experience == null) { return; }
+    if (experience) {
+      experience.level += 1;
 
-    experience.level += 1;
+      const minimum = EssenceSystem.essenceToLevel(id);
+      if (experience.essence < minimum) { experience.essence = minimum; }
 
-    const minimum = EssenceSystem.totalEssenceToLevel(experience.level, CharacterMath.attributeGrades(id));
-    if (experience.essence < minimum) { experience.essence = minimum; }
-
-    ExperienceComponent.update(id, experience);
+      ExperienceComponent.update(id, experience);
+    }
   }
 
   function growMaxHealth(id, vitalityIncrease) {

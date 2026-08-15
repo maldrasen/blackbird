@@ -35,9 +35,7 @@ global.ExperienceComponent = (function() {
     Validate.atLeast('Experience.essence',experienceComponent.essence,0);
 
     if (experienceComponent.level > 1) {
-      const grades = CharacterMath.attributeGrades(id);
-      const minimum = EssenceSystem.totalEssenceToLevel(experienceComponent.level, grades);
-      Validate.atLeast('Experience.essence', experienceComponent.essence, minimum);
+      Validate.atLeast('Experience.essence', experienceComponent.essence, EssenceSystem.essenceToLevel(id));
     }
   }
 
