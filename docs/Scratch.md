@@ -14,3 +14,4 @@ application/helpers/pronoun-helper.js
 application/records/base-monster.js
 application/records/monster-type.js
 ```
+
