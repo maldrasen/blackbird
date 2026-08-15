@@ -2,13 +2,21 @@ global.TrainingSystem = (function() {
 
   let state;
 
+  // The partner may refuse, so the proposition plays out as an episode and the training itself only begins from that
+  // episode's end function. The return mode is marked here so that a refusal returns to wherever we came from.
+  function proposeTraining(characterId) {
+    EpisodeSystem.startEpisode('propose-training', { P:GameSystem.getState().getPlayer(), T:characterId });
+    GameSystem.markReturnMode();
+    GameSystem.setGameMode(GameMode.episode);
+  }
+
   // TODO: It's possible that a character may have some initial anger (or comfort) but that would depend on how this
   //       training began and their feelings towards the player.
 
   // Data: { player:id, partner:id }
   function startTraining(data) {
     state = TrainingState(data);
-    TrainingInterface.startTraining();
+    GameSystem.setGameMode(GameMode.training);
   }
 
   // TODO: I don't think we actually want to drop arousal all the way to 0 after training. It makes sense that there
@@ -17,7 +25,16 @@ global.TrainingSystem = (function() {
   function endTraining() {
     ArousalComponent.update(state.getPlayer(), { arousal:0 });
     ArousalComponent.update(state.getPartner(), { arousal:0 });
-    TrainingInterface.endTraining(state);
+
+    EnlightenSystem.startEnlightenment('training',{
+      skillImprovements: state.getSkillImprovements(),
+      partner: state.getPartner(),
+      anima: state.getAnima(),
+      animus: state.getAnimus(),
+      anger: state.getEssenceOfAnger(),
+    });
+
+    GameSystem.setGameMode(GameMode.enlighten);
     state = null;
   }
 
@@ -243,6 +260,7 @@ global.TrainingSystem = (function() {
   }
 
   return {
+    proposeTraining,
     startTraining,
     endTraining,
     handleSexAction,
