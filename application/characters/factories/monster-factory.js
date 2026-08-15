@@ -1,13 +1,10 @@
-global.MonsterFactory = (function() {
+global.MonsterFactory = function(code) {
+  const monsterBase = BaseMonster.lookup(code);
+  const monsterSpecies = monsterBase.getSpecies();
 
-  function build(code) {
-    const monsterBase = BaseMonster.lookup(code);
-    const monsterSpecies = monsterBase.getSpecies();
-    const monsterData = { code, threatTable:{}, abilityCooldowns:{} };
+  let monsterId;
 
-    let monsterId;
-
-    // We can use the character factory to build the base monster.
+  function build() {
     if (monsterSpecies) {
       monsterId = CharacterFactory.build({
         species: monsterSpecies,
@@ -15,28 +12,25 @@ global.MonsterFactory = (function() {
         triggers: monsterBase.getTriggers(),
         archetypes: monsterBase.getArchetypes(),
       });
-      addEquipment(monsterBase, monsterId);
+      addEquipment();
     }
 
-    // We need to build the battle applicable components that the character builder would have built from scratch.
     if (monsterSpecies == null) {
       monsterId = Registry.createEntity();
-      buildBeast(monsterBase, monsterId);
+      buildBeast();
     }
 
-    // The monster component is created before levels are added because leveling a beast looks up its base monster
-    // through the monster component.
-    MonsterComponent.create(monsterId, monsterData);
+    MonsterComponent.create(monsterId, code);
 
-    addSkills(monsterBase, monsterId);
-    addLevels(monsterBase, monsterId);
+    addSkills();
+    addLevels();
 
     return monsterId;
   }
 
   // Skills start with the type's base skill ranges, then any skills set directly on the base monster override the
   // rolled values.
-  function addSkills(monsterBase, monsterId) {
+  function addSkills() {
     const baseSkills = MonsterType.lookup(monsterBase.getType()).getBaseSkills() || {};
     const skills = SkillsComponent.lookup(monsterId);
 
@@ -53,18 +47,18 @@ global.MonsterFactory = (function() {
   // Only monsters that have a defined attributeGrowth map can add levels. We level monsters this way so that a kobold
   // runt recruited at level 1 can have the same attributes as a level 10 kobold recruited later. Each level also
   // grows one skill from the type's skill growth map.
-  function addLevels(monsterBase, monsterId) {
+  function addLevels() {
     const attributeGrowth = MonsterType.lookup(monsterBase.getType()).getAttributeGrowth();
     if (attributeGrowth) {
       for (let i=1; i<monsterBase.getLevel(); i++) {
         LevelSystem.levelUp(monsterId, Random.fromFrequencyMap(attributeGrowth));
-        growSkill(monsterBase, monsterId);
+        growSkill();
       }
     }
   }
 
   // Skills that were set directly on the base monster are pinned to their authored value and don't grow.
-  function growSkill(monsterBase, monsterId) {
+  function growSkill() {
     const skillGrowth = MonsterType.lookup(monsterBase.getType()).getSkillGrowth();
     if (skillGrowth == null) { return; }
 
@@ -76,7 +70,7 @@ global.MonsterFactory = (function() {
     SkillsComponent.update(monsterId, skills);
   }
 
-  function addEquipment(monsterBase, monsterId) {
+  function addEquipment() {
     const equipment = monsterBase.getEquipment();
     if (equipment) {
       CharacterEquipper(monsterId).equipLoadout(equipment);
@@ -87,7 +81,7 @@ global.MonsterFactory = (function() {
   //    Beast Type Monsters
   // =========================
 
-  function buildBeast(monsterBase, monsterId) {
+  function buildBeast() {
     ActorComponent.create(monsterId, {
       name: monsterBase.getName(),
       gender: Random.fromFrequencyMap(monsterBase.getGenderRatio()),
@@ -97,13 +91,13 @@ global.MonsterFactory = (function() {
     SkillsComponent.getSkills().forEach(code => { skills[code] = 0; });
     SkillsComponent.create(monsterId, skills);
 
-    addAttributes(monsterBase, monsterId);
-    addHealth(monsterBase, monsterId);
+    addAttributes();
+    addHealth();
   }
 
   // Beast attributes are rolled the same way character attributes are, with the attribute grades coming from the
   // monster type rather than a species.
-  function addAttributes(monsterBase, monsterId) {
+  function addAttributes() {
     const grades = MonsterType.lookup(monsterBase.getType()).getAttributes();
     const actor = ActorComponent.lookup(monsterId);
     const attributes = {};
@@ -115,7 +109,7 @@ global.MonsterFactory = (function() {
     AttributesComponent.create(monsterId, attributes);
   }
 
-  function addHealth(monsterBase, monsterId) {
+  function addHealth() {
     const vitality = AttributesComponent.lookup(monsterId).vitality;
     const health = Math.round(Random.rollDice({ x:vitality, d:10 }) * monsterBase.getHealthFactor());
     const stamina = Attributes(monsterId).getMaxStamina();
@@ -124,5 +118,4 @@ global.MonsterFactory = (function() {
   }
 
   return { build };
-
-})();
+}

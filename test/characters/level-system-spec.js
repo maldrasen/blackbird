@@ -53,12 +53,12 @@ describe("LevelSystem", function() {
 
   describe("monster leveling", function() {
     it("levels monsters through the same path", function() {
-      const id = MonsterFactory.build('kobold-dick-puncher');
+      const id = MonsterFactory('kobold-dick-puncher').build();
       expect(ExperienceComponent.lookup(id).level).to.equal(5);
     });
 
     it("seeds leveled monsters with the minimum essence for their level", function() {
-      const id = MonsterFactory.build('kobold-dick-puncher');
+      const id = MonsterFactory('kobold-dick-puncher').build();
       expect(ExperienceComponent.lookup(id).essence).to.equal(8122);
     });
   });

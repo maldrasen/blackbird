@@ -10,7 +10,7 @@ const rows = BaseMonster.getAllCodes().map(code => {
   const values = [];
 
   for (let i=0; i<100; i++) {
-    values.push(EssenceSystem.monsterEssenceValue(MonsterFactory.build(code)));
+    values.push(EssenceSystem.monsterEssenceValue(MonsterFactory(code).build()));
   }
 
   return {

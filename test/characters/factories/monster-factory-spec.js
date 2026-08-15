@@ -2,12 +2,12 @@ describe("MonsterFactory", function() {
 
   describe('Building a species based monster', function() {
     it("uses the CharacterFactory to build the base monster", function() {
-      const id = MonsterFactory.build('deepdark-whisperer');
+      const id = MonsterFactory('deepdark-whisperer').build();
       expect(BodyComponent.lookup(id).scaleColor).to.equal('black');
     });
 
     it("leaves a natural fighter's hands empty", function() {
-      const id = MonsterFactory.build('kobold-dick-puncher');
+      const id = MonsterFactory('kobold-dick-puncher').build();
       const equipment = EquipmentComponent.lookup(id);
 
       expect(equipment.primary).to.be.undefined;
@@ -16,7 +16,7 @@ describe("MonsterFactory", function() {
     });
 
     it("equips real weapons", function() {
-      const id = MonsterFactory.build('kobold-tosser');
+      const id = MonsterFactory('kobold-tosser').build();
       const primary = EquipmentComponent.lookup(id).primary;
 
       expect(WeaponComponent.lookup(primary).base).to.equal('bone-spear');
@@ -25,7 +25,7 @@ describe("MonsterFactory", function() {
     });
 
     it("equips armor", function() {
-      const id = MonsterFactory.build('kobold-trapper');
+      const id = MonsterFactory('kobold-trapper').build();
       const chest = EquipmentComponent.lookup(id).chest;
 
       expect(ArmorComponent.lookup(chest).base).to.equal('leather-doublet');
@@ -35,7 +35,7 @@ describe("MonsterFactory", function() {
 
   describe('Building a beast type monster', function() {
     it("builds an actor component without a species", function() {
-      const id = MonsterFactory.build('rabid-skitterfang');
+      const id = MonsterFactory('rabid-skitterfang').build();
       const actor = ActorComponent.lookup(id);
 
       expect(actor.name).to.equal('Rabid Skitterfang');
@@ -44,7 +44,7 @@ describe("MonsterFactory", function() {
     });
 
     it("builds an attributes component from the monster type's attribute grades", function() {
-      const id = MonsterFactory.build('rabid-skitterfang');
+      const id = MonsterFactory('rabid-skitterfang').build();
       const attributes = AttributesComponent.lookup(id);
 
       expect(attributes.strength).to.be.within(9,13);
@@ -55,7 +55,7 @@ describe("MonsterFactory", function() {
     });
 
     it("builds a health component from the rolled vitality", function() {
-      const id = MonsterFactory.build('rabid-skitterfang');
+      const id = MonsterFactory('rabid-skitterfang').build();
       const health = HealthComponent.lookup(id);
 
       expect(health.maxHealth).to.be.within(5,65);
@@ -64,7 +64,7 @@ describe("MonsterFactory", function() {
     });
 
     it("builds a skills component from the monster type's base skill ranges", function() {
-      const id = MonsterFactory.build('rabid-skitterfang');
+      const id = MonsterFactory('rabid-skitterfang').build();
       const skills = SkillsComponent.lookup(id);
 
       expect(skills.dodge).to.be.within(10,20);
@@ -73,7 +73,7 @@ describe("MonsterFactory", function() {
     });
 
     it("levels a beast at creation without tracking experience", function() {
-      const id = MonsterFactory.build('slithering-yeek');
+      const id = MonsterFactory('slithering-yeek').build();
       const attributes = AttributesComponent.lookup(id);
       const total = Object.values(attributes).reduce((sum,value) => sum + value, 0);
 
@@ -82,7 +82,7 @@ describe("MonsterFactory", function() {
     });
 
     it("grows one skill from the type's skill growth map on each level", function() {
-      const id = MonsterFactory.build('slithering-yeek');
+      const id = MonsterFactory('slithering-yeek').build();
       const skills = SkillsComponent.lookup(id);
 
       expect(skills.dodge + skills.daggers).to.be.within(22,65);

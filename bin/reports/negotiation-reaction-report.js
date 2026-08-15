@@ -73,7 +73,7 @@ for (let i=0; i<samples; i++) {
   GameSystem.getState().setPlayer(player);
   CharacterEquipper(player).equip(Random.between(500,1000));
 
-  const monsterId = MonsterFactory.build(monsterCode);
+  const monsterId = MonsterFactory(monsterCode).build();
   const monster = Monster(monsterId);
   const context = { P:player, T:monsterId };
 

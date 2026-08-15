@@ -27,7 +27,7 @@ function buildPair(monsterCode, playerGender) {
   GameSystem.getState().setPlayer(player);
   CharacterEquipper(player).equip(Random.between(500,1000));
 
-  return { P:player, T:MonsterFactory.build(monsterCode) };
+  return { P:player, T:MonsterFactory(monsterCode).build() };
 }
 
 // ranges[monsterCode][monsterGender][playerGender] = { min, max }

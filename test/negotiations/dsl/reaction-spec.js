@@ -94,7 +94,7 @@ describe("Reaction", function() {
     }
 
     it('grants, overwrites, and deletes preferences', function() {
-      const id = MonsterFactory.build('kobold-sneak-slut');
+      const id = MonsterFactory('kobold-sneak-slut').build();
 
       applyPreferences(id, { 'humiliation-slut':30, 'piss-slut':20 });
       expect(SexualPreferencesComponent.lookup(id)['humiliation-slut']).to.equal(30);
@@ -109,7 +109,7 @@ describe("Reaction", function() {
     });
 
     it('ignores a preference weaker than the current value', function() {
-      const id = MonsterFactory.build('kobold-sneak-slut');
+      const id = MonsterFactory('kobold-sneak-slut').build();
 
       applyPreferences(id, { 'piss-slut':50 });
       applyPreferences(id, { 'piss-slut':20 });
@@ -122,7 +122,7 @@ describe("Reaction", function() {
     });
 
     it('treats a negative preference as its own direction, allowing flips across zero', function() {
-      const id = MonsterFactory.build('kobold-sneak-slut');
+      const id = MonsterFactory('kobold-sneak-slut').build();
 
       applyPreferences(id, { perverted:null });
       applyPreferences(id, { perverted:30 });
@@ -136,7 +136,7 @@ describe("Reaction", function() {
     // The sensitivities component is rebuilt without a cervix because a freshly built kobold has a small random
     // chance of rolling one.
     it('throws for an incompatible preference', function() {
-      const id = MonsterFactory.build('kobold-sneak-slut');
+      const id = MonsterFactory('kobold-sneak-slut').build();
       SensitivitiesComponent.destroy(id);
       SensitivitiesComponent.create(id, { throat:2 });
 
@@ -144,7 +144,7 @@ describe("Reaction", function() {
     });
 
     it('throws for an unknown preference code', function() {
-      const id = MonsterFactory.build('kobold-sneak-slut');
+      const id = MonsterFactory('kobold-sneak-slut').build();
       expect(() => applyPreferences(id, { 'linoleum-slut':30 })).to.throw('Bad sexual preference code');
     });
   });

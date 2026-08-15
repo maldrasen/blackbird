@@ -1,8 +1,11 @@
 global.MonsterComponent = (function() {
   const properties = ['code','threatTable','abilityCooldowns'];
 
-  function create(id,data) {
-    Registry.createComponent(id,ComponentType.monster,data);
+  function create(id,code) {
+    Registry.createComponent(id,ComponentType.monster, { code,
+      threatTable: {},
+      abilityCooldowns: {}
+    });
     validate(id);
   }
 

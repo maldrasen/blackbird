@@ -4,7 +4,7 @@ describe("RecruitmentSystem", function() {
     const player = Registry.createEntity();
     GameSystem.getState().setPlayer(player);
 
-    const monster = MonsterFactory.build('kobold-trapper');
+    const monster = MonsterFactory('kobold-trapper').build();
     expect(MonsterComponent.lookup(monster)).to.exist;
 
     RecruitmentSystem.recruit(monster, { affection:300, fear:50, respect:200, control:0 });
@@ -24,7 +24,7 @@ describe("RecruitmentSystem", function() {
     const player = Registry.createEntity();
     GameSystem.getState().setPlayer(player);
 
-    const monster = MonsterFactory.build('kobold-trapper');
+    const monster = MonsterFactory('kobold-trapper').build();
     const primary = EquipmentComponent.lookup(monster).primary;
 
     RecruitmentSystem.recruit(monster, { affection:300, fear:50, respect:200, control:0 });
