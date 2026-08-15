@@ -48,8 +48,8 @@ describe("MonsterFactory", function() {
       const attributes = AttributesComponent.lookup(id);
 
       expect(attributes.strength).to.be.within(9,13);
-      expect(attributes.dexterity).to.be.within(11,15);
-      expect(attributes.vitality).to.be.within(9,13);
+      expect(attributes.dexterity).to.be.within(12,16);
+      expect(attributes.vitality).to.be.within(7,11);
       expect(attributes.intelligence).to.be.within(7,11);
       expect(attributes.beauty).to.be.within(7,11);
     });
@@ -58,9 +58,9 @@ describe("MonsterFactory", function() {
       const id = MonsterFactory('rabid-skitterfang').build();
       const health = HealthComponent.lookup(id);
 
-      expect(health.maxHealth).to.be.within(5,65);
+      expect(health.maxHealth).to.be.within(5,36);
       expect(health.currentHealth).to.equal(health.maxHealth);
-      expect(health.currentStamina).to.be.within(4532,5586);
+      expect(health.currentStamina).to.be.within(3843,5586);
     });
 
     it("builds a skills component from the monster type's base skill ranges", function() {

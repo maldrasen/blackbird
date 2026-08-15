@@ -28,6 +28,11 @@ global.BaseMonster = (function() {
       return monster.healthFactor || 1;
     }
 
+    function getSpeedFactor() {
+      if (monster.species) { throw new Error(`This monster should have a body. Get the precalculated speed factor from the entity's cache component.`); }
+      return monster.speedFactor || 1;
+    }
+
     function getThreatWeights() {
       return monster.threatWeights || MonsterType.lookup(monster.type).getThreatWeights();
     }
@@ -49,6 +54,7 @@ global.BaseMonster = (function() {
       getLevel: () => { return monster.level || 0; },
 
       getHealthFactor,
+      getSpeedFactor,
 
       getSkills: () => { return monster.skills || {}; },
       getResistances: () => { return monster.resistances || {}; },

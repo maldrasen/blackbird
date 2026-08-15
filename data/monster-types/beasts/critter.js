@@ -8,8 +8,8 @@ MonsterType.register('critter',{
 
   attributes: {
     strength:     'C',
-    dexterity:    'A',
-    vitality:     'C',
+    dexterity:    'S',
+    vitality:     'F',
     intelligence: 'F',
     beauty:       'F',
   },

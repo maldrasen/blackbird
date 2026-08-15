@@ -89,7 +89,8 @@ global.BattleRound = function(acting) {
   // ==========
 
   function getSpeedFactor() {
-    return CacheComponent.lookup(acting).speedFactor;
+    const cache = CacheComponent.lookup(acting);
+    return cache ? cache.speedFactor : Monster(acting).getBaseMonster().getSpeedFactor();
   }
 
   // When the action time is set we usually want to apply the standard time scale. Sometimes though (as in the case of
