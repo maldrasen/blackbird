@@ -1,5 +1,7 @@
 Need to ensure that a monster has a species to enable negotiate
 
+Different hit locations for beasts. 
+
 ### To Review:
 ```
 application/characters/character-math.js
@@ -12,18 +14,6 @@ application/helpers/pronoun-helper.js
 application/records/base-monster.js
 application/records/monster-type.js
 
-bin/reports/level-report.js
-
-data/abilities/beast-bite.js
-data/abilities/venomous-bite.js
-data/monster-types/beasts/creature.js
-data/monster-types/beasts/critter.js
-data/monsters/lesser-daggermaw.js
-data/monsters/rabid-skitterfang.js
-data/monsters/revolting-cockroach.js
-data/monsters/slithering-yeek.js
-
-docs/design-and-planning/battle/Monsters.md
-
 ```
+
 

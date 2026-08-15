@@ -48,8 +48,7 @@ function getSizeFactor(size) {
 
 // The dick punch ability does dramatically reduced damage to someone wearing metal pants. Metal pants also remove
 // the stun effect. Other materials, like leather and cloth will reduce the damage somewhat, but keeps the stun
-// effect. This does full damage to someone without pants, making this ability very effective against large naked
-// monsters.
+// effect. This does full damage to someone without pants, making this ability very effective against big naked mans.
 function getArmorFactor(target) {
   const pants = EquipmentManager(target).getSlot(EquipmentSlot.legs);
   if (pants == null) { return 1; }

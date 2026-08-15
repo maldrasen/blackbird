@@ -17,11 +17,9 @@ global.Monster = function(id) {
     const abilityMap = {}
 
     getType().getPrioritizedAbilities().forEach(ability => {
-      abilityMap[ability.code] = ability.priority;
-    });
+      abilityMap[ability.code] = ability.priority; });
     getBaseMonster().getPrioritizedAbilities().forEach(ability => {
-      abilityMap[ability.code] = ability.priority;
-    });
+      abilityMap[ability.code] = ability.priority; });
 
     if (Object.keys(abilityMap).length === 0) {
       throw new Error(`Monster[${getCode()}] has no abilities.`);
@@ -30,6 +28,22 @@ global.Monster = function(id) {
     return Object.keys(abilityMap).map(code => {
       return { code:code, priority:abilityMap[code] }
     });
+  }
+
+  // A base monster ability will overwrite a monster type ability here, the same way the getPrioritizedAbilities()
+  // function works. We need to call this function when there are other properties on the ability that we need to read.
+  function getAbility(code) {
+    const abilityMap = {};
+
+    getType().getPrioritizedAbilities().forEach(ability => {
+      abilityMap[ability.code] = ability; });
+    getBaseMonster().getPrioritizedAbilities().forEach(ability => {
+      abilityMap[ability.code] = ability; });
+
+    if (abilityMap[code] == null) {
+      throw new Error(`Monster[${getCode()}] doesn't have Ability[${code}]`); }
+
+    return abilityMap[code];
   }
 
   function getResistance(type) {
@@ -98,6 +112,7 @@ global.Monster = function(id) {
     getNegotiationStyle,
     getSkill,
     getPrioritizedAbilities,
+    getAbility,
 
     populateThreatTable,
     getThreatTable,

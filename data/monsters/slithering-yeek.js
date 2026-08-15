@@ -7,7 +7,7 @@ BaseMonster.register('slithering-yeek',{
   level: 3,
 
   prioritizedAbilities: [
-    { code:'venomous-bite', priority:50 }, // TODO: We need to be able to set poison strength when an ability is defined.
+    { code:'venomous-bite', priority:50, poisonStrength:5 },
   ],
 
 });
