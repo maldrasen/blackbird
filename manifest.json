@@ -170,6 +170,7 @@
     "application/records/dungeon-theme.js",
     "application/records/encounter.js",
     "application/records/episode.js",
+    "application/records/factories/natural-attack-ability.js",
     "application/records/feature-type.js",
     "application/records/has-materials.js",
     "application/records/has-reduction.js",

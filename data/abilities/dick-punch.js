@@ -1,54 +1,28 @@
+
 // A dick punch is always thrown with a fist, whatever the attacker might be holding.
-const dickPunchAttack = {
-  skill: 'martial-arts',
-  name: 'fist',
-  textKey: 'punch',
-  damageType: DamageType.crush,
-  low: 25,
-  high: 50,
-  speed: 500,
-  reach: WeaponReach.short,
-};
 
-Ability.register('dick-punch',{
+NaturalAttackAbility.register('dick-punch', {
   name: 'Dick Punch',
-  category: 'physical',
-  targetingMode: TargetingMode.enemyInWeaponRange,
   essence: 50,
-
-  canBeUsed: () => {
-    const round = BattleSystem.getRound();
-    const cock = CockComponent.lookupNormalOf(round.getTarget());
-    return cock == null ? false : BattleHelper.isAttackWithinRange(WeaponReach.short,
-      round.getActingPosition(),
-      round.getTargetPosition());
+  attack: {
+    skill: 'martial-arts',
+    name: 'fist',
+    textKey: 'punch',
+    damageType: DamageType.crush,
+    low: 25,
+    high: 50,
+    speed: 500,
+    reach: WeaponReach.short,
   },
 
-  execute: () => {
-    const round = BattleSystem.getRound();
-    const state = BattleSystem.getState();
-    const acting = round.getActing();
-    const target = round.getTarget();
+  hitLocation: EquipmentSlot.legs,
+  cooldown: 1000,
 
-    const contest = PhysicalAttackContest(acting, target);
-          contest.setNaturalAttack(dickPunchAttack);
-          contest.setAbility('dick-punch');
-          contest.setHitLocation(EquipmentSlot.legs);
-          contest.roll();
+  canTarget: target => { return CockComponent.lookupNormalOf(target) != null; },
+  getAttackText: () => { return `{A:ActingName} punches {T:targetName} in the dick.`; },
 
-    const attackRoll = contest.getAttackRoll();
-    const defendRoll = contest.getDefendRoll();
-
-    round.addTime(500);
-    round.addMessage({ text:getAttackText() });
-    state.setCooldown(acting, 'dick-punch', 1000);
-
-    if (contest.isHit()) {
-      if (getArmorFactor(target) > 0.5) { addStunEffect(acting,target); }
-      PhysicalAttackSystem.processHit(attackRoll, defendRoll);
-    } else {
-      PhysicalAttackSystem.processMiss(attackRoll, defendRoll);
-    }
+  onHit: (acting, target) => {
+    if (getArmorFactor(target) > 0.5) { addStunEffect(acting, target); }
   },
 
   getDamageBonus: acting => {
@@ -95,6 +69,3 @@ function addStunEffect(acting, target) {
 // TODO: We need some ball crushingly vivid attack text here. The attack text also needs to describe how the attack
 //       wasn't effective if the defender is wearing metal pants, or only partly effective if they're wearing any
 //       pants.
-function getAttackText() {
-  return `{A:ActingName} punches {T:targetName} in the dick.`
-}
