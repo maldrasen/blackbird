@@ -51,14 +51,6 @@ global.BattleInterface = (function() {
     if (viewActive()) { FormationPanel.moveInwardOnDeath(moves); }
   }
 
-  // Not a call into the battle view. This starts an episode and changes the mode, so it's gated on the client being
-  // present rather than on the battle view being active.
-  function showGameOver() {
-    if (Environment.viewPresent() === false) { return; }
-    EpisodeSystem.startEpisode('game-over', {});
-    GameSystem.setGameMode(GameMode.episode);
-  }
-
   return {
     startTargeting,
     showCharacterCommands,
@@ -70,7 +62,6 @@ global.BattleInterface = (function() {
     killEntity,
     moveForwardOnDeath,
     moveInwardOnDeath,
-    showGameOver,
   };
 
 })();

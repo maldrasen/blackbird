@@ -23,3 +23,12 @@ Records are generally accessed by their code, a string label used to access the 
 
 ##### Game State
 The GameState is the one state object that is persisted outside of the entities and components. It's mostly a place to store game state variables that aren't attached to a particular entity, like the current game mode or the game time.
+
+### Views and Interfaces
+Everything under `/views` needs the DOM, and everything under `/application` needs to run without it. The interfaces in `/application/interfaces` are the seam between them. A system never calls a view directly; it calls an interface, and the interface decides whether the call can happen. This is what keeps the systems headless-safe, and it's the only place the check belongs.
+
+Each interface has a `viewActive()` predicate. It first checks `Environment.viewPresent()`, which is false when the game is headless or running under the test suite, and then checks that the interface's own view is the one currently showing. 
+
+The mode check matters as much as the headless check. Systems update views whenever they change something displayed, and that can happen while a different view owns the main content. Dropping those updates is safe because every view refreshes itself when it's shown again.
+
+Interfaces only hold calls into views. Anything that changes the game mode, starts an episode, or otherwise decides what happens next is business logic and belongs in a system, even when a view is what triggers it. `GameInterface` is the exception to all of this and has no `viewActive()`, since showing a game mode is what makes a view active in the first place.

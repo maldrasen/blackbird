@@ -97,7 +97,8 @@ global.BattleSystem = (function() {
 
   function battleLost() {
     reset();
-    BattleInterface.showGameOver();
+    EpisodeSystem.startEpisode('game-over', {});
+    GameSystem.setGameMode(GameMode.episode);
   }
 
   // TODO: Generate loot from dead monsters.
