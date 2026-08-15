@@ -6,12 +6,12 @@ MonsterType.register('critter',{
     leastArmor: 50,
   },
 
-  baseAttributes: {
-    strength:     [5,10],
-    dexterity:    [15,25],
-    vitality:     [5,10],
-    intelligence: [3,5],
-    beauty:       [3,5],
+  attributes: {
+    strength:     'C',
+    dexterity:    'A',
+    vitality:     'C',
+    intelligence: 'F',
+    beauty:       'F',
   },
 
   attributeGrowth: {

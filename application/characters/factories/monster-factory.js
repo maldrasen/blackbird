@@ -89,7 +89,7 @@ global.MonsterFactory = (function() {
   }
 
   function addAttributes(monsterBase, monsterId) {
-    const baseAttributes = MonsterType.lookup(monsterBase.getType()).getBaseAttributes();
+    const baseAttributes = MonsterType.lookup(monsterBase.getType()).getAttributes();
     const attributes = {};
 
     Object.entries(baseAttributes).forEach(([code,range]) => {

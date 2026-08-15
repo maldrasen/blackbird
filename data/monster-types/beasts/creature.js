@@ -6,12 +6,12 @@ MonsterType.register('creature',{
     leastArmor: 50,
   },
 
-  baseAttributes: {
-    strength:     [15,25],
-    dexterity:    [5,10],
-    vitality:     [15,25],
-    intelligence: [3,5],
-    beauty:       [3,5],
+  attributes: {
+    strength:     'A',
+    dexterity:    'C',
+    vitality:     'A',
+    intelligence: 'F',
+    beauty:       'F',
   },
 
   attributeGrowth: {
