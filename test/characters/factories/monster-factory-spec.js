@@ -80,6 +80,14 @@ describe("MonsterFactory", function() {
       expect(ExperienceComponent.lookup(id)).to.be.undefined;
       expect(total).to.be.within(47,83);
     });
+
+    it("grows one skill from the type's skill growth map on each level", function() {
+      const id = MonsterFactory.build('slithering-yeek');
+      const skills = SkillsComponent.lookup(id);
+
+      expect(skills.dodge + skills.daggers).to.be.within(22,65);
+      expect(skills.stealth).to.equal(0);
+    });
   });
 
 });
