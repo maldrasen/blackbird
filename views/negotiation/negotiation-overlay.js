@@ -20,6 +20,10 @@ global.NegotiationOverlay = (function() {
     clear();
   }
 
+  function isOpen() {
+    return X.hasClass('#negotiationOverlay','hide') === false;
+  }
+
   function advance() {
     if (X.hasClass('#negotiationFrame','can-advance')) {
       X.removeClass('#negotiationFrame','can-advance');
@@ -77,6 +81,7 @@ global.NegotiationOverlay = (function() {
     init,
     open,
     close,
+    isOpen,
     renderQuestion,
     renderDialog,
     renderResolution,
