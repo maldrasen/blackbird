@@ -23,6 +23,10 @@ global.Monster = function(id) {
       abilityMap[ability.code] = ability.priority;
     });
 
+    if (Object.keys(abilityMap).length === 0) {
+      throw new Error(`Monster[${getCode()}] as no abilities.`);
+    }
+
     return Object.keys(abilityMap).map(code => {
       return { code:code, priority:abilityMap[code] }
     });
