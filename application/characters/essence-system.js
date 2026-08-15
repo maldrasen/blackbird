@@ -41,7 +41,7 @@ global.EssenceSystem = (function() {
   // ========================
 
   // The leveling costs are keyed on an attribute grade map rather than a species so that they work for beasts too.
-  // Character(id).getAttributeGrades() resolves the grades for an entity.
+  // CharacterMath.attributeGrades(id) resolves the grades for an entity.
   function totalEssenceToLevel(level, grades) {
     let total = 0;
     for (let i=2; i<=level; i++) { total += essenceToLevel(i,grades); }
@@ -64,7 +64,7 @@ global.EssenceSystem = (function() {
 
   function canLevelUp(characterId) {
     const experience = ExperienceComponent.lookup(characterId);
-    const grades = Character(characterId).getAttributeGrades();
+    const grades = CharacterMath.attributeGrades(characterId);
 
     return experience.essence >= totalEssenceToLevel(experience.level + 1, grades);
   }

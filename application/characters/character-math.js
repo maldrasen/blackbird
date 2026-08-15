@@ -18,6 +18,13 @@ global.CharacterMath = (function() {
 
   const attributeBaseline = 5;
 
+  // An entity's attribute grades come from its species, or from the monster type for beasts, which don't have one.
+  function attributeGrades(id) {
+    const species = ActorComponent.lookup(id).species;
+    if (species) { return Species.lookup(species).getAttributes(); }
+    return MonsterType.lookup(BaseMonster.lookup(MonsterComponent.lookup(id).code).getType()).getAttributes();
+  }
+
   // Roll a single attribute increase from an attribute grade map, attribute aspects, and gender. This is shared by
   // the attributes factory when rolling a new character's attributes and by the level system when leveling one up.
   // The grades come from the species for characters and from the monster type for beasts.
@@ -174,6 +181,7 @@ global.CharacterMath = (function() {
 
   return {
     attributeBaseline,
+    attributeGrades,
     attributeIncrease,
     calculateSpeedFactor,
     emotionBaseValue,

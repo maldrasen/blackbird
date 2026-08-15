@@ -2,7 +2,7 @@ global.LevelSystem = (function() {
 
   function levelUp(id, attribute) {
     const actor = ActorComponent.lookup(id);
-    const grades = Character(id).getAttributeGrades();
+    const grades = CharacterMath.attributeGrades(id);
     const increase = CharacterMath.attributeIncrease(attribute, grades, actor, AspectsComponent.lookup(id) || {});
     const attributes = AttributesComponent.lookup(id);
 
@@ -33,7 +33,7 @@ global.LevelSystem = (function() {
     const experience = ExperienceComponent.lookup(id);
     experience.level += 1;
 
-    const minimum = EssenceSystem.totalEssenceToLevel(experience.level, Character(id).getAttributeGrades());
+    const minimum = EssenceSystem.totalEssenceToLevel(experience.level, CharacterMath.attributeGrades(id));
     if (experience.essence < minimum) { experience.essence = minimum; }
 
     ExperienceComponent.update(id, experience);

@@ -13,13 +13,6 @@ global.Character = function(id) {
 
   function getSpecies() { return ActorComponent.lookup(id).species; }
   function getSpeciesName() { return Species.lookup(getSpecies()).getName(); }
-
-  // Attribute grades come from the species, or from the monster type for beasts, which don't have one.
-  function getAttributeGrades() {
-    const species = getSpecies();
-    if (species) { return Species.lookup(species).getAttributes(); }
-    return MonsterType.lookup(BaseMonster.lookup(MonsterComponent.lookup(id).code).getType()).getAttributes();
-  }
   function getGenderName() { return GenderName[ActorComponent.lookup(id).gender] }
   function isMale() { return ActorComponent.lookup(id).gender === Gender.male; }
   function isFemale() { return ActorComponent.lookup(id).gender === Gender.female; }
@@ -257,7 +250,6 @@ global.Character = function(id) {
     getFullName,
     getSpecies,
     getSpeciesName,
-    getAttributeGrades,
     getGenderName,
     isMale,
     isFemale,
