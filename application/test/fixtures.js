@@ -7,7 +7,7 @@ global.Fixtures = (function() {
   }
 
   function setupBattle() {
-    setupGame();
+    setupGame({ location:'the-well' });
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
@@ -32,7 +32,7 @@ global.Fixtures = (function() {
   }
 
   function setupTraining() {
-    setupGame();
+    setupGame({ location:'ruined-living-room' });
     CharacterFixtures.randomPlayer();
     CharacterFixtures.randomCharacters(10, { triggers:[] });
 
