@@ -24,7 +24,7 @@ global.Monster = function(id) {
     });
 
     if (Object.keys(abilityMap).length === 0) {
-      throw new Error(`Monster[${getCode()}] as no abilities.`);
+      throw new Error(`Monster[${getCode()}] has no abilities.`);
     }
 
     return Object.keys(abilityMap).map(code => {
