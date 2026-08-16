@@ -1,6 +1,6 @@
 global.DamageRoll = function(attacker, attackRoll, defendRoll) {
   const baseWeapon = attackRoll.getBaseWeapon();
-  const strength = AttributesComponent.lookup(attacker).strength;
+  const strength = Attributes(attacker).getStrength();
   const attackType = BattleHelper.getRollType(attackRoll);
   const defendType = BattleHelper.getRollType(defendRoll);
   const damageRoll = Random.between(baseWeapon.getLow(), baseWeapon.getHigh());

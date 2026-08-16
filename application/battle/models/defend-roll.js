@@ -24,10 +24,10 @@ global.DefendRoll = function(defender, attacker, attackRoll) {
   // When a character can both block or parry an attack, they have a chance of doing either. A high strength character
   // will block more often and a high dex character will parry more often.
   function chooseDefenseSkill(defender) {
-    const attributes = AttributesComponent.lookup(defender);
+    const attributes = Attributes(defender);
     return Random.fromFrequencyMap({
-      parry: attributes.dexterity,
-      block: attributes.strength,
+      parry: attributes.getDexterity(),
+      block: attributes.getStrength(),
     });
   }
 
