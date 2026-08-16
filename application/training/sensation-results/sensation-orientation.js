@@ -20,7 +20,7 @@ global.SensationOrientation = (function() {
     }
 
     if (orientation.submission > 0) {
-      const submissiveFactor = CharacterMath.personalityFactorValue(preferences.submissive);
+      const submissiveFactor = TrainingMath.personalityFactorValue(preferences.submissive);
       const check = SkillCheck(player, 'domination');
 
       result.addToPlayerSkills('domination');
@@ -31,7 +31,7 @@ global.SensationOrientation = (function() {
     }
 
     if (orientation.masochism > 0) {
-      const masochismFactor = CharacterMath.personalityFactorValue(preferences.masochistic);
+      const masochismFactor = TrainingMath.personalityFactorValue(preferences.masochistic);
       const check = SkillCheck(player, 'sadism');
 
       result.addToPlayerSkills('sadism');
@@ -42,7 +42,7 @@ global.SensationOrientation = (function() {
     }
 
     if (orientation.shame > 0) {
-      const shameFactor = CharacterMath.personalityFactorValue(preferences['humiliation-slut']);
+      const shameFactor = TrainingMath.personalityFactorValue(preferences['humiliation-slut']);
       const check = SkillCheck(player, 'degradation');
 
       result.addToPlayerSkills('degradation');

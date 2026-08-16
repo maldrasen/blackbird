@@ -44,8 +44,8 @@ rather than assuming the reference model is what Blackbird is converging toward.
 ## Core formula philosophy: discrete tables vs continuous curves
 
 Blackbird leans on continuous functions everywhere a personality/preference value affects a number:
-`CharacterMath.personalityFactorValue()` (a squared curve from -100..100 to a 0.5-2.0 factor),
-`CharacterMath.emotionBaseValue()` (a six-zone `PiecewiseCurve`), `applyFactorScale()`. One formula, smooth output,
+`TrainingMath.personalityFactorValue()` (a squared curve from -100..100 to a 0.5-2.0 factor),
+`TrainingMath.emotionBaseValue()` (a six-zone `PiecewiseCurve`), `applyFactorScale()`. One formula, smooth output,
 easy to reason about at any input value.
 
 The reference game does almost everything via `SELECTCASE` on a **discrete ability level (0-5)**, each case a

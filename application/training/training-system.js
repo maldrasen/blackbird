@@ -97,7 +97,7 @@ global.TrainingSystem = (function() {
     const character = Character(entity);
     const rValue = 0.0035;
     const pleasureDecayRate = 0.75;
-    const comparative = CharacterMath.saturatingGrowthCurve(sensations.desire, 100, rValue);
+    const comparative = TrainingMath.saturatingGrowthCurve(sensations.desire, 100, rValue);
     const arousalData = ArousalComponent.lookup(entity);
 
     if (comparative < arousalData.arousal) {
