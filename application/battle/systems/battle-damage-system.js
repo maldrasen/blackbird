@@ -59,15 +59,24 @@ global.BattleDamageSystem = (function() {
   //       want to use character's armor's slash resistance, but average it across all locations. Other resistance
   //       types should be additive though. A character that has a 20% percent fire damage resistance amulet and a 10%
   //       fire damage resistance cloak should have an 30% overall fire damage resistance across every hit location.
-  //       This is the same resistance used to resist status effects.
+  //       This is the same resistance used to resist status effects. Until equipment carries elemental resistances,
+  //       elemental damage is reduced by the target's innate resistance alone.
 
+  // Physical damage lands somewhere, so it's reduced by whatever armor covers that location on top of the target's
+  // own resistance. Elemental damage has no location to cover yet, leaving only the innate resistance. A negative
+  // resistance is a vulnerability either way, and raises the damage rather than reducing it.
   function getReductionPercent(target, hitLocation, type) {
-    if ([DamageType.crush, DamageType.pierce, DamageType.slash].includes(type)) {
-      if (hitLocation == null) { throw new Error(`applyDamage() requires a hit location.`); }
-      const reduction = getEquippedReduction(target, hitLocation, type) + getInnateResistance(target, type);
-      return Math.min(reduction, maxReduction);
-    }
-    throw new Error(`TODO: Equipment elemental resistances.`);
+    if (isPhysical(type) === false) { return cappedReduction(getInnateResistance(target, type)); }
+    if (hitLocation == null) { throw new Error(`applyDamage() requires a hit location.`); }
+    return cappedReduction(getEquippedReduction(target, hitLocation, type) + getInnateResistance(target, type));
+  }
+
+  function isPhysical(type) {
+    return [DamageType.crush, DamageType.pierce, DamageType.slash].includes(type);
+  }
+
+  function cappedReduction(reduction) {
+    return Math.min(reduction, maxReduction);
   }
 
   function getEquippedReduction(target, hitLocation, type) {

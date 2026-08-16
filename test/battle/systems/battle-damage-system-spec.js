@@ -267,6 +267,36 @@ describe("BattleDamageSystem", function() {
       expect(damage).to.equal(100);
     });
 
+    // Elemental damage has no hit location, so a kobold's fire resistance of 20 is the only thing between them and
+    // the flames. Their armor never enters into it, which is why the secondary slot doesn't need clearing here.
+    it("reduces elemental damage by the innate resistance alone", function() {
+      const state = startBattle();
+      const target = state.getActiveMonsters()[0];
+
+      const damage = BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ fire:100 }});
+
+      expect(damage).to.equal(80);
+    });
+
+    // A kobold's psychic resistance is -10, so they take more than what was thrown at them.
+    it("raises damage for a negative resistance", function() {
+      const state = startBattle();
+      const target = state.getActiveMonsters()[0];
+
+      const damage = BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ psychic:100 }});
+
+      expect(damage).to.equal(110);
+    });
+
+    it("passes elemental damage the creature doesn't resist straight through", function() {
+      const state = startBattle();
+      const target = state.getActiveMonsters()[0];
+
+      const damage = BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ nature:100 }});
+
+      expect(damage).to.equal(100);
+    });
+
     // The kobold trappers always wear a leather doublet over their scales, so the chest takes both reductions.
     // The secondary slot is cleared because a trapper can roll a shield loadout.
     it("stacks innate resistance with worn armor", function() {
