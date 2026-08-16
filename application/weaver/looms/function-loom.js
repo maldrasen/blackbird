@@ -4,6 +4,8 @@ global.FunctionLoom = (function() {
     switch(name) {
       case `unequip`: return unequip(context,argumentList);
       case `setPosition`: return setPosition(context,argumentList);
+      case `hisHitLocation`: return compileHitLocation(context,argumentList,'his');
+      case `targetsHitLocation`: return compileHitLocation(context,argumentList,`targetName's`);
       case `aWeaponName`: return compileWeaponName(context,argumentList,'a');
       case `hisWeaponName`: return compileWeaponName(context,argumentList,'his');
       case `theWeaponName`: return compileWeaponName(context,argumentList,'the');
@@ -25,6 +27,78 @@ global.FunctionLoom = (function() {
     equipment.equipItem(null, argumentList[1]);
     return '';
   }
+
+  // ===========================
+  //    Target's Hit Location
+  // ===========================
+  // The target's hit location resolves to a phrase like "Greg's head", or "One of Greg's legs" and includes more
+  // specific body parts locatated at those hit locations, like face, neck, or breasts.
+
+  function compileHitLocation(context, argumentList, possessive) {
+    const id = context[argumentList[0]];
+    const location = context.hitLocation;
+    const owner = `{${argumentList[0]}:${possessive}}`;
+
+    if (location == null) { throw new Error(`The context has no hitLocation.`); }
+    if (location === EquipmentSlot.head) { return `${owner} ${Random.from(['head','face','neck'])}`; }
+    if (location === EquipmentSlot.chest) { return chestHitLocation(id, owner); }
+    if (location === EquipmentSlot.legs) { return legHitLocation(id, owner); }
+
+    const singular = { hands:'hand', feet:'foot' }[location];
+
+    return Random.from([
+      `one of ${owner} ${location}`,
+      `${owner} ${singular}`,
+    ]);
+  }
+
+  // Hitting a character's chest will sometimes hit their breasts if they have breasts, and unlike the cock or pussy
+  // hits will happen through armor.
+  function chestHitLocation(id, owner) {
+    const breasts = BreastsComponent.lookup(id);
+
+    if (breasts && Random.roll(100) < 30) {
+      return Random.from([
+        `one of ${owner} {breasts}`,
+        `one of ${owner} {T:breasts.apple} sized breasts`,
+      ]);
+    }
+
+    return `${owner} chest`;
+  }
+
+  // Hitting a leg location can hit a character's cock or pussy, though it's rare. The character also has to be
+  // bottomless or wearing lewd armor for this to happen. I think it's too complicated to retroactively add more
+  // damage when this happens, so it's really only for flavor.
+  function legHitLocation(id, owner) {
+    const hasBody = BodyComponent.lookup(id) != null;
+
+    if (hasBody && Character(id).isCrotchExposed()) {
+      const cock = CockComponent.lookupNormalOf(id);
+      const pussy = PussyComponent.lookupNormalOf(id);
+      const exposed = Random.from(['exposed','naked','bare','vulnerable']);
+
+      if (cock && Random.roll(100) < 20) {
+        return Random.from([
+          `${owner} ${exposed} {cock}`,
+          `${owner} swinging {cock}`,
+        ]);
+      }
+
+      if (pussy && Random.roll(100) < 10) {
+        return `${owner} ${exposed} {pussy}`;
+      }
+    }
+
+    return Random.from([
+      `one of ${owner} ${Random.from(['legs','thighs'])}`,
+      `${owner} ${Random.from(['leg','thigh'])}`,
+    ]);
+  }
+
+  // =================
+  //    Weapon Name
+  // =================
 
   // This function gets a weapon's name from the context, or by looking up primary weapon data from the actor key. The
   // function prefixes the name with "a", "his", "the", or nothing if the weapon has a proper name. Text with a dagger

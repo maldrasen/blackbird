@@ -1,6 +1,6 @@
 global.BreastsLoom = (function() {
 
-  const breastsWord = { tits:10, breasts:8, mounds:2 };
+  const breastsWord = { tits:10, breasts:8 };
   const breastWord = { tit:10, breast:8 };
 
   const sizeWords = {
@@ -59,6 +59,7 @@ global.BreastsLoom = (function() {
   // {A:breasts.bigRound} A longer adjective phrase describing the shape without a word for breasts.
   // {A:breasts:thickNipples} A phrase like 'long nipples' or 'dark teats'
   // {A:breasts:hardThickNipples} Like thickNipples, but stiff with arousal. A phrase like 'long hard nipples'
+  // {A:breasts.apple} A size comparison word.
   // {A:breasts.apples} A plural size comparison word.
   // {A:breasts.anApple} A singular size comparison prefixed with a or an.
   function weave(id, token) {

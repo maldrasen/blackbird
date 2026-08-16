@@ -148,6 +148,8 @@ global.Weaver = function(context) {
   }
 
   function simpleValue(key) {
+    if (key === 'teeth') { return Random.from(['teeth','fangs']); }
+
     if (key === 'breast') { return Random.fromFrequencyMap(BreastsLoom.breastWord); }
     if (key === 'breasts') { return Random.fromFrequencyMap(BreastsLoom.breastsWord); }
     if (key === 'cock') { return Random.fromFrequencyMap(CockLoom.cockWords); }
