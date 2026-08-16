@@ -28,11 +28,19 @@ global.CharacterOverviewPanel = (function() {
   }
 
   function fillAttributes(id) {
-    const attributes = AttributesComponent.lookup(id);
+    const actual = AttributesComponent.lookup(id);
+    const effective = Attributes(id);
     const list = ListBuilder('ul','two-columns');
 
+    function valueClass(value, key) {
+      if (value > actual[key]) { return 'value buffed fg-good'; }
+      if (value < actual[key]) { return 'value debuffed fg-bad'; }
+      return 'value';
+    }
+
     ['strength', 'dexterity', 'vitality', 'intelligence', 'beauty'].forEach(key => {
-      list.add(`<li class='label'>${StringHelper.titlecase(key)}</li><li class='value'>${attributes[key]}</li>`)
+      const value = effective.getAttribute(key);
+      list.add(`<li class='label'>${StringHelper.titlecase(key)}</li><li class='${valueClass(value, key)}'>${value}</li>`)
     });
 
     X.fill('#characterOverlay .attributes-area', X.createElement(list.getList()));

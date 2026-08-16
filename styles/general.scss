@@ -102,6 +102,11 @@ body:has(.dragging), body:has(.dragging) * { cursor: grabbing !important; }
 .fg-rank-SS { color: variables.$fg-rank-SS; }
 .fg-rank-SSS { color: variables.$fg-rank-SSS; }
 
+.fg-ok   { color: variables.$fg-ok; }
+.fg-good { color: variables.$fg-good; }
+.fg-mid  { color: variables.$fg-mid; }
+.fg-bad  { color: variables.$fg-bad; }
+
 .weaver-error, .dialog-error {
   font-family:'roboto-mono', monospace;
   color: variables.$fg-error;
