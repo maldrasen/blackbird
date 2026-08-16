@@ -1,7 +1,7 @@
 BaseMonster.register('kobold-trapper',{
   name: 'Kobold Trapper',
   species: SpeciesCode.kobold,
-  genderRatio: { male:100 },
+  genderRatio: { male:100, female:20, futa:10 },
   type: 'fighter',
   triggers: [],
   level: 3,

@@ -1,15 +1,11 @@
 
 NaturalAttackAbility.register('venomous-bite', {
   name: 'Venomous Bite',
-  essence: 75,
   attack: {
     skill: 'daggers',
     name: 'fangs',
     textKey: 'bite',
     damageType: DamageType.pierce,
-    low: 10,
-    high: 20,
-    speed: 1000,
     reach: WeaponReach.short,
     cooldown: 2500,
   },

@@ -3,7 +3,7 @@ const greetingPackage = WeaverPackage('kobold-sneak-slut-greeting');
 BaseMonster.register('kobold-sneak-slut',{
   name: 'Kobold Sneak Slut',
   species: SpeciesCode.kobold,
-  genderRatio: { male:5, female:60, futa:20, enby:5 },
+  genderRatio: { male:5, female:70, futa:20, enby:5 },
   type: 'rogue',
   archetypes: { slut:10 },
   triggers: [],

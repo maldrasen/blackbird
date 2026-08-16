@@ -9,7 +9,7 @@ BaseMonster.register('rabid-skitterfang',{
   speedFactor: 0.75,
 
   prioritizedAbilities: [
-    { code:'beast-bite', priority:50 },
+    { code:'beast-bite', priority:50, abilityDamage:[10,20], speed:800, essence:15 },
   ],
 
 });

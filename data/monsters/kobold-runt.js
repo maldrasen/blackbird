@@ -3,7 +3,7 @@ const greetingPackage = WeaverPackage('kobold-runt-greeting');
 BaseMonster.register('kobold-runt',{
   name: 'Kobold Runt',
   species: SpeciesCode.kobold,
-  genderRatio: { female:100 },
+  genderRatio: { female:100, futa:20, male:10, enby:10 },
   type: 'coward',
   archetypes: { timid:10 },
   triggers:[],
@@ -16,7 +16,9 @@ BaseMonster.register('kobold-runt',{
     ],
   },
 
-  // TODO: The runt should get a low priority bite attack ability, like the dick puncher's punch.
+  prioritizedAbilities:[
+    { code:'beast-bite', priority:10, abilityDamage:[10,30], speed:1000, essence:10 },
+  ],
 
   negotiationGreeting: greetingPackage,
 });
