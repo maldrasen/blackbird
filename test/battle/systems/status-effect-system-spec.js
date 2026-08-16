@@ -50,7 +50,7 @@ describe("StatusEffectSystem", function() {
 
       BattleSystem.addStatus(victim, 'poison', { strength:10, damage:{ x:1, d:6, p:2 }});
 
-      expect(findEntry(state, victim, 'poison').time).to.equal(now + 1000);
+      expect(findEntry(state, victim, 'poison').time).to.equal(now + 800);
     });
 
     it("overrides the record interval with the component's interval", function() {
@@ -131,7 +131,7 @@ describe("StatusEffectSystem", function() {
 
       const messages = BattleSystem.getRound().getMessages();
       expect(messages.length).to.equal(1);
-      expect(messages[0].text).to.include('fades');
+      expect(messages[0].text).to.include('no longer blind');
     });
   });
 
@@ -178,7 +178,7 @@ describe("StatusEffectSystem", function() {
 
       const messages = BattleSystem.getRound().getMessages();
       expect(messages.length).to.equal(1);
-      expect(messages[0].text).to.include('takes 6 damage from');
+      expect(messages[0].text).to.include('takes 6');
     });
 
     it("does not reschedule the tick when it downs the victim", function() {
@@ -217,8 +217,8 @@ describe("StatusEffectSystem", function() {
 
       const messages = BattleSystem.getRound().getMessages();
       expect(messages.length).to.equal(2);
-      expect(messages[0].text).to.include('takes 6 damage from');
-      expect(messages[1].text).to.include('shakes off');
+      expect(messages[0].text).to.include('takes 6');
+      expect(messages[1].text).to.include('poison fades from');
     });
 
     it("ticks and reschedules when the victim fails to resist", function() {

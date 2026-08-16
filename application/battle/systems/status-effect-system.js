@@ -106,7 +106,7 @@ global.StatusEffectSystem = (function() {
     const damage = Random.rollDice(component.damage);
     const actual = BattleDamageSystem.applyDamage({ entity:victim, damageTypes:{ [type.getDamageType()]:damage }});
 
-    BattleSystem.getRound().addMessage({ text:type.getDamageMessage() });
+    BattleSystem.getRound().addMessage({ text:type.getDamageMessage(actual) });
   }
 
   // A stack is consumed when the effect triggers, or in the case of turn based effects, when a turn passes. Consuming
