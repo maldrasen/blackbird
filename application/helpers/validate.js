@@ -68,6 +68,18 @@ global.Validate = (function() {
     }
   }
 
+  // A range is the [low,high] pair the data files use for a value that gets rolled with Random.between().
+  function isRange(name, value, message=null) {
+    isArray(name, value, message);
+    if (value.length !== 2 || typeof value[0] !== 'number' || typeof value[1] !== 'number') {
+      throw new Error(message ? message : `Validate.isRange Failed: ${name} is not a [low,high] pair of numbers.`);
+    }
+    if (value[0] > value[1]) {
+      throw new Error(message ? message :
+        `Validate.isRange Failed: ${name} low(${value[0]}) is greater than high(${value[1]}).`);
+    }
+  }
+
   // Accepts a single value of the given type or an array of them, the shape used by properties like requires and
   // classname.
   function singleOrArrayOf(name, value, type, message=null) {
@@ -101,6 +113,7 @@ global.Validate = (function() {
     isNumber,
     isFunction,
     isArray,
+    isRange,
     singleOrArrayOf,
     singleKeyFrom
   };

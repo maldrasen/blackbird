@@ -1,12 +1,13 @@
 global.StatusEffectComponent = (function() {
-  const properties = [_parentId,'code','count','interval','duration','strength'];
+  const properties = [_parentId,'code','count','interval','duration','strength','damage'];
   const numericProperties = ['count','interval','duration','strength'];
+  const rangeProperties = ['damage'];
 
   function create(id,data) {
     const entity = Registry.createEntity();
     const componentData = { _parentId:id, ...data };
 
-    numericProperties.forEach(key => {
+    [...numericProperties, ...rangeProperties].forEach(key => {
       if (componentData[key] == null) { componentData[key] = null; }
     });
 
@@ -43,6 +44,15 @@ global.StatusEffectComponent = (function() {
     numericProperties.forEach(key => {
       if (statusEffectComponent[key] != null) {
         Validate.atLeast(`StatusEffect.${key}`,statusEffectComponent[key],1);
+      }
+    });
+
+    // The effect carries a damage range rather than a single number, so that whatever applied it can decide how hard
+    // it hits without the effect itself needing to know where it came from.
+    rangeProperties.forEach(key => {
+      if (statusEffectComponent[key] != null) {
+        Validate.isRange(`StatusEffect.${key}`,statusEffectComponent[key]);
+        Validate.atLeast(`StatusEffect.${key}`,statusEffectComponent[key][0],1);
       }
     });
 

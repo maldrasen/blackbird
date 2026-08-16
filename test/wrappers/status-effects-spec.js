@@ -33,6 +33,17 @@ describe("StatusEffects", function() {
       expect(StatusEffectComponent.of(entity).length).to.equal(1);
     });
 
+    it("renews a damage range on its high end", function() {
+      const entity = Registry.createEntity();
+      StatusEffects(entity).apply('poison', { strength:10, damage:[5,10] });
+
+      StatusEffects(entity).apply('poison', { strength:10, damage:[1,20] });
+      expect(StatusEffects(entity).get('poison').damage).to.deep.equal([1,20]);
+
+      StatusEffects(entity).apply('poison', { strength:10, damage:[15,18] });
+      expect(StatusEffects(entity).get('poison').damage).to.deep.equal([1,20]);
+    });
+
     it("removes an opposing status effect", function() {
       const entity = Registry.createEntity();
 

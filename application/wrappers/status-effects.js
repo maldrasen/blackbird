@@ -28,8 +28,17 @@ global.StatusEffects = function(parentId) {
       }
     });
 
+    if (isHarderHitting(current.damage, values.damage)) { renewed.damage = values.damage; }
+
     if (Object.keys(renewed).length > 0) { StatusEffectComponent.update(id,renewed); }
     return id;
+  }
+
+  // Damage ranges follow the same never-reduced rule as the numeric values, compared on the high end of the range.
+  function isHarderHitting(current, applied) {
+    if (applied == null) { return false; }
+    if (current == null) { return true; }
+    return applied[1] > current[1];
   }
 
   function removeOpposing(code) {
