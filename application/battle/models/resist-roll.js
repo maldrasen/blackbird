@@ -25,8 +25,8 @@ global.ResistRoll = function(target, type, power) {
     Monster(target).getResistance(type) :
     Character(target).getResistance(type) + Difficulty.getResistance();
 
-  const resistRoll = Random.roll(CONTEST_FLOOR) + signedRoll(resistance);
-  const powerRoll = Random.roll(CONTEST_FLOOR) + signedRoll(power);
+  const resistRoll = Random.roll(CONTEST_FLOOR) + Random.roll(resistance);
+  const powerRoll = Random.roll(CONTEST_FLOOR) + Random.roll(power);
 
   Console.log(`Resist Roll [${target}]`,{ system:'BattleSystem', level:3, data:{
     resistance:`${resistance}(${resistRoll})`,
@@ -34,11 +34,4 @@ global.ResistRoll = function(target, type, power) {
   }});
 
   return (resistRoll >= powerRoll) ? ResistResult.pass : ResistResult.fail;
-}
-
-// A negative resistance is a vulnerability, subtracting a roll rather than adding one. Zero never rolls at all, both
-// because the result could only ever be zero and because rolling it would consume a stubbed value in the specs.
-function signedRoll(value) {
-  if (value === 0) { return 0; }
-  return (value > 0) ? Random.roll(value) : -Random.roll(-value);
 }

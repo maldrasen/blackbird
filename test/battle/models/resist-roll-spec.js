@@ -51,8 +51,8 @@ describe("ResistRoll", function() {
     expect(ResistRoll(target, DamageType.psychic, 100)).to.equal(ResistResult.fail);
   });
 
-  // Rolling a resistance of zero would throw in the stub validator, so reaching the expected result at all proves the
-  // roll was skipped.
+  // A resistance of zero doesn't roll at all, so the third and fourth stubbed values fall through to the power side
+  // of the contest.
   it("skips the roll when the target has no resistance", function() {
     const state = startBattle();
     const target = pinnedCharacter(state, SpeciesCode.human);

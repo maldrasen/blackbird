@@ -75,9 +75,14 @@ global.Random = (function() {
   //    Random Functions
   // ======================
 
-  // Random number between 0 and the limit exclusive, (meaning upTo(100) will
-  // return between 0 and 99) plus an optional 'plus' value.
+  // Random number between 0 and the limit exclusive, (meaning upTo(100) will return between 0 and 99) plus an
+  // optional 'plus' value. A negative limit mirrors that range, so roll(-100) returns between -99 and 0. This keeps a
+  // value that could fall on either side of zero, like a resistance that might really be a vulnerability, on a single
+  // code path. A limit of zero has only one possible result, so it returns without consuming a stubbed value.
   function roll(limit, plus=0) {
+    if (limit === 0) { return plus; }
+    if (limit < 0) { return plus - roll(-limit); }
+
     if (stubQueues.roll != null) { return stubbedValue('roll',{ min:plus, max:(limit+plus-1) }); }
     return Math.floor(nextFloat() * limit) + plus;
   }
