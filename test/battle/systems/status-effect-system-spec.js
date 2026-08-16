@@ -35,8 +35,9 @@ describe("StatusEffectSystem", function() {
     return state.getTurnOrder().find(entry => entry.key === `status.${victim}.${code}`);
   }
 
-  // Every tick of an until-resisted effect starts with a resist roll, so the specs about the tick itself force a
-  // failed one. Humans and kobolds both have no nature resistance, so that roll is skipped.
+  // Every tick of an until-resisted effect ends with a resist roll when the victim is still standing, so the specs
+  // about the tick itself force a failed one. Humans and kobolds both have no nature resistance, so that roll is
+  // skipped.
   function failResist() {
     Random.stubRoll(5, 10, 80, 5);
   }
@@ -49,7 +50,7 @@ describe("StatusEffectSystem", function() {
 
       BattleSystem.addStatus(victim, 'poison', { strength:10, damage:{ x:1, d:6, p:2 }});
 
-      expect(findEntry(state, victim, 'poison').time).to.equal(now + 2000);
+      expect(findEntry(state, victim, 'poison').time).to.equal(now + 1000);
     });
 
     it("overrides the record interval with the component's interval", function() {
@@ -138,7 +139,6 @@ describe("StatusEffectSystem", function() {
       makeHuman(victim);
       poisonVictim(state, victim);
 
-      failResist();
       Random.stubRollDice(6);
       BattleSystem.advanceBattle();
 
@@ -149,7 +149,7 @@ describe("StatusEffectSystem", function() {
 
     // The stub order for the resist roll is the 5% critical roll, then the contest floor and resistance rolls, then
     // the contest floor and power rolls. The pinned human victim has no nature resistance, so that roll is skipped.
-    it("ends the effect without damage when the victim resists it", function() {
+    it("ends the effect after its damage when the victim resists it", function() {
       const state = startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
       setHealth(victim, 100);
@@ -157,16 +157,18 @@ describe("StatusEffectSystem", function() {
       makeHuman(victim);
       poisonVictim(state, victim);
 
+      Random.stubRollDice(6);
       Random.stubRoll(5, 80, 20, 5);
       BattleSystem.advanceBattle();
 
-      expect(HealthComponent.lookup(victim).currentHealth).to.equal(100);
+      expect(HealthComponent.lookup(victim).currentHealth).to.equal(94);
       expect(StatusEffects(victim).has('poison')).to.be.false;
       expect(state.getTurnOrder().filter(entry => entry.type === 'status')).to.be.empty;
 
       const messages = BattleSystem.getRound().getMessages();
-      expect(messages.length).to.equal(1);
-      expect(messages[0].text).to.include('shakes off');
+      expect(messages.length).to.equal(2);
+      expect(messages[0].text).to.include('takes 6 damage from');
+      expect(messages[1].text).to.include('shakes off');
     });
 
     it("ticks and reschedules when the victim fails to resist", function() {
@@ -196,7 +198,6 @@ describe("StatusEffectSystem", function() {
       setHealth(victim, 1);
       poisonVictim(state, victim);
 
-      failResist();
       Random.stubRollDice(6);
       BattleSystem.advanceBattle();
 
