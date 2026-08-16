@@ -2,10 +2,6 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
-## Priority 1
-
-- [185] Add more monsters `5pt` — [185-add-more-monsters.md](185-add-more-monsters.md)
-
 ## Priority 2
 
 - [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
@@ -21,6 +17,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [161] Join Text `8pt` — [161-join-text.md](161-join-text.md)
 - [172] Nightgaunt Episode `8pt` — [172-nightgaunt-episode.md](172-nightgaunt-episode.md)
 - [186] Put status effects in the turn order `8pt` — [186-status-effects-in-the-turn-order.md](186-status-effects-in-the-turn-order.md)
+- [187] Beasts need a different map of hit locations `3pt` — [187-beasts-need-a-different-map-of-hit-locations.md](187-beasts-need-a-different-map-of-hit-locations.md)
 
 ## Priority 3
 
@@ -57,6 +54,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [176] Implement potency item effect `8pt` — [176-implement-potency-item-effect.md](176-implement-potency-item-effect.md)
 - [179] Orchard Features `5pt` — [179-orchard-features.md](179-orchard-features.md)
 - [182] Implement consumable weapons `5pt` — [182-implement-consumable-weapons.md](182-implement-consumable-weapons.md)
+- [188] Separate CharacterMath `2pt` — [188-separate-character-math.md](188-separate-character-math.md)
 
 ## Priority 4
 
