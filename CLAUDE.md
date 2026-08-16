@@ -11,7 +11,8 @@ adding content.
 
 #### Project Planning
 Blackbird keeps track of development tasks in the `/docs/tasks` directory. Each task is a Markdown file with YAML front
-matter, with an `index.md` that lists all the current tasks and their priority.
+matter, with an `index.md` that lists all the current tasks and their priority. The current milestone that's being 
+worked towards should be the most recent file in `/docs/milestones`
 
 ## Documentation
 The `/docs` directory also contains the planning and design documentation, some of which should be referenced when
