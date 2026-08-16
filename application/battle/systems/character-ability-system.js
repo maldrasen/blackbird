@@ -1,7 +1,8 @@
 global.CharacterAbilitySystem = (function() {
 
   function getAbilities() {
-    return Object.values(BattleCommand).filter(code => Ability.lookup(code).canBeUsed(BattleSystem.getRound().getActing()));
+    const acting = BattleSystem.getRound().getActing();
+    return Object.values(BattleCommand).filter(code => Ability.lookup(code).canBeUsed(acting));
   }
 
   return {
