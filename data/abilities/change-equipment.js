@@ -2,7 +2,7 @@ Ability.register('change-equipment',{
   name: 'Change Equipment',
   category: 'utility',
 
-  canBeUsed: () => { return true; },
+  canBeUsed: acting => { return true; },
 
   // TODO: Changing equipment in battle needs to be a different interface from the normal equipment change screen. We
   //       only allow characters to change small things. Probably just weapons, but rings and charms and such should be

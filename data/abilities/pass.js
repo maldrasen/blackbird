@@ -3,8 +3,7 @@ Ability.register('pass',{
   category: 'basic',
 
   // There might be other reasons a character has to pass. Being stunned is the only one we have now though.
-  canBeUsed: () => {
-    const acting = BattleSystem.getRound().getActing();
+  canBeUsed: acting => {
     return StatusEffects(acting).has('stun');
   },
 
