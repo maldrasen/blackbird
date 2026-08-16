@@ -85,6 +85,56 @@ describe("StatusEffectSystem", function() {
     });
   });
 
+  describe("fixed time effects", function() {
+    it("schedules the effect's removal at the end of its duration", function() {
+      const state = startBattle();
+      const victim = state.getEntityAtPosition('P',1,2);
+      const now = state.getNext().time;
+
+      BattleSystem.addStatus(victim, 'blind', { duration:1000 });
+
+      expect(findEntry(state, victim, 'blind').time).to.equal(now + 1000);
+    });
+
+    it("extends a pending removal when the effect is renewed", function() {
+      const state = startBattle();
+      const victim = state.getEntityAtPosition('P',1,2);
+      const now = state.getNext().time;
+
+      BattleSystem.addStatus(victim, 'blind', { duration:1000 });
+      BattleSystem.addStatus(victim, 'blind', { duration:2000 });
+
+      expect(findEntry(state, victim, 'blind').time).to.equal(now + 2000);
+    });
+
+    it("schedules nothing for an effect applied without a duration", function() {
+      const state = startBattle();
+      const victim = state.getEntityAtPosition('P',1,2);
+
+      BattleSystem.addStatus(victim, 'blind');
+
+      expect(state.getTurnOrder().filter(entry => entry.type === 'status')).to.be.empty;
+    });
+
+    it("removes the effect when its removal entry comes up", function() {
+      const state = startBattle();
+      const victim = state.getEntityAtPosition('P',1,2);
+      setHealth(victim, 100);
+
+      BattleSystem.addStatus(victim, 'blind', { duration:1000 });
+      state.moveToTopOfTurnOrder({ type:'status', id:victim, code:'blind' });
+      BattleSystem.advanceBattle();
+
+      expect(StatusEffects(victim).has('blind')).to.be.false;
+      expect(state.getTurnOrder().filter(entry => entry.type === 'status')).to.be.empty;
+      expect(HealthComponent.lookup(victim).currentHealth).to.equal(100);
+
+      const messages = BattleSystem.getRound().getMessages();
+      expect(messages.length).to.equal(1);
+      expect(messages[0].text).to.include('fades');
+    });
+  });
+
   describe("removeStatus()", function() {
     it("clears the effect's turn order entry", function() {
       const state = startBattle();

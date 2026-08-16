@@ -29,17 +29,28 @@ global.StatusEffectSystem = (function() {
 
   // Effects with an interval act on their own schedule, independent of their victim's actions, so applying one adds
   // an entry to the battle turn order. A renewed effect keeps its pending tick: rescheduling here would let anything
-  // that reapplies the effect as often as it ticks push the tick out forever.
+  // that reapplies the effect as often as it ticks push the tick out forever. Fixed time effects schedule their
+  // removal instead, and there a renewal does reschedule - reapplying a timed effect extends it.
   function scheduleTick(entity, code) {
     const state = BattleSystem.getState();
+    const component = StatusEffects(entity).get(code);
+
+    if (StatusEffectType.lookup(code).getDurationType() === StatusEffectDurationType.fixedTime) {
+      return scheduleRemoval(state, entity, code, component);
+    }
 
     if (state.hasTurnOrderEntry({ type:'status', id:entity, code })) { return; }
 
-    const interval = getInterval(StatusEffects(entity).get(code));
+    const interval = getInterval(component);
 
     if (interval == null) { return; }
 
     state.setTurnOrder({ type:'status', id:entity, code, time:state.getNext().time + interval });
+  }
+
+  function scheduleRemoval(state, entity, code, component) {
+    if (component.duration == null) { return; }
+    state.setTurnOrder({ type:'status', id:entity, code, time:state.getNext().time + component.duration });
   }
 
   function getInterval(component) {
@@ -53,6 +64,9 @@ global.StatusEffectSystem = (function() {
   function processTick(entry) {
     const victim = entry.id;
     const component = StatusEffects(victim).get(entry.code);
+    const type = StatusEffectType.lookup(entry.code);
+
+    if (type.getDurationType() === StatusEffectDurationType.fixedTime) { return expireEffect(victim, type); }
 
     applyTickDamage(victim, component);
 
@@ -76,6 +90,13 @@ global.StatusEffectSystem = (function() {
     BattleSystem.getRound().addMessage({ text:`{A:ActingName} shakes off the {S/nst}${type.getName()}{/S}.` });
     BattleSystem.removeStatus(victim, component.code);
     return true;
+  }
+
+  // A fixed time effect's turn order entry is its removal time, not a periodic trigger, so when it comes up the
+  // effect simply ends. Removal clears the entry.
+  function expireEffect(victim, type) {
+    BattleSystem.getRound().addMessage({ text:`{A:ActingName's} {S/nst}${type.getName()}{/S} fades.` });
+    BattleSystem.removeStatus(victim, type.getCode());
   }
 
   function applyTickDamage(victim, component) {
