@@ -31,12 +31,9 @@ global.CharacterAbilitySystem = (function() {
   function canNegotiate(acting) {
     if (acting !== GameSystem.getState().getPlayer()) { return false; }
     if (BattleSystem.getState().hasAttemptedNegotiation()) { return false; }
-    return livingMonsterCount() === 1;
-  }
 
-  function livingMonsterCount() {
-    const state = BattleSystem.getState();
-    return state.getActiveMonsters().length;
+    const monsters = BattleSystem.getState().getActiveMonsters();
+    return monsters.length === 1 && Monster(monsters[0]).willNegotiate();
   }
 
   function stunned(acting) {

@@ -7,6 +7,7 @@ global.Monster = function(id) {
   function getSpecies() { return getBaseMonster().getSpecies(); }
   function getGender() { return ActorComponent.lookup(id).gender; }
   function getArchetype() { return PersonalityComponent.lookup(id).archetype; }
+  function willNegotiate() { return getBaseMonster().getSpecies() != null; }
   function getNegotiationStyle() { return Archetype.lookup(getArchetype()).getNegotiationStyle(); }
   function getSkill(code) { return SkillsComponent.lookup(id)[code]; }
 
@@ -109,6 +110,7 @@ global.Monster = function(id) {
     getSpecies,
     getGender,
     getArchetype,
+    willNegotiate,
     getNegotiationStyle,
     getSkill,
     getPrioritizedAbilities,
