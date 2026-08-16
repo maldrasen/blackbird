@@ -8,7 +8,7 @@ global.AttributesFactory = (function() {
     const attributes = {};
 
     Object.keys(Attrib).forEach(code => {
-      attributes[code] = CharacterMath.attributeBaseline + CharacterMath.attributeIncrease(code, grades, actor, aspects);
+      attributes[code] = AttributeMath.attributeBaseline + AttributeMath.attributeIncrease(code, grades, actor, aspects);
     });
 
     state.setAttributes(attributes);

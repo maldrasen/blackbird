@@ -103,7 +103,7 @@ global.MonsterFactory = function(code) {
     const attributes = {};
 
     Object.keys(Attrib).forEach(code => {
-      attributes[code] = CharacterMath.attributeBaseline + CharacterMath.attributeIncrease(code, grades, actor, {});
+      attributes[code] = AttributeMath.attributeBaseline + AttributeMath.attributeIncrease(code, grades, actor, {});
     });
 
     AttributesComponent.create(monsterId, attributes);

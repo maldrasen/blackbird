@@ -50,7 +50,7 @@ global.EssenceSystem = (function() {
   }
 
   function essenceToLevel(id, addLevels=0) {
-    const grades = CharacterMath.attributeGrades(id);
+    const grades = AttributeMath.attributeGrades(id);
     const experience = ExperienceComponent.lookup(id);
     const level = experience.level + addLevels;
 
