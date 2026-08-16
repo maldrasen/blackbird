@@ -1,43 +1,7 @@
 global.CharacterAbilitySystem = (function() {
 
   function getAbilities() {
-    const acting = BattleSystem.getRound().getActing();
-    if (stunned(acting)) { return ['pass']; }
-    return getAllAbilities(acting).filter(code => Ability.lookup(code).canBeUsed());
-  }
-
-  function getAllAbilities(acting) {
-    const skills = SkillsComponent.lookup(acting);
-
-    const abilities = [
-      'basic-attack',
-      'basic-defend',
-      'change-equipment',
-      'use-item',
-    ]
-
-    if (skills.stealth > 0) {
-      abilities.push('hide');
-      abilities.push('sneak-attack');
-    }
-
-    if (canNegotiate(acting)) {
-      abilities.push(BattleCommand.negotiate);
-    }
-
-    return abilities;
-  }
-
-  function canNegotiate(acting) {
-    if (acting !== GameSystem.getState().getPlayer()) { return false; }
-    if (BattleSystem.getState().hasAttemptedNegotiation()) { return false; }
-
-    const monsters = BattleSystem.getState().getActiveMonsters();
-    return monsters.length === 1 && Monster(monsters[0]).willNegotiate();
-  }
-
-  function stunned(acting) {
-    return StatusEffects(acting).has('stun');
+    return Object.values(BattleCommand).filter(code => Ability.lookup(code).canBeUsed(BattleSystem.getRound().getActing()));
   }
 
   return {
