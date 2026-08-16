@@ -115,7 +115,6 @@ global.ComponentType = {
   attributes: 'AttributesComponent',
   body: 'BodyComponent',
   breasts: 'BreastsComponent',
-  cache: 'CacheComponent',
   cock: 'CockComponent',
   controlled: 'ControlledComponent',
   description: 'DescriptionComponent',

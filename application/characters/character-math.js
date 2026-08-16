@@ -52,9 +52,9 @@ global.CharacterMath = (function() {
     return 0;
   }
 
-  // The speed factor is used frequently and comes from a lot of different factors. As such we cache it after
-  // calculating it. Dexterity and body size are the primary influences on speed. We also take breast size into
-  // consideration, as having a pair of huge swinging milkers will slow a person down significantly.
+  // Dexterity and body size are the primary influences on speed. We also take breast size into consideration, as
+  // having a pair of huge swinging milkers will slow a person down significantly. The factor is recalculated on
+  // every read so that changes to any of the inputs (like a dexterity buff) take effect immediately.
 
   function calculateSpeedFactor(id) {
     const dexSpeed = speedForDexterity(id);
@@ -68,7 +68,7 @@ global.CharacterMath = (function() {
   // 10000, though it's unlikely that anyone will have a dexterity that high. The speed reduction is handled in three
   // different bands, for diminishing returns.
   function speedForDexterity(id) {
-    const dexterity = AttributesComponent.lookup(id)['dexterity'];
+    const dexterity = Attributes(id).getDexterity();
 
     if (dexterity > 10000) { return -0.3 }
 

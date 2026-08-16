@@ -171,8 +171,6 @@ global.CharacterFactory = (function() {
     if (state.getCock()) { CockComponent.create(characterId, state.getCock()); }
     if (state.getPussy()) { PussyComponent.create(characterId, state.getPussy()); }
 
-    CacheComponent.build(characterId);
-
     Console.log('CharacterData',{ system:'CharacterFactory', data:{
       attributes: state.getAttributes(),
       personality: state.getPersonality(),

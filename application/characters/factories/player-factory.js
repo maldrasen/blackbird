@@ -80,7 +80,6 @@ global.PlayerFactory = (function() {
       EquipmentComponent.create(playerId);
       InventoryComponent.create(playerId);
       ExperienceComponent.create(playerId);
-      CacheComponent.build(playerId);
 
       return playerId;
     }
