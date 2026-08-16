@@ -1,6 +1,4 @@
-
 NaturalAttackAbility.register('venomous-bite', {
-  name: 'Venomous Bite',
   attack: {
     skill: 'daggers',
     textKey: 'bite',

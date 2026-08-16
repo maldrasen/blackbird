@@ -26,12 +26,12 @@ describe("EssenceSystem", function() {
     const attributes = { strength:20, dexterity:15, vitality:15, intelligence:10, beauty:10 };
 
     it("combines the monster's attribute total with its ability scores", function() {
-      expect(EssenceSystem.monsterEssenceValue(buildMonster('kobold-dick-puncher', attributes))).to.equal(169);
+      expect(EssenceSystem.monsterEssenceValue(buildMonster('kobold-dick-puncher', attributes))).to.equal(260);
     });
 
     it("scales superlinearly with the attribute total", function() {
       const doubled = { strength:40, dexterity:30, vitality:30, intelligence:20, beauty:20 };
-      expect(EssenceSystem.monsterEssenceValue(buildMonster('kobold-dick-puncher', doubled))).to.equal(477);
+      expect(EssenceSystem.monsterEssenceValue(buildMonster('kobold-dick-puncher', doubled))).to.equal(735);
     });
 
     // The runt's own bite entry rides on top of the basic attack its coward type carries, worth ten essence each.

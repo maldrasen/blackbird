@@ -3,7 +3,7 @@
 
 NaturalAttackAbility.register('dick-punch', {
   name: 'Dick Punch',
-  essence: 50,
+  essence: 75,
   attack: {
     skill: 'martial-arts',
     textKey: 'punch',

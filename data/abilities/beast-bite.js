@@ -1,6 +1,4 @@
-
 NaturalAttackAbility.register('beast-bite', {
-  name: 'Bite',
   attack: {
     skill: 'daggers',
     textKey: 'bite',
