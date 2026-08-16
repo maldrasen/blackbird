@@ -14,6 +14,24 @@ global.StatusEffectType = (function() {
 
     const statusEffect = { ...statusEffects[code] };
 
+    function getDamageMessage(damage) {
+      return statusEffect.getDamageMessage == null ?
+        Weaver.formatError(`${code} is missing a damage message.`):
+        statusEffect.getDamageMessage(damage);
+    }
+
+    function getExpireMessage() {
+      return statusEffect.getExpireMessage == null ?
+        Weaver.formatError(`${code} is missing a expire message.`):
+        statusEffect.getExpireMessage();
+    }
+
+    function getResistMessage() {
+      return statusEffect.getResistMessage == null ?
+        Weaver.formatError(`${code} is missing a resist message.`):
+        statusEffect.getResistMessage();
+    }
+
     return {
       getCode: () => { return code; },
       getName: () => { return statusEffect.name; },
@@ -23,6 +41,9 @@ global.StatusEffectType = (function() {
       getInterval: () => { return statusEffect.interval || null; },
       getRemovedAt: () => { return statusEffect.removedAt || 'start-of-round' },
       isClearedAfterBattle: () => { return statusEffect.clearAfterBattle === true; },
+      getDamageMessage,
+      getExpireMessage,
+      getResistMessage,
     };
   }
 

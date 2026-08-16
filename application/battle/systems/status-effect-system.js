@@ -87,7 +87,7 @@ global.StatusEffectSystem = (function() {
     if (component.strength == null) { return false; }
     if (ResistRoll(victim, type.getDamageType(), component.strength) === ResistResult.fail) { return false; }
 
-    BattleSystem.getRound().addMessage({ text:`{A:ActingName} shakes off the {S/nst}${type.getName()}{/S}.` });
+    BattleSystem.getRound().addMessage({ text:type.getResistMessage() });
     BattleSystem.removeStatus(victim, component.code);
     return true;
   }
@@ -95,7 +95,7 @@ global.StatusEffectSystem = (function() {
   // A fixed time effect's turn order entry is its removal time, not a periodic trigger, so when it comes up the
   // effect simply ends. Removal clears the entry.
   function expireEffect(victim, type) {
-    BattleSystem.getRound().addMessage({ text:`{A:ActingName's} {S/nst}${type.getName()}{/S} fades.` });
+    BattleSystem.getRound().addMessage({ text:type.getExpireMessage() });
     BattleSystem.removeStatus(victim, type.getCode());
   }
 
@@ -106,7 +106,7 @@ global.StatusEffectSystem = (function() {
     const damage = Random.rollDice(component.damage);
     const actual = BattleDamageSystem.applyDamage({ entity:victim, damageTypes:{ [type.getDamageType()]:damage }});
 
-    BattleSystem.getRound().addMessage({ text:`{A:ActingName} takes ${actual} damage from {S/nst}${type.getName()}{/S}.` });
+    BattleSystem.getRound().addMessage({ text:type.getDamageMessage() });
   }
 
   // A stack is consumed when the effect triggers, or in the case of turn based effects, when a turn passes. Consuming
