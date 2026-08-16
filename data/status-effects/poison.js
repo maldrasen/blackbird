@@ -3,6 +3,6 @@ StatusEffectType.register('poison',{
   category: 'negative',
   damageType: DamageType.nature,
   durationType: StatusEffectDurationType.untilResisted,
-  interval: 2000,
+  interval: 1000,
   clearAfterBattle: true,
 });

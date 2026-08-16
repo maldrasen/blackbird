@@ -57,9 +57,25 @@ global.StatusEffectSystem = (function() {
     applyTickDamage(victim, component);
 
     if (BattleSystem.getState().isDown(victim)) { return; }
+    if (resistsEffect(victim, component)) { return; }
 
     entry.time += getInterval(component);
     BattleSystem.getState().setTurnOrder(entry);
+  }
+
+  // Each trigger of an until-resisted effect gives the victim a fresh chance to shrug it off, rolled against the
+  // strength the effect was applied with. Passing ends the effect before it can do that tick's damage, and removing
+  // it clears the effect's turn order entry.
+  function resistsEffect(victim, component) {
+    const type = StatusEffectType.lookup(component.code);
+
+    if (type.getDurationType() !== StatusEffectDurationType.untilResisted) { return false; }
+    if (component.strength == null) { return false; }
+    if (ResistRoll(victim, type.getDamageType(), component.strength) === ResistResult.fail) { return false; }
+
+    BattleSystem.getRound().addMessage({ text:`{A:ActingName} shakes off the {S/nst}${type.getName()}{/S}.` });
+    BattleSystem.removeStatus(victim, component.code);
+    return true;
   }
 
   function applyTickDamage(victim, component) {

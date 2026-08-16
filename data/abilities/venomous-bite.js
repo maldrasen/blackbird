@@ -11,7 +11,7 @@ NaturalAttackAbility.register('venomous-bite', {
     high: 20,
     speed: 1000,
     reach: WeaponReach.short,
-    cooldown: 2000,
+    cooldown: 2500,
   },
 
   onHit: (acting, target) => { addVenomEffect(acting, target); },
