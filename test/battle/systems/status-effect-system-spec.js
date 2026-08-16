@@ -56,6 +56,18 @@ describe("StatusEffectSystem", function() {
       expect(findEntry(state, victim, 'poison').time).to.equal(now + 500);
     });
 
+    it("keeps the pending tick's schedule when the effect is renewed", function() {
+      const state = startBattle();
+      const victim = state.getEntityAtPosition('P',1,2);
+      const now = state.getNext().time;
+
+      BattleSystem.addStatus(victim, 'poison', { strength:10, interval:500, damage:{ x:1, d:6, p:2 }});
+      BattleSystem.addStatus(victim, 'poison', { strength:20, interval:2000, damage:{ x:1, d:6, p:2 }});
+
+      expect(StatusEffects(victim).get('poison').interval).to.equal(2000);
+      expect(findEntry(state, victim, 'poison').time).to.equal(now + 500);
+    });
+
     it("schedules nothing for an effect without an interval", function() {
       const state = startBattle();
       const victim = state.getEntityAtPosition('P',1,2);

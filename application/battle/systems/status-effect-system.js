@@ -28,9 +28,13 @@ global.StatusEffectSystem = (function() {
   }
 
   // Effects with an interval act on their own schedule, independent of their victim's actions, so applying one adds
-  // an entry to the battle turn order.
+  // an entry to the battle turn order. A renewed effect keeps its pending tick: rescheduling here would let anything
+  // that reapplies the effect as often as it ticks push the tick out forever.
   function scheduleTick(entity, code) {
     const state = BattleSystem.getState();
+
+    if (state.hasTurnOrderEntry({ type:'status', id:entity, code })) { return; }
+
     const interval = getInterval(StatusEffects(entity).get(code));
 
     if (interval == null) { return; }

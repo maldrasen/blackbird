@@ -208,6 +208,11 @@ global.BattleState = function(data) {
     return -1;
   }
 
+  // Data: { type, id, code } or { type, id }
+  function hasTurnOrderEntry(data) {
+    return turnOrderIndex(buildKey(data)) >= 0;
+  }
+
   function getNext() {
     return { ...turnOrder[0] };
   }
@@ -360,6 +365,7 @@ global.BattleState = function(data) {
     setAmbushState,
     getAmbushState: () => { return ambushState; },
     getNext,
+    hasTurnOrderEntry,
     removeFromTurnOrder,
     removeStatusEffectsFromTurnOrder,
     moveToTopOfTurnOrder,
