@@ -27,6 +27,32 @@ global.StatusEffectSystem = (function() {
     }
   }
 
+  // Triggered when a status effect's turn order entry comes up. The entry is never popped from the turn order, so
+  // every path through here has to either reschedule it or see it removed, or the same tick dispatches forever.
+  // Damage can kill or knock out the victim, and the death system sweeps their status entries, so the reschedule
+  // only happens while they're still standing.
+  function processTick(entry) {
+    const victim = entry.id;
+    const component = StatusEffects(victim).get(entry.code);
+
+    applyTickDamage(victim, component);
+
+    if (BattleSystem.getState().isDown(victim)) { return; }
+
+    entry.time += component.interval;
+    BattleSystem.getState().setTurnOrder(entry);
+  }
+
+  function applyTickDamage(victim, component) {
+    if (component.damage == null) { return; }
+
+    const type = StatusEffectType.lookup(component.code);
+    const damage = Random.rollDice(component.damage);
+    const actual = BattleDamageSystem.applyDamage({ entity:victim, damageTypes:{ [type.getDamageType()]:damage }});
+
+    BattleSystem.getRound().addMessage({ text:`{A:ActingName} takes ${actual} damage from {S/nst}${type.getName()}{/S}.` });
+  }
+
   // A stack is consumed when the effect triggers, or in the case of turn based effects, when a turn passes. Consuming
   // the last stack removes the effect. Removal goes through the battle system so the combatant view is refreshed.
   function consumeStack(entity, code) {
@@ -41,6 +67,7 @@ global.StatusEffectSystem = (function() {
   return {
     processStartRound,
     processEndRound,
+    processTick,
     consumeStack,
   };
 

@@ -26,6 +26,23 @@ describe("BattleDeathSystem", function() {
       expect(state.getInterrupt()).to.be.undefined;
     });
 
+    it("removes the character's status effect entries from the turn order", function() {
+      const state = startBattle();
+      const front = state.getEntityAtPosition('P',0,3);
+      const other = state.getEntityAtPosition('P',1,3);
+
+      state.setTurnOrder({ type:'status', id:front, code:'poison', time:5000 });
+      state.setTurnOrder({ type:'status', id:front, code:'burn', time:6000 });
+      state.setTurnOrder({ type:'status', id:other, code:'poison', time:7000 });
+
+      BattleDeathSystem.knockOutEntity(front);
+
+      const keys = state.getTurnOrder().map(entry => entry.key);
+      expect(keys).not.to.include(`status.${front}.poison`);
+      expect(keys).not.to.include(`status.${front}.burn`);
+      expect(keys).to.include(`status.${other}.poison`);
+    });
+
     it("loses the battle when the last standing character is knocked out", function() {
       const state = startBattle();
 
@@ -62,6 +79,21 @@ describe("BattleDeathSystem", function() {
 
       expect(PartyConfiguration.getConfiguration()[front]).to.equal('P.0.3');
       expect(PartyConfiguration.getConfiguration()[back]).to.equal('P.1.3');
+    });
+
+    it("removes the entity's status effect entries from the turn order", function() {
+      const state = startBattle();
+      const front = state.getEntityAtPosition('P',0,3);
+      const other = state.getEntityAtPosition('P',1,3);
+
+      state.setTurnOrder({ type:'status', id:front, code:'poison', time:5000 });
+      state.setTurnOrder({ type:'status', id:other, code:'poison', time:6000 });
+
+      BattleDeathSystem.killEntity(front);
+
+      const keys = state.getTurnOrder().map(entry => entry.key);
+      expect(keys).not.to.include(`status.${front}.poison`);
+      expect(keys).to.include(`status.${other}.poison`);
     });
 
     it("loses the battle when the player is killed", function() {

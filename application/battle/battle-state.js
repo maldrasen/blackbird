@@ -132,6 +132,7 @@ global.BattleState = function(data) {
 
   function removeFromBattle(id) {
     removeFromTurnOrder({ type:isMonster(id) ? 'monster' : 'character', id });
+    removeStatusEffectsFromTurnOrder(id);
     removeFromFormation(id);
   }
 
@@ -221,6 +222,15 @@ global.BattleState = function(data) {
     }
 
     turnOrder.splice(index, 1)
+  }
+
+  function removeStatusEffectsFromTurnOrder(id, code=null) {
+    for (let i=turnOrder.length-1; i>=0; i--) {
+      const entry = turnOrder[i];
+      if (entry.type === 'status' && entry.id === id && (code == null || entry.code === code)) {
+        turnOrder.splice(i,1);
+      }
+    }
   }
 
   // Data: { type, id, code } or { type, id }
@@ -351,6 +361,7 @@ global.BattleState = function(data) {
     getAmbushState: () => { return ambushState; },
     getNext,
     removeFromTurnOrder,
+    removeStatusEffectsFromTurnOrder,
     moveToTopOfTurnOrder,
 
     setCooldown,

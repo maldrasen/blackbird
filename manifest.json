@@ -574,6 +574,7 @@
     "test/battle/systems/battle-damage-system-spec.js",
     "test/battle/systems/battle-death-system-spec.js",
     "test/battle/systems/recruitment-system-spec.js",
+    "test/battle/systems/status-effect-system-spec.js",
     "test/characters/character-math-spec.js",
     "test/characters/describers/body-describer-spec.js",
     "test/characters/describers/breast-describer-spec.js",

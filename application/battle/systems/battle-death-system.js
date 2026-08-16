@@ -14,6 +14,7 @@ global.BattleDeathSystem = (function() {
 
     state.setCondition(id, BattleCondition.dead);
     state.removeFromTurnOrder({ type:(isMonster ? 'monster' : 'character'), id:id });
+    state.removeStatusEffectsFromTurnOrder(id);
 
     BattleInterface.killEntity(id);
 
@@ -44,6 +45,7 @@ global.BattleDeathSystem = (function() {
 
     state.setCondition(id, BattleCondition.knockedOut);
     state.removeFromTurnOrder({ type:'character', id:id });
+    state.removeStatusEffectsFromTurnOrder(id);
 
     BattleInterface.killEntity(id);
 

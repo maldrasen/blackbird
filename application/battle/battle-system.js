@@ -28,9 +28,6 @@ global.BattleSystem = (function() {
     }).forEach(Registry.deleteEntity);
   }
 
-  // TODO: When a fixed time status effect is added its removal time needs to be added to the turn order because the
-  //       effect goes away independent of the character's actions. Periodic effects (poison and burn) also add their
-  //       next trigger time to the turn order, and removing an effect needs to clear its turn order entries.
   function addStatus(entity, code, values={}) {
     const { removed } = StatusEffects(entity).apply(code, values);
     if (removed.length > 0) { BattleInterface.updateCombatantView(entity); }
@@ -56,14 +53,17 @@ global.BattleSystem = (function() {
   }
 
   function advanceBattle() {
-    startRound();
-
-    Console.log(`Advancing Battle`,{ system:'BattleSystem', level:1, data:{ acting:round.getActing() }});
-
     switch (state.getInterrupt()) {
       case 'victory': return battleWon();
       case 'game-over': return battleLost();
     }
+
+    const next = state.getNext();
+    Console.log(`Advancing Battle`,{ system:'BattleSystem', level:1, data:{ next:next.key }});
+
+    if (next.type === 'status') { return statusEffectRound(next); }
+
+    startRound();
 
     if (round.isActingMonster()) {
       MonsterSystem.executeBattleTurn();
@@ -72,6 +72,12 @@ global.BattleSystem = (function() {
     if (round.isActingCharacter()) {
       startCharacterRound();
     }
+  }
+
+  function statusEffectRound(entry) {
+    round = BattleRound(entry.id);
+    StatusEffectSystem.processTick(entry);
+    round.getMessages().length === 0 ? advanceBattle() : BattleInterface.showMonsterResult();
   }
 
   function startCharacterRound() {
