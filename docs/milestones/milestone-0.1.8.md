@@ -7,9 +7,12 @@ The last six tasks written (186–191) are all battle and character math — the
 ## Committed (~56pt against a ~60pt planning budget)
 Planning budget assumes the observed throughput of roughly 35–45pt/week over two weeks, planned under capacity on purpose.
 
+##### Done
 - [186] Put status effects in the turn order `8pt` — the P1, already has a full implementation plan in the task file
 - [189] Attribute must be read from wrapper `5pt` — the other P1; makes status-effect buffs/debuffs sane before 186 needs them
 - [190] Adjustable damage and essence of abilities `3pt`
+
+##### TODO
 - [187] Beasts need a different map of hit locations `3pt`
 - [188] Separate CharacterMath `2pt`
 - [127] Add a Health factor to the EssenceSystem `2pt`

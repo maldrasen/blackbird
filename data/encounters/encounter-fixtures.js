@@ -28,5 +28,5 @@ Encounter.register('negotiation-fixture-4',{
 Encounter.register('yeeks',{
   description: `yeeks`,
   formation:[[1,1,1,1,1]],
-  monsters: { 1: { code:'kobold-dick-puncher' }}
+  monsters: { 1: { code:'revolting-cockroach' }}
 });

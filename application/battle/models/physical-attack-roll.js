@@ -49,7 +49,7 @@ global.PhysicalAttackRoll = function(attacker, target) {
 
   function roll() {
     if (baseWeapon == null) { throw new Error(`A PhysicalAttackRoll must have a base weapon. Call setWeaponData() before roll().`); }
-    if (hitLocation == null) { hitLocation = BattleHelper.randomHitLocation(); }
+    if (hitLocation == null) { hitLocation = BattleHelper.randomHitLocation(target); }
 
     check = SkillCheck(attacker, baseWeapon.getSkill());
     finalValue = Math.ceil(check.value);

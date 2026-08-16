@@ -49,6 +49,7 @@ global.BaseMonster = (function() {
       getNameType: () => { return monster.nameType || 'common' },
       getDescription: () => { return monster.description },
       getSpecies: () => { return monster.species; },
+      getBodyPlan: () => { return monster.bodyPlan ? BodyPlan[monster.bodyPlan] : BodyPlan.humanoid; },
       getGenderRatio,
       getType: () => { return monster.type; },
       getLevel: () => { return monster.level || 0; },

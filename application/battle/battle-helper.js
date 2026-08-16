@@ -33,14 +33,10 @@ global.BattleHelper = (function() {
     throw new Error(`TODO: Distance between positions on same side.`);
   }
 
-  function randomHitLocation() {
-    return Random.fromFrequencyMap({
-      chest: 35,
-      feet:  15,
-      hands: 15,
-      head:  10,
-      legs:  25,
-    });
+  function randomHitLocation(target) {
+    const monster = MonsterComponent.lookup(target);
+    const bodyPlan = (monster != null) ? Monster(target).getBodyPlan() : BodyPlan.humanoid;
+    return Random.fromFrequencyMap(bodyPlan)
   }
 
   // I was kind of dumb and represented the attack and defend states in two different ways within the battle system.
