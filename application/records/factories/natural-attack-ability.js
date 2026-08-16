@@ -55,12 +55,15 @@ global.NaturalAttackAbility = (function() {
     });
   }
 
-  // A hidden attacker can't make a natural attack - they strike from hiding with a sneak attack instead.
+  // A hidden attacker can't make a natural attack - they strike from hiding with a sneak attack instead. An attack
+  // aimed at a specific hit location needs a target whose body plan has that location.
   function canBeUsed(options) {
     const round = BattleSystem.getRound();
+    const target = round.getTarget();
 
     if (StatusEffects(round.getActing()).has('hidden')) { return false; }
-    if (options.canTarget && options.canTarget(round.getTarget()) === false) { return false; }
+    if (options.canTarget && options.canTarget(target) === false) { return false; }
+    if (options.hitLocation && BattleHelper.hasHitLocation(target, options.hitLocation) === false) { return false; }
 
     return BattleHelper.isAttackWithinRange(options.attack.reach,
       round.getActingPosition(),
