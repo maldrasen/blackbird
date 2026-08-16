@@ -9,7 +9,7 @@ BaseMonster.register('slithering-yeek',{
   healthFactor: 0.5,
 
   prioritizedAbilities: [
-    { code:'venomous-bite', priority:80, poisonStrength:5 },
+    { code:'venomous-bite', priority:80, poisonStrength:10, poisonDamage:[5,10] },
     { code:'beast-bite', priority:50 },
   ],
 
