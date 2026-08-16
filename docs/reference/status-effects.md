@@ -1,5 +1,7 @@
 # Negative Effects
 Categorized by damage type that resists the effect.
+
+Resistance to a damage type does double duty against the effects it covers: it raises the chance to resist the effect when it's applied, and then reduces the damage the effect does if it lands anyway. Nature resistance is worth roughly twice as much against a poison as fire resistance is worth against a plain fire attack. That's arguably correct - shrugging off venom should mean shrugging off both the venom and its burn - but it means resistance to the types that carry damaging effects needs to be priced accordingly when equipment starts granting elemental resistances.
 ### Fire (red)
 - *Blind* Reduced attack accuracy and dodge.
 - *Burn* Damage over time from some fire spells.

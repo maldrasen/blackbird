@@ -20,6 +20,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [158] Add a Fixture to Adjust the Question Pool for Testing `3pt` — [158-fixture-to-adjust-question-pool.md](158-fixture-to-adjust-question-pool.md)
 - [161] Join Text `8pt` — [161-join-text.md](161-join-text.md)
 - [172] Nightgaunt Episode `8pt` — [172-nightgaunt-episode.md](172-nightgaunt-episode.md)
+- [186] Put status effects in the turn order `8pt` — [186-status-effects-in-the-turn-order.md](186-status-effects-in-the-turn-order.md)
 
 ## Priority 3
 
