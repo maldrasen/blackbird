@@ -5,4 +5,4 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-mv docs/tasks/$1*.md docs/tasks/completed
+git mv docs/tasks/$1*.md docs/tasks/completed

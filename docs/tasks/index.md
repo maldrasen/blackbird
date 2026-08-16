@@ -17,7 +17,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [161] Join Text `8pt` — [161-join-text.md](161-join-text.md)
 - [172] Nightgaunt Episode `8pt` — [172-nightgaunt-episode.md](172-nightgaunt-episode.md)
 - [187] Beasts need a different map of hit locations `3pt` — [187-beasts-need-a-different-map-of-hit-locations.md](187-beasts-need-a-different-map-of-hit-locations.md)
-- [190] Adjustable damage and essence of abilities `3pt` — [190-adjustable-damage-and-essence-of-abilities.md](190-adjustable-damage-and-essence-of-abilities.md)
 
 ## Priority 3
 
