@@ -25,7 +25,7 @@ global.PhysicalAttackRoll = function(attacker, target) {
   // A natural attack profile - a punch, a bite, a claw - stands in for the base weapon, so the roll doesn't care
   // that no real weapon is involved.
   function setNaturalAttack(profile) {
-    weaponData = { name:profile.name, textKey:profile.textKey };
+    weaponData = { textKey:profile.textKey };
     baseWeapon = NaturalAttack(profile);
     weapon = null;
   }

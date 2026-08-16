@@ -3,7 +3,7 @@
 // the same interface the attack and damage rolls read from a real weapon's base record, built from the profile an
 // attack ability defines rather than a registered weapon. A profile looks like:
 //
-//     { skill:'martial-arts', name:'fist', textKey:'punch', damageType:DamageType.crush,
+//     { skill:'martial-arts', textKey:'punch', damageType:DamageType.crush,
 //       low:25, high:50, speed:500, reach:WeaponReach.short }
 //
 global.NaturalAttack = function(profile) {
@@ -14,7 +14,6 @@ global.NaturalAttack = function(profile) {
 
   return {
     getSkill: () => { return profile.skill; },
-    getName: () => { return profile.name; },
     getTextKey: () => { return profile.textKey; },
     getReach: () => { return profile.reach || WeaponReach.short; },
     getLow: () => { return profile.low; },

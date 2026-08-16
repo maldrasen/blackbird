@@ -6,7 +6,6 @@ NaturalAttackAbility.register('dick-punch', {
   essence: 50,
   attack: {
     skill: 'martial-arts',
-    name: 'fist',
     textKey: 'punch',
     damage: [25,50],
     damageType: DamageType.crush,

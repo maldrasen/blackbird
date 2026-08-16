@@ -60,7 +60,7 @@ describe("DamageRoll", function() {
 
   it("rolls monster damage from a natural attack profile", function() {
     const damage = naturalAttackDamage(startBattle(), {
-      skill:'martial-arts', name:'fist', textKey:'punch', damageType:DamageType.crush, low:20, high:60 });
+      skill:'martial-arts', textKey:'punch', damageType:DamageType.crush, low:20, high:60 });
 
     expect(damage.getDamageTypes()).to.deep.equal({ crush:20 });
   });

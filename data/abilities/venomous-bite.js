@@ -3,13 +3,12 @@ NaturalAttackAbility.register('venomous-bite', {
   name: 'Venomous Bite',
   attack: {
     skill: 'daggers',
-    name: 'fangs',
     textKey: 'bite',
     damageType: DamageType.pierce,
     reach: WeaponReach.short,
-    cooldown: 2500,
   },
 
+  cooldown: 2500,
   onHit: (acting, target) => { addVenomEffect(acting, target); },
 });
 

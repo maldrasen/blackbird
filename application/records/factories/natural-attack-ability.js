@@ -8,7 +8,6 @@
 //   essence: 100,
 //   attack: {
 //     skill: 'daggers',
-//     name: 'fangs',
 //     textKey: 'bite',
 //     damage: [100,500],
 //     damageType: DamageType.pierce,
@@ -29,6 +28,7 @@
 // don't set their own.
 //
 // Optional keys:
+//     name              Only needed when a character could use the ability - monster abilities never display one.
 //     canTarget         An extra usability check on the target.
 //     hitLocation       Forces the strike to a location instead of rolling one.
 //     cooldown          Milliseconds before the attacker can use the ability again.
@@ -40,7 +40,7 @@
 global.NaturalAttackAbility = (function() {
 
   function register(code, options) {
-    Validate.isString(`${code}.name`, options.name);
+    if (options.name != null) { Validate.isString(`${code}.name`, options.name); }
     Validate.exists(`${code}.attack`, options.attack);
 
     Ability.register(code, {
