@@ -3,16 +3,19 @@
 // ability then runs a physical attack contest, describes the attack, adds the attack's time, and finally resolve the
 // hit or miss. This factory builds that scaffolding so the ability records only carry what makes them different.
 //
-// NaturalAttackAbility.register('venomous-bite', {
-//   name: 'Venomous Bite',
+// NaturalAttackAbility.register('face-bite', {
+//   name: 'Bite your face off',
+//   essence: 100,
 //   attack: {
-//     skill:'daggers',
-//     name:'fangs',
-//     textKey:'bite',
-//     damageType:DamageType.pierce,
-//     reach:WeaponReach.short
+//     skill: 'daggers',
+//     name: 'fangs',
+//     textKey: 'bite',
+//     damage: [100,500],
+//     damageType: DamageType.pierce,
+//     speed: 2000,
+//     reach: WeaponReach.short
 //   },
-//   onHit: (acting, target) => { addVenomEffect(target); },
+//   onHit: (acting, target) => { addFaceRemovedEffect(target); },
 // });
 //
 // The damage range, speed, and essence of a natural attack live on the acting monster's ability entry rather than
