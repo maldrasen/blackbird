@@ -23,7 +23,7 @@ Ability.register('hide',{
     let message;
 
     observers.forEach(observer => {
-      const check = AttributesComponent.check(observer.id, Attrib.intelligence);
+      const check = Attributes(observer.id).check(Attrib.intelligence);
       if (isHidden && check > stealthRoll.value) {
         isHidden = false;
         message = {
