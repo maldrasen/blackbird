@@ -28,9 +28,13 @@ global.EssenceSystem = (function() {
     return (attributeSum ** attributePowerExponent) * essenceScale;
   }
 
+  // An ability's essence lives on the monster's ability entry, so the same bite can be weighed differently from
+  // monster to monster. The ability record's essence acts as the default for entries that don't set their own.
   function abilityFactor(monsterId) {
-    const scoreSum = Monster(monsterId).getPrioritizedAbilities().reduce((sum,ability) => {
-      return sum + Ability.lookup(ability.code).getEssence();
+    const monster = Monster(monsterId);
+    const scoreSum = monster.getPrioritizedAbilities().reduce((sum,ability) => {
+      const entry = monster.getAbility(ability.code);
+      return sum + (entry.essence != null ? entry.essence : Ability.lookup(ability.code).getEssence());
     },0);
 
     return 1 + (scoreSum * abilityScale);

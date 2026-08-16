@@ -5,19 +5,25 @@
 //
 // NaturalAttackAbility.register('venomous-bite', {
 //   name: 'Venomous Bite',
-//   essence: 25,
 //   attack: {
 //     skill:'daggers',
 //     name:'fangs',
 //     textKey:'bite',
 //     damageType:DamageType.pierce,
-//     low:25,
-//     high:50,
-//     speed:500,
 //     reach:WeaponReach.short
 //   },
 //   onHit: (acting, target) => { addVenomEffect(target); },
 // });
+//
+// The damage range, speed, and essence of a natural attack live on the acting monster's ability entry rather than
+// the ability record, so that a kobold bite can be a different class of attack than a dragon bite:
+//
+//   prioritizedAbilities: [
+//     { code:'beast-bite', priority:50, abilityDamage:[25,50], speed:1500, essence:50 },
+//   ]
+//
+// The record's attack may still carry low, high, and speed values, which act as defaults for entries that don't
+// set their own.
 //
 // Optional keys:
 //     canTarget         An extra usability check on the target.
@@ -32,7 +38,6 @@ global.NaturalAttackAbility = (function() {
 
   function register(code, options) {
     Validate.isString(`${code}.name`, options.name);
-    Validate.isNumber(`${code}.essence`, options.essence);
     Validate.exists(`${code}.attack`, options.attack);
 
     Ability.register(code, {
@@ -63,9 +68,10 @@ global.NaturalAttackAbility = (function() {
     const round = BattleSystem.getRound();
     const acting = round.getActing();
     const target = round.getTarget();
+    const attack = getAttackProfile(code, options, acting);
 
     const contest = PhysicalAttackContest(acting, target);
-          contest.setNaturalAttack(options.attack);
+          contest.setNaturalAttack(attack);
           contest.setAbility(code);
           contest.setHitLocation(options.hitLocation || null);
           contest.roll();
@@ -75,7 +81,7 @@ global.NaturalAttackAbility = (function() {
     const context = { A:acting, T:target, hitLocation:attackRoll.getHitLocation() };
 
     round.addMessage({ text:getAttackText(options, context) }, Weaver(context));
-    round.addTime(options.attack.speed);
+    round.addTime(attack.speed);
 
     if (options.cooldown) { BattleSystem.getState().setCooldown(acting, code, options.cooldown); }
 
@@ -85,6 +91,19 @@ global.NaturalAttackAbility = (function() {
     } else {
       PhysicalAttackSystem.processMiss(attackRoll, defendRoll);
     }
+  }
+
+  // The effective attack profile comes from the acting monster's ability entry, with the record's attack values
+  // filling in anything the entry doesn't set.
+  function getAttackProfile(code, options, acting) {
+    const entry = Monster(acting).getAbility(code);
+    const [low, high] = entry.abilityDamage || [options.attack.low, options.attack.high];
+    const speed = entry.speed || options.attack.speed;
+
+    if (low == null || high == null) { throw new Error(`Ability[${code}] has no damage range for Monster[${Monster(acting).getCode()}]`); }
+    if (speed == null) { throw new Error(`Ability[${code}] has no speed for Monster[${Monster(acting).getCode()}]`); }
+
+    return { ...options.attack, low, high, speed };
   }
 
   function getAttackText(options, context) {
