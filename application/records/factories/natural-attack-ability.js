@@ -19,11 +19,11 @@
 // the ability record, so that a kobold bite can be a different class of attack than a dragon bite:
 //
 //   prioritizedAbilities: [
-//     { code:'beast-bite', priority:50, abilityDamage:[25,50], speed:1500, essence:50 },
+//     { code:'beast-bite', priority:50, damage:[25,50], speed:1500, essence:50 },
 //   ]
 //
-// The record's attack may still carry low, high, and speed values, which act as defaults for entries that don't
-// set their own.
+// The record's attack may still carry damage:[low,high] and speed values, which act as defaults for entries that
+// don't set their own.
 //
 // Optional keys:
 //     canTarget         An extra usability check on the target.
@@ -97,7 +97,7 @@ global.NaturalAttackAbility = (function() {
   // filling in anything the entry doesn't set.
   function getAttackProfile(code, options, acting) {
     const entry = Monster(acting).getAbility(code);
-    const [low, high] = entry.abilityDamage || [options.attack.low, options.attack.high];
+    const [low, high] = entry.damage || options.attack.damage || [];
     const speed = entry.speed || options.attack.speed;
 
     if (low == null || high == null) { throw new Error(`Ability[${code}] has no damage range for Monster[${Monster(acting).getCode()}]`); }
