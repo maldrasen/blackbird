@@ -27,6 +27,21 @@ global.StatusEffectSystem = (function() {
     }
   }
 
+  // Effects with an interval act on their own schedule, independent of their victim's actions, so applying one adds
+  // an entry to the battle turn order.
+  function scheduleTick(entity, code) {
+    const state = BattleSystem.getState();
+    const interval = getInterval(StatusEffects(entity).get(code));
+
+    if (interval == null) { return; }
+
+    state.setTurnOrder({ type:'status', id:entity, code, time:state.getNext().time + interval });
+  }
+
+  function getInterval(component) {
+    return component.interval != null ? component.interval : StatusEffectType.lookup(component.code).getInterval();
+  }
+
   // Triggered when a status effect's turn order entry comes up. The entry is never popped from the turn order, so
   // every path through here has to either reschedule it or see it removed, or the same tick dispatches forever.
   // Damage can kill or knock out the victim, and the death system sweeps their status entries, so the reschedule
@@ -39,7 +54,7 @@ global.StatusEffectSystem = (function() {
 
     if (BattleSystem.getState().isDown(victim)) { return; }
 
-    entry.time += component.interval;
+    entry.time += getInterval(component);
     BattleSystem.getState().setTurnOrder(entry);
   }
 
@@ -67,6 +82,7 @@ global.StatusEffectSystem = (function() {
   return {
     processStartRound,
     processEndRound,
+    scheduleTick,
     processTick,
     consumeStack,
   };

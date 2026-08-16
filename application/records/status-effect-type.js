@@ -20,6 +20,7 @@ global.StatusEffectType = (function() {
       getCategory: () => { return statusEffect.category; },
       getDamageType: () => { return statusEffect.damageType; },
       getDurationType: () => { return statusEffect.durationType; },
+      getInterval: () => { return statusEffect.interval || null; },
       getRemovedAt: () => { return statusEffect.removedAt || 'start-of-round' },
       isClearedAfterBattle: () => { return statusEffect.clearAfterBattle === true; },
     };

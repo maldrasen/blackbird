@@ -30,11 +30,13 @@ global.BattleSystem = (function() {
 
   function addStatus(entity, code, values={}) {
     const { removed } = StatusEffects(entity).apply(code, values);
+    StatusEffectSystem.scheduleTick(entity, code);
     if (removed.length > 0) { BattleInterface.updateCombatantView(entity); }
   }
 
   function removeStatus(entity, code) {
     StatusEffects(entity).remove(code);
+    state.removeStatusEffectsFromTurnOrder(entity, code);
     BattleInterface.updateCombatantView(entity);
   }
 
