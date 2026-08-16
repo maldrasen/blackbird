@@ -3,6 +3,7 @@ BaseMonster.register('slithering-yeek',{
   description: `A yeek is either a reptilian centipede or a snake with far too many legs. The only thing for certain is 
     that it's coming to get you.`,
   genderRatio: { none:100 },
+  bodyPlan: 'yeek',
   type: 'critter',
   level: 3,
 
