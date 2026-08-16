@@ -17,13 +17,13 @@ global.SkillCheck = function(id, code, mode=RollMode.normal) {
     let total = 0;
 
     attributeList.forEach(attribute => {
-      total += attributes[attribute];
+      total += attributes.getAttribute(attribute);
     });
 
     return Math.ceil(total / attributeList.length);
   }
 
-  const average = averageAttributes(AttributesComponent.lookup(id), skill.getAttributes());
+  const average = averageAttributes(Attributes(id), skill.getAttributes());
   const plus = Math.floor(average * 0.25);
   const rand = Math.ceil(average * 0.75);
   const factor = (1 + (level/100)) * skill.getFactor();
