@@ -5,7 +5,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 ## Priority 1
 
 - [186] Put status effects in the turn order `8pt` — [186-status-effects-in-the-turn-order.md](186-status-effects-in-the-turn-order.md)
-- [189] Attribute must be read from wrapper `5pt` — [189-attribute-must-be-read-from-wrapper.md](189-attribute-must-be-read-from-wrapper.md)
 
 ## Priority 2
 
