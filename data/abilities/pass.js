@@ -2,9 +2,8 @@ Ability.register('pass',{
   name: 'Pass',
   category: 'basic',
 
-  // There might be other reasons a character has to pass. Being stunned is the only one we have now though.
   canBeUsed: acting => {
-    return StatusEffects(acting).has('stun');
+    return StatusEffects(acting).has('stun') || StatusEffects(acting).has('paralysis');
   },
 
   execute: () => {
