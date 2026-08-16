@@ -2,6 +2,10 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
+## Priority 1
+
+- [186] Put status effects in the turn order `8pt` — [186-status-effects-in-the-turn-order.md](186-status-effects-in-the-turn-order.md)
+
 ## Priority 2
 
 - [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
@@ -16,7 +20,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [158] Add a Fixture to Adjust the Question Pool for Testing `3pt` — [158-fixture-to-adjust-question-pool.md](158-fixture-to-adjust-question-pool.md)
 - [161] Join Text `8pt` — [161-join-text.md](161-join-text.md)
 - [172] Nightgaunt Episode `8pt` — [172-nightgaunt-episode.md](172-nightgaunt-episode.md)
-- [186] Put status effects in the turn order `8pt` — [186-status-effects-in-the-turn-order.md](186-status-effects-in-the-turn-order.md)
 - [187] Beasts need a different map of hit locations `3pt` — [187-beasts-need-a-different-map-of-hit-locations.md](187-beasts-need-a-different-map-of-hit-locations.md)
 
 ## Priority 3

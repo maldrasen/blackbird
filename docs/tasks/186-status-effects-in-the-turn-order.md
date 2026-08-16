@@ -1,7 +1,7 @@
 ---
 id: 186
 title: Put status effects in the turn order
-priority: 2
+priority: 1
 created: 2026-08-15
 tags:
   - battle
