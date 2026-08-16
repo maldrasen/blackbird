@@ -16,15 +16,10 @@ First, this is needed for the fixtures, rather than randomly picking a encounter
 ## Difficulty Level
 First, we need to be able to build an encounter given an average difficulty level. We can use the base monster essence value to gauge how difficult a monster is. Then given a target essence for the encounter, we pick a group of monsters that fit within that essence cap.
 
+> Calculating the average essence a monster can grant would be very difficult at runtime. We first need convert the essence report into a script that saves this monster essence data into a data file. If we write precalculated essence ranges to a js file the loader will just pick it up automatically. Unlike the compile manifest we don't need to rebuild the data every time the app is loaded, just when monster data is changed. Should be made part of a dist script though so that it's not forgotten. (We currently don't have a dist bash script, just the node script)
+
 ## Encounter Theme
 Each dungeon floor has a theme, which defines what monsters can be encountered on that floor. We haven't implemented this yet, but each theme should have a list of monster types that can be encountered there. These types could be a category of monsters (which will also need defining) or specific base monsters.
 
 ## Related Monsters
 An encounter should only include monsters that would work together. We only have a few kobolds so far, but the plan is to separate the kobolds into multiple clans, so the Deepdark kobolds wouldn't be in the same formation as Flamescales. A kobold runt though could be in either clan. Kobolds and vermen wouldn't be in the same party, but vermen could keep other more animal like monsters as pets. Not sure what the best way to define these relationships would be. Probably another data record to define a cohort. 
-
-
-
-
-
-
-

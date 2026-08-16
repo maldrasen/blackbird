@@ -5,6 +5,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 ## Priority 1
 
 - [186] Put status effects in the turn order `8pt` — [186-status-effects-in-the-turn-order.md](186-status-effects-in-the-turn-order.md)
+- [189] Attribute must be read from wrapper `5pt` — [189-attribute-must-be-read-from-wrapper.md](189-attribute-must-be-read-from-wrapper.md)
 
 ## Priority 2
 
@@ -21,6 +22,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [161] Join Text `8pt` — [161-join-text.md](161-join-text.md)
 - [172] Nightgaunt Episode `8pt` — [172-nightgaunt-episode.md](172-nightgaunt-episode.md)
 - [187] Beasts need a different map of hit locations `3pt` — [187-beasts-need-a-different-map-of-hit-locations.md](187-beasts-need-a-different-map-of-hit-locations.md)
+- [190] Adjustable damage and essence of abilities `3pt` — [190-adjustable-damage-and-essence-of-abilities.md](190-adjustable-damage-and-essence-of-abilities.md)
 
 ## Priority 3
 
@@ -58,6 +60,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [179] Orchard Features `5pt` — [179-orchard-features.md](179-orchard-features.md)
 - [182] Implement consumable weapons `5pt` — [182-implement-consumable-weapons.md](182-implement-consumable-weapons.md)
 - [188] Separate CharacterMath `2pt` — [188-separate-character-math.md](188-separate-character-math.md)
+- [191] Create a battle testbed `13pt` — [191-create-a-battle-testbed.md](191-create-a-battle-testbed.md)
 
 ## Priority 4
 

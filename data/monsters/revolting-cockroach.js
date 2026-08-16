@@ -3,7 +3,7 @@ BaseMonster.register('revolting-cockroach',{
   description: `If you thought normal cockroaches were gross, how about one that's the side of a small dog?`,
   genderRatio: { none:100 },
   type: 'critter',
-  level: 1,
+  level: 2,
 
   healthFactor: 1.2,
   speedFactor: 0.9,
