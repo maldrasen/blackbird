@@ -34,11 +34,12 @@ global.StatusEffects = function(parentId) {
     return id;
   }
 
-  // Damage ranges follow the same never-reduced rule as the numeric values, compared on the high end of the range.
+  // Damage dice follow the same never-reduced rule as the numeric values, compared on what they average rather than
+  // on what they could roll at their luckiest.
   function isHarderHitting(current, applied) {
     if (applied == null) { return false; }
     if (current == null) { return true; }
-    return applied[1] > current[1];
+    return Random.averageDice(applied) > Random.averageDice(current);
   }
 
   function removeOpposing(code) {

@@ -14,11 +14,11 @@ describe("StatusEffectComponent", function() {
       expect(statusEffect.damage).to.be.null;
     });
 
-    it("keeps a damage range", function() {
+    it("keeps the damage dice", function() {
       const entity = Registry.createEntity();
-      const id = StatusEffectComponent.create(entity, { code:'poison', strength:10, damage:[5,10] });
+      const id = StatusEffectComponent.create(entity, { code:'poison', strength:10, damage:{ x:1, d:6, p:2 }});
 
-      expect(StatusEffectComponent.lookup(id).damage).to.deep.equal([5,10]);
+      expect(StatusEffectComponent.lookup(id).damage).to.deep.equal({ x:1, d:6, p:2 });
     });
   });
 
@@ -44,24 +44,32 @@ describe("StatusEffectComponent", function() {
       }).to.throw('Validate.atLeast Failed');
     });
 
-    it("rejects a damage range that isn't a low high pair", function() {
+    it("rejects damage that isn't a dice roll", function() {
       const entity = Registry.createEntity();
       expect(function() {
-        StatusEffectComponent.create(entity, { code:'poison', damage:[5] });
-      }).to.throw('Validate.isRange Failed');
+        StatusEffectComponent.create(entity, { code:'poison', damage:[5,10] });
+      }).to.throw('is not a dice roll');
     });
 
-    it("rejects a damage range that runs backwards", function() {
+    it("rejects damage dice with an unexpected property", function() {
       const entity = Registry.createEntity();
       expect(function() {
-        StatusEffectComponent.create(entity, { code:'poison', damage:[10,5] });
-      }).to.throw('low(10) is greater than high(5)');
+        StatusEffectComponent.create(entity, { code:'poison', damage:{ x:1, d:6, low:2 }});
+      }).to.throw('has an unexpected low property');
     });
 
-    it("rejects a damage range starting below one", function() {
+    it("rejects damage dice without any faces", function() {
       const entity = Registry.createEntity();
       expect(function() {
-        StatusEffectComponent.create(entity, { code:'poison', damage:[0,5] });
+        StatusEffectComponent.create(entity, { code:'poison', damage:{ x:2 }});
+      }).to.throw(`doesn't roll dice with at least two sides`);
+    });
+
+    // 1d6-3 can roll for nothing at all, which would leave the poison ticking away harmlessly.
+    it("rejects damage dice that can roll below one", function() {
+      const entity = Registry.createEntity();
+      expect(function() {
+        StatusEffectComponent.create(entity, { code:'poison', damage:{ x:1, d:6, p:-3 }});
       }).to.throw('Validate.atLeast Failed');
     });
 

@@ -1,13 +1,13 @@
 global.StatusEffectComponent = (function() {
   const properties = [_parentId,'code','count','interval','duration','strength','damage'];
   const numericProperties = ['count','interval','duration','strength'];
-  const rangeProperties = ['damage'];
+  const diceProperties = ['damage'];
 
   function create(id,data) {
     const entity = Registry.createEntity();
     const componentData = { _parentId:id, ...data };
 
-    [...numericProperties, ...rangeProperties].forEach(key => {
+    [...numericProperties, ...diceProperties].forEach(key => {
       if (componentData[key] == null) { componentData[key] = null; }
     });
 
@@ -47,12 +47,13 @@ global.StatusEffectComponent = (function() {
       }
     });
 
-    // The effect carries a damage range rather than a single number, so that whatever applied it can decide how hard
-    // it hits without the effect itself needing to know where it came from.
-    rangeProperties.forEach(key => {
+    // The effect carries its own damage dice, so that whatever applied it can decide how hard it hits without the
+    // effect itself needing to know where it came from. The lowest possible roll still has to hurt.
+    diceProperties.forEach(key => {
       if (statusEffectComponent[key] != null) {
-        Validate.isRange(`StatusEffect.${key}`,statusEffectComponent[key]);
-        Validate.atLeast(`StatusEffect.${key}`,statusEffectComponent[key][0],1);
+        const dice = statusEffectComponent[key];
+        Validate.isDiceRoll(`StatusEffect.${key}`,dice);
+        Validate.atLeast(`StatusEffect.${key}`,dice.x + (dice.p || 0),1);
       }
     });
 

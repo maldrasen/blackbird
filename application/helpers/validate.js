@@ -68,16 +68,22 @@ global.Validate = (function() {
     }
   }
 
-  // A range is the [low,high] pair the data files use for a value that gets rolled with Random.between().
-  function isRange(name, value, message=null) {
-    isArray(name, value, message);
-    if (value.length !== 2 || typeof value[0] !== 'number' || typeof value[1] !== 'number') {
-      throw new Error(message ? message : `Validate.isRange Failed: ${name} is not a [low,high] pair of numbers.`);
-    }
-    if (value[0] > value[1]) {
-      throw new Error(message ? message :
-        `Validate.isRange Failed: ${name} low(${value[0]}) is greater than high(${value[1]}).`);
-    }
+  // A dice roll is the { x:(dice count), d:(dice faces), p:(plus or minus) } shape that Random.rollDice() takes. The
+  // plus is optional and may be negative.
+  function isDiceRoll(name, value, message=null) {
+    const fail = reason => {
+      throw new Error(message ? message : `Validate.isDiceRoll Failed: ${name} ${reason}.`);
+    };
+
+    if (value == null || typeof value !== 'object' || Array.isArray(value)) { fail(`is not a dice roll`); }
+
+    Object.keys(value).forEach(key => {
+      if (['x','d','p'].includes(key) === false) { fail(`has an unexpected ${key} property`); }
+      if (typeof value[key] !== 'number') { fail(`has a non numeric ${key} property`); }
+    });
+
+    if (value.x == null || value.x < 1) { fail(`doesn't roll at least one die`); }
+    if (value.d == null || value.d < 2) { fail(`doesn't roll dice with at least two sides`); }
   }
 
   // Accepts a single value of the given type or an array of them, the shape used by properties like requires and
@@ -113,7 +119,7 @@ global.Validate = (function() {
     isNumber,
     isFunction,
     isArray,
-    isRange,
+    isDiceRoll,
     singleOrArrayOf,
     singleKeyFrom
   };

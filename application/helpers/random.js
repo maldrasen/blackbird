@@ -100,6 +100,11 @@ global.Random = (function() {
     return total;
   }
 
+  // The average result of a dice roll, for comparing two of them without rolling either.
+  function averageDice(options) {
+    return (options.x || 1) * ((options.d || 6) + 1) / 2 + (options.p || 0);
+  }
+
   // Boolean Heads or tails, 50% probability.
   function flipCoin() {
     if (stubQueues.flipCoin != null) { return stubbedValue('flipCoin'); }
@@ -194,6 +199,7 @@ global.Random = (function() {
 
     roll,
     rollDice,
+    averageDice,
     flipCoin,
     between,
     from,

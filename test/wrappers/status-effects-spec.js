@@ -33,15 +33,17 @@ describe("StatusEffects", function() {
       expect(StatusEffectComponent.of(entity).length).to.equal(1);
     });
 
-    it("renews a damage range on its high end", function() {
+    // The 2d8 venom averages 9 and replaces the 1d6+2 that averages 5.5, but the 3d4 that averages 7.5 doesn't
+    // replace it even though it could roll higher on a lucky day.
+    it("renews damage dice on their average", function() {
       const entity = Registry.createEntity();
-      StatusEffects(entity).apply('poison', { strength:10, damage:[5,10] });
+      StatusEffects(entity).apply('poison', { strength:10, damage:{ x:1, d:6, p:2 }});
 
-      StatusEffects(entity).apply('poison', { strength:10, damage:[1,20] });
-      expect(StatusEffects(entity).get('poison').damage).to.deep.equal([1,20]);
+      StatusEffects(entity).apply('poison', { strength:10, damage:{ x:2, d:8 }});
+      expect(StatusEffects(entity).get('poison').damage).to.deep.equal({ x:2, d:8 });
 
-      StatusEffects(entity).apply('poison', { strength:10, damage:[15,18] });
-      expect(StatusEffects(entity).get('poison').damage).to.deep.equal([1,20]);
+      StatusEffects(entity).apply('poison', { strength:10, damage:{ x:3, d:4 }});
+      expect(StatusEffects(entity).get('poison').damage).to.deep.equal({ x:2, d:8 });
     });
 
     it("removes an opposing status effect", function() {

@@ -50,4 +50,17 @@ describe("Random", function() {
     });
   });
 
+  describe("averageDice()", function() {
+    it('averages the dice and adds the plus value', function() {
+      expect(Random.averageDice({ x:1, d:6 })).to.equal(3.5);
+      expect(Random.averageDice({ x:2, d:8 })).to.equal(9);
+      expect(Random.averageDice({ x:1, d:6, p:2 })).to.equal(5.5);
+      expect(Random.averageDice({ x:3, d:4, p:-2 })).to.equal(5.5);
+    });
+
+    it('falls back on the same defaults the roll does', function() {
+      expect(Random.averageDice({})).to.equal(3.5);
+    });
+  });
+
 });
