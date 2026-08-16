@@ -5,6 +5,7 @@ global.LevelSystem = (function() {
     const grades = CharacterMath.attributeGrades(id);
     const increase = CharacterMath.attributeIncrease(attribute, grades, actor, AspectsComponent.lookup(id) || {});
     const attributes = AttributesComponent.lookup(id);
+    const before = Attributes(attributes);
 
     attributes[attribute] += increase;
     AttributesComponent.update(id, attributes);
@@ -13,6 +14,7 @@ global.LevelSystem = (function() {
 
     if (attribute === Attrib.vitality) {
       growMaxHealth(id, increase);
+      growStamina(id, before.getMaxStamina());
     }
 
     return increase;
@@ -49,6 +51,12 @@ global.LevelSystem = (function() {
     health.maxHealth += addedHealth;
     health.currentHealth += addedHealth;
 
+    HealthComponent.update(id, health);
+  }
+
+  function growStamina(id, maxStaminaBefore) {
+    const health = HealthComponent.lookup(id);
+    health.currentStamina += Attributes(id).getMaxStamina() - maxStaminaBefore;
     HealthComponent.update(id, health);
   }
 
