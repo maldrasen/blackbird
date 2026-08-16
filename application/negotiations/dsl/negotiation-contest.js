@@ -45,7 +45,7 @@ global.NegotiationContest = function(options) {
   }
 
   function rollAttribute(id) {
-    return Random.roll(AttributesComponent.lookup(id)[attribute]);
+    return Random.roll(Attributes(id).getAttribute(attribute));
   }
 
   return {

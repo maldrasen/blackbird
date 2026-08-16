@@ -27,8 +27,8 @@ global.Character = function(id) {
 
   // The attribute functions take either an entity id (which would be a string) or a raw attribute value (a number)
   function compareAttributes(arg, attribute) {
-    const other = (typeof arg === 'string') ? AttributesComponent.lookup(arg)[attribute] : arg;
-    return AttributesComponent.lookup(id)[attribute] > other;
+    const other = (typeof arg === 'string') ? Attributes(arg).getAttribute(attribute) : arg;
+    return Attributes(id).getAttribute(attribute) > other;
   }
 
   function isFasterThan(value) { return compareAttributes(value, Attrib.dexterity); }
