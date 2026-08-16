@@ -1,4 +1,4 @@
-global.CharacterMath = (function() {
+global.SpeedMath = (function() {
 
   // Dexterity and body size are the primary influences on speed. We also take breast size into consideration, as
   // having a pair of huge swinging milkers will slow a person down significantly. The factor is recalculated on

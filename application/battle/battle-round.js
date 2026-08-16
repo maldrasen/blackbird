@@ -91,7 +91,7 @@ global.BattleRound = function(acting) {
   // Beasts don't have the body components speed is calculated from, so they use the flat factor from their base
   // monster record instead.
   function getSpeedFactor() {
-    if (ActorComponent.lookup(acting).species) { return CharacterMath.calculateSpeedFactor(acting); }
+    if (ActorComponent.lookup(acting).species) { return SpeedMath.calculateSpeedFactor(acting); }
     return Monster(acting).getBaseMonster().getSpeedFactor();
   }
 
