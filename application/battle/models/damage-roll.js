@@ -5,7 +5,7 @@ global.DamageRoll = function(attacker, attackRoll, defendRoll) {
   const defendType = BattleHelper.getRollType(defendRoll);
   const damageRoll = Random.between(baseWeapon.getLow(), baseWeapon.getHigh());
   const ability = attackRoll.getAbility();
-  const damageFactor = (ability == null) ? 1 : ability.getDamageBonus(attacker);
+  const damageFactor = (ability == null) ? 1 : ability.getDamageBonus();
   const damageTypes = {};
 
   let rawDamage = Math.round((damageRoll / 100) * strength * damageFactor);
