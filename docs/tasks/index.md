@@ -16,6 +16,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [158] Add a Fixture to Adjust the Question Pool for Testing `3pt` — [158-fixture-to-adjust-question-pool.md](158-fixture-to-adjust-question-pool.md)
 - [161] Join Text `8pt` — [161-join-text.md](161-join-text.md)
 - [172] Nightgaunt Episode `8pt` — [172-nightgaunt-episode.md](172-nightgaunt-episode.md)
+- [194] Feeling Adjustments During Battle `2pt` — [194-feeling-adjustments-during-battle.md](194-feeling-adjustments-during-battle.md)
 
 ## Priority 3
 
@@ -76,6 +77,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [178] Dungeon tripe episode `3pt` — [178-dungeon-tripe-episode.md](178-dungeon-tripe-episode.md)
 - [180] Add Jet Stream Drug `3pt` — [180-add-jet-stream-drug.md](180-add-jet-stream-drug.md)
 - [181] Add a Snootle Jar `3pt` — [181-add-a-snootle-jar.md](181-add-a-snootle-jar.md)
+- [193] Large and Huge monsters `3pt` — [193-large-and-huge-monsters.md](193-large-and-huge-monsters.md)
 
 ## Priority 5
 
