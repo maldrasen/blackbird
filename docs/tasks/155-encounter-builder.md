@@ -23,3 +23,5 @@ Each dungeon floor has a theme, which defines what monsters can be encountered o
 
 ## Related Monsters
 An encounter should only include monsters that would work together. We only have a few kobolds so far, but the plan is to separate the kobolds into multiple clans, so the Deepdark kobolds wouldn't be in the same formation as Flamescales. A kobold runt though could be in either clan. Kobolds and vermen wouldn't be in the same party, but vermen could keep other more animal like monsters as pets. Not sure what the best way to define these relationships would be. Probably another data record to define a cohort. 
+
+---

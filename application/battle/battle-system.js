@@ -5,11 +5,11 @@ global.BattleSystem = (function() {
   function startBattle(data) {
     state = BattleState(data);
 
-    EncounterBuilder.buildMonsters(state);
-    EncounterBuilder.rollReactionTimes(state);
-    EncounterBuilder.populateThreatTables(state);
+    BattleInitializer.buildMonsters(state);
+    BattleInitializer.rollReactionTimes(state);
+    BattleInitializer.populateThreatTables(state);
 
-    state.setAmbushState(data.ambushState || EncounterBuilder.rollAmbush());
+    state.setAmbushState(data.ambushState || BattleInitializer.rollAmbush());
   }
 
   function reset() {

@@ -1,4 +1,4 @@
-global.EncounterBuilder = (function() {
+global.BattleInitializer = (function() {
 
   // When building the monsters we take the formation from the encounter and loop though the arrays that represent the
   // ranks and columns. The values in the arrays are passed to the monster factory to build the monster then its entity
