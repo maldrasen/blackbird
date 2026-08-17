@@ -16,23 +16,22 @@ global.EssenceSystem = (function() {
   // ============================
   //    Monster Essence Values
   // ============================
-  // A monster's essence value is determined by their attributes and abilities. Attributes are worth more as they
-  // determine the potency of the abilities. Even a monster without abilities, with only a basic attack can be very
-  // dangerous, but a weak monster with lots of abilities is still weak.
+  // A monster's essence value will be different for each monster as much of that value comes from their attributes
+  // which are rolled randomly. This value is determined by their attributes and abilities. Attributes are worth more
+  // as they determine the potency of the abilities. Even a monster without abilities, with only a basic attack can be
+  // very dangerous, but a weak monster with lots of abilities is still weak. We also include the speed and health
+  // factors as they can arbritrarily make a monster faster or tougher. A final bonus essence value can be given to
+  // monsters that are just weirdly hard or easy for some reason.
 
   function monsterEssenceValue(monsterId) {
-    return Math.round(attributeFactor(monsterId) * abilityFactor(monsterId) * healthFactor(monsterId) * speedFactor(monsterId));
+    const value = attributeFactor(monsterId) * abilityFactor(monsterId) * healthFactor(monsterId) * speedFactor(monsterId);
+    return Math.round(value) + Monster(monsterId).getBaseMonster().getBonusEssence();
   }
 
-  // The health and speed factors are squeezed toward 1 before they're applied, so that they temper the essence value
-  // rather than drive it. Health gets squeezed harder because speed should have the greater effect.
   function healthFactor(monsterId) {
     return squeeze(Monster(monsterId).getBaseMonster().getHealthFactor(), healthEssenceWeight);
   }
 
-  // Species monsters calculate speed from their bodies, which would swing the essence value from individual to
-  // individual, so only the flat factor carried by beasts weighs in here. Fast monsters are more dangerous, so a
-  // speed factor below 1 raises the value.
   function speedFactor(monsterId) {
     const base = Monster(monsterId).getBaseMonster();
     const value = base.getSpecies() ? 1 : squeeze(base.getSpeedFactor(), speedEssenceWeight);
@@ -49,8 +48,6 @@ global.EssenceSystem = (function() {
     return (attributeSum ** attributePowerExponent) * essenceScale;
   }
 
-  // An ability's essence lives on the monster's ability entry, so the same bite can be weighed differently from
-  // monster to monster. The ability record's essence acts as the default for entries that don't set their own.
   function abilityFactor(monsterId) {
     const monster = Monster(monsterId);
     const scoreSum = monster.getPrioritizedAbilities().reduce((sum,ability) => {
