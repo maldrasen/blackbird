@@ -4,6 +4,8 @@ global.EssenceSystem = (function() {
   const attributePowerExponent = 1.5;
   const essenceScale = 0.12;
   const abilityScale = 0.02;
+  const healthEssenceWeight = 0.25;
+  const speedEssenceWeight = 0.5;
 
   // Level Knobs
   const baseLevelCost = 250;
@@ -19,7 +21,26 @@ global.EssenceSystem = (function() {
   // dangerous, but a weak monster with lots of abilities is still weak.
 
   function monsterEssenceValue(monsterId) {
-    return Math.round(attributeFactor(monsterId) * abilityFactor(monsterId));
+    return Math.round(attributeFactor(monsterId) * abilityFactor(monsterId) * healthFactor(monsterId) * speedFactor(monsterId));
+  }
+
+  // The health and speed factors are squeezed toward 1 before they're applied, so that they temper the essence value
+  // rather than drive it. Health gets squeezed harder because speed should have the greater effect.
+  function healthFactor(monsterId) {
+    return squeeze(Monster(monsterId).getBaseMonster().getHealthFactor(), healthEssenceWeight);
+  }
+
+  // Species monsters calculate speed from their bodies, which would swing the essence value from individual to
+  // individual, so only the flat factor carried by beasts weighs in here. Fast monsters are more dangerous, so a
+  // speed factor below 1 raises the value.
+  function speedFactor(monsterId) {
+    const base = Monster(monsterId).getBaseMonster();
+    const value = base.getSpecies() ? 1 : squeeze(base.getSpeedFactor(), speedEssenceWeight);
+    return 1/value;
+  }
+
+  function squeeze(factor, weight) {
+    return 1 + ((factor - 1) * weight);
   }
 
   function attributeFactor(monsterId) {
