@@ -4,30 +4,22 @@ Everything finished by September 1st ships as 0.1.8. This file names the theme t
 ## Theme
 The last six tasks written (186–191) are all battle and character math — the momentum is already pointed here. The cut closes the battle loop end to end: status effects actually tick, ability damage and essence are tunable, the essence economy accounts for health factors, encounters are built intelligently instead of hand-picked, and the testbed exists to measure whether any of it is balanced.
 
-## Committed (~56pt against a ~60pt planning budget)
-Planning budget assumes the observed throughput of roughly 35–45pt/week over two weeks, planned under capacity on purpose.
-
-##### Done
+### Done
 - [186] Put status effects in the turn order `8pt` — the P1, already has a full implementation plan in the task file
 - [189] Attribute must be read from wrapper `5pt` — the other P1; makes status-effect buffs/debuffs sane before 186 needs them
 - [190] Adjustable damage and essence of abilities `3pt`
 - [187] Beasts need a different map of hit locations `3pt`
 - [188] Separate CharacterMath `2pt`
 - [127] Add a Health factor to the EssenceSystem `2pt`
-
-##### TODO
 - [162] Battle enlightenment variation for no essence `2pt`
+
+### TODO
 - [155] Encounter Builder `8pt` — also what the testbed uses to build its fights
 - [191] Create a battle testbed `13pt` — **first slice only, timeboxed**: build a party, build an encounter via 155, run one full automated battle headlessly, produce a report. The thousand-battle balance harness is a later milestone.
 
-Suggested order: 189 → 186 → 190/187/188/127/162 in any order → 155 → 191. The small wiring tasks are good palate cleansers between the big three.
-
-## Stretch (only if the committed list is done)
-
+### Stretch
 - [172] Nightgaunt Episode `8pt`
 - [105] Add Negotiation Requests `8pt` + [158] Question pool fixture `3pt` — 158 explicitly waits on 105
-
-Pick one thread, not both.
 
 ## Explicitly out of 0.1.8
 
