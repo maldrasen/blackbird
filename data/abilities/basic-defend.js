@@ -3,8 +3,6 @@ Ability.register('basic-defend',{
   category: 'basic',
   essence: 5,
 
-  canBeUsed: acting => { return true; },
-
   execute: () => {
     const round = BattleSystem.getRound();
 

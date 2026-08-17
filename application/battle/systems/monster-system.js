@@ -25,7 +25,7 @@ global.MonsterSystem = (function() {
       round.setTarget(GameSystem.getState().getPlayer());
 
       const code = state.takeForcedAbility();
-      if (Ability.lookup(code).canBeUsed(round.getActing())) { return code; }
+      if (Ability.lookup(code).canBeUsed()) { return code; }
 
       round.clearTarget();
     }
@@ -72,7 +72,7 @@ global.MonsterSystem = (function() {
     const abilities = [];
 
     round.getActingMonster().getPrioritizedAbilities().forEach(ability => {
-      if (Ability.lookup(ability.code).canBeUsed(acting) && !state.isOnCooldown(acting, ability.code)) {
+      if (Ability.lookup(ability.code).canBeUsed() && !state.isOnCooldown(acting, ability.code)) {
         abilities.push(ability);
       }
     });

@@ -8,11 +8,13 @@ Ability.register(BattleCommand.negotiate, {
   category: 'utility',
   overlay: NegotiationSystem.start,
 
-  canBeUsed: acting => {
-    if (acting !== GameSystem.getState().getPlayer()) { return false; }
-    if (BattleSystem.getState().hasAttemptedNegotiation()) { return false; }
+  canBeUsed: () => {
+    const state = BattleSystem.getState();
 
-    const monsters = BattleSystem.getState().getActiveMonsters();
+    if (BattleSystem.getRound().getActing() !== GameSystem.getState().getPlayer()) { return false; }
+    if (state.hasAttemptedNegotiation()) { return false; }
+
+    const monsters = state.getActiveMonsters();
     return monsters.length === 1 && Monster(monsters[0]).willNegotiate();
   },
 

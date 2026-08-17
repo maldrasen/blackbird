@@ -29,7 +29,7 @@ global.Ability = (function() {
       getEssence: () => { return ability.essence || 0; },
       hasOverlay: () => { return typeof ability.overlay === 'function' },
       openOverlay: () => { ability.overlay() },
-      canBeUsed: acting => { return ability.canBeUsed(acting); },
+      canBeUsed: () => { return (ability.canBeUsed == null) ? true : ability.canBeUsed(); },
       getAccuracyBonus: acting => { return typeof ability.getAccuracyBonus === 'function' ? ability.getAccuracyBonus(acting) : 1; },
       getDamageBonus: acting => { return typeof ability.getDamageBonus === 'function' ? ability.getDamageBonus(acting) : 1; },
       execute,

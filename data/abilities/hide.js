@@ -3,7 +3,8 @@ Ability.register('hide',{
   category: 'basic',
   essence: 10,
 
-  canBeUsed: acting => {
+  canBeUsed: () => {
+    const acting = BattleSystem.getRound().getActing();
     const hasSkill = SkillsComponent.lookup(acting)['stealth'] > 0;
     const notHidden = StatusEffects(acting).has('hidden') === false;
     const inBack = BattleSystem.getState().isInBack(acting);
