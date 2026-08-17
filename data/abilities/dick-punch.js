@@ -23,7 +23,7 @@ NaturalAttackAbility.register('dick-punch', {
     if (getArmorFactor(target) > 0.5) { addStunEffect(acting, target); }
   },
 
-  getDamageBonus: acting => {
+  getDamageBonus: () => {
     const target = BattleSystem.getRound().getTarget();
     const sizeFactor = getSizeFactor(CockComponent.lookupNormalOf(target).size);
     return getArmorFactor(target) * sizeFactor;

@@ -2,8 +2,9 @@ Ability.register('pass',{
   name: 'Pass',
   category: 'basic',
 
-  canBeUsed: acting => {
-    return StatusEffects(acting).has('stun') || StatusEffects(acting).has('paralysis');
+  canBeUsed: () => {
+    const statusEffects = StatusEffects(BattleSystem.getRound().getActing());
+    return statusEffects.has('stun') || statusEffects.has('paralysis');
   },
 
   execute: () => {

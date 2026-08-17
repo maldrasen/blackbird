@@ -9,6 +9,7 @@ global.EnlightenView = (function() {
 
   function show() {
     MainContent.setMainContent("views/templates/enlighten.html");
+    MainContent.setBackground('backgrounds/battle.jpg');
 
     switch (EnlightenSystem.getState().getFrom()) {
       case 'training': return showTrainingResults();
@@ -72,9 +73,18 @@ global.EnlightenView = (function() {
   // ====================
 
   function showEssenceBars() {
+    const state = EnlightenSystem.getState()
+    const essence = state.getEssence();
+
+    // We need to enable the continue button here because the bars are never animated when no essence is awarded.
+    if (state.isEssenceAwarded() === false) {
+      X.removeClass('#enlightenView .no-essence-awarded','hide');
+      X.removeClass('#enlightenView .continue-button','disabled');
+      return;
+    }
+
     essenceBars = {};
 
-    const essence = EnlightenSystem.getState().getEssence();
     X.removeClass('#enlightenView .essence-bars','hide');
 
     Object.keys(essence).forEach(id => {

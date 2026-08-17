@@ -4,8 +4,8 @@ Ability.register('sneak-attack',{
   targetingMode: TargetingMode.anyEnemy,
   essence: 25,
 
-  canBeUsed: acting => {
-    return StatusEffects(acting).has('hidden');
+  canBeUsed: () => {
+    return StatusEffects(BattleSystem.getRound().getActing()).has('hidden');
   },
 
   execute: () => {
@@ -41,8 +41,8 @@ Ability.register('sneak-attack',{
   //       depend on the weapon being used. To prevent sneak attacks with a maul maybe the damage multiplier increases
   //       with the weapon speed. Something to consider for the future I think.
 
-  getAccuracyBonus: acting => { return 1.5; },
-  getDamageBonus: acting =>  { return 2; },
+  getAccuracyBonus: () => { return 1.5; },
+  getDamageBonus: () => { return 2; },
 });
 
 // TODO: We'll need a lot more attack text for this ability.
