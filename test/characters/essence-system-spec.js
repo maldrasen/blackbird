@@ -25,24 +25,26 @@ describe("EssenceSystem", function() {
   describe("monsterEssenceValue()", function() {
     const attributes = { strength:20, dexterity:15, vitality:15, intelligence:10, beauty:10 };
 
+    // The kobolds' species health factor of 0.2 squeezes down to 0.8, tempering every kobold value here.
     it("combines the monster's attribute total with its ability scores", function() {
-      expect(EssenceSystem.monsterEssenceValue(buildMonster('kobold-dick-puncher', attributes))).to.equal(260);
+      expect(EssenceSystem.monsterEssenceValue(buildMonster('kobold-dick-puncher', attributes))).to.equal(208);
     });
 
     it("scales superlinearly with the attribute total", function() {
       const doubled = { strength:40, dexterity:30, vitality:30, intelligence:20, beauty:20 };
-      expect(EssenceSystem.monsterEssenceValue(buildMonster('kobold-dick-puncher', doubled))).to.equal(735);
+      expect(EssenceSystem.monsterEssenceValue(buildMonster('kobold-dick-puncher', doubled))).to.equal(588);
     });
 
     // The runt's own bite entry rides on top of the basic attack its coward type carries, worth ten essence each.
     it("counts the abilities the base monster adds to its type", function() {
-      expect(EssenceSystem.monsterEssenceValue(buildMonster('kobold-runt', attributes))).to.equal(98);
+      expect(EssenceSystem.monsterEssenceValue(buildMonster('kobold-runt', attributes))).to.equal(79);
     });
 
     // The beast types carry no abilities at all, leaving the base monster to supply every one of them. The
-    // skitterfang's bite entry weighs its fifteen essence over the record's default of zero.
+    // skitterfang's bite entry weighs its fifteen essence over the record's default of zero. Its frailty (health 0.25)
+    // and quickness (speed 0.75) mostly cancel out, the squeezed factors shaving the raw 91 down to 85.
     it("values a beast off the abilities on its base monster alone", function() {
-      expect(EssenceSystem.monsterEssenceValue(buildMonster('rabid-skitterfang', attributes))).to.equal(91);
+      expect(EssenceSystem.monsterEssenceValue(buildMonster('rabid-skitterfang', attributes))).to.equal(85);
     });
 
     // A factory built daggermaw can't be pinned to a number here, as its rolled attributes swing the value around.
@@ -51,16 +53,16 @@ describe("EssenceSystem", function() {
       const id = buildBeast('lesser-daggermaw', attributes);
       Random.stubBetween(3,3,3);
 
-      expect(EssenceSystem.monsterEssenceValue(id)).to.equal(141);
+      expect(EssenceSystem.monsterEssenceValue(id)).to.equal(158);
 
       LevelSystem.levelUp(id, Attrib.strength);
-      expect(EssenceSystem.monsterEssenceValue(id)).to.equal(165);
+      expect(EssenceSystem.monsterEssenceValue(id)).to.equal(186);
 
       LevelSystem.levelUp(id, Attrib.strength);
-      expect(EssenceSystem.monsterEssenceValue(id)).to.equal(191);
+      expect(EssenceSystem.monsterEssenceValue(id)).to.equal(215);
 
       LevelSystem.levelUp(id, Attrib.strength);
-      expect(EssenceSystem.monsterEssenceValue(id)).to.equal(219);
+      expect(EssenceSystem.monsterEssenceValue(id)).to.equal(246);
     });
   });
 

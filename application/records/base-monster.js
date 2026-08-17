@@ -53,6 +53,7 @@ global.BaseMonster = (function() {
       getGenderRatio,
       getType: () => { return monster.type; },
       getLevel: () => { return monster.level || 0; },
+      getBonusEssence: () => { return monster.bonusEssence || 0; },
 
       getHealthFactor,
       getSpeedFactor,

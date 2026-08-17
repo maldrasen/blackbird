@@ -13,9 +13,9 @@ Planning budget assumes the observed throughput of roughly 35–45pt/week over t
 - [190] Adjustable damage and essence of abilities `3pt`
 - [187] Beasts need a different map of hit locations `3pt`
 - [188] Separate CharacterMath `2pt`
+- [127] Add a Health factor to the EssenceSystem `2pt`
 
 ##### TODO
-- [127] Add a Health factor to the EssenceSystem `2pt`
 - [162] Battle enlightenment variation for no essence `2pt`
 - [155] Encounter Builder `8pt` — also what the testbed uses to build its fights
 - [191] Create a battle testbed `13pt` — **first slice only, timeboxed**: build a party, build an encounter via 155, run one full automated battle headlessly, produce a report. The thousand-battle balance harness is a later milestone.
