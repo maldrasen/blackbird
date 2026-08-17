@@ -14,8 +14,8 @@ global.Fixtures = (function() {
       // encounter: 'kobold-1',
       // encounter: `kobold-${Random.between(1,5)}`,
       // encounter: `negotiation-fixture-${Random.between(1,3)}`,
-      // encounter: `negotiation-fixture-2`,
-      encounter: 'test',
+      encounter: `negotiation-fixture-2`,
+      // encounter: 'test',
     });
 
     GameSystem.setGameMode(GameMode.location);
