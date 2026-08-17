@@ -12,9 +12,9 @@ Planning budget assumes the observed throughput of roughly 35–45pt/week over t
 - [189] Attribute must be read from wrapper `5pt` — the other P1; makes status-effect buffs/debuffs sane before 186 needs them
 - [190] Adjustable damage and essence of abilities `3pt`
 - [187] Beasts need a different map of hit locations `3pt`
+- [188] Separate CharacterMath `2pt`
 
 ##### TODO
-- [188] Separate CharacterMath `2pt`
 - [127] Add a Health factor to the EssenceSystem `2pt`
 - [162] Battle enlightenment variation for no essence `2pt`
 - [155] Encounter Builder `8pt` — also what the testbed uses to build its fights
