@@ -6,7 +6,7 @@
 
 require('./run-headless.js');
 
-const SAMPLES = 500;
+const SAMPLES = 100;
 const pad = ReportHelper.pad;
 const padn = ReportHelper.padNumber;
 
