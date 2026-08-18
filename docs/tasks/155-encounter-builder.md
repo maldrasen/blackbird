@@ -25,3 +25,7 @@ Each dungeon floor has a theme, which defines what monsters can be encountered o
 An encounter should only include monsters that would work together. We only have a few kobolds so far, but the plan is to separate the kobolds into multiple clans, so the Deepdark kobolds wouldn't be in the same formation as Flamescales. A kobold runt though could be in either clan. Kobolds and vermen wouldn't be in the same party, but vermen could keep other more animal like monsters as pets. Not sure what the best way to define these relationships would be. Probably another data record to define a cohort. 
 
 ---
+
+We'll need other builder options as well beyond just difficulty level. Some encounters should still be exact monsters in an exact formation. So I think we still need to keep the encounter records for special battles like this. We started this task because I want to be able to easily start a battle with a specific monster, so we also need to build an encounter from a base monster code or a formation and base monster codes. 
+
+An encounter builder doesn't actually buy us much from the perspective of putting a fixture together, but I think it should provide a more interesting variety of encounters so I think it's still worth doing.
