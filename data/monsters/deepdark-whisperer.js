@@ -3,4 +3,5 @@ BaseMonster.register('deepdark-whisperer',{
   species: SpeciesCode.kobold,
   type: 'rogue',
   triggers: ['black-hair'],
+  level: 8,
 });

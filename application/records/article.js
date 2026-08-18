@@ -2,7 +2,6 @@ global.Article = (function() {
   const articles = {};
 
   function register(code,data) {
-    if (articles[code] != null) { throw new Error(`Article code [${code}] is already registered`); }
     articles[code] = data;
   }
 

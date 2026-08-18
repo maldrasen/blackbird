@@ -4,4 +4,5 @@ BaseMonster.register('flamescale-kobold',{
   type: 'fighter',
   archetypes: { savage:10 },
   triggers: ['red-hair'],
+  level: 6,
 });

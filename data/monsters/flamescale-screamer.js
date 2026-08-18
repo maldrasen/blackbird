@@ -4,4 +4,5 @@ BaseMonster.register('flamescale-screamer',{
   type: 'mage',
   archetypes: { maniac:10 },
   triggers: ['red-hair'],
+  level: 8,
 });

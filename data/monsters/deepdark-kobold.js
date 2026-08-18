@@ -3,4 +3,5 @@ BaseMonster.register('deepdark-kobold',{
   species: SpeciesCode.kobold,
   type: 'fighter',
   triggers: ['black-hair'],
+  level: 6,
 });

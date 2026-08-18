@@ -1,14 +1,5 @@
 
-Encounter.register('kobold-sneak-sluts',{
-  description: `some naked, knife wielding, kobold sluts.`,
-  formation:[
-    [2,1,1,1,2],
-  ],
-  monsters:{
-    1: { code:'kobold-sneak-slut' },
-    2: { code:'kobold-sneak-slut', chance:33, }
-  }
-});
+// TODO: Still needed for specs for now.
 
 Encounter.register('kobold-trappers',{
   description: `a small group of spear wielding kobolds.`,
@@ -18,26 +9,6 @@ Encounter.register('kobold-trappers',{
   ],
   monsters:{
     1: { code:'kobold-trapper' },
-  }
-});
-
-Encounter.register('kobold-tossers',{
-  description: `a small group of spear wielding kobolds.`,
-  formation:[
-    [0,1,1,1,0],
-  ],
-  monsters:{
-    1: { code:'kobold-tosser' },
-  }
-});
-
-Encounter.register('kobold-dick-punchers',{
-  description: `a small group of unarmed kobolds.`,
-  formation:[
-    [1,1,1,1,1],
-  ],
-  monsters:{
-    1: { code:'kobold-dick-puncher' },
   }
 });
 

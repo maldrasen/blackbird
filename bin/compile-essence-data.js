@@ -13,8 +13,8 @@ const padn = ReportHelper.padNumber;
 Random.seed(666);
 
 console.log("\n=== Compiling Essence Data ===\n")
-console.log(pad('Monster',20) + padn('Level',6) + padn('Min',6) + padn('Avg',6) + padn('Max',6));
-console.log(pad('-------',20) + padn('-----',6) + padn('---',6) + padn('---',6) + padn('---',6));
+console.log(pad('Monster',32) + padn('Level',6) + padn('Min',6) + padn('Avg',6) + padn('Max',6));
+console.log(pad('-------',32) + padn('-----',6) + padn('---',6) + padn('---',6) + padn('---',6));
 
 const rows = BaseMonster.getAllCodes().sort().map(code => {
   const base = BaseMonster.lookup(code);
@@ -32,7 +32,7 @@ const rows = BaseMonster.getAllCodes().sort().map(code => {
     average: Math.round(values.reduce((sum,value) => sum + value, 0) / SAMPLES),
   };
 
-  console.log(pad(data.code,20) + padn(data.level,6) + padn(data.min,6) + padn(data.average,6) + padn(data.max,6));
+  console.log(pad(data.code,32) + padn(data.level,6) + padn(data.min,6) + padn(data.average,6) + padn(data.max,6));
 
   return data;
 });
