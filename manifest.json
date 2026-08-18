@@ -348,6 +348,7 @@
     "data/episodes/game-start-1.js",
     "data/episodes/propose-training.js",
     "data/episodes/take-the-dungeon-oath.js",
+    "data/essence-data.js",
     "data/feature-types/cross-room.js",
     "data/feature-types/leg-room.js",
     "data/feature-types/nested-room.js",
