@@ -7,8 +7,14 @@
 require('./run-headless.js');
 
 const SAMPLES = 500;
+const pad = ReportHelper.pad;
+const padn = ReportHelper.padNumber;
 
 Random.seed(666);
+
+console.log("\n=== Compiling Essence Data ===\n")
+console.log(pad('Monster',20) + padn('Level',6) + padn('Min',6) + padn('Avg',6) + padn('Max',6));
+console.log(pad('-------',20) + padn('-----',6) + padn('---',6) + padn('---',6) + padn('---',6));
 
 const rows = BaseMonster.getAllCodes().sort().map(code => {
   const base = BaseMonster.lookup(code);
@@ -18,13 +24,17 @@ const rows = BaseMonster.getAllCodes().sort().map(code => {
     values.push(EssenceSystem.monsterEssenceValue(MonsterFactory(code).build()));
   }
 
-  return {
+  const data = {
     code,
     level: base.getLevel(),
     min: Math.min(...values),
     max: Math.max(...values),
     average: Math.round(values.reduce((sum,value) => sum + value, 0) / SAMPLES),
   };
+
+  console.log(pad(data.code,20) + padn(data.level,6) + padn(data.min,6) + padn(data.average,6) + padn(data.max,6));
+
+  return data;
 });
 
 const entries = rows.map(row =>
@@ -36,16 +46,5 @@ global.EssenceData = {
 ${entries.join('\n')}
 };
 `);
-
-const pad = ReportHelper.pad;
-const padn = ReportHelper.padNumber;
-
-console.log(`\n=== Monster Essence Data ===\n`);
-console.log(pad('Monster',20) + padn('Level',6) + padn('Min',6) + padn('Avg',6) + padn('Max',6));
-console.log(pad('-------',20) + padn('-----',6) + padn('---',6) + padn('---',6) + padn('---',6));
-
-rows.forEach(row => {
-  console.log(pad(row.code,20) + padn(row.level,6) + padn(row.min,6) + padn(row.average,6) + padn(row.max,6));
-});
 
 console.log(`\nWrote data/essence-data.js`);
