@@ -638,6 +638,7 @@
     "test/records/encounter-spec.js",
     "test/records/episode-spec.js",
     "test/records/feature-type-spec.js",
+    "test/records/monster-type-spec.js",
     "test/records/name-spec.js",
     "test/records/sex-action-spec.js",
     "test/records/sex-position-spec.js",

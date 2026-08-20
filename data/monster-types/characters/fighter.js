@@ -1,4 +1,5 @@
 MonsterType.register('fighter',{
+  preferredPosition: 'front',
 
   threatWeights: {
     closest: 50,

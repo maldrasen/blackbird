@@ -1,4 +1,5 @@
 MonsterType.register('hunter',{
+  preferredPosition: 'back',
 
   threatWeights: {
     leastArmor: 75,

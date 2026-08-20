@@ -1,5 +1,6 @@
 // The "Creature" type is a basic beast type that favors dexterity.
 MonsterType.register('critter',{
+  preferredPosition: 'front',
 
   threatWeights: {
     closest: 75,

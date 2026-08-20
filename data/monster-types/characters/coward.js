@@ -1,4 +1,5 @@
 MonsterType.register('coward',{
+  preferredPosition: 'front',
 
   // Cowards pick their targets based on whoever is close to them and who looks like an easy kill.
   threatWeights: {

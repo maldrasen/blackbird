@@ -1,4 +1,5 @@
 MonsterType.register('mage',{
+  preferredPosition: 'back',
 
   threatWeights: {
     leastHealth: 100,

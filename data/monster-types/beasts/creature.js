@@ -1,5 +1,6 @@
 // The "Creature" type is a basic beast type that favors strength and vitality.
 MonsterType.register('creature',{
+  preferredPosition: 'front',
 
   threatWeights: {
     closest: 75,

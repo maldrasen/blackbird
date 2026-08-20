@@ -1,4 +1,5 @@
 MonsterType.register('rogue',{
+  preferredPosition: 'back',
 
   threatWeights: {
     closest: 25,
