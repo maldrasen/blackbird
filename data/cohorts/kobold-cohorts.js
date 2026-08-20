@@ -21,9 +21,9 @@ Cohort.register('deepdark-kobolds',{
     'kobold-trapper',
   ],
   startText:{
-    'normal': deepdarkNormal,
-    'party-ambushed': deepdarkAmbush,
-    'monsters-ambushed': deepdarkSurprised,
+    normal: deepdarkNormal,
+    partyAmbushed: deepdarkAmbush,
+    monstersAmbushed: deepdarkSurprised,
   },
 });
 
@@ -49,8 +49,8 @@ Cohort.register('flamescale-kobolds',{
     'kobold-trapper',
   ],
   startText:{
-    'normal': flamescaleNormal,
-    'party-ambushed': flamescaleAmbush,
-    'monsters-ambushed': flamescaleSurprised,
+    normal: flamescaleNormal,
+    partyAmbushed: flamescaleAmbush,
+    monstersAmbushed: flamescaleSurprised,
   },
 });

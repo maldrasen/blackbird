@@ -14,16 +14,10 @@ global.Cohort = (function() {
 
     const cohort = { ...cohorts[code] };
 
-    function getStartText(ambushState, context={}) {
-      const pack = (cohort.startText || {})[ambushState];
-      if (pack == null) { throw new Error(`Cohort [${code}] has no start text for [${ambushState}]`); }
-      return pack.pick(context);
-    }
-
     return {
       getCode: () => { return code; },
       getMonsters: () => { return cohort.monsters; },
-      getStartText,
+      getStartText: (ambushState, context={}) => { return cohort.startText[ambushState].pick(context); },
     };
   }
 

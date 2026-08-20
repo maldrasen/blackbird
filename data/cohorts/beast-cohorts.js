@@ -16,9 +16,9 @@ Cohort.register('daggermaws',{
     'lesser-daggermaw',
   ],
   startText:{
-    'normal': daggermawNormal,
-    'party-ambushed': daggermawAmbush,
-    'monsters-ambushed': daggermawSurprised,
+    normal: daggermawNormal,
+    partyAmbushed: daggermawAmbush,
+    monstersAmbushed: daggermawSurprised,
   },
 });
 
@@ -40,9 +40,9 @@ Cohort.register('roaches',{
     'revolting-horsecockroach',
   ],
   startText:{
-    'normal': roachNormal,
-    'party-ambushed': roachAmbush,
-    'monsters-ambushed': roachSurprised,
+    normal: roachNormal,
+    partyAmbushed: roachAmbush,
+    monstersAmbushed: roachSurprised,
   },
 });
 
@@ -63,9 +63,9 @@ Cohort.register('skitterfangs',{
     'rabid-skitterfang',
   ],
   startText:{
-    'normal': skitterfangNormal,
-    'party-ambushed': skitterfangAmbush,
-    'monsters-ambushed': skitterfangSurprised,
+    normal: skitterfangNormal,
+    partyAmbushed: skitterfangAmbush,
+    monstersAmbushed: skitterfangSurprised,
   },
 });
 
@@ -87,8 +87,8 @@ Cohort.register('yeeks',{
     'slithering-yeek',
   ],
   startText:{
-    'normal': yeekNormal,
-    'party-ambushed': yeekAmbush,
-    'monsters-ambushed': yeekSurprised,
+    normal: yeekNormal,
+    partyAmbushed: yeekAmbush,
+    monstersAmbushed: yeekSurprised,
   },
 });
