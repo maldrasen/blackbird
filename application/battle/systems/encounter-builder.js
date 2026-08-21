@@ -117,7 +117,20 @@ global.EncounterBuilder = (function() {
     while (front.length > 5) { back.push(front.pop()); }
     while (back.length > front.length) { front.push(back.pop()); }
 
+    fillCenter(front);
+
     return { front, back };
+  }
+
+  // The center of the front row must never be left empty, or a battle can stall with the survivors on each side
+  // placed too far apart to ever reach each other. Only a type with an odd count takes the center slot, so when
+  // the front row would mirror perfectly, one extra monster of its cheapest type is added over budget to hold the
+  // center.
+  function fillCenter(front) {
+    const groups = groupByType(front);
+    if (groups.length > 0 && groups.every(group => group.count % 2 === 0)) {
+      front.push(groups[groups.length-1].code);
+    }
   }
 
   // Lay a row of monsters out as symmetrically as possible around the center column. The most expensive type with

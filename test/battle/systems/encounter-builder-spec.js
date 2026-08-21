@@ -159,6 +159,17 @@ describe("EncounterBuilder", function() {
       ]);
     });
 
+    it("adds an extra monster over budget to hold the center of a mirrored front row", function() {
+      const formation = EncounterBuilder.arrangeFormation([
+        'kobold-trapper','kobold-trapper','kobold-runt','kobold-runt',
+      ]);
+
+      expect(formation).to.deep.equal([
+        ['kobold-runt','kobold-trapper','kobold-runt','kobold-trapper','kobold-runt'],
+        [null,null,null,null,null],
+      ]);
+    });
+
     it("splits an oversized group across both rows", function() {
       const skitterfang = 'rabid-skitterfang';
       expect(EncounterBuilder.arrangeFormation(Array(6).fill(skitterfang))).to.deep.equal([
@@ -167,10 +178,11 @@ describe("EncounterBuilder", function() {
       ]);
     });
 
-    it("never leaves a back row monster unguarded", function() {
+    it("never leaves a back row monster unguarded or the front center empty", function() {
       for (let i=0; i<20; i++) {
         const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('deepdark-kobolds'), 600);
         const formation = EncounterBuilder.arrangeFormation(monsters);
+        expect(formation[0][2], `front center for [${monsters}]`).to.not.be.null;
         formation[1].forEach((code,position) => {
           if (code) { expect(formation[0][position], `back position ${position}`).to.not.be.null; }
         });
@@ -186,6 +198,7 @@ describe("EncounterBuilder", function() {
       const state = BattleSystem.getState();
       const monsters = state.getActiveMonsters();
       expect(monsters.length).to.be.within(1,10);
+      expect(state.getEntityAtPosition('M',0,2)).to.not.be.null;
 
       const codes = monsters.map(id => MonsterComponent.lookup(id).code);
       const home = Cohort.getAllCodes().find(cohort =>
