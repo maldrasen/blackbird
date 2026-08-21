@@ -39,44 +39,48 @@ describe("EncounterBuilder", function() {
 
   describe("chooseCohort()", function() {
 
-    function minimumCost(code) {
+    function essenceFloor(code) {
       const cohort = Cohort.lookup(code);
-      const cheapest = Math.min(...cohort.getMonsters().map(monster => EssenceData[monster].average));
-      return (cohort.getMinimum() || 1) * cheapest;
+      return cohort.getMinimum() * Math.min(...cohort.getMonsters().map(monster => EssenceData[monster].average));
     }
 
-    function costSortedCohorts() {
-      return Cohort.getAllCodes().sort((a,b) => minimumCost(a) - minimumCost(b));
+    function essenceCeiling(code) {
+      const cohort = Cohort.lookup(code);
+      return cohort.getMaximum() * Math.max(...cohort.getMonsters().map(monster => EssenceData[monster].average));
     }
-
-    it("throws without a list of cohorts", function() {
-      expect(() => EncounterBuilder.chooseCohort(null, 150)).to.throw(/without cohorts/);
-      expect(() => EncounterBuilder.chooseCohort([], 150)).to.throw(/without cohorts/);
-    });
 
     it("offers a viable cohort to the random pick", function() {
-      const cohorts = costSortedCohorts();
-      const target = (minimumCost(cohorts[0]) + minimumCost(cohorts[cohorts.length-1])) / 2;
+      const cohorts = Cohort.getAllCodes().sort((a,b) => essenceFloor(a) - essenceFloor(b));
+      const target = (essenceFloor(cohorts[0]) + essenceFloor(cohorts[cohorts.length-1])) / 2;
+      expect(essenceCeiling(cohorts[0])).to.be.at.least(target);
 
       Random.stubFrom(cohorts[0]);
       expect(EncounterBuilder.chooseCohort(cohorts, target).getCode()).to.equal(cohorts[0]);
     });
 
     it("does not offer a cohort that cannot field its minimum group within the target", function() {
-      const cohorts = costSortedCohorts();
+      const cohorts = Cohort.getAllCodes().sort((a,b) => essenceFloor(a) - essenceFloor(b));
       const priciest = cohorts[cohorts.length-1];
-      const target = (minimumCost(cohorts[0]) + minimumCost(priciest)) / 2;
+      const target = (essenceFloor(cohorts[0]) + essenceFloor(priciest)) / 2;
 
       Random.stubFrom(priciest);
       expect(() => EncounterBuilder.chooseCohort(cohorts, target)).to.throw(/not within/);
     });
 
-    it("falls back to the full list when no cohort is viable", function() {
-      const cohorts = costSortedCohorts();
-      const priciest = cohorts[cohorts.length-1];
+    it("does not offer a cohort too weak to fill the essence budget", function() {
+      const cohorts = Cohort.getAllCodes().sort((a,b) => essenceCeiling(a) - essenceCeiling(b));
+      const weakest = cohorts[0];
+      const target = (essenceCeiling(weakest) + essenceCeiling(cohorts[cohorts.length-1])) / 2;
+      expect(cohorts.some(code => essenceFloor(code) <= target && essenceCeiling(code) >= target)).to.equal(true);
 
-      Random.stubFrom(priciest);
-      expect(EncounterBuilder.chooseCohort(cohorts, 1).getCode()).to.equal(priciest);
+      Random.stubFrom(weakest);
+      expect(() => EncounterBuilder.chooseCohort(cohorts, target)).to.throw(/not within/);
+    });
+
+    it("throws when no cohort can fit the essence target", function() {
+      DungeonSystem.createDungeon();
+      DungeonSystem.setLevel(1);
+      expect(() => EncounterBuilder.chooseCohort(Cohort.getAllCodes(), 1)).to.throw(/viable cohort/);
     });
   });
 
@@ -90,13 +94,15 @@ describe("EncounterBuilder", function() {
       expect(EncounterBuilder.selectMonsters(cohort, average * 3.6).length).to.equal(4);
     });
 
-    it("always fields at least one monster even when the budget is too small", function() {
-      const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('daggermaws'), 10);
+    it("builds a group of one when only a single monster fits the target", function() {
+      const average = EssenceData['lesser-daggermaw'].average;
+      const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('daggermaws'), average);
       expect(monsters).to.deep.equal(['lesser-daggermaw']);
     });
 
     it("adds the cheapest type until the minimum group size is met", function() {
-      const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('skitterfangs'), 10);
+      const average = EssenceData['rabid-skitterfang'].average;
+      const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('skitterfangs'), average * 2.2);
       expect(monsters).to.deep.equal(['rabid-skitterfang','rabid-skitterfang','rabid-skitterfang']);
     });
 
@@ -119,6 +125,79 @@ describe("EncounterBuilder", function() {
         const averages = [...new Set(monsters)].map(code => EssenceData[code].average);
         expect(Math.max(...averages)).to.be.at.most(Math.min(...averages) * BattleConstants.essenceSpreadRatio);
       }
+    });
+  });
+
+  describe("arrangeFormation()", function() {
+
+    it("centers a single monster in the front rank", function() {
+      expect(EncounterBuilder.arrangeFormation(['kobold-tosser'])).to.deep.equal([
+        [null,null,'kobold-tosser',null,null],
+        [null,null,null,null,null],
+      ]);
+    });
+
+    it("mirrors pairs of the same type around the most expensive monster", function() {
+      const formation = EncounterBuilder.arrangeFormation([
+        'kobold-dick-puncher','kobold-runt','kobold-runt','kobold-tosser','kobold-tosser',
+      ]);
+
+      expect(formation).to.deep.equal([
+        [null,'kobold-runt','kobold-dick-puncher','kobold-runt',null],
+        [null,'kobold-tosser',null,'kobold-tosser',null],
+      ]);
+    });
+
+    it("promotes back preferring monsters when the front line is too thin", function() {
+      const formation = EncounterBuilder.arrangeFormation([
+        'kobold-trapper','kobold-tosser','kobold-tosser','kobold-tosser',
+      ]);
+
+      expect(formation).to.deep.equal([
+        [null,'kobold-trapper','kobold-tosser',null,null],
+        [null,'kobold-tosser','kobold-tosser',null,null],
+      ]);
+    });
+
+    it("splits an oversized group across both rows", function() {
+      const skitterfang = 'rabid-skitterfang';
+      expect(EncounterBuilder.arrangeFormation(Array(6).fill(skitterfang))).to.deep.equal([
+        [skitterfang,skitterfang,skitterfang,skitterfang,skitterfang],
+        [null,null,skitterfang,null,null],
+      ]);
+    });
+
+    it("never leaves a back row monster unguarded", function() {
+      for (let i=0; i<20; i++) {
+        const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('deepdark-kobolds'), 600);
+        const formation = EncounterBuilder.arrangeFormation(monsters);
+        formation[1].forEach((code,position) => {
+          if (code) { expect(formation[0][position], `back position ${position}`).to.not.be.null; }
+        });
+      }
+    });
+  });
+
+  describe("build()", function() {
+    it("builds a battle formation from the floor's cohorts", function() {
+      BattleFixtures.prepareForBattle();
+      BattleSystem.startBattle({ cohorts:Cohort.getAllCodes(), essenceTarget:300, ambushState:'normal' });
+
+      const state = BattleSystem.getState();
+      const monsters = state.getActiveMonsters();
+      expect(monsters.length).to.be.within(1,10);
+
+      const codes = monsters.map(id => MonsterComponent.lookup(id).code);
+      const home = Cohort.getAllCodes().find(cohort =>
+        codes.every(code => Cohort.lookup(cohort).getMonsters().includes(code)));
+      expect(home, `Monsters [${codes}] should all come from a single cohort`).to.not.be.undefined;
+
+      monsters.forEach(id => {
+        if (state.isInBack(id)) {
+          const column = state.getPosition(id)[4];
+          expect(state.getEntityAtPosition('M',0,column), `guard for column ${column}`).to.not.be.null;
+        }
+      });
     });
   });
 

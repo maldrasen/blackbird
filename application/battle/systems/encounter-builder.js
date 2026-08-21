@@ -4,8 +4,7 @@ global.EncounterBuilder = (function() {
   // from. These options will normally come from the dungeon floor. This is the standard version.
   function build(options) {
     const cohort = chooseCohort(options.cohorts, options.essenceTarget);
-    const monsters = selectMonsters(cohort, options.essenceTarget);
-    // TODO: Arrange the selected monsters into a formation and place them into the battle state.
+    placeFormation(arrangeFormation(selectMonsters(cohort, options.essenceTarget)));
   }
 
   // Choose which of the floor's cohorts the party will fight. A cohort is viable when it can field its minimum
@@ -92,6 +91,82 @@ global.EncounterBuilder = (function() {
     return picks;
   }
 
+  // Arrange the selected monsters into a formation grid, the same shape the encounter records use, but holding
+  // monster codes directly. Each base type prefers the front or back rank depending on its monster type. The back
+  // rank can never hold more monsters than the front, and a back monster is only placed in a column with a front
+  // monster to guard it. Within those rules the rows are laid out as symmetrically as possible.
+  function arrangeFormation(codes) {
+    const rows = splitRows(codes);
+    const front = layoutRow(rows.front);
+    const guarded = [0,1,2,3,4].filter(position => front[position] != null);
+    return [front, layoutRow(rows.back, guarded)];
+  }
+
+  // Split the monsters into the front and back rows by their type's preferred position, with flexible monsters
+  // preferring the front. When the rows come out lopsided, monsters of the cheapest types are shifted over until
+  // the back row is no larger than the front.
+  function splitRows(codes) {
+    const front = [];
+    const back = [];
+
+    groupByType(codes).forEach(group => {
+      const row = preferredPosition(group.code) === 'back' ? back : front;
+      for (let i=0; i<group.count; i++) { row.push(group.code); }
+    });
+
+    while (front.length > 5) { back.push(front.pop()); }
+    while (back.length > front.length) { front.push(back.pop()); }
+
+    return { front, back };
+  }
+
+  // Lay a row of monsters out as symmetrically as possible around the center column. The most expensive type with
+  // an odd count takes the center slot, pairs of the same type mirror each other across the innermost open
+  // columns, and whatever can't be mirrored fills in from the center out. The back row is also only allowed to
+  // use the guarded columns, those with a front row monster in them.
+  function layoutRow(codes, guarded) {
+    const slots = [null,null,null,null,null];
+    const open = position => (guarded == null || guarded.includes(position)) && slots[position] == null;
+    const groups = groupByType(codes);
+
+    const center = groups.find(group => group.count % 2 === 1);
+    if (center && open(2)) {
+      slots[2] = center.code;
+      center.count -= 1;
+    }
+
+    [[1,3],[0,4]].forEach(pair => {
+      const group = groups.find(group => group.count >= 2);
+      if (group && open(pair[0]) && open(pair[1])) {
+        slots[pair[0]] = group.code;
+        slots[pair[1]] = group.code;
+        group.count -= 2;
+      }
+    });
+
+    groups.forEach(group => {
+      while (group.count > 0) {
+        slots[[2,1,3,0,4].find(position => open(position))] = group.code;
+        group.count -= 1;
+      }
+    });
+
+    return slots;
+  }
+
+  // Group a list of monster codes into type groups, ordered from the most expensive type to the cheapest.
+  function groupByType(codes) {
+    const counts = {};
+    codes.forEach(code => counts[code] = (counts[code] || 0) + 1);
+    return Object.keys(counts)
+      .sort((a,b) => essenceAverage(b) - essenceAverage(a))
+      .map(code => ({ code, count:counts[code] }));
+  }
+
+  function preferredPosition(code) {
+    return MonsterType.lookup(BaseMonster.lookup(code).getType()).getPreferredPosition();
+  }
+
   // Base monster difficulty is judged by the average essence a monster of that type yields, precalculated in the
   // generated essence data file.
   function essenceAverage(code) {
@@ -150,5 +225,6 @@ global.EncounterBuilder = (function() {
     buildFromRecordData,
     chooseCohort,
     selectMonsters,
+    arrangeFormation,
   };
 })();
