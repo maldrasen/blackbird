@@ -304,7 +304,7 @@ Worth stating plainly since the table above is tempting to skim as if the number
 not, for two structural reasons:
 
 1. **Different accumulation targets.** Blackbird's baseline sensations feed a *session-scoped* scale that resets
-   every training session and overflows into anima/animus in chunks (`_scaleThresholds` starting at 100, capping at
+   every training session and overflows into anima/animus in chunks (`scaleThresholds` starting at 100, capping at
    453,600). The reference game's `SOURCE` values feed `CUP`, which writes **directly and permanently** to `PALAM`
    every action, with orgasm thresholds at 10,000 and escalating tiers to 100,000+. A given raw number means
    something like "session progress toward a scale-up" in one game and "permanent character-defining stat, right

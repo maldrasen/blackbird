@@ -66,19 +66,20 @@ global.LetterGradeHelper = (function() {
   // letter, the next threshold, as well as the current position within the range and the size of the range we're in.
   function scaleValue(value) {
     const letters = ['F','D','C','B','A','S','SS','SSS'];
+    const thresholds = TrainingConstants.scaleThresholds;
 
-    if (_scaleThresholds.length !== letters.length) {
+    if (thresholds.length !== letters.length) {
       throw new Error(`The scale thresholds must be mappable to letter grades.`);
     }
 
-    const upperLimit = _scaleThresholds[letters.length-1];
+    const upperLimit = thresholds[letters.length-1];
     if (value >= upperLimit) { value = upperLimit - 1; }
 
-    for (let i=0; i<_scaleThresholds.length; i++) {
-      let max = _scaleThresholds[i];
+    for (let i=0; i<thresholds.length; i++) {
+      let max = thresholds[i];
       if (value < max) {
-        const range = max - (_scaleThresholds[i-1]||0)
-        const progress = value - (_scaleThresholds[i-1]||0)
+        const range = max - (thresholds[i-1]||0)
+        const progress = value - (thresholds[i-1]||0)
         const remainder = range - progress;
 
         return { letter:letters[i], range:range, progress:progress, remainder:remainder, threshold:max };

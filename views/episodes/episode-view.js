@@ -129,7 +129,7 @@ global.EpisodeView = (function() {
     FlashSquare.flash({
       element: X.first('#episodeView .episode-frame'),
       color: 'rgb(75,10,10)',
-      duration: _episodeDamageEffectTime,
+      duration: BattleConstants.damageEffectTime,
     });
   }
 

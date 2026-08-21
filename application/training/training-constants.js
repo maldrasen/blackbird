@@ -12,6 +12,8 @@ global.TrainingConstants = {
   reluctantShame: 100,
   reluctantSubmission: 100,
 
+  scaleThresholds: [100, 600, 3600, 13600, 43600, 103600, 203600, 453600],
+
   // Sensation Scale Factors. Applied to the transient training scales. The scales always start at F, so F is
   // deliberately a steep penalty. A fresh session should feel muted until the scales build up.
   scaleFactors: {
