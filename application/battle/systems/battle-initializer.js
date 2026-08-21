@@ -3,8 +3,8 @@ global.BattleInitializer = (function() {
   // When building the monsters we take the formation from the encounter and loop though the arrays that represent the
   // ranks and columns. The values in the arrays are passed to the monster factory to build the monster then its entity
   // ID is added to the state at the proper position in the monster formation.
-  function buildMonsters(state) {
-    const formation = state.getEncounter().getFormation();
+  function buildMonsters(state, data) {
+    const formation = findFormation(data);
     for (let r=0; r<formation.length; r++) {
       for (let p=0; p<formation[r].length; p++) {
         if (formation[r][p]) {
@@ -13,6 +13,13 @@ global.BattleInitializer = (function() {
         }
       }
     }
+  }
+
+  // The encounter code might be set directly in the battle data. If not, fall back by picking an encounter from the
+  // current dungeon floor.
+  function findFormation(data) {
+    if (data.encounter) { return Encounter.lookup(data.encounter).getFormation(); }
+    throw `Battle needs to find encounter in some other way.`
   }
 
   // Still thinking about how this is going to work. There will probably be feats and abilities or something that

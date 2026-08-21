@@ -5,7 +5,7 @@ global.BattleSystem = (function() {
   function startBattle(data) {
     state = BattleState(data);
 
-    BattleInitializer.buildMonsters(state);
+    BattleInitializer.buildMonsters(state, data);
     BattleInitializer.rollReactionTimes(state);
     BattleInitializer.populateThreatTables(state);
 

@@ -9,7 +9,6 @@ global.BattleState = function(data) {
   //       everything then.
 
   const afterBattle = data.afterBattle || 'dungeon';
-  const encounter = findEncounter(data);
   const turnOrder = [];
 
   const partyFormation = { ...PartyConfiguration.getConfiguration() };
@@ -45,13 +44,6 @@ global.BattleState = function(data) {
     if (inventory) {
       inventory.items.forEach(itemId => Registry.deleteEntity(itemId));
     }
-  }
-
-  // The encounter code might be set directly in the battle data. If not, fall back by picking an encounter from the
-  // current dungeon floor.
-  function findEncounter(data) {
-    if (data.encounter) { return Encounter.lookup(data.encounter); }
-    throw `Battle needs to find encounter in some other way.`
   }
 
   function addMonster(id, position) {
@@ -333,7 +325,6 @@ global.BattleState = function(data) {
   return {
     cleanup,
     getAfterBattle: () => { return afterBattle; },
-    getEncounter: () => { return encounter; },
 
     addMonster,
     getMonsterFormation: () => { return { ...monsterFormation }; },
