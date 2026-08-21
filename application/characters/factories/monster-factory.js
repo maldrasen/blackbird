@@ -8,8 +8,8 @@ global.MonsterFactory = function(code,options={}) {
     if (monsterSpecies) {
       monsterId = CharacterFactory.build({
         species: monsterSpecies,
-        gender: Random.fromFrequencyMap(monsterBase.getGenderRatio()),
-        triggers: monsterBase.getTriggers(),
+        gender: rollGender(),
+        triggers: [...monsterBase.getTriggers(), ...(options.triggers || [])],
         archetypes: monsterBase.getArchetypes(),
       });
       addEquipment();
@@ -26,6 +26,10 @@ global.MonsterFactory = function(code,options={}) {
     addLevels();
 
     return monsterId;
+  }
+
+  function rollGender() {
+    return options.gender || Random.fromFrequencyMap(monsterBase.getGenderRatio());
   }
 
   // Skills start with the type's base skill ranges, then any skills set directly on the base monster override the
@@ -84,7 +88,7 @@ global.MonsterFactory = function(code,options={}) {
   function buildBeast() {
     ActorComponent.create(monsterId, {
       name: monsterBase.getName(),
-      gender: Random.fromFrequencyMap(monsterBase.getGenderRatio()),
+      gender: Gender.none,
     });
 
     const skills = {};

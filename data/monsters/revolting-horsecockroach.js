@@ -1,7 +1,6 @@
 BaseMonster.register('revolting-horsecockroach',{
   name: 'Revolting Horsecockroach',
   description: `Much larger and… girthier than your average cockroach.`,
-  genderRatio: { none:100 },
   bodyPlan: 'insect',
   type: 'critter',
   level: 4,

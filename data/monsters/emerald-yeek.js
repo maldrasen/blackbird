@@ -2,7 +2,6 @@ BaseMonster.register('emerald-yeek',{
   name: 'Emerald Yeek',
   description: `The yeek's bright green body is coated in a thick mucus that glistens in the torchlight. It's toxic, 
     venomous, and poisonous.`,
-  genderRatio: { none:100 },
   bodyPlan: 'yeek',
   type: 'critter',
   level: 5,
