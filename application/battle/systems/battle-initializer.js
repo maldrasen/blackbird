@@ -76,9 +76,9 @@ global.BattleInitializer = (function() {
   //       easier for you to ambush.
   function rollAmbush() {
     const ambushRoll = Random.roll(100);
-    if (ambushRoll < 30) { return 'party-ambushed'; }
-    if (ambushRoll > 70) { return 'monsters-ambushed'; }
-    return 'normal';
+    if (ambushRoll < 30) { return AmbushState.partyAmbushed; }
+    if (ambushRoll > 70) { return AmbushState.monstersAmbushed; }
+    return AmbushState.normal;
   }
 
   return {

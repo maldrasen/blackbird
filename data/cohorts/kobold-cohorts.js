@@ -1,12 +1,12 @@
 
-const deepdarkNormal = WeaverPackage('cohort.deepdark-kobolds.normal');
+const deepdarkNormal = WeaverPackage('cohort.deepdarks.N');
 deepdarkNormal.add(`You're suddenly attacked by a small group of black scaled kobolds!`,BattleRequirements.againstAtMost(5));
 deepdarkNormal.add(`You're suddenly attacked by a large group of black scaled kobolds!`,BattleRequirements.againstAtLeast(6));
 
-const deepdarkAmbush = WeaverPackage('cohort.deepdark-kobolds.party-ambushed');
+const deepdarkAmbush = WeaverPackage('cohort.deepdarks.PA');
 deepdarkAmbush.add(`You walk into a seemingly empty room, when suddenly black scaled kobolds leap from the shadows!`);
 
-const deepdarkSurprised = WeaverPackage('cohort.deepdark-kobolds.monsters-ambushed');
+const deepdarkSurprised = WeaverPackage('cohort.deepdarks.MA');
 deepdarkSurprised.add(`You come across a group of sleeping kobolds. The lone kobold on watch doesn't notice you, giving you the opportunity to make the first attack.`);
 
 Cohort.register('deepdark-kobolds',{
@@ -31,14 +31,14 @@ Cohort.register('deepdark-kobolds',{
 
 // =============================================================================
 
-const flamescaleNormal = WeaverPackage('cohort.flamescale-kobolds.normal');
+const flamescaleNormal = WeaverPackage('cohort.flamescales.N');
 flamescaleNormal.add(`You're suddenly attacked by a small group of red scaled kobolds!`,BattleRequirements.againstAtMost(5));
 flamescaleNormal.add(`You're suddenly attacked by a large group of red scaled kobolds!`,BattleRequirements.againstAtLeast(6));
 
-const flamescaleAmbush = WeaverPackage('cohort.flamescale-kobolds.party-ambushed');
+const flamescaleAmbush = WeaverPackage('cohort.flamescales.PA');
 flamescaleAmbush.add(`You walk into a seemingly empty room, when suddenly red scaled kobolds leap from the shadows!`);
 
-const flamescaleSurprised = WeaverPackage('cohort.flamescale-kobolds.monsters-ambushed');
+const flamescaleSurprised = WeaverPackage('cohort.flamescales.MA');
 flamescaleSurprised.add(`You come across a group of sleeping kobolds. The lone kobold on watch doesn't notice you, giving you the opportunity to make the first attack.`);
 
 Cohort.register('flamescale-kobolds',{

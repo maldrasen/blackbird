@@ -168,18 +168,18 @@ global.BattleState = function(data) {
   }
 
   // Setting the ambush state also adjusts the turn order accordingly.
-  // State can be normal, party-ambushed, monsters-ambushed
+  // State can be normal, partyAmbushed, monstersAmbushed
   function setAmbushState(state) {
     ambushState = state;
 
-    if (ambushState === 'party-ambushed') {
+    if (ambushState === AmbushState.partyAmbushed) {
       turnOrder.forEach(data => {
         if (data.type === 'character') { data.time += AMBUSH_REACTION_TIME; }
       });
       sortTurnOrder();
     }
 
-    if (ambushState === 'monsters-ambushed') {
+    if (ambushState === AmbushState.monstersAmbushed) {
       turnOrder.forEach(data => {
         if (data.type === 'monster') { data.time += AMBUSH_REACTION_TIME; }
       });

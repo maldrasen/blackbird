@@ -6,7 +6,7 @@ describe("Cohort", function() {
       BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
 
       Cohort.getAllCodes().forEach(code => {
-        ['normal','partyAmbushed','monstersAmbushed'].forEach(state => {
+        Object.values(AmbushState).forEach(state => {
           const text = Cohort.lookup(code).getStartText(state);
           expect(text).to.be.a('string');
           expect(text.length).to.be.above(0);

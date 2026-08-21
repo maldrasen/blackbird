@@ -376,6 +376,12 @@ global.ActionDirection = {
 //   Battle
 // ==========
 
+global.AmbushState = {
+  normal: 'normal',
+  partyAmbushed: 'partyAmbushed',
+  monstersAmbushed: 'monstersAmbushed',
+}
+
 global.DamageType = {
   crush: 'crush',
   slash: 'slash',

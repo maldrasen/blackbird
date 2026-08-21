@@ -1,17 +1,5 @@
 global.BattleText = (function() {
 
-  const startPhrases = [
-    `You've been attacked by XXX!`,
-    `Suddenly XXX attacks you!`,
-    `XXX attacks you!`
-  ];
-  const partyAmbushedPhrases = [
-    `XXX ambushes you!`
-  ];
-  const monstersAmbushedPhrases = [
-    `You ambush XXX!`
-  ];
-
   function init() {
     X.onCodeDown('Space', isTextVisible, BattleSystem.advanceBattle);
     X.onCodeDown('Enter', isTextVisible, BattleSystem.advanceBattle);
@@ -54,19 +42,12 @@ global.BattleText = (function() {
     X.first('#textScroll').scrollTop = 0;
   }
 
-  // TODO: The description and start phrases will work for most encounter types, though some will need their own start
-  //       and ambush phrases.
+  // TODO: We need to get the start text from the cohort or from the premade encounter. We'll need to save it
+  //       somewhere because we don't save the encounter in the state anymore.
   function showBattleStartText() {
     const state = BattleSystem.getState();
-    const encounter = state.getEncounter();
-    const phrase = StringHelper.titlecase(getStartPhrase(state.getAmbushState()).replace(`XXX`, encounter.getDescription()));
-    setMessages([{ text:phrase, size:'large', color:'important' }]);
-  }
-
-  function getStartPhrase(ambushState) {
-    if (ambushState === 'party-ambushed') { return Random.from(partyAmbushedPhrases); }
-    if (ambushState === 'monsters-ambushed') { return Random.from(monstersAmbushedPhrases); }
-    return Random.from(startPhrases);
+    const ambushState = state.getAmbushState();
+    setMessages([{ text:`[TODO: Find start text for ${ambushState}]`, size:'large', color:'important' }]);
   }
 
   function addElement(message) {
