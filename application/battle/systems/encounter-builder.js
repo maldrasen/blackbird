@@ -1,4 +1,4 @@
-global.EncounterBuilder = function() {
+global.EncounterBuilder = (function() {
 
   // Build an encounter with a cohort of monsters, given a target essence level and a list of monster codes to pull
   // from. This list will normally come from the dungeon level. This is the standard version.
@@ -21,4 +21,4 @@ global.EncounterBuilder = function() {
     buildFromRecord,
     buildFromRecordData,
   };
-};
+})();
