@@ -1,17 +1,16 @@
 
 const deepdarkNormal = WeaverPackage('cohort.deepdark-kobolds.normal');
-deepdarkNormal.add(`A warband of deepdark kobolds pours out of the shadows!`);
-deepdarkNormal.add(`Deepdark kobolds skitter into the torchlight, spears leveled!`);
+deepdarkNormal.add(`You're suddenly attacked by a small group of black scaled kobolds!`,BattleRequirements.againstAtMost(5));
+deepdarkNormal.add(`You're suddenly attacked by a large group of black scaled kobolds!`,BattleRequirements.againstAtLeast(6));
 
 const deepdarkAmbush = WeaverPackage('cohort.deepdark-kobolds.party-ambushed');
-deepdarkAmbush.add(`Deepdark kobolds drop silently from the darkness above!`);
-deepdarkAmbush.add(`Deepdark kobolds spring their trap, and the dark is suddenly full of spears!`);
+deepdarkAmbush.add(`You walk into a seemingly empty room, when suddenly black scaled kobolds leap from the shadows!`);
 
 const deepdarkSurprised = WeaverPackage('cohort.deepdark-kobolds.monsters-ambushed');
-deepdarkSurprised.add(`You catch a warband of deepdark kobolds unaware!`);
-deepdarkSurprised.add(`The deepdark kobolds are too busy bickering to notice your approach!`);
+deepdarkSurprised.add(`You come across a group of sleeping kobolds. The lone kobold on watch doesn't notice you, giving you the opportunity to make the first attack.`);
 
 Cohort.register('deepdark-kobolds',{
+  minimum: 3,
   monsters:[
     'deepdark-kobold',
     'deepdark-whisperer',
@@ -25,21 +24,25 @@ Cohort.register('deepdark-kobolds',{
     partyAmbushed: deepdarkAmbush,
     monstersAmbushed: deepdarkSurprised,
   },
+  factoryOptions:{
+    triggers: ['black-hair'],
+  },
 });
 
+// =============================================================================
+
 const flamescaleNormal = WeaverPackage('cohort.flamescale-kobolds.normal');
-flamescaleNormal.add(`A warband of flamescale kobolds charges in, shrieking!`);
-flamescaleNormal.add(`Flamescale kobolds swagger out of the gloom, looking for a fight!`);
+flamescaleNormal.add(`You're suddenly attacked by a small group of red scaled kobolds!`,BattleRequirements.againstAtMost(5));
+flamescaleNormal.add(`You're suddenly attacked by a large group of red scaled kobolds!`,BattleRequirements.againstAtLeast(6));
 
 const flamescaleAmbush = WeaverPackage('cohort.flamescale-kobolds.party-ambushed');
-flamescaleAmbush.add(`Flamescale kobolds burst from hiding with a triumphant shriek!`);
-flamescaleAmbush.add(`A screech from behind — the flamescale kobolds have you surrounded!`);
+flamescaleAmbush.add(`You walk into a seemingly empty room, when suddenly red scaled kobolds leap from the shadows!`);
 
 const flamescaleSurprised = WeaverPackage('cohort.flamescale-kobolds.monsters-ambushed');
-flamescaleSurprised.add(`You catch the flamescale kobolds mid-argument, completely unaware!`);
-flamescaleSurprised.add(`The flamescale kobolds never hear you coming!`);
+flamescaleSurprised.add(`You come across a group of sleeping kobolds. The lone kobold on watch doesn't notice you, giving you the opportunity to make the first attack.`);
 
 Cohort.register('flamescale-kobolds',{
+  minimum: 3,
   monsters:[
     'flamescale-kobold',
     'flamescale-screamer',
@@ -52,5 +55,8 @@ Cohort.register('flamescale-kobolds',{
     normal: flamescaleNormal,
     partyAmbushed: flamescaleAmbush,
     monstersAmbushed: flamescaleSurprised,
+  },
+  factoryOptions:{
+    triggers: ['red-hair'],
   },
 });

@@ -1,4 +1,4 @@
-global.MonsterFactory = function(code) {
+global.MonsterFactory = function(code,options={}) {
   const monsterBase = BaseMonster.lookup(code);
   const monsterSpecies = monsterBase.getSpecies();
 

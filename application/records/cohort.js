@@ -16,8 +16,11 @@ global.Cohort = (function() {
 
     return {
       getCode: () => { return code; },
+      getMaximum: () => { return cohort.maximum; },
+      getMinimum: () => { return cohort.minimum; },
       getMonsters: () => { return cohort.monsters; },
       getStartText: (ambushState, context={}) => { return cohort.startText[ambushState].pick(context); },
+      getFactoryOptions: () => { return cohort.factoryOptions; }
     };
   }
 
