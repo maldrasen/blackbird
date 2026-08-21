@@ -2,6 +2,7 @@
   "applicationFiles": [
     "application/constants.js",
     "application/enums.js",
+    "application/battle/battle-constants.js",
     "application/battle/battle-helper.js",
     "application/battle/battle-round.js",
     "application/battle/battle-state.js",

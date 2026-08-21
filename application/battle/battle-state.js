@@ -1,7 +1,5 @@
 global.BattleState = function(data) {
 
-  const AMBUSH_REACTION_TIME = 1000;
-
   // TODO: Should check if the after battle return point is a valid point. Returning to the main menu should not be
   //       possible during a normal game for instance. This will usually be set to the dungeon or a running event.
   //       The enlighten view will need this. Not sure if we should send it as a new argument for an enlighten state,
@@ -47,7 +45,7 @@ global.BattleState = function(data) {
   }
 
   function addMonster(id, position) {
-    if (position.match(_positionPattern) == null) { throw new Error(`Invalid Position: ${position}`); }
+    if (position.match(BattleConstants.positionPattern) == null) { throw new Error(`Invalid Position: ${position}`); }
     monsterFormation[id] = position;
     monsterIds.push(id);
     conditions[id] = BattleCondition.active;
@@ -174,14 +172,14 @@ global.BattleState = function(data) {
 
     if (ambushState === AmbushState.partyAmbushed) {
       turnOrder.forEach(data => {
-        if (data.type === 'character') { data.time += AMBUSH_REACTION_TIME; }
+        if (data.type === 'character') { data.time += BattleConstants.ambushReactionTime; }
       });
       sortTurnOrder();
     }
 
     if (ambushState === AmbushState.monstersAmbushed) {
       turnOrder.forEach(data => {
-        if (data.type === 'monster') { data.time += AMBUSH_REACTION_TIME; }
+        if (data.type === 'monster') { data.time += BattleConstants.ambushReactionTime; }
       });
       sortTurnOrder();
     }

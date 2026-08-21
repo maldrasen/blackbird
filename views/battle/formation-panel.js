@@ -161,12 +161,12 @@ global.FormationPanel = (function() {
 
     setTimeout(()=>{
       element.remove();
-    },_battleKillEffectTime);
+    }, BattleConstants.killEffectTime);
 
     // Inspect mode stays off long enough to cover any follow-up death moves.
     setTimeout(()=>{
       X.addClass('#battleView','inspect-mode');
-    },_battleKillEffectTime + _battleMoveEffectTime + 100);
+    }, BattleConstants.killEffectTime + BattleConstants.moveEffectTime + 100);
   }
 
   // This function animates moving a character from the back rank to the front. This should only be called once a
@@ -197,14 +197,14 @@ global.FormationPanel = (function() {
       record.animation = MoveAnimation.move({
         element,
         ...combatantCoords(targetKey),
-        duration: _battleMoveEffectTime,
+        duration: BattleConstants.moveEffectTime,
         onComplete: () => {
           X.removeClass(element,'moving');
           pendingMoves.delete(id);
           validatePositions();
         },
       });
-    }, _battleKillEffectTime);
+    }, BattleConstants.killEffectTime);
 
     pendingMoves.set(id, record);
   }
@@ -291,7 +291,7 @@ global.FormationPanel = (function() {
     FlashSquare.flash({
       element: combatantPanels[data.entity].getElement(),
       color: getDamageColor(data),
-      duration: _battleDamageEffectTime,
+      duration: BattleConstants.damageEffectTime,
     });
   }
 

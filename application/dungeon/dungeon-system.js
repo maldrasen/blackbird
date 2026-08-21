@@ -55,7 +55,6 @@ global.DungeonSystem = (function() {
     (dungeonFloor.getLevel() === 1) ? exitDungeon() : setLevel(dungeonFloor.getLevel() - 1, 'down');
   }
 
-  // TODO: Pick the encounter from the dungeon theme's encounter tables once they exist (task 015).
   // TODO: Some features will also have their own encounter data to use, rather than defaulting to the floor encounter.
   function startRandomEncounter() {
     GameSystem.markReturnMode();
@@ -63,11 +62,10 @@ global.DungeonSystem = (function() {
     GameSystem.setGameMode(GameMode.battle);
   }
 
-  // TODO: Determine essence target from level.
   function getFloorEncounterOptions() {
     return {
       cohorts: DungeonTheme.lookup(dungeonFloor.getTheme()).getCohorts(),
-      essenceTarget: 0,
+      essenceTarget: BattleHelper.getEssenceTarget(dungeonFloor.getLevel()),
     }
   }
 

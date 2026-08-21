@@ -89,7 +89,7 @@ global.PartyConfiguration = (function() {
   }
 
   function isPartyPosition(position) {
-    const match = position.match(_positionPattern);
+    const match = position.match(BattleConstants.positionPattern);
     return match != null && match[1] === 'P';
   }
 

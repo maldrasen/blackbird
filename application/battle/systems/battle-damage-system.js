@@ -1,5 +1,4 @@
 global.BattleDamageSystem = (function() {
-  const maxReduction = 80;
 
   // Some actions can contain multiple hits, so we need to check to see if the target is still up before applying
   // damage in case they were already killed or knocked out, which would remove them from the formation and cause
@@ -76,7 +75,7 @@ global.BattleDamageSystem = (function() {
   }
 
   function cappedReduction(reduction) {
-    return Math.min(reduction, maxReduction);
+    return Math.min(reduction, BattleConstants.maxReduction);
   }
 
   function getEquippedReduction(target, hitLocation, type) {

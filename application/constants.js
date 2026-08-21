@@ -6,12 +6,6 @@
 
 global._parentId = '_parentId'
 
-// === Battle ===
-global._positionPattern = /([PM])\.(\d)\.(\d)/;
-global._battleDamageEffectTime = 500;
-global._battleKillEffectTime = 1000;
-global._battleMoveEffectTime = 500;
-
 // === Episodes ===
 global._episodeDamageEffectTime = 500;
 

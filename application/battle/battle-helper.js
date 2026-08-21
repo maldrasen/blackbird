@@ -20,8 +20,8 @@ global.BattleHelper = (function() {
   // Distance between positions returns an object with both rank difference and position difference as the rank
   // (vertical) distance is usually more significant than the position (horizontal) distance.
   function distanceBetweenPositions(p1, p2) {
-    const m1 = p1.match(_positionPattern);
-    const m2 = p2.match(_positionPattern);
+    const m1 = p1.match(BattleConstants.positionPattern);
+    const m2 = p2.match(BattleConstants.positionPattern);
 
     if (m1[1] !== m2[1]) {
       return {
@@ -46,6 +46,10 @@ global.BattleHelper = (function() {
     return Random.fromFrequencyMap(getBodyPlan(target));
   }
 
+  function getEssenceTarget(level) {
+    return Math.round(BattleConstants.essenceTargetBase * Math.pow(BattleConstants.essenceTargetGrowth, level-1));
+  }
+
   // I was kind of dumb and represented the attack and defend states in two different ways within the battle system.
   // The skill checks (which the attack and defend rolls use internally) return an object with crit and fumble
   // booleans, and the context objects that I use for the battle messages have the attack and defend types as strings.
@@ -63,6 +67,7 @@ global.BattleHelper = (function() {
     distanceBetweenPositions,
     hasHitLocation,
     randomHitLocation,
+    getEssenceTarget,
     getRollType,
   };
 

@@ -14,21 +14,21 @@
 // character produces threat for all monsters.
 
 global.ThreatGenerators = (function() {
-  const threatBase = 100;
 
   // Characters that are closet in position have some initial threat.
   function closest(threatTable, weight, monsterId) {
     const state = BattleSystem.getState();
     const position = state.getPosition(monsterId);
+    const base = BattleConstants.threatBase;
 
     Object.entries(state.getPartyFormation()).forEach(([id, pos]) => {
       const distance = BattleHelper.distanceBetweenPositions(position, pos);
 
       let threat = 0;
-      if (distance.position === 0) { threat += threatBase * 0.60; }
-      if (distance.position === 1) { threat += threatBase * 0.30; }
-      if (distance.position === 2) { threat += threatBase * 0.10; }
-      if (distance.rank === 0) { threat += threatBase * 0.40; }
+      if (distance.position === 0) { threat += base * 0.60; }
+      if (distance.position === 1) { threat += base * 0.30; }
+      if (distance.position === 2) { threat += base * 0.10; }
+      if (distance.rank === 0) { threat += base * 0.40; }
 
       threatTable[id] += Math.round(threat * weight);
     });
@@ -44,7 +44,7 @@ global.ThreatGenerators = (function() {
   function leastHealth(threatTable, weight) {
     BattleSystem.getState().getActiveCharacters().forEach(id => {
       const health = HealthComponent.lookup(id);
-      threatTable[id] += Math.round((1 - (health.currentHealth / health.maxHealth)) * threatBase * weight);
+      threatTable[id] += Math.round((1 - (health.currentHealth / health.maxHealth)) * BattleConstants.threatBase * weight);
     });
   }
 
