@@ -12,12 +12,10 @@ global.BattleSystem = (function() {
     state.setAmbushState(data.ambushState || BattleInitializer.rollAmbush());
   }
 
-  // The encounter code or a single monster code might be set directly in the battle data. If not, fall back by
-  // picking an encounter from the current dungeon floor.
   function buildEncounter(data) {
     if (data.encounter) { return EncounterBuilder.buildFromRecord(data.encounter); }
     if (data.monster) { return EncounterBuilder.buildFromMonster(data.monster); }
-    throw `Battle needs to find encounter in some other way.`
+    EncounterBuilder.build(data);
   }
 
   function reset() {

@@ -56,11 +56,19 @@ global.DungeonSystem = (function() {
   }
 
   // TODO: Pick the encounter from the dungeon theme's encounter tables once they exist (task 015).
+  // TODO: Some features will also have their own encounter data to use, rather than defaulting to the floor encounter.
   function startRandomEncounter() {
     GameSystem.markReturnMode();
-    // BattleSystem.startBattle({ encounter:`kobold-${Random.between(1,5)}` });
-    BattleSystem.startBattle({ encounter:`kobold-1` });
+    BattleSystem.startBattle(getFloorEncounterOptions());
     GameSystem.setGameMode(GameMode.battle);
+  }
+
+  // TODO: Determine essence target from level.
+  function getFloorEncounterOptions() {
+    return {
+      cohorts: DungeonTheme.lookup(dungeonFloor.getTheme()).getCohorts(),
+      essenceTarget: 0,
+    }
   }
 
   return {

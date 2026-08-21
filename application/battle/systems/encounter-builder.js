@@ -1,8 +1,8 @@
 global.EncounterBuilder = (function() {
 
-  // Build an encounter with a cohort of monsters, given a target essence level and a list of monster codes to pull
+  // Build an encounter with a cohort of monsters, given a target essence level and a list of cohorts to pull
   // from. This list will normally come from the dungeon level. This is the standard version.
-  function build(essenceTarget, monsterList) {}
+  function build(essenceTarget, cohorts) {}
 
   // Build an encounter with a single base monster. Used to test a single monster in a battle. A monster can never be
   // in the back rank without a monster in front of it, so even back preferring monsters are placed front and center.
