@@ -5,11 +5,18 @@ global.BattleSystem = (function() {
   function startBattle(data) {
     state = BattleState(data);
 
-    BattleInitializer.buildMonsters(data);
+    buildEncounter(data);
     BattleInitializer.rollReactionTimes();
     BattleInitializer.populateThreatTables();
 
     state.setAmbushState(data.ambushState || BattleInitializer.rollAmbush());
+  }
+
+  // The encounter code might be set directly in the battle data. If not, fall back by picking an encounter from the
+  // current dungeon floor.
+  function buildEncounter(data) {
+    if (data.encounter) { return EncounterBuilder.buildFromRecord(data.encounter); }
+    throw `Battle needs to find encounter in some other way.`
   }
 
   function reset() {

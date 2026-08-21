@@ -583,6 +583,7 @@
     "test/battle/monster-system-spec.js",
     "test/battle/systems/battle-damage-system-spec.js",
     "test/battle/systems/battle-death-system-spec.js",
+    "test/battle/systems/encounter-builder-spec.js",
     "test/battle/systems/recruitment-system-spec.js",
     "test/battle/systems/status-effect-system-spec.js",
     "test/characters/describers/body-describer-spec.js",
