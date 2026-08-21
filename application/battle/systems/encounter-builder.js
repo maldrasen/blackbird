@@ -4,12 +4,10 @@ global.EncounterBuilder = (function() {
   // from. This list will normally come from the dungeon level. This is the standard version.
   function build(essenceTarget, monsterList) {}
 
-  // Build an encounter with a single base monster, centered in the rank its type prefers. Used to test a single
-  // monster in a battle.
+  // Build an encounter with a single base monster. Used to test a single monster in a battle. A monster can never be
+  // in the back rank without a monster in front of it, so even back preferring monsters are placed front and center.
   function buildFromMonster(code) {
-    const type = MonsterType.lookup(BaseMonster.lookup(code).getType());
-    const formation = (type.getPreferredPosition() === 'back') ? [[0,0,0,0,0],[0,0,1,0,0]] : [[0,0,1,0,0]];
-    buildFromRecordData(formation, { 1:{ code }});
+    buildFromRecordData([[0,0,1,0,0]], { 1:{ code }});
   }
 
   // Build an encounter given an encounter record code. Used for specific battles where we always want the same
