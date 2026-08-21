@@ -4,7 +4,7 @@ global.BattleInitializer = (function() {
   // ranks and columns. The values in the arrays are passed to the monster factory to build the monster then its entity
   // ID is added to the state at the proper position in the monster formation.
   function buildMonsters(state) {
-    const formation = state.getEncounter().buildFormation();
+    const formation = state.getEncounter().getFormation();
     for (let r=0; r<formation.length; r++) {
       for (let p=0; p<formation[r].length; p++) {
         if (formation[r][p]) {

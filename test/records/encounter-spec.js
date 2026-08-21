@@ -1,16 +1,12 @@
 describe("Encounter", function() {
 
-  describe("buildFormation()", function() {
-    it("picks from a single monster code", function() {
-      Random.stubRoll(10,90);
-      const rank = Encounter.lookup('kobold-1').buildFormation()[0];
-      expect(rank).to.deep.equal(['kobold-runt','kobold-runt','kobold-runt','kobold-runt',null]);
-    });
-
-    it("picks from a monster code map", function() {
-      Random.stubRoll(0,5,25,0,25,5);
-      const rank = Encounter.lookup('kobold-4').buildFormation()[1];
-      expect(rank).to.deep.equal([null,'kobold-sneak-slut','kobold-tosser','kobold-tosser',null]);
+  describe("getFormation()", function() {
+    it("resolves monster codes and empty positions", function() {
+      const formation = Encounter.lookup('kobold-2').getFormation();
+      expect(formation).to.deep.equal([
+        ['kobold-runt','kobold-runt','kobold-dick-puncher','kobold-runt','kobold-runt'],
+        [null,'kobold-tosser',null,'kobold-tosser',null],
+      ]);
     });
   });
 

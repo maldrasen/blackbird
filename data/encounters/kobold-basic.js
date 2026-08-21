@@ -15,11 +15,10 @@ Encounter.register('kobold-trappers',{
 Encounter.register('kobold-1',{
   description: `a small group of weak looking kobolds`,
   formation:[
-    [2,1,1,1,2],
+    [0,1,1,1,0],
   ],
   monsters:{
     1: { code:'kobold-runt' },
-    2: { code:'kobold-runt', chance:33, }
   }
 });
 
@@ -32,7 +31,7 @@ Encounter.register('kobold-2',{
   monsters:{
     1:{ code:'kobold-dick-puncher' },
     2:{ code:'kobold-runt' },
-    3:{ code:'kobold-tosser', chance:66 },
+    3:{ code:'kobold-tosser' },
   }
 });
 
@@ -57,8 +56,8 @@ Encounter.register('kobold-4',{
   ],
   monsters:{
     1:{ code:'kobold-trapper' },
-    2:{ codeMap:{ 'kobold-sneak-slut':10, 'kobold-tosser':20 } },
-    3:{ codeMap:{ 'kobold-sneak-slut':10, 'kobold-tosser':20 }, chance:50 },
+    2:{ code:'kobold-tosser' },
+    3:{ code:'kobold-sneak-slut' },
   }
 });
 
