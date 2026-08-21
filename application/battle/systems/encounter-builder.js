@@ -10,12 +10,26 @@ global.EncounterBuilder = (function() {
   // Build an encounter given an encounter record code. Used for specific battles where we always want the same
   // monsters in a given formation.
   function buildFromRecord(code) {
-    placeFormation(Encounter.lookup(code).getFormation());
+    const encounter = Encounter.lookup(code);
+    buildFromRecordData(encounter.getFormation(), encounter.getMonsters());
   }
 
   // Build an encounter given a formation and a map of monster definitions. This is the same shape the encounter
   // records use. This version is for testing out specific configurations in the fixtures or battle testbed.
-  function buildFromRecordData(formation, monsters) {}
+  function buildFromRecordData(formation, monsters) {
+    placeFormation(resolveFormation(formation, monsters));
+  }
+
+  // The record shaped formation grid holds indexes into the monsters map, with zero marking an empty position.
+  // Resolving the grid replaces each index with its definition's monster code.
+  function resolveFormation(formation, monsters) {
+    return formation.map(rank => rank.map(index => {
+      const definition = monsters[index];
+      if (definition == null) { return null; }
+      if (definition.code == null) { throw new Error(`No code in monster definition [${index}]`); }
+      return definition.code;
+    }));
+  }
 
   // The formation grid holds monster codes by rank and position. Each monster is built by the factory then added to
   // the battle state at its position in the monster formation.
