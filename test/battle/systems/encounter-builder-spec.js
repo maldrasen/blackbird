@@ -119,6 +119,14 @@ describe("EncounterBuilder", function() {
       }
     });
 
+    it("reserves anchor room for the minimum group so the total stays near the target", function() {
+      for (let i=0; i<30; i++) {
+        const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('deepdark-kobolds'), 190);
+        const total = monsters.reduce((sum,code) => sum + EssenceData[code].average, 0);
+        expect(total, `[${monsters}]`).to.be.at.most(190 * 1.25);
+      }
+    });
+
     it("keeps the essence spread of the group within the ratio", function() {
       for (let i=0; i<20; i++) {
         const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('deepdark-kobolds'), 600);

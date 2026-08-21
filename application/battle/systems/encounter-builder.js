@@ -45,8 +45,14 @@ global.EncounterBuilder = (function() {
   function buildRoster(cohort, essenceTarget) {
     const types = [...cohort.getMonsters()].sort((a,b) => essenceAverage(b) - essenceAverage(a));
     const affordable = types.filter(type => essenceAverage(type) <= essenceTarget);
-    const anchors = types.slice(0, Math.ceil(types.length/2)).filter(type => affordable.includes(type));
-    const roster = [Random.from(anchors.length > 0 ? anchors : affordable)];
+    const cheapest = affordable[affordable.length-1];
+
+    // The anchor never gets the whole budget: room is reserved for the cheapest monsters needed to finish out the
+    // cohort's minimum group size, otherwise an expensive anchor forces the group far over the target.
+    const anchorBudget = essenceTarget - (cohort.getMinimum() - 1) * essenceAverage(cheapest);
+    const anchors = types.slice(0, Math.ceil(types.length/2)).filter(type => essenceAverage(type) <= anchorBudget);
+    const openers = anchors.length > 0 ? anchors : affordable.filter(type => essenceAverage(type) <= anchorBudget);
+    const roster = [openers.length > 0 ? Random.from(openers) : cheapest];
     const candidates = affordable.filter(type => type !== roster[0]);
 
     while (roster.length < BattleConstants.maxEncounterTypes && candidates.length > 0) {

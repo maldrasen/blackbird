@@ -4,7 +4,7 @@ global.BattleConstants = {
   killEffectTime: 1000,
   moveEffectTime: 500,
   essenceSpreadRatio: 3,
-  essenceTargetBase: 150,
+  essenceTargetBase: 185,
   essenceTargetGrowth: 1.25,
   maxEncounterTypes: 3,
   maxReduction: 80,
