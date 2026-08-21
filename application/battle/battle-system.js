@@ -5,9 +5,9 @@ global.BattleSystem = (function() {
   function startBattle(data) {
     state = BattleState(data);
 
-    BattleInitializer.buildMonsters(state, data);
-    BattleInitializer.rollReactionTimes(state);
-    BattleInitializer.populateThreatTables(state);
+    BattleInitializer.buildMonsters(data);
+    BattleInitializer.rollReactionTimes();
+    BattleInitializer.populateThreatTables();
 
     state.setAmbushState(data.ambushState || BattleInitializer.rollAmbush());
   }

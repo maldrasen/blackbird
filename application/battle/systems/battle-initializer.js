@@ -3,7 +3,8 @@ global.BattleInitializer = (function() {
   // When building the monsters we take the formation from the encounter and loop though the arrays that represent the
   // ranks and columns. The values in the arrays are passed to the monster factory to build the monster then its entity
   // ID is added to the state at the proper position in the monster formation.
-  function buildMonsters(state, data) {
+  function buildMonsters(data) {
+    const state = BattleSystem.getState();
     const formation = findFormation(data);
     for (let r=0; r<formation.length; r++) {
       for (let p=0; p<formation[r].length; p++) {
@@ -39,7 +40,9 @@ global.BattleInitializer = (function() {
   // character's dexterities and compare them, applying the ratios of the fastest and slowest characters. That way it
   // doesn't matter what the dex cap ends up being as only the difference between the characters' dex matters. But then
   // could you bring a super clumsy character to juice the player's relative dex?
-  function rollReactionTimes(state) {
+  function rollReactionTimes() {
+    const state = BattleSystem.getState();
+
     Object.keys(state.getMonsterFormation()).forEach(id => {
       state.setTurnOrder({
         type: 'monster',
@@ -61,8 +64,8 @@ global.BattleInitializer = (function() {
   // character. The monster types set different weights on the functions used to determine threat, that way different
   // monsters will have different target priorities. They could simply target the closest first, or the least armored,
   // or the most injured.
-  function populateThreatTables(state) {
-    state.getActiveMonsters().forEach(id => {
+  function populateThreatTables() {
+    BattleSystem.getState().getActiveMonsters().forEach(id => {
       Monster(id).populateThreatTable();
     });
   }
