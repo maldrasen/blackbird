@@ -31,6 +31,36 @@ global.BreastData = {
 
   SaggyShapes: ['swingers','dangling','heavy-bells','pendulous','hangers','elongated-sacks','massive-bells'],
 
+  // The BreastComparisons ladder to use for each shape. Shapes that are flat or the long narrow torpedo/tubular kind
+  // have no common object to compare against and map to null; the comparison tokens warn for them, so templates
+  // that use those tokens need to be gated on the shape being comparable.
+  ComparisonShapes: {
+    'flat':             null,
+    'pancakes':         null,
+    'tiny-balls':       'round',
+    'tiddys':           null,
+    'pert':             'teardrop',
+    'small-balls':      'round',
+    'teardrops':        'teardrop',
+    'conical':          'teardrop',
+    'balls':            'round',
+    'tubular':          null,
+    'swingers':         'teardrop',
+    'average':          'round',
+    'perky':            'teardrop',
+    'torpedoes':        null,
+    'dangling':         'teardrop',
+    'heavy-bells':      'teardrop',
+    'big-round':        'round',
+    'pendulous':        'teardrop',
+    'hangers':          'teardrop',
+    'cow-tits':         'round',
+    'bimbo':            'round',
+    'elongated-sacks':  null,
+    'massive-bells':    'teardrop',
+    'straining-round':  'round',
+  },
+
   NippleShapes: {
     normal: 80,
     puffy: 15,

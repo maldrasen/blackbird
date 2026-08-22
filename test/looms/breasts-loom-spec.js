@@ -1,7 +1,5 @@
 describe("BreastsLoom", function() {
 
-  const NO_COMPARISON = ['flat','pancakes','tiddys','elongated-sacks','massive-bells','straining-round'];
-
   function allShapes() {
     return Object.values(BreastData.BreastShapeTable).flatMap(row => Object.values(row).flat());
   }
@@ -12,78 +10,89 @@ describe("BreastsLoom", function() {
     });
   }
 
-  describe("BreastComparisons data", function() {
+  describe("BreastData.ComparisonShapes", function() {
 
-    const SIZE_WORD = /\b(tiny|small|little|large|big|huge|young|overgrown|oversized|swollen|bulging|giant|massive|enormous)\b/;
-
-    it("has a ladder for every shape that isn't explicitly excluded", function() {
+    it("has an entry for every shape in the BreastShapeTable, even if it's null", function() {
       allShapes().forEach(shape => {
-        const hasLadder = BreastComparisons[shape] != null;
-        const excluded = NO_COMPARISON.includes(shape);
-        expect(hasLadder || excluded, `${shape} needs a ladder or an entry in NO_COMPARISON`).to.equal(true);
-        expect(hasLadder && excluded, `${shape} is both laddered and excluded`).to.equal(false);
+        expect(BreastData.ComparisonShapes, `${shape} needs a ComparisonShapes entry`).to.have.property(shape);
       });
     });
 
-    it("only has ladders for known shapes", function() {
+    it("only has entries for known shapes", function() {
       const shapes = allShapes();
-      Object.keys(BreastComparisons).forEach(shape => {
+      Object.keys(BreastData.ComparisonShapes).forEach(shape => {
         expect(shapes, `${shape} is not in the BreastShapeTable`).to.include(shape);
       });
     });
 
-    it("has ascending rungs that span exactly the shape's size band", function() {
-      Object.entries(BreastComparisons).forEach(([shape, ladder]) => {
-        const band = BreastData.BreastSizes[sizeOf(shape)];
-        expect(ladder.length, `${shape} has no rungs`).to.be.above(0);
-        ladder.forEach((rung, i) => {
-          if (i > 0) { expect(rung.max, `${shape} rung ${i} does not ascend`).to.be.above(ladder[i-1].max); }
-        });
-        expect(ladder[0].max, `${shape} first rung ends below its band`).to.be.above(band.min);
-        expect(ladder[ladder.length-1].max, `${shape} does not end at its band max`).to.equal(band.max);
+    it("only maps shapes to ladders that exist in BreastComparisons", function() {
+      Object.entries(BreastData.ComparisonShapes).forEach(([shape, comparisonShape]) => {
+        if (comparisonShape == null) { return; }
+        expect(BreastComparisons, `${shape} maps to ${comparisonShape}`).to.have.property(comparisonShape);
       });
     });
 
-    it("has non-empty noun and phrase lists on every rung", function() {
-      Object.entries(BreastComparisons).forEach(([shape, ladder]) => {
-        ladder.forEach((rung, i) => {
-          expect(rung.nouns.length, `${shape} rung ${i} has no nouns`).to.be.above(0);
-          expect(rung.phrases.length, `${shape} rung ${i} has no phrases`).to.be.above(0);
+  });
+
+  describe("BreastComparisons data", function() {
+
+    const SIZE_WORD = /\b(tiny|small|little|large|big|huge|young|overgrown|oversized|swollen|bulging|giant|massive|enormous)\b/;
+
+    function eachLadder(callback) {
+      Object.entries(BreastComparisons).forEach(([key, ladder]) => callback(key, ladder));
+    }
+
+    function eachBand(callback) {
+      eachLadder((key, ladder) => {
+        Object.keys(ladder.nouns).forEach((max, i) => callback(key, max, ladder.nouns[max], ladder.phrases[max], i));
+      });
+    }
+
+    it("keys the nouns and phrases of every ladder by the same ascending volume bands", function() {
+      eachLadder((key, ladder) => {
+        const maxes = Object.keys(ladder.nouns).map(Number);
+        expect(maxes.length, `${key} has no bands`).to.be.above(0);
+        maxes.forEach((max, i) => {
+          expect(Number.isInteger(max) && max > 0, `${key} band ${max} is not a whole volume`).to.equal(true);
+          if (i > 0) { expect(max, `${key} band ${max} does not ascend`).to.be.above(maxes[i-1]); }
         });
+        expect(Object.keys(ladder.phrases), `${key} phrases are not banded like its nouns`).to.deep.equal(Object.keys(ladder.nouns));
+      });
+    });
+
+    it("has non-empty noun and phrase lists in every band", function() {
+      eachBand((key, max, nouns, phrases) => {
+        expect(nouns.length, `${key}@${max} has no nouns`).to.be.above(0);
+        expect(phrases.length, `${key}@${max} has no phrases`).to.be.above(0);
       });
     });
 
     it("never uses a size word in a compact noun", function() {
-      Object.entries(BreastComparisons).forEach(([shape, ladder]) => {
-        ladder.forEach(rung => {
-          rung.nouns.forEach(noun => {
-            expect(noun, `${shape}: "${noun}" contains a size word`).to.not.match(SIZE_WORD);
-          });
+      eachBand((key, max, nouns) => {
+        nouns.forEach(noun => {
+          expect(noun, `${key}@${max}: "${noun}" contains a size word`).to.not.match(SIZE_WORD);
         });
       });
     });
 
-    it("places each compact noun in at most two adjacent rungs of a ladder", function() {
-      Object.entries(BreastComparisons).forEach(([shape, ladder]) => {
-        const rungsByNoun = {};
-        ladder.forEach((rung, i) => {
-          rung.nouns.forEach(noun => { (rungsByNoun[noun] ||= []).push(i); });
+    it("places each compact noun in consecutive bands of a ladder", function() {
+      eachLadder((key, ladder) => {
+        const bandsByNoun = {};
+        Object.values(ladder.nouns).forEach((nouns, i) => {
+          nouns.forEach(noun => { (bandsByNoun[noun] ||= []).push(i); });
         });
-        Object.entries(rungsByNoun).forEach(([noun, rungs]) => {
-          expect(rungs.length, `${shape}: "${noun}" is in ${rungs.length} rungs`).to.be.at.most(2);
-          if (rungs.length === 2) {
-            expect(rungs[1] - rungs[0], `${shape}: "${noun}" is in non-adjacent rungs`).to.equal(1);
-          }
+        Object.entries(bandsByNoun).forEach(([noun, bands]) => {
+          bands.forEach((band, i) => {
+            if (i > 0) { expect(band - bands[i-1], `${key}: "${noun}" skips a band`).to.equal(1); }
+          });
         });
       });
     });
 
     it("never uses a phrase that can't be pluralized on its last word", function() {
-      Object.entries(BreastComparisons).forEach(([shape, ladder]) => {
-        ladder.forEach(rung => {
-          rung.phrases.forEach(phrase => {
-            expect(phrase, `${shape}: "${phrase}" won't pluralize cleanly`).to.not.include(' of ');
-          });
+      eachBand((key, max, nouns, phrases) => {
+        phrases.forEach(phrase => {
+          expect(phrase, `${key}@${max}: "${phrase}" won't pluralize cleanly`).to.not.include(' of ');
         });
       });
     });
@@ -94,73 +103,101 @@ describe("BreastsLoom", function() {
 
     const CONNECTOR = /^(\S+) (the size of|as big as|as large as) (.+)$/;
 
-    function setBreasts(id, shape, volume) {
-      BreastsComponent.update(id, { breastSize:sizeOf(shape), breastShape:shape, relativeBreastVolume:volume });
+    function shapeUsing(comparisonShape) {
+      return allShapes().find(shape => BreastData.ComparisonShapes[shape] === comparisonShape);
     }
 
-    // Runs the callback once per rung of every ladder, with the character's breasts set to that shape and a volume
-    // sitting exactly on the rung's max.
-    function onEveryRung(callback) {
+    function setBreasts(id, shape, volume) {
+      BreastsComponent.update(id, { breastSize:sizeOf(shape), breastShape:shape, absoluteBreastVolume:volume });
+    }
+
+    function topBandOf(ladder) {
+      const maxes = Object.keys(ladder.nouns);
+      return maxes[maxes.length-1];
+    }
+
+    // Runs the callback once per band of every ladder, with the character's breasts set to a shape that uses the
+    // ladder and an absolute volume sitting exactly on the band's max.
+    function onEveryBand(callback) {
       const id = CharacterFactory.build({ gender:Gender.female, species:SpeciesCode.human });
-      Object.entries(BreastComparisons).forEach(([shape, ladder]) => {
-        ladder.forEach(rung => {
-          setBreasts(id, shape, rung.max);
-          callback(id, shape, rung);
+      Object.entries(BreastComparisons).forEach(([comparisonShape, ladder]) => {
+        const shape = shapeUsing(comparisonShape);
+        Object.keys(ladder.nouns).forEach(max => {
+          setBreasts(id, shape, Number(max));
+          callback(id, `${shape}@${max}`, { nouns:ladder.nouns[max], phrases:ladder.phrases[max] });
         });
       });
     }
 
     it("weaves appleSized as a compact noun followed by sized", function() {
-      onEveryRung((id, shape, rung) => {
+      onEveryBand((id, label, band) => {
         const match = BreastsLoom.weave(id,'appleSized').match(/^(.+) sized$/);
-        expect(match, `${shape}@${rung.max}: no match`).to.not.equal(null);
-        expect(rung.nouns, `${shape}@${rung.max}`).to.include(match[1]);
+        expect(match, `${label}: no match`).to.not.equal(null);
+        expect(band.nouns, label).to.include(match[1]);
       });
     });
 
     it("weaves appleSizedBreasts as a compact noun, sized, and a plural breasts word", function() {
-      onEveryRung((id, shape, rung) => {
+      onEveryBand((id, label, band) => {
         const match = BreastsLoom.weave(id,'appleSizedBreasts').match(/^(.+) sized (\S+)$/);
-        expect(match, `${shape}@${rung.max}: no match`).to.not.equal(null);
-        expect(rung.nouns, `${shape}@${rung.max}`).to.include(match[1]);
+        expect(match, `${label}: no match`).to.not.equal(null);
+        expect(band.nouns, label).to.include(match[1]);
         expect(match[2]).to.match(/s$/);
       });
     });
 
     it("weaves breastsBigAsApples as a breasts word, a connector, and a plural long-form phrase", function() {
-      onEveryRung((id, shape, rung) => {
+      onEveryBand((id, label, band) => {
         const match = BreastsLoom.weave(id,'breastsBigAsApples').match(CONNECTOR);
-        expect(match, `${shape}@${rung.max}: no match`).to.not.equal(null);
+        expect(match, `${label}: no match`).to.not.equal(null);
         expect(match[1]).to.match(/s$/);
-        expect(rung.phrases.map(EnglishHelper.pluralize), `${shape}@${rung.max}`).to.include(match[3]);
+        expect(band.phrases.map(EnglishHelper.pluralize), label).to.include(match[3]);
       });
     });
 
     it("weaves apples and anApple from the long-form phrases", function() {
-      onEveryRung((id, shape, rung) => {
-        expect(rung.phrases.map(EnglishHelper.pluralize), `${shape}@${rung.max} apples`).to.include(BreastsLoom.weave(id,'apples'));
+      onEveryBand((id, label, band) => {
+        expect(band.phrases.map(EnglishHelper.pluralize), `${label} apples`).to.include(BreastsLoom.weave(id,'apples'));
 
         const match = BreastsLoom.weave(id,'anApple').match(/^(an?) (.+)$/);
-        expect(match, `${shape}@${rung.max} anApple: no match`).to.not.equal(null);
-        expect(rung.phrases, `${shape}@${rung.max} anApple`).to.include(match[2]);
+        expect(match, `${label} anApple: no match`).to.not.equal(null);
+        expect(band.phrases, `${label} anApple`).to.include(match[2]);
         expect(match[1]).to.equal(EnglishHelper.a_an(match[2]));
       });
     });
 
+    it("bands by the absolute volume, not the relative volume", function() {
+      const id = CharacterFactory.build({ gender:Gender.female, species:SpeciesCode.human });
+      BreastsComponent.update(id, { breastSize:'huge', breastShape:'bimbo', relativeBreastVolume:3000, absoluteBreastVolume:140 });
+      const match = BreastsLoom.weave(id,'appleSized').match(/^(.+) sized$/);
+      expect(BreastComparisons.round.nouns[150]).to.include(match[1]);
+    });
+
+    it("uses the first band at or above the volume", function() {
+      const id = CharacterFactory.build({ gender:Gender.female, species:SpeciesCode.human });
+      setBreasts(id, 'balls', 201);
+      const match = BreastsLoom.weave(id,'appleSized').match(/^(.+) sized$/);
+      expect(BreastComparisons.round.nouns[250]).to.include(match[1]);
+    });
+
+    it("uses the top band for volumes past the end of the ladder", function() {
+      const id = CharacterFactory.build({ gender:Gender.female, species:SpeciesCode.human });
+      const top = topBandOf(BreastComparisons.teardrop);
+      setBreasts(id, 'massive-bells', Number(top) * 3);
+      const match = BreastsLoom.weave(id,'appleSized').match(/^(.+) sized$/);
+      expect(BreastComparisons.teardrop.nouns[top]).to.include(match[1]);
+    });
+
     it("warns instead of comparing for shapes without a ladder", function() {
       const id = CharacterFactory.build({ gender:Gender.female, species:SpeciesCode.human });
-      NO_COMPARISON.forEach(shape => {
+      const shapes = allShapes().filter(shape => BreastData.ComparisonShapes[shape] == null);
+      expect(shapes).to.not.be.empty;
+      shapes.forEach(shape => {
         setBreasts(id, shape, BreastData.BreastSizes[sizeOf(shape)].min + 1);
         const text = BreastsLoom.weave(id,'appleSizedBreasts');
         expect(text, shape).to.include('weaver-warning');
         expect(text, shape).to.include(shape);
       });
-    });
-
-    it("throws when the relative volume is past the end of the ladder", function() {
-      const id = CharacterFactory.build({ gender:Gender.female, species:SpeciesCode.human });
-      setBreasts(id, 'average', BreastData.BreastSizes.average.max + 1);
-      expect(() => BreastsLoom.weave(id,'appleSized')).to.throw(/past the end of the average ladder/);
     });
 
   });
