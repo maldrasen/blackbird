@@ -141,6 +141,47 @@ describe("DungeonNavigationSystem", function() {
     expect(DungeonNavigationSystem.getPathThroughDoor(door.from, door.to)).to.eql([first, far]);
   });
 
+  describe("getDoorInDirection()", function() {
+
+    // Doors are stored on the north or west wall of the tile at their position, and `from` owns that tile.
+    beforeEach(function() {
+      floor.setDoors([
+        { position:{ x:5, y:3 }, direction:'N', from:start, to:901 },
+        { position:{ x:5, y:8 }, direction:'N', from:902, to:start },
+        { position:{ x:2, y:5 }, direction:'W', from:start, to:903 },
+        { position:{ x:9, y:5 }, direction:'W', from:904, to:start },
+        { position:{ x:9, y:6 }, direction:'W', from:905, to:906 },
+      ]);
+    });
+
+    it("finds the door on each wall of the current room", function() {
+      expect(DungeonNavigationSystem.getDoorInDirection('north').to).to.equal(901);
+      expect(DungeonNavigationSystem.getDoorInDirection('south').from).to.equal(902);
+      expect(DungeonNavigationSystem.getDoorInDirection('west').to).to.equal(903);
+      expect(DungeonNavigationSystem.getDoorInDirection('east').from).to.equal(904);
+    });
+
+    it("returns null when the wall has no door", function() {
+      floor.setDoors([{ position:{ x:5, y:3 }, direction:'N', from:start, to:901 }]);
+      expect(DungeonNavigationSystem.getDoorInDirection('south')).to.equal(null);
+      expect(DungeonNavigationSystem.getDoorInDirection('east')).to.equal(null);
+    });
+
+    it("always picks the same door when a wall has several", function() {
+      floor.setDoors([
+        { position:{ x:7, y:3 }, direction:'N', from:start, to:901 },
+        { position:{ x:3, y:3 }, direction:'N', from:start, to:902 },
+        { position:{ x:3, y:1 }, direction:'N', from:start, to:903 },
+      ]);
+      expect(DungeonNavigationSystem.getDoorInDirection('north').to).to.equal(903);
+    });
+
+    it("rejects a direction it doesn't know", function() {
+      expect(() => DungeonNavigationSystem.getDoorInDirection('up')).to.throw('Bad direction');
+    });
+
+  });
+
   it("cannot move to a room without a connecting door", function() {
     const adjacent = DungeonNavigationSystem.getAdjacentRoomIndices(start);
     const rooms = floor.getRooms();

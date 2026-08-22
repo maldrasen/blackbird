@@ -11,6 +11,7 @@ global.DungeonView = (function() {
     X.onClick('#dungeonFloor .hanging-door', doorClicked);
     X.onClick('#dungeonFloor .stairs', stairsClicked);
     X.onClick('#dungeonFloor .room', roomClicked);
+    KeyBindingDispatcher.register('dungeon', { isActive:isShowing, perform:walkInDirection });
   }
 
   function show() {
@@ -65,6 +66,17 @@ global.DungeonView = (function() {
     walkPath(DungeonNavigationSystem.getPathThroughDoor(
       parseInt(doorElement.dataset.from),
       parseInt(doorElement.dataset.to)));
+  }
+
+  function isShowing() {
+    return GameSystem.getState().getGameMode() === GameMode.dungeon && X.first('#dungeonView') != null;
+  }
+
+  // Walks through the door on that wall of the current room, the same as clicking the door. A key press mid-walk
+  // starts a fresh walk, just as a click does.
+  function walkInDirection(direction) {
+    const door = DungeonNavigationSystem.getDoorInDirection(direction);
+    if (door) { walkPath(DungeonNavigationSystem.getPathThroughDoor(door.from, door.to)); }
   }
 
   // Walk the party through the path one room at a time on a steady beat, targeting the camera at each new room as

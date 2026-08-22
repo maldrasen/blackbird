@@ -8,6 +8,7 @@ global.FormationPanel = (function() {
     X.onClick('#battleView.target-mode .valid-target', targetSelected);
     X.onClick('#battleView.inspect-mode .combatant', inspectPosition);
     X.onClick('#commandPanel .cancel-button', cancelTargeting);
+    KeyBindingDispatcher.register('targeting', { isActive:isTargeting, perform:pressTarget });
     X.onResize(() => X.first('#combatantLayer') != null, handleResize);
   }
 
@@ -120,6 +121,30 @@ global.FormationPanel = (function() {
         'valid-target' :
         'invalid-target');
     });
+
+    showKeyHints();
+  }
+
+  function showKeyHints() {
+    const hints = {};
+
+    Object.entries(KeyBindings.getBindings().targeting).forEach(([action, key]) => {
+      if (key) { hints[suffixFor(action)] = KeyBindings.labelFor(key); }
+    });
+
+    X.each('#battleView .valid-target[data-position]', element => {
+      const hint = hints[element.dataset.position.substring(1)];
+      if (hint) { element.dataset.keyHint = hint; }
+    });
+  }
+
+  function clearKeyHints() {
+    X.each('#battleView [data-key-hint]', element => { delete element.dataset.keyHint; });
+  }
+
+  function suffixFor(action) {
+    const [rank, column] = action.split('-');
+    return `.${rank === 'front' ? 0 : 1}.${parseInt(column) - 1}`;
   }
 
   function cancelTargeting() {
@@ -128,13 +153,13 @@ global.FormationPanel = (function() {
   }
 
   function stopTargeting() {
+    clearKeyHints();
     X.removeClass('.valid-target','valid-target')
     X.removeClass('.invalid-target','invalid-target')
     X.removeClass('#battleView','target-mode');
     X.addClass('#battleView','inspect-mode');
   }
 
-  // Targeting always returns a position because some abilities (like AoE attacks) might target an empty position.
   function targetSelected(event) {
     const position = event.target.closest('[data-position]').dataset.position;
 
@@ -143,6 +168,15 @@ global.FormationPanel = (function() {
     stopTargeting();
 
     TargetingController.targetSelected(position);
+  }
+
+  function isTargeting() {
+    return X.hasClass('#battleView','target-mode');
+  }
+
+  function pressTarget(action) {
+    const position = X.first(`#battleView.target-mode .position.valid-target[data-position$='${suffixFor(action)}']`);
+    if (position) { position.click(); }
   }
 
   // =====================
@@ -318,6 +352,8 @@ global.FormationPanel = (function() {
     updateAll,
     updateCombatant,
     startTargeting,
+    isTargeting,
+    cancelTargeting,
     killEntity,
     moveForwardOnDeath,
     moveInwardOnDeath,

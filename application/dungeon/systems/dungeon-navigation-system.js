@@ -18,6 +18,22 @@ global.DungeonNavigationSystem = (function() {
     return [...adjacent].sort((a,b) => a-b);
   }
 
+  function getDoorInDirection(direction) {
+    const floor = DungeonSystem.getDungeonFloor();
+    const current = floor.getLocation();
+    const matches = {
+      north: door => door.direction === 'N' && door.from === current,
+      south: door => door.direction === 'N' && door.to === current,
+      west:  door => door.direction === 'W' && door.from === current,
+      east:  door => door.direction === 'W' && door.to === current,
+    }[direction];
+
+    if (matches == null) { throw new Error(`Bad direction [${direction}]`); }
+
+    return floor.getDoors().filter(matches).sort((a,b) =>
+      (a.position.x - b.position.x) || (a.position.y - b.position.y))[0] || null;
+  }
+
   // TODO: When entering a new room, we need to read the room's contents to actually determine what happens on
   //       entering a new room. It's sometimes a battle, sometimes an event, sometimes we want to print a description,
   //       or nothing may happen. Since we don't have any room contents yet, we're simply starting a battle sometimes,
@@ -104,6 +120,7 @@ global.DungeonNavigationSystem = (function() {
   return {
     canMoveTo,
     getAdjacentRoomIndices,
+    getDoorInDirection,
     moveToRoom,
     getPathToRoom,
     getPathThroughDoor,

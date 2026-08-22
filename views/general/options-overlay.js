@@ -9,7 +9,6 @@ global.OptionsOverlay = (function() {
   const sliders = {};
 
   let isDirty = false;
-  let isBuilt = false;
 
   function init() {
     X.onClick('#optionsOverlay a.close-button', () => {
@@ -17,7 +16,7 @@ global.OptionsOverlay = (function() {
     });
 
     X.onClick('#optionsOverlay a.save-button', () => {
-      save();
+      if (save() === false) { return; }
       WindowManager.pop();
     });
   }
@@ -39,17 +38,21 @@ global.OptionsOverlay = (function() {
       X.first(`#${key}Slider`).appendChild(sliders[key].getElement());
     });
 
-    isBuilt = true;
+    KeyBindingsPanel.build(X.first('#keyBindings .key-bindings-area'), KeyBindings.getBindings(), { onChange:bindingsChanged });
+    updateSaveButton();
   }
 
+  // The overlay is rebuilt from the saved options every time it opens, so closing without saving discards any edits.
   function open() {
-    if (isBuilt === false) { OptionsOverlay.build(); }
+    build();
+    isDirty = false;
     MainMenu.hide();
     X.removeClass('#optionsOverlay','hide');
     WindowManager.push(OptionsOverlay);
   }
 
   function close() {
+    KeyBindingsPanel.cancelCapture();
     TabController.setActiveByName(X.first('#optionsOverlay .tab-control'),'gameplay');
     X.addClass('#optionsOverlay','hide');
     MainMenu.show();
@@ -59,7 +62,21 @@ global.OptionsOverlay = (function() {
     isDirty = true;
   }
 
+  function bindingsChanged() {
+    markDirty();
+    updateSaveButton();
+  }
+
+  // Two actions sharing a key in the same context can't be saved, so the save button is disabled until the conflict
+  // is resolved. The panel lists what conflicts.
+  function updateSaveButton() {
+    const button = X.first('#optionsOverlay a.save-button');
+    KeyBindingsPanel.hasConflicts() ? X.addClass(button,'disabled') : X.removeClass(button,'disabled');
+  }
+
+  // Resolves false when the options can't be saved as they stand.
   function save() {
+    if (KeyBindingsPanel.hasConflicts()) { return false; }
     if (isDirty === false) { return; }
 
     WorldState.setOptions(pack()).then(() => {
@@ -73,13 +90,16 @@ global.OptionsOverlay = (function() {
     });
   }
 
+  // Only what's shown here is packed, so the rest of the options are carried over untouched.
   function pack() {
     return {
+      ...WorldState.getOptions(),
       difficulty: {
         damage: sliders.damage.getValue(),
         mitigation: sliders.mitigation.getValue(),
         resistance: sliders.resistance.getValue(),
-      }
+      },
+      keyBindings: KeyBindingsPanel.getBindings(),
     };
   }
 
