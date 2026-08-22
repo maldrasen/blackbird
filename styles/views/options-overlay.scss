@@ -37,6 +37,9 @@
     row-gap: 5px;
     align-items: center;
 
+    // The buttons hang from the right edge so a long label, or the capture prompt, only widens its own button.
+    .key { text-align: right; }
+
     .key-button {
       min-width: 40px;
       text-align: center;

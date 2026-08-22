@@ -46,7 +46,7 @@ global.KeyBindingsPanel = (function() {
 
     Object.entries(actions).forEach(([action, { name }]) => {
       grid.appendChild(X.createElement(`<div class='label'>${name}</div>`));
-      grid.appendChild(X.createElement(`<div><a href='#' class='button key-button' data-context='${context}' data-action='${action}'>${KeyBindings.labelFor(bindings[context][action])}</a></div>`));
+      grid.appendChild(X.createElement(`<div class='key'><a href='#' class='button key-button' data-context='${context}' data-action='${action}'>${KeyBindings.labelFor(bindings[context][action])}</a></div>`));
     });
 
     return section;
