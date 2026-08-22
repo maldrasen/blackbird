@@ -44,16 +44,8 @@ global.BattleText = (function() {
 
   function showBattleStartText() {
     const state = BattleSystem.getState();
-    const text = lookupStartText(state) || `[Missing start text for ${state.getAmbushState()}]`;
+    const text = state.getStartText() || `[Missing start text for ${state.getAmbushState()}]`;
     setMessages([{ text, size:'large', color:'important' }]);
-  }
-
-  // The battle state records the cohort or encounter record the battle was built from. Battles built another way,
-  // from a single monster or raw record data, are test battles that fall back to the placeholder text above.
-  function lookupStartText(state) {
-    if (state.getCohort()) { return Cohort.lookup(state.getCohort()).getStartText(state.getAmbushState()); }
-    if (state.getEncounter()) { return Encounter.lookup(state.getEncounter()).getStartText(state.getAmbushState()); }
-    return null;
   }
 
   function addElement(message) {

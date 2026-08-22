@@ -1,11 +1,12 @@
 global.EncounterBuilder = (function() {
 
   // Build an encounter with a cohort of monsters, given a target essence level and a list of cohorts to pull
-  // from. These options will normally come from the dungeon floor. This is the standard version.
+  // from. These options will normally come from the dungeon floor. This is the standard version. The builders
+  // return the record the encounter was built from, so the battle system can resolve the start text from it.
   function build(options) {
     const cohort = chooseCohort(options.cohorts, options.essenceTarget);
-    BattleSystem.getState().setCohort(cohort.getCode());
     placeFormation(arrangeFormation(selectMonsters(cohort, options.essenceTarget)), cohort.getFactoryOptions());
+    return cohort;
   }
 
   // Choose which of the floor's cohorts the party will fight. A cohort is viable when it can field its minimum
@@ -204,8 +205,8 @@ global.EncounterBuilder = (function() {
   // monsters in a given formation.
   function buildFromRecord(code) {
     const encounter = Encounter.lookup(code);
-    BattleSystem.getState().setEncounter(code);
     buildFromRecordData(encounter.getFormation(), encounter.getMonsters());
+    return encounter;
   }
 
   // Build an encounter given a formation and a map of monster definitions. This is the same shape the encounter
