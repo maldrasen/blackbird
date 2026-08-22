@@ -2,6 +2,10 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
+## Priority 1
+
+- [195] We need keybindings `5pt` — [195-we-need-keybindings.md](195-we-need-keybindings.md)
+
 ## Priority 2
 
 - [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
@@ -12,7 +16,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [105] Add Negotiation Requests `8pt` — [105-add-negotiation-requests.md](105-add-negotiation-requests.md)
 - [122] Training Enlighten View `5pt` — [122-training-enlighten-view.md](122-training-enlighten-view.md)
 - [142] Item detail panel `5pt` — [142-item-detail-panel.md](142-item-detail-panel.md)
-- [155] Encounter Builder `8pt` — [155-encounter-builder.md](155-encounter-builder.md)
 - [158] Add a Fixture to Adjust the Question Pool for Testing `3pt` — [158-fixture-to-adjust-question-pool.md](158-fixture-to-adjust-question-pool.md)
 - [161] Join Text `8pt` — [161-join-text.md](161-join-text.md)
 - [172] Nightgaunt Episode `8pt` — [172-nightgaunt-episode.md](172-nightgaunt-episode.md)
@@ -22,7 +25,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 - [012] Character Abilities `8pt` #battle — [012-character-abilities.md](012-character-abilities.md)
 - [014] Bows & Arrows `5pt` #battle — [014-bows-arrows.md](014-bows-arrows.md)
-- [015] Battle Encounter Tables `8pt` #battle #dungeon — [015-battle-encounter-tables.md](015-battle-encounter-tables.md)
 - [016] Battle Character Inspect `5pt` #battle — [016-battle-character-inspect.md](016-battle-character-inspect.md)
 - [019] Stamina `3pt` #training — [019-stamina.md](019-stamina.md)
 - [020] Refactor how SexActions define their persistence `5pt` #training — [020-refactor-how-sexactions-define-their-persistence.md](020-refactor-how-sexactions-define-their-persistence.md)
@@ -52,7 +54,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [176] Implement potency item effect `8pt` — [176-implement-potency-item-effect.md](176-implement-potency-item-effect.md)
 - [179] Orchard Features `5pt` — [179-orchard-features.md](179-orchard-features.md)
 - [182] Implement consumable weapons `5pt` — [182-implement-consumable-weapons.md](182-implement-consumable-weapons.md)
-- [191] Create a battle testbed `13pt` — [191-create-a-battle-testbed.md](191-create-a-battle-testbed.md)
 - [192] Give the kobold trapper a blind ability `3pt` — [192-give-the-kobold-trapper-a-blind-ability.md](192-give-the-kobold-trapper-a-blind-ability.md)
 
 ## Priority 4
