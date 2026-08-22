@@ -3,7 +3,7 @@ describe("EncounterBuilder", function() {
   describe("buildFromRecord()", function() {
     it("builds the record's monsters into the battle state", function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'kobold-2', ambushState:'normal' });
+      BattleSystem.startBattle({ encounter:'battle-fixture-1', ambushState:'normal' });
 
       const state = BattleSystem.getState();
       expect(state.getActiveMonsters().length).to.equal(7);
@@ -240,9 +240,19 @@ describe("EncounterBuilder", function() {
   });
 
   describe("buildFromRecordData()", function() {
+    it("starts a battle directly from formation data", function() {
+      BattleFixtures.prepareForBattle();
+      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
+
+      const state = BattleSystem.getState();
+      expect(state.getActiveMonsters().length).to.equal(3);
+      expect(state.getStartText()).to.be.undefined;
+      expect(MonsterComponent.lookup(state.getEntityAtPosition('M',0,2)).code).to.equal('kobold-runt');
+    });
+
     it("resolves the formation grid and builds the monsters at their positions", function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'negotiation-fixture-1', ambushState:'normal' });
+      BattleSystem.startBattle({ monster:'kobold-runt', ambushState:'normal' });
 
       EncounterBuilder.buildFromRecordData([
         [1,0,0,0,1],

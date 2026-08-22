@@ -2,7 +2,7 @@ describe("PhysicalAttackContest", function() {
 
   function startBattle() {
     BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
     return BattleSystem.getState();
   }
 

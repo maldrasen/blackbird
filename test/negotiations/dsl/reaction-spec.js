@@ -153,7 +153,7 @@ describe("Reaction", function() {
   describe("giveStatusEffect", function() {
     function startBattle() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'negotiation-fixture-1', ambushState:'normal' });
+      BattleSystem.startBattle({ monster:'kobold-runt', ambushState:'normal' });
 
       const player = GameSystem.getState().getPlayer();
       const monster = BattleSystem.getState().getActiveMonsters()[0];

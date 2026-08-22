@@ -56,9 +56,32 @@ global.BattleFixtures = (function() {
     SkillsComponent.update(id, skills);
   }
 
+  // Stock encounter data for specs that need a battle without going through a cohort or an encounter record.
+  // Spread into the BattleSystem.startBattle() options.
+  function runtPack() {
+    return {
+      formation:[
+        [0,1,1,1,0],
+      ],
+      monsters:{ 1:{ code:'kobold-runt' } },
+    };
+  }
+
+  function trapperPack() {
+    return {
+      formation:[
+        [0,1,1,1,0],
+        [0,0,1,0,0],
+      ],
+      monsters:{ 1:{ code:'kobold-trapper' } },
+    };
+  }
+
   return {
     prepareForBattle,
     equipWeapon,
+    runtPack,
+    trapperPack,
   };
 
 })();

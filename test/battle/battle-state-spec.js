@@ -3,7 +3,7 @@ describe("BattleState", function() {
   describe("Formation", function() {
     it('getEntityAtPosition()', function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'kobold-1' });
+      BattleSystem.startBattle({ ...BattleFixtures.runtPack() });
 
       const state = BattleSystem.getState();
       expect(state.getEntityAtPosition('M',0,3)).to.not.be.null;
@@ -14,7 +14,7 @@ describe("BattleState", function() {
   describe("Combatant Conditions", function() {
     it('starts every combatant as active', function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
 
       const state = BattleSystem.getState();
       expect(state.getCondition(state.getActiveCharacters()[0])).to.equal(BattleCondition.active);
@@ -23,7 +23,7 @@ describe("BattleState", function() {
 
     it('conditions are mutually exclusive', function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
 
       const state = BattleSystem.getState();
       const monster = state.getActiveMonsters()[0];
@@ -37,7 +37,7 @@ describe("BattleState", function() {
 
     it('throws for entities that are not in the battle', function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
 
       const state = BattleSystem.getState();
       expect(() => state.setCondition('nobody', BattleCondition.dead)).to.throw('Validate.exists');
@@ -46,7 +46,7 @@ describe("BattleState", function() {
 
     it('only monsters are listed in the dead and fled monster lists', function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
 
       const state = BattleSystem.getState();
       state.setCondition(state.getActiveCharacters()[0], BattleCondition.dead);
@@ -57,7 +57,7 @@ describe("BattleState", function() {
 
     it('lists the knocked out characters', function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
 
       const state = BattleSystem.getState();
       const character = state.getActiveCharacters()[0];
@@ -73,7 +73,7 @@ describe("BattleState", function() {
   describe("Turn Order", function() {
     it('moves the character within the turn order after acting', function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
 
       const state = BattleSystem.getState();
       const next = state.getNext();
@@ -88,7 +88,7 @@ describe("BattleState", function() {
 
     it('moves an entity to the top of the turn order', function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
 
       const state = BattleSystem.getState();
       const order = state.getTurnOrder();
@@ -103,7 +103,7 @@ describe("BattleState", function() {
 
     it('entities can be removed from the turn order', function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
 
       const state = BattleSystem.getState();
       const order = state.getTurnOrder();

@@ -3,7 +3,7 @@ describe("BattleSystem", function() {
   describe("addStatus()", function() {
     it('adds a new status effect', function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
 
       const entity = BattleSystem.getState().getActiveCharacters()[0];
 
@@ -15,7 +15,7 @@ describe("BattleSystem", function() {
 
     it('renews the duration when the effect is reapplied with a longer duration', function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
 
       const entity = BattleSystem.getState().getActiveCharacters()[0];
 
@@ -29,7 +29,7 @@ describe("BattleSystem", function() {
 
     it('keeps the longer duration when the effect is reapplied with a shorter duration', function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
 
       const entity = BattleSystem.getState().getActiveCharacters()[0];
 
@@ -41,7 +41,7 @@ describe("BattleSystem", function() {
 
     it('removes an opposing status effect', function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
 
       const entity = BattleSystem.getState().getActiveCharacters()[0];
 
@@ -61,7 +61,7 @@ describe("BattleSystem", function() {
   describe("reset()", function() {
     it("clears battle only status effects from the survivors", function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
 
       const state = BattleSystem.getState();
       const character = state.getActiveCharacters()[0];

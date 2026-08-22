@@ -8,7 +8,7 @@ describe("NegotiationState", function() {
   // once the state is built.
   function buildState(fear, respect) {
     BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ encounter:'negotiation-fixture-2', ambushState:'normal' });
+    BattleSystem.startBattle({ monster:'kobold-sneak-slut', ambushState:'normal' });
     BattleSystem.specRound(GameSystem.getState().getPlayer());
     setArchetype(ArchetypeCode.slut);
     NegotiationSystem.start();

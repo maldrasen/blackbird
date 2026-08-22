@@ -20,6 +20,7 @@ global.BattleSystem = (function() {
   function buildEncounter(data) {
     if (data.encounter) { return EncounterBuilder.buildFromRecord(data.encounter); }
     if (data.monster) { return EncounterBuilder.buildFromMonster(data.monster); }
+    if (data.formation) { return EncounterBuilder.buildFromRecordData(data.formation, data.monsters); }
     return EncounterBuilder.build(data);
   }
 

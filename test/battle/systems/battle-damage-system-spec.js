@@ -2,7 +2,7 @@ describe("BattleDamageSystem", function() {
 
   function startBattle() {
     BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
     return BattleSystem.getState();
   }
 
@@ -244,7 +244,7 @@ describe("BattleDamageSystem", function() {
     });
 
     // The kobold species resists 10 slash - their scales - which reduces physical damage at every hit location.
-    // The kobold runts in the kobold-1 encounter wear nothing over them.
+    // The runt pack's kobolds wear nothing over them.
     it("applies a creature's innate resistance to physical damage", function() {
       const state = startBattle();
       const target = state.getActiveMonsters()[0];
@@ -301,7 +301,7 @@ describe("BattleDamageSystem", function() {
     // The secondary slot is cleared because a trapper can roll a shield loadout.
     it("stacks innate resistance with worn armor", function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'kobold-trappers', ambushState:'normal' });
+      BattleSystem.startBattle({ ...BattleFixtures.trapperPack(), ambushState:'normal' });
       const target = BattleSystem.getState().getActiveMonsters()[0];
       EquipmentManager(target).equipItem(null, EquipmentSlot.secondary);
 

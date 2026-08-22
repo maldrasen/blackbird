@@ -1,6 +1,18 @@
 
 // Encounter fixtures. These shouldn't go into any of the encounter tables.
 
+Encounter.register('battle-fixture-1',{
+  formation:[
+    [2,2,1,2,2],
+    [0,3,0,3,0],
+  ],
+  monsters:{
+    1:{ code:'kobold-dick-puncher' },
+    2:{ code:'kobold-runt' },
+    3:{ code:'kobold-tosser' },
+  }
+});
+
 Encounter.register('negotiation-fixture-1',{
   formation:[[0,0,1,0,0]],
   monsters: { 1: { code:'kobold-runt' }}

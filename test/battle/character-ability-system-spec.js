@@ -3,7 +3,7 @@ describe("CharacterAbilitySystem", function() {
   describe("getAbilities()", function() {
     it('removes the negotiate command after a negotiation has been attempted', function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'negotiation-fixture-1', ambushState:'normal' });
+      BattleSystem.startBattle({ monster:'kobold-runt', ambushState:'normal' });
       BattleSystem.specRound(GameSystem.getState().getPlayer());
 
       expect(CharacterAbilitySystem.getAbilities()).to.include('negotiate');

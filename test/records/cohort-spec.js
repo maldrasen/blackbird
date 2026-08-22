@@ -3,7 +3,7 @@ describe("Cohort", function() {
   describe("getStartText()", function() {
     it("resolves start text for every cohort and ambush state", function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'kobold-1', ambushState:'normal' });
+      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
 
       Cohort.getAllCodes().forEach(code => {
         Object.values(AmbushState).forEach(state => {

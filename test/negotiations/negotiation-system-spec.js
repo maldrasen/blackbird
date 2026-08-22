@@ -7,7 +7,7 @@ describe("NegotiationSystem", function() {
   // is thin and the question path is Random-heavy.
   function startNegotiation() {
     BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ encounter:'negotiation-fixture-1', ambushState:'normal' });
+    BattleSystem.startBattle({ monster:'kobold-runt', ambushState:'normal' });
 
     const player = GameSystem.getState().getPlayer();
     BattleSystem.getState().moveToTopOfTurnOrder({ type:'character', id:player });
@@ -96,7 +96,7 @@ describe("NegotiationSystem", function() {
     // zero out. Each skill check consumes a crit and a value roll (between) then an improve roll (roll).
     function bootNegotiation() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'negotiation-fixture-2', ambushState:'normal' });
+      BattleSystem.startBattle({ monster:'kobold-sneak-slut', ambushState:'normal' });
 
       const player = GameSystem.getState().getPlayer();
       BattleSystem.specRound(player);

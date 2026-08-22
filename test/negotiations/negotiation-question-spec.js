@@ -32,7 +32,7 @@ describe("NegotiationQuestion", function() {
   describe("getReactionData()", function() {
     function bootMonster() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'negotiation-fixture-2', ambushState:'normal' });
+      BattleSystem.startBattle({ monster:'kobold-sneak-slut', ambushState:'normal' });
 
       const monster = BattleSystem.getState().getActiveMonsters()[0];
       const personality = PersonalityComponent.lookup(monster);

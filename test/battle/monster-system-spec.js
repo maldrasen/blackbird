@@ -4,7 +4,7 @@ describe("MonsterSystem", function() {
   describe('pickAbility()', function() {
     it('when the threat table is empty', function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'kobold-1' });
+      BattleSystem.startBattle({ ...BattleFixtures.runtPack() });
 
       const state = BattleSystem.getState();
       BattleSystem.specRound(state.getEntityAtPosition('M',0,3))
