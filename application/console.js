@@ -1,37 +1,41 @@
 global.Console = (function() {
+  const listeners = [];
+
+  function notify(entry) {
+    listeners.forEach(listener => listener(entry));
+  }
 
   function log(message, options={}) {
-    const type = options.type || LogType.info;
+    const entry = { ...options, message, type:options.type || LogType.info };
+
+    notify(entry);
 
     if (Environment.viewPresent()) {
-      options.time = TimeHelper.getTimeString();
-      options.message = message;
-      options.type = type;
-      ConsoleView.append(options);
+      ConsoleView.append({ ...entry, time:TimeHelper.getTimeString() });
     }
 
-    if (type === LogType.warning) { console.warn(message); }
-    if (type === LogType.error) { console.error(message); }
+    if (entry.type === LogType.warning) { console.warn(message); }
+    if (entry.type === LogType.error) { console.error(message); }
   }
 
   function logError(message, error, options={}) {
-    if (options.data == null) { options.data = {};}
+    const data = { ...(options.data || {}) };
+    if (error) { data.error = errorToString(error); }
+
+    const entry = { ...options, data, level:1, type:LogType.error };
 
     if (Environment.viewPresent() === false) {
+      notify({ ...entry, message });
       console.error('=== Error ===');
       console.error(message);
       if (error) { console.error(error); }
-      if (Object.keys(options.data).length > 0) { console.error(JSON.stringify(options.data, null, 2)); }
+      if (options.data && Object.keys(options.data).length > 0) { console.error(JSON.stringify(options.data, null, 2)); }
       return;
     }
 
-    options.level = 1;
-    options.type = LogType.error;
-    options.data.error = errorToString(error)
+    log(message, entry);
 
-    log(message, options);
-
-    console.error(message, options);
+    console.error(message, entry);
     if (error) { console.error(error); }
   }
 
@@ -40,6 +44,7 @@ global.Console = (function() {
   }
 
   return {
+    addListener: listener => { listeners.push(listener); },
     log,
     logError,
   };

@@ -57,6 +57,10 @@ pipes, or output filters — the flags cover those needs:
 
 Repeated random-seed runs to flush out flaky specs use `node bin/soak-tests.js [runs] [--grep "<spec title>"]`.
 
+### Integration Tests
+Automated integration tests of the battle system (and eventually the training system) are handled in a child project 
+within its own repository in `../blackbird-testbed`, the details of which can be found there.
+
 ### Client loading model
 There is no bundler. The renderer (though application/loader.js) reads `manifest.json` and dynamically imports every
 listed file in order; each file attaches itself to the global object rather than using module exports. The
