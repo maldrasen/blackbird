@@ -39,20 +39,29 @@ A weaver is created with the context to use for token replacement. This is most 
 - `{A:pussy.pussy}` A single word for "pussy" that takes the pussy shape into consideration.
 
 #### Breast Tokens
-- `{A:breasts.bigSoftBreasts}`A phrase like "big firm tits" or "large soft breasts"
-- `{A:breasts.bigBreasts}`A phrase like "big tits" or "large breasts"
-- `{A:breasts.softBreasts}`A phrase like "soft tits" or "firm breasts"
-- `{A:breasts.bigRoundBreasts}`A phrase describing breast size and shape.
+- `{A:breasts.bigSoftBreasts}` A phrase like "big firm tits" or "large soft breasts"
+- `{A:breasts.bigBreasts}` A phrase like "big tits" or "large breasts"
+- `{A:breasts.softBreasts}` A phrase like "soft tits" or "firm breasts"
+- `{A:breasts.bigRoundBreasts}` A phrase describing breast size and shape.
 - `{A:breasts.big}` An adjective that can be used to describe the breast size.
-- `{A:breasts.soft}`An adjective that can be used to describe the breast firmness
-- `{A:breasts.round}` An adjective that can be used to describe the breast shape
-- `{A:breasts.breast}` A single word for "breast" (note singular) that takes size and shape into consideration.  
+- `{A:breasts.soft}` An adjective that can be used to describe the breast firmness.
+- `{A:breasts.round}` An adjective that can be used to describe the breast shape.
+- `{A:breasts.breast}` A single word for "breast" (note singular) that takes size and shape into consideration.
 - `{A:breasts.breasts}` A single word for "breasts" (note plural) that takes size and shape into consideration.
-- `{A:breasts.bigSoft}`A longer adjective phrase without a word for breasts.
-- `{A:breasts.bigRound}`A longer adjective phrase describing the shape without a word for breasts.
-- `{A:breasts:thickNipples}` A phrase like 'long nipples' or 'dark teats'
-- `{A:breasts:thickInchLongNipples}`
-- `{A:breasts:inchLongNipples}`
+- `{A:breasts.bigSoft}` A longer adjective phrase without a word for breasts.
+- `{A:breasts.bigRound}` A longer adjective phrase describing the shape without a word for breasts.
+- `{A:breasts.thickNipples}` A phrase like 'long nipples' or 'dark teats'
+- `{A:breasts.hardThickNipples}` Like thickNipples, but stiff with arousal. A phrase like 'long hard nipples'
+- `{A:breasts.appleSized}` An attributive size comparison like "cantaloupe sized", for use in front of a noun: "heavy {A:breasts.appleSized} bells".
+- `{A:breasts.appleSizedBreasts}` A phrase like "cantaloupe sized tits".
+- `{A:breasts.breastsBigAsApples}` A phrase like "tits the size of small cantaloupes".
+- `{A:breasts.apples}` A plural comparison phrase like "small cantaloupes". Only use it after a comparative, as in "no larger than {A:breasts.apples}". Never put it in front of "sized"; that's what appleSized is for, because the phrase's own adjectives would read as describing the breasts.
+- `{A:breasts.anApple}` A singular comparison phrase like "a small cantaloupe", with the same restriction.
+##### (Not implemented yet)
+-- `{A:breasts:thickInchLongNipples}`
+-- `{A:breasts:inchLongNipples}`
+
+The size comparisons come from `data/breast-comparisons.js`, which ladders each breast shape by relative breast volume and keeps two lists per rung: bare nouns for the `appleSized` forms and qualified phrases for the long forms.
 
 #### Equipment Tokens
 - `{A:equipped.<slot>}` short name of the item in the equipped \<slot>
