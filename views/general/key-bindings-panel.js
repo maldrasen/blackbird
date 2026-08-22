@@ -2,31 +2,42 @@ global.KeyBindingsPanel = (function() {
 
   const columnCount = 2;
 
+  let container = null;
   let bindings = {};
   let onChange = null;
   let capturing = null;
 
   function init() {
     X.onClick('.key-bindings-area .key-button', startCapture);
+    X.onClick('.restore-bindings-button', restoreDefaults);
 
     // The capture phase runs before the escape chain, the console toggle and the key binding dispatcher, which all
     // listen on the window in the bubble phase.
     window.addEventListener('keydown', handleKeyDown, true);
   }
 
-  // Renders a section for each context into the container. The panel keeps its own copy of the bindings to edit,
-  // which is what the options overlay saves. The sections are dealt into whichever column is shortest so the tab
-  // fills evenly.
-  function build(container, current, options={}) {
+  // The panel keeps its own copy of the bindings to edit, which is what the options overlay saves.
+  function build(element, current, options={}) {
+    container = element;
     bindings = structuredClone(current);
     onChange = options.onChange || null;
     capturing = null;
 
+    render();
+  }
+
+  // Renders a section for each context into the container. The sections are dealt into whichever column is shortest
+  // so the tab fills evenly.
+  function render() {
     X.empty(container);
+    container.appendChild(X.createElement(`<ul class='conflict-messages hide'></ul>`));
+
+    const columnArea = X.createElement(`<div class='binding-columns'></div>`);
+    container.appendChild(columnArea);
 
     const columns = Array.from({ length:columnCount }, () => {
       const element = X.createElement(`<div class='binding-column'></div>`);
-      container.appendChild(element);
+      columnArea.appendChild(element);
       return { element, rows:0 };
     });
 
@@ -35,6 +46,8 @@ global.KeyBindingsPanel = (function() {
       column.element.appendChild(buildSection(context, name, actions));
       column.rows += Object.keys(actions).length;
     });
+
+    updateConflicts();
   }
 
   function buildSection(context, name, actions) {
@@ -50,6 +63,40 @@ global.KeyBindingsPanel = (function() {
     });
 
     return section;
+  }
+
+  // Marks every button caught in a conflict and lists the conflicts above the sections. The options overlay keeps
+  // the save button disabled while any remain.
+  function updateConflicts() {
+    const conflicts = KeyBindings.findConflicts(bindings);
+    const messages = container.querySelector('.conflict-messages');
+
+    container.querySelectorAll('.key-button.conflict').forEach(button => { X.removeClass(button,'conflict'); });
+    X.empty(messages);
+
+    conflicts.forEach(conflict => {
+      const context = KeyBindings.getContexts()[conflict.context];
+      const names = conflict.actions.map(action => context.actions[action].name);
+
+      conflict.actions.forEach(action => {
+        X.addClass(container.querySelector(`.key-button[data-context='${conflict.context}'][data-action='${action}']`),'conflict');
+      });
+
+      messages.appendChild(X.createElement(`<li>${context.name}: ${names.join(' and ')} both use ${KeyBindings.labelFor(conflict.code)}.</li>`));
+    });
+
+    (conflicts.length > 0) ? X.removeClass(messages,'hide') : X.addClass(messages,'hide');
+  }
+
+  function hasConflicts() {
+    return KeyBindings.findConflicts(bindings).length > 0;
+  }
+
+  function restoreDefaults() {
+    cancelCapture();
+    bindings = KeyBindings.getDefaults();
+    render();
+    if (onChange) { onChange(); }
   }
 
   function startCapture(event) {
@@ -79,6 +126,7 @@ global.KeyBindingsPanel = (function() {
 
     bindings[capturing.dataset.context][capturing.dataset.action] = event.code;
     cancelCapture();
+    updateConflicts();
     if (onChange) { onChange(); }
   }
 
@@ -90,6 +138,7 @@ global.KeyBindingsPanel = (function() {
     init,
     build,
     cancelCapture,
+    hasConflicts,
     getBindings,
   };
 

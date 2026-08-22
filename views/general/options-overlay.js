@@ -16,7 +16,7 @@ global.OptionsOverlay = (function() {
     });
 
     X.onClick('#optionsOverlay a.save-button', () => {
-      save();
+      if (save() === false) { return; }
       WindowManager.pop();
     });
   }
@@ -38,7 +38,8 @@ global.OptionsOverlay = (function() {
       X.first(`#${key}Slider`).appendChild(sliders[key].getElement());
     });
 
-    KeyBindingsPanel.build(X.first('#keyBindings .key-bindings-area'), KeyBindings.getBindings(), { onChange:markDirty });
+    KeyBindingsPanel.build(X.first('#keyBindings .key-bindings-area'), KeyBindings.getBindings(), { onChange:bindingsChanged });
+    updateSaveButton();
   }
 
   // The overlay is rebuilt from the saved options every time it opens, so closing without saving discards any edits.
@@ -61,7 +62,21 @@ global.OptionsOverlay = (function() {
     isDirty = true;
   }
 
+  function bindingsChanged() {
+    markDirty();
+    updateSaveButton();
+  }
+
+  // Two actions sharing a key in the same context can't be saved, so the save button is disabled until the conflict
+  // is resolved. The panel lists what conflicts.
+  function updateSaveButton() {
+    const button = X.first('#optionsOverlay a.save-button');
+    KeyBindingsPanel.hasConflicts() ? X.addClass(button,'disabled') : X.removeClass(button,'disabled');
+  }
+
+  // Resolves false when the options can't be saved as they stand.
   function save() {
+    if (KeyBindingsPanel.hasConflicts()) { return false; }
     if (isDirty === false) { return; }
 
     WorldState.setOptions(pack()).then(() => {

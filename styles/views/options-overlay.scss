@@ -12,7 +12,12 @@
     box-shadow: variables.$shadow-inset;
   }
 
-  .key-bindings-area {
+  .conflict-messages {
+    margin-bottom: 10px;
+    color: variables.$fg-error;
+  }
+
+  .binding-columns {
     display: flex;
     gap: 20px;
     align-items: flex-start;
@@ -49,6 +54,15 @@
       border-color: rgb(166,109,45);
       box-shadow: variables.$shadow-small-highlight;
     }
+
+    .key-button.conflict {
+      color: variables.$fg-error !important;
+      border-color: variables.$fg-error;
+    }
+  }
+
+  .restore-row {
+    text-align: right;
   }
 
   .with-percent {
