@@ -41,6 +41,11 @@
       min-width: 40px;
       text-align: center;
     }
+
+    .key-button.capturing {
+      border-color: rgb(166,109,45);
+      box-shadow: variables.$shadow-small-highlight;
+    }
   }
 
   .with-percent {

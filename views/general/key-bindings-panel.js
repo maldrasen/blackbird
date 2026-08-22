@@ -4,6 +4,15 @@ global.KeyBindingsPanel = (function() {
 
   let bindings = {};
   let onChange = null;
+  let capturing = null;
+
+  function init() {
+    X.onClick('.key-bindings-area .key-button', startCapture);
+
+    // The capture phase runs before the escape chain, the console toggle and the key binding dispatcher, which all
+    // listen on the window in the bubble phase.
+    window.addEventListener('keydown', handleKeyDown, true);
+  }
 
   // Renders a section for each context into the container. The panel keeps its own copy of the bindings to edit,
   // which is what the options overlay saves. The sections are dealt into whichever column is shortest so the tab
@@ -11,6 +20,7 @@ global.KeyBindingsPanel = (function() {
   function build(container, current, options={}) {
     bindings = structuredClone(current);
     onChange = options.onChange || null;
+    capturing = null;
 
     X.empty(container);
 
@@ -42,12 +52,44 @@ global.KeyBindingsPanel = (function() {
     return section;
   }
 
+  function startCapture(event) {
+    cancelCapture();
+    capturing = event.target.closest('.key-button');
+    X.addClass(capturing,'capturing');
+    capturing.textContent = 'Press a key…';
+  }
+
+  function cancelCapture() {
+    if (capturing == null) { return; }
+    X.removeClass(capturing,'capturing');
+    capturing.textContent = KeyBindings.labelFor(bindings[capturing.dataset.context][capturing.dataset.action]);
+    capturing = null;
+  }
+
+  // While a button is waiting for a key the key press belongs to it and nothing else. Escape backs out, keys that
+  // can't be bound are ignored, and anything else becomes the new binding.
+  function handleKeyDown(event) {
+    if (capturing == null) { return; }
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    if (event.code === KeyCodes.Escape) { return cancelCapture(); }
+    if (KeyBindings.isBindable(event.code) === false) { return; }
+
+    bindings[capturing.dataset.context][capturing.dataset.action] = event.code;
+    cancelCapture();
+    if (onChange) { onChange(); }
+  }
+
   function getBindings() {
     return structuredClone(bindings);
   }
 
   return {
+    init,
     build,
+    cancelCapture,
     getBindings,
   };
 

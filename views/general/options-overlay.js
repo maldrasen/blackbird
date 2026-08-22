@@ -51,6 +51,7 @@ global.OptionsOverlay = (function() {
   }
 
   function close() {
+    KeyBindingsPanel.cancelCapture();
     TabController.setActiveByName(X.first('#optionsOverlay .tab-control'),'gameplay');
     X.addClass('#optionsOverlay','hide');
     MainMenu.show();

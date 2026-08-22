@@ -13,6 +13,7 @@ global.Views = (function() {
     GameStateFrame.init();
     GeneralOverlay.init();
     KeyBindingDispatcher.init();
+    KeyBindingsPanel.init();
     LevelUpOverlay.init();
     LoadOverlay.init();
     LocationView.init();
