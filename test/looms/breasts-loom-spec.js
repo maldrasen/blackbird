@@ -25,13 +25,22 @@ describe("BreastsLoom", function() {
       });
     });
 
-    it("has ascending rungs that end at Infinity", function() {
+    function sizeBandFor(shape) {
+      const size = Object.keys(BreastData.BreastShapeTable).find(size => {
+        return Object.values(BreastData.BreastShapeTable[size]).flat().includes(shape);
+      });
+      return BreastData.BreastSizes[size];
+    }
+
+    it("has ascending rungs that span exactly the shape's size band", function() {
       Object.entries(BreastComparisons).forEach(([shape, ladder]) => {
+        const band = sizeBandFor(shape);
         expect(ladder.length, `${shape} has no rungs`).to.be.above(0);
         ladder.forEach((rung, i) => {
           if (i > 0) { expect(rung.max, `${shape} rung ${i} does not ascend`).to.be.above(ladder[i-1].max); }
         });
-        expect(ladder[ladder.length-1].max, `${shape} does not end at Infinity`).to.equal(Infinity);
+        expect(ladder[0].max, `${shape} first rung ends below its band`).to.be.above(band.min);
+        expect(ladder[ladder.length-1].max, `${shape} does not end at its band max`).to.equal(band.max);
       });
     });
 

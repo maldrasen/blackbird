@@ -1,5 +1,7 @@
-// Size comparison objects for each breast shape, keyed by shape and laddered by absolute breast volume in ml. The first
-// rung whose max is greater than the volume is used, so each ladder must ascend and end with max:Infinity.
+// Size comparison objects for each breast shape, keyed by shape and laddered by breast volume in ml. The first rung
+// whose max is at or above the volume is used. Each ladder must ascend and end at the max of the size band its shape
+// belongs to (BreastData.BreastSizes); a volume past the end of its ladder means the breast volume and size category
+// are out of sync, which is an error rather than something to paper over.
 //
 // Each rung has two lists:
 //
@@ -25,7 +27,7 @@ global.BreastComparisons = {
                     phrases:['small lime','small lemon','small tart plum',`large hen's egg`,'plump apricot','ripe lemon','ripe lime'] },
     { max:150,      nouns:['lemon','plum'],
                     phrases:['ripe lemon','ripe lime','tiny pear','tiny apple','firm young peach','ripe plum','small orange','large apricot'] },
-    { max:Infinity, nouns:['peach','orange'],
+    { max:200,      nouns:['peach','orange'],
                     phrases:['small green apple','plump peach','large plum','ripe orange'] },
   ],
 
@@ -37,7 +39,7 @@ global.BreastComparisons = {
                     phrases:['ripe pear','small mango','small pinecone'] },
     { max:350,      nouns:['pinecone'],
                     phrases:['large pear','tiny eggplant','small mango','pinecone'] },
-    { max:Infinity, nouns:['mango','pinecone'],
+    { max:400,      nouns:['mango','pinecone'],
                     phrases:['overgrown pear','small eggplant','ripe mango','pinecone'] },
   ],
 
@@ -49,7 +51,7 @@ global.BreastComparisons = {
                     phrases:['plump apple','large peach','plump orange','large bread roll'] },
     { max:350,      nouns:['cinnamon roll'],
                     phrases:['large apple','large orange','plump bread roll'] },
-    { max:Infinity, nouns:['pomegranate'],
+    { max:400,      nouns:['pomegranate'],
                     phrases:['overgrown apple','overgrown orange','large cinnamon roll','small grapefruit'] },
   ],
 
@@ -57,7 +59,7 @@ global.BreastComparisons = {
   'teardrops': [
     { max:550,      nouns:['mango','eggplant','belt pouch'],
                     phrases:['juicy mango','ripe eggplant','leather belt pouch'] },
-    { max:Infinity, nouns:['wineskin','papaya'],
+    { max:700,      nouns:['wineskin','papaya'],
                     phrases:['large juicy mango','large juicy eggplant','full wineskin'] },
   ],
 
@@ -65,7 +67,7 @@ global.BreastComparisons = {
   'conical': [
     { max:550,      nouns:['eggplant'],
                     phrases:['large pinecone','ripe eggplant'] },
-    { max:Infinity, nouns:['papaya'],
+    { max:700,      nouns:['papaya'],
                     phrases:['huge pinecone','large juicy eggplant'] },
   ],
 
@@ -73,7 +75,7 @@ global.BreastComparisons = {
   'balls': [
     { max:550,      nouns:['grapefruit'],
                     phrases:['juicy grapefruit'] },
-    { max:Infinity, nouns:['grapefruit'],
+    { max:700,      nouns:['grapefruit'],
                     phrases:['large ripe grapefruit'] },
   ],
 
@@ -81,7 +83,7 @@ global.BreastComparisons = {
   'tubular': [
     { max:550,      nouns:['flask'],
                     phrases:['leather flask','small wine bottle'] },
-    { max:Infinity, nouns:['wineskin','wine bottle'],
+    { max:700,      nouns:['wineskin','wine bottle'],
                     phrases:['small ale tankard','full wineskin','full wine bottle'] },
   ],
 
@@ -89,7 +91,7 @@ global.BreastComparisons = {
   'swingers': [
     { max:1000,     nouns:['wineskin','tankard'],
                     phrases:['wineskin','ale tankard'] },
-    { max:Infinity, nouns:['wine decanter'],
+    { max:1200,     nouns:['wine decanter'],
                     phrases:['tavern tankard','bulging wineskin','large wine decanter'] },
   ],
 
@@ -97,7 +99,7 @@ global.BreastComparisons = {
   'average': [
     { max:1000,     nouns:['wineskin','tankard'],
                     phrases:['overgrown grapefruit'] },
-    { max:Infinity, nouns:['wine decanter','ostrich egg'],
+    { max:1200,     nouns:['wine decanter','ostrich egg'],
                     phrases:['young cantaloupe','small cantaloupe','small honeydew melon'] },
   ],
 
@@ -105,7 +107,7 @@ global.BreastComparisons = {
   'perky': [
     { max:1000,     nouns:['wineskin','tankard'],
                     phrases:['wineskin','ale tankard'] },
-    { max:Infinity, nouns:['ostrich egg','wine decanter'],
+    { max:1200,     nouns:['ostrich egg','wine decanter'],
                     phrases:['young pineapple','small pineapple'] },
   ],
 
@@ -113,7 +115,7 @@ global.BreastComparisons = {
   'torpedoes': [
     { max:1000,     nouns:['wineskin'],
                     phrases:['large wine bottle'] },
-    { max:Infinity, nouns:['wine decanter','flagon'],
+    { max:1200,     nouns:['wine decanter','flagon'],
                     phrases:['oversized wine bottle'] },
   ],
 
@@ -121,7 +123,7 @@ global.BreastComparisons = {
   'dangling': [
     { max:1600,     nouns:['cantaloupe'],
                     phrases:['small pineapple'] },
-    { max:Infinity, nouns:['pineapple','cantaloupe'],
+    { max:2000,     nouns:['pineapple','cantaloupe'],
                     phrases:['ripe pineapple','juicy pineapple'] },
   ],
 
@@ -129,7 +131,7 @@ global.BreastComparisons = {
   'heavy-bells': [
     { max:1600,     nouns:['cantaloupe'],
                     phrases:['small pineapple'] },
-    { max:Infinity, nouns:['pineapple','cantaloupe'],
+    { max:2000,     nouns:['pineapple','cantaloupe'],
                     phrases:['ripe pineapple','juicy pineapple'] },
   ],
 
@@ -137,7 +139,7 @@ global.BreastComparisons = {
   'big-round': [
     { max:1600,     nouns:['cantaloupe','honeydew melon'],
                     phrases:['young coconut','juicy cantaloupe','ripe honeydew melon'] },
-    { max:Infinity, nouns:['cantaloupe','honeydew melon'],
+    { max:2000,     nouns:['cantaloupe','honeydew melon'],
                     phrases:['small coconut','ripe cantaloupe','juicy honeydew melon'] },
   ],
 
@@ -147,7 +149,7 @@ global.BreastComparisons = {
                     phrases:['ripe pineapple','juicy pineapple','small oblong watermelon'] },
     { max:4000,     nouns:['pumpkin','watermelon'],
                     phrases:['large pineapple','big pineapple','small elongated watermelon','small elongated pumpkin'] },
-    { max:Infinity, nouns:['pumpkin','watermelon'],
+    { max:5000,     nouns:['pumpkin','watermelon'],
                     phrases:['huge pineapple','overgrown pineapple','ripe watermelon','ripe pumpkin'] },
   ],
 
@@ -157,7 +159,7 @@ global.BreastComparisons = {
                     phrases:['ripe pineapple','juicy pineapple','small oblong watermelon'] },
     { max:4000,     nouns:['pumpkin','watermelon'],
                     phrases:['large pineapple','big pineapple','small elongated watermelon','small elongated pumpkin'] },
-    { max:Infinity, nouns:['pumpkin','watermelon'],
+    { max:5000,     nouns:['pumpkin','watermelon'],
                     phrases:['huge pineapple','overgrown pineapple','ripe watermelon','ripe pumpkin'] },
   ],
 
@@ -167,7 +169,7 @@ global.BreastComparisons = {
                     phrases:['ripe coconut','big juicy cantaloupe','big juicy honeydew melon','ripe watermelon'] },
     { max:4000,     nouns:['pumpkin','watermelon'],
                     phrases:['swollen coconut','huge cantaloupe','swollen honeydew melon','swollen watermelon','small swollen pumpkin'] },
-    { max:Infinity, nouns:['pumpkin','watermelon'],
+    { max:5000,     nouns:['pumpkin','watermelon'],
                     phrases:['bulging coconut','bulging honeydew melon','bulging watermelon','ripe pumpkin'] },
   ],
 
@@ -177,7 +179,7 @@ global.BreastComparisons = {
                     phrases:['ripe coconut','big juicy cantaloupe','big juicy honeydew melon','small round watermelon'] },
     { max:4000,     nouns:['watermelon','pumpkin'],
                     phrases:['large coconut','huge cantaloupe','huge honeydew melon','ripe round watermelon','small pumpkin'] },
-    { max:Infinity, nouns:['watermelon','pumpkin'],
+    { max:5000,     nouns:['watermelon','pumpkin'],
                     phrases:['large ripe coconut','overgrown honeydew melon','round juicy watermelon','ripe pumpkin'] },
   ],
 
