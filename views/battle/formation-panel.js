@@ -8,6 +8,7 @@ global.FormationPanel = (function() {
     X.onClick('#battleView.target-mode .valid-target', targetSelected);
     X.onClick('#battleView.inspect-mode .combatant', inspectPosition);
     X.onClick('#commandPanel .cancel-button', cancelTargeting);
+    KeyBindingDispatcher.register('targeting', { isActive:isTargeting, perform:pressTarget });
     X.onResize(() => X.first('#combatantLayer') != null, handleResize);
   }
 
@@ -143,6 +144,20 @@ global.FormationPanel = (function() {
     stopTargeting();
 
     TargetingController.targetSelected(position);
+  }
+
+  function isTargeting() {
+    return X.hasClass('#battleView','target-mode');
+  }
+
+  // A targeting action names a rank and a column. The key press clicks that position if it's a valid target, so that
+  // both paths share targetSelected(). Matching the end of the position key leaves the side to whichever formation is
+  // being targeted.
+  function pressTarget(action) {
+    const [rank, column] = action.split('-');
+    const suffix = `.${rank === 'front' ? 0 : 1}.${parseInt(column) - 1}`;
+    const position = X.first(`#battleView.target-mode .position.valid-target[data-position$='${suffix}']`);
+    if (position) { position.click(); }
   }
 
   // =====================
@@ -318,6 +333,8 @@ global.FormationPanel = (function() {
     updateAll,
     updateCombatant,
     startTargeting,
+    isTargeting,
+    cancelTargeting,
     killEntity,
     moveForwardOnDeath,
     moveInwardOnDeath,
