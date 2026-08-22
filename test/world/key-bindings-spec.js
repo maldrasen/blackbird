@@ -29,6 +29,14 @@ describe("KeyBindings", function() {
     expect(KeyBindings.getBinding('dungeon','north')).to.equal('KeyW');
   });
 
+  it("lets an action be unbound", async function() {
+    await WorldState.setOptions({ keyBindings:{ battle:{ [BattleCommand.basicAttack]:null } } });
+
+    expect(KeyBindings.getBinding('battle',BattleCommand.basicAttack)).to.equal(null);
+    expect(KeyBindings.getAction('battle','KeyA')).to.equal(null);
+    expect(KeyBindings.getAction('battle',null)).to.equal(null);
+  });
+
   it("falls back to the defaults when the options hold no bindings", async function() {
     await WorldState.setOptions({ difficulty:{ damage:100, mitigation:100, resistance:0 } });
     expect(KeyBindings.getBindings()).to.deep.equal(KeyBindings.getDefaults());
@@ -54,6 +62,13 @@ describe("KeyBindings", function() {
     it("allows the same key in different contexts", function() {
       const bindings = KeyBindings.getDefaults();
       bindings.battle[BattleCommand.basicAttack] = 'KeyW';
+      expect(KeyBindings.findConflicts(bindings)).to.deep.equal([]);
+    });
+
+    it("ignores unbound actions", function() {
+      const bindings = KeyBindings.getDefaults();
+      bindings.battle[BattleCommand.basicAttack] = null;
+      bindings.battle[BattleCommand.basicDefend] = null;
       expect(KeyBindings.findConflicts(bindings)).to.deep.equal([]);
     });
   });

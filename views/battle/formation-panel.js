@@ -130,7 +130,7 @@ global.FormationPanel = (function() {
   function showKeyHints() {
     const hints = {};
     Object.entries(KeyBindings.getBindings().targeting).forEach(([action, key]) => {
-      hints[suffixFor(action)] = KeyBindings.labelFor(key);
+      if (key) { hints[suffixFor(action)] = KeyBindings.labelFor(key); }
     });
 
     X.each('#battleView .valid-target[data-position]', element => {

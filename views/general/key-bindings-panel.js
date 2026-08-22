@@ -58,11 +58,19 @@ global.KeyBindingsPanel = (function() {
     const grid = section.querySelector('.binding-grid');
 
     Object.entries(actions).forEach(([action, { name }]) => {
+      const button = X.createElement(`<a href='#' class='button key-button' data-context='${context}' data-action='${action}'></a>`);
+      showKey(button, bindings[context][action]);
+
       grid.appendChild(X.createElement(`<div class='label'>${name}</div>`));
-      grid.appendChild(X.createElement(`<div class='key'><a href='#' class='button key-button' data-context='${context}' data-action='${action}'>${KeyBindings.labelFor(bindings[context][action])}</a></div>`));
+      grid.appendChild(X.createElement(`<div class='key'></div>`)).appendChild(button);
     });
 
     return section;
+  }
+
+  function showKey(button, code) {
+    button.textContent = (code == null) ? 'None' : KeyBindings.labelFor(code);
+    (code == null) ? X.addClass(button,'unbound') : X.removeClass(button,'unbound');
   }
 
   // Marks every button caught in a conflict and lists the conflicts above the sections. The options overlay keeps
@@ -109,22 +117,26 @@ global.KeyBindingsPanel = (function() {
   function cancelCapture() {
     if (capturing == null) { return; }
     X.removeClass(capturing,'capturing');
-    capturing.textContent = KeyBindings.labelFor(bindings[capturing.dataset.context][capturing.dataset.action]);
+    showKey(capturing, bindings[capturing.dataset.context][capturing.dataset.action]);
     capturing = null;
   }
 
-  // While a button is waiting for a key the key press belongs to it and nothing else. Escape backs out, keys that
-  // can't be bound are ignored, and anything else becomes the new binding.
+  // While a button is waiting for a key the key press belongs to it and nothing else. Escape leaves the action
+  // unbound, keys that can't be bound are ignored, and anything else becomes the new binding.
   function handleKeyDown(event) {
     if (capturing == null) { return; }
 
     event.preventDefault();
     event.stopImmediatePropagation();
 
-    if (event.code === KeyCodes.Escape) { return cancelCapture(); }
+    if (event.code === KeyCodes.Escape) { return setBinding(null); }
     if (KeyBindings.isBindable(event.code) === false) { return; }
 
-    bindings[capturing.dataset.context][capturing.dataset.action] = event.code;
+    setBinding(event.code);
+  }
+
+  function setBinding(code) {
+    bindings[capturing.dataset.context][capturing.dataset.action] = code;
     cancelCapture();
     updateConflicts();
     if (onChange) { onChange(); }

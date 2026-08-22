@@ -59,6 +59,10 @@
       color: variables.$fg-error !important;
       border-color: variables.$fg-error;
     }
+
+    .key-button.unbound {
+      color: variables.$fg-very-weak !important;
+    }
   }
 
   .restore-row {

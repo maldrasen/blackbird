@@ -109,19 +109,22 @@ global.KeyBindings = (function() {
     return getBindings()[context][action];
   }
 
+  // An unbound action has a null key, which nothing matches.
   function getAction(context, code) {
+    if (code == null) { return null; }
     const entry = Object.entries(getBindings()[context] || {}).find(([action, key]) => key === code);
     return entry ? entry[0] : null;
   }
 
   // A key bound to two actions in the same context is a conflict. The same key in different contexts is fine, since
-  // only one context listens at a time.
+  // only one context listens at a time, and any number of actions can be unbound.
   function findConflicts(bindings) {
     const conflicts = [];
 
     Object.entries(bindings).forEach(([context, actions]) => {
       const byKey = {};
       Object.entries(actions).forEach(([action, key]) => {
+        if (key == null) { return; }
         (byKey[key] = byKey[key] || []).push(action);
       });
       Object.entries(byKey).forEach(([code, list]) => {
