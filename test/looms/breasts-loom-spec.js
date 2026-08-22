@@ -54,6 +54,21 @@ describe("BreastsLoom", function() {
       });
     });
 
+    it("places each compact noun in at most two adjacent rungs of a ladder", function() {
+      Object.entries(BreastComparisons).forEach(([shape, ladder]) => {
+        const rungsByNoun = {};
+        ladder.forEach((rung, i) => {
+          rung.nouns.forEach(noun => { (rungsByNoun[noun] ||= []).push(i); });
+        });
+        Object.entries(rungsByNoun).forEach(([noun, rungs]) => {
+          expect(rungs.length, `${shape}: "${noun}" is in ${rungs.length} rungs`).to.be.at.most(2);
+          if (rungs.length === 2) {
+            expect(rungs[1] - rungs[0], `${shape}: "${noun}" is in non-adjacent rungs`).to.equal(1);
+          }
+        });
+      });
+    });
+
     it("never uses a phrase that can't be pluralized on its last word", function() {
       Object.entries(BreastComparisons).forEach(([shape, ladder]) => {
         ladder.forEach(rung => {
