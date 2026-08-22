@@ -11,9 +11,7 @@ global.BattleSystem = (function() {
 
     state.setAmbushState(data.ambushState || BattleInitializer.rollAmbush());
 
-    // Once the formation is in place and the ambush state is known, the battle start text can be resolved from
-    // whichever record the encounter was built from. It's stored as a plain string so the state holds no live
-    // record objects. Battles built from a single monster or raw record data have no source and no start text.
+    // The source will be null when the encounter is built from a monster or record data, which the specs will often do.
     if (source) { state.setStartText(source.getStartText(state.getAmbushState())); }
   }
 

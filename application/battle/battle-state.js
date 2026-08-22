@@ -21,12 +21,10 @@ global.BattleState = function(data) {
   characterIds.forEach(id => { conditions[id] = BattleCondition.active; });
 
   let ambushState = 'normal';
+  let startText;
   let negotiationAttempted = false;
   let interrupt;
   let forcedAbility;
-
-  // The battle start text, resolved from the cohort or encounter record when the battle starts.
-  let startText;
 
   // The cleanup() function needs to be called after the battle to remove the monsters who were killed or ran away.
   function cleanup() {
@@ -327,9 +325,6 @@ global.BattleState = function(data) {
     cleanup,
     getAfterBattle: () => { return afterBattle; },
 
-    setStartText: (text) => { startText = text; },
-    getStartText: () => { return startText; },
-
     addMonster,
     getMonsterFormation: () => { return { ...monsterFormation }; },
     getPartyFormation: () => { return { ...partyFormation }; },
@@ -359,6 +354,8 @@ global.BattleState = function(data) {
     getTurnOrder: () => { return [ ...turnOrder ]; },
     setAmbushState,
     getAmbushState: () => { return ambushState; },
+    setStartText: (text) => { startText = text; },
+    getStartText: () => { return startText; },
     getNext,
     hasTurnOrderEntry,
     removeFromTurnOrder,
