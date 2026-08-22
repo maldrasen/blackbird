@@ -13,8 +13,6 @@ The last six tasks written (186–191) are all battle and character math — the
 - [127] Add a Health factor to the EssenceSystem `2pt`
 - [162] Battle enlightenment variation for no essence `2pt`
 - [155] Encounter Builder `8pt` — also what the testbed uses to build its fights
-
-### TODO
 - [191] Create a battle testbed `13pt` — **first slice only, timeboxed**: build a party, build an encounter via 155, run one full automated battle headlessly, produce a report. The thousand-battle balance harness is a later milestone.
 
 ### Stretch
