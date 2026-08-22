@@ -220,6 +220,20 @@ describe("EncounterBuilder", function() {
         }
       });
     });
+
+    it("passes the cohort's factory options to every monster", function() {
+      BattleFixtures.prepareForBattle();
+
+      for (let i=0; i<3; i++) {
+        BattleSystem.startBattle({ cohorts:['deepdark-kobolds'], essenceTarget:400, ambushState:'normal' });
+
+        const state = BattleSystem.getState();
+        state.getActiveMonsters().forEach(id => {
+          const code = MonsterComponent.lookup(id).code;
+          expect(BodyComponent.lookup(id).scaleColor, code).to.equal('black');
+        });
+      }
+    });
   });
 
   describe("buildFromRecordData()", function() {

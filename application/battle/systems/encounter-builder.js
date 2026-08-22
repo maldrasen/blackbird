@@ -4,7 +4,7 @@ global.EncounterBuilder = (function() {
   // from. These options will normally come from the dungeon floor. This is the standard version.
   function build(options) {
     const cohort = chooseCohort(options.cohorts, options.essenceTarget);
-    placeFormation(arrangeFormation(selectMonsters(cohort, options.essenceTarget)));
+    placeFormation(arrangeFormation(selectMonsters(cohort, options.essenceTarget)), cohort.getFactoryOptions());
   }
 
   // Choose which of the floor's cohorts the party will fight. A cohort is viable when it can field its minimum
@@ -224,13 +224,14 @@ global.EncounterBuilder = (function() {
   }
 
   // The formation grid holds monster codes by rank and position. Each monster is built by the factory then added to
-  // the battle state at its position in the monster formation.
-  function placeFormation(formation) {
+  // the battle state at its position in the monster formation. Encounters built from a cohort pass the cohort's
+  // factory options along to every monster in the formation.
+  function placeFormation(formation, factoryOptions) {
     const state = BattleSystem.getState();
     for (let r=0; r<formation.length; r++) {
       for (let p=0; p<formation[r].length; p++) {
         if (formation[r][p]) {
-          const monster = MonsterFactory(formation[r][p]).build();
+          const monster = MonsterFactory(formation[r][p], factoryOptions).build();
           state.addMonster(monster,`M.${r}.${p}`);
         }
       }

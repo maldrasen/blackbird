@@ -9,7 +9,7 @@ global.MonsterFactory = function(code,options={}) {
       monsterId = CharacterFactory.build({
         species: monsterSpecies,
         gender: rollGender(),
-        triggers: [...monsterBase.getTriggers(), ...(options.triggers || [])],
+        triggers: [...new Set([...monsterBase.getTriggers(), ...(options.triggers || [])])],
         archetypes: monsterBase.getArchetypes(),
       });
       addEquipment();

@@ -6,6 +6,12 @@ describe("MonsterFactory", function() {
       expect(BodyComponent.lookup(id).scaleColor).to.equal('black');
     });
 
+    it("merges option triggers with the base triggers without duplicating them", function() {
+      const id = MonsterFactory('deepdark-kobold',{ triggers:['black-hair'] }).build();
+      expect(id).to.not.be.undefined;
+      expect(BodyComponent.lookup(id).scaleColor).to.equal('black');
+    });
+
     it("leaves a natural fighter's hands empty", function() {
       const id = MonsterFactory('kobold-dick-puncher').build();
       const equipment = EquipmentComponent.lookup(id);
