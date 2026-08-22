@@ -9,6 +9,13 @@ global.LetterGradeHelper = (function() {
     return gradeLevels[letter];
   }
 
+  // The number of dice rolled for a mana pool, both at character creation and on each level up. Unlike attributes an
+  // F grade rolls nothing at all: it means the species has no natural affinity for that color. A missing grade (humans
+  // have no mana grades at all) is the same as an F.
+  function manaBase(letter) {
+    return { F:0, D:1, C:2, B:3, A:4, S:5, SS:6, SSS:7 }[letter] || 0;
+  }
+
   // The influence this attribute level will have on the essence needed to level. This is one of the knobs we have
   // that influences how fast a character levels. Species with naturally high attributes level slower, but not too
   // much slower.
@@ -89,6 +96,7 @@ global.LetterGradeHelper = (function() {
 
   return {
     attributeBase,
+    manaBase,
     attributeScore,
     feelingValue,
     sensitivityValue,
