@@ -25,6 +25,11 @@ global.BattleState = function(data) {
   let interrupt;
   let forcedAbility;
 
+  // The encounter builder records the cohort or encounter record the battle was built from, so that the battle
+  // start text can be looked up after the fact.
+  let cohort;
+  let encounter;
+
   // The cleanup() function needs to be called after the battle to remove the monsters who were killed or ran away.
   function cleanup() {
     [...getDeadMonsters(), ...getFledMonsters()].forEach(id => {
@@ -323,6 +328,11 @@ global.BattleState = function(data) {
   return {
     cleanup,
     getAfterBattle: () => { return afterBattle; },
+
+    setCohort: (code) => { cohort = code; },
+    getCohort: () => { return cohort; },
+    setEncounter: (code) => { encounter = code; },
+    getEncounter: () => { return encounter; },
 
     addMonster,
     getMonsterFormation: () => { return { ...monsterFormation }; },

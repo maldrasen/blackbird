@@ -7,6 +7,7 @@ describe("EncounterBuilder", function() {
 
       const state = BattleSystem.getState();
       expect(state.getActiveMonsters().length).to.equal(7);
+      expect(state.getEncounter()).to.equal('kobold-2');
 
       const center = state.getEntityAtPosition('M',0,2);
       expect(MonsterComponent.lookup(center).code).to.equal('kobold-dick-puncher');
@@ -208,10 +209,9 @@ describe("EncounterBuilder", function() {
       expect(monsters.length).to.be.within(1,10);
       expect(state.getEntityAtPosition('M',0,2)).to.not.be.null;
 
+      const cohort = Cohort.lookup(state.getCohort());
       const codes = monsters.map(id => MonsterComponent.lookup(id).code);
-      const home = Cohort.getAllCodes().find(cohort =>
-        codes.every(code => Cohort.lookup(cohort).getMonsters().includes(code)));
-      expect(home, `Monsters [${codes}] should all come from a single cohort`).to.not.be.undefined;
+      codes.forEach(code => expect(cohort.getMonsters(), code).to.include(code));
 
       monsters.forEach(id => {
         if (state.isInBack(id)) {

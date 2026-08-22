@@ -42,12 +42,18 @@ global.BattleText = (function() {
     X.first('#textScroll').scrollTop = 0;
   }
 
-  // TODO: We need to get the start text from the cohort or from the premade encounter. We'll need to save it
-  //       somewhere because we don't save the encounter in the state anymore.
   function showBattleStartText() {
     const state = BattleSystem.getState();
-    const ambushState = state.getAmbushState();
-    setMessages([{ text:`[TODO: Find start text for ${ambushState}]`, size:'large', color:'important' }]);
+    const text = lookupStartText(state) || `[Missing start text for ${state.getAmbushState()}]`;
+    setMessages([{ text, size:'large', color:'important' }]);
+  }
+
+  // The battle state records the cohort or encounter record the battle was built from. Battles built another way,
+  // from a single monster or raw record data, are test battles that fall back to the placeholder text above.
+  function lookupStartText(state) {
+    if (state.getCohort()) { return Cohort.lookup(state.getCohort()).getStartText(state.getAmbushState()); }
+    if (state.getEncounter()) { return Encounter.lookup(state.getEncounter()).getStartText(state.getAmbushState()); }
+    return null;
   }
 
   function addElement(message) {

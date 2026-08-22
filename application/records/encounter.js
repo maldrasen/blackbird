@@ -14,13 +14,13 @@ global.Encounter = (function() {
 
     const encounter = { ...encounters[code] };
 
-    // TODO: Remove description, moving to the same startText objects that the cohorts use.
-
     return {
       getCode: () => { return code; },
-      getDescription: () => { return encounter.description; },
       getFormation: () => { return encounter.formation; },
       getMonsters: () => { return encounter.monsters; },
+      getStartText: (ambushState, context={}) => {
+        return encounter.startText ? encounter.startText[ambushState].pick(context) : null;
+      },
     };
   }
 

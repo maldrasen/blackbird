@@ -4,6 +4,7 @@ global.EncounterBuilder = (function() {
   // from. These options will normally come from the dungeon floor. This is the standard version.
   function build(options) {
     const cohort = chooseCohort(options.cohorts, options.essenceTarget);
+    BattleSystem.getState().setCohort(cohort.getCode());
     placeFormation(arrangeFormation(selectMonsters(cohort, options.essenceTarget)), cohort.getFactoryOptions());
   }
 
@@ -203,6 +204,7 @@ global.EncounterBuilder = (function() {
   // monsters in a given formation.
   function buildFromRecord(code) {
     const encounter = Encounter.lookup(code);
+    BattleSystem.getState().setEncounter(code);
     buildFromRecordData(encounter.getFormation(), encounter.getMonsters());
   }
 
