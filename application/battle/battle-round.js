@@ -1,8 +1,11 @@
-global.BattleRound = function(acting) {
+global.BattleRound = function(acting, type=null) {
 
   const state = BattleSystem.getState();
-  const actingIsMonster = state.isMonster(acting);
+  const roundType = type || (state.isMonster(acting) ? 'monster' : 'character');
   const actingPosition = state.getPosition(acting);
+
+  Validate.isIn('BattleRound.type', roundType, ['monster','character','status']);
+
   const messages = [];
   const context = {};
 
@@ -114,8 +117,9 @@ global.BattleRound = function(acting) {
     getActingMonster: () => { return Monster(acting); },
     getActingCharacter: () => { return Character(acting); },
     getActingPosition: () => { return actingPosition; },
-    isActingMonster: () => { return actingIsMonster; },
-    isActingCharacter: () => { return actingIsMonster === false; },
+    isActingMonster: () => { return roundType === 'monster'; },
+    isActingCharacter: () => { return roundType === 'character'; },
+    isStatusEffect: () => { return roundType === 'status'; },
     setAbility,
     getAbility: () => { return ability; },
 

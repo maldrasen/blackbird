@@ -51,7 +51,8 @@ global.BattleSystem = (function() {
   }
 
   function startRound() {
-    round = BattleRound(state.getNext().id);
+    const next = state.getNext();
+    round = BattleRound(next.id, next.type);
     round.compileWeaponData();
     BattleInterface.highlightActing();
     StatusEffectSystem.processStartRound();
@@ -87,7 +88,7 @@ global.BattleSystem = (function() {
   }
 
   function statusEffectRound(entry) {
-    round = BattleRound(entry.id);
+    round = BattleRound(entry.id, entry.type);
     StatusEffectSystem.processTick(entry);
     round.getMessages().length === 0 ? advanceBattle() : BattleInterface.showMonsterResult();
   }
