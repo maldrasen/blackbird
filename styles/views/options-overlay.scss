@@ -12,6 +12,30 @@
     box-shadow: variables.$shadow-inset;
   }
 
+  .key-bindings-area {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    align-items: start;
+  }
+
+  .binding-context h4 {
+    margin-bottom: 10px;
+  }
+
+  .binding-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 10px;
+    row-gap: 5px;
+    align-items: center;
+
+    .key-button {
+      min-width: 40px;
+      text-align: center;
+    }
+  }
+
   .with-percent {
     position: relative;
 

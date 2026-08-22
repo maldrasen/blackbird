@@ -548,6 +548,7 @@
     "views/general/console-commands.js",
     "views/general/console-view.js",
     "views/general/game-state-frame.js",
+    "views/general/key-bindings-panel.js",
     "views/general/list-builder.js",
     "views/general/load-overlay.js",
     "views/general/main-content.js",

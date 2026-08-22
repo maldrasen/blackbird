@@ -9,7 +9,6 @@ global.OptionsOverlay = (function() {
   const sliders = {};
 
   let isDirty = false;
-  let isBuilt = false;
 
   function init() {
     X.onClick('#optionsOverlay a.close-button', () => {
@@ -39,11 +38,13 @@ global.OptionsOverlay = (function() {
       X.first(`#${key}Slider`).appendChild(sliders[key].getElement());
     });
 
-    isBuilt = true;
+    KeyBindingsPanel.build(X.first('#keyBindings .key-bindings-area'), KeyBindings.getBindings(), { onChange:markDirty });
   }
 
+  // The overlay is rebuilt from the saved options every time it opens, so closing without saving discards any edits.
   function open() {
-    if (isBuilt === false) { OptionsOverlay.build(); }
+    build();
+    isDirty = false;
     MainMenu.hide();
     X.removeClass('#optionsOverlay','hide');
     WindowManager.push(OptionsOverlay);
@@ -73,13 +74,16 @@ global.OptionsOverlay = (function() {
     });
   }
 
+  // Only what's shown here is packed, so the rest of the options are carried over untouched.
   function pack() {
     return {
+      ...WorldState.getOptions(),
       difficulty: {
         damage: sliders.damage.getValue(),
         mitigation: sliders.mitigation.getValue(),
         resistance: sliders.resistance.getValue(),
-      }
+      },
+      keyBindings: KeyBindingsPanel.getBindings(),
     };
   }
 
