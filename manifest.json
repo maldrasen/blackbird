@@ -607,6 +607,7 @@
     "test/components/experience-component-spec.js",
     "test/components/feelings-component-spec.js",
     "test/components/health-component-spec.js",
+    "test/components/mana-component-spec.js",
     "test/components/status-effect-component-spec.js",
     "test/dungeon/dungeon-system-spec.js",
     "test/dungeon/factories/floor-factory-spec.js",
