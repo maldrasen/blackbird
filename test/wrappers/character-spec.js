@@ -37,6 +37,18 @@ describe("Character", function() {
       expect(Character(horse).breastsAreAtLeast(volume + 10)).to.be.false;
     });
 
+    it("Knows when breasts have a shape that can be compared to an object", function() {
+      const round = CharacterFixtures.genericFemale({ breasts:{ breastShape:'balls' } });
+      const torpedo = CharacterFixtures.genericFemale({ breasts:{ breastShape:'torpedoes' } });
+      const flat = CharacterFixtures.genericMale({});
+
+      expect(Character(round).hasComparableBreasts()).to.be.true;
+      expect(Character(torpedo).hasComparableBreasts()).to.be.false;
+      expect(Character(flat).hasComparableBreasts()).to.be.false;
+      expect(CharacterRequirements.shapeComparableBreasts('C')({ C:round })).to.be.true;
+      expect(CharacterRequirements.shapeComparableBreasts('C')({ C:torpedo })).to.be.false;
+    });
+
     it("Compares cock sizes", function() {
       const horse = CharacterFixtures.genericMale({ species:SpeciesCode.equian, cock:'huge' });
       const length = CockComponent.lookupNormalOf(horse).length;

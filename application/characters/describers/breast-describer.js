@@ -233,7 +233,7 @@ global.BreastsDescriber = (function() {
       elongated shape that slopes gently downwards.`);
     options.push(`{C:name's} long {C:breasts.softBreasts} project
       dramatically outward before gently yielding to gravity.`);
-    options.push(`{C:name's} {C:breasts.appleSizedBreasts} project sharply forward
+    options.push(`{C:name's} {C:breasts.bigBreasts} project sharply forward
       in a firm, elongated shape, maintaining a pointed, upward-angled profile with minimal sag.`);
     return Random.from(options);
   }

@@ -61,7 +61,7 @@ A weaver is created with the context to use for token replacement. This is most 
 -- `{A:breasts:thickInchLongNipples}`
 -- `{A:breasts:inchLongNipples}`
 
-The size comparisons come from `data/breast-comparisons.js`, which ladders each breast shape by relative breast volume and keeps two lists per rung: bare nouns for the `appleSized` forms and qualified phrases for the long forms.
+The size comparisons come from `data/breast-comparisons.js`, which has a ladder of round objects and a ladder of teardrop shaped objects, each banded by absolute breast volume so that a small species isn't compared to a watermelon just because their tits are huge for their frame. Every band keeps two lists: bare nouns for the `appleSized` forms and qualified phrases for the long forms. `BreastData.ComparisonShapes` maps each breast shape to the ladder it uses; the flat and torpedo shaped breasts map to `null` because there's no common object to compare them to, and the comparison tokens emit an error for those shapes instead of a comparison, so anything using them needs to be gated on the `CharacterRequirements.shapeComparableBreasts()` predicate, or `Character(id).hasComparableBreasts()` in code.
 
 #### Equipment Tokens
 - `{A:equipped.<slot>}` short name of the item in the equipped \<slot>

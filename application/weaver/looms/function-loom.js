@@ -54,15 +54,14 @@ global.FunctionLoom = (function() {
   }
 
   // Hitting a character's chest will sometimes hit their breasts if they have breasts, and unlike the cock or pussy
-  // hits will happen through armor.
+  // hits will happen through armor. The size comparison is only offered for breast shapes that can be compared.
   function chestHitLocation(id, owner, subject) {
     const breasts = BreastsComponent.lookup(id);
 
     if (breasts && Random.roll(100) < 30) {
-      return Random.from([
-        `one of ${owner} {breasts}`,
-        `one of ${owner} {${subject}:breasts.appleSizedBreasts}`,
-      ]);
+      return Character(id).hasComparableBreasts() ?
+        `one of ${owner} {${subject}:breasts.appleSizedBreasts}`:
+        `one of ${owner} {${subject}:breasts.bigSoftBreasts}`;
     }
 
     return `${owner} chest`;

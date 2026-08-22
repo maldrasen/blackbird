@@ -98,32 +98,36 @@ global.BreastsLoom = (function() {
     return Weaver.formatWarning(`[Breasts:${token}]`);
   }
 
-  // Shapes without a round object to compare against have no ladder, so using a comparison token for one of them is a
-  // template problem that gets a warning. A relative volume past the end of its ladder means the breast volume and
-  // size category are out of sync, which is an error.
+  // Shapes without a common object to compare against map to no ladder in BreastData.ComparisonShapes, so using a
+  // comparison token for one of them is a template problem that gets an error. The ladders are banded by absolute
+  // volume so that the same ostrich egg sized tits read the same on a havlin as on an equin. Each band is keyed by its
+  // upper bound and the first band at or above the volume is used. A volume past the top band gets the top band, as
+  // the biggest objects on the ladder are still the closest comparison there is.
   function withComparison(breasts, token, compose) {
-    const ladder = BreastComparisons[breasts.breastShape];
-    if (ladder == null) { return Weaver.formatWarning(`[Breasts:${token}:${breasts.breastShape}]`); }
+    const comparisonShape = BreastData.ComparisonShapes[breasts.breastShape];
+    if (comparisonShape == null) {
+      return Weaver.formatError(`[Error: ${breasts.breastShape} is an incomparable breast shape]`); }
 
-    const volume = breasts.relativeBreastVolume;
-    const rung = ladder.find(rung => volume <= rung.max);
-    if (rung == null) { throw new Error(`Breast volume ${volume}ml is past the end of the ${breasts.breastShape} ladder.`); }
+    const ladder = BreastComparisons[comparisonShape];
+    const volume = breasts.absoluteBreastVolume;
+    const maxes = Object.keys(ladder.nouns).map(Number).sort((a,b) => a - b);
+    const max = maxes.find(max => volume <= max) ?? maxes[maxes.length-1];
 
-    return compose(rung, breasts);
+    return compose({ nouns:ladder.nouns[max], phrases:ladder.phrases[max] }, breasts);
   }
 
-  function appleSized(rung) { return `${Random.from(rung.nouns)} sized`; }
-  function appleSizedBreasts(rung, breasts) { return `${appleSized(rung)} ${getBreastsWord(breasts)}`; }
-  function comparisonPhrase(rung) { return Random.from(rung.phrases); }
-  function apples(rung) { return EnglishHelper.pluralize(comparisonPhrase(rung)); }
+  function appleSized(band) { return `${Random.from(band.nouns)} sized`; }
+  function appleSizedBreasts(band, breasts) { return `${appleSized(band)} ${getBreastsWord(breasts)}`; }
+  function comparisonPhrase(band) { return Random.from(band.phrases); }
+  function apples(band) { return EnglishHelper.pluralize(comparisonPhrase(band)); }
 
-  function anApple(rung) {
-    const phrase = comparisonPhrase(rung);
+  function anApple(band) {
+    const phrase = comparisonPhrase(band);
     return `${EnglishHelper.a_an(phrase)} ${phrase}`;
   }
 
-  function breastsBigAsApples(rung, breasts) {
-    return `${getBreastsWord(breasts)} ${Random.fromFrequencyMap(comparisonConnectors)} ${apples(rung)}`;
+  function breastsBigAsApples(band, breasts) {
+    return `${getBreastsWord(breasts)} ${Random.fromFrequencyMap(comparisonConnectors)} ${apples(band)}`;
   }
 
   // Unlike the {breast} token (which usually resolves to "breast" or "tit") this breast word function takes the
