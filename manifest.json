@@ -344,7 +344,7 @@
     "data/dungeon-themes/sewer.js",
     "data/dungeon-themes/temple.js",
     "data/dungeon-themes/warrens.js",
-    "data/encounters/encounter-fixtures.js",
+    "data/encounters/spec-encounters.js",
     "data/episode-bundles.js",
     "data/episodes/debug-strange-mist.js",
     "data/episodes/game-over.js",

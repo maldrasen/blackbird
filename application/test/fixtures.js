@@ -11,10 +11,7 @@ global.Fixtures = (function() {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
-      // encounter: 'battle-fixture-1',
-      // encounter: `negotiation-fixture-${Random.between(1,3)}`,
-      encounter: `negotiation-fixture-2`,
-      // encounter: 'test',
+      monster: 'kobold-sneak-slut',
     });
 
     GameSystem.setGameMode(GameMode.location);
