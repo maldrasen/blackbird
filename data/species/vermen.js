@@ -10,6 +10,14 @@ Species.register(SpeciesCode.vermen, {
     beauty: 'F',
   },
 
+  mana: {
+    red: 'F',
+    yellow: 'F',
+    green: 'C',
+    blue: 'F',
+    black: 'F',
+  },
+
   healthFactor: 0.2,
   resistances: {
     nature: 50,

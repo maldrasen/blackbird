@@ -12,6 +12,14 @@ Species.register(SpeciesCode.kobold, {
     beauty: 'D',
   },
 
+  mana: {
+    red: 'C',
+    yellow: 'F',
+    green: 'F',
+    blue: 'F',
+    black: 'F',
+  },
+
   healthFactor: 0.2,
   resistances: {
     slash: 10,

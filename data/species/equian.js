@@ -10,6 +10,14 @@ Species.register(SpeciesCode.equian, {
     beauty: 'C',
   },
 
+  mana: {
+    red: 'F',
+    yellow: 'D',
+    green: 'D',
+    blue: 'F',
+    black: 'F',
+  },
+
   healthFactor: 1.6,
   resistances: {
     slash: 10,

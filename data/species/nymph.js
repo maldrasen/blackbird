@@ -10,6 +10,14 @@ Species.register(SpeciesCode.nymph, {
     beauty: 'A',
   },
 
+  mana: {
+    red: 'F',
+    yellow: 'F',
+    green: 'C',
+    blue: 'C',
+    black: 'D',
+  },
+
   healthFactor: 1.0,
   resistances: {
     nature: 20,
