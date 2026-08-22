@@ -32,7 +32,7 @@ global.BreastData = {
   SaggyShapes: ['swingers','dangling','heavy-bells','pendulous','hangers','elongated-sacks','massive-bells'],
 
   // The BreastComparisons ladder to use for each shape. Shapes that are flat or the long narrow torpedo/tubular kind
-  // have no common object to compare against and map to null; the comparison tokens warn for them, so templates
+  // have no common object to compare against and map to null; the comparison tokens error for them, so templates
   // that use those tokens need to be gated on the shape being comparable.
   ComparisonShapes: {
     'flat':             null,

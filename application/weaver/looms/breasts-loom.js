@@ -99,7 +99,7 @@ global.BreastsLoom = (function() {
   }
 
   // Shapes without a common object to compare against map to no ladder in BreastData.ComparisonShapes, so using a
-  // comparison token for one of them is a template problem that gets a warning. The ladders are banded by absolute
+  // comparison token for one of them is a template problem that gets an error. The ladders are banded by absolute
   // volume so that the same ostrich egg sized tits read the same on a havlin as on an equin. Each band is keyed by its
   // upper bound and the first band at or above the volume is used. A volume past the top band gets the top band, as
   // the biggest objects on the ladder are still the closest comparison there is.

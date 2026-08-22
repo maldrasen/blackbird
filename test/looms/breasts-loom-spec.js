@@ -188,14 +188,14 @@ describe("BreastsLoom", function() {
       expect(BreastComparisons.teardrop.nouns[top]).to.include(match[1]);
     });
 
-    it("warns instead of comparing for shapes without a ladder", function() {
+    it("errors instead of comparing for shapes without a ladder", function() {
       const id = CharacterFactory.build({ gender:Gender.female, species:SpeciesCode.human });
       const shapes = allShapes().filter(shape => BreastData.ComparisonShapes[shape] == null);
       expect(shapes).to.not.be.empty;
       shapes.forEach(shape => {
         setBreasts(id, shape, BreastData.BreastSizes[sizeOf(shape)].min + 1);
         const text = BreastsLoom.weave(id,'appleSizedBreasts');
-        expect(text, shape).to.include('weaver-warning');
+        expect(text, shape).to.include('weaver-error');
         expect(text, shape).to.include(shape);
       });
     });

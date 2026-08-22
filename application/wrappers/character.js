@@ -77,6 +77,13 @@ global.Character = function(id) {
     return tits.absoluteBreastVolume >= value;
   }
 
+  // Only the round and teardrop shaped breasts have common objects to compare their size against, so the breast
+  // loom's comparison tokens (appleSizedBreasts and friends) should only be used when this is true.
+  function hasComparableBreasts() {
+    const tits = BreastsComponent.lookup(id);
+    return tits != null && BreastData.ComparisonShapes[tits.breastShape] != null;
+  }
+
   // Like the breastsAreAtLeast() function this function takes a string if we're checking the cock size category or a
   // number if we're checking the cock length in mm.
   function cockIsAtLeast(value) {
@@ -275,6 +282,7 @@ global.Character = function(id) {
     hasSensitivity,
     hasTail,
     breastsAreAtLeast,
+    hasComparableBreasts,
     cockIsAtLeast,
     isFullyErect,
 

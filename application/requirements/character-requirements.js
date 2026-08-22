@@ -49,6 +49,10 @@ global.CharacterRequirements = (function() {
     return character.hasBreasts() && character.breastsAreAtLeast(size);
   }
 
+  function shapeComparableBreasts(context, key) {
+    return Character(context[key]).hasComparableBreasts();
+  }
+
   function hasCock(context, key) {
     return subject(context, key).hasNormalCock();
   }
@@ -143,6 +147,7 @@ global.CharacterRequirements = (function() {
     hasBreasts: key =>                       { return (context) => { return hasBreasts(context, key); }},
     visibleBreasts: key =>                   { return (context) => { return visibleBreasts(context, key); }},
     minimumBreastSize: (key, size) =>        { return (context) => { return minimumBreastSize(context, key, size); }},
+    shapeComparableBreasts: key =>           { return (context) => { return shapeComparableBreasts(context, key); }},
     hasCock: key =>                          { return (context) => { return hasCock(context, key); }},
     hasNoCock: key =>                        { return (context) => { return hasCock(context, key) === false; }},
     visibleCock: key =>                      { return (context) => { return visibleCock(context, key); }},
