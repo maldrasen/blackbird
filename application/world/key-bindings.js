@@ -1,8 +1,5 @@
 global.KeyBindings = (function() {
 
-  // Every bindable action, grouped by the context that listens for it. A context is a UI state that owns the keyboard
-  // while it's showing, so two actions in one context can't share a key, though the same key can mean different
-  // things in different contexts. Keys are KeyboardEvent.code values.
   const contexts = {
     battle: {
       name: 'Battle Commands',
@@ -43,7 +40,7 @@ global.KeyBindings = (function() {
     },
   };
 
-  // Keys that already belong to something else (the escape chain, the console, scrolling) or to the OS.
+  // These keys belong to the escape chain, the console, scrolling, or to the OS.
   const unbindable = [
     KeyCodes.Escape,
     KeyCodes.Backquote,
@@ -99,8 +96,6 @@ global.KeyBindings = (function() {
     return defaults;
   }
 
-  // The saved options only hold what the player has saved, so anything missing from them (including a world state
-  // written before a binding existed) falls back to its default.
   function getBindings() {
     return ObjectHelper.merge(getDefaults(), WorldState.getOptions().keyBindings || {});
   }
@@ -109,15 +104,12 @@ global.KeyBindings = (function() {
     return getBindings()[context][action];
   }
 
-  // An unbound action has a null key, which nothing matches.
   function getAction(context, code) {
     if (code == null) { return null; }
     const entry = Object.entries(getBindings()[context] || {}).find(([action, key]) => key === code);
     return entry ? entry[0] : null;
   }
 
-  // A key bound to two actions in the same context is a conflict. The same key in different contexts is fine, since
-  // only one context listens at a time, and any number of actions can be unbound.
   function findConflicts(bindings) {
     const conflicts = [];
 

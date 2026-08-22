@@ -12,14 +12,10 @@
     box-shadow: variables.$shadow-inset;
   }
 
-  .conflict-messages {
-    margin-bottom: 10px;
-    color: variables.$fg-error;
-  }
-
   .binding-columns {
     display: flex;
     gap: 20px;
+    margin-top: 30px;
     align-items: flex-start;
   }
 
@@ -42,7 +38,6 @@
     row-gap: 5px;
     align-items: center;
 
-    // The buttons hang from the right edge so a long label, or the capture prompt, only widens its own button.
     .key { text-align: right; }
 
     .key-button {
@@ -51,22 +46,18 @@
     }
 
     .key-button.capturing {
-      border-color: rgb(166,109,45);
+      border-color: rgb(56, 62, 99);
       box-shadow: variables.$shadow-small-highlight;
     }
 
     .key-button.conflict {
-      color: variables.$fg-error !important;
-      border-color: variables.$fg-error;
+      color: variables.$fg-error-bright !important;
+      border-color: variables.$fg-error-dark;
     }
 
     .key-button.unbound {
       color: variables.$fg-very-weak !important;
     }
-  }
-
-  .restore-row {
-    text-align: right;
   }
 
   .with-percent {

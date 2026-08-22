@@ -22,8 +22,14 @@ global.WindowManager = (function() {
     windowStack.push(modal);
   }
 
-  function hasWindows() {
-    return windowStack.length > 0;
+  function isModalOpen() {
+    return windowStack.length > 0
+      || MainMenu.isVisible()
+      || ConsoleView.isVisible()
+      || Select.isOpen()
+      || Confirmation.isVisible()
+      || NegotiationOverlay.isOpen()
+      || MainContent.isHalted();
   }
 
   // A locked window can only be closed programmatically, so it stays on the stack until whatever locked it lets go.
@@ -46,7 +52,7 @@ global.WindowManager = (function() {
     push,
     pop,
     remove,
-    hasWindows,
+    isModalOpen,
   };
 
 })();

@@ -49,16 +49,12 @@ global.CommandPanel = (function() {
     ability.getTargetingMode() != null ? TargetingController.startTargeting(ability.getCode()) : ability.execute();
   }
 
-  // The command panel owns the keyboard while it's showing and not waiting on a target. While targeting, the command
-  // buttons are only hidden, and click() doesn't care about that.
   function isAcceptingCommands() {
     return X.first('#battleView') != null
         && X.hasClass('#commandPanel','hide') === false
         && X.hasClass('#battleView','target-mode') === false;
   }
 
-  // A key press clicks the button so that both paths share executeCommand(). A command that can't be used this round
-  // has no button, so its key does nothing.
   function pressCommand(code) {
     const button = X.first(`#commandPanel .command[data-ability='${code}']`);
     if (button) { button.click(); }

@@ -1,11 +1,11 @@
 @use "../variables";
 
-$roll-border: rgba(57,59,73,0.75);
-$roll-title: rgb(80,84,115);
-$roll-low: rgb(120,120,150);
-$roll-low-bright: rgb(150,150,200);
-$roll-high: rgb(200,200,250);
-$roll-high-bright: rgb(250,250,250);
+$roll-border: rgb(57 59 73 / 75%);
+$roll-title: rgb(80 84 115);
+$roll-low: rgb(120 120 150);
+$roll-low-bright: rgb(150 150 200);
+$roll-high: rgb(200 200 250);
+$roll-high-bright: rgb(250 250 250);
 
 // ============
 //    Layout
@@ -167,8 +167,8 @@ $roll-high-bright: rgb(250,250,250);
     height: 140px;
     width: 140px;
     overflow: hidden;
-    background-color: rgba(0,0,0,0.33);
-    border: 1px solid rgb(20,20,20);
+    background-color: rgb(0 0 0 / 33%);
+    border: 1px solid rgb(20 20 20);
     box-shadow: variables.$shadow-frame;
     backdrop-filter: blur(5px);
   }
@@ -179,7 +179,7 @@ $roll-high-bright: rgb(250,250,250);
     width: 140px;
 
     // The position panel behind the card draws the resting frame in the battle view.
-    border-color: rgba(0,0,0,0);
+    border-color: rgb(0 0 0 / 0);
 
     .status-panel {
       text-align: right;
@@ -197,8 +197,8 @@ $roll-high-bright: rgb(250,250,250);
       border-radius: 3px;
     }
     &.acting {
-      border-color: rgb(50,50,80);
-      .background-cover { background-color: rgba(20,20,50,0.5); }
+      border-color: rgb(50 50 80);
+      .background-cover { background-color: rgba(20 20 50 / 50%); }
     }
     &.dead {
       filter: grayscale(1);
@@ -228,9 +228,9 @@ $roll-high-bright: rgb(250,250,250);
 #battleView.inspect-mode {
   .combatant:hover {
     cursor: pointer;
-    border-color: rgb(57, 64, 63);
+    border-color: rgb(57 64 63);
     .background-cover {
-      background-color: rgba(26, 28, 28, 0.5);
+      background-color: rgba(26 28 28 / 50%);
     }
   }
 }
@@ -244,31 +244,31 @@ $roll-high-bright: rgb(250,250,250);
 
   .position.valid-target {
     cursor: pointer;
-    border-color: rgb(99,65,26);
+    border-color: rgb(99 65 26);
     .background-cover {
-      background-color: rgba(53,32,9,0.5);
+      background-color: rgb(53 32 9 / 50%);
     }
   }
 
   .position.valid-target:hover {
-    border-color: rgb(166,109,45);
+    border-color: rgb(166 109 45);
     .background-cover {
-      background-color: rgba(76,45,10,0.5);
+      background-color: rgba(76 45 10 / 50%);
     }
   }
 
   .combatant.valid-target {
     cursor: pointer;
-    border-color: rgb(99,65,26);
+    border-color: rgb(99 65 26);
     .background-cover {
-      background-color: rgba(53,32,9,0.5);
+      background-color: rgb(53 32 9 / 50%);
     }
   }
 
   .combatant.valid-target:hover {
-    border-color: rgb(166,109,45);
+    border-color: rgb(166 109 45);
     .background-cover {
-      background-color: rgba(76,45,10,0.5);
+      background-color: rgba(76 45 10 / 50%);
     }
   }
 

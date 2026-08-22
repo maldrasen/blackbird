@@ -125,10 +125,9 @@ global.FormationPanel = (function() {
     showKeyHints();
   }
 
-  // Every valid target, cell and card alike, is stamped with the key that picks it. The card sits over its cell, so
-  // whichever one is on top shows the hint.
   function showKeyHints() {
     const hints = {};
+
     Object.entries(KeyBindings.getBindings().targeting).forEach(([action, key]) => {
       if (key) { hints[suffixFor(action)] = KeyBindings.labelFor(key); }
     });
@@ -143,7 +142,6 @@ global.FormationPanel = (function() {
     X.each('#battleView [data-key-hint]', element => { delete element.dataset.keyHint; });
   }
 
-  // A targeting action names a rank and a column, which is the end of a position key on either side.
   function suffixFor(action) {
     const [rank, column] = action.split('-');
     return `.${rank === 'front' ? 0 : 1}.${parseInt(column) - 1}`;
@@ -162,7 +160,6 @@ global.FormationPanel = (function() {
     X.addClass('#battleView','inspect-mode');
   }
 
-  // Targeting always returns a position because some abilities (like AoE attacks) might target an empty position.
   function targetSelected(event) {
     const position = event.target.closest('[data-position]').dataset.position;
 
@@ -177,8 +174,6 @@ global.FormationPanel = (function() {
     return X.hasClass('#battleView','target-mode');
   }
 
-  // The key press clicks the position if it's a valid target, so that both paths share targetSelected(). Matching the
-  // end of the position key leaves the side to whichever formation is being targeted.
   function pressTarget(action) {
     const position = X.first(`#battleView.target-mode .position.valid-target[data-position$='${suffixFor(action)}']`);
     if (position) { position.click(); }

@@ -18,10 +18,6 @@ global.DungeonNavigationSystem = (function() {
     return [...adjacent].sort((a,b) => a-b);
   }
 
-  // Doors sit on the north or west wall of the tile at their position, and `from` owns that tile. So the current
-  // room's north and west doors are the N and W doors it owns, and its south and east doors are the N and W doors
-  // owned by the rooms below and to the right of it. When a wall has several doors the first by position wins, so
-  // the same direction always picks the same door.
   function getDoorInDirection(direction) {
     const floor = DungeonSystem.getDungeonFloor();
     const current = floor.getLocation();
@@ -34,9 +30,8 @@ global.DungeonNavigationSystem = (function() {
 
     if (matches == null) { throw new Error(`Bad direction [${direction}]`); }
 
-    return floor.getDoors()
-      .filter(matches)
-      .sort((a,b) => (a.position.x - b.position.x) || (a.position.y - b.position.y))[0] || null;
+    return floor.getDoors().filter(matches).sort((a,b) =>
+      (a.position.x - b.position.x) || (a.position.y - b.position.y))[0] || null;
   }
 
   // TODO: When entering a new room, we need to read the room's contents to actually determine what happens on
