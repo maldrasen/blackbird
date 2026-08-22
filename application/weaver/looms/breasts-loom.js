@@ -19,6 +19,8 @@ global.BreastsLoom = (function() {
     firm:   { firm:10, solid:6, stiff:2 },
   };
 
+  const comparisonConnectors = { 'the size of':10, 'as big as':6, 'as large as':4 };
+
   const shapeWords = {
     'flat':             { 'flat':10, 'barely noticeable':5 },
     'pancakes':         { 'flat':10 },
@@ -57,17 +59,21 @@ global.BreastsLoom = (function() {
   // {A:breasts.breasts} A single word for "breasts" (note plural) that takes size and shape into consideration.
   // {A:breasts.bigSoft} A longer adjective phrase without a word for breasts.
   // {A:breasts.bigRound} A longer adjective phrase describing the shape without a word for breasts.
-  // {A:breasts:thickNipples} A phrase like 'long nipples' or 'dark teats'
-  // {A:breasts:hardThickNipples} Like thickNipples, but stiff with arousal. A phrase like 'long hard nipples'
-  // {A:breasts.apple} A size comparison word.
-  // {A:breasts.apples} A plural size comparison word.
-  // {A:breasts.anApple} A singular size comparison prefixed with a or an.
+  // {A:breasts.thickNipples} A phrase like 'long nipples' or 'dark teats'
+  // {A:breasts.hardThickNipples} Like thickNipples, but stiff with arousal. A phrase like 'long hard nipples'
+  // {A:breasts.appleSized} An attributive size comparison like "cantaloupe sized", for use in front of a noun.
+  // {A:breasts.appleSizedBreasts} A phrase like "cantaloupe sized tits".
+  // {A:breasts.breastsBigAsApples} A phrase like "tits the size of small cantaloupes".
+  // {A:breasts.apples} A plural comparison phrase like "small cantaloupes". Only use it after a comparative, as in
+  //                    "no larger than {A:breasts.apples}". Never put it in front of "sized"; that's what appleSized
+  //                    is for, because the phrase's own adjectives would read as describing the breasts.
+  // {A:breasts.anApple} A singular comparison phrase like "a small cantaloupe", with the same restriction.
+  // {A:breasts.apple} The bare singular comparison phrase. Being removed; use one of the tokens above instead.
   function weave(id, token) {
     const breasts = BreastsComponent.lookup(id);
     const size = breasts.breastSize;
     const firmness = breasts.breastFirmness;
     const shape = breasts.breastShape;
-    const volume = breasts.absoluteBreastVolume;
 
     if (token === 'bigSoftBreasts') { return `${sizeWord(size)} ${firmnessWord(firmness)} ${getBreastsWord(breasts)}`; }
     if (token === 'bigBreasts') { return `${sizeWord(size)} ${getBreastsWord(breasts)}`; }
@@ -84,23 +90,42 @@ global.BreastsLoom = (function() {
     if (token === 'thickNipples') { return shortNippleDescription(breasts); }
     if (token === 'hardThickNipples') { return hardNippleDescription(breasts); }
 
-    if (token === 'apple') {
-      const comparison = BreastsDescriber.sizeShapeComparison(shape, volume);
-      if (comparison == null) { return `[Comparison:${shape},${volume}]` }
-      return comparison;
-    }
-    if (token === 'apples') {
-      const comparison = BreastsDescriber.sizeShapeComparison(shape, volume);
-      if (comparison == null) { return `[Comparison:${shape},${volume}]` }
-      return EnglishHelper.pluralize(comparison);
-    }
-    if (token === 'anApple') {
-      const comparison = BreastsDescriber.sizeShapeComparison(shape, volume);
-      if (comparison == null) { return `[Comparison:${shape},${volume}]` }
-      return `${EnglishHelper.a_an(comparison)} ${comparison}`;
-    }
+    if (token === 'appleSized') { return withComparison(breasts, token, appleSized); }
+    if (token === 'appleSizedBreasts') { return withComparison(breasts, token, appleSizedBreasts); }
+    if (token === 'breastsBigAsApples') { return withComparison(breasts, token, breastsBigAsApples); }
+    if (token === 'apple') { return withComparison(breasts, token, apple); }
+    if (token === 'apples') { return withComparison(breasts, token, apples); }
+    if (token === 'anApple') { return withComparison(breasts, token, anApple); }
 
     return Weaver.formatWarning(`[Breasts:${token}]`);
+  }
+
+  // Shapes without a round object to compare against have no ladder, so using a comparison token for one of them is a
+  // template problem that gets a warning. A relative volume past the end of its ladder means the breast volume and
+  // size category are out of sync, which is an error.
+  function withComparison(breasts, token, compose) {
+    const ladder = BreastComparisons[breasts.breastShape];
+    if (ladder == null) { return Weaver.formatWarning(`[Breasts:${token}:${breasts.breastShape}]`); }
+
+    const volume = breasts.relativeBreastVolume;
+    const rung = ladder.find(rung => volume <= rung.max);
+    if (rung == null) { throw new Error(`Breast volume ${volume}ml is past the end of the ${breasts.breastShape} ladder.`); }
+
+    return compose(rung, breasts);
+  }
+
+  function appleSized(rung) { return `${Random.from(rung.nouns)} sized`; }
+  function appleSizedBreasts(rung, breasts) { return `${appleSized(rung)} ${getBreastsWord(breasts)}`; }
+  function apple(rung) { return Random.from(rung.phrases); }
+  function apples(rung) { return EnglishHelper.pluralize(apple(rung)); }
+
+  function anApple(rung) {
+    const phrase = apple(rung);
+    return `${EnglishHelper.a_an(phrase)} ${phrase}`;
+  }
+
+  function breastsBigAsApples(rung, breasts) {
+    return `${getBreastsWord(breasts)} ${Random.fromFrequencyMap(comparisonConnectors)} ${apples(rung)}`;
   }
 
   // Unlike the {breast} token (which usually resolves to "breast" or "tit") this breast word function takes the
