@@ -136,9 +136,8 @@ describe("BreastsLoom", function() {
       });
     });
 
-    it("weaves apple, apples, and anApple from the long-form phrases", function() {
+    it("weaves apples and anApple from the long-form phrases", function() {
       onEveryRung((id, shape, rung) => {
-        expect(rung.phrases, `${shape}@${rung.max} apple`).to.include(BreastsLoom.weave(id,'apple'));
         expect(rung.phrases.map(EnglishHelper.pluralize), `${shape}@${rung.max} apples`).to.include(BreastsLoom.weave(id,'apples'));
 
         const match = BreastsLoom.weave(id,'anApple').match(/^(an?) (.+)$/);

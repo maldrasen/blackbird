@@ -68,7 +68,6 @@ global.BreastsLoom = (function() {
   //                    "no larger than {A:breasts.apples}". Never put it in front of "sized"; that's what appleSized
   //                    is for, because the phrase's own adjectives would read as describing the breasts.
   // {A:breasts.anApple} A singular comparison phrase like "a small cantaloupe", with the same restriction.
-  // {A:breasts.apple} The bare singular comparison phrase. Being removed; use one of the tokens above instead.
   function weave(id, token) {
     const breasts = BreastsComponent.lookup(id);
     const size = breasts.breastSize;
@@ -93,7 +92,6 @@ global.BreastsLoom = (function() {
     if (token === 'appleSized') { return withComparison(breasts, token, appleSized); }
     if (token === 'appleSizedBreasts') { return withComparison(breasts, token, appleSizedBreasts); }
     if (token === 'breastsBigAsApples') { return withComparison(breasts, token, breastsBigAsApples); }
-    if (token === 'apple') { return withComparison(breasts, token, apple); }
     if (token === 'apples') { return withComparison(breasts, token, apples); }
     if (token === 'anApple') { return withComparison(breasts, token, anApple); }
 
@@ -116,11 +114,11 @@ global.BreastsLoom = (function() {
 
   function appleSized(rung) { return `${Random.from(rung.nouns)} sized`; }
   function appleSizedBreasts(rung, breasts) { return `${appleSized(rung)} ${getBreastsWord(breasts)}`; }
-  function apple(rung) { return Random.from(rung.phrases); }
-  function apples(rung) { return EnglishHelper.pluralize(apple(rung)); }
+  function comparisonPhrase(rung) { return Random.from(rung.phrases); }
+  function apples(rung) { return EnglishHelper.pluralize(comparisonPhrase(rung)); }
 
   function anApple(rung) {
-    const phrase = apple(rung);
+    const phrase = comparisonPhrase(rung);
     return `${EnglishHelper.a_an(phrase)} ${phrase}`;
   }
 
