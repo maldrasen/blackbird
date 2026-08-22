@@ -25,8 +25,13 @@ global.CommandPanel = (function() {
 
     abilities.forEach(code => {
       const ability = Ability.lookup(code);
-      X.append(getCommandArea(ability.getCategory()), X.createElement(`<a class='button button-primary command' data-ability='${code}'>${ability.getName()}</a>`));
+      X.append(getCommandArea(ability.getCategory()), X.createElement(`<a class='button button-primary command' data-ability='${code}'>${ability.getName()}${keyHint(code)}</a>`));
     });
+  }
+
+  function keyHint(code) {
+    const key = KeyBindings.getBinding('battle', code);
+    return key ? `<span class='key-hint'>${KeyBindings.labelFor(key)}</span>` : '';
   }
 
   function getCommandArea(category) {
@@ -36,7 +41,7 @@ global.CommandPanel = (function() {
   }
 
   function executeCommand(event) {
-    const ability = Ability.lookup(event.target.dataset.ability);
+    const ability = Ability.lookup(event.target.closest('.command').dataset.ability);
     if (ability.hasOverlay()) {
       return ability.openOverlay();
     }

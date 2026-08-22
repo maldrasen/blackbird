@@ -121,6 +121,32 @@ global.FormationPanel = (function() {
         'valid-target' :
         'invalid-target');
     });
+
+    showKeyHints();
+  }
+
+  // Every valid target, cell and card alike, is stamped with the key that picks it. The card sits over its cell, so
+  // whichever one is on top shows the hint.
+  function showKeyHints() {
+    const hints = {};
+    Object.entries(KeyBindings.getBindings().targeting).forEach(([action, key]) => {
+      hints[suffixFor(action)] = KeyBindings.labelFor(key);
+    });
+
+    X.each('#battleView .valid-target[data-position]', element => {
+      const hint = hints[element.dataset.position.substring(1)];
+      if (hint) { element.dataset.keyHint = hint; }
+    });
+  }
+
+  function clearKeyHints() {
+    X.each('#battleView [data-key-hint]', element => { delete element.dataset.keyHint; });
+  }
+
+  // A targeting action names a rank and a column, which is the end of a position key on either side.
+  function suffixFor(action) {
+    const [rank, column] = action.split('-');
+    return `.${rank === 'front' ? 0 : 1}.${parseInt(column) - 1}`;
   }
 
   function cancelTargeting() {
@@ -129,6 +155,7 @@ global.FormationPanel = (function() {
   }
 
   function stopTargeting() {
+    clearKeyHints();
     X.removeClass('.valid-target','valid-target')
     X.removeClass('.invalid-target','invalid-target')
     X.removeClass('#battleView','target-mode');
@@ -150,13 +177,10 @@ global.FormationPanel = (function() {
     return X.hasClass('#battleView','target-mode');
   }
 
-  // A targeting action names a rank and a column. The key press clicks that position if it's a valid target, so that
-  // both paths share targetSelected(). Matching the end of the position key leaves the side to whichever formation is
-  // being targeted.
+  // The key press clicks the position if it's a valid target, so that both paths share targetSelected(). Matching the
+  // end of the position key leaves the side to whichever formation is being targeted.
   function pressTarget(action) {
-    const [rank, column] = action.split('-');
-    const suffix = `.${rank === 'front' ? 0 : 1}.${parseInt(column) - 1}`;
-    const position = X.first(`#battleView.target-mode .position.valid-target[data-position$='${suffix}']`);
+    const position = X.first(`#battleView.target-mode .position.valid-target[data-position$='${suffixFor(action)}']`);
     if (position) { position.click(); }
   }
 
