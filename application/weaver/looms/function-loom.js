@@ -42,7 +42,7 @@ global.FunctionLoom = (function() {
     if (location == null) { throw new Error(`The context has no hitLocation.`); }
     if (['abdomen','body','thorax'].includes(location)) { return `${owner} ${location}`; }
     if (location === EquipmentSlot.head) { return `${owner} ${Random.from(['head','face','neck'])}`; }
-    if (location === EquipmentSlot.chest) { return chestHitLocation(id, owner); }
+    if (location === EquipmentSlot.chest) { return chestHitLocation(id, owner, argumentList[0]); }
     if (location === EquipmentSlot.legs) { return legHitLocation(id, owner); }
 
     const singular = { hands:'hand', feet:'foot' }[location];
@@ -55,13 +55,13 @@ global.FunctionLoom = (function() {
 
   // Hitting a character's chest will sometimes hit their breasts if they have breasts, and unlike the cock or pussy
   // hits will happen through armor.
-  function chestHitLocation(id, owner) {
+  function chestHitLocation(id, owner, subject) {
     const breasts = BreastsComponent.lookup(id);
 
     if (breasts && Random.roll(100) < 30) {
       return Random.from([
         `one of ${owner} {breasts}`,
-        `one of ${owner} {T:breasts.apple} sized breasts`,
+        `one of ${owner} {${subject}:breasts.appleSizedBreasts}`,
       ]);
     }
 

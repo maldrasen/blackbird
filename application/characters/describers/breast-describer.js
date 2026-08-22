@@ -268,9 +268,9 @@ global.BreastsDescriber = (function() {
   // 700 - 1,200 ml / soft
   function describeSwingers() {
     const options = [];
-    options.push(`{C:name's} soft, {C:breasts.apple} sized {breasts} swell 
+    options.push(`{C:name's} soft, {C:breasts.appleSizedBreasts} swell
       forward in a soft, gentle curve before dropping into a heavy natural sag.`);
-    options.push(`{C:name's} {C:breasts.apple} sized {breasts} look 
+    options.push(`{C:name's} {C:breasts.appleSizedBreasts} look
       incredibly soft, swinging from side to side {C:his} every movement.`)
     return Random.from(options)
   }
@@ -286,11 +286,11 @@ global.BreastsDescriber = (function() {
     const options = [];
     options.push(`{C:name's} {breasts} form a soft, classic teardrop shape, 
       full at the bottom and tapering gently upward with a natural, relaxed curve.`)
-    options.push(`Full and softly rounded, {C:name's} {C:breasts.apple} sized 
-      {breasts} sway heavily with {C:his} every movements.`)
-    options.push(`Perfectly balanced, {C:breasts.apple} sized {breasts} adorn {C:name's} chest,
+    options.push(`Full and softly rounded, {C:name's} {C:breasts.appleSizedBreasts}
+      sway heavily with {C:his} every movements.`)
+    options.push(`Perfectly balanced, {C:breasts.appleSizedBreasts} adorn {C:name's} chest,
       round and full, with a subtle lift that gives them a harmonious, natural appearance.`)
-    options.push(`{C:name's} {C:breasts.apple} sized {breasts} flare into a gentle bell 
+    options.push(`{C:name's} {C:breasts.appleSizedBreasts} flare into a gentle bell
       shape, widening toward the base with a soft, inviting fullness.`)
     options.push(`{C:name's} {breasts} are full and round, each about the 
       size of {C:breasts.anApple} they hang like soft swaying bells.`)
@@ -306,7 +306,7 @@ global.BreastsDescriber = (function() {
   // 700 - 1,200 ml / firm
   function describePerky () {
     const options = [];
-    options.push(`{C:name's} {C:breasts.soft} {C:breasts.apple} sized breasts form round 
+    options.push(`{C:name's} {C:breasts.soft} {C:breasts.appleSizedBreasts} form round
       perky hemispheres, sitting high on {C:his} torso, lifting upward with almost no sag`)
     return Random.from(options)
   }
@@ -326,7 +326,7 @@ global.BreastsDescriber = (function() {
       elongated shape that slopes gently downwards.`);
     options.push(`{C:name's} long {C:breasts.softBreasts} project 
       dramatically outward before gently yielding to gravity.`);
-    options.push(`{C:name's} {C:breasts.apple} sized {C:breasts.breasts} project sharply forward
+    options.push(`{C:name's} {C:breasts.appleSizedBreasts} project sharply forward
       in a firm, elongated shape, maintaining a pointed, upward-angled profile with minimal sag.`);
     return Random.from(options)
   }
@@ -340,7 +340,7 @@ global.BreastsDescriber = (function() {
   // 1,200 - 2,000 / soft
   function describeDangling() {
     const options = [];
-    options.push(`{C:name's} {C:breasts.big} {C:breasts.apple} sized {C:breasts.breasts} look huge on {C:his} frame, 
+    options.push(`{C:name's} {C:breasts.appleSizedBreasts} look huge on {C:his} frame,
       dangling udders that swing freely with every step, stretching downward under their own weight.`);
     options.push(`Heavy and sack-like, {C:name's} {C:breasts.bigBreasts} sway
       pendulously, slapping softly against {C:his} ribs when {C:he} moves.`);
@@ -358,12 +358,12 @@ global.BreastsDescriber = (function() {
   // 1,200 - 2,000 / medium
   function describeHeavyBells () {
     const options = [];
-    options.push(`{C:name's} {C:breasts.bigBreasts} form heavy {C:breasts.apple} sized bells,
+    options.push(`{C:name's} {C:breasts.bigBreasts} form heavy {C:breasts.appleSized} bells,
       swinging and pulling downward, creating deep cleavage and a soft, pendulous sway.`);
     options.push(`{C:name's} {C:breasts.big}, bouncing {C:breasts.breasts} dominate {C:his} frame,
       rolling and shifting with every motion in a hypnotic, fleshy display.`);
-    options.push(`Deep, plunging cleavage forms where {C:name's} {C:breasts.apple} sized 
-      {C:breasts.breasts} hang together, slapping together heavily when she leans forward.`);
+    options.push(`Deep, plunging cleavage forms where {C:name's} {C:breasts.appleSizedBreasts}
+      hang together, slapping together heavily when {C:he} leans forward.`);
     return Random.from(options)
   }
 
@@ -376,10 +376,10 @@ global.BreastsDescriber = (function() {
   // 1,200 - 2,000 / firm
   function describeBigRound() {
     const options = [];
-    options.push(`{C:name's} {C:breasts.bigBreasts} form big rounded {C:breasts.apple} 
-      sized orbs that remain surprisingly high and firm.`);
+    options.push(`{C:name's} {C:breasts.bigBreasts} form big rounded {C:breasts.appleSized}
+      orbs that remain surprisingly high and firm.`);
     options.push(`{C:name's} {C:breasts.bigRoundBreasts} thrust sharply forward, high and firm`);
-    options.push(`Taut, bulging {C:breasts.apple} sized orbs sit high and proud on {C:name's} 
+    options.push(`Taut, bulging {C:breasts.appleSized} orbs sit high and proud on {C:name's}
       chest, straining against gravity and practically demanding attention.`);
     return Random.from(options)
   }
@@ -393,7 +393,7 @@ global.BreastsDescriber = (function() {
   // 2,000 - 5,000 / soft
   function describePendulous() {
     const options = [];
-    options.push(`{C:name's} enormous dangling {C:breasts.apple} sized {C:breasts.breasts} hang low 
+    options.push(`{C:name's} enormous dangling {C:breasts.appleSizedBreasts} hang low
       down {C:his} torso, swaying heavily and slapping against each other with each motion.`);
     return Random.from(options)
   }
@@ -412,7 +412,7 @@ global.BreastsDescriber = (function() {
     options.push(`{C:name's} {C:breasts.bigBreasts} hang deeply and heavily from {C:his} chest, 
       creating a pronounced lower curve and soft, rolling bounce with each step.`);
     options.push(`Massive and full, {C:name's} breasts drop low under their own weight, forming 
-      generous, swaying {C:breasts.apple} sized orbs that dominate {C:his} silhouette.`);
+      generous, swaying {C:breasts.appleSized} orbs that dominate {C:his} silhouette.`);
     return Random.from(options)
   }
 
@@ -431,7 +431,7 @@ global.BreastsDescriber = (function() {
       sheer weight causing them to swing and slap together.`);
     options.push(`{C:name's} {C:breasts.big} heavy breasts, each the size of {C:breasts.anApple}, 
       hang low and full, swaying pendulously with every movement like swollen udders.`);
-    options.push(`{C:name's} {C:breasts.big} {C:breasts.apple} sized breasts hang low and full,
+    options.push(`{C:name's} {C:breasts.big} {C:breasts.appleSizedBreasts} hang low and full,
       swaying heavily with every movement as though they needed to be milked.`);
     return Random.from(options)
   }
