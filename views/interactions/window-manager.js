@@ -21,6 +21,10 @@ global.WindowManager = (function() {
     windowStack.push(modal);
   }
 
+  function hasWindows() {
+    return windowStack.length > 0;
+  }
+
   // A locked window can only be closed programmatically, so it stays on the stack until whatever locked it lets go.
   function pop() {
     const modal = windowStack[windowStack.length - 1];
@@ -41,6 +45,7 @@ global.WindowManager = (function() {
     push,
     pop,
     remove,
+    hasWindows,
   };
 
 })();

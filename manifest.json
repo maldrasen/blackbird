@@ -555,6 +555,7 @@
     "views/general/options-overlay.js",
     "views/general/table-builder.js",
     "views/interactions/dragon-drop.js",
+    "views/interactions/key-binding-dispatcher.js",
     "views/interactions/mouse-monitor.js",
     "views/interactions/scroll-keys.js",
     "views/interactions/window-manager.js",
