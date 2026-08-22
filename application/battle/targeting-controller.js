@@ -61,6 +61,7 @@ global.TargetingController = (function() {
     startTargeting,
     targetSelected,
     cancelTargeting,
+    getTargetableMonsters,
     getMonstersInRange,
   };
 
