@@ -20,7 +20,8 @@ FeatureType.register('leg-room',{
     const heightRange = notchRange(totalHeight);
     const notchWidth = Random.between(widthRange[0],widthRange[1]);
     const notchHeight = Random.between(heightRange[0],heightRange[1]);
-    const room = Room();
+    const feature = Feature('leg-room');
+    const room = Room(feature);
 
     switch (rotation) {
       case 'NE':
@@ -43,7 +44,6 @@ FeatureType.register('leg-room',{
 
     room.allowStairs();
 
-    const feature = Feature('leg-room');
     feature.addRoom(room);
     return feature;
   }

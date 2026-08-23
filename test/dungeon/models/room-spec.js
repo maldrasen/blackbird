@@ -151,6 +151,24 @@ describe("Room", function() {
     });
   });
 
+  describe("canHaveContents()", function() {
+    it('allows a plain room', function() {
+      const room = Room(Feature('rect-room'));
+      expect(room.canHaveContents()).to.equal(true);
+    });
+
+    it('rejects corridor rooms', function() {
+      const room = Room(Feature('corridor'));
+      expect(room.canHaveContents()).to.equal(false);
+    });
+
+    it('rejects rooms with stairs', function() {
+      const room = Room(Feature('rect-room'));
+      room.setStairs('down');
+      expect(room.canHaveContents()).to.equal(false);
+    });
+  });
+
   describe("pack()", function() {
     it('serializes the position, contents, stairs, and every box', function() {
       const room = Room();

@@ -30,18 +30,8 @@ global.RoomContentPlacer = function(contents=null) {
     });
   }
 
-  // TODO: No features have contents yet, but eventually some features will have rooms with preset content. If any
-  //       room in a feature record has content then the placer shouldn't place randomized content into it.
-
-  // TODO: Should a room have a "can content be added here" function? Do rooms know if they contain stairs. The need
-  //       to, because the room description should mention the giant staircase.
-
   function getEligibleRooms() {
-    const stairs = [...floor.getStairs('up'), ...floor.getStairs('down')];
-
-    return floor.getRooms().filter(room =>
-      floor.getFeatureForRoom(room.getIndex()).getType() !== 'corridor' &&
-      stairs.includes(room.getIndex()) === false);
+    return floor.getRooms().filter(room => room.canHaveContents());
   }
 
   function pickContents() {

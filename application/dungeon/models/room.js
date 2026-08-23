@@ -1,9 +1,8 @@
-global.Room = function(type='normal') {
+global.Room = function(feature, type='normal') {
 
   const boxes = [];
   let position = { x:0, y:0 };
   let index;
-  let featureIndex;
   let floorPosition;
   let stairsAllowed = false;
   let overlapping = false;
@@ -73,6 +72,12 @@ global.Room = function(type='normal') {
     };
   }
 
+  // TODO: No features have contents yet, but eventually some features will have rooms with preset content. If any
+  //       room in a feature record has content then the placer shouldn't place randomized content into it.
+  function canHaveContents() {
+    return feature.getType() !== 'corridor' && stairs == null;
+  }
+
   function stairsAreAllowed() {
     return stairsAllowed && boxes[0].width > 1 && boxes[0].height > 1;
   }
@@ -96,8 +101,8 @@ global.Room = function(type='normal') {
     getType: () => { return type },
     setIndex: i => { index = i; },
     getIndex: () => { return index; },
-    setFeatureIndex: i => { featureIndex = i; },
-    getFeatureIndex: () => { return featureIndex; },
+    getFeature: () => { return feature; },
+    getFeatureIndex: () => { return feature.getIndex(); },
     setFloorPosition: (x,y) => { floorPosition = {x,y}; },
     getFloorPosition: () => { return {...floorPosition}; },
     setPosition,
@@ -117,6 +122,7 @@ global.Room = function(type='normal') {
     setContents: code => { contents = code; },
     getContents: () => { return contents; },
     hasContents: () => { return contents != null; },
+    canHaveContents,
     pack,
   };
 }

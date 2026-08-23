@@ -31,7 +31,6 @@ global.DungeonFloor = function(level, theme=null) {
     feature.getRooms().forEach(room => {
       const roomPosition = room.getPosition();
       room.setIndex(rooms.length);
-      room.setFeatureIndex(feature.getIndex());
       room.setFloorPosition(featurePosition.x + roomPosition.x, featurePosition.y + roomPosition.y);
       rooms.push(room);
     });
