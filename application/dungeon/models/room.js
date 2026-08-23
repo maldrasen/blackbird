@@ -1,6 +1,5 @@
 global.Room = function(type='normal') {
 
-  // The room model will also manage the contents of the room.
   const boxes = [];
   let position = { x:0, y:0 };
   let index;
@@ -8,6 +7,7 @@ global.Room = function(type='normal') {
   let floorPosition;
   let stairsAllowed = false;
   let overlapping = false;
+  let contents = null;
 
   // Add a box to the room. Boxes can be added in any order using any shared coordinate system (eg. plain absolute
   // grid coordinates) - the room's own origin isn't pinned to (0,0) until something actually reads the boxes/bounds,
@@ -85,6 +85,7 @@ global.Room = function(type='normal') {
   function pack() {
     return {
       position,
+      contents,
       boxes: getBoxes(),
     }
   }
@@ -108,6 +109,9 @@ global.Room = function(type='normal') {
     stairsAreAllowed,
     markOverlapping: () => { overlapping = true; },
     isOverlapping,
+    setContents: code => { contents = code; },
+    getContents: () => { return contents; },
+    hasContents: () => { return contents != null; },
     pack,
   };
 }
