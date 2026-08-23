@@ -115,7 +115,9 @@ global.Room = function(feature, type='normal') {
        description = theme.getDescription(`${stairs}Stairs`);
     }
     if (description == null) {
-      description = theme.getDescription(FeatureType.lookup(feature.getType()).getVariety());
+      const variety = (feature.getType() === 'corridor') ?
+        'corridor' : FeatureType.lookup(feature.getType()).getVariety();
+      description = theme.getDescription(variety);
     }
     return description;
   }

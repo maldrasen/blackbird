@@ -25,7 +25,7 @@ global.DungeonTheme = (function() {
     }
 
     // A room without contents will pull its description from the theme. Currently the variety can only be 'plain',
-    // 'upStairs' or 'downStairs'.
+    // 'corridor', 'upStairs' or 'downStairs'.
     function getDescription(variety) {
       return theme.descriptions[variety].pick();
     }

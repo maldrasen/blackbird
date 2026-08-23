@@ -1,5 +1,6 @@
 
 const plainDescriptions = WeaverPackage('dungeon.plain');
+const corridorDescriptions = WeaverPackage('dungeon.corridor');
 const upStairDescriptions = WeaverPackage('dungeon.upStairs');
 const downStairDescriptions = WeaverPackage('dungeon.downStairs');
 
@@ -38,6 +39,7 @@ DungeonTheme.register('dungeon',{
 
   descriptions: {
     plain: plainDescriptions,
+    corridor: corridorDescriptions,
     upStairs: upStairDescriptions,
     downStairs: downStairDescriptions,
   },
@@ -47,5 +49,6 @@ DungeonTheme.register('dungeon',{
 //       variations of "An empty stone room with nothing interesting in it."
 
 plainDescriptions.add(`An extremely plain room`);
+corridorDescriptions.add(`A narrow stone corridor.`);
 upStairDescriptions.add(`A room with stairs going up.`);
 downStairDescriptions.add(`A room with stairs going down.`);
