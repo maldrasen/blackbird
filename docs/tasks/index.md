@@ -56,6 +56,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [179] Orchard Features `5pt` — [179-orchard-features.md](179-orchard-features.md)
 - [182] Implement consumable weapons `5pt` — [182-implement-consumable-weapons.md](182-implement-consumable-weapons.md)
 - [192] Give the kobold trapper a blind ability `3pt` — [192-give-the-kobold-trapper-a-blind-ability.md](192-give-the-kobold-trapper-a-blind-ability.md)
+- [199] Dungeon entrance feature `0pt` — [199-dungeon-entrance-feature.md](199-dungeon-entrance-feature.md)
 
 ## Priority 4
 

@@ -40,10 +40,19 @@ global.DungeonControls = (function() {
     CharacterOverlay.open(event.target.closest('.party-card').dataset.id);
   }
 
+  // Show the description of the room the party is currently in. Called when the floor is drawn and again each time
+  // the party steps into a new room.
+  function refreshRoom() {
+    const floor = DungeonSystem.getDungeonFloor();
+    const room = floor.getRooms()[floor.getLocation()];
+    X.first('#dungeonControls .room-description').innerHTML = room.getDescription();
+  }
+
   return {
     init,
     build,
     update,
+    refreshRoom,
   };
 
 })();

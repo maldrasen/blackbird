@@ -29,6 +29,7 @@ global.DungeonView = (function() {
     DungeonFloorView.drawDungeon();
     DungeonViewport.reset();
     DungeonViewport.centerOn(getCurrentRoom().getFloorCenter());
+    DungeonControls.refreshRoom();
   }
 
   function getCurrentRoom() {
@@ -93,6 +94,7 @@ global.DungeonView = (function() {
     for (const index of path) {
       const result = DungeonNavigationSystem.moveToRoom(index);
       DungeonFloorView.updateLocation(index, result.revealed);
+      DungeonControls.refreshRoom();
       DungeonViewport.panTo(getCurrentRoom().getFloorCenter());
       await new Promise(resolve => setTimeout(resolve, stepTime));
 

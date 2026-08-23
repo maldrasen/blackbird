@@ -29,6 +29,24 @@ $bg-controls: rgb(5 5 5);
     box-shadow: 5px -5px 5px rgb(0 0 0 / 50%);
   }
 
+  .center-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 130px;
+    right: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .room-description {
+      max-height: 90px;
+      overflow-y: auto;
+      padding: 5px 10px;
+      text-align: center;
+    }
+  }
+
   .formation-panel {
     position: absolute;
     right: 0;
