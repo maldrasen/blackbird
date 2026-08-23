@@ -152,16 +152,18 @@ describe("Room", function() {
   });
 
   describe("pack()", function() {
-    it('serializes the position, contents, and every box', function() {
+    it('serializes the position, contents, stairs, and every box', function() {
       const room = Room();
       room.setPosition(5,9);
       room.setContents('spec-contents');
+      room.setStairs('up');
       room.addBox(0,0,3,1);
       room.addBox(2,0,1,3);
 
       expect(room.pack()).to.deep.equal({
         position: { x:5, y:9 },
         contents: 'spec-contents',
+        stairs: 'up',
         boxes: [
           { x:0, y:0, width:3, height:1 },
           { x:2, y:0, width:1, height:3 },

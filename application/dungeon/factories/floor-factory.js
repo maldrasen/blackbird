@@ -117,7 +117,7 @@ global.FloorFactory = function() {
     }
 
     stairs.forEach(direction => {
-      floor.addStairs(direction, rooms.pop().getIndex());
+      rooms.pop().setStairs(direction);
     });
   }
 

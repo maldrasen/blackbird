@@ -8,6 +8,7 @@ global.Room = function(type='normal') {
   let stairsAllowed = false;
   let overlapping = false;
   let contents = null;
+  let stairs = null;
 
   // Add a box to the room. Boxes can be added in any order using any shared coordinate system (eg. plain absolute
   // grid coordinates) - the room's own origin isn't pinned to (0,0) until something actually reads the boxes/bounds,
@@ -86,6 +87,7 @@ global.Room = function(type='normal') {
     return {
       position,
       contents,
+      stairs,
       boxes: getBoxes(),
     }
   }
@@ -107,6 +109,9 @@ global.Room = function(type='normal') {
     getFloorCenter,
     allowStairs: () => { stairsAllowed = true; },
     stairsAreAllowed,
+    setStairs: direction => { stairs = direction; },
+    getStairs: () => { return stairs; },
+    hasStairs: () => { return stairs != null; },
     markOverlapping: () => { overlapping = true; },
     isOverlapping,
     setContents: code => { contents = code; },
