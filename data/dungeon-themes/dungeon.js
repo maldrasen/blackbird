@@ -1,25 +1,22 @@
-
-// Generic regular dungeon, the most common theme. Because this is the most
-// often picked theme though it will need the largest and most varied
-// collection of features.
+// Generic regular dungeon, the most common theme. Because this is the most often picked theme though it will need
+// the largest and most varied collection of contents and features.
 DungeonTheme.register('dungeon',{
   name: "The Dungeon",
-  rarity: 1,
+  rarity: Rarity.common,
 
-  // TODO: The room contents need to be a many to many relationship with the features. Rather than having arrays on
-  //       both I think the dungeon themes need to each have a join table. They would only reference features and
-  //       contents by code, as defined in that theme. Like the features, the contents will be simple, reference a
-  //       content type, and pass along a few arguments.
+  contents:[
+    { code:'tripe-patch', rarity:Rarity.common }
+  ],
 
   // TODO: Actually handle the rarity and update these values.
 
   features:[
-    { code:'small-square', rarity:100, type:'rect-room',  size:[2,5]},
-    { code:'large-square', rarity:100, type:'rect-room',  size:[5,8]},
-    { code:'leg-room',     rarity:100, type:'leg-room',   size:[3,8]},
-    { code:'tea-room',     rarity:100, type:'tea-room',   size:[3,8]},
-    { code:'cross-room',   rarity:100, type:'cross-room', size:[3,9]},
-    { code:'nested-room',  rarity:100, type:'nested-room', size:[3,7], padding:[1,3]},
+    { code:'small-square', rarity:Rarity.common, type:'rect-room',  size:[2,5]},
+    { code:'large-square', rarity:Rarity.common, type:'rect-room',  size:[5,8]},
+    { code:'leg-room',     rarity:Rarity.common, type:'leg-room',   size:[3,8]},
+    { code:'tea-room',     rarity:Rarity.common, type:'tea-room',   size:[3,8]},
+    { code:'cross-room',   rarity:Rarity.common, type:'cross-room', size:[3,9]},
+    { code:'nested-room',  rarity:Rarity.common, type:'nested-room', size:[3,7], padding:[1,3]},
   ],
 
   getFloorTexture: () => { return DungeonFloorGrid; },
