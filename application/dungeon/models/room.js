@@ -1,6 +1,7 @@
 global.Room = function(feature, type='normal') {
-
+  const theme = DungeonTheme.lookup(DungeonSystem.getDungeonFloor().getTheme());
   const boxes = [];
+
   let description;
   let position = { x:0, y:0 };
   let index;
@@ -98,17 +99,24 @@ global.Room = function(feature, type='normal') {
     }
   }
 
-  // Get the description for this room. If a description is set, that takes priority over the description from the
-  // contents. A description may be set by a feature to give a room a feature based description (such as a jail cell
-  // in a prison) without giving a room a contents reference.
+  function setDescription(text) {
+    if (description != null) { throw new Error(`A description for this room has already been set.`); }
+    description = text;
+  }
+
+  // Get the description for this room. We lazy load the description if it hasn't been set yet, but once a description
+  // has been set it shouldn't change.
   function getDescription() {
-    const theme = DungeonTheme.lookup(DungeonSystem.getDungeonFloor().getTheme());
-
-    if (description) { return description; }
-    if (contents) { return RoomContents.lookup(contents).getDescription(); }
-    if (stairs) { return theme.getDescription(`${stairs}Stairs`); }
-
-    return theme.getDescription(FeatureType.lookup(feature.getType()).getVariety());
+    if (description == null && contents) {
+      description = RoomContents.lookup(contents).getDescription();
+    }
+    if (description == null && stairs) {
+       description = theme.getDescription(`${stairs}Stairs`);
+    }
+    if (description == null) {
+      description = theme.getDescription(FeatureType.lookup(feature.getType()).getVariety());
+    }
+    return description;
   }
 
   return {
@@ -117,7 +125,7 @@ global.Room = function(feature, type='normal') {
     getIndex: () => { return index; },
     getFeature: () => { return feature; },
     getFeatureIndex: () => { return feature.getIndex(); },
-    setDescription: text => { description = text; },
+    setDescription,
     getDescription,
     setFloorPosition: (x,y) => { floorPosition = {x,y}; },
     getFloorPosition: () => { return {...floorPosition}; },
