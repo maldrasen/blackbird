@@ -1,5 +1,4 @@
 global.Room = function(feature, type='normal') {
-  const theme = DungeonTheme.lookup(DungeonSystem.getDungeonFloor().getTheme());
   const boxes = [];
 
   let description;
@@ -107,6 +106,8 @@ global.Room = function(feature, type='normal') {
   // Get the description for this room. We lazy load the description if it hasn't been set yet, but once a description
   // has been set it shouldn't change.
   function getDescription() {
+    const theme = DungeonTheme.lookup(DungeonSystem.getDungeonFloor().getTheme());
+
     if (description == null && contents) {
       description = RoomContents.lookup(contents).getDescription();
     }
