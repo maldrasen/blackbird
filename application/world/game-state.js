@@ -2,6 +2,7 @@ global.GameState = function(data={}) {
 
   const saveKey = data.saveKey || Random.identifier().substring(1);
   const flags = data.flags || {};
+  const dungeonState = DungeonState(data.dungeonState);
 
   let gameMode = data.gameMode || GameMode.location;
   let gameTime = data.gameTime || 0;
@@ -56,6 +57,7 @@ global.GameState = function(data={}) {
       roster: roster,
       episodeQueue: episodeQueue,
       flags: flags,
+      dungeonState: dungeonState.pack(),
     };
   }
 
@@ -85,6 +87,7 @@ global.GameState = function(data={}) {
     pushEpisode,
     setFlag,
     getFlag: key => { return flags[key]; },
+    getDungeonState: () => { return dungeonState; },
     getSaveMetadata,
     pack,
   };

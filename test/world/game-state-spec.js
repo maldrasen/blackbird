@@ -84,4 +84,21 @@ describe('GameState', function() {
     expect(state.pack().roster).to.eql([goblin,slime]);
   });
 
+  it('builds an empty dungeon state for a new game', function() {
+    const state = GameState();
+
+    expect(state.getDungeonState().pack()).to.eql({ discoveredFonts:[] });
+    expect(state.pack().dungeonState).to.eql({ discoveredFonts:[] });
+  });
+
+  it('packs and restores the dungeon state', function() {
+    const state = GameState({ dungeonState:{ discoveredFonts:[1,3] } });
+
+    const packed = state.pack();
+    expect(packed.dungeonState).to.eql({ discoveredFonts:[1,3] });
+
+    const restored = GameState(packed);
+    expect(restored.getDungeonState().pack()).to.eql({ discoveredFonts:[1,3] });
+  });
+
 });

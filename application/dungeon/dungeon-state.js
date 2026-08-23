@@ -1,9 +1,29 @@
-global.DungeonState = function() {
+global.DungeonState = function(data={}) {
 
-  // State for the entire dungeon. This state is created when we enter the dungeon and persists when we change floors.
-  // I'm not actually sure if we need to keep track of anything in this, but I moved everything that was in here into
-  // the dungeon floor state that gets reset on every floor.
+  const discoveredFonts = data.discoveredFonts || [];
 
-  return {};
+  // The player gains mana by using the mana fonts found scattered through the dungeon. We don't want this to be an
+  // endless resource though, so once a font has been found on a level within the dungeon, a font won't be able to
+  // spawn on that level again. So if a player has made it 20 levels deep, they could have found at most 20 fonts.
 
+  function canGenerateFont(level) { return discoveredFonts.includes(level) === false; }
+
+  function fontUsed(level) {
+    canGenerateFont(level) ? discoveredFonts.push(level):
+      throw new Error(`A font on level ${level} has already been used.`);
+
+    // TODO: Deepen mana pool when font is used.
+  }
+
+  function pack() {
+    return {
+      discoveredFonts
+    };
+  }
+
+  return {
+    canGenerateFont,
+    fontUsed,
+    pack,
+  };
 }

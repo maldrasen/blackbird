@@ -1,6 +1,7 @@
 global.GameSystem = (function() {
 
   const saveDirectory = `${DATA}/Saves`;
+  const saveVersion = 1;
 
   let state = GameState();
   let loaded = false;
@@ -9,12 +10,12 @@ global.GameSystem = (function() {
   function getState() { return state; }
   function isLoaded() { return loaded; }
 
-  // A game can only be saved when we're in the location view. So as not to couple this to the view though we check to
-  // see if any of the system states are present. These states are never persisted, so if they exist that indicates
-  // that we're in a non-savable state.
+  // A game can only be saved when we're in the location view. So as not to couple this to the view, we check to see if
+  // any of the system states are present. These states are never persisted, so if they exist that indicates that we're
+  // in a non-savable state.
   function canSave() {
     if (BattleSystem.getState()) { return false; }
-    if (DungeonSystem.getDungeonState()) { return false; }
+    if (DungeonSystem.getDungeonFloor()) { return false; }
     if (EpisodeSystem.getState()) { return false; }
     return true;
   }
@@ -29,6 +30,7 @@ global.GameSystem = (function() {
 
     await FileHelper.writeJSON(`${saveDirectory}/${state.getSaveKey()}.json`, {
       version: Environment.version,
+      saveVersion: saveVersion,
       state: state.pack(),
       registry: Registry.pack(),
     });
@@ -66,11 +68,13 @@ global.GameSystem = (function() {
     await loadGame(WorldState.getPreviousGame());
   }
 
+  // TODO: Eventually, if the save version doesn't match, we'll want to run it through a migration rather than throwing
+  //       an error. No need to worry about that until there's some sort of distributed beta version.
   async function loadGame(key) {
     const saveData = await FileHelper.readJSON(`${saveDirectory}/${key}.json`);
 
-    if (saveData.version !== Environment.version) {
-      throw new Error(`Incorrect game version: ${saveData.version}`)
+    if (saveData.saveVersion !== saveVersion) {
+      throw new Error(`Incompatible save version: ${saveData.saveVersion} (expected ${saveVersion})`);
     }
 
     Registry.unpack(saveData.registry);
@@ -85,7 +89,6 @@ global.GameSystem = (function() {
     GameInterface.openGame();
   }
 
-  // Ends the current game, resetting the state and returning to the main menu.
   function endGame() {
     reset();
     GameInterface.endGame();
@@ -113,8 +116,6 @@ global.GameSystem = (function() {
     GameInterface.showGameMode(mode);
   }
 
-  // Return mode is transient and never persisted — it should be impossible to save from the modes it returns from
-  // (episodes, training, etc.).
   function getReturnMode() { return returnMode; }
   function markReturnMode() { returnMode = state.getGameMode(); }
   function returnToPreviousMode() {
