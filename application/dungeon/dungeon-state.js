@@ -1,4 +1,4 @@
-global.DungeonState = function(data) {
+global.DungeonState = function(data={}) {
 
   const discoveredFonts = data.discoveredFonts || [];
 
