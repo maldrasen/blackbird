@@ -2,7 +2,10 @@
 function harvest() {
   const count = Random.between(3,6);
   InventoryManager().addArticle('dungeon-tripe',count);
-  return `You harvest ${count} uncomfortably moist furls of pungent dungeon tripe. Lucky you.`
+  return {
+    text: `You harvest ${count} uncomfortably moist furls of pungent dungeon tripe. Lucky you.`,
+    loot: [{ code:'dungeon-tripe', count }],
+  };
 }
 
 RoomContents.register('tripe-patch',{
