@@ -190,9 +190,14 @@ global.CharacterOverviewPanel = (function() {
     }).getElement();
   }
 
-  // TODO: Implement Mana
   function getManaBar(mana,color) {
-    return `${StringHelper.titlecase(color)} Mana(0/0)`
+    return BarDisplay({
+      label: `${StringHelper.titlecase(color)} Mana`,
+      currentValue: mana[color].current,
+      minValue: 0,
+      maxValue: mana[color].max,
+      color: `mana-${color}`,
+    }).getElement();
   }
 
   function getControlBar(control) {

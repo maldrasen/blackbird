@@ -21,6 +21,15 @@ global.Character = function(id) {
   function getSkill(code) { return SkillsComponent.lookup(id)[code]; }
   function getLevel() { return ExperienceComponent.lookup(id).level; }
 
+  function getTotalMana() {
+    const mana = ManaComponent.lookup(id);
+    const pools = Object.values(Mana).map(color => mana[color]);
+    return {
+      current: pools.reduce((sum, pool) => sum + pool.current, 0),
+      max: pools.reduce((sum, pool) => sum + pool.max, 0)
+    };
+  }
+
   // ==============
   //   Attributes
   // ==============
@@ -264,6 +273,7 @@ global.Character = function(id) {
     isEnby,
     getSkill,
     getLevel,
+    getTotalMana,
 
     // Attributes
     isFasterThan,

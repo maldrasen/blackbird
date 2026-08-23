@@ -76,12 +76,14 @@ global.GameStateFrame = (function() {
     }).getElement();
   }
 
+  // The frame only has room for a single bar, so it shows the player's mana summed across every color.
   function getManaBar(player) {
+    const mana = Character(player).getTotalMana();
     return BarDisplay({
       label: 'Mana',
-      currentValue: 0,
+      currentValue: mana.current,
       minValue: 0,
-      maxValue: 0,
+      maxValue: mana.max,
       color: 'mana',
     }).getElement();
   }
