@@ -623,6 +623,7 @@
     "test/dungeon/models/feature-graph-spec.js",
     "test/dungeon/models/room-spec.js",
     "test/dungeon/systems/dungeon-navigation-system-spec.js",
+    "test/dungeon/systems/dungeon-theme-system-spec.js",
     "test/enlighten/enlighten-system-spec.js",
     "test/helpers/calendar-helper-spec.js",
     "test/helpers/currency-helper-spec.js",

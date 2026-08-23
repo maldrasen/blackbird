@@ -4,12 +4,12 @@ global.DungeonThemeSystem = (function() {
 
   function init() {
 
-    for (let i=1; i<=5; i++) {
-      rarityRanges[i] = {};
-      for (let j=1; j<=10; j++) {
-        rarityRanges[i][j] = [];
+    Object.values(Rarity).forEach(rarity => {
+      rarityRanges[rarity] = {};
+      for (let level=1; level<=10; level++) {
+        rarityRanges[rarity][level] = [];
       }
-    }
+    });
 
     DungeonTheme.getAllCodes().forEach(themeCode => {
       const theme = DungeonTheme.lookup(themeCode);
@@ -38,12 +38,15 @@ global.DungeonThemeSystem = (function() {
     return Random.from(rarityRanges[getRandomRarity()][level]);
   }
 
-  // Rarity 1 is the same percentage chance as rarity 2 because there should
-  // only be one theme (generic dungeon) in the first slot, meaning the generic
-  // dungeon will be picked as often as all the level 2 themes combined.
+  // Common has the same percentage chance as unusual because there should only be one common theme (the generic
+  // dungeon), meaning the generic dungeon will be picked as often as all the unusual themes combined.
   function getRandomRarity() {
     return Random.fromFrequencyMap({
-      1:30, 2:30, 3:10, 4:3, 5:1,
+      [Rarity.common]: 30,
+      [Rarity.unusual]: 30,
+      [Rarity.rare]: 10,
+      [Rarity.astonishing]: 3,
+      [Rarity.unheardOf]: 1,
     });
   }
 
