@@ -17,6 +17,8 @@ global.LevelSystem = (function() {
       growStamina(id, before.getMaxStamina());
     }
 
+    growMana(id);
+
     return increase;
   }
 
@@ -58,6 +60,20 @@ global.LevelSystem = (function() {
     const health = HealthComponent.lookup(id);
     health.currentStamina += Attributes(id).getMaxStamina() - maxStaminaBefore;
     HealthComponent.update(id, health);
+  }
+
+  function growMana(id) {
+    const mana = ManaComponent.lookup(id);
+    if (mana == null) { return; }
+
+    const grades = ManaMath.manaGrades(id);
+    Object.values(Mana).forEach(color => {
+      const growth = ManaMath.levelGrowth(grades[color]);
+      mana[color].max += growth;
+      mana[color].current += growth;
+    });
+
+    ManaComponent.update(id, mana);
   }
 
   return {
