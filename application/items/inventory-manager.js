@@ -69,9 +69,19 @@ global.InventoryManager = function(characterId=GameSystem.getState().getPlayer()
     Registry.deleteEntity(itemId);
   }
 
-  // Technically also subtractArticle if called with a negative quantity.
   function addArticle(code, quantity) {
-    setArticleQuantity(code, Math.max(0,getArticleQuantity(code) + quantity));
+    if (quantity < 0) { throw new Error(`Cannot add ${quantity} of Article:${code}, use removeArticle().`); }
+    setArticleQuantity(code, getArticleQuantity(code) + quantity);
+  }
+
+  function removeArticle(code, quantity) {
+    const current = getArticleQuantity(code);
+
+    if (quantity > current) {
+      throw new Error(`Inventory:${characterId} only has ${current} of Article:${code}, cannot remove ${quantity}.`);
+    }
+
+    setArticleQuantity(code, current - quantity);
   }
 
   function getArticleQuantity(code) {
@@ -96,6 +106,7 @@ global.InventoryManager = function(characterId=GameSystem.getState().getPlayer()
     listItems,
     dropItem,
     addArticle,
+    removeArticle,
     getArticleQuantity,
     setArticleQuantity,
   };
