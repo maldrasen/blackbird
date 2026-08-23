@@ -7,6 +7,7 @@ function notchRange(length) {
 }
 
 FeatureType.register('leg-room',{
+  variety:'plain',
 
   // Build a leg shaped room
   //   size:      [min,max]

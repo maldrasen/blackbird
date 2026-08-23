@@ -1,9 +1,15 @@
+
+const plainDescriptions = WeaverPackage('dungeon.plain');
+const upStairDescriptions = WeaverPackage('dungeon.upStairs');
+const downStairDescriptions = WeaverPackage('dungeon.downStairs');
+
 // Generic regular dungeon, the most common theme. Because this is the most often picked theme though it will need
 // the largest and most varied collection of contents and features.
 DungeonTheme.register('dungeon',{
   name: "The Dungeon",
   rarity: Rarity.common,
 
+  extraStairChance: 66,
   roomContentChance: 20,
   roomContents:[
     { code:'tripe-patch', rarity:Rarity.common },
@@ -30,4 +36,16 @@ DungeonTheme.register('dungeon',{
     'flamescale-kobolds',
   ],
 
+  descriptions: {
+    plain: plainDescriptions,
+    upStairs: upStairDescriptions,
+    downStairs: downStairDescriptions,
+  },
 });
+
+// TODO: Add a lot more dungeon room descriptions. We'll eventually need more that 100 I think, most of which will be
+//       variations of "An empty stone room with nothing interesting in it."
+
+plainDescriptions.add(`An extremely plain room`);
+upStairDescriptions.add(`A room with stairs going up.`);
+downStairDescriptions.add(`A room with stairs going down.`);

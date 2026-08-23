@@ -1,6 +1,7 @@
 global.Room = function(feature, type='normal') {
 
   const boxes = [];
+  let description;
   let position = { x:0, y:0 };
   let index;
   let floorPosition;
@@ -97,12 +98,27 @@ global.Room = function(feature, type='normal') {
     }
   }
 
+  // Get the description for this room. If a description is set, that takes priority over the description from the
+  // contents. A description may be set by a feature to give a room a feature based description (such as a jail cell
+  // in a prison) without giving a room a contents reference.
+  function getDescription() {
+    const theme = DungeonTheme.lookup(DungeonSystem.getDungeonFloor().getTheme());
+
+    if (description) { return description; }
+    if (contents) { return RoomContents.lookup(contents).getDescription(); }
+    if (stairs) { return theme.getDescription(`${stairs}Stairs`); }
+
+    return theme.getDescription(FeatureType.lookup(feature.getType()).getVariety());
+  }
+
   return {
     getType: () => { return type },
     setIndex: i => { index = i; },
     getIndex: () => { return index; },
     getFeature: () => { return feature; },
     getFeatureIndex: () => { return feature.getIndex(); },
+    setDescription: text => { description = text; },
+    getDescription,
     setFloorPosition: (x,y) => { floorPosition = {x,y}; },
     getFloorPosition: () => { return {...floorPosition}; },
     setPosition,

@@ -24,6 +24,12 @@ global.DungeonTheme = (function() {
       return featureType.buildFeature(options);
     }
 
+    // A room without contents will pull its description from the theme. Currently the variety can only be 'plain',
+    // 'upStairs' or 'downStairs'.
+    function getDescription(variety) {
+      return theme.descriptions[variety].pick();
+    }
+
     return {
       getCode: () => { return code; },
       getName: () => { return theme.name; },
@@ -36,6 +42,7 @@ global.DungeonTheme = (function() {
       getExtraStairChance: () => { return theme.extraStairChance || 50 },
       getFloorTextureFunction: () => { return theme.getFloorTexture().paint },
       getWallTextureFunction: () => { return theme.getWallTexture().paint },
+      getDescription,
     };
   }
 

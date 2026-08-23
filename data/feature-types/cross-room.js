@@ -7,6 +7,7 @@ function getTrimMax(length) {
 }
 
 FeatureType.register('cross-room',{
+  variety:'plain',
 
   // The cross room only takes a room size option. The notch size is determined by the room size, and they'll either
   // be square notches or match the room's aspect ratio.

@@ -1,4 +1,5 @@
 FeatureType.register('rect-room',{
+  variety:'plain',
 
   // Generic room only has a single square room.
   //   size:      [min,max]
