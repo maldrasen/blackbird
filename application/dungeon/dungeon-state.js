@@ -9,8 +9,8 @@ global.DungeonState = function(data={}) {
   function canGenerateFont(level) { return discoveredFonts.includes(level) === false; }
 
   function fontUsed(level) {
-    canGenerateFont(level) ? discoveredFonts.push(level):
-      throw new Error(`A font on level ${level} has already been used.`);
+    if (canGenerateFont(level) === false) { throw new Error(`A font on level ${level} has already been used.`); }
+    discoveredFonts.push(level);
 
     // TODO: Deepen mana pool when font is used.
   }

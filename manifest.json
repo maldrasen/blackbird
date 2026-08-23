@@ -186,6 +186,7 @@
     "application/records/name.js",
     "application/records/negotiation-question.js",
     "application/records/negotiation-request.js",
+    "application/records/room-contents.js",
     "application/records/sex-action.js",
     "application/records/sex-position.js",
     "application/records/sexual-preference.js",
