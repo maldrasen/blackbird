@@ -4,11 +4,10 @@ DungeonTheme.register('dungeon',{
   name: "The Dungeon",
   rarity: Rarity.common,
 
-  contents:[
-    { code:'tripe-patch', rarity:Rarity.common }
+  roomContentChance: 20,
+  roomContents:[
+    { code:'tripe-patch', rarity:Rarity.common },
   ],
-
-  // TODO: Actually handle the rarity and update these values.
 
   features:[
     { code:'small-square', rarity:Rarity.common, type:'rect-room',  size:[2,5]},

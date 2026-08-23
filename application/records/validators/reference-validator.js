@@ -2,6 +2,7 @@ global.ReferenceValidator = (function() {
 
   function validate() {
     Episode.getAllCodes().forEach(code => validateEpisodeQueue(code, Episode.lookup(code).getQueue()));
+    DungeonTheme.getAllCodes().forEach(code => validateDungeonTheme(code, DungeonTheme.lookup(code).getRoomContents()));
 
     SexAction.getAllCodes().forEach(code => {
       const action = SexAction.lookup(code);
@@ -21,6 +22,12 @@ global.ReferenceValidator = (function() {
 
     if (queue.district != null) { Validate.isIn(`${name}.district`, queue.district, District.getAllCodes()); }
     if (queue.location != null) { Validate.isIn(`${name}.location`, queue.location, Location.getAllCodes()); }
+  }
+
+  function validateDungeonTheme(code, contents) {
+    contents.forEach(entry => {
+      Validate.isIn(`DungeonTheme[${code}].roomContents`, entry.code, RoomContents.getAllCodes());
+    });
   }
 
   function validateSexAction(code, data) {
@@ -63,6 +70,7 @@ global.ReferenceValidator = (function() {
   return {
     validate,
     validateEpisodeQueue,
+    validateDungeonTheme,
     validateSexAction,
   };
 
