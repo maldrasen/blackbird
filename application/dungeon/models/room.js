@@ -9,6 +9,7 @@ global.Room = function(feature, type='normal') {
   let overlapping = false;
   let contents = null;
   let stairs = null;
+  let usedCommands = [];
 
   // Add a box to the room. Boxes can be added in any order using any shared coordinate system (eg. plain absolute
   // grid coordinates) - the room's own origin isn't pinned to (0,0) until something actually reads the boxes/bounds,
@@ -94,8 +95,22 @@ global.Room = function(feature, type='normal') {
       position,
       contents,
       stairs,
+      usedCommands: [...usedCommands],
       boxes: getBoxes(),
     }
+  }
+
+  function getAvailableCommands() {
+    if (contents == null) { return []; }
+    return RoomContents.lookup(contents).getCommands().filter(command => usedCommands.includes(command.code) === false);
+  }
+
+  function useCommand(code) {
+    const command = getAvailableCommands().find(command => command.code === code);
+    if (command == null) { throw new Error(`Command [${code}] is not available in this room.`); }
+
+    usedCommands.push(code);
+    return command.execute();
   }
 
   function setDescription(text) {
@@ -150,6 +165,8 @@ global.Room = function(feature, type='normal') {
     getContents: () => { return contents; },
     hasContents: () => { return contents != null; },
     canHaveContents,
+    getAvailableCommands,
+    useCommand,
     pack,
   };
 }

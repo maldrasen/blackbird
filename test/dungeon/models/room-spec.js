@@ -169,8 +169,50 @@ describe("Room", function() {
     });
   });
 
+  describe("commands", function() {
+    beforeEach(function() {
+      RoomContents.register('spec-command-contents',{
+        description: 'A room full of spec contents.',
+        commands: [
+          { code:'take', label:'Take', execute: () => ({ text:'Taken', loot:[{ code:'spec-loot', count:2 }] }) },
+          { code:'poke', label:'Poke', execute: () => ({ text:'Poked' }) },
+          { code:'hidden', label:'Hidden', requires: () => false, execute: () => ({}) },
+        ],
+      });
+    });
+
+    it('offers no commands without contents', function() {
+      expect(Room().getAvailableCommands()).to.be.empty;
+    });
+
+    it('offers the contents commands whose requirements are met', function() {
+      const room = Room();
+      room.setContents('spec-command-contents');
+      expect(room.getAvailableCommands().map(command => command.code)).to.deep.equal(['take','poke']);
+    });
+
+    it('uses a command up when it is executed', function() {
+      const room = Room();
+      room.setContents('spec-command-contents');
+
+      const result = room.useCommand('take');
+      expect(result).to.deep.equal({ text:'Taken', loot:[{ code:'spec-loot', count:2 }] });
+      expect(room.getAvailableCommands().map(command => command.code)).to.deep.equal(['poke']);
+    });
+
+    it('throws when using a command that is not available', function() {
+      const room = Room();
+      room.setContents('spec-command-contents');
+      room.useCommand('take');
+
+      expect(() => room.useCommand('take')).to.throw('not available');
+      expect(() => room.useCommand('hidden')).to.throw('not available');
+      expect(() => room.useCommand('unknown')).to.throw('not available');
+    });
+  });
+
   describe("pack()", function() {
-    it('serializes the position, contents, stairs, and every box', function() {
+    it('serializes the position, contents, stairs, used commands, and every box', function() {
       const room = Room();
       room.setPosition(5,9);
       room.setContents('spec-contents');
@@ -182,6 +224,7 @@ describe("Room", function() {
         position: { x:5, y:9 },
         contents: 'spec-contents',
         stairs: 'up',
+        usedCommands: [],
         boxes: [
           { x:0, y:0, width:3, height:1 },
           { x:2, y:0, width:1, height:3 },
