@@ -1,6 +1,5 @@
 global.DungeonSystem = (function() {
 
-  let dungeonState;
   let dungeonFloor;
 
   function enterDungeon() {
@@ -11,7 +10,6 @@ global.DungeonSystem = (function() {
 
   function createDungeon() {
     Console.log("Creating Dungeon",{ system:'DungeonSystem', level:1 });
-    dungeonState = DungeonState();
   }
 
   function exitDungeon() {
@@ -20,7 +18,6 @@ global.DungeonSystem = (function() {
   }
 
   function reset() {
-    dungeonState = null;
     dungeonFloor = null;
   }
 
@@ -70,7 +67,6 @@ global.DungeonSystem = (function() {
   }
 
   return {
-    getDungeonState: () => { return dungeonState; },
     getDungeonFloor: () => { return dungeonFloor; },
     enterDungeon,
     createDungeon,
