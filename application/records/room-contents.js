@@ -1,6 +1,5 @@
 /*
 # Room Contents Properties
-- `name`          Display name of the contents.
 - `description`   HTML string or `() => HTML string`.
 - `episode`       Optional episode code. The episode starts when the room is entered.
 - `commands`      Optional array of command objects, offered as buttons in the dungeon controls.
@@ -33,7 +32,6 @@ global.RoomContents = (function() {
 
     return {
       getCode: () => { return code; },
-      getName: () => { return record.name; },
       getEpisode: () => { return record.episode; },
       getCommands: () => { return (record.commands || []).filter(command => Requirements.met(command.requires)); },
       getDescription,

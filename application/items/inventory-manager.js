@@ -1,4 +1,4 @@
-global.InventoryManager = function(characterId) {
+global.InventoryManager = function(characterId=GameSystem.getState().getPlayer()) {
 
   function fetch() {
     return InventoryComponent.lookup(characterId);
@@ -69,6 +69,11 @@ global.InventoryManager = function(characterId) {
     Registry.deleteEntity(itemId);
   }
 
+  // Technically also subtractArticle if called with a negative quantity.
+  function addArticle(code, quantity) {
+    setArticleQuantity(code, Math.max(0,getArticleQuantity(code) + quantity));
+  }
+
   function getArticleQuantity(code) {
     return fetch().articles[code] || 0
   }
@@ -90,6 +95,7 @@ global.InventoryManager = function(characterId) {
     removeItem,
     listItems,
     dropItem,
+    addArticle,
     getArticleQuantity,
     setArticleQuantity,
   };
