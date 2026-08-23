@@ -78,6 +78,20 @@ describe('LetterGradeHelper', function() {
     });
   });
 
+  describe('manaBase()', function() {
+    it('rolls no dice for an F or a missing grade', function() {
+      expect(LetterGradeHelper.manaBase('F')).to.equal(0);
+      expect(LetterGradeHelper.manaBase(undefined)).to.equal(0);
+    });
+
+    it('rolls more dice for higher grades', function() {
+      expect(LetterGradeHelper.manaBase('D')).to.equal(1);
+      expect(LetterGradeHelper.manaBase('C')).to.equal(2);
+      expect(LetterGradeHelper.manaBase('A')).to.equal(4);
+      expect(LetterGradeHelper.manaBase('SSS')).to.equal(7);
+    });
+  });
+
   // I had a spec for the LetterGradeHelper.scaleValue() but it was too
   // fragile and would break whenever I change the scale thresholds. Pretty
   // sure the function works though.

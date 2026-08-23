@@ -34,6 +34,7 @@ global.PlayerFactory = (function() {
       AspectsFactory.build();
       AttributesFactory.build();
       HealthFactory.build();
+      ManaFactory.build();
 
       BodyFactory.build();
       AnusFactory.build();
@@ -58,6 +59,7 @@ global.PlayerFactory = (function() {
       ArousalComponent.create(playerId, { arousal:0 });
       AttributesComponent.create(playerId, state.getAttributes());
       HealthComponent.create(playerId, state.getHealth());
+      ManaComponent.create(playerId, state.getMana());
       SkillsComponent.create(playerId, state.getSkills());
       AspectsComponent.create(playerId, state.getAspects());
       AnusComponent.create(playerId, state.getAnus());

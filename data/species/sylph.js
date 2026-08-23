@@ -10,6 +10,14 @@ Species.register(SpeciesCode.sylph, {
     beauty: 'B',
   },
 
+  mana: {
+    red: 'F',
+    yellow: 'F',
+    green: 'D',
+    blue: 'C',
+    black: 'C',
+  },
+
   healthFactor: 0.4,
   resistances: {
     psychic: 20,

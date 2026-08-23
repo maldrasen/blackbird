@@ -11,6 +11,14 @@ Species.register(SpeciesCode.elf, {
     beauty: 'B',
   },
 
+  mana: {
+    red: 'C',
+    yellow: 'F',
+    green: 'C',
+    blue: 'C',
+    black: 'D',
+  },
+
   healthFactor: 0.8,
   resistances: {
     arcane: 20,

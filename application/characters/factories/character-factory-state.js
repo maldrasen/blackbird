@@ -35,6 +35,7 @@ global.CharacterFactoryState = function(options={}) {
     aspects: null,
     attributes: null,
     health: null,
+    mana: null,
     personality: null,
     sensitivities: null,
     skills: null,
@@ -160,6 +161,9 @@ global.CharacterFactoryState = function(options={}) {
 
     getHealth: () => { return getBlock('health'); },
     setHealth: (data) => { setBlock('health', data); },
+
+    getMana: () => { return getBlock('mana'); },
+    setMana: (data) => { setBlock('mana', data); },
 
     getPersonality: () => { return getBlock('personality'); },
     setPersonality: (data) => { setBlock('personality', data); },

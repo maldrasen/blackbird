@@ -16,6 +16,11 @@ describe("CharacterFactory", function() {
       expect(health.currentHealth).to.be.within(1,1000);
       expect(health.currentHealth).to.equal(health.maxHealth);
 
+      const mana = ManaComponent.lookup(id);
+      Object.values(Mana).forEach(color => {
+        expect(mana[color].current).to.equal(mana[color].max);
+      });
+
       expect(ArousalComponent.lookup(id).arousal).to.equal(0);
     });
 

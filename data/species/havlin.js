@@ -10,6 +10,14 @@ Species.register(SpeciesCode.havlin, {
     beauty: 'B',
   },
 
+  mana: {
+    red: 'F',
+    yellow: 'C',
+    green: 'C',
+    blue: 'F',
+    black: 'F',
+  },
+
   healthFactor: 0.6,
   resistances: {
     corruption: 20,

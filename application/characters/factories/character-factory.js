@@ -81,6 +81,7 @@ global.CharacterFactory = (function() {
     AspectsFactory.build();
     AttributesFactory.build();
     HealthFactory.build();
+    ManaFactory.build();
     PersonalityFactory.build();
     SensitivitiesFactory.build();
     SkillsFactory.build();
@@ -156,6 +157,7 @@ global.CharacterFactory = (function() {
     AttributesComponent.create(characterId, state.getAttributes());
     BodyComponent.create(characterId, state.getBody());
     HealthComponent.create(characterId, state.getHealth());
+    ManaComponent.create(characterId, state.getMana());
     MouthComponent.create(characterId, state.getMouth());
     PersonalityComponent.create(characterId, state.getPersonality());
     SkillsComponent.create(characterId, state.getSkills());
@@ -173,6 +175,7 @@ global.CharacterFactory = (function() {
 
     Console.log('CharacterData',{ system:'CharacterFactory', data:{
       attributes: state.getAttributes(),
+      mana: state.getMana(),
       personality: state.getPersonality(),
       body: state.getBody(),
       anus: state.getAnus(),

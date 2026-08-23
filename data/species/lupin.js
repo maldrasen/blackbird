@@ -10,6 +10,14 @@ Species.register(SpeciesCode.lupin, {
     beauty: 'C',
   },
 
+  mana: {
+    red: 'F',
+    yellow: 'D',
+    green: 'C',
+    blue: 'F',
+    black: 'F',
+  },
+
   healthFactor: 1.25,
   resistances: {
     slash: 10,
