@@ -7,15 +7,21 @@ global.Room = function(feature, type='normal') {
   let floorPosition;
   let stairsAllowed = false;
   let overlapping = false;
-  let contents = null;
-  let stairs = null;
+  let contents;
+  let stairs;
   let usedCommands = [];
+
+  let footprint;
+  let size;
 
   // Add a box to the room. Boxes can be added in any order using any shared coordinate system (eg. plain absolute
   // grid coordinates) - the room's own origin isn't pinned to (0,0) until something actually reads the boxes/bounds,
   // so there's no need to keep re-normalizing (and no risk of earlier boxes drifting out of sync with later ones)
   // as more boxes get added.
   function addBox(x, y, width, height) {
+    if (footprint) {
+      throw new Error(`You cannot add a box to a room whose footprint has been calculated.`);
+    }
     boxes.push({ x, y, width, height });
   }
 
@@ -50,19 +56,34 @@ global.Room = function(feature, type='normal') {
     return boxes.map(box => ({ x: box.x - raw.xMin, y: box.y - raw.yMin, width: box.width, height: box.height }));
   }
 
+  // A room's footprint shouldn't change after the room has been built, so it should be safe to cache it once it's
+  // been calculated once.
   function getFootprint() {
+    if (footprint) { return footprint; }
+
     const bounds = getBounds();
-    const footprint = Array.from({ length: bounds.yMax }, () => new Array(bounds.xMax).fill(false));
+    footprint = Array.from({ length: bounds.yMax }, () => new Array(bounds.xMax).fill(false));
+    size = 0;
 
     getBoxes().forEach(box => {
       for (let y = box.y; y < box.y + box.height; y++) {
         for (let x = box.x; x < box.x + box.width; x++) {
           footprint[y][x] = true;
+          size++;
         }
       }
     });
 
     return footprint;
+  }
+
+  // To get a room's actual size (as opposed to a bounding box) we need to calculate the room's footprint. Rather than
+  // doing this in four nested loops, we just calculate the room's size when the footprint is built, and cache both
+  // values. The getSize() function will be called in a loop when checking room description predicates, so this is an
+  // actual performance concern. This function should only be called after all the room's boxes have been added.
+  function getSize() {
+    if (size == null) { getFootprint(); }
+    return size;
   }
 
   // Center of bounds in floor coordinates, which can fall outside the room itself if the room is L-shaped.
@@ -153,6 +174,7 @@ global.Room = function(feature, type='normal') {
     getBoxes,
     getBounds,
     getFootprint,
+    getSize,
     getFloorCenter,
     allowStairs: () => { stairsAllowed = true; },
     stairsAreAllowed,
