@@ -24,6 +24,10 @@ global.DungeonTheme = (function() {
       return featureType.buildFeature(options);
     }
 
+    function getEncounterRate(newRoom) {
+      return newRoom ? (theme.newRoomEncounterRate || 20) : (theme.revealedRoomEncounterRate || 2);
+    }
+
     // A room without contents will pull its description from the theme. Currently the variety can only be 'plain',
     // 'corridor', 'upStairs' or 'downStairs'.
     function getDescription(variety) {
@@ -41,6 +45,7 @@ global.DungeonTheme = (function() {
       getRoomContents: () => { return theme.roomContents || []; },
       getRoomContentChance: () => { return theme.roomContentChance ?? 20; },
       getRandomFeature: getRandomFeature,
+      getEncounterRate,
       getExtraStairChance: () => { return theme.extraStairChance || 50 },
       getFloorTextureFunction: () => { return theme.getFloorTexture().paint },
       getWallTextureFunction: () => { return theme.getWallTexture().paint },

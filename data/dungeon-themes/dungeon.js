@@ -14,6 +14,8 @@ DungeonTheme.register('dungeon',{
   floorWidth: 15,
 
   extraStairChance: 66,
+  revealedRoomEncounterRate: 2,
+  newRoomEncounterRate: 20,
   roomContentChance: 20,
   roomContents:[
     { code:'tripe-patch', rarity:Rarity.common },

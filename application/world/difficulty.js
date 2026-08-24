@@ -6,6 +6,7 @@ global.Difficulty = (function() {
     getDamageFactor: () => { return getDifficulty().damage / 100; },
     getMitigationFactor: () => { return 100 / getDifficulty().mitigation; },
     getResistance: () => { return getDifficulty().resistance; },
+    getEncounterFactor: () => { return getDifficulty().encounterRate / 100; },
   };
 
 })();
