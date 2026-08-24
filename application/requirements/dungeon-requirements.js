@@ -1,17 +1,22 @@
 global.DungeonRequirements = (function() {
 
-  function roomSizeAtMost(room, size) { return room.getSize() <= size; }
-  function roomSizeAtLeast(room, size) { return room.getSize() >= size; }
-  function roomSizeBetween(room, min, max) { return roomSizeAtLeast(room,min) && roomSizeAtMost(room,max);  }
+  function currentRoom() { return DungeonSystem.getDungeonFloor().getCurrentRoom(); }
+  function roomSizeAtMost(size) { return currentRoom().getSize() <= size; }
+  function roomSizeAtLeast(size) { return currentRoom().getSize() >= size; }
+
+  function roomSizeBetween(min, max) {
+    const room = currentRoom();
+    return roomSizeAtLeast(room,min) && roomSizeAtMost(room,max);
+  }
 
   return {
-    isSmallRoom: () =>            { return room => { return roomSizeAtMost(room, 16); }},
-    isMediumRoom: () =>           { return room => { return roomSizeBetween(room, 16, 49); }},
-    isLargeRoom: () =>            { return room => { return roomSizeBetween(room, 49, 100); }},
-    isHugeRoom: () =>             { return room => { return roomSizeAtLeast(room, 100); }},
-    roomSizeAtMost: max =>        { return room => { return roomSizeAtMost(room,max); }},
-    roomSizeAtLeast: min =>       { return room => { return roomSizeAtLeast(room,min); }},
-    roomSizeBetween: (min,max) => { return room => { return roomSizeBetween(room,min,max); }},
+    isSmallRoom: () =>            { return () => { return roomSizeAtMost(16); }},
+    isMediumRoom: () =>           { return () => { return roomSizeBetween(16, 49); }},
+    isLargeRoom: () =>            { return () => { return roomSizeBetween(49, 100); }},
+    isHugeRoom: () =>             { return () => { return roomSizeAtLeast(100); }},
+    roomSizeAtMost: max =>        { return () => { return roomSizeAtMost(max); }},
+    roomSizeAtLeast: min =>       { return () => { return roomSizeAtLeast(min); }},
+    roomSizeBetween: (min,max) => { return () => { return roomSizeBetween(min,max); }},
   };
 
 })();

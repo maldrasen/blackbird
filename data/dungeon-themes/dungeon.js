@@ -52,6 +52,11 @@ DungeonTheme.register('dungeon',{
 //       variations of "An empty stone room with nothing interesting in it."
 
 plainDescriptions.add(`An extremely plain room`);
+plainDescriptions.add(`The stone ceiling of the room is uncomfortable low, making the already small room feel
+  claustrophobic.`,DungeonRequirements.isSmallRoom());
+plainDescriptions.add(`Apart from a thick layer of dust on the floor, This modest chamber is completely empty`,
+  DungeonRequirements.isMediumRoom());
+
 corridorDescriptions.add(`A narrow stone corridor.`);
 upStairDescriptions.add(`A room with stairs going up.`);
 downStairDescriptions.add(`A room with stairs going down.`);
