@@ -24,5 +24,4 @@ I think a room with a randomly generated resource node of some kind is the simpl
 
 >I think most games would follow a design where a room may have a resource and there's a single function that handles harvesting the resource and printing a generic message. I don't really see a reason to do that when having a slightly different message any time a similar action is done adds more variety.
 
-> Also, this is entirely a different task, but we'll also want to roll a scouting check every time we enter a room. If a room has a trap or treasure it may not be obvious. A failed scouting check will just trip the trap as soon as the party enters the room. A successful scouting check will be needed to find a hidden treasure, otherwise the room looks empty.
 

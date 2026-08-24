@@ -4,7 +4,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 ## Priority 1
 
-- [198] Room Contents `8pt` — [198-room-contents.md](198-room-contents.md)
+- [200] Auto Battle Mode `3pt` — [200-auto-battle-mode.md](200-auto-battle-mode.md)
 
 ## Priority 2
 
@@ -21,6 +21,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [172] Nightgaunt Episode `8pt` — [172-nightgaunt-episode.md](172-nightgaunt-episode.md)
 - [194] Feeling Adjustments During Battle `2pt` — [194-feeling-adjustments-during-battle.md](194-feeling-adjustments-during-battle.md)
 - [197] Skill events `5pt` — [197-skill-episodes.md](197-skill-episodes.md)
+- [201] Room Scouting `3pt` — [201-room-scouting.md](201-room-scouting.md)
 
 ## Priority 3
 
