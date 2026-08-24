@@ -66,10 +66,18 @@ plainDescriptions.add(`A giant slab of stone lies sitting in the center of the l
   ceiling shows where it fell from, and the skeletal arm reaching out from underneath tells the rest of the story.`,
   DungeonRequirements.isLargeRoom());
 plainDescriptions.add(`This large room's ceiling is intricately coffered, forming a grid of sunken panels. Each coffer
-  contains a grinning skull motif, looking down on you ominously.`, DungeonRequirements.isHugeRoom());
+  contains a grinning skull motif, looking down on you ominously.`,DungeonRequirements.isHugeRoom());
 
+corridorDescriptions.add(`A completely unidentifiable collection of bones are scattered along one side of the hall.`);
+corridorDescriptions.add(`The rough stone corridor is far taller than it is wide. You glance into the darkness above,
+  but can't make out much beyond the limit of your torchlight.`);
+corridorDescriptions.add(`You hear the sound of dripping watter from somewhere, though the corridor you're in seems
+  perfectly dry.`);
 corridorDescriptions.add(`The stone corridor is unusually narrow, forcing you and your {party} to walk single file
   through it.`, PartyRequirements.sizeAtLeast(3));
 
-upStairDescriptions.add(`A room with stairs going up.`);
-downStairDescriptions.add(`A room with stairs going down.`);
+upStairDescriptions.add(`You find a room with stairs leading back up to the floor above.`);
+upStairDescriptions.add(`A spiral stairway takes up most of the space in this small room.`, DungeonRequirements.isTinyRoom());
+
+downStairDescriptions.add(`You find a room with stairs descending down into the darkness below..`);
+downStairDescriptions.add(`A spiral stairway takes up most of the space in this small room.`, DungeonRequirements.isTinyRoom());

@@ -24,16 +24,23 @@ global.RoomContents = (function() {
   function lookup(code) {
     if (contents[code] == null) { throw new Error(`Bad room contents code [${code}]`); }
 
-    const record = { ...contents[code] };
+    const roomContents = { ...contents[code] };
 
+    // By default, a room with contents has brighter text to differentiate it from an empty room. A room with a
+    // treasure that wasn't discovered though should have the same style as an empty room. Or, if this room started an
+    // episode, and that episode was resolved, the description should reflect the state of the room after the
+    // resolution. When anything complicated like this happens the description() function needs to render its text in
+    // whatever style is appropriate. This function can look up the resolution of the scouting roll from the current
+    // room, which should always be accessible from the floor state with getCurrentRoom().
     function getDescription() {
-      return (typeof record.description === 'function') ? record.description() : record.description;
+      return (typeof roomContents.description === 'function') ? roomContents.description():
+        `<span class='fg-strong'>${roomContents.description}</span>`;
     }
 
     return {
       getCode: () => { return code; },
-      getEpisode: () => { return record.episode; },
-      getCommands: () => { return (record.commands || []).filter(command => Requirements.met(command.requires)); },
+      getEpisode: () => { return roomContents.episode; },
+      getCommands: () => { return (roomContents.commands || []).filter(command => Requirements.met(command.requires)); },
       getDescription,
     };
   }

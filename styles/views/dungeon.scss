@@ -98,11 +98,3 @@
 }
 
 #dungeonFloor .hanging-door.raised { z-index: 60; }
-
-#roomContentOverlay {
-  .result-text {
-    margin: 20px;
-    font-size: variables.$fs-big;
-    font-family: "habibi", serif;
-  }
-}

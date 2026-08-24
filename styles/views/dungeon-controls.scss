@@ -41,6 +41,7 @@ $bg-controls: rgb(5 5 5);
       height: 67px;
       padding: 10px;
       overflow: hidden;
+      color: variables.$fg-weak;
       font-size: variables.$fs-big;
       font-family: "habibi", serif;
     }
@@ -97,9 +98,10 @@ $bg-controls: rgb(5 5 5);
 
 #roomContentOverlay {
   .result-text {
-    text-align: center;
+    margin: 20px;
+    font-size: variables.$fs-big;
+    font-family: "habibi", serif;
   }
-
   .loot-list {
     margin-top: 10px;
     text-align: center;
