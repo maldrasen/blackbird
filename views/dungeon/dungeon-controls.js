@@ -5,7 +5,7 @@ global.DungeonControls = (function() {
   function init() {
     X.onClick('#dungeonControls .open-party', () => { PartyOverlay.open('normal') });
     X.onClick('#dungeonControls .party-card', openCharacterOverlay);
-    X.onClick('#dungeonControls .command-buttons .command', commandClicked);
+    X.onClick('#dungeonControls #commandButtons .command', commandClicked);
   }
 
   function build() {
@@ -45,18 +45,29 @@ global.DungeonControls = (function() {
   // and again each time the party steps into a new room.
   function refreshRoom() {
     const room = getCurrentRoom();
-    X.first('#dungeonControls .room-description').innerHTML = room.getDescription();
+    setDescription(room.getDescription());
     buildCommandButtons(room);
   }
 
-  function buildCommandButtons(room) {
-    const list = X.first('#dungeonControls .command-buttons');
+  function setDescription(value) {
+    const element = X.first('#dungeonControls #description');
+    X.empty(element);
+    element.appendChild(X.createElement(`<div class='room-description'>${value}</div>`));
+  }
 
+  function buildCommandButtons(room) {
+    const list = X.first('#dungeonControls #commandButtons');
     X.empty(list);
 
     room.getAvailableCommands().forEach(command => {
-      list.appendChild(X.createElement(
-        `<li><a href='#' class='command button' data-code='${command.code}'>${command.label}</a></li>`));
+      const button = X.createElement(
+        `<li><a href='#' class='command button' data-code='${command.code}'>${command.label}</a></li>`);
+
+      list.appendChild(button);
+
+      setTimeout(() => {
+        FlashSquare.flash({ element:button, duration:50000 });
+      },100);
     });
   }
 
