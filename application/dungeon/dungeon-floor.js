@@ -13,10 +13,8 @@ global.DungeonFloor = function(level, theme=null) {
   let rooms = [];
   let doors = [];
 
-  // Theoretically the size of the floor should come from the floor theme, as well as any specific building and room
-  // layout instructions.
-  function getFloorWidth() { return 60; }
-  function getFloorHeight() { return 40; }
+  function getFloorWidth() { return DungeonTheme.lookup(theme).getFloorWidth(); }
+  function getFloorHeight() { return DungeonTheme.lookup(theme).getFloorHeight(); }
 
   function setLocation(index) {
     location = index;

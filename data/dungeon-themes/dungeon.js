@@ -10,6 +10,9 @@ DungeonTheme.register('dungeon',{
   name: "The Dungeon",
   rarity: Rarity.common,
 
+  floorHeight: 15,
+  floorWidth: 15,
+
   extraStairChance: 66,
   roomContentChance: 20,
   roomContents:[

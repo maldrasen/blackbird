@@ -4,7 +4,7 @@ describe("FloorFactory", function() {
   // which I think should be impossible. We'll know if this ever fails though.
   it("fills a dungeon with features", function() {
     DungeonSystem.setLevel(1);
-    expect(DungeonSystem.getDungeonFloor().getFeatures().length).to.be.greaterThan(50);
+    expect(DungeonSystem.getDungeonFloor().getFeatures().length).to.be.greaterThan(5);
   });
 
 });
