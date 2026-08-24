@@ -64,10 +64,7 @@ global.DungeonControls = (function() {
         `<li><a href='#' class='command button' data-code='${command.code}'>${command.label}</a></li>`);
 
       list.appendChild(button);
-
-      setTimeout(() => {
-        FlashSquare.flash({ element:button, duration:50000 });
-      },100);
+      FlashSquare.flash({ element:button, color:'rgb(200 200 250)' });
     });
   }
 

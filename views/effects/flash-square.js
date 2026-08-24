@@ -2,10 +2,10 @@ global.FlashSquare = (function() {
 
   // Options: { element, color, duration }
   function flash(options) {
-    const square = X.createElement(`<div class='flash-square' style='${buildFlashStyle(options)}'></div>`);
-
     if (options.duration == null) { options.duration = 500; }
     if (options.color == null) { options.color = `rgb(255 255 255)`; }
+
+    const square = X.createElement(`<div class='flash-square' style='${buildFlashStyle(options)}'></div>`);
 
     X.first(`#effectArea`).appendChild(square);
     setTimeout(() => { X.addClass(square,'fade'); },1);
