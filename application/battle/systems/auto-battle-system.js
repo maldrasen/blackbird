@@ -18,25 +18,17 @@ global.AutoBattleSystem = (function() {
   }
 
   function closestTarget() {
+    const state = BattleSystem.getState();
+    const actingPosition = BattleSystem.getRound().getActingPosition();
+    const columnDistance = monster => {
+      return BattleHelper.distanceBetweenPositions(actingPosition, state.getPosition(monster)).position;
+    };
+
     return TargetingController.getMonstersInRange().reduce((closest, monster) => {
-      return (closest == null || isCloser(monster, closest)) ? monster : closest;
+      return (closest == null || columnDistance(monster) < columnDistance(closest)) ? monster : closest;
     }, null);
   }
 
-  // The rank distance is more significant than the position distance, so a monster in the front rank is always
-  // closer than one in the back, no matter the column.
-  function isCloser(monster, closest) {
-    const state = BattleSystem.getState();
-    const actingPosition = BattleSystem.getRound().getActingPosition();
-
-    const a = BattleHelper.distanceBetweenPositions(actingPosition, state.getPosition(monster));
-    const b = BattleHelper.distanceBetweenPositions(actingPosition, state.getPosition(closest));
-
-    return (a.rank === b.rank) ? a.position < b.position : a.rank < b.rank;
-  }
-
-  return {
-    takeTurn,
-  };
+  return { takeTurn };
 
 })();
