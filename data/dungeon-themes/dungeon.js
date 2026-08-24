@@ -51,12 +51,25 @@ DungeonTheme.register('dungeon',{
 // TODO: Add a lot more dungeon room descriptions. We'll eventually need more that 100 I think, most of which will be
 //       variations of "An empty stone room with nothing interesting in it."
 
-plainDescriptions.add(`An extremely plain room`);
+plainDescriptions.add(`You spot a rat, scurrying off into the darkness as you enter the room.`);
+plainDescriptions.add(`You spot a meandering trail of slimy footprints, crossing the ground in front of you and
+  continuing up the wall. A yeek probably.`);
+plainDescriptions.add(`A large gaping hole in the floor has been almost entirely filled with kobold bones. You're not
+  sure what could have collected them here; either some beast or perhaps even the kobolds themselves.`);
+plainDescriptions.add(`The floor if this tiny room is littered with discarded bottles.`,
+  DungeonRequirements.isTinyRoom());
 plainDescriptions.add(`The stone ceiling of the room is uncomfortable low, making the already small room feel
   claustrophobic.`,DungeonRequirements.isSmallRoom());
 plainDescriptions.add(`Apart from a thick layer of dust on the floor, This modest chamber is completely empty`,
   DungeonRequirements.isMediumRoom());
+plainDescriptions.add(`A giant slab of stone lies sitting in the center of the large room. The depression in the
+  ceiling shows where it fell from, and the skeletal arm reaching out from underneath tells the rest of the story.`,
+  DungeonRequirements.isLargeRoom());
+plainDescriptions.add(`This large room's ceiling is intricately coffered, forming a grid of sunken panels. Each coffer
+  contains a grinning skull motif, looking down on you ominously.`, DungeonRequirements.isHugeRoom());
 
-corridorDescriptions.add(`A narrow stone corridor.`);
+corridorDescriptions.add(`The stone corridor is unusually narrow, forcing you and your {party} to walk single file
+  through it.`, PartyRequirements.sizeAtLeast(3));
+
 upStairDescriptions.add(`A room with stairs going up.`);
 downStairDescriptions.add(`A room with stairs going down.`);

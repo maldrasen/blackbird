@@ -160,7 +160,16 @@ global.Weaver = function(context) {
     if (key === 'Cock') { return StringHelper.titlecase(simpleValue('cock')); }
     if (key === 'Pussy') { return StringHelper.titlecase(simpleValue('pussy')); }
 
+    if (key === 'party') { return partyName(); }
+
     return Weaver.formatWarning(`[${key}]`);
+  }
+
+  // TODO: What do you call your party? Are they your companions? girls? slaves? We need to have a way for the player
+  //       to set this value. Maybe a drop down with valid options in the party configuration. For now we can just pick
+  //       at random to make sure that all possible values sound right where they're used.
+  function partyName() {
+    return Random.from(['party','companions','girls','slaves','harem']);
   }
 
   function onError(type, error, data) {

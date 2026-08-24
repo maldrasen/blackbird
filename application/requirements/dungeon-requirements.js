@@ -10,7 +10,8 @@ global.DungeonRequirements = (function() {
   }
 
   return {
-    isSmallRoom: () =>            { return () => { return roomSizeAtMost(16); }},
+    isTinyRoom: () =>             { return () => { return roomSizeAtMost(1); }},
+    isSmallRoom: () =>            { return () => { return roomSizeBetween(4, 16); }},
     isMediumRoom: () =>           { return () => { return roomSizeBetween(16, 49); }},
     isLargeRoom: () =>            { return () => { return roomSizeBetween(49, 100); }},
     isHugeRoom: () =>             { return () => { return roomSizeAtLeast(100); }},
