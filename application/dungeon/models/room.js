@@ -7,8 +7,8 @@ global.Room = function(feature, type='normal') {
   let floorPosition;
   let stairsAllowed = false;
   let overlapping = false;
-  let contents;
-  let stairs;
+  let contents = null;
+  let stairs = null;
   let usedCommands = [];
 
   let footprint;
@@ -68,8 +68,10 @@ global.Room = function(feature, type='normal') {
     getBoxes().forEach(box => {
       for (let y = box.y; y < box.y + box.height; y++) {
         for (let x = box.x; x < box.x + box.width; x++) {
-          footprint[y][x] = true;
-          size++;
+          if (footprint[y][x] === false) {
+            footprint[y][x] = true;
+            size++;
+          }
         }
       }
     });
