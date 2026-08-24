@@ -1,2 +1,0 @@
-### Contents
-Rooms can have a variety of 'contents'. A room can contain a short event that starts a fight, or a longer event where choices would need to be made, including negotiations with groups of not quite hostile monsters. Normal dungeon stuff, traps, treasure. They could run into a vender. There are shrines where spells and abilities can be learned, or mana pools can be deepened. The dungeon view will at least need to show a room description, show available exits, and general commands. When we change room we can start an event, and could start a combat directly.

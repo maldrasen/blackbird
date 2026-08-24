@@ -18,6 +18,7 @@ function maxPadding(options, size) {
 }
 
 FeatureType.register('nested-room',{
+  variety:'plain',
 
   // Build a rectangular outer room with a second room nested in its center, joined by a single door centered on a
   // random wall of the inner room.
@@ -26,8 +27,9 @@ FeatureType.register('nested-room',{
   build: function(options) {
     if (options.size[0] < 3) { throw new Error(`Minimum outer size needs to be at least 3`); }
 
-    const outer = Room();
-    const inner = Room('nested');
+    const feature = Feature('nested-room');
+    const outer = Room(feature);
+    const inner = Room(feature, 'nested');
     const size = Random.between(options.size[0], options.size[1]);
     const padding = Random.between(options.padding[0],maxPadding(options, size));
     const innerSize = size - (padding*2);
@@ -38,7 +40,6 @@ FeatureType.register('nested-room',{
     inner.allowStairs();
     inner.markOverlapping();
 
-    const feature = Feature('nested-room');
     feature.addRoom(outer);
     feature.addRoom(inner);
     feature.addDoor(buildNestedDoor(padding, innerSize));

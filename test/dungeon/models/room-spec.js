@@ -136,15 +136,95 @@ describe("Room", function() {
     });
   });
 
+  describe("contents", function() {
+    it('starts empty', function() {
+      const room = Room();
+      expect(room.hasContents()).to.equal(false);
+      expect(room.getContents()).to.equal(null);
+    });
+
+    it('holds a contents code', function() {
+      const room = Room();
+      room.setContents('spec-contents');
+      expect(room.hasContents()).to.equal(true);
+      expect(room.getContents()).to.equal('spec-contents');
+    });
+  });
+
+  describe("canHaveContents()", function() {
+    it('allows a plain room', function() {
+      const room = Room(Feature('rect-room'));
+      expect(room.canHaveContents()).to.equal(true);
+    });
+
+    it('rejects corridor rooms', function() {
+      const room = Room(Feature('corridor'));
+      expect(room.canHaveContents()).to.equal(false);
+    });
+
+    it('rejects rooms with stairs', function() {
+      const room = Room(Feature('rect-room'));
+      room.setStairs('down');
+      expect(room.canHaveContents()).to.equal(false);
+    });
+  });
+
+  describe("commands", function() {
+    beforeEach(function() {
+      RoomContents.register('spec-command-contents',{
+        description: 'A room full of spec contents.',
+        commands: [
+          { code:'take', label:'Take', execute: () => ({ text:'Taken', loot:[{ code:'spec-loot', count:2 }] }) },
+          { code:'poke', label:'Poke', execute: () => ({ text:'Poked' }) },
+          { code:'hidden', label:'Hidden', requires: () => false, execute: () => ({}) },
+        ],
+      });
+    });
+
+    it('offers no commands without contents', function() {
+      expect(Room().getAvailableCommands()).to.be.empty;
+    });
+
+    it('offers the contents commands whose requirements are met', function() {
+      const room = Room();
+      room.setContents('spec-command-contents');
+      expect(room.getAvailableCommands().map(command => command.code)).to.deep.equal(['take','poke']);
+    });
+
+    it('uses a command up when it is executed', function() {
+      const room = Room();
+      room.setContents('spec-command-contents');
+
+      const result = room.useCommand('take');
+      expect(result).to.deep.equal({ text:'Taken', loot:[{ code:'spec-loot', count:2 }] });
+      expect(room.getAvailableCommands().map(command => command.code)).to.deep.equal(['poke']);
+    });
+
+    it('throws when using a command that is not available', function() {
+      const room = Room();
+      room.setContents('spec-command-contents');
+      room.useCommand('take');
+
+      expect(() => room.useCommand('take')).to.throw('not available');
+      expect(() => room.useCommand('hidden')).to.throw('not available');
+      expect(() => room.useCommand('unknown')).to.throw('not available');
+    });
+  });
+
   describe("pack()", function() {
-    it('serializes the position and every box', function() {
+    it('serializes the position, contents, stairs, used commands, and every box', function() {
       const room = Room();
       room.setPosition(5,9);
+      room.setContents('spec-contents');
+      room.setStairs('up');
       room.addBox(0,0,3,1);
       room.addBox(2,0,1,3);
 
       expect(room.pack()).to.deep.equal({
         position: { x:5, y:9 },
+        contents: 'spec-contents',
+        stairs: 'up',
+        usedCommands: [],
         boxes: [
           { x:0, y:0, width:3, height:1 },
           { x:2, y:0, width:1, height:3 },

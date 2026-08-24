@@ -23,6 +23,15 @@ global.DialogCategory = {
   attackText: 'attackText',
 };
 
+// Contents and feature rarity levels (not item rarity)
+global.Rarity = {
+  common: 'common',
+  unusual: 'unusual',
+  rare: 'rare',
+  astonishing: 'astonishing',
+  unheardOf: 'unheardOf',
+}
+
 // =========
 //   Views
 // =========

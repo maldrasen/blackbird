@@ -1,4 +1,4 @@
-global.InventoryManager = function(characterId) {
+global.InventoryManager = function(characterId=GameSystem.getState().getPlayer()) {
 
   function fetch() {
     return InventoryComponent.lookup(characterId);
@@ -69,6 +69,21 @@ global.InventoryManager = function(characterId) {
     Registry.deleteEntity(itemId);
   }
 
+  function addArticle(code, quantity) {
+    if (quantity < 0) { throw new Error(`Cannot add ${quantity} of Article:${code}, use removeArticle().`); }
+    setArticleQuantity(code, getArticleQuantity(code) + quantity);
+  }
+
+  function removeArticle(code, quantity) {
+    const current = getArticleQuantity(code);
+
+    if (quantity > current) {
+      throw new Error(`Inventory:${characterId} only has ${current} of Article:${code}, cannot remove ${quantity}.`);
+    }
+
+    setArticleQuantity(code, current - quantity);
+  }
+
   function getArticleQuantity(code) {
     return fetch().articles[code] || 0
   }
@@ -90,6 +105,8 @@ global.InventoryManager = function(characterId) {
     removeItem,
     listItems,
     dropItem,
+    addArticle,
+    removeArticle,
     getArticleQuantity,
     setArticleQuantity,
   };

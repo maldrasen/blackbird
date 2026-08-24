@@ -41,7 +41,8 @@ global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
   }
 
   function buildFeature(path) {
-    const room = Room();
+    const feature = Feature('corridor');
+    const room = Room(feature);
 
     if (path.corner) {
       FloorFactorySupport.addSegment(room, path.start, path.corner);
@@ -51,7 +52,6 @@ global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
       FloorFactorySupport.addSegment(room, path.start, path.end);
     }
 
-    const feature = Feature('corridor');
     const x = Math.min(path.start.x, path.end.x);
     const y = Math.min(path.start.y, path.end.y);
 

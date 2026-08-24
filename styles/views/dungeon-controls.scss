@@ -9,7 +9,7 @@ $bg-controls: rgb(5 5 5);
   left: 0;
   bottom: 0;
   right: 0;
-  height: 100px;
+  height: 130px;
   z-index: variables.$z-dungeon-controls;
 
   border-top: variables.$border-normal;
@@ -20,13 +20,37 @@ $bg-controls: rgb(5 5 5);
     position: absolute;
     left: 0;
     bottom: 0;
-    height: 120px;
-    padding: 5px;
+    height: 130px;
+    width: 100px;
+    padding: 10px;
     background-color: $bg-panel;
 
     border-top: variables.$border-normal;
     border-right: variables.$border-normal;
     box-shadow: 5px -5px 5px rgb(0 0 0 / 50%);
+  }
+
+  .center-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 120px;
+    right: 376px;
+
+    .room-description {
+      height: 67px;
+      padding: 10px;
+      overflow: hidden;
+      font-size: variables.$fs-big;
+      font-family: "habibi", serif;
+    }
+
+    .command-buttons {
+      display: flex;
+      gap: 5px;
+      padding: 0 10px;
+      justify-content: end;
+    }
   }
 
   .formation-panel {
@@ -68,5 +92,16 @@ $bg-controls: rgb(5 5 5);
 
       .name { display:none; }
     }
+  }
+}
+
+#roomContentOverlay {
+  .result-text {
+    text-align: center;
+  }
+
+  .loot-list {
+    margin-top: 10px;
+    text-align: center;
   }
 }

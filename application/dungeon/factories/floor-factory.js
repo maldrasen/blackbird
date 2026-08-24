@@ -77,6 +77,7 @@ global.FloorFactory = function() {
     featureDoors.forEach(door => floor.addDoor(door));
 
     placeStairs();
+    RoomContentPlacer().placeContents();
   }
 
   // Multi-room features join their own rooms with authored doors. Their edges go into the connection graph before
@@ -116,7 +117,7 @@ global.FloorFactory = function() {
     }
 
     stairs.forEach(direction => {
-      floor.addStairs(direction, rooms.pop().getIndex());
+      rooms.pop().setStairs(direction);
     });
   }
 

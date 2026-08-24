@@ -7,6 +7,7 @@ function getTrimMax(length) {
 }
 
 FeatureType.register('tea-room',{
+  variety:'plain',
 
   // Build a "T" shaped room, rotated in any of the cardinal directions.
   //   size:    [min,max]
@@ -20,7 +21,8 @@ FeatureType.register('tea-room',{
     const notchHeight = Random.between(1, getTrimMax(totalHeight));
     const legWidth = totalWidth-(notchWidth*2);
     const legHeight = totalHeight-(notchHeight*2);
-    const room = Room();
+    const feature = Feature('tea-room');
+    const room = Room(feature);
 
     switch(rotation) {
       case 'N':
@@ -43,7 +45,6 @@ FeatureType.register('tea-room',{
 
     room.allowStairs();
 
-    const feature = Feature('tea-room');
     feature.addRoom(room);
     return feature;
   }

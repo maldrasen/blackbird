@@ -13,7 +13,7 @@ global.StraightCorridorFactory = function(originFeature, targetFeature, alignmen
 
       const feature = Feature('corridor');
       feature.setPosition(x, y);
-      feature.addRoom(buildRoomBetween(start, end));
+      feature.addRoom(buildRoomBetween(feature, start, end));
 
       // The doors can't be built until the corridor's room has been registered with the floor and given its global
       // room index, so we return the door tiles and the features they open into instead.
@@ -88,12 +88,12 @@ global.StraightCorridorFactory = function(originFeature, targetFeature, alignmen
     return tile.x >= 0 && tile.y >= 0 && tile.x < floor.getFloorWidth() && tile.y < floor.getFloorHeight();
   }
 
-  function buildRoomBetween(start,end) {
+  function buildRoomBetween(feature,start,end) {
     const isVertical = start.x === end.x;
     const width  = isVertical ? 1 : Math.abs(end.x - start.x) + 1;
     const height = isVertical ? Math.abs(end.y - start.y) + 1 : 1;
 
-    const room = Room();
+    const room = Room(feature);
     room.addBox(0, 0, width, height);
     return room;
   }

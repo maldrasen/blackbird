@@ -76,6 +76,57 @@ describe('InventoryManager', function() {
     });
   });
 
+  describe('addArticle()', function() {
+    it('adds to the existing quantity', function() {
+      const horse = CharacterFixtures.genericMale({});
+      const inventory = InventoryManager(horse);
+
+      inventory.addArticle('dungeon-tripe', 3);
+      inventory.addArticle('dungeon-tripe', 4);
+
+      expect(inventory.getArticleQuantity('dungeon-tripe')).to.equal(7);
+    });
+
+    it('throws on a negative quantity', function() {
+      const horse = CharacterFixtures.genericMale({});
+
+      expect(() => InventoryManager(horse).addArticle('dungeon-tripe', -1)).to.throw(
+        `Cannot add -1 of Article:dungeon-tripe, use removeArticle().`);
+    });
+  });
+
+  describe('removeArticle()', function() {
+    it('removes from the existing quantity', function() {
+      const horse = CharacterFixtures.genericMale({});
+      const inventory = InventoryManager(horse);
+
+      inventory.addArticle('dungeon-tripe', 5);
+      inventory.removeArticle('dungeon-tripe', 2);
+
+      expect(inventory.getArticleQuantity('dungeon-tripe')).to.equal(3);
+    });
+
+    it('clears the article entry when the last one is removed', function() {
+      const horse = CharacterFixtures.genericMale({});
+      const inventory = InventoryManager(horse);
+
+      inventory.addArticle('dungeon-tripe', 2);
+      inventory.removeArticle('dungeon-tripe', 2);
+
+      expect(InventoryComponent.lookup(horse).articles).to.not.have.property('dungeon-tripe');
+    });
+
+    it('throws when removing more than the inventory holds', function() {
+      const horse = CharacterFixtures.genericMale({});
+      const inventory = InventoryManager(horse);
+
+      inventory.addArticle('dungeon-tripe', 2);
+
+      expect(() => inventory.removeArticle('dungeon-tripe', 3)).to.throw(
+        `Inventory:${horse} only has 2 of Article:dungeon-tripe, cannot remove 3.`);
+    });
+  });
+
   it('listItems()', function() {
     const horse = CharacterFixtures.genericMale({});
     const cleaver = WeaponFactory.build('cleaver');

@@ -1,13 +1,15 @@
-global.Room = function(type='normal') {
-
-  // The room model will also manage the contents of the room.
+global.Room = function(feature, type='normal') {
   const boxes = [];
+
+  let description;
   let position = { x:0, y:0 };
   let index;
-  let featureIndex;
   let floorPosition;
   let stairsAllowed = false;
   let overlapping = false;
+  let contents = null;
+  let stairs = null;
+  let usedCommands = [];
 
   // Add a box to the room. Boxes can be added in any order using any shared coordinate system (eg. plain absolute
   // grid coordinates) - the room's own origin isn't pinned to (0,0) until something actually reads the boxes/bounds,
@@ -72,6 +74,12 @@ global.Room = function(type='normal') {
     };
   }
 
+  // TODO: No features have contents yet, but eventually some features will have rooms with preset content. If any
+  //       room in a feature record has content then the placer shouldn't place randomized content into it.
+  function canHaveContents() {
+    return feature.getType() !== 'corridor' && stairs == null;
+  }
+
   function stairsAreAllowed() {
     return stairsAllowed && boxes[0].width > 1 && boxes[0].height > 1;
   }
@@ -85,16 +93,58 @@ global.Room = function(type='normal') {
   function pack() {
     return {
       position,
+      contents,
+      stairs,
+      usedCommands: [...usedCommands],
       boxes: getBoxes(),
     }
+  }
+
+  function getAvailableCommands() {
+    if (contents == null) { return []; }
+    return RoomContents.lookup(contents).getCommands().filter(command => usedCommands.includes(command.code) === false);
+  }
+
+  function useCommand(code) {
+    const command = getAvailableCommands().find(command => command.code === code);
+    if (command == null) { throw new Error(`Command [${code}] is not available in this room.`); }
+
+    usedCommands.push(code);
+    return command.execute();
+  }
+
+  function setDescription(text) {
+    if (description != null) { throw new Error(`A description for this room has already been set.`); }
+    description = text;
+  }
+
+  // Get the description for this room. We lazy load the description if it hasn't been set yet, but once a description
+  // has been set it shouldn't change.
+  function getDescription() {
+    const theme = DungeonTheme.lookup(DungeonSystem.getDungeonFloor().getTheme());
+
+    if (description == null && contents) {
+      description = RoomContents.lookup(contents).getDescription();
+    }
+    if (description == null && stairs) {
+       description = theme.getDescription(`${stairs}Stairs`);
+    }
+    if (description == null) {
+      const variety = (feature.getType() === 'corridor') ?
+        'corridor' : FeatureType.lookup(feature.getType()).getVariety();
+      description = theme.getDescription(variety);
+    }
+    return description;
   }
 
   return {
     getType: () => { return type },
     setIndex: i => { index = i; },
     getIndex: () => { return index; },
-    setFeatureIndex: i => { featureIndex = i; },
-    getFeatureIndex: () => { return featureIndex; },
+    getFeature: () => { return feature; },
+    getFeatureIndex: () => { return feature.getIndex(); },
+    setDescription,
+    getDescription,
     setFloorPosition: (x,y) => { floorPosition = {x,y}; },
     getFloorPosition: () => { return {...floorPosition}; },
     setPosition,
@@ -106,8 +156,17 @@ global.Room = function(type='normal') {
     getFloorCenter,
     allowStairs: () => { stairsAllowed = true; },
     stairsAreAllowed,
+    setStairs: direction => { stairs = direction; },
+    getStairs: () => { return stairs; },
+    hasStairs: () => { return stairs != null; },
     markOverlapping: () => { overlapping = true; },
     isOverlapping,
+    setContents: code => { contents = code; },
+    getContents: () => { return contents; },
+    hasContents: () => { return contents != null; },
+    canHaveContents,
+    getAvailableCommands,
+    useCommand,
     pack,
   };
 }

@@ -5,6 +5,7 @@ global.DungeonControls = (function() {
   function init() {
     X.onClick('#dungeonControls .open-party', () => { PartyOverlay.open('normal') });
     X.onClick('#dungeonControls .party-card', openCharacterOverlay);
+    X.onClick('#dungeonControls .command-buttons .command', commandClicked);
   }
 
   function build() {
@@ -40,10 +41,43 @@ global.DungeonControls = (function() {
     CharacterOverlay.open(event.target.closest('.party-card').dataset.id);
   }
 
+  // Show the description and command buttons of the room the party is currently in. Called when the floor is drawn
+  // and again each time the party steps into a new room.
+  function refreshRoom() {
+    const room = getCurrentRoom();
+    X.first('#dungeonControls .room-description').innerHTML = room.getDescription();
+    buildCommandButtons(room);
+  }
+
+  function buildCommandButtons(room) {
+    const list = X.first('#dungeonControls .command-buttons');
+
+    X.empty(list);
+
+    room.getAvailableCommands().forEach(command => {
+      list.appendChild(X.createElement(
+        `<li><a href='#' class='command button' data-code='${command.code}'>${command.label}</a></li>`));
+    });
+  }
+
+  function commandClicked(event) {
+    const code = event.target.closest('.command').dataset.code;
+    const result = getCurrentRoom().useCommand(code);
+
+    refreshRoom();
+    RoomContentOverlay.open(result);
+  }
+
+  function getCurrentRoom() {
+    const floor = DungeonSystem.getDungeonFloor();
+    return floor.getRooms()[floor.getLocation()];
+  }
+
   return {
     init,
     build,
     update,
+    refreshRoom,
   };
 
 })();
