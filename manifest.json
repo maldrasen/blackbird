@@ -519,6 +519,7 @@
     "data/weapons/whips.js"
   ],
   "viewFiles": [
+    "views/battle/auto-battle-button.js",
     "views/battle/battle-text.js",
     "views/battle/battle-view.js",
     "views/battle/combatant-panel.js",

@@ -4,6 +4,7 @@ global.BattleView = (function() {
     BattleText.init();
     CommandPanel.init();
     FormationPanel.init();
+    AutoBattleButton.init();
   }
 
   function show() {
@@ -12,6 +13,7 @@ global.BattleView = (function() {
     FormationPanel.build();
     BattleText.build();
     BattleText.showBattleStartText();
+    AutoBattleButton.update();
   }
 
   function update() {
