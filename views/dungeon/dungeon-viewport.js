@@ -2,12 +2,16 @@ global.DungeonViewport = (function() {
 
   const scaleSteps = [0.125, 0.25, 0.375, 0.5, 0.75, 1];
   const defaultScale = 0.5;
+  const wheelThreshold = 100;
+  const wheelResetDelay = 150;
 
   let dragContext;
   let dragMoved = false;
   let currentLocation = { x:0, y:0 };
   let currentScale = defaultScale;
   let scaleTarget = defaultScale;
+  let wheelDistance = 0;
+  let lastWheelTime = 0;
 
   function init() {
     window.addEventListener('mouseup', stopDrag);
@@ -16,8 +20,25 @@ global.DungeonViewport = (function() {
       if (event.target.closest('#dungeonViewport')) { startDrag(); }
     });
     window.addEventListener('wheel', event => {
-      if (event.target.closest('#dungeonViewport')) { zoom(event.deltaY < 0 ? 1 : -1); }
+      if (event.target.closest('#dungeonViewport')) { onWheel(event); }
     });
+  }
+
+  // A mouse wheel notch arrives as a single event with a large delta, but a trackpad swipe arrives as a stream of
+  // small ones (plus a momentum tail after the fingers lift), so zoom steps come from accumulated scroll distance
+  // rather than event count. The accumulator resets when the direction flips or the stream pauses, so leftover
+  // distance and momentum from one gesture don't bleed into the next.
+  function onWheel(event) {
+    if (event.timeStamp - lastWheelTime > wheelResetDelay) { wheelDistance = 0; }
+    lastWheelTime = event.timeStamp;
+
+    if (Math.sign(event.deltaY) !== Math.sign(wheelDistance)) { wheelDistance = 0; }
+    wheelDistance += event.deltaY;
+
+    while (Math.abs(wheelDistance) >= wheelThreshold) {
+      zoom(wheelDistance < 0 ? 1 : -1);
+      wheelDistance -= Math.sign(wheelDistance) * wheelThreshold;
+    }
   }
 
   function isDragging() {
