@@ -4,6 +4,7 @@ global.OptionsOverlay = (function() {
     damage:     { min:30, max:1000, step:10, input:'#damageInput' },
     mitigation: { min:30, max:1000, step:10, input:'#mitigationInput' },
     resistance: { min:0,  max:100,  step:1,  input:'#resistanceInput' },
+    encounterRate: { min:0, max:200, step:5, input:'#encounterRateInput' },
   }
 
   const sliders = {};
@@ -98,6 +99,7 @@ global.OptionsOverlay = (function() {
         damage: sliders.damage.getValue(),
         mitigation: sliders.mitigation.getValue(),
         resistance: sliders.resistance.getValue(),
+        encounterRate: sliders.encounterRate.getValue(),
       },
       keyBindings: KeyBindingsPanel.getBindings(),
     };

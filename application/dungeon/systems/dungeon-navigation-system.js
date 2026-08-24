@@ -34,10 +34,9 @@ global.DungeonNavigationSystem = (function() {
       (a.position.x - b.position.x) || (a.position.y - b.position.y))[0] || null;
   }
 
-  // TODO: The random encounter rate should come from the dungeon theme. This base encounter rate could also be
-  //       changed by items the party uses or events. Maybe they use something that makes them quieter, or they trip
-  //       an alarm in an event. We'll need to add a property to the floor state that keeps track of dungeon
-  //       conditions like this.
+  // TODO: The encounter rate could also be changed by items the party uses or events. Maybe they use something that
+  //       makes them quieter, or they trip an alarm in an event. We'll need to add a property to the floor state that
+  //       keeps track of dungeon conditions like this.
 
   function moveToRoom(index) {
     const floor = DungeonSystem.getDungeonFloor();
@@ -48,7 +47,8 @@ global.DungeonNavigationSystem = (function() {
 
     const revealed = floor.isRevealed(index) === false;
     const episode = revealed ? getRoomEpisode(floor.getRooms()[index]) : null;
-    const encounter = episode == null && Random.roll(100) < (revealed ? 20 : 2);
+    const encounterRate = DungeonTheme.lookup(floor.getTheme()).getEncounterRate(revealed);
+    const encounter = episode == null && Random.roll(100) < encounterRate * Difficulty.getEncounterFactor();
 
     floor.setLocation(index);
     GameSystem.getState().advanceGameTime(revealed ? exploreTime : backtrackTime);

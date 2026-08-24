@@ -64,6 +64,22 @@ describe("DungeonNavigationSystem", function() {
     expect(DungeonNavigationSystem.moveToRoom(start).encounter).to.equal(false);
   });
 
+  it("never rolls an encounter when the encounter rate option is zero", async function() {
+    const target = DungeonNavigationSystem.getAdjacentRoomIndices(start)[0];
+
+    await WorldState.setOptions({ ...WorldState.getOptions(), difficulty:{ damage:100, mitigation:100, resistance:0, encounterRate:0 } });
+    Random.stubRoll(0);
+    expect(DungeonNavigationSystem.moveToRoom(target).encounter).to.equal(false);
+  });
+
+  it("rolls more encounters when the encounter rate option is raised", async function() {
+    const target = DungeonNavigationSystem.getAdjacentRoomIndices(start)[0];
+
+    await WorldState.setOptions({ ...WorldState.getOptions(), difficulty:{ damage:100, mitigation:100, resistance:0, encounterRate:200 } });
+    Random.stubRoll(39);
+    expect(DungeonNavigationSystem.moveToRoom(target).encounter).to.equal(true);
+  });
+
   it("advances the game time as the party moves", function() {
     const target = DungeonNavigationSystem.getAdjacentRoomIndices(start)[0];
     const state = GameSystem.getState();

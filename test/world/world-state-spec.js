@@ -1,7 +1,7 @@
 describe("WorldState", function() {
 
   it("provides default options without loading state", function() {
-    expect(WorldState.getOptions().difficulty).to.deep.equal({ damage:100, mitigation:100, resistance:0 });
+    expect(WorldState.getOptions().difficulty).to.deep.equal({ damage:100, mitigation:100, resistance:0, encounterRate:100 });
   });
 
   it("round trips options without writing to disk", async function() {
@@ -19,12 +19,12 @@ describe("WorldState", function() {
   it("fills a state missing options entirely with the defaults", function() {
     const merged = WorldState.mergeDefaults({ previousGame:'g1' });
     expect(merged.previousGame).to.equal('g1');
-    expect(merged.options.difficulty).to.deep.equal({ damage:100, mitigation:100, resistance:0 });
+    expect(merged.options.difficulty).to.deep.equal({ damage:100, mitigation:100, resistance:0, encounterRate:100 });
   });
 
   it("keeps loaded values while filling missing difficulty keys", function() {
     const merged = WorldState.mergeDefaults({ options:{ difficulty:{ damage:200 } } });
-    expect(merged.options.difficulty).to.deep.equal({ damage:200, mitigation:100, resistance:0 });
+    expect(merged.options.difficulty).to.deep.equal({ damage:200, mitigation:100, resistance:0, encounterRate:100 });
   });
 
 });
