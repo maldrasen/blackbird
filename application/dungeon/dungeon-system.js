@@ -59,6 +59,12 @@ global.DungeonSystem = (function() {
     GameSystem.setGameMode(GameMode.battle);
   }
 
+  function startRoomEpisode(code) {
+    GameSystem.markReturnMode();
+    EpisodeSystem.startEpisode(code, { P:GameSystem.getState().getPlayer() });
+    GameSystem.setGameMode(GameMode.episode);
+  }
+
   function getFloorEncounterOptions() {
     return {
       cohorts: DungeonTheme.lookup(dungeonFloor.getTheme()).getCohorts(),
@@ -76,6 +82,7 @@ global.DungeonSystem = (function() {
     goDownStairs,
     goUpStairs,
     startRandomEncounter,
+    startRoomEpisode,
   };
 
 })();

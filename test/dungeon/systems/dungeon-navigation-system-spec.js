@@ -85,6 +85,45 @@ describe("DungeonNavigationSystem", function() {
     expect(DungeonNavigationSystem.moveToRoom(start).encounter).to.equal(true);
   });
 
+  describe("room episodes", function() {
+    let target;
+
+    beforeEach(function() {
+      RoomContents.register('spec-episode-contents',{
+        description: 'A room with an episode in it.',
+        episode: 'spec-episode',
+      });
+
+      target = DungeonNavigationSystem.getAdjacentRoomIndices(start)[0];
+      floor.getRooms()[target].setContents('spec-episode-contents');
+    });
+
+    it("fires the contents episode when the room is first entered, skipping the encounter roll", function() {
+      Random.stubRoll(0);
+
+      const result = DungeonNavigationSystem.moveToRoom(target);
+      expect(result.episode).to.equal('spec-episode');
+      expect(result.encounter).to.equal(false);
+    });
+
+    it("does not fire the episode again when backtracking through the room", function() {
+      Random.stubRoll(50, 50);
+      DungeonNavigationSystem.moveToRoom(target);
+      DungeonNavigationSystem.moveToRoom(start);
+
+      const result = DungeonNavigationSystem.moveToRoom(target);
+      expect(result.episode).to.equal(null);
+    });
+
+    it("returns no episode from contents without one", function() {
+      RoomContents.register('spec-no-episode-contents',{ description: 'Nothing to see here.' });
+      floor.getRooms()[target].setContents('spec-no-episode-contents');
+
+      Random.stubRoll(99);
+      expect(DungeonNavigationSystem.moveToRoom(target).episode).to.equal(null);
+    });
+  });
+
   it("finds an empty path to the current room", function() {
     expect(DungeonNavigationSystem.getPathToRoom(start)).to.eql([]);
   });

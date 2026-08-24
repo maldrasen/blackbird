@@ -34,15 +34,9 @@ global.DungeonNavigationSystem = (function() {
       (a.position.x - b.position.x) || (a.position.y - b.position.y))[0] || null;
   }
 
-  // TODO: When entering a new room, we need to read the room's contents to actually determine what happens on
-  //       entering a new room. It's sometimes a battle, sometimes an event, sometimes we want to print a description,
-  //       or nothing may happen. Since we don't have any room contents yet, we're simply starting a battle sometimes,
-  //       though this is a temporary behavior.
-  //
-  // TODO: When backtracking through the revealed rooms though we do want to keep this slim chance of a random
-  //       encounter. This random encounter rate should come from the dungeon theme. This base encounter rate could
-  //       also by changed by items the party uses or events. Maybe they use something that makes them quieter, or
-  //       they trip an alarm in an event. We'll need to add a property to the floor state that keeps track of dungeon
+  // TODO: The random encounter rate should come from the dungeon theme. This base encounter rate could also be
+  //       changed by items the party uses or events. Maybe they use something that makes them quieter, or they trip
+  //       an alarm in an event. We'll need to add a property to the floor state that keeps track of dungeon
   //       conditions like this.
 
   function moveToRoom(index) {
@@ -53,12 +47,18 @@ global.DungeonNavigationSystem = (function() {
     }
 
     const revealed = floor.isRevealed(index) === false;
-    const encounter = Random.roll(100) < (revealed ? 20 : 2);
+    const episode = revealed ? getRoomEpisode(floor.getRooms()[index]) : null;
+    const encounter = episode == null && Random.roll(100) < (revealed ? 20 : 2);
 
     floor.setLocation(index);
     GameSystem.getState().advanceGameTime(revealed ? exploreTime : backtrackTime);
 
-    return { encounter, revealed };
+    return { encounter, revealed, episode };
+  }
+
+  function getRoomEpisode(room) {
+    if (room.hasContents() === false) { return null; }
+    return RoomContents.lookup(room.getContents()).getEpisode() || null;
   }
 
   // =============
