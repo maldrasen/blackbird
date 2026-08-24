@@ -33,9 +33,11 @@ global.DungeonThemeSystem = (function() {
     });
   }
 
+  // TODO: Every floor is locked to the dungeon theme until the other themes have their content fleshed out.
   function pickTheme(level) {
-    if (Object.keys(rarityRanges).length === 0) { init(); }
-    return Random.from(rarityRanges[getRandomRarity()][level]);
+    return 'dungeon';
+    // if (Object.keys(rarityRanges).length === 0) { init(); }
+    // return Random.from(rarityRanges[getRandomRarity()][level]);
   }
 
   // Common has the same percentage chance as unusual because there should only be one common theme (the generic
