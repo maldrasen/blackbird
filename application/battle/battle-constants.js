@@ -1,5 +1,6 @@
 global.BattleConstants = {
   ambushReactionTime: 1000,
+  autoAdvanceTime: 250,
   damageEffectTime: 500,
   killEffectTime: 1000,
   moveEffectTime: 500,

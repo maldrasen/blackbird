@@ -1,5 +1,7 @@
 global.BattleText = (function() {
 
+  let autoAdvanceTimer;
+
   function init() {
     X.onCodeDown('Space', isTextVisible, BattleSystem.advanceBattle);
     X.onCodeDown('Enter', isTextVisible, BattleSystem.advanceBattle);
@@ -40,6 +42,25 @@ global.BattleText = (function() {
     });
 
     X.first('#textScroll').scrollTop = 0;
+
+    if (BattleSystem.getState().isAutoBattle()) { scheduleAutoAdvance(); }
+  }
+
+  function scheduleAutoAdvance() {
+    cancelAutoAdvance();
+
+    autoAdvanceTimer = setTimeout(() => {
+      autoAdvanceTimer = null;
+      const state = BattleSystem.getState();
+      if (isTextVisible() && state != null && state.isAutoBattle()) { BattleSystem.advanceBattle(); }
+    }, BattleConstants.autoAdvanceTime);
+  }
+
+  function cancelAutoAdvance() {
+    if (autoAdvanceTimer != null) {
+      clearTimeout(autoAdvanceTimer);
+      autoAdvanceTimer = null;
+    }
   }
 
   function showBattleStartText() {
@@ -94,6 +115,8 @@ global.BattleText = (function() {
     show,
     setMessages,
     showBattleStartText,
+    scheduleAutoAdvance,
+    cancelAutoAdvance,
   };
 
 })();

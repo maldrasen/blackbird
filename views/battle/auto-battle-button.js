@@ -14,14 +14,14 @@ global.AutoBattleButton = (function() {
     state.setAutoBattle(state.isAutoBattle() === false);
     update();
 
-    if (state.isAutoBattle()) { takeOverRound(); }
+    state.isAutoBattle() ? takeOverRound() : BattleText.cancelAutoAdvance();
   }
 
-  // Turning auto mode on while a character is waiting for a command takes their turn immediately, cancelling any
-  // targeting that was in progress first.
   function takeOverRound() {
     if (FormationPanel.isTargeting()) { FormationPanel.cancelTargeting(); }
-    if (X.hasClass('#commandPanel','hide') === false) { AutoBattleSystem.takeTurn(); }
+    if (X.hasClass('#commandPanel','hide') === false) { return AutoBattleSystem.takeTurn(); }
+
+    BattleText.scheduleAutoAdvance();
   }
 
   return {
