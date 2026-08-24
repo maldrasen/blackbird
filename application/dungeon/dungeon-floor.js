@@ -60,7 +60,7 @@ global.DungeonFloor = function(level, theme=null) {
 
     setLocation,
     getLocation: () => { return location; },
-    getCurrentRoom: () => {},
+    getCurrentRoom: () => { return rooms[location]; },
 
     getFeatures: () => { return features; },
     getRooms: () => { return rooms; },
