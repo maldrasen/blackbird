@@ -21,11 +21,11 @@ DungeonTheme.register('dungeon',{
 
   features:[
     { code:'small-square', rarity:Rarity.common, type:'rect-room',  size:[2,5]},
-    { code:'large-square', rarity:Rarity.common, type:'rect-room',  size:[5,8]},
     { code:'leg-room',     rarity:Rarity.common, type:'leg-room',   size:[3,8]},
     { code:'tea-room',     rarity:Rarity.common, type:'tea-room',   size:[3,8]},
     { code:'cross-room',   rarity:Rarity.common, type:'cross-room', size:[3,9]},
-    { code:'nested-room',  rarity:Rarity.common, type:'nested-room', size:[3,7], padding:[1,3]},
+    { code:'large-square', rarity:Rarity.unusual, type:'rect-room',  size:[5,8]},
+    { code:'nested-room',  rarity:Rarity.unusual, type:'nested-room', size:[3,7], padding:[1,3]},
   ],
 
   getFloorTexture: () => { return DungeonFloorGrid; },
