@@ -203,6 +203,7 @@
     "application/requirements/dungeon-requirements.js",
     "application/requirements/game-requirements.js",
     "application/requirements/negotiation-requirements.js",
+    "application/requirements/party-requirements.js",
     "application/requirements/requirements.js",
     "application/requirements/training-requirements.js",
     "application/test/battle-fixtures.js",

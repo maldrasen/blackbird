@@ -75,7 +75,7 @@ global.GameState = function(data={}) {
     setPlayer: id => { player = id; },
     getPartyConfiguration: () => { return party; },
     setPartyConfiguration: config => { party = config; },
-    getPartySize: () => { return 0; },
+    getPartySize: () => { return Object.keys(party).length; },
     getPartySizeLimit,
     getLegacyName: () => { return legacyName; },
     setLegacyName: name => { legacyName = name; },
