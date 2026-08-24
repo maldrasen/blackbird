@@ -5,7 +5,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 ## Priority 1
 
 - [200] Auto Battle Mode `3pt` — [200-auto-battle-mode.md](200-auto-battle-mode.md)
-- [202] Adjust encounter rate `3pt` — [202-adjust-encounter-rate.md](202-adjust-encounter-rate.md)
 
 ## Priority 2
 
