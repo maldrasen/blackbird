@@ -14,6 +14,12 @@ global.KeyBindings = (function() {
         [BattleCommand.pass]:            { name:'Pass',             key:'KeyP' },
       },
     },
+    autoBattle: {
+      name: 'Auto Battle',
+      actions: {
+        toggle: { name:'Toggle Auto Battle', key:'KeyZ' },
+      },
+    },
     targeting: {
       name: 'Targeting',
       actions: {

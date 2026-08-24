@@ -2,11 +2,23 @@ global.AutoBattleButton = (function() {
 
   function init() {
     X.onClick('#autoBattleButton', toggle);
+    KeyBindingDispatcher.register('autoBattle', { isActive, perform:toggle });
+  }
+
+  function isActive() {
+    return X.first('#battleView') != null && BattleSystem.getState() != null;
   }
 
   function update() {
-    const on = BattleSystem.getState().isAutoBattle();
-    on ? X.addClass('#autoBattleButton','on') : X.removeClass('#autoBattleButton','on');
+    const button = X.first('#autoBattleButton');
+    button.innerHTML = `Auto${keyHint()}`;
+
+    BattleSystem.getState().isAutoBattle() ? X.addClass(button,'on') : X.removeClass(button,'on');
+  }
+
+  function keyHint() {
+    const key = KeyBindings.getBinding('autoBattle','toggle');
+    return key ? `<span class='key-hint'>${KeyBindings.labelFor(key)}</span>` : '';
   }
 
   function toggle() {
