@@ -94,7 +94,7 @@ global.BattleSystem = (function() {
   }
 
   function startCharacterRound() {
-    BattleInterface.showCharacterCommands();
+    state.isAutoBattle() ? AutoBattleSystem.takeTurn() : BattleInterface.showCharacterCommands();
   }
 
   function finishMonsterRound() {
