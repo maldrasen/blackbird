@@ -45,15 +45,15 @@ global.DungeonNavigationSystem = (function() {
       throw new Error(`Cannot move to room ${index} from room ${floor.getLocation()}`);
     }
 
-    const revealed = floor.isRevealed(index) === false;
-    const episode = revealed ? getRoomEpisode(floor.getRooms()[index]) : null;
-    const encounterRate = DungeonTheme.lookup(floor.getTheme()).getEncounterRate(revealed);
+    const newRoom = floor.isRevealed(index) === false;
+    const episode = newRoom ? getRoomEpisode(floor.getRooms()[index]) : null;
+    const encounterRate = DungeonTheme.lookup(floor.getTheme()).getEncounterRate(newRoom);
     const encounter = episode == null && Random.roll(100) < encounterRate * Difficulty.getEncounterFactor();
 
     floor.setLocation(index);
-    GameSystem.getState().advanceGameTime(revealed ? exploreTime : backtrackTime);
+    GameSystem.getState().advanceGameTime(newRoom ? exploreTime : backtrackTime);
 
-    return { encounter, revealed, episode };
+    return { encounter, revealed:newRoom, episode };
   }
 
   function getRoomEpisode(room) {

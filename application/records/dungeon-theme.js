@@ -24,8 +24,8 @@ global.DungeonTheme = (function() {
       return featureType.buildFeature(options);
     }
 
-    function getEncounterRate(revealed) {
-      return revealed ? (theme.revealedRoomEncounterRate || 2) : (theme.newRoomEncounterRate || 20);
+    function getEncounterRate(newRoom) {
+      return newRoom ? (theme.newRoomEncounterRate || 20) : (theme.revealedRoomEncounterRate || 2);
     }
 
     // A room without contents will pull its description from the theme. Currently the variety can only be 'plain',
