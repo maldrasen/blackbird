@@ -121,3 +121,16 @@ body:has(.dragging), body:has(.dragging) * { cursor: grabbing !important; }
 .quote {
   color: variables.$fg-strong;
 }
+
+.key-hint {
+  position: relative;
+  left: 6px;
+  margin-left: 2px;
+  padding: 2px 5px;
+  font-size: variables.$fs-small;
+  line-height: 18px;
+  border: variables.$border-normal;
+  border-radius: 3px;
+  opacity: 0.5;
+  background-color: rgb(0 0 0);
+}

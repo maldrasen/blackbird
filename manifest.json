@@ -14,6 +14,7 @@
     "application/battle/models/physical-attack-contest.js",
     "application/battle/models/physical-attack-roll.js",
     "application/battle/models/resist-roll.js",
+    "application/battle/systems/auto-battle-system.js",
     "application/battle/systems/battle-damage-system.js",
     "application/battle/systems/battle-death-system.js",
     "application/battle/systems/battle-initializer.js",
@@ -518,6 +519,7 @@
     "data/weapons/whips.js"
   ],
   "viewFiles": [
+    "views/battle/auto-battle-button.js",
     "views/battle/battle-text.js",
     "views/battle/battle-view.js",
     "views/battle/combatant-panel.js",
@@ -594,6 +596,7 @@
     "test/battle/models/physical-attack-contest-spec.js",
     "test/battle/models/resist-roll-spec.js",
     "test/battle/monster-system-spec.js",
+    "test/battle/systems/auto-battle-system-spec.js",
     "test/battle/systems/battle-damage-system-spec.js",
     "test/battle/systems/battle-death-system-spec.js",
     "test/battle/systems/encounter-builder-spec.js",

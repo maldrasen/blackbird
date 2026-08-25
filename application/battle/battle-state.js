@@ -21,6 +21,7 @@ global.BattleState = function(data) {
   characterIds.forEach(id => { conditions[id] = BattleCondition.active; });
 
   let ambushState = 'normal';
+  let autoBattle = false;
   let startText;
   let negotiationAttempted = false;
   let interrupt;
@@ -354,6 +355,8 @@ global.BattleState = function(data) {
     getTurnOrder: () => { return [ ...turnOrder ]; },
     setAmbushState,
     getAmbushState: () => { return ambushState; },
+    setAutoBattle: (on) => { autoBattle = on; },
+    isAutoBattle: () => { return autoBattle; },
     setStartText: (text) => { startText = text; },
     getStartText: () => { return startText; },
     getNext,
