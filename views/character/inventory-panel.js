@@ -38,7 +38,7 @@ global.InventoryPanel = function(options) {
 
     X.empty(itemList);
     items.forEach(item => {
-      itemList.appendChild(buildItemElement(item));
+      itemList.appendChild(item.articleCode ? buildArticleElement(item) : buildItemElement(item));
     });
 
     updateTradeTitle()
@@ -59,7 +59,7 @@ global.InventoryPanel = function(options) {
       <div class='item-name'></div>
     </li>`);
 
-    itemElement.querySelector('.item-icon').style['background-image'] = X.assetURL(`icons/${item.icon}`);
+    setRowIcon(itemElement, item);
     itemElement.querySelector('.item-name').textContent = StringHelper.titlecaseName(item.name);
     itemElement.addEventListener('click', clickItemElement(item, itemElement));
 
@@ -73,6 +73,28 @@ global.InventoryPanel = function(options) {
     }
 
     return itemElement;
+  }
+
+  // TODO: Articles can't be selected yet. Selection needs to handle article codes before the use, drop, and trade
+  //       buttons can work on them.
+  function buildArticleElement(article) {
+    const articleElement = X.createElement(`<li class='item-row article-row' data-article-code='${article.articleCode}'>
+      <div class='item-icon'></div>
+      <div class='item-name'></div>
+      <div class='item-quantity'></div>
+    </li>`);
+
+    setRowIcon(articleElement, article);
+    articleElement.querySelector('.item-name').textContent = StringHelper.titlecaseName(article.name);
+    articleElement.querySelector('.item-quantity').textContent = `×${article.quantity}`;
+
+    return articleElement;
+  }
+
+  function setRowIcon(rowElement, row) {
+    if (row.icon) {
+      rowElement.querySelector('.item-icon').style['background-image'] = X.assetURL(`icons/${row.icon}`);
+    }
   }
 
   function clickItemElement(item, itemElement) {

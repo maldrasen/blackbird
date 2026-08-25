@@ -40,6 +40,11 @@
 
     .item-name { opacity: 0.75; }
 
+    .item-quantity {
+      margin-left: auto;
+      color: variables.$fg-weak;
+    }
+
     .item-row.equipped .item-name {
       font-family: 'roboto-bold', sans-serif;
       opacity: 1;
