@@ -14,6 +14,10 @@ global.Room = function(feature, type='normal') {
   let footprint;
   let size;
 
+  // =======================
+  //    Building & Layout
+  // =======================
+
   // Add a box to the room. Boxes can be added in any order using any shared coordinate system (eg. plain absolute
   // grid coordinates) - the room's own origin isn't pinned to (0,0) until something actually reads the boxes/bounds,
   // so there's no need to keep re-normalizing (and no risk of earlier boxes drifting out of sync with later ones)
@@ -97,12 +101,6 @@ global.Room = function(feature, type='normal') {
     };
   }
 
-  // TODO: No features have contents yet, but eventually some features will have rooms with preset content. If any
-  //       room in a feature record has content then the placer shouldn't place randomized content into it.
-  function canHaveContents() {
-    return feature.getType() !== 'corridor' && stairs == null;
-  }
-
   function stairsAreAllowed() {
     return stairsAllowed && boxes[0].width > 1 && boxes[0].height > 1;
   }
@@ -113,27 +111,14 @@ global.Room = function(feature, type='normal') {
   // but need to be pulled on top of the overlapping room in this case.
   function isOverlapping(door) { return overlapping; }
 
-  function pack() {
-    return {
-      position,
-      contents,
-      stairs,
-      usedCommands: [...usedCommands],
-      boxes: getBoxes(),
-    }
-  }
+  // ==============
+  //    Contents
+  // ==============
 
-  function getAvailableCommands() {
-    if (contents == null) { return []; }
-    return RoomContents.lookup(contents).getCommands().filter(command => usedCommands.includes(command.code) === false);
-  }
-
-  function useCommand(code) {
-    const command = getAvailableCommands().find(command => command.code === code);
-    if (command == null) { throw new Error(`Command [${code}] is not available in this room.`); }
-
-    usedCommands.push(code);
-    return command.execute();
+  // TODO: No features have contents yet, but eventually some features will have rooms with preset content. If any
+  //       room in a feature record has content then the placer shouldn't place randomized content into it.
+  function canHaveContents() {
+    return feature.getType() !== 'corridor' && stairs == null;
   }
 
   function setDescription(text) {
@@ -160,14 +145,35 @@ global.Room = function(feature, type='normal') {
     return description;
   }
 
+  function getAvailableCommands() {
+    if (contents == null) { return []; }
+    return RoomContents.lookup(contents).getCommands().filter(command => usedCommands.includes(command.code) === false);
+  }
+
+  function useCommand(code) {
+    const command = getAvailableCommands().find(command => command.code === code);
+    if (command == null) { throw new Error(`Command [${code}] is not available in this room.`); }
+
+    usedCommands.push(code);
+    return command.execute();
+  }
+
+  function pack() {
+    return {
+      position,
+      contents,
+      stairs,
+      usedCommands: [...usedCommands],
+      boxes: getBoxes(),
+    }
+  }
+
   return {
     getType: () => { return type },
     setIndex: i => { index = i; },
     getIndex: () => { return index; },
     getFeature: () => { return feature; },
     getFeatureIndex: () => { return feature.getIndex(); },
-    setDescription,
-    getDescription,
     setFloorPosition: (x,y) => { floorPosition = {x,y}; },
     getFloorPosition: () => { return {...floorPosition}; },
     setPosition,
@@ -189,10 +195,13 @@ global.Room = function(feature, type='normal') {
     getContents: () => { return contents; },
     hasContents: () => { return contents != null; },
     canHaveContents,
+    setDescription,
+    getDescription,
     getAvailableCommands,
     useCommand,
     setScoutingRoll: roll => { scoutingRoll = roll; },
     getScoutingRoll: () => { return scoutingRoll; },
+    checkScoutingRoll: () => { return scoutingRoll >= RoomContents.lookup(contents).getSecrecy(); },
     pack,
   };
 }

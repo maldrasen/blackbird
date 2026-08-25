@@ -39,6 +39,9 @@ global.RoomContents = (function() {
 
     return {
       getCode: () => { return code; },
+      getRange: () => { return roomContents.range; },
+      getSecrecy: () => { return roomContents.secrecy; },
+      getTrap: () => { return roomContents.trap; },
       getEpisode: () => { return roomContents.episode; },
       getCommands: () => { return (roomContents.commands || []).filter(command => Requirements.met(command.requires)); },
       getDescription,

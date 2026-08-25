@@ -103,6 +103,10 @@ global.EpisodePriority = {
   flavor: 2,
 };
 
+global.EpisodeTarget = {
+  anyInParty: 'any-in-party' // Any single character in the party.
+};
+
 // A character in the party moves with the player, so their situated location is this pseudo-location rather than a
 // registered location code.
 global.SpecialLocation = {
