@@ -8,7 +8,7 @@ function harvest() {
   };
 }
 
-RoomContents.register('tripe-patch',{
+RoomContents.register('dungeon-tripe-patch',{
   commands:[{ code:'harvest', label:'Harvest', execute:harvest }],
   description:`The room you enter is hot and humid. You spot a small patch of bright orange lichen growing on one of
     the stone walls.`,
