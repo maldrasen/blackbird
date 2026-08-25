@@ -40,23 +40,23 @@ global.DungeonNavigationSystem = (function() {
 
   function moveToRoom(index) {
     const floor = DungeonSystem.getDungeonFloor();
-    const room = floor.getCurrentRoom();
 
     if (canMoveTo(index) === false) {
       throw new Error(`Cannot move to room ${index} from room ${floor.getLocation()}`);
     }
 
-    const newRoom = floor.isRevealed(index) === false;
-    if (newRoom) { scoutRoom(room); }
+    const room = floor.getRooms()[index];
+    const isNewRoom = floor.isRevealed(index) === false;
+    if (isNewRoom) { scoutRoom(room); }
 
-    const episode = newRoom ? getRoomEpisode(room) : null;
-    const encounterRate = DungeonTheme.lookup(floor.getTheme()).getEncounterRate(newRoom);
+    const episode = isNewRoom ? getRoomEpisode(room) : null;
+    const encounterRate = DungeonTheme.lookup(floor.getTheme()).getEncounterRate(isNewRoom);
     const encounter = episode == null && Random.roll(100) < encounterRate * Difficulty.getEncounterFactor();
 
     floor.setLocation(index);
-    GameSystem.getState().advanceGameTime(newRoom ? exploreTime : backtrackTime);
+    GameSystem.getState().advanceGameTime(isNewRoom ? exploreTime : backtrackTime);
 
-    return { encounter, revealed:newRoom, episode };
+    return { encounter, revealed:isNewRoom, episode };
   }
 
   // TODO: Get the designated scout character, always roll a scouting skill check. Store the result in the room. The
