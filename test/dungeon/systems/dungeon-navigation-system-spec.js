@@ -9,6 +9,7 @@ describe("DungeonNavigationSystem", function() {
   function buildScout() {
     const id = Registry.createEntity();
     AttributesComponent.create(id, { strength:10, dexterity:10, vitality:10, intelligence:10, beauty:10 });
+    HealthComponent.create(id, { currentHealth:20, maxHealth:20, currentStamina:10 });
 
     const skills = {};
     SkillsComponent.getSkills().forEach(code => { skills[code] = 0; });
@@ -174,6 +175,65 @@ describe("DungeonNavigationSystem", function() {
       Random.stubBetween(50,5);
       Random.stubRoll(99);
       expect(DungeonNavigationSystem.moveToRoom(target).episode).to.equal(null);
+    });
+  });
+
+  describe("room traps", function() {
+    let target;
+
+    // The scouting check rolls a 21 from the stubbed between values, so a secrecy of 30 stays unspotted while a
+    // secrecy of 10 gets caught.
+    beforeEach(function() {
+      RoomContents.register('spec-trapped-room-contents',{
+        secrecy: 30,
+        trap: {
+          damage: { x:2, d:6 },
+          target: EpisodeTarget.anyInParty,
+          onScoutingFailure: () => `The spec trap springs!`,
+        },
+        description: 'A room with a trap in it.',
+      });
+
+      target = DungeonNavigationSystem.getAdjacentRoomIndices(start)[0];
+      floor.getRooms()[target].setContents('spec-trapped-room-contents');
+    });
+
+    // Once roll() is stubbed, the trap's target pick with from() draws its index from the same queue, so each trapped
+    // room entry consumes a target roll before the encounter roll.
+    it("springs an unspotted trap when the room is first entered", function() {
+      Random.stubBetween(50,5);
+      Random.stubRollDice(7);
+      Random.stubRoll(0, 99);
+
+      const result = DungeonNavigationSystem.moveToRoom(target);
+      expect(result.trap.damage).to.equal(7);
+    });
+
+    it("does not spring a trap the scout spotted", function() {
+      RoomContents.register('spec-spotted-trap-contents',{
+        secrecy: 10,
+        trap: {
+          damage: { x:2, d:6 },
+          target: EpisodeTarget.anyInParty,
+          onScoutingFailure: () => `The spec trap springs!`,
+        },
+        description: 'A room with a spotted trap in it.',
+      });
+      floor.getRooms()[target].setContents('spec-spotted-trap-contents');
+
+      Random.stubBetween(50,5);
+      Random.stubRoll(99);
+      expect(DungeonNavigationSystem.moveToRoom(target).trap).to.equal(null);
+    });
+
+    it("does not spring the trap again when backtracking through the room", function() {
+      Random.stubBetween(50,5);
+      Random.stubRollDice(7);
+      Random.stubRoll(0, 99, 99, 99);
+
+      DungeonNavigationSystem.moveToRoom(target);
+      DungeonNavigationSystem.moveToRoom(start);
+      expect(DungeonNavigationSystem.moveToRoom(target).trap).to.equal(null);
     });
   });
 

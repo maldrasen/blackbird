@@ -50,13 +50,14 @@ global.DungeonNavigationSystem = (function() {
     if (isNewRoom) { scoutRoom(room); }
 
     const episode = isNewRoom ? getRoomEpisode(room) : null;
+    const trap = isNewRoom ? TrapSystem.springTrap(room) : null;
     const encounterRate = DungeonTheme.lookup(floor.getTheme()).getEncounterRate(isNewRoom);
     const encounter = episode == null && Random.roll(100) < encounterRate * Difficulty.getEncounterFactor();
 
     floor.setLocation(index);
     GameSystem.getState().advanceGameTime(isNewRoom ? exploreTime : backtrackTime);
 
-    return { encounter, revealed:isNewRoom, episode };
+    return { encounter, revealed:isNewRoom, episode, trap };
   }
 
   function scoutRoom(room) {
