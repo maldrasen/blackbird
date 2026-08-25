@@ -1,6 +1,6 @@
 RoomContents.register('dungeon-spike-trap',{
   range: [1,4],
-  secrecy: 10,
+  secrecy: 15,
 
   trap: {
     damage: { x:2, d:6 },
