@@ -17,6 +17,7 @@ global.TrapSystem = (function() {
     return {
       target,
       damage,
+      title: `A Trap!`,
       text: trap.onScoutingFailure ? Weaver(context).weave(trap.onScoutingFailure(context)) : null,
     };
   }

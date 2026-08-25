@@ -97,18 +97,21 @@ $bg-controls: rgb(5 5 5);
 }
 
 #roomContentOverlay {
+  padding: 10px;
+
+  .title {
+    border-bottom: variables.$border-normal;
+    margin-bottom: 10px;
+  }
   .result-text {
-    margin: 20px;
     font-size: variables.$fs-big;
     font-family: "habibi", serif;
+    margin-bottom: 20px;
   }
+
+  // TEMP
   .loot-list {
     margin-top: 10px;
     text-align: center;
-  }
-  .damage-text {
-    margin-top: 10px;
-    text-align: center;
-    color: rgb(200,25,25);
   }
 }
