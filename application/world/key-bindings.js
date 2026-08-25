@@ -14,12 +14,16 @@ global.KeyBindings = (function() {
         [BattleCommand.pass]:            { name:'Pass',             key:'KeyP' },
       },
     },
+
+    // Auto battle needs to be a separate context from the commands. Commands are available when the command panel is
+    // shown, auto battle is available at any time during a battle.
     autoBattle: {
       name: 'Auto Battle',
       actions: {
         toggle: { name:'Toggle Auto Battle', key:'KeyZ' },
       },
     },
+
     targeting: {
       name: 'Targeting',
       actions: {
@@ -35,6 +39,7 @@ global.KeyBindings = (function() {
         'back-5':  { name:'Back Row 5',  key:'Digit0' },
       },
     },
+
     dungeon: {
       name: 'Dungeon',
       actions: {
