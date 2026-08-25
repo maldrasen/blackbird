@@ -59,10 +59,8 @@ global.DungeonNavigationSystem = (function() {
     return { encounter, revealed:isNewRoom, episode };
   }
 
-  // TODO: Get the designated scout character, always roll a scouting skill check. Store the result in the room. The
-  //       room's contents may or may not use it when it's getDescription() function is executed.
   function scoutRoom(room) {
-    const scout = PartyConfiguration.getScout();
+    room.setScoutingRoll(SkillCheck(PartyConfiguration.getScout(), 'scouting').value);
   }
 
   function getRoomEpisode(room) {

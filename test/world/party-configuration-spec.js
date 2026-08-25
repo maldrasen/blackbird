@@ -91,11 +91,9 @@ describe("PartyConfiguration", function() {
     it('rejects a configuration without the player', function() {
       expect(() => PartyConfiguration.setConfiguration({ goat:'P.0.1' })).to.throw('Invalid configuration');
     });
-
   });
 
   describe('location syncing', function() {
-
     beforeEach(function() {
       GameSystem.getState().setPlayer('horse');
     });
@@ -136,7 +134,6 @@ describe("PartyConfiguration", function() {
       expect(SituatedComponent.lookup('horse')).to.be.undefined;
       expect(SituatedComponent.lookup('goat')).to.be.undefined;
     });
-
   });
 
   describe('getScout', function() {
@@ -207,7 +204,6 @@ describe("PartyConfiguration", function() {
       const configuration = { horse:'P.1.0', goat:'P.1.2', rabbit:'P.0.2', pig:'P.1.3' };
       expect(PartyConfiguration.getVacantFrontPositions(configuration)).to.eql(['P.0.0','P.0.3']);
     });
-
   });
 
 });

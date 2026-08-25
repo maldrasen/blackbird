@@ -10,7 +10,7 @@ global.Room = function(feature, type='normal') {
   let contents = null;
   let stairs = null;
   let usedCommands = [];
-
+  let scoutingRoll;
   let footprint;
   let size;
 
@@ -191,6 +191,8 @@ global.Room = function(feature, type='normal') {
     canHaveContents,
     getAvailableCommands,
     useCommand,
+    setScoutingRoll: roll => { scoutingRoll = roll; },
+    getScoutingRoll: () => { return scoutingRoll; },
     pack,
   };
 }
