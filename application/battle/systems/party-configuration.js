@@ -94,9 +94,14 @@ global.PartyConfiguration = (function() {
   }
 
   // The party's scout is the character in the front rank, middle position. (P.0.2) If that spot is empty fallback to
-  // positions [1,3,0,4] in that order. This function should return the entity ID.
+  // columns [1,3,0,4] in that order.
   function getScout() {
-
+    const entries = Object.entries(getConfiguration());
+    for (const column of [2,1,3,0,4]) {
+      const entry = entries.find(entry => entry[1] === `P.0.${column}`);
+      if (entry) { return entry[0]; }
+    }
+    return null;
   }
 
   // A valid configuration contains the player, holds only party side positions with no duplicates, and never leaves

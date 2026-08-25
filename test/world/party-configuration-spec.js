@@ -139,8 +139,26 @@ describe("PartyConfiguration", function() {
 
   });
 
-  describe('validity', function() {
+  describe('getScout', function() {
+    beforeEach(function() {
+      GameSystem.getState().setPlayer('horse');
+    });
 
+    it('picks the front center character', function() {
+      PartyConfiguration.setConfiguration({ horse:'P.0.1', goat:'P.0.2', rabbit:'P.0.3' });
+      expect(PartyConfiguration.getScout()).to.equal('goat');
+    });
+
+    it('falls back through the front rank when the center is empty', function() {
+      PartyConfiguration.setConfiguration({ rabbit:'P.0.0', horse:'P.0.3', goat:'P.0.4' });
+      expect(PartyConfiguration.getScout()).to.equal('horse');
+
+      PartyConfiguration.setConfiguration({ rabbit:'P.0.0', horse:'P.0.4' });
+      expect(PartyConfiguration.getScout()).to.equal('rabbit');
+    });
+  });
+
+  describe('validity', function() {
     beforeEach(function() {
       GameSystem.getState().setPlayer('horse');
     });
