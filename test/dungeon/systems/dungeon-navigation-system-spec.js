@@ -8,6 +8,7 @@ describe("DungeonNavigationSystem", function() {
   // the check doesn't also consume an improve roll.
   function buildScout() {
     const id = Registry.createEntity();
+    ActorComponent.create(id, { name:'Scout', gender:Gender.male, species:SpeciesCode.human });
     AttributesComponent.create(id, { strength:10, dexterity:10, vitality:10, intelligence:10, beauty:10 });
     HealthComponent.create(id, { currentHealth:20, maxHealth:20, currentStamina:10 });
 
@@ -188,6 +189,8 @@ describe("DungeonNavigationSystem", function() {
         secrecy: 30,
         trap: {
           damage: { x:2, d:6 },
+          damageType: DamageType.pierce,
+          hitLocation: EquipmentSlot.legs,
           target: EpisodeTarget.anyInParty,
           onScoutingFailure: () => `The spec trap springs!`,
         },
@@ -214,6 +217,8 @@ describe("DungeonNavigationSystem", function() {
         secrecy: 10,
         trap: {
           damage: { x:2, d:6 },
+          damageType: DamageType.pierce,
+          hitLocation: EquipmentSlot.legs,
           target: EpisodeTarget.anyInParty,
           onScoutingFailure: () => `The spec trap springs!`,
         },

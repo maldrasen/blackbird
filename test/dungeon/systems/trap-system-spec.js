@@ -4,25 +4,20 @@ describe("TrapSystem", function() {
   let room;
   let player;
 
-  function buildCharacter() {
-    const id = Registry.createEntity();
-    AttributesComponent.create(id, { strength:10, dexterity:10, vitality:10, intelligence:10, beauty:10 });
-    HealthComponent.create(id, { currentHealth:20, maxHealth:20, currentStamina:10 });
-    return id;
-  }
-
   beforeEach(function() {
     RoomContents.register('spec-trap-contents',{
       secrecy: 10,
       trap: {
         damage: { x:2, d:6 },
+        damageType: DamageType.pierce,
+        hitLocation: EquipmentSlot.legs,
         target: EpisodeTarget.anyInParty,
         onScoutingFailure: () => `The spec trap springs!`,
       },
       description: 'A room with a trap in it.',
     });
 
-    player = buildCharacter();
+    player = CharacterFixtures.genericMale({});
     GameSystem.getState().setPlayer(player);
     PartyConfiguration.setConfiguration({ [player]:'P.0.2' });
 
@@ -57,7 +52,21 @@ describe("TrapSystem", function() {
     expect(result.target).to.equal(player);
     expect(result.damage).to.equal(7);
     expect(result.text).to.include('The spec trap springs!');
-    expect(HealthComponent.lookup(player).currentHealth).to.equal(13);
+    expect(HealthComponent.lookup(player).currentHealth).to.equal(93);
+  });
+
+  // Plate mail reduces pierce damage by 34%.
+  it("reduces the damage by the armor covering the hit location", function() {
+    const plate = ArmorFactory.build('plate-mail');
+    InventoryManager(player).addItem(plate);
+    EquipmentManager(player).equipItem(plate, EquipmentSlot.legs);
+
+    room.setScoutingRoll(5);
+    Random.stubRollDice(10);
+
+    const result = TrapSystem.springTrap(room);
+    expect(result.damage).to.equal(7);
+    expect(HealthComponent.lookup(player).currentHealth).to.equal(93);
   });
 
   it("deals no damage when the trap has none to roll", function() {
@@ -74,7 +83,16 @@ describe("TrapSystem", function() {
 
     const result = TrapSystem.springTrap(room);
     expect(result.damage).to.equal(0);
-    expect(HealthComponent.lookup(player).currentHealth).to.equal(20);
+    expect(HealthComponent.lookup(player).currentHealth).to.equal(100);
+  });
+
+  // Trap deaths are deferred to a later task, so for now a trap that kills its target is an error.
+  it("throws when the trap kills its target", function() {
+    room.setScoutingRoll(5);
+    Random.stubRollDice(200);
+
+    expect(() => TrapSystem.springTrap(room)).to.throw('Trap deaths');
+    expect(HealthComponent.lookup(player).currentHealth).to.equal(100);
   });
 
   it("rejects a trap target it doesn't know", function() {
