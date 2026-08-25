@@ -3,7 +3,26 @@ describe("DungeonNavigationSystem", function() {
   let floor;
   let start;
 
+  // Entering an unexplored room rolls a scouting check for the party's scout, so the party needs a real character.
+  // A SkillCheck consumes two between values, the crit roll then the value roll. The scout's skill is level 100 so
+  // the check doesn't also consume an improve roll.
+  function buildScout() {
+    const id = Registry.createEntity();
+    AttributesComponent.create(id, { strength:10, dexterity:10, vitality:10, intelligence:10, beauty:10 });
+
+    const skills = {};
+    SkillsComponent.getSkills().forEach(code => { skills[code] = 0; });
+    skills.scouting = 100;
+    SkillsComponent.create(id, skills);
+
+    return id;
+  }
+
   beforeEach(function() {
+    const scout = buildScout();
+    GameSystem.getState().setPlayer(scout);
+    PartyConfiguration.setConfiguration({ [scout]:'P.0.2' });
+
     DungeonSystem.createDungeon();
     DungeonSystem.setLevel(1);
     floor = DungeonSystem.getDungeonFloor();
@@ -49,9 +68,20 @@ describe("DungeonNavigationSystem", function() {
     expect(feature.getRooms().map(r => r.getIndex())).to.include(start);
   });
 
+  it("stores the scout's skill check in a room when it is first entered", function() {
+    const target = DungeonNavigationSystem.getAdjacentRoomIndices(start)[0];
+
+    Random.stubBetween(50,5);
+    DungeonNavigationSystem.moveToRoom(target);
+
+    expect(floor.getRooms()[target].getScoutingRoll()).to.equal(21);
+    expect(floor.getRooms()[start].getScoutingRoll()).to.be.undefined;
+  });
+
   it("risks an encounter when entering an unexplored room", function() {
     const target = DungeonNavigationSystem.getAdjacentRoomIndices(start)[0];
 
+    Random.stubBetween(50,5);
     Random.stubRoll(19);
     expect(DungeonNavigationSystem.moveToRoom(target).encounter).to.equal(true);
   });
@@ -59,6 +89,7 @@ describe("DungeonNavigationSystem", function() {
   it("is much safer to backtrack through an explored room", function() {
     const target = DungeonNavigationSystem.getAdjacentRoomIndices(start)[0];
 
+    Random.stubBetween(50,5);
     Random.stubRoll(19, 19);
     expect(DungeonNavigationSystem.moveToRoom(target).encounter).to.equal(true);
     expect(DungeonNavigationSystem.moveToRoom(start).encounter).to.equal(false);
@@ -68,6 +99,7 @@ describe("DungeonNavigationSystem", function() {
     const target = DungeonNavigationSystem.getAdjacentRoomIndices(start)[0];
 
     await WorldState.setOptions({ ...WorldState.getOptions(), difficulty:{ damage:100, mitigation:100, resistance:0, encounterRate:0 } });
+    Random.stubBetween(50,5);
     Random.stubRoll(0);
     expect(DungeonNavigationSystem.moveToRoom(target).encounter).to.equal(false);
   });
@@ -76,6 +108,7 @@ describe("DungeonNavigationSystem", function() {
     const target = DungeonNavigationSystem.getAdjacentRoomIndices(start)[0];
 
     await WorldState.setOptions({ ...WorldState.getOptions(), difficulty:{ damage:100, mitigation:100, resistance:0, encounterRate:200 } });
+    Random.stubBetween(50,5);
     Random.stubRoll(39);
     expect(DungeonNavigationSystem.moveToRoom(target).encounter).to.equal(true);
   });
@@ -96,6 +129,7 @@ describe("DungeonNavigationSystem", function() {
   it("can still hit an encounter while backtracking", function() {
     const target = DungeonNavigationSystem.getAdjacentRoomIndices(start)[0];
 
+    Random.stubBetween(50,5);
     Random.stubRoll(20, 1);
     expect(DungeonNavigationSystem.moveToRoom(target).encounter).to.equal(false);
     expect(DungeonNavigationSystem.moveToRoom(start).encounter).to.equal(true);
@@ -115,6 +149,7 @@ describe("DungeonNavigationSystem", function() {
     });
 
     it("fires the contents episode when the room is first entered, skipping the encounter roll", function() {
+      Random.stubBetween(50,5);
       Random.stubRoll(0);
 
       const result = DungeonNavigationSystem.moveToRoom(target);
@@ -123,6 +158,7 @@ describe("DungeonNavigationSystem", function() {
     });
 
     it("does not fire the episode again when backtracking through the room", function() {
+      Random.stubBetween(50,5);
       Random.stubRoll(50, 50);
       DungeonNavigationSystem.moveToRoom(target);
       DungeonNavigationSystem.moveToRoom(start);
@@ -135,6 +171,7 @@ describe("DungeonNavigationSystem", function() {
       RoomContents.register('spec-no-episode-contents',{ description: 'Nothing to see here.' });
       floor.getRooms()[target].setContents('spec-no-episode-contents');
 
+      Random.stubBetween(50,5);
       Random.stubRoll(99);
       expect(DungeonNavigationSystem.moveToRoom(target).episode).to.equal(null);
     });
