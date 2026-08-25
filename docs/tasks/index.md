@@ -2,6 +2,10 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
+## Priority 1
+
+- [203] Inventory panel should include articles. `3pt` — [203-inventory-panel-should-include-articles.md](203-inventory-panel-should-include-articles.md)
+
 ## Priority 2
 
 - [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)

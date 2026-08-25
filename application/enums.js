@@ -84,6 +84,7 @@ global.ArticleType = {
   consumable: 'consumable',
 };
 
+// This category enum is ordered as the categories should appear in the inventory.
 global.InventoryCategory = {
   weapon: 'weapon',
   armor: 'armor',
@@ -94,6 +95,12 @@ global.InventoryCategory = {
   mutagen: 'mutagen',
   ammo: 'ammo',
   valuables: 'valuables',
+};
+
+global.UsableWhen = {
+  anyTime: 'any-time',
+  inCombat: 'in-combat',
+  outOfCombat: 'out-of-combat',
 };
 
 global.EpisodePriority = {
