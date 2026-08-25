@@ -106,15 +106,7 @@ $bg-controls: rgb(5 5 5);
     margin-top: 10px;
     text-align: center;
   }
-}
-
-#trapOverlay {
-  .trap-text {
-    margin: 20px;
-    font-size: variables.$fs-big;
-    font-family: "habibi", serif;
-  }
-  .trap-damage {
+  .damage-text {
     margin-top: 10px;
     text-align: center;
     color: rgb(200,25,25);

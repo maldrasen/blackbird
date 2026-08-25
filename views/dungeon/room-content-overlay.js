@@ -15,6 +15,7 @@ global.RoomContentOverlay = (function() {
     </div>`);
 
     addLoot(content, result.loot);
+    addDamage(content, result);
 
     return content;
   }
@@ -29,6 +30,13 @@ global.RoomContentOverlay = (function() {
         list.appendChild(X.createElement(`<li>${Article.lookup(item.code).getName()} &times; ${item.count}</li>`));
       });
       content.appendChild(list);
+    }
+  }
+
+  function addDamage(content, result) {
+    if (result.damage > 0) {
+      content.appendChild(X.createElement(
+        `<div class='damage-text'>${Character(result.target).getName()} takes ${result.damage} damage.</div>`));
     }
   }
 

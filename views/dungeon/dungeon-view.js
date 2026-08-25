@@ -131,7 +131,7 @@ global.DungeonView = (function() {
         FlashSquare.flash({ element:card, color:'rgb(75,10,10)', duration:BattleConstants.damageEffectTime });
       }
     }
-    TrapOverlay.open(trap);
+    RoomContentOverlay.open(trap);
   }
 
   function isWalking() {

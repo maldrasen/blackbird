@@ -28,7 +28,6 @@ global.Views = (function() {
     TabController.init();
     Tooltip.init();
     TrainingView.init();
-    TrapOverlay.init();
     WindowManager.init();
   }
 
