@@ -82,8 +82,8 @@ global.DungeonView = (function() {
 
   // Walk the party through the path one room at a time on a steady beat, targeting the camera at each new room as
   // they go. Clicking a new destination mid-walk starts a fresh walk that supersedes this one, and escape abandons the
-  // path outright. A room episode or a random encounter also stops the party in the room that triggered it. This
-  // resolves false if the party will never arrive.
+  // path outright. A sprung trap, a room episode, or a random encounter also stops the party in the room that
+  // triggered it. This resolves false if the party will never arrive.
   async function walkPath(path) {
     if (path == null) { return false; }
     if (path.length === 0) { return true; }
@@ -101,6 +101,12 @@ global.DungeonView = (function() {
       // A newer walk owns the party now; any encounter rolled on this step is quietly forgotten.
       if (walkId !== currentWalk) { return false; }
 
+      if (result.trap) {
+        walking = false;
+        showTrapResult(result.trap);
+        return false;
+      }
+
       if (result.episode) {
         walking = false;
         DungeonSystem.startRoomEpisode(result.episode);
@@ -116,6 +122,16 @@ global.DungeonView = (function() {
 
     walking = false;
     return true;
+  }
+
+  function showTrapResult(trap) {
+    if (trap.damage > 0) {
+      const card = X.first(`#dungeonControls .party-card[data-id='${trap.target}']`);
+      if (card) {
+        FlashSquare.flash({ element:card, color:'rgb(75,10,10)', duration:BattleConstants.damageEffectTime });
+      }
+    }
+    TrapOverlay.open(trap);
   }
 
   function isWalking() {
