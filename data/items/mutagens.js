@@ -5,6 +5,7 @@ Consumable.register('horse-juice',{
     similar way.`,
   category: InventoryCategory.mutagen,
   tags: ['manly','juice'],
+  usableWhen: UsableWhen.outOfCombat,
   effects:[
     ConsumableEffect.increasePotency(1),
   ]
@@ -15,6 +16,7 @@ Consumable.register('goats-milk',{
   description: `It's disgustingly thick and tastes terrible, but it's age has given it potency.`,
   category: InventoryCategory.mutagen,
   tags: ['manly','milk'],
+  usableWhen: UsableWhen.outOfCombat,
   effects:[
     ConsumableEffect.increasePotency(3),
   ]
@@ -26,6 +28,7 @@ Consumable.register('minotaur-milk',{
     minotaurs themselves are quite happy with the arrangement.`,
   category: InventoryCategory.mutagen,
   tags: ['manly','milk'],
+  usableWhen: UsableWhen.outOfCombat,
   effects:[
     ConsumableEffect.increasePotency(10),
   ]
@@ -37,6 +40,7 @@ Consumable.register('centaur-milk',{
     a centaur who wants to be milked.`,
   category: InventoryCategory.mutagen,
   tags: ['manly','milk'],
+  usableWhen: UsableWhen.outOfCombat,
   effects:[
     ConsumableEffect.increasePotency(12),
   ]
@@ -47,6 +51,7 @@ Consumable.register('milk-of-kindness',{
   description: `This rare milk may have named ironically, given the painful nature of the extraction process.`,
   category: InventoryCategory.mutagen,
   tags: ['milk'],
+  usableWhen: UsableWhen.outOfCombat,
   effects:[
     // TODO: Revert most mutations down to a human level baseline.
   ]

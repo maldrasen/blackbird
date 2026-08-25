@@ -18,6 +18,7 @@ global.Article = (function() {
       getDescription: () => { return article.description; },
       getIcon: () => { return article.icon; },
       getIconColor: () => { return article.iconColor; },
+      getUsableWhen: () => { return article.usableWhen || UsableWhen.never },
       getTags: () => { return [...(article.tags||[])]; },
     };
   }

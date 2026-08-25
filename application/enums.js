@@ -101,6 +101,7 @@ global.UsableWhen = {
   anyTime: 'any-time',
   inCombat: 'in-combat',
   outOfCombat: 'out-of-combat',
+  never: 'never',
 };
 
 global.EpisodePriority = {

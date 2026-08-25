@@ -8,6 +8,7 @@ Consumable.register('blasto',{
   tags: ['mushroom'],
   target: 'position',    //                                               []        [][][]
   areaOfEffect: 'small', // 1 center position + 3 neighbor positions.   [][][]  or    []
+  usableWhen: UsableWhen.inCombat,
   effects: [
     // TODO: Damage, Blind and Stun effect against targets in area.
   ],

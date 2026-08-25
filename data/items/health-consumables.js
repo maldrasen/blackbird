@@ -10,6 +10,7 @@ Consumable.register('dungeon-tripe',{
     though more potent healing items can be made by refining it further.`,
   category: InventoryCategory.restoreHealth,
   tags: ['mushroom'],
+  usableWhen: UsableWhen.outOfCombat,
   effects: [
     ConsumableEffect.addHealth(5,15),
   ],
@@ -20,6 +21,7 @@ Consumable.register('rhysh-apple',{
   description: `These small tart apples are sometimes found growing in the dungeon's upper levels.`,
   category: InventoryCategory.restoreHealth,
   tags: ['fruit'],
+  usableWhen: UsableWhen.outOfCombat,
   effects: [
     ConsumableEffect.addHealth(15,25),
   ]
