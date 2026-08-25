@@ -10,6 +10,11 @@ describe("RoomContentPlacer", function() {
     DungeonSystem.createDungeon();
     DungeonSystem.setLevel(1, 'up', 'dungeon');
     floor = DungeonSystem.getDungeonFloor();
+
+    ['spec-one','spec-two','spec-three','spec-rare'].forEach(code =>
+      RoomContents.register(code,{ description:'Spec contents.' }));
+    RoomContents.register('spec-shallow',{ description:'Spec contents.', range:[1,3] });
+    RoomContents.register('spec-deep',{ description:'Spec contents.', range:[2,4] });
   });
 
   function eligibleRooms() {
@@ -69,6 +74,26 @@ describe("RoomContentPlacer", function() {
     RoomContentPlacer(entries).placeContents();
 
     expect(roomsWithContents().map(room => room.getContents())).to.deep.equal(['spec-one']);
+  });
+
+  it("places contents whose range includes the floor level", function() {
+    clearContents();
+    const entries = [{ code:'spec-shallow', rarity:Rarity.common }];
+
+    Random.stubRoll(0,rollCommon);
+    Random.stubFrom(entries[0]);
+    RoomContentPlacer(entries).placeContents();
+
+    expect(roomsWithContents().map(room => room.getContents())).to.deep.equal(['spec-shallow']);
+  });
+
+  it("excludes contents whose range does not include the floor level", function() {
+    clearContents();
+    const entries = [{ code:'spec-deep', rarity:Rarity.common }];
+
+    RoomContentPlacer(entries).placeContents();
+
+    expect(roomsWithContents()).to.be.empty;
   });
 
   it("never steps up to a rarer tier than was rolled", function() {

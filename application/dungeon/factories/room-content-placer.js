@@ -1,7 +1,7 @@
 global.RoomContentPlacer = function(contents=null) {
   const floor = DungeonSystem.getDungeonFloor();
   const theme = DungeonTheme.lookup(floor.getTheme());
-  const available = [...(contents || theme.getRoomContents())];
+  const available = (contents || theme.getRoomContents()).filter(entry => isInRange(entry));
 
   const rarityWeights = {
     [Rarity.common]: 200,
@@ -28,6 +28,11 @@ global.RoomContentPlacer = function(contents=null) {
       room.setContents(entry.code);
       available.splice(available.indexOf(entry), 1);
     });
+  }
+
+  function isInRange(entry) {
+    const range = RoomContents.lookup(entry.code).getRange();
+    return range == null || (floor.getLevel() >= range[0] && floor.getLevel() <= range[1]);
   }
 
   function getEligibleRooms() {
