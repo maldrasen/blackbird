@@ -5,6 +5,7 @@ RoomContents.register('dungeon-spike-trap',{
   trap: {
     damage: { x:2, d:6 },
     damageType: DamageType.pierce,
+    hitLocation: EquipmentSlot.legs,
     target: EpisodeTarget.anyInParty,
     onScoutingFailure: context => {
       return (context.T === GameSystem.getState().getPlayer()) ?
