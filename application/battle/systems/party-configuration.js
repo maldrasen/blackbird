@@ -93,6 +93,12 @@ global.PartyConfiguration = (function() {
     return match != null && match[1] === 'P';
   }
 
+  // The party's scout is the character in the front rank, middle position. (P.0.2) If that spot is empty fallback to
+  // positions [1,3,0,4] in that order. This function should return the entity ID.
+  function getScout() {
+
+  }
+
   // A valid configuration contains the player, holds only party side positions with no duplicates, and never leaves
   // a back row character exposed.
   function isValid(configuration = getConfiguration()) {
@@ -111,6 +117,7 @@ global.PartyConfiguration = (function() {
     setCharacter,
     addCharacter,
     getVacantFrontPositions,
+    getScout,
     isValid,
   };
 
