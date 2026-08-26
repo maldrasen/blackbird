@@ -365,6 +365,7 @@
     "data/episodes/system/game-start-1.js",
     "data/essence-data.js",
     "data/feature-types/cross-room.js",
+    "data/feature-types/dungeon-entrance.js",
     "data/feature-types/leg-room.js",
     "data/feature-types/nested-room.js",
     "data/feature-types/rect-room.js",

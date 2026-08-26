@@ -5,7 +5,7 @@ priority: 1
 created: 2026-08-26
 tags:
   - dungeon
-points: 8
+points: 3
 ---
 ---
 When I first built the dungeon view, I wanted to try something different, so I experimented with an orthographic top down projection where the floors were placed on the grid, but the north and west walls were drawn on top of them to give a 3D illusion. After working with this for a while I'm not happy with the look. It's more difficult to read than I thought it would be and having the doors hanging off the edge is bad and awkward. It's also limiting the room shapes I can reasonably make. If I switch to a completely top down perspective, adding round rooms or or rooms with rounded or chamfered corners would be fairly easy. 
