@@ -128,15 +128,10 @@ global.FloorFactory = function() {
       const position = room.getFloorPosition();
       const index = room.getIndex();
 
-      room.getBoxes().forEach(box => {
-        const yMin = position.y + box.y;
-        const xMin = position.x + box.x;
-
-        for (let y=yMin; y<(yMin + box.height); y++) {
-          for (let x=xMin; x<(xMin + box.width); x++) {
-            floorGrid[y][x] = index;
-          }
-        }
+      room.getFootprint().forEach((row, y) => {
+        row.forEach((cell, x) => {
+          if (cell) { floorGrid[position.y + y][position.x + x] = index; }
+        });
       });
     });
   }

@@ -54,24 +54,11 @@ global.FeaturePlacer = function() {
     for (let i=0; i<rooms.length; i++) {
       const roomPosition = rooms[i].getPosition();
       const position = { x: featurePosition.x + roomPosition.x, y: featurePosition.y + roomPosition.y };
-      const boxes = rooms[i].getBoxes();
-      for (let j=0; j<boxes.length; j++) {
-        if (boxCanFit(position, boxes[j]) === false) { return false; }
-      }
-    }
-
-    return true;
-  }
-
-  function boxCanFit(position, box) {
-    const xMin = position.x + box.x;
-    const xMax = position.x + box.x + box.width;
-    const yMin = position.y + box.y;
-    const yMax = position.y + box.y + box.height;
-
-    for (let y=yMin; y<yMax; y++) {
-      for (let x=xMin; x<xMax; x++) {
-        if (grid[y][x] != null) { return false; }
+      const footprint = rooms[i].getFootprint();
+      for (let y=0; y<footprint.length; y++) {
+        for (let x=0; x<footprint[y].length; x++) {
+          if (footprint[y][x] && grid[position.y + y][position.x + x] != null) { return false; }
+        }
       }
     }
 
@@ -81,21 +68,15 @@ global.FeaturePlacer = function() {
   // The grid cells hold the room's floor-global index, as rooms are the unit of navigation.
   function placeFeature(feature) {
     feature.getRooms().forEach(room => {
-      room.getBoxes().forEach(box => placeBox(room.getIndex(), room.getFloorPosition(), box));
+      const position = room.getFloorPosition();
+      const index = room.getIndex();
+
+      room.getFootprint().forEach((row, y) => {
+        row.forEach((cell, x) => {
+          if (cell) { grid[position.y + y][position.x + x] = index; }
+        });
+      });
     });
-  }
-
-  function placeBox(index, position, box) {
-    const xMin = position.x + box.x;
-    const xMax = position.x + box.x + box.width;
-    const yMin = position.y + box.y;
-    const yMax = position.y + box.y + box.height;
-
-    for (let y=yMin; y<yMax; y++) {
-      for (let x=xMin; x<xMax; x++) {
-        grid[y][x] = index;
-      }
-    }
   }
 
   return {
