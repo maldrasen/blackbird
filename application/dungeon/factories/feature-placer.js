@@ -72,7 +72,7 @@ global.FeaturePlacer = function() {
       const footprint = rooms[i].getFootprint();
       for (let y=0; y<footprint.length; y++) {
         for (let x=0; x<footprint[y].length; x++) {
-          if (footprint[y][x] && grid[position.y + y][position.x + x] != null) { return false; }
+          if (footprint[y][x] != null && grid[position.y + y][position.x + x] != null) { return false; }
         }
       }
     }
@@ -88,7 +88,7 @@ global.FeaturePlacer = function() {
 
       room.getFootprint().forEach((row, y) => {
         row.forEach((cell, x) => {
-          if (cell) { grid[position.y + y][position.x + x] = index; }
+          if (cell != null) { grid[position.y + y][position.x + x] = index; }
         });
       });
     });

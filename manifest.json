@@ -97,6 +97,7 @@
     "application/components/weapon-component.js",
     "application/console.js",
     "application/dialog-keys.js",
+    "application/dungeon/dungeon-constants.js",
     "application/dungeon/dungeon-floor.js",
     "application/dungeon/dungeon-state.js",
     "application/dungeon/dungeon-system.js",

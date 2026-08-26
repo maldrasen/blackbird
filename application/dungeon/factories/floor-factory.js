@@ -133,7 +133,7 @@ global.FloorFactory = function() {
 
       room.getFootprint().forEach((row, y) => {
         row.forEach((cell, x) => {
-          if (cell) { floorGrid[position.y + y][position.x + x] = index; }
+          if (cell != null) { floorGrid[position.y + y][position.x + x] = index; }
         });
       });
     });

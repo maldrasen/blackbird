@@ -22,12 +22,13 @@ global.Room = function(feature, type='normal') {
   // =======================
 
   // Decide the room's bounds up front, creating an empty footprint grid of the correct size. Every box added after
-  // this just paints tiles into the grid, so boxes must use room-local coordinates that fit inside the bounds.
+  // this just paints tiles into the grid, so boxes must use room-local coordinates that fit inside the bounds. Each
+  // cell holds an index into DungeonConstants.floorTypes, or null for tiles that aren't part of the room.
   function setBounds(width, height) {
     if (bounds) { throw new Error(`This room's bounds have already been set.`); }
 
     bounds = { width, height };
-    footprint = Array.from({ length:height }, () => new Array(width).fill(false));
+    footprint = Array.from({ length:height }, () => new Array(width).fill(null));
     size = 0;
   }
 
@@ -41,12 +42,37 @@ global.Room = function(feature, type='normal') {
 
     for (let yy = y; yy < y + height; yy++) {
       for (let xx = x; xx < x + width; xx++) {
-        if (footprint[yy][xx] === false) {
-          footprint[yy][xx] = true;
+        if (footprint[yy][xx] == null) {
+          footprint[yy][xx] = 0;
           size++;
         }
       }
     }
+  }
+
+  // Change the floor type of tiles already painted into the footprint. Tiles hold the floor type's index rather
+  // than its name to keep packed rooms small.
+  function setFloor(x, y, type) {
+    const floorIndex = DungeonConstants.floorTypes.indexOf(type);
+    if (floorIndex < 0) { throw new Error(`Unknown floor type [${type}]`); }
+    if (bounds == null || x < 0 || y < 0 || x >= bounds.width || y >= bounds.height || footprint[y][x] == null) {
+      throw new Error(`(${x},${y}) is not a floor tile in this room.`);
+    }
+
+    footprint[y][x] = floorIndex;
+  }
+
+  function setFloorBox(x, y, width, height, type) {
+    for (let yy = y; yy < y + height; yy++) {
+      for (let xx = x; xx < x + width; xx++) {
+        setFloor(xx, yy, type);
+      }
+    }
+  }
+
+  function getFloor(x, y) {
+    if (footprint[y] == null || footprint[y][x] == null) { return null; }
+    return DungeonConstants.floorTypes[footprint[y][x]];
   }
 
 
@@ -105,15 +131,15 @@ global.Room = function(feature, type='normal') {
   }
 
   function wallKeys(x, y, direction) {
-    if (bounds == null || x < 0 || y < 0 || x >= bounds.width || y >= bounds.height || footprint[y][x] === false) {
+    if (bounds == null || x < 0 || y < 0 || x >= bounds.width || y >= bounds.height || footprint[y][x] == null) {
       throw new Error(`(${x},${y}) is not a floor tile in this room.`);
     }
 
     const exterior = [];
-    if (y === 0 || footprint[y-1][x] === false) { exterior.push('N'); }
-    if (y === bounds.height-1 || footprint[y+1][x] === false) { exterior.push('S'); }
-    if (x === bounds.width-1 || footprint[y][x+1] === false) { exterior.push('E'); }
-    if (x === 0 || footprint[y][x-1] === false) { exterior.push('W'); }
+    if (y === 0 || footprint[y-1][x] == null) { exterior.push('N'); }
+    if (y === bounds.height-1 || footprint[y+1][x] == null) { exterior.push('S'); }
+    if (x === bounds.width-1 || footprint[y][x+1] == null) { exterior.push('E'); }
+    if (x === 0 || footprint[y][x-1] == null) { exterior.push('W'); }
 
     if (direction != null) {
       if (exterior.includes(direction) === false) {
@@ -198,6 +224,9 @@ global.Room = function(feature, type='normal') {
     getPosition: () => { return {...position}; },
     setBounds,
     addBox,
+    setFloor,
+    setFloorBox,
+    getFloor,
     getBounds,
     getFootprint: () => { return footprint },
     getSize: () => { return size; },

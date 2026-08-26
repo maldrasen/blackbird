@@ -29,7 +29,7 @@ describe("DoorFinder", function() {
       const position = room.getFloorPosition();
       room.getFootprint().forEach((row,y) => {
         row.forEach((cell,x) => {
-          if (cell) { grid[position.y + y][position.x + x] = room.getIndex(); }
+          if (cell != null) { grid[position.y + y][position.x + x] = room.getIndex(); }
         });
       });
     });

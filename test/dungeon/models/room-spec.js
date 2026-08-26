@@ -7,8 +7,8 @@ describe("Room", function() {
 
       expect(room.getBounds()).to.deep.equal({ xMin:0, yMin:0, xMax:3, yMax:2 });
       expect(room.getFootprint()).to.deep.equal([
-        [false,false,false],
-        [false,false,false],
+        [null,null,null],
+        [null,null,null],
       ]);
       expect(room.getSize()).to.equal(0);
     });
@@ -28,9 +28,9 @@ describe("Room", function() {
       room.addBox(1,0,2,3);
 
       expect(room.getFootprint()).to.deep.equal([
-        [true,true,true,true],
-        [true,true,true,true],
-        [false,true,true,false],
+        [0,0,0,0],
+        [0,0,0,0],
+        [null,0,0,null],
       ]);
       expect(room.getSize()).to.equal(10);
     });
@@ -56,6 +56,81 @@ describe("Room", function() {
 
       expect(() => room.addBox(-1,0,2,2)).to.throw(`doesn't fit`);
       expect(() => room.addBox(2,2,2,2)).to.throw(`doesn't fit`);
+    });
+
+    it('preserves the floor type of tiles painted twice', function() {
+      const room = Room();
+      room.setBounds(3,1);
+      room.addBox(0,0,3,1);
+      room.setFloor(1,0,'water');
+      room.addBox(0,0,3,1);
+
+      expect(room.getFloor(1,0)).to.equal('water');
+      expect(room.getSize()).to.equal(3);
+    });
+  });
+
+  describe("setFloor()", function() {
+    it('sets the floor type index of a tile in the footprint', function() {
+      const room = Room();
+      room.setBounds(3,1);
+      room.addBox(0,0,3,1);
+      room.setFloor(1,0,'water');
+
+      expect(room.getFootprint()).to.deep.equal([[0,1,0]]);
+      expect(room.getFloor(0,0)).to.equal('default');
+      expect(room.getFloor(1,0)).to.equal('water');
+    });
+
+    it('throws for an unknown floor type', function() {
+      const room = Room();
+      room.setBounds(3,1);
+      room.addBox(0,0,3,1);
+
+      expect(() => room.setFloor(1,0,'lava')).to.throw('Unknown floor type');
+    });
+
+    it('throws for a tile outside the room', function() {
+      const room = Room();
+      room.setBounds(3,2);
+      room.addBox(0,0,3,1);
+
+      expect(() => room.setFloor(1,1,'water')).to.throw('not a floor tile');
+      expect(() => room.setFloor(5,0,'water')).to.throw('not a floor tile');
+    });
+  });
+
+  describe("setFloorBox()", function() {
+    it('sets the floor type of every tile in the box', function() {
+      const room = Room();
+      room.setBounds(4,3);
+      room.addBox(0,0,4,3);
+      room.setFloorBox(0,0,4,1,'water');
+
+      expect(room.getFootprint()).to.deep.equal([
+        [1,1,1,1],
+        [0,0,0,0],
+        [0,0,0,0],
+      ]);
+    });
+
+    it('throws when the box covers tiles outside the room', function() {
+      const room = Room();
+      room.setBounds(4,3);
+      room.addBox(0,0,4,2);
+
+      expect(() => room.setFloorBox(0,1,4,2,'water')).to.throw('not a floor tile');
+    });
+  });
+
+  describe("getFloor()", function() {
+    it('returns null for tiles not in the room', function() {
+      const room = Room();
+      room.setBounds(2,1);
+      room.addBox(0,0,1,1);
+
+      expect(room.getFloor(1,0)).to.equal(null);
+      expect(room.getFloor(0,5)).to.equal(null);
     });
   });
 
@@ -257,9 +332,9 @@ describe("Room", function() {
         stairs: 'up',
         usedCommands: [],
         footprint: [
-          [true,true,true],
-          [false,false,true],
-          [false,false,true],
+          [0,0,0],
+          [null,null,0],
+          [null,null,0],
         ],
       });
     });
@@ -270,9 +345,9 @@ describe("Room", function() {
       room.addBox(0,0,2,1);
 
       const packed = room.pack();
-      packed.footprint[0][0] = false;
+      packed.footprint[0][0] = null;
 
-      expect(room.getFootprint()[0][0]).to.equal(true);
+      expect(room.getFootprint()[0][0]).to.equal(0);
     });
   });
 

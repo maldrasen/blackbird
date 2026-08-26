@@ -17,7 +17,7 @@
 
         room.getFootprint().forEach((row, footprintY) => {
           row.forEach((cell, footprintX) => {
-            if (cell === false) { return; }
+            if (cell == null) { return; }
 
             const x = position.x + footprintX;
             const y = position.y + footprintY;

@@ -67,7 +67,7 @@ global.Feature = function(type) {
         const position = room.getPosition();
         room.getFootprint().forEach((row, y) => {
           row.forEach((cell, x) => {
-            if (cell) { footprint[position.y + y][position.x + x] = true; }
+            if (cell != null) { footprint[position.y + y][position.x + x] = true; }
           });
         });
       });
@@ -126,7 +126,7 @@ global.Feature = function(type) {
       const local = { x: floorTile.x - roomPosition.x, y: floorTile.y - roomPosition.y };
       const roomBounds = rooms[i].getBounds();
       if (local.x >= 0 && local.y >= 0 && local.x < roomBounds.xMax && local.y < roomBounds.yMax &&
-          rooms[i].getFootprint()[local.y][local.x]) {
+          rooms[i].getFootprint()[local.y][local.x] != null) {
         return rooms[i].doorIsAllowed(local.x, local.y, direction);
       }
     }
