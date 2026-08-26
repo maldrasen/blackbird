@@ -4,7 +4,7 @@ global.DungeonDoorView = (function() {
 
  function build(floor, door) {
     const gridSize = DungeonFloorView.getGridSize();
-    const wallInset = DungeonRoomView.getWallMetrics().wallInset;
+    const wallInset = DungeonRoomView.getWallInset();
     const half = gridSize / 2;
 
     let classname = `door ${door.direction}`;

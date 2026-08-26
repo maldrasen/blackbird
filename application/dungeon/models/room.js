@@ -105,11 +105,8 @@ global.Room = function(feature, type='normal') {
     return stairsAllowed && boxes[0].width > 1 && boxes[0].height > 1;
   }
 
-  // The isOverlapping() function takes a door as an argument (the door object has a position and a direction) though
-  // currently the only overlapping room is the nested room where every tile is overlapping. We need to know this in
-  // order to draw the 'hanging' door above an overlapping room. Hanging doors are normally the lowest in the z-order,
-  // but need to be pulled on top of the overlapping room in this case.
-  function isOverlapping(door) { return overlapping; }
+  // Currently the only overlapping room is the nested room, where every tile overlaps the room it sits inside.
+  function isOverlapping() { return overlapping; }
 
   // ==============
   //    Contents

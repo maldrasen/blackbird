@@ -66,69 +66,10 @@ global.GeometryHelper = (function() {
     });
   }
 
-  // Translate each edge of a clockwise outline by the vector given for its walk direction, e.g. projecting wall
-  // tops to wall bases in an oblique perspective. Where two edges with the same shift meet, the vertex stays a
-  // single mitered point; where edges with different shifts meet, the vertex splits into both shifted copies and
-  // the polygon gains the slanted joining edge between them.
-  function shiftOutline(vertices, shifts) {
-    return vertices.flatMap((vertex, i) => {
-      const previous = vertices[(i + vertices.length - 1) % vertices.length];
-      const next = vertices[(i + 1) % vertices.length];
-      const incoming = shifts[edgeDirection(previous, vertex)];
-      const outgoing = shifts[edgeDirection(vertex, next)];
-
-      const arrival = { x: vertex.x + incoming.x, y: vertex.y + incoming.y };
-      const departure = { x: vertex.x + outgoing.x, y: vertex.y + outgoing.y };
-
-      if (arrival.x === departure.x && arrival.y === departure.y) { return [arrival]; }
-      return [arrival, departure];
-    });
-  }
-
   function edgeDirection(from, to) {
     if (to.x > from.x) { return 'E'; }
     if (to.x < from.x) { return 'W'; }
     return (to.y > from.y) ? 'S' : 'N';
-  }
-
-  // Collect the maximal runs of consecutive edges walked in the given directions, each returned as the chain of
-  // vertex indices along the run. Runs crossing the outline's starting vertex come back whole.
-  function outlineRuns(vertices, directions) {
-    const count = vertices.length;
-    const included = i => directions.includes(edgeDirection(vertices[i], vertices[(i + 1) % count]));
-
-    let start = 0;
-    while (start < count && included(start)) { start++; }
-    if (start === count) { return [vertices.map((vertex, i) => i).concat([0])]; }
-
-    const runs = [];
-    let run = null;
-
-    for (let step = 1; step <= count; step++) {
-      const edge = (start + step) % count;
-
-      if (included(edge) === false) {
-        if (run != null) { runs.push(run); }
-        run = null;
-        continue;
-      }
-
-      if (run == null) { run = [edge]; }
-      run.push((edge + 1) % count);
-    }
-
-    if (run != null) { runs.push(run); }
-    return runs;
-  }
-
-  // A vertex of a clockwise outline is convex when the walk turns right there, and concave (a corner pointing
-  // into the shape's interior) when it turns left.
-  function vertexIsConvex(vertices, index) {
-    const previous = vertices[(index + vertices.length - 1) % vertices.length];
-    const vertex = vertices[index];
-    const next = vertices[(index + 1) % vertices.length];
-
-    return ((vertex.x - previous.x) * (next.y - vertex.y)) - ((vertex.y - previous.y) * (next.x - vertex.x)) > 0;
   }
 
   // The top-left corner of the topmost-leftmost filled cell, which is always a convex corner of the outline.
@@ -155,10 +96,6 @@ global.GeometryHelper = (function() {
   return {
     traceOutline,
     insetOutline,
-    shiftOutline,
-    outlineRuns,
-    vertexIsConvex,
-    edgeDirection,
   };
 
 })();

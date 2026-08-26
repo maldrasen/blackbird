@@ -1,6 +1,5 @@
 global.DungeonRoomView = (function() {
   const wallInset = 10;
-  const wallDepth = 40;
 
   function points(vertices) {
     return vertices.map(vertex => `${vertex.x},${vertex.y}`).join(' ');
@@ -45,7 +44,7 @@ global.DungeonRoomView = (function() {
       .map(vertex => ({ x: vertex.x * gridSize, y: vertex.y * gridSize }));
     const wallLine = GeometryHelper.insetOutline(outline, wallInset);
 
-    return { outline, wallLine, floor: wallLine, faces: [] };
+    return { outline, wallLine, floor: wallLine };
   }
 
   function getNestedGeometry(floor, room) {
@@ -62,7 +61,7 @@ global.DungeonRoomView = (function() {
       }));
       const wallLine = GeometryHelper.insetOutline(outline, -wallInset);
 
-      return { outline, wallLine, faces: [] };
+      return { outline, wallLine };
     });
   }
 
@@ -90,7 +89,7 @@ global.DungeonRoomView = (function() {
     build,
     getRoomGeometry,
     getNestedGeometry,
-    getWallMetrics: () => { return { wallInset, wallDepth }; },
+    getWallInset: () => { return wallInset; },
   };
 
 })();
