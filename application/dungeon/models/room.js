@@ -14,20 +14,49 @@ global.Room = function(feature, type='normal') {
   let footprint;
   let size;
   let centerPoint;
+  let bounds;
 
   // =======================
   //    Building & Layout
   // =======================
 
-  // Add a box to the room. Boxes can be added in any order using any shared coordinate system (eg. plain absolute
-  // grid coordinates) - the room's own origin isn't pinned to (0,0) until something actually reads the boxes/bounds,
-  // so there's no need to keep re-normalizing (and no risk of earlier boxes drifting out of sync with later ones)
-  // as more boxes get added.
+  // Decide the room's bounds up front, creating an empty footprint grid of the correct size. Every box added after
+  // this just paints tiles into the grid, so boxes must use room-local coordinates that fit inside the bounds.
+  function setBounds(width, height) {
+    if (bounds) { throw new Error(`This room's bounds have already been set.`); }
+    if (boxes.length > 0) { throw new Error(`You cannot set bounds on a room that already has boxes.`); }
+
+    bounds = { width, height };
+    footprint = Array.from({ length:height }, () => new Array(width).fill(false));
+    size = 0;
+  }
+
+  // Add a box to the room. When the bounds have been set this paints the box directly into the footprint grid.
+  //
+  // TODO: Rooms without bounds instead collect the boxes and lazily normalize their origin to (0,0) when the
+  //       bounds/boxes are first read. This legacy path goes away once every builder sets bounds first.
   function addBox(x, y, width, height) {
+    if (bounds) { return paintBox(x, y, width, height); }
+
     if (footprint) {
       throw new Error(`You cannot add a box to a room whose footprint has been calculated.`);
     }
     boxes.push({ x, y, width, height });
+  }
+
+  function paintBox(x, y, width, height) {
+    if (x < 0 || y < 0 || x + width > bounds.width || y + height > bounds.height) {
+      throw new Error(`Box (${x},${y} ${width}x${height}) doesn't fit in the room's ${bounds.width}x${bounds.height} bounds.`);
+    }
+
+    for (let yy = y; yy < y + height; yy++) {
+      for (let xx = x; xx < x + width; xx++) {
+        if (footprint[yy][xx] === false) {
+          footprint[yy][xx] = true;
+          size++;
+        }
+      }
+    }
   }
 
   // Position of this room within the feature.
@@ -51,6 +80,8 @@ global.Room = function(feature, type='normal') {
 
   // Return the room bounds in an object { xMin, xMax, yMin, yMax }, normalized so xMin/yMin are always 0.
   function getBounds() {
+    if (bounds) { return { xMin:0, yMin:0, xMax:bounds.width, yMax:bounds.height }; }
+
     const raw = rawBounds();
     return { xMin:0, yMin:0, xMax: raw.xMax - raw.xMin, yMax: raw.yMax - raw.yMin };
   }
@@ -62,7 +93,7 @@ global.Room = function(feature, type='normal') {
   }
 
   // A room's footprint shouldn't change after the room has been built, so it should be safe to cache it once it's
-  // been calculated once.
+  // been calculated once. Rooms with bounds paint the footprint as boxes are added, so it's always current.
   function getFootprint() {
     if (footprint) { return footprint; }
 
@@ -104,11 +135,12 @@ global.Room = function(feature, type='normal') {
 
   function getCenterPoint() {
     if (centerPoint) {
+      if (bounds) { return { ...centerPoint }; }
       const raw = rawBounds();
       return { x: centerPoint.x - raw.xMin, y: centerPoint.y - raw.yMin };
     }
-    const bounds = getBounds();
-    return { x: bounds.xMax / 2, y: bounds.yMax / 2 };
+    const roomBounds = getBounds();
+    return { x: roomBounds.xMax / 2, y: roomBounds.yMax / 2 };
   }
 
   // Center of bounds in floor coordinates, which can fall outside the room itself if the room is L-shaped.
@@ -196,6 +228,7 @@ global.Room = function(feature, type='normal') {
     getFloorPosition: () => { return {...floorPosition}; },
     setPosition,
     getPosition: () => { return {...position}; },
+    setBounds,
     addBox,
     getBoxes,
     getBounds,

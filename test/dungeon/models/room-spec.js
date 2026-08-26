@@ -136,6 +136,72 @@ describe("Room", function() {
     });
   });
 
+  describe("setBounds()", function() {
+    it('creates an empty footprint grid of the correct size', function() {
+      const room = Room();
+      room.setBounds(3,2);
+
+      expect(room.getBounds()).to.deep.equal({ xMin:0, yMin:0, xMax:3, yMax:2 });
+      expect(room.getFootprint()).to.deep.equal([
+        [false,false,false],
+        [false,false,false],
+      ]);
+      expect(room.getSize()).to.equal(0);
+    });
+
+    it('paints boxes directly into the footprint grid', function() {
+      const room = Room();
+      room.setBounds(4,3);
+      room.addBox(0,0,4,2);
+      room.addBox(1,0,2,3);
+
+      expect(room.getFootprint()).to.deep.equal([
+        [true,true,true,true],
+        [true,true,true,true],
+        [false,true,true,false],
+      ]);
+      expect(room.getSize()).to.equal(10);
+    });
+
+    it('keeps painting boxes after the footprint has been read', function() {
+      const room = Room();
+      room.setBounds(2,2);
+      room.addBox(0,0,1,2);
+      room.getFootprint();
+      room.addBox(1,0,1,2);
+
+      expect(room.getSize()).to.equal(4);
+    });
+
+    it('returns an explicitly set center point without shifting it', function() {
+      const room = Room();
+      room.setBounds(5,3);
+      room.setCenterPoint(2.5,1.5);
+
+      expect(room.getCenterPoint()).to.deep.equal({ x:2.5, y:1.5 });
+    });
+
+    it('throws when a box does not fit inside the bounds', function() {
+      const room = Room();
+      room.setBounds(3,3);
+
+      expect(() => room.addBox(-1,0,2,2)).to.throw(`doesn't fit`);
+      expect(() => room.addBox(2,2,2,2)).to.throw(`doesn't fit`);
+    });
+
+    it('throws when the bounds are set twice', function() {
+      const room = Room();
+      room.setBounds(3,3);
+      expect(() => room.setBounds(4,4)).to.throw('already been set');
+    });
+
+    it('throws when the room already has boxes', function() {
+      const room = Room();
+      room.addBox(0,0,3,3);
+      expect(() => room.setBounds(3,3)).to.throw('already has boxes');
+    });
+  });
+
   describe("getCenterPoint()", function() {
     it('defaults to the center of the bounds', function() {
       const room = Room();
