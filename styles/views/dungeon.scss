@@ -25,9 +25,8 @@
 
   .footprint { fill: variables.$bg-dungeon; }
   .floor { fill: variables.$bg-dungeon-floor; }
-  .wall-face { fill: variables.$bg-dungeon-wall-face; }
 
-  .walls, .wall-base, .wall-corner, .nested-wall {
+  .walls, .nested-wall {
     fill: none;
     stroke: variables.$fg-dungeon-wall;
     stroke-width: 2;
@@ -40,7 +39,7 @@
   }
 
   &.current {
-    .walls, .wall-base, .wall-corner {
+    .walls {
       stroke: variables.$fg-dungeon-wall-current;
     }
   }
@@ -49,10 +48,7 @@
     z-index: calc(10 + var(--depth, 0));
 
     .floor { display: none; }
-    .wall-face { display: none; }
     .walls { display: none; }
-    .wall-base { display: none; }
-    .wall-corner { display: none; }
     .nested-wall { display: none; }
     .stairs { display: none; }
     .floor-texture { display: none; }

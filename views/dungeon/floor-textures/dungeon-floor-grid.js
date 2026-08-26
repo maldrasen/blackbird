@@ -2,7 +2,6 @@ global.DungeonFloorGrid = (function() {
 
   function paint(room) {
     const gridSize = DungeonFloorView.getGridSize();
-    const wallDepth = DungeonRoomView.getWallMetrics().wallDepth;
     const bounds = room.getBounds();
     const index = room.getIndex();
     const width = bounds.xMax * gridSize;
@@ -12,10 +11,10 @@ global.DungeonFloorGrid = (function() {
     const lines = [];
 
     for (let x = gridSize; x < width; x += gridSize) {
-      lines.push(`<line x1='${x + wallDepth}' y1='0' x2='${x + wallDepth}' y2='${height}'/>`);
+      lines.push(`<line x1='${x}' y1='0' x2='${x}' y2='${height}'/>`);
     }
     for (let y = gridSize; y < height; y += gridSize) {
-      lines.push(`<line x1='0' y1='${y + wallDepth}' x2='${width}' y2='${y + wallDepth}'/>`);
+      lines.push(`<line x1='0' y1='${y}' x2='${width}' y2='${y}'/>`);
     }
 
     X.first(`#dungeonFloor .room[data-index='${index}'] .floor`).insertAdjacentHTML('afterend', [
