@@ -43,6 +43,8 @@ FeatureType.register('leg-room',{
         break;
     }
 
+    // Center of the vertical leg, which is always the first box.
+    room.setCenterPoint((totalWidth - notchWidth) / 2, totalHeight / 2);
     room.allowStairs();
 
     feature.addRoom(room);

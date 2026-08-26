@@ -13,6 +13,7 @@ global.Room = function(feature, type='normal') {
   let scoutingRoll;
   let footprint;
   let size;
+  let centerPoint;
 
   // =======================
   //    Building & Layout
@@ -92,6 +93,24 @@ global.Room = function(feature, type='normal') {
     return size;
   }
 
+  // The room's center point in grid units, measured from the room's origin. The game isn't strictly tile based, so
+  // this can be any point in the room's grid — glyphs and graphics render at exactly this point. It defaults to the
+  // center of the bounds, which suits any rectangular room, but the bounds center of an irregular room can sit
+  // outside the room itself, so builders of those rooms should set a center point explicitly. Set it in the same
+  // coordinate frame as the boxes; it's normalized along with them.
+  function setCenterPoint(x,y) {
+    centerPoint = {x,y};
+  }
+
+  function getCenterPoint() {
+    if (centerPoint) {
+      const raw = rawBounds();
+      return { x: centerPoint.x - raw.xMin, y: centerPoint.y - raw.yMin };
+    }
+    const bounds = getBounds();
+    return { x: bounds.xMax / 2, y: bounds.yMax / 2 };
+  }
+
   // Center of bounds in floor coordinates, which can fall outside the room itself if the room is L-shaped.
   function getFloorCenter() {
     const bounds = getBounds();
@@ -102,7 +121,9 @@ global.Room = function(feature, type='normal') {
   }
 
   function stairsAreAllowed() {
-    return stairsAllowed && boxes[0].width > 1 && boxes[0].height > 1;
+    if (stairsAllowed === false) { return false; }
+    const bounds = getBounds();
+    return bounds.xMax > 1 && bounds.yMax > 1;
   }
 
   // Currently the only overlapping room is the nested room, where every tile overlaps the room it sits inside.
@@ -180,6 +201,8 @@ global.Room = function(feature, type='normal') {
     getBounds,
     getFootprint,
     getSize,
+    setCenterPoint,
+    getCenterPoint,
     getFloorCenter,
     allowStairs: () => { stairsAllowed = true; },
     stairsAreAllowed,

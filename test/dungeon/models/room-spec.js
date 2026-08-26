@@ -136,6 +136,32 @@ describe("Room", function() {
     });
   });
 
+  describe("getCenterPoint()", function() {
+    it('defaults to the center of the bounds', function() {
+      const room = Room();
+      room.addBox(0,0,5,3);
+
+      expect(room.getCenterPoint()).to.deep.equal({ x:2.5, y:1.5 });
+    });
+
+    it('returns an explicitly set center point', function() {
+      const room = Room();
+      room.addBox(0,0,5,3);
+      room.setCenterPoint(2,1);
+
+      expect(room.getCenterPoint()).to.deep.equal({ x:2, y:1 });
+    });
+
+    it('normalizes the center point along with the boxes', function() {
+      const room = Room();
+      room.addBox(0,0,4,4);
+      room.addBox(1,-2,2,2);
+      room.setCenterPoint(2,2);
+
+      expect(room.getCenterPoint()).to.deep.equal({ x:2, y:4 });
+    });
+  });
+
   describe("contents", function() {
     it('starts empty', function() {
       const room = Room();

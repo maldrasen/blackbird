@@ -73,10 +73,10 @@ global.DungeonRoomView = (function() {
   function stairsGlyph(floor, room, direction, gridSize) {
     if (floor.getStairs(direction).includes(room.getIndex()) === false) { return ''; }
 
-    const box = room.getBoxes()[0];
+    const center = room.getCenterPoint();
     const glyph = (direction === 'up') ? '▲' : '▼';
-    const x = (box.x + (box.width / 2)) * gridSize;
-    const y = (box.y + (box.height / 2)) * gridSize;
+    const x = center.x * gridSize;
+    const y = center.y * gridSize;
 
     return `<text class='stairs ${direction}' data-direction='${direction}' x='${x}' y='${y}'>${glyph}</text>`;
   }

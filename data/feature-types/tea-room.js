@@ -43,6 +43,14 @@ FeatureType.register('tea-room',{
         break;
     }
 
+    // Center of the crossbar, so the stairs glyph never lands in the notches beside the leg.
+    if (['N','S'].includes(rotation)) {
+      room.setCenterPoint(totalWidth / 2, (totalHeight - notchHeight) / 2);
+    }
+    else {
+      room.setCenterPoint((totalWidth - notchWidth) / 2, totalHeight / 2);
+    }
+
     room.allowStairs();
 
     feature.addRoom(room);
