@@ -16,7 +16,7 @@ global.FeatureType = (function() {
 
     return {
       getCode: () => { return code; },
-      getVariety: () => { return featureType.variety },
+      getVariety: () => { return featureType.variety || 'plain' },
       buildFeature: options => { return featureType.build(options) },
     };
   }
