@@ -55,7 +55,7 @@ global.Room = function(feature, type='normal') {
   function setFloor(x, y, type) {
     const floorIndex = DungeonConstants.floorTypes.indexOf(type);
     if (floorIndex < 0) { throw new Error(`Unknown floor type [${type}]`); }
-    if (bounds == null || x < 0 || y < 0 || x >= bounds.width || y >= bounds.height || footprint[y][x] == null) {
+    if (footprint[y] == null || footprint[y][x] == null) {
       throw new Error(`(${x},${y}) is not a floor tile in this room.`);
     }
 
