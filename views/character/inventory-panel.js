@@ -231,12 +231,12 @@ global.InventoryPanel = function(options) {
     if (isSelectionUsable() === false) { return; }
 
     const code = selected.articleCode;
-    const story = Consumable.lookup(code).consume(characterId);
+    const response = Consumable.lookup(code).consume(characterId);
 
     inventoryManager.removeArticle(code, 1);
     if (inventoryManager.getArticleQuantity(code) === 0) { selected = null; }
 
-    Alert.show({ message:story, position:AlertPosition.side, fadeTime:5000 });
+    Alert.show({ message:response.story, position:AlertPosition.side, fadeTime:5000 });
     update();
   }
 

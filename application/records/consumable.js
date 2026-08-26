@@ -17,12 +17,8 @@ global.Consumable = (function() {
     function consume(entity) {
       const context = { A:entity, I:code };
       const results = (consumable.effects||[]).map(effect => { effect(entity); });
-
-      if (consumable.stories) {
-        return consumable.stories.pick(context);
-      }
-
-      return `[TODO: ${entity} consumes ${article.getName()} with results:${JSON.stringify(results)}]`;
+      const story = consumable.stories ? consumable.stories.pick(context) : `[TODO: Consumable:${code} story]`;
+      return { results, story };
     }
 
     return {
