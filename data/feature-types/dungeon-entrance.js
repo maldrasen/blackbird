@@ -4,7 +4,7 @@ FeatureType.register('dungeon-entrance',{
     const room = Room(feature);
     room.setBounds(15, 7);
     room.addBox(0, 0, 15, 7);
-    room.setCenterPoint(3,3);
+    room.setCenterPoint(3.5,3.5);
     room.allowStairs();
     room.setStairs('up');
     room.forbidAllDoors();
