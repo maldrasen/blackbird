@@ -34,7 +34,9 @@ FeatureType.register('nested-room',{
     const padding = Random.between(options.padding[0],maxPadding(options, size));
     const innerSize = size - (padding*2);
 
+    outer.setBounds(size, size);
     outer.addBox(0, 0, size, size);
+    inner.setBounds(innerSize, innerSize);
     inner.addBox(0, 0, innerSize, innerSize);
     inner.setPosition(padding, padding);
     inner.allowStairs();
