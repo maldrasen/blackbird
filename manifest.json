@@ -646,6 +646,7 @@
     "test/helpers/random-spec.js",
     "test/helpers/string-helper-spec.js",
     "test/items/character-equipper-spec.js",
+    "test/items/consumable-effect-spec.js",
     "test/items/equipment-manager-spec.js",
     "test/items/factories/outfit-factory-spec.js",
     "test/items/factories/weapon-factory-spec.js",
