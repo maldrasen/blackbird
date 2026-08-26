@@ -1,24 +1,23 @@
 global.DungeonDoorView = (function() {
 
-  const doorLength = 60;
+  const openingLength = 60;
+  const doorLength = 40;
 
- function build(floor, door) {
+  function build(floor, door) {
     const gridSize = DungeonFloorView.getGridSize();
-    const wallInset = DungeonRoomView.getWallInset();
+    const across = DungeonRoomView.getWallInset() + 2;
     const half = gridSize / 2;
 
     let classname = `door ${door.direction}`;
     if (floor.isRevealed(door.from) === false && floor.isRevealed(door.to) === false) { classname += ' hide'; }
 
-    const across = wallInset + 1;
-    const along = doorLength / 2;
-    const slab = (door.direction === 'N')
-      ? `${-along},${-across} ${along},${-across} ${along},${across} ${-along},${across}`
-      : `${-across},${-along} ${across},${-along} ${across},${along} ${-across},${along}`;
+    const opening = rectangle(door.direction, openingLength / 2, across);
+    const slab = rectangle(door.direction, doorLength / 2, across);
     const target = `0,${-half} ${half},0 0,${half} ${-half},0`;
 
     const element = X.createElement([
       `<svg class='${classname}' data-from='${door.from}' data-to='${door.to}' viewBox='${-half} ${-half} ${gridSize} ${gridSize}'>`,
+      `<polygon class='opening' points='${opening}'/>`,
       `<polygon class='slab' points='${slab}'/>`,
       `<polygon class='click-target' points='${target}'/>`,
       `</svg>`,
@@ -34,6 +33,12 @@ global.DungeonDoorView = (function() {
     element.style['width'] = `${gridSize}px`;
 
     return element;
+  }
+
+  function rectangle(direction, along, across) {
+    return (direction === 'N')
+      ? `${-along},${-across} ${along},${-across} ${along},${across} ${-along},${across}`
+      : `${-across},${-along} ${across},${-along} ${across},${along} ${-across},${along}`;
   }
 
   return {

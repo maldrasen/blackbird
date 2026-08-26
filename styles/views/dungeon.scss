@@ -73,6 +73,7 @@
   z-index: 100;
 
   pointer-events: none;
+  .opening { fill: variables.$bg-dungeon-floor; }
   .slab { fill: variables.$fg-dungeon-wall; }
 
   .click-target {
