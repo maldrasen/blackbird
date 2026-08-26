@@ -9,4 +9,4 @@
 echo
 ddate
 date
-sloc application/ data/
+sloc application/ data/ views/
