@@ -63,18 +63,13 @@ global.Feature = function(type) {
 
       footprint = Array.from({ length: height }, () => new Array(width).fill(false));
 
-      function paintBox(pos,box) {
-        const xPos = pos.x + box.x;
-        const yPos = pos.y + box.y;
-        for (let y = yPos; y < yPos + box.height; y++) {
-          for (let x = xPos; x < xPos + box.width; x++) {
-            footprint[y][x] = true;
-          }
-        }
-      }
-
       rooms.forEach(room => {
-        room.getBoxes().forEach(box => paintBox(room.getPosition(), box));
+        const position = room.getPosition();
+        room.getFootprint().forEach((row, y) => {
+          row.forEach((cell, x) => {
+            if (cell) { footprint[position.y + y][position.x + x] = true; }
+          });
+        });
       });
     }
 

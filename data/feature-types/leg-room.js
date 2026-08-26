@@ -23,6 +23,7 @@ FeatureType.register('leg-room',{
     const notchHeight = Random.between(heightRange[0],heightRange[1]);
     const feature = Feature('leg-room');
     const room = Room(feature);
+    room.setBounds(totalWidth, totalHeight);
 
     switch (rotation) {
       case 'NE':
@@ -30,19 +31,23 @@ FeatureType.register('leg-room',{
         room.addBox(0, 0, totalWidth, totalHeight-notchHeight);
         break;
       case 'NW':
-        room.addBox(0, 0, totalWidth-notchWidth, totalHeight);
-        room.addBox(-notchWidth, 0, totalWidth, totalHeight-notchHeight);
+        room.addBox(notchWidth, 0, totalWidth-notchWidth, totalHeight);
+        room.addBox(0, 0, totalWidth, totalHeight-notchHeight);
         break;
       case 'SE':
         room.addBox(0, 0, totalWidth-notchWidth, totalHeight);
         room.addBox(0, notchHeight, totalWidth, totalHeight-notchHeight);
         break;
       case 'SW':
-        room.addBox(0, 0, totalWidth-notchWidth, totalHeight);
-        room.addBox(-notchWidth, notchHeight, totalWidth, totalHeight-notchHeight);
+        room.addBox(notchWidth, 0, totalWidth-notchWidth, totalHeight);
+        room.addBox(0, notchHeight, totalWidth, totalHeight-notchHeight);
         break;
     }
 
+    // Center of the full-height leg, which sits against the west side for E rotations and the east side for W ones.
+    const legCenter = ['NE','SE'].includes(rotation) ?
+      (totalWidth-notchWidth) / 2 : (totalWidth+notchWidth) / 2;
+    room.setCenterPoint(legCenter, totalHeight / 2);
     room.allowStairs();
 
     feature.addRoom(room);

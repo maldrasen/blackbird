@@ -4,14 +4,20 @@ describe("FeatureType", function() {
     return FeatureType.lookup(type).buildFeature(options);
   }
 
+  function footprint(room) {
+    return room.getFootprint().map(row => row.map(cell => cell ? 'X' : '.').join(''));
+  }
+
   describe("rect-room", function() {
-    it("Sets the room's box given a height/width range", function() {
+    it("Sets the room's bounds given a height/width range", function() {
       Random.stubBetween(3,2);
       const room = buildFeature('rect-room',{ size:[1,4] }).getRooms()[0];
-      const box = room.getBoxes()[0];
 
-      expect(box.width).to.equal(3);
-      expect(box.height).to.equal(2);
+      expect(room.getBounds()).to.deep.equal({ xMin:0, yMin:0, xMax:3, yMax:2 });
+      expect(footprint(room)).to.deep.equal([
+        'XXX',
+        'XXX',
+      ]);
     });
   });
 
@@ -22,10 +28,15 @@ describe("FeatureType", function() {
       Random.stubBetween(6,6,3,2);
       const room = buildFeature('leg-room',{ size:[3,8] }).getRooms()[0];
 
-      expect(room.getBoxes()).to.deep.equal([
-        { x:0, y:0, width:3, height:6 },
-        { x:0, y:0, width:6, height:4 },
+      expect(footprint(room)).to.deep.equal([
+        'XXXXXX',
+        'XXXXXX',
+        'XXXXXX',
+        'XXXXXX',
+        'XXX...',
+        'XXX...',
       ]);
+      expect(room.getCenterPoint()).to.deep.equal({ x:1.5, y:3 });
     });
 
     it("builds an NW leg", function() {
@@ -33,10 +44,15 @@ describe("FeatureType", function() {
       Random.stubBetween(6,6,3,2);
       const room = buildFeature('leg-room',{ size:[3,8] }).getRooms()[0];
 
-      expect(room.getBoxes()).to.deep.equal([
-        { x:3, y:0, width:3, height:6 },
-        { x:0, y:0, width:6, height:4 },
+      expect(footprint(room)).to.deep.equal([
+        'XXXXXX',
+        'XXXXXX',
+        'XXXXXX',
+        'XXXXXX',
+        '...XXX',
+        '...XXX',
       ]);
+      expect(room.getCenterPoint()).to.deep.equal({ x:4.5, y:3 });
     });
 
     it("builds an SE leg", function() {
@@ -44,10 +60,15 @@ describe("FeatureType", function() {
       Random.stubBetween(6,6,3,2);
       const room = buildFeature('leg-room',{ size:[3,8] }).getRooms()[0];
 
-      expect(room.getBoxes()).to.deep.equal([
-        { x:0, y:0, width:3, height:6 },
-        { x:0, y:2, width:6, height:4 },
+      expect(footprint(room)).to.deep.equal([
+        'XXX...',
+        'XXX...',
+        'XXXXXX',
+        'XXXXXX',
+        'XXXXXX',
+        'XXXXXX',
       ]);
+      expect(room.getCenterPoint()).to.deep.equal({ x:1.5, y:3 });
     });
 
     it("builds an SW leg", function() {
@@ -55,10 +76,15 @@ describe("FeatureType", function() {
       Random.stubBetween(6,6,3,2);
       const room = buildFeature('leg-room',{ size:[3,8] }).getRooms()[0];
 
-      expect(room.getBoxes()).to.deep.equal([
-        { x:3, y:0, width:3, height:6 },
-        { x:0, y:2, width:6, height:4 },
+      expect(footprint(room)).to.deep.equal([
+        '...XXX',
+        '...XXX',
+        'XXXXXX',
+        'XXXXXX',
+        'XXXXXX',
+        'XXXXXX',
       ]);
+      expect(room.getCenterPoint()).to.deep.equal({ x:4.5, y:3 });
     });
   });
 
@@ -69,10 +95,15 @@ describe("FeatureType", function() {
       Random.stubBetween(6,6,1,2);
       const room = buildFeature('tea-room',{ size:[3,8] }).getRooms()[0];
 
-      expect(room.getBoxes()).to.deep.equal([
-        { x:0, y:0, width:6, height:4 },
-        { x:1, y:0, width:4, height:6 },
+      expect(footprint(room)).to.deep.equal([
+        'XXXXXX',
+        'XXXXXX',
+        'XXXXXX',
+        'XXXXXX',
+        '.XXXX.',
+        '.XXXX.',
       ]);
+      expect(room.getCenterPoint()).to.deep.equal({ x:3, y:2 });
     });
 
     it("builds a S rotation", function() {
@@ -80,10 +111,15 @@ describe("FeatureType", function() {
       Random.stubBetween(6,6,1,2);
       const room = buildFeature('tea-room',{ size:[3,8] }).getRooms()[0];
 
-      expect(room.getBoxes()).to.deep.equal([
-        { x:0, y:2, width:6, height:4 },
-        { x:1, y:0, width:4, height:6 },
+      expect(footprint(room)).to.deep.equal([
+        '.XXXX.',
+        '.XXXX.',
+        'XXXXXX',
+        'XXXXXX',
+        'XXXXXX',
+        'XXXXXX',
       ]);
+      expect(room.getCenterPoint()).to.deep.equal({ x:3, y:4 });
     });
 
     it("builds an E rotation", function() {
@@ -91,10 +127,15 @@ describe("FeatureType", function() {
       Random.stubBetween(6,6,1,2);
       const room = buildFeature('tea-room',{ size:[3,8] }).getRooms()[0];
 
-      expect(room.getBoxes()).to.deep.equal([
-        { x:0, y:0, width:5, height:6 },
-        { x:0, y:2, width:6, height:2 },
+      expect(footprint(room)).to.deep.equal([
+        'XXXXX.',
+        'XXXXX.',
+        'XXXXXX',
+        'XXXXXX',
+        'XXXXX.',
+        'XXXXX.',
       ]);
+      expect(room.getCenterPoint()).to.deep.equal({ x:2.5, y:3 });
     });
 
     it("builds a W rotation", function() {
@@ -102,22 +143,29 @@ describe("FeatureType", function() {
       Random.stubBetween(6,6,1,2);
       const room = buildFeature('tea-room',{ size:[3,8] }).getRooms()[0];
 
-      expect(room.getBoxes()).to.deep.equal([
-        { x:1, y:0, width:5, height:6 },
-        { x:0, y:2, width:6, height:2 },
+      expect(footprint(room)).to.deep.equal([
+        '.XXXXX',
+        '.XXXXX',
+        'XXXXXX',
+        'XXXXXX',
+        '.XXXXX',
+        '.XXXXX',
       ]);
+      expect(room.getCenterPoint()).to.deep.equal({ x:3.5, y:3 });
     });
   });
 
   describe("nested-room", function() {
     // size:7, padding:2 -> inner is 3x3 at (2,2), door center column and row are x:3, y:3.
-    it("builds single box rooms with the inner room centered", function() {
+    it("builds solid square rooms with the inner room centered", function() {
       Random.stubFrom('N');
       Random.stubBetween(7,2);
       const [outer, inner] = buildFeature('nested-room',{ size:[5,9], padding:[1,3] }).getRooms();
 
-      expect(outer.getBoxes()).to.deep.equal([{ x:0, y:0, width:7, height:7 }]);
-      expect(inner.getBoxes()).to.deep.equal([{ x:0, y:0, width:3, height:3 }]);
+      expect(outer.getBounds()).to.deep.equal({ xMin:0, yMin:0, xMax:7, yMax:7 });
+      expect(outer.getSize()).to.equal(49);
+      expect(inner.getBounds()).to.deep.equal({ xMin:0, yMin:0, xMax:3, yMax:3 });
+      expect(inner.getSize()).to.equal(9);
       expect(inner.getPosition()).to.deep.equal({ x:2, y:2 });
     });
 
@@ -156,7 +204,8 @@ describe("FeatureType", function() {
       Random.stubBetween(4);
       const inner = buildFeature('nested-room',{ size:[3,7], padding:[1,3] }).getRooms()[1];
 
-      expect(inner.getBoxes()).to.deep.equal([{ x:0, y:0, width:2, height:2 }]);
+      expect(inner.getBounds()).to.deep.equal({ xMin:0, yMin:0, xMax:2, yMax:2 });
+      expect(inner.getSize()).to.equal(4);
       expect(inner.getPosition()).to.deep.equal({ x:1, y:1 });
     });
 
@@ -171,10 +220,15 @@ describe("FeatureType", function() {
       Random.stubBetween(6,6,1,2);
       const room = buildFeature('cross-room',{ size:[3,8] }).getRooms()[0];
 
-      expect(room.getBoxes()).to.deep.equal([
-        { x:0, y:2, width:6, height:2 },
-        { x:1, y:0, width:4, height:6 },
+      expect(footprint(room)).to.deep.equal([
+        '.XXXX.',
+        '.XXXX.',
+        'XXXXXX',
+        'XXXXXX',
+        '.XXXX.',
+        '.XXXX.',
       ]);
+      expect(room.getCenterPoint()).to.deep.equal({ x:3, y:3 });
     });
   });
 

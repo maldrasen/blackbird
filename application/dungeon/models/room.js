@@ -1,5 +1,4 @@
 global.Room = function(feature, type='normal') {
-  const boxes = [];
 
   let description;
   let position = { x:0, y:0 };
@@ -13,100 +12,64 @@ global.Room = function(feature, type='normal') {
   let scoutingRoll;
   let footprint;
   let size;
+  let centerPoint;
+  let bounds;
 
   // =======================
   //    Building & Layout
   // =======================
 
-  // Add a box to the room. Boxes can be added in any order using any shared coordinate system (eg. plain absolute
-  // grid coordinates) - the room's own origin isn't pinned to (0,0) until something actually reads the boxes/bounds,
-  // so there's no need to keep re-normalizing (and no risk of earlier boxes drifting out of sync with later ones)
-  // as more boxes get added.
-  function addBox(x, y, width, height) {
-    if (footprint) {
-      throw new Error(`You cannot add a box to a room whose footprint has been calculated.`);
-    }
-    boxes.push({ x, y, width, height });
-  }
+  // Decide the room's bounds up front, creating an empty footprint grid of the correct size. Every box added after
+  // this just paints tiles into the grid, so boxes must use room-local coordinates that fit inside the bounds.
+  function setBounds(width, height) {
+    if (bounds) { throw new Error(`This room's bounds have already been set.`); }
 
-  // Position of this room within the feature.
-  function setPosition(x,y) {
-    position = {x,y};
-  }
-
-  // The raw bounds of the stored boxes, before normalizing the room's origin to (0,0).
-  function rawBounds() {
-    const bounds = { xMin:Infinity, xMax:-Infinity, yMin:Infinity, yMax:-Infinity };
-
-    boxes.forEach(box => {
-      if (box.x < bounds.xMin) { bounds.xMin = box.x; }
-      if (box.y < bounds.yMin) { bounds.yMin = box.y; }
-      if (box.x + box.width  > bounds.xMax) { bounds.xMax = box.x + box.width; }
-      if (box.y + box.height > bounds.yMax) { bounds.yMax = box.y + box.height; }
-    });
-
-    return bounds;
-  }
-
-  // Return the room bounds in an object { xMin, xMax, yMin, yMax }, normalized so xMin/yMin are always 0.
-  function getBounds() {
-    const raw = rawBounds();
-    return { xMin:0, yMin:0, xMax: raw.xMax - raw.xMin, yMax: raw.yMax - raw.yMin };
-  }
-
-  // Return every box, shifted so the room's overall bounds start at (0,0).
-  function getBoxes() {
-    const raw = rawBounds();
-    return boxes.map(box => ({ x: box.x - raw.xMin, y: box.y - raw.yMin, width: box.width, height: box.height }));
-  }
-
-  // A room's footprint shouldn't change after the room has been built, so it should be safe to cache it once it's
-  // been calculated once.
-  function getFootprint() {
-    if (footprint) { return footprint; }
-
-    const bounds = getBounds();
-    footprint = Array.from({ length: bounds.yMax }, () => new Array(bounds.xMax).fill(false));
+    bounds = { width, height };
+    footprint = Array.from({ length:height }, () => new Array(width).fill(false));
     size = 0;
+  }
 
-    getBoxes().forEach(box => {
-      for (let y = box.y; y < box.y + box.height; y++) {
-        for (let x = box.x; x < box.x + box.width; x++) {
-          if (footprint[y][x] === false) {
-            footprint[y][x] = true;
-            size++;
-          }
+  // Paint a box of tiles into the footprint grid. The size is maintained here rather than counted on demand because
+  // getSize() is called in a loop when checking room description predicates, so it's an actual performance concern.
+  function addBox(x, y, width, height) {
+    if (bounds == null) { throw new Error(`Set the room's bounds before adding a box.`); }
+    if (x < 0 || y < 0 || x + width > bounds.width || y + height > bounds.height) {
+      throw new Error(`Box (${x},${y} ${width}x${height}) doesn't fit in the room's ${bounds.width}x${bounds.height} bounds.`);
+    }
+
+    for (let yy = y; yy < y + height; yy++) {
+      for (let xx = x; xx < x + width; xx++) {
+        if (footprint[yy][xx] === false) {
+          footprint[yy][xx] = true;
+          size++;
         }
       }
-    });
-
-    return footprint;
+    }
   }
 
-  // To get a room's actual size (as opposed to a bounding box) we need to calculate the room's footprint. Rather than
-  // doing this in four nested loops, we just calculate the room's size when the footprint is built, and cache both
-  // values. The getSize() function will be called in a loop when checking room description predicates, so this is an
-  // actual performance concern. This function should only be called after all the room's boxes have been added.
-  function getSize() {
-    if (size == null) { getFootprint(); }
-    return size;
+
+  // Return the room bounds in an object { xMin, xMax, yMin, yMax }. The mins are always 0; the shape is what the
+  // feature and floor maths expect.
+  function getBounds() {
+    return { xMin:0, yMin:0, xMax:bounds.width, yMax:bounds.height };
+  }
+
+  function getCenterPoint() {
+    if (centerPoint) { return { ...centerPoint }; }
+    return { x: bounds.width / 2, y: bounds.height / 2 };
   }
 
   // Center of bounds in floor coordinates, which can fall outside the room itself if the room is L-shaped.
   function getFloorCenter() {
-    const bounds = getBounds();
     return {
-      x: floorPosition.x + (bounds.xMax / 2),
-      y: floorPosition.y + (bounds.yMax / 2),
+      x: floorPosition.x + (bounds.width / 2),
+      y: floorPosition.y + (bounds.height / 2),
     };
   }
 
   function stairsAreAllowed() {
-    return stairsAllowed && boxes[0].width > 1 && boxes[0].height > 1;
+    return stairsAllowed && bounds.width > 1 && bounds.height > 1;
   }
-
-  // Currently the only overlapping room is the nested room, where every tile overlaps the room it sits inside.
-  function isOverlapping() { return overlapping; }
 
   // ==============
   //    Contents
@@ -161,7 +124,7 @@ global.Room = function(feature, type='normal') {
       contents,
       stairs,
       usedCommands: [...usedCommands],
-      boxes: getBoxes(),
+      footprint: footprint.map(row => [...row]),
     }
   }
 
@@ -173,13 +136,15 @@ global.Room = function(feature, type='normal') {
     getFeatureIndex: () => { return feature.getIndex(); },
     setFloorPosition: (x,y) => { floorPosition = {x,y}; },
     getFloorPosition: () => { return {...floorPosition}; },
-    setPosition,
+    setPosition: (x,y) => { position = {x,y}; },
     getPosition: () => { return {...position}; },
+    setBounds,
     addBox,
-    getBoxes,
     getBounds,
-    getFootprint,
-    getSize,
+    getFootprint: () => { return footprint },
+    getSize: () => { return size; },
+    setCenterPoint: (x,y) => { centerPoint = {x,y}; },
+    getCenterPoint,
     getFloorCenter,
     allowStairs: () => { stairsAllowed = true; },
     stairsAreAllowed,
@@ -187,7 +152,7 @@ global.Room = function(feature, type='normal') {
     getStairs: () => { return stairs; },
     hasStairs: () => { return stairs != null; },
     markOverlapping: () => { overlapping = true; },
-    isOverlapping,
+    isOverlapping: () => { return overlapping; },
     setContents: code => { contents = code; },
     getContents: () => { return contents; },
     hasContents: () => { return contents != null; },

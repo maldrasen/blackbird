@@ -23,23 +23,29 @@ FeatureType.register('tea-room',{
     const legHeight = totalHeight-(notchHeight*2);
     const feature = Feature('tea-room');
     const room = Room(feature);
+    room.setBounds(totalWidth, totalHeight);
 
+    // The center point is the center of the crossbar, so the stairs glyph never lands in the notches beside the leg.
     switch(rotation) {
       case 'N':
         room.addBox(0, 0, totalWidth, totalHeight-notchHeight);
         room.addBox(notchWidth, 0, legWidth, totalHeight);
+        room.setCenterPoint(totalWidth/2, (totalHeight-notchHeight)/2);
         break;
       case 'S':
-        room.addBox(0, 0, totalWidth, totalHeight-notchHeight);
-        room.addBox(notchWidth, -notchHeight, legWidth, totalHeight);
+        room.addBox(0, notchHeight, totalWidth, totalHeight-notchHeight);
+        room.addBox(notchWidth, 0, legWidth, totalHeight);
+        room.setCenterPoint(totalWidth/2, (totalHeight+notchHeight)/2);
         break;
       case 'E':
         room.addBox(0, 0, totalWidth-notchWidth, totalHeight);
         room.addBox(0, notchHeight, totalWidth, legHeight);
+        room.setCenterPoint((totalWidth-notchWidth)/2, totalHeight/2);
         break;
       case 'W':
-        room.addBox(0, 0, totalWidth-notchWidth, totalHeight);
-        room.addBox(-notchWidth, notchHeight, totalWidth, legHeight);
+        room.addBox(notchWidth, 0, totalWidth-notchWidth, totalHeight);
+        room.addBox(0, notchHeight, totalWidth, legHeight);
+        room.setCenterPoint((totalWidth+notchWidth)/2, totalHeight/2);
         break;
     }
 

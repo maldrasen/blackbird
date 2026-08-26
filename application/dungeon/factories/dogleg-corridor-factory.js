@@ -31,18 +31,22 @@ global.DoglegCorridorFactory = function(originFeature, targetFeature, alignment)
     }
   }
 
+  // The jog's turn points always sit inside the rect between the start and end points, so that rect is the room's
+  // bounds and its min corner is the corridor's origin.
   function buildFeature(path) {
     const feature = Feature('corridor');
     const room = Room(feature);
-
-    path.forEach(segment => {
-      FloorFactorySupport.addSegment(room, segment[0], segment[1]);
-    });
-
     const start = path[0][0];
     const end = path[2][1];
+    const origin = { x: Math.min(start.x, end.x), y: Math.min(start.y, end.y) };
 
-    feature.setPosition(Math.min(start.x,end.x), Math.min(start.y,end.y));
+    room.setBounds(Math.abs(end.x - start.x) + 1, Math.abs(end.y - start.y) + 1);
+
+    path.forEach(segment => {
+      FloorFactorySupport.addSegment(room, segment[0], segment[1], origin);
+    });
+
+    feature.setPosition(origin.x, origin.y);
     feature.addRoom(room);
 
     return feature;
