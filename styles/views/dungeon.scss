@@ -74,7 +74,14 @@
 
   pointer-events: none;
   .opening { fill: variables.$bg-dungeon-floor; }
-  .slab { fill: variables.$fg-dungeon-wall; }
+  .slab { fill: variables.$fg-dungeon-door; }
+
+  .cap {
+    fill: none;
+    stroke: variables.$fg-dungeon-wall;
+    stroke-width: 2;
+    stroke-linecap: square;
+  }
 
   .click-target {
     fill: none;

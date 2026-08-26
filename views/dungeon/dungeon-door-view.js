@@ -1,23 +1,26 @@
 global.DungeonDoorView = (function() {
 
-  const openingLength = 60;
-  const doorLength = 40;
+  const doorLength = 60;
+  const doorThickness = 8;
 
   function build(floor, door) {
     const gridSize = DungeonFloorView.getGridSize();
-    const across = DungeonRoomView.getWallInset() + 2;
+    const wallInset = DungeonRoomView.getWallInset();
     const half = gridSize / 2;
+    const along = doorLength / 2;
 
     let classname = `door ${door.direction}`;
     if (floor.isRevealed(door.from) === false && floor.isRevealed(door.to) === false) { classname += ' hide'; }
 
-    const opening = rectangle(door.direction, openingLength / 2, across);
-    const slab = rectangle(door.direction, doorLength / 2, across);
+    const opening = rectangle(door.direction, along, wallInset + 2);
+    const caps = [-along, along].map(position => capLine(door.direction, position, wallInset));
+    const slab = rectangle(door.direction, along, doorThickness / 2);
     const target = `0,${-half} ${half},0 0,${half} ${-half},0`;
 
     const element = X.createElement([
       `<svg class='${classname}' data-from='${door.from}' data-to='${door.to}' viewBox='${-half} ${-half} ${gridSize} ${gridSize}'>`,
       `<polygon class='opening' points='${opening}'/>`,
+      ...caps,
       `<polygon class='slab' points='${slab}'/>`,
       `<polygon class='click-target' points='${target}'/>`,
       `</svg>`,
@@ -39,6 +42,12 @@ global.DungeonDoorView = (function() {
     return (direction === 'N')
       ? `${-along},${-across} ${along},${-across} ${along},${across} ${-along},${across}`
       : `${-across},${-along} ${across},${-along} ${across},${along} ${-across},${along}`;
+  }
+
+  function capLine(direction, position, extent) {
+    return (direction === 'N')
+      ? `<line class='cap' x1='${position}' y1='${-extent}' x2='${position}' y2='${extent}'/>`
+      : `<line class='cap' x1='${-extent}' y1='${position}' x2='${extent}' y2='${position}'/>`;
   }
 
   return {
