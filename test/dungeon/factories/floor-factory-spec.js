@@ -7,5 +7,22 @@ describe("FloorFactory", function() {
     expect(DungeonSystem.getDungeonFloor().getFeatures().length).to.be.greaterThan(5);
   });
 
+  it("pins the dungeon entrance to the west boundary of the first level", function() {
+    DungeonSystem.setLevel(1);
+    const floor = DungeonSystem.getDungeonFloor();
+    const entrances = floor.getFeatures().filter(feature => feature.getType() === 'dungeon-entrance');
+
+    expect(entrances).to.have.lengthOf(1);
+    expect(entrances[0].getPosition().x).to.equal(0);
+    expect(floor.getStairs('up')).to.have.lengthOf(1);
+  });
+
+  it("puts no entrance on deeper levels", function() {
+    DungeonSystem.setLevel(2);
+    const floor = DungeonSystem.getDungeonFloor();
+
+    expect(floor.getFeatures().some(feature => feature.getType() === 'dungeon-entrance')).to.equal(false);
+  });
+
 });
 

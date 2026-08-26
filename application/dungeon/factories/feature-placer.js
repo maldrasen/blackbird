@@ -12,6 +12,13 @@ global.FeaturePlacer = function() {
     const features = [];
     let guard = 0
 
+    if (floor.getLevel() === 1) {
+      const entrance = dungeonEntrance();
+      floor.addFeature(entrance);
+      placeFeature(entrance);
+      features.push(entrance);
+    }
+
     while(guard < 1000) {
       const feature = theme.getRandomFeature();
       setRandomPosition(feature);
@@ -38,6 +45,14 @@ global.FeaturePlacer = function() {
         throw new Error(`The feature index ${features[i].getIndex()} did not match the array index ${i}`);
       }
     }
+  }
+
+  // The dungeon entrance always appears in the same orientation with a door on its east wall. It's pinned flush
+  // against the west boundary of the floor so that it should always be able to connect to something.
+  function dungeonEntrance() {
+    const feature = FeatureType.lookup('dungeon-entrance').buildFeature({});
+    feature.setPosition(0, Random.between(0, floorHeight - feature.getBounds().yMax));
+    return feature;
   }
 
   function setRandomPosition(feature) {
