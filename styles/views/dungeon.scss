@@ -83,6 +83,13 @@
     stroke-linecap: square;
   }
 
+  &.from-current .cap.from { stroke: variables.$fg-dungeon-wall-current; }
+  &.to-current .cap.to { stroke: variables.$fg-dungeon-wall-current; }
+
+  &.from-unrevealed .cap.from { display: none; }
+  &.to-unrevealed .cap.to { display: none; }
+  &.from-unrevealed.to-unrevealed { display: none; }
+
   .click-target {
     fill: none;
     pointer-events: fill;

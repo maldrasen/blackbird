@@ -10,11 +10,15 @@ global.DungeonDoorView = (function() {
     const along = doorLength / 2;
 
     let classname = `door ${door.direction}`;
-    if (floor.isRevealed(door.from) === false && floor.isRevealed(door.to) === false) { classname += ' hide'; }
+    if (floor.isRevealed(door.from) === false) { classname += ' from-unrevealed'; }
+    if (floor.isRevealed(door.to) === false) { classname += ' to-unrevealed'; }
+    if (door.from === floor.getLocation()) { classname += ' from-current'; }
+    if (door.to === floor.getLocation()) { classname += ' to-current'; }
 
     const opening = rectangle(door.direction, along, wallInset + 2);
-    const caps = [-along, along].map(position => capLine(door.direction, position, wallInset));
-    const slab = rectangle(door.direction, along, doorThickness / 2);
+    const caps = [-along, along].flatMap(position => ['from','to'].map(side =>
+      capLine(door.direction, position, side, wallInset)));
+    const slab = rectangle(door.direction, along-4, doorThickness / 2);
     const target = `0,${-half} ${half},0 0,${half} ${-half},0`;
 
     const element = X.createElement([
@@ -44,10 +48,13 @@ global.DungeonDoorView = (function() {
       : `${-across},${-along} ${across},${-along} ${across},${along} ${-across},${along}`;
   }
 
-  function capLine(direction, position, extent) {
+  // The from room is always the door's own tile, on the positive side of the shared edge; the to room is the
+  // north or west neighbor on the negative side.
+  function capLine(direction, position, side, extent) {
+    const reach = (side === 'from') ? extent : -extent;
     return (direction === 'N')
-      ? `<line class='cap' x1='${position}' y1='${-extent}' x2='${position}' y2='${extent}'/>`
-      : `<line class='cap' x1='${-extent}' y1='${position}' x2='${extent}' y2='${position}'/>`;
+      ? `<line class='cap ${side}' x1='${position}' y1='0' x2='${position}' y2='${reach}'/>`
+      : `<line class='cap ${side}' x1='0' y1='${position}' x2='${reach}' y2='${position}'/>`;
   }
 
   return {
