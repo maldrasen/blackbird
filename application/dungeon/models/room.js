@@ -47,32 +47,11 @@ global.Room = function(feature, type='normal') {
     }
   }
 
-  // Position of this room within the feature.
-  function setPosition(x,y) {
-    position = {x,y};
-  }
 
   // Return the room bounds in an object { xMin, xMax, yMin, yMax }. The mins are always 0; the shape is what the
   // feature and floor maths expect.
   function getBounds() {
     return { xMin:0, yMin:0, xMax:bounds.width, yMax:bounds.height };
-  }
-
-  function getFootprint() {
-    return footprint;
-  }
-
-  // The number of tiles actually painted into the footprint, as opposed to the area of the bounds.
-  function getSize() {
-    return size;
-  }
-
-  // The room's center point in room-local grid units. The game isn't strictly tile based, so this can be any point
-  // in the room's grid — glyphs and graphics render at exactly this point. It defaults to the center of the bounds,
-  // which suits any rectangular room, but the bounds center of an irregular room can sit outside the room itself,
-  // so builders of those rooms should set a center point explicitly.
-  function setCenterPoint(x,y) {
-    centerPoint = {x,y};
   }
 
   function getCenterPoint() {
@@ -91,9 +70,6 @@ global.Room = function(feature, type='normal') {
   function stairsAreAllowed() {
     return stairsAllowed && bounds.width > 1 && bounds.height > 1;
   }
-
-  // Currently the only overlapping room is the nested room, where every tile overlaps the room it sits inside.
-  function isOverlapping() { return overlapping; }
 
   // ==============
   //    Contents
@@ -160,14 +136,14 @@ global.Room = function(feature, type='normal') {
     getFeatureIndex: () => { return feature.getIndex(); },
     setFloorPosition: (x,y) => { floorPosition = {x,y}; },
     getFloorPosition: () => { return {...floorPosition}; },
-    setPosition,
+    setPosition: (x,y) => { position = {x,y}; },
     getPosition: () => { return {...position}; },
     setBounds,
     addBox,
     getBounds,
-    getFootprint,
-    getSize,
-    setCenterPoint,
+    getFootprint: () => { return footprint },
+    getSize: () => { return size; },
+    setCenterPoint: (x,y) => { centerPoint = {x,y}; },
     getCenterPoint,
     getFloorCenter,
     allowStairs: () => { stairsAllowed = true; },
@@ -176,7 +152,7 @@ global.Room = function(feature, type='normal') {
     getStairs: () => { return stairs; },
     hasStairs: () => { return stairs != null; },
     markOverlapping: () => { overlapping = true; },
-    isOverlapping,
+    isOverlapping: () => { return overlapping; },
     setContents: code => { contents = code; },
     getContents: () => { return contents; },
     hasContents: () => { return contents != null; },
