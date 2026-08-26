@@ -14,5 +14,4 @@ DungeonTheme.register('monastery',{
   ],
 
   getFloorTexture: () => { return DungeonFloorGrid; },
-  getWallTexture: () => { return DungeonWallGrid; },
 });

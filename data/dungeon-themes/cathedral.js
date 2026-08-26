@@ -14,5 +14,4 @@ DungeonTheme.register('cathedral',{
   ],
 
   getFloorTexture: () => { return DungeonFloorGrid; },
-  getWallTexture: () => { return DungeonWallGrid; },
 });

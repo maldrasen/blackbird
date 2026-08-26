@@ -14,5 +14,4 @@ DungeonTheme.register('temple',{
   ],
 
   getFloorTexture: () => { return DungeonFloorGrid; },
-  getWallTexture: () => { return DungeonWallGrid; },
 });

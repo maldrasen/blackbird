@@ -33,7 +33,7 @@
     stroke-linecap: square;
   }
 
-  .floor-texture, .wall-texture {
+  .floor-texture {
     stroke: variables.$fg-dungeon-grid;
     stroke-width: 1;
   }
@@ -52,7 +52,6 @@
     .nested-wall { display: none; }
     .stairs { display: none; }
     .floor-texture { display: none; }
-    .wall-texture { display: none; }
   }
 
   .stairs {

@@ -48,7 +48,6 @@ global.DungeonTheme = (function() {
       getEncounterRate,
       getExtraStairChance: () => { return theme.extraStairChance || 50 },
       getFloorTextureFunction: () => { return theme.getFloorTexture().paint },
-      getWallTextureFunction: () => { return theme.getWallTexture().paint },
       getDescription,
     };
   }

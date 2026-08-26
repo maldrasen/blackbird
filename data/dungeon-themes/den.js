@@ -12,5 +12,4 @@ DungeonTheme.register('den',{
   ],
 
   getFloorTexture: () => { return DungeonFloorGrid; },
-  getWallTexture: () => { return DungeonWallGrid; },
 });

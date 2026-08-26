@@ -32,7 +32,6 @@ DungeonTheme.register('dungeon',{
   ],
 
   getFloorTexture: () => { return DungeonFloorGrid; },
-  getWallTexture: () => { return DungeonWallGrid; },
 
   cohorts: [
     'skitterfangs',
