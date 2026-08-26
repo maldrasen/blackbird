@@ -236,7 +236,10 @@ global.InventoryPanel = function(options) {
     inventoryManager.removeArticle(code, 1);
     if (inventoryManager.getArticleQuantity(code) === 0) { selected = null; }
 
-    Alert.show({ message:response.story, position:AlertPosition.side, fadeTime:5000 });
+    CharacterOverviewPanel.fillHealthBars(characterId);
+    CharacterOverviewPanel.fillManaBars(characterId);
+
+    ConsumeOverlay.open(response);
     update();
   }
 

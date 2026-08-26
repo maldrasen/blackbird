@@ -40,11 +40,15 @@ global.GeneralOverlay = (function() {
     X.fill('#generalOverlay .overlay-footer', buttons);
   }
 
-  // The close() function should only be called by the WindowManager.
+  // The close() function should only be called by the WindowManager. The character overlay may still be open beneath
+  // this one, and it needs the shared cover to stay up until it closes itself.
   function close() {
     X.empty('#generalOverlay');
     X.addClass('#generalOverlay','hide');
-    X.addClass('#overlayCover','hide');
+
+    if (X.hasClass('#characterOverlay','hide')) {
+      X.addClass('#overlayCover','hide');
+    }
   }
 
   function isOpen() {
