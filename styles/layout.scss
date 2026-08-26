@@ -107,6 +107,16 @@
   height: calc(100% - 400px);
 }
 
+.overlay.tiny {
+  top: 350px;
+  bottom: auto;
+  left: calc(50% - 250px);
+  right: auto;
+  width: 500px;
+  min-width: 500px;
+  height: 300px;
+}
+
 .overlay-footer {
   position: absolute;
   bottom: 55px;
@@ -141,6 +151,15 @@
   bottom: 155px;
   width: calc(100% - 410px);
   min-width: 390px;
+}
+
+.overlay-footer.tiny {
+  top: 647px;
+  bottom: auto;
+  left: calc(50% - 250px);
+  right: auto;
+  width: 490px;
+  min-width: 490px;
 }
 
 .overlay-header {

@@ -1,12 +1,12 @@
 
-// TODO: Thinking about this, a person is unlikely to eat an apple in a single second. I think we need to
-//       differentiate between consumables that can be used during a battle, and those that take longer. Fast healing
-//       inside of combat should remain difficult.
+const tripePackage = WeaverPackage('consume-tripe');
+tripePackage.add(`{A:name} makes a disgusted face as {A:he} forces {A:him}self to eat the leathery, yet slimy... 
+  "food". Despite the taste, the magic infused lichen does make {A:him} feel a bit better.`);
 
 Consumable.register('dungeon-tripe',{
   name: 'Dungeon Tripe',
-  description: `A bright orange lichen commonly found growing in patches along amber seams in the dungeon. By feeding 
-    on the mana rich amber, the tripe absorbs some of dungeon's latent magical energy. Eating it can heal wounds 
+  description: `A bright orange lichen commonly found growing in patches along amber seams in the dungeon. By feeding
+    on the mana rich amber, the tripe absorbs some of dungeon's latent magical energy. Eating it can heal wounds
     though more potent healing items can be made by refining it further.`,
   category: InventoryCategory.restoreHealth,
   tags: ['mushroom'],
@@ -14,7 +14,12 @@ Consumable.register('dungeon-tripe',{
   effects: [
     ConsumableEffect.addHealth(5,15),
   ],
+  stories: tripePackage,
 });
+
+const applePackage = WeaverPackage('consume-apple');
+applePackage.add(`{A:name} bites into the {I.name} with a satisfying crunch. A comfortable warmth spreads though
+  {A:his} body as the magic infused fruit starts to heal {A:his} wounds.`);
 
 Consumable.register('rhysh-apple',{
   name: `Rhysh Apple`,
@@ -24,5 +29,6 @@ Consumable.register('rhysh-apple',{
   usableWhen: UsableWhen.outOfCombat,
   effects: [
     ConsumableEffect.addHealth(15,25),
-  ]
+  ],
+  stories: applePackage,
 });

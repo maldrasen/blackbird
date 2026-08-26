@@ -38,17 +38,22 @@ global.InventoryPanel = function(options) {
 
     X.empty(itemList);
     items.forEach(item => {
-      itemList.appendChild(buildItemElement(item));
+      itemList.appendChild(item.articleCode ? buildArticleElement(item) : buildItemElement(item));
     });
 
     updateTradeTitle()
     updateButtons();
   }
 
-  function setSelected(id) {
-    selected = id;
+  // The selected row is either an item row (with an itemId) or an article row (with an articleCode).
+  function setSelected(row) {
+    selected = row;
     updateTradeTitle()
     updateButtons();
+  }
+
+  function selectedItemId() {
+    return selected ? selected.itemId : null;
   }
 
   // TODO: We also want to change the text color to represent the rarity of the item, WoW, PoE, etc, style.
@@ -59,31 +64,56 @@ global.InventoryPanel = function(options) {
       <div class='item-name'></div>
     </li>`);
 
-    itemElement.querySelector('.item-icon').style['background-image'] = X.assetURL(`icons/${item.icon}`);
+    setRowIcon(itemElement, item);
     itemElement.querySelector('.item-name').textContent = StringHelper.titlecaseName(item.name);
-    itemElement.addEventListener('click', clickItemElement(item, itemElement));
+    itemElement.addEventListener('click', clickRowElement(item, itemElement));
 
     if (item.slot) {
       X.addClass(itemElement,'equipped');
       itemElement.setAttribute('data-slot', item.slot);
     }
 
-    if (item.itemId === selected) {
+    if (selected && selected.itemId === item.itemId) {
       X.addClass(itemElement,'selected');
     }
 
     return itemElement;
   }
 
-  function clickItemElement(item, itemElement) {
+  function buildArticleElement(article) {
+    const articleElement = X.createElement(`<li class='item-row article-row' data-article-code='${article.articleCode}'>
+      <div class='item-icon'></div>
+      <div class='item-name'></div>
+      <div class='item-quantity'></div>
+    </li>`);
+
+    setRowIcon(articleElement, article);
+    articleElement.querySelector('.item-name').textContent = StringHelper.titlecaseName(article.name);
+    articleElement.querySelector('.item-quantity').textContent = `×${article.quantity}`;
+    articleElement.addEventListener('click', clickRowElement(article, articleElement));
+
+    if (selected && selected.articleCode === article.articleCode) {
+      X.addClass(articleElement,'selected');
+    }
+
+    return articleElement;
+  }
+
+  function setRowIcon(rowElement, row) {
+    if (row.icon) {
+      rowElement.querySelector('.item-icon').style['background-image'] = X.assetURL(`icons/${row.icon}`);
+    }
+  }
+
+  function clickRowElement(row, rowElement) {
     return () => {
-      if (X.hasClass(itemElement,`selected`)) {
-        X.removeClass(itemElement,`selected`)
+      if (X.hasClass(rowElement,`selected`)) {
+        X.removeClass(rowElement,`selected`)
         setSelected(null);
       } else {
         X.removeClass(`.item-list .selected`,`selected`);
-        X.addClass(itemElement,`selected`);
-        setSelected(item.itemId);
+        X.addClass(rowElement,`selected`);
+        setSelected(row);
       }
 
       updateButtons();
@@ -96,8 +126,8 @@ global.InventoryPanel = function(options) {
     const isEquipped = isSelectionEquipped();
 
     enabledButton('.equip-button', isEquipped || canEquipSelection());
-    enabledButton('.use-button', false);
-    enabledButton('.drop-button', selected != null);
+    enabledButton('.use-button', isSelectionUsable());
+    enabledButton('.drop-button', selectedItemId() != null);
 
     inventoryPanel.querySelector(`.equip-button`).textContent = isEquipped ? 'Unequip' : 'Equip';
   }
@@ -109,11 +139,19 @@ global.InventoryPanel = function(options) {
   }
 
   function isSelectionEquipped() {
-    return selected && equipmentManager.getEquippedSlot(selected) != null;
+    return selectedItemId() != null && equipmentManager.getEquippedSlot(selected.itemId) != null;
   }
 
   function canEquipSelection() {
-    return selected && equipmentManager.getValidSlots(selected).length > 0;
+    return selectedItemId() != null && equipmentManager.getValidSlots(selected.itemId).length > 0;
+  }
+
+  // The inventory panel is only reachable outside of battle, so in-combat items can't be used from here.
+  function isSelectionUsable() {
+    if (selected == null || selected.articleCode == null) { return false; }
+    if (selected.type !== ArticleType.consumable) { return false; }
+
+    return [UsableWhen.anyTime, UsableWhen.outOfCombat].includes(selected.usableWhen);
   }
 
   function getReachableInventories() {
@@ -121,15 +159,15 @@ global.InventoryPanel = function(options) {
   }
 
   function equipSelected() {
-    const slots = equipmentManager.getValidSlots(selected);
+    const slots = equipmentManager.getValidSlots(selected.itemId);
 
     if (isSelectionEquipped()) {
-      equipmentManager.unequipItem(selected);
+      equipmentManager.unequipItem(selected.itemId);
       return update();
     }
 
     if (slots.length === 1) {
-      equipmentManager.equipItem(selected, slots[0]);
+      equipmentManager.equipItem(selected.itemId, slots[0]);
       return update();
     }
 
@@ -137,7 +175,7 @@ global.InventoryPanel = function(options) {
       anchor: inventoryPanel.querySelector(`.equip-button`),
       items: slots.map(slot => { return { label:StringHelper.titlecase(slot), value:slot } }),
       callback: value => {
-        equipmentManager.equipItem(selected, value);
+        equipmentManager.equipItem(selected.itemId, value);
         update();
       },
     })
@@ -152,10 +190,11 @@ global.InventoryPanel = function(options) {
     });
   }
 
+  // TODO: Articles can't be traded yet, so an article selection is treated as no selection here.
   function updateTradeTitle() {
-    inventoryPanel.querySelector(`.trade-title`).textContent = (selected == null) ?
+    inventoryPanel.querySelector(`.trade-title`).textContent = (selectedItemId() == null) ?
       `Select an item to trade.`:
-      `Give ${Item(selected).getName()} to...`;
+      `Give ${Item(selected.itemId).getName()} to...`;
   }
 
   function toggleTradePanel() {
@@ -164,8 +203,8 @@ global.InventoryPanel = function(options) {
   }
 
   function clickDestination(inventoryId) {
-    if (selected) {
-      InventorySystem.transferItem(selected, characterId, inventoryId);
+    if (selectedItemId() != null) {
+      InventorySystem.transferItem(selected.itemId, characterId, inventoryId);
       setSelected(null);
       update();
     }
@@ -179,16 +218,30 @@ global.InventoryPanel = function(options) {
 
   function dropSelected() {
     Confirmation.show({
-      text: `Drop the ${Item(selected).getName()}? It will be destroyed`,
+      text: `Drop the ${Item(selected.itemId).getName()}? It will be destroyed`,
       onConfirm: () => {
-        inventoryManager.dropItem(selected);
+        inventoryManager.dropItem(selected.itemId);
         selected = null;
         update();
       },
     });
   }
 
-  function useSelected() { throw new Error(`TODO: How do I shoop whoop?`) }
+  function useSelected() {
+    if (isSelectionUsable() === false) { return; }
+
+    const code = selected.articleCode;
+    const response = Consumable.lookup(code).consume(characterId);
+
+    inventoryManager.removeArticle(code, 1);
+    if (inventoryManager.getArticleQuantity(code) === 0) { selected = null; }
+
+    CharacterOverviewPanel.fillHealthBars(characterId);
+    CharacterOverviewPanel.fillManaBars(characterId);
+
+    ConsumeOverlay.open(response);
+    update();
+  }
 
   return {
     buildInto,

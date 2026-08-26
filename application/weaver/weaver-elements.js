@@ -1,8 +1,5 @@
 global.WeaverElements = (function() {
 
-  // TODO: If we need to display multiple result blocks we should do that with a different function, adding each block
-  //       to the list.
-
   function appendResultBlock(element, text, options={}) {
     element.appendChild(X.createElement(resultBlock(text,options)));
   }
@@ -13,12 +10,23 @@ global.WeaverElements = (function() {
   //  - classname: (optional) [gain, loss, damage]
   //  - icon (todo)
   function resultBlock(text, options={}) {
-    return `<ul class='result-blocks'><li class='result-block ${options.classname}'>${text}</li></ul>`;
+    return resultBlocks([{ text:text, options:options }]);
+  }
+
+  // Renders multiple results as blocks in a single list. Each entry is a { text, options } object.
+  function resultBlocks(blocks) {
+    const items = blocks.map(block => {
+      const classname = (block.options || {}).classname || '';
+      return `<li class='result-block ${classname}'>${block.text}</li>`;
+    });
+
+    return `<ul class='result-blocks'>${items.join('')}</ul>`;
   }
 
   return {
     appendResultBlock,
-    resultBlock
+    resultBlock,
+    resultBlocks,
   };
 
 })();

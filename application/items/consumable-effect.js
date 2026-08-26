@@ -1,9 +1,22 @@
 global.ConsumableEffect = (function() {
 
-  // TODO: Effects should return an object with the rolled effect. Add health or mana should return a { value } with
-  //       the amount rolled. Some effects have only a chance of working, and should return {} when it does nothing.
-  function addHealth(entity, min, max) { return {}; }
-  function addMana(entity, color, min, max) { return {}; }
+  function addHealth(entity, min, max) {
+    const health = HealthComponent.lookup(entity);
+    const before = health.currentHealth;
+
+    health.currentHealth += Random.between(min,max);
+    HealthComponent.update(entity, health);
+
+    const value = HealthComponent.lookup(entity).currentHealth - before;
+    return { type:'add-health', value:value };
+  }
+
+  function addMana(entity, color, min, max) {
+    const value = ManaSystem.addMana(entity, color, Random.between(min,max));
+    return { type:'add-mana', color:color, value:value };
+  }
+
+  // TODO: Some effects have only a chance of working, and should return {} when they do nothing.
   function addStatusEffect(entity, code, options) { return {}; }
   function increasePotency(entity, level) { return {}; }
 

@@ -139,6 +139,9 @@ describe('InventoryManager', function() {
     const inventory = InventoryManager(horse);
     [cleaver, helm, hauberk, hatchet, battleAxe, boots].forEach(item => inventory.addItem(item));
 
+    inventory.addArticle('dungeon-tripe', 3);
+    inventory.addArticle('string-of-teeth', 1);
+
     const equipment = EquipmentManager(horse);
     equipment.equipItem(cleaver, EquipmentSlot.primary);
     equipment.equipItem(hauberk, EquipmentSlot.chest);
@@ -147,7 +150,7 @@ describe('InventoryManager', function() {
     const rows = inventory.listItems();
 
     expect(rows.map(row => row.name)).to.deep.equal([
-      'cleaver', 'hauberk', 'helm', 'battle axe', 'boots', 'hatchet']);
+      'cleaver', 'hauberk', 'helm', 'battle axe', 'hatchet', 'boots', 'Dungeon Tripe', 'String of Teeth']);
 
     expect(rows[0].slot).to.equal(EquipmentSlot.primary);
     expect(rows[1].slot).to.equal(EquipmentSlot.chest);
@@ -155,6 +158,11 @@ describe('InventoryManager', function() {
     expect(rows[3].slot).to.equal(null);
     expect(rows[3].itemId).to.equal(battleAxe);
     expect(rows[3].type).to.equal('weapon');
+    expect(rows[3].category).to.equal(InventoryCategory.weapon);
+    expect(rows[6].articleCode).to.equal('dungeon-tripe');
+    expect(rows[6].quantity).to.equal(3);
+    expect(rows[6].category).to.equal(InventoryCategory.restoreHealth);
+    expect(rows[7].category).to.equal(InventoryCategory.valuables);
   });
 
   it('dropItem() destroys an equipped item', function() {
