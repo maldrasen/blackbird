@@ -2,10 +2,6 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
-## Priority 1
-
-- [205] Abandon Orthographic View `8pt` — [205-abandon-orthographic-view.md](205-abandon-orthographic-view.md)
-
 ## Priority 2
 
 - [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
