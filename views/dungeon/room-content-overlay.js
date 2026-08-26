@@ -5,7 +5,7 @@ global.RoomContentOverlay = (function() {
   }
 
   function open(result) {
-    GeneralOverlay.open(build(result), { classname:'small' });
+    GeneralOverlay.open(build(result), { classname:'tiny' });
     GeneralOverlay.setFooterContent(buildContinueButton());
   }
 
