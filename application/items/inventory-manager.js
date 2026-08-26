@@ -62,6 +62,7 @@ global.InventoryManager = function(characterId=GameSystem.getState().getPlayer()
         icon: article.getIcon(),
         type: article.getType(),
         category: article.getCategory(),
+        usableWhen: article.getUsableWhen(),
         quantity: quantity,
         slot: null,
       };
