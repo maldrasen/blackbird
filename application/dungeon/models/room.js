@@ -87,13 +87,13 @@ global.Room = function(feature, type='normal') {
     doorWalls = new Set();
   }
 
-  function allowDoor(x, y, direction) {
+  function allowDoor(x, y, direction=null) {
     wallKeys(x, y, direction).forEach(key => {
       (doorMode === 'whitelist') ? doorWalls.add(key) : doorWalls.delete(key);
     });
   }
 
-  function forbidDoor(x, y, direction) {
+  function forbidDoor(x, y, direction=null) {
     wallKeys(x, y, direction).forEach(key => {
       (doorMode === 'blacklist') ? doorWalls.add(key) : doorWalls.delete(key);
     });

@@ -6,6 +6,10 @@ FeatureType.register('dungeon-entrance',{
     room.addBox(0, 0, 21, 9);
     room.setCenterPoint(4,4);
     room.setStairs('up');
+
+    room.forbidAllDoors();
+    room.allowDoor(20,4);
+
     room.setDescription('TODO: Dungeon Entrance Description');
 
     // Add two 21x3 strips of water onto floor.
