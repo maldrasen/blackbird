@@ -1,13 +1,7 @@
 global.ConsumableEffect = (function() {
 
   function addHealth(entity, min, max) {
-    const health = HealthComponent.lookup(entity);
-    const before = health.currentHealth;
-
-    health.currentHealth += Random.between(min,max);
-    HealthComponent.update(entity, health);
-
-    const value = HealthComponent.lookup(entity).currentHealth - before;
+    const value = HealthSystem.addHealth(entity, Random.between(min,max));
     return { type:'add-health', value:value };
   }
 
