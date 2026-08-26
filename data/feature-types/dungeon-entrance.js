@@ -12,7 +12,9 @@ FeatureType.register('dungeon-entrance',{
 
     room.setDescription('TODO: Dungeon Entrance Description');
 
-    // Add two 15x2 strips of water onto floor.
+    room.setFloorBox(0, 0, 15, 2, 'water');
+    room.setFloorBox(0, 5, 15, 2, 'water');
+
     // Add rows of statues with something like room.setGlyph(1,1,'◉')
 
     feature.addRoom(room);
