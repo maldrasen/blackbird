@@ -8,7 +8,6 @@ global.DungeonView = (function() {
   function init() {
     DungeonViewport.init();
     X.onClick('#dungeonFloor .door', doorClicked);
-    X.onClick('#dungeonFloor .hanging-door', doorClicked);
     X.onClick('#dungeonFloor .stairs', stairsClicked);
     X.onClick('#dungeonFloor .room', roomClicked);
     KeyBindingDispatcher.register('dungeon', { isActive:isShowing, perform:walkInDirection });
@@ -63,7 +62,7 @@ global.DungeonView = (function() {
   function doorClicked(event) {
     if (DungeonViewport.didDrag()) { return; }
 
-    const doorElement = event.target.closest('.door, .hanging-door');
+    const doorElement = event.target.closest('.door');
     walkPath(DungeonNavigationSystem.getPathThroughDoor(
       parseInt(doorElement.dataset.from),
       parseInt(doorElement.dataset.to)));

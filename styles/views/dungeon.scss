@@ -68,9 +68,10 @@
   }
 }
 
-#dungeonFloor .door, #dungeonFloor .hanging-door {
+#dungeonFloor .door {
   position: absolute;
   cursor: pointer;
+  z-index: 100;
 
   pointer-events: none;
   .slab { fill: variables.$fg-dungeon-wall; }
@@ -80,17 +81,3 @@
     pointer-events: fill;
   }
 }
-
-#dungeonFloor .door { z-index: 100; }
-
-#dungeonFloor .hanging-door {
-  z-index: 30;
-
-  .frame {
-    fill: none;
-    stroke: variables.$fg-dungeon-wall;
-    stroke-width: 2;
-  }
-}
-
-#dungeonFloor .hanging-door.raised { z-index: 60; }
