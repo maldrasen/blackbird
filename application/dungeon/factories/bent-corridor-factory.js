@@ -40,22 +40,27 @@ global.BentCorridorFactory = function(originFeature, targetFeature, alignment) {
     }
   }
 
+  // The corner always sits inside the rect between the start and end points, so that rect is the room's bounds and
+  // its min corner is the corridor's origin.
   function buildFeature(path) {
     const feature = Feature('corridor');
     const room = Room(feature);
+    const origin = {
+      x: Math.min(path.start.x, path.end.x),
+      y: Math.min(path.start.y, path.end.y),
+    };
+
+    room.setBounds(Math.abs(path.end.x - path.start.x) + 1, Math.abs(path.end.y - path.start.y) + 1);
 
     if (path.corner) {
-      FloorFactorySupport.addSegment(room, path.start, path.corner);
-      FloorFactorySupport.addSegment(room, path.corner, path.end);
+      FloorFactorySupport.addSegment(room, path.start, path.corner, origin);
+      FloorFactorySupport.addSegment(room, path.corner, path.end, origin);
     }
     if (path.corner == null) {
-      FloorFactorySupport.addSegment(room, path.start, path.end);
+      FloorFactorySupport.addSegment(room, path.start, path.end, origin);
     }
 
-    const x = Math.min(path.start.x, path.end.x);
-    const y = Math.min(path.start.y, path.end.y);
-
-    feature.setPosition(x,y);
+    feature.setPosition(origin.x, origin.y);
     feature.addRoom(room);
 
     return feature;

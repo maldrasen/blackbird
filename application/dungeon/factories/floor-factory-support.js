@@ -30,12 +30,11 @@ global.FloorFactorySupport = (function() {
         filter(tile => floorGrid[tile.y][tile.x] == null);
   }
 
-  // Add a box to the room for a straight segment between two absolute grid points. Room normalizes its own origin
-  // to (0,0) lazily (whenever its bounds/boxes are actually read), so every segment of a multi-box room (a bent
-  // corridor's two legs, a dogleg's three) can just be added using plain absolute grid coordinates.
-  function addSegment(room, start, end) {
-    const x = Math.min(start.x, end.x);
-    const y = Math.min(start.y, end.y);
+  // Add a box to the room for a straight segment between two absolute grid points, translated into the room's own
+  // grid by the corridor's origin (its min corner in floor coordinates).
+  function addSegment(room, start, end, origin) {
+    const x = Math.min(start.x, end.x) - origin.x;
+    const y = Math.min(start.y, end.y) - origin.y;
     const width = Math.abs(end.x - start.x) + 1;
     const height = Math.abs(end.y - start.y) + 1;
     room.addBox(x, y, width, height);
