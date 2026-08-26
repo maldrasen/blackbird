@@ -77,6 +77,95 @@ describe("Room", function() {
     });
   });
 
+  describe("door permissions", function() {
+
+    // A 3x3 room with the south-east corner missing, so (2,1) has an exterior wall to the E and S, and (1,1) is an
+    // interior tile with no exterior walls at all.
+    function buildRoom() {
+      const room = Room();
+      room.setBounds(3,3);
+      room.addBox(0,0,3,2);
+      room.addBox(0,0,2,3);
+      return room;
+    }
+
+    it('allows doors on every wall by default', function() {
+      const room = buildRoom();
+      expect(room.doorIsAllowed(0,0,'N')).to.equal(true);
+      expect(room.doorIsAllowed(0,0,'W')).to.equal(true);
+      expect(room.doorIsAllowed(2,1,'E')).to.equal(true);
+    });
+
+    it('forbids doors on every wall after forbidAllDoors()', function() {
+      const room = buildRoom();
+      room.forbidAllDoors();
+      expect(room.doorIsAllowed(0,0,'N')).to.equal(false);
+      expect(room.doorIsAllowed(2,1,'E')).to.equal(false);
+    });
+
+    it('whitelists a single wall with allowDoor() after forbidAllDoors()', function() {
+      const room = buildRoom();
+      room.forbidAllDoors();
+      room.allowDoor(2,1,'E');
+
+      expect(room.doorIsAllowed(2,1,'E')).to.equal(true);
+      expect(room.doorIsAllowed(2,1,'S')).to.equal(false);
+      expect(room.doorIsAllowed(0,0,'N')).to.equal(false);
+    });
+
+    it('blacklists a single wall with forbidDoor()', function() {
+      const room = buildRoom();
+      room.forbidDoor(0,1,'W');
+
+      expect(room.doorIsAllowed(0,1,'W')).to.equal(false);
+      expect(room.doorIsAllowed(0,0,'W')).to.equal(true);
+    });
+
+    it('applies to every exterior wall of the tile when the direction is omitted', function() {
+      const room = buildRoom();
+      room.forbidDoor(2,1);
+
+      expect(room.doorIsAllowed(2,1,'E')).to.equal(false);
+      expect(room.doorIsAllowed(2,1,'S')).to.equal(false);
+    });
+
+    it('reverses an earlier call in the same mode', function() {
+      const room = buildRoom();
+      room.forbidDoor(0,0,'N');
+      room.allowDoor(0,0,'N');
+      expect(room.doorIsAllowed(0,0,'N')).to.equal(true);
+
+      room.forbidAllDoors();
+      room.allowDoor(0,0,'N');
+      room.forbidDoor(0,0,'N');
+      expect(room.doorIsAllowed(0,0,'N')).to.equal(false);
+    });
+
+    it('resets the whitelist when forbidAllDoors() is called again', function() {
+      const room = buildRoom();
+      room.forbidAllDoors();
+      room.allowDoor(0,0,'N');
+      room.forbidAllDoors();
+      expect(room.doorIsAllowed(0,0,'N')).to.equal(false);
+    });
+
+    it('throws for a tile that is not part of the room', function() {
+      const room = buildRoom();
+      expect(() => room.forbidDoor(2,2,'E')).to.throw('not a floor tile');
+      expect(() => room.allowDoor(5,0,'N')).to.throw('not a floor tile');
+    });
+
+    it('throws for a wall that is not exterior', function() {
+      const room = buildRoom();
+      expect(() => room.forbidDoor(1,1,'N')).to.throw('no exterior wall');
+    });
+
+    it('throws for an interior tile when the direction is omitted', function() {
+      const room = buildRoom();
+      expect(() => room.forbidDoor(1,1)).to.throw('interior tile');
+    });
+  });
+
   describe("contents", function() {
     it('starts empty', function() {
       const room = Room();

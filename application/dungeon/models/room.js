@@ -10,6 +10,8 @@ global.Room = function(feature, type='normal') {
   let stairs = null;
   let usedCommands = [];
   let scoutingRoll;
+  let doorMode = 'blacklist';
+  let doorWalls = new Set();
   let footprint;
   let size;
   let centerPoint;
@@ -69,6 +71,62 @@ global.Room = function(feature, type='normal') {
 
   function stairsAreAllowed() {
     return stairsAllowed && bounds.width > 1 && bounds.height > 1;
+  }
+
+  // ========================
+  //    Door Permissions
+  // ========================
+
+  // Door permissions work in either a blacklist mode (the default, where every exterior wall allows a door unless
+  // forbidden) or a whitelist mode (entered with forbidAllDoors(), where only explicitly allowed walls can have
+  // doors). Walls are addressed by a room-local floor tile plus the side the wall is on; when the direction is
+  // omitted the call applies to every exterior wall of that tile.
+
+  function forbidAllDoors() {
+    doorMode = 'whitelist';
+    doorWalls = new Set();
+  }
+
+  function allowDoor(x, y, direction) {
+    wallKeys(x, y, direction).forEach(key => {
+      (doorMode === 'whitelist') ? doorWalls.add(key) : doorWalls.delete(key);
+    });
+  }
+
+  function forbidDoor(x, y, direction) {
+    wallKeys(x, y, direction).forEach(key => {
+      (doorMode === 'blacklist') ? doorWalls.add(key) : doorWalls.delete(key);
+    });
+  }
+
+  function doorIsAllowed(x, y, direction) {
+    const listed = doorWalls.has(`${x},${y},${direction}`);
+    return (doorMode === 'whitelist') ? listed : listed === false;
+  }
+
+  function wallKeys(x, y, direction) {
+    if (bounds == null || x < 0 || y < 0 || x >= bounds.width || y >= bounds.height || footprint[y][x] === false) {
+      throw new Error(`(${x},${y}) is not a floor tile in this room.`);
+    }
+
+    const exterior = [];
+    if (y === 0 || footprint[y-1][x] === false) { exterior.push('N'); }
+    if (y === bounds.height-1 || footprint[y+1][x] === false) { exterior.push('S'); }
+    if (x === bounds.width-1 || footprint[y][x+1] === false) { exterior.push('E'); }
+    if (x === 0 || footprint[y][x-1] === false) { exterior.push('W'); }
+
+    if (direction != null) {
+      if (exterior.includes(direction) === false) {
+        throw new Error(`(${x},${y}) has no exterior wall to the ${direction}.`);
+      }
+      return [`${x},${y},${direction}`];
+    }
+
+    if (exterior.length === 0) {
+      throw new Error(`(${x},${y}) is an interior tile with no exterior walls.`);
+    }
+
+    return exterior.map(side => `${x},${y},${side}`);
   }
 
   // ==============
@@ -148,6 +206,10 @@ global.Room = function(feature, type='normal') {
     getFloorCenter,
     allowStairs: () => { stairsAllowed = true; },
     stairsAreAllowed,
+    forbidAllDoors,
+    allowDoor,
+    forbidDoor,
+    doorIsAllowed,
     setStairs: direction => { stairs = direction; },
     getStairs: () => { return stairs; },
     hasStairs: () => { return stairs != null; },
