@@ -25,22 +25,21 @@
 
   .footprint { fill: variables.$bg-dungeon; }
   .floor { fill: variables.$bg-dungeon-floor; }
-  .wall-face { fill: variables.$bg-dungeon-wall-face; }
 
-  .walls, .wall-base, .wall-corner, .nested-wall {
+  .walls, .nested-wall {
     fill: none;
     stroke: variables.$fg-dungeon-wall;
     stroke-width: 2;
     stroke-linecap: square;
   }
 
-  .floor-texture, .wall-texture {
+  .floor-texture {
     stroke: variables.$fg-dungeon-grid;
     stroke-width: 1;
   }
 
   &.current {
-    .walls, .wall-base, .wall-corner {
+    .walls {
       stroke: variables.$fg-dungeon-wall-current;
     }
   }
@@ -49,14 +48,10 @@
     z-index: calc(10 + var(--depth, 0));
 
     .floor { display: none; }
-    .wall-face { display: none; }
     .walls { display: none; }
-    .wall-base { display: none; }
-    .wall-corner { display: none; }
     .nested-wall { display: none; }
     .stairs { display: none; }
     .floor-texture { display: none; }
-    .wall-texture { display: none; }
   }
 
   .stairs {
@@ -72,29 +67,31 @@
   }
 }
 
-#dungeonFloor .door, #dungeonFloor .hanging-door {
+#dungeonFloor .door {
   position: absolute;
   cursor: pointer;
+  z-index: 100;
 
   pointer-events: none;
-  .slab { fill: variables.$fg-dungeon-wall; }
+  .opening { fill: variables.$bg-dungeon-floor; }
+  .slab { fill: variables.$fg-dungeon-door; }
+
+  .cap {
+    fill: none;
+    stroke: variables.$fg-dungeon-wall;
+    stroke-width: 2;
+    stroke-linecap: square;
+  }
+
+  &.from-current .cap.from { stroke: variables.$fg-dungeon-wall-current; }
+  &.to-current .cap.to { stroke: variables.$fg-dungeon-wall-current; }
+
+  &.from-unrevealed .cap.from { display: none; }
+  &.to-unrevealed .cap.to { display: none; }
+  &.from-unrevealed.to-unrevealed { display: none; }
 
   .click-target {
     fill: none;
     pointer-events: fill;
   }
 }
-
-#dungeonFloor .door { z-index: 100; }
-
-#dungeonFloor .hanging-door {
-  z-index: 30;
-
-  .frame {
-    fill: none;
-    stroke: variables.$fg-dungeon-wall;
-    stroke-width: 2;
-  }
-}
-
-#dungeonFloor .hanging-door.raised { z-index: 60; }

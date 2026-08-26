@@ -14,5 +14,4 @@ DungeonTheme.register('onsen',{
   ],
 
   getFloorTexture: () => { return DungeonFloorGrid; },
-  getWallTexture: () => { return DungeonWallGrid; },
 });

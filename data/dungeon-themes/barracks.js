@@ -13,5 +13,4 @@ DungeonTheme.register('barracks',{
   ],
 
   getFloorTexture: () => { return DungeonFloorGrid; },
-  getWallTexture: () => { return DungeonWallGrid; },
 });

@@ -13,5 +13,4 @@ DungeonTheme.register('crypt',{
   ],
 
   getFloorTexture: () => { return DungeonFloorGrid; },
-  getWallTexture: () => { return DungeonWallGrid; },
 });

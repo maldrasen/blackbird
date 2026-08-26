@@ -12,7 +12,6 @@ global.DungeonFloorView = (function() {
     const floor = DungeonSystem.getDungeonFloor();
     const theme = DungeonTheme.lookup(floor.getTheme());
     const paintFloorTexture = theme.getFloorTextureFunction();
-    const paintWallTexture = theme.getWallTextureFunction();
 
     X.empty('#dungeonFloor');
 
@@ -23,29 +22,28 @@ global.DungeonFloorView = (function() {
     floor.getRooms().forEach(room => {
       floorElement.appendChild(DungeonRoomView.build(floor, room));
       paintFloorTexture(room);
-      paintWallTexture(room);
     });
 
     floor.getDoors().forEach(door => {
       floorElement.appendChild(DungeonDoorView.build(floor, door));
-      if (floor.isRevealed(door.from) === false) {
-        floorElement.appendChild(DungeonDoorView.buildHanging(floor, door));
-      }
     });
   }
 
-  // A real door shows once its from room is revealed and draws the walls the door lies on. Until then the hanging
-  // door stands in, shown from the moment the room on the other side is revealed and removed for good when the
-  // from room's walls take over.
+  // A door is visible from the moment either of its rooms is revealed, and each half of its wall caps tracks the
+  // revealed and current state of the room on its side.
   function updateLocation(index, revealed) {
     X.removeClass('#dungeonFloor .room.current','current');
     X.addClass(`#dungeonFloor .room[data-index='${index}']`,'current');
 
+    X.removeClass('#dungeonFloor .door.from-current','from-current');
+    X.removeClass('#dungeonFloor .door.to-current','to-current');
+    X.addClass(`#dungeonFloor .door[data-from='${index}']`,'from-current');
+    X.addClass(`#dungeonFloor .door[data-to='${index}']`,'to-current');
+
     if (revealed) {
       X.removeClass(`#dungeonFloor .room[data-index='${index}']`,'unrevealed');
-      X.removeClass(`#dungeonFloor .door[data-from='${index}']`,'hide');
-      X.each(`#dungeonFloor .hanging-door[data-from='${index}']`, hangingDoor => hangingDoor.remove());
-      X.removeClass(`#dungeonFloor .hanging-door[data-to='${index}']`,'hide');
+      X.removeClass(`#dungeonFloor .door[data-from='${index}']`,'from-unrevealed');
+      X.removeClass(`#dungeonFloor .door[data-to='${index}']`,'to-unrevealed');
     }
   }
 

@@ -14,5 +14,4 @@ DungeonTheme.register('sewer',{
   ],
 
   getFloorTexture: () => { return DungeonFloorGrid; },
-  getWallTexture: () => { return DungeonWallGrid; },
 });

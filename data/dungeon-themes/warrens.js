@@ -14,5 +14,4 @@ DungeonTheme.register('warrens',{
   ],
 
   getFloorTexture: () => { return DungeonFloorGrid; },
-  getWallTexture: () => { return DungeonWallGrid; },
 });

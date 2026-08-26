@@ -14,5 +14,4 @@ DungeonTheme.register('forbidden-grove',{
   ],
 
   getFloorTexture: () => { return DungeonFloorGrid; },
-  getWallTexture: () => { return DungeonWallGrid; },
 });

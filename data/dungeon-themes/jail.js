@@ -13,5 +13,4 @@ DungeonTheme.register('jail',{
   ],
 
   getFloorTexture: () => { return DungeonFloorGrid; },
-  getWallTexture: () => { return DungeonWallGrid; },
 });

@@ -13,5 +13,4 @@ DungeonTheme.register('castle',{
   ],
 
   getFloorTexture: () => { return DungeonFloorGrid; },
-  getWallTexture: () => { return DungeonWallGrid; },
 });

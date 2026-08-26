@@ -544,7 +544,6 @@
     "views/dungeon/dungeon-viewport.js",
     "views/dungeon/floor-textures/dungeon-floor-grid.js",
     "views/dungeon/room-content-overlay.js",
-    "views/dungeon/wall-textures/dungeon-wall-grid.js",
     "views/effects/flash-square.js",
     "views/effects/move-animation.js",
     "views/elements/alert.js",
