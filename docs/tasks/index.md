@@ -4,7 +4,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 ## Priority 1
 
-- [203] Inventory panel should include articles. `3pt` — [203-inventory-panel-should-include-articles.md](203-inventory-panel-should-include-articles.md)
 - [204] Add a health system `3pt` — [204-add-a-health-system.md](204-add-a-health-system.md)
 
 ## Priority 2
