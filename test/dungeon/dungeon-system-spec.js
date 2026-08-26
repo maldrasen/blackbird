@@ -2,8 +2,8 @@
 
   describe("setLevel()", function() {
 
-    // A room's own boxes may overlap each other (that's how L-shaped rooms are built), and a nested inner room
-    // shares all of its tiles with its feature's outer room. Any other shared tile is a violation.
+    // A nested inner room shares all of its tiles with its feature's outer room. Any other shared tile is a
+    // violation.
     it("ensures that rooms don't overlap", function() {
       DungeonSystem.createDungeon();
       DungeonSystem.setLevel(1);
@@ -14,22 +14,25 @@
 
       floor.getRooms().forEach(room => {
         const position = room.getFloorPosition();
-        room.getBoxes().forEach(box => {
-          for (let y = position.y + box.y; y < position.y + box.y + box.height; y++) {
-            for (let x = position.x + box.x; x < position.x + box.x + box.width; x++) {
-              const other = (claimed[`${x},${y}`] == null) ? null : floor.getRooms()[claimed[`${x},${y}`]];
 
-              if (other != null && other.getIndex() !== room.getIndex()) {
-                const sameFeature = other.getFeatureIndex() === room.getFeatureIndex();
-                const nested = other.isOverlapping() || room.isOverlapping();
-                if (sameFeature === false || nested === false) {
-                  violations.push(`Rooms ${other.getIndex()} and ${room.getIndex()} overlap at (${x},${y})`);
-                }
+        room.getFootprint().forEach((row, footprintY) => {
+          row.forEach((cell, footprintX) => {
+            if (cell === false) { return; }
+
+            const x = position.x + footprintX;
+            const y = position.y + footprintY;
+            const other = (claimed[`${x},${y}`] == null) ? null : floor.getRooms()[claimed[`${x},${y}`]];
+
+            if (other != null && other.getIndex() !== room.getIndex()) {
+              const sameFeature = other.getFeatureIndex() === room.getFeatureIndex();
+              const nested = other.isOverlapping() || room.isOverlapping();
+              if (sameFeature === false || nested === false) {
+                violations.push(`Rooms ${other.getIndex()} and ${room.getIndex()} overlap at (${x},${y})`);
               }
-
-              claimed[`${x},${y}`] = room.getIndex();
             }
-          }
+
+            claimed[`${x},${y}`] = room.getIndex();
+          });
         });
       });
 

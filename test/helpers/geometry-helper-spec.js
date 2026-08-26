@@ -3,6 +3,7 @@ describe("GeometryHelper", function() {
   describe("traceOutline()", function() {
     it('traces a single box room clockwise from the top-left corner', function() {
       const room = Room();
+      room.setBounds(2,3);
       room.addBox(0,0,2,3);
 
       expect(GeometryHelper.traceOutline(room.getFootprint())).to.deep.equal([
@@ -12,6 +13,7 @@ describe("GeometryHelper", function() {
 
     it('traces an L-shaped room as a single six vertex polygon', function() {
       const room = Room();
+      room.setBounds(3,3);
       room.addBox(0,0,3,1);
       room.addBox(2,0,1,3);
 
@@ -22,8 +24,9 @@ describe("GeometryHelper", function() {
 
     it('traces a room with a notch sticking out of the top edge', function() {
       const room = Room();
-      room.addBox(0,0,4,4);
-      room.addBox(1,-2,2,2);
+      room.setBounds(4,6);
+      room.addBox(0,2,4,4);
+      room.addBox(1,0,2,2);
 
       expect(GeometryHelper.traceOutline(room.getFootprint())).to.deep.equal([
         { x:1, y:0 }, { x:3, y:0 }, { x:3, y:2 }, { x:4, y:2 },
@@ -37,6 +40,7 @@ describe("GeometryHelper", function() {
 
     it('shrinks a single box room evenly on every side', function() {
       const room = Room();
+      room.setBounds(2,3);
       room.addBox(0,0,2,3);
       const outline = scale(GeometryHelper.traceOutline(room.getFootprint()));
 
@@ -47,6 +51,7 @@ describe("GeometryHelper", function() {
 
     it('insets each edge by its own amount when given a per-direction map', function() {
       const room = Room();
+      room.setBounds(2,3);
       room.addBox(0,0,2,3);
       const outline = scale(GeometryHelper.traceOutline(room.getFootprint()));
 
@@ -57,6 +62,7 @@ describe("GeometryHelper", function() {
 
     it('expands the outline when the inset is negative', function() {
       const room = Room();
+      room.setBounds(2,3);
       room.addBox(0,0,2,3);
       const outline = scale(GeometryHelper.traceOutline(room.getFootprint()));
 
@@ -67,6 +73,7 @@ describe("GeometryHelper", function() {
 
     it('pushes the concave corner of an L-shaped room further into the room', function() {
       const room = Room();
+      room.setBounds(3,3);
       room.addBox(0,0,3,1);
       room.addBox(2,0,1,3);
       const outline = scale(GeometryHelper.traceOutline(room.getFootprint()));
