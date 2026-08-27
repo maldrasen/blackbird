@@ -24,6 +24,7 @@ global.DungeonRoomView = (function() {
       ...floorLayers(room, geometry, index),
       `<polygon class='walls' points='${points(geometry.wallLine)}'/>`,
       ...nestedWalls(floor, room),
+      ...roomGlyphs(room, gridSize),
       stairsGlyph(floor, room, 'up', gridSize),
       stairsGlyph(floor, room, 'down', gridSize),
     ].join('');
@@ -93,6 +94,11 @@ global.DungeonRoomView = (function() {
   function nestedWalls(floor, room) {
     return getNestedGeometry(floor, room).map(nested =>
       `<polygon class='nested-wall' points='${points(nested.wallLine)}'/>`);
+  }
+
+  function roomGlyphs(room, gridSize) {
+    return room.getGlyphs().map(glyph =>
+      `<text class='glyph' x='${glyph.x * gridSize}' y='${glyph.y * gridSize}' fill='${glyph.color}'>${glyph.glyph}</text>`);
   }
 
   function stairsGlyph(floor, room, direction, gridSize) {

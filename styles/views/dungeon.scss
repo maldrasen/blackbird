@@ -44,6 +44,13 @@
     stroke-width: 2;
   }
 
+  // The fill comes from each glyph's own color attribute.
+  .glyph {
+    font-size: 48px;
+    text-anchor: middle;
+    dominant-baseline: central;
+  }
+
   &.current {
     .walls {
       stroke: variables.$fg-dungeon-wall-current;
@@ -59,6 +66,7 @@
     .stairs { display: none; }
     .floor-texture { display: none; }
     .floor-layer { display: none; }
+    .glyph { display: none; }
   }
 
   .stairs {

@@ -123,6 +123,30 @@ describe("Room", function() {
     });
   });
 
+  describe("addGlyph()", function() {
+    it('collects glyphs to render onto the room', function() {
+      const room = Room();
+      room.setBounds(3,3);
+      room.addBox(0,0,3,3);
+      room.addGlyph({ x:1, y:1.5, glyph:'◉', color:'rgb(130 130 140)' });
+
+      expect(room.getGlyphs()).to.deep.equal([
+        { x:1, y:1.5, glyph:'◉', color:'rgb(130 130 140)' },
+      ]);
+    });
+
+    it('returns copies of the glyphs, not the live objects', function() {
+      const room = Room();
+      room.setBounds(3,3);
+      room.addBox(0,0,3,3);
+      room.addGlyph({ x:1, y:1, glyph:'◉', color:'white' });
+
+      room.getGlyphs()[0].color = 'red';
+
+      expect(room.getGlyphs()[0].color).to.equal('white');
+    });
+  });
+
   describe("getFloor()", function() {
     it('returns null for tiles not in the room', function() {
       const room = Room();

@@ -16,6 +16,7 @@ global.Room = function(feature, type='normal') {
   let size;
   let centerPoint;
   let bounds;
+  let glyphs = [];
 
   // =======================
   //    Building & Layout
@@ -74,6 +75,13 @@ global.Room = function(feature, type='normal') {
   function getFloor(x, y) {
     if (footprint[y] == null || footprint[y][x] == null) { return null; }
     return DungeonConstants.floorTypes[footprint[y][x]];
+  }
+
+  // Decorative glyphs drawn onto the room, positioned like the center point, so they can sit anywhere in the room
+  // including tile boundaries.
+  function addGlyph(options) {
+    const { x, y, glyph, color } = options;
+    glyphs.push({ x, y, glyph, color });
   }
 
 
@@ -228,6 +236,8 @@ global.Room = function(feature, type='normal') {
     setFloor,
     setFloorBox,
     getFloor,
+    addGlyph,
+    getGlyphs: () => { return glyphs.map(glyph => ({ ...glyph })); },
     getBounds,
     getFootprint: () => { return footprint },
     getSize: () => { return size; },

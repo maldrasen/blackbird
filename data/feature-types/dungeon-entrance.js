@@ -18,7 +18,10 @@ FeatureType.register('dungeon-entrance',{
 
     room.setDescription('TODO: Dungeon Entrance Description');
 
-    // Add rows of statues with something like room.setGlyph(1,1,'◉')
+    for (let i = 1; i <= 6; i++) {
+      room.addGlyph({ x:4+i, y:1, glyph:'◉', color:'rgb(130 130 140)' });
+      room.addGlyph({ x:4+i, y:4, glyph:'◉', color:'rgb(130 130 140)' });
+    }
 
     feature.addRoom(room);
 
