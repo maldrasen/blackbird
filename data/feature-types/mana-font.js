@@ -18,6 +18,8 @@ FeatureType.register('mana-font',{
     room.setFloorBox({ x:1, y:1, width:3, height:3, type:'water' });
     room.setContents('mana-font', { color });
 
+    feature.addRoom(room);
+
     return feature;
   }
 
