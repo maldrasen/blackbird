@@ -2,10 +2,6 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
-## Priority 1
-
-- [207] Add Mana Font Feature `5pt` — [207-add-mana-font-feature.md](207-add-mana-font-feature.md)
-
 ## Priority 2
 
 - [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
