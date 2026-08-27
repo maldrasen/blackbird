@@ -26,6 +26,18 @@ global.RoomContents = (function() {
 
     const roomContents = { ...contents[code] };
 
+    function getEpisode() {
+      const validEpisodes = roomContents.episode ?
+        validateEpisodes([roomContents.episode]) :
+        validateEpisodes(roomContents.episodes);
+
+      return validEpisodes.length > 0 ? validEpisodes[0] : null;
+    }
+
+    function validateEpisodes(codes) {
+      return (codes||[]).filter(code => Episode.lookup(code).meetsRequirements());
+    }
+
     // By default, a room with contents has brighter text to differentiate it from an empty room. A room with a
     // treasure that wasn't discovered though should have the same style as an empty room. Or, if this room started an
     // episode, and that episode was resolved, the description should reflect the state of the room after the
@@ -42,7 +54,7 @@ global.RoomContents = (function() {
       getRange: () => { return roomContents.range; },
       getSecrecy: () => { return roomContents.secrecy; },
       getTrap: () => { return roomContents.trap; },
-      getEpisode: () => { return roomContents.episode; },
+      getEpisode,
       getCommands: () => { return (roomContents.commands || []).filter(command => Requirements.met(command.requires)); },
       getDescription,
     };

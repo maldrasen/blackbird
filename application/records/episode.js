@@ -71,6 +71,10 @@ global.Episode = (function() {
       return 'backgrounds/episode.jpg';
     }
 
+    function meetsRequirements() {
+      return false; // TODO: Check requirements.
+    }
+
     return {
       getCode: () => { return code; },
       getEndFunction: () => { return episode.endFunction; },
@@ -78,6 +82,7 @@ global.Episode = (function() {
       getPages: () => { return episode.pages; },
       getBackground,
       getLayout,
+      meetsRequirements,
     };
   }
 
