@@ -2,7 +2,7 @@ FeatureType.register('mana-font',{
 
   build: function() {
     const color = Random.from(Object.values(Mana));
-    const feature = Feature('dungeon-entrance');
+    const feature = Feature('mana-font');
     const room = Room(feature);
 
     room.setBounds(5, 5);
@@ -17,6 +17,8 @@ FeatureType.register('mana-font',{
 
     room.setFloorBox({ x:1, y:1, width:3, height:3, type:'water' });
     room.setContents('mana-font', { color });
+
+    return feature;
   }
 
 });
