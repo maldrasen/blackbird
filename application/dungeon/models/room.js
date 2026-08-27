@@ -169,10 +169,8 @@ global.Room = function(feature, type='normal') {
   //    Contents
   // ==============
 
-  // TODO: No features have contents yet, but eventually some features will have rooms with preset content. If any
-  //       room in a feature record has content then the placer shouldn't place randomized content into it.
   function canHaveContents() {
-    return feature.getType() !== 'corridor' && stairs == null;
+    return feature.getType() !== 'corridor' && stairs == null && contents == null;
   }
 
   function setContents(code, options={}) {
