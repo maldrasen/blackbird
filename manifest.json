@@ -361,6 +361,8 @@
     "data/episode-bundles.js",
     "data/episodes/city/take-the-dungeon-oath.js",
     "data/episodes/debug-strange-mist.js",
+    "data/episodes/dungeon/deepen-mana-pool.js",
+    "data/episodes/dungeon/nightgaunt-at-the-mana-font.js",
     "data/episodes/propose-training.js",
     "data/episodes/system/game-over.js",
     "data/episodes/system/game-start-1.js",
