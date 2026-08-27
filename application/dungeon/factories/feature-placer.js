@@ -55,7 +55,7 @@ global.FeaturePlacer = function() {
 
   function shouldSpawnFont() {
     if (floor.getLevel() === 1) { return true; }
-    if (DungeonState.canGenerateFont(floor.getLevel()) === false) { return false; }
+    if (GameSystem.getState().getDungeonState().canGenerateFont(floor.getLevel()) === false) { return false; }
     return Random.roll(100) < DungeonConstants.fontChance;
   }
 

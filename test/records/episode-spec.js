@@ -123,22 +123,54 @@ describe('Episode', function() {
     expect(registerQueue({ priority:'critical' })).to.throw(/priority is not a number/);
   });
 
-  it('rejects a queue repeat that is not true', function() {
-    expect(registerQueue({ repeat:'yes' })).to.throw(/repeat is yes/);
-    expect(registerQueue({ repeat:false })).to.throw(/repeat is false/);
+  it('rejects a repeat that is not true', function() {
+    expect(register({ repeat:'yes' })).to.throw(/repeat is yes/);
+    expect(register({ repeat:false })).to.throw(/repeat is false/);
   });
 
   it('rejects a queue removeWhen that is not a function', function() {
     expect(registerQueue({ removeWhen:true })).to.throw(/removeWhen is not a function/);
   });
 
-  it('rejects queue requires that are not functions', function() {
-    expect(registerQueue({ requires:'hasPlayer' })).to.throw(/queue.requires is not a function or an array of functions/);
+  it('rejects requires that are not functions', function() {
+    expect(register({ requires:'hasPlayer' })).to.throw(/requires is not a function or an array of functions/);
   });
 
   it('does not store an episode that fails validation', function() {
     expect(register({ layout:'sideways' })).to.throw();
     expect(() => Episode.lookup('spec-invalid-episode')).to.throw(/Bad episode code/);
+  });
+
+  describe('meetsRequirements()', function() {
+    beforeEach(function() {
+      Episode.register('spec-once-episode',{ pages:[{ content:`<p>Text</p>` }] });
+      Episode.register('spec-repeat-episode',{ repeat:true, pages:[{ content:`<p>Text</p>` }] });
+      Episode.register('spec-gated-episode',{
+        requires: [() => GameSystem.getState().getFlag('spec-gate') === true],
+        pages:[{ content:`<p>Text</p>` }],
+      });
+    });
+
+    it('passes an episode that has not been viewed', function() {
+      expect(Episode.lookup('spec-once-episode').meetsRequirements()).to.equal(true);
+    });
+
+    it('fails a one-time episode once it has been viewed', function() {
+      GameSystem.getState().recordEpisodeViewed('spec-once-episode');
+      expect(Episode.lookup('spec-once-episode').meetsRequirements()).to.equal(false);
+    });
+
+    it('passes a repeatable episode that has been viewed', function() {
+      GameSystem.getState().recordEpisodeViewed('spec-repeat-episode');
+      expect(Episode.lookup('spec-repeat-episode').meetsRequirements()).to.equal(true);
+    });
+
+    it('checks the requires predicates', function() {
+      expect(Episode.lookup('spec-gated-episode').meetsRequirements()).to.equal(false);
+
+      GameSystem.getState().setFlag('spec-gate',true);
+      expect(Episode.lookup('spec-gated-episode').meetsRequirements()).to.equal(true);
+    });
   });
 
 });

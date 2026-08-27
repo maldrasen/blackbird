@@ -141,6 +141,10 @@ describe("DungeonNavigationSystem", function() {
     let target;
 
     beforeEach(function() {
+      Episode.register('spec-episode',{
+        pages: [{ content: 'A spec episode.' }],
+      });
+
       RoomContents.register('spec-episode-contents',{
         description: 'A room with an episode in it.',
         episode: 'spec-episode',

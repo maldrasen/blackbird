@@ -4,6 +4,9 @@
 - `background`    Image path. Defaults to the current location's background, then 'backgrounds/episode.jpg'.
 - `pages`         Array of page objects, shown in order. (See below.)
 - `endFunction`   Called when the episode ends. When omitted the game returns to the previous game mode.
+- `repeat`        true lets the episode fire again after it has been viewed. Omit for one-time episodes.
+- `requires`      Predicate or array of predicates, passed the context {P:player}. All must pass for the episode
+                  to fire, whether it comes from the queue or is triggered by something like a room's contents.
 - `queue`         Queue metadata, read by EpisodeQueue when the episode is pushed and on every move evaluation.
                   Only needed for episodes that fire from the queue; episodes started directly can omit it.
 
@@ -14,8 +17,6 @@
 - `priority`      Number, higher fires first. Use an EpisodePriority value. Ties are broken by place specificity
                   (location > district > global), then queue order. Default 0.
 - `chance`        Percent chance (0-100) to fire when eligible. Default 100.
-- `repeat`        true keeps the episode in the queue after it fires. Omit for one-shot.
-- `requires`      Predicate or array of predicates, passed the context {P:player}. All must pass to fire.
 - `removeWhen`    Predicate, passed the same context. When true the episode is removed without firing.
 
 ### Page properties:
@@ -71,8 +72,11 @@ global.Episode = (function() {
       return 'backgrounds/episode.jpg';
     }
 
+    // A one-time episode that has already been viewed no longer meets its requirements, so it can never fire twice.
     function meetsRequirements() {
-      return false; // TODO: Check requirements.
+      const state = GameSystem.getState();
+      if (episode.repeat !== true && state.hasViewedEpisode(code)) { return false; }
+      return Requirements.met(episode.requires, { P:state.getPlayer() });
     }
 
     return {
@@ -80,6 +84,7 @@ global.Episode = (function() {
       getEndFunction: () => { return episode.endFunction; },
       getQueue: () => { return episode.queue; },
       getPages: () => { return episode.pages; },
+      getRepeat: () => { return episode.repeat === true; },
       getBackground,
       getLayout,
       meetsRequirements,
