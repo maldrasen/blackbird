@@ -5,17 +5,17 @@ FeatureType.register('mana-font',{
     const feature = Feature('mana-font');
     const room = Room(feature);
 
-    room.setBounds(5, 5);
-    room.addBox(0, 0, 5, 5);
-    room.setCenterPoint(2.5,2.5);
+    room.setBounds(3, 3);
+    room.addBox(0, 0, 3, 3);
+    room.setCenterPoint(1.5,1.5);
 
     room.forbidAllDoors();
-    room.allowDoor(0,2);
-    room.allowDoor(2,0);
-    room.allowDoor(4,2);
-    room.allowDoor(2,4);
+    room.allowDoor(0,1);
+    room.allowDoor(1,0);
+    room.allowDoor(2,1);
+    room.allowDoor(1,2);
 
-    room.setFloorBox({ x:1, y:1, width:3, height:3, type:'water' });
+    room.setFloorBox({ x:1, y:1, width:1, height:1, type:'water' });
     room.setContents('mana-font', { color });
 
     feature.addRoom(room);
