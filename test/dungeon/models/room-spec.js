@@ -7,8 +7,8 @@ describe("Room", function() {
 
       expect(room.getBounds()).to.deep.equal({ xMin:0, yMin:0, xMax:3, yMax:2 });
       expect(room.getFootprint()).to.deep.equal([
-        [false,false,false],
-        [false,false,false],
+        [null,null,null],
+        [null,null,null],
       ]);
       expect(room.getSize()).to.equal(0);
     });
@@ -28,9 +28,9 @@ describe("Room", function() {
       room.addBox(1,0,2,3);
 
       expect(room.getFootprint()).to.deep.equal([
-        [true,true,true,true],
-        [true,true,true,true],
-        [false,true,true,false],
+        [0,0,0,0],
+        [0,0,0,0],
+        [null,0,0,null],
       ]);
       expect(room.getSize()).to.equal(10);
     });
@@ -57,6 +57,105 @@ describe("Room", function() {
       expect(() => room.addBox(-1,0,2,2)).to.throw(`doesn't fit`);
       expect(() => room.addBox(2,2,2,2)).to.throw(`doesn't fit`);
     });
+
+    it('preserves the floor type of tiles painted twice', function() {
+      const room = Room();
+      room.setBounds(3,1);
+      room.addBox(0,0,3,1);
+      room.setFloor(1,0,'water');
+      room.addBox(0,0,3,1);
+
+      expect(room.getFloor(1,0)).to.equal('water');
+      expect(room.getSize()).to.equal(3);
+    });
+  });
+
+  describe("setFloor()", function() {
+    it('sets the floor type index of a tile in the footprint', function() {
+      const room = Room();
+      room.setBounds(3,1);
+      room.addBox(0,0,3,1);
+      room.setFloor(1,0,'water');
+
+      expect(room.getFootprint()).to.deep.equal([[0,1,0]]);
+      expect(room.getFloor(0,0)).to.equal('default');
+      expect(room.getFloor(1,0)).to.equal('water');
+    });
+
+    it('throws for an unknown floor type', function() {
+      const room = Room();
+      room.setBounds(3,1);
+      room.addBox(0,0,3,1);
+
+      expect(() => room.setFloor(1,0,'lava')).to.throw('Unknown floor type');
+    });
+
+    it('throws for a tile outside the room', function() {
+      const room = Room();
+      room.setBounds(3,2);
+      room.addBox(0,0,3,1);
+
+      expect(() => room.setFloor(1,1,'water')).to.throw('not a floor tile');
+      expect(() => room.setFloor(5,0,'water')).to.throw('not a floor tile');
+    });
+  });
+
+  describe("setFloorBox()", function() {
+    it('sets the floor type of every tile in the box', function() {
+      const room = Room();
+      room.setBounds(4,3);
+      room.addBox(0,0,4,3);
+      room.setFloorBox({ x:0, y:0, width:4, height:1, type:'water' });
+
+      expect(room.getFootprint()).to.deep.equal([
+        [1,1,1,1],
+        [0,0,0,0],
+        [0,0,0,0],
+      ]);
+    });
+
+    it('throws when the box covers tiles outside the room', function() {
+      const room = Room();
+      room.setBounds(4,3);
+      room.addBox(0,0,4,2);
+
+      expect(() => room.setFloorBox({ x:0, y:1, width:4, height:2, type:'water' })).to.throw('not a floor tile');
+    });
+  });
+
+  describe("addGlyph()", function() {
+    it('collects glyphs to render onto the room', function() {
+      const room = Room();
+      room.setBounds(3,3);
+      room.addBox(0,0,3,3);
+      room.addGlyph({ x:1, y:1.5, glyph:'◉', color:'rgb(130 130 140)' });
+
+      expect(room.getGlyphs()).to.deep.equal([
+        { x:1, y:1.5, glyph:'◉', color:'rgb(130 130 140)' },
+      ]);
+    });
+
+    it('returns copies of the glyphs, not the live objects', function() {
+      const room = Room();
+      room.setBounds(3,3);
+      room.addBox(0,0,3,3);
+      room.addGlyph({ x:1, y:1, glyph:'◉', color:'white' });
+
+      room.getGlyphs()[0].color = 'red';
+
+      expect(room.getGlyphs()[0].color).to.equal('white');
+    });
+  });
+
+  describe("getFloor()", function() {
+    it('returns null for tiles not in the room', function() {
+      const room = Room();
+      room.setBounds(2,1);
+      room.addBox(0,0,1,1);
+
+      expect(room.getFloor(1,0)).to.equal(null);
+      expect(room.getFloor(0,5)).to.equal(null);
+    });
   });
 
   describe("getCenterPoint()", function() {
@@ -74,6 +173,95 @@ describe("Room", function() {
       room.setCenterPoint(2,1);
 
       expect(room.getCenterPoint()).to.deep.equal({ x:2, y:1 });
+    });
+  });
+
+  describe("door permissions", function() {
+
+    // A 3x3 room with the south-east corner missing, so (2,1) has an exterior wall to the E and S, and (1,1) is an
+    // interior tile with no exterior walls at all.
+    function buildRoom() {
+      const room = Room();
+      room.setBounds(3,3);
+      room.addBox(0,0,3,2);
+      room.addBox(0,0,2,3);
+      return room;
+    }
+
+    it('allows doors on every wall by default', function() {
+      const room = buildRoom();
+      expect(room.doorIsAllowed(0,0,'N')).to.equal(true);
+      expect(room.doorIsAllowed(0,0,'W')).to.equal(true);
+      expect(room.doorIsAllowed(2,1,'E')).to.equal(true);
+    });
+
+    it('forbids doors on every wall after forbidAllDoors()', function() {
+      const room = buildRoom();
+      room.forbidAllDoors();
+      expect(room.doorIsAllowed(0,0,'N')).to.equal(false);
+      expect(room.doorIsAllowed(2,1,'E')).to.equal(false);
+    });
+
+    it('whitelists a single wall with allowDoor() after forbidAllDoors()', function() {
+      const room = buildRoom();
+      room.forbidAllDoors();
+      room.allowDoor(2,1,'E');
+
+      expect(room.doorIsAllowed(2,1,'E')).to.equal(true);
+      expect(room.doorIsAllowed(2,1,'S')).to.equal(false);
+      expect(room.doorIsAllowed(0,0,'N')).to.equal(false);
+    });
+
+    it('blacklists a single wall with forbidDoor()', function() {
+      const room = buildRoom();
+      room.forbidDoor(0,1,'W');
+
+      expect(room.doorIsAllowed(0,1,'W')).to.equal(false);
+      expect(room.doorIsAllowed(0,0,'W')).to.equal(true);
+    });
+
+    it('applies to every exterior wall of the tile when the direction is omitted', function() {
+      const room = buildRoom();
+      room.forbidDoor(2,1);
+
+      expect(room.doorIsAllowed(2,1,'E')).to.equal(false);
+      expect(room.doorIsAllowed(2,1,'S')).to.equal(false);
+    });
+
+    it('reverses an earlier call in the same mode', function() {
+      const room = buildRoom();
+      room.forbidDoor(0,0,'N');
+      room.allowDoor(0,0,'N');
+      expect(room.doorIsAllowed(0,0,'N')).to.equal(true);
+
+      room.forbidAllDoors();
+      room.allowDoor(0,0,'N');
+      room.forbidDoor(0,0,'N');
+      expect(room.doorIsAllowed(0,0,'N')).to.equal(false);
+    });
+
+    it('resets the whitelist when forbidAllDoors() is called again', function() {
+      const room = buildRoom();
+      room.forbidAllDoors();
+      room.allowDoor(0,0,'N');
+      room.forbidAllDoors();
+      expect(room.doorIsAllowed(0,0,'N')).to.equal(false);
+    });
+
+    it('throws for a tile that is not part of the room', function() {
+      const room = buildRoom();
+      expect(() => room.forbidDoor(2,2,'E')).to.throw('not a floor tile');
+      expect(() => room.allowDoor(5,0,'N')).to.throw('not a floor tile');
+    });
+
+    it('throws for a wall that is not exterior', function() {
+      const room = buildRoom();
+      expect(() => room.forbidDoor(1,1,'N')).to.throw('no exterior wall');
+    });
+
+    it('throws for an interior tile when the direction is omitted', function() {
+      const room = buildRoom();
+      expect(() => room.forbidDoor(1,1)).to.throw('interior tile');
     });
   });
 
@@ -168,9 +356,9 @@ describe("Room", function() {
         stairs: 'up',
         usedCommands: [],
         footprint: [
-          [true,true,true],
-          [false,false,true],
-          [false,false,true],
+          [0,0,0],
+          [null,null,0],
+          [null,null,0],
         ],
       });
     });
@@ -181,9 +369,9 @@ describe("Room", function() {
       room.addBox(0,0,2,1);
 
       const packed = room.pack();
-      packed.footprint[0][0] = false;
+      packed.footprint[0][0] = null;
 
-      expect(room.getFootprint()[0][0]).to.equal(true);
+      expect(room.getFootprint()[0][0]).to.equal(0);
     });
   });
 

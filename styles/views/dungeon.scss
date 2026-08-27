@@ -38,6 +38,19 @@
     stroke-width: 1;
   }
 
+  .floor-layer .water {
+    fill: variables.$bg-dungeon-water;
+    stroke: variables.$fg-dungeon-water-edge;
+    stroke-width: 2;
+  }
+
+  // The fill comes from each glyph's own color attribute.
+  .glyph {
+    font-size: 48px;
+    text-anchor: middle;
+    dominant-baseline: central;
+  }
+
   &.current {
     .walls {
       stroke: variables.$fg-dungeon-wall-current;
@@ -52,6 +65,8 @@
     .nested-wall { display: none; }
     .stairs { display: none; }
     .floor-texture { display: none; }
+    .floor-layer { display: none; }
+    .glyph { display: none; }
   }
 
   .stairs {

@@ -9,11 +9,12 @@ global.GeometryHelper = (function() {
     N: { move:{ x:0,  y:-1 }, left:{ x:-1, y:-1 }, right:{ x:0,  y:-1 }, turnLeft:'W', turnRight:'E' },
   };
 
-  // Trace the boundary of a footprint (a 2D boolean grid of filled cells) as a single clockwise polygon, walking
-  // with the interior always on the right. Vertices are lattice corners in cell coordinates, so a single filled
-  // cell yields (0,0) (1,0) (1,1) (0,1). The filled region must be connected and have no holes.
+  // Trace the boundary of a footprint as a single clockwise polygon, walking with the interior always on the
+  // right. A cell is filled unless it holds null or false, covering both feature footprints (booleans) and room
+  // footprints (floor type indices, where 0 is a valid type). Vertices are lattice corners in cell coordinates,
+  // so a single filled cell yields (0,0) (1,0) (1,1) (0,1). The filled region must be connected and have no holes.
   function traceOutline(footprint) {
-    const filled = (x,y) => footprint[y] != null && footprint[y][x] === true;
+    const filled = (x,y) => footprint[y] != null && footprint[y][x] != null && footprint[y][x] !== false;
 
     const start = startCorner(footprint);
     const vertices = [{ x:start.x, y:start.y }];
@@ -76,7 +77,7 @@ global.GeometryHelper = (function() {
   function startCorner(footprint) {
     for (let y = 0; y < footprint.length; y++) {
       for (let x = 0; x < footprint[y].length; x++) {
-        if (footprint[y][x]) { return { x, y }; }
+        if (footprint[y][x] != null && footprint[y][x] !== false) { return { x, y }; }
       }
     }
   }
@@ -93,9 +94,47 @@ global.GeometryHelper = (function() {
     return ahead.turnRight;
   }
 
+  // Split a grid into its orthogonally connected regions of cells matching the given predicate. Each region comes
+  // back as a boolean grid with the same dimensions as the input, so it can be passed directly to traceOutline().
+  function findRegions(grid, match) {
+    const height = grid.length;
+    const width = grid[0].length;
+    const seen = Array.from({ length:height }, () => new Array(width).fill(false));
+    const regions = [];
+
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        if (seen[y][x] || match(grid[y][x]) === false) { continue; }
+
+        const region = Array.from({ length:height }, () => new Array(width).fill(false));
+        const stack = [{ x, y }];
+        seen[y][x] = true;
+
+        while (stack.length > 0) {
+          const tile = stack.pop();
+          region[tile.y][tile.x] = true;
+
+          [{ x:tile.x+1, y:tile.y }, { x:tile.x-1, y:tile.y }, { x:tile.x, y:tile.y+1 }, { x:tile.x, y:tile.y-1 }]
+            .forEach(next => {
+              if (next.x >= 0 && next.y >= 0 && next.x < width && next.y < height &&
+                  seen[next.y][next.x] === false && match(grid[next.y][next.x])) {
+                seen[next.y][next.x] = true;
+                stack.push(next);
+              }
+            });
+        }
+
+        regions.push(region);
+      }
+    }
+
+    return regions;
+  }
+
   return {
     traceOutline,
     insetOutline,
+    findRegions,
   };
 
 })();

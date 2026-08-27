@@ -67,7 +67,7 @@ global.Feature = function(type) {
         const position = room.getPosition();
         room.getFootprint().forEach((row, y) => {
           row.forEach((cell, x) => {
-            if (cell) { footprint[position.y + y][position.x + x] = true; }
+            if (cell != null) { footprint[position.y + y][position.x + x] = true; }
           });
         });
       });
@@ -111,7 +111,27 @@ global.Feature = function(type) {
       default: throw new Error(`Bad Direction ${direction}`);
     }
 
-    return tiles;
+    return tiles.filter(tile => wallAllowsDoor(tile, direction));
+  }
+
+  // An edge tile sits one step outside the footprint, so the wall a corridor would knock through belongs to the
+  // floor tile one step back toward the feature. Overlapping rooms paint the floor grid in room order with the last
+  // room winning, so the owning room is resolved the same way here.
+  function wallAllowsDoor(tile, direction) {
+    const step = { N:{x:0,y:1}, S:{x:0,y:-1}, E:{x:-1,y:0}, W:{x:1,y:0} }[direction];
+    const floorTile = { x: tile.x + step.x, y: tile.y + step.y };
+
+    for (let i=rooms.length-1; i>=0; i--) {
+      const roomPosition = rooms[i].getPosition();
+      const local = { x: floorTile.x - roomPosition.x, y: floorTile.y - roomPosition.y };
+      const roomBounds = rooms[i].getBounds();
+      if (local.x >= 0 && local.y >= 0 && local.x < roomBounds.xMax && local.y < roomBounds.yMax &&
+          rooms[i].getFootprint()[local.y][local.x] != null) {
+        return rooms[i].doorIsAllowed(local.x, local.y, direction);
+      }
+    }
+
+    return false;
   }
 
   function inspect() {

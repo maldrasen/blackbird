@@ -12,6 +12,13 @@ global.FeaturePlacer = function() {
     const features = [];
     let guard = 0
 
+    if (floor.getLevel() === 1) {
+      const entrance = dungeonEntrance();
+      floor.addFeature(entrance);
+      placeFeature(entrance);
+      features.push(entrance);
+    }
+
     while(guard < 1000) {
       const feature = theme.getRandomFeature();
       setRandomPosition(feature);
@@ -40,6 +47,14 @@ global.FeaturePlacer = function() {
     }
   }
 
+  // The dungeon entrance always appears in the same orientation with a door on its east wall. It's pinned flush
+  // against the west boundary of the floor so that it should always be able to connect to something.
+  function dungeonEntrance() {
+    const feature = FeatureType.lookup('dungeon-entrance').buildFeature({});
+    feature.setPosition(0, Random.between(0, floorHeight - feature.getBounds().yMax));
+    return feature;
+  }
+
   function setRandomPosition(feature) {
     const bounds = feature.getBounds();
     const xPos = Random.between(0,floorWidth - bounds.xMax);
@@ -57,7 +72,7 @@ global.FeaturePlacer = function() {
       const footprint = rooms[i].getFootprint();
       for (let y=0; y<footprint.length; y++) {
         for (let x=0; x<footprint[y].length; x++) {
-          if (footprint[y][x] && grid[position.y + y][position.x + x] != null) { return false; }
+          if (footprint[y][x] != null && grid[position.y + y][position.x + x] != null) { return false; }
         }
       }
     }
@@ -73,7 +88,7 @@ global.FeaturePlacer = function() {
 
       room.getFootprint().forEach((row, y) => {
         row.forEach((cell, x) => {
-          if (cell) { grid[position.y + y][position.x + x] = index; }
+          if (cell != null) { grid[position.y + y][position.x + x] = index; }
         });
       });
     });

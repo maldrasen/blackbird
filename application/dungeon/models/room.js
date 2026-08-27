@@ -10,22 +10,26 @@ global.Room = function(feature, type='normal') {
   let stairs = null;
   let usedCommands = [];
   let scoutingRoll;
+  let doorMode = 'blacklist';
+  let doorWalls = new Set();
   let footprint;
   let size;
   let centerPoint;
   let bounds;
+  let glyphs = [];
 
   // =======================
   //    Building & Layout
   // =======================
 
   // Decide the room's bounds up front, creating an empty footprint grid of the correct size. Every box added after
-  // this just paints tiles into the grid, so boxes must use room-local coordinates that fit inside the bounds.
+  // this just paints tiles into the grid, so boxes must use room-local coordinates that fit inside the bounds. Each
+  // cell holds an index into DungeonConstants.floorTypes, or null for tiles that aren't part of the room.
   function setBounds(width, height) {
     if (bounds) { throw new Error(`This room's bounds have already been set.`); }
 
     bounds = { width, height };
-    footprint = Array.from({ length:height }, () => new Array(width).fill(false));
+    footprint = Array.from({ length:height }, () => new Array(width).fill(null));
     size = 0;
   }
 
@@ -39,12 +43,45 @@ global.Room = function(feature, type='normal') {
 
     for (let yy = y; yy < y + height; yy++) {
       for (let xx = x; xx < x + width; xx++) {
-        if (footprint[yy][xx] === false) {
-          footprint[yy][xx] = true;
+        if (footprint[yy][xx] == null) {
+          footprint[yy][xx] = 0;
           size++;
         }
       }
     }
+  }
+
+  // Change the floor type of tiles already painted into the footprint. Tiles hold the floor type's index rather
+  // than its name to keep packed rooms small.
+  function setFloor(x, y, type) {
+    const floorIndex = DungeonConstants.floorTypes.indexOf(type);
+    if (floorIndex < 0) { throw new Error(`Unknown floor type [${type}]`); }
+    if (footprint[y] == null || footprint[y][x] == null) {
+      throw new Error(`(${x},${y}) is not a floor tile in this room.`);
+    }
+
+    footprint[y][x] = floorIndex;
+  }
+
+  function setFloorBox(options) {
+    const { x, y, width, height, type } = options;
+    for (let yy = y; yy < y + height; yy++) {
+      for (let xx = x; xx < x + width; xx++) {
+        setFloor(xx, yy, type);
+      }
+    }
+  }
+
+  function getFloor(x, y) {
+    if (footprint[y] == null || footprint[y][x] == null) { return null; }
+    return DungeonConstants.floorTypes[footprint[y][x]];
+  }
+
+  // Decorative glyphs drawn onto the room, positioned like the center point, so they can sit anywhere in the room
+  // including tile boundaries.
+  function addGlyph(options) {
+    const { x, y, glyph, color } = options;
+    glyphs.push({ x, y, glyph, color });
   }
 
 
@@ -69,6 +106,62 @@ global.Room = function(feature, type='normal') {
 
   function stairsAreAllowed() {
     return stairsAllowed && bounds.width > 1 && bounds.height > 1;
+  }
+
+  // ========================
+  //    Door Permissions
+  // ========================
+
+  // Door permissions work in either a blacklist mode (the default, where every exterior wall allows a door unless
+  // forbidden) or a whitelist mode (entered with forbidAllDoors(), where only explicitly allowed walls can have
+  // doors). Walls are addressed by a room-local floor tile plus the side the wall is on; when the direction is
+  // omitted the call applies to every exterior wall of that tile.
+
+  function forbidAllDoors() {
+    doorMode = 'whitelist';
+    doorWalls = new Set();
+  }
+
+  function allowDoor(x, y, direction=null) {
+    wallKeys(x, y, direction).forEach(key => {
+      (doorMode === 'whitelist') ? doorWalls.add(key) : doorWalls.delete(key);
+    });
+  }
+
+  function forbidDoor(x, y, direction=null) {
+    wallKeys(x, y, direction).forEach(key => {
+      (doorMode === 'blacklist') ? doorWalls.add(key) : doorWalls.delete(key);
+    });
+  }
+
+  function doorIsAllowed(x, y, direction) {
+    const listed = doorWalls.has(`${x},${y},${direction}`);
+    return (doorMode === 'whitelist') ? listed : listed === false;
+  }
+
+  function wallKeys(x, y, direction) {
+    if (bounds == null || x < 0 || y < 0 || x >= bounds.width || y >= bounds.height || footprint[y][x] == null) {
+      throw new Error(`(${x},${y}) is not a floor tile in this room.`);
+    }
+
+    const exterior = [];
+    if (y === 0 || footprint[y-1][x] == null) { exterior.push('N'); }
+    if (y === bounds.height-1 || footprint[y+1][x] == null) { exterior.push('S'); }
+    if (x === bounds.width-1 || footprint[y][x+1] == null) { exterior.push('E'); }
+    if (x === 0 || footprint[y][x-1] == null) { exterior.push('W'); }
+
+    if (direction != null) {
+      if (exterior.includes(direction) === false) {
+        throw new Error(`(${x},${y}) has no exterior wall to the ${direction}.`);
+      }
+      return [`${x},${y},${direction}`];
+    }
+
+    if (exterior.length === 0) {
+      throw new Error(`(${x},${y}) is an interior tile with no exterior walls.`);
+    }
+
+    return exterior.map(side => `${x},${y},${side}`);
   }
 
   // ==============
@@ -140,6 +233,11 @@ global.Room = function(feature, type='normal') {
     getPosition: () => { return {...position}; },
     setBounds,
     addBox,
+    setFloor,
+    setFloorBox,
+    getFloor,
+    addGlyph,
+    getGlyphs: () => { return glyphs.map(glyph => ({ ...glyph })); },
     getBounds,
     getFootprint: () => { return footprint },
     getSize: () => { return size; },
@@ -148,6 +246,10 @@ global.Room = function(feature, type='normal') {
     getFloorCenter,
     allowStairs: () => { stairsAllowed = true; },
     stairsAreAllowed,
+    forbidAllDoors,
+    allowDoor,
+    forbidDoor,
+    doorIsAllowed,
     setStairs: direction => { stairs = direction; },
     getStairs: () => { return stairs; },
     hasStairs: () => { return stairs != null; },

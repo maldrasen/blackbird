@@ -5,7 +5,7 @@ describe("FeatureType", function() {
   }
 
   function footprint(room) {
-    return room.getFootprint().map(row => row.map(cell => cell ? 'X' : '.').join(''));
+    return room.getFootprint().map(row => row.map(cell => cell != null ? 'X' : '.').join(''));
   }
 
   describe("rect-room", function() {

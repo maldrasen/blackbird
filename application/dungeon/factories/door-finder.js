@@ -39,14 +39,27 @@ global.DoorFinder = function(grid) {
     const northCell = cellNorthOf(x,y);
     const westCell = cellWestOf(x,y);
 
-    if (canConnect(thisCell,northCell)) { addDoor(x,y,'N',thisCell,northCell); }
-    if (canConnect(thisCell,westCell)) { addDoor(x,y,'W',thisCell,westCell); }
+    if (canConnect(thisCell,northCell) && wallsAllowDoor(x,y,'N',thisCell,northCell)) { addDoor(x,y,'N',thisCell,northCell); }
+    if (canConnect(thisCell,westCell) && wallsAllowDoor(x,y,'W',thisCell,westCell)) { addDoor(x,y,'W',thisCell,westCell); }
   }
 
   // Rooms within the same feature are joined by the feature's own authored doors, never by found ones.
   function canConnect(from, to) {
     if (to == null || to === from) { return false; }
     return floor.getRooms()[from].getFeatureIndex() !== floor.getRooms()[to].getFeatureIndex();
+  }
+
+  // The two rooms share the wall the door would be knocked through, one owning each side, so both need to allow it.
+  function wallsAllowDoor(x, y, direction, from, to) {
+    return (direction === 'N') ?
+      roomAllowsDoor(from,x,y,'N') && roomAllowsDoor(to,x,y-1,'S') :
+      roomAllowsDoor(from,x,y,'W') && roomAllowsDoor(to,x-1,y,'E');
+  }
+
+  function roomAllowsDoor(index, x, y, direction) {
+    const room = floor.getRooms()[index];
+    const position = room.getFloorPosition();
+    return room.doorIsAllowed(x - position.x, y - position.y, direction);
   }
 
   function cellNorthOf(x,y) {

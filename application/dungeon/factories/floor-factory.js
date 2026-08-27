@@ -1,6 +1,7 @@
 global.FloorFactory = function() {
   const floor = DungeonSystem.getDungeonFloor();
   const blacklist = new Set();
+  const downStairsOnly = floor.getLevel() === 1;
 
   // Floor generation failures are nearly impossible to hunt down after the fact because the randomly generated state
   // is lost when the factory dies, so we dump whatever state we have before rethrowing. The error always propagates;
@@ -106,14 +107,16 @@ global.FloorFactory = function() {
     return featureDoors;
   }
 
+  // A feature that authors its own up stair (the dungeon entrance) owns the only one on the floor, so no more are
+  // placed and every extra stair leads down.
   function placeStairs() {
     const chance = DungeonTheme.lookup(DungeonSystem.getDungeonFloor().getTheme()).getExtraStairChance();
-    const rooms = Random.shuffle(floor.getRooms().filter(room => room.stairsAreAllowed()));
+    const rooms = Random.shuffle(floor.getRooms().filter(room => room.stairsAreAllowed() && room.hasStairs() === false));
     const limit = Math.floor(rooms.length / 2);
-    const stairs = ['up','down'];
+    const stairs = downStairsOnly ? ['down'] : ['up','down'];
 
     while (Random.roll(100) < chance && stairs.length < limit) {
-      stairs.push(Random.flipCoin() ? 'up' : 'down')
+      stairs.push(downStairsOnly ? 'down' : (Random.flipCoin() ? 'up' : 'down'))
     }
 
     stairs.forEach(direction => {
@@ -130,7 +133,7 @@ global.FloorFactory = function() {
 
       room.getFootprint().forEach((row, y) => {
         row.forEach((cell, x) => {
-          if (cell) { floorGrid[position.y + y][position.x + x] = index; }
+          if (cell != null) { floorGrid[position.y + y][position.x + x] = index; }
         });
       });
     });
