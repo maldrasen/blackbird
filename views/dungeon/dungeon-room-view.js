@@ -42,9 +42,15 @@ global.DungeonRoomView = (function() {
 
   function getRoomGeometry(room) {
     const gridSize = DungeonFloorView.getGridSize();
-    const outline = GeometryHelper.traceOutline(room.getFootprint())
+    const chamfer = (room.getChamfer() / 100) * gridSize;
+    let outline = GeometryHelper.traceOutline(room.getFootprint())
       .map(vertex => ({ x: vertex.x * gridSize, y: vertex.y * gridSize }));
-    const wallLine = GeometryHelper.insetOutline(outline, wallInset);
+    let wallLine = GeometryHelper.insetOutline(outline, wallInset);
+
+    if (chamfer > 0) {
+      outline = GeometryHelper.chamferOutline(outline, chamfer);
+      wallLine = GeometryHelper.chamferOutline(wallLine, chamfer, wallInset);
+    }
 
     return { outline, wallLine, floor: wallLine };
   }
@@ -57,11 +63,14 @@ global.DungeonRoomView = (function() {
 
     return feature.getRooms().slice(depth + 1).map(nested => {
       const nestedPosition = nested.getFloorPosition();
+      const chamfer = (nested.getChamfer() / 100) * gridSize;
       const outline = GeometryHelper.traceOutline(nested.getFootprint()).map(vertex => ({
         x: ((nestedPosition.x - position.x) + vertex.x) * gridSize,
         y: ((nestedPosition.y - position.y) + vertex.y) * gridSize,
       }));
-      const wallLine = GeometryHelper.insetOutline(outline, -wallInset);
+      let wallLine = GeometryHelper.insetOutline(outline, -wallInset);
+
+      if (chamfer > 0) { wallLine = GeometryHelper.chamferOutline(wallLine, chamfer, -wallInset); }
 
       return { outline, wallLine };
     });
