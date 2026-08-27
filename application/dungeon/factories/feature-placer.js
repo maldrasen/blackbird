@@ -4,19 +4,20 @@ global.FeaturePlacer = function() {
   const floorWidth = floor.getFloorWidth();
   const floorHeight = floor.getFloorHeight();
   const grid = floor.getFloorGrid();
+  const features = [];
 
-  // This feature placer builds a super dense dungeon. We randomly add features to the dungon, randomizing their
+  // This feature placer builds a super dense dungeon. We randomly add features to the dungeon, randomizing their
   // positions and checking to see if they fit. Once 1000 features fail to fit into the dungeon we stop trying to add
-  // more features. Probably the least efficient way to do this, but still fast enough to not be noticible.
+  // more features. Probably the least efficient way to do this, but still fast enough to not be noticeable.
   function packFeatures() {
-    const features = [];
     let guard = 0
 
     if (floor.getLevel() === 1) {
-      const entrance = dungeonEntrance();
-      floor.addFeature(entrance);
-      placeFeature(entrance);
-      features.push(entrance);
+      placeFeature(dungeonEntrance());
+    }
+
+    if (shouldSpawnFont()) {
+      placeFeature(manaFont());
     }
 
     while(guard < 1000) {
@@ -24,22 +25,19 @@ global.FeaturePlacer = function() {
       setRandomPosition(feature);
 
       if (featureCanFit(feature)) {
-        floor.addFeature(feature);
         placeFeature(feature);
-        features.push(feature);
-      }
-      else {
+      } else {
         guard += 1;
       }
     }
 
-    checkIndices(features);
+    checkIndices();
 
     return [features, grid];
   }
 
   // Double check to make sure I added the features to the array with the correct indices.
-  function checkIndices(features) {
+  function checkIndices() {
     for (let i=0; i<features.length; i++) {
       if (features[i].getIndex() !== i) {
         throw new Error(`The feature index ${features[i].getIndex()} did not match the array index ${i}`);
@@ -50,9 +48,21 @@ global.FeaturePlacer = function() {
   // The dungeon entrance always appears in the same orientation with a door on its east wall. It's pinned flush
   // against the west boundary of the floor so that it should always be able to connect to something.
   function dungeonEntrance() {
-    const feature = FeatureType.lookup('dungeon-entrance').buildFeature({});
-    feature.setPosition(0, Random.between(0, floorHeight - feature.getBounds().yMax));
-    return feature;
+    const entrance = FeatureType.lookup('dungeon-entrance').buildFeature();
+    entrance.setPosition(0, Random.between(0, floorHeight - entrance.getBounds().yMax));
+    return entrance;
+  }
+
+  function shouldSpawnFont() {
+    if (floor.getLevel() === 1) { return true; }
+    // if font has spawned on this level return false.
+    return Random.roll(100) < DungeonConstants.fontChance;
+  }
+
+  function manaFont() {
+    const font = FeatureType.lookup('mana-font').buildFeature();
+    setRandomPosition(font)
+    return font;
   }
 
   function setRandomPosition(feature) {
@@ -82,6 +92,9 @@ global.FeaturePlacer = function() {
 
   // The grid cells hold the room's floor-global index, as rooms are the unit of navigation.
   function placeFeature(feature) {
+    floor.addFeature(feature);
+    features.push(feature);
+
     feature.getRooms().forEach(room => {
       const position = room.getFloorPosition();
       const index = room.getIndex();
