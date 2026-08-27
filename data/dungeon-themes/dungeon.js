@@ -27,7 +27,7 @@ DungeonTheme.register('dungeon',{
     { code:'leg-room',     rarity:Rarity.common, type:'leg-room',   size:[3,8]},
     { code:'tea-room',     rarity:Rarity.common, type:'tea-room',   size:[3,8]},
     { code:'cross-room',   rarity:Rarity.common, type:'cross-room', size:[3,9]},
-    { code:'large-square', rarity:Rarity.unusual, type:'rect-room',  size:[5,8]},
+    { code:'large-square', rarity:Rarity.unusual, type:'rect-room',  size:[5,7]},
     { code:'nested-room',  rarity:Rarity.unusual, type:'nested-room', size:[3,7], padding:[1,3]},
   ],
 

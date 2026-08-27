@@ -16,7 +16,9 @@ FeatureType.register('dungeon-entrance',{
     room.setFloorBox({ x:4, y:0, width:7, height:2, type:'water' });
     room.setFloorBox({ x:4, y:3, width:7, height:2, type:'water' });
 
-    room.setDescription('TODO: Dungeon Entrance Description');
+    room.setDescription(`The entrance chamber is filled with the sound of gently falling water. The rippling pool 
+      sparkles brightly, as though catching rays of sunlight. The narrow causeway, flanked by statues of twelve faceless 
+      and impossibly well endowed creatures, leads to a stout wooden door and the dungeon beyond.`);
 
     for (let i = 1; i <= 6; i++) {
       room.addGlyph({ x:4+i, y:1, glyph:'◉', color:'rgb(130 130 140)' });
