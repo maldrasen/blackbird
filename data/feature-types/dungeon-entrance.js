@@ -23,8 +23,8 @@ FeatureType.register('dungeon-entrance',{
       and impossibly well endowed creatures, leads to a stout wooden door and the dungeon beyond.`);
 
     for (let i = 1; i <= 6; i++) {
-      room.addGlyph({ x:4+i, y:1, glyph:'◉', color:'rgb(130 130 140)' });
-      room.addGlyph({ x:4+i, y:4, glyph:'◉', color:'rgb(130 130 140)' });
+      room.addGlyph({ x:4+i, y:1, glyph:'◉', color:DungeonConstants.wallColor });
+      room.addGlyph({ x:4+i, y:4, glyph:'◉', color:DungeonConstants.wallColor });
     }
 
     feature.addRoom(room);
