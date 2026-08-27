@@ -81,13 +81,15 @@ global.DungeonRoomView = (function() {
   // up against a wall, so the stroke only separates special floor from normal floor.
   function floorLayers(room, geometry, index) {
     const gridSize = DungeonFloorView.getGridSize();
+    const chamfer = (room.getFloorChamfer() / 100) * gridSize;
 
     const polygons = DungeonConstants.floorTypes.flatMap((type, typeIndex) => {
       if (typeIndex === 0) { return []; }
 
       return GeometryHelper.findRegions(room.getFootprint(), cell => cell === typeIndex).map(region => {
-        const outline = GeometryHelper.traceOutline(region)
+        let outline = GeometryHelper.traceOutline(region)
           .map(vertex => ({ x: vertex.x * gridSize, y: vertex.y * gridSize }));
+        if (chamfer > 0) { outline = GeometryHelper.chamferOutline(outline, chamfer); }
         return `<polygon class='${type}' points='${points(outline)}'/>`;
       });
     });
