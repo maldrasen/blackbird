@@ -8,13 +8,14 @@ FeatureType.register('mana-font',{
     room.setBounds(3, 3);
     room.addBox(0, 0, 3, 3);
     room.setCenterPoint(1.5,1.5);
-    room.setChamfer(100);
+    room.setChamfer(80);
 
     room.forbidAllDoors();
     room.allowDoor(0,1);
     room.allowDoor(1,0);
     room.allowDoor(2,1);
     room.allowDoor(1,2);
+    room.addGlyph({ x:1.5, y:1.5, glyph:'◉', color:DungeonConstants.wallColor });
 
     room.setFloorBox({ x:1, y:1, width:1, height:1, type:'water' });
     room.setFloorChamfer(33);

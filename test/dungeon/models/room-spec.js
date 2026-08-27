@@ -128,10 +128,10 @@ describe("Room", function() {
       const room = Room();
       room.setBounds(3,3);
       room.addBox(0,0,3,3);
-      room.addGlyph({ x:1, y:1.5, glyph:'◉', color:'rgb(130 130 140)' });
+      room.addGlyph({ x:1, y:1.5, glyph:'X', color:'foo' });
 
       expect(room.getGlyphs()).to.deep.equal([
-        { x:1, y:1.5, glyph:'◉', color:'rgb(130 130 140)' },
+        { x:1, y:1.5, glyph:'X', color:'foo' },
       ]);
     });
 
