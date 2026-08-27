@@ -8,6 +8,7 @@ FeatureType.register('mana-font',{
     room.setBounds(3, 3);
     room.addBox(0, 0, 3, 3);
     room.setCenterPoint(1.5,1.5);
+    room.setChamfer(100);
 
     room.forbidAllDoors();
     room.allowDoor(0,1);

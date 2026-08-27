@@ -17,6 +17,7 @@ global.Room = function(feature, type='normal') {
   let size;
   let centerPoint;
   let bounds;
+  let chamfer = 0;
   let glyphs = [];
 
   // =======================
@@ -248,6 +249,8 @@ global.Room = function(feature, type='normal') {
     setCenterPoint: (x,y) => { centerPoint = {x,y}; },
     getCenterPoint,
     getFloorCenter,
+    setChamfer: percent => { chamfer = percent; },
+    getChamfer: () => { return chamfer; },
     allowStairs: () => { stairsAllowed = true; },
     stairsAreAllowed,
     forbidAllDoors,
