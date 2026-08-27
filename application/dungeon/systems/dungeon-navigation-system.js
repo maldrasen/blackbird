@@ -46,18 +46,19 @@ global.DungeonNavigationSystem = (function() {
     }
 
     const room = floor.getRooms()[index];
-    const isNewRoom = floor.isRevealed(index) === false;
-    if (isNewRoom) { scoutRoom(room); }
+    const isFirstVisit = floor.isVisited(index) === false;
+    const newlyRevealed = floor.isRevealed(index) === false;
+    if (isFirstVisit) { scoutRoom(room); }
 
-    const episode = isNewRoom ? getRoomEpisode(room) : null;
-    const trap = isNewRoom ? TrapSystem.springTrap(room) : null;
-    const encounterRate = DungeonTheme.lookup(floor.getTheme()).getEncounterRate(isNewRoom);
+    const episode = isFirstVisit ? getRoomEpisode(room) : null;
+    const trap = isFirstVisit ? TrapSystem.springTrap(room) : null;
+    const encounterRate = DungeonTheme.lookup(floor.getTheme()).getEncounterRate(isFirstVisit);
     const encounter = episode == null && Random.roll(100) < encounterRate * Difficulty.getEncounterFactor();
 
     floor.setLocation(index);
-    GameSystem.getState().advanceGameTime(isNewRoom ? exploreTime : backtrackTime);
+    GameSystem.getState().advanceGameTime(isFirstVisit ? exploreTime : backtrackTime);
 
-    return { encounter, revealed:isNewRoom, episode, trap };
+    return { encounter, revealed:newlyRevealed, episode, trap };
   }
 
   function scoutRoom(room) {
