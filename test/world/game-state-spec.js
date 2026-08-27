@@ -74,6 +74,22 @@ describe('GameState', function() {
     expect(restored.getEpisodes()).to.eql(packed.episodeQueue);
   });
 
+  it('packs and restores the viewed episodes without duplicates', function() {
+    const state = GameState({ viewedEpisodes:['game-over'] });
+    state.recordEpisodeViewed('propose-training');
+    state.recordEpisodeViewed('propose-training');
+
+    expect(state.hasViewedEpisode('game-over')).to.equal(true);
+    expect(state.hasViewedEpisode('propose-training')).to.equal(true);
+    expect(state.hasViewedEpisode('debug-strange-mist')).to.equal(false);
+
+    const packed = state.pack();
+    expect(packed.viewedEpisodes).to.eql(['game-over','propose-training']);
+
+    const restored = GameState(packed);
+    expect(restored.hasViewedEpisode('propose-training')).to.equal(true);
+  });
+
   it('packs and restores the roster', function() {
     const goblin = Registry.createEntity();
     const slime = Registry.createEntity();

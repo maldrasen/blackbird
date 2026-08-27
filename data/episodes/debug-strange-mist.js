@@ -2,14 +2,14 @@
 //       non-default option. Task 131's oath episode replaces it as the real thing.
 Episode.register('debug-strange-mist',{
   layout: 'centered',
+  repeat: true,
+  requires: [() => GameSystem.getState().getPlayer() != null],
   queue: {
     district: 'dungeon',
     on: 'enter',
     chance: 25,
     priority: EpisodePriority.flavor,
-    repeat: true,
     removeWhen: () => GameSystem.getState().getGameTime() > 30 * 24 * 60,
-    requires: [() => GameSystem.getState().getPlayer() != null],
   },
   pages: [{
     content: `<p>A pale mist comes rolling up the street as you cross into the dungeon district, thick enough to chew

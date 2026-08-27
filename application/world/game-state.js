@@ -12,6 +12,7 @@ global.GameState = function(data={}) {
   let legacyName = data.legacyName;
   let roster = data.roster || [];
   let episodeQueue = data.episodeQueue || [];
+  let viewedEpisodes = data.viewedEpisodes || [];
 
   // TODO: Eventually this function will consult everything that might influence this value. It's not set in the state,
   //       but may need to read values from the player.
@@ -56,6 +57,7 @@ global.GameState = function(data={}) {
       legacyName: legacyName,
       roster: roster,
       episodeQueue: episodeQueue,
+      viewedEpisodes: viewedEpisodes,
       flags: flags,
       dungeonState: dungeonState.pack(),
     };
@@ -85,6 +87,8 @@ global.GameState = function(data={}) {
     isInRoster: id => { return roster.includes(id); },
     getEpisodes: () => { return episodeQueue.map(entry => ({ ...entry })); },
     removeEpisode: code => { episodeQueue = episodeQueue.filter(entry => entry.code !== code); },
+    recordEpisodeViewed: code => { if (viewedEpisodes.includes(code) === false) { viewedEpisodes.push(code); } },
+    hasViewedEpisode: code => { return viewedEpisodes.includes(code); },
     pushEpisode,
     setFlag,
     getFlag: key => { return flags[key]; },

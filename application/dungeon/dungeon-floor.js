@@ -6,7 +6,12 @@ global.DungeonFloor = function(level, theme=null) {
   if (theme == null) { theme = DungeonThemeSystem.pickTheme(level); }
 
   const floorGrid = Array.from({ length:getFloorHeight() }, () => new Array(getFloorWidth()).fill(null));
+
+  // A revealed room is drawn on the map; a visited room has actually been walked into. Walking into a room does
+  // both, but a room can be revealed without being visited (the debug reveal command), so scouting, traps, and
+  // episodes key off visited rather than revealed.
   const revealed = new Set();
+  const visited = new Set();
 
   let location = null;
   let features = [];
@@ -19,6 +24,7 @@ global.DungeonFloor = function(level, theme=null) {
   function setLocation(index) {
     location = index;
     revealed.add(index);
+    visited.add(index);
   }
 
   function addFeature(feature) {
@@ -68,6 +74,7 @@ global.DungeonFloor = function(level, theme=null) {
     addFeature,
     revealRoom: index => { revealed.add(index); },
     isRevealed: index => { return revealed.has(index); },
+    isVisited: index => { return visited.has(index); },
 
     setDoors: d => { doors = d; },
     getDoors: () => { return doors; },

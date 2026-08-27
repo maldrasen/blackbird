@@ -80,6 +80,17 @@ describe("DungeonNavigationSystem", function() {
     expect(floor.getRooms()[start].getScoutingRoll()).to.be.undefined;
   });
 
+  it("still scouts a room revealed on the map but never visited", function() {
+    const target = DungeonNavigationSystem.getAdjacentRoomIndices(start)[0];
+    floor.revealRoom(target);
+
+    Random.stubBetween(50,5);
+    const result = DungeonNavigationSystem.moveToRoom(target);
+
+    expect(result.revealed).to.equal(false);
+    expect(floor.getRooms()[target].getScoutingRoll()).to.equal(21);
+  });
+
   it("risks an encounter when entering an unexplored room", function() {
     const target = DungeonNavigationSystem.getAdjacentRoomIndices(start)[0];
 
@@ -141,6 +152,10 @@ describe("DungeonNavigationSystem", function() {
     let target;
 
     beforeEach(function() {
+      Episode.register('spec-episode',{
+        pages: [{ content: 'A spec episode.' }],
+      });
+
       RoomContents.register('spec-episode-contents',{
         description: 'A room with an episode in it.',
         episode: 'spec-episode',
@@ -157,6 +172,16 @@ describe("DungeonNavigationSystem", function() {
       const result = DungeonNavigationSystem.moveToRoom(target);
       expect(result.episode).to.equal('spec-episode');
       expect(result.encounter).to.equal(false);
+    });
+
+    it("fires the episode in a room revealed on the map but never visited", function() {
+      floor.revealRoom(target);
+
+      Random.stubBetween(50,5);
+      Random.stubRoll(0);
+
+      const result = DungeonNavigationSystem.moveToRoom(target);
+      expect(result.episode).to.equal('spec-episode');
     });
 
     it("does not fire the episode again when backtracking through the room", function() {

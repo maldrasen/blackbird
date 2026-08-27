@@ -3,6 +3,7 @@ global.EpisodeSystem = (function() {
 
   function startEpisode(code, context) {
     state = EpisodeState(code, context);
+    GameSystem.getState().recordEpisodeViewed(code);
   }
 
   // The end function runs before the state is cleared because it may still read the episode context. It may also

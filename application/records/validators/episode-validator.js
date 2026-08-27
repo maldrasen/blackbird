@@ -3,6 +3,8 @@ global.EpisodeValidator = function(code, data) {
 
   if (data.layout != null) { Validate.isIn(`${name}.layout`, data.layout, ['novel','centered','large-centered']); }
   if (data.endFunction != null) { Validate.isFunction(`${name}.endFunction`, data.endFunction); }
+  if (data.requires != null) { Validate.singleOrArrayOf(`${name}.requires`, data.requires, 'function'); }
+  Validate.trueOrNull(`${name}.repeat`, data.repeat);
 
   Validate.isArray(`${name}.pages`, data.pages);
   Validate.atLeast(`${name}.pages.length`, data.pages.length, 1);
@@ -98,8 +100,5 @@ global.EpisodeValidator = function(code, data) {
     if (queue.chance != null) { Validate.between(`${name}.chance`, queue.chance, 0, 100); }
     if (queue.priority != null) { Validate.isNumber(`${name}.priority`, queue.priority); }
     if (queue.removeWhen != null) { Validate.isFunction(`${name}.removeWhen`, queue.removeWhen); }
-    if (queue.requires != null) { Validate.singleOrArrayOf(`${name}.requires`, queue.requires, 'function'); }
-
-    Validate.trueOrNull(`${name}.repeat`, queue.repeat);
   }
 }

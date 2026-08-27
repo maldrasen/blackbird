@@ -29,10 +29,10 @@ global.EpisodeQueue = (function() {
       .map((entry,position) => buildCandidate(entry, position, move))
       .filter(candidate => candidate != null);
 
-    const winner = pruneFinished(candidates, context).sort(byRank).find(candidate => isEligible(candidate, context));
+    const winner = pruneFinished(candidates, context).sort(byRank).find(candidate => isEligible(candidate));
     if (winner == null) { return null; }
 
-    if (winner.metadata.repeat !== true) { state.removeEpisode(winner.code); }
+    if (winner.record.getRepeat() === false) { state.removeEpisode(winner.code); }
     return winner.code;
   }
 
@@ -40,10 +40,11 @@ global.EpisodeQueue = (function() {
     const specificity = placeSpecificity(entry.place, move);
     if (specificity == null) { return null; }
 
-    const metadata = Episode.lookup(entry.code).getQueue() || {};
+    const record = Episode.lookup(entry.code);
+    const metadata = record.getQueue() || {};
     if (specificity !== SPECIFICITY.location && momentMatches(metadata.on, move.districtChanged) === false) { return null; }
 
-    return { code:entry.code, position, specificity, metadata };
+    return { code:entry.code, position, specificity, metadata, record };
   }
 
   function placeSpecificity(place, move) {
@@ -73,8 +74,8 @@ global.EpisodeQueue = (function() {
     return a.position - b.position;
   }
 
-  function isEligible(candidate, context) {
-    if (Requirements.met(candidate.metadata.requires, context) === false) { return false; }
+  function isEligible(candidate) {
+    if (candidate.record.meetsRequirements() === false) { return false; }
     const chance = candidate.metadata.chance == null ? 100 : candidate.metadata.chance;
     return Random.roll(100) < chance;
   }

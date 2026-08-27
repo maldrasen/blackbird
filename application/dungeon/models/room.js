@@ -7,6 +7,7 @@ global.Room = function(feature, type='normal') {
   let stairsAllowed = false;
   let overlapping = false;
   let contents = null;
+  let contentsOptions;
   let stairs = null;
   let usedCommands = [];
   let scoutingRoll;
@@ -168,10 +169,13 @@ global.Room = function(feature, type='normal') {
   //    Contents
   // ==============
 
-  // TODO: No features have contents yet, but eventually some features will have rooms with preset content. If any
-  //       room in a feature record has content then the placer shouldn't place randomized content into it.
   function canHaveContents() {
-    return feature.getType() !== 'corridor' && stairs == null;
+    return feature.getType() !== 'corridor' && stairs == null && contents == null;
+  }
+
+  function setContents(code, options={}) {
+    contents = code;
+    contentsOptions = options;
   }
 
   function setDescription(text) {
@@ -185,7 +189,7 @@ global.Room = function(feature, type='normal') {
     const theme = DungeonTheme.lookup(DungeonSystem.getDungeonFloor().getTheme());
 
     if (description == null && contents) {
-      description = RoomContents.lookup(contents).getDescription();
+      description = RoomContents.lookup(contents).getDescription(contentsOptions);
     }
     if (description == null && stairs) {
        description = theme.getDescription(`${stairs}Stairs`);
@@ -255,10 +259,11 @@ global.Room = function(feature, type='normal') {
     hasStairs: () => { return stairs != null; },
     markOverlapping: () => { overlapping = true; },
     isOverlapping: () => { return overlapping; },
-    setContents: code => { contents = code; },
-    getContents: () => { return contents; },
-    hasContents: () => { return contents != null; },
     canHaveContents,
+    setContents,
+    getContents: () => { return contents; },
+    getContentsOptions: () => { return contentsOptions; },
+    hasContents: () => { return contents != null; },
     setDescription,
     getDescription,
     getAvailableCommands,

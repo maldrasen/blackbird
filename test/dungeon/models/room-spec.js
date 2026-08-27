@@ -296,6 +296,12 @@ describe("Room", function() {
       room.setStairs('down');
       expect(room.canHaveContents()).to.equal(false);
     });
+
+    it('rejects rooms that already have contents', function() {
+      const room = Room(Feature('rect-room'));
+      room.setContents('spec-contents');
+      expect(room.canHaveContents()).to.equal(false);
+    });
   });
 
   describe("commands", function() {
