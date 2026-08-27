@@ -61,7 +61,9 @@ global.FeaturePlacer = function() {
 
   function manaFont() {
     const font = FeatureType.lookup('mana-font').buildFeature();
-    setRandomPosition(font)
+    do {
+      setRandomPosition(font);
+    } while (featureCanFit(font) === false);
     return font;
   }
 
