@@ -84,6 +84,96 @@ describe("GeometryHelper", function() {
     });
   });
 
+  describe("chamferOutline()", function() {
+    const scale = vertices => vertices.map(vertex => ({ x: vertex.x * 60, y: vertex.y * 60 }));
+
+    it('bevels every corner of a box room', function() {
+      const room = Room();
+      room.setBounds(2,3);
+      room.addBox(0,0,2,3);
+      const outline = scale(GeometryHelper.traceOutline(room.getFootprint()));
+
+      expect(GeometryHelper.chamferOutline(outline, 15)).to.deep.equal([
+        { x:0,   y:15  }, { x:15,  y:0   },
+        { x:105, y:0   }, { x:120, y:15  },
+        { x:120, y:165 }, { x:105, y:180 },
+        { x:15,  y:180 }, { x:0,   y:165 },
+      ]);
+    });
+
+    it('clamps the setback to a third of the shorter adjacent edge', function() {
+      const room = Room();
+      room.setBounds(1,1);
+      room.addBox(0,0,1,1);
+      const outline = scale(GeometryHelper.traceOutline(room.getFootprint()));
+
+      expect(GeometryHelper.chamferOutline(outline, 60)).to.deep.equal([
+        { x:0,  y:20 }, { x:20, y:0  },
+        { x:40, y:0  }, { x:60, y:20 },
+        { x:60, y:40 }, { x:40, y:60 },
+        { x:20, y:60 }, { x:0,  y:40 },
+      ]);
+    });
+
+    it('bevels the concave corner of an L-shaped room', function() {
+      const room = Room();
+      room.setBounds(3,3);
+      room.addBox(0,0,3,1);
+      room.addBox(2,0,1,3);
+      const outline = scale(GeometryHelper.traceOutline(room.getFootprint()));
+
+      expect(GeometryHelper.chamferOutline(outline, 15)).to.deep.equal([
+        { x:0,   y:15  }, { x:15,  y:0   },
+        { x:165, y:0   }, { x:180, y:15  },
+        { x:180, y:165 }, { x:165, y:180 },
+        { x:135, y:180 }, { x:120, y:165 },
+        { x:120, y:75  }, { x:105, y:60  },
+        { x:15,  y:60  }, { x:0,   y:45  },
+      ]);
+    });
+
+    it('keeps the wall as thick along the bevel as along the straight edges', function() {
+      const room = Room();
+      room.setBounds(2,3);
+      room.addBox(0,0,2,3);
+      const outline = scale(GeometryHelper.traceOutline(room.getFootprint()));
+      const wallLine = GeometryHelper.insetOutline(outline, 10);
+
+      const outerBevel = GeometryHelper.chamferOutline(outline, 15)[0];
+      const innerBevel = GeometryHelper.chamferOutline(wallLine, 15, 10)[0];
+
+      const thickness = ((innerBevel.x + innerBevel.y) - (outerBevel.x + outerBevel.y)) / Math.SQRT2;
+      expect(thickness).to.be.closeTo(10, 0.000001);
+    });
+
+    it('pushes concave bevels out by the inset correction', function() {
+      const room = Room();
+      room.setBounds(3,3);
+      room.addBox(0,0,3,1);
+      room.addBox(2,0,1,3);
+      const outline = scale(GeometryHelper.traceOutline(room.getFootprint()));
+      const wallLine = GeometryHelper.insetOutline(outline, 10);
+
+      const chamfered = GeometryHelper.chamferOutline(wallLine, 15, 10);
+      const setback = 15 + ((2 - Math.SQRT2) * 10);
+
+      expect(chamfered[8].x).to.equal(130);
+      expect(chamfered[8].y).to.be.closeTo(50 + setback, 0.000001);
+      expect(chamfered[9].x).to.be.closeTo(130 - setback, 0.000001);
+      expect(chamfered[9].y).to.equal(50);
+    });
+
+    it('leaves a corner square when the inset correction consumes the whole distance', function() {
+      const room = Room();
+      room.setBounds(2,3);
+      room.addBox(0,0,2,3);
+      const outline = scale(GeometryHelper.traceOutline(room.getFootprint()));
+      const wallLine = GeometryHelper.insetOutline(outline, 10);
+
+      expect(GeometryHelper.chamferOutline(wallLine, 5, 10)).to.deep.equal(wallLine);
+    });
+  });
+
   describe("findRegions()", function() {
     const waterIndex = DungeonConstants.floorTypes.indexOf('water');
 

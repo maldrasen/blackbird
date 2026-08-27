@@ -9,12 +9,14 @@ FeatureType.register('dungeon-entrance',{
     room.setStairs('up');
     room.forbidAllDoors();
     room.allowDoor(10,2);
+    room.setChamfer(50);
 
     room.setFloorBox({ x:0, y:0, width:4, height:1, type:'water' });
     room.setFloorBox({ x:0, y:4, width:4, height:1, type:'water' });
     room.setFloorBox({ x:0, y:1, width:1, height:3, type:'water' });
     room.setFloorBox({ x:4, y:0, width:7, height:2, type:'water' });
     room.setFloorBox({ x:4, y:3, width:7, height:2, type:'water' });
+    room.setFloorChamfer(25);
 
     room.setDescription(`The entrance chamber is filled with the sound of gently falling water. The rippling pool 
       sparkles brightly, as though catching rays of sunlight. The narrow causeway, flanked by statues of twelve faceless 

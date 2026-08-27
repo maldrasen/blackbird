@@ -67,6 +67,36 @@ global.GeometryHelper = (function() {
     });
   }
 
+  // Replace every corner of a clockwise rectilinear outline with a 45° bevel, set back along both adjacent edges
+  // by the given distance (in the same units as the vertices). Each corner's setback is clamped to a third of its
+  // shorter adjacent edge, so even a fully chamfered one tile edge keeps a flat middle third. When chamfering an
+  // outline that insetOutline() shifted by some amount, pass that amount as the inset: convex bevels pull in and
+  // concave bevels push out by (2−√2)·inset, keeping the wall as thick along the diagonals as along the straight
+  // edges. A corner whose setback comes out at zero or less stays square.
+  function chamferOutline(vertices, distance, inset = 0) {
+    const correction = (2 - Math.SQRT2) * inset;
+
+    return vertices.flatMap((vertex, i) => {
+      const previous = vertices[(i + vertices.length - 1) % vertices.length];
+      const next = vertices[(i + 1) % vertices.length];
+      const incoming = { x: vertex.x - previous.x, y: vertex.y - previous.y };
+      const outgoing = { x: next.x - vertex.x, y: next.y - vertex.y };
+
+      const convex = (incoming.x * outgoing.y) - (incoming.y * outgoing.x) > 0;
+      const setback = Math.min(
+        distance + (convex ? -correction : correction),
+        Math.abs(incoming.x + incoming.y) / 3,
+        Math.abs(outgoing.x + outgoing.y) / 3);
+
+      if (setback <= 0) { return [vertex]; }
+
+      return [
+        { x: vertex.x - (Math.sign(incoming.x) * setback), y: vertex.y - (Math.sign(incoming.y) * setback) },
+        { x: vertex.x + (Math.sign(outgoing.x) * setback), y: vertex.y + (Math.sign(outgoing.y) * setback) },
+      ];
+    });
+  }
+
   function edgeDirection(from, to) {
     if (to.x > from.x) { return 'E'; }
     if (to.x < from.x) { return 'W'; }
@@ -134,6 +164,7 @@ global.GeometryHelper = (function() {
   return {
     traceOutline,
     insetOutline,
+    chamferOutline,
     findRegions,
   };
 
