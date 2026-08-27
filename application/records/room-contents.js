@@ -32,8 +32,8 @@ global.RoomContents = (function() {
     // resolution. When anything complicated like this happens the description() function needs to render its text in
     // whatever style is appropriate. This function can look up the resolution of the scouting roll from the current
     // room, which should always be accessible from the floor state with getCurrentRoom().
-    function getDescription() {
-      return (typeof roomContents.description === 'function') ? roomContents.description():
+    function getDescription(options) {
+      return (typeof roomContents.description === 'function') ? roomContents.description(options):
         `<span class='fg-strong'>${roomContents.description}</span>`;
     }
 

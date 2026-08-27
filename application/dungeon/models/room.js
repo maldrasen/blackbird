@@ -7,6 +7,7 @@ global.Room = function(feature, type='normal') {
   let stairsAllowed = false;
   let overlapping = false;
   let contents = null;
+  let contentsOptions;
   let stairs = null;
   let usedCommands = [];
   let scoutingRoll;
@@ -174,6 +175,11 @@ global.Room = function(feature, type='normal') {
     return feature.getType() !== 'corridor' && stairs == null;
   }
 
+  function setContents(code, options={}) {
+    contents = code;
+    contentsOptions = options;
+  }
+
   function setDescription(text) {
     if (description != null) { throw new Error(`A description for this room has already been set.`); }
     description = text;
@@ -185,7 +191,7 @@ global.Room = function(feature, type='normal') {
     const theme = DungeonTheme.lookup(DungeonSystem.getDungeonFloor().getTheme());
 
     if (description == null && contents) {
-      description = RoomContents.lookup(contents).getDescription();
+      description = RoomContents.lookup(contents).getDescription(contentsOptions);
     }
     if (description == null && stairs) {
        description = theme.getDescription(`${stairs}Stairs`);
@@ -255,10 +261,11 @@ global.Room = function(feature, type='normal') {
     hasStairs: () => { return stairs != null; },
     markOverlapping: () => { overlapping = true; },
     isOverlapping: () => { return overlapping; },
-    setContents: code => { contents = code; },
-    getContents: () => { return contents; },
-    hasContents: () => { return contents != null; },
     canHaveContents,
+    setContents,
+    getContents: () => { return contents; },
+    getContentsOptions: () => { return contentsOptions; },
+    hasContents: () => { return contents != null; },
     setDescription,
     getDescription,
     getAvailableCommands,
