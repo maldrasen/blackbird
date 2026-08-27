@@ -94,9 +94,47 @@ global.GeometryHelper = (function() {
     return ahead.turnRight;
   }
 
+  // Split a grid into its orthogonally connected regions of cells matching the given predicate. Each region comes
+  // back as a boolean grid with the same dimensions as the input, so it can be passed directly to traceOutline().
+  function findRegions(grid, match) {
+    const height = grid.length;
+    const width = grid[0].length;
+    const seen = Array.from({ length:height }, () => new Array(width).fill(false));
+    const regions = [];
+
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        if (seen[y][x] || match(grid[y][x]) === false) { continue; }
+
+        const region = Array.from({ length:height }, () => new Array(width).fill(false));
+        const stack = [{ x, y }];
+        seen[y][x] = true;
+
+        while (stack.length > 0) {
+          const tile = stack.pop();
+          region[tile.y][tile.x] = true;
+
+          [{ x:tile.x+1, y:tile.y }, { x:tile.x-1, y:tile.y }, { x:tile.x, y:tile.y+1 }, { x:tile.x, y:tile.y-1 }]
+            .forEach(next => {
+              if (next.x >= 0 && next.y >= 0 && next.x < width && next.y < height &&
+                  seen[next.y][next.x] === false && match(grid[next.y][next.x])) {
+                seen[next.y][next.x] = true;
+                stack.push(next);
+              }
+            });
+        }
+
+        regions.push(region);
+      }
+    }
+
+    return regions;
+  }
+
   return {
     traceOutline,
     insetOutline,
+    findRegions,
   };
 
 })();

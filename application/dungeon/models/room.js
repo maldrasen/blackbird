@@ -62,7 +62,8 @@ global.Room = function(feature, type='normal') {
     footprint[y][x] = floorIndex;
   }
 
-  function setFloorBox(x, y, width, height, type) {
+  function setFloorBox(options) {
+    const { x, y, width, height, type } = options;
     for (let yy = y; yy < y + height; yy++) {
       for (let xx = x; xx < x + width; xx++) {
         setFloor(xx, yy, type);

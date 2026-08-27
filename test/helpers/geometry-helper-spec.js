@@ -84,4 +84,67 @@ describe("GeometryHelper", function() {
     });
   });
 
+  describe("findRegions()", function() {
+    const waterIndex = DungeonConstants.floorTypes.indexOf('water');
+
+    it('finds each strip of water in a room as its own region', function() {
+      const room = Room();
+      room.setBounds(4,5);
+      room.addBox(0,0,4,5);
+      room.setFloorBox(0,0,4,1,'water');
+      room.setFloorBox(0,4,4,1,'water');
+
+      const regions = GeometryHelper.findRegions(room.getFootprint(), cell => cell === waterIndex);
+
+      expect(regions).to.deep.equal([
+        [
+          [true,true,true,true],
+          [false,false,false,false],
+          [false,false,false,false],
+          [false,false,false,false],
+          [false,false,false,false],
+        ],[
+          [false,false,false,false],
+          [false,false,false,false],
+          [false,false,false,false],
+          [false,false,false,false],
+          [true,true,true,true],
+        ],
+      ]);
+    });
+
+    it('connects tiles orthogonally but not diagonally', function() {
+      const room = Room();
+      room.setBounds(2,2);
+      room.addBox(0,0,2,2);
+      room.setFloor(0,0,'water');
+      room.setFloor(1,1,'water');
+
+      const regions = GeometryHelper.findRegions(room.getFootprint(), cell => cell === waterIndex);
+
+      expect(regions.length).to.equal(2);
+    });
+
+    it('finds no regions when nothing matches', function() {
+      const room = Room();
+      room.setBounds(2,2);
+      room.addBox(0,0,2,2);
+
+      expect(GeometryHelper.findRegions(room.getFootprint(), cell => cell === waterIndex)).to.deep.equal([]);
+    });
+
+    it('returns regions that can be traced as outlines', function() {
+      const room = Room();
+      room.setBounds(4,5);
+      room.addBox(0,0,4,5);
+      room.setFloorBox(0,4,4,1,'water');
+
+      const regions = GeometryHelper.findRegions(room.getFootprint(), cell => cell === waterIndex);
+
+      expect(GeometryHelper.traceOutline(regions[0])).to.deep.equal([
+        { x:0, y:4 }, { x:4, y:4 }, { x:4, y:5 }, { x:0, y:5 },
+      ]);
+    });
+  });
+
 });

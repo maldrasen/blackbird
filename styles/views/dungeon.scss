@@ -38,6 +38,12 @@
     stroke-width: 1;
   }
 
+  .floor-layer .water {
+    fill: variables.$bg-dungeon-water;
+    stroke: variables.$fg-dungeon-water-edge;
+    stroke-width: 2;
+  }
+
   &.current {
     .walls {
       stroke: variables.$fg-dungeon-wall-current;
@@ -52,6 +58,7 @@
     .nested-wall { display: none; }
     .stairs { display: none; }
     .floor-texture { display: none; }
+    .floor-layer { display: none; }
   }
 
   .stairs {

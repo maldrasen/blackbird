@@ -21,6 +21,7 @@ global.DungeonRoomView = (function() {
     const content = [
       `<polygon class='footprint' points='${points(geometry.outline)}'/>`,
       `<polygon class='floor' points='${points(geometry.floor)}'/>`,
+      ...floorLayers(room, geometry, index),
       `<polygon class='walls' points='${points(geometry.wallLine)}'/>`,
       ...nestedWalls(floor, room),
       stairsGlyph(floor, room, 'up', gridSize),
@@ -63,6 +64,30 @@ global.DungeonRoomView = (function() {
 
       return { outline, wallLine };
     });
+  }
+
+  // Rooms with special floor tiles (water so far) render each connected region as a polygon between the floor and
+  // the walls. The group is clipped to the floor polygon, which also trims the edge stroke wherever a region butts
+  // up against a wall, so the stroke only separates special floor from normal floor.
+  function floorLayers(room, geometry, index) {
+    const gridSize = DungeonFloorView.getGridSize();
+
+    const polygons = DungeonConstants.floorTypes.flatMap((type, typeIndex) => {
+      if (typeIndex === 0) { return []; }
+
+      return GeometryHelper.findRegions(room.getFootprint(), cell => cell === typeIndex).map(region => {
+        const outline = GeometryHelper.traceOutline(region)
+          .map(vertex => ({ x: vertex.x * gridSize, y: vertex.y * gridSize }));
+        return `<polygon class='${type}' points='${points(outline)}'/>`;
+      });
+    });
+
+    if (polygons.length === 0) { return []; }
+
+    return [
+      `<clipPath id='floorLayerClip-${index}'><polygon points='${points(geometry.floor)}'/></clipPath>`,
+      `<g class='floor-layer' clip-path='url(#floorLayerClip-${index})'>${polygons.join('')}</g>`,
+    ];
   }
 
   function nestedWalls(floor, room) {
