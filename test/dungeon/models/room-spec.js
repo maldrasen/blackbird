@@ -105,7 +105,7 @@ describe("Room", function() {
       const room = Room();
       room.setBounds(4,3);
       room.addBox(0,0,4,3);
-      room.setFloorBox(0,0,4,1,'water');
+      room.setFloorBox({ x:0, y:0, width:4, height:1, type:'water' });
 
       expect(room.getFootprint()).to.deep.equal([
         [1,1,1,1],
@@ -119,7 +119,7 @@ describe("Room", function() {
       room.setBounds(4,3);
       room.addBox(0,0,4,2);
 
-      expect(() => room.setFloorBox(0,1,4,2,'water')).to.throw('not a floor tile');
+      expect(() => room.setFloorBox({ x:0, y:1, width:4, height:2, type:'water' })).to.throw('not a floor tile');
     });
   });
 

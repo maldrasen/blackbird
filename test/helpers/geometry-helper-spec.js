@@ -91,8 +91,8 @@ describe("GeometryHelper", function() {
       const room = Room();
       room.setBounds(4,5);
       room.addBox(0,0,4,5);
-      room.setFloorBox(0,0,4,1,'water');
-      room.setFloorBox(0,4,4,1,'water');
+      room.setFloorBox({ x:0, y:0, width:4, height:1, type:'water' });
+      room.setFloorBox({ x:0, y:4, width:4, height:1, type:'water' });
 
       const regions = GeometryHelper.findRegions(room.getFootprint(), cell => cell === waterIndex);
 
@@ -137,7 +137,7 @@ describe("GeometryHelper", function() {
       const room = Room();
       room.setBounds(4,5);
       room.addBox(0,0,4,5);
-      room.setFloorBox(0,4,4,1,'water');
+      room.setFloorBox({ x:0, y:4, width:4, height:1, type:'water' });
 
       const regions = GeometryHelper.findRegions(room.getFootprint(), cell => cell === waterIndex);
 
