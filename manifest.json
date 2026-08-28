@@ -267,6 +267,7 @@
     "data/abilities/change-equipment.js",
     "data/abilities/dick-punch.js",
     "data/abilities/hide.js",
+    "data/abilities/monster-use-article.js",
     "data/abilities/negotiate.js",
     "data/abilities/pass.js",
     "data/abilities/punch.js",

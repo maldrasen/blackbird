@@ -11,8 +11,7 @@ global.Fixtures = (function() {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
-      encounter: 'nightgaunt',
-      // monster: 'kobold-sneak-slut',
+      monster: 'kobold-tosser',
     });
 
     GameSystem.setGameMode(GameMode.location);
