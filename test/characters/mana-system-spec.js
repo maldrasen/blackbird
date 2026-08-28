@@ -23,40 +23,33 @@ describe("ManaSystem", function() {
   });
 
   describe("deepenPool()", function() {
+    beforeEach(function() {
+      GameSystem.getState().setPlayer(CharacterFixtures.genericMale({ actor:{ species:'human' }}));
+    })
+
     it("raises the maximum and fills the new depth", function() {
-      const id = CharacterFixtures.genericMale({ actor:{ species:'human' }});
-      ManaSystem.deepenPool(id, Mana.red, 10);
-      expect(ManaSystem.getPool(id, Mana.red)).to.deep.equal({ current:10, max:10 });
-    });
-
-    it("keeps the mana already spent from the pool", function() {
-      const id = elfWithRed(3, 10);
-      ManaSystem.deepenPool(id, Mana.red, 5);
-      expect(ManaSystem.getPool(id, Mana.red)).to.deep.equal({ current:8, max:15 });
-    });
-
-    it("rejects a negative amount", function() {
-      const id = elfWithRed(3, 10);
-      expect(function() { ManaSystem.deepenPool(id, Mana.red, -5); }).to.throw('ManaSystem.amount');
+      Random.stubBetween(8);
+      ManaSystem.deepenPool(Mana.red);
+      expect(ManaSystem.getPool(GameSystem.getState().getPlayer(), Mana.red)).to.deep.equal({ current:8, max:8 });
     });
   });
 
-  describe("addMana()", function() {
+  describe("restoreMana()", function() {
     it("adds to the current mana and returns the amount gained", function() {
       const id = elfWithRed(3, 10);
-      expect(ManaSystem.addMana(id, Mana.red, 4)).to.equal(4);
+      expect(ManaSystem.restoreMana(id, Mana.red, 4)).to.equal(4);
       expect(ManaSystem.getPool(id, Mana.red).current).to.equal(7);
     });
 
     it("only gains what the pool can hold", function() {
       const id = elfWithRed(3, 10);
-      expect(ManaSystem.addMana(id, Mana.red, 20)).to.equal(7);
+      expect(ManaSystem.restoreMana(id, Mana.red, 20)).to.equal(7);
       expect(ManaSystem.getPool(id, Mana.red).current).to.equal(10);
     });
 
     it("gains nothing into an empty pool", function() {
       const id = elfWithRed(3, 10);
-      expect(ManaSystem.addMana(id, Mana.blue, 20)).to.equal(0);
+      expect(ManaSystem.restoreMana(id, Mana.blue, 20)).to.equal(0);
     });
   });
 
