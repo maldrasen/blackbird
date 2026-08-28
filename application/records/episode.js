@@ -34,15 +34,17 @@
 - `onShow`           Function called after the page is rendered.
 
 ### Button properties:
-- `standard`    ['continue'] Renders a canned button (only continue for now) all other properties are ignored.
-- `label`       Button text. Required unless standard is set.
-- `callback`    Called when the button is clicked or chosen with a number key. A side effect that runs before
-                jump or end; a button with neither is expected to advance the episode itself, if at all.
-- `jump`        Page label. Clicking jumps to that page. Mutually exclusive with end.
-- `end`         true ends the episode when clicked.
-- `requires`    Predicate or array of predicates, passed the EpisodeState. Unmet buttons aren't rendered.
-- `id`          Element id.
-- `classname`   Classname string or array of classnames.
+- `standard`        ['continue'] Renders a canned button (only continue for now) all other properties are ignored.
+- `label`           Button text. Required unless standard is set.
+- `callback`        Called when the button is clicked or chosen with a number key. A side effect that runs before
+                    jump or end; a button with neither is expected to advance the episode itself, if at all.
+- `jump`            Page label. Clicking jumps to that page. Mutually exclusive with end.
+- `end`             true ends the episode when clicked.
+- `startEncounter`  { record } Clicking ends the episode (skipping the endFunction) and starts a battle with that
+                    encounter record. Mutually exclusive with jump and end.
+- `requires`        Predicate or array of predicates, passed the EpisodeState. Unmet buttons aren't rendered.
+- `id`              Element id.
+- `classname`       Classname string or array of classnames.
 */
 global.Episode = (function() {
   const episodes = {};

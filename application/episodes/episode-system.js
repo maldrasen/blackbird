@@ -61,6 +61,15 @@ global.EpisodeSystem = (function() {
     nextPage();
   }
 
+  // A button can end its episode by starting a battle with a specific encounter record. The episode is over the
+  // moment the fight starts, so the state is dropped without running the endFunction, and the return mode marked
+  // when the episode began is left in place for the battle to resolve to.
+  function startEncounter(options) {
+    state = null;
+    BattleSystem.startBattle({ encounter:options.record });
+    GameSystem.setGameMode(GameMode.battle);
+  }
+
   function reset() {
     state = null;
   }
@@ -78,6 +87,7 @@ global.EpisodeSystem = (function() {
     endEpisode,
     nextPage,
     jumpToPage,
+    startEncounter,
     reset,
   };
 

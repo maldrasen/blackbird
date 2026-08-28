@@ -73,7 +73,7 @@ global.EpisodeView = (function() {
 
   // This function expects one of the standard button codes or button properties. A canned application button ignores
   // the button properties, but gets own default values if the button has them. The other button properties are:
-  // { label, id, classname, callback, jump, end } Only label is required.
+  // { label, id, classname, callback, jump, end, startEncounter } Only label is required.
   function addButton(buttonData) {
     X.removeClass('#episodeButtons','hide');
 
@@ -113,6 +113,13 @@ global.EpisodeView = (function() {
       return () => {
         if (callback) { callback(); }
         EpisodeSystem.endEpisode();
+      };
+    }
+
+    if (buttonData.startEncounter) {
+      return () => {
+        if (callback) { callback(); }
+        EpisodeSystem.startEncounter(buttonData.startEncounter);
       };
     }
 
