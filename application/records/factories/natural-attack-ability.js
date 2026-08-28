@@ -50,6 +50,7 @@ global.NaturalAttackAbility = (function() {
       essence: options.essence,
       canBeUsed: () => canBeUsed(options),
       execute: () => execute(code, options),
+      cooldown: options.cooldown,
       getAccuracyBonus: options.getAccuracyBonus,
       getDamageBonus: options.getDamageBonus,
     });
@@ -88,8 +89,6 @@ global.NaturalAttackAbility = (function() {
 
     round.addMessage({ text:getAttackText(options, context) }, Weaver(context));
     round.addTime(attack.speed);
-
-    if (options.cooldown) { BattleSystem.getState().setCooldown(acting, code, options.cooldown); }
 
     if (contest.isHit()) {
       if (options.onHit) { options.onHit(acting, target); }

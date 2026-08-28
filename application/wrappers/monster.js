@@ -42,9 +42,6 @@ global.Monster = function(id) {
     getBaseMonster().getPrioritizedAbilities().forEach(ability => {
       abilityMap[ability.code] = ability; });
 
-    if (abilityMap[code] == null) {
-      throw new Error(`Monster[${getCode()}] doesn't have Ability[${code}]`); }
-
     return abilityMap[code];
   }
 
