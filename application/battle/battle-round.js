@@ -33,14 +33,16 @@ global.BattleRound = function(acting, type=null) {
   // Get the cooldown for the specified ability for the currently acting entity.
   function getCooldown(code) {
     if (isActingMonster()) { return getActingMonster().getAbilityCooldown(code); }
-    return Ability.lookup(code).getCooldown();
+    throw `Only monster abilities have cooldowns.`;
   }
 
   // Apply the cooldown time for the specified ability for the currently acting entity.
   function applyCooldown(code) {
-    const cooldown = getCooldown(code)
-    if (cooldown) {
-      BattleSystem.getState().setCooldown(acting, code, cooldown);
+    if (isActingMonster()) {
+      const cooldown = getCooldown(code)
+      if (cooldown) {
+        BattleSystem.getState().setCooldown(acting, code, cooldown);
+      }
     }
   }
 
