@@ -47,6 +47,24 @@ global.BattleInitializer = (function() {
     });
   }
 
+  // Every monster ability with a cooldown starts the battle already on a random cooldown of up to its full time.
+  // Otherwise every monster of the same type would open the battle with the same highest priority ability. A roll of
+  // zero leaves the ability ready to use immediately.
+  function rollInitialCooldowns() {
+    const state = BattleSystem.getState();
+
+    state.getActiveMonsters().forEach(id => {
+      const monster = Monster(id);
+      monster.getPrioritizedAbilities().forEach(ability => {
+        const cooldown = monster.getAbilityCooldown(ability.code);
+        if (cooldown) {
+          const initial = Random.roll(cooldown + 1);
+          if (initial > 0) { state.setCooldown(id, ability.code, initial); }
+        }
+      });
+    });
+  }
+
   // TODO: Keeping the ambush state super simple, stupid, and frequent for now. There will eventually be variables
   //       that effect the ambush chances here. Scouting ahead or something to make favorable ambushes more likely.
   //       Some monster types (sneaky ones) will also be more likely to ambush, whereas big stompy monsters will be
@@ -61,6 +79,7 @@ global.BattleInitializer = (function() {
   return {
     rollReactionTimes,
     populateThreatTables,
+    rollInitialCooldowns,
     rollAmbush,
   };
 

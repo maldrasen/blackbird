@@ -252,9 +252,6 @@ global.BattleState = function(data) {
   // every turn. Characters in the party can use abilities as often as they like, provided they spend the stamina or
   // mana to use the ability.
 
-  // TODO: Come to think of it, when we start the battle we should set a random cooldown time for every monster
-  //       ability so that the monsters aren't all doing the same thing on the first round.
-
   function setCooldown(id, code, time) {
     if (abilityCooldowns[id] == null) { abilityCooldowns[id] = {}; }
     abilityCooldowns[id][code] = time;

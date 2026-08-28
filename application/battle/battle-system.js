@@ -8,6 +8,7 @@ global.BattleSystem = (function() {
     const source = buildEncounter(data);
     BattleInitializer.rollReactionTimes();
     BattleInitializer.populateThreatTables();
+    BattleInitializer.rollInitialCooldowns();
 
     state.setAmbushState(data.ambushState || BattleInitializer.rollAmbush());
 
