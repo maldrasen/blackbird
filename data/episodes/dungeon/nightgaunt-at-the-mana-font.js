@@ -51,7 +51,7 @@ const startButtons = [
 
 const refuseButtons = [
   { label:'Do as it says.', jump:'A.accept' },
-  { label:'Charge the creature!', startEncounter:'nightgaunt' },
+  { label:'Charge the creature!', startEncounter: { record:'nightgaunt' }},
 ];
 
 Episode.register('nightgaunt-at-the-mana-font',{

@@ -357,6 +357,7 @@
     "data/dungeon-themes/sewer.js",
     "data/dungeon-themes/temple.js",
     "data/dungeon-themes/warrens.js",
+    "data/encounters/nightgaunts.js",
     "data/encounters/spec-encounters.js",
     "data/episode-bundles.js",
     "data/episodes/city/take-the-dungeon-oath.js",
