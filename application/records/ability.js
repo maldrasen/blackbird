@@ -13,22 +13,11 @@ global.Ability = (function() {
     function execute() {
       const round = BattleSystem.getRound();
       round.setAbility(code);
-
+      round.applyCooldown(code);
       ability.execute();
-      applyCooldown();
 
       if (round.isActingCharacter()) {
         BattleSystem.finishCharacterRound();
-      }
-    }
-
-    function applyCooldown() {
-      const round = BattleSystem.getRound();
-      const monsterAbility = round.isActingMonster() ? round.getActingMonster().getAbility(code) : null;
-      const cooldown = (monsterAbility ? monsterAbility.cooldown : null) || ability.cooldown;
-
-      if (cooldown) {
-        BattleSystem.getState().setCooldown(round.getActing(), code, cooldown);
       }
     }
 
