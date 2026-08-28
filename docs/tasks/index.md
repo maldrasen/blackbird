@@ -14,7 +14,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [142] Item detail panel `5pt` — [142-item-detail-panel.md](142-item-detail-panel.md)
 - [158] Add a Fixture to Adjust the Question Pool for Testing `3pt` — [158-fixture-to-adjust-question-pool.md](158-fixture-to-adjust-question-pool.md)
 - [161] Join Text `8pt` — [161-join-text.md](161-join-text.md)
-- [172] Nightgaunt Episode `8pt` — [172-nightgaunt-episode.md](172-nightgaunt-episode.md)
 - [194] Feeling Adjustments During Battle `2pt` — [194-feeling-adjustments-during-battle.md](194-feeling-adjustments-during-battle.md)
 - [197] Skill events `5pt` — [197-skill-episodes.md](197-skill-episodes.md)
 
