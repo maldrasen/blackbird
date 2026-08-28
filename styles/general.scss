@@ -122,6 +122,12 @@ body:has(.dragging), body:has(.dragging) * { cursor: grabbing !important; }
   color: variables.$fg-strong;
 }
 
+.telepathy {
+  margin: 20px;
+  text-align: center;
+  color: variables.$fg-very-strong;
+}
+
 .key-hint {
   position: relative;
   left: 6px;

@@ -48,6 +48,7 @@ global.EpisodeValidator = function(code, data) {
 
     Validate.isString(`${name}.label`, button.label);
     validateNavigation(name, button);
+    if (button.startEncounter != null) { validateStartEncounter(name, button); }
     if (button.callback != null) { Validate.isFunction(`${name}.callback`, button.callback); }
     if (button.requires != null) { Validate.singleOrArrayOf(`${name}.requires`, button.requires, 'function'); }
     if (button.classname != null) { Validate.singleOrArrayOf(`${name}.classname`, button.classname, 'string'); }
@@ -59,6 +60,15 @@ global.EpisodeValidator = function(code, data) {
     Object.entries(setFlag).forEach(([key,value]) => {
       Validate.isIn(`${name}.${key}`, typeof value, ['boolean','number','string']);
     });
+  }
+
+  // Whether the record names a real encounter can only be checked once all the records have loaded, so only the
+  // shape is validated here.
+  function validateStartEncounter(name, button) {
+    Validate.isString(`${name}.startEncounter.record`, button.startEncounter.record);
+    if (button.jump != null || button.end != null) {
+      throw new Error(`${name} cannot combine startEncounter with jump or end`);
+    }
   }
 
   // Pages and buttons share the jump and end navigation properties.

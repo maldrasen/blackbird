@@ -5,8 +5,8 @@ global.ConsumableEffect = (function() {
     return { type:'add-health', value:value };
   }
 
-  function addMana(entity, color, min, max) {
-    const value = ManaSystem.addMana(entity, color, Random.between(min,max));
+  function restoreMana(entity, color, min, max) {
+    const value = ManaSystem.restoreMana(entity, color, Random.between(min,max));
     return { type:'add-mana', color:color, value:value };
   }
 
@@ -16,7 +16,7 @@ global.ConsumableEffect = (function() {
 
   return {
     addHealth: (min, max) => { return entity => addHealth(entity, min, max); },
-    addMana: (color, min, max) => { return entity => addMana(entity, color, min, max); },
+    restoreMana: (color, min, max) => { return entity => restoreMana(entity, color, min, max); },
     addStatusEffect: (code, options) => { return entity => addStatusEffect(entity, code, options); },
     increasePotency: level => { return entity => increasePotency(entity, level); }
   };

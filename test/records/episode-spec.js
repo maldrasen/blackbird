@@ -97,6 +97,16 @@ describe('Episode', function() {
     expect(registerButton({ label:'Approach', jump:'here', end:true })).to.throw(/cannot have both jump and end/);
   });
 
+  it('rejects a startEncounter without a record', function() {
+    expect(registerButton({ label:'Charge!', startEncounter:{} }))
+      .to.throw(/startEncounter.record is not a string/);
+  });
+
+  it('rejects a button that combines startEncounter with jump or end', function() {
+    expect(registerButton({ label:'Charge!', startEncounter:{ record:'nightgaunt' }, end:true }))
+      .to.throw(/cannot combine startEncounter with jump or end/);
+  });
+
   it('rejects a button classname that is not a string or string array', function() {
     expect(registerButton({ label:'Continue', classname:['button-primary',7] }))
       .to.throw(/classname is not a string or an array of strings/);

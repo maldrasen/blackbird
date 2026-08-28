@@ -21,11 +21,11 @@ describe('ConsumableEffect', function() {
     });
   });
 
-  describe('addMana()', function() {
+  describe('restoreMana()', function() {
     it('adds mana to the pool and returns the amount gained', function() {
       const horse = CharacterFixtures.genericMale({ mana:{ red:{ current:2, max:20 } } });
 
-      const result = ConsumableEffect.addMana(Mana.red,5,5)(horse);
+      const result = ConsumableEffect.restoreMana(Mana.red,5,5)(horse);
 
       expect(result.type).to.equal('add-mana');
       expect(result.color).to.equal(Mana.red);
@@ -36,7 +36,7 @@ describe('ConsumableEffect', function() {
     it('clamps mana at the pool maximum and reports only the amount gained', function() {
       const horse = CharacterFixtures.genericMale({ mana:{ red:{ current:18, max:20 } } });
 
-      const result = ConsumableEffect.addMana(Mana.red,5,5)(horse);
+      const result = ConsumableEffect.restoreMana(Mana.red,5,5)(horse);
 
       expect(result.value).to.equal(2);
       expect(ManaSystem.getPool(horse,Mana.red).current).to.equal(20);

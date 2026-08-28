@@ -23,10 +23,13 @@ global.WeaverElements = (function() {
     return `<ul class='result-blocks'>${items.join('')}</ul>`;
   }
 
+  function telepathy(text) { return `<div class='telepathy'>《 ${text} 》</div>` }
+
   return {
     appendResultBlock,
     resultBlock,
     resultBlocks,
+    telepathy,
   };
 
 })();

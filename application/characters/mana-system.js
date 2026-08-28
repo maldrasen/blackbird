@@ -19,22 +19,24 @@ global.ManaSystem = (function() {
     return lookup(id)[color];
   }
 
-  // The mana fonts found in the dungeon deepen a pool, raising its maximum and filling the new depth at the same
-  // time. This is the only way a human ever gains mana.
-  function deepenPool(id, color, amount) {
+  // The mana fonts found in the dungeon deepen the player's mana pool, raising its maximum and filling the new depth
+  // at the same time. This is the only way a human can ever gain mana.
+  function deepenPool(color) {
     assertColor(color);
-    assertAmount(amount);
 
-    const mana = lookup(id);
+    const player = GameSystem.getState().getPlayer();
+    const amount = Random.between(4,10);
+    const mana = lookup(player);
     mana[color].max += amount;
     mana[color].current += amount;
-    ManaComponent.update(id, mana);
+    ManaComponent.update(player, mana);
 
-    return getPool(id, color);
+    return amount;
   }
 
-  // Returns the amount actually gained, which is less than asked for when the pool can't hold it all.
-  function addMana(id, color, amount) {
+  // This function is for restoring mana and doesn't change a character's max mana. The deepenPool()
+  // function is used to increase max mana. This function returns the amount actually restored.
+  function restoreMana(id, color, amount) {
     assertColor(color);
     assertAmount(amount);
 
@@ -75,7 +77,7 @@ global.ManaSystem = (function() {
   return {
     getPool,
     deepenPool,
-    addMana,
+    restoreMana,
     hasMana,
     spendMana,
     restoreAll,
