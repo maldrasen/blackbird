@@ -24,6 +24,7 @@ global.Ability = (function() {
     return {
       getCode: () => { return code; },
       getName: () => { return ability.name },
+      getCooldown: () => { return ability.cooldown; },
       getCategory: () => { return ability.category },
       getTargetingMode: () => { return ability.targetingMode },
       getEssence: () => { return ability.essence || 0; },

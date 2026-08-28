@@ -45,6 +45,12 @@ global.Monster = function(id) {
     return abilityMap[code];
   }
 
+  // The cooldown set on the monster's ability entry overrides the cooldown on the ability record itself.
+  function getAbilityCooldown(code) {
+    const monsterAbility = getAbility(code);
+    return (monsterAbility ? monsterAbility.cooldown : null) || Ability.lookup(code).getCooldown();
+  }
+
   function getResistance(type) {
     const speciesResistance = getSpecies() ? Species.lookup(getSpecies()).getResistance(type) : 0;
     const monsterResistance = getBaseMonster().getResistance(type);
@@ -114,6 +120,7 @@ global.Monster = function(id) {
     getSkill,
     getPrioritizedAbilities,
     getAbility,
+    getAbilityCooldown,
 
     populateThreatTable,
     getThreatTable,
