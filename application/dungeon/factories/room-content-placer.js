@@ -31,9 +31,9 @@ global.RoomContentPlacer = function(contents=null) {
 
   function pickContents() {
     const rarityOrder = RarityHelper.getOrder();
-    const rolled = RarityHelper.rollRarity();
+    const index = RarityHelper.rollRarityIndex();
 
-    for (let tier=rolled; tier>=0; tier--) {
+    for (let tier=index; tier>=0; tier--) {
       const candidates = available.filter(entry => entry.rarity === rarityOrder[tier]);
       if (candidates.length > 0) { return Random.from(candidates); }
     }

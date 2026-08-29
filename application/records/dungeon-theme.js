@@ -16,9 +16,9 @@ global.DungeonTheme = (function() {
 
     function getRandomFeature() {
       const rarityOrder = RarityHelper.getOrder();
-      const rolled = RarityHelper.rollRarity();
+      const index = RarityHelper.rollRarityIndex();
 
-      for (let tier=rolled; tier>=0; tier--) {
+      for (let tier=index; tier>=0; tier--) {
         const candidates = theme.features.filter(entry => entry.rarity === rarityOrder[tier]);
         if (candidates.length > 0) {
           const options = Random.from(candidates);
@@ -26,7 +26,7 @@ global.DungeonTheme = (function() {
         }
       }
 
-      throw new Error(`Theme [${code}] has no feature at or below the [${rarityOrder[rolled]}] rarity tier`);
+      throw new Error(`Theme [${code}] has no feature at or below the [${rarityOrder[index]}] rarity tier`);
     }
 
     function getEncounterRate(isNewRoom) {

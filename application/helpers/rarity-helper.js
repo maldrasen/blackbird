@@ -19,9 +19,15 @@ global.RarityHelper = (function() {
     return Random.fromFrequencyMap(standardWeights);
   }
 
+  function rollRarityIndex(type='standard') {
+    return getOrder().indexOf(rollRarity(type));
+  }
+
   return {
     getOrder,
     rollRarity,
+    rollRarityIndex,
   }
+
 
 })();
