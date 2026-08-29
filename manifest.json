@@ -138,6 +138,7 @@
     "application/helpers/piecewise-curve.js",
     "application/helpers/pronoun-helper.js",
     "application/helpers/random.js",
+    "application/helpers/rarity-helper.js",
     "application/helpers/report-helper.js",
     "application/helpers/state-recorder.js",
     "application/helpers/string-helper.js",

@@ -14,14 +14,19 @@ global.DungeonTheme = (function() {
 
     const theme = { ...themes[code] };
 
-    // TODO: This function should use the feature rarity. Before we can do that
-    //       though every feature is going to need at least five different
-    //       feature types to pull from. That should be the bare minimum for
-    //       any dungeon theme I think.
     function getRandomFeature() {
-      const options = Random.from(theme.features);
-      const featureType = FeatureType.lookup(options.type);
-      return featureType.buildFeature(options);
+      const rarityOrder = RarityHelper.getOrder();
+      const rolled = RarityHelper.rollRarity();
+
+      for (let tier=rolled; tier>=0; tier--) {
+        const candidates = theme.features.filter(entry => entry.rarity === rarityOrder[tier]);
+        if (candidates.length > 0) {
+          const options = Random.from(candidates);
+          return FeatureType.lookup(options.type).buildFeature(options);
+        }
+      }
+
+      throw new Error(`Theme [${code}] has no feature at or below the [${rarityOrder[rolled]}] rarity tier`);
     }
 
     function getEncounterRate(isNewRoom) {
