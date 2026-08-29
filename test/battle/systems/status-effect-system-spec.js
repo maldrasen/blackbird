@@ -195,6 +195,10 @@ describe("StatusEffectSystem", function() {
       expect(HealthComponent.lookup(victim).currentHealth).to.equal(-5);
       expect(state.isKnockedOut(victim)).to.be.true;
       expect(state.getTurnOrder().filter(entry => entry.type === 'status')).to.be.empty;
+
+      const messages = BattleSystem.getRound().getMessages();
+      expect(messages.length).to.equal(2);
+      expect(messages[1].text).to.include('was knocked out!');
     });
 
     // The stub order for the resist roll is the 5% critical roll, then the contest floor and resistance rolls, then
