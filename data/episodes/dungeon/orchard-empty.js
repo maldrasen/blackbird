@@ -1,6 +1,18 @@
 
+function getAppleCount() {
+  return  Math.ceil(DungeonSystem.getDungeonFloor().getCurrentRoom().getContentsOptions().size / 5);
+}
+
+// TODO: We need a standardized loot element that we can add as part of the description here.
+
+function harvestApples() {
+  const count = getAppleCount();
+  InventoryManager().addArticle('rhysh-apple',count);
+  return `You pick ${count} apples...`;
+}
+
 const harvestButtons = [
-  { label:'Pick some apples.', end:true },
+  { label:'Pick some apples.', jump:'harvested' },
   { label:'Leave them alone.', end:true },
 ]
 
@@ -8,6 +20,7 @@ Episode.register('orchard-empty',{
   layout: 'centered',
   repeat: true,
   pages: [
-    { content:`You find an orchard.`, buttons:harvestButtons, buttonsStyle:'column' }
+    { content:`You find an orchard.`, buttons:harvestButtons, buttonsStyle:'column' },
+    { contentFunction:harvestApples, label:'harvested' },
   ],
 });
