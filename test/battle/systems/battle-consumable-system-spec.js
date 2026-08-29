@@ -88,6 +88,20 @@ describe("BattleConsumableSystem", function() {
       expect(getHealth(state.getEntityAtPosition('P',0,2))).to.be.lessThan(100);
     });
 
+    // The crimson tear defines no target, areaOfEffect, or messageForEntity, and its story names the item with an
+    // {I} token - the minimal shape a self targeted consumable can have.
+    it("targets the acting entity with a bare self consumable", function() {
+      const state = startBattle();
+      const acting = state.getEntityAtPosition('P',0,2);
+
+      BattleSystem.specRound(acting);
+      BattleConsumableSystem.useConsumable('crimson-tear');
+
+      const messages = BattleSystem.getRound().getMessages();
+      expect(messages.length).to.equal(1);
+      expect(messages[0].text).to.include('swallows the Crimson Tear whole');
+    });
+
     it("applies the statuses that fail their resist rolls", function() {
       const state = startBattle();
       const victim = isolateVictim(state);

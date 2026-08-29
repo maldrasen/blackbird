@@ -32,7 +32,7 @@ global.Consumable = (function() {
       getAreaOfEffect: () => { return consumable.areaOfEffect || null; },
       getBattleEffects: () => { return [...(consumable.battleEffects||[])]; },
       pickStory: context => { return consumable.stories ? consumable.stories.pick(context) : null; },
-      messageForEntity: (id,results) => { return consumable.messageForEntity(id,results); },
+      messageForEntity: (id,results) => { return consumable.messageForEntity ? consumable.messageForEntity(id,results) : null; },
       consume,
     };
   }

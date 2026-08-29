@@ -25,6 +25,10 @@ describe("Consumable", function() {
   });
 
   describe("messageForEntity()", function() {
+    it("returns null for a consumable that doesn't define one", function() {
+      expect(Consumable.lookup('dungeon-tripe').messageForEntity(null,{ damage:7 })).to.equal(null);
+    });
+
     it("builds the blasto's message from whichever effects landed", function() {
       const blasto = Consumable.lookup('blasto');
       expect(blasto.messageForEntity(null,{ damage:7, blind:true, stun:true }))

@@ -9,13 +9,23 @@ global.BattleConsumableSystem = (function() {
     const consumable = Consumable.lookup(code);
 
     round.addTime(750);
-    round.addMessage({ text:consumable.pickStory(round.getContext()) });
+    addStoryMessage(round, consumable);
     getAffectedEntities(round, consumable).forEach(id => applyEffects(round, consumable, id));
+  }
+
+  // The story is woven with the item in the context so that a story shared with the out of combat consume() path can
+  // still name the item with an {I} token.
+  function addStoryMessage(round, consumable) {
+    const context = { ...round.getContext(), I:consumable.getCode() };
+    const story = consumable.pickStory(context);
+
+    if (story) { round.addMessage({ text:story }, Weaver(context)); }
   }
 
   function getAffectedEntities(round, consumable) {
     const state = BattleSystem.getState();
 
+    if (consumable.getTarget() === 'self') { return [round.getActing()]; }
     if (consumable.getTarget() !== 'position') { return [round.getTarget()]; }
 
     return AreasOfEffect.get(round.getTargetPosition(), consumable.getAreaOfEffect()).
@@ -37,7 +47,9 @@ global.BattleConsumableSystem = (function() {
       if (effect.type === 'status') { results[effect.code] = applyStatus(id, effect); }
     });
 
-    round.addMessage({ text:consumable.messageForEntity(id, results) }, weaver);
+    const message = consumable.messageForEntity(id, results);
+    if (message) { round.addMessage({ text:message }, weaver); }
+
     BattleDamageSystem.addDownedMessage(id);
   }
 
