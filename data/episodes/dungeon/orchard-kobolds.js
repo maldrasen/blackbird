@@ -75,7 +75,7 @@ function takeFail() {
 
   if (size <= 3) {
     return `You raise your hands and start to back away. Even against kobolds, six to ${number} odds aren't great, 
-      especially when they already have you surrounded. Knowing them, there might be a few more you didn't notice 
+      especially when they already have you surrounded. And knowing them, there might be a few more you didn't notice
       hiding in the shadows. They're at least willing to let you leave, albeit empty handed.`;
   }
 
@@ -97,7 +97,7 @@ Episode.register('orchard-kobolds',{
     { contentFunction:tryJoin, label:'B.join' },
     { content:pages.joinPass, requires:EpisodeRequirements.propertyEquals('join.result','pass'), end:true },
     { content:pages.joinFail, requires:EpisodeRequirements.propertyEquals('join.result','fail'), end:true },
-    { contentFunction:tryTake, label:'B.take', end:true },
+    { contentFunction:tryTake, label:'B.take' },
     { contentFunction:takePass, requires:EpisodeRequirements.propertyEquals('take.result','pass'), end:true },
     { contentFunction:takeFail, requires:EpisodeRequirements.propertyEquals('take.result','fail'), end:true },
     { content:pages.nothing, label:'B.nothing' },
