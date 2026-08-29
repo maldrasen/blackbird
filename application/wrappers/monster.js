@@ -85,6 +85,7 @@ global.Monster = function(id) {
         case ThreatWeight.leastHealth: ThreatGenerators.leastHealth(threatTable, weight); break;
         case ThreatWeight.killMen: ThreatGenerators.killMen(threatTable, weight); break;
         case ThreatWeight.killWomen: ThreatGenerators.killWomen(threatTable, weight); break;
+        case ThreatWeight.furtherBack: ThreatGenerators.furtherBack(threatTable, weight); break;
         default: throw new Error(`Unknown Threat Generator [${generator}]`);
       }
     });

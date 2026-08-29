@@ -421,6 +421,7 @@ global.ThreatWeight = {
   leastHealth: 'leastHealth',
   killMen: 'killMen',
   killWomen: 'killWomen',
+  furtherBack: 'furtherBack',
 };
 
 global.BattleCondition = {
