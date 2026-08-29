@@ -7,9 +7,11 @@ FeatureType.register('orchard', {
 
     room.setBounds(width, height);
     room.addBox(0, 0, width, height);
-    room.allowStairs();
+    room.setContents('orchard-empty',{ size:width * height }); // TODO: Randomly add other variations of this content.
 
-    Random.flipCoin() ? addTreeRows(room, width, height) : addTreeCols(room, width, height);
+    Random.flipCoin() ?
+      addTreeRows(room, width, height) :
+      addTreeCols(room, width, height);
 
     feature.addRoom(room);
     return feature;
