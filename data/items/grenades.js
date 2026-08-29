@@ -9,15 +9,6 @@ blastoPackage.add(`{A:ActingName} takes one of the kobold made explosives, light
   It explodes on impact, creating a tremendous flash of light.`,
   BattleRequirements.actingIsCharacter());
 
-// TODO: Somehow we also need to add up to 4 messages after the story with:
-//   - "Name takes X damage, and is blinded and stunned!" or
-//   - "Name takes X damage, and is stunned!" or
-//   - "Name takes X damage, and is blinded!" or
-//   - "Name takes X damage!"
-// The consume() function returns an array of the effects. The effects need to all be applied to each character in the
-// area of effect. The consumable will then need to create one of these messages, given the damage done and the status
-// effects that were successfully applied.
-
 Consumable.register('blasto',{
   name: 'Blasto',
   description: `These loosely stitched hide bags are covered with a pungent, flammable grease and filled with dried
@@ -25,16 +16,23 @@ Consumable.register('blasto',{
     impact releasing a cloud of explosive spores.`,
   category: InventoryCategory.grenades,
   tags: ['mushroom'],
-  target: 'position',    //                                               []        [][][]
-  areaOfEffect: 'small', // 1 center position + 3 neighbor positions.   [][][]  or    []
+  target: 'position',
+  areaOfEffect: 'small',
   usableWhen: UsableWhen.inCombat,
   stories: blastoPackage,
-  effects: [
-    // TODO: Damage, Blind and Stun effect against targets in area.
+
+  battleEffects: [
+    { type:'damage', damageType:DamageType.fire, damage:{ x:2, d:4 } },
+    { type:'status', code:'blind', strength:20, duration:3000 },
+    { type:'status', code:'stun',  strength:10, count:1 },
   ],
 
-  messageForEntity: (id,effects) => {
-    // TODO: Effects should be { damage:int, blind:bool, stun:bool }
+  messageForEntity: (id, results) => {
+    let tail = ''
+    if (results.blind) { tail = `, and is blinded`; }
+    if (results.stun) { tail = `, and is stunned`; }
+    if (results.blind && results.stun) { tail = `, and is both blinded and stunned`; }
+    return `{A:ActingName} takes ${results.damage} damage${tail}!`;
   },
 
 });

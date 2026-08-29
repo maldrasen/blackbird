@@ -2,10 +2,10 @@ global.Consumable = (function() {
   const consumables = {};
 
   function register(code,data) {
-    const { effects, stories, ...articleData } = data;
+    const { effects, battleEffects, stories, target, areaOfEffect, messageForEntity, ...articleData } = data;
 
     Article.register(code, { ...articleData, type:ArticleType.consumable });
-    consumables[code] = { effects, stories };
+    consumables[code] = { effects, battleEffects, stories, target, areaOfEffect, messageForEntity };
   }
 
   function lookup(code) {
@@ -28,6 +28,11 @@ global.Consumable = (function() {
       getCategory: () => { return article.getCategory(); },
       getTags: () => { return article.getTags(); },
       getEffects: () => { return [...(consumable.effects||[])]; },
+      getTarget: () => { return consumable.target || 'self'; },
+      getAreaOfEffect: () => { return consumable.areaOfEffect || null; },
+      getBattleEffects: () => { return [...(consumable.battleEffects||[])]; },
+      pickStory: context => { return consumable.stories ? consumable.stories.pick(context) : null; },
+      messageForEntity: (id,results) => { return consumable.messageForEntity(id,results); },
       consume,
     };
   }

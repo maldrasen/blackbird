@@ -684,6 +684,7 @@
     "test/records/base-armor-spec.js",
     "test/records/base-weapon-spec.js",
     "test/records/cohort-spec.js",
+    "test/records/consumable-spec.js",
     "test/records/episode-spec.js",
     "test/records/feature-type-spec.js",
     "test/records/name-spec.js",
