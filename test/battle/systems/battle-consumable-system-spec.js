@@ -76,7 +76,7 @@ describe("BattleConsumableSystem", function() {
       expect(getHealth(acting)).to.equal(100);
     });
 
-    it("never catches the acting entity in its own blast", function() {
+    it("catches the acting entity in its own blast", function() {
       const state = startBattle();
       const acting = state.getEntityAtPosition('M',0,2);
       setHealth(acting, 100);
@@ -84,7 +84,7 @@ describe("BattleConsumableSystem", function() {
 
       throwBlasto(state, acting);
 
-      expect(getHealth(acting)).to.equal(100);
+      expect(getHealth(acting)).to.be.lessThan(100);
       expect(getHealth(state.getEntityAtPosition('P',0,2))).to.be.lessThan(100);
     });
 

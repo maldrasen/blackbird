@@ -2,8 +2,8 @@ global.BattleConsumableSystem = (function() {
 
   // Using a consumable in battle reads the acting entity and target from the round, tells the consumable's story,
   // then applies its battle effects to every entity caught in the area of effect. Explosions are indiscriminate: a
-  // blast catches hidden characters (though it doesn't reveal them) and the acting entity's own side, but the acting
-  // entity is never caught in its own blast - nobody lobs a grenade at their own feet.
+  // blast catches hidden characters (though it doesn't reveal them), the acting entity's own side, and even the
+  // acting entity itself when it's standing in the blast - a kobold absolutely would toss a grenade at its own feet.
   function useConsumable(code) {
     const round = BattleSystem.getRound();
     const consumable = Consumable.lookup(code);
@@ -20,7 +20,7 @@ global.BattleConsumableSystem = (function() {
 
     return AreasOfEffect.get(round.getTargetPosition(), consumable.getAreaOfEffect()).
       map(position => state.getEntityAtPosition(position)).
-      filter(id => id != null && id !== round.getActing() && state.isDown(id) === false);
+      filter(id => id != null && state.isDown(id) === false);
   }
 
   // The effects are applied in their authored order, and an effect that downs the victim stops the rest - the dead
