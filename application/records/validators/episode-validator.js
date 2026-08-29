@@ -66,6 +66,9 @@ global.EpisodeValidator = function(code, data) {
   // shape is validated here.
   function validateStartEncounter(name, button) {
     Validate.isString(`${name}.startEncounter.record`, button.startEncounter.record);
+    if (button.startEncounter.ambushState != null) {
+      Validate.isIn(`${name}.startEncounter.ambushState`, button.startEncounter.ambushState, Object.values(AmbushState));
+    }
     if (button.jump != null || button.end != null) {
       throw new Error(`${name} cannot combine startEncounter with jump or end`);
     }

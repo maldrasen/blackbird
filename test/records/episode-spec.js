@@ -102,6 +102,11 @@ describe('Episode', function() {
       .to.throw(/startEncounter.record is not a string/);
   });
 
+  it('rejects a startEncounter with an invalid ambush state', function() {
+    expect(registerButton({ label:'Charge!', startEncounter:{ record:'nightgaunt', ambushState:'sneaky' }}))
+      .to.throw(/startEncounter.ambushState\[sneaky\] not in list/);
+  });
+
   it('rejects a button that combines startEncounter with jump or end', function() {
     expect(registerButton({ label:'Charge!', startEncounter:{ record:'nightgaunt' }, end:true }))
       .to.throw(/cannot combine startEncounter with jump or end/);

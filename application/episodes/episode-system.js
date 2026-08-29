@@ -66,7 +66,7 @@ global.EpisodeSystem = (function() {
   // when the episode began is left in place for the battle to resolve to.
   function startEncounter(options) {
     state = null;
-    BattleSystem.startBattle({ encounter:options.record });
+    BattleSystem.startBattle({ encounter:options.record, ambushState:options.ambushState });
     GameSystem.setGameMode(GameMode.battle);
   }
 
