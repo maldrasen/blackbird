@@ -52,9 +52,11 @@ global.StraightCorridorFactory = function(originFeature, targetFeature, alignmen
         let cell = grid[cursor.y][cursor.x];
         if (cell == null) { end = cursor; }
 
-        // A ray is only valid if it finds a room of the target feature at the end.
+        // A ray is only valid if it finds a room of the target feature at the end, through a wall that room allows
+        // a door in. The origin's edge tiles are already filtered by door permission, but the target tile is
+        // whatever the ray lands on, so its room has to be asked here.
         if (cell != null) {
-          if (floor.getFeatureForRoom(cell) === targetFeature) {
+          if (floor.getFeatureForRoom(cell) === targetFeature && targetAllowsDoor(cell, cursor)) {
             rays.push({ start, end });
           }
           return;
@@ -63,6 +65,14 @@ global.StraightCorridorFactory = function(originFeature, targetFeature, alignmen
     });
 
     return (rays.length > 0) ? Random.from(rays) : null;
+  }
+
+  // The door gets knocked through the wall of the target tile the ray hits, on the side facing back up the ray.
+  function targetAllowsDoor(cell, cursor) {
+    const opposite = { N:'S', S:'N', E:'W', W:'E' };
+    const room = floor.getRooms()[cell];
+    const position = room.getFloorPosition();
+    return room.doorIsAllowed(cursor.x - position.x, cursor.y - position.y, opposite[alignment]);
   }
 
   // The overlapping start tiles are the edge tiles in the direction of the target feature where the tiles are empty
