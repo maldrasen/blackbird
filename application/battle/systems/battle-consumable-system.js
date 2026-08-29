@@ -41,7 +41,7 @@ global.BattleConsumableSystem = (function() {
     const weaver = Weaver({ A:id });
     const results = {};
 
-    consumable.getBattleEffects().forEach(effect => {
+    consumable.getEffects().forEach(effect => {
       if (state.isDown(id)) { return; }
       if (effect.type === 'damage') { results.damage = applyDamage(id, effect); }
       if (effect.type === 'status') { results[effect.code] = applyStatus(id, effect); }

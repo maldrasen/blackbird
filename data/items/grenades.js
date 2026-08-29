@@ -21,10 +21,10 @@ Consumable.register('blasto',{
   usableWhen: UsableWhen.inCombat,
   stories: blastoPackage,
 
-  battleEffects: [
-    { type:'damage', damageType:DamageType.fire, damage:{ x:2, d:4 } },
-    { type:'status', code:'blind', strength:20, duration:3000 },
-    { type:'status', code:'stun',  strength:10, count:1 },
+  effects: [
+    ConsumableEffect.damage(DamageType.fire, { x:2, d:4 }),
+    ConsumableEffect.addStatusEffect('blind', { strength:20, duration:3000 }),
+    ConsumableEffect.addStatusEffect('stun', { strength:10, count:1 }),
   ],
 
   messageForEntity: (id, results) => {

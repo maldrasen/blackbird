@@ -28,6 +28,7 @@ global.ConsumableEffect = (function() {
     apply,
     addHealth: (min, max) => { return { type:'restore-health', min, max }; },
     restoreMana: (color, min, max) => { return { type:'restore-mana', color, min, max }; },
+    damage: (damageType, damage) => { return { type:'damage', damageType, damage }; },
     addStatusEffect: (code, options) => { return { type:'status', code, ...options }; },
     increasePotency: level => { return { type:'potency', level }; },
   };

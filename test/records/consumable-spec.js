@@ -10,8 +10,8 @@ describe("Consumable", function() {
       expect(blasto.getAreaOfEffect()).to.equal('small');
     });
 
-    it("exposes the blasto's battle effects", function() {
-      const effects = Consumable.lookup('blasto').getBattleEffects();
+    it("exposes the blasto's effects", function() {
+      const effects = Consumable.lookup('blasto').getEffects();
       expect(effects.map(effect => effect.type)).to.deep.equal(['damage','status','status']);
       expect(effects.map(effect => effect.code)).to.include('blind').and.include('stun');
     });
@@ -20,7 +20,7 @@ describe("Consumable", function() {
       const tripe = Consumable.lookup('dungeon-tripe');
       expect(tripe.getTarget()).to.equal('self');
       expect(tripe.getAreaOfEffect()).to.equal(null);
-      expect(tripe.getBattleEffects()).to.deep.equal([]);
+      expect(tripe.getEffects()).to.deep.equal([{ type:'restore-health', min:5, max:15 }]);
     });
   });
 
