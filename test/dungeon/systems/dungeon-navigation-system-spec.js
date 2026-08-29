@@ -3,9 +3,6 @@ describe("DungeonNavigationSystem", function() {
   let floor;
   let start;
 
-  // Entering an unexplored room rolls a scouting check for the party's scout, so the party needs a real character.
-  // A SkillCheck consumes two between values, the crit roll then the value roll. The scout's skill is level 100 so
-  // the check doesn't also consume an improve roll.
   function buildScout() {
     const id = Registry.createEntity();
     ActorComponent.create(id, { name:'Scout', gender:Gender.male, species:SpeciesCode.human });
@@ -28,6 +25,8 @@ describe("DungeonNavigationSystem", function() {
     DungeonSystem.createDungeon();
     DungeonSystem.setLevel(1);
     floor = DungeonSystem.getDungeonFloor();
+    floor.getRooms().forEach(room => room.setContents(null));
+
     start = floor.getLocation();
   });
 
