@@ -23,3 +23,8 @@ RoomContents.register('orchard-empty',{
   episode:'orchard-empty',
   description: describe,
 });
+
+RoomContents.register('orchard-kobolds',{
+  episode:'orchard-kobolds',
+  description: describe,
+});
