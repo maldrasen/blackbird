@@ -57,7 +57,7 @@ Consumable.register('ebony-tear',{
   tags: ['tear'],
   usableWhen: UsableWhen.anyTime,
   effects:[
-    ConsumableEffect.restoreMana(Mana.blue, 5, 15)
+    ConsumableEffect.restoreMana(Mana.black, 5, 15)
   ],
   stories: tearPackage,
 });
