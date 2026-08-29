@@ -36,14 +36,22 @@ global.DefendRoll = function(defender, attacker, attackRoll) {
     const offBalance = statusEffects.has('off-balance');
     const poised = statusEffects.has('poised');
     const stunned = statusEffects.has('stun');
+    const blind = statusEffects.has('blind');
 
     if (offBalance && poised) {
       throw new Error(`Entity:${defender} is both poised and off-balance, which is not be allowed.`)
     }
 
-    if (offBalance) { return SkillCheck(defender, defendSkill, RollMode.disadvantage); }
-    if (poised) { return SkillCheck(defender, defendSkill, RollMode.advantage); }
+    // A stunned character cannot defend.
     if (stunned) { return { value:0 }; }
+
+    // A character that is both blind and poised is an odd situation, but one that makes narrative sense, unlike off
+    // balance and poised. You can have both effects at the same time, but they simply cancel each other out.
+    if (blind && poised) { return SkillCheck(defender, defendSkill); }
+
+    if (poised) { return SkillCheck(defender, defendSkill, RollMode.advantage); }
+    if (offBalance) { return SkillCheck(defender, defendSkill, RollMode.disadvantage); }
+    if (blind) { return SkillCheck(defender, defendSkill, RollMode.disadvantage); }
 
     return SkillCheck(defender, defendSkill);
   }
@@ -58,6 +66,7 @@ global.DefendRoll = function(defender, attacker, attackRoll) {
 
   return {
     getRollValue: () => { return defendRoll.value },
+    getRollMode: () => { return defendRoll.mode || RollMode.normal },
     getDefendSkill: () => { return defendSkill },
     isCrit: () => { return defendRoll.crit === true; },
     isFumble: () => { return defendRoll.fumble === true; },

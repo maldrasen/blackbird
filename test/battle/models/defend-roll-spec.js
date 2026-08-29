@@ -147,6 +147,46 @@ describe("DefendRoll", function() {
     expect(roll.getDefendSkill()).to.equal('block');
   });
 
+  describe("status effect modifiers", function() {
+    it("rolls with advantage while poised", function() {
+      const state = startBattle();
+      const defender = pinnedDefender(state);
+      BattleSystem.addStatus(defender, 'poised', { count:1 });
+
+      const roll = DefendRoll(defender, null, attackAgainst(state, defender));
+      expect(roll.getRollMode()).to.equal(RollMode.advantage);
+    });
+
+    it("rolls with disadvantage while blinded", function() {
+      const state = startBattle();
+      const defender = pinnedDefender(state);
+      BattleSystem.addStatus(defender, 'blind', { duration:1000 });
+
+      const roll = DefendRoll(defender, null, attackAgainst(state, defender));
+      expect(roll.getRollMode()).to.equal(RollMode.disadvantage);
+    });
+
+    it("cancels poise's advantage while blinded", function() {
+      const state = startBattle();
+      const defender = pinnedDefender(state);
+      BattleSystem.addStatus(defender, 'poised', { count:1 });
+      BattleSystem.addStatus(defender, 'blind', { duration:1000 });
+
+      const roll = DefendRoll(defender, null, attackAgainst(state, defender));
+      expect(roll.getRollMode()).to.equal(RollMode.normal);
+    });
+
+    it("cannot defend at all while stunned, blind or not", function() {
+      const state = startBattle();
+      const defender = pinnedDefender(state);
+      BattleSystem.addStatus(defender, 'stun', { count:1 });
+      BattleSystem.addStatus(defender, 'blind', { duration:1000 });
+
+      const roll = DefendRoll(defender, null, attackAgainst(state, defender));
+      expect(roll.getRollValue()).to.equal(0);
+    });
+  });
+
   it("dodges as a monster without a shield", function() {
     const state = startBattle();
     const attacker = state.getEntityAtPosition('P',1,2);
