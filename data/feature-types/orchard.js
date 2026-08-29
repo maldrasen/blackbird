@@ -4,11 +4,12 @@ FeatureType.register('orchard', {
     const room = Room(feature);
     const width = Random.between(options.size[0], options.size[1]);
     const height = Random.between(options.size[0], options.size[1]);
-    const contents = Random.from(['orchard-empty','orchard-kobolds']);
+    // const contents = Random.from(['orchard-empty','orchard-kobolds']);
 
     room.setBounds(width, height);
     room.addBox(0, 0, width, height);
-    room.setContents(contents,{ size:width * height });
+    // room.setContents(contents,{ size:width * height });
+    room.setContents('orchard-kobolds',{ size:width * height });
 
     Random.flipCoin() ?
       addTreeRows(room, width, height) :

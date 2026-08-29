@@ -208,6 +208,7 @@
     "application/requirements/character-requirements.js",
     "application/requirements/context-requirements.js",
     "application/requirements/dungeon-requirements.js",
+    "application/requirements/episode-requirements.js",
     "application/requirements/game-requirements.js",
     "application/requirements/negotiation-requirements.js",
     "application/requirements/party-requirements.js",
