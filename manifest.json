@@ -600,6 +600,7 @@
   ],
   "testFiles": [
     "test/battle/battle-helper-spec.js",
+    "test/battle/battle-requirements-spec.js",
     "test/battle/battle-state-spec.js",
     "test/battle/battle-system-spec.js",
     "test/battle/character-ability-system-spec.js",
