@@ -1,6 +1,6 @@
 
 const tearPackage = WeaverPackage('consume-tear');
-tearPackage.add(`{A:name} swallows the {I.name} whole.`);
+tearPackage.add(`{A:ActingName} swallows the {I.name} whole.`);
 
 Consumable.register('crimson-tear',{
   name: 'Crimson Tear',

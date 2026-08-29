@@ -10,12 +10,14 @@ global.BattleRequirements = (function() {
   }
 
   return {
-    againstSingle: () => { return (context) => { return activeMonsterCount() === 1; }},
-    againstMultiple: () => { return (context) => { return activeMonsterCount() > 1; }},
-    againstAtLeast: x => { return (context) => { return activeMonsterCount() >= x; }},
-    againstAtMost: x => { return (context) => { return activeMonsterCount() <= x; }},
-    againstBetween: (min,max) => { return (context) => { return againstBetween(min,max); }},
-    withHitLocation: (...slots) => { return (context) => { return slots.includes(context.hitLocation); }},
+    actingIsMonster: () =>         { return context => { return BattleSystem.getState().isActingMonster(); }},
+    actingIsCharacter: () =>       { return context => { return BattleSystem.getState().isActingCharacter(); }},
+    againstSingle: () =>           { return context => { return activeMonsterCount() === 1; }},
+    againstMultiple: () =>         { return context => { return activeMonsterCount() > 1; }},
+    againstAtLeast: x =>           { return context => { return activeMonsterCount() >= x; }},
+    againstAtMost: x =>            { return context => { return activeMonsterCount() <= x; }},
+    againstBetween: (min,max) =>   { return context => { return againstBetween(min,max); }},
+    withHitLocation: (...slots) => { return context => { return slots.includes(context.hitLocation); }},
   };
 
 })();
