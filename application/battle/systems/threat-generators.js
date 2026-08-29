@@ -72,7 +72,7 @@ global.ThreatGenerators = (function() {
   function furtherBack(threatTable, weight) {
     const formation = BattleSystem.getState().getPartyFormation();
     BattleSystem.getState().getActiveCharacters().forEach(id => {
-      if (formation[id][2] === 1) {
+      if (formation[id][2] === '1') {
         threatTable[id] += Math.round(BattleConstants.threatBase * weight);
       }
     });
