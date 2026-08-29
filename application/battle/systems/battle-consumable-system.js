@@ -8,6 +8,7 @@ global.BattleConsumableSystem = (function() {
     const round = BattleSystem.getRound();
     const consumable = Consumable.lookup(code);
 
+    round.addTime(750);
     round.addMessage({ text:consumable.pickStory(round.getContext()) });
     getAffectedEntities(round, consumable).forEach(id => applyEffects(round, consumable, id));
   }
