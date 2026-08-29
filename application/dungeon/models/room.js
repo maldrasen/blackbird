@@ -80,14 +80,6 @@ global.Room = function(feature, type='normal') {
     return DungeonConstants.floorTypes[footprint[y][x]];
   }
 
-  // Decorative glyphs drawn onto the room, positioned like the center point, so they can sit anywhere in the room
-  // including tile boundaries.
-  function addGlyph(options) {
-    const { x, y, glyph, color } = options;
-    glyphs.push({ x, y, glyph, color });
-  }
-
-
   // Return the room bounds in an object { xMin, xMax, yMin, yMax }. The mins are always 0; the shape is what the
   // feature and floor maths expect.
   function getBounds() {
@@ -242,7 +234,7 @@ global.Room = function(feature, type='normal') {
     setFloor,
     setFloorBox,
     getFloor,
-    addGlyph,
+    addGlyph: (options) => { glyphs.push(options); },
     getGlyphs: () => { return glyphs.map(glyph => ({ ...glyph })); },
     getBounds,
     getFootprint: () => { return footprint },

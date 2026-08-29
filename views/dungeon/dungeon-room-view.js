@@ -108,8 +108,10 @@ global.DungeonRoomView = (function() {
   }
 
   function roomGlyphs(room, gridSize) {
-    return room.getGlyphs().map(glyph =>
-      `<text class='glyph' x='${glyph.x * gridSize}' y='${glyph.y * gridSize}' fill='${glyph.color}'>${glyph.glyph}</text>`);
+    return room.getGlyphs().map(glyph => {
+      const size = glyph.size ? ` style='font-size:${glyph.size}px'` : '';
+      return `<text class='glyph' x='${glyph.x * gridSize}' y='${glyph.y * gridSize}' fill='${glyph.color}'${size}>${glyph.glyph}</text>`;
+    });
   }
 
   function stairsGlyph(floor, room, direction, gridSize) {
