@@ -38,12 +38,7 @@ global.BattleConsumableSystem = (function() {
     });
 
     round.addMessage({ text:consumable.messageForEntity(id, results) }, weaver);
-
-    if (state.isKnockedOut(id)) {
-      round.addMessage({ text:`{A:ActingName} was knocked out!`, color:'important' }, weaver);
-    } else if (state.isAlive(id) === false) {
-      round.addMessage({ text:`{A:ActingName} was killed!`, color:'important' }, weaver);
-    }
+    BattleDamageSystem.addDownedMessage(id);
   }
 
   function applyDamage(id, effect) {

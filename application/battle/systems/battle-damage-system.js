@@ -88,6 +88,22 @@ global.BattleDamageSystem = (function() {
       Character(target).getResistance(type);
   }
 
+  // Any time damage is applied we should call this addDownedMessage() function to add the knocked out or killed
+  // messages. This needs to be a separate call so that each damage source can add its own messages about what's
+  // causing damage, but the downed messages are the same no matter the cause.
+  function addDownedMessage(entity) {
+    const state = BattleSystem.getState();
+    const weaver = Weaver({ A:entity });
+
+    if (state.isKnockedOut(entity)) {
+      Console.log(`[${entity}] was knocked out`,{ system:'BattleSystem', level:2 });
+      BattleSystem.getRound().addMessage({ text:`{A:ActingName} was knocked out!`, color:'important' }, weaver);
+    } else if (state.isAlive(entity) === false) {
+      Console.log(`[${entity}] was killed`,{ system:'BattleSystem', level:2 });
+      BattleSystem.getRound().addMessage({ text:`{A:ActingName} was killed!`, color:'important' }, weaver);
+    }
+  }
+
   // Monsters simply die at zero health. Characters brought to zero or below are knocked out, keeping their negative
   // health, and are only killed when that health falls below the negative of their vitality.
   function resolveDamageOutcome(state, target, health) {
@@ -99,6 +115,7 @@ global.BattleDamageSystem = (function() {
 
   return {
     applyDamage,
+    addDownedMessage,
   };
 
 })();

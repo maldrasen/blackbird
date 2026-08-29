@@ -37,18 +37,7 @@ global.PhysicalAttackSystem = (function() {
       actualDamage, damageTypes
     }});
 
-    const state = BattleSystem.getState();
-
-    if (state.isKnockedOut(target)) {
-      Console.log(`[${target}] was knocked out`,{ system:'BattleSystem', level:2 });
-      round.addMessage({ text:`{T:TargetName} was knocked out!`, color:'important' });
-      return;
-    }
-
-    if (state.isAlive(target) === false) {
-      Console.log(`[${target}] was killed`,{ system:'BattleSystem', level:2 });
-      round.addMessage({ text:`{T:TargetName} was killed!`, color:'important' });
-    }
+    BattleDamageSystem.addDownedMessage(target);
   }
 
   // If the attack missed, no damage is done, but the crits and fumbles may add status effects to either the attacker
@@ -67,7 +56,7 @@ global.PhysicalAttackSystem = (function() {
     BattleSystem.getRound().addMessage({ text:`Miss`, color:'miss' });
   }
 
-  // When making an attack messages that come from the weapon enchantments (and probable other places) expect these
+  // When making an attack, messages that come from the weapon enchantments (and probable other places) expect these
   // values to be in the context. If the basic attack has multiple attacks the hit location will change every time,
   // but that should be fine as long as the context has the latest hit location.
   function updateContext(attackRoll) {
