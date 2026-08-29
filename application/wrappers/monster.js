@@ -42,10 +42,13 @@ global.Monster = function(id) {
     getBaseMonster().getPrioritizedAbilities().forEach(ability => {
       abilityMap[ability.code] = ability; });
 
-    if (abilityMap[code] == null) {
-      throw new Error(`Monster[${getCode()}] doesn't have Ability[${code}]`); }
-
     return abilityMap[code];
+  }
+
+  // The cooldown set on the monster's ability entry overrides the cooldown on the ability record itself.
+  function getAbilityCooldown(code) {
+    const monsterAbility = getAbility(code);
+    return (monsterAbility ? monsterAbility.cooldown : null) || Ability.lookup(code).getCooldown();
   }
 
   function getResistance(type) {
@@ -82,6 +85,7 @@ global.Monster = function(id) {
         case ThreatWeight.leastHealth: ThreatGenerators.leastHealth(threatTable, weight); break;
         case ThreatWeight.killMen: ThreatGenerators.killMen(threatTable, weight); break;
         case ThreatWeight.killWomen: ThreatGenerators.killWomen(threatTable, weight); break;
+        case ThreatWeight.furtherBack: ThreatGenerators.furtherBack(threatTable, weight); break;
         default: throw new Error(`Unknown Threat Generator [${generator}]`);
       }
     });
@@ -117,6 +121,7 @@ global.Monster = function(id) {
     getSkill,
     getPrioritizedAbilities,
     getAbility,
+    getAbilityCooldown,
 
     populateThreatTable,
     getThreatTable,

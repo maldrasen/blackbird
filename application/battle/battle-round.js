@@ -16,11 +16,34 @@ global.BattleRound = function(acting, type=null) {
   let time = 0;
   let ability;
 
+  function getActingMonster() { return Monster(acting); }
+  function getActingCharacter() { return Character(acting); }
+  function getActingPosition() { return actingPosition; }
+  function isActingMonster() { return roundType === 'monster'; }
+  function isActingCharacter() { return roundType === 'character'; }
+  function isStatusEffect() { return roundType === 'status'; }
+
   function setAbility(code) {
     if (ability != null && ability !== code) {
       throw new Error(`Ability has already been set to ${ability}`);
     }
     ability = code;
+  }
+
+  // Get the cooldown for the specified ability for the currently acting entity.
+  function getCooldown(code) {
+    if (isActingMonster()) { return getActingMonster().getAbilityCooldown(code); }
+    throw `Only monster abilities have cooldowns.`;
+  }
+
+  // Apply the cooldown time for the specified ability for the currently acting entity.
+  function applyCooldown(code) {
+    if (isActingMonster()) {
+      const cooldown = getCooldown(code)
+      if (cooldown) {
+        BattleSystem.getState().setCooldown(acting, code, cooldown);
+      }
+    }
   }
 
   // Every weapon is a real weapon now, so any entity, character or monster, reads them from the equipment manager,
@@ -114,14 +137,16 @@ global.BattleRound = function(acting, type=null) {
 
   return {
     getActing: () => { return acting; },
-    getActingMonster: () => { return Monster(acting); },
-    getActingCharacter: () => { return Character(acting); },
-    getActingPosition: () => { return actingPosition; },
-    isActingMonster: () => { return roundType === 'monster'; },
-    isActingCharacter: () => { return roundType === 'character'; },
-    isStatusEffect: () => { return roundType === 'status'; },
+    getActingMonster,
+    getActingCharacter,
+    getActingPosition,
+    isActingMonster,
+    isActingCharacter,
+    isStatusEffect,
     setAbility,
     getAbility: () => { return ability; },
+    getCooldown,
+    applyCooldown,
 
     compileWeaponData,
     getPrimaryWeapon: () => { return primaryWeapon; },

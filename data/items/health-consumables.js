@@ -1,6 +1,6 @@
 
 const tripePackage = WeaverPackage('consume-tripe');
-tripePackage.add(`{A:name} makes a disgusted face as {A:he} forces {A:him}self to eat the leathery, yet slimy... 
+tripePackage.add(`{A:ActingName} makes a disgusted face as {A:he} forces {A:him}self to eat the leathery, yet slimy...
   "food". Despite the taste, the magic infused lichen does make {A:him} feel a bit better.`);
 
 Consumable.register('dungeon-tripe',{
@@ -18,7 +18,7 @@ Consumable.register('dungeon-tripe',{
 });
 
 const applePackage = WeaverPackage('consume-apple');
-applePackage.add(`{A:name} bites into the {I.name} with a satisfying crunch. A comfortable warmth spreads though
+applePackage.add(`{A:ActingName} bites into the {I.name} with a satisfying crunch. A comfortable warmth spreads though
   {A:his} body as the magic infused fruit starts to heal {A:his} wounds.`);
 
 Consumable.register('rhysh-apple',{

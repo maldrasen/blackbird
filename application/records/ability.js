@@ -13,7 +13,7 @@ global.Ability = (function() {
     function execute() {
       const round = BattleSystem.getRound();
       round.setAbility(code);
-
+      round.applyCooldown(code);
       ability.execute();
 
       if (round.isActingCharacter()) {
@@ -24,6 +24,7 @@ global.Ability = (function() {
     return {
       getCode: () => { return code; },
       getName: () => { return ability.name },
+      getCooldown: () => { return ability.cooldown; },
       getCategory: () => { return ability.category },
       getTargetingMode: () => { return ability.targetingMode },
       getEssence: () => { return ability.essence || 0; },

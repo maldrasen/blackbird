@@ -118,6 +118,55 @@ describe("BattleDamageSystem", function() {
     }).to.throw('requires a hit location');
   });
 
+  // The damage specs above run without a round, which is why the announcement is a separate call rather than part
+  // of applyDamage(). These specs build one so there's somewhere for the messages to land.
+  describe("addDownedMessage()", function() {
+    function specRound(state) {
+      BattleSystem.specRound(state.getEntityAtPosition('P',0,2));
+      return BattleSystem.getRound();
+    }
+
+    it("announces a knocked out character", function() {
+      const state = startBattle();
+      const target = state.getEntityAtPosition('P',1,2);
+      setHealth(target, 5);
+      setVitality(target, 15);
+      bareChest(target);
+      const round = specRound(state);
+
+      BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:10 }, hitLocation:EquipmentSlot.chest });
+      BattleDamageSystem.addDownedMessage(target);
+
+      expect(round.getMessages().length).to.equal(1);
+      expect(round.getMessages()[0].text).to.include('was knocked out!');
+      expect(round.getMessages()[0].color).to.equal('important');
+    });
+
+    it("announces a killed monster", function() {
+      const state = startBattle();
+      const target = state.getActiveMonsters()[0];
+      const round = specRound(state);
+
+      BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:9999 }, hitLocation:EquipmentSlot.chest });
+      BattleDamageSystem.addDownedMessage(target);
+
+      expect(round.getMessages().length).to.equal(1);
+      expect(round.getMessages()[0].text).to.include('was killed!');
+      expect(round.getMessages()[0].color).to.equal('important');
+    });
+
+    it("says nothing about an entity that is still up", function() {
+      const state = startBattle();
+      const target = state.getEntityAtPosition('P',1,2);
+      setHealth(target, 100);
+      const round = specRound(state);
+
+      BattleDamageSystem.addDownedMessage(target);
+
+      expect(round.getMessages().length).to.equal(0);
+    });
+  });
+
   describe("armor mitigation", function() {
     // The battle fixtures equip the party randomly, so each test pins the slots it touches: known gear goes on
     // explicitly and slots that must be bare are cleared.

@@ -58,6 +58,32 @@ describe("BattleSystem", function() {
     });
   });
 
+  // A blasto thrown at the position directly across the battle line catches the thrower in its own blast. When the
+  // blast kills the thrower they're removed from the turn order mid round, so finishing the round must not try to
+  // schedule their next action.
+  describe("finishRound()", function() {
+    it("finishes the round when the acting entity dies to its own blast", function() {
+      BattleFixtures.prepareForBattle();
+      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
+
+      const state = BattleSystem.getState();
+      const acting = state.getEntityAtPosition('M',0,2);
+
+      const health = HealthComponent.lookup(acting);
+      health.currentHealth = 1;
+      HealthComponent.update(acting, health);
+
+      BattleSystem.specRound(acting, { target:state.getEntityAtPosition('P',0,2) });
+      BattleConsumableSystem.useConsumable('blasto');
+      BattleSystem.finishRound();
+
+      expect(state.isAlive(acting)).to.equal(false);
+
+      const messages = BattleSystem.getRound().getMessages();
+      expect(messages[messages.length - 1].text).to.include('was killed!');
+    });
+  });
+
   describe("reset()", function() {
     it("clears battle only status effects from the survivors", function() {
       BattleFixtures.prepareForBattle();

@@ -41,9 +41,6 @@ global.PhysicalAttackRoll = function(attacker, target) {
     return (weapon != null) ? weapon.getTextKey() : baseWeapon.getTextKey();
   }
 
-  // TODO: The attack roll will need to take all of the status effects and feats and whatever into consideration
-  //       to turn the check value into a final value.
-
   // TODO: We'll also need to take weapon enchantments that add to the accuracy of the weapon into account as well
   //       which we can get from attack.weapon if the attack is using a real weapon.
 
@@ -51,7 +48,9 @@ global.PhysicalAttackRoll = function(attacker, target) {
     if (baseWeapon == null) { throw new Error(`A PhysicalAttackRoll must have a base weapon. Call setWeaponData() before roll().`); }
     if (hitLocation == null) { hitLocation = BattleHelper.randomHitLocation(target); }
 
-    check = SkillCheck(attacker, baseWeapon.getSkill());
+    const mode = StatusEffects(attacker).has('blind') ? RollMode.disadvantage : RollMode.normal;
+
+    check = SkillCheck(attacker, baseWeapon.getSkill(), mode);
     finalValue = Math.ceil(check.value);
 
     Console.log(`Attack Roll [${attacker}]`,{ system:'BattleSystem', level:3, data:{ check, finalValue }});
@@ -77,6 +76,7 @@ global.PhysicalAttackRoll = function(attacker, target) {
 
     roll,
     getRollValue: () => { return check.value; },
+    getRollMode: () => { return check.mode; },
     isCrit: () => { return check.crit === true; },
     isFumble: () => { return check.fumble === true; },
     getFinalValue: () => { return finalValue },

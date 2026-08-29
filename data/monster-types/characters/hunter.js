@@ -2,8 +2,9 @@ MonsterType.register('hunter',{
   preferredPosition: 'back',
 
   threatWeights: {
-    leastArmor: 75,
-    leastHealth: 100,
+    leastArmor: 60,
+    leastHealth: 80,
+    furtherBack: 100,
   },
 
   prioritizedAbilities: [

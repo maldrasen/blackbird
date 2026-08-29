@@ -1,24 +1,36 @@
 global.ConsumableEffect = (function() {
 
-  function addHealth(entity, min, max) {
-    const value = HealthSystem.addHealth(entity, Random.between(min,max));
+  function apply(entity, effect) {
+    switch (effect.type) {
+      case 'restore-health': return restoreHealth(entity, effect);
+      case 'restore-mana': return restoreMana(entity, effect);
+      case 'status': return applyStatusEffect(entity, effect);
+      case 'potency': return applyPotency(entity, effect);
+      default: throw new Error(`The [${effect.type}] effect cannot be applied out of battle.`);
+    }
+  }
+
+  function restoreHealth(entity, effect) {
+    const value = HealthSystem.addHealth(entity, Random.between(effect.min, effect.max));
     return { type:'add-health', value:value };
   }
 
-  function restoreMana(entity, color, min, max) {
-    const value = ManaSystem.restoreMana(entity, color, Random.between(min,max));
-    return { type:'add-mana', color:color, value:value };
+  function restoreMana(entity, effect) {
+    const value = ManaSystem.restoreMana(entity, effect.color, Random.between(effect.min, effect.max));
+    return { type:'add-mana', color:effect.color, value:value };
   }
 
   // TODO: Some effects have only a chance of working, and should return {} when they do nothing.
-  function addStatusEffect(entity, code, options) { return {}; }
-  function increasePotency(entity, level) { return {}; }
+  function applyStatusEffect(entity, effect) { return {}; }
+  function applyPotency(entity, effect) { return {}; }
 
   return {
-    addHealth: (min, max) => { return entity => addHealth(entity, min, max); },
-    restoreMana: (color, min, max) => { return entity => restoreMana(entity, color, min, max); },
-    addStatusEffect: (code, options) => { return entity => addStatusEffect(entity, code, options); },
-    increasePotency: level => { return entity => increasePotency(entity, level); }
+    apply,
+    addHealth: (min, max) => { return { type:'restore-health', min, max }; },
+    restoreMana: (color, min, max) => { return { type:'restore-mana', color, min, max }; },
+    damage: (damageType, damage) => { return { type:'damage', damageType, damage }; },
+    addStatusEffect: (code, options) => { return { type:'status', code, ...options }; },
+    increasePotency: level => { return { type:'potency', level }; },
   };
 
 })();

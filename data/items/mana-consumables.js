@@ -1,6 +1,6 @@
 
 const tearPackage = WeaverPackage('consume-tear');
-tearPackage.add(`{A:name} swallows the {I.name} whole.`);
+tearPackage.add(`{A:ActingName} swallows the {I.name} whole.`);
 
 Consumable.register('crimson-tear',{
   name: 'Crimson Tear',
@@ -57,7 +57,7 @@ Consumable.register('ebony-tear',{
   tags: ['tear'],
   usableWhen: UsableWhen.anyTime,
   effects:[
-    ConsumableEffect.restoreMana(Mana.blue, 5, 15)
+    ConsumableEffect.restoreMana(Mana.black, 5, 15)
   ],
   stories: tearPackage,
 });

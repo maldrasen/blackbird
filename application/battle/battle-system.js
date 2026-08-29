@@ -8,6 +8,7 @@ global.BattleSystem = (function() {
     const source = buildEncounter(data);
     BattleInitializer.rollReactionTimes();
     BattleInitializer.populateThreatTables();
+    BattleInitializer.rollInitialCooldowns();
 
     state.setAmbushState(data.ambushState || BattleInitializer.rollAmbush());
 
@@ -107,11 +108,16 @@ global.BattleSystem = (function() {
     BattleInterface.showCharacterResult();
   }
 
+  // An actor downed during their own turn (a grenade catching its thrower in the blast) was already removed from the
+  // turn order, so there's no next action to schedule.
   function finishRound() {
     round.validate();
     StealthSystem.processRound();
     StatusEffectSystem.processEndRound();
-    state.updateTime(round.getActing(), round.getTime());
+
+    if (state.isDown(round.getActing()) === false) {
+      state.updateTime(round.getActing(), round.getTime());
+    }
   }
 
   function battleLost() {

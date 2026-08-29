@@ -54,8 +54,8 @@ global.ThreatGenerators = (function() {
   function killMen(threatTable, weight) {
     BattleSystem.getState().getActiveCharacters().forEach(id => {
       switch (ActorComponent.lookup(id).gender) {
-        case Gender.male: threatTable[id] += Math.round(100 * weight); break;
-        case Gender.futa: threatTable[id] += Math.round(50 * weight); break;
+        case Gender.male: threatTable[id] += Math.round(BattleConstants.threatBase * weight); break;
+        case Gender.futa: threatTable[id] += Math.round(BattleConstants.threatBase/2 * weight); break;
       }
     });
   }
@@ -63,8 +63,17 @@ global.ThreatGenerators = (function() {
   function killWomen(threatTable, weight) {
     BattleSystem.getState().getActiveCharacters().forEach(id => {
       switch (ActorComponent.lookup(id).gender) {
-        case Gender.female: threatTable[id] += Math.round(100 * weight); break;
-        case Gender.futa: threatTable[id] += Math.round(50 * weight); break;
+        case Gender.female: threatTable[id] += Math.round(BattleConstants.threatBase * weight); break;
+        case Gender.futa: threatTable[id] += Math.round(BattleConstants.threatBase/2 * weight); break;
+      }
+    });
+  }
+
+  function furtherBack(threatTable, weight) {
+    const formation = BattleSystem.getState().getPartyFormation();
+    BattleSystem.getState().getActiveCharacters().forEach(id => {
+      if (formation[id][2] === '1') {
+        threatTable[id] += Math.round(BattleConstants.threatBase * weight);
       }
     });
   }
@@ -75,6 +84,7 @@ global.ThreatGenerators = (function() {
     leastHealth,
     killMen,
     killWomen,
+    furtherBack,
   };
 
 })();
