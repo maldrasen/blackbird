@@ -376,6 +376,7 @@
     "data/feature-types/leg-room.js",
     "data/feature-types/mana-font.js",
     "data/feature-types/nested-room.js",
+    "data/feature-types/orchard.js",
     "data/feature-types/rect-room.js",
     "data/feature-types/tea-room.js",
     "data/items/ammunition.js",
