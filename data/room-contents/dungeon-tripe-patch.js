@@ -4,7 +4,7 @@ function harvest() {
   InventoryManager().addArticle('dungeon-tripe',count);
   return {
     text: `You harvest ${count} uncomfortably moist furls of pungent dungeon tripe. Lucky you.`,
-    loot: [{ code:'dungeon-tripe', count }],
+    loot: [{ articleCode:'dungeon-tripe', quantity:count }],
   };
 }
 

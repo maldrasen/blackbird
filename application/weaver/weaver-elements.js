@@ -27,7 +27,7 @@ global.WeaverElements = (function() {
   //       We'll want to include the icon with the name as well.
 
   function lootBlock(entries) {
-    return `<div class='loot-block'><ul class='loot-list'>${entries.map(lootEntry)}</ul></div>`
+    return `<div class='loot-block'><ul class='loot-list'>${entries.map(lootEntry).join('')}</ul></div>`
   }
 
   function lootEntry(entry) {

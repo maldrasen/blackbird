@@ -33,16 +33,9 @@ global.RoomContentOverlay = (function() {
     }
   }
 
-  // TODO: The loot list is a placeholder. Loot display will eventually be a proper loot panel shared with the after
-  //       battle enlighten view.
-
   function addLoot(content, loot) {
     if (loot && loot.length > 0) {
-      const list = X.createElement(`<ul class='loot-list'></ul>`);
-      loot.forEach(item => {
-        list.appendChild(X.createElement(`<li>${Article.lookup(item.code).getName()} &times; ${item.count}</li>`));
-      });
-      content.appendChild(list);
+      content.appendChild(X.createElement(WeaverElements.lootBlock(loot)));
     }
   }
 
