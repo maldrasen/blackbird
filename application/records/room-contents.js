@@ -55,6 +55,7 @@ global.RoomContents = (function() {
       getSecrecy: () => { return roomContents.secrecy; },
       getTrap: () => { return roomContents.trap; },
       getEpisode,
+      getEpisodeCode: () => { return roomContents.episode; },
       getCommands: () => { return (roomContents.commands || []).filter(command => Requirements.met(command.requires)); },
       getDescription,
     };
