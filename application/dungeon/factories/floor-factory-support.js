@@ -62,44 +62,50 @@ global.FloorFactorySupport = (function() {
   }
 
   // Resolve which room of toFeature a corridor door tile actually touches, then build the door between the corridor's
-  // room and that room. Must be called after the corridor is registered, so its room has a floor-global index.
+  // room and that room. The point can touch the feature on more than one side while only some of those walls allow
+  // doors, so the wall is picked from the door-permitted candidates rather than plain adjacency. Must be called after
+  // the corridor is registered, so its room has a floor-global index.
   function buildDoorToFeature(point, fromRoomIndex, toFeature) {
     const floor = DungeonSystem.getDungeonFloor();
     const grid = floor.getFloorGrid();
 
-    const neighbors = [
-      point.y > 0 ? grid[point.y-1][point.x] : null,
-      point.y+1 < floor.getFloorHeight() ? grid[point.y+1][point.x] : null,
-      point.x > 0 ? grid[point.y][point.x-1] : null,
-      point.x+1 < floor.getFloorWidth() ? grid[point.y][point.x+1] : null,
-    ];
+    const candidates = [
+      { direction:'N', tile:{ x:point.x, y:point.y-1 } },
+      { direction:'S', tile:{ x:point.x, y:point.y+1 } },
+      { direction:'W', tile:{ x:point.x-1, y:point.y } },
+      { direction:'E', tile:{ x:point.x+1, y:point.y } },
+    ].
+      filter(({tile}) => tile.x >= 0 && tile.y >= 0 && tile.x < floor.getFloorWidth() && tile.y < floor.getFloorHeight()).
+      map(candidate => ({ ...candidate, cell:grid[candidate.tile.y][candidate.tile.x] })).
+      filter(({cell}) => cell != null && floor.getFeatureForRoom(cell) === toFeature);
 
-    const toRoomIndex = neighbors.find(cell => cell != null && floor.getFeatureForRoom(cell) === toFeature);
-    if (toRoomIndex == null) {
+    if (candidates.length === 0) {
       throw new Error(`Feature[${toFeature.getIndex()}] is not adjacent to (${point.x},${point.y})`);
     }
 
-    return buildDoor(point, fromRoomIndex, toRoomIndex);
+    const allowed = candidates.find(({direction,tile,cell}) => {
+      const opposite = { N:'S', S:'N', E:'W', W:'E' };
+      const room = floor.getRooms()[cell];
+      const position = room.getFloorPosition();
+      return room.doorIsAllowed(tile.x - position.x, tile.y - position.y, opposite[direction]);
+    });
+
+    if (allowed == null) {
+      throw new Error(`Feature[${toFeature.getIndex()}] allows no door adjacent to (${point.x},${point.y})`);
+    }
+
+    return buildDoor(point, fromRoomIndex, allowed);
   }
 
-  // Doors are only ever stored on a tile's N or W wall. Given a point that touches the room at toIndex, this finds
-  // which side toIndex is on and derives the door's real position/direction from that. A room to the S or E needs
-  // the door tile shifted onto that room so it can be expressed as N/W facing.
-  function buildDoor(point, fromIndex, toIndex) {
-    const floor = DungeonSystem.getDungeonFloor();
-    const grid = floor.getFloorGrid();
-
-    const north = point.y > 0 ? grid[point.y-1][point.x] : null;
-    const south = point.y+1 < floor.getFloorHeight() ? grid[point.y+1][point.x] : null;
-    const west  = point.x > 0 ? grid[point.y][point.x-1] : null;
-    const east  = point.x+1 < floor.getFloorWidth() ? grid[point.y][point.x+1] : null;
-
-    if (north === toIndex) { return { position:point, direction:'N', from:fromIndex, to:toIndex }; }
-    if (west  === toIndex) { return { position:point, direction:'W', from:fromIndex, to:toIndex }; }
-    if (south === toIndex) { return { position:{ x:point.x, y:point.y+1 }, direction:'N', from:toIndex, to:fromIndex }; }
-    if (east  === toIndex) { return { position:{ x:point.x+1, y:point.y }, direction:'W', from:toIndex, to:fromIndex }; }
-
-    throw new Error(`Room[${toIndex}] is not adjacent to (${point.x},${point.y})`);
+  // Doors are only ever stored on a tile's N or W wall. A room to the S or E needs the door tile shifted onto that
+  // room so it can be expressed as N/W facing.
+  function buildDoor(point, fromIndex, {direction, cell}) {
+    switch (direction) {
+      case 'N': return { position:point, direction:'N', from:fromIndex, to:cell };
+      case 'W': return { position:point, direction:'W', from:fromIndex, to:cell };
+      case 'S': return { position:{ x:point.x, y:point.y+1 }, direction:'N', from:cell, to:fromIndex };
+      case 'E': return { position:{ x:point.x+1, y:point.y }, direction:'W', from:cell, to:fromIndex };
+    }
   }
 
   return {

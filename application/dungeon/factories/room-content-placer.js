@@ -3,16 +3,6 @@ global.RoomContentPlacer = function(contents=null) {
   const theme = DungeonTheme.lookup(floor.getTheme());
   const available = (contents || theme.getRoomContents()).filter(entry => isInRange(entry));
 
-  const rarityWeights = {
-    [Rarity.common]: 200,
-    [Rarity.unusual]: 50,
-    [Rarity.rare]: 16,
-    [Rarity.astonishing]: 4,
-    [Rarity.unheardOf]: 1,
-  };
-
-  const rarityOrder = Object.keys(rarityWeights);
-
   // Each contents code is placed at most once per floor. Some contents will start an episode that can only happen
   // once, so the same contents should never be in two rooms on the same floor.
   function placeContents() {
@@ -40,9 +30,10 @@ global.RoomContentPlacer = function(contents=null) {
   }
 
   function pickContents() {
-    const rolled = rarityOrder.indexOf(Random.fromFrequencyMap(rarityWeights));
+    const rarityOrder = RarityHelper.getOrder();
+    const index = RarityHelper.rollRarityIndex();
 
-    for (let tier=rolled; tier>=0; tier--) {
+    for (let tier=index; tier>=0; tier--) {
       const candidates = available.filter(entry => entry.rarity === rarityOrder[tier]);
       if (candidates.length > 0) { return Random.from(candidates); }
     }

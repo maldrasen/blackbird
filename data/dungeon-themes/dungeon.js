@@ -23,12 +23,13 @@ DungeonTheme.register('dungeon',{
   ],
 
   features:[
-    { code:'small-square', rarity:Rarity.common, type:'rect-room',  size:[2,5]},
-    { code:'leg-room',     rarity:Rarity.common, type:'leg-room',   size:[3,8]},
-    { code:'tea-room',     rarity:Rarity.common, type:'tea-room',   size:[3,8]},
-    { code:'cross-room',   rarity:Rarity.common, type:'cross-room', size:[3,9]},
-    { code:'large-square', rarity:Rarity.unusual, type:'rect-room',  size:[5,7]},
+    { code:'small-square', rarity:Rarity.common,  type:'rect-room',   size:[2,5]},
+    { code:'leg-room',     rarity:Rarity.common,  type:'leg-room',    size:[3,8]},
+    { code:'tea-room',     rarity:Rarity.common,  type:'tea-room',    size:[3,8]},
+    { code:'cross-room',   rarity:Rarity.common,  type:'cross-room',  size:[3,9]},
+    { code:'large-square', rarity:Rarity.unusual, type:'rect-room',   size:[5,7]},
     { code:'nested-room',  rarity:Rarity.unusual, type:'nested-room', size:[3,7], padding:[1,3]},
+    { code:'orchard',      rarity:Rarity.rare,    type:'orchard',     size:[3,7]},
   ],
 
   getFloorTexture: () => { return DungeonFloorGrid; },

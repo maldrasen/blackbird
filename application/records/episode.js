@@ -40,8 +40,9 @@
                     jump or end; a button with neither is expected to advance the episode itself, if at all.
 - `jump`            Page label. Clicking jumps to that page. Mutually exclusive with end.
 - `end`             true ends the episode when clicked.
-- `startEncounter`  { record } Clicking ends the episode (skipping the endFunction) and starts a battle with that
-                    encounter record. Mutually exclusive with jump and end.
+- `startEncounter`  { record, ambushState } Clicking ends the episode (skipping the endFunction) and starts a battle
+                    with that encounter record. An ambushState forces the battle's ambush state rather than rolling
+                    for it. Mutually exclusive with jump and end.
 - `requires`        Predicate or array of predicates, passed the EpisodeState. Unmet buttons aren't rendered.
 - `id`              Element id.
 - `classname`       Classname string or array of classnames.

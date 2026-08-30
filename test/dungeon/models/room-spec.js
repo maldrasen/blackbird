@@ -135,6 +135,17 @@ describe("Room", function() {
       ]);
     });
 
+    it('keeps the optional size', function() {
+      const room = Room();
+      room.setBounds(3,3);
+      room.addBox(0,0,3,3);
+      room.addGlyph({ x:1, y:1, glyph:'✽', color:'green', size:52 });
+
+      expect(room.getGlyphs()).to.deep.equal([
+        { x:1, y:1, glyph:'✽', color:'green', size:52 },
+      ]);
+    });
+
     it('returns copies of the glyphs, not the live objects', function() {
       const room = Room();
       room.setBounds(3,3);

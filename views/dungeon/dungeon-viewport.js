@@ -165,11 +165,11 @@ global.DungeonViewport = (function() {
   }
 
   // The floor element is rebuilt every time the dungeon view is shown, dropping any applied transform, so the scale
-  // has to start over at the default, applied explicitly because a bare element renders at scale 1.
+  // has to be reapplied explicitly because a bare element renders at scale 1. The zoom level itself carries over
+  // from the last visit, snapped to the target in case the camera was mid-glide when the view closed.
   function reset() {
-    currentScale = defaultScale;
-    scaleTarget = defaultScale;
-    X.first('#dungeonFloor').style['transform'] = `scale(${defaultScale})`;
+    currentScale = scaleTarget;
+    X.first('#dungeonFloor').style['transform'] = `scale(${currentScale})`;
     stopDrag();
     DungeonCamera.stop();
   }

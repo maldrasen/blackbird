@@ -67,7 +67,7 @@ global.DungeonNavigationSystem = (function() {
 
   function getRoomEpisode(room) {
     if (room.hasContents() === false) { return null; }
-    return RoomContents.lookup(room.getContents()).getEpisode() || null;
+    return RoomContents.lookup(room.getContents()).getAvailableEpisode();
   }
 
   // =============

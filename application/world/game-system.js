@@ -45,6 +45,7 @@ global.GameSystem = (function() {
     state = GameState();
     loaded = true;
     EpisodeQueue.seed(getStartingEpisodes());
+    GameFlags.seed();
     openGame();
 
     if (typeof setup === "function") { return setup(); }

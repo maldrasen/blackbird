@@ -25,3 +25,18 @@
   font-size: variables.$fs-bigger;
   color: variables.$fg-strong;
 }
+
+.loot-block {
+  display: flex;
+  justify-content: center;
+
+  .loot-list {
+    padding: 10px 20px;
+    background-color: rgb(15 15 15);
+    box-shadow: variables.$shadow-button;
+    border: variables.$border-light;
+    border-radius: 5px;
+    font-family: 'roboto', sans-serif;
+    font-size: variables.$fs-body;
+  }
+}

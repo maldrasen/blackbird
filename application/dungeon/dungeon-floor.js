@@ -44,6 +44,10 @@ global.DungeonFloor = function(level, theme=null) {
     return features[rooms[roomIndex].getFeatureIndex()];
   }
 
+  function getPlacedContents() {
+    return new Set(rooms.map(room => room.getContents()));
+  }
+
   function addDoor(door) {
     doors.push(door);
   }
@@ -71,6 +75,7 @@ global.DungeonFloor = function(level, theme=null) {
     getFeatures: () => { return features; },
     getRooms: () => { return rooms; },
     getFeatureForRoom,
+    getPlacedContents,
     addFeature,
     revealRoom: index => { revealed.add(index); },
     isRevealed: index => { return revealed.has(index); },
