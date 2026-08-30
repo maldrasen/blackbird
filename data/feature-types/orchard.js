@@ -18,10 +18,14 @@ FeatureType.register('orchard', {
   }
 });
 
-// Orchard room contents should always have an episode.
+// The Orchard's contents should always have an episode. Contents other than orchard-empty start episodes that rely on
+// game state flags, so they can only be placed once per floor.
 function findOrchardContents() {
+  const placed = DungeonSystem.getDungeonFloor().getRooms().map(room => room.getContents());
   const possible = ['orchard-empty','orchard-kobolds'];
+
   return Random.from(possible.filter(code => {
+    if (code !== 'orchard-empty' && placed.includes(code)) { return false; }
     return Episode.lookup(RoomContents.lookup(code).getEpisode()).meetsRequirements();
   }));
 }
