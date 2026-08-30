@@ -8,7 +8,6 @@ FeatureType.register('orchard', {
     room.setBounds(width, height);
     room.addBox(0, 0, width, height);
     room.setContents(findOrchardContents(), { size:width * height });
-    room.setContents('orchard-kobolds',{ size:width * height });
 
     Random.flipCoin() ?
       addTreeRows(room, width, height) :
