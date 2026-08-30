@@ -44,7 +44,7 @@ function tryTake() {
   }
 
   EpisodeSystem.setPropertyValue('take.result', 'pass');
-  return `The kobold chuckles and tosses his half eaten apple at you. "Help yourself sexy."`
+  return `The kobold chuckles and tosses his half eaten apple at you. "Plenty to go around. Help yourself cupcake."`
 }
 
 function takePass() {
@@ -56,10 +56,11 @@ function takePass() {
 
   InventoryManager().addArticle('rhysh-apple',count);
 
-  return `<p>You deftly catch the half eaten apple, and nod at the little creature. "Alright... I'll just, grab some 
+  return `<p>You deftly catch the half eaten apple, and give the lizard a nod. "Alright... I'll just, grab some 
     then."</p><p>You walk a short distance away to start harvesting some of the apples from the low hanging branches. 
     He stares at your ass as you reach up to pluck them from the tree and gives you a wink when you notice his 
-    leering.</p>${lootBlock}`;
+    leering. Not wanting to press your luck with the creatures, you take what you've gathered and leave.</p>
+    ${lootBlock}`;
 }
 
 function takeFail() {

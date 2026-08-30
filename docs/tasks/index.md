@@ -48,7 +48,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [171] Anima Decay `2pt` — [171-anima-decay.md](171-anima-decay.md)
 - [173] Compile episode pages to a graph at registration `3pt` — [173-compile-episodes-to-graph.md](173-compile-episodes-to-graph.md)
 - [176] Implement potency item effect `8pt` — [176-implement-potency-item-effect.md](176-implement-potency-item-effect.md)
-- [179] Orchard Features `5pt` — [179-orchard-features.md](179-orchard-features.md)
 - [208] Six Blade Knife Episodes `13pt` — [208-six-blade-knife-episodes.md](208-six-blade-knife-episodes.md)
 
 ## Priority 4
