@@ -29,6 +29,8 @@ global.DungeonSystem = (function() {
   function setLevel(level, arrival='up', theme=null) {
     Console.log("Changing Level",{ system:'DungeonSystem', level:1, data:{ level, arrival }});
 
+    let lastError;
+
     for (let attempt=0; attempt<5; attempt++) {
       dungeonFloor = DungeonFloor(level, theme);
       try {
@@ -37,11 +39,13 @@ global.DungeonSystem = (function() {
         return;
       }
       catch (error) {
+        lastError = error;
         Console.log(`Discarding failed floor (attempt ${attempt+1}): ${error.message}`,{ system:'DungeonSystem', level:1 });
       }
     }
 
-    throw new Error(`Failed to generate a valid floor for level ${level} after 5 attempts.`);
+    throw new Error(`Failed to generate a valid floor for level ${level} after 5 attempts. Last error: ${lastError.message}`,
+      { cause:lastError });
   }
 
   function goDownStairs() {
