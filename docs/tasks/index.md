@@ -16,6 +16,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [161] Join Text `8pt` — [161-join-text.md](161-join-text.md)
 - [194] Feeling Adjustments During Battle `2pt` — [194-feeling-adjustments-during-battle.md](194-feeling-adjustments-during-battle.md)
 - [197] Skill events `5pt` — [197-skill-episodes.md](197-skill-episodes.md)
+- [209] Create the Cock Describer `8pt` — [209-create-the-cock-describer.md](209-create-the-cock-describer.md)
 
 ## Priority 3
 
