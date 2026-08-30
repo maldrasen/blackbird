@@ -4,11 +4,10 @@ FeatureType.register('orchard', {
     const room = Room(feature);
     const width = Random.between(options.size[0], options.size[1]);
     const height = Random.between(options.size[0], options.size[1]);
-    // const contents = Random.from(['orchard-empty','orchard-kobolds']);
 
     room.setBounds(width, height);
     room.addBox(0, 0, width, height);
-    // room.setContents(contents,{ size:width * height });
+    room.setContents(findOrchardContents(), { size:width * height });
     room.setContents('orchard-kobolds',{ size:width * height });
 
     Random.flipCoin() ?
@@ -19,6 +18,14 @@ FeatureType.register('orchard', {
     return feature;
   }
 });
+
+// Orchard room contents should always have an episode.
+function findOrchardContents() {
+  const possible = ['orchard-empty','orchard-kobolds'];
+  return Random.from(possible.filter(code => {
+    return RoomContents.lookup(code).getEpisode().meetsRequirements()
+  }));
+}
 
 function addTreeRows(room, width, height) {
   for (let yy=0; yy < height; yy++) {

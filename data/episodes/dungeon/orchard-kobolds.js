@@ -4,6 +4,10 @@ function getAppleCount() {
   return  Math.ceil(DungeonSystem.getDungeonFloor().getCurrentRoom().getContentsOptions().size / 5);
 }
 
+function killed() {
+  GameSystem.getState().setFlag(GameFlags.sixBladeStatus,'killed');
+}
+
 const pages = {};
 
 pages.start = `You step into what looks like a large underground orchard, filled with rows of dark, twisted trees.
@@ -13,7 +17,8 @@ pages.start = `You step into what looks like a large underground orchard, filled
 
 const startOptions = [
   { label:`Try to sneak past them.`, jump:'A.sneak' },
-  { label:`Ambush them while they're distracted.`, startEncounter: { record:'orchard-kobolds', ambushState:AmbushState.monstersAmbushed }},
+  { label:`Ambush them while they're distracted.`, callback:killed,
+    startEncounter: { record:'orchard-kobolds', ambushState:AmbushState.monstersAmbushed }},
   { label:`Speak with them.`, jump:'B.talk' },
 ];
 
@@ -26,24 +31,9 @@ pages.talk = `You clear your throat as you approach them. They're startled by yo
   we're on break here?"`
 
 const talkOptions = [
-  { label:`"Ahh, sounds lovely. Mind if I join you?"`, jump:'B.join' },
   { label:`"Nice looking apples you've got there. Mind if I grab some?"`, jump:'B.take' },
   { label:`"Nothing really, just passing though."`, jump:'B.nothing' },
 ];
-
-function tryJoin() {
-  const check = SkillCheck(GameSystem.getState().getPlayer(),'conversation',RollMode.advantage);
-  if (check < 15) {
-    EpisodeSystem.setPropertyValue('join.result', 'fail')
-    return `No you can't join`
-  }
-
-  EpisodeSystem.setPropertyValue('join.result', 'pass');
-  return `OK, let's party`
-}
-
-pages.joinFail = ``;
-pages.joinPass = ``;
 
 function tryTake() {
   const check = SkillCheck(GameSystem.getState().getPlayer(),'conversation').value;
@@ -58,6 +48,9 @@ function tryTake() {
 }
 
 function takePass() {
+  GameSystem.getState().setFlag(GameFlags.sixBladeStatus,'met');
+  GameSystem.getState().setFlag(GameFlags.sixBladeRespect,1);
+
   const count = getAppleCount();
   const lootBlock = WeaverElements.lootBlock([{ articleCode:'rhysh-apple', quantity:count }]);
 
@@ -65,7 +58,7 @@ function takePass() {
 
   return `<p>You deftly catch the half eaten apple, and nod at the little creature. "Alright... I'll just, grab some 
     then."</p><p>You walk a short distance away to start harvesting some of the apples from the low hanging branches. 
-    He stares at your ass as you reach up to pluck them from the tree, and gives you a wink when you notice his 
+    He stares at your ass as you reach up to pluck them from the tree and gives you a wink when you notice his 
     leering.</p>${lootBlock}`;
 }
 
@@ -90,13 +83,11 @@ pages.nothing = `The kobold stares at you for a moment and shrugs. "Nothing huh?
 Episode.register('orchard-kobolds',{
   layout: 'centered',
   repeat: true,
+  requires: GameRequirements.flagIs(GameFlags.sixBladeStatus,'unknown'),
   pages: [
     { content:pages.start, buttons:startOptions, buttonsStyle:'column' },
     { content:pages.sneak, label:'A.sneak', end:true },
     { content:pages.talk, label:'B.talk', buttons:talkOptions, buttonsStyle:'column' },
-    { contentFunction:tryJoin, label:'B.join' },
-    { content:pages.joinPass, requires:EpisodeRequirements.propertyEquals('join.result','pass'), end:true },
-    { content:pages.joinFail, requires:EpisodeRequirements.propertyEquals('join.result','fail'), end:true },
     { contentFunction:tryTake, label:'B.take' },
     { contentFunction:takePass, requires:EpisodeRequirements.propertyEquals('take.result','pass'), end:true },
     { contentFunction:takeFail, requires:EpisodeRequirements.propertyEquals('take.result','fail'), end:true },
