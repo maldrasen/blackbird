@@ -1,6 +1,9 @@
 global.CockFactory = (function() {
 
-  function build() {
+  // - cockOptions: {size} I've added a size option because I still didn't have a reliable way to build a rare size
+  //     like tiny or titanic in the specs. A size adjustment will normally come from a trigger.
+
+  function build(cockOptions={}) {
     const state = CharacterFactory.getState();
     if (state.shouldHaveCock() === false) { return; }
 
@@ -12,7 +15,7 @@ global.CockFactory = (function() {
       placement: 'normal',
       shape: cockDef.shape || 'normal',
       minUrethraWidth: 0,
-      size: Random.fromFrequencyMap(species.getBody().cock.size),
+      size: cockOptions.size || Random.fromFrequencyMap(species.getBody().cock.size),
     };
 
     const sizeData = CockData.CockSizes[cockData.size];

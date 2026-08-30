@@ -2,7 +2,7 @@ global.CockDescriber = function(id) {
   const cock = CockComponent.lookupNormalOf(id);
   const pack = WeaverPackage('cock-description');
 
-  console.log("Cock:",cock);
+  console.log(cock);
 
   function buildFullDescription() {
     switch (cock.shape) {
