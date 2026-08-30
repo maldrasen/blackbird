@@ -22,7 +22,7 @@ FeatureType.register('orchard', {
 function findOrchardContents() {
   const possible = ['orchard-empty','orchard-kobolds'];
   return Random.from(possible.filter(code => {
-    return Episode.lookup(RoomContents.lookup(code).getEpisodeCode()).meetsRequirements();
+    return Episode.lookup(RoomContents.lookup(code).getEpisode()).meetsRequirements();
   }));
 }
 
