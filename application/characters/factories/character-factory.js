@@ -72,7 +72,7 @@ global.CharacterFactory = (function() {
     AnusFactory.build();
     MouthFactory.build();
     PussyFactory.build();
-    CockFactory.build();
+    CockFactory.build(options.cock);
     BreastsFactory.build();
 
     // Add random mutators like strange hair colors or tails and shit.

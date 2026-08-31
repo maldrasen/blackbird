@@ -1,5 +1,12 @@
 global.CockLoom = (function() {
 
+  const ballsWords = {
+    balls: 50,
+    testicles: 10,
+    nuts: 5,
+    bollocks: 3,
+  };
+
   const cockWords = {
     cock: 20,
     dick: 8,
@@ -35,6 +42,7 @@ global.CockLoom = (function() {
 
     if (token === 'thickSixInchLongCock') { return `${adjective(cock)} ${inchPhrase(id,cock)} long ${cockWord(cock)}`; }
     if (token === 'sixInch') { return inchPhrase(id,cock); }
+    if (token === 'sixInches') { return inchesPhrase(id,cock); }
     if (token === 'bigCock') { return `${sizeWord(cock.size)} ${cockWord()}`; }
     if (token === 'bigHardCock') { return `${sizeWord(cock.size)} ${hardWord()} ${cockWord()}`; }
     if (token === 'big') { return sizeWord(cock.size); }
@@ -70,7 +78,14 @@ global.CockLoom = (function() {
       MeasurementHelper.inchesWithFractions(cock.length, false, true);
   }
 
+  function inchesPhrase(id, cock) {
+    return (cock.length > 600) ?
+      MeasurementHelper.feetAndInchesInEnglish(cock.length, true):
+      MeasurementHelper.inchesWithFractions(cock.length, false);
+  }
+
   return {
+    ballsWords,
     cockWords,
     weave
   };
