@@ -1,9 +1,10 @@
 global.EffectSystem = (function() {
 
-  // An effect source can be a consumable or a spell, both records share the same functions.
-  function applyDuringBattle(source) {
+  // An effect source can be a consumable or a spell, both records share the same functions. Consumables ignore the
+  // power level.
+  function applyDuringBattle(source, powerLevel=1) {
     addBattleMessage(source);
-    getAffectedEntities(source).forEach(entity => applyToAffected(source, entity));
+    getAffectedEntities(source).forEach(entity => applyToAffected(source, entity, powerLevel));
   }
 
   // An effect source that can be used in battle should always have a story.
@@ -39,13 +40,13 @@ global.EffectSystem = (function() {
       filter(entity => entity != null && state.isDown(entity) === false);
   }
 
-  function applyToAffected(source, entity) {
+  function applyToAffected(source, entity, powerLevel) {
     const state = BattleSystem.getState();
     const round = BattleSystem.getRound();
     const weaver = Weaver({ ...round.getContext(), T:entity });
     const results = {};
 
-    source.getEffects().forEach(effect => {
+    source.getEffects(powerLevel).forEach(effect => {
       if (state.isDown(entity)) { return; }
       if (effect.type === 'damage') { results.damage = applyDamage(entity, effect); }
       if (effect.type === 'status-effect') { results[effect.code] = applyStatus(entity, effect); }
