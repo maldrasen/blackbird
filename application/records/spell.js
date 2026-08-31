@@ -34,6 +34,7 @@ global.Spell = (function() {
         case Mana.green: return 'witchcraft';
         case Mana.blue: return 'magic';
         case Mana.black: return 'wizardry';
+        default: throw new Error(`Incorrect Mana Color: ${spell.color}`);
       }
     }
 
@@ -67,6 +68,7 @@ global.Spell = (function() {
         case 6: return 10;
         case 7: return 12;
         case 8: return 13;
+        default: throw new Error(`Unexpected power level: ${level}`);
       }
     }
 
