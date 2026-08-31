@@ -51,8 +51,7 @@ global.EssenceSystem = (function() {
   function abilityFactor(monsterId) {
     const monster = Monster(monsterId);
     const scoreSum = monster.getPrioritizedAbilities().reduce((sum,ability) => {
-      const entry = monster.getAbility(ability.code);
-      return sum + (entry.essence != null ? entry.essence : Ability.lookup(ability.code).getEssence());
+      return sum + (ability.essence != null ? ability.essence : Ability.lookup(ability.code).getEssence());
     },0);
 
     return 1 + (scoreSum * abilityScale);

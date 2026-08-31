@@ -732,6 +732,7 @@
     "test/world/registry-spec.js",
     "test/world/world-state-spec.js",
     "test/wrappers/character-spec.js",
+    "test/wrappers/monster-spec.js",
     "test/wrappers/personality-spec.js",
     "test/wrappers/status-effects-spec.js"
   ]

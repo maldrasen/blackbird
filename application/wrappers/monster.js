@@ -12,43 +12,48 @@ global.Monster = function(id) {
   function getNegotiationStyle() { return Archetype.lookup(getArchetype()).getNegotiationStyle(); }
   function getSkill(code) { return SkillsComponent.lookup(id)[code]; }
 
-  // When building the list of abilities and their priorities we first build the ability map from the two arrays.
-  // Because object keys act like a set, and this will allow ability priorities defined in the base monster to
-  // override the abilities set in the more generalized monster type.
+  // When building the list of abilities we build one map from the two arrays. Because object keys act like a set, an
+  // ability defined in the base monster will override an ability from the more generalized monster type that shares
+  // the same key. An entry is keyed by its ability code unless it sets an explicit key, which a monster that carries
+  // the same ability multiple times (a caster with two spells) needs to keep its entries distinct.
+  function getAbilityMap() {
+    const abilityMap = {};
+
+    [getType(), getBaseMonster()].forEach(source => {
+      const keys = [];
+      source.getPrioritizedAbilities().forEach(ability => {
+        const key = ability.key || ability.code;
+        if (keys.includes(key)) {
+          throw new Error(`Monster[${getCode()}] has more than one ability with the key [${key}]`);
+        }
+        keys.push(key);
+        abilityMap[key] = { ...ability, key };
+      });
+    });
+
+    return abilityMap;
+  }
+
   function getPrioritizedAbilities() {
-    const abilityMap = {}
+    const abilities = Object.values(getAbilityMap());
 
-    getType().getPrioritizedAbilities().forEach(ability => {
-      abilityMap[ability.code] = ability.priority; });
-    getBaseMonster().getPrioritizedAbilities().forEach(ability => {
-      abilityMap[ability.code] = ability.priority; });
-
-    if (Object.keys(abilityMap).length === 0) {
+    if (abilities.length === 0) {
       throw new Error(`Monster[${getCode()}] has no abilities.`);
     }
 
-    return Object.keys(abilityMap).map(code => {
-      return { code:code, priority:abilityMap[code] }
-    });
+    return abilities;
   }
 
-  // A base monster ability will overwrite a monster type ability here, the same way the getPrioritizedAbilities()
-  // function works. We need to call this function when there are other properties on the ability that we need to read.
-  function getAbility(code) {
-    const abilityMap = {};
-
-    getType().getPrioritizedAbilities().forEach(ability => {
-      abilityMap[ability.code] = ability; });
-    getBaseMonster().getPrioritizedAbilities().forEach(ability => {
-      abilityMap[ability.code] = ability; });
-
-    return abilityMap[code];
+  // We need to call this function when there are other properties on the ability entry that we need to read.
+  function getAbility(key) {
+    return getAbilityMap()[key];
   }
 
   // The cooldown set on the monster's ability entry overrides the cooldown on the ability record itself.
-  function getAbilityCooldown(code) {
-    const monsterAbility = getAbility(code);
-    return (monsterAbility ? monsterAbility.cooldown : null) || Ability.lookup(code).getCooldown();
+  function getAbilityCooldown(key) {
+    const monsterAbility = getAbility(key);
+    if (monsterAbility == null) { return Ability.lookup(key).getCooldown(); }
+    return monsterAbility.cooldown || Ability.lookup(monsterAbility.code).getCooldown();
   }
 
   function getResistance(type) {
