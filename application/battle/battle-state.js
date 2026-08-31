@@ -278,12 +278,16 @@ global.BattleState = function(data) {
   //    Spell Casting
   // ===================
 
-  function startCastingSpell(entity, data) { spellCasting[entity] = data; }
+  function startCastingSpell(data) { spellCasting[BattleSystem.getRound().getActing()] = data; }
   function isCastingSpell(entity) { return spellCasting[entity] != null; }
 
-  function finishCastingSpell(entity) {
-    const spellData = spellCasting[entity];
-    delete spellCasting[entity];
+  function finishCastingSpell() {
+    const acting = BattleSystem.getRound().getActing()
+    const spellData = spellCasting[acting];
+
+    if (spellData == null) { throw new Error(`The acting entity is not casting a spell.`); }
+
+    delete spellCasting[acting];
     return spellData;
   }
 

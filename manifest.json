@@ -19,6 +19,7 @@
     "application/battle/systems/battle-damage-system.js",
     "application/battle/systems/battle-death-system.js",
     "application/battle/systems/battle-initializer.js",
+    "application/battle/systems/battle-spell-system.js",
     "application/battle/systems/character-ability-system.js",
     "application/battle/systems/encounter-builder.js",
     "application/battle/systems/formation-manager.js",

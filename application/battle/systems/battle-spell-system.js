@@ -1,8 +1,8 @@
 global.BattleSpellSystem = (function() {
 
-  function castSpell(entity) {
+  function castSpell() {
     const state = BattleSystem.getState();
-    const spellData = state.finishCastingSpell(entity);
+    const spellData = state.finishCastingSpell();
     // TODO: Cast spell using spell data.
   }
 

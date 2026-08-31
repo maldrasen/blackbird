@@ -8,6 +8,12 @@ global.MonsterSystem = (function() {
   //       space. If no move is possible than they should defend.
 
   function executeBattleTurn() {
+    const acting = BattleSystem.getRound().getActing();
+
+    if (BattleSystem.getState().isCastingSpell(acting)) {
+      return BattleSpellSystem.castSpell();
+    }
+
     Ability.lookup(pickForcedAbility() || pickAbility() || 'basic-defend').execute();
   }
 
