@@ -17,6 +17,7 @@ global.BattleState = function(data) {
   const abilityCooldowns = {};
   const conditions = {};
   const skillImprovements = {};
+  const spellCasting = {};
 
   characterIds.forEach(id => { conditions[id] = BattleCondition.active; });
 
@@ -273,6 +274,19 @@ global.BattleState = function(data) {
     });
   }
 
+  // ===================
+  //    Spell Casting
+  // ===================
+
+  function startCastingSpell(entity, data) { spellCasting[entity] = data; }
+  function isCastingSpell(entity) { return spellCasting[entity] != null; }
+
+  function finishCastingSpell(entity) {
+    const spellData = spellCasting[entity];
+    delete spellCasting[entity];
+    return spellData;
+  }
+
   // ===================================
   //    Status Effects and Conditions
   // ===================================
@@ -365,6 +379,10 @@ global.BattleState = function(data) {
     setCooldown,
     isOnCooldown,
     reduceCooldowns,
+
+    startCastingSpell,
+    isCastingSpell,
+    finishCastingSpell,
 
     canBeTargeted,
     isAlive,
