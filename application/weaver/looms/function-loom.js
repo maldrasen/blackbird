@@ -4,6 +4,7 @@ global.FunctionLoom = (function() {
     switch(name) {
       case `unequip`: return unequip(context,argumentList);
       case `setPosition`: return setPosition(context,argumentList);
+      case `hitLocation`: return compileHitLocation(context,argumentList);
       case `hisHitLocation`: return compileHitLocation(context,argumentList,'his');
       case `targetsHitLocation`: return compileHitLocation(context,argumentList,`targetName's`);
       case `aWeaponName`: return compileWeaponName(context,argumentList,'a');

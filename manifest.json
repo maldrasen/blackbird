@@ -515,6 +515,7 @@
     "data/species/sylph.js",
     "data/species/vermen.js",
     "data/spells/overwhelming-effulgence.js",
+    "data/spells/searing-lance.js",
     "data/status-effects/blind.js",
     "data/status-effects/burn.js",
     "data/status-effects/damned.js",

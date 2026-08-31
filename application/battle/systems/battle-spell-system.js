@@ -13,7 +13,7 @@ global.BattleSpellSystem = (function() {
       return round.addMessage({ text:`{A:ActingName} fucked up casting {A:his} spell.` });
     }
 
-    EffectSystem.applyDuringBattle(spell, check.powerLevel);
+    EffectSystem.applyDuringBattle(spell, { ...spellData, powerLevel:check.powerLevel });
   }
 
   return {

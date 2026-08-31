@@ -168,6 +168,7 @@ global.CharacterRequirements = (function() {
     wouldConsentTo: (key, code, min) =>      { return (context) => { return wouldConsentTo(context, key, code, min); }},
     hasSexualPreference: (key, code, min) => { return (context) => { return hasSexualPreference(context, key, code, min); }},
     isStraight: key =>                       { return (context) => { return isStraight(context, key); }},
+    hasArchetype: (key, code) =>             { return (context) => { return Character(context[key]).getArchetype() === code; }}
   };
 
 })();
