@@ -81,7 +81,7 @@ global.MonsterSystem = (function() {
     const abilities = [];
 
     round.getActingMonster().getPrioritizedAbilities().forEach(ability => {
-      if (Ability.lookup(ability.code).canBeUsed() && !state.isOnCooldown(acting, ability.code)) {
+      if (Ability.lookup(ability.code).canBeUsed() && !state.isOnCooldown(acting, ability.key)) {
         abilities.push(ability);
       }
     });

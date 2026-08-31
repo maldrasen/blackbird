@@ -14,8 +14,8 @@ describe("MonsterCastSpell", function() {
       type: 'mage',
       level: 1,
       prioritizedAbilities: [
-        { code:'monster-cast-spell', key:'cast-flare', priority:80, spell:'spec-flare', powerLevel:2 },
-        { code:'monster-cast-spell', key:'cast-glimmer', priority:70, spell:'spec-glimmer', powerLevel:1 },
+        { code:'monster-cast-spell', key:'cast-flare', priority:80, spell:'spec-flare', powerLevel:2, cooldown:30000 },
+        { code:'monster-cast-spell', key:'cast-glimmer', priority:70, spell:'spec-glimmer', powerLevel:1, cooldown:30000 },
       ],
     });
   });
@@ -51,6 +51,37 @@ describe("MonsterCastSpell", function() {
     const round = BattleSystem.getRound();
     expect(round.getMessages()[0].text).to.include('begins casting');
     expect(round.getTime()).to.be.greaterThan(0);
+  });
+
+  it("puts only the cast entry on cooldown", function() {
+    const caster = addCasterToBattle();
+    const state = BattleSystem.getState();
+
+    Monster(caster).populateThreatTable();
+    Monster(caster).updateThreat(state.getEntityAtPosition('P',0,2), 999999);
+
+    state.setTurnOrder({ type:'monster', id:caster, time:0 });
+    state.moveToTopOfTurnOrder({ type:'monster', id:caster });
+    BattleSystem.advanceBattle();
+
+    expect(state.isOnCooldown(caster,'cast-flare')).to.equal(true);
+    expect(state.isOnCooldown(caster,'cast-glimmer')).to.equal(false);
+    expect(state.isOnCooldown(caster,'monster-cast-spell')).to.equal(false);
+  });
+
+  it("picks the other spell while the first is on cooldown", function() {
+    const caster = addCasterToBattle();
+    const state = BattleSystem.getState();
+
+    Monster(caster).populateThreatTable();
+    Monster(caster).updateThreat(state.getEntityAtPosition('P',0,2), 999999);
+    state.setCooldown(caster,'cast-flare',99999);
+
+    state.setTurnOrder({ type:'monster', id:caster, time:0 });
+    state.moveToTopOfTurnOrder({ type:'monster', id:caster });
+    BattleSystem.advanceBattle();
+
+    expect(state.finishCastingSpell().code).to.equal('spec-glimmer');
   });
 
 });

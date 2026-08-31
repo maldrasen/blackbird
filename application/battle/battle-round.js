@@ -34,9 +34,16 @@ global.BattleRound = function(acting, type=null) {
     abilityEntry = entry;
   }
 
+  // Cooldowns are keyed by the executing entry's key so that two entries sharing an ability code cool down
+  // independently. An ability executed without an entry falls back to its code, which is what a keyless entry's key
+  // would be anyway.
+  function abilityKey(code) {
+    return abilityEntry ? abilityEntry.key : code;
+  }
+
   // Get the cooldown for the specified ability for the currently acting entity.
   function getCooldown(code) {
-    if (isActingMonster()) { return getActingMonster().getAbilityCooldown(code); }
+    if (isActingMonster()) { return getActingMonster().getAbilityCooldown(abilityKey(code)); }
     throw `Only monster abilities have cooldowns.`;
   }
 
@@ -45,7 +52,7 @@ global.BattleRound = function(acting, type=null) {
     if (isActingMonster()) {
       const cooldown = getCooldown(code)
       if (cooldown) {
-        BattleSystem.getState().setCooldown(acting, code, cooldown);
+        BattleSystem.getState().setCooldown(acting, abilityKey(code), cooldown);
       }
     }
   }
