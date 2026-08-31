@@ -1,7 +1,8 @@
 global.CockFactory = (function() {
 
   // - cockOptions: {size} I've added a size option because I still didn't have a reliable way to build a rare size
-  //     like tiny or titanic in the specs. A size adjustment will normally come from a trigger.
+  //     like tiny or titanic in the specs. A size adjustment will normally come from a trigger, and can in fact still
+  //     be overwritten by a trigger, even when the size is set in the options.
 
   function build(cockOptions={}) {
     const state = CharacterFactory.getState();

@@ -152,6 +152,7 @@ global.Weaver = function(context) {
 
     if (key === 'breast') { return Random.fromFrequencyMap(BreastsLoom.breastWord); }
     if (key === 'breasts') { return Random.fromFrequencyMap(BreastsLoom.breastsWord); }
+    if (key === 'balls') { return Random.fromFrequencyMap(CockLoom.ballsWords); }
     if (key === 'cock') { return Random.fromFrequencyMap(CockLoom.cockWords); }
     if (key === 'pussy') { return Random.fromFrequencyMap(PussyLoom.pussyWords); }
 
