@@ -6,7 +6,7 @@ global.BattleConsumableSystem = (function() {
 
     round.addTime(750);
     addStoryMessage(round, consumable);
-    getAffectedEntities(round, consumable).forEach(id => applyEffects(round, consumable, id));
+    getAffectedEntities(round, consumable).forEach(id => applyEffects(consumable, id));
   }
 
   function addStoryMessage(round, consumable) {
@@ -27,15 +27,16 @@ global.BattleConsumableSystem = (function() {
       filter(id => id != null && state.isDown(id) === false);
   }
 
-  function applyEffects(round, consumable, id) {
+  function applyEffects(consumable, id) {
     const state = BattleSystem.getState();
-    const weaver = Weaver({ A:id });
+    const round = BattleSystem.getRound();
+    const weaver = Weaver({ ...round.getContext(), T:id });
     const results = {};
 
     consumable.getEffects().forEach(effect => {
       if (state.isDown(id)) { return; }
       if (effect.type === 'damage') { results.damage = applyDamage(id, effect); }
-      if (effect.type === 'status') { results[effect.code] = applyStatus(id, effect); }
+      if (effect.type === 'status-effect') { results[effect.code] = applyStatus(id, effect); }
     });
 
     const message = consumable.messageForEntity(id, results);
