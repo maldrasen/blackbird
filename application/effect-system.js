@@ -3,41 +3,44 @@ global.EffectSystem = (function() {
   // An effect source can be a consumable or a spell, both records share the same functions. Consumables ignore the
   // power level.
   function applyDuringBattle(source, data={}) {
-    addBattleMessage(source);
+    const round = BattleSystem.getRound();
 
-    // Spells need to get the effected entities from the spell data we pass here.
-    getAffectedEntities(source).forEach(entity => applyToAffected(source, entity, data));
+    if (data.target == null) { data.target = round.getTarget(); }
+    if (data.targetPosition == null) { data.targetPosition = round.getTargetPosition(); }
+
+    addBattleMessage(source, data);
+    getAffectedEntities(source, data).forEach(entity => applyToAffected(source, entity, data));
   }
 
-  // An effect source that can be used in battle should always have a story.
-  function addBattleMessage(source) {
+  // An effect source that can be used in battle should always have a story. A spell released on a later turn carries
+  // its target in the spell data, so it takes precedence over the round's target in the story context.
+  function addBattleMessage(source, data) {
     const round = BattleSystem.getRound();
-    const context = { ...round.getContext() };
+    const context = { ...round.getContext(), T:data.target };
 
     if (Article.getAllCodes().includes(source.getCode())) { context.I = source.getCode(); }
 
     round.addMessage({ text:source.pickStory(context) }, Weaver(context));
   }
 
-  function getAffectedEntities(source) {
+  function getAffectedEntities(source, data) {
     const round = BattleSystem.getRound();
     const state = BattleSystem.getState();
     const actingIsMonster = state.isMonster(round.getActing());
 
     switch (source.getTarget()) {
       case EffectTarget.self: return [round.getActing()];
-      case EffectTarget.single: return [round.getTarget()];
+      case EffectTarget.single: return [data.target];
       case EffectTarget.enemyFormation: return actingIsMonster ? state.getActiveCharacters() : state.getActiveMonsters();
       case EffectTarget.allyFormation: return actingIsMonster ? state.getActiveMonsters() : state.getActiveCharacters();
-      case EffectTarget.position: return getEntitiesWithinAreaOfEffect(source);
+      case EffectTarget.position: return getEntitiesWithinAreaOfEffect(source, data);
       default: throw new Error(`Bad effect target [${source.getTarget()}]`);
     }
   }
 
-  function getEntitiesWithinAreaOfEffect(source) {
-    const round = BattleSystem.getRound();
+  function getEntitiesWithinAreaOfEffect(source, data) {
     const state = BattleSystem.getState();
-    return AreasOfEffect.get(round.getTargetPosition(), source.getAreaOfEffect()).
+    return AreasOfEffect.get(data.targetPosition, source.getAreaOfEffect()).
       map(position => state.getEntityAtPosition(position)).
       filter(entity => entity != null && state.isDown(entity) === false);
   }

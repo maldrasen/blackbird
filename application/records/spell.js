@@ -82,7 +82,7 @@ global.Spell = (function() {
       getAreaOfEffect: () => { return spell.areaOfEffect; },
       getEffects: (powerLevel=1) => { return spell.getEffects(powerLevel); },
       pickStory: context => { return spell.stories.pick(context); },
-      messageForEntity: (id,results) => { return spell.messageForEntity(id,results); },
+      messageForEntity: (id,results) => { return spell.messageForEntity ? spell.messageForEntity(id,results) : null; },
       getSpellSkill,
       rollSkillCheck,
     };

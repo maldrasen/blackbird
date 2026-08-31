@@ -20,6 +20,18 @@ describe("BattleSpellSystem", function() {
       stories: stories,
       messageForEntity: () => { return null; },
     });
+
+    const boltStories = WeaverPackage('spec-bolt');
+    boltStories.add(`A spectral bolt strikes {T:TargetName}.`);
+
+    Spell.register('spec-bolt', {
+      name: 'Spec Bolt',
+      color: 'red',
+      manaCost: 1,
+      target: EffectTarget.single,
+      getEffects: () => { return [Effect.damage(DamageType.fire, { x:5, d:4 })]; },
+      stories: boltStories,
+    });
   });
 
   beforeEach(function() {
@@ -104,6 +116,26 @@ describe("BattleSpellSystem", function() {
       const round = BattleSystem.getRound();
       expect(round.getTime()).to.be.greaterThan(0);
       expect(round.getMessages()[0].text).to.include('fucked up casting');
+    });
+
+    // The release turn's round has no target set - a single target spell has to hit the target stored in the spell
+    // data when the cast began.
+    it("hits the target stored when the cast began", function() {
+      const state = startBattle();
+      const party = getParty(state);
+      party.forEach(id => setHealth(id, 100));
+      const target = party[1];
+
+      Random.stubBetween(50, 1);
+      BattleSystem.specRound(state.getEntityAtPosition('M',0,1));
+      state.startCastingSpell({ code:'spec-bolt', powerLevel:2, target:target, targetPosition:state.getPosition(target) });
+      BattleSpellSystem.castSpell();
+
+      expect(getHealth(target)).to.be.lessThan(100);
+      party.filter(id => id !== target).forEach(id => expect(getHealth(id), id).to.equal(100));
+
+      const messages = BattleSystem.getRound().getMessages();
+      expect(messages[0].text).to.include(ActorComponent.lookup(target).name);
     });
 
     it("throws when the acting entity is not casting a spell", function() {
