@@ -15,6 +15,7 @@ global.BattleRound = function(acting, type=null) {
   let targetPosition;
   let time = 0;
   let ability;
+  let abilityEntry;
 
   function getActingMonster() { return Monster(acting); }
   function getActingCharacter() { return Character(acting); }
@@ -23,11 +24,14 @@ global.BattleRound = function(acting, type=null) {
   function isActingCharacter() { return roundType === 'character'; }
   function isStatusEffect() { return roundType === 'status'; }
 
-  function setAbility(code) {
+  // A monster's ability entry is set alongside the code, so that an ability carrying extra data (the spell a
+  // monster-cast-spell entry casts) can read the entry that was actually picked rather than looking it up by code.
+  function setAbility(code, entry=null) {
     if (ability != null && ability !== code) {
       throw new Error(`Ability has already been set to ${ability}`);
     }
     ability = code;
+    abilityEntry = entry;
   }
 
   // Get the cooldown for the specified ability for the currently acting entity.
@@ -145,6 +149,7 @@ global.BattleRound = function(acting, type=null) {
     isStatusEffect,
     setAbility,
     getAbility: () => { return ability; },
+    getAbilityEntry: () => { return abilityEntry; },
     getCooldown,
     applyCooldown,
 

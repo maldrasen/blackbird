@@ -9,7 +9,7 @@
 Ability.register('monster-cast-spell', {
   execute: () => {
     const round = BattleSystem.getRound();
-    const ability = round.getActingMonster().getAbility('monster-cast-spell');
+    const ability = round.getAbilityEntry();
     const spell = Spell.lookup(ability.spell);
     const target = round.getTarget();
     const targetPosition = round.getTargetPosition();

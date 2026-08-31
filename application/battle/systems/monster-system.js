@@ -14,7 +14,8 @@ global.MonsterSystem = (function() {
       return BattleSpellSystem.castSpell();
     }
 
-    Ability.lookup(pickForcedAbility() || pickAbility() || 'basic-defend').execute();
+    const entry = pickForcedAbility() || pickAbility() || { code:'basic-defend', key:'basic-defend' };
+    Ability.lookup(entry.code).execute(entry);
   }
 
   // When a negotiation ends with the monster using a specific ability we assume that this ability will target the
@@ -31,7 +32,9 @@ global.MonsterSystem = (function() {
       round.setTarget(GameSystem.getState().getPlayer());
 
       const code = state.takeForcedAbility();
-      if (Ability.lookup(code).canBeUsed()) { return code; }
+      if (Ability.lookup(code).canBeUsed()) {
+        return round.getActingMonster().getAbility(code) || { code:code, key:code };
+      }
 
       round.clearTarget();
     }
@@ -83,7 +86,7 @@ global.MonsterSystem = (function() {
       }
     });
 
-    return abilities.sort((a,b) => { return b.priority - a.priority }).map(a => a.code);
+    return abilities.sort((a,b) => { return b.priority - a.priority });
   }
 
   // Pick the highest threat monster that is a member of the characters array.
