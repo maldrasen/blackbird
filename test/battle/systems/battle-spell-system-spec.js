@@ -138,6 +138,43 @@ describe("BattleSpellSystem", function() {
       expect(messages[0].text).to.include(ActorComponent.lookup(target).name);
     });
 
+    // The party fixtures fill P.0.2, P.0.3, P.1.2, and P.1.3. With the original target at P.0.2 down, their neighbor
+    // at P.0.3 (rank distance 0) is closer than either back rank character (rank distance 1).
+    it("redirects to the closest available target when the original target is down", function() {
+      const state = startBattle();
+      const party = getParty(state);
+      party.forEach(id => setHealth(id, 100));
+      const target = state.getEntityAtPosition('P',0,2);
+
+      Random.stubBetween(50, 1);
+      BattleSystem.specRound(state.getEntityAtPosition('M',0,1));
+      state.startCastingSpell({ code:'spec-bolt', powerLevel:2, target:target, targetPosition:state.getPosition(target) });
+      state.setCondition(target, BattleCondition.knockedOut);
+      BattleSpellSystem.castSpell();
+
+      const redirected = state.getEntityAtPosition('P',0,3);
+      expect(getHealth(redirected)).to.be.lessThan(100);
+      party.filter(id => id !== redirected).forEach(id => expect(getHealth(id), id).to.equal(100));
+    });
+
+    it("counts rank distance for more than position distance when redirecting", function() {
+      const state = startBattle();
+      const party = getParty(state);
+      party.forEach(id => setHealth(id, 100));
+      const target = state.getEntityAtPosition('P',0,2);
+
+      Random.stubBetween(50, 1);
+      BattleSystem.specRound(state.getEntityAtPosition('M',0,1));
+      state.startCastingSpell({ code:'spec-bolt', powerLevel:2, target:target, targetPosition:state.getPosition(target) });
+      state.setCondition(target, BattleCondition.knockedOut);
+      state.setCondition(state.getEntityAtPosition('P',0,3), BattleCondition.knockedOut);
+      BattleSpellSystem.castSpell();
+
+      const redirected = state.getEntityAtPosition('P',1,2);
+      expect(getHealth(redirected)).to.be.lessThan(100);
+      expect(getHealth(state.getEntityAtPosition('P',1,3))).to.equal(100);
+    });
+
     it("throws when the acting entity is not casting a spell", function() {
       const state = startBattle();
       BattleSystem.specRound(state.getEntityAtPosition('M',0,1));
