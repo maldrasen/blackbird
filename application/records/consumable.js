@@ -23,7 +23,7 @@ global.Consumable = (function() {
 
     function consume(entity) {
       const context = { A:entity, I:code };
-      const results = (consumable.effects||[]).map(effect => ConsumableEffect.apply(entity, effect));
+      const results = (consumable.effects||[]).map(effect => Effect.apply(entity, effect));
       const story = consumable.stories ? consumable.stories.pick(context) : `[TODO: Consumable:${code} story]`;
       return { results, story:Weaver(context).weave(story) };
     }

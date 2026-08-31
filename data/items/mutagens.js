@@ -7,7 +7,7 @@ Consumable.register('horse-juice',{
   tags: ['manly','juice'],
   usableWhen: UsableWhen.outOfCombat,
   effects:[
-    ConsumableEffect.increasePotency(1),
+    Effect.increasePotency(1),
   ]
 });
 
@@ -18,7 +18,7 @@ Consumable.register('goats-milk',{
   tags: ['manly','milk'],
   usableWhen: UsableWhen.outOfCombat,
   effects:[
-    ConsumableEffect.increasePotency(3),
+    Effect.increasePotency(3),
   ]
 });
 
@@ -30,7 +30,7 @@ Consumable.register('minotaur-milk',{
   tags: ['manly','milk'],
   usableWhen: UsableWhen.outOfCombat,
   effects:[
-    ConsumableEffect.increasePotency(10),
+    Effect.increasePotency(10),
   ]
 });
 
@@ -42,7 +42,7 @@ Consumable.register('centaur-milk',{
   tags: ['manly','milk'],
   usableWhen: UsableWhen.outOfCombat,
   effects:[
-    ConsumableEffect.increasePotency(12),
+    Effect.increasePotency(12),
   ]
 });
 

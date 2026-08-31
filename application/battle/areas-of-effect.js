@@ -7,7 +7,7 @@ global.AreasOfEffect = (function() {
 
   function get(center, shape) {
     switch (shape) {
-      case 'small': return getSmall(center);
+      case AreaOfEffect.small: return getSmall(center);
       default: throw new Error(`Bad AreaOfEffect shape [${shape}]`);
     }
   }

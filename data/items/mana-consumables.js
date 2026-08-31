@@ -9,7 +9,7 @@ Consumable.register('crimson-tear',{
   tags: ['tear'],
   usableWhen: UsableWhen.anyTime,
   effects:[
-    ConsumableEffect.restoreMana(Mana.red, 5, 15)
+    Effect.restoreMana(Mana.red, 5, 15)
   ],
   stories: tearPackage,
 });
@@ -21,7 +21,7 @@ Consumable.register('aureolin-tear',{
   tags: ['tear'],
   usableWhen: UsableWhen.anyTime,
   effects:[
-    ConsumableEffect.restoreMana(Mana.yellow, 5, 15)
+    Effect.restoreMana(Mana.yellow, 5, 15)
   ],
   stories: tearPackage,
 });
@@ -33,7 +33,7 @@ Consumable.register('celadon-tear',{
   tags: ['tear'],
   usableWhen: UsableWhen.anyTime,
   effects:[
-    ConsumableEffect.restoreMana(Mana.green, 5, 15)
+    Effect.restoreMana(Mana.green, 5, 15)
   ],
   stories: tearPackage,
 });
@@ -45,7 +45,7 @@ Consumable.register('cerulean-tear',{
   tags: ['tear'],
   usableWhen: UsableWhen.anyTime,
   effects:[
-    ConsumableEffect.restoreMana(Mana.blue, 5, 15)
+    Effect.restoreMana(Mana.blue, 5, 15)
   ],
   stories: tearPackage,
 });
@@ -57,7 +57,7 @@ Consumable.register('ebony-tear',{
   tags: ['tear'],
   usableWhen: UsableWhen.anyTime,
   effects:[
-    ConsumableEffect.restoreMana(Mana.black, 5, 15)
+    Effect.restoreMana(Mana.black, 5, 15)
   ],
   stories: tearPackage,
 });
