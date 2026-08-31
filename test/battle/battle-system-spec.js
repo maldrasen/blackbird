@@ -74,7 +74,8 @@ describe("BattleSystem", function() {
       HealthComponent.update(acting, health);
 
       BattleSystem.specRound(acting, { target:state.getEntityAtPosition('P',0,2) });
-      BattleConsumableSystem.useConsumable('blasto');
+      BattleSystem.getRound().addTime(750);
+      EffectSystem.applyDuringBattle(Consumable.lookup('blasto'));
       BattleSystem.finishRound();
 
       expect(state.isAlive(acting)).to.equal(false);
