@@ -2,6 +2,10 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
+## Priority 1
+
+- [210] Start Adding Spells `8pt` — [210-start-adding-spells.md](210-start-adding-spells.md)
+
 ## Priority 2
 
 - [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
@@ -16,7 +20,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [161] Join Text `8pt` — [161-join-text.md](161-join-text.md)
 - [194] Feeling Adjustments During Battle `2pt` — [194-feeling-adjustments-during-battle.md](194-feeling-adjustments-during-battle.md)
 - [197] Skill events `5pt` — [197-skill-episodes.md](197-skill-episodes.md)
-- [209] Create the Cock Describer `8pt` — [209-create-the-cock-describer.md](209-create-the-cock-describer.md)
 
 ## Priority 3
 
@@ -50,6 +53,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [173] Compile episode pages to a graph at registration `3pt` — [173-compile-episodes-to-graph.md](173-compile-episodes-to-graph.md)
 - [176] Implement potency item effect `8pt` — [176-implement-potency-item-effect.md](176-implement-potency-item-effect.md)
 - [208] Six Blade Knife Episodes `13pt` — [208-six-blade-knife-episodes.md](208-six-blade-knife-episodes.md)
+- [209] Create the Cock Describer `13pt` — [209-create-the-cock-describer.md](209-create-the-cock-describer.md)
 
 ## Priority 4
 
