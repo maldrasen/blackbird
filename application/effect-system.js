@@ -19,17 +19,21 @@ global.EffectSystem = (function() {
   function getAffectedEntities(source) {
     const round = BattleSystem.getRound();
     const state = BattleSystem.getState();
+    const actingIsMonster = state.isMonster(round.getActing());
 
-    if (source.getTarget() === 'self') { return [round.getActing()]; }
+    switch (source.getTarget()) {
+      case EffectTarget.self: return [round.getActing()];
+      case EffectTarget.single: return [round.getTarget()];
+      case EffectTarget.enemyFormation: return actingIsMonster ? state.getActiveCharacters() : state.getActiveMonsters();
+      case EffectTarget.allyFormation: return actingIsMonster ? state.getActiveMonsters() : state.getActiveCharacters();
+      case EffectTarget.position: return getEntitiesWithinAreaOfEffect(source);
+      default: throw new Error(`Bad effect target [${source.getTarget()}]`);
+    }
+  }
 
-    // TODO: Enemy formation is entities in party formation when acting is monster, or monster formation when acting
-    //       is character, or same formation when target is ally formation.
-    if (source.getTarget() === 'enemy-formation') { }
-    if (source.getTarget() === 'ally-formation') { }
-
-    // TODO: Not position won't work now...
-    if (source.getTarget() !== 'position') { return [round.getTarget()]; }
-
+  function getEntitiesWithinAreaOfEffect(source) {
+    const round = BattleSystem.getRound();
+    const state = BattleSystem.getState();
     return AreasOfEffect.get(round.getTargetPosition(), source.getAreaOfEffect()).
       map(position => state.getEntityAtPosition(position)).
       filter(entity => entity != null && state.isDown(entity) === false);
@@ -70,6 +74,7 @@ global.EffectSystem = (function() {
 
   return {
     applyDuringBattle,
+    getAffectedEntities,
   };
 
 })();

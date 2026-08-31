@@ -16,7 +16,7 @@ Consumable.register('blasto',{
     impact releasing a cloud of explosive spores.`,
   category: InventoryCategory.grenades,
   tags: ['mushroom'],
-  target: 'position',
+  target: EffectTarget.position,
   areaOfEffect: AreaOfEffect.small,
   usableWhen: UsableWhen.inCombat,
   stories: blastoPackage,

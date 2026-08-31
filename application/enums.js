@@ -539,6 +539,12 @@ global.AreaOfEffect = {
   single: 'single',
   small: 'small',
   large: 'large',
+};
+
+global.EffectTarget = {
+  self: 'self',
+  single: 'single',
+  position: 'position',
   enemyFormation: 'enemy-formation',
-  partyFormation: 'party-formation',
+  allyFormation: 'ally-formation',
 };

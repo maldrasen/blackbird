@@ -11,8 +11,8 @@ global.Fixtures = (function() {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
-      // monster: 'kobold-tosser',
-      encounter: 'orchard-kobolds',
+      monster: 'kobold-tosser',
+      // encounter: 'orchard-kobolds',
     });
 
     GameSystem.setGameMode(GameMode.location);

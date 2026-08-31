@@ -620,6 +620,7 @@
     "test/battle/character-ability-system-spec.js",
     "test/battle/commands/basic-attack-spec.js",
     "test/battle/commands/monster-use-article-spec.js",
+    "test/battle/effect-system-spec.js",
     "test/battle/models/damage-roll-spec.js",
     "test/battle/models/defend-roll-spec.js",
     "test/battle/models/physical-attack-contest-spec.js",
