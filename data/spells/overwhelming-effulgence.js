@@ -6,6 +6,7 @@ Spell.register('overwhelming-effulgence', {
   name: 'Overwhelming Effulgence',
   color: 'red',
   manaCost: 5,
+  target: 'enemy-formation', // TODO: Convert to enum?
   areaOfEffect: AreasOfEffect.enemyFormation,
 
   getEffects: powerLevel => {

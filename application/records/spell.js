@@ -29,6 +29,7 @@ global.Spell = (function() {
       getColor: () => { return spell.color; },
       getManaCost: (powerLevel=1) => { return spell.manaCost * powerLevel; },
       getCastingTime,
+      getTarget: () => { return spell.target || 'self'; },
       getAreaOfEffect: () => { return spell.areaOfEffect; },
       getEffects: (powerLevel=1) => { return spell.getEffects(powerLevel); },
       pickStory: context => { return spell.stories.pick(context); },
