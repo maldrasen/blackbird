@@ -10,9 +10,9 @@ global.Ability = (function() {
 
     const ability = { ...abilities[code] };
 
-    function execute(key=code) {
+    function execute({ key, data } = {}) {
       const round = BattleSystem.getRound();
-      round.setAbility(key);
+      round.isActingMonster() ? round.setMonsterAbility(key) : round.setCharacterAbility(code, data);
       round.applyCooldown();
       ability.execute();
 

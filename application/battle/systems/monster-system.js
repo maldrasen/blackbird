@@ -8,14 +8,18 @@ global.MonsterSystem = (function() {
   //       space. If no move is possible than they should defend.
 
   function executeBattleTurn() {
-    const acting = BattleSystem.getRound().getActing();
+    const round = BattleSystem.getRound();
+    const acting = round.getActing();
+    const monster = round.getActingMonster();
 
     if (BattleSystem.getState().isCastingSpell(acting)) {
       return BattleSpellSystem.castSpell();
     }
 
-    const entry = pickForcedAbility() || pickAbility() || { code:'basic-defend', key:'basic-defend' };
-    Ability.lookup(entry.code).execute(entry.key);
+    const key = pickForcedAbility() || pickAbility() || 'defend';
+    const abilityData = monster.getAbility(key);
+
+    Ability.lookup(abilityData.code).execute({ key });
   }
 
   // When a negotiation ends with the monster using a specific ability we assume that this ability will target the
@@ -31,11 +35,10 @@ global.MonsterSystem = (function() {
       const round = BattleSystem.getRound();
       round.setTarget(GameSystem.getState().getPlayer());
 
-      // A negotiation forces an ability by its code, so we find the monster's entry that carries it. A forced
-      // ability the monster doesn't have at all gets a bare entry with no data beyond the ability record's.
       const code = state.takeForcedAbility();
       if (Ability.lookup(code).canBeUsed()) {
-        return round.getActingMonster().getPrioritizedAbilities().find(a => a.code === code) || { code:code, key:code };
+        const key = round.getActingMonster().findAbility(code);
+        if (key) { return key; }
       }
 
       round.clearTarget();
@@ -80,15 +83,20 @@ global.MonsterSystem = (function() {
     const state = BattleSystem.getState();
     const round = BattleSystem.getRound();
     const acting = round.getActing();
-    const abilities = [];
+    const selections = [];
 
-    round.getActingMonster().getPrioritizedAbilities().forEach(ability => {
-      if (Ability.lookup(ability.code).canBeUsed() && !state.isOnCooldown(acting, ability.key)) {
-        abilities.push(ability);
+    const monster = round.getActingMonster();
+
+    Object.keys(monster.getAbilityMap()).forEach(key => {
+      const abilityData = monster.getAbility(key);
+      const ability = Ability.lookup(abilityData.code);
+
+      if (ability.canBeUsed() && !state.isOnCooldown(acting, key)) {
+        selections.push({ key:key, priority:abilityData.priority });
       }
     });
 
-    return abilities.sort((a,b) => { return b.priority - a.priority });
+    return selections.sort((a,b) => { return b.priority - a.priority }).map(entry => entry.key);
   }
 
   // Pick the highest threat monster that is a member of the characters array.

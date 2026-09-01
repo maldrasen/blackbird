@@ -18,7 +18,7 @@ describe("MonsterFactory", function() {
 
       expect(equipment.primary).to.be.undefined;
       expect(InventoryComponent.lookup(id).items).to.be.empty;
-      expect(Monster(id).getPrioritizedAbilities().map(a => a.code)).to.include('punch');
+      expect(Object.values(Monster(id).getAbilityMap()).map(a => a.code)).to.include('punch');
     });
 
     it("equips real weapons", function() {
