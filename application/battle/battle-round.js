@@ -15,7 +15,6 @@ global.BattleRound = function(acting, type=null) {
   let targetPosition;
   let time = 0;
   let ability;
-  let abilityEntry;
 
   function getActingMonster() { return Monster(acting); }
   function getActingCharacter() { return Character(acting); }
@@ -24,35 +23,33 @@ global.BattleRound = function(acting, type=null) {
   function isActingCharacter() { return roundType === 'character'; }
   function isStatusEffect() { return roundType === 'status'; }
 
-  // A monster's ability entry is set alongside the code, so that an ability carrying extra data (the spell a
-  // monster-cast-spell entry casts) can read the entry that was actually picked rather than looking it up by code.
-  function setAbility(code, entry=null) {
-    if (ability != null && ability !== code) {
+  // The ability set on the round is the acting monster's ability key, which is the ability code unless the monster's
+  // record keys the entry otherwise. Characters always set the ability code.
+  function setAbility(key) {
+    if (ability != null && ability !== key) {
       throw new Error(`Ability has already been set to ${ability}`);
     }
-    ability = code;
-    abilityEntry = entry;
+    ability = key;
   }
 
-  // Cooldowns are keyed by the executing entry's key so that two entries sharing an ability code cool down
-  // independently. An ability executed without an entry falls back to its code, which is what a keyless entry's key
-  // would be anyway.
-  function abilityKey(code) {
-    return abilityEntry ? abilityEntry.key : code;
+  // An ability carrying extra data (the spell a monster-cast-spell entry casts, a natural attack's damage) reads its
+  // entry from the acting monster's record. Characters don't have ability entries.
+  function getAbilityEntry() {
+    return isActingMonster() ? getActingMonster().getAbility(ability) : null;
   }
 
-  // Get the cooldown for the specified ability for the currently acting entity.
-  function getCooldown(code) {
-    if (isActingMonster()) { return getActingMonster().getAbilityCooldown(abilityKey(code)); }
+  // Get the cooldown for the round's ability for the currently acting entity.
+  function getCooldown() {
+    if (isActingMonster()) { return getActingMonster().getAbilityCooldown(ability); }
     throw `Only monster abilities have cooldowns.`;
   }
 
-  // Apply the cooldown time for the specified ability for the currently acting entity.
-  function applyCooldown(code) {
+  // Apply the cooldown time for the round's ability for the currently acting entity.
+  function applyCooldown() {
     if (isActingMonster()) {
-      const cooldown = getCooldown(code)
+      const cooldown = getCooldown()
       if (cooldown) {
-        BattleSystem.getState().setCooldown(acting, abilityKey(code), cooldown);
+        BattleSystem.getState().setCooldown(acting, ability, cooldown);
       }
     }
   }
@@ -156,7 +153,7 @@ global.BattleRound = function(acting, type=null) {
     isStatusEffect,
     setAbility,
     getAbility: () => { return ability; },
-    getAbilityEntry: () => { return abilityEntry; },
+    getAbilityEntry,
     getCooldown,
     applyCooldown,
 

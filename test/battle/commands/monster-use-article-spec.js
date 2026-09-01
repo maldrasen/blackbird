@@ -38,7 +38,7 @@ describe("MonsterUseArticle", function() {
     BattleSystem.advanceBattle();
 
     const round = BattleSystem.getRound();
-    expect(round.getAbility()).to.equal('monster-use-article');
+    expect(round.getAbility()).to.equal('blasto');
     expect(round.getTarget()).to.equal(target);
     expect(state.isOnCooldown(tosser,'blasto')).to.equal(true);
     expect(round.getMessages()[0].text).to.include('flash of light');

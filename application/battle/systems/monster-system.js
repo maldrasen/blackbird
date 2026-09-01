@@ -15,7 +15,7 @@ global.MonsterSystem = (function() {
     }
 
     const entry = pickForcedAbility() || pickAbility() || { code:'basic-defend', key:'basic-defend' };
-    Ability.lookup(entry.code).execute(entry);
+    Ability.lookup(entry.code).execute(entry.key);
   }
 
   // When a negotiation ends with the monster using a specific ability we assume that this ability will target the
@@ -31,9 +31,11 @@ global.MonsterSystem = (function() {
       const round = BattleSystem.getRound();
       round.setTarget(GameSystem.getState().getPlayer());
 
+      // A negotiation forces an ability by its code, so we find the monster's entry that carries it. A forced
+      // ability the monster doesn't have at all gets a bare entry with no data beyond the ability record's.
       const code = state.takeForcedAbility();
       if (Ability.lookup(code).canBeUsed()) {
-        return round.getActingMonster().getAbility(code) || { code:code, key:code };
+        return round.getActingMonster().getPrioritizedAbilities().find(a => a.code === code) || { code:code, key:code };
       }
 
       round.clearTarget();
