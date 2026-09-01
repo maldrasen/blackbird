@@ -14,12 +14,24 @@ global.Spell = (function() {
 
     const spell = { ...spells[code] };
 
-    // TODO: The 700+100x casting time is for a 'fast' casting time. Other casting times (medium, slow) can either
-    //       adjust these values with a known 'castingTime' property or provide their own formula in a getCastingTime
-    //       property.
+    // A spell's castingTime property can be fast (the default), medium, or slow. If a spell defines a
+    // getCastingTime(powerLevel) closure then that will be called instead.
     function getCastingTime(powerLevel) {
       let base = 700;
       let multiplier = 100;
+
+      if (typeof spell.getCastingTime === 'function') {
+        return spell.getCastingTime(powerLevel);
+      }
+      if (spell.castingTime === 'medium') {
+        base = 800;
+        multiplier = 200;
+      }
+      if (spell.castingTime === 'slow') {
+        base = 1000;
+        multiplier = 300;
+      }
+
       return (powerLevel * multiplier) + base;
     }
 

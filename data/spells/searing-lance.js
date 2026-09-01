@@ -3,6 +3,8 @@
 //       Also, spells don't have a hit location, because there's no mechanical component there, but we could add a hit
 //       location as a weaver package part.
 
+// TODO: This spell could also add a burn condition once we've implemented it.
+
 const stories = WeaverPackage('searing-lance');
 stories.add(`A lance of searing heat erupts from {A:actingName's} hands, striking {T:TargetName} in the chest.`);
 stories.add(`{A:ActingName} cackles wildly as a lance of searing heat erupts from {A:his} hands, striking 

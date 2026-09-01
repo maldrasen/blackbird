@@ -11,8 +11,9 @@ BaseMonster.register('flamescale-screamer',{
   },
 
   prioritizedAbilities:[
-    { code:'monster-cast-spell', key:'cast-effulgence', priority:100, spell:'overwhelming-effulgence', powerLevel:2, cooldown:3000 },
-    { code:'monster-cast-spell', key:'cast-lance', priority:75, spell:'searing-lance', powerLevel:2, cooldown:1500 },
+    { key:'A', code:'monster-cast-spell', priority:100, spell:'overwhelming-effulgence', powerLevel:2, cooldown:4000 },
+    { key:'B', code:'monster-cast-spell', priority:75, spell:'searing-lance', powerLevel:3, cooldown:2000 },
+    { key:'C', code:'monster-cast-spell', priority:50, spell:'ember', powerLevel:1 },
   ],
 
 });
