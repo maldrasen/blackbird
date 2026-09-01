@@ -65,11 +65,16 @@ global.BattleRound = function(acting, type=null) {
       const off = equipment.getSlot(EquipmentSlot.secondary);
 
       if (main && WeaponComponent.lookup(main)) { primaryWeapon = distillWeapon(main); }
-      if (off && WeaponComponent.lookup(off)) { secondaryWeapon = distillWeapon(off); }
+      if (off && WeaponComponent.lookup(off) && isShield(off) === false) { secondaryWeapon = distillWeapon(off); }
     }
 
     if (primaryWeapon.base == null) { primaryWeapon = null; }
     if (secondaryWeapon.base == null) { secondaryWeapon = null; }
+  }
+
+  // Shields are purely defensive, so one in the off-hand doesn't count as a secondary attack weapon.
+  function isShield(itemId) {
+    return Weapon(itemId).getBaseWeapon().getType() === 'shield';
   }
 
   function distillWeapon(itemId) {
