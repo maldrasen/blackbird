@@ -5,6 +5,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 ## Priority 1
 
 - [210] Start Adding Spells `8pt` — [210-start-adding-spells.md](210-start-adding-spells.md)
+- [211] Calculate essence for spells `5pt` — [211-calculate-essence-for-spells.md](211-calculate-essence-for-spells.md)
 
 ## Priority 2
 
