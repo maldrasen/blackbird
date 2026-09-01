@@ -23,14 +23,10 @@ global.BattleHelper = (function() {
     const m1 = p1.match(BattleConstants.positionPattern);
     const m2 = p2.match(BattleConstants.positionPattern);
 
-    if (m1[1] !== m2[1]) {
-      return {
-        rank: parseInt(m1[2]) + parseInt(m2[2]),
-        position: Math.abs(parseInt(m1[3]) - parseInt(m2[3])),
-      }
+    return {
+      rank: (m1[1] === m2[1]) ? Math.abs(parseInt(m1[2]) - parseInt(m2[2])) : parseInt(m1[2]) + parseInt(m2[2]),
+      position: Math.abs(parseInt(m1[3]) - parseInt(m2[3])),
     }
-
-    throw new Error(`TODO: Distance between positions on same side.`);
   }
 
   function getBodyPlan(target) {

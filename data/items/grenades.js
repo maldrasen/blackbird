@@ -16,15 +16,15 @@ Consumable.register('blasto',{
     impact releasing a cloud of explosive spores.`,
   category: InventoryCategory.grenades,
   tags: ['mushroom'],
-  target: 'position',
-  areaOfEffect: 'small',
+  target: EffectTarget.position,
+  areaOfEffect: AreaOfEffect.small,
   usableWhen: UsableWhen.inCombat,
   stories: blastoPackage,
 
   effects: [
-    ConsumableEffect.damage(DamageType.fire, { x:2, d:4 }),
-    ConsumableEffect.addStatusEffect('blind', { strength:20, duration:3000 }),
-    ConsumableEffect.addStatusEffect('stun', { strength:10, count:1 }),
+    Effect.damage(DamageType.fire, { x:2, d:4 }),
+    Effect.blind({ strength:20, duration:3000 }),
+    Effect.stun({ strength:10, count:1 }),
   ],
 
   messageForEntity: (id, results) => {
@@ -32,7 +32,7 @@ Consumable.register('blasto',{
     if (results.blind) { tail = `, and is blinded`; }
     if (results.stun) { tail = `, and is stunned`; }
     if (results.blind && results.stun) { tail = `, and is both blinded and stunned`; }
-    return `{A:ActingName} takes ${results.damage} damage${tail}!`;
+    return `{T:TargetName} takes ${results.damage} damage${tail}!`;
   },
 
 });

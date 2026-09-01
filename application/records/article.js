@@ -5,6 +5,10 @@ global.Article = (function() {
     articles[code] = data;
   }
 
+  function getAllCodes() {
+    return Object.keys(articles);
+  }
+
   function lookup(code) {
     if (articles[code] == null) { throw new Error(`Bad article code [${code}]`); }
 
@@ -25,6 +29,7 @@ global.Article = (function() {
 
   return {
     register,
+    getAllCodes,
     lookup,
   };
 

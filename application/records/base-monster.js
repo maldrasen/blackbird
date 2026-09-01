@@ -61,7 +61,7 @@ global.BaseMonster = (function() {
       getThreatWeights,
       getEquipment: () => { return monster.equipment; },
 
-      getPrioritizedAbilities: () => { return monster.prioritizedAbilities || [] },
+      getPrioritizedAbilities: () => { return monster.prioritizedAbilities || {} },
       getNegotiationGreeting,
     };
   }

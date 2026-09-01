@@ -6,9 +6,9 @@ BaseMonster.register('kobold-tosser',{
   triggers: [],
   level: 5,
 
-  prioritizedAbilities:[
-    { code:'monster-use-article', priority:100, article:'blasto', cooldown:5000 },
-  ],
+  prioritizedAbilities:{
+    blasto: { code:'monster-use-article', priority:100, article:'blasto', cooldown:5000 },
+  },
 
   equipment: {
     loadouts:[

@@ -7,11 +7,11 @@ MonsterType.register('rogue',{
     leastHealth: 75,
   },
 
-  prioritizedAbilities: [
-    { code:'hide', priority:50 },
-    { code:'sneak-attack', priority:30 },
-    { code:'basic-attack', priority:10 },
-  ],
+  prioritizedAbilities: {
+    hide: { code:'hide', priority:50 },
+    sneakAttack: { code:'sneak-attack', priority:30 },
+    attack: { code:'basic-attack', priority:10 },
+  },
 
   attributeGrowth: {
     strength: 50,

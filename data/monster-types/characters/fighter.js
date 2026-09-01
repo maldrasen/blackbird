@@ -7,9 +7,9 @@ MonsterType.register('fighter',{
     leastHealth: 100,
   },
 
-  prioritizedAbilities: [
-    { code:'basic-attack', priority:50 },
-  ],
+  prioritizedAbilities: {
+    attack: { code:'basic-attack', priority:50 },
+  },
 
   attributeGrowth: {
     strength: 100,

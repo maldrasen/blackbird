@@ -56,10 +56,10 @@ global.BattleInitializer = (function() {
     state.getActiveMonsters().forEach(id => {
       const monster = Monster(id);
       monster.getPrioritizedAbilities().forEach(ability => {
-        const cooldown = monster.getAbilityCooldown(ability.code);
+        const cooldown = monster.getAbilityCooldown(ability.key);
         if (cooldown) {
           const initial = Random.roll(cooldown + 1);
-          if (initial > 0) { state.setCooldown(id, ability.code, initial); }
+          if (initial > 0) { state.setCooldown(id, ability.key, initial); }
         }
       });
     });

@@ -23,7 +23,7 @@ global.Consumable = (function() {
 
     function consume(entity) {
       const context = { A:entity, I:code };
-      const results = (consumable.effects||[]).map(effect => ConsumableEffect.apply(entity, effect));
+      const results = (consumable.effects||[]).map(effect => Effect.apply(entity, effect));
       const story = consumable.stories ? consumable.stories.pick(context) : `[TODO: Consumable:${code} story]`;
       return { results, story:Weaver(context).weave(story) };
     }
@@ -35,7 +35,7 @@ global.Consumable = (function() {
       getCategory: () => { return article.getCategory(); },
       getTags: () => { return article.getTags(); },
       getEffects: () => { return [...(consumable.effects||[])]; },
-      getTarget: () => { return consumable.target || 'self'; },
+      getTarget: () => { return consumable.target || EffectTarget.self; },
       getAreaOfEffect: () => { return consumable.areaOfEffect || null; },
       pickStory: context => { return consumable.stories ? consumable.stories.pick(context) : null; },
       messageForEntity: (id,results) => { return consumable.messageForEntity ? consumable.messageForEntity(id,results) : null; },

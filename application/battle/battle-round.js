@@ -23,25 +23,33 @@ global.BattleRound = function(acting, type=null) {
   function isActingCharacter() { return roundType === 'character'; }
   function isStatusEffect() { return roundType === 'status'; }
 
-  function setAbility(code) {
-    if (ability != null && ability !== code) {
+  // The ability set on the round is the acting monster's ability key, which is the ability code unless the monster's
+  // record keys the entry otherwise. Characters always set the ability code.
+  function setAbility(key) {
+    if (ability != null && ability !== key) {
       throw new Error(`Ability has already been set to ${ability}`);
     }
-    ability = code;
+    ability = key;
   }
 
-  // Get the cooldown for the specified ability for the currently acting entity.
-  function getCooldown(code) {
-    if (isActingMonster()) { return getActingMonster().getAbilityCooldown(code); }
+  // An ability carrying extra data (the spell a monster-cast-spell entry casts, a natural attack's damage) reads its
+  // entry from the acting monster's record. Characters don't have ability entries.
+  function getAbilityEntry() {
+    return isActingMonster() ? getActingMonster().getAbility(ability) : null;
+  }
+
+  // Get the cooldown for the round's ability for the currently acting entity.
+  function getCooldown() {
+    if (isActingMonster()) { return getActingMonster().getAbilityCooldown(ability); }
     throw `Only monster abilities have cooldowns.`;
   }
 
-  // Apply the cooldown time for the specified ability for the currently acting entity.
-  function applyCooldown(code) {
+  // Apply the cooldown time for the round's ability for the currently acting entity.
+  function applyCooldown() {
     if (isActingMonster()) {
-      const cooldown = getCooldown(code)
+      const cooldown = getCooldown()
       if (cooldown) {
-        BattleSystem.getState().setCooldown(acting, code, cooldown);
+        BattleSystem.getState().setCooldown(acting, ability, cooldown);
       }
     }
   }
@@ -145,6 +153,7 @@ global.BattleRound = function(acting, type=null) {
     isStatusEffect,
     setAbility,
     getAbility: () => { return ability; },
+    getAbilityEntry,
     getCooldown,
     applyCooldown,
 

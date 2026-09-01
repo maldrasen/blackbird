@@ -19,7 +19,7 @@ describe("BattleInitializer", function() {
       Random.stubRoll(3000);
       BattleInitializer.rollInitialCooldowns();
 
-      expect(BattleSystem.getState().isOnCooldown(tosser,'monster-use-article')).to.equal(true);
+      expect(BattleSystem.getState().isOnCooldown(tosser,'blasto')).to.equal(true);
     });
 
     it("leaves an ability ready to use when the initial cooldown roll is zero", function() {
@@ -28,7 +28,7 @@ describe("BattleInitializer", function() {
       Random.stubRoll(0);
       BattleInitializer.rollInitialCooldowns();
 
-      expect(BattleSystem.getState().isOnCooldown(tosser,'monster-use-article')).to.equal(false);
+      expect(BattleSystem.getState().isOnCooldown(tosser,'blasto')).to.equal(false);
     });
 
   });

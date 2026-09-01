@@ -11,8 +11,9 @@ global.Fixtures = (function() {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
+      monster: 'flamescale-screamer',
       // monster: 'kobold-tosser',
-      encounter: 'orchard-kobolds',
+      // encounter: 'orchard-kobolds',
     });
 
     GameSystem.setGameMode(GameMode.location);

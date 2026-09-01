@@ -12,7 +12,7 @@ Consumable.register('dungeon-tripe',{
   tags: ['mushroom'],
   usableWhen: UsableWhen.outOfCombat,
   effects: [
-    ConsumableEffect.addHealth(5,15),
+    Effect.restoreHealth(5,15),
   ],
   stories: tripePackage,
 });
@@ -28,7 +28,7 @@ Consumable.register('rhysh-apple',{
   tags: ['fruit'],
   usableWhen: UsableWhen.outOfCombat,
   effects: [
-    ConsumableEffect.addHealth(15,25),
+    Effect.restoreHealth(15,25),
   ],
   stories: applePackage,
 });

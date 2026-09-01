@@ -20,9 +20,9 @@
 // The damage range, speed, and essence of a natural attack live on the acting monster's ability entry rather than
 // the ability record, so that a kobold bite can be a different class of attack than a dragon bite:
 //
-//   prioritizedAbilities: [
-//     { code:'beast-bite', priority:50, damage:[25,50], speed:1500, essence:50 },
-//   ]
+//   prioritizedAbilities: {
+//     'bite': { code:'beast-bite', priority:50, damage:[25,50], speed:1500, essence:50 },
+//   }
 //
 // The record's attack may still carry damage:[low,high] and speed values, which act as defaults for entries that
 // don't set their own.
@@ -98,10 +98,11 @@ global.NaturalAttackAbility = (function() {
     }
   }
 
-  // The effective attack profile comes from the acting monster's ability entry, with the record's attack values
-  // filling in anything the entry doesn't set.
+  // The effective attack profile comes from the round's ability entry, with the record's attack values filling in
+  // anything the entry doesn't set. A character using a natural attack has no entry at all and gets the record's
+  // values alone.
   function getAttackProfile(code, options, acting) {
-    const entry = Monster(acting).getAbility(code);
+    const entry = BattleSystem.getRound().getAbilityEntry() || {};
     const [low, high] = entry.damage || options.attack.damage || [];
     const speed = entry.speed || options.attack.speed;
 

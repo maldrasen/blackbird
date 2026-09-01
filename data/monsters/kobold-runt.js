@@ -16,9 +16,9 @@ BaseMonster.register('kobold-runt',{
     ],
   },
 
-  prioritizedAbilities:[
-    { code:'beast-bite', priority:10, damage:[10,30], speed:1000, essence:10 },
-  ],
+  prioritizedAbilities:{
+    bite: { code:'beast-bite', priority:10, damage:[10,30], speed:1000, essence:10 },
+  },
 
   negotiationGreeting: greetingPackage,
 });

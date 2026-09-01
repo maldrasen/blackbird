@@ -534,3 +534,17 @@ global.TargetingMode = {
   enemyInWeaponRange: 'enemy-in-weapon-range',
   anyEnemy: 'any-enemy',
 };
+
+global.AreaOfEffect = {
+  single: 'single',
+  small: 'small',
+  large: 'large',
+};
+
+global.EffectTarget = {
+  self: 'self',
+  single: 'single',
+  position: 'position',
+  enemyFormation: 'enemy-formation',
+  allyFormation: 'ally-formation',
+};

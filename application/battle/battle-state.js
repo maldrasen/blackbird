@@ -17,6 +17,7 @@ global.BattleState = function(data) {
   const abilityCooldowns = {};
   const conditions = {};
   const skillImprovements = {};
+  const spellCasting = {};
 
   characterIds.forEach(id => { conditions[id] = BattleCondition.active; });
 
@@ -273,6 +274,24 @@ global.BattleState = function(data) {
     });
   }
 
+  // ===================
+  //    Spell Casting
+  // ===================
+
+  function startCastingSpell(data) { spellCasting[BattleSystem.getRound().getActing()] = data; }
+  function isCastingSpell(entity) { return spellCasting[entity] != null; }
+  function cancelCastingSpell(entity) { delete spellCasting[entity]; }
+
+  function finishCastingSpell() {
+    const acting = BattleSystem.getRound().getActing()
+    const spellData = spellCasting[acting];
+
+    if (spellData == null) { throw new Error(`The acting entity is not casting a spell.`); }
+
+    delete spellCasting[acting];
+    return spellData;
+  }
+
   // ===================================
   //    Status Effects and Conditions
   // ===================================
@@ -365,6 +384,11 @@ global.BattleState = function(data) {
     setCooldown,
     isOnCooldown,
     reduceCooldowns,
+
+    startCastingSpell,
+    isCastingSpell,
+    cancelCastingSpell,
+    finishCastingSpell,
 
     canBeTargeted,
     isAlive,
