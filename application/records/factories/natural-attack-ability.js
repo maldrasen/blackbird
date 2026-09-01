@@ -98,11 +98,11 @@ global.NaturalAttackAbility = (function() {
     }
   }
 
-  // The effective attack profile comes from the round's ability entry, with the record's attack values filling in
-  // anything the entry doesn't set. A character using a natural attack has no entry at all and gets the record's
+  // The effective attack profile comes from the round's ability data, with the record's attack values filling in
+  // anything the data doesn't set. A character using a natural attack has no data at all and gets the record's
   // values alone.
   function getAttackProfile(code, options, acting) {
-    const entry = BattleSystem.getRound().getAbilityEntry() || {};
+    const entry = BattleSystem.getRound().getAbilityData() || {};
     const [low, high] = entry.damage || options.attack.damage || [];
     const speed = entry.speed || options.attack.speed;
 

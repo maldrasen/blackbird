@@ -147,7 +147,7 @@ global.BattleRound = function(acting, type=null) {
   // Each round will need to take some time in order for the battle turns to advance.
   function validate() {
     if (time === 0) {
-      throw new Error(`BattleRound.time was not set by the ${ability} ability.`)
+      throw new Error(`BattleRound.time was not set by the ${abilityCode} ability.`)
     }
   }
 
