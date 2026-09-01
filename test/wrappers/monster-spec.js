@@ -29,21 +29,19 @@ describe("Monster", function() {
     return Monster(id);
   }
 
-  describe("getPrioritizedAbilities()", function() {
+  describe("getAbilityMap()", function() {
     it("keeps same code entries with distinct keys and overrides by key", function() {
-      const abilities = buildMonster('spec-caster').getPrioritizedAbilities();
-      const byKey = Object.fromEntries(abilities.map(a => [a.key, a]));
+      const abilityMap = buildMonster('spec-caster').getAbilityMap();
 
-      expect(abilities.length).to.equal(4);
-      expect(byKey['basic-defend'].priority).to.equal(10);
-      expect(byKey['basic-attack'].priority).to.equal(50);
-      expect(byKey['cast-spark'].priority).to.equal(80);
-      expect(byKey['cast-bolt'].priority).to.equal(70);
+      expect(Object.keys(abilityMap).length).to.equal(4);
+      expect(abilityMap['basic-defend'].priority).to.equal(10);
+      expect(abilityMap['basic-attack'].priority).to.equal(50);
+      expect(abilityMap['cast-spark'].priority).to.equal(80);
+      expect(abilityMap['cast-bolt'].priority).to.equal(70);
     });
-
   });
 
-  describe.only("getAbility()", function() {
+  describe("getAbility()", function() {
     it("looks entries up by key", function() {
       const monster = buildMonster('spec-caster');
 
@@ -51,6 +49,20 @@ describe("Monster", function() {
       expect(monster.getAbility('cast-bolt').spell).to.equal('spec-bolt');
       expect(monster.getAbility('basic-attack').priority).to.equal(50);
       expect(monster.getAbility('monster-cast-spell')).to.equal(undefined);
+    });
+
+    it("falls back to the default abilities", function() {
+      expect(buildMonster('spec-caster').getAbility('defend').code).to.equal('basic-defend');
+    });
+  });
+
+  describe("findAbility()", function() {
+    it("returns the key of the highest priority entry with the code", function() {
+      const monster = buildMonster('spec-caster');
+
+      expect(monster.findAbility('monster-cast-spell')).to.equal('cast-spark');
+      expect(monster.findAbility('basic-attack')).to.equal('basic-attack');
+      expect(monster.findAbility('no-such-ability')).to.equal(undefined);
     });
   });
 
