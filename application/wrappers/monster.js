@@ -1,5 +1,9 @@
 global.Monster = function(id) {
 
+  const defaultAbilities = {
+    defend: { code:'basic-defend', priority:0 },
+  };
+
   function monsterComponent() { return MonsterComponent.lookup(id); }
   function getCode() { return monsterComponent().code; }
   function getBaseMonster() { return BaseMonster.lookup(getCode()); }
@@ -13,19 +17,24 @@ global.Monster = function(id) {
   function getSkill(code) { return SkillsComponent.lookup(id)[code]; }
 
   // The prioritized abilities are maps keyed by an ability key, so an ability defined in the base monster overrides
-  // an ability from the more generalized monster type that shares its key. The key is merged into each entry here so
-  // that the entries can be passed around whole.
+  // an ability from the more generalized monster type that shares its key.
   function getAbilityMap() {
     return { ...getType().getPrioritizedAbilities(), ...getBaseMonster().getPrioritizedAbilities() };
   }
 
+  // Find the key of the highest priority ability with the given code. Several entries can share a code, casting
+  // different spells for instance, so the priority breaks the tie.
   function findAbility(code) {
-    // TODO: Find the first ability in the ability map with the code.
+    const matches = Object.entries(getAbilityMap()).filter(([key, entry]) => entry.code === code);
+    matches.sort(([,a], [,b]) => b.priority - a.priority);
+    return matches.length > 0 ? matches[0][0] : undefined;
   }
 
-  // We need to call this function when there are other properties on the ability entry that we need to read.
+  // We need to call this function when there are other properties on the ability entry that we need to read. The
+  // default abilities are kept out of the ability map so that they're never picked, counted for essence, or given
+  // initial cooldowns - they're only reachable through their explicit fallback keys.
   function getAbility(key) {
-    return getAbilityMap()[key];
+    return getAbilityMap()[key] || defaultAbilities[key];
   }
 
   // The cooldown set on the monster's ability entry overrides the cooldown on the ability record itself.
@@ -104,6 +113,7 @@ global.Monster = function(id) {
     getSkill,
     getAbility,
     getAbilityMap,
+    findAbility,
     getAbilityCooldown,
 
     populateThreatTable,
