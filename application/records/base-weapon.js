@@ -73,10 +73,9 @@ global.BaseWeapon = (function() {
     // applied over the entire body the reduction it provides is much more valuable than a normal armor piece, giving
     // shields a higher overall performance factor.
     function getPerformanceFactor() {
-      if (weapon.type !== 'shield') { return ItemHelper.getWeaponValueFactor(getDamagePerSecond()); }
-
-      return (1.5 * ItemHelper.getArmorValueFactor(reduction.getTotalReduction()))
-           + (0.5 * ItemHelper.getWeaponValueFactor(getDamagePerSecond()));
+      return (weapon.type !== 'shield') ?
+        ItemHelper.getWeaponValueFactor(getDamagePerSecond()) :
+        (ItemHelper.getArmorValueFactor(reduction.getTotalReduction()) * 2);
     }
 
     function getValue() {
