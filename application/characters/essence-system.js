@@ -50,7 +50,7 @@ global.EssenceSystem = (function() {
 
   function abilityFactor(monsterId) {
     const monster = Monster(monsterId);
-    const scoreSum = monster.getPrioritizedAbilities().reduce((sum,ability) => {
+    const scoreSum = Object.values(monster.getAbilityMap()).reduce((sum,ability) => {
       return sum + (ability.essence != null ? ability.essence : Ability.lookup(ability.code).getEssence());
     },0);
 

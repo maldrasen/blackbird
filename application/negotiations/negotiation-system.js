@@ -10,7 +10,7 @@ global.NegotiationSystem = (function() {
     state = NegotiationState();
 
     BattleSystem.getState().setNegotiationAttempted();
-    BattleSystem.getRound().setAbility(BattleCommand.negotiate);
+    BattleSystem.getRound().setCharacterAbility(BattleCommand.negotiate);
     NegotiationInterface.open();
   }
 
