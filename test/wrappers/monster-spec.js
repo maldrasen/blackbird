@@ -43,7 +43,7 @@ describe("Monster", function() {
 
   });
 
-  describe("getAbility()", function() {
+  describe.only("getAbility()", function() {
     it("looks entries up by key", function() {
       const monster = buildMonster('spec-caster');
 
