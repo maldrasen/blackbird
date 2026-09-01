@@ -183,4 +183,53 @@ describe("BattleSpellSystem", function() {
     });
   });
 
+  // Casting starts on the caster's own round, and the interrupting status lands on someone else's round later, so
+  // these specs start a second round before applying the status.
+  describe("interruptCasting()", function() {
+    function startCasting(state) {
+      const caster = state.getEntityAtPosition('M',0,1);
+      BattleSystem.specRound(caster);
+      state.startCastingSpell({ code:'spec-spark', powerLevel:2 });
+      BattleSystem.specRound(state.getEntityAtPosition('P',0,2));
+      return caster;
+    }
+
+    it("cancels the cast when the caster is stunned", function() {
+      const state = startBattle();
+      const caster = startCasting(state);
+
+      BattleSystem.addStatus(caster, 'stun', { count:1 });
+
+      expect(state.isCastingSpell(caster)).to.equal(false);
+    });
+
+    it("cancels the cast when the caster is silenced", function() {
+      const state = startBattle();
+      const caster = startCasting(state);
+
+      BattleSystem.addStatus(caster, 'silence', { duration:3000 });
+
+      expect(state.isCastingSpell(caster)).to.equal(false);
+    });
+
+    it("leaves the cast alone for statuses that don't interrupt", function() {
+      const state = startBattle();
+      const caster = startCasting(state);
+
+      BattleSystem.addStatus(caster, 'blind', { duration:3000 });
+
+      expect(state.isCastingSpell(caster)).to.equal(true);
+      expect(BattleSystem.getRound().getMessages().length).to.equal(0);
+    });
+
+    it("clears the pending cast when the caster is killed", function() {
+      const state = startBattle();
+      const caster = startCasting(state);
+
+      BattleDeathSystem.killEntity(caster);
+
+      expect(state.isCastingSpell(caster)).to.equal(false);
+    });
+  });
+
 });

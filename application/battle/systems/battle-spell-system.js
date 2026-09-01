@@ -1,6 +1,8 @@
 global.BattleSpellSystem = (function() {
 
-  // The spell's casting time was already spent when the cast began, so the release itself only takes a moment.
+  // TODO: When a character casts a spell the mana should be spent here at cast time, that way, if their spell is
+  //       interrupted by getting stunned or silenced, their mana is still expended.
+
   function castSpell() {
     const round = BattleSystem.getRound();
     const acting = round.getActing();
@@ -34,6 +36,14 @@ global.BattleSpellSystem = (function() {
     return Random.from(closestCandidates(spellData.targetPosition, candidates));
   }
 
+  // We should consider making interruptsCasting a property of the status effect record if this becomes more complex.
+  function interruptCasting(entity, code) {
+    const state = BattleSystem.getState();
+    if (['stun','paralysis','silence'].includes(code) && state.isCastingSpell(entity)) {
+      state.cancelCastingSpell(entity);
+    }
+  }
+
   function closestCandidates(anchor, candidates) {
     const state = BattleSystem.getState();
     let closest = [];
@@ -54,6 +64,7 @@ global.BattleSpellSystem = (function() {
 
   return {
     castSpell,
+    interruptCasting,
   };
 
 })();

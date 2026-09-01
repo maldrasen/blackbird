@@ -280,6 +280,7 @@ global.BattleState = function(data) {
 
   function startCastingSpell(data) { spellCasting[BattleSystem.getRound().getActing()] = data; }
   function isCastingSpell(entity) { return spellCasting[entity] != null; }
+  function cancelCastingSpell(entity) { delete spellCasting[entity]; }
 
   function finishCastingSpell() {
     const acting = BattleSystem.getRound().getActing()
@@ -386,6 +387,7 @@ global.BattleState = function(data) {
 
     startCastingSpell,
     isCastingSpell,
+    cancelCastingSpell,
     finishCastingSpell,
 
     canBeTargeted,

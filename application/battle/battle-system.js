@@ -42,6 +42,7 @@ global.BattleSystem = (function() {
   function addStatus(entity, code, values={}) {
     const { removed } = StatusEffects(entity).apply(code, values);
     StatusEffectSystem.scheduleTick(entity, code);
+    BattleSpellSystem.interruptCasting(entity, code);
     if (removed.length > 0) { BattleInterface.updateCombatantView(entity); }
   }
 
