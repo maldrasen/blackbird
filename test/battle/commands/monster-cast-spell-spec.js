@@ -13,10 +13,10 @@ describe("MonsterCastSpell", function() {
       species: SpeciesCode.kobold,
       type: 'mage',
       level: 1,
-      prioritizedAbilities: [
-        { code:'monster-cast-spell', key:'cast-flare', priority:80, spell:'spec-flare', powerLevel:2, cooldown:30000 },
-        { code:'monster-cast-spell', key:'cast-glimmer', priority:70, spell:'spec-glimmer', powerLevel:1, cooldown:30000 },
-      ],
+      prioritizedAbilities: {
+        'cast-flare': { code:'monster-cast-spell', priority:80, spell:'spec-flare', powerLevel:2, cooldown:30000 },
+        'cast-glimmer': { code:'monster-cast-spell', priority:70, spell:'spec-glimmer', powerLevel:1, cooldown:30000 },
+      },
     });
   });
 

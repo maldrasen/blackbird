@@ -12,23 +12,14 @@ global.Monster = function(id) {
   function getNegotiationStyle() { return Archetype.lookup(getArchetype()).getNegotiationStyle(); }
   function getSkill(code) { return SkillsComponent.lookup(id)[code]; }
 
-  // When building the list of abilities we build one map from the two arrays. Because object keys act like a set, an
-  // ability defined in the base monster will override an ability from the more generalized monster type that shares
-  // the same key. An entry is keyed by its ability code unless it sets an explicit key, which a monster that carries
-  // the same ability multiple times (a caster with two spells) needs to keep its entries distinct.
+  // The prioritized abilities are maps keyed by an ability key, so an ability defined in the base monster overrides
+  // an ability from the more generalized monster type that shares its key. The key is merged into each entry here so
+  // that the entries can be passed around whole.
   function getAbilityMap() {
-    const abilityMap = {};
+    const abilityMap = { ...getType().getPrioritizedAbilities(), ...getBaseMonster().getPrioritizedAbilities() };
 
-    [getType(), getBaseMonster()].forEach(source => {
-      const keys = [];
-      source.getPrioritizedAbilities().forEach(ability => {
-        const key = ability.key || ability.code;
-        if (keys.includes(key)) {
-          throw new Error(`Monster[${getCode()}] has more than one ability with the key [${key}]`);
-        }
-        keys.push(key);
-        abilityMap[key] = { ...ability, key };
-      });
+    Object.keys(abilityMap).forEach(key => {
+      abilityMap[key] = { ...abilityMap[key], key };
     });
 
     return abilityMap;

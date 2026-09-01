@@ -20,9 +20,9 @@
 // The damage range, speed, and essence of a natural attack live on the acting monster's ability entry rather than
 // the ability record, so that a kobold bite can be a different class of attack than a dragon bite:
 //
-//   prioritizedAbilities: [
-//     { code:'beast-bite', priority:50, damage:[25,50], speed:1500, essence:50 },
-//   ]
+//   prioritizedAbilities: {
+//     'bite': { code:'beast-bite', priority:50, damage:[25,50], speed:1500, essence:50 },
+//   }
 //
 // The record's attack may still carry damage:[low,high] and speed values, which act as defaults for entries that
 // don't set their own.

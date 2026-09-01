@@ -17,10 +17,10 @@ BaseMonster.register('kobold-dick-puncher',{
     killMen: 100,
   },
 
-  prioritizedAbilities:[
-    { code:'dick-punch', priority:100 },
-    { code:'punch', priority:50, damage:[20,30], speed:500, essence:50 },
-  ],
+  prioritizedAbilities:{
+    dickPunch: { code:'dick-punch', priority:100 },
+    punch: { code:'punch', priority:50, damage:[20,30], speed:500, essence:50 },
+  },
 
   negotiationGreeting: greetingPackage,
 });

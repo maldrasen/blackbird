@@ -10,8 +10,8 @@ BaseMonster.register('nightgaunt',{
   type: 'creature',
   level: 200,
 
-  prioritizedAbilities: [
-    { code:'beast-bite', priority:50, damage:[125,150], speed:1000, essence:50 },
-  ],
+  prioritizedAbilities: {
+    temp: { code:'beast-bite', priority:50, damage:[125,150], speed:1000, essence:50 },
+  },
 
 });

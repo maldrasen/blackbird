@@ -8,8 +8,8 @@ BaseMonster.register('revolting-cockroach',{
   healthFactor: 1.2,
   speedFactor: 0.9,
 
-  prioritizedAbilities: [
-    { code:'beast-bite', priority:50, damage:[10,20], speed:1000, essence:10 },
-  ],
+  prioritizedAbilities: {
+    bite: { code:'beast-bite', priority:50, damage:[10,20], speed:1000, essence:10 },
+  },
 
 });

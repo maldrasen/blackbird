@@ -5,31 +5,21 @@ describe("Monster", function() {
   // build a full monster through the factory.
   before(function() {
     MonsterType.register('spec-caster-type', {
-      prioritizedAbilities: [
-        { code:'basic-defend', priority:10 },
-        { code:'basic-attack', priority:20 },
-      ],
+      prioritizedAbilities: {
+        'basic-defend': { code:'basic-defend', priority:10 },
+        'basic-attack': { code:'basic-attack', priority:20 },
+      },
     });
 
     BaseMonster.register('spec-caster', {
       name: 'Spec Caster',
       type: 'spec-caster-type',
       level: 1,
-      prioritizedAbilities: [
-        { code:'basic-attack', priority:50 },
-        { code:'monster-cast-spell', key:'cast-spark', priority:80, spell:'spec-spark', powerLevel:1, cooldown:2000 },
-        { code:'monster-cast-spell', key:'cast-bolt', priority:70, spell:'spec-bolt', powerLevel:2 },
-      ],
-    });
-
-    BaseMonster.register('spec-mumbler', {
-      name: 'Spec Mumbler',
-      type: 'spec-caster-type',
-      level: 1,
-      prioritizedAbilities: [
-        { code:'monster-cast-spell', priority:80, spell:'spec-spark', powerLevel:1 },
-        { code:'monster-cast-spell', priority:70, spell:'spec-bolt', powerLevel:2 },
-      ],
+      prioritizedAbilities: {
+        'basic-attack': { code:'basic-attack', priority:50 },
+        'cast-spark': { code:'monster-cast-spell', priority:80, spell:'spec-spark', powerLevel:1, cooldown:2000 },
+        'cast-bolt': { code:'monster-cast-spell', priority:70, spell:'spec-bolt', powerLevel:2 },
+      },
     });
   });
 
@@ -51,10 +41,6 @@ describe("Monster", function() {
       expect(byKey['cast-bolt'].priority).to.equal(70);
     });
 
-    it("throws when two entries share a key", function() {
-      expect(() => buildMonster('spec-mumbler').getPrioritizedAbilities()).
-        to.throw('more than one ability with the key [monster-cast-spell]');
-    });
   });
 
   describe("getAbility()", function() {
