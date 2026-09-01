@@ -16,23 +16,11 @@ global.Monster = function(id) {
   // an ability from the more generalized monster type that shares its key. The key is merged into each entry here so
   // that the entries can be passed around whole.
   function getAbilityMap() {
-    const abilityMap = { ...getType().getPrioritizedAbilities(), ...getBaseMonster().getPrioritizedAbilities() };
-
-    Object.keys(abilityMap).forEach(key => {
-      abilityMap[key] = { ...abilityMap[key], key };
-    });
-
-    return abilityMap;
+    return { ...getType().getPrioritizedAbilities(), ...getBaseMonster().getPrioritizedAbilities() };
   }
 
-  function getPrioritizedAbilities() {
-    const abilities = Object.values(getAbilityMap());
-
-    if (abilities.length === 0) {
-      throw new Error(`Monster[${getCode()}] has no abilities.`);
-    }
-
-    return abilities;
+  function findAbility(code) {
+    // TODO: Find the first ability in the ability map with the code.
   }
 
   // We need to call this function when there are other properties on the ability entry that we need to read.
@@ -42,9 +30,8 @@ global.Monster = function(id) {
 
   // The cooldown set on the monster's ability entry overrides the cooldown on the ability record itself.
   function getAbilityCooldown(key) {
-    const monsterAbility = getAbility(key);
-    if (monsterAbility == null) { return Ability.lookup(key).getCooldown(); }
-    return monsterAbility.cooldown || Ability.lookup(monsterAbility.code).getCooldown();
+    const abilityData = getAbility(key);
+    return abilityData.cooldown || Ability.lookup(abilityData.code).getCooldown();
   }
 
   function getResistance(type) {
@@ -115,8 +102,8 @@ global.Monster = function(id) {
     willNegotiate,
     getNegotiationStyle,
     getSkill,
-    getPrioritizedAbilities,
     getAbility,
+    getAbilityMap,
     getAbilityCooldown,
 
     populateThreatTable,

@@ -9,12 +9,14 @@ global.BattleRound = function(acting, type=null) {
   const messages = [];
   const context = {};
 
+  let abilityCode;
+  let abilityData;
+
   let primaryWeapon = {};
   let secondaryWeapon = {};
   let target;
   let targetPosition;
   let time = 0;
-  let ability;
 
   function getActingMonster() { return Monster(acting); }
   function getActingCharacter() { return Character(acting); }
@@ -23,40 +25,38 @@ global.BattleRound = function(acting, type=null) {
   function isActingCharacter() { return roundType === 'character'; }
   function isStatusEffect() { return roundType === 'status'; }
 
-  // The ability set on the round is the acting monster's ability key, which is the ability code unless the monster's
-  // record keys the entry otherwise. Characters always set the ability code.
-  function setAbility(key) {
-    if (ability != null && ability !== key) {
-      throw new Error(`Ability has already been set to ${ability}`);
-    }
-    ability = key;
+  // ===============
+  //    Abilities
+  // ===============
+
+  function setCharacterAbility(code, data={}) {
+    abilityCode = code;
+    abilityData = data;
   }
 
-  // An ability carrying extra data (the spell a monster-cast-spell entry casts, a natural attack's damage) reads its
-  // entry from the acting monster's record. Characters don't have ability entries.
-  function getAbilityEntry() {
-    return isActingMonster() ? getActingMonster().getAbility(ability) : null;
+  function setMonsterAbility(key) {
+    const prioritizedAbility = getActingMonster().getAbility(key);
+    abilityCode = prioritizedAbility.code;
+    abilityData = { ...prioritizedAbility, key };
   }
 
-  // Get the cooldown for the round's ability for the currently acting entity.
   function getCooldown() {
-    if (isActingMonster()) { return getActingMonster().getAbilityCooldown(ability); }
+    if (isActingMonster()) { return getActingMonster().getAbilityCooldown(abilityData.key); }
     throw `Only monster abilities have cooldowns.`;
   }
 
-  // Apply the cooldown time for the round's ability for the currently acting entity.
   function applyCooldown() {
     if (isActingMonster()) {
-      const cooldown = getCooldown()
+      const cooldown = getCooldown();
       if (cooldown) {
-        BattleSystem.getState().setCooldown(acting, ability, cooldown);
+        BattleSystem.getState().setCooldown(acting, abilityData.key, cooldown);
       }
     }
   }
 
-  // Every weapon is a real weapon now, so any entity, character or monster, reads them from the equipment manager,
-  // distilled down to the properties we need to make an attack roll or use in a physical ability. An entity with
-  // nothing in hand ends up with null weapons - they fight with natural attack abilities (punch, bite) instead.
+  // =============
+  //    Weapons
+  // =============
 
   function compileWeaponData() {
     if (EquipmentComponent.lookup(acting) != null) {
@@ -84,6 +84,10 @@ global.BattleRound = function(acting, type=null) {
     };
   }
 
+  // =============
+  //    Targets
+  // =============
+
   function setTarget(id) {
     target = id;
     targetPosition = state.getPosition(id);
@@ -99,6 +103,10 @@ global.BattleRound = function(acting, type=null) {
     target = null;
     targetPosition = null;
   }
+
+  // ==============
+  //    Messages
+  // ==============
 
   function addToContext(key, value) {
     if (key === 'A') { throw new Error(`Blasphemous Key: The acting entity is automatically included in the round context.`) }
@@ -151,9 +159,11 @@ global.BattleRound = function(acting, type=null) {
     isActingMonster,
     isActingCharacter,
     isStatusEffect,
-    setAbility,
-    getAbility: () => { return ability; },
-    getAbilityEntry,
+
+    setCharacterAbility,
+    setMonsterAbility,
+    getAbilityCode: () => { return abilityCode; },
+    getAbilityData: () => { return abilityData },
     getCooldown,
     applyCooldown,
 
