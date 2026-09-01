@@ -16,11 +16,10 @@ global.MonsterSystem = (function() {
       return BattleSpellSystem.castSpell();
     }
 
-    // TODO: We need a level above the monster type to define a global defend ability.
     const key = pickForcedAbility() || pickAbility() || 'defend';
     const abilityData = monster.getAbility(key);
 
-    Ability.lookup(abilityData.code).execute(key);
+    Ability.lookup(abilityData.code).execute({ key });
   }
 
   // When a negotiation ends with the monster using a specific ability we assume that this ability will target the
@@ -38,7 +37,8 @@ global.MonsterSystem = (function() {
 
       const code = state.takeForcedAbility();
       if (Ability.lookup(code).canBeUsed()) {
-        return round.getActingMonster().findAbility(code)
+        const key = round.getActingMonster().findAbility(code);
+        if (key) { return key; }
       }
 
       round.clearTarget();
