@@ -18,6 +18,10 @@ FeatureType.register('dungeon-entrance',{
     room.setFloorBox({ x:4, y:3, width:7, height:2, type:'water' });
     room.setFloorChamfer(25);
 
+    GameSystem.getState().hasViewedEpisode('dungeon-entrance') ?
+      room.forbidContents() :
+      room.setContents('dungeon-entrance');
+
     room.setDescription(`The entrance chamber is filled with the sound of gently falling water. The rippling pool 
       sparkles brightly, as though catching rays of sunlight. The narrow causeway, flanked by statues of twelve faceless 
       and impossibly well endowed creatures, leads to a stout wooden door and the dungeon beyond.`);
