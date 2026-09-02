@@ -205,6 +205,7 @@ global.Room = function(feature, type='normal') {
   function useCommand(code) {
     const command = getAvailableCommands().find(command => command.code === code);
     if (command == null) { throw new Error(`Command [${code}] is not available in this room.`); }
+    if (command.startEpisode) { return { episode:command.startEpisode }; }
 
     usedCommands.push(code);
     return command.execute();

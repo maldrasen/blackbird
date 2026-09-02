@@ -71,6 +71,7 @@ global.DungeonControls = (function() {
   function commandClicked(event) {
     const code = event.target.closest('.command').dataset.code;
     const result = getCurrentRoom().useCommand(code);
+    if (result.episode) { return DungeonSystem.startRoomEpisode(result.episode); }
 
     refreshRoom();
     RoomContentOverlay.open(result);

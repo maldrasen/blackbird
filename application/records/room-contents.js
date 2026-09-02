@@ -5,10 +5,11 @@
 - `commands`      Optional array of command objects, offered as buttons in the dungeon controls.
 
 ### Command properties:
-- `code`      String, unique within the contents.
-- `label`     Button text.
-- `execute`   Called when the command is chosen.
-- `requires`  Predicate or array of predicates. Unmet commands aren't offered.
+- `code`          String, unique within the contents.
+- `label`         Button text.
+- `execute`       Called when the command is chosen. Returns the result shown in the room content overlay.
+- `requires`      Predicate or array of predicates. Unmet commands aren't offered.
+- `startEpisode`  Episode code. Cannot be used with "execute" and uses its own requirements.
 */
 global.RoomContents = (function() {
   const contents = {};
@@ -49,6 +50,14 @@ global.RoomContents = (function() {
         `<span class='fg-strong'>${roomContents.description}</span>`;
     }
 
+    function getCommands() {
+      return (roomContents.commands || []).filter(command => {
+        return command.startEpisode ?
+          Episode.lookup(command.startEpisode).meetsRequirements():
+          Requirements.met(command.requires);
+      });
+    }
+
     return {
       getCode: () => { return code; },
       getRange: () => { return roomContents.range; },
@@ -56,7 +65,7 @@ global.RoomContents = (function() {
       getTrap: () => { return roomContents.trap; },
       getEpisode: () => { return roomContents.episode; },
       getAvailableEpisode,
-      getCommands: () => { return (roomContents.commands || []).filter(command => Requirements.met(command.requires)); },
+      getCommands,
       getDescription,
     };
   }
