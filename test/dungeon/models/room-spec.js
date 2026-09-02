@@ -355,6 +355,23 @@ describe("Room", function() {
       expect(() => room.useCommand('hidden')).to.throw('not available');
       expect(() => room.useCommand('unknown')).to.throw('not available');
     });
+
+    it('offers an episode command while the episode meets its requirements', function() {
+      Episode.register('spec-command-episode', { pages:[{ content:'Spec' }] });
+      RoomContents.register('spec-episode-contents', {
+        description: 'A room with a story.',
+        commands: [{ code:'inspect', label:'Inspect', startEpisode:'spec-command-episode' }],
+      });
+
+      const room = Room();
+      room.setContents('spec-episode-contents');
+      expect(room.useCommand('inspect')).to.deep.equal({ episode:'spec-command-episode' });
+      expect(room.getAvailableCommands().map(command => command.code)).to.deep.equal(['inspect']);
+
+      GameSystem.getState().recordEpisodeViewed('spec-command-episode');
+      expect(room.getAvailableCommands()).to.be.empty;
+      expect(() => room.useCommand('inspect')).to.throw('not available');
+    });
   });
 
   describe("pack()", function() {

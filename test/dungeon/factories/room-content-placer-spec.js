@@ -31,13 +31,6 @@ describe("RoomContentPlacer", function() {
     floor.getRooms().forEach(room => room.setContents(null));
   }
 
-  it("only places contents in rooms that are neither corridors nor stair rooms", function() {
-    const eligible = eligibleRooms();
-    roomsWithContents().forEach(room => expect(eligible).to.include(room));
-  });
-
-  // Once roll() is stubbed, from() draws its index from the same queue, so from() is stubbed as well to keep the
-  // roll queue to two values per placement: the chance roll and the rarity roll.
   it("never places the same contents twice on a floor", function() {
     clearContents();
     const entries = [

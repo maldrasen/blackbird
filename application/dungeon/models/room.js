@@ -5,6 +5,7 @@ global.Room = function(feature, type='normal') {
   let index;
   let floorPosition;
   let stairsAllowed = false;
+  let contentsAllowed = true;
   let overlapping = false;
   let contents = null;
   let contentsOptions;
@@ -164,7 +165,7 @@ global.Room = function(feature, type='normal') {
   // ==============
 
   function canHaveContents() {
-    return feature.getType() !== 'corridor' && stairs == null && contents == null;
+    return contentsAllowed && feature.getType() !== 'corridor' && stairs == null && contents == null;
   }
 
   function setContents(code, options={}) {
@@ -204,6 +205,7 @@ global.Room = function(feature, type='normal') {
   function useCommand(code) {
     const command = getAvailableCommands().find(command => command.code === code);
     if (command == null) { throw new Error(`Command [${code}] is not available in this room.`); }
+    if (command.startEpisode) { return { episode:command.startEpisode }; }
 
     usedCommands.push(code);
     return command.execute();
@@ -246,22 +248,27 @@ global.Room = function(feature, type='normal') {
     getChamfer: () => { return chamfer; },
     setFloorChamfer: percent => { floorChamfer = percent; },
     getFloorChamfer: () => { return floorChamfer; },
+
     allowStairs: () => { stairsAllowed = true; },
-    stairsAreAllowed,
-    forbidAllDoors,
-    allowDoor,
-    forbidDoor,
-    doorIsAllowed,
     setStairs: direction => { stairs = direction; },
     getStairs: () => { return stairs; },
     hasStairs: () => { return stairs != null; },
-    markOverlapping: () => { overlapping = true; },
-    isOverlapping: () => { return overlapping; },
-    canHaveContents,
-    setContents,
+    stairsAreAllowed,
+
+    allowDoor,
+    forbidDoor,
+    forbidAllDoors,
+    doorIsAllowed,
+
+    forbidContents: () => { contentsAllowed = false; },
     getContents: () => { return contents; },
     getContentsOptions: () => { return contentsOptions; },
     hasContents: () => { return contents != null; },
+    canHaveContents,
+    setContents,
+
+    markOverlapping: () => { overlapping = true; },
+    isOverlapping: () => { return overlapping; },
     setDescription,
     getDescription,
     getAvailableCommands,
