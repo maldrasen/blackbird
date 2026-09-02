@@ -32,8 +32,19 @@ describe("RoomContentPlacer", function() {
   }
 
   it("only places contents in rooms that are neither corridors nor stair rooms", function() {
+    clearContents();
+    const entries = floor.getRooms().map((room,i) => {
+      RoomContents.register(`spec-fill-${i}`,{ description:'Spec contents.' });
+      return { code:`spec-fill-${i}`, rarity:Rarity.common };
+    });
+
+    Random.stubRoll(...Array(floor.getRooms().length * 3).fill(0));
+    RoomContentPlacer(entries).placeContents();
+
     const eligible = eligibleRooms();
-    roomsWithContents().forEach(room => expect(eligible).to.include(room));
+    const placed = roomsWithContents();
+    expect(placed).to.not.be.empty;
+    placed.forEach(room => expect(eligible).to.include(room));
   });
 
   // Once roll() is stubbed, from() draws its index from the same queue, so from() is stubbed as well to keep the
