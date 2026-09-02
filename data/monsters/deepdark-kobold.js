@@ -5,6 +5,6 @@ BaseMonster.register('deepdark-kobold',{
   triggers: ['black-hair'],
   level: 6,
 
-  lootGroups:['kobolds'],
+  lootGroups: { kobolds:100 },
 
 });

@@ -6,6 +6,6 @@ BaseMonster.register('flamescale-kobold',{
   triggers: ['red-hair'],
   level: 6,
 
-  lootGroups:['kobolds'],
+  lootGroups: { kobolds:100 },
 
 });

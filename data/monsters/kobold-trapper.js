@@ -16,6 +16,6 @@ BaseMonster.register('kobold-trapper',{
     ],
   },
 
-  lootGroups:['kobolds'],
+  lootGroups: { kobolds:100 },
 
 });

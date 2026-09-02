@@ -5,6 +5,6 @@ BaseMonster.register('deepdark-whisperer',{
   triggers: ['black-hair'],
   level: 8,
 
-  lootGroups:['kobolds'],
+  lootGroups: { kobolds:100 },
 
 });
