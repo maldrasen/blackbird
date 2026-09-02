@@ -38,6 +38,10 @@ global.BaseMonster = (function() {
           Species.lookup(monster.species).getNegotiationGreeting(context);
     }
 
+    function adjustLoot(builder) {
+      if (typeof monster.adjustLoot === 'function') { monster.adjustLoot(builder); }
+    }
+
     return {
       getCode: () => { return code; },
       getName: () => { return monster.name; },
@@ -63,6 +67,8 @@ global.BaseMonster = (function() {
 
       getPrioritizedAbilities: () => { return monster.prioritizedAbilities || {} },
       getNegotiationGreeting,
+      getLootGroups: () => { return monster.lootGroups; },
+      adjustLoot,
     };
   }
 

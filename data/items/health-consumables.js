@@ -10,11 +10,15 @@ Consumable.register('dungeon-tripe',{
     though more potent healing items can be made by refining it further.`,
   category: InventoryCategory.restoreHealth,
   tags: ['mushroom'],
+  rarity: Rarity.common,
   usableWhen: UsableWhen.outOfCombat,
   effects: [
     Effect.restoreHealth(5,15),
   ],
   stories: tripePackage,
+  sources: [
+    { chestGroup:'foods', rarity:Rarity.common },
+  ],
 });
 
 const applePackage = WeaverPackage('consume-apple');
@@ -26,9 +30,13 @@ Consumable.register('rhysh-apple',{
   description: `These small tart apples are sometimes found growing in the dungeon's upper levels.`,
   category: InventoryCategory.restoreHealth,
   tags: ['fruit'],
+  rarity: Rarity.common,
   usableWhen: UsableWhen.outOfCombat,
   effects: [
     Effect.restoreHealth(15,25),
   ],
   stories: applePackage,
+  sources: [
+    { chestGroup:'foods', rarity:Rarity.common },
+  ],
 });

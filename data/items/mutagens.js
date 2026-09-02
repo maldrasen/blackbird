@@ -5,10 +5,17 @@ Consumable.register('horse-juice',{
     similar way.`,
   category: InventoryCategory.mutagen,
   tags: ['manly','juice'],
+  rarity: Rarity.unusual,
   usableWhen: UsableWhen.outOfCombat,
+
   effects:[
     Effect.increasePotency(1),
-  ]
+  ],
+
+  sources: [
+    { chestGroup:'potions', rarity:Rarity.unusual },
+    { monsterGroup:'equians', rarity:Rarity.common },
+  ],
 });
 
 Consumable.register('goats-milk',{
@@ -16,10 +23,17 @@ Consumable.register('goats-milk',{
   description: `It's disgustingly thick and tastes terrible, but it's age has given it potency.`,
   category: InventoryCategory.mutagen,
   tags: ['manly','milk'],
+  rarity: Rarity.unusual,
   usableWhen: UsableWhen.outOfCombat,
+
   effects:[
     Effect.increasePotency(3),
-  ]
+  ],
+
+  sources: [
+    { chestGroup:'potions', rarity:Rarity.unusual },
+    { monsterGroup:'capriens', rarity:Rarity.common },
+  ],
 });
 
 Consumable.register('minotaur-milk',{
@@ -28,10 +42,17 @@ Consumable.register('minotaur-milk',{
     minotaurs themselves are quite happy with the arrangement.`,
   category: InventoryCategory.mutagen,
   tags: ['manly','milk'],
+  rarity: Rarity.unusual,
   usableWhen: UsableWhen.outOfCombat,
+
   effects:[
     Effect.increasePotency(10),
-  ]
+  ],
+
+  sources: [
+    { chestGroup:'potions', rarity:Rarity.rare },
+    { monsterGroup:'minotaurs', rarity:Rarity.unusual },
+  ],
 });
 
 Consumable.register('centaur-milk',{
@@ -40,10 +61,17 @@ Consumable.register('centaur-milk',{
     a centaur who wants to be milked.`,
   category: InventoryCategory.mutagen,
   tags: ['manly','milk'],
+  rarity: Rarity.unusual,
   usableWhen: UsableWhen.outOfCombat,
+
   effects:[
     Effect.increasePotency(12),
-  ]
+  ],
+
+  sources: [
+    { chestGroup:'potions', rarity:Rarity.rare },
+    { monsterGroup:'centaurs', rarity:Rarity.unusual },
+  ],
 });
 
 Consumable.register('milk-of-kindness',{
@@ -51,8 +79,14 @@ Consumable.register('milk-of-kindness',{
   description: `This rare milk may have named ironically, given the painful nature of the extraction process.`,
   category: InventoryCategory.mutagen,
   tags: ['milk'],
+  rarity: Rarity.unusual,
   usableWhen: UsableWhen.outOfCombat,
+
   effects:[
     // TODO: Revert most mutations down to a human level baseline.
-  ]
+  ],
+
+  sources: [
+    { chestGroup:'potions', rarity:Rarity.unusual },
+  ],
 });

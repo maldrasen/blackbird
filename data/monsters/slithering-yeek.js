@@ -21,6 +21,8 @@ BaseMonster.register('slithering-yeek',{
     bite: { code:'beast-bite', priority:50, damage:[10,20], speed:1000, essence:10 },
   },
 
+  lootGroups:['yeeks'],
+
 });
 
 // TODO: Higher level yeek with a toxic grapple attack.

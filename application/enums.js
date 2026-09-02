@@ -93,6 +93,7 @@ global.InventoryCategory = {
   drug: 'drug',
   grenades: 'grenades',
   mutagen: 'mutagen',
+  alchemy: 'alchemy',
   ammo: 'ammo',
   valuables: 'valuables',
 };

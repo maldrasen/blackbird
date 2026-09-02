@@ -20,6 +20,8 @@ BaseMonster.register('kobold-runt',{
     bite: { code:'beast-bite', priority:10, damage:[10,30], speed:1000, essence:10 },
   },
 
+  lootGroups:['kobolds'],
+
   negotiationGreeting: greetingPackage,
 });
 

@@ -24,6 +24,8 @@ global.Article = (function() {
       getIconColor: () => { return article.iconColor; },
       getUsableWhen: () => { return article.usableWhen || UsableWhen.never },
       getTags: () => { return [...(article.tags||[])]; },
+      getRarity: () => { return article.rarity || Rarity.common; },
+      getSources: () => { return article.sources },
     };
   }
 

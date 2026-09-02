@@ -27,6 +27,8 @@ BaseMonster.register('kobold-sneak-slut',{
     ],
   },
 
+  lootGroups:['kobolds'],
+
   negotiationGreeting: greetingPackage,
 });
 

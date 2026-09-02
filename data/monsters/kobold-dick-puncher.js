@@ -22,6 +22,8 @@ BaseMonster.register('kobold-dick-puncher',{
     punch: { code:'punch', priority:50, damage:[20,30], speed:500, essence:50 },
   },
 
+  lootGroups:['kobolds'],
+
   negotiationGreeting: greetingPackage,
 });
 
