@@ -12,7 +12,7 @@ Ammunition.register('arrows',{
   },
 
   sources:[
-    { withWeapon:'bow', rarity:Rarity.common },
-    { chestGroup:'supplies', rarity:Rarity.common },
+    { withWeapon:'bow', rarity:Rarity.common, quantity:[10,20]},
+    { chestGroup:'supplies', rarity:Rarity.common, quantity:[10,20]},
   ]
 });

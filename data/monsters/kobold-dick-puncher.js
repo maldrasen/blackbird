@@ -22,9 +22,12 @@ BaseMonster.register('kobold-dick-puncher',{
     punch: { code:'punch', priority:50, damage:[20,30], speed:500, essence:50 },
   },
 
-  lootGroups: { kobolds:100 },
-
   negotiationGreeting: greetingPackage,
+
+  lootGroups: {
+    nothing: 100,
+    kobolds: 30,
+  },
 });
 
 greetingPackage.add(`The kobold cracks his knuckles and smiles. With surprising boldness he steps closer to you,

@@ -20,9 +20,12 @@ BaseMonster.register('kobold-runt',{
     bite: { code:'beast-bite', priority:10, damage:[10,30], speed:1000, essence:10 },
   },
 
-  lootGroups: { kobolds:100 },
-
   negotiationGreeting: greetingPackage,
+
+  lootGroups: {
+    nothing: 100,
+    kobolds: 20,
+  },
 });
 
 greetingPackage.add(`The kobold looks shocked as you lower your weapon. {T:He} looks around, thinking you must be

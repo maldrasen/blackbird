@@ -16,6 +16,8 @@ BaseMonster.register('flamescale-screamer',{
     C: { code:'monster-cast-spell', priority:50, spell:'ember', powerLevel:1 },
   },
 
-  lootGroups: { kobolds:100 },
-
+  lootGroups: {
+    nothing: 100,
+    kobolds: 40,
+  },
 });
