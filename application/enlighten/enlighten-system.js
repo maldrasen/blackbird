@@ -4,6 +4,7 @@ global.EnlightenSystem = (function() {
   function startEnlightenment(from, data) {
     state = EnlightenState(from, data);
     bankEssence();
+    bankLoot();
   }
 
   // Each character's share of the essence is banked as soon as enlightenment starts. The essence bars in the view
@@ -14,6 +15,12 @@ global.EnlightenSystem = (function() {
       experience.essence = essence.end;
       ExperienceComponent.update(id, experience);
     });
+  }
+
+  // The loot goes straight into the player's inventory as well, the view only lists what was found.
+  function bankLoot() {
+    const inventory = InventoryManager();
+    (state.getLoot() || []).forEach(entry => inventory.addArticle(entry.articleCode, entry.quantity));
   }
 
   function finishEnlightenment() {

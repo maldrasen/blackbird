@@ -4,7 +4,7 @@ title: Random weapon and armor generation
 priority: 3
 created: 2026-07-20
 tags: []
-points: 8
+points: 13
 ---
 ---
 We've updated the monsters to have real equipment components built when the monsters are built. We needed to do this for a couple of reasons, first to simplify the weapon looms and requirements. Rather than having to look in two places for weapon data, we can always look at the equipment and item components. Also, when a monster joins the party, they now come with whatever equipment they were using.
@@ -29,3 +29,8 @@ The item factories only build bare base items right now. `WeaponFactory.build(co
 
 - Color item names by rarity in `buildItemElement()`, WoW/PoE style. `InventoryManager.listItems()` needs to return the rarity, then it's a CSS class per tier.
 - Fix the name phrasing in `updateTradeTitle()` and `dropSelected()`. Common names need an article ("the maul") while proper names don't ("Kobold Fucker"). The TODO suggests a `getName('the')` prefix form on `Item`/`Weapon`/`Armor`, and the weaver's name loom should use the same logic instead of duplicating it.
+
+---
+
+> Looking over this task now, I'm thinking this is too large to be done as a single task. There several parts that need to be done here. Monsters will need drop tables. Beast type monsters don't generate equipment or carry consumables or things, so we might need to add a few things like yeek teeth. We also need to handle generating loot from treasure chests which are randomly added as room contents. While a monster's loot comes in part from the equipment it has, a chest needs a random chance of generating equipment. What can be found in a chest is determined by the level and current floor theme.
+> I think fow now, the goal is to generate normal items in monster drops. The tossers have "blastos", the screamers carry red mana tears, yeek teeth, etc. Loot in treasure chests can be a separate task, and special equipment and armor will probably end up being a bunch of other tasks.

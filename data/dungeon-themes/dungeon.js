@@ -49,6 +49,19 @@ DungeonTheme.register('dungeon',{
     upStairs: upStairDescriptions,
     downStairs: downStairDescriptions,
   },
+
+  lootQuantity: [1,4],
+  lootQuality: 1,
+  lootGroups: {
+    foods: 100,
+    alcohols: 30,
+    drugs: 10,
+    potions: 20,
+    explosives: 50,
+    supplies: 100,
+    valuables: 100,
+  },
+
 });
 
 // TODO: Add a lot more dungeon room descriptions. We'll eventually need more that 100 I think, most of which will be

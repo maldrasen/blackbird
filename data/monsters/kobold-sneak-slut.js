@@ -28,6 +28,12 @@ BaseMonster.register('kobold-sneak-slut',{
   },
 
   negotiationGreeting: greetingPackage,
+
+  lootGroups: {
+    nothing: 100,
+    kobolds: 30,
+    extra: 5,
+  },
 });
 
 greetingPackage.add(`The kobold snarls, looking about frantically as {T:he} realizes that you've got {T:him} cornered.

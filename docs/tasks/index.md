@@ -20,6 +20,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [161] Join Text `8pt` — [161-join-text.md](161-join-text.md)
 - [194] Feeling Adjustments During Battle `2pt` — [194-feeling-adjustments-during-battle.md](194-feeling-adjustments-during-battle.md)
 - [197] Skill events `5pt` — [197-skill-episodes.md](197-skill-episodes.md)
+- [213] Add Weapon and Armor Appraisers and Virtual Stores `13pt` — [213-add-weapon-and-armor-appraisers.md](213-add-weapon-and-armor-appraisers.md)
 
 ## Priority 3
 
@@ -43,7 +44,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [047] Add New Species `13pt` — [047-add-new-species.md](047-add-new-species.md)
 - [113] Add statistics component `5pt` — [113-add-statistics-component.md](113-add-statistics-component.md)
 - [121] Add Capture Mechanics `8pt` — [121-add-capture-mechanics.md](121-add-capture-mechanics.md)
-- [128] Random weapon and armor generation `8pt` — [128-random-item-generation.md](128-random-item-generation.md)
 - [130] Accept death in game over event `8pt` — [130-accept-death-in-game-over-event.md](130-accept-death-in-game-over-event.md)
 - [139] Fix Stamina `3pt` — [139-fix-stamina.md](139-fix-stamina.md)
 - [151] More Negotiation Questions `5pt` — [151-more-negotiation-questions.md](151-more-negotiation-questions.md)

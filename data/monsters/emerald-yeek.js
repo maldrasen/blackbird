@@ -20,6 +20,11 @@ BaseMonster.register('emerald-yeek',{
 
     bite: { code:'beast-bite', priority:50, damage:[10,20], speed:1000, essence:10 },
   },
+
+  lootGroups: {
+    nothing: 100,
+    yeeks: 50,
+  },
 });
 
 // TODO: Add toxic grapple that immobilizes and causes toxic buildup. We'll need to fully implement both the toxic

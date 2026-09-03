@@ -6,6 +6,12 @@ Article.register('string-of-teeth',{
   description: `A set of thirty two human teeth worn as a talisman. ${churchNote}`,
   category: InventoryCategory.valuables,
   tags: ['bone'],
+
+  baseValue: 15,
+  sources: [
+    { chestGroup:'valuables', rarity:Rarity.common },
+    { monsterGroup:'kobolds', rarity:Rarity.common },
+  ],
 });
 
 Article.register('grim-totem',{
@@ -13,4 +19,10 @@ Article.register('grim-totem',{
   description: `A crude talisman made from human bones and preserved organs. ${churchNote}`,
   category: InventoryCategory.valuables,
   tags: ['bone'],
+
+  baseValue: 60,
+  sources: [
+    { chestGroup:'valuables', rarity:Rarity.common },
+    { monsterGroup:'kobolds', rarity:Rarity.common },
+  ],
 });

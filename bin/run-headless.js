@@ -15,4 +15,4 @@ const manifest = require(`${ROOT}/manifest.json`);
 
 [...manifest.applicationFiles, ...manifest.dataFiles].forEach(path => require(`${ROOT}/${path}`));
 
-ReferenceValidator.validate();
+Application.init();

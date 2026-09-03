@@ -26,6 +26,7 @@ global.EnlightenView = (function() {
   function showBattleResults() {
     showSkillImprovements();
     showRevives();
+    showLoot();
     showEssenceBars();
   }
 
@@ -56,6 +57,14 @@ global.EnlightenView = (function() {
     if (revived.length > 0) {
       X.removeClass('#enlightenView .revived','hide');
       X.first('#enlightenView .revived').textContent = revivedSummary(revived);
+    }
+  }
+
+  function showLoot() {
+    const loot = EnlightenSystem.getState().getLoot();
+    if (loot.length > 0) {
+      X.removeClass('#enlightenView .loot','hide');
+      X.first('#enlightenView .loot').appendChild(X.createElement(WeaverElements.lootBlock(loot)));
     }
   }
 

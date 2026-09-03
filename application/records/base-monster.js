@@ -38,11 +38,15 @@ global.BaseMonster = (function() {
           Species.lookup(monster.species).getNegotiationGreeting(context);
     }
 
+    function adjustLoot(builder) {
+      if (typeof monster.adjustLoot === 'function') { monster.adjustLoot(builder); }
+    }
+
     return {
       getCode: () => { return code; },
       getName: () => { return monster.name; },
-      getNameType: () => { return monster.nameType || 'common' },
-      getDescription: () => { return monster.description },
+      getNameType: () => { return monster.nameType || 'common'; },
+      getDescription: () => { return monster.description; },
       getSpecies: () => { return monster.species; },
       getBodyPlan: () => { return monster.bodyPlan ? BodyPlan[monster.bodyPlan] : BodyPlan.humanoid; },
       getGenderRatio,
@@ -56,13 +60,17 @@ global.BaseMonster = (function() {
       getSkills: () => { return monster.skills || {}; },
       getResistances: () => { return monster.resistances || {}; },
       getResistance: type => { return (monster.resistances||{})[type] || 0; },
-      getTriggers: () => { return monster.triggers || [] },
+      getTriggers: () => { return monster.triggers || []; },
       getArchetypes: () => { return monster.archetypes; },
       getThreatWeights,
       getEquipment: () => { return monster.equipment; },
 
-      getPrioritizedAbilities: () => { return monster.prioritizedAbilities || {} },
+      getPrioritizedAbilities: () => { return monster.prioritizedAbilities || {}; },
       getNegotiationGreeting,
+
+      getLootQuality:() => { return monster.lootQuality || 1; },
+      getLootGroups: () => { return monster.lootGroups || {}; },
+      adjustLoot,
     };
   }
 

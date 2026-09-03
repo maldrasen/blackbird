@@ -21,6 +21,11 @@ BaseMonster.register('kobold-runt',{
   },
 
   negotiationGreeting: greetingPackage,
+
+  lootGroups: {
+    nothing: 100,
+    kobolds: 20,
+  },
 });
 
 greetingPackage.add(`The kobold looks shocked as you lower your weapon. {T:He} looks around, thinking you must be

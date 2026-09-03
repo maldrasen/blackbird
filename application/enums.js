@@ -80,6 +80,7 @@ global.KeyCodes = {
 };
 
 global.ArticleType = {
+  article: 'article',
   ammunition: 'ammunition',
   consumable: 'consumable',
 };
@@ -93,6 +94,7 @@ global.InventoryCategory = {
   drug: 'drug',
   grenades: 'grenades',
   mutagen: 'mutagen',
+  alchemy: 'alchemy',
   ammo: 'ammo',
   valuables: 'valuables',
 };
