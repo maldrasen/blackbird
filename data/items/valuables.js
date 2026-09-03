@@ -7,6 +7,7 @@ Article.register('string-of-teeth',{
   category: InventoryCategory.valuables,
   tags: ['bone'],
 
+  baseValue: 15,
   sources: [
     { chestGroup:'valuables', rarity:Rarity.common },
     { monsterGroup:'kobolds', rarity:Rarity.common },
@@ -19,6 +20,7 @@ Article.register('grim-totem',{
   category: InventoryCategory.valuables,
   tags: ['bone'],
 
+  baseValue: 60,
   sources: [
     { chestGroup:'valuables', rarity:Rarity.common },
     { monsterGroup:'kobolds', rarity:Rarity.common },

@@ -9,6 +9,13 @@ global.Article = (function() {
     return Object.keys(articles);
   }
 
+  function setValue(code, value) {
+    if (articles[code].value != null) {
+      throw new Error(`The value of article[${code}] has already been appraised.`);
+    }
+    articles[code].value = value;
+  }
+
   function lookup(code) {
     if (articles[code] == null) { throw new Error(`Bad article code [${code}]`); }
 
@@ -26,12 +33,15 @@ global.Article = (function() {
       getTags: () => { return [...(article.tags||[])]; },
       getRarity: () => { return article.rarity || Rarity.common; },
       getSources: () => { return article.sources },
+      getBaseValue: () => { return article.baseValue },
+      getValue: () => { return article.value; },
     };
   }
 
   return {
     register,
     getAllCodes,
+    setValue,
     lookup,
   };
 

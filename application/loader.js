@@ -61,13 +61,14 @@ window.Loader = (function() {
   async function boot() {
     try {
       ReferenceValidator.validate();
+      ArticleAppraiser.run();
       MainContent.loadStyles();
       MainContent.loadMainContent();
       Views.initAll();
 
       await WorldState.loadState();
-      await MainMenu.loadBaseMenu();
 
+      MainMenu.loadBaseMenu();
       Console.log("Blackbird Started",{ system:'Main', level:1, data:{
         environment: Environment.name,
       }});

@@ -7,6 +7,7 @@ Article.register('yeek-gland',{
   tags: ['organ'],
   rarity: Rarity.common,
 
+  baseValue: 10,
   sources: [
     { monsterGroup:'yeeks', rarity:Rarity.common },
   ],
