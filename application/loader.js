@@ -162,7 +162,6 @@ window.Loader = (function() {
 
   return {
     startLoading,
-    headlessBoot,
   };
 
 })();
