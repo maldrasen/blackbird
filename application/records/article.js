@@ -23,7 +23,7 @@ global.Article = (function() {
 
     return {
       getCode: () => { return code; },
-      getType: () => { return article.type; },
+      getType: () => { return article.type || ArticleType.article; },
       getCategory: () => { return article.category; },
       getName: () => { return article.name; },
       getDescription: () => { return article.description; },

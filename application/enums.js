@@ -80,6 +80,7 @@ global.KeyCodes = {
 };
 
 global.ArticleType = {
+  article: 'article',
   ammunition: 'ammunition',
   consumable: 'consumable',
 };

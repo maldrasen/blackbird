@@ -4,7 +4,7 @@ global.Ammunition = (function() {
   function register(code,data) {
     const { effects, stories, ...articleData } = data;
 
-    Article.register(code, { ...articleData, type:ArticleType.consumable });
+    Article.register(code, { ...articleData, type:ArticleType.ammunition });
     ammunitionRecords[code] = { effects, stories };
   }
 
@@ -21,6 +21,7 @@ global.Ammunition = (function() {
       getCategory: () => { return article.getCategory(); },
       getTags: () => { return article.getTags(); },
       getDamageTypes: () => { return { ...ammunition.damageTypes }},
+      getEffects: () => { return [...(ammunition.effects||[])]; },
     };
   }
 
