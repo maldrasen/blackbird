@@ -34,6 +34,7 @@ global.CharacterOverlay = (function() {
     X.empty('#characterOverlay');
     X.addClass('#characterOverlay','hide');
     X.addClass('#overlayCover','hide');
+    WindowManager.remove(CharacterOverlay);
   }
 
   function update() {
