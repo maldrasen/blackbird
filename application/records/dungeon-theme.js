@@ -56,7 +56,7 @@ global.DungeonTheme = (function() {
       getDescription,
       getLootQuantity: () => { return [...theme.lootQuantity] || [1,4] },
       getLootQuality:() => { return theme.lootQuality || 1 },
-      getLootGroups: () => { return theme.lootGroups; },
+      getLootGroups: () => { return theme.lootGroups || {}; },
     };
   }
 

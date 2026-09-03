@@ -19,6 +19,7 @@ BaseMonster.register('flamescale-screamer',{
   lootGroups: {
     nothing: 100,
     kobolds: 40,
+    gear: 10,
     extra: 5,
   },
 });

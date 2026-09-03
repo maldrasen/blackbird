@@ -32,7 +32,7 @@ global.Article = (function() {
       getUsableWhen: () => { return article.usableWhen || UsableWhen.never },
       getTags: () => { return [...(article.tags||[])]; },
       getRarity: () => { return article.rarity || Rarity.common; },
-      getSources: () => { return article.sources },
+      getSources: () => { return article.sources || []; },
       getBaseValue: () => { return article.baseValue },
       getValue: () => { return article.value; },
     };
