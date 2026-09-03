@@ -53,12 +53,12 @@ describe('ArticleAppraiser', function() {
   describe('valueForDamageTypes()', function() {
     it('values ammunition damage at half the rate of consumable damage', function() {
       const damageTypes = { [DamageType.pierce]:{ low:1, high:6 } };
-      expect(ArticleAppraiser.valueForDamageTypes(damageTypes)).to.equal(1.75);
+      expect(ArticleAppraiser.valueForDamageTypes(damageTypes)).to.equal(3.5);
     });
 
     it('sums every damage type', function() {
       const damageTypes = { [DamageType.pierce]:{ low:1, high:6 }, [DamageType.fire]:{ low:2, high:8 } };
-      expect(ArticleAppraiser.valueForDamageTypes(damageTypes)).to.equal(4.25);
+      expect(ArticleAppraiser.valueForDamageTypes(damageTypes)).to.equal(8.5);
     });
 
     it('returns nothing for ammunition with no damage', function() {

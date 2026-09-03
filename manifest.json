@@ -164,6 +164,7 @@
     "application/items/factories/weapon-factory.js",
     "application/items/inventory-manager.js",
     "application/items/inventory-system.js",
+    "application/items/item-constants.js",
     "application/items/item.js",
     "application/items/loot-generator.js",
     "application/items/weapon-enchantment.js",

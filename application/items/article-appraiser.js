@@ -1,25 +1,5 @@
 global.ArticleAppraiser = (function() {
 
-  // Article values sit on the same scale as the base weapons and armor, which run from roughly 200 to 1000. A
-  // consumable is used once though, so a point of health restored or damage dealt is worth far less than a point of
-  // weapon damage that can be dealt every second.
-  const _healthValue = 1;
-  const _manaValue = 3;
-  const _damageValue = 1;
-  const _potencyValue = 20;
-
-  // Ammunition only adds a flat bonus to a shot the bow was making anyway, so a point of ammunition damage is worth
-  // half a point of damage from a consumable that does its damage on its own.
-  const _ammunitionDamageValue = 0.5;
-
-  // A status effect is worth a base amount for every turn (turn count effects) or second (fixed time effects) that it
-  // lasts. Only the effects that articles actually apply need a value, an unpriced effect is an error so that new
-  // effects are priced deliberately rather than silently adding nothing.
-  const _statusValues = {
-    blind: 4,
-    stun: 15,
-  };
-
   // Articles are read only data objects, but the article values are calculated rather than set directly. The
   // appraiser runs at lead time to set the value of all the articles so that an article's getValue function can just
   // return a precalculated value. Once a value has been set by this loader it can't be overwritten.
@@ -48,7 +28,7 @@ global.ArticleAppraiser = (function() {
 
   function valueForDamageTypes(damageTypes) {
     return Object.values(damageTypes).reduce((total, range) => {
-      return total + (((range.low + range.high) / 2) * _ammunitionDamageValue);
+      return total + (((range.low + range.high) / 2) * ItemConstants.damageValue);
     }, 0);
   }
 
@@ -63,21 +43,22 @@ global.ArticleAppraiser = (function() {
 
   function valueForEffect(effect) {
     switch (effect.type) {
-      case 'restore-health': return ((effect.min + effect.max) / 2) * _healthValue;
-      case 'restore-mana': return ((effect.min + effect.max) / 2) * _manaValue;
-      case 'damage': return Random.averageDice(effect.damage) * _damageValue;
+      case 'restore-health': return ((effect.min + effect.max) / 2) * ItemConstants.healthValue;
+      case 'restore-mana': return ((effect.min + effect.max) / 2) * ItemConstants.manaValue;
+      case 'damage': return Random.averageDice(effect.damage) * ItemConstants.damageValue;
       case 'status-effect': return valueForStatusEffect(effect);
-      case 'increase-potency': return effect.level * _potencyValue;
+      case 'increase-potency': return effect.level * ItemConstants.potencyValue;
     }
 
     throw new Error(`Unsupported effect type [${effect.type}]`);
   }
 
   function valueForStatusEffect(effect) {
-    if (_statusValues[effect.code] == null) {
+    const value = ItemConstants.statusEffectValues[effect.code];
+    if (value == null) {
       throw new Error(`No value has been set for the [${effect.code}] status effect.`);
     }
-    return _statusValues[effect.code] * durationOfStatusEffect(effect) * landChance(effect.strength);
+    return value * durationOfStatusEffect(effect) * landChance(effect.strength);
   }
 
   function durationOfStatusEffect(effect) {
