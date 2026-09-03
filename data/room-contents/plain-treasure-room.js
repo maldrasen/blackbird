@@ -4,7 +4,10 @@ function describe() {
 }
 
 function open() {
-  return `TODO: You open the treasure chest.`
+  return {
+    text: `TODO: You open the treasure chest.`,
+    loot: LootGenerator.forCurrentLocation(),
+  };
 }
 
 RoomContents.register('plain-treasure-room',{

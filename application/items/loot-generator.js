@@ -135,3 +135,11 @@ global.LootGenerator = function(type, data) {
 
   return generator;
 }
+
+LootGenerator.forCurrentLocation = function() {
+  const floor = DungeonSystem.getDungeonFloor();
+  if (floor) {
+    return LootGenerator('chest', { theme:floor.getTheme(), level:floor.getLevel() }).generateLoot();
+  }
+  throw new Error(`Cannot generate loot for a non-dungeon location yet.`)
+}
