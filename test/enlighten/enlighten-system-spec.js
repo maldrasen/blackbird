@@ -8,12 +8,12 @@ describe("EnlightenSystem", function() {
     return id;
   }
 
-  function startBattleEnlightenment(party, totalEssence) {
+  function startBattleEnlightenment(party, totalEssence, loot=[]) {
     const configuration = {};
     party.forEach((id,index) => { configuration[id] = `p-${index}`; });
     GameSystem.getState().setPartyConfiguration(configuration);
 
-    EnlightenSystem.startEnlightenment('battle', { totalEssence, skillImprovements:{}, revived:[], loot:[] });
+    EnlightenSystem.startEnlightenment('battle', { totalEssence, skillImprovements:{}, revived:[], loot });
   }
 
   describe("startEnlightenment()", function() {
@@ -28,6 +28,16 @@ describe("EnlightenSystem", function() {
       expect(essence[second]).to.deep.equal({ start:200, end:700 });
       expect(ExperienceComponent.lookup(first).essence).to.equal(600);
       expect(ExperienceComponent.lookup(second).essence).to.equal(700);
+    });
+
+    it("banks the loot in the player's inventory", function() {
+      Article.register('spec-enlighten-bauble', { name:'Spec Bauble', category:InventoryCategory.valuables });
+      const player = CharacterFixtures.randomPlayer();
+
+      startBattleEnlightenment([player], 0, [{ articleCode:'spec-enlighten-bauble', quantity:3 }]);
+
+      expect(InventoryManager(player).getArticleQuantity('spec-enlighten-bauble')).to.equal(3);
+      expect(EnlightenSystem.getState().getLoot()).to.deep.equal([{ articleCode:'spec-enlighten-bauble', quantity:3 }]);
     });
 
     it("banks no essence when enlightenment comes from training", function() {

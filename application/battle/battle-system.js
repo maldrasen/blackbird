@@ -127,12 +127,12 @@ global.BattleSystem = (function() {
     GameSystem.setGameMode(GameMode.episode);
   }
 
-  // TODO: Generate loot from dead monsters.
+  // The loot has to be generated before reset() deletes the dead monsters.
   function battleWon() {
     const totalEssence = state.getTotalEssence();
     const skillImprovements = state.getSkillImprovements();
     const revived = BattleDeathSystem.reviveKnockedOut();
-    const loot = [];
+    const loot = generateLoot();
 
     // The survivors' home positions become the new party configuration. This is the only point where a battle
     // writes the persistent configuration.
@@ -148,6 +148,16 @@ global.BattleSystem = (function() {
     });
 
     GameSystem.setGameMode(GameMode.enlighten);
+  }
+
+  function generateLoot() {
+    const merged = {};
+    state.getDeadMonsters().forEach(id => {
+      LootGenerator('monster', { id }).generateLoot().forEach(entry => {
+        merged[entry.articleCode] = (merged[entry.articleCode] || 0) + entry.quantity;
+      });
+    });
+    return Object.entries(merged).map(([articleCode, quantity]) => ({ articleCode, quantity }));
   }
 
   return {
