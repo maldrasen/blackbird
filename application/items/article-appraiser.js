@@ -8,6 +8,10 @@ global.ArticleAppraiser = (function() {
   const _damageValue = 1;
   const _potencyValue = 20;
 
+  // Ammunition only adds a flat bonus to a shot the bow was making anyway, so a point of ammunition damage is worth
+  // half a point of damage from a consumable that does its damage on its own.
+  const _ammunitionDamageValue = 0.5;
+
   // A status effect is worth a base amount for every turn (turn count effects) or second (fixed time effects) that it
   // lasts. Only the effects that articles actually apply need a value, an unpriced effect is an error so that new
   // effects are priced deliberately rather than silently adding nothing.
@@ -37,11 +41,15 @@ global.ArticleAppraiser = (function() {
     return Math.ceil(value);
   }
 
-  // TODO: Ammo's value comes from damage types, and effects. (assume the same effects that consumables have. An
-  //       arrow that could blind or stun for instance.)
   function valueForAmmunition(code) {
     const ammunition = Ammunition.lookup(code);
-    return 0;
+    return valueForDamageTypes(ammunition.getDamageTypes()) + valueForEffects(ammunition.getEffects());
+  }
+
+  function valueForDamageTypes(damageTypes) {
+    return Object.values(damageTypes).reduce((total, range) => {
+      return total + (((range.low + range.high) / 2) * _ammunitionDamageValue);
+    }, 0);
   }
 
   function valueForConsumable(code) {
@@ -109,6 +117,7 @@ global.ArticleAppraiser = (function() {
   return {
     run,
     valueForEffects,
+    valueForDamageTypes,
   }
 
 })();

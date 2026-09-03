@@ -50,4 +50,20 @@ describe('ArticleAppraiser', function() {
     });
   });
 
+  describe('valueForDamageTypes()', function() {
+    it('values ammunition damage at half the rate of consumable damage', function() {
+      const damageTypes = { [DamageType.pierce]:{ low:1, high:6 } };
+      expect(ArticleAppraiser.valueForDamageTypes(damageTypes)).to.equal(1.75);
+    });
+
+    it('sums every damage type', function() {
+      const damageTypes = { [DamageType.pierce]:{ low:1, high:6 }, [DamageType.fire]:{ low:2, high:8 } };
+      expect(ArticleAppraiser.valueForDamageTypes(damageTypes)).to.equal(4.25);
+    });
+
+    it('returns nothing for ammunition with no damage', function() {
+      expect(ArticleAppraiser.valueForDamageTypes({})).to.equal(0);
+    });
+  });
+
 });
