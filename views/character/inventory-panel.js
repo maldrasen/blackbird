@@ -238,6 +238,7 @@ global.InventoryPanel = function(options) {
 
     CharacterOverviewPanel.fillHealthBars(characterId);
     CharacterOverviewPanel.fillManaBars(characterId);
+    GameStateFrame.update();
 
     ConsumeOverlay.open(response);
     update();
