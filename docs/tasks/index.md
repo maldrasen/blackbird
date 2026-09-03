@@ -21,6 +21,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [194] Feeling Adjustments During Battle `2pt` — [194-feeling-adjustments-during-battle.md](194-feeling-adjustments-during-battle.md)
 - [197] Skill events `5pt` — [197-skill-episodes.md](197-skill-episodes.md)
 - [213] Add Weapon and Armor Appraisers and Virtual Stores `13pt` — [213-add-weapon-and-armor-appraisers.md](213-add-weapon-and-armor-appraisers.md)
+- [214] Add rooms with treasure chests `5pt` — [214-add-rooms-with-treasure-chests.md](214-add-rooms-with-treasure-chests.md)
 
 ## Priority 3
 
