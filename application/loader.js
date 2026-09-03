@@ -60,8 +60,7 @@ window.Loader = (function() {
 
   async function boot() {
     try {
-      ReferenceValidator.validate();
-      ArticleAppraiser.run();
+      Application.init();
       MainContent.loadStyles();
       MainContent.loadMainContent();
       Views.initAll();
@@ -163,6 +162,7 @@ window.Loader = (function() {
 
   return {
     startLoading,
+    headlessBoot,
   };
 
 })();
