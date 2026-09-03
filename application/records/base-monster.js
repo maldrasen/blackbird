@@ -67,6 +67,8 @@ global.BaseMonster = (function() {
 
       getPrioritizedAbilities: () => { return monster.prioritizedAbilities || {}; },
       getNegotiationGreeting,
+
+      getLootQuality:() => { return monster.lootQuality || 1; },
       getLootGroups: () => { return monster.lootGroups || {}; },
       adjustLoot,
     };

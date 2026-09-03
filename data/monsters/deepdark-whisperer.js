@@ -8,5 +8,6 @@ BaseMonster.register('deepdark-whisperer',{
   lootGroups: {
     nothing: 100,
     kobolds: 30,
+    extra: 5,
   },
 });

@@ -27,6 +27,7 @@ BaseMonster.register('kobold-dick-puncher',{
   lootGroups: {
     nothing: 100,
     kobolds: 30,
+    extra: 5,
   },
 });
 

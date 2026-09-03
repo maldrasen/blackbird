@@ -1,32 +1,40 @@
 global.LootGenerator = function(type, data) {
   if (['chest','monster'].includes(type)) { throw new Error(`Generator type should be chest or monster.`); }
 
-  // TODO, build a table from the source, then generate loot from that table.
+  // Data could be:
   //   Chest data: { theme, level }
   //   Monster data: { id }
 
-  // We first build a table from all the items with a matching source. Dungeon themes and base monsters have maps of
-  // loot groups (used to fine tune rarity). Articles that can be dropped have an array of sources with the groups they
-  // can appear in as well as their rarity within that group. The loot table is kind of a join table, here with the
-  // combined rarity from the source rarity and the group rarity.
+  // Dungeon themes and base monsters have maps of loot groups (used to fine tune rarity). Articles that can be
+  // dropped have an array of sources with the groups they can appear in as well as their rarity within that group.
 
-  // >   We may not build an actual table. A monster's loot groups include the 'nothing' group which has nothing in it.
-  //     When rolling loot it might work best to first pick the group as a frequency map, then pick rarity, and get an
-  //     item from that group with the chosen rarity.
+  // Monster loot groups include the 'nothing' group which has nothing in it. When rolling we should first pick the
+  // group as a frequency map, then we find all the articles that belong in that group. We then pick rarity, and get
+  // an item from that group with the chosen rarity. If there's nothing that matches the picked rarity we need to find
+  // something that does. Normally we'd step down through the rarities, until we get something common, but that might
+  // not work if a group only has rare items. We should probably plan to step down first, and if that doesn't work,
+  // step up through the rarities instead.
 
-  // We also need to filter the items by value so that random items fall within a range, derived somehow from an
+  // Monsters also have a special 'extra' group. If we pick the extra group we can roll for two items. (Hitting extra
+  // again in the second roll will roll a third time, etc.) Some monsters, like a yeek, couldn't support an extra roll.
+  // They can only ever drop a venom gland, and they only have one of them.
+
+  // While monsters generally have a single roll (with multiple defeated monsters rolling after the battle) treasure
+  // chests will have a lootQuantity range that will determine how many items are in a chest. They probably won't have
+  // an extra group, but there's no reason they couldn't.
+
+  // We also need to filter the items by value so that random items are capped. The maximum value is derived from an
   // essence value. The level can give us an average essence value for an encounter, while a monster can get us an
-  // actual essence value. An encounter though should have more essence than an average monster in an encounter, so
-  // the chest essence should be some percentage of the average floor encounter average, or chests will be too good,
-  // but a chest should still be more valuable of a find than an average encounter, so the chest essence should
-  // probably be something around 30% maybe of the floor's encounter essence.
+  // actual essence value. A treasure chest though should have more valuables than an average monster in an encounter,
+  // so the chest essence should be some percentage of the average floor encounter average. Chests would be too
+  // valuable if we used the full encounter essence value, so the chest essence should probably be something around
+  // 30% of the floor's encounter essence.
 
-  // >   Rather than a value band though we should probably have a loot budget. We start with the essence, convert the
-  //     essence into a value (probably a logarithmic curve to that value tapers off at higher levels). We randomize
-  //     the value a bit, probably only lowering it to a percentage of the max possible value. Base monsters and
-  //     themes could also have a richness factor to move the value of their loot up or done. Finally, we generate loot
-  //     by randomly selecting items from the table (with value below the remaining value budget), and subtracting
-  //     their value from the budget.
+  // We then take this essence value and use it to determine the maximum value cap. (Probably a logarithmic curve so
+  // that value tapers off at higher levels). We randomize this value a bit, lowering it to a percentage of this max
+  // possible value. Base monsters and themes could also have a lootQuality factor to move the value of their loot up
+  // or down. You'd expect to find better loot in a temple or a crypt than a prison or a sewer. Finally, we generate
+  // loot by randomly selecting items that are under this loot ceiling, but also above some percentage of this max.
 
   // An encounter could potentially generate loot 10 times, one for each monster, though with a smaller value budget
   // for each chance. That sounds correct though. 10 kobolds aren't going to be carrying around one really expensive
@@ -36,9 +44,16 @@ global.LootGenerator = function(type, data) {
 
   // A monster that has unusual equipment will drop that equipment as loot.
 
-  // Before any of this can be done though, we need a way to determine the absolute value of an article.
+  // ---
 
-  function addArticle(code, rarity) {}
+  // Monsters have an adjustLoot function that can add an article that it normally wouldn't drop to the drop table.
+  // I'm assuming we'll go with the "select group -> select rarity -> select item" strategy here, so when adding an
+  // article, we need to know what group it belongs in. The tosser adds his grenades to the kobold group, so their
+  // overall drop rate remains at a 3/13 and a blasto is a common drop when loot is dropped. A different monster could
+  // define their groups as { nothing:100, kobold:30, rare:1 }, and add an article to this rare drop group. Even if no
+  // articles normally add things to that group, having that group selected in the first step would return whatever is
+  // in that group.
+  function addArticle(code, group, rarity) {}
 
   function generateLoot() {}
 

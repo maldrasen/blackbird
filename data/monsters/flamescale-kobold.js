@@ -9,5 +9,6 @@ BaseMonster.register('flamescale-kobold',{
   lootGroups: {
     nothing: 100,
     kobolds: 40,
+    extra: 5,
   },
 });

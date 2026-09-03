@@ -50,6 +50,8 @@ DungeonTheme.register('dungeon',{
     downStairs: downStairDescriptions,
   },
 
+  lootQuantity: [1,4],
+  lootQuality: 1,
   lootGroups: {
     foods: 100,
     alcohols: 30,

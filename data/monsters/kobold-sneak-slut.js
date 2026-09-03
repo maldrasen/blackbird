@@ -32,6 +32,7 @@ BaseMonster.register('kobold-sneak-slut',{
   lootGroups: {
     nothing: 100,
     kobolds: 30,
+    extra: 5,
   },
 });
 
