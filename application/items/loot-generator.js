@@ -26,18 +26,13 @@ global.LootGenerator = function(type, data) {
   // an article to this rare drop group. Even if no articles normally add things to that group, having that group
   // selected in the first step would return whatever is in that group.
 
-  // We also need to filter the items by value so that random items are capped. The maximum value is derived from an
-  // essence value. The level can give us an average essence value for an encounter, while a monster can get us an
-  // actual essence value. A treasure chest though should have more valuables than an average monster in an encounter,
-  // so the chest essence should be some percentage of the average floor encounter average. Chests would be too
-  // valuable if we used the full encounter essence value, so the chest essence should probably be something around
-  // 30% of the floor's encounter essence.
-
-  // We then take this essence value and use it to determine the maximum value cap. (Probably a logarithmic curve so
-  // that value tapers off at higher levels). We randomize this value a bit, lowering it to a percentage of this max
-  // possible value. Base monsters and themes could also have a lootQuality factor to move the value of their loot up
-  // or down. You'd expect to find better loot in a temple or a crypt than a prison or a sewer. Finally, we generate
-  // loot by randomly selecting items that are under this loot ceiling, but also above some percentage of this max.
+  // The articles are also capped by value. The cap is derived from an essence value: a monster's actual essence
+  // value, or for a chest a percentage of the floor's encounter essence target (a chest holding a whole encounter's
+  // worth would be far too valuable). The essence is put through a logarithmic curve so that value tapers off at
+  // higher levels, multiplied by the source's lootQuality (you'd expect better loot in a temple or a crypt than a
+  // prison or a sewer), then randomly lowered to a percentage of that maximum for each generation. Candidates must be
+  // under this ceiling and above a floor that's a percentage of it. When nothing sits in that window anything under
+  // the ceiling will do, and when everything is over the ceiling the roll drops nothing.
 
   // A monster that has unusual equipment will drop that equipment as loot.
 
@@ -104,25 +99,43 @@ global.LootGenerator = function(type, data) {
     if (Object.keys(source.groups).length === 0) { return []; }
 
     const entries = [];
+    const range = rollValueRange();
     const rolls = (type === 'chest') ? Random.between(...source.quantity) : 1;
-    for (let i=0; i<rolls; i++) { rollGroup(entries); }
+    for (let i=0; i<rolls; i++) { rollGroup(entries, range); }
 
     return mergeEntries(entries);
   }
 
-  function rollGroup(entries) {
+  function essenceValue() {
+    if (type === 'monster') { return EssenceSystem.monsterEssenceValue(data.id); }
+    return BattleHelper.getEssenceTarget(data.level) * ItemConstants.chestEssencePercent;
+  }
+
+  function rollValueRange() {
+    const max = source.quality * ItemConstants.lootValueScale * Math.log(1 + (essenceValue() / ItemConstants.lootEssenceScale));
+    const ceiling = max * (Random.between(ItemConstants.lootCeilingLow, 100) / 100);
+    return { floor:ceiling * ItemConstants.lootFloorPercent, ceiling };
+  }
+
+  function rollGroup(entries, range) {
     const group = Random.fromFrequencyMap(source.groups);
     if (group === 'nothing') { return; }
     if (group === 'extra') {
-      rollGroup(entries);
-      rollGroup(entries);
+      rollGroup(entries, range);
+      rollGroup(entries, range);
       return;
     }
 
-    const entry = pickEntry(table[group] || []);
+    const entry = pickEntry(affordableEntries(table[group] || [], range));
     if (entry) {
       entries.push({ articleCode:entry.code, quantity:(entry.quantity ? Random.between(...entry.quantity) : 1) });
     }
+  }
+
+  function affordableEntries(candidates, range) {
+    const affordable = candidates.filter(entry => Article.lookup(entry.code).getValue() <= range.ceiling);
+    const inWindow = affordable.filter(entry => Article.lookup(entry.code).getValue() >= range.floor);
+    return inWindow.length > 0 ? inWindow : affordable;
   }
 
   function pickEntry(candidates) {
@@ -148,6 +161,7 @@ global.LootGenerator = function(type, data) {
 
   const generator = {
     generateLoot,
+    rollValueRange,
     addArticle,
     getDropTable,
   };
