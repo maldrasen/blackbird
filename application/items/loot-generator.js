@@ -7,8 +7,14 @@ global.LootGenerator = function(type, data) {
 
   // Dungeon themes and base monsters have maps of loot groups (used to fine tune rarity). Articles that can be
   // dropped have an array of sources with the groups they can appear in as well as their rarity within that group.
-  // The drop table collects every source that lands in one of the listed groups, keyed by group. Monster loot groups
-  // include the 'nothing' group which has nothing in it, and the special 'extra' group which rolls again.
+  // The drop table collects every source that lands in one of the listed groups, keyed by group.
+
+  // A roll first picks a group from the frequency map. Monster loot groups include the 'nothing' group which has
+  // nothing in it, and the special 'extra' group which rolls twice more (hitting extra again keeps rolling). We then
+  // roll a rarity and pick an article of that rarity from the group. If the group has nothing at that rarity we step
+  // down through the rarities, and if that finds nothing either we step up instead, so a group that only holds rare
+  // articles still drops something. Monsters roll once, while treasure chests roll their theme's lootQuantity range.
+  // Creatures without loot groups, like the cockroaches, drop no loot.
 
   // Monsters also have conditional sources. An article with a withWeapon source drops from monsters using that type
   // of weapon, and one with a castsSpells source drops from monsters casting spells of that color. Both land in the
@@ -19,10 +25,6 @@ global.LootGenerator = function(type, data) {
   // when loot is dropped. A different monster could define their groups as { nothing:100, kobold:30, rare:1 }, and add
   // an article to this rare drop group. Even if no articles normally add things to that group, having that group
   // selected in the first step would return whatever is in that group.
-
-  // While monsters generally have a single roll (with multiple defeated monsters rolling after the battle) treasure
-  // chests will have a lootQuantity range that will determine how many items are in a chest. They probably won't have
-  // an extra group, but there's no reason they couldn't.
 
   // We also need to filter the items by value so that random items are capped. The maximum value is derived from an
   // essence value. The level can give us an average essence value for an encounter, while a monster can get us an
@@ -49,7 +51,7 @@ global.LootGenerator = function(type, data) {
 
   function chestSource() {
     const theme = DungeonTheme.lookup(data.theme);
-    return { key:'chestGroup', groups:theme.getLootGroups(), quality:theme.getLootQuality() };
+    return { key:'chestGroup', groups:theme.getLootGroups(), quality:theme.getLootQuality(), quantity:theme.getLootQuantity() };
   }
 
   function buildTable() {
@@ -98,7 +100,51 @@ global.LootGenerator = function(type, data) {
     return copy;
   }
 
-  function generateLoot() {}
+  function generateLoot() {
+    if (Object.keys(source.groups).length === 0) { return []; }
+
+    const entries = [];
+    const rolls = (type === 'chest') ? Random.between(...source.quantity) : 1;
+    for (let i=0; i<rolls; i++) { rollGroup(entries); }
+
+    return mergeEntries(entries);
+  }
+
+  function rollGroup(entries) {
+    const group = Random.fromFrequencyMap(source.groups);
+    if (group === 'nothing') { return; }
+    if (group === 'extra') {
+      rollGroup(entries);
+      rollGroup(entries);
+      return;
+    }
+
+    const entry = pickEntry(table[group] || []);
+    if (entry) {
+      entries.push({ articleCode:entry.code, quantity:(entry.quantity ? Random.between(...entry.quantity) : 1) });
+    }
+  }
+
+  function pickEntry(candidates) {
+    if (candidates.length === 0) { return null; }
+
+    const order = RarityHelper.getOrder();
+    const index = RarityHelper.rollRarityIndex();
+    const tiers = [];
+    for (let tier=index; tier>=0; tier--) { tiers.push(order[tier]); }
+    for (let tier=index+1; tier<order.length; tier++) { tiers.push(order[tier]); }
+
+    for (const rarity of tiers) {
+      const matches = candidates.filter(entry => entry.rarity === rarity);
+      if (matches.length > 0) { return Random.from(matches); }
+    }
+  }
+
+  function mergeEntries(entries) {
+    const merged = {};
+    entries.forEach(entry => { merged[entry.articleCode] = (merged[entry.articleCode] || 0) + entry.quantity; });
+    return Object.entries(merged).map(([articleCode, quantity]) => ({ articleCode, quantity }));
+  }
 
   const generator = {
     generateLoot,

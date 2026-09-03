@@ -54,7 +54,7 @@ global.DungeonTheme = (function() {
       getExtraStairChance: () => { return theme.extraStairChance || 50 },
       getFloorTextureFunction: () => { return theme.getFloorTexture().paint },
       getDescription,
-      getLootQuantity: () => { return [...theme.lootQuantity] || [1,4] },
+      getLootQuantity: () => { return [...(theme.lootQuantity || [1,4])]; },
       getLootQuality:() => { return theme.lootQuality || 1 },
       getLootGroups: () => { return theme.lootGroups || {}; },
     };
