@@ -12,7 +12,7 @@ function describe() {
     stepping on that one.`;
   const failure = `An open pit lies in the center of the room. The thin slab of stone that covered it lies split and 
     shattered at the bottom of the spike filled pit.`;
-  return (DungeonRequirements.checkScoutingRoll())() ? success : failure;
+  return (DungeonRequirements.scoutingSuccess())() ? success : failure;
 }
 
 RoomContents.register('dungeon-pit-trap',{
@@ -26,5 +26,6 @@ RoomContents.register('dungeon-pit-trap',{
     target: EpisodeTarget.anyInParty,
     onScoutingFailure: trapSprung,
   },
+
   description: describe,
 });

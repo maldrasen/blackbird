@@ -18,8 +18,10 @@ DungeonTheme.register('dungeon',{
   newRoomEncounterRate: 20,
   roomContentChance: 20,
   roomContents:[
+    { code:'dungeon-pit-trap', rarity:Rarity.common },
     { code:'dungeon-spike-trap', rarity:Rarity.common },
     { code:'dungeon-tripe-patch', rarity:Rarity.common },
+    { code:'plain-treasure-room', rarity:Rarity.common },
   ],
 
   features:[
