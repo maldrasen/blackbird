@@ -2,10 +2,10 @@ global.Ammunition = (function() {
   const ammunitionRecords = {};
 
   function register(code,data) {
-    const { effects, stories, ...articleData } = data;
+    const { damageTypes, effects, stories, ...articleData } = data;
 
     Article.register(code, { ...articleData, type:ArticleType.ammunition });
-    ammunitionRecords[code] = { effects, stories };
+    ammunitionRecords[code] = { damageTypes, effects, stories };
   }
 
   function lookup(code) {
@@ -22,6 +22,7 @@ global.Ammunition = (function() {
       getTags: () => { return article.getTags(); },
       getDamageTypes: () => { return { ...ammunition.damageTypes }},
       getEffects: () => { return [...(ammunition.effects||[])]; },
+      pickStory: context => { return ammunition.stories ? ammunition.stories.pick(context) : null; },
     };
   }
 
