@@ -77,6 +77,7 @@ global.DungeonSystem = (function() {
   }
 
   return {
+    setDungeonFloor: floor => { dungeonFloor = floor },
     getDungeonFloor: () => { return dungeonFloor; },
     getDungeonState: () => { return GameSystem.getState().getDungeonState(); },
     enterDungeon,
