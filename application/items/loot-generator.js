@@ -15,12 +15,18 @@ global.LootGenerator = function() {
   const dropTable = {};
   const drops = [];
 
+  let used = false;
+
   // Options:
   //   - groups: A group map to use instead of the default dungeon map.
   //   - quality: An additional quality factor.
   //   - quantity: An additional quantity factor.
   function generateChestLoot(options={}) {
+    claim();
+
     floor = DungeonSystem.getDungeonFloor();
+    if (floor == null) { throw new Error(`Chest loot can only be generated on a dungeon floor.`); }
+
     theme = DungeonTheme.lookup(floor.getTheme());
     lootGroups = options.groups || theme.getLootGroups();
     qualityFactor = theme.getLootQuality() * (options.quality || 1);
@@ -33,17 +39,26 @@ global.LootGenerator = function() {
   }
 
   function generateMonsterLoot(id) {
-    monsterId = id
+    claim();
+
+    monsterId = id;
     monster = Monster(id);
     monsterBase = monster.getBaseMonster();
     lootGroups = monsterBase.getLootGroups();
-    qualityFactor = monsterBase.getLootQuality()
+    qualityFactor = monsterBase.getLootQuality();
 
     buildDropTable();
     makeAdjustments();
     rollValueRange();
 
     return generateLoot();
+  }
+
+  // The drop table and the drops accumulate in the generator, so each generator is single use. Generating twice would
+  // double up the table and hand back the first generation's drops along with the second.
+  function claim() {
+    if (used) { throw new Error(`A LootGenerator is single use. Build a new one for each generation.`); }
+    used = true;
   }
 
   // =============================
@@ -176,6 +191,7 @@ global.LootGenerator = function() {
     generateChestLoot,
     generateMonsterLoot,
     getDropTable: () => { return structuredClone(dropTable); },
+    getValueRange: () => { return { ...valueRange }; },
   };
 
 };
