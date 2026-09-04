@@ -317,10 +317,11 @@ describe("Room", function() {
 
   describe("commands", function() {
     beforeEach(function() {
+      Article.register('spec-loot', { name:'Spec Loot', category:InventoryCategory.valuables });
       RoomContents.register('spec-command-contents',{
         description: 'A room full of spec contents.',
         commands: [
-          { code:'take', label:'Take', execute: () => ({ text:'Taken', loot:[{ code:'spec-loot', count:2 }] }) },
+          { code:'take', label:'Take', execute: () => ({ text:'Taken', loot:[{ articleCode:'spec-loot', quantity:2 }] }) },
           { code:'poke', label:'Poke', execute: () => ({ text:'Poked' }) },
           { code:'hidden', label:'Hidden', requires: () => false, execute: () => ({}) },
         ],
@@ -341,17 +342,27 @@ describe("Room", function() {
       const room = Room();
       room.setContents('spec-command-contents');
 
+      const result = room.useCommand('poke');
+      expect(result).to.deep.equal({ text:'Poked' });
+      expect(room.getAvailableCommands().map(command => command.code)).to.deep.equal(['take']);
+    });
+
+    it("banks the command's loot in the player's inventory", function() {
+      const player = CharacterFixtures.randomPlayer();
+      const room = Room();
+      room.setContents('spec-command-contents');
+
       const result = room.useCommand('take');
-      expect(result).to.deep.equal({ text:'Taken', loot:[{ code:'spec-loot', count:2 }] });
-      expect(room.getAvailableCommands().map(command => command.code)).to.deep.equal(['poke']);
+      expect(result).to.deep.equal({ text:'Taken', loot:[{ articleCode:'spec-loot', quantity:2 }] });
+      expect(InventoryManager(player).getArticleQuantity('spec-loot')).to.equal(2);
     });
 
     it('throws when using a command that is not available', function() {
       const room = Room();
       room.setContents('spec-command-contents');
-      room.useCommand('take');
+      room.useCommand('poke');
 
-      expect(() => room.useCommand('take')).to.throw('not available');
+      expect(() => room.useCommand('poke')).to.throw('not available');
       expect(() => room.useCommand('hidden')).to.throw('not available');
       expect(() => room.useCommand('unknown')).to.throw('not available');
     });

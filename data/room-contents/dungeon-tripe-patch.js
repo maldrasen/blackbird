@@ -1,7 +1,6 @@
 
 function harvest() {
   const count = Random.between(3,6);
-  InventoryManager().addArticle('dungeon-tripe',count);
   return {
     text: `You harvest ${count} uncomfortably moist furls of pungent dungeon tripe. Lucky you.`,
     loot: [{ articleCode:'dungeon-tripe', quantity:count }],

@@ -208,7 +208,13 @@ global.Room = function(feature, type='normal') {
     if (command.startEpisode) { return { episode:command.startEpisode }; }
 
     usedCommands.push(code);
-    return command.execute();
+    const result = command.execute();
+    const inventory = InventoryManager();
+
+    (result.loot || []).forEach(entry =>
+      inventory.addArticle(entry.articleCode, entry.quantity));
+
+    return result;
   }
 
   function pack() {
