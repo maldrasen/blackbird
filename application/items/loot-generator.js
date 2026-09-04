@@ -115,10 +115,12 @@ global.LootGenerator = function() {
     });
   }
 
+  // The max is the ceiling before it's rolled down to a percentage. It's kept in the range so the loot reports can show
+  // the most a source could ever be worth without stubbing the roll.
   function rollValueRange() {
     const max = qualityFactor * ItemConstants.lootValueScale * Math.log(1 + (essenceValue() / ItemConstants.lootEssenceScale));
     const ceiling = max * (Random.between(ItemConstants.lootCeilingLow, 100) / 100);
-    valueRange = { floor:ceiling * ItemConstants.lootFloorPercent, ceiling };
+    valueRange = { floor:ceiling * ItemConstants.lootFloorPercent, ceiling, max };
   }
 
   // ===================

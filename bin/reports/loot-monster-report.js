@@ -18,22 +18,20 @@ if (monsterCode == null || BaseMonster.getAllCodes().includes(monsterCode) === f
 
 const results = [];
 const essences = [];
-const ceilings = [];
+const ranges = [];
 let generator;
 
 for (let i=0; i<samples; i++) {
   Registry.clear();
   const id = MonsterFactory(monsterCode).build();
-  generator = LootGenerator('monster', { id });
+  generator = LootGenerator();
+  results.push(generator.generateMonsterLoot(id));
+  ranges.push(generator.getValueRange());
   essences.push(EssenceSystem.monsterEssenceValue(id));
-  ceilings.push(LootReport.fullValueRange(generator).ceiling);
-  results.push(generator.generateLoot());
 }
 
-const average = values => (values.reduce((sum,value) => sum + value, 0) / values.length).toFixed(1);
-
 console.log(`\n=== Monster Loot Report : ${monsterCode} ===\n`);
-console.log(`Essence: ${Math.min(...essences)} - ${Math.max(...essences)} (avg ${average(essences)})`);
-console.log(`Value ceiling: ${Math.min(...ceilings).toFixed(1)} - ${Math.max(...ceilings).toFixed(1)} at most (avg ${average(ceilings)})`);
+console.log(`Essence: ${LootReport.spread(essences)}`);
+LootReport.printValueRanges(ranges);
 LootReport.printDropTable(generator.getDropTable());
 LootReport.printResults(results, generator.getDropTable());
