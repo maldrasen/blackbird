@@ -114,7 +114,7 @@ global.LootGenerator = function() {
     if (Object.keys(lootGroups).length > 0) {
       if (floor == null) { rollGroup(); } else {
         const range = theme.getLootQuantity();
-        const min = Math.floor(range[0] * quantityFactor);
+        const min = Math.max(1,Math.floor(range[0] * quantityFactor));
         const max = Math.ceil(range[1] * quantityFactor);
         const rolls = Random.between(min,max);
         for (let i=0; i<rolls; i++) { rollGroup(); }
