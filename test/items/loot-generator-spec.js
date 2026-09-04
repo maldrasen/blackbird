@@ -1,4 +1,4 @@
-describe.only('LootGenerator', function() {
+describe('LootGenerator', function() {
 
   function setupDungeon(level, theme) {
     DungeonSystem.setDungeonFloor(DungeonFloor(level, theme));

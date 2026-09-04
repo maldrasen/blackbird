@@ -16,9 +16,11 @@ if (themeCode == null || DungeonTheme.getAllCodes().includes(themeCode) === fals
   process.exit(1);
 }
 
-const generator = LootGenerator('chest', { theme:themeCode, level });
+DungeonSystem.setDungeonFloor(DungeonFloor(level, themeCode));
+
+const generator = LootGenerator();
 const results = [];
-for (let i=0; i<samples; i++) { results.push(generator.generateLoot()); }
+for (let i=0; i<samples; i++) { results.push(generator.generateChestLoot()); }
 
 console.log(`\n=== Treasure Chest Loot Report : ${themeCode} level ${level} ===\n`);
 console.log(`Loot quantity: ${DungeonTheme.lookup(themeCode).getLootQuantity().join('-')}`);

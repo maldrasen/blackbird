@@ -153,7 +153,7 @@ global.BattleSystem = (function() {
   function generateLoot() {
     const merged = {};
     state.getDeadMonsters().forEach(id => {
-      LootGenerator('monster', { id }).generateLoot().forEach(entry => {
+      LootGenerator().generateMonsterLoot(id).forEach(entry => {
         merged[entry.articleCode] = (merged[entry.articleCode] || 0) + entry.quantity;
       });
     });
