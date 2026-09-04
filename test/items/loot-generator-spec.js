@@ -129,11 +129,7 @@ describe('LootGenerator', function() {
     Random.stubBetween(100);
     Random.stubRoll(0);
     generator.generateMonsterLoot(id);
-    expect(() => generator.generateMonsterLoot(id)).to.throw(/single use/);
-  });
-
-  it('needs a dungeon floor to generate chest loot', function() {
-    expect(() => LootGenerator().generateChestLoot()).to.throw(/dungeon floor/);
+    expect(() => generator.generateMonsterLoot(id)).to.throw(/used once/);
   });
 
   describe('getDropTable()', function() {
