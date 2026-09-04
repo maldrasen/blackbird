@@ -8,7 +8,7 @@ function describe() {
 function open() {
   return {
     text: `TODO: You rifle through the goods.`,
-    loot: LootGenerator.generateChestLoot({ quantity:1.5, groups:{ foods:100, alcohols:30 }}),
+    loot: LootGenerator().generateChestLoot({ quantity:1.5, groups:{ foods:100, alcohols:30 }}),
   };
 }
 

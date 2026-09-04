@@ -13,7 +13,7 @@ function describe() {
 function open() {
   return {
     text: `TODO: You open a crate.`,
-    loot: LootGenerator.generateChestLoot({ quality:0.6, quantity:1.2 }),
+    loot: LootGenerator().generateChestLoot({ quality:0.6, quantity:1.2 }),
   };
 }
 

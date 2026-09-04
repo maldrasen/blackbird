@@ -8,7 +8,7 @@ function describe() {
 function open() {
   return {
     text: `TODO: You open the treasure chest.`,
-    loot: LootGenerator.generateChestLoot({ quality:1.5, quantity:0.5 }),
+    loot: LootGenerator().generateChestLoot({ quality:1.5, quantity:0.5 }),
   };
 }
 
