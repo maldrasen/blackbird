@@ -15,7 +15,7 @@ Consumable.register('ale',{
   ],
 
   sources: [
-    { chestGroup:'alcohols', rarity:Rarity.common },
+    { group:'alcohols', rarity:Rarity.common },
   ],
 });
 
@@ -32,7 +32,7 @@ Consumable.register('kumis',{
   ],
 
   sources: [
-    { chestGroup:'alcohols', rarity:Rarity.unusual },
+    { group:'alcohols', rarity:Rarity.unusual },
   ],
 });
 
@@ -49,7 +49,7 @@ Consumable.register('grog',{
   ],
 
   sources: [
-    { chestGroup:'alcohols', rarity:Rarity.common },
+    { group:'alcohols', rarity:Rarity.common },
   ],
 });
 
@@ -69,7 +69,7 @@ Consumable.register('absinthe',{
   ],
 
   sources: [
-    { chestGroup:'alcohols', rarity:Rarity.rare },
+    { group:'alcohols', rarity:Rarity.rare },
   ],
 });
 
@@ -86,7 +86,7 @@ Consumable.register('rakia',{
   ],
 
   sources: [
-    { chestGroup:'alcohols', rarity:Rarity.unusual },
+    { group:'alcohols', rarity:Rarity.unusual },
   ],
 });
 
@@ -106,6 +106,6 @@ Consumable.register('powdered-satyrs-horn',{
   ],
 
   sources: [
-    { chestGroup:'drugs', rarity:Rarity.rare },
+    { group:'drugs', rarity:Rarity.rare },
   ],
 });

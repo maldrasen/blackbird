@@ -14,7 +14,7 @@ Consumable.register('crimson-tear',{
   ],
   stories: tearPackage,
   sources: [
-    { chestGroup:'potions', rarity:Rarity.unusual },
+    { group:'potions', rarity:Rarity.unusual },
     { castsSpells:'red', rarity:Rarity.unusual },
   ],
 });
@@ -31,7 +31,7 @@ Consumable.register('aureolin-tear',{
   ],
   stories: tearPackage,
   sources: [
-    { chestGroup:'potions', rarity:Rarity.unusual },
+    { group:'potions', rarity:Rarity.unusual },
     { castsSpells:'yellow', rarity:Rarity.unusual },
   ],
 });
@@ -48,7 +48,7 @@ Consumable.register('celadon-tear',{
   ],
   stories: tearPackage,
   sources: [
-    { chestGroup:'potions', rarity:Rarity.unusual },
+    { group:'potions', rarity:Rarity.unusual },
     { castsSpells:'green', rarity:Rarity.unusual },
   ],
 });
@@ -65,7 +65,7 @@ Consumable.register('cerulean-tear',{
   ],
   stories: tearPackage,
   sources: [
-    { chestGroup:'potions', rarity:Rarity.unusual },
+    { group:'potions', rarity:Rarity.unusual },
     { castsSpells:'blue', rarity:Rarity.unusual },
   ],
 });
@@ -82,7 +82,7 @@ Consumable.register('ebony-tear',{
   ],
   stories: tearPackage,
   sources: [
-    { chestGroup:'potions', rarity:Rarity.unusual },
+    { group:'potions', rarity:Rarity.unusual },
     { castsSpells:'black', rarity:Rarity.unusual },
   ],
 });

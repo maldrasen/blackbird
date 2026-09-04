@@ -17,7 +17,7 @@ Consumable.register('dungeon-tripe',{
   ],
   stories: tripePackage,
   sources: [
-    { chestGroup:'foods', rarity:Rarity.common },
+    { group:'foods', rarity:Rarity.common },
   ],
 });
 
@@ -37,6 +37,6 @@ Consumable.register('rhysh-apple',{
   ],
   stories: applePackage,
   sources: [
-    { chestGroup:'foods', rarity:Rarity.common },
+    { group:'foods', rarity:Rarity.common },
   ],
 });

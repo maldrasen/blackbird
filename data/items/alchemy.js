@@ -9,6 +9,6 @@ Article.register('yeek-gland',{
 
   baseValue: 10,
   sources: [
-    { monsterGroup:'yeeks', rarity:Rarity.common },
+    { group:'yeeks', rarity:Rarity.common },
   ],
 });

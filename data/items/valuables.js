@@ -9,8 +9,8 @@ Article.register('string-of-teeth',{
 
   baseValue: 15,
   sources: [
-    { chestGroup:'valuables', rarity:Rarity.common },
-    { monsterGroup:'kobolds', rarity:Rarity.common },
+    { group:'valuables', rarity:Rarity.common },
+    { group:'kobolds', rarity:Rarity.common },
   ],
 });
 
@@ -22,7 +22,7 @@ Article.register('grim-totem',{
 
   baseValue: 60,
   sources: [
-    { chestGroup:'valuables', rarity:Rarity.common },
-    { monsterGroup:'kobolds', rarity:Rarity.common },
+    { group:'valuables', rarity:Rarity.common },
+    { group:'kobolds', rarity:Rarity.common },
   ],
 });
