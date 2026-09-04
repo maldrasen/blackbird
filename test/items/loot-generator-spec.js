@@ -11,18 +11,21 @@ describe.only('LootGenerator', function() {
   describe('generateChestLoot()', function() {
     it('generates loot for the current level', function() {
       setupDungeon(1,'dungeon');
-      const loot = LootGenerator();
-      loot.generateChestLoot();
-      console.log(loot.getDropTable())
+      const loot = LootGenerator().generateChestLoot();
     });
   });
 
   describe('generateMonsterLoot()', function() {
+
+    it('generates no loot for a monster without loot', function() {
+      const cockroach = setupMonster('revolting-cockroach');
+      const loot = LootGenerator().generateMonsterLoot(cockroach);
+      expect(loot.length).to.equal(0);
+    });
+
     it('generates loot for a monster', function() {
       const screamer = setupMonster('flamescale-screamer');
-      const loot = LootGenerator();
-      loot.generateMonsterLoot(screamer);
-      console.log(loot.getDropTable())
+      const loot = LootGenerator().generateMonsterLoot(screamer);
     });
   });
 

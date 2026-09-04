@@ -3,10 +3,17 @@ global.LootGenerator = function() {
   let monsterId;
   let monsterBase;
   let monster;
+
   let floor;
   let theme;
 
+  let lootGroups;
+  let qualityFactor = 1;
+  let quantityFactor = 1;
+  let valueRange;
+
   const dropTable = {};
+  const drops = [];
 
   // Options:
   //   - groups: A group map to use instead of the default dungeon map.
@@ -15,36 +22,39 @@ global.LootGenerator = function() {
   function generateChestLoot(options={}) {
     floor = DungeonSystem.getDungeonFloor();
     theme = DungeonTheme.lookup(floor.getTheme());
+    lootGroups = options.groups || theme.getLootGroups();
+    qualityFactor = theme.getLootQuality() * (options.quality || 1);
+    quantityFactor = options.quantity || 1;
 
-    const quality = theme.getLootQuality() * (options.quality || 1)
+    buildDropTable();
+    rollValueRange();
 
-    buildDropTable(options.groups || theme.getLootGroups());
-
-    return [];
+    return generateLoot();
   }
 
   function generateMonsterLoot(id) {
     monsterId = id
     monster = Monster(id);
     monsterBase = monster.getBaseMonster();
+    lootGroups = monsterBase.getLootGroups();
+    qualityFactor = monsterBase.getLootQuality()
 
-    const quality = monsterBase.getLootQuality()
-
-    buildDropTable(monsterBase.getLootGroups());
+    buildDropTable();
     makeAdjustments();
+    rollValueRange();
 
-    return [];
+    return generateLoot();
   }
 
   // =============================
   //    Building the Drop Table
   // =============================
 
-  function buildDropTable(groups) {
+  function buildDropTable() {
     Article.getAllCodes().forEach(code => {
       (Article.lookup(code).getSources()).forEach(source => {
         const group = groupForSource(source);
-        if (group && groups[group] != null) {
+        if (group && lootGroups[group] != null) {
           addArticle(code, group, source.rarity, source.quantity);
         }
       });
@@ -90,53 +100,44 @@ global.LootGenerator = function() {
     });
   }
 
+  function rollValueRange() {
+    const max = qualityFactor * ItemConstants.lootValueScale * Math.log(1 + (essenceValue() / ItemConstants.lootEssenceScale));
+    const ceiling = max * (Random.between(ItemConstants.lootCeilingLow, 100) / 100);
+    valueRange = { floor:ceiling * ItemConstants.lootFloorPercent, ceiling };
+  }
+
   // ===================
   //    Generate Loot
   // ===================
 
-
-  /*
   function generateLoot() {
-    if (Object.keys(source.groups).length === 0) { return []; }
+    if (Object.keys(lootGroups).length > 0) {
+      if (floor == null) { rollGroup(); } else {
+        const range = theme.getLootQuantity();
+        const min = Math.floor(range[0] * quantityFactor);
+        const max = Math.ceil(range[1] * quantityFactor);
+        const rolls = Random.between(min,max);
+        for (let i=0; i<rolls; i++) { rollGroup(); }
+      }
+    }
 
-    const entries = [];
-    const range = rollValueRange();
-    const rolls = (type === 'chest') ? Random.between(...source.quantity) : 1;
-    for (let i=0; i<rolls; i++) { rollGroup(entries, range); }
-
-    return mergeEntries(entries);
+    return mergedDrops();
   }
 
-  function essenceValue() {
-    if (type === 'monster') { return EssenceSystem.monsterEssenceValue(data.id); }
-    return BattleHelper.getEssenceTarget(data.level) * ItemConstants.chestEssencePercent;
-  }
+  function rollGroup() {
+    const group = Random.fromFrequencyMap(lootGroups);
 
-  function rollValueRange() {
-    const max = source.quality * ItemConstants.lootValueScale * Math.log(1 + (essenceValue() / ItemConstants.lootEssenceScale));
-    const ceiling = max * (Random.between(ItemConstants.lootCeilingLow, 100) / 100);
-    return { floor:ceiling * ItemConstants.lootFloorPercent, ceiling };
-  }
-
-  function rollGroup(entries, range) {
-    const group = Random.fromFrequencyMap(source.groups);
     if (group === 'nothing') { return; }
     if (group === 'extra') {
-      rollGroup(entries, range);
-      rollGroup(entries, range);
+      rollGroup();
+      rollGroup();
       return;
     }
 
-    const entry = pickEntry(affordableEntries(table[group] || [], range));
+    const entry = pickEntry(affordableEntries(dropTable[group] || []));
     if (entry) {
-      entries.push({ articleCode:entry.code, quantity:(entry.quantity ? Random.between(...entry.quantity) : 1) });
+      drops.push({ articleCode:entry.code, quantity:(entry.quantity ? Random.between(...entry.quantity) : 1) });
     }
-  }
-
-  function affordableEntries(candidates, range) {
-    const affordable = candidates.filter(entry => Article.lookup(entry.code).getValue() <= range.ceiling);
-    const inWindow = affordable.filter(entry => Article.lookup(entry.code).getValue() >= range.floor);
-    return inWindow.length > 0 ? inWindow : affordable;
   }
 
   function pickEntry(candidates) {
@@ -154,12 +155,23 @@ global.LootGenerator = function() {
     }
   }
 
-  function mergeEntries(entries) {
+  function affordableEntries(candidates) {
+    const affordable = candidates.filter(entry => Article.lookup(entry.code).getValue() <= valueRange.ceiling);
+    const inWindow = affordable.filter(entry => Article.lookup(entry.code).getValue() >= valueRange.floor);
+    return inWindow.length > 0 ? inWindow : affordable;
+  }
+
+  function essenceValue() {
+    if (monsterId) { return EssenceSystem.monsterEssenceValue(monsterId); }
+    return BattleHelper.getEssenceTarget(floor.getLevel()) * ItemConstants.chestEssencePercent;
+  }
+
+  function mergedDrops() {
     const merged = {};
-    entries.forEach(entry => { merged[entry.articleCode] = (merged[entry.articleCode] || 0) + entry.quantity; });
+    drops.forEach(drop => { merged[drop.articleCode] = (merged[drop.articleCode] || 0) + drop.quantity; });
     return Object.entries(merged).map(([articleCode, quantity]) => ({ articleCode, quantity }));
   }
-*/
+
   return {
     generateChestLoot,
     generateMonsterLoot,
