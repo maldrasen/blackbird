@@ -20,7 +20,9 @@ BaseMonster.register('kobold-tosser',{
     nothing: 100,
     kobolds: 30,
   },
-  adjustLoot: generator => {
-    generator.addArticle('blasto', 'kobolds', Rarity.common);
-  },
+
+  lootAdjustments: [
+    { addArticle:'blasto', group:'kobolds', rarity:Rarity.common },
+  ],
+
 });

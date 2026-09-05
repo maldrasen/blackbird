@@ -1,49 +1,91 @@
-global.LootGenerator = function(type, data) {
-  if (['chest','monster'].includes(type) === false) { throw new Error(`Generator type should be chest or monster.`); }
+global.LootGenerator = function() {
 
-  const source = (type === 'monster') ? monsterSource() : chestSource();
-  const table = {};
+  let monsterId;
+  let monsterBase;
+  let monster;
 
-  function monsterSource() {
-    const base = Monster(data.id).getBaseMonster();
-    return { key:'monsterGroup', groups:base.getLootGroups(), quality:base.getLootQuality(), base };
+  let floor;
+  let theme;
+
+  let lootGroups;
+  let qualityFactor = 1;
+  let quantityFactor = 1;
+  let valueRange;
+
+  const dropTable = {};
+  const drops = [];
+
+  // Options:
+  //   - groups: A group map to use instead of the default dungeon map.
+  //   - quality: An additional quality factor.
+  //   - quantity: An additional quantity factor.
+  function generateChestLoot(options={}) {
+    ensureFreshness();
+
+    floor = DungeonSystem.getDungeonFloor();
+    theme = DungeonTheme.lookup(floor.getTheme());
+    lootGroups = options.groups || theme.getLootGroups();
+    qualityFactor = theme.getLootQuality() * (options.quality || 1);
+    quantityFactor = options.quantity || 1;
+
+    buildDropTable();
+    rollValueRange();
+
+    return generateLoot();
   }
 
-  function chestSource() {
-    const theme = DungeonTheme.lookup(data.theme);
-    return { key:'chestGroup', groups:theme.getLootGroups(), quality:theme.getLootQuality(), quantity:theme.getLootQuantity() };
+  function generateMonsterLoot(id) {
+    ensureFreshness();
+
+    monsterId = id;
+    monster = Monster(id);
+    monsterBase = monster.getBaseMonster();
+    lootGroups = monsterBase.getLootGroups();
+    qualityFactor = monsterBase.getLootQuality();
+
+    buildDropTable();
+    makeAdjustments();
+    rollValueRange();
+
+    return generateLoot();
   }
 
-  function buildTable() {
+  function ensureFreshness() {
+    if (Object.keys(dropTable).length > 0) { throw new Error(`Each LootGenerator should only be used once.`); }
+  }
+
+  // =============================
+  //    Building the Drop Table
+  // =============================
+
+  function buildDropTable() {
     Article.getAllCodes().forEach(code => {
-      (Article.lookup(code).getSources()).forEach(articleSource => {
-        const group = groupForSource(articleSource);
-        if (group && source.groups[group] != null) {
-          addArticle(code, group, articleSource.rarity, articleSource.quantity);
+      (Article.lookup(code).getSources()).forEach(source => {
+        const group = groupForSource(source);
+        if (group && lootGroups[group] != null) {
+          addArticle(code, group, source.rarity, source.quantity);
         }
       });
     });
-
-    if (type === 'monster') { source.base.adjustLoot(generator); }
   }
 
-  function groupForSource(articleSource) {
-    if (articleSource[source.key] != null) { return articleSource[source.key]; }
-    if (type === 'monster') {
-      if (articleSource.withWeapon && hasWeaponType(articleSource.withWeapon)) { return 'gear'; }
-      if (articleSource.castsSpells && castsColor(articleSource.castsSpells)) { return 'gear'; }
+  function groupForSource(source) {
+    if (monsterId) {
+      if (source.withWeapon && hasWeaponType(source.withWeapon)) { return 'gear'; }
+      if (source.castsSpells && castsColor(source.castsSpells)) { return 'gear'; }
     }
+    return source.group;
   }
 
   function hasWeaponType(weaponType) {
-    return Object.values(EquipmentComponent.lookup(data.id) || {}).some(itemId => {
+    return Object.values(EquipmentComponent.lookup(monsterId) || {}).some(itemId => {
       const weapon = WeaponComponent.lookup(itemId);
       return weapon != null && BaseWeapon.lookup(weapon.base).getType() === weaponType;
     });
   }
 
   function castsColor(color) {
-    return Object.values(Monster(data.id).getAbilityMap()).some(ability => {
+    return Object.values(monster.getAbilityMap()).some(ability => {
       return ability.code === 'monster-cast-spell' && Spell.lookup(ability.spell).getColor() === color;
     });
   }
@@ -51,56 +93,59 @@ global.LootGenerator = function(type, data) {
   function addArticle(code, group, rarity=Rarity.common, quantity) {
     const entry = { code, rarity };
     if (quantity) { entry.quantity = [...quantity]; }
-    table[group] = [...(table[group] || []), entry];
+    dropTable[group] = [...(dropTable[group] || []), entry];
   }
 
-  function getDropTable() {
-    const copy = {};
-    Object.keys(table).forEach(group => { copy[group] = table[group].map(entry => ({ ...entry })); });
-    return copy;
-  }
-
-  function generateLoot() {
-    if (Object.keys(source.groups).length === 0) { return []; }
-
-    const entries = [];
-    const range = rollValueRange();
-    const rolls = (type === 'chest') ? Random.between(...source.quantity) : 1;
-    for (let i=0; i<rolls; i++) { rollGroup(entries, range); }
-
-    return mergeEntries(entries);
-  }
-
-  function essenceValue() {
-    if (type === 'monster') { return EssenceSystem.monsterEssenceValue(data.id); }
-    return BattleHelper.getEssenceTarget(data.level) * ItemConstants.chestEssencePercent;
+  // A monster can have an array of loot adjustments to adjust the drop table for that base monster. Only adding items
+  // is currently implemented, but we may also want to remove an item or adjust an item's rarity or quantity at some
+  // point. Adjustments have the form:
+  //   { addArticle:code, group:group, rarity:rarity, quantity:[min,max]|null }
+  function makeAdjustments() {
+    monsterBase.getLootAdjustments().forEach(adjustment => {
+      if (adjustment.addArticle) {
+        addArticle(adjustment.addArticle, adjustment.group, adjustment.rarity, adjustment.quantity)
+      }
+    });
   }
 
   function rollValueRange() {
-    const max = source.quality * ItemConstants.lootValueScale * Math.log(1 + (essenceValue() / ItemConstants.lootEssenceScale));
+    const max = qualityFactor * ItemConstants.lootValueScale * Math.log(1 + (essenceValue() / ItemConstants.lootEssenceScale));
     const ceiling = max * (Random.between(ItemConstants.lootCeilingLow, 100) / 100);
-    return { floor:ceiling * ItemConstants.lootFloorPercent, ceiling };
+    valueRange = { floor:ceiling * ItemConstants.lootFloorPercent, ceiling, max };
   }
 
-  function rollGroup(entries, range) {
-    const group = Random.fromFrequencyMap(source.groups);
+  // ===================
+  //    Generate Loot
+  // ===================
+
+  function generateLoot() {
+    if (Object.keys(lootGroups).length > 0) {
+      if (floor == null) { rollGroup(); } else {
+        const range = theme.getLootQuantity();
+        const min = Math.max(1,Math.floor(range[0] * quantityFactor));
+        const max = Math.ceil(range[1] * quantityFactor);
+        const rolls = Random.between(min,max);
+        for (let i=0; i<rolls; i++) { rollGroup(); }
+      }
+    }
+
+    return mergedDrops();
+  }
+
+  function rollGroup() {
+    const group = Random.fromFrequencyMap(lootGroups);
+
     if (group === 'nothing') { return; }
     if (group === 'extra') {
-      rollGroup(entries, range);
-      rollGroup(entries, range);
+      rollGroup();
+      rollGroup();
       return;
     }
 
-    const entry = pickEntry(affordableEntries(table[group] || [], range));
+    const entry = pickEntry(affordableEntries(dropTable[group] || []));
     if (entry) {
-      entries.push({ articleCode:entry.code, quantity:(entry.quantity ? Random.between(...entry.quantity) : 1) });
+      drops.push({ articleCode:entry.code, quantity:(entry.quantity ? Random.between(...entry.quantity) : 1) });
     }
-  }
-
-  function affordableEntries(candidates, range) {
-    const affordable = candidates.filter(entry => Article.lookup(entry.code).getValue() <= range.ceiling);
-    const inWindow = affordable.filter(entry => Article.lookup(entry.code).getValue() >= range.floor);
-    return inWindow.length > 0 ? inWindow : affordable;
   }
 
   function pickEntry(candidates) {
@@ -118,20 +163,28 @@ global.LootGenerator = function(type, data) {
     }
   }
 
-  function mergeEntries(entries) {
+  function affordableEntries(candidates) {
+    const affordable = candidates.filter(entry => Article.lookup(entry.code).getValue() <= valueRange.ceiling);
+    const inWindow = affordable.filter(entry => Article.lookup(entry.code).getValue() >= valueRange.floor);
+    return inWindow.length > 0 ? inWindow : affordable;
+  }
+
+  function essenceValue() {
+    if (monsterId) { return EssenceSystem.monsterEssenceValue(monsterId); }
+    return BattleHelper.getEssenceTarget(floor.getLevel()) * ItemConstants.chestEssencePercent;
+  }
+
+  function mergedDrops() {
     const merged = {};
-    entries.forEach(entry => { merged[entry.articleCode] = (merged[entry.articleCode] || 0) + entry.quantity; });
+    drops.forEach(drop => { merged[drop.articleCode] = (merged[drop.articleCode] || 0) + drop.quantity; });
     return Object.entries(merged).map(([articleCode, quantity]) => ({ articleCode, quantity }));
   }
 
-  const generator = {
-    generateLoot,
-    rollValueRange,
-    addArticle,
-    getDropTable,
+  return {
+    generateChestLoot,
+    generateMonsterLoot,
+    getDropTable: () => { return structuredClone(dropTable); },
+    getValueRange: () => { return { ...valueRange }; },
   };
 
-  buildTable();
-
-  return generator;
-}
+};

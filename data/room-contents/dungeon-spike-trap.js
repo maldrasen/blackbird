@@ -9,7 +9,7 @@ function describe() {
   const success = `One of the stone floor tiles is raised slightly above the others. It's probably a trap, but easy
       enough to avoid if you know it's there.`;
   const failure = `Bloodstained spikes jut upward from the floor; a reminder to be more careful in the future.`;
-  return (DungeonRequirements.checkScoutingRoll())() ? success : failure;
+  return (DungeonRequirements.scoutingSuccess())() ? success : failure;
 }
 
 RoomContents.register('dungeon-spike-trap',{
@@ -23,6 +23,6 @@ RoomContents.register('dungeon-spike-trap',{
     target: EpisodeTarget.anyInParty,
     onScoutingFailure: springTrap,
   },
-  description: () => {
-  },
+
+  description: describe,
 });

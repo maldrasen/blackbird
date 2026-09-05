@@ -5,6 +5,8 @@ function color() { return DungeonSystem.getDungeonFloor().getCurrentRoom().getCo
 function hue() { return color() === 'black' ? 'purple' : color(); }
 
 function gainMana() {
+  DungeonSystem.getDungeonState().fontUsed(DungeonSystem.getDungeonFloor().getLevel());
+
   const c = color();
   const amount = ManaSystem.deepenPool(c);
   return WeaverElements.resultBlock(`You've gained ${amount} ${c} mana!`, { classname:'gain' });

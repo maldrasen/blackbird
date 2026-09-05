@@ -13,8 +13,8 @@ Consumable.register('horse-juice',{
   ],
 
   sources: [
-    { chestGroup:'potions', rarity:Rarity.unusual },
-    { monsterGroup:'equians', rarity:Rarity.common },
+    { group:'potions', rarity:Rarity.unusual },
+    { group:'equians', rarity:Rarity.common },
   ],
 });
 
@@ -31,8 +31,8 @@ Consumable.register('goats-milk',{
   ],
 
   sources: [
-    { chestGroup:'potions', rarity:Rarity.unusual },
-    { monsterGroup:'capriens', rarity:Rarity.common },
+    { group:'potions', rarity:Rarity.unusual },
+    { group:'capriens', rarity:Rarity.common },
   ],
 });
 
@@ -50,8 +50,8 @@ Consumable.register('minotaur-milk',{
   ],
 
   sources: [
-    { chestGroup:'potions', rarity:Rarity.rare },
-    { monsterGroup:'minotaurs', rarity:Rarity.unusual },
+    { group:'potions', rarity:Rarity.rare },
+    { group:'minotaurs', rarity:Rarity.unusual },
   ],
 });
 
@@ -69,8 +69,8 @@ Consumable.register('centaur-milk',{
   ],
 
   sources: [
-    { chestGroup:'potions', rarity:Rarity.rare },
-    { monsterGroup:'centaurs', rarity:Rarity.unusual },
+    { group:'potions', rarity:Rarity.rare },
+    { group:'centaurs', rarity:Rarity.unusual },
   ],
 });
 
@@ -87,6 +87,6 @@ Consumable.register('milk-of-kindness',{
   ],
 
   sources: [
-    { chestGroup:'potions', rarity:Rarity.unusual },
+    { group:'potions', rarity:Rarity.unusual },
   ],
 });

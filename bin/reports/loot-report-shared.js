@@ -65,21 +65,25 @@ function printResults(results, table) {
   }
 }
 
-// The ceiling is rolled down to a random percentage each generation, so stub the roll at 100% to report the maximum.
-function fullValueRange(generator) {
-  Random.stubBetween(100);
-  const range = generator.rollValueRange();
-  Random.stubReset();
-  return range;
+function average(values) {
+  return values.reduce((sum,value) => sum + value, 0) / values.length;
 }
 
-function printValueRange(range) {
-  console.log(`Value ceiling: ${range.ceiling.toFixed(1)} at most, floor ${range.floor.toFixed(1)}`);
+function spread(values) {
+  return `${Math.min(...values).toFixed(1)} - ${Math.max(...values).toFixed(1)} (avg ${average(values).toFixed(1)})`;
+}
+
+// The ceiling is rolled down to a random percentage each generation, so the ranges are shown as the spread of what
+// was rolled along with the most the ceiling could ever have been.
+function printValueRanges(ranges) {
+  console.log(`Value ceiling: ${Math.max(...ranges.map(range => range.max)).toFixed(1)} at most`);
+  console.log(`Rolled ceiling: ${spread(ranges.map(range => range.ceiling))}`);
+  console.log(`Rolled floor: ${spread(ranges.map(range => range.floor))}`);
 }
 
 module.exports = {
   printDropTable,
   printResults,
-  fullValueRange,
-  printValueRange,
+  printValueRanges,
+  spread,
 };

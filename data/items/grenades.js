@@ -38,6 +38,6 @@ Consumable.register('blasto',{
   },
 
   sources: [
-    { chestGroup:'explosives', rarity:Rarity.unusual },
+    { group:'explosives', rarity:Rarity.unusual },
   ],
 });
