@@ -197,6 +197,10 @@ global.Room = function(feature, type='normal') {
     return description;
   }
 
+  function updateDescription() {
+    // TODO: A room command can update the state of the room and update the ui.
+  }
+
   function getAvailableCommands() {
     if (contents == null) { return []; }
     return RoomContents.lookup(contents).getCommands().filter(command => usedCommands.includes(command.code) === false);
@@ -277,6 +281,7 @@ global.Room = function(feature, type='normal') {
     isOverlapping: () => { return overlapping; },
     setDescription,
     getDescription,
+    updateDescription,
     getAvailableCommands,
     useCommand,
     setScoutingRoll: roll => { scoutingRoll = roll; },
