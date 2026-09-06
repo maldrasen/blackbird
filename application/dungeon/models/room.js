@@ -173,11 +173,6 @@ global.Room = function(feature, type='normal') {
     contentsOptions = options;
   }
 
-  function setDescription(text) {
-    if (description != null) { throw new Error(`A description for this room has already been set.`); }
-    description = text;
-  }
-
   // Get the description for this room. We lazy load the description if it hasn't been set yet, but once a description
   // has been set it shouldn't change.
   function getDescription() {
@@ -195,6 +190,11 @@ global.Room = function(feature, type='normal') {
       description = theme.getDescription(variety);
     }
     return description;
+  }
+
+  function updateDescription(text) {
+    description = text;
+    DungeonInterface.refreshDescription();
   }
 
   function getAvailableCommands() {
@@ -275,8 +275,8 @@ global.Room = function(feature, type='normal') {
 
     markOverlapping: () => { overlapping = true; },
     isOverlapping: () => { return overlapping; },
-    setDescription,
     getDescription,
+    updateDescription,
     getAvailableCommands,
     useCommand,
     setScoutingRoll: roll => { scoutingRoll = roll; },

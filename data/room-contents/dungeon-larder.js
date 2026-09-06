@@ -1,7 +1,7 @@
 
 function describe() {
   const descriptions = WeaverPackage('dungeon-larder');
-  descriptions.add(`A room with shelves stocked with food and bottles.`);
+  descriptions.add(`TODO: A room with shelves stocked with food and bottles.`);
   return descriptions.pick();
 }
 
