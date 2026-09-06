@@ -194,7 +194,7 @@ global.Room = function(feature, type='normal') {
 
   function updateDescription(text) {
     description = text;
-    // TODO: Update the ui when the description is changed.
+    if (Environment.viewPresent()) { DungeonControls.refreshDescription(); }
   }
 
   function getAvailableCommands() {

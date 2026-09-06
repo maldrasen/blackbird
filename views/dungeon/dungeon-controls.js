@@ -44,15 +44,14 @@ global.DungeonControls = (function() {
   // Show the description and command buttons of the room the party is currently in. Called when the floor is drawn
   // and again each time the party steps into a new room.
   function refreshRoom() {
-    const room = getCurrentRoom();
-    setDescription(room.getDescription());
-    buildCommandButtons(room);
+    refreshDescription();
+    buildCommandButtons(getCurrentRoom());
   }
 
-  function setDescription(value) {
+  function refreshDescription() {
     const element = X.first('#dungeonControls #description');
     X.empty(element);
-    element.appendChild(X.createElement(`<div class='room-description'>${value}</div>`));
+    element.appendChild(X.createElement(`<div class='room-description'>${getCurrentRoom().getDescription()}</div>`));
   }
 
   function buildCommandButtons(room) {
@@ -87,6 +86,7 @@ global.DungeonControls = (function() {
     build,
     update,
     refreshRoom,
+    refreshDescription,
   };
 
 })();
