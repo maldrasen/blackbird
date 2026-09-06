@@ -194,7 +194,7 @@ global.Room = function(feature, type='normal') {
 
   function updateDescription(text) {
     description = text;
-    if (Environment.viewPresent()) { DungeonControls.refreshDescription(); }
+    DungeonInterface.refreshDescription();
   }
 
   function getAvailableCommands() {
