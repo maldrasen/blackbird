@@ -6,6 +6,8 @@ function describe() {
 }
 
 function open() {
+  DungeonSystem.getDungeonFloor().getCurrentRoom().updateDescription(`TODO: Room with an opened treasure chest.`);
+
   return {
     text: `TODO: You open the treasure chest.`,
     loot: LootGenerator().generateChestLoot({ quality:1.5, quantity:0.5 }),
