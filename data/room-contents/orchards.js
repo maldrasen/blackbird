@@ -26,7 +26,7 @@ function describe() {
 function harvest() {
   return {
     text: `You pick some apples, stuffing them into your bag for a future snack.`,
-    loot: { articleCode:'rhysh-apple', quantity:getAppleCount() }
+    loot: [{ articleCode:'rhysh-apple', quantity:getAppleCount() }]
   }
 }
 
