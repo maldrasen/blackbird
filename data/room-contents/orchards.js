@@ -1,4 +1,8 @@
 
+function getAppleCount() {
+  return Math.ceil(DungeonSystem.getDungeonFloor().getCurrentRoom().getContentsOptions().size / 5);
+}
+
 function getSizeCategory() {
   const size = DungeonSystem.getDungeonFloor().getCurrentRoom().getContentsOptions().size;
   if (size > 25) { return 'large'; }
@@ -19,8 +23,15 @@ function describe() {
     sunlight ever shines upon them.`;
 }
 
+function harvest() {
+  return {
+    text: `You pick some apples, stuffing them into your bag for a future snack.`,
+    loot: { articleCode:'rhysh-apple', quantity:getAppleCount() }
+  }
+}
+
 RoomContents.register('orchard-empty',{
-  episode:'orchard-empty',
+  commands: [{ code:'harvest', label:'Harvest', execute:harvest }],
   description: describe,
 });
 

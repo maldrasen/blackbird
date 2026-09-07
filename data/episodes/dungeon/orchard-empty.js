@@ -1,6 +1,9 @@
 
+// TODO: The empty orchard no longer starts an event. I'd like to have another variation of the empty orchard event
+//       though in which something happens here.
+
 function getAppleCount() {
-  return  Math.ceil(DungeonSystem.getDungeonFloor().getCurrentRoom().getContentsOptions().size / 5);
+  return Math.ceil(DungeonSystem.getDungeonFloor().getCurrentRoom().getContentsOptions().size / 5);
 }
 
 function harvestApples() {
