@@ -3,11 +3,7 @@ global.DungeonRequirements = (function() {
   function currentRoom() { return DungeonSystem.getDungeonFloor().getCurrentRoom(); }
   function roomSizeAtMost(size) { return currentRoom().getSize() <= size; }
   function roomSizeAtLeast(size) { return currentRoom().getSize() >= size; }
-
-  function roomSizeBetween(min, max) {
-    const room = currentRoom();
-    return roomSizeAtLeast(room,min) && roomSizeAtMost(room,max);
-  }
+  function roomSizeBetween(min, max) { return roomSizeAtLeast(min) && roomSizeAtMost(max); }
 
   function checkScoutingRoll() {
     return DungeonSystem.getDungeonFloor().getCurrentRoom().checkScoutingRoll();
