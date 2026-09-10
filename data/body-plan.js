@@ -8,10 +8,19 @@ global.BodyPlan = {
     legs:  25,
   },
 
+  beast: {
+    body: 40,
+    legs: 20,
+    feet: 10,
+    head: 10,
+    tail: 10,
+  },
+
   hopper: {
-    chest: 30,
-    head: 30,
+    body: 50,
     legs: 30,
+    head: 20,
+    tail: 10,
   },
 
   insect: {
@@ -25,6 +34,7 @@ global.BodyPlan = {
     head: 10,
     body: 60,
     legs: 30,
+    tail: 20,
   },
 
   worm: {
