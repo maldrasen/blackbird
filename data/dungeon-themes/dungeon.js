@@ -39,6 +39,7 @@ DungeonTheme.register('dungeon',{
   getFloorTexture: () => { return DungeonFloorGrid; },
 
   cohorts: [
+    'claws',
     'skitterfangs',
     'daggermaws',
     'roaches',
