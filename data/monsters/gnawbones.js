@@ -1,12 +1,10 @@
-BaseMonster.register('lesser-daggermaw',{
-  name: 'Lesser Daggermaw',
-  description: `Daggermaws are large tunneling, worm like creatures. They don't seem to have a front end or a back, as 
-    both end in wide circular arrays of teeth.`,
-  bodyPlan: 'worm',
-  type: 'creature',
-  level: 5,
-
-  healthFactor: 1.5,
+BaseMonster.register('gnawbones',{
+  name: 'Gnawbones',
+  description: `The gnawbones are squat furry scavengers. They serve an important function, keeping the dungeon free 
+    of corpses, but they don't like being disturbed.`,
+  bodyPlan: 'beast',
+  type: 'critter',
+  level: 2,
 
   prioritizedAbilities: {
     bite: { code:'beast-bite', priority:50, damage:[25,50], speed:1500, essence:50 },
