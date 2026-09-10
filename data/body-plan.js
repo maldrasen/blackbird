@@ -30,6 +30,8 @@ global.BodyPlan = {
   worm: {
     head: 20,
     body: 80,
-  }
+  },
+
+  claw: { claw:100 },
 
 }
