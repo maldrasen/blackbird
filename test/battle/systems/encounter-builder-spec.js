@@ -115,14 +115,14 @@ describe("EncounterBuilder", function() {
 
     it("never puts more than three base types in a group", function() {
       for (let i=0; i<20; i++) {
-        const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('deepdark-kobolds'), 2000);
+        const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('kobolds-deepdarks'), 2000);
         expect(new Set(monsters).size).to.be.at.most(BattleConstants.maxEncounterTypes);
       }
     });
 
     it("reserves anchor room for the minimum group so the total stays near the target", function() {
       for (let i=0; i<30; i++) {
-        const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('deepdark-kobolds'), 190);
+        const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('kobolds-deepdarks'), 190);
         const total = monsters.reduce((sum,code) => sum + EssenceData[code].average, 0);
         expect(total, `[${monsters}]`).to.be.at.most(190 * 1.25);
       }
@@ -130,7 +130,7 @@ describe("EncounterBuilder", function() {
 
     it("keeps the essence spread of the group within the ratio", function() {
       for (let i=0; i<20; i++) {
-        const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('deepdark-kobolds'), 600);
+        const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('kobolds-deepdarks'), 600);
         const averages = [...new Set(monsters)].map(code => EssenceData[code].average);
         expect(Math.max(...averages)).to.be.at.most(Math.min(...averages) * BattleConstants.essenceSpreadRatio);
       }
@@ -189,7 +189,7 @@ describe("EncounterBuilder", function() {
 
     it("never leaves a back row monster unguarded or the front center empty", function() {
       for (let i=0; i<20; i++) {
-        const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('deepdark-kobolds'), 600);
+        const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('kobolds-deepdarks'), 600);
         const formation = EncounterBuilder.arrangeFormation(monsters);
         expect(formation[0][2], `front center for [${monsters}]`).to.not.be.null;
         formation[1].forEach((code,position) => {
@@ -228,7 +228,7 @@ describe("EncounterBuilder", function() {
       BattleFixtures.prepareForBattle();
 
       for (let i=0; i<3; i++) {
-        BattleSystem.startBattle({ cohorts:['deepdark-kobolds'], essenceTarget:400, ambushState:'normal' });
+        BattleSystem.startBattle({ cohorts:['kobolds-deepdarks'], essenceTarget:400, ambushState:'normal' });
 
         const state = BattleSystem.getState();
         state.getActiveMonsters().forEach(id => {

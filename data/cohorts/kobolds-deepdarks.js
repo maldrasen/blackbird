@@ -9,7 +9,7 @@ ambush.add(`You walk into a seemingly empty room, when suddenly black scaled kob
 const surprise = WeaverPackage('cohort.deepdarks.MA');
 surprise.add(`You come across a group of sleeping kobolds. The lone kobold on watch doesn't notice you, giving you the opportunity to make the first attack.`);
 
-Cohort.register('deepdark-kobolds',{
+Cohort.register('kobolds-deepdarks',{
   minimum: 3,
   monsters:[
     'deepdark-kobold',

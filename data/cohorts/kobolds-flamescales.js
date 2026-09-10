@@ -9,7 +9,7 @@ ambush.add(`You walk into a seemingly empty room, when suddenly red scaled kobol
 const surprise = WeaverPackage('cohort.flamescales.MA');
 surprise.add(`You come across a group of sleeping kobolds. The lone kobold on watch doesn't notice you, giving you the opportunity to make the first attack.`);
 
-Cohort.register('flamescale-kobolds',{
+Cohort.register('kobolds-flamescales',{
   minimum: 3,
   monsters:[
     'flamescale-kobold',
