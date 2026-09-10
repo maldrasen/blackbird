@@ -44,7 +44,7 @@ describe("EssenceSystem", function() {
     // skitterfang's bite entry weighs its fifteen essence over the record's default of zero. Its frailty (health 0.25)
     // and quickness (speed 0.75) mostly cancel out, the squeezed factors shaving the raw 91 down to 85.
     it("values a beast off the abilities on its base monster alone", function() {
-      expect(EssenceSystem.monsterEssenceValue(buildMonster('rabid-skitterfang', attributes))).to.equal(85);
+      expect(EssenceSystem.monsterEssenceValue(buildMonster('rabid-skitterfang', attributes))).to.equal(82);
     });
 
     // A factory built daggermaw can't be pinned to a number here, as its rolled attributes swing the value around.

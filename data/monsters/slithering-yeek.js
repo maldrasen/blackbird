@@ -4,7 +4,7 @@ BaseMonster.register('slithering-yeek',{
     that it's coming to get you.`,
   bodyPlan: 'yeek',
   type: 'critter',
-  level: 3,
+  level: 2,
 
   healthFactor: 0.5,
 

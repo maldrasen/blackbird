@@ -4,7 +4,7 @@ BaseMonster.register('emerald-yeek',{
     venomous, and poisonous.`,
   bodyPlan: 'yeek',
   type: 'critter',
-  level: 5,
+  level: 6,
 
   healthFactor: 0.5,
 

@@ -4,7 +4,7 @@ BaseMonster.register('lesser-daggermaw',{
     both end in wide circular arrays of teeth.`,
   bodyPlan: 'worm',
   type: 'creature',
-  level: 4,
+  level: 5,
 
   healthFactor: 1.5,
 
