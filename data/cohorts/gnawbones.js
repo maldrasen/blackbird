@@ -9,7 +9,7 @@ const surprise = WeaverPackage('cohort.gnawbones.MA');
 surprise.add(`TODO: You surprise gnawbones.`);
 
 Cohort.register('gnawbones',{
-  minimum: 3,
+  minimum: 1,
   monsters:[
     'gnawbones'
   ],

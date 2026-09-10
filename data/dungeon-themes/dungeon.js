@@ -39,13 +39,14 @@ DungeonTheme.register('dungeon',{
   getFloorTexture: () => { return DungeonFloorGrid; },
 
   cohorts: [
-    'claws',
-    'skitterfangs',
-    'daggermaws',
-    'roaches',
-    'yeeks',
-    'deepdark-kobolds',
-    'flamescale-kobolds',
+    // 'claws',
+    // 'skitterfangs',
+    // 'daggermaws',
+    'gnawbones',
+    // 'roaches',
+    // 'yeeks',
+    // 'deepdark-kobolds',
+    // 'flamescale-kobolds',
   ],
 
   descriptions: {

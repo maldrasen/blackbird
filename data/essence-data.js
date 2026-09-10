@@ -7,7 +7,7 @@ global.EssenceData = {
   'emerald-yeek': { level:6, min:214, max:351, average:266 },
   'flamescale-kobold': { level:6, min:69, max:113, average:88 },
   'flamescale-screamer': { level:8, min:82, max:146, average:110 },
-  'gnawbones': { level:2, min:77, max:135, average:107 },
+  'gnawbones': { level:2, min:54, max:94, average:75 },
   'kobold-dick-puncher': { level:5, min:204, max:324, average:250 },
   'kobold-runt': { level:1, min:41, max:67, average:55 },
   'kobold-sneak-slut': { level:3, min:76, max:131, average:102 },
