@@ -4,7 +4,7 @@ global.EssenceSystem = (function() {
   const attributePowerExponent = 1.5;
   const essenceScale = 0.12;
   const abilityScale = 0.02;
-  const healthEssenceWeight = 0.25;
+  const healthEssenceWeight = 0.75;
   const speedEssenceWeight = 0.5;
 
   // Level Knobs
