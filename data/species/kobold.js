@@ -28,7 +28,6 @@ Species.register(SpeciesCode.kobold, {
   },
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby,   SpeciesCode.kobold),
     female: ArchetypeDistribution(Gender.female, SpeciesCode.kobold),
     futa:   ArchetypeDistribution(Gender.futa,   SpeciesCode.kobold),
     male:   ArchetypeDistribution(Gender.male,   SpeciesCode.kobold),

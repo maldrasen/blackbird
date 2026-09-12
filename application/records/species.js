@@ -20,7 +20,6 @@ global.Species = (function() {
         case Gender.male: return maleHeight;
         case Gender.female: return femaleHeight;
         case Gender.futa: return futaHeight;
-        case Gender.enby: return futaHeight;
       }
     }
 

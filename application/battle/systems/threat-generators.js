@@ -50,7 +50,7 @@ global.ThreatGenerators = (function() {
 
   // Some monsters have a gender preference for the targets they pick. Maybe they want to kill the men off so they can
   // kidnap the women. Maybe they want to kill the women so they can kidnap the men. Who knows? For these functions a
-  // futa is both male and female while an enby is neither male nor female.
+  // futa is both male and female.
   function killMen(threatTable, weight) {
     BattleSystem.getState().getActiveCharacters().forEach(id => {
       switch (ActorComponent.lookup(id).gender) {

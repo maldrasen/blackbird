@@ -109,12 +109,6 @@ global.ConsentResult = (characterId, target=null) => {
       maleFactor = TrainingMath.personalityFactorValue(preferences['androphilic']);
       femaleFactor = TrainingMath.personalityFactorValue(preferences['gynophilic']);
     }
-    if (gender === Gender.enby) {
-      maleFactor = TrainingMath.applyFactorScale(
-        TrainingMath.personalityFactorValue(preferences['androphilic']),1.5);
-      femaleFactor = TrainingMath.applyFactorScale(
-        TrainingMath.personalityFactorValue(preferences['gynophilic']),1.5);
-    }
 
     maleFactor = TrainingMath.applyFactorScale(maleFactor, factor.scale || 2);
     femaleFactor = TrainingMath.applyFactorScale(femaleFactor, factor.scale || 2);

@@ -14,7 +14,6 @@ Species.register(SpeciesCode.human, {
   resistances: {},
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby),
     female: ArchetypeDistribution(Gender.female),
     futa:   ArchetypeDistribution(Gender.futa),
     male:   ArchetypeDistribution(Gender.male),

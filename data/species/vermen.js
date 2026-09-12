@@ -1,6 +1,6 @@
 Species.register(SpeciesCode.vermen, {
   name: 'Vermen',
-  genderRatio: { female:40, futa:20, male:40, enby:10 },
+  genderRatio: { female:40, futa:20, male:40 },
 
   attributes: {
     strength: 'F',
@@ -25,7 +25,6 @@ Species.register(SpeciesCode.vermen, {
   },
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby,   SpeciesCode.vermen),
     female: ArchetypeDistribution(Gender.female, SpeciesCode.vermen),
     futa:   ArchetypeDistribution(Gender.futa,   SpeciesCode.vermen),
     male:   ArchetypeDistribution(Gender.male,   SpeciesCode.vermen),

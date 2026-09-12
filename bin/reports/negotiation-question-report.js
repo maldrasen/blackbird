@@ -9,7 +9,7 @@
 require('../run-headless.js');
 
 const samples = Number(process.argv[2]) || 100;
-const playerGenders = [Gender.male, Gender.female, Gender.futa, Gender.enby];
+const playerGenders = [Gender.male, Gender.female, Gender.futa];
 
 function poolCount(context) {
   return NegotiationQuestion.getAllCodes().filter(code => {
@@ -60,7 +60,7 @@ function formatRange(range) {
   return range.min === range.max ? `${range.min}` : `${range.min}-${range.max}`;
 }
 
-const genderOrder = [Gender.male, Gender.female, Gender.futa, Gender.enby];
+const genderOrder = [Gender.male, Gender.female, Gender.futa];
 const rows = [];
 
 monsterCodes.forEach(monsterCode => {

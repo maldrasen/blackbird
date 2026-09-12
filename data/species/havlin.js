@@ -1,6 +1,6 @@
 Species.register(SpeciesCode.havlin, {
   name: 'Havlin',
-  genderRatio: { female:40, futa:20, male:40, enby:5 },
+  genderRatio: { female:40, futa:20, male:40 },
 
   attributes: {
     strength: 'D',
@@ -24,7 +24,6 @@ Species.register(SpeciesCode.havlin, {
   },
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby,   SpeciesCode.havlin),
     female: ArchetypeDistribution(Gender.female, SpeciesCode.havlin),
     futa:   ArchetypeDistribution(Gender.futa,   SpeciesCode.havlin),
     male:   ArchetypeDistribution(Gender.male,   SpeciesCode.havlin),
