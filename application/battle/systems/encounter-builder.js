@@ -1,13 +1,13 @@
 global.EncounterBuilder = (function() {
 
   // The cohort is used by the battle system to display the battle start text.
-  // TODO: Save this in the state instead.
   function build(options) {
     const cohort = chooseCohort(options.cohorts, options.essenceTarget);
     const monsters = selectMonsters(cohort, options.essenceTarget);
     const formation = arrangeFormation(monsters);
+
     placeFormation(formation, cohort.getFactoryOptions());
-    return cohort;
+    setStartText(cohort.getStartText(BattleSystem.getState().getAmbushState()));
   }
 
   // Choose a cohort of monsters that are between the minimum and maximum essence targets.
@@ -105,6 +105,10 @@ global.EncounterBuilder = (function() {
         }
       }
     }
+  }
+
+  function setStartText(text) {
+    BattleSystem.getState().setStartText(text);
   }
 
   // ========================
@@ -221,7 +225,7 @@ global.EncounterBuilder = (function() {
   function buildFromRecord(code) {
     const encounter = Encounter.lookup(code);
     buildFromRecordData(encounter.getFormation(), encounter.getMonsters());
-    return encounter;
+    setStartText(encounter.getStartText(BattleSystem.getState().getAmbushState()));
   }
 
   // Build an encounter given a formation and a map of monster definitions. This is the same shape the encounter
