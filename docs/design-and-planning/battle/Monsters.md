@@ -16,9 +16,8 @@ Gaunts looks like they're dressed in robes or cloaks, with deep hoods to obscure
 ### Other
 Going to need some other small, unusual creatures to fill in the ranks. The names we give these monsters need to be descriptive enough that it's possible to understand vaguely what a monster is without reading a long description, but I also want to avoid overused monsters or giant rats and shit.
 
-- Revolting Horsecockroach
+
 - Queen (something) and Consort (somethings)
-- Gnawbones
 - Creeping Coins
 - Bandersnatch (with extra snatch)
 - (something) Skulk or Skulking (something)

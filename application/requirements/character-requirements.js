@@ -44,6 +44,18 @@ global.CharacterRequirements = (function() {
     return character.hasBreasts() && character.areBreastsExposed();
   }
 
+  // This predicate is a negation of visibleBreasts(). As such it checks two conditions, that the character has breasts
+  // and that they are not exposed. This function throws an error if the checked character has no breasts because this
+  // could lead to unexpected results. A bare chested man for instance would be false here, which while logically true,
+  // is probably not the intended use.
+  function breastsAreCovered(context, key) {
+    const character = Character(context[key]);
+    if (character.hasBreasts() === false) {
+      throw new Error(`Check that breasts exist with hasBreasts() before calling this.`);
+    }
+    return character.areBreastsExposed() === false;
+  }
+
   function minimumBreastSize(context, key, size) {
     const character = Character(context[key]);
     return character.hasBreasts() && character.breastsAreAtLeast(size);
@@ -105,16 +117,8 @@ global.CharacterRequirements = (function() {
 
   // === Equipment ===
 
-  function chestIsCovered(context, key) {
-    return Character(context[key]).isEquipped(EquipmentSlot.chest);
-  }
-
   function legsAreCovered(context, key) {
     return Character(context[key]).isEquipped(EquipmentSlot.legs);
-  }
-
-  function isTopless(context, key) {
-    return Character(context[key]).isEquipped(EquipmentSlot.chest) === false;
   }
 
   // === Sexual Preferences and Consent Calculations ===
@@ -162,9 +166,8 @@ global.CharacterRequirements = (function() {
     isTallerThan: (first, second) =>         { return (context) => { return isTallerThan(context, first, second); }},
     minimumStrength: (key, min) =>           { return (context) => { return minimumStrength(context, key, min); }},
     minimumIntelligence: (key, min) =>       { return (context) => { return minimumIntelligence(context, key, min); }},
-    chestIsCovered: key =>                   { return (context) => { return chestIsCovered(context, key); }},
+    breastsAreCovered: key =>                { return (context) => { return breastsAreCovered(context, key); }},
     legsAreCovered: key =>                   { return (context) => { return legsAreCovered(context, key); }},
-    isTopless: key =>                        { return (context) => { return isTopless(context, key); }},
     wouldConsentTo: (key, code, min) =>      { return (context) => { return wouldConsentTo(context, key, code, min); }},
     hasSexualPreference: (key, code, min) => { return (context) => { return hasSexualPreference(context, key, code, min); }},
     isStraight: key =>                       { return (context) => { return isStraight(context, key); }},

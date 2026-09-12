@@ -40,12 +40,13 @@ DungeonTheme.register('dungeon',{
 
   cohorts: [
     'claws',
-    'skitterfangs',
     'daggermaws',
+    'gnawbones',
     'roaches',
+    'skitterfangs',
     'yeeks',
-    'deepdark-kobolds',
-    'flamescale-kobolds',
+    'kobolds-deepdarks',
+    'kobolds-flamescales',
   ],
 
   descriptions: {

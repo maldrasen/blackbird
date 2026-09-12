@@ -109,7 +109,7 @@ global.CharacterEquipper = function(id) {
     });
   }
 
-  // === Weapons ===================================================================================================
+  // === Weapons =======================================================================================================
 
   // A preset primary weapon means the loadout is intentional, so we leave both hands alone. Otherwise we pick a
   // primary and, unless it's two-handed or the off-hand is already filled, an appropriate secondary.
@@ -167,7 +167,7 @@ global.CharacterEquipper = function(id) {
     return DexterityWeaponTypes.includes(weaponType) || (attributesComponent.dexterity > attributesComponent.strength);
   }
 
-  // === Armor =====================================================================================================
+  // === Armor =========================================================================================================
 
   function equipArmor(budget) {
     ArmorSlots.forEach(slot => {
@@ -179,7 +179,7 @@ global.CharacterEquipper = function(id) {
     });
   }
 
-  // === Selection =================================================================================================
+  // === Selection =====================================================================================================
 
   function weaponCandidates(type) {
     return BaseWeapon.getAllCodes().
@@ -208,7 +208,7 @@ global.CharacterEquipper = function(id) {
     return Random.from(affordable.filter(item => item.value === bestValue).map(item => item.code));
   }
 
-  // === Giving ====================================================================================================
+  // === Giving ========================================================================================================
 
   function isFilled(slot) { return equipmentManager.getSlot(slot) != null; }
   function giveWeapon(code, slot, options={}) { give(WeaponFactory.build(code, options), slot); }
@@ -220,9 +220,31 @@ global.CharacterEquipper = function(id) {
     equipment[slot] = itemId;
   }
 
+  // === Skills ========================================================================================================
+
+  // If this character has been equipped with a weapon they have no skill in (which happens when the player character
+  // is randomly given a weapon) we want to give them the minimum starting skill to use that weapon. Otherwise, they'll
+  // just miss far too often.
+  function assignSkills() {
+    const primaryId = equipmentManager.getSlot(EquipmentSlot.primary);
+    const secondaryId = equipmentManager.getSlot(EquipmentSlot.secondary);
+
+    if (primaryId) { ensureMinimumSkill(Weapon(primaryId).getSkill()) }
+    if (secondaryId) { ensureMinimumSkill(Weapon(secondaryId).getSkill()) }
+  }
+
+  function ensureMinimumSkill(code) {
+    const skills = SkillsComponent.lookup(id);
+    if (skills[code]<minimumWeaponSkill) {
+      skills[code] = minimumWeaponSkill + Random.roll(6);
+      SkillsComponent.update(id,skills);
+    }
+  }
+
   return {
     equip,
     equipLoadout,
+    assignSkills,
   };
 
 }

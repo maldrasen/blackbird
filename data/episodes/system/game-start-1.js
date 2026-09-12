@@ -267,7 +267,11 @@ function finishCharacterCreation() {
   }
 
   EpisodeQueue.seed(EpisodeBundles.defaultStart);
-  CharacterEquipper(playerId).equip(Random.between(500,600));
+
+  const equipper = CharacterEquipper(playerId)
+  equipper.equip(Random.between(500,600));
+  equipper.assignSkills();
+
   GameSystem.setGameMode(GameMode.location);
 }
 

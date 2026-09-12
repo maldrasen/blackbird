@@ -5,15 +5,12 @@ global.BattleSystem = (function() {
   function startBattle(data) {
     state = BattleState(data);
 
-    const source = buildEncounter(data);
+    buildEncounter(data);
     BattleInitializer.rollReactionTimes();
     BattleInitializer.populateThreatTables();
     BattleInitializer.rollInitialCooldowns();
 
     state.setAmbushState(data.ambushState || BattleInitializer.rollAmbush());
-
-    // The source will be null when the encounter is built from a monster or record data, which the specs will often do.
-    if (source) { state.setStartText(source.getStartText(state.getAmbushState())); }
   }
 
   function buildEncounter(data) {

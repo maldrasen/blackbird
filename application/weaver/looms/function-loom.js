@@ -41,7 +41,7 @@ global.FunctionLoom = (function() {
     const owner = `{${argumentList[0]}:${possessive}}`;
 
     if (location == null) { throw new Error(`The context has no hitLocation.`); }
-    if (['abdomen','body','thorax'].includes(location)) { return `${owner} ${location}`; }
+    if (['abdomen','body','tail','thorax'].includes(location)) { return `${owner} ${location}`; }
     if (location === 'claw') { return `${owner} hand`; }
     if (location === EquipmentSlot.head) { return `${owner} ${Random.from(['head','face','neck'])}`; }
     if (location === EquipmentSlot.chest) { return chestHitLocation(id, owner, argumentList[0]); }

@@ -9,6 +9,7 @@ const pHugeCock = CharacterRequirements.minimumCockSize('P', 'huge');
 const tHasCock = CharacterRequirements.hasCock('T');
 const tVisibleCock = CharacterRequirements.visibleCock('T');
 const tVisibleAnus = CharacterRequirements.visibleAnus('T');
+const tHasBreasts = CharacterRequirements.hasBreasts('T');
 const tBigBreasts = CharacterRequirements.minimumBreastSize('T', 'big');
 const tHugeBreasts = CharacterRequirements.minimumBreastSize('T', 'huge');
 const tBreastsVisible = CharacterRequirements.visibleBreasts('T');
@@ -19,7 +20,7 @@ const tConsentsAnal = CharacterRequirements.wouldConsentTo('T', 'fuck-anus', Con
 const tAnalSlut = CharacterRequirements.hasSexualPreference('T', 'anal-slut', 30);
 const tAnusEmpty = CharacterRequirements.isAnusEmpty('T');
 const tCockLover = CharacterRequirements.hasSexualPreference('T', 'cock-lover', 20);
-const tChestEquipped = CharacterRequirements.chestIsCovered('T');
+const tCoveredBreasts = CharacterRequirements.breastsAreCovered('T');
 
 const eager = WeaverPackage('bimbo.propose-training.eager');
 const willing = WeaverPackage('bimbo.propose-training.willing');
@@ -82,7 +83,7 @@ willing.addPart('motion', `{T:name} tilts {T:his} head, {T:his} round ass shifti
 willing.addPart('motion', `{T:name} absently plays with a strand of {T:his} long {T:body.hairColor} hair.`);
 willing.addPart('motion', `{T:name} grins and twirls a strand of {T:body.hairColor} hair around {T:his} finger.`);
 willing.addPart('motion', `The bimbo nods slowly, {T:his} vacant eyes glazing over as {T:he} adjusts {T:his} top, "accidentally" exposing one of {T:his} {T:breasts:thickNipples}.`,
-  [tChestEquipped]);
+  [tHasBreasts, tCoveredBreasts]);
 
 willing.addPart('dialogue', `Hehe, okay {T:niceName}. I love feeling all filled up and stuff.`);
 willing.addPart('dialogue', `Umm, sure! That sounds fun.`);
