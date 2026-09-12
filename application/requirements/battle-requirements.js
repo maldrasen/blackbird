@@ -12,6 +12,7 @@ global.BattleRequirements = (function() {
   return {
     actingIsMonster: () =>         { return context => { return BattleSystem.getRound().isActingMonster(); }},
     actingIsCharacter: () =>       { return context => { return BattleSystem.getRound().isActingCharacter(); }},
+    against: x =>                  { return context => { return activeMonsterCount() === x; }},
     againstSingle: () =>           { return context => { return activeMonsterCount() === 1; }},
     againstMultiple: () =>         { return context => { return activeMonsterCount() > 1; }},
     againstAtLeast: x =>           { return context => { return activeMonsterCount() >= x; }},
