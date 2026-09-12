@@ -5,6 +5,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 ## Priority 1
 
 - [211] Calculate essence for spells `5pt` — [211-calculate-essence-for-spells.md](211-calculate-essence-for-spells.md)
+- [218] Calculate essence for abilities `5pt` — [218-calculate-essence-for-abilities.md](218-calculate-essence-for-abilities.md)
 
 ## Priority 2
 
