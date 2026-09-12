@@ -83,11 +83,27 @@ global.PlayerFactory = (function() {
       InventoryComponent.create(playerId);
       ExperienceComponent.create(playerId);
 
+      adjustStartingAttributes(playerId);
+
       return playerId;
     }
     finally {
       CharacterFactory.endBuild();
     }
+  }
+
+  // The player character starts with unnaturally high starting attributes. A +5 bonus in every attribute essentially
+  // makes the player character level 6, or 8 because of the game start bonuses. Though this is a rather large bonus
+  // at the start of the game, it becomes less important the more they level. The difference between 10 and 15 is much
+  // larger than the difference between 100 and 105.
+  function adjustStartingAttributes(id) {
+    const attributes = AttributesComponent.lookup(id);
+    attributes.strength += 5;
+    attributes.dexterity += 5;
+    attributes.vitality += 5;
+    attributes.intelligence += 5;
+    attributes.beauty += 5;
+    AttributesComponent.update(id, attributes);
   }
 
   return { build };

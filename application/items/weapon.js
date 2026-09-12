@@ -1,6 +1,7 @@
 global.Weapon = function(id) {
 
   function getComponent() { return WeaponComponent.lookup(id); }
+  function getBaseWeapon() { return BaseWeapon.lookup(getComponent().base); }
 
   function getName() {
     const component = getComponent();
@@ -33,7 +34,8 @@ global.Weapon = function(id) {
 
   return {
     getId: () => { return id; },
-    getBaseWeapon: () => { return BaseWeapon.lookup(getComponent().base); },
+    getBaseWeapon,
+    getSkill: () => { return getBaseWeapon().getSkill() },
     getName,
     getIcon,
     getNameType,
