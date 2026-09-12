@@ -31,6 +31,34 @@ describe("PhysicalAttackRoll", function() {
       const attackRoll = rollAgainstMonster(state, attacker);
       expect(attackRoll.getRollMode()).to.equal(RollMode.disadvantage);
     });
+
+    it("rolls with advantage while poised", function() {
+      const state = startBattle();
+      const attacker = state.getEntityAtPosition('P',1,2);
+      BattleSystem.addStatus(attacker, 'poised', { count:1 });
+
+      const attackRoll = rollAgainstMonster(state, attacker);
+      expect(attackRoll.getRollMode()).to.equal(RollMode.advantage);
+    });
+
+    it("rolls with disadvantage while off balance", function() {
+      const state = startBattle();
+      const attacker = state.getEntityAtPosition('P',1,2);
+      BattleSystem.addStatus(attacker, 'off-balance', { count:1 });
+
+      const attackRoll = rollAgainstMonster(state, attacker);
+      expect(attackRoll.getRollMode()).to.equal(RollMode.disadvantage);
+    });
+
+    it("cancels poise's advantage while blinded", function() {
+      const state = startBattle();
+      const attacker = state.getEntityAtPosition('P',1,2);
+      BattleSystem.addStatus(attacker, 'poised', { count:1 });
+      BattleSystem.addStatus(attacker, 'blind', { duration:1000 });
+
+      const attackRoll = rollAgainstMonster(state, attacker);
+      expect(attackRoll.getRollMode()).to.equal(RollMode.normal);
+    });
   });
 
 });

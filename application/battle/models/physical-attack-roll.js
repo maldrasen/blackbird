@@ -41,6 +41,19 @@ global.PhysicalAttackRoll = function(attacker, target) {
     return (weapon != null) ? weapon.getTextKey() : baseWeapon.getTextKey();
   }
 
+  function getRollMode() {
+    const statusEffects = StatusEffects(attacker);
+    const poised = statusEffects.has('poised');
+    const blind = statusEffects.has('blind');
+    const offBalance = statusEffects.has('off-balance');
+
+    if (poised && blind) { return RollMode.normal; }
+    if (poised) { return RollMode.advantage; }
+    if (blind || offBalance) { return RollMode.disadvantage; }
+
+    return RollMode.normal;
+  }
+
   // TODO: We'll also need to take weapon enchantments that add to the accuracy of the weapon into account as well
   //       which we can get from attack.weapon if the attack is using a real weapon.
 
@@ -48,9 +61,7 @@ global.PhysicalAttackRoll = function(attacker, target) {
     if (baseWeapon == null) { throw new Error(`A PhysicalAttackRoll must have a base weapon. Call setWeaponData() before roll().`); }
     if (hitLocation == null) { hitLocation = BattleHelper.randomHitLocation(target); }
 
-    const mode = StatusEffects(attacker).has('blind') ? RollMode.disadvantage : RollMode.normal;
-
-    check = SkillCheck(attacker, baseWeapon.getSkill(), mode);
+    check = SkillCheck(attacker, baseWeapon.getSkill(), getRollMode());
     finalValue = Math.ceil(check.value);
 
     Console.log(`Attack Roll [${attacker}]`,{ system:'BattleSystem', level:3, data:{ check, finalValue }});
