@@ -14,7 +14,7 @@ Resistance to a damage type does double duty against the effects it covers: it r
 - *Silence* Can't cast spells or talk.
 - *Slow* Actions take more time. Slow should have different strengths.
 ### Psychic (purple)
-- *Off Balance* Target briefly stumbles, becoming easier to hit until their next turn.
+- *Off Balance* The character has stumbled or overextended themself. They roll with disadvantage on both defend and attack rolls and do half damage. A fumbled attack leaves the attacker off balance. Being off balance is the opposite of being poised, and applying either removes the other.
 - *Delirium* Targets for actions will be randomized. Can choose not to act.
 - *Enrage* Will always attack the "enrage target" that's set when the status is applied using normal attacks and physical abilities. Physical attack damage increased. Can be combined with hallucinating to attack anyone. Tank characters can enrage foes into attacking them.
 - *Enthrall* Their attention is entirely focused on watching a character. They can't take actions or dodge. Damage will remove the effect. Arousal builds every second. 
@@ -34,7 +34,10 @@ Resistance to a damage type does double duty against the effects it covers: it r
 - *Intangible* Can only be effected by magic and magic weapons.
 - *Regain* Health is restored every second.
 - *Hidden* The character is in stealth. 
-- *Poised* The character is well prepared to defend themself. 
+- *Poised* The character is well prepared. They roll with advantage on both defend and attack rolls and do 50% extra damage, which applies to every strike of a multi-strike attack. Defending makes a character poised, as does a critical defend roll. Blind cancels the advantage on either roll. Some special abilities may require the character to be poised.
+
+# Turn Count Effects
+Poised, off balance and stun last for a number of the affected character's turns. A turn is counted at the end of the character's own round rather than the start, so the effect is still in place when they choose and execute their command: a stunned character actually loses the turn, and a poised one attacks with the bonus. An effect the character picked up during their own round (defend makes them poised, a fumble leaves them off balance) doesn't have that round counted against it, so it lasts through their next turn. A defend then attack strategy is the intended use of poised, and defending is the way out of being off balance.
 
 # Binding (Work in Progress)
 Binding will be an alternate way of capturing monsters. Negotiation will be the preferred way and a monster who is negotiated with will have better starting feelings. Some monsters can't be negotiated with though.
