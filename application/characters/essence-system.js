@@ -77,13 +77,21 @@ global.EssenceSystem = (function() {
   // more than the same damage spread over several casts. A status effect is worth its type's essence for the share of
   // the fight it keeps a target covered, discounted by the chance it lands at all.
 
-  function spellEssence({ spell, powerLevel=1, cooldown=0 }) {
+  function spellEssence(entry) {
+    return spellEssenceBreakdown(entry).total;
+  }
+
+  // The breakdown is for the report, so the knobs can be tuned with every term in view.
+  function spellEssenceBreakdown({ spell, powerLevel=1, cooldown=0 }) {
     const record = Spell.lookup(spell);
     const effects = record.getEffects(powerLevel);
     const period = Math.max(record.getCastingTime(powerLevel) + BattleConstants.spellReleaseTime, cooldown || 0);
     const targets = spellTargets(record);
+    const spike = EffectMath.averageDamage(effects);
+    const damage = damageEssence(effects, targets, period);
+    const status = statusEssence(effects, targets, period);
 
-    return damageEssence(effects, targets, period) + statusEssence(effects, targets, period);
+    return { period, targets, spike, damage, status, total:damage + status };
   }
 
   function damageEssence(effects, targets, period) {
@@ -150,6 +158,7 @@ global.EssenceSystem = (function() {
   return {
     monsterEssenceValue,
     spellEssence,
+    spellEssenceBreakdown,
     canLevelUp,
     essenceToLevel,
   };
