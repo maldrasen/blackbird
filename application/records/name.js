@@ -43,8 +43,8 @@ global.Name = (function() {
     }
   }
 
-  // TODO: Dedupe this arrays with a set as titles will appear in both lists.
-  function getFutaTitles() { return [...nameData.title.male, ...nameData.title.female]; }
+  // Titles registered with no gender appear in both lists, so the set drops the duplicates.
+  function getFutaTitles() { return [...new Set([...nameData.title.male, ...nameData.title.female])]; }
 
   function getRandomTitle(genderCode) {
     switch (genderCode) {
