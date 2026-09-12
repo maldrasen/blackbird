@@ -1,5 +1,27 @@
 describe("EssenceSystem", function() {
 
+  describe("effectsEssenceBreakdown()", function() {
+    it("prices a damaging status effect's expected damage as one burst, discounted by its land chance", function() {
+      // Poison at strength 10 lands 53.3% of the time and ticks 2.14 times, so 1d6+2 does 11.78 expected damage.
+      const poison = Effect.poison({ strength:10, damage:{ x:1, d:6, p:2 } });
+      const breakdown = EssenceSystem.effectsEssenceBreakdown({ effects:[poison], targets:1, period:2500 });
+
+      expect(breakdown.spike).to.equal(0);
+      expect(breakdown.damage).to.equal(0);
+      expect(breakdown.status).to.be.closeTo(1.3331, 0.0001);
+      expect(breakdown.total).to.equal(breakdown.status);
+    });
+
+    it("scales every term by the target count", function() {
+      const effects = [Effect.poison({ strength:10, damage:{ x:1, d:6, p:2 } }), Effect.damage(DamageType.pierce, { x:1, d:4 })];
+      const breakdown = EssenceSystem.effectsEssenceBreakdown({ effects, targets:2, period:2500 });
+
+      expect(breakdown.spike).to.equal(2.5);
+      expect(breakdown.damage).to.be.closeTo(0.225, 0.0001);
+      expect(breakdown.status).to.be.closeTo(2.6661, 0.0001);
+    });
+  });
+
   describe("spellEssence()", function() {
     it("weights damage by the size of each hit and the damage per second", function() {
       // Ember at power level 1: 1d4 averages 2.5, and the medium cast takes 1000ms plus the 500ms release.

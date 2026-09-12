@@ -68,34 +68,24 @@ global.EssenceSystem = (function() {
     return Ability.lookup(entry.code).getEssence({ ...entry, cooldown:monster.getAbilityCooldown(key) });
   }
 
-  // =================
-  //   Spell Essence
-  // =================
-  // A spell's essence comes from what it does to one target per cast, scaled by how often it can be cast. The period
-  // between casts is the casting time plus the release, unless the entry's cooldown is longer. Damage is weighted by
-  // the size of each hit as well as the damage per second, so a spell that lands its damage in one burst is worth
-  // more than the same damage spread over several casts. A status effect is worth its type's essence for the share of
-  // the fight it keeps a target covered, discounted by the chance it lands at all.
+  // ==================
+  //   Effect Essence
+  // ==================
+  // An ability's essence comes from what its effects do to one target per use, scaled by how often it can be used.
+  // Damage is weighted by the size of each hit as well as the damage per second, so an ability that lands its damage
+  // in one burst is worth more than the same damage spread over several uses. A status effect is worth its type's
+  // essence for the share of the fight it keeps a target covered, discounted by the chance it lands at all. The
+  // breakdowns exist for the report, so the knobs can be tuned with every term in view.
 
-  function spellEssence(entry) {
-    return spellEssenceBreakdown(entry).total;
-  }
-
-  // The breakdown is for the report, so the knobs can be tuned with every term in view.
-  function spellEssenceBreakdown({ spell, powerLevel=1, cooldown=0 }) {
-    const record = Spell.lookup(spell);
-    const effects = record.getEffects(powerLevel);
-    const period = Math.max(record.getCastingTime(powerLevel) + BattleConstants.spellReleaseTime, cooldown || 0);
-    const targets = spellTargets(record);
+  function effectsEssenceBreakdown({ effects, targets, period }) {
     const spike = EffectMath.averageDamage(effects);
-    const damage = damageEssence(effects, targets, period);
+    const damage = burstEssence(spike, targets, period);
     const status = statusEssence(effects, targets, period);
 
     return { period, targets, spike, damage, status, total:damage + status };
   }
 
-  function damageEssence(effects, targets, period) {
-    const spike = EffectMath.averageDamage(effects);
+  function burstEssence(spike, targets, period) {
     const dps = spike * targets / (period / 1000);
     return spike * dps * damageEssenceScale;
   }
@@ -103,9 +93,37 @@ global.EssenceSystem = (function() {
   function statusEssence(effects, targets, period) {
     return effects.filter(effect => effect.type === 'status-effect').reduce((sum, effect) => {
       const type = StatusEffectType.lookup(effect.code);
+      const landChance = EffectMath.landChance(effect.strength);
       const uptime = Math.min(1, (EffectMath.statusDurationSeconds(effect) * 1000) / period);
-      return sum + (type.getEssence() * EffectMath.landChance(effect.strength) * targets * uptime);
+      const coverage = type.getEssence() * targets * uptime;
+
+      return sum + ((coverage + tickDamageEssence(effect, targets, period)) * landChance);
     }, 0);
+  }
+
+  // A damaging effect's expected damage over its whole life is priced as a single burst: once it has landed nothing
+  // the victim does can dodge or armor it away.
+  function tickDamageEssence(effect, targets, period) {
+    if (effect.damage == null) { return 0; }
+
+    const ticks = (EffectMath.statusDurationSeconds(effect) * 1000) / EffectMath.interval(effect);
+    return burstEssence(Random.averageDice(effect.damage) * ticks, targets, period);
+  }
+
+  // =================
+  //   Spell Essence
+  // =================
+  // The period between casts is the casting time plus the release, unless the entry's cooldown is longer.
+
+  function spellEssence(entry) {
+    return spellEssenceBreakdown(entry).total;
+  }
+
+  function spellEssenceBreakdown({ spell, powerLevel=1, cooldown=0 }) {
+    const record = Spell.lookup(spell);
+    const period = Math.max(record.getCastingTime(powerLevel) + BattleConstants.spellReleaseTime, cooldown || 0);
+
+    return effectsEssenceBreakdown({ effects:record.getEffects(powerLevel), targets:spellTargets(record), period });
   }
 
   // A spell cast on the monster's own side isn't a threat the player has to survive, at least not yet.
@@ -157,6 +175,7 @@ global.EssenceSystem = (function() {
 
   return {
     monsterEssenceValue,
+    effectsEssenceBreakdown,
     spellEssence,
     spellEssenceBreakdown,
     canLevelUp,

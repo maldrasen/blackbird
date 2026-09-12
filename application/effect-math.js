@@ -22,7 +22,7 @@ global.EffectMath = (function() {
     switch (type.getDurationType()) {
       case StatusEffectDurationType.turnCount: return effect.count || 1;
       case StatusEffectDurationType.fixedTime: return effect.duration / 1000;
-      case StatusEffectDurationType.untilResisted: return expectedTicks(effect) * intervalOf(effect, type) / 1000;
+      case StatusEffectDurationType.untilResisted: return expectedTicks(effect) * interval(effect) / 1000;
     }
 
     throw new Error(`Unsupported duration type for the [${effect.code}] status effect.`);
@@ -34,10 +34,10 @@ global.EffectMath = (function() {
     return 1 / (1 - landChance(effect.strength));
   }
 
-  function intervalOf(effect, type) {
-    const interval = effect.interval != null ? effect.interval : type.getInterval();
-    if (interval == null) { throw new Error(`The [${effect.code}] status effect has no interval.`); }
-    return interval;
+  function interval(effect) {
+    const value = effect.interval != null ? effect.interval : StatusEffectType.lookup(effect.code).getInterval();
+    if (value == null) { throw new Error(`The [${effect.code}] status effect has no interval.`); }
+    return value;
   }
 
   return {
@@ -45,6 +45,7 @@ global.EffectMath = (function() {
     landChance,
     statusDurationSeconds,
     expectedTicks,
+    interval,
   };
 
 })();
