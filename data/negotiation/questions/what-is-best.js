@@ -4,7 +4,7 @@ NegotiationQuestion.register('what-is-best', {
   answers: {
     bullshit: { text:`"The warm sun on your face, the laughter of children."` },
     conan:    { text:`"To crush your enemies, see them driven before you, and to hear the lamentations of their women."` },
-    comfort:  { text:`"A farm fire, cup of hot tea, a book, an obedient slave{T:ling} at your feet sucking on your toes."` },
+    comfort:  { text:`"A farm fire, cup of hot tea, a book, an obedient slave{T:boy} at your feet sucking on your toes."` },
     cock:     { text:`"Horsecock."` },
   }
 });

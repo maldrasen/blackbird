@@ -60,30 +60,9 @@ global.ArchetypeDistribution = function(gender, species=SpeciesCode.human) {
     timid:       30,
   };
 
-  const enbyStandard = {
-    bastard:     0,
-    bimbo:       0,
-    bitch:       0,
-    brat:        50,
-    flowerChild: 40,
-    innocent:    20,
-    maniac:      10,
-    nice:        0,
-    pervert:     30,
-    playful:     60,
-    prude:       40,
-    reserved:    30,
-    savage:      0,
-    serious:     20,
-    slut:        40,
-    sweet:       30,
-    timid:       50,
-  };
-
   let distribution = maleStandard;
   if (gender === Gender.female) { distribution = femaleStandard; }
   if (gender === Gender.futa) { distribution = futaStandard; }
-  if (gender === Gender.enby) { distribution = enbyStandard; }
 
   if (species === SpeciesCode.elf) {
     distribution.bastard *=     1.3;

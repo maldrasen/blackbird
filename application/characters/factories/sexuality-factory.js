@@ -1,15 +1,14 @@
 global.SexualityFactory = (function() {
 
-  // Sexuality has to key off of biological sex because I have no idea who a straight non-binary person is supposed to
-  // be attracted to. A straight futa is gynophilic, a gay futa is androphilic (because of butt stuff). Bi is positive
-  // in both. Ace is negative in both.
+  // A straight futa is gynophilic, a gay futa is androphilic (because of butt stuff). Bi is positive in both. Ace is
+  // negative in both.
   function build() {
     const state = CharacterFactory.getState();
     const preferences = applySexualityTriggers(state);
 
     if (preferences.androphilic == null || preferences.gynophilic == null) {
       const sexuality = state.getSexuality() || randomSexuality(state);
-      const baseline = buildBaselineSexuality(sexuality, state.getBiologicalSex());
+      const baseline = buildBaselineSexuality(sexuality, state.getGender());
       if (preferences.androphilic == null) { preferences.androphilic = baseline.androphilic; }
       if (preferences.gynophilic == null) { preferences.gynophilic = baseline.gynophilic; }
     }
@@ -44,27 +43,27 @@ global.SexualityFactory = (function() {
     return (sexuality === 'straight' && menAreRare) ? 'bi' : sexuality;
   }
 
-  function buildBaselineSexuality(sexuality, sex) {
+  function buildBaselineSexuality(sexuality, gender) {
     const gyno = Math.max(10,30+Random.normalDistribution(0,10));
     const andro = Math.max(10,30+Random.normalDistribution(0,10));
     const preferences = {}
 
     if (sexuality === 'straight') {
-      if ([Gender.male, Gender.futa].includes(sex)) {
+      if ([Gender.male, Gender.futa].includes(gender)) {
         preferences.gynophilic = gyno;
         preferences.androphilic = andro * -1;
       }
-      if (sex === Gender.female) {
+      if (gender === Gender.female) {
         preferences.gynophilic = gyno * -1;
         preferences.androphilic = andro;
       }
     }
     if (sexuality === 'gay') {
-      if ([Gender.male, Gender.futa].includes(sex)) {
+      if ([Gender.male, Gender.futa].includes(gender)) {
         preferences.gynophilic = gyno * -1;
         preferences.androphilic = andro;
       }
-      if (sex === Gender.female) {
+      if (gender === Gender.female) {
         preferences.gynophilic = gyno;
         preferences.androphilic = andro * -1;
       }

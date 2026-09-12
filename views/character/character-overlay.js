@@ -85,7 +85,7 @@ global.CharacterOverlay = (function() {
   // location within a viewport with the correct aspect ratio. Future plan stuff.
   function fillPortrait() {
     function pickRandom() {
-      if (character.isFemale() || character.isEnby()) {
+      if (character.isFemale()) {
         const roll = Random.between(1,35);
         const file = (roll < 10) ? `female-0${roll}.jpg` : `female-${roll}.jpg`
         return X.assetURL(`ai-assets/${file}`);

@@ -1,5 +1,5 @@
 
-Name.register('surname',Gender.male,[
+Name.register('surname', Gender.male, [
   { name:'Bearmantle', triggers:['~serious','strong']},
   { name:'Blackbear', triggers:['~serious','black-hairs']},
   { name:'Blackcock', triggers:['dark-skin','huge-cock']},
@@ -10,11 +10,11 @@ Name.register('surname',Gender.male,[
   { name:'the Tosser', triggers:['~bastard','stupid','ugly','sadistic[20]']},
 ]);
 
-Name.register('surname',Gender.female,[
+Name.register('surname', Gender.female, [
   { name:'Knockers', triggers:['~bimbo','stupid','big-tits','breast-slut[20]','humiliation-slut[30]']},
 ]);
 
-Name.register('surname',Gender.enby,[
+Name.register('surname', Gender.none, [
   { name:'Arrowswift', triggers:['skillful','smart']},
   { name:'Ashenvale', triggers:['healthy']},
   { name:'Blackfire', triggers:['smart','magical','black-hairs']},

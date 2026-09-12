@@ -1,7 +1,7 @@
 Species.register(SpeciesCode.elf, {
   name: 'Elf',
   adjective: 'Elven',
-  genderRatio: { female:40, futa:20, male:40, enby:5 },
+  genderRatio: { female:40, futa:20, male:40 },
 
   attributes: {
     strength: 'D',
@@ -25,7 +25,6 @@ Species.register(SpeciesCode.elf, {
   },
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby,   SpeciesCode.elf),
     female: ArchetypeDistribution(Gender.female, SpeciesCode.elf),
     futa:   ArchetypeDistribution(Gender.futa,   SpeciesCode.elf),
     male:   ArchetypeDistribution(Gender.male,   SpeciesCode.elf),

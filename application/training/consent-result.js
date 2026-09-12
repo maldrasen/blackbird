@@ -85,13 +85,10 @@ global.ConsentResult = (characterId, target=null) => {
   // We pretty much always will add a gender factor to the consent calculations, though the importance of gender
   // differs for different actions. Something like kissing would have a stronger gender component than getting
   // fondled I think. Sexuality is represented by the androphilic and gynophilic ranges, so calculating the gender
-  // response for futa and non-binary characters need to look at both preferences.
+  // response for futa characters needs to look at both preferences.
   //
-  // Apply both male and female gender preferences at the same time will reduce consent for straight characters, but
-  // increase it for bisexual characters, which makes sense especially for futanari. Gender preferences for
-  // non-binary characters only apply at half strength (0.66 - 1.5) as they fall into a 'having neither gender' kind
-  // of logical space, though they also kind of have both. Also, it should be fine to scale the factor twice for the
-  // non-binary characters here. When you reduce the range, the resulting range remains within the legal limits.
+  // Applying both male and female gender preferences at the same time will reduce consent for straight characters,
+  // but increase it for bisexual characters, which makes sense for futanari.
   function applyGenderFactor(factor) {
     const preferences = SexualPreferencesComponent.lookup(characterId);
     const gender = ActorComponent.lookup(targetId).gender;
@@ -108,12 +105,6 @@ global.ConsentResult = (characterId, target=null) => {
     if (gender === Gender.futa) {
       maleFactor = TrainingMath.personalityFactorValue(preferences['androphilic']);
       femaleFactor = TrainingMath.personalityFactorValue(preferences['gynophilic']);
-    }
-    if (gender === Gender.enby) {
-      maleFactor = TrainingMath.applyFactorScale(
-        TrainingMath.personalityFactorValue(preferences['androphilic']),1.5);
-      femaleFactor = TrainingMath.applyFactorScale(
-        TrainingMath.personalityFactorValue(preferences['gynophilic']),1.5);
     }
 
     maleFactor = TrainingMath.applyFactorScale(maleFactor, factor.scale || 2);

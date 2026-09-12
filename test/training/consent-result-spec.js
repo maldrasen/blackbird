@@ -220,24 +220,6 @@ describe("ConsentResult", function() {
       expect(result.getConsent()).to.equal(Consent.eager);
     });
 
-    it("applies gender preferences for non-binary characters", function() {
-      const wolf = Registry.createEntity();
-      const goat = Registry.createEntity();
-
-      ActorComponent.create(wolf, { gender:Gender.enby, species:SpeciesCode.lupin });
-      ArousalComponent.create(goat, { arousal:50 });
-      SexualPreferencesComponent.create(goat, { androphilic:75, gynophilic:75 });
-
-      const result = ConsentResult(goat, wolf);
-      result.setSexAction('fondle-ass');
-      result.applyFactor({ type:'arousal' });
-      expect(Math.round(result.getConsentValue())).to.equal(25);
-      result.applyFactor({ type:'gender' });
-      expect(Math.round(result.getConsentValue())).to.equal(41);
-      expect(Math.round(100 * result.getResponse().multiplicative[0].value)).to.equal(164);
-      expect(result.getConsent()).to.equal(Consent.eager);
-    });
-
     it("applies complementing sexual preferences", function() {
       const wolf = Registry.createEntity();
       const rabbit = Registry.createEntity();

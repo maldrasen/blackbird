@@ -13,7 +13,6 @@ global.CharacterFactoryState = function(options={}) {
   const speciesCode = options.species || Random.fromFrequencyMap(SpeciesFrequency);
   const species = Species.lookup(speciesCode);
   const genderCode = options.gender || Random.fromFrequencyMap(species.getGenderRatio());
-  const biologicalSex = getBiologicalSex(species, genderCode);
 
   const actorData = { gender:genderCode, species:speciesCode };
   if (options.name) { actorData.name = options.name; }
@@ -78,9 +77,9 @@ global.CharacterFactoryState = function(options={}) {
 
   // === Part Predicates ===============================================================================================
 
-  function shouldHavePussy() { return [Gender.futa, Gender.female].includes(biologicalSex); }
-  function shouldHaveCock() { return [Gender.futa, Gender.male].includes(biologicalSex); }
-  function shouldHaveBreasts() { return Boolean(species.getBody().breasts) && [Gender.futa, Gender.female].includes(biologicalSex); }
+  function shouldHavePussy() { return [Gender.futa, Gender.female].includes(genderCode); }
+  function shouldHaveCock() { return [Gender.futa, Gender.male].includes(genderCode); }
+  function shouldHaveBreasts() { return Boolean(species.getBody().breasts) && [Gender.futa, Gender.female].includes(genderCode); }
 
   // These predicates mirror the ones on Character(), so that requirements can be checked against a character mid-build.
   function isMale() { return genderCode === Gender.male; }
@@ -90,29 +89,10 @@ global.CharacterFactoryState = function(options={}) {
   function getSensitivity(code) { return (blocks.sensitivities||{})[code]; }
   function hasSensitivity(code) { return getSensitivity(code) != null; }
 
-  // If a character is non-binary I still need to know their biological sex to build their various naughty bits. This
-  // value needs to be randomly chosen from the species gender ratio map with the enby option removed. Non-binary
-  // Kobolds and Vermens however are always biologically male.
-  function getBiologicalSex(species, gender) {
-    if (gender !== Gender.enby) { return gender; }
-
-    if ([SpeciesCode.kobold,SpeciesCode.vermen].includes(species.getCode())) {
-      return Gender.male;
-    }
-
-    const ratios = species.getGenderRatio();
-    return Random.fromFrequencyMap({
-      male: ratios.male,
-      female: ratios.female,
-      futa: ratios.futa,
-    });
-  }
-
   return {
     getSpeciesCode: () => { return speciesCode; },
     getSpecies: () => { return species; },
     getGender: () => { return genderCode; },
-    getBiologicalSex: () => { return biologicalSex; },
     getArchetypes: () => { return options.archetypes ? { ...options.archetypes } : null; },
     getSexuality: () => { return options.sexuality; },
     getDefaultSkills: () => { return options.skills ? { ...options.skills } : null; },

@@ -1,12 +1,12 @@
 
-Name.register('title',Gender.male,[
+Name.register('title', Gender.male,[
   { name:"Arseface", triggers:['ugly']},
   { name:"Big", triggers:['tall','strong','big-cock']},
   { name:"Bonechewer", triggers:['~savage','sadistic[40]']},
   { name:"Long", triggers:['tall','big-cock']},
 ]);
 
-Name.register('title',Gender.female,[
+Name.register('title', Gender.female,[
   { name:"Bang Bang", triggers:['~slut','magical']},
   { name:"Creamy", triggers:['~slut','sensitive','cum-dump[20]','humiliation-slut[20]']},
   { name:"Cumrag", triggers:['~slut','cum-dump[40]',`humiliation-slut[40]`]},
@@ -20,7 +20,7 @@ Name.register('title',Gender.female,[
   { name:"Sweet Tits", triggers:['~bimbo','small-tits','breast-slut[20]','humiliation-slut[20]','stupid']},
 ]);
 
-Name.register('title',Gender.enby,[
+Name.register('title', Gender.none,[
   { name:"Average" },
   { name:"Bloody", triggers:['~savage','sadistic[30]']},
   { name:"Dirty", triggers:['~pervert','ugly']},

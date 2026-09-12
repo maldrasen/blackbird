@@ -3,7 +3,7 @@
 require('../run-headless.js');
 
 const count = Number(process.argv[2]) || 1000;
-const genders = [Gender.male, Gender.female, Gender.futa, Gender.enby];
+const genders = [Gender.male, Gender.female, Gender.futa];
 const rows = [];
 
 // When the registry fills with characters the name pool runs dry and the factory can start failing outright.

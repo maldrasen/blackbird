@@ -2,7 +2,7 @@ const greetingPackage = WeaverPackage('kobold-greeting');
 
 Species.register(SpeciesCode.kobold, {
   name: 'Kobold',
-  genderRatio: { female:40, futa:20, male:40, enby:10 },
+  genderRatio: { female:40, futa:20, male:40 },
 
   attributes: {
     strength: 'D',
@@ -28,7 +28,6 @@ Species.register(SpeciesCode.kobold, {
   },
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby,   SpeciesCode.kobold),
     female: ArchetypeDistribution(Gender.female, SpeciesCode.kobold),
     futa:   ArchetypeDistribution(Gender.futa,   SpeciesCode.kobold),
     male:   ArchetypeDistribution(Gender.male,   SpeciesCode.kobold),

@@ -1,6 +1,6 @@
 Species.register(SpeciesCode.lupin, {
   name: 'Lupin',
-  genderRatio: { female:40, futa:20, male:40, enby:5 },
+  genderRatio: { female:40, futa:20, male:40 },
 
   attributes: {
     strength: 'B',
@@ -25,7 +25,6 @@ Species.register(SpeciesCode.lupin, {
   },
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby,   SpeciesCode.lupin),
     female: ArchetypeDistribution(Gender.female, SpeciesCode.lupin),
     futa:   ArchetypeDistribution(Gender.futa,   SpeciesCode.lupin),
     male:   ArchetypeDistribution(Gender.male,   SpeciesCode.lupin),

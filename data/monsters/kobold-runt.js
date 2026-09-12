@@ -3,7 +3,7 @@ const greetingPackage = WeaverPackage('kobold-runt-greeting');
 BaseMonster.register('kobold-runt',{
   name: 'Kobold Runt',
   species: SpeciesCode.kobold,
-  genderRatio: { female:100, futa:20, male:10, enby:10 },
+  genderRatio: { female:100, futa:20, male:10 },
   type: 'coward',
   archetypes: { timid:10 },
   triggers:[],

@@ -175,7 +175,6 @@ global.Gender = {
   male: 'male',
   female: 'female',
   futa: 'futa',
-  enby: 'enby',
   none: 'none',
 };
 
@@ -183,7 +182,6 @@ global.GenderName = {
   male: 'Male',
   female: 'Female',
   futa: 'Futanari',
-  enby: 'Non-Binary',
   none: 'None',
 };
 
