@@ -1,6 +1,10 @@
 
 const isLowAttack = BattleRequirements.withHitLocation(EquipmentSlot.legs, EquipmentSlot.feet);
 const isHighAttack = BattleRequirements.withHitLocation(EquipmentSlot.chest, EquipmentSlot.head);
+const visibleBreasts = CharacterRequirements.visibleBreasts('T');
+const visibleCock = CharacterRequirements.visibleCock('T');
+const hitChest = BattleRequirements.withHitLocation(EquipmentSlot.chest);
+const hitLegs = BattleRequirements.withHitLocation(EquipmentSlot.legs);
 
 const basicSwing = WeaverPackage('attack-text.basic-swing');
 const basicThrust = WeaverPackage('attack-text.basic-thrust');
@@ -11,6 +15,7 @@ const shoot = WeaverPackage('attack-text.shoot');
 const throwWeapon = WeaverPackage('attack-text.throw');
 const punch = WeaverPackage('attack-text.punch');
 const claw = WeaverPackage('attack-text.claw');
+const leapClaw = WeaverPackage('attack-text.leap-claw');
 const bite = WeaverPackage('attack-text.bite');
 const sneakAttackPierce = WeaverPackage('attack-text.sneak-attack-pierce');
 const sneakAttackRanged = WeaverPackage('attack-text.sneak-attack-ranged');
@@ -25,12 +30,11 @@ Dialog.register(DialogCategory.attackText, 'shoot', shoot);
 Dialog.register(DialogCategory.attackText, 'throw', throwWeapon);
 Dialog.register(DialogCategory.attackText, 'punch', punch);
 Dialog.register(DialogCategory.attackText, 'claw', claw);
+Dialog.register(DialogCategory.attackText, 'leap-claw', leapClaw);
 Dialog.register(DialogCategory.attackText, 'bite', bite);
 Dialog.register(DialogCategory.attackText, 'sneak-attack-pierce', sneakAttackPierce);
 Dialog.register(DialogCategory.attackText, 'sneak-attack-ranged', sneakAttackRanged);
 Dialog.register(DialogCategory.attackText, 'sneak-attack-swing', sneakAttackSwing);
-
-
 
 basicSwing.add(`{A:ActingName} swings {hisWeaponName(A)} at {targetsHitLocation(T)}.`);
 basicSwing.add(`{A:ActingName} swings {hisWeaponName(A)} in a wide arc at {targetsHitLocation(T)}.`);
@@ -96,6 +100,18 @@ punch.add(`{A:ActingName} punches {A:his} fist hard into {targetsHitLocation(T)}
 
 
 claw.add(`{A:ActingName} lashes out with {A:his} claws at {targetsHitLocation(T)}.`);
+
+
+
+// Specifically for monsters with the "claw" body plan
+leapClaw.add(`{A:ActingName} leaps into the air, slashing at {targetsHitLocation(T)}.`);
+leapClaw.add(`{A:ActingName} launches itself into the air, clawing at {targetsHitLocation(T)}.`);
+leapClaw.add(`{A:ActingName} leaps into the air, slashing its claws at one of {T:targetName's} {T:breasts.bigSoftBreasts}.`,
+  [visibleBreasts,hitChest]);
+leapClaw.add(`{A:ActingName} launches itself at {T:targetName's} {T:cock.big} swinging cock.`,
+  [visibleCock,hitLegs]);
+leapClaw.add(`{A:ActingName} launches itself between {T:targetName's} legs, slashing at {T:his} dangling ballsack.`,
+  [visibleCock,hitLegs]);
 
 
 

@@ -6,8 +6,9 @@ const strong = CharacterRequirements.minimumStrength('T', 20);
 const taller = CharacterRequirements.isTallerThan('T', 'P');
 const bigCock = CharacterRequirements.minimumCockSize('T', 'big');
 const legsCovered = CharacterRequirements.legsAreCovered('T');
+const hasBreasts = CharacterRequirements.hasBreasts('T')
 const bigBreasts = CharacterRequirements.minimumBreastSize('T', 'big');
-const chestCovered = CharacterRequirements.chestIsCovered('T');
+const breastsCovered = CharacterRequirements.breastsAreCovered('T');
 
 const eager = WeaverPackage('serious.propose-training.eager');
 const willing = WeaverPackage('serious.propose-training.willing');
@@ -39,10 +40,10 @@ willing.add(`{T:name} straightens, the outline of {T:his} {T:cock.bigCock} strai
   [bigCock, legsCovered]);
 willing.add(`{T:name} straightens, the outline of {T:his} {T:breasts.bigSoftBreasts} straining against {T:his}
   {T:equipped.chest}. "Understood. I'm prepared for whatever comes next."`,
-  [bigBreasts, chestCovered]);
+  [hasBreasts, bigBreasts, breastsCovered]);
 willing.add(`{T:name} nods and begins to pull off {T:his} {T:equipped.chest}. {unequip(T,chest)} "Alright,
   let's get going then."`,
-  [chestCovered]);
+  [hasBreasts, breastsCovered]);
 
 
 
