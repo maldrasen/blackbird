@@ -664,7 +664,6 @@
     "test/characters/describers/body-describer-spec.js",
     "test/characters/describers/breast-describer-spec.js",
     "test/characters/describers/cock-describer-spec.js",
-    "test/characters/essence-system-spec.js",
     "test/characters/factories/attributes-factory-spec.js",
     "test/characters/factories/body-factory-spec.js",
     "test/characters/factories/character-factory-spec.js",

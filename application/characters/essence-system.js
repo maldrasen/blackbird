@@ -4,7 +4,7 @@ global.EssenceSystem = (function() {
   const attributePowerExponent = 1.5;
   const essenceScale = 0.12;
   const abilityScale = 0.02;
-  const healthEssenceWeight = 0.75;
+  const healthEssenceWeight = 0.25;
   const speedEssenceWeight = 0.5;
 
   // Level Knobs
@@ -20,7 +20,7 @@ global.EssenceSystem = (function() {
   // which are rolled randomly. This value is determined by their attributes and abilities. Attributes are worth more
   // as they determine the potency of the abilities. Even a monster without abilities, with only a basic attack can be
   // very dangerous, but a weak monster with lots of abilities is still weak. We also include the speed and health
-  // factors as they can arbritrarily make a monster faster or tougher. A final bonus essence value can be given to
+  // factors as they can arbitrarily make a monster faster or tougher. A final bonus essence value can be given to
   // monsters that are just weirdly hard or easy for some reason.
 
   function monsterEssenceValue(monsterId) {
