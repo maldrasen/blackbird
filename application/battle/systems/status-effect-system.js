@@ -1,30 +1,24 @@
 global.StatusEffectSystem = (function() {
 
-  // Status effects that influence a character's commands need to be removed at the end of the round. A character that
-  // gets stunned for instance should lose their next turn, but if a stun effect only lasts a single round, and it's
-  // removed before we show the character commands, they never lose the ability to act. The same would be true for
-  // effects like silence and blind that should persist during a character's turn.
-
-  function processStartRound() { reduceAllEffectTime('start-of-round'); }
-  function processEndRound() { reduceAllEffectTime('end-of-round'); }
-
-  function reduceAllEffectTime(removedAt) {
-    const acting = BattleSystem.getRound().getActing();
+  // Turn count effects influence a character's commands, so a turn is counted at the end of the round rather than the
+  // start. A stunned character has to actually lose their turn, and a poised one has to still be poised when they
+  // choose their attack. An effect the acting entity picked up during their own round (defending makes them poised, a
+  // fumbled attack leaves them off balance) doesn't count that round, otherwise it would be gone before anyone else
+  // acted.
+  function processEndRound() {
+    const round = BattleSystem.getRound();
+    const acting = round.getActing();
 
     StatusEffectComponent.of(acting).forEach(id => {
-      const statusEffect = StatusEffectComponent.lookup(id);
-      if (StatusEffectType.lookup(statusEffect.code).getRemovedAt() === removedAt) {
-        reduceEffectTime(acting, statusEffect);
+      const code = StatusEffectComponent.lookup(id).code;
+      if (isTurnCount(code) && round.hasAppliedStatus(code) === false) {
+        consumeStack(acting, code);
       }
     });
   }
 
-  // Reduce the remaining turn count of turn based status effects, removing them at the start of the turn if this is
-  // their last turn. Because this can remove status effects this should be run last.
-  function reduceEffectTime(acting, statusEffect) {
-    if (StatusEffectType.lookup(statusEffect.code).getDurationType() === StatusEffectDurationType.turnCount) {
-      consumeStack(acting, statusEffect.code);
-    }
+  function isTurnCount(code) {
+    return StatusEffectType.lookup(code).getDurationType() === StatusEffectDurationType.turnCount;
   }
 
   // Effects with an interval act on their own schedule, independent of their victim's actions, so applying one adds
@@ -122,7 +116,6 @@ global.StatusEffectSystem = (function() {
   }
 
   return {
-    processStartRound,
     processEndRound,
     scheduleTick,
     processTick,

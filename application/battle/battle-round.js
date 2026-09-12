@@ -8,6 +8,7 @@ global.BattleRound = function(acting, type=null) {
 
   const messages = [];
   const context = {};
+  const appliedStatuses = new Set();
 
   let abilityCode;
   let abilityData;
@@ -88,6 +89,15 @@ global.BattleRound = function(acting, type=null) {
       textKey: weapon.getTextKey(),
     };
   }
+
+  // ====================
+  //    Status Effects
+  // ====================
+
+  // The status effects the acting entity picked up during their own round. A turn count effect applied this round
+  // shouldn't have a turn counted against it when the round ends.
+  function addAppliedStatus(code) { appliedStatuses.add(code); }
+  function hasAppliedStatus(code) { return appliedStatuses.has(code); }
 
   // =============
   //    Targets
@@ -175,6 +185,9 @@ global.BattleRound = function(acting, type=null) {
     compileWeaponData,
     getPrimaryWeapon: () => { return primaryWeapon; },
     getSecondaryWeapon: () => { return secondaryWeapon; },
+
+    addAppliedStatus,
+    hasAppliedStatus,
 
     setTarget,
     setTargetPosition,

@@ -42,6 +42,74 @@ describe("StatusEffectSystem", function() {
     Random.stubRoll(5, 10, 80, 5);
   }
 
+  // A turn count effect lasts through the acting entity's round, so a spec has to run a whole round to see a turn
+  // counted against it. finishRound() requires the acting entity to be next in the turn order.
+  function runRound(state, acting, action=() => {}) {
+    state.moveToTopOfTurnOrder({ type:'character', id:acting });
+    BattleSystem.specRound(acting);
+    action();
+    BattleSystem.getRound().addTime(1000);
+    BattleSystem.finishRound();
+  }
+
+  describe("processEndRound()", function() {
+    it("counts a turn against a turn count effect when the round ends, not when it starts", function() {
+      const state = startBattle();
+      const acting = state.getEntityAtPosition('P',0,2);
+
+      BattleSystem.addStatus(acting, 'poised', { count:2 });
+      state.moveToTopOfTurnOrder({ type:'character', id:acting });
+      BattleSystem.specRound(acting);
+
+      expect(StatusEffects(acting).get('poised').count).to.equal(2);
+
+      BattleSystem.getRound().addTime(1000);
+      BattleSystem.finishRound();
+
+      expect(StatusEffects(acting).get('poised').count).to.equal(1);
+    });
+
+    it("removes the effect when its last turn ends", function() {
+      const state = startBattle();
+      const acting = state.getEntityAtPosition('P',0,2);
+
+      BattleSystem.addStatus(acting, 'stun', { count:1 });
+      runRound(state, acting);
+
+      expect(StatusEffects(acting).has('stun')).to.be.false;
+    });
+
+    it("keeps an effect the acting entity picked up during their own round", function() {
+      const state = startBattle();
+      const acting = state.getEntityAtPosition('P',0,2);
+
+      runRound(state, acting, () => BattleSystem.addStatus(acting, 'poised', { count:1 }));
+
+      expect(StatusEffects(acting).get('poised').count).to.equal(1);
+    });
+
+    it("keeps an effect renewed during the round", function() {
+      const state = startBattle();
+      const acting = state.getEntityAtPosition('P',0,2);
+
+      BattleSystem.addStatus(acting, 'poised', { count:1 });
+      runRound(state, acting, () => BattleSystem.addStatus(acting, 'poised', { count:1 }));
+
+      expect(StatusEffects(acting).get('poised').count).to.equal(1);
+    });
+
+    it("leaves effects on the other combatants alone", function() {
+      const state = startBattle();
+      const acting = state.getEntityAtPosition('P',0,2);
+      const other = state.getEntityAtPosition('P',1,2);
+
+      BattleSystem.addStatus(other, 'stun', { count:1 });
+      runRound(state, acting);
+
+      expect(StatusEffects(other).has('stun')).to.be.true;
+    });
+  });
+
   describe("scheduleTick()", function() {
     it("schedules a tick one record interval after the current time", function() {
       const state = startBattle();

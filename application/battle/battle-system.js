@@ -40,6 +40,7 @@ global.BattleSystem = (function() {
     const { removed } = StatusEffects(entity).apply(code, values);
     StatusEffectSystem.scheduleTick(entity, code);
     BattleSpellSystem.interruptCasting(entity, code);
+    if (round && round.getActing() === entity) { round.addAppliedStatus(code); }
     if (removed.length > 0) { BattleInterface.updateCombatantView(entity); }
   }
 
@@ -54,14 +55,12 @@ global.BattleSystem = (function() {
     round = BattleRound(next.id, next.type);
     round.compileWeaponData();
     BattleInterface.highlightActing();
-    StatusEffectSystem.processStartRound();
   }
 
   function specRound(acting,options={}) {
     round = BattleRound(acting);
     round.compileWeaponData();
     if (options.target) { round.setTarget(options.target); }
-    StatusEffectSystem.processStartRound();
   }
 
   function advanceBattle() {
