@@ -1,16 +1,16 @@
 global.EncounterBuilder = (function() {
 
-  // Build an encounter with a cohort of monsters, given a target essence level and a list of cohorts to pull
-  // from. These options will normally come from the dungeon floor. This is the standard version. The builders
-  // return the record the encounter was built from, so the battle system can resolve the start text from it.
+  // The cohort is used by the battle system to display the battle start text.
+  // TODO: Save this in the state instead.
   function build(options) {
     const cohort = chooseCohort(options.cohorts, options.essenceTarget);
-    placeFormation(arrangeFormation(selectMonsters(cohort, options.essenceTarget)), cohort.getFactoryOptions());
+    const monsters = selectMonsters(cohort, options.essenceTarget);
+    const formation = arrangeFormation(monsters);
+    placeFormation(formation, cohort.getFactoryOptions());
     return cohort;
   }
 
-  // Choose which of the floor's cohorts the party will fight. A cohort is viable when it can field its minimum
-  // group size without blowing past the essence target.
+  // Choose a cohort of monsters that are between the minimum and maximum essence targets.
   function chooseCohort(cohorts, essenceTarget) {
     const viable = cohorts.filter(code => {
       const cohort = Cohort.lookup(code);
@@ -30,9 +30,9 @@ global.EncounterBuilder = (function() {
     throw new Error(`Cannot find a viable cohort for [${floor.getTheme()}:${floor.getLevel()}]`);
   }
 
-  // Select the monsters for the encounter, spending the essence target as a budget. To keep the group coherent,
-  // it's built from a small roster of base types rather than the whole cohort; then monsters are drawn from the
-  // roster until the total essence lands as close to the target as we can get it.
+  // Select the monsters for the encounter, using the target essence as a budget. To keep the group coherent, we build
+  // the encounter from a small roster of base types rather than the whole cohort. Monsters are drawn from the roster
+  // until we have close to the total essence target.
   function selectMonsters(cohort, essenceTarget) {
     const roster = buildRoster(cohort, essenceTarget);
     const minimum = cohort.getMinimum();
@@ -40,17 +40,14 @@ global.EncounterBuilder = (function() {
     return drawMonsters(roster, essenceTarget, minimum, maximum);
   }
 
-  // The roster starts with an anchor, one of the cohort's more expensive base types that still fits the budget,
-  // then adds companion types of comparable essence value. The spread limit keeps every monster in a formation at
-  // roughly the same weight, so the cheapest types don't pad out every single encounter. When even the cheapest
-  // type is over the target we have to overshoot to field anything at all, and that one type is the whole roster.
+  // The roster starts with an anchor, the most expensive monster that fits within the budget. We then add companions
+  // of comparable essence value. The spread limit keeps every monster in a formation at roughly the same weight, so
+  // the cheapest types don't pad out every single encounter. When even the cheapest type is over the target we have
+  // to overshoot to field anything at all, and that one type is the whole roster.
   function buildRoster(cohort, essenceTarget) {
     const types = [...cohort.getMonsters()].sort((a,b) => essenceAverage(b) - essenceAverage(a));
     const affordable = types.filter(type => essenceAverage(type) <= essenceTarget);
     const cheapest = affordable[affordable.length-1];
-
-    // The anchor never gets the whole budget: room is reserved for the cheapest monsters needed to finish out the
-    // cohort's minimum group size, otherwise an expensive anchor forces the group far over the target.
     const anchorBudget = essenceTarget - (cohort.getMinimum() - 1) * essenceAverage(cheapest);
     const anchors = types.slice(0, Math.ceil(types.length/2)).filter(type => essenceAverage(type) <= anchorBudget);
     const openers = anchors.length > 0 ? anchors : affordable.filter(type => essenceAverage(type) <= anchorBudget);
@@ -63,6 +60,7 @@ global.EncounterBuilder = (function() {
         const average = essenceAverage(type);
         return Math.max(average, ...averages) <= Math.min(average, ...averages) * BattleConstants.essenceSpreadRatio;
       });
+
       if (band.length === 0) { break; }
 
       const companion = Random.from(band);
@@ -73,9 +71,6 @@ global.EncounterBuilder = (function() {
     return roster;
   }
 
-  // Draw monsters from the roster until the budget is spent, starting with the anchor. Once nothing in the roster
-  // fits the remaining budget anymore, one more of the cheapest type is still drawn when overshooting lands the
-  // total closer to the target than stopping short would. The cohort's minimum group size wins over the budget.
   function drawMonsters(roster, essenceTarget, minimum, maximum) {
     const cheapest = roster.reduce((cheap,type) => essenceAverage(type) < essenceAverage(cheap) ? type : cheap);
     const picks = [roster[0]];
@@ -99,10 +94,26 @@ global.EncounterBuilder = (function() {
     return picks;
   }
 
-  // Arrange the selected monsters into a formation grid, the same shape the encounter records use, but holding
-  // monster codes directly. Each base type prefers the front or back rank depending on its monster type. The back
-  // rank can never hold more monsters than the front, and a back monster is only placed in a column with a front
-  // monster to guard it. Within those rules the rows are laid out as symmetrically as possible.
+  // Finally, we place the monsters into the current battle state at their positions in the formation.
+  function placeFormation(formation, factoryOptions) {
+    const state = BattleSystem.getState();
+    for (let r=0; r<formation.length; r++) {
+      for (let p=0; p<formation[r].length; p++) {
+        if (formation[r][p]) {
+          const monster = MonsterFactory(formation[r][p], factoryOptions).build();
+          state.addMonster(monster,`M.${r}.${p}`);
+        }
+      }
+    }
+  }
+
+  // ========================
+  //    Formation Building
+  // ========================
+
+  // Once the monsters have been selected, most of the work of the encounter builder is to arrange them into a
+  // sensible formation. Some monsters prefer the front or back rank. We also want the formations to be generally
+  // symmetrical.
   function arrangeFormation(codes) {
     const rows = splitRows(codes);
     const front = layoutRow(rows.front);
@@ -128,6 +139,10 @@ global.EncounterBuilder = (function() {
     fillCenter(front);
 
     return { front, back };
+  }
+
+  function preferredPosition(code) {
+    return MonsterType.lookup(BaseMonster.lookup(code).getType()).getPreferredPosition();
   }
 
   // The center of the front row must never be left empty, or a battle can stall with the survivors on each side
@@ -179,13 +194,9 @@ global.EncounterBuilder = (function() {
   function groupByType(codes) {
     const counts = {};
     codes.forEach(code => counts[code] = (counts[code] || 0) + 1);
-    return Object.keys(counts)
-      .sort((a,b) => essenceAverage(b) - essenceAverage(a))
-      .map(code => ({ code, count:counts[code] }));
-  }
-
-  function preferredPosition(code) {
-    return MonsterType.lookup(BaseMonster.lookup(code).getType()).getPreferredPosition();
+    return Object.keys(counts).
+      sort((a,b) => essenceAverage(b) - essenceAverage(a)).
+      map(code => ({ code, count:counts[code] }));
   }
 
   // Base monster difficulty is judged by the average essence a monster of that type yields, precalculated in the
@@ -194,6 +205,10 @@ global.EncounterBuilder = (function() {
     if (EssenceData[code] == null) { throw new Error(`No essence data for [${code}]`); }
     return EssenceData[code].average;
   }
+
+  // ====================
+  //    Build Variants
+  // ====================
 
   // Build an encounter with a single base monster. Used to test a single monster in a battle. A monster can never be
   // in the back rank without a monster in front of it, so even back preferring monsters are placed front and center.
@@ -226,21 +241,6 @@ global.EncounterBuilder = (function() {
     }));
   }
 
-  // The formation grid holds monster codes by rank and position. Each monster is built by the factory then added to
-  // the battle state at its position in the monster formation. Encounters built from a cohort pass the cohort's
-  // factory options along to every monster in the formation.
-  function placeFormation(formation, factoryOptions) {
-    const state = BattleSystem.getState();
-    for (let r=0; r<formation.length; r++) {
-      for (let p=0; p<formation[r].length; p++) {
-        if (formation[r][p]) {
-          const monster = MonsterFactory(formation[r][p], factoryOptions).build();
-          state.addMonster(monster,`M.${r}.${p}`);
-        }
-      }
-    }
-  }
-
   return {
     build,
     buildFromMonster,
@@ -250,4 +250,5 @@ global.EncounterBuilder = (function() {
     selectMonsters,
     arrangeFormation,
   };
+
 })();
