@@ -1,3 +1,5 @@
+// A status effect's essence is the threat of keeping one enemy under the effect for an entire battle. The essence
+// calculations scale it down by how likely the effect is to land and how much of the fight it actually covers.
 global.StatusEffectType = (function() {
   const statusEffects = {};
 
@@ -39,6 +41,7 @@ global.StatusEffectType = (function() {
       getDamageType: () => { return statusEffect.damageType; },
       getDurationType: () => { return statusEffect.durationType; },
       getInterval: () => { return statusEffect.interval || null; },
+      getEssence: () => { return statusEffect.essence || 0; },
       isClearedAfterBattle: () => { return statusEffect.clearAfterBattle === true; },
       getDamageMessage,
       getExpireMessage,
