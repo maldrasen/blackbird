@@ -12,7 +12,7 @@ global.StealthSystem = (function() {
     const actingPosition = round.getActingPosition();
     const targetPosition = round.getTargetPosition();
 
-    if (StatusEffects(acting).has('hidden') && targetPosition != null) {
+    if (StatusEffects(acting).hasHidden() && targetPosition != null) {
       (actingPosition[0] !== targetPosition[0]) ? BattleSystem.removeStatus(acting,'hidden') : stayHidden();
     }
   }

@@ -8,6 +8,7 @@ global.BattleDamageSystem = (function() {
   function applyDamage(data) {
     const state = BattleSystem.getState();
     const target = data.entity;
+    const targetStatusEffects = StatusEffects(target);
     const damageTypes = data.damageTypes;
 
     if (state.isDown(target)) {
@@ -21,12 +22,12 @@ global.BattleDamageSystem = (function() {
       actualDamage += Math.round(damage * (1 - reduction/100));
     });
 
-    if (StatusEffects(target).has('vulnerable')) {
+    if (targetStatusEffects.hasVulnerable()) {
       actualDamage = actualDamage * 2;
       StatusEffectSystem.consumeStack(target,'vulnerable');
     }
 
-    if (StatusEffects(target).has('damned')) {
+    if (targetStatusEffects.hasDamned()) {
       actualDamage = actualDamage * 4;
       StatusEffectSystem.consumeStack(target,'damned');
     }

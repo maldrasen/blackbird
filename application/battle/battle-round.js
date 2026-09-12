@@ -8,6 +8,7 @@ global.BattleRound = function(acting, type=null) {
 
   const messages = [];
   const context = {};
+  const appliedStatuses = new Set();
 
   let abilityCode;
   let abilityData;
@@ -88,6 +89,17 @@ global.BattleRound = function(acting, type=null) {
       textKey: weapon.getTextKey(),
     };
   }
+
+  // ====================
+  //    Status Effects
+  // ====================
+  // We need a way to track status effects that were added this round. A status effect like poised can be added on the
+  // character's turn (when they use defend) or on an enemy turn (when they crit at their defend roll). Poised only
+  // lasts one round though, so we need to check to see if the status was applied this round, and only remove poised
+  // if it wasn't.
+
+  function addAppliedStatus(code) { appliedStatuses.add(code); }
+  function hasAppliedStatus(code) { return appliedStatuses.has(code); }
 
   // =============
   //    Targets
@@ -175,6 +187,9 @@ global.BattleRound = function(acting, type=null) {
     compileWeaponData,
     getPrimaryWeapon: () => { return primaryWeapon; },
     getSecondaryWeapon: () => { return secondaryWeapon; },
+
+    addAppliedStatus,
+    hasAppliedStatus,
 
     setTarget,
     setTargetPosition,

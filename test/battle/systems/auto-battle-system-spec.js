@@ -44,7 +44,7 @@ describe("AutoBattleSystem", function() {
       BattleSystem.advanceBattle();
 
       expect(BattleSystem.getRound().getAbilityCode()).to.equal('basic-defend');
-      expect(StatusEffects(acting).has('poised')).to.equal(true);
+      expect(StatusEffects(acting).hasPoised()).to.equal(true);
     });
 
     it("passes when the character must pass", function() {

@@ -241,7 +241,7 @@ describe("BattleDamageSystem", function() {
         entity:target, damageTypes:{ slash:100 }, hitLocation:EquipmentSlot.chest });
 
       expect(damage).to.equal(110);
-      expect(StatusEffects(target).has('vulnerable')).to.be.false;
+      expect(StatusEffects(target).hasVulnerable()).to.be.false;
     });
 
     it("consumes one vulnerable stack per hit", function() {
@@ -257,7 +257,7 @@ describe("BattleDamageSystem", function() {
       expect(StatusEffects(target).get('vulnerable').count).to.equal(1);
 
       expect(hit()).to.equal(22);
-      expect(StatusEffects(target).has('vulnerable')).to.be.false;
+      expect(StatusEffects(target).hasVulnerable()).to.be.false;
 
       expect(hit()).to.equal(11);
     });
@@ -272,7 +272,7 @@ describe("BattleDamageSystem", function() {
         entity:target, damageTypes:{ slash:20 }, hitLocation:EquipmentSlot.chest });
 
       expect(hit()).to.equal(44);
-      expect(StatusEffects(target).has('damned')).to.be.false;
+      expect(StatusEffects(target).hasDamned()).to.be.false;
 
       expect(hit()).to.equal(11);
     });
@@ -288,8 +288,8 @@ describe("BattleDamageSystem", function() {
         entity:target, damageTypes:{ slash:10 }, hitLocation:EquipmentSlot.chest });
 
       expect(damage).to.equal(48);
-      expect(StatusEffects(target).has('vulnerable')).to.be.false;
-      expect(StatusEffects(target).has('damned')).to.be.false;
+      expect(StatusEffects(target).hasVulnerable()).to.be.false;
+      expect(StatusEffects(target).hasDamned()).to.be.false;
     });
 
     // The kobold species resists 10 slash - their scales - which reduces physical damage at every hit location.

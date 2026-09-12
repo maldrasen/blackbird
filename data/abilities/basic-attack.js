@@ -35,7 +35,7 @@ function canCharacterAttack() {
 
 function isHidden() {
   const acting = BattleSystem.getRound().getActing();
-  return StatusEffects(acting).has('hidden');
+  return StatusEffects(acting).hasHidden();
 }
 
 function executeBasicAttack() {

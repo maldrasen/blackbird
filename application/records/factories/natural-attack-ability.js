@@ -62,7 +62,7 @@ global.NaturalAttackAbility = (function() {
     const round = BattleSystem.getRound();
     const target = round.getTarget();
 
-    if (StatusEffects(round.getActing()).has('hidden')) { return false; }
+    if (StatusEffects(round.getActing()).hasHidden()) { return false; }
     if (options.canTarget && options.canTarget(target) === false) { return false; }
     if (options.hitLocation && BattleHelper.hasHitLocation(target, options.hitLocation) === false) { return false; }
 

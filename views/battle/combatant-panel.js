@@ -109,7 +109,7 @@ global.CombatantPanel = function(type, entity) {
     X.addClass(element, 'unhiding');
     setTimeout(() => {
       X.removeClass(element,'unhiding');
-      if (StatusEffects(entity).has('hidden') === false) {
+      if (StatusEffects(entity).hasHidden() === false) {
         X.removeClass(element,'hidden');
       }
     },500);

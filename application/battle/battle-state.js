@@ -303,7 +303,7 @@ global.BattleState = function(data) {
     conditions[id] = condition;
   }
 
-  function canBeTargeted(id) { return isDown(id) === false && StatusEffects(id).has('hidden') === false }
+  function canBeTargeted(id) { return isDown(id) === false && StatusEffects(id).hasHidden() === false }
   function getKnockedOut() { return Object.keys(conditions).filter(id => isKnockedOut(id)); }
   function getDeadMonsters() { return monsterIds.filter(id => { return getCondition(id) === BattleCondition.dead }); }
   function getFledMonsters() { return monsterIds.filter(id => { return conditions[id] === BattleCondition.fled }); }
