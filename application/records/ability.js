@@ -27,7 +27,7 @@ global.Ability = (function() {
       getCooldown: () => { return ability.cooldown; },
       getCategory: () => { return ability.category },
       getTargetingMode: () => { return ability.targetingMode },
-      getEssence: () => { return ability.essence || 0; },
+      getEssence: entry => { return typeof ability.getEssence === 'function' ? ability.getEssence(entry) : (ability.essence || 0); },
       hasOverlay: () => { return typeof ability.overlay === 'function' },
       openOverlay: () => { ability.overlay() },
       canBeUsed: () => { return (ability.canBeUsed == null) ? true : ability.canBeUsed(); },

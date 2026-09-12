@@ -36,6 +36,7 @@
 //     getAttackText     Called with the weaver context in place of the attack text template lookup.
 //     getAccuracyBonus  Passed through to the ability record.
 //     getDamageBonus    Passed through to the ability record.
+//     getEssence        Called with the monster's ability entry in place of the essence value.
 //
 global.NaturalAttackAbility = (function() {
 
@@ -48,6 +49,7 @@ global.NaturalAttackAbility = (function() {
       category: 'physical',
       targetingMode: TargetingMode.enemyInWeaponRange,
       essence: options.essence,
+      getEssence: options.getEssence,
       canBeUsed: () => canBeUsed(options),
       execute: () => execute(code, options),
       cooldown: options.cooldown,
