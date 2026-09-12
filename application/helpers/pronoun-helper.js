@@ -1,9 +1,5 @@
 global.PronounHelper = (function() {
 
-  // Enby characters use the ze/zem/zir set rather than singular they. Every woven verb is conjugated third-person
-  // singular ("{B:he} lies back"), which "they" can't support ("they lies"), while "ze lies back" works. The set
-  // also can't collide with the futa shi/hir set, and the object form has to survive the "{B:him}self" reflexive
-  // construction (zem + self = zemself).
   function he(gender) {
     if (gender === Gender.male) { return 'he'; }
     if (gender === Gender.female) { return 'she'; }
@@ -11,7 +7,7 @@ global.PronounHelper = (function() {
     if (gender === Gender.none) { return 'it'; }
   }
 
-  // Conjunction he's, she's, shi's, ze's, or it's
+  // Conjunction he's, she's, shi's, or it's
   function hes(gender) {
     if (gender === Gender.male) { return `he's`; }
     if (gender === Gender.female) { return `she's`; }
