@@ -8,6 +8,7 @@ NaturalAttackAbility.register('venomous-bite', {
 
   cooldown: 2500,
   onHit: (acting, target) => { addVenomEffect(acting, target); },
+  getEffects: entry => { return [Effect.poison({ strength:entry.poisonStrength, damage:entry.poisonDamage })]; },
 });
 
 // The venom takes hold when the target fails to resist it. Strength is how hard the venom is to shrug off, damage is

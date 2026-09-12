@@ -7,6 +7,6 @@ BaseMonster.register('gnawbones',{
   level: 2,
 
   prioritizedAbilities: {
-    bite: { code:'beast-bite', priority:50, damage:[10,20], speed:1000, essence:20 },
+    bite: { code:'beast-bite', priority:50, damage:[10,20], speed:1000 },
   },
 });

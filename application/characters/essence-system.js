@@ -110,6 +110,21 @@ global.EssenceSystem = (function() {
     return burstEssence(Random.averageDice(effect.damage) * ticks, targets, period);
   }
 
+  // ==================
+  //   Attack Essence
+  // ==================
+  // A natural or weapon attack hits one target per swing, with the swing's speed as the period unless the cooldown is
+  // longer. The effects are the status effects the attack applies when it hits, priced beside its damage.
+
+  function attackEssenceBreakdown({ low, high, speed, cooldown=0, effects=[] }) {
+    const period = Math.max(speed, cooldown || 0);
+    const spike = (low + high) / 2;
+    const damage = burstEssence(spike, 1, period);
+    const status = statusEssence(effects, 1, period);
+
+    return { period, targets:1, spike, damage, status, total:damage + status };
+  }
+
   // =================
   //   Spell Essence
   // =================
@@ -176,6 +191,7 @@ global.EssenceSystem = (function() {
   return {
     monsterEssenceValue,
     effectsEssenceBreakdown,
+    attackEssenceBreakdown,
     spellEssence,
     spellEssenceBreakdown,
     canLevelUp,

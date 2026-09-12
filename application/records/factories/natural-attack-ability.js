@@ -36,7 +36,11 @@
 //     getAttackText     Called with the weaver context in place of the attack text template lookup.
 //     getAccuracyBonus  Passed through to the ability record.
 //     getDamageBonus    Passed through to the ability record.
-//     getEssence        Called with the monster's ability entry in place of the essence value.
+//     getEffects        Called with the monster's ability entry, returns the status effects the attack applies when
+//                       it hits. Only used to calculate essence for now.
+//     getEssence        Called with the monster's ability entry in place of the essence value. A record with neither
+//                       an essence value nor a getEssence closure calculates its essence from the entry's attack
+//                       profile and effects.
 //
 global.NaturalAttackAbility = (function() {
 
@@ -49,7 +53,7 @@ global.NaturalAttackAbility = (function() {
       category: 'physical',
       targetingMode: TargetingMode.enemyInWeaponRange,
       essence: options.essence,
-      getEssence: options.getEssence,
+      getEssence: getEssence(code, options),
       canBeUsed: () => canBeUsed(options),
       execute: () => execute(code, options),
       cooldown: options.cooldown,
@@ -100,16 +104,31 @@ global.NaturalAttackAbility = (function() {
     }
   }
 
+  function getEssence(code, options) {
+    if (options.getEssence) { return options.getEssence; }
+    if (options.essence != null) { return undefined; }
+
+    return entry => EssenceSystem.attackEssenceBreakdown({
+      ...resolveProfile(code, options, entry, 'the essence calculation'),
+      cooldown: entry.cooldown,
+      effects: options.getEffects ? options.getEffects(entry) : [],
+    }).total;
+  }
+
   // The effective attack profile comes from the round's ability data, with the record's attack values filling in
   // anything the data doesn't set. A character using a natural attack has no data at all and gets the record's
   // values alone.
   function getAttackProfile(code, options, acting) {
     const entry = BattleSystem.getRound().getAbilityData() || {};
+    return resolveProfile(code, options, entry, `Monster[${Monster(acting).getCode()}]`);
+  }
+
+  function resolveProfile(code, options, entry, owner) {
     const [low, high] = entry.damage || options.attack.damage || [];
     const speed = entry.speed || options.attack.speed;
 
-    if (low == null || high == null) { throw new Error(`Ability[${code}] has no damage range for Monster[${Monster(acting).getCode()}]`); }
-    if (speed == null) { throw new Error(`Ability[${code}] has no speed for Monster[${Monster(acting).getCode()}]`); }
+    if (low == null || high == null) { throw new Error(`Ability[${code}] has no damage range for ${owner}`); }
+    if (speed == null) { throw new Error(`Ability[${code}] has no speed for ${owner}`); }
 
     return { ...options.attack, low, high, speed };
   }

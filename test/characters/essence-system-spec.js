@@ -22,6 +22,32 @@ describe("EssenceSystem", function() {
     });
   });
 
+  describe("attackEssenceBreakdown()", function() {
+    it("weights a swing by its average damage and swings per second", function() {
+      const breakdown = EssenceSystem.attackEssenceBreakdown({ low:25, high:50, speed:1500 });
+      expect(breakdown.spike).to.equal(37.5);
+      expect(breakdown.total).to.be.closeTo(42.1875, 0.0001);
+    });
+
+    it("uses the cooldown as the period when it outlasts the swing", function() {
+      expect(EssenceSystem.attackEssenceBreakdown({ low:10, high:20, speed:1000 }).total).to.be.closeTo(10.125, 0.0001);
+      expect(EssenceSystem.attackEssenceBreakdown({ low:10, high:20, speed:1000, cooldown:2500 }).total).to.be.closeTo(4.05, 0.0001);
+    });
+  });
+
+  describe("natural attack records", function() {
+    it("calculate their essence from the monster's entry", function() {
+      const entry = BaseMonster.lookup('emerald-yeek').getPrioritizedAbilities().venomBite;
+      // A [10,20] bite every 2500ms is worth 4.05, and the strength 15 venom's 2d6+2 over 2.22 ticks adds 3.96.
+      expect(Ability.lookup('venomous-bite').getEssence({ ...entry, cooldown:2500 })).to.be.closeTo(8.0059, 0.0001);
+      expect(Ability.lookup('beast-bite').getEssence({ damage:[10,20], speed:1000, cooldown:0 })).to.be.closeTo(10.125, 0.0001);
+    });
+
+    it("keep a hand-set essence when the record has one", function() {
+      expect(Ability.lookup('dick-punch').getEssence({ cooldown:1000 })).to.equal(75);
+    });
+  });
+
   describe("spellEssence()", function() {
     it("weights damage by the size of each hit and the damage per second", function() {
       // Ember at power level 1: 1d4 averages 2.5, and the medium cast takes 1000ms plus the 500ms release.
