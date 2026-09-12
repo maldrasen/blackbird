@@ -34,6 +34,7 @@ global.Effect = (function() {
     damage: (damageType, damage) => { return { type:'damage', damageType, damage }; },
     blind: options => { return { type:'status-effect', code:'blind', ...options }; },
     stun: options => { return { type:'status-effect', code:'stun', ...options }; },
+    poison: options => { return { type:'status-effect', code:'poison', ...options }; },
     increasePotency: level => { return { type:'increase-potency', level }; },
   };
 

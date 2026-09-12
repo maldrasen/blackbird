@@ -17,18 +17,34 @@ global.EffectMath = (function() {
 
   // A turn count effect is counted as a second per turn, which is close enough to a typical action time.
   function statusDurationSeconds(effect) {
-    switch (StatusEffectType.lookup(effect.code).getDurationType()) {
+    const type = StatusEffectType.lookup(effect.code);
+
+    switch (type.getDurationType()) {
       case StatusEffectDurationType.turnCount: return effect.count || 1;
       case StatusEffectDurationType.fixedTime: return effect.duration / 1000;
+      case StatusEffectDurationType.untilResisted: return expectedTicks(effect) * intervalOf(effect, type) / 1000;
     }
 
     throw new Error(`Unsupported duration type for the [${effect.code}] status effect.`);
+  }
+
+  // An until-resisted effect always gets its first tick, then rolls to shrug itself off after every one at the
+  // strength it was applied with, so each further tick is another roll the victim loses at the land chance.
+  function expectedTicks(effect) {
+    return 1 / (1 - landChance(effect.strength));
+  }
+
+  function intervalOf(effect, type) {
+    const interval = effect.interval != null ? effect.interval : type.getInterval();
+    if (interval == null) { throw new Error(`The [${effect.code}] status effect has no interval.`); }
+    return interval;
   }
 
   return {
     averageDamage,
     landChance,
     statusDurationSeconds,
+    expectedTicks,
   };
 
 })();
