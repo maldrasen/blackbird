@@ -89,8 +89,8 @@ global.StatusEffects = function(parentId) {
     hasPoised: () => { return has('poised'); },
     hasStun: () => { return has('stun'); },
     hasParalysis: () => { return has('paralysis'); },
+    hasPoison: () => { return has('poison'); },
     hasVulnerable: () => { return has('vulnerable'); },
-
   };
 
 }

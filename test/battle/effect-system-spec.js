@@ -111,8 +111,8 @@ describe("EffectSystem", function() {
       Random.stubRollDice(4);
       const messages = throwBlasto(state, state.getEntityAtPosition('M',0,1));
 
-      expect(StatusEffects(victim).has('blind')).to.equal(true);
-      expect(StatusEffects(victim).has('stun')).to.equal(true);
+      expect(StatusEffects(victim).hasBlind()).to.equal(true);
+      expect(StatusEffects(victim).hasStun()).to.equal(true);
 
       const removal = state.getTurnOrder().find(entry => entry.key === `status.${victim}.blind`);
       expect(removal.time).to.equal(now + 3000);
@@ -130,8 +130,8 @@ describe("EffectSystem", function() {
       Random.stubRollDice(4);
       const messages = throwBlasto(state, state.getEntityAtPosition('M',0,1));
 
-      expect(StatusEffects(victim).has('blind')).to.equal(false);
-      expect(StatusEffects(victim).has('stun')).to.equal(false);
+      expect(StatusEffects(victim).hasBlind()).to.equal(false);
+      expect(StatusEffects(victim).hasStun()).to.equal(false);
       expect(getHealth(victim)).to.equal(96);
       expect(messages[1].text).to.include('takes 4 damage!');
     });
@@ -149,7 +149,7 @@ describe("EffectSystem", function() {
       const messages = throwBlasto(state, state.getEntityAtPosition('M',0,1));
 
       expect(state.isKnockedOut(victim)).to.equal(true);
-      expect(StatusEffects(victim).has('blind')).to.equal(false);
+      expect(StatusEffects(victim).hasBlind()).to.equal(false);
       expect(messages.length).to.equal(3);
       expect(messages[1].text).to.include('takes 6 damage!');
       expect(messages[2].text).to.include('was knocked out!');

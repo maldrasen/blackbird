@@ -76,7 +76,7 @@ describe("StatusEffectSystem", function() {
       BattleSystem.addStatus(acting, 'stun', { count:1 });
       runRound(state, acting);
 
-      expect(StatusEffects(acting).has('stun')).to.be.false;
+      expect(StatusEffects(acting).hasStun()).to.be.false;
     });
 
     it("keeps an effect the acting entity picked up during their own round", function() {
@@ -106,7 +106,7 @@ describe("StatusEffectSystem", function() {
       BattleSystem.addStatus(other, 'stun', { count:1 });
       runRound(state, acting);
 
-      expect(StatusEffects(other).has('stun')).to.be.true;
+      expect(StatusEffects(other).hasStun()).to.be.true;
     });
   });
 
@@ -193,7 +193,7 @@ describe("StatusEffectSystem", function() {
       state.moveToTopOfTurnOrder({ type:'status', id:victim, code:'blind' });
       BattleSystem.advanceBattle();
 
-      expect(StatusEffects(victim).has('blind')).to.be.false;
+      expect(StatusEffects(victim).hasBlind()).to.be.false;
       expect(state.getTurnOrder().filter(entry => entry.type === 'status')).to.be.empty;
       expect(HealthComponent.lookup(victim).currentHealth).to.equal(100);
 
@@ -211,7 +211,7 @@ describe("StatusEffectSystem", function() {
       BattleSystem.addStatus(victim, 'poison', { strength:10, damage:{ x:1, d:6, p:2 }});
       BattleSystem.removeStatus(victim, 'poison');
 
-      expect(StatusEffects(victim).has('poison')).to.be.false;
+      expect(StatusEffects(victim).hasPoison()).to.be.false;
       expect(findEntry(state, victim, 'poison')).to.be.undefined;
     });
 
@@ -284,7 +284,7 @@ describe("StatusEffectSystem", function() {
       BattleSystem.advanceBattle();
 
       expect(HealthComponent.lookup(victim).currentHealth).to.equal(94);
-      expect(StatusEffects(victim).has('poison')).to.be.false;
+      expect(StatusEffects(victim).hasPoison()).to.be.false;
       expect(state.getTurnOrder().filter(entry => entry.type === 'status')).to.be.empty;
 
       const messages = BattleSystem.getRound().getMessages();
@@ -307,7 +307,7 @@ describe("StatusEffectSystem", function() {
       BattleSystem.advanceBattle();
 
       expect(HealthComponent.lookup(victim).currentHealth).to.equal(94);
-      expect(StatusEffects(victim).has('poison')).to.be.true;
+      expect(StatusEffects(victim).hasPoison()).to.be.true;
       expect(findEntry(state, victim, 'poison').time).to.equal(start + 500);
     });
 

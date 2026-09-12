@@ -9,7 +9,7 @@ describe("BattleSystem", function() {
 
       BattleSystem.addStatus(entity,'blind',{ duration:1000 });
 
-      expect(StatusEffects(entity).has('blind')).to.be.true;
+      expect(StatusEffects(entity).hasBlind()).to.be.true;
       expect(StatusEffects(entity).get('blind').duration).to.equal(1000);
     });
 
@@ -48,13 +48,13 @@ describe("BattleSystem", function() {
       BattleSystem.addStatus(entity,'off-balance',{ count:1 });
       BattleSystem.addStatus(entity,'poised',{ count:1 });
 
-      expect(StatusEffects(entity).has('off-balance')).to.be.false;
-      expect(StatusEffects(entity).has('poised')).to.be.true;
+      expect(StatusEffects(entity).hasOffBalance()).to.be.false;
+      expect(StatusEffects(entity).hasPoised()).to.be.true;
 
       BattleSystem.addStatus(entity,'off-balance',{ count:1 });
 
-      expect(StatusEffects(entity).has('poised')).to.be.false;
-      expect(StatusEffects(entity).has('off-balance')).to.be.true;
+      expect(StatusEffects(entity).hasPoised()).to.be.false;
+      expect(StatusEffects(entity).hasOffBalance()).to.be.true;
     });
   });
 
@@ -98,8 +98,8 @@ describe("BattleSystem", function() {
 
       BattleSystem.reset();
 
-      expect(StatusEffects(character).has('poised')).to.be.false;
-      expect(StatusEffects(character).has('paralysis')).to.be.true;
+      expect(StatusEffects(character).hasPoised()).to.be.false;
+      expect(StatusEffects(character).hasParalysis()).to.be.true;
     });
   });
 

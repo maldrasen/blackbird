@@ -13,7 +13,7 @@ global.FormationManager = (function() {
       state.setHomePosition(moving, column.front.position);
     }
 
-    if (StatusEffects(moving).has('hidden')) {
+    if (StatusEffects(moving).hasHidden()) {
       BattleSystem.removeStatus(moving, 'hidden');
     }
   }

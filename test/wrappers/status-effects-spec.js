@@ -53,14 +53,14 @@ describe("StatusEffects", function() {
       const poised = StatusEffects(entity).apply('poised', { count:1 });
 
       expect(poised.removed).to.deep.equal(['off-balance']);
-      expect(StatusEffects(entity).has('off-balance')).to.be.false;
-      expect(StatusEffects(entity).has('poised')).to.be.true;
+      expect(StatusEffects(entity).hasOffBalance()).to.be.false;
+      expect(StatusEffects(entity).hasPoised()).to.be.true;
 
       const offBalance = StatusEffects(entity).apply('off-balance', { count:1 });
 
       expect(offBalance.removed).to.deep.equal(['poised']);
-      expect(StatusEffects(entity).has('poised')).to.be.false;
-      expect(StatusEffects(entity).has('off-balance')).to.be.true;
+      expect(StatusEffects(entity).hasPoised()).to.be.false;
+      expect(StatusEffects(entity).hasOffBalance()).to.be.true;
     });
   });
 
@@ -78,7 +78,7 @@ describe("StatusEffects", function() {
 
       StatusEffects(entity).remove('stun');
 
-      expect(StatusEffects(entity).has('stun')).to.be.false;
+      expect(StatusEffects(entity).hasStun()).to.be.false;
       expect(Registry.entityExists(id)).to.be.false;
     });
   });
@@ -115,7 +115,7 @@ describe("StatusEffects", function() {
       expect(StatusEffectComponent.of(wolf).length).to.equal(2);
       expect(wolfStatus.get('poison').interval).to.equal(500);
       expect(wolfStatus.get('hidden')).to.be.null;
-      expect(rabbitStatus.has('hidden')).to.be.true;
+      expect(rabbitStatus.hasHidden()).to.be.true;
 
       const codes = StatusEffects(wolf).list().map(effect => effect.code);
       expect(codes).to.have.members(['stun','poison']);
