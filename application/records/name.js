@@ -6,8 +6,9 @@ global.Name = (function() {
     surname: {},
   };
 
+  // If gender is set to none (as is the case for some titles) then the name is added to both lists.
   function register(type, gender, names) {
-    if (gender !== Gender.enby) {
+    if (gender !== Gender.none) {
       return nameData[type][gender] = names;
     }
     nameData[type][Gender.male] = nameData[type][Gender.male].concat(names);
@@ -15,14 +16,12 @@ global.Name = (function() {
   }
 
   // Get a random name from the normal name lists based on the character's gender. (Some species, demonic entities and
-  // such, will have unique name lists to pull from.) Futa characters will pull from the feminine list, enby characters
-  // will randomly pick one to use. Once we decide which name list to use we enter a while loop, picking names randomly
-  // until we find unique character name.
+  // such, will have unique name lists to pull from.) Futa characters will pull from the feminine list. Once we decide
+  // which name list to use we enter a while loop, picking names randomly until we find unique character name.
   function getRandom(genderCode, speciesCode) {
-    let list = nameData.name.female;
+    if (genderCode == null || genderCode === Gender.none) { throw new Error(`A character needs a gender.`) }
 
-    if (genderCode === Gender.male) { list = nameData.name.male; }
-    if (genderCode === Gender.enby) { list = Random.roll(10) < 5 ? nameData.name.male : nameData.name.female }
+    const list = (genderCode === Gender.male) ? nameData.name.male : nameData.name.female;
 
     while(true) {
       let names = {
@@ -44,18 +43,19 @@ global.Name = (function() {
     }
   }
 
+  // TODO: Dedupe this arrays with a set as titles will appear in both lists.
+  function getFutaTitles() { return [...nameData.title.male, ...nameData.title.female]; }
+
   function getRandomTitle(genderCode) {
-    let list = nameData.title.female;
-    if (genderCode === Gender.male) { list = nameData.title.male; }
-    if (genderCode === Gender.enby) { list = Random.roll(10) < 5 ? nameData.title.male : nameData.title.female }
-    return Random.from(list);
+    switch (genderCode) {
+      case Gender.male: return Random.from(nameData.title.male);
+      case Gender.female: return Random.from(nameData.title.female);
+      case Gender.futa: return Random.from(getFutaTitles());
+    }
   }
 
   function getRandomSurname(genderCode) {
-    let list = nameData.surname.female;
-    if (genderCode === Gender.male) { list = nameData.surname.male; }
-    if (genderCode === Gender.enby) { list = Random.roll(10) < 5 ? nameData.surname.male : nameData.surname.female }
-    return Random.from(list);
+    return (genderCode === Gender.male) ? Random.from(nameData.surname.male) : Random.from(nameData.surname.female);
   }
 
   // names = {name:{name}, title:{name}, surname:{name}}

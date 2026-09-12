@@ -1,6 +1,6 @@
 Species.register(SpeciesCode.equian, {
   name: 'Equian',
-  genderRatio: { female:40, futa:20, male:40, enby:5 },
+  genderRatio: { female:40, futa:20, male:40 },
 
   attributes: {
     strength: 'A',
@@ -25,7 +25,6 @@ Species.register(SpeciesCode.equian, {
   },
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby,   SpeciesCode.equian),
     female: ArchetypeDistribution(Gender.female, SpeciesCode.equian),
     futa:   ArchetypeDistribution(Gender.futa,   SpeciesCode.equian),
     male:   ArchetypeDistribution(Gender.male,   SpeciesCode.equian),

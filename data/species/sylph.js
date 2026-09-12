@@ -1,6 +1,6 @@
 Species.register(SpeciesCode.sylph, {
   name: 'Sylph',
-  genderRatio: { female:75, futa:25, male:5, enby:20 },
+  genderRatio: { female:75, futa:25, male:5 },
 
   attributes: {
     strength: 'F',
@@ -24,7 +24,6 @@ Species.register(SpeciesCode.sylph, {
   },
 
   archetypes: {
-    enby:   ArchetypeDistribution(Gender.enby,   SpeciesCode.sylph),
     female: ArchetypeDistribution(Gender.female, SpeciesCode.sylph),
     futa:   ArchetypeDistribution(Gender.futa,   SpeciesCode.sylph),
     male:   ArchetypeDistribution(Gender.male,   SpeciesCode.sylph),

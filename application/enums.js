@@ -175,7 +175,6 @@ global.Gender = {
   male: 'male',
   female: 'female',
   futa: 'futa',
-  enby: 'enby',
   none: 'none',
 };
 

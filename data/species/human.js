@@ -1,6 +1,6 @@
 Species.register(SpeciesCode.human, {
   name: 'Human',
-  genderRatio: { female:40, futa:20, male:40, enby:5 },
+  genderRatio: { female:40, futa:20, male:40 },
 
   attributes: {
     strength: 'C',

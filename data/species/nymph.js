@@ -1,6 +1,6 @@
 Species.register(SpeciesCode.nymph, {
   name: 'Nymph',
-  genderRatio: { female:60, futa:40, male:0, enby:0 },
+  genderRatio: { female:60, futa:40, male:0 },
 
   attributes: {
     strength: 'D',

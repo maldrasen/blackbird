@@ -2,7 +2,7 @@ const greetingPackage = WeaverPackage('kobold-greeting');
 
 Species.register(SpeciesCode.kobold, {
   name: 'Kobold',
-  genderRatio: { female:40, futa:20, male:40, enby:10 },
+  genderRatio: { female:40, futa:20, male:40 },
 
   attributes: {
     strength: 'D',
