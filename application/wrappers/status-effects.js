@@ -81,7 +81,16 @@ global.StatusEffects = function(parentId) {
     get,
     has,
     remove,
-    list
+    list,
+    hasBlind: () => { return has('blind'); },
+    hasDamned: () => { return has('damned'); },
+    hasHidden: () => { return has('hidden'); },
+    hasOffBalance: () => { return has('off-balance'); },
+    hasPoised: () => { return has('poised'); },
+    hasStun: () => { return has('stun'); },
+    hasParalysis: () => { return has('paralysis'); },
+    hasVulnerable: () => { return has('vulnerable'); },
+
   };
 
 }

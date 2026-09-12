@@ -20,10 +20,12 @@ describe("DamageRoll", function() {
 
   // The stubbed values are consumed in order: attack crit roll, attack value roll, defend crit roll, defend value
   // roll, then the damage roll itself. A crit (98) or fumble (2) consumes only its crit roll.
-  function contestDamage(state, stubs) {
+  function contestDamage(state, stubs, status=null) {
     const attacker = state.getEntityAtPosition('P',0,2);
     const defender = state.getEntityAtPosition('P',1,2);
     setStrength(attacker, 50);
+
+    if (status) { BattleSystem.addStatus(attacker, status, { count:1 }); }
 
     Random.stubBetween(...stubs);
 
@@ -99,6 +101,19 @@ describe("DamageRoll", function() {
 
     expect(damage.getDamageTypes()).to.deep.equal({ slash:80 });
     expect(damage.getMessage().text).to.equal(`{T:TargetName} was left wide open!`);
+  });
+
+  // Advantage and disadvantage make the attack roll twice, so the stubs supply a second attack crit and value roll.
+  it("adds half again to the damage while poised", function() {
+    const damage = contestDamage(startBattle(), [50, 1, 50, 1, 50, 1, 80], 'poised');
+
+    expect(damage.getDamageTypes()).to.deep.equal({ slash:60 });
+  });
+
+  it("halves the damage while off balance", function() {
+    const damage = contestDamage(startBattle(), [50, 1, 50, 1, 50, 1, 80], 'off-balance');
+
+    expect(damage.getDamageTypes()).to.deep.equal({ slash:20 });
   });
 
 });

@@ -4,17 +4,18 @@ Ability.register('pass',{
 
   canBeUsed: () => {
     const statusEffects = StatusEffects(BattleSystem.getRound().getActing());
-    return statusEffects.has('stun') || statusEffects.has('paralysis');
+    return statusEffects.hasStun() || statusEffects.hasParalysis();
   },
 
   execute: () => {
     const round = BattleSystem.getRound();
     const acting = round.getActing();
+    const status = StatusEffects(acting);
 
     round.addTime(1000,false);
 
-    if (StatusEffects(acting).has('stun')) {
-      const count = StatusEffects(acting).get('stun').count;
+    if (status.hasStun()) {
+      const count = status.get('stun').count;
       round.addMessage({
         text: (count === 1) ? `{A:ActingName} recovers from being {S/nst}Stunned{/S}` : `{A:ActingName} can't act this turn.`
       });

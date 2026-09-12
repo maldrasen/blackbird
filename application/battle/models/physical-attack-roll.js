@@ -43,9 +43,9 @@ global.PhysicalAttackRoll = function(attacker, target) {
 
   function getRollMode() {
     const statusEffects = StatusEffects(attacker);
-    const poised = statusEffects.has('poised');
-    const blind = statusEffects.has('blind');
-    const offBalance = statusEffects.has('off-balance');
+    const poised = statusEffects.hasPoised();
+    const blind = statusEffects.hasBlind();
+    const offBalance = statusEffects.hasOffBalance();
 
     if (poised && blind) { return RollMode.normal; }
     if (poised) { return RollMode.advantage; }

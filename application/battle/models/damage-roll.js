@@ -8,7 +8,7 @@ global.DamageRoll = function(attacker, attackRoll, defendRoll) {
   const damageFactor = (ability == null) ? 1 : ability.getDamageBonus();
   const damageTypes = {};
 
-  let rawDamage = Math.round((damageRoll / 100) * strength * damageFactor);
+  let rawDamage = Math.round((damageRoll / 100) * strength * damageFactor * getStanceFactor());
   if (attackType === 'crit') { rawDamage = rawDamage*2; }
   if (attackType === 'fumble') { rawDamage = Math.ceil(rawDamage/2); }
   if (defendType === 'crit') { rawDamage = Math.ceil(rawDamage/2); }
@@ -34,6 +34,13 @@ global.DamageRoll = function(attacker, attackRoll, defendRoll) {
   if (attackType === 'normal') {
     if (defendType === 'crit') { message = `{T:TargetName} was almost able to avoid it.` }
     if (defendType === 'fumble') { message = `{T:TargetName} was left wide open!`; }
+  }
+
+  function getStanceFactor() {
+    const statusEffects = StatusEffects(attacker);
+    if (statusEffects.hasPoised()) { return 1.5; }
+    if (statusEffects.hasOffBalance()) { return 0.5; }
+    return 1;
   }
 
   return {

@@ -33,10 +33,10 @@ global.DefendRoll = function(defender, attacker, attackRoll) {
 
   function rollDefendSkill() {
     const statusEffects = StatusEffects(defender);
-    const offBalance = statusEffects.has('off-balance');
-    const poised = statusEffects.has('poised');
-    const stunned = statusEffects.has('stun');
-    const blind = statusEffects.has('blind');
+    const offBalance = statusEffects.hasOffBalance();
+    const poised = statusEffects.hasPoised();
+    const stunned = statusEffects.hasStun();
+    const blind = statusEffects.hasBlind();
 
     if (offBalance && poised) {
       throw new Error(`Entity:${defender} is both poised and off-balance, which is not be allowed.`)
