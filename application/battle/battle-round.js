@@ -93,9 +93,11 @@ global.BattleRound = function(acting, type=null) {
   // ====================
   //    Status Effects
   // ====================
+  // We need a way to track status effects that were added this round. A status effect like poised can be added on the
+  // character's turn (when they use defend) or on an enemy turn (when they crit at their defend roll). Poised only
+  // lasts one round though, so we need to check to see if the status was applied this round, and only remove poised
+  // if it wasn't.
 
-  // The status effects the acting entity picked up during their own round. A turn count effect applied this round
-  // shouldn't have a turn counted against it when the round ends.
   function addAppliedStatus(code) { appliedStatuses.add(code); }
   function hasAppliedStatus(code) { return appliedStatuses.has(code); }
 
