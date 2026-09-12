@@ -58,22 +58,7 @@ global.ArticleAppraiser = (function() {
     if (value == null) {
       throw new Error(`No value has been set for the [${effect.code}] status effect.`);
     }
-    return value * durationOfStatusEffect(effect) * landChance(effect.strength);
-  }
-
-  function durationOfStatusEffect(effect) {
-    switch (StatusEffectType.lookup(effect.code).getDurationType()) {
-      case StatusEffectDurationType.turnCount: return effect.count || 1;
-      case StatusEffectDurationType.fixedTime: return effect.duration / 1000;
-    }
-
-    throw new Error(`Unsupported duration type for the [${effect.code}] status effect.`);
-  }
-
-  // The chance that an effect lands on a target with no resistance. This approximates the contest in ResistRoll, where
-  // strength 0 is a coin flip and strength 100 lands about four times out of five.
-  function landChance(strength) {
-    return 0.5 + (0.5 * Math.tanh((strength || 0) / 150));
+    return value * EffectMath.statusDurationSeconds(effect) * EffectMath.landChance(effect.strength);
   }
 
   // An item that can be used on a single target is slightly more valuable than one that can only be used on yourself,

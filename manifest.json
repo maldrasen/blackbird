@@ -121,6 +121,7 @@
     "application/dungeon/systems/dungeon-navigation-system.js",
     "application/dungeon/systems/dungeon-theme-system.js",
     "application/dungeon/systems/trap-system.js",
+    "application/effect-math.js",
     "application/effect-system.js",
     "application/effect.js",
     "application/enlighten/enlighten-state.js",
