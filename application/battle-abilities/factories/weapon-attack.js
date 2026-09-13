@@ -21,7 +21,7 @@ function canMonsterAttack() {
   if (weapon == null) { return false; }
   if (isHidden()) { return false; }
 
-  return BattleHelper.isAttackWithinRange(weapon.reach, round.getActingPosition(), round.getTargetPosition());
+  return BattleHelper.isAttackWithinRange(weapon.getBaseWeapon().getReach(), round.getActingPosition(), round.getTargetPosition());
 }
 
 function canCharacterAttack() {
@@ -85,7 +85,7 @@ function calculateAttacks() {
   let time = 0;
 
   while (time < 1000) {
-    attacks.push(weapons[hand].id);
+    attacks.push(weapons[hand].getId());
     time += getStrikeTime(weapons[hand], dualWielding);
     hand = (hand === 'primary' && dualWielding) ? 'secondary' : 'primary';
   }
@@ -95,7 +95,7 @@ function calculateAttacks() {
 
 // A character with a weapon in each hand swings each of them 25% faster.
 function getStrikeTime(weapon, dualWielding) {
-  const time = BaseWeapon.lookup(weapon.base).getSpeed() * BattleSystem.getRound().getSpeedFactor();
+  const time = weapon.getBaseWeapon().getSpeed() * BattleSystem.getRound().getSpeedFactor();
   return dualWielding ? Math.round(time * 0.75) : time;
 }
 

@@ -11,8 +11,6 @@ global.BattleRound = function(acting, type=null) {
   const appliedStatuses = new Set();
 
   let ability;
-  let primaryWeapon = {};
-  let secondaryWeapon = {};
   let target;
   let targetPosition;
   let time = 0;
@@ -45,36 +43,21 @@ global.BattleRound = function(acting, type=null) {
   // =============
   //    Weapons
   // =============
+  // The weapons the acting entity attacks with. Shields are purely defensive, so one in the off hand doesn't count
+  // as a secondary weapon.
 
-  function compileWeaponData() {
-    if (EquipmentComponent.lookup(acting) != null) {
-      const equipment = EquipmentManager(acting);
-      const main = equipment.getSlot(EquipmentSlot.primary);
-      const off = equipment.getSlot(EquipmentSlot.secondary);
+  function getPrimaryWeapon() { return getWeaponInSlot(EquipmentSlot.primary); }
 
-      if (main && WeaponComponent.lookup(main)) { primaryWeapon = distillWeapon(main); }
-      if (off && WeaponComponent.lookup(off) && isShield(off) === false) { secondaryWeapon = distillWeapon(off); }
-    }
-
-    if (primaryWeapon.base == null) { primaryWeapon = null; }
-    if (secondaryWeapon.base == null) { secondaryWeapon = null; }
+  function getSecondaryWeapon() {
+    const weapon = getWeaponInSlot(EquipmentSlot.secondary);
+    return (weapon && weapon.getBaseWeapon().getType() === 'shield') ? null : weapon;
   }
 
-  // Shields are purely defensive, so one in the off-hand doesn't count as a secondary attack weapon.
-  function isShield(itemId) {
-    return Weapon(itemId).getBaseWeapon().getType() === 'shield';
-  }
+  function getWeaponInSlot(slot) {
+    if (EquipmentComponent.lookup(acting) == null) { return null; }
 
-  function distillWeapon(itemId) {
-    const weapon = Weapon(itemId);
-    const baseWeapon = weapon.getBaseWeapon();
-    return {
-      id: itemId,
-      base: baseWeapon.getCode(),
-      reach: baseWeapon.getReach(),
-      name: weapon.getName(),
-      textKey: weapon.getTextKey(),
-    };
+    const itemId = EquipmentManager(acting).getSlot(slot);
+    return (itemId && WeaponComponent.lookup(itemId)) ? Weapon(itemId) : null;
   }
 
   // ====================
@@ -169,9 +152,8 @@ global.BattleRound = function(acting, type=null) {
     getCooldown,
     applyCooldown,
 
-    compileWeaponData,
-    getPrimaryWeapon: () => { return primaryWeapon; },
-    getSecondaryWeapon: () => { return secondaryWeapon; },
+    getPrimaryWeapon,
+    getSecondaryWeapon,
 
     addAppliedStatus,
     hasAppliedStatus,

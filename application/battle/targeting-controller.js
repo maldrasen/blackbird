@@ -46,7 +46,7 @@ global.TargetingController = (function() {
     const state = BattleSystem.getState();
     const round = BattleSystem.getRound();
     const position = round.getActingPosition();
-    const reach = round.getPrimaryWeapon().reach;
+    const reach = round.getPrimaryWeapon().getBaseWeapon().getReach();
 
     return getTargetableMonsters().filter(monster =>
       BattleHelper.isAttackWithinRange(reach, position, state.getPosition(monster)));

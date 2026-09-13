@@ -53,13 +53,11 @@ global.BattleSystem = (function() {
   function startRound() {
     const next = state.getNext();
     round = BattleRound(next.id, next.type);
-    round.compileWeaponData();
     BattleInterface.highlightActing();
   }
 
   function specRound(acting,options={}) {
     round = BattleRound(acting);
-    round.compileWeaponData();
     if (options.target) { round.setTarget(options.target); }
   }
 
