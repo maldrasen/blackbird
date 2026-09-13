@@ -39,7 +39,9 @@
 //     getAccuracyBonus  Passed through to the ability record.
 //     getDamageBonus    Passed through to the ability record.
 //     getEffects        Called with the monster's ability entry, returns the status effects the attack applies when
-//                       it hits. Only used to calculate essence for now.
+//                       it hits. Each one rolls its own resistance, and the same list prices the attack's essence.
+//     messageForEntity  Called with (target, results) after the effects are applied, where results maps each effect
+//                       code to whether it landed. Returns the message to add, or null for none.
 //
 global.NaturalAttackAbility = (function() {
 
@@ -97,10 +99,25 @@ global.NaturalAttackAbility = (function() {
 
     if (contest.isHit()) {
       if (options.onHit) { options.onHit(acting, target); }
+      applyEffects(options, target);
       PhysicalAttackSystem.processHit(attackRoll, defendRoll);
     } else {
       PhysicalAttackSystem.processMiss(attackRoll, defendRoll);
     }
+  }
+
+  function applyEffects(options, target) {
+    if (options.getEffects == null) { return; }
+
+    const round = BattleSystem.getRound();
+    const results = {};
+
+    options.getEffects(round.getAbilityData() || {}).forEach(effect => {
+      results[effect.code] = EffectSystem.applyStatus(target, effect);
+    });
+
+    const message = options.messageForEntity ? options.messageForEntity(target, results) : null;
+    if (message) { round.addMessage({ text:message }); }
   }
 
   function getEssenceBreakdown(code, options) {
