@@ -5,7 +5,6 @@
 //
 // NaturalAttackAbility.register('face-bite', {
 //   name: 'Bite your face off',
-//   essence: 100,
 //   attack: {
 //     skill: 'daggers',
 //     textKey: 'bite',
@@ -17,18 +16,21 @@
 //   onHit: (acting, target) => { addFaceRemovedEffect(target); },
 // });
 //
-// The damage range, speed, and essence of a natural attack live on the acting monster's ability entry rather than
-// the ability record, so that a kobold bite can be a different class of attack than a dragon bite:
+// The damage range and speed of a natural attack live on the acting monster's ability entry rather than the ability
+// record, so that a kobold bite can be a different class of attack than a dragon bite:
 //
 //   prioritizedAbilities: {
-//     'bite': { code:'beast-bite', priority:50, damage:[25,50], speed:1500, essence:50 },
+//     'bite': { code:'beast-bite', priority:50, damage:[25,50], speed:1500 },
 //   }
 //
 // The record's attack may still carry damage:[low,high] and speed values, which act as defaults for entries that
-// don't set their own.
+// don't set their own. The attack's essence is calculated from the entry's damage range, speed, cooldown, and effects
+// unless the record sets an essence value of its own, which a record whose effects can't be expressed as plain data
+// should do.
 //
 // Optional keys:
 //     name              Only needed when a character could use the ability - monster abilities never display one.
+//     essence           A hand-set essence value in place of the calculated one.
 //     canTarget         An extra usability check on the target.
 //     hitLocation       Forces the strike to a location instead of rolling one.
 //     cooldown          Milliseconds before the attacker can use the ability again.
@@ -38,9 +40,6 @@
 //     getDamageBonus    Passed through to the ability record.
 //     getEffects        Called with the monster's ability entry, returns the status effects the attack applies when
 //                       it hits. Only used to calculate essence for now.
-//     getEssenceBreakdown  Called with the monster's ability entry in place of the essence value, returning the
-//                       EssenceSystem breakdown. A record with neither an essence value nor this closure calculates
-//                       its essence from the entry's attack profile and effects.
 //
 global.NaturalAttackAbility = (function() {
 
@@ -105,7 +104,6 @@ global.NaturalAttackAbility = (function() {
   }
 
   function getEssenceBreakdown(code, options) {
-    if (options.getEssenceBreakdown) { return options.getEssenceBreakdown; }
     if (options.essence != null) { return undefined; }
 
     return entry => EssenceSystem.attackEssenceBreakdown({
