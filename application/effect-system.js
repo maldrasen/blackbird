@@ -68,6 +68,8 @@ global.EffectSystem = (function() {
     return BattleDamageSystem.applyDamage({ entity:entity, damageTypes:{ [effect.damageType]:damage }});
   }
 
+  // A status effect rolls its own resistance when it lands, so anything that applies one outside a spell or consumable
+  // (a natural attack's venom) goes through here as well.
   function applyStatus(entity, effect) {
     const { type, code, ...values } = effect;
     const resist = ResistRoll(entity, StatusEffectType.lookup(code).getDamageType(), effect.strength);
@@ -80,6 +82,7 @@ global.EffectSystem = (function() {
 
   return {
     applyDuringBattle,
+    applyStatus,
     getAffectedEntities,
   };
 

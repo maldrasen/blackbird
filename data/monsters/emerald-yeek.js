@@ -16,9 +16,9 @@ BaseMonster.register('emerald-yeek',{
       speed: 1000,
       poisonStrength: 15,
       poisonDamage: { x:2, d:6, p:2 },
-      essence: 100 },
+    },
 
-    bite: { code:'beast-bite', priority:50, damage:[10,20], speed:1000, essence:10 },
+    bite: { code:'beast-bite', priority:50, damage:[10,20], speed:1000 },
   },
 
   lootGroups: {

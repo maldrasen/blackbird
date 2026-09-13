@@ -16,11 +16,7 @@ global.Monster = function(id) {
   function getNegotiationStyle() { return Archetype.lookup(getArchetype()).getNegotiationStyle(); }
   function getSkill(code) { return SkillsComponent.lookup(id)[code]; }
 
-  // The prioritized abilities are maps keyed by an ability key, so an ability defined in the base monster overrides
-  // an ability from the more generalized monster type that shares its key.
-  function getAbilityMap() {
-    return { ...getType().getPrioritizedAbilities(), ...getBaseMonster().getPrioritizedAbilities() };
-  }
+  function getAbilityMap() { return getBaseMonster().getAbilityMap(); }
 
   // Find the key of the highest priority ability with the given code. Several entries can share a code, casting
   // different spells for instance, so the priority breaks the tie.
@@ -37,10 +33,9 @@ global.Monster = function(id) {
     return getAbilityMap()[key] || defaultAbilities[key];
   }
 
-  // The cooldown set on the monster's ability entry overrides the cooldown on the ability record itself.
+  // A default ability is only reachable through its fallback key, and none of them has a cooldown.
   function getAbilityCooldown(key) {
-    const abilityData = getAbility(key);
-    return abilityData.cooldown || Ability.lookup(abilityData.code).getCooldown();
+    return defaultAbilities[key] ? undefined : getBaseMonster().getAbilityCooldown(key);
   }
 
   function getResistance(type) {

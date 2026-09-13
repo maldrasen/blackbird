@@ -4,7 +4,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 ## Priority 1
 
-- [211] Calculate essence for spells `5pt` — [211-calculate-essence-for-spells.md](211-calculate-essence-for-spells.md)
+- [219] Split essence and challenge rating `8pt` — [220-split-essence-and-challenge-rating.md](220-split-essence-and-challenge-rating.md)
 
 ## Priority 2
 

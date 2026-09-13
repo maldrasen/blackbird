@@ -9,7 +9,7 @@ BaseMonster.register('crawling-claw',{
   healthFactor: 0.25,
 
   prioritizedAbilities: {
-    claw: { code:'leap-claw', priority:50, damage:[10,20], speed:800, essence:10 },
+    claw: { code:'leap-claw', priority:50, damage:[10,20], speed:800 },
   },
 
 });

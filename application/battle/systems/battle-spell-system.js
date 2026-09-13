@@ -10,7 +10,7 @@ global.BattleSpellSystem = (function() {
     const spell = Spell.lookup(spellData.code);
     const check = spell.rollSkillCheck(acting, spellData.powerLevel);
 
-    round.addTime(500);
+    round.addTime(BattleConstants.spellReleaseTime);
     if (check.result === 'fail') {
       return round.addMessage({ text:`{A:ActingName} fucked up casting {A:his} spell.` });
     }

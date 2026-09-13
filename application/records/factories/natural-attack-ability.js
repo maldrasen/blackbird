@@ -5,7 +5,6 @@
 //
 // NaturalAttackAbility.register('face-bite', {
 //   name: 'Bite your face off',
-//   essence: 100,
 //   attack: {
 //     skill: 'daggers',
 //     textKey: 'bite',
@@ -17,18 +16,21 @@
 //   onHit: (acting, target) => { addFaceRemovedEffect(target); },
 // });
 //
-// The damage range, speed, and essence of a natural attack live on the acting monster's ability entry rather than
-// the ability record, so that a kobold bite can be a different class of attack than a dragon bite:
+// The damage range and speed of a natural attack live on the acting monster's ability entry rather than the ability
+// record, so that a kobold bite can be a different class of attack than a dragon bite:
 //
 //   prioritizedAbilities: {
-//     'bite': { code:'beast-bite', priority:50, damage:[25,50], speed:1500, essence:50 },
+//     'bite': { code:'beast-bite', priority:50, damage:[25,50], speed:1500 },
 //   }
 //
 // The record's attack may still carry damage:[low,high] and speed values, which act as defaults for entries that
-// don't set their own.
+// don't set their own. The attack's essence is calculated from the entry's damage range, speed, cooldown, and effects
+// unless the record sets an essence value of its own, which a record whose effects can't be expressed as plain data
+// should do.
 //
 // Optional keys:
 //     name              Only needed when a character could use the ability - monster abilities never display one.
+//     essence           A hand-set essence value in place of the calculated one.
 //     canTarget         An extra usability check on the target.
 //     hitLocation       Forces the strike to a location instead of rolling one.
 //     cooldown          Milliseconds before the attacker can use the ability again.
@@ -36,6 +38,10 @@
 //     getAttackText     Called with the weaver context in place of the attack text template lookup.
 //     getAccuracyBonus  Passed through to the ability record.
 //     getDamageBonus    Passed through to the ability record.
+//     getEffects        Called with the monster's ability entry, returns the status effects the attack applies when
+//                       it hits. Each one rolls its own resistance, and the same list prices the attack's essence.
+//     messageForEntity  Called with (target, results) after the effects are applied, where results maps each effect
+//                       code to whether it landed. Returns the message to add, or null for none.
 //
 global.NaturalAttackAbility = (function() {
 
@@ -48,6 +54,7 @@ global.NaturalAttackAbility = (function() {
       category: 'physical',
       targetingMode: TargetingMode.enemyInWeaponRange,
       essence: options.essence,
+      getEssenceBreakdown: getEssenceBreakdown(code, options),
       canBeUsed: () => canBeUsed(options),
       execute: () => execute(code, options),
       cooldown: options.cooldown,
@@ -92,10 +99,35 @@ global.NaturalAttackAbility = (function() {
 
     if (contest.isHit()) {
       if (options.onHit) { options.onHit(acting, target); }
+      applyEffects(options, target);
       PhysicalAttackSystem.processHit(attackRoll, defendRoll);
     } else {
       PhysicalAttackSystem.processMiss(attackRoll, defendRoll);
     }
+  }
+
+  function applyEffects(options, target) {
+    if (options.getEffects == null) { return; }
+
+    const round = BattleSystem.getRound();
+    const results = {};
+
+    options.getEffects(round.getAbilityData() || {}).forEach(effect => {
+      results[effect.code] = EffectSystem.applyStatus(target, effect);
+    });
+
+    const message = options.messageForEntity ? options.messageForEntity(target, results) : null;
+    if (message) { round.addMessage({ text:message }); }
+  }
+
+  function getEssenceBreakdown(code, options) {
+    if (options.essence != null) { return undefined; }
+
+    return entry => EssenceSystem.attackEssenceBreakdown({
+      ...resolveProfile(code, options, entry, 'the essence calculation'),
+      cooldown: entry.cooldown,
+      effects: options.getEffects ? options.getEffects(entry) : [],
+    });
   }
 
   // The effective attack profile comes from the round's ability data, with the record's attack values filling in
@@ -103,11 +135,15 @@ global.NaturalAttackAbility = (function() {
   // values alone.
   function getAttackProfile(code, options, acting) {
     const entry = BattleSystem.getRound().getAbilityData() || {};
+    return resolveProfile(code, options, entry, `Monster[${Monster(acting).getCode()}]`);
+  }
+
+  function resolveProfile(code, options, entry, owner) {
     const [low, high] = entry.damage || options.attack.damage || [];
     const speed = entry.speed || options.attack.speed;
 
-    if (low == null || high == null) { throw new Error(`Ability[${code}] has no damage range for Monster[${Monster(acting).getCode()}]`); }
-    if (speed == null) { throw new Error(`Ability[${code}] has no speed for Monster[${Monster(acting).getCode()}]`); }
+    if (low == null || high == null) { throw new Error(`Ability[${code}] has no damage range for ${owner}`); }
+    if (speed == null) { throw new Error(`Ability[${code}] has no speed for ${owner}`); }
 
     return { ...options.attack, low, high, speed };
   }

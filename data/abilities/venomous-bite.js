@@ -7,20 +7,15 @@ NaturalAttackAbility.register('venomous-bite', {
   },
 
   cooldown: 2500,
-  onHit: (acting, target) => { addVenomEffect(acting, target); },
+  getEffects: entry => { return [venom(entry)]; },
+  messageForEntity: (target, results) => { return results.poison ? `Venom burns through {T:targetName's} veins!` : null; },
 });
 
 // The venom takes hold when the target fails to resist it. Strength is how hard the venom is to shrug off, damage is
 // what it does once it has, and the poison effect only carries the damage because it can't look back at the bite.
-function addVenomEffect(acting, target) {
-  const { poisonStrength, poisonDamage } = BattleSystem.getRound().getAbilityData();
+function venom(entry) {
+  if (entry.poisonStrength == null) { throw `The Ability[venomous-bite] should have a poisonStrength property.`; }
+  if (entry.poisonDamage == null) { throw `The Ability[venomous-bite] should have a poisonDamage property.`; }
 
-  if (poisonStrength == null) { throw `The Ability[venomous-bite] should have a poisonStrength property.`; }
-  if (poisonDamage == null) { throw `The Ability[venomous-bite] should have a poisonDamage property.`; }
-
-  const resist = ResistRoll(target, DamageType.nature, poisonStrength);
-  if (resist === ResistResult.fail) {
-    BattleSystem.getRound().addMessage({ text:`Venom burns through {T:targetName's} veins!` });
-    BattleSystem.addStatus(target, 'poison', { strength:poisonStrength, damage:poisonDamage });
-  }
+  return Effect.poison({ strength:entry.poisonStrength, damage:entry.poisonDamage });
 }

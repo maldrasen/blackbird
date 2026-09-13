@@ -11,4 +11,5 @@ global.BattleConstants = {
   maxReduction: 80,
   threatBase: 100,
   positionPattern: /([PM])\.(\d)\.(\d)/,
+  spellReleaseTime: 500,
 };

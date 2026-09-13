@@ -9,7 +9,7 @@ BaseMonster.register('revolting-horsecockroach',{
   speedFactor: 0.8,
 
   prioritizedAbilities: {
-    bite: { code:'beast-bite', priority:50, damage:[20,30], speed:1200, essence:20 },
+    bite: { code:'beast-bite', priority:50, damage:[20,30], speed:1200 },
   },
 
 });
