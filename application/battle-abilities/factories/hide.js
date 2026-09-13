@@ -1,54 +1,35 @@
 Ability.Hide = function() {
   const ability = Ability('Hide');
   ability.setEssence(10);
-  return ability;
-}
 
-/*
-Ability.register('hide',{
-  name: 'Hide',
-  category: 'basic',
-  essence: 10,
-
-  canBeUsed: () => {
+  ability.setPossibleFunction(() => {
     const acting = BattleSystem.getRound().getActing();
     const hasSkill = SkillsComponent.lookup(acting)['stealth'] > 0;
     const notHidden = StatusEffects(acting).hasHidden() === false;
     const inBack = BattleSystem.getState().isInBack(acting);
 
     return notHidden && inBack && hasSkill;
-  },
+  });
 
-  execute: () => {
+  // The first observer whose intelligence check beats the stealth roll spots the hider.
+  ability.setExecuteFunction(() => {
     const round = BattleSystem.getRound();
     const acting = round.getActing();
-
-    const observers = StealthSystem.getObservers(round.getActingPosition());
     const stealthRoll = SkillCheck(acting,'stealth');
-    const weaver = Weaver({ A:acting });
-
-    let isHidden = true;
-    let message;
-
-    observers.forEach(observer => {
-      const check = Attributes(observer.id).check(Attrib.intelligence);
-      if (isHidden && check > stealthRoll.value) {
-        isHidden = false;
-        message = {
-          text: `{A:ActingName} tries to hide, but ${ActorLoom.compileName(observer.id)} spots {A:him}.`
-        };
-      }
+    const spotter = StealthSystem.getObservers(round.getActingPosition()).find(observer => {
+      return Attributes(observer.id).check(Attrib.intelligence) > stealthRoll.value;
     });
-
-    if (isHidden) {
-      message = { text: `{A:ActingName} hides in the shadows.` };
-      BattleSystem.addStatus(acting,'hidden');
-    }
 
     round.clearTarget();
     round.addTime(1000);
-    round.addMessage(message, weaver);
-  },
 
-});
-*/
+    if (spotter) {
+      return round.addMessage({ text:`{A:ActingName} tries to hide, but ${ActorLoom.compileName(spotter.id)} spots {A:him}.` });
+    }
+
+    BattleSystem.addStatus(acting,'hidden');
+    round.addMessage({ text:`{A:ActingName} hides in the shadows.` });
+  });
+
+  return ability;
+}
