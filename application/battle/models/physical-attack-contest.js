@@ -46,6 +46,22 @@ global.PhysicalAttackContest = function(attacker, target) {
     return attackRoll.getFinalValue() * accuracyFactor > defendRoll.getFinalValue();
   }
 
+  // The weaver context for describing the strike: who was involved, what was swung at where, and how both rolls went.
+  function getContext() {
+    if (attackRoll == null) { throw new Error(`The contest hasn't been rolled. Call roll() before getContext().`); }
+
+    return {
+      A: attacker,
+      T: target,
+      hitLocation: attackRoll.getHitLocation(),
+      weaponName: attackRoll.getWeaponName(),
+      baseWeapon: attackRoll.getBaseWeaponCode(),
+      weapon: attackRoll.getWeaponId(),
+      attack: BattleHelper.getRollType(attackRoll),
+      defend: BattleHelper.getRollType(defendRoll),
+    };
+  }
+
   return {
     setWeapon,
     setNaturalAttack,
@@ -54,6 +70,7 @@ global.PhysicalAttackContest = function(attacker, target) {
     roll,
     getAttackRoll: () => { return attackRoll; },
     getDefendRoll: () => { return defendRoll; },
+    getContext,
     isHit,
   };
 }

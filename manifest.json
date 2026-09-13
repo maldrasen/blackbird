@@ -671,6 +671,7 @@
     "test/battle-abilities/factories/hide-spec.js",
     "test/battle-abilities/factories/natural-attack-spec.js",
     "test/battle-abilities/factories/pass-spec.js",
+    "test/battle-abilities/factories/special-attack-spec.js",
     "test/battle-abilities/factories/weapon-attack-spec.js",
     "test/characters/describers/body-describer-spec.js",
     "test/characters/describers/breast-describer-spec.js",

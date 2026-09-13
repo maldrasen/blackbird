@@ -57,7 +57,7 @@ function executeAttacks(ability) {
 
     const attackRoll = contest.getAttackRoll();
     const defendRoll = contest.getDefendRoll();
-    const context = buildAttackContext(contest);
+    const context = contest.getContext();
     const attackText = Dialog.lookupTemplate(DialogCategory.attackText, attackRoll.getTextKey(), context);
 
     round.addMessage({ text:attackText }, Weaver(context));
@@ -97,20 +97,4 @@ function calculateAttacks() {
 function getStrikeTime(weapon, dualWielding) {
   const time = weapon.getBaseWeapon().getSpeed() * BattleSystem.getRound().getSpeedFactor();
   return dualWielding ? Math.round(time * 0.75) : time;
-}
-
-function buildAttackContext(contest) {
-  const round = BattleSystem.getRound();
-  const attackRoll = contest.getAttackRoll();
-
-  return {
-    A: round.getActing(),
-    T: round.getTarget(),
-    hitLocation: attackRoll.getHitLocation(),
-    weaponName: attackRoll.getWeaponName(),
-    baseWeapon: attackRoll.getBaseWeaponCode(),
-    weapon: attackRoll.getWeaponId(),
-    attack: BattleHelper.getRollType(attackRoll),
-    defend: BattleHelper.getRollType(contest.getDefendRoll()),
-  };
 }
