@@ -1,7 +1,5 @@
 let nextAbilityId = 0;
 
-// TODO: I'm just calling this model ABILITY for now. The intent is to replace the Ability record. Once all the
-//       references to Ability have been removed I can just search and replace this.
 global.Ability = function(name) {
   const id = nextAbilityId++;
 
@@ -10,29 +8,31 @@ global.Ability = function(name) {
   let damageBonus = 1;
   let damageBonusFunction;
   let cooldown = 0;
-  let possibleFunction; // Possible is a better name than canBeUsed I think.
-  let targetingMode = TargetingMode.anyEnemy;
+  let possibleFunction;
+  let executeFunction;
+  let targetingMode = null;
+  let essence;
 
-  // TODO: Well send an ability though an AbilityAppraiser after it's been built. The ability shouldn't need an essence
-  //       breakdown after its been calculated.
-  let essence = 0;
+  // A character's round ends as soon as their ability has run. A monster's round is finished by the BattleSystem
+  // after the MonsterSystem's turn returns, so the ability leaves it open.
+  function execute() {
+    if (executeFunction == null) { throw new Error(`Ability[${name}] has no execute function.`); }
 
-  // TODO: Execute will do basically the same thing.
-  function execute({ key, data } = {}) {
     const round = BattleSystem.getRound();
-    round.isActingMonster() ? round.setMonsterAbility(key) : round.setCharacterAbility(code, data);
+    round.setAbility(ability);
     round.applyCooldown();
-    ability.execute();
+    executeFunction();
 
+    // TODO: Execute should no longer be responsible for finishing the character round. That should be the job of the
+    //       BattleCommand now.
     if (round.isActingCharacter()) {
       BattleSystem.finishCharacterRound();
     }
   }
 
-  return {
+  const ability = {
     getId: () => { return id; },
     getName: () => { return name },
-
     setAccuracyBonusFunction: closure => { accuracyBonusFunction = closure; },
     setAccuracyBonus: factor => { accuracyBonus = factor; },
     getAccuracyBonus: () => { return accuracyBonusFunction ? accuracyBonusFunction() : accuracyBonus; },
@@ -43,10 +43,13 @@ global.Ability = function(name) {
     getCooldown: () => { return cooldown; },
     setPossibleFunction: closure => { possibleFunction = closure; },
     isPossible: () => { return possibleFunction ? possibleFunction() : true; },
+    setExecuteFunction: closure => { executeFunction = closure; },
     setTargetingMode: mode => { targetingMode = mode; },
     getTargetingMode: () => { return targetingMode; },
+    setEssence: value => { essence = value },
     getEssence: () => { return essence; },
     execute,
   };
 
+  return ability;
 }

@@ -1,25 +1,18 @@
+// A combatant can only pass when they have to.
 Ability.Pass = function() {
-  const ability = Ability();
+  const ability = Ability('Pass');
 
-  return ability;
-}
+  ability.setPossibleFunction(() => {
+    const status = StatusEffects(BattleSystem.getRound().getActing());
+    return status.hasStun() || status.hasParalysis();
+  });
 
-/*
-Ability.register('pass',{
-  name: 'Pass',
-  category: 'basic',
-
-  canBeUsed: () => {
-    const statusEffects = StatusEffects(BattleSystem.getRound().getActing());
-    return statusEffects.hasStun() || statusEffects.hasParalysis();
-  },
-
-  execute: () => {
+  ability.setExecuteFunction(() => {
     const round = BattleSystem.getRound();
     const acting = round.getActing();
     const status = StatusEffects(acting);
 
-    round.addTime(1000,false);
+    round.addTime(1000, false);
 
     if (status.hasStun()) {
       const count = status.get('stun').count;
@@ -31,7 +24,9 @@ Ability.register('pass',{
     if (round.getMessages().length === 0) {
       throw new Error(`Entity:${acting} passed their turn, but no message was added.`);
     }
-  },
+  });
 
-});
-*/
+  AbilityAppraiser(ability).appraise();
+
+  return ability;
+}

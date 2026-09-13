@@ -97,11 +97,16 @@ global.Monster = function(id) {
   // }
 
   // TODO: Reimplement with the new model. I think all of these functions will still need to work in basically the
-  //       the same way. I think we'll probably move away from the ability codes and keys. Instead each ability could
-  //       have a unique identifier that's generated automatically. Just autoincrement a number?
+  //       the same way. Each ability now has a unique identifier to use. Should we keep abilities in a map or does it
+  //       make more sense for this to be an array now?
+
+  // TODO: By moving away from the records, Ability no longer has a code. I think the only place this was really used
+  //       was when forcing an ability from a negotiation. Every ability at least has a name though, so findAbility
+  //       should find by name and all the forced abilities should reference ability by name now. As two abilities
+  //       could share the same code before, referencing an ability by name shouldn't be significantly different.
 
   function getAbility() {}
-  function getAbilityMap() {}
+  function getAbilityMap() { return {}; }
   function findAbility() {}
   function getAbilityCooldown() {}
 
