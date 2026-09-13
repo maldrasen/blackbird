@@ -35,21 +35,10 @@ function print(title, columns, rows) {
   console.log(ReportHelper.formatTable(columns, rows).join('\n'));
 }
 
-// The entry map and cooldown resolution mirror Monster.getAbilityMap() and getAbilityCooldown(), which need a built
-// entity. The report only has the records.
-function abilityEntries(code) {
-  const base = BaseMonster.lookup(code);
-  const type = MonsterType.lookup(base.getType());
-  return { ...type.getPrioritizedAbilities(), ...base.getPrioritizedAbilities() };
-}
-
-function entryBreakdown(entry) {
-  const ability = Ability.lookup(entry.code);
-  const cooldown = entry.cooldown || ability.getCooldown() || 0;
-
+function entryBreakdown(entry, cooldown) {
   return entry.essence != null ?
     { total:entry.essence, handSet:true } :
-    ability.getEssenceBreakdown({ ...entry, cooldown });
+    Ability.lookup(entry.code).getEssenceBreakdown({ ...entry, cooldown });
 }
 
 function kindOf(entry, breakdown) {
@@ -74,18 +63,20 @@ const entryRows = [];
 const sumRows = [];
 
 BaseMonster.getAllCodes().sort().forEach(code => {
-  const entries = Object.entries(abilityEntries(code));
+  const base = BaseMonster.lookup(code);
+  const entries = Object.entries(base.getAbilityMap());
   let sum = 0;
 
   entries.forEach(([key, entry]) => {
-    const breakdown = entryBreakdown(entry);
+    const cooldown = base.getAbilityCooldown(key) || 0;
+    const breakdown = entryBreakdown(entry, cooldown);
     const ability = entry.spell || entry.article || entry.code;
     sum += breakdown.total;
 
-    entryRows.push([code, key, ability, kindOf(entry, breakdown), entry.cooldown || 0, ...breakdownCells(breakdown)]);
+    entryRows.push([code, key, ability, kindOf(entry, breakdown), cooldown, ...breakdownCells(breakdown)]);
   });
 
-  sumRows.push([code, BaseMonster.lookup(code).getLevel(), entries.length, sum.toFixed(2)]);
+  sumRows.push([code, base.getLevel(), entries.length, sum.toFixed(2)]);
 });
 
 print('Monster Ability Entries', [

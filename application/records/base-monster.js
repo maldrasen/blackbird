@@ -38,6 +38,18 @@ global.BaseMonster = (function() {
           Species.lookup(monster.species).getNegotiationGreeting(context);
     }
 
+    // The prioritized abilities are maps keyed by an ability key, so an ability defined in the base monster overrides
+    // an ability from the more generalized monster type that shares its key.
+    function getAbilityMap() {
+      return { ...MonsterType.lookup(monster.type).getPrioritizedAbilities(), ...(monster.prioritizedAbilities || {}) };
+    }
+
+    // The cooldown set on the monster's ability entry overrides the cooldown on the ability record itself.
+    function getAbilityCooldown(key) {
+      const entry = getAbilityMap()[key];
+      return entry.cooldown || Ability.lookup(entry.code).getCooldown();
+    }
+
     return {
       getCode: () => { return code; },
       getName: () => { return monster.name; },
@@ -62,6 +74,8 @@ global.BaseMonster = (function() {
       getEquipment: () => { return monster.equipment; },
 
       getPrioritizedAbilities: () => { return monster.prioritizedAbilities || {}; },
+      getAbilityMap,
+      getAbilityCooldown,
       getNegotiationGreeting,
 
       getLootQuality:() => { return monster.lootQuality || 1; },
