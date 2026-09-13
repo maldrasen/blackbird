@@ -78,6 +78,9 @@ function isPossible(options) {
   return BattleHelper.isAttackWithinRange(buildProfile(options).reach, round.getActingPosition(), round.getTargetPosition());
 }
 
+// TODO: Characters with natural attack abilities will need to enter targeting mode in the same way that the weapon
+//       attack has different execution paths for characters and monsters.
+
 function execute(ability, options) {
   const round = BattleSystem.getRound();
   const acting = round.getActing();
