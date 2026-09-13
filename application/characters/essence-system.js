@@ -79,14 +79,19 @@ global.EssenceSystem = (function() {
   // Damage is weighted by the size of each hit as well as the damage per second, so an ability that lands its damage
   // in one burst is worth more than the same damage spread over several uses. A status effect is worth its type's
   // essence for the share of the fight it keeps a target covered, discounted by the chance it lands at all. The
-  // breakdowns exist for the report, so the knobs can be tuned with every term in view.
+  // breakdowns exist for the report, so the knobs can be tuned with every term in view. The spike is the average
+  // damage of one use, which an attack supplies from its damage range instead of a damage effect.
 
-  function effectsEssenceBreakdown({ effects, targets, period }) {
-    const spike = EffectMath.averageDamage(effects);
+  function effectsEssenceBreakdown({ effects, targets, period, spike=EffectMath.averageDamage(effects) }) {
     const damage = burstEssence(spike, targets, period);
     const status = statusEssence(effects, targets, period);
 
     return { period, targets, spike, damage, status, total:damage + status };
+  }
+
+  // A cooldown only matters when it outlasts the time the ability itself takes.
+  function periodBetweenUses(useTime, cooldown) {
+    return Math.max(useTime, cooldown || 0);
   }
 
   function burstEssence(spike, targets, period) {
@@ -120,13 +125,8 @@ global.EssenceSystem = (function() {
   // A natural or weapon attack hits one target per swing, with the swing's speed as the period unless the cooldown is
   // longer. The effects are the status effects the attack applies when it hits, priced beside its damage.
 
-  function attackEssenceBreakdown({ low, high, speed, cooldown=0, effects=[] }) {
-    const period = Math.max(speed, cooldown || 0);
-    const spike = (low + high) / 2;
-    const damage = burstEssence(spike, 1, period);
-    const status = statusEssence(effects, 1, period);
-
-    return { period, targets:1, spike, damage, status, total:damage + status };
+  function attackEssenceBreakdown({ low, high, speed, cooldown, effects=[] }) {
+    return effectsEssenceBreakdown({ effects, targets:1, period:periodBetweenUses(speed, cooldown), spike:(low + high) / 2 });
   }
 
   // =================
@@ -134,9 +134,9 @@ global.EssenceSystem = (function() {
   // =================
   // The period between casts is the casting time plus the release, unless the entry's cooldown is longer.
 
-  function spellEssenceBreakdown({ spell, powerLevel=1, cooldown=0 }) {
+  function spellEssenceBreakdown({ spell, powerLevel=1, cooldown }) {
     const record = Spell.lookup(spell);
-    const period = Math.max(record.getCastingTime(powerLevel) + BattleConstants.spellReleaseTime, cooldown || 0);
+    const period = periodBetweenUses(record.getCastingTime(powerLevel) + BattleConstants.spellReleaseTime, cooldown);
 
     return effectsEssenceBreakdown({ effects:record.getEffects(powerLevel), targets:spellTargets(record), period });
   }
