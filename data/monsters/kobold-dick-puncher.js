@@ -17,9 +17,7 @@ BaseMonster.register('kobold-dick-puncher',{
     killMen: 100,
   },
 
-  // The abilities should be a list of factory functions like this, avoiding any load order problems (even though
-  // Abilities will load before BaseMonsters, better to not rely on the alphabetical accident of them loading first)
-  // Also maybe just call this abilities now?
+  // Maybe just call this abilities now?
   prioritizedAbilities:[
     buildDickPunch,
     buildPunch,
@@ -44,16 +42,13 @@ function buildDickPunch() {
   });
 }
 
+// NaturalAttack gets an optional parameter, taking a code for a natural ability option map that we can spread into
+// the passed options.
+
 function buildPunch() {
   return Ability.NaturalAttack({
-    ...NaturalAttack.Punch, // Standard punch attack options. Maybe...
     damage: [20,30],
     speed: 500,
     priority: 50,
-  });
+  },'punch');
 }
-
-// I think I would prefer something like:
-//    Ability.NaturalAttack('punch',{ ... });
-// or
-//    Ability.Punch({ ... })
