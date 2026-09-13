@@ -39,36 +39,38 @@ describe("EssenceSystem", function() {
     it("calculate their essence from the monster's entry", function() {
       const entry = BaseMonster.lookup('emerald-yeek').getPrioritizedAbilities().venomBite;
       // A [10,20] bite every 2500ms is worth 4.05, and the strength 15 venom's 2d6+2 over 2.22 ticks adds 3.96.
-      expect(Ability.lookup('venomous-bite').getEssence({ ...entry, cooldown:2500 })).to.be.closeTo(8.0059, 0.0001);
-      expect(Ability.lookup('beast-bite').getEssence({ damage:[10,20], speed:1000, cooldown:0 })).to.be.closeTo(10.125, 0.0001);
+      expect(Ability.lookup('venomous-bite').getEssenceBreakdown({ ...entry, cooldown:2500 }).total).to.be.closeTo(8.0059, 0.0001);
+      expect(Ability.lookup('beast-bite').getEssenceBreakdown({ damage:[10,20], speed:1000, cooldown:0 }).total).to.be.closeTo(10.125, 0.0001);
     });
 
     it("keep a hand-set essence when the record has one", function() {
-      expect(Ability.lookup('dick-punch').getEssence({ cooldown:1000 })).to.equal(75);
+      expect(Ability.lookup('dick-punch').getEssenceBreakdown({ cooldown:1000 })).to.deep.equal({ total:75, handSet:true });
     });
   });
 
-  describe("spellEssence()", function() {
+  describe("spellEssenceBreakdown()", function() {
+    const spellEssence = entry => EssenceSystem.spellEssenceBreakdown(entry).total;
+
     it("weights damage by the size of each hit and the damage per second", function() {
       // Ember at power level 1: 1d4 averages 2.5, and the medium cast takes 1000ms plus the 500ms release.
-      expect(EssenceSystem.spellEssence({ spell:'ember', powerLevel:1 })).to.be.closeTo(0.1875, 0.0001);
+      expect(spellEssence({ spell:'ember', powerLevel:1 })).to.be.closeTo(0.1875, 0.0001);
       // Searing lance at power level 3: 3d8 averages 13.5 every 1500ms.
-      expect(EssenceSystem.spellEssence({ spell:'searing-lance', powerLevel:3 })).to.be.closeTo(5.4675, 0.0001);
+      expect(spellEssence({ spell:'searing-lance', powerLevel:3 })).to.be.closeTo(5.4675, 0.0001);
     });
 
     it("uses the cooldown as the period only when it outlasts the cast", function() {
-      expect(EssenceSystem.spellEssence({ spell:'searing-lance', powerLevel:3, cooldown:2000 })).to.be.closeTo(4.1006, 0.0001);
-      expect(EssenceSystem.spellEssence({ spell:'searing-lance', powerLevel:3, cooldown:1000 })).to.be.closeTo(5.4675, 0.0001);
+      expect(spellEssence({ spell:'searing-lance', powerLevel:3, cooldown:2000 })).to.be.closeTo(4.1006, 0.0001);
+      expect(spellEssence({ spell:'searing-lance', powerLevel:3, cooldown:1000 })).to.be.closeTo(5.4675, 0.0001);
     });
 
     it("scores a status effect by its type essence, land chance, and targets", function() {
       // Overwhelming effulgence at power level 2 blinds the whole enemy formation at strength 15 for 3000ms and can be
       // cast every 1400ms, so the effect covers the whole fight: 15 * 0.5498 * 3.
-      expect(EssenceSystem.spellEssence({ spell:'overwhelming-effulgence', powerLevel:2 })).to.be.closeTo(24.7425, 0.001);
+      expect(spellEssence({ spell:'overwhelming-effulgence', powerLevel:2 })).to.be.closeTo(24.7425, 0.001);
     });
 
     it("discounts a status effect by the share of the period it covers", function() {
-      expect(EssenceSystem.spellEssence({ spell:'overwhelming-effulgence', powerLevel:2, cooldown:4000 })).to.be.closeTo(18.5569, 0.001);
+      expect(spellEssence({ spell:'overwhelming-effulgence', powerLevel:2, cooldown:4000 })).to.be.closeTo(18.5569, 0.001);
     });
   });
 

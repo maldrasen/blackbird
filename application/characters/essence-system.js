@@ -134,10 +134,6 @@ global.EssenceSystem = (function() {
   // =================
   // The period between casts is the casting time plus the release, unless the entry's cooldown is longer.
 
-  function spellEssence(entry) {
-    return spellEssenceBreakdown(entry).total;
-  }
-
   function spellEssenceBreakdown({ spell, powerLevel=1, cooldown=0 }) {
     const record = Spell.lookup(spell);
     const period = Math.max(record.getCastingTime(powerLevel) + BattleConstants.spellReleaseTime, cooldown || 0);
@@ -197,7 +193,6 @@ global.EssenceSystem = (function() {
     abilityEntryBreakdown,
     effectsEssenceBreakdown,
     attackEssenceBreakdown,
-    spellEssence,
     spellEssenceBreakdown,
     canLevelUp,
     essenceToLevel,

@@ -35,7 +35,6 @@ global.Ability = (function() {
       getCooldown: () => { return ability.cooldown; },
       getCategory: () => { return ability.category },
       getTargetingMode: () => { return ability.targetingMode },
-      getEssence: entry => { return getEssenceBreakdown(entry).total; },
       getEssenceBreakdown,
       hasOverlay: () => { return typeof ability.overlay === 'function' },
       openOverlay: () => { ability.overlay() },
