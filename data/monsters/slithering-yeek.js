@@ -15,7 +15,8 @@ BaseMonster.register('slithering-yeek',{
       damage: [10,20],
       speed: 1000,
       poisonStrength: 10,
-      poisonDamage: { x:1, d:6, p:2 }},
+      poisonDamage: { x:1, d:6, p:2 },
+    },
 
     bite: { code:'beast-bite', priority:50, damage:[10,20], speed:1000 },
   },
@@ -28,4 +29,3 @@ BaseMonster.register('slithering-yeek',{
 });
 
 // TODO: Higher level yeek with a toxic grapple attack.
-
