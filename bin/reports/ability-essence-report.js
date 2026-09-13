@@ -35,12 +35,6 @@ function print(title, columns, rows) {
   console.log(ReportHelper.formatTable(columns, rows).join('\n'));
 }
 
-function entryBreakdown(entry, cooldown) {
-  return entry.essence != null ?
-    { total:entry.essence, handSet:true } :
-    Ability.lookup(entry.code).getEssenceBreakdown({ ...entry, cooldown });
-}
-
 function kindOf(entry, breakdown) {
   if (breakdown.handSet) { return breakdown.total === 0 ? 'unpriced' : 'hand-set'; }
   return entry.code === 'monster-cast-spell' ? 'spell' : 'attack';
@@ -68,12 +62,11 @@ BaseMonster.getAllCodes().sort().forEach(code => {
   let sum = 0;
 
   entries.forEach(([key, entry]) => {
-    const cooldown = base.getAbilityCooldown(key) || 0;
-    const breakdown = entryBreakdown(entry, cooldown);
+    const breakdown = EssenceSystem.abilityEntryBreakdown(base, key);
     const ability = entry.spell || entry.article || entry.code;
     sum += breakdown.total;
 
-    entryRows.push([code, key, ability, kindOf(entry, breakdown), cooldown, ...breakdownCells(breakdown)]);
+    entryRows.push([code, key, ability, kindOf(entry, breakdown), base.getAbilityCooldown(key) || 0, ...breakdownCells(breakdown)]);
   });
 
   sumRows.push([code, base.getLevel(), entries.length, sum.toFixed(2)]);

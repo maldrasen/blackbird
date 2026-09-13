@@ -54,18 +54,22 @@ global.EssenceSystem = (function() {
   }
 
   function abilityFactor(monsterId) {
-    const monster = Monster(monsterId);
-    const scoreSum = Object.entries(monster.getAbilityMap()).reduce((sum,[key,entry]) => {
-      return sum + (entry.essence != null ? entry.essence : abilityEssence(monster, key, entry));
+    const base = Monster(monsterId).getBaseMonster();
+    const scoreSum = Object.keys(base.getAbilityMap()).reduce((sum,key) => {
+      return sum + abilityEntryBreakdown(base, key).total;
     },0);
 
     return 1 + (scoreSum * abilityScale);
   }
 
-  // An ability record that calculates its own essence gets the monster's entry, with the cooldown resolved the same
-  // way the battle resolves it, so a spell entry's cooldown counts toward how often the spell can be cast.
-  function abilityEssence(monster, key, entry) {
-    return Ability.lookup(entry.code).getEssence({ ...entry, cooldown:monster.getAbilityCooldown(key) });
+  // An essence value set on the monster's ability entry wins over anything the record would calculate. Otherwise the
+  // record gets the entry with the cooldown resolved the same way the battle resolves it, so a spell entry's cooldown
+  // counts toward how often the spell can be cast.
+  function abilityEntryBreakdown(base, key) {
+    const entry = base.getAbilityMap()[key];
+    if (entry.essence != null) { return { total:entry.essence, handSet:true }; }
+
+    return Ability.lookup(entry.code).getEssenceBreakdown({ ...entry, cooldown:base.getAbilityCooldown(key) });
   }
 
   // ==================
@@ -190,6 +194,7 @@ global.EssenceSystem = (function() {
 
   return {
     monsterEssenceValue,
+    abilityEntryBreakdown,
     effectsEssenceBreakdown,
     attackEssenceBreakdown,
     spellEssence,
