@@ -1,6 +1,6 @@
 global.PhysicalAttackRoll = function(attacker, target) {
   let weaponData = {};
-  let abilityCode = null;
+  let ability = null;
   let hitLocation = null;
 
   let baseWeapon;
@@ -8,8 +8,8 @@ global.PhysicalAttackRoll = function(attacker, target) {
   let check;
   let finalValue;
 
-  function setAbility(code) { abilityCode = code; }
-  function getAbility() { return (abilityCode == null) ? null : Ability.lookup(abilityCode); }
+  function setAbility(model) { ability = model; }
+  function getAbility() { return ability; }
   function setHitLocation(location) { hitLocation = location; }
 
   // TODO: We'll need to look at this again once we've added some monsters that only have natural attacks. Because all
@@ -32,7 +32,7 @@ global.PhysicalAttackRoll = function(attacker, target) {
 
   // An ability that can target any enemy is always long range. Otherwise, the weapon's reach determines the range.
   function isRangedAttack() {
-    if (abilityCode != null && getAbility().getTargetingMode() === TargetingMode.anyEnemy) { return true; }
+    if (ability && getAbility().getTargetingMode() === TargetingMode.anyEnemy) { return true; }
     return baseWeapon.getReach() === WeaponReach.long;
   }
 
@@ -70,7 +70,6 @@ global.PhysicalAttackRoll = function(attacker, target) {
   return {
     setAbility,
     getAbility,
-    getAbilityCode: () => { return abilityCode; },
 
     setHitLocation,
     getHitLocation: () => { return hitLocation; },

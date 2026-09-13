@@ -10,9 +10,7 @@ global.BattleRound = function(acting, type=null) {
   const context = {};
   const appliedStatuses = new Set();
 
-  let abilityCode;
-  let abilityData;
-
+  let ability;
   let primaryWeapon = {};
   let secondaryWeapon = {};
   let target;
@@ -30,19 +28,8 @@ global.BattleRound = function(acting, type=null) {
   //    Abilities
   // ===============
 
-  function setCharacterAbility(code, data={}) {
-    abilityCode = code;
-    abilityData = data;
-  }
-
-  function setMonsterAbility(key) {
-    const prioritizedAbility = getActingMonster().getAbility(key);
-    abilityCode = prioritizedAbility.code;
-    abilityData = { ...prioritizedAbility, key };
-  }
-
   function getCooldown() {
-    if (isActingMonster()) { return getActingMonster().getAbilityCooldown(abilityData.key); }
+    if (isActingMonster()) { return getActingMonster().getAbilityCooldown(ability.getId()); }
     throw `Only monster abilities have cooldowns.`;
   }
 
@@ -177,10 +164,8 @@ global.BattleRound = function(acting, type=null) {
     isActingCharacter,
     isStatusEffect,
 
-    setCharacterAbility,
-    setMonsterAbility,
-    getAbilityCode: () => { return abilityCode; },
-    getAbilityData: () => { return abilityData },
+    setAbility: (model) => { ability = model; },
+    getAbility: () => { return ability; },
     getCooldown,
     applyCooldown,
 

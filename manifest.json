@@ -2,6 +2,7 @@
   "applicationFiles": [
     "application/constants.js",
     "application/enums.js",
+    "application/battle-abilities/ability.js",
     "application/application.js",
     "application/battle/areas-of-effect.js",
     "application/battle/battle-constants.js",
@@ -32,7 +33,6 @@
     "application/battle/systems/stealth-system.js",
     "application/battle/systems/threat-generators.js",
     "application/battle/targeting-controller.js",
-    "application/battle-abilities/ability.js",
     "application/battle-abilities/effect-math.js",
     "application/battle-abilities/effect-system.js",
     "application/battle-abilities/effect.js",
@@ -671,6 +671,7 @@
     "test/battle/systems/encounter-builder-spec.js",
     "test/battle/systems/recruitment-system-spec.js",
     "test/battle/systems/status-effect-system-spec.js",
+    "test/battle-abilities/ability-spec.js",
     "test/characters/describers/body-describer-spec.js",
     "test/characters/describers/breast-describer-spec.js",
     "test/characters/describers/cock-describer-spec.js",

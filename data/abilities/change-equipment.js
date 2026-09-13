@@ -1,3 +1,5 @@
+// TODO: This becomes a battle command
+
 Ability.register('change-equipment',{
   name: 'Change Equipment',
   category: 'utility',

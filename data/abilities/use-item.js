@@ -1,3 +1,5 @@
+// TODO: This becomes a battle command
+
 Ability.register('use-item',{
   name: 'Use Item',
   category: 'utility',

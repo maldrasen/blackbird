@@ -3,6 +3,8 @@
 // system finishes or ends the round itself depending on how the negotiation goes, so this record's execute() is
 // never called through the usual ability flow.
 
+// TODO: This becomes a battle command
+
 Ability.register(BattleCommand.negotiate, {
   name: 'Negotiate',
   category: 'utility',

@@ -1,9 +1,5 @@
 global.Monster = function(id) {
 
-  const defaultAbilities = {
-    defend: { code:'basic-defend', priority:0 },
-  };
-
   function monsterComponent() { return MonsterComponent.lookup(id); }
   function getCode() { return monsterComponent().code; }
   function getBaseMonster() { return BaseMonster.lookup(getCode()); }
@@ -15,28 +11,6 @@ global.Monster = function(id) {
   function willNegotiate() { return getBaseMonster().getSpecies() != null; }
   function getNegotiationStyle() { return Archetype.lookup(getArchetype()).getNegotiationStyle(); }
   function getSkill(code) { return SkillsComponent.lookup(id)[code]; }
-
-  function getAbilityMap() { return getBaseMonster().getAbilityMap(); }
-
-  // Find the key of the highest priority ability with the given code. Several entries can share a code, casting
-  // different spells for instance, so the priority breaks the tie.
-  function findAbility(code) {
-    const matches = Object.entries(getAbilityMap()).filter(([key, entry]) => entry.code === code);
-    matches.sort(([,a], [,b]) => b.priority - a.priority);
-    return matches.length > 0 ? matches[0][0] : undefined;
-  }
-
-  // We need to call this function when there are other properties on the ability entry that we need to read. The
-  // default abilities are kept out of the ability map so that they're never picked, counted for essence, or given
-  // initial cooldowns - they're only reachable through their explicit fallback keys.
-  function getAbility(key) {
-    return getAbilityMap()[key] || defaultAbilities[key];
-  }
-
-  // A default ability is only reachable through its fallback key, and none of them has a cooldown.
-  function getAbilityCooldown(key) {
-    return defaultAbilities[key] ? undefined : getBaseMonster().getAbilityCooldown(key);
-  }
 
   function getResistance(type) {
     const speciesResistance = getSpecies() ? Species.lookup(getSpecies()).getResistance(type) : 0;
@@ -92,6 +66,45 @@ global.Monster = function(id) {
     MonsterComponent.update(id, component);
   }
 
+  // ===============
+  //    Abilities
+  // ===============
+
+  // const defaultAbilities = {
+  //   defend: { code:'basic-defend', priority:0 },
+  // };
+
+  // function getAbilityMap() { return getBaseMonster().getAbilityMap(); }
+
+  // Find the key of the highest priority ability with the given code. Several entries can share a code, casting
+  // different spells for instance, so the priority breaks the tie.
+  // function findAbility(code) {
+  //   const matches = Object.entries(getAbilityMap()).filter(([key, entry]) => entry.code === code);
+  //   matches.sort(([,a], [,b]) => b.priority - a.priority);
+  //   return matches.length > 0 ? matches[0][0] : undefined;
+  // }
+
+  // We need to call this function when there are other properties on the ability entry that we need to read. The
+  // default abilities are kept out of the ability map so that they're never picked, counted for essence, or given
+  // initial cooldowns - they're only reachable through their explicit fallback keys.
+  // function getAbility(key) {
+  //   return getAbilityMap()[key] || defaultAbilities[key];
+  // }
+
+  // A default ability is only reachable through its fallback key, and none of them has a cooldown.
+  // function getAbilityCooldown(key) {
+  //   return defaultAbilities[key] ? undefined : getBaseMonster().getAbilityCooldown(key);
+  // }
+
+  // TODO: Reimplement with the new model. I think all of these functions will still need to work in basically the
+  //       the same way. I think we'll probably move away from the ability codes and keys. Instead each ability could
+  //       have a unique identifier that's generated automatically. Just autoincrement a number?
+
+  function getAbility() {}
+  function getAbilityMap() {}
+  function findAbility() {}
+  function getAbilityCooldown() {}
+
   return {
     getEntity: () => { return id },
     getCode,
@@ -106,14 +119,15 @@ global.Monster = function(id) {
     willNegotiate,
     getNegotiationStyle,
     getSkill,
-    getAbility,
-    getAbilityMap,
-    findAbility,
-    getAbilityCooldown,
 
     populateThreatTable,
     getThreatTable,
     updateThreat,
+
+    getAbility,
+    getAbilityMap,
+    findAbility,
+    getAbilityCooldown,
 
     getCardArt: () => { return `temp/entity.jpg` },
   };

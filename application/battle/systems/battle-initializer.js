@@ -50,6 +50,9 @@ global.BattleInitializer = (function() {
   // Every monster ability with a cooldown starts the battle already on a random cooldown of up to its full time.
   // Otherwise every monster of the same type would open the battle with the same highest priority ability. A roll of
   // zero leaves the ability ready to use immediately.
+
+  // TODO: Should we keep abilities as a map? Or should they be an array?
+
   function rollInitialCooldowns() {
     const state = BattleSystem.getState();
 
