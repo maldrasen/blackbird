@@ -21,13 +21,22 @@ global.Ability = (function() {
       }
     }
 
+    // A record that calculates its essence returns the terms behind it for the ability essence report. A hand-set
+    // value has no terms, only a total.
+    function getEssenceBreakdown(entry) {
+      return typeof ability.getEssenceBreakdown === 'function' ?
+        ability.getEssenceBreakdown(entry) :
+        { total:(ability.essence || 0), handSet:true };
+    }
+
     return {
       getCode: () => { return code; },
       getName: () => { return ability.name },
       getCooldown: () => { return ability.cooldown; },
       getCategory: () => { return ability.category },
       getTargetingMode: () => { return ability.targetingMode },
-      getEssence: entry => { return typeof ability.getEssence === 'function' ? ability.getEssence(entry) : (ability.essence || 0); },
+      getEssence: entry => { return getEssenceBreakdown(entry).total; },
+      getEssenceBreakdown,
       hasOverlay: () => { return typeof ability.overlay === 'function' },
       openOverlay: () => { ability.overlay() },
       canBeUsed: () => { return (ability.canBeUsed == null) ? true : ability.canBeUsed(); },

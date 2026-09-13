@@ -38,9 +38,9 @@
 //     getDamageBonus    Passed through to the ability record.
 //     getEffects        Called with the monster's ability entry, returns the status effects the attack applies when
 //                       it hits. Only used to calculate essence for now.
-//     getEssence        Called with the monster's ability entry in place of the essence value. A record with neither
-//                       an essence value nor a getEssence closure calculates its essence from the entry's attack
-//                       profile and effects.
+//     getEssenceBreakdown  Called with the monster's ability entry in place of the essence value, returning the
+//                       EssenceSystem breakdown. A record with neither an essence value nor this closure calculates
+//                       its essence from the entry's attack profile and effects.
 //
 global.NaturalAttackAbility = (function() {
 
@@ -53,7 +53,7 @@ global.NaturalAttackAbility = (function() {
       category: 'physical',
       targetingMode: TargetingMode.enemyInWeaponRange,
       essence: options.essence,
-      getEssence: getEssence(code, options),
+      getEssenceBreakdown: getEssenceBreakdown(code, options),
       canBeUsed: () => canBeUsed(options),
       execute: () => execute(code, options),
       cooldown: options.cooldown,
@@ -104,15 +104,15 @@ global.NaturalAttackAbility = (function() {
     }
   }
 
-  function getEssence(code, options) {
-    if (options.getEssence) { return options.getEssence; }
+  function getEssenceBreakdown(code, options) {
+    if (options.getEssenceBreakdown) { return options.getEssenceBreakdown; }
     if (options.essence != null) { return undefined; }
 
     return entry => EssenceSystem.attackEssenceBreakdown({
       ...resolveProfile(code, options, entry, 'the essence calculation'),
       cooldown: entry.cooldown,
       effects: options.getEffects ? options.getEffects(entry) : [],
-    }).total;
+    });
   }
 
   // The effective attack profile comes from the round's ability data, with the record's attack values filling in

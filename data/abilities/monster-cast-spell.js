@@ -7,7 +7,7 @@
 //       lowest position distance) A target position will still target the same position though.
 
 Ability.register('monster-cast-spell', {
-  getEssence: entry => EssenceSystem.spellEssence(entry),
+  getEssenceBreakdown: entry => EssenceSystem.spellEssenceBreakdown(entry),
   execute: () => {
     const round = BattleSystem.getRound();
     const ability = round.getAbilityData();
