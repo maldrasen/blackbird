@@ -8,7 +8,7 @@ describe("PhysicalAttackRoll", function() {
 
   function rollAgainstMonster(state, attacker) {
     const attackRoll = PhysicalAttackRoll(attacker, state.getActiveMonsters()[0]);
-    attackRoll.setWeaponData({ base:'longsword' });
+    attackRoll.setWeapon(WeaponFactory.build('longsword'));
     attackRoll.setHitLocation(EquipmentSlot.chest);
     attackRoll.roll();
     return attackRoll;

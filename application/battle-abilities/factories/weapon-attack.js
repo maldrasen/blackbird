@@ -43,9 +43,9 @@ function executeAttacks(ability) {
   const acting = round.getActing();
   const target = round.getTarget();
 
-  const contests = calculateAttacks().map(attack => {
+  const contests = calculateAttacks().map(weaponId => {
     const contest = PhysicalAttackContest(acting, target);
-          contest.setWeaponData(attack);
+          contest.setWeapon(weaponId);
           contest.setAbility(ability);
           contest.roll();
 
@@ -74,6 +74,7 @@ function executeAttacks(ability) {
 // a character's primary weapon strike takes 900ms, they will attack twice but only every 1800ms. Alternatively, a
 // character with a weapon speed of 1200ms will attack once every 1200ms, so it might seem like they attack more
 // often, but really they're getting fewer hits in. It's just that they get to choose their actions more frequently.
+// The attacks are the ids of the weapons making each strike, in order.
 function calculateAttacks() {
   const round = BattleSystem.getRound();
   const weapons = { primary:round.getPrimaryWeapon(), secondary:round.getSecondaryWeapon() };
@@ -84,7 +85,7 @@ function calculateAttacks() {
   let time = 0;
 
   while (time < 1000) {
-    attacks.push({ ...weapons[hand], hand });
+    attacks.push(weapons[hand].id);
     time += getStrikeTime(weapons[hand], dualWielding);
     hand = (hand === 'primary' && dualWielding) ? 'secondary' : 'primary';
   }

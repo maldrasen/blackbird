@@ -38,11 +38,11 @@ describe("DefendRoll", function() {
     AttributesComponent.update(id, attributes);
   }
 
-  function attackAgainst(state, defender, base='longsword', abilityCode=null) {
+  function attackAgainst(state, defender, base='longsword', ability=null) {
     const attacker = state.getActiveMonsters()[0];
     const attackRoll = PhysicalAttackRoll(attacker, defender);
-    attackRoll.setWeaponData({ base });
-    attackRoll.setAbility(abilityCode);
+    attackRoll.setWeapon(WeaponFactory.build(base));
+    attackRoll.setAbility(ability);
     attackRoll.setHitLocation(EquipmentSlot.chest);
     attackRoll.roll();
     return attackRoll;
@@ -132,7 +132,10 @@ describe("DefendRoll", function() {
     equipItem(defender, 'longsword', EquipmentSlot.primary);
     setParry(defender, 25);
 
-    const roll = DefendRoll(defender, null, attackAgainst(state, defender, 'dagger', 'sneak-attack'));
+    const ability = Ability('Sneak Attack');
+    ability.setTargetingMode(TargetingMode.anyEnemy);
+
+    const roll = DefendRoll(defender, null, attackAgainst(state, defender, 'dagger', ability));
     expect(roll.getDefendSkill()).to.equal('dodge');
   });
 
@@ -193,7 +196,7 @@ describe("DefendRoll", function() {
     const defender = state.getActiveMonsters()[0];
 
     const attackRoll = PhysicalAttackRoll(attacker, defender);
-    attackRoll.setWeaponData({ base:'longsword' });
+    attackRoll.setWeapon(WeaponFactory.build('longsword'));
     attackRoll.setHitLocation(EquipmentSlot.chest);
     attackRoll.roll();
 
@@ -208,7 +211,7 @@ describe("DefendRoll", function() {
     equipItem(defender, 'targe', EquipmentSlot.secondary);
 
     const attackRoll = PhysicalAttackRoll(attacker, defender);
-    attackRoll.setWeaponData({ base:'longsword' });
+    attackRoll.setWeapon(WeaponFactory.build('longsword'));
     attackRoll.setHitLocation(EquipmentSlot.chest);
     attackRoll.roll();
 
