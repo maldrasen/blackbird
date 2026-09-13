@@ -1,6 +1,5 @@
 Ability.WeaponAttack = function() {
-  const ability = Ability();
-
+  const ability = Ability(`Attack`);
   return ability;
 }
 
@@ -9,7 +8,7 @@ Ability.register('basic-attack',{
   name: 'Attack',
   category: 'basic',
   targetingMode: TargetingMode.enemyInWeaponRange,
-  essence: 10,
+  essence: 0,
 
   canBeUsed: () => {
     return BattleSystem.getRound().isActingMonster() ? canMonsterAttack() : canCharacterAttack();

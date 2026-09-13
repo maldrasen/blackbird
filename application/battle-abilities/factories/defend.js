@@ -1,6 +1,5 @@
 Ability.Defend = function() {
-  const ability = Ability();
-
+  const ability = Ability('Defend');
   return ability;
 }
 
@@ -8,7 +7,7 @@ Ability.Defend = function() {
 Ability.register('basic-defend',{
   name: 'Defend',
   category: 'basic',
-  essence: 5,
+  essence:0,
 
   execute: () => {
     const round = BattleSystem.getRound();

@@ -1,4 +1,3 @@
-// A combatant can only pass when they have to.
 Ability.Pass = function() {
   const ability = Ability('Pass');
 
@@ -25,8 +24,6 @@ Ability.Pass = function() {
       throw new Error(`Entity:${acting} passed their turn, but no message was added.`);
     }
   });
-
-  AbilityAppraiser(ability).appraise();
 
   return ability;
 }

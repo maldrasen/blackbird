@@ -1,6 +1,6 @@
 Ability.SpecialAttack = function(options) {
-  const ability = Ability();
-
+  const ability = Ability(options.name);
+  AbilityAppraiser(ability).appraise();
   return ability;
 }
 

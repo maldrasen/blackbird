@@ -1,6 +1,6 @@
 Ability.Hide = function() {
-  const ability = Ability();
-
+  const ability = Ability('Hide');
+  ability.setEssence(10);
   return ability;
 }
 

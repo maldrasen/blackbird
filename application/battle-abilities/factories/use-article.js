@@ -1,6 +1,5 @@
 Ability.UseArticle = function(code) {
-  const ability = Ability();
-
+  const ability = Ability(`Use ${Article.lookup(code).getName()}`);
   return ability;
 }
 
