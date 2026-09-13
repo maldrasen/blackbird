@@ -663,6 +663,7 @@
     "test/battle/systems/recruitment-system-spec.js",
     "test/battle/systems/status-effect-system-spec.js",
     "test/battle-abilities/ability-spec.js",
+    "test/battle-abilities/factories/defend-spec.js",
     "test/battle-abilities/factories/pass-spec.js",
     "test/characters/describers/body-describer-spec.js",
     "test/characters/describers/breast-describer-spec.js",

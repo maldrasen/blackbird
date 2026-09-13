@@ -1,23 +1,15 @@
 Ability.Defend = function() {
   const ability = Ability('Defend');
-  return ability;
-}
 
-/*
-Ability.register('basic-defend',{
-  name: 'Defend',
-  category: 'basic',
-  essence:0,
-
-  execute: () => {
+  ability.setExecuteFunction(() => {
     const round = BattleSystem.getRound();
 
     round.clearTarget();
-    round.addTime(1000,false);
+    round.addTime(1000, false);
     round.addMessage({ text:`{A:ActingName} takes a defensive stance, becoming {S/pst}Poised{/S}.` });
 
     BattleSystem.addStatus(round.getActing(), 'poised', { count:1 });
-  },
+  });
 
-});
-*/
+  return ability;
+}
