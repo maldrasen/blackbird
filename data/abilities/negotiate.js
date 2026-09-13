@@ -5,7 +5,7 @@
 
 // TODO: This becomes a battle command
 
-Ability.register(BattleCommand.negotiate, {
+BattleCommand.register(BattleCommandCode.negotiate, {
   name: 'Negotiate',
   category: 'utility',
   overlay: NegotiationSystem.start,

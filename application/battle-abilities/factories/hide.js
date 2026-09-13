@@ -1,5 +1,5 @@
-ABILITY.Hide = function() {
-  const ability = ABILITY();
+Ability.Hide = function() {
+  const ability = Ability();
 
   return ability;
 }

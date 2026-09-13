@@ -1,5 +1,5 @@
-ABILITY.Defend = function() {
-  const ability = ABILITY();
+Ability.Defend = function() {
+  const ability = Ability();
 
   return ability;
 }

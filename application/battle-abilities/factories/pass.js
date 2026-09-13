@@ -1,5 +1,5 @@
-ABILITY.Pass = function() {
-  const ability = ABILITY();
+Ability.Pass = function() {
+  const ability = Ability();
 
   return ability;
 }

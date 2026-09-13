@@ -1,6 +1,6 @@
 // TODO: This becomes a battle command
 
-Ability.register('use-item',{
+BattleCommand.register(BattleCommandCode.useItem,{
   name: 'Use Item',
   category: 'utility',
 

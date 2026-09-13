@@ -1,3 +1,7 @@
+
+// TODO: This should all pretty much be copied into the Ability.NaturalAttack factory, building the model rather than
+//       the record.
+
 // Every natural attack shares a similar skeleton: check that the attacker isn't hidden (Monsters that are hidden must
 // use a sneak attack variant in order to get the increased accuracy and damage) and that the target is in reach. The
 // ability then runs a physical attack contest, describes the attack, adds the attack's time, and finally resolve the

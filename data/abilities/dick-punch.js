@@ -1,6 +1,7 @@
 
-// A dick punch is always thrown with a fist, whatever the attacker might be holding.
+// TODO: Should probably be its own factory that chains into the new Ability.NaturalAttack factory.
 
+/*
 NaturalAttackAbility.register('dick-punch', {
   name: 'Dick Punch',
   essence: 75,
@@ -66,3 +67,4 @@ function addStunEffect(acting, target) {
 // TODO: We need some ball crushingly vivid attack text here. The attack text also needs to describe how the attack
 //       wasn't effective if the defender is wearing metal pants, or only partly effective if they're wearing any
 //       pants.
+*/

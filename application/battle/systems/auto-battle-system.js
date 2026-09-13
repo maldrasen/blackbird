@@ -5,16 +5,16 @@ global.AutoBattleSystem = (function() {
   function takeTurn() {
     const abilities = CharacterAbilitySystem.getAbilities();
 
-    if (abilities.includes(BattleCommand.pass)) {
-      return Ability.lookup(BattleCommand.pass).execute();
+    if (abilities.includes(BattleCommandCode.pass)) {
+      return Ability.lookup(BattleCommandCode.pass).execute();
     }
 
-    if (abilities.includes(BattleCommand.basicAttack)) {
+    if (abilities.includes(BattleCommandCode.basicAttack)) {
       BattleSystem.getRound().setTarget(closestTarget());
-      return Ability.lookup(BattleCommand.basicAttack).execute();
+      return Ability.lookup(BattleCommandCode.basicAttack).execute();
     }
 
-    Ability.lookup(BattleCommand.basicDefend).execute();
+    Ability.lookup(BattleCommandCode.basicDefend).execute();
   }
 
   function closestTarget() {

@@ -1,5 +1,5 @@
-ABILITY.UseArticle = function(code) {
-  const ability = ABILITY();
+Ability.UseArticle = function(code) {
+  const ability = Ability();
 
   return ability;
 }

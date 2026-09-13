@@ -1,5 +1,5 @@
-ABILITY.CastSpell = function(code, power) {
-  const ability = ABILITY();
+Ability.CastSpell = function(code, power) {
+  const ability = Ability();
 
   return ability;
 }

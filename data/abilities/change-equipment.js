@@ -1,6 +1,6 @@
 // TODO: This becomes a battle command
 
-Ability.register('change-equipment',{
+BattleCommand.register(BattleCommandCode.changeEquipment,{
   name: 'Change Equipment',
   category: 'utility',
 

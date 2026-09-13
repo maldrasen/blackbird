@@ -1,3 +1,7 @@
+
+// TODO: This becomes a factory that chains to the special attack factory that creates an Ability model.
+
+/*
 Ability.register('sneak-attack',{
   name: 'Sneak Attack',
   category: 'basic',
@@ -63,3 +67,4 @@ function getAttackText(weapon) {
 
   return `[TODO: Sneak attack with ${weapon.base}]`;
 }
+*/

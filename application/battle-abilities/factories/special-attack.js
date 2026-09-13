@@ -1,5 +1,5 @@
-ABILITY.SpecialAttack = function(options) {
-  const ability = ABILITY();
+Ability.SpecialAttack = function(options) {
+  const ability = Ability();
 
   return ability;
 }

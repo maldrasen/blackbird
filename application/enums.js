@@ -432,7 +432,7 @@ global.BattleCondition = {
   recruited: 'recruited',
 };
 
-global.BattleCommand = {
+global.BattleCommandCode = {
   basicAttack: 'basic-attack',
   basicDefend: 'basic-defend',
   changeEquipment: 'change-equipment',
