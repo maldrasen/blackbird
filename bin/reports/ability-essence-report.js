@@ -1,8 +1,10 @@
 // Usage: node bin/reports/ability-essence-report.js
 //
-// Prints the essence breakdown for every spell at each power level with no cooldown, then for every ability entry on
-// every base monster as the essence system scores it, and finally each monster's ability essence sum. Use it to tune
-// the essence knobs in EssenceSystem and the essence values on the status effect records.
+// Prints the essence of every status effect type, flagging the ones with none set, then the essence breakdown for
+// every spell at each power level with no cooldown, then for every ability entry on every base monster as the essence
+// system scores it, and finally each monster's ability essence sum. Use it to tune the essence knobs in EssenceSystem
+// and the essence values on the status effect records. An unpriced status effect scores nothing beyond any damage it
+// does, which is right for poison but a gap for anything else a spell or attack applies.
 
 require('../run-headless.js');
 
@@ -39,6 +41,21 @@ function kindOf(entry, breakdown) {
   if (breakdown.handSet) { return breakdown.total === 0 ? 'unpriced' : 'hand-set'; }
   return entry.code === 'monster-cast-spell' ? 'spell' : 'attack';
 }
+
+// ---
+
+const statusRows = StatusEffectType.getAllCodes().sort().map(code => {
+  const type = StatusEffectType.lookup(code);
+  return [code, type.getCategory(), type.getDurationType(), type.getEssence(), type.getEssence() === 0 ? 'unpriced' : ''];
+});
+
+print('Status Effect Essence', [
+  { label:'Status Effect' },
+  { label:'Category' },
+  { label:'Duration' },
+  { label:'Essence', align:'right' },
+  { label:'' },
+], statusRows);
 
 // ---
 
