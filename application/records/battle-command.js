@@ -32,12 +32,10 @@ global.BattleCommand = (function() {
       return command.buildAbility ? buildAbility(data).getTargetingMode() : null;
     }
 
-    // The ability ends the character's round when it runs. A command still waiting on its overlay runs its
-    // placeholder instead, so the round is ended here for it.
+    // Executing a command ends the character's round, whether it built an ability or ran the placeholder of a
+    // command still waiting on its overlay.
     function execute(data={}) {
-      if (command.buildAbility) { return buildAbility(data).execute(); }
-
-      command.execute();
+      command.buildAbility ? buildAbility(data).execute() : command.execute();
       BattleSystem.finishCharacterRound();
     }
 

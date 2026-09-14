@@ -1,8 +1,8 @@
 describe.only("Ability.Pass", function() {
 
-  // finishCharacterRound() requires the acting entity to be next in the turn order. A status applied during the
-  // acting entity's own round isn't counted against at the end of it, so the specs stun the character before the
-  // round opens.
+  // The command that built an ability ends the round, so the execute specs end it themselves to see the stun counted
+  // down, which requires the acting entity to be next in the turn order. A status applied during the acting entity's
+  // own round isn't counted against at the end of it, so the specs stun the character before the round opens.
   function startBattle() {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
@@ -40,6 +40,7 @@ describe.only("Ability.Pass", function() {
       BattleSystem.addStatus(acting, 'stun', { count:1 });
       BattleSystem.specRound(acting);
       ability.execute();
+      BattleSystem.finishCharacterRound();
 
       const round = BattleSystem.getRound();
       expect(round.getAbility()).to.equal(ability);
@@ -54,6 +55,7 @@ describe.only("Ability.Pass", function() {
       BattleSystem.addStatus(acting, 'stun', { count:2 });
       BattleSystem.specRound(acting);
       Ability.Pass().execute();
+      BattleSystem.finishCharacterRound();
 
       expect(BattleSystem.getRound().getMessages()[0].text).to.include(`can't act this turn`);
       expect(StatusEffects(acting).get('stun').count).to.equal(1);

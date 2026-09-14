@@ -1,6 +1,7 @@
 describe.only("Ability.Defend", function() {
 
-  // finishCharacterRound() requires the acting entity to be next in the turn order.
+  // The command that built an ability ends the round, so the execute spec ends it itself to see the poised stack
+  // survive, which requires the acting entity to be next in the turn order.
   function startRound() {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
@@ -23,6 +24,7 @@ describe.only("Ability.Defend", function() {
     const ability = Ability.Defend();
 
     ability.execute();
+    BattleSystem.finishCharacterRound();
 
     const round = BattleSystem.getRound();
     expect(round.getAbility()).to.equal(ability);

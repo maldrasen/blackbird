@@ -15,8 +15,8 @@ global.Ability = function(name) {
   let priority = 50;
   let details = {};
 
-  // A character's round ends as soon as their ability has run. A monster's round is finished by the BattleSystem
-  // after the MonsterSystem's turn returns, so the ability leaves it open.
+  // Running an ability leaves the round open. A monster's round is finished by the BattleSystem after the
+  // MonsterSystem's turn returns, and a character's by the command that built the ability.
   function execute() {
     if (executeFunction == null) { throw new Error(`Ability[${name}] has no execute function.`); }
 
@@ -24,12 +24,6 @@ global.Ability = function(name) {
     round.setAbility(ability);
     round.applyCooldown();
     executeFunction();
-
-    // TODO: Execute should no longer be responsible for finishing the character round. That should be the job of the
-    //       BattleCommand now.
-    if (round.isActingCharacter()) {
-      BattleSystem.finishCharacterRound();
-    }
   }
 
   const ability = {

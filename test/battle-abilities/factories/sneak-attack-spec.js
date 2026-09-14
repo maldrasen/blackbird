@@ -14,6 +14,7 @@ describe.only("Ability.SneakAttack", function() {
   }
 
   // A hidden rogue sneak attacks the kobold in front of them, with the weapon they came with unless told otherwise.
+  // The command that built an ability ends the round, so the helper ends it itself to see the rogue revealed.
   function sneakAttackWith(base=null) {
     const state = startBattle();
     const rogue = state.getEntityAtPosition('P.1.2');
@@ -22,6 +23,7 @@ describe.only("Ability.SneakAttack", function() {
     BattleSystem.addStatus(rogue, 'hidden');
     startCharacterRound(rogue, state.getEntityAtPosition('M.0.2'));
     Ability.SneakAttack().execute();
+    BattleSystem.finishCharacterRound();
 
     return { rogue, text:BattleSystem.getRound().getMessages()[0].text };
   }
