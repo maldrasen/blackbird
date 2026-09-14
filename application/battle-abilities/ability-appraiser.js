@@ -1,4 +1,12 @@
-global.AbilityAppraiser = function(ability) {
+global.AbilityAppraiser = (function() {
+
+  // TODO: Loop through all the base monsters and their abilities, and appraise every ability that doesn't have an
+  //       essence already set.
+  function run() {}
+
+  function appraise(ability) {
+    ability.setEssence(0);
+  }
 
 // A record that calculates its essence returns the terms behind it for the ability essence report. A hand-set
 // value has no terms, only a total.
@@ -8,11 +16,6 @@ global.AbilityAppraiser = function(ability) {
 //     { total:(ability.essence || 0), handSet:true };
 // }
 
-  function appraise() {
-    ability.setEssence(0);
-  }
+  return { run };
 
-  return { appraise };
-
-}
-
+})();

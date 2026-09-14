@@ -1,8 +1,8 @@
 Ability.VenomousBite = function(options) {
-  const { strength, damage, ...remaining } = options;
+  const { poisonStrength, poisonDamage, ...remaining } = options;
 
-  if (strength == null) { throw `Ability.VenomousBite requires a poisonStrength.`; }
-  if (damage == null) { throw `Ability.VenomousBite requires a poisonDamage.`; }
+  Validate.isNumber('VenomousBite.poisonStrength', poisonStrength);
+  Validate.isDiceRoll('VenomousBite.poisonDamage', poisonDamage);
 
   return Ability.NaturalAttack({
     name:'Venomous Bite',

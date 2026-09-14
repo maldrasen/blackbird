@@ -31,11 +31,10 @@ Ability.SpecialAttack = function(options) {
   ability.setExecuteFunction(() => execute(ability, options));
 
   if (options.cooldown != null) { ability.setCooldown(options.cooldown); }
+  if (options.essence != null) { ability.setEssence(options.essence); }
   if (options.priority != null) { ability.setPriority(options.priority); }
   if (options.getAccuracyBonus) { ability.setAccuracyBonusFunction(options.getAccuracyBonus); }
   if (options.getDamageBonus) { ability.setDamageBonusFunction(options.getDamageBonus); }
-
-  options.essence != null ? ability.setEssence(options.essence) : AbilityAppraiser(ability).appraise();
 
   return ability;
 }

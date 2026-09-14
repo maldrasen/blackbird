@@ -1,6 +1,5 @@
 Ability.CastSpell = function(code, power) {
   const ability = Ability(`Cast ${Spell.lookup(code).getName()}`);
-  AbilityAppraiser(ability).appraise();
   return ability;
 }
 
