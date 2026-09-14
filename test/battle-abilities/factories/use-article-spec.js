@@ -29,6 +29,7 @@ describe.only("Ability.UseArticle", function() {
     expect(ability.getName()).to.equal('Use Blasto');
     expect(ability.getCooldown()).to.equal(5000);
     expect(ability.getPriority()).to.equal(100);
+    expect(ability.getDetails()).to.deep.equal({ article:'blasto' });
     expect(ability.isPossible()).to.equal(true);
   });
 

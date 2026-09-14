@@ -16,6 +16,7 @@ Ability.UseArticle = function(options) {
 
   ability.setTargetingMode(getTargetingMode(consumable));
   ability.setExecuteFunction(() => execute(consumable));
+  ability.setDetails({ article:options.article });
 
   if (options.cooldown != null) { ability.setCooldown(options.cooldown); }
   if (options.essence != null) { ability.setEssence(options.essence); }
