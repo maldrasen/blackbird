@@ -44,10 +44,6 @@ global.BaseMonster = (function() {
           Species.lookup(monster.species).getNegotiationGreeting(context);
     }
 
-    function getAbilityCooldown(id) {
-      return getAbilities().find(ability => { return id === ability.getId(); }).getCooldown();
-    }
-
     function getAbilities() {
       return [...MonsterType.lookup(monster.type).getAbilities(), ...(monster.abilities || [])];
     }
@@ -76,7 +72,6 @@ global.BaseMonster = (function() {
       getEquipment: () => { return monster.equipment; },
 
       getAbilities,
-      getAbilityCooldown,
       getNegotiationGreeting,
 
       getLootQuality:() => { return monster.lootQuality || 1; },

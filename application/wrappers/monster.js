@@ -69,46 +69,16 @@ global.Monster = function(id) {
   // ===============
   //    Abilities
   // ===============
+  // A monster's abilities are the models its base monster compiled, shared by every monster of that kind.
 
-  // const defaultAbilities = {
-  //   defend: { code:'basic-defend', priority:0 },
-  // };
+  function getAbilities() { return getBaseMonster().getAbilities(); }
 
-  // function getAbilityMap() { return getBaseMonster().getAbilityMap(); }
-
-  // Find the key of the highest priority ability with the given code. Several entries can share a code, casting
-  // different spells for instance, so the priority breaks the tie.
-  // function findAbility(code) {
-  //   const matches = Object.entries(getAbilityMap()).filter(([key, entry]) => entry.code === code);
-  //   matches.sort(([,a], [,b]) => b.priority - a.priority);
-  //   return matches.length > 0 ? matches[0][0] : undefined;
-  // }
-
-  // We need to call this function when there are other properties on the ability entry that we need to read. The
-  // default abilities are kept out of the ability map so that they're never picked, counted for essence, or given
-  // initial cooldowns - they're only reachable through their explicit fallback keys.
-  // function getAbility(key) {
-  //   return getAbilityMap()[key] || defaultAbilities[key];
-  // }
-
-  // A default ability is only reachable through its fallback key, and none of them has a cooldown.
-  // function getAbilityCooldown(key) {
-  //   return defaultAbilities[key] ? undefined : getBaseMonster().getAbilityCooldown(key);
-  // }
-
-  // TODO: Reimplement with the new model. I think all of these functions will still need to work in basically the
-  //       the same way. Each ability now has a unique identifier to use. Should we keep abilities in a map or does it
-  //       make more sense for this to be an array now?
-
-  // TODO: By moving away from the records, Ability no longer has a code. I think the only place this was really used
-  //       was when forcing an ability from a negotiation. Every ability at least has a name though, so findAbility
-  //       should find by name and all the forced abilities should reference ability by name now. As two abilities
-  //       could share the same code before, referencing an ability by name shouldn't be significantly different.
-
-  function getAbility() {}
-  function getAbilityMap() { return {}; }
-  function findAbility() {}
-  function getAbilityCooldown() {}
+  // Several abilities can share a name, casting different spells for instance, so the highest priority one wins.
+  function findAbility(name) {
+    const matches = getAbilities().filter(ability => ability.getName() === name);
+    matches.sort((a, b) => b.getPriority() - a.getPriority());
+    return matches[0];
+  }
 
   return {
     getEntity: () => { return id },
@@ -129,10 +99,8 @@ global.Monster = function(id) {
     getThreatTable,
     updateThreat,
 
-    getAbility,
-    getAbilityMap,
+    getAbilities,
     findAbility,
-    getAbilityCooldown,
 
     getCardArt: () => { return `temp/entity.jpg` },
   };

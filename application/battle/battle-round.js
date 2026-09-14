@@ -26,17 +26,11 @@ global.BattleRound = function(acting, type=null) {
   //    Abilities
   // ===============
 
-  function getCooldown() {
-    if (isActingMonster()) { return getActingMonster().getAbilityCooldown(ability.getId()); }
-    throw `Only monster abilities have cooldowns.`;
-  }
-
+  // Only monsters have cooldowns. A character can use their abilities as often as they like, provided they pay the
+  // stamina or mana for them.
   function applyCooldown() {
-    if (isActingMonster()) {
-      const cooldown = getCooldown();
-      if (cooldown) {
-        BattleSystem.getState().setCooldown(acting, abilityData.key, cooldown);
-      }
+    if (isActingMonster() && ability.getCooldown() > 0) {
+      BattleSystem.getState().setCooldown(acting, ability.getId(), ability.getCooldown());
     }
   }
 
@@ -134,7 +128,7 @@ global.BattleRound = function(acting, type=null) {
   // Each round will need to take some time in order for the battle turns to advance.
   function validate() {
     if (time === 0) {
-      throw new Error(`BattleRound.time was not set by the ${abilityCode} ability.`)
+      throw new Error(`BattleRound.time was not set by the ${ability ? ability.getName() : roundType} round.`);
     }
   }
 
@@ -149,7 +143,6 @@ global.BattleRound = function(acting, type=null) {
 
     setAbility: (model) => { ability = model; },
     getAbility: () => { return ability; },
-    getCooldown,
     applyCooldown,
 
     getPrimaryWeapon,

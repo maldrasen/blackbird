@@ -253,23 +253,23 @@ global.BattleState = function(data) {
   // every turn. Characters in the party can use abilities as often as they like, provided they spend the stamina or
   // mana to use the ability.
 
-  function setCooldown(id, code, time) {
+  function setCooldown(id, abilityId, time) {
     if (abilityCooldowns[id] == null) { abilityCooldowns[id] = {}; }
-    abilityCooldowns[id][code] = time;
+    abilityCooldowns[id][abilityId] = time;
   }
 
-  function isOnCooldown(id, code) {
-    return abilityCooldowns[id] != null && abilityCooldowns[id][code] != null;
+  function isOnCooldown(id, abilityId) {
+    return abilityCooldowns[id] != null && abilityCooldowns[id][abilityId] != null;
   }
 
   function reduceCooldowns(id) {
     const time = BattleSystem.getRound().getTime();
-    Object.keys(abilityCooldowns[id]||[]).forEach(code => {
-      const remaining = abilityCooldowns[id][code];
+    Object.keys(abilityCooldowns[id]||[]).forEach(abilityId => {
+      const remaining = abilityCooldowns[id][abilityId];
       if (remaining > time) {
-        abilityCooldowns[id][code] = remaining - time;
+        abilityCooldowns[id][abilityId] = remaining - time;
       } else {
-        delete abilityCooldowns[id][code];
+        delete abilityCooldowns[id][abilityId];
       }
     });
   }
