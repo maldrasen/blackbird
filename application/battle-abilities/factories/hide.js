@@ -1,6 +1,8 @@
-Ability.Hide = function() {
+Ability.Hide = function(options={}) {
   const ability = Ability('Hide');
   ability.setEssence(10);
+
+  if (options.priority != null) { ability.setPriority(options.priority); }
 
   ability.setPossibleFunction(() => {
     const acting = BattleSystem.getRound().getActing();

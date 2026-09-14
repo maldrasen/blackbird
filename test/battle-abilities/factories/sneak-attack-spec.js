@@ -34,6 +34,8 @@ describe.only("Ability.SneakAttack", function() {
     expect(ability.getEssence()).to.equal(25);
     expect(ability.getAccuracyBonus()).to.equal(1.5);
     expect(ability.getDamageBonus()).to.equal(2);
+    expect(ability.getPriority()).to.equal(50);
+    expect(Ability.SneakAttack({ priority:30 }).getPriority()).to.equal(30);
   });
 
   it("is only possible while hidden", function() {

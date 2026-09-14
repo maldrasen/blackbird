@@ -42,6 +42,11 @@ describe.only("Ability.WeaponAttack", function() {
     }).length;
   }
 
+  it("carries a monster's priority", function() {
+    expect(Ability.WeaponAttack().getPriority()).to.equal(50);
+    expect(Ability.WeaponAttack({ priority:10 }).getPriority()).to.equal(10);
+  });
+
   describe("isPossible()", function() {
     it("is possible for a character with a monster in reach", function() {
       const state = startBattle();

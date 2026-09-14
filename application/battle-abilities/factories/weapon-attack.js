@@ -1,4 +1,4 @@
-Ability.WeaponAttack = function() {
+Ability.WeaponAttack = function(options={}) {
   const ability = Ability(`Attack`);
   ability.setTargetingMode(TargetingMode.enemyInWeaponRange);
 
@@ -7,6 +7,8 @@ Ability.WeaponAttack = function() {
   });
 
   ability.setExecuteFunction(() => { executeAttacks(ability); });
+
+  if (options.priority != null) { ability.setPriority(options.priority); }
 
   return ability;
 }

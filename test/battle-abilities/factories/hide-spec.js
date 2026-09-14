@@ -26,6 +26,11 @@ describe.only("Ability.Hide", function() {
     SkillsComponent.update(id, skills);
   }
 
+  it("carries a monster's priority", function() {
+    expect(Ability.Hide().getPriority()).to.equal(50);
+    expect(Ability.Hide({ priority:70 }).getPriority()).to.equal(70);
+  });
+
   describe("isPossible()", function() {
     it("is possible for a stealthy character in the back rank", function() {
       const state = startBattle();

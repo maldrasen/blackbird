@@ -4,11 +4,12 @@
 // TODO: The bonuses are functions so that feats and abilities can add to them. A high level rogue might be doing 4x
 //       damage with a sneak attack. They might also depend on the weapon: to prevent sneak attacks with a maul, the
 //       damage multiplier could increase with the weapon's speed.
-Ability.SneakAttack = function() {
+Ability.SneakAttack = function(options={}) {
   return Ability.SpecialAttack({
     name: 'Sneak Attack',
     targetingMode: TargetingMode.anyEnemy,
     essence: 25,
+    priority: options.priority,
     isPossible: () => { return StatusEffects(BattleSystem.getRound().getActing()).hasHidden(); },
     getAccuracyBonus: () => { return 1.5; },
     getDamageBonus: () => { return 2; },
