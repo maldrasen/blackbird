@@ -1,4 +1,4 @@
-describe.only("Ability.SpecialAttack", function() {
+describe("Ability.SpecialAttack", function() {
 
   const strike = { name:'Strike' };
 

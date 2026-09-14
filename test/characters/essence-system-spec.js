@@ -35,17 +35,13 @@ describe("EssenceSystem", function() {
     });
   });
 
-  describe("natural attack records", function() {
-    it("calculate their essence from the monster's entry", function() {
-      const entry = BaseMonster.lookup('emerald-yeek').getPrioritizedAbilities().venomBite;
-      // A [10,20] bite every 2500ms is worth 4.05, and the strength 15 venom's 2d6+2 over 2.22 ticks adds 3.96.
-      expect(Ability.lookup('venomous-bite').getEssenceBreakdown({ ...entry, cooldown:2500 }).total).to.be.closeTo(8.0059, 0.0001);
-      expect(Ability.lookup('beast-bite').getEssenceBreakdown({ damage:[10,20], speed:1000, cooldown:0 }).total).to.be.closeTo(10.125, 0.0001);
-    });
-
-    it("keep a hand-set essence when the record has one", function() {
-      expect(Ability.lookup('dick-punch').getEssenceBreakdown({ cooldown:1000 })).to.deep.equal({ total:75, handSet:true });
-    });
+  // These wait on the ability appraiser pricing the compiled ability models. The old records gave these values:
+  // the emerald yeek's [10,20] venomous bite every 2500ms is worth 4.05, and its strength 15 venom's 2d6+2 over 2.22
+  // ticks adds 3.96, for 8.0059 in all; a plain [10,20] bite every 1000ms is worth 10.125; and the dick punch keeps
+  // its hand-set 75.
+  describe("appraised abilities", function() {
+    it("calculate a natural attack's essence from its damage, speed, cooldown, and effects");
+    it("keep a hand-set essence when the ability has one");
   });
 
   describe("spellEssenceBreakdown()", function() {

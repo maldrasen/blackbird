@@ -1,4 +1,4 @@
-describe.only("Monster", function() {
+describe("Monster", function() {
 
   // These specs register their own monster records so they test the merge logic without coupling to shipped content.
   // The abilities are built here because the compile pass ran before the specs. The wrapper only reads the registries

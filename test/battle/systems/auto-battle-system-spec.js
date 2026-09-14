@@ -1,4 +1,4 @@
-describe.only("AutoBattleSystem", function() {
+describe("AutoBattleSystem", function() {
 
   // Each test boots a full battle, turns on auto battle, and moves the acting character to the front of the turn
   // order (finishRound() requires the acting entity to be next) so that advanceBattle() runs their turn through

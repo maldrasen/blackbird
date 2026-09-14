@@ -1,4 +1,4 @@
-describe.only("Ability.Defend", function() {
+describe("Ability.Defend", function() {
 
   // The command that built an ability ends the round, so the execute spec ends it itself to see the poised stack
   // survive, which requires the acting entity to be next in the turn order.

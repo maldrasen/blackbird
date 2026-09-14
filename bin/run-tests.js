@@ -1,8 +1,9 @@
-// Usage: bin/test.sh [--grep "<spec title>"] [--seed <seed>] [--seeds <seed,seed,...>] [--quiet]
-//   --grep   only run specs whose title matches
-//   --seed   run with a fixed seed to reproduce a failure
-//   --seeds  run once per seed, printing a one-line summary for each run
-//   --quiet  print only the summary lines; a failing run still dumps its full output
+// Usage: bin/test.sh [--grep "<spec title>"] [--seed <seed>] [--seeds <seed,seed,...>] [--quiet] [--reporter <name>]
+//   --grep      only run specs whose title matches
+//   --seed      run with a fixed seed to reproduce a failure
+//   --seeds     run once per seed, printing a one-line summary for each run
+//   --quiet     print only the summary lines; a failing run still dumps its full output
+//   --reporter  a mocha reporter in place of the spec listing; "dot" prints only the failures in detail
 // Repeated random-seed runs to flush out flaky specs are handled by bin/soak-tests.js instead.
 
 const args = parseArgs(process.argv);
@@ -24,6 +25,7 @@ function parseArgs(argv) {
     seed: valueOf('--seed'),
     seeds: (valueOf('--seeds') || '').split(',').filter(seed => seed.length > 0),
     quiet: argv.includes('--quiet'),
+    reporter: valueOf('--reporter'),
   };
 }
 
@@ -35,6 +37,7 @@ function runBatch(args) {
   for (const seed of seeds) {
     const childArgs = [__filename];
     if (args.grep != null) { childArgs.push('--grep', args.grep); }
+    if (args.reporter != null) { childArgs.push('--reporter', args.reporter); }
     if (seed != null) { childArgs.push('--seed', seed); }
 
     const result = spawnSync('node', childArgs, { encoding:'utf8' });
@@ -63,7 +66,7 @@ function runMocha(args) {
   global.expect = require('chai').expect;
 
   const Mocha = require('mocha');
-  const mocha = new Mocha({ ui: 'bdd', checkLeaks: true });
+  const mocha = new Mocha({ ui: 'bdd', checkLeaks: true, reporter: args.reporter || 'spec' });
 
   mocha.rootHooks({
     beforeAll: Tests.rootBefore,

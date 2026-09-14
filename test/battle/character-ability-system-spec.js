@@ -1,4 +1,4 @@
-describe.only("CharacterAbilitySystem", function() {
+describe("CharacterAbilitySystem", function() {
 
   // A single kobold runt at M.0.2 faces the fixture party: the player in front of it with a longsword, and rogues
   // with short reach daggers in the back rank.

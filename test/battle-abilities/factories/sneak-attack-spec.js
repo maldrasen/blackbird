@@ -1,4 +1,4 @@
-describe.only("Ability.SneakAttack", function() {
+describe("Ability.SneakAttack", function() {
 
   // The fixture rogues sit in the back rank with a dagger in each hand, out of reach of everything.
   function startBattle() {

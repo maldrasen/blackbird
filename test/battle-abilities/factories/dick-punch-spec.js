@@ -1,4 +1,4 @@
-describe.only("Ability.DickPunch", function() {
+describe("Ability.DickPunch", function() {
 
   // The kobold dick puncher squares up to a well-endowed elf who can't dodge to save his life, with the player behind
   // him and a woman beside him. The kobold's strength and training make every punch land.

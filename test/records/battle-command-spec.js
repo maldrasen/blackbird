@@ -1,4 +1,4 @@
-describe.only("BattleCommand", function() {
+describe("BattleCommand", function() {
 
   // finishCharacterRound() requires the acting entity to be next in the turn order.
   function startRound() {

@@ -1,4 +1,4 @@
-describe.only("MonsterCastSpell", function() {
+describe("MonsterCastSpell", function() {
 
   // The dual caster is the regression case for a monster with two abilities of the same kind: two cast spells with
   // different spells. The spec spells never actually go off, so they only need enough shape for Spell.lookup and the

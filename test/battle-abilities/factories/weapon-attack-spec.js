@@ -1,4 +1,4 @@
-describe.only("Ability.WeaponAttack", function() {
+describe("Ability.WeaponAttack", function() {
 
   // The fixture party puts the player at P.0.2 with a longsword and a shield, and rogues in the back rank with a
   // dagger in each hand. The runt pack is a single rank of kobolds.

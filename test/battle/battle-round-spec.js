@@ -1,4 +1,4 @@
-describe.only("BattleRound", function() {
+describe("BattleRound", function() {
 
   function startBattle() {
     BattleFixtures.prepareForBattle();

@@ -1,4 +1,4 @@
-describe.only("Ability.UseArticle", function() {
+describe("Ability.UseArticle", function() {
 
   // The tosser joins the runt pack in the back rank, behind the blast a blasto thrown at the front of the party
   // makes. Nothing is stubbed: a blasto's fire always leaves a mark on its target.

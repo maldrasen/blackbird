@@ -1,4 +1,4 @@
-describe.only("Ability.Hide", function() {
+describe("Ability.Hide", function() {
 
   // The fixture party puts a rogue with the stealth skill at P.1.2. The runt pack has a single rank, so the only
   // observer of that position is the kobold at M.0.2.

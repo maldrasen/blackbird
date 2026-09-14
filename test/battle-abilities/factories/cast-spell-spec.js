@@ -1,4 +1,4 @@
-describe.only("Ability.CastSpell", function() {
+describe("Ability.CastSpell", function() {
 
   // The flamescale screamer is the only spellcasting monster. A single monster battle puts it at M.0.2.
   function startBattle() {

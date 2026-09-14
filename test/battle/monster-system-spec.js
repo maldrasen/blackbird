@@ -1,4 +1,4 @@
-describe.only("MonsterSystem", function() {
+describe("MonsterSystem", function() {
 
   // The runt pack's kobolds each carry a club or a spear from their type and a low priority bite of their own. The
   // runt at M.0.2 acts, with its threat pinned so the target choice is deterministic, and the player stands in front

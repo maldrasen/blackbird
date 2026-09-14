@@ -1,4 +1,4 @@
-describe.only("BattleInitializer", function() {
+describe("BattleInitializer", function() {
 
   describe("rollInitialCooldowns()", function() {
 

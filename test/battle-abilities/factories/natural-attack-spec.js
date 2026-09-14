@@ -1,4 +1,4 @@
-describe.only("Ability.NaturalAttack", function() {
+describe("Ability.NaturalAttack", function() {
 
   const bite = {
     name: 'Bite',

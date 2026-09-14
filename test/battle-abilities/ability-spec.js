@@ -1,4 +1,4 @@
-describe.only("Ability", function() {
+describe("Ability", function() {
 
   it("gives every ability its own id", function() {
     expect(Ability('One').getId()).to.not.equal(Ability('Two').getId());

@@ -1,4 +1,4 @@
-describe.only("MonsterUseArticle", function() {
+describe("MonsterUseArticle", function() {
 
   // The tosser is added after the battle starts so that no initial cooldown roll is consumed, leaving its blasto
   // ready on its first turn. Pinning the threat keeps the AI's target choice deterministic; everything else runs

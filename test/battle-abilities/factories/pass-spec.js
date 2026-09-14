@@ -1,4 +1,4 @@
-describe.only("Ability.Pass", function() {
+describe("Ability.Pass", function() {
 
   // The command that built an ability ends the round, so the execute specs end it themselves to see the stun counted
   // down, which requires the acting entity to be next in the turn order. A status applied during the acting entity's
