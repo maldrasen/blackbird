@@ -3,7 +3,7 @@ global.AutoBattleSystem = (function() {
   // Auto mode isn't intelligent. A character who must pass still passes, otherwise they attack the closest monster
   // they can reach, falling back to defend when no attack is possible.
   function takeTurn() {
-    const abilities = CharacterAbilitySystem.getAbilities();
+    const abilities = CharacterAbilitySystem.getCommands();
 
     if (abilities.includes(BattleCommandCode.pass)) {
       return Ability.lookup(BattleCommandCode.pass).execute();

@@ -1,3 +1,5 @@
-// TODO: The sneak attack command simply builds a SneakAttack ability.
-//  -  name: 'Sneak Attack',
-//  -  category: 'basic',
+BattleCommand.register(BattleCommandCode.sneakAttack, {
+  name: 'Sneak Attack',
+  category: 'basic',
+  buildAbility: () => { return Ability.SneakAttack(); },
+});

@@ -1,3 +1,5 @@
-// TODO: The defend command simply builds a Defend ability.
-//  -  name: 'Defend',
-//  -  category: 'basic',
+BattleCommand.register(BattleCommandCode.basicDefend, {
+  name: 'Defend',
+  category: 'basic',
+  buildAbility: () => { return Ability.Defend(); },
+});

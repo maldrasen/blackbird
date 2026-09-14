@@ -1,5 +1,3 @@
-// TODO: This becomes a battle command
-
 BattleCommand.register(BattleCommandCode.useItem,{
   name: 'Use Item',
   category: 'utility',

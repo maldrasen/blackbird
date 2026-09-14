@@ -1,5 +1,3 @@
-// TODO: This becomes a battle command
-
 BattleCommand.register(BattleCommandCode.changeEquipment,{
   name: 'Change Equipment',
   category: 'utility',

@@ -1,14 +1,13 @@
 global.CharacterAbilitySystem = (function() {
 
-  // A character who can pass must pass.
-  function getAbilities() {
-    return Ability.lookup(BattleCommandCode.pass).canBeUsed() ?
-      [BattleCommandCode.pass]:
-      Object.values(BattleCommandCode).filter(code => Ability.lookup(code).canBeUsed());
+  // The codes of the commands the acting character can use this round. A character who can pass must pass.
+  function getCommands() {
+    return BattleCommand.lookup(BattleCommandCode.pass).isPossible() ? [BattleCommandCode.pass] :
+      Object.values(BattleCommandCode).filter(code => BattleCommand.lookup(code).isPossible());
   }
 
   return {
-    getAbilities,
+    getCommands,
   };
 
 })();

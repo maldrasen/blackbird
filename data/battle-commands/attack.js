@@ -1,3 +1,5 @@
-// TODO: An attack command builds a weapon attack ability
-//  name: 'Attack',
-//  category: 'basic',
+BattleCommand.register(BattleCommandCode.basicAttack, {
+  name: 'Attack',
+  category: 'basic',
+  buildAbility: () => { return Ability.WeaponAttack(); },
+});

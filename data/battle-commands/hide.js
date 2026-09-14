@@ -1,3 +1,5 @@
-// TODO: The hide command simply builds a Hide ability.
-//  -  name: 'Hide',
-//  -  category: 'basic',
+BattleCommand.register(BattleCommandCode.hide, {
+  name: 'Hide',
+  category: 'basic',
+  buildAbility: () => { return Ability.Hide(); },
+});
