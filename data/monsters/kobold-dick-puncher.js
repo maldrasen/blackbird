@@ -19,8 +19,8 @@ BaseMonster.register('kobold-dick-puncher',{
 
   // Maybe just call this abilities now?
   prioritizedAbilities:[
-    buildDickPunch,
-    buildPunch,
+    // dickPunch,
+    // normalPunch,
   ],
 
   negotiationGreeting: greetingPackage,
@@ -36,19 +36,17 @@ greetingPackage.add(`The kobold cracks his knuckles and smiles. With surprising 
   putting the small lizard man right at eye level with your crotch. "Don't think I'll back down just cause you killed
   off the others. Didn't like them anyway, and I got plenty of fight left in me."`);
 
-function buildDickPunch() {
-  return Ability.DickPunch({  // Factory in data/abilities that uses NaturalAttack to build an Ability.
-    priority: 100,            // If the monster abilities becomes an array, each ability will need to have a priority property, set here through the factory options.
-  });
-}
+/*
 
-// NaturalAttack gets an optional parameter, taking a code for a natural ability option map that we can spread into
-// the passed options.
+const dickPunch = Ability.DickPunch({ // Factory in data/abilities that uses NaturalAttack to build an Ability.
+  priority: 100,                      // If the monster abilities becomes an array, each ability will need to have a priority property, set here through the factory options.
+});
 
-function buildPunch() {
-  return Ability.NaturalAttack({
-    damage: [20,30],
-    speed: 500,
-    priority: 50,
-  },'punch');
-}
+const normalPunch = Ability.NaturalAttack({
+  damage: [20,30],
+  speed: 500,
+  priority: 50,
+},'punch');
+
+Commented out because app can't load with it yet.
+*/
