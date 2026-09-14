@@ -673,6 +673,7 @@
     "test/battle/systems/encounter-builder-spec.js",
     "test/battle/systems/recruitment-system-spec.js",
     "test/battle/systems/status-effect-system-spec.js",
+    "test/battle/targeting-controller-spec.js",
     "test/battle-abilities/ability-spec.js",
     "test/battle-abilities/factories/cast-spell-spec.js",
     "test/battle-abilities/factories/defend-spec.js",

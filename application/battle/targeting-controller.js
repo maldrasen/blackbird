@@ -1,45 +1,36 @@
 global.TargetingController = (function() {
 
-  // The ability waiting on a target. This is targeting state, not battle state, so it lives here rather than on the
-  // round; the round isn't touched until a target is actually committed.
-  let pendingAbility;
+  // The command waiting on a target, with whatever its overlay chose. This is targeting state, not battle state, so
+  // it lives here rather than on the round; the round isn't touched until a target is actually committed.
+  let pending;
 
-  function startTargeting(abilityCode) {
-    pendingAbility = abilityCode;
-    switch(Ability.lookup(abilityCode).getTargetingMode()) {
+  function startTargeting(command, data={}) {
+    pending = { command, data };
+
+    switch(command.buildAbility(data).getTargetingMode()) {
       case TargetingMode.anyEnemy: return BattleInterface.startTargeting(monsterPositions(getTargetableMonsters()), []);
       case TargetingMode.enemyInWeaponRange: return BattleInterface.startTargeting(monsterPositions(getMonstersInRange()), []);
     }
   }
 
-  // Invoked by the FormationPanel when a valid target is clicked. Ability.execute() sets the ability on the round.
+  // Invoked by the FormationPanel when a valid target is clicked.
   function targetSelected(position) {
-    const state = BattleSystem.getState();
-    const round = BattleSystem.getRound();
-    const ability = pendingAbility;
+    const { command, data } = pending;
 
-    pendingAbility = null;
-    round.setTarget(state.getEntityAtPosition(position));
-    Ability.lookup(ability).execute();
+    pending = null;
+    BattleSystem.getRound().setTarget(BattleSystem.getState().getEntityAtPosition(position));
+    command.execute(data);
   }
 
   // Invoked by the FormationPanel's back button. Nothing was set on the round, so there's nothing to undo.
   function cancelTargeting() {
-    pendingAbility = null;
+    pending = null;
   }
 
   // All monsters that can be targeted. A monster can be targeted if it is alive and not hidden.
   function getTargetableMonsters() {
     const state = BattleSystem.getState();
-    const monsters = [];
-
-    state.getActiveMonsters().forEach(monster => {
-      if (state.canBeTargeted(monster)) {
-        monsters.push(monster);
-      }
-    });
-
-    return monsters;
+    return state.getActiveMonsters().filter(monster => state.canBeTargeted(monster));
   }
 
   function getMonstersInRange() {
