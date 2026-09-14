@@ -6,7 +6,7 @@ BaseMonster.register('gnawbones',{
   type: 'critter',
   level: 2,
 
-  prioritizedAbilities: {
-    bite: { code:'beast-bite', priority:50, damage:[10,20], speed:1000 },
-  },
+  prioritizedAbilities: [
+    Ability.Bite({ damage:[10,20], speed:1000 }),
+  ],
 });

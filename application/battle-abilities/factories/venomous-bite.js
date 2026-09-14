@@ -11,7 +11,7 @@ Ability.VenomousBite = function(options) {
     damageType: DamageType.pierce,
     cooldown: 2500,
     effects: [
-      Effect.poison({ strength, damage })
+      Effect.poison({ strength:poisonStrength, damage:poisonDamage })
     ],
     messageForEntity: (target, results) => { return results.poison ? `Venom burns through {T:targetName's} veins!` : null; },
     ...remaining

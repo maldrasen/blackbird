@@ -8,8 +8,8 @@ BaseMonster.register('rabid-skitterfang',{
   healthFactor: 0.25,
   speedFactor: 0.80,
 
-  prioritizedAbilities: {
-    bite: { code:'beast-bite', priority:50, damage:[10,20], speed:800 },
-  },
+  prioritizedAbilities: [
+    Ability.Bite({ damage:[10,20], speed:800 }),
+  ],
 
 });
