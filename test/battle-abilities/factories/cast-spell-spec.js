@@ -18,6 +18,7 @@ describe.only("Ability.CastSpell", function() {
     expect(ability.getName()).to.equal('Cast Searing Lance');
     expect(ability.getCooldown()).to.equal(2000);
     expect(ability.getPriority()).to.equal(75);
+    expect(ability.getDetails()).to.deep.equal({ spell:'searing-lance', powerLevel:3 });
     expect(ability.isPossible()).to.equal(true);
   });
 

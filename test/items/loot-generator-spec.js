@@ -48,7 +48,9 @@ describe('LootGenerator', function() {
       level: 1,
       bonusEssence: essenceBonus,
       equipment: { loadouts:[{ main:{ base:'longbow' }}] },
-      prioritizedAbilities: { flare:{ code:'monster-cast-spell', priority:50, spell:'spec-loot-flare', powerLevel:1 } },
+      // The spec spell is registered just above, so the archer's abilities are built here rather than in the
+      // compile pass that ran before the specs.
+      abilities: [Ability.CastSpell({ spell:'spec-loot-flare', powerLevel:1 })],
       lootGroups: { nothing:100, 'spec-critters':30, gear:10 },
       lootAdjustments: [
         { addArticle:'spec-fang', group:'spec-critters', rarity:Rarity.rare },

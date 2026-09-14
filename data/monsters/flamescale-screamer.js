@@ -10,12 +10,11 @@ BaseMonster.register('flamescale-screamer',{
     sorcery: 5,
   },
 
-  // TODO: Convert to Ability.CastSpell() models once that factory builds a working ability.
-  prioritizedAbilities:{
-    A: { code:'monster-cast-spell', priority:100, spell:'overwhelming-effulgence', powerLevel:2, cooldown:4000 },
-    B: { code:'monster-cast-spell', priority:75, spell:'searing-lance', powerLevel:3, cooldown:2000 },
-    C: { code:'monster-cast-spell', priority:50, spell:'ember', powerLevel:1 },
-  },
+  buildAbilities: () => { return [
+    Ability.CastSpell({ spell:'overwhelming-effulgence', powerLevel:2, priority:100, cooldown:4000 }),
+    Ability.CastSpell({ spell:'searing-lance', powerLevel:3, priority:75, cooldown:2000 }),
+    Ability.CastSpell({ spell:'ember', powerLevel:1 }),
+  ]},
 
   lootGroups: {
     nothing: 100,

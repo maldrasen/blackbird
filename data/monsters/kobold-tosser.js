@@ -6,10 +6,9 @@ BaseMonster.register('kobold-tosser',{
   triggers: [],
   level: 5,
 
-  // TODO: Convert to an Ability.UseArticle() model once that factory builds a working ability.
-  prioritizedAbilities:{
-    blasto: { code:'monster-use-article', priority:100, article:'blasto', cooldown:5000 },
-  },
+  buildAbilities: () => { return [
+    Ability.UseArticle({ article:'blasto', priority:100, cooldown:5000 }),
+  ]},
 
   equipment: {
     loadouts:[

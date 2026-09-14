@@ -54,10 +54,9 @@ global.EssenceSystem = (function() {
   }
 
   function abilityFactor(monsterId) {
-    const base = Monster(monsterId).getBaseMonster();
-    const scoreSum = Object.keys(base.getAbilityMap()).reduce((sum,key) => {
-      return sum + abilityEntryBreakdown(base, key).total;
-    },0);
+    const scoreSum = Monster(monsterId).getBaseMonster().getAbilities().reduce((sum, ability) => {
+      return sum + (ability.getEssence() || 0);
+    }, 0);
 
     return 1 + (scoreSum * abilityScale);
   }

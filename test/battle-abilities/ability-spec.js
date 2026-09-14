@@ -13,6 +13,7 @@ describe.only("Ability", function() {
     expect(ability.getDamageBonus()).to.equal(1);
     expect(ability.getCooldown()).to.equal(0);
     expect(ability.getPriority()).to.equal(50);
+    expect(ability.getDetails()).to.deep.equal({});
   });
 
   it("can't be executed without an execute function", function() {
