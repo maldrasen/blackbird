@@ -25,6 +25,12 @@ describe.only("BattleCommand", function() {
     expect(BattleCommand.lookup(BattleCommandCode.hide).isPossible()).to.equal(false);
   });
 
+  it("needs a target when the ability it builds does", function() {
+    expect(BattleCommand.lookup(BattleCommandCode.basicAttack).getTargetingMode()).to.equal(TargetingMode.enemyInWeaponRange);
+    expect(BattleCommand.lookup(BattleCommandCode.basicDefend).getTargetingMode()).to.equal(null);
+    expect(BattleCommand.lookup(BattleCommandCode.useItem).getTargetingMode()).to.equal(null);
+  });
+
   it("builds its ability and runs it", function() {
     const player = startRound();
 

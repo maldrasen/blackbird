@@ -27,6 +27,11 @@ global.BattleCommand = (function() {
       return command.buildAbility(data);
     }
 
+    // A command needs a target picked when the ability it would build does.
+    function getTargetingMode(data={}) {
+      return command.buildAbility ? buildAbility(data).getTargetingMode() : null;
+    }
+
     // The ability ends the character's round when it runs. A command still waiting on its overlay runs its
     // placeholder instead, so the round is ended here for it.
     function execute(data={}) {
@@ -44,6 +49,7 @@ global.BattleCommand = (function() {
       openOverlay: () => { command.overlay(); },
       isPossible,
       buildAbility,
+      getTargetingMode,
       execute,
     };
   }

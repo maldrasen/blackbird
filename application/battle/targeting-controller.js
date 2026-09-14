@@ -7,7 +7,7 @@ global.TargetingController = (function() {
   function startTargeting(command, data={}) {
     pending = { command, data };
 
-    switch(command.buildAbility(data).getTargetingMode()) {
+    switch(command.getTargetingMode(data)) {
       case TargetingMode.anyEnemy: return BattleInterface.startTargeting(monsterPositions(getTargetableMonsters()), []);
       case TargetingMode.enemyInWeaponRange: return BattleInterface.startTargeting(monsterPositions(getMonstersInRange()), []);
     }
