@@ -16,9 +16,9 @@ BaseMonster.register('kobold-runt',{
     ],
   },
 
-  prioritizedAbilities:[
+  buildAbilities: () => { return [
     Ability.Bite({ damage:[10,30], speed:1000, priority:10 }),
-  ],
+  ]},
 
   negotiationGreeting: greetingPackage,
 

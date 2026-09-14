@@ -8,10 +8,10 @@ BaseMonster.register('emerald-yeek',{
 
   healthFactor: 0.5,
 
-  prioritizedAbilities: [
+  buildAbilities: () => { return [
     Ability.VenomousBite({ damage:[10,20], speed:1000, priority:80, poisonStrength:15, poisonDamage:{ x:2, d:6, p:2 } }),
     Ability.Bite({ damage:[10,20], speed:1000 }),
-  ],
+  ]},
 
   lootGroups: {
     nothing: 100,

@@ -8,8 +8,8 @@ BaseMonster.register('revolting-horsecockroach',{
   healthFactor: 1.3,
   speedFactor: 0.8,
 
-  prioritizedAbilities: [
+  buildAbilities: () => { return [
     Ability.Bite({ damage:[20,30], speed:1200 }),
-  ],
+  ]},
 
 });

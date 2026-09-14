@@ -10,8 +10,8 @@ BaseMonster.register('nightgaunt',{
   type: 'creature',
   level: 200,
 
-  prioritizedAbilities: [
+  buildAbilities: () => { return [
     Ability.Bite({ damage:[125,150], speed:1000, essence:50 }),
-  ],
+  ]},
 
 });

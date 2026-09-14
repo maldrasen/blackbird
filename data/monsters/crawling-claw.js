@@ -8,9 +8,9 @@ BaseMonster.register('crawling-claw',{
 
   healthFactor: 0.25,
 
-  prioritizedAbilities: [
+  buildAbilities: () => { return [
     Ability.LeapClaw({ damage:[10,20], speed:800 }),
-  ],
+  ]},
 
 });
 
