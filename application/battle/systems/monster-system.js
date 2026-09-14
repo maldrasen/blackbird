@@ -7,19 +7,17 @@ global.MonsterSystem = (function() {
   //       monster finds themselves in the front rank they should attempt to move behind another monster if there's
   //       space. If no move is possible than they should defend.
 
+  // Defend is the fallback when nothing else is possible. It stays out of the monster's ability list so that it's
+  // never picked over a real ability, counted for essence, or given an initial cooldown.
   function executeBattleTurn() {
     const round = BattleSystem.getRound();
-    const acting = round.getActing();
-    const monster = round.getActingMonster();
 
-    if (BattleSystem.getState().isCastingSpell(acting)) {
+    if (BattleSystem.getState().isCastingSpell(round.getActing())) {
       return BattleSpellSystem.castSpell();
     }
 
-    const key = pickForcedAbility() || pickAbility() || 'defend';
-    const abilityData = monster.getAbility(key);
-
-    Ability.lookup(abilityData.code).execute({ key });
+    const ability = pickForcedAbility() || pickAbility() || Ability.Defend();
+    ability.execute();
   }
 
   // When a negotiation ends with the monster using a specific ability we assume that this ability will target the
@@ -27,22 +25,21 @@ global.MonsterSystem = (function() {
   // never need to look at. If the monster uses something like an AoE attack that target's a position instead of a
   // character though this will need to change.
   //
-  // A forced ability the monster can't actually use - a negotiation forcing basic-attack on a monster with no
-  // weapon, or an attack out of range - falls through to the normal ability selection instead.
+  // A forced ability the monster can't actually use - a negotiation forcing an attack on a monster with no weapon, or
+  // an attack out of range - falls through to the normal ability selection instead. A forced ability ignores its
+  // cooldown.
   function pickForcedAbility() {
     const state = BattleSystem.getState();
-    if (state.getForcedAbility()) {
-      const round = BattleSystem.getRound();
-      round.setTarget(GameSystem.getState().getPlayer());
+    if (state.getForcedAbility() == null) { return null; }
 
-      const code = state.takeForcedAbility();
-      if (Ability.lookup(code).canBeUsed()) {
-        const key = round.getActingMonster().findAbility(code);
-        if (key) { return key; }
-      }
+    const round = BattleSystem.getRound();
+    const ability = round.getActingMonster().findAbility(state.takeForcedAbility());
 
-      round.clearTarget();
-    }
+    round.setTarget(GameSystem.getState().getPlayer());
+    if (ability && ability.isPossible()) { return ability; }
+
+    round.clearTarget();
+    return null;
   }
 
   // When a monster picks a target it first picks the highest threat target from its threat table. If the monster has
@@ -71,6 +68,8 @@ global.MonsterSystem = (function() {
       round.clearTarget();
       ArrayHelper.remove(characters, target);
     }
+
+    return null;
   }
 
   // A character can be targeted if they are alive and are not hidden.
@@ -83,20 +82,10 @@ global.MonsterSystem = (function() {
     const state = BattleSystem.getState();
     const round = BattleSystem.getRound();
     const acting = round.getActing();
-    const selections = [];
 
-    const monster = round.getActingMonster();
-
-    Object.keys(monster.getAbilityMap()).forEach(key => {
-      const abilityData = monster.getAbility(key);
-      const ability = Ability.lookup(abilityData.code);
-
-      if (ability.canBeUsed() && !state.isOnCooldown(acting, key)) {
-        selections.push({ key:key, priority:abilityData.priority });
-      }
-    });
-
-    return selections.sort((a,b) => { return b.priority - a.priority }).map(entry => entry.key);
+    return round.getActingMonster().getAbilities().
+      filter(ability => state.isOnCooldown(acting, ability.getId()) === false && ability.isPossible()).
+      sort((a, b) => b.getPriority() - a.getPriority());
   }
 
   // Pick the highest threat monster that is a member of the characters array.

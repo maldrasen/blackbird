@@ -66,7 +66,7 @@ global.NegotiationSystem = (function() {
 
     switch (resolution.type) {
       case 'join':      return resolveJoin();
-      case 'attack':    return resolveAbility('basic-attack');
+      case 'attack':    return resolveAbility('Attack');
       case 'ability':   return resolveAbility(resolution.code);
       case 'run':       return resolveRun();
     }
