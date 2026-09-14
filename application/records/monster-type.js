@@ -9,6 +9,12 @@ global.MonsterType = (function() {
     return Object.keys(types);
   }
 
+  function compile() {
+    Object.values(types).forEach(type => {
+      if (type.buildAbilities) { type.abilities = type.buildAbilities(); }
+    });
+  }
+
   function lookup(code) {
     if (types[code] == null) { throw new Error(`Bad monster type code [${code}]`); }
 
@@ -18,7 +24,7 @@ global.MonsterType = (function() {
       getCode: () => { return code; },
       getPreferredPosition: () => { return type.preferredPosition || 'flexible'; },
       getThreatWeights: () => { return type.threatWeights; },
-      getPrioritizedAbilities: () => { return type.prioritizedAbilities || {}; },
+      getAbilities: () => { return type.abilities || []; },
       getAttributes: () => { return type.attributes; },
       getAttributeGrowth: () => { return type.attributeGrowth; },
       getBaseSkills: () => { return type.baseSkills; },
@@ -29,6 +35,7 @@ global.MonsterType = (function() {
   return {
     register,
     getAllCodes,
+    compile,
     lookup,
   };
 

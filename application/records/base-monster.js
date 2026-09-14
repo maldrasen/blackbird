@@ -9,6 +9,12 @@ global.BaseMonster = (function() {
     return Object.keys(monsters);
   }
 
+  function compile() {
+    Object.values(monsters).forEach(monster => {
+      if (monster.buildAbilities) { monster.abilities = monster.buildAbilities(); }
+    });
+  }
+
   function lookup(code) {
     if (monsters[code] == null) { throw new Error(`Bad monster code [${code}]`); }
 
@@ -38,16 +44,12 @@ global.BaseMonster = (function() {
           Species.lookup(monster.species).getNegotiationGreeting(context);
     }
 
-    // The prioritized abilities are maps keyed by an ability key, so an ability defined in the base monster overrides
-    // an ability from the more generalized monster type that shares its key.
-    function getAbilityMap() {
-      return { ...MonsterType.lookup(monster.type).getPrioritizedAbilities(), ...(monster.prioritizedAbilities || {}) };
+    function getAbilityCooldown(id) {
+      return getAbilities().find(ability => { return id === ability.getId(); }).getCooldown();
     }
 
-    // The cooldown set on the monster's ability entry overrides the cooldown on the ability record itself.
-    function getAbilityCooldown(key) {
-      const entry = getAbilityMap()[key];
-      return entry.cooldown || Ability.lookup(entry.code).getCooldown();
+    function getAbilities() {
+      return [...MonsterType.lookup(monster.type).getAbilities(), ...(monster.abilities || [])];
     }
 
     return {
@@ -73,8 +75,7 @@ global.BaseMonster = (function() {
       getThreatWeights,
       getEquipment: () => { return monster.equipment; },
 
-      getPrioritizedAbilities: () => { return monster.prioritizedAbilities || {}; },
-      getAbilityMap,
+      getAbilities,
       getAbilityCooldown,
       getNegotiationGreeting,
 
@@ -87,6 +88,7 @@ global.BaseMonster = (function() {
   return {
     register,
     getAllCodes,
+    compile,
     lookup,
   };
 
