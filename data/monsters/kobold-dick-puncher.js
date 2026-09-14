@@ -17,10 +17,10 @@ BaseMonster.register('kobold-dick-puncher',{
     killMen: 100,
   },
 
-  // Maybe just call this abilities now?
+  // TODO: Just call this abilities because all abilities now have a priority now.
   prioritizedAbilities:[
-    // dickPunch,
-    // normalPunch,
+    Ability.DickPunch({ priority:100 }),
+    Ability.Punch({ damage:[20,30], speed:500, priority:50, }),
   ],
 
   negotiationGreeting: greetingPackage,
@@ -35,18 +35,3 @@ BaseMonster.register('kobold-dick-puncher',{
 greetingPackage.add(`The kobold cracks his knuckles and smiles. With surprising boldness he steps closer to you,
   putting the small lizard man right at eye level with your crotch. "Don't think I'll back down just cause you killed
   off the others. Didn't like them anyway, and I got plenty of fight left in me."`);
-
-/*
-
-const dickPunch = Ability.DickPunch({ // Factory in data/abilities that uses NaturalAttack to build an Ability.
-  priority: 100,                      // If the monster abilities becomes an array, each ability will need to have a priority property, set here through the factory options.
-});
-
-const normalPunch = Ability.NaturalAttack({
-  damage: [20,30],
-  speed: 500,
-  priority: 50,
-},'punch');
-
-Commented out because app can't load with it yet.
-*/
