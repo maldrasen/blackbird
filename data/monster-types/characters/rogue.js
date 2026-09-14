@@ -7,7 +7,6 @@ MonsterType.register('rogue',{
     leastHealth: 75,
   },
 
-  // TODO: These abilities all need to implement the priority option.
   buildAbilities: () => { return [
     Ability.Hide({ priority:50 }),
     Ability.SneakAttack({ priority:30 }),
