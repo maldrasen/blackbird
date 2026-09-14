@@ -20,7 +20,7 @@ BaseMonster.register('kobold-dick-puncher',{
   // TODO: Just call this abilities because all abilities now have a priority now.
   prioritizedAbilities:[
     Ability.DickPunch({ priority:100 }),
-    Ability.Punch({ damage:[20,30], speed:500, priority:50, }),
+    Ability.Punch({ damage:[20,30], speed:500 }),
   ],
 
   negotiationGreeting: greetingPackage,
