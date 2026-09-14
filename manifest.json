@@ -672,6 +672,7 @@
     "test/battle/systems/recruitment-system-spec.js",
     "test/battle/systems/status-effect-system-spec.js",
     "test/battle-abilities/ability-spec.js",
+    "test/battle-abilities/factories/cast-spell-spec.js",
     "test/battle-abilities/factories/defend-spec.js",
     "test/battle-abilities/factories/dick-punch-spec.js",
     "test/battle-abilities/factories/hide-spec.js",
