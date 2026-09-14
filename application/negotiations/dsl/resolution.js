@@ -1,17 +1,17 @@
 global.Resolution = function(type, message, feelings, options={}) {
   const effectKeys = ['flags', 'givePreferences', 'giveStatusEffect', 'rememberThis'];
   const effects = ObjectHelper.filter(options, effectKeys);
-  const extras = ObjectHelper.filter(options, ['question', 'code']);
+  const extras = ObjectHelper.filter(options, ['question', 'ability']);
 
-  const unknown = Object.keys(options).filter(key => [...effectKeys, 'question', 'code', 'feelings'].includes(key) === false);
+  const unknown = Object.keys(options).filter(key => [...effectKeys, 'question', 'ability', 'feelings'].includes(key) === false);
   if (unknown.length > 0) {
     throw new Error(`Unknown negotiation reaction option [${unknown.join(', ')}]`); }
 
   if (type === 'followUp' && extras.question == null) {
     throw new Error(`A followUp reaction must point to a question.`); }
 
-  if (type === 'ability' && extras.code == null) {
-    throw new Error(`An ability reaction must have an ability code.`); }
+  if (type === 'ability' && extras.ability == null) {
+    throw new Error(`An ability reaction must name the ability the monster uses.`); }
 
   // The negotiation questions can tell a story. Depending on how the negotiation plays out it may 'reveal' certain
   // character traits, aspects, or sexual preferences. Because the monsters aren't full characters during a
