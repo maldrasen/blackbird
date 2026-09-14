@@ -11,6 +11,7 @@
 // Optional keys:
 //     essence           A hand-set essence value in place of the appraised one.
 //     cooldown          Milliseconds before the attacker can use the ability again.
+//     priority          How strongly a monster prefers this ability over its others.
 //     isPossible        An extra possibility check on top of holding a weapon and having a target in range.
 //     hitLocation       Forces the strike to a location instead of rolling one.
 //     onHit             Called with (acting, target) before the hit is processed.
@@ -30,6 +31,7 @@ Ability.SpecialAttack = function(options) {
   ability.setExecuteFunction(() => execute(ability, options));
 
   if (options.cooldown != null) { ability.setCooldown(options.cooldown); }
+  if (options.priority != null) { ability.setPriority(options.priority); }
   if (options.getAccuracyBonus) { ability.setAccuracyBonusFunction(options.getAccuracyBonus); }
   if (options.getDamageBonus) { ability.setDamageBonusFunction(options.getDamageBonus); }
 

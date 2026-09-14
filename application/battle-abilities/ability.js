@@ -12,6 +12,7 @@ global.Ability = function(name) {
   let executeFunction;
   let targetingMode = null;
   let essence;
+  let priority = 50;
 
   // A character's round ends as soon as their ability has run. A monster's round is finished by the BattleSystem
   // after the MonsterSystem's turn returns, so the ability leaves it open.
@@ -48,6 +49,8 @@ global.Ability = function(name) {
     getTargetingMode: () => { return targetingMode; },
     setEssence: value => { essence = value },
     getEssence: () => { return essence; },
+    setPriority: value => { priority = value; },
+    getPriority: () => { return priority; },
     execute,
   };
 
