@@ -16,11 +16,12 @@ Ability.CastSpell = function(options) {
   Validate.isNumber('CastSpell.powerLevel', options.powerLevel);
 
   const ability = Ability(`Cast ${spell.getName()}`);
+  let essence;
 
   ability.setTargetingMode(getTargetingMode(spell));
   ability.setExecuteFunction(() => execute(spell, options.powerLevel));
   ability.setDetails({ spell:options.spell, powerLevel:options.powerLevel });
-  ability.setAppraiseFunction(() => { ability.setEssence(AbilityAppraiser.spellEssence(options)); });
+  ability.setAppraiseFunction(() => { return essence ??= AbilityAppraiser.spellEssence(options); });
 
   if (options.cooldown != null) { ability.setCooldown(options.cooldown); }
   if (options.essence != null) { ability.setEssence(options.essence); }

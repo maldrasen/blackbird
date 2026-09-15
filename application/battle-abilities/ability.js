@@ -16,6 +16,13 @@ global.Ability = function(name) {
   let priority = 50;
   let details = {};
 
+  // A hand-set essence wins. Otherwise the factory's appraise closure prices the ability for the attributes of
+  // whoever is using it, since a natural attack's damage scales with strength. An ability with neither is worth nothing.
+  function getEssence(attributes) {
+    if (essence != null) { return essence; }
+    return appraiseFunction ? appraiseFunction(attributes) : 0;
+  }
+
   // Running an ability leaves the round open. A monster's round is finished by the BattleSystem after the
   // MonsterSystem's turn returns, and a character's by the command that built the ability.
   function execute() {
@@ -31,8 +38,6 @@ global.Ability = function(name) {
     getId: () => { return id; },
     getName: () => { return name },
     setAppraiseFunction: closure => { appraiseFunction = closure; },
-    hasAppraiseFunction: () => { return appraiseFunction != null },
-    appraise: () => { appraiseFunction(); },
     setAccuracyBonusFunction: closure => { accuracyBonusFunction = closure; },
     setAccuracyBonus: factor => { accuracyBonus = factor; },
     getAccuracyBonus: () => { return accuracyBonusFunction ? accuracyBonusFunction() : accuracyBonus; },
@@ -47,7 +52,7 @@ global.Ability = function(name) {
     setTargetingMode: mode => { targetingMode = mode; },
     getTargetingMode: () => { return targetingMode; },
     setEssence: value => { essence = value },
-    getEssence: () => { return essence; },
+    getEssence,
     setPriority: value => { priority = value; },
     getPriority: () => { return priority; },
     setDetails: value => { details = value; },

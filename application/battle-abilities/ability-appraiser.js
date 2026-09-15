@@ -8,14 +8,6 @@ global.AbilityAppraiser = (function() {
   // in one burst is worth somewhat more than the same damage spread over several uses. A status effect is worth its
   // type's essence for the share of the fight it keeps a target covered, discounted by the chance it lands at all.
 
-  function run() {
-    BaseMonster.getAllCodes().forEach(code => {
-      BaseMonster.lookup(code).getAbilities().forEach(ability => {
-        if (ability.getEssence() == null) { ability.appraise(); }
-      });
-    });
-  }
-
   // ==================
   //   Attack Essence
   // ==================
@@ -118,7 +110,6 @@ global.AbilityAppraiser = (function() {
   }
 
   return {
-    run,
     attackEssence,
     spellEssence,
   };

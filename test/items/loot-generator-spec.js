@@ -85,9 +85,6 @@ describe('LootGenerator', function() {
       level: 1,
     });
 
-    // The spec monsters register after the init pass that prices every compiled ability, so price them here.
-    AbilityAppraiser.run();
-
     DungeonTheme.register('spec-loot-vault', {
       name: 'Spec Loot Vault',
       rarity: Rarity.common,

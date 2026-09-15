@@ -4,7 +4,6 @@ global.Application = (function() {
     ReferenceValidator.validate();
     MonsterType.compile();
     BaseMonster.compile();
-    AbilityAppraiser.run();
     ArticleAppraiser.run();
   }
 

@@ -34,7 +34,7 @@ Ability.NaturalAttack = function(options) {
   ability.setTargetingMode(TargetingMode.enemyInWeaponRange);
   ability.setPossibleFunction(() => isPossible(options));
   ability.setExecuteFunction(() => execute(ability, options));
-  ability.setAppraiseFunction(() => { ability.setEssence(AbilityAppraiser.attackEssence(options)); });
+  ability.setAppraiseFunction(attributes => AbilityAppraiser.attackEssence(options, attributes));
 
   if (options.cooldown != null) { ability.setCooldown(options.cooldown); }
   if (options.essence != null) { ability.setEssence(options.essence); }
