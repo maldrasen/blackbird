@@ -49,7 +49,9 @@ global.BaseMonster = (function() {
     }
 
     function findAbility(name) {
-      return getAbilities().find(ability => { return name === ability.getName() });
+      const matches = getAbilities().filter(ability => ability.getName() === name);
+      matches.sort((a, b) => b.getPriority() - a.getPriority());
+      return matches[0];
     }
 
     return {
