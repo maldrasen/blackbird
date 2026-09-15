@@ -30,12 +30,7 @@ global.EssenceSystem = (function() {
   function getBonusEssence(base) {
     return base.getBonusEssence() || 0;
   }
-
-  // TODO: We should add a getSpeedFactor() to the species that calculates the average expected speed based on the
-  //       species average height. Perhaps having the speed factor use the real body component is unnecessary as the
-  //       height difference between a tall kobold and a short kobold is probably negligible. The speed difference
-  //       between a kobold and an equian is probably too significant to ignore here.
-
+  
   function speedFactor(base) {
     return base.getSpecies() ? 1 : 1 / base.getSpeedFactor();
   }

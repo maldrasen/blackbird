@@ -1,0 +1,11 @@
+---
+id: 223
+title: Move speed factor into species
+priority: 1
+created: 2026-09-15
+tags:
+  - character
+points: 2
+---
+---
+The speedFactor() in the essence system ignores the speed of a character with a body. We should just change how the speed factor is determined, rather than making it depend on a body component. The height difference between a tall kobold and a short kobold is probably negligible, but the speed difference between a kobold and an equian is too significant to ignore when calculating a monster's essence.

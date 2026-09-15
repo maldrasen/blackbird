@@ -6,6 +6,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 - [219] Split essence and challenge rating `8pt` — [220-split-essence-and-challenge-rating.md](220-split-essence-and-challenge-rating.md)
 - [221] Refactor abilities `13pt` — [221-refactor-abilities.md](221-refactor-abilities.md)
+- [223] Move speed factor into species `2pt` — [223-move-speed-factor-into-species.md](223-move-speed-factor-into-species.md)
 
 ## Priority 2
 
