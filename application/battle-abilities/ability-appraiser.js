@@ -11,10 +11,10 @@ global.AbilityAppraiser = (function() {
   // ==================
   //   Attack Essence
   // ==================
-  // Attack damage is based on a character's attributes, so rather than having a dice value like the spells an attack
-  // has a [low,high] range which is a percentage applied to the attribute for that attack. Abilities such as a bite
-  // attack still use the weapon skill (such as daggers) because the skill maps to which attribute to use and effects
-  // the hit chance for that attack.
+  // Attack damage is based on the attacker's strength, so rather than having a dice value like the spells, an attack
+  // has a [low,high] range which is a percentage of strength. The attack's weapon skill (such as daggers) only decides
+  // whether it hits, so the attributes of whoever is biting have to be supplied to price it. One target per swing,
+  // with the swing's speed as the period unless the cooldown is longer.
   //
   // Applicable NaturalAttack Options:
   //   - damage: in [low,high] format
@@ -25,8 +25,14 @@ global.AbilityAppraiser = (function() {
   //        long arms or a natural ranged should have more essence.
   //   - (targets?): Doesn't exist yet, but some natural attacks will have the ability to hit multiple targets. A
   //        'swipe' attack that hits the target and two neighbors for instance.
-  function attackEssence(options) {
-    console.log("Attack Essence Options:",options)
+  function attackEssence(options, attributes) {
+    if (attributes == null) { throw new Error(`Pricing the [${options.name}] attack needs the attacker's attributes.`); }
+
+    const [low, high] = options.damage;
+    const spike = ((low + high) / 2 / 100) * attributes.getStrength();
+    const period = periodBetweenUses(options.speed, options.cooldown);
+
+    return essenceForEffects(options.effects || [], 1, period, spike);
   }
 
   // =================
@@ -77,8 +83,9 @@ global.AbilityAppraiser = (function() {
   //    Effects
   // =============
 
-  function essenceForEffects(effects, targets, period) {
-    const spike = EffectMath.averageDamage(effects);
+  // The spike is the average damage of one use, which an attack supplies from its damage range and strength rather
+  // than from a damage effect.
+  function essenceForEffects(effects, targets, period, spike=EffectMath.averageDamage(effects)) {
     const weight = spikeWeight(spike, targets, period);
     const status = statusEssence(effects, targets, period);
     return Math.round(weight + status);
