@@ -48,6 +48,10 @@ global.BaseMonster = (function() {
       return [...MonsterType.lookup(monster.type).getAbilities(), ...(monster.abilities || [])];
     }
 
+    function findAbility(name) {
+      return getAbilities().find(ability => { return name === ability.getName() });
+    }
+
     return {
       getCode: () => { return code; },
       getName: () => { return monster.name; },
@@ -72,6 +76,7 @@ global.BaseMonster = (function() {
       getEquipment: () => { return monster.equipment; },
 
       getAbilities,
+      findAbility,
       getNegotiationGreeting,
 
       getLootQuality:() => { return monster.lootQuality || 1; },
