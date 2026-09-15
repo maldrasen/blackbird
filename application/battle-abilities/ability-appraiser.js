@@ -1,6 +1,7 @@
 global.AbilityAppraiser = (function() {
 
-  const damageEssenceScale = 0.5;
+  const damageEssenceScale = 5;
+  const spikeExponent = 0.35;
 
   function run() {
     BaseMonster.getAllCodes().forEach(code => {
@@ -84,9 +85,10 @@ global.AbilityAppraiser = (function() {
     return Math.round(weight + status);
   }
 
+  // Hit size earns a premium over sustained damage, but a sublinear one.
   function spikeWeight(spike, targets, period) {
-    const dps = spike * targets / (period / 1000);
-    return spike * dps * damageEssenceScale;
+    const dps = (spike * targets) / (period / 1000);
+    return dps * Math.pow(spike, spikeExponent) * damageEssenceScale;
   }
 
   function statusEssence(effects, targets, period) {
