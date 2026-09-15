@@ -9,12 +9,16 @@ describe.only("AbilityAppraiser", function() {
       const essence = AbilityAppraiser.spellEssence('ember', 1);
       console.log("Essence:",essence)
     });
-    it('appraises burst damage spells', function() {
+
+    it('appraises higher damage single turn spells', function() {
       const essence = AbilityAppraiser.spellEssence('ember', 8, 3000);
       console.log("Essence:",essence)
     });
 
-
+    it('appraises higher damage spells with a damage over time effect', function() {
+      const essence = AbilityAppraiser.spellEssence('incinerate', 4);
+      console.log("Essence:",essence)
+    });
   });
 
 });

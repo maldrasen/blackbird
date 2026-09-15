@@ -104,15 +104,9 @@ global.AbilityAppraiser = (function() {
   // the victim does can dodge or armor it away.
   function tickDamageEssence(effect, targets, period) {
     if (effect.damage == null) { return 0; }
-
     const ticks = (EffectMath.statusDurationSeconds(effect) * 1000) / EffectMath.interval(effect);
     return burstEssence(Random.averageDice(effect.damage) * ticks, targets, period);
   }
-
-
-
-
-
 
   return {
     run,
