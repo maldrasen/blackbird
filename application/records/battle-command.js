@@ -33,6 +33,14 @@ global.BattleCommand = (function() {
       return command.buildAbility(data);
     }
 
+    // TODO: It's also a problem that we're building the ability 4 times every character click. getCommands,
+    //       getTargetingMode, startTargeting, and execute each build the ability again. This is looking like some of
+    //       the properties held by the ability should really belong to the command, but then commands are only used
+    //       by the characters. If we pull the command specific properties out of the abilities then monsters would
+    //       then need to use these commands or have their own equivalent record. This is kind of harmless for now
+    //       though. Building an ability has the side effect of incrementing the ability ID, but I don't think I really
+    //       need to worry about running out of integers.
+
     // A command needs a target picked when the ability it would build does.
     function getTargetingMode(data={}) {
       return command.buildAbility ? buildAbility(data).getTargetingMode() : null;
