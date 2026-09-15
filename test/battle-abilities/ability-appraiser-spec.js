@@ -4,15 +4,9 @@ describe("AbilityAppraiser", function() {
     expect(BaseMonster.lookup('kobold-runt').findAbility('Attack').getEssence()).to.equal(0);
   });
 
-  describe.only('attackEssence()', function() {
-
-    it('appraises a normal attack', function() {
-      const essence = AbilityAppraiser.attackEssence({ damage:[10,20], speed:1000 });
-      console.log("Essence:",essence);
-    });
-
-
-  })
+  describe('attackEssence()', function() {
+    it('appraises a normal attack');
+  });
 
   describe('spellEssence()', function() {
     it('appraises burst damage spells', function() {

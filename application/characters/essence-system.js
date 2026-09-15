@@ -4,8 +4,6 @@ global.EssenceSystem = (function() {
   const attributePowerExponent = 1.5;
   const essenceScale = 0.12;
   const abilityScale = 1;
-  const healthWeight = 1.25;
-  const speedWeight = 1.5;
 
   // Level Knobs
   const baseLevelCost = 250;
@@ -20,7 +18,7 @@ global.EssenceSystem = (function() {
   function monsterEssenceValue(id) {
     const base = Monster(id).getBaseMonster();
     const root = abilityTotal(base) + attributeTotal(id) + getBonusEssence(base);
-    return Math.round(root * healthFactor(base) * speedFactor(base) * essenceScale);
+    return Math.round(root * base.getHealthFactor() * speedFactor(base) * essenceScale);
   }
 
   function abilityTotal(base) {
@@ -33,15 +31,13 @@ global.EssenceSystem = (function() {
     return base.getBonusEssence() || 0;
   }
 
-  // TODO: Seriously check this.
-  function healthFactor(base) {
-    return base.getHealthFactor() * healthWeight;
-  }
+  // TODO: We should add a getSpeedFactor() to the species that calculates the average expected speed based on the
+  //       species average height. Perhaps having the speed factor use the real body component is unnecessary as the
+  //       height difference between a tall kobold and a short kobold is probably negligible. The speed difference
+  //       between a kobold and an equian is probably too significant to ignore here.
 
-  // TODO: Hmm, this seems wrong... Why are the speed factors of species being ignored?
   function speedFactor(base) {
-    const value = base.getSpecies() ? 1 : squeeze(base.getSpeedFactor(), speedWeight);
-    return 1/value;
+    return base.getSpecies() ? 1 : 1 / base.getSpeedFactor();
   }
 
   function attributeTotal(id) {

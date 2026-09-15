@@ -3,9 +3,10 @@ describe('LootGenerator', function() {
   // The spec articles, monsters and themes keep these specs independent of the shipped loot data. The archer both
   // carries a bow and casts a red spell, so it qualifies for every kind of conditional source. The monsters carry a
   // large essence bonus so that their rolled attributes can't move the value window enough to exclude the spec
-  // articles, which are all valued in the middle of it. The chest specs use level 5, where the value ceiling is 61.5
-  // and the floor is 15.4.
-  const essenceBonus = 1000;
+  // articles, which are all valued in the middle of it. The bonus is scaled by the kobold health factor, so it lands
+  // near 250 essence for a ceiling of about 78 and a floor of about 20. The chest specs use level 5, where the value
+  // ceiling is 61.5 and the floor is 15.4.
+  const essenceBonus = 10000;
   const chestLevel = 5;
 
   before(function() {
@@ -83,6 +84,9 @@ describe('LootGenerator', function() {
       type: 'critter',
       level: 1,
     });
+
+    // The spec monsters register after the init pass that prices every compiled ability, so price them here.
+    AbilityAppraiser.run();
 
     DungeonTheme.register('spec-loot-vault', {
       name: 'Spec Loot Vault',
