@@ -74,17 +74,17 @@ global.AbilityAppraiser = (function() {
 
   function essenceForEffects(effects, targets, period) {
     const spike = EffectMath.averageDamage(effects);
-    const damage = burstEssence(spike, targets, period);
+    const weight = spikeWeight(spike, targets, period);
     const status = statusEssence(effects, targets, period);
 
-    console.log("Period",period);
-    console.log("Spike:",spike);
-    console.log("Burst Damage:",damage);
+    console.log("  Period",period);
+    console.log("  Spike Damage:",spike);
+    console.log("  Weight:",weight);
 
-    return Math.round(damage + status);
+    return Math.round(weight + status);
   }
 
-  function burstEssence(spike, targets, period) {
+  function spikeWeight(spike, targets, period) {
     const dps = spike * targets / (period / 1000);
     return spike * dps * damageEssenceScale;
   }
@@ -105,7 +105,7 @@ global.AbilityAppraiser = (function() {
   function tickDamageEssence(effect, targets, period) {
     if (effect.damage == null) { return 0; }
     const ticks = (EffectMath.statusDurationSeconds(effect) * 1000) / EffectMath.interval(effect);
-    return burstEssence(Random.averageDice(effect.damage) * ticks, targets, period);
+    return spikeWeight(Random.averageDice(effect.damage) * ticks, targets, period);
   }
 
   return {
