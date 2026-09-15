@@ -17,16 +17,12 @@ global.EssenceSystem = (function() {
 
   function monsterEssenceValue(id) {
     const base = Monster(id).getBaseMonster();
-    const root = abilityTotal(base, Attributes(id)) + getBonusEssence(base);
+    const root = abilityTotal(base, Attributes(id)) + base.getBonusEssence();
     return Math.round(root * base.getHealthFactor() * speedFactor(base) * essenceScale);
   }
 
   function abilityTotal(base, attributes) {
     return base.getAbilities().reduce((sum, ability) => { return sum + ability.getEssence(attributes); }, 0);
-  }
-
-  function getBonusEssence(base) {
-    return base.getBonusEssence() || 0;
   }
 
   function speedFactor(base) {
