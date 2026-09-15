@@ -30,7 +30,7 @@ global.EssenceSystem = (function() {
   function getBonusEssence(base) {
     return base.getBonusEssence() || 0;
   }
-  
+
   function speedFactor(base) {
     return base.getSpecies() ? 1 : 1 / base.getSpeedFactor();
   }
