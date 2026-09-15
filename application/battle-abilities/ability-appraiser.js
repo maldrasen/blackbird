@@ -3,6 +3,11 @@ global.AbilityAppraiser = (function() {
   const damageEssenceScale = 5;
   const spikeExponent = 0.35;
 
+  // An ability's essence comes from what its effects do to one target per use, scaled by how often it can be used.
+  // Damage is weighted by the size of each hit as well as the damage per second, so an ability that lands its damage
+  // in one burst is worth somewhat more than the same damage spread over several uses. A status effect is worth its
+  // type's essence for the share of the fight it keeps a target covered, discounted by the chance it lands at all.
+
   function run() {
     BaseMonster.getAllCodes().forEach(code => {
       BaseMonster.lookup(code).getAbilities().forEach(ability => {
@@ -11,38 +16,40 @@ global.AbilityAppraiser = (function() {
     });
   }
 
-  // An ability's essence comes from what its effects do to one target per use, scaled by how often it can be used.
-  // Damage is weighted by the size of each hit as well as the damage per second, so an ability that lands its damage
-  // in one burst is worth more than the same damage spread over several uses. A status effect is worth its type's
-  // essence for the share of the fight it keeps a target covered, discounted by the chance it lands at all.
-
-
   // ==================
   //   Attack Essence
   // ==================
-  // range, speed, effects=[], cooldown=0
-
   // Attack damage is based on a character's attributes, so rather than having a dice value like the spells an attack
   // has a [low,high] range which is a percentage applied to a weapon skill check for that attack. Abilities such as a
   // bite attack still use the weapon skill because the skill maps to which attribute to use and effects the hit chance
   // for that attack.
   //
-  // Profile:
-  //   - range
-  function attackEssence(profile) {
-
+  // Applicable NaturalAttack Options:
+  //   - damage: in [low,high] format
+  //   - speed
+  //   - effects
+  //   - cooldown
+  //   - (reach?): An attack reach other than WeaponReach.short should give a flat essence bonus. Monsters that have
+  //        long arms or a natural ranged should have more essence.
+  //   - (targets?): Doesn't exist yet, but some natural attacks will have the ability to hit multiple targets. A
+  //        'swipe' attack that hits the target and two neighbors for instance.
+  function attackEssence(options) {
+    console.log("Attack Essence Options:",options)
   }
-
 
   // =================
   //   Spell Essence
   // =================
   // The period between casts is the casting time plus the release, unless the entry's cooldown is longer.
-
-  function spellEssence(code, powerLevel=1, cooldown=0) {
-    const spell = Spell.lookup(code);
+  // Applicable CastSpell Options
+  //   - spell
+  //   - powerLevel
+  //   - cooldown
+  function spellEssence(options) {
+    const spell = Spell.lookup(options.spell);
+    const powerLevel = options.powerLevel || 1;
     const time = spell.getCastingTime(powerLevel) + BattleConstants.spellReleaseTime;
-    const period = periodBetweenUses(time, cooldown);
+    const period = periodBetweenUses(time, options.cooldown || 0);
 
     return essenceForEffects(spell.getEffects(powerLevel), effectTargetCount(spell), period);
   }
@@ -112,6 +119,7 @@ global.AbilityAppraiser = (function() {
 
   return {
     run,
+    attackEssence,
     spellEssence,
   };
 

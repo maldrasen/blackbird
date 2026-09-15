@@ -34,7 +34,7 @@ Ability.NaturalAttack = function(options) {
   ability.setTargetingMode(TargetingMode.enemyInWeaponRange);
   ability.setPossibleFunction(() => isPossible(options));
   ability.setExecuteFunction(() => execute(ability, options));
-  ability.setAppraiseFunction(() => { appraise(ability); });
+  ability.setAppraiseFunction(() => { ability.setEssence(AbilityAppraiser.attackEssence(options)); });
 
   if (options.cooldown != null) { ability.setCooldown(options.cooldown); }
   if (options.essence != null) { ability.setEssence(options.essence); }
@@ -124,8 +124,4 @@ function getAttackText(options, context) {
   return options.getAttackText ?
     options.getAttackText(context):
     Dialog.lookupTemplate(DialogCategory.attackText, options.textKey, context);
-}
-
-function appraise(ability) {
-  console.log(`Appraising Natural Attack : ${ability.getName()}`)
 }
