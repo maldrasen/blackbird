@@ -1,9 +1,6 @@
 global.AbilityAppraiser = (function() {
 
-  // Spell Knobs
-  const damageEssenceScale = 0.045;
-  const formationTargets = 3;
-  const smallAreaTargets = 2;
+  const damageEssenceScale = 0.5;
 
   function run() {
     BaseMonster.getAllCodes().forEach(code => {
@@ -18,16 +15,6 @@ global.AbilityAppraiser = (function() {
   // in one burst is worth more than the same damage spread over several uses. A status effect is worth its type's
   // essence for the share of the fight it keeps a target covered, discounted by the chance it lands at all.
 
-  function appraise(ability) {
-    console.log(`=== Appraise ${ability.getName()} ===`);
-
-    const cooldown = ability.getCooldown();
-    // Hmm... how do I get the profile from an ability now?
-
-    // const period = periodBetweenUses(speed, cooldown);
-
-    ability.setEssence(0);
-  }
 
   // ==================
   //   Attack Essence
@@ -36,44 +23,65 @@ global.AbilityAppraiser = (function() {
   // longer. The effects are the status effects the attack applies when it hits, priced beside its damage.
 
   // function attackEssenceBreakdown({ low, high, speed, cooldown, effects=[] }) {
-  //   return effectsEssenceBreakdown({ effects, targets:1, period:, spike:(low + high) / 2 });
+  //   return effectsEssenceBreakdown({ effects, targets:1, period:cooldown, spike:(low + high) / 2 });
   // }
 
 
 
+  // =================
+  //   Spell Essence
+  // =================
+  // The period between casts is the casting time plus the release, unless the entry's cooldown is longer.
 
+  function spellEssence(code, powerLevel=1, cooldown=0) {
+    const spell = Spell.lookup(code);
+    const time = spell.getCastingTime(powerLevel) + BattleConstants.spellReleaseTime;
+    const period = periodBetweenUses(time, cooldown);
 
-// A record that calculates its essence returns the terms behind it for the ability essence report. A hand-set
-// value has no terms, only a total.
-// function getEssenceBreakdown(entry) {
-//   return typeof ability.getEssenceBreakdown === 'function' ?
-//     ability.getEssenceBreakdown(entry) :
-//     { total:(ability.essence || 0), handSet:true };
-// }
-  // An essence value set on the monster's ability entry wins over anything the record would calculate. Otherwise the
-  // record gets the entry with the cooldown resolved the same way the battle resolves it, so a spell entry's cooldown
-  // counts toward how often the spell can be cast.
-  // function abilityEntryBreakdown(base, key) {
-  //   const entry = base.getAbilityMap()[key];
-  //   if (entry.essence != null) { return { total:entry.essence, handSet:true }; }
-  //
-  //   return Ability.lookup(entry.code).getEssenceBreakdown({ ...entry, cooldown:base.getAbilityCooldown(key) });
-  // }
-
-
-/*
-
-
-  function effectsEssenceBreakdown({ effects, targets, period, spike=EffectMath.averageDamage(effects) }) {
-    const damage = burstEssence(spike, targets, period);
-    const status = statusEssence(effects, targets, period);
-
-    return { period, targets, spike, damage, status, total:damage + status };
+    return essenceForEffects(spell.getEffects(powerLevel), effectTargetCount(spell), period);
   }
 
   // A cooldown only matters when it outlasts the time the ability itself takes.
-  function periodBetweenUses(useTime, cooldown) {
-    return Math.max(useTime, cooldown || 0);
+  function periodBetweenUses(time, cooldown) {
+    return Math.max(time, cooldown||0);
+  }
+
+  // The formation count could really be anywhere between 1 and 10. Six seems like a reasonable average for a
+  // formation size.
+  function effectTargetCount(spell) {
+    switch (spell.getTarget()) {
+      case EffectTarget.self: return 1;
+      case EffectTarget.single: return 1;
+      case EffectTarget.allyFormation: return 6;
+      case EffectTarget.enemyFormation: return 6;
+      case EffectTarget.position: return areaTargetCount(spell.getAreaOfEffect());
+      default: throw new Error(`No effect count for the [${spell.getTarget()}] effect target.`);
+    }
+  }
+
+  function areaTargetCount(area) {
+    switch (area) {
+      case AreaOfEffect.single: return 1;
+      case AreaOfEffect.small: return 3;
+      case AreaOfEffect.large: return 6;
+      default: throw new Error(`No target count for the [${area}] area of effect.`);
+    }
+  }
+
+  // =============
+  //    Effects
+  // =============
+
+  function essenceForEffects(effects, targets, period) {
+    const spike = EffectMath.averageDamage(effects);
+    const damage = burstEssence(spike, targets, period);
+    const status = statusEssence(effects, targets, period);
+
+    console.log("Period",period);
+    console.log("Spike:",spike);
+    console.log("Burst Damage:",damage);
+
+    return Math.round(damage + status);
   }
 
   function burstEssence(spike, targets, period) {
@@ -102,36 +110,13 @@ global.AbilityAppraiser = (function() {
   }
 
 
-  // =================
-  //   Spell Essence
-  // =================
-  // The period between casts is the casting time plus the release, unless the entry's cooldown is longer.
 
-  function spellEssenceBreakdown({ spell, powerLevel=1, cooldown }) {
-    const record = Spell.lookup(spell);
-    const period = periodBetweenUses(record.getCastingTime(powerLevel) + BattleConstants.spellReleaseTime, cooldown);
 
-    return effectsEssenceBreakdown({ effects:record.getEffects(powerLevel), targets:spellTargets(record), period });
-  }
 
-  // A spell cast on the monster's own side isn't a threat the player has to survive, at least not yet.
-  function spellTargets(record) {
-    switch (record.getTarget()) {
-      case EffectTarget.single: return 1;
-      case EffectTarget.enemyFormation: return formationTargets;
-      case EffectTarget.position: return areaTargets(record.getAreaOfEffect());
-      default: return 0;
-    }
-  }
-
-  function areaTargets(area) {
-    if (area === AreaOfEffect.small) { return smallAreaTargets; }
-    throw new Error(`No target count for the [${area}] area of effect.`);
-  }
-*/
 
   return {
     run,
+    spellEssence,
   };
 
 })();

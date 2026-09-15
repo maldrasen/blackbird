@@ -548,6 +548,7 @@
     "data/species/sylph.js",
     "data/species/vermen.js",
     "data/spells/ember.js",
+    "data/spells/incinerate.js",
     "data/spells/overwhelming-effulgence.js",
     "data/spells/searing-lance.js",
     "data/status-effects/blind.js",

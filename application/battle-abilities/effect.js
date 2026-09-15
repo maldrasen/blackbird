@@ -33,6 +33,7 @@ global.Effect = (function() {
     restoreMana: (color, min, max) => { return { type:'restore-mana', color, min, max }; },
     damage: (damageType, damage) => { return { type:'damage', damageType, damage }; },
     blind: options => { return { type:'status-effect', code:'blind', ...options }; },
+    burn: options => { return { type:'status-effect', code:'burn', ...options }; },
     stun: options => { return { type:'status-effect', code:'stun', ...options }; },
     poison: options => { return { type:'status-effect', code:'poison', ...options }; },
     increasePotency: level => { return { type:'increase-potency', level }; },

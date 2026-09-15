@@ -20,7 +20,7 @@ Ability.CastSpell = function(options) {
   ability.setTargetingMode(getTargetingMode(spell));
   ability.setExecuteFunction(() => execute(spell, options.powerLevel));
   ability.setDetails({ spell:options.spell, powerLevel:options.powerLevel });
-  ability.setAppraiseFunction(() => { appraise(ability); });
+  ability.setAppraiseFunction(() => { ability.setEssence(AbilityAppraiser.spellEssence(options.spell, options.powerLevel, options.cooldown)); });
 
   if (options.cooldown != null) { ability.setCooldown(options.cooldown); }
   if (options.essence != null) { ability.setEssence(options.essence); }
@@ -47,8 +47,4 @@ function execute(spell, powerLevel) {
     target: round.getTarget(),
     targetPosition: round.getTargetPosition(),
   });
-}
-
-function appraise(ability) {
-  console.log(`Appraising Cast Spell : ${ability.getName()}`)
 }
