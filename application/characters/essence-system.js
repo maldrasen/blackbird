@@ -3,7 +3,6 @@ global.EssenceSystem = (function() {
   // Essence Knobs
   const attributePowerExponent = 1.5;
   const essenceScale = 0.12;
-  const abilityScale = 1;
 
   // Level Knobs
   const baseLevelCost = 250;
@@ -22,9 +21,7 @@ global.EssenceSystem = (function() {
   }
 
   function abilityTotal(base) {
-    return base.getAbilities().reduce((sum, ability) => {
-      return sum + ability.getEssence() * abilityScale;
-    }, 0);
+    return base.getAbilities().reduce((sum, ability) => { return sum + ability.getEssence(); }, 0);
   }
 
   function getBonusEssence(base) {
