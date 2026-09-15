@@ -432,17 +432,6 @@ global.BattleCondition = {
   recruited: 'recruited',
 };
 
-global.BattleCommandCode = {
-  basicAttack: 'basic-attack',
-  basicDefend: 'basic-defend',
-  changeEquipment: 'change-equipment',
-  hide: 'hide',
-  negotiate: 'negotiate',
-  sneakAttack: 'sneak-attack',
-  useItem: 'use-item',
-  pass: 'pass',
-};
-
 global.StatusEffectDurationType = {
   fixedTime: 'fixed-time',         // The specified time has elapsed.
   fixedCount: 'fixed-count',       // The effect has been triggered a set number of times.
@@ -524,10 +513,14 @@ global.ResistResult = {
 };
 
 global.StandardAbility = {
-  basicAttack: 'basic-attack',
-  basicDefend: 'basic-defend',
+  attack: 'basic-attack',
+  defend: 'basic-defend',
+  changeEquipment: 'change-equipment',
   hide: 'hide',
+  negotiate: 'negotiate',
+  pass: 'pass',
   sneakAttack: 'sneak-attack',
+  useItem: 'use-item',
 };
 
 global.TargetingMode = {

@@ -1,4 +1,4 @@
-BattleCommand.register(BattleCommandCode.changeEquipment,{
+BattleCommand.register(StandardAbility.changeEquipment,{
   name: 'Change Equipment',
   category: 'utility',
 

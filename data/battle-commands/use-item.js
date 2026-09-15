@@ -1,4 +1,4 @@
-BattleCommand.register(BattleCommandCode.useItem,{
+BattleCommand.register(StandardAbility.useItem,{
   name: 'Use Item',
   category: 'utility',
 

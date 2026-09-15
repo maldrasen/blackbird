@@ -1,7 +1,7 @@
 // Negotiate is offered only when a single monster remains. Rather than resolving like a normal command, the command
 // panel hands it to the NegotiationSystem, which opens the negotiation overlay. The system finishes or ends the round
 // itself depending on how the negotiation goes, so the command never builds an ability.
-BattleCommand.register(BattleCommandCode.negotiate, {
+BattleCommand.register(StandardAbility.negotiate, {
   name: 'Negotiate',
   category: 'utility',
   overlay: NegotiationSystem.start,

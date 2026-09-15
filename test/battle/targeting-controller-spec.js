@@ -18,7 +18,7 @@ describe("TargetingController", function() {
     const state = startRound();
     const target = state.getEntityAtPosition('M.0.3');
 
-    TargetingController.startTargeting(BattleCommand.lookup(BattleCommandCode.basicAttack));
+    TargetingController.startTargeting(BattleCommand.lookup(StandardAbility.attack));
     TargetingController.targetSelected('M.0.3');
 
     const round = BattleSystem.getRound();
@@ -30,7 +30,7 @@ describe("TargetingController", function() {
   it("leaves the round alone when targeting is cancelled", function() {
     startRound();
 
-    TargetingController.startTargeting(BattleCommand.lookup(BattleCommandCode.basicAttack));
+    TargetingController.startTargeting(BattleCommand.lookup(StandardAbility.attack));
     TargetingController.cancelTargeting();
 
     const round = BattleSystem.getRound();

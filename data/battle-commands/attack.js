@@ -1,4 +1,4 @@
-BattleCommand.register(BattleCommandCode.basicAttack, {
+BattleCommand.register(StandardAbility.attack, {
   name: 'Attack',
   category: 'basic',
   buildAbility: () => { return Ability.WeaponAttack(); },

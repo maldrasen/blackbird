@@ -15,10 +15,10 @@ describe("CharacterAbilitySystem", function() {
       BattleSystem.specRound(state.getEntityAtPosition('P.0.2'));
       const commands = CharacterAbilitySystem.getCommands();
 
-      expect(commands).to.include.members([BattleCommandCode.basicAttack, BattleCommandCode.basicDefend, BattleCommandCode.negotiate]);
-      expect(commands).to.not.include(BattleCommandCode.hide);
-      expect(commands).to.not.include(BattleCommandCode.sneakAttack);
-      expect(commands).to.not.include(BattleCommandCode.pass);
+      expect(commands).to.include.members([StandardAbility.attack, StandardAbility.defend, StandardAbility.negotiate]);
+      expect(commands).to.not.include(StandardAbility.hide);
+      expect(commands).to.not.include(StandardAbility.sneakAttack);
+      expect(commands).to.not.include(StandardAbility.pass);
     });
 
     it("offers a rogue in the back rank a hiding place but no attack", function() {
@@ -27,9 +27,9 @@ describe("CharacterAbilitySystem", function() {
       BattleSystem.specRound(state.getEntityAtPosition('P.1.2'));
       const commands = CharacterAbilitySystem.getCommands();
 
-      expect(commands).to.include(BattleCommandCode.hide);
-      expect(commands).to.not.include(BattleCommandCode.basicAttack);
-      expect(commands).to.not.include(BattleCommandCode.negotiate);
+      expect(commands).to.include(StandardAbility.hide);
+      expect(commands).to.not.include(StandardAbility.attack);
+      expect(commands).to.not.include(StandardAbility.negotiate);
     });
 
     it("offers a hidden rogue a sneak attack in place of hiding", function() {
@@ -40,8 +40,8 @@ describe("CharacterAbilitySystem", function() {
       BattleSystem.specRound(rogue);
       const commands = CharacterAbilitySystem.getCommands();
 
-      expect(commands).to.include(BattleCommandCode.sneakAttack);
-      expect(commands).to.not.include(BattleCommandCode.hide);
+      expect(commands).to.include(StandardAbility.sneakAttack);
+      expect(commands).to.not.include(StandardAbility.hide);
     });
 
     it("offers only pass to a character who must pass", function() {
@@ -51,17 +51,17 @@ describe("CharacterAbilitySystem", function() {
       BattleSystem.addStatus(player, 'stun', { count:1 });
       BattleSystem.specRound(player);
 
-      expect(CharacterAbilitySystem.getCommands()).to.deep.equal([BattleCommandCode.pass]);
+      expect(CharacterAbilitySystem.getCommands()).to.deep.equal([StandardAbility.pass]);
     });
 
     it("removes the negotiate command after a negotiation has been attempted", function() {
       const state = startBattle();
 
       BattleSystem.specRound(GameSystem.getState().getPlayer());
-      expect(CharacterAbilitySystem.getCommands()).to.include(BattleCommandCode.negotiate);
+      expect(CharacterAbilitySystem.getCommands()).to.include(StandardAbility.negotiate);
 
       state.setNegotiationAttempted();
-      expect(CharacterAbilitySystem.getCommands()).to.not.include(BattleCommandCode.negotiate);
+      expect(CharacterAbilitySystem.getCommands()).to.not.include(StandardAbility.negotiate);
     });
   });
 
