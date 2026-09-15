@@ -20,13 +20,18 @@ global.AbilityAppraiser = (function() {
   // ==================
   //   Attack Essence
   // ==================
-  // A natural or weapon attack hits one target per swing, with the swing's speed as the period unless the cooldown is
-  // longer. The effects are the status effects the attack applies when it hits, priced beside its damage.
+  // range, speed, effects=[], cooldown=0
 
-  // function attackEssenceBreakdown({ low, high, speed, cooldown, effects=[] }) {
-  //   return effectsEssenceBreakdown({ effects, targets:1, period:cooldown, spike:(low + high) / 2 });
-  // }
+  // Attack damage is based on a character's attributes, so rather than having a dice value like the spells an attack
+  // has a [low,high] range which is a percentage applied to a weapon skill check for that attack. Abilities such as a
+  // bite attack still use the weapon skill because the skill maps to which attribute to use and effects the hit chance
+  // for that attack.
+  //
+  // Profile:
+  //   - range
+  function attackEssence(profile) {
 
+  }
 
 
   // =================
@@ -77,11 +82,6 @@ global.AbilityAppraiser = (function() {
     const spike = EffectMath.averageDamage(effects);
     const weight = spikeWeight(spike, targets, period);
     const status = statusEssence(effects, targets, period);
-
-    console.log("  Period",period);
-    console.log("  Spike Damage:",spike);
-    console.log("  Weight:",weight);
-
     return Math.round(weight + status);
   }
 
