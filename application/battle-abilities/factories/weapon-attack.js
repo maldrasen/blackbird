@@ -1,16 +1,17 @@
 Ability.WeaponAttack = function(options={}) {
   const ability = Ability(`Attack`);
+  ability.setEssence(0);
   ability.setTargetingMode(TargetingMode.enemyInWeaponRange);
-
-  ability.setPossibleFunction(() => {
-    return BattleSystem.getRound().isActingMonster() ? canMonsterAttack() : canCharacterAttack();
-  });
-
+  ability.setPossibleFunction(isPossible);
   ability.setExecuteFunction(() => { executeAttacks(ability); });
 
   if (options.priority != null) { ability.setPriority(options.priority); }
 
   return ability;
+}
+
+function isPossible() {
+  return BattleSystem.getRound().isActingMonster() ? canMonsterAttack() : canCharacterAttack();
 }
 
 // A weapon attack always uses a real equipped weapon. An entity with empty hands can't make one - they fight with

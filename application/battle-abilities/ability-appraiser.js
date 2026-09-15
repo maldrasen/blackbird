@@ -8,7 +8,7 @@ global.AbilityAppraiser = (function() {
   function run() {
     BaseMonster.getAllCodes().forEach(code => {
       BaseMonster.lookup(code).getAbilities().forEach(ability => {
-        if (ability.getEssence() == null) { appraise(ability); }
+        if (ability.getEssence() == null) { ability.appraise(); }
       });
     });
   }
@@ -130,6 +130,8 @@ global.AbilityAppraiser = (function() {
   }
 */
 
-  return { run };
+  return {
+    run,
+  };
 
 })();

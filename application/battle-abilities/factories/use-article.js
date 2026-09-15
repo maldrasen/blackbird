@@ -14,6 +14,7 @@ Ability.UseArticle = function(options) {
   const consumable = Consumable.lookup(options.article);
   const ability = Ability(`Use ${consumable.getName()}`);
 
+  ability.setEssence(0);
   ability.setTargetingMode(getTargetingMode(consumable));
   ability.setExecuteFunction(() => execute(consumable));
   ability.setDetails({ article:options.article });

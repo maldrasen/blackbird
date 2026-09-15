@@ -29,6 +29,7 @@ Ability.SpecialAttack = function(options) {
   ability.setTargetingMode(options.targetingMode || TargetingMode.enemyInWeaponRange);
   ability.setPossibleFunction(() => isPossible(ability, options));
   ability.setExecuteFunction(() => execute(ability, options));
+  ability.setAppraiseFunction(() => { appraise(ability); });
 
   if (options.cooldown != null) { ability.setCooldown(options.cooldown); }
   if (options.essence != null) { ability.setEssence(options.essence); }
@@ -98,4 +99,8 @@ function getAttackText(options, weapon, attackRoll, context) {
   return options.getAttackText ?
     options.getAttackText(weapon, context):
     Dialog.lookupTemplate(DialogCategory.attackText, attackRoll.getTextKey(), context);
+}
+
+function appraise(ability) {
+  console.log(`Appraising Special Attack : ${ability.getName()}`)
 }

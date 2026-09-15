@@ -3,6 +3,7 @@ let nextAbilityId = 0;
 global.Ability = function(name) {
   const id = nextAbilityId++;
 
+  let appraiseFunction;
   let accuracyBonus = 1;
   let accuracyBonusFunction;
   let damageBonus = 1;
@@ -29,6 +30,9 @@ global.Ability = function(name) {
   const ability = {
     getId: () => { return id; },
     getName: () => { return name },
+    setAppraiseFunction: closure => { appraiseFunction = closure; },
+    hasAppraiseFunction: () => { return appraiseFunction != null },
+    appraise: () => { appraiseFunction(); },
     setAccuracyBonusFunction: closure => { accuracyBonusFunction = closure; },
     setAccuracyBonus: factor => { accuracyBonus = factor; },
     getAccuracyBonus: () => { return accuracyBonusFunction ? accuracyBonusFunction() : accuracyBonus; },
