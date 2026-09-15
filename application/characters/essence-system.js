@@ -1,8 +1,7 @@
 global.EssenceSystem = (function() {
 
   // Essence Knobs
-  const attributePowerExponent = 1.5;
-  const essenceScale = 0.12;
+  const essenceScale = 10;
 
   // Level Knobs
   const baseLevelCost = 250;
@@ -13,15 +12,17 @@ global.EssenceSystem = (function() {
   // ============================
   //    Monster Essence Values
   // ============================
+  // A monster is worth what its abilities can do, priced for its own attributes, scaled by how tough and how quick it
+  // is. Weapons and carried articles are not part of the monster and aren't priced here (task 220).
 
   function monsterEssenceValue(id) {
     const base = Monster(id).getBaseMonster();
-    const root = abilityTotal(base) + attributeTotal(id) + getBonusEssence(base);
+    const root = abilityTotal(base, Attributes(id)) + getBonusEssence(base);
     return Math.round(root * base.getHealthFactor() * speedFactor(base) * essenceScale);
   }
 
-  function abilityTotal(base) {
-    return base.getAbilities().reduce((sum, ability) => { return sum + ability.getEssence(); }, 0);
+  function abilityTotal(base, attributes) {
+    return base.getAbilities().reduce((sum, ability) => { return sum + ability.getEssence(attributes); }, 0);
   }
 
   function getBonusEssence(base) {
@@ -30,12 +31,6 @@ global.EssenceSystem = (function() {
 
   function speedFactor(base) {
     return base.getSpecies() ? 1 : 1 / base.getSpeedFactor();
-  }
-
-  function attributeTotal(id) {
-    const attributes = AttributesComponent.lookup(id);
-    const attributeSum = Object.keys(Attrib).reduce((sum,code) => sum + attributes[code], 0);
-    return attributeSum ** attributePowerExponent;
   }
 
   // ========================

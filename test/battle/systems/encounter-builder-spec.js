@@ -40,14 +40,16 @@ describe("EncounterBuilder", function() {
 
   describe("chooseCohort()", function() {
 
+    function pricedAverages(code) {
+      return Cohort.lookup(code).getMonsters().map(monster => EssenceData[monster].average).filter(average => average > 0);
+    }
+
     function essenceFloor(code) {
-      const cohort = Cohort.lookup(code);
-      return cohort.getMinimum() * Math.min(...cohort.getMonsters().map(monster => EssenceData[monster].average));
+      return Cohort.lookup(code).getMinimum() * Math.min(...pricedAverages(code));
     }
 
     function essenceCeiling(code) {
-      const cohort = Cohort.lookup(code);
-      return cohort.getMaximum() * Math.max(...cohort.getMonsters().map(monster => EssenceData[monster].average));
+      return Cohort.lookup(code).getMaximum() * Math.max(...pricedAverages(code));
     }
 
     it("offers a viable cohort to the random pick", function() {
@@ -128,6 +130,15 @@ describe("EncounterBuilder", function() {
       }
     });
 
+    it("never draws a monster with no essence", function() {
+      [100, 300, 600, 2000].forEach(target => {
+        for (let i=0; i<10; i++) {
+          const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('kobolds-flamescales'), target);
+          monsters.forEach(code => expect(EssenceData[code].average, code).to.be.above(0));
+        }
+      });
+    });
+
     it("keeps the essence spread of the group within the ratio", function() {
       for (let i=0; i<20; i++) {
         const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('kobolds-deepdarks'), 600);
@@ -159,22 +170,22 @@ describe("EncounterBuilder", function() {
 
     it("promotes back preferring monsters when the front line is too thin", function() {
       const formation = EncounterBuilder.arrangeFormation([
-        'kobold-trapper','kobold-tosser','kobold-tosser','kobold-tosser',
+        'kobold-runt','deepdark-whisperer','deepdark-whisperer','deepdark-whisperer',
       ]);
 
       expect(formation).to.deep.equal([
-        [null,'kobold-trapper','kobold-tosser',null,null],
-        [null,'kobold-tosser','kobold-tosser',null,null],
+        [null,'kobold-runt','deepdark-whisperer',null,null],
+        [null,'deepdark-whisperer','deepdark-whisperer',null,null],
       ]);
     });
 
     it("adds an extra monster over budget to hold the center of a mirrored front row", function() {
       const formation = EncounterBuilder.arrangeFormation([
-        'kobold-trapper','kobold-trapper','kobold-runt','kobold-runt',
+        'kobold-dick-puncher','kobold-dick-puncher','kobold-runt','kobold-runt',
       ]);
 
       expect(formation).to.deep.equal([
-        ['kobold-runt','kobold-trapper','kobold-runt','kobold-trapper','kobold-runt'],
+        ['kobold-runt','kobold-dick-puncher','kobold-runt','kobold-dick-puncher','kobold-runt'],
         [null,null,null,null,null],
       ]);
     });
