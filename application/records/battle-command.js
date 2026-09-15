@@ -17,6 +17,12 @@ global.BattleCommand = (function() {
 
     const command = { ...commands[code] };
 
+    // TODO: This will need to be handled differently for the commands that require options like cast spell or use
+    //       item. We need to know if it's possible to cast any spell before we show the command to open the spell
+    //       selection UI, but we won't have any spell data until a spell is selected in that UI. Building an ability
+    //       every time this is checked also burns an ability ID every round for each command. We may need to make the
+    //       isPossible() function "static" to the factory.
+
     function isPossible() {
       if (command.isPossible) { return command.isPossible(); }
       return command.buildAbility ? buildAbility().isPossible() : true;
