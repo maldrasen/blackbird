@@ -1,4 +1,5 @@
 global.MonsterSystem = (function() {
+  let defendAbility;
 
   // TODO: Rather than having a monster defend if no abilities are available a more advanced option would have it move
   //       to a new position that turn. A monster though should only ever be able to move towards the center or a rank
@@ -16,8 +17,12 @@ global.MonsterSystem = (function() {
       return BattleSpellSystem.castSpell();
     }
 
-    const ability = pickForcedAbility() || pickAbility() || Ability.Defend();
+    const ability = pickForcedAbility() || pickAbility() || getDefendAbility()
     ability.execute();
+  }
+
+  function getDefendAbility() {
+    return defendAbility ||= Ability.Defend();
   }
 
   // When a negotiation ends with the monster using a specific ability we assume that this ability will target the
