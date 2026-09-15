@@ -20,9 +20,9 @@ global.AbilityAppraiser = (function() {
   //   Attack Essence
   // ==================
   // Attack damage is based on a character's attributes, so rather than having a dice value like the spells an attack
-  // has a [low,high] range which is a percentage applied to a weapon skill check for that attack. Abilities such as a
-  // bite attack still use the weapon skill because the skill maps to which attribute to use and effects the hit chance
-  // for that attack.
+  // has a [low,high] range which is a percentage applied to the attribute for that attack. Abilities such as a bite
+  // attack still use the weapon skill (such as daggers) because the skill maps to which attribute to use and effects
+  // the hit chance for that attack.
   //
   // Applicable NaturalAttack Options:
   //   - damage: in [low,high] format
