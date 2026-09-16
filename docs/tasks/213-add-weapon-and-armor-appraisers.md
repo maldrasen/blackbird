@@ -1,7 +1,7 @@
 ---
 id: 213
 title: Add Weapon and Armor Appraisers and Virtual Stores
-priority: 2
+priority: 1
 created: 2026-09-03
 tags:
 points: 13

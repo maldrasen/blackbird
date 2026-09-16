@@ -1,7 +1,7 @@
 ---
 id: 224
 title: Dungeon Rendering Prototype
-priority: 3
+priority: 1
 created: 2026-09-16
 tags:
   - dungeon

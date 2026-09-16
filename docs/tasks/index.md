@@ -4,7 +4,10 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 ## Priority 1
 
+- [213] Add Weapon and Armor Appraisers and Virtual Stores `13pt` — [213-add-weapon-and-armor-appraisers.md](213-add-weapon-and-armor-appraisers.md)
+- [215] Grid Based Dungeon Movement `8pt` — [215-grid-based-dungeon-movement.md](215-grid-based-dungeon-movement.md)
 - [219] Split essence and challenge rating `8pt` — [220-split-essence-and-challenge-rating.md](220-split-essence-and-challenge-rating.md)
+- [224] Dungeon Rendering Prototype `8pt` — [224-dungeon-rendering-prototype.md](224-dungeon-rendering-prototype.md)
 
 ## Priority 2
 
@@ -20,8 +23,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [161] Join Text `8pt` — [161-join-text.md](161-join-text.md)
 - [194] Feeling Adjustments During Battle `2pt` — [194-feeling-adjustments-during-battle.md](194-feeling-adjustments-during-battle.md)
 - [197] Skill events `5pt` — [197-skill-episodes.md](197-skill-episodes.md)
-- [213] Add Weapon and Armor Appraisers and Virtual Stores `13pt` — [213-add-weapon-and-armor-appraisers.md](213-add-weapon-and-armor-appraisers.md)
-- [215] Grid Based Dungeon Movement `8pt` — [215-grid-based-dungeon-movement.md](215-grid-based-dungeon-movement.md)
 
 ## Priority 3
 
@@ -55,7 +56,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [176] Implement potency item effect `8pt` — [176-implement-potency-item-effect.md](176-implement-potency-item-effect.md)
 - [208] Six Blade Knife Episodes `13pt` — [208-six-blade-knife-episodes.md](208-six-blade-knife-episodes.md)
 - [209] Create the Cock Describer `13pt` — [209-create-the-cock-describer.md](209-create-the-cock-describer.md)
-- [224] Dungeon Rendering Prototype `8pt` — [224-dungeon-rendering-prototype.md](224-dungeon-rendering-prototype.md)
 
 ## Priority 4
 

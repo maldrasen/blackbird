@@ -1,7 +1,7 @@
 ---
 id: 215
 title: Grid Based Dungeon Movement
-priority: 2
+priority: 1
 created: 2026-09-10
 tags:
   - dungeon
@@ -16,11 +16,4 @@ I'm not sure if this approach feels right though. I wouldn't be a huge change to
 
 ---
 
-As a follow on task, I'm not sure if the SVG dungeon graphics are really working either. If we move to a more traditional tile based movement, I think we could do more with the graphics. We could use traditional tile sprites or something more three dimensional. I saw an interesting video of a top down character based map that had some kind of parallax driven depth. Something like grids stacked on top of each other, with the top most grid being the largest. You could see through the characters down to the symbols on the level below, giving the illusion of a 3D space. I'd have to test that out, still slightly worried about performance. We'd either want each tile to be an HTML element or move completely to a canvas.
-
-
-
-
-
-
-
+As part of the changes to doors, we should also add an open or closed state to the door. All doors start closed. When a door is walked though its set to open. This won't have any effect until the doors start to block vision, but we could also add locked doors at some point.
