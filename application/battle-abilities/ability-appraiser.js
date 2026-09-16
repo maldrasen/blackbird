@@ -73,7 +73,7 @@ global.AbilityAppraiser = (function() {
   function areaTargetCount(area) {
     switch (area) {
       case AreaOfEffect.single: return 1;
-      case AreaOfEffect.small: return 3;
+      case AreaOfEffect.small: return 4;
       case AreaOfEffect.large: return 6;
       default: throw new Error(`No target count for the [${area}] area of effect.`);
     }
