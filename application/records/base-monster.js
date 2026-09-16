@@ -30,8 +30,7 @@ global.BaseMonster = (function() {
     }
 
     function getSpeedFactor() {
-      if (monster.species) { throw new Error(`This monster should have a body. Get the precalculated speed factor from the entity's cache component.`); }
-      return monster.speedFactor || 1;
+      return monster.species ? Species.lookup(monster.species).getSpeedFactor() : (monster.speedFactor || 1);
     }
 
     function getThreatWeights() {

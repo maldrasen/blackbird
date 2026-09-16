@@ -45,7 +45,7 @@ global.Character = function(id) {
   function isSmarterThan(value) { return compareAttributes(value, Attrib.intelligence); }
   function isStrongerThan(value) { return compareAttributes(value, Attrib.strength); }
   function isTougherThan(value) { return compareAttributes(value, Attrib.vitality); }
-  function getSpeedFactor() { return SpeedMath.calculateSpeedFactor(id); }
+  function getSpeedFactor() { return Species.lookup(getSpecies()).getSpeedFactor(); }
 
   // ===============
   //   Body Values

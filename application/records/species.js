@@ -41,6 +41,7 @@ global.Species = (function() {
       getAttributes: () => { return species.attributes; },
       getMana: () => { return species.mana; },
       getHealthFactor: () => { return species.healthFactor; },
+      getSpeedFactor: () => { return species.speedFactor; },
       getResistances: () => { return species.resistances; },
       getResistance: type => { return species.resistances[type] || 0; },
       getArchetypes: () => { return species.archetypes; },

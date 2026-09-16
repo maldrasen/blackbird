@@ -55,10 +55,11 @@ describe("EncounterBuilder", function() {
     it("offers a viable cohort to the random pick", function() {
       const cohorts = Cohort.getAllCodes().sort((a,b) => essenceFloor(a) - essenceFloor(b));
       const target = (essenceFloor(cohorts[0]) + essenceFloor(cohorts[cohorts.length-1])) / 2;
-      expect(essenceCeiling(cohorts[0])).to.be.at.least(target);
+      const viable = cohorts.find(code => essenceFloor(code) <= target && essenceCeiling(code) >= target);
+      expect(viable).to.exist;
 
-      Random.stubFrom(cohorts[0]);
-      expect(EncounterBuilder.chooseCohort(cohorts, target).getCode()).to.equal(cohorts[0]);
+      Random.stubFrom(viable);
+      expect(EncounterBuilder.chooseCohort(cohorts, target).getCode()).to.equal(viable);
     });
 
     it("does not offer a cohort that cannot field its minimum group within the target", function() {

@@ -111,11 +111,10 @@ global.BattleRound = function(acting, type=null) {
   //    Time
   // ==========
 
-  // Beasts don't have the body components speed is calculated from, so they use the flat factor from their base
-  // monster record instead.
   function getSpeedFactor() {
-    if (ActorComponent.lookup(acting).species) { return SpeedMath.calculateSpeedFactor(acting); }
-    return Monster(acting).getBaseMonster().getSpeedFactor();
+    return ActorComponent.lookup(acting).species ?
+      Character(acting).getSpeedFactor() :
+      Monster(acting).getBaseMonster().getSpeedFactor();
   }
 
   // When the action time is set we usually want to apply the standard time scale. Sometimes though (as in the case of

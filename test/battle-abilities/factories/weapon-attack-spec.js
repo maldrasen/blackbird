@@ -14,16 +14,12 @@ describe("Ability.WeaponAttack", function() {
     BattleSystem.specRound(acting, { target });
   }
 
-  // The lowest dexterity and an average height leave only the breast penalty in the speed factor, which is never
-  // large enough to change how many strikes a known weapon fits into a second.
+  // The speed factor comes from the species. A human's factor of 1 keeps the number of strikes a known weapon fits
+  // into a second predictable whatever species the fixture rolled.
   function pinSpeed(id) {
-    const attributes = AttributesComponent.lookup(id);
-    attributes.dexterity = 1;
-    AttributesComponent.update(id, attributes);
-
-    const body = BodyComponent.lookup(id);
-    body.height = 1500;
-    BodyComponent.update(id, body);
+    const actor = ActorComponent.lookup(id);
+    actor.species = SpeciesCode.human;
+    ActorComponent.update(id, actor);
   }
 
   // A target that can't go down never cuts the strikes short.
