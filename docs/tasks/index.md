@@ -55,6 +55,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [176] Implement potency item effect `8pt` — [176-implement-potency-item-effect.md](176-implement-potency-item-effect.md)
 - [208] Six Blade Knife Episodes `13pt` — [208-six-blade-knife-episodes.md](208-six-blade-knife-episodes.md)
 - [209] Create the Cock Describer `13pt` — [209-create-the-cock-describer.md](209-create-the-cock-describer.md)
+- [224] Dungeon Rendering Prototype `8pt` — [224-dungeon-rendering-prototype.md](224-dungeon-rendering-prototype.md)
 
 ## Priority 4
 
