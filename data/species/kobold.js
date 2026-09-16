@@ -21,6 +21,7 @@ Species.register(SpeciesCode.kobold, {
   },
 
   healthFactor: 0.2,
+  speedFactor: 0.87,
   resistances: {
     slash: 10,
     fire: 20,

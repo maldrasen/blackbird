@@ -11,6 +11,7 @@ Species.register(SpeciesCode.human, {
   },
 
   healthFactor: 1.0,
+  speedFactor: 1.0,
   resistances: {},
 
   archetypes: {

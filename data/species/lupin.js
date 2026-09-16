@@ -19,6 +19,7 @@ Species.register(SpeciesCode.lupin, {
   },
 
   healthFactor: 1.25,
+  speedFactor: 1.03,
   resistances: {
     slash: 10,
     shock: 10,

@@ -19,6 +19,7 @@ Species.register(SpeciesCode.nymph, {
   },
 
   healthFactor: 1.0,
+  speedFactor: 0.99,
   resistances: {
     nature: 20,
   },

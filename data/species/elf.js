@@ -20,6 +20,7 @@ Species.register(SpeciesCode.elf, {
   },
 
   healthFactor: 0.8,
+  speedFactor: 0.99,
   resistances: {
     arcane: 20,
   },

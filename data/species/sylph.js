@@ -19,6 +19,7 @@ Species.register(SpeciesCode.sylph, {
   },
 
   healthFactor: 0.4,
+  speedFactor: 0.95,
   resistances: {
     psychic: 20,
   },

@@ -19,6 +19,7 @@ Species.register(SpeciesCode.havlin, {
   },
 
   healthFactor: 0.6,
+  speedFactor: 0.90,
   resistances: {
     corruption: 20,
   },

@@ -19,6 +19,7 @@ Species.register(SpeciesCode.vermen, {
   },
 
   healthFactor: 0.2,
+  speedFactor: 0.88,
   resistances: {
     nature: 50,
     psychic: -20,

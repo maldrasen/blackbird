@@ -19,6 +19,7 @@ Species.register(SpeciesCode.equian, {
   },
 
   healthFactor: 1.6,
+  speedFactor: 1.06,
   resistances: {
     slash: 10,
     crush: 10,
