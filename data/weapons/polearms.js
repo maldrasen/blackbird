@@ -4,10 +4,9 @@ BaseWeapon.register('spear', {
   icon: 'weapons/spear-01.png',
   type: 'polearm',
   damageType: DamageType.pierce,
+  damageRange: [50,100],
   hands: WeaponHandedness.two,
   reach: WeaponReach.extended,
-  low: 50,
-  high: 100,
   speed: 1200,
   materials: {
     tip:   { material:MaterialType.steel, amount:1 },
@@ -17,17 +16,14 @@ BaseWeapon.register('spear', {
   textKey: 'basic-thrust',
 });
 
-BaseWeapon.registerVariant('bone-spear', 'spear', { material:MaterialType.bone });
-
 BaseWeapon.register('pike', {
   name: 'pike',
   icon: 'weapons/spear-01.png',
   type: 'polearm',
   damageType: DamageType.pierce,
+  damageRange: [40,90],
   hands: WeaponHandedness.two,
   reach: WeaponReach.extended,
-  low: 40,
-  high: 90,
   speed: 1400,
   materials: {
     tip:   { material:MaterialType.steel, amount:1 },
@@ -45,10 +41,9 @@ BaseWeapon.register('halberd', {
     { type:DamageType.slash, percent:60 },
     { type:DamageType.pierce, percent:40 }
   ],
+  damageRange: [80,160],
   hands: WeaponHandedness.two,
   reach: WeaponReach.extended,
-  low: 80,
-  high: 160,
   speed: 1500,
   materials: {
     head:  { material:MaterialType.steel, amount:2 },
@@ -63,10 +58,9 @@ BaseWeapon.register('glaive', {
   icon: 'weapons/glaive-01.png',
   type: 'polearm',
   damageType: DamageType.slash,
+  damageRange: [70,140],
   hands: WeaponHandedness.two,
   reach: WeaponReach.extended,
-  low: 70,
-  high: 140,
   speed: 1400,
   materials: {
     head:  { material:MaterialType.steel, amount:2 },
@@ -81,10 +75,9 @@ BaseWeapon.register('scythe', {
   icon: 'weapons/scythe-01.png',
   type: 'polearm',
   damageType: DamageType.slash,
+  damageRange: [60,130],
   hands: WeaponHandedness.two,
   reach: WeaponReach.extended,
-  low: 60,
-  high: 130,
   speed: 1400,
   materials: {
     head:  { material:MaterialType.steel, amount:2 },
@@ -99,10 +92,9 @@ BaseWeapon.register('trident', {
   icon: 'weapons/trident-01.png',
   type: 'polearm',
   damageType: DamageType.pierce,
+  damageRange: [55,120],
   hands: WeaponHandedness.two,
   reach: WeaponReach.extended,
-  low: 55,
-  high: 120,
   speed: 1300,
   materials: {
     head:  { material:MaterialType.steel, amount:2 },
@@ -118,10 +110,9 @@ BaseWeapon.register('ranseur', {
   icon: 'weapons/trident-01.png',
   type: 'polearm',
   damageType: DamageType.pierce,
+  damageRange: [60,120],
   hands: WeaponHandedness.two,
   reach: WeaponReach.extended,
-  low: 60,
-  high: 120,
   speed: 1300,
   materials: {
     head:  { material:MaterialType.steel, amount:1 },

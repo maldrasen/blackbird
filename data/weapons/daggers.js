@@ -7,10 +7,9 @@ BaseWeapon.register('knife', {
     { type:DamageType.slash, percent:60 },
     { type:DamageType.pierce, percent:40 }
   ],
+  damageRange: [20,30],
   hands: WeaponHandedness.one,
   reach: WeaponReach.short,
-  low: 20,
-  high: 30,
   speed: 500,
   materials: {
     blade: { material:MaterialType.steel, amount:1 },
@@ -20,17 +19,14 @@ BaseWeapon.register('knife', {
   textKey: 'quick-stab',
 });
 
-BaseWeapon.registerVariant('bone-knife', 'knife', { material:MaterialType.bone });
-
 BaseWeapon.register('dirk', {
   name: 'dirk',
   icon: 'weapons/dagger-02.png',
   type: 'dagger',
   damageType: DamageType.pierce,
+  damageRange: [40,60],
   hands: WeaponHandedness.one,
   reach: WeaponReach.short,
-  low: 40,
-  high: 60,
   speed: 500,
   materials: {
     blade: { material:MaterialType.steel, amount:1 },
@@ -48,10 +44,9 @@ BaseWeapon.register('dagger', {
     { type:DamageType.slash, percent:60 },
     { type:DamageType.pierce, percent:40 }
   ],
+  damageRange: [50,75],
   hands: WeaponHandedness.one,
   reach: WeaponReach.short,
-  low: 50,
-  high: 75,
   speed: 500,
   materials: {
     blade: { material:MaterialType.steel, amount:1 },
@@ -66,10 +61,9 @@ BaseWeapon.register('poignard', {
   icon: 'weapons/dagger-07.png',
   type: 'dagger',
   damageType: DamageType.pierce,
+  damageRange: [70,90],
   hands: WeaponHandedness.one,
   reach: WeaponReach.short,
-  low: 70,
-  high: 90,
   speed: 500,
   materials: {
     blade: { material:MaterialType.steel, amount:1 },
@@ -84,10 +78,9 @@ BaseWeapon.register('baselard', {
   icon: 'weapons/dagger-05.png',
   type: 'dagger',
   damageType: DamageType.pierce,
+  damageRange: [80,100],
   hands: WeaponHandedness.one,
   reach: WeaponReach.short,
-  low: 80,
-  high: 100,
   speed: 500,
   materials: {
     blade: { material:MaterialType.steel, amount:1 },
@@ -102,10 +95,9 @@ BaseWeapon.register('stiletto', {
   icon: 'weapons/dagger-07.png',
   type: 'dagger',
   damageType: DamageType.pierce,
+  damageRange: [100,120],
   hands: WeaponHandedness.one,
   reach: WeaponReach.short,
-  low: 100,
-  high: 120,
   speed: 500,
   materials: {
     blade: { material:MaterialType.steel, amount:1 },

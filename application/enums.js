@@ -454,15 +454,13 @@ global.OutfitStyle = {
 };
 
 global.MaterialType = {
-  wool: 'wool',
-  silk: 'silk',
-  wood: 'wood',
-  bone: 'bone',
-  leather: 'leather',
-  iron: 'iron',
-  steel: 'steel',
-  silver: 'silver',
-};
+  bendy: 'bendy',
+  pliable: 'pliable',
+  hard: 'hard',
+  pointy: 'pointy',
+  sharp: 'sharp',
+  heavy: 'heavy',
+}
 
 global.MaterialFactor = {
   sharpness: 'sharpness',

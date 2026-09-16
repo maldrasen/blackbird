@@ -19,7 +19,7 @@
 // but it takes an enchantment far better than wool. The absorption values here are a first pass and get tuned as the
 // armor is built out.
 
-Material.register(MaterialType.wool, {
+Material.register('wool', {
   name: 'Wool',
   cost: 3,
   factors: {
@@ -28,7 +28,7 @@ Material.register(MaterialType.wool, {
   },
 });
 
-Material.register(MaterialType.silk, {
+Material.register('silk', {
   name: 'Silk',
   cost: 12,
   factors: {
@@ -37,7 +37,7 @@ Material.register(MaterialType.silk, {
   },
 });
 
-Material.register(MaterialType.wood, {
+Material.register('wood', {
   name: 'Wood',
   cost: 1,
   factors: {
@@ -48,7 +48,7 @@ Material.register(MaterialType.wood, {
   },
 });
 
-Material.register(MaterialType.bone, {
+Material.register('bone', {
   name: 'Bone',
   cost: 2,
   factors: {
@@ -59,7 +59,23 @@ Material.register(MaterialType.bone, {
   },
 });
 
-Material.register(MaterialType.leather, {
+Material.register('flint',{
+  name: 'Flint',
+  cost: 1,
+  factors: {
+    sharpness: 0.75,
+  }
+})
+
+Material.register('stone',{
+  name: 'Stone',
+  cost: 1,
+  factors: {
+    heft: 0.75,
+  }
+})
+
+Material.register('leather', {
   name: 'Leather',
   cost: 4,
   factors: {
@@ -69,7 +85,7 @@ Material.register(MaterialType.leather, {
   },
 });
 
-Material.register(MaterialType.iron, {
+Material.register('iron', {
   name: 'Iron',
   cost: 8,
   factors: {
@@ -82,7 +98,7 @@ Material.register(MaterialType.iron, {
   },
 });
 
-Material.register(MaterialType.steel, {
+Material.register('steel', {
   name: 'Steel',
   cost: 20,
   factors: {
@@ -91,11 +107,11 @@ Material.register(MaterialType.steel, {
     lash: 1.0,
     potential: 1.0,
     sharpness: 1.0,
-    tension: 1.0,
+    tension: 1.1,
   },
 });
 
-Material.register(MaterialType.silver, {
+Material.register('silver', {
   name: 'Silver',
   cost: 50,
   factors: {

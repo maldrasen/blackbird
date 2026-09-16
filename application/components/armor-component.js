@@ -1,5 +1,5 @@
 global.ArmorComponent = (function() {
-  const properties = ['base','name','enchantment'];
+  const properties = ['base','enchantment'];
 
   function create(id,data) {
     Registry.createComponent(id,ComponentType.armor,data);

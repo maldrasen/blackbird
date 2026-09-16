@@ -4,9 +4,8 @@ BaseWeapon.register('hammer', {
   icon: 'weapons/hammer-02.png',
   type: 'mace',
   damageType: DamageType.crush,
+  damageRange: [10,50],
   hands: WeaponHandedness.one,
-  low: 10,
-  high: 50,
   speed: 1000,
   materials: {
     head: { material:MaterialType.steel, amount:1 },
@@ -16,16 +15,14 @@ BaseWeapon.register('hammer', {
   textKey: 'basic-swing',
 });
 
-BaseWeapon.registerVariant('bone-club', 'hammer', { material:MaterialType.bone, name:'bone club' });
 
 BaseWeapon.register('mace', {
   name: 'mace',
   icon: 'weapons/mace-01.png',
   type: 'mace',
   damageType: DamageType.crush,
+  damageRange: [20,100],
   hands: WeaponHandedness.one,
-  low: 20,
-  high: 100,
   speed: 1000,
   materials: {
     head: { material:MaterialType.steel, amount:2 },
@@ -40,9 +37,8 @@ BaseWeapon.register('warhammer', {
   icon: 'weapons/hammer-04.png',
   type: 'mace',
   damageType: DamageType.crush,
+  damageRange: [30,150],
   hands: WeaponHandedness.main,
-  low: 30,
-  high: 150,
   speed: 1200,
   materials: {
     head: { material:MaterialType.steel, amount:2 },
@@ -61,9 +57,8 @@ BaseWeapon.register('morning-star', {
     { type:DamageType.crush, percent:50 },
     { type:DamageType.pierce, percent:50 }
   ],
+  damageRange: [50,200],
   hands: WeaponHandedness.main,
-  low: 50,
-  high: 200,
   speed: 1200,
   materials: {
     head: { material:MaterialType.steel, amount:2 },
@@ -78,9 +73,8 @@ BaseWeapon.register('maul', {
   icon: 'weapons/hammer-03.png',
   type: 'mace',
   damageType: DamageType.crush,
+  damageRange: [100,500],
   hands: WeaponHandedness.two,
-  low: 100,
-  high: 500,
   speed: 2400,
   materials: {
     head: { material:MaterialType.steel, amount:4 },

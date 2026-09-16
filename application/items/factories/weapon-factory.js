@@ -10,8 +10,15 @@ global.WeaponFactory = (function() {
       customizeWeapon(id, options);
     }
 
+    WeaponAppraiser.appraise(id);
+
     return id;
   }
+
+  // BaseWeapon.registerVariant('bone-knife', 'knife', { material:MaterialType.bone });
+  // BaseWeapon.registerVariant('bone-club', 'hammer', { material:MaterialType.bone, name:'bone club' });
+  // BaseWeapon.registerVariant('bone-spear', 'spear', { material:MaterialType.bone });
+
 
   // For now we can just pass the data from the options into the weapon component. Eventually we'll want to have
   // something else randomly building enchantments and adding them to weapons, adjusting the weapon name accordingly,

@@ -9,6 +9,18 @@ global.Material = (function() {
     return Object.keys(materials);
   }
 
+  function forType(type) {
+    const metals = ['iron','steel','silver'];
+    switch (type) {
+      case MaterialType.bendy:   return ['wood','steel'];              // Bows and crossbows.
+      case MaterialType.pliable: return ['wool','silk','leather'];     // Clothing.
+      case MaterialType.hard:    return [...metals];                   // Rigid metal armors.
+      case MaterialType.pointy:  return [...metals,'bone','flint'];    // Spears and arrows, can be sharpened to a point.
+      case MaterialType.sharp:   return [...metals,'flint'];           // Swords and axes, will hold an edge.
+      case MaterialType.heavy:   return [...metals,'bone','stone'];    // Crushing weapons like clubs or maces.
+    }
+  }
+
   function lookup(code) {
     if (materials[code] == null) { throw new Error(`Bad material code [${code}]`); }
 
@@ -30,20 +42,22 @@ global.Material = (function() {
     };
   }
 
-  function getCost(code) {
-    return lookup(code).getCost();
-  }
-
-  function getFactor(code,name) {
-    return lookup(code).getFactor(name);
-  }
+  // function getCost(code) {
+  //   return lookup(code).getCost();
+  // }
+  //
+  // function getFactor(code,name) {
+  //   return lookup(code).getFactor(name);
+  // }
 
   return {
     register,
     getAllCodes,
     lookup,
-    getCost,
-    getFactor,
+    forType,
+
+    // getCost,
+    // getFactor,
   };
 
 })();
