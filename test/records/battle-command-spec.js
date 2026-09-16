@@ -25,6 +25,14 @@ describe("BattleCommand", function() {
     expect(BattleCommand.lookup(StandardAbility.hide).isPossible()).to.equal(false);
   });
 
+  it("builds the ability of a command with no overlay once and shares it", function() {
+    const first = BattleCommand.lookup(StandardAbility.attack).getAbility();
+    const second = BattleCommand.lookup(StandardAbility.attack).getAbility();
+
+    expect(second).to.equal(first);
+    expect(BattleCommand.lookup(StandardAbility.defend).getAbility()).to.not.equal(first);
+  });
+
   it("needs a target when the ability it builds does", function() {
     expect(BattleCommand.lookup(StandardAbility.attack).getTargetingMode()).to.equal(TargetingMode.enemyInWeaponRange);
     expect(BattleCommand.lookup(StandardAbility.defend).getTargetingMode()).to.equal(null);
