@@ -18,6 +18,7 @@ global.Room = function(feature, type='normal') {
   let size;
   let centerPoint;
   let bounds;
+  let boundsBox;
   let chamfer = 0;
   let floorChamfer = 0;
   let glyphs = [];
@@ -33,6 +34,7 @@ global.Room = function(feature, type='normal') {
     if (bounds) { throw new Error(`This room's bounds have already been set.`); }
 
     bounds = { width, height };
+    boundsBox = Object.freeze({ xMin:0, yMin:0, xMax:width, yMax:height });
     footprint = Array.from({ length:height }, () => new Array(width).fill(null));
     size = 0;
   }
@@ -82,9 +84,10 @@ global.Room = function(feature, type='normal') {
   }
 
   // Return the room bounds in an object { xMin, xMax, yMin, yMax }. The mins are always 0; the shape is what the
-  // feature and floor maths expect.
+  // feature and floor maths expect. The box is frozen and shared: it's read in the floor factory's hot loops, where a
+  // fresh object per call is what lets V8's allocation sites go megamorphic (see Feature.getBounds).
   function getBounds() {
-    return { xMin:0, yMin:0, xMax:bounds.width, yMax:bounds.height };
+    return boundsBox;
   }
 
   function getCenterPoint() {

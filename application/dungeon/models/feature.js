@@ -6,9 +6,18 @@ global.Feature = function(type) {
   let position;
   let index;
   let footprint;
+  let bounds;
+  let location;
+
+  function addRoom(room) {
+    bounds = null;
+    location = null;
+    rooms.push(room);
+  }
 
   // Set the position of the feature within the floor.
   function setPosition(x,y) {
+    location = null;
     position = {x,y};
   }
 
@@ -24,35 +33,51 @@ global.Feature = function(type) {
   // The bounds of the feature only describes it size, using the bounds from each room (offset by the room's position
   // within the feature) to find the overall bounding box. To get the bounds translated by the position use
   // getLocation().
+  //
+  // Claude's Performance Fix:
+  //    Both boxes are cached and frozen rather than built on every call. The getLocation() function sits inside the
+  //    floor factory's closest-pair search, which calls it tens of thousands of times per floor, and a fresh object
+  //    per call is not just garbage: once a major GC lands mid-generation V8 drops the maps of those short-lived
+  //    objects, recreates them with new identities, and the allocation sites end up megamorphic and dozens of times
+  //    slower for the rest of the process. Rooms are positioned before they're added, so the bounds only change when
+  //    a room is added.
   function getBounds() {
-    const featureBounds = {
-      xMin: Infinity,
-      xMax: -Infinity,
-      yMin: Infinity,
-      yMax: -Infinity,
-    };
+    if (bounds == null) { bounds = buildBounds(); }
+    return bounds;
+  }
+
+  function buildBounds() {
+    let xMin = Infinity;
+    let xMax = -Infinity;
+    let yMin = Infinity;
+    let yMax = -Infinity;
+
     rooms.forEach(room => {
       const roomPosition = room.getPosition();
       const roomBounds = room.getBounds();
-      if (roomPosition.x + roomBounds.xMin < featureBounds.xMin) { featureBounds.xMin = roomPosition.x + roomBounds.xMin; }
-      if (roomPosition.x + roomBounds.xMax > featureBounds.xMax) { featureBounds.xMax = roomPosition.x + roomBounds.xMax; }
-      if (roomPosition.y + roomBounds.yMin < featureBounds.yMin) { featureBounds.yMin = roomPosition.y + roomBounds.yMin; }
-      if (roomPosition.y + roomBounds.yMax > featureBounds.yMax) { featureBounds.yMax = roomPosition.y + roomBounds.yMax; }
+      if (roomPosition.x + roomBounds.xMin < xMin) { xMin = roomPosition.x + roomBounds.xMin; }
+      if (roomPosition.x + roomBounds.xMax > xMax) { xMax = roomPosition.x + roomBounds.xMax; }
+      if (roomPosition.y + roomBounds.yMin < yMin) { yMin = roomPosition.y + roomBounds.yMin; }
+      if (roomPosition.y + roomBounds.yMax > yMax) { yMax = roomPosition.y + roomBounds.yMax; }
     });
-    return featureBounds;
+
+    return Object.freeze({ xMin, xMax, yMin, yMax });
   }
 
   // Combine position and bounds to get a location box. The lower bounds are inclusive, but the upper bounds are
   // exclusive so if a feature box is at { xMin:4, xMax:8, yMin:8, yMax:12} nothing will be in column 12 or row 8
   // within the grid. The location maths are all easier with this being the case though.
   function getLocation() {
-    const bounds = getBounds();
-    return {
-      xMin: bounds.xMin + position.x,
-      xMax: bounds.xMax + position.x,
-      yMin: bounds.yMin + position.y,
-      yMax: bounds.yMax + position.y,
-    };
+    if (location == null) {
+      const featureBounds = getBounds();
+      location = Object.freeze({
+        xMin: featureBounds.xMin + position.x,
+        xMax: featureBounds.xMax + position.x,
+        yMin: featureBounds.yMin + position.y,
+        yMax: featureBounds.yMax + position.y,
+      });
+    }
+    return location;
   }
 
   function getFootprint() {
@@ -160,7 +185,7 @@ global.Feature = function(type) {
     getType: () => { return type; },
     getRooms: () => { return [...rooms]; },
     getDoors: () => { return [...doors]; },
-    addRoom: (room) => { rooms.push(room); },
+    addRoom,
     addDoor: (door) => { doors.push(door); },
     setPosition,
     getPosition: () => { return {...position}; },
