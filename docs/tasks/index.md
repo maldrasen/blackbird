@@ -22,7 +22,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [197] Skill events `5pt` — [197-skill-episodes.md](197-skill-episodes.md)
 - [213] Add Weapon and Armor Appraisers and Virtual Stores `13pt` — [213-add-weapon-and-armor-appraisers.md](213-add-weapon-and-armor-appraisers.md)
 - [215] Grid Based Dungeon Movement `8pt` — [215-grid-based-dungeon-movement.md](215-grid-based-dungeon-movement.md)
-- [222] Improve test speed `3pt` — [222-improve-test-speed.md](222-improve-test-speed.md)
 
 ## Priority 3
 
