@@ -42,8 +42,7 @@ global.Feature = function(type) {
   //    slower for the rest of the process. Rooms are positioned before they're added, so the bounds only change when
   //    a room is added.
   function getBounds() {
-    if (bounds == null) { bounds = buildBounds(); }
-    return bounds;
+    return bounds ??= buildBounds();
   }
 
   function buildBounds() {
