@@ -8,7 +8,7 @@ describe("PhysicalAttackContest", function() {
 
   function rolledContest(attacker, defender) {
     const contest = PhysicalAttackContest(attacker, defender);
-    contest.setWeaponData({ base:'longsword' });
+    contest.setWeapon(WeaponFactory.build('longsword'));
     contest.setHitLocation('chest');
     contest.roll();
     return contest;

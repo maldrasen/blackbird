@@ -157,10 +157,10 @@ describe("NegotiationState", function() {
   describe("setResolution()", function() {
     it('first resolution wins, even over a later threshold pass', function() {
       const state = buildState(40, 20);
-      state.setResolution({ type:'ability', code:'dick-punch' });
+      state.setResolution({ type:'ability', ability:'Dick Punch' });
       state.setResolution({ type:'run' });
       state.applyFeelings({ affection:95 });
-      expect(state.getResolution()).to.deep.equal({ type:'ability', code:'dick-punch' });
+      expect(state.getResolution()).to.deep.equal({ type:'ability', ability:'Dick Punch' });
     });
   });
 

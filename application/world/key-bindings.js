@@ -4,14 +4,14 @@ global.KeyBindings = (function() {
     battle: {
       name: 'Battle Commands',
       actions: {
-        [BattleCommand.basicAttack]:     { name:'Attack',           key:'KeyA' },
-        [BattleCommand.basicDefend]:     { name:'Defend',           key:'KeyD' },
-        [BattleCommand.hide]:            { name:'Hide',             key:'KeyH' },
-        [BattleCommand.sneakAttack]:     { name:'Sneak Attack',     key:'KeyS' },
-        [BattleCommand.negotiate]:       { name:'Negotiate',        key:'KeyN' },
-        [BattleCommand.useItem]:         { name:'Use Item',         key:'KeyI' },
-        [BattleCommand.changeEquipment]: { name:'Change Equipment', key:'KeyE' },
-        [BattleCommand.pass]:            { name:'Pass',             key:'KeyP' },
+        [StandardAbility.attack]:          { name:'Attack',           key:'KeyA' },
+        [StandardAbility.defend]:          { name:'Defend',           key:'KeyD' },
+        [StandardAbility.hide]:            { name:'Hide',             key:'KeyH' },
+        [StandardAbility.sneakAttack]:     { name:'Sneak Attack',     key:'KeyS' },
+        [StandardAbility.negotiate]:       { name:'Negotiate',        key:'KeyN' },
+        [StandardAbility.useItem]:         { name:'Use Item',         key:'KeyI' },
+        [StandardAbility.changeEquipment]: { name:'Change Equipment', key:'KeyE' },
+        [StandardAbility.pass]:            { name:'Pass',             key:'KeyP' },
       },
     },
 

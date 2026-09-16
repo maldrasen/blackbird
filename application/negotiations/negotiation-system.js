@@ -10,7 +10,6 @@ global.NegotiationSystem = (function() {
     state = NegotiationState();
 
     BattleSystem.getState().setNegotiationAttempted();
-    BattleSystem.getRound().setCharacterAbility(BattleCommand.negotiate);
     NegotiationInterface.open();
   }
 
@@ -53,7 +52,7 @@ global.NegotiationSystem = (function() {
       case 'followUp': state.setFollowUp(reaction.question); break;
       case 'join':     state.setResolution({ type:'join' }); break;
       case 'attack':   state.setResolution({ type:'attack' }); break;
-      case 'ability':  state.setResolution({ type:'ability', code:reaction.code }); break;
+      case 'ability':  state.setResolution({ type:'ability', ability:reaction.ability }); break;
       case 'run':      state.setResolution({ type:'run' }); break;
       default: throw new Error(`Unknown reaction type [${reaction.type}]`);
     }
@@ -66,8 +65,8 @@ global.NegotiationSystem = (function() {
 
     switch (resolution.type) {
       case 'join':      return resolveJoin();
-      case 'attack':    return resolveAbility('basic-attack');
-      case 'ability':   return resolveAbility(resolution.code);
+      case 'attack':    return resolveAbility('Attack');
+      case 'ability':   return resolveAbility(resolution.ability);
       case 'run':       return resolveRun();
     }
     throw new Error(`Unknown resolution type [${resolution.type}]`);
@@ -85,8 +84,8 @@ global.NegotiationSystem = (function() {
     PartyConfiguration.addCharacter(monster);
   }
 
-  function resolveAbility(code) {
-    BattleSystem.getState().setForcedAbility(code);
+  function resolveAbility(name) {
+    BattleSystem.getState().setForcedAbility(name);
     finishNegotiation();
   }
 

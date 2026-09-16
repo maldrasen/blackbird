@@ -33,7 +33,7 @@ describe("AutoBattleSystem", function() {
       BattleSystem.advanceBattle();
 
       const round = BattleSystem.getRound();
-      expect(round.getAbilityCode()).to.equal('basic-attack');
+      expect(round.getAbility().getName()).to.equal('Attack');
       expect(round.getTarget()).to.equal(closest);
     });
 
@@ -43,7 +43,7 @@ describe("AutoBattleSystem", function() {
 
       BattleSystem.advanceBattle();
 
-      expect(BattleSystem.getRound().getAbilityCode()).to.equal('basic-defend');
+      expect(BattleSystem.getRound().getAbility().getName()).to.equal('Defend');
       expect(StatusEffects(acting).hasPoised()).to.equal(true);
     });
 
@@ -53,7 +53,7 @@ describe("AutoBattleSystem", function() {
       BattleSystem.addStatus(acting, 'stun', { count:1 });
       BattleSystem.advanceBattle();
 
-      expect(BattleSystem.getRound().getAbilityCode()).to.equal('pass');
+      expect(BattleSystem.getRound().getAbility().getName()).to.equal('Pass');
     });
   });
 

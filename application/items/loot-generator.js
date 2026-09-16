@@ -85,8 +85,9 @@ global.LootGenerator = function() {
   }
 
   function castsColor(color) {
-    return Object.values(monster.getAbilityMap()).some(ability => {
-      return ability.code === 'monster-cast-spell' && Spell.lookup(ability.spell).getColor() === color;
+    return monsterBase.getAbilities().some(ability => {
+      const spell = ability.getDetails().spell;
+      return spell != null && Spell.lookup(spell).getColor() === color;
     });
   }
 

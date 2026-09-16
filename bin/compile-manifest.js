@@ -17,6 +17,7 @@ console.log("=== Compiling manifest.json ===");
 const applicationFiles = [
   'application/constants.js',
   'application/enums.js',
+  'application/battle-abilities/ability.js'
 ];
 const dataFiles = ['data/game-flags.js'];
 const viewFiles = [];

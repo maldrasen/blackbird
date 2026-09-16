@@ -13,13 +13,17 @@ Almost all of the components in the game are associated with characters. The Bat
 Once a character has become 'real' like this I don't think we ever delete them. There are components like feelings and memory that can reference another character entity. Even if a character were to permanently die, I don't think we want to delete those references. This would allow characters to 'remember' other party members that may have died.
 
 ### Data Objects
-In addition to the Components, Blackbird has three different types of data objects:
+In addition to the Components, Blackbird has four different types of data objects:
 - `Wrappers` - To add functions onto the basic component data objects (Character, Monster, Weapon, etc)
 - `Records` - Immutable data objects (BaseWeapon, Species)
+- `Models` - Objects with internal state (Ability)
 - `States` - Internal state for game modes (TrainingState, BattleState)
 
 ##### Records
 Records are generally accessed by their code, a string label used to access the data with the record's `lookup()` function. The `lookup()` function returns a wrapped record object with accessor functions. When a system or another object needs a reference to a record, only the record code is stored.
+
+##### Models
+A model is for something that has to carry state a record can't; an Ability that casts a particular spell at a particular power level, or a bite with one monster's damage range. Rather than using a traditional JavaScript class, we use factories to build a model object. Models aren't immutable, but they shouldn't really be changed after they've been built. The abilities for instance are shared across all monsters of a given type, so changing one would change all of them. Objects with mutable persistent state should be Components. Non persistent state belongs in the associated system state.
 
 ##### Game State
 The GameState is the one state object that is persisted outside of the entities and components. It's mostly a place to store game state variables that aren't attached to a particular entity, like the current game mode or the game time.

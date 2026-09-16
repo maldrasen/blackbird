@@ -8,18 +8,10 @@ BaseMonster.register('slithering-yeek',{
 
   healthFactor: 0.5,
 
-  prioritizedAbilities: {
-    venomBite: {
-      code: 'venomous-bite',
-      priority: 80,
-      damage: [10,20],
-      speed: 1000,
-      poisonStrength: 10,
-      poisonDamage: { x:1, d:6, p:2 },
-    },
-
-    bite: { code:'beast-bite', priority:50, damage:[10,20], speed:1000 },
-  },
+  buildAbilities: () => { return [
+    Ability.VenomousBite({ damage:[10,20], speed:1000, priority:80, poisonStrength:10, poisonDamage:{ x:1, d:6, p:2 } }),
+    Ability.Bite({ damage:[10,20], speed:1000 }),
+  ]},
 
   lootGroups: {
     nothing: 100,

@@ -1,23 +1,23 @@
 global.PhysicalAttackContest = function(attacker, target) {
   const maxAttempts = 5;
 
-  let weaponData = null;
+  let weaponId = null;
   let naturalAttack = null;
-  let abilityCode = null;
+  let ability = null;
   let hitLocation = null;
 
   let attackRoll;
   let defendRoll;
 
-  function setWeaponData(data) { weaponData = data; }
+  function setWeapon(itemId) { weaponId = itemId; }
   function setNaturalAttack(profile) { naturalAttack = profile; }
-  function setAbility(code) { abilityCode = code; }
+  function setAbility(model) { ability = model; }
   function setHitLocation(location) { hitLocation = location; }
 
   function buildAttackRoll() {
     const attack = PhysicalAttackRoll(attacker, target);
-    naturalAttack ? attack.setNaturalAttack(naturalAttack) : attack.setWeaponData(weaponData);
-    attack.setAbility(abilityCode);
+    naturalAttack ? attack.setNaturalAttack(naturalAttack) : attack.setWeapon(weaponId);
+    attack.setAbility(ability);
     attack.setHitLocation(hitLocation);
     attack.roll();
     return attack;
@@ -46,14 +46,31 @@ global.PhysicalAttackContest = function(attacker, target) {
     return attackRoll.getFinalValue() * accuracyFactor > defendRoll.getFinalValue();
   }
 
+  // The weaver context for describing the strike: who was involved, what was swung at where, and how both rolls went.
+  function getContext() {
+    if (attackRoll == null) { throw new Error(`The contest hasn't been rolled. Call roll() before getContext().`); }
+
+    return {
+      A: attacker,
+      T: target,
+      hitLocation: attackRoll.getHitLocation(),
+      weaponName: attackRoll.getWeaponName(),
+      baseWeapon: attackRoll.getBaseWeaponCode(),
+      weapon: attackRoll.getWeaponId(),
+      attack: BattleHelper.getRollType(attackRoll),
+      defend: BattleHelper.getRollType(defendRoll),
+    };
+  }
+
   return {
-    setWeaponData,
+    setWeapon,
     setNaturalAttack,
     setAbility,
     setHitLocation,
     roll,
     getAttackRoll: () => { return attackRoll; },
     getDefendRoll: () => { return defendRoll; },
+    getContext,
     isHit,
   };
 }

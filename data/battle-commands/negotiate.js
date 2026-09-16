@@ -1,0 +1,18 @@
+// Negotiate is offered only when a single monster remains. Rather than resolving like a normal command, the command
+// panel hands it to the NegotiationSystem, which opens the negotiation overlay. The system finishes or ends the round
+// itself depending on how the negotiation goes, so the command never builds an ability.
+BattleCommand.register(StandardAbility.negotiate, {
+  name: 'Negotiate',
+  category: 'utility',
+  overlay: NegotiationSystem.start,
+
+  isPossible: () => {
+    const state = BattleSystem.getState();
+
+    if (BattleSystem.getRound().getActing() !== GameSystem.getState().getPlayer()) { return false; }
+    if (state.hasAttemptedNegotiation()) { return false; }
+
+    const monsters = state.getActiveMonsters();
+    return monsters.length === 1 && Monster(monsters[0]).willNegotiate();
+  },
+});

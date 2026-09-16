@@ -8,9 +8,9 @@ MonsterType.register('coward',{
     leastHealth: 75,
   },
 
-  prioritizedAbilities: {
-    attack: { code:'basic-attack', priority:50 },
-  },
+  buildAbilities: () => { return [
+    Ability.WeaponAttack(),
+  ]},
 
   attributeGrowth: {
     strength: 30,

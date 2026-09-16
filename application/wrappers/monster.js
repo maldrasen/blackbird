@@ -1,42 +1,10 @@
 global.Monster = function(id) {
 
-  const defaultAbilities = {
-    defend: { code:'basic-defend', priority:0 },
-  };
-
   function monsterComponent() { return MonsterComponent.lookup(id); }
   function getCode() { return monsterComponent().code; }
   function getBaseMonster() { return BaseMonster.lookup(getCode()); }
-  function getType() { return MonsterType.lookup(getBaseMonster().getType()); }
   function getSpecies() { return getBaseMonster().getSpecies(); }
-  function getBodyPlan() { return getBaseMonster().getBodyPlan(); }
-  function getGender() { return ActorComponent.lookup(id).gender; }
   function getArchetype() { return PersonalityComponent.lookup(id).archetype; }
-  function willNegotiate() { return getBaseMonster().getSpecies() != null; }
-  function getNegotiationStyle() { return Archetype.lookup(getArchetype()).getNegotiationStyle(); }
-  function getSkill(code) { return SkillsComponent.lookup(id)[code]; }
-
-  function getAbilityMap() { return getBaseMonster().getAbilityMap(); }
-
-  // Find the key of the highest priority ability with the given code. Several entries can share a code, casting
-  // different spells for instance, so the priority breaks the tie.
-  function findAbility(code) {
-    const matches = Object.entries(getAbilityMap()).filter(([key, entry]) => entry.code === code);
-    matches.sort(([,a], [,b]) => b.priority - a.priority);
-    return matches.length > 0 ? matches[0][0] : undefined;
-  }
-
-  // We need to call this function when there are other properties on the ability entry that we need to read. The
-  // default abilities are kept out of the ability map so that they're never picked, counted for essence, or given
-  // initial cooldowns - they're only reachable through their explicit fallback keys.
-  function getAbility(key) {
-    return getAbilityMap()[key] || defaultAbilities[key];
-  }
-
-  // A default ability is only reachable through its fallback key, and none of them has a cooldown.
-  function getAbilityCooldown(key) {
-    return defaultAbilities[key] ? undefined : getBaseMonster().getAbilityCooldown(key);
-  }
 
   function getResistance(type) {
     const speciesResistance = getSpecies() ? Species.lookup(getSpecies()).getResistance(type) : 0;
@@ -44,27 +12,14 @@ global.Monster = function(id) {
     return speciesResistance + monsterResistance;
   }
 
-  function getNameType() {
-    return getBaseMonster().getNameType();
-  }
-
-  // ==========
-  //   Threat
-  // ==========
-
-  // Populating the threat table is done when the battle first starts. It will replace whatever is currently in the
-  // table (which should be nothing) though it could also be used to completely reset the threat if there's some kind
-  // of effect that would do that.
   function populateThreatTable() {
     const state = BattleSystem.getState();
     const threatTable = {};
 
-    // We start with some random "I just don't like your face" threat.
     state.getActiveCharacters().forEach(id => {
       threatTable[id] = 1 + Random.roll(500);
     });
 
-    // There's probably a more elegant way to do this, but this works fine I guess.
     Object.entries(getBaseMonster().getThreatWeights()).forEach(([generator, weight]) => {
       switch (generator) {
         case ThreatWeight.closest: ThreatGenerators.closest(threatTable, weight, id); break;
@@ -82,10 +37,6 @@ global.Monster = function(id) {
     MonsterComponent.update(id, component);
   }
 
-  function getThreatTable() {
-    return monsterComponent().threatTable;
-  }
-
   function updateThreat(character, threat) {
     const component = monsterComponent();
     component.threatTable[character] = threat;
@@ -96,26 +47,21 @@ global.Monster = function(id) {
     getEntity: () => { return id },
     getCode,
     getBaseMonster,
-    getType,
     getResistance,
-    getNameType,
     getSpecies,
-    getBodyPlan,
-    getGender,
     getArchetype,
-    willNegotiate,
-    getNegotiationStyle,
-    getSkill,
-    getAbility,
-    getAbilityMap,
-    findAbility,
-    getAbilityCooldown,
-
+    getType: () => { return MonsterType.lookup(getBaseMonster().getType()); },
+    getNameType: () => { return getBaseMonster().getNameType(); },
+    getBodyPlan: () => { return getBaseMonster().getBodyPlan(); },
+    getGender: () => { return ActorComponent.lookup(id).gender; },
+    willNegotiate: () => { return getBaseMonster().getSpecies() != null; },
+    getNegotiationStyle: () => { return Archetype.lookup(getArchetype()).getNegotiationStyle(); },
+    getSkill: code => { return SkillsComponent.lookup(id)[code]; },
     populateThreatTable,
-    getThreatTable,
     updateThreat,
-
+    getThreatTable: () => { return monsterComponent().threatTable; },
+    getAbilities: () => { return getBaseMonster().getAbilities(); },
+    findAbility: name => { return getBaseMonster().findAbility(name); },
     getCardArt: () => { return `temp/entity.jpg` },
   };
-
 }

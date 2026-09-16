@@ -5,9 +5,9 @@ MonsterType.register('mage',{
     leastHealth: 100,
   },
 
-  prioritizedAbilities: {
-    attack: { code:'basic-attack', priority:20 },
-  },
+  buildAbilities: () => { return [
+    Ability.WeaponAttack(),
+  ]},
 
   attributeGrowth: {
     strength: 10,

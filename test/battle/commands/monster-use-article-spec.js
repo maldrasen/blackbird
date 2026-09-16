@@ -1,8 +1,8 @@
 describe("MonsterUseArticle", function() {
 
-  // The tosser is added after the battle starts so that no initial cooldown roll is consumed, leaving its
-  // monster-use-article ability ready on its first turn. Pinning the threat keeps the AI's target choice
-  // deterministic; everything else runs unstubbed, so the specs assert outcomes that hold for any rolls.
+  // The tosser is added after the battle starts so that no initial cooldown roll is consumed, leaving its blasto
+  // ready on its first turn. Pinning the threat keeps the AI's target choice deterministic; everything else runs
+  // unstubbed, so the specs assert outcomes that hold for any rolls.
   function addTosserToBattle() {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
@@ -27,6 +27,7 @@ describe("MonsterUseArticle", function() {
     const tosser = addTosserToBattle();
     const state = BattleSystem.getState();
     const target = state.getEntityAtPosition('P',1,2);
+    const blasto = Monster(tosser).findAbility('Use Blasto');
 
     ['P.0.2','P.0.3','P.1.2','P.1.3'].forEach(position => setHealth(state.getEntityAtPosition(position), 100));
 
@@ -38,10 +39,9 @@ describe("MonsterUseArticle", function() {
     BattleSystem.advanceBattle();
 
     const round = BattleSystem.getRound();
-    expect(round.getAbilityCode()).to.equal('monster-use-article');
-    expect(round.getAbilityData().key).to.equal('blasto');
+    expect(round.getAbility()).to.equal(blasto);
     expect(round.getTarget()).to.equal(target);
-    expect(state.isOnCooldown(tosser,'blasto')).to.equal(true);
+    expect(state.isOnCooldown(tosser, blasto.getId())).to.equal(true);
     expect(round.getMessages()[0].text).to.include('flash of light');
 
     ['P.0.2','P.1.2','P.1.3'].forEach(position => {

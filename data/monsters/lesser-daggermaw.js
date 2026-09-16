@@ -8,7 +8,7 @@ BaseMonster.register('lesser-daggermaw',{
 
   healthFactor: 1.5,
 
-  prioritizedAbilities: {
-    bite: { code:'beast-bite', priority:50, damage:[25,50], speed:1500 },
-  },
+  buildAbilities: () => { return [
+    Ability.Bite({ damage:[25,50], speed:1500 }),
+  ]},
 });

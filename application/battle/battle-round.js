@@ -10,11 +10,7 @@ global.BattleRound = function(acting, type=null) {
   const context = {};
   const appliedStatuses = new Set();
 
-  let abilityCode;
-  let abilityData;
-
-  let primaryWeapon = {};
-  let secondaryWeapon = {};
+  let ability;
   let target;
   let targetPosition;
   let time = 0;
@@ -30,64 +26,32 @@ global.BattleRound = function(acting, type=null) {
   //    Abilities
   // ===============
 
-  function setCharacterAbility(code, data={}) {
-    abilityCode = code;
-    abilityData = data;
-  }
-
-  function setMonsterAbility(key) {
-    const prioritizedAbility = getActingMonster().getAbility(key);
-    abilityCode = prioritizedAbility.code;
-    abilityData = { ...prioritizedAbility, key };
-  }
-
-  function getCooldown() {
-    if (isActingMonster()) { return getActingMonster().getAbilityCooldown(abilityData.key); }
-    throw `Only monster abilities have cooldowns.`;
-  }
-
+  // Only monsters have cooldowns. A character can use their abilities as often as they like, provided they pay the
+  // stamina or mana for them.
   function applyCooldown() {
-    if (isActingMonster()) {
-      const cooldown = getCooldown();
-      if (cooldown) {
-        BattleSystem.getState().setCooldown(acting, abilityData.key, cooldown);
-      }
+    if (isActingMonster() && ability.getCooldown() > 0) {
+      BattleSystem.getState().setCooldown(acting, ability.getId(), ability.getCooldown());
     }
   }
 
   // =============
   //    Weapons
   // =============
+  // The weapons the acting entity attacks with. Shields are purely defensive, so one in the off hand doesn't count
+  // as a secondary weapon.
 
-  function compileWeaponData() {
-    if (EquipmentComponent.lookup(acting) != null) {
-      const equipment = EquipmentManager(acting);
-      const main = equipment.getSlot(EquipmentSlot.primary);
-      const off = equipment.getSlot(EquipmentSlot.secondary);
+  function getPrimaryWeapon() { return getWeaponInSlot(EquipmentSlot.primary); }
 
-      if (main && WeaponComponent.lookup(main)) { primaryWeapon = distillWeapon(main); }
-      if (off && WeaponComponent.lookup(off) && isShield(off) === false) { secondaryWeapon = distillWeapon(off); }
-    }
-
-    if (primaryWeapon.base == null) { primaryWeapon = null; }
-    if (secondaryWeapon.base == null) { secondaryWeapon = null; }
+  function getSecondaryWeapon() {
+    const weapon = getWeaponInSlot(EquipmentSlot.secondary);
+    return (weapon && weapon.getBaseWeapon().getType() === 'shield') ? null : weapon;
   }
 
-  // Shields are purely defensive, so one in the off-hand doesn't count as a secondary attack weapon.
-  function isShield(itemId) {
-    return Weapon(itemId).getBaseWeapon().getType() === 'shield';
-  }
+  function getWeaponInSlot(slot) {
+    if (EquipmentComponent.lookup(acting) == null) { return null; }
 
-  function distillWeapon(itemId) {
-    const weapon = Weapon(itemId);
-    const baseWeapon = weapon.getBaseWeapon();
-    return {
-      id: itemId,
-      base: baseWeapon.getCode(),
-      reach: baseWeapon.getReach(),
-      name: weapon.getName(),
-      textKey: weapon.getTextKey(),
-    };
+    const itemId = EquipmentManager(acting).getSlot(slot);
+    return (itemId && WeaponComponent.lookup(itemId)) ? Weapon(itemId) : null;
   }
 
   // ====================
@@ -164,7 +128,7 @@ global.BattleRound = function(acting, type=null) {
   // Each round will need to take some time in order for the battle turns to advance.
   function validate() {
     if (time === 0) {
-      throw new Error(`BattleRound.time was not set by the ${abilityCode} ability.`)
+      throw new Error(`BattleRound.time was not set by the ${ability ? ability.getName() : roundType} round.`);
     }
   }
 
@@ -177,16 +141,12 @@ global.BattleRound = function(acting, type=null) {
     isActingCharacter,
     isStatusEffect,
 
-    setCharacterAbility,
-    setMonsterAbility,
-    getAbilityCode: () => { return abilityCode; },
-    getAbilityData: () => { return abilityData },
-    getCooldown,
+    setAbility: (model) => { ability = model; },
+    getAbility: () => { return ability; },
     applyCooldown,
 
-    compileWeaponData,
-    getPrimaryWeapon: () => { return primaryWeapon; },
-    getSecondaryWeapon: () => { return secondaryWeapon; },
+    getPrimaryWeapon,
+    getSecondaryWeapon,
 
     addAppliedStatus,
     hasAppliedStatus,

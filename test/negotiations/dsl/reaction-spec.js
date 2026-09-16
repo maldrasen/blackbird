@@ -13,8 +13,8 @@ describe("Reaction", function() {
         type:'attack', feelings:{ affection:-40, respect:-20, fear:-30 }, message:'msg', effects:{} });
       expect(Reaction.run('msg')).to.deep.include({
         type:'run', feelings:{ affection:-20, fear:30 }, message:'msg', effects:{} });
-      expect(Reaction.ability('msg',{ code:'dick-punch' })).to.deep.include({
-        type:'ability', code:'dick-punch', feelings:{ affection:-40, respect:-20, fear:-30 }, message:'msg',
+      expect(Reaction.ability('msg',{ ability:'Dick Punch' })).to.deep.include({
+        type:'ability', ability:'Dick Punch', feelings:{ affection:-40, respect:-20, fear:-30 }, message:'msg',
         effects:{} });
       expect(Reaction.join('msg')).to.deep.include({
         type:'join', feelings:{ control:40, affection:50, respect:20, fear:-10 }, message:'msg', effects:{} });

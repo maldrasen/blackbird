@@ -14,7 +14,7 @@ global.EncounterBuilder = (function() {
   function chooseCohort(cohorts, essenceTarget) {
     const viable = cohorts.filter(code => {
       const cohort = Cohort.lookup(code);
-      const values = cohort.getMonsters().map(monster => essenceAverage(monster));
+      const values = pricedMonsters(cohort).map(monster => essenceAverage(monster));
       const least = Math.min(...values);
       const most = Math.max(...values);
       const under = (cohort.getMinimum()) * least <= essenceTarget;
@@ -45,7 +45,7 @@ global.EncounterBuilder = (function() {
   // the cheapest types don't pad out every single encounter. When even the cheapest type is over the target we have
   // to overshoot to field anything at all, and that one type is the whole roster.
   function buildRoster(cohort, essenceTarget) {
-    const types = [...cohort.getMonsters()].sort((a,b) => essenceAverage(b) - essenceAverage(a));
+    const types = pricedMonsters(cohort).sort((a,b) => essenceAverage(b) - essenceAverage(a));
     const affordable = types.filter(type => essenceAverage(type) <= essenceTarget);
     const cheapest = affordable[affordable.length-1];
     const anchorBudget = essenceTarget - (cohort.getMinimum() - 1) * essenceAverage(cheapest);
@@ -201,6 +201,12 @@ global.EncounterBuilder = (function() {
     return Object.keys(counts).
       sort((a,b) => essenceAverage(b) - essenceAverage(a)).
       map(code => ({ code, count:counts[code] }));
+  }
+
+  // A monster whose only threat is its weapon has no essence until the challenge rating exists (task 220). It would
+  // read as free, so the builder never draws one.
+  function pricedMonsters(cohort) {
+    return cohort.getMonsters().filter(code => essenceAverage(code) > 0);
   }
 
   // Base monster difficulty is judged by the average essence a monster of that type yields, precalculated in the

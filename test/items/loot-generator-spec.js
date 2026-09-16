@@ -3,9 +3,11 @@ describe('LootGenerator', function() {
   // The spec articles, monsters and themes keep these specs independent of the shipped loot data. The archer both
   // carries a bow and casts a red spell, so it qualifies for every kind of conditional source. The monsters carry a
   // large essence bonus so that their rolled attributes can't move the value window enough to exclude the spec
-  // articles, which are all valued in the middle of it. The chest specs use level 5, where the value ceiling is 61.5
-  // and the floor is 15.4.
-  const essenceBonus = 1000;
+  // articles, which are all valued in the middle of it. The bonus is scaled by the kobold health factor and the
+  // essence scale, so the kobolds land near 250 essence for a ceiling of about 78 and a floor of about 20, and the
+  // blob near 1250 for a ceiling of about 124 and a floor of about 31. The chest specs use level 5, where the value
+  // ceiling is 61.5 and the floor is 15.4.
+  const essenceBonus = 125;
   const chestLevel = 5;
 
   before(function() {
@@ -48,7 +50,9 @@ describe('LootGenerator', function() {
       level: 1,
       bonusEssence: essenceBonus,
       equipment: { loadouts:[{ main:{ base:'longbow' }}] },
-      prioritizedAbilities: { flare:{ code:'monster-cast-spell', priority:50, spell:'spec-loot-flare', powerLevel:1 } },
+      // The spec spell is registered just above, so the archer's abilities are built here rather than in the
+      // compile pass that ran before the specs.
+      abilities: [Ability.CastSpell({ spell:'spec-loot-flare', powerLevel:1 })],
       lootGroups: { nothing:100, 'spec-critters':30, gear:10 },
       lootAdjustments: [
         { addArticle:'spec-fang', group:'spec-critters', rarity:Rarity.rare },

@@ -2,7 +2,7 @@ describe("KeyBindings", function() {
 
   it("binds a default key to every battle command", function() {
     const bindings = KeyBindings.getBindings();
-    Object.values(BattleCommand).forEach(code => {
+    Object.values(StandardAbility).forEach(code => {
       expect(bindings.battle[code]).to.be.a('string');
     });
   });
@@ -12,7 +12,7 @@ describe("KeyBindings", function() {
   });
 
   it("finds the action bound to a key in a context", function() {
-    expect(KeyBindings.getAction('battle','KeyA')).to.equal(BattleCommand.basicAttack);
+    expect(KeyBindings.getAction('battle','KeyA')).to.equal(StandardAbility.attack);
     expect(KeyBindings.getAction('targeting','Digit0')).to.equal('back-5');
     expect(KeyBindings.getAction('dungeon','KeyW')).to.equal('north');
     expect(KeyBindings.getAction('battle','KeyZ')).to.equal(null);
@@ -20,19 +20,19 @@ describe("KeyBindings", function() {
   });
 
   it("reads saved bindings over the defaults", async function() {
-    await WorldState.setOptions({ keyBindings:{ battle:{ [BattleCommand.basicAttack]:'KeyQ' } } });
+    await WorldState.setOptions({ keyBindings:{ battle:{ [StandardAbility.attack]:'KeyQ' } } });
 
-    expect(KeyBindings.getBinding('battle',BattleCommand.basicAttack)).to.equal('KeyQ');
-    expect(KeyBindings.getAction('battle','KeyQ')).to.equal(BattleCommand.basicAttack);
+    expect(KeyBindings.getBinding('battle',StandardAbility.attack)).to.equal('KeyQ');
+    expect(KeyBindings.getAction('battle','KeyQ')).to.equal(StandardAbility.attack);
     expect(KeyBindings.getAction('battle','KeyA')).to.equal(null);
-    expect(KeyBindings.getAction('battle','KeyD')).to.equal(BattleCommand.basicDefend);
+    expect(KeyBindings.getAction('battle','KeyD')).to.equal(StandardAbility.defend);
     expect(KeyBindings.getBinding('dungeon','north')).to.equal('KeyW');
   });
 
   it("lets an action be unbound", async function() {
-    await WorldState.setOptions({ keyBindings:{ battle:{ [BattleCommand.basicAttack]:null } } });
+    await WorldState.setOptions({ keyBindings:{ battle:{ [StandardAbility.attack]:null } } });
 
-    expect(KeyBindings.getBinding('battle',BattleCommand.basicAttack)).to.equal(null);
+    expect(KeyBindings.getBinding('battle',StandardAbility.attack)).to.equal(null);
     expect(KeyBindings.getAction('battle','KeyA')).to.equal(null);
     expect(KeyBindings.getAction('battle',null)).to.equal(null);
   });
@@ -43,32 +43,32 @@ describe("KeyBindings", function() {
   });
 
   it("hands out a fresh copy of the bindings each time", function() {
-    KeyBindings.getBindings().battle[BattleCommand.basicAttack] = 'KeyZ';
-    expect(KeyBindings.getBinding('battle',BattleCommand.basicAttack)).to.equal('KeyA');
+    KeyBindings.getBindings().battle[StandardAbility.attack] = 'KeyZ';
+    expect(KeyBindings.getBinding('battle',StandardAbility.attack)).to.equal('KeyA');
   });
 
   describe("findConflicts()", function() {
     it("flags a key bound to two actions in one context", function() {
       const bindings = KeyBindings.getDefaults();
-      bindings.battle[BattleCommand.basicDefend] = 'KeyA';
+      bindings.battle[StandardAbility.defend] = 'KeyA';
 
       const conflicts = KeyBindings.findConflicts(bindings);
       expect(conflicts.length).to.equal(1);
       expect(conflicts[0].context).to.equal('battle');
       expect(conflicts[0].code).to.equal('KeyA');
-      expect(conflicts[0].actions).to.have.members([BattleCommand.basicAttack, BattleCommand.basicDefend]);
+      expect(conflicts[0].actions).to.have.members([StandardAbility.attack, StandardAbility.defend]);
     });
 
     it("allows the same key in different contexts", function() {
       const bindings = KeyBindings.getDefaults();
-      bindings.battle[BattleCommand.basicAttack] = 'KeyW';
+      bindings.battle[StandardAbility.attack] = 'KeyW';
       expect(KeyBindings.findConflicts(bindings)).to.deep.equal([]);
     });
 
     it("ignores unbound actions", function() {
       const bindings = KeyBindings.getDefaults();
-      bindings.battle[BattleCommand.basicAttack] = null;
-      bindings.battle[BattleCommand.basicDefend] = null;
+      bindings.battle[StandardAbility.attack] = null;
+      bindings.battle[StandardAbility.defend] = null;
       expect(KeyBindings.findConflicts(bindings)).to.deep.equal([]);
     });
   });

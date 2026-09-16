@@ -33,6 +33,7 @@ applicable to the current task.
 - `/docs/reference/consent.md` The training consent model reference. 
 
 #### Battle System References
+- `/docs/reference/battle-abilities.md` The ability model, its factories, monster ability lists, and battle commands.
 - `/docs/reference/status-effects.md` Status effects reference.
 
 ## Running the app
@@ -54,6 +55,7 @@ pipes, or output filters — the flags cover those needs:
 - `--seed <seed>` reproduces a run with a fixed seed
 - `--seeds <seed,seed,...>` runs once per seed, printing a one-line summary for each
 - `--quiet` prints only the summary lines (a failing run still dumps its full output)
+- `--reporter dot` prints a dot per spec and only the failures in detail, for when a failing full run is too long to read
 
 Repeated random-seed runs to flush out flaky specs use `node bin/soak-tests.js [runs] [--grep "<spec title>"]`.
 

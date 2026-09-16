@@ -1,44 +1,37 @@
 global.PhysicalAttackRoll = function(attacker, target) {
-  let weaponData = {};
-  let abilityCode = null;
+  let ability = null;
   let hitLocation = null;
 
+  let weapon = null;
   let baseWeapon;
-  let weapon;
   let check;
   let finalValue;
 
-  function setAbility(code) { abilityCode = code; }
-  function getAbility() { return (abilityCode == null) ? null : Ability.lookup(abilityCode); }
+  function setAbility(model) { ability = model; }
+  function getAbility() { return ability; }
   function setHitLocation(location) { hitLocation = location; }
 
-  // TODO: We'll need to look at this again once we've added some monsters that only have natural attacks. Because all
-  //       weapons are real weapons now, there shouldn't ever be a need for a base weapon that exists without a weapon
-  //       component.
-
-  function setWeaponData(data) {
-    weaponData = data;
-    weapon = (weaponData.id) ? Weapon(weaponData.id) : null;
-    baseWeapon = (weapon != null) ? weapon.getBaseWeapon() : BaseWeapon.lookup(weaponData.base);
+  function setWeapon(itemId) {
+    weapon = Weapon(itemId);
+    baseWeapon = weapon.getBaseWeapon();
   }
 
   // A natural attack profile - a punch, a bite, a claw - stands in for the base weapon, so the roll doesn't care
   // that no real weapon is involved.
   function setNaturalAttack(profile) {
-    weaponData = { textKey:profile.textKey };
-    baseWeapon = NaturalAttack(profile);
     weapon = null;
+    baseWeapon = NaturalAttack(profile);
   }
 
   // An ability that can target any enemy is always long range. Otherwise, the weapon's reach determines the range.
   function isRangedAttack() {
-    if (abilityCode != null && getAbility().getTargetingMode() === TargetingMode.anyEnemy) { return true; }
+    if (ability && ability.getTargetingMode() === TargetingMode.anyEnemy) { return true; }
     return baseWeapon.getReach() === WeaponReach.long;
   }
 
+  // A real weapon can carry its own text key over its base weapon's.
   function getTextKey() {
-    if (weaponData.textKey) { return weaponData.textKey; }
-    return (weapon != null) ? weapon.getTextKey() : baseWeapon.getTextKey();
+    return weapon ? weapon.getTextKey() : baseWeapon.getTextKey();
   }
 
   function getRollMode() {
@@ -58,7 +51,7 @@ global.PhysicalAttackRoll = function(attacker, target) {
   //       which we can get from attack.weapon if the attack is using a real weapon.
 
   function roll() {
-    if (baseWeapon == null) { throw new Error(`A PhysicalAttackRoll must have a base weapon. Call setWeaponData() before roll().`); }
+    if (baseWeapon == null) { throw new Error(`A PhysicalAttackRoll must have a base weapon. Call setWeapon() or setNaturalAttack() before roll().`); }
     if (hitLocation == null) { hitLocation = BattleHelper.randomHitLocation(target); }
 
     check = SkillCheck(attacker, baseWeapon.getSkill(), getRollMode());
@@ -70,18 +63,17 @@ global.PhysicalAttackRoll = function(attacker, target) {
   return {
     setAbility,
     getAbility,
-    getAbilityCode: () => { return abilityCode; },
 
     setHitLocation,
     getHitLocation: () => { return hitLocation; },
 
-    setWeaponData,
+    setWeapon,
     setNaturalAttack,
     getBaseWeapon: () => { return baseWeapon; },
-    getWeaponName: () => { return weaponData.name; },
-    getBaseWeaponCode: () => { return weaponData.base },
-    getWeaponId: () => { return weaponData.id || null },
     getWeapon: () => { return weapon; },
+    getWeaponId: () => { return weapon ? weapon.getId() : null; },
+    getWeaponName: () => { return weapon ? weapon.getName() : null; },
+    getBaseWeaponCode: () => { return weapon ? baseWeapon.getCode() : null; },
     isRangedAttack,
     getTextKey,
 

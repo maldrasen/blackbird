@@ -7,9 +7,9 @@ MonsterType.register('hunter',{
     furtherBack: 100,
   },
 
-  prioritizedAbilities: {
-    attack: { code:'basic-attack', priority:50 },
-  },
+  buildAbilities: () => { return [
+    Ability.WeaponAttack(),
+  ]},
 
   attributeGrowth: {
     strength: 20,

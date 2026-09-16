@@ -15,7 +15,7 @@ global.CommandPanel = (function() {
     X.addClass('#commandPanel','hide');
   }
 
-  function showCommands(abilities) {
+  function showCommands(codes) {
     const character = BattleSystem.getRound().getActingCharacter();
 
     show();
@@ -23,9 +23,9 @@ global.CommandPanel = (function() {
     X.empty(`#commandPanel #commandArea`);
     X.empty(`#commandPanel #utilityArea`);
 
-    abilities.forEach(code => {
-      const ability = Ability.lookup(code);
-      X.append(getCommandArea(ability.getCategory()), X.createElement(`<a class='button button-primary command' data-ability='${code}'>${ability.getName()}${keyHint(code)}</a>`));
+    codes.forEach(code => {
+      const command = BattleCommand.lookup(code);
+      X.append(getCommandArea(command.getCategory()), X.createElement(`<a class='button button-primary command' data-command='${code}'>${command.getName()}${keyHint(code)}</a>`));
     });
   }
 
@@ -40,13 +40,15 @@ global.CommandPanel = (function() {
     throw new Error(`We need an area for this category: ${category}`);
   }
 
+  // A command with an overlay picks up from there once the overlay has chosen. Otherwise the command needs a target
+  // picked first, or runs at once.
   function executeCommand(event) {
-    const ability = Ability.lookup(event.target.closest('.command').dataset.ability);
-    if (ability.hasOverlay()) {
-      return ability.openOverlay();
+    const command = BattleCommand.lookup(event.target.closest('.command').dataset.command);
+    if (command.hasOverlay()) {
+      return command.openOverlay();
     }
 
-    ability.getTargetingMode() != null ? TargetingController.startTargeting(ability.getCode()) : ability.execute();
+    command.getTargetingMode() != null ? TargetingController.startTargeting(command) : command.execute();
   }
 
   function isAcceptingCommands() {
@@ -56,7 +58,7 @@ global.CommandPanel = (function() {
   }
 
   function pressCommand(code) {
-    const button = X.first(`#commandPanel .command[data-ability='${code}']`);
+    const button = X.first(`#commandPanel .command[data-command='${code}']`);
     if (button) { button.click(); }
   }
 

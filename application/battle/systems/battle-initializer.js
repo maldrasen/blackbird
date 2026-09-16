@@ -54,12 +54,10 @@ global.BattleInitializer = (function() {
     const state = BattleSystem.getState();
 
     state.getActiveMonsters().forEach(id => {
-      const monster = Monster(id);
-      Object.keys(monster.getAbilityMap()).forEach(key => {
-        const cooldown = monster.getAbilityCooldown(key);
-        if (cooldown) {
-          const initial = Random.roll(cooldown + 1);
-          if (initial > 0) { state.setCooldown(id, key, initial); }
+      Monster(id).getAbilities().forEach(ability => {
+        if (ability.getCooldown() > 0) {
+          const initial = Random.roll(ability.getCooldown() + 1);
+          if (initial > 0) { state.setCooldown(id, ability.getId(), initial); }
         }
       });
     });

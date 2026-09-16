@@ -10,7 +10,7 @@ global.BattleInterface = (function() {
   }
 
   function showCharacterCommands() {
-    if (viewActive()) { CommandPanel.showCommands(CharacterAbilitySystem.getAbilities()); }
+    if (viewActive()) { CommandPanel.showCommands(CharacterAbilitySystem.getCommands()); }
   }
 
   function showMonsterResult() {
