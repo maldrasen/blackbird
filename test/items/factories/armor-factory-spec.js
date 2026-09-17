@@ -1,4 +1,4 @@
-describe.only('ArmorFactory', function() {
+describe('ArmorFactory', function() {
 
   it('builds basic armor with no options', function() {
     const armor = Armor(ArmorFactory().build('doublet'));

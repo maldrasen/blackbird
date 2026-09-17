@@ -46,6 +46,7 @@ global.BaseWeapon = (function() {
       getReach: () => { return weapon.reach || WeaponReach.close },
       getSpeed: () => { return weapon.speed },
       getDamageStat,
+      getMaterials: () => { return weapon.materials; },
       getEffort: () => { return weapon.effort || 0; },
       getTextKey: () => { return weapon.textKey; },
     };

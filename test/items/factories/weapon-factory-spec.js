@@ -1,9 +1,17 @@
 describe("WeaponFactory", function() {
 
   it("builds simple base weapons", function() {
-    const id = WeaponFactory.build('goosewing');
-    const axe = WeaponComponent.lookup(id);
-    expect(axe.base).to.equal('goosewing');
+    const axe = Weapon(WeaponFactory().build('goosewing'));
+    expect(axe.getBaseWeapon().getCode()).to.equal('goosewing');
+  });
+
+  it.only('builds basic weapon with a material list', function() {
+    const factory = WeaponFactory();
+    factory.setAvailableMaterials(['silver']);
+
+    const weapon = Weapon(factory.build('labrys'));
+    expect(weapon.getName()).to.equal('Silver Labrys');
+    expect(weapon.getPrimaryMaterial()).to.equal('silver');
   });
 
 });

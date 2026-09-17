@@ -1,35 +1,33 @@
 global.Weapon = function(id) {
 
-  function getComponent() { return WeaponComponent.lookup(id); }
-  function getBaseWeapon() { return BaseWeapon.lookup(getComponent().base); }
+  function getItemComponent() { return ItemComponent.lookup(id); }
+  function getWeaponComponent() { return WeaponComponent.lookup(id); }
+  function getBaseWeapon() { return BaseWeapon.lookup(getWeaponComponent().base); }
 
   function getName() {
-    const component = getComponent();
-    return component.name || BaseWeapon.lookup(component.base).getName();
+    return getItemComponent().name;
   }
 
   function getIcon() {
-    return BaseWeapon.lookup(getComponent().base).getIcon();
+    return getBaseWeapon().getIcon();
   }
 
   function getNameType() {
-    return getComponent().nameType || 'common';
+    return getItemComponent().nameType;
   }
 
   function getTextKey() {
-    const component = getComponent();
-    return component.textKey || BaseWeapon.lookup(component.base).getTextKey();
+    const weapon = getWeaponComponent();
+    return weapon.textKey || getBaseWeapon().getTextKey();
   }
 
   function getEnchantment() {
-    const component = getComponent();
-    return component.enchantment ? WeaponEnchantment(id, component.enchantment) : null;
+    const weapon = getWeaponComponent();
+    return weapon.enchantment ? WeaponEnchantment(id, weapon.enchantment) : null;
   }
 
-  // Only shields carry a reduction profile. It starts at the base weapon's value, but individual pieces will
-  // eventually be able to override it, with enchantments for instance.
-  function getReduction(type) {
-    return BaseWeapon.lookup(getComponent().base).getReduction(type);
+  function getPrimaryMaterial() {
+    return Object.keys(getItemComponent().materials)[0];
   }
 
   return {
@@ -40,8 +38,8 @@ global.Weapon = function(id) {
     getIcon,
     getNameType,
     getTextKey,
-    getReduction,
-    hasEnchantment: () => { return getComponent().enchantment != null; },
+    hasEnchantment: () => { return getWeaponComponent().enchantment != null; },
     getEnchantment,
+    getPrimaryMaterial,
   };
 }

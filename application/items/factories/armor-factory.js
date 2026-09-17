@@ -15,8 +15,6 @@ global.ArmorFactory = function() {
   //   - name
   //   - nameType
   function build(code, options={}) {
-    console.log(`=== Build ${code} ===`);
-
     const base = BaseArmor.lookup(code);
     const item = { type:'armor' };
     const armor = { base:code }
