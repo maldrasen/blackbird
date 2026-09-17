@@ -1,5 +1,5 @@
 
-BaseWeapon.register('shortbow', {
+BaseEquipment.register('shortbow', {
   nameFunction: (names, materials) => { return materials.wood ? `Shortbow` : `${names[0]} Banded Shortbow`; },
   icon: 'weapons/bow-02.png',
   type: 'bow',
@@ -13,7 +13,7 @@ BaseWeapon.register('shortbow', {
   textKey: 'shoot',
 });
 
-BaseWeapon.register('longbow', {
+BaseEquipment.register('longbow', {
   nameFunction: (names, materials) => { return materials.wood ? `Longbow` : `${names[0]} Banded Longbow`; },
   icon: 'weapons/bow-02.png',
   type: 'bow',
@@ -27,7 +27,7 @@ BaseWeapon.register('longbow', {
   textKey: 'shoot',
 });
 
-BaseWeapon.register('recursive-bow', {
+BaseEquipment.register('recursive-bow', {
   nameFunction: () => { return `Recursive Bow`; },
   icon: 'weapons/bow-01.png',
   type: 'bow',
@@ -41,7 +41,7 @@ BaseWeapon.register('recursive-bow', {
   textKey: 'shoot',
 });
 
-BaseWeapon.register('crossbow', {
+BaseEquipment.register('crossbow', {
   nameFunction: (names,materials) => { return materials.wood ? `Crossbow` : `${names[0]} Crossbow`; },
   icon: 'weapons/crossbow-01.png',
   type: 'bow',
@@ -55,7 +55,7 @@ BaseWeapon.register('crossbow', {
   textKey: 'shoot',
 });
 
-BaseWeapon.register('arbalest', {
+BaseEquipment.register('arbalest', {
   nameFunction: (names,materials) => { return materials.wood ? `Arbalest` : `${names[0]} Arbalest`; },
   icon: 'weapons/crossbow-01.png',
   type: 'bow',

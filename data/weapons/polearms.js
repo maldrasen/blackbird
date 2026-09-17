@@ -1,5 +1,5 @@
 
-BaseWeapon.register('spear', {
+BaseEquipment.register('spear', {
   nameFunction: names => { return `${names[0]} Spear`; },
   icon: 'weapons/spear-01.png',
   type: 'polearm',
@@ -13,7 +13,7 @@ BaseWeapon.register('spear', {
   textKey: 'basic-thrust',
 });
 
-BaseWeapon.register('pike', {
+BaseEquipment.register('pike', {
   nameFunction: names => { return `${names[0]} Pike`; },
   icon: 'weapons/spear-01.png',
   type: 'polearm',
@@ -27,7 +27,7 @@ BaseWeapon.register('pike', {
   textKey: 'basic-thrust',
 });
 
-BaseWeapon.register('halberd', {
+BaseEquipment.register('halberd', {
   nameFunction: names => { return `${names[0]} Halberd`; },
   icon: 'weapons/halberd-01.png',
   type: 'polearm',
@@ -44,7 +44,7 @@ BaseWeapon.register('halberd', {
   textKey: 'heavy-axe',
 });
 
-BaseWeapon.register('glaive', {
+BaseEquipment.register('glaive', {
   nameFunction: names => { return `${names[0]} Glaive`; },
   icon: 'weapons/glaive-01.png',
   type: 'polearm',
@@ -58,7 +58,7 @@ BaseWeapon.register('glaive', {
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('scythe', {
+BaseEquipment.register('scythe', {
   nameFunction: names => { return `${names[0]} Scythe`; },
   icon: 'weapons/scythe-01.png',
   type: 'polearm',
@@ -72,7 +72,7 @@ BaseWeapon.register('scythe', {
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('trident', {
+BaseEquipment.register('trident', {
   nameFunction: names => { return `${names[0]} Trident`; },
   icon: 'weapons/trident-01.png',
   type: 'polearm',
@@ -87,7 +87,7 @@ BaseWeapon.register('trident', {
 });
 
 // TODO: We need an actual ranseur icon.
-BaseWeapon.register('ranseur', {
+BaseEquipment.register('ranseur', {
   nameFunction: names => { return `${names[0]} Ranseur`; },
   icon: 'weapons/trident-01.png',
   type: 'polearm',

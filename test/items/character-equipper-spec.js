@@ -2,7 +2,7 @@ describe('CharacterEquipper', function() {
 
   function weaponCode(itemId) { return WeaponComponent.lookup(itemId).base; }
   function armorCode(itemId) { return ArmorComponent.lookup(itemId).base; }
-  function weaponType(itemId) { return BaseWeapon.lookup(weaponCode(itemId)).getType(); }
+  function weaponType(itemId) { return BaseEquipment.lookup(weaponCode(itemId)).getType(); }
 
   it('picks the weapon type from the highest martial skill', function() {
     const horse = CharacterFixtures.genericMale({ skills:{ swords:30, axes:15 } });
@@ -10,7 +10,7 @@ describe('CharacterEquipper', function() {
 
     expect(weaponType(equipped.primary)).to.equal('sword');
     expect(['saber','longsword','falchion','broadsword']).to.include(weaponCode(equipped.primary));
-    expect(BaseWeapon.lookup(weaponCode(equipped.primary)).getValue()).to.be.within(560, 700);
+    expect(BaseEquipment.lookup(weaponCode(equipped.primary)).getValue()).to.be.within(560, 700);
     expect(weaponCode(equipped.secondary)).to.equal('round-shield');
   });
 
@@ -29,9 +29,9 @@ describe('CharacterEquipper', function() {
     // A character will only have an offhand item equipped if they didn't randomly pick a two handed weapon.
     if (equipped.secondary) {
       expect(weaponCode(equipped.secondary)).to.be.oneOf(['buckler']);
-      expect(BaseWeapon.lookup(primary).getHands()).to.not.equal(WeaponHandedness.two)
+      expect(BaseEquipment.lookup(primary).getHands()).to.not.equal(WeaponHandedness.two)
     } else {
-      expect(BaseWeapon.lookup(primary).getHands()).to.equal(WeaponHandedness.two)
+      expect(BaseEquipment.lookup(primary).getHands()).to.equal(WeaponHandedness.two)
     }
   });
 
@@ -44,9 +44,9 @@ describe('CharacterEquipper', function() {
 
     if (equipped.secondary) {
       expect(weaponCode(equipped.secondary)).to.be.oneOf(['knife']);
-      expect(BaseWeapon.lookup(primary).getHands()).to.not.equal(WeaponHandedness.two)
+      expect(BaseEquipment.lookup(primary).getHands()).to.not.equal(WeaponHandedness.two)
     } else {
-      expect(BaseWeapon.lookup(primary).getHands()).to.equal(WeaponHandedness.two)
+      expect(BaseEquipment.lookup(primary).getHands()).to.equal(WeaponHandedness.two)
     }
   });
 

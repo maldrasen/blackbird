@@ -2,7 +2,7 @@
 // Leg armor. Leggings and chaps are soft goods (their steel-quality profiles are scaled down by the primary material's
 // absorption); greaves, chainmail, and plate-mail are metal.
 
-BaseArmor.register('leggings', {
+BaseEquipment.register('leggings', {
   nameFunction: names => { return `${names[0]} Leggings`; },
   icon: 'armor/legs-03.png',
   slot: EquipmentSlot.legs,
@@ -11,7 +11,7 @@ BaseArmor.register('leggings', {
   effort: 2,
 });
 
-BaseArmor.register('chaps', {
+BaseEquipment.register('chaps', {
   nameFunction: names => { return `${names[0]} Chaps`; },
   icon: 'armor/legs-03.png',
   slot: EquipmentSlot.legs,
@@ -20,7 +20,7 @@ BaseArmor.register('chaps', {
   effort: 3,
 });
 
-BaseArmor.register('greaves', {
+BaseEquipment.register('greaves', {
   nameFunction: names => { return `${names[0]} Greaves`; },
   icon: 'armor/legs-01.png',
   slot: EquipmentSlot.legs,
@@ -30,7 +30,7 @@ BaseArmor.register('greaves', {
 });
 
 // TODO: Need a better chainmail icon.
-BaseArmor.register('chainmail', {
+BaseEquipment.register('chainmail', {
   nameFunction: names => { return `${names[0]} Chainmail`; },
   icon: 'armor/legs-03.png',
   slot: EquipmentSlot.legs,
@@ -40,7 +40,7 @@ BaseArmor.register('chainmail', {
 });
 
 // TODO: Need a better plate legs icon.
-BaseArmor.register('plate-mail', {
+BaseEquipment.register('plate-mail', {
   nameFunction: names => { return `${names[0]} Plate Mail`; },
   icon: 'armor/legs-03.png',
   slot: EquipmentSlot.legs,

@@ -1,7 +1,7 @@
 
 // TODO: We need better sword icons across the board really.
 
-BaseWeapon.register('short-sword', {
+BaseEquipment.register('short-sword', {
   nameFunction: names => { return `${names[0]} Short Sword`; },
   icon: 'weapons/sword-04.png',
   type: 'sword',
@@ -16,7 +16,7 @@ BaseWeapon.register('short-sword', {
 });
 
 // TODO: Better cutlass icon.
-BaseWeapon.register('cutlass', {
+BaseEquipment.register('cutlass', {
   nameFunction: names => { return `${names[0]} Cutlass`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',
@@ -31,7 +31,7 @@ BaseWeapon.register('cutlass', {
 });
 
 // TODO: Better saber icon.
-BaseWeapon.register('saber', {
+BaseEquipment.register('saber', {
   nameFunction: names => { return `${names[0]} Saber`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',
@@ -46,7 +46,7 @@ BaseWeapon.register('saber', {
 });
 
 // TODO: Better scimitar icon. Why do I have no curved sword icons?
-BaseWeapon.register('scimitar', {
+BaseEquipment.register('scimitar', {
   nameFunction: names => { return `${names[0]} Scimitar`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',
@@ -60,7 +60,7 @@ BaseWeapon.register('scimitar', {
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('rapier', {
+BaseEquipment.register('rapier', {
   nameFunction: names => { return `${names[0]} Rapier`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',
@@ -74,7 +74,7 @@ BaseWeapon.register('rapier', {
   textKey: 'basic-thrust',
 });
 
-BaseWeapon.register('estoc', {
+BaseEquipment.register('estoc', {
   nameFunction: names => { return `${names[0]} Estoc`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',
@@ -88,7 +88,7 @@ BaseWeapon.register('estoc', {
   textKey: 'basic-thrust',
 });
 
-BaseWeapon.register('longsword', {
+BaseEquipment.register('longsword', {
   nameFunction: names => { return `${names[0]} Longsword`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',
@@ -102,7 +102,7 @@ BaseWeapon.register('longsword', {
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('broadsword', {
+BaseEquipment.register('broadsword', {
   nameFunction: names => { return `${names[0]} Broadsword`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',
@@ -116,7 +116,7 @@ BaseWeapon.register('broadsword', {
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('falchion', {
+BaseEquipment.register('falchion', {
   nameFunction: names => { return `${names[0]} Falchion`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',
@@ -130,7 +130,7 @@ BaseWeapon.register('falchion', {
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('bastard-sword', {
+BaseEquipment.register('bastard-sword', {
   nameFunction: names => { return `${names[0]} Bastard Sword`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',
@@ -144,7 +144,7 @@ BaseWeapon.register('bastard-sword', {
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('claymore', {
+BaseEquipment.register('claymore', {
   nameFunction: names => { return `${names[0]} Claymore`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',

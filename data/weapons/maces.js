@@ -1,5 +1,5 @@
 
-BaseWeapon.register('hammer', {
+BaseEquipment.register('hammer', {
   nameFunction: names => { return `${names[0]} Hammer`; },
   icon: 'weapons/hammer-02.png',
   type: 'mace',
@@ -12,7 +12,7 @@ BaseWeapon.register('hammer', {
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('mace', {
+BaseEquipment.register('mace', {
   nameFunction: (names,materials) => {
     if (materials.bone) { return `Skullhead Mace`; }
     if (materials.stone) { return `Stonehead Mace`; }
@@ -29,7 +29,7 @@ BaseWeapon.register('mace', {
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('warhammer', {
+BaseEquipment.register('warhammer', {
   nameFunction: (names,materials) => {
     if (materials.bone) { return 'Jawbone' }
     if (materials.stone) { return 'Stonehead Warhammer' }
@@ -47,7 +47,7 @@ BaseWeapon.register('warhammer', {
 });
 
 // TODO: Need an icon with more spikes.
-BaseWeapon.register('morning-star', {
+BaseEquipment.register('morning-star', {
   nameFunction: names => { return `${names[0]} Morning Star`; },
   icon: 'weapons/mace-01.png',
   type: 'mace',
@@ -63,8 +63,8 @@ BaseWeapon.register('morning-star', {
   textKey: 'heavy-mace',
 });
 
-BaseWeapon.register('maul', {
-  nameFunction: names => {
+BaseEquipment.register('maul', {
+  nameFunction: (names,materials) => {
     if (materials.bone) { return 'Oxskull Maul' }
     if (materials.stone) { return 'Boulderhead Maul' }
     return `${names[0]} Maul`;

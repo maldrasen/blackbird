@@ -1,5 +1,5 @@
 
-BaseWeapon.register('knife', {
+BaseEquipment.register('knife', {
   nameFunction: names => { return `${names[0]} Knife`; },
   icon: 'weapons/dagger-02.png',
   type: 'dagger',
@@ -16,7 +16,7 @@ BaseWeapon.register('knife', {
   textKey: 'quick-stab',
 });
 
-BaseWeapon.register('dirk', {
+BaseEquipment.register('dirk', {
   nameFunction: names => { return `${names[0]} Dirk`; },
   icon: 'weapons/dagger-02.png',
   type: 'dagger',
@@ -30,7 +30,7 @@ BaseWeapon.register('dirk', {
   textKey: 'quick-stab',
 });
 
-BaseWeapon.register('dagger', {
+BaseEquipment.register('dagger', {
   nameFunction: names => { return `${names[0]} Dagger`; },
   icon: 'weapons/dagger-02.png',
   type: 'dagger',
@@ -47,7 +47,7 @@ BaseWeapon.register('dagger', {
   textKey: 'quick-stab',
 });
 
-BaseWeapon.register('poignard', {
+BaseEquipment.register('poignard', {
   nameFunction: names => { return `${names[0]} Poignard`; },
   icon: 'weapons/dagger-07.png',
   type: 'dagger',
@@ -61,7 +61,7 @@ BaseWeapon.register('poignard', {
   textKey: 'quick-stab',
 });
 
-BaseWeapon.register('baselard', {
+BaseEquipment.register('baselard', {
   nameFunction: names => { return `${names[0]} Baselard`; },
   icon: 'weapons/dagger-05.png',
   type: 'dagger',
@@ -75,7 +75,7 @@ BaseWeapon.register('baselard', {
   textKey: 'quick-stab',
 });
 
-BaseWeapon.register('stiletto', {
+BaseEquipment.register('stiletto', {
   nameFunction: names => { return `${names[0]} Stiletto`; },
   icon: 'weapons/dagger-07.png',
   type: 'dagger',

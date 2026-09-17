@@ -6,7 +6,7 @@
 //       sallet, or armet all have distinct styles. Before devoting too much time to this though, we may eventually
 //       have real graphics for all the equipment pieces, so a generic head armor icon is fine.
 
-BaseArmor.register('coif', {
+BaseEquipment.register('coif', {
   nameFunction: names => { return `${names[0]} Coif`; },
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
@@ -15,7 +15,7 @@ BaseArmor.register('coif', {
   effort: 3,
 });
 
-BaseArmor.register('helm', {
+BaseEquipment.register('helm', {
   nameFunction: names => { return `${names[0]} Helm`; },
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
@@ -24,7 +24,7 @@ BaseArmor.register('helm', {
   effort: 3,
 });
 
-BaseArmor.register('bascinet', {
+BaseEquipment.register('bascinet', {
   nameFunction: names => { return `${names[0]} Bascinet`; },
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
@@ -33,7 +33,7 @@ BaseArmor.register('bascinet', {
   effort: 4,
 });
 
-BaseArmor.register('sallet', {
+BaseEquipment.register('sallet', {
   nameFunction: names => { return `${names[0]} Sallet`; },
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
@@ -42,7 +42,7 @@ BaseArmor.register('sallet', {
   effort: 4,
 });
 
-BaseArmor.register('armet', {
+BaseEquipment.register('armet', {
   nameFunction: names => { return `${names[0]} Armet`; },
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
@@ -51,7 +51,7 @@ BaseArmor.register('armet', {
   effort: 5,
 });
 
-BaseArmor.register('heaume', {
+BaseEquipment.register('heaume', {
   nameFunction: names => { return `${names[0]} Heaume`; },
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,

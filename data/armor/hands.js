@@ -2,7 +2,7 @@
 // Hand and forearm armor. Gloves and bracers are soft goods (their steel-quality profile is scaled down by the primary
 // material's absorption); vambraces and gauntlets are metal.
 
-BaseArmor.register('gloves', {
+BaseEquipment.register('gloves', {
   nameFunction: names => { return `${names[0]} Gloves`; },
   icon: 'armor/hands-02.png',
   slot: EquipmentSlot.hands,
@@ -12,7 +12,7 @@ BaseArmor.register('gloves', {
 });
 
 // TODO: Need an icon for bracers and these are obviously gloves.
-BaseArmor.register('bracers', {
+BaseEquipment.register('bracers', {
   nameFunction: names => { return `${names[0]} Bracers`; },
   icon: 'armor/hands-03.png',
   slot: EquipmentSlot.hands,
@@ -22,7 +22,7 @@ BaseArmor.register('bracers', {
 });
 
 // TODO: Could use the same bracers icon, but these are gloves.
-BaseArmor.register('vambraces', {
+BaseEquipment.register('vambraces', {
   nameFunction: names => { return `${names[0]} Vambraces`; },
   icon: 'armor/hands-03.png',
   slot: EquipmentSlot.hands,
@@ -31,7 +31,7 @@ BaseArmor.register('vambraces', {
   effort: 3,
 });
 
-BaseArmor.register('gauntlets', {
+BaseEquipment.register('gauntlets', {
   nameFunction: names => { return `${names[0]} Gauntlets`; },
   icon: 'armor/hands-01.png',
   slot: EquipmentSlot.hands,

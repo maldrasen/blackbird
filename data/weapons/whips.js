@@ -1,8 +1,8 @@
 
-// The chain weapons are filed under hard rather than heavy because a whip's slash damage runs on the lash factor, which
-// only the metals define. Nothing in MaterialType singles out leather, so the leather whips use pliable for now.
+// The chain whips are filed under hard rather than heavy because a whip's slash damage runs on the lash factor, which
+// only the metals define.
 
-BaseWeapon.register('bullwhip', {
+BaseEquipment.register('bullwhip', {
   nameFunction: () => { return `Bullwhip`; },
   icon: 'weapons/whip-01.png',
   type: 'whip',
@@ -16,7 +16,7 @@ BaseWeapon.register('bullwhip', {
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('chain-whip', {
+BaseEquipment.register('chain-whip', {
   nameFunction: names => { return `${names[0]} Chain Whip`; },
   icon: 'weapons/chain-01.png',
   type: 'whip',
@@ -31,7 +31,7 @@ BaseWeapon.register('chain-whip', {
 });
 
 // TODO: Need a better sickle and chain
-BaseWeapon.register('sickle-and-chain', {
+BaseEquipment.register('sickle-and-chain', {
   nameFunction: names => { return `${names[0]} Sickle and Chain`; },
   icon: 'weapons/chain-01.png',
   type: 'whip',
@@ -46,7 +46,7 @@ BaseWeapon.register('sickle-and-chain', {
 });
 
 // TODO: Need a better ball and chain
-BaseWeapon.register('ball-and-chain', {
+BaseEquipment.register('ball-and-chain', {
   nameFunction: (names, materials) => {
     if (materials.bone) { return `Skull and Chain`; }
     if (materials.stone) { return `Stone and Chain`; }
@@ -64,7 +64,7 @@ BaseWeapon.register('ball-and-chain', {
   textKey: 'heavy-mace',
 });
 
-BaseWeapon.register('flail', {
+BaseEquipment.register('flail', {
   nameFunction: names => { return `${names[0]} Flail`; },
   icon: 'weapons/flail-01.png',
   type: 'whip',
@@ -79,7 +79,7 @@ BaseWeapon.register('flail', {
 });
 
 // TODO: Needs a better icon.
-BaseWeapon.register('cat-o-nine-tails', {
+BaseEquipment.register('cat-o-nine-tails', {
   nameFunction: () => { return `Cat o' Nine Tails`; },
   icon: 'weapons/whip-01.png',
   type: 'whip',
