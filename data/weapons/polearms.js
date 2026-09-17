@@ -1,6 +1,6 @@
 
 BaseWeapon.register('spear', {
-  name: 'spear',
+  nameFunction: names => { return `${names[0]} Spear`; },
   icon: 'weapons/spear-01.png',
   type: 'polearm',
   damageType: DamageType.pierce,
@@ -8,16 +8,13 @@ BaseWeapon.register('spear', {
   hands: WeaponHandedness.two,
   reach: WeaponReach.extended,
   speed: 1200,
-  materials: {
-    tip:   { material:MaterialType.steel, amount:1 },
-    shaft: { material:MaterialType.wood, amount:2 },
-  },
+  materials: { pointy:1 },
   effort: 2,
   textKey: 'basic-thrust',
 });
 
 BaseWeapon.register('pike', {
-  name: 'pike',
+  nameFunction: names => { return `${names[0]} Pike`; },
   icon: 'weapons/spear-01.png',
   type: 'polearm',
   damageType: DamageType.pierce,
@@ -25,16 +22,13 @@ BaseWeapon.register('pike', {
   hands: WeaponHandedness.two,
   reach: WeaponReach.extended,
   speed: 1400,
-  materials: {
-    tip:   { material:MaterialType.steel, amount:1 },
-    shaft: { material:MaterialType.wood, amount:3 },
-  },
+  materials: { pointy:1 },
   effort: 2,
   textKey: 'basic-thrust',
 });
 
 BaseWeapon.register('halberd', {
-  name: 'halberd',
+  nameFunction: names => { return `${names[0]} Halberd`; },
   icon: 'weapons/halberd-01.png',
   type: 'polearm',
   damageTypes: [
@@ -45,16 +39,13 @@ BaseWeapon.register('halberd', {
   hands: WeaponHandedness.two,
   reach: WeaponReach.extended,
   speed: 1500,
-  materials: {
-    head:  { material:MaterialType.steel, amount:2 },
-    shaft: { material:MaterialType.wood, amount:2 },
-  },
+  materials: { sharp:3 },
   effort: 4,
   textKey: 'heavy-axe',
 });
 
 BaseWeapon.register('glaive', {
-  name: 'glaive',
+  nameFunction: names => { return `${names[0]} Glaive`; },
   icon: 'weapons/glaive-01.png',
   type: 'polearm',
   damageType: DamageType.slash,
@@ -62,16 +53,13 @@ BaseWeapon.register('glaive', {
   hands: WeaponHandedness.two,
   reach: WeaponReach.extended,
   speed: 1400,
-  materials: {
-    head:  { material:MaterialType.steel, amount:2 },
-    shaft: { material:MaterialType.wood, amount:2 },
-  },
+  materials: { sharp:2 },
   effort: 4,
   textKey: 'basic-swing',
 });
 
 BaseWeapon.register('scythe', {
-  name: 'scythe',
+  nameFunction: names => { return `${names[0]} Scythe`; },
   icon: 'weapons/scythe-01.png',
   type: 'polearm',
   damageType: DamageType.slash,
@@ -79,16 +67,13 @@ BaseWeapon.register('scythe', {
   hands: WeaponHandedness.two,
   reach: WeaponReach.extended,
   speed: 1400,
-  materials: {
-    head:  { material:MaterialType.steel, amount:2 },
-    shaft: { material:MaterialType.wood, amount:2 },
-  },
+  materials: { sharp:2 },
   effort: 3,
   textKey: 'basic-swing',
 });
 
 BaseWeapon.register('trident', {
-  name: 'trident',
+  nameFunction: names => { return `${names[0]} Trident`; },
   icon: 'weapons/trident-01.png',
   type: 'polearm',
   damageType: DamageType.pierce,
@@ -96,17 +81,14 @@ BaseWeapon.register('trident', {
   hands: WeaponHandedness.two,
   reach: WeaponReach.extended,
   speed: 1300,
-  materials: {
-    head:  { material:MaterialType.steel, amount:2 },
-    shaft: { material:MaterialType.wood, amount:2 },
-  },
+  materials: { pointy:2 },
   effort: 3,
   textKey: 'basic-thrust',
 });
 
 // TODO: We need an actual ranseur icon.
 BaseWeapon.register('ranseur', {
-  name: 'ranseur',
+  nameFunction: names => { return `${names[0]} Ranseur`; },
   icon: 'weapons/trident-01.png',
   type: 'polearm',
   damageType: DamageType.pierce,
@@ -114,10 +96,7 @@ BaseWeapon.register('ranseur', {
   hands: WeaponHandedness.two,
   reach: WeaponReach.extended,
   speed: 1300,
-  materials: {
-    head:  { material:MaterialType.steel, amount:1 },
-    shaft: { material:MaterialType.wood, amount:2 },
-  },
+  materials: { pointy:2 },
   effort: 3,
   textKey: 'basic-thrust',
 });

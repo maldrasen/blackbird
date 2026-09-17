@@ -16,6 +16,7 @@ global.Material = (function() {
 
   function forType(type) {
     switch (type) {
+      case MaterialType.leather: return ['leather'];                   // Some items, like whips can only really be made with leather.
       case MaterialType.bendy:   return ['wood','steel'];              // Bows and crossbows.
       case MaterialType.pliable: return ['wool','silk','leather'];     // Clothing.
       case MaterialType.hard:    return [...metals];                   // Rigid metal armors.

@@ -454,6 +454,7 @@ global.OutfitStyle = {
 };
 
 global.MaterialType = {
+  leather: 'leather',
   bendy: 'bendy',
   pliable: 'pliable',
   hard: 'hard',
