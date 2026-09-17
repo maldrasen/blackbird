@@ -15,7 +15,7 @@ global.WeaponFactory = function() {
   //   - name
   //   - nameType
   function build(code, options={}) {
-    const base = BaseWeapon.lookup(code);
+    const base = BaseEquipment.lookup(code);
     const item = { type:'weapon' };
     const weapon = { base:code };
 

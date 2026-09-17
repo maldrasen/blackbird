@@ -80,7 +80,7 @@ global.LootGenerator = function() {
   function hasWeaponType(weaponType) {
     return Object.values(EquipmentComponent.lookup(monsterId) || {}).some(itemId => {
       const weapon = WeaponComponent.lookup(itemId);
-      return weapon != null && BaseWeapon.lookup(weapon.base).getType() === weaponType;
+      return weapon != null && BaseEquipment.lookup(weapon.base).getType() === weaponType;
     });
   }
 

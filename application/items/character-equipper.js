@@ -86,7 +86,7 @@ global.CharacterEquipper = function(id) {
     const loadout = Random.from(loadouts);
     if (loadout.main) {
       giveWeapon(loadout.main.base, EquipmentSlot.primary, loadout.main);
-      if (BaseWeapon.lookup(loadout.main.base).getHands() === WeaponHandedness.two) { return; }
+      if (BaseEquipment.lookup(loadout.main.base).getHands() === WeaponHandedness.two) { return; }
     }
     if (loadout.off && isFilled(EquipmentSlot.secondary) === false) {
       giveWeapon(loadout.off.base, EquipmentSlot.secondary, loadout.off);
@@ -98,7 +98,7 @@ global.CharacterEquipper = function(id) {
   function equipLoadoutArmor(entries) {
     const grouped = {};
     entries.forEach(entry => {
-      const slot = BaseArmor.lookup(entry.base).getSlot();
+      const slot = BaseEquipment.lookup(entry.base).getSlot();
       grouped[slot] = [...(grouped[slot] || []), entry];
     });
 
@@ -121,7 +121,7 @@ global.CharacterEquipper = function(id) {
     if (primaryCode == null) { return; }
 
     giveWeapon(primaryCode, EquipmentSlot.primary);
-    if (BaseWeapon.lookup(primaryCode).getHands() === WeaponHandedness.two) { return; }
+    if (BaseEquipment.lookup(primaryCode).getHands() === WeaponHandedness.two) { return; }
     if (isFilled(EquipmentSlot.secondary)) { return; }
 
     const offhandType = isDexterous(weaponType) ? 'dagger' : 'shield';
@@ -182,15 +182,15 @@ global.CharacterEquipper = function(id) {
   // === Selection =====================================================================================================
 
   function weaponCandidates(type) {
-    return BaseWeapon.getAllCodes().
-      map(code => BaseWeapon.lookup(code)).
+    return BaseEquipment.getAllCodes().
+      map(code => BaseEquipment.lookup(code)).
       filter(weapon => weapon.getType() === type).
       map(weapon => ({ code:weapon.getCode(), value:weapon.getValue() }));
   }
 
   function armorCandidates(slot) {
-    return BaseArmor.getAllCodes().
-      map(code => BaseArmor.lookup(code)).
+    return BaseEquipment.getAllCodes().
+      map(code => BaseEquipment.lookup(code)).
       filter(armor => armor.getSlot() === slot).
       map(armor => ({ code:armor.getCode(), value:armor.getValue() }));
   }
