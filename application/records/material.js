@@ -1,4 +1,5 @@
 global.Material = (function() {
+  const metals = ['iron','steel','silver'];
   const materials = {};
 
   function register(code,data) {
@@ -9,8 +10,11 @@ global.Material = (function() {
     return Object.keys(materials);
   }
 
+  function isMetal(code) {
+    return metals.includes(code);
+  }
+
   function forType(type) {
-    const metals = ['iron','steel','silver'];
     switch (type) {
       case MaterialType.bendy:   return ['wood','steel'];              // Bows and crossbows.
       case MaterialType.pliable: return ['wool','silk','leather'];     // Clothing.
@@ -42,22 +46,12 @@ global.Material = (function() {
     };
   }
 
-  // function getCost(code) {
-  //   return lookup(code).getCost();
-  // }
-  //
-  // function getFactor(code,name) {
-  //   return lookup(code).getFactor(name);
-  // }
-
   return {
     register,
     getAllCodes,
     lookup,
     forType,
-
-    // getCost,
-    // getFactor,
+    isMetal,
   };
 
 })();
