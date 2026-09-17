@@ -16,8 +16,7 @@ global.WeaponFactory = function() {
   //   - nameType
   function build(code, options={}) {
     const base = BaseEquipment.lookup(code);
-    const item = { type:'weapon' };
-    const weapon = { base:code };
+    const item = { type:'weapon', base:code };
 
     setMaterials();
     setName();
@@ -52,7 +51,6 @@ global.WeaponFactory = function() {
 
     const id = Registry.createEntity();
     ItemComponent.create(id, item);
-    WeaponComponent.create(id, weapon);
     WeaponAppraiser.appraise(id);
     return id;
   }

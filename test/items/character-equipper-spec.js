@@ -1,7 +1,7 @@
 describe('CharacterEquipper', function() {
 
-  function weaponCode(itemId) { return WeaponComponent.lookup(itemId).base; }
-  function armorCode(itemId) { return ArmorComponent.lookup(itemId).base; }
+  function weaponCode(itemId) { return ItemComponent.lookup(itemId).base; }
+  function armorCode(itemId) { return ItemComponent.lookup(itemId).base; }
   function weaponType(itemId) { return BaseEquipment.lookup(weaponCode(itemId)).getType(); }
 
   it('picks the weapon type from the highest martial skill', function() {
@@ -17,7 +17,7 @@ describe('CharacterEquipper', function() {
   it('falls back to strength weapons when unskilled', function() {
     const horse = CharacterFixtures.genericMale({ attributes:{ strength:50, dexterity:20 } });
     const equipped = CharacterEquipper(horse).equip(500);
-    const primary = WeaponComponent.lookup(equipped.primary).base;
+    const primary = ItemComponent.lookup(equipped.primary).base;
 
     expect(primary).to.be.oneOf(['broad-axe','halberd','glaive','morning-star','warhammer']);
     expect(armorCode(equipped.chest)).to.be.oneOf(['leather-doublet']);
@@ -38,7 +38,7 @@ describe('CharacterEquipper', function() {
   it('gives high dexterity characters an off-hand dagger', function() {
     const horse = CharacterFixtures.genericMale({ attributes:{ strength:20, dexterity:50 } });
     const equipped = CharacterEquipper(horse).equip(500);
-    const primary = WeaponComponent.lookup(equipped.primary).base;
+    const primary = ItemComponent.lookup(equipped.primary).base;
 
     expect(weaponCode(equipped.primary)).to.be.oneOf(['ball-and-chain','baselard','flail','longbow','poignard','sickle-and-chain']);
 

@@ -1,8 +1,7 @@
 global.Armor = function(id) {
 
   function getItemComponent() { return ItemComponent.lookup(id); }
-  function getArmorComponent() { return ArmorComponent.lookup(id); }
-  function getBaseArmor() { return BaseEquipment.lookup(getArmorComponent().base); }
+  function getBaseArmor() { return BaseEquipment.lookup(getItemComponent().base); }
 
   function getName() {
     return getItemComponent().name;
@@ -17,8 +16,8 @@ global.Armor = function(id) {
   }
 
   function getEnchantment() {
-    const component = getArmorComponent();
-    return component.enchantment ? ArmorEnchantment(id, component.enchantment) : null;
+    const item = getItemComponent();
+    return item.enchantment ? ArmorEnchantment(id, item.enchantment) : null;
   }
 
   function getPrimaryMaterial() {
@@ -31,7 +30,7 @@ global.Armor = function(id) {
     getName,
     getIcon,
     getReduction,
-    hasEnchantment: () => { return getArmorComponent().enchantment != null; },
+    hasEnchantment: () => { return getItemComponent().enchantment != null; },
     getEnchantment,
     getPrimaryMaterial,
     isMetal: () => { return Material.isMetal(getPrimaryMaterial()); },

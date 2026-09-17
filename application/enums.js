@@ -132,7 +132,6 @@ global.ComponentType = {
   anima: 'AnimaComponent',
   animus: 'AnimusComponent',
   anus: 'AnusComponent',
-  armor: 'ArmorComponent',
   arousal: 'ArousalComponent',
   aspects: 'AspectsComponent',
   attributes: 'AttributesComponent',
@@ -160,7 +159,6 @@ global.ComponentType = {
   situated: 'SituatedComponent',
   skills: 'SkillsComponent',
   statusEffect: 'StatusEffectComponent',
-  weapon: 'WeaponComponent',
 };
 
 global.Attrib = {

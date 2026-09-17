@@ -24,8 +24,7 @@ global.ArmorFactory = function() {
   //   - nameType
   function build(code, options={}) {
     const base = BaseEquipment.lookup(code);
-    const item = { type:'armor' };
-    const armor = { base:code }
+    const item = { type:'armor', base:code };
 
     setMaterials();
     setName();
@@ -51,7 +50,6 @@ global.ArmorFactory = function() {
 
     const id = Registry.createEntity();
     ItemComponent.create(id, item);
-    ArmorComponent.create(id, armor);
     ArmorAppraiser.appraise(id);
 
     return id;

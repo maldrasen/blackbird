@@ -22,15 +22,11 @@ global.EquipmentManager = function(characterId) {
     const item = ItemComponent.lookup(itemId);
 
     if (item.type === 'armor') {
-      const armor = ArmorComponent.lookup(itemId);
-      const base = BaseEquipment.lookup(armor.base);
-      return base.getSlot() === slot;
+      return BaseEquipment.lookup(item.base).getSlot() === slot;
     }
 
     if (item.type === 'weapon') {
-      const weapon = WeaponComponent.lookup(itemId);
-      const base = BaseEquipment.lookup(weapon.base);
-      const hands = base.getHands();
+      const hands = BaseEquipment.lookup(item.base).getHands();
 
       if (hands === WeaponHandedness.main) { return EquipmentSlot.primary === slot; }
       if (hands === WeaponHandedness.off)  { return EquipmentSlot.secondary === slot; }
@@ -66,10 +62,11 @@ global.EquipmentManager = function(characterId) {
   // item clears a two-handed primary.
   function isTwoHandedWeapon(itemId) {
     if (itemId == null) { return false; }
-    if (ItemComponent.lookup(itemId).type !== 'weapon') { return false; }
 
-    const weapon = WeaponComponent.lookup(itemId);
-    return BaseEquipment.lookup(weapon.base).getHands() === WeaponHandedness.two;
+    const item = ItemComponent.lookup(itemId);
+    if (item.type !== 'weapon') { return false; }
+
+    return BaseEquipment.lookup(item.base).getHands() === WeaponHandedness.two;
   }
 
   // The id of the armor worn at a hit location. Hit locations (chest/feet/hands/head/legs) are exactly the armor
@@ -77,7 +74,7 @@ global.EquipmentManager = function(characterId) {
   function getArmorAt(slot) {
     const itemId = fetch()[slot];
     if (itemId == null) { return null; }
-    return ArmorComponent.lookup(itemId) ? itemId : null;
+    return ItemComponent.lookup(itemId).type === 'armor' ? itemId : null;
   }
 
   // The id of the shield in the secondary weapon slot; anything else there (a dagger, nothing) means no shield.
@@ -85,10 +82,7 @@ global.EquipmentManager = function(characterId) {
     const itemId = fetch()[EquipmentSlot.secondary];
     if (itemId == null) { return null; }
 
-    const weapon = WeaponComponent.lookup(itemId);
-    if (weapon == null) { return null; }
-
-    return BaseEquipment.lookup(weapon.base).getType() === 'shield' ? itemId : null;
+    return BaseEquipment.lookup(ItemComponent.lookup(itemId).base).isShield() ? itemId : null;
   }
 
   function hasEquippedWeaponType(type) {
@@ -96,8 +90,7 @@ global.EquipmentManager = function(characterId) {
       const itemId = fetch()[slot];
       if (itemId == null) { return false; }
 
-      const weapon = WeaponComponent.lookup(itemId);
-      return weapon != null && BaseEquipment.lookup(weapon.base).getType() === type;
+      return BaseEquipment.lookup(ItemComponent.lookup(itemId).base).getType() === type;
     });
   }
 
@@ -106,7 +99,7 @@ global.EquipmentManager = function(characterId) {
     const armorId = getArmorAt(hitLocation);
     const shieldId = getEquippedShield();
     const total = (armorId ? Armor(armorId).getReduction(damageType) : 0)
-                + (shieldId ? Weapon(shieldId).getReduction(damageType) : 0);
+                + (shieldId ? Armor(shieldId).getReduction(damageType) : 0);
     return Math.min(total, maxReduction);
   }
 

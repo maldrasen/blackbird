@@ -1,8 +1,7 @@
 global.Weapon = function(id) {
 
   function getItemComponent() { return ItemComponent.lookup(id); }
-  function getWeaponComponent() { return WeaponComponent.lookup(id); }
-  function getBaseWeapon() { return BaseEquipment.lookup(getWeaponComponent().base); }
+  function getBaseWeapon() { return BaseEquipment.lookup(getItemComponent().base); }
 
   function getName() {
     return getItemComponent().name;
@@ -17,13 +16,13 @@ global.Weapon = function(id) {
   }
 
   function getTextKey() {
-    const weapon = getWeaponComponent();
-    return weapon.textKey || getBaseWeapon().getTextKey();
+    const item = getItemComponent();
+    return item.textKey || getBaseWeapon().getTextKey();
   }
 
   function getEnchantment() {
-    const weapon = getWeaponComponent();
-    return weapon.enchantment ? WeaponEnchantment(id, weapon.enchantment) : null;
+    const item = getItemComponent();
+    return item.enchantment ? WeaponEnchantment(id, item.enchantment) : null;
   }
 
   function getPrimaryMaterial() {
@@ -38,7 +37,7 @@ global.Weapon = function(id) {
     getIcon,
     getNameType,
     getTextKey,
-    hasEnchantment: () => { return getWeaponComponent().enchantment != null; },
+    hasEnchantment: () => { return getItemComponent().enchantment != null; },
     getEnchantment,
     getPrimaryMaterial,
   };

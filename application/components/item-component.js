@@ -1,5 +1,5 @@
 global.ItemComponent = (function() {
-  const properties = ['type','name','nameType','materials'];
+  const properties = ['type','name','nameType','materials','base','enchantment','textKey'];
 
   function create(id, data) {
     Registry.createComponent(id,ComponentType.item,data);
@@ -30,6 +30,7 @@ global.ItemComponent = (function() {
     });
 
     Validate.exists(`Item.type`,itemComponent.type);
+    Validate.exists(`Item.base`,itemComponent.base);
 
     // Item names can be common or proper. A common name can be prefixed with "the" or "his", while a proper name has
     // no prefix. The difference between "He swings his spiked dildo bat" and "He thrusts Stabitha forward."
