@@ -1,38 +1,40 @@
-// Usage: node bin/reports/weapon-report.js [type|dps|value]
+// Usage: node bin/reports/weapon-report.js [type|dps]
 
 require('../run-headless.js');
 
 const sort = process.argv[2] || 'type';
 
-const weapons = BaseWeapon.getAllCodes().map(code => {
-  const weapon = BaseWeapon.lookup(code);
+const weapons = BaseEquipment.getAllCodes().map(code => BaseEquipment.lookup(code)).filter(base => base.isWeapon()).map(weapon => {
   return {
-    code:      code,
+    code:      weapon.getCode(),
     type:      weapon.getType(),
     hands:     weapon.getHands(),
     reach:     weapon.getReach(),
     damage:    `${weapon.getLow()}-${weapon.getHigh()}`,
-    dps:       weapon.getDamagePerSecond(),
+    dps:       ((weapon.getLow() + weapon.getHigh()) / 2) / (weapon.getSpeed() / 1000),
     speed:     weapon.getSpeed(),
     types:     damageTypeString(weapon),
-    material:  weapon.getPrimaryMaterial() || '-',
-    value:     weapon.getValue(),
+    materials: materialString(weapon),
+    effort:    weapon.getEffort(),
   };
 });
 
-const byValue = (a,b) => b.value - a.value;
+const byDps = (a,b) => b.dps - a.dps;
 
 switch (sort) {
-  case 'type':  weapons.sort((a,b) => a.type.localeCompare(b.type) || byValue(a,b)); break;
-  case 'dps':   weapons.sort((a,b) => b.dps - a.dps); break;
-  case 'value': weapons.sort(byValue); break;
-  default:      throw new Error(`Unknown sort "${sort}" (expected type, dps, or value)`);
+  case 'type': weapons.sort((a,b) => a.type.localeCompare(b.type) || byDps(a,b)); break;
+  case 'dps':  weapons.sort(byDps); break;
+  default:     throw new Error(`Unknown sort "${sort}" (expected type or dps)`);
 }
 
 function damageTypeString(weapon) {
   return weapon.getDamageTypes().map(entry => {
     return entry.percent === 100 ? entry.type : `${entry.type}:${entry.percent}`;
   }).join('/');
+}
+
+function materialString(weapon) {
+  return Object.entries(weapon.getMaterials()).map(([type,amount]) => `${type}:${amount}`).join(' ');
 }
 
 console.log(`\n=== Base Weapon Report (by ${sort}) ===\n`);
@@ -43,12 +45,12 @@ console.log(ReportHelper.formatTable([
   { label:'hands' },
   { label:'reach' },
   { label:'damage' },
-  { label:'dps',   align:'right' },
-  { label:'speed', align:'right' },
+  { label:'dps',    align:'right' },
+  { label:'speed',  align:'right' },
   { label:'damage types' },
-  { label:'material' },
-  { label:'value', align:'right' },
+  { label:'materials' },
+  { label:'effort', align:'right' },
 ], weapons.map(weapon => [
   weapon.code, weapon.type, weapon.hands, weapon.reach, weapon.damage,
-  weapon.dps.toFixed(1), weapon.speed, weapon.types, weapon.material, weapon.value,
+  weapon.dps.toFixed(1), weapon.speed, weapon.types, weapon.materials, weapon.effort,
 ])).join('\n'));
