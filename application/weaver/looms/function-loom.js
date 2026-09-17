@@ -120,7 +120,7 @@ global.FunctionLoom = (function() {
     }
 
     if (name == null) {
-      name = BaseWeapon.lookup(base).getName();
+      name = BaseEquipment.lookup(base).getName();
     }
 
     if (weaponId) {

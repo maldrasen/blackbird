@@ -2,7 +2,7 @@ global.Weapon = function(id) {
 
   function getItemComponent() { return ItemComponent.lookup(id); }
   function getWeaponComponent() { return WeaponComponent.lookup(id); }
-  function getBaseWeapon() { return BaseWeapon.lookup(getWeaponComponent().base); }
+  function getBaseWeapon() { return BaseEquipment.lookup(getWeaponComponent().base); }
 
   function getName() {
     return getItemComponent().name;

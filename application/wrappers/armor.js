@@ -2,7 +2,7 @@ global.Armor = function(id) {
 
   function getItemComponent() { return ItemComponent.lookup(id); }
   function getArmorComponent() { return ArmorComponent.lookup(id); }
-  function getBaseArmor() { return BaseArmor.lookup(getArmorComponent().base); }
+  function getBaseArmor() { return BaseEquipment.lookup(getArmorComponent().base); }
 
   function getName() {
     return getItemComponent().name;

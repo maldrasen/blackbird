@@ -455,6 +455,7 @@ global.OutfitStyle = {
 
 global.MaterialType = {
   leather: 'leather',
+  wood: 'wood',
   bendy: 'bendy',
   pliable: 'pliable',
   hard: 'hard',
