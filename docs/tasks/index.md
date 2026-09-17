@@ -9,6 +9,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [219] Split essence and challenge rating `8pt` — [220-split-essence-and-challenge-rating.md](220-split-essence-and-challenge-rating.md)
 - [224] Dungeon Rendering Prototype `8pt` — [224-dungeon-rendering-prototype.md](224-dungeon-rendering-prototype.md)
 - [225] Create equipment depots used to equip characters. `8pt` — [225-create-equipment-depots-used-to-equip-characters.md](225-create-equipment-depots-used-to-equip-characters.md)
+- [226] Unify weapons and armor as equipment `8pt` — [226-unify-weapons-and-armor-as-equipment.md](226-unify-weapons-and-armor-as-equipment.md)
 
 ## Priority 2
 
