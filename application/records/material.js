@@ -19,7 +19,7 @@ global.Material = (function() {
       case MaterialType.leather: return ['leather'];                   // Some items, like whips can only really be made with leather.
       case MaterialType.bendy:   return ['wood','steel'];              // Bows and crossbows.
       case MaterialType.pliable: return ['wool','silk','leather'];     // Clothing.
-      case MaterialType.hard:    return [...metals];                   // Rigid metal armors.
+      case MaterialType.hard:    return [...metals];                   // Rigid metal armors and equipment that should only be metal.
       case MaterialType.pointy:  return [...metals,'bone','flint'];    // Spears and arrows, can be sharpened to a point.
       case MaterialType.sharp:   return [...metals,'flint'];           // Swords and axes, will hold an edge.
       case MaterialType.heavy:   return [...metals,'bone','stone'];    // Crushing weapons like clubs or maces.
