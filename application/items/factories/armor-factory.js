@@ -1,6 +1,14 @@
 global.ArmorFactory = function() {
   let availableMaterials;
 
+  // TODO: We're currently using Random.from() to pick a random material, given a list of available materials. We
+  //       should actually be using a frequency map here because some materials should be more rare then others when
+  //       randomly generating equipment. Once we implement the item depots, different depots should have different
+  //       material ranges. When generating higher level monsters better quality materials should be more common in the
+  //       depot used to equip them. I think the factory must always receive a material rarity map. In the actual game,
+  //       I think we'd always want to specify the material range somehow, for random monsters, for the player
+  //       character's randomly selected equipment or generating the stock for an item store.
+
   function setAvailableMaterials(list) {
     availableMaterials = (list == null) ? null : new Set(list);
   }
