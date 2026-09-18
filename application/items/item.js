@@ -17,6 +17,11 @@ global.Item = function(id) {
     return ItemHelper.getScaledReduction(getBase().getReductionMap(), getPrimaryMaterial(), type);
   }
 
+  // The damage range is authored at baseline quality the same way, and scales with the primary material too.
+  function getDamageRange() {
+    return ItemHelper.getScaledDamageRange(getBase(), getPrimaryMaterial());
+  }
+
   // Shields are filed with the armor in the inventory.
   function getCategory() {
     return getBase().isWeapon() ? InventoryCategory.weapon : InventoryCategory.armor;
@@ -39,6 +44,7 @@ global.Item = function(id) {
     getCategory,
     getTextKey,
     getReduction,
+    getDamageRange,
     getPrimaryMaterial,
     isMetal: () => { return Material.isMetal(getPrimaryMaterial()); },
     hasEnchantment: () => { return getItemComponent().enchantment != null; },

@@ -98,6 +98,27 @@ describe('Item', function() {
     });
   });
 
+  // Damage ranges are authored at baseline quality and scaled by the primary material's factor for the damage being
+  // done: flint sharpness 0.75, stone heft 0.75, iron lash 0.9, steel tension 1.1.
+  describe('getDamageRange()', function() {
+    it('returns the authored range for a steel blade', function() {
+      expect(build('longsword',['steel']).getDamageRange()).to.deep.equal({ low:50, high:100 });
+    });
+
+    it('scales a blade down by its sharpness', function() {
+      expect(build('longsword',['flint']).getDamageRange()).to.deep.equal({ low:38, high:75 });
+    });
+
+    it('scales a crushing weapon by its heft', function() {
+      expect(build('mace',['stone']).getDamageRange()).to.deep.equal({ low:15, high:75 });
+    });
+
+    it('scales a whip by its lash and a bow by its tension', function() {
+      expect(build('chain-whip',['iron']).getDamageRange()).to.deep.equal({ low:27, high:63 });
+      expect(build('longbow',['steel']).getDamageRange()).to.deep.equal({ low:66, high:132 });
+    });
+  });
+
   describe('getEnchantment()', function() {
     it('is null without an enchantment', function() {
       const sword = build('longsword',['steel']);

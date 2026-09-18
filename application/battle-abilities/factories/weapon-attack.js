@@ -64,7 +64,7 @@ function executeAttacks(ability) {
     const attackText = Dialog.lookupTemplate(DialogCategory.attackText, attackRoll.getTextKey(), context);
 
     round.addMessage({ text:attackText }, Weaver(context));
-    round.addTime(attackRoll.getBaseWeapon().getSpeed());
+    round.addTime(attackRoll.getWeapon().getBase().getSpeed());
 
     contest.isHit() ?
       PhysicalAttackSystem.processHit(attackRoll, defendRoll):

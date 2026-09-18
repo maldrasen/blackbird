@@ -54,8 +54,6 @@ global.PhysicalAttackContest = function(attacker, target) {
       A: attacker,
       T: target,
       hitLocation: attackRoll.getHitLocation(),
-      weaponName: attackRoll.getWeaponName(),
-      baseWeapon: attackRoll.getBaseWeaponCode(),
       weapon: attackRoll.getWeaponId(),
       attack: BattleHelper.getRollType(attackRoll),
       defend: BattleHelper.getRollType(defendRoll),

@@ -20,7 +20,7 @@ describe("DamageRoll", function() {
 
   // The stubbed values are consumed in order: attack crit roll, attack value roll, defend crit roll, defend value
   // roll, then the damage roll itself. A crit (98) or fumble (2) consumes only its crit roll.
-  function contestDamage(state, stubs, status=null) {
+  function contestDamage(state, stubs, status=null, materials=['steel']) {
     const attacker = state.getEntityAtPosition('P',0,2);
     const defender = state.getEntityAtPosition('P',1,2);
     setStrength(attacker, 50);
@@ -30,7 +30,7 @@ describe("DamageRoll", function() {
     Random.stubBetween(...stubs);
 
     const contest = PhysicalAttackContest(attacker, defender);
-    contest.setWeapon(EquipmentFactory().build('longsword'));
+    contest.setWeapon(ItemFixtures.build('longsword', materials));
     contest.setHitLocation('chest');
     contest.roll();
 
@@ -58,6 +58,13 @@ describe("DamageRoll", function() {
 
     expect(damage.getDamageTypes()).to.deep.equal({ slash:40 });
     expect(damage.hasMessage()).to.equal(false);
+  });
+
+  // A steel longsword rolls 50-100, so the stub refuses a 38 unless the range really was scaled down to flint's 38-75.
+  it("rolls within the range the weapon's material scales it to", function() {
+    const damage = contestDamage(startBattle(), [50, 1, 50, 1, 38], null, ['flint']);
+
+    expect(damage.getDamageTypes()).to.deep.equal({ slash:19 });
   });
 
   it("rolls monster damage from a natural attack profile", function() {
