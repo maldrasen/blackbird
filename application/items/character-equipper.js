@@ -229,8 +229,8 @@ global.CharacterEquipper = function(id) {
     const primaryId = equipmentManager.getSlot(EquipmentSlot.primary);
     const secondaryId = equipmentManager.getSlot(EquipmentSlot.secondary);
 
-    if (primaryId) { ensureMinimumSkill(Weapon(primaryId).getSkill()) }
-    if (secondaryId) { ensureMinimumSkill(Weapon(secondaryId).getSkill()) }
+    if (primaryId) { ensureMinimumSkill(Item(primaryId).getSkill()) }
+    if (secondaryId) { ensureMinimumSkill(Item(secondaryId).getSkill()) }
   }
 
   function ensureMinimumSkill(code) {

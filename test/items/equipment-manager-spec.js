@@ -212,10 +212,9 @@ describe('EquipmentManager', function() {
     function equipGear(horse, codes) {
       const inventory = InventoryManager(horse);
       const equipment = EquipmentManager(horse);
-      const factory = EquipmentFactory();
 
       codes.forEach(([code, slot]) => {
-        const item = factory.build(code);
+        const item = ItemFixtures.buildSteel(code);
         inventory.addItem(item);
         equipment.equipItem(item, slot);
       });
@@ -239,9 +238,9 @@ describe('EquipmentManager', function() {
         ['tower-shield', EquipmentSlot.secondary],
       ]);
 
-      expect(equipment.getDamageReduction(EquipmentSlot.chest, DamageType.slash)).to.equal(61);
-      expect(equipment.getDamageReduction(EquipmentSlot.head, DamageType.slash)).to.equal(16);
-      expect(equipment.getDamageReduction(EquipmentSlot.feet, DamageType.crush)).to.equal(12);
+      expect(equipment.getDamageReduction(EquipmentSlot.chest, DamageType.slash)).to.equal(75);
+      expect(equipment.getDamageReduction(EquipmentSlot.head, DamageType.slash)).to.equal(30);
+      expect(equipment.getDamageReduction(EquipmentSlot.feet, DamageType.crush)).to.equal(28);
     });
 
     it("covers a bare body with only a shield", function() {

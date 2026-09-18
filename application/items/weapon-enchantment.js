@@ -1,5 +1,5 @@
 global.WeaponEnchantment = function(id, enchantment) {
-  const weapon = Weapon(id);
+  const weapon = Item(id);
 
   function getPower() {
     const material = weapon ? weapon.getPrimaryMaterial() : null;

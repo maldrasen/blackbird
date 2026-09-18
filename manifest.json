@@ -273,13 +273,11 @@
     "application/world/navigation-system.js",
     "application/world/registry.js",
     "application/world/world-state.js",
-    "application/wrappers/armor.js",
     "application/wrappers/attributes.js",
     "application/wrappers/character.js",
     "application/wrappers/monster.js",
     "application/wrappers/personality.js",
-    "application/wrappers/status-effects.js",
-    "application/wrappers/weapon.js"
+    "application/wrappers/status-effects.js"
   ],
   "dataFiles": [
     "data/game-flags.js",

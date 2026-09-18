@@ -8,14 +8,14 @@ describe.only("EquipmentFactory", function() {
 
   describe("build()", function() {
     it("builds a weapon from its base record", function() {
-      const axe = Weapon(EquipmentFactory().build('goosewing'));
-      expect(axe.getBaseWeapon().getCode()).to.equal('goosewing');
+      const axe = Item(EquipmentFactory().build('goosewing'));
+      expect(axe.getBase().getCode()).to.equal('goosewing');
       expect(ItemComponent.lookup(axe.getId()).type).to.equal('weapon');
     });
 
     it("builds armor from its base record", function() {
-      const armor = Armor(EquipmentFactory().build('doublet'));
-      expect(armor.getBaseArmor().getCode()).to.equal('doublet');
+      const armor = Item(EquipmentFactory().build('doublet'));
+      expect(armor.getBase().getCode()).to.equal('doublet');
       expect(ItemComponent.lookup(armor.getId()).type).to.equal('armor');
     });
 
@@ -24,14 +24,14 @@ describe.only("EquipmentFactory", function() {
     });
 
     it("names the item as common unless told otherwise", function() {
-      expect(Weapon(EquipmentFactory().build('longsword')).getNameType()).to.equal('common');
-      expect(Weapon(EquipmentFactory().build('longsword', { nameType:'proper' })).getNameType()).to.equal('proper');
+      expect(Item(EquipmentFactory().build('longsword')).getNameType()).to.equal('common');
+      expect(Item(EquipmentFactory().build('longsword', { nameType:'proper' })).getNameType()).to.equal('proper');
     });
   });
 
   describe("materials", function() {
     it("picks each material from the available list and names the item after it", function() {
-      const weapon = Weapon(steelFactory().build('labrys'));
+      const weapon = Item(steelFactory().build('labrys'));
       expect(weapon.getName()).to.equal('Steel Labrys');
       expect(weapon.getPrimaryMaterial()).to.equal('steel');
     });
@@ -39,7 +39,7 @@ describe.only("EquipmentFactory", function() {
     it("builds soft armor from a soft material", function() {
       const factory = EquipmentFactory();
       factory.setAvailableMaterials(['silk']);
-      const armor = Armor(factory.build('doublet'));
+      const armor = Item(factory.build('doublet'));
       expect(armor.getName()).to.equal('Silk Doublet');
       expect(armor.getPrimaryMaterial()).to.equal('silk');
       expect(armor.isMetal()).to.be.false;
@@ -54,7 +54,7 @@ describe.only("EquipmentFactory", function() {
       Random.stubFrom('bone', 'iron');
       const id = EquipmentFactory().build('flail');
       expect(ItemComponent.lookup(id).materials).to.deep.equal({ bone:3, iron:1 });
-      expect(Weapon(id).getName()).to.equal('Bone Flail');
+      expect(Item(id).getName()).to.equal('Bone Flail');
     });
 
     it("throws when nothing on the available list fits a material type", function() {
@@ -73,7 +73,7 @@ describe.only("EquipmentFactory", function() {
         enchantment: { type:WeaponEnchantments.endanger, species:'kobold', power:100 },
       });
 
-      const weapon = Weapon(id);
+      const weapon = Item(id);
       expect(weapon.getName()).to.equal('Stabitha');
       expect(weapon.getNameType()).to.equal('proper');
       expect(weapon.getTextKey()).to.equal('quick-stab');
@@ -86,12 +86,12 @@ describe.only("EquipmentFactory", function() {
       factory.setAvailableMaterials(['silver']);
       const enchantment = { type:WeaponEnchantments.endanger, species:'kobold', power:100 };
 
-      expect(Weapon(steelFactory().build('longsword', { enchantment })).getEnchantment().getPower()).to.equal(100);
-      expect(Weapon(factory.build('longsword', { enchantment })).getEnchantment().getPower()).to.equal(200);
+      expect(Item(steelFactory().build('longsword', { enchantment })).getEnchantment().getPower()).to.equal(100);
+      expect(Item(factory.build('longsword', { enchantment })).getEnchantment().getPower()).to.equal(200);
     });
 
     it("leaves the text key and enchantment off when they are not given", function() {
-      const weapon = Weapon(EquipmentFactory().build('longsword'));
+      const weapon = Item(EquipmentFactory().build('longsword'));
       expect(weapon.getTextKey()).to.equal('basic-swing');
       expect(weapon.hasEnchantment()).to.be.false;
     });

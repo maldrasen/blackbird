@@ -23,6 +23,7 @@ global.BaseEquipment = (function() {
 
     function isWeapon() { return record.damageRange != null; }
     function isShield() { return record.type === 'shield'; }
+    function isLewd() { return record.lewd === true; }
     function hasReduction() { return record.reduction != null; }
 
     function getSkill() {
@@ -95,6 +96,7 @@ global.BaseEquipment = (function() {
       getValue: () => { return 100; },
       isWeapon,
       isShield,
+      isLewd,
       hasReduction,
     };
   }

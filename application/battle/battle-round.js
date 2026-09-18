@@ -50,7 +50,8 @@ global.BattleRound = function(acting, type=null) {
     const itemId = EquipmentManager(acting).getSlot(slot);
     if (itemId == null) { return null; }
 
-    return BaseEquipment.lookup(ItemComponent.lookup(itemId).base).isWeapon() ? Weapon(itemId) : null;
+    const item = Item(itemId);
+    return item.getBase().isWeapon() ? item : null;
   }
 
   // ====================

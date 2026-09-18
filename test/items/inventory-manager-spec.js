@@ -129,12 +129,15 @@ describe('InventoryManager', function() {
 
   it('listItems()', function() {
     const horse = CharacterFixtures.genericMale({});
-    const cleaver = EquipmentFactory().build('cleaver');
-    const helm = EquipmentFactory().build('helm');
-    const hauberk = EquipmentFactory().build('hauberk');
-    const hatchet = EquipmentFactory().build('hatchet');
-    const battleAxe = EquipmentFactory().build('battle-axe');
-    const boots = EquipmentFactory().build('boots');
+    const leather = EquipmentFactory();
+    leather.setAvailableMaterials(['leather']);
+
+    const cleaver = ItemFixtures.buildSteel('cleaver');
+    const helm = ItemFixtures.buildSteel('helm');
+    const hauberk = ItemFixtures.buildSteel('hauberk');
+    const hatchet = ItemFixtures.buildSteel('hatchet');
+    const battleAxe = ItemFixtures.buildSteel('battle-axe');
+    const boots = leather.build('boots');
 
     const inventory = InventoryManager(horse);
     [cleaver, helm, hauberk, hatchet, battleAxe, boots].forEach(item => inventory.addItem(item));
@@ -150,7 +153,8 @@ describe('InventoryManager', function() {
     const rows = inventory.listItems();
 
     expect(rows.map(row => row.name)).to.deep.equal([
-      'cleaver', 'hauberk', 'helm', 'battle axe', 'hatchet', 'boots', 'Dungeon Tripe', 'String of Teeth']);
+      'Steel Cleaver', 'Steel Hauberk', 'Steel Helm', 'Steel Battle Axe', 'Steel Hatchet', 'Leather Boots',
+      'Dungeon Tripe', 'String of Teeth']);
 
     expect(rows[0].slot).to.equal(EquipmentSlot.primary);
     expect(rows[1].slot).to.equal(EquipmentSlot.chest);

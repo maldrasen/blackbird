@@ -57,7 +57,7 @@ function isInRange(ability, weapon) {
   if (ability.getTargetingMode() === TargetingMode.anyEnemy) { return true; }
   if (round.isActingCharacter()) { return TargetingController.getMonstersInRange().length > 0; }
 
-  return BattleHelper.isAttackWithinRange(weapon.getBaseWeapon().getReach(), round.getActingPosition(), round.getTargetPosition());
+  return BattleHelper.isAttackWithinRange(weapon.getBase().getReach(), round.getActingPosition(), round.getTargetPosition());
 }
 
 function execute(ability, options) {
@@ -75,7 +75,7 @@ function execute(ability, options) {
   const context = contest.getContext();
 
   round.addMessage({ text:getAttackText(options, weapon, attackRoll, context) }, Weaver(context));
-  round.addTime(weapon.getBaseWeapon().getSpeed());
+  round.addTime(weapon.getBase().getSpeed());
 
   if (contest.isHit() === false) { return PhysicalAttackSystem.processMiss(attackRoll, defendRoll); }
 

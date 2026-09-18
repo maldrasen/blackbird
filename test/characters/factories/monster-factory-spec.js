@@ -26,7 +26,7 @@ describe("MonsterFactory", function() {
       const primary = EquipmentComponent.lookup(id).primary;
 
       expect(ItemComponent.lookup(primary).base).to.equal('bone-spear');
-      expect(Weapon(primary).getName()).to.equal('bone spear');
+      expect(Item(primary).getName()).to.equal('bone spear');
       expect(InventoryComponent.lookup(id).items).to.include(primary);
     });
 
@@ -35,7 +35,7 @@ describe("MonsterFactory", function() {
       const chest = EquipmentComponent.lookup(id).chest;
 
       expect(ItemComponent.lookup(chest).base).to.equal('leather-doublet');
-      expect(Armor(chest).getName()).to.equal('leather doublet');
+      expect(Item(chest).getName()).to.equal('leather doublet');
     });
   });
 

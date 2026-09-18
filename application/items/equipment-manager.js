@@ -98,8 +98,8 @@ global.EquipmentManager = function(characterId) {
   function getDamageReduction(hitLocation, damageType) {
     const armorId = getArmorAt(hitLocation);
     const shieldId = getEquippedShield();
-    const total = (armorId ? Armor(armorId).getReduction(damageType) : 0)
-                + (shieldId ? Armor(shieldId).getReduction(damageType) : 0);
+    const total = (armorId ? Item(armorId).getReduction(damageType) : 0)
+                + (shieldId ? Item(shieldId).getReduction(damageType) : 0);
     return Math.min(total, maxReduction);
   }
 

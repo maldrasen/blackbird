@@ -21,6 +21,10 @@ describe("BaseEquipment", function() {
       expect(BaseEquipment.lookup('plate').isShield()).to.be.false;
     });
 
+    it("is only lewd when the record says so", function() {
+      expect(BaseEquipment.lookup('chaps').isLewd()).to.be.false;
+    });
+
     it("armor and shields carry a reduction profile", function() {
       expect(BaseEquipment.lookup('plate').hasReduction()).to.be.true;
       expect(BaseEquipment.lookup('buckler').hasReduction()).to.be.true;
