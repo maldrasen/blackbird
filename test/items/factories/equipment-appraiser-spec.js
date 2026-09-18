@@ -45,12 +45,12 @@ describe.only("EquipmentAppraiser", function() {
   describe("shields", function() {
     it("doubles the reduction factor because a shield covers the whole body", function() {
       // 1 steel (20) plus 2 effort (200). The same 12 points of reduction on an armor piece would be worth 194.
-      expect(appraise('buckler',{ steel:1 })).to.equal(106);
+      expect(appraise('buckler',{ steel:1 })).to.equal(159);
     });
 
     it("values the leather and wood builds", function() {
-      expect(appraise('leather-buckler',{ leather:1 })).to.equal(77);
-      expect(appraise('wood-kite-shield',{ wood:5 })).to.equal(154);
+      expect(appraise('leather-buckler',{ leather:1 })).to.equal(115);
+      expect(appraise('wood-kite-shield',{ wood:5 })).to.equal(231);
     });
   });
 

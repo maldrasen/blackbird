@@ -1,8 +1,3 @@
-
-// Runs at the end of EquipmentFactory.build(). The item component can't be created without a value, so the appraiser
-// works from the properties the factory has settled on rather than from an Item. A piece of equipment is worth what
-// it cost to make, the materials plus the effort, nudged by a performance factor for how well it does its job.
-
 global.EquipmentAppraiser = (function() {
 
   function appraise(item) {
@@ -24,7 +19,7 @@ global.EquipmentAppraiser = (function() {
     if (base.isWeapon()) { return ItemHelper.getWeaponValueFactor(getDamagePerSecond(base, material)); }
 
     const factor = ItemHelper.getArmorValueFactor(getTotalReduction(base, material));
-    return base.isShield() ? factor * 2 : factor;
+    return base.isShield() ? factor * 3 : factor;
   }
 
   function getDamagePerSecond(base, material) {
