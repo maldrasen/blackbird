@@ -87,7 +87,7 @@ describe("Character", function() {
 
       ItemFixtures.addRandomEquipment(goat)
 
-      const leggings = ArmorFactory.build('leggings');
+      const leggings = EquipmentFactory().build('leggings');
       InventoryManager(horse).addItem(leggings);
       EquipmentManager(horse).equipItem(leggings, EquipmentSlot.legs);
 
@@ -133,7 +133,7 @@ describe("Character", function() {
     it("isNaked()", function() {
       const entity = CharacterFixtures.genericMale({});
       const character = Character(entity);
-      const asslessChaps = ArmorFactory.build('chaps');
+      const asslessChaps = EquipmentFactory().build('chaps');
       const equipment = EquipmentManager(entity);
       const inventory = InventoryManager(entity);
 

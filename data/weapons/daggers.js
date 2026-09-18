@@ -1,116 +1,90 @@
 
-BaseWeapon.register('knife', {
-  name: 'knife',
+BaseEquipment.register('knife', {
+  nameFunction: names => { return `${names[0]} Knife`; },
   icon: 'weapons/dagger-02.png',
   type: 'dagger',
   damageTypes: [
     { type:DamageType.slash, percent:60 },
     { type:DamageType.pierce, percent:40 }
   ],
+  damageRange: [20,30],
   hands: WeaponHandedness.one,
   reach: WeaponReach.short,
-  low: 20,
-  high: 30,
   speed: 500,
-  materials: {
-    blade: { material:MaterialType.steel, amount:1 },
-    grip:  { material:MaterialType.leather, amount:1 },
-  },
+  materials: { sharp:1 },
   effort: 2,
   textKey: 'quick-stab',
 });
 
-BaseWeapon.registerVariant('bone-knife', 'knife', { material:MaterialType.bone });
-
-BaseWeapon.register('dirk', {
-  name: 'dirk',
+BaseEquipment.register('dirk', {
+  nameFunction: names => { return `${names[0]} Dirk`; },
   icon: 'weapons/dagger-02.png',
   type: 'dagger',
   damageType: DamageType.pierce,
+  damageRange: [40,60],
   hands: WeaponHandedness.one,
   reach: WeaponReach.short,
-  low: 40,
-  high: 60,
   speed: 500,
-  materials: {
-    blade: { material:MaterialType.steel, amount:1 },
-    grip:  { material:MaterialType.leather, amount:1 },
-  },
+  materials: { sharp:1 },
   effort: 3,
   textKey: 'quick-stab',
 });
 
-BaseWeapon.register('dagger', {
-  name: 'dagger',
+BaseEquipment.register('dagger', {
+  nameFunction: names => { return `${names[0]} Dagger`; },
   icon: 'weapons/dagger-02.png',
   type: 'dagger',
   damageTypes: [
     { type:DamageType.slash, percent:60 },
     { type:DamageType.pierce, percent:40 }
   ],
+  damageRange: [50,75],
   hands: WeaponHandedness.one,
   reach: WeaponReach.short,
-  low: 50,
-  high: 75,
   speed: 500,
-  materials: {
-    blade: { material:MaterialType.steel, amount:1 },
-    grip:  { material:MaterialType.leather, amount:1 },
-  },
+  materials: { sharp:1 },
   effort: 3,
   textKey: 'quick-stab',
 });
 
-BaseWeapon.register('poignard', {
-  name: 'poignard',
+BaseEquipment.register('poignard', {
+  nameFunction: names => { return `${names[0]} Poignard`; },
   icon: 'weapons/dagger-07.png',
   type: 'dagger',
   damageType: DamageType.pierce,
+  damageRange: [70,90],
   hands: WeaponHandedness.one,
   reach: WeaponReach.short,
-  low: 70,
-  high: 90,
   speed: 500,
-  materials: {
-    blade: { material:MaterialType.steel, amount:1 },
-    grip:  { material:MaterialType.leather, amount:1 },
-  },
+  materials: { sharp:2 },
   effort: 4,
   textKey: 'quick-stab',
 });
 
-BaseWeapon.register('baselard', {
-  name: 'baselard',
+BaseEquipment.register('baselard', {
+  nameFunction: names => { return `${names[0]} Baselard`; },
   icon: 'weapons/dagger-05.png',
   type: 'dagger',
   damageType: DamageType.pierce,
+  damageRange: [80,100],
   hands: WeaponHandedness.one,
   reach: WeaponReach.short,
-  low: 80,
-  high: 100,
   speed: 500,
-  materials: {
-    blade: { material:MaterialType.steel, amount:1 },
-    grip:  { material:MaterialType.leather, amount:1 },
-  },
+  materials: { sharp:2 },
   effort: 4,
   textKey: 'quick-stab',
 });
 
-BaseWeapon.register('stiletto', {
-  name: 'stiletto',
+BaseEquipment.register('stiletto', {
+  nameFunction: names => { return `${names[0]} Stiletto`; },
   icon: 'weapons/dagger-07.png',
   type: 'dagger',
   damageType: DamageType.pierce,
+  damageRange: [100,120],
   hands: WeaponHandedness.one,
   reach: WeaponReach.short,
-  low: 100,
-  high: 120,
   speed: 500,
-  materials: {
-    blade: { material:MaterialType.steel, amount:1 },
-    grip:  { material:MaterialType.leather, amount:1 },
-  },
+  materials: { sharp:2 },
   effort: 5,
   textKey: 'quick-stab',
 });

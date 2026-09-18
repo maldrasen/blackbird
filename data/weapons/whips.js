@@ -1,114 +1,94 @@
 
-BaseWeapon.register('bullwhip', {
-  name: 'bullwhip',
+// The chain whips are filed under hard rather than heavy because a whip's slash damage runs on the lash factor, which
+// only the metals define.
+
+BaseEquipment.register('bullwhip', {
+  nameFunction: () => { return `Bullwhip`; },
   icon: 'weapons/whip-01.png',
   type: 'whip',
   damageType: DamageType.slash,
+  damageRange: [20,50],
   hands: WeaponHandedness.main,
   reach: WeaponReach.extended,
-  low: 20,
-  high: 50,
   speed: 1000,
-  materials: {
-    cord:   { material:MaterialType.leather, amount:2 },
-    handle: { material:MaterialType.wood, amount:1 },
-  },
+  materials: { leather:2 },
   effort: 3,
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('chain-whip', {
-  name: 'chain whip',
+BaseEquipment.register('chain-whip', {
+  nameFunction: names => { return `${names[0]} Chain Whip`; },
   icon: 'weapons/chain-01.png',
   type: 'whip',
   damageType: DamageType.slash,
+  damageRange: [30,70],
   hands: WeaponHandedness.main,
   reach: WeaponReach.extended,
-  low: 30,
-  high: 70,
   speed: 1100,
-  materials: {
-    chain:  { material:MaterialType.steel, amount:2 },
-    handle: { material:MaterialType.wood, amount:1 },
-  },
+  materials: { hard:2 },
   effort: 4,
   textKey: 'basic-swing',
 });
 
 // TODO: Need a better sickle and chain
-BaseWeapon.register('sickle-and-chain', {
-  name: 'sickle and chain',
+BaseEquipment.register('sickle-and-chain', {
+  nameFunction: names => { return `${names[0]} Sickle and Chain`; },
   icon: 'weapons/chain-01.png',
   type: 'whip',
   damageType: DamageType.slash,
+  damageRange: [40,90],
   hands: WeaponHandedness.two,
   reach: WeaponReach.extended,
-  low: 40,
-  high: 90,
   speed: 1200,
-  materials: {
-    blade:  { material:MaterialType.steel, amount:1 },
-    chain:  { material:MaterialType.steel, amount:1 },
-    handle: { material:MaterialType.wood, amount:1 },
-  },
+  materials: { hard:2 },
   effort: 5,
   textKey: 'basic-swing',
 });
 
 // TODO: Need a better ball and chain
-BaseWeapon.register('ball-and-chain', {
-  name: 'ball and chain',
+BaseEquipment.register('ball-and-chain', {
+  nameFunction: (names, materials) => {
+    if (materials.bone) { return `Skull and Chain`; }
+    if (materials.stone) { return `Stone and Chain`; }
+    return `${names[0]} Ball and Chain`;
+  },
   icon: 'weapons/chain-01.png',
   type: 'whip',
   damageType: DamageType.crush,
+  damageRange: [40,100],
   hands: WeaponHandedness.main,
   reach: WeaponReach.extended,
-  low: 40,
-  high: 100,
   speed: 1300,
-  materials: {
-    ball:   { material:MaterialType.steel, amount:2 },
-    chain:  { material:MaterialType.steel, amount:1 },
-    handle: { material:MaterialType.wood, amount:1 },
-  },
+  materials: { heavy:3, hard:1 },
   effort: 4,
   textKey: 'heavy-mace',
 });
 
-BaseWeapon.register('flail', {
-  name: 'flail',
+BaseEquipment.register('flail', {
+  nameFunction: names => { return `${names[0]} Flail`; },
   icon: 'weapons/flail-01.png',
   type: 'whip',
   damageType: DamageType.crush,
+  damageRange: [35,90],
   hands: WeaponHandedness.main,
   reach: WeaponReach.close,
-  low: 35,
-  high: 90,
   speed: 1200,
-  materials: {
-    head:  { material:MaterialType.steel, amount:2 },
-    chain: { material:MaterialType.steel, amount:1 },
-    haft:  { material:MaterialType.wood, amount:1 },
-  },
+  materials: { heavy:3, hard:1 },
   effort: 4,
   textKey: 'heavy-mace',
 });
 
 // TODO: Needs a better icon.
-BaseWeapon.register('cat-o-nine-tails', {
-  name: "cat o' nine tails",
+BaseEquipment.register('cat-o-nine-tails', {
+  nameFunction: () => { return `Cat o' Nine Tails`; },
   icon: 'weapons/whip-01.png',
   type: 'whip',
   damageType: DamageType.slash,
+  damageRange: [15,45],
   hands: WeaponHandedness.main,
   reach: WeaponReach.close,
-  low: 15,
-  high: 45,
   speed: 1000,
-  materials: {
-    cords:  { material:MaterialType.leather, amount:2 },
-    handle: { material:MaterialType.wood, amount:1 },
-  },
+  materials: { leather:2 },
   effort: 3,
   textKey: 'basic-swing',
 });

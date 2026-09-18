@@ -1,4 +1,5 @@
 global.Material = (function() {
+  const metals = ['iron','steel','silver'];
   const materials = {};
 
   function register(code,data) {
@@ -7,6 +8,23 @@ global.Material = (function() {
 
   function getAllCodes() {
     return Object.keys(materials);
+  }
+
+  function isMetal(code) {
+    return metals.includes(code);
+  }
+
+  function forType(type) {
+    switch (type) {
+      case MaterialType.leather: return ['leather'];                   // Some items, like whips can only really be made with leather.
+      case MaterialType.wood:    return ['wood'];                      // Wooden shields.
+      case MaterialType.bendy:   return ['wood','steel'];              // Bows and crossbows.
+      case MaterialType.pliable: return ['wool','silk','leather'];     // Clothing.
+      case MaterialType.hard:    return [...metals];                   // Rigid metal armors and equipment that should only be metal.
+      case MaterialType.pointy:  return [...metals,'bone','flint'];    // Spears and arrows, can be sharpened to a point.
+      case MaterialType.sharp:   return [...metals,'flint'];           // Swords and axes, will hold an edge.
+      case MaterialType.heavy:   return [...metals,'bone','stone'];    // Crushing weapons like clubs or maces.
+    }
   }
 
   function lookup(code) {
@@ -30,20 +48,12 @@ global.Material = (function() {
     };
   }
 
-  function getCost(code) {
-    return lookup(code).getCost();
-  }
-
-  function getFactor(code,name) {
-    return lookup(code).getFactor(name);
-  }
-
   return {
     register,
     getAllCodes,
     lookup,
-    getCost,
-    getFactor,
+    forType,
+    isMetal,
   };
 
 })();

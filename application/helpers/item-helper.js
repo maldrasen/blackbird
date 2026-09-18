@@ -30,29 +30,33 @@ global.ItemHelper = (function() {
     const base = (profile || {})[type] || 0;
     if (base === 0) { return 0; }
 
-    const absorption = (material == null) ? 1 : Material.getFactor(material, MaterialFactor.absorption);
+    const absorption = (material == null) ? 1 : Material.lookup(material).getFactor(MaterialFactor.absorption);
     return Math.round(base * absorption);
   }
 
-  // Build a new materials map with the primary (first listed) part swapped to another material. Used when an item
-  // instance overrides the material it's made from - a spear tipped with bone instead of steel.
-  function substitutePrimaryMaterial(materials, material) {
-    const parts = Object.keys(materials || {});
-    if (parts.length === 0) { throw new Error(`Cannot substitute the material of an item with no materials.`); }
+  // A weapon's damage range is authored at baseline quality the same way a reduction profile is. Crush damage scales
+  // with the primary material's heft, anything else with the stat that suits the weapon (sharpness, lash, or tension),
+  // blended by the weapon's damage type percentages.
+  function getDamageFactor(base, material) {
+    if (material == null) { return 1; }
 
-    const substituted = {};
-    parts.forEach((part,index) => {
-      substituted[part] = { ...materials[part] };
-      if (index === 0) { substituted[part].material = material; }
-    });
-    return substituted;
+    const record = Material.lookup(material);
+    return base.getDamageTypes().reduce((blend, entry) => {
+      const stat = (entry.type === DamageType.crush) ? MaterialFactor.heft : base.getDamageStat();
+      return blend + ((entry.percent / 100) * record.getFactor(stat));
+    }, 0);
+  }
+
+  function getScaledDamageRange(base, material) {
+    const factor = getDamageFactor(base, material);
+    return { low:Math.round(base.getLow() * factor), high:Math.round(base.getHigh() * factor) };
   }
 
   return {
     getArmorValueFactor,
     getWeaponValueFactor,
     getScaledReduction,
-    substitutePrimaryMaterial,
+    getScaledDamageRange,
   };
 
 })();

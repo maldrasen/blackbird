@@ -1,4 +1,6 @@
 global.ItemConstants = {
+  effortCost: 20,
+
   damageValue: 1,
   healthValue: 1,
   manaValue: 3,

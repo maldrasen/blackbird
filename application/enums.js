@@ -132,7 +132,6 @@ global.ComponentType = {
   anima: 'AnimaComponent',
   animus: 'AnimusComponent',
   anus: 'AnusComponent',
-  armor: 'ArmorComponent',
   arousal: 'ArousalComponent',
   aspects: 'AspectsComponent',
   attributes: 'AttributesComponent',
@@ -160,7 +159,6 @@ global.ComponentType = {
   situated: 'SituatedComponent',
   skills: 'SkillsComponent',
   statusEffect: 'StatusEffectComponent',
-  weapon: 'WeaponComponent',
 };
 
 global.Attrib = {
@@ -454,15 +452,15 @@ global.OutfitStyle = {
 };
 
 global.MaterialType = {
-  wool: 'wool',
-  silk: 'silk',
-  wood: 'wood',
-  bone: 'bone',
   leather: 'leather',
-  iron: 'iron',
-  steel: 'steel',
-  silver: 'silver',
-};
+  wood: 'wood',
+  bendy: 'bendy',
+  pliable: 'pliable',
+  hard: 'hard',
+  pointy: 'pointy',
+  sharp: 'sharp',
+  heavy: 'heavy',
+}
 
 global.MaterialFactor = {
   sharpness: 'sharpness',

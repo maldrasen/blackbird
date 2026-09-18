@@ -1,7 +1,9 @@
 
 Next Task Order:
- - 213 - Build the equipment depots
- - 213 - appraise the equipment built for the depots
- - 220 - Calculate the challenge rating given the appraised equipment.
- - 215 - Grid based movement
- - 224 - New graphic prototype
+ - [X] 226 - Unify weapons and armor as equipment, which the appraiser builds on.
+ - [ ] 213 - Appraise Items first because the depot needs the value.
+ - [ ] 227 - Fix Item Material Scaling
+ - [ ] 225 - Build the equipment depots
+ - [ ] 220 - Calculate the challenge rating given the appraised equipment.
+ - [ ] 215 - Grid based movement
+ - [ ] 224 - New graphic prototype

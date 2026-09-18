@@ -1,91 +1,81 @@
 
-BaseWeapon.register('hammer', {
-  name: 'hammer',
+BaseEquipment.register('hammer', {
+  nameFunction: names => { return `${names[0]} Hammer`; },
   icon: 'weapons/hammer-02.png',
   type: 'mace',
   damageType: DamageType.crush,
+  damageRange: [10,50],
   hands: WeaponHandedness.one,
-  low: 10,
-  high: 50,
   speed: 1000,
-  materials: {
-    head: { material:MaterialType.steel, amount:1 },
-    haft: { material:MaterialType.wood, amount:1 },
-  },
+  materials: { hard:1 },
   effort: 2,
   textKey: 'basic-swing',
 });
 
-BaseWeapon.registerVariant('bone-club', 'hammer', { material:MaterialType.bone, name:'bone club' });
-
-BaseWeapon.register('mace', {
-  name: 'mace',
+BaseEquipment.register('mace', {
+  nameFunction: (names,materials) => {
+    if (materials.bone) { return `Skullhead Mace`; }
+    if (materials.stone) { return `Stonehead Mace`; }
+    return `${names[0]} Mace`;
+  },
   icon: 'weapons/mace-01.png',
   type: 'mace',
   damageType: DamageType.crush,
+  damageRange: [20,100],
   hands: WeaponHandedness.one,
-  low: 20,
-  high: 100,
   speed: 1000,
-  materials: {
-    head: { material:MaterialType.steel, amount:2 },
-    haft: { material:MaterialType.wood, amount:1 },
-  },
+  materials: { heavy:2 },
   effort: 3,
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('warhammer', {
-  name: 'warhammer',
+BaseEquipment.register('warhammer', {
+  nameFunction: (names,materials) => {
+    if (materials.bone) { return 'Jawbone' }
+    if (materials.stone) { return 'Stonehead Warhammer' }
+    return `${names[0]} Warhammer`;
+  },
   icon: 'weapons/hammer-04.png',
   type: 'mace',
   damageType: DamageType.crush,
+  damageRange: [30,150],
   hands: WeaponHandedness.main,
-  low: 30,
-  high: 150,
   speed: 1200,
-  materials: {
-    head: { material:MaterialType.steel, amount:2 },
-    haft: { material:MaterialType.wood, amount:1 },
-  },
+  materials: { heavy:3 },
   effort: 4,
   textKey: 'heavy-mace',
 });
 
 // TODO: Need an icon with more spikes.
-BaseWeapon.register('morning-star', {
-  name: 'morning star',
+BaseEquipment.register('morning-star', {
+  nameFunction: names => { return `${names[0]} Morning Star`; },
   icon: 'weapons/mace-01.png',
   type: 'mace',
   damageTypes: [
     { type:DamageType.crush, percent:50 },
     { type:DamageType.pierce, percent:50 }
   ],
+  damageRange: [50,200],
   hands: WeaponHandedness.main,
-  low: 50,
-  high: 200,
   speed: 1200,
-  materials: {
-    head: { material:MaterialType.steel, amount:2 },
-    haft: { material:MaterialType.wood, amount:1 },
-  },
+  materials: { hard:4 },
   effort: 4,
   textKey: 'heavy-mace',
 });
 
-BaseWeapon.register('maul', {
-  name: 'maul',
+BaseEquipment.register('maul', {
+  nameFunction: (names,materials) => {
+    if (materials.bone) { return 'Oxskull Maul' }
+    if (materials.stone) { return 'Boulderhead Maul' }
+    return `${names[0]} Maul`;
+  },
   icon: 'weapons/hammer-03.png',
   type: 'mace',
   damageType: DamageType.crush,
+  damageRange: [100,500],
   hands: WeaponHandedness.two,
-  low: 100,
-  high: 500,
   speed: 2400,
-  materials: {
-    head: { material:MaterialType.steel, amount:4 },
-    haft: { material:MaterialType.wood, amount:2 },
-  },
+  materials: { heavy:5 },
   effort: 4,
   textKey: 'heavy-mace',
 });

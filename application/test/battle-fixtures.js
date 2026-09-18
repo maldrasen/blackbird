@@ -47,7 +47,7 @@ global.BattleFixtures = (function() {
   }
 
   function equipWeapon(id, weaponData, slot) {
-    const weapon = WeaponFactory.build(weaponData.base, weaponData)
+    const weapon = EquipmentFactory().build(weaponData.base, weaponData);
     InventoryManager(id).addItem(weapon);
     EquipmentManager(id).equipItem(weapon, slot);
   }

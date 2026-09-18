@@ -9,13 +9,6 @@ BaseMonster.register('kobold-runt',{
   triggers:[],
   level: 1,
 
-  equipment: {
-    loadouts:[
-      { main:{ base:'bone-club' }},
-      { main:{ base:'bone-spear' }},
-    ],
-  },
-
   buildAbilities: () => { return [
     Ability.Bite({ damage:[10,30], speed:1000, priority:10 }),
   ]},

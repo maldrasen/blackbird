@@ -30,7 +30,7 @@ describe("DamageRoll", function() {
     Random.stubBetween(...stubs);
 
     const contest = PhysicalAttackContest(attacker, defender);
-    contest.setWeapon(WeaponFactory.build('longsword'));
+    contest.setWeapon(EquipmentFactory().build('longsword'));
     contest.setHitLocation('chest');
     contest.roll();
 

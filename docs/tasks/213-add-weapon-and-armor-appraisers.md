@@ -1,20 +1,14 @@
 ---
 id: 213
-title: Add Weapon and Armor Appraisers and Virtual Stores
+title: Add Weapon and Armor Appraisers
 priority: 1
 created: 2026-09-03
 tags:
-points: 13
+points: 8
 ---
 ---
-Now that we've created an article appraiser to set the value of the Article records, it doesn't really make sense for the base weapons and armor to be calculating their values the way they are. Weapon and armor value will only get more complex once we start adding enchantments and such. 
+The value of weapons and armor come entirely from the base record, which only looks at the materials used to create that item. That's not going to work once a weapon has enchantments and such. Weapons and armor should have an appraisal step which can be run after the components have been built.
 
-This is a bit tricky because a real weapon or armor's value needs to look at the actual component. So the appraiser should work on an actual item entity. However, the character equipper need the values of the base weapons to know what equipment is in budget for a character.
+As part of this though, I think the weapons and armor is due for a major revision. We'll be moving much of what the records are doing into the components, where I think it belongs. I'm going to get rid of variants, moving weapons and armor built from different materials into the factories.
 
----
-### Prerequisite Task
-One solution to this problem may be to slim back the use of the base weapons and armor, removing the variants entirely. We could fully make each weapon or armor in the game a real component. I think the equipper is the only thing that really uses the base weapons and armor, and uses value. We could update it to simulate a shop. Have the equipper build a virtual store, randomly building a bunch of equipable items, then characters select from those items what to buy. This might be a better approach because we can build a virtual shop that matches a monster type. A 'kobold store' that takes a monster type, would be a more extendable solution than giving each monster a list of equipment loadouts.
-
-This prerequisite work alone is probably several tasks. We'd need a store builder that builds this virtual store. We'd need to define different stocks for the different monster species. We'd need to update the equipper to select at random from the randomly selected stock. (same strategy, the budget defines the most they can spend on any single item, but can buy enough to fully equip themselves.) We'd need a cleanup step where the unselected items in the store are deleted. 
-
-One other advantage to this strategy is that we could sometimes stock enchanted items, a monster that buys something enchanted would then drop it after the battle, which takes care of the enchanted weapons as loot task that I still needed to figure out.
+The revision itself is now task 226, which unifies the weapon and armor records, factories, components, and wrappers into a single equipment model. This task depends on it. Once 226 lands, this task is a single `EquipmentAppraiser` that runs at the end of `EquipmentFactory.build()` and writes a `value` onto the item component. Its value branches follow the record: a damage-per-second performance factor for weapons, a total-reduction factor for armor, and the doubled reduction factor for shields, each multiplied by the material cost plus effort. The commented-out `getValue` and `getPerformanceFactor` sketches in the current weapon and armor appraiser stubs are the starting point.

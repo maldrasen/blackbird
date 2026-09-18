@@ -21,22 +21,9 @@ describe("MonsterFactory", function() {
       expect(Monster(id).getAbilities().map(ability => ability.getName())).to.include('Punch');
     });
 
-    it("equips real weapons", function() {
-      const id = MonsterFactory('kobold-tosser').build();
-      const primary = EquipmentComponent.lookup(id).primary;
-
-      expect(WeaponComponent.lookup(primary).base).to.equal('bone-spear');
-      expect(Weapon(primary).getName()).to.equal('bone spear');
-      expect(InventoryComponent.lookup(id).items).to.include(primary);
-    });
-
-    it("equips armor", function() {
-      const id = MonsterFactory('kobold-trapper').build();
-      const chest = EquipmentComponent.lookup(id).chest;
-
-      expect(ArmorComponent.lookup(chest).base).to.equal('leather-doublet');
-      expect(Armor(chest).getName()).to.equal('leather doublet');
-    });
+    // Pending the equipment depots (task 225), which is where a monster's gear will come from.
+    it("equips real weapons");
+    it("equips armor");
   });
 
   describe('Building a beast type monster', function() {

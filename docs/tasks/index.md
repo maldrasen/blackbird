@@ -4,10 +4,12 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 ## Priority 1
 
-- [213] Add Weapon and Armor Appraisers and Virtual Stores `13pt` — [213-add-weapon-and-armor-appraisers.md](213-add-weapon-and-armor-appraisers.md)
+- [213] Add Weapon and Armor Appraisers `8pt` — [213-add-weapon-and-armor-appraisers.md](213-add-weapon-and-armor-appraisers.md)
 - [215] Grid Based Dungeon Movement `8pt` — [215-grid-based-dungeon-movement.md](215-grid-based-dungeon-movement.md)
 - [219] Split essence and challenge rating `8pt` — [220-split-essence-and-challenge-rating.md](220-split-essence-and-challenge-rating.md)
 - [224] Dungeon Rendering Prototype `8pt` — [224-dungeon-rendering-prototype.md](224-dungeon-rendering-prototype.md)
+- [225] Create equipment depots used to equip characters. `8pt` — [225-create-equipment-depots-used-to-equip-characters.md](225-create-equipment-depots-used-to-equip-characters.md)
+- [227] Fix Material Scaling `2pt` — [227-fix-material-scaling.md](227-fix-material-scaling.md)
 
 ## Priority 2
 
@@ -23,6 +25,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [161] Join Text `8pt` — [161-join-text.md](161-join-text.md)
 - [194] Feeling Adjustments During Battle `2pt` — [194-feeling-adjustments-during-battle.md](194-feeling-adjustments-during-battle.md)
 - [197] Skill events `5pt` — [197-skill-episodes.md](197-skill-episodes.md)
+- [228] Effect based enchantments `3pt` — [228-effect-based-enchantments.md](228-effect-based-enchantments.md)
 
 ## Priority 3
 

@@ -120,11 +120,11 @@ global.FunctionLoom = (function() {
     }
 
     if (name == null) {
-      name = BaseWeapon.lookup(base).getName();
+      name = BaseEquipment.lookup(base).getName();
     }
 
     if (weaponId) {
-      const weapon = Weapon(weaponId);
+      const weapon = Item(weaponId);
       name = weapon.getName();
       nameType = weapon.getNameType();
     }
@@ -143,7 +143,7 @@ global.FunctionLoom = (function() {
     const weaponId = equipment ? EquipmentManager(actorId).getSlot(EquipmentSlot.primary) : null;
 
     if (weaponId) {
-      return { base:Weapon(weaponId).getBaseWeapon().getCode(), id:weaponId };
+      return { base:Item(weaponId).getBase().getCode(), id:weaponId };
     }
 
     throw `Unable to determine a weapon for {${actorId}}.`

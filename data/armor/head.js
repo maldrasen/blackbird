@@ -1,73 +1,61 @@
 
-// Head armor. The coif is a steel mail hood; the rest are steel helms of increasing coverage. All are steel, so
-// their reduction profile is what they actually turn away.
+// Head armor. The coif is a mail hood; the rest are helms of increasing coverage. All are metal, so the steel-quality
+// profile is only scaled by the metal's absorption.
 
 // TODO: For now we're using the same head armor icon for all the helmet types, though styles like a bascinet,
 //       sallet, or armet all have distinct styles. Before devoting too much time to this though, we may eventually
 //       have real graphics for all the equipment pieces, so a generic head armor icon is fine.
 
-BaseArmor.register('coif', {
-  name: 'coif',
+BaseEquipment.register('coif', {
+  nameFunction: names => { return `${names[0]} Coif`; },
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 10, slash: 20, pierce: 14 },
-  materials: {
-    mail: { material:MaterialType.steel, amount:2 },
-  },
+  materials: { hard:2 },
   effort: 3,
 });
 
-BaseArmor.register('helm', {
-  name: 'helm',
+BaseEquipment.register('helm', {
+  nameFunction: names => { return `${names[0]} Helm`; },
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 14, slash: 20, pierce: 16 },
-  materials: {
-    body: { material:MaterialType.steel, amount:2 },
-  },
+  materials: { hard:2 },
   effort: 3,
 });
 
-BaseArmor.register('bascinet', {
-  name: 'bascinet',
+BaseEquipment.register('bascinet', {
+  nameFunction: names => { return `${names[0]} Bascinet`; },
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 16, slash: 24, pierce: 20 },
-  materials: {
-    body: { material:MaterialType.steel, amount:2 },
-  },
+  materials: { hard:2 },
   effort: 4,
 });
 
-BaseArmor.register('sallet', {
-  name: 'sallet',
+BaseEquipment.register('sallet', {
+  nameFunction: names => { return `${names[0]} Sallet`; },
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 16, slash: 25, pierce: 21 },
-  materials: {
-    body: { material:MaterialType.steel, amount:3 },
-  },
+  materials: { hard:3 },
   effort: 4,
 });
 
-BaseArmor.register('armet', {
-  name: 'armet',
+BaseEquipment.register('armet', {
+  nameFunction: names => { return `${names[0]} Armet`; },
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 20, slash: 28, pierce: 24 },
-  materials: {
-    body: { material:MaterialType.steel, amount:3 },
-  },
+  materials: { hard:3 },
   effort: 5,
 });
 
-BaseArmor.register('heaume', {
-  name: 'heaume',
+BaseEquipment.register('heaume', {
+  nameFunction: names => { return `${names[0]} Heaume`; },
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 22, slash: 30, pierce: 26 },
-  materials: {
-    body: { material:MaterialType.steel, amount:4 },
-  },
+  materials: { hard:4 },
   effort: 5,
 });
