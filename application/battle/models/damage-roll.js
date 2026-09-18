@@ -1,4 +1,8 @@
 global.DamageRoll = function(attacker, attackRoll, defendRoll) {
+
+  // TODO: The weapon damage no longer scales properly for material. In order to fix this the damage roll needs an
+  //       actual weapon component, not the base weapon.
+
   const baseWeapon = attackRoll.getBaseWeapon();
   const strength = Attributes(attacker).getStrength();
   const attackType = BattleHelper.getRollType(attackRoll);
