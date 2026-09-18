@@ -21,12 +21,6 @@ BaseMonster.register('kobold-sneak-slut',{
     killWomen: 100,
   },
 
-  equipment: {
-    loadouts:[
-      { main:{ base:'bone-knife' }, off:{ base:'bone-knife' }},
-    ],
-  },
-
   negotiationGreeting: greetingPackage,
 
   lootGroups: {

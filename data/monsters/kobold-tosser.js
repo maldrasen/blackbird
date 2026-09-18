@@ -10,12 +10,6 @@ BaseMonster.register('kobold-tosser',{
     Ability.UseArticle({ article:'blasto', priority:100, cooldown:5000 }),
   ]},
 
-  equipment: {
-    loadouts:[
-      { main:{ base:'bone-spear' }},
-    ],
-  },
-
   lootGroups: {
     nothing: 100,
     kobolds: 30,

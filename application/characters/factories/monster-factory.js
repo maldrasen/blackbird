@@ -75,10 +75,7 @@ global.MonsterFactory = function(code,options={}) {
   }
 
   function addEquipment() {
-    const equipment = monsterBase.getEquipment();
-    if (equipment) {
-      CharacterEquipper(monsterId).equipLoadout(equipment);
-    }
+    // TODO: Select equipment from this monster's equipment depot.
   }
 
   // =========================
