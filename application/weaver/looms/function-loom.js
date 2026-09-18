@@ -107,20 +107,12 @@ global.FunctionLoom = (function() {
   // named Stabitha for instance should read "He thrust Stabitha" rather than "He thrust the Stabitha" or "He thrust
   // his Stabitha"
   function compileWeaponName(context,argumentList,prefix) {
-    let base = context.baseWeapon;
     let weaponId = context.weapon;
     let name = context.weaponName;
     let nameType = context.weaponNameType || 'common';
 
-    if (base == null && name == null) {
-      const resolved = resolvePrimaryWeapon(context[argumentList[0]]);
-      base = resolved.base;
-      weaponId = resolved.id;
-      name = resolved.name;
-    }
-
-    if (name == null) {
-      name = BaseEquipment.lookup(base).getName();
+    if (weaponId == null && name == null) {
+      weaponId = resolvePrimaryWeapon(context[argumentList[0]]);
     }
 
     if (weaponId) {
@@ -142,9 +134,7 @@ global.FunctionLoom = (function() {
     const equipment = EquipmentComponent.lookup(actorId);
     const weaponId = equipment ? EquipmentManager(actorId).getSlot(EquipmentSlot.primary) : null;
 
-    if (weaponId) {
-      return { base:Item(weaponId).getBase().getCode(), id:weaponId };
-    }
+    if (weaponId) { return weaponId; }
 
     throw `Unable to determine a weapon for {${actorId}}.`
   }

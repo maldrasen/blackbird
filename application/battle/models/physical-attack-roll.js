@@ -78,7 +78,6 @@ global.PhysicalAttackRoll = function(attacker, target) {
     getWeapon: () => { return weapon; },
     getWeaponId: () => { return weapon ? weapon.getId() : null; },
     getWeaponName: () => { return weapon ? weapon.getName() : null; },
-    getBaseWeaponCode: () => { return weapon ? baseWeapon.getCode() : null; },
     isRangedAttack,
     getTextKey,
     getDamageRange,
