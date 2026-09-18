@@ -1,5 +1,12 @@
 global.EquipmentAppraiser = (function() {
 
+  // TODO: We also need to take the enchantment cost into consideration. I was thinking that the enchantments could be
+  //       priced like the articles, but the enchantments have a different shape entirely. Some enchantments could be
+  //       very simple, like add a flat damage percentage to a weapon. Other enchantments like endanger though would
+  //       probably need their own formula. Vulnerable is a valuable affliction, but if it can only ever be applied to
+  //       chickens or something, then it's actually not that useful. I think before we can really appraise
+  //       enchantments we need more enchantments to be in the game.
+
   function appraise(item) {
     const base = BaseEquipment.lookup(item.base);
     const primaryMaterial = Object.keys(item.materials)[0];
