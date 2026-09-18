@@ -19,14 +19,29 @@ global.ItemFixtures = (function() {
   // An item's name, reduction, and enchantment power all follow its material, so specs that assert them build in
   // steel, the baseline every factor is measured against.
   function buildSteel(code, options={}) {
+    return build(code, ['steel'], options);
+  }
+
+  function build(code, materials, options={}) {
     const factory = EquipmentFactory();
-    factory.setAvailableMaterials(['steel']);
+    factory.setAvailableMaterials(materials);
     return factory.build(code, options);
+  }
+
+  // Monsters don't equip themselves until the depots exist (task 225), so specs that need a monster carrying
+  // something specific hand it over here. The item goes into the first slot its base fits.
+  function equip(character, code, materials) {
+    const item = build(code, materials);
+    InventoryManager(character).addItem(item);
+    EquipmentManager(character).equipItem(item, BaseEquipment.lookup(code).getSlots()[0]);
+    return item;
   }
 
   return {
     addRandomEquipment,
+    build,
     buildSteel,
+    equip,
   };
 
 })();

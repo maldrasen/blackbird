@@ -1,4 +1,4 @@
-describe.only("EquipmentFactory", function() {
+describe("EquipmentFactory", function() {
 
   function steelFactory() {
     const factory = EquipmentFactory();

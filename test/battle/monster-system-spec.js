@@ -1,12 +1,14 @@
 describe("MonsterSystem", function() {
 
-  // The runt pack's kobolds each carry a club or a spear from their type and a low priority bite of their own. The
-  // runt at M.0.2 acts, with its threat pinned so the target choice is deterministic, and the player stands in front
-  // of it at P.0.2.
+  // The runt at M.0.2 acts, carrying a bone spear and a low priority bite of its own. Its threat is pinned so the
+  // target choice is deterministic, and the player stands in front of it at P.0.2.
   function startBattle() {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-    return BattleSystem.getState();
+
+    const state = BattleSystem.getState();
+    ItemFixtures.equip(state.getEntityAtPosition('M.0.2'), 'spear', ['bone']);
+    return state;
   }
 
   function takeTurn(kobold, target=null) {

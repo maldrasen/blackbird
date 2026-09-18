@@ -1,4 +1,4 @@
-describe.only("EquipmentAppraiser", function() {
+describe("EquipmentAppraiser", function() {
 
   function appraise(base, materials) {
     return EquipmentAppraiser.appraise({ base, materials });

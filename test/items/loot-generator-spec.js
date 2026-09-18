@@ -49,7 +49,6 @@ describe('LootGenerator', function() {
       type: 'hunter',
       level: 1,
       bonusEssence: essenceBonus,
-      equipment: { loadouts:[{ main:{ base:'longbow' }}] },
       // The spec spell is registered just above, so the archer's abilities are built here rather than in the
       // compile pass that ran before the specs.
       abilities: [Ability.CastSpell({ spell:'spec-loot-flare', powerLevel:1 })],
@@ -66,7 +65,6 @@ describe('LootGenerator', function() {
       type: 'fighter',
       level: 1,
       bonusEssence: essenceBonus,
-      equipment: { loadouts:[{ main:{ base:'bone-club' }}] },
       lootGroups: { nothing:100, 'spec-critters':30, gear:10 },
     });
 
@@ -109,8 +107,16 @@ describe('LootGenerator', function() {
   // in a generation is the ceiling percentage, followed for chests by the roll count, then any quantity ranges. Every
   // spec monster lists the nothing group first, as does the vault when its groups are overridden, so a roll of zero
   // generates nothing and leaves the drop table and value range to be inspected.
-  function monsterTable(code) {
+  // The archer's bow qualifies it for the weapon sources, and the brawler's mace is there to not qualify.
+  function buildMonster(code) {
     const id = MonsterFactory(code).build();
+    if (code === 'spec-loot-archer') { ItemFixtures.equip(id, 'longbow', ['wood']); }
+    if (code === 'spec-loot-brawler') { ItemFixtures.equip(id, 'mace', ['bone']); }
+    return id;
+  }
+
+  function monsterTable(code) {
+    const id = buildMonster(code);
     const generator = LootGenerator();
     Random.stubBetween(100);
     Random.stubRoll(0);
@@ -246,7 +252,7 @@ describe('LootGenerator', function() {
   // The blob's groups are { nothing:100, 'spec-slimes':50, extra:10 } and a rarity roll under 200 is common.
   describe('generateMonsterLoot()', function() {
     function generate(code, rolls) {
-      const id = MonsterFactory(code).build();
+      const id = buildMonster(code);
       Random.stubBetween(100);
       Random.stubRoll(...rolls);
       return LootGenerator().generateMonsterLoot(id);

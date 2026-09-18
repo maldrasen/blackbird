@@ -347,13 +347,14 @@ describe("BattleDamageSystem", function() {
       expect(damage).to.equal(100);
     });
 
-    // The kobold trappers always wear a leather doublet over their scales, so the chest takes both reductions.
-    // The secondary slot is cleared because a trapper can roll a shield loadout.
+    // A leather doublet turns away 21 slash, and it's worn over the kobold's scales so the chest takes both
+    // reductions. The secondary slot is cleared because a trapper can carry a shield.
     it("stacks innate resistance with worn armor", function() {
       BattleFixtures.prepareForBattle();
       BattleSystem.startBattle({ ...BattleFixtures.trapperPack(), ambushState:'normal' });
       const target = BattleSystem.getState().getActiveMonsters()[0];
       EquipmentManager(target).equipItem(null, EquipmentSlot.secondary);
+      ItemFixtures.equip(target, 'doublet', ['leather']);
 
       const damage = BattleDamageSystem.applyDamage({
         entity:target, damageTypes:{ slash:100 }, hitLocation:EquipmentSlot.chest });
