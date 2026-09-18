@@ -25,7 +25,7 @@ describe("BasicAttack", function() {
         setPlayerAttribute({ strength:50 });
         BattleSystem.specRound(GameSystem.getState().getPlayer(), { target:BattleSystem.getState().getActiveMonsters()[0] });
 
-        const complexDamage = BasicAttack.rollDamage(GameSystem.getState().getPlayer(), BaseWeapon.lookup('maul'), 'normal', 'normal');
+        const complexDamage = BasicAttack.rollDamage(GameSystem.getState().getPlayer(), BaseEquipment.lookup('maul'), 'normal', 'normal');
         expect(BattleSystem.getRound().getMessages().length).to.equal(0);
         expect(Object.keys(complexDamage).length).to.equal(1);
         expect(complexDamage.crush).to.be.greaterThan(50);
@@ -36,7 +36,7 @@ describe("BasicAttack", function() {
         setPlayerAttribute({ strength:50 });
         BattleSystem.specRound(GameSystem.getState().getPlayer(), { target:BattleSystem.getState().getActiveMonsters()[0] });
 
-        const complexDamage = BasicAttack.rollDamage(GameSystem.getState().getPlayer(), BaseWeapon.lookup('morning-star'), 'crit', 'fumble');
+        const complexDamage = BasicAttack.rollDamage(GameSystem.getState().getPlayer(), BaseEquipment.lookup('morning-star'), 'crit', 'fumble');
         expect(BattleSystem.getRound().getMessages().length).to.equal(2);
         expect(Object.keys(complexDamage).length).to.equal(2);
         expect(complexDamage.pierce).to.be.greaterThan(50);

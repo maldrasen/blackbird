@@ -6,16 +6,6 @@ BaseMonster.register('kobold-trapper',{
   triggers: [],
   level: 3,
 
-  equipment: {
-    loadouts:[
-      { main:{ base:'bone-spear' }},
-      { main:{ base:'bone-club' }, off:{ base:'targe' }},
-    ],
-    armor:[
-      { base:'leather-doublet' },
-    ],
-  },
-
   lootGroups: {
     nothing: 100,
     kobolds: 30,

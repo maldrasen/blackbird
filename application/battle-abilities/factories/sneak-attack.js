@@ -19,7 +19,7 @@ Ability.SneakAttack = function(options={}) {
 
 // TODO: We'll need a lot more attack text for this ability.
 function getAttackText(weapon, context) {
-  const base = weapon.getBaseWeapon();
+  const base = weapon.getBase();
   const type = base.getType();
   const damageTypes = base.getDamageTypes().map(damageType => damageType.type);
 

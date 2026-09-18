@@ -3,7 +3,7 @@
 // padded doublet and the leather-backed cuirass the primary material's absorption scales it down to what the piece
 // really turns away. Across all armor, plate turns cuts (slash) best and blunt trauma (crush) worst.
 
-BaseArmor.register('doublet', {
+BaseEquipment.register('doublet', {
   icon: 'armor/coat-01.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 40, slash: 60, pierce: 33 },
@@ -13,7 +13,7 @@ BaseArmor.register('doublet', {
   nameFunction: names => { return `${names[0]} Doublet`; },
 });
 
-BaseArmor.register('hauberk', {
+BaseEquipment.register('hauberk', {
   icon: 'armor/chest-08.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 18, slash: 30, pierce: 20 },
@@ -23,7 +23,7 @@ BaseArmor.register('hauberk', {
   nameFunction: names => { return `${names[0]} Hauberk` },
 });
 
-BaseArmor.register('cuirass', {
+BaseEquipment.register('cuirass', {
   icon: 'armor/chest-07.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 25, slash: 35, pierce: 30 },
@@ -33,7 +33,7 @@ BaseArmor.register('cuirass', {
   nameFunction: names => { return `${names[0]} Cuirass` },
 });
 
-BaseArmor.register('breastplate', {
+BaseEquipment.register('breastplate', {
   icon: 'armor/chest-04.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 32, slash: 45, pierce: 40 },
@@ -43,7 +43,7 @@ BaseArmor.register('breastplate', {
   nameFunction: names => { return `${names[0]} Breastplate` },
 });
 
-BaseArmor.register('plate', {
+BaseEquipment.register('plate', {
   icon: 'armor/chest-03.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 40, slash: 50, pierce: 48 },

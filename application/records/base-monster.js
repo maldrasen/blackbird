@@ -74,7 +74,6 @@ global.BaseMonster = (function() {
       getTriggers: () => { return monster.triggers || []; },
       getArchetypes: () => { return monster.archetypes; },
       getThreatWeights,
-      getEquipment: () => { return monster.equipment; },
 
       getAbilities,
       findAbility,

@@ -14,8 +14,8 @@ Once a character has become 'real' like this I don't think we ever delete them. 
 
 ### Data Objects
 In addition to the Components, Blackbird has four different types of data objects:
-- `Wrappers` - To add functions onto the basic component data objects (Character, Monster, Weapon, etc)
-- `Records` - Immutable data objects (BaseWeapon, Species)
+- `Wrappers` - To add functions onto the basic component data objects (Character, Monster, Item, etc)
+- `Records` - Immutable data objects (BaseEquipment, Species)
 - `Models` - Objects with internal state (Ability)
 - `States` - Internal state for game modes (TrainingState, BattleState)
 

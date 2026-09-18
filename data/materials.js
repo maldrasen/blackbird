@@ -64,6 +64,7 @@ Material.register('flint',{
   cost: 1,
   factors: {
     sharpness: 0.75,
+    potential: 0.66,
   }
 })
 
@@ -72,6 +73,7 @@ Material.register('stone',{
   cost: 1,
   factors: {
     heft: 0.75,
+    potential: 0.5,
   }
 })
 

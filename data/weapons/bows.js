@@ -1,6 +1,6 @@
 
-BaseWeapon.register('shortbow', {
-  name: 'shortbow',
+BaseEquipment.register('shortbow', {
+  nameFunction: (names, materials) => { return materials.wood ? `Shortbow` : `${names[0]} Banded Shortbow`; },
   icon: 'weapons/bow-02.png',
   type: 'bow',
   damageType: DamageType.pierce,
@@ -8,16 +8,13 @@ BaseWeapon.register('shortbow', {
   hands: WeaponHandedness.two,
   reach: WeaponReach.long,
   speed: 1000,
-  materials: {
-    stave:  { material:MaterialType.wood, amount:2 },
-    string: { material:MaterialType.leather, amount:1 },
-  },
+  materials: { bendy:2 },
   effort: 3,
   textKey: 'shoot',
 });
 
-BaseWeapon.register('longbow', {
-  name: 'longbow',
+BaseEquipment.register('longbow', {
+  nameFunction: (names, materials) => { return materials.wood ? `Longbow` : `${names[0]} Banded Longbow`; },
   icon: 'weapons/bow-02.png',
   type: 'bow',
   damageType: DamageType.pierce,
@@ -25,16 +22,13 @@ BaseWeapon.register('longbow', {
   hands: WeaponHandedness.two,
   reach: WeaponReach.long,
   speed: 1300,
-  materials: {
-    stave:  { material:MaterialType.wood, amount:3 },
-    string: { material:MaterialType.leather, amount:1 },
-  },
+  materials: { bendy:3 },
   effort: 4,
   textKey: 'shoot',
 });
 
-BaseWeapon.register('recursive-bow', {
-  name: 'recursive bow',
+BaseEquipment.register('recursive-bow', {
+  nameFunction: () => { return `Recursive Bow`; },
   icon: 'weapons/bow-01.png',
   type: 'bow',
   damageType: DamageType.pierce,
@@ -42,16 +36,13 @@ BaseWeapon.register('recursive-bow', {
   hands: WeaponHandedness.two,
   reach: WeaponReach.long,
   speed: 1200,
-  materials: {
-    stave:  { material:MaterialType.wood, amount:3 },
-    string: { material:MaterialType.leather, amount:1 },
-  },
+  materials: { bendy:3 },
   effort: 5,
   textKey: 'shoot',
 });
 
-BaseWeapon.register('crossbow', {
-  name: 'crossbow',
+BaseEquipment.register('crossbow', {
+  nameFunction: (names,materials) => { return materials.wood ? `Crossbow` : `${names[0]} Crossbow`; },
   icon: 'weapons/crossbow-01.png',
   type: 'bow',
   damageType: DamageType.pierce,
@@ -59,17 +50,13 @@ BaseWeapon.register('crossbow', {
   hands: WeaponHandedness.two,
   reach: WeaponReach.long,
   speed: 1600,
-  materials: {
-    prod:   { material:MaterialType.steel, amount:1 },
-    stock:  { material:MaterialType.wood, amount:2 },
-    string: { material:MaterialType.leather, amount:1 },
-  },
+  materials: { bendy:3 },
   effort: 6,
   textKey: 'shoot',
 });
 
-BaseWeapon.register('arbalest', {
-  name: 'arbalest',
+BaseEquipment.register('arbalest', {
+  nameFunction: (names,materials) => { return materials.wood ? `Arbalest` : `${names[0]} Arbalest`; },
   icon: 'weapons/crossbow-01.png',
   type: 'bow',
   damageType: DamageType.pierce,
@@ -77,11 +64,7 @@ BaseWeapon.register('arbalest', {
   hands: WeaponHandedness.two,
   reach: WeaponReach.long,
   speed: 2000,
-  materials: {
-    prod:   { material:MaterialType.steel, amount:2 },
-    stock:  { material:MaterialType.wood, amount:2 },
-    string: { material:MaterialType.leather, amount:1 },
-  },
+  materials: { bendy:4 },
   effort: 7,
   textKey: 'shoot',
 });

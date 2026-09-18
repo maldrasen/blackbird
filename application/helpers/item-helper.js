@@ -30,29 +30,14 @@ global.ItemHelper = (function() {
     const base = (profile || {})[type] || 0;
     if (base === 0) { return 0; }
 
-    const absorption = (material == null) ? 1 : Material.getFactor(material, MaterialFactor.absorption);
+    const absorption = (material == null) ? 1 : Material.lookup(material).getFactor(MaterialFactor.absorption);
     return Math.round(base * absorption);
-  }
-
-  // Build a new materials map with the primary (first listed) part swapped to another material. Used when an item
-  // instance overrides the material it's made from - a spear tipped with bone instead of steel.
-  function substitutePrimaryMaterial(materials, material) {
-    const parts = Object.keys(materials || {});
-    if (parts.length === 0) { throw new Error(`Cannot substitute the material of an item with no materials.`); }
-
-    const substituted = {};
-    parts.forEach((part,index) => {
-      substituted[part] = { ...materials[part] };
-      if (index === 0) { substituted[part].material = material; }
-    });
-    return substituted;
   }
 
   return {
     getArmorValueFactor,
     getWeaponValueFactor,
     getScaledReduction,
-    substitutePrimaryMaterial,
   };
 
 })();

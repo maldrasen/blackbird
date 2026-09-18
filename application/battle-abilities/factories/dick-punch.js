@@ -46,7 +46,7 @@ function getSizeFactor(size) {
 function getArmorFactor(target) {
   const pants = EquipmentManager(target).getSlot(EquipmentSlot.legs);
   if (pants == null) { return 1; }
-  return Armor(pants).isMetal() ? 0.25 : 0.75;
+  return Item(pants).isMetal() ? 0.25 : 0.75;
 }
 
 // The stun's power is the attacker's strength.

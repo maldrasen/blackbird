@@ -12,8 +12,8 @@ global.PhysicalAttackRoll = function(attacker, target) {
   function setHitLocation(location) { hitLocation = location; }
 
   function setWeapon(itemId) {
-    weapon = Weapon(itemId);
-    baseWeapon = weapon.getBaseWeapon();
+    weapon = Item(itemId);
+    baseWeapon = weapon.getBase();
   }
 
   // A natural attack profile - a punch, a bite, a claw - stands in for the base weapon, so the roll doesn't care

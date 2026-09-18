@@ -3,7 +3,7 @@ describe('InventoryManager', function() {
   describe('addItem()', function() {
     it('throws when the item is already in this inventory', function() {
       const horse = CharacterFixtures.genericMale({});
-      const hatchet = WeaponFactory.build('hatchet');
+      const hatchet = EquipmentFactory().build('hatchet');
 
       InventoryManager(horse).addItem(hatchet);
 
@@ -13,7 +13,7 @@ describe('InventoryManager', function() {
     it('throws when the item is already in another inventory', function() {
       const horse = CharacterFixtures.genericMale({});
       const goat = CharacterFixtures.genericMale({});
-      const hatchet = WeaponFactory.build('hatchet');
+      const hatchet = EquipmentFactory().build('hatchet');
 
       InventoryManager(horse).addItem(hatchet);
 
@@ -24,8 +24,8 @@ describe('InventoryManager', function() {
   describe('removeItem()', function() {
     it('removes only the given item', function() {
       const horse = CharacterFixtures.genericMale({});
-      const hatchet = WeaponFactory.build('hatchet');
-      const cleaver = WeaponFactory.build('cleaver');
+      const hatchet = EquipmentFactory().build('hatchet');
+      const cleaver = EquipmentFactory().build('cleaver');
 
       InventoryManager(horse).addItem(hatchet);
       InventoryManager(horse).addItem(cleaver);
@@ -37,7 +37,7 @@ describe('InventoryManager', function() {
 
     it("throws when the item isn't in the inventory", function() {
       const horse = CharacterFixtures.genericMale({});
-      const hatchet = WeaponFactory.build('hatchet');
+      const hatchet = EquipmentFactory().build('hatchet');
 
       expect(() => InventoryManager(horse).removeItem(hatchet)).to.throw(
         `Inventory:${horse} doesn't have Item:${hatchet} to remove.`);
@@ -129,12 +129,15 @@ describe('InventoryManager', function() {
 
   it('listItems()', function() {
     const horse = CharacterFixtures.genericMale({});
-    const cleaver = WeaponFactory.build('cleaver');
-    const helm = ArmorFactory.build('helm');
-    const hauberk = ArmorFactory.build('hauberk');
-    const hatchet = WeaponFactory.build('hatchet');
-    const battleAxe = WeaponFactory.build('battle-axe');
-    const boots = ArmorFactory.build('boots');
+    const leather = EquipmentFactory();
+    leather.setAvailableMaterials(['leather']);
+
+    const cleaver = ItemFixtures.buildSteel('cleaver');
+    const helm = ItemFixtures.buildSteel('helm');
+    const hauberk = ItemFixtures.buildSteel('hauberk');
+    const hatchet = ItemFixtures.buildSteel('hatchet');
+    const battleAxe = ItemFixtures.buildSteel('battle-axe');
+    const boots = leather.build('boots');
 
     const inventory = InventoryManager(horse);
     [cleaver, helm, hauberk, hatchet, battleAxe, boots].forEach(item => inventory.addItem(item));
@@ -150,7 +153,8 @@ describe('InventoryManager', function() {
     const rows = inventory.listItems();
 
     expect(rows.map(row => row.name)).to.deep.equal([
-      'cleaver', 'hauberk', 'helm', 'battle axe', 'hatchet', 'boots', 'Dungeon Tripe', 'String of Teeth']);
+      'Steel Cleaver', 'Steel Hauberk', 'Steel Helm', 'Steel Battle Axe', 'Steel Hatchet', 'Leather Boots',
+      'Dungeon Tripe', 'String of Teeth']);
 
     expect(rows[0].slot).to.equal(EquipmentSlot.primary);
     expect(rows[1].slot).to.equal(EquipmentSlot.chest);
@@ -167,7 +171,7 @@ describe('InventoryManager', function() {
 
   it('dropItem() destroys an equipped item', function() {
     const horse = CharacterFixtures.genericMale({});
-    const helm = ArmorFactory.build('helm');
+    const helm = EquipmentFactory().build('helm');
 
     InventoryManager(horse).addItem(helm);
     EquipmentManager(horse).equipItem(helm, EquipmentSlot.head);

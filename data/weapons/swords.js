@@ -1,8 +1,8 @@
 
 // TODO: We need better sword icons across the board really.
 
-BaseWeapon.register('short-sword', {
-  name: 'short sword',
+BaseEquipment.register('short-sword', {
+  nameFunction: names => { return `${names[0]} Short Sword`; },
   icon: 'weapons/sword-04.png',
   type: 'sword',
   damageType: DamageType.slash,
@@ -10,17 +10,14 @@ BaseWeapon.register('short-sword', {
   hands: WeaponHandedness.one,
   reach: WeaponReach.close,
   speed: 800,
-  materials: {
-    blade: { material:MaterialType.steel, amount:2 },
-    grip:  { material:MaterialType.leather, amount:1 },
-  },
+  materials: { sharp:2 },
   effort: 4,
   textKey: 'basic-swing',
 });
 
 // TODO: Better cutlass icon.
-BaseWeapon.register('cutlass', {
-  name: 'cutlass',
+BaseEquipment.register('cutlass', {
+  nameFunction: names => { return `${names[0]} Cutlass`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.slash,
@@ -28,17 +25,14 @@ BaseWeapon.register('cutlass', {
   hands: WeaponHandedness.one,
   reach: WeaponReach.close,
   speed: 900,
-  materials: {
-    blade: { material:MaterialType.steel, amount:2 },
-    grip:  { material:MaterialType.leather, amount:1 },
-  },
+  materials: { sharp:2 },
   effort: 5,
   textKey: 'basic-swing',
 });
 
 // TODO: Better saber icon.
-BaseWeapon.register('saber', {
-  name: 'saber',
+BaseEquipment.register('saber', {
+  nameFunction: names => { return `${names[0]} Saber`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.slash,
@@ -46,17 +40,14 @@ BaseWeapon.register('saber', {
   hands: WeaponHandedness.one,
   reach: WeaponReach.close,
   speed: 850,
-  materials: {
-    blade: { material:MaterialType.steel, amount:2 },
-    grip:  { material:MaterialType.leather, amount:1 },
-  },
+  materials: { sharp:2 },
   effort: 6,
   textKey: 'basic-swing',
 });
 
 // TODO: Better scimitar icon. Why do I have no curved sword icons?
-BaseWeapon.register('scimitar', {
-  name: 'scimitar',
+BaseEquipment.register('scimitar', {
+  nameFunction: names => { return `${names[0]} Scimitar`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.slash,
@@ -64,16 +55,13 @@ BaseWeapon.register('scimitar', {
   hands: WeaponHandedness.one,
   reach: WeaponReach.close,
   speed: 900,
-  materials: {
-    blade: { material:MaterialType.steel, amount:3 },
-    grip:  { material:MaterialType.leather, amount:1 },
-  },
+  materials: { sharp:3 },
   effort: 5,
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('rapier', {
-  name: 'rapier',
+BaseEquipment.register('rapier', {
+  nameFunction: names => { return `${names[0]} Rapier`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.pierce,
@@ -81,16 +69,13 @@ BaseWeapon.register('rapier', {
   hands: WeaponHandedness.main,
   reach: WeaponReach.close,
   speed: 700,
-  materials: {
-    blade: { material:MaterialType.steel, amount:3 },
-    grip:  { material:MaterialType.leather, amount:1 },
-  },
+  materials: { sharp:3 },
   effort: 8,
   textKey: 'basic-thrust',
 });
 
-BaseWeapon.register('estoc', {
-  name: 'estoc',
+BaseEquipment.register('estoc', {
+  nameFunction: names => { return `${names[0]} Estoc`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.pierce,
@@ -98,16 +83,13 @@ BaseWeapon.register('estoc', {
   hands: WeaponHandedness.main,
   reach: WeaponReach.close,
   speed: 900,
-  materials: {
-    blade: { material:MaterialType.steel, amount:3 },
-    grip:  { material:MaterialType.leather, amount:1 },
-  },
+  materials: { sharp:3 },
   effort: 7,
   textKey: 'basic-thrust',
 });
 
-BaseWeapon.register('longsword', {
-  name: 'longsword',
+BaseEquipment.register('longsword', {
+  nameFunction: names => { return `${names[0]} Longsword`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.slash,
@@ -115,16 +97,13 @@ BaseWeapon.register('longsword', {
   hands: WeaponHandedness.main,
   reach: WeaponReach.close,
   speed: 1000,
-  materials: {
-    blade: { material:MaterialType.steel, amount:3 },
-    grip:  { material:MaterialType.leather, amount:1 },
-  },
+  materials: { sharp:3 },
   effort: 6,
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('broadsword', {
-  name: 'broadsword',
+BaseEquipment.register('broadsword', {
+  nameFunction: names => { return `${names[0]} Broadsword`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.slash,
@@ -132,16 +111,13 @@ BaseWeapon.register('broadsword', {
   hands: WeaponHandedness.main,
   reach: WeaponReach.close,
   speed: 1100,
-  materials: {
-    blade: { material:MaterialType.steel, amount:4 },
-    grip:  { material:MaterialType.leather, amount:1 },
-  },
+  materials: { sharp:4 },
   effort: 6,
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('falchion', {
-  name: 'falchion',
+BaseEquipment.register('falchion', {
+  nameFunction: names => { return `${names[0]} Falchion`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.slash,
@@ -149,16 +125,13 @@ BaseWeapon.register('falchion', {
   hands: WeaponHandedness.main,
   reach: WeaponReach.close,
   speed: 1000,
-  materials: {
-    blade: { material:MaterialType.steel, amount:3 },
-    grip:  { material:MaterialType.leather, amount:1 },
-  },
+  materials: { sharp:3 },
   effort: 6,
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('bastard-sword', {
-  name: 'bastard sword',
+BaseEquipment.register('bastard-sword', {
+  nameFunction: names => { return `${names[0]} Bastard Sword`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.slash,
@@ -166,16 +139,13 @@ BaseWeapon.register('bastard-sword', {
   hands: WeaponHandedness.main,
   reach: WeaponReach.close,
   speed: 1300,
-  materials: {
-    blade: { material:MaterialType.steel, amount:4 },
-    grip:  { material:MaterialType.leather, amount:1 },
-  },
+  materials: { sharp:4 },
   effort: 7,
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('claymore', {
-  name: 'claymore',
+BaseEquipment.register('claymore', {
+  nameFunction: names => { return `${names[0]} Claymore`; },
   icon: 'weapons/sword-03.png',
   type: 'sword',
   damageType: DamageType.slash,
@@ -183,10 +153,7 @@ BaseWeapon.register('claymore', {
   hands: WeaponHandedness.two,
   reach: WeaponReach.close,
   speed: 1700,
-  materials: {
-    blade: { material:MaterialType.steel, amount:6 },
-    grip:  { material:MaterialType.leather, amount:1 },
-  },
+  materials: { sharp:6 },
   effort: 8,
   textKey: 'basic-swing',
 });

@@ -42,16 +42,16 @@ global.BattleRound = function(acting, type=null) {
 
   function getPrimaryWeapon() { return getWeaponInSlot(EquipmentSlot.primary); }
 
-  function getSecondaryWeapon() {
-    const weapon = getWeaponInSlot(EquipmentSlot.secondary);
-    return (weapon && weapon.getBaseWeapon().getType() === 'shield') ? null : weapon;
-  }
+  function getSecondaryWeapon() { return getWeaponInSlot(EquipmentSlot.secondary); }
 
   function getWeaponInSlot(slot) {
     if (EquipmentComponent.lookup(acting) == null) { return null; }
 
     const itemId = EquipmentManager(acting).getSlot(slot);
-    return (itemId && WeaponComponent.lookup(itemId)) ? Weapon(itemId) : null;
+    if (itemId == null) { return null; }
+
+    const item = Item(itemId);
+    return item.getBase().isWeapon() ? item : null;
   }
 
   // ====================

@@ -1,5 +1,5 @@
 
-BaseWeapon.register('hatchet', {
+BaseEquipment.register('hatchet', {
   nameFunction: names => { return `${names[0]} Hatchet`; },
   icon: 'weapons/axe-06.png',
   type: 'axe',
@@ -12,7 +12,7 @@ BaseWeapon.register('hatchet', {
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('cleaver', {
+BaseEquipment.register('cleaver', {
   nameFunction: names => { return `${names[0]} Cleaver`; },
   icon: 'weapons/cleaver-01.png',
   type: 'axe',
@@ -25,7 +25,7 @@ BaseWeapon.register('cleaver', {
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('hand-axe', {
+BaseEquipment.register('hand-axe', {
   nameFunction: names => { return `${names[0]} Hand Axe`; },
   icon: 'weapons/axe-07.png',
   type: 'axe',
@@ -38,7 +38,7 @@ BaseWeapon.register('hand-axe', {
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('broad-axe', {
+BaseEquipment.register('broad-axe', {
   nameFunction: names => { return `${names[0]} Broad Axe`; },
   icon: 'weapons/axe-04.png',
   type: 'axe',
@@ -51,7 +51,7 @@ BaseWeapon.register('broad-axe', {
   textKey: 'basic-swing',
 });
 
-BaseWeapon.register('war-axe', {
+BaseEquipment.register('war-axe', {
   nameFunction: names => { return `${names[0]} War Axe`; },
   icon: 'weapons/axe-03.png',
   type: 'axe',
@@ -65,7 +65,7 @@ BaseWeapon.register('war-axe', {
 });
 
 // TODO: Need a better goosewing icon.
-BaseWeapon.register('goosewing', {
+BaseEquipment.register('goosewing', {
   nameFunction: names => { return `${names[0]} Goosewing`; },
   icon: 'weapons/axe-01.png',
   type: 'axe',
@@ -78,7 +78,7 @@ BaseWeapon.register('goosewing', {
   textKey: 'heavy-axe',
 });
 
-BaseWeapon.register('battle-axe', {
+BaseEquipment.register('battle-axe', {
   nameFunction: names => { return `${names[0]} Battle Axe`; },
   icon: 'weapons/axe-02.png',
   type: 'axe',
@@ -91,7 +91,7 @@ BaseWeapon.register('battle-axe', {
   textKey: 'heavy-axe',
 });
 
-BaseWeapon.register('labrys', {
+BaseEquipment.register('labrys', {
   nameFunction: names => { return `${names[0]} Labrys`; },
   icon: 'weapons/axe-05.png',
   type: 'axe',
