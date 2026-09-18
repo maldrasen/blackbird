@@ -102,27 +102,16 @@ global.FunctionLoom = (function() {
   //    Weapon Name
   // =================
 
-  // This function gets a weapon's name from the context, or by looking up primary weapon data from the actor key. The
-  // function prefixes the name with "a", "his", "the", or nothing if the weapon has a proper name. Text with a dagger
-  // named Stabitha for instance should read "He thrust Stabitha" rather than "He thrust the Stabitha" or "He thrust
-  // his Stabitha"
+  // This function names the weapon in the context, or the actor's primary weapon when the context doesn't carry one.
+  // The function prefixes the name with "a", "his", "the", or nothing if the weapon has a proper name. Text with a
+  // dagger named Stabitha for instance should read "He thrust Stabitha" rather than "He thrust the Stabitha" or "He
+  // thrust his Stabitha"
   function compileWeaponName(context,argumentList,prefix) {
-    let weaponId = context.weapon;
-    let name = context.weaponName;
-    let nameType = context.weaponNameType || 'common';
-
-    if (weaponId == null && name == null) {
-      weaponId = resolvePrimaryWeapon(context[argumentList[0]]);
-    }
-
-    if (weaponId) {
-      const weapon = Item(weaponId);
-      name = weapon.getName();
-      nameType = weapon.getNameType();
-    }
+    const weapon = Item(context.weapon || resolvePrimaryWeapon(context[argumentList[0]]));
+    const name = weapon.getName();
 
     const weaponName = `{S/wep}${name}{/S}`;
-    if (nameType === 'proper') { return weaponName; }
+    if (weapon.getNameType() === 'proper') { return weaponName; }
     if (prefix === 'a') { return `${EnglishHelper.a_an(name)} ${weaponName}`; }
     if (prefix === 'his') { return `{${argumentList[0]}:his} ${weaponName}`; }
     if (prefix === 'your') { return `your ${weaponName}`; }

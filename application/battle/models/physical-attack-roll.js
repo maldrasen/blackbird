@@ -78,7 +78,6 @@ global.PhysicalAttackRoll = function(attacker, target) {
     setNaturalAttack,
     getWeapon: () => { return weapon; },
     getWeaponId: () => { return weapon ? weapon.getId() : null; },
-    getWeaponName: () => { return weapon ? weapon.getName() : null; },
     isRangedAttack,
     getTextKey,
     getDamageRange,
