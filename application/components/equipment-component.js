@@ -32,24 +32,10 @@ global.EquipmentComponent = (function() {
 
       if (equipmentComponent[slot]) {
         const itemId = equipmentComponent[slot];
-        const equippedItem = ItemComponent.lookup(itemId);
+        const base = BaseEquipment.lookup(ItemComponent.lookup(itemId).base);
 
-        if (equippedItem.type === 'armor') {
-          const base = BaseEquipment.lookup(equippedItem.base);
-
-          if (base.getSlot() !== slot) {
-            throw new Error(`Armor:${itemId} (${equippedItem.base}) cannot be equipped in ${slot}`);
-          }
-        }
-        if (equippedItem.type === 'weapon') {
-          const hands = BaseEquipment.lookup(equippedItem.base).getHands();
-
-          if (hands === WeaponHandedness.main && slot !== EquipmentSlot.primary) {
-            throw new Error(`Weapon:${itemId} (${equippedItem.base}) cannot be equipped in ${slot}`)
-          }
-          if (hands === WeaponHandedness.off && slot !== EquipmentSlot.secondary) {
-            throw new Error(`Weapon:${itemId} (${equippedItem.base}) cannot be equipped in ${slot}`)
-          }
+        if (base.getSlots().includes(slot) === false) {
+          throw new Error(`Item:${itemId} (${base.getCode()}) cannot be equipped in ${slot}`);
         }
 
         if (InventoryManager(id).hasItem(itemId) === false) {

@@ -1,5 +1,5 @@
 global.ItemComponent = (function() {
-  const properties = ['type','base','name','nameType','materials','enchantment','textKey','value'];
+  const properties = ['base','name','nameType','materials','enchantment','textKey','value'];
 
   function create(id, data) {
     Registry.createComponent(id,ComponentType.item,data);
@@ -29,7 +29,6 @@ global.ItemComponent = (function() {
       }
     });
 
-    Validate.isIn(`Item.type`,itemComponent.type,['armor','weapon']);
     Validate.exists(`Item.base`,itemComponent.base);
     Validate.exists(`Item.name`,itemComponent.name);
     Validate.atLeast(`Item.value`,itemComponent.value,0);

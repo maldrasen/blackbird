@@ -35,6 +35,12 @@ describe('Item', function() {
       expect(build('goosewing',['steel'],{ textKey:'basic-swing' }).getTextKey()).to.equal('basic-swing');
     });
 
+    it('files weapons as weapons and everything else, shields included, as armor', function() {
+      expect(build('longsword',['steel']).getCategory()).to.equal(InventoryCategory.weapon);
+      expect(build('plate',['steel']).getCategory()).to.equal(InventoryCategory.armor);
+      expect(build('buckler',['steel']).getCategory()).to.equal(InventoryCategory.armor);
+    });
+
     it('is not lewd unless the record says so', function() {
       expect(build('chaps',['leather']).isLewd()).to.be.false;
     });

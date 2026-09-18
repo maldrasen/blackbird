@@ -17,6 +17,11 @@ global.Item = function(id) {
     return ItemHelper.getScaledReduction(getBase().getReductionMap(), getPrimaryMaterial(), type);
   }
 
+  // Shields are filed with the armor in the inventory.
+  function getCategory() {
+    return getBase().isWeapon() ? InventoryCategory.weapon : InventoryCategory.armor;
+  }
+
   // Weapon and armor enchantments are still separate models. Shields take armor enchantments.
   function getEnchantment() {
     const enchantment = getItemComponent().enchantment;
@@ -31,6 +36,7 @@ global.Item = function(id) {
     getNameType: () => { return getItemComponent().nameType; },
     getIcon: () => { return getBase().getIcon(); },
     getSkill: () => { return getBase().getSkill(); },
+    getCategory,
     getTextKey,
     getReduction,
     getPrimaryMaterial,

@@ -45,14 +45,17 @@ global.InventoryManager = function(characterId=GameSystem.getState().getPlayer()
     const slotOrder = Object.values(EquipmentSlot);
     const categoryOrder = Object.values(InventoryCategory);
 
-    const itemRows = fetch().items.map(itemId => ({
-      itemId: itemId,
-      name: Item(itemId).getName(),
-      icon: Item(itemId).getIcon(),
-      type: ItemComponent.lookup(itemId).type,
-      category: InventoryCategory[ItemComponent.lookup(itemId).type],
-      slot: equipment.getEquippedSlot(itemId),
-    }));
+    const itemRows = fetch().items.map(itemId => {
+      const item = Item(itemId);
+      return {
+        itemId: itemId,
+        name: item.getName(),
+        icon: item.getIcon(),
+        type: item.getCategory(),
+        category: item.getCategory(),
+        slot: equipment.getEquippedSlot(itemId),
+      };
+    });
 
     const articleRows = Object.entries(fetch().articles).map(([code,quantity]) => {
       const article = Article.lookup(code);

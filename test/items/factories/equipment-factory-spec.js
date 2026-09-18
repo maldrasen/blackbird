@@ -10,17 +10,11 @@ describe.only("EquipmentFactory", function() {
     it("builds a weapon from its base record", function() {
       const axe = Item(EquipmentFactory().build('goosewing'));
       expect(axe.getBase().getCode()).to.equal('goosewing');
-      expect(ItemComponent.lookup(axe.getId()).type).to.equal('weapon');
     });
 
     it("builds armor from its base record", function() {
       const armor = Item(EquipmentFactory().build('doublet'));
       expect(armor.getBase().getCode()).to.equal('doublet');
-      expect(ItemComponent.lookup(armor.getId()).type).to.equal('armor');
-    });
-
-    it("files a shield under armor", function() {
-      expect(ItemComponent.lookup(EquipmentFactory().build('buckler')).type).to.equal('armor');
     });
 
     it("names the item as common unless told otherwise", function() {

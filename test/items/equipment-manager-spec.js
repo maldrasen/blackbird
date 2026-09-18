@@ -21,6 +21,19 @@ describe('EquipmentManager', function() {
     expect(equipment.canEquipItem(twoHand,EquipmentSlot.head)).to.be.false;
   });
 
+  it('canEquipItem() puts shields in the off hand and armor in the slot it names', function() {
+    const horse = CharacterFixtures.genericMale({});
+    const shield = EquipmentFactory().build('buckler');
+    const helm = EquipmentFactory().build('helm');
+
+    const equipment = EquipmentManager(horse);
+    expect(equipment.canEquipItem(shield,EquipmentSlot.secondary)).to.be.true;
+    expect(equipment.canEquipItem(shield,EquipmentSlot.primary)).to.be.false;
+    expect(equipment.canEquipItem(helm,EquipmentSlot.head)).to.be.true;
+    expect(equipment.canEquipItem(helm,EquipmentSlot.chest)).to.be.false;
+    expect(equipment.canEquipItem(helm,EquipmentSlot.secondary)).to.be.false;
+  });
+
   describe('equipItem()', function() {
     it("equips armors", function() {
       const horse = CharacterFixtures.genericMale({});

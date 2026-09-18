@@ -32,7 +32,7 @@ global.EquipmentFactory = function() {
   //   - enchantment
   function build(code, options={}) {
     const base = BaseEquipment.lookup(code);
-    const item = { type:(base.isWeapon() ? 'weapon' : 'armor'), base:code };
+    const item = { base:code };
 
     setMaterials();
     setName();

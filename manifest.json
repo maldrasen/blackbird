@@ -698,6 +698,7 @@
     "test/characters/mana-math-spec.js",
     "test/characters/mana-system-spec.js",
     "test/characters/skill-check-spec.js",
+    "test/components/equipment-component-spec.js",
     "test/components/experience-component-spec.js",
     "test/components/feelings-component-spec.js",
     "test/components/health-component-spec.js",

@@ -50,8 +50,11 @@ describe("BaseEquipment", function() {
       expect(BaseEquipment.lookup('boots').getSlots()).to.deep.equal([EquipmentSlot.feet]);
     });
 
-    it("puts a shield in the secondary slot", function() {
-      expect(BaseEquipment.lookup('buckler').getSlots()).to.deep.equal([EquipmentSlot.secondary]);
+    it("puts a shield in the secondary slot because it is held in the off hand", function() {
+      const buckler = BaseEquipment.lookup('buckler');
+      expect(buckler.getHands()).to.equal(WeaponHandedness.off);
+      expect(buckler.getSlot()).to.be.undefined;
+      expect(buckler.getSlots()).to.deep.equal([EquipmentSlot.secondary]);
     });
   });
 
