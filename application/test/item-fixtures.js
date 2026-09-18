@@ -5,8 +5,9 @@ global.ItemFixtures = (function() {
   function addRandomEquipment(character, options={}) {
     const equipment = EquipmentManager(character);
     const inventory = InventoryManager(character);
-    const leggings = ArmorFactory.build('leggings');
-    const boots = ArmorFactory.build('boots');
+    const factory = EquipmentFactory();
+    const leggings = factory.build('leggings');
+    const boots = factory.build('boots');
 
     inventory.addItem(leggings);
     inventory.addItem(boots);

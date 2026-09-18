@@ -57,7 +57,7 @@ describe("TrapSystem", function() {
 
   // Plate mail reduces pierce damage by 34%.
   it("reduces the damage by the armor covering the hit location", function() {
-    const plate = ArmorFactory.build('plate-mail');
+    const plate = EquipmentFactory().build('plate-mail');
     InventoryManager(player).addItem(plate);
     EquipmentManager(player).equipItem(plate, EquipmentSlot.legs);
 

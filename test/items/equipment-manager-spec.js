@@ -2,9 +2,9 @@ describe('EquipmentManager', function() {
 
   it('canEquipItem()', function() {
     const horse = CharacterFixtures.genericMale({});
-    const oneHand = WeaponFactory.build('hatchet');
-    const mainHand = WeaponFactory.build('broad-axe');
-    const twoHand = WeaponFactory.build('goosewing');
+    const oneHand = EquipmentFactory().build('hatchet');
+    const mainHand = EquipmentFactory().build('broad-axe');
+    const twoHand = EquipmentFactory().build('goosewing');
 
     const inventory = InventoryManager(horse);
     inventory.addItem(oneHand);
@@ -24,7 +24,7 @@ describe('EquipmentManager', function() {
   describe('equipItem()', function() {
     it("equips armors", function() {
       const horse = CharacterFixtures.genericMale({});
-      const helm = ArmorFactory.build('helm');
+      const helm = EquipmentFactory().build('helm');
 
       InventoryManager(horse).addItem(helm);
       EquipmentManager(horse).equipItem(helm, EquipmentSlot.head);
@@ -34,8 +34,8 @@ describe('EquipmentManager', function() {
 
     it("equips weapons", function() {
       const horse = CharacterFixtures.genericMale({});
-      const right = WeaponFactory.build('cleaver');
-      const left = WeaponFactory.build('hand-axe');
+      const right = EquipmentFactory().build('cleaver');
+      const left = EquipmentFactory().build('hand-axe');
 
       const inventory = InventoryManager(horse);
       inventory.addItem(right);
@@ -52,8 +52,8 @@ describe('EquipmentManager', function() {
 
     it("unequips the secondary slot when equipping a two-handed weapon", function() {
       const horse = CharacterFixtures.genericMale({});
-      const dagger = WeaponFactory.build('dagger');
-      const maul = WeaponFactory.build('goosewing');
+      const dagger = EquipmentFactory().build('dagger');
+      const maul = EquipmentFactory().build('goosewing');
 
       const inventory = InventoryManager(horse);
       inventory.addItem(dagger);
@@ -70,8 +70,8 @@ describe('EquipmentManager', function() {
 
     it("unequips a two-handed primary when equipping an off-hand item", function() {
       const horse = CharacterFixtures.genericMale({});
-      const dagger = WeaponFactory.build('dagger');
-      const maul = WeaponFactory.build('goosewing');
+      const dagger = EquipmentFactory().build('dagger');
+      const maul = EquipmentFactory().build('goosewing');
 
       const inventory = InventoryManager(horse);
       inventory.addItem(dagger);
@@ -88,7 +88,7 @@ describe('EquipmentManager', function() {
 
     it("unequips an item", function() {
       const horse = CharacterFixtures.genericMale({});
-      const choppa = WeaponFactory.build('battle-axe');
+      const choppa = EquipmentFactory().build('battle-axe');
 
       InventoryManager(horse).addItem(choppa);
       EquipmentManager(horse).equipItem(choppa, EquipmentSlot.primary);
@@ -101,8 +101,8 @@ describe('EquipmentManager', function() {
 
   it('getEquippedSlot()', function() {
     const horse = CharacterFixtures.genericMale({});
-    const helm = ArmorFactory.build('helm');
-    const hatchet = WeaponFactory.build('hatchet');
+    const helm = EquipmentFactory().build('helm');
+    const hatchet = EquipmentFactory().build('hatchet');
 
     const inventory = InventoryManager(horse);
     inventory.addItem(helm);
@@ -117,9 +117,9 @@ describe('EquipmentManager', function() {
 
   it('getValidSlots()', function() {
     const horse = CharacterFixtures.genericMale({});
-    const oneHand = WeaponFactory.build('hatchet');
-    const mainHand = WeaponFactory.build('broad-axe');
-    const helm = ArmorFactory.build('helm');
+    const oneHand = EquipmentFactory().build('hatchet');
+    const mainHand = EquipmentFactory().build('broad-axe');
+    const helm = EquipmentFactory().build('helm');
 
     const inventory = InventoryManager(horse);
     inventory.addItem(oneHand);
@@ -134,7 +134,7 @@ describe('EquipmentManager', function() {
 
   it('unequipItem()', function() {
     const horse = CharacterFixtures.genericMale({});
-    const helm = ArmorFactory.build('helm');
+    const helm = EquipmentFactory().build('helm');
 
     InventoryManager(horse).addItem(helm);
 
@@ -148,9 +148,9 @@ describe('EquipmentManager', function() {
 
   it('getSlot()', function() {
     const horse = CharacterFixtures.genericMale({});
-    const chest = ArmorFactory.build('hauberk');
-    const feet = ArmorFactory.build('boots');
-    const hands = ArmorFactory.build('gloves');
+    const chest = EquipmentFactory().build('hauberk');
+    const feet = EquipmentFactory().build('boots');
+    const hands = EquipmentFactory().build('gloves');
 
     const inventory = InventoryManager(horse);
     inventory.addItem(chest);
@@ -170,8 +170,8 @@ describe('EquipmentManager', function() {
 
   it('getEquippedShield()', function() {
     const horse = CharacterFixtures.genericMale({});
-    const dagger = WeaponFactory.build('dagger');
-    const shield = WeaponFactory.build('tower-shield');
+    const dagger = EquipmentFactory().build('dagger');
+    const shield = EquipmentFactory().build('tower-shield');
 
     const inventory = InventoryManager(horse);
     inventory.addItem(dagger);
@@ -189,8 +189,8 @@ describe('EquipmentManager', function() {
 
   it('hasEquippedWeaponType()', function() {
     const horse = CharacterFixtures.genericMale({});
-    const sword = WeaponFactory.build('longsword');
-    const offSword = WeaponFactory.build('short-sword');
+    const sword = EquipmentFactory().build('longsword');
+    const offSword = EquipmentFactory().build('short-sword');
 
     const inventory = InventoryManager(horse);
     inventory.addItem(sword);
@@ -212,8 +212,9 @@ describe('EquipmentManager', function() {
     function equipGear(horse, codes) {
       const inventory = InventoryManager(horse);
       const equipment = EquipmentManager(horse);
+      const factory = EquipmentFactory();
 
-      codes.forEach(([factory, code, slot]) => {
+      codes.forEach(([code, slot]) => {
         const item = factory.build(code);
         inventory.addItem(item);
         equipment.equipItem(item, slot);
@@ -224,7 +225,7 @@ describe('EquipmentManager', function() {
 
     it("uses the worn piece at the hit location", function() {
       const horse = CharacterFixtures.genericMale({});
-      const equipment = equipGear(horse, [[ArmorFactory, 'breastplate', EquipmentSlot.chest]]);
+      const equipment = equipGear(horse, [['breastplate', EquipmentSlot.chest]]);
 
       expect(equipment.getDamageReduction(EquipmentSlot.chest, DamageType.slash)).to.equal(45);
       expect(equipment.getDamageReduction(EquipmentSlot.chest, DamageType.crush)).to.equal(32);
@@ -234,8 +235,8 @@ describe('EquipmentManager', function() {
     it("adds the shield bonus to every hit location", function() {
       const horse = CharacterFixtures.genericMale({});
       const equipment = equipGear(horse, [
-        [ArmorFactory, 'breastplate', EquipmentSlot.chest],
-        [WeaponFactory, 'tower-shield', EquipmentSlot.secondary],
+        ['breastplate', EquipmentSlot.chest],
+        ['tower-shield', EquipmentSlot.secondary],
       ]);
 
       expect(equipment.getDamageReduction(EquipmentSlot.chest, DamageType.slash)).to.equal(61);
@@ -245,7 +246,7 @@ describe('EquipmentManager', function() {
 
     it("covers a bare body with only a shield", function() {
       const horse = CharacterFixtures.genericMale({});
-      const equipment = equipGear(horse, [[WeaponFactory, 'buckler', EquipmentSlot.secondary]]);
+      const equipment = equipGear(horse, [['buckler', EquipmentSlot.secondary]]);
 
       expect(equipment.getDamageReduction(EquipmentSlot.legs, DamageType.pierce)).to.equal(4);
     });

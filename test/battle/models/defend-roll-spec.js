@@ -17,7 +17,7 @@ describe("DefendRoll", function() {
   }
 
   function equipItem(id, code, slot) {
-    const item = WeaponFactory.build(code);
+    const item = EquipmentFactory().build(code);
     InventoryManager(id).addItem(item);
     EquipmentManager(id).equipItem(item, slot);
   }
@@ -41,7 +41,7 @@ describe("DefendRoll", function() {
   function attackAgainst(state, defender, base='longsword', ability=null) {
     const attacker = state.getActiveMonsters()[0];
     const attackRoll = PhysicalAttackRoll(attacker, defender);
-    attackRoll.setWeapon(WeaponFactory.build(base));
+    attackRoll.setWeapon(EquipmentFactory().build(base));
     attackRoll.setAbility(ability);
     attackRoll.setHitLocation(EquipmentSlot.chest);
     attackRoll.roll();
@@ -196,7 +196,7 @@ describe("DefendRoll", function() {
     const defender = state.getActiveMonsters()[0];
 
     const attackRoll = PhysicalAttackRoll(attacker, defender);
-    attackRoll.setWeapon(WeaponFactory.build('longsword'));
+    attackRoll.setWeapon(EquipmentFactory().build('longsword'));
     attackRoll.setHitLocation(EquipmentSlot.chest);
     attackRoll.roll();
 
@@ -211,7 +211,7 @@ describe("DefendRoll", function() {
     equipItem(defender, 'targe', EquipmentSlot.secondary);
 
     const attackRoll = PhysicalAttackRoll(attacker, defender);
-    attackRoll.setWeapon(WeaponFactory.build('longsword'));
+    attackRoll.setWeapon(EquipmentFactory().build('longsword'));
     attackRoll.setHitLocation(EquipmentSlot.chest);
     attackRoll.roll();
 

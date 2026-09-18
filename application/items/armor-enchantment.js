@@ -2,8 +2,8 @@ global.ArmorEnchantment = function(id, enchantment) {
   const armor = Armor(id);
 
   function getPower() {
-    const material = armor ? armor.getBaseArmor().getPrimaryMaterial() : null;
-    const potential = (material == null) ? 1 : Material.getFactor(material, MaterialFactor.potential);
+    const material = armor ? armor.getPrimaryMaterial() : null;
+    const potential = (material == null) ? 1 : Material.lookup(material).getFactor(MaterialFactor.potential);
     return Math.round(enchantment.power * potential);
   }
 

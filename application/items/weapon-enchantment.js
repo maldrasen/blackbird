@@ -2,8 +2,8 @@ global.WeaponEnchantment = function(id, enchantment) {
   const weapon = Weapon(id);
 
   function getPower() {
-    const material = weapon ? weapon.getBaseWeapon().getPrimaryMaterial() : null;
-    const potential = (material == null) ? 1 : Material.getFactor(material, MaterialFactor.potential);
+    const material = weapon ? weapon.getPrimaryMaterial() : null;
+    const potential = (material == null) ? 1 : Material.lookup(material).getFactor(MaterialFactor.potential);
     return Math.round(enchantment.power * potential);
   }
 

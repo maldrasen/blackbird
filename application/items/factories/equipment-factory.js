@@ -1,4 +1,9 @@
-global.ArmorFactory = function() {
+
+// Builds a piece of equipment from a BaseEquipment record. The record lists its materials by type; the factory picks a
+// concrete material for each, restricted to the available list when one has been set, and names the item from what
+// it was made of.
+
+global.EquipmentFactory = function() {
   let availableMaterials;
 
   // TODO: We're currently using Random.from() to pick a random material, given a list of available materials. We
@@ -13,27 +18,32 @@ global.ArmorFactory = function() {
     availableMaterials = (list == null) ? null : new Set(list);
   }
 
-  function pickMaterial(type) {
+  function pickMaterial(type, code) {
     const all = Material.forType(type);
-    const availableForType = (availableMaterials == null) ? all : [...(new Set(all).intersection(availableMaterials))];
+    const availableForType = (availableMaterials == null) ? all : all.filter(material => availableMaterials.has(material));
+    if (availableForType.length === 0) { throw new Error(`No available ${type} material for [${code}]`); }
     return Random.from(availableForType);
   }
 
   // Options:
-  //   - name
-  //   - nameType
+  //   - name         overrides the name built from the materials
+  //   - nameType     'proper' for a named item, otherwise common
+  //   - textKey      overrides the record's attack text key
+  //   - enchantment
   function build(code, options={}) {
     const base = BaseEquipment.lookup(code);
-    const item = { type:'armor', base:code };
+    const item = { type:(base.isWeapon() ? 'weapon' : 'armor'), base:code };
 
     setMaterials();
     setName();
+    setOverrides();
 
-    // Materials can be specified in the options. If they aren't, pick them at random from the type.
+    // Two material types can land on the same material (a steel ball on a steel chain), so the amounts add up.
     function setMaterials() {
       item.materials = {};
       Object.entries(base.getMaterials()).forEach(([type,amount]) => {
-        item.materials[pickMaterial(type)] = amount;
+        const material = pickMaterial(type, code);
+        item.materials[material] = (item.materials[material] || 0) + amount;
       });
     }
 
@@ -42,22 +52,20 @@ global.ArmorFactory = function() {
       item.nameType = (options.nameType === 'proper') ? 'proper' : 'common';
     }
 
-    // For now I'm just making the armor factory work in just like the weapon factory.
-    // function customizeArmor(id, options) {
-    //   const armorComponent = ArmorComponent.lookup(id);
-    //   if (options.enchantment) { armorComponent.enchantment = options.enchantment; }
-    // }
+    function setOverrides() {
+      if (options.textKey) { item.textKey = options.textKey; }
+      if (options.enchantment) { item.enchantment = options.enchantment; }
+    }
 
     const id = Registry.createEntity();
     ItemComponent.create(id, item);
-    ArmorAppraiser.appraise(id);
-
+    EquipmentAppraiser.appraise(id);
     return id;
   }
 
   return {
     build,
     setAvailableMaterials,
-  }
+  };
 
-}
+};

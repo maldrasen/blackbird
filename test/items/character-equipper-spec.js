@@ -99,7 +99,7 @@ describe('CharacterEquipper', function() {
 
   it('leaves a preset weapon loadout alone', function() {
     const horse = CharacterFixtures.genericMale({ skills:{ swords:30 } });
-    const preset = WeaponFactory.build('short-sword');
+    const preset = EquipmentFactory().build('short-sword');
     InventoryManager(horse).addItem(preset);
     EquipmentManager(horse).equipItem(preset, EquipmentSlot.primary);
 
@@ -115,7 +115,7 @@ describe('CharacterEquipper', function() {
 
   it('skips armor slots that are already filled', function() {
     const horse = CharacterFixtures.genericMale({ skills:{ swords:30 } });
-    const preset = ArmorFactory.build('doublet');
+    const preset = EquipmentFactory().build('doublet');
     InventoryManager(horse).addItem(preset);
     EquipmentManager(horse).equipItem(preset, EquipmentSlot.chest);
 

@@ -40,7 +40,7 @@ describe('InventorySystem', function() {
   it('transferItem() unequips an item and moves it between inventories', function() {
     const horse = CharacterFixtures.genericMale({});
     const goat = CharacterFixtures.genericMale({});
-    const cleaver = WeaponFactory.build('cleaver');
+    const cleaver = EquipmentFactory().build('cleaver');
 
     InventoryManager(horse).addItem(cleaver);
     EquipmentManager(horse).equipItem(cleaver, EquipmentSlot.primary);

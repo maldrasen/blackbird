@@ -37,8 +37,9 @@ global.Fixtures = (function() {
     // TEMP: Inventory Testing
     const player = GameSystem.getState().getPlayer();
     const inventory = InventoryManager(player);
+    const factory = EquipmentFactory();
     BaseEquipment.getAllCodes().filter(code => BaseEquipment.lookup(code).isWeapon()).forEach(code => {
-      inventory.addItem(WeaponFactory.build(code));
+      inventory.addItem(factory.build(code));
     });
 
     GameSystem.setGameMode(GameMode.location);

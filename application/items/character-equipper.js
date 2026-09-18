@@ -9,6 +9,7 @@ global.CharacterEquipper = function(id) {
   const attributesComponent = AttributesComponent.lookup(id);
   const inventoryManager = InventoryManager(id);
   const equipmentManager = EquipmentManager(id);
+  const factory = EquipmentFactory();
 
   const equipment = {};
 
@@ -68,8 +69,8 @@ global.CharacterEquipper = function(id) {
   // The equipLoadout() function is the list driven alternative to equip(). Instead of shopping against a budget, the
   // caller provides the exact gear the character can have: a list of possible weapon loadouts (one is picked at
   // random) and the armor they wear. Monsters use this to fight with real equipment, equipment they keep if they're
-  // recruited into the party. Every entry is a factory options object with a base code (which may be a registered
-  // variant like bone-spear), so names and text keys can be overridden.
+  // recruited into the party. Every entry is a factory options object with a base code, so names and text keys can
+  // be overridden.
   //
   //     loadouts: [{ main:{ base:B, name:N }, off:{ base:B, name:N }}]
   //     armor:    [{ base:B, name:N }]
@@ -85,11 +86,11 @@ global.CharacterEquipper = function(id) {
 
     const loadout = Random.from(loadouts);
     if (loadout.main) {
-      giveWeapon(loadout.main.base, EquipmentSlot.primary, loadout.main);
+      giveEquipment(loadout.main.base, EquipmentSlot.primary, loadout.main);
       if (BaseEquipment.lookup(loadout.main.base).getHands() === WeaponHandedness.two) { return; }
     }
     if (loadout.off && isFilled(EquipmentSlot.secondary) === false) {
-      giveWeapon(loadout.off.base, EquipmentSlot.secondary, loadout.off);
+      giveEquipment(loadout.off.base, EquipmentSlot.secondary, loadout.off);
     }
   }
 
@@ -105,7 +106,7 @@ global.CharacterEquipper = function(id) {
     Object.entries(grouped).forEach(([slot,choices]) => {
       if (isFilled(slot)) { return; }
       const choice = Random.from(choices);
-      giveArmor(choice.base, slot, choice);
+      giveEquipment(choice.base, slot, choice);
     });
   }
 
@@ -120,7 +121,7 @@ global.CharacterEquipper = function(id) {
     const primaryCode = selectByBudget(weaponCandidates(weaponType), budget * SlotBudgetPercent.primary);
     if (primaryCode == null) { return; }
 
-    giveWeapon(primaryCode, EquipmentSlot.primary);
+    giveEquipment(primaryCode, EquipmentSlot.primary);
     if (BaseEquipment.lookup(primaryCode).getHands() === WeaponHandedness.two) { return; }
     if (isFilled(EquipmentSlot.secondary)) { return; }
 
@@ -129,7 +130,7 @@ global.CharacterEquipper = function(id) {
     const secondaryCode = selectByBudget(weaponCandidates(offhandType), budget * offhandPercent);
     if (secondaryCode == null) { return; }
 
-    giveWeapon(secondaryCode, EquipmentSlot.secondary);
+    giveEquipment(secondaryCode, EquipmentSlot.secondary);
   }
 
   // A character who's trained with a weapon uses that kind of weapon. Untrained characters get whatever suits their
@@ -174,7 +175,7 @@ global.CharacterEquipper = function(id) {
       if (isFilled(slot)) { return; }
       const code = selectByBudget(armorCandidates(slot), budget * SlotBudgetPercent[slot]);
       if (code) {
-        giveArmor(code, slot);
+        giveEquipment(code, slot);
       }
     });
   }
@@ -211,8 +212,7 @@ global.CharacterEquipper = function(id) {
   // === Giving ========================================================================================================
 
   function isFilled(slot) { return equipmentManager.getSlot(slot) != null; }
-  function giveWeapon(code, slot, options={}) { give(WeaponFactory.build(code, options), slot); }
-  function giveArmor(code, slot, options={}) { give(ArmorFactory.build(code, options), slot); }
+  function giveEquipment(code, slot, options={}) { give(factory.build(code, options), slot); }
 
   function give(itemId, slot) {
     inventoryManager.addItem(itemId);
