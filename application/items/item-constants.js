@@ -13,4 +13,7 @@ global.ItemConstants = {
   lootEssenceScale: 20,
   lootCeilingLow: 60,
   lootFloorPercent: 0.25,
+
+  effortCost: 20,
+  enchantmentCost: 1000,
 };

@@ -4,7 +4,6 @@
 // it cost to make, the materials plus the effort, nudged by a performance factor for how well it does its job.
 
 global.EquipmentAppraiser = (function() {
-  const effortCost = 20;
 
   function appraise(item) {
     const base = BaseEquipment.lookup(item.base);
@@ -16,7 +15,7 @@ global.EquipmentAppraiser = (function() {
     const materialCost = Object.entries(materials).reduce((sum, [code,amount]) => {
       return sum + (Material.lookup(code).getCost() * amount);
     }, 0);
-    return materialCost + (base.getEffort() * effortCost);
+    return materialCost + (base.getEffort() * ItemConstants.effortCost);
   }
 
   // Because a shield's reduction is applied over the entire body the reduction it provides is much more valuable than
