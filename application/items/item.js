@@ -43,7 +43,7 @@ global.Item = function(id) {
     isMetal: () => { return Material.isMetal(getPrimaryMaterial()); },
     hasEnchantment: () => { return getItemComponent().enchantment != null; },
     getEnchantment,
+    getValue: () => { return getItemComponent().value; },
     isLewd: () => { return getBase().isLewd(); },
   };
-
 }
