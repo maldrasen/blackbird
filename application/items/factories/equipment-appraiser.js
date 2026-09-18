@@ -4,8 +4,8 @@
 
 global.EquipmentAppraiser = (function() {
 
-  function appraise(id) {
-
+  function appraise(itemProperties) {
+    return 100;
   }
 
   // function getWeaponValue() {

@@ -57,9 +57,10 @@ global.EquipmentFactory = function() {
       if (options.enchantment) { item.enchantment = options.enchantment; }
     }
 
+    item.value = EquipmentAppraiser.appraise(item);
+
     const id = Registry.createEntity();
     ItemComponent.create(id, item);
-    EquipmentAppraiser.appraise(id);
     return id;
   }
 
