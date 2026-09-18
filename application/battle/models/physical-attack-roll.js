@@ -34,6 +34,11 @@ global.PhysicalAttackRoll = function(attacker, target) {
     return weapon ? weapon.getTextKey() : baseWeapon.getTextKey();
   }
 
+  // A real weapon's damage range scales with what it was made from, which only the item knows.
+  function getDamageRange() {
+    return weapon ? weapon.getDamageRange() : baseWeapon.getDamageRange();
+  }
+
   function getRollMode() {
     const statusEffects = StatusEffects(attacker);
     const poised = statusEffects.hasPoised();
@@ -76,6 +81,8 @@ global.PhysicalAttackRoll = function(attacker, target) {
     getBaseWeaponCode: () => { return weapon ? baseWeapon.getCode() : null; },
     isRangedAttack,
     getTextKey,
+    getDamageRange,
+    getDamageTypes: () => { return baseWeapon.getDamageTypes(); },
 
     roll,
     getRollValue: () => { return check.value; },
