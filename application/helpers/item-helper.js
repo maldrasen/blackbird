@@ -34,10 +34,29 @@ global.ItemHelper = (function() {
     return Math.round(base * absorption);
   }
 
+  // A weapon's damage range is authored at baseline quality the same way a reduction profile is. Crush damage scales
+  // with the primary material's heft, anything else with the stat that suits the weapon (sharpness, lash, or tension),
+  // blended by the weapon's damage type percentages.
+  function getDamageFactor(base, material) {
+    if (material == null) { return 1; }
+
+    const record = Material.lookup(material);
+    return base.getDamageTypes().reduce((blend, entry) => {
+      const stat = (entry.type === DamageType.crush) ? MaterialFactor.heft : base.getDamageStat();
+      return blend + ((entry.percent / 100) * record.getFactor(stat));
+    }, 0);
+  }
+
+  function getScaledDamageRange(base, material) {
+    const factor = getDamageFactor(base, material);
+    return { low:Math.round(base.getLow() * factor), high:Math.round(base.getHigh() * factor) };
+  }
+
   return {
     getArmorValueFactor,
     getWeaponValueFactor,
     getScaledReduction,
+    getScaledDamageRange,
   };
 
 })();

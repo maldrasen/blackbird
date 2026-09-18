@@ -1,55 +1,44 @@
 
-// Runs at the end of EquipmentFactory.build() and will write a value onto the item component (task 213). The sketches
-// below came off the old weapon and armor records and are the starting point.
+// Runs at the end of EquipmentFactory.build(). The item component can't be created without a value, so the appraiser
+// works from the properties the factory has settled on rather than from an Item. A piece of equipment is worth what
+// it cost to make, the materials plus the effort, nudged by a performance factor for how well it does its job.
 
 global.EquipmentAppraiser = (function() {
+  const effortCost = 20;
 
-  function appraise(itemProperties) {
-    return 100;
+  function appraise(item) {
+    const base = BaseEquipment.lookup(item.base);
+    const primaryMaterial = Object.keys(item.materials)[0];
+    return Math.round(getConstructionCost(base, item.materials) * getPerformanceFactor(base, primaryMaterial));
   }
 
-  // function getWeaponValue() {
-  //   const construction = materials.getMaterialCost() + ((weapon.effort || 0) * _effortCost);
-  //   return Math.round(construction * getPerformanceFactor());
-  // }
-  //
-  // function getArmorValue() {
-  //   const construction = materials.getMaterialCost() + ((armor.effort || 0) * _effortCost);
-  //   const performance = ItemHelper.getArmorValueFactor(reduction.getTotalReduction());
-  //   return Math.round((construction * performance) / 5) * 5;
-  // }
+  function getConstructionCost(base, materials) {
+    const materialCost = Object.entries(materials).reduce((sum, [code,amount]) => {
+      return sum + (Material.lookup(code).getCost() * amount);
+    }, 0);
+    return materialCost + (base.getEffort() * effortCost);
+  }
 
-  // A shield's value comes from both it's reduction and the damage it can do. Because the shield's reduction is
-  // applied over the entire body the reduction it provides is much more valuable than a normal armor piece, giving
-  // shields a higher overall performance factor.
-  // function getPerformanceFactor() {
-  //   return (weapon.type !== 'shield') ?
-  //     ItemHelper.getWeaponValueFactor(getDamagePerSecond()) :
-  //     (ItemHelper.getArmorValueFactor(reduction.getTotalReduction()) * 2);
-  // }
+  // Because a shield's reduction is applied over the entire body the reduction it provides is much more valuable than
+  // a normal armor piece, giving shields a higher overall performance factor.
+  function getPerformanceFactor(base, material) {
+    if (base.isWeapon()) { return ItemHelper.getWeaponValueFactor(getDamagePerSecond(base, material)); }
 
-  // The weapon needs these...
+    const factor = ItemHelper.getArmorValueFactor(getTotalReduction(base, material));
+    return base.isShield() ? factor * 2 : factor;
+  }
 
-  // function damageTypeFactor(type) {
-  //   const statKey = (type === DamageType.crush) ? MaterialFactor.heft : getDamageStat();
-  //   return Material.getFactor(materials.getPrimaryMaterial(),statKey);
-  // }
-  //
-  // function getDamageFactor() {
-  //   if (materials.getPrimaryMaterial() == null) { return 1; }
-  //   return getDamageTypes().reduce((blend,dt) => {
-  //     return blend + ((dt.percent / 100) * damageTypeFactor(dt.type));
-  //   }, 0);
-  // }
-  //
-  // function getLow() { return Math.round(weapon.low * getDamageFactor()); }
-  // function getHigh() { return Math.round(weapon.high * getDamageFactor()); }
-  //
-  // function getDamagePerSecond() {
-  //   const average = (getLow() + getHigh()) / 2;
-  //   return average / (weapon.speed / 1000);
-  // }
+  function getDamagePerSecond(base, material) {
+    const range = ItemHelper.getScaledDamageRange(base, material);
+    return ((range.low + range.high) / 2) / (base.getSpeed() / 1000);
+  }
 
-  return { appraise }
+  function getTotalReduction(base, material) {
+    return [DamageType.crush, DamageType.slash, DamageType.pierce].reduce((total, type) => {
+      return total + ItemHelper.getScaledReduction(base.getReductionMap(), material, type);
+    }, 0);
+  }
+
+  return { appraise };
 
 })();
