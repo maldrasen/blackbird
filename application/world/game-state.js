@@ -13,7 +13,7 @@ global.GameState = function(data={}) {
   let roster = data.roster || [];
   let episodeQueue = data.episodeQueue || [];
   let viewedEpisodes = data.viewedEpisodes || [];
-  let equipmentDepots = {};
+  let equipmentDepots = data.equipmentDepots || {};
 
   // TODO: Eventually this function will consult everything that might influence this value. It's not set in the state,
   //       but may need to read values from the player.
@@ -36,15 +36,16 @@ global.GameState = function(data={}) {
     flags[key] = value;
   }
 
-  // Find an entity for an equipment depot given the associated code, or create one if it doesn't exist.
+  // Find the entities for an equipment depot given the associated code, or create them if they don't exist. A depot
+  // keeps its weapons and its armor in separate inventories.
   function manifestEquipmentDepot(code) {
-    if (equipmentDepots[code]) { return equipmentDepots[code]; }
+    if (equipmentDepots[code] == null) {
+      equipmentDepots[code] = { weapons:Registry.createEntity(), armor:Registry.createEntity() };
+      InventoryComponent.create(equipmentDepots[code].weapons);
+      InventoryComponent.create(equipmentDepots[code].armor);
+    }
 
-    const id = Registry.createEntity();
-    InventoryComponent.create(id);
-    equipmentDepots[code] = id;
-
-    return id;
+    return { ...equipmentDepots[code] };
   }
 
   function getSaveMetadata() {
