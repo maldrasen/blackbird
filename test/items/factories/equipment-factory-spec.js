@@ -1,10 +1,12 @@
 describe("EquipmentFactory", function() {
 
-  function steelFactory() {
+  function factoryFor(materials) {
     const factory = EquipmentFactory();
-    factory.setAvailableMaterials(['steel']);
+    factory.setAvailableMaterials(materials);
     return factory;
   }
+
+  function steelFactory() { return factoryFor({ steel:1 }); }
 
   describe("build()", function() {
     it("builds a weapon from its base record", function() {
@@ -24,16 +26,28 @@ describe("EquipmentFactory", function() {
   });
 
   describe("materials", function() {
-    it("picks each material from the available list and names the item after it", function() {
+    it("picks each material from the available materials and names the item after it", function() {
       const weapon = Item(steelFactory().build('labrys'));
       expect(weapon.getName()).to.equal('Steel Labrys');
       expect(weapon.getPrimaryMaterial()).to.equal('steel');
     });
 
+    it("weighs the pick by each material's frequency", function() {
+      const factory = factoryFor({ iron:10, steel:90 });
+      Random.stubRoll(9, 10);
+      expect(Item(factory.build('longsword')).getPrimaryMaterial()).to.equal('iron');
+      expect(Item(factory.build('longsword')).getPrimaryMaterial()).to.equal('steel');
+    });
+
+    it("only weighs the materials that fit the material type", function() {
+      // Wool and leather can't hold an edge, so steel is the only thing left for the longsword to roll against.
+      const factory = factoryFor({ wool:100, leather:120, steel:50 });
+      Random.stubRoll(49);
+      expect(Item(factory.build('longsword')).getPrimaryMaterial()).to.equal('steel');
+    });
+
     it("builds soft armor from a soft material", function() {
-      const factory = EquipmentFactory();
-      factory.setAvailableMaterials(['silk']);
-      const armor = Item(factory.build('doublet'));
+      const armor = Item(factoryFor({ silk:1 }).build('doublet'));
       expect(armor.getName()).to.equal('Silk Doublet');
       expect(armor.getPrimaryMaterial()).to.equal('silk');
       expect(armor.isMetal()).to.be.false;
@@ -51,10 +65,8 @@ describe("EquipmentFactory", function() {
       expect(Item(id).getName()).to.equal('Bone Flail');
     });
 
-    it("throws when nothing on the available list fits a material type", function() {
-      const factory = EquipmentFactory();
-      factory.setAvailableMaterials(['wool']);
-      expect(() => factory.build('longsword')).to.throw(/sharp/);
+    it("throws when none of the available materials fit a material type", function() {
+      expect(() => factoryFor({ wool:100 }).build('longsword')).to.throw(/No available sharp material/);
     });
   });
 
@@ -76,12 +88,11 @@ describe("EquipmentFactory", function() {
     });
 
     it("scales an enchantment's power by the material's potential", function() {
-      const factory = EquipmentFactory();
-      factory.setAvailableMaterials(['silver']);
+      const silverFactory = factoryFor({ silver:1 });
       const enchantment = { type:WeaponEnchantments.endanger, species:'kobold', power:100 };
 
       expect(Item(steelFactory().build('longsword', { enchantment })).getEnchantment().getPower()).to.equal(100);
-      expect(Item(factory.build('longsword', { enchantment })).getEnchantment().getPower()).to.equal(200);
+      expect(Item(silverFactory.build('longsword', { enchantment })).getEnchantment().getPower()).to.equal(200);
     });
 
     it("leaves the text key and enchantment off when they are not given", function() {

@@ -129,15 +129,13 @@ describe('InventoryManager', function() {
 
   it('listItems()', function() {
     const horse = CharacterFixtures.genericMale({});
-    const leather = EquipmentFactory();
-    leather.setAvailableMaterials(['leather']);
 
     const cleaver = ItemFixtures.buildSteel('cleaver');
     const helm = ItemFixtures.buildSteel('helm');
     const hauberk = ItemFixtures.buildSteel('hauberk');
     const hatchet = ItemFixtures.buildSteel('hatchet');
     const battleAxe = ItemFixtures.buildSteel('battle-axe');
-    const boots = leather.build('boots');
+    const boots = ItemFixtures.build('boots', ['leather']);
 
     const inventory = InventoryManager(horse);
     [cleaver, helm, hauberk, hatchet, battleAxe, boots].forEach(item => inventory.addItem(item));

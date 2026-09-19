@@ -22,9 +22,11 @@ global.ItemFixtures = (function() {
     return build(code, ['steel'], options);
   }
 
+  // Specs care about which materials an item can be made of, not how common they are, so they list the materials and
+  // every one gets the same frequency.
   function build(code, materials, options={}) {
     const factory = EquipmentFactory();
-    factory.setAvailableMaterials(materials);
+    factory.setAvailableMaterials(Object.fromEntries(materials.map(material => [material, 1])));
     return factory.build(code, options);
   }
 
