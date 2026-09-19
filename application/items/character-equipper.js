@@ -82,22 +82,33 @@ global.CharacterEquipper = function(id) {
     if (isFilled(EquipmentSlot.primary)) { return; }
 
     const stock = equipmentDepot.getWeapons();
-    const weaponType = determineWeaponType();
-    const primaryCandidates = weaponCandidates(stock, weaponType, EquipmentSlot.primary);
-    const primaryId = selectByBudget(primaryCandidates, budget * SlotBudgetPercent.primary);
+    const primaryId = selectPrimary(stock, budget * SlotBudgetPercent.primary);
     if (primaryId == null) { return; }
 
     pickEquipment(primaryId, EquipmentSlot.primary);
     if (Item(primaryId).getBase().getHands() === WeaponHandedness.two) { return; }
     if (isFilled(EquipmentSlot.secondary)) { return; }
 
-    const offhandType = isDexterous(weaponType) ? 'dagger' : 'shield';
+    // The off-hand follows the weapon they actually ended up with, which may not be the type they wanted.
+    const offhandType = isDexterous(Item(primaryId).getBase().getType()) ? 'dagger' : 'shield';
     const offhandPercent = (offhandType === 'shield') ? SlotBudgetPercent.shield : SlotBudgetPercent.secondary;
-    const secondaryCandidates = weaponCandidates(stock, offhandType, EquipmentSlot.secondary);
+    const secondaryCandidates = ofType(slotCandidates(stock, EquipmentSlot.secondary), offhandType);
     const secondaryId = selectByBudget(secondaryCandidates, budget * offhandPercent);
     if (secondaryId == null) { return; }
 
     pickEquipment(secondaryId, EquipmentSlot.secondary);
+  }
+
+  // A depot might not stock the weapon type a character wants (kobolds don't make whips), or might not have one
+  // they can afford. Fighting with the wrong weapon beats fighting unarmed, so the search widens to any weapon in
+  // budget, and then to the least unaffordable weapon in the depot. Only an empty depot leaves them unarmed. The
+  // off-hand doesn't get this treatment, an empty off-hand is fine.
+  function selectPrimary(stock, slotBudget) {
+    const candidates = slotCandidates(stock, EquipmentSlot.primary);
+
+    return selectByBudget(ofType(candidates, determineWeaponType()), slotBudget)
+        || selectByBudget(candidates, slotBudget)
+        || selectCheapest(candidates);
   }
 
   // A character who's trained with a weapon uses that kind of weapon. Untrained characters get whatever suits their
@@ -142,7 +153,7 @@ global.CharacterEquipper = function(id) {
 
     ArmorSlots.forEach(slot => {
       if (isFilled(slot)) { return; }
-      const itemId = selectByBudget(armorCandidates(stock, slot), budget * SlotBudgetPercent[slot]);
+      const itemId = selectByBudget(slotCandidates(stock, slot), budget * SlotBudgetPercent[slot]);
       if (itemId) {
         pickEquipment(itemId, slot);
       }
@@ -153,20 +164,15 @@ global.CharacterEquipper = function(id) {
 
   // The stock list goes stale as items are picked from it, so anything this character has already taken is skipped.
   // Otherwise, a character with a dagger in each hand could try to pick the same dagger twice.
-  function weaponCandidates(stock, type, slot) {
+  function slotCandidates(stock, slot) {
     return stock.
       filter(itemId => Object.values(equipment).includes(itemId) === false).
-      filter(itemId => Item(itemId).getBase().getType() === type).
       filter(itemId => equipmentManager.canEquipItem(itemId, slot)).
-      map(toCandidate);
+      map(itemId => ({ id:itemId, value:Item(itemId).getValue() }));
   }
 
-  function armorCandidates(stock, slot) {
-    return stock.filter(itemId => equipmentManager.canEquipItem(itemId, slot)).map(toCandidate);
-  }
-
-  function toCandidate(itemId) {
-    return { id:itemId, value:Item(itemId).getValue() };
+  function ofType(candidates, type) {
+    return candidates.filter(item => Item(item.id).getBase().getType() === type);
   }
 
   // Pick a random item valued within 80% - 100% of the slot's budget. When nothing falls in that window we settle
@@ -178,8 +184,16 @@ global.CharacterEquipper = function(id) {
     const inWindow = affordable.filter(item => item.value >= slotBudget * budgetWindow);
     if (inWindow.length > 0) { return Random.from(inWindow.map(item => item.id)); }
 
-    const bestValue = Math.max(...affordable.map(item => item.value));
-    return Random.from(affordable.filter(item => item.value === bestValue).map(item => item.id));
+    return randomWithValue(affordable, Math.max(...affordable.map(item => item.value)));
+  }
+
+  function selectCheapest(candidates) {
+    if (candidates.length === 0) { return null; }
+    return randomWithValue(candidates, Math.min(...candidates.map(item => item.value)));
+  }
+
+  function randomWithValue(candidates, value) {
+    return Random.from(candidates.filter(item => item.value === value).map(item => item.id));
   }
 
   // === Giving ========================================================================================================
