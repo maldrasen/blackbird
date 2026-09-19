@@ -90,10 +90,6 @@ global.BaseEquipment = (function() {
       getMaterials: () => { return record.materials; },
       getEffort: () => { return record.effort || 0; },
       getTextKey: () => { return record.textKey; },
-
-      // TODO: Placeholder so the CharacterEquipper's budget shopping doesn't blow up. Value belongs to the built item
-      //       now, and this goes away when task 225 rewrites the equipper to look at real components.
-      getValue: () => { return 100; },
       isWeapon,
       isShield,
       isLewd,

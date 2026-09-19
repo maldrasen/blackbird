@@ -122,24 +122,28 @@ global.CharacterEquipper = function(id) {
   // === Weapons =======================================================================================================
 
   // A preset primary weapon means the loadout is intentional, so we leave both hands alone. Otherwise we pick a
-  // primary and, unless it's two-handed or the off-hand is already filled, an appropriate secondary.
+  // primary and, unless it's two-handed or the off-hand is already filled, an appropriate secondary. The stock is
+  // only fetched once because fetching it restocks the depot.
   function equipWeapons(budget) {
     if (isFilled(EquipmentSlot.primary)) { return; }
 
+    const stock = equipmentDepot.getWeapons();
     const weaponType = determineWeaponType();
-    const primaryCode = selectByBudget(weaponCandidates(weaponType), budget * SlotBudgetPercent.primary);
-    if (primaryCode == null) { return; }
+    const primaryCandidates = weaponCandidates(stock, weaponType, EquipmentSlot.primary);
+    const primaryId = selectByBudget(primaryCandidates, budget * SlotBudgetPercent.primary);
+    if (primaryId == null) { return; }
 
-    giveEquipment(primaryCode, EquipmentSlot.primary);
-    if (BaseEquipment.lookup(primaryCode).getHands() === WeaponHandedness.two) { return; }
+    pickEquipment(primaryId, EquipmentSlot.primary);
+    if (Item(primaryId).getBase().getHands() === WeaponHandedness.two) { return; }
     if (isFilled(EquipmentSlot.secondary)) { return; }
 
     const offhandType = isDexterous(weaponType) ? 'dagger' : 'shield';
     const offhandPercent = (offhandType === 'shield') ? SlotBudgetPercent.shield : SlotBudgetPercent.secondary;
-    const secondaryCode = selectByBudget(weaponCandidates(offhandType), budget * offhandPercent);
-    if (secondaryCode == null) { return; }
+    const secondaryCandidates = weaponCandidates(stock, offhandType, EquipmentSlot.secondary);
+    const secondaryId = selectByBudget(secondaryCandidates, budget * offhandPercent);
+    if (secondaryId == null) { return; }
 
-    giveEquipment(secondaryCode, EquipmentSlot.secondary);
+    pickEquipment(secondaryId, EquipmentSlot.secondary);
   }
 
   // A character who's trained with a weapon uses that kind of weapon. Untrained characters get whatever suits their
@@ -180,29 +184,35 @@ global.CharacterEquipper = function(id) {
   // === Armor =========================================================================================================
 
   function equipArmor(budget) {
+    const stock = equipmentDepot.getArmor();
+
     ArmorSlots.forEach(slot => {
       if (isFilled(slot)) { return; }
-      const code = selectByBudget(armorCandidates(slot), budget * SlotBudgetPercent[slot]);
-      if (code) {
-        giveEquipment(code, slot);
+      const itemId = selectByBudget(armorCandidates(stock, slot), budget * SlotBudgetPercent[slot]);
+      if (itemId) {
+        pickEquipment(itemId, slot);
       }
     });
   }
 
   // === Selection =====================================================================================================
 
-  function weaponCandidates(type) {
-    return BaseEquipment.getAllCodes().
-      map(code => BaseEquipment.lookup(code)).
-      filter(weapon => weapon.getType() === type).
-      map(weapon => ({ code:weapon.getCode(), value:weapon.getValue() }));
+  // The stock list goes stale as items are picked from it, so anything this character has already taken is skipped.
+  // Otherwise, a character with a dagger in each hand could try to pick the same dagger twice.
+  function weaponCandidates(stock, type, slot) {
+    return stock.
+      filter(itemId => Object.values(equipment).includes(itemId) === false).
+      filter(itemId => Item(itemId).getBase().getType() === type).
+      filter(itemId => equipmentManager.canEquipItem(itemId, slot)).
+      map(toCandidate);
   }
 
-  function armorCandidates(slot) {
-    return BaseEquipment.getAllCodes().
-      map(code => BaseEquipment.lookup(code)).
-      filter(armor => armor.getSlot() === slot).
-      map(armor => ({ code:armor.getCode(), value:armor.getValue() }));
+  function armorCandidates(stock, slot) {
+    return stock.filter(itemId => equipmentManager.canEquipItem(itemId, slot)).map(toCandidate);
+  }
+
+  function toCandidate(itemId) {
+    return { id:itemId, value:Item(itemId).getValue() };
   }
 
   // Pick a random item valued within 80% - 100% of the slot's budget. When nothing falls in that window we settle
@@ -212,19 +222,28 @@ global.CharacterEquipper = function(id) {
     if (affordable.length === 0) { return null; }
 
     const inWindow = affordable.filter(item => item.value >= slotBudget * budgetWindow);
-    if (inWindow.length > 0) { return Random.from(inWindow.map(item => item.code)); }
+    if (inWindow.length > 0) { return Random.from(inWindow.map(item => item.id)); }
 
     const bestValue = Math.max(...affordable.map(item => item.value));
-    return Random.from(affordable.filter(item => item.value === bestValue).map(item => item.code));
+    return Random.from(affordable.filter(item => item.value === bestValue).map(item => item.id));
   }
 
   // === Giving ========================================================================================================
 
   function isFilled(slot) { return equipmentManager.getSlot(slot) != null; }
-  function giveEquipment(code, slot, options={}) { give(factory.build(code, options), slot); }
 
-  function give(itemId, slot) {
+  function giveEquipment(code, slot, options={}) {
+    const itemId = factory.build(code, options);
     inventoryManager.addItem(itemId);
+    wear(itemId, slot);
+  }
+
+  function pickEquipment(itemId, slot) {
+    equipmentDepot.pickItem(itemId, id);
+    wear(itemId, slot);
+  }
+
+  function wear(itemId, slot) {
     equipmentManager.equipItem(itemId, slot);
     equipment[slot] = itemId;
   }
