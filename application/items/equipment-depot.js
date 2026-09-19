@@ -1,7 +1,32 @@
 global.EquipmentDepot = function(code) {
   const parameters = EquipmentParameters.lookup(code);
+  const depotId = GameSystem.getState().manifestEquipmentDepot(code);
 
-  // A depot needs an inventory component, but I don't think it needs much else...
-  // We need a map somewhere that maps the depot based on the parameter codes to the inventory entity... probably in the game state.
+  function fetch() { return InventoryComponent.lookup(depotId); }
+  function update(inventory) { Registry.updateComponent(depotId, ComponentType.inventory, inventory); }
+
+  // Remove oldest items and fill with new items.
+  // How is oldest determined? Auto increment id? System time at creation?
+  function restock() {
+
+  }
+
+  function getStock() {
+    restock();
+    return fetch().items;
+  }
+
+  function removeItem(itemId) {
+    const inventory = fetch();
+    inventory.items = inventory.items.filter(id => id !== itemId);
+    update(inventory);
+  }
+
+  return {
+    getId: () => { return depotId },
+    getParameters: () => { return parameters },
+    getStock,
+    removeItem,
+  }
 
 }

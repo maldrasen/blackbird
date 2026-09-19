@@ -6,7 +6,7 @@ global.InventoryManager = function(characterId=GameSystem.getState().getPlayer()
 
   function update(inventory) {
     Registry.updateComponent(characterId, ComponentType.inventory, inventory);
- }
+  }
 
   function hasItem(itemId) {
     return fetch().items.indexOf(itemId) >= 0;
