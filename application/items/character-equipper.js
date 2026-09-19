@@ -17,8 +17,10 @@ global.CharacterEquipper = function(id) {
   const equipmentManager = EquipmentManager(id);
   const factory = EquipmentFactory();
 
-  const equipment = {};
+  // TODO: All the species have equipment parameters codes used to select which equipment depot to use as a fallback.
+  //       A base monster could also set its own equipment parameters property which would take priority.
   const equipmentDepot = EquipmentDepot(species.getEquipmentParameters());
+  const equipment = {};
 
   const SlotBudgetPercent = {
     primary: 1.0,
