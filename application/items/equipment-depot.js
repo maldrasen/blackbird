@@ -12,15 +12,21 @@ global.EquipmentDepot = function(code) {
   //       options, like the name or text key may be used by unique weapons. The depot won't be building unique
   //       weapons, and I'm not sure the factory would either honestly.
 
-  // TODO: When restocking we need to remove the oldest equipment from the depot. This should prevent the depots from
-  //       getting clogged with expensive equipment that no monsters can afford within their budget.
-
+  // Every item picked since the last restock pushes the oldest item out of the pool as well, so the depot can't clog
+  // with expensive equipment that no monster can afford within their budget. Items are stocked in the order they're
+  // built, which keeps the oldest at the front. The eviction happens here rather than in pickItem() so that a list of
+  // stock stays valid while a character picks several things from it.
+  //
   // A depot with nothing to build in a pool (the vermen have no armor) leaves that pool empty.
   function restock(poolId, equipment) {
     if (Object.keys(equipment).length === 0) { return; }
 
     const factory = EquipmentFactory(parameters.getMaterials());
     const inventory = fetch(poolId);
+    const picked = poolSize - inventory.items.length;
+
+    inventory.items.splice(0, picked).forEach(id => Registry.deleteEntity(id));
+
     const shortfall = poolSize - inventory.items.length;
 
     for (let i=0; i<shortfall; i++) {
