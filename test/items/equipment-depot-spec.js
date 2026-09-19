@@ -16,4 +16,15 @@ describe('Equipment Depot', function() {
     expect(EquipmentDepot('kobold').getStock().length).to.equal(100);
   });
 
+  it(`transfers an item when picked from the depot`, function() {
+    const bunny = CharacterFixtures.genericFemale({});
+    const depot = EquipmentDepot('standard')
+    const item = depot.getStock()[0];
+
+    depot.pickItem(item, bunny);
+
+    expect(InventoryManager(bunny).hasItem(item)).to.be.true;
+    expect(depot.getStock().includes(item)).to.be.false;
+  });
+
 });

@@ -32,17 +32,20 @@ global.EquipmentDepot = function(code) {
     return fetch().items;
   }
 
-  function removeItem(itemId) {
+  // Picking an item should always transfer it into a new inventory.
+  function pickItem(itemId, entity) {
     const inventory = fetch();
     inventory.items = inventory.items.filter(id => id !== itemId);
     update(inventory);
+
+    InventoryManager(entity).addItem(itemId)
   }
 
   return {
     getId: () => { return depotId },
     getParameters: () => { return parameters },
     getStock,
-    removeItem,
+    pickItem,
   }
 
 }
