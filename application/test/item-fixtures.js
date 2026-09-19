@@ -25,9 +25,7 @@ global.ItemFixtures = (function() {
   // Specs care about which materials an item can be made of, not how common they are, so they list the materials and
   // every one gets the same frequency.
   function build(code, materials, options={}) {
-    const factory = EquipmentFactory();
-    factory.setAvailableMaterials(Object.fromEntries(materials.map(material => [material, 1])));
-    return factory.build(code, options);
+    return EquipmentFactory(Object.fromEntries(materials.map(material => [material, 1]))).build(code, options);
   }
 
   // Monsters don't equip themselves until the depots exist (task 225), so specs that need a monster carrying

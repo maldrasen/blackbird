@@ -1,5 +1,4 @@
-global.EquipmentFactory = function() {
-  let availableMaterials;
+global.EquipmentFactory = function(availableMaterials) {
 
   // Options:
   //   - name         overrides the name built from the materials
@@ -53,9 +52,6 @@ global.EquipmentFactory = function() {
     return id;
   }
 
-  return {
-    setAvailableMaterials: map => {availableMaterials = map; },
-    build,
-  }
+  return { build }
 
 };
