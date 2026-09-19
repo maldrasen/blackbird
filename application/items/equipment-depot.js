@@ -35,12 +35,12 @@ global.EquipmentDepot = function(code) {
   }
 
   // Shields take a hand slot, so they're stocked with the weapons.
-  function restockWeapons() {
+  function getWeapons() {
     restock(stocks.weapons, parameters.getWeapons());
     return [...fetch(stocks.weapons).items];
   }
 
-  function restockArmor() {
+  function getArmor() {
     restock(stocks.armor, parameters.getArmor());
     return [...fetch(stocks.armor).items];
   }
@@ -57,8 +57,8 @@ global.EquipmentDepot = function(code) {
   return {
     getStocks: () => { return { ...stocks }; },
     getParameters: () => { return parameters },
-    restockWeapons,
-    restockArmor,
+    getWeapons,
+    getArmor,
     pickItem,
   }
 

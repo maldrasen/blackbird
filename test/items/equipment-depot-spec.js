@@ -15,10 +15,16 @@ describe('EquipmentDepot', function() {
     expect(GameSystem.getState().pack().equipmentDepots).to.deep.equal({});
   });
 
+  it(`doesn't evict items unless items are picked`, function() {
+    const first = EquipmentDepot('standard').getWeapons();
+    const second = EquipmentDepot('standard').getWeapons();
+    expect(first).to.deep.equal(second);
+  })
+
   it(`builds equipment when stock is accessed`, function() {
     const depot = EquipmentDepot('kobold');
-    const weapons = depot.restockWeapons();
-    const armor = depot.restockArmor();
+    const weapons = depot.getWeapons();
+    const armor = depot.getArmor();
     const parameters = depot.getParameters();
 
     expect(weapons.length).to.equal(50);
@@ -30,36 +36,36 @@ describe('EquipmentDepot', function() {
 
   it(`leaves a stock empty when the parameters have nothing to build for it`, function() {
     const depot = EquipmentDepot('vermen');
-    expect(depot.restockWeapons().length).to.equal(50);
-    expect(depot.restockArmor()).to.deep.equal([]);
+    expect(depot.getWeapons().length).to.equal(50);
+    expect(depot.getArmor()).to.deep.equal([]);
   });
 
   it(`transfers an item when picked from the depot`, function() {
     const bunny = CharacterFixtures.genericFemale({});
     const depot = EquipmentDepot('standard')
-    const weapon = depot.restockWeapons()[0];
-    const armor = depot.restockArmor()[0];
+    const weapon = depot.getWeapons()[0];
+    const armor = depot.getArmor()[0];
 
     depot.pickItem(weapon, bunny);
     depot.pickItem(armor, bunny);
 
     expect(InventoryManager(bunny).hasItem(weapon)).to.be.true;
     expect(InventoryManager(bunny).hasItem(armor)).to.be.true;
-    expect(depot.restockWeapons().includes(weapon)).to.be.false;
-    expect(depot.restockArmor().includes(armor)).to.be.false;
-    expect(depot.restockWeapons().length).to.equal(50);
+    expect(depot.getWeapons().includes(weapon)).to.be.false;
+    expect(depot.getArmor().includes(armor)).to.be.false;
+    expect(depot.getWeapons().length).to.equal(50);
   });
 
   // The oldest item is picked second to show that the first pick didn't evict it from under the list.
   it(`evicts the oldest item for every item picked when it restocks`, function() {
     const bunny = CharacterFixtures.genericFemale({});
     const depot = EquipmentDepot('standard')
-    const before = depot.restockWeapons();
+    const before = depot.getWeapons();
 
     depot.pickItem(before[10], bunny);
     depot.pickItem(before[0], bunny);
 
-    const after = depot.restockWeapons();
+    const after = depot.getWeapons();
 
     expect(after.length).to.equal(50);
     expect(after.slice(0,46)).to.deep.equal([...before.slice(3,10), ...before.slice(11)]);
@@ -69,7 +75,7 @@ describe('EquipmentDepot', function() {
     expect(ItemComponent.lookup(before[2])).to.be.undefined;
     expect(InventoryManager(bunny).hasItem(before[0])).to.be.true;
     expect(InventoryManager(bunny).hasItem(before[10])).to.be.true;
-    expect(depot.restockArmor().length).to.equal(50);
+    expect(depot.getArmor().length).to.equal(50);
   });
 
   it(`throws when picking an item the depot doesn't have`, function() {
