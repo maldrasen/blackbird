@@ -25,6 +25,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [197] Skill events `5pt` — [197-skill-episodes.md](197-skill-episodes.md)
 - [228] Effect based enchantments `3pt` — [228-effect-based-enchantments.md](228-effect-based-enchantments.md)
 - [229] Implment ammunition `3pt` — [229-implment-ammunition.md](229-implment-ammunition.md)
+- [230] Add draw weight for bows. `0pt` — [230-add-draw-weight-for-bows.md](230-add-draw-weight-for-bows.md)
 
 ## Priority 3
 
