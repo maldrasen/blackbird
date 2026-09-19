@@ -13,9 +13,7 @@ global.CharacterEquipper = function(id) {
   const species = Species.lookup(ActorComponent.lookup(id).species);
   const skillsComponent = SkillsComponent.lookup(id);
   const attributesComponent = AttributesComponent.lookup(id);
-  const inventoryManager = InventoryManager(id);
   const equipmentManager = EquipmentManager(id);
-  const factory = EquipmentFactory();
 
   // TODO: All the species have equipment parameters codes used to select which equipment depot to use as a fallback.
   //       A base monster could also set its own equipment parameters property which would take priority.
@@ -75,55 +73,11 @@ global.CharacterEquipper = function(id) {
     return equipment;
   }
 
-  // The equipLoadout() function is the list driven alternative to equip(). Instead of shopping against a budget, the
-  // caller provides the exact gear the character can have: a list of possible weapon loadouts (one is picked at
-  // random) and the armor they wear. Monsters use this to fight with real equipment, equipment they keep if they're
-  // recruited into the party. Every entry is a factory options object with a base code, so names and text keys can
-  // be overridden.
-  //
-  //     loadouts: [{ main:{ base:B, name:N }, off:{ base:B, name:N }}]
-  //     armor:    [{ base:B, name:N }]
-  //
-  function equipLoadout(spec) {
-    equipLoadoutWeapons(spec.loadouts || []);
-    equipLoadoutArmor(spec.armor || []);
-    return equipment;
-  }
-
-  function equipLoadoutWeapons(loadouts) {
-    if (loadouts.length === 0 || isFilled(EquipmentSlot.primary)) { return; }
-
-    const loadout = Random.from(loadouts);
-    if (loadout.main) {
-      giveEquipment(loadout.main.base, EquipmentSlot.primary, loadout.main);
-      if (BaseEquipment.lookup(loadout.main.base).getHands() === WeaponHandedness.two) { return; }
-    }
-    if (loadout.off && isFilled(EquipmentSlot.secondary) === false) {
-      giveEquipment(loadout.off.base, EquipmentSlot.secondary, loadout.off);
-    }
-  }
-
-  // Armor entries are grouped by the slot their base fills; when a slot has more than one possible piece, one is
-  // picked at random.
-  function equipLoadoutArmor(entries) {
-    const grouped = {};
-    entries.forEach(entry => {
-      const slot = BaseEquipment.lookup(entry.base).getSlot();
-      grouped[slot] = [...(grouped[slot] || []), entry];
-    });
-
-    Object.entries(grouped).forEach(([slot,choices]) => {
-      if (isFilled(slot)) { return; }
-      const choice = Random.from(choices);
-      giveEquipment(choice.base, slot, choice);
-    });
-  }
-
   // === Weapons =======================================================================================================
 
-  // A preset primary weapon means the loadout is intentional, so we leave both hands alone. Otherwise we pick a
-  // primary and, unless it's two-handed or the off-hand is already filled, an appropriate secondary. The stock is
-  // only fetched once because fetching it restocks the depot.
+  // A preset primary weapon means their weapons were chosen intentionally, so we leave both hands alone. Otherwise we
+  // pick a primary and, unless it's two-handed or the off-hand is already filled, an appropriate secondary. The stock
+  // is only fetched once because fetching it restocks the depot.
   function equipWeapons(budget) {
     if (isFilled(EquipmentSlot.primary)) { return; }
 
@@ -232,18 +186,8 @@ global.CharacterEquipper = function(id) {
 
   function isFilled(slot) { return equipmentManager.getSlot(slot) != null; }
 
-  function giveEquipment(code, slot, options={}) {
-    const itemId = factory.build(code, options);
-    inventoryManager.addItem(itemId);
-    wear(itemId, slot);
-  }
-
   function pickEquipment(itemId, slot) {
     equipmentDepot.pickItem(itemId, id);
-    wear(itemId, slot);
-  }
-
-  function wear(itemId, slot) {
     equipmentManager.equipItem(itemId, slot);
     equipment[slot] = itemId;
   }
@@ -271,7 +215,6 @@ global.CharacterEquipper = function(id) {
 
   return {
     equip,
-    equipLoadout,
     assignSkills,
   };
 
