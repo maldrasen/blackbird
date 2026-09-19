@@ -18,7 +18,7 @@ global.BattleFixtures = (function() {
     setSkill(player,'swords',Random.between(20,40));
     equipWeapon(player, koboldFucker, EquipmentSlot.primary);
     equipWeapon(player, { base:'round-shield'}, EquipmentSlot.secondary);
-    CharacterEquipper(player).equip(Random.between(500,1000));
+    CharacterEquipper(player).equip({ budget:Random.between(200, 250) });
     PartyConfiguration.setCharacter(player,position);
   }
 
@@ -30,7 +30,7 @@ global.BattleFixtures = (function() {
 
     equipWeapon(tank, { base:'longsword'}, EquipmentSlot.primary);
     equipWeapon(tank, { base:'round-shield'}, EquipmentSlot.secondary);
-    CharacterEquipper(tank).equip(Random.between(400,600));
+    CharacterEquipper(tank).equip({ budget:Random.between(150, 200) });
     PartyConfiguration.setCharacter(tank,position);
   }
 
@@ -42,7 +42,7 @@ global.BattleFixtures = (function() {
 
     equipWeapon(rogue, { base:'dagger'}, EquipmentSlot.primary);
     equipWeapon(rogue, { base:'dagger'}, EquipmentSlot.secondary);
-    CharacterEquipper(rogue).equip(Random.between(200,400));
+    CharacterEquipper(rogue).equip({ budget:Random.between(100, 200) });
     PartyConfiguration.setCharacter(rogue,position);
   }
 

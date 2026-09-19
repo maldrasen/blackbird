@@ -4,6 +4,7 @@ BaseMonster.register('deepdark-whisperer',{
   type: 'rogue',
   triggers: ['black-hair'],
   level: 8,
+  equipmentOptions: { budget:150 },
 
   lootGroups: {
     nothing: 100,

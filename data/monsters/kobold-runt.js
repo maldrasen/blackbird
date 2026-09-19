@@ -8,6 +8,7 @@ BaseMonster.register('kobold-runt',{
   archetypes: { timid:10 },
   triggers:[],
   level: 1,
+  equipmentOptions: { budget:40 },
 
   buildAbilities: () => { return [
     Ability.Bite({ damage:[10,30], speed:1000, priority:10 }),

@@ -4,6 +4,7 @@ BaseMonster.register('deepdark-kobold',{
   type: 'fighter',
   triggers: ['black-hair'],
   level: 6,
+  equipmentOptions: { budget:110 },
 
   lootGroups: {
     nothing: 100,

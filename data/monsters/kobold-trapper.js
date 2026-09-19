@@ -5,6 +5,7 @@ BaseMonster.register('kobold-trapper',{
   type: 'fighter',
   triggers: [],
   level: 3,
+  equipmentOptions: { budget:100 },
 
   lootGroups: {
     nothing: 100,

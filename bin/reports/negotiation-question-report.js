@@ -25,7 +25,7 @@ function buildPair(monsterCode, playerGender) {
 
   const player = PlayerFactory.build({ gender:playerGender });
   GameSystem.getState().setPlayer(player);
-  CharacterEquipper(player).equip(Random.between(500,1000));
+  CharacterEquipper(player).equip({ budget:150 });
 
   return { P:player, T:MonsterFactory(monsterCode).build() };
 }

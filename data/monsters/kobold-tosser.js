@@ -5,6 +5,7 @@ BaseMonster.register('kobold-tosser',{
   type: 'hunter',
   triggers: [],
   level: 5,
+  equipmentOptions: { budget:85 },
 
   buildAbilities: () => { return [
     Ability.UseArticle({ article:'blasto', priority:100, cooldown:5000 }),

@@ -269,7 +269,7 @@ function finishCharacterCreation() {
   EpisodeQueue.seed(EpisodeBundles.defaultStart);
 
   const equipper = CharacterEquipper(playerId)
-  equipper.equip(Random.between(500,600));
+  equipper.equip({ budget:150 });
   equipper.assignSkills();
 
   GameSystem.setGameMode(GameMode.location);

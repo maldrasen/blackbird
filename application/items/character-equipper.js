@@ -60,6 +60,9 @@ global.CharacterEquipper = function(id) {
   // The equip() function equips the character with a weapon, an off-hand item, and armor for every slot, then returns
   // a map of the slots that were actually filled with the new item ids. Slots with nothing affordable are simply left
   // empty.
+  //  - budget - The maximum a character can spend on any one piece of equipment, scaled by the SlotBudgetPercent.
+  //  - bareHanded - This character will not buy weapons if this is true.
+  //  - naked - This character will not but armor if this is true.
   //
   // TODO: At the moment, we assume every character is a melee fighter for now. Magic users, specific armors for
   //       ranged fighters and rogues, ability-aware armor selection for higher level characters, and a finery pass
@@ -67,9 +70,9 @@ global.CharacterEquipper = function(id) {
   //
   // TODO: If a character is equipped with a bow, we'll also need to add arrows to their inventory.
   //
-  function equip(budget) {
-    equipWeapons(budget);
-    equipArmor(budget);
+  function equip(options) {
+    if (options.bareHanded !== true) { equipWeapons(options.budget); }
+    if (options.naked !== true) { equipArmor(options.budget); }
     return equipment;
   }
 

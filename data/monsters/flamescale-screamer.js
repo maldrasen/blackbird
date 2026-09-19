@@ -5,6 +5,7 @@ BaseMonster.register('flamescale-screamer',{
   archetypes: { maniac:10 },
   triggers: ['red-hair'],
   level: 8,
+  equipmentOptions: { budget:100 },
 
   skills: {
     sorcery: 5,

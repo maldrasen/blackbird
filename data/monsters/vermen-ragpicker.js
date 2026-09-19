@@ -5,4 +5,5 @@ BaseMonster.register('vermen-ragpicker',{
   type: 'coward',
   triggers: [],
   level: 1,
+  equipmentOptions: { budget:40 },
 });
