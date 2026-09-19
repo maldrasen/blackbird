@@ -1,11 +1,3 @@
-// The CharacterEquipper outfits an existing character with weapons and armor appropriate to their skills and
-// attributes. The budget isn't a total to spend, it's the most the character would pay for any single item. Each
-// equipment slot uses a percentage of that budget, so characters end up with roughly comparable gear in every slot.
-
-// TODO: We should try to avoid using the character equipper in the specs. The depots are lazy loaded, but if they're
-//       accessed in a spec the depots will build a hundred item components for each spec. Instead, the character
-//       fixtures should build single pieces of equipment. This would be more predictable as well.
-
 global.CharacterEquipper = function(id) {
   const minimumWeaponSkill = 10;
   const budgetWindow = 0.8;
@@ -14,10 +6,7 @@ global.CharacterEquipper = function(id) {
   const skillsComponent = SkillsComponent.lookup(id);
   const attributesComponent = AttributesComponent.lookup(id);
   const equipmentManager = EquipmentManager(id);
-
-  // TODO: All the species have equipment parameters codes used to select which equipment depot to use as a fallback.
-  //       A base monster could also set its own equipment parameters property which would take priority.
-  const equipmentDepot = EquipmentDepot(species.getEquipmentParameters());
+  const equipmentDepot = findDepot();
   const equipment = {};
 
   const SlotBudgetPercent = {
@@ -57,9 +46,6 @@ global.CharacterEquipper = function(id) {
   const StrengthWeaponTypes = ['axe','mace','polearm'];
   const DexterityWeaponTypes = ['bow','dagger','whip'];
 
-  // The equip() function equips the character with a weapon, an off-hand item, and armor for every slot, then returns
-  // a map of the slots that were actually filled with the new item ids. Slots with nothing affordable are simply left
-  // empty.
   //  - budget - The maximum a character can spend on any one piece of equipment, scaled by the SlotBudgetPercent.
   //  - bareHanded - This character will not buy weapons if this is true.
   //  - naked - This character will not but armor if this is true.
@@ -74,6 +60,16 @@ global.CharacterEquipper = function(id) {
     if (options.bareHanded !== true) { equipWeapons(options.budget); }
     if (options.naked !== true) { equipArmor(options.budget); }
     return equipment;
+  }
+
+  // All the species have equipment parameters codes used to select which equipment depot to use as a fallback. A base
+  // monster can also set its own equipment parameters property which take priority.
+  function findDepot() {
+    if (MonsterComponent.lookup(id)) {
+      const monsterParameters = Monster(id).getBaseMonster().getEquipmentParameters();
+      if (monsterParameters) { return monsterParameters; }
+    }
+    return EquipmentDepot(species.getEquipmentParameters());
   }
 
   // === Weapons =======================================================================================================
