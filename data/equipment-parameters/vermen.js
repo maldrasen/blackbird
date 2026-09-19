@@ -9,8 +9,7 @@ EquipmentParameters.register('vermen',{
     iron: 20,
   },
 
-  armors:{},
-  weapons:{},
+  equipment:{},
   enchantments:{},
 
 });

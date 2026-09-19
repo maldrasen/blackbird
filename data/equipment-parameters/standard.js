@@ -13,8 +13,7 @@ EquipmentParameters.register('standard',{
     silver: 10,
   },
 
-  armors:{},
-  weapons:{},
+  equipment:{},
   enchantments:{},
 
 });

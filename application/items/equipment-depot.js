@@ -9,6 +9,9 @@ global.EquipmentDepot = function(code) {
   // How is oldest determined? Auto increment id? System time at creation?
   function restock() {
 
+    const factory = EquipmentFactory();
+    // factory.setAvailableMaterials(parameters.getMaterials());
+
   }
 
   function getStock() {

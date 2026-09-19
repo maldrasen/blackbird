@@ -17,8 +17,7 @@ global.EquipmentParameters = (function() {
     return {
       getCode: () => { return code; },
       getMaterials: () => { return { ...parameters.materials }; },
-      getArmors: () => { return { ...parameters.armors }; },
-      getWeapons: () => { return { ...parameters.weapons }; },
+      getEquipment: () => { return { ...parameters.equipment }; },
       getEnchantments: () => { return { ...parameters.enchantment }; },
     };
   }

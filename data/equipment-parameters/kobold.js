@@ -9,8 +9,7 @@ EquipmentParameters.register('kobold',{
     iron: 30,
   },
 
-  armors:{},
-  weapons:{},
+  equipment:{},
   enchantments:{},
 
 });
