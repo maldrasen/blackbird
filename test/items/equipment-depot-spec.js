@@ -1,4 +1,4 @@
-describe.only('Equipment Depot', function() {
+describe('Equipment Depot', function() {
 
   it(`builds a component when it's first accessed`, function() {
     const depot = EquipmentDepot('standard');
