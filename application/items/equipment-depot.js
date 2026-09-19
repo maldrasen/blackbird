@@ -1,17 +1,30 @@
 global.EquipmentDepot = function(code) {
+  const depotSize = 100;
+
   const parameters = EquipmentParameters.lookup(code);
   const depotId = GameSystem.getState().manifestEquipmentDepot(code);
 
   function fetch() { return InventoryComponent.lookup(depotId); }
   function update(inventory) { Registry.updateComponent(depotId, ComponentType.inventory, inventory); }
 
-  // Remove oldest items and fill with new items.
-  // How is oldest determined? Auto increment id? System time at creation?
+  // TODO: The equipment parameters should include an enchantment chance. When building a new item, we should roll to
+  //       see if there should be an enchantment, then create random enchantment options to send to the factory. Other
+  //       options, like the name or text key may be used by unique weapons. The depot won't be building unique
+  //       weapons, and I'm not sure the factory would either honestly.
+
+  // TODO: When restocking we need to remove the oldest equipment from the depot. This should prevent the depots from
+  //       getting clogged with expensive equipment that no monsters can afford within their budget. This might not
+  //       work though. We could look into some other strategies. Maybe resetting the stock once a given category is
+  //       completely drained maybe?
+
   function restock() {
+    const factory = EquipmentFactory(parameters.getMaterials());
+    const inventory = fetch();
 
-    const factory = EquipmentFactory();
-    // factory.setAvailableMaterials(parameters.getMaterials());
-
+    while (inventory.items.length < depotSize) {
+      const code = Random.fromFrequencyMap(parameters.getEquipment());
+      inventory.items.push(factory.build(code));
+    }
   }
 
   function getStock() {

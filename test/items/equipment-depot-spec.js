@@ -13,7 +13,7 @@ describe('Equipment Depot', function() {
   });
 
   it(`builds equipment when stock is accessed`, function() {
-    const items = EquipmentDepot('kobold').getStock();
+    expect(EquipmentDepot('kobold').getStock().length).to.equal(100);
   });
 
 });
