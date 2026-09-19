@@ -2,12 +2,21 @@
 // Foot armor. Boots and buskins are soft goods (their steel-quality profile is scaled down by the primary material's
 // absorption); sabatons and sollerets are metal.
 
+BaseEquipment.register('slippers', {
+  nameFunction: names => { return `${names[0]} Slippers`; },
+  icon: 'armor/feet-01.png',
+  slot: EquipmentSlot.feet,
+  reduction: { crush: 2, slash: 5, pierce: 5 },
+  materials: { pliable:1 },
+  effort: 3,
+});
+
 BaseEquipment.register('boots', {
   nameFunction: names => { return `${names[0]} Boots`; },
   icon: 'armor/feet-01.png',
   slot: EquipmentSlot.feet,
   reduction: { crush: 11, slash: 20, pierce: 14 },
-  materials: { pliable:3 },
+  materials: { leather:3 },
   effort: 2,
 });
 
@@ -16,7 +25,7 @@ BaseEquipment.register('buskins', {
   icon: 'armor/feet-02.png',
   slot: EquipmentSlot.feet,
   reduction: { crush: 9, slash: 17, pierce: 11 },
-  materials: { pliable:2 },
+  materials: { leather:2 },
   effort: 2,
 });
 
