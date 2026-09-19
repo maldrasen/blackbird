@@ -733,6 +733,7 @@
     "test/helpers/random-spec.js",
     "test/helpers/string-helper-spec.js",
     "test/items/article-appraiser-spec.js",
+    "test/items/character-equipper-spec.js",
     "test/items/equipment-depot-spec.js",
     "test/items/equipment-manager-spec.js",
     "test/items/factories/equipment-appraiser-spec.js",

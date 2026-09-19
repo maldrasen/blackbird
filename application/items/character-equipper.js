@@ -212,8 +212,8 @@ global.CharacterEquipper = function(id) {
   // === Skills ========================================================================================================
 
   // If this character has been equipped with a weapon they have no skill in (which happens when the player character
-  // is randomly given a weapon) we want to give them the minimum starting skill to use that weapon. Otherwise, they'll
-  // just miss far too often.
+  // is randomly given a weapon, or a monster falls back to whatever the depot had) we want to give them the minimum
+  // starting skill to use that weapon. Otherwise, they'll just miss far too often.
   function assignSkills() {
     const primaryId = equipmentManager.getSlot(EquipmentSlot.primary);
     const secondaryId = equipmentManager.getSlot(EquipmentSlot.secondary);
@@ -222,11 +222,15 @@ global.CharacterEquipper = function(id) {
     if (secondaryId) { ensureMinimumSkill(Item(secondaryId).getSkill()) }
   }
 
+  // The minimum grows with level, and it's rolled before looking at the skill they have, so a character who's already
+  // trained past the roll keeps what they've got.
   function ensureMinimumSkill(code) {
+    const minimum = Math.min(100, minimumWeaponSkill + Random.roll(2 * Character(id).getLevel()));
     const skills = SkillsComponent.lookup(id);
-    if (skills[code]<minimumWeaponSkill) {
-      skills[code] = minimumWeaponSkill + Random.roll(6);
-      SkillsComponent.update(id,skills);
+
+    if (skills[code] < minimum) {
+      skills[code] = minimum;
+      SkillsComponent.update(id, skills);
     }
   }
 
