@@ -10,10 +10,8 @@ EquipmentParameters.register('standard',{
     silver: 10,
   },
 
-  // Armor and weapons are combined in the same map as they're all equipment. Armor should be 6 times more common than
-  // weapons. A character equipping themselves will get 1 or 2 weapons, but get 5-7 armor pieces. Because shields take
-  // a hand slot they're counted on the weapon side.
-  equipment:{
+  // Because shields take a hand slot they're counted on the weapon side.
+  weapons:{
     'hatchet':           30,
     'cleaver':           35,
     'hand-axe':          40,
@@ -89,7 +87,9 @@ EquipmentParameters.register('standard',{
     'flail':             25,
     'cat-o-nine-tails':  10,
     // Whips:            80
+  },
 
+  armor:{
     'doublet':           600,
     'hauberk':           500,
     'cuirass':           400,
@@ -124,8 +124,6 @@ EquipmentParameters.register('standard',{
     'plate-mail':        150,
     // Legs:             1900
   },
-  // WEAPONS TOTAL:    1580
-  // ARMOR TOTAL:      9500
 
   enchantments:{},
 });

@@ -19,10 +19,11 @@ global.EquipmentDepot = function(code) {
 
   function restock() {
     const factory = EquipmentFactory(parameters.getMaterials());
+    const equipment = { ...parameters.getWeapons(), ...parameters.getArmor() };
     const inventory = fetch();
 
     while (inventory.items.length < depotSize) {
-      const code = Random.fromFrequencyMap(parameters.getEquipment());
+      const code = Random.fromFrequencyMap(equipment);
       inventory.items.push(factory.build(code));
     }
   }
