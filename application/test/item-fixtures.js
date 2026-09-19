@@ -16,6 +16,10 @@ global.ItemFixtures = (function() {
     equipment.equipItem(boots, EquipmentSlot.feet);
   }
 
+  function buildStandard(code) {
+    return EquipmentFactory(EquipmentParameters.lookup('standard').getMaterials()).build(code);
+  }
+
   // An item's name, reduction, and enchantment power all follow its material, so specs that assert them build in
   // steel, the baseline every factor is measured against.
   function buildSteel(code, options={}) {
@@ -39,6 +43,7 @@ global.ItemFixtures = (function() {
 
   return {
     addRandomEquipment,
+    buildStandard,
     build,
     buildSteel,
     equip,
