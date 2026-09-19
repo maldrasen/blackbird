@@ -31,6 +31,9 @@ Species.register(SpeciesCode.equian, {
     male:   ArchetypeDistribution(Gender.male,   SpeciesCode.equian),
   },
 
+  // For now. I think equians and lupins may pull their equipment from a more strength focused equipment pool.
+  equipmentParameters: 'standard',
+
   // Huge cocks and clits and pussies, but as such their sensitivity is lower.
   sensitivities: {
     cock:     { Z:0,   F:5,  D:10, C:80,  B:20, A:5 },

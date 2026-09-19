@@ -31,6 +31,8 @@ Species.register(SpeciesCode.elf, {
     male:   ArchetypeDistribution(Gender.male,   SpeciesCode.elf),
   },
 
+  equipmentParameters: 'standard',
+
   sensitivities: {
     cock:     { Z:0,   F:1,  D:5,  C:100, B:40, A:15 },
     clit:     { Z:0,   F:1,  D:5,  C:100, B:40, A:15 },

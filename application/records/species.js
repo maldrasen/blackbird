@@ -45,6 +45,7 @@ global.Species = (function() {
       getResistances: () => { return species.resistances; },
       getResistance: type => { return species.resistances[type] || 0; },
       getArchetypes: () => { return species.archetypes; },
+      getEquipmentParameters: () => { return species.equipmentParameters; },
       getSensitivities: () => { return species.sensitivities; },
       getSexualPreferences: () => { return species.sexualPreferences; },
       getAspects: () => { return species.aspects; },

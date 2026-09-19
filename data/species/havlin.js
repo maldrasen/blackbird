@@ -30,6 +30,8 @@ Species.register(SpeciesCode.havlin, {
     male:   ArchetypeDistribution(Gender.male,   SpeciesCode.havlin),
   },
 
+  equipmentParameters: 'standard',
+
   // Because of their relatively shallow pussies, havlins have an unusually
   // sensitive cervix.
   sensitivities: {

@@ -1,10 +1,16 @@
 // The CharacterEquipper outfits an existing character with weapons and armor appropriate to their skills and
 // attributes. The budget isn't a total to spend, it's the most the character would pay for any single item. Each
 // equipment slot uses a percentage of that budget, so characters end up with roughly comparable gear in every slot.
+
+// TODO: We should try to avoid using the character equipper in the specs. The depots are lazy loaded, but if they're
+//       accessed in a spec the depots will build a hundred item components for each spec. Instead, the character
+//       fixtures should build single pieces of equipment. This would be more predictable as well.
+
 global.CharacterEquipper = function(id) {
   const minimumWeaponSkill = 10;
   const budgetWindow = 0.8;
 
+  const species = Species.lookup(ActorComponent.lookup(id).species);
   const skillsComponent = SkillsComponent.lookup(id);
   const attributesComponent = AttributesComponent.lookup(id);
   const inventoryManager = InventoryManager(id);
@@ -12,6 +18,7 @@ global.CharacterEquipper = function(id) {
   const factory = EquipmentFactory();
 
   const equipment = {};
+  const equipmentDepot = EquipmentDepot(species.getEquipmentParameters());
 
   const SlotBudgetPercent = {
     primary: 1.0,

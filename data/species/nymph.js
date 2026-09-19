@@ -30,6 +30,10 @@ Species.register(SpeciesCode.nymph, {
     male:   ArchetypeDistribution(Gender.male,   SpeciesCode.nymph),
   },
 
+  // For now. I think nymphs and sylphs may pull their equipment from a more beauty focused equipment pool, less
+  // clothing, more body piercings.
+  equipmentParameters: 'standard',
+
   // Nymphs have an overall boost to their sensitivities, and highly sensitive
   // nipples.
   sensitivities: {

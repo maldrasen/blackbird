@@ -31,6 +31,9 @@ Species.register(SpeciesCode.lupin, {
     male:   ArchetypeDistribution(Gender.male,   SpeciesCode.lupin),
   },
 
+  // For now. I think equians and lupins may pull their equipment from a more strength focused equipment pool.
+  equipmentParameters: 'standard',
+
   // Lupins all have some degree of urethra sensitivity.
   sensitivities: {
     cock:     { Z:0,   F:1,   D:5,  C:100, B:40, A:15 },

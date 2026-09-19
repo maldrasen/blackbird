@@ -34,6 +34,8 @@ Species.register(SpeciesCode.kobold, {
     male:   ArchetypeDistribution(Gender.male,   SpeciesCode.kobold),
   },
 
+  equipmentParameters: 'kobold',
+
   // Fairly standard, except that kobolds don't have nipples.
   sensitivities: {
     cock:     { Z:0,   F:1,  D:5,  C:100, B:40, A:15 },
