@@ -6,7 +6,6 @@ global.CharacterEquipper = function(id) {
   const skillsComponent = SkillsComponent.lookup(id);
   const attributesComponent = AttributesComponent.lookup(id);
   const equipmentManager = EquipmentManager(id);
-  const equipmentDepot = findDepot();
   const equipment = {};
 
   const SlotBudgetPercent = {
@@ -67,7 +66,7 @@ global.CharacterEquipper = function(id) {
   function findDepot() {
     if (MonsterComponent.lookup(id)) {
       const monsterParameters = Monster(id).getBaseMonster().getEquipmentParameters();
-      if (monsterParameters) { return monsterParameters; }
+      if (monsterParameters) { return EquipmentDepot(monsterParameters); }
     }
     return EquipmentDepot(species.getEquipmentParameters());
   }
@@ -80,7 +79,7 @@ global.CharacterEquipper = function(id) {
   function equipWeapons(budget) {
     if (isFilled(EquipmentSlot.primary)) { return; }
 
-    const stock = equipmentDepot.getWeapons();
+    const stock = findDepot().getWeapons();
     const primaryId = selectPrimary(stock, budget * SlotBudgetPercent.primary);
     if (primaryId == null) { return; }
 
@@ -148,7 +147,7 @@ global.CharacterEquipper = function(id) {
   // === Armor =========================================================================================================
 
   function equipArmor(budget) {
-    const stock = equipmentDepot.getArmor();
+    const stock = findDepot().getArmor();
 
     ArmorSlots.forEach(slot => {
       if (isFilled(slot)) { return; }
@@ -200,7 +199,7 @@ global.CharacterEquipper = function(id) {
   function isFilled(slot) { return equipmentManager.getSlot(slot) != null; }
 
   function pickEquipment(itemId, slot) {
-    equipmentDepot.pickItem(itemId, id);
+    findDepot().pickItem(itemId, id);
     equipmentManager.equipItem(itemId, slot);
     equipment[slot] = itemId;
   }
