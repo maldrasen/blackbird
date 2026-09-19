@@ -32,8 +32,8 @@ global.ItemFixtures = (function() {
     return EquipmentFactory(Object.fromEntries(materials.map(material => [material, 1]))).build(code, options);
   }
 
-  // Monsters don't equip themselves until the depots exist (task 225), so specs that need a monster carrying
-  // something specific hand it over here. The item goes into the first slot its base fits.
+  // Monsters pick whatever their depot happens to stock, so specs that need a character carrying something specific
+  // hand it over here. The item goes into the first slot its base fits, replacing anything already equipped there.
   function equip(character, code, materials) {
     const item = build(code, materials);
     InventoryManager(character).addItem(item);
