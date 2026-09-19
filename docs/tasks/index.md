@@ -24,6 +24,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [194] Feeling Adjustments During Battle `2pt` — [194-feeling-adjustments-during-battle.md](194-feeling-adjustments-during-battle.md)
 - [197] Skill events `5pt` — [197-skill-episodes.md](197-skill-episodes.md)
 - [228] Effect based enchantments `3pt` — [228-effect-based-enchantments.md](228-effect-based-enchantments.md)
+- [229] Implment ammunition `3pt` — [229-implment-ammunition.md](229-implment-ammunition.md)
 
 ## Priority 3
 
