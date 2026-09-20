@@ -2,23 +2,23 @@ global.EncounterBuilder = (function() {
 
   // The cohort is used by the battle system to display the battle start text.
   function build(options) {
-    const cohort = chooseCohort(options.cohorts, options.essenceTarget);
-    const monsters = selectMonsters(cohort, options.essenceTarget);
+    const cohort = chooseCohort(options.cohorts, options.challengeTarget);
+    const monsters = selectMonsters(cohort, options.challengeTarget);
     const formation = arrangeFormation(monsters);
 
     placeFormation(formation, cohort.getFactoryOptions());
     setStartText(cohort.getStartText(BattleSystem.getState().getAmbushState()));
   }
 
-  // Choose a cohort of monsters that are between the minimum and maximum essence targets.
-  function chooseCohort(cohorts, essenceTarget) {
+  // Choose a cohort of monsters whose smallest and largest possible groups bracket the challenge target.
+  function chooseCohort(cohorts, challengeTarget) {
     const viable = cohorts.filter(code => {
       const cohort = Cohort.lookup(code);
-      const values = pricedMonsters(cohort).map(monster => essenceAverage(monster));
+      const values = cohort.getMonsters().map(monster => challengeRating(monster));
       const least = Math.min(...values);
       const most = Math.max(...values);
-      const under = (cohort.getMinimum()) * least <= essenceTarget;
-      const over = (cohort.getMaximum()) * most >= essenceTarget;
+      const under = (cohort.getMinimum()) * least <= challengeTarget;
+      const over = (cohort.getMaximum()) * most >= challengeTarget;
       return under && over;
     });
 
@@ -30,35 +30,35 @@ global.EncounterBuilder = (function() {
     throw new Error(`Cannot find a viable cohort for [${floor.getTheme()}:${floor.getLevel()}]`);
   }
 
-  // Select the monsters for the encounter, using the target essence as a budget. To keep the group coherent, we build
+  // Select the monsters for the encounter, using the challenge target as a budget. To keep the group coherent, we build
   // the encounter from a small roster of base types rather than the whole cohort. Monsters are drawn from the roster
-  // until we have close to the total essence target.
-  function selectMonsters(cohort, essenceTarget) {
-    const roster = buildRoster(cohort, essenceTarget);
+  // until we have close to the total challenge target.
+  function selectMonsters(cohort, challengeTarget) {
+    const roster = buildRoster(cohort, challengeTarget);
     const minimum = cohort.getMinimum();
     const maximum = Math.min(cohort.getMaximum(), 10);
-    return drawMonsters(roster, essenceTarget, minimum, maximum);
+    return drawMonsters(roster, challengeTarget, minimum, maximum);
   }
 
   // The roster starts with an anchor, the most expensive monster that fits within the budget. We then add companions
-  // of comparable essence value. The spread limit keeps every monster in a formation at roughly the same weight, so
+  // of comparable challenge rating. The spread limit keeps every monster in a formation at roughly the same weight, so
   // the cheapest types don't pad out every single encounter. When even the cheapest type is over the target we have
   // to overshoot to field anything at all, and that one type is the whole roster.
-  function buildRoster(cohort, essenceTarget) {
-    const types = pricedMonsters(cohort).sort((a,b) => essenceAverage(b) - essenceAverage(a));
-    const affordable = types.filter(type => essenceAverage(type) <= essenceTarget);
+  function buildRoster(cohort, challengeTarget) {
+    const types = cohort.getMonsters().sort((a,b) => challengeRating(b) - challengeRating(a));
+    const affordable = types.filter(type => challengeRating(type) <= challengeTarget);
     const cheapest = affordable[affordable.length-1];
-    const anchorBudget = essenceTarget - (cohort.getMinimum() - 1) * essenceAverage(cheapest);
-    const anchors = types.slice(0, Math.ceil(types.length/2)).filter(type => essenceAverage(type) <= anchorBudget);
-    const openers = anchors.length > 0 ? anchors : affordable.filter(type => essenceAverage(type) <= anchorBudget);
+    const anchorBudget = challengeTarget - (cohort.getMinimum() - 1) * challengeRating(cheapest);
+    const anchors = types.slice(0, Math.ceil(types.length/2)).filter(type => challengeRating(type) <= anchorBudget);
+    const openers = anchors.length > 0 ? anchors : affordable.filter(type => challengeRating(type) <= anchorBudget);
     const roster = [openers.length > 0 ? Random.from(openers) : cheapest];
     const candidates = affordable.filter(type => type !== roster[0]);
 
     while (roster.length < BattleConstants.maxEncounterTypes && candidates.length > 0) {
-      const averages = roster.map(type => essenceAverage(type));
+      const ratings = roster.map(type => challengeRating(type));
       const band = candidates.filter(type => {
-        const average = essenceAverage(type);
-        return Math.max(average, ...averages) <= Math.min(average, ...averages) * BattleConstants.essenceSpreadRatio;
+        const rating = challengeRating(type);
+        return Math.max(rating, ...ratings) <= Math.min(rating, ...ratings) * BattleConstants.challengeSpreadRatio;
       });
 
       if (band.length === 0) { break; }
@@ -71,21 +71,21 @@ global.EncounterBuilder = (function() {
     return roster;
   }
 
-  function drawMonsters(roster, essenceTarget, minimum, maximum) {
-    const cheapest = roster.reduce((cheap,type) => essenceAverage(type) < essenceAverage(cheap) ? type : cheap);
+  function drawMonsters(roster, challengeTarget, minimum, maximum) {
+    const cheapest = roster.reduce((cheap,type) => challengeRating(type) < challengeRating(cheap) ? type : cheap);
     const picks = [roster[0]];
-    let remaining = essenceTarget - essenceAverage(roster[0]);
+    let remaining = challengeTarget - challengeRating(roster[0]);
 
     while (picks.length < maximum) {
-      const affordable = roster.filter(type => essenceAverage(type) <= remaining);
+      const affordable = roster.filter(type => challengeRating(type) <= remaining);
       if (affordable.length === 0) { break; }
 
       const pick = Random.from(affordable);
       picks.push(pick);
-      remaining -= essenceAverage(pick);
+      remaining -= challengeRating(pick);
     }
 
-    if (picks.length < maximum && remaining > 0 && essenceAverage(cheapest) < remaining * 2) {
+    if (picks.length < maximum && remaining > 0 && challengeRating(cheapest) < remaining * 2) {
       picks.push(cheapest);
     }
 
@@ -199,21 +199,16 @@ global.EncounterBuilder = (function() {
     const counts = {};
     codes.forEach(code => counts[code] = (counts[code] || 0) + 1);
     return Object.keys(counts).
-      sort((a,b) => essenceAverage(b) - essenceAverage(a)).
+      sort((a,b) => challengeRating(b) - challengeRating(a)).
       map(code => ({ code, count:counts[code] }));
   }
 
-  // A monster whose only threat is its weapon has no essence until the challenge rating exists (task 220). It would
-  // read as free, so the builder never draws one.
-  function pricedMonsters(cohort) {
-    return cohort.getMonsters().filter(code => essenceAverage(code) > 0);
-  }
+  // The base monster records never change once they're compiled, so each rating is only calculated once.
+  const challengeRatings = {};
 
-  // Base monster difficulty is judged by the average essence a monster of that type yields, precalculated in the
-  // generated essence data file.
-  function essenceAverage(code) {
-    if (EssenceData[code] == null) { throw new Error(`No essence data for [${code}]`); }
-    return EssenceData[code].average;
+  function challengeRating(code) {
+    if (challengeRatings[code] == null) { challengeRatings[code] = BaseMonster.lookup(code).getChallengeRating(); }
+    return challengeRatings[code];
   }
 
   // ====================

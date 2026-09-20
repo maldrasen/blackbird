@@ -10,9 +10,9 @@ global.ItemConstants = {
     stun: 15,
   },
 
-  chestEssencePercent: 0.3,
+  chestChallengePercent: 0.3,
   lootValueScale: 30,
-  lootEssenceScale: 20,
+  lootChallengeScale: 20,
   lootCeilingLow: 60,
   lootFloorPercent: 0.25,
 };

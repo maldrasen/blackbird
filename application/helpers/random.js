@@ -152,6 +152,14 @@ global.Random = (function() {
     throw new Error('Invalid frequency map');
   }
 
+  // The probability of each key in a frequency map, for averaging over a map without rolling on it.
+  function frequencyMapChances(map) {
+    const total = Object.values(map).reduce((sum, weight) => sum + weight, 0);
+    const chances = {};
+    Object.keys(map).forEach(key => { chances[key] = map[key] / total; });
+    return chances;
+  }
+
   // Normal distribution using the Box–Muller transform
   function normalDistribution(average, deviation) {
     const multiplier = Math.sqrt(-2.0 * Math.log(nextFloat())) * Math.cos(2.0 * Math.PI * nextFloat());
@@ -205,6 +213,7 @@ global.Random = (function() {
     from,
 
     fromFrequencyMap,
+    frequencyMapChances,
     normalDistribution,
     testDistribution,
     shuffle,

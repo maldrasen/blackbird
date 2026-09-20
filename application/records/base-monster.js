@@ -1,5 +1,7 @@
 global.BaseMonster = (function() {
   const monsters = {};
+  const essenceScale = 10;
+  const equipmentScale = 0.5;
 
   function register(code,data) {
     monsters[code] = data;
@@ -24,15 +26,6 @@ global.BaseMonster = (function() {
       return monster.genderRatio ? monster.genderRatio : Species.lookup(monster.species).getGenderRatio();
     }
 
-    function getHealthFactor() {
-      if (monster.species) { return Species.lookup(monster.species).getHealthFactor(); }
-      return monster.healthFactor || 1;
-    }
-
-    function getSpeedFactor() {
-      return monster.species ? Species.lookup(monster.species).getSpeedFactor() : (monster.speedFactor || 1);
-    }
-
     function getThreatWeights() {
       return monster.threatWeights || MonsterType.lookup(monster.type).getThreatWeights();
     }
@@ -53,6 +46,61 @@ global.BaseMonster = (function() {
       return matches[0];
     }
 
+    // ==================================
+    //    Essence and Challenge Rating
+    // ==================================
+
+    function getHealthFactor() {
+      if (monster.species) { return Species.lookup(monster.species).getHealthFactor(); }
+      return monster.healthFactor || 1;
+    }
+
+    function getSpeedFactor() {
+      return monster.species ? Species.lookup(monster.species).getSpeedFactor() : (monster.speedFactor || 1);
+    }
+
+    function getAttributeGrades() {
+      return monster.species ?
+        Species.lookup(monster.species).getAttributes() :
+        MonsterType.lookup(monster.type).getAttributes();
+    }
+
+    // The attributes of an average monster of this kind, following the MonsterFactory: the starting roll, plus each
+    // attribute's share of the level ups from the type's attribute growth map.
+    function getAverageAttributes() {
+      const grades = getAttributeGrades();
+      const growth = MonsterType.lookup(monster.type).getAttributeGrowth();
+      const growthChances = growth ? Random.frequencyMapChances(growth) : {};
+      const levelUps = Math.max(0, (monster.level || 0) - 1);
+      const attributes = {};
+
+      Object.keys(Attrib).forEach(code => {
+        const increase = AttributeMath.averageIncrease(code, grades);
+        attributes[code] = Math.round(AttributeMath.attributeBaseline + increase + (levelUps * (growthChances[code] || 0) * increase));
+      });
+
+      return Attributes(attributes);
+    }
+
+    function getBonusEssence() {
+      return monster.bonusEssence || 0;
+    }
+
+    function getEssenceScale() {
+      return getHealthFactor() / getSpeedFactor() * essenceScale
+    }
+
+    function getChallengeRating() {
+      let essenceRating = getBonusEssence();
+      let equipmentRating = monster.equipmentOptions ? Math.round(monster.equipmentOptions.budget * equipmentScale) : 0;
+
+      getAbilities().forEach(ability => {
+        essenceRating += ability.getEssence(getAverageAttributes());
+      });
+
+      return equipmentRating + Math.round(essenceRating * getEssenceScale());
+    }
+
     return {
       getCode: () => { return code; },
       getName: () => { return monster.name; },
@@ -63,11 +111,8 @@ global.BaseMonster = (function() {
       getGenderRatio,
       getType: () => { return monster.type; },
       getLevel: () => { return monster.level || 0; },
-      getBonusEssence: () => { return monster.bonusEssence || 0; },
       getEquipmentOptions: () => { return monster.equipmentOptions; },
       getEquipmentParameters: () => { return monster.equipmentParameters; },
-      getHealthFactor,
-      getSpeedFactor,
 
       getSkills: () => { return monster.skills || {}; },
       getResistances: () => { return monster.resistances || {}; },
@@ -83,6 +128,13 @@ global.BaseMonster = (function() {
       getLootQuality:() => { return monster.lootQuality || 1; },
       getLootGroups: () => { return monster.lootGroups || {}; },
       getLootAdjustments: () => { return monster.lootAdjustments || []; },
+
+      getHealthFactor,
+      getSpeedFactor,
+      getAverageAttributes,
+      getBonusEssence,
+      getEssenceScale,
+      getChallengeRating,
     };
   }
 

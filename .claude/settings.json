@@ -1,5 +1,6 @@
 {
   "permissions": {
+    "additionalDirectories": ["../blackbird-testbed"],
     "allow": [
       "Bash(bin/test.sh:*)",
       "Bash(bash bin/test.sh:*)",

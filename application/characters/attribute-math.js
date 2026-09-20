@@ -17,6 +17,7 @@ global.AttributeMath = (function() {
   };
 
   const attributeBaseline = 5;
+  const increaseRoll = { min:1, max:5 };
 
   // An entity's attribute grades come from its species, or from the monster type for beasts, which don't have one.
   function attributeGrades(id) {
@@ -30,12 +31,18 @@ global.AttributeMath = (function() {
   // The grades come from the species for characters and from the monster type for beasts.
   function attributeIncrease(attribute, grades, actorData, aspectsData) {
     const grade = grades[attribute];
-    const increase = Random.between(1,5)
+    const increase = Random.between(increaseRoll.min, increaseRoll.max)
       + LetterGradeHelper.attributeBase(grade)
       + aspectModifier(attribute, aspectsData)
       + genderBonus(attribute, actorData.gender);
 
     return (increase < 1) ? 1 : increase;
+  }
+
+  // The expected value of attributeIncrease() for estimating attributes without having to build a character. We're
+  // just taking a swag here so gender bonuses and other aspects are ignored.
+  function averageIncrease(attribute, grades) {
+    return ((increaseRoll.min + increaseRoll.max) / 2) + LetterGradeHelper.attributeBase(grades[attribute])
   }
 
   function aspectModifier(attribute, aspectsData) {
@@ -56,6 +63,7 @@ global.AttributeMath = (function() {
     attributeBaseline,
     attributeGrades,
     attributeIncrease,
+    averageIncrease,
   };
 
 })();

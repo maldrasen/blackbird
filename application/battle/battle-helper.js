@@ -42,8 +42,8 @@ global.BattleHelper = (function() {
     return Random.fromFrequencyMap(getBodyPlan(target));
   }
 
-  function getEssenceTarget(level) {
-    return Math.round(BattleConstants.essenceTargetBase * Math.pow(BattleConstants.essenceTargetGrowth, level-1));
+  function getChallengeTarget(level) {
+    return Math.round(BattleConstants.challengeTargetBase * Math.pow(BattleConstants.challengeTargetGrowth, level-1));
   }
 
   // I was kind of dumb and represented the attack and defend states in two different ways within the battle system.
@@ -63,7 +63,7 @@ global.BattleHelper = (function() {
     distanceBetweenPositions,
     hasHitLocation,
     randomHitLocation,
-    getEssenceTarget,
+    getChallengeTarget,
     getRollType,
   };
 
