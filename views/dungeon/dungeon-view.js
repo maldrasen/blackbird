@@ -61,6 +61,9 @@ global.DungeonView = (function() {
     DungeonPartyMarker.moveTo(result.position);
     DungeonViewport.panTo(tileCenter(result.position));
 
+    if (result.openedDoor) {
+      DungeonFloorView.openDoor(result.openedDoor);
+    }
     if (result.enteredRoom != null) {
       DungeonFloorView.updateLocation(result.enteredRoom, result.revealed);
     }

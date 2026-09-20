@@ -104,6 +104,9 @@
   .opening { fill: variables.$bg-dungeon-floor; }
   .slab { fill: variables.$fg-dungeon-door; }
 
+  // An open door is faded rather than hidden, so that it still reads as a door.
+  &.open .slab { fill-opacity: 0.25; }
+
   .cap {
     fill: none;
     stroke: variables.$fg-dungeon-wall;
