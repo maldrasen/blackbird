@@ -7,7 +7,7 @@ global.DungeonView = (function() {
 
   function init() {
     DungeonViewport.init();
-    KeyBindingDispatcher.register('dungeon', { isActive:isShowing, perform:stepInDirection });
+    KeyBindingDispatcher.register('dungeon', { isActive:isShowing, perform:stepInDirection, allowRepeat:true });
   }
 
   function show() {
