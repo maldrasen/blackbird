@@ -13,6 +13,8 @@ global.DungeonFloor = function(level, theme=null) {
   const revealed = new Set();
   const visited = new Set();
 
+  const doorsByEdge = new Map();
+
   let location = null;
   let features = [];
   let rooms = [];
@@ -62,8 +64,30 @@ global.DungeonFloor = function(level, theme=null) {
     return new Set(rooms.map(room => room.getContents()));
   }
 
+  function setDoors(list) {
+    doors = list;
+    doorsByEdge.clear();
+    doors.forEach(indexDoor);
+  }
+
   function addDoor(door) {
     doors.push(door);
+    indexDoor(door);
+  }
+
+  // Movement looks doors up by the wall they're on, and a wall can only ever hold one door.
+  function indexDoor(door) {
+    const key = edgeKey(door.position.x, door.position.y, door.direction);
+    if (doorsByEdge.has(key)) { throw new Error(`There is already a door at (${key})`); }
+    doorsByEdge.set(key, door);
+  }
+
+  function edgeKey(x, y, direction) {
+    return `${x},${y},${direction}`;
+  }
+
+  function getDoorAt(x, y, direction) {
+    return doorsByEdge.get(edgeKey(x, y, direction)) || null;
   }
 
   function pack() {
@@ -95,8 +119,9 @@ global.DungeonFloor = function(level, theme=null) {
     isRevealed: index => { return revealed.has(index); },
     isVisited: index => { return visited.has(index); },
 
-    setDoors: d => { doors = d; },
+    setDoors,
     getDoors: () => { return doors; },
+    getDoorAt,
     addDoor,
     getStairs: direction => { return rooms.filter(room => room.getStairs() === direction).map(room => room.getIndex()); },
 
