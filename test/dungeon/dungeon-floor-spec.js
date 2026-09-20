@@ -1,5 +1,78 @@
 describe("DungeonFloor", function() {
 
+  function addSquareRoom(floor, size, x, y) {
+    const feature = Feature('spec-room');
+    const room = Room(feature);
+    room.setBounds(size,size);
+    room.addBox(0,0,size,size);
+    feature.addRoom(room);
+    feature.setPosition(x,y);
+    floor.addFeature(feature);
+    return room;
+  }
+
+  describe("getRoomIndexAt()", function() {
+    let floor;
+
+    // A 3x3 room at (4,4) and a 2x2 room at (8,4), with a column of empty tiles between them.
+    beforeEach(function() {
+      floor = DungeonFloor(1,'dungeon');
+      addSquareRoom(floor,3,4,4);
+      addSquareRoom(floor,2,8,4);
+    });
+
+    it('finds the room that owns a tile', function() {
+      expect(floor.getRoomIndexAt(4,4)).to.equal(0);
+      expect(floor.getRoomIndexAt(6,6)).to.equal(0);
+      expect(floor.getRoomIndexAt(8,4)).to.equal(1);
+      expect(floor.getRoomIndexAt(9,5)).to.equal(1);
+    });
+
+    it('finds nothing on an empty tile', function() {
+      expect(floor.getRoomIndexAt(7,4)).to.equal(null);
+      expect(floor.getRoomIndexAt(4,7)).to.equal(null);
+    });
+
+    it('finds nothing off the floor', function() {
+      expect(floor.getRoomIndexAt(-1,4)).to.equal(null);
+      expect(floor.getRoomIndexAt(4,-1)).to.equal(null);
+      expect(floor.getRoomIndexAt(60,4)).to.equal(null);
+      expect(floor.getRoomIndexAt(4,40)).to.equal(null);
+    });
+  });
+
+  describe("stairs", function() {
+    let floor;
+
+    beforeEach(function() {
+      floor = DungeonFloor(1,'dungeon');
+      addSquareRoom(floor,3,4,4).setStairs('up',1,1);
+      addSquareRoom(floor,2,8,4).setStairs('down',1,0);
+      addSquareRoom(floor,2,12,4);
+    });
+
+    it('lists the stairs in a direction by their floor tile and room', function() {
+      expect(floor.getStairs('up')).to.deep.equal([{ position:{ x:5, y:5 }, room:0 }]);
+      expect(floor.getStairs('down')).to.deep.equal([{ position:{ x:9, y:4 }, room:1 }]);
+    });
+
+    it('finds the stairs standing on a tile', function() {
+      expect(floor.getStairsAt(5,5)).to.equal('up');
+      expect(floor.getStairsAt(9,4)).to.equal('down');
+    });
+
+    it('finds no stairs on the other tiles of a stair room', function() {
+      expect(floor.getStairsAt(4,4)).to.equal(null);
+      expect(floor.getStairsAt(8,4)).to.equal(null);
+    });
+
+    it('finds no stairs in a room without them, on an empty tile, or off the floor', function() {
+      expect(floor.getStairsAt(12,4)).to.equal(null);
+      expect(floor.getStairsAt(7,4)).to.equal(null);
+      expect(floor.getStairsAt(-1,-1)).to.equal(null);
+    });
+  });
+
   describe("getDoorAt()", function() {
     let floor;
 

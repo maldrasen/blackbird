@@ -90,6 +90,29 @@ global.DungeonFloor = function(level, theme=null) {
     return doorsByEdge.get(edgeKey(x, y, direction)) || null;
   }
 
+  // The index of the room that owns a tile, or null when the tile is empty or off the floor entirely.
+  function getRoomIndexAt(x, y) {
+    if (floorGrid[y] == null || floorGrid[y][x] == null) { return null; }
+    return floorGrid[y][x];
+  }
+
+  function getStairs(direction) {
+    return rooms.filter(room => room.getStairs() === direction).map(room => {
+      return { position:room.getStairsFloorPosition(), room:room.getIndex() };
+    });
+  }
+
+  // The direction of the stairs standing on a tile, if there are any.
+  function getStairsAt(x, y) {
+    const index = getRoomIndexAt(x, y);
+    if (index == null) { return null; }
+
+    const position = rooms[index].getStairsFloorPosition();
+    if (position == null || position.x !== x || position.y !== y) { return null; }
+
+    return rooms[index].getStairs();
+  }
+
   function pack() {
     return {
       theme,
@@ -103,6 +126,7 @@ global.DungeonFloor = function(level, theme=null) {
     getLevel: () => { return level; },
     getTheme: () => { return theme; },
     getFloorGrid: () => { return floorGrid; },
+    getRoomIndexAt,
     getFloorWidth,
     getFloorHeight,
 
@@ -123,7 +147,8 @@ global.DungeonFloor = function(level, theme=null) {
     getDoors: () => { return doors; },
     getDoorAt,
     addDoor,
-    getStairs: direction => { return rooms.filter(room => room.getStairs() === direction).map(room => room.getIndex()); },
+    getStairs,
+    getStairsAt,
 
     pack,
   };

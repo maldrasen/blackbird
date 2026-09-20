@@ -1,5 +1,9 @@
 ﻿describe("DungeonSystem", function() {
 
+  function stairRooms(floor, direction) {
+    return floor.getStairs(direction).map(stairs => stairs.room);
+  }
+
   describe("setLevel()", function() {
 
     // A nested inner room shares all of its tiles with its feature's outer room. Any other shared tile is a
@@ -70,11 +74,25 @@
       expect(up.length).to.be.at.least(1);
       expect(down.length).to.be.at.least(1);
 
-      const roomIndexes = [...up,...down];
+      const roomIndexes = [...up,...down].map(stairs => stairs.room);
       expect(new Set(roomIndexes).size).to.equal(roomIndexes.length);
 
       roomIndexes.forEach(index => {
         expect(floor.getRooms()[index].stairsAreAllowed()).to.equal(true);
+      });
+    });
+
+    it("places each staircase on a tile of its room", function() {
+      DungeonSystem.createDungeon();
+      DungeonSystem.setLevel(2);
+
+      const floor = DungeonSystem.getDungeonFloor();
+
+      ['up','down'].forEach(direction => {
+        floor.getStairs(direction).forEach(stairs => {
+          expect(floor.getRoomIndexAt(stairs.position.x, stairs.position.y)).to.equal(stairs.room);
+          expect(floor.getStairsAt(stairs.position.x, stairs.position.y)).to.equal(direction);
+        });
       });
     });
 
@@ -90,7 +108,7 @@
       DungeonSystem.setLevel(1);
 
       const floor = DungeonSystem.getDungeonFloor();
-      expect(floor.getStairs('up')).to.include(floor.getLocation());
+      expect(stairRooms(floor,'up')).to.include(floor.getLocation());
     });
 
   });
@@ -104,7 +122,7 @@
 
       const floor = DungeonSystem.getDungeonFloor();
       expect(floor.getLevel()).to.equal(2);
-      expect(floor.getStairs('up')).to.include(floor.getLocation());
+      expect(stairRooms(floor,'up')).to.include(floor.getLocation());
       expect(floor.isRevealed(floor.getLocation())).to.be.true;
     });
 
@@ -115,7 +133,7 @@
 
       const floor = DungeonSystem.getDungeonFloor();
       expect(floor.getLevel()).to.equal(1);
-      expect(floor.getStairs('down')).to.include(floor.getLocation());
+      expect(stairRooms(floor,'down')).to.include(floor.getLocation());
     });
 
     it("leaves the dungeon when climbing out of level 1", function() {
