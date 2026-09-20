@@ -97,7 +97,6 @@
 
 #dungeonFloor .door {
   position: absolute;
-  cursor: pointer;
   z-index: 100;
 
   pointer-events: none;
@@ -120,9 +119,4 @@
   &.from-unrevealed .cap.from { display: none; }
   &.to-unrevealed .cap.to { display: none; }
   &.from-unrevealed.to-unrevealed { display: none; }
-
-  .click-target {
-    fill: none;
-    pointer-events: fill;
-  }
 }
