@@ -52,7 +52,7 @@ global.KeyBindingsPanel = (function() {
 
     Object.entries(actions).forEach(([action, { name }]) => {
       const button = X.createElement(`<a href='#' class='button key-button' data-context='${context}' data-action='${action}'></a>`);
-      showKey(button, bindings[context][action]);
+      showKey(button, bindings[context][action].primary);
 
       grid.appendChild(X.createElement(`<div class='label'>${name}</div>`));
       grid.appendChild(X.createElement(`<div class='key'></div>`)).appendChild(button);
@@ -99,7 +99,7 @@ global.KeyBindingsPanel = (function() {
   function cancelCapture() {
     if (capturing == null) { return; }
     X.removeClass(capturing,'capturing');
-    showKey(capturing, bindings[capturing.dataset.context][capturing.dataset.action]);
+    showKey(capturing, bindings[capturing.dataset.context][capturing.dataset.action].primary);
     capturing = null;
   }
 
@@ -116,7 +116,7 @@ global.KeyBindingsPanel = (function() {
   }
 
   function setBinding(code) {
-    bindings[capturing.dataset.context][capturing.dataset.action] = code;
+    bindings[capturing.dataset.context][capturing.dataset.action].primary = code;
     cancelCapture();
     updateConflicts();
     if (onChange) { onChange(); }

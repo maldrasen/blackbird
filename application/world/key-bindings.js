@@ -1,5 +1,9 @@
 global.KeyBindings = (function() {
 
+  // Every action has two bindings, and pressing either key performs it. An action's `key` is the default for its
+  // primary binding. It can also have an `alternate` key, though most actions start without one.
+  const slots = ['primary','alternate'];
+
   const contexts = {
     battle: {
       name: 'Battle Commands',
@@ -102,33 +106,57 @@ global.KeyBindings = (function() {
     const defaults = {};
     Object.entries(contexts).forEach(([context, { actions }]) => {
       defaults[context] = {};
-      Object.entries(actions).forEach(([action, { key }]) => { defaults[context][action] = key; });
+      Object.entries(actions).forEach(([action, { key, alternate }]) => {
+        defaults[context][action] = { primary:key, alternate:(alternate || null) };
+      });
     });
     return defaults;
   }
 
   function getBindings() {
-    return ObjectHelper.merge(getDefaults(), WorldState.getOptions().keyBindings || {});
+    return ObjectHelper.merge(getDefaults(), savedBindings());
   }
 
+  // Options saved before actions had an alternate binding hold a single key for each action, which was what's now
+  // the primary binding.
+  function savedBindings() {
+    const saved = structuredClone(WorldState.getOptions().keyBindings || {});
+
+    Object.values(saved).forEach(actions => {
+      Object.entries(actions).forEach(([action, binding]) => {
+        if (ObjectHelper.isPlainObject(binding) === false) { actions[action] = { primary:binding }; }
+      });
+    });
+
+    return saved;
+  }
+
+  // The key to show as the hint for an action.
   function getBinding(context, action) {
-    return getBindings()[context][action];
+    const binding = getBindings()[context][action];
+    return binding.primary || binding.alternate;
   }
 
   function getAction(context, code) {
     if (code == null) { return null; }
-    const entry = Object.entries(getBindings()[context] || {}).find(([action, key]) => key === code);
+    const entry = Object.entries(getBindings()[context] || {}).find(([action, binding]) =>
+      slots.some(slot => binding[slot] === code));
     return entry ? entry[0] : null;
   }
 
+  // A key can't perform two actions in the same context. Binding the same key to both of an action's slots is
+  // pointless, but it isn't a conflict.
   function findConflicts(bindings) {
     const conflicts = [];
 
     Object.entries(bindings).forEach(([context, actions]) => {
       const byKey = {};
-      Object.entries(actions).forEach(([action, key]) => {
-        if (key == null) { return; }
-        (byKey[key] = byKey[key] || []).push(action);
+      Object.entries(actions).forEach(([action, binding]) => {
+        slots.forEach(slot => {
+          const key = binding[slot];
+          if (key == null) { return; }
+          if ((byKey[key] = byKey[key] || []).includes(action) === false) { byKey[key].push(action); }
+        });
       });
       Object.entries(byKey).forEach(([code, list]) => {
         if (list.length > 1) { conflicts.push({ context, code, actions:list }); }
@@ -154,6 +182,7 @@ global.KeyBindings = (function() {
   }
 
   return {
+    getSlots: () => { return [...slots]; },
     getContexts,
     getDefaults,
     getBindings,
