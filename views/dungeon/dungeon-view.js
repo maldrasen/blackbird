@@ -28,6 +28,11 @@ global.DungeonView = (function() {
     DungeonControls.refreshRoom();
   }
 
+  // Taking the stairs up from the first level leaves the dungeon, so there may not be a floor left to draw.
+  function floorChanged() {
+    if (isShowing()) { drawDungeon(); }
+  }
+
   function isShowing() {
     return GameSystem.getState().getGameMode() === GameMode.dungeon && X.first('#dungeonView') != null;
   }
@@ -100,6 +105,7 @@ global.DungeonView = (function() {
     show,
     close,
     drawDungeon,
+    floorChanged,
     getStepTime: () => { return stepTime; },
   };
 
