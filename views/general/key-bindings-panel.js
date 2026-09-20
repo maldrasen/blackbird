@@ -50,15 +50,27 @@ global.KeyBindingsPanel = (function() {
     </div>`);
     const grid = section.querySelector('.binding-grid');
 
-    Object.entries(actions).forEach(([action, { name }]) => {
-      const button = X.createElement(`<a href='#' class='button key-button' data-context='${context}' data-action='${action}'></a>`);
-      showKey(button, bindings[context][action].primary);
+    grid.appendChild(X.createElement(`<div></div>`));
+    KeyBindings.getSlots().forEach(slot => {
+      grid.appendChild(X.createElement(`<div class='slot-heading'>${StringHelper.titlecaseAll(slot)}</div>`));
+    });
 
+    Object.entries(actions).forEach(([action, { name }]) => {
       grid.appendChild(X.createElement(`<div class='label'>${name}</div>`));
-      grid.appendChild(X.createElement(`<div class='key'></div>`)).appendChild(button);
+      KeyBindings.getSlots().forEach(slot => { grid.appendChild(buildKey(context, action, slot)); });
     });
 
     return section;
+  }
+
+  function buildKey(context, action, slot) {
+    const key = X.createElement(`<div class='key'></div>`);
+    const button = X.createElement(
+      `<a href='#' class='button key-button' data-context='${context}' data-action='${action}' data-slot='${slot}'></a>`);
+
+    showKey(button, bindings[context][action][slot]);
+    key.appendChild(button);
+    return key;
   }
 
   function showKey(button, code) {
@@ -71,9 +83,10 @@ global.KeyBindingsPanel = (function() {
 
     container.querySelectorAll('.key-button.conflict').forEach(button => { X.removeClass(button,'conflict'); });
 
+    // Only the buttons holding the contested key are marked, not the other binding of the same action.
     conflicts.forEach(conflict => {
-      conflict.actions.forEach(action => {
-        X.addClass(container.querySelector(`.key-button[data-context='${conflict.context}'][data-action='${action}']`),'conflict');
+      container.querySelectorAll(`.key-button[data-context='${conflict.context}']`).forEach(button => {
+        if (bindingFor(button) === conflict.code) { X.addClass(button,'conflict'); }
       });
     });
   }
@@ -99,7 +112,7 @@ global.KeyBindingsPanel = (function() {
   function cancelCapture() {
     if (capturing == null) { return; }
     X.removeClass(capturing,'capturing');
-    showKey(capturing, bindings[capturing.dataset.context][capturing.dataset.action].primary);
+    showKey(capturing, bindingFor(capturing));
     capturing = null;
   }
 
@@ -115,8 +128,12 @@ global.KeyBindingsPanel = (function() {
     setBinding(event.code);
   }
 
+  function bindingFor(button) {
+    return bindings[button.dataset.context][button.dataset.action][button.dataset.slot];
+  }
+
   function setBinding(code) {
-    bindings[capturing.dataset.context][capturing.dataset.action].primary = code;
+    bindings[capturing.dataset.context][capturing.dataset.action][capturing.dataset.slot] = code;
     cancelCapture();
     updateConflicts();
     if (onChange) { onChange(); }
