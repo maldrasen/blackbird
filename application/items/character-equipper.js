@@ -102,11 +102,22 @@ global.CharacterEquipper = function(id) {
   // budget, and then to the least unaffordable weapon in the depot. Only an empty depot leaves them unarmed. The
   // off-hand doesn't get this treatment, an empty off-hand is fine.
   function selectPrimary(stock, slotBudget) {
-    const candidates = slotCandidates(stock, EquipmentSlot.primary);
+    const candidates = primaryCandidates(stock);
 
     return selectByBudget(ofType(candidates, determineWeaponType()), slotBudget)
         || selectByBudget(candidates, slotBudget)
         || selectCheapest(candidates);
+  }
+
+  // A character may already be equipped with an offhand weapon, but then equipping a two-handed weapon would knock it
+  // out of their hand, so the equipper should only shop for something that leaves the off-hand alone. I'm not sure
+  // that this is something that would ever actually come up in the real game, but the specs might want to specify that
+  // a character must be equipped with a shield without also specifying their main hand weapon.
+  function primaryCandidates(stock) {
+    const candidates = slotCandidates(stock, EquipmentSlot.primary);
+    return isFilled(EquipmentSlot.secondary) ?
+      candidates.filter(item => Item(item.id).getBase().getHands() !== WeaponHandedness.two) :
+      candidates;
   }
 
   // A character who's trained with a weapon uses that kind of weapon. Untrained characters get whatever suits their

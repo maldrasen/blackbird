@@ -1,5 +1,19 @@
 describe('CharacterEquipper', function() {
 
+  describe('equip()', function() {
+
+    // Every bow is two-handed, so an archer is the character most likely to shop their way out of a preset shield.
+    it('only picks a primary that leaves a preset off-hand alone', function() {
+      const id = CharacterFixtures.genericMale({ skills:{ bows:50 } });
+      const shield = ItemFixtures.equip(id, 'round-shield', ['steel']);
+
+      const equipment = CharacterEquipper(id).equip({ budget:150, naked:true });
+
+      expect(EquipmentComponent.lookup(id).secondary).to.equal(shield);
+      expect(Item(equipment.primary).getBase().getHands()).to.not.equal(WeaponHandedness.two);
+    });
+  });
+
   describe('assignSkills()', function() {
 
     // The sword is built and the equipper is made before the roll is stubbed because building an item rolls for its
