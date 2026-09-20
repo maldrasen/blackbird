@@ -92,21 +92,9 @@ global.FeaturePlacer = function() {
     return true;
   }
 
-  // The grid cells hold the room's floor-global index, as rooms are the unit of navigation.
   function placeFeature(feature) {
     floor.addFeature(feature);
     features.push(feature);
-
-    feature.getRooms().forEach(room => {
-      const position = room.getFloorPosition();
-      const index = room.getIndex();
-
-      room.getFootprint().forEach((row, y) => {
-        row.forEach((cell, x) => {
-          if (cell != null) { grid[position.y + y][position.x + x] = index; }
-        });
-      });
-    });
   }
 
   return {

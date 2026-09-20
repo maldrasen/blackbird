@@ -48,10 +48,10 @@ global.FloorFactory = function() {
       const result = CorridorFactory().digBetween(origin, target);
 
       // The corridor's room only gets its global index when the feature is registered, and its door tiles can only
-      // be resolved to rooms once the corridor is painted into the grid, so both happen before the doors are built.
+      // be resolved to rooms once the corridor is painted into the grid. Adding the feature does both, so it has to
+      // happen before the doors are built.
       if (result) {
         floor.addFeature(result.feature);
-        addFeatureToGrid(result.feature);
 
         const corridorRoom = result.feature.getRooms()[0];
         result.doorTiles.forEach(doorTile => {
@@ -121,21 +121,6 @@ global.FloorFactory = function() {
 
     stairs.forEach(direction => {
       rooms.pop().setStairs(direction);
-    });
-  }
-
-  function addFeatureToGrid(feature) {
-    const floorGrid = DungeonSystem.getDungeonFloor().getFloorGrid();
-
-    feature.getRooms().forEach(room => {
-      const position = room.getFloorPosition();
-      const index = room.getIndex();
-
-      room.getFootprint().forEach((row, y) => {
-        row.forEach((cell, x) => {
-          if (cell != null) { floorGrid[position.y + y][position.x + x] = index; }
-        });
-      });
     });
   }
 

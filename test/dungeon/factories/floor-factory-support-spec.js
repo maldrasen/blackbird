@@ -34,16 +34,6 @@ describe("FloorFactorySupport", function() {
       corridor.setPosition(1,2);
       floor.addFeature(corridor);
 
-      const grid = floor.getFloorGrid();
-      floor.getRooms().forEach(room => {
-        const position = room.getFloorPosition();
-        room.getFootprint().forEach((row,y) => {
-          row.forEach((cell,x) => {
-            if (cell != null) { grid[position.y + y][position.x + x] = room.getIndex(); }
-          });
-        });
-      });
-
       return targetFeature;
     }
 

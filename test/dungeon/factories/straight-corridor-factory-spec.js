@@ -23,16 +23,6 @@ describe("StraightCorridorFactory", function() {
       feature.setPosition(0,yPos);
       floor.addFeature(feature);
     });
-
-    const grid = floor.getFloorGrid();
-    floor.getRooms().forEach(room => {
-      const position = room.getFloorPosition();
-      room.getFootprint().forEach((row,y) => {
-        row.forEach((cell,x) => {
-          if (cell != null) { grid[position.y + y][position.x + x] = room.getIndex(); }
-        });
-      });
-    });
   }
 
   function factory() {

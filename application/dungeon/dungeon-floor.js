@@ -37,6 +37,20 @@ global.DungeonFloor = function(level, theme=null) {
       room.setIndex(rooms.length);
       room.setFloorPosition(featurePosition.x + roomPosition.x, featurePosition.y + roomPosition.y);
       rooms.push(room);
+      paintRoom(room);
+    });
+  }
+
+  // The grid cells hold the room's floor-global index, as rooms are the unit of navigation. Where the rooms of a
+  // feature overlap the last room painted owns the tile.
+  function paintRoom(room) {
+    const position = room.getFloorPosition();
+    const index = room.getIndex();
+
+    room.getFootprint().forEach((row, y) => {
+      row.forEach((cell, x) => {
+        if (cell != null) { floorGrid[position.y + y][position.x + x] = index; }
+      });
     });
   }
 
