@@ -147,6 +147,7 @@ global.DungeonView = (function() {
     show,
     close,
     drawDungeon,
+    getStepTime: () => { return stepTime; },
     isWalking,
     stopWalking,
   };

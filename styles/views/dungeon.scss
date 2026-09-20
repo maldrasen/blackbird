@@ -82,6 +82,24 @@
   }
 }
 
+// The ring leaves the middle of the tile clear so that whatever the party is standing on still shows through. The
+// transition's duration is the length of a step, which the view sets on the element.
+#dungeonPartyMarker {
+  position: absolute;
+  z-index: 110;
+  pointer-events: none;
+  transition-property: left, top;
+  transition-timing-function: linear;
+
+  .ring {
+    position: absolute;
+    inset: 26px;
+    border: 4px solid variables.$fg-dungeon-party;
+    border-radius: 50%;
+    box-shadow: 0 0 12px variables.$fg-dungeon-party-glow;
+  }
+}
+
 #dungeonFloor .door {
   position: absolute;
   cursor: pointer;

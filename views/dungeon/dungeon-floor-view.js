@@ -27,6 +27,8 @@ global.DungeonFloorView = (function() {
     floor.getDoors().forEach(door => {
       floorElement.appendChild(DungeonDoorView.build(floor, door));
     });
+
+    floorElement.appendChild(DungeonPartyMarker.build(floor.getPartyPosition()));
   }
 
   // A door is visible from the moment either of its rooms is revealed, and each half of its wall caps tracks the

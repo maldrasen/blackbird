@@ -596,6 +596,7 @@
     "views/dungeon/dungeon-controls.js",
     "views/dungeon/dungeon-door-view.js",
     "views/dungeon/dungeon-floor-view.js",
+    "views/dungeon/dungeon-party-marker.js",
     "views/dungeon/dungeon-room-view.js",
     "views/dungeon/dungeon-view.js",
     "views/dungeon/dungeon-viewport.js",
