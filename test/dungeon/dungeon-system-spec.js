@@ -48,24 +48,29 @@
       expect(violations).to.deep.equal([]);
     });
 
-    it("connects every room in the dungeon", function() {
+    // Walks the floor one step at a time from where the party starts, the way the party would, to prove that every
+    // tile of every room can be reached on foot.
+    it("connects every tile of the dungeon", function() {
       DungeonSystem.createDungeon();
       DungeonSystem.setLevel(1);
 
       const floor = DungeonSystem.getDungeonFloor();
-      const queue = [0];
-      const reached = new Set(queue);
+      const start = floor.getPartyPosition();
+      const queue = [start];
+      const reached = new Set([`${start.x},${start.y}`]);
 
       for (let i=0; i<queue.length; i++) {
-        DungeonNavigationSystem.getAdjacentRoomIndices(queue[i]).forEach(neighbor => {
-          if (reached.has(neighbor) === false) {
-            reached.add(neighbor);
-            queue.push(neighbor);
-          }
+        ['north','south','west','east'].forEach(direction => {
+          const step = DungeonNavigationSystem.findStep(queue[i], direction);
+          if (step == null || reached.has(`${step.position.x},${step.position.y}`)) { return; }
+
+          reached.add(`${step.position.x},${step.position.y}`);
+          queue.push(step.position);
         });
       }
 
-      expect(reached.size).to.equal(floor.getRooms().length);
+      const tiles = floor.getFloorGrid().reduce((total, row) => total + row.filter(cell => cell != null).length, 0);
+      expect(reached.size).to.equal(tiles);
     });
 
     it("places each staircase in its own room", function() {

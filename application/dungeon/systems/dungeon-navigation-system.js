@@ -2,88 +2,6 @@ global.DungeonNavigationSystem = (function() {
   const exploreTime = 1;
   const backtrackTime = 0.2;
 
-  function canMoveTo(index) {
-    const currentIndex = DungeonSystem.getDungeonFloor().getLocation();
-    return getAdjacentRoomIndices(currentIndex).includes(index);
-  }
-
-  function getAdjacentRoomIndices(index) {
-    const adjacent = new Set();
-
-    DungeonSystem.getDungeonFloor().getDoors().forEach(door => {
-      if (door.from === index) { adjacent.add(door.to); }
-      if (door.to === index) { adjacent.add(door.from); }
-    });
-
-    return [...adjacent].sort((a,b) => a-b);
-  }
-
-  function getDoorInDirection(direction) {
-    const floor = DungeonSystem.getDungeonFloor();
-    const current = floor.getLocation();
-    const matches = {
-      north: door => door.direction === 'N' && door.from === current,
-      south: door => door.direction === 'N' && door.to === current,
-      west:  door => door.direction === 'W' && door.from === current,
-      east:  door => door.direction === 'W' && door.to === current,
-    }[direction];
-
-    if (matches == null) { throw new Error(`Bad direction [${direction}]`); }
-
-    return floor.getDoors().filter(matches).sort((a,b) =>
-      (a.position.x - b.position.x) || (a.position.y - b.position.y))[0] || null;
-  }
-
-  // TODO: The encounter rate could also be changed by items the party uses or events. Maybe they use something that
-  //       makes them quieter, or they trip an alarm in an event. We'll need to add a property to the floor state that
-  //       keeps track of dungeon conditions like this.
-
-  function moveToRoom(index) {
-    const floor = DungeonSystem.getDungeonFloor();
-
-    if (canMoveTo(index) === false) {
-      throw new Error(`Cannot move to room ${index} from room ${floor.getLocation()}`);
-    }
-
-    const entry = enterRoom(index);
-    const encounterRate = DungeonTheme.lookup(floor.getTheme()).getEncounterRate(entry.isFirstVisit);
-    const encounter = entry.episode == null && Random.roll(100) < encounterRate * Difficulty.getEncounterFactor();
-
-    floor.setLocation(index);
-
-    return { encounter, revealed:entry.revealed, episode:entry.episode, trap:entry.trap };
-  }
-
-  // Everything that happens as the party crosses into a room, which has to be worked out before the party is moved
-  // because moving them marks the room as visited. A room is only scouted the first time it's entered, which is also
-  // the only time its trap can be sprung or its episode can start.
-  function enterRoom(index) {
-    const floor = DungeonSystem.getDungeonFloor();
-    const room = floor.getRooms()[index];
-    const isFirstVisit = floor.isVisited(index) === false;
-    const revealed = floor.isRevealed(index) === false;
-    if (isFirstVisit) { scoutRoom(room); }
-
-    const episode = isFirstVisit ? getRoomEpisode(room) : null;
-    const trap = isFirstVisit ? TrapSystem.springTrap(room) : null;
-    GameSystem.getState().advanceGameTime(isFirstVisit ? exploreTime : backtrackTime);
-
-    return { enteredRoom:index, isFirstVisit, revealed, episode, trap };
-  }
-
-  function scoutRoom(room) {
-    room.setScoutingRoll(SkillCheck(PartyConfiguration.getScout(), 'scouting').value);
-  }
-
-  function getRoomEpisode(room) {
-    if (room.hasContents() === false) { return null; }
-    return RoomContents.lookup(room.getContents()).getAvailableEpisode();
-  }
-
-  // ===================
-  //    Grid Movement
-  // ===================
-
   // Doors live on the north or west wall of a tile, so a step to the south or east finds its door on the tile being
   // stepped onto rather than on the tile being left.
   const headings = {
@@ -163,6 +81,10 @@ global.DungeonNavigationSystem = (function() {
     return { moved:true, position, openedDoor, ...entry, encounter };
   }
 
+  // TODO: The encounter rate could also be changed by items the party uses or events. Maybe they use something that
+  //       makes them quieter, or they trip an alarm in an event. We'll need to add a property to the floor state that
+  //       keeps track of dungeon conditions like this.
+
   // Walking into a room for the first time is when the party is most likely to be ambushed, unless the room has an
   // episode of its own to play out. Every other step only carries a slight chance of a wandering encounter, low
   // enough that it needs a finer roll than a percentage.
@@ -181,72 +103,36 @@ global.DungeonNavigationSystem = (function() {
     return position;
   }
 
-  // =============
-  //    Pathing
-  // =============
-
-  function getPathToRoom(index) {
-    return findPath(DungeonSystem.getDungeonFloor().getLocation(), index);
-  }
-
-  function getPathThroughDoor(from, to) {
-    const currentIndex = DungeonSystem.getDungeonFloor().getLocation();
-    const pathToFrom = findPath(currentIndex, from);
-    const pathToTo = findPath(currentIndex, to);
-
-    if (pathToFrom == null && pathToTo == null) { return null; }
-    if (pathToFrom == null) { return [...pathToTo, from]; }
-    if (pathToTo == null) { return [...pathToFrom, to]; }
-
-    return (pathToFrom.length <= pathToTo.length) ? [...pathToFrom, to] : [...pathToTo, from];
-  }
-
-  // A breadth first search through the revealed rooms, returning the path as the indices of the rooms to step
-  // through, not including the starting room.
-  function findPath(fromIndex, toIndex) {
+  // Everything that happens as the party crosses into a room, which has to be worked out before the party is moved
+  // because moving them marks the room as visited. A room is only scouted the first time it's entered, which is also
+  // the only time its trap can be sprung or its episode can start.
+  function enterRoom(index) {
     const floor = DungeonSystem.getDungeonFloor();
+    const room = floor.getRooms()[index];
+    const isFirstVisit = floor.isVisited(index) === false;
+    const revealed = floor.isRevealed(index) === false;
+    if (isFirstVisit) { scoutRoom(room); }
 
-    if (fromIndex === toIndex) { return []; }
+    const episode = isFirstVisit ? getRoomEpisode(room) : null;
+    const trap = isFirstVisit ? TrapSystem.springTrap(room) : null;
+    GameSystem.getState().advanceGameTime(isFirstVisit ? exploreTime : backtrackTime);
 
-    const cameFrom = new Map([[fromIndex, null]]);
-    const queue = [fromIndex];
-
-    while (queue.length > 0) {
-      const current = queue.shift();
-
-      for (const neighbor of getAdjacentRoomIndices(current)) {
-        if (cameFrom.has(neighbor)) { continue; }
-        if (floor.isRevealed(neighbor) === false) { continue; }
-
-        cameFrom.set(neighbor, current);
-        if (neighbor === toIndex) { return buildPath(cameFrom, toIndex); }
-        queue.push(neighbor);
-      }
-    }
+    return { enteredRoom:index, isFirstVisit, revealed, episode, trap };
   }
 
-  function buildPath(cameFrom, toIndex) {
-    const path = [];
+  function scoutRoom(room) {
+    room.setScoutingRoll(SkillCheck(PartyConfiguration.getScout(), 'scouting').value);
+  }
 
-    let step = toIndex;
-    while (cameFrom.get(step) != null) {
-      path.unshift(step);
-      step = cameFrom.get(step);
-    }
-
-    return path;
+  function getRoomEpisode(room) {
+    if (room.hasContents() === false) { return null; }
+    return RoomContents.lookup(room.getContents()).getAvailableEpisode();
   }
 
   return {
-    canMoveTo,
-    getAdjacentRoomIndices,
-    getDoorInDirection,
-    moveToRoom,
     findStep,
     canStep,
     step,
-    getPathToRoom,
-    getPathThroughDoor,
   };
 
 })();

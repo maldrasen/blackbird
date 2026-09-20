@@ -41,6 +41,17 @@ describe("DungeonFloor", function() {
     });
   });
 
+  describe("getFeatureForRoom()", function() {
+    it('finds the feature a room belongs to', function() {
+      const floor = DungeonFloor(1,'dungeon');
+      addSquareRoom(floor,3,4,4);
+      const room = addSquareRoom(floor,2,8,4);
+
+      expect(floor.getFeatureForRoom(1)).to.equal(room.getFeature());
+      expect(floor.getFeatureForRoom(1).getIndex()).to.equal(1);
+    });
+  });
+
   describe("stairs", function() {
     let floor;
 
