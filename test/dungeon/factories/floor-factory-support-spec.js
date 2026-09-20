@@ -41,7 +41,7 @@ describe("FloorFactorySupport", function() {
       const targetFeature = buildFloor();
       const door = FloorFactorySupport.buildDoorToFeature({ x:1, y:2 }, 1, targetFeature);
 
-      expect(door).to.deep.equal({ position:{ x:1, y:2 }, direction:'N', from:1, to:0 });
+      expect(door).to.deep.equal({ position:{ x:1, y:2 }, direction:'N', from:1, to:0, open:false });
     });
 
     it('skips touching walls that forbid doors', function() {
@@ -52,7 +52,7 @@ describe("FloorFactorySupport", function() {
 
       const door = FloorFactorySupport.buildDoorToFeature({ x:1, y:2 }, 1, targetFeature);
 
-      expect(door).to.deep.equal({ position:{ x:2, y:2 }, direction:'W', from:0, to:1 });
+      expect(door).to.deep.equal({ position:{ x:2, y:2 }, direction:'W', from:0, to:1, open:false });
     });
 
     it('throws when no touching wall allows a door', function() {

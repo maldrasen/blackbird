@@ -73,7 +73,7 @@ global.DoorFinder = function(grid) {
   function addDoor(x, y, direction, from, to) {
     const key = (from < to) ? `${from}-${to}` : `${to}-${from}`;
     if (doors[key] == null) { doors[key] = [] }
-    doors[key].push({ position:{x,y}, direction, from, to });
+    doors[key].push(Door({ position:{x,y}, direction, from, to }));
     connections.addEdge(from,to);
   }
 

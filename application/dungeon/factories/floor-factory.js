@@ -92,12 +92,12 @@ global.FloorFactory = function() {
       const rooms = feature.getRooms();
 
       feature.getDoors().forEach(spec => {
-        const door = {
+        const door = Door({
           position: { x: position.x + spec.position.x, y: position.y + spec.position.y },
           direction: spec.direction,
           from: rooms[spec.from].getIndex(),
           to: rooms[spec.to].getIndex(),
-        };
+        });
 
         connections.addEdge(door.from, door.to);
         featureDoors.push(door);

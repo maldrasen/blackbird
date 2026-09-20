@@ -101,10 +101,10 @@ global.FloorFactorySupport = (function() {
   // room so it can be expressed as N/W facing.
   function buildDoor(point, fromIndex, {direction, cell}) {
     switch (direction) {
-      case 'N': return { position:point, direction:'N', from:fromIndex, to:cell };
-      case 'W': return { position:point, direction:'W', from:fromIndex, to:cell };
-      case 'S': return { position:{ x:point.x, y:point.y+1 }, direction:'N', from:cell, to:fromIndex };
-      case 'E': return { position:{ x:point.x+1, y:point.y }, direction:'W', from:cell, to:fromIndex };
+      case 'N': return Door({ position:point, direction:'N', from:fromIndex, to:cell });
+      case 'W': return Door({ position:point, direction:'W', from:fromIndex, to:cell });
+      case 'S': return Door({ position:{ x:point.x, y:point.y+1 }, direction:'N', from:cell, to:fromIndex });
+      case 'E': return Door({ position:{ x:point.x+1, y:point.y }, direction:'W', from:cell, to:fromIndex });
     }
   }
 

@@ -55,7 +55,7 @@ describe("DoorFinder", function() {
 
     const [,doors] = DoorFinder(grid).execute();
 
-    expect(doors).to.deep.equal([{ position:{ x:3, y:1 }, direction:'W', from:1, to:0 }]);
+    expect(doors).to.deep.equal([{ position:{ x:3, y:1 }, direction:'W', from:1, to:0, open:false }]);
   });
 
   it('drops only the forbidden wall tile from the candidates', function() {
