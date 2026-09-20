@@ -16,6 +16,7 @@ DungeonTheme.register('dungeon',{
   extraStairChance: 66,
   revealedRoomEncounterRate: 2,
   newRoomEncounterRate: 20,
+  stepEncounterRate: 0.5,
   roomContentChance: 20,
   roomContents:[
     { code:'dungeon-pit-trap', rarity:Rarity.common },

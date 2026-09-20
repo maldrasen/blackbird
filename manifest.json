@@ -759,6 +759,7 @@
     "test/records/battle-command-spec.js",
     "test/records/cohort-spec.js",
     "test/records/consumable-spec.js",
+    "test/records/dungeon-theme-spec.js",
     "test/records/episode-spec.js",
     "test/records/feature-type-spec.js",
     "test/records/name-spec.js",
