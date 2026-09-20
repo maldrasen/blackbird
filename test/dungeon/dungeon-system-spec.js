@@ -4,6 +4,11 @@
     return floor.getStairs(direction).map(stairs => stairs.room);
   }
 
+  function stairsUnderParty(floor) {
+    const position = floor.getPartyPosition();
+    return floor.getStairsAt(position.x, position.y);
+  }
+
   describe("setLevel()", function() {
 
     // A nested inner room shares all of its tiles with its feature's outer room. Any other shared tile is a
@@ -103,11 +108,12 @@
       expect(DungeonSystem.getDungeonFloor().getTheme()).to.equal('dungeon');
     });
 
-    it("starts the party at the up stairs", function() {
+    it("starts the party standing on the up stairs", function() {
       DungeonSystem.createDungeon();
       DungeonSystem.setLevel(1);
 
       const floor = DungeonSystem.getDungeonFloor();
+      expect(stairsUnderParty(floor)).to.equal('up');
       expect(stairRooms(floor,'up')).to.include(floor.getLocation());
     });
 
@@ -122,6 +128,7 @@
 
       const floor = DungeonSystem.getDungeonFloor();
       expect(floor.getLevel()).to.equal(2);
+      expect(stairsUnderParty(floor)).to.equal('up');
       expect(stairRooms(floor,'up')).to.include(floor.getLocation());
       expect(floor.isRevealed(floor.getLocation())).to.be.true;
     });
@@ -133,6 +140,7 @@
 
       const floor = DungeonSystem.getDungeonFloor();
       expect(floor.getLevel()).to.equal(1);
+      expect(stairsUnderParty(floor)).to.equal('down');
       expect(stairRooms(floor,'down')).to.include(floor.getLocation());
     });
 

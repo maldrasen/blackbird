@@ -16,6 +16,7 @@ global.DungeonFloor = function(level, theme=null) {
   const doorsByEdge = new Map();
 
   let location = null;
+  let partyPosition = null;
   let features = [];
   let rooms = [];
   let doors = [];
@@ -23,10 +24,25 @@ global.DungeonFloor = function(level, theme=null) {
   function getFloorWidth() { return DungeonTheme.lookup(theme).getFloorWidth(); }
   function getFloorHeight() { return DungeonTheme.lookup(theme).getFloorHeight(); }
 
+  // TODO: The location is on its way out. Once the party only moves by tile it becomes the room that owns the
+  //       party's tile, until then moving by room leaves the party position behind.
   function setLocation(index) {
     location = index;
     revealed.add(index);
     visited.add(index);
+  }
+
+  // The party stands on a single tile of the floor, which reveals and visits the room that owns the tile.
+  function setPartyPosition(x, y) {
+    const index = getRoomIndexAt(x, y);
+    if (index == null) { throw new Error(`The party cannot stand at (${x},${y}), there is no floor there.`); }
+
+    partyPosition = { x, y };
+    setLocation(index);
+  }
+
+  function getPartyPosition() {
+    return partyPosition ? { ...partyPosition } : null;
   }
 
   function addFeature(feature) {
@@ -130,6 +146,8 @@ global.DungeonFloor = function(level, theme=null) {
     getFloorWidth,
     getFloorHeight,
 
+    setPartyPosition,
+    getPartyPosition,
     setLocation,
     getLocation: () => { return location; },
     getCurrentRoom: () => { return rooms[location]; },

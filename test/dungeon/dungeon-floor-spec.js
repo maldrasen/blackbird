@@ -73,6 +73,51 @@ describe("DungeonFloor", function() {
     });
   });
 
+  describe("party position", function() {
+    let floor;
+
+    beforeEach(function() {
+      floor = DungeonFloor(1,'dungeon');
+      addSquareRoom(floor,3,4,4);
+      addSquareRoom(floor,2,8,4);
+    });
+
+    it('starts with the party nowhere', function() {
+      expect(floor.getPartyPosition()).to.equal(null);
+      expect(floor.getLocation()).to.equal(null);
+    });
+
+    it('stands the party on a tile', function() {
+      floor.setPartyPosition(9,5);
+
+      expect(floor.getPartyPosition()).to.deep.equal({ x:9, y:5 });
+      expect(floor.getLocation()).to.equal(1);
+      expect(floor.getCurrentRoom()).to.equal(floor.getRooms()[1]);
+    });
+
+    it('reveals and visits the room the party is standing in', function() {
+      floor.setPartyPosition(4,4);
+
+      expect(floor.isRevealed(0)).to.equal(true);
+      expect(floor.isVisited(0)).to.equal(true);
+      expect(floor.isRevealed(1)).to.equal(false);
+      expect(floor.isVisited(1)).to.equal(false);
+    });
+
+    it('hands out a copy of the position', function() {
+      floor.setPartyPosition(4,4);
+      floor.getPartyPosition().x = 99;
+
+      expect(floor.getPartyPosition()).to.deep.equal({ x:4, y:4 });
+    });
+
+    it('throws when there is no floor to stand on', function() {
+      expect(() => floor.setPartyPosition(7,4)).to.throw('The party cannot stand at (7,4), there is no floor there.');
+      expect(() => floor.setPartyPosition(-1,4)).to.throw('The party cannot stand at (-1,4), there is no floor there.');
+      expect(floor.getPartyPosition()).to.equal(null);
+    });
+  });
+
   describe("getDoorAt()", function() {
     let floor;
 
