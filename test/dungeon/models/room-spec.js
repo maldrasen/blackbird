@@ -238,6 +238,41 @@ describe("Room", function() {
     });
   });
 
+  describe("descriptions", function() {
+    let room;
+
+    // A 3x3 room with the party standing on its down stairs. The descriptions for tiny rooms never apply to it, which
+    // leaves the theme with a single way to describe the stairs.
+    beforeEach(function() {
+      const floor = DungeonFloor(1,'dungeon');
+      const feature = Feature('rect-room');
+      DungeonSystem.setDungeonFloor(floor);
+
+      room = Room(feature);
+      room.setBounds(3,3);
+      room.addBox(0,0,3,3);
+      room.setStairs('down',1,1);
+      feature.addRoom(room);
+      feature.setPosition(4,4);
+      floor.addFeature(feature);
+      floor.setPartyPosition(5,5);
+    });
+
+    it('describes the stairs apart from the room', function() {
+      expect(room.getStairsDescription()).to.include('You find a room with stairs descending down into the darkness below..');
+    });
+
+    it('describes a room with stairs the same as any other room', function() {
+      expect(room.getDescription()).to.be.a('string');
+      expect(room.getDescription()).to.not.include('stairs');
+    });
+
+    it('has no stairs to describe in a room without them', function() {
+      const plain = Room(Feature('rect-room'));
+      expect(plain.getStairsDescription()).to.equal(null);
+    });
+  });
+
   describe("door permissions", function() {
 
     // A 3x3 room with the south-east corner missing, so (2,1) has an exterior wall to the E and S, and (1,1) is an

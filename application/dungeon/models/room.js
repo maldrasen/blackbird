@@ -1,6 +1,7 @@
 global.Room = function(feature, type='normal') {
 
   let description;
+  let stairsDescription;
   let position = { x:0, y:0 };
   let index;
   let floorPosition;
@@ -202,15 +203,24 @@ global.Room = function(feature, type='normal') {
     if (description == null && contents) {
       description = RoomContents.lookup(contents).getDescription(contentsOptions);
     }
-    if (description == null && stairs) {
-       description = theme.getDescription(`${stairs.direction}Stairs`);
-    }
     if (description == null) {
       const variety = (feature.getType() === 'corridor') ?
         'corridor' : FeatureType.lookup(feature.getType()).getVariety();
       description = theme.getDescription(variety);
     }
     return description;
+  }
+
+  // The stairs are described on their own, as they're only a single tile of the room. The room's description has
+  // nothing to say about them.
+  function getStairsDescription() {
+    if (stairs == null) { return null; }
+
+    if (stairsDescription == null) {
+      const theme = DungeonTheme.lookup(DungeonSystem.getDungeonFloor().getTheme());
+      stairsDescription = theme.getDescription(`${stairs.direction}Stairs`);
+    }
+    return stairsDescription;
   }
 
   function updateDescription(text) {
@@ -299,6 +309,7 @@ global.Room = function(feature, type='normal') {
     markOverlapping: () => { overlapping = true; },
     isOverlapping: () => { return overlapping; },
     getDescription,
+    getStairsDescription,
     updateDescription,
     getAvailableCommands,
     useCommand,
