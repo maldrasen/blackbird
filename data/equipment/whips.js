@@ -2,6 +2,10 @@
 // The chain whips are filed under hard rather than heavy because a whip's slash damage runs on the lash factor, which
 // only the metals define.
 
+// TODO: Some "whips" like the flails or the chain whips have their damage scaled by the welder's strength. Other
+//       flogger like whips though shouldn't scale at all, and should instead have a flat damage. Bullwhips and Cats
+//       aren't great weapons, but they can hold interesting enchantments or have certain special abilities.
+
 BaseEquipment.register('bullwhip', {
   nameFunction: () => { return `Bullwhip`; },
   icon: 'weapons/whip-01.png',

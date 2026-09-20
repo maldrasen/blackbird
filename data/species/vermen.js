@@ -31,6 +31,8 @@ Species.register(SpeciesCode.vermen, {
     male:   ArchetypeDistribution(Gender.male,   SpeciesCode.vermen),
   },
 
+  equipmentParameters: 'vermen',
+
   // Vermen have strange bodies with multiple nipples and unusual erogenous zones.
   sensitivities: {
     cock:     { Z:0,   F:1,   D:5,  C:100, B:40, A:15 },

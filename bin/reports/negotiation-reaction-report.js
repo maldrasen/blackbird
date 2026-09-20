@@ -71,7 +71,7 @@ for (let i=0; i<samples; i++) {
 
   const player = PlayerFactory.build({ gender:playerGender });
   GameSystem.getState().setPlayer(player);
-  CharacterEquipper(player).equip(Random.between(500,1000));
+  CharacterEquipper(player).equip({ budget:150 });
 
   const monsterId = MonsterFactory(monsterCode).build();
   const monster = Monster(monsterId);

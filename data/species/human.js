@@ -34,6 +34,8 @@ Species.register(SpeciesCode.human, {
     cervix:   { Z:100, F:10, D:5,  C:1,   B:0,  A:0  },
   },
 
+  equipmentParameters: 'standard',
+
   body: {
     maleHeight: 1750,
     femaleHeight: 1500,   // (Actual female average height is 1620, but I want the male/female difference to be more noticeable.)

@@ -64,7 +64,8 @@ global.BaseMonster = (function() {
       getType: () => { return monster.type; },
       getLevel: () => { return monster.level || 0; },
       getBonusEssence: () => { return monster.bonusEssence || 0; },
-
+      getEquipmentOptions: () => { return monster.equipmentOptions; },
+      getEquipmentParameters: () => { return monster.equipmentParameters; },
       getHealthFactor,
       getSpeedFactor,
 

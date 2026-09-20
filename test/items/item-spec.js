@@ -1,9 +1,7 @@
 describe('Item', function() {
 
   function build(code, materials, options={}) {
-    const factory = EquipmentFactory();
-    factory.setAvailableMaterials(materials);
-    return Item(factory.build(code, options));
+    return Item(ItemFixtures.build(code, materials, options));
   }
 
   describe('getName()', function() {

@@ -15,18 +15,48 @@ describe("MonsterFactory", function() {
     it("leaves a natural fighter's hands empty", function() {
       const id = MonsterFactory('kobold-dick-puncher').build();
       const equipment = EquipmentComponent.lookup(id);
+      const items = InventoryComponent.lookup(id).items;
 
       expect(equipment.primary).to.be.undefined;
-      expect(InventoryComponent.lookup(id).items).to.be.empty;
+      expect(equipment.secondary).to.be.undefined;
+      expect(items.some(itemId => Item(itemId).getBase().isWeapon())).to.be.false;
       expect(Monster(id).getAbilities().map(ability => ability.getName())).to.include('Punch');
     });
 
-    // Pending the equipment depots (task 225), which is where a monster's gear will come from.
-    it("equips real weapons");
-    it("equips armor");
+    it("equips a real weapon from the species depot", function() {
+      const id = MonsterFactory('deepdark-kobold').build();
+      const primary = EquipmentComponent.lookup(id).primary;
+      const kobold = EquipmentParameters.lookup('kobold');
+
+      expect(Item(primary).getBase().isWeapon()).to.be.true;
+      expect(Item(primary).getValue()).to.be.at.most(110);
+      expect(Object.keys(kobold.getWeapons())).to.include(Item(primary).getBase().getCode());
+      expect(InventoryComponent.lookup(id).items).to.include(primary);
+    });
+
+    it("equips armor", function() {
+      const id = MonsterFactory('flamescale-kobold').build();
+      const legs = EquipmentComponent.lookup(id).legs;
+
+      expect(Item(legs).getBase().getSlot()).to.equal(EquipmentSlot.legs);
+      expect(Item(legs).getValue()).to.be.at.most(88);
+      expect(InventoryComponent.lookup(id).items).to.include(legs);
+    });
+
+    it("gives a monster some skill with the weapon it ends up with", function() {
+      const id = MonsterFactory('kobold-runt').build();
+      const primary = EquipmentComponent.lookup(id).primary;
+
+      expect(SkillsComponent.lookup(id)[Item(primary).getSkill()]).to.be.at.least(10);
+    });
   });
 
   describe('Building a beast type monster', function() {
+    it("never visits an equipment depot", function() {
+      MonsterFactory('rabid-skitterfang').build();
+      expect(GameSystem.getState().pack().equipmentDepots).to.deep.equal({});
+    });
+
     it("builds an actor component without a species", function() {
       const id = MonsterFactory('rabid-skitterfang').build();
       const actor = ActorComponent.lookup(id);

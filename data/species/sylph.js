@@ -30,6 +30,10 @@ Species.register(SpeciesCode.sylph, {
     male:   ArchetypeDistribution(Gender.male,   SpeciesCode.sylph),
   },
 
+  // For now. I think nymphs and sylphs may pull their equipment from a more beauty focused equipment pool, less
+  // clothing, more body piercings.
+  equipmentParameters: 'standard',
+
   // It's rare for a sylph to have a cock, but when they do they're exceedingly
   // sensitive and prone to premature ejaculation. They also have extremely
   // sensitive prostates.

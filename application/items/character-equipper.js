@@ -1,16 +1,11 @@
-// The CharacterEquipper outfits an existing character with weapons and armor appropriate to their skills and
-// attributes. The budget isn't a total to spend, it's the most the character would pay for any single item. Each
-// equipment slot uses a percentage of that budget, so characters end up with roughly comparable gear in every slot.
 global.CharacterEquipper = function(id) {
   const minimumWeaponSkill = 10;
   const budgetWindow = 0.8;
 
+  const species = Species.lookup(ActorComponent.lookup(id).species);
   const skillsComponent = SkillsComponent.lookup(id);
   const attributesComponent = AttributesComponent.lookup(id);
-  const inventoryManager = InventoryManager(id);
   const equipmentManager = EquipmentManager(id);
-  const factory = EquipmentFactory();
-
   const equipment = {};
 
   const SlotBudgetPercent = {
@@ -50,9 +45,9 @@ global.CharacterEquipper = function(id) {
   const StrengthWeaponTypes = ['axe','mace','polearm'];
   const DexterityWeaponTypes = ['bow','dagger','whip'];
 
-  // The equip() function equips the character with a weapon, an off-hand item, and armor for every slot, then returns
-  // a map of the slots that were actually filled with the new item ids. Slots with nothing affordable are simply left
-  // empty.
+  //  - budget - The maximum a character can spend on any one piece of equipment, scaled by the SlotBudgetPercent.
+  //  - bareHanded - This character will not buy weapons if this is true.
+  //  - naked - This character will not but armor if this is true.
   //
   // TODO: At the moment, we assume every character is a melee fighter for now. Magic users, specific armors for
   //       ranged fighters and rogues, ability-aware armor selection for higher level characters, and a finery pass
@@ -60,77 +55,69 @@ global.CharacterEquipper = function(id) {
   //
   // TODO: If a character is equipped with a bow, we'll also need to add arrows to their inventory.
   //
-  function equip(budget) {
-    equipWeapons(budget);
-    equipArmor(budget);
+  function equip(options) {
+    if (options.bareHanded !== true) { equipWeapons(options.budget); }
+    if (options.naked !== true) { equipArmor(options.budget); }
     return equipment;
   }
 
-  // The equipLoadout() function is the list driven alternative to equip(). Instead of shopping against a budget, the
-  // caller provides the exact gear the character can have: a list of possible weapon loadouts (one is picked at
-  // random) and the armor they wear. Monsters use this to fight with real equipment, equipment they keep if they're
-  // recruited into the party. Every entry is a factory options object with a base code, so names and text keys can
-  // be overridden.
-  //
-  //     loadouts: [{ main:{ base:B, name:N }, off:{ base:B, name:N }}]
-  //     armor:    [{ base:B, name:N }]
-  //
-  function equipLoadout(spec) {
-    equipLoadoutWeapons(spec.loadouts || []);
-    equipLoadoutArmor(spec.armor || []);
-    return equipment;
-  }
-
-  function equipLoadoutWeapons(loadouts) {
-    if (loadouts.length === 0 || isFilled(EquipmentSlot.primary)) { return; }
-
-    const loadout = Random.from(loadouts);
-    if (loadout.main) {
-      giveEquipment(loadout.main.base, EquipmentSlot.primary, loadout.main);
-      if (BaseEquipment.lookup(loadout.main.base).getHands() === WeaponHandedness.two) { return; }
+  // All the species have equipment parameters codes used to select which equipment depot to use as a fallback. A base
+  // monster can also set its own equipment parameters property which take priority.
+  function findDepot() {
+    if (MonsterComponent.lookup(id)) {
+      const monsterParameters = Monster(id).getBaseMonster().getEquipmentParameters();
+      if (monsterParameters) { return EquipmentDepot(monsterParameters); }
     }
-    if (loadout.off && isFilled(EquipmentSlot.secondary) === false) {
-      giveEquipment(loadout.off.base, EquipmentSlot.secondary, loadout.off);
-    }
-  }
-
-  // Armor entries are grouped by the slot their base fills; when a slot has more than one possible piece, one is
-  // picked at random.
-  function equipLoadoutArmor(entries) {
-    const grouped = {};
-    entries.forEach(entry => {
-      const slot = BaseEquipment.lookup(entry.base).getSlot();
-      grouped[slot] = [...(grouped[slot] || []), entry];
-    });
-
-    Object.entries(grouped).forEach(([slot,choices]) => {
-      if (isFilled(slot)) { return; }
-      const choice = Random.from(choices);
-      giveEquipment(choice.base, slot, choice);
-    });
+    return EquipmentDepot(species.getEquipmentParameters());
   }
 
   // === Weapons =======================================================================================================
 
-  // A preset primary weapon means the loadout is intentional, so we leave both hands alone. Otherwise we pick a
-  // primary and, unless it's two-handed or the off-hand is already filled, an appropriate secondary.
+  // A preset primary weapon means their weapons were chosen intentionally, so we leave both hands alone. Otherwise we
+  // pick a primary and, unless it's two-handed or the off-hand is already filled, an appropriate secondary. The stock
+  // is only fetched once because fetching it restocks the depot.
   function equipWeapons(budget) {
     if (isFilled(EquipmentSlot.primary)) { return; }
 
-    const weaponType = determineWeaponType();
-    const primaryCode = selectByBudget(weaponCandidates(weaponType), budget * SlotBudgetPercent.primary);
-    if (primaryCode == null) { return; }
+    const stock = findDepot().getWeapons();
+    const primaryId = selectPrimary(stock, budget * SlotBudgetPercent.primary);
+    if (primaryId == null) { return; }
 
-    giveEquipment(primaryCode, EquipmentSlot.primary);
-    if (BaseEquipment.lookup(primaryCode).getHands() === WeaponHandedness.two) { return; }
+    pickEquipment(primaryId, EquipmentSlot.primary);
+    if (Item(primaryId).getBase().getHands() === WeaponHandedness.two) { return; }
     if (isFilled(EquipmentSlot.secondary)) { return; }
 
-    const offhandType = isDexterous(weaponType) ? 'dagger' : 'shield';
+    // The off-hand follows the weapon they actually ended up with, which may not be the type they wanted.
+    const offhandType = isDexterous(Item(primaryId).getBase().getType()) ? 'dagger' : 'shield';
     const offhandPercent = (offhandType === 'shield') ? SlotBudgetPercent.shield : SlotBudgetPercent.secondary;
-    const secondaryCode = selectByBudget(weaponCandidates(offhandType), budget * offhandPercent);
-    if (secondaryCode == null) { return; }
+    const secondaryCandidates = ofType(slotCandidates(stock, EquipmentSlot.secondary), offhandType);
+    const secondaryId = selectByBudget(secondaryCandidates, budget * offhandPercent);
+    if (secondaryId == null) { return; }
 
-    giveEquipment(secondaryCode, EquipmentSlot.secondary);
+    pickEquipment(secondaryId, EquipmentSlot.secondary);
+  }
+
+  // A depot might not stock the weapon type a character wants (kobolds don't make whips), or might not have one
+  // they can afford. Fighting with the wrong weapon beats fighting unarmed, so the search widens to any weapon in
+  // budget, and then to the least unaffordable weapon in the depot. Only an empty depot leaves them unarmed. The
+  // off-hand doesn't get this treatment, an empty off-hand is fine.
+  function selectPrimary(stock, slotBudget) {
+    const candidates = primaryCandidates(stock);
+
+    return selectByBudget(ofType(candidates, determineWeaponType()), slotBudget)
+        || selectByBudget(candidates, slotBudget)
+        || selectCheapest(candidates);
+  }
+
+  // A character may already be equipped with an offhand weapon, but then equipping a two-handed weapon would knock it
+  // out of their hand, so the equipper should only shop for something that leaves the off-hand alone. I'm not sure
+  // that this is something that would ever actually come up in the real game, but the specs might want to specify that
+  // a character must be equipped with a shield without also specifying their main hand weapon.
+  function primaryCandidates(stock) {
+    const candidates = slotCandidates(stock, EquipmentSlot.primary);
+    return isFilled(EquipmentSlot.secondary) ?
+      candidates.filter(item => Item(item.id).getBase().getHands() !== WeaponHandedness.two) :
+      candidates;
   }
 
   // A character who's trained with a weapon uses that kind of weapon. Untrained characters get whatever suits their
@@ -171,29 +158,30 @@ global.CharacterEquipper = function(id) {
   // === Armor =========================================================================================================
 
   function equipArmor(budget) {
+    const stock = findDepot().getArmor();
+
     ArmorSlots.forEach(slot => {
       if (isFilled(slot)) { return; }
-      const code = selectByBudget(armorCandidates(slot), budget * SlotBudgetPercent[slot]);
-      if (code) {
-        giveEquipment(code, slot);
+      const itemId = selectByBudget(slotCandidates(stock, slot), budget * SlotBudgetPercent[slot]);
+      if (itemId) {
+        pickEquipment(itemId, slot);
       }
     });
   }
 
   // === Selection =====================================================================================================
 
-  function weaponCandidates(type) {
-    return BaseEquipment.getAllCodes().
-      map(code => BaseEquipment.lookup(code)).
-      filter(weapon => weapon.getType() === type).
-      map(weapon => ({ code:weapon.getCode(), value:weapon.getValue() }));
+  // The stock list goes stale as items are picked from it, so anything this character has already taken is skipped.
+  // Otherwise, a character with a dagger in each hand could try to pick the same dagger twice.
+  function slotCandidates(stock, slot) {
+    return stock.
+      filter(itemId => Object.values(equipment).includes(itemId) === false).
+      filter(itemId => equipmentManager.canEquipItem(itemId, slot)).
+      map(itemId => ({ id:itemId, value:Item(itemId).getValue() }));
   }
 
-  function armorCandidates(slot) {
-    return BaseEquipment.getAllCodes().
-      map(code => BaseEquipment.lookup(code)).
-      filter(armor => armor.getSlot() === slot).
-      map(armor => ({ code:armor.getCode(), value:armor.getValue() }));
+  function ofType(candidates, type) {
+    return candidates.filter(item => Item(item.id).getBase().getType() === type);
   }
 
   // Pick a random item valued within 80% - 100% of the slot's budget. When nothing falls in that window we settle
@@ -203,19 +191,26 @@ global.CharacterEquipper = function(id) {
     if (affordable.length === 0) { return null; }
 
     const inWindow = affordable.filter(item => item.value >= slotBudget * budgetWindow);
-    if (inWindow.length > 0) { return Random.from(inWindow.map(item => item.code)); }
+    if (inWindow.length > 0) { return Random.from(inWindow.map(item => item.id)); }
 
-    const bestValue = Math.max(...affordable.map(item => item.value));
-    return Random.from(affordable.filter(item => item.value === bestValue).map(item => item.code));
+    return randomWithValue(affordable, Math.max(...affordable.map(item => item.value)));
+  }
+
+  function selectCheapest(candidates) {
+    if (candidates.length === 0) { return null; }
+    return randomWithValue(candidates, Math.min(...candidates.map(item => item.value)));
+  }
+
+  function randomWithValue(candidates, value) {
+    return Random.from(candidates.filter(item => item.value === value).map(item => item.id));
   }
 
   // === Giving ========================================================================================================
 
   function isFilled(slot) { return equipmentManager.getSlot(slot) != null; }
-  function giveEquipment(code, slot, options={}) { give(factory.build(code, options), slot); }
 
-  function give(itemId, slot) {
-    inventoryManager.addItem(itemId);
+  function pickEquipment(itemId, slot) {
+    findDepot().pickItem(itemId, id);
     equipmentManager.equipItem(itemId, slot);
     equipment[slot] = itemId;
   }
@@ -223,8 +218,8 @@ global.CharacterEquipper = function(id) {
   // === Skills ========================================================================================================
 
   // If this character has been equipped with a weapon they have no skill in (which happens when the player character
-  // is randomly given a weapon) we want to give them the minimum starting skill to use that weapon. Otherwise, they'll
-  // just miss far too often.
+  // is randomly given a weapon, or a monster falls back to whatever the depot had) we want to give them the minimum
+  // starting skill to use that weapon. Otherwise, they'll just miss far too often.
   function assignSkills() {
     const primaryId = equipmentManager.getSlot(EquipmentSlot.primary);
     const secondaryId = equipmentManager.getSlot(EquipmentSlot.secondary);
@@ -233,17 +228,20 @@ global.CharacterEquipper = function(id) {
     if (secondaryId) { ensureMinimumSkill(Item(secondaryId).getSkill()) }
   }
 
+  // The minimum grows with level, and it's rolled before looking at the skill they have, so a character who's already
+  // trained past the roll keeps what they've got.
   function ensureMinimumSkill(code) {
+    const minimum = Math.min(100, minimumWeaponSkill + Random.roll(2 * Character(id).getLevel()));
     const skills = SkillsComponent.lookup(id);
-    if (skills[code]<minimumWeaponSkill) {
-      skills[code] = minimumWeaponSkill + Random.roll(6);
-      SkillsComponent.update(id,skills);
+
+    if (skills[code] < minimum) {
+      skills[code] = minimum;
+      SkillsComponent.update(id, skills);
     }
   }
 
   return {
     equip,
-    equipLoadout,
     assignSkills,
   };
 

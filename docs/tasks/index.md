@@ -7,7 +7,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [215] Grid Based Dungeon Movement `8pt` — [215-grid-based-dungeon-movement.md](215-grid-based-dungeon-movement.md)
 - [219] Split essence and challenge rating `8pt` — [220-split-essence-and-challenge-rating.md](220-split-essence-and-challenge-rating.md)
 - [224] Dungeon Rendering Prototype `8pt` — [224-dungeon-rendering-prototype.md](224-dungeon-rendering-prototype.md)
-- [225] Create equipment depots used to equip characters. `8pt` — [225-create-equipment-depots-used-to-equip-characters.md](225-create-equipment-depots-used-to-equip-characters.md)
+- [231] Remove orphaned entities on save `3pt` — [231-remove-orphaned-entities-on-save.md](231-remove-orphaned-entities-on-save.md)
 
 ## Priority 2
 
@@ -24,6 +24,8 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [194] Feeling Adjustments During Battle `2pt` — [194-feeling-adjustments-during-battle.md](194-feeling-adjustments-during-battle.md)
 - [197] Skill events `5pt` — [197-skill-episodes.md](197-skill-episodes.md)
 - [228] Effect based enchantments `3pt` — [228-effect-based-enchantments.md](228-effect-based-enchantments.md)
+- [229] Implment ammunition `3pt` — [229-implment-ammunition.md](229-implment-ammunition.md)
+- [230] Add draw weight for bows. `0pt` — [230-add-draw-weight-for-bows.md](230-add-draw-weight-for-bows.md)
 
 ## Priority 3
 

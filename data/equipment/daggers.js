@@ -1,4 +1,10 @@
 
+// TODO: Rather than scaling with strength, most daggers should only have flat damage. (This would help reduce the
+//       insane Poignard damage). Instead a player can have abilities that increase dagger crit range and multipliers,
+//       so that overall DPS scales with dex, but it's more random, whereas the strength weapons do more consistent
+//       damage without the need for much skill. Swords, because they're the hybrid dex/str weapons will scale with
+//       strength (but not as much) and also adjust crit chance and magnitude (though also by not as much)
+
 BaseEquipment.register('knife', {
   nameFunction: names => { return `${names[0]} Knife`; },
   icon: 'weapons/dagger-02.png',

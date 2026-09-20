@@ -5,6 +5,7 @@ BaseMonster.register('flamescale-kobold',{
   archetypes: { savage:10 },
   triggers: ['red-hair'],
   level: 6,
+  equipmentOptions: { budget:110 },
 
   lootGroups: {
     nothing: 100,

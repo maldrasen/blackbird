@@ -12,7 +12,6 @@ global.MonsterFactory = function(code,options={}) {
         triggers: [...new Set([...monsterBase.getTriggers(), ...(options.triggers || [])])],
         archetypes: monsterBase.getArchetypes(),
       });
-      addEquipment();
     }
 
     if (monsterSpecies == null) {
@@ -24,6 +23,7 @@ global.MonsterFactory = function(code,options={}) {
 
     addSkills();
     addLevels();
+    addEquipment();
 
     return monsterId;
   }
@@ -74,8 +74,15 @@ global.MonsterFactory = function(code,options={}) {
     SkillsComponent.update(monsterId, skills);
   }
 
+  // Monsters shop last because the equipper picks a weapon type from their finished skills and attributes. Base
+  // monsters without equipment options (every beast) don't shop at all.
   function addEquipment() {
-    // TODO: Select equipment from this monster's equipment depot.
+    const equipmentOptions = monsterBase.getEquipmentOptions();
+    if (equipmentOptions == null) { return; }
+
+    const equipper = CharacterEquipper(monsterId);
+    equipper.equip(equipmentOptions);
+    equipper.assignSkills();
   }
 
   // =========================

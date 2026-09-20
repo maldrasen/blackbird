@@ -8,6 +8,7 @@ BaseMonster.register('kobold-sneak-slut',{
   archetypes: { slut:10 },
   triggers: [],
   level: 3,
+  equipmentOptions: { budget:55 },
 
   skills: {
     stealth: 10,

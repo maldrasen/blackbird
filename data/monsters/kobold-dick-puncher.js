@@ -8,6 +8,7 @@ BaseMonster.register('kobold-dick-puncher',{
   archetypes: { bastard:10 },
   triggers:[],
   level: 5,
+  equipmentOptions: { budget:85, bareHanded:true },
 
   // Adds a preference for attacking men on top of fighter weights.
   threatWeights: {
