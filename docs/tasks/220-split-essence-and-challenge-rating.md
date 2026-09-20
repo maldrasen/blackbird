@@ -1,5 +1,5 @@
 ---
-id: 219
+id: 220
 title: Split essence and challenge rating
 priority: 1
 created: 2026-09-12

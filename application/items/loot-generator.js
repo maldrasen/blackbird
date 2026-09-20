@@ -110,7 +110,7 @@ global.LootGenerator = function() {
   }
 
   function rollValueRange() {
-    const max = qualityFactor * ItemConstants.lootValueScale * Math.log(1 + (essenceValue() / ItemConstants.lootEssenceScale));
+    const max = qualityFactor * ItemConstants.lootValueScale * Math.log(1 + (challengeValue() / ItemConstants.lootChallengeScale));
     const ceiling = max * (Random.between(ItemConstants.lootCeilingLow, 100) / 100);
     valueRange = { floor:ceiling * ItemConstants.lootFloorPercent, ceiling, max };
   }
@@ -170,9 +170,9 @@ global.LootGenerator = function() {
     return inWindow.length > 0 ? inWindow : affordable;
   }
 
-  function essenceValue() {
-    if (monsterId) { return EssenceSystem.monsterEssenceValue(monsterId); }
-    return BattleHelper.getChallengeTarget(floor.getLevel()) * ItemConstants.chestEssencePercent;
+  function challengeValue() {
+    if (monsterId) { return monsterBase.getChallengeRating(); }
+    return BattleHelper.getChallengeTarget(floor.getLevel()) * ItemConstants.chestChallengePercent;
   }
 
   function mergedDrops() {

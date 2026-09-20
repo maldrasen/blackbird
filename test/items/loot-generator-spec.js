@@ -238,14 +238,14 @@ describe('LootGenerator', function() {
       expect(chestRange('spec-loot-shrine', { quality:1.5 }).ceiling).to.be.closeTo(184.6, 0.1);
     });
 
-    it('derives a monster ceiling from its essence value', function() {
+    it('derives a monster ceiling from the challenge rating of its base monster', function() {
       const id = MonsterFactory('spec-loot-blob').build();
-      const essence = EssenceSystem.monsterEssenceValue(id);
+      const rating = BaseMonster.lookup('spec-loot-blob').getChallengeRating();
       const generator = LootGenerator();
       Random.stubBetween(100);
       Random.stubRoll(0);
       generator.generateMonsterLoot(id);
-      expect(generator.getValueRange().ceiling).to.be.closeTo(30 * Math.log(1 + (essence / 20)), 0.001);
+      expect(generator.getValueRange().ceiling).to.be.closeTo(30 * Math.log(1 + (rating / 20)), 0.001);
     });
   });
 
