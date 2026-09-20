@@ -753,6 +753,7 @@
     "test/negotiations/negotiation-state-spec.js",
     "test/negotiations/negotiation-system-spec.js",
     "test/records/base-equipment-spec.js",
+    "test/records/base-monster-spec.js",
     "test/records/battle-command-spec.js",
     "test/records/cohort-spec.js",
     "test/records/consumable-spec.js",

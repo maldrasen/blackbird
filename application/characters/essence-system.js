@@ -18,7 +18,7 @@ global.EssenceSystem = (function() {
   function monsterEssenceValue(id) {
     const base = Monster(id).getBaseMonster();
     const root = abilityTotal(base, Attributes(id)) + base.getBonusEssence();
-    return Math.round(root * base.getHealthFactor() / base.getSpeedFactor() * essenceScale);
+    return Math.round(root * base.getEssenceScale());
   }
 
   function abilityTotal(base, attributes) {
