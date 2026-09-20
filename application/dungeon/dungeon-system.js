@@ -72,7 +72,7 @@ global.DungeonSystem = (function() {
   function getFloorEncounterOptions() {
     return {
       cohorts: DungeonTheme.lookup(dungeonFloor.getTheme()).getCohorts(),
-      challengeTarget: BattleHelper.getEssenceTarget(dungeonFloor.getLevel()),
+      challengeTarget: BattleHelper.getChallengeTarget(dungeonFloor.getLevel()),
     }
   }
 

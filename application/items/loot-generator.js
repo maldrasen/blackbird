@@ -172,7 +172,7 @@ global.LootGenerator = function() {
 
   function essenceValue() {
     if (monsterId) { return EssenceSystem.monsterEssenceValue(monsterId); }
-    return BattleHelper.getEssenceTarget(floor.getLevel()) * ItemConstants.chestEssencePercent;
+    return BattleHelper.getChallengeTarget(floor.getLevel()) * ItemConstants.chestEssencePercent;
   }
 
   function mergedDrops() {
