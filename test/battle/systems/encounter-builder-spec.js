@@ -40,22 +40,22 @@ describe("EncounterBuilder", function() {
 
   describe("chooseCohort()", function() {
 
-    function pricedAverages(code) {
-      return Cohort.lookup(code).getMonsters().map(monster => EssenceData[monster].average).filter(average => average > 0);
+    function challengeRatings(code) {
+      return Cohort.lookup(code).getMonsters().map(monster => BaseMonster.lookup(monster).getChallengeRating());
     }
 
-    function essenceFloor(code) {
-      return Cohort.lookup(code).getMinimum() * Math.min(...pricedAverages(code));
+    function challengeFloor(code) {
+      return Cohort.lookup(code).getMinimum() * Math.min(...challengeRatings(code));
     }
 
-    function essenceCeiling(code) {
-      return Cohort.lookup(code).getMaximum() * Math.max(...pricedAverages(code));
+    function challengeCeiling(code) {
+      return Cohort.lookup(code).getMaximum() * Math.max(...challengeRatings(code));
     }
 
     it("offers a viable cohort to the random pick", function() {
-      const cohorts = Cohort.getAllCodes().sort((a,b) => essenceFloor(a) - essenceFloor(b));
-      const target = (essenceFloor(cohorts[0]) + essenceFloor(cohorts[cohorts.length-1])) / 2;
-      const viable = cohorts.find(code => essenceFloor(code) <= target && essenceCeiling(code) >= target);
+      const cohorts = Cohort.getAllCodes().sort((a,b) => challengeFloor(a) - challengeFloor(b));
+      const target = (challengeFloor(cohorts[0]) + challengeFloor(cohorts[cohorts.length-1])) / 2;
+      const viable = cohorts.find(code => challengeFloor(code) <= target && challengeCeiling(code) >= target);
       expect(viable).to.exist;
 
       Random.stubFrom(viable);
@@ -63,25 +63,25 @@ describe("EncounterBuilder", function() {
     });
 
     it("does not offer a cohort that cannot field its minimum group within the target", function() {
-      const cohorts = Cohort.getAllCodes().sort((a,b) => essenceFloor(a) - essenceFloor(b));
+      const cohorts = Cohort.getAllCodes().sort((a,b) => challengeFloor(a) - challengeFloor(b));
       const priciest = cohorts[cohorts.length-1];
-      const target = (essenceFloor(cohorts[0]) + essenceFloor(priciest)) / 2;
+      const target = (challengeFloor(cohorts[0]) + challengeFloor(priciest)) / 2;
 
       Random.stubFrom(priciest);
       expect(() => EncounterBuilder.chooseCohort(cohorts, target)).to.throw(/not within/);
     });
 
-    it("does not offer a cohort too weak to fill the essence budget", function() {
-      const cohorts = Cohort.getAllCodes().sort((a,b) => essenceCeiling(a) - essenceCeiling(b));
+    it("does not offer a cohort too weak to fill the challenge budget", function() {
+      const cohorts = Cohort.getAllCodes().sort((a,b) => challengeCeiling(a) - challengeCeiling(b));
       const weakest = cohorts[0];
-      const target = (essenceCeiling(weakest) + essenceCeiling(cohorts[cohorts.length-1])) / 2;
-      expect(cohorts.some(code => essenceFloor(code) <= target && essenceCeiling(code) >= target)).to.equal(true);
+      const target = (challengeCeiling(weakest) + challengeCeiling(cohorts[cohorts.length-1])) / 2;
+      expect(cohorts.some(code => challengeFloor(code) <= target && challengeCeiling(code) >= target)).to.equal(true);
 
       Random.stubFrom(weakest);
       expect(() => EncounterBuilder.chooseCohort(cohorts, target)).to.throw(/not within/);
     });
 
-    it("throws when no cohort can fit the essence target", function() {
+    it("throws when no cohort can fit the challenge target", function() {
       DungeonSystem.createDungeon();
       DungeonSystem.setLevel(1);
       expect(() => EncounterBuilder.chooseCohort(Cohort.getAllCodes(), 1)).to.throw(/viable cohort/);
@@ -92,27 +92,27 @@ describe("EncounterBuilder", function() {
 
     it("draws the only type until the total lands closest to the target", function() {
       const cohort = Cohort.lookup('daggermaws');
-      const average = EssenceData['lesser-daggermaw'].average;
+      const rating = BaseMonster.lookup('lesser-daggermaw').getChallengeRating();
 
-      expect(EncounterBuilder.selectMonsters(cohort, average * 3.4).length).to.equal(3);
-      expect(EncounterBuilder.selectMonsters(cohort, average * 3.6).length).to.equal(4);
+      expect(EncounterBuilder.selectMonsters(cohort, rating * 3.4).length).to.equal(3);
+      expect(EncounterBuilder.selectMonsters(cohort, rating * 3.6).length).to.equal(4);
     });
 
     it("builds a group of one when only a single monster fits the target", function() {
-      const average = EssenceData['lesser-daggermaw'].average;
-      const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('daggermaws'), average);
+      const rating = BaseMonster.lookup('lesser-daggermaw').getChallengeRating();
+      const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('daggermaws'), rating);
       expect(monsters).to.deep.equal(['lesser-daggermaw']);
     });
 
     it("adds the cheapest type until the minimum group size is met", function() {
-      const average = EssenceData['rabid-skitterfang'].average;
-      const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('skitterfangs'), average * 2.2);
+      const rating = BaseMonster.lookup('rabid-skitterfang').getChallengeRating();
+      const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('skitterfangs'), rating * 2.2);
       expect(monsters).to.deep.equal(['rabid-skitterfang','rabid-skitterfang','rabid-skitterfang']);
     });
 
     it("stops at the cohort's maximum group size", function() {
-      const average = EssenceData['lesser-daggermaw'].average;
-      const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('daggermaws'), average * 20);
+      const rating = BaseMonster.lookup('lesser-daggermaw').getChallengeRating();
+      const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('daggermaws'), rating * 20);
       expect(monsters.length).to.equal(5);
     });
 
@@ -126,25 +126,16 @@ describe("EncounterBuilder", function() {
     it("reserves anchor room for the minimum group so the total stays near the target", function() {
       for (let i=0; i<30; i++) {
         const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('kobolds-deepdarks'), 190);
-        const total = monsters.reduce((sum,code) => sum + EssenceData[code].average, 0);
+        const total = monsters.reduce((sum,code) => sum + BaseMonster.lookup(code).getChallengeRating(), 0);
         expect(total, `[${monsters}]`).to.be.at.most(190 * 1.25);
       }
     });
 
-    it("never draws a monster with no essence", function() {
-      [100, 300, 600, 2000].forEach(target => {
-        for (let i=0; i<10; i++) {
-          const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('kobolds-flamescales'), target);
-          monsters.forEach(code => expect(EssenceData[code].average, code).to.be.above(0));
-        }
-      });
-    });
-
-    it("keeps the essence spread of the group within the ratio", function() {
+    it("keeps the challenge spread of the group within the ratio", function() {
       for (let i=0; i<20; i++) {
         const monsters = EncounterBuilder.selectMonsters(Cohort.lookup('kobolds-deepdarks'), 600);
-        const averages = [...new Set(monsters)].map(code => EssenceData[code].average);
-        expect(Math.max(...averages)).to.be.at.most(Math.min(...averages) * BattleConstants.essenceSpreadRatio);
+        const ratings = [...new Set(monsters)].map(code => BaseMonster.lookup(code).getChallengeRating());
+        expect(Math.max(...ratings)).to.be.at.most(Math.min(...ratings) * BattleConstants.challengeSpreadRatio);
       }
     });
   });
@@ -214,7 +205,7 @@ describe("EncounterBuilder", function() {
   describe("build()", function() {
     it("builds a battle formation from the floor's cohorts", function() {
       BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ cohorts:Cohort.getAllCodes(), essenceTarget:300, ambushState:'normal' });
+      BattleSystem.startBattle({ cohorts:Cohort.getAllCodes(), challengeTarget:300, ambushState:'normal' });
 
       const state = BattleSystem.getState();
       const monsters = state.getActiveMonsters();
@@ -240,7 +231,7 @@ describe("EncounterBuilder", function() {
       BattleFixtures.prepareForBattle();
 
       for (let i=0; i<3; i++) {
-        BattleSystem.startBattle({ cohorts:['kobolds-deepdarks'], essenceTarget:400, ambushState:'normal' });
+        BattleSystem.startBattle({ cohorts:['kobolds-deepdarks'], challengeTarget:400, ambushState:'normal' });
 
         const state = BattleSystem.getState();
         state.getActiveMonsters().forEach(id => {
