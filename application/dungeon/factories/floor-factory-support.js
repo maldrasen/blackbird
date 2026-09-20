@@ -108,12 +108,42 @@ global.FloorFactorySupport = (function() {
     }
   }
 
+  // Stairs take up a single tile of their room, returned here in room-local coordinates. The room has to own the
+  // tile on the floor grid, because where the rooms of a feature overlap only one of them does. Dry tiles are
+  // preferred, and of those we take the closest to the room's center point. Ties go to the first tile in reading
+  // order, so the choice never depends on a random roll.
+  function pickStairsTile(room) {
+    const grid = DungeonSystem.getDungeonFloor().getFloorGrid();
+    const position = room.getFloorPosition();
+    const center = room.getCenterPoint();
+    const owned = [];
+
+    room.getFootprint().forEach((row, y) => {
+      row.forEach((cell, x) => {
+        if (cell != null && grid[position.y + y][position.x + x] === room.getIndex()) { owned.push({ x, y }); }
+      });
+    });
+
+    if (owned.length === 0) {
+      throw new Error(`Room[${room.getIndex()}] owns no tiles to put stairs on.`);
+    }
+
+    const dry = owned.filter(tile => room.getFloor(tile.x, tile.y) === 'default');
+    const candidates = (dry.length > 0) ? dry : owned;
+
+    // Tile centers and center points only ever land on half tiles, so the squared distances compare exactly.
+    const distance = tile => ((tile.x + 0.5 - center.x) ** 2) + ((tile.y + 0.5 - center.y) ** 2);
+
+    return candidates.sort((a,b) => distance(a) - distance(b))[0];
+  }
+
   return {
     getGapBetweenFeatures,
     getStartTiles,
     addSegment,
     segmentIsClear,
     buildDoorToFeature,
+    pickStairsTile,
   };
 
 })();

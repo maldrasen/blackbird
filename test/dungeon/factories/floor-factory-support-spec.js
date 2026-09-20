@@ -65,4 +65,74 @@ describe("FloorFactorySupport", function() {
 
   });
 
+  describe("pickStairsTile()", function() {
+    let floor;
+
+    beforeEach(function() {
+      floor = DungeonFloor(1,'dungeon');
+      DungeonSystem.setDungeonFloor(floor);
+    });
+
+    function addSquareRoom(size) {
+      const feature = Feature('spec-room');
+      const room = Room(feature);
+      room.setBounds(size,size);
+      room.addBox(0,0,size,size);
+      feature.addRoom(room);
+      feature.setPosition(4,4);
+      floor.addFeature(feature);
+      return room;
+    }
+
+    it('picks the tile closest to the center of the room', function() {
+      expect(FloorFactorySupport.pickStairsTile(addSquareRoom(3))).to.deep.equal({ x:1, y:1 });
+    });
+
+    it('picks the first of the tiles that are equally close to the center', function() {
+      expect(FloorFactorySupport.pickStairsTile(addSquareRoom(2))).to.deep.equal({ x:0, y:0 });
+    });
+
+    it('follows a center point that has been moved', function() {
+      const room = addSquareRoom(5);
+      room.setCenterPoint(3.5,0.5);
+
+      expect(FloorFactorySupport.pickStairsTile(room)).to.deep.equal({ x:3, y:0 });
+    });
+
+    it('prefers a dry tile over a closer water tile', function() {
+      const room = addSquareRoom(3);
+      room.setFloor(1,1,'water');
+
+      expect(FloorFactorySupport.pickStairsTile(room)).to.deep.equal({ x:1, y:0 });
+    });
+
+    it('settles for a water tile when the whole room is flooded', function() {
+      const room = addSquareRoom(3);
+      room.setFloorBox({ x:0, y:0, width:3, height:3, type:'water' });
+
+      expect(FloorFactorySupport.pickStairsTile(room)).to.deep.equal({ x:1, y:1 });
+    });
+
+    // A 4x4 outer room with a 2x2 room nested in its center. The inner room is painted last, so it owns the four
+    // center tiles and the outer room is left with the ring around them.
+    it('only picks tiles the room owns where rooms overlap', function() {
+      const feature = Feature('spec-room');
+      const outer = Room(feature);
+      const inner = Room(feature,'nested');
+      outer.setBounds(4,4);
+      outer.addBox(0,0,4,4);
+      inner.setBounds(2,2);
+      inner.addBox(0,0,2,2);
+      inner.setPosition(1,1);
+      inner.markOverlapping();
+      feature.addRoom(outer);
+      feature.addRoom(inner);
+      feature.setPosition(4,4);
+      floor.addFeature(feature);
+
+      expect(FloorFactorySupport.pickStairsTile(outer)).to.deep.equal({ x:1, y:0 });
+      expect(FloorFactorySupport.pickStairsTile(inner)).to.deep.equal({ x:0, y:0 });
+    });
+  });
+
 });
