@@ -47,10 +47,14 @@ global.KeyBindings = (function() {
     dungeon: {
       name: 'Dungeon',
       actions: {
-        north: { name:'Move North', key:'KeyW' },
-        south: { name:'Move South', key:'KeyS' },
-        west:  { name:'Move West',  key:'KeyA' },
-        east:  { name:'Move East',  key:'KeyD' },
+        north:     { name:'Move North',     key:'Numpad8', alternate:'KeyW' },
+        south:     { name:'Move South',     key:'Numpad2', alternate:'KeyS' },
+        west:      { name:'Move West',      key:'Numpad4', alternate:'KeyA' },
+        east:      { name:'Move East',      key:'Numpad6', alternate:'KeyD' },
+        northeast: { name:'Move Northeast', key:'Numpad9' },
+        northwest: { name:'Move Northwest', key:'Numpad7' },
+        southeast: { name:'Move Southeast', key:'Numpad3' },
+        southwest: { name:'Move Southwest', key:'Numpad1' },
       },
     },
   };

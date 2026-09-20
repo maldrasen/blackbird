@@ -19,6 +19,25 @@ describe("KeyBindings", function() {
     expect(KeyBindings.getAction('nonsense','KeyA')).to.equal(null);
   });
 
+  it("moves through the dungeon in eight directions from the numpad, and in four from WASD", function() {
+    const numpad = { Numpad8:'north', Numpad2:'south', Numpad4:'west', Numpad6:'east',
+      Numpad9:'northeast', Numpad7:'northwest', Numpad3:'southeast', Numpad1:'southwest' };
+    const letters = { KeyW:'north', KeyS:'south', KeyA:'west', KeyD:'east' };
+
+    Object.entries({ ...numpad, ...letters }).forEach(([code, direction]) => {
+      expect(KeyBindings.getAction('dungeon',code), code).to.equal(direction);
+    });
+
+    expect(KeyBindings.getDefaults().dungeon.north).to.deep.equal({ primary:'Numpad8', alternate:'KeyW' });
+    expect(KeyBindings.getDefaults().dungeon.northeast).to.deep.equal({ primary:'Numpad9', alternate:null });
+  });
+
+  it("names every dungeon direction the way the navigation system does", function() {
+    Object.keys(KeyBindings.getContexts().dungeon.actions).forEach(direction => {
+      expect(() => DungeonNavigationSystem.findStep({ x:0, y:0 }, direction), direction).to.not.throw('Bad direction');
+    });
+  });
+
   it("gives every action a primary and an alternate binding", function() {
     expect(KeyBindings.getSlots()).to.deep.equal(['primary','alternate']);
     expect(KeyBindings.getDefaults().battle[StandardAbility.attack]).to.deep.equal({ primary:'KeyA', alternate:null });
@@ -49,7 +68,7 @@ describe("KeyBindings", function() {
     expect(KeyBindings.getAction('battle','KeyQ')).to.equal(StandardAbility.attack);
     expect(KeyBindings.getAction('battle','KeyA')).to.equal(null);
     expect(KeyBindings.getAction('battle','KeyD')).to.equal(StandardAbility.defend);
-    expect(KeyBindings.getBinding('dungeon','north')).to.equal('KeyW');
+    expect(KeyBindings.getBinding('dungeon','north')).to.equal('Numpad8');
   });
 
   // Before actions had an alternate binding the options held a single key for each action.
