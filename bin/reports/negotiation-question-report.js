@@ -21,7 +21,7 @@ function poolCount(context) {
 }
 
 function buildPair(monsterCode, playerGender) {
-  Registry.clear();
+  GameSystem.reset();
 
   const player = PlayerFactory.build({ gender:playerGender });
   GameSystem.getState().setPlayer(player);
