@@ -74,11 +74,6 @@
     fill: variables.$fg-dungeon-stairs;
     text-anchor: middle;
     dominant-baseline: central;
-    cursor: pointer;
-
-    &:hover {
-      fill: variables.$fg-dungeon-stairs-hover;
-    }
   }
 }
 
