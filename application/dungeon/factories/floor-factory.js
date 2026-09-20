@@ -120,7 +120,9 @@ global.FloorFactory = function() {
     }
 
     stairs.forEach(direction => {
-      rooms.pop().setStairs(direction);
+      const room = rooms.pop();
+      const tile = FloorFactorySupport.pickStairsTile(room);
+      room.setStairs(direction, tile.x, tile.y);
     });
   }
 

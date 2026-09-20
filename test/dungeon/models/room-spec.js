@@ -187,6 +187,57 @@ describe("Room", function() {
     });
   });
 
+  describe("stairs", function() {
+
+    // An L-shaped room: the top row plus the right-hand column.
+    function legRoom() {
+      const room = Room();
+      room.setBounds(3,3);
+      room.addBox(0,0,3,1);
+      room.addBox(2,0,1,3);
+      return room;
+    }
+
+    it('starts without stairs', function() {
+      const room = legRoom();
+      expect(room.hasStairs()).to.equal(false);
+      expect(room.getStairs()).to.equal(null);
+      expect(room.getStairsTile()).to.equal(null);
+      expect(room.getStairsFloorPosition()).to.equal(null);
+    });
+
+    it('puts the stairs on a tile of the room', function() {
+      const room = legRoom();
+      room.setStairs('down',2,2);
+
+      expect(room.hasStairs()).to.equal(true);
+      expect(room.getStairs()).to.equal('down');
+      expect(room.getStairsTile()).to.deep.equal({ x:2, y:2 });
+    });
+
+    it('locates the stairs on the floor', function() {
+      const room = legRoom();
+      room.setFloorPosition(10,20);
+      room.setStairs('up',2,1);
+
+      expect(room.getStairsFloorPosition()).to.deep.equal({ x:12, y:21 });
+    });
+
+    it('throws when the tile is not part of the room', function() {
+      const room = legRoom();
+      expect(() => room.setStairs('up',0,2)).to.throw('(0,2) is not a floor tile in this room.');
+      expect(() => room.setStairs('up',3,0)).to.throw('(3,0) is not a floor tile in this room.');
+    });
+
+    it('throws when the room has no footprint yet', function() {
+      expect(() => Room().setStairs('up',0,0)).to.throw('(0,0) is not a floor tile in this room.');
+    });
+
+    it('throws on a bad direction', function() {
+      expect(() => legRoom().setStairs('sideways',0,0)).to.throw('direction[sideways] not in list');
+    });
+  });
+
   describe("door permissions", function() {
 
     // A 3x3 room with the south-east corner missing, so (2,1) has an exterior wall to the E and S, and (1,1) is an
@@ -304,7 +355,9 @@ describe("Room", function() {
 
     it('rejects rooms with stairs', function() {
       const room = Room(Feature('rect-room'));
-      room.setStairs('down');
+      room.setBounds(2,2);
+      room.addBox(0,0,2,2);
+      room.setStairs('down',0,0);
       expect(room.canHaveContents()).to.equal(false);
     });
 
@@ -390,15 +443,15 @@ describe("Room", function() {
       const room = Room();
       room.setPosition(5,9);
       room.setContents('spec-contents');
-      room.setStairs('up');
       room.setBounds(3,3);
       room.addBox(0,0,3,1);
       room.addBox(2,0,1,3);
+      room.setStairs('up',2,1);
 
       expect(room.pack()).to.deep.equal({
         position: { x:5, y:9 },
         contents: 'spec-contents',
-        stairs: 'up',
+        stairs: { direction:'up', x:2, y:1 },
         usedCommands: [],
         footprint: [
           [0,0,0],

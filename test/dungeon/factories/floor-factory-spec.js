@@ -36,6 +36,33 @@ describe("FloorFactory", function() {
     });
   });
 
+  [1,2].forEach(level => {
+    it(`puts every staircase on a dry tile that its room owns on level ${level}`, function() {
+      DungeonSystem.setLevel(level);
+      const floor = DungeonSystem.getDungeonFloor();
+      const grid = floor.getFloorGrid();
+      const stairRooms = floor.getRooms().filter(room => room.hasStairs());
+
+      expect(stairRooms.length).to.be.greaterThan(0);
+
+      stairRooms.forEach(room => {
+        const tile = room.getStairsTile();
+        const position = room.getStairsFloorPosition();
+
+        expect(grid[position.y][position.x]).to.equal(room.getIndex());
+        expect(room.getFloor(tile.x, tile.y)).to.equal('default');
+      });
+    });
+  });
+
+  it("puts the entrance stairs on the platform at the head of the causeway", function() {
+    DungeonSystem.setLevel(1);
+    const entrance = DungeonSystem.getDungeonFloor().getRooms().find(room => room.getContents() === 'dungeon-entrance');
+
+    expect(entrance.getStairs()).to.equal('up');
+    expect(entrance.getStairsTile()).to.deep.equal({ x:2, y:2 });
+  });
+
   it("puts no entrance on deeper levels", function() {
     DungeonSystem.setLevel(2);
     const floor = DungeonSystem.getDungeonFloor();

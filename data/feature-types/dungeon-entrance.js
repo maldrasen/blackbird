@@ -6,7 +6,7 @@ FeatureType.register('dungeon-entrance',{
     room.addBox(0, 0, 11, 5);
     room.setCenterPoint(2.5,2.5);
     room.allowStairs();
-    room.setStairs('up');
+    room.setStairs('up', 2, 2);
     room.forbidAllDoors();
     room.allowDoor(10,2);
     room.setChamfer(50);
