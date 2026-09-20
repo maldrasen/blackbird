@@ -70,6 +70,72 @@ global.DungeonNavigationSystem = (function() {
     return RoomContents.lookup(room.getContents()).getAvailableEpisode();
   }
 
+  // ===================
+  //    Grid Movement
+  // ===================
+
+  // Doors live on the north or west wall of a tile, so a step to the south or east finds its door on the tile being
+  // stepped onto rather than on the tile being left.
+  const headings = {
+    north:     { x:0,  y:-1, wall:'N', doorOnTarget:false },
+    south:     { x:0,  y:1,  wall:'N', doorOnTarget:true },
+    west:      { x:-1, y:0,  wall:'W', doorOnTarget:false },
+    east:      { x:1,  y:0,  wall:'W', doorOnTarget:true },
+    northeast: { x:1,  y:-1 },
+    northwest: { x:-1, y:-1 },
+    southeast: { x:1,  y:1 },
+    southwest: { x:-1, y:1 },
+  };
+
+  // Find where a step from a tile would lead, returning the tile stepped onto and the door passed through on the
+  // way (if there was one), or null when the way is blocked. Nothing moves. The position is a parameter rather than
+  // the party's own so that a path can be searched for from any tile.
+  function findStep(position, direction) {
+    const heading = headings[direction];
+    if (heading == null) { throw new Error(`Bad direction [${direction}]`); }
+
+    return (heading.wall == null) ? findDiagonalStep(position, heading) : findCardinalStep(position, heading);
+  }
+
+  // A step between two tiles of the same room is always open. A step between rooms needs a door in the wall.
+  function findCardinalStep(position, heading) {
+    const floor = DungeonSystem.getDungeonFloor();
+    const target = { x:position.x + heading.x, y:position.y + heading.y };
+    const toRoom = floor.getRoomIndexAt(target.x, target.y);
+    if (toRoom == null) { return null; }
+
+    const doorTile = heading.doorOnTarget ? target : position;
+    const door = floor.getDoorAt(doorTile.x, doorTile.y, heading.wall);
+    if (door == null && toRoom !== floor.getRoomIndexAt(position.x, position.y)) { return null; }
+
+    return { position:target, door };
+  }
+
+  // A diagonal step passes through the corner point shared by four tiles: the tile being left, the tile being
+  // stepped onto, and the two tiles beside them. It's only open when one room owns all four, because then no wall
+  // or door can touch that corner. This keeps diagonal steps from cutting corners or slipping past doors.
+  function findDiagonalStep(position, heading) {
+    const floor = DungeonSystem.getDungeonFloor();
+    const room = floor.getRoomIndexAt(position.x, position.y);
+    const target = { x:position.x + heading.x, y:position.y + heading.y };
+    const corner = [target, { x:target.x, y:position.y }, { x:position.x, y:target.y }];
+
+    if (room == null) { return null; }
+    if (corner.some(tile => floor.getRoomIndexAt(tile.x, tile.y) !== room)) { return null; }
+
+    return { position:target, door:null };
+  }
+
+  function canStep(direction) {
+    return findStep(getPartyPosition(), direction) != null;
+  }
+
+  function getPartyPosition() {
+    const position = DungeonSystem.getDungeonFloor().getPartyPosition();
+    if (position == null) { throw new Error('The party has not been placed on the floor.'); }
+    return position;
+  }
+
   // =============
   //    Pathing
   // =============
@@ -131,6 +197,8 @@ global.DungeonNavigationSystem = (function() {
     getAdjacentRoomIndices,
     getDoorInDirection,
     moveToRoom,
+    findStep,
+    canStep,
     getPathToRoom,
     getPathThroughDoor,
   };
