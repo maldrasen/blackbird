@@ -59,15 +59,27 @@ global.BaseMonster = (function() {
       return monster.species ? Species.lookup(monster.species).getSpeedFactor() : (monster.speedFactor || 1);
     }
 
-    // TODO: Calculate real averages based on level and attributes and attribute growth from the monster type.
+    function getAttributeGrades() {
+      return monster.species ?
+        Species.lookup(monster.species).getAttributes() :
+        MonsterType.lookup(monster.type).getAttributes();
+    }
+
+    // The attributes of an average monster of this kind, following the MonsterFactory: the starting roll, plus each
+    // attribute's share of the level ups from the type's attribute growth map.
     function getAverageAttributes() {
-      return Attributes({
-        strength:10,
-        dexterity:10,
-        vitality:10,
-        intelligence:10,
-        beauty:10,
+      const grades = getAttributeGrades();
+      const growth = MonsterType.lookup(monster.type).getAttributeGrowth();
+      const growthChances = growth ? Random.frequencyMapChances(growth) : {};
+      const levelUps = Math.max(0, (monster.level || 0) - 1);
+      const attributes = {};
+
+      Object.keys(Attrib).forEach(code => {
+        const increase = AttributeMath.averageIncrease(code, grades);
+        attributes[code] = Math.round(AttributeMath.attributeBaseline + increase + (levelUps * (growthChances[code] || 0) * increase));
       });
+
+      return Attributes(attributes);
     }
 
     function getBonusEssence() {
@@ -119,6 +131,7 @@ global.BaseMonster = (function() {
 
       getHealthFactor,
       getSpeedFactor,
+      getAverageAttributes,
       getBonusEssence,
       getEssenceScale,
       getChallengeRating,
