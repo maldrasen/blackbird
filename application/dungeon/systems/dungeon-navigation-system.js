@@ -45,20 +45,30 @@ global.DungeonNavigationSystem = (function() {
       throw new Error(`Cannot move to room ${index} from room ${floor.getLocation()}`);
     }
 
+    const entry = enterRoom(index);
+    const encounterRate = DungeonTheme.lookup(floor.getTheme()).getEncounterRate(entry.isFirstVisit);
+    const encounter = entry.episode == null && Random.roll(100) < encounterRate * Difficulty.getEncounterFactor();
+
+    floor.setLocation(index);
+
+    return { encounter, revealed:entry.revealed, episode:entry.episode, trap:entry.trap };
+  }
+
+  // Everything that happens as the party crosses into a room, which has to be worked out before the party is moved
+  // because moving them marks the room as visited. A room is only scouted the first time it's entered, which is also
+  // the only time its trap can be sprung or its episode can start.
+  function enterRoom(index) {
+    const floor = DungeonSystem.getDungeonFloor();
     const room = floor.getRooms()[index];
     const isFirstVisit = floor.isVisited(index) === false;
-    const newlyRevealed = floor.isRevealed(index) === false;
+    const revealed = floor.isRevealed(index) === false;
     if (isFirstVisit) { scoutRoom(room); }
 
     const episode = isFirstVisit ? getRoomEpisode(room) : null;
     const trap = isFirstVisit ? TrapSystem.springTrap(room) : null;
-    const encounterRate = DungeonTheme.lookup(floor.getTheme()).getEncounterRate(isFirstVisit);
-    const encounter = episode == null && Random.roll(100) < encounterRate * Difficulty.getEncounterFactor();
-
-    floor.setLocation(index);
     GameSystem.getState().advanceGameTime(isFirstVisit ? exploreTime : backtrackTime);
 
-    return { encounter, revealed:newlyRevealed, episode, trap };
+    return { enteredRoom:index, isFirstVisit, revealed, episode, trap };
   }
 
   function scoutRoom(room) {
@@ -130,6 +140,41 @@ global.DungeonNavigationSystem = (function() {
     return findStep(getPartyPosition(), direction) != null;
   }
 
+  const stayedInRoom = Object.freeze({ enteredRoom:null, isFirstVisit:false, revealed:false, episode:null, trap:null });
+
+  // Move the party a single step, opening the door if they pass through one. Nothing happens when the way is blocked.
+  function step(direction) {
+    const floor = DungeonSystem.getDungeonFloor();
+    const from = getPartyPosition();
+    const found = findStep(from, direction);
+    if (found == null) { return { moved:false }; }
+
+    const { position, door } = found;
+    const openedDoor = (door != null && door.open === false) ? door : null;
+    if (openedDoor) { openedDoor.open = true; }
+
+    const fromRoom = floor.getRoomIndexAt(from.x, from.y);
+    const toRoom = floor.getRoomIndexAt(position.x, position.y);
+    const { isFirstVisit, ...entry } = (toRoom === fromRoom) ? stayedInRoom : enterRoom(toRoom);
+    const encounter = rollEncounter(isFirstVisit, entry.episode);
+
+    floor.setPartyPosition(position.x, position.y);
+
+    return { moved:true, position, openedDoor, ...entry, encounter };
+  }
+
+  // Walking into a room for the first time is when the party is most likely to be ambushed, unless the room has an
+  // episode of its own to play out. Every other step only carries a slight chance of a wandering encounter, low
+  // enough that it needs a finer roll than a percentage.
+  function rollEncounter(isFirstVisit, episode) {
+    const theme = DungeonTheme.lookup(DungeonSystem.getDungeonFloor().getTheme());
+    const factor = Difficulty.getEncounterFactor();
+
+    if (episode != null) { return false; }
+    if (isFirstVisit) { return Random.roll(100) < theme.getNewRoomEncounterRate() * factor; }
+    return Random.roll(1000) < theme.getStepEncounterRate() * 10 * factor;
+  }
+
   function getPartyPosition() {
     const position = DungeonSystem.getDungeonFloor().getPartyPosition();
     if (position == null) { throw new Error('The party has not been placed on the floor.'); }
@@ -199,6 +244,7 @@ global.DungeonNavigationSystem = (function() {
     moveToRoom,
     findStep,
     canStep,
+    step,
     getPathToRoom,
     getPathThroughDoor,
   };

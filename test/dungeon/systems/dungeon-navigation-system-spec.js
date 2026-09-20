@@ -1,21 +1,23 @@
+// With every attribute at 10 and a scouting skill of 100 the scout's check comes to (n + 2) * 3, where n is the
+// second of the stubbed between values: stubBetween(50,5) scouts a 21 and stubBetween(50,1) scouts a 9.
+function buildScout() {
+  const id = Registry.createEntity();
+  ActorComponent.create(id, { name:'Scout', gender:Gender.male, species:SpeciesCode.human });
+  AttributesComponent.create(id, { strength:10, dexterity:10, vitality:10, intelligence:10, beauty:10 });
+  HealthComponent.create(id, { currentHealth:20, maxHealth:20, currentStamina:10 });
+
+  const skills = {};
+  SkillsComponent.getSkills().forEach(code => { skills[code] = 0; });
+  skills.scouting = 100;
+  SkillsComponent.create(id, skills);
+
+  return id;
+}
+
 describe("DungeonNavigationSystem", function() {
 
   let floor;
   let start;
-
-  function buildScout() {
-    const id = Registry.createEntity();
-    ActorComponent.create(id, { name:'Scout', gender:Gender.male, species:SpeciesCode.human });
-    AttributesComponent.create(id, { strength:10, dexterity:10, vitality:10, intelligence:10, beauty:10 });
-    HealthComponent.create(id, { currentHealth:20, maxHealth:20, currentStamina:10 });
-
-    const skills = {};
-    SkillsComponent.getSkills().forEach(code => { skills[code] = 0; });
-    skills.scouting = 100;
-    SkillsComponent.create(id, skills);
-
-    return id;
-  }
 
   beforeEach(function() {
     const scout = buildScout();
@@ -553,6 +555,279 @@ describe("DungeonNavigationSystem grid movement", function() {
 
     it('throws before the party has been placed', function() {
       expect(() => DungeonNavigationSystem.canStep('east')).to.throw('The party has not been placed on the floor.');
+    });
+
+  });
+
+  // The party starts in the middle of room A, which makes A the only visited room. A stubbed roll has to fit the die
+  // being rolled and the queue throws when it runs dry, so stubbing a single value also proves which of the two
+  // encounter rolls a step made, and that it only made the one.
+  describe("step()", function() {
+    let scout;
+    let state;
+
+    const missedStep = 5;
+    const missedRoom = 20;
+
+    beforeEach(function() {
+      scout = buildScout();
+      state = GameSystem.getState();
+      state.setPlayer(scout);
+      state.setGameTime(100);
+      PartyConfiguration.setConfiguration({ [scout]:'P.0.2' });
+
+      floor.setPartyPosition(3,3);
+    });
+
+    function step(direction) {
+      return DungeonNavigationSystem.step(direction);
+    }
+
+    function standBesideDoor() {
+      floor.setPartyPosition(4,3);
+    }
+
+    it('moves the party onto the next tile', function() {
+      Random.stubRoll(missedStep);
+
+      expect(step('east')).to.deep.equal({
+        moved: true,
+        position: { x:4, y:3 },
+        openedDoor: null,
+        enteredRoom: null,
+        revealed: false,
+        episode: null,
+        trap: null,
+        encounter: false,
+      });
+      expect(floor.getPartyPosition()).to.deep.equal({ x:4, y:3 });
+    });
+
+    it('goes nowhere when the way is blocked', function() {
+      floor.setPartyPosition(4,2);
+      Random.stubRoll();
+
+      expect(step('east')).to.deep.equal({ moved:false });
+      expect(floor.getPartyPosition()).to.deep.equal({ x:4, y:2 });
+      expect(state.getGameTime()).to.equal(100);
+    });
+
+    it('throws before the party has been placed', function() {
+      DungeonSystem.setDungeonFloor(DungeonFloor(1,'dungeon'));
+      expect(() => step('east')).to.throw('The party has not been placed on the floor.');
+    });
+
+    describe("inside a room", function() {
+
+      it('takes no time', function() {
+        Random.stubRoll(missedStep, missedStep);
+        step('east');
+        step('northwest');
+
+        expect(floor.getPartyPosition()).to.deep.equal({ x:3, y:2 });
+        expect(state.getGameTime()).to.equal(100);
+      });
+
+      it('carries a slight chance of an encounter', function() {
+        Random.stubRoll(4, missedStep, 4);
+
+        expect(step('east').encounter).to.equal(true);
+        expect(step('west').encounter).to.equal(false);
+        expect(step('southeast').encounter).to.equal(true);
+      });
+
+      it('never has an encounter when the encounter rate option is zero', async function() {
+        await WorldState.setOptions({ ...WorldState.getOptions(), difficulty:{ damage:100, mitigation:100, resistance:0, encounterRate:0 } });
+        Random.stubRoll(0);
+
+        expect(step('east').encounter).to.equal(false);
+      });
+
+      it('has more encounters when the encounter rate option is raised', async function() {
+        await WorldState.setOptions({ ...WorldState.getOptions(), difficulty:{ damage:100, mitigation:100, resistance:0, encounterRate:200 } });
+        Random.stubRoll(9, 10);
+
+        expect(step('east').encounter).to.equal(true);
+        expect(step('west').encounter).to.equal(false);
+      });
+
+    });
+
+    describe("through a door", function() {
+
+      beforeEach(function() {
+        standBesideDoor();
+        Random.stubBetween(50,5);
+      });
+
+      it('opens the door the first time through', function() {
+        Random.stubRoll(missedRoom, missedStep);
+
+        expect(doorAB.open).to.equal(false);
+        expect(step('east').openedDoor).to.equal(doorAB);
+        expect(doorAB.open).to.equal(true);
+        expect(step('west').openedDoor).to.equal(null);
+        expect(doorAB.open).to.equal(true);
+      });
+
+      it('enters the room on the other side', function() {
+        Random.stubRoll(missedRoom);
+        const result = step('east');
+
+        expect(result.enteredRoom).to.equal(1);
+        expect(result.revealed).to.equal(true);
+        expect(floor.getLocation()).to.equal(1);
+        expect(floor.isVisited(1)).to.equal(true);
+        expect(floor.isRevealed(1)).to.equal(true);
+      });
+
+      it('scouts a room when it is first entered', function() {
+        Random.stubRoll(missedRoom);
+        step('east');
+
+        expect(floor.getRooms()[1].getScoutingRoll()).to.equal(21);
+        expect(floor.getRooms()[0].getScoutingRoll()).to.be.undefined;
+      });
+
+      it('still scouts a room that was revealed on the map but never visited', function() {
+        floor.revealRoom(1);
+        Random.stubRoll(missedRoom);
+        const result = step('east');
+
+        expect(result.revealed).to.equal(false);
+        expect(floor.getRooms()[1].getScoutingRoll()).to.equal(21);
+      });
+
+      it('takes longer to explore a new room than to walk back into an old one', function() {
+        Random.stubRoll(missedRoom, missedStep, missedStep);
+
+        step('east');
+        expect(state.getGameTime()).to.equal(101);
+
+        step('west');
+        step('east');
+        expect(state.getGameTime()).to.equal(101.4);
+      });
+
+      it('risks an ambush when a room is first entered', function() {
+        Random.stubRoll(19);
+        expect(step('east').encounter).to.equal(true);
+      });
+
+      it('only carries the slight chance of an encounter when walking back into a room', function() {
+        Random.stubRoll(missedRoom, 19, 4);
+
+        expect(step('east').encounter).to.equal(false);
+        expect(step('west').encounter).to.equal(false);
+        expect(step('east').encounter).to.equal(true);
+      });
+
+      it('is never ambushed when the encounter rate option is zero', async function() {
+        await WorldState.setOptions({ ...WorldState.getOptions(), difficulty:{ damage:100, mitigation:100, resistance:0, encounterRate:0 } });
+        Random.stubRoll(0);
+
+        expect(step('east').encounter).to.equal(false);
+      });
+
+      it('is ambushed more often when the encounter rate option is raised', async function() {
+        await WorldState.setOptions({ ...WorldState.getOptions(), difficulty:{ damage:100, mitigation:100, resistance:0, encounterRate:200 } });
+        Random.stubRoll(39);
+
+        expect(step('east').encounter).to.equal(true);
+      });
+
+      it('enters a nested room through its door', function() {
+        floor.setPartyPosition(15,2);
+        Random.stubRoll(missedRoom);
+        const result = step('south');
+
+        expect(result.openedDoor).to.equal(doorNested);
+        expect(result.enteredRoom).to.equal(6);
+        expect(floor.getPartyPosition()).to.deep.equal({ x:15, y:3 });
+      });
+
+    });
+
+    // The spike trap has a secrecy of 15. Once roll() is stubbed the trap's target is picked from the same queue, so
+    // a sprung trap takes a target roll before the encounter roll.
+    describe("into a trapped room", function() {
+
+      beforeEach(function() {
+        standBesideDoor();
+        floor.getRooms()[1].setContents('dungeon-spike-trap');
+      });
+
+      it('springs a trap the scout failed to spot', function() {
+        Random.stubBetween(50,1);
+        Random.stubRollDice(7);
+        Random.stubRoll(0, missedRoom);
+
+        const result = step('east');
+        expect(result.trap.target).to.equal(scout);
+        expect(result.trap.damage).to.equal(7);
+        expect(HealthComponent.lookup(scout).currentHealth).to.equal(13);
+      });
+
+      it('does not spring a trap the scout spotted', function() {
+        Random.stubBetween(50,5);
+        Random.stubRoll(missedRoom);
+
+        expect(step('east').trap).to.equal(null);
+        expect(HealthComponent.lookup(scout).currentHealth).to.equal(20);
+      });
+
+      it('does not spring the trap again when walking back into the room', function() {
+        Random.stubBetween(50,1);
+        Random.stubRollDice(7);
+        Random.stubRoll(0, missedRoom, missedStep, missedStep);
+
+        step('east');
+        step('west');
+        expect(step('east').trap).to.equal(null);
+        expect(HealthComponent.lookup(scout).currentHealth).to.equal(13);
+      });
+
+    });
+
+    describe("into a room with an episode", function() {
+
+      beforeEach(function() {
+        GameFlags.seed();
+        standBesideDoor();
+        floor.getRooms()[1].setContents('orchard-kobolds',{ size:9 });
+        Random.stubBetween(50,5);
+      });
+
+      it('starts the episode in place of an ambush', function() {
+        Random.stubRoll();
+        const result = step('east');
+
+        expect(result.episode).to.equal('orchard-kobolds');
+        expect(result.encounter).to.equal(false);
+      });
+
+      it('starts the episode in a room that was revealed on the map but never visited', function() {
+        floor.revealRoom(1);
+        Random.stubRoll();
+
+        expect(step('east').episode).to.equal('orchard-kobolds');
+      });
+
+      it('does not start the episode again when walking back into the room', function() {
+        Random.stubRoll(missedStep, missedStep);
+
+        step('east');
+        step('west');
+        expect(step('east').episode).to.equal(null);
+      });
+
+      it('has nothing to start once the episode no longer meets its requirements', function() {
+        state.setFlag(GameFlags.sixBladeStatus,'met');
+        Random.stubRoll(missedRoom);
+
+        expect(step('east').episode).to.equal(null);
+      });
+
     });
 
   });
