@@ -6,6 +6,29 @@ global.BattleFixtures = (function() {
     enchantment:{ type:WeaponEnchantments.endanger, species:'kobold', power:100 }
   }
 
+  // The party wears fixed outfits rather than shopping from an equipment depot. What a depot stocks is random, so a
+  // shopper can come away missing a slot entirely (an unlucky player ends up with no pants, which changes which
+  // negotiation questions are possible.)
+  const PlayerOutfit = [
+    ['hauberk',['steel']],
+    ['chainmail',['steel']],
+    ['boots',['leather']],
+    ['gloves',['leather']],
+  ];
+
+  const TankOutfit = [
+    ['breastplate',['steel']],
+    ['greaves',['steel']],
+    ['helm',['steel']],
+    ['boots',['leather']],
+  ];
+
+  const RogueOutfit = [
+    ['doublet',['leather']],
+    ['leggings',['leather']],
+    ['boots',['leather']],
+  ];
+
   function prepareForBattle() {
     addPlayer('P.0.2');
     addTank('P.0.3');
@@ -18,7 +41,7 @@ global.BattleFixtures = (function() {
     setSkill(player,'swords',Random.between(20,40));
     equipWeapon(player, koboldFucker, EquipmentSlot.primary);
     equipWeapon(player, { base:'round-shield'}, EquipmentSlot.secondary);
-    CharacterEquipper(player).equip({ budget:Random.between(200, 250) });
+    equipOutfit(player, PlayerOutfit);
     PartyConfiguration.setCharacter(player,position);
   }
 
@@ -30,7 +53,7 @@ global.BattleFixtures = (function() {
 
     equipWeapon(tank, { base:'longsword'}, EquipmentSlot.primary);
     equipWeapon(tank, { base:'round-shield'}, EquipmentSlot.secondary);
-    CharacterEquipper(tank).equip({ budget:Random.between(150, 200) });
+    equipOutfit(tank, TankOutfit);
     PartyConfiguration.setCharacter(tank,position);
   }
 
@@ -42,7 +65,7 @@ global.BattleFixtures = (function() {
 
     equipWeapon(rogue, { base:'dagger'}, EquipmentSlot.primary);
     equipWeapon(rogue, { base:'dagger'}, EquipmentSlot.secondary);
-    CharacterEquipper(rogue).equip({ budget:Random.between(100, 200) });
+    equipOutfit(rogue, RogueOutfit);
     PartyConfiguration.setCharacter(rogue,position);
   }
 
@@ -50,6 +73,10 @@ global.BattleFixtures = (function() {
     const weapon = EquipmentFactory().build(weaponData.base, weaponData);
     InventoryManager(id).addItem(weapon);
     EquipmentManager(id).equipItem(weapon, slot);
+  }
+
+  function equipOutfit(id, outfit) {
+    outfit.forEach(([code, materials]) => ItemFixtures.equip(id, code, materials));
   }
 
   function setSkill(id, code, value) {
