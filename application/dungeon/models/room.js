@@ -139,12 +139,8 @@ global.Room = function(feature, type='normal') {
   // set of stairs, so setting them again moves them.
   function setStairs(direction, x, y) {
     Validate.isIn('direction', direction, ['up','down']);
-    if (footprint == null || getFloor(x, y) == null) {
-      throw new Error(`(${x},${y}) is not a floor tile in this room.`);
-    }
-
-    const previous = findStairs();
-    if (previous) { tileContents.delete(`${previous.x},${previous.y}`); }
+    if (hasStairs()) { throw new Error(`This room already has stairs.`); }
+    if (footprint == null || getFloor(x,y) == null) { throw new Error(`(${x},${y}) is not a floor tile in this room.`); }
 
     setTileContents(x, y, {
       type: 'stairs',
