@@ -116,6 +116,7 @@ global.GameSystem = (function() {
   // ===============
 
   function setGameMode(mode) {
+    OrphanSweeper.sweep();
     state.setGameMode(mode);
     GameInterface.showGameMode(mode);
   }

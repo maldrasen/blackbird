@@ -79,8 +79,18 @@ global.NegotiationSystem = (function() {
 
     battleState.setCondition(monster, BattleCondition.recruited);
     battleState.removeFromBattle(monster);
-    finishNegotiation();
+
+    // TODO: There's some uncertainty here about making recruit() happen before finishNegotiation(). We changed the
+    //       order when adding the orphan sweep. If finishNegotiation() calls advanceBattle(), and advanceBattle() sees
+    //       that combat is over and triggers the mode change, we don't want the recruited monster to be deleted when
+    //       the mode change removes orphaned monsters. However, the recruit() function also deletes the monster
+    //       component, turning a character from a monster into a party member, something in the
+    //       BattleSystem.finishRound() or BattleSystem.advanceBattle() path may expect the monster component to still
+    //       be present. This is difficult to test in the app right now. The negotiations are in a bit of a half
+    //       finished state (there aren't enough questions and responses for some personality archetypes.)
+
     RecruitmentSystem.recruit(monster, feelings);
+    finishNegotiation();
     PartyConfiguration.addCharacter(monster);
   }
 
