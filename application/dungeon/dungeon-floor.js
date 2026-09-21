@@ -119,6 +119,15 @@ global.DungeonFloor = function(level, theme=null) {
     return rooms[index].canEnterTile(x - position.x, y - position.y);
   }
 
+  // Whatever has been put on a tile, or null for a bare tile. The contents keep the room's own coordinates.
+  function getTileContents(x, y) {
+    const index = getRoomIndexAt(x, y);
+    if (index == null) { return null; }
+
+    const position = rooms[index].getFloorPosition();
+    return rooms[index].getTileContents(x - position.x, y - position.y);
+  }
+
   function getStairs(direction) {
     return rooms.filter(room => room.getStairs() === direction).map(room => {
       return { position:room.getStairsFloorPosition(), room:room.getIndex() };
@@ -151,6 +160,7 @@ global.DungeonFloor = function(level, theme=null) {
     getFloorGrid: () => { return floorGrid; },
     getRoomIndexAt,
     canEnterTile,
+    getTileContents,
     getFloorWidth,
     getFloorHeight,
 

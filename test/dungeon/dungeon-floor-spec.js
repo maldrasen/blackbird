@@ -84,6 +84,18 @@ describe("DungeonFloor", function() {
     });
   });
 
+  describe("getTileContents()", function() {
+    it('finds the contents of a tile by its floor position', function() {
+      const floor = DungeonFloor(1,'dungeon');
+      const room = addSquareRoom(floor,3,4,4);
+      room.setTileContents(1, 2, { description:'A mossy patch.' });
+
+      expect(floor.getTileContents(5,6)).to.deep.equal({ x:1, y:2, description:'A mossy patch.' });
+      expect(floor.getTileContents(5,5)).to.equal(null);
+      expect(floor.getTileContents(7,4)).to.equal(null);
+    });
+  });
+
   describe("getFeatureForRoom()", function() {
     it('finds the feature a room belongs to', function() {
       const floor = DungeonFloor(1,'dungeon');
