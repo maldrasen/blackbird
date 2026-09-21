@@ -62,6 +62,18 @@ describe("NegotiationSystem", function() {
     expect(feelings.respect).to.equal(20);
   });
 
+  it("is only recruiting the monster once the resolution is join", function() {
+    const state = startNegotiation();
+    const monster = state.getMonster();
+
+    expect(NegotiationSystem.isRecruiting(monster)).to.equal(false);
+
+    state.setResolution({ type:'join' });
+
+    expect(NegotiationSystem.isRecruiting(monster)).to.equal(true);
+    expect(NegotiationSystem.isRecruiting(GameSystem.getState().getPlayer())).to.equal(false);
+  });
+
   it("removes the monster from the game when the resolution is run", function() {
     const state = startNegotiation();
     const monster = state.getMonster();

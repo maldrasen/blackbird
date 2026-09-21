@@ -56,6 +56,21 @@ describe("EnlightenSystem", function() {
     });
   });
 
+  describe("finishEnlightenment()", function() {
+    it("deletes the items left in the loot inventory", function() {
+      const loot = GameSystem.getState().manifestLootInventory();
+      const item = ItemFixtures.buildSteel('longsword');
+      InventoryManager(loot).addItem(item);
+
+      startBattleEnlightenment([buildCharacter()], 0);
+      EnlightenSystem.finishEnlightenment();
+
+      expect(EnlightenSystem.getState()).to.be.null;
+      expect(InventoryComponent.lookup(loot).items).to.eql([]);
+      expect(Registry.entityExists(item)).to.be.false;
+    });
+  });
+
   describe("levelUpAttribute()", function() {
     it("levels a character through the LevelSystem", function() {
       const id = buildCharacter();

@@ -79,9 +79,17 @@ global.NegotiationSystem = (function() {
 
     battleState.setCondition(monster, BattleCondition.recruited);
     battleState.removeFromBattle(monster);
+
+    // The monster keeps its monster component until the battle has finished with it. If this was the last monster,
+    // finishNegotiation() wins the battle and changes the game mode, which sweeps the orphaned monsters. The
+    // OrphanSweeper uses isRecruiting() to leave this one alone.
     finishNegotiation();
     RecruitmentSystem.recruit(monster, feelings);
     PartyConfiguration.addCharacter(monster);
+  }
+
+  function isRecruiting(id) {
+    return state != null && state.getMonster() === id && state.getResolution().type === 'join';
   }
 
   function resolveAbility(name) {
@@ -128,6 +136,7 @@ global.NegotiationSystem = (function() {
     advance,
     answer,
     reset,
+    isRecruiting,
     getState: () => { return state; },
   };
 

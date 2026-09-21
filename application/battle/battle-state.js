@@ -28,16 +28,29 @@ global.BattleState = function(data) {
   let interrupt;
   let forcedAbility;
 
-  // The cleanup() function needs to be called after the battle to remove the monsters who were killed or ran away.
-  function cleanup() {
-    [...getDeadMonsters(), ...getFledMonsters()].forEach(id => {
+  // The cleanup() function needs to be called after the battle to remove the monsters. Recruited monsters have become
+  // characters, so they're the only ones who survive it. The defeated monsters drop their enchanted items as loot
+  // first. Monsters who fled (or who are still standing) take everything with them.
+  function cleanup(saveLoot=true) {
+    if (saveLoot) {
+      [...getDeadMonsters(), ...getKnockedOut().filter(isMonster)].forEach(saveCarriedLoot);
+    }
+
+    monsterIds.filter(id => conditions[id] !== BattleCondition.recruited).forEach(id => {
       deleteCarriedItems(id);
       Registry.deleteEntity(id);
     });
   }
 
-  // TODO: Rare items in the monster's inventory should be dropped as loot, though we need to start building rare
-  //       items (task 128) before concerning ourselves with that.
+  function saveCarriedLoot(id) {
+    const inventory = InventoryComponent.lookup(id);
+    if (inventory == null) { return; }
+
+    inventory.items.filter(itemId => Item(itemId).hasEnchantment()).forEach(itemId => {
+      InventoryManager(id).removeItem(itemId);
+      InventoryManager(GameSystem.getState().manifestLootInventory()).addItem(itemId);
+    });
+  }
 
   // A monster's equipment items are their own entities, not children of the monster, so they're deleted explicitly.
   function deleteCarriedItems(id) {

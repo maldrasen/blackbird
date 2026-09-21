@@ -22,6 +22,9 @@ global.GameSystem = (function() {
 
   async function saveGame() {
     if (canSave() === false) { throw new Error(`Cannot save the game in its current state.`); }
+
+    OrphanSweeper.sweep();
+
     if (HEADLESS) { return; }
 
     WorldState.updateSaveMetadata();
@@ -113,6 +116,7 @@ global.GameSystem = (function() {
   // ===============
 
   function setGameMode(mode) {
+    OrphanSweeper.sweep();
     state.setGameMode(mode);
     GameInterface.showGameMode(mode);
   }
