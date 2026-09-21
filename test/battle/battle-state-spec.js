@@ -70,6 +70,91 @@ describe("BattleState", function() {
     });
   });
 
+  describe("cleanup()", function() {
+    const enchantment = { type:WeaponEnchantments.endanger, species:'kobold', power:100 };
+
+    function startBattle() {
+      BattleFixtures.prepareForBattle();
+      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
+      return BattleSystem.getState();
+    }
+
+    function giveItem(monster, options={}) {
+      const item = ItemFixtures.buildSteel('longsword', options);
+      InventoryManager(monster).addItem(item);
+      return item;
+    }
+
+    function getLoot() {
+      return InventoryComponent.lookup(GameSystem.getState().manifestLootInventory()).items;
+    }
+
+    it('deletes every monster along with their items', function() {
+      const state = startBattle();
+      const [dead, knockedOut, active] = state.getActiveMonsters();
+      const items = [dead, knockedOut, active].map(monster => giveItem(monster));
+
+      state.setCondition(dead, BattleCondition.dead);
+      state.setCondition(knockedOut, BattleCondition.knockedOut);
+      state.cleanup();
+
+      [dead, knockedOut, active, ...items].forEach(id => {
+        expect(Registry.entityExists(id)).to.be.false;
+      });
+    });
+
+    it('keeps the recruited monsters and their items', function() {
+      const state = startBattle();
+      const recruit = state.getActiveMonsters()[0];
+      const item = giveItem(recruit);
+
+      state.setCondition(recruit, BattleCondition.recruited);
+      state.cleanup();
+
+      expect(Registry.entityExists(recruit)).to.be.true;
+      expect(Registry.entityExists(item)).to.be.true;
+    });
+
+    it('moves the enchanted items of the defeated monsters into the loot inventory', function() {
+      const state = startBattle();
+      const [dead, knockedOut] = state.getActiveMonsters();
+      const deadLoot = giveItem(dead, { enchantment });
+      const knockedOutLoot = giveItem(knockedOut, { enchantment });
+      const mundane = giveItem(dead);
+
+      state.setCondition(dead, BattleCondition.dead);
+      state.setCondition(knockedOut, BattleCondition.knockedOut);
+      state.cleanup();
+
+      expect(getLoot()).to.have.members([deadLoot, knockedOutLoot]);
+      expect(Registry.entityExists(mundane)).to.be.false;
+    });
+
+    it('monsters who were not defeated keep their enchanted items', function() {
+      const state = startBattle();
+      const [fled, active] = state.getActiveMonsters();
+      const items = [giveItem(fled, { enchantment }), giveItem(active, { enchantment })];
+
+      state.setCondition(fled, BattleCondition.fled);
+      state.cleanup();
+
+      expect(getLoot()).to.eql([]);
+      items.forEach(id => { expect(Registry.entityExists(id)).to.be.false; });
+    });
+
+    it('saves no loot when told not to', function() {
+      const state = startBattle();
+      const dead = state.getActiveMonsters()[0];
+      const item = giveItem(dead, { enchantment });
+
+      state.setCondition(dead, BattleCondition.dead);
+      state.cleanup(false);
+
+      expect(getLoot()).to.eql([]);
+      expect(Registry.entityExists(item)).to.be.false;
+    });
+  });
+
   describe("Turn Order", function() {
     it('moves the character within the turn order after acting', function() {
       BattleFixtures.prepareForBattle();
