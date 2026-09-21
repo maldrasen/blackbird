@@ -5,8 +5,5 @@ Next Task Order:
  - [x] 227 - Fix Item Material Scaling
  - [x] 225 - Build the equipment depots
  - [x] 220 - Calculate the challenge rating given the appraised equipment.
- - [ ] 215 - Grid based movement
+ - [X] 215 - Grid based movement
  - [ ] 224 - New graphic prototype
-
-TODO: Investigate why the negotiations fail with this seed:
---seed 3585013934

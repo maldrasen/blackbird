@@ -4,7 +4,7 @@ A dungeon floor is a grid of tiles. The party stands on one tile at a time and m
 ### The Floor Grid
 `DungeonFloor.getFloorGrid()` is a two dimensional array addressed as `grid[y][x]`, with the origin in the top left corner, x running east and y running south. Every cell holds the floor-global index of the room that owns the tile, or `null` when there's nothing there. Use `getRoomIndexAt(x, y)` to read it, which also returns `null` for a tile that's off the floor entirely.
 
-Rooms are painted into the grid as their feature is added with `addFeature()`. Corridors are features with a single room, so every corridor tile has an owner too. Where the rooms of a feature overlap, the last room painted owns the tile. That's how a nested room works: the inner room is painted after the outer room and takes the tiles in the middle, leaving the outer room with the ring around it. A room's footprint can therefore include tiles that the room doesn't own, and anything that needs a tile of a room (like placing the stairs) has to check the grid rather than the footprint.
+Rooms are painted into the grid as their feature is added with `addFeature()`. Corridors are features with a single room, so every corridor tile has an owner. Where the rooms of a feature overlap, the last room painted owns the tile. That's how a nested room works: the inner room is painted after the outer room and takes the tiles in the middle, leaving the outer room with the ring around it. A room's footprint can therefore include tiles that the room doesn't own, and anything that needs a tile of a room (like placing the stairs) has to check the grid rather than the footprint.
 
 ### Doors
 A door is a plain object built by `Door()`: `{ position, direction, from, to, open }`.
