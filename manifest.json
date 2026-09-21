@@ -786,6 +786,7 @@
     "test/world/difficulty-spec.js",
     "test/world/episode-queue-spec.js",
     "test/world/game-state-spec.js",
+    "test/world/game-system-spec.js",
     "test/world/key-bindings-spec.js",
     "test/world/navigation-system-spec.js",
     "test/world/orphan-sweeper-spec.js",
