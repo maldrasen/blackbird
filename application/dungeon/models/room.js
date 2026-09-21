@@ -85,7 +85,8 @@ global.Room = function(feature, type='normal') {
   }
 
   // Put something on a single tile of the room, given in room-local coordinates. Options:
-  //  - glyph        { glyph, color, size } drawn at the center of the tile.
+  //  - glyph        { glyph, color, size, offset } drawn at the center of the tile, moved by the offset ({ x, y } in
+  //                 tiles) if it has one.
   //  - canEnter     boolean or a boolean function. True if omitted.
   //  - description
   function setTileContents(x, y, options) {
@@ -106,7 +107,8 @@ global.Room = function(feature, type='normal') {
 
   function getGlyphs() {
     return [...tileContents.values()].filter(tile => tile.glyph).map(tile => {
-      return { x:tile.x + 0.5, y:tile.y + 0.5, ...tile.glyph };
+      const { offset={ x:0, y:0 }, ...glyph } = tile.glyph;
+      return { x:tile.x + 0.5 + offset.x, y:tile.y + 0.5 + offset.y, ...glyph };
     });
   }
 

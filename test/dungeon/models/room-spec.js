@@ -155,6 +155,17 @@ describe("Room", function() {
     });
   });
 
+  describe("getGlyphs()", function() {
+    it('moves a glyph by its offset', function() {
+      const room = Room();
+      room.setBounds(3,3);
+      room.addBox(0,0,3,3);
+      room.setTileContents(1, 2, { glyph:{ glyph:'◉', color:'white', offset:{ x:-0.5, y:0.5 }}});
+
+      expect(room.getGlyphs()).to.deep.equal([{ x:1, y:3, glyph:'◉', color:'white' }]);
+    });
+  });
+
   describe("canEnterTile()", function() {
     it('is true for a tile with no contents or no canEnter', function() {
       const room = Room();
