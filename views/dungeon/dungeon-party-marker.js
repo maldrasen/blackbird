@@ -17,6 +17,16 @@ global.DungeonPartyMarker = (function() {
     place(X.first('#dungeonPartyMarker'), position);
   }
 
+  // Jump to the end of a move that's still sliding. The marker's style already holds the tile it's heading for, so
+  // switching the transition off lands it there, and reading the layout makes that stick before the transition is
+  // switched back on. Without this a new move would start from wherever the slide had got to and lag behind the party.
+  function finishMove() {
+    const element = X.first('#dungeonPartyMarker');
+    element.style['transition-property'] = 'none';
+    element.offsetWidth;
+    element.style['transition-property'] = '';
+  }
+
   function place(element, position) {
     element.style['left'] = `${position.x * DungeonFloorView.getGridSize()}px`;
     element.style['top'] = `${position.y * DungeonFloorView.getGridSize()}px`;
@@ -25,6 +35,7 @@ global.DungeonPartyMarker = (function() {
   return {
     build,
     moveTo,
+    finishMove,
   };
 
 })();

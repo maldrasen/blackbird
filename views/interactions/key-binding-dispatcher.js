@@ -24,7 +24,7 @@ global.KeyBindingDispatcher = (function() {
       if (action == null) { continue; }
 
       event.preventDefault();
-      return perform(action);
+      return perform(action, { repeat:event.repeat });
     }
   }
 

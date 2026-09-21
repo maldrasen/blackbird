@@ -1,6 +1,6 @@
 global.DungeonView = (function() {
 
-  const stepTime = 160;
+  const stepTime = 200;
 
   let lastStepAt = 0;
   let resolving = false;
@@ -41,12 +41,17 @@ global.DungeonView = (function() {
     return { x:position.x + 0.5, y:position.y + 0.5 };
   }
 
-  // Key presses can arrive far faster than the party can walk, from a held key especially, so steps are held to a
-  // steady beat. Nothing gets through while a step's trap, episode, or encounter is waiting to start.
-  function stepInDirection(direction) {
+  // A held key repeats far faster than the party can walk, so the repeats are held to a steady beat. A fresh press is
+  // never ignored though. It cuts short whatever is left of the step being animated and the new step plays instead.
+  // Nothing gets through while a step's trap, episode, or encounter is waiting to start.
+  function stepInDirection(direction, { repeat }) {
     if (resolving) { return; }
-    if (performance.now() - lastStepAt < stepTime) { return; }
+    if (repeat && isStepping()) { return; }
     takeStep(direction);
+  }
+
+  function isStepping() {
+    return performance.now() - lastStepAt < stepTime;
   }
 
   // Take a single step and bring the view up to date with it. The controls are only rebuilt when there's something
@@ -56,6 +61,8 @@ global.DungeonView = (function() {
     const hadTileFeature = DungeonTileSystem.hasTileFeature();
     const result = DungeonNavigationSystem.step(direction);
     if (result.moved === false) { return result; }
+
+    if (isStepping()) { DungeonPartyMarker.finishMove(); }
 
     lastStepAt = performance.now();
     DungeonPartyMarker.moveTo(result.position);
