@@ -49,7 +49,8 @@
     });
 
     // Walks the floor one step at a time from where the party starts, the way the party would, to prove that every
-    // tile of every room can be reached on foot.
+    // tile of every room can be reached on foot. Tiles that can't be entered (trees, statues) don't count, but they
+    // also mustn't cut anything else off.
     it("connects every tile of the dungeon", function() {
       DungeonSystem.createDungeon();
       DungeonSystem.setLevel(1);
@@ -69,7 +70,9 @@
         });
       }
 
-      const tiles = floor.getFloorGrid().reduce((total, row) => total + row.filter(cell => cell != null).length, 0);
+      const tiles = floor.getFloorGrid().reduce((total, row, y) => {
+        return total + row.filter((cell, x) => floor.canEnterTile(x, y)).length;
+      }, 0);
       expect(reached.size).to.equal(tiles);
     });
 

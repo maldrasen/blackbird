@@ -1,7 +1,6 @@
 // What the party can see and do from the tile they're standing on. Most tiles have nothing of their own, so they
-// show the room they belong to. A tile with a feature on it is described in place of the room and puts its commands
-// ahead of the room's. Stairs are the only tile feature so far; when there are more stairsHere() becomes a lookup of
-// whatever feature is on the tile, with a case for each.
+// show the room they belong to. A tile whose contents have a description is described in place of the room. Stairs
+// are the only contents that add commands so far, which go ahead of the room's.
 global.DungeonTileSystem = (function() {
 
   const useStairs = 'use-stairs';
@@ -11,13 +10,13 @@ global.DungeonTileSystem = (function() {
     const stairs = stairsHere();
 
     return {
-      description: stairs ? room.getStairsDescription() : room.getDescription(),
+      description: tileDescriptionHere() || room.getDescription(),
       commands: [...stairsCommands(stairs), ...room.getAvailableCommands()],
     };
   }
 
   function hasTileFeature() {
-    return stairsHere() != null;
+    return stairsHere() != null || tileDescriptionHere() != null;
   }
 
   function useCommand(code) {
@@ -29,6 +28,12 @@ global.DungeonTileSystem = (function() {
     const floor = DungeonSystem.getDungeonFloor();
     const position = floor.getPartyPosition();
     return floor.getStairsAt(position.x, position.y);
+  }
+
+  function tileDescriptionHere() {
+    const floor = DungeonSystem.getDungeonFloor();
+    const position = floor.getPartyPosition();
+    return floor.getTileDescription(position.x, position.y) || null;
   }
 
   function stairsCommands(stairs) {

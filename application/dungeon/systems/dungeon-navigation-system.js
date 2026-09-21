@@ -31,6 +31,7 @@ global.DungeonNavigationSystem = (function() {
     const target = { x:position.x + heading.x, y:position.y + heading.y };
     const toRoom = floor.getRoomIndexAt(target.x, target.y);
     if (toRoom == null) { return null; }
+    if (floor.canEnterTile(target.x, target.y) === false) { return null; }
 
     const doorTile = heading.doorOnTarget ? target : position;
     const door = floor.getDoorAt(doorTile.x, doorTile.y, heading.wall);
@@ -41,7 +42,9 @@ global.DungeonNavigationSystem = (function() {
 
   // A diagonal step passes through the corner point shared by four tiles: the tile being left, the tile being
   // stepped onto, and the two tiles beside them. It's only open when one room owns all four, because then no wall
-  // or door can touch that corner. This keeps diagonal steps from cutting corners or slipping past doors.
+  // or door can touch that corner. This keeps diagonal steps from cutting corners or slipping past doors. All of
+  // those tiles have to be enterable as well, so the party can't squeeze past the corner of something standing on
+  // a tile either.
   function findDiagonalStep(position, heading) {
     const floor = DungeonSystem.getDungeonFloor();
     const room = floor.getRoomIndexAt(position.x, position.y);
@@ -50,6 +53,7 @@ global.DungeonNavigationSystem = (function() {
 
     if (room == null) { return null; }
     if (corner.some(tile => floor.getRoomIndexAt(tile.x, tile.y) !== room)) { return null; }
+    if (corner.some(tile => floor.canEnterTile(tile.x, tile.y) === false)) { return null; }
 
     return { position:target, door:null };
   }

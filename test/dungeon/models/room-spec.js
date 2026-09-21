@@ -123,38 +123,79 @@ describe("Room", function() {
     });
   });
 
-  describe("addGlyph()", function() {
-    it('collects glyphs to render onto the room', function() {
+  describe("setTileContents()", function() {
+    function buildRoom() {
       const room = Room();
       room.setBounds(3,3);
       room.addBox(0,0,3,3);
-      room.addGlyph({ x:1, y:1.5, glyph:'X', color:'foo' });
+      return room;
+    }
 
-      expect(room.getGlyphs()).to.deep.equal([
-        { x:1, y:1.5, glyph:'X', color:'foo' },
-      ]);
+    it('stores the contents of a tile', function() {
+      const room = buildRoom();
+      room.setTileContents(1, 2, { canEnter:true, description:'A mossy patch.' });
+
+      expect(room.getTileContents(1,2)).to.deep.equal({ x:1, y:2, canEnter:true, description:'A mossy patch.' });
+      expect(room.getTileContents(0,0)).to.equal(null);
     });
 
-    it('keeps the optional size', function() {
-      const room = Room();
-      room.setBounds(3,3);
-      room.addBox(0,0,3,3);
-      room.addGlyph({ x:1, y:1, glyph:'✽', color:'green', size:52 });
-
-      expect(room.getGlyphs()).to.deep.equal([
-        { x:1, y:1, glyph:'✽', color:'green', size:52 },
-      ]);
+    it('throws for a tile outside the room', function() {
+      expect(() => buildRoom().setTileContents(3, 0, { canEnter:false })).to.throw('not a floor tile');
     });
 
-    it('returns copies of the glyphs, not the live objects', function() {
+    it('draws the glyph at the center of the tile', function() {
+      const room = buildRoom();
+      room.setTileContents(1, 1, { glyph:{ glyph:'◉', color:'white' }});
+      room.setTileContents(2, 0, { canEnter:false, glyph:{ glyph:'✽', color:'green', size:150 }});
+
+      expect(room.getGlyphs()).to.deep.equal([
+        { x:1.5, y:1.5, glyph:'◉', color:'white' },
+        { x:2.5, y:0.5, glyph:'✽', color:'green', size:150 },
+      ]);
+    });
+  });
+
+  describe("getGlyphs()", function() {
+    it('moves a glyph by its offset', function() {
       const room = Room();
       room.setBounds(3,3);
       room.addBox(0,0,3,3);
-      room.addGlyph({ x:1, y:1, glyph:'◉', color:'white' });
+      room.setTileContents(1, 2, { glyph:{ glyph:'◉', color:'white', offset:{ x:-0.5, y:0.5 }}});
 
-      room.getGlyphs()[0].color = 'red';
+      expect(room.getGlyphs()).to.deep.equal([{ x:1, y:3, glyph:'◉', color:'white' }]);
+    });
+  });
 
-      expect(room.getGlyphs()[0].color).to.equal('white');
+  describe("canEnterTile()", function() {
+    it('is true for a tile with no contents or no canEnter', function() {
+      const room = Room();
+      room.setBounds(2,1);
+      room.addBox(0,0,2,1);
+      room.setTileContents(1, 0, { description:'Scattered bones.' });
+
+      expect(room.canEnterTile(0,0)).to.equal(true);
+      expect(room.canEnterTile(1,0)).to.equal(true);
+    });
+
+    it('uses a boolean canEnter', function() {
+      const room = Room();
+      room.setBounds(2,1);
+      room.addBox(0,0,2,1);
+      room.setTileContents(1, 0, { canEnter:false });
+
+      expect(room.canEnterTile(1,0)).to.equal(false);
+    });
+
+    it('calls a canEnter function each time', function() {
+      let open = false;
+      const room = Room();
+      room.setBounds(2,1);
+      room.addBox(0,0,2,1);
+      room.setTileContents(1, 0, { canEnter:() => open });
+
+      expect(room.canEnterTile(1,0)).to.equal(false);
+      open = true;
+      expect(room.canEnterTile(1,0)).to.equal(true);
     });
   });
 
@@ -215,6 +256,29 @@ describe("Room", function() {
       expect(room.getStairsTile()).to.deep.equal({ x:2, y:2 });
     });
 
+    it('keeps the stairs as the contents of their tile', function() {
+      const room = legRoom();
+      room.setStairs('down',2,2);
+
+      const contents = room.getTileContents(2,2);
+      expect(contents.type).to.equal('stairs');
+      expect(contents.direction).to.equal('down');
+      expect(room.canEnterTile(2,2)).to.equal(true);
+    });
+
+    it('draws the stairs as a glyph on their tile', function() {
+      const room = legRoom();
+      room.setStairs('up',2,1);
+
+      expect(room.getGlyphs()).to.deep.equal([{ x:2.5, y:1.5, glyph:'▲', color:'rgb(119 110 94)', size:80 }]);
+    });
+
+    it('only allows a single set of stairs', function() {
+      const room = legRoom();
+      room.setStairs('down',2,2);
+      expect(() => room.setStairs('up',2,1)).to.throw(/already has stairs/);
+    });
+
     it('locates the stairs on the floor', function() {
       const room = legRoom();
       room.setFloorPosition(10,20);
@@ -259,17 +323,27 @@ describe("Room", function() {
     });
 
     it('describes the stairs apart from the room', function() {
-      expect(room.getStairsDescription()).to.include('You find a room with stairs descending down into the darkness below..');
+      expect(room.getTileDescription(1,1)).to.include('You find a room with stairs descending down into the darkness below..');
+    });
+
+    it('describes a tile with text or with a function', function() {
+      room.setTileContents(0, 0, { description:'A mossy patch.' });
+      room.setTileContents(2, 0, { description:() => 'Scattered bones.' });
+
+      expect(room.getTileDescription(0,0)).to.equal('A mossy patch.');
+      expect(room.getTileDescription(2,0)).to.equal('Scattered bones.');
+    });
+
+    it('has nothing to say about a tile without a description', function() {
+      room.setTileContents(0, 0, { canEnter:false });
+
+      expect(room.getTileDescription(0,0)).to.equal(null);
+      expect(room.getTileDescription(2,2)).to.equal(null);
     });
 
     it('describes a room with stairs the same as any other room', function() {
       expect(room.getDescription()).to.be.a('string');
       expect(room.getDescription()).to.not.include('stairs');
-    });
-
-    it('has no stairs to describe in a room without them', function() {
-      const plain = Room(Feature('rect-room'));
-      expect(plain.getStairsDescription()).to.equal(null);
     });
   });
 

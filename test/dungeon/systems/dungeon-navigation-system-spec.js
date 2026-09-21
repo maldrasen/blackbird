@@ -136,6 +136,17 @@ describe("DungeonNavigationSystem", function() {
       expect(findStep(15,3,'east')).to.deep.equal({ position:{ x:16, y:3 }, door:null });
     });
 
+    // The middle tile of C is (3,6).
+    it("is blocked by a tile that can't be entered", function() {
+      floor.getRooms()[2].setTileContents(1, 1, { canEnter:false });
+
+      expect(findStep(3,5,'south')).to.equal(null);
+      expect(findStep(3,7,'north')).to.equal(null);
+      expect(findStep(2,6,'east')).to.equal(null);
+      expect(findStep(4,6,'west')).to.equal(null);
+      expect(findStep(2,5,'south')).to.deep.equal({ position:{ x:2, y:6 }, door:null });
+    });
+
     it("rejects a direction it doesn't know", function() {
       expect(() => findStep(3,3,'up')).to.throw('Bad direction [up]');
     });
@@ -169,6 +180,23 @@ describe("DungeonNavigationSystem", function() {
     it('will not cut across the corner of another room', function() {
       expect(findStep(15,2,'southwest')).to.equal(null);
       expect(findStep(14,3,'northeast')).to.equal(null);
+    });
+
+    // The middle tile of C is (3,6).
+    it("will not step onto a tile that can't be entered", function() {
+      floor.getRooms()[2].setTileContents(1, 1, { canEnter:false });
+
+      expect(findStep(2,5,'southeast')).to.equal(null);
+      expect(findStep(4,7,'northwest')).to.equal(null);
+    });
+
+    // Stepping from (2,6) to (3,5) passes the corner of the blocked tile at (3,6).
+    it("will not cut across the corner of a tile that can't be entered", function() {
+      floor.getRooms()[2].setTileContents(1, 1, { canEnter:false });
+
+      expect(findStep(2,6,'northeast')).to.equal(null);
+      expect(findStep(3,5,'southwest')).to.equal(null);
+      expect(findStep(3,7,'northeast')).to.equal(null);
     });
 
     it('will not step into another room, even beside a door', function() {

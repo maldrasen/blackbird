@@ -1,7 +1,6 @@
 global.Room = function(feature, type='normal') {
 
   let description;
-  let stairsDescription;
   let position = { x:0, y:0 };
   let index;
   let floorPosition;
@@ -10,7 +9,6 @@ global.Room = function(feature, type='normal') {
   let overlapping = false;
   let contents = null;
   let contentsOptions;
-  let stairs = null;
   let usedCommands = [];
   let scoutingRoll;
   let doorMode = 'blacklist';
@@ -22,7 +20,7 @@ global.Room = function(feature, type='normal') {
   let boundsBox;
   let chamfer = 0;
   let floorChamfer = 0;
-  let glyphs = [];
+  let tileContents = new Map();
 
   // =======================
   //    Building & Layout
@@ -84,6 +82,40 @@ global.Room = function(feature, type='normal') {
     return DungeonConstants.floorTypes[footprint[y][x]];
   }
 
+  // Put something on a single tile of the room, given in room-local coordinates. Options:
+  //  - glyph        { glyph, color, size, offset } drawn at the center of the tile, moved by the offset ({ x, y } in
+  //                 tiles) if it has one.
+  //  - canEnter     boolean or a boolean function. True if omitted.
+  //  - description  text or a function returning it, shown in place of the room's description.
+  function setTileContents(x, y, options) {
+    if (getFloor(x, y) == null) { throw new Error(`(${x},${y}) is not a floor tile in this room.`); }
+    tileContents.set(`${x},${y}`, { x, y, ...options });
+  }
+
+  function getTileContents(x, y) {
+    const tile = tileContents.get(`${x},${y}`);
+    return tile ? { ...tile } : null;
+  }
+
+  function canEnterTile(x, y) {
+    const tile = tileContents.get(`${x},${y}`);
+    if (tile == null || tile.canEnter == null) { return true; }
+    return (typeof tile.canEnter === 'function') ? tile.canEnter() : tile.canEnter;
+  }
+
+  function getTileDescription(x, y) {
+    const tile = tileContents.get(`${x},${y}`);
+    if (tile == null || tile.description == null) { return null; }
+    return (typeof tile.description === 'function') ? tile.description() : tile.description;
+  }
+
+  function getGlyphs() {
+    return [...tileContents.values()].filter(tile => tile.glyph).map(tile => {
+      const { offset={ x:0, y:0 }, ...glyph } = tile.glyph;
+      return { x:tile.x + 0.5 + offset.x, y:tile.y + 0.5 + offset.y, ...glyph };
+    });
+  }
+
   // Return the room bounds in an object { xMin, xMax, yMin, yMax }. The mins are always 0; the shape is what the
   // feature and floor maths expect. The box is frozen and shared: it's read in the floor factory's hot loops, where a
   // fresh object per call is what lets V8's allocation sites go megamorphic (see Feature.getBounds).
@@ -108,21 +140,45 @@ global.Room = function(feature, type='normal') {
     return stairsAllowed && bounds.width > 1 && bounds.height > 1;
   }
 
-  // Stairs stand on a single tile of the room, given in room-local coordinates.
+  // Stairs are the contents of a single tile of the room, given in room-local coordinates. A room only ever has one
+  // set of stairs. The description is picked from the theme the first time it's read, because a room can be built
+  // before there's a floor to take the theme from, and then kept so that it doesn't change.
   function setStairs(direction, x, y) {
     Validate.isIn('direction', direction, ['up','down']);
-    if (footprint == null || getFloor(x, y) == null) {
-      throw new Error(`(${x},${y}) is not a floor tile in this room.`);
-    }
+    if (hasStairs()) { throw new Error(`This room already has stairs.`); }
+    if (footprint == null || getFloor(x,y) == null) { throw new Error(`(${x},${y}) is not a floor tile in this room.`); }
 
-    stairs = { direction, x, y };
+    let text;
+
+    setTileContents(x, y, {
+      type: 'stairs',
+      direction: direction,
+      glyph: { glyph:DungeonConstants.stairsGlyphs[direction], color:DungeonConstants.stairsColor, size:80 },
+      description: () => {
+        if (text == null) {
+          const theme = DungeonTheme.lookup(DungeonSystem.getDungeonFloor().getTheme());
+          text = theme.getDescription(`${direction}Stairs`);
+        }
+        return text;
+      },
+    });
+  }
+
+  function findStairs() {
+    return [...tileContents.values()].find(tile => tile.type === 'stairs') || null;
+  }
+
+  function hasStairs() {
+    return findStairs() != null;
   }
 
   function getStairsTile() {
+    const stairs = findStairs();
     return stairs ? { x:stairs.x, y:stairs.y } : null;
   }
 
   function getStairsFloorPosition() {
+    const stairs = findStairs();
     return stairs ? { x: floorPosition.x + stairs.x, y: floorPosition.y + stairs.y } : null;
   }
 
@@ -187,7 +243,7 @@ global.Room = function(feature, type='normal') {
   // ==============
 
   function canHaveContents() {
-    return contentsAllowed && feature.getType() !== 'corridor' && stairs == null && contents == null;
+    return contentsAllowed && feature.getType() !== 'corridor' && findStairs() == null && contents == null;
   }
 
   function setContents(code, options={}) {
@@ -209,18 +265,6 @@ global.Room = function(feature, type='normal') {
       description = theme.getDescription(variety);
     }
     return description;
-  }
-
-  // The stairs are described on their own, as they're only a single tile of the room. The room's description has
-  // nothing to say about them.
-  function getStairsDescription() {
-    if (stairs == null) { return null; }
-
-    if (stairsDescription == null) {
-      const theme = DungeonTheme.lookup(DungeonSystem.getDungeonFloor().getTheme());
-      stairsDescription = theme.getDescription(`${stairs.direction}Stairs`);
-    }
-    return stairsDescription;
   }
 
   function updateDescription(text) {
@@ -249,10 +293,12 @@ global.Room = function(feature, type='normal') {
   }
 
   function pack() {
+    const stairs = findStairs();
+
     return {
       position,
       contents,
-      stairs: stairs ? { ...stairs } : null,
+      stairs: stairs ? { direction:stairs.direction, x:stairs.x, y:stairs.y } : null,
       usedCommands: [...usedCommands],
       footprint: footprint.map(row => [...row]),
     }
@@ -273,8 +319,11 @@ global.Room = function(feature, type='normal') {
     setFloor,
     setFloorBox,
     getFloor,
-    addGlyph: (options) => { glyphs.push(options); },
-    getGlyphs: () => { return glyphs.map(glyph => ({ ...glyph })); },
+    getGlyphs,
+    setTileContents,
+    getTileContents,
+    canEnterTile,
+    getTileDescription,
     getBounds,
     getFootprint: () => { return footprint },
     getSize: () => { return size; },
@@ -288,10 +337,10 @@ global.Room = function(feature, type='normal') {
 
     allowStairs: () => { stairsAllowed = true; },
     setStairs,
-    getStairs: () => { return stairs ? stairs.direction : null; },
+    getStairs: () => { return hasStairs() ? findStairs().direction : null; },
     getStairsTile,
     getStairsFloorPosition,
-    hasStairs: () => { return stairs != null; },
+    hasStairs,
     stairsAreAllowed,
 
     allowDoor,
@@ -309,7 +358,6 @@ global.Room = function(feature, type='normal') {
     markOverlapping: () => { overlapping = true; },
     isOverlapping: () => { return overlapping; },
     getDescription,
-    getStairsDescription,
     updateDescription,
     getAvailableCommands,
     useCommand,

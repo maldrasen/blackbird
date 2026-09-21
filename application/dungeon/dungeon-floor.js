@@ -109,6 +109,33 @@ global.DungeonFloor = function(level, theme=null) {
     return floorGrid[y][x];
   }
 
+  // A floor tile as the room that owns it sees it, in the room's own coordinates. The owner is the one to ask about
+  // a tile, because the footprint of an outer room also covers the tiles of the room nested inside it.
+  function findRoomTile(x, y) {
+    const index = getRoomIndexAt(x, y);
+    if (index == null) { return null; }
+
+    const position = rooms[index].getFloorPosition();
+    return { room:rooms[index], x:x - position.x, y:y - position.y };
+  }
+
+  // Whether the party could stand on a tile.
+  function canEnterTile(x, y) {
+    const tile = findRoomTile(x, y);
+    return tile ? tile.room.canEnterTile(tile.x, tile.y) : false;
+  }
+
+  // Whatever has been put on a tile, or null for a bare tile. The contents keep the room's own coordinates.
+  function getTileContents(x, y) {
+    const tile = findRoomTile(x, y);
+    return tile ? tile.room.getTileContents(tile.x, tile.y) : null;
+  }
+
+  function getTileDescription(x, y) {
+    const tile = findRoomTile(x, y);
+    return tile ? tile.room.getTileDescription(tile.x, tile.y) : null;
+  }
+
   function getStairs(direction) {
     return rooms.filter(room => room.getStairs() === direction).map(room => {
       return { position:room.getStairsFloorPosition(), room:room.getIndex() };
@@ -117,13 +144,8 @@ global.DungeonFloor = function(level, theme=null) {
 
   // The direction of the stairs standing on a tile, if there are any.
   function getStairsAt(x, y) {
-    const index = getRoomIndexAt(x, y);
-    if (index == null) { return null; }
-
-    const position = rooms[index].getStairsFloorPosition();
-    if (position == null || position.x !== x || position.y !== y) { return null; }
-
-    return rooms[index].getStairs();
+    const contents = getTileContents(x, y);
+    return (contents && contents.type === 'stairs') ? contents.direction : null;
   }
 
   function pack() {
@@ -140,6 +162,9 @@ global.DungeonFloor = function(level, theme=null) {
     getTheme: () => { return theme; },
     getFloorGrid: () => { return floorGrid; },
     getRoomIndexAt,
+    canEnterTile,
+    getTileContents,
+    getTileDescription,
     getFloorWidth,
     getFloorHeight,
 

@@ -41,6 +41,61 @@ describe("DungeonFloor", function() {
     });
   });
 
+  describe("canEnterTile()", function() {
+    it('asks the room using its own coordinates', function() {
+      const floor = DungeonFloor(1,'dungeon');
+      const room = addSquareRoom(floor,3,4,4);
+      room.setTileContents(1, 2, { canEnter:false });
+
+      expect(floor.canEnterTile(5,6)).to.equal(false);
+      expect(floor.canEnterTile(5,5)).to.equal(true);
+      expect(floor.canEnterTile(1,2)).to.equal(false);
+    });
+
+    it('is false where there is no floor', function() {
+      const floor = DungeonFloor(1,'dungeon');
+      addSquareRoom(floor,3,4,4);
+
+      expect(floor.canEnterTile(7,4)).to.equal(false);
+      expect(floor.canEnterTile(-1,4)).to.equal(false);
+    });
+
+    // The inner room owns (5,5), which is tile (1,1) of the outer room and tile (0,0) of the inner room.
+    it('asks the room that owns the tile when rooms are nested', function() {
+      const floor = DungeonFloor(1,'dungeon');
+      const feature = Feature('spec-room');
+      const outer = Room(feature);
+      const inner = Room(feature,'nested');
+      outer.setBounds(4,4);
+      outer.addBox(0,0,4,4);
+      inner.setBounds(2,2);
+      inner.addBox(0,0,2,2);
+      inner.setPosition(1,1);
+      feature.addRoom(outer);
+      feature.addRoom(inner);
+      feature.setPosition(4,4);
+      floor.addFeature(feature);
+
+      outer.setTileContents(1, 1, { canEnter:false });
+      expect(floor.canEnterTile(5,5)).to.equal(true);
+
+      inner.setTileContents(0, 0, { canEnter:false });
+      expect(floor.canEnterTile(5,5)).to.equal(false);
+    });
+  });
+
+  describe("getTileContents()", function() {
+    it('finds the contents of a tile by its floor position', function() {
+      const floor = DungeonFloor(1,'dungeon');
+      const room = addSquareRoom(floor,3,4,4);
+      room.setTileContents(1, 2, { description:'A mossy patch.' });
+
+      expect(floor.getTileContents(5,6)).to.deep.equal({ x:1, y:2, description:'A mossy patch.' });
+      expect(floor.getTileContents(5,5)).to.equal(null);
+      expect(floor.getTileContents(7,4)).to.equal(null);
+    });
+  });
+
   describe("getFeatureForRoom()", function() {
     it('finds the feature a room belongs to', function() {
       const floor = DungeonFloor(1,'dungeon');

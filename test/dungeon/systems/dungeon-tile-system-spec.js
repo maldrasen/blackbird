@@ -37,6 +37,24 @@ describe("DungeonTileSystem", function() {
       expect(commandCodes()).to.deep.equal(['inspect']);
     });
 
+    // The tile east of the stairs is (3,2) of the entrance room.
+    it("describes a tile's contents in place of the room", function() {
+      floor.getCurrentRoom().setTileContents(3, 2, { description:'A cracked flagstone.' });
+      stepOffStairs();
+
+      expect(DungeonTileSystem.hasTileFeature()).to.equal(true);
+      expect(DungeonTileSystem.getTileInfo().description).to.equal('A cracked flagstone.');
+      expect(commandCodes()).to.deep.equal(['inspect']);
+    });
+
+    it('describes the room from a tile whose contents have no description', function() {
+      floor.getCurrentRoom().setTileContents(3, 2, { canEnter:true });
+      stepOffStairs();
+
+      expect(DungeonTileSystem.hasTileFeature()).to.equal(false);
+      expect(DungeonTileSystem.getTileInfo().description).to.include('The entrance chamber is filled with the sound');
+    });
+
     it("passes the room's commands along to the room", function() {
       stepOffStairs();
       expect(DungeonTileSystem.useCommand('inspect')).to.deep.equal({ episode:'dungeon-entrance' });
