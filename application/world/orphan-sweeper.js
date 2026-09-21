@@ -13,11 +13,14 @@ global.OrphanSweeper = (function() {
     return swept;
   }
 
-  // A monster only exists for the length of a battle. A recruited monster has already lost its monster component.
+  // A monster only exists for the length of a battle. The one exception is a monster in the middle of being recruited.
+  // When recruiting the last monster wins the battle, the battle state is gone before the monster has been turned
+  // into a character.
   function sweepMonsters() {
     const battleState = BattleSystem.getState();
 
     const orphans = Registry.findEntitiesWithComponents([ComponentType.monster]).filter(id => {
+      if (NegotiationSystem.isRecruiting(id)) { return false; }
       return battleState == null || battleState.isMonster(id) === false;
     });
 

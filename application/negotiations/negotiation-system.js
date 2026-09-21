@@ -80,21 +80,16 @@ global.NegotiationSystem = (function() {
     battleState.setCondition(monster, BattleCondition.recruited);
     battleState.removeFromBattle(monster);
 
-    // TODO: There's some uncertainty here about making recruit() happen before finishNegotiation(). We changed the
-    //       order when adding the orphan sweep. If finishNegotiation() calls advanceBattle(), and advanceBattle() sees
-    //       that combat is over and triggers the mode change, we don't want the recruited monster to be deleted when
-    //       the mode change removes orphaned monsters. However, the recruit() function also deletes the monster
-    //       component, turning a character from a monster into a party member. Something in the
-    //       BattleSystem.finishRound() or BattleSystem.advanceBattle() path may expect the monster component to still
-    //       be present. I ran a negotiation and added a monster to the party in game, and it seemed to work fine, but
-    //       this could use a more complete examination. We may want to call finishNegotiation() first anyway and check
-    //       to see if a negotiation has been successful before deleting an orphaned monster. That seems like an easier
-    //       situation to work around than monsters not having their monster component in the battle. Even if it works
-    //       now, it's setting an invalid state.
-
-    RecruitmentSystem.recruit(monster, feelings);
+    // The monster keeps its monster component until the battle has finished with it. If this was the last monster,
+    // finishNegotiation() wins the battle and changes the game mode, which sweeps the orphaned monsters. The
+    // OrphanSweeper uses isRecruiting() to leave this one alone.
     finishNegotiation();
+    RecruitmentSystem.recruit(monster, feelings);
     PartyConfiguration.addCharacter(monster);
+  }
+
+  function isRecruiting(id) {
+    return state != null && state.getMonster() === id && state.getResolution().type === 'join';
   }
 
   function resolveAbility(name) {
@@ -141,6 +136,7 @@ global.NegotiationSystem = (function() {
     advance,
     answer,
     reset,
+    isRecruiting,
     getState: () => { return state; },
   };
 
