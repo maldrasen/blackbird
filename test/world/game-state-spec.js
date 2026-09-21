@@ -117,4 +117,20 @@ describe('GameState', function() {
     expect(restored.getDungeonState().pack()).to.eql({ discoveredFonts:[1,3] });
   });
 
+  it('manifests a single loot inventory', function() {
+    const state = GameState();
+    const loot = state.manifestLootInventory();
+
+    expect(InventoryComponent.lookup(loot).items).to.eql([]);
+    expect(state.manifestLootInventory()).to.equal(loot);
+  });
+
+  it('packs and restores the loot inventory', function() {
+    const state = GameState();
+    const loot = state.manifestLootInventory();
+
+    expect(state.pack().lootInventory).to.equal(loot);
+    expect(GameState(state.pack()).manifestLootInventory()).to.equal(loot);
+  });
+
 });
