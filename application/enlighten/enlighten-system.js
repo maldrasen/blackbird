@@ -24,7 +24,16 @@ global.EnlightenSystem = (function() {
   }
 
   function finishEnlightenment() {
+    discardLoot();
     state = null;
+  }
+
+  // Whatever the party left behind in the loot inventory is gone for good.
+  function discardLoot() {
+    const loot = GameSystem.getState().manifestLootInventory();
+
+    InventoryComponent.lookup(loot).items.forEach(itemId => Registry.deleteEntity(itemId));
+    Registry.updateComponent(loot, ComponentType.inventory, { items:[] });
   }
 
   function levelUpAttribute(id, attribute) {
