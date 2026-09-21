@@ -2,7 +2,6 @@ global.BattleFixtures = (function() {
 
   const koboldFucker = {
     name:'Longsword of Kobold Endangerment',
-    base:'longsword',
     enchantment:{ type:WeaponEnchantments.endanger, species:'kobold', power:100 }
   }
 
@@ -39,8 +38,8 @@ global.BattleFixtures = (function() {
   function addPlayer(position) {
     const player = CharacterFixtures.randomPlayer();
     setSkill(player,'swords',Random.between(20,40));
-    equipWeapon(player, koboldFucker, EquipmentSlot.primary);
-    equipWeapon(player, { base:'round-shield'}, EquipmentSlot.secondary);
+    ItemFixtures.equip(player, 'longsword', ['steel'], koboldFucker);
+    ItemFixtures.equip(player, 'round-shield', ['steel']);
     equipOutfit(player, PlayerOutfit);
     PartyConfiguration.setCharacter(player,position);
   }
@@ -51,8 +50,8 @@ global.BattleFixtures = (function() {
       swords: Random.between(10,20),
     }})[0];
 
-    equipWeapon(tank, { base:'longsword'}, EquipmentSlot.primary);
-    equipWeapon(tank, { base:'round-shield'}, EquipmentSlot.secondary);
+    ItemFixtures.equip(tank, 'longsword', ['steel']);
+    ItemFixtures.equip(tank, 'round-shield', ['steel']);
     equipOutfit(tank, TankOutfit);
     PartyConfiguration.setCharacter(tank,position);
   }
@@ -63,16 +62,10 @@ global.BattleFixtures = (function() {
       daggers: Random.between(10,20),
     }})[0];
 
-    equipWeapon(rogue, { base:'dagger'}, EquipmentSlot.primary);
-    equipWeapon(rogue, { base:'dagger'}, EquipmentSlot.secondary);
+    ItemFixtures.equip(rogue, 'dagger', ['steel']);
+    ItemFixtures.equip(rogue, 'dagger', ['steel'], { slot:EquipmentSlot.secondary });
     equipOutfit(rogue, RogueOutfit);
     PartyConfiguration.setCharacter(rogue,position);
-  }
-
-  function equipWeapon(id, weaponData, slot) {
-    const weapon = EquipmentFactory().build(weaponData.base, weaponData);
-    InventoryManager(id).addItem(weapon);
-    EquipmentManager(id).equipItem(weapon, slot);
   }
 
   function equipOutfit(id, outfit) {
@@ -108,7 +101,6 @@ global.BattleFixtures = (function() {
 
   return {
     prepareForBattle,
-    equipWeapon,
     runtPack,
     trapperPack,
   };

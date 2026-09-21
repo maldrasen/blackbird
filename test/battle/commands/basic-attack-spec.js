@@ -9,7 +9,7 @@ describe("BasicAttack", function() {
       BattleSystem.startBattle({ encounter:(options.encounter || 'kobold-1'), ambushState:'normal' });
 
       if (options.playerMainWeapon) {
-        BattleFixtures.equipWeapon(GameSystem.getState().getPlayer(), options.playerMainWeapon, EquipmentSlot.primary);
+        ItemFixtures.equip(GameSystem.getState().getPlayer(), options.playerMainWeapon, ['steel']);
       }
     }
 
@@ -57,7 +57,7 @@ describe("BasicAttack", function() {
     });
 
     it("a single fast weapon", function() {
-      prepare({ playerMainWeapon:{ base:'dagger' }});
+      prepare({ playerMainWeapon:'dagger' });
 
       BattleSystem.specRound(GameSystem.getState().getPlayer());
       const attacks = BasicAttack.calculateAttacks();

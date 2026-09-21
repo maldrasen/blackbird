@@ -1,19 +1,5 @@
 global.ItemFixtures = (function() {
 
-  function addRandomEquipment(character, options={}) {
-    const equipment = EquipmentManager(character);
-    const inventory = InventoryManager(character);
-    const factory = EquipmentFactory();
-    const leggings = factory.build('leggings');
-    const boots = factory.build('boots');
-
-    inventory.addItem(leggings);
-    inventory.addItem(boots);
-
-    equipment.equipItem(leggings, EquipmentSlot.legs);
-    equipment.equipItem(boots, EquipmentSlot.feet);
-  }
-
   function buildStandard(code) {
     return EquipmentFactory(EquipmentParameters.lookup('standard').getMaterials()).build(code);
   }
@@ -31,16 +17,17 @@ global.ItemFixtures = (function() {
   }
 
   // Monsters pick whatever their depot happens to stock, so specs that need a character carrying something specific
-  // hand it over here. The item goes into the first slot its base fits, replacing anything already equipped there.
-  function equip(character, code, materials) {
-    const item = build(code, materials);
+  // hand it over here. The item goes into the first slot its base fits unless a slot option names another (an
+  // off-hand dagger), replacing anything already equipped there. The rest of the options go to the factory.
+  function equip(character, code, materials, options={}) {
+    const { slot, ...buildOptions } = options;
+    const item = build(code, materials, buildOptions);
     InventoryManager(character).addItem(item);
-    EquipmentManager(character).equipItem(item, BaseEquipment.lookup(code).getSlots()[0]);
+    EquipmentManager(character).equipItem(item, slot || BaseEquipment.lookup(code).getSlots()[0]);
     return item;
   }
 
   return {
-    addRandomEquipment,
     buildStandard,
     build,
     buildSteel,

@@ -85,7 +85,7 @@ describe("Ability.WeaponAttack", function() {
       const state = startBattle();
       const kobold = state.getEntityAtPosition('M.0.2');
 
-      BattleFixtures.equipWeapon(kobold, { base:'dagger' }, EquipmentSlot.primary);
+      ItemFixtures.equip(kobold, 'dagger', ['steel']);
 
       BattleSystem.specRound(kobold, { target:state.getEntityAtPosition('P.0.2') });
       expect(Ability.WeaponAttack().isPossible()).to.equal(true);
@@ -118,7 +118,7 @@ describe("Ability.WeaponAttack", function() {
       const player = state.getEntityAtPosition('P.0.2');
       const kobold = state.getEntityAtPosition('M.0.2');
 
-      BattleFixtures.equipWeapon(player, { base:'dagger' }, EquipmentSlot.primary);
+      ItemFixtures.equip(player, 'dagger', ['steel']);
       pinSpeed(player);
       makeUnkillable(kobold);
       startCharacterRound(player, kobold);

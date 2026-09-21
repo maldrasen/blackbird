@@ -19,7 +19,7 @@ describe("Ability.SneakAttack", function() {
     const state = startBattle();
     const rogue = state.getEntityAtPosition('P.1.2');
 
-    if (base) { BattleFixtures.equipWeapon(rogue, { base }, EquipmentSlot.primary); }
+    if (base) { ItemFixtures.equip(rogue, base, ['steel']); }
     BattleSystem.addStatus(rogue, 'hidden');
     startCharacterRound(rogue, state.getEntityAtPosition('M.0.2'));
     Ability.SneakAttack().execute();

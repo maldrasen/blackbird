@@ -92,7 +92,7 @@ describe("Ability.SpecialAttack", function() {
       const state = startBattle();
       const kobold = state.getEntityAtPosition('M.0.2');
 
-      BattleFixtures.equipWeapon(kobold, { base:'dagger' }, EquipmentSlot.primary);
+      ItemFixtures.equip(kobold, 'dagger', ['steel']);
 
       BattleSystem.specRound(kobold, { target:state.getEntityAtPosition('P.0.2') });
       expect(Ability.SpecialAttack(strike).isPossible()).to.equal(true);
@@ -117,7 +117,7 @@ describe("Ability.SpecialAttack", function() {
       const kobold = state.getEntityAtPosition('M.0.2');
       const ability = Ability.SpecialAttack(strike);
 
-      BattleFixtures.equipWeapon(player, { base:'dagger' }, EquipmentSlot.primary);
+      ItemFixtures.equip(player, 'dagger', ['steel']);
       startCharacterRound(player, kobold);
       ability.execute();
 
