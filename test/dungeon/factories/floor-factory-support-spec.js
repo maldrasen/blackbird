@@ -113,9 +113,9 @@ describe("FloorFactorySupport", function() {
       expect(FloorFactorySupport.pickStairsTile(room)).to.deep.equal({ x:1, y:1 });
     });
 
-    // A 4x4 outer room with a 2x2 room nested in its center. The inner room is painted last, so it owns the four
-    // center tiles and the outer room is left with the ring around them.
-    it('only picks tiles the room owns where rooms overlap', function() {
+    // A 4x4 outer room with a 2x2 room nested in its center. The inner room carves the four center tiles out of the
+    // outer room, which is left with the ring around them.
+    it('never picks a tile that a nested room has taken', function() {
       const feature = Feature('spec-room');
       const outer = Room(feature);
       const inner = Room(feature,'nested');

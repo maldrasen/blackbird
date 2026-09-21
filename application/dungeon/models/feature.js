@@ -156,18 +156,15 @@ global.Feature = function(type) {
   }
 
   // An edge tile sits one step outside the footprint, so the wall a corridor would knock through belongs to the
-  // floor tile one step back toward the feature. Overlapping rooms paint the floor grid in room order with the last
-  // room winning, so the owning room is resolved the same way here.
+  // floor tile one step back toward the feature. Only one room has that tile in its footprint.
   function wallAllowsDoor(tile, direction) {
     const step = { N:{x:0,y:1}, S:{x:0,y:-1}, E:{x:-1,y:0}, W:{x:1,y:0} }[direction];
     const floorTile = { x: tile.x + step.x, y: tile.y + step.y };
 
-    for (let i=rooms.length-1; i>=0; i--) {
+    for (let i=0; i<rooms.length; i++) {
       const roomPosition = rooms[i].getPosition();
       const local = { x: floorTile.x - roomPosition.x, y: floorTile.y - roomPosition.y };
-      const roomBounds = rooms[i].getBounds();
-      if (local.x >= 0 && local.y >= 0 && local.x < roomBounds.xMax && local.y < roomBounds.yMax &&
-          rooms[i].getFootprint()[local.y][local.x] != null) {
+      if (rooms[i].getFloor(local.x, local.y) != null) {
         return rooms[i].doorIsAllowed(local.x, local.y, direction);
       }
     }

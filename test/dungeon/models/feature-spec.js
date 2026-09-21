@@ -66,6 +66,16 @@ describe("Feature", function() {
       expect(feature.getEdgeTiles('W')).to.be.empty;
       expect(feature.getEdgeTiles('E')).to.have.lengthOf(3);
     });
+
+    // The east room takes column 2 from the west room, so the walls above it are the east room's to allow.
+    it('asks the room that carved a tile out of another about its walls', function() {
+      const feature = Feature('spec-room');
+      const westRoom = buildRoom(feature,0);
+      buildRoom(feature,2);
+      westRoom.forbidAllDoors();
+
+      expect(feature.getEdgeTiles('N')).to.deep.equal([{ x:2, y:-1 },{ x:3, y:-1 },{ x:4, y:-1 }]);
+    });
   });
 
 });
