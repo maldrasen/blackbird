@@ -6,6 +6,8 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 - [224] Dungeon Rendering Prototype `8pt` — [224-dungeon-rendering-prototype.md](224-dungeon-rendering-prototype.md)
 - [231] Remove orphaned entities on save `3pt` — [231-remove-orphaned-entities-on-save.md](231-remove-orphaned-entities-on-save.md)
+- [233] Improve grid movement `3pt` — [233-improve-grid-movement.md](233-improve-grid-movement.md)
+- [234] Tile contents `3pt` — [234-tile-contents.md](234-tile-contents.md)
 
 ## Priority 2
 
