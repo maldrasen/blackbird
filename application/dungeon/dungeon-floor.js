@@ -109,6 +109,16 @@ global.DungeonFloor = function(level, theme=null) {
     return floorGrid[y][x];
   }
 
+  // Whether the party could stand on a tile. The room that owns the tile is the one to ask, because the footprint
+  // of an outer room also covers the tiles of the room nested inside it.
+  function canEnterTile(x, y) {
+    const index = getRoomIndexAt(x, y);
+    if (index == null) { return false; }
+
+    const position = rooms[index].getFloorPosition();
+    return rooms[index].canEnterTile(x - position.x, y - position.y);
+  }
+
   function getStairs(direction) {
     return rooms.filter(room => room.getStairs() === direction).map(room => {
       return { position:room.getStairsFloorPosition(), room:room.getIndex() };
@@ -140,6 +150,7 @@ global.DungeonFloor = function(level, theme=null) {
     getTheme: () => { return theme; },
     getFloorGrid: () => { return floorGrid; },
     getRoomIndexAt,
+    canEnterTile,
     getFloorWidth,
     getFloorHeight,
 
