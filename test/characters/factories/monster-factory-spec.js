@@ -101,14 +101,14 @@ describe("MonsterFactory", function() {
       const total = Object.values(attributes).reduce((sum,value) => sum + value, 0);
 
       expect(ExperienceComponent.lookup(id)).to.be.undefined;
-      expect(total).to.be.within(47,83);
+      expect(total).to.be.within(44,73);
     });
 
     it("grows one skill from the type's skill growth map on each level", function() {
       const id = MonsterFactory('slithering-yeek').build();
       const skills = SkillsComponent.lookup(id);
 
-      expect(skills.dodge + skills.daggers).to.be.within(22,65);
+      expect(skills.dodge + skills.daggers).to.be.within(21,50);
       expect(skills.stealth).to.equal(0);
     });
   });
