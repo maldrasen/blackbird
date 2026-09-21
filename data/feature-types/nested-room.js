@@ -40,7 +40,6 @@ FeatureType.register('nested-room',{
     inner.addBox(0, 0, innerSize, innerSize);
     inner.setPosition(padding, padding);
     inner.allowStairs();
-    inner.markOverlapping();
 
     feature.addRoom(outer);
     feature.addRoom(inner);

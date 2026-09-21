@@ -56,8 +56,8 @@ global.DungeonFloor = function(level, theme=null) {
     });
   }
 
-  // The grid cells hold the room's floor-global index, as rooms are the unit of navigation. Where the rooms of a
-  // feature overlap the last room painted owns the tile.
+  // The grid cells hold the room's floor-global index, as rooms are the unit of navigation. Footprints never share a
+  // tile, so the order the rooms are painted in doesn't matter.
   function paintRoom(room) {
     const position = room.getFloorPosition();
     const index = room.getIndex();
@@ -109,8 +109,7 @@ global.DungeonFloor = function(level, theme=null) {
     return floorGrid[y][x];
   }
 
-  // A floor tile as the room that owns it sees it, in the room's own coordinates. The owner is the one to ask about
-  // a tile, because the footprint of an outer room also covers the tiles of the room nested inside it.
+  // A floor tile as the room that owns it sees it, in the room's own coordinates.
   function findRoomTile(x, y) {
     const index = getRoomIndexAt(x, y);
     if (index == null) { return null; }

@@ -6,7 +6,6 @@ global.Room = function(feature, type='normal') {
   let floorPosition;
   let stairsAllowed = false;
   let contentsAllowed = true;
-  let overlapping = false;
   let contents = null;
   let contentsOptions;
   let usedCommands = [];
@@ -366,8 +365,6 @@ global.Room = function(feature, type='normal') {
     canHaveContents,
     setContents,
 
-    markOverlapping: () => { overlapping = true; },
-    isOverlapping: () => { return overlapping; },
     getDescription,
     updateDescription,
     getAvailableCommands,

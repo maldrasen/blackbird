@@ -57,7 +57,6 @@ describe("DungeonNavigationSystem", function() {
     inner.setBounds(2,2);
     inner.addBox(0,0,2,2);
     inner.setPosition(1,1);
-    inner.markOverlapping();
     feature.addRoom(outer);
     feature.addRoom(inner);
     feature.setPosition(x,y);

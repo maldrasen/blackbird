@@ -12,7 +12,8 @@ global.GeometryHelper = (function() {
   // Trace the boundary of a footprint as a single clockwise polygon, walking with the interior always on the
   // right. A cell is filled unless it holds null or false, covering both feature footprints (booleans) and room
   // footprints (floor type indices, where 0 is a valid type). Vertices are lattice corners in cell coordinates,
-  // so a single filled cell yields (0,0) (1,0) (1,1) (0,1). The filled region must be connected and have no holes.
+  // so a single filled cell yields (0,0) (1,0) (1,1) (0,1). The filled region must be connected. Only the outside
+  // edge is followed, so a hole (the ring left around a nested room) is traced as if it were filled.
   function traceOutline(footprint) {
     const filled = (x,y) => footprint[y] != null && footprint[y][x] != null && footprint[y][x] !== false;
 

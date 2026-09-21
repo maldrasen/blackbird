@@ -5,8 +5,10 @@ The floor isn't saved. Leaving a floor throws it away and a new one is generated
 
 ### The Grid and Tile Ownership
 - The floor grid is addressed as `grid[y][x]`, origin top left, x running east and y running south. Each cell holds the floor-global index of the room that owns the tile, or `null`.
-- Rooms are painted into the grid as their feature is added, and where the rooms of a feature overlap the last room painted owns the tile. That's how a nested room works: the inner room takes the tiles in the middle and the outer room keeps the ring.
-- A room's footprint can therefore include tiles the room doesn't own. Anything that needs a tile of a room has to ask the grid (or the floor-level lookups that find the owning room), never the footprint.
+- A tile only ever belongs to one room. When a room is added to a feature (`Feature.addRoom()`) its tiles are carved out of the footprints of the rooms already there. That's how a nested room works: the inner room takes the tiles in the middle and the outer room's footprint is left as the ring around it.
+- Because of the carve a room has to be fully built and positioned before it's added to its feature. Boxes added or positions changed afterwards won't be carved out of anything.
+- A room's footprint and the floor grid always agree, so either can be asked who owns a tile. The footprint works in room-local coordinates and is available before the feature is placed; the grid and the floor-level lookups work in floor coordinates.
+- Carving a tile throws away anything that was on it, and a carved room's size only counts the tiles it kept. A footprint can have a hole in it, and `GeometryHelper.traceOutline()` only follows the outside edge.
 
 ### Doors
 - A door sits on the wall between two tiles and is always stored on the **north or west** wall of the tile at its `position`. A door that would face south or east is stored on the neighboring tile instead.
