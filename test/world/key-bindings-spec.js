@@ -3,7 +3,7 @@ describe("KeyBindings", function() {
   it("binds a default key to every battle command", function() {
     const bindings = KeyBindings.getBindings();
     Object.values(StandardAbility).forEach(code => {
-      expect(bindings.battle[code]).to.be.a('string');
+      expect(bindings.battle[code].primary).to.be.a('string');
     });
   });
 
@@ -19,18 +19,70 @@ describe("KeyBindings", function() {
     expect(KeyBindings.getAction('nonsense','KeyA')).to.equal(null);
   });
 
+  it("moves through the dungeon in eight directions from the numpad, and in four from WASD", function() {
+    const numpad = { Numpad8:'north', Numpad2:'south', Numpad4:'west', Numpad6:'east',
+      Numpad9:'northeast', Numpad7:'northwest', Numpad3:'southeast', Numpad1:'southwest' };
+    const letters = { KeyW:'north', KeyS:'south', KeyA:'west', KeyD:'east' };
+
+    Object.entries({ ...numpad, ...letters }).forEach(([code, direction]) => {
+      expect(KeyBindings.getAction('dungeon',code), code).to.equal(direction);
+    });
+
+    expect(KeyBindings.getDefaults().dungeon.north).to.deep.equal({ primary:'Numpad8', alternate:'KeyW' });
+    expect(KeyBindings.getDefaults().dungeon.northeast).to.deep.equal({ primary:'Numpad9', alternate:null });
+  });
+
+  it("names every dungeon direction the way the navigation system does", function() {
+    Object.keys(KeyBindings.getContexts().dungeon.actions).forEach(direction => {
+      expect(() => DungeonNavigationSystem.findStep({ x:0, y:0 }, direction), direction).to.not.throw('Bad direction');
+    });
+  });
+
+  it("gives every action a primary and an alternate binding", function() {
+    expect(KeyBindings.getSlots()).to.deep.equal(['primary','alternate']);
+    expect(KeyBindings.getDefaults().battle[StandardAbility.attack]).to.deep.equal({ primary:'KeyA', alternate:null });
+  });
+
+  it("performs an action from either of its bindings", async function() {
+    await WorldState.setOptions({ keyBindings:{ battle:{ [StandardAbility.attack]:{ alternate:'KeyQ' } } } });
+
+    expect(KeyBindings.getAction('battle','KeyA')).to.equal(StandardAbility.attack);
+    expect(KeyBindings.getAction('battle','KeyQ')).to.equal(StandardAbility.attack);
+    expect(KeyBindings.getBindings().battle[StandardAbility.attack]).to.deep.equal({ primary:'KeyA', alternate:'KeyQ' });
+  });
+
+  it("hints at the primary binding, or the alternate when there is no primary", async function() {
+    await WorldState.setOptions({ keyBindings:{ battle:{
+      [StandardAbility.attack]:{ alternate:'KeyQ' },
+      [StandardAbility.defend]:{ primary:null, alternate:'KeyX' },
+    }}});
+
+    expect(KeyBindings.getBinding('battle',StandardAbility.attack)).to.equal('KeyA');
+    expect(KeyBindings.getBinding('battle',StandardAbility.defend)).to.equal('KeyX');
+  });
+
   it("reads saved bindings over the defaults", async function() {
-    await WorldState.setOptions({ keyBindings:{ battle:{ [StandardAbility.attack]:'KeyQ' } } });
+    await WorldState.setOptions({ keyBindings:{ battle:{ [StandardAbility.attack]:{ primary:'KeyQ' } } } });
 
     expect(KeyBindings.getBinding('battle',StandardAbility.attack)).to.equal('KeyQ');
     expect(KeyBindings.getAction('battle','KeyQ')).to.equal(StandardAbility.attack);
     expect(KeyBindings.getAction('battle','KeyA')).to.equal(null);
     expect(KeyBindings.getAction('battle','KeyD')).to.equal(StandardAbility.defend);
-    expect(KeyBindings.getBinding('dungeon','north')).to.equal('KeyW');
+    expect(KeyBindings.getBinding('dungeon','north')).to.equal('Numpad8');
+  });
+
+  // Before actions had an alternate binding the options held a single key for each action.
+  it("reads a binding saved as a single key as the primary binding", async function() {
+    await WorldState.setOptions({ keyBindings:{ battle:{ [StandardAbility.attack]:'KeyQ', [StandardAbility.defend]:null } } });
+
+    expect(KeyBindings.getBindings().battle[StandardAbility.attack]).to.deep.equal({ primary:'KeyQ', alternate:null });
+    expect(KeyBindings.getBindings().battle[StandardAbility.defend]).to.deep.equal({ primary:null, alternate:null });
+    expect(KeyBindings.getAction('battle','KeyQ')).to.equal(StandardAbility.attack);
+    expect(KeyBindings.getAction('battle','KeyD')).to.equal(null);
   });
 
   it("lets an action be unbound", async function() {
-    await WorldState.setOptions({ keyBindings:{ battle:{ [StandardAbility.attack]:null } } });
+    await WorldState.setOptions({ keyBindings:{ battle:{ [StandardAbility.attack]:{ primary:null } } } });
 
     expect(KeyBindings.getBinding('battle',StandardAbility.attack)).to.equal(null);
     expect(KeyBindings.getAction('battle','KeyA')).to.equal(null);
@@ -43,14 +95,14 @@ describe("KeyBindings", function() {
   });
 
   it("hands out a fresh copy of the bindings each time", function() {
-    KeyBindings.getBindings().battle[StandardAbility.attack] = 'KeyZ';
+    KeyBindings.getBindings().battle[StandardAbility.attack].primary = 'KeyZ';
     expect(KeyBindings.getBinding('battle',StandardAbility.attack)).to.equal('KeyA');
   });
 
   describe("findConflicts()", function() {
     it("flags a key bound to two actions in one context", function() {
       const bindings = KeyBindings.getDefaults();
-      bindings.battle[StandardAbility.defend] = 'KeyA';
+      bindings.battle[StandardAbility.defend].primary = 'KeyA';
 
       const conflicts = KeyBindings.findConflicts(bindings);
       expect(conflicts.length).to.equal(1);
@@ -59,16 +111,30 @@ describe("KeyBindings", function() {
       expect(conflicts[0].actions).to.have.members([StandardAbility.attack, StandardAbility.defend]);
     });
 
+    it("flags an alternate binding that takes another action's key", function() {
+      const bindings = KeyBindings.getDefaults();
+      bindings.battle[StandardAbility.defend].alternate = 'KeyA';
+
+      const conflicts = KeyBindings.findConflicts(bindings);
+      expect(conflicts).to.deep.equal([{ context:'battle', code:'KeyA', actions:[StandardAbility.attack, StandardAbility.defend] }]);
+    });
+
+    it("allows an action to have the same key in both of its bindings", function() {
+      const bindings = KeyBindings.getDefaults();
+      bindings.battle[StandardAbility.attack].alternate = 'KeyA';
+      expect(KeyBindings.findConflicts(bindings)).to.deep.equal([]);
+    });
+
     it("allows the same key in different contexts", function() {
       const bindings = KeyBindings.getDefaults();
-      bindings.battle[StandardAbility.attack] = 'KeyW';
+      bindings.battle[StandardAbility.attack].primary = 'KeyW';
       expect(KeyBindings.findConflicts(bindings)).to.deep.equal([]);
     });
 
     it("ignores unbound actions", function() {
       const bindings = KeyBindings.getDefaults();
-      bindings.battle[StandardAbility.attack] = null;
-      bindings.battle[StandardAbility.defend] = null;
+      bindings.battle[StandardAbility.attack].primary = null;
+      bindings.battle[StandardAbility.defend].primary = null;
       expect(KeyBindings.findConflicts(bindings)).to.deep.equal([]);
     });
   });

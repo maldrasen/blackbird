@@ -14,6 +14,8 @@ touch the existing dungeon view. It can read a real floor layout from `debug/flo
 `debug/headless-floor.js`) so we're testing against real room shapes, round and chamfered rooms included. The question
 we're answering is how it looks and feels, and whether it holds 60fps in Electron. It doesn't need to be clean code.
 
+In the floor state each door is `{ position, direction, from, to, open }`, sitting on the north or west wall of its position tile, and a room's `stairs` is `{ direction, x, y }` in the room's own coordinates (or null). See `docs/reference/dungeon-floor.md`.
+
 ## 1. Tile movement with a smooth camera
 - The player marker moves one tile per key press (arrow keys / WASD) and is blocked by walls and closed doors.
 - The marker's drawn position eases toward its tile with a critically damped spring (the SmoothDamp in
@@ -25,7 +27,7 @@ we're answering is how it looks and feels, and whether it holds 60fps in Electro
 ## 2. Vision mask
 - Each frame, compute a 2D visibility polygon from the marker's *drawn* (interpolated) position against the wall
   segments. See Red Blob Games' "2D Visibility" article: sort segment endpoints by angle and sweep. Doors are
-  segments, open doorways are gaps. (Doors don't have an open or closed state yet, so for now we can consider all doors as open) Only consider segments within a bounding box around the light radius.
+  segments, open doorways are gaps. (Doors now have an `open` flag in the floor state. They all start closed and open when walked through.) Only consider segments within a bounding box around the light radius.
 - Walking from a corridor through a doorway into a large room should visibly widen the cone as the marker crosses the
   threshold. That's the effect we're looking for.
 - The polygon is only cosmetic. Monsters aren't on the map, so there's no gameplay field of view to keep in sync, but

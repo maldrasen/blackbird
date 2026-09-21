@@ -27,6 +27,8 @@ global.DungeonFloorView = (function() {
     floor.getDoors().forEach(door => {
       floorElement.appendChild(DungeonDoorView.build(floor, door));
     });
+
+    floorElement.appendChild(DungeonPartyMarker.build(floor.getPartyPosition()));
   }
 
   // A door is visible from the moment either of its rooms is revealed, and each half of its wall caps tracks the
@@ -47,9 +49,15 @@ global.DungeonFloorView = (function() {
     }
   }
 
+  // A wall can only hold one door, so a door is found by its tile and the wall of the tile it's on.
+  function openDoor(door) {
+    X.addClass(`#dungeonFloor .door.${door.direction}[data-x='${door.position.x}'][data-y='${door.position.y}']`,'open');
+  }
+
   return {
     drawDungeon,
     updateLocation,
+    openDoor,
     getGridSize: () => { return gridSize; },
   };
 

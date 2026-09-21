@@ -128,7 +128,8 @@ global.FormationPanel = (function() {
   function showKeyHints() {
     const hints = {};
 
-    Object.entries(KeyBindings.getBindings().targeting).forEach(([action, key]) => {
+    Object.keys(KeyBindings.getContexts().targeting.actions).forEach(action => {
+      const key = KeyBindings.getBinding('targeting', action);
       if (key) { hints[suffixFor(action)] = KeyBindings.labelFor(key); }
     });
 

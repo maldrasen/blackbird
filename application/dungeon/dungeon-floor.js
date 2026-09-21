@@ -13,7 +13,9 @@ global.DungeonFloor = function(level, theme=null) {
   const revealed = new Set();
   const visited = new Set();
 
-  let location = null;
+  const doorsByEdge = new Map();
+
+  let partyPosition = null;
   let features = [];
   let rooms = [];
   let doors = [];
@@ -21,10 +23,23 @@ global.DungeonFloor = function(level, theme=null) {
   function getFloorWidth() { return DungeonTheme.lookup(theme).getFloorWidth(); }
   function getFloorHeight() { return DungeonTheme.lookup(theme).getFloorHeight(); }
 
-  function setLocation(index) {
-    location = index;
+  // The party stands on a single tile of the floor, which reveals and visits the room that owns the tile.
+  function setPartyPosition(x, y) {
+    const index = getRoomIndexAt(x, y);
+    if (index == null) { throw new Error(`The party cannot stand at (${x},${y}), there is no floor there.`); }
+
+    partyPosition = { x, y };
     revealed.add(index);
     visited.add(index);
+  }
+
+  // The party's location is the room that owns the tile they're standing on.
+  function getLocation() {
+    return partyPosition ? getRoomIndexAt(partyPosition.x, partyPosition.y) : null;
+  }
+
+  function getPartyPosition() {
+    return partyPosition ? { ...partyPosition } : null;
   }
 
   function addFeature(feature) {
@@ -37,6 +52,20 @@ global.DungeonFloor = function(level, theme=null) {
       room.setIndex(rooms.length);
       room.setFloorPosition(featurePosition.x + roomPosition.x, featurePosition.y + roomPosition.y);
       rooms.push(room);
+      paintRoom(room);
+    });
+  }
+
+  // The grid cells hold the room's floor-global index, as rooms are the unit of navigation. Where the rooms of a
+  // feature overlap the last room painted owns the tile.
+  function paintRoom(room) {
+    const position = room.getFloorPosition();
+    const index = room.getIndex();
+
+    room.getFootprint().forEach((row, y) => {
+      row.forEach((cell, x) => {
+        if (cell != null) { floorGrid[position.y + y][position.x + x] = index; }
+      });
     });
   }
 
@@ -48,8 +77,53 @@ global.DungeonFloor = function(level, theme=null) {
     return new Set(rooms.map(room => room.getContents()));
   }
 
+  function setDoors(list) {
+    doors = list;
+    doorsByEdge.clear();
+    doors.forEach(indexDoor);
+  }
+
   function addDoor(door) {
     doors.push(door);
+    indexDoor(door);
+  }
+
+  // Movement looks doors up by the wall they're on, and a wall can only ever hold one door.
+  function indexDoor(door) {
+    const key = edgeKey(door.position.x, door.position.y, door.direction);
+    if (doorsByEdge.has(key)) { throw new Error(`There is already a door at (${key})`); }
+    doorsByEdge.set(key, door);
+  }
+
+  function edgeKey(x, y, direction) {
+    return `${x},${y},${direction}`;
+  }
+
+  function getDoorAt(x, y, direction) {
+    return doorsByEdge.get(edgeKey(x, y, direction)) || null;
+  }
+
+  // The index of the room that owns a tile, or null when the tile is empty or off the floor entirely.
+  function getRoomIndexAt(x, y) {
+    if (floorGrid[y] == null || floorGrid[y][x] == null) { return null; }
+    return floorGrid[y][x];
+  }
+
+  function getStairs(direction) {
+    return rooms.filter(room => room.getStairs() === direction).map(room => {
+      return { position:room.getStairsFloorPosition(), room:room.getIndex() };
+    });
+  }
+
+  // The direction of the stairs standing on a tile, if there are any.
+  function getStairsAt(x, y) {
+    const index = getRoomIndexAt(x, y);
+    if (index == null) { return null; }
+
+    const position = rooms[index].getStairsFloorPosition();
+    if (position == null || position.x !== x || position.y !== y) { return null; }
+
+    return rooms[index].getStairs();
   }
 
   function pack() {
@@ -65,12 +139,14 @@ global.DungeonFloor = function(level, theme=null) {
     getLevel: () => { return level; },
     getTheme: () => { return theme; },
     getFloorGrid: () => { return floorGrid; },
+    getRoomIndexAt,
     getFloorWidth,
     getFloorHeight,
 
-    setLocation,
-    getLocation: () => { return location; },
-    getCurrentRoom: () => { return rooms[location]; },
+    setPartyPosition,
+    getPartyPosition,
+    getLocation,
+    getCurrentRoom: () => { return rooms[getLocation()]; },
 
     getFeatures: () => { return features; },
     getRooms: () => { return rooms; },
@@ -81,10 +157,12 @@ global.DungeonFloor = function(level, theme=null) {
     isRevealed: index => { return revealed.has(index); },
     isVisited: index => { return visited.has(index); },
 
-    setDoors: d => { doors = d; },
+    setDoors,
     getDoors: () => { return doors; },
+    getDoorAt,
     addDoor,
-    getStairs: direction => { return rooms.filter(room => room.getStairs() === direction).map(room => room.getIndex()); },
+    getStairs,
+    getStairsAt,
 
     pack,
   };

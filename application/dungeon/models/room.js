@@ -1,6 +1,7 @@
 global.Room = function(feature, type='normal') {
 
   let description;
+  let stairsDescription;
   let position = { x:0, y:0 };
   let index;
   let floorPosition;
@@ -107,6 +108,24 @@ global.Room = function(feature, type='normal') {
     return stairsAllowed && bounds.width > 1 && bounds.height > 1;
   }
 
+  // Stairs stand on a single tile of the room, given in room-local coordinates.
+  function setStairs(direction, x, y) {
+    Validate.isIn('direction', direction, ['up','down']);
+    if (footprint == null || getFloor(x, y) == null) {
+      throw new Error(`(${x},${y}) is not a floor tile in this room.`);
+    }
+
+    stairs = { direction, x, y };
+  }
+
+  function getStairsTile() {
+    return stairs ? { x:stairs.x, y:stairs.y } : null;
+  }
+
+  function getStairsFloorPosition() {
+    return stairs ? { x: floorPosition.x + stairs.x, y: floorPosition.y + stairs.y } : null;
+  }
+
   // ========================
   //    Door Permissions
   // ========================
@@ -184,15 +203,24 @@ global.Room = function(feature, type='normal') {
     if (description == null && contents) {
       description = RoomContents.lookup(contents).getDescription(contentsOptions);
     }
-    if (description == null && stairs) {
-       description = theme.getDescription(`${stairs}Stairs`);
-    }
     if (description == null) {
       const variety = (feature.getType() === 'corridor') ?
         'corridor' : FeatureType.lookup(feature.getType()).getVariety();
       description = theme.getDescription(variety);
     }
     return description;
+  }
+
+  // The stairs are described on their own, as they're only a single tile of the room. The room's description has
+  // nothing to say about them.
+  function getStairsDescription() {
+    if (stairs == null) { return null; }
+
+    if (stairsDescription == null) {
+      const theme = DungeonTheme.lookup(DungeonSystem.getDungeonFloor().getTheme());
+      stairsDescription = theme.getDescription(`${stairs.direction}Stairs`);
+    }
+    return stairsDescription;
   }
 
   function updateDescription(text) {
@@ -224,7 +252,7 @@ global.Room = function(feature, type='normal') {
     return {
       position,
       contents,
-      stairs,
+      stairs: stairs ? { ...stairs } : null,
       usedCommands: [...usedCommands],
       footprint: footprint.map(row => [...row]),
     }
@@ -259,8 +287,10 @@ global.Room = function(feature, type='normal') {
     getFloorChamfer: () => { return floorChamfer; },
 
     allowStairs: () => { stairsAllowed = true; },
-    setStairs: direction => { stairs = direction; },
-    getStairs: () => { return stairs; },
+    setStairs,
+    getStairs: () => { return stairs ? stairs.direction : null; },
+    getStairsTile,
+    getStairsFloorPosition,
     hasStairs: () => { return stairs != null; },
     stairsAreAllowed,
 
@@ -279,6 +309,7 @@ global.Room = function(feature, type='normal') {
     markOverlapping: () => { overlapping = true; },
     isOverlapping: () => { return overlapping; },
     getDescription,
+    getStairsDescription,
     updateDescription,
     getAvailableCommands,
     useCommand,

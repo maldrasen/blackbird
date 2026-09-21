@@ -74,22 +74,37 @@
     fill: variables.$fg-dungeon-stairs;
     text-anchor: middle;
     dominant-baseline: central;
-    cursor: pointer;
+  }
+}
 
-    &:hover {
-      fill: variables.$fg-dungeon-stairs-hover;
-    }
+// The ring leaves the middle of the tile clear so that whatever the party is standing on still shows through. The
+// transition's duration is the length of a step, which the view sets on the element.
+#dungeonPartyMarker {
+  position: absolute;
+  z-index: 110;
+  pointer-events: none;
+  transition-property: left, top;
+  transition-timing-function: linear;
+
+  .ring {
+    position: absolute;
+    inset: 26px;
+    border: 4px solid variables.$fg-dungeon-party;
+    border-radius: 50%;
+    box-shadow: 0 0 12px variables.$fg-dungeon-party-glow;
   }
 }
 
 #dungeonFloor .door {
   position: absolute;
-  cursor: pointer;
   z-index: 100;
 
   pointer-events: none;
   .opening { fill: variables.$bg-dungeon-floor; }
   .slab { fill: variables.$fg-dungeon-door; }
+
+  // An open door is faded rather than hidden, so that it still reads as a door.
+  &.open .slab { fill-opacity: 0.25; }
 
   .cap {
     fill: none;
@@ -104,9 +119,4 @@
   &.from-unrevealed .cap.from { display: none; }
   &.to-unrevealed .cap.to { display: none; }
   &.from-unrevealed.to-unrevealed { display: none; }
-
-  .click-target {
-    fill: none;
-    pointer-events: fill;
-  }
 }

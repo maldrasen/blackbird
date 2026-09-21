@@ -33,12 +33,18 @@
 
   .binding-grid {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr auto auto;
     column-gap: 10px;
     row-gap: 5px;
     align-items: center;
 
     .key { text-align: right; }
+
+    .slot-heading {
+      font-size: 12px;
+      text-align: center;
+      color: variables.$fg-very-weak;
+    }
 
     .key-button {
       min-width: 40px;

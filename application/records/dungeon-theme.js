@@ -29,14 +29,11 @@ global.DungeonTheme = (function() {
       throw new Error(`Theme [${code}] has no feature at or below the [${rarityOrder[index]}] rarity tier`);
     }
 
-    function getEncounterRate(isNewRoom) {
-      return isNewRoom ? (theme.newRoomEncounterRate || 20) : (theme.revealedRoomEncounterRate || 2);
-    }
-
     // A room without contents will pull its description from the theme. Currently the variety can only be 'plain',
-    // 'corridor', 'upStairs' or 'downStairs'.
+    // 'corridor', 'upStairs' or 'downStairs'. A theme doesn't need to describe every variety, or any of them.
     function getDescription(variety) {
-      return theme.descriptions[variety].pick();
+      const descriptions = (theme.descriptions || {})[variety];
+      return descriptions ? descriptions.pick() : null;
     }
 
     return {
@@ -50,7 +47,8 @@ global.DungeonTheme = (function() {
       getRoomContents: () => { return theme.roomContents || []; },
       getRoomContentChance: () => { return theme.roomContentChance ?? 20; },
       getRandomFeature: getRandomFeature,
-      getEncounterRate,
+      getNewRoomEncounterRate: () => { return theme.newRoomEncounterRate ?? 20; },
+      getStepEncounterRate: () => { return theme.stepEncounterRate ?? 0.5; },
       getExtraStairChance: () => { return theme.extraStairChance || 50 },
       getFloorTextureFunction: () => { return theme.getFloorTexture().paint },
       getDescription,

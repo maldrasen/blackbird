@@ -25,8 +25,7 @@ global.DungeonRoomView = (function() {
       `<polygon class='walls' points='${points(geometry.wallLine)}'/>`,
       ...nestedWalls(floor, room),
       ...roomGlyphs(room, gridSize),
-      stairsGlyph(floor, room, 'up', gridSize),
-      stairsGlyph(floor, room, 'down', gridSize),
+      stairsGlyph(room, gridSize),
     ].join('');
 
     const roomElement = X.createElement(
@@ -114,15 +113,18 @@ global.DungeonRoomView = (function() {
     });
   }
 
-  function stairsGlyph(floor, room, direction, gridSize) {
-    if (floor.getStairs(direction).includes(room.getIndex()) === false) { return ''; }
+  // The glyph is anchored at its center, so it's drawn at the center of the stairs tile rather than at the tile's
+  // corner.
+  function stairsGlyph(room, gridSize) {
+    if (room.hasStairs() === false) { return ''; }
 
-    const center = room.getCenterPoint();
+    const tile = room.getStairsTile();
+    const direction = room.getStairs();
     const glyph = (direction === 'up') ? '▲' : '▼';
-    const x = center.x * gridSize;
-    const y = center.y * gridSize;
+    const x = (tile.x + 0.5) * gridSize;
+    const y = (tile.y + 0.5) * gridSize;
 
-    return `<text class='stairs ${direction}' data-direction='${direction}' x='${x}' y='${y}'>${glyph}</text>`;
+    return `<text class='stairs ${direction}' x='${x}' y='${y}'>${glyph}</text>`;
   }
 
   function roomDepth(floor, index) {

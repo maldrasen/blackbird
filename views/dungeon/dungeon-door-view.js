@@ -14,19 +14,18 @@ global.DungeonDoorView = (function() {
     if (floor.isRevealed(door.to) === false) { classname += ' to-unrevealed'; }
     if (door.from === floor.getLocation()) { classname += ' from-current'; }
     if (door.to === floor.getLocation()) { classname += ' to-current'; }
+    if (door.open) { classname += ' open'; }
 
     const opening = rectangle(door.direction, along, wallInset + 2);
     const caps = [-along, along].flatMap(position => ['from','to'].map(side =>
       capLine(door.direction, position, side, wallInset)));
     const slab = rectangle(door.direction, along-4, doorThickness / 2);
-    const target = `0,${-half} ${half},0 0,${half} ${-half},0`;
 
     const element = X.createElement([
-      `<svg class='${classname}' data-from='${door.from}' data-to='${door.to}' viewBox='${-half} ${-half} ${gridSize} ${gridSize}'>`,
+      `<svg class='${classname}' data-from='${door.from}' data-to='${door.to}' data-x='${door.position.x}' data-y='${door.position.y}' viewBox='${-half} ${-half} ${gridSize} ${gridSize}'>`,
       `<polygon class='opening' points='${opening}'/>`,
       ...caps,
       `<polygon class='slab' points='${slab}'/>`,
-      `<polygon class='click-target' points='${target}'/>`,
       `</svg>`,
     ].join(''));
 

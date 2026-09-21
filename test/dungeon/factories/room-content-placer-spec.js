@@ -18,9 +18,8 @@ describe("RoomContentPlacer", function() {
   });
 
   function eligibleRooms() {
-    const stairs = [...floor.getStairs('up'), ...floor.getStairs('down')];
     return floor.getRooms().filter(room =>
-      floor.getFeatureForRoom(room.getIndex()).getType() !== 'corridor' && stairs.includes(room.getIndex()) === false);
+      floor.getFeatureForRoom(room.getIndex()).getType() !== 'corridor' && room.hasStairs() === false);
   }
 
   function roomsWithContents() {

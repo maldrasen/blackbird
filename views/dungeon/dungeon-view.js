@@ -1,16 +1,13 @@
 global.DungeonView = (function() {
 
-  const stepTime = 250;
+  const stepTime = 160;
 
-  let currentWalk = 0;
-  let walking = false;
+  let lastStepAt = 0;
+  let resolving = false;
 
   function init() {
     DungeonViewport.init();
-    X.onClick('#dungeonFloor .door', doorClicked);
-    X.onClick('#dungeonFloor .stairs', stairsClicked);
-    X.onClick('#dungeonFloor .room', roomClicked);
-    KeyBindingDispatcher.register('dungeon', { isActive:isShowing, perform:walkInDirection });
+    KeyBindingDispatcher.register('dungeon', { isActive:isShowing, perform:stepInDirection, allowRepeat:true });
   }
 
   function show() {
@@ -27,100 +24,73 @@ global.DungeonView = (function() {
   function drawDungeon() {
     DungeonFloorView.drawDungeon();
     DungeonViewport.reset();
-    DungeonViewport.centerOn(getCurrentRoom().getFloorCenter());
+    DungeonViewport.centerOn(tileCenter(DungeonSystem.getDungeonFloor().getPartyPosition()));
     DungeonControls.refreshRoom();
   }
 
-  function getCurrentRoom() {
-    const floor = DungeonSystem.getDungeonFloor();
-    return floor.getRooms()[floor.getLocation()];
-  }
-
-  function roomClicked(event) {
-    if (DungeonViewport.didDrag()) { return; }
-    if (event.target.closest('.stairs')) { return; }
-
-    const index = parseInt(event.target.closest('.room').dataset.index);
-    walkPath(DungeonNavigationSystem.getPathToRoom(index));
-  }
-
-  async function stairsClicked(event) {
-    if (DungeonViewport.didDrag()) { return; }
-
-    const stairsElement = event.target.closest('.stairs');
-    const direction = stairsElement.dataset.direction;
-    const roomIndex = parseInt(stairsElement.closest('.room').dataset.index);
-    const path = DungeonNavigationSystem.getPathToRoom(roomIndex);
-    const arrived = await walkPath(path);
-    if (arrived === false) { return; }
-
-    (direction === 'up') ? DungeonSystem.goUpStairs() : DungeonSystem.goDownStairs();
-
-    if (GameSystem.getState().getGameMode() === GameMode.dungeon) { drawDungeon(); }
-  }
-
-  function doorClicked(event) {
-    if (DungeonViewport.didDrag()) { return; }
-
-    const doorElement = event.target.closest('.door');
-    walkPath(DungeonNavigationSystem.getPathThroughDoor(
-      parseInt(doorElement.dataset.from),
-      parseInt(doorElement.dataset.to)));
+  // Taking the stairs up from the first level leaves the dungeon, so there may not be a floor left to draw.
+  function floorChanged() {
+    if (isShowing()) { drawDungeon(); }
   }
 
   function isShowing() {
     return GameSystem.getState().getGameMode() === GameMode.dungeon && X.first('#dungeonView') != null;
   }
 
-  // Walks through the door on that wall of the current room, the same as clicking the door. A key press mid-walk
-  // starts a fresh walk, just as a click does.
-  function walkInDirection(direction) {
-    const door = DungeonNavigationSystem.getDoorInDirection(direction);
-    if (door) { walkPath(DungeonNavigationSystem.getPathThroughDoor(door.from, door.to)); }
+  function tileCenter(position) {
+    return { x:position.x + 0.5, y:position.y + 0.5 };
   }
 
-  // Walk the party through the path one room at a time on a steady beat, targeting the camera at each new room as
-  // they go. Clicking a new destination mid-walk starts a fresh walk that supersedes this one, and escape abandons the
-  // path outright. A sprung trap, a room episode, or a random encounter also stops the party in the room that
-  // triggered it. This resolves false if the party will never arrive.
-  async function walkPath(path) {
-    if (path == null) { return false; }
-    if (path.length === 0) { return true; }
+  // Key presses can arrive far faster than the party can walk, from a held key especially, so steps are held to a
+  // steady beat. Nothing gets through while a step's trap, episode, or encounter is waiting to start.
+  function stepInDirection(direction) {
+    if (resolving) { return; }
+    if (performance.now() - lastStepAt < stepTime) { return; }
+    takeStep(direction);
+  }
 
-    const walkId = ++currentWalk;
-    walking = true;
+  // Take a single step and bring the view up to date with it. The controls are only rebuilt when there's something
+  // new to show, on entering a room or on stepping onto or off of a tile with something on it, because rebuilding
+  // them flashes the command buttons.
+  function takeStep(direction) {
+    const hadTileFeature = DungeonTileSystem.hasTileFeature();
+    const result = DungeonNavigationSystem.step(direction);
+    if (result.moved === false) { return result; }
 
-    for (const index of path) {
-      const result = DungeonNavigationSystem.moveToRoom(index);
-      DungeonFloorView.updateLocation(index, result.revealed);
+    lastStepAt = performance.now();
+    DungeonPartyMarker.moveTo(result.position);
+    DungeonViewport.panTo(tileCenter(result.position));
+
+    if (result.openedDoor) {
+      DungeonFloorView.openDoor(result.openedDoor);
+    }
+    if (result.enteredRoom != null) {
+      DungeonFloorView.updateLocation(result.enteredRoom, result.revealed);
+    }
+    if (result.enteredRoom != null || hadTileFeature || DungeonTileSystem.hasTileFeature()) {
       DungeonControls.refreshRoom();
-      DungeonViewport.panTo(getCurrentRoom().getFloorCenter());
-      await new Promise(resolve => setTimeout(resolve, stepTime));
-
-      // A newer walk owns the party now; any encounter rolled on this step is quietly forgotten.
-      if (walkId !== currentWalk) { return false; }
-
-      if (result.trap) {
-        walking = false;
-        showTrapResult(result.trap);
-        return false;
-      }
-
-      if (result.episode) {
-        walking = false;
-        DungeonSystem.startRoomEpisode(result.episode);
-        return false;
-      }
-
-      if (result.encounter) {
-        walking = false;
-        DungeonSystem.startRandomEncounter();
-        return false;
-      }
+    }
+    if (result.trap || result.episode || result.encounter) {
+      resolveStep(result);
     }
 
-    walking = false;
-    return true;
+    return result;
+  }
+
+  // Whatever the step set off waits for the party to finish arriving on the tile before it starts.
+  function resolveStep(result) {
+    resolving = true;
+
+    setTimeout(() => {
+      resolving = false;
+      if (isShowing()) { startStepEvent(result); }
+    }, stepTime);
+  }
+
+  function startStepEvent(result) {
+    if (result.trap) { return showTrapResult(result.trap); }
+    if (result.episode) { return DungeonSystem.startRoomEpisode(result.episode); }
+    if (result.encounter) { return DungeonSystem.startRandomEncounter(); }
   }
 
   function showTrapResult(trap) {
@@ -133,22 +103,13 @@ global.DungeonView = (function() {
     RoomContentOverlay.open(trap);
   }
 
-  function isWalking() {
-    return walking;
-  }
-
-  function stopWalking() {
-    currentWalk += 1;
-    walking = false;
-  }
-
   return {
     init,
     show,
     close,
     drawDungeon,
-    isWalking,
-    stopWalking,
+    floorChanged,
+    getStepTime: () => { return stepTime; },
   };
 
 })();

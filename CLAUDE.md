@@ -20,6 +20,7 @@ applicable to the current task.
 
 #### System References
 - `/docs/reference/architecture.md` Overall project architecture.
+- `/docs/reference/dungeon-floor.md` The dungeon's tile grid, doors, movement rules, and what happens on entering a room.
 
 #### Writing References
 - `/docs/reference/writing-guide.md` When generating text content, reference this for style and tone.

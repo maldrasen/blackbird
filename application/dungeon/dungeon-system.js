@@ -24,8 +24,8 @@ global.DungeonSystem = (function() {
   // Floor generation can very rarely build a floor whose features cannot all be connected. When that happens we
   // throw the whole floor away and start over from scratch with a fresh DungeonFloor. The factory dumps the failed
   // floor's state to the debug directory before we toss it, so a failure can still be analyzed after the fact. The
-  // party arrives in a room with the stairs in the direction they just came through, an upstairs when descending or
-  // a downstairs when climbing.
+  // party arrives standing on stairs in the direction they just came through, an upstairs when descending or a
+  // downstairs when climbing.
   function setLevel(level, arrival='up', theme=null) {
     Console.log("Changing Level",{ system:'DungeonSystem', level:1, data:{ level, arrival }});
 
@@ -35,7 +35,8 @@ global.DungeonSystem = (function() {
       dungeonFloor = DungeonFloor(level, theme);
       try {
         FloorFactory().buildFloor();
-        dungeonFloor.setLocation(Random.from(dungeonFloor.getStairs(arrival)));
+        const stairs = Random.from(dungeonFloor.getStairs(arrival));
+        dungeonFloor.setPartyPosition(stairs.position.x, stairs.position.y);
         return;
       }
       catch (error) {

@@ -41,24 +41,28 @@ global.DungeonControls = (function() {
     CharacterOverlay.open(event.target.closest('.party-card').dataset.id);
   }
 
-  // Show the description and command buttons of the room the party is currently in. Called when the floor is drawn
-  // and again each time the party steps into a new room.
+  // Show the description and command buttons for the tile the party is standing on, which for most tiles are those
+  // of the room. Called when the floor is drawn, and again whenever a step gives the party something new to look at.
   function refreshRoom() {
     refreshDescription();
-    buildCommandButtons(getCurrentRoom());
+    buildCommandButtons();
   }
 
+  // Not every room has something worth describing, but the description is always rendered so that the command
+  // buttons stay where they are.
   function refreshDescription() {
     const element = X.first('#dungeonControls #description');
+    const description = DungeonTileSystem.getTileInfo().description || '';
+
     X.empty(element);
-    element.appendChild(X.createElement(`<div class='room-description'>${getCurrentRoom().getDescription()}</div>`));
+    element.appendChild(X.createElement(`<div class='room-description'>${description}</div>`));
   }
 
-  function buildCommandButtons(room) {
+  function buildCommandButtons() {
     const list = X.first('#dungeonControls #commandButtons');
     X.empty(list);
 
-    room.getAvailableCommands().forEach(command => {
+    DungeonTileSystem.getTileInfo().commands.forEach(command => {
       const button = X.createElement(
         `<li><a href='#' class='command button' data-code='${command.code}'>${command.label}</a></li>`);
 
@@ -69,16 +73,12 @@ global.DungeonControls = (function() {
 
   function commandClicked(event) {
     const code = event.target.closest('.command').dataset.code;
-    const result = getCurrentRoom().useCommand(code);
+    const result = DungeonTileSystem.useCommand(code);
     if (result.episode) { return DungeonSystem.startRoomEpisode(result.episode); }
+    if (result.floorChanged) { return DungeonView.floorChanged(); }
 
     refreshRoom();
     RoomContentOverlay.open(result);
-  }
-
-  function getCurrentRoom() {
-    const floor = DungeonSystem.getDungeonFloor();
-    return floor.getRooms()[floor.getLocation()];
   }
 
   return {

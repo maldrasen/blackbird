@@ -187,6 +187,92 @@ describe("Room", function() {
     });
   });
 
+  describe("stairs", function() {
+
+    // An L-shaped room: the top row plus the right-hand column.
+    function legRoom() {
+      const room = Room();
+      room.setBounds(3,3);
+      room.addBox(0,0,3,1);
+      room.addBox(2,0,1,3);
+      return room;
+    }
+
+    it('starts without stairs', function() {
+      const room = legRoom();
+      expect(room.hasStairs()).to.equal(false);
+      expect(room.getStairs()).to.equal(null);
+      expect(room.getStairsTile()).to.equal(null);
+      expect(room.getStairsFloorPosition()).to.equal(null);
+    });
+
+    it('puts the stairs on a tile of the room', function() {
+      const room = legRoom();
+      room.setStairs('down',2,2);
+
+      expect(room.hasStairs()).to.equal(true);
+      expect(room.getStairs()).to.equal('down');
+      expect(room.getStairsTile()).to.deep.equal({ x:2, y:2 });
+    });
+
+    it('locates the stairs on the floor', function() {
+      const room = legRoom();
+      room.setFloorPosition(10,20);
+      room.setStairs('up',2,1);
+
+      expect(room.getStairsFloorPosition()).to.deep.equal({ x:12, y:21 });
+    });
+
+    it('throws when the tile is not part of the room', function() {
+      const room = legRoom();
+      expect(() => room.setStairs('up',0,2)).to.throw('(0,2) is not a floor tile in this room.');
+      expect(() => room.setStairs('up',3,0)).to.throw('(3,0) is not a floor tile in this room.');
+    });
+
+    it('throws when the room has no footprint yet', function() {
+      expect(() => Room().setStairs('up',0,0)).to.throw('(0,0) is not a floor tile in this room.');
+    });
+
+    it('throws on a bad direction', function() {
+      expect(() => legRoom().setStairs('sideways',0,0)).to.throw('direction[sideways] not in list');
+    });
+  });
+
+  describe("descriptions", function() {
+    let room;
+
+    // A 3x3 room with the party standing on its down stairs. The descriptions for tiny rooms never apply to it, which
+    // leaves the theme with a single way to describe the stairs.
+    beforeEach(function() {
+      const floor = DungeonFloor(1,'dungeon');
+      const feature = Feature('rect-room');
+      DungeonSystem.setDungeonFloor(floor);
+
+      room = Room(feature);
+      room.setBounds(3,3);
+      room.addBox(0,0,3,3);
+      room.setStairs('down',1,1);
+      feature.addRoom(room);
+      feature.setPosition(4,4);
+      floor.addFeature(feature);
+      floor.setPartyPosition(5,5);
+    });
+
+    it('describes the stairs apart from the room', function() {
+      expect(room.getStairsDescription()).to.include('You find a room with stairs descending down into the darkness below..');
+    });
+
+    it('describes a room with stairs the same as any other room', function() {
+      expect(room.getDescription()).to.be.a('string');
+      expect(room.getDescription()).to.not.include('stairs');
+    });
+
+    it('has no stairs to describe in a room without them', function() {
+      const plain = Room(Feature('rect-room'));
+      expect(plain.getStairsDescription()).to.equal(null);
+    });
+  });
+
   describe("door permissions", function() {
 
     // A 3x3 room with the south-east corner missing, so (2,1) has an exterior wall to the E and S, and (1,1) is an
@@ -304,7 +390,9 @@ describe("Room", function() {
 
     it('rejects rooms with stairs', function() {
       const room = Room(Feature('rect-room'));
-      room.setStairs('down');
+      room.setBounds(2,2);
+      room.addBox(0,0,2,2);
+      room.setStairs('down',0,0);
       expect(room.canHaveContents()).to.equal(false);
     });
 
@@ -390,15 +478,15 @@ describe("Room", function() {
       const room = Room();
       room.setPosition(5,9);
       room.setContents('spec-contents');
-      room.setStairs('up');
       room.setBounds(3,3);
       room.addBox(0,0,3,1);
       room.addBox(2,0,1,3);
+      room.setStairs('up',2,1);
 
       expect(room.pack()).to.deep.equal({
         position: { x:5, y:9 },
         contents: 'spec-contents',
-        stairs: 'up',
+        stairs: { direction:'up', x:2, y:1 },
         usedCommands: [],
         footprint: [
           [0,0,0],

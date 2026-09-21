@@ -24,17 +24,7 @@ describe("DoorFinder", function() {
       floor.addFeature(feature);
     });
 
-    const grid = floor.getFloorGrid();
-    floor.getRooms().forEach(room => {
-      const position = room.getFloorPosition();
-      room.getFootprint().forEach((row,y) => {
-        row.forEach((cell,x) => {
-          if (cell != null) { grid[position.y + y][position.x + x] = room.getIndex(); }
-        });
-      });
-    });
-
-    return grid;
+    return floor.getFloorGrid();
   }
 
   it('finds one door between adjacent rooms', function() {
@@ -65,7 +55,7 @@ describe("DoorFinder", function() {
 
     const [,doors] = DoorFinder(grid).execute();
 
-    expect(doors).to.deep.equal([{ position:{ x:3, y:1 }, direction:'W', from:1, to:0 }]);
+    expect(doors).to.deep.equal([{ position:{ x:3, y:1 }, direction:'W', from:1, to:0, open:false }]);
   });
 
   it('drops only the forbidden wall tile from the candidates', function() {
