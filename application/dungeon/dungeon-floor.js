@@ -128,6 +128,14 @@ global.DungeonFloor = function(level, theme=null) {
     return rooms[index].getTileContents(x - position.x, y - position.y);
   }
 
+  function getTileDescription(x, y) {
+    const index = getRoomIndexAt(x, y);
+    if (index == null) { return null; }
+
+    const position = rooms[index].getFloorPosition();
+    return rooms[index].getTileDescription(x - position.x, y - position.y);
+  }
+
   function getStairs(direction) {
     return rooms.filter(room => room.getStairs() === direction).map(room => {
       return { position:room.getStairsFloorPosition(), room:room.getIndex() };
@@ -161,6 +169,7 @@ global.DungeonFloor = function(level, theme=null) {
     getRoomIndexAt,
     canEnterTile,
     getTileContents,
+    getTileDescription,
     getFloorWidth,
     getFloorHeight,
 

@@ -323,17 +323,27 @@ describe("Room", function() {
     });
 
     it('describes the stairs apart from the room', function() {
-      expect(room.getStairsDescription()).to.include('You find a room with stairs descending down into the darkness below..');
+      expect(room.getTileDescription(1,1)).to.include('You find a room with stairs descending down into the darkness below..');
+    });
+
+    it('describes a tile with text or with a function', function() {
+      room.setTileContents(0, 0, { description:'A mossy patch.' });
+      room.setTileContents(2, 0, { description:() => 'Scattered bones.' });
+
+      expect(room.getTileDescription(0,0)).to.equal('A mossy patch.');
+      expect(room.getTileDescription(2,0)).to.equal('Scattered bones.');
+    });
+
+    it('has nothing to say about a tile without a description', function() {
+      room.setTileContents(0, 0, { canEnter:false });
+
+      expect(room.getTileDescription(0,0)).to.equal(null);
+      expect(room.getTileDescription(2,2)).to.equal(null);
     });
 
     it('describes a room with stairs the same as any other room', function() {
       expect(room.getDescription()).to.be.a('string');
       expect(room.getDescription()).to.not.include('stairs');
-    });
-
-    it('has no stairs to describe in a room without them', function() {
-      const plain = Room(Feature('rect-room'));
-      expect(plain.getStairsDescription()).to.equal(null);
     });
   });
 
