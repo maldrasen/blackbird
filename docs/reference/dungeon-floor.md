@@ -24,22 +24,34 @@ Every door starts closed and is opened by walking through it. An open door doesn
 
 `step(direction)` moves the party. A blocked step returns `{ moved:false }` and nothing else happens. Otherwise it returns `{ moved, position, openedDoor, enteredRoom, revealed, episode, trap, encounter }`. `enteredRoom` is set whenever the step crossed into a different room, and `revealed` is only true when the map needs to uncover that room.
 
+### Walking and Running
+Because user input drives the pace of movement, it belongs to `DungeonView`, not to the navigation system. `step()` moves the party instantly and knows nothing about time.
+
+A direction press is never ignored. If the previous step is still animating, the party marker jumps to the end of that step and the new step plays from there. The camera is a spring that can be retargeted mid-flight, so it just carries on smoothly. The only time a press does nothing is while a trap, episode, or encounter is waiting for the party to finish arriving on its tile.
+
+Running is meant for backtracking across explored ground. A run ends when:
+- The key is released, or the window loses focus.
+- The step is blocked.
+- The step opens a door.
+- The step reveals a room.
+- The step sets off a trap, an episode, or an encounter.
+- A modal opens or the dungeon view closes.
+
+These apply to the first step of a held key as well, so the party always stops on the far side of a newly opened door. The key has to be pressed again to carry on.
+
 ### Entering a Room
-Rooms are revealed and visited as a whole. A revealed room is drawn on the map. A visited room is one the party has actually stood in. Standing on any tile of a room does both, but a room can be revealed without being visited (the console's reveal command), so everything below keys off of visited.
+Rooms are revealed and visited as a whole. A revealed room is drawn on the map. A visited room is one the party has actually stood in. Standing on any tile of a room does both, but a room can be revealed without being visited (the console's reveal command, a mapping spell, finding a map), so everything below keys off of visited.
 
 Crossing into a room for the **first time**:
 - The party's scout makes a scouting check, which is stored on the room.
-- The room's trap is sprung, unless the scouting check spotted it.
 - The episode belonging to the room's contents is started, if it has one and its requirements are met.
 - Game time advances by 1.
 
 Crossing into a room that's already been visited only advances the game time by 0.2. A step that stays within a room takes no time.
 
-Room contents belong to the whole room. Their commands can be used from any tile in it.
-
 ### Encounters
 Every step that moves the party makes exactly one encounter roll, scaled by the encounter rate difficulty option.
-- Crossing into a room for the first time rolls the theme's `newRoomEncounterRate` as a percentage (20 by default). There's no roll at all if the room started an episode.
+- Crossing into a room for the first time rolls the theme's `newRoomEncounterRate` as a percentage. There's no roll at all if the room started an episode.
 - Every other step rolls the theme's `stepEncounterRate` (0.5 by default). It's a percentage too, but it's rolled out of a thousand so that it can be less than one percent.
 
 At 0.5 a walk from the arrival stairs to the nearest down stairs through explored rooms (about 44 steps on average) has roughly a one in five chance of an encounter.
