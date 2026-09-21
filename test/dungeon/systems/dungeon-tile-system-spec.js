@@ -55,12 +55,6 @@ describe("DungeonTileSystem", function() {
       expect(DungeonTileSystem.getTileInfo().description).to.include('The entrance chamber is filled with the sound');
     });
 
-    it('describes the stairs ahead of the contents of their tile', function() {
-      floor.getCurrentRoom().setTileContents(2, 2, { description:'A cracked flagstone.' });
-
-      expect(DungeonTileSystem.getTileInfo().description).to.include('stairs leading back up to the floor above');
-    });
-
     it("passes the room's commands along to the room", function() {
       stepOffStairs();
       expect(DungeonTileSystem.useCommand('inspect')).to.deep.equal({ episode:'dungeon-entrance' });

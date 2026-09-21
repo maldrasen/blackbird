@@ -2,6 +2,8 @@ global.DungeonConstants = {
   fontChance: 20,
   floorTypes: ['default','water'],
   wallColor: 'rgb(130 130 140)',
+  stairsColor: 'rgb(119 110 94)',
+  stairsGlyphs: { up:'▲', down:'▼' },
 
   treeColors:[
     'rgb(51,62,45)',

@@ -256,6 +256,33 @@ describe("Room", function() {
       expect(room.getStairsTile()).to.deep.equal({ x:2, y:2 });
     });
 
+    it('keeps the stairs as the contents of their tile', function() {
+      const room = legRoom();
+      room.setStairs('down',2,2);
+
+      const contents = room.getTileContents(2,2);
+      expect(contents.type).to.equal('stairs');
+      expect(contents.direction).to.equal('down');
+      expect(room.canEnterTile(2,2)).to.equal(true);
+    });
+
+    it('draws the stairs as a glyph on their tile', function() {
+      const room = legRoom();
+      room.setStairs('up',2,1);
+
+      expect(room.getGlyphs()).to.deep.equal([{ x:2.5, y:1.5, glyph:'▲', color:'rgb(119 110 94)', size:80 }]);
+    });
+
+    it('moves the stairs when they are set again', function() {
+      const room = legRoom();
+      room.setStairs('down',2,2);
+      room.setStairs('up',2,1);
+
+      expect(room.getStairs()).to.equal('up');
+      expect(room.getStairsTile()).to.deep.equal({ x:2, y:1 });
+      expect(room.getTileContents(2,2)).to.equal(null);
+    });
+
     it('locates the stairs on the floor', function() {
       const room = legRoom();
       room.setFloorPosition(10,20);

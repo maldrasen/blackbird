@@ -63,17 +63,9 @@
     .floor { display: none; }
     .walls { display: none; }
     .nested-wall { display: none; }
-    .stairs { display: none; }
     .floor-texture { display: none; }
     .floor-layer { display: none; }
     .glyph { display: none; }
-  }
-
-  .stairs {
-    font-size: 80px;
-    fill: variables.$fg-dungeon-stairs;
-    text-anchor: middle;
-    dominant-baseline: central;
   }
 }
 

@@ -10,7 +10,6 @@ global.Room = function(feature, type='normal') {
   let overlapping = false;
   let contents = null;
   let contentsOptions;
-  let stairs = null;
   let usedCommands = [];
   let scoutingRoll;
   let doorMode = 'blacklist';
@@ -136,21 +135,39 @@ global.Room = function(feature, type='normal') {
     return stairsAllowed && bounds.width > 1 && bounds.height > 1;
   }
 
-  // Stairs stand on a single tile of the room, given in room-local coordinates.
+  // Stairs are the contents of a single tile of the room, given in room-local coordinates. A room only ever has one
+  // set of stairs, so setting them again moves them.
   function setStairs(direction, x, y) {
     Validate.isIn('direction', direction, ['up','down']);
     if (footprint == null || getFloor(x, y) == null) {
       throw new Error(`(${x},${y}) is not a floor tile in this room.`);
     }
 
-    stairs = { direction, x, y };
+    const previous = findStairs();
+    if (previous) { tileContents.delete(`${previous.x},${previous.y}`); }
+
+    setTileContents(x, y, {
+      type: 'stairs',
+      direction: direction,
+      glyph: { glyph:DungeonConstants.stairsGlyphs[direction], color:DungeonConstants.stairsColor, size:80 },
+    });
+  }
+
+  function findStairs() {
+    return [...tileContents.values()].find(tile => tile.type === 'stairs') || null;
+  }
+
+  function hasStairs() {
+    return findStairs() != null;
   }
 
   function getStairsTile() {
+    const stairs = findStairs();
     return stairs ? { x:stairs.x, y:stairs.y } : null;
   }
 
   function getStairsFloorPosition() {
+    const stairs = findStairs();
     return stairs ? { x: floorPosition.x + stairs.x, y: floorPosition.y + stairs.y } : null;
   }
 
@@ -215,7 +232,7 @@ global.Room = function(feature, type='normal') {
   // ==============
 
   function canHaveContents() {
-    return contentsAllowed && feature.getType() !== 'corridor' && stairs == null && contents == null;
+    return contentsAllowed && feature.getType() !== 'corridor' && findStairs() == null && contents == null;
   }
 
   function setContents(code, options={}) {
@@ -242,6 +259,7 @@ global.Room = function(feature, type='normal') {
   // The stairs are described on their own, as they're only a single tile of the room. The room's description has
   // nothing to say about them.
   function getStairsDescription() {
+    const stairs = findStairs();
     if (stairs == null) { return null; }
 
     if (stairsDescription == null) {
@@ -277,10 +295,12 @@ global.Room = function(feature, type='normal') {
   }
 
   function pack() {
+    const stairs = findStairs();
+
     return {
       position,
       contents,
-      stairs: stairs ? { ...stairs } : null,
+      stairs: stairs ? { direction:stairs.direction, x:stairs.x, y:stairs.y } : null,
       usedCommands: [...usedCommands],
       footprint: footprint.map(row => [...row]),
     }
@@ -318,10 +338,10 @@ global.Room = function(feature, type='normal') {
 
     allowStairs: () => { stairsAllowed = true; },
     setStairs,
-    getStairs: () => { return stairs ? stairs.direction : null; },
+    getStairs: () => { return hasStairs() ? findStairs().direction : null; },
     getStairsTile,
     getStairsFloorPosition,
-    hasStairs: () => { return stairs != null; },
+    hasStairs,
     stairsAreAllowed,
 
     allowDoor,
