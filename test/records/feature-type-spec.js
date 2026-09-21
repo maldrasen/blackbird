@@ -157,13 +157,14 @@ describe("FeatureType", function() {
 
   describe("nested-room", function() {
     // size:7, padding:2 -> inner is 3x3 at (2,2), door center column and row are x:3, y:3.
-    it("builds solid square rooms with the inner room centered", function() {
+    it("builds a square ring around a solid inner room", function() {
       Random.stubFrom('N');
       Random.stubBetween(7,2);
       const [outer, inner] = buildFeature('nested-room',{ size:[5,9], padding:[1,3] }).getRooms();
 
       expect(outer.getBounds()).to.deep.equal({ xMin:0, yMin:0, xMax:7, yMax:7 });
-      expect(outer.getSize()).to.equal(49);
+      expect(outer.getSize()).to.equal(40);
+      expect(outer.getFloor(3,3)).to.be.null;
       expect(inner.getBounds()).to.deep.equal({ xMin:0, yMin:0, xMax:3, yMax:3 });
       expect(inner.getSize()).to.equal(9);
       expect(inner.getPosition()).to.deep.equal({ x:2, y:2 });

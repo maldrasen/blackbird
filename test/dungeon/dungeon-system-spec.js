@@ -11,8 +11,7 @@
 
   describe("setLevel()", function() {
 
-    // A nested inner room shares all of its tiles with its feature's outer room. Any other shared tile is a
-    // violation.
+    // No two footprints share a tile, not even those of a nested room and the room around it.
     it("ensures that rooms don't overlap", function() {
       DungeonSystem.createDungeon();
       DungeonSystem.setLevel(1);
@@ -33,11 +32,7 @@
             const other = (claimed[`${x},${y}`] == null) ? null : floor.getRooms()[claimed[`${x},${y}`]];
 
             if (other != null && other.getIndex() !== room.getIndex()) {
-              const sameFeature = other.getFeatureIndex() === room.getFeatureIndex();
-              const nested = other.isOverlapping() || room.isOverlapping();
-              if (sameFeature === false || nested === false) {
-                violations.push(`Rooms ${other.getIndex()} and ${room.getIndex()} overlap at (${x},${y})`);
-              }
+              violations.push(`Rooms ${other.getIndex()} and ${room.getIndex()} overlap at (${x},${y})`);
             }
 
             claimed[`${x},${y}`] = room.getIndex();

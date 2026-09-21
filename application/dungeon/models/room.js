@@ -6,7 +6,6 @@ global.Room = function(feature, type='normal') {
   let floorPosition;
   let stairsAllowed = false;
   let contentsAllowed = true;
-  let overlapping = false;
   let contents = null;
   let contentsOptions;
   let usedCommands = [];
@@ -54,6 +53,16 @@ global.Room = function(feature, type='normal') {
         }
       }
     }
+  }
+
+  // Take a tile back out of the footprint, along with anything that was put on it. Tiles that were never part of
+  // the room are ignored, so a room can be carved by another room that only partly overlaps it.
+  function removeTile(x, y) {
+    if (footprint[y] == null || footprint[y][x] == null) { return; }
+
+    footprint[y][x] = null;
+    tileContents.delete(`${x},${y}`);
+    size--;
   }
 
   // Change the floor type of tiles already painted into the footprint. Tiles hold the floor type's index rather
@@ -316,6 +325,7 @@ global.Room = function(feature, type='normal') {
     getPosition: () => { return {...position}; },
     setBounds,
     addBox,
+    removeTile,
     setFloor,
     setFloorBox,
     getFloor,
@@ -355,8 +365,6 @@ global.Room = function(feature, type='normal') {
     canHaveContents,
     setContents,
 
-    markOverlapping: () => { overlapping = true; },
-    isOverlapping: () => { return overlapping; },
     getDescription,
     updateDescription,
     getAvailableCommands,
