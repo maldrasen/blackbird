@@ -23,6 +23,7 @@ global.Room = function(feature, type='normal') {
   let chamfer = 0;
   let floorChamfer = 0;
   let glyphs = [];
+  let tileContents = new Map();
 
   // =======================
   //    Building & Layout
@@ -82,6 +83,34 @@ global.Room = function(feature, type='normal') {
   function getFloor(x, y) {
     if (footprint[y] == null || footprint[y][x] == null) { return null; }
     return DungeonConstants.floorTypes[footprint[y][x]];
+  }
+
+  // Put something on a single tile of the room, given in room-local coordinates. Options:
+  //  - glyph        { glyph, color, size } drawn at the center of the tile.
+  //  - canEnter     boolean or a boolean function. True if omitted.
+  //  - description
+  function setTileContents(x, y, options) {
+    if (getFloor(x, y) == null) { throw new Error(`(${x},${y}) is not a floor tile in this room.`); }
+    tileContents.set(`${x},${y}`, { x, y, ...options });
+  }
+
+  function getTileContents(x, y) {
+    const tile = tileContents.get(`${x},${y}`);
+    return tile ? { ...tile } : null;
+  }
+
+  function canEnterTile(x, y) {
+    const tile = tileContents.get(`${x},${y}`);
+    if (tile == null || tile.canEnter == null) { return true; }
+    return (typeof tile.canEnter === 'function') ? tile.canEnter() : tile.canEnter;
+  }
+
+  function getGlyphs() {
+    const tileGlyphs = [...tileContents.values()].filter(tile => tile.glyph).map(tile => {
+      return { x:tile.x + 0.5, y:tile.y + 0.5, ...tile.glyph };
+    });
+
+    return [...glyphs.map(glyph => ({ ...glyph })), ...tileGlyphs];
   }
 
   // Return the room bounds in an object { xMin, xMax, yMin, yMax }. The mins are always 0; the shape is what the
@@ -274,7 +303,10 @@ global.Room = function(feature, type='normal') {
     setFloorBox,
     getFloor,
     addGlyph: (options) => { glyphs.push(options); },
-    getGlyphs: () => { return glyphs.map(glyph => ({ ...glyph })); },
+    getGlyphs,
+    setTileContents,
+    getTileContents,
+    canEnterTile,
     getBounds,
     getFootprint: () => { return footprint },
     getSize: () => { return size; },

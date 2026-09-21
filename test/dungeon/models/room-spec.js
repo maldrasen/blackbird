@@ -158,6 +158,71 @@ describe("Room", function() {
     });
   });
 
+  describe("setTileContents()", function() {
+    function buildRoom() {
+      const room = Room();
+      room.setBounds(3,3);
+      room.addBox(0,0,3,3);
+      return room;
+    }
+
+    it('stores the contents of a tile', function() {
+      const room = buildRoom();
+      room.setTileContents(1, 2, { canEnter:true, description:'A mossy patch.' });
+
+      expect(room.getTileContents(1,2)).to.deep.equal({ x:1, y:2, canEnter:true, description:'A mossy patch.' });
+      expect(room.getTileContents(0,0)).to.equal(null);
+    });
+
+    it('throws for a tile outside the room', function() {
+      expect(() => buildRoom().setTileContents(3, 0, { canEnter:false })).to.throw('not a floor tile');
+    });
+
+    it('draws the glyph at the center of the tile', function() {
+      const room = buildRoom();
+      room.addGlyph({ x:1, y:1, glyph:'◉', color:'white' });
+      room.setTileContents(2, 0, { canEnter:false, glyph:{ glyph:'✽', color:'green', size:150 }});
+
+      expect(room.getGlyphs()).to.deep.equal([
+        { x:1, y:1, glyph:'◉', color:'white' },
+        { x:2.5, y:0.5, glyph:'✽', color:'green', size:150 },
+      ]);
+    });
+  });
+
+  describe("canEnterTile()", function() {
+    it('is true for a tile with no contents or no canEnter', function() {
+      const room = Room();
+      room.setBounds(2,1);
+      room.addBox(0,0,2,1);
+      room.setTileContents(1, 0, { description:'Scattered bones.' });
+
+      expect(room.canEnterTile(0,0)).to.equal(true);
+      expect(room.canEnterTile(1,0)).to.equal(true);
+    });
+
+    it('uses a boolean canEnter', function() {
+      const room = Room();
+      room.setBounds(2,1);
+      room.addBox(0,0,2,1);
+      room.setTileContents(1, 0, { canEnter:false });
+
+      expect(room.canEnterTile(1,0)).to.equal(false);
+    });
+
+    it('calls a canEnter function each time', function() {
+      let open = false;
+      const room = Room();
+      room.setBounds(2,1);
+      room.addBox(0,0,2,1);
+      room.setTileContents(1, 0, { canEnter:() => open });
+
+      expect(room.canEnterTile(1,0)).to.equal(false);
+      open = true;
+      expect(room.canEnterTile(1,0)).to.equal(true);
+    });
+  });
+
   describe("getFloor()", function() {
     it('returns null for tiles not in the room', function() {
       const room = Room();
