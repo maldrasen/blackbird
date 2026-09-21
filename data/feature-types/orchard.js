@@ -40,21 +40,24 @@ function findOrchardContents() {
 }
 
 function addTreeRows(room, width, height) {
-  for (let yy=1; yy < height-1; yy+=2) {
-    for (let xx=1; xx < width-1; xx++) {
-      const x = 0.5 + xx;
-      const y = 0.5 + yy;
-      room.addGlyph({ x:x, y:y, glyph:'✽', color:Random.from(DungeonConstants.treeColors), size:Random.between(120,180) });
+  for (let y=1; y < height-1; y+=2) {
+    for (let x=1; x < width-1; x++) {
+      plantTree(room, x, y);
     }
   }
 }
 
 function addTreeCols(room, width, height) {
-  for (let xx=1; xx < width-1; xx+=2) {
-    for (let yy=1; yy < height-1; yy++) {
-      const x = 0.5 + xx;
-      const y = 0.5 + yy;
-      room.addGlyph({ x:x, y:y, glyph:'✽', color:Random.from(DungeonConstants.treeColors), size:Random.between(120,180) });
+  for (let x=1; x < width-1; x+=2) {
+    for (let y=1; y < height-1; y++) {
+      plantTree(room, x, y);
     }
   }
+}
+
+function plantTree(room, x, y) {
+  room.setTileContents(x, y, {
+    canEnter: false,
+    glyph: { glyph:'✽', color:Random.from(DungeonConstants.treeColors), size:Random.between(120,180) },
+  });
 }

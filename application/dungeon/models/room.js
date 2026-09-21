@@ -22,7 +22,6 @@ global.Room = function(feature, type='normal') {
   let boundsBox;
   let chamfer = 0;
   let floorChamfer = 0;
-  let glyphs = [];
   let tileContents = new Map();
 
   // =======================
@@ -106,11 +105,9 @@ global.Room = function(feature, type='normal') {
   }
 
   function getGlyphs() {
-    const tileGlyphs = [...tileContents.values()].filter(tile => tile.glyph).map(tile => {
+    return [...tileContents.values()].filter(tile => tile.glyph).map(tile => {
       return { x:tile.x + 0.5, y:tile.y + 0.5, ...tile.glyph };
     });
-
-    return [...glyphs.map(glyph => ({ ...glyph })), ...tileGlyphs];
   }
 
   // Return the room bounds in an object { xMin, xMax, yMin, yMax }. The mins are always 0; the shape is what the
@@ -302,7 +299,6 @@ global.Room = function(feature, type='normal') {
     setFloor,
     setFloorBox,
     getFloor,
-    addGlyph: (options) => { glyphs.push(options); },
     getGlyphs,
     setTileContents,
     getTileContents,

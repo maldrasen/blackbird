@@ -20,8 +20,8 @@ FeatureType.register('dungeon-entrance',{
     room.setContents('dungeon-entrance');
 
     for (let i = 1; i <= 6; i++) {
-      room.addGlyph({ x:4+i, y:1, glyph:'◉', color:DungeonConstants.wallColor });
-      room.addGlyph({ x:4+i, y:4, glyph:'◉', color:DungeonConstants.wallColor });
+      room.setTileContents(4+i, 1, { canEnter:false, glyph:{ glyph:'◉', color:DungeonConstants.wallColor }});
+      room.setTileContents(4+i, 3, { canEnter:false, glyph:{ glyph:'◉', color:DungeonConstants.wallColor }});
     }
 
     feature.addRoom(room);

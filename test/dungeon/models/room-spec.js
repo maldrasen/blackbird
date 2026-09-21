@@ -123,41 +123,6 @@ describe("Room", function() {
     });
   });
 
-  describe("addGlyph()", function() {
-    it('collects glyphs to render onto the room', function() {
-      const room = Room();
-      room.setBounds(3,3);
-      room.addBox(0,0,3,3);
-      room.addGlyph({ x:1, y:1.5, glyph:'X', color:'foo' });
-
-      expect(room.getGlyphs()).to.deep.equal([
-        { x:1, y:1.5, glyph:'X', color:'foo' },
-      ]);
-    });
-
-    it('keeps the optional size', function() {
-      const room = Room();
-      room.setBounds(3,3);
-      room.addBox(0,0,3,3);
-      room.addGlyph({ x:1, y:1, glyph:'✽', color:'green', size:52 });
-
-      expect(room.getGlyphs()).to.deep.equal([
-        { x:1, y:1, glyph:'✽', color:'green', size:52 },
-      ]);
-    });
-
-    it('returns copies of the glyphs, not the live objects', function() {
-      const room = Room();
-      room.setBounds(3,3);
-      room.addBox(0,0,3,3);
-      room.addGlyph({ x:1, y:1, glyph:'◉', color:'white' });
-
-      room.getGlyphs()[0].color = 'red';
-
-      expect(room.getGlyphs()[0].color).to.equal('white');
-    });
-  });
-
   describe("setTileContents()", function() {
     function buildRoom() {
       const room = Room();
@@ -180,11 +145,11 @@ describe("Room", function() {
 
     it('draws the glyph at the center of the tile', function() {
       const room = buildRoom();
-      room.addGlyph({ x:1, y:1, glyph:'◉', color:'white' });
+      room.setTileContents(1, 1, { glyph:{ glyph:'◉', color:'white' }});
       room.setTileContents(2, 0, { canEnter:false, glyph:{ glyph:'✽', color:'green', size:150 }});
 
       expect(room.getGlyphs()).to.deep.equal([
-        { x:1, y:1, glyph:'◉', color:'white' },
+        { x:1.5, y:1.5, glyph:'◉', color:'white' },
         { x:2.5, y:0.5, glyph:'✽', color:'green', size:150 },
       ]);
     });
