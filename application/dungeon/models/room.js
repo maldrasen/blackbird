@@ -56,6 +56,16 @@ global.Room = function(feature, type='normal') {
     }
   }
 
+  // Take a tile back out of the footprint, along with anything that was put on it. Tiles that were never part of
+  // the room are ignored, so a room can be carved by another room that only partly overlaps it.
+  function removeTile(x, y) {
+    if (footprint[y] == null || footprint[y][x] == null) { return; }
+
+    footprint[y][x] = null;
+    tileContents.delete(`${x},${y}`);
+    size--;
+  }
+
   // Change the floor type of tiles already painted into the footprint. Tiles hold the floor type's index rather
   // than its name to keep packed rooms small.
   function setFloor(x, y, type) {
@@ -316,6 +326,7 @@ global.Room = function(feature, type='normal') {
     getPosition: () => { return {...position}; },
     setBounds,
     addBox,
+    removeTile,
     setFloor,
     setFloorBox,
     getFloor,

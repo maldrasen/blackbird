@@ -9,6 +9,23 @@ describe("Feature", function() {
     return room;
   }
 
+  describe("addRoom()", function() {
+    // A 3x3 room at (2,0) covers the east column of the 3x3 room at (0,0).
+    it('carves the tiles of the new room out of the rooms it overlaps', function() {
+      const feature = Feature('spec-room');
+      const westRoom = buildRoom(feature,0);
+      const eastRoom = buildRoom(feature,2);
+
+      expect(westRoom.getFootprint()).to.deep.equal([
+        [0,0,null],
+        [0,0,null],
+        [0,0,null],
+      ]);
+      expect(westRoom.getSize()).to.equal(6);
+      expect(eastRoom.getSize()).to.equal(9);
+    });
+  });
+
   describe("getEdgeTiles()", function() {
     it('returns every edge tile when doors are allowed everywhere', function() {
       const feature = Feature('spec-room');

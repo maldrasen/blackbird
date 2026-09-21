@@ -9,10 +9,27 @@ global.Feature = function(type) {
   let bounds;
   let location;
 
+  // A tile only ever belongs to one room. A room added on top of the rooms already in the feature (a nested room)
+  // takes its tiles out of their footprints, so the room has to be fully built and positioned before it's added.
   function addRoom(room) {
+    rooms.forEach(other => carveRoom(other, room));
+
     bounds = null;
     location = null;
+    footprint = null;
     rooms.push(room);
+  }
+
+  function carveRoom(carved, room) {
+    const roomPosition = room.getPosition();
+    const carvedPosition = carved.getPosition();
+    const offset = { x: roomPosition.x - carvedPosition.x, y: roomPosition.y - carvedPosition.y };
+
+    room.getFootprint().forEach((row, y) => {
+      row.forEach((cell, x) => {
+        if (cell != null) { carved.removeTile(offset.x + x, offset.y + y); }
+      });
+    });
   }
 
   // Set the position of the feature within the floor.

@@ -60,8 +60,9 @@ describe("DungeonFloor", function() {
       expect(floor.canEnterTile(-1,4)).to.equal(false);
     });
 
-    // The inner room owns (5,5), which is tile (1,1) of the outer room and tile (0,0) of the inner room.
-    it('asks the room that owns the tile when rooms are nested', function() {
+    // The inner room owns (5,5), which is its tile (0,0). It was tile (1,1) of the outer room until the inner room
+    // carved it out.
+    it('asks the nested room about the tiles it took from the outer room', function() {
       const floor = DungeonFloor(1,'dungeon');
       const feature = Feature('spec-room');
       const outer = Room(feature);
@@ -76,7 +77,7 @@ describe("DungeonFloor", function() {
       feature.setPosition(4,4);
       floor.addFeature(feature);
 
-      outer.setTileContents(1, 1, { canEnter:false });
+      expect(() => outer.setTileContents(1, 1, { canEnter:false })).to.throw('not a floor tile');
       expect(floor.canEnterTile(5,5)).to.equal(true);
 
       inner.setTileContents(0, 0, { canEnter:false });

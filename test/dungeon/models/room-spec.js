@@ -70,6 +70,31 @@ describe("Room", function() {
     });
   });
 
+  describe("removeTile()", function() {
+    it('takes a tile and its contents out of the footprint', function() {
+      const room = Room();
+      room.setBounds(3,1);
+      room.addBox(0,0,3,1);
+      room.setTileContents(1,0,{ canEnter:false });
+      room.removeTile(1,0);
+
+      expect(room.getFootprint()).to.deep.equal([[0,null,0]]);
+      expect(room.getTileContents(1,0)).to.be.null;
+      expect(room.getSize()).to.equal(2);
+    });
+
+    it('ignores tiles that are not part of the room', function() {
+      const room = Room();
+      room.setBounds(2,1);
+      room.addBox(0,0,1,1);
+      room.removeTile(1,0);
+      room.removeTile(-1,0);
+      room.removeTile(0,4);
+
+      expect(room.getSize()).to.equal(1);
+    });
+  });
+
   describe("setFloor()", function() {
     it('sets the floor type index of a tile in the footprint', function() {
       const room = Room();
