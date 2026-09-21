@@ -1,13 +1,20 @@
 global.DungeonView = (function() {
 
-  const stepTime = 200;
+  const walkStepTime = 200;
+  const runStepTime = 100;
 
   let lastStepAt = 0;
   let resolving = false;
+  let heldDirection = null;
+  let running = false;
+  let runTimer = null;
 
+  // The repeats are asked for even though they're ignored, so that the dispatcher still keeps them from the browser.
+  // Repeating arrow keys would scroll the page otherwise.
   function init() {
     DungeonViewport.init();
-    KeyBindingDispatcher.register('dungeon', { isActive:isShowing, perform:stepInDirection, allowRepeat:true });
+    KeyBindingDispatcher.register('dungeon', {
+      isActive:isShowing, perform:pressDirection, release:releaseDirection, allowRepeat:true });
   }
 
   function show() {
@@ -17,6 +24,7 @@ global.DungeonView = (function() {
   }
 
   function close() {
+    stopRun();
     DungeonCamera.stop();
     DungeonViewport.stopDrag();
   }
@@ -41,17 +49,61 @@ global.DungeonView = (function() {
     return { x:position.x + 0.5, y:position.y + 0.5 };
   }
 
-  // A held key repeats far faster than the party can walk, so the repeats are held to a steady beat. A fresh press is
-  // never ignored though. It cuts short whatever is left of the step being animated and the new step plays instead.
-  // Nothing gets through while a step's trap, episode, or encounter is waiting to start.
-  function stepInDirection(direction, { repeat }) {
-    if (resolving) { return; }
-    if (repeat && isStepping()) { return; }
-    takeStep(direction);
+  // A press is never ignored. It cuts short whatever is left of the step being animated and the new step plays
+  // instead. The operating system's key repeats are ignored, because the pause before they start is too long. A key
+  // that's still down once the walking step has finished breaks into a run instead, and a press in a new direction
+  // during a run turns the run that way. Nothing gets through while a step's trap, episode, or encounter is waiting
+  // to start.
+  function pressDirection(direction, { repeat }) {
+    if (repeat || resolving) { return; }
+
+    clearTimeout(runTimer);
+    heldDirection = direction;
+    continueRun(takeStep(direction));
+  }
+
+  // Only the direction pressed last is tracked, so letting go of an earlier key while changing direction does nothing.
+  function releaseDirection(direction) {
+    if (direction === heldDirection) { stopRun(); }
+  }
+
+  function runStep() {
+    if (isShowing() === false || resolving || WindowManager.isModalOpen()) { return stopRun(); }
+
+    running = true;
+    continueRun(takeStep(heldDirection));
+  }
+
+  // Running is for getting back across explored ground quickly. The key has to be pressed again to carry on past
+  // anything that stops a run.
+  function continueRun(result) {
+    if (endsRun(result)) { return stopRun(); }
+    runTimer = setTimeout(runStep, currentStepTime());
+  }
+
+  // A closed door is the only way into a room that hasn't been visited, so opening one covers entering an unexplored
+  // room as well as coming into an explored room by a new way. The revealed check is only there for a room that was
+  // opened up some other way.
+  function endsRun(result) {
+    return result.moved === false
+        || result.openedDoor != null
+        || result.revealed === true
+        || resolving;
+  }
+
+  function stopRun() {
+    clearTimeout(runTimer);
+    runTimer = null;
+    running = false;
+    heldDirection = null;
+  }
+
+  function currentStepTime() {
+    return running ? runStepTime : walkStepTime;
   }
 
   function isStepping() {
-    return performance.now() - lastStepAt < stepTime;
+    return performance.now() - lastStepAt < currentStepTime();
   }
 
   // Take a single step and bring the view up to date with it. The controls are only rebuilt when there's something
@@ -65,7 +117,7 @@ global.DungeonView = (function() {
     if (isStepping()) { DungeonPartyMarker.finishMove(); }
 
     lastStepAt = performance.now();
-    DungeonPartyMarker.moveTo(result.position);
+    DungeonPartyMarker.moveTo(result.position, currentStepTime());
     DungeonViewport.panTo(tileCenter(result.position));
 
     if (result.openedDoor) {
@@ -91,7 +143,7 @@ global.DungeonView = (function() {
     setTimeout(() => {
       resolving = false;
       if (isShowing()) { startStepEvent(result); }
-    }, stepTime);
+    }, currentStepTime());
   }
 
   function startStepEvent(result) {
@@ -116,7 +168,6 @@ global.DungeonView = (function() {
     close,
     drawDungeon,
     floorChanged,
-    getStepTime: () => { return stepTime; },
   };
 
 })();
