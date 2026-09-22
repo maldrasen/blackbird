@@ -185,6 +185,51 @@ describe("DungeonFloor", function() {
     });
   });
 
+  describe("seen tiles", function() {
+    let floor;
+
+    beforeEach(function() {
+      floor = DungeonFloor(1,'dungeon');
+      addSquareRoom(floor,3,4,4);
+      addSquareRoom(floor,2,8,4);
+    });
+
+    it('starts with nothing seen', function() {
+      expect(floor.isTileSeen(4,4)).to.equal(false);
+      expect(floor.getSeenTiles()).to.deep.equal([]);
+    });
+
+    it('remembers a tile once it has been seen', function() {
+      floor.markTileSeen(5,6);
+      floor.markTileSeen(5,6);
+      floor.markTileSeen(8,4);
+
+      expect(floor.isTileSeen(5,6)).to.equal(true);
+      expect(floor.isTileSeen(4,4)).to.equal(false);
+      expect(floor.getSeenTiles()).to.deep.equal([{ x:5, y:6 }, { x:8, y:4 }]);
+    });
+
+    it('hands out copies of the seen tiles', function() {
+      floor.markTileSeen(5,6);
+      floor.getSeenTiles()[0].x = 99;
+
+      expect(floor.getSeenTiles()).to.deep.equal([{ x:5, y:6 }]);
+    });
+
+    it('throws for a tile with no floor', function() {
+      expect(() => floor.markTileSeen(7,4)).to.throw('There is no floor tile at (7,4) to see.');
+    });
+
+    it('sees every tile of a revealed room', function() {
+      floor.revealRoom(1);
+
+      expect(floor.isRevealed(1)).to.equal(true);
+      expect(floor.isVisited(1)).to.equal(false);
+      expect(floor.getSeenTiles()).to.deep.equal([{ x:8, y:4 }, { x:9, y:4 }, { x:8, y:5 }, { x:9, y:5 }]);
+      expect(floor.isTileSeen(4,4)).to.equal(false);
+    });
+  });
+
   describe("getDoorAt()", function() {
     let floor;
 

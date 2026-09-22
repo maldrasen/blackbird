@@ -96,6 +96,7 @@ global.Room = function(feature, type='normal') {
   //                 tiles) if it has one.
   //  - canEnter     boolean or a boolean function. True if omitted.
   //  - description  text or a function returning it, shown in place of the room's description.
+  //  - shadow       true when the contents are solid enough to block the party's light. False if omitted.
   function setTileContents(x, y, options) {
     if (getFloor(x, y) == null) { throw new Error(`(${x},${y}) is not a floor tile in this room.`); }
     tileContents.set(`${x},${y}`, { x, y, ...options });
@@ -121,7 +122,7 @@ global.Room = function(feature, type='normal') {
   function getGlyphs() {
     return [...tileContents.values()].filter(tile => tile.glyph).map(tile => {
       const { offset={ x:0, y:0 }, ...glyph } = tile.glyph;
-      return { x:tile.x + 0.5 + offset.x, y:tile.y + 0.5 + offset.y, ...glyph };
+      return { x:tile.x + 0.5 + offset.x, y:tile.y + 0.5 + offset.y, ...glyph, shadow:tile.shadow === true };
     });
   }
 

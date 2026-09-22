@@ -13,6 +13,10 @@ global.DungeonFloor = function(level, theme=null) {
   const revealed = new Set();
   const visited = new Set();
 
+  // A seen tile has been inside the party's light at some point. The dungeon view decides that as the party moves,
+  // and draws what it remembers of the walls around seen tiles. Revealing a room marks all of its tiles as seen.
+  const seenTiles = new Map();
+
   const doorsByEdge = new Map();
 
   let partyPosition = null;
@@ -42,6 +46,24 @@ global.DungeonFloor = function(level, theme=null) {
     return partyPosition ? { ...partyPosition } : null;
   }
 
+  function revealRoom(index) {
+    revealed.add(index);
+    eachRoomTile(rooms[index], markTileSeen);
+  }
+
+  function markTileSeen(x, y) {
+    if (getRoomIndexAt(x, y) == null) { throw new Error(`There is no floor tile at (${x},${y}) to see.`); }
+    seenTiles.set(`${x},${y}`, { x, y });
+  }
+
+  function isTileSeen(x, y) {
+    return seenTiles.has(`${x},${y}`);
+  }
+
+  function getSeenTiles() {
+    return [...seenTiles.values()].map(tile => ({ ...tile }));
+  }
+
   function addFeature(feature) {
     feature.setIndex(features.length);
     features.push(feature);
@@ -59,12 +81,17 @@ global.DungeonFloor = function(level, theme=null) {
   // The grid cells hold the room's floor-global index, as rooms are the unit of navigation. Footprints never share a
   // tile, so the order the rooms are painted in doesn't matter.
   function paintRoom(room) {
-    const position = room.getFloorPosition();
     const index = room.getIndex();
+    eachRoomTile(room, (x, y) => { floorGrid[y][x] = index; });
+  }
+
+  // Call back with the floor coordinates of every tile in a room's footprint.
+  function eachRoomTile(room, callback) {
+    const position = room.getFloorPosition();
 
     room.getFootprint().forEach((row, y) => {
       row.forEach((cell, x) => {
-        if (cell != null) { floorGrid[position.y + y][position.x + x] = index; }
+        if (cell != null) { callback(position.x + x, position.y + y); }
       });
     });
   }
@@ -177,9 +204,12 @@ global.DungeonFloor = function(level, theme=null) {
     getFeatureForRoom,
     getPlacedContents,
     addFeature,
-    revealRoom: index => { revealed.add(index); },
+    revealRoom,
     isRevealed: index => { return revealed.has(index); },
     isVisited: index => { return visited.has(index); },
+    markTileSeen,
+    isTileSeen,
+    getSeenTiles,
 
     setDoors,
     getDoors: () => { return doors; },
