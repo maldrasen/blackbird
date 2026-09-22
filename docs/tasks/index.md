@@ -4,7 +4,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 ## Priority 1
 
-- [224] Dungeon Rendering Prototype `8pt` — [224-dungeon-rendering-prototype.md](224-dungeon-rendering-prototype.md)
+- [224] Dungeon Vision Mask `8pt` — [224-dungeon-vision-mask.md](224-dungeon-vision-mask.md)
 
 ## Priority 2
 
