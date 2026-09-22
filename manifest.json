@@ -603,6 +603,7 @@
     "views/dungeon/dungeon-view.js",
     "views/dungeon/dungeon-viewport.js",
     "views/dungeon/dungeon-vision-occluders.js",
+    "views/dungeon/dungeon-vision-view.js",
     "views/dungeon/floor-textures/dungeon-floor-grid.js",
     "views/dungeon/room-content-overlay.js",
     "views/effects/flash-square.js",

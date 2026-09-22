@@ -74,6 +74,7 @@ global.DungeonPartyMarker = (function() {
 
     drawnPosition = getDrawnPosition(timestamp);
     place(element, drawnPosition);
+    DungeonVisionView.render(drawnPosition);
 
     if (timestamp - move.startedAt >= move.duration) { return stop(); }
     frameId = requestAnimationFrame(step);

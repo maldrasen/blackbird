@@ -109,3 +109,17 @@
   &.to-unrevealed .cap.to { display: none; }
   &.from-unrevealed.to-unrevealed { display: none; }
 }
+
+// The party's light, drawn as darkness laid over the fully lit floor: a shadow wherever the light can't reach from
+// the marker, and a falloff that fades the floor out toward the edge of the light. The gradient's stops take their
+// color from here so that the shadow and the falloff are the same dark.
+#dungeonVision {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 105;
+  pointer-events: none;
+
+  .shadow { fill: variables.$bg-dungeon-shadow; }
+  stop { stop-color: variables.$bg-dungeon-shadow; }
+}

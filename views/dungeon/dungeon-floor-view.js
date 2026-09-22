@@ -28,7 +28,9 @@ global.DungeonFloorView = (function() {
       floorElement.appendChild(DungeonDoorView.build(floor, door));
     });
 
+    floorElement.appendChild(DungeonVisionView.build(floor));
     floorElement.appendChild(DungeonPartyMarker.build(floor.getPartyPosition()));
+    DungeonVisionView.render(floor.getPartyPosition());
   }
 
   // A door is visible from the moment either of its rooms is revealed, and each half of its wall caps tracks the
@@ -49,9 +51,11 @@ global.DungeonFloorView = (function() {
     }
   }
 
-  // A wall can only hold one door, so a door is found by its tile and the wall of the tile it's on.
+  // A wall can only hold one door, so a door is found by its tile and the wall of the tile it's on. The light is
+  // recast straight away, as an open door no longer blocks it.
   function openDoor(door) {
     X.addClass(`#dungeonFloor .door.${door.direction}[data-x='${door.position.x}'][data-y='${door.position.y}']`,'open');
+    DungeonVisionView.refresh();
   }
 
   return {
