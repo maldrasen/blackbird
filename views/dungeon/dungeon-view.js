@@ -25,6 +25,7 @@ global.DungeonView = (function() {
 
   function close() {
     stopRun();
+    DungeonPartyMarker.stop();
     DungeonCamera.stop();
     DungeonViewport.stopDrag();
   }
