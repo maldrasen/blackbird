@@ -140,6 +140,7 @@ describe("Character", function() {
       inventory.addItem(asslessChaps)
       equipment.equipItem(asslessChaps,EquipmentSlot.legs);
       expect(character.isNaked()).to.be.false;
+      expect(character.isCrotchExposed()).to.be.true;
 
       equipment.equipItem(null,EquipmentSlot.legs);
       expect(character.isNaked()).to.be.true;

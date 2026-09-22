@@ -39,8 +39,9 @@ describe('Item', function() {
       expect(build('buckler',['steel']).getCategory()).to.equal(InventoryCategory.armor);
     });
 
-    it('is not lewd unless the record says so', function() {
-      expect(build('chaps',['leather']).isLewd()).to.be.false;
+    it('is lewd when the record says so', function() {
+      expect(build('chaps',['leather']).isLewd()).to.be.true;
+      expect(build('leggings',['leather']).isLewd()).to.be.false;
     });
   });
 
