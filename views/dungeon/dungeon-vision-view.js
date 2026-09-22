@@ -1,19 +1,22 @@
 // The party's light, drawn as darkness laid over the fully lit floor. A shadow covers everything the light can't
 // reach from the marker, and a radial falloff fades the floor out toward the edge of the light. The outlines of the
-// walls, doors, and glyphs are drawn back over the shadow as trim, clipped to the light, so that the shadow's edge
-// never cuts through a stroke. Everything is redrawn on every frame the marker moves, from the visibility polygon
-// cast against the floor's occluders.
+// walls and doors are drawn back over the shadow as trim, clipped to the light, so that the shadow's edge never
+// cuts through a stroke, and every glyph whose body is in the light is drawn whole in front of its own shadow.
+// Everything is redrawn on every frame the marker moves, from the visibility polygon cast against the floor's
+// occluders.
 global.DungeonVisionView = (function() {
 
   const lightRadius = 4.5;
   const falloffStart = 0.55;
   const overshoot = 3;
+  const glyphMargin = 2;
 
   let svg = null;
   let shadow = null;
   let clip = null;
   let falloff = null;
   let floorRect = '';
+  let glyphs = [];
 
   function build(floor) {
     const gridSize = DungeonFloorView.getGridSize();
@@ -36,6 +39,7 @@ global.DungeonVisionView = (function() {
       `</defs>`,
       `<path class='shadow' fill-rule='evenodd'/>`,
       `<g class='trim outlines' clip-path='url(#visionClip)'>${outlines(floor)}</g>`,
+      `<g class='trim glyphs'>${buildGlyphs(floor)}</g>`,
       `<rect class='falloff' width='${width}' height='${height}' fill='url(#visionFalloff)'/>`,
       `</svg>`,
     ].join(''));
@@ -45,19 +49,19 @@ global.DungeonVisionView = (function() {
     shadow = svg.querySelector('.shadow');
     clip = svg.querySelector('#visionClip path');
     falloff = svg.querySelector('#visionFalloff');
+    pairGlyphElements(svg.querySelectorAll('.glyphs .glyph'));
 
     return svg;
   }
 
   // The outlines are the occluders themselves, one path per room so that the current room can be picked out, with
-  // each door's slab and each room's glyphs drawn just as the floor draws them. They go in as plain elements rather
-  // than being shared through a <use>, because the stylesheet's descendant selectors don't reach into a use
-  // element's shadow tree and the trim lost its styling that way.
+  // each door's slab drawn just as the floor draws it. They go in as plain elements rather than being shared
+  // through a <use>, because the stylesheet's descendant selectors don't reach into a use element's shadow tree and
+  // the trim lost its styling that way.
   function outlines(floor) {
     return [
       ...DungeonVisionOccluders.getRooms().map(room => wallsMarkup(room, floor)),
       ...floor.getDoors().map(door => doorMarkup(door)),
-      ...floor.getRooms().map(room => glyphsMarkup(room)),
     ].join('');
   }
 
@@ -75,13 +79,34 @@ global.DungeonVisionView = (function() {
       + `</g>`;
   }
 
-  function glyphsMarkup(room) {
-    const glyphs = DungeonRoomView.roomGlyphs(room);
-    if (glyphs.length === 0) { return ''; }
-
+  // Every glyph on the floor, drawn just as its room draws it but switched on and off per frame rather than
+  // clipped. Each is remembered with its body (the center and radius of its occluder, zero for a glyph that casts
+  // no shadow) in the order the markup lists them, which is the rooms in order and each room's glyphs in order.
+  function buildGlyphs(floor) {
     const gridSize = DungeonFloorView.getGridSize();
-    const position = room.getFloorPosition();
-    return `<g transform='translate(${position.x * gridSize} ${position.y * gridSize})'>${glyphs.join('')}</g>`;
+    glyphs = [];
+
+    return floor.getRooms().map(room => {
+      const markup = DungeonRoomView.roomGlyphs(room);
+      if (markup.length === 0) { return ''; }
+
+      const position = room.getFloorPosition();
+      room.getGlyphs().forEach(glyph => glyphs.push({
+        center: { x: (position.x + glyph.x) * gridSize, y: (position.y + glyph.y) * gridSize },
+        radius: DungeonVisionOccluders.glyphRadius(glyph),
+        visible: false,
+        element: null,
+      }));
+
+      return `<g transform='translate(${position.x * gridSize} ${position.y * gridSize})'>${markup.join('')}</g>`;
+    }).join('');
+  }
+
+  function pairGlyphElements(elements) {
+    if (elements.length !== glyphs.length) {
+      throw new Error(`The vision has ${glyphs.length} glyph bodies but ${elements.length} glyph elements.`);
+    }
+    elements.forEach((element, i) => { glyphs[i].element = element; });
   }
 
   // Cast the light from a position in tile units, usually the marker's drawn position part way through a step. The
@@ -93,13 +118,46 @@ global.DungeonVisionView = (function() {
     const radius = lightRadius * gridSize;
     const origin = { x: (position.x + 0.5) * gridSize, y: (position.y + 0.5) * gridSize };
     const box = { xMin:origin.x - radius, xMax:origin.x + radius, yMin:origin.y - radius, yMax:origin.y + radius };
-    const polygon = VisibilityHelper.computePolygon(origin, DungeonVisionOccluders.nearby(box), box, overshoot);
+    const segments = DungeonVisionOccluders.nearby(box);
+    const polygon = VisibilityHelper.computePolygon(origin, segments, box, overshoot);
     const outline = pathFor(polygon);
 
     shadow.setAttribute('d', `${floorRect} ${outline}`);
     clip.setAttribute('d', outline);
     falloff.setAttribute('cx', origin.x);
     falloff.setAttribute('cy', origin.y);
+    updateGlyphs(origin, radius, segments);
+  }
+
+  // A glyph is lit while the point just in front of its body, on the line from the light, is in the light. Only
+  // the glyphs whose state changes touch the page.
+  function updateGlyphs(origin, radius, segments) {
+    glyphs.forEach(glyph => {
+      const visible = isLit(origin, radius, segments, nearPoint(origin, glyph));
+      if (visible === glyph.visible) { return; }
+
+      glyph.visible = visible;
+      glyph.element.classList.toggle('visible', visible);
+    });
+  }
+
+  function nearPoint(origin, glyph) {
+    if (glyph.radius === 0) { return glyph.center; }
+
+    const distance = Math.hypot(glyph.center.x - origin.x, glyph.center.y - origin.y);
+    const reach = glyph.radius + glyphMargin;
+    if (distance <= reach) { return origin; }
+
+    const t = (distance - reach) / distance;
+    return {
+      x: origin.x + ((glyph.center.x - origin.x) * t),
+      y: origin.y + ((glyph.center.y - origin.y) * t),
+    };
+  }
+
+  function isLit(origin, radius, segments, target) {
+    return Math.hypot(target.x - origin.x, target.y - origin.y) <= radius
+        && VisibilityHelper.isVisible(origin, target, segments);
   }
 
   function refresh() {

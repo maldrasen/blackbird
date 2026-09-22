@@ -85,14 +85,20 @@ global.DungeonVisionOccluders = (function() {
 
     return room.getGlyphs().filter(glyph => glyph.shadow).flatMap(glyph => {
       const center = { x: (position.x + glyph.x) * gridSize, y: (position.y + glyph.y) * gridSize };
-      const radius = (glyph.size || DungeonRoomView.getDefaultGlyphSize()) * glyphShadowFactor;
-      return VisibilityHelper.regularPolygon(center, radius, glyphShadowSides);
+      return VisibilityHelper.regularPolygon(center, glyphRadius(glyph), glyphShadowSides);
     });
+  }
+
+  // The radius of the body standing in for a glyph, or zero for a glyph that casts no shadow.
+  function glyphRadius(glyph) {
+    if (glyph.shadow !== true) { return 0; }
+    return (glyph.size || DungeonRoomView.getDefaultGlyphSize()) * glyphShadowFactor;
   }
 
   return {
     build,
     nearby,
+    glyphRadius,
     getRooms: () => { return rooms; },
   };
 

@@ -128,6 +128,13 @@
     .walls.current { stroke: variables.$fg-dungeon-wall-current; }
     .door .slab { fill: variables.$fg-dungeon-door; }
     .door.open .slab { fill-opacity: 0.25; }
-    .glyph { @include glyph-text; }
+  }
+
+  // Glyphs are drawn whole and switched on while their body is in the light, so that a lit pillar or tree stands
+  // in front of its own shadow instead of being cut in half by it.
+  .glyphs .glyph {
+    @include glyph-text;
+    visibility: hidden;
+    &.visible { visibility: visible; }
   }
 }
