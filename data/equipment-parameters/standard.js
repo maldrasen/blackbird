@@ -90,6 +90,8 @@ EquipmentParameters.register('standard',{
   },
 
   armor:{
+    'low-corset':        200,
+    'high-corset':       300,
     'doublet':           600,
     'hauberk':           500,
     'cuirass':           400,
@@ -97,6 +99,7 @@ EquipmentParameters.register('standard',{
     'plate':             100,
     // Chests:           1900
 
+    'slippers':          200,
     'boots':             800,
     'buskins':           450,
     'sabatons':          350,

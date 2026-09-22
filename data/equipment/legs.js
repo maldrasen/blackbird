@@ -15,6 +15,7 @@ BaseEquipment.register('chaps', {
   nameFunction: names => { return `${names[0]} Chaps`; },
   icon: 'armor/legs-03.png',
   slot: EquipmentSlot.legs,
+  lewd: true,
   reduction: { crush: 23, slash: 34, pierce: 23 },
   materials: { pliable:4 },
   effort: 3,

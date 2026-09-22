@@ -22,7 +22,8 @@ describe("BaseEquipment", function() {
     });
 
     it("is only lewd when the record says so", function() {
-      expect(BaseEquipment.lookup('chaps').isLewd()).to.be.false;
+      expect(BaseEquipment.lookup('leggings').isLewd()).to.be.false;
+      expect(BaseEquipment.lookup('chaps').isLewd()).to.be.true;
     });
 
     it("armor and shields carry a reduction profile", function() {

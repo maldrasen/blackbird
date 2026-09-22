@@ -184,27 +184,13 @@ global.Character = function(id) {
 
   // A general can we see their cock, pussy, or ass function.
   function isCrotchExposed() {
-    const equipment = EquipmentComponent.lookup(id)
-    const legs = equipment[EquipmentSlot.legs];
-    const underlegs = equipment[EquipmentSlot.underlegs];
-
-    let exposed = true;
-    if (legs && Item(legs).isLewd() === false) { exposed = false; }
-    if (underlegs && Item(underlegs).isLewd() === false) { exposed = false; }
-
-    return exposed
+    const legs = EquipmentManager(id).getArmorAt(EquipmentSlot.legs);
+    return legs == null || Item(legs).isLewd();
   }
 
   function areBreastsExposed() {
-    const equipment = EquipmentComponent.lookup(id)
-    const chest = equipment[EquipmentSlot.chest];
-    const underchest = equipment[EquipmentSlot.underchest];
-
-    let exposed = true;
-    if (chest && Item(chest).isLewd() === false) { exposed = false; }
-    if (underchest && Item(underchest).isLewd() === false) { exposed = false; }
-
-    return exposed
+    const chest = EquipmentManager(id).getArmorAt(EquipmentSlot.chest);
+    return chest == null || Item(chest).isLewd();
   }
 
   // TODO: We'll eventually have a bondage system. This function should return true when a character is completely
