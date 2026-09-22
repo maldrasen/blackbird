@@ -7,6 +7,10 @@
 // cast against the floor's occluders.
 global.DungeonVisionView = (function() {
 
+  // TODO: 4.5 is a very generous light radius. I think eventually we'll need to supply items like lanterns, torches
+  //       light spells, etc. Instead of a constant, we'll need to look this value up. It sounds like a value that
+  //       would have to come from the party somehow, rather than a specific character in the party.
+
   const lightRadius = 4.5;
   const falloffStart = 0.55;
   const overshoot = 3;
