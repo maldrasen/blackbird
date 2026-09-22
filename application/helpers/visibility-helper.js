@@ -14,7 +14,7 @@ global.VisibilityHelper = (function() {
   // caller land the shadow's edge just past a wall's stroke rather than through the middle of it. The vertices come
   // back in angle order, with near duplicates and points along a straight edge dropped.
   function computePolygon(origin, segments, box, overshoot = 0) {
-    const walls = [...boxSegments(box), ...segments.filter(segment => reachesBox(segment, box))];
+    const walls = [...boxSegments(box), ...segmentsInBox(segments, box)];
     const hits = rayAngles(origin, walls).map(angle => castRay(origin, angle, walls)).filter(hit => hit != null);
 
     hits.sort((a, b) => a.angle - b.angle);
@@ -70,8 +70,14 @@ global.VisibilityHelper = (function() {
     ]);
   }
 
+  // The edges of a closed outline as segments, the last vertex joined back to the first.
   function loopSegments(vertices) {
     return vertices.map((vertex, i) => ({ a:vertex, b:vertices[(i + 1) % vertices.length] }));
+  }
+
+  // The segments that reach into a box, judged by their bounding boxes.
+  function segmentsInBox(segments, box) {
+    return segments.filter(segment => reachesBox(segment, box));
   }
 
   function reachesBox(segment, box) {
@@ -196,6 +202,8 @@ global.VisibilityHelper = (function() {
     isVisible,
     subtractRect,
     regularPolygon,
+    loopSegments,
+    segmentsInBox,
   };
 
 })();

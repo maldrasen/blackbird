@@ -44,9 +44,8 @@
     stroke-width: 2;
   }
 
-  // The fill comes from each glyph's own color attribute.
+  // The fill and font size come from each glyph's own attributes.
   .glyph {
-    font-size: 48px;
     text-anchor: middle;
     dominant-baseline: central;
   }

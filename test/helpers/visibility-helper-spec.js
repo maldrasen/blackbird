@@ -113,4 +113,23 @@ describe("VisibilityHelper", function() {
     });
   });
 
+  describe("loopSegments()", function() {
+    it('joins the vertices of an outline into segments, closing the loop', function() {
+      expect(VisibilityHelper.loopSegments([{ x:0, y:0 }, { x:4, y:0 }, { x:4, y:4 }])).to.deep.equal([
+        segment(0,0, 4,0), segment(4,0, 4,4), segment(4,4, 0,0),
+      ]);
+    });
+  });
+
+  describe("segmentsInBox()", function() {
+    it('keeps the segments that reach into the box', function() {
+      const box = { xMin:0, xMax:100, yMin:0, yMax:100 };
+      const inside = segment(10,10, 20,20);
+      const crossing = segment(90,50, 150,50);
+      const outside = segment(150,20, 150,80);
+
+      expect(VisibilityHelper.segmentsInBox([inside, crossing, outside], box)).to.deep.equal([inside, crossing]);
+    });
+  });
+
 });

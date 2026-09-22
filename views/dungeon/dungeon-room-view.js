@@ -1,5 +1,6 @@
 global.DungeonRoomView = (function() {
   const wallInset = 10;
+  const defaultGlyphSize = 48;
 
   function points(vertices) {
     return vertices.map(vertex => `${vertex.x},${vertex.y}`).join(' ');
@@ -107,8 +108,8 @@ global.DungeonRoomView = (function() {
 
   function roomGlyphs(room, gridSize) {
     return room.getGlyphs().map(glyph => {
-      const size = glyph.size ? ` style='font-size:${glyph.size}px'` : '';
-      return `<text class='glyph' x='${glyph.x * gridSize}' y='${glyph.y * gridSize}' fill='${glyph.color}'${size}>${glyph.glyph}</text>`;
+      const size = glyph.size || defaultGlyphSize;
+      return `<text class='glyph' x='${glyph.x * gridSize}' y='${glyph.y * gridSize}' fill='${glyph.color}' style='font-size:${size}px'>${glyph.glyph}</text>`;
     });
   }
 
@@ -121,6 +122,7 @@ global.DungeonRoomView = (function() {
     getRoomGeometry,
     getNestedGeometry,
     getWallInset: () => { return wallInset; },
+    getDefaultGlyphSize: () => { return defaultGlyphSize; },
   };
 
 })();
