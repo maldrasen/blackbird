@@ -130,11 +130,16 @@
     .door.open .slab { fill-opacity: 0.25; }
   }
 
-  // Glyphs are drawn whole and switched on while their body is in the light, so that a lit pillar or tree stands
-  // in front of its own shadow instead of being cut in half by it.
+  // Glyphs are drawn whole and switched on rather than clipped: the trim's while their body is in the light, so
+  // that a lit pillar or tree stands in front of its own shadow instead of being cut in half by it, and the
+  // memory's once the tile under them has been seen.
   .glyphs .glyph {
     @include glyph-text;
     visibility: hidden;
-    &.visible { visibility: visible; }
+    &.visible, &.seen { visibility: visible; }
   }
+
+  // What the party remembers: the outlines of every tile the light has reached and the glyphs standing on them,
+  // dimmed. Over the trim the dim copy disappears into it; over the dark it reads as the map.
+  .memory { opacity: 0.35; }
 }
