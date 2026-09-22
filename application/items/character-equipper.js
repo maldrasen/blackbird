@@ -19,8 +19,7 @@ global.CharacterEquipper = function(id) {
     hands: 0.25,
   };
 
-  // TODO: The underchest and underlegs slots are skipped for now. There's no base armor registered for them yet.
-  //       We'll also want slots for rings, amulet, and body piercings. Cloaks are a possibility as well.
+  // TODO: We'll also want slots for rings, amulet, and body piercings. Cloaks are a possibility as well.
 
   const ArmorSlots = [
     EquipmentSlot.chest,

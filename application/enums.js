@@ -479,8 +479,6 @@ global.EquipmentSlot = {
   hands: 'hands',
   head: 'head',
   legs: 'legs',
-  underchest: 'underchest',
-  underlegs: 'underlegs',
 };
 
 global.WeaponHandedness = {
