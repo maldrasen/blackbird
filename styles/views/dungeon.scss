@@ -59,17 +59,6 @@
       stroke: variables.$fg-dungeon-wall-current;
     }
   }
-
-  &.unrevealed {
-    z-index: calc(10 + var(--depth, 0));
-
-    .floor { display: none; }
-    .walls { display: none; }
-    .nested-wall { display: none; }
-    .floor-texture { display: none; }
-    .floor-layer { display: none; }
-    .glyph { display: none; }
-  }
 }
 
 // The ring leaves the middle of the tile clear so that whatever the party is standing on still shows through. The
@@ -103,10 +92,6 @@
 
   &.from-current .cap.from { stroke: variables.$fg-dungeon-wall-current; }
   &.to-current .cap.to { stroke: variables.$fg-dungeon-wall-current; }
-
-  &.from-unrevealed .cap.from { display: none; }
-  &.to-unrevealed .cap.to { display: none; }
-  &.from-unrevealed.to-unrevealed { display: none; }
 }
 
 // The party's light, drawn as darkness laid over the fully lit floor: a shadow wherever the light can't reach from

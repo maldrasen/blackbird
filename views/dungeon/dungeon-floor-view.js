@@ -33,9 +33,9 @@ global.DungeonFloorView = (function() {
     DungeonVisionView.render(floor.getPartyPosition());
   }
 
-  // A door is visible from the moment either of its rooms is revealed, and each half of its wall caps tracks the
-  // revealed and current state of the room on its side.
-  function updateLocation(index, revealed) {
+  // Each half of a door's wall caps tracks the current state of the room on its side. Whether a room has been
+  // revealed no longer changes how it's drawn: the vision view's light and memory decide what shows.
+  function updateLocation(index) {
     X.removeClass('#dungeonFloor .room.current','current');
     X.addClass(`#dungeonFloor .room[data-index='${index}']`,'current');
     DungeonVisionView.updateLocation(index);
@@ -44,12 +44,6 @@ global.DungeonFloorView = (function() {
     X.removeClass('#dungeonFloor .door.to-current','to-current');
     X.addClass(`#dungeonFloor .door[data-from='${index}']`,'from-current');
     X.addClass(`#dungeonFloor .door[data-to='${index}']`,'to-current');
-
-    if (revealed) {
-      X.removeClass(`#dungeonFloor .room[data-index='${index}']`,'unrevealed');
-      X.removeClass(`#dungeonFloor .door[data-from='${index}']`,'from-unrevealed');
-      X.removeClass(`#dungeonFloor .door[data-to='${index}']`,'to-unrevealed');
-    }
   }
 
   // A wall can only hold one door, so a door is found by its tile and the wall of the tile it's on. The floor's own

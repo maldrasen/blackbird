@@ -13,8 +13,6 @@ global.DungeonDoorView = (function() {
     const along = doorLength / 2;
 
     let classname = `door ${door.direction}`;
-    if (floor.isRevealed(door.from) === false) { classname += ' from-unrevealed'; }
-    if (floor.isRevealed(door.to) === false) { classname += ' to-unrevealed'; }
     if (door.from === floor.getLocation()) { classname += ' from-current'; }
     if (door.to === floor.getLocation()) { classname += ' to-current'; }
     if (door.open) { classname += ' open'; }

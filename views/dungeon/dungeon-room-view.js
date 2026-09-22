@@ -15,7 +15,6 @@ global.DungeonRoomView = (function() {
     const height = bounds.yMax * gridSize;
 
     let classname = 'room';
-    if (floor.isRevealed(index) === false) { classname += ' unrevealed'; }
     if (index === floor.getLocation()) { classname += ' current'; }
 
     const geometry = getRoomGeometry(room);
