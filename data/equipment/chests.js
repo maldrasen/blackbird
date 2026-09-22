@@ -3,6 +3,29 @@
 // padded doublet and the leather-backed cuirass the primary material's absorption scales it down to what the piece
 // really turns away. Across all armor, plate turns cuts (slash) best and blunt trauma (crush) worst.
 
+// The low corset stops below the breasts, leaving them completely exposed.
+BaseEquipment.register('low-corset', {
+  icon: 'armor/coat-01.png',
+  slot: EquipmentSlot.chest,
+  reduction: { crush: 20, slash: 30, pierce: 20 },
+  lewd: true,
+
+  effort: 4,
+  materials: { leather:2 },
+  nameFunction: names => { return `Low ${names[0]} Corset`; },
+});
+
+// The high corset shows a lot of cleavage, but covers the breasts.
+BaseEquipment.register('high-corset', {
+  icon: 'armor/coat-01.png',
+  slot: EquipmentSlot.chest,
+  reduction: { crush: 30, slash: 40, pierce: 25 },
+
+  effort: 4,
+  materials: { leather:3 },
+  nameFunction: names => { return `High ${names[0]} Corset`; },
+});
+
 BaseEquipment.register('doublet', {
   icon: 'armor/coat-01.png',
   slot: EquipmentSlot.chest,
