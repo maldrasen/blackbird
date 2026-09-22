@@ -19,7 +19,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [228] Effect based enchantments `3pt` — [228-effect-based-enchantments.md](228-effect-based-enchantments.md)
 - [229] Implment ammunition `3pt` — [229-implment-ammunition.md](229-implment-ammunition.md)
 - [230] Add draw weight for bows. `0pt` — [230-add-draw-weight-for-bows.md](230-add-draw-weight-for-bows.md)
-- [232] Remove outfits `2pt` — [232-remove-outfits.md](232-remove-outfits.md)
 
 ## Priority 3
 
