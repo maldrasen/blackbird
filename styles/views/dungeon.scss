@@ -1,5 +1,18 @@
 @use "../variables";
 
+@mixin wall-stroke {
+  fill: none;
+  stroke: variables.$fg-dungeon-wall;
+  stroke-width: 2;
+  stroke-linecap: square;
+}
+
+// The fill and font size come from each glyph's own attributes.
+@mixin glyph-text {
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
 #dungeonView {
   #dungeonViewport {
     position: absolute;
@@ -26,12 +39,7 @@
   .footprint { fill: variables.$bg-dungeon; }
   .floor { fill: variables.$bg-dungeon-floor; }
 
-  .walls, .nested-wall {
-    fill: none;
-    stroke: variables.$fg-dungeon-wall;
-    stroke-width: 2;
-    stroke-linecap: square;
-  }
+  .walls, .nested-wall { @include wall-stroke; }
 
   .floor-texture {
     stroke: variables.$fg-dungeon-grid;
@@ -44,39 +52,21 @@
     stroke-width: 2;
   }
 
-  // The fill comes from each glyph's own color attribute.
-  .glyph {
-    font-size: 48px;
-    text-anchor: middle;
-    dominant-baseline: central;
-  }
+  .glyph { @include glyph-text; }
 
   &.current {
     .walls {
       stroke: variables.$fg-dungeon-wall-current;
     }
   }
-
-  &.unrevealed {
-    z-index: calc(10 + var(--depth, 0));
-
-    .floor { display: none; }
-    .walls { display: none; }
-    .nested-wall { display: none; }
-    .floor-texture { display: none; }
-    .floor-layer { display: none; }
-    .glyph { display: none; }
-  }
 }
 
 // The ring leaves the middle of the tile clear so that whatever the party is standing on still shows through. The
-// transition's duration is the length of a step, which the view sets on the element.
+// marker's slide between tiles is animated by DungeonPartyMarker, not by a transition.
 #dungeonPartyMarker {
   position: absolute;
   z-index: 110;
   pointer-events: none;
-  transition-property: left, top;
-  transition-timing-function: linear;
 
   .ring {
     position: absolute;
@@ -98,17 +88,43 @@
   // An open door is faded rather than hidden, so that it still reads as a door.
   &.open .slab { fill-opacity: 0.25; }
 
-  .cap {
-    fill: none;
-    stroke: variables.$fg-dungeon-wall;
-    stroke-width: 2;
-    stroke-linecap: square;
-  }
+  .cap { @include wall-stroke; }
 
   &.from-current .cap.from { stroke: variables.$fg-dungeon-wall-current; }
   &.to-current .cap.to { stroke: variables.$fg-dungeon-wall-current; }
+}
 
-  &.from-unrevealed .cap.from { display: none; }
-  &.to-unrevealed .cap.to { display: none; }
-  &.from-unrevealed.to-unrevealed { display: none; }
+// The party's light, drawn as darkness laid over the fully lit floor: a shadow wherever the light can't reach from
+// the marker, and a falloff that fades the floor out toward the edge of the light. The gradient's stops take their
+// color from here so that the shadow and the falloff are the same dark.
+#dungeonVision {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 105;
+  pointer-events: none;
+
+  .shadow { fill: variables.$bg-dungeon-shadow; }
+  stop { stop-color: variables.$bg-dungeon-shadow; }
+
+  // The outlines follow the current room and the doors' open state the same way the floor's own do.
+  .outlines {
+    .walls { @include wall-stroke; }
+    .walls.current { stroke: variables.$fg-dungeon-wall-current; }
+    .door .slab { fill: variables.$fg-dungeon-door; }
+    .door.open .slab { fill-opacity: 0.25; }
+  }
+
+  // Glyphs are drawn whole and switched on rather than clipped: the trim's while their body is in the light, so
+  // that a lit pillar or tree stands in front of its own shadow instead of being cut in half by it, and the
+  // memory's once the tile under them has been seen.
+  .glyphs .glyph {
+    @include glyph-text;
+    visibility: hidden;
+    &.visible, &.seen { visibility: visible; }
+  }
+
+  // What the party remembers: the outlines of every tile the light has reached and the glyphs standing on them,
+  // dimmed. Over the trim the dim copy disappears into it; over the dark it reads as the map.
+  .memory { opacity: 0.35; }
 }

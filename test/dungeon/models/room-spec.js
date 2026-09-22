@@ -174,8 +174,8 @@ describe("Room", function() {
       room.setTileContents(2, 0, { canEnter:false, glyph:{ glyph:'✽', color:'green', size:150 }});
 
       expect(room.getGlyphs()).to.deep.equal([
-        { x:1.5, y:1.5, glyph:'◉', color:'white' },
-        { x:2.5, y:0.5, glyph:'✽', color:'green', size:150 },
+        { x:1.5, y:1.5, glyph:'◉', color:'white', shadow:false },
+        { x:2.5, y:0.5, glyph:'✽', color:'green', size:150, shadow:false },
       ]);
     });
   });
@@ -187,7 +187,16 @@ describe("Room", function() {
       room.addBox(0,0,3,3);
       room.setTileContents(1, 2, { glyph:{ glyph:'◉', color:'white', offset:{ x:-0.5, y:0.5 }}});
 
-      expect(room.getGlyphs()).to.deep.equal([{ x:1, y:3, glyph:'◉', color:'white' }]);
+      expect(room.getGlyphs()).to.deep.equal([{ x:1, y:3, glyph:'◉', color:'white', shadow:false }]);
+    });
+
+    it('says whether the contents cast a shadow', function() {
+      const room = Room();
+      room.setBounds(3,3);
+      room.addBox(0,0,3,3);
+      room.setTileContents(1, 1, { canEnter:false, shadow:true, glyph:{ glyph:'◉', color:'white' }});
+
+      expect(room.getGlyphs()).to.deep.equal([{ x:1.5, y:1.5, glyph:'◉', color:'white', shadow:true }]);
     });
   });
 
@@ -295,7 +304,9 @@ describe("Room", function() {
       const room = legRoom();
       room.setStairs('up',2,1);
 
-      expect(room.getGlyphs()).to.deep.equal([{ x:2.5, y:1.5, glyph:'▲', color:'rgb(119 110 94)', size:80 }]);
+      expect(room.getGlyphs()).to.deep.equal([
+        { x:2.5, y:1.5, glyph:'▲', color:'rgb(119 110 94)', size:80, shadow:false },
+      ]);
     });
 
     it('only allows a single set of stairs', function() {

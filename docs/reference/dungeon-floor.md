@@ -22,14 +22,24 @@ The floor isn't saved. Leaving a floor throws it away and a new one is generated
 
 ### Tile Contents
 - `Room.setTileContents(x, y, options)` puts something on a single tile, in room-local integer coordinates. A tile holds one thing, and setting the contents again replaces what was there.
-- The options are a `glyph` (`{ glyph, color, size, offset }`, drawn at the center of the tile unless an offset in tiles moves it), `canEnter`, and `description`. Both `canEnter` and `description` can be a plain value or a function that's called every time it's read.
+- The options are a `glyph` (`{ glyph, color, size, offset }`, drawn at the center of the tile unless an offset in tiles moves it), `canEnter`, `description`, and `shadow`. Both `canEnter` and `description` can be a plain value or a function that's called every time it's read.
+- `shadow` is a plain boolean. When it's true the dungeon view treats the glyph as a solid body that blocks the party's light, so a pillar or a tree casts a shadow. `getGlyphs()` always reports it, false when it was omitted.
 - A tile that can't be entered blocks movement. A tile with a description is described in place of its room while the party stands on it.
 - Stairs are tile contents with `type:'stairs'` and a `direction`, placed by `Room.setStairs()`. A room can only have its stairs set once, and the content placer skips rooms that have stairs (`canHaveContents()`), though a feature can still give its own stair room contents the way the dungeon entrance does. Their description is picked from the theme the first time it's read.
 - The floor has matching lookups that take floor coordinates: `canEnterTile`, `getTileContents`, `getTileDescription`, and `getStairsAt`.
 
-### Revealed and Visited
-- A revealed room is drawn on the map. A visited room is one the party has actually stood in. Standing on any tile of a room does both, but a room can be revealed without being visited (the console's reveal command, a mapping spell, finding a map).
+### Revealed, Visited, and Seen
+- A revealed room is one the map knows about, and revealing it marks every tile of it as seen. A visited room is one the party has actually stood in. Standing on any tile of a room does both, but a room can be revealed without being visited (the console's reveal command, a mapping spell, finding a map). The view doesn't hide unrevealed rooms itself; the light and the memory decide what's drawn.
 - Everything that happens on entering a room keys off of **visited**: the scouting check, springing the room's trap, and starting the episode of the room's contents all only happen the first time the party crosses into it.
+- A seen tile is one that has been inside the party's light. The dungeon view decides that frame by frame as the party moves and records it with `markTileSeen()`; the floor never marks a tile seen on its own, except that revealing a room marks every tile of it. Seen tiles are what the map remembers once the party has moved on, so they're purely cosmetic and nothing in the game keys off of them.
+
+### Vision
+The party's light is purely cosmetic and lives in the dungeon view: `DungeonVisionView` draws it, `DungeonVisionOccluders` builds what blocks it, and `VisibilityHelper` does the maths. The floor only keeps the seen tiles. The rules that are easy to get wrong:
+- The light is cast against the drawn wall lines, not the tile edges. A room's wall line is inset 10 px inside its tiles, so the wall between two rooms is two lines 20 px apart with the dark band between them, and a shadow's edge lands in that band.
+- A doorway is a 60 px gap cut out of both wall lines, with a jamb at each end joining them across the band. Each jamb is split at the shared edge into halves belonging to the rooms on either side, the way the door caps are drawn, so a room's outline includes its side of its doorways. A closed door adds its slab along the shared edge; opening it only removes the slab, which is read live from the door.
+- A tile's contents cast a shadow when `shadow` is true, as an octagon around the glyph point with a radius of 30% of the glyph's font size, small enough that the glyph drawn over it hides where the shadow starts.
+- Shadow edges are pushed 3 px past the wall they hit so that they land in the band rather than on the stroke's centre line. The outlines are drawn again over the shadow as trim, clipped to the light, and a glyph is drawn whole while the point just in front of its body is lit.
+- A tile is seen once any of five sample points (its centre and four points 15% in from its corners) is within the light radius with nothing in the way. The memory draws the outlines clipped to the seen tiles' squares, plus the opening of any door with a seen tile beside it, and a glyph once the tile under its centre is seen.
 
 ### Encounters
 - Every step that moves the party makes exactly one encounter roll, scaled by the encounter rate difficulty option.

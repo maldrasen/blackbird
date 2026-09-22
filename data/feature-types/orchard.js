@@ -58,6 +58,7 @@ function addTreeCols(room, width, height) {
 function plantTree(room, x, y) {
   room.setTileContents(x, y, {
     canEnter: false,
+    shadow: true,
     glyph: { glyph:'✽', color:Random.from(DungeonConstants.treeColors), size:Random.between(120,180) },
   });
 }
