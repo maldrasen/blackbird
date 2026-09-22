@@ -6,6 +6,7 @@ global.VisibilityHelper = (function() {
   const angleOffset = 0.00001;
   const mergeDistance = 0.05;
   const endpointTolerance = 1e-9;
+  const spanTolerance = 1e-9;
 
   // The visibility polygon from an origin against a set of wall segments, each { a:{x,y}, b:{x,y} }. The box (an
   // { xMin, xMax, yMin, yMax } that must contain the origin) bounds the polygon: its edges are walls too, and
@@ -24,14 +25,53 @@ global.VisibilityHelper = (function() {
     }));
   }
 
+  // Whether nothing stands between the origin and a point. A wall the point sits on doesn't block it.
+  function isVisible(origin, point, segments) {
+    const length = distanceBetween(origin, point);
+    if (length === 0) { return true; }
+
+    const direction = { x: (point.x - origin.x) / length, y: (point.y - origin.y) / length };
+
+    return segments.every(segment => {
+      const distance = rayDistance(origin, direction, segment);
+      return distance == null || distance >= length - spanTolerance;
+    });
+  }
+
+  // Cut a rectangle out of a set of segments, keeping whatever lies outside it. Door openings are cut out of the
+  // wall lines this way. A segment that only touches the rectangle is kept whole.
+  function subtractRect(segments, rect) {
+    return segments.flatMap(segment => {
+      const span = insideSpan(segment, rect);
+      if (span == null) { return [segment]; }
+
+      const pieces = [];
+      if (span.t0 > spanTolerance) { pieces.push({ a:segment.a, b:pointAlong(segment, span.t0) }); }
+      if (span.t1 < 1 - spanTolerance) { pieces.push({ a:pointAlong(segment, span.t1), b:segment.b }); }
+      return pieces;
+    });
+  }
+
+  // A regular polygon as a closed loop of segments, standing in for the shadow-casting body of a glyph. The first
+  // vertex is turned half a step past the x axis so the polygon has flat sides facing the four directions.
+  function regularPolygon(center, radius, sides) {
+    return loopSegments(Array.from({ length:sides }, (_, i) => {
+      const angle = ((2 * Math.PI * i) + Math.PI) / sides;
+      return { x: center.x + (radius * Math.cos(angle)), y: center.y + (radius * Math.sin(angle)) };
+    }));
+  }
+
   function boxSegments(box) {
-    const corners = [
+    return loopSegments([
       { x:box.xMin, y:box.yMin },
       { x:box.xMax, y:box.yMin },
       { x:box.xMax, y:box.yMax },
       { x:box.xMin, y:box.yMax },
-    ];
-    return corners.map((corner, i) => ({ a:corner, b:corners[(i + 1) % corners.length] }));
+    ]);
+  }
+
+  function loopSegments(vertices) {
+    return vertices.map((vertex, i) => ({ a:vertex, b:vertices[(i + 1) % vertices.length] }));
   }
 
   function reachesBox(segment, box) {
@@ -93,6 +133,36 @@ global.VisibilityHelper = (function() {
     return t;
   }
 
+  // Liang-Barsky clipping: the part of a segment inside a rectangle, as a range of the segment's own parameter
+  // (0 at a, 1 at b), or null when the segment misses the rectangle or only touches it.
+  function insideSpan(segment, rect) {
+    const delta = { x: segment.b.x - segment.a.x, y: segment.b.y - segment.a.y };
+    const edges = [
+      { p:-delta.x, q:segment.a.x - rect.xMin },
+      { p: delta.x, q:rect.xMax - segment.a.x },
+      { p:-delta.y, q:segment.a.y - rect.yMin },
+      { p: delta.y, q:rect.yMax - segment.a.y },
+    ];
+
+    let t0 = 0;
+    let t1 = 1;
+
+    for (const edge of edges) {
+      if (edge.p === 0 && edge.q < 0) { return null; }
+      if (edge.p < 0) { t0 = Math.max(t0, edge.q / edge.p); }
+      if (edge.p > 0) { t1 = Math.min(t1, edge.q / edge.p); }
+    }
+
+    return (t0 < t1) ? { t0, t1 } : null;
+  }
+
+  function pointAlong(segment, t) {
+    return {
+      x: segment.a.x + ((segment.b.x - segment.a.x) * t),
+      y: segment.a.y + ((segment.b.y - segment.a.y) * t),
+    };
+  }
+
   // Merge hits that landed within a whisker of each other (the three rays at a corner) and drop hits lying on the
   // straight line between their neighbours, which is where a ray that meets a wall mid-span ends up. Both checks
   // wrap around from the last hit to the first.
@@ -123,6 +193,9 @@ global.VisibilityHelper = (function() {
 
   return {
     computePolygon,
+    isVisible,
+    subtractRect,
+    regularPolygon,
   };
 
 })();
