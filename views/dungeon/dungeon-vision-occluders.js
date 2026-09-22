@@ -11,7 +11,6 @@ global.DungeonVisionOccluders = (function() {
   const glyphShadowSides = 8;
 
   let rooms = [];
-  let jambs = [];
   let slabs = [];
   let glyphs = [];
   let statics = [];
@@ -20,10 +19,10 @@ global.DungeonVisionOccluders = (function() {
     const doors = floor.getDoors();
 
     rooms = floor.getRooms().map(room => ({ index:room.getIndex(), segments:roomSegments(floor, room, doors) }));
-    jambs = doors.flatMap(door => doorJambs(door));
+    doors.flatMap(door => doorJambs(door)).forEach(jamb => rooms[jamb.room].segments.push(jamb.segment));
     slabs = doors.map(door => ({ door, segment:doorSlab(door) }));
     glyphs = floor.getRooms().flatMap(room => glyphOccluders(room));
-    statics = [...rooms.flatMap(room => room.segments), ...jambs, ...glyphs];
+    statics = [...rooms.flatMap(room => room.segments), ...glyphs];
   }
 
   // Everything the light could reach from inside a box. A door's slab only counts while the door is closed, which
@@ -54,15 +53,21 @@ global.DungeonVisionOccluders = (function() {
   }
 
   // A doorway is a gap in the wall lines on both sides of the wall, so a jamb at each end joins them across the
-  // wall's thickness. The wall lines sit one inset in from the shared edge on either side.
+  // wall's thickness. Each jamb is split at the shared edge into halves that belong to the rooms on either side,
+  // the way the door's caps are drawn, so that a room's outline includes its side of its doorways. The from room
+  // is on the positive side of the edge and its wall line sits one inset in from it, as does the to room's.
   function doorJambs(door) {
     const center = DungeonDoorView.getDoorCenter(door);
     const along = DungeonDoorView.getDoorLength() / 2;
     const reach = DungeonRoomView.getWallInset();
+    const sides = [{ room:door.from, reach:reach }, { room:door.to, reach:-reach }];
 
-    return [-along, along].map(offset => (door.direction === 'N')
-      ? { a:{ x:center.x + offset, y:center.y - reach }, b:{ x:center.x + offset, y:center.y + reach } }
-      : { a:{ x:center.x - reach, y:center.y + offset }, b:{ x:center.x + reach, y:center.y + offset } });
+    return [-along, along].flatMap(offset => sides.map(side => ({
+      room: side.room,
+      segment: (door.direction === 'N')
+        ? { a:{ x:center.x + offset, y:center.y }, b:{ x:center.x + offset, y:center.y + side.reach } }
+        : { a:{ x:center.x, y:center.y + offset }, b:{ x:center.x + side.reach, y:center.y + offset } },
+    })));
   }
 
   function doorSlab(door) {
@@ -89,7 +94,6 @@ global.DungeonVisionOccluders = (function() {
     build,
     nearby,
     getRooms: () => { return rooms; },
-    getJambs: () => { return jambs; },
   };
 
 })();

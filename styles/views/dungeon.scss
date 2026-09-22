@@ -1,5 +1,18 @@
 @use "../variables";
 
+@mixin wall-stroke {
+  fill: none;
+  stroke: variables.$fg-dungeon-wall;
+  stroke-width: 2;
+  stroke-linecap: square;
+}
+
+// The fill and font size come from each glyph's own attributes.
+@mixin glyph-text {
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
 #dungeonView {
   #dungeonViewport {
     position: absolute;
@@ -26,12 +39,7 @@
   .footprint { fill: variables.$bg-dungeon; }
   .floor { fill: variables.$bg-dungeon-floor; }
 
-  .walls, .nested-wall {
-    fill: none;
-    stroke: variables.$fg-dungeon-wall;
-    stroke-width: 2;
-    stroke-linecap: square;
-  }
+  .walls, .nested-wall { @include wall-stroke; }
 
   .floor-texture {
     stroke: variables.$fg-dungeon-grid;
@@ -44,11 +52,7 @@
     stroke-width: 2;
   }
 
-  // The fill and font size come from each glyph's own attributes.
-  .glyph {
-    text-anchor: middle;
-    dominant-baseline: central;
-  }
+  .glyph { @include glyph-text; }
 
   &.current {
     .walls {
@@ -95,12 +99,7 @@
   // An open door is faded rather than hidden, so that it still reads as a door.
   &.open .slab { fill-opacity: 0.25; }
 
-  .cap {
-    fill: none;
-    stroke: variables.$fg-dungeon-wall;
-    stroke-width: 2;
-    stroke-linecap: square;
-  }
+  .cap { @include wall-stroke; }
 
   &.from-current .cap.from { stroke: variables.$fg-dungeon-wall-current; }
   &.to-current .cap.to { stroke: variables.$fg-dungeon-wall-current; }
@@ -122,4 +121,13 @@
 
   .shadow { fill: variables.$bg-dungeon-shadow; }
   stop { stop-color: variables.$bg-dungeon-shadow; }
+
+  // The outlines follow the current room and the doors' open state the same way the floor's own do.
+  .outlines {
+    .walls { @include wall-stroke; }
+    .walls.current { stroke: variables.$fg-dungeon-wall-current; }
+    .door .slab { fill: variables.$fg-dungeon-door; }
+    .door.open .slab { fill-opacity: 0.25; }
+    .glyph { @include glyph-text; }
+  }
 }

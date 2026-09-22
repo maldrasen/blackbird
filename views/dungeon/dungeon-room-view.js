@@ -25,7 +25,7 @@ global.DungeonRoomView = (function() {
       ...floorLayers(room, geometry, index),
       `<polygon class='walls' points='${points(geometry.wallLine)}'/>`,
       ...nestedWalls(floor, room),
-      ...roomGlyphs(room, gridSize),
+      ...roomGlyphs(room),
     ].join('');
 
     const roomElement = X.createElement(
@@ -106,7 +106,10 @@ global.DungeonRoomView = (function() {
       `<polygon class='nested-wall' points='${points(nested.wallLine)}'/>`);
   }
 
-  function roomGlyphs(room, gridSize) {
+  // The glyph markup in the room's own pixel coordinates. The vision view draws the same glyphs over the shadow.
+  function roomGlyphs(room) {
+    const gridSize = DungeonFloorView.getGridSize();
+
     return room.getGlyphs().map(glyph => {
       const size = glyph.size || defaultGlyphSize;
       return `<text class='glyph' x='${glyph.x * gridSize}' y='${glyph.y * gridSize}' fill='${glyph.color}' style='font-size:${size}px'>${glyph.glyph}</text>`;
@@ -121,6 +124,7 @@ global.DungeonRoomView = (function() {
     build,
     getRoomGeometry,
     getNestedGeometry,
+    roomGlyphs,
     getWallInset: () => { return wallInset; },
     getDefaultGlyphSize: () => { return defaultGlyphSize; },
   };

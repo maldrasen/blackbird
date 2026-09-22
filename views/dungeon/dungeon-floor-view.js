@@ -38,6 +38,7 @@ global.DungeonFloorView = (function() {
   function updateLocation(index, revealed) {
     X.removeClass('#dungeonFloor .room.current','current');
     X.addClass(`#dungeonFloor .room[data-index='${index}']`,'current');
+    DungeonVisionView.updateLocation(index);
 
     X.removeClass('#dungeonFloor .door.from-current','from-current');
     X.removeClass('#dungeonFloor .door.to-current','to-current');
@@ -51,11 +52,11 @@ global.DungeonFloorView = (function() {
     }
   }
 
-  // A wall can only hold one door, so a door is found by its tile and the wall of the tile it's on. The light is
-  // recast straight away, as an open door no longer blocks it.
+  // A wall can only hold one door, so a door is found by its tile and the wall of the tile it's on. The floor's own
+  // doors are its direct children; the vision view keeps a copy of each door that it marks open itself.
   function openDoor(door) {
-    X.addClass(`#dungeonFloor .door.${door.direction}[data-x='${door.position.x}'][data-y='${door.position.y}']`,'open');
-    DungeonVisionView.refresh();
+    X.addClass(`#dungeonFloor > .door.${door.direction}[data-x='${door.position.x}'][data-y='${door.position.y}']`,'open');
+    DungeonVisionView.openDoor(door);
   }
 
   return {

@@ -22,13 +22,12 @@ global.DungeonDoorView = (function() {
     const opening = rectangle(door.direction, along, wallInset + openingOverlap);
     const caps = [-along, along].flatMap(position => ['from','to'].map(side =>
       capLine(door.direction, position, side, wallInset)));
-    const slab = rectangle(door.direction, along-4, doorThickness / 2);
 
     const element = X.createElement([
       `<svg class='${classname}' data-from='${door.from}' data-to='${door.to}' data-x='${door.position.x}' data-y='${door.position.y}' viewBox='${-half} ${-half} ${gridSize} ${gridSize}'>`,
       `<polygon class='opening' points='${opening}'/>`,
       ...caps,
-      `<polygon class='slab' points='${slab}'/>`,
+      slabMarkup(door.direction),
       `</svg>`,
     ].join(''));
 
@@ -63,6 +62,12 @@ global.DungeonDoorView = (function() {
       : { xMin: center.x - across, xMax: center.x + across, yMin: center.y - along, yMax: center.y + along };
   }
 
+  // The slab is what's drawn of the door itself, centered on the door and a little shorter than the opening so that
+  // it clears the caps. The vision view draws it again over the shadow.
+  function slabMarkup(direction) {
+    return `<polygon class='slab' points='${rectangle(direction, (doorLength / 2) - 4, doorThickness / 2)}'/>`;
+  }
+
   function rectangle(direction, along, across) {
     return (direction === 'N')
       ? `${-along},${-across} ${along},${-across} ${along},${across} ${-along},${across}`
@@ -82,6 +87,7 @@ global.DungeonDoorView = (function() {
     build,
     getDoorCenter,
     getOpening,
+    slabMarkup,
     getDoorLength: () => { return doorLength; },
   };
 
