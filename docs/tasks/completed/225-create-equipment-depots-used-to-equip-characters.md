@@ -3,7 +3,8 @@ id: 225
 title: Create equipment depots used to equip characters.
 priority: 1
 created: 2026-09-16
-tags: []
+tags:
+  - character
 points: 8
 ---
 ---

@@ -2,6 +2,11 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
+## Priority 1
+
+- [235] Remove current room highlight `2pt` — [235-remove-current-room-highlight.md](235-remove-current-room-highlight.md)
+- [236] Convert traps into tile contents `5pt` — [236-convert-traps-into-tile-contents.md](236-convert-traps-into-tile-contents.md)
+
 ## Priority 2
 
 - [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)

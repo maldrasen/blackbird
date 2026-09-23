@@ -3,7 +3,8 @@ id: 233
 title: Improve grid movement
 priority: 1
 created: 2026-09-21
-tags: []
+tags:
+  - dungeon
 points: 3
 ---
 ---

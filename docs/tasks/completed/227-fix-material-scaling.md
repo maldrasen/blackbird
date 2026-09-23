@@ -3,7 +3,8 @@ id: 227
 title: Fix Material Scaling
 priority: 1
 created: 2026-09-18
-tags: []
+tags:
+  - character
 points: 2
 ---
 ---

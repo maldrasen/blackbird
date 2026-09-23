@@ -3,7 +3,8 @@ id: 226
 title: Unify weapons and armor as equipment
 priority: 1
 created: 2026-09-17
-tags: []
+tags:
+  - character
 points: 8
 ---
 ---
