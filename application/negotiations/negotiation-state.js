@@ -72,7 +72,7 @@ global.NegotiationState = function() {
   function getAvailableRequests() {
     return NegotiationRequest.getAllCodes().
       filter(code => NegotiationRequest.lookup(code).isPossible(context)).
-      filter(code => nonRepeatableRequests.includes(code)).
+      filter(code => nonRepeatableRequests.includes(code) === false).
       map(code => { return { type:'request', code:code }});
   }
 
@@ -116,7 +116,7 @@ global.NegotiationState = function() {
     if (reactionData == null) {
       throw new Error(`Follow up question [${code}] has no reaction that applies to ${monster.getCode()}`);
     }
-    pendingFollowUp = { question:code, reactionData };
+    pendingFollowUp = { type:'question', code, reactionData };
   }
 
   function takeFollowUpQuestion() {

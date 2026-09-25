@@ -68,7 +68,8 @@ describe("NegotiationState", function() {
       expect(state.hasFollowUp()).to.equal(true);
 
       const entry = state.takeFollowUpQuestion();
-      expect(entry.question).to.equal('tired-of-fighting-other-way');
+      expect(entry.type).to.equal('question');
+      expect(entry.code).to.equal('tired-of-fighting-other-way');
       expect(entry.reactionData.style).to.equal(NegotiationStyle.fierce);
       expect(state.getCurrentInteraction()).to.equal(entry);
       expect(state.getInteractionCount()).to.equal(1);

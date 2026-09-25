@@ -11,8 +11,8 @@ global.Fixtures = (function() {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
-      monster: 'crawling-claw',
-      // monster: 'kobold-tosser',
+      // monster: 'crawling-claw',
+      monster: 'kobold-tosser',
       // encounter: 'orchard-kobolds',
     });
 
