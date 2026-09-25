@@ -1,6 +1,6 @@
 
 NegotiationRequest.register('give-me-mana', {
-  staticRequirements: [CharacterRequirements.hasAnyMana('P')],
+  requirements: [CharacterRequirements.hasAnyMana('P')],
   getRequestParameters,
   getRequestText,
   answers: {

@@ -38,6 +38,10 @@ global.NegotiationState = function() {
   let resolution;
   let resolutionShown = false;
 
+  let currentRequest;
+  let requestParameters;
+  let requestText;
+
   // Having just killed all their compatriots, monsters will start out with some fear and respect, but almost no
   // control or affection. These values are randomized so that each negotiation starts out on slightly different
   // footing. A negotiation should end if any of these values drop below 0, or surpass 100.
@@ -68,9 +72,32 @@ global.NegotiationState = function() {
 
     interactionCount += 1;
     currentQuestion = Random.from(available);
+    currentRequest = null;
+
     questions = questions.filter(entry => entry !== currentQuestion);
 
     return currentQuestion;
+  }
+
+  // Unlike the questions, where the availability of a question is largely determined by the monster having a reaction
+  // to the question, the requests depend more on the player's current resources and inventory. We have to check that
+  // the player has the requested resources to give with each request, so we need to check the requirements of each
+  // request each time one is requested.
+  function pickRequest() {
+    const available = NegotiationRequest.getAllCodes().filter(code => NegotiationRequest.lookup(code).isPossible(context));
+
+    // TODO: Most requests will be repeatable. A monster can keep asking for more items or mana. We'll need a way to
+    //       flag some requests (like let me stab you) as not being repeatable.
+
+    interactionCount += 1;
+    currentRequest = Random.from(available);
+    currentQuestion = null;
+
+    const record = NegotiationRequest.lookup(currentRequest);
+    requestParameters = record.getRequestParameters(context);
+    requestText = record.getRequestText(context, requestParameters);
+
+    return currentRequest;
   }
 
   function setFollowUp(code) {

@@ -14,6 +14,10 @@ global.NegotiationRequest = (function() {
 
     const request = { ...requests[code] };
 
+    function isPossible(context) {
+      return (request.requirements || []).every(requirement => requirement(context));
+    }
+
     function getAnswers(context) {
       return ObjectHelper.select(request.answers, (key, answer) => Requirements.met(answer.requires, context));
     }
@@ -25,9 +29,9 @@ global.NegotiationRequest = (function() {
 
     return {
       getCode: () => { return code; },
-      getStaticRequirements: () => { return request.staticRequirements || []; },
       getRequestParameters: context => { return request.getRequestParameters(context); },
       getRequestText: (context,parameters) => { return request.getRequestText(context,parameters); },
+      isPossible,
       getAnswers,
       getAnswerText,
     };
