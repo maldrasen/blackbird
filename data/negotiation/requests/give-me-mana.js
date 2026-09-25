@@ -4,7 +4,7 @@ NegotiationRequest.register('give-me-mana', {
   getRequestParameters,
   getRequestText,
   answers: {
-    yes: { text:(context, parameters) => { return `Give {T:him} ${parameters.amount} ${parameters.color} mana.` }},
+    yes: { text:(parameters) => { return `Give {T:him} ${parameters.amount} ${parameters.color} mana.` }},
     no: { text:'Refuse.' },
   }
 });
