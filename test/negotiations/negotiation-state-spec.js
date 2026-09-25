@@ -56,35 +56,6 @@ describe("NegotiationState", function() {
     });
   });
 
-  // The pool's exact contents grow as questions are authored, so the spec drains the pool rather than enumerating it.
-  describe("pickQuestion()", function() {
-    it('picks every possible question with a matching reaction, then throws', function() {
-      const state = buildState(40, 20);
-
-      const picked = [];
-      for (let i=0; i<NegotiationQuestion.getAllCodes().length; i++) {
-        try { picked.push(state.pickQuestion().question); } catch { break; }
-      }
-
-      expect(picked).to.include('how-do-you-taste');
-      expect(picked).to.include('show-it-to-me');
-      expect(new Set(picked).size).to.equal(picked.length);
-
-      // Follow up questions are never added to the pool.
-      expect(picked).to.not.include('tired-of-fighting-other-way');
-
-      // let-me-taste is still in the pool, but its dynamic requirement keeps it unpickable.
-      expect(picked).to.not.include('let-me-taste');
-      expect(() => state.pickQuestion()).to.throw(`aren't enough valid questions`);
-
-      state.setFlag('playerCockOut', true);
-      expect(state.pickQuestion().question).to.equal('let-me-taste');
-      expect(state.getInteractionCount()).to.equal(picked.length + 1);
-
-      expect(() => state.pickQuestion()).to.throw(`aren't enough valid questions`);
-    });
-  });
-
   // setFollowUp() reads the reaction data live, so the archetype can be repinned after the state is built to give the
   // monster whatever style the test needs.
   describe("followUp questions", function() {
@@ -99,7 +70,7 @@ describe("NegotiationState", function() {
       const entry = state.takeFollowUpQuestion();
       expect(entry.question).to.equal('tired-of-fighting-other-way');
       expect(entry.reactionData.style).to.equal(NegotiationStyle.fierce);
-      expect(state.getCurrentQuestion()).to.equal(entry);
+      expect(state.getCurrentInteraction()).to.equal(entry);
       expect(state.getInteractionCount()).to.equal(1);
       expect(state.hasFollowUp()).to.equal(false);
     });

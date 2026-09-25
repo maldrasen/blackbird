@@ -18,7 +18,7 @@ global.NegotiationSystem = (function() {
     if (state.hasResolution()) { return showResolution(); }
     if (state.hasFollowUp()) { return NegotiationInterface.renderQuestion(state.takeFollowUpQuestion()); }
     if (state.getInteractionCount() >= maxInteractions) { return forceResolution(); }
-    NegotiationInterface.renderQuestion(state.pickQuestion());
+    NegotiationInterface.renderQuestion(state.pickInteraction());
   }
 
   function forceResolution() {
@@ -31,13 +31,17 @@ global.NegotiationSystem = (function() {
     NegotiationInterface.renderResolution();
   }
 
-  // TODO: Requests are answered here as well once they're implemented. (Task 105)
   function answer(key) {
-    const question = state.getCurrentQuestion();
-    const reaction = question.reactionData.reactions[key].resolve(state.getContext());
+    const interaction = state.getCurrentInteraction();
 
-    reaction.applyEffects(state.getContext());
-    applyReaction(reaction.feelings ? moderateReaction(reaction) : reaction);
+    // TODO: Questions have reaction data baked into the interaction. Requests will need the same kind of reaction map
+    //       if it can't be found on the record directly.
+    if (interaction.reactionData) {
+      const reaction = interaction.reactionData.reactions[key].resolve(state.getContext());
+
+      reaction.applyEffects(state.getContext());
+      applyReaction(reaction.feelings ? moderateReaction(reaction) : reaction);
+    }
   }
 
   function moderateReaction(reaction) {

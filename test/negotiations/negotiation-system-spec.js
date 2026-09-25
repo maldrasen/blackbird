@@ -127,11 +127,14 @@ describe("NegotiationSystem", function() {
       return { state, player, monster };
     }
 
+    // TODO: Task 158 will add a fixture to limit the question pool to a small list of questions or requests. We
+    //       should use that instead of this function.
+
     // Draws until the wanted question comes up. The registered question count bounds the loop; a pool exhausted
-    // before the question is found fails the test through pickQuestion's own throw.
+    // before the question is found fails the test through pickInteraction's own throw.
     function pickUntil(state, question) {
       for (let i=0; i<NegotiationQuestion.getAllCodes().length; i++) {
-        if (state.pickQuestion().question === question) { return; }
+        if (state.pickInteraction().code === question) { return; }
       }
       throw new Error(`Question ${question} was not in the pool`);
     }
@@ -181,10 +184,10 @@ describe("NegotiationSystem", function() {
         NegotiationSystem.answer('otherWay');
         expect(state.hasResolution()).to.equal(false);
         expect(state.hasFollowUp()).to.equal(true);
-        expect(state.getCurrentQuestion().question).to.equal('tired-of-fighting');
+        expect(state.getCurrentInteraction().code).to.equal('tired-of-fighting');
 
         NegotiationSystem.advance();
-        expect(state.getCurrentQuestion().question).to.equal('tired-of-fighting-other-way');
+        expect(state.getCurrentInteraction().code).to.equal('tired-of-fighting-other-way');
         expect(state.getInteractionCount()).to.equal(count + 1);
         expect(state.hasFollowUp()).to.equal(false);
 
@@ -210,7 +213,7 @@ describe("NegotiationSystem", function() {
         NegotiationSystem.advance();
 
         expect(state.hasResolution()).to.equal(false);
-        expect(state.getCurrentQuestion().question).to.equal('tired-of-fighting-other-way');
+        expect(state.getCurrentInteraction().code).to.equal('tired-of-fighting-other-way');
         expect(state.getInteractionCount()).to.equal(6);
       });
 

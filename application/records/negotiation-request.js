@@ -34,6 +34,7 @@ global.NegotiationRequest = (function() {
       isPossible,
       getAnswers,
       getAnswerText,
+      isRepeatable: () => { return request.isRepeatable !== false; },
     };
   }
 

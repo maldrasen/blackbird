@@ -30,17 +30,15 @@ global.NegotiationState = function() {
     monsterHard: false,
   }
 
-  // TODO: Requests return in task 105.
   let interactionCount = 0;
+  let currentInteraction;
+
   let questions = [];
-  let currentQuestion;
   let pendingFollowUp;
   let resolution;
   let resolutionShown = false;
 
-  let currentRequest;
-  let requestParameters;
-  let requestText;
+  let nonRepeatableRequests = [];
 
   // Having just killed all their compatriots, monsters will start out with some fear and respect, but almost no
   // control or affection. These values are randomized so that each negotiation starts out on slightly different
@@ -57,47 +55,60 @@ global.NegotiationState = function() {
 
     const reactionData = question.getReactionData(context);
     if (reactionData) {
-      questions.push({ question:code, reactionData });
+      questions.push({ type:'question', code, reactionData });
     }
   });
 
   // The dynamic requirements are checked here rather than when the pool is built because the flags they look at
   // change as the negotiation plays out. A question that isn't available now may be available a few answers from now.
-  function pickQuestion() {
-    const available = questions.filter(entry => NegotiationQuestion.lookup(entry.question).isAvailable(context));
-
-    if (available.length === 0) {
-      throw new Error(`Error: There aren't enough valid questions for ${monster.getCode()}:[${monster.getArchetype()}]`);
-    }
-
-    interactionCount += 1;
-    currentQuestion = Random.from(available);
-    currentRequest = null;
-
-    questions = questions.filter(entry => entry !== currentQuestion);
-
-    return currentQuestion;
+  function getAvailableQuestions() {
+    return questions.filter(entry => NegotiationQuestion.lookup(entry.code).isAvailable(context));
   }
 
   // Unlike the questions, where the availability of a question is largely determined by the monster having a reaction
   // to the question, the requests depend more on the player's current resources and inventory. We have to check that
   // the player has the requested resources to give with each request, so we need to check the requirements of each
   // request each time one is requested.
-  function pickRequest() {
-    const available = NegotiationRequest.getAllCodes().filter(code => NegotiationRequest.lookup(code).isPossible(context));
+  function getAvailableRequests() {
+    return NegotiationRequest.getAllCodes().
+      filter(code => NegotiationRequest.lookup(code).isPossible(context)).
+      filter(code => nonRepeatableRequests.includes(code)).
+      map(code => { return { type:'request', code:code }});
+  }
 
-    // TODO: Most requests will be repeatable. A monster can keep asking for more items or mana. We'll need a way to
-    //       flag some requests (like let me stab you) as not being repeatable.
-
+  function pickInteraction() {
     interactionCount += 1;
-    currentRequest = Random.from(available);
-    currentQuestion = null;
 
-    const record = NegotiationRequest.lookup(currentRequest);
-    requestParameters = record.getRequestParameters(context);
-    requestText = record.getRequestText(context, requestParameters);
+    const availableQuestions = getAvailableQuestions();
+    const availableRequests = getAvailableRequests();
 
-    return currentRequest;
+    if (availableQuestions.length === 0 && availableRequests.length === 0) { throw new Error(`There are no possible negotiation interactions.`); }
+    if (availableQuestions.length === 0) { return pickRequest(Random.from(availableRequests)); }
+    if (availableRequests.length === 0) { return pickQuestion(Random.from(availableQuestions)); }
+
+    return Random.flipCoin() ? pickQuestion(Random.from(availableQuestions)) : pickRequest(Random.from(availableRequests));
+  }
+
+  // When a question is picked that question is filtered out of the list of available questions.
+  function pickQuestion(question) {
+    currentInteraction = question;
+    questions = questions.filter(entry => entry !== currentInteraction);
+
+    return currentInteraction;
+  }
+
+  function pickRequest(request) {
+    const record = NegotiationRequest.lookup(request.code);
+
+    currentInteraction = request;
+    currentInteraction.requestParameters = record.getRequestParameters(context);
+    currentInteraction.requestText = record.getRequestText(context, currentInteraction.requestParameters);
+
+    if (record.isRepeatable() === false) {
+      nonRepeatableRequests.push(request.code);
+    }
+
+    return currentInteraction;
   }
 
   function setFollowUp(code) {
@@ -110,11 +121,11 @@ global.NegotiationState = function() {
 
   function takeFollowUpQuestion() {
     interactionCount += 1;
-    currentQuestion = pendingFollowUp;
-    questions = questions.filter(entry => entry.question !== currentQuestion.question);
+    currentInteraction = pendingFollowUp;
+    questions = questions.filter(entry => entry.code !== currentInteraction.code);
     pendingFollowUp = null;
 
-    return currentQuestion;
+    return currentInteraction;
   }
 
   // TODO: Monsters will have different conditions and thresholds that are used to determine these states. We can make
@@ -204,9 +215,9 @@ global.NegotiationState = function() {
     getFlag: flag => { return flags[flag]; },
     setFlag: (flag,value) => { flags[flag] = value; },
     setFlags: newFlags => { Object.entries(newFlags).forEach(([key,value]) => { flags[key] = value; }); },
-    getCurrentQuestion: () => { return currentQuestion; },
+    getCurrentInteraction: () => { return currentInteraction; },
     getInteractionCount: () => { return interactionCount; },
-    pickQuestion,
+    pickInteraction,
     setFollowUp,
     hasFollowUp: () => { return pendingFollowUp != null; },
     takeFollowUpQuestion,
