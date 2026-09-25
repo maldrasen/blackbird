@@ -20,7 +20,7 @@ global.NegotiationRequest = (function() {
 
     function getAnswerText(key, context, parameters) {
       const answer = getAnswers(context)[key];
-      return Weaver(context).weave(typeof answer.text === 'string' ? answer.text : answer.text(parameters));
+      return typeof answer.text === 'string' ? answer.text : answer.text(parameters);
     }
 
     return {
