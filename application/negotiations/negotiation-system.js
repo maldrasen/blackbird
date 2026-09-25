@@ -16,9 +16,9 @@ global.NegotiationSystem = (function() {
   function advance() {
     if (state.hasShownResolution()) { return executeResolution(); }
     if (state.hasResolution()) { return showResolution(); }
-    if (state.hasFollowUp()) { return NegotiationInterface.renderQuestion(state.takeFollowUpQuestion()); }
+    if (state.hasFollowUp()) { return NegotiationInterface.renderInteraction(state.takeFollowUpQuestion()); }
     if (state.getInteractionCount() >= maxInteractions) { return forceResolution(); }
-    NegotiationInterface.renderQuestion(state.pickInteraction());
+    NegotiationInterface.renderInteraction(state.pickInteraction());
   }
 
   function forceResolution() {

@@ -24,6 +24,14 @@ global.NegotiationOverlay = (function() {
     return X.hasClass('#negotiationOverlay','hide') === false;
   }
 
+  function getContext() {
+    return NegotiationSystem.getState().getContext();
+  }
+
+  function weave(text) {
+    return Weaver(getContext()).weave(text);
+  }
+
   function advance() {
     if (X.hasClass('#negotiationFrame','can-advance')) {
       X.removeClass('#negotiationFrame','can-advance');
@@ -42,15 +50,42 @@ global.NegotiationOverlay = (function() {
     `));
   }
 
-  function renderQuestion(data) {
-    const question = NegotiationQuestion.lookup(data.question);
-
+  function renderInteraction(interaction) {
     clear();
 
-    X.append('#negotiationFrame .dialog', X.createElement(`<p class='question'>${weave(question.getText())}</p>`));
-    Object.entries(question.getAnswers(NegotiationSystem.getState().getContext())).forEach(([key, answer]) => {
-      X.append('#negotiationFrame .options', buildButton(key, weave(answer.text)));
+    switch (interaction.type) {
+      case 'question': return renderQuestion(interaction);
+      case 'request':  return renderRequest(interaction);
+    }
+    throw new Error(`Unknown interaction type [${interaction.type}]`);
+  }
+
+  function renderQuestion(interaction) {
+    const question = NegotiationQuestion.lookup(interaction.code);
+    const answers = question.getAnswers(getContext());
+
+    renderPrompt('question', question.getText());
+    Object.entries(answers).forEach(([key, answer]) => renderAnswer(key, answer.text));
+  }
+
+  // The request text and the answer text can both depend on the parameters rolled when the request was picked, so
+  // they're read from the interaction rather than the record.
+  function renderRequest(interaction) {
+    const request = NegotiationRequest.lookup(interaction.code);
+    const answers = request.getAnswers(getContext());
+
+    renderPrompt('request', interaction.requestText);
+    Object.keys(answers).forEach(key => {
+      renderAnswer(key, request.getAnswerText(key, getContext(), interaction.requestParameters));
     });
+  }
+
+  function renderPrompt(type, text) {
+    X.append('#negotiationFrame .dialog', X.createElement(`<p class='${type}'>${weave(text)}</p>`));
+  }
+
+  function renderAnswer(key, text) {
+    X.append('#negotiationFrame .options', buildButton(key, weave(text)));
   }
 
   function renderDialog(message) {
@@ -73,16 +108,12 @@ global.NegotiationOverlay = (function() {
     return X.createElement(`<li><a href='#' class='button answer' data-key='${key}'>${label}</a></li>`);
   }
 
-  function weave(text) {
-    return Weaver(NegotiationSystem.getState().getContext()).weave(text);
-  }
-
   return {
     init,
     open,
     close,
     isOpen,
-    renderQuestion,
+    renderInteraction,
     renderDialog,
     renderResolution,
   };

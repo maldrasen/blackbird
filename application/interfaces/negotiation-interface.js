@@ -16,8 +16,8 @@ global.NegotiationInterface = (function() {
     if (viewActive()) { NegotiationOverlay.close(); }
   }
 
-  function renderQuestion(data) {
-    if (viewActive()) { NegotiationOverlay.renderQuestion(data); }
+  function renderInteraction(interaction) {
+    if (viewActive()) { NegotiationOverlay.renderInteraction(interaction); }
   }
 
   function renderDialog(message) {
@@ -31,7 +31,7 @@ global.NegotiationInterface = (function() {
   return {
     open,
     close,
-    renderQuestion,
+    renderInteraction,
     renderDialog,
     renderResolution,
   };
