@@ -16,14 +16,14 @@ function getRequestParameters(context) {
   const mana = ManaComponent.lookup(context.P);
   const manaBounds = {};
 
-  Object.entries(mana).forEach((color,component) => {
+  Object.entries(mana).forEach(([color,component]) => {
     if (component.current > 0) { manaBounds[color] = component.current; }
   });
 
   const color = Random.from(Object.keys(manaBounds));
   const current = manaBounds[color];
-  const min = Math.max(32, Math.ceil(current/10));
-  const max = Math.min(min, Math.floor(current/2));
+  const min = Math.ceil(current/10);
+  const max = Math.max(min, Math.min(32, Math.floor(current/2)));
   const amount = Random.between(min, max);
 
   return { color, amount };
