@@ -48,7 +48,7 @@ global.NegotiationState = function() {
   let fear = Random.roll(80);
   let respect = Random.roll(40);
 
-  NegotiationQuestion.getAllCodes().forEach(code => {
+  NegotiationQuestion.getAllowedCodes().forEach(code => {
     const question = NegotiationQuestion.lookup(code);
     if (question.isFollowUp()) { return; }
     if (question.isPossible(context) === false) { return; }
@@ -70,7 +70,7 @@ global.NegotiationState = function() {
   // the player has the requested resources to give with each request, so we need to check the requirements of each
   // request each time one is requested.
   function getAvailableRequests() {
-    return NegotiationRequest.getAllCodes().
+    return NegotiationRequest.getAllowedCodes().
       filter(code => NegotiationRequest.lookup(code).isPossible(context)).
       filter(code => nonRepeatableRequests.includes(code) === false).
       map(code => { return { type:'request', code:code }});

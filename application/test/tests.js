@@ -4,6 +4,8 @@ global.Tests = (function() {
   let currentSeed;
 
   function reset() {
+    NegotiationQuestion.clearWhitelist();
+    NegotiationRequest.clearWhitelist();
     Random.stubReset();
     GameSystem.reset();
     WorldState.reset();
