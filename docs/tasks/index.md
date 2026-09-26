@@ -15,7 +15,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [007] Position Attitude Requirement `3pt` #training — [007-position-attitude-requirement.md](007-position-attitude-requirement.md)
 - [009] Descriptions `13pt` #character — [009-descriptions.md](009-descriptions.md)
 - [011] Project Stuff `3pt` — [011-project-stuff.md](011-project-stuff.md)
-- [105] Add Negotiation Requests `8pt` — [105-add-negotiation-requests.md](105-add-negotiation-requests.md)
 - [122] Training Enlighten View `5pt` — [122-training-enlighten-view.md](122-training-enlighten-view.md)
 - [142] Item detail panel `5pt` — [142-item-detail-panel.md](142-item-detail-panel.md)
 - [158] Add a Fixture to Adjust the Question Pool for Testing `3pt` — [158-fixture-to-adjust-question-pool.md](158-fixture-to-adjust-question-pool.md)
@@ -28,6 +27,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [237] The Character Equipper Should Honor Gender and Sexual Preferences `3pt` — [237-equipper-should-honor-gender.md](237-equipper-should-honor-gender.md)
 - [239] Dungeon Light emitters `5pt` — [239-dungeon-light-emitters.md](239-dungeon-light-emitters.md)
 - [240] Safe Rooms `3pt` — [240-safe-rooms.md](240-safe-rooms.md)
+- [242] More Negotiation Requests `5pt` — [242-more-negotiation-requests.md](242-more-negotiation-requests.md)
 
 ## Priority 3
 
