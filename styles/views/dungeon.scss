@@ -53,12 +53,6 @@
   }
 
   .glyph { @include glyph-text; }
-
-  &.current {
-    .walls {
-      stroke: variables.$fg-dungeon-wall-current;
-    }
-  }
 }
 
 // The ring leaves the middle of the tile clear so that whatever the party is standing on still shows through. The
@@ -89,9 +83,6 @@
   &.open .slab { fill-opacity: 0.25; }
 
   .cap { @include wall-stroke; }
-
-  &.from-current .cap.from { stroke: variables.$fg-dungeon-wall-current; }
-  &.to-current .cap.to { stroke: variables.$fg-dungeon-wall-current; }
 }
 
 // The party's light, drawn as darkness laid over the fully lit floor: a shadow wherever the light can't reach from
@@ -107,10 +98,9 @@
   .shadow { fill: variables.$bg-dungeon-shadow; }
   stop { stop-color: variables.$bg-dungeon-shadow; }
 
-  // The outlines follow the current room and the doors' open state the same way the floor's own do.
+  // The outlines follow the doors' open state the same way the floor's own do.
   .outlines {
     .walls { @include wall-stroke; }
-    .walls.current { stroke: variables.$fg-dungeon-wall-current; }
     .door .slab { fill: variables.$fg-dungeon-door; }
     .door.open .slab { fill-opacity: 0.25; }
   }

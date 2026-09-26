@@ -6,23 +6,20 @@ global.DungeonDoorView = (function() {
   // The opening reaches a little past the wall lines on either side of the door so that their strokes are covered.
   const openingOverlap = 2;
 
-  function build(floor, door) {
+  function build(door) {
     const gridSize = DungeonFloorView.getGridSize();
     const wallInset = DungeonRoomView.getWallInset();
     const half = gridSize / 2;
     const along = doorLength / 2;
 
-    let classname = `door ${door.direction}`;
-    if (door.from === floor.getLocation()) { classname += ' from-current'; }
-    if (door.to === floor.getLocation()) { classname += ' to-current'; }
-    if (door.open) { classname += ' open'; }
+    const classname = door.open ? `door ${door.direction} open` : `door ${door.direction}`;
 
     const opening = rectangle(door.direction, along, wallInset + openingOverlap);
     const caps = [-along, along].flatMap(position => ['from','to'].map(side =>
       capLine(door.direction, position, side, wallInset)));
 
     const element = X.createElement([
-      `<svg class='${classname}' data-from='${door.from}' data-to='${door.to}' data-x='${door.position.x}' data-y='${door.position.y}' viewBox='${-half} ${-half} ${gridSize} ${gridSize}'>`,
+      `<svg class='${classname}' data-x='${door.position.x}' data-y='${door.position.y}' viewBox='${-half} ${-half} ${gridSize} ${gridSize}'>`,
       `<polygon class='opening' points='${opening}'/>`,
       ...caps,
       slabMarkup(door.direction),

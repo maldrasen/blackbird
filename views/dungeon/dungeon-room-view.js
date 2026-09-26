@@ -14,9 +14,6 @@ global.DungeonRoomView = (function() {
     const width = bounds.xMax * gridSize;
     const height = bounds.yMax * gridSize;
 
-    let classname = 'room';
-    if (index === floor.getLocation()) { classname += ' current'; }
-
     const geometry = getRoomGeometry(room);
     const content = [
       `<polygon class='footprint' points='${points(geometry.outline)}'/>`,
@@ -28,7 +25,7 @@ global.DungeonRoomView = (function() {
     ].join('');
 
     const roomElement = X.createElement(
-      `<svg class='${classname}' data-index='${index}' viewBox='0 0 ${width} ${height}'>${content}</svg>`);
+      `<svg class='room' data-index='${index}' viewBox='0 0 ${width} ${height}'>${content}</svg>`);
     roomElement.style['left'] = `${(position.x * gridSize)}px`;
     roomElement.style['top'] = `${(position.y * gridSize)}px`;
     roomElement.style['height'] = `${height}px`;

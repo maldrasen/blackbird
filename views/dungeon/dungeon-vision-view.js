@@ -76,10 +76,9 @@ global.DungeonVisionView = (function() {
     return svg;
   }
 
-  // The outlines are the occluders themselves, one path per room so that the current room can be picked out, with
-  // each door's slab drawn just as the floor draws it. They go in as plain elements rather than being shared
-  // through a <use>, because the stylesheet's descendant selectors don't reach into a use element's shadow tree and
-  // the trim lost its styling that way.
+  // The outlines are the occluders themselves, one path per room, with each door's slab drawn just as the floor
+  // draws it. They go in as plain elements rather than being shared through a <use>, because the stylesheet's
+  // descendant selectors don't reach into a use element's shadow tree and the trim lost its styling that way.
   function outlines() {
     return [
       ...DungeonVisionOccluders.getRooms().map(room => wallsMarkup(room)),
@@ -88,9 +87,8 @@ global.DungeonVisionView = (function() {
   }
 
   function wallsMarkup(room) {
-    const classname = (room.index === floor.getLocation()) ? 'walls current' : 'walls';
     const d = room.segments.map(segment => `M${point(segment.a)} L${point(segment.b)}`).join(' ');
-    return `<path class='${classname}' data-index='${room.index}' d='${d}'/>`;
+    return `<path class='walls' d='${d}'/>`;
   }
 
   function doorMarkup(door) {
@@ -253,11 +251,6 @@ global.DungeonVisionView = (function() {
     render(DungeonPartyMarker.getDrawnPosition());
   }
 
-  function updateLocation(index) {
-    X.removeClass('#dungeonVision .walls.current','current');
-    X.addClass(`#dungeonVision .walls[data-index='${index}']`,'current');
-  }
-
   // An open door no longer blocks the light, so it's recast straight away.
   function openDoor(door) {
     X.addClass(`#dungeonVision .door.${door.direction}[data-x='${door.position.x}'][data-y='${door.position.y}']`,'open');
@@ -281,7 +274,6 @@ global.DungeonVisionView = (function() {
     build,
     render,
     refresh,
-    updateLocation,
     openDoor,
   };
 

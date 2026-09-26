@@ -124,9 +124,6 @@ global.DungeonView = (function() {
     if (result.openedDoor) {
       DungeonFloorView.openDoor(result.openedDoor);
     }
-    if (result.enteredRoom != null) {
-      DungeonFloorView.updateLocation(result.enteredRoom);
-    }
     if (result.enteredRoom != null || hadTileFeature || DungeonTileSystem.hasTileFeature()) {
       DungeonControls.refreshRoom();
     }
