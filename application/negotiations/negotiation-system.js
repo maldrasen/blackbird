@@ -41,7 +41,7 @@ global.NegotiationSystem = (function() {
     const interaction = state.getCurrentInteraction();
     return (interaction.type === 'question') ?
       interaction.reactionData.reactions[key] :
-      NegotiationRequest.lookup(interaction.code).getAnswerReaction(key, state.getContext(), interaction.requestParameters);
+      NegotiationRequest.lookup(interaction.code).resolveAnswerReaction(key, state.getContext(), interaction.requestParameters);
   }
 
   function moderateReaction(reaction) {

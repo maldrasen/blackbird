@@ -27,7 +27,10 @@ global.NegotiationRequest = (function() {
       return typeof answer.text === 'string' ? answer.text : answer.text(parameters);
     }
 
-    function getAnswerReaction(key, context, parameters) {
+    // Resolving the answer reaction gets the reaction for the player's answer, but it also resolves the request,
+    // meaning that any resources that are removed as part of the negotiation happens here. This function should only
+    // be called once, when the player chooses to respond to the request.
+    function resolveAnswerReaction(key, context, parameters) {
       const answer = getAnswers(context)[key];
       return typeof answer.reaction === 'object' ? answer.reaction : answer.reaction(context,parameters);
     }
@@ -39,7 +42,7 @@ global.NegotiationRequest = (function() {
       isPossible,
       getAnswers,
       getAnswerText,
-      getAnswerReaction,
+      resolveAnswerReaction,
       isRepeatable: () => { return request.isRepeatable !== false; },
     };
   }
