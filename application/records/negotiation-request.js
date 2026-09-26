@@ -27,6 +27,12 @@ global.NegotiationRequest = (function() {
       return typeof answer.text === 'string' ? answer.text : answer.text(parameters);
     }
 
+    // Unlike the text, which can be a string or a function, the reaction should always be a function.
+    function getAnswerReaction(key, context, parameters) {
+      const answer = getAnswers(context)[key];
+      return answer.response(context,parameters);
+    }
+
     return {
       getCode: () => { return code; },
       getRequestParameters: context => { return request.getRequestParameters(context); },
@@ -34,6 +40,7 @@ global.NegotiationRequest = (function() {
       isPossible,
       getAnswers,
       getAnswerText,
+      getAnswerReaction,
       isRepeatable: () => { return request.isRepeatable !== false; },
     };
   }
