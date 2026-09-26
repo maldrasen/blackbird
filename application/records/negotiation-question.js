@@ -10,9 +10,15 @@ global.NegotiationQuestion = (function() {
     monster: 50,
   }
 
+  let whitelist;
+
   function register(code, data) {
     questions[code] = data;
   }
+
+  function getAllowedCodes() { return whitelist ? Object.keys(questions).filter(code => whitelist.includes(code)) : getAllCodes(); }
+  function setWhitelist(list) { whitelist = list; }
+  function clearWhitelist() { whitelist = null; }
 
   function registerReaction(code, data) {
     data.weight = 0;
@@ -99,6 +105,9 @@ global.NegotiationQuestion = (function() {
     register,
     registerReaction,
     getAllCodes,
+    getAllowedCodes,
+    setWhitelist,
+    clearWhitelist,
     getReactions,
     lookup,
   };

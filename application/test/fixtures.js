@@ -15,7 +15,7 @@ global.Fixtures = (function() {
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
       // monster: 'crawling-claw',
-      monster: 'vermen-ragpicker',
+      monster: 'kobold-dick-puncher',
       // encounter: 'orchard-kobolds',
     });
 

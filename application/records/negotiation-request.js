@@ -1,6 +1,8 @@
 global.NegotiationRequest = (function() {
   const requests = {};
 
+  let whitelist;
+
   function register(code,data) {
     requests[code] = data;
   }
@@ -8,6 +10,10 @@ global.NegotiationRequest = (function() {
   function getAllCodes() {
     return Object.keys(requests);
   }
+
+  function getAllowedCodes() { return whitelist ? Object.keys(requests).filter(code => whitelist.includes(code)) : getAllCodes(); }
+  function setWhitelist(list) { whitelist = list; }
+  function clearWhitelist() { whitelist = null; }
 
   function lookup(code) {
     if (requests[code] == null) { throw new Error(`Bad negotiation request code [${code}]`); }
@@ -50,6 +56,9 @@ global.NegotiationRequest = (function() {
   return {
     register,
     getAllCodes,
+    getAllowedCodes,
+    setWhitelist,
+    clearWhitelist,
     lookup,
   };
 
