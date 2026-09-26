@@ -759,6 +759,7 @@
     "test/negotiations/dsl/reaction-spec.js",
     "test/negotiations/negotiation-influence-spec.js",
     "test/negotiations/negotiation-question-spec.js",
+    "test/negotiations/negotiation-request-spec.js",
     "test/negotiations/negotiation-state-spec.js",
     "test/negotiations/negotiation-system-spec.js",
     "test/records/base-equipment-spec.js",
