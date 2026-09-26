@@ -1,3 +1,5 @@
+const greetingPackage = WeaverPackage('vermen-greeting');
+
 Species.register(SpeciesCode.vermen, {
   name: 'Vermen',
   genderRatio: { female:40, futa:20, male:40 },
@@ -94,4 +96,15 @@ Species.register(SpeciesCode.vermen, {
     }
   },
 
+  negotiationGreeting: greetingPackage,
 });
+
+greetingPackage.defineFormat(`{{movement}} "{{dialog}}"`);
+greetingPackage.addPart('movement',`The little rat {T:boy} looks up up at you and sneers,`);
+greetingPackage.addPart('movement',`The vermen snarls and crouches low, looking like {T:he's} either preparing to leap away, or on top of you.`);
+greetingPackage.addPart('movement',`The vermen's eyes dart about, looking for an escape route.`);
+greetingPackage.addPart('movement',`The vermen twirls {hisWeaponName(T)} with a flourish,`);
+greetingPackage.addPart('dialog',`Talk? Talk is for cowards. But...`);
+greetingPackage.addPart('dialog',`Hehe. You want to talk to this one? Fine. Come closer then.`);
+greetingPackage.addPart('dialog',`Really? We both know how this is going to end. Fine.`);
+greetingPackage.addPart('dialog',`Ahh, the {P:species.elf} wants a new slave? Is that is?`);
