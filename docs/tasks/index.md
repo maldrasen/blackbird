@@ -5,7 +5,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 ## Priority 1
 
 - [236] Convert traps into tile contents `5pt` — [236-convert-traps-into-tile-contents.md](236-convert-traps-into-tile-contents.md)
-- [241] Vermen Negotiation Greeting `2pt` — [241-vermen-negotiation-greeting.md](241-vermen-negotiation-greeting.md)
 
 ## Priority 2
 
