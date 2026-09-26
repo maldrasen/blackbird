@@ -32,16 +32,16 @@ global.NegotiationSystem = (function() {
   }
 
   function answer(key) {
+    const reaction = getReaction(key).resolve(state.getContext());
+    reaction.applyEffects(state.getContext());
+    applyReaction(reaction.feelings ? moderateReaction(reaction) : reaction);
+  }
+
+  function getReaction(key) {
     const interaction = state.getCurrentInteraction();
-
-    // TODO: Questions have reaction data baked into the interaction. Requests will need the same kind of reaction map
-    //       if it can't be found on the record directly.
-    if (interaction.reactionData) {
-      const reaction = interaction.reactionData.reactions[key].resolve(state.getContext());
-
-      reaction.applyEffects(state.getContext());
-      applyReaction(reaction.feelings ? moderateReaction(reaction) : reaction);
-    }
+    return (interaction.type === 'question') ?
+      interaction.reactionData.reactions[key] :
+      NegotiationRequest.lookup(interaction.code).getAnswerReaction(key, state.getContext(), interaction.requestParameters);
   }
 
   function moderateReaction(reaction) {

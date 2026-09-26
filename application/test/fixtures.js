@@ -8,7 +8,10 @@ global.Fixtures = (function() {
 
   function setupBattle() {
     setupGame({ location:'the-well' });
+
     BattleFixtures.prepareForBattle();
+    BattleFixtures.grantMana('red',100);
+
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
       // monster: 'crawling-claw',

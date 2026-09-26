@@ -22,7 +22,7 @@ NegotiationQuestion.register('get-our-cocks-out', {
 });
 
 const dickSlapLose = `The kobold dodges out of the way and snarls, "Ha! Too slow asshole."`
-const dickSlapWin = `The kobold's head snaps back as you slap him across the face with your {P:thickSixInchLongCock}. 
+const dickSlapWin = `The kobold's head snaps back as you slap him across the face with your {P:cock.thickSixInchLongCock}. 
   He looks momentarily stunned, but wipes his face with his arm and gives you a smile.`
 
 NegotiationQuestion.registerReaction('get-our-cocks-out', {
@@ -47,14 +47,14 @@ const cocksOut = { monsterCockOut:true, playerCockOut:true };
 const hardCocksOut = { monsterCockOut:true, playerCockOut:true, monsterCockHard:true, playerCockHard:true };
 const lewdStripYou = `{T:TargetName} grins viciously, "Where else? Now, show me your dick asshole." The {T:species.elf}
   rushes forward aggressively, ready to strip you by force.`;
-const lewdShowYou = `{T:TargetName} smiles and reaches down, pulling {T:his} {P:thickSixInchLongCock} free and starts
+const lewdShowYou = `{T:TargetName} smiles and reaches down, pulling {T:his} {P:cock.thickSixInchLongCock} free and starts
   lewdly stroking {T:him}self. "Your turn."`;
 const lewdCocksOut = `{T:TargetName} grins, looking you over lewdly as you both free your cocks from their confinement.
-  He strokes {T:him}self shameless as {T:he} stares at your {P:thickSixInchLongCock}.`;
+  He strokes {T:him}self shameless as {T:he} stares at your {P:cock.thickSixInchLongCock}.`;
 const lewdDickSlap = `{T:TargetName} reaches down to free {T:his} cock from it's confinement. When your
-  {P:thickSixInchLongCock} slaps {T:him} across {T:his} face {T:he} looks up, momentarily stunned. {T:He} opens {T:his}
-  mouth wide, letting you slap your cock against {T:his} tongue while {T:he} strokes {T:his} own cock. Finely {T:he} 
-  gives the tip a wet kiss and smiles up at you, "I like the way you think."`;
+  {P:cock.thickSixInchLongCock} slaps {T:him} across {T:his} face {T:he} looks up, momentarily stunned. {T:He} opens 
+  {T:his} mouth wide, letting you slap your cock against {T:his} tongue while {T:he} strokes {T:his} own cock. Finely 
+  {T:he} gives the tip a wet kiss and smiles up at you, "I like the way you think."`;
 
 NegotiationQuestion.registerReaction('get-our-cocks-out', {
   style: NegotiationStyle.lewd,
