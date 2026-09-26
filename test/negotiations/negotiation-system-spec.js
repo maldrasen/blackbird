@@ -106,6 +106,10 @@ describe("NegotiationSystem", function() {
     // archetype pinned to slut so the question pool is deterministic. The player is made brilliant and the monster
     // dim, so the player wins the influence contest past the 100 point cap: helping feelings double and hurting ones
     // zero out. Each skill check consumes a crit and a value roll (between) then an improve roll (roll).
+    //
+    // The question whitelist is set before the boot because the state builds its question pool when it's constructed.
+    // The player fixture has no mana, so no request is possible and a single whitelisted question is picked without a
+    // coin flip.
     function bootNegotiation() {
       BattleFixtures.prepareForBattle();
       BattleSystem.startBattle({ monster:'kobold-sneak-slut', ambushState:'normal' });
@@ -127,21 +131,10 @@ describe("NegotiationSystem", function() {
       return { state, player, monster };
     }
 
-    // TODO: Task 158 will add a fixture to limit the question pool to a small list of questions or requests. We
-    //       should use that instead of this function.
-
-    // Draws until the wanted question comes up. The registered question count bounds the loop; a pool exhausted
-    // before the question is found fails the test through pickInteraction's own throw.
-    function pickUntil(state, question) {
-      for (let i=0; i<NegotiationQuestion.getAllCodes().length; i++) {
-        if (state.pickInteraction().code === question) { return; }
-      }
-      throw new Error(`Question ${question} was not in the pool`);
-    }
-
     it("moderates a feelings reaction and records the conversation improvement", function() {
+      NegotiationQuestion.setWhitelist(['how-do-you-taste']);
       const { state, player } = bootNegotiation();
-      pickUntil(state, 'how-do-you-taste');
+      expect(state.pickInteraction().code).to.equal('how-do-you-taste');
 
       Random.stubBetween(50,75, 50,1);
       Random.stubRoll(5, 149);
@@ -157,10 +150,11 @@ describe("NegotiationSystem", function() {
     // the values land exactly), then the two improve rolls. The join carries the default love feelings map, so the
     // doubled positives push affection past its threshold on the way in.
     it("applies moderated feelings from a join reaction before it resolves", function() {
+      NegotiationQuestion.setWhitelist(['let-me-taste']);
       const { state, monster } = bootNegotiation();
 
       state.setFlag('playerCockOut', true);
-      pickUntil(state, 'let-me-taste');
+      expect(state.pickInteraction().code).to.equal('let-me-taste');
 
       Random.stubBetween(50,75, 50,1);
       Random.stubRoll(3, 5, 5, 5, 149);
@@ -176,8 +170,9 @@ describe("NegotiationSystem", function() {
     // only carries a fierce reaction block, which setFollowUp reads live.
     describe("follow up questions", function() {
       it("forces the follow up question on the advance after the reaction", function() {
+        NegotiationQuestion.setWhitelist(['tired-of-fighting']);
         const { state, monster } = bootNegotiation();
-        pickUntil(state, 'tired-of-fighting');
+        expect(state.pickInteraction().code).to.equal('tired-of-fighting');
         setArchetype(monster, ArchetypeCode.savage);
 
         const count = state.getInteractionCount();
@@ -230,15 +225,15 @@ describe("NegotiationSystem", function() {
     });
 
     // The player fixture is a human with no natural mana, so no request is possible until some is granted. With red
-    // mana the give-me-mana request is the only one in the pool, and the coin flip is stubbed to pick a request over
-    // a question. The request parameters are rolled when the request is picked: the color is drawn from a single
-    // element list and the amount is the first stubbed between value.
+    // mana the give-me-mana request is the only one in the pool, and the empty question whitelist leaves it as the only
+    // interaction, so no coin is flipped. The request parameters are rolled when the request is picked: the color is
+    // drawn from a single element list and the amount is the first stubbed between value.
     describe("requests", function() {
       function bootRequest() {
+        NegotiationQuestion.setWhitelist([]);
         const booted = bootNegotiation();
 
         BattleFixtures.grantMana('red', 100);
-        Random.stubFlipCoin(false);
         Random.stubBetween(20);
 
         expect(booted.state.pickInteraction().code).to.equal('give-me-mana');

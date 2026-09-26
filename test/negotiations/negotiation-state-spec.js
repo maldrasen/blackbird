@@ -60,8 +60,11 @@ describe("NegotiationState", function() {
   // the give-me-mana request is the only one in the pool. When both a question and a request are available the pick
   // flips a coin, tails for a request. Picking a request rolls its parameters: the color is drawn from a single element
   // list and the amount is the first stubbed between value.
+  //
+  // The exhaustion specs whitelist two questions before the state is built (the pool is built in the constructor) so
+  // the pool runs dry on an exact pick.
   describe("pickInteraction()", function() {
-    const questionLimit = NegotiationQuestion.getAllCodes().length;
+    const twoQuestions = ['tired-of-fighting', 'what-is-best'];
 
     it('picks a request on tails, rolling its parameters and text', function() {
       const state = buildState(40, 20);
@@ -94,34 +97,36 @@ describe("NegotiationState", function() {
       expect(state.getInteractionCount()).to.equal(2);
     });
 
-    // Every pick with both kinds available consumes a coin flip, so enough heads are queued to drain the whole question
-    // pool. The leftover stubs are harmless.
+    // Every pick with both kinds available consumes a coin flip, so two heads drain the question pool. Only two flips
+    // are stubbed, proving the request fallback doesn't flip a third.
     it('falls back to a request once the questions are used up', function() {
+      NegotiationQuestion.setWhitelist(twoQuestions);
       const state = buildState(40, 20);
       BattleFixtures.grantMana('red', 100);
-      Random.stubFlipCoin(...Array(questionLimit).fill(true));
+      Random.stubFlipCoin(true, true);
 
-      let entry;
-      for (let i=0; i<=questionLimit; i++) {
-        entry = state.pickInteraction();
-        if (entry.type === 'request') { break; }
-      }
+      expect(state.pickInteraction().type).to.equal('question');
+      expect(state.pickInteraction().type).to.equal('question');
 
+      const entry = state.pickInteraction();
+      expect(entry.type).to.equal('request');
       expect(entry.code).to.equal('give-me-mana');
-      expect(state.getInteractionCount()).to.be.above(1);
+      expect(state.getInteractionCount()).to.equal(3);
     });
 
     // The empty flipCoin stub makes any coin flip throw, proving no coin is flipped while only questions are possible.
     it('picks only questions without a coin flip when no request is possible, then throws when they run out', function() {
+      NegotiationQuestion.setWhitelist(twoQuestions);
       const state = buildState(40, 20);
       Random.stubFlipCoin();
 
-      const entries = [];
-      const drain = () => { for (let i=0; i<=questionLimit; i++) { entries.push(state.pickInteraction()); } };
+      const first = state.pickInteraction();
+      const second = state.pickInteraction();
+      expect([first.code, second.code].sort()).to.deep.equal(twoQuestions);
+      expect(first.type).to.equal('question');
+      expect(second.type).to.equal('question');
 
-      expect(drain).to.throw('There are no possible negotiation interactions');
-      expect(entries.length).to.be.above(0);
-      expect(entries.every(entry => entry.type === 'question')).to.equal(true);
+      expect(() => state.pickInteraction()).to.throw('There are no possible negotiation interactions');
     });
   });
 
