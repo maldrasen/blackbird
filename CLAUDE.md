@@ -72,14 +72,10 @@ listed file in order; each file attaches itself to the global object rather than
 
 ## Other 
 
-### Local Version Control
+### Version Control
 Don't run or offer to run any git commands that would check in code. I'll take care of all the version control tasks
 myself. Work only in the main project directory, not in git worktree subdirectories. Using git for read only commands
 like `git diff` or `git log` is allowed.
-
-### Cloud Version Control
-If this is a cloud session, then Claude will necessarily have to have full access to version control. I'm not sure yet
-how or if cloud sessions will fit into my workflow, but I thought I'd give them a try at least.
 
 ### Comments
 There's no need to add comments when it's clear what something does.
