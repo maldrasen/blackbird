@@ -15,14 +15,5 @@ Agreeing to a request will usually result in positive feelings, though sometimes
 Unlike the questions though a request will sometimes have to have a random value. Like "Give me 50 mana" needs to randomly select the mana amount to ask for. The feelings awarded by the request should be tied to this random value, though we'll need a factor to define by how much. 
 
 > I would actually like to implement character mana and loot generation before adding this. We have a few ideas of what requests could look like below, but I think these will be rarer. Most requests should be of the "give me an item" or "give me mana" variety.
-### Violent Requests
-- Can I cut you, just a little bit?
-- Really, I just want to punch you in the face, okay?
-- Let me slap your tits around for a little.
-### Lewd requests
-- Hmm, lets if you're a good kisser.
-- I want to see what your working with. So pull your dick out for me.
-- Umm, show me your tits.
-- I want to fuck, umm, that one over there. He says pointing at {character name}.
-- How about you suck me off first.
+
 

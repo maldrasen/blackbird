@@ -20,6 +20,14 @@ global.CharacterRequirements = (function() {
     return Character(context[key]).getName() === name
   }
 
+  function hasAnyMana(context, key) {
+    return Character(context[key]).getTotalMana().current > 0;
+  }
+
+  function hasMana(context, key, color, min) {
+    return ManaComponent.lookup(context[key])[color].current > min;
+  }
+
   // Be careful not to confuse isMale() with hasCock(). Some men don't have dicks, and some women do.
   function isMale(context, key) {
     return subject(context, key).isMale();
@@ -144,6 +152,8 @@ global.CharacterRequirements = (function() {
     isSpecies: (key, code) =>                { return (context) => { return isSpecies(context, key, code); }},
     isNamed: (key, name) =>                  { return (context) => { return isNamed(context, key, name); }},
     isNotNamed: (key, name) =>               { return (context) => { return isNamed(context, key, name) === false; }},
+    hasAnyMana: key =>                       { return (context) => { return hasAnyMana(context, key); }},
+    hasMana: (key,color,min) =>              { return (context) => { return hasMana(context, key, color, min); }},
     isMale: key =>                           { return (context) => { return isMale(context, key); }},
     isNotMale: key =>                        { return (context) => { return isMale(context, key) === false; }},
     isAnusEmpty: key =>                      { return (context) => { return isAnusEmpty(context, key); }},

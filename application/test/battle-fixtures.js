@@ -78,6 +78,14 @@ global.BattleFixtures = (function() {
     SkillsComponent.update(id, skills);
   }
 
+  function grantMana(color, amount) {
+    const player = GameSystem.getState().getPlayer();
+    const mana = ManaComponent.lookup(player);
+    mana[color].max = amount;
+    mana[color].current = amount;
+    ManaComponent.update(player,mana);
+  }
+
   // Stock encounter data for specs that need a battle without going through a cohort or an encounter record.
   // Spread into the BattleSystem.startBattle() options.
   function runtPack() {
@@ -101,6 +109,7 @@ global.BattleFixtures = (function() {
 
   return {
     prepareForBattle,
+    grantMana,
     runtPack,
     trapperPack,
   };

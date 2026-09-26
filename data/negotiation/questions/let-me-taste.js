@@ -3,7 +3,7 @@
 //       other similar questions when asked. The reverse order is fine, so this isn't a symmetrical relationship.
 
 NegotiationQuestion.register('let-me-taste', {
-  text: `{T:TargetName} smiles, staring at your {P:thickSixInchLongCock}, "Okay... let me taste it."`,
+  text: `{T:TargetName} smiles, staring at your {P:cock.thickSixInchLongCock}, "Okay... let me taste it."`,
   dynamicRequirements: [
     NegotiationRequirements.isTrue('playerCockOut'),
   ],

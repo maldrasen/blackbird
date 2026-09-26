@@ -16,9 +16,9 @@ global.NegotiationSystem = (function() {
   function advance() {
     if (state.hasShownResolution()) { return executeResolution(); }
     if (state.hasResolution()) { return showResolution(); }
-    if (state.hasFollowUp()) { return NegotiationInterface.renderQuestion(state.takeFollowUpQuestion()); }
+    if (state.hasFollowUp()) { return NegotiationInterface.renderInteraction(state.takeFollowUpQuestion()); }
     if (state.getInteractionCount() >= maxInteractions) { return forceResolution(); }
-    NegotiationInterface.renderQuestion(state.pickQuestion());
+    NegotiationInterface.renderInteraction(state.pickInteraction());
   }
 
   function forceResolution() {
@@ -31,13 +31,17 @@ global.NegotiationSystem = (function() {
     NegotiationInterface.renderResolution();
   }
 
-  // TODO: Requests are answered here as well once they're implemented. (Task 105)
   function answer(key) {
-    const question = state.getCurrentQuestion();
-    const reaction = question.reactionData.reactions[key].resolve(state.getContext());
-
+    const reaction = getReaction(key).resolve(state.getContext());
     reaction.applyEffects(state.getContext());
     applyReaction(reaction.feelings ? moderateReaction(reaction) : reaction);
+  }
+
+  function getReaction(key) {
+    const interaction = state.getCurrentInteraction();
+    return (interaction.type === 'question') ?
+      interaction.reactionData.reactions[key] :
+      NegotiationRequest.lookup(interaction.code).resolveAnswerReaction(key, state.getContext(), interaction.requestParameters);
   }
 
   function moderateReaction(reaction) {

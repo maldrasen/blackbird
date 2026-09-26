@@ -127,11 +127,14 @@ describe("NegotiationSystem", function() {
       return { state, player, monster };
     }
 
+    // TODO: Task 158 will add a fixture to limit the question pool to a small list of questions or requests. We
+    //       should use that instead of this function.
+
     // Draws until the wanted question comes up. The registered question count bounds the loop; a pool exhausted
-    // before the question is found fails the test through pickQuestion's own throw.
+    // before the question is found fails the test through pickInteraction's own throw.
     function pickUntil(state, question) {
       for (let i=0; i<NegotiationQuestion.getAllCodes().length; i++) {
-        if (state.pickQuestion().question === question) { return; }
+        if (state.pickInteraction().code === question) { return; }
       }
       throw new Error(`Question ${question} was not in the pool`);
     }
@@ -181,10 +184,10 @@ describe("NegotiationSystem", function() {
         NegotiationSystem.answer('otherWay');
         expect(state.hasResolution()).to.equal(false);
         expect(state.hasFollowUp()).to.equal(true);
-        expect(state.getCurrentQuestion().question).to.equal('tired-of-fighting');
+        expect(state.getCurrentInteraction().code).to.equal('tired-of-fighting');
 
         NegotiationSystem.advance();
-        expect(state.getCurrentQuestion().question).to.equal('tired-of-fighting-other-way');
+        expect(state.getCurrentInteraction().code).to.equal('tired-of-fighting-other-way');
         expect(state.getInteractionCount()).to.equal(count + 1);
         expect(state.hasFollowUp()).to.equal(false);
 
@@ -210,7 +213,7 @@ describe("NegotiationSystem", function() {
         NegotiationSystem.advance();
 
         expect(state.hasResolution()).to.equal(false);
-        expect(state.getCurrentQuestion().question).to.equal('tired-of-fighting-other-way');
+        expect(state.getCurrentInteraction().code).to.equal('tired-of-fighting-other-way');
         expect(state.getInteractionCount()).to.equal(6);
       });
 
@@ -223,6 +226,56 @@ describe("NegotiationSystem", function() {
 
         NegotiationSystem.advance();
         expect(state.hasShownResolution()).to.equal(true);
+      });
+    });
+
+    // The player fixture is a human with no natural mana, so no request is possible until some is granted. With red
+    // mana the give-me-mana request is the only one in the pool, and the coin flip is stubbed to pick a request over
+    // a question. The request parameters are rolled when the request is picked: the color is drawn from a single
+    // element list and the amount is the first stubbed between value.
+    describe("requests", function() {
+      function bootRequest() {
+        const booted = bootNegotiation();
+
+        BattleFixtures.grantMana('red', 100);
+        Random.stubFlipCoin(false);
+        Random.stubBetween(20);
+
+        expect(booted.state.pickInteraction().code).to.equal('give-me-mana');
+        expect(booted.state.getCurrentInteraction().requestParameters).to.deep.equal({ color:'red', amount:20 });
+
+        return booted;
+      }
+
+      it("spends the requested mana and moderates the reaction when the request is granted", function() {
+        const { state, player } = bootRequest();
+
+        Random.stubBetween(50,75, 50,1);
+        Random.stubRoll(5, 149);
+        NegotiationSystem.answer('yes');
+
+        expect(ManaComponent.lookup(player).red).to.deep.equal({ current:80, max:100 });
+        expect(state.getFeelings()).to.deep.equal({ control:50, affection:10, fear:40, respect:80 });
+        expect(state.hasResolution()).to.equal(false);
+        expect(SkillsComponent.lookup(player).conversation).to.equal(1);
+      });
+
+      // The brains are swapped so the monster wins the contest and the hurting feelings double instead of zeroing out.
+      // The starting feelings are raised so nothing clamps at zero.
+      it("keeps the mana and takes the disrespect when the request is refused", function() {
+        const { state, player, monster } = bootRequest();
+
+        setBrains(player, 20);
+        setBrains(monster, 100);
+        state.setFeelings({ fear:60, respect:70 });
+
+        Random.stubBetween(50,1, 50,75);
+        Random.stubRoll(5, 149);
+        NegotiationSystem.answer('no');
+
+        expect(ManaComponent.lookup(player).red).to.deep.equal({ current:100, max:100 });
+        expect(state.getFeelings()).to.deep.equal({ control:-30, affection:10, fear:20, respect:10 });
+        expect(state.hasResolution()).to.equal(false);
       });
     });
   });

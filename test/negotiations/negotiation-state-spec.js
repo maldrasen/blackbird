@@ -56,32 +56,72 @@ describe("NegotiationState", function() {
     });
   });
 
-  // The pool's exact contents grow as questions are authored, so the spec drains the pool rather than enumerating it.
-  describe("pickQuestion()", function() {
-    it('picks every possible question with a matching reaction, then throws', function() {
-      const state = buildState(40, 20);
+  // The player fixture is a human with no natural mana, so no request is possible until some is granted. With red mana
+  // the give-me-mana request is the only one in the pool. When both a question and a request are available the pick
+  // flips a coin, tails for a request. Picking a request rolls its parameters: the color is drawn from a single element
+  // list and the amount is the first stubbed between value.
+  describe("pickInteraction()", function() {
+    const questionLimit = NegotiationQuestion.getAllCodes().length;
 
-      const picked = [];
-      for (let i=0; i<NegotiationQuestion.getAllCodes().length; i++) {
-        try { picked.push(state.pickQuestion().question); } catch { break; }
+    it('picks a request on tails, rolling its parameters and text', function() {
+      const state = buildState(40, 20);
+      BattleFixtures.grantMana('red', 100);
+      Random.stubFlipCoin(false);
+      Random.stubBetween(20);
+
+      const entry = state.pickInteraction();
+      expect(entry.type).to.equal('request');
+      expect(entry.code).to.equal('give-me-mana');
+      expect(entry.requestParameters).to.deep.equal({ color:'red', amount:20 });
+      expect(entry.requestText).to.include('red mana');
+      expect(state.getCurrentInteraction()).to.equal(entry);
+      expect(state.getInteractionCount()).to.equal(1);
+    });
+
+    it('keeps a repeatable request in the pool and re-rolls its parameters on each pick', function() {
+      const state = buildState(40, 20);
+      BattleFixtures.grantMana('red', 100);
+      Random.stubFlipCoin(false, false);
+      Random.stubBetween(20, 25);
+
+      const first = state.pickInteraction();
+      const second = state.pickInteraction();
+      expect(first.code).to.equal('give-me-mana');
+      expect(second.code).to.equal('give-me-mana');
+      expect(first).to.not.equal(second);
+      expect(first.requestParameters.amount).to.equal(20);
+      expect(second.requestParameters.amount).to.equal(25);
+      expect(state.getInteractionCount()).to.equal(2);
+    });
+
+    // Every pick with both kinds available consumes a coin flip, so enough heads are queued to drain the whole question
+    // pool. The leftover stubs are harmless.
+    it('falls back to a request once the questions are used up', function() {
+      const state = buildState(40, 20);
+      BattleFixtures.grantMana('red', 100);
+      Random.stubFlipCoin(...Array(questionLimit).fill(true));
+
+      let entry;
+      for (let i=0; i<=questionLimit; i++) {
+        entry = state.pickInteraction();
+        if (entry.type === 'request') { break; }
       }
 
-      expect(picked).to.include('how-do-you-taste');
-      expect(picked).to.include('show-it-to-me');
-      expect(new Set(picked).size).to.equal(picked.length);
+      expect(entry.code).to.equal('give-me-mana');
+      expect(state.getInteractionCount()).to.be.above(1);
+    });
 
-      // Follow up questions are never added to the pool.
-      expect(picked).to.not.include('tired-of-fighting-other-way');
+    // The empty flipCoin stub makes any coin flip throw, proving no coin is flipped while only questions are possible.
+    it('picks only questions without a coin flip when no request is possible, then throws when they run out', function() {
+      const state = buildState(40, 20);
+      Random.stubFlipCoin();
 
-      // let-me-taste is still in the pool, but its dynamic requirement keeps it unpickable.
-      expect(picked).to.not.include('let-me-taste');
-      expect(() => state.pickQuestion()).to.throw(`aren't enough valid questions`);
+      const entries = [];
+      const drain = () => { for (let i=0; i<=questionLimit; i++) { entries.push(state.pickInteraction()); } };
 
-      state.setFlag('playerCockOut', true);
-      expect(state.pickQuestion().question).to.equal('let-me-taste');
-      expect(state.getInteractionCount()).to.equal(picked.length + 1);
-
-      expect(() => state.pickQuestion()).to.throw(`aren't enough valid questions`);
+      expect(drain).to.throw('There are no possible negotiation interactions');
+      expect(entries.length).to.be.above(0);
+      expect(entries.every(entry => entry.type === 'question')).to.equal(true);
     });
   });
 
@@ -97,9 +137,10 @@ describe("NegotiationState", function() {
       expect(state.hasFollowUp()).to.equal(true);
 
       const entry = state.takeFollowUpQuestion();
-      expect(entry.question).to.equal('tired-of-fighting-other-way');
+      expect(entry.type).to.equal('question');
+      expect(entry.code).to.equal('tired-of-fighting-other-way');
       expect(entry.reactionData.style).to.equal(NegotiationStyle.fierce);
-      expect(state.getCurrentQuestion()).to.equal(entry);
+      expect(state.getCurrentInteraction()).to.equal(entry);
       expect(state.getInteractionCount()).to.equal(1);
       expect(state.hasFollowUp()).to.equal(false);
     });
