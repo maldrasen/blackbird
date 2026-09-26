@@ -24,6 +24,9 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [228] Effect based enchantments `3pt` — [228-effect-based-enchantments.md](228-effect-based-enchantments.md)
 - [229] Implment ammunition `3pt` — [229-implment-ammunition.md](229-implment-ammunition.md)
 - [230] Add draw weight for bows. `3pt` — [230-add-draw-weight-for-bows.md](230-add-draw-weight-for-bows.md)
+- [237] The Character Equipper Should Honor Gender and Sexual Preferences `3pt` — [237-equipper-should-honor-gender.md](237-equipper-should-honor-gender.md)
+- [239] Dungeon Light emitters `5pt` — [239-dungeon-light-emitters.md](239-dungeon-light-emitters.md)
+- [240] Safe Rooms `3pt` — [240-safe-rooms.md](240-safe-rooms.md)
 
 ## Priority 3
 
@@ -57,6 +60,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [176] Implement potency item effect `8pt` — [176-implement-potency-item-effect.md](176-implement-potency-item-effect.md)
 - [208] Six Blade Knife Episodes `13pt` — [208-six-blade-knife-episodes.md](208-six-blade-knife-episodes.md)
 - [209] Create the Cock Describer `13pt` — [209-create-the-cock-describer.md](209-create-the-cock-describer.md)
+- [238] Equipment details `0pt` — [238-equipment-details.md](238-equipment-details.md)
 
 ## Priority 4
 

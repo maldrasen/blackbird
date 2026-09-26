@@ -1,3 +1,5 @@
-
 #### Unique Weapons
 - Simmerdalewanny (a little wee simmer-dale wanny to ding me sindle and saft)
+
+### Demonic Coprolite
+A higher end crafting material with a lewd origin. The material will exist in the game, but the details of it's origin will need to be hidden if scat content is filtered. Some demons are obsessed with eating shit, including their own. This creates a "refining" cycle where the same shit is being eaten and shat back out, growing harder and more mineral like with each trip. Eventually the shit turns into a crystal like substance, first growing sharp edges, and eventually long sharp spikes, making each trip through the guts increasingly painful and damaging. Eventually it's rendered inedible, even by demonic standards. By then it's absorbed a ton of demonic blood and mana, and is hard enough to be forged into a weapon or armor. It's a very difficult and cursed material to try and work with. It can be turned into a mace head fairly easily, but something like a sword is near impossible. Probably needs some satanic ass rituals to forge properly. A succubus being deepthroated over the anvil, forced to puke up her highly acidic digestive juices onto the blade as it's being worked. 

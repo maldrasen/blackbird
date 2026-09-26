@@ -1,13 +1,15 @@
+### Armor Ideas
+We've added mostly normal armor to the game so far. The kinds of armor you'd expect to see in a fantasy game, but we also want a bunch of lewd and unusual armor as well, leaning into the BDSM and even horror elements.
 
-
-### Armor and Clothing
-Armor and clothing share a lot of the same properties. Really armor is just a type of clothing with damage reduction. Clothing can also have damage reduction too of course. It should be possible to wear some clothing with armor though. Maybe there should be a clothing chest slot and an armor chest slot?
-
+##### Normal Stuff
 - `Chest` Gown, Jacket, Tunic, Robes, Straps, Shirt
-- `Feet` Slippers, Shoes, Sandals
+- `Feet` Shoes, Sandals
 - `Head` Mask, Cowl, Cap
 
-We also want some armors that prevent clothing or clothing that prevents armor. We already have armor that takes up multiple slots, so that shouldn't be hard. 
+##### Lewd Armors
 - Chainmail Bikini top and bottom
 - Chastity belt
 - Cruelty or bondage bras and panties
+- Murderfucking Rapeblade (A sword attached to a strap on, as featured in Se7en)
+- Fang Thong and Bra (Sharp inward facing teeth)
+- Vulgar Plate Armor (Fullplate armor with huge, highly detailed, aggressively erect, metal cocks.)
