@@ -15,6 +15,7 @@ global.GameState = function(data={}) {
   let viewedEpisodes = data.viewedEpisodes || [];
   let equipmentDepots = data.equipmentDepots || {};
   let lootInventory = data.lootInventory;
+  let partyInventory = data.partyInventory;
 
   // TODO: Eventually this function will consult everything that might influence this value. It's not set in the state,
   //       but may need to read values from the player.
@@ -60,6 +61,17 @@ global.GameState = function(data={}) {
     return lootInventory;
   }
 
+  // Everything the party carries that isn't equipped lives in one shared inventory. Equipped items belong to the
+  // character wearing them.
+  function manifestPartyInventory() {
+    if (partyInventory == null) {
+      partyInventory = Registry.createEntity();
+      InventoryComponent.create(partyInventory);
+    }
+
+    return partyInventory;
+  }
+
   function getSaveMetadata() {
     return {
       version: Environment.version,
@@ -87,6 +99,7 @@ global.GameState = function(data={}) {
       dungeonState: dungeonState.pack(),
       equipmentDepots: equipmentDepots,
       lootInventory: lootInventory,
+      partyInventory: partyInventory,
     };
   }
 
@@ -122,6 +135,7 @@ global.GameState = function(data={}) {
     getDungeonState: () => { return dungeonState; },
     manifestEquipmentDepot,
     manifestLootInventory,
+    manifestPartyInventory,
     getSaveMetadata,
     pack,
   };

@@ -30,13 +30,13 @@ describe("EnlightenSystem", function() {
       expect(ExperienceComponent.lookup(second).essence).to.equal(700);
     });
 
-    it("banks the loot in the player's inventory", function() {
+    it("banks the loot in the party inventory", function() {
       Article.register('spec-enlighten-bauble', { name:'Spec Bauble', category:InventoryCategory.valuables });
       const player = CharacterFixtures.randomPlayer();
 
       startBattleEnlightenment([player], 0, [{ articleCode:'spec-enlighten-bauble', quantity:3 }]);
 
-      expect(InventoryManager(player).getArticleQuantity('spec-enlighten-bauble')).to.equal(3);
+      expect(InventoryManager().getArticleQuantity('spec-enlighten-bauble')).to.equal(3);
       expect(EnlightenSystem.getState().getLoot()).to.deep.equal([{ articleCode:'spec-enlighten-bauble', quantity:3 }]);
     });
 

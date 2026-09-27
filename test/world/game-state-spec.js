@@ -133,4 +133,21 @@ describe('GameState', function() {
     expect(GameState(state.pack()).manifestLootInventory()).to.equal(loot);
   });
 
+  it('manifests a single party inventory', function() {
+    const state = GameState();
+    const party = state.manifestPartyInventory();
+
+    expect(InventoryComponent.lookup(party).items).to.eql([]);
+    expect(state.manifestPartyInventory()).to.equal(party);
+    expect(party).to.not.equal(state.manifestLootInventory());
+  });
+
+  it('packs and restores the party inventory', function() {
+    const state = GameState();
+    const party = state.manifestPartyInventory();
+
+    expect(state.pack().partyInventory).to.equal(party);
+    expect(GameState(state.pack()).manifestPartyInventory()).to.equal(party);
+  });
+
 });

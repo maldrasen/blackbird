@@ -1,4 +1,4 @@
-global.InventoryManager = function(characterId=GameSystem.getState().getPlayer()) {
+global.InventoryManager = function(characterId=GameSystem.getState().manifestPartyInventory()) {
 
   function fetch() {
     return InventoryComponent.lookup(characterId);
