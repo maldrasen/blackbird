@@ -6,7 +6,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 - [236] Convert traps into tile contents `5pt` — [236-convert-traps-into-tile-contents.md](236-convert-traps-into-tile-contents.md)
 - [243] Combine party inventory `8pt` — [243-combine-party-inventory.md](243-combine-party-inventory.md)
-- [245] Equipment slot panel `3pt` — [245-equipment-slot-panel.md](245-equipment-slot-panel.md)
 
 ## Priority 2
 
