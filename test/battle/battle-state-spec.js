@@ -79,9 +79,11 @@ describe("BattleState", function() {
       return BattleSystem.getState();
     }
 
+    // A longsword in the primary slot unless told otherwise, replacing whatever the depot gave the monster.
     function giveItem(monster, options={}) {
-      const item = ItemFixtures.buildSteel('longsword', options);
-      InventoryManager(monster).addItem(item);
+      const { code='longsword', slot=EquipmentSlot.primary, ...buildOptions } = options;
+      const item = ItemFixtures.buildSteel(code, buildOptions);
+      EquipmentManager(monster).equipItem(item, slot);
       return item;
     }
 
@@ -120,7 +122,7 @@ describe("BattleState", function() {
       const [dead, knockedOut] = state.getActiveMonsters();
       const deadLoot = giveItem(dead, { enchantment });
       const knockedOutLoot = giveItem(knockedOut, { enchantment });
-      const mundane = giveItem(dead);
+      const mundane = giveItem(dead, { code:'helm', slot:EquipmentSlot.head });
 
       state.setCondition(dead, BattleCondition.dead);
       state.setCondition(knockedOut, BattleCondition.knockedOut);
