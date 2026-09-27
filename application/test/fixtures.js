@@ -41,8 +41,7 @@ global.Fixtures = (function() {
     CharacterFixtures.randomCharacters(10, { triggers:[] });
 
     // TEMP: Inventory Testing
-    const player = GameSystem.getState().getPlayer();
-    const inventory = InventoryManager(player);
+    const inventory = InventoryManager();
     const factory = EquipmentFactory();
     BaseEquipment.getAllCodes().filter(code => BaseEquipment.lookup(code).isWeapon()).forEach(code => {
       inventory.addItem(factory.build(code));

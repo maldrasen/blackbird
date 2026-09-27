@@ -25,8 +25,6 @@ global.OrphanSweeper = (function() {
     });
 
     orphans.forEach(id => {
-      const inventory = InventoryComponent.lookup(id);
-      if (inventory) { inventory.items.forEach(itemId => Registry.deleteEntity(itemId)); }
       equippedItems(id).forEach(itemId => Registry.deleteEntity(itemId));
       Registry.deleteEntity(id);
     });

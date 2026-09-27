@@ -11,13 +11,12 @@ describe("OrphanSweeper", function() {
     expect(Registry.entityExists(item)).to.be.false;
   });
 
-  it('keeps the items held by characters, depots, and the loot inventory', function() {
-    const character = CharacterFixtures.genericMale({});
+  it('keeps the items held by the party, depots, and the loot inventory', function() {
     const carried = ItemFixtures.buildSteel('longsword');
     const loot = ItemFixtures.buildSteel('longsword');
     const stock = EquipmentDepot('standard').getWeapons();
 
-    InventoryManager(character).addItem(carried);
+    InventoryManager().addItem(carried);
     InventoryManager(GameSystem.getState().getLootInventory()).addItem(loot);
 
     expect(OrphanSweeper.sweep()).to.eql({ monsters:0, items:0 });
