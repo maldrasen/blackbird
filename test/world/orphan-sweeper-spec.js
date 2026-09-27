@@ -28,10 +28,19 @@ describe("OrphanSweeper", function() {
     });
   });
 
+  it('keeps an equipped item that is in no inventory', function() {
+    const character = CharacterFixtures.genericMale({});
+    const sword = ItemFixtures.buildSteel('longsword');
+    EquipmentManager(character).equipItem(sword, EquipmentSlot.primary);
+
+    expect(OrphanSweeper.sweep()).to.eql({ monsters:0, items:0 });
+    expect(Registry.entityExists(sword)).to.be.true;
+  });
+
   it('removes the monsters outside of a battle along with their items', function() {
     const monster = buildMonster();
     const item = ItemFixtures.buildSteel('longsword');
-    InventoryManager(monster).addItem(item);
+    EquipmentManager(monster).equipItem(item, EquipmentSlot.primary);
 
     const swept = OrphanSweeper.sweep();
 

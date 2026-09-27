@@ -45,12 +45,6 @@ describe("EquipmentComponent", function() {
       const { horse, items:[sword] } = ownerOf('longsword');
       expect(() => EquipmentComponent.update(horse, { tail:sword })).to.throw(/does not have a tail slot/);
     });
-
-    it("rejects an equipped item that isn't in the owner's inventory", function() {
-      const horse = CharacterFixtures.genericMale({});
-      const sword = EquipmentFactory().build('longsword');
-      expect(() => EquipmentComponent.update(horse, { primary:sword })).to.throw(/isn't in Character/);
-    });
   });
 
 });

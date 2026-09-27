@@ -27,13 +27,15 @@ global.OrphanSweeper = (function() {
     orphans.forEach(id => {
       const inventory = InventoryComponent.lookup(id);
       if (inventory) { inventory.items.forEach(itemId => Registry.deleteEntity(itemId)); }
+      equippedItems(id).forEach(itemId => Registry.deleteEntity(itemId));
       Registry.deleteEntity(id);
     });
 
     return orphans.length;
   }
 
-  // An item has to be in an inventory. That could be a character's inventory, an equipment depot, or the loot.
+  // An item is owned when an inventory holds it (the party inventory, an equipment depot, or the loot) or when it's
+  // equipped by someone.
   function sweepItems() {
     const owned = new Set();
 
@@ -41,10 +43,18 @@ global.OrphanSweeper = (function() {
       InventoryComponent.lookup(id).items.forEach(itemId => owned.add(itemId));
     });
 
+    Registry.findEntitiesWithComponents([ComponentType.equipment]).forEach(id => {
+      equippedItems(id).forEach(itemId => owned.add(itemId));
+    });
+
     const orphans = Registry.findEntitiesWithComponents([ComponentType.item]).filter(id => owned.has(id) === false);
     orphans.forEach(id => Registry.deleteEntity(id));
 
     return orphans.length;
+  }
+
+  function equippedItems(id) {
+    return Object.values(EquipmentComponent.lookup(id) || {}).filter(itemId => itemId != null);
   }
 
   return { sweep };
