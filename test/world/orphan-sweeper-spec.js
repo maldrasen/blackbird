@@ -37,8 +37,9 @@ describe("OrphanSweeper", function() {
     expect(Registry.entityExists(sword)).to.be.true;
   });
 
+  // A bare handed monster, so the sword doesn't knock a depot weapon out of the slot and leave it orphaned.
   it('removes the monsters outside of a battle along with their items', function() {
-    const monster = buildMonster();
+    const monster = MonsterFactory('kobold-dick-puncher').build();
     const item = ItemFixtures.buildSteel('longsword');
     EquipmentManager(monster).equipItem(item, EquipmentSlot.primary);
 

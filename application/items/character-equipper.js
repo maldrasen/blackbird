@@ -209,7 +209,7 @@ global.CharacterEquipper = function(id) {
   function isFilled(slot) { return equipmentManager.getSlot(slot) != null; }
 
   function pickEquipment(itemId, slot) {
-    findDepot().pickItem(itemId, id);
+    findDepot().pickItem(itemId);
     equipmentManager.equipItem(itemId, slot);
     equipment[slot] = itemId;
   }

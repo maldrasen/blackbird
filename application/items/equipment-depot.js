@@ -45,13 +45,12 @@ global.EquipmentDepot = function(code) {
     return [...fetch(stocks.armor).items];
   }
 
-  // Picking an item should always transfer it into a new inventory.
-  function pickItem(itemId, entity) {
+  // A picked item leaves the stock with no owner, so whoever picks it has to equip it or put it in an inventory.
+  function pickItem(itemId) {
     const stock = Object.values(stocks).find(id => InventoryManager(id).hasItem(itemId));
     if (stock == null) { throw new Error(`EquipmentDepot:${code} doesn't have Item:${itemId} to pick.`); }
 
     InventoryManager(stock).removeItem(itemId);
-    InventoryManager(entity).addItem(itemId);
   }
 
   return {
