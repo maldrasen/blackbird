@@ -50,6 +50,7 @@ global.Confirmation = (function() {
   return {
     init,
     show,
+    hide,
     cancel,
     isVisible,
   };
