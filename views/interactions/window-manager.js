@@ -46,11 +46,21 @@ global.WindowManager = (function() {
     }
   }
 
+  // Closes every window, locked or not, from the top down. The stack is swapped out first because each close() removes
+  // itself from whatever stack is current.
+  function forceCloseAll() {
+    const open = windowStack;
+    windowStack = [];
+    Tooltip.close();
+    open.toReversed().forEach(modal => modal.close());
+  }
+
   return {
     init,
     push,
     pop,
     remove,
+    forceCloseAll,
     isModalOpen,
   };
 
