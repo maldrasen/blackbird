@@ -111,6 +111,10 @@ global.GameSystem = (function() {
     returnMode = null;
   }
 
+  // TODO: This bothers me. When making a fresh game state, the state should know to build empty inventories. We can't
+  //       just build them though in the "constructor" as written because the registry may not exist yet. We should
+  //       change the state to something like GameState.create() to build a new state with empty inventory entities and
+  //       GameState.unpack({}) to build one from the packed data.
   function createGameState() {
     state = GameState();
     state.createInventories();
