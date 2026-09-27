@@ -22,7 +22,6 @@ global.ItemFixtures = (function() {
   function equip(character, code, materials, options={}) {
     const { slot, ...buildOptions } = options;
     const item = build(code, materials, buildOptions);
-    InventoryManager(character).addItem(item);
     EquipmentManager(character).equipItem(item, slot || BaseEquipment.lookup(code).getSlots()[0]);
     return item;
   }

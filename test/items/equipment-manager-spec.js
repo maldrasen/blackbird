@@ -6,11 +6,6 @@ describe('EquipmentManager', function() {
     const mainHand = EquipmentFactory().build('broad-axe');
     const twoHand = EquipmentFactory().build('goosewing');
 
-    const inventory = InventoryManager(horse);
-    inventory.addItem(oneHand);
-    inventory.addItem(mainHand);
-    inventory.addItem(twoHand);
-
     const equipment = EquipmentManager(horse);
     expect(equipment.canEquipItem(oneHand,EquipmentSlot.primary)).to.be.true;
     expect(equipment.canEquipItem(oneHand,EquipmentSlot.secondary)).to.be.true;
@@ -38,8 +33,6 @@ describe('EquipmentManager', function() {
     it("equips armors", function() {
       const horse = CharacterFixtures.genericMale({});
       const helm = EquipmentFactory().build('helm');
-
-      InventoryManager(horse).addItem(helm);
       EquipmentManager(horse).equipItem(helm, EquipmentSlot.head);
 
       expect(EquipmentComponent.lookup(horse).head).to.equal(helm);
@@ -49,10 +42,6 @@ describe('EquipmentManager', function() {
       const horse = CharacterFixtures.genericMale({});
       const right = EquipmentFactory().build('cleaver');
       const left = EquipmentFactory().build('hand-axe');
-
-      const inventory = InventoryManager(horse);
-      inventory.addItem(right);
-      inventory.addItem(left);
 
       const equipment = EquipmentManager(horse);
       equipment.equipItem(right, EquipmentSlot.primary);
@@ -68,10 +57,6 @@ describe('EquipmentManager', function() {
       const dagger = EquipmentFactory().build('dagger');
       const maul = EquipmentFactory().build('goosewing');
 
-      const inventory = InventoryManager(horse);
-      inventory.addItem(dagger);
-      inventory.addItem(maul);
-
       const equipment = EquipmentManager(horse);
       equipment.equipItem(dagger, EquipmentSlot.secondary);
       equipment.equipItem(maul, EquipmentSlot.primary);
@@ -86,10 +71,6 @@ describe('EquipmentManager', function() {
       const dagger = EquipmentFactory().build('dagger');
       const maul = EquipmentFactory().build('goosewing');
 
-      const inventory = InventoryManager(horse);
-      inventory.addItem(dagger);
-      inventory.addItem(maul);
-
       const equipment = EquipmentManager(horse);
       equipment.equipItem(maul, EquipmentSlot.primary);
       equipment.equipItem(dagger, EquipmentSlot.secondary);
@@ -102,8 +83,6 @@ describe('EquipmentManager', function() {
     it("unequips an item", function() {
       const horse = CharacterFixtures.genericMale({});
       const choppa = EquipmentFactory().build('battle-axe');
-
-      InventoryManager(horse).addItem(choppa);
       EquipmentManager(horse).equipItem(choppa, EquipmentSlot.primary);
       expect(EquipmentComponent.lookup(horse).primary).to.equal(choppa);
 
@@ -116,10 +95,6 @@ describe('EquipmentManager', function() {
     const horse = CharacterFixtures.genericMale({});
     const helm = EquipmentFactory().build('helm');
     const hatchet = EquipmentFactory().build('hatchet');
-
-    const inventory = InventoryManager(horse);
-    inventory.addItem(helm);
-    inventory.addItem(hatchet);
 
     const equipment = EquipmentManager(horse);
     equipment.equipItem(helm, EquipmentSlot.head);
@@ -134,11 +109,6 @@ describe('EquipmentManager', function() {
     const mainHand = EquipmentFactory().build('broad-axe');
     const helm = EquipmentFactory().build('helm');
 
-    const inventory = InventoryManager(horse);
-    inventory.addItem(oneHand);
-    inventory.addItem(mainHand);
-    inventory.addItem(helm);
-
     const equipment = EquipmentManager(horse);
     expect(equipment.getValidSlots(oneHand)).to.deep.equal([EquipmentSlot.primary, EquipmentSlot.secondary]);
     expect(equipment.getValidSlots(mainHand)).to.deep.equal([EquipmentSlot.primary]);
@@ -148,8 +118,6 @@ describe('EquipmentManager', function() {
   it('unequipItem()', function() {
     const horse = CharacterFixtures.genericMale({});
     const helm = EquipmentFactory().build('helm');
-
-    InventoryManager(horse).addItem(helm);
 
     const equipment = EquipmentManager(horse);
     equipment.equipItem(helm, EquipmentSlot.head);
@@ -164,11 +132,6 @@ describe('EquipmentManager', function() {
     const chest = EquipmentFactory().build('hauberk');
     const feet = EquipmentFactory().build('boots');
     const hands = EquipmentFactory().build('gloves');
-
-    const inventory = InventoryManager(horse);
-    inventory.addItem(chest);
-    inventory.addItem(feet);
-    inventory.addItem(hands);
 
     const equipment = EquipmentManager(horse);
     equipment.equipItem(chest, EquipmentSlot.chest);
@@ -186,10 +149,6 @@ describe('EquipmentManager', function() {
     const dagger = EquipmentFactory().build('dagger');
     const shield = EquipmentFactory().build('tower-shield');
 
-    const inventory = InventoryManager(horse);
-    inventory.addItem(dagger);
-    inventory.addItem(shield);
-
     const equipment = EquipmentManager(horse);
     expect(equipment.getEquippedShield()).to.equal(null);
 
@@ -205,10 +164,6 @@ describe('EquipmentManager', function() {
     const sword = EquipmentFactory().build('longsword');
     const offSword = EquipmentFactory().build('short-sword');
 
-    const inventory = InventoryManager(horse);
-    inventory.addItem(sword);
-    inventory.addItem(offSword);
-
     const equipment = EquipmentManager(horse);
     expect(equipment.hasEquippedWeaponType('sword')).to.be.false;
 
@@ -223,12 +178,10 @@ describe('EquipmentManager', function() {
 
   describe('getDamageReduction()', function() {
     function equipGear(horse, codes) {
-      const inventory = InventoryManager(horse);
       const equipment = EquipmentManager(horse);
 
       codes.forEach(([code, slot]) => {
         const item = ItemFixtures.buildSteel(code);
-        inventory.addItem(item);
         equipment.equipItem(item, slot);
       });
 

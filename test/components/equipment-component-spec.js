@@ -5,7 +5,6 @@ describe("EquipmentComponent", function() {
   function ownerOf(...codes) {
     const horse = CharacterFixtures.genericMale({});
     const items = codes.map(code => EquipmentFactory().build(code));
-    items.forEach(item => InventoryManager(horse).addItem(item));
     return { horse, items };
   }
 

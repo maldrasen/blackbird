@@ -172,7 +172,6 @@ describe("BattleDamageSystem", function() {
     // explicitly and slots that must be bare are cleared. The gear is built in steel so its reduction profile
     // applies unscaled.
     function equipItem(id, item, slot) {
-      InventoryManager(id).addItem(item);
       EquipmentManager(id).equipItem(item, slot);
     }
 

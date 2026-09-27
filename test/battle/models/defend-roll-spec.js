@@ -18,7 +18,6 @@ describe("DefendRoll", function() {
 
   function equipItem(id, code, slot) {
     const item = EquipmentFactory().build(code);
-    InventoryManager(id).addItem(item);
     EquipmentManager(id).equipItem(item, slot);
   }
 

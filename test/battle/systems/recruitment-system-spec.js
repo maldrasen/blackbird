@@ -30,7 +30,6 @@ describe("RecruitmentSystem", function() {
     RecruitmentSystem.recruit(monster, { affection:300, fear:50, respect:200, control:0 });
 
     expect(EquipmentComponent.lookup(monster).primary).to.equal(primary);
-    expect(InventoryManager(monster).hasItem(primary)).to.be.true;
     expect(ItemComponent.lookup(primary).base).to.equal('spear');
   });
 
