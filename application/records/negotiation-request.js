@@ -20,6 +20,18 @@ global.NegotiationRequest = (function() {
 
     const request = { ...requests[code] };
 
+    function getRequestParameters(context) {
+      return typeof request.requestParameters === 'function' ?
+        request.requestParameters(context) :
+        (request.requestParameters || {});
+    }
+
+    function getRequestText(context, parameters) {
+      return typeof request.requestText === 'function' ?
+        request.requestText(context,parameters) :
+        request.requestText;
+    }
+
     function isPossible(context) {
       return (request.requirements || []).every(requirement => requirement(context));
     }
@@ -43,8 +55,8 @@ global.NegotiationRequest = (function() {
 
     return {
       getCode: () => { return code; },
-      getRequestParameters: context => { return request.getRequestParameters(context); },
-      getRequestText: (context,parameters) => { return request.getRequestText(context,parameters); },
+      getRequestParameters,
+      getRequestText,
       isPossible,
       getAnswers,
       getAnswerText,

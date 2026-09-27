@@ -1,8 +1,8 @@
 
 NegotiationRequest.register('give-me-mana', {
   requirements: [CharacterRequirements.hasAnyMana('P')],
-  getRequestParameters,
-  getRequestText,
+  requestParameters,
+  requestText,
   answers: {
     yes: { text:agreeText, reaction:yesReaction },
     no: { text:'Refuse.', reaction:noReaction },
@@ -16,7 +16,7 @@ function agreeText(parameters) {
 // In this request, we first determine what colors of mana the player has. We pick a color at random, then the player
 // offers somewhere between 1/10 and 1/2 of their current mana, but no more than 32. Because the request parameters
 // will always be somewhat random we need to memoize them.
-function getRequestParameters(context) {
+function requestParameters(context) {
   const mana = ManaComponent.lookup(context.P);
   const manaBounds = {};
 
@@ -34,7 +34,7 @@ function getRequestParameters(context) {
 }
 
 // TODO: Adjust the request text for personality archetype and stuff.
-function getRequestText(context, parameters) {
+function requestText(context, parameters) {
   return `"Hmm... Give me some ${parameters.color} mana."`
 }
 

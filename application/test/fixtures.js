@@ -12,6 +12,9 @@ global.Fixtures = (function() {
     BattleFixtures.prepareForBattle();
     BattleFixtures.grantMana('red',100);
 
+    // NegotiationQuestion.setWhitelist([]);
+    // NegotiationRequest.setWhitelist([]);
+
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
       // monster: 'crawling-claw',
