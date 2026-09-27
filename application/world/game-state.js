@@ -38,6 +38,16 @@ global.GameState = function(data={}) {
     flags[key] = value;
   }
 
+  function createInventories() {
+    if (partyInventory != null) { throw new Error(`The inventories have already been created.`); }
+
+    partyInventory = Registry.createEntity();
+    InventoryComponent.create(partyInventory);
+
+    lootInventory = Registry.createEntity();
+    InventoryComponent.create(lootInventory);
+  }
+
   // Find the entities for an equipment depot given the associated code, or create them if they don't exist. A depot
   // keeps its weapons and its armor in separate inventories.
   function manifestEquipmentDepot(code) {
@@ -48,28 +58,6 @@ global.GameState = function(data={}) {
     }
 
     return { ...equipmentDepots[code] };
-  }
-
-  // The loot inventory holds the items dropped in the last battle until the party has had a chance to pick through
-  // them. Because it's an inventory like any other, the items inside aren't considered orphaned.
-  function manifestLootInventory() {
-    if (lootInventory == null) {
-      lootInventory = Registry.createEntity();
-      InventoryComponent.create(lootInventory);
-    }
-
-    return lootInventory;
-  }
-
-  // Everything the party carries that isn't equipped lives in one shared inventory. Equipped items belong to the
-  // character wearing them.
-  function manifestPartyInventory() {
-    if (partyInventory == null) {
-      partyInventory = Registry.createEntity();
-      InventoryComponent.create(partyInventory);
-    }
-
-    return partyInventory;
   }
 
   function getSaveMetadata() {
@@ -133,9 +121,10 @@ global.GameState = function(data={}) {
     setFlag,
     getFlag: key => { return flags[key]; },
     getDungeonState: () => { return dungeonState; },
+    createInventories,
+    getPartyInventory: () => { return partyInventory; },
+    getLootInventory: () => { return lootInventory; },
     manifestEquipmentDepot,
-    manifestLootInventory,
-    manifestPartyInventory,
     getSaveMetadata,
     pack,
   };

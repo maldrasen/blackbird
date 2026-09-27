@@ -48,7 +48,7 @@ global.BattleState = function(data) {
 
     inventory.items.filter(itemId => Item(itemId).hasEnchantment()).forEach(itemId => {
       InventoryManager(id).removeItem(itemId);
-      InventoryManager(GameSystem.getState().manifestLootInventory()).addItem(itemId);
+      InventoryManager(GameSystem.getState().getLootInventory()).addItem(itemId);
     });
   }
 

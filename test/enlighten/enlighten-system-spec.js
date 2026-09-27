@@ -58,7 +58,7 @@ describe("EnlightenSystem", function() {
 
   describe("finishEnlightenment()", function() {
     it("deletes the items left in the loot inventory", function() {
-      const loot = GameSystem.getState().manifestLootInventory();
+      const loot = GameSystem.getState().getLootInventory();
       const item = ItemFixtures.buildSteel('longsword');
       InventoryManager(loot).addItem(item);
 

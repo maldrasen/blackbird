@@ -86,7 +86,7 @@ describe("BattleState", function() {
     }
 
     function getLoot() {
-      return InventoryComponent.lookup(GameSystem.getState().manifestLootInventory()).items;
+      return InventoryComponent.lookup(GameSystem.getState().getLootInventory()).items;
     }
 
     it('deletes every monster along with their items', function() {

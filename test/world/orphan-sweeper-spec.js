@@ -18,7 +18,7 @@ describe("OrphanSweeper", function() {
     const stock = EquipmentDepot('standard').getWeapons();
 
     InventoryManager(character).addItem(carried);
-    InventoryManager(GameSystem.getState().manifestLootInventory()).addItem(loot);
+    InventoryManager(GameSystem.getState().getLootInventory()).addItem(loot);
 
     expect(OrphanSweeper.sweep()).to.eql({ monsters:0, items:0 });
     expect(stock.length).to.equal(50);

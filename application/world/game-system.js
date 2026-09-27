@@ -45,7 +45,7 @@ global.GameSystem = (function() {
 
   async function startNewGame(setup=null) {
     Registry.clear();
-    state = GameState();
+    createGameState();
     loaded = true;
     EpisodeQueue.seed(getStartingEpisodes());
     GameFlags.seed();
@@ -106,9 +106,14 @@ global.GameSystem = (function() {
     NegotiationSystem.reset();
     DungeonSystem.reset();
 
-    state = GameState();
+    createGameState();
     loaded = false;
     returnMode = null;
+  }
+
+  function createGameState() {
+    state = GameState();
+    state.createInventories();
   }
 
   // ===============

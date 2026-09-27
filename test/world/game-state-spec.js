@@ -117,37 +117,33 @@ describe('GameState', function() {
     expect(restored.getDungeonState().pack()).to.eql({ discoveredFonts:[1,3] });
   });
 
-  it('manifests a single loot inventory', function() {
-    const state = GameState();
-    const loot = state.manifestLootInventory();
-
-    expect(InventoryComponent.lookup(loot).items).to.eql([]);
-    expect(state.manifestLootInventory()).to.equal(loot);
-  });
-
   it('packs and restores the loot inventory', function() {
     const state = GameState();
-    const loot = state.manifestLootInventory();
+    state.createInventories();
+
+    const loot = state.getLootInventory();
 
     expect(state.pack().lootInventory).to.equal(loot);
-    expect(GameState(state.pack()).manifestLootInventory()).to.equal(loot);
+    expect(GameState(state.pack()).getLootInventory()).to.equal(loot);
   });
 
-  it('manifests a single party inventory', function() {
+  it('creates the party inventory once', function() {
     const state = GameState();
-    const party = state.manifestPartyInventory();
+    state.createInventories();
 
-    expect(InventoryComponent.lookup(party).items).to.eql([]);
-    expect(state.manifestPartyInventory()).to.equal(party);
-    expect(party).to.not.equal(state.manifestLootInventory());
+    expect(InventoryComponent.lookup(state.getPartyInventory()).items).to.eql([]);
+    expect(state.getPartyInventory()).to.not.equal(state.getLootInventory());
+    expect(() => state.createInventories()).to.throw(`have already been created`);
   });
 
   it('packs and restores the party inventory', function() {
     const state = GameState();
-    const party = state.manifestPartyInventory();
+    state.createInventories();
+
+    const party = state.getPartyInventory();
 
     expect(state.pack().partyInventory).to.equal(party);
-    expect(GameState(state.pack()).manifestPartyInventory()).to.equal(party);
+    expect(GameState(state.pack()).getPartyInventory()).to.equal(party);
   });
 
 });
