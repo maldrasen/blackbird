@@ -12,20 +12,8 @@ global.CharacterRequirements = (function() {
     return state != null ? state : Character(context);
   }
 
-  function isSpecies(context, key, code) {
-    return Character(context[key]).getSpecies() === code;
-  }
-
   function isNamed(context, key, name) {
     return Character(context[key]).getName() === name
-  }
-
-  function hasAnyMana(context, key) {
-    return Character(context[key]).getTotalMana().current > 0;
-  }
-
-  function hasMana(context, key, color, min) {
-    return ManaComponent.lookup(context[key])[color].current > min;
   }
 
   // Be careful not to confuse isMale() with hasCock(). Some men don't have dicks, and some women do.
@@ -148,40 +136,43 @@ global.CharacterRequirements = (function() {
   }
 
   return {
-    playerIs: key =>                         { return (context) => { return GameSystem.getState().getPlayer() === context[key]; }},
-    isSpecies: (key, code) =>                { return (context) => { return isSpecies(context, key, code); }},
-    isNamed: (key, name) =>                  { return (context) => { return isNamed(context, key, name); }},
-    isNotNamed: (key, name) =>               { return (context) => { return isNamed(context, key, name) === false; }},
-    hasAnyMana: key =>                       { return (context) => { return hasAnyMana(context, key); }},
-    hasMana: (key,color,min) =>              { return (context) => { return hasMana(context, key, color, min); }},
-    isMale: key =>                           { return (context) => { return isMale(context, key); }},
-    isNotMale: key =>                        { return (context) => { return isMale(context, key) === false; }},
-    isAnusEmpty: key =>                      { return (context) => { return isAnusEmpty(context, key); }},
-    visibleAnus: key =>                      { return (context) => { return visibleAnus(context, key); }},
-    hasBreasts: key =>                       { return (context) => { return hasBreasts(context, key); }},
-    visibleBreasts: key =>                   { return (context) => { return visibleBreasts(context, key); }},
-    minimumBreastSize: (key, size) =>        { return (context) => { return minimumBreastSize(context, key, size); }},
-    shapeComparableBreasts: key =>           { return (context) => { return shapeComparableBreasts(context, key); }},
-    hasCock: key =>                          { return (context) => { return hasCock(context, key); }},
-    hasNoCock: key =>                        { return (context) => { return hasCock(context, key) === false; }},
-    visibleCock: key =>                      { return (context) => { return visibleCock(context, key); }},
-    notVisibleCock: key =>                   { return (context) => { return visibleCock(context, key) === false; }},
-    visibleHardCock: key =>                  { return (context) => { return visibleHardCock(context, key) }},
-    minimumCockSize: (key, size) =>          { return (context) => { return minimumCockSize(context, key, size); }},
-    hasPussy: key =>                         { return (context) => { return hasPussy(context, key); }},
-    visiblePussy: key =>                     { return (context) => { return visiblePussy(context, key); }},
-    erogenousCervix: key =>                  { return (context) => { return erogenousZone(context, key, 'cervix'); }},
-    erogenousUrethra: key =>                 { return (context) => { return erogenousZone(context, key, 'urethra'); }},
-    hasTail: key =>                          { return (context) => { return hasTail(context, key); }},
-    isTallerThan: (first, second) =>         { return (context) => { return isTallerThan(context, first, second); }},
-    minimumStrength: (key, min) =>           { return (context) => { return minimumStrength(context, key, min); }},
-    minimumIntelligence: (key, min) =>       { return (context) => { return minimumIntelligence(context, key, min); }},
-    breastsAreCovered: key =>                { return (context) => { return breastsAreCovered(context, key); }},
-    legsAreCovered: key =>                   { return (context) => { return legsAreCovered(context, key); }},
-    wouldConsentTo: (key, code, min) =>      { return (context) => { return wouldConsentTo(context, key, code, min); }},
-    hasSexualPreference: (key, code, min) => { return (context) => { return hasSexualPreference(context, key, code, min); }},
-    isStraight: key =>                       { return (context) => { return isStraight(context, key); }},
-    hasArchetype: (key, code) =>             { return (context) => { return Character(context[key]).getArchetype() === code; }}
+    playerIs: key =>                         { return context => { return GameSystem.getState().getPlayer() === context[key]; }},
+    isSpecies: (key, code) =>                { return context => { return Character(context[key]).getSpecies() === code; }},
+    isSpeciesIn: (key, list) =>              { return context => { return list.includes(Character(context[key]).getSpecies()); }},
+    isNamed: (key, name) =>                  { return context => { return isNamed(context, key, name); }},
+    isNotNamed: (key, name) =>               { return context => { return isNamed(context, key, name) === false; }},
+    healthAtLeast: (key, min) =>             { return context => { return HealthComponent.lookup(context[key]).currentHealth >= min; }},
+    hasAnyMana: key =>                       { return context => { return Character(context[key]).getTotalMana().current > 0; }},
+    hasMana: (key,color,min) =>              { return context => { return ManaComponent.lookup(context[key])[color].current > min; }},
+    isMale: key =>                           { return context => { return isMale(context, key); }},
+    isNotMale: key =>                        { return context => { return isMale(context, key) === false; }},
+    isAnusEmpty: key =>                      { return context => { return isAnusEmpty(context, key); }},
+    visibleAnus: key =>                      { return context => { return visibleAnus(context, key); }},
+    hasBreasts: key =>                       { return context => { return hasBreasts(context, key); }},
+    visibleBreasts: key =>                   { return context => { return visibleBreasts(context, key); }},
+    minimumBreastSize: (key, size) =>        { return context => { return minimumBreastSize(context, key, size); }},
+    shapeComparableBreasts: key =>           { return context => { return shapeComparableBreasts(context, key); }},
+    hasCock: key =>                          { return context => { return hasCock(context, key); }},
+    hasNoCock: key =>                        { return context => { return hasCock(context, key) === false; }},
+    visibleCock: key =>                      { return context => { return visibleCock(context, key); }},
+    notVisibleCock: key =>                   { return context => { return visibleCock(context, key) === false; }},
+    visibleHardCock: key =>                  { return context => { return visibleHardCock(context, key) }},
+    minimumCockSize: (key, size) =>          { return context => { return minimumCockSize(context, key, size); }},
+    hasPussy: key =>                         { return context => { return hasPussy(context, key); }},
+    visiblePussy: key =>                     { return context => { return visiblePussy(context, key); }},
+    erogenousCervix: key =>                  { return context => { return erogenousZone(context, key, 'cervix'); }},
+    erogenousUrethra: key =>                 { return context => { return erogenousZone(context, key, 'urethra'); }},
+    hasTail: key =>                          { return context => { return hasTail(context, key); }},
+    isTallerThan: (first, second) =>         { return context => { return isTallerThan(context, first, second); }},
+    minimumStrength: (key, min) =>           { return context => { return minimumStrength(context, key, min); }},
+    minimumIntelligence: (key, min) =>       { return context => { return minimumIntelligence(context, key, min); }},
+    breastsAreCovered: key =>                { return context => { return breastsAreCovered(context, key); }},
+    legsAreCovered: key =>                   { return context => { return legsAreCovered(context, key); }},
+    wouldConsentTo: (key, code, min) =>      { return context => { return wouldConsentTo(context, key, code, min); }},
+    hasSexualPreference: (key, code, min) => { return context => { return hasSexualPreference(context, key, code, min); }},
+    isStraight: key =>                       { return context => { return isStraight(context, key); }},
+    hasArchetype: (key, code) =>             { return context => { return Character(context[key]).getArchetype() === code; }},
+    hasArchetypeIn: (key, list) =>           { return context => { return list.includes(Character(context[key]).getArchetype()); }},
   };
 
 })();
