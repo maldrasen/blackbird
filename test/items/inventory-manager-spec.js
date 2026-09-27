@@ -1,53 +1,60 @@
 describe('InventoryManager', function() {
 
+  function partyId() { return GameSystem.getState().getPartyInventory(); }
+  function loot() { return InventoryManager(GameSystem.getState().getLootInventory()); }
+
   describe('addItem()', function() {
     it('throws when the item is already in this inventory', function() {
-      const horse = CharacterFixtures.genericMale({});
       const hatchet = EquipmentFactory().build('hatchet');
 
-      InventoryManager(horse).addItem(hatchet);
+      InventoryManager().addItem(hatchet);
 
-      expect(() => InventoryManager(horse).addItem(hatchet)).to.throw(`already has Item:${hatchet}`);
+      expect(() => InventoryManager().addItem(hatchet)).to.throw(`already has Item:${hatchet}`);
     });
 
     it('throws when the item is already in another inventory', function() {
-      const horse = CharacterFixtures.genericMale({});
-      const goat = CharacterFixtures.genericMale({});
       const hatchet = EquipmentFactory().build('hatchet');
 
-      InventoryManager(horse).addItem(hatchet);
+      loot().addItem(hatchet);
 
-      expect(() => InventoryManager(goat).addItem(hatchet)).to.throw(`Inventory:${horse} already has Item:${hatchet}`);
+      expect(() => InventoryManager().addItem(hatchet)).to.throw(
+        `Inventory:${GameSystem.getState().getLootInventory()} already has Item:${hatchet}`);
+    });
+
+    it('throws when the item is equipped by a character', function() {
+      const horse = CharacterFixtures.genericMale({});
+      const hatchet = EquipmentFactory().build('hatchet');
+
+      EquipmentManager(horse).equipItem(hatchet, EquipmentSlot.primary);
+
+      expect(() => InventoryManager().addItem(hatchet)).to.throw(`Item:${hatchet} is equipped by Character:${horse}`);
     });
   });
 
   describe('removeItem()', function() {
     it('removes only the given item', function() {
-      const horse = CharacterFixtures.genericMale({});
       const hatchet = EquipmentFactory().build('hatchet');
       const cleaver = EquipmentFactory().build('cleaver');
 
-      InventoryManager(horse).addItem(hatchet);
-      InventoryManager(horse).addItem(cleaver);
-      InventoryManager(horse).removeItem(hatchet);
+      InventoryManager().addItem(hatchet);
+      InventoryManager().addItem(cleaver);
+      InventoryManager().removeItem(hatchet);
 
-      expect(InventoryManager(horse).hasItem(hatchet)).to.equal(false);
-      expect(InventoryManager(horse).hasItem(cleaver)).to.equal(true);
+      expect(InventoryManager().hasItem(hatchet)).to.equal(false);
+      expect(InventoryManager().hasItem(cleaver)).to.equal(true);
     });
 
     it("throws when the item isn't in the inventory", function() {
-      const horse = CharacterFixtures.genericMale({});
       const hatchet = EquipmentFactory().build('hatchet');
 
-      expect(() => InventoryManager(horse).removeItem(hatchet)).to.throw(
-        `Inventory:${horse} doesn't have Item:${hatchet} to remove.`);
+      expect(() => InventoryManager().removeItem(hatchet)).to.throw(
+        `Inventory:${partyId()} doesn't have Item:${hatchet} to remove.`);
     });
   });
 
   describe('setArticleQuantity()', function() {
     it('sets and overwrites the quantity', function() {
-      const horse = CharacterFixtures.genericMale({});
-      const inventory = InventoryManager(horse);
+      const inventory = InventoryManager();
 
       inventory.setArticleQuantity('dungeon-tripe', 3);
       inventory.setArticleQuantity('rhysh-apple', 2);
@@ -58,28 +65,24 @@ describe('InventoryManager', function() {
     });
 
     it('removes the article entry when the quantity reaches zero', function() {
-      const horse = CharacterFixtures.genericMale({});
-      const inventory = InventoryManager(horse);
+      const inventory = InventoryManager();
 
       inventory.setArticleQuantity('dungeon-tripe', 3);
       inventory.setArticleQuantity('dungeon-tripe', 0);
 
       expect(inventory.getArticleQuantity('dungeon-tripe')).to.equal(0);
-      expect(InventoryComponent.lookup(horse).articles).to.not.have.property('dungeon-tripe');
+      expect(InventoryComponent.lookup(partyId()).articles).to.not.have.property('dungeon-tripe');
     });
 
     it('throws when the article code is unknown', function() {
-      const horse = CharacterFixtures.genericMale({});
-
-      expect(() => InventoryManager(horse).setArticleQuantity('polished-turnip', 1)).to.throw(
+      expect(() => InventoryManager().setArticleQuantity('polished-turnip', 1)).to.throw(
         `Bad article code [polished-turnip]`);
     });
   });
 
   describe('addArticle()', function() {
     it('adds to the existing quantity', function() {
-      const horse = CharacterFixtures.genericMale({});
-      const inventory = InventoryManager(horse);
+      const inventory = InventoryManager();
 
       inventory.addArticle('dungeon-tripe', 3);
       inventory.addArticle('dungeon-tripe', 4);
@@ -88,17 +91,14 @@ describe('InventoryManager', function() {
     });
 
     it('throws on a negative quantity', function() {
-      const horse = CharacterFixtures.genericMale({});
-
-      expect(() => InventoryManager(horse).addArticle('dungeon-tripe', -1)).to.throw(
+      expect(() => InventoryManager().addArticle('dungeon-tripe', -1)).to.throw(
         `Cannot add -1 of Article:dungeon-tripe, use removeArticle().`);
     });
   });
 
   describe('removeArticle()', function() {
     it('removes from the existing quantity', function() {
-      const horse = CharacterFixtures.genericMale({});
-      const inventory = InventoryManager(horse);
+      const inventory = InventoryManager();
 
       inventory.addArticle('dungeon-tripe', 5);
       inventory.removeArticle('dungeon-tripe', 2);
@@ -107,29 +107,25 @@ describe('InventoryManager', function() {
     });
 
     it('clears the article entry when the last one is removed', function() {
-      const horse = CharacterFixtures.genericMale({});
-      const inventory = InventoryManager(horse);
+      const inventory = InventoryManager();
 
       inventory.addArticle('dungeon-tripe', 2);
       inventory.removeArticle('dungeon-tripe', 2);
 
-      expect(InventoryComponent.lookup(horse).articles).to.not.have.property('dungeon-tripe');
+      expect(InventoryComponent.lookup(partyId()).articles).to.not.have.property('dungeon-tripe');
     });
 
     it('throws when removing more than the inventory holds', function() {
-      const horse = CharacterFixtures.genericMale({});
-      const inventory = InventoryManager(horse);
+      const inventory = InventoryManager();
 
       inventory.addArticle('dungeon-tripe', 2);
 
       expect(() => inventory.removeArticle('dungeon-tripe', 3)).to.throw(
-        `Inventory:${horse} only has 2 of Article:dungeon-tripe, cannot remove 3.`);
+        `Inventory:${partyId()} only has 2 of Article:dungeon-tripe, cannot remove 3.`);
     });
   });
 
-  it('listItems()', function() {
-    const horse = CharacterFixtures.genericMale({});
-
+  it('listItems() orders the rows by category and then by name', function() {
     const cleaver = ItemFixtures.buildSteel('cleaver');
     const helm = ItemFixtures.buildSteel('helm');
     const hauberk = ItemFixtures.buildSteel('hauberk');
@@ -137,47 +133,36 @@ describe('InventoryManager', function() {
     const battleAxe = ItemFixtures.buildSteel('battle-axe');
     const boots = ItemFixtures.build('boots', ['leather']);
 
-    const inventory = InventoryManager(horse);
+    const inventory = InventoryManager();
     [cleaver, helm, hauberk, hatchet, battleAxe, boots].forEach(item => inventory.addItem(item));
 
     inventory.addArticle('dungeon-tripe', 3);
     inventory.addArticle('string-of-teeth', 1);
 
-    const equipment = EquipmentManager(horse);
-    equipment.equipItem(cleaver, EquipmentSlot.primary);
-    equipment.equipItem(hauberk, EquipmentSlot.chest);
-    equipment.equipItem(helm, EquipmentSlot.head);
-
     const rows = inventory.listItems();
 
     expect(rows.map(row => row.name)).to.deep.equal([
-      'Steel Cleaver', 'Steel Hauberk', 'Steel Helm', 'Steel Battle Axe', 'Steel Hatchet', 'Leather Boots',
+      'Steel Battle Axe', 'Steel Cleaver', 'Steel Hatchet', 'Leather Boots', 'Steel Hauberk', 'Steel Helm',
       'Dungeon Tripe', 'String of Teeth']);
 
-    expect(rows[0].slot).to.equal(EquipmentSlot.primary);
-    expect(rows[1].slot).to.equal(EquipmentSlot.chest);
-    expect(rows[2].slot).to.equal(EquipmentSlot.head);
-    expect(rows[3].slot).to.equal(null);
-    expect(rows[3].itemId).to.equal(battleAxe);
-    expect(rows[3].type).to.equal('weapon');
-    expect(rows[3].category).to.equal(InventoryCategory.weapon);
+    expect(rows[0].itemId).to.equal(battleAxe);
+    expect(rows[0].type).to.equal('weapon');
+    expect(rows[0].category).to.equal(InventoryCategory.weapon);
+    expect(rows[0].icon).to.be.a('string');
     expect(rows[6].articleCode).to.equal('dungeon-tripe');
     expect(rows[6].quantity).to.equal(3);
     expect(rows[6].category).to.equal(InventoryCategory.restoreHealth);
+    expect(rows[6].usableWhen).to.equal(UsableWhen.outOfCombat);
     expect(rows[7].category).to.equal(InventoryCategory.valuables);
   });
 
-  it('dropItem() destroys an equipped item', function() {
-    const horse = CharacterFixtures.genericMale({});
+  it('dropItem() destroys the item', function() {
     const helm = EquipmentFactory().build('helm');
+    InventoryManager().addItem(helm);
 
-    InventoryManager(horse).addItem(helm);
-    EquipmentManager(horse).equipItem(helm, EquipmentSlot.head);
-
-    InventoryManager(horse).dropItem(helm);
+    InventoryManager().dropItem(helm);
 
     expect(Registry.entityExists(helm)).to.equal(false);
-    expect(InventoryManager(horse).hasItem(helm)).to.equal(false);
-    expect(EquipmentComponent.lookup(horse).head).to.not.exist;
+    expect(InventoryManager().hasItem(helm)).to.equal(false);
   });
 });

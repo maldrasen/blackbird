@@ -1,26 +1,28 @@
-global.InventoryManager = function(characterId=GameSystem.getState().getPartyInventory()) {
+global.InventoryManager = function(inventoryId=GameSystem.getState().getPartyInventory()) {
 
   function fetch() {
-    return InventoryComponent.lookup(characterId);
+    return InventoryComponent.lookup(inventoryId);
   }
 
   function update(inventory) {
-    Registry.updateComponent(characterId, ComponentType.inventory, inventory);
+    Registry.updateComponent(inventoryId, ComponentType.inventory, inventory);
   }
 
   function hasItem(itemId) {
     return fetch().items.indexOf(itemId) >= 0;
   }
 
-  // When we add an item to an inventory we make sure that the item exists and that it isn't already in an inventory,
-  // including the inventory that it's going into.
+  // An item has exactly one owner: an inventory or an equipment slot. Adding an item checks that it exists and that
+  // nothing else already owns it, including the inventory it's going into.
   function addItem(itemId) {
     if (ItemComponent.lookup(itemId) == null) { throw new Error(`Item:${itemId} does not exist.`); }
 
-    Registry.findEntitiesWithComponents([ComponentType.inventory]).forEach(ownerId => {
-      if (InventoryComponent.lookup(ownerId).items.includes(itemId)) {
-        throw new Error(`Inventory:${ownerId} already has Item:${itemId}`);
-      }
+    Registry.findComponentsWith(ComponentType.inventory, inventory => inventory.items.includes(itemId)).forEach(ownerId => {
+      throw new Error(`Inventory:${ownerId} already has Item:${itemId}`);
+    });
+
+    Registry.findComponentsWith(ComponentType.equipment, equipment => Object.values(equipment).includes(itemId)).forEach(ownerId => {
+      throw new Error(`Item:${itemId} is equipped by Character:${ownerId}`);
     });
 
     const inventory = fetch();
@@ -30,7 +32,7 @@ global.InventoryManager = function(characterId=GameSystem.getState().getPartyInv
 
   function removeItem(itemId) {
     if (hasItem(itemId) === false) {
-      throw new Error(`Inventory:${characterId} doesn't have Item:${itemId} to remove.`);
+      throw new Error(`Inventory:${inventoryId} doesn't have Item:${itemId} to remove.`);
     }
 
     const inventory = fetch();
@@ -38,11 +40,8 @@ global.InventoryManager = function(characterId=GameSystem.getState().getPartyInv
     update(inventory);
   }
 
-  // Rows for the inventory view. Equipped items come first, in equipment slot declaration order, followed by the
-  // unequipped items and articles in InventoryCategory declaration order, alphabetical within a category.
+  // Rows for an inventory view, in InventoryCategory declaration order and alphabetical within a category.
   function listItems() {
-    const equipment = EquipmentManager(characterId);
-    const slotOrder = Object.values(EquipmentSlot);
     const categoryOrder = Object.values(InventoryCategory);
 
     const itemRows = fetch().items.map(itemId => {
@@ -53,7 +52,6 @@ global.InventoryManager = function(characterId=GameSystem.getState().getPartyInv
         icon: item.getIcon(),
         type: item.getCategory(),
         category: item.getCategory(),
-        slot: equipment.getEquippedSlot(itemId),
       };
     });
 
@@ -67,24 +65,15 @@ global.InventoryManager = function(characterId=GameSystem.getState().getPartyInv
         category: article.getCategory(),
         usableWhen: article.getUsableWhen(),
         quantity: quantity,
-        slot: null,
       };
     });
 
-    const equipped = itemRows.filter(row => row.slot != null);
-    const unequipped = [...itemRows.filter(row => row.slot == null), ...articleRows];
-
-    equipped.sort((a,b) => slotOrder.indexOf(a.slot) - slotOrder.indexOf(b.slot));
-    unequipped.sort((a,b) =>
+    return [...itemRows, ...articleRows].sort((a,b) =>
       (categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category)) || a.name.localeCompare(b.name));
-
-    return [...equipped, ...unequipped];
   }
 
-  // Dropping an item destroys it. The item is unequipped first because equipped items must remain in their owner's
-  // inventory to stay valid.
+  // Dropping an item destroys it.
   function dropItem(itemId) {
-    EquipmentManager(characterId).unequipItem(itemId);
     removeItem(itemId);
     Registry.deleteEntity(itemId);
   }
@@ -98,7 +87,7 @@ global.InventoryManager = function(characterId=GameSystem.getState().getPartyInv
     const current = getArticleQuantity(code);
 
     if (quantity > current) {
-      throw new Error(`Inventory:${characterId} only has ${current} of Article:${code}, cannot remove ${quantity}.`);
+      throw new Error(`Inventory:${inventoryId} only has ${current} of Article:${code}, cannot remove ${quantity}.`);
     }
 
     setArticleQuantity(code, current - quantity);
