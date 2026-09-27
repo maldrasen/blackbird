@@ -30,6 +30,32 @@ describe('EquipmentManager', function() {
   });
 
   describe('equipItem()', function() {
+    it("returns the item it replaced", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const first = EquipmentFactory().build('helm');
+      const second = EquipmentFactory().build('helm');
+      const equipment = EquipmentManager(horse);
+
+      expect(equipment.equipItem(first, EquipmentSlot.head)).to.deep.equal([]);
+      expect(equipment.equipItem(second, EquipmentSlot.head)).to.deep.equal([first]);
+      expect(equipment.unequipItem(second)).to.deep.equal([second]);
+      expect(equipment.unequipItem(second)).to.deep.equal([]);
+    });
+
+    it("returns the off-hand cleared by a two-handed weapon", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const hatchet = EquipmentFactory().build('hatchet');
+      const dagger = EquipmentFactory().build('dagger');
+      const maul = EquipmentFactory().build('maul');
+      const equipment = EquipmentManager(horse);
+
+      equipment.equipItem(hatchet, EquipmentSlot.primary);
+      equipment.equipItem(dagger, EquipmentSlot.secondary);
+
+      expect(equipment.equipItem(maul, EquipmentSlot.primary)).to.have.members([hatchet, dagger]);
+      expect(equipment.equipItem(dagger, EquipmentSlot.secondary)).to.deep.equal([maul]);
+    });
+
     it("equips armors", function() {
       const horse = CharacterFixtures.genericMale({});
       const helm = EquipmentFactory().build('helm');
