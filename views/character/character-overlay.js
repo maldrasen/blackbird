@@ -9,7 +9,6 @@ global.CharacterOverlay = (function() {
 
   let character
   let equipmentPanel;
-  let inventoryPanel;
 
   function init() {
     X.onClick(`#characterOverlay .close-button`, close);
@@ -23,8 +22,6 @@ global.CharacterOverlay = (function() {
     update();
     equipmentPanel = EquipmentPanel({ character:id });
     equipmentPanel.buildInto(`#equipmentTab`);
-    inventoryPanel = InventoryPanel({ character:id });
-    inventoryPanel.buildInto(`#inventoryTab`);
 
     WindowManager.push(CharacterOverlay)
     X.removeClass('#characterOverlay','hide');
