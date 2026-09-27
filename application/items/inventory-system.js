@@ -49,9 +49,38 @@ global.InventorySystem = (function() {
     InventoryManager(destinationId).addItem(itemId);
   }
 
+  // === Equipping ======================================================================================================
+
+  // The equipment panel equips through these rather than through the EquipmentManager directly, so that the inventory
+  // side of equipping has one place to live once the party shares an inventory.
+
+  function getEquipmentForSlot(characterId, slot) {
+    const equipment = EquipmentManager(characterId);
+
+    return InventoryComponent.lookup(characterId).items.
+      filter(itemId => equipment.getEquippedSlot(itemId) == null).
+      filter(itemId => equipment.canEquipItem(itemId, slot)).
+      map(itemId => {
+        const item = Item(itemId);
+        return { itemId:itemId, name:item.getName(), icon:item.getIcon() };
+      }).
+      sort((a,b) => a.name.localeCompare(b.name));
+  }
+
+  function equip(characterId, itemId, slot) {
+    EquipmentManager(characterId).equipItem(itemId, slot);
+  }
+
+  function unequip(characterId, slot) {
+    EquipmentManager(characterId).equipItem(null, slot);
+  }
+
   return {
     getReachableInventories,
     transferItem,
+    getEquipmentForSlot,
+    equip,
+    unequip,
   };
 
 })();

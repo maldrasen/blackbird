@@ -52,4 +52,54 @@ describe('InventorySystem', function() {
     expect(InventoryManager(goat).hasItem(cleaver)).to.equal(true);
   });
 
+
+  describe('equipping', function() {
+    function armory() {
+      const horse = CharacterFixtures.genericMale({});
+      const items = {
+        hatchet: ItemFixtures.buildSteel('hatchet'),
+        handAxe: ItemFixtures.buildSteel('hand-axe'),
+        broadAxe: ItemFixtures.buildSteel('broad-axe'),
+        helm: ItemFixtures.buildSteel('helm'),
+      };
+
+      Object.values(items).forEach(itemId => InventoryManager(horse).addItem(itemId));
+      return { horse, ...items };
+    }
+
+    it('getEquipmentForSlot() lists the unequipped inventory items the slot accepts, by name', function() {
+      const { horse, hatchet, handAxe, broadAxe, helm } = armory();
+      EquipmentManager(horse).equipItem(broadAxe, EquipmentSlot.primary);
+
+      const primary = InventorySystem.getEquipmentForSlot(horse, EquipmentSlot.primary);
+      const secondary = InventorySystem.getEquipmentForSlot(horse, EquipmentSlot.secondary);
+      const head = InventorySystem.getEquipmentForSlot(horse, EquipmentSlot.head);
+
+      expect(primary.map(row => row.itemId)).to.deep.equal([handAxe, hatchet]);
+      expect(secondary.map(row => row.itemId)).to.deep.equal([handAxe, hatchet]);
+      expect(head).to.have.lengthOf(1);
+      expect(head[0]).to.include({ itemId:helm, name:'Steel Helm' });
+      expect(head[0].icon).to.be.a('string');
+    });
+
+    it('equip() puts the item in the slot', function() {
+      const { horse, hatchet } = armory();
+
+      InventorySystem.equip(horse, hatchet, EquipmentSlot.secondary);
+
+      expect(EquipmentComponent.lookup(horse).secondary).to.equal(hatchet);
+      expect(InventorySystem.getEquipmentForSlot(horse, EquipmentSlot.secondary).map(row => row.itemId)).to.not.include(hatchet);
+    });
+
+    it('unequip() empties the slot', function() {
+      const { horse, helm } = armory();
+      EquipmentManager(horse).equipItem(helm, EquipmentSlot.head);
+
+      InventorySystem.unequip(horse, EquipmentSlot.head);
+
+      expect(EquipmentComponent.lookup(horse).head).to.not.exist;
+      expect(InventorySystem.getEquipmentForSlot(horse, EquipmentSlot.head).map(row => row.itemId)).to.deep.equal([helm]);
+    });
+  });
+
 });
