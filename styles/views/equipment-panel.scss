@@ -1,0 +1,38 @@
+@use "../variables";
+
+.equipment-panel {
+
+  .equipment-frame {
+    border: variables.$border-light;
+  }
+
+  .slot-row {
+    display: flex;
+    align-items: center;
+    height: 36px;
+    padding: 0 6px;
+    cursor: pointer;
+
+    .slot-name {
+      width: 100px;
+      color: variables.$fg-weak;
+    }
+
+    .item-icon {
+      height: 24px;
+      width: 24px;
+      margin-right: 6px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .item-name { opacity: 0.5; }
+  }
+
+  .slot-row.filled .item-name { opacity: 1; }
+
+  .slot-row:hover {
+    background-color: variables.$select-shade;
+  }
+}
