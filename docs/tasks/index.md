@@ -5,7 +5,8 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 ## Priority 1
 
 - [236] Convert traps into tile contents `5pt` — [236-convert-traps-into-tile-contents.md](236-convert-traps-into-tile-contents.md)
-- [243] Combine party inventory `13pt` — [243-combine-party-inventory.md](243-combine-party-inventory.md)
+- [243] Combine party inventory `8pt` — [243-combine-party-inventory.md](243-combine-party-inventory.md)
+- [245] Equipment slot panel `3pt` — [245-equipment-slot-panel.md](245-equipment-slot-panel.md)
 
 ## Priority 2
 
@@ -26,6 +27,8 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [239] Dungeon Light emitters `5pt` — [239-dungeon-light-emitters.md](239-dungeon-light-emitters.md)
 - [240] Safe Rooms `3pt` — [240-safe-rooms.md](240-safe-rooms.md)
 - [242] More Negotiation Requests `5pt` — [242-more-negotiation-requests.md](242-more-negotiation-requests.md)
+- [246] Party inventory overlay `5pt` — [246-party-inventory-overlay.md](246-party-inventory-overlay.md)
+- [247] Bank item drops into the party inventory `2pt` — [247-bank-item-drops.md](247-bank-item-drops.md)
 
 ## Priority 3
 
