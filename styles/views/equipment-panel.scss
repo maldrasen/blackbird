@@ -11,11 +11,21 @@
     align-items: center;
     height: 36px;
     padding: 0 6px;
-    cursor: pointer;
 
     .slot-name {
       width: 100px;
       color: variables.$fg-weak;
+    }
+
+    .slot-item {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      cursor: pointer;
+    }
+
+    .slot-item:hover {
+      background-color: variables.$select-shade;
     }
 
     .item-icon {
@@ -31,8 +41,4 @@
   }
 
   .slot-row.filled .item-name { opacity: 1; }
-
-  .slot-row:hover {
-    background-color: variables.$select-shade;
-  }
 }
