@@ -1,5 +1,5 @@
 
-NegotiationRequest.register('have-anything-unusual', {
+NegotiationRequest.register('give-bones', {
   requirements: [
     InventoryRequirements.hasArticlesWithAnyTag(['bone','flesh']),
     CharacterRequirements.isSpeciesIn('T',['kobold','vermen']),

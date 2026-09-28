@@ -7,6 +7,7 @@ global.Fixtures = (function() {
   }
 
   function grantLoot() {
+    Inventory().addArticle('ale',10);
     Inventory().addArticle('rhysh-apple',10);
     Inventory().addArticle('string-of-teeth',4);
     Inventory().addArticle('rattlebones',2);
@@ -31,12 +32,12 @@ global.Fixtures = (function() {
 
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
-      // monster: 'crawling-claw',
       monster: 'kobold-sneak-slut',
-      // encounter: 'orchard-kobolds',
     });
 
-    GameSystem.setGameMode(GameMode.location);
+    DungeonSystem.createDungeon();
+    DungeonSystem.setLevel(1,'up','dungeon');
+    GameSystem.setGameMode(GameMode.dungeon);
     GameSystem.markReturnMode();
     GameSystem.setGameMode(GameMode.battle);
   }
@@ -53,14 +54,6 @@ global.Fixtures = (function() {
     setupGame();
     CharacterFixtures.randomPlayer();
     CharacterFixtures.randomCharacters(10, { triggers:[] });
-
-    // TEMP: Inventory Testing
-    const inventory = Inventory();
-    const factory = EquipmentFactory();
-    BaseEquipment.getAllCodes().filter(code => BaseEquipment.lookup(code).isWeapon()).forEach(code => {
-      inventory.addItem(factory.build(code));
-    });
-
     GameSystem.setGameMode(GameMode.location);
   }
 
