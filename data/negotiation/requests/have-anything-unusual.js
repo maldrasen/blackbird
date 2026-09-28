@@ -18,9 +18,18 @@ function compileAnswers(context, parameters) {
 
   parameters.offers.forEach(code => {
     const name = Article.lookup(code).getName();
-    answers[code] = { text:`Offer ${EnglishHelper.a_an(name)} ${name}`, reaction:Reaction.like(`Heh... Nice.`) };
+    answers[code] = { text:`Offer ${EnglishHelper.a_an(name)} ${name}`, reaction:gaveItem(code) };
   });
 
   answers.no = { text:'Refuse.', reaction:Reaction.dislike(`Tightwad.`) };
   return answers;
+}
+
+function gaveItem(code) {
+  return () => {
+    const value = Article.lookup(code).getValue();
+    Inventory().removeArticle(code,1);
+
+    return Reaction.like(`Heh... Nice.`);
+  }
 }
