@@ -6,25 +6,33 @@ global.Fixtures = (function() {
     state.setCurrentLocation(options.location || 'ruined-living-room');
   }
 
-  function setupBattle() {
-    setupGame({ location:'the-well' });
-
-    BattleFixtures.prepareForBattle();
-    BattleFixtures.grantMana('red',100);
-
-    NegotiationQuestion.setWhitelist([]);
-    NegotiationRequest.setWhitelist(['have-anything-unusual']);
-
+  function grantLoot() {
     Inventory().addArticle('rhysh-apple',10);
     Inventory().addArticle('string-of-teeth',4);
     Inventory().addArticle('rattlebones',2);
     Inventory().addArticle('grim-totem',3);
     Inventory().addArticle('impressive-ball-bag',2);
+    Inventory().addArticle('crimson-tear',5);
+    Inventory().addArticle('aureolin-tear',5);
+    Inventory().addArticle('celadon-tear',5);
+    Inventory().addArticle('cerulean-tear',5);
+    Inventory().addArticle('ebony-tear',5);
+  }
+
+  function setupBattle() {
+    setupGame({ location:'the-well' });
+    grantLoot();
+
+    BattleFixtures.prepareForBattle();
+    BattleFixtures.grantMana('red',100);
+
+    // NegotiationQuestion.setWhitelist([]);
+    // NegotiationRequest.setWhitelist([]);
 
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
       // monster: 'crawling-claw',
-      monster: 'kobold-dick-puncher',
+      monster: 'kobold-sneak-slut',
       // encounter: 'orchard-kobolds',
     });
 
