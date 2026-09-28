@@ -12,8 +12,8 @@ global.Fixtures = (function() {
     BattleFixtures.prepareForBattle();
     BattleFixtures.grantMana('red',100);
 
-    // NegotiationQuestion.setWhitelist([]);
-    // NegotiationRequest.setWhitelist([]);
+    NegotiationQuestion.setWhitelist([]);
+    NegotiationRequest.setWhitelist(['can-i-cut-you']);
 
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
