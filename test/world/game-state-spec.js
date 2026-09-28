@@ -119,27 +119,21 @@ describe('GameState', function() {
 
   it('packs and restores the loot inventory', function() {
     const state = GameState();
-    state.createInventories();
-
     const loot = state.getLootInventory();
 
     expect(state.pack().lootInventory).to.equal(loot);
     expect(GameState(state.pack()).getLootInventory()).to.equal(loot);
   });
 
-  it('creates the party inventory once', function() {
+  it('creates the party inventory', function() {
     const state = GameState();
-    state.createInventories();
 
     expect(InventoryComponent.lookup(state.getPartyInventory()).items).to.eql([]);
     expect(state.getPartyInventory()).to.not.equal(state.getLootInventory());
-    expect(() => state.createInventories()).to.throw(`have already been created`);
   });
 
   it('packs and restores the party inventory', function() {
     const state = GameState();
-    state.createInventories();
-
     const party = state.getPartyInventory();
 
     expect(state.pack().partyInventory).to.equal(party);
