@@ -1,4 +1,4 @@
-describe.skip("NegotiationRequest", function() {
+describe("NegotiationRequest", function() {
 
   // The player fixture is a human with no natural mana, so give-me-mana is impossible until some is granted. The specs
   // that need the request to be possible grant 100 red mana, which makes the request ask for between 10 and 32.
@@ -100,15 +100,65 @@ describe.skip("NegotiationRequest", function() {
       expect(ManaComponent.lookup(player).red).to.deep.equal({ current:10, max:10 });
     });
 
-    it('keeps the mana and returns the disrespect reaction when the request is refused', function() {
+    it('keeps the mana and returns the dislike reaction when the request is refused', function() {
       const player = bootPlayer();
       BattleFixtures.grantMana('red', 100);
       const request = NegotiationRequest.lookup('give-me-mana');
 
       const reaction = request.resolveAnswerReaction('no', { P:player }, { color:'red', amount:20 });
       expect(reaction.type).to.equal('feelings');
-      expect(reaction.feelings).to.deep.equal(Reaction.getFeelings('disrespect'));
+      expect(reaction.feelings).to.deep.equal(Reaction.getFeelings('dislike'));
       expect(ManaComponent.lookup(player).red).to.deep.equal({ current:100, max:100 });
+    });
+  });
+
+  // The offers are a shuffled slice of the tagged articles, so the specs stock the inventory and compare sorted codes
+  // rather than pinning an order. The answers are compiled from the parameters, one per offered article plus a refusal.
+  describe("have-anything-unusual", function() {
+    const offers = ['string-of-teeth','grim-totem','ball-bag'];
+
+    function stockOffers() {
+      const inventory = Inventory();
+      offers.forEach(code => inventory.addArticle(code, 1));
+      inventory.addArticle('dungeon-tripe', 5);
+      return inventory;
+    }
+
+    function kobold() { return MonsterFactory('kobold-runt').build(); }
+
+    it('is only possible against a kobold or vermen holding bone or flesh articles', function() {
+      const request = NegotiationRequest.lookup('have-anything-unusual');
+      const context = { T:kobold() };
+
+      expect(request.isPossible(context)).to.equal(false);
+      stockOffers();
+      expect(request.isPossible(context)).to.equal(true);
+    });
+
+    it('offers up to three of the tagged articles', function() {
+      stockOffers();
+      Inventory().addArticle('rattlebones', 1);
+
+      const parameters = NegotiationRequest.lookup('have-anything-unusual').getRequestParameters({});
+      expect(parameters.offers.length).to.equal(3);
+      parameters.offers.forEach(code => expect([...offers,'rattlebones']).to.include(code));
+    });
+
+    it('compiles an answer for each offer and a refusal', function() {
+      const request = NegotiationRequest.lookup('have-anything-unusual');
+      const parameters = { offers:['string-of-teeth','grim-totem'] };
+
+      expect(Object.keys(request.getAnswers({}, parameters))).to.deep.equal(['string-of-teeth','grim-totem','no']);
+      expect(request.getAnswerText('string-of-teeth', {}, parameters)).to.equal('Offer a String of Teeth');
+      expect(request.getAnswerText('no', {}, parameters)).to.equal('Refuse.');
+    });
+
+    it('resolves the reactions from the offered articles', function() {
+      const request = NegotiationRequest.lookup('have-anything-unusual');
+      const parameters = { offers:['grim-totem'] };
+
+      expect(request.resolveAnswerReaction('grim-totem', {}, parameters).feelings).to.deep.equal(Reaction.getFeelings('like'));
+      expect(request.resolveAnswerReaction('no', {}, parameters).feelings).to.deep.equal(Reaction.getFeelings('dislike'));
     });
   });
 
