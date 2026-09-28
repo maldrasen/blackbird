@@ -7,7 +7,7 @@ global.Tests = (function() {
     NegotiationQuestion.clearWhitelist();
     NegotiationRequest.clearWhitelist();
     Random.stubReset();
-    GameSystem.reset();
+    GameSystem.createNewGame();
     WorldState.reset();
   }
 

@@ -21,7 +21,7 @@ const ranges = [];
 let generator;
 
 for (let i=0; i<samples; i++) {
-  GameSystem.reset();
+  GameSystem.createNewGame();
   const id = MonsterFactory(monsterCode).build();
   generator = LootGenerator();
   results.push(generator.generateMonsterLoot(id));

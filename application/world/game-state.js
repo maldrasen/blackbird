@@ -17,6 +17,16 @@ global.GameState = function(data={}) {
   let lootInventory = data.lootInventory;
   let partyInventory = data.partyInventory;
 
+  if (partyInventory == null) {
+    partyInventory = Registry.createEntity();
+    InventoryComponent.create(partyInventory);
+  }
+
+  if (lootInventory == null) {
+    lootInventory = Registry.createEntity();
+    InventoryComponent.create(lootInventory);
+  }
+
   // TODO: Eventually this function will consult everything that might influence this value. It's not set in the state,
   //       but may need to read values from the player.
   function getPartySizeLimit() { return 6; }
@@ -36,16 +46,6 @@ global.GameState = function(data={}) {
       throw new Error(`A flag must be a boolean, number, or string`); }
 
     flags[key] = value;
-  }
-
-  function createInventories() {
-    if (partyInventory != null) { throw new Error(`The inventories have already been created.`); }
-
-    partyInventory = Registry.createEntity();
-    InventoryComponent.create(partyInventory);
-
-    lootInventory = Registry.createEntity();
-    InventoryComponent.create(lootInventory);
   }
 
   // Find the entities for an equipment depot given the associated code, or create them if they don't exist. A depot
@@ -121,7 +121,6 @@ global.GameState = function(data={}) {
     setFlag,
     getFlag: key => { return flags[key]; },
     getDungeonState: () => { return dungeonState; },
-    createInventories,
     getPartyInventory: () => { return partyInventory; },
     getLootInventory: () => { return lootInventory; },
     manifestEquipmentDepot,

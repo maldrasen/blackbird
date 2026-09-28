@@ -3,12 +3,11 @@ global.GameSystem = (function() {
   const saveDirectory = `${DATA}/Saves`;
   const saveVersion = 2;
 
-  let state = GameState();
-  let loaded = false;
+  let state;
   let returnMode;
 
   function getState() { return state; }
-  function isLoaded() { return loaded; }
+  function isLoaded() { return state != null }
 
   // A game can only be saved when we're in the location view. So as not to couple this to the view, we check to see if
   // any of the system states are present. These states are never persisted, so if they exist that indicates that we're
@@ -43,12 +42,29 @@ global.GameSystem = (function() {
   //    Game Lifecycle
   // ===================
 
-  async function startNewGame(setup=null) {
+  function reset() {
     Registry.clear();
-    createGameState();
-    loaded = true;
+
+    EpisodeSystem.reset();
+    BattleSystem.reset();
+    NegotiationSystem.reset();
+    DungeonSystem.reset();
+
+    state = null;
+    returnMode = null;
+  }
+
+  function createNewGame() {
+    reset();
+    state = GameState();
+  }
+
+  function startNewGame(setup=null) {
+    createNewGame();
+
     EpisodeQueue.seed(getStartingEpisodes());
     GameFlags.seed();
+
     openGame();
 
     if (typeof setup === "function") { return setup(); }
@@ -81,9 +97,9 @@ global.GameSystem = (function() {
       throw new Error(`Incompatible save version: ${saveData.saveVersion} (expected ${saveVersion})`);
     }
 
+    reset();
     Registry.unpack(saveData.registry);
     state = GameState(saveData.state);
-    loaded = true;
 
     openGame();
     setGameMode(state.getGameMode());
@@ -96,28 +112,6 @@ global.GameSystem = (function() {
   function endGame() {
     reset();
     GameInterface.endGame();
-  }
-
-  function reset() {
-    Registry.clear();
-
-    EpisodeSystem.reset();
-    BattleSystem.reset();
-    NegotiationSystem.reset();
-    DungeonSystem.reset();
-
-    createGameState();
-    loaded = false;
-    returnMode = null;
-  }
-
-  // TODO: This bothers me. When making a fresh game state, the state should know to build empty inventories. We can't
-  //       just build them though in the "constructor" as written because the registry may not exist yet. We should
-  //       change the state to something like GameState.create() to build a new state with empty inventory entities and
-  //       GameState.unpack({}) to build one from the packed data.
-  function createGameState() {
-    state = GameState();
-    state.createInventories();
   }
 
   // ===============
@@ -143,11 +137,11 @@ global.GameSystem = (function() {
     canSave,
     saveGame,
 
+    createNewGame,
     startNewGame,
     loadLastGame,
     loadGame,
     endGame,
-    reset,
 
     setGameMode,
     getReturnMode,
