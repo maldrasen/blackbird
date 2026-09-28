@@ -52,7 +52,7 @@ global.CharacterEquipper = function(id) {
   //       ranged fighters and rogues, ability-aware armor selection for higher level characters, and a finery pass
   //       for wealthy non-fighters can all come later.
   //
-  // TODO: If a character is equipped with a bow, we'll also need to add arrows to their inventory.
+  // TODO: If a character is equipped with a bow, we'll also need to add arrows to the party inventory.
   //
   function equip(options) {
     if (options.bareHanded !== true) { equipWeapons(options.budget); }

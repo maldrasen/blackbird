@@ -1,7 +1,7 @@
 global.GameSystem = (function() {
 
   const saveDirectory = `${DATA}/Saves`;
-  const saveVersion = 1;
+  const saveVersion = 2;
 
   let state = GameState();
   let loaded = false;
