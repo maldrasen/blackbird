@@ -136,7 +136,6 @@ global.GameSystem = (function() {
     canSave,
     saveGame,
 
-    reset,
     createNewGame,
     startNewGame,
     loadLastGame,
