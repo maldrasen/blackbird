@@ -13,7 +13,7 @@ global.Fixtures = (function() {
     BattleFixtures.grantMana('red',100);
 
     NegotiationQuestion.setWhitelist([]);
-    NegotiationRequest.setWhitelist(['can-i-cut-you']);
+    NegotiationRequest.setWhitelist(['give-me-something']);
 
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',

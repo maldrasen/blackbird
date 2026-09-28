@@ -46,5 +46,5 @@ function yesReaction(context, parameters) {
 
 // TODO: Adjust the reaction text for personality archetype and stuff.
 function noReaction(context, parameters) {
-  return Reaction.disrespect(`Stingy ass {P:species.elf}.`);
+  return Reaction.dislike(`Stingy ass {P:species.elf}.`);
 }
