@@ -40,17 +40,16 @@ describe('EquipmentDepot', function() {
     expect(depot.getArmor()).to.deep.equal([]);
   });
 
-  it(`transfers an item when picked from the depot`, function() {
-    const bunny = CharacterFixtures.genericFemale({});
+  it(`removes a picked item from the stock without deleting it`, function() {
     const depot = EquipmentDepot('standard')
     const weapon = depot.getWeapons()[0];
     const armor = depot.getArmor()[0];
 
-    depot.pickItem(weapon, bunny);
-    depot.pickItem(armor, bunny);
+    depot.pickItem(weapon);
+    depot.pickItem(armor);
 
-    expect(InventoryManager(bunny).hasItem(weapon)).to.be.true;
-    expect(InventoryManager(bunny).hasItem(armor)).to.be.true;
+    expect(Registry.entityExists(weapon)).to.be.true;
+    expect(Registry.entityExists(armor)).to.be.true;
     expect(depot.getWeapons().includes(weapon)).to.be.false;
     expect(depot.getArmor().includes(armor)).to.be.false;
     expect(depot.getWeapons().length).to.equal(50);
@@ -58,12 +57,11 @@ describe('EquipmentDepot', function() {
 
   // The oldest item is picked second to show that the first pick didn't evict it from under the list.
   it(`evicts the oldest item for every item picked when it restocks`, function() {
-    const bunny = CharacterFixtures.genericFemale({});
     const depot = EquipmentDepot('standard')
     const before = depot.getWeapons();
 
-    depot.pickItem(before[10], bunny);
-    depot.pickItem(before[0], bunny);
+    depot.pickItem(before[10]);
+    depot.pickItem(before[0]);
 
     const after = depot.getWeapons();
 
@@ -73,16 +71,15 @@ describe('EquipmentDepot', function() {
 
     expect(ItemComponent.lookup(before[1])).to.be.undefined;
     expect(ItemComponent.lookup(before[2])).to.be.undefined;
-    expect(InventoryManager(bunny).hasItem(before[0])).to.be.true;
-    expect(InventoryManager(bunny).hasItem(before[10])).to.be.true;
+    expect(Registry.entityExists(before[0])).to.be.true;
+    expect(Registry.entityExists(before[10])).to.be.true;
     expect(depot.getArmor().length).to.equal(50);
   });
 
   it(`throws when picking an item the depot doesn't have`, function() {
-    const bunny = CharacterFixtures.genericFemale({});
     const item = ItemFixtures.buildStandard('longsword');
 
-    expect(() => EquipmentDepot('standard').pickItem(item, bunny)).to.throw(/doesn't have Item/);
+    expect(() => EquipmentDepot('standard').pickItem(item)).to.throw(/doesn't have Item/);
   });
 
 });

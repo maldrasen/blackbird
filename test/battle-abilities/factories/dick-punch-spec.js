@@ -34,7 +34,6 @@ describe("Ability.DickPunch", function() {
 
   function wearPants(id, base) {
     const pants = EquipmentFactory().build(base);
-    InventoryManager(id).addItem(pants);
     EquipmentManager(id).equipItem(pants, EquipmentSlot.legs);
   }
 

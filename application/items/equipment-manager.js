@@ -27,23 +27,29 @@ global.EquipmentManager = function(characterId) {
 
   // The canEquipItem() function does most of the work when equipping an item. If an item can be equipped, equipping it
   // is as simple as setting the equipment slot to the item id. An item can be unequipped by calling this function with
-  // itemId = null
+  // itemId = null. The ids of the items knocked out of their slots are returned, so that whoever owns the character's
+  // spare equipment can take them back.
   function equipItem(itemId, slot) {
     if (itemId != null && canEquipItem(itemId, slot) === false) {
       throw new Error(`Cannot equip Item:${itemId} in Slot:${slot}`);
     }
 
     const equipment = fetch();
+    const displaced = [equipment[slot]];
     equipment[slot] = itemId;
 
     if (isTwoHandedWeapon(itemId)) {
+      displaced.push(equipment[EquipmentSlot.secondary]);
       equipment[EquipmentSlot.secondary] = null;
     }
     if (itemId != null && slot === EquipmentSlot.secondary && isTwoHandedWeapon(equipment[EquipmentSlot.primary])) {
+      displaced.push(equipment[EquipmentSlot.primary]);
       equipment[EquipmentSlot.primary] = null;
     }
 
     update(equipment);
+
+    return displaced.filter(id => id != null && id !== itemId);
   }
 
   // A two-handed weapon needs both hands, so equipping one clears the secondary slot, and equipping an off-hand
@@ -85,7 +91,7 @@ global.EquipmentManager = function(characterId) {
 
   function unequipItem(itemId) {
     const slot = getEquippedSlot(itemId);
-    if (slot != null) { equipItem(null, slot); }
+    return (slot != null) ? equipItem(null, slot) : [];
   }
 
   return {

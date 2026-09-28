@@ -19,8 +19,8 @@ global.EquipmentComponent = (function() {
     Registry.deleteComponent(id,ComponentType.equipment);
   }
 
-  // Equipment validation is rather involved. We need to check that each equipped slot can actually hold the equipped
-  // item. We also make sure that each equipped item is actually in the character's inventory.
+  // Each equipped slot has to be one the component knows about, and it has to be a slot the item's record allows.
+  // An equipped item is owned by the slot holding it, so there's no inventory to check against.
   function validate(id) {
     const equipmentComponent = lookup(id);
 
@@ -36,10 +36,6 @@ global.EquipmentComponent = (function() {
 
         if (base.getSlots().includes(slot) === false) {
           throw new Error(`Item:${itemId} (${base.getCode()}) cannot be equipped in ${slot}`);
-        }
-
-        if (InventoryManager(id).hasItem(itemId) === false) {
-          throw new Error(`Item:${itemId} is equipped, but isn't in Character:${id}'s inventory.`);
         }
       }
     });

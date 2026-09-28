@@ -167,7 +167,6 @@ global.CharacterFactory = (function() {
     AspectsComponent.create(characterId, state.getAspects());
     EquipmentComponent.create(characterId);
     ExperienceComponent.create(characterId);
-    InventoryComponent.create(characterId);
 
     if (state.getBreasts()) { BreastsComponent.create(characterId, state.getBreasts()); }
     if (state.getCock()) { CockComponent.create(characterId, state.getCock()); }

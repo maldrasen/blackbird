@@ -545,14 +545,13 @@ describe("Room", function() {
       expect(room.getAvailableCommands().map(command => command.code)).to.deep.equal(['take']);
     });
 
-    it("banks the command's loot in the player's inventory", function() {
-      const player = CharacterFixtures.randomPlayer();
+    it("banks the command's loot in the party inventory", function() {
       const room = Room();
       room.setContents('spec-command-contents');
 
       const result = room.useCommand('take');
       expect(result).to.deep.equal({ text:'Taken', loot:[{ articleCode:'spec-loot', quantity:2 }] });
-      expect(InventoryManager(player).getArticleQuantity('spec-loot')).to.equal(2);
+      expect(InventoryManager().getArticleQuantity('spec-loot')).to.equal(2);
     });
 
     it('throws when using a command that is not available', function() {

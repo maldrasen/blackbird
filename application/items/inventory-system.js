@@ -1,64 +1,14 @@
 global.InventorySystem = (function() {
 
-  // Each provider returns candidate entity ids. The list is ordered so that reachable inventories are always
-  // presented in the same order: player, then party, then co-located roster members. Future inventory sources
-  // (an armory, a bag of holding) can be appended here.
-  const providers = [
-    playerProvider,
-    partyProvider,
-    rosterProvider,
-  ];
+  // The party shares one inventory, and an equipped item leaves it for the character's slot. Items should only move
+  // between the two through these functions, so that neither side ends up owning an item the other still lists.
 
-  function playerProvider() {
-    const player = GameSystem.getState().getPlayer();
-    return player ? [player] : [];
-  }
-
-  function partyProvider() {
-    return Object.keys(PartyConfiguration.getConfiguration());
-  }
-
-  function rosterProvider() {
-    const state = GameSystem.getState();
-    return state.getRoster().filter(id => {
-      const situated = SituatedComponent.lookup(id);
-      return situated != null && situated.currentLocation === state.getCurrentLocation();
-    });
-  }
-
-  function getReachableInventories(characterId) {
-    const reachable = [];
-
-    providers.forEach(provider => {
-      provider().forEach(id => {
-        if (id === characterId) { return; }
-        if (reachable.includes(id)) { return; }
-        if (InventoryComponent.lookup(id) == null) { return; }
-        reachable.push(id);
-      });
-    });
-
-    return reachable.map(id => ({ id:id, name:Character(id).getName() }));
-  }
-
-  // The item must be unequipped and removed from the source inventory before it's added to the destination.
-  // EquipmentComponent.validate requires equipped items to be in the owner's inventory.
-  function transferItem(itemId, sourceId, destinationId) {
-    EquipmentManager(sourceId).unequipItem(itemId);
-    InventoryManager(sourceId).removeItem(itemId);
-    InventoryManager(destinationId).addItem(itemId);
-  }
-
-  // === Equipping ======================================================================================================
-
-  // The equipment panel equips through these rather than through the EquipmentManager directly, so that the inventory
-  // side of equipping has one place to live once the party shares an inventory.
+  function party() { return InventoryManager(); }
 
   function getEquipmentForSlot(characterId, slot) {
     const equipment = EquipmentManager(characterId);
 
-    return InventoryComponent.lookup(characterId).items.
-      filter(itemId => equipment.getEquippedSlot(itemId) == null).
+    return InventoryComponent.lookup(GameSystem.getState().getPartyInventory()).items.
       filter(itemId => equipment.canEquipItem(itemId, slot)).
       map(itemId => {
         const item = Item(itemId);
@@ -67,17 +17,21 @@ global.InventorySystem = (function() {
       sort((a,b) => a.name.localeCompare(b.name));
   }
 
+  // Equipping throws before anything changes when the slot won't take the item, so the party inventory is only
+  // touched once the slot has been set. Whatever the new item knocked out of a slot goes back to the party.
   function equip(characterId, itemId, slot) {
-    EquipmentManager(characterId).equipItem(itemId, slot);
+    if (party().hasItem(itemId) === false) { throw new Error(`Item:${itemId} isn't in the party inventory.`); }
+
+    const displaced = EquipmentManager(characterId).equipItem(itemId, slot);
+    party().removeItem(itemId);
+    displaced.forEach(id => party().addItem(id));
   }
 
   function unequip(characterId, slot) {
-    EquipmentManager(characterId).equipItem(null, slot);
+    EquipmentManager(characterId).equipItem(null, slot).forEach(id => party().addItem(id));
   }
 
   return {
-    getReachableInventories,
-    transferItem,
     getEquipmentForSlot,
     equip,
     unequip,

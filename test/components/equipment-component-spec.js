@@ -5,7 +5,6 @@ describe("EquipmentComponent", function() {
   function ownerOf(...codes) {
     const horse = CharacterFixtures.genericMale({});
     const items = codes.map(code => EquipmentFactory().build(code));
-    items.forEach(item => InventoryManager(horse).addItem(item));
     return { horse, items };
   }
 
@@ -44,12 +43,6 @@ describe("EquipmentComponent", function() {
     it("rejects a slot that doesn't exist", function() {
       const { horse, items:[sword] } = ownerOf('longsword');
       expect(() => EquipmentComponent.update(horse, { tail:sword })).to.throw(/does not have a tail slot/);
-    });
-
-    it("rejects an equipped item that isn't in the owner's inventory", function() {
-      const horse = CharacterFixtures.genericMale({});
-      const sword = EquipmentFactory().build('longsword');
-      expect(() => EquipmentComponent.update(horse, { primary:sword })).to.throw(/isn't in Character/);
     });
   });
 

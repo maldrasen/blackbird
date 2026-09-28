@@ -134,12 +134,8 @@ describe("Character", function() {
       const asslessChaps = EquipmentFactory().build('chaps');
       const titsOutCorset = EquipmentFactory().build('low-corset');
       const equipment = EquipmentManager(entity);
-      const inventory = InventoryManager(entity);
 
       expect(character.isNaked()).to.be.true;
-
-      inventory.addItem(asslessChaps);
-      inventory.addItem(titsOutCorset);
       equipment.equipItem(titsOutCorset,EquipmentSlot.chest);
       equipment.equipItem(asslessChaps,EquipmentSlot.legs);
 

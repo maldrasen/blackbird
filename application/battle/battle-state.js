@@ -42,22 +42,24 @@ global.BattleState = function(data) {
     });
   }
 
+  // An item has to be unequipped before it can be owned by the loot inventory.
   function saveCarriedLoot(id) {
-    const inventory = InventoryComponent.lookup(id);
-    if (inventory == null) { return; }
+    const equipment = EquipmentManager(id);
 
-    inventory.items.filter(itemId => Item(itemId).hasEnchantment()).forEach(itemId => {
-      InventoryManager(id).removeItem(itemId);
-      InventoryManager(GameSystem.getState().manifestLootInventory()).addItem(itemId);
+    getCarriedItems(id).filter(itemId => Item(itemId).hasEnchantment()).forEach(itemId => {
+      equipment.unequipItem(itemId);
+      InventoryManager(GameSystem.getState().getLootInventory()).addItem(itemId);
     });
   }
 
   // A monster's equipment items are their own entities, not children of the monster, so they're deleted explicitly.
   function deleteCarriedItems(id) {
-    const inventory = InventoryComponent.lookup(id);
-    if (inventory) {
-      inventory.items.forEach(itemId => Registry.deleteEntity(itemId));
-    }
+    getCarriedItems(id).forEach(itemId => Registry.deleteEntity(itemId));
+  }
+
+  // Monsters carry nothing but what they have equipped.
+  function getCarriedItems(id) {
+    return Object.values(EquipmentComponent.lookup(id) || {}).filter(itemId => itemId != null);
   }
 
   function addMonster(id, position) {

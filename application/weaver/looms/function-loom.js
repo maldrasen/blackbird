@@ -22,10 +22,16 @@ global.FunctionLoom = (function() {
     return '';
   }
 
-  // If the action text specifies that a character removes a piece of clothing we can have them unequip that slot.
+  // If the action text specifies that a character removes a piece of clothing we can have them unequip that slot. The
+  // item goes back to the party inventory rather than vanishing.
+
+  // TODO: Instead of unequipping the item we should somehow hide it. It would be annoying to have to reequip all of a
+  //       character's equipment after a sex scene. The Character wrapper's areBreastsExposed() and similar functions
+  //       would need to look at the equipped item's hidden state. This function should be changed to hide(). A mode
+  //       change should always unhide everything I think.
+
   function unequip(context, argumentList) {
-    const equipment = EquipmentManager(context[argumentList[0]]);
-    equipment.equipItem(null, argumentList[1]);
+    InventorySystem.unequip(context[argumentList[0]], argumentList[1]);
     return '';
   }
 

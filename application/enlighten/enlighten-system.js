@@ -17,7 +17,7 @@ global.EnlightenSystem = (function() {
     });
   }
 
-  // The loot goes straight into the player's inventory as well, the view only lists what was found.
+  // The loot goes straight into the party inventory as well, the view only lists what was found.
   function bankLoot() {
     const inventory = InventoryManager();
     (state.getLoot() || []).forEach(entry => inventory.addArticle(entry.articleCode, entry.quantity));
@@ -30,7 +30,7 @@ global.EnlightenSystem = (function() {
 
   // Whatever the party left behind in the loot inventory is gone for good.
   function discardLoot() {
-    const loot = GameSystem.getState().manifestLootInventory();
+    const loot = GameSystem.getState().getLootInventory();
 
     InventoryComponent.lookup(loot).items.forEach(itemId => Registry.deleteEntity(itemId));
     Registry.updateComponent(loot, ComponentType.inventory, { items:[] });

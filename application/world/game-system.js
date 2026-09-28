@@ -1,7 +1,7 @@
 global.GameSystem = (function() {
 
   const saveDirectory = `${DATA}/Saves`;
-  const saveVersion = 1;
+  const saveVersion = 2;
 
   let state = GameState();
   let loaded = false;
@@ -45,7 +45,7 @@ global.GameSystem = (function() {
 
   async function startNewGame(setup=null) {
     Registry.clear();
-    state = GameState();
+    createGameState();
     loaded = true;
     EpisodeQueue.seed(getStartingEpisodes());
     GameFlags.seed();
@@ -106,9 +106,18 @@ global.GameSystem = (function() {
     NegotiationSystem.reset();
     DungeonSystem.reset();
 
-    state = GameState();
+    createGameState();
     loaded = false;
     returnMode = null;
+  }
+
+  // TODO: This bothers me. When making a fresh game state, the state should know to build empty inventories. We can't
+  //       just build them though in the "constructor" as written because the registry may not exist yet. We should
+  //       change the state to something like GameState.create() to build a new state with empty inventory entities and
+  //       GameState.unpack({}) to build one from the packed data.
+  function createGameState() {
+    state = GameState();
+    state.createInventories();
   }
 
   // ===============

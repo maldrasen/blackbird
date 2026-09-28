@@ -1,104 +1,100 @@
 describe('InventorySystem', function() {
 
-  describe('getReachableInventories()', function() {
-    it('gathers the player, party, and co-located roster members', function() {
-      const state = GameSystem.getState();
-      const player = CharacterFixtures.genericMale({ actor:{ name:'Player' } });
-      const partyMember = CharacterFixtures.genericMale({ actor:{ name:'Party' } });
-      const coLocated = CharacterFixtures.genericMale({ actor:{ name:'Nearby' } });
-      const farAway = CharacterFixtures.genericMale({ actor:{ name:'Distant' } });
-
-      state.setPlayer(player);
-      state.setCurrentLocation('night-market');
-      state.setPartyConfiguration({ [player]:'p-0', [partyMember]:'p-1' });
-      state.addToRoster(coLocated);
-      state.addToRoster(farAway);
-
-      SituatedComponent.create(coLocated, { currentLocation:'night-market' });
-      SituatedComponent.create(farAway, { currentLocation:'graveyard' });
-
-      const reachable = InventorySystem.getReachableInventories(partyMember);
-
-      expect(reachable.map(entry => entry.id)).to.deep.equal([player, coLocated]);
-      expect(reachable.map(entry => entry.name)).to.deep.equal(['Player','Nearby']);
-    });
-
-    it('excludes self and does not duplicate a player in the party', function() {
-      const state = GameSystem.getState();
-      const player = CharacterFixtures.genericMale({ actor:{ name:'Player' } });
-      const partyMember = CharacterFixtures.genericMale({ actor:{ name:'Party' } });
-
-      state.setPlayer(player);
-      state.setPartyConfiguration({ [player]:'p-0', [partyMember]:'p-1' });
-
-      const reachable = InventorySystem.getReachableInventories(player);
-
-      expect(reachable.map(entry => entry.id)).to.deep.equal([partyMember]);
-    });
-  });
-
-  it('transferItem() unequips an item and moves it between inventories', function() {
+  function armory() {
     const horse = CharacterFixtures.genericMale({});
-    const goat = CharacterFixtures.genericMale({});
-    const cleaver = EquipmentFactory().build('cleaver');
+    const items = {
+      hatchet: ItemFixtures.buildSteel('hatchet'),
+      handAxe: ItemFixtures.buildSteel('hand-axe'),
+      broadAxe: ItemFixtures.buildSteel('broad-axe'),
+      maul: ItemFixtures.buildSteel('maul'),
+      helm: ItemFixtures.buildSteel('helm'),
+    };
 
-    InventoryManager(horse).addItem(cleaver);
-    EquipmentManager(horse).equipItem(cleaver, EquipmentSlot.primary);
+    Object.values(items).forEach(itemId => InventoryManager().addItem(itemId));
+    return { horse, ...items };
+  }
 
-    InventorySystem.transferItem(cleaver, horse, goat);
+  function partyHas(itemId) { return InventoryManager().hasItem(itemId); }
 
-    expect(EquipmentComponent.lookup(horse).primary).to.not.exist;
-    expect(InventoryManager(horse).hasItem(cleaver)).to.equal(false);
-    expect(InventoryManager(goat).hasItem(cleaver)).to.equal(true);
+  it('getEquipmentForSlot() lists the party inventory items the slot accepts, by name', function() {
+    const { horse, hatchet, handAxe, broadAxe, maul, helm } = armory();
+    InventorySystem.equip(horse, broadAxe, EquipmentSlot.primary);
+
+    const primary = InventorySystem.getEquipmentForSlot(horse, EquipmentSlot.primary);
+    const secondary = InventorySystem.getEquipmentForSlot(horse, EquipmentSlot.secondary);
+    const head = InventorySystem.getEquipmentForSlot(horse, EquipmentSlot.head);
+
+    expect(primary.map(row => row.itemId)).to.deep.equal([handAxe, hatchet, maul]);
+    expect(secondary.map(row => row.itemId)).to.deep.equal([handAxe, hatchet]);
+    expect(head).to.have.lengthOf(1);
+    expect(head[0]).to.include({ itemId:helm, name:'Steel Helm' });
+    expect(head[0].icon).to.be.a('string');
   });
 
-
-  describe('equipping', function() {
-    function armory() {
-      const horse = CharacterFixtures.genericMale({});
-      const items = {
-        hatchet: ItemFixtures.buildSteel('hatchet'),
-        handAxe: ItemFixtures.buildSteel('hand-axe'),
-        broadAxe: ItemFixtures.buildSteel('broad-axe'),
-        helm: ItemFixtures.buildSteel('helm'),
-      };
-
-      Object.values(items).forEach(itemId => InventoryManager(horse).addItem(itemId));
-      return { horse, ...items };
-    }
-
-    it('getEquipmentForSlot() lists the unequipped inventory items the slot accepts, by name', function() {
-      const { horse, hatchet, handAxe, broadAxe, helm } = armory();
-      EquipmentManager(horse).equipItem(broadAxe, EquipmentSlot.primary);
-
-      const primary = InventorySystem.getEquipmentForSlot(horse, EquipmentSlot.primary);
-      const secondary = InventorySystem.getEquipmentForSlot(horse, EquipmentSlot.secondary);
-      const head = InventorySystem.getEquipmentForSlot(horse, EquipmentSlot.head);
-
-      expect(primary.map(row => row.itemId)).to.deep.equal([handAxe, hatchet]);
-      expect(secondary.map(row => row.itemId)).to.deep.equal([handAxe, hatchet]);
-      expect(head).to.have.lengthOf(1);
-      expect(head[0]).to.include({ itemId:helm, name:'Steel Helm' });
-      expect(head[0].icon).to.be.a('string');
-    });
-
-    it('equip() puts the item in the slot', function() {
+  describe('equip()', function() {
+    it('moves the item from the party inventory into the slot', function() {
       const { horse, hatchet } = armory();
 
       InventorySystem.equip(horse, hatchet, EquipmentSlot.secondary);
 
       expect(EquipmentComponent.lookup(horse).secondary).to.equal(hatchet);
-      expect(InventorySystem.getEquipmentForSlot(horse, EquipmentSlot.secondary).map(row => row.itemId)).to.not.include(hatchet);
+      expect(partyHas(hatchet)).to.be.false;
     });
 
-    it('unequip() empties the slot', function() {
+    it('returns a replaced item to the party inventory', function() {
+      const { horse, hatchet, handAxe } = armory();
+
+      InventorySystem.equip(horse, hatchet, EquipmentSlot.primary);
+      InventorySystem.equip(horse, handAxe, EquipmentSlot.primary);
+
+      expect(EquipmentComponent.lookup(horse).primary).to.equal(handAxe);
+      expect(partyHas(hatchet)).to.be.true;
+      expect(partyHas(handAxe)).to.be.false;
+    });
+
+    it('returns the off-hand cleared by a two-handed weapon', function() {
+      const { horse, hatchet, handAxe, maul } = armory();
+      InventorySystem.equip(horse, hatchet, EquipmentSlot.primary);
+      InventorySystem.equip(horse, handAxe, EquipmentSlot.secondary);
+
+      InventorySystem.equip(horse, maul, EquipmentSlot.primary);
+
+      expect(EquipmentComponent.lookup(horse).primary).to.equal(maul);
+      expect(EquipmentComponent.lookup(horse).secondary).to.not.exist;
+      expect(partyHas(hatchet)).to.be.true;
+      expect(partyHas(handAxe)).to.be.true;
+      expect(partyHas(maul)).to.be.false;
+    });
+
+    it("throws for an item that isn't in the party inventory and changes nothing", function() {
+      const { horse, hatchet } = armory();
+      const stray = ItemFixtures.buildSteel('helm');
+
+      expect(() => InventorySystem.equip(horse, stray, EquipmentSlot.head)).to.throw(`isn't in the party inventory`);
+      expect(() => InventorySystem.equip(horse, hatchet, EquipmentSlot.head)).to.throw(`Cannot equip`);
+      expect(EquipmentComponent.lookup(horse).head).to.not.exist;
+      expect(partyHas(hatchet)).to.be.true;
+    });
+  });
+
+  describe('unequip()', function() {
+    it('returns the item to the party inventory', function() {
       const { horse, helm } = armory();
-      EquipmentManager(horse).equipItem(helm, EquipmentSlot.head);
+      InventorySystem.equip(horse, helm, EquipmentSlot.head);
 
       InventorySystem.unequip(horse, EquipmentSlot.head);
 
       expect(EquipmentComponent.lookup(horse).head).to.not.exist;
-      expect(InventorySystem.getEquipmentForSlot(horse, EquipmentSlot.head).map(row => row.itemId)).to.deep.equal([helm]);
+      expect(partyHas(helm)).to.be.true;
+    });
+
+    it('does nothing for an empty slot', function() {
+      const { horse } = armory();
+      const before = [...InventoryComponent.lookup(GameSystem.getState().getPartyInventory()).items];
+
+      InventorySystem.unequip(horse, EquipmentSlot.head);
+
+      expect(InventoryComponent.lookup(GameSystem.getState().getPartyInventory()).items).to.deep.equal(before);
     });
   });
 

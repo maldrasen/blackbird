@@ -15,11 +15,9 @@ describe("MonsterFactory", function() {
     it("leaves a natural fighter's hands empty", function() {
       const id = MonsterFactory('kobold-dick-puncher').build();
       const equipment = EquipmentComponent.lookup(id);
-      const items = InventoryComponent.lookup(id).items;
 
       expect(equipment.primary).to.be.undefined;
       expect(equipment.secondary).to.be.undefined;
-      expect(items.some(itemId => Item(itemId).getBase().isWeapon())).to.be.false;
       expect(Monster(id).getAbilities().map(ability => ability.getName())).to.include('Punch');
     });
 
@@ -31,7 +29,7 @@ describe("MonsterFactory", function() {
       expect(Item(primary).getBase().isWeapon()).to.be.true;
       expect(Item(primary).getValue()).to.be.at.most(110);
       expect(Object.keys(kobold.getWeapons())).to.include(Item(primary).getBase().getCode());
-      expect(InventoryComponent.lookup(id).items).to.include(primary);
+      expect(Registry.entityExists(primary)).to.be.true;
     });
 
     it("equips armor", function() {
@@ -40,7 +38,7 @@ describe("MonsterFactory", function() {
 
       expect(Item(legs).getBase().getSlot()).to.equal(EquipmentSlot.legs);
       expect(Item(legs).getValue()).to.be.at.most(88);
-      expect(InventoryComponent.lookup(id).items).to.include(legs);
+      expect(Registry.entityExists(legs)).to.be.true;
     });
 
     it("gives a monster some skill with the weapon it ends up with", function() {

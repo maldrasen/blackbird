@@ -80,7 +80,6 @@ global.PlayerFactory = (function() {
       if (state.getPussy()) { PussyComponent.create(playerId, state.getPussy()); }
 
       EquipmentComponent.create(playerId);
-      InventoryComponent.create(playerId);
       ExperienceComponent.create(playerId);
 
       adjustStartingAttributes(playerId);
