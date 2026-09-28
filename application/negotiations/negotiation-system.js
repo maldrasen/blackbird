@@ -126,6 +126,22 @@ global.NegotiationSystem = (function() {
     state = null;
   }
 
+  // Damage taken as part of a negotiation skips any kind of armor and damage reduction. Dealing with a player killed
+  // during the negotiation would be too complex, so we clamp the damage to leave the player with at least 1 health.
+  // This function returns the damage that was actually dealt.
+  function dealDamage(amount, id=GameSystem.getState().getPlayer()) {
+    const health = HealthComponent.lookup(id);
+    const damage = Math.max(0, Math.min(amount, health.currentHealth - 1));
+
+    health.currentHealth -= damage;
+    HealthComponent.update(id, health);
+
+    BattleInterface.updateCombatantView(id);
+    if (damage > 0) { BattleInterface.showDamageEffect({ entity:id }); }
+
+    return damage;
+  }
+
   function scheduleMonsterResponse() {
     const battleState = BattleSystem.getState();
 
@@ -140,6 +156,7 @@ global.NegotiationSystem = (function() {
     advance,
     answer,
     reset,
+    dealDamage,
     isRecruiting,
     getState: () => { return state; },
   };

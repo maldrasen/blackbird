@@ -20,15 +20,7 @@ function yesReaction(context, parameters) {
       {T:his} eye he brings the knife down, but turns the blade aside at the last moment. "Just kidding."`)
   }
 
-  // TODO: We need to update the view here, even though the character panel is below the overlay. Or maybe always
-  //       update the view that way we won't have to remember to do it in other requests? We could move the "deal
-  //       damage" block below into the negotiation system and make it a more general function for when the player
-  //       takes damage as part of the negotiation.
-
-  const health = HealthComponent.lookup(context.P);
-  const damage = Math.min(health.currentHealth-1, Random.rollDice({ x:2, d:6 }));
-  health.currentHealth -= damage;
-  HealthComponent.update(context.P, health);
+  const damage = NegotiationSystem.dealDamage(Random.rollDice({ x:2, d:6 }));
 
   if (archetype === 'pervert') {
     return Reaction.lust(`{T:TargetName} grins and licks {T:his} lips. {T:He} takes your hand in {T:his} and slowly 
@@ -46,4 +38,3 @@ function noReaction(context, parameters) {
   if (archetype === 'pervert') { return Reaction.neutral(`"{T:He} gives you a shrug, "Not into that? Well whatever."`); }
   return Reaction.respect(`{T:TargetName} chuckles a little and nods. "Mmm, would have been fun though."`);
 }
-

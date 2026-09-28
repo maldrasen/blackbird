@@ -275,6 +275,35 @@ describe("NegotiationSystem", function() {
     });
   });
 
+  describe("dealDamage()", function() {
+    function setHealth(id, value) {
+      const health = HealthComponent.lookup(id);
+      health.currentHealth = value;
+      HealthComponent.update(id, health);
+    }
+
+    it("takes the damage from the target's health", function() {
+      startNegotiation();
+      const player = GameSystem.getState().getPlayer();
+      setHealth(player, 10);
+
+      expect(NegotiationSystem.dealDamage(4)).to.equal(4);
+      expect(HealthComponent.lookup(player).currentHealth).to.equal(6);
+    });
+
+    it("never drops the target below 1 health", function() {
+      startNegotiation();
+      const player = GameSystem.getState().getPlayer();
+      setHealth(player, 10);
+
+      expect(NegotiationSystem.dealDamage(50)).to.equal(9);
+      expect(HealthComponent.lookup(player).currentHealth).to.equal(1);
+
+      expect(NegotiationSystem.dealDamage(50)).to.equal(0);
+      expect(HealthComponent.lookup(player).currentHealth).to.equal(1);
+    });
+  });
+
   it("continues the battle with the monster acting first", function() {
     const state = startNegotiation();
     const battleState = BattleSystem.getState();
