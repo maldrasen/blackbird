@@ -9,13 +9,13 @@ global.InventoryRequirements = (function() {
   }
 
   function hasArticlesWithEveryTag(tags) {
-    return Object.keys(Inventory().getArticlesWithAnyTag(tags)).length > 0;
+    return Object.keys(Inventory().getArticlesWithEveryTag(tags)).length > 0;
   }
 
   return {
     hasArticlesWithTag: tag =>       { return () => { return hasArticlesWithTag(tag); }},
-    hasArticlesWithAnyTag: tags =>   { return () => { return hasArticlesWithTag(tags); }},
-    hasArticlesWithEveryTag: tags => { return () => { return hasArticlesWithTag(tags); }},
+    hasArticlesWithAnyTag: tags =>   { return () => { return hasArticlesWithAnyTag(tags); }},
+    hasArticlesWithEveryTag: tags => { return () => { return hasArticlesWithEveryTag(tags); }},
   }
 
 })();

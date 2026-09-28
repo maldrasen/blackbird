@@ -126,7 +126,7 @@ global.Inventory = function(inventoryId=GameSystem.getState().getPartyInventory(
 
   function getArticlesWithEveryTag(tags) {
     return ObjectHelper.select(fetch().articles, (code,quantity) => {
-      return Article.lookup(code).getTags().every(tag => tags.includes(tag));
+      return tags.every(tag => Article.lookup(code).getTags().includes(tag));
     });
   }
 

@@ -165,4 +165,49 @@ describe('Inventory', function() {
     expect(Registry.entityExists(helm)).to.equal(false);
     expect(Inventory().hasItem(helm)).to.equal(false);
   });
+
+  describe('article tags', function() {
+    // string-of-teeth: [bone]  grim-totem: [bone,flesh]  runecarved-femur: [bone,magic]  ball-bag: [flesh]
+    function stockedInventory() {
+      const inventory = Inventory();
+      inventory.addArticle('string-of-teeth', 1);
+      inventory.addArticle('grim-totem', 2);
+      inventory.addArticle('runecarved-femur', 1);
+      inventory.addArticle('ball-bag', 3);
+      inventory.addArticle('dungeon-tripe', 5);
+      return inventory;
+    }
+
+    it('getArticlesWithTag() selects the articles carrying the tag', function() {
+      expect(stockedInventory().getArticlesWithTag('flesh')).to.deep.equal({ 'grim-totem':2, 'ball-bag':3 });
+    });
+
+    it('getArticlesWithAnyTag() selects the articles carrying at least one of the tags', function() {
+      expect(stockedInventory().getArticlesWithAnyTag(['flesh','magic'])).to.deep.equal({
+        'grim-totem':2, 'runecarved-femur':1, 'ball-bag':3 });
+    });
+
+    it('getArticlesWithEveryTag() selects only the articles carrying all of the tags', function() {
+      expect(stockedInventory().getArticlesWithEveryTag(['bone','magic'])).to.deep.equal({ 'runecarved-femur':1 });
+    });
+
+    it('getArticlesWithEveryTag() rejects an article missing one of the tags', function() {
+      expect(stockedInventory().getArticlesWithEveryTag(['bone','flesh','magic'])).to.deep.equal({});
+    });
+
+    it('InventoryRequirements predicates pass and fail against the party inventory', function() {
+      expect(InventoryRequirements.hasArticlesWithTag('bone')()).to.equal(false);
+      expect(InventoryRequirements.hasArticlesWithAnyTag(['bone','flesh'])()).to.equal(false);
+      expect(InventoryRequirements.hasArticlesWithEveryTag(['bone','magic'])()).to.equal(false);
+
+      stockedInventory();
+
+      expect(InventoryRequirements.hasArticlesWithTag('bone')()).to.equal(true);
+      expect(InventoryRequirements.hasArticlesWithTag('slime')()).to.equal(false);
+      expect(InventoryRequirements.hasArticlesWithAnyTag(['bone','flesh'])()).to.equal(true);
+      expect(InventoryRequirements.hasArticlesWithAnyTag(['slime','ooze'])()).to.equal(false);
+      expect(InventoryRequirements.hasArticlesWithEveryTag(['bone','magic'])()).to.equal(true);
+      expect(InventoryRequirements.hasArticlesWithEveryTag(['flesh','magic'])()).to.equal(false);
+    });
+  });
 });
