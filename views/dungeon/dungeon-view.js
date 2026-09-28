@@ -153,9 +153,7 @@ global.DungeonView = (function() {
   function showTrapResult(trap) {
     if (trap.damage > 0) {
       const card = X.first(`#dungeonControls .party-card[data-id='${trap.target}']`);
-      if (card) {
-        FlashSquare.flash({ element:card, color:'rgb(75,10,10)', duration:BattleConstants.damageEffectTime });
-      }
+      if (card) { FlashSquare.flashDamage(card); }
     }
     RoomContentOverlay.open(trap);
   }
