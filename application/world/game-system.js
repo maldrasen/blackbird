@@ -97,6 +97,7 @@ global.GameSystem = (function() {
       throw new Error(`Incompatible save version: ${saveData.saveVersion} (expected ${saveVersion})`);
     }
 
+    reset();
     Registry.unpack(saveData.registry);
     state = GameState(saveData.state);
 
