@@ -137,7 +137,7 @@ global.NegotiationSystem = (function() {
     HealthComponent.update(id, health);
 
     BattleInterface.updateCombatantView(id);
-    if (damage > 0) { BattleInterface.showDamageEffect({ entity:id }); }
+    if (damage > 0) { NegotiationInterface.showDamageEffect(); }
 
     return damage;
   }

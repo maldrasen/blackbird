@@ -108,6 +108,14 @@ global.NegotiationOverlay = (function() {
     return X.createElement(`<li><a href='#' class='button answer' data-key='${key}'>${label}</a></li>`);
   }
 
+  function showDamageEffect() {
+    FlashSquare.flash({
+      element: X.first('#negotiationFrame'),
+      color: 'rgb(75,10,10)',
+      duration: BattleConstants.damageEffectTime,
+    });
+  }
+
   return {
     init,
     open,
@@ -116,6 +124,7 @@ global.NegotiationOverlay = (function() {
     renderInteraction,
     renderDialog,
     renderResolution,
+    showDamageEffect,
   };
 
 })();
