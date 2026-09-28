@@ -477,6 +477,7 @@
     "data/negotiation/questions/what-is-best.js",
     "data/negotiation/requests/can-i-cut-you.js",
     "data/negotiation/requests/give-me-mana.js",
+    "data/negotiation/requests/give-me-something.js",
     "data/penetration-data.js",
     "data/pussy-data.js",
     "data/room-contents/drungeon-crates.js",
