@@ -36,12 +36,16 @@ global.NegotiationRequest = (function() {
       return (request.requirements || []).every(requirement => requirement(context));
     }
 
-    function getAnswers(context) {
-      return ObjectHelper.select(request.answers, (key, answer) => Requirements.met(answer.requires, context));
+    // The request answers will either be an object in the shape:
+    //   { yes:{ text, reaction, requires }, no:{ text, reaction, requires } }
+    // or a function that returns an object in that shape.
+    function getAnswers(context, parameters) {
+      const answers = typeof request.answers === 'function' ? request.answers(context,parameters) : request.answers;
+      return ObjectHelper.select(answers, (key, answer) => Requirements.met(answer.requires, context));
     }
 
     function getAnswerText(key, context, parameters) {
-      const answer = getAnswers(context)[key];
+      const answer = getAnswers(context, parameters)[key];
       return typeof answer.text === 'string' ? answer.text : answer.text(parameters);
     }
 
