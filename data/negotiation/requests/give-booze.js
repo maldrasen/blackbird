@@ -37,7 +37,7 @@ function pissReaction(context) {
   const character = Character(context.T);
   const interested = character.hasSexualPreference('piss-slut',1) ||
       character.hasSexualPreference('perverted',1) ||
-      ['bimbo','slut','pervert'].includes(character.getArchetype());
+      Archetype.lookup(character.getArchetype()).getNegotiationStyle() === NegotiationStyle.lewd;
 
   return interested ?
     Reaction.lust(`{T:TargetName} grins and licks {T:his} lips, "Heh, maybe later. I like where your head's at though."`,{ givePreferences:{ 'piss-slut':15 }}) :

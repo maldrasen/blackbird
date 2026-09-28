@@ -12,9 +12,6 @@ We added a single negotiation request in task 105 to build the framework for the
 ### Item Requests
 Most of the new requests should focus on giving out items or articles, valuables or consumables especially. These requests can use the article tags to match something that the monster might be asking for. If they ask for something to drink we can see if the character has any article tagged with alcohol. If there are multiple matching items we could give the player a few options of what to offer, with higher value options producing better reactions. 
 
-### Violent Requests
-- Really, I just want to punch you in the face, okay?
-- Let me slap your tits around for a little.
 ### Lewd requests
 - Hmm, lets if you're a good kisser.
 - I want to see what your working with. So pull your dick out for me.
