@@ -72,7 +72,7 @@ global.NegotiationOverlay = (function() {
   // they're read from the interaction rather than the record.
   function renderRequest(interaction) {
     const request = NegotiationRequest.lookup(interaction.code);
-    const answers = request.getAnswers(getContext());
+    const answers = request.getAnswers(getContext(), interaction.requestParameters);
 
     renderPrompt('request', interaction.requestText);
     Object.keys(answers).forEach(key => {

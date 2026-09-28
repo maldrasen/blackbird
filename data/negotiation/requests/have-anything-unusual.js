@@ -16,8 +16,9 @@ function requestParameters() {
 function compileAnswers(context, parameters) {
   const answers = {}
 
-  parameters.offers.each(code => {
-    answers[code] = { text:`Offer ${EnglishHelper.a_an(Article.lookup(code).getName())}`, reaction:Reaction.like(`Heh... Nice.`) };
+  parameters.offers.forEach(code => {
+    const name = Article.lookup(code).getName();
+    answers[code] = { text:`Offer ${EnglishHelper.a_an(name)} ${name}`, reaction:Reaction.like(`Heh... Nice.`) };
   });
 
   answers.no = { text:'Refuse.', reaction:Reaction.dislike(`Tightwad.`) };

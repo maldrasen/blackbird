@@ -53,7 +53,7 @@ global.NegotiationRequest = (function() {
     // meaning that any resources that are removed as part of the negotiation happens here. This function should only
     // be called once, when the player chooses to respond to the request.
     function resolveAnswerReaction(key, context, parameters) {
-      const answer = getAnswers(context)[key];
+      const answer = getAnswers(context, parameters)[key];
       return typeof answer.reaction === 'object' ? answer.reaction : answer.reaction(context,parameters);
     }
 
