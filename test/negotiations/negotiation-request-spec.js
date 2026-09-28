@@ -115,7 +115,7 @@ describe("NegotiationRequest", function() {
   // The offers are a shuffled slice of the tagged articles, so the specs stock the inventory and compare sorted codes
   // rather than pinning an order. The answers are compiled from the parameters, one per offered article plus a refusal.
   describe("have-anything-unusual", function() {
-    const offers = ['string-of-teeth','grim-totem','ball-bag'];
+    const offers = ['string-of-teeth','grim-totem','ball-bag','faintly-glowing-human-skull'];
 
     function stockOffers() {
       const inventory = Inventory();
@@ -153,12 +153,28 @@ describe("NegotiationRequest", function() {
       expect(request.getAnswerText('no', {}, parameters)).to.equal('Refuse.');
     });
 
-    it('resolves the reactions from the offered articles', function() {
+    it('hands over the offered article for feelings scaled to its value', function() {
+      const inventory = stockOffers();
       const request = NegotiationRequest.lookup('have-anything-unusual');
-      const parameters = { offers:['grim-totem'] };
+      const parameters = { offers:['string-of-teeth','faintly-glowing-human-skull'] };
 
-      expect(request.resolveAnswerReaction('grim-totem', {}, parameters).feelings).to.deep.equal(Reaction.getFeelings('like'));
-      expect(request.resolveAnswerReaction('no', {}, parameters).feelings).to.deep.equal(Reaction.getFeelings('dislike'));
+      const teeth = request.resolveAnswerReaction('string-of-teeth', {}, parameters);
+      expect(teeth.type).to.equal('feelings');
+      expect(teeth.feelings).to.deep.equal({ control:17, affection:9, respect:13 });
+      expect(inventory.getArticleQuantity('string-of-teeth')).to.equal(0);
+
+      const skull = request.resolveAnswerReaction('faintly-glowing-human-skull', {}, parameters);
+      expect(skull.feelings).to.deep.equal({ control:42, affection:21, respect:32 });
+      expect(inventory.getArticleQuantity('faintly-glowing-human-skull')).to.equal(0);
+    });
+
+    it('keeps the articles and returns the dislike reaction when refused', function() {
+      const inventory = stockOffers();
+      const request = NegotiationRequest.lookup('have-anything-unusual');
+
+      const reaction = request.resolveAnswerReaction('no', {}, { offers:['grim-totem'] });
+      expect(reaction.feelings).to.deep.equal(Reaction.getFeelings('dislike'));
+      expect(inventory.getArticleQuantity('grim-totem')).to.equal(1);
     });
   });
 

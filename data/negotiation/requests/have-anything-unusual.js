@@ -18,18 +18,24 @@ function compileAnswers(context, parameters) {
 
   parameters.offers.forEach(code => {
     const name = Article.lookup(code).getName();
-    answers[code] = { text:`Offer ${EnglishHelper.a_an(name)} ${name}`, reaction:gaveItem(code) };
+    answers[code] = {
+      text:`Offer ${EnglishHelper.a_an(name)} ${name}`,
+      reaction:() => { gaveItem(code) }
+    };
   });
 
-  answers.no = { text:'Refuse.', reaction:Reaction.dislike(`Tightwad.`) };
+  answers.no = { text:'Refuse.', reaction:refused };
   return answers;
 }
 
-function gaveItem(code) {
-  return () => {
-    const value = Article.lookup(code).getValue();
-    Inventory().removeArticle(code,1);
+// TODO: More and better refusal text.
+function refused() {
+  Reaction.dislike(`Tightwad.`);
+}
 
-    return Reaction.like(`Heh... Nice.`);
-  }
+// TODO: This will also need more and better reaction text, based on both the personality archetype and the item's
+//       value.
+function gaveItem(code) {
+  Inventory().removeArticle(code,1);
+  return Reaction.withValue(`Heh... Nice.`, Article.lookup(code).getValue());
 }
