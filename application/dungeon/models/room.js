@@ -294,7 +294,7 @@ global.Room = function(feature, type='normal') {
 
     usedCommands.push(code);
     const result = command.execute();
-    const inventory = InventoryManager();
+    const inventory = Inventory();
 
     (result.loot || []).forEach(entry =>
       inventory.addArticle(entry.articleCode, entry.quantity));

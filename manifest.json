@@ -179,7 +179,6 @@
     "application/items/equipment-manager.js",
     "application/items/factories/equipment-appraiser.js",
     "application/items/factories/equipment-factory.js",
-    "application/items/inventory-manager.js",
     "application/items/inventory-system.js",
     "application/items/item-constants.js",
     "application/items/item.js",
@@ -280,6 +279,7 @@
     "application/world/world-state.js",
     "application/wrappers/attributes.js",
     "application/wrappers/character.js",
+    "application/wrappers/inventory.js",
     "application/wrappers/monster.js",
     "application/wrappers/personality.js",
     "application/wrappers/status-effects.js"
@@ -750,7 +750,6 @@
     "test/items/equipment-manager-spec.js",
     "test/items/factories/equipment-appraiser-spec.js",
     "test/items/factories/equipment-factory-spec.js",
-    "test/items/inventory-manager-spec.js",
     "test/items/inventory-system-spec.js",
     "test/items/item-spec.js",
     "test/items/loot-generator-spec.js",
@@ -800,6 +799,7 @@
     "test/world/registry-spec.js",
     "test/world/world-state-spec.js",
     "test/wrappers/character-spec.js",
+    "test/wrappers/inventory-spec.js",
     "test/wrappers/monster-spec.js",
     "test/wrappers/personality-spec.js",
     "test/wrappers/status-effects-spec.js"

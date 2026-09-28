@@ -19,7 +19,7 @@ global.EnlightenSystem = (function() {
 
   // The loot goes straight into the party inventory as well, the view only lists what was found.
   function bankLoot() {
-    const inventory = InventoryManager();
+    const inventory = Inventory();
     (state.getLoot() || []).forEach(entry => inventory.addArticle(entry.articleCode, entry.quantity));
   }
 

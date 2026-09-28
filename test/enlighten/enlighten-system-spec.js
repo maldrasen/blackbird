@@ -36,7 +36,7 @@ describe("EnlightenSystem", function() {
 
       startBattleEnlightenment([player], 0, [{ articleCode:'spec-enlighten-bauble', quantity:3 }]);
 
-      expect(InventoryManager().getArticleQuantity('spec-enlighten-bauble')).to.equal(3);
+      expect(Inventory().getArticleQuantity('spec-enlighten-bauble')).to.equal(3);
       expect(EnlightenSystem.getState().getLoot()).to.deep.equal([{ articleCode:'spec-enlighten-bauble', quantity:3 }]);
     });
 
@@ -60,7 +60,7 @@ describe("EnlightenSystem", function() {
     it("deletes the items left in the loot inventory", function() {
       const loot = GameSystem.getState().getLootInventory();
       const item = ItemFixtures.buildSteel('longsword');
-      InventoryManager(loot).addItem(item);
+      Inventory(loot).addItem(item);
 
       startBattleEnlightenment([buildCharacter()], 0);
       EnlightenSystem.finishEnlightenment();

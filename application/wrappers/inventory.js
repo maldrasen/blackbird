@@ -1,7 +1,4 @@
-global.InventoryManager = function(inventoryId=GameSystem.getState().getPartyInventory()) {
-
-  // TODO: InventoryManager is now essentially a wrapper around an Inventory component, so really this should be
-  //       renamed to Inventory and moved in the wrappers.
+global.Inventory = function(inventoryId=GameSystem.getState().getPartyInventory()) {
 
   function fetch() {
     return InventoryComponent.lookup(inventoryId);

@@ -47,10 +47,10 @@ global.EquipmentDepot = function(code) {
 
   // A picked item leaves the stock with no owner, so whoever picks it has to equip it or put it in an inventory.
   function pickItem(itemId) {
-    const stock = Object.values(stocks).find(id => InventoryManager(id).hasItem(itemId));
+    const stock = Object.values(stocks).find(id => Inventory(id).hasItem(itemId));
     if (stock == null) { throw new Error(`EquipmentDepot:${code} doesn't have Item:${itemId} to pick.`); }
 
-    InventoryManager(stock).removeItem(itemId);
+    Inventory(stock).removeItem(itemId);
   }
 
   return {

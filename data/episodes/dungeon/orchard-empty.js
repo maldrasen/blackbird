@@ -9,7 +9,7 @@ function getAppleCount() {
 function harvestApples() {
   const count = getAppleCount();
   const lootBlock = WeaverElements.lootBlock([{ articleCode:'rhysh-apple', quantity:count }]);
-  InventoryManager().addArticle('rhysh-apple',count);
+  Inventory().addArticle('rhysh-apple',count);
   return `<p>You pick some apples, stuffing them into your bag for a future snack.</p>${lootBlock}`;
 }
 

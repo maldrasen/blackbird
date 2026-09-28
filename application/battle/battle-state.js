@@ -48,7 +48,7 @@ global.BattleState = function(data) {
 
     getCarriedItems(id).filter(itemId => Item(itemId).hasEnchantment()).forEach(itemId => {
       equipment.unequipItem(itemId);
-      InventoryManager(GameSystem.getState().getLootInventory()).addItem(itemId);
+      Inventory(GameSystem.getState().getLootInventory()).addItem(itemId);
     });
   }
 
