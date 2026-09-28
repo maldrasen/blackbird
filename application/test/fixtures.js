@@ -13,7 +13,13 @@ global.Fixtures = (function() {
     BattleFixtures.grantMana('red',100);
 
     NegotiationQuestion.setWhitelist([]);
-    NegotiationRequest.setWhitelist(['give-me-something']);
+    NegotiationRequest.setWhitelist(['have-anything-unusual']);
+
+    Inventory().addArticle('rhysh-apple',10);
+    Inventory().addArticle('string-of-teeth',4);
+    Inventory().addArticle('rattlebones',2);
+    Inventory().addArticle('grim-totem',3);
+    Inventory().addArticle('impressive-ball-bag',2);
 
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',

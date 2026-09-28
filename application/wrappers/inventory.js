@@ -108,6 +108,28 @@ global.Inventory = function(inventoryId=GameSystem.getState().getPartyInventory(
     update(inventory);
   }
 
+  function getArticles() {
+    return { ...fetch().articles };
+  }
+
+  function getArticlesWithTag(tag) {
+    return ObjectHelper.select(fetch().articles, (code,quantity) => {
+      return Article.lookup(code).getTags().includes(tag);
+    });
+  }
+
+  function getArticlesWithAnyTag(tags) {
+    return ObjectHelper.select(fetch().articles, (code,quantity) => {
+      return Article.lookup(code).getTags().some(tag => tags.includes(tag));
+    });
+  }
+
+  function getArticlesWithEveryTag(tags) {
+    return ObjectHelper.select(fetch().articles, (code,quantity) => {
+      return Article.lookup(code).getTags().every(tag => tags.includes(tag));
+    });
+  }
+
   return {
     hasItem,
     addItem,
@@ -118,6 +140,10 @@ global.Inventory = function(inventoryId=GameSystem.getState().getPartyInventory(
     removeArticle,
     getArticleQuantity,
     setArticleQuantity,
+    getArticles,
+    getArticlesWithTag,
+    getArticlesWithAnyTag,
+    getArticlesWithEveryTag,
   };
 
 }

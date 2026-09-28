@@ -1,9 +1,9 @@
 
-NegotiationRequest.register('give-me-something', {
+NegotiationRequest.register('have-anything-unusual', {
   requirements: [
-    hasItemsWithTag('valuable')
+    InventoryRequirements.hasArticlesWithAnyTag(['bone','flesh']),
   ],
-  requestText: `Give me something nice.`,
+  requestText: `Have anything... unusual?`,
   answers: compileAnswers,
 });
 
