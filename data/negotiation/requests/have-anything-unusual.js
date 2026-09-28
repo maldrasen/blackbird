@@ -20,7 +20,7 @@ function compileAnswers(context, parameters) {
     const name = Article.lookup(code).getName();
     answers[code] = {
       text:`Offer ${EnglishHelper.a_an(name)} ${name}`,
-      reaction:() => { gaveItem(code) }
+      reaction: () => { return gaveItem(code); },
     };
   });
 
@@ -30,7 +30,7 @@ function compileAnswers(context, parameters) {
 
 // TODO: More and better refusal text.
 function refused() {
-  Reaction.dislike(`Tightwad.`);
+  return Reaction.dislike(`Tightwad.`);
 }
 
 // TODO: This will also need more and better reaction text, based on both the personality archetype and the item's
