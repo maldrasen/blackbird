@@ -224,6 +224,31 @@ describe("DungeonNavigationSystem", function() {
 
   });
 
+  describe("getReachableTiles()", function() {
+
+    it('lists every tile a step could land on', function() {
+      expect(DungeonNavigationSystem.getReachableTiles({ x:3, y:3 })).to.have.deep.members([
+        { x:3, y:2 }, { x:3, y:4 }, { x:2, y:3 }, { x:4, y:3 },
+        { x:4, y:2 }, { x:2, y:2 }, { x:4, y:4 }, { x:2, y:4 },
+      ]);
+    });
+
+    it('reaches through a door but not around its corners', function() {
+      expect(DungeonNavigationSystem.getReachableTiles({ x:4, y:3 })).to.have.deep.members([
+        { x:4, y:2 }, { x:4, y:4 }, { x:3, y:3 }, { x:5, y:3 }, { x:3, y:2 }, { x:3, y:4 },
+      ]);
+    });
+
+    it('leaves out tiles that cannot be entered', function() {
+      floor.getRooms()[0].setTileContents(2, 0, { canEnter:false });
+
+      expect(DungeonNavigationSystem.getReachableTiles({ x:3, y:3 })).to.have.deep.members([
+        { x:3, y:2 }, { x:3, y:4 }, { x:2, y:3 }, { x:4, y:3 }, { x:2, y:2 }, { x:4, y:4 }, { x:2, y:4 },
+      ]);
+    });
+
+  });
+
   // The party starts in the middle of room A, which makes A the only visited room. A stubbed roll has to fit the die
   // being rolled and the queue throws when it runs dry, so stubbing a single value also proves which of the two
   // encounter rolls a step made, and that it only made the one.

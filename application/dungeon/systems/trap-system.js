@@ -1,68 +1,34 @@
+// Traps are tile contents placed by the tile content placer, and everything that happens to one is kept on its tile:
+// the scouting roll that found it or missed it, and later its sprung or disarmed state. The scout rolls, whatever
+// the trap.
 global.TrapSystem = (function() {
-  /*
 
-  The trap system will need to be entirely rewritted to apply to tile based traps rather than room based traps. I'm
-  leaving the file in a commented out state though because traps will still work the same when triggered. It's just
-  finding and activating traps change completely.
+  // Scout a single tile. A check is only rolled when the tile holds a trap that hasn't been scouted yet, never for
+  // a bare tile, because every check is a chance for the skill to improve. The roll stays on the tile, so a trap the
+  // scout missed stays hidden however many times the party walks past it. Says whether the trap was just found.
+  function scoutTile(x, y) {
+    const floor = DungeonSystem.getDungeonFloor();
+    const tile = floor.getTileContents(x, y);
+    if (tile == null || tile.type !== TileContentType.trap || tile.scoutingRoll != null) { return false; }
 
+    const record = TileContents.lookup(tile.code);
+    const scoutingRoll = SkillCheck(PartyConfiguration.getScout(), 'scouting').value;
+    const found = scoutingRoll >= record.getSecrecy();
 
-
-  // Springs the trap in a room as it's entered for the first time. Returns null when there's nothing to spring,
-  // either because there's no trap in the room or because the scouting check spotted it. A sprung trap picks its
-  // target, rolls and applies any damage, and returns what happened so the view can display it.
-  function springTrap(room) {
-    if (room.hasContents() === false) { return null; }
-
-    const trap = RoomContents.lookup(room.getContents()).getTrap();
-    if (trap == null || room.checkScoutingRoll()) { return null; }
-
-    const target = pickTarget(trap);
-    const damage = trap.damage ? rollDamage(trap, target) : 0;
-    if (damage > 0) { applyDamage(target, damage); }
-
-    const context = { T:target };
-    return {
-      target,
-      damage,
-      title: `A Trap!`,
-      text: trap.onScoutingFailure ? Weaver(context).weave(trap.onScoutingFailure(context)) : null,
-    };
+    floor.updateTileContents(x, y, found ? { scoutingRoll, glyph:record.getGlyph() } : { scoutingRoll });
+    return found;
   }
 
-  function pickTarget(trap) {
-    if (trap.target === EpisodeTarget.anyInParty) {
-      return Random.from(Object.keys(PartyConfiguration.getConfiguration()));
-    }
-    throw new Error(`Bad trap target [${trap.target}]`);
+  // Scout every tile the party could step onto from where they stand, returning the positions of the traps found.
+  // A floor built with nobody in the party has no scout, and nothing is scouted.
+  function scoutAround(position) {
+    if (PartyConfiguration.getScout() == null) { return []; }
+    return DungeonNavigationSystem.getReachableTiles(position).filter(tile => scoutTile(tile.x, tile.y));
   }
 
-  // Trap damage skips the battle damage pipeline, but it's still mitigated like a physical hit in battle would be:
-  // reduced by the armor covering the trap's hit location on top of the target's own innate resistance.
-  function rollDamage(trap, target) {
-    const reduction = Math.min(getReductionPercent(trap, target), BattleConstants.maxReduction);
-    return Math.round(Random.rollDice(trap.damage) * (1 - reduction/100));
-  }
-
-  function getReductionPercent(trap, target) {
-    const armor = (trap.hitLocation != null && EquipmentComponent.lookup(target)) ?
-      EquipmentManager(target).getDamageReduction(trap.hitLocation, trap.damageType) : 0;
-    return armor + Character(target).getResistance(trap.damageType);
-  }
-
-  // TODO: Trap deaths are deferred to a later task. A character killed by a trap should be revived to 1 health like
-  //       a character falling in battle, unless the player dies with no one else in the party, which should be a
-  //       game over instead. Both endings will need more trap text once they're handled.
-  function applyDamage(id, damage) {
-    const health = HealthComponent.lookup(id);
-    health.currentHealth -= damage;
-
-    if (health.currentHealth <= 0) {
-      throw new Error(`The trap has killed [${id}]. Trap deaths aren't handled yet.`);
-    }
-
-    HealthComponent.update(id, health);
-  }
-   */
-  return { };
+  return {
+    scoutTile,
+    scoutAround,
+  };
 
 })();

@@ -62,6 +62,13 @@ global.DungeonNavigationSystem = (function() {
     return findStep(getPartyPosition(), direction) != null;
   }
 
+  // The tiles a single step from a position could land on, which is what the party can reach next and what the
+  // scout looks over as they arrive.
+  function getReachableTiles(position) {
+    return Object.keys(headings).map(direction => findStep(position, direction)).filter(step => step != null)
+      .map(step => step.position);
+  }
+
   const stayedInRoom = Object.freeze({ enteredRoom:null, isFirstVisit:false, revealed:false, episode:null });
 
   // Move the party a single step, opening the door if they pass through one. Nothing happens when the way is blocked.
@@ -140,6 +147,7 @@ global.DungeonNavigationSystem = (function() {
   return {
     findStep,
     canStep,
+    getReachableTiles,
     step,
   };
 
