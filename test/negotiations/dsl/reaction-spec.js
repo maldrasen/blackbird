@@ -93,8 +93,17 @@ describe("Reaction", function() {
       Reaction.join('msg', { givePreferences }).applyEffects({ T:id });
     }
 
-    it('grants, overwrites, and deletes preferences', function() {
+    // Archetypes and name triggers can roll the same preferences the specs assert on, so the built monster starts
+    // with none.
+    function buildMonster() {
       const id = MonsterFactory('kobold-sneak-slut').build();
+      SexualPreferencesComponent.destroy(id);
+      SexualPreferencesComponent.create(id, {});
+      return id;
+    }
+
+    it('grants, overwrites, and deletes preferences', function() {
+      const id = buildMonster();
 
       applyPreferences(id, { 'humiliation-slut':30, 'piss-slut':20 });
       expect(SexualPreferencesComponent.lookup(id)['humiliation-slut']).to.equal(30);
@@ -109,7 +118,7 @@ describe("Reaction", function() {
     });
 
     it('ignores a preference weaker than the current value', function() {
-      const id = MonsterFactory('kobold-sneak-slut').build();
+      const id = buildMonster();
 
       applyPreferences(id, { 'piss-slut':50 });
       applyPreferences(id, { 'piss-slut':20 });
@@ -122,7 +131,7 @@ describe("Reaction", function() {
     });
 
     it('treats a negative preference as its own direction, allowing flips across zero', function() {
-      const id = MonsterFactory('kobold-sneak-slut').build();
+      const id = buildMonster();
 
       applyPreferences(id, { perverted:null });
       applyPreferences(id, { perverted:30 });
