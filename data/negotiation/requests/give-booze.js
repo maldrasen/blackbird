@@ -4,7 +4,7 @@ NegotiationRequest.register('give-booze', {
     InventoryRequirements.hasArticlesWithTag('alcohol'),
   ],
   requestParameters,
-  requestText: `You know, I'm feeling kind of thirsty...`,
+  requestText: `"You know, I'm feeling kind of thirsty..."`,
   answers: compileAnswers,
 });
 
@@ -23,8 +23,8 @@ function compileAnswers(context, parameters) {
     };
   });
 
-  answers.piss = { text:`"So, you want to be my toilet?"`, reaction:pissReaction };
-  answers.no = { text:`So?`, reaction:refused };
+  answers.piss = { text:`"I see... do you want to be my toilet?"`, reaction:pissReaction };
+  answers.no = { text:`"Sorry to hear that."`, reaction:refused };
   return answers;
 }
 
@@ -41,12 +41,12 @@ function pissReaction(context) {
 
   return interested ?
     Reaction.lust(`{T:TargetName} grins and licks {T:his} lips, "Heh, maybe later. I like where your head's at though."`,{ givePreferences:{ 'piss-slut':15 }}) :
-    Reaction.hate(`{T:TargetName} frowns deeply, "Yeah, no..."`);
+    Reaction.hate(`{T:TargetName} frowns deeply, "That's not... No."`);
 }
 
 // TODO: This will also need more and better reaction text, based on both the personality archetype and the item's
 //       value.
 function gaveItem(code) {
   Inventory().removeArticle(code,1);
-  return Reaction.withValue(`Thanks.`, Article.lookup(code).getValue());
+  return Reaction.withValue(`"Thanks."`, Article.lookup(code).getValue());
 }

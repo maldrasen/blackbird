@@ -74,7 +74,7 @@ describe("NegotiationRequest", function() {
       const request = NegotiationRequest.lookup('give-me-mana');
       const parameters = { color:'red', amount:20 };
 
-      expect(request.getAnswerText('no', {}, parameters)).to.equal('Refuse.');
+      expect(request.getAnswerText('no', {}, parameters)).to.equal('Refuse');
       expect(request.getAnswerText('yes', {}, parameters)).to.include('20 red mana');
     });
   });

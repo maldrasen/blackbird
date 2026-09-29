@@ -5,7 +5,7 @@ NegotiationRequest.register('give-me-mana', {
   requestText,
   answers: {
     yes: { text:agreeText, reaction:yesReaction },
-    no: { text:'Refuse.', reaction:noReaction },
+    no: { text:'Refuse', reaction:noReaction },
   },
 });
 
@@ -41,10 +41,10 @@ function requestText(context, parameters) {
 // TODO: Adjust the reaction text for personality archetype and stuff.
 function yesReaction(context, parameters) {
   ManaSystem.spendMana(context.P, parameters.color, parameters.amount);
-  return Reaction.respect(`Oh yeah, that's the stuff.`);
+  return Reaction.respect(`"Oh yeah, that's the stuff."`);
 }
 
 // TODO: Adjust the reaction text for personality archetype and stuff.
 function noReaction(context, parameters) {
-  return Reaction.dislike(`Stingy ass {P:species.elf}.`);
+  return Reaction.dislike(`"Stingy ass {P:species.elf}."`);
 }

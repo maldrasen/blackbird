@@ -5,7 +5,7 @@ NegotiationRequest.register('give-bones', {
     CharacterRequirements.isSpeciesIn('T',['kobold','vermen']),
   ],
   requestParameters,
-  requestText: `Have anything... unusual?`,
+  requestText: `"Have anything... unusual?"`,
   answers: compileAnswers,
 });
 
@@ -24,18 +24,18 @@ function compileAnswers(context, parameters) {
     };
   });
 
-  answers.no = { text:'Refuse.', reaction:refused };
+  answers.no = { text:'Refuse', reaction:refused };
   return answers;
 }
 
 // TODO: More and better refusal text.
 function refused() {
-  return Reaction.dislike(`Tightwad.`);
+  return Reaction.dislike(`"Tightwad."`);
 }
 
 // TODO: This will also need more and better reaction text, based on both the personality archetype and the item's
 //       value.
 function gaveItem(code) {
   Inventory().removeArticle(code,1);
-  return Reaction.withValue(`Heh... Nice.`, Article.lookup(code).getValue());
+  return Reaction.withValue(`"Heh... Nice."`, Article.lookup(code).getValue());
 }

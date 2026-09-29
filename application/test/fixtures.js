@@ -28,11 +28,11 @@ global.Fixtures = (function() {
     BattleFixtures.grantMana('red',100);
 
     NegotiationQuestion.setWhitelist([]);
-    NegotiationRequest.setWhitelist(['tit-slapping']);
+    // NegotiationRequest.setWhitelist([]);
 
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
-      monster: 'kobold-sneak-slut',
+      monster: 'kobold-dick-puncher',
     });
 
     DungeonSystem.createDungeon();
