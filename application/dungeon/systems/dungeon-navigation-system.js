@@ -65,8 +65,10 @@ global.DungeonNavigationSystem = (function() {
   // The tiles a single step from a position could land on, which is what the party can reach next and what the
   // scout looks over as they arrive.
   function getReachableTiles(position) {
-    return Object.keys(headings).map(direction => findStep(position, direction)).filter(step => step != null)
-      .map(step => step.position);
+    return Object.keys(headings).
+      map(direction => findStep(position, direction)).
+      filter(step => step != null).
+      map(step => step.position);
   }
 
   const stayedInRoom = Object.freeze({ enteredRoom:null, isFirstVisit:false, revealed:false, episode:null });
