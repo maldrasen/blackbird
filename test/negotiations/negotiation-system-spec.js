@@ -256,22 +256,52 @@ describe("NegotiationSystem", function() {
       });
 
       // The brains are swapped so the monster wins the contest and the hurting feelings double instead of zeroing out.
-      // The starting feelings are raised so nothing clamps at zero.
-      it("keeps the mana and takes the disrespect when the request is refused", function() {
+      // The refusal is a dislike (control and affection both -20), so affection is raised beforehand to keep it from
+      // clamping at zero.
+      it("keeps the mana and takes the dislike when the request is refused", function() {
         const { state, player, monster } = bootRequest();
 
         setBrains(player, 20);
         setBrains(monster, 100);
-        state.setFeelings({ fear:60, respect:70 });
+        state.setFeelings({ affection:50, fear:60, respect:70 });
 
         Random.stubBetween(50,1, 50,75);
         Random.stubRoll(5, 149);
         NegotiationSystem.answer('no');
 
         expect(ManaComponent.lookup(player).red).to.deep.equal({ current:100, max:100 });
-        expect(state.getFeelings()).to.deep.equal({ control:-30, affection:10, fear:20, respect:10 });
+        expect(state.getFeelings()).to.deep.equal({ control:-30, affection:10, fear:60, respect:70 });
         expect(state.hasResolution()).to.equal(false);
       });
+    });
+  });
+
+  describe("dealDamage()", function() {
+    function setHealth(id, value) {
+      const health = HealthComponent.lookup(id);
+      health.currentHealth = value;
+      HealthComponent.update(id, health);
+    }
+
+    it("takes the damage from the target's health", function() {
+      startNegotiation();
+      const player = GameSystem.getState().getPlayer();
+      setHealth(player, 10);
+
+      expect(NegotiationSystem.dealDamage(4)).to.equal(4);
+      expect(HealthComponent.lookup(player).currentHealth).to.equal(6);
+    });
+
+    it("never drops the target below 1 health", function() {
+      startNegotiation();
+      const player = GameSystem.getState().getPlayer();
+      setHealth(player, 10);
+
+      expect(NegotiationSystem.dealDamage(50)).to.equal(9);
+      expect(HealthComponent.lookup(player).currentHealth).to.equal(1);
+
+      expect(NegotiationSystem.dealDamage(50)).to.equal(0);
+      expect(HealthComponent.lookup(player).currentHealth).to.equal(1);
     });
   });
 

@@ -28,7 +28,18 @@ global.Reaction = (function() {
     return Resolution(type, message, feelings, options);
   }
 
+  function withFeelings(message, feelings, options={}) {
+    return Resolution('feelings', message, feelings, options);
+  }
+
+  function withValue(message, value, options={}) {
+    const gain = Math.min(50, Math.round(10 + 13 * Math.log(1 + value/20)));
+    return withFeelings(message, { control:gain, affection:Math.ceil(gain * 0.5), respect:Math.ceil(gain * 0.75) }, options);
+  }
+
   const methods = {
+    withFeelings,
+    withValue,
     getFeelings: code => { return reactionMap[code] },
     attack:   (message, options={}) =>  buildResolution('attack', message, options),
     run:      (message, options={}) =>  buildResolution('run', message, options),

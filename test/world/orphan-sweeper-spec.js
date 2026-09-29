@@ -16,8 +16,8 @@ describe("OrphanSweeper", function() {
     const loot = ItemFixtures.buildSteel('longsword');
     const stock = EquipmentDepot('standard').getWeapons();
 
-    InventoryManager().addItem(carried);
-    InventoryManager(GameSystem.getState().getLootInventory()).addItem(loot);
+    Inventory().addItem(carried);
+    Inventory(GameSystem.getState().getLootInventory()).addItem(loot);
 
     expect(OrphanSweeper.sweep()).to.eql({ monsters:0, items:0 });
     expect(stock.length).to.equal(50);

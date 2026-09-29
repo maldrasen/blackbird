@@ -551,7 +551,7 @@ describe("Room", function() {
 
       const result = room.useCommand('take');
       expect(result).to.deep.equal({ text:'Taken', loot:[{ articleCode:'spec-loot', quantity:2 }] });
-      expect(InventoryManager().getArticleQuantity('spec-loot')).to.equal(2);
+      expect(Inventory().getArticleQuantity('spec-loot')).to.equal(2);
     });
 
     it('throws when using a command that is not available', function() {

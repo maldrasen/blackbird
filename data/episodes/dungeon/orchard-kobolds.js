@@ -54,7 +54,7 @@ function takePass() {
   const count = getAppleCount();
   const lootBlock = WeaverElements.lootBlock([{ articleCode:'rhysh-apple', quantity:count }]);
 
-  InventoryManager().addArticle('rhysh-apple',count);
+  Inventory().addArticle('rhysh-apple',count);
 
   return `<p>You deftly catch the half eaten apple, and give the lizard a nod. "Alright... I'll just, grab some 
     then."</p><p>You walk a short distance away to start harvesting some of the apples from the low hanging branches. 

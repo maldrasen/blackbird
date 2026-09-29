@@ -10,11 +10,11 @@ describe('InventorySystem', function() {
       helm: ItemFixtures.buildSteel('helm'),
     };
 
-    Object.values(items).forEach(itemId => InventoryManager().addItem(itemId));
+    Object.values(items).forEach(itemId => Inventory().addItem(itemId));
     return { horse, ...items };
   }
 
-  function partyHas(itemId) { return InventoryManager().hasItem(itemId); }
+  function partyHas(itemId) { return Inventory().hasItem(itemId); }
 
   it('getEquipmentForSlot() lists the party inventory items the slot accepts, by name', function() {
     const { horse, hatchet, handAxe, broadAxe, maul, helm } = armory();

@@ -1,7 +1,4 @@
-global.InventoryManager = function(inventoryId=GameSystem.getState().getPartyInventory()) {
-
-  // TODO: InventoryManager is now essentially a wrapper around an Inventory component, so really this should be
-  //       renamed to Inventory and moved in the wrappers.
+global.Inventory = function(inventoryId=GameSystem.getState().getPartyInventory()) {
 
   function fetch() {
     return InventoryComponent.lookup(inventoryId);
@@ -111,6 +108,28 @@ global.InventoryManager = function(inventoryId=GameSystem.getState().getPartyInv
     update(inventory);
   }
 
+  function getArticles() {
+    return { ...fetch().articles };
+  }
+
+  function getArticlesWithTag(tag) {
+    return ObjectHelper.select(fetch().articles, (code,quantity) => {
+      return Article.lookup(code).getTags().includes(tag);
+    });
+  }
+
+  function getArticlesWithAnyTag(tags) {
+    return ObjectHelper.select(fetch().articles, (code,quantity) => {
+      return Article.lookup(code).getTags().some(tag => tags.includes(tag));
+    });
+  }
+
+  function getArticlesWithEveryTag(tags) {
+    return ObjectHelper.select(fetch().articles, (code,quantity) => {
+      return tags.every(tag => Article.lookup(code).getTags().includes(tag));
+    });
+  }
+
   return {
     hasItem,
     addItem,
@@ -121,6 +140,10 @@ global.InventoryManager = function(inventoryId=GameSystem.getState().getPartyInv
     removeArticle,
     getArticleQuantity,
     setArticleQuantity,
+    getArticles,
+    getArticlesWithTag,
+    getArticlesWithAnyTag,
+    getArticlesWithEveryTag,
   };
 
 }

@@ -53,8 +53,7 @@ global.CharacterRequirements = (function() {
   }
 
   function minimumBreastSize(context, key, size) {
-    const character = Character(context[key]);
-    return character.hasBreasts() && character.breastsAreAtLeast(size);
+    return Character(context[key]).breastsAreAtLeast(size);
   }
 
   function shapeComparableBreasts(context, key) {
@@ -76,8 +75,7 @@ global.CharacterRequirements = (function() {
   }
 
   function minimumCockSize(context, key, size) {
-    const character = Character(context[key]);
-    return character.hasNormalCock() && character.cockIsAtLeast(size);
+    return Character(context[key]).cockIsAtLeast(size);
   }
 
   function hasPussy(context, key) {

@@ -72,7 +72,7 @@ global.NegotiationOverlay = (function() {
   // they're read from the interaction rather than the record.
   function renderRequest(interaction) {
     const request = NegotiationRequest.lookup(interaction.code);
-    const answers = request.getAnswers(getContext());
+    const answers = request.getAnswers(getContext(), interaction.requestParameters);
 
     renderPrompt('request', interaction.requestText);
     Object.keys(answers).forEach(key => {
@@ -108,6 +108,10 @@ global.NegotiationOverlay = (function() {
     return X.createElement(`<li><a href='#' class='button answer' data-key='${key}'>${label}</a></li>`);
   }
 
+  function showDamageEffect() {
+    FlashSquare.flashDamage(X.first('#negotiationFrame'));
+  }
+
   return {
     init,
     open,
@@ -116,6 +120,7 @@ global.NegotiationOverlay = (function() {
     renderInteraction,
     renderDialog,
     renderResolution,
+    showDamageEffect,
   };
 
 })();

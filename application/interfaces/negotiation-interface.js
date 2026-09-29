@@ -28,12 +28,17 @@ global.NegotiationInterface = (function() {
     if (viewActive()) { NegotiationOverlay.renderResolution(); }
   }
 
+  function showDamageEffect() {
+    if (viewActive()) { NegotiationOverlay.showDamageEffect(); }
+  }
+
   return {
     open,
     close,
     renderInteraction,
     renderDialog,
     renderResolution,
+    showDamageEffect,
   };
 
 })();

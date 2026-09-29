@@ -74,7 +74,7 @@ describe("NegotiationRequest", function() {
       const request = NegotiationRequest.lookup('give-me-mana');
       const parameters = { color:'red', amount:20 };
 
-      expect(request.getAnswerText('no', {}, parameters)).to.equal('Refuse.');
+      expect(request.getAnswerText('no', {}, parameters)).to.equal('Refuse');
       expect(request.getAnswerText('yes', {}, parameters)).to.include('20 red mana');
     });
   });
@@ -100,14 +100,14 @@ describe("NegotiationRequest", function() {
       expect(ManaComponent.lookup(player).red).to.deep.equal({ current:10, max:10 });
     });
 
-    it('keeps the mana and returns the disrespect reaction when the request is refused', function() {
+    it('keeps the mana and returns the dislike reaction when the request is refused', function() {
       const player = bootPlayer();
       BattleFixtures.grantMana('red', 100);
       const request = NegotiationRequest.lookup('give-me-mana');
 
       const reaction = request.resolveAnswerReaction('no', { P:player }, { color:'red', amount:20 });
       expect(reaction.type).to.equal('feelings');
-      expect(reaction.feelings).to.deep.equal(Reaction.getFeelings('disrespect'));
+      expect(reaction.feelings).to.deep.equal(Reaction.getFeelings('dislike'));
       expect(ManaComponent.lookup(player).red).to.deep.equal({ current:100, max:100 });
     });
   });

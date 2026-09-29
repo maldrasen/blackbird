@@ -6,23 +6,38 @@ global.Fixtures = (function() {
     state.setCurrentLocation(options.location || 'ruined-living-room');
   }
 
+  function grantLoot() {
+    Inventory().addArticle('ale',10);
+    Inventory().addArticle('rhysh-apple',10);
+    Inventory().addArticle('string-of-teeth',4);
+    Inventory().addArticle('rattlebones',2);
+    Inventory().addArticle('grim-totem',3);
+    Inventory().addArticle('impressive-ball-bag',2);
+    Inventory().addArticle('crimson-tear',5);
+    Inventory().addArticle('aureolin-tear',5);
+    Inventory().addArticle('celadon-tear',5);
+    Inventory().addArticle('cerulean-tear',5);
+    Inventory().addArticle('ebony-tear',5);
+  }
+
   function setupBattle() {
     setupGame({ location:'the-well' });
+    grantLoot();
 
     BattleFixtures.prepareForBattle();
     BattleFixtures.grantMana('red',100);
 
-    // NegotiationQuestion.setWhitelist([]);
+    NegotiationQuestion.setWhitelist([]);
     // NegotiationRequest.setWhitelist([]);
 
     BattleSystem.startBattle({
       afterBattle: 'returnTo.mainMenu',
-      // monster: 'crawling-claw',
       monster: 'kobold-dick-puncher',
-      // encounter: 'orchard-kobolds',
     });
 
-    GameSystem.setGameMode(GameMode.location);
+    DungeonSystem.createDungeon();
+    DungeonSystem.setLevel(1,'up','dungeon');
+    GameSystem.setGameMode(GameMode.dungeon);
     GameSystem.markReturnMode();
     GameSystem.setGameMode(GameMode.battle);
   }
@@ -39,14 +54,6 @@ global.Fixtures = (function() {
     setupGame();
     CharacterFixtures.randomPlayer();
     CharacterFixtures.randomCharacters(10, { triggers:[] });
-
-    // TEMP: Inventory Testing
-    const inventory = InventoryManager();
-    const factory = EquipmentFactory();
-    BaseEquipment.getAllCodes().filter(code => BaseEquipment.lookup(code).isWeapon()).forEach(code => {
-      inventory.addItem(factory.build(code));
-    });
-
     GameSystem.setGameMode(GameMode.location);
   }
 

@@ -133,11 +133,7 @@ global.EpisodeView = (function() {
   }
 
   function showDamageEffect() {
-    FlashSquare.flash({
-      element: X.first('#episodeView .episode-frame'),
-      color: 'rgb(75,10,10)',
-      duration: BattleConstants.damageEffectTime,
-    });
+    FlashSquare.flashDamage(X.first('#episodeView .episode-frame'));
   }
 
   function isVisible() {
