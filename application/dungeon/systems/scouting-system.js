@@ -29,9 +29,37 @@ global.ScoutingSystem = (function() {
     return DungeonNavigationSystem.getReachableTiles(position).filter(tile => scoutTile(tile.x, tile.y));
   }
 
+  // Find everything hidden on the floor without a roll, for the debug console. Anything already scouted, found or
+  // missed, is left as it was.
+  function findEverything() {
+    const floor = DungeonSystem.getDungeonFloor();
+    let found = 0;
+
+    floor.getRooms().forEach(room => {
+      const position = room.getFloorPosition();
+      room.getFootprint().forEach((row, y) => {
+        row.forEach((cell, x) => {
+          if (cell == null) { return; }
+
+          const tile = room.getTileContents(x, y);
+          if (tile == null || tile.code == null || tile.scoutingRoll != null || tile.state != null) { return; }
+
+          const record = TileContents.lookup(tile.code);
+          if (record.getSecrecy() == null) { return; }
+
+          floor.updateTileContents(position.x + x, position.y + y, { scoutingRoll:record.getSecrecy(), glyph:record.getGlyph() });
+          found++;
+        });
+      });
+    });
+
+    return found;
+  }
+
   return {
     scoutTile,
     scoutAround,
+    findEverything,
   };
 
 })();

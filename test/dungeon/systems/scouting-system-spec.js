@@ -126,6 +126,22 @@ describe("ScoutingSystem", function() {
       expect(ScoutingSystem.scoutAround({ x:3, y:3 })).to.deep.equal([]);
     });
 
+    it("finds every trap on the floor for the console, leaving the scouted ones alone", function() {
+      placeTrap(3,2);
+      placeTrap(5,3);
+      placeTrap(7,3);
+      floor.updateTileContents(5, 3, { scoutingRoll:9 });
+      Random.stubBetween();
+
+      expect(ScoutingSystem.findEverything()).to.equal(2);
+      expect(floor.getTileContents(3,2).scoutingRoll).to.equal(15);
+      expect(floor.getTileContents(3,2).glyph).to.deep.equal(TileContents.lookup('spike-trap').getGlyph());
+      expect(floor.getTileContents(5,3).scoutingRoll).to.equal(9);
+      expect(floor.getTileContents(5,3).glyph).to.equal(undefined);
+      expect(floor.getTileContents(7,3).scoutingRoll).to.equal(15);
+      expect(ScoutingSystem.findEverything()).to.equal(0);
+    });
+
     it("scouts nothing when there is no scout", function() {
       placeTrap(4,3);
       GameSystem.getState().setPartyConfiguration({});

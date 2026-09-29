@@ -14,6 +14,10 @@ global.ConsoleCommands = (function() {
       commandFunction: revealDungeon,
       description:`Reveal all the rooms on the current dungeon floor.`
     },
+    traps: {
+      commandFunction: findTraps,
+      description:`Find every trap on the current dungeon floor, as though the scout had spotted them all.`
+    },
     roster: {
       commandFunction: printRoster,
       requires: ['game.loaded'],
@@ -152,6 +156,14 @@ global.ConsoleCommands = (function() {
       floor.getRooms().forEach(room => floor.revealRoom(room.getIndex()));
       DungeonFloorView.drawDungeon();
     }
+  }
+
+  function findTraps() {
+    if (DungeonSystem.getDungeonFloor() == null) { throw new Error(`The party isn't in the dungeon.`); }
+
+    const found = ScoutingSystem.findEverything();
+    DungeonFloorView.drawDungeon();
+    return `Found ${found} traps.`;
   }
 
   return {
