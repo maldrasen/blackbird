@@ -24,6 +24,10 @@ DungeonTheme.register('dungeon',{
     { code:'dungeon-treasure', rarity:Rarity.rare },
   ],
 
+  tileContents: [
+    { type:TileContentType.trap, count:[10,20], codes:{ 'spike-trap':6, 'pit-trap':4 }},
+  ],
+
   features:[
     { code:'small-square', rarity:Rarity.common,  type:'rect-room',   size:[2,5]},
     { code:'leg-room',     rarity:Rarity.common,  type:'leg-room',    size:[3,8]},

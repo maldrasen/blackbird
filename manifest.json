@@ -221,6 +221,7 @@
     "application/records/species.js",
     "application/records/spell.js",
     "application/records/status-effect-type.js",
+    "application/records/tile-contents.js",
     "application/records/validators/episode-validator.js",
     "application/records/validators/reference-validator.js",
     "application/records/validators/sex-action-validator.js",
@@ -585,7 +586,9 @@
     "data/status-effects/stun.js",
     "data/status-effects/toxic.js",
     "data/status-effects/vulnerable.js",
-    "data/status-effects/withering.js"
+    "data/status-effects/withering.js",
+    "data/tile-contents/traps/pit-trap.js",
+    "data/tile-contents/traps/spike-trap.js"
   ],
   "viewFiles": [
     "views/battle/auto-battle-button.js",
@@ -777,6 +780,7 @@
     "test/records/name-spec.js",
     "test/records/sex-action-spec.js",
     "test/records/sex-position-spec.js",
+    "test/records/tile-contents-spec.js",
     "test/training/consent-result-spec.js",
     "test/training/position-controller-spec.js",
     "test/training/sensation-results/sensation-arousal-spec.js",
