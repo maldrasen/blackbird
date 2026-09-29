@@ -27,7 +27,7 @@ global.Fixtures = (function() {
     BattleFixtures.prepareForBattle();
     BattleFixtures.grantMana('red',100);
 
-    NegotiationQuestion.setWhitelist([]);
+    // NegotiationQuestion.setWhitelist([]);
     // NegotiationRequest.setWhitelist([]);
 
     BattleSystem.startBattle({
