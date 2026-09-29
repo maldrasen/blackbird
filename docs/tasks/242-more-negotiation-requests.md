@@ -1,10 +1,10 @@
 ---
 id: 242
 title: More Negotiation Requests
-priority: 2
+priority: 3
 created: 2026-09-26
 tags: []
-points: 5
+points: 8
 ---
 ---
 We added a single negotiation request in task 105 to build the framework for them and include them in the negotiation system. Now we can go back and start adding a lot more of them, including the ones that I had originally thought of in the first task.
@@ -22,3 +22,7 @@ Most of the new requests should focus on giving out items or articles, valuables
 Some lewd requests shouldn't be too difficult to implement. We already have a "whip you dick out" negotiation state that this could hook into. Something like fucking one of your other party members though is far more complex. We'd want to adjust the feelings of the pimped out character, save a memory, may even earn a hate mark for doing so. All planned systems, none of which are implemented yet.
 
 For now just implement what we feel like doing and save the rest for follow on tasks. Like most of the content, this will be kind of a rolling task.
+
+---
+
+I've added a couple of the item and violent requests. I'm leaving the task open for now. I need to go back and fill in more of the text. That, or hire a writer to do so, still feels too early for that though.

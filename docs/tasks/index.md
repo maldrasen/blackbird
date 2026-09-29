@@ -24,7 +24,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [237] The Character Equipper Should Honor Gender and Sexual Preferences `3pt` — [237-equipper-should-honor-gender.md](237-equipper-should-honor-gender.md)
 - [239] Dungeon Light emitters `5pt` — [239-dungeon-light-emitters.md](239-dungeon-light-emitters.md)
 - [240] Safe Rooms `3pt` — [240-safe-rooms.md](240-safe-rooms.md)
-- [242] More Negotiation Requests `5pt` — [242-more-negotiation-requests.md](242-more-negotiation-requests.md)
 - [246] Party inventory overlay `5pt` — [246-party-inventory-overlay.md](246-party-inventory-overlay.md)
 - [247] Bank item drops into the party inventory `2pt` — [247-bank-item-drops.md](247-bank-item-drops.md)
 
@@ -61,6 +60,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [208] Six Blade Knife Episodes `13pt` — [208-six-blade-knife-episodes.md](208-six-blade-knife-episodes.md)
 - [209] Create the Cock Describer `13pt` — [209-create-the-cock-describer.md](209-create-the-cock-describer.md)
 - [238] Equipment details `0pt` — [238-equipment-details.md](238-equipment-details.md)
+- [242] More Negotiation Requests `8pt` — [242-more-negotiation-requests.md](242-more-negotiation-requests.md)
 
 ## Priority 4
 
