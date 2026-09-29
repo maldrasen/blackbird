@@ -513,6 +513,42 @@ describe("Room", function() {
     });
   });
 
+  // The crates allow traps and the treasure room allows nothing on its tiles.
+  describe("canHaveTileContents()", function() {
+    it('allows a room without contents', function() {
+      const room = Room(Feature('rect-room'));
+      expect(room.canHaveTileContents(TileContentType.trap)).to.equal(true);
+    });
+
+    it('allows corridors and rooms with stairs', function() {
+      const corridor = Room(Feature('corridor'));
+      expect(corridor.canHaveTileContents(TileContentType.trap)).to.equal(true);
+
+      const room = Room(Feature('rect-room'));
+      room.setBounds(2,2);
+      room.addBox(0,0,2,2);
+      room.setStairs('down',0,0);
+      expect(room.canHaveTileContents(TileContentType.trap)).to.equal(true);
+    });
+
+    it('rejects a room that forbids contents', function() {
+      const room = Room(Feature('rect-room'));
+      room.forbidContents();
+      expect(room.canHaveTileContents(TileContentType.trap)).to.equal(false);
+    });
+
+    it('defers to the room contents when the room has some', function() {
+      const crates = Room(Feature('rect-room'));
+      crates.setContents('dungeon-crates');
+      expect(crates.canHaveTileContents(TileContentType.trap)).to.equal(true);
+      expect(crates.canHaveTileContents('spec-unknown-type')).to.equal(false);
+
+      const treasure = Room(Feature('rect-room'));
+      treasure.setContents('dungeon-treasure');
+      expect(treasure.canHaveTileContents(TileContentType.trap)).to.equal(false);
+    });
+  });
+
   describe("commands", function() {
     beforeEach(function() {
       Article.register('spec-loot', { name:'Spec Loot', category:InventoryCategory.valuables });
