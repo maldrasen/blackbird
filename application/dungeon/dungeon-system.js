@@ -25,7 +25,7 @@ global.DungeonSystem = (function() {
   // throw the whole floor away and start over from scratch with a fresh DungeonFloor. The factory dumps the failed
   // floor's state to the debug directory before we toss it, so a failure can still be analyzed after the fact. The
   // party arrives standing on stairs in the direction they just came through, an upstairs when descending or a
-  // downstairs when climbing.
+  // downstairs when climbing, and the scout looks over the tiles around the stairs before anyone takes a step.
   function setLevel(level, arrival='up', theme=null) {
     Console.log("Changing Level",{ system:'DungeonSystem', level:1, data:{ level, arrival }});
 
@@ -37,6 +37,7 @@ global.DungeonSystem = (function() {
         FloorFactory().buildFloor();
         const stairs = Random.from(dungeonFloor.getStairs(arrival));
         dungeonFloor.setPartyPosition(stairs.position.x, stairs.position.y);
+        ScoutingSystem.scoutAround(stairs.position);
         return;
       }
       catch (error) {

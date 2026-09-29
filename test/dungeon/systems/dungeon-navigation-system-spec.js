@@ -287,6 +287,8 @@ describe("DungeonNavigationSystem", function() {
         enteredRoom: null,
         revealed: false,
         episode: null,
+        trap: null,
+        foundTraps: [],
         encounter: false,
       });
       expect(floor.getPartyPosition()).to.deep.equal({ x:4, y:3 });
@@ -433,6 +435,63 @@ describe("DungeonNavigationSystem", function() {
         expect(result.openedDoor).to.equal(doorNested);
         expect(result.enteredRoom).to.equal(6);
         expect(floor.getPartyPosition()).to.deep.equal({ x:15, y:3 });
+      });
+
+    });
+
+    // A spike trap on (4,4), the tile southeast of the party. Nothing is scouted where the party is first placed, so
+    // the trap is hidden until the party stands beside it. The trap's own rolls come before the encounter roll, and
+    // a trap step makes no encounter roll at all: the roll queue proves it by running dry if one is made.
+    describe("onto a trap tile", function() {
+
+      beforeEach(function() {
+        floor.getRooms()[0].setTileContents(2, 2, { type:TileContentType.trap, code:'spike-trap' });
+      });
+
+      it('springs a trap the scout never found', function() {
+        Random.stubRoll(0);
+        Random.stubRollDice(7);
+
+        const result = step('southeast');
+        expect(result.trap.target).to.equal(scout);
+        expect(result.trap.damage).to.equal(7);
+        expect(result.trap.position).to.deep.equal({ x:4, y:4 });
+        expect(result.encounter).to.equal(false);
+        expect(HealthComponent.lookup(scout).currentHealth).to.equal(13);
+      });
+
+      it('finds a trap when stepping beside it', function() {
+        Random.stubBetween(50,5);
+        Random.stubRoll(missedStep);
+
+        const result = step('east');
+        expect(result.trap).to.equal(null);
+        expect(result.foundTraps).to.deep.equal([{ x:4, y:4 }]);
+        expect(floor.getTileContents(4,4).glyph).to.not.be.undefined;
+      });
+
+      // The scout's mechanics skill is 0, so the disarm check is followed by a roll for the skill to improve.
+      it('disarms a found trap when stepping onto it', function() {
+        Random.stubBetween(50,5, 50,5);
+        Random.stubRoll(missedStep, 249);
+
+        step('east');
+        const result = step('south');
+        expect(result.trap.title).to.equal('Trap Disarmed');
+        expect(result.trap.damage).to.equal(0);
+        expect(result.encounter).to.equal(false);
+        expect(floor.getTileContents(4,4).state).to.equal('disarmed');
+      });
+
+      it('walks over a resolved trap like any other tile', function() {
+        Random.stubRoll(0, missedStep, missedStep);
+        Random.stubRollDice(7);
+
+        step('southeast');
+        step('north');
+        const result = step('south');
+        expect(result.trap).to.equal(null);
+        expect(HealthComponent.lookup(scout).currentHealth).to.equal(13);
       });
 
     });

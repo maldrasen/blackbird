@@ -74,6 +74,8 @@ global.DungeonNavigationSystem = (function() {
   const stayedInRoom = Object.freeze({ enteredRoom:null, isFirstVisit:false, revealed:false, episode:null });
 
   // Move the party a single step, opening the door if they pass through one. Nothing happens when the way is blocked.
+  // Whatever is on the tile stepped onto happens first, then the scout looks over the tiles around it, and only a
+  // step that set nothing off risks an encounter.
   function step(direction) {
     const floor = DungeonSystem.getDungeonFloor();
     const from = getPartyPosition();
@@ -87,15 +89,13 @@ global.DungeonNavigationSystem = (function() {
     const fromRoom = floor.getRoomIndexAt(from.x, from.y);
     const toRoom = floor.getRoomIndexAt(position.x, position.y);
     const { isFirstVisit, ...entry } = (toRoom === fromRoom) ? stayedInRoom : enterRoom(toRoom);
-    const encounter = rollEncounter(isFirstVisit, entry.episode);
-
-    // TODO: Steps will need to include the trap property here if the tile stepped on contains a trap. Or, rather than
-    //       trap, a tile contents code so that whatever is in the tile can be looked up. This step result object is
-    //       getting a bit too complex as well though. It might be worth it to convert it into a model.
+    const trap = TrapSystem.enterTile(position);
+    const foundTraps = ScoutingSystem.scoutAround(position);
+    const encounter = rollEncounter(isFirstVisit, entry.episode, trap);
 
     floor.setPartyPosition(position.x, position.y);
 
-    return { moved:true, position, openedDoor, ...entry, encounter };
+    return { moved:true, position, openedDoor, ...entry, trap, foundTraps, encounter };
   }
 
   // TODO: The encounter rate could also be changed by items the party uses or events. Maybe they use something that
@@ -103,13 +103,13 @@ global.DungeonNavigationSystem = (function() {
   //       keeps track of dungeon conditions like this.
 
   // Walking into a room for the first time is when the party is most likely to be ambushed, unless the room has an
-  // episode of its own to play out. Every other step only carries a slight chance of a wandering encounter, low
-  // enough that it needs a finer roll than a percentage.
-  function rollEncounter(isFirstVisit, episode) {
+  // episode of its own to play out or the step set off a trap. Every other step only carries a slight chance of a
+  // wandering encounter, low enough that it needs a finer roll than a percentage.
+  function rollEncounter(isFirstVisit, episode, trap) {
     const theme = DungeonTheme.lookup(DungeonSystem.getDungeonFloor().getTheme());
     const factor = Difficulty.getEncounterFactor();
 
-    if (episode != null) { return false; }
+    if (episode != null || trap != null) { return false; }
     if (isFirstVisit) { return Random.roll(100) < theme.getNewRoomEncounterRate() * factor; }
     return Random.roll(1000) < theme.getStepEncounterRate() * 10 * factor;
   }

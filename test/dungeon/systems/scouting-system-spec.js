@@ -84,6 +84,15 @@ describe("ScoutingSystem", function() {
       expect(floor.getTileContents(4,3).scoutingRoll).to.equal(9);
     });
 
+    it("makes no check on a trap that went off before it was ever scouted", function() {
+      placeTrap(4,3);
+      floor.updateTileContents(4, 3, { state:'sprung' });
+      Random.stubBetween();
+
+      expect(ScoutingSystem.scoutTile(4,3)).to.equal(false);
+      expect(floor.getTileContents(4,3).scoutingRoll).to.equal(undefined);
+    });
+
     it("makes no check on a tile with nothing hidden on it", function() {
       floor.getRooms()[0].setTileContents(0, 0, { canEnter:false });
       Random.stubBetween();

@@ -5,12 +5,12 @@ global.ScoutingSystem = (function() {
 
   // Scout a single tile. A check is only rolled when the tile holds something hidden that hasn't been scouted yet,
   // never for a bare tile, because every check is a chance for the skill to improve. The roll stays on the tile, so
-  // contents the scout missed stay hidden however many times the party walks past. Says whether the contents were
-  // just found.
+  // contents the scout missed stay hidden however many times the party walks past. Contents with a state have been
+  // dealt with one way or another, and there's nothing left to find. Says whether the contents were just found.
   function scoutTile(x, y) {
     const floor = DungeonSystem.getDungeonFloor();
     const tile = floor.getTileContents(x, y);
-    if (tile == null || tile.code == null || tile.scoutingRoll != null) { return false; }
+    if (tile == null || tile.code == null || tile.scoutingRoll != null || tile.state != null) { return false; }
 
     const record = TileContents.lookup(tile.code);
     if (record.getSecrecy() == null) { return false; }
