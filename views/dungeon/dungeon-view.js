@@ -84,11 +84,12 @@ global.DungeonView = (function() {
 
   // A closed door is the only way into a room that hasn't been visited, so opening one covers entering an unexplored
   // room as well as coming into an explored room by a new way. The revealed check is only there for a room that was
-  // opened up some other way.
+  // opened up some other way. Spotting a trap stops the run as well, so that the next step onto it is a choice.
   function endsRun(result) {
     return result.moved === false
         || result.openedDoor != null
         || result.revealed === true
+        || result.foundTraps.length > 0
         || resolving;
   }
 
@@ -127,11 +128,21 @@ global.DungeonView = (function() {
     if (result.enteredRoom != null || hadTileFeature || DungeonTileSystem.hasTileFeature()) {
       DungeonControls.refreshRoom();
     }
+
+    refreshTrapGlyphs(result);
+
     if (result.trap || result.episode || result.encounter) {
       resolveStep(result);
     }
 
     return result;
+  }
+
+  // A trap the scout just found gets its glyph, and a trap the party just stepped on has its glyph replaced with
+  // the resolved one. Both happen on the tile straight away, while the marker is still on its way.
+  function refreshTrapGlyphs(result) {
+    result.foundTraps.forEach(position => DungeonFloorView.refreshTileGlyph(position));
+    if (result.trap) { DungeonFloorView.refreshTileGlyph(result.trap.position); }
   }
 
   // Whatever the step set off waits for the party to finish arriving on the tile before it starts.
@@ -150,6 +161,7 @@ global.DungeonView = (function() {
     if (result.encounter) { return DungeonSystem.startRandomEncounter(); }
   }
 
+  // A sprung trap and a disarmed one show the same overlay. Only the damage of a sprung one flashes the party card.
   function showTrapResult(trap) {
     if (trap.damage > 0) {
       const card = X.first(`#dungeonControls .party-card[data-id='${trap.target}']`);
