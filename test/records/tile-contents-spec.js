@@ -49,18 +49,18 @@ describe("TileContents", function() {
   describe("getGlyph()", function() {
     it("gives a trap the default glyph in the armed color", function() {
       expect(TileContents.lookup('spike-trap').getGlyph()).to.deep.equal({
-        glyph:DungeonConstants.trapGlyph, color:DungeonConstants.trapColors.armed, size:80,
+        glyph:DungeonConstants.trapGlyph, color:DungeonConstants.trapColors.armed, size:60,
       });
     });
 
     it("keeps a trap's own glyph over the default", function() {
-      expect(TileContents.lookup('spec-tile-trap').getGlyph()).to.deep.equal({ glyph:'▲', color:'red', size:80 });
+      expect(TileContents.lookup('spec-tile-trap').getGlyph()).to.deep.equal({ glyph:'▲', color:'red', size:60 });
     });
 
     it("draws a sprung or disarmed trap in the resolved color whatever its glyph", function() {
       const resolved = DungeonConstants.trapColors.resolved;
       expect(TileContents.lookup('spike-trap').getGlyph('sprung').color).to.equal(resolved);
-      expect(TileContents.lookup('spec-tile-trap').getGlyph('disarmed')).to.deep.equal({ glyph:'▲', color:resolved, size:80 });
+      expect(TileContents.lookup('spec-tile-trap').getGlyph('disarmed')).to.deep.equal({ glyph:'▲', color:resolved, size:60 });
     });
   });
 

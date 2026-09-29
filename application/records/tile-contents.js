@@ -62,7 +62,7 @@ global.TileContents = (function() {
     function getGlyph(state=null) {
       if (tileContents.type !== TileContentType.trap) { return tileContents.glyph ? { ...tileContents.glyph } : null; }
 
-      const glyph = { glyph:DungeonConstants.trapGlyph, color:DungeonConstants.trapColors.armed, size:80, ...tileContents.glyph };
+      const glyph = { glyph:DungeonConstants.trapGlyph, color:DungeonConstants.trapColors.armed, size:60, ...tileContents.glyph };
       return (state == null) ? glyph : { ...glyph, color:DungeonConstants.trapColors.resolved };
     }
 
