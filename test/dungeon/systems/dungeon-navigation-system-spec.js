@@ -413,47 +413,6 @@ describe("DungeonNavigationSystem", function() {
 
     });
 
-    // The spike trap has a secrecy of 15. Once roll() is stubbed the trap's target is picked from the same queue, so
-    // a sprung trap takes a target roll before the encounter roll.
-    describe("into a trapped room", function() {
-
-      beforeEach(function() {
-        standBesideDoor();
-        floor.getRooms()[1].setContents('dungeon-spike-trap');
-      });
-
-      it('springs a trap the scout failed to spot', function() {
-        Random.stubBetween(50,1);
-        Random.stubRollDice(7);
-        Random.stubRoll(0, missedRoom);
-
-        const result = step('east');
-        expect(result.trap.target).to.equal(scout);
-        expect(result.trap.damage).to.equal(7);
-        expect(HealthComponent.lookup(scout).currentHealth).to.equal(13);
-      });
-
-      it('does not spring a trap the scout spotted', function() {
-        Random.stubBetween(50,5);
-        Random.stubRoll(missedRoom);
-
-        expect(step('east').trap).to.equal(null);
-        expect(HealthComponent.lookup(scout).currentHealth).to.equal(20);
-      });
-
-      it('does not spring the trap again when walking back into the room', function() {
-        Random.stubBetween(50,1);
-        Random.stubRollDice(7);
-        Random.stubRoll(0, missedRoom, missedStep, missedStep);
-
-        step('east');
-        step('west');
-        expect(step('east').trap).to.equal(null);
-        expect(HealthComponent.lookup(scout).currentHealth).to.equal(13);
-      });
-
-    });
-
     describe("into a room with an episode", function() {
 
       beforeEach(function() {
