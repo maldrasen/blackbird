@@ -258,8 +258,10 @@ global.Room = function(feature, type='normal') {
     return contentsAllowed && feature.getType() !== 'corridor' && findStairs() == null && contents == null;
   }
 
-  function canHaveTileContents() {
-    return (contents == null) ? true : RoomContents.lookup(contents).getAllowedTileTypes().length > 0;
+  function canHaveTileContents(type) {
+    if (contentsAllowed === false) { return false; }
+    if (contents == null) { return true; }
+    return RoomContents.lookup(contents).getAllowedTileTypes().includes(type);
   }
 
   function setContents(code, options={}) {
