@@ -2,7 +2,11 @@ global.ReferenceValidator = (function() {
 
   function validate() {
     Episode.getAllCodes().forEach(code => validateEpisodeQueue(code, Episode.lookup(code).getQueue()));
-    DungeonTheme.getAllCodes().forEach(code => validateDungeonTheme(code, DungeonTheme.lookup(code).getRoomContents()));
+    DungeonTheme.getAllCodes().forEach(code => {
+      const theme = DungeonTheme.lookup(code);
+      validateDungeonTheme(code, theme.getRoomContents());
+      validateTileContents(code, theme.getTileContents());
+    });
 
     SexAction.getAllCodes().forEach(code => {
       const action = SexAction.lookup(code);
@@ -27,6 +31,20 @@ global.ReferenceValidator = (function() {
   function validateDungeonTheme(code, contents) {
     contents.forEach(entry => {
       Validate.isIn(`DungeonTheme[${code}].roomContents`, entry.code, RoomContents.getAllCodes());
+    });
+  }
+
+  // Every code in a tile contents entry has to be a record of the type the entry places.
+  function validateTileContents(code, entries) {
+    entries.forEach(entry => {
+      const name = `DungeonTheme[${code}].tileContents[${entry.type}]`;
+      Validate.isIn(`${name}.type`, entry.type, Object.values(TileContentType));
+      Validate.isArray(`${name}.count`, entry.count);
+
+      Object.keys(entry.codes).forEach(contentsCode => {
+        Validate.isIn(`${name}.codes`, contentsCode, TileContents.getAllCodes());
+        Validate.equals(`${name}.codes[${contentsCode}].type`, TileContents.lookup(contentsCode).getType(), entry.type);
+      });
     });
   }
 

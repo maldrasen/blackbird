@@ -731,6 +731,7 @@
     "test/dungeon/factories/floor-factory-support-spec.js",
     "test/dungeon/factories/room-content-placer-spec.js",
     "test/dungeon/factories/straight-corridor-factory-spec.js",
+    "test/dungeon/factories/tile-content-placer-spec.js",
     "test/dungeon/models/door-spec.js",
     "test/dungeon/models/feature-graph-spec.js",
     "test/dungeon/models/feature-spec.js",

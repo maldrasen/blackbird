@@ -1,34 +1,53 @@
-global.TileContentPlacer = function() {
+// Puts the theme's random tile contents onto the floor. Each theme entry places one type of contents: a count range
+// for how many tiles get something and a frequency map of the codes to pick from. The candidates are every bare tile
+// of every room that can take the type, so the contents spread out in proportion to room area rather than by room.
+global.TileContentPlacer = function(entries=null) {
   const floor = DungeonSystem.getDungeonFloor();
   const theme = DungeonTheme.lookup(floor.getTheme());
 
   function placeContents() {
-    console.log("=== Place Contents ===");
-    console.log(`There are ${getEligibleRooms(TileContentType.trap).length} eligible rooms out of ${floor.getRooms().length} rooms.`);
-
-    // OK, we've filtered out the few ineligible rooms. We now need to pick random tiles to add tile content to. The
-    // theme has a list of types. Each type has a range with the number of tiles to be placed and a frequency map used
-    // to select the trap.
-
-    // In order to place tile content we need a list of available tiles. To put this list together we can loop though
-    // all the theme's tileContents, and for each tile content loop though all the eligible rooms, adding all of that
-    // room's tiles to a list that we randomly pick from. Because canHaveTileContents() needs the type, we have to put
-    // a new list together for every type.
-
-    // Alternatively canHaveTileContents() can go back to not taking a type as an argument, and if the tile can have
-    // any type of content it returns true. We build the list of available tiles once. Each entry has the tile and a
-    // list of contents that tile can have. Fewer loops, more data. This might be a premature optimization worry here,
-    // but building a dungeon floor already takes longer than anything else in the game.
-
-    // Changing floors usually produces a warning. Something like:
-    //   [Violation] Forced reflow while executing JavaScript took 83ms
-    // I think this forced reflow comes from putting the SVG elements into the DOM, and doesn't have anything to do
-    // with the floor factory itself. The spec times are still great, so we can afford a little inefficiency here.
+    (entries || theme.getTileContents()).forEach(placeEntry);
   }
 
-  function getEligibleRooms(type) {
-    return floor.getRooms().filter(room => room.canHaveTileContents(type));
+  function placeEntry(entry) {
+    const codes = codesInRange(entry.codes);
+    if (Object.keys(codes).length === 0) { return; }
+
+    const tiles = Random.shuffle(getAvailableTiles(entry.type));
+    const count = Math.min(Random.between(entry.count[0], entry.count[1]), tiles.length);
+
+    for (let i=0; i<count; i++) {
+      const tile = tiles[i];
+      tile.room.setTileContents(tile.x, tile.y, { type:entry.type, code:Random.fromFrequencyMap(codes) });
+    }
+  }
+
+  function codesInRange(codes) {
+    const level = floor.getLevel();
+    const inRange = {};
+
+    Object.keys(codes).forEach(code => {
+      if (TileContents.lookup(code).isInRange(level)) { inRange[code] = codes[code]; }
+    });
+
+    return inRange;
+  }
+
+  // Every tile that could take the type, as the room that owns it sees it. A tile already holding something (stairs,
+  // a tree) is never a candidate, as setting its contents would replace what's there.
+  function getAvailableTiles(type) {
+    const tiles = [];
+
+    floor.getRooms().filter(room => room.canHaveTileContents(type)).forEach(room => {
+      room.getFootprint().forEach((row, y) => {
+        row.forEach((cell, x) => {
+          if (cell != null && room.getTileContents(x, y) == null) { tiles.push({ room, x, y }); }
+        });
+      });
+    });
+
+    return tiles;
   }
 
   return { placeContents };
-}
+};
