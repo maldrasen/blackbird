@@ -1,4 +1,11 @@
 global.TrapSystem = (function() {
+  /*
+
+  The trap system will need to be entirely rewritted to apply to tile based traps rather than room based traps. I'm
+  leaving the file in a commented out state though because traps will still work the same when triggered. It's just
+  finding and activating traps change completely.
+
+
 
   // Springs the trap in a room as it's entered for the first time. Returns null when there's nothing to spring,
   // either because there's no trap in the room or because the scouting check spotted it. A sprung trap picks its
@@ -55,7 +62,7 @@ global.TrapSystem = (function() {
 
     HealthComponent.update(id, health);
   }
-
-  return { springTrap };
+   */
+  return { };
 
 })();

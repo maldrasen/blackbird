@@ -79,6 +79,7 @@ global.FloorFactory = function() {
 
     placeStairs();
     RoomContentPlacer().placeContents();
+    TileContentPlacer().placeContents();
   }
 
   // Multi-room features join their own rooms with authored doors. Their edges go into the connection graph before

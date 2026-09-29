@@ -251,9 +251,15 @@ global.Room = function(feature, type='normal') {
   // ==============
   //    Contents
   // ==============
+  // The contentsAllowed property applies to both room and tile contents. If a room can't randomly have room contents
+  // assigned then it can't allow tile content (like traps) to be assigned either.
 
-  function canHaveContents() {
+  function canHaveRoomContents() {
     return contentsAllowed && feature.getType() !== 'corridor' && findStairs() == null && contents == null;
+  }
+
+  function canHaveTileContents() {
+    return (contents == null) ? true : RoomContents.lookup(contents).getAllowedTileTypes().length > 0;
   }
 
   function setContents(code, options={}) {
@@ -363,7 +369,8 @@ global.Room = function(feature, type='normal') {
     getContents: () => { return contents; },
     getContentsOptions: () => { return contentsOptions; },
     hasContents: () => { return contents != null; },
-    canHaveContents,
+    canHaveRoomContents,
+    canHaveTileContents,
     setContents,
 
     getDescription,

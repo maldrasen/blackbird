@@ -26,7 +26,7 @@ global.RoomContentPlacer = function(contents=null) {
   }
 
   function getEligibleRooms() {
-    return floor.getRooms().filter(room => room.canHaveContents());
+    return floor.getRooms().filter(room => room.canHaveRoomContents());
   }
 
   function pickContents() {

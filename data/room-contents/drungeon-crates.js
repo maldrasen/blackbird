@@ -23,4 +23,5 @@ function open() {
 RoomContents.register('dungeon-crates',{
   commands: [{ code:'open', label:'Inspect', execute:open }],
   description: describe,
+  allowedTileTypes: [TileContentType.trap],
 });

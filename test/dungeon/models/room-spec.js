@@ -487,15 +487,15 @@ describe("Room", function() {
     });
   });
 
-  describe("canHaveContents()", function() {
+  describe("canHaveRoomContents()", function() {
     it('allows a plain room', function() {
       const room = Room(Feature('rect-room'));
-      expect(room.canHaveContents()).to.equal(true);
+      expect(room.canHaveRoomContents()).to.equal(true);
     });
 
     it('rejects corridor rooms', function() {
       const room = Room(Feature('corridor'));
-      expect(room.canHaveContents()).to.equal(false);
+      expect(room.canHaveRoomContents()).to.equal(false);
     });
 
     it('rejects rooms with stairs', function() {
@@ -503,13 +503,13 @@ describe("Room", function() {
       room.setBounds(2,2);
       room.addBox(0,0,2,2);
       room.setStairs('down',0,0);
-      expect(room.canHaveContents()).to.equal(false);
+      expect(room.canHaveRoomContents()).to.equal(false);
     });
 
     it('rejects rooms that already have contents', function() {
       const room = Room(Feature('rect-room'));
       room.setContents('spec-contents');
-      expect(room.canHaveContents()).to.equal(false);
+      expect(room.canHaveRoomContents()).to.equal(false);
     });
   });
 

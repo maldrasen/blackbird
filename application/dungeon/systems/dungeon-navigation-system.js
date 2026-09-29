@@ -62,7 +62,7 @@ global.DungeonNavigationSystem = (function() {
     return findStep(getPartyPosition(), direction) != null;
   }
 
-  const stayedInRoom = Object.freeze({ enteredRoom:null, isFirstVisit:false, revealed:false, episode:null, trap:null });
+  const stayedInRoom = Object.freeze({ enteredRoom:null, isFirstVisit:false, revealed:false, episode:null });
 
   // Move the party a single step, opening the door if they pass through one. Nothing happens when the way is blocked.
   function step(direction) {
@@ -79,6 +79,10 @@ global.DungeonNavigationSystem = (function() {
     const toRoom = floor.getRoomIndexAt(position.x, position.y);
     const { isFirstVisit, ...entry } = (toRoom === fromRoom) ? stayedInRoom : enterRoom(toRoom);
     const encounter = rollEncounter(isFirstVisit, entry.episode);
+
+    // TODO: Steps will need to include the trap property here if the tile stepped on contains a trap. Or, rather than
+    //       trap, a tile contents code so that whatever is in the tile can be looked up. This step result object is
+    //       getting a bit too complex as well though. It might be worth it to convert it into a model.
 
     floor.setPartyPosition(position.x, position.y);
 
@@ -109,7 +113,7 @@ global.DungeonNavigationSystem = (function() {
 
   // Everything that happens as the party crosses into a room, which has to be worked out before the party is moved
   // because moving them marks the room as visited. A room is only scouted the first time it's entered, which is also
-  // the only time its trap can be sprung or its episode can start.
+  // the only time its episode can start.
   function enterRoom(index) {
     const floor = DungeonSystem.getDungeonFloor();
     const room = floor.getRooms()[index];
@@ -118,10 +122,10 @@ global.DungeonNavigationSystem = (function() {
     if (isFirstVisit) { scoutRoom(room); }
 
     const episode = isFirstVisit ? getRoomEpisode(room) : null;
-    const trap = isFirstVisit ? TrapSystem.springTrap(room) : null;
+
     GameSystem.getState().advanceGameTime(isFirstVisit ? exploreTime : backtrackTime);
 
-    return { enteredRoom:index, isFirstVisit, revealed, episode, trap };
+    return { enteredRoom:index, isFirstVisit, revealed, episode };
   }
 
   function scoutRoom(room) {
