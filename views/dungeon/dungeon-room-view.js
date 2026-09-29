@@ -103,13 +103,15 @@ global.DungeonRoomView = (function() {
   }
 
   // The glyph markup in the room's own pixel coordinates. The vision view draws the same glyphs over the shadow.
+  // Each glyph is tagged with its tile so that it can be found again when the tile's contents change.
   function roomGlyphs(room) {
-    const gridSize = DungeonFloorView.getGridSize();
+    return room.getGlyphs().map(glyphMarkup);
+  }
 
-    return room.getGlyphs().map(glyph => {
-      const size = glyph.size || defaultGlyphSize;
-      return `<text class='glyph' x='${glyph.x * gridSize}' y='${glyph.y * gridSize}' fill='${glyph.color}' style='font-size:${size}px'>${glyph.glyph}</text>`;
-    });
+  function glyphMarkup(glyph) {
+    const gridSize = DungeonFloorView.getGridSize();
+    const size = glyph.size || defaultGlyphSize;
+    return `<text class='glyph' data-x='${glyph.tile.x}' data-y='${glyph.tile.y}' x='${glyph.x * gridSize}' y='${glyph.y * gridSize}' fill='${glyph.color}' style='font-size:${size}px'>${glyph.glyph}</text>`;
   }
 
   function roomDepth(floor, index) {
@@ -121,6 +123,7 @@ global.DungeonRoomView = (function() {
     getRoomGeometry,
     getNestedGeometry,
     roomGlyphs,
+    glyphMarkup,
     getWallInset: () => { return wallInset; },
     getDefaultGlyphSize: () => { return defaultGlyphSize; },
   };

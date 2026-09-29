@@ -126,10 +126,17 @@ global.Room = function(feature, type='normal') {
     return (typeof tile.description === 'function') ? tile.description() : tile.description;
   }
 
+  // The glyphs to draw, each at its point in tile units along with the tile whose contents it belongs to.
   function getGlyphs() {
     return [...tileContents.values()].filter(tile => tile.glyph).map(tile => {
       const { offset={ x:0, y:0 }, ...glyph } = tile.glyph;
-      return { x:tile.x + 0.5 + offset.x, y:tile.y + 0.5 + offset.y, ...glyph, shadow:tile.shadow === true };
+      return {
+        x: tile.x + 0.5 + offset.x,
+        y: tile.y + 0.5 + offset.y,
+        tile: { x:tile.x, y:tile.y },
+        ...glyph,
+        shadow: tile.shadow === true,
+      };
     });
   }
 
