@@ -13,7 +13,8 @@ global.Character = function(id) {
 
   function getSpecies() { return ActorComponent.lookup(id).species; }
   function getSpeciesName() { return Species.lookup(getSpecies()).getName(); }
-  function getGenderName() { return GenderName[ActorComponent.lookup(id).gender] }
+  function getGender() { return ActorComponent.lookup(id).gender; }
+  function getGenderName() { return GenderName[getGender()]; }
   function isMale() { return ActorComponent.lookup(id).gender === Gender.male; }
   function isFemale() { return ActorComponent.lookup(id).gender === Gender.female; }
   function isFuta() { return ActorComponent.lookup(id).gender === Gender.futa; }
@@ -74,6 +75,8 @@ global.Character = function(id) {
   // is a string this function checks the breastSize category. If the argument is a number it checks the absolute
   // breast volume.
   function breastsAreAtLeast(value) {
+    if (hasBreasts() === false) { return false; }
+
     const breastSizes = Object.keys(BreastData.BreastSizes);
     const tits = BreastsComponent.lookup(id);
 
@@ -96,6 +99,8 @@ global.Character = function(id) {
   // Like the breastsAreAtLeast() function this function takes a string if we're checking the cock size category or a
   // number if we're checking the cock length in mm.
   function cockIsAtLeast(value) {
+    if (hasNormalCock() === false) { return false; }
+
     const cockSizes = Object.keys(CockData.CockSizes);
     const cock = CockComponent.lookupNormalOf(id);
 
@@ -252,6 +257,7 @@ global.Character = function(id) {
     getFullName,
     getSpecies,
     getSpeciesName,
+    getGender,
     getGenderName,
     isMale,
     isFemale,
