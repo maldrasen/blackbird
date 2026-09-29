@@ -97,6 +97,24 @@ describe("DungeonFloor", function() {
     });
   });
 
+  describe("updateTileContents()", function() {
+    it('updates the contents of a tile by its floor position', function() {
+      const floor = DungeonFloor(1,'dungeon');
+      const room = addSquareRoom(floor,3,4,4);
+      room.setTileContents(1, 2, { type:'trap', code:'pit-trap' });
+      floor.updateTileContents(5, 6, { scoutingRoll:9 });
+
+      expect(room.getTileContents(1,2)).to.deep.equal({ x:1, y:2, type:'trap', code:'pit-trap', scoutingRoll:9 });
+    });
+
+    it('throws where there is no floor', function() {
+      const floor = DungeonFloor(1,'dungeon');
+      addSquareRoom(floor,3,4,4);
+
+      expect(() => floor.updateTileContents(7, 4, { scoutingRoll:9 })).to.throw('no floor tile');
+    });
+  });
+
   describe("getFeatureForRoom()", function() {
     it('finds the feature a room belongs to', function() {
       const floor = DungeonFloor(1,'dungeon');

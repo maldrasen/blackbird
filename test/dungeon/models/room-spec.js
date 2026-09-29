@@ -180,6 +180,37 @@ describe("Room", function() {
     });
   });
 
+  describe("updateTileContents()", function() {
+    function buildRoom() {
+      const room = Room();
+      room.setBounds(3,3);
+      room.addBox(0,0,3,3);
+      return room;
+    }
+
+    it('changes part of the contents and keeps the rest', function() {
+      const room = buildRoom();
+      room.setTileContents(1, 2, { type:'trap', code:'spike-trap' });
+      room.updateTileContents(1, 2, { scoutingRoll:12, glyph:{ glyph:'♆', color:'red' }});
+
+      expect(room.getTileContents(1,2)).to.deep.equal({
+        x:1, y:2, type:'trap', code:'spike-trap', scoutingRoll:12, glyph:{ glyph:'♆', color:'red' },
+      });
+    });
+
+    it('cannot move the contents to another tile', function() {
+      const room = buildRoom();
+      room.setTileContents(1, 2, { type:'trap' });
+      room.updateTileContents(1, 2, { x:0, y:0 });
+
+      expect(room.getTileContents(1,2)).to.deep.equal({ x:1, y:2, type:'trap' });
+    });
+
+    it('throws for a tile with nothing on it', function() {
+      expect(() => buildRoom().updateTileContents(1, 1, { scoutingRoll:12 })).to.throw('no contents to update');
+    });
+  });
+
   describe("getGlyphs()", function() {
     it('moves a glyph by its offset', function() {
       const room = Room();

@@ -107,6 +107,13 @@ global.Room = function(feature, type='normal') {
     return tile ? { ...tile } : null;
   }
 
+  // Change part of what's on a tile, keeping the rest. The tile has to hold something already.
+  function updateTileContents(x, y, changes) {
+    const tile = tileContents.get(`${x},${y}`);
+    if (tile == null) { throw new Error(`(${x},${y}) has no contents to update.`); }
+    tileContents.set(`${x},${y}`, { ...tile, ...changes, x, y });
+  }
+
   function canEnterTile(x, y) {
     const tile = tileContents.get(`${x},${y}`);
     if (tile == null || tile.canEnter == null) { return true; }
@@ -341,6 +348,7 @@ global.Room = function(feature, type='normal') {
     getGlyphs,
     setTileContents,
     getTileContents,
+    updateTileContents,
     canEnterTile,
     getTileDescription,
     getBounds,
