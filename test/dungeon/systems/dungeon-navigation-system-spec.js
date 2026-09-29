@@ -262,7 +262,6 @@ describe("DungeonNavigationSystem", function() {
         enteredRoom: null,
         revealed: false,
         episode: null,
-        trap: null,
         encounter: false,
       });
       expect(floor.getPartyPosition()).to.deep.equal({ x:4, y:3 });
