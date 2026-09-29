@@ -2,9 +2,9 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
-## Priority 1
+## Priority 
 
-- [236] Convert traps into tile contents `5pt` — [236-convert-traps-into-tile-contents.md](236-convert-traps-into-tile-contents.md)
+- [248] Convert step result to a model `3pt` — [248-convert-step-result-to-a-model.md](248-convert-step-result-to-a-model.md)
 
 ## Priority 2
 
@@ -61,6 +61,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [209] Create the Cock Describer `13pt` — [209-create-the-cock-describer.md](209-create-the-cock-describer.md)
 - [238] Equipment details `0pt` — [238-equipment-details.md](238-equipment-details.md)
 - [242] More Negotiation Requests `8pt` — [242-more-negotiation-requests.md](242-more-negotiation-requests.md)
+- [249] Show skill increases in an alert `3pt` — [249-show-trap-disarm-and-skill-increases-in-an-alert.md](249-show-trap-disarm-and-skill-increases-in-an-alert.md)
 
 ## Priority 4
 

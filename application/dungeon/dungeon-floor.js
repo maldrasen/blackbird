@@ -162,6 +162,12 @@ global.DungeonFloor = function(level, theme=null) {
     return tile ? tile.room.getTileDescription(tile.x, tile.y) : null;
   }
 
+  function updateTileContents(x, y, changes) {
+    const tile = findRoomTile(x, y);
+    if (tile == null) { throw new Error(`There is no floor tile at (${x},${y}) to update.`); }
+    tile.room.updateTileContents(tile.x, tile.y, changes);
+  }
+
   function getStairs(direction) {
     return rooms.filter(room => room.getStairs() === direction).map(room => {
       return { position:room.getStairsFloorPosition(), room:room.getIndex() };
@@ -191,6 +197,7 @@ global.DungeonFloor = function(level, theme=null) {
     canEnterTile,
     getTileContents,
     getTileDescription,
+    updateTileContents,
     getFloorWidth,
     getFloorHeight,
 

@@ -1,109 +1,191 @@
 describe("TrapSystem", function() {
 
+  // A hand-built floor with a single 3x3 room at (2,2). The spike trap goes on (4,3), and the scout stands beside it.
   let floor;
-  let room;
-  let player;
+  let scout;
+
+  // With every attribute at 10, a mechanics skill of 0 and the skill's factor of 2.5, the mechanics check comes to
+  // (n + 2) * 2.5 where n is the second stubbed between value, followed by one roll out of 250 for the chance to
+  // improve the skill, which 249 misses. stubBetween(50,5) checks a 17.5 and stubBetween(50,1) a 7.5, against the
+  // spike trap's disarm of 12.
+  const missedImprovement = 249;
+
+  function buildScout() {
+    const id = Registry.createEntity();
+    ActorComponent.create(id, { name:'Scout', gender:Gender.male, species:SpeciesCode.human });
+    AttributesComponent.create(id, { strength:10, dexterity:10, vitality:10, intelligence:10, beauty:10 });
+    HealthComponent.create(id, { currentHealth:20, maxHealth:20, currentStamina:10 });
+
+    const skills = {};
+    SkillsComponent.getSkills().forEach(code => { skills[code] = 0; });
+    skills.scouting = 100;
+    SkillsComponent.create(id, skills);
+
+    return id;
+  }
+
+  function placeTrap(code='spike-trap') {
+    floor.getRooms()[0].setTileContents(2, 1, { type:TileContentType.trap, code });
+  }
+
+  function findTrap() {
+    floor.updateTileContents(4, 3, { scoutingRoll:21, glyph:TileContents.lookup('spike-trap').getGlyph() });
+  }
+
+  function trapTile() {
+    return floor.getTileContents(4,3);
+  }
+
+  function health(id) {
+    return HealthComponent.lookup(id).currentHealth;
+  }
 
   beforeEach(function() {
-    RoomContents.register('spec-trap-contents',{
-      secrecy: 10,
-      trap: {
-        damage: { x:2, d:6 },
-        damageType: DamageType.pierce,
-        hitLocation: EquipmentSlot.legs,
-        target: EpisodeTarget.anyInParty,
-        onScoutingFailure: () => `The spec trap springs!`,
-      },
-      description: 'A room with a trap in it.',
+    floor = DungeonFloor(1,'dungeon');
+    DungeonSystem.setDungeonFloor(floor);
+
+    const feature = Feature('spec-room');
+    const room = Room(feature);
+    room.setBounds(3,3);
+    room.addBox(0,0,3,3);
+    feature.addRoom(room);
+    feature.setPosition(2,2);
+    floor.addFeature(feature);
+
+    scout = buildScout();
+    GameSystem.getState().setPlayer(scout);
+    PartyConfiguration.setConfiguration({ [scout]:'P.0.2' });
+    floor.setPartyPosition(3,3);
+  });
+
+  it("does nothing on a tile without an armed trap", function() {
+    floor.getRooms()[0].setTileContents(0, 0, { description:'Scattered bones.' });
+    placeTrap();
+    floor.updateTileContents(4, 3, { state:'disarmed' });
+
+    expect(TrapSystem.enterTile({ x:3, y:3 })).to.equal(null);
+    expect(TrapSystem.enterTile({ x:2, y:2 })).to.equal(null);
+    expect(TrapSystem.enterTile({ x:4, y:3 })).to.equal(null);
+  });
+
+  describe("a hidden trap", function() {
+
+    // The target is picked with Random.from(), which takes a roll when only roll is stubbed.
+    it("springs on its target and damages them", function() {
+      placeTrap();
+      Random.stubRoll(0);
+      Random.stubRollDice(7);
+
+      const result = TrapSystem.enterTile({ x:4, y:3 });
+      expect(result.position).to.deep.equal({ x:4, y:3 });
+      expect(result.target).to.equal(scout);
+      expect(result.damage).to.equal(7);
+      expect(result.title).to.equal('A Trap!');
+      expect(result.text).to.include('jagged iron spikes stab into your legs');
+      expect(health(scout)).to.equal(13);
     });
 
-    player = CharacterFixtures.genericMale({});
-    GameSystem.getState().setPlayer(player);
-    PartyConfiguration.setConfiguration({ [player]:'P.0.2' });
+    it("resolves the tile as sprung", function() {
+      placeTrap();
+      Random.stubRoll(0);
+      Random.stubRollDice(7);
+      TrapSystem.enterTile({ x:4, y:3 });
 
-    DungeonSystem.createDungeon();
-    DungeonSystem.setLevel(1);
-    floor = DungeonSystem.getDungeonFloor();
-    room = floor.getCurrentRoom();
-    room.setContents('spec-trap-contents');
-  });
-
-  it("springs nothing in a room without contents", function() {
-    const empty = floor.getRooms().find(room => room.hasContents() === false);
-    expect(TrapSystem.springTrap(empty)).to.equal(null);
-  });
-
-  it("springs nothing from contents without a trap", function() {
-    RoomContents.register('spec-trapless-contents',{ description:'Nothing dangerous here.' });
-    room.setContents('spec-trapless-contents');
-    expect(TrapSystem.springTrap(room)).to.equal(null);
-  });
-
-  it("springs nothing when the scout has spotted the trap", function() {
-    room.setScoutingRoll(15);
-    expect(TrapSystem.springTrap(room)).to.equal(null);
-  });
-
-  it("damages its target when the scout missed the trap", function() {
-    room.setScoutingRoll(5);
-    Random.stubRollDice(7);
-
-    const result = TrapSystem.springTrap(room);
-    expect(result.target).to.equal(player);
-    expect(result.damage).to.equal(7);
-    expect(result.text).to.include('The spec trap springs!');
-    expect(HealthComponent.lookup(player).currentHealth).to.equal(93);
-  });
-
-  // Steel plate mail reduces pierce damage by 34%.
-  it("reduces the damage by the armor covering the hit location", function() {
-    const plate = ItemFixtures.buildSteel('plate-mail');
-    EquipmentManager(player).equipItem(plate, EquipmentSlot.legs);
-
-    room.setScoutingRoll(5);
-    Random.stubRollDice(10);
-
-    const result = TrapSystem.springTrap(room);
-    expect(result.damage).to.equal(7);
-    expect(HealthComponent.lookup(player).currentHealth).to.equal(93);
-  });
-
-  it("deals no damage when the trap has none to roll", function() {
-    RoomContents.register('spec-harmless-trap-contents',{
-      secrecy: 10,
-      trap: {
-        target: EpisodeTarget.anyInParty,
-        onScoutingFailure: () => `The spec trap springs harmlessly.`,
-      },
-      description: 'A room with a harmless trap in it.',
+      expect(trapTile().state).to.equal('sprung');
+      expect(trapTile().glyph.color).to.equal(DungeonConstants.trapColors.resolved);
+      expect(floor.getTileDescription(4,3)).to.include('Bloodstained spikes');
     });
-    room.setContents('spec-harmless-trap-contents');
-    room.setScoutingRoll(5);
 
-    const result = TrapSystem.springTrap(room);
-    expect(result.damage).to.equal(0);
-    expect(HealthComponent.lookup(player).currentHealth).to.equal(100);
-  });
+    it("springs when the scout missed it too", function() {
+      placeTrap();
+      floor.updateTileContents(4, 3, { scoutingRoll:9 });
+      Random.stubRoll(0);
+      Random.stubRollDice(7);
 
-  // Trap deaths are deferred to a later task, so for now a trap that kills its target is an error.
-  it("throws when the trap kills its target", function() {
-    room.setScoutingRoll(5);
-    Random.stubRollDice(200);
-
-    expect(() => TrapSystem.springTrap(room)).to.throw('Trap deaths');
-    expect(HealthComponent.lookup(player).currentHealth).to.equal(100);
-  });
-
-  it("rejects a trap target it doesn't know", function() {
-    RoomContents.register('spec-bad-target-contents',{
-      secrecy: 10,
-      trap: { target:'the-moon' },
-      description: 'A room with a confused trap in it.',
+      expect(TrapSystem.enterTile({ x:4, y:3 }).damage).to.equal(7);
     });
-    room.setContents('spec-bad-target-contents');
-    room.setScoutingRoll(5);
 
-    expect(() => TrapSystem.springTrap(room)).to.throw('Bad trap target');
+    // Steel plate mail reduces pierce damage by 34%.
+    it("reduces the damage by the armor covering the hit location", function() {
+      const player = CharacterFixtures.genericMale({});
+      GameSystem.getState().setPlayer(player);
+      PartyConfiguration.setConfiguration({ [player]:'P.0.2' });
+      EquipmentManager(player).equipItem(ItemFixtures.buildSteel('plate-mail'), EquipmentSlot.legs);
+
+      placeTrap();
+      Random.stubRoll(0);
+      Random.stubRollDice(10);
+
+      const result = TrapSystem.enterTile({ x:4, y:3 });
+      expect(result.target).to.equal(player);
+      expect(result.damage).to.equal(7);
+      expect(health(player)).to.equal(93);
+    });
+
+    // Trap deaths are deferred to a later task, so for now a trap that kills its target is an error.
+    it("throws when the trap kills its target", function() {
+      placeTrap();
+      Random.stubRoll(0);
+      Random.stubRollDice(200);
+
+      expect(() => TrapSystem.enterTile({ x:4, y:3 })).to.throw('Trap deaths');
+      expect(health(scout)).to.equal(20);
+    });
+
+    it("rejects a trap target it doesn't know", function() {
+      TileContents.register('spec-confused-trap', { type:TileContentType.trap, trap:{ target:'the-moon' }});
+      placeTrap('spec-confused-trap');
+
+      expect(() => TrapSystem.enterTile({ x:4, y:3 })).to.throw('Bad trap target');
+    });
+  });
+
+  describe("a found trap", function() {
+
+    it("is disarmed by the scout when the mechanics check meets its disarm value", function() {
+      placeTrap();
+      findTrap();
+      Random.stubBetween(50,5);
+      Random.stubRoll(missedImprovement);
+
+      const result = TrapSystem.enterTile({ x:4, y:3 });
+      expect(result.target).to.equal(scout);
+      expect(result.damage).to.equal(0);
+      expect(result.title).to.equal('Trap Disarmed');
+      expect(result.text).to.include('wedge it in place');
+      expect(health(scout)).to.equal(20);
+
+      expect(trapTile().state).to.equal('disarmed');
+      expect(trapTile().glyph.color).to.equal(DungeonConstants.trapColors.resolved);
+      expect(floor.getTileDescription(4,3)).to.include('wedged in place');
+    });
+
+    it("springs on the scout when the mechanics check falls short", function() {
+      placeTrap();
+      findTrap();
+      Random.stubBetween(50,1);
+      Random.stubRoll(missedImprovement);
+      Random.stubRollDice(7);
+
+      const result = TrapSystem.enterTile({ x:4, y:3 });
+      expect(result.target).to.equal(scout);
+      expect(result.damage).to.equal(7);
+      expect(result.title).to.equal('A Trap!');
+      expect(health(scout)).to.equal(13);
+      expect(trapTile().state).to.equal('sprung');
+    });
+
+    it("is disarmed without a check when the trap has no disarm value", function() {
+      placeTrap('pit-trap');
+      findTrap();
+      Random.stubBetween();
+      Random.stubRoll();
+
+      const result = TrapSystem.enterTile({ x:4, y:3 });
+      expect(result.damage).to.equal(0);
+      expect(result.text).to.include('step carefully around it');
+      expect(trapTile().state).to.equal('disarmed');
+    });
   });
 
 });

@@ -46,6 +46,7 @@ global.DungeonTheme = (function() {
       getCohorts: () => { return theme.cohorts; },
       getRoomContents: () => { return theme.roomContents || []; },
       getRoomContentChance: () => { return theme.roomContentChance ?? 20; },
+      getTileContents: () => { return theme.tileContents || []; },
       getRandomFeature: getRandomFeature,
       getNewRoomEncounterRate: () => { return theme.newRoomEncounterRate ?? 20; },
       getStepEncounterRate: () => { return theme.stepEncounterRate ?? 0.5; },

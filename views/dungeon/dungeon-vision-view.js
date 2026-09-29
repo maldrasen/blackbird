@@ -100,32 +100,87 @@ global.DungeonVisionView = (function() {
   }
 
   // Every glyph on the floor, drawn just as its room draws it but switched on and off rather than clipped. Each is
-  // remembered with its body (the center and radius of its occluder, zero for a glyph that casts no shadow) and the
-  // tile under its center, in the order the markup lists them: the rooms in order and each room's glyphs in order.
+  // remembered with its body (the center and radius of its occluder, zero for a glyph that casts no shadow), the
+  // tile under its center, and the room and room tile it belongs to, in the order the markup lists them: the rooms
+  // in order and each room's glyphs in order.
   function buildGlyphs() {
-    const gridSize = DungeonFloorView.getGridSize();
     glyphs = [];
 
     return floor.getRooms().map(room => {
       const markup = DungeonRoomView.roomGlyphs(room);
       if (markup.length === 0) { return ''; }
 
-      const position = room.getFloorPosition();
-      room.getGlyphs().forEach(glyph => {
-        const center = { x: (position.x + glyph.x) * gridSize, y: (position.y + glyph.y) * gridSize };
-        glyphs.push({
-          center,
-          tile: { x:Math.floor(center.x / gridSize), y:Math.floor(center.y / gridSize) },
-          radius: DungeonVisionOccluders.glyphRadius(glyph),
-          visible: false,
-          seen: false,
-          element: null,
-          memoryElement: null,
-        });
-      });
+      room.getGlyphs().forEach(glyph => glyphs.push(buildGlyphEntry(room, glyph)));
 
-      return `<g transform='translate(${position.x * gridSize} ${position.y * gridSize})'>${markup.join('')}</g>`;
+      return roomGroup(room, markup.join(''));
     }).join('');
+  }
+
+  function buildGlyphEntry(room, glyph) {
+    const gridSize = DungeonFloorView.getGridSize();
+    const position = room.getFloorPosition();
+    const center = { x: (position.x + glyph.x) * gridSize, y: (position.y + glyph.y) * gridSize };
+
+    return {
+      center,
+      tile: { x:Math.floor(center.x / gridSize), y:Math.floor(center.y / gridSize) },
+      room: room.getIndex(),
+      roomTile: { ...glyph.tile },
+      radius: DungeonVisionOccluders.glyphRadius(glyph),
+      visible: false,
+      seen: false,
+      element: null,
+      memoryElement: null,
+    };
+  }
+
+  function roomGroup(room, markup) {
+    const gridSize = DungeonFloorView.getGridSize();
+    const position = room.getFloorPosition();
+    return `<g transform='translate(${position.x * gridSize} ${position.y * gridSize})'>${markup}</g>`;
+  }
+
+  // Swap the lit and remembered copies of one tile's glyph after its contents changed, or just remove them when the
+  // tile has no glyph any more. A new glyph is remembered straight away if its tile has been seen, since the memory
+  // is only rebuilt as new tiles come into the light. The occluders are built once with the floor, so a glyph that
+  // casts a shadow can't be added this way.
+  function replaceTileGlyph(room, tile, glyph) {
+    if (svg == null) { return; }
+
+    const index = glyphs.findIndex(entry =>
+      entry.room === room.getIndex() && entry.roomTile.x === tile.x && entry.roomTile.y === tile.y);
+    if (index >= 0) {
+      const [entry] = glyphs.splice(index, 1);
+      entry.element.remove();
+      entry.memoryElement.remove();
+    }
+
+    if (glyph != null) {
+      if (glyph.shadow) { throw new Error(`A glyph that casts a shadow can't be added after the floor is drawn.`); }
+      glyphs.push(addGlyphElements(room, glyph));
+    }
+
+    refresh();
+  }
+
+  function addGlyphElements(room, glyph) {
+    const entry = buildGlyphEntry(room, glyph);
+    const markup = roomGroup(room, DungeonRoomView.glyphMarkup(glyph));
+
+    entry.element = appendGlyph(svg.querySelector('.trim.glyphs'), markup);
+    entry.memoryElement = appendGlyph(svg.querySelector('.memory.glyphs'), markup);
+
+    if (floor.isTileSeen(entry.tile.x, entry.tile.y)) {
+      entry.seen = true;
+      entry.memoryElement.classList.add('seen');
+    }
+
+    return entry;
+  }
+
+  function appendGlyph(group, markup) {
+    group.insertAdjacentHTML('beforeend', markup);
+    return group.lastElementChild.querySelector('.glyph');
   }
 
   function pairGlyphElements(trimElements, memoryElements) {
@@ -275,6 +330,7 @@ global.DungeonVisionView = (function() {
     render,
     refresh,
     openDoor,
+    replaceTileGlyph,
   };
 
 })();

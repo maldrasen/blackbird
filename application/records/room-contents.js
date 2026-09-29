@@ -62,11 +62,11 @@ global.RoomContents = (function() {
       getCode: () => { return code; },
       getRange: () => { return roomContents.range; },
       getSecrecy: () => { return roomContents.secrecy; },
-      getTrap: () => { return roomContents.trap; },
       getEpisode: () => { return roomContents.episode; },
       getAvailableEpisode,
       getCommands,
       getDescription,
+      getAllowedTileTypes: () => { return roomContents.allowedTileTypes || []; }
     };
   }
 

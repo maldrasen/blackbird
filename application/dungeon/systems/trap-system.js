@@ -1,24 +1,59 @@
+// What happens when the party steps onto a trap tile. Finding traps is the ScoutingSystem's job; by the time the
+// party stands on one it has either been found, in which case the scout tries to disarm it, or it hasn't, in which
+// case it goes off. Either way the trap is resolved, and its state, glyph and description are written to the tile.
 global.TrapSystem = (function() {
 
-  // Springs the trap in a room as it's entered for the first time. Returns null when there's nothing to spring,
-  // either because there's no trap in the room or because the scouting check spotted it. A sprung trap picks its
-  // target, rolls and applies any damage, and returns what happened so the view can display it.
-  function springTrap(room) {
-    if (room.hasContents() === false) { return null; }
+  // Returns what happened for the view to show, in the same shape as a room command result, or null when there's
+  // no armed trap on the tile.
+  function enterTile(position) {
+    const tile = DungeonSystem.getDungeonFloor().getTileContents(position.x, position.y);
+    if (tile == null || tile.type !== TileContentType.trap || tile.state != null) { return null; }
 
-    const trap = RoomContents.lookup(room.getContents()).getTrap();
-    if (trap == null || room.checkScoutingRoll()) { return null; }
+    const record = TileContents.lookup(tile.code);
+    const found = tile.scoutingRoll != null && tile.scoutingRoll >= record.getSecrecy();
 
-    const target = pickTarget(trap);
+    return found ? disarmTrap(position, record) : springTrap(position, record, pickTarget(record.getTrap()));
+  }
+
+  // A trap without a disarm value is disarmed just by knowing it's there. A failed disarm springs the trap on the
+  // scout who was working on it.
+  function disarmTrap(position, record) {
+    const trap = record.getTrap();
+    const scout = PartyConfiguration.getScout();
+    const disarmed = trap.disarm == null || SkillCheck(scout, 'mechanics').value >= trap.disarm;
+    if (disarmed === false) { return springTrap(position, record, scout); }
+
+    resolveTile(position, record, 'disarmed');
+
+    return buildResult(position, scout, 0, `Trap Disarmed`, trap.disarmTrap);
+  }
+
+  function springTrap(position, record, target) {
+    const trap = record.getTrap();
     const damage = trap.damage ? rollDamage(trap, target) : 0;
     if (damage > 0) { applyDamage(target, damage); }
 
+    resolveTile(position, record, 'sprung');
+
+    return buildResult(position, target, damage, `A Trap!`, trap.springTrap);
+  }
+
+  function resolveTile(position, record, state) {
+    DungeonSystem.getDungeonFloor().updateTileContents(position.x, position.y, {
+      state,
+      glyph: record.getGlyph(state),
+      description: () => { return record.getDescription({ state }); },
+    });
+  }
+
+  function buildResult(position, target, damage, title, textFunction) {
     const context = { T:target };
     return {
+      position: { ...position },
       target,
       damage,
-      title: `A Trap!`,
-      text: trap.onScoutingFailure ? Weaver(context).weave(trap.onScoutingFailure(context)) : null,
+      title,
+      text: textFunction ? Weaver(context).weave(textFunction(context)) : null,
     };
   }
 
@@ -30,10 +65,11 @@ global.TrapSystem = (function() {
   }
 
   // Trap damage skips the battle damage pipeline, but it's still mitigated like a physical hit in battle would be:
-  // reduced by the armor covering the trap's hit location on top of the target's own innate resistance.
+  // reduced by the armor covering the trap's hit location on top of the target's own innate resistance, then scaled
+  // by the difficulty's mitigation option.
   function rollDamage(trap, target) {
     const reduction = Math.min(getReductionPercent(trap, target), BattleConstants.maxReduction);
-    return Math.round(Random.rollDice(trap.damage) * (1 - reduction/100));
+    return Math.round(Random.rollDice(trap.damage) * (1 - reduction/100) * Difficulty.getMitigationFactor());
   }
 
   function getReductionPercent(trap, target) {
@@ -56,6 +92,6 @@ global.TrapSystem = (function() {
     HealthComponent.update(id, health);
   }
 
-  return { springTrap };
+  return { enterTile };
 
 })();

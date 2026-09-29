@@ -15,4 +15,5 @@ function open() {
 RoomContents.register('dungeon-larder',{
   commands: [{ code:'open', label:'Inspect', execute:open }],
   description: describe,
+  allowedTileTypes: [TileContentType.trap],
 });

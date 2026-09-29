@@ -391,6 +391,14 @@ global.ActionDirection = {
   playerToBoth: 'player-to-both',
 };
 
+// ===========
+//   Dungeon
+// ===========
+
+global.TileContentType = {
+  trap: 'trap',
+};
+
 // ==========
 //   Battle
 // ==========

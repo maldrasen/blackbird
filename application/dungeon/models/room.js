@@ -107,6 +107,13 @@ global.Room = function(feature, type='normal') {
     return tile ? { ...tile } : null;
   }
 
+  // Change part of what's on a tile, keeping the rest. The tile has to hold something already.
+  function updateTileContents(x, y, changes) {
+    const tile = tileContents.get(`${x},${y}`);
+    if (tile == null) { throw new Error(`(${x},${y}) has no contents to update.`); }
+    tileContents.set(`${x},${y}`, { ...tile, ...changes, x, y });
+  }
+
   function canEnterTile(x, y) {
     const tile = tileContents.get(`${x},${y}`);
     if (tile == null || tile.canEnter == null) { return true; }
@@ -119,10 +126,17 @@ global.Room = function(feature, type='normal') {
     return (typeof tile.description === 'function') ? tile.description() : tile.description;
   }
 
+  // The glyphs to draw, each at its point in tile units along with the tile whose contents it belongs to.
   function getGlyphs() {
     return [...tileContents.values()].filter(tile => tile.glyph).map(tile => {
       const { offset={ x:0, y:0 }, ...glyph } = tile.glyph;
-      return { x:tile.x + 0.5 + offset.x, y:tile.y + 0.5 + offset.y, ...glyph, shadow:tile.shadow === true };
+      return {
+        x: tile.x + 0.5 + offset.x,
+        y: tile.y + 0.5 + offset.y,
+        tile: { x:tile.x, y:tile.y },
+        ...glyph,
+        shadow: tile.shadow === true,
+      };
     });
   }
 
@@ -251,9 +265,17 @@ global.Room = function(feature, type='normal') {
   // ==============
   //    Contents
   // ==============
+  // The contentsAllowed property applies to both room and tile contents. If a room can't randomly have room contents
+  // assigned then it can't allow tile content (like traps) to be assigned either.
 
-  function canHaveContents() {
+  function canHaveRoomContents() {
     return contentsAllowed && feature.getType() !== 'corridor' && findStairs() == null && contents == null;
+  }
+
+  function canHaveTileContents(type) {
+    if (contentsAllowed === false) { return false; }
+    if (contents == null) { return true; }
+    return RoomContents.lookup(contents).getAllowedTileTypes().includes(type);
   }
 
   function setContents(code, options={}) {
@@ -333,6 +355,7 @@ global.Room = function(feature, type='normal') {
     getGlyphs,
     setTileContents,
     getTileContents,
+    updateTileContents,
     canEnterTile,
     getTileDescription,
     getBounds,
@@ -363,7 +386,8 @@ global.Room = function(feature, type='normal') {
     getContents: () => { return contents; },
     getContentsOptions: () => { return contentsOptions; },
     hasContents: () => { return contents != null; },
-    canHaveContents,
+    canHaveRoomContents,
+    canHaveTileContents,
     setContents,
 
     getDescription,
