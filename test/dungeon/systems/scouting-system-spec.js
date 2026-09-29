@@ -1,4 +1,4 @@
-describe("TrapSystem", function() {
+describe("ScoutingSystem", function() {
 
   // A hand-built floor with two 3x3 rooms, A at (2,2) and B at (5,2), joined by a door in the wall at (5,3).
   //
@@ -60,7 +60,7 @@ describe("TrapSystem", function() {
       placeTrap(4,3);
       Random.stubBetween(50,5);
 
-      expect(TrapSystem.scoutTile(4,3)).to.equal(true);
+      expect(ScoutingSystem.scoutTile(4,3)).to.equal(true);
       expect(floor.getTileContents(4,3).scoutingRoll).to.equal(21);
       expect(floor.getTileContents(4,3).glyph).to.deep.equal(TileContents.lookup('spike-trap').getGlyph());
     });
@@ -69,7 +69,7 @@ describe("TrapSystem", function() {
       placeTrap(4,3);
       Random.stubBetween(50,1);
 
-      expect(TrapSystem.scoutTile(4,3)).to.equal(false);
+      expect(ScoutingSystem.scoutTile(4,3)).to.equal(false);
       expect(floor.getTileContents(4,3).scoutingRoll).to.equal(9);
       expect(floor.getTileContents(4,3).glyph).to.equal(undefined);
     });
@@ -77,20 +77,20 @@ describe("TrapSystem", function() {
     it("never scouts a tile twice", function() {
       placeTrap(4,3);
       Random.stubBetween(50,1);
-      TrapSystem.scoutTile(4,3);
+      ScoutingSystem.scoutTile(4,3);
 
       Random.stubBetween(50,5);
-      expect(TrapSystem.scoutTile(4,3)).to.equal(false);
+      expect(ScoutingSystem.scoutTile(4,3)).to.equal(false);
       expect(floor.getTileContents(4,3).scoutingRoll).to.equal(9);
     });
 
-    it("makes no check on a tile without a trap", function() {
+    it("makes no check on a tile with nothing hidden on it", function() {
       floor.getRooms()[0].setTileContents(0, 0, { canEnter:false });
       Random.stubBetween();
 
-      expect(TrapSystem.scoutTile(2,2)).to.equal(false);
-      expect(TrapSystem.scoutTile(3,3)).to.equal(false);
-      expect(TrapSystem.scoutTile(0,0)).to.equal(false);
+      expect(ScoutingSystem.scoutTile(2,2)).to.equal(false);
+      expect(ScoutingSystem.scoutTile(3,3)).to.equal(false);
+      expect(ScoutingSystem.scoutTile(0,0)).to.equal(false);
     });
   });
 
@@ -104,7 +104,7 @@ describe("TrapSystem", function() {
       placeTrap(7,3);
       Random.stubBetween(50,1, 50,5);
 
-      expect(TrapSystem.scoutAround({ x:4, y:3 })).to.deep.equal([{ x:3, y:2 }]);
+      expect(ScoutingSystem.scoutAround({ x:4, y:3 })).to.deep.equal([{ x:3, y:2 }]);
       expect(floor.getTileContents(3,2).scoutingRoll).to.equal(21);
       expect(floor.getTileContents(5,3).scoutingRoll).to.equal(9);
       expect(floor.getTileContents(7,3).scoutingRoll).to.equal(undefined);
@@ -114,7 +114,7 @@ describe("TrapSystem", function() {
       placeTrap(7,3);
       Random.stubBetween();
 
-      expect(TrapSystem.scoutAround({ x:3, y:3 })).to.deep.equal([]);
+      expect(ScoutingSystem.scoutAround({ x:3, y:3 })).to.deep.equal([]);
     });
 
     it("scouts nothing when there is no scout", function() {
@@ -122,7 +122,7 @@ describe("TrapSystem", function() {
       GameSystem.getState().setPartyConfiguration({});
       Random.stubBetween();
 
-      expect(TrapSystem.scoutAround({ x:3, y:3 })).to.deep.equal([]);
+      expect(ScoutingSystem.scoutAround({ x:3, y:3 })).to.deep.equal([]);
       expect(floor.getTileContents(4,3).scoutingRoll).to.equal(undefined);
     });
   });
