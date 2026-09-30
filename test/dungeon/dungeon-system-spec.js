@@ -57,11 +57,12 @@
 
       for (let i=0; i<queue.length; i++) {
         ['north','south','west','east'].forEach(direction => {
-          const step = DungeonNavigationSystem.findStep(queue[i], direction);
-          if (step == null || reached.has(`${step.position.x},${step.position.y}`)) { return; }
+          const step = Step(queue[i], direction);
+          const position = step.getPosition();
+          if (step.canMove() === false || reached.has(`${position.x},${position.y}`)) { return; }
 
-          reached.add(`${step.position.x},${step.position.y}`);
-          queue.push(step.position);
+          reached.add(`${position.x},${position.y}`);
+          queue.push(position);
         });
       }
 

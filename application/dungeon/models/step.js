@@ -1,6 +1,7 @@
 global.Step = function(start, direction) {
   const floor = DungeonSystem.getDungeonFloor();
   const heading = DungeonConstants.headings[direction];
+  if (heading == null) { throw new Error(`Bad direction [${direction}]`); }
 
   let canMove = true;
   let position = null;
