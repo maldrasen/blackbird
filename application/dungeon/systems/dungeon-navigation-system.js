@@ -29,7 +29,7 @@ global.DungeonNavigationSystem = (function() {
     const position = found.getPosition();
     const door = found.getDoor();
     const openedDoor = (door != null && door.open === false) ? door : null;
-    if (openedDoor) { openedDoor.open = true; }
+    if (openedDoor) { floor.openDoor(door.position.x, door.position.y, door.direction); }
 
     const fromRoom = floor.getRoomIndexAt(from.x, from.y);
     const toRoom = floor.getRoomIndexAt(position.x, position.y);
