@@ -291,4 +291,34 @@ describe("DungeonFloor", function() {
     });
   });
 
+  describe("openDoor()", function() {
+    let floor;
+
+    beforeEach(function() {
+      floor = DungeonFloor(1,'dungeon');
+      floor.setDoors([
+        Door({ position:{ x:5, y:3 }, direction:'N', from:0, to:1 }),
+        Door({ position:{ x:5, y:3 }, direction:'W', from:0, to:2 }),
+      ]);
+    });
+
+    it('opens the door on a wall and leaves the others closed', function() {
+      floor.openDoor(5,3,'W');
+
+      expect(floor.getDoorAt(5,3,'W').open).to.equal(true);
+      expect(floor.getDoorAt(5,3,'N').open).to.equal(false);
+    });
+
+    it('leaves an open door open', function() {
+      floor.openDoor(5,3,'W');
+      floor.openDoor(5,3,'W');
+
+      expect(floor.getDoorAt(5,3,'W').open).to.equal(true);
+    });
+
+    it('throws when the wall has no door', function() {
+      expect(() => floor.openDoor(5,4,'N')).to.throw('There is no door at (5,4,N) to open.');
+    });
+  });
+
 });

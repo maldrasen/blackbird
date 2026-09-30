@@ -32,9 +32,9 @@ describe("KeyBindings", function() {
     expect(KeyBindings.getDefaults().dungeon.northeast).to.deep.equal({ primary:'Numpad9', alternate:null });
   });
 
-  it("names every dungeon direction the way the navigation system does", function() {
+  it("names every dungeon direction the way a step does", function() {
     Object.keys(KeyBindings.getContexts().dungeon.actions).forEach(direction => {
-      expect(() => DungeonNavigationSystem.findStep({ x:0, y:0 }, direction), direction).to.not.throw('Bad direction');
+      expect(() => Step({ x:0, y:0 }, direction), direction).to.not.throw('Bad direction');
     });
   });
 

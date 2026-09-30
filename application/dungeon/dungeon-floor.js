@@ -130,6 +130,12 @@ global.DungeonFloor = function(level, theme=null) {
     return doorsByEdge.get(edgeKey(x, y, direction)) || null;
   }
 
+  function openDoor(x, y, direction) {
+    const door = getDoorAt(x, y, direction);
+    if (door == null) { throw new Error(`There is no door at (${edgeKey(x, y, direction)}) to open.`); }
+    door.open = true;
+  }
+
   // The index of the room that owns a tile, or null when the tile is empty or off the floor entirely.
   function getRoomIndexAt(x, y) {
     if (floorGrid[y] == null || floorGrid[y][x] == null) { return null; }
@@ -222,6 +228,7 @@ global.DungeonFloor = function(level, theme=null) {
     getDoors: () => { return doors; },
     getDoorAt,
     addDoor,
+    openDoor,
     getStairs,
     getStairsAt,
 

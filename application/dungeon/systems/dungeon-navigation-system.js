@@ -2,100 +2,55 @@ global.DungeonNavigationSystem = (function() {
   const exploreTime = 1;
   const backtrackTime = 0.2;
 
-  // Doors live on the north or west wall of a tile, so a step to the south or east finds its door on the tile being
-  // stepped onto rather than on the tile being left.
-  const headings = {
-    north:     { x:0,  y:-1, wall:'N', doorOnTarget:false },
-    south:     { x:0,  y:1,  wall:'N', doorOnTarget:true },
-    west:      { x:-1, y:0,  wall:'W', doorOnTarget:false },
-    east:      { x:1,  y:0,  wall:'W', doorOnTarget:true },
-    northeast: { x:1,  y:-1 },
-    northwest: { x:-1, y:-1 },
-    southeast: { x:1,  y:1 },
-    southwest: { x:-1, y:1 },
-  };
-
-  // Find where a step from a tile would lead, returning the tile stepped onto and the door passed through on the
-  // way (if there was one), or null when the way is blocked. Nothing moves. The position is a parameter rather than
-  // the party's own so that a path can be searched for from any tile.
-  function findStep(position, direction) {
-    const heading = headings[direction];
-    if (heading == null) { throw new Error(`Bad direction [${direction}]`); }
-
-    return (heading.wall == null) ? findDiagonalStep(position, heading) : findCardinalStep(position, heading);
-  }
-
-  // A step between two tiles of the same room is always open. A step between rooms needs a door in the wall.
-  function findCardinalStep(position, heading) {
-    const floor = DungeonSystem.getDungeonFloor();
-    const target = { x:position.x + heading.x, y:position.y + heading.y };
-    const toRoom = floor.getRoomIndexAt(target.x, target.y);
-    if (toRoom == null) { return null; }
-    if (floor.canEnterTile(target.x, target.y) === false) { return null; }
-
-    const doorTile = heading.doorOnTarget ? target : position;
-    const door = floor.getDoorAt(doorTile.x, doorTile.y, heading.wall);
-    if (door == null && toRoom !== floor.getRoomIndexAt(position.x, position.y)) { return null; }
-
-    return { position:target, door };
-  }
-
-  // A diagonal step passes through the corner point shared by four tiles: the tile being left, the tile being
-  // stepped onto, and the two tiles beside them. It's only open when one room owns all four, because then no wall
-  // or door can touch that corner. This keeps diagonal steps from cutting corners or slipping past doors. All of
-  // those tiles have to be enterable as well, so the party can't squeeze past the corner of something standing on
-  // a tile either.
-  function findDiagonalStep(position, heading) {
-    const floor = DungeonSystem.getDungeonFloor();
-    const room = floor.getRoomIndexAt(position.x, position.y);
-    const target = { x:position.x + heading.x, y:position.y + heading.y };
-    const corner = [target, { x:target.x, y:position.y }, { x:position.x, y:target.y }];
-
-    if (room == null) { return null; }
-    if (corner.some(tile => floor.getRoomIndexAt(tile.x, tile.y) !== room)) { return null; }
-    if (corner.some(tile => floor.canEnterTile(tile.x, tile.y) === false)) { return null; }
-
-    return { position:target, door:null };
-  }
-
   function canStep(direction) {
-    return findStep(getPartyPosition(), direction) != null;
+    return Step(getPartyPosition(), direction).canMove();
   }
 
   // The tiles a single step from a position could land on, which is what the party can reach next and what the
   // scout looks over as they arrive.
   function getReachableTiles(position) {
-    return Object.keys(headings).
-      map(direction => findStep(position, direction)).
-      filter(step => step != null).
-      map(step => step.position);
+    return Object.keys(DungeonConstants.headings).
+      map(direction => Step(position, direction)).
+      filter(step => step.canMove()).
+      map(step => step.getPosition());
   }
-
-  const stayedInRoom = Object.freeze({ enteredRoom:null, isFirstVisit:false, revealed:false, episode:null });
 
   // Move the party a single step, opening the door if they pass through one. Nothing happens when the way is blocked.
   // Whatever is on the tile stepped onto happens first, then the scout looks over the tiles around it, and only a
-  // step that set nothing off risks an encounter.
+  // step that set nothing off risks an encounter. Whether this is the party's first visit to the room has to be
+  // worked out before they're moved, because moving them marks the room as visited.
   function step(direction) {
     const floor = DungeonSystem.getDungeonFloor();
     const from = getPartyPosition();
-    const found = findStep(from, direction);
-    if (found == null) { return { moved:false }; }
+    const step = Step(from, direction);
+    const result = StepResult();
 
-    const { position, door } = found;
-    const openedDoor = (door != null && door.open === false) ? door : null;
-    if (openedDoor) { openedDoor.open = true; }
+    if (step.canMove()) {
+      const position = step.getPosition();
+      const toRoom = floor.getRoomIndexAt(position.x, position.y);
+      const isFirstVisit = floor.isVisited(toRoom) === false;
 
-    const fromRoom = floor.getRoomIndexAt(from.x, from.y);
-    const toRoom = floor.getRoomIndexAt(position.x, position.y);
-    const { isFirstVisit, ...entry } = (toRoom === fromRoom) ? stayedInRoom : enterRoom(toRoom);
-    const trap = TrapSystem.enterTile(position);
-    const foundTraps = ScoutingSystem.scoutAround(position);
-    const encounter = rollEncounter(isFirstVisit, entry.episode, trap);
+      result.setPosition(position);
+      openDoor(step.getDoor(), result);
 
-    floor.setPartyPosition(position.x, position.y);
+      if (toRoom !== floor.getRoomIndexAt(from.x, from.y)) { enterRoom(toRoom, isFirstVisit, result); }
 
-    return { moved:true, position, openedDoor, ...entry, trap, foundTraps, encounter };
+      result.setTrap(TrapSystem.enterTile(position));
+      result.setFoundTraps(ScoutingSystem.scoutAround(position));
+      result.setEncounter(rollEncounter(isFirstVisit, result));
+
+      floor.setPartyPosition(position.x, position.y);
+    }
+
+    return result;
+  }
+
+  // Only a closed door needs opening, and only a door that was opened is reported.
+  function openDoor(door, result) {
+    if (door == null || door.open) { return; }
+
+    DungeonSystem.getDungeonFloor().openDoor(door.position.x, door.position.y, door.direction);
+    result.setOpenedDoor(door);
   }
 
   // TODO: The encounter rate could also be changed by items the party uses or events. Maybe they use something that
@@ -105,11 +60,11 @@ global.DungeonNavigationSystem = (function() {
   // Walking into a room for the first time is when the party is most likely to be ambushed, unless the room has an
   // episode of its own to play out or the step set off a trap. Every other step only carries a slight chance of a
   // wandering encounter, low enough that it needs a finer roll than a percentage.
-  function rollEncounter(isFirstVisit, episode, trap) {
+  function rollEncounter(isFirstVisit, result) {
     const theme = DungeonTheme.lookup(DungeonSystem.getDungeonFloor().getTheme());
     const factor = Difficulty.getEncounterFactor();
 
-    if (episode != null || trap != null) { return false; }
+    if (result.getEpisode() != null || result.getTrap() != null) { return false; }
     if (isFirstVisit) { return Random.roll(100) < theme.getNewRoomEncounterRate() * factor; }
     return Random.roll(1000) < theme.getStepEncounterRate() * 10 * factor;
   }
@@ -120,21 +75,21 @@ global.DungeonNavigationSystem = (function() {
     return position;
   }
 
-  // Everything that happens as the party crosses into a room, which has to be worked out before the party is moved
-  // because moving them marks the room as visited. A room is only scouted the first time it's entered, which is also
-  // the only time its episode can start.
-  function enterRoom(index) {
+  // Everything that happens as the party crosses into a room. A room is only scouted the first time it's entered,
+  // which is also the only time its episode can start.
+  function enterRoom(index, isFirstVisit, result) {
     const floor = DungeonSystem.getDungeonFloor();
     const room = floor.getRooms()[index];
-    const isFirstVisit = floor.isVisited(index) === false;
-    const revealed = floor.isRevealed(index) === false;
-    if (isFirstVisit) { scoutRoom(room); }
 
-    const episode = isFirstVisit ? getRoomEpisode(room) : null;
+    result.setEnteredRoom(index);
+    result.setRevealedRoom(floor.isRevealed(index) === false);
+
+    if (isFirstVisit) {
+      scoutRoom(room);
+      result.setEpisode(getRoomEpisode(room));
+    }
 
     GameSystem.getState().advanceGameTime(isFirstVisit ? exploreTime : backtrackTime);
-
-    return { enteredRoom:index, isFirstVisit, revealed, episode };
   }
 
   function scoutRoom(room) {
@@ -147,7 +102,6 @@ global.DungeonNavigationSystem = (function() {
   }
 
   return {
-    findStep,
     canStep,
     getReachableTiles,
     step,
