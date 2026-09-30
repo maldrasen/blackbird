@@ -22,6 +22,13 @@ global.Step = function(start, direction) {
     const doorTile = heading.doorOnTarget ? position : start;
     door = floor.getDoorAt(doorTile.x, doorTile.y, heading.wall);
     if (door == null && toRoom !== floor.getRoomIndexAt(start.x, start.y)) { canMove = false; }
+
+    if (door) {
+    console.log("Door is what?",door)
+
+    }
+
+
   }
 
   // A diagonal step passes through the corner point shared by four tiles: the tile being left, the tile being
@@ -41,9 +48,9 @@ global.Step = function(start, direction) {
   }
 
   return {
-    getPosition: () => { return position; },
+    getPosition: () => { return { ...position }; },
     getDirection: () => { return direction; },
-    getHeading: () => { return heading; },
+    getHeading: () => { return { ...heading }; },
     canMove: () => { return canMove; },
     getDoor: () => { return door; }
   }
