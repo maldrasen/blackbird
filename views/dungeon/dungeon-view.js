@@ -170,6 +170,7 @@ global.DungeonView = (function() {
     if (trap.damage > 0) {
       const card = X.first(`#dungeonControls .party-card[data-id='${trap.target}']`);
       if (card) { FlashSquare.flashDamage(card); }
+      DungeonControls.refreshHealth();
     }
     RoomContentOverlay.open(trap);
   }

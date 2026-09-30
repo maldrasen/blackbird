@@ -15,7 +15,7 @@ NegotiationQuestion.registerReaction('what-is-best', {
   style: NegotiationStyle.fierce,
   reactions: {
     bullshit: Reaction.disrespect(`"The fuck are you talking about?"`),
-    conan:    Reaction.attack(`{T:TargetName} grins, {T:his} hand tightening around {T:his} weapon, "This guys gets it! Let's dance motherfucker!"`),
+    conan:    Reaction.attack(`{T:TargetName} grins, {T:his} hand tightening around {T:his} weapon, "This guy gets it! Let's dance motherfucker!"`),
     comfort:  Reaction.like(`Mmm, can't say that I'm really into toe sucking... doesn't sound too bad though. As long as I'm the one getting sucked.`),
     cock:     NegotiationContest({
       random: { win:1, loss:5 },
