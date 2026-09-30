@@ -4,6 +4,8 @@ global.GeneralOverlay = (function() {
 
   function init() {
     X.onClick('#generalOverlay .close-button', close);
+    X.onCodeDown(KeyCodes.Space, allowKeyClose, clickCloseButton);
+    X.onCodeDown(KeyCodes.Enter, allowKeyClose, clickCloseButton);
   }
 
   /**
@@ -55,6 +57,21 @@ global.GeneralOverlay = (function() {
 
   function isOpen() {
     return X.hasClass('#generalOverlay','hide') === false;
+  }
+
+  function allowKeyClose(event) {
+    return event.repeat === false && getCloseButton() != null && X.first('#generalOverlay input') == null;
+  }
+
+  function clickCloseButton(event) {
+    event.preventDefault();
+    getCloseButton().click();
+  }
+
+  function getCloseButton() {
+    if (isOpen() === false || locked) { return null; }
+    if (X.hasClass('#generalOverlay .overlay-footer','hide')) { return null; }
+    return X.first('#generalOverlay .overlay-footer .close-button');
   }
 
   return {
