@@ -7,7 +7,7 @@ describe("Step", function() {
   //        x: 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17
   //   y:2           A  A  A  B  B  B     L  L  L        N  N  N  N
   //                                                        -
-  //   y:3           A  A  A | B  B  B           L        N  i  i  N
+  //   y:3           A  A  A | B  B  B          L        N  i  i  N
   //   y:4           A  A  A  B  B  B           L        N  i  i  N
   //                    -
   //   y:5           C  C  C                             N  N  N  N
@@ -208,6 +208,12 @@ describe("Step", function() {
       expectBlocked(4,3,'northeast');
       expectBlocked(4,4,'southwest');
       expectBlocked(15,2,'southeast');
+    });
+
+    // Stepping from (4,4) to (5,3) lands on the tile the door between A and B sits on.
+    it('never passes through a door', function() {
+      expect(Step({ x:4, y:4 },'northeast').getDoor()).to.equal(null);
+      expect(Step({ x:14, y:2 },'southeast').getDoor()).to.equal(null);
     });
 
   });

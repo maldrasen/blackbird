@@ -7,10 +7,12 @@ global.Step = function(start, direction) {
   let position = null;
 
   (heading.wall) ?
-    takeCardinalStep(start, heading) :
+    takeCardinalStep(start, heading):
     takeDiagonalStep(start, heading);
 
+  // Only a cardinal step crosses a wall, so only a cardinal step can pass through a door.
   function getDoor() {
+    if (heading.wall == null) { return null; }
     const doorTile = heading.doorOnTarget ? position : start;
     return floor.getDoorAt(doorTile.x, doorTile.y, heading.wall);
   }
