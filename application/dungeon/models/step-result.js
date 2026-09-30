@@ -1,5 +1,3 @@
 global.StepResult = function() {
 
-
-
 }

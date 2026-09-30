@@ -2,60 +2,17 @@ global.DungeonNavigationSystem = (function() {
   const exploreTime = 1;
   const backtrackTime = 0.2;
 
-  // Find where a step from a tile would lead, returning the tile stepped onto and the door passed through on the
-  // way (if there was one), or null when the way is blocked. Nothing moves. The position is a parameter rather than
-  // the party's own so that a path can be searched for from any tile.
-  function findStep(position, direction) {
-    const heading = DungeonConstants.headings[direction];
-    if (heading == null) { throw new Error(`Bad direction [${direction}]`); }
-
-    return (heading.wall == null) ? findDiagonalStep(position, heading) : findCardinalStep(position, heading);
-  }
-
-  // A step between two tiles of the same room is always open. A step between rooms needs a door in the wall.
-  function findCardinalStep(position, heading) {
-    const floor = DungeonSystem.getDungeonFloor();
-    const target = { x:position.x + heading.x, y:position.y + heading.y };
-    const toRoom = floor.getRoomIndexAt(target.x, target.y);
-    if (toRoom == null) { return null; }
-    if (floor.canEnterTile(target.x, target.y) === false) { return null; }
-
-    const doorTile = heading.doorOnTarget ? target : position;
-    const door = floor.getDoorAt(doorTile.x, doorTile.y, heading.wall);
-    if (door == null && toRoom !== floor.getRoomIndexAt(position.x, position.y)) { return null; }
-
-    return { position:target, door };
-  }
-
-  // A diagonal step passes through the corner point shared by four tiles: the tile being left, the tile being
-  // stepped onto, and the two tiles beside them. It's only open when one room owns all four, because then no wall
-  // or door can touch that corner. This keeps diagonal steps from cutting corners or slipping past doors. All of
-  // those tiles have to be enterable as well, so the party can't squeeze past the corner of something standing on
-  // a tile either.
-  function findDiagonalStep(position, heading) {
-    const floor = DungeonSystem.getDungeonFloor();
-    const room = floor.getRoomIndexAt(position.x, position.y);
-    const target = { x:position.x + heading.x, y:position.y + heading.y };
-    const corner = [target, { x:target.x, y:position.y }, { x:position.x, y:target.y }];
-
-    if (room == null) { return null; }
-    if (corner.some(tile => floor.getRoomIndexAt(tile.x, tile.y) !== room)) { return null; }
-    if (corner.some(tile => floor.canEnterTile(tile.x, tile.y) === false)) { return null; }
-
-    return { position:target, door:null };
-  }
-
   function canStep(direction) {
-    return findStep(getPartyPosition(), direction) != null;
+    return Step(getPartyPosition(), direction).canMove();
   }
 
   // The tiles a single step from a position could land on, which is what the party can reach next and what the
   // scout looks over as they arrive.
   function getReachableTiles(position) {
     return Object.keys(DungeonConstants.headings).
-      map(direction => findStep(position, direction)).
-      filter(step => step != null).
-      map(step => step.position);
+      map(direction => Step(position, direction)).
+      filter(step => step.canMove()).
+      map(step => step.getPosition());
   }
 
   const stayedInRoom = Object.freeze({ enteredRoom:null, isFirstVisit:false, revealed:false, episode:null });
@@ -66,10 +23,11 @@ global.DungeonNavigationSystem = (function() {
   function step(direction) {
     const floor = DungeonSystem.getDungeonFloor();
     const from = getPartyPosition();
-    const found = findStep(from, direction);
-    if (found == null) { return { moved:false }; }
+    const found = Step(from, direction);
+    if (found.canMove() == false) { return { moved:false }; }
 
-    const { position, door } = found;
+    const position = found.getPosition();
+    const door = found.getDoor();
     const openedDoor = (door != null && door.open === false) ? door : null;
     if (openedDoor) { openedDoor.open = true; }
 
@@ -134,7 +92,6 @@ global.DungeonNavigationSystem = (function() {
   }
 
   return {
-    findStep,
     canStep,
     getReachableTiles,
     step,
