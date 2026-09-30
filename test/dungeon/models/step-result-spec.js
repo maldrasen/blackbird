@@ -11,22 +11,20 @@ describe("StepResult", function() {
   });
 
   function buildResult() {
-    return StepResult({
-      moved: true,
-      position: { x:5, y:3 },
-      doorPosition: { x:5, y:3 },
-      doorDirection: 'W',
-      enteredRoom: 1,
-      revealed: true,
-      episode: 'orchard-kobolds',
-      trap: { position:{ x:5, y:3 }, target:7, damage:4, title:'A Trap!', text:null },
-      foundTraps: [{ x:6, y:4 }],
-      encounter: true,
-    });
+    const result = StepResult();
+    result.setPosition({ x:5, y:3 });
+    result.setOpenedDoor(door);
+    result.setEnteredRoom(1);
+    result.setRevealedRoom(true);
+    result.setEpisode('orchard-kobolds');
+    result.setTrap({ position:{ x:5, y:3 }, target:7, damage:4, title:'A Trap!', text:null });
+    result.setFoundTraps([{ x:6, y:4 }]);
+    result.setEncounter(true);
+    return result;
   }
 
-  it('reports a blocked step as going nowhere', function() {
-    const result = StepResult({ moved:false });
+  it('starts out as a blocked step that went nowhere', function() {
+    const result = StepResult();
 
     expect(result.hasMoved()).to.equal(false);
     expect(result.getPosition()).to.equal(null);
@@ -52,6 +50,23 @@ describe("StepResult", function() {
     expect(result.getTrap()).to.deep.equal({ position:{ x:5, y:3 }, target:7, damage:4, title:'A Trap!', text:null });
     expect(result.getFoundTraps()).to.deep.equal([{ x:6, y:4 }]);
     expect(result.hasEncounter()).to.equal(true);
+  });
+
+  it('has moved once it has a position', function() {
+    const result = StepResult();
+    result.setPosition({ x:5, y:3 });
+
+    expect(result.hasMoved()).to.equal(true);
+  });
+
+  // The floor still indexes the door by the wall it was set on, so a result that had kept the door's own position
+  // object would look it up at (99,3) and find nothing.
+  it('keeps a copy of the wall the opened door is on', function() {
+    const result = StepResult();
+    result.setOpenedDoor(door);
+    door.position.x = 99;
+
+    expect(result.getOpenedDoor()).to.equal(door);
   });
 
   it('reads the opened door fresh from the floor', function() {

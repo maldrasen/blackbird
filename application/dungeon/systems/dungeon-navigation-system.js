@@ -15,38 +15,42 @@ global.DungeonNavigationSystem = (function() {
       map(step => step.getPosition());
   }
 
-  const stayedInRoom = Object.freeze({ enteredRoom:null, isFirstVisit:false, revealed:false, episode:null });
-
   // Move the party a single step, opening the door if they pass through one. Nothing happens when the way is blocked.
   // Whatever is on the tile stepped onto happens first, then the scout looks over the tiles around it, and only a
-  // step that set nothing off risks an encounter.
+  // step that set nothing off risks an encounter. Whether this is the party's first visit to the room has to be
+  // worked out before they're moved, because moving them marks the room as visited.
   function step(direction) {
     const floor = DungeonSystem.getDungeonFloor();
     const from = getPartyPosition();
-    const found = Step(from, direction);
-    if (found.canMove() == false) { return StepResult({ moved:false }); }
+    const step = Step(from, direction);
+    const result = StepResult();
 
-    const position = found.getPosition();
-    const opened = openDoor(found.getDoor());
+    if (step.canMove()) {
+      const position = step.getPosition();
+      const toRoom = floor.getRoomIndexAt(position.x, position.y);
+      const isFirstVisit = floor.isVisited(toRoom) === false;
 
-    const fromRoom = floor.getRoomIndexAt(from.x, from.y);
-    const toRoom = floor.getRoomIndexAt(position.x, position.y);
-    const { isFirstVisit, ...entry } = (toRoom === fromRoom) ? stayedInRoom : enterRoom(toRoom);
-    const trap = TrapSystem.enterTile(position);
-    const foundTraps = ScoutingSystem.scoutAround(position);
-    const encounter = rollEncounter(isFirstVisit, entry.episode, trap);
+      result.setPosition(position);
+      openDoor(step.getDoor(), result);
 
-    floor.setPartyPosition(position.x, position.y);
+      if (toRoom !== floor.getRoomIndexAt(from.x, from.y)) { enterRoom(toRoom, isFirstVisit, result); }
 
-    return StepResult({ moved:true, position, ...opened, ...entry, trap, foundTraps, encounter });
+      result.setTrap(TrapSystem.enterTile(position));
+      result.setFoundTraps(ScoutingSystem.scoutAround(position));
+      result.setEncounter(rollEncounter(isFirstVisit, result));
+
+      floor.setPartyPosition(position.x, position.y);
+    }
+
+    return result;
   }
 
   // Only a closed door needs opening, and only a door that was opened is reported.
-  function openDoor(door) {
-    if (door == null || door.open) { return {}; }
+  function openDoor(door, result) {
+    if (door == null || door.open) { return; }
 
     DungeonSystem.getDungeonFloor().openDoor(door.position.x, door.position.y, door.direction);
-    return { doorPosition:{ ...door.position }, doorDirection:door.direction };
+    result.setOpenedDoor(door);
   }
 
   // TODO: The encounter rate could also be changed by items the party uses or events. Maybe they use something that
@@ -56,11 +60,11 @@ global.DungeonNavigationSystem = (function() {
   // Walking into a room for the first time is when the party is most likely to be ambushed, unless the room has an
   // episode of its own to play out or the step set off a trap. Every other step only carries a slight chance of a
   // wandering encounter, low enough that it needs a finer roll than a percentage.
-  function rollEncounter(isFirstVisit, episode, trap) {
+  function rollEncounter(isFirstVisit, result) {
     const theme = DungeonTheme.lookup(DungeonSystem.getDungeonFloor().getTheme());
     const factor = Difficulty.getEncounterFactor();
 
-    if (episode != null || trap != null) { return false; }
+    if (result.getEpisode() != null || result.getTrap() != null) { return false; }
     if (isFirstVisit) { return Random.roll(100) < theme.getNewRoomEncounterRate() * factor; }
     return Random.roll(1000) < theme.getStepEncounterRate() * 10 * factor;
   }
@@ -71,21 +75,21 @@ global.DungeonNavigationSystem = (function() {
     return position;
   }
 
-  // Everything that happens as the party crosses into a room, which has to be worked out before the party is moved
-  // because moving them marks the room as visited. A room is only scouted the first time it's entered, which is also
-  // the only time its episode can start.
-  function enterRoom(index) {
+  // Everything that happens as the party crosses into a room. A room is only scouted the first time it's entered,
+  // which is also the only time its episode can start.
+  function enterRoom(index, isFirstVisit, result) {
     const floor = DungeonSystem.getDungeonFloor();
     const room = floor.getRooms()[index];
-    const isFirstVisit = floor.isVisited(index) === false;
-    const revealed = floor.isRevealed(index) === false;
-    if (isFirstVisit) { scoutRoom(room); }
 
-    const episode = isFirstVisit ? getRoomEpisode(room) : null;
+    result.setEnteredRoom(index);
+    result.setRevealedRoom(floor.isRevealed(index) === false);
+
+    if (isFirstVisit) {
+      scoutRoom(room);
+      result.setEpisode(getRoomEpisode(room));
+    }
 
     GameSystem.getState().advanceGameTime(isFirstVisit ? exploreTime : backtrackTime);
-
-    return { enteredRoom:index, isFirstVisit, revealed, episode };
   }
 
   function scoutRoom(room) {
