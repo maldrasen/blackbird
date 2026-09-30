@@ -2,10 +2,6 @@
 
 Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
-## Priority 
-
-- [248] Convert step result to a model `3pt` — [248-convert-step-result-to-a-model.md](248-convert-step-result-to-a-model.md)
-
 ## Priority 2
 
 - [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
