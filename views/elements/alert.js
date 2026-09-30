@@ -40,11 +40,10 @@ global.Alert = (function() {
   // Skill improvements made in a battle or a training session are summarized in the enlighten view instead.
   function showSkillImprovement(id, code, level) {
     show({
-      title: 'Skill Increased',
-      message: `${Character(id).getName()}'s ${Skill.lookup(code).getName()} skill is now ${level}.`,
+      message: `${Character(id).getName()}'s ${Skill.lookup(code).getName()} skill increased to ${level}.`,
       position: AlertPosition.side,
       type: LogType.success,
-      fadeTime: 3000,
+      fadeTime: 2000,
     });
   }
 
