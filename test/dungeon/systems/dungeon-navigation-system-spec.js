@@ -153,17 +153,16 @@ describe("DungeonNavigationSystem", function() {
     it('moves the party onto the next tile', function() {
       Random.stubRoll(missedStep);
 
-      expect(step('east')).to.deep.equal({
-        moved: true,
-        position: { x:4, y:3 },
-        openedDoor: null,
-        enteredRoom: null,
-        revealed: false,
-        episode: null,
-        trap: null,
-        foundTraps: [],
-        encounter: false,
-      });
+      const result = step('east');
+      expect(result.hasMoved()).to.equal(true);
+      expect(result.getPosition()).to.deep.equal({ x:4, y:3 });
+      expect(result.hasOpenedDoor()).to.equal(false);
+      expect(result.getEnteredRoom()).to.equal(null);
+      expect(result.hasRevealedRoom()).to.equal(false);
+      expect(result.getEpisode()).to.equal(null);
+      expect(result.getTrap()).to.equal(null);
+      expect(result.getFoundTraps()).to.deep.equal([]);
+      expect(result.hasEncounter()).to.equal(false);
       expect(floor.getPartyPosition()).to.deep.equal({ x:4, y:3 });
     });
 
@@ -171,7 +170,7 @@ describe("DungeonNavigationSystem", function() {
       floor.setPartyPosition(4,2);
       Random.stubRoll();
 
-      expect(step('east')).to.deep.equal({ moved:false });
+      expect(step('east').hasMoved()).to.equal(false);
       expect(floor.getPartyPosition()).to.deep.equal({ x:4, y:2 });
       expect(state.getGameTime()).to.equal(100);
     });
@@ -195,24 +194,24 @@ describe("DungeonNavigationSystem", function() {
       it('carries a slight chance of an encounter', function() {
         Random.stubRoll(4, missedStep, 4);
 
-        expect(step('east').encounter).to.equal(true);
-        expect(step('west').encounter).to.equal(false);
-        expect(step('southeast').encounter).to.equal(true);
+        expect(step('east').hasEncounter()).to.equal(true);
+        expect(step('west').hasEncounter()).to.equal(false);
+        expect(step('southeast').hasEncounter()).to.equal(true);
       });
 
       it('never has an encounter when the encounter rate option is zero', async function() {
         await WorldState.setOptions({ ...WorldState.getOptions(), difficulty:{ damage:100, mitigation:100, resistance:0, encounterRate:0 } });
         Random.stubRoll(0);
 
-        expect(step('east').encounter).to.equal(false);
+        expect(step('east').hasEncounter()).to.equal(false);
       });
 
       it('has more encounters when the encounter rate option is raised', async function() {
         await WorldState.setOptions({ ...WorldState.getOptions(), difficulty:{ damage:100, mitigation:100, resistance:0, encounterRate:200 } });
         Random.stubRoll(9, 10);
 
-        expect(step('east').encounter).to.equal(true);
-        expect(step('west').encounter).to.equal(false);
+        expect(step('east').hasEncounter()).to.equal(true);
+        expect(step('west').hasEncounter()).to.equal(false);
       });
 
     });
@@ -228,9 +227,9 @@ describe("DungeonNavigationSystem", function() {
         Random.stubRoll(missedRoom, missedStep);
 
         expect(doorAB.open).to.equal(false);
-        expect(step('east').openedDoor).to.equal(doorAB);
+        expect(step('east').getOpenedDoor()).to.equal(doorAB);
         expect(doorAB.open).to.equal(true);
-        expect(step('west').openedDoor).to.equal(null);
+        expect(step('west').hasOpenedDoor()).to.equal(false);
         expect(doorAB.open).to.equal(true);
       });
 
@@ -238,8 +237,8 @@ describe("DungeonNavigationSystem", function() {
         Random.stubRoll(missedRoom);
         const result = step('east');
 
-        expect(result.enteredRoom).to.equal(1);
-        expect(result.revealed).to.equal(true);
+        expect(result.getEnteredRoom()).to.equal(1);
+        expect(result.hasRevealedRoom()).to.equal(true);
         expect(floor.getLocation()).to.equal(1);
         expect(floor.isVisited(1)).to.equal(true);
         expect(floor.isRevealed(1)).to.equal(true);
@@ -258,7 +257,7 @@ describe("DungeonNavigationSystem", function() {
         Random.stubRoll(missedRoom);
         const result = step('east');
 
-        expect(result.revealed).to.equal(false);
+        expect(result.hasRevealedRoom()).to.equal(false);
         expect(floor.getRooms()[1].getScoutingRoll()).to.equal(21);
       });
 
@@ -275,29 +274,29 @@ describe("DungeonNavigationSystem", function() {
 
       it('risks an ambush when a room is first entered', function() {
         Random.stubRoll(19);
-        expect(step('east').encounter).to.equal(true);
+        expect(step('east').hasEncounter()).to.equal(true);
       });
 
       it('only carries the slight chance of an encounter when walking back into a room', function() {
         Random.stubRoll(missedRoom, 19, 4);
 
-        expect(step('east').encounter).to.equal(false);
-        expect(step('west').encounter).to.equal(false);
-        expect(step('east').encounter).to.equal(true);
+        expect(step('east').hasEncounter()).to.equal(false);
+        expect(step('west').hasEncounter()).to.equal(false);
+        expect(step('east').hasEncounter()).to.equal(true);
       });
 
       it('is never ambushed when the encounter rate option is zero', async function() {
         await WorldState.setOptions({ ...WorldState.getOptions(), difficulty:{ damage:100, mitigation:100, resistance:0, encounterRate:0 } });
         Random.stubRoll(0);
 
-        expect(step('east').encounter).to.equal(false);
+        expect(step('east').hasEncounter()).to.equal(false);
       });
 
       it('is ambushed more often when the encounter rate option is raised', async function() {
         await WorldState.setOptions({ ...WorldState.getOptions(), difficulty:{ damage:100, mitigation:100, resistance:0, encounterRate:200 } });
         Random.stubRoll(39);
 
-        expect(step('east').encounter).to.equal(true);
+        expect(step('east').hasEncounter()).to.equal(true);
       });
 
       it('enters a nested room through its door', function() {
@@ -305,8 +304,8 @@ describe("DungeonNavigationSystem", function() {
         Random.stubRoll(missedRoom);
         const result = step('south');
 
-        expect(result.openedDoor).to.equal(doorNested);
-        expect(result.enteredRoom).to.equal(6);
+        expect(result.getOpenedDoor()).to.equal(doorNested);
+        expect(result.getEnteredRoom()).to.equal(6);
         expect(floor.getPartyPosition()).to.deep.equal({ x:15, y:3 });
       });
 
@@ -326,10 +325,10 @@ describe("DungeonNavigationSystem", function() {
         Random.stubRollDice(7);
 
         const result = step('southeast');
-        expect(result.trap.target).to.equal(scout);
-        expect(result.trap.damage).to.equal(7);
-        expect(result.trap.position).to.deep.equal({ x:4, y:4 });
-        expect(result.encounter).to.equal(false);
+        expect(result.getTrap().target).to.equal(scout);
+        expect(result.getTrap().damage).to.equal(7);
+        expect(result.getTrap().position).to.deep.equal({ x:4, y:4 });
+        expect(result.hasEncounter()).to.equal(false);
         expect(HealthComponent.lookup(scout).currentHealth).to.equal(13);
       });
 
@@ -338,8 +337,8 @@ describe("DungeonNavigationSystem", function() {
         Random.stubRoll(missedStep);
 
         const result = step('east');
-        expect(result.trap).to.equal(null);
-        expect(result.foundTraps).to.deep.equal([{ x:4, y:4 }]);
+        expect(result.getTrap()).to.equal(null);
+        expect(result.getFoundTraps()).to.deep.equal([{ x:4, y:4 }]);
         expect(floor.getTileContents(4,4).glyph).to.not.be.undefined;
       });
 
@@ -350,9 +349,9 @@ describe("DungeonNavigationSystem", function() {
 
         step('east');
         const result = step('south');
-        expect(result.trap.title).to.equal('Trap Disarmed');
-        expect(result.trap.damage).to.equal(0);
-        expect(result.encounter).to.equal(false);
+        expect(result.getTrap().title).to.equal('Trap Disarmed');
+        expect(result.getTrap().damage).to.equal(0);
+        expect(result.hasEncounter()).to.equal(false);
         expect(floor.getTileContents(4,4).state).to.equal('disarmed');
       });
 
@@ -363,7 +362,7 @@ describe("DungeonNavigationSystem", function() {
         step('southeast');
         step('north');
         const result = step('south');
-        expect(result.trap).to.equal(null);
+        expect(result.getTrap()).to.equal(null);
         expect(HealthComponent.lookup(scout).currentHealth).to.equal(13);
       });
 
@@ -382,15 +381,15 @@ describe("DungeonNavigationSystem", function() {
         Random.stubRoll();
         const result = step('east');
 
-        expect(result.episode).to.equal('orchard-kobolds');
-        expect(result.encounter).to.equal(false);
+        expect(result.getEpisode()).to.equal('orchard-kobolds');
+        expect(result.hasEncounter()).to.equal(false);
       });
 
       it('starts the episode in a room that was revealed on the map but never visited', function() {
         floor.revealRoom(1);
         Random.stubRoll();
 
-        expect(step('east').episode).to.equal('orchard-kobolds');
+        expect(step('east').getEpisode()).to.equal('orchard-kobolds');
       });
 
       it('does not start the episode again when walking back into the room', function() {
@@ -398,14 +397,14 @@ describe("DungeonNavigationSystem", function() {
 
         step('east');
         step('west');
-        expect(step('east').episode).to.equal(null);
+        expect(step('east').getEpisode()).to.equal(null);
       });
 
       it('has nothing to start once the episode no longer meets its requirements', function() {
         state.setFlag(GameFlags.sixBladeStatus,'met');
         Random.stubRoll(missedRoom);
 
-        expect(step('east').episode).to.equal(null);
+        expect(step('east').getEpisode()).to.equal(null);
       });
 
     });

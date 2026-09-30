@@ -24,12 +24,10 @@ global.DungeonNavigationSystem = (function() {
     const floor = DungeonSystem.getDungeonFloor();
     const from = getPartyPosition();
     const found = Step(from, direction);
-    if (found.canMove() == false) { return { moved:false }; }
+    if (found.canMove() == false) { return StepResult({ moved:false }); }
 
     const position = found.getPosition();
-    const door = found.getDoor();
-    const openedDoor = (door != null && door.open === false) ? door : null;
-    if (openedDoor) { floor.openDoor(door.position.x, door.position.y, door.direction); }
+    const opened = openDoor(found.getDoor());
 
     const fromRoom = floor.getRoomIndexAt(from.x, from.y);
     const toRoom = floor.getRoomIndexAt(position.x, position.y);
@@ -40,7 +38,15 @@ global.DungeonNavigationSystem = (function() {
 
     floor.setPartyPosition(position.x, position.y);
 
-    return { moved:true, position, openedDoor, ...entry, trap, foundTraps, encounter };
+    return StepResult({ moved:true, position, ...opened, ...entry, trap, foundTraps, encounter });
+  }
+
+  // Only a closed door needs opening, and only a door that was opened is reported.
+  function openDoor(door) {
+    if (door == null || door.open) { return {}; }
+
+    DungeonSystem.getDungeonFloor().openDoor(door.position.x, door.position.y, door.direction);
+    return { doorPosition:{ ...door.position }, doorDirection:door.direction };
   }
 
   // TODO: The encounter rate could also be changed by items the party uses or events. Maybe they use something that
