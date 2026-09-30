@@ -42,7 +42,7 @@ describe("TileContents", function() {
   });
 
   it("passes the description its options", function() {
-    expect(TileContents.lookup('spike-trap').getDescription({ state:'disarmed' })).to.include('wedged in place');
+    expect(TileContents.lookup('spike-trap').getDescription({ state:'disarmed' })).to.include('has been disabled');
     expect(TileContents.lookup('spike-trap').getDescription({ state:'sprung' })).to.include('Bloodstained spikes');
   });
 

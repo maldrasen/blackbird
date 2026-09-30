@@ -151,13 +151,14 @@ describe("TrapSystem", function() {
       const result = TrapSystem.enterTile({ x:4, y:3 });
       expect(result.target).to.equal(scout);
       expect(result.damage).to.equal(0);
+      expect(result.state).to.equal('disarmed');
       expect(result.title).to.equal('Trap Disarmed');
-      expect(result.text).to.include('wedge it in place');
+      expect(result.text).to.include('wedging a loose stone');
       expect(health(scout)).to.equal(20);
 
       expect(trapTile().state).to.equal('disarmed');
       expect(trapTile().glyph.color).to.equal(DungeonConstants.trapColors.resolved);
-      expect(floor.getTileDescription(4,3)).to.include('wedged in place');
+      expect(floor.getTileDescription(4,3)).to.include('has been disabled');
     });
 
     it("springs on the scout when the mechanics check falls short", function() {
@@ -170,6 +171,7 @@ describe("TrapSystem", function() {
       const result = TrapSystem.enterTile({ x:4, y:3 });
       expect(result.target).to.equal(scout);
       expect(result.damage).to.equal(7);
+      expect(result.state).to.equal('sprung');
       expect(result.title).to.equal('A Trap!');
       expect(health(scout)).to.equal(13);
       expect(trapTile().state).to.equal('sprung');
@@ -183,7 +185,7 @@ describe("TrapSystem", function() {
 
       const result = TrapSystem.enterTile({ x:4, y:3 });
       expect(result.damage).to.equal(0);
-      expect(result.text).to.include('step carefully around it');
+      expect(result.text).to.include('mark it so you know');
       expect(trapTile().state).to.equal('disarmed');
     });
   });

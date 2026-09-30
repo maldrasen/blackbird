@@ -25,7 +25,7 @@ global.TrapSystem = (function() {
 
     resolveTile(position, record, 'disarmed');
 
-    return buildResult(position, scout, 0, `Trap Disarmed`, trap.disarmTrap);
+    return buildResult(position, 'disarmed', scout, 0, `Trap Disarmed`, trap.disarmTrap);
   }
 
   function springTrap(position, record, target) {
@@ -35,7 +35,7 @@ global.TrapSystem = (function() {
 
     resolveTile(position, record, 'sprung');
 
-    return buildResult(position, target, damage, `A Trap!`, trap.springTrap);
+    return buildResult(position, 'sprung', target, damage, `A Trap!`, trap.springTrap);
   }
 
   function resolveTile(position, record, state) {
@@ -46,10 +46,11 @@ global.TrapSystem = (function() {
     });
   }
 
-  function buildResult(position, target, damage, title, textFunction) {
+  function buildResult(position, state, target, damage, title, textFunction) {
     const context = { T:target };
     return {
       position: { ...position },
+      state,
       target,
       damage,
       title,
