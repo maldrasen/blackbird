@@ -33,11 +33,19 @@ describe("EnlightenSystem", function() {
     it("banks the loot in the party inventory", function() {
       Article.register('spec-enlighten-bauble', { name:'Spec Bauble', category:InventoryCategory.valuables });
       const player = CharacterFixtures.randomPlayer();
+      const loot = GameSystem.getState().getLootInventory();
+      const item = ItemFixtures.buildSteel('longsword');
+      Inventory(loot).addItem(item);
 
       startBattleEnlightenment([player], 0, [{ articleCode:'spec-enlighten-bauble', quantity:3 }]);
 
       expect(Inventory().getArticleQuantity('spec-enlighten-bauble')).to.equal(3);
-      expect(EnlightenSystem.getState().getLoot()).to.deep.equal([{ articleCode:'spec-enlighten-bauble', quantity:3 }]);
+      expect(Inventory().hasItem(item)).to.be.true;
+      expect(Inventory(loot).getItems()).to.eql([]);
+      expect(EnlightenSystem.getState().getLoot()).to.deep.equal([
+        { articleCode:'spec-enlighten-bauble', quantity:3 },
+        { itemId:item },
+      ]);
     });
 
     it("banks no essence when enlightenment comes from training", function() {
@@ -57,17 +65,11 @@ describe("EnlightenSystem", function() {
   });
 
   describe("finishEnlightenment()", function() {
-    it("deletes the items left in the loot inventory", function() {
-      const loot = GameSystem.getState().getLootInventory();
-      const item = ItemFixtures.buildSteel('longsword');
-      Inventory(loot).addItem(item);
-
+    it("clears the state", function() {
       startBattleEnlightenment([buildCharacter()], 0);
       EnlightenSystem.finishEnlightenment();
 
       expect(EnlightenSystem.getState()).to.be.null;
-      expect(InventoryComponent.lookup(loot).items).to.eql([]);
-      expect(Registry.entityExists(item)).to.be.false;
     });
   });
 

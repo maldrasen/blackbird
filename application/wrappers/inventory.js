@@ -12,6 +12,10 @@ global.Inventory = function(inventoryId=GameSystem.getState().getPartyInventory(
     return fetch().items.indexOf(itemId) >= 0;
   }
 
+  function getItems() {
+    return [...fetch().items];
+  }
+
   // An item has exactly one owner: an inventory or an equipment slot. Adding an item checks that it exists and that
   // nothing else already owns it, including the inventory it's going into.
   function addItem(itemId) {
@@ -132,6 +136,7 @@ global.Inventory = function(inventoryId=GameSystem.getState().getPartyInventory(
 
   return {
     hasItem,
+    getItems,
     addItem,
     removeItem,
     listItems,

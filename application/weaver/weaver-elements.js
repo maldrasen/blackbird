@@ -23,8 +23,7 @@ global.WeaverElements = (function() {
     return `<ul class='result-blocks'>${items.join('')}</ul>`;
   }
 
-  // TODO: The loot block needs styling and the ability to handle items.
-  //       We'll want to include the icon with the name as well.
+  // TODO: The loot block needs styling. We'll want to include the icon with the name as well.
 
   function lootBlock(entries) {
     return `<div class='loot-block'><ul class='loot-list'>${entries.map(lootEntry).join('')}</ul></div>`
@@ -37,7 +36,11 @@ global.WeaverElements = (function() {
       return `<li>${entry.quantity} ${label}</li>`;
     }
 
-    throw new Error(`We need to implement showing items as loot (or entry is malformed)`);
+    if (entry.itemId) {
+      return `<li>${Item(entry.itemId).getName()}</li>`;
+    }
+
+    throw new Error(`Malformed loot entry: ${JSON.stringify(entry)}`);
   }
 
   function telepathy(text) { return `<div class='telepathy'>《 ${text} 》</div>` }
