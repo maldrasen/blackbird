@@ -9,3 +9,5 @@ points: 3
 ---
 ---
 Now that we have a proper drag and drop library we can update the inventory trading control to use it. Dragging and dropping might actually be slower than select item and select destination, but more intuitive I think.
+
+> Now that we've moved to a single inventory and removed trading between party members entirely, this is no longer a valid task.

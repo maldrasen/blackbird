@@ -17,23 +17,23 @@ global.EnlightenSystem = (function() {
     });
   }
 
-  // The loot goes straight into the party inventory as well, the view only lists what was found.
+  // The loot goes straight into the party inventory as well, the view only lists what was found. The loot inventory
+  // is only a staging area between battle cleanup and enlightenment, so everything in it is moved over.
   function bankLoot() {
     const inventory = Inventory();
-    (state.getLoot() || []).forEach(entry => inventory.addArticle(entry.articleCode, entry.quantity));
+    const lootInventory = Inventory(GameSystem.getState().getLootInventory());
+
+    state.getLoot().forEach(entry => {
+      if (entry.articleCode) {
+        return inventory.addArticle(entry.articleCode, entry.quantity);
+      }
+      lootInventory.removeItem(entry.itemId);
+      inventory.addItem(entry.itemId);
+    });
   }
 
   function finishEnlightenment() {
-    discardLoot();
     state = null;
-  }
-
-  // Whatever the party left behind in the loot inventory is gone for good.
-  function discardLoot() {
-    const loot = GameSystem.getState().getLootInventory();
-
-    InventoryComponent.lookup(loot).items.forEach(itemId => Registry.deleteEntity(itemId));
-    Registry.updateComponent(loot, ComponentType.inventory, { items:[] });
   }
 
   function levelUpAttribute(id, attribute) {
