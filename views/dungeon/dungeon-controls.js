@@ -1,6 +1,7 @@
 global.DungeonControls = (function() {
 
   let positionCells;
+  let cards;
 
   function init() {
     X.onClick('#dungeonControls .open-party', () => { PartyOverlay.open('normal') });
@@ -28,13 +29,20 @@ global.DungeonControls = (function() {
   }
 
   function update() {
+    cards = [];
     Object.values(positionCells).forEach(cell => X.empty(cell));
 
     Object.entries(PartyConfiguration.getConfiguration()).forEach(([id, position]) => {
-      const element = PartyCard(id, { healthBar:true }).getElement();
+      const card = PartyCard(id, { healthBar:true });
+      const element = card.getElement();
       if (id === GameSystem.getState().getPlayer()) { X.addClass(element,'player'); }
       X.append(positionCells[position], element);
+      cards.push(card);
     });
+  }
+
+  function refreshHealth() {
+    cards.forEach(card => card.update());
   }
 
   function openCharacterOverlay(event) {
@@ -85,6 +93,7 @@ global.DungeonControls = (function() {
     init,
     build,
     update,
+    refreshHealth,
     refreshRoom,
     refreshDescription,
   };

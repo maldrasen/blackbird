@@ -2,6 +2,8 @@
 // because the party overlay is for arranging the formation, and doesn't show it.
 global.PartyCard = function(id, options={}) {
 
+  let healthBar;
+
   const element = X.createElement(`<div class='entity-card party-card' data-id='${id}'>
     <div class='fill content'>
       <div class='name'></div>
@@ -19,7 +21,7 @@ global.PartyCard = function(id, options={}) {
   function addHealthBar() {
     const health = HealthComponent.lookup(id);
 
-    const healthBar = BarDisplay({
+    healthBar = BarDisplay({
       label: 'Health',
       currentValue: health.currentHealth,
       minValue: 0,
@@ -31,9 +33,14 @@ global.PartyCard = function(id, options={}) {
     element.querySelector('.health-bar').appendChild(healthBar.getElement());
   }
 
+  function update() {
+    if (healthBar) { healthBar.setCurrentValue(HealthComponent.lookup(id).currentHealth); }
+  }
+
   return {
     getEntity: () => { return id; },
     getElement: () => { return element; },
+    update,
   };
 
 }
