@@ -51,8 +51,10 @@ global.SkillCheck = function(id, code, mode=RollMode.normal) {
       skills[code] = skills[code] + 1;
       SkillsComponent.update(id, skills);
 
-      if (battleState) { battleState.skillImproved(id, code, skills[code]); }
-      if (trainingState) { trainingState.skillImproved(id, code, skills[code]); }
+      if (battleState) { return battleState.skillImproved(id, code, skills[code]); }
+      if (trainingState) { return trainingState.skillImproved(id, code, skills[code]); }
+
+      GameInterface.showSkillImprovement(id, code, skills[code]);
     }
   }
 

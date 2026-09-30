@@ -6,8 +6,8 @@ describe("TrapSystem", function() {
 
   // With every attribute at 10, a mechanics skill of 0 and the skill's factor of 2.5, the mechanics check comes to
   // (n + 2) * 2.5 where n is the second stubbed between value, followed by one roll out of 250 for the chance to
-  // improve the skill, which 249 misses. stubBetween(50,5) checks a 17.5 and stubBetween(50,1) a 7.5, against the
-  // spike trap's disarm of 12.
+  // improve the skill, which 249 misses. stubBetween(50,6) checks a 20 and stubBetween(50,1) a 7.5, against the
+  // spike trap's disarm of 20.
   const missedImprovement = 249;
 
   function buildScout() {
@@ -145,19 +145,20 @@ describe("TrapSystem", function() {
     it("is disarmed by the scout when the mechanics check meets its disarm value", function() {
       placeTrap();
       findTrap();
-      Random.stubBetween(50,5);
+      Random.stubBetween(50,6);
       Random.stubRoll(missedImprovement);
 
       const result = TrapSystem.enterTile({ x:4, y:3 });
       expect(result.target).to.equal(scout);
       expect(result.damage).to.equal(0);
+      expect(result.state).to.equal('disarmed');
       expect(result.title).to.equal('Trap Disarmed');
-      expect(result.text).to.include('wedge it in place');
+      expect(result.text).to.include('wedging a loose stone');
       expect(health(scout)).to.equal(20);
 
       expect(trapTile().state).to.equal('disarmed');
       expect(trapTile().glyph.color).to.equal(DungeonConstants.trapColors.resolved);
-      expect(floor.getTileDescription(4,3)).to.include('wedged in place');
+      expect(floor.getTileDescription(4,3)).to.include('has been disabled');
     });
 
     it("springs on the scout when the mechanics check falls short", function() {
@@ -170,6 +171,7 @@ describe("TrapSystem", function() {
       const result = TrapSystem.enterTile({ x:4, y:3 });
       expect(result.target).to.equal(scout);
       expect(result.damage).to.equal(7);
+      expect(result.state).to.equal('sprung');
       expect(result.title).to.equal('A Trap!');
       expect(health(scout)).to.equal(13);
       expect(trapTile().state).to.equal('sprung');
@@ -183,7 +185,7 @@ describe("TrapSystem", function() {
 
       const result = TrapSystem.enterTile({ x:4, y:3 });
       expect(result.damage).to.equal(0);
-      expect(result.text).to.include('step carefully around it');
+      expect(result.text).to.include('mark it so you know');
       expect(trapTile().state).to.equal('disarmed');
     });
   });

@@ -1,9 +1,5 @@
 global.RoomContentOverlay = (function() {
 
-  function init() {
-    X.onClick('#roomContentContinue', close);
-  }
-
   function open(result) {
     GeneralOverlay.open(build(result), { classname:'tiny' });
     GeneralOverlay.setFooterContent(buildContinueButton());
@@ -40,16 +36,9 @@ global.RoomContentOverlay = (function() {
   }
 
   function buildContinueButton() {
-    return X.createElement(`<a id='roomContentContinue' href='#' class='button button-primary'>Continue</a>`);
+    return X.createElement(`<a href='#' class='button button-primary close-button'>Continue</a>`);
   }
 
-  function close() {
-    WindowManager.pop();
-  }
-
-  return {
-    init,
-    open,
-  };
+  return { open };
 
 })();

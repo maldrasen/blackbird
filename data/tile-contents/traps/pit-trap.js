@@ -25,17 +25,13 @@ function springTrap(context) {
   return (context.T === GameSystem.getState().getPlayer()) ? toPlayer : toCharacter;
 }
 
-// TODO: Placeholder text. A pit can't be disarmed so much as avoided; knowing it's there is enough.
 function disarmTrap(context) {
-  return (context.T === GameSystem.getState().getPlayer()) ?
-    `You test the edge of the thin stone slab with your foot and step carefully around it.`:
-    `{T:name} tests the edge of the thin stone slab and waves everyone carefully around it.`;
+  return `You carefully avoid stepping on the hazardous tile, then mark it so you know to avoid it in the future.`
 }
 
-// TODO: How does a pit trap look when disarmed? Maybe just marked?
 function describe(options) {
   return (options.state === 'disarmed') ?
-    `A thin slab of stone covers a pit here. Someone has scratched a warning mark beside it.`:
+    `A thin slab of stone covers a pit here. A line drawn across it marks the hazard so you know to step over it.`:
     `You carefully step over the open pit. The thin slab of stone that covered the trap lies split and shattered 
     at the bottom of the spike filled hole.`;
 }

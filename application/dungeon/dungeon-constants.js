@@ -17,7 +17,7 @@ global.DungeonConstants = {
   stairsColor: 'rgb(119 110 94)',
   stairsGlyphs: { up:'▲', down:'▼' },
   trapGlyph: '♆',
-  trapColors: { armed:'rgb(240 80 16)', resolved:'rgb(130 130 140)' },
+  trapColors: { armed:'rgb(240 80 16)', resolved:'rgb(130 130 140 / 30%)' },
 
   treeColors:[
     'rgb(51,62,45)',

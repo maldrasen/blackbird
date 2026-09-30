@@ -163,13 +163,25 @@ global.DungeonView = (function() {
     if (result.hasEncounter()) { return DungeonSystem.startRandomEncounter(); }
   }
 
-  // A sprung trap and a disarmed one show the same overlay. Only the damage of a sprung one flashes the party card.
+  // A disarmed trap is routine enough for an alert. A sprung one gets the overlay, because taking damage matters.
   function showTrapResult(trap) {
+    if (trap.state === 'disarmed') { return showDisarmAlert(trap); }
+
     if (trap.damage > 0) {
       const card = X.first(`#dungeonControls .party-card[data-id='${trap.target}']`);
       if (card) { FlashSquare.flashDamage(card); }
     }
     RoomContentOverlay.open(trap);
+  }
+
+  function showDisarmAlert(trap) {
+    Alert.show({
+      title: trap.title,
+      message: trap.text,
+      position: AlertPosition.side,
+      type: LogType.info,
+      fadeTime: 4000,
+    });
   }
 
   return {
