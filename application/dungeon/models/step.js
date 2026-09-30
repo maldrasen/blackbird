@@ -5,11 +5,15 @@ global.Step = function(start, direction) {
 
   let canMove = true;
   let position = null;
-  let door = null;
 
   (heading.wall) ?
     takeCardinalStep(start, heading) :
     takeDiagonalStep(start, heading);
+
+  function getDoor() {
+    const doorTile = heading.doorOnTarget ? position : start;
+    return floor.getDoorAt(doorTile.x, doorTile.y, heading.wall);
+  }
 
   // A step between two tiles of the same room is always open. A step between rooms needs a door in the wall.
   function takeCardinalStep(start, heading) {
@@ -18,10 +22,7 @@ global.Step = function(start, direction) {
     const toRoom = floor.getRoomIndexAt(position.x, position.y);
     if (toRoom == null) { canMove = false; }
     if (floor.canEnterTile(position.x, position.y) === false) { canMove = false; }
-
-    const doorTile = heading.doorOnTarget ? position : start;
-    door = floor.getDoorAt(doorTile.x, doorTile.y, heading.wall);
-    if (door == null && toRoom !== floor.getRoomIndexAt(start.x, start.y)) { canMove = false; }
+    if (getDoor() == null && toRoom !== floor.getRoomIndexAt(start.x, start.y)) { canMove = false; }
   }
 
   // A diagonal step passes through the corner point shared by four tiles: the tile being left, the tile being
@@ -45,6 +46,6 @@ global.Step = function(start, direction) {
     getDirection: () => { return direction; },
     getHeading: () => { return { ...heading }; },
     canMove: () => { return canMove; },
-    getDoor: () => { return door; }
+    getDoor,
   }
 }
