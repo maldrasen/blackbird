@@ -22,6 +22,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [240] Safe Rooms `3pt` — [240-safe-rooms.md](240-safe-rooms.md)
 - [246] Party inventory overlay `5pt` — [246-party-inventory-overlay.md](246-party-inventory-overlay.md)
 - [247] Bank item drops into the party inventory `2pt` — [247-bank-item-drops.md](247-bank-item-drops.md)
+- [250] Show Health Bars in Dungeon Controls `2pt` — [250-show-health-bars-in-dungeon-controls.md](250-show-health-bars-in-dungeon-controls.md)
 
 ## Priority 3
 
