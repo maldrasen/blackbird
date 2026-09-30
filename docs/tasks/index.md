@@ -21,7 +21,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [239] Dungeon Light emitters `5pt` — [239-dungeon-light-emitters.md](239-dungeon-light-emitters.md)
 - [240] Safe Rooms `3pt` — [240-safe-rooms.md](240-safe-rooms.md)
 - [246] Party inventory overlay `5pt` — [246-party-inventory-overlay.md](246-party-inventory-overlay.md)
-- [247] Bank item drops into the party inventory `2pt` — [247-bank-item-drops.md](247-bank-item-drops.md)
 
 ## Priority 3
 
