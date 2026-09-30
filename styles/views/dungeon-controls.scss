@@ -98,6 +98,8 @@ $bg-controls: rgb(5 5 5);
         left: 5px;
         right: 5px;
         bottom: 5px;
+
+        .bar-track, .bar { height: 3px; }
       }
     }
   }
