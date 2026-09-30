@@ -1,6 +1,18 @@
 global.DungeonConstants = {
   fontChance: 20,
   floorTypes: ['default','water'],
+
+  headings: {
+    north:     { x:0,  y:-1, wall:'N', doorOnTarget:false },
+    south:     { x:0,  y:1,  wall:'N', doorOnTarget:true },
+    west:      { x:-1, y:0,  wall:'W', doorOnTarget:false },
+    east:      { x:1,  y:0,  wall:'W', doorOnTarget:true },
+    northeast: { x:1,  y:-1 },
+    northwest: { x:-1, y:-1 },
+    southeast: { x:1,  y:1 },
+    southwest: { x:-1, y:1 },
+  },
+
   wallColor: 'rgb(130 130 140)',
   stairsColor: 'rgb(119 110 94)',
   stairsGlyphs: { up:'▲', down:'▼' },

@@ -136,6 +136,7 @@
     "application/dungeon/models/feature-graph.js",
     "application/dungeon/models/feature.js",
     "application/dungeon/models/room.js",
+    "application/dungeon/models/step-result.js",
     "application/dungeon/systems/dungeon-navigation-system.js",
     "application/dungeon/systems/dungeon-theme-system.js",
     "application/dungeon/systems/dungeon-tile-system.js",

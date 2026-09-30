@@ -2,24 +2,11 @@ global.DungeonNavigationSystem = (function() {
   const exploreTime = 1;
   const backtrackTime = 0.2;
 
-  // Doors live on the north or west wall of a tile, so a step to the south or east finds its door on the tile being
-  // stepped onto rather than on the tile being left.
-  const headings = {
-    north:     { x:0,  y:-1, wall:'N', doorOnTarget:false },
-    south:     { x:0,  y:1,  wall:'N', doorOnTarget:true },
-    west:      { x:-1, y:0,  wall:'W', doorOnTarget:false },
-    east:      { x:1,  y:0,  wall:'W', doorOnTarget:true },
-    northeast: { x:1,  y:-1 },
-    northwest: { x:-1, y:-1 },
-    southeast: { x:1,  y:1 },
-    southwest: { x:-1, y:1 },
-  };
-
   // Find where a step from a tile would lead, returning the tile stepped onto and the door passed through on the
   // way (if there was one), or null when the way is blocked. Nothing moves. The position is a parameter rather than
   // the party's own so that a path can be searched for from any tile.
   function findStep(position, direction) {
-    const heading = headings[direction];
+    const heading = DungeonConstants.headings[direction];
     if (heading == null) { throw new Error(`Bad direction [${direction}]`); }
 
     return (heading.wall == null) ? findDiagonalStep(position, heading) : findCardinalStep(position, heading);
@@ -65,7 +52,7 @@ global.DungeonNavigationSystem = (function() {
   // The tiles a single step from a position could land on, which is what the party can reach next and what the
   // scout looks over as they arrive.
   function getReachableTiles(position) {
-    return Object.keys(headings).
+    return Object.keys(DungeonConstants.headings).
       map(direction => findStep(position, direction)).
       filter(step => step != null).
       map(step => step.position);
