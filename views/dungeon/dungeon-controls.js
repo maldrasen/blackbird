@@ -31,7 +31,7 @@ global.DungeonControls = (function() {
     Object.values(positionCells).forEach(cell => X.empty(cell));
 
     Object.entries(PartyConfiguration.getConfiguration()).forEach(([id, position]) => {
-      const element = PartyCard(id).getElement();
+      const element = PartyCard(id, { healthBar:true }).getElement();
       if (id === GameSystem.getState().getPlayer()) { X.addClass(element,'player'); }
       X.append(positionCells[position], element);
     });
