@@ -10,7 +10,7 @@ TileContents.register('spike-trap',{
     damageType: DamageType.pierce,
     hitLocation: EquipmentSlot.legs,
     target: EpisodeTarget.anyInParty,
-    disarm: 12,
+    disarm: 20,
     springTrap,
     disarmTrap,
   },
