@@ -48,7 +48,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [130] Accept death in game over event `8pt` — [130-accept-death-in-game-over-event.md](130-accept-death-in-game-over-event.md)
 - [139] Fix Stamina `3pt` — [139-fix-stamina.md](139-fix-stamina.md)
 - [151] More Negotiation Questions `5pt` — [151-more-negotiation-questions.md](151-more-negotiation-questions.md)
-- [167] Update the inventory trading to use the drag and drop and entity cards. `3pt` — [167-update-the-inventory-trading-to-use-the-drag-and-drop-and-entity-cards.md](167-update-the-inventory-trading-to-use-the-drag-and-drop-and-entity-cards.md)
 - [171] Anima Decay `2pt` — [171-anima-decay.md](171-anima-decay.md)
 - [173] Compile episode pages to a graph at registration `3pt` — [173-compile-episodes-to-graph.md](173-compile-episodes-to-graph.md)
 - [176] Implement potency item effect `8pt` — [176-implement-potency-item-effect.md](176-implement-potency-item-effect.md)
