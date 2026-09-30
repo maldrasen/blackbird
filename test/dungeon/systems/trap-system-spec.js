@@ -6,8 +6,8 @@ describe("TrapSystem", function() {
 
   // With every attribute at 10, a mechanics skill of 0 and the skill's factor of 2.5, the mechanics check comes to
   // (n + 2) * 2.5 where n is the second stubbed between value, followed by one roll out of 250 for the chance to
-  // improve the skill, which 249 misses. stubBetween(50,5) checks a 17.5 and stubBetween(50,1) a 7.5, against the
-  // spike trap's disarm of 12.
+  // improve the skill, which 249 misses. stubBetween(50,6) checks a 20 and stubBetween(50,1) a 7.5, against the
+  // spike trap's disarm of 20.
   const missedImprovement = 249;
 
   function buildScout() {
@@ -145,7 +145,7 @@ describe("TrapSystem", function() {
     it("is disarmed by the scout when the mechanics check meets its disarm value", function() {
       placeTrap();
       findTrap();
-      Random.stubBetween(50,5);
+      Random.stubBetween(50,6);
       Random.stubRoll(missedImprovement);
 
       const result = TrapSystem.enterTile({ x:4, y:3 });

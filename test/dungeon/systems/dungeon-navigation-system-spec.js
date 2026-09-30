@@ -342,9 +342,10 @@ describe("DungeonNavigationSystem", function() {
         expect(floor.getTileContents(4,4).glyph).to.not.be.undefined;
       });
 
-      // The scout's mechanics skill is 0, so the disarm check is followed by a roll for the skill to improve.
+      // The scout's mechanics skill is 0, so the disarm check is followed by a roll for the skill to improve. The
+      // second between of 6 gives a mechanics check of exactly 20, the spike trap's disarm value.
       it('disarms a found trap when stepping onto it', function() {
-        Random.stubBetween(50,5, 50,5);
+        Random.stubBetween(50,5, 50,6);
         Random.stubRoll(missedStep, 249);
 
         step('east');
