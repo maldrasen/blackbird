@@ -37,6 +37,17 @@ global.Alert = (function() {
     });
   }
 
+  // Skill improvements made in a battle or a training session are summarized in the enlighten view instead.
+  function showSkillImprovement(id, code, level) {
+    show({
+      title: 'Skill Increased',
+      message: `${Character(id).getName()}'s ${Skill.lookup(code).getName()} skill is now ${level}.`,
+      position: AlertPosition.side,
+      type: LogType.success,
+      fadeTime: 3000,
+    });
+  }
+
   // If there are a lof of alerts for some reason, dismissing them one at a
   // time by clicking on them doesn't feel good. They move around, they block
   // other alerts from being clicked. It would look better to just dismiss all
@@ -90,6 +101,7 @@ global.Alert = (function() {
   return {
     show,
     showFromLog,
+    showSkillImprovement,
   };
 
 })();

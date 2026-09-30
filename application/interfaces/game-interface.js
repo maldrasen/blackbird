@@ -30,10 +30,16 @@ global.GameInterface = (function() {
     }
   }
 
+  function showSkillImprovement(id, code, level) {
+    if (Environment.viewPresent() === false) { return; }
+    Alert.showSkillImprovement(id, code, level);
+  }
+
   return {
     openGame,
     endGame,
     showGameMode,
+    showSkillImprovement,
   };
 
 })();
