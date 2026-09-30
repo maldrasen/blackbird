@@ -86,10 +86,10 @@ global.DungeonView = (function() {
   // room as well as coming into an explored room by a new way. The revealed check is only there for a room that was
   // opened up some other way. Spotting a trap stops the run as well, so that the next step onto it is a choice.
   function endsRun(result) {
-    return result.moved === false
-        || result.openedDoor != null
-        || result.revealed === true
-        || result.foundTraps.length > 0
+    return result.hasMoved() === false
+        || result.hasOpenedDoor()
+        || result.hasRevealedRoom()
+        || result.getFoundTraps().length > 0
         || resolving;
   }
 
@@ -114,24 +114,24 @@ global.DungeonView = (function() {
   function takeStep(direction) {
     const hadTileFeature = DungeonTileSystem.hasTileFeature();
     const result = DungeonNavigationSystem.step(direction);
-    if (result.moved === false) { return result; }
+    if (result.hasMoved() === false) { return result; }
 
     if (isStepping()) { DungeonPartyMarker.finishMove(); }
 
     lastStepAt = performance.now();
-    DungeonPartyMarker.moveTo(result.position, currentStepTime());
-    DungeonViewport.panTo(tileCenter(result.position));
+    DungeonPartyMarker.moveTo(result.getPosition(), currentStepTime());
+    DungeonViewport.panTo(tileCenter(result.getPosition()));
 
-    if (result.openedDoor) {
-      DungeonFloorView.openDoor(result.openedDoor);
+    if (result.hasOpenedDoor()) {
+      DungeonFloorView.openDoor(result.getOpenedDoor());
     }
-    if (result.enteredRoom != null || hadTileFeature || DungeonTileSystem.hasTileFeature()) {
+    if (result.getEnteredRoom() != null || hadTileFeature || DungeonTileSystem.hasTileFeature()) {
       DungeonControls.refreshRoom();
     }
 
     refreshTrapGlyphs(result);
 
-    if (result.trap || result.episode || result.encounter) {
+    if (result.getTrap() || result.getEpisode() || result.hasEncounter()) {
       resolveStep(result);
     }
 
@@ -141,8 +141,10 @@ global.DungeonView = (function() {
   // A trap the scout just found gets its glyph, and a trap the party just stepped on has its glyph replaced with
   // the resolved one. Both happen on the tile straight away, while the marker is still on its way.
   function refreshTrapGlyphs(result) {
-    result.foundTraps.forEach(position => DungeonFloorView.refreshTileGlyph(position));
-    if (result.trap) { DungeonFloorView.refreshTileGlyph(result.trap.position); }
+    const trap = result.getTrap();
+
+    result.getFoundTraps().forEach(position => DungeonFloorView.refreshTileGlyph(position));
+    if (trap) { DungeonFloorView.refreshTileGlyph(trap.position); }
   }
 
   // Whatever the step set off waits for the party to finish arriving on the tile before it starts.
@@ -156,9 +158,9 @@ global.DungeonView = (function() {
   }
 
   function startStepEvent(result) {
-    if (result.trap) { return showTrapResult(result.trap); }
-    if (result.episode) { return DungeonSystem.startRoomEpisode(result.episode); }
-    if (result.encounter) { return DungeonSystem.startRandomEncounter(); }
+    if (result.getTrap()) { return showTrapResult(result.getTrap()); }
+    if (result.getEpisode()) { return DungeonSystem.startRoomEpisode(result.getEpisode()); }
+    if (result.hasEncounter()) { return DungeonSystem.startRandomEncounter(); }
   }
 
   // A sprung trap and a disarmed one show the same overlay. Only the damage of a sprung one flashes the party card.
