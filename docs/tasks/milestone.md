@@ -23,11 +23,11 @@ This month that's mostly the dungeon side: learning spells and abilities, people
 - [ ] [197] Skill trainer episodes `5pt` — [197-skill-episodes.md](197-skill-episodes.md)
 
 ## Early Game Events `42pt`
-- [ ] Spellbook component and Cast Spell command `8pt` — *new task.* Party members have no way to know or cast spells yet; `cast-spell.js` is still a TODO.
-- [ ] Learning spells `5pt` — *new task.* Spells are found in the dungeon or granted at shrines (see `Magic.md`). Likely a tome article and a first shrine episode.
+- [ ] [250] Casting spells `8pt` — [250-casting-spells.md](250-casting-spells.md)
+- [ ] [251] Learning spells `5pt` — [251-learning-spells.md](251-learning-spells.md) Depends on 250.
 - [ ] [012] Character abilities `8pt` — [012-character-abilities.md](012-character-abilities.md) Re-scope to how abilities are learned, plus one or two abilities.
-- [ ] Person records `5pt` — *new task.* A person data record defines the character factory arguments (or enough data for an actor component when they have no body), a location, and their handwritten conversation data. People are reached by code with `Person.find(code)`. People who can be found at locations are built at new game, since a location needs to list who's there. People only met through episodes, like 208's kobolds, are built lazily the first time they're referenced. Needed by 197's trainers and the 208 chain.
-- [ ] Conversation component and builder `8pt` — *new task.* Depends on 173. Starting a conversation builds a page graph from the person's conversation data, falling back to archetype and species topics, and feeds it into the episode system. The conversation component remembers which topics have been seen, keyed by stable topic ids rather than page indexes.
+- [ ] [252] Person record `5pt` — [252-person-record.md](252-person-record.md) Needed by 197's trainers and the 208 chain.
+- [ ] [253] Conversation component `8pt` — [253-conversation-component.md](253-conversation-component.md) Depends on 173 and 252.
 - [ ] Episodes can start a battle and resume afterward `5pt` — *new task.* Needed by the 208 episode chain and most NPC encounters.
 - [ ] [173] Compile episode pages to a graph `3pt` — [173-compile-episodes-to-graph.md](173-compile-episodes-to-graph.md) Worth doing before writing a batch of new episodes.
 

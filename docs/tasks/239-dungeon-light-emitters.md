@@ -1,7 +1,7 @@
 ---
 id: 239
 title: Dungeon Light emitters
-priority: 2
+priority: 3
 created: 2026-09-26
 tags: []
 points: 5

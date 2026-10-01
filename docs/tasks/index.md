@@ -18,7 +18,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [229] Implment ammunition `3pt` — [229-implment-ammunition.md](229-implment-ammunition.md)
 - [230] Add draw weight for bows. `3pt` — [230-add-draw-weight-for-bows.md](230-add-draw-weight-for-bows.md)
 - [237] The Character Equipper Should Honor Gender and Sexual Preferences `3pt` — [237-equipper-should-honor-gender.md](237-equipper-should-honor-gender.md)
-- [239] Dungeon Light emitters `5pt` — [239-dungeon-light-emitters.md](239-dungeon-light-emitters.md)
 - [240] Safe Rooms `3pt` — [240-safe-rooms.md](240-safe-rooms.md)
 - [246] Party inventory overlay `5pt` — [246-party-inventory-overlay.md](246-party-inventory-overlay.md)
 - [250] Casting Spells `8pt` — [250-casting-spells.md](250-casting-spells.md)
@@ -28,7 +27,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 ## Priority 3
 
-- [012] Character Abilities `8pt` #battle — [012-character-abilities.md](012-character-abilities.md)
+- [12] Character Abilities `5pt` — [012-character-abilities.md](012-character-abilities.md)
 - [014] Bows & Arrows `5pt` #battle — [014-bows-arrows.md](014-bows-arrows.md)
 - [016] Battle Character Inspect `5pt` #battle — [016-battle-character-inspect.md](016-battle-character-inspect.md)
 - [019] Stamina `3pt` #training — [019-stamina.md](019-stamina.md)
@@ -57,6 +56,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [208] Six Blade Knife Episodes `13pt` — [208-six-blade-knife-episodes.md](208-six-blade-knife-episodes.md)
 - [209] Create the Cock Describer `13pt` — [209-create-the-cock-describer.md](209-create-the-cock-describer.md)
 - [238] Equipment details `0pt` — [238-equipment-details.md](238-equipment-details.md)
+- [239] Dungeon Light emitters `5pt` — [239-dungeon-light-emitters.md](239-dungeon-light-emitters.md)
 - [242] More Negotiation Requests `8pt` — [242-more-negotiation-requests.md](242-more-negotiation-requests.md)
 
 ## Priority 4
