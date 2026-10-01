@@ -1,6 +1,6 @@
 # October 2026 Milestone
 
-Planned work for October, about 82 points, roughly half of the ~170 point pace of the last two releases. The rest of the month is left open for work discovered along the way, new ideas, and content.
+Planned work for October, about 77 points, roughly half of the ~170 point pace of the last two releases. The rest of the month is left open for work discovered along the way, new ideas, and content.
 
 The focus is the dungeon crawler half of the game. Training depends on what the party brings back from the dungeon, so the dungeon needs to be playable first. Each month should strengthen the weakest link in the gameplay loop:
 
@@ -22,13 +22,13 @@ This month that's mostly the dungeon side: learning spells and abilities, people
 - [ ] [122] Training enlighten view `5pt` — [122-training-enlighten-view.md](122-training-enlighten-view.md)
 - [ ] [197] Skill trainer episodes `5pt` — [197-skill-episodes.md](197-skill-episodes.md)
 
-## Early Game Events `42pt`
+## Early Game Events `37pt`
 - [ ] [250] Casting spells `8pt` — [250-casting-spells.md](250-casting-spells.md)
 - [ ] [251] Learning spells `5pt` — [251-learning-spells.md](251-learning-spells.md) Depends on 250.
-- [ ] [012] Character abilities `8pt` — [012-character-abilities.md](012-character-abilities.md) Re-scope to how abilities are learned, plus one or two abilities.
+- [ ] [012] Character abilities `5pt` — [012-character-abilities.md](012-character-abilities.md)
 - [ ] [252] Person record `5pt` — [252-person-record.md](252-person-record.md) Needed by 197's trainers and the 208 chain.
 - [ ] [253] Conversation component `8pt` — [253-conversation-component.md](253-conversation-component.md) Depends on 173 and 252.
-- [ ] Episodes can start a battle and resume afterward `5pt` — *new task.* Needed by the 208 episode chain and most NPC encounters.
+- [ ] [254] Resume an episode after an encounter `3pt` — [254-resume-an-episode-after-an-encounter.md](254-return-to-episode-after-an-encounter.md) Needed by the 208 episode chain and most person encounters.
 - [ ] [173] Compile episode pages to a graph `3pt` — [173-compile-episodes-to-graph.md](173-compile-episodes-to-graph.md) Worth doing before writing a batch of new episodes.
 
 ## Deferred
