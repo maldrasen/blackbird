@@ -3,7 +3,8 @@ id: 239
 title: Dungeon Light emitters
 priority: 3
 created: 2026-09-26
-tags: []
+tags:
+  - dungeon
 points: 5
 ---
 ---
@@ -14,6 +15,8 @@ These lights could be given color as well, but not inside the mask. A mask only 
 The difficult part here is we'd need to define a line of sight polygon, which would be much larger than the light radius. Fortunately, because this is a dungeon crawler and not an open world, the line of sight will usually be obscured by something. It will be rare to have long stretches of uninterrupted tiles. It's possible, even with the current dungeon builder to have such a stretch though, doors that happen to line up through several connected rooms. The radial gradient may make a return here as a "fog" layer. Obscuring lights that would otherwise be visible off in the distance.
 
 I think we also need to look at the dungeon camera, and reduce how far it's able to zoom out. If we keep the camera in close, and keep the line of sight just under what could be on the screen at a time, that should help the performance. It's also easier to get lost when you can't see the whole map at once, even though you can still pan as much as you want.
+
+We would also need to add torches, bonfires, braziers and such as tile contents too as part of this.
 
 ### Technical Notes
 - **One gradient for every light.** A radial gradient with the default `gradientUnits` (objectBoundingBox) centers on whatever shape uses it, so a single `<radialGradient>` def can be shared by every light circle. Light strength can come from the circle's `opacity` instead of separate gradient stops. Each light still needs its own `<clipPath>` for its visibility polygon.
