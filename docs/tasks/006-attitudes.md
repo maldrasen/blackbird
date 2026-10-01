@@ -12,6 +12,3 @@ When building a character's dialog it would be most useful to have some kind of 
 - Curious (low affection, low or no respect, no fear)
 - Cautious (no affection, low respect, moderate fear)
 I think I may work on some of the events and dialog first, to see what kind of attitudes that it makes sense for a character to take.
-
----
-**Notes (Claude):** A derived value: flatten feelings + current marks + control + personality into a single attitude enum you can switch dialog on. Likely a wrapper accessor or a small `AttitudeSystem` reading `FeelingsComponent`, `MarkComponent`, `ControlledComponent`, and `PersonalityComponent`. The design is genuinely unsettled — you want to author dialog first to discover the useful buckets, so treat this as a spike + implementation, not a clean build. Foundational: it unblocks [[007-position-attitude-requirement]] and feeds negotiation, [[028-orders]], and [[037-denial-reactions]].

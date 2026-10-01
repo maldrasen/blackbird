@@ -1,13 +1,28 @@
 ---
-id: 041
+id: 41
 title: More Species
-priority: 5
+priority: 3
 created: 2026-07-03
-points: 5
-tags: [character]
+points: 13
+tags:
+  - character
 ---
 ---
 We could use a more oral focused species, in the same way that lupins have sensitive urethras and havlin have sensitive cervixes. The naga come to mind, as swallowing seem pretty central to the whole snake thing, but dealing with a legless species has all kinds of complications. Maybe some leggy snakes are needed then. Good to have another scaly at the very least.
 
----
-**Notes (Claude):** Add one oral-focused species (a swallowing/sensitive-throat niche, paralleling lupin urethra / havlin cervix). Naga raise legless-body complications, so probably a leggy snake variant. One species record (`data/species/*`) plus any species-specific sensation hooks and design. Same shape as the simpler entries in [[047-add-new-species]] — could be folded in with that batch.
+### Vulpins
+The vulpins are fox people. Their bodies are very similar to the lupins so we don't need to add anything new for them, though anything that's specific to lupins may need to apply to them as 
+well.
+
+### Gnolls
+Hyena people, would again be very similar to the Lupins or Vulpins. Another race we'll say inspired by D&D (they're included in the SRD, not under copyright. Several games like WoW also have hyena like gnolls) Biggest unique feature for the gnolls will be the female pseudo-penis, big swinging clit cocks. I'll lean into the gnolls being matriarchal; females are larger than males and dominate them, and the men are into that shit.
+
+### Capriens
+The capriens are goat people. They're going to be a bit more complex as the capriens have strong sexual dimorphism. The males of the species are larger, their bodies are entirely covered in fur, and their heads are goat shaped. The females are only furred from the waist down, and have horns on their human looking heads. (Futas lean towards female features with a big swinging goat dick.)
+
+And because of this dimorphism gender is going to get messy. Probably need to take another look at the body factory to determine how gender is figured out. With the other species we don't need to explicitly decide if a character is a trans woman. A character's gender can be female, and if they have a dick that doesn't contradict anything about their femaleness. A trans caprien though may have an entirely different head structure. So what effect would that have on the species view of gender?
+
+And because biology is messy, we should also rarely build bare chested, human faced males or fur covered females with goat heads.
+
+### Fauns
+Deer people.

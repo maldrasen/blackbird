@@ -17,3 +17,5 @@ I think an interesting way to handle all of this would be to have a character's 
 This mirrors how training works in ERA games as well, where a long training session can leave a character with lower energy the next day. 
 
 As a separate task we can also add a couple of status effects to mirror this behavior for health and mana. A disease that reduces max health until it's cured and maybe a curse that reduces max mana. We'll need to adjust the bar display to show both the normal max and the reduced max. 
+
+> Need to look into task 19 with this, though that task is more about how a character's sexual stamina effects their current attitude and sensations.

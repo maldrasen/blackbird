@@ -16,6 +16,3 @@ After a battle the monsters may drop loot and characters gain experience. If the
 The enlighten view for the training will work more like the Era games, where the anima and animus are spent to increase the sensitivities or increase sexual preferences. There are probably some training specific aspects that can be unlocked as well as sexual preferences grow in strength.
 
 > Moving this to 117 as part of the after battle control flow.
-
----
-**Notes (Claude):** `EnlightenSystem`/`EnlightenState` are stubs that just log skill improvements. The two branches are quite different — recommend splitting by branch. Battle enlighten: loot, XP, level-ups, attribute gains, quirk unlocks (overlaps [[017-game-over-episode]] victory). Training enlighten: spend anima/animus to raise sensitivities/preferences and unlock training quirks, Era-style. Each needs its own view under `views/enlighten/`. Design the progression/XP model once and share it with 017; blocked on that design.

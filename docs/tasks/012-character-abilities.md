@@ -11,7 +11,3 @@ We've implemented a single ability for the monsters. (The dick-punch) When a mon
 
 ### Ability Ideas
 - Charge attack - A character in the back row, charges forward, makes a single weapon attack. The ability only takes maybe 100ms, meaning they'll likely get to go again soon after. The ability has a long cooldown, preventing two characters with the ability from swapping back and forth, taking double turns.
-
-
----
-**Notes (Claude):** Infra exists — abilities are models built by the factories in `application/battle-abilities/factories`, characters reach them through the `BattleCommand` records in `data/battle-commands`, and `CharacterAbilitySystem.getCommands()` lists what a character can use (task 221, see `docs/reference/battle-abilities.md`). Monster random initial cooldowns are done. Three separable pieces remain: (a) resource costs (stamina vs mana; stamina restored post-battle) wired into command execution and the health/mana components; (b) a command that builds a character's own natural attacks, which needs the natural attack's possibility check to work without a target the way the weapon attack's does (see the note in `data/battle-commands/special-ability.js`); (c) an ability-learning/progression model — the real design unknown. Consider splitting (c) out. Overlaps quirk unlocks in [[045-implement-the-enlighten-view]].

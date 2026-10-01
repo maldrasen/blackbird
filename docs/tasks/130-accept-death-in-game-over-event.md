@@ -14,3 +14,4 @@ The second part is more involved as in order to accept death, we need to add a n
 
 The scenario will need to define it's unlock conditions. Could be as simple as advancing to level 5 first, or could be something more specific. 
 
+> We may not end up doing this. We still need to decide if we want to go with a legacy game or something more traditional. 

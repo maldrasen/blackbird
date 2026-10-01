@@ -25,4 +25,6 @@ For now just implement what we feel like doing and save the rest for follow on t
 
 ---
 
-I've added a couple of the item and violent requests. I'm leaving the task open for now. I need to go back and fill in more of the text. That, or hire a writer to do so, still feels too early for that though.
+> I've added a couple of the item and violent requests. I'm leaving the task open for now. I need to go back and fill in more of the text. That, or hire a writer to do so, still feels too early for that though.
+
+> This task and task 151 are more like rolling tasks. We'll always need to add more content. We should have a different way of tracking work like this.

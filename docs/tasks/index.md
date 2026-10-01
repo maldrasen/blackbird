@@ -4,7 +4,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 ## Priority 2
 
-- [003] Training Systems `5pt` #training — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
+- [3] Persisted Action Controls `5pt` — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
 - [006] Attitudes `5pt` #training — [006-attitudes.md](006-attitudes.md)
 - [007] Position Attitude Requirement `3pt` #training — [007-position-attitude-requirement.md](007-position-attitude-requirement.md)
 - [009] Descriptions `13pt` #character — [009-descriptions.md](009-descriptions.md)
@@ -40,8 +40,8 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [036] Update Sensation Calculations `8pt` #training — [036-update-sensation-calculations.md](036-update-sensation-calculations.md)
 - [037] Denial Reactions `8pt` #training — [037-denial-reactions.md](037-denial-reactions.md)
 - [038] SexAction isAvailable() and isEnabled() `3pt` — [038-sexaction-isavailable-and-isenabled.md](038-sexaction-isavailable-and-isenabled.md)
+- [41] More Species `13pt` — [041-more-species.md](041-more-species.md)
 - [044] Unwilling Actions Require Hands `3pt` — [044-unwilling-actions-require-hands.md](044-unwilling-actions-require-hands.md)
-- [047] Add New Species `13pt` — [047-add-new-species.md](047-add-new-species.md)
 - [113] Add statistics component `5pt` — [113-add-statistics-component.md](113-add-statistics-component.md)
 - [121] Add Capture Mechanics `8pt` — [121-add-capture-mechanics.md](121-add-capture-mechanics.md)
 - [130] Accept death in game over event `8pt` — [130-accept-death-in-game-over-event.md](130-accept-death-in-game-over-event.md)
@@ -64,7 +64,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [032] Body piercings `8pt` #character — [032-body-piercings.md](032-body-piercings.md)
 - [033] Sexual Fantasies `8pt` #training — [033-sexual-fantasies.md](033-sexual-fantasies.md)
 - [034] Character Portraits `8pt` #character — [034-character-portraits.md](034-character-portraits.md)
-- [101] Look for a Community `1pt` — [101-look-for-a-community.md](101-look-for-a-community.md)
 - [104] Lineage and Meta-Progression `21pt` — [104-lineage-and-meta-progression.md](104-lineage-and-meta-progression.md)
 - [115] Add deathblow messages `5pt` — [115-add-deathblow-messages.md](115-add-deathblow-messages.md)
 - [119] Dungeon color themes `3pt` — [119-dungeon-color-themes.md](119-dungeon-color-themes.md)
@@ -81,7 +80,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 - [039] Grinding Follow on Actions `3pt` #training — [039-grinding-follow-on-actions.md](039-grinding-follow-on-actions.md)
 - [040] Forced Blowjobs `3pt` #training — [040-forced-blowjobs.md](040-forced-blowjobs.md)
-- [041] More Species `5pt` #character — [041-more-species.md](041-more-species.md)
 - [042] All the way though `5pt` #training — [042-all-the-way-though.md](042-all-the-way-though.md)
 - [043] Additional Sex Actions / Body Part Types `21pt` #training — [043-additional-sex-actions-body-part-types.md](043-additional-sex-actions-body-part-types.md)
 - [169] Implement remember this effect `3pt` — [169-implement-remember-this-effect.md](169-implement-remember-this-effect.md)
