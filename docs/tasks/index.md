@@ -24,6 +24,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [250] Casting Spells `8pt` — [250-casting-spells.md](250-casting-spells.md)
 - [251] Learning Spells `5pt` — [251-learning-spells.md](251-learning-spells.md)
 - [252] Person Record `5pt` — [252-person-record.md](252-person-record.md)
+- [253] Conversation Component `8pt` — [253-conversation-component.md](253-conversation-component.md)
 
 ## Priority 3
 
