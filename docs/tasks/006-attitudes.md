@@ -11,4 +11,5 @@ When building a character's dialog it would be most useful to have some kind of 
 - Resistant (low control, no fear or respect)
 - Curious (low affection, low or no respect, no fear)
 - Cautious (no affection, low respect, moderate fear)
-I think I may work on some of the events and dialog first, to see what kind of attitudes that it makes sense for a character to take.
+
+> I think these attitudes are really more for the "barks" that happen during a sex scene. Short, sentence or fragments like, "Harder!", "Not so Hard!", "Woof!". The idea here is to collapse the large number of variables that any character can have into a smaller number of possible spaces to choose dialog from.
