@@ -23,6 +23,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [246] Party inventory overlay `5pt` — [246-party-inventory-overlay.md](246-party-inventory-overlay.md)
 - [250] Casting Spells `8pt` — [250-casting-spells.md](250-casting-spells.md)
 - [251] Learning Spells `5pt` — [251-learning-spells.md](251-learning-spells.md)
+- [252] Person Record `5pt` — [252-person-record.md](252-person-record.md)
 
 ## Priority 3
 
