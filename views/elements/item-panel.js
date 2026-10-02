@@ -23,9 +23,10 @@ global.ItemPanel = function() {
   }
 
   function buildArticle(entry) {
-    const icon = entry.icon ? `[${entry.icon}]` : '';
+    const article = Article.lookup(entry.articleCode);
+    const icon = article.getIcon() ? `[${article.getIcon()}]` : '';
 
-    return X.createElement(`<li data-code='${entry.articleCode}'>${icon} ${entry.quantity} ${entry.name}</li>`);
+    return X.createElement(`<li data-code='${entry.articleCode}'>${icon} ${entry.quantity} ${article.getName()}</li>`);
   }
 
   function buildItem(item) {
