@@ -17,8 +17,19 @@ global.ItemPanel = function() {
   // have other inventories, like the equipment depots, they're never displayed to players.
   function update() {
     X.empty(itemList);
+    Inventory().listItems().forEach(entry => {
+      itemList.appendChild(entry.articleCode ? buildArticle(entry): buildItem(entry));
+    });
+  }
 
-    Inventory().listItems().forEach(item => { console.log("Add:",item); });
+  function buildArticle(entry) {
+    const icon = entry.icon ? `[${entry.icon}]` : '';
+
+    return X.createElement(`<li data-code='${entry.articleCode}'>${icon} ${entry.quantity} ${entry.name}</li>`);
+  }
+
+  function buildItem(item) {
+    // TODO
   }
 
   return {

@@ -4,8 +4,8 @@
 
   .main-panel {
     display: flex;
-    .item-area { flex-grow:1; }
-    .detail-area { flex-grow:1; }
+    .item-area { width: 50%; }
+    .detail-area { width: 50%; }
   }
 
   .party-select-frame {
