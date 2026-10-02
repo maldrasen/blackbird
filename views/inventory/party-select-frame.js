@@ -1,5 +1,5 @@
 global.PartySelectFrame = function() {
-  const frameElement = X.createElement(`<div class='party-select-frame'></div>`);
+  const frameElement = X.createElement(`<div class='party-select-frame hide'></div>`);
   const characterFrames = {};
 
   Object.keys(GameSystem.getState().getPartyConfiguration()).forEach(id => {
@@ -36,7 +36,8 @@ global.PartySelectFrame = function() {
 
   return {
     getElement: () => { return frameElement; },
+    show: () => { X.removeClass(frameElement,'hide'); },
+    hide: () => { X.addClass(frameElement, 'hide'); },
     update,
   }
-
 }
