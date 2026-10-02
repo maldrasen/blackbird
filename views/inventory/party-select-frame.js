@@ -1,9 +1,19 @@
-global.PartySelectFrame = (function() {
+global.PartySelectFrame = function() {
+  let frameElement;
 
-  function buildInto(selector) {}
-
-  return {
-    buildInto,
+  function build() {
+    frameElement = X.createElement(`<div class='party-select-frame'></div>`);
+    update();
+    return frameElement;
   }
 
-})();
+  function update() {
+    X.empty(frameElement);
+  }
+
+  return {
+    build,
+    update,
+  }
+
+}

@@ -1,5 +1,9 @@
 global.InventoryOverlay = (function() {
 
+  let itemPanel;
+  let itemDetailPanel;
+  let partySelectFrame;
+
   function init() {
     X.onClick(`#inventoryOverlay .close-button`, close);
   }
@@ -7,11 +11,13 @@ global.InventoryOverlay = (function() {
   function open() {
     X.loadDocument('#inventoryOverlay','views/templates/inventory-overlay.html');
 
-    ItemPanel.buildInto('#inventoryOverlay .item-panel');
-    ItemDetailPanel.buildInto('#inventoryOverlay .item-detail-panel');
-    PartySelectFrame.buildInto('#inventoryOverlay .party-frame');
+    itemPanel = ItemPanel();
+    itemDetailPanel = ItemDetailPanel();
+    partySelectFrame = PartySelectFrame();
 
-    update();
+    X.fill('#inventoryOverlay .item-area', itemPanel.build());
+    X.fill('#inventoryOverlay .detail-area', itemDetailPanel.build());
+    X.fill('#inventoryOverlay .party-area', partySelectFrame.build());
 
     WindowManager.push(InventoryOverlay);
     X.removeClass('#inventoryOverlay','hide');
@@ -23,17 +29,15 @@ global.InventoryOverlay = (function() {
     X.addClass('#inventoryOverlay','hide');
     X.addClass('#overlayCover','hide');
     WindowManager.remove(InventoryOverlay);
-  }
 
-  function update() {
-    console.log("Build Panel");
+    itemPanel = null;
+    itemDetailPanel = null;
   }
 
   return {
     init,
     open,
     close,
-    update,
   }
 
 })();
