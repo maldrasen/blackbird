@@ -1,6 +1,7 @@
 
 Consumable.register('ale',{
-  name: `Ale`,
+  name: `Bottle of Ale`,
+  pluralName: 'Bottles of Ale',
   description: `A brown earthenware bottle filled with ale of unknown provenance.`,
   category: InventoryCategory.drug,
   tags: ['alcohol'],
@@ -20,7 +21,7 @@ Consumable.register('ale',{
 });
 
 Consumable.register('kumis',{
-  name: `Kumis`,
+  name: `Kumis Gourd`,
   description: `A bottle gourd filled with fermented mare's milk. It's an acquired taste.`,
   category: InventoryCategory.drug,
   tags: ['alcohol'],
@@ -37,7 +38,8 @@ Consumable.register('kumis',{
 });
 
 Consumable.register('grog',{
-  name: `Grog`,
+  name: `Jug of Grog`,
+  pluralName: 'Jugs of Grog',
   description: `A brown earthenware jug filled with a diluted mixture of rum and beer.`,
   category: InventoryCategory.drug,
   tags: ['alcohol'],
@@ -56,7 +58,8 @@ Consumable.register('grog',{
 // TODO: Maybe a wine or two.
 
 Consumable.register('absinthe',{
-  name: `Absinthe`,
+  name: `Bottle of Absinthe`,
+  pluralName: `Bottles of Absinthe`,
   description: `A bright green spirit made from anise, wormwood, and sweet fennel.`,
   category: InventoryCategory.drug,
   tags: ['alcohol'],
@@ -74,7 +77,8 @@ Consumable.register('absinthe',{
 });
 
 Consumable.register('rakia',{
-  name: `Rakia`,
+  name: `Bottle of Rakia`,
+  pluralName: `Bottles of Rakia`,
   description: `A type of sweet brandy made from many of the fruits found growing in the dungeon.`,
   category: InventoryCategory.drug,
   tags: ['alcohol'],
