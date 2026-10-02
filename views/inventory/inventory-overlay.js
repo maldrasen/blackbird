@@ -11,9 +11,10 @@ global.InventoryOverlay = (function() {
   function open() {
     X.loadDocument('#inventoryOverlay','views/templates/inventory-overlay.html');
 
-    itemPanel = ItemPanel();
-    itemDetailPanel = ItemDetailPanel();
     partySelectFrame = PartySelectFrame();
+    itemDetailPanel = ItemDetailPanel();
+    itemPanel = ItemPanel();
+    itemPanel.setDetailPanel(itemDetailPanel);
 
     X.fill('#inventoryOverlay .item-area', itemPanel.build());
     X.fill('#inventoryOverlay .detail-area', itemDetailPanel.build());

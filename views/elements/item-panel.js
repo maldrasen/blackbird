@@ -1,4 +1,5 @@
 global.ItemPanel = function() {
+  let detailPanel;
   let panelElement;
   let itemList;
 
@@ -46,5 +47,6 @@ global.ItemPanel = function() {
   return {
     build,
     update,
+    setDetailPanel: panel => { detailPanel = panel; },
   }
 }
