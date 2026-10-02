@@ -1,6 +1,13 @@
 @use "../variables";
 
 #inventoryOverlay {
+
+  .main-panel {
+    display: flex;
+    .item-area { flex-grow:1; }
+    .detail-area { flex-grow:1; }
+  }
+
   .party-select-frame {
     position: absolute;
 
