@@ -97,6 +97,12 @@
   width: calc(100% - 400px);
 }
 
+.overlay.very-narrow {
+  left: 300px;
+  min-width: 600px;
+  width: calc(100% - 600px);
+}
+
 .overlay.small {
   left: 200px;
   top: 200px;
@@ -143,6 +149,12 @@
   left: 200px;
   width: calc(100% - 410px);
   min-width: 390px;
+}
+
+.overlay-footer.very-narrow {
+  left: 300px;
+  width: calc(100% - 610px);
+  min-width: 590px;
 }
 
 .overlay-footer.small {

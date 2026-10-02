@@ -17,7 +17,7 @@ global.InventoryOverlay = (function() {
 
     X.fill('#inventoryOverlay .item-area', itemPanel.build());
     X.fill('#inventoryOverlay .detail-area', itemDetailPanel.build());
-    X.fill('#inventoryOverlay .party-area', partySelectFrame.build());
+    X.fill('#inventoryOverlay .party-area', partySelectFrame.getElement());
 
     WindowManager.push(InventoryOverlay);
     X.removeClass('#inventoryOverlay','hide');

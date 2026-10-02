@@ -1,13 +1,47 @@
 @use "../variables";
 
 #inventoryOverlay {
+  .party-select-frame {
+    position: absolute;
 
-  .party-area {
-    background-color: rgb(130 119 88 / 0.25);
+    width: 228px;
+    right: 50px;
+    top: 70px;
+    padding: 10px;
+
+    border: variables.$border-normal;
+    border-left: none;
+    z-index: variables.$z-overlay;
+
+    background-color: rgb(20 20 20 / 0.5);
+    box-shadow: inset 15px 0 20px -20px rgb(0, 0, 0), variables.$shadow-overlay;
+    backdrop-filter: blur(5px);
   }
 
-  .command-panel {
-    background-color: rgb(97 130 88 / 0.25);
+  .character-frame {
+    display: flex;
+    height: 68px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    background-color: rgb(10 10 10 / 0.75);
+    border: variables.$border-light;
+    box-shadow: variables.$shadow-shallow;
+
+    .portrait {
+      height: 66px;
+      width: 66px;
+      background-size: contain;
+    }
+
+    .right-side {
+      width: 161px;
+      padding: 5px;
+      .name {
+        font-size: variables.$fs-small;
+        border-bottom: variables.$border-light;
+      }
+    }
   }
+  .character-frame:last-child { margin-bottom:0; }
 
 }

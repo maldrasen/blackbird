@@ -15,3 +15,7 @@ The overlay is opened from the game state frame and lists everything in `Invento
 - **Drop** with a confirmation, destroying the item.
 
 The old inventory panel's row markup and styles (deleted in 243, recoverable from git history) are a fine starting point. This overlay is also the natural home for the battle use-item command when that gets implemented.
+
+> Actually, perhaps we only show the targeting panel when an item is selected that needs it.
+
+> Actually actually, we can make the inventory a "very narrow" overlay, place the party selection into a right side "wing". Even in a very narrow overlay the frame is still wider than it is tall in the minimum size window, so left and right sides for the list and details still work.
