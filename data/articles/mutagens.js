@@ -58,7 +58,7 @@ Consumable.register('minotaur-milk',{
 Consumable.register('centaur-milk',{
   name: `Centaur's Milk`,
   description: `A centaur's milk is more potent than even a minotaur's, though rarer, given the difficulty of finding 
-    a centaur who wants to be milked.`,
+    a centaur who would allow himself to be milked.`,
   category: InventoryCategory.mutagen,
   tags: ['manly','milk'],
   rarity: Rarity.unusual,
@@ -76,6 +76,8 @@ Consumable.register('centaur-milk',{
 
 Consumable.register('milk-of-kindness',{
   name: `The Milk of Human Kindness`,
+  pluralName: `Milks of Human Kindness`,
+  nameType: 'proper',
   description: `This rare milk may have named ironically, given the painful nature of the extraction process.`,
   category: InventoryCategory.mutagen,
   tags: ['milk'],

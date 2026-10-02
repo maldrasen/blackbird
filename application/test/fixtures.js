@@ -18,6 +18,8 @@ global.Fixtures = (function() {
     Inventory().addArticle('celadon-tear',5);
     Inventory().addArticle('cerulean-tear',5);
     Inventory().addArticle('ebony-tear',5);
+    Inventory().addArticle('minotaur-milk',2);
+    Inventory().addArticle('milk-of-kindness',1);
   }
 
   function setupBattle() {
