@@ -1,6 +1,8 @@
 global.InventoryOverlay = (function() {
 
-  function init() {}
+  function init() {
+    X.onClick(`#inventoryOverlay .close-button`, close);
+  }
 
   function open() {
     X.loadDocument('#inventoryOverlay','views/templates/inventory-overlay.html');
