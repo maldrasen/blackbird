@@ -12,6 +12,7 @@ global.Views = (function() {
     EpisodeView.init();
     GameStateFrame.init();
     GeneralOverlay.init();
+    InventoryOverlay.init();
     KeyBindingDispatcher.init();
     KeyBindingsPanel.init();
     LevelUpOverlay.init();

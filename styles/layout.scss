@@ -63,9 +63,8 @@
 
 
 // === Overlay ===
-// Overlays come in a few different sizes. The normal overlay takes up most of
-// the screen. The narrow and small overlays have a larger padding to the
-// screen edge, but both are larger than most dialogs will be.
+// Overlays come in a few different sizes. The normal overlay takes up most of the screen. The narrow and small
+// overlays have a larger padding to the screen edge, but both are larger than most dialogs will be.
 
 .overlay {
   position: absolute;
@@ -181,6 +180,13 @@
 }
 .overlay.with-header {
   top: 80px;
+}
+
+// The overlay content defines an area that is absolutely positioned in the correct z-index layer. Used when we need a
+// more complex frame layout than a main frame and a footer as in the inventory overlay.
+.overlay-content {
+  position: absolute;
+  z-index: variables.$z-overlay;
 }
 
 #overlayCover {
