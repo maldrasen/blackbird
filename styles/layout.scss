@@ -141,10 +141,6 @@
   z-index: variables.$z-overlay-footer;
 }
 
-.overlay-footer.button-row {
-  text-align: right;
-}
-
 .overlay-footer.narrow {
   left: 200px;
   width: calc(100% - 410px);

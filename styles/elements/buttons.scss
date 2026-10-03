@@ -55,6 +55,13 @@
   font-size: variables.$fs-tiny;
 }
 
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 5px;
+}
+
 .button.highlight {
   box-shadow: variables.$shadow-glow-frame;
 }
