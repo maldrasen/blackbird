@@ -39,7 +39,7 @@ global.Article = (function() {
       getPluralName,
       getNameWithQuantity,
       getDescription: () => { return article.description; },
-      getIcon: () => { return article.icon; },
+      getIcon: () => { return article.icon || 'missing.png'; },
       getIconColor: () => { return article.iconColor; },
       getUsableWhen: () => { return article.usableWhen || UsableWhen.never },
       getTags: () => { return [...(article.tags||[])]; },

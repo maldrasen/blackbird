@@ -32,21 +32,25 @@ global.ItemPanel = function() {
   // that kind of works. (2 Milks of Human Kindness is also kind of funny)
   function buildArticle(code, quantity) {
     const article = Article.lookup(code);
-    const icon = article.getIcon() ? `[${article.getIcon()}]` : '';
-    const element = X.createElement(`<li data-type='article' data-code='${code}'>${icon} ${article.getNameWithQuantity(quantity)}</li>`);
-
-    element.addEventListener('click', event => { selectItem(event.target); });
-
+    const element = buildEntry(article.getIcon(), article.getNameWithQuantity(quantity));
+    element.dataset.type = 'article';
+    element.dataset.code = code;
     return element;
   }
 
   function buildItem(id) {
     const item = Item(id);
-    const icon = item.getIcon() ? `[${item.getIcon()}]` : '';
-    const element = X.createElement(`<li data-type='item' data-id='${id}'>${icon} ${item.getName()}</li>`);
+    const element = buildEntry(item.getIcon(), item.getName());
+    element.dataset.type = 'item';
+    element.dataset.id = id;
+    return element;
+  }
 
+  // Entries without an icon keep the empty icon element so that the names stay aligned.
+  function buildEntry(icon, name) {
+    const element = X.createElement(`<li><div class='item-icon'></div><div class='item-name'>${name}</div></li>`);
+    element.querySelector('.item-icon').style['background-image'] = X.assetURL(`icons/${icon}`);
     element.addEventListener('click', event => { selectItem(event.currentTarget); });
-
     return element;
   }
 

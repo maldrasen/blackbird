@@ -73,7 +73,7 @@ global.BaseEquipment = (function() {
     return {
       getCode: () => { return code; },
       getName,
-      getIcon: () => { return record.icon; },
+      getIcon: () => { return record.icon || 'missing.png'; },
       getType: () => { return record.type; },
       getSkill,
       getSlots,

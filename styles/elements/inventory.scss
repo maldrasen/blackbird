@@ -6,12 +6,23 @@
 
 .item-panel {
   li {
+    display: flex;
+    align-items: center;
     padding: 2px 5px;
     margin-bottom: 2px;
     white-space: nowrap;
   }
   li:last-child {
     margin-bottom: 0;
+  }
+  .item-icon {
+    flex: none;
+    height: 24px;
+    width: 24px;
+    margin-right: 6px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
   }
   .selected {
     background-color: variables.$select-active;
