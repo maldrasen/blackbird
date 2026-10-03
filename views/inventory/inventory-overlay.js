@@ -33,6 +33,7 @@ global.InventoryOverlay = (function() {
 
     itemPanel = null;
     itemDetailPanel = null;
+    partySelectFrame = null;
   }
 
   return {

@@ -8,12 +8,13 @@
   li {
     padding: 2px 5px;
     margin-bottom: 2px;
+    white-space: nowrap;
   }
   li:last-child {
     margin-bottom: 0;
   }
   .selected {
-    background-color: variables.$select-active
+    background-color: variables.$select-active;
   }
 }
 

@@ -194,13 +194,6 @@
   top: 80px;
 }
 
-// The overlay content defines an area that is absolutely positioned in the correct z-index layer. Used when we need a
-// more complex frame layout than a main frame and a footer as in the inventory overlay.
-.overlay-content {
-  position: absolute;
-  z-index: variables.$z-overlay;
-}
-
 #overlayCover {
   position: absolute;
   top: 0;
