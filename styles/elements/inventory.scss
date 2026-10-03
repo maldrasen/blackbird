@@ -46,6 +46,10 @@
     color: variables.$fg-weak;
   }
   .value {
+    display: flex;
+    gap: 8px;
+    padding-bottom: 5px;
     margin-bottom: 10px;
+    border-bottom: variables.$border-normal;
   }
 }

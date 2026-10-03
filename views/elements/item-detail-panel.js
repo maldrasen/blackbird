@@ -37,12 +37,14 @@ global.ItemDetailPanel = function() {
       <div class='top'>
         <div class='name'>${article.getName()}</div>
         <div class='description'>${article.getDescription()}</div>
-        <div class='value'>Value: ${JSON.stringify(CurrencyHelper.valueToCurrency(article.getValue()))}</div>
+        <div class='value'><span class='label'>Value</span></div>
       </div>
       <div class='actions button-row'>
         <a href='#' class='button button-danger drop-button'>Drop</a>
       </div>
     </div>`);
+
+    details.querySelector('.value').appendChild(CurrencyDisplay.build(article.getValue()));
 
     const dropButton = details.querySelector('.drop-button');
     dropButton.addEventListener('click', () => { console.log("Drop:",article.getName()) });

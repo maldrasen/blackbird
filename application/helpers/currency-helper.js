@@ -13,16 +13,16 @@ global.CurrencyHelper = (function() {
   //    Golden Dragon  : is 4 Crowns (value 216,000)
 
   const denominations = [
-    { code:'nit',     value:1 },
-    { code:'thistle', value:5 },
-    { code:'mark',    value:15 },
-    { code:'crow',    value:60 },
-    { code:'tulip',   value:300 },
-    { code:'chalice', value:900 },
-    { code:'stag',    value:3600 },
-    { code:'rose',    value:18000 },
-    { code:'crown',   value:54000 },
-    { code:'dragon',  value:216000 },
+    { code:'nit',     value:1,       name:'Tin Nit'        },
+    { code:'thistle', value:5,       name:'Copper Thistle' },
+    { code:'mark',    value:15,      name:'Copper Mark'    },
+    { code:'crow',    value:60,      name:'Copper Crow'    },
+    { code:'tulip',   value:300,     name:'Silver Tulip'   },
+    { code:'chalice', value:900,     name:'Silver Chalice' },
+    { code:'stag',    value:3600,    name:'Silver Stag'    },
+    { code:'rose',    value:18000,   name:'Golden Rose'    },
+    { code:'crown',   value:54000,   name:'Golden Crown'   },
+    { code:'dragon',  value:216000,  name:'Golden Dragon'  },
   ]
 
   // Transactions in the game are vaguely medieval flavored. Each transaction should really only involve a few coins.
@@ -83,6 +83,7 @@ global.CurrencyHelper = (function() {
   }
 
   return {
+    getName: code => { return denominations.find(d => d.code === code).name },
     valueToCurrency,
     currencyToValue,
     findHighCoin,
