@@ -30,11 +30,11 @@ global.ItemDetailPanel = function() {
     return [UsableWhen.outOfCombat, UsableWhen.anyTime].includes(article.getUsableWhen());
   }
 
-  function buildArticleDetails(article) {
+  function buildDetails(thing) {
     const details = X.createElement(`<div class='details'>
       <div class='top'>
-        <div class='name'>${article.getName()}</div>
-        <div class='description'>${article.getDescription()}</div>
+        <div class='name'>${thing.getName()}</div>
+        <div class='description'>${thing.getDescription()}</div>
         <div class='value'><span class='label'>Value</span></div>
       </div>
       <div class='actions button-row'>
@@ -42,10 +42,16 @@ global.ItemDetailPanel = function() {
       </div>
     </div>`);
 
-    details.querySelector('.value').appendChild(CurrencyDisplay.build(article.getValue()));
+    details.querySelector('.value').appendChild(CurrencyDisplay.build(thing.getValue()));
 
     const dropButton = details.querySelector('.drop-button');
-    dropButton.addEventListener('click', () => { console.log("Drop:",article.getName()) });
+    dropButton.addEventListener('click', () => { console.log("Drop:",thing.getName()) });
+
+    return details;
+  }
+
+  function buildArticleDetails(article) {
+    const details = buildDetails(article);
 
     if (isUsableNow(article)) {
       const disabledState = partySelect.getSelected() == null ? 'disabled' : '';
@@ -57,28 +63,11 @@ global.ItemDetailPanel = function() {
     return details;
   }
 
-  // TODO: This looks copy/pasted for now, but we'll need to add more sections to the top panel for weapon and armor
-  //       properties like damage and absorption. We'll need another section for enchantment details as well. We could
-  //       create the base details panel in a shared function though. We also need to display rarity somehow as well.
+  // TODO: We'll need to add more sections to the top panel for weapon and armor properties like damage and absorption.
+  //       We'll need another section for enchantment details as well. We also need to display rarity somehow as well.
 
   function buildItemDetails(item) {
-    const details = X.createElement(`<div class='details'>
-      <div class='top'>
-        <div class='name'>${item.getName()}</div>
-        <div class='description'>${item.getDescription()}</div>
-        <div class='value'><span class='label'>Value</span></div>
-      </div>
-      <div class='actions button-row'>
-        <a href='#' class='button button-danger drop-button'>Drop</a>
-      </div>
-    </div>`);
-
-    details.querySelector('.value').appendChild(CurrencyDisplay.build(item.getValue()));
-
-    const dropButton = details.querySelector('.drop-button');
-    dropButton.addEventListener('click', () => { console.log("Drop:",item.getName()) });
-
-    return details;
+    return buildDetails(item);
   }
 
   return {
