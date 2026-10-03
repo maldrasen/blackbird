@@ -2,6 +2,7 @@ global.ItemPanel = function() {
   let detailPanel;
   let panelElement;
   let itemList;
+  let selected;
 
   // Create and return a list element.
   function build() {
@@ -32,13 +33,47 @@ global.ItemPanel = function() {
   function buildArticle(code, quantity) {
     const article = Article.lookup(code);
     const icon = article.getIcon() ? `[${article.getIcon()}]` : '';
-    return X.createElement(`<li data-type='article' data-code='${code}'>${icon} ${article.getNameWithQuantity(quantity)}</li>`);
+    const element = X.createElement(`<li data-type='article' data-code='${code}'>${icon} ${article.getNameWithQuantity(quantity)}</li>`);
+
+    element.addEventListener('click', event => { selectItem(event.target); });
+
+    return element;
   }
 
   function buildItem(id) {
     const item = Item(id);
     const icon = item.getIcon() ? `[${item.getIcon()}]` : '';
-    return X.createElement(`<li data-type='item' data-id='${id}'>${icon} ${item.getName()}</li>`);
+    const element = X.createElement(`<li data-type='item' data-id='${id}'>${icon} ${item.getName()}</li>`);
+
+    element.addEventListener('click', event => { selectItem(event.target); });
+
+    return element;
+  }
+
+  function selectItem(element) {
+
+    if (element == null || element === selected) {
+      if (element) { X.removeClass(element,'selected'); }
+
+      selected = null;
+      detailPanel.update(null);
+      return;
+    }
+
+    selected = element;
+
+    const previous = element.parentElement.querySelector('.selected');
+    if (previous) {
+      X.removeClass(previous,'selected')
+    }
+
+    if (selected) {
+      X.addClass(selected, 'selected');
+    }
+
+    if (detailPanel) {
+      detailPanel.update(selected.dataset.type === 'item' ? { id:selected.dataset.id } : { code:selected.dataset.code });
+    }
   }
 
   return {

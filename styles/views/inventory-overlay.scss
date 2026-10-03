@@ -4,8 +4,21 @@
 
   .main-panel {
     display: flex;
-    .item-area { width: 50%; }
-    .detail-area { width: 50%; }
+    background-color: rgb(10 10 10 / 0.5);
+
+    .item-area {
+      width: 40%;
+      margin: 5px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      border: variables.$border-light;
+      box-shadow: variables.$shadow-frame;
+    }
+
+    .detail-area {
+      width: 60%;
+      margin: 5px;
+    }
   }
 
   .party-select-frame {

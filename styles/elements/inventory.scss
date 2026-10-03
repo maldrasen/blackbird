@@ -5,7 +5,16 @@
 // to display item details.
 
 .item-panel {
-  background-color: rgb(88 104 130 / 0.25);
+  li {
+    padding: 2px 5px;
+    margin-bottom: 2px;
+  }
+  li:last-child {
+    margin-bottom: 0;
+  }
+  .selected {
+    background-color: variables.$select-active
+  }
 }
 
 .item-detail-panel {

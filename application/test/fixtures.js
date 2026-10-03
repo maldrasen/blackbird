@@ -46,6 +46,8 @@ global.Fixtures = (function() {
 
   function setupDungeon() {
     setupGame({ location:'the-well' });
+    grantLoot();
+
     BattleFixtures.prepareForBattle();
     DungeonSystem.createDungeon();
     DungeonSystem.setLevel(1,'up','dungeon');

@@ -21,13 +21,12 @@ global.Article = (function() {
 
     const article = { ...articles[code] };
 
-    function getPluralName() {
-      return article.pluralName || EnglishHelper.pluralize(article.name);
-    }
+    function getNameType() { return article.nameType || 'common'; }
+    function getPluralName() { return article.pluralName || EnglishHelper.pluralize(article.name); }
 
     function getNameWithQuantity(quantity) {
       const name = (quantity === 1) ? article.name : getPluralName();
-      const count = (article.nameType === 'common') ? quantity : '';
+      const count = (getNameType() === 'common') ? quantity : '';
       return `${count} ${name}`;
     }
 
@@ -36,7 +35,7 @@ global.Article = (function() {
       getType: () => { return article.type || ArticleType.article; },
       getCategory: () => { return article.category; },
       getName: () => { return article.name; },
-      getNameType: () => { return article.nameType || 'common' },
+      getNameType,
       getPluralName,
       getNameWithQuantity,
       getDescription: () => { return article.description; },
