@@ -26,8 +26,8 @@ global.Article = (function() {
 
     function getNameWithQuantity(quantity) {
       const name = (quantity === 1) ? article.name : getPluralName();
-      const count = (getNameType() === 'common') ? quantity : '';
-      return `${count} ${name}`;
+      let count = (getNameType() === 'proper' && quantity === 1) ? "" : quantity;
+      return `${count} ${name}`.trim();
     }
 
     return {
