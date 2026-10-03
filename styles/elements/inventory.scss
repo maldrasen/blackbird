@@ -11,6 +11,7 @@
     padding: 2px 5px;
     margin-bottom: 2px;
     white-space: nowrap;
+    cursor: pointer;
   }
   li:last-child {
     margin-bottom: 0;
@@ -30,5 +31,21 @@
 }
 
 .item-detail-panel {
-  background-color: rgb(130 88 128 / 0.25);
+  .details {
+    padding: 10px;
+    font-family: "habibi", serif;
+  }
+  .name {
+    margin-bottom: 5px;
+    color: variables.$fg-strong;
+    font-size: variables.$fs-big;
+    border-bottom: variables.$border-normal;
+  }
+  .description {
+    margin-bottom: 10px;
+    color: variables.$fg-weak;
+  }
+  .value {
+    margin-bottom: 10px;
+  }
 }

@@ -13,6 +13,7 @@ global.InventoryOverlay = (function() {
 
     partySelectFrame = PartySelectFrame();
     itemDetailPanel = ItemDetailPanel();
+    itemDetailPanel.setPartySelect(partySelectFrame);
     itemPanel = ItemPanel();
     itemPanel.setDetailPanel(itemDetailPanel);
 

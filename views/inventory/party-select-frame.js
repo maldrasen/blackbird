@@ -36,6 +36,7 @@ global.PartySelectFrame = function() {
 
   return {
     getElement: () => { return frameElement; },
+    getSelected: () => { return null; },
     show: () => { X.removeClass(frameElement,'hide'); },
     hide: () => { X.addClass(frameElement, 'hide'); },
     update,
