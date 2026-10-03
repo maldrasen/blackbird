@@ -1,5 +1,6 @@
 global.ItemDetailPanel = function() {
   let panelElement;
+  let itemPanel;
   let partySelect;
 
   // Create and return a panel element;
@@ -30,7 +31,10 @@ global.ItemDetailPanel = function() {
     return [UsableWhen.outOfCombat, UsableWhen.anyTime].includes(article.getUsableWhen());
   }
 
-  function buildDetails(thing) {
+  // TODO: Items and articles will also need a canDrop() function because some items may not be droppable. Quest items
+  //       and such.
+
+  function buildDetails(thing, onDrop) {
     const details = X.createElement(`<div class='details'>
       <div class='top'>
         <div class='name'>${thing.getName()}</div>
@@ -43,15 +47,17 @@ global.ItemDetailPanel = function() {
     </div>`);
 
     details.querySelector('.value').appendChild(CurrencyDisplay.build(thing.getValue()));
-
-    const dropButton = details.querySelector('.drop-button');
-    dropButton.addEventListener('click', () => { console.log("Drop:",thing.getName()) });
+    details.querySelector('.drop-button').addEventListener('click', onDrop);
 
     return details;
   }
 
   function buildArticleDetails(article) {
-    const details = buildDetails(article);
+    const code = article.getCode();
+    const details = buildDetails(article, () => {
+      const name = article.getNameWithQuantity(Inventory().getArticleQuantity(code));
+      confirmDrop(name, () => Inventory().setArticleQuantity(code, 0));
+    });
 
     if (isUsableNow(article)) {
       const disabledState = partySelect.getSelected() == null ? 'disabled' : '';
@@ -67,12 +73,24 @@ global.ItemDetailPanel = function() {
   //       We'll need another section for enchantment details as well. We also need to display rarity somehow as well.
 
   function buildItemDetails(item) {
-    return buildDetails(item);
+    return buildDetails(item, () => {
+      confirmDrop(item.getName(), () => Inventory().dropItem(item.getId()));
+    });
+  }
+
+  // Dropping an item or an article needs to update this and the item panel after the item has been dropped.
+  function confirmDrop(name, drop) {
+    Confirmation.show({ text:`Drop ${name}?`, onConfirm:() => {
+      drop();
+      update(null);
+      if (itemPanel) { itemPanel.update(); }
+    }});
   }
 
   return {
     build,
     update,
     setPartySelect: select => { partySelect = select; },
+    setItemPanel: panel => { itemPanel = panel; },
   }
 }
