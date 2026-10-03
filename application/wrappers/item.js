@@ -34,11 +34,16 @@ global.Item = function(id) {
     return getBase().isWeapon() ? WeaponEnchantment(id, enchantment) : ArmorEnchantment(id, enchantment);
   }
 
+  function getDescription() {
+    return `[TODO Item Descriptions]`;
+  }
+
   return {
     getId: () => { return id; },
     getBase,
     getName: () => { return getItemComponent().name; },
     getNameType: () => { return getItemComponent().nameType; },
+    getDescription,
     getIcon: () => { return getBase().getIcon(); },
     getSkill: () => { return getBase().getSkill(); },
     getCategory,
