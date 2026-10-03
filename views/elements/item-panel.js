@@ -54,9 +54,8 @@ global.ItemPanel = function() {
 
     if (element == null || element === selected) {
       if (element) { X.removeClass(element,'selected'); }
-
+      if (detailPanel) { detailPanel.update(null); }
       selected = null;
-      detailPanel.update(null);
       return;
     }
 
