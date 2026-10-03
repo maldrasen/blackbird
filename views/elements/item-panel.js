@@ -19,7 +19,7 @@ global.ItemPanel = function() {
   function update() {
     X.empty(itemList);
     Inventory().listItems().forEach(entry => {
-      itemList.appendChild(entry.articleCode ? buildArticle(entry): buildItem(entry));
+      itemList.appendChild(entry.articleCode ? buildArticle(entry.articleCode, entry.quantity): buildItem(entry.itemId));
     });
   }
 
@@ -29,19 +29,16 @@ global.ItemPanel = function() {
   // I added "The Milk of Human Kindness" partially as a joke, partially as a Fallout reference, and because we need a
   // human mutagen. It's a rare case though that acts like a proper name (it starts with "The") but has a plural form
   // that kind of works. (2 Milks of Human Kindness is also kind of funny)
-  function buildArticle(entry) {
-    const article = Article.lookup(entry.articleCode);
+  function buildArticle(code, quantity) {
+    const article = Article.lookup(code);
     const icon = article.getIcon() ? `[${article.getIcon()}]` : '';
-    const name = (entry.quantity === 1) ? article.getName() : article.getPluralName();
-    const quantity = (article.getNameType() === 'common') ? entry.quantity : '';
-
-    return X.createElement(`<li data-type='article' data-code='${entry.articleCode}'>${icon} ${quantity} ${name}</li>`);
+    return X.createElement(`<li data-type='article' data-code='${code}'>${icon} ${article.getNameWithQuantity(quantity)}</li>`);
   }
 
-  function buildItem(entry) {
-    const item = Item(entry.itemId);
+  function buildItem(id) {
+    const item = Item(id);
     const icon = item.getIcon() ? `[${item.getIcon()}]` : '';
-    return X.createElement(`<li data-type='item' data-id='${entry.itemId}'>${icon} ${item.getName()}</li>`);
+    return X.createElement(`<li data-type='item' data-id='${id}'>${icon} ${item.getName()}</li>`);
   }
 
   return {
