@@ -31,9 +31,7 @@ global.WeaverElements = (function() {
 
   function lootEntry(entry) {
     if (entry.articleCode) {
-      const name = Article.lookup(entry.articleCode).getName();
-      const label = (entry.quantity === 1) ? name : EnglishHelper.pluralize(name);
-      return `<li>${entry.quantity} ${label}</li>`;
+      return `<li>${Article.lookup(entry.articleCode).getNameWithQuantity(entry.quantity)}</li>`;
     }
 
     if (entry.itemId) {
