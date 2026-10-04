@@ -12,6 +12,7 @@
   border: 1px solid color.adjust($color, $alpha: -0.8);
   border-radius: 3px;
   box-shadow: variables.$shadow-button;
+  font-family: "Roboto", sans-serif;
 
   &:focus {
     color: color.adjust($color, $alpha: -0.25) !important;
@@ -52,6 +53,13 @@
   padding: 0 8px;
   line-height: 16px;
   font-size: variables.$fs-tiny;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 5px;
 }
 
 .button.highlight {

@@ -1,0 +1,106 @@
+@use "../variables";
+
+#inventoryOverlay {
+
+  .main-panel {
+    display: flex;
+    background-color: rgb(10 10 10 / 0.5);
+
+    .item-area {
+      width: 40%;
+      margin: 5px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      border: variables.$border-light;
+      box-shadow: variables.$shadow-frame;
+    }
+
+    .detail-area {
+      width: 60%;
+      margin: 5px;
+    }
+  }
+
+  .party-select-frame {
+    position: absolute;
+
+    width: 228px;
+    right: 50px;
+    top: 70px;
+    padding: 10px;
+
+    border: variables.$border-normal;
+    border-left: none;
+    z-index: variables.$z-overlay;
+
+    background-color: rgb(20 20 20 / 0.5);
+    box-shadow: inset 15px 0 20px -20px rgb(0, 0, 0), variables.$shadow-overlay;
+    backdrop-filter: blur(5px);
+  }
+
+  .character-frame {
+    display: flex;
+    height: 68px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    background-color: rgb(10 10 10 / 0.75);
+    border: variables.$border-light;
+    box-shadow: variables.$shadow-shallow;
+
+    .portrait {
+      height: 66px;
+      width: 66px;
+      background-size: contain;
+    }
+
+    .right-side {
+      width: 161px;
+      padding: 5px;
+
+      .name-row {
+        height: 20px;
+        position: relative;
+        border-bottom: variables.$border-light;
+      }
+      .name {
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      .status-effects {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        gap: 4px;
+      }
+      .status-effect-icon {
+        height: 20px;
+        width: 20px;
+        background-size: 20px 20px;
+      }
+      .health-bar, .mana-bar, .stamina-bar {
+        margin-top: 6px;
+        .bar-track { height: 4px; }
+        .bar { height: 4px; }
+      }
+    }
+  }
+  .character-frame:last-child { margin-bottom:0; }
+
+  .character-frame { cursor: pointer; }
+  .character-frame.selected { background-color: variables.$select-active; }
+
+  // TODO: Targeting could be turned into a more general style, shared with the valid target highlight in the battle
+  //       view.
+  .party-select-frame.target-mode .character-frame {
+    border-color: variables.$fg-target;
+    background-color: variables.$bg-target;
+    box-shadow: variables.$glow-target;
+
+    &:hover {
+      border-color: variables.$fg-target-hover;
+      background-color: variables.$bg-target-hover;
+    }
+  }
+}

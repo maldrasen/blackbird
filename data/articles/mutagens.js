@@ -6,11 +6,10 @@ Consumable.register('horse-juice',{
   category: InventoryCategory.mutagen,
   tags: ['manly','juice'],
   rarity: Rarity.unusual,
-  usableWhen: UsableWhen.outOfCombat,
 
-  effects:[
-    Effect.increasePotency(1),
-  ],
+  usableWhen: UsableWhen.outOfCombat,
+  onUse: { showAlert:`TODO: Implement Increase Potency Effect`, level:LogType.warning },
+  // effects:[Effect.increasePotency(1)],
 
   sources: [
     { group:'potions', rarity:Rarity.unusual },
@@ -24,11 +23,10 @@ Consumable.register('goats-milk',{
   category: InventoryCategory.mutagen,
   tags: ['manly','milk'],
   rarity: Rarity.unusual,
-  usableWhen: UsableWhen.outOfCombat,
 
-  effects:[
-    Effect.increasePotency(3),
-  ],
+  usableWhen: UsableWhen.outOfCombat,
+  onUse: { showAlert:`TODO: Implement Increase Potency Effect`, level:LogType.warning },
+  // effects:[Effect.increasePotency(3)],
 
   sources: [
     { group:'potions', rarity:Rarity.unusual },
@@ -43,11 +41,10 @@ Consumable.register('minotaur-milk',{
   category: InventoryCategory.mutagen,
   tags: ['manly','milk'],
   rarity: Rarity.unusual,
-  usableWhen: UsableWhen.outOfCombat,
 
-  effects:[
-    Effect.increasePotency(10),
-  ],
+  usableWhen: UsableWhen.outOfCombat,
+  onUse: { showAlert:`TODO: Implement Increase Potency Effect`, level:LogType.warning },
+  // effects:[Effect.increasePotency(10)],
 
   sources: [
     { group:'potions', rarity:Rarity.rare },
@@ -58,15 +55,14 @@ Consumable.register('minotaur-milk',{
 Consumable.register('centaur-milk',{
   name: `Centaur's Milk`,
   description: `A centaur's milk is more potent than even a minotaur's, though rarer, given the difficulty of finding 
-    a centaur who wants to be milked.`,
+    a centaur who would allow himself to be milked.`,
   category: InventoryCategory.mutagen,
   tags: ['manly','milk'],
   rarity: Rarity.unusual,
-  usableWhen: UsableWhen.outOfCombat,
 
-  effects:[
-    Effect.increasePotency(12),
-  ],
+  usableWhen: UsableWhen.outOfCombat,
+  onUse: { showAlert:`TODO: Implement Increase Potency Effect`, level:LogType.warning },
+  // effects:[Effect.increasePotency(12)],
 
   sources: [
     { group:'potions', rarity:Rarity.rare },
@@ -76,15 +72,16 @@ Consumable.register('centaur-milk',{
 
 Consumable.register('milk-of-kindness',{
   name: `The Milk of Human Kindness`,
+  pluralName: `Milks of Human Kindness`,
+  nameType: 'proper',
   description: `This rare milk may have named ironically, given the painful nature of the extraction process.`,
   category: InventoryCategory.mutagen,
   tags: ['milk'],
   rarity: Rarity.unusual,
-  usableWhen: UsableWhen.outOfCombat,
 
-  effects:[
-    // TODO: Revert most mutations down to a human level baseline.
-  ],
+  // TODO: Revert most mutations down to a human level baseline.
+  usableWhen: UsableWhen.outOfCombat,
+  onUse: { showAlert:`TODO: Implement Decrease Potency Effect`, level:LogType.warning },
 
   sources: [
     { group:'potions', rarity:Rarity.unusual },

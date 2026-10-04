@@ -21,13 +21,25 @@ global.Article = (function() {
 
     const article = { ...articles[code] };
 
+    function getNameType() { return article.nameType || 'common'; }
+    function getPluralName() { return article.pluralName || EnglishHelper.pluralize(article.name); }
+
+    function getNameWithQuantity(quantity) {
+      const name = (quantity === 1) ? article.name : getPluralName();
+      let count = (getNameType() === 'proper' && quantity === 1) ? "" : quantity;
+      return `${count} ${name}`.trim();
+    }
+
     return {
       getCode: () => { return code; },
       getType: () => { return article.type || ArticleType.article; },
       getCategory: () => { return article.category; },
       getName: () => { return article.name; },
+      getNameType,
+      getPluralName,
+      getNameWithQuantity,
       getDescription: () => { return article.description; },
-      getIcon: () => { return article.icon; },
+      getIcon: () => { return article.icon || 'missing.png'; },
       getIconColor: () => { return article.iconColor; },
       getUsableWhen: () => { return article.usableWhen || UsableWhen.never },
       getTags: () => { return [...(article.tags||[])]; },

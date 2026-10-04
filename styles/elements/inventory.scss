@@ -1,0 +1,71 @@
+@use "../variables";
+
+// The item panel and item detail panel can be placed inside of other inventory displaying frames. The use item battle
+// command will need to show a list of items that can be used. The character overlay equipment tab will eventually need
+// to display item details.
+
+.item-panel {
+  li {
+    display: flex;
+    align-items: center;
+    padding: 2px 5px;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  li:last-child {
+    margin-bottom: 0;
+  }
+  .item-icon {
+    flex: none;
+    height: 24px;
+    width: 24px;
+    margin-right: 6px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .selected {
+    background-color: variables.$select-active;
+  }
+}
+
+.item-detail-panel {
+  .details {
+    padding: 10px;
+    font-family: "habibi", serif;
+  }
+  .name {
+    margin-bottom: 5px;
+    color: variables.$fg-strong;
+    font-size: variables.$fs-big;
+    border-bottom: variables.$border-normal;
+  }
+  .description {
+    margin-bottom: 10px;
+    color: variables.$fg-weak;
+  }
+  .properties {
+    font-size: variables.$fs-small;
+
+    li {
+      display: flex;
+      margin-bottom: 10px;
+    }
+    .label {
+      flex: none;
+      width: 90px;
+    }
+    .content {
+      font-family: "Roboto", serif;
+      color: variables.$fg-weak;
+    }
+  }
+  .value {
+    display: flex;
+    gap: 8px;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    border-bottom: variables.$border-normal;
+  }
+}

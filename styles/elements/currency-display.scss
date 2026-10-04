@@ -1,0 +1,27 @@
+@use "../variables";
+
+.currency-display {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+
+  font-family: "roboto", sans-serif;
+  font-size: variables.$fs-small;
+
+  .worthless { color: variables.$fg-very-weak; }
+
+  .coin {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .coin-icon {
+    flex: none;
+    height: 16px;
+    width: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}

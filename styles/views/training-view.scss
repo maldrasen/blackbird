@@ -223,8 +223,7 @@ $fg-toggle-inactive-hover: rgb(200,200,200);
           grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
         }
       }
-      .action-button-row {
-        text-align: right;
+      .button-row {
         margin-top: 10px;
       }
     }

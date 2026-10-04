@@ -1,18 +1,18 @@
 
 Consumable.register('ale',{
-  name: `Ale`,
+  name: `Bottle of Ale`,
+  pluralName: 'Bottles of Ale',
   description: `A brown earthenware bottle filled with ale of unknown provenance.`,
   category: InventoryCategory.drug,
   tags: ['alcohol'],
   rarity: Rarity.common,
-  usableWhen: UsableWhen.outOfCombat,
 
-  effects:[
-    // TODO: Drunk Effect - Getting drunk will need to be a different state from drunk. A single beer shouldn't get
-    //       Someone drunk, so we'll need to do somthing like build up a drunk level, and once it passes a certain
-    //       threshold they get an actual drunk effect. Drunk could then build to extremely drunk then pass out if more
-    //       'alcohol power' is being applied. The Toxic status effect works in a similar way.
-  ],
+  // TODO: Drunk Effect. Getting drunk will need to be a different state from drunk. A single beer shouldn't get
+  //       someone drunk, so we'll need to do somthing like build up a drunk level, and once it passes a certain
+  //       threshold they get an actual drunk effect. Drunk could then build to extremely drunk then pass out if more
+  //       'alcohol power' is being applied. The Toxic status effect works in a similar way.
+  usableWhen: UsableWhen.outOfCombat,
+  onUse: { showAlert:`TODO: Drunk status effects.`, level:LogType.warning },
 
   sources: [
     { group:'alcohols', rarity:Rarity.common },
@@ -20,16 +20,15 @@ Consumable.register('ale',{
 });
 
 Consumable.register('kumis',{
-  name: `Kumis`,
+  name: `Kumis Gourd`,
   description: `A bottle gourd filled with fermented mare's milk. It's an acquired taste.`,
   category: InventoryCategory.drug,
   tags: ['alcohol'],
   rarity: Rarity.common,
-  usableWhen: UsableWhen.outOfCombat,
 
-  effects:[
-    // TODO: About as strong as ale, but may have rare additional effects.
-  ],
+  // TODO: Drunk Effect. About as strong as ale, but may have rare additional effects.
+  usableWhen: UsableWhen.outOfCombat,
+  onUse: { showAlert:`TODO: Drunk status effects.`, level:LogType.warning },
 
   sources: [
     { group:'alcohols', rarity:Rarity.unusual },
@@ -37,36 +36,36 @@ Consumable.register('kumis',{
 });
 
 Consumable.register('grog',{
-  name: `Grog`,
+  name: `Jug of Grog`,
+  pluralName: 'Jugs of Grog',
   description: `A brown earthenware jug filled with a diluted mixture of rum and beer.`,
   category: InventoryCategory.drug,
   tags: ['alcohol'],
   rarity: Rarity.common,
-  usableWhen: UsableWhen.outOfCombat,
 
-  effects:[
-    // TODO: I don't know, maybe like 20 proof.
-  ],
+  // TODO: Drunk Effect. I don't know, maybe like 20 proof.
+  usableWhen: UsableWhen.outOfCombat,
+  onUse: { showAlert:`TODO: Drunk status effects.`, level:LogType.warning },
 
   sources: [
     { group:'alcohols', rarity:Rarity.common },
   ],
 });
 
-// TODO: Maybe a wine or two.
+// TODO: Add maybe a wine or two.
 
 Consumable.register('absinthe',{
-  name: `Absinthe`,
+  name: `Bottle of Absinthe`,
+  pluralName: `Bottles of Absinthe`,
   description: `A bright green spirit made from anise, wormwood, and sweet fennel.`,
   category: InventoryCategory.drug,
   tags: ['alcohol'],
   rarity: Rarity.common,
-  usableWhen: UsableWhen.outOfCombat,
 
-  effects:[
-    // TDDO: Drunk: 60 proof, with additional effects. Though it's not really hallucinogenic, we should do something
-    //       interesting with it. Maybe it has stronger effects on fae monsters like the nymphs and sylphs.
-  ],
+  // TODO: Drunk Effect: 60 proof, with additional effects. Though it's not really hallucinogenic, we should do
+  //       something interesting with it. Maybe it has stronger effects on fae monsters like the nymphs and sylphs.
+  usableWhen: UsableWhen.outOfCombat,
+  onUse: { showAlert:`TODO: Drunk status effects.`, level:LogType.warning },
 
   sources: [
     { group:'alcohols', rarity:Rarity.rare },
@@ -74,16 +73,16 @@ Consumable.register('absinthe',{
 });
 
 Consumable.register('rakia',{
-  name: `Rakia`,
+  name: `Bottle of Rakia`,
+  pluralName: `Bottles of Rakia`,
   description: `A type of sweet brandy made from many of the fruits found growing in the dungeon.`,
   category: InventoryCategory.drug,
   tags: ['alcohol'],
   rarity: Rarity.common,
-  usableWhen: UsableWhen.outOfCombat,
 
-  effects:[
-    // TDDO: Drunk: 80 proof
-  ],
+  // TODO: Drunk Effect: 80 proof
+  usableWhen: UsableWhen.outOfCombat,
+  onUse: { showAlert:`TODO: Drunk status effects.`, level:LogType.warning },
 
   sources: [
     { group:'alcohols', rarity:Rarity.unusual },
@@ -99,11 +98,10 @@ Consumable.register('powdered-satyrs-horn',{
   category: InventoryCategory.drug,
   tags: ['drug','aphrodisiac','mushroom'],
   rarity: Rarity.unusual,
-  usableWhen: UsableWhen.outOfCombat,
 
-  effects:[
-    // TODO: Lustful status effect
-  ],
+  // TODO: Lustful status effect
+  usableWhen: UsableWhen.outOfCombat,
+  onUse: { showAlert:`TODO: Lustful status effects.`, level:LogType.warning },
 
   sources: [
     { group:'drugs', rarity:Rarity.rare },

@@ -11,11 +11,17 @@ Consumable.register('dungeon-tripe',{
   category: InventoryCategory.restoreHealth,
   tags: ['mushroom'],
   rarity: Rarity.common,
+
   usableWhen: UsableWhen.outOfCombat,
+  stories: tripePackage,
+  onUse: { storyInAlert:true },
   effects: [
     Effect.restoreHealth(5,15),
   ],
-  stories: tripePackage,
+  messageForEntity: (id, results) => {
+    return (results.health > 0) ? `{T:TargetName} regains ${results.health} health.` : '';
+  },
+
   sources: [
     { group:'foods', rarity:Rarity.common },
   ],
@@ -31,11 +37,17 @@ Consumable.register('rhysh-apple',{
   category: InventoryCategory.restoreHealth,
   tags: ['fruit'],
   rarity: Rarity.common,
+
   usableWhen: UsableWhen.outOfCombat,
+  stories: applePackage,
+  onUse: { storyInAlert:true },
   effects: [
     Effect.restoreHealth(15,25),
   ],
-  stories: applePackage,
+  messageForEntity: (id, results) => {
+    return (results.health > 0) ? `{T:TargetName} regains ${results.health} health.` : '';
+  },
+
   sources: [
     { group:'foods', rarity:Rarity.common },
   ],

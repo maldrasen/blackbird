@@ -139,21 +139,16 @@ describe('Inventory', function() {
     inventory.addArticle('dungeon-tripe', 3);
     inventory.addArticle('string-of-teeth', 1);
 
-    const rows = inventory.listItems();
-
-    expect(rows.map(row => row.name)).to.deep.equal([
-      'Steel Battle Axe', 'Steel Cleaver', 'Steel Hatchet', 'Leather Boots', 'Steel Hauberk', 'Steel Helm',
-      'Dungeon Tripe', 'String of Teeth']);
-
-    expect(rows[0].itemId).to.equal(battleAxe);
-    expect(rows[0].type).to.equal('weapon');
-    expect(rows[0].category).to.equal(InventoryCategory.weapon);
-    expect(rows[0].icon).to.be.a('string');
-    expect(rows[6].articleCode).to.equal('dungeon-tripe');
-    expect(rows[6].quantity).to.equal(3);
-    expect(rows[6].category).to.equal(InventoryCategory.restoreHealth);
-    expect(rows[6].usableWhen).to.equal(UsableWhen.outOfCombat);
-    expect(rows[7].category).to.equal(InventoryCategory.valuables);
+    expect(inventory.listItems()).to.deep.equal([
+      { itemId: battleAxe },
+      { itemId: cleaver },
+      { itemId: hatchet },
+      { itemId: boots },
+      { itemId: hauberk },
+      { itemId: helm },
+      { articleCode: 'dungeon-tripe', quantity: 3 },
+      { articleCode: 'string-of-teeth', quantity: 1 },
+    ]);
   });
 
   it('dropItem() destroys the item', function() {

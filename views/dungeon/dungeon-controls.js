@@ -5,6 +5,7 @@ global.DungeonControls = (function() {
 
   function init() {
     X.onClick('#dungeonControls .open-party', () => { PartyOverlay.open('normal') });
+    X.onClick('#dungeonControls .open-inventory', InventoryOverlay.open);
     X.onClick('#dungeonControls .party-card', openCharacterOverlay);
     X.onClick('#dungeonControls #commandButtons .command', commandClicked);
   }

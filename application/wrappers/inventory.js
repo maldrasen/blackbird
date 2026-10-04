@@ -44,36 +44,23 @@ global.Inventory = function(inventoryId=GameSystem.getState().getPartyInventory(
     update(inventory);
   }
 
-  // Rows for an inventory view, in InventoryCategory declaration order and alphabetical within a category.
   function listItems() {
     const categoryOrder = Object.values(InventoryCategory);
+    const inventory = fetch();
 
-    const itemRows = fetch().items.map(itemId => {
-      const item = Item(itemId);
-      return {
-        itemId: itemId,
-        name: item.getName(),
-        icon: item.getIcon(),
-        type: item.getCategory(),
-        category: item.getCategory(),
-      };
-    });
+    const sortKey = entry => {
+      const record = entry.itemId ? Item(entry.itemId) : Article.lookup(entry.articleCode);
+      return { category: categoryOrder.indexOf(record.getCategory()), name: record.getName() };
+    };
 
-    const articleRows = Object.entries(fetch().articles).map(([code,quantity]) => {
-      const article = Article.lookup(code);
-      return {
-        articleCode: code,
-        name: article.getName(),
-        icon: article.getIcon(),
-        type: article.getType(),
-        category: article.getCategory(),
-        usableWhen: article.getUsableWhen(),
-        quantity: quantity,
-      };
-    });
+    const entries = [
+      ...inventory.items.map(itemId => ({ itemId })),
+      ...Object.entries(inventory.articles).map(([articleCode,quantity]) => ({ articleCode, quantity })),
+    ];
 
-    return [...itemRows, ...articleRows].sort((a,b) =>
-      (categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category)) || a.name.localeCompare(b.name));
+    return entries.map(entry => ({ entry, key:sortKey(entry) })).
+      sort((a,b) => (a.key.category - b.key.category) || a.key.name.localeCompare(b.key.name)).
+      map(sorted => sorted.entry);
   }
 
   // Dropping an item destroys it.

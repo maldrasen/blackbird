@@ -6,23 +6,9 @@ global.Fixtures = (function() {
     state.setCurrentLocation(options.location || 'ruined-living-room');
   }
 
-  function grantLoot() {
-    Inventory().addArticle('ale',10);
-    Inventory().addArticle('rhysh-apple',10);
-    Inventory().addArticle('string-of-teeth',4);
-    Inventory().addArticle('rattlebones',2);
-    Inventory().addArticle('grim-totem',3);
-    Inventory().addArticle('impressive-ball-bag',2);
-    Inventory().addArticle('crimson-tear',5);
-    Inventory().addArticle('aureolin-tear',5);
-    Inventory().addArticle('celadon-tear',5);
-    Inventory().addArticle('cerulean-tear',5);
-    Inventory().addArticle('ebony-tear',5);
-  }
-
   function setupBattle() {
     setupGame({ location:'the-well' });
-    grantLoot();
+    randomBullshitGo();
 
     BattleFixtures.prepareForBattle();
     BattleFixtures.grantMana('red',100);
@@ -44,6 +30,8 @@ global.Fixtures = (function() {
 
   function setupDungeon() {
     setupGame({ location:'the-well' });
+    randomBullshitGo();
+
     BattleFixtures.prepareForBattle();
     DungeonSystem.createDungeon();
     DungeonSystem.setLevel(1,'up','dungeon');
@@ -55,6 +43,13 @@ global.Fixtures = (function() {
     CharacterFixtures.randomPlayer();
     CharacterFixtures.randomCharacters(10, { triggers:[] });
     GameSystem.setGameMode(GameMode.location);
+  }
+
+  function randomBullshitGo() {
+    const inventory = Inventory();
+    Article.getAllCodes().forEach(code => {
+      if (Random.flipCoin()) { inventory.addArticle(code, Random.flipCoin() ? 1 : Random.between(2,10)); }
+    });
   }
 
   return {

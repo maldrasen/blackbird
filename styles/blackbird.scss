@@ -18,8 +18,10 @@
 @use 'elements/buttons';
 @use 'elements/casement';
 @use 'elements/confirmation';
+@use 'elements/currency-display';
 @use 'elements/entity-card';
 @use 'elements/icons';
+@use 'elements/inventory';
 @use 'elements/notes';
 @use 'elements/scrollbar';
 @use 'elements/select';
@@ -39,6 +41,7 @@
 @use 'views/episode-page';
 @use 'views/episode-view';
 @use 'views/feature-viewer';
+@use 'views/inventory-overlay';
 @use 'views/load-overlay';
 @use 'views/location';
 @use 'views/main-content';

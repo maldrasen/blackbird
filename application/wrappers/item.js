@@ -17,7 +17,10 @@ global.Item = function(id) {
     return ItemHelper.getScaledReduction(getBase().getReductionMap(), getPrimaryMaterial(), type);
   }
 
-  // The damage range is authored at baseline quality the same way, and scales with the primary material too.
+  // The damage range is authored at baseline quality the same way, and scales with the primary material too. The
+  // scaled damage range of a weapon is its attack power. We call this value the attack power in the view because the
+  // actual damage values depend still on the character's strength and skill, and it would be confusing when the
+  // damage numbers don't match.
   function getDamageRange() {
     return ItemHelper.getScaledDamageRange(getBase(), getPrimaryMaterial());
   }
@@ -34,11 +37,16 @@ global.Item = function(id) {
     return getBase().isWeapon() ? WeaponEnchantment(id, enchantment) : ArmorEnchantment(id, enchantment);
   }
 
+  function getDescription() {
+    return `[TODO Item Descriptions]`;
+  }
+
   return {
     getId: () => { return id; },
     getBase,
     getName: () => { return getItemComponent().name; },
     getNameType: () => { return getItemComponent().nameType; },
+    getDescription,
     getIcon: () => { return getBase().getIcon(); },
     getSkill: () => { return getBase().getSkill(); },
     getCategory,

@@ -5,9 +5,9 @@ priority: 2
 created: 2026-07-25
 tags:
   - character
-points: 5
+points: 8
 ---
 ---
 When an item is selected in the equipment panel, I'd like to show details for that item in a side panel. This panel should include item descriptions, weapon damage ranges, armor defense values, enchantment details. All that.
 
-> After combining the inventory, we needed to completely change the old inventory panel. We have another task 246 to address this, which should include this detail panel.
+> When building the inventory overlay in task 246, I added the item detail panel as its own element. We still need to completely rework the equipment panel in order to use it though. Though the current equipment panel is functional, the feel of it is off to me. We weed to look into better ways of handling this interface.

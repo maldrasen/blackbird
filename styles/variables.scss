@@ -52,6 +52,13 @@ $fg-link-active:     rgb(255 255 255);
 $select-active: rgb(150 150 200 / 0.2);
 $select-shade:  rgb(150 150 200 / 0.1);
 
+// === Targeting ===
+$fg-target:       rgb(99 65 26);
+$bg-target:       rgb(53 32 9 / 0.5);
+$fg-target-hover: rgb(166 109 45);
+$bg-target-hover: rgb(76 45 10 / 0.5);
+$glow-target:     0 0 8px rgb(166 109 45 / 0.6);
+
 // === Logs and Alerts ===
 $fg-info:    rgb(180 200 220);
 $fg-success: rgb(100 250 100);
@@ -72,6 +79,13 @@ $fg-ok:   rgb(111 117 145);
 $fg-good: rgb(111 162 108);
 $fg-mid:  rgb(116 117 93);
 $fg-bad:  rgb(138 70 55);
+
+// === Rarities ===
+$fg-common:      rgb(168 168 168);
+$fg-unusual:     rgb(157 156 97);
+$fg-rare:        rgb(92 170 82);
+$fg-astonishing: rgb(58 151 185);
+$fg-unheard-of:  rgb(132 41 201);
 
 // === Buttons ===
 $bg-button:           rgb(0 0 0 / 0.666);

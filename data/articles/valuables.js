@@ -231,7 +231,7 @@ Article.register('unblinking-eye',{
 });
 
 Article.register('smashed-horse-assholes',{
-  name: 'A Bag of Smashed Horse Assholes',
+  name: 'Bag of Smashed Horse Assholes',
   pluralName: 'Bags of Smashed Horse Assholes',
   description: `Why would anyone want this?`,
   category: InventoryCategory.valuables,
@@ -245,7 +245,7 @@ Article.register('smashed-horse-assholes',{
 });
 
 Article.register('hickory-smoked-horse-assholes',{
-  name: 'A Bag of Hickory Smoked Horse Assholes',
+  name: 'Bag of Hickory Smoked Horse Assholes',
   pluralName: 'Bags of Hickory Smoked Horse Assholes',
   description: `Better than the raw ones.`,
   category: InventoryCategory.valuables,

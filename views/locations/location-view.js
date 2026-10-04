@@ -7,6 +7,7 @@ global.LocationView = (function() {
 
     X.onClick('#locationView #openMap', NavigationOverlay.open);
     X.onClick('#locationView #openParty', openPartyOverlay);
+    X.onClick('#locationView #openInventory', InventoryOverlay.open);
     X.onClick('#locationView #characterList a', characterClicked);
     X.onClick('#locationView #actionList a', actionClicked);
   }
