@@ -32,6 +32,7 @@ global.Consumable = (function() {
       if (onUse.storyInAlert) { valid = consumable.stories != null; }
       if (onUse.storyInOverlay) { valid = consumable.stories != null; }
       if (onUse.showAlert) { valid = true; }
+      if (onUse.startEpisode) { valid = true; }
       if (valid === false) { throw new Error(`Consumable[${code}] has an invalid onUse: ${JSON.stringify(onUse)}`); }
     }
   }

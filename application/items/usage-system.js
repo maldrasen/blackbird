@@ -10,8 +10,8 @@ global.UsageSystem = (function() {
   //       would assume an article like this would have a proper name and perhaps something that would ensure
   //       uniqueness as well, though something like an "Everburning Torch" could be both perpetual and non-unique.
 
-  // The consume() function will need to consult the onUse property to determine how and where to show the
-  // consumable's effects.
+  // The useArticle() function consults the onUse property to determine how and where to show the consumable's
+  // effects.
   //
   //   { showAlert:message, level }  -  For a simple message for consumables that don't actually have any effects.
   //

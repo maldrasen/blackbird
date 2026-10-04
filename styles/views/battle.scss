@@ -246,31 +246,31 @@ $roll-high-bright: rgb(250 250 250);
 
   .position.valid-target {
     cursor: pointer;
-    border-color: rgb(99 65 26);
+    border-color: variables.$fg-target;
     .background-cover {
-      background-color: rgb(53 32 9 / 50%);
+      background-color: variables.$bg-target;
     }
   }
 
   .position.valid-target:hover {
-    border-color: rgb(166 109 45);
+    border-color: variables.$fg-target-hover;
     .background-cover {
-      background-color: rgba(76 45 10 / 50%);
+      background-color: variables.$bg-target-hover;
     }
   }
 
   .combatant.valid-target {
     cursor: pointer;
-    border-color: rgb(99 65 26);
+    border-color: variables.$fg-target;
     .background-cover {
-      background-color: rgb(53 32 9 / 50%);
+      background-color: variables.$bg-target;
     }
   }
 
   .combatant.valid-target:hover {
-    border-color: rgb(166 109 45);
+    border-color: variables.$fg-target-hover;
     .background-cover {
-      background-color: rgba(76 45 10 / 50%);
+      background-color: variables.$bg-target-hover;
     }
   }
 

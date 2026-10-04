@@ -52,6 +52,13 @@ $fg-link-active:     rgb(255 255 255);
 $select-active: rgb(150 150 200 / 0.2);
 $select-shade:  rgb(150 150 200 / 0.1);
 
+// === Targeting ===
+$fg-target:       rgb(99 65 26);
+$bg-target:       rgb(53 32 9 / 0.5);
+$fg-target-hover: rgb(166 109 45);
+$bg-target-hover: rgb(76 45 10 / 0.5);
+$glow-target:     0 0 8px rgb(166 109 45 / 0.6);
+
 // === Logs and Alerts ===
 $fg-info:    rgb(180 200 220);
 $fg-success: rgb(100 250 100);

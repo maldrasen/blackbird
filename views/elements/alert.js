@@ -1,6 +1,12 @@
 global.Alert = (function() {
 
-  // TODO: I really need to document the options here...
+  // Alert options:
+  //   message   The body of the alert. Required, and may contain HTML.
+  //   title     Optional heading shown above the message.
+  //   position  An AlertPosition (side, center, or event) that picks the list the alert is added to. Defaults to side.
+  //   type      Optional LogType (info, success, warning, error) added as a class to color the alert.
+  //   fadeTime  Optional time in milliseconds before the alert dismisses itself. Without it the alert stays until
+  //             it's clicked, which dismisses every alert in the same list.
   function show(options) {
     let parent;
 

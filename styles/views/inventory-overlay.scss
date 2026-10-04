@@ -91,16 +91,16 @@
   .character-frame { cursor: pointer; }
   .character-frame.selected { background-color: variables.$select-active; }
 
-  // TODO: This uses the same colors as the the valid target highlight in the battle view. Really, we should move all
-  //       these loose UI colors into the SCSS variables. Targeting could even be turned into a more general style.
+  // TODO: Targeting could be turned into a more general style, shared with the valid target highlight in the battle
+  //       view.
   .party-select-frame.target-mode .character-frame {
-    border-color: rgb(99 65 26);
-    background-color: rgb(53 32 9 / 50%);
-    box-shadow: 0 0 8px rgb(166 109 45 / 60%);
+    border-color: variables.$fg-target;
+    background-color: variables.$bg-target;
+    box-shadow: variables.$glow-target;
 
     &:hover {
-      border-color: rgb(166 109 45);
-      background-color: rgb(76 45 10 / 50%);
+      border-color: variables.$fg-target-hover;
+      background-color: variables.$bg-target-hover;
     }
   }
 }
