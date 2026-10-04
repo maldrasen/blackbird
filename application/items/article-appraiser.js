@@ -34,7 +34,8 @@ global.ArticleAppraiser = (function() {
 
   function valueForConsumable(code) {
     const consumable = Consumable.lookup(code);
-    return valueForEffects(consumable.getEffects()) * factorForArea(consumable.getTarget(), consumable.getAreaOfEffect())
+    if (consumable.hasEffects() === false) { return 0; }
+    return valueForEffects(consumable.getEffects()) * factorForArea(consumable.getTarget(), consumable.getAreaOfEffect());
   }
 
   function valueForEffects(effects) {
