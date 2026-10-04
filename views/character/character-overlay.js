@@ -8,7 +8,6 @@ global.CharacterOverlay = (function() {
   // should empty the overlay, and hide it and the cover.
 
   let character
-  let equipmentPanel;
 
   function init() {
     X.onClick(`#characterOverlay .close-button`, close);
@@ -20,8 +19,8 @@ global.CharacterOverlay = (function() {
     X.loadDocument('#characterOverlay','views/templates/character-overlay.html');
 
     update();
-    equipmentPanel = EquipmentPanel({ character:id });
-    equipmentPanel.buildInto(`#equipmentTab`);
+
+    X.fill('#equipmentTab', EquipmentPanel(id).build());
 
     WindowManager.push(CharacterOverlay)
     X.removeClass('#characterOverlay','hide');

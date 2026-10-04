@@ -1,44 +1,64 @@
 @use "../variables";
 
-.equipment-panel {
-
-  .equipment-frame {
-    border: variables.$border-light;
-  }
-
-  .slot-row {
+#equipmentTab {
+  .equipment-root {
     display: flex;
-    align-items: center;
-    height: 36px;
-    padding: 0 6px;
-
-    .slot-name {
-      width: 100px;
-      color: variables.$fg-weak;
-    }
-
-    .slot-item {
-      display: inline-flex;
-      align-items: center;
-      padding: 3px 8px;
-      cursor: pointer;
-    }
-
-    .slot-item:hover {
-      background-color: variables.$select-shade;
-    }
-
-    .item-icon {
-      height: 24px;
-      width: 24px;
-      margin-right: 6px;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-    }
-
-    .item-name { opacity: 0.5; }
+  }
+  .slots-panel {
+    width: 200px;
+    background-color: rgb(200 150 150 / 0.2);
+  }
+  .item-panel {
+    flex-grow: 1;
+    background-color: rgb(150 200 150 / 0.2);
+  }
+  .detail-area {
+    flex-grow: 1;
+    background-color: rgb(150 150 200 / 0.2);
   }
 
-  .slot-row.filled .item-name { opacity: 1; }
 }
+
+
+//.equipment-panel {
+//
+//  .equipment-frame {
+//    border: variables.$border-light;
+//  }
+//
+//  .slot-row {
+//    display: flex;
+//    align-items: center;
+//    height: 36px;
+//    padding: 0 6px;
+//
+//    .slot-name {
+//      width: 100px;
+//      color: variables.$fg-weak;
+//    }
+//
+//    .slot-item {
+//      display: inline-flex;
+//      align-items: center;
+//      padding: 3px 8px;
+//      cursor: pointer;
+//    }
+//
+//    .slot-item:hover {
+//      background-color: variables.$select-shade;
+//    }
+//
+//    .item-icon {
+//      height: 24px;
+//      width: 24px;
+//      margin-right: 6px;
+//      background-size: contain;
+//      background-repeat: no-repeat;
+//      background-position: center;
+//    }
+//
+//    .item-name { opacity: 0.5; }
+//  }
+//
+//  .slot-row.filled .item-name { opacity: 1; }
+//}
