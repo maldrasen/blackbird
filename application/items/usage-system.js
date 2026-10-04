@@ -22,7 +22,7 @@ global.UsageSystem = (function() {
     if (onUse.startEpisode) { throw new Error(`TODO: Implement onUse.startEpisode`); }
     if (onUse.storyInOverlay) { throw new Error(`TODO: Implement onUse.storyInOverlay`); }
 
-    Alert.show({
+    GameInterface.showAlert({
       message: compileMessage(consumable, context),
       type: (onUse.level || LogType.success),
       fadeTime: 3000
