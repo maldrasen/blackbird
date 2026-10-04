@@ -79,14 +79,67 @@ global.ItemDetailPanel = function() {
     update(null);
   }
 
-  // TODO: We'll need to add more sections to the top panel for weapon and armor properties like damage and absorption.
-  //       We'll need another section for enchantment details as well. We also need to display rarity somehow as well.
+  // TODO: We'll need another section for enchantment details. We also need to display rarity somehow as well.
 
   // TODO: Some items, like a wand, could be usable. We would make a usable item if that item needs to carry data, like
   //       wand charges, or an sword that has an ability that can be activated out of combat.
 
   function buildItemDetails(item) {
-    return buildDetails(item);
+    const details = buildDetails(item);
+    const base = item.getBase();
+    const properties = X.createElement(`<ul class='properties'></ul>`);
+
+    if (base.isWeapon()) { weaponProperties(item).forEach(property => properties.appendChild(buildProperty(property))); }
+    if (base.hasReduction()) { armorProperties(item).forEach(property => properties.appendChild(buildProperty(property))); }
+
+    details.insertBefore(properties, details.querySelector('.value'));
+
+    return details;
+  }
+
+  function buildProperty(property) {
+    return X.createElement(`<li><span class='label'>${property.label}</span><span>${property.text}</span></li>`);
+  }
+
+  // The damage range and the absorption both come from the item rather than its base, because they scale with the
+  // material the item was made from.
+  function weaponProperties(item) {
+    const base = item.getBase();
+    const range = item.getDamageRange();
+
+    return [
+      { label:'Damage', text:`${range.low} – ${range.high} ${damageTypesText(base.getDamageTypes())}` },
+      { label:'Speed', text:`${base.getSpeed() / 1000} sec` },
+      { label:'Hands', text:handsText(base.getHands()) },
+      { label:'Reach', text:StringHelper.titlecase(base.getReach()) },
+    ];
+  }
+
+  // A weapon with a single damage type doesn't need to show that it does 100% of it.
+  function damageTypesText(damageTypes) {
+    if (damageTypes.length === 1) { return damageTypes[0].type; }
+    return `(${damageTypes.map(entry => `${entry.percent}% ${entry.type}`).join(', ')})`;
+  }
+
+  function handsText(hands) {
+    switch (hands) {
+      case WeaponHandedness.one: return 'Either hand';
+      case WeaponHandedness.main: return 'Main hand';
+      case WeaponHandedness.off: return 'Off hand';
+      case WeaponHandedness.two: return 'Two-handed';
+    }
+  }
+
+  // A shield's absorption applies to hits anywhere on the body, while armor only protects where it's worn.
+  function armorProperties(item) {
+    const base = item.getBase();
+    const absorption = [DamageType.crush, DamageType.slash, DamageType.pierce].
+      map(type => `${item.getReduction(type)}% ${type}`).join(', ');
+
+    return [
+      { label:'Absorbs', text:absorption },
+      { label:'Protects', text:(base.isShield() ? 'Whole body' : StringHelper.titlecase(base.getSlot())) },
+    ];
   }
 
   return {

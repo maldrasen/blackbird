@@ -45,6 +45,12 @@
     margin-bottom: 10px;
     color: variables.$fg-weak;
   }
+  .properties {
+    margin-bottom: 10px;
+
+    li { display: flex; gap: 8px; }
+    .label { flex: none; width: 70px; }
+  }
   .value {
     display: flex;
     gap: 8px;
