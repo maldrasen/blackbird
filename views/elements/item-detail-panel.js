@@ -31,33 +31,21 @@ global.ItemDetailPanel = function() {
     return [UsableWhen.outOfCombat, UsableWhen.anyTime].includes(article.getUsableWhen());
   }
 
-  // TODO: Items and articles will also need a canDrop() function because some items may not be droppable. Quest items
-  //       and such.
-
-  function buildDetails(thing, onDrop) {
+  function buildDetails(thing) {
     const details = X.createElement(`<div class='details'>
-      <div class='top'>
-        <div class='name'>${thing.getName()}</div>
-        <div class='description'>${thing.getDescription()}</div>
-        <div class='value'><span class='label'>Value</span></div>
-      </div>
-      <div class='actions button-row'>
-        <a href='#' class='button button-danger drop-button'>Drop</a>
-      </div>
+      <div class='name'>${thing.getName()}</div>
+      <div class='description'>${thing.getDescription()}</div>
+      <div class='value'><span class='label'>Value</span></div>
+      <div class='actions button-row'></div>
     </div>`);
 
     details.querySelector('.value').appendChild(CurrencyDisplay.build(thing.getValue()));
-    details.querySelector('.drop-button').addEventListener('click', onDrop);
 
     return details;
   }
 
   function buildArticleDetails(article) {
-    const code = article.getCode();
-    const details = buildDetails(article, () => {
-      const name = article.getNameWithQuantity(Inventory().getArticleQuantity(code));
-      confirmDrop(name, () => Inventory().setArticleQuantity(code, 0));
-    });
+    const details = buildDetails(article);
 
     if (isUsableNow(article)) {
       const useButton = X.createElement(`<a href='#' class='button button-primary use-button'>Use</a>`);
@@ -95,20 +83,13 @@ global.ItemDetailPanel = function() {
   // TODO: We'll need to add more sections to the top panel for weapon and armor properties like damage and absorption.
   //       We'll need another section for enchantment details as well. We also need to display rarity somehow as well.
 
+  // TODO: Some items, like a wand, could be usable. We would make a usable item if that item needs to carry data, like
+  //       wand charges, or an sword that has an ability that can be activated out of combat.
+
   function buildItemDetails(item) {
-    return buildDetails(item, () => {
-      confirmDrop(item.getName(), () => Inventory().dropItem(item.getId()));
-    });
+    return buildDetails(item);
   }
 
-  // Dropping an item or an article needs to update this and the item panel after the item has been dropped.
-  function confirmDrop(name, drop) {
-    Confirmation.show({ text:`Drop ${name}?`, onConfirm:() => {
-      drop();
-      update(null);
-      if (itemPanel) { itemPanel.update(); }
-    }});
-  }
 
   return {
     build,
