@@ -18,6 +18,9 @@ Consumable.register('dungeon-tripe',{
   effects: [
     Effect.restoreHealth(5,15),
   ],
+  messageForEntity: (id, results) => {
+    return `{T:TargetName} regains ${results.health} health.`;
+  },
 
   sources: [
     { group:'foods', rarity:Rarity.common },
@@ -41,6 +44,9 @@ Consumable.register('rhysh-apple',{
   effects: [
     Effect.restoreHealth(15,25),
   ],
+  messageForEntity: (id, results) => {
+    return `{T:TargetName} regains ${results.health} health.`;
+  },
 
   sources: [
     { group:'foods', rarity:Rarity.common },

@@ -15,7 +15,7 @@ global.UsageSystem = (function() {
   //                                    will need an entire episode to property describe.
   //
   function useArticle(id, code) {
-    const context = { A:id, I:code };
+    const context = { A:id, T:id, I:code };
     const consumable = Consumable.lookup(code);
     const onUse = consumable.getOnUse();
 
@@ -30,11 +30,25 @@ global.UsageSystem = (function() {
   }
 
   function compileMessage(consumable, context) {
-    const onUse = consumable.getOnUse();
-    const message = consumable.hasStories() ? Weaver(context).weave(consumable.pickStory(context)) : onUse.showAlert;
-    const results = consumable.hasEffects() ? consumable.getEffects().map(effect => Effect.apply(context.A, effect)) : [];
+    const story = consumable.hasStories() ? consumable.pickStory(context) : consumable.getOnUse().showAlert;
+    const resultMessage = consumable.messageForEntity(context.A, applyEffects(consumable, context.A));
 
-    return `${message} ${results.join(' ')}`
+    return Weaver(context).weave(resultMessage ? `${story} ${resultMessage}` : story);
+  }
+
+  // The battle system adds the story and each entity's result message as separate lines. Out of battle the consumable
+  // is only ever applied to the character using it, so the results are keyed the same way, but the message is appended
+  // to the story.
+  function applyEffects(consumable, id) {
+    const results = {};
+
+    (consumable.getEffects() || []).forEach(effect => {
+      const result = Effect.apply(id, effect);
+      if (result.type === 'add-health') { results.health = result.value; }
+      if (result.type === 'add-mana') { results.mana = result.value; }
+    });
+
+    return results;
   }
 
   return {

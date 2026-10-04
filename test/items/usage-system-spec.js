@@ -52,7 +52,25 @@ describe('UsageSystem', function() {
       expect(alerts[0].message).to.include('TODO: Drunk status effects.');
     });
 
-    it('describes the effect results in the alert message');
+    it('appends the result message to the story', function() {
+      const greg = CharacterFixtures.genericMale({ health:{ currentHealth:50 } });
+      Random.stubBetween(20);
+
+      UsageSystem.useArticle(greg, 'rhysh-apple');
+
+      expect(alerts[0].message).to.include('heal his wounds.');
+      expect(alerts[0].message).to.include('regains 20 health.');
+      expect(alerts[0].message).to.not.include('[object Object]');
+    });
+
+    it('shows only the onUse message when the consumable has no result message', function() {
+      const greg = CharacterFixtures.genericMale({});
+
+      UsageSystem.useArticle(greg, 'horse-juice');
+
+      expect(alerts[0].message).to.include('TODO: Implement Increase Potency Effect');
+      expect(alerts[0].message).to.not.include('[object Object]');
+    });
   });
 
 });
