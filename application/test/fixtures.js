@@ -6,13 +6,6 @@ global.Fixtures = (function() {
     state.setCurrentLocation(options.location || 'ruined-living-room');
   }
 
-  function randomBullshitGo() {
-    const inventory = Inventory();
-    Article.getAllCodes().forEach(code => {
-      if (Random.flipCoin()) { inventory.addArticle(code, Random.flipCoin() ? 1 : Random.between(2,10)); }
-    });
-  }
-
   function setupBattle() {
     setupGame({ location:'the-well' });
     randomBullshitGo();
@@ -50,6 +43,13 @@ global.Fixtures = (function() {
     CharacterFixtures.randomPlayer();
     CharacterFixtures.randomCharacters(10, { triggers:[] });
     GameSystem.setGameMode(GameMode.location);
+  }
+
+  function randomBullshitGo() {
+    const inventory = Inventory();
+    Article.getAllCodes().forEach(code => {
+      if (Random.flipCoin()) { inventory.addArticle(code, Random.flipCoin() ? 1 : Random.between(2,10)); }
+    });
   }
 
   return {
