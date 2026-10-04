@@ -73,6 +73,13 @@ $fg-good: rgb(111 162 108);
 $fg-mid:  rgb(116 117 93);
 $fg-bad:  rgb(138 70 55);
 
+// === Rarities ===
+$fg-common:      rgb(168 168 168);
+$fg-unusual:     rgb(157 156 97);
+$fg-rare:        rgb(92 170 82);
+$fg-astonishing: rgb(58 151 185);
+$fg-unheard-of:  rgb(132 41 201);
+
 // === Buttons ===
 $bg-button:           rgb(0 0 0 / 0.666);
 $fg-button-default:   rgb(200 200 200);

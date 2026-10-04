@@ -8,6 +8,14 @@ global.RarityHelper = (function() {
     [Rarity.unheardOf]: 1,
   }
 
+  const colors = {
+    [Rarity.common]:      `rgb(168 168 168)`,
+    [Rarity.unusual]:     `rgb(157 156 97)`,
+    [Rarity.rare]:        `rgb(92 170 82)`,
+    [Rarity.astonishing]: `rgb(58 151 185)`,
+    [Rarity.unheardOf]:   `rgb(132 41 201)`,
+  }
+
   function getOrder() {
     return Object.keys(Rarity);
   }
@@ -24,10 +32,10 @@ global.RarityHelper = (function() {
   }
 
   return {
+    getColor: (rarity) => { return colors[rarity] },
     getOrder,
     rollRarity,
     rollRarityIndex,
   }
-
 
 })();
