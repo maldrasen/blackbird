@@ -1,6 +1,7 @@
 global.PartySelectFrame = function() {
   const frameElement = X.createElement(`<div class='party-select-frame hide'></div>`);
   const characterFrames = {};
+  const characterBars = {};
 
   Object.keys(GameSystem.getState().getPartyConfiguration()).forEach(id => {
     characterFrames[id] = buildCharacterFrame(id);
@@ -28,11 +29,47 @@ global.PartySelectFrame = function() {
     </div>`);
 
     element.querySelector('.portrait').style['background-image'] = X.assetURL(character.getCardArt());
+
+    characterBars[id] = {
+      health: buildBar('health'),
+      mana: buildBar('mana'),
+      stamina: buildBar('stamina'),
+    };
+
+    Object.keys(characterBars[id]).forEach(type => {
+      element.querySelector(`.${type}-bar`).appendChild(characterBars[id][type].getElement());
+    });
+
+    updateBars(id);
+
     return element;
   }
 
-  // Loop though all character frames and update bars and status effects.
-  function update() {}
+  // The frame is too small for labels, so the bars are shown without their text rows.
+  function buildBar(color) {
+    const bar = BarDisplay({ minValue:0, maxValue:0, currentValue:0, color:color });
+    bar.hideTextRow();
+    return bar;
+  }
+
+  // There's only room for a single mana bar, so it shows the character's mana summed across every color.
+  function updateBars(id) {
+    const health = HealthComponent.lookup(id);
+    const mana = Character(id).getTotalMana();
+    const bars = characterBars[id];
+
+    bars.health.setMaxValue(health.maxHealth);
+    bars.health.setCurrentValue(health.currentHealth);
+    bars.mana.setMaxValue(mana.max);
+    bars.mana.setCurrentValue(mana.current);
+    bars.stamina.setMaxValue(Math.round(Attributes(id).getMaxStamina()));
+    bars.stamina.setCurrentValue(Math.round(health.currentStamina));
+  }
+
+  // TODO: Update the status effects as well.
+  function update() {
+    Object.keys(characterBars).forEach(updateBars);
+  }
 
   return {
     getElement: () => { return frameElement; },
