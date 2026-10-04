@@ -60,8 +60,7 @@ global.ItemDetailPanel = function() {
     });
 
     if (isUsableNow(article)) {
-      const disabledState = partySelect.getSelected() == null ? 'disabled' : '';
-      const useButton = X.createElement(`<a href='#' class='button button-primary use-button ${disabledState}'>Use</a>`);
+      const useButton = X.createElement(`<a href='#' class='button button-primary use-button'>Use</a>`);
       useButton.addEventListener('click', () => { console.log("Use:",article.getName()) })
       details.querySelector('.button-row').appendChild(useButton);
     }

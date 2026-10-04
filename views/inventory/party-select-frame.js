@@ -8,14 +8,6 @@ global.PartySelectFrame = function() {
     frameElement.appendChild(characterFrames[id]);
   });
 
-  // TODO: The party select frame is only used the out of combat inventory, so this status effects list can only
-  //       display status effects that can survive outside of combat. (Paralyze, drunk, etc.) With a frame this small
-  //       though, I think it's only possible to show at most 4 status effect icons at 32x32 px each. There really
-  //       aren't that many, but if a character does get that many we'll need some kind of show overflow effects on
-  //       hover. It would probably be a good idea to show a full status effects list as a tooltip anyway, listing all
-  //       the effects by name, rather than only showing the icon. Status effect tooltip can be a separate eventual
-  //       task.
-
   function buildCharacterFrame(id) {
     const character = Character(id);
     const element = X.createElement(`<div class='character-frame'>
