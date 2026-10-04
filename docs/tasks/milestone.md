@@ -1,6 +1,6 @@
 # October 2026 Milestone
 
-Planned work for October, about 77 points, roughly half of the ~170 point pace of the last two releases. The rest of the month is left open for work discovered along the way, new ideas, and content.
+Planned work for October, about 80 points, roughly half of the ~170 point pace of the last two releases. The rest of the month is left open for work discovered along the way, new ideas, and content.
 
 The focus is the dungeon crawler half of the game. Training depends on what the party brings back from the dungeon, so the dungeon needs to be playable first. Each month should strengthen the weakest link in the gameplay loop:
 
@@ -10,7 +10,7 @@ This month that's mostly the dungeon side: learning spells and abilities, people
 
 ## Items & Bows `27pt`
 - [x] [246] Party inventory overlay `5pt` — [246-party-inventory-overlay.md](246-party-inventory-overlay.md)
-- [ ] [142] Item detail panel `5pt` — [142-item-detail-panel.md](142-item-detail-panel.md)
+- [ ] [142] Item detail panel `8pt` — [142-item-detail-panel.md](142-item-detail-panel.md)
 - [ ] [228] Effect based enchantments `3pt` — [228-effect-based-enchantments.md](228-effect-based-enchantments.md)
 - [ ] [237] The character equipper should honor gender and sexual preferences `3pt` — [237-equipper-should-honor-gender.md](237-equipper-should-honor-gender.md)
 - [ ] [014] Bows & arrows `5pt` — [014-bows-arrows.md](014-bows-arrows.md)
