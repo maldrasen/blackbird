@@ -772,6 +772,7 @@
     "test/items/factories/equipment-factory-spec.js",
     "test/items/inventory-system-spec.js",
     "test/items/loot-generator-spec.js",
+    "test/items/usage-system-spec.js",
     "test/looms/breasts-loom-spec.js",
     "test/looms/function-loom-spec.js",
     "test/looms/weaver-package-spec.js",

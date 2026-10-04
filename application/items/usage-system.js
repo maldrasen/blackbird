@@ -31,8 +31,8 @@ global.UsageSystem = (function() {
 
   function compileMessage(consumable, context) {
     const onUse = consumable.getOnUse();
-    const message = consumable.hasStories() ?  Weaver(context).weave(consumable.stories.pick(context)) : onUse.showAlert;
-    const results = consumable.hasEffects() ?  consumable.getEffects().map(effect => Effect.apply(context.A, effect)) : [];
+    const message = consumable.hasStories() ? Weaver(context).weave(consumable.pickStory(context)) : onUse.showAlert;
+    const results = consumable.hasEffects() ? consumable.getEffects().map(effect => Effect.apply(context.A, effect)) : [];
 
     return `${message} ${results.join(' ')}`
   }

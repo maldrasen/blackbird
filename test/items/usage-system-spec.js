@@ -1,0 +1,58 @@
+describe('UsageSystem', function() {
+
+  // The game interface doesn't show alerts while the specs are running, so the alert is captured here instead.
+  const showAlert = GameInterface.showAlert;
+  let alerts;
+
+  beforeEach(function() {
+    alerts = [];
+    GameInterface.showAlert = options => { alerts.push(options); };
+  });
+
+  afterEach(function() {
+    GameInterface.showAlert = showAlert;
+  });
+
+  describe('useArticle()', function() {
+    it('rejects an unknown article', function() {
+      const greg = CharacterFixtures.genericMale({});
+
+      expect(() => UsageSystem.useArticle(greg, 'no-such-article')).to.throw('Bad consumable code');
+      expect(alerts).to.have.lengthOf(0);
+    });
+
+    it('applies the effects of the consumable to the character', function() {
+      const greg = CharacterFixtures.genericMale({ health:{ currentHealth:50 } });
+      Random.stubBetween(20);
+
+      UsageSystem.useArticle(greg, 'rhysh-apple');
+
+      expect(HealthComponent.lookup(greg).currentHealth).to.equal(70);
+    });
+
+    it('shows the woven story in a success alert', function() {
+      const greg = CharacterFixtures.genericMale({ health:{ currentHealth:50 } });
+
+      UsageSystem.useArticle(greg, 'rhysh-apple');
+
+      expect(alerts).to.have.lengthOf(1);
+      expect(alerts[0].type).to.equal(LogType.success);
+      expect(alerts[0].fadeTime).to.equal(3000);
+      expect(alerts[0].message).to.include('Greg');
+      expect(alerts[0].message).to.include('bites into the Rhysh Apple with a satisfying crunch');
+    });
+
+    it('shows the onUse message at the onUse level for a consumable without stories', function() {
+      const greg = CharacterFixtures.genericMale({});
+
+      UsageSystem.useArticle(greg, 'ale');
+
+      expect(alerts).to.have.lengthOf(1);
+      expect(alerts[0].type).to.equal(LogType.warning);
+      expect(alerts[0].message).to.include('TODO: Drunk status effects.');
+    });
+
+    it('describes the effect results in the alert message');
+  });
+
+});
