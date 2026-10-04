@@ -98,24 +98,21 @@ global.ItemDetailPanel = function() {
   }
 
   function buildProperty(property) {
-    return X.createElement(`<li><span class='label'>${property.label}</span><span>${property.text}</span></li>`);
+    return X.createElement(`<li><span class='label'>${property.label}</span><div class='content'>${property.content}</div></li>`);
   }
 
-  // The damage range and the absorption both come from the item rather than its base, because they scale with the
-  // material the item was made from.
   function weaponProperties(item) {
     const base = item.getBase();
     const range = item.getDamageRange();
 
     return [
-      { label:'Damage', text:`${range.low} – ${range.high} ${damageTypesText(base.getDamageTypes())}` },
-      { label:'Speed', text:`${base.getSpeed() / 1000} sec` },
-      { label:'Hands', text:handsText(base.getHands()) },
-      { label:'Reach', text:StringHelper.titlecase(base.getReach()) },
+      { label:'Attack Power', content:`${range.low} – ${range.high} ${damageTypesText(base.getDamageTypes())}` },
+      { label:'Attack Time', content:`${base.getSpeed()}` },
+      { label:'Hands', content:handsText(base.getHands()) },
+      { label:'Range', content:StringHelper.titlecase(base.getReach()) },
     ];
   }
 
-  // A weapon with a single damage type doesn't need to show that it does 100% of it.
   function damageTypesText(damageTypes) {
     if (damageTypes.length === 1) { return damageTypes[0].type; }
     return `(${damageTypes.map(entry => `${entry.percent}% ${entry.type}`).join(', ')})`;
@@ -123,22 +120,22 @@ global.ItemDetailPanel = function() {
 
   function handsText(hands) {
     switch (hands) {
-      case WeaponHandedness.one: return 'Either hand';
-      case WeaponHandedness.main: return 'Main hand';
-      case WeaponHandedness.off: return 'Off hand';
-      case WeaponHandedness.two: return 'Two-handed';
+      case WeaponHandedness.one: return 'Either Hand';
+      case WeaponHandedness.main: return 'Main Hand';
+      case WeaponHandedness.off: return 'Off Hand';
+      case WeaponHandedness.two: return 'Double Fisted';
     }
   }
 
-  // A shield's absorption applies to hits anywhere on the body, while armor only protects where it's worn.
+  // TODO: Can some armors absorb other damage types, even without an enchantment?
   function armorProperties(item) {
     const base = item.getBase();
-    const absorption = [DamageType.crush, DamageType.slash, DamageType.pierce].
-      map(type => `${item.getReduction(type)}% ${type}`).join(', ');
+    const reduction = [DamageType.crush, DamageType.slash, DamageType.pierce].
+      map(type => `<div>${item.getReduction(type)}% ${type}</div>`).join('');
 
     return [
-      { label:'Absorbs', text:absorption },
-      { label:'Protects', text:(base.isShield() ? 'Whole body' : StringHelper.titlecase(base.getSlot())) },
+      { label:'Type', content:(base.isShield() ? 'Whole body' : StringHelper.titlecase(base.getSlot())) },
+      { label:'Reduction', content:reduction },
     ];
   }
 

@@ -46,10 +46,20 @@
     color: variables.$fg-weak;
   }
   .properties {
-    margin-bottom: 10px;
+    font-size: variables.$fs-small;
 
-    li { display: flex; gap: 8px; }
-    .label { flex: none; width: 70px; }
+    li {
+      display: flex;
+      margin-bottom: 10px;
+    }
+    .label {
+      flex: none;
+      width: 90px;
+    }
+    .content {
+      font-family: "Roboto", serif;
+      color: variables.$fg-weak;
+    }
   }
   .value {
     display: flex;
