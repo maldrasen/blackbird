@@ -78,9 +78,14 @@ global.ItemPanel = function() {
     }
   }
 
+  function selectArticle(code) {
+    selectItem(itemList.querySelector(`li[data-code='${code}']`));
+  }
+
   return {
     build,
     update,
+    selectArticle,
     setDetailPanel: panel => { detailPanel = panel; },
   }
 }

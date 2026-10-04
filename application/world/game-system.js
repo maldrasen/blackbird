@@ -147,6 +147,7 @@ global.GameSystem = (function() {
     getReturnMode,
     markReturnMode,
     returnToPreviousMode,
+    isDungeonMode: () => { return state.getGameMode() === 'dungeon' },
   };
 
 })();

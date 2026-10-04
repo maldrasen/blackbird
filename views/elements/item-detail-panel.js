@@ -76,9 +76,20 @@ global.ItemDetailPanel = function() {
     useArticle(article, target);
   }
 
-  // TODO: Actually use the article, then update this panel, the item panel, and the party select.
+  // The article stays selected while there are more of them, so that several can be used in a row.
   function useArticle(article, characterId) {
-    console.log("Use:",article.getName(),"on",Character(characterId).getName());
+    const code = article.getCode();
+
+    UsageSystem.useArticle(characterId, code);
+    if (GameStateFrame.isVisible()) { GameStateFrame.update(); }
+    if (GameSystem.isDungeonMode()) { DungeonControls.refreshHealth(); }
+
+    partySelect.update();
+
+    if (itemPanel) { itemPanel.update(); }
+    if (itemPanel && Inventory().getArticleQuantity(code) > 0) { return itemPanel.selectArticle(code); }
+
+    update(null);
   }
 
   // TODO: We'll need to add more sections to the top panel for weapon and armor properties like damage and absorption.

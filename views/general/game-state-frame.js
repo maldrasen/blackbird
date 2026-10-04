@@ -17,6 +17,10 @@ global.GameStateFrame = (function() {
     X.addClass('#gameStateFrame','hide');
   }
 
+  function isVisible() {
+    return X.hasClass('#gameStateFrame','hide') === false;
+  }
+
   function clear() {
     X.empty('#gameStateFrame .name');
     X.empty('#gameStateFrame .status');
@@ -115,6 +119,7 @@ global.GameStateFrame = (function() {
     load,
     show,
     hide,
+    isVisible,
     update,
   };
 
