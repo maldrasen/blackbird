@@ -3,6 +3,9 @@ global.PartySelectFrame = function() {
   const characterFrames = {};
   const characterBars = {};
 
+  let selected = null;
+  let onTarget = null;
+
   Object.keys(GameSystem.getState().getPartyConfiguration()).forEach(id => {
     characterFrames[id] = buildCharacterFrame(id);
     frameElement.appendChild(characterFrames[id]);
@@ -36,6 +39,7 @@ global.PartySelectFrame = function() {
     });
 
     characterFrames[id] = element;
+    element.addEventListener('click', () => { clickCharacter(id); });
 
     updateBars(id);
     updateStatusEffects(id);
@@ -83,11 +87,47 @@ global.PartySelectFrame = function() {
     });
   }
 
+  // Clicking a character normally toggles the selection. In target mode a click always selects the character and
+  // hands them to whatever is waiting for a target.
+  function clickCharacter(id) {
+    if (onTarget) {
+      const callback = onTarget;
+      cancelTargeting();
+      select(id);
+      return callback(id);
+    }
+
+    select(selected === id ? null : id);
+  }
+
+  function select(id) {
+    if (selected) { X.removeClass(characterFrames[selected],'selected'); }
+    selected = id;
+    if (selected) { X.addClass(characterFrames[selected],'selected'); }
+  }
+
+  function startTargeting(callback) {
+    onTarget = callback;
+    X.addClass(frameElement,'target-mode');
+  }
+
+  function cancelTargeting() {
+    onTarget = null;
+    X.removeClass(frameElement,'target-mode');
+  }
+
+  function hide() {
+    cancelTargeting();
+    X.addClass(frameElement,'hide');
+  }
+
   return {
     getElement: () => { return frameElement; },
-    getSelected: () => { return null; },
+    getSelected: () => { return selected; },
     show: () => { X.removeClass(frameElement,'hide'); },
-    hide: () => { X.addClass(frameElement, 'hide'); },
+    hide,
+    startTargeting,
+    cancelTargeting,
     update,
   }
 }

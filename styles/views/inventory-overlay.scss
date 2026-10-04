@@ -67,7 +67,6 @@
         overflow: hidden;
       }
 
-      // The icons sit over the right end of the name row, covering the name when there isn't room for both.
       .status-effects {
         position: absolute;
         right: 0;
@@ -89,4 +88,19 @@
   }
   .character-frame:last-child { margin-bottom:0; }
 
+  .character-frame { cursor: pointer; }
+  .character-frame.selected { background-color: variables.$select-active; }
+
+  // TODO: This uses the same colors as the the valid target highlight in the battle view. Really, we should move all
+  //       these loose UI colors into the SCSS variables. Targeting could even be turned into a more general style.
+  .party-select-frame.target-mode .character-frame {
+    border-color: rgb(99 65 26);
+    background-color: rgb(53 32 9 / 50%);
+    box-shadow: 0 0 8px rgb(166 109 45 / 60%);
+
+    &:hover {
+      border-color: rgb(166 109 45);
+      background-color: rgb(76 45 10 / 50%);
+    }
+  }
 }

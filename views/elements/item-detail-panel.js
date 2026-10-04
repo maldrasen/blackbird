@@ -61,11 +61,24 @@ global.ItemDetailPanel = function() {
 
     if (isUsableNow(article)) {
       const useButton = X.createElement(`<a href='#' class='button button-primary use-button'>Use</a>`);
-      useButton.addEventListener('click', () => { console.log("Use:",article.getName()) })
+      useButton.addEventListener('click', () => { clickUse(article); });
       details.querySelector('.button-row').appendChild(useButton);
     }
 
     return details;
+  }
+
+  // Using an article with no one selected puts the party select into target mode, and the article is used on
+  // whoever gets clicked.
+  function clickUse(article) {
+    const target = partySelect.getSelected();
+    if (target == null) { return partySelect.startTargeting(id => useArticle(article, id)); }
+    useArticle(article, target);
+  }
+
+  // TODO: Actually use the article, then update this panel, the item panel, and the party select.
+  function useArticle(article, characterId) {
+    console.log("Use:",article.getName(),"on",Character(characterId).getName());
   }
 
   // TODO: We'll need to add more sections to the top panel for weapon and armor properties like damage and absorption.
