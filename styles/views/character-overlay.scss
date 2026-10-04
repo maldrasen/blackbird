@@ -75,21 +75,25 @@
 
   // === Panels ===
 
+  // The row gap is wider than the column gap to leave room for the panel labels that sit on the top borders.
+  #overviewTab.active, #bodyTab.active {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
   .row-of-panels {
     display: flex;
+    gap: 10px;
   }
 
   .panel {
     flex-grow: 1;
     padding: 10px;
-    margin: 10px 5px 10px;
     background-color: rgb(0,0,0);
     white-space: nowrap;
     border: variables.$border-light;
     box-shadow: variables.$shadow-dark;
-
-    &:first-child { margin-left:0; }
-    &:last-child { margin-right:0; }
   }
   .panel-label {
     display: inline-block;
