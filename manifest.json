@@ -605,7 +605,6 @@
     "views/character/character-body-panel.js",
     "views/character/character-overlay.js",
     "views/character/character-overview-panel.js",
-    "views/character/consume-overlay.js",
     "views/character/equipment-panel.js",
     "views/dungeon/dungeon-camera.js",
     "views/dungeon/dungeon-controls.js",
