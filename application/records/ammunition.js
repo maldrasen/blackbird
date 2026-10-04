@@ -22,7 +22,6 @@ global.Ammunition = (function() {
       getTags: () => { return article.getTags(); },
       getDamageTypes: () => { return { ...ammunition.damageTypes }},
       getEffects: () => { return [...(ammunition.effects||[])]; },
-      pickStory: context => { return ammunition.stories ? ammunition.stories.pick(context) : null; },
     };
   }
 

@@ -186,6 +186,7 @@
     "application/items/inventory-system.js",
     "application/items/item-constants.js",
     "application/items/loot-generator.js",
+    "application/items/usage-system.js",
     "application/items/weapon-enchantment.js",
     "application/negotiations/dsl/negotiation-contest.js",
     "application/negotiations/dsl/reaction.js",

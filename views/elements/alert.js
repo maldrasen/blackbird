@@ -1,5 +1,6 @@
 global.Alert = (function() {
 
+  // TODO: I really need to document the options here...
   function show(options) {
     let parent;
 

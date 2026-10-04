@@ -6,8 +6,9 @@ Consumable.register('horse-juice',{
   category: InventoryCategory.mutagen,
   tags: ['manly','juice'],
   rarity: Rarity.unusual,
-  usableWhen: UsableWhen.outOfCombat,
 
+  usableWhen: UsableWhen.outOfCombat,
+  onUse: { showAlert:`TODO: Implement Increase Potency Effect`, level:LogType.warning },
   effects:[
     Effect.increasePotency(1),
   ],
@@ -24,8 +25,9 @@ Consumable.register('goats-milk',{
   category: InventoryCategory.mutagen,
   tags: ['manly','milk'],
   rarity: Rarity.unusual,
-  usableWhen: UsableWhen.outOfCombat,
 
+  usableWhen: UsableWhen.outOfCombat,
+  onUse: { showAlert:`TODO: Implement Increase Potency Effect`, level:LogType.warning },
   effects:[
     Effect.increasePotency(3),
   ],
@@ -43,8 +45,9 @@ Consumable.register('minotaur-milk',{
   category: InventoryCategory.mutagen,
   tags: ['manly','milk'],
   rarity: Rarity.unusual,
-  usableWhen: UsableWhen.outOfCombat,
 
+  usableWhen: UsableWhen.outOfCombat,
+  onUse: { showAlert:`TODO: Implement Increase Potency Effect`, level:LogType.warning },
   effects:[
     Effect.increasePotency(10),
   ],
@@ -62,8 +65,9 @@ Consumable.register('centaur-milk',{
   category: InventoryCategory.mutagen,
   tags: ['manly','milk'],
   rarity: Rarity.unusual,
-  usableWhen: UsableWhen.outOfCombat,
 
+  usableWhen: UsableWhen.outOfCombat,
+  onUse: { showAlert:`TODO: Implement Increase Potency Effect`, level:LogType.warning },
   effects:[
     Effect.increasePotency(12),
   ],
@@ -82,8 +86,9 @@ Consumable.register('milk-of-kindness',{
   category: InventoryCategory.mutagen,
   tags: ['milk'],
   rarity: Rarity.unusual,
-  usableWhen: UsableWhen.outOfCombat,
 
+  usableWhen: UsableWhen.outOfCombat,
+  onUse: { showAlert:`TODO: Implement Decrease Potency Effect`, level:LogType.warning },
   effects:[
     // TODO: Revert most mutations down to a human level baseline.
   ],

@@ -8,11 +8,14 @@ Consumable.register('crimson-tear',{
   category: InventoryCategory.restoreMana,
   tags: ['tear'],
   rarity: Rarity.unusual,
+
   usableWhen: UsableWhen.anyTime,
+  stories: tearPackage,
+  onUse: { storyInAlert:true },
   effects:[
     Effect.restoreMana(Mana.red, 5, 15)
   ],
-  stories: tearPackage,
+
   sources: [
     { group:'potions', rarity:Rarity.unusual },
     { castsSpells:'red', rarity:Rarity.unusual },
@@ -25,11 +28,14 @@ Consumable.register('aureolin-tear',{
   category: InventoryCategory.restoreMana,
   tags: ['tear'],
   rarity: Rarity.unusual,
+
   usableWhen: UsableWhen.anyTime,
+  stories: tearPackage,
+  onUse: { storyInAlert:true },
   effects:[
     Effect.restoreMana(Mana.yellow, 5, 15)
   ],
-  stories: tearPackage,
+
   sources: [
     { group:'potions', rarity:Rarity.unusual },
     { castsSpells:'yellow', rarity:Rarity.unusual },
@@ -42,11 +48,14 @@ Consumable.register('celadon-tear',{
   category: InventoryCategory.restoreMana,
   tags: ['tear'],
   rarity: Rarity.unusual,
+
   usableWhen: UsableWhen.anyTime,
+  stories: tearPackage,
+  onUse: { storyInAlert:true },
   effects:[
     Effect.restoreMana(Mana.green, 5, 15)
   ],
-  stories: tearPackage,
+
   sources: [
     { group:'potions', rarity:Rarity.unusual },
     { castsSpells:'green', rarity:Rarity.unusual },
@@ -59,11 +68,14 @@ Consumable.register('cerulean-tear',{
   category: InventoryCategory.restoreMana,
   tags: ['tear'],
   rarity: Rarity.unusual,
+
   usableWhen: UsableWhen.anyTime,
+  stories: tearPackage,
+  onUse: { storyInAlert:true },
   effects:[
     Effect.restoreMana(Mana.blue, 5, 15)
   ],
-  stories: tearPackage,
+
   sources: [
     { group:'potions', rarity:Rarity.unusual },
     { castsSpells:'blue', rarity:Rarity.unusual },
@@ -76,11 +88,14 @@ Consumable.register('ebony-tear',{
   category: InventoryCategory.restoreMana,
   tags: ['tear'],
   rarity: Rarity.unusual,
+
   usableWhen: UsableWhen.anyTime,
+  stories: tearPackage,
+  onUse: { storyInAlert:true },
   effects:[
     Effect.restoreMana(Mana.black, 5, 15)
   ],
-  stories: tearPackage,
+
   sources: [
     { group:'potions', rarity:Rarity.unusual },
     { castsSpells:'black', rarity:Rarity.unusual },
