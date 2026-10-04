@@ -3,7 +3,6 @@ global.ItemDetailPanel = function() {
   let itemPanel;
   let partySelect;
 
-  // Create and return a panel element;
   function build() {
     panelElement = X.createElement(`<div class='item-detail-panel'></div>`);
     return panelElement;
@@ -89,7 +88,6 @@ global.ItemDetailPanel = function() {
   function buildItemDetails(item) {
     return buildDetails(item);
   }
-
 
   return {
     build,
