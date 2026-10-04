@@ -1,5 +1,15 @@
 global.UsageSystem = (function() {
 
+  // TODO: At some point items will also need to be usable. The main difference between items and articles is that
+  //       items are components and can carry data, while articles are fungible and can be stacked. An item like a
+  //       wand though might be usable, but could carry data like number of charges. A wand with a damage effect would
+  //       only be usable in battle, but a wand with a healing effect should be usable at any time.
+
+  // TODO: Some articles may be perpetual any can be used without it being removed. Something like The Phial of
+  //       Galadriel in Angband for instance. It could be used for a light effect, but using it wouldn't remove it. I
+  //       would assume an article like this would have a proper name and perhaps something that would ensure
+  //       uniqueness as well, though something like an "Everburning Torch" could be both perpetual and non-unique.
+
   // The consume() function will need to consult the onUse property to determine how and where to show the
   // consumable's effects.
   //
@@ -21,6 +31,8 @@ global.UsageSystem = (function() {
 
     if (onUse.startEpisode) { throw new Error(`TODO: Implement onUse.startEpisode`); }
     if (onUse.storyInOverlay) { throw new Error(`TODO: Implement onUse.storyInOverlay`); }
+
+    Inventory().removeArticle(code, 1);
 
     GameInterface.showAlert({
       message: compileMessage(consumable, context),
