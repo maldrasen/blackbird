@@ -60,7 +60,11 @@
         font-size: variables.$fs-small;
         border-bottom: variables.$border-light;
       }
-      .health-bar, .mana-bar, .stamina-bar { margin-top: 4px; }
+      .health-bar, .mana-bar, .stamina-bar {
+        margin-top: 6px;
+        .bar-track { height: 4px; }
+        .bar { height: 4px; }
+      }
     }
   }
   .character-frame:last-child { margin-bottom:0; }
