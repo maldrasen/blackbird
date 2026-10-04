@@ -15,6 +15,9 @@ Consumable.register('crimson-tear',{
   effects:[
     Effect.restoreMana(Mana.red, 5, 15)
   ],
+  messageForEntity: (id, results) => {
+    return (results.mana > 0) ? `{T:TargetName} regains ${results.mana} red mana.` : '';
+  },
 
   sources: [
     { group:'potions', rarity:Rarity.unusual },
@@ -35,6 +38,9 @@ Consumable.register('aureolin-tear',{
   effects:[
     Effect.restoreMana(Mana.yellow, 5, 15)
   ],
+  messageForEntity: (id, results) => {
+    return (results.mana > 0) ? `{T:TargetName} regains ${results.mana} yellow mana.` : '';
+  },
 
   sources: [
     { group:'potions', rarity:Rarity.unusual },
@@ -55,6 +61,9 @@ Consumable.register('celadon-tear',{
   effects:[
     Effect.restoreMana(Mana.green, 5, 15)
   ],
+  messageForEntity: (id, results) => {
+    return (results.mana > 0) ? `{T:TargetName} regains ${results.mana} green mana.` : '';
+  },
 
   sources: [
     { group:'potions', rarity:Rarity.unusual },
@@ -75,6 +84,9 @@ Consumable.register('cerulean-tear',{
   effects:[
     Effect.restoreMana(Mana.blue, 5, 15)
   ],
+  messageForEntity: (id, results) => {
+    return (results.mana > 0) ? `{T:TargetName} regains ${results.mana} blue mana.` : '';
+  },
 
   sources: [
     { group:'potions', rarity:Rarity.unusual },
@@ -95,6 +107,9 @@ Consumable.register('ebony-tear',{
   effects:[
     Effect.restoreMana(Mana.black, 5, 15)
   ],
+  messageForEntity: (id, results) => {
+    return (results.mana > 0) ? `{T:TargetName} regains ${results.mana} black mana.` : '';
+  },
 
   sources: [
     { group:'potions', rarity:Rarity.unusual },

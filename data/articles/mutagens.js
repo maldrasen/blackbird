@@ -9,9 +9,7 @@ Consumable.register('horse-juice',{
 
   usableWhen: UsableWhen.outOfCombat,
   onUse: { showAlert:`TODO: Implement Increase Potency Effect`, level:LogType.warning },
-  effects:[
-    Effect.increasePotency(1),
-  ],
+  // effects:[Effect.increasePotency(1)],
 
   sources: [
     { group:'potions', rarity:Rarity.unusual },
@@ -28,9 +26,7 @@ Consumable.register('goats-milk',{
 
   usableWhen: UsableWhen.outOfCombat,
   onUse: { showAlert:`TODO: Implement Increase Potency Effect`, level:LogType.warning },
-  effects:[
-    Effect.increasePotency(3),
-  ],
+  // effects:[Effect.increasePotency(3)],
 
   sources: [
     { group:'potions', rarity:Rarity.unusual },
@@ -48,9 +44,7 @@ Consumable.register('minotaur-milk',{
 
   usableWhen: UsableWhen.outOfCombat,
   onUse: { showAlert:`TODO: Implement Increase Potency Effect`, level:LogType.warning },
-  effects:[
-    Effect.increasePotency(10),
-  ],
+  // effects:[Effect.increasePotency(10)],
 
   sources: [
     { group:'potions', rarity:Rarity.rare },
@@ -68,9 +62,7 @@ Consumable.register('centaur-milk',{
 
   usableWhen: UsableWhen.outOfCombat,
   onUse: { showAlert:`TODO: Implement Increase Potency Effect`, level:LogType.warning },
-  effects:[
-    Effect.increasePotency(12),
-  ],
+  // effects:[Effect.increasePotency(12)],
 
   sources: [
     { group:'potions', rarity:Rarity.rare },
@@ -87,11 +79,9 @@ Consumable.register('milk-of-kindness',{
   tags: ['milk'],
   rarity: Rarity.unusual,
 
+  // TODO: Revert most mutations down to a human level baseline.
   usableWhen: UsableWhen.outOfCombat,
   onUse: { showAlert:`TODO: Implement Decrease Potency Effect`, level:LogType.warning },
-  effects:[
-    // TODO: Revert most mutations down to a human level baseline.
-  ],
 
   sources: [
     { group:'potions', rarity:Rarity.unusual },
