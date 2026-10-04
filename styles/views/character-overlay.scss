@@ -23,7 +23,8 @@
     .main-panel {
       grid-column: 1;
       grid-row: 2;
-      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
       padding: 10px;
     }
     .side-panel {
@@ -48,12 +49,18 @@
 
   // TODO: We may want to make these the tab default styles.
   .tab-container {
+    display: flex;
+    flex-grow: 1;
     border: variables.$border-normal;
     background-color: #000;
     box-shadow: variables.$shadow-frame;
   }
   .tab.active {
     box-shadow: 0 1px 1px #000;
+  }
+  .tab-content {
+    flex-grow: 1;
+    min-width: 0;
   }
 
   // TODO: Also default grid layout styles.

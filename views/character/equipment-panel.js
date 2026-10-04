@@ -1,30 +1,26 @@
 global.EquipmentPanel = function(id) {
-  const equipmentManager = EquipmentManager(id);
-  const rootElement = X.createElement(`<div class='equipment-root'>
-    <div class='slots-panel'></div>
-    <div class='item-panel'></div>
-    <div class='detail-area'></div>
-  </div>`);
+  let rootElement;
+  let detailPanel;
 
   function build() {
+    detailPanel = ItemDetailPanel();
+
+    rootElement = X.createElement(`<div class='equipment-root'>
+      <div class='slots-panel'></div>
+      <div class='item-panel hide'></div>
+      <div class='detail-area'></div>
+    </div>`);
+
+    rootElement.querySelector('.detail-area').appendChild(detailPanel.build())
+
+    detailPanel.update({ characterId:id });
+
     return rootElement;
   }
 
-  return { build }
+  return { build };
 }
 
-
-
-  //
-  // let panel;
-  //
-  //
-  // function buildInto(container) {
-  //   X.loadDocument(container,'views/templates/equipment-panel.html');
-  //   panel = X.first(container).querySelector('.equipment-panel');
-  //   update();
-  // }
-  //
   // function update() {
   //   const slotList = panel.querySelector('.slot-list');
   //   X.empty(slotList);
@@ -77,9 +73,3 @@ global.EquipmentPanel = function(id) {
   //     },
   //   });
   // }
-  //
-  // return {
-  //   buildInto,
-  //   update,
-  // };
-

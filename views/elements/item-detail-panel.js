@@ -13,7 +13,10 @@ global.ItemDetailPanel = function() {
   // this panel.
   function update(selected) {
     X.empty(panelElement);
-    partySelect.hide();
+
+    if (partySelect) {
+      partySelect.hide();
+    }
 
     if (selected && selected.code) {
       const article = Article.lookup(selected.code);
@@ -23,6 +26,10 @@ global.ItemDetailPanel = function() {
 
     if (selected && selected.id) {
       panelElement.appendChild(buildItemDetails(Item(selected.id)));
+    }
+
+    if (selected.characterId) {
+      panelElement.appendChild(buildSummary(selected.characterId));
     }
   }
 
@@ -137,6 +144,10 @@ global.ItemDetailPanel = function() {
       { label:'Type', content:(base.isShield() ? 'Whole body' : StringHelper.titlecase(base.getSlot())) },
       { label:'Reduction', content:reduction },
     ];
+  }
+
+  function buildSummary(characterId) {
+    return X.createElement(`<pre>[TODO: Equipment Summery for ${characterId}]</pre>`);
   }
 
   return {
