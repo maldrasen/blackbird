@@ -19,9 +19,12 @@ global.PartySelectFrame = function() {
   function buildCharacterFrame(id) {
     const character = Character(id);
     const element = X.createElement(`<div class='character-frame'>
-      <div class='portrait'><ul class='status-effects'></ul></div>
+      <div class='portrait'></div>
       <div class='right-side'>
-        <div class='name'>${character.getName()}</div>
+        <div class='name-row'>
+          <div class='name'>${character.getName()}</div>
+          <ul class='status-effects'></ul>
+        </div>
         <div class='health-bar'></div>
         <div class='mana-bar'></div>
         <div class='stamina-bar'></div>
@@ -40,7 +43,10 @@ global.PartySelectFrame = function() {
       element.querySelector(`.${type}-bar`).appendChild(characterBars[id][type].getElement());
     });
 
+    characterFrames[id] = element;
+
     updateBars(id);
+    updateStatusEffects(id);
 
     return element;
   }
@@ -66,9 +72,23 @@ global.PartySelectFrame = function() {
     bars.stamina.setCurrentValue(Math.round(health.currentStamina));
   }
 
-  // TODO: Update the status effects as well.
+  function updateStatusEffects(id) {
+    const list = characterFrames[id].querySelector('.status-effects');
+    X.empty(list);
+
+    StatusEffects(id).list().forEach(effect => {
+      const name = StatusEffectType.lookup(effect.code).getName();
+      const icon = X.createElement(`<li class='status-effect-icon' data-name='${name}'></li>`);
+      icon.style['background-image'] = X.assetURL(`icons/${effect.code}.png`);
+      list.appendChild(icon);
+    });
+  }
+
   function update() {
-    Object.keys(characterBars).forEach(updateBars);
+    Object.keys(characterFrames).forEach(id => {
+      updateBars(id);
+      updateStatusEffects(id);
+    });
   }
 
   return {

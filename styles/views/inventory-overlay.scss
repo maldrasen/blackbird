@@ -56,9 +56,32 @@
     .right-side {
       width: 161px;
       padding: 5px;
+
+      .name-row {
+        position: relative;
+        border-bottom: variables.$border-light;
+      }
       .name {
         font-size: variables.$fs-small;
-        border-bottom: variables.$border-light;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      // The icons sit over the right end of the name row, covering the name when there isn't room for both.
+      .status-effects {
+        position: absolute;
+        right: 0;
+        bottom: 1px;
+        display: flex;
+        gap: 2px;
+      }
+      .status-effect-icon {
+        height: 16px;
+        width: 16px;
+        background-size: 16px 16px;
+        border: variables.$border-normal;
+        border-radius: 2px;
+        box-sizing: border-box;
       }
       .health-bar, .mana-bar, .stamina-bar {
         margin-top: 6px;
