@@ -18,17 +18,17 @@ global.ItemDetailPanel = function() {
       partySelect.hide();
     }
 
-    if (selected && selected.code) {
+    if (selected?.code) {
       const article = Article.lookup(selected.code);
       if (isUsableNow(article)) { partySelect.show(); }
       panelElement.appendChild(buildArticleDetails(article));
     }
 
-    if (selected && selected.id) {
+    if (selected?.id) {
       panelElement.appendChild(buildItemDetails(Item(selected.id)));
     }
 
-    if (selected.characterId) {
+    if (selected?.characterId) {
       panelElement.appendChild(buildSummary(selected.characterId));
     }
   }
@@ -39,7 +39,7 @@ global.ItemDetailPanel = function() {
 
   function buildDetails(thing) {
     const details = X.createElement(`<div class='details'>
-      <div class='name'>${thing.getName()}</div>
+      <div class='name'>${nameFor(thing)}</div>
       <div class='description'>${thing.getDescription()}</div>
       <div class='value'><span class='label'>Value</span></div>
       <div class='actions button-row'></div>
@@ -48,6 +48,11 @@ global.ItemDetailPanel = function() {
     details.querySelector('.value').appendChild(CurrencyDisplay.build(thing.getValue()));
 
     return details;
+  }
+
+  function nameFor(thing) {
+    const nameOptions = (typeof thing.getCode === 'function') ? { articleCode:thing.getCode() } : { itemId:thing.getId() };
+    return ItemName({ ...nameOptions, size:'large', showIcon:true }).asString();
   }
 
   function buildArticleDetails(article) {

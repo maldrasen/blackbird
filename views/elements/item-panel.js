@@ -32,25 +32,21 @@ global.ItemPanel = function() {
   // human mutagen. It's a rare case though that acts like a proper name (it starts with "The") but has a plural form
   // that kind of works. (2 Milks of Human Kindness is also kind of funny)
   function buildArticle(code, quantity) {
-    const article = Article.lookup(code);
-    const element = buildEntry(article.getIcon(), article.getNameWithQuantity(quantity));
+    const element = buildEntry(ItemName({ articleCode:code, quantity:quantity, showIcon:true }));
     element.dataset.type = 'article';
     element.dataset.code = code;
     return element;
   }
 
   function buildItem(id) {
-    const item = Item(id);
-    const element = buildEntry(item.getIcon(), item.getName());
+    const element = buildEntry(ItemName({ itemId:id, showIcon:true }));
     element.dataset.type = 'item';
     element.dataset.id = id;
     return element;
   }
 
-  // Entries without an icon keep the empty icon element so that the names stay aligned.
-  function buildEntry(icon, name) {
-    const element = X.createElement(`<li><div class='item-icon'></div><div class='item-name'>${name}</div></li>`);
-    element.querySelector('.item-icon').style['background-image'] = X.assetURL(`icons/${icon}`);
+  function buildEntry(itemName) {
+    const element = X.createElement(`<li>${itemName.asString()}</li>`);
     element.addEventListener('click', event => { selectItem(event.currentTarget); });
     return element;
   }

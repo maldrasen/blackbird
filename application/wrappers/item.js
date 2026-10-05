@@ -41,12 +41,17 @@ global.Item = function(id) {
     return `[TODO Item Descriptions]`;
   }
 
+  // TODO: Item rarity will depend on its enchantment. We can hold off on this until task 228 when we start
+  //       adding more enchantments to the game. For now, all normal armor and weapons are common.
+  function getRarity() { return Rarity.common; }
+
   return {
     getId: () => { return id; },
     getBase,
     getName: () => { return getItemComponent().name; },
     getNameType: () => { return getItemComponent().nameType; },
     getDescription,
+    getRarity,
     getIcon: () => { return getBase().getIcon(); },
     getSkill: () => { return getBase().getSkill(); },
     getCategory,

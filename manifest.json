@@ -627,6 +627,7 @@
     "views/elements/currency-display.js",
     "views/elements/general-overlay.js",
     "views/elements/item-detail-panel.js",
+    "views/elements/item-name.js",
     "views/elements/item-panel.js",
     "views/elements/select.js",
     "views/elements/slider.js",
