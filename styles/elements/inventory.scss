@@ -69,3 +69,12 @@
     border-bottom: variables.$border-normal;
   }
 }
+
+.item-name {
+  font-family: Roboto, "sans-serif";
+  &.common      { color: variables.$fg-common; }
+  &.unusual     { color: variables.$fg-unusual; }
+  &.rare        { color: variables.$fg-rare; }
+  &.astonishing { color: variables.$fg-astonishing; }
+  &.unheardOf   { color: variables.$fg-unheard-of; }
+}

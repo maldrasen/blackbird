@@ -10,17 +10,36 @@
     flex-grow: 1;
     gap: 10px;
   }
+
   .slots-panel {
     width: 200px;
     overflow-y: auto;
     overflow-x: hidden;
     border: variables.$border-light;
+    background-color: rgb(20 20 20 / 0.5);
+    .slot {
+      margin: 5px;
+      padding: 5px;
+      border: variables.$border-light;
+      box-shadow: variables.$shadow-shallow;
+      background-color: rgb(0 0 0 / 0.2);
+    }
+    .slot-name {
+      font-size: variables.$fs-tiny;
+      color: variables.$fg-weak;
+    }
+    .slot-content {
+      margin-left: 10px;
+      height: 20px;
+    }
   }
+
   .item-panel {
     flex-grow: 1;
     overflow-y: auto;
     overflow-x: hidden;
   }
+
   .detail-area {
     flex-grow: 1;
   }
