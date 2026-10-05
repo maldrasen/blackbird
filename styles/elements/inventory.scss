@@ -72,7 +72,8 @@
     }
     .protection-grid {
       display: grid;
-      grid-template-columns: 90px repeat(3, 70px);
+      grid-template-columns: 90px repeat(var(--columns), 70px);
+      justify-content: center;
       row-gap: 4px;
       font-size: variables.$fs-small;
 
@@ -88,6 +89,14 @@
       .amount.none {
         color: variables.$fg-very-weak;
       }
+      .amount.vulnerable {
+        color: variables.$fg-warning;
+      }
+    }
+    .empty {
+      text-align: center;
+      font-size: variables.$fs-small;
+      color: variables.$fg-very-weak;
     }
   }
 }

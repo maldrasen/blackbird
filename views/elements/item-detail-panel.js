@@ -161,27 +161,51 @@ global.ItemDetailPanel = function() {
     return summary;
   }
 
-  // The reduction at each location already includes the whole body bonus from a shield, and is capped the same way
-  // it is when damage is applied.
+  // The protection table shows the effective reduction at each hit location, the equipment and the character's innate
+  // resistance together. A damage type only gets a column when something actually affects it.
   function buildProtection(characterId) {
-    const equipment = EquipmentManager(characterId);
-    const types = [DamageType.crush, DamageType.slash, DamageType.pierce];
     const locations = [EquipmentSlot.head, EquipmentSlot.chest, EquipmentSlot.hands, EquipmentSlot.legs, EquipmentSlot.feet];
+    const types = Object.values(DamageType).filter(type => {
+      return locations.some(location => effectiveReduction(characterId, location, type) !== 0);
+    });
+
+    const section = X.createElement(`<div class='section protection'>
+      <div class='section-title'>Protection</div>
+    </div>`);
+
+    if (types.length === 0) {
+      section.appendChild(X.createElement(`<div class='empty'>No protection</div>`));
+      return section;
+    }
 
     const headings = types.map(type => `<div class='heading'>${StringHelper.titlecase(type)}</div>`).join('');
 
     const rows = locations.map(location => {
-      const amounts = types.map(type => {
-        const reduction = equipment.getDamageReduction(location, type);
-        return `<div class='amount ${reduction === 0 ? 'none' : ''}'>${reduction}%</div>`;
-      }).join('');
+      const amounts = types.map(type => buildAmount(effectiveReduction(characterId, location, type))).join('');
       return `<div class='label'>${StringHelper.titlecase(location)}</div>${amounts}`;
     }).join('');
 
-    return X.createElement(`<div class='section protection'>
-      <div class='section-title'>Protection</div>
-      <div class='protection-grid'><div></div>${headings}${rows}</div>
-    </div>`);
+    section.appendChild(X.createElement(`<div class='protection-grid' style='--columns:${types.length}'>
+      <div></div>${headings}${rows}
+    </div>`));
+
+    return section;
+  }
+
+  function buildAmount(reduction) {
+    if (reduction === 0) { return `<div class='amount none'>0%</div>`; }
+    if (reduction < 0) { return `<div class='amount vulnerable'>${reduction}%</div>`; }
+    return `<div class='amount'>${reduction}%</div>`;
+  }
+
+  // TODO: This mirrors BattleDamageSystem.getReductionPercent(), which can't be used here because it needs a battle
+  //       state. Only physical damage is reduced by the armor at the hit location; everything else is reduced by the
+  //       innate resistance alone until equipment carries elemental resistances.
+  function effectiveReduction(characterId, location, type) {
+    const innate = Character(characterId).getResistance(type);
+    const isPhysical = [DamageType.crush, DamageType.slash, DamageType.pierce].includes(type);
+    const equipped = isPhysical ? EquipmentManager(characterId).getDamageReduction(location, type) : 0;
+    return Math.min(equipped + innate, BattleConstants.maxReduction);
   }
 
   return {
