@@ -70,6 +70,18 @@
       margin-bottom: 5px;
       color: variables.$fg-weak;
     }
+    .attack {
+      margin-bottom: 10px;
+      .weapon {
+        margin-bottom: 5px;
+      }
+      .properties {
+        margin-left: 10px;
+        li {
+          margin-bottom: 4px;
+        }
+      }
+    }
     .resistance-grid {
       display: grid;
       grid-template-columns: 90px repeat(var(--columns), 70px);

@@ -156,13 +156,42 @@ global.ItemDetailPanel = function() {
       <div class='name title'>Equipment Summary</div>
     </div>`);
 
-    const resistances = EquipmentManager(characterId).summarizeResistances();
+    const equipment = EquipmentManager(characterId);
+    const damages = equipment.summarizeDamages();
+    const resistances = equipment.summarizeResistances();
     const magical = ObjectHelper.select(resistances.magical, (type, amount) => amount !== 0);
 
+    if (Object.keys(damages).length > 0) { summary.appendChild(buildAttacks(damages)); }
     summary.appendChild(buildProtection(resistances.physical));
     if (Object.keys(magical).length > 0) { summary.appendChild(buildMagicResistances(magical)); }
 
     return summary;
+  }
+
+  // The damage shown here is what the character really deals with the weapon, unlike the attack power in the item
+  // details, which is the weapon's range before strength is applied.
+  function buildAttacks(damages) {
+    const section = X.createElement(`<div class='section'>
+      <div class='section-title'>Attacks</div>
+    </div>`);
+
+    [EquipmentSlot.primary, EquipmentSlot.secondary].filter(slot => damages[slot]).forEach(slot => {
+      const damage = damages[slot];
+      const attack = X.createElement(`<div class='attack'>
+        <div class='weapon'>${ItemName({ itemId:damage.itemId, showIcon:true }).asString()}</div>
+        <ul class='properties'></ul>
+      </div>`);
+
+      [
+        { label:'Damage', content:`${damage.low} – ${damage.high} ${damageTypesText(damage.damageTypes)}` },
+        { label:'Attack Time', content:`${damage.speed}` },
+        { label:'Range', content:StringHelper.titlecase(damage.reach) },
+      ].forEach(property => attack.querySelector('.properties').appendChild(buildProperty(property)));
+
+      section.appendChild(attack);
+    });
+
+    return section;
   }
 
   function buildProtection(physical) {
