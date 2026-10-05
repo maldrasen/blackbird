@@ -178,7 +178,7 @@ global.ItemDetailPanel = function() {
     [EquipmentSlot.primary, EquipmentSlot.secondary].filter(slot => damages[slot]).forEach(slot => {
       const damage = damages[slot];
       const attack = X.createElement(`<div class='attack'>
-        <div class='weapon'>${ItemName({ itemId:damage.itemId, showIcon:true }).asString()}</div>
+        <div class='weapon'>${ItemName({ itemId:damage.itemId, showIcon:true, size:'large' }).asString()}</div>
         <ul class='properties'></ul>
       </div>`);
 
