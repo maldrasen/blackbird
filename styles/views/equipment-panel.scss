@@ -25,12 +25,13 @@
       background-color: rgb(0 0 0 / 0.2);
     }
     .slot-name {
+      margin-bottom: 2px;
       font-size: variables.$fs-tiny;
       color: variables.$fg-weak;
     }
     .slot-content {
       margin-left: 10px;
-      height: 20px;
+      height: 22px;
     }
   }
 

@@ -27,9 +27,11 @@ global.ItemName = function(options={}) {
     rarity = article.getRarity();
   }
 
+  // The icons are white shapes on a transparent background, so the image is used as a mask over the current text
+  // color. That way the icon always matches the rarity color of the name.
   if (options.showIcon) {
     const image = (type === 'item') ? item.getIcon() : article.getIcon();
-    icon = `<span class='item-icon'></span>`
+    icon = `<span class='item-icon' style="mask-image:${X.assetURL(`icons/${image}`)}"></span>`;
   }
 
   function asString() {

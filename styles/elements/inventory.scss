@@ -71,7 +71,21 @@
 }
 
 .item-name {
+  display: inline-flex;
+  align-items: center;
   font-family: Roboto, "sans-serif";
+
+  .item-icon {
+    flex: none;
+    height: 20px;
+    width: 20px;
+    margin-right: 6px;
+    background-color: currentColor;
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+  }
+
   &.common      { color: variables.$fg-common; }
   &.unusual     { color: variables.$fg-unusual; }
   &.rare        { color: variables.$fg-rare; }
