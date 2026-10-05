@@ -34,23 +34,16 @@ global.EquipmentPanel = (function() {
     character.getEquipmentSlots().forEach(slot => {
       X.append('#characterOverlay .slots-list', buildEquipmentSlot(slot));
     });
-
   }
 
   function buildEquipmentSlot(slot) {
-
-    // Can this be rewritten with `?.` We actually really need that item-name element now.
     const equippedId = equipmentManager.getSlot(slot);
-    const equipped = equippedId ? Item(equippedId) : null;
-    const name = equipped ? equipped.getName() : '';
-    const icon = equipped ? equipped.getIcon() : '';
+    const itemName = equippedId ? ItemName({ itemId:equippedId, showIcon:true }).asString() : '';
 
-    const item = X.createElement(`<li class='slot'>
+    return X.createElement(`<li class='slot'>
       <div class='slot-name'>${StringHelper.titlecase(slot)}</div>
-      <div class='item-name'>${icon} ${name}</div>
+      <div class='slot-content'>${itemName}</div>
     </li>`);
-
-    return item;
   }
 
   return {
