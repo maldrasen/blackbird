@@ -131,9 +131,47 @@ global.EquipmentManager = function(characterId) {
       Character(characterId).getResistance(type);
   }
 
+  // Real main and off hand weapon damage ranges given the character's strength. A weapon's attack power is the percent
+  // of the wielder's strength that a hit deals, the same way the DamageRoll works it out, before any ability, stance,
+  // or crit adjustments.
+  //   { primary:{ itemId, low, high, damageTypes:[{ type, percent }], speed, reach }, secondary:{ ... } }
+  //
+  // The secondary entry is only there when the off hand holds a weapon, not when it's empty or holding a shield.
+  //
+  // TODO: Nothing is summarized without a primary weapon. That needs to wait until I figure out how unarmed attacks
+  //       work for characters, when they only have a shield equipped for instance.
   function summarizeDamages() {
-    // Real main and off hand weapon damage ranges given the character's strength and weapon skill with the equipped
-    // weapons.
+    const primary = getWeaponIn(EquipmentSlot.primary);
+    const secondary = getWeaponIn(EquipmentSlot.secondary);
+    const summary = {};
+
+    if (primary == null) { return summary; }
+
+    summary.primary = summarizeWeapon(primary);
+    if (secondary) { summary.secondary = summarizeWeapon(secondary); }
+
+    return summary;
+  }
+
+  function getWeaponIn(slot) {
+    const itemId = getSlot(slot);
+    return (itemId != null && getBase(itemId).isWeapon()) ? itemId : null;
+  }
+
+  function summarizeWeapon(itemId) {
+    const item = Item(itemId);
+    const base = item.getBase();
+    const range = item.getDamageRange();
+    const strength = Attributes(characterId).getStrength();
+
+    return {
+      itemId,
+      low: Math.round((range.low / 100) * strength),
+      high: Math.round((range.high / 100) * strength),
+      damageTypes: base.getDamageTypes(),
+      speed: base.getSpeed(),
+      reach: base.getReach(),
+    };
   }
 
   return {
