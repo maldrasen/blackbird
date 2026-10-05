@@ -38,13 +38,16 @@ global.EquipmentPanel = (function() {
   }
 
   function buildEquipmentSlot(slot) {
-    const equipped = equipmentManager.getSlot(slot);
 
-    console.log(equipped)
+    // Can this be rewritten with `?.` We actually really need that item-name element now.
+    const equippedId = equipmentManager.getSlot(slot);
+    const equipped = equippedId ? Item(equippedId) : null;
+    const name = equipped ? equipped.getName() : '';
+    const icon = equipped ? equipped.getIcon() : '';
 
     const item = X.createElement(`<li class='slot'>
       <div class='slot-name'>${StringHelper.titlecase(slot)}</div>
-      <div class='item-display'>${equipped}</div>
+      <div class='item-name'>${icon} ${name}</div>
     </li>`);
 
     return item;
