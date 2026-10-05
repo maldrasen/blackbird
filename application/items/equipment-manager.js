@@ -136,9 +136,9 @@ global.EquipmentManager = function(characterId) {
   // or crit adjustments.
   //   { primary:{ itemId, low, high, damageTypes:[{ type, percent }], speed, reach }, secondary:{ ... } }
   //
-  // The secondary entry is only there when the off hand holds a weapon, not when it's empty or holding a shield.
+  // An entry is only there when the hand holds a weapon, not when it's empty or holding a shield.
   //
-  // TODO: Nothing is summarized without a primary weapon. That needs to wait until I figure out how unarmed attacks
+  // TODO: Nothing is summarized for an unarmed character. That needs to wait until I figure out how unarmed attacks
   //       work for characters, when they only have a shield equipped for instance.
   function summarizeDamages() {
     const primary = getWeaponIn(EquipmentSlot.primary);

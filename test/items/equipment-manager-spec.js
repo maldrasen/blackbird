@@ -281,4 +281,51 @@ describe('EquipmentManager', function() {
     });
   });
 
+  // The generic fixtures have 25 strength, so a weapon deals a quarter of its attack power.
+  describe('summarizeDamages()', function() {
+    it("scales the attack power of both weapons by strength", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const longsword = ItemFixtures.equip(horse, 'longsword', ['steel']);
+      const dagger = ItemFixtures.equip(horse, 'dagger', ['steel'], { slot:EquipmentSlot.secondary });
+      const summary = EquipmentManager(horse).summarizeDamages();
+
+      expect(summary.primary).to.deep.equal({
+        itemId: longsword,
+        low: 13,
+        high: 25,
+        damageTypes: [{ type:DamageType.slash, percent:100 }],
+        speed: 1000,
+        reach: WeaponReach.close,
+      });
+      expect(summary.secondary).to.deep.equal({
+        itemId: dagger,
+        low: 13,
+        high: 19,
+        damageTypes: [{ type:DamageType.slash, percent:60 }, { type:DamageType.pierce, percent:40 }],
+        speed: 500,
+        reach: WeaponReach.short,
+      });
+    });
+
+    it("leaves out an empty hand or a shield", function() {
+      const horse = CharacterFixtures.genericMale({});
+      ItemFixtures.equip(horse, 'longsword', ['steel']);
+      expect(EquipmentManager(horse).summarizeDamages()).to.have.keys('primary');
+
+      ItemFixtures.equip(horse, 'tower-shield', ['steel']);
+      expect(EquipmentManager(horse).summarizeDamages()).to.have.keys('primary');
+    });
+
+    it("summarizes an off-hand weapon on its own", function() {
+      const horse = CharacterFixtures.genericMale({});
+      ItemFixtures.equip(horse, 'dagger', ['steel'], { slot:EquipmentSlot.secondary });
+      expect(EquipmentManager(horse).summarizeDamages()).to.have.keys('secondary');
+    });
+
+    it("summarizes nothing for an unarmed character", function() {
+      const horse = CharacterFixtures.genericMale({});
+      expect(EquipmentManager(horse).summarizeDamages()).to.deep.equal({});
+    });
+  });
+
 });
