@@ -1,5 +1,7 @@
 global.EquipmentManager = function(characterId) {
   const maxReduction = 80;
+  const physicalTypes = [DamageType.crush, DamageType.slash, DamageType.pierce];
+  const hitLocations = [EquipmentSlot.head, EquipmentSlot.chest, EquipmentSlot.hands, EquipmentSlot.legs, EquipmentSlot.feet];
 
   function fetch() { return EquipmentComponent.lookup(characterId); }
   function update(equipment) { EquipmentComponent.update(characterId, equipment); }
@@ -94,6 +96,46 @@ global.EquipmentManager = function(characterId) {
     return (slot != null) ? equipItem(null, slot) : [];
   }
 
+  // Build an equipment summary, displayed in the detail panel. Also can be used by the battle system to get a
+  // character's resistance totals. These are the effective resistances, with the wearer's innate resistance included.
+  // Physical damage lands on a hit location, so those reductions are listed per location. The other damage types are
+  // whole body.
+  //   { physical:{ head:{ crush, slash, pierce }, ... }, magical:{ fire, shock, ... } }
+  //
+  // TODO: Equipment doesn't carry elemental resistances yet. Once the armor enchantments do they get added to the
+  //       magical resistances here.
+  function summarizeResistances() {
+    const summary = { physical:{}, magical:{} };
+
+    hitLocations.forEach(location => {
+      summary.physical[location] = {};
+      physicalTypes.forEach(type => {
+        summary.physical[location][type] = cappedReduction(getDamageReduction(location, type) + getInnateResistance(type));
+      });
+    });
+
+    Object.values(DamageType).filter(type => physicalTypes.includes(type) === false).forEach(type => {
+      summary.magical[type] = cappedReduction(getInnateResistance(type));
+    });
+
+    return summary;
+  }
+
+  function cappedReduction(reduction) {
+    return Math.min(reduction, BattleConstants.maxReduction);
+  }
+
+  function getInnateResistance(type) {
+    return MonsterComponent.lookup(characterId) != null ?
+      Monster(characterId).getResistance(type) :
+      Character(characterId).getResistance(type);
+  }
+
+  function summarizeDamages() {
+    // Real main and off hand weapon damage ranges given the character's strength and weapon skill with the equipped
+    // weapons.
+  }
+
   return {
     getSlot,
     getEquippedSlot,
@@ -105,6 +147,8 @@ global.EquipmentManager = function(characterId) {
     getEquippedShield,
     hasEquippedWeaponType,
     getDamageReduction,
+    summarizeResistances,
+    summarizeDamages,
   };
 
 }

@@ -70,7 +70,7 @@
       margin-bottom: 5px;
       color: variables.$fg-weak;
     }
-    .protection-grid {
+    .resistance-grid {
       display: grid;
       grid-template-columns: 90px repeat(var(--columns), 70px);
       justify-content: center;
@@ -92,11 +92,6 @@
       .amount.vulnerable {
         color: variables.$fg-warning;
       }
-    }
-    .empty {
-      text-align: center;
-      font-size: variables.$fs-small;
-      color: variables.$fg-very-weak;
     }
   }
 }
