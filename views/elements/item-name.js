@@ -2,6 +2,7 @@
 //   - `showIcon`     True if the name span should include its icon.
 //   - `itemId`       An item entity ID
 //   - `articleCode`  An article code
+//   - `size`         [small,large] The size of the name and icon, defaults to small.
 //   - `quantity`     If we include the quantity option, then we need include the quantity and use the article's
 //                    getNameWithQuantity() function to get its name. An article without quality shows it's plain name.
 //
@@ -11,6 +12,7 @@ global.ItemName = function(options={}) {
   let article;
   let name;
   let icon = '';
+  let size = options.size || 'small'
   let rarity;
 
   if (options.itemId) {
@@ -35,7 +37,7 @@ global.ItemName = function(options={}) {
   }
 
   function asString() {
-    return `<span class='item-name ${rarity}'>${icon}${name}</span>`;
+    return `<span class='item-name ${size} ${rarity}'>${icon}${name}</span>`;
   }
 
   return {
