@@ -60,6 +60,7 @@ global.EnlightenView = (function() {
     }
   }
 
+  // TODO: Task 256 will move the loot blocks into the view, rather than using the WeaverElements.
   function showLoot() {
     const loot = EnlightenSystem.getState().getLoot();
     if (loot.length > 0) {
