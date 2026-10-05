@@ -24,7 +24,7 @@ global.EquipmentSummaryPanel = function() {
   // details, which is the weapon's range before strength is applied.
   function buildAttacks(damages) {
     const section = X.createElement(`<div class='section'>
-      <div class='section-title'>Attacks</div>
+      <div class='section-title'>Weapons</div>
       <div class='attack-row'></div>
     </div>`);
 
@@ -66,7 +66,7 @@ global.EquipmentSummaryPanel = function() {
     }).join('');
 
     return X.createElement(`<div class='section'>
-      <div class='section-title'>Protection</div>
+      <div class='section-title'>Armor</div>
       <div class='resistance-grid' style='--columns:${types.length}'><div></div>${headings}${rows}</div>
     </div>`);
   }
