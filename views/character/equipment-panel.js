@@ -3,7 +3,7 @@ global.EquipmentPanel = (function() {
   let equipmentManager;
 
   let rootElement;
-  let detailPanel;
+  let summaryPanel;
 
   function init() {}
 
@@ -19,8 +19,8 @@ global.EquipmentPanel = (function() {
 
     X.fill('#equipmentTab', rootElement);
 
-    detailPanel = ItemDetailPanel();
-    rootElement.querySelector('.detail-area').appendChild(detailPanel.build());
+    summaryPanel = EquipmentSummaryPanel();
+    rootElement.querySelector('.detail-area').appendChild(summaryPanel.build());
 
     update();
   }
@@ -28,7 +28,7 @@ global.EquipmentPanel = (function() {
   function update() {
 
     // ---When no slots are selected---
-    detailPanel.update({ characterId:character.getEntity() });
+    summaryPanel.update(character.getEntity());
 
     X.empty('#characterOverlay .slots-list');
     character.getEquipmentSlots().forEach(slot => {

@@ -625,6 +625,7 @@
     "views/elements/casement.js",
     "views/elements/confirmation.js",
     "views/elements/currency-display.js",
+    "views/elements/equipment-summary-panel.js",
     "views/elements/general-overlay.js",
     "views/elements/item-detail-panel.js",
     "views/elements/item-name.js",
