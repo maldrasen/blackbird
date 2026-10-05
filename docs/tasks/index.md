@@ -24,6 +24,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [252] Person Record `5pt` — [252-person-record.md](252-person-record.md)
 - [253] Conversation Component `8pt` — [253-conversation-component.md](253-conversation-component.md)
 - [254] Return to episode after an encounter `3pt` — [254-return-to-episode-after-an-encounter.md](254-return-to-episode-after-an-encounter.md)
+- [256] Unhack WeaverElements lootBlock `3pt` — [256-unhack-weaver-elements-loot-block.md](256-unhack-weaver-elements-loot-block.md)
 
 ## Priority 3
 
