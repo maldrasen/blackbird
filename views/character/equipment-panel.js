@@ -1,25 +1,63 @@
-global.EquipmentPanel = function(id) {
+global.EquipmentPanel = (function() {
+  let character;
+  let equipmentManager;
+
   let rootElement;
   let detailPanel;
 
-  function build() {
-    detailPanel = ItemDetailPanel();
+  function init() {}
+
+  function build(id) {
+    character = Character(id);
+    equipmentManager = EquipmentManager(id);
 
     rootElement = X.createElement(`<div class='equipment-root'>
-      <div class='slots-panel'></div>
+      <div class='slots-panel'><ul class='slots-list'></ul></div>
       <div class='item-panel hide'></div>
       <div class='detail-area'></div>
     </div>`);
 
-    rootElement.querySelector('.detail-area').appendChild(detailPanel.build())
+    X.fill('#equipmentTab', rootElement);
 
-    detailPanel.update({ characterId:id });
+    detailPanel = ItemDetailPanel();
+    rootElement.querySelector('.detail-area').appendChild(detailPanel.build());
 
-    return rootElement;
+    update();
   }
 
-  return { build };
-}
+  function update() {
+
+    // ---When no slots are selected---
+    detailPanel.update({ characterId:character.getEntity() });
+
+    X.empty('#characterOverlay .slots-list');
+    character.getEquipmentSlots().forEach(slot => {
+      X.append('#characterOverlay .slots-list', buildEquipmentSlot(slot));
+    });
+
+  }
+
+  function buildEquipmentSlot(slot) {
+    const equipped = equipmentManager.getSlot(slot);
+
+    console.log(equipped)
+
+    const item = X.createElement(`<li class='slot'>
+      <div class='slot-name'>${StringHelper.titlecase(slot)}</div>
+      <div class='item-display'>${equipped}</div>
+    </li>`);
+
+    return item;
+  }
+
+  return {
+    init,
+    build,
+    update,
+  };
+
+})();
+
 
   // function update() {
   //   const slotList = panel.querySelector('.slot-list');

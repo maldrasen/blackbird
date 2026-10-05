@@ -10,6 +10,7 @@ global.Views = (function() {
     DungeonView.init();
     EnlightenView.init();
     EpisodeView.init();
+    EquipmentPanel.init();
     GameStateFrame.init();
     GeneralOverlay.init();
     InventoryOverlay.init();

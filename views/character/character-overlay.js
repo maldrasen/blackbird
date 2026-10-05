@@ -20,7 +20,7 @@ global.CharacterOverlay = (function() {
 
     update();
 
-    X.fill('#equipmentTab', EquipmentPanel(id).build());
+    EquipmentPanel.build(id);
 
     WindowManager.push(CharacterOverlay)
     X.removeClass('#characterOverlay','hide');
