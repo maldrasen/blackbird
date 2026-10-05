@@ -152,7 +152,36 @@ global.ItemDetailPanel = function() {
   }
 
   function buildSummary(characterId) {
-    return X.createElement(`<pre>[TODO: Equipment Summery for ${characterId}]</pre>`);
+    const summary = X.createElement(`<div class='details summary'>
+      <div class='name title'>Equipment Summary</div>
+    </div>`);
+
+    summary.appendChild(buildProtection(characterId));
+
+    return summary;
+  }
+
+  // The reduction at each location already includes the whole body bonus from a shield, and is capped the same way
+  // it is when damage is applied.
+  function buildProtection(characterId) {
+    const equipment = EquipmentManager(characterId);
+    const types = [DamageType.crush, DamageType.slash, DamageType.pierce];
+    const locations = [EquipmentSlot.head, EquipmentSlot.chest, EquipmentSlot.hands, EquipmentSlot.legs, EquipmentSlot.feet];
+
+    const headings = types.map(type => `<div class='heading'>${StringHelper.titlecase(type)}</div>`).join('');
+
+    const rows = locations.map(location => {
+      const amounts = types.map(type => {
+        const reduction = equipment.getDamageReduction(location, type);
+        return `<div class='amount ${reduction === 0 ? 'none' : ''}'>${reduction}%</div>`;
+      }).join('');
+      return `<div class='label'>${StringHelper.titlecase(location)}</div>${amounts}`;
+    }).join('');
+
+    return X.createElement(`<div class='section protection'>
+      <div class='section-title'>Protection</div>
+      <div class='protection-grid'><div></div>${headings}${rows}</div>
+    </div>`);
   }
 
   return {

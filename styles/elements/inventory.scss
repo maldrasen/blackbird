@@ -57,6 +57,39 @@
     margin-bottom: 10px;
     border-bottom: variables.$border-normal;
   }
+
+  .summary {
+    .title {
+      margin-bottom: 10px;
+      font-size: variables.$fs-big;
+    }
+    .section {
+      margin-bottom: 15px;
+    }
+    .section-title {
+      margin-bottom: 5px;
+      color: variables.$fg-weak;
+    }
+    .protection-grid {
+      display: grid;
+      grid-template-columns: 90px repeat(3, 70px);
+      row-gap: 4px;
+      font-size: variables.$fs-small;
+
+      .heading, .amount {
+        text-align: right;
+      }
+      .heading {
+        color: variables.$fg-very-weak;
+      }
+      .amount {
+        font-family: "Roboto", serif;
+      }
+      .amount.none {
+        color: variables.$fg-very-weak;
+      }
+    }
+  }
 }
 
 .item-name {
