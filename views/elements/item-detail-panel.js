@@ -18,17 +18,17 @@ global.ItemDetailPanel = function() {
       partySelect.hide();
     }
 
-    if (selected && selected.code) {
+    if (selected?.code) {
       const article = Article.lookup(selected.code);
       if (isUsableNow(article)) { partySelect.show(); }
       panelElement.appendChild(buildArticleDetails(article));
     }
 
-    if (selected && selected.id) {
+    if (selected?.id) {
       panelElement.appendChild(buildItemDetails(Item(selected.id)));
     }
 
-    if (selected.characterId) {
+    if (selected?.characterId) {
       panelElement.appendChild(buildSummary(selected.characterId));
     }
   }
