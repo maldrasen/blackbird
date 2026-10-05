@@ -145,9 +145,7 @@ global.EquipmentManager = function(characterId) {
     const secondary = getWeaponIn(EquipmentSlot.secondary);
     const summary = {};
 
-    if (primary == null) { return summary; }
-
-    summary.primary = summarizeWeapon(primary);
+    if (primary) { summary.primary = summarizeWeapon(primary); }
     if (secondary) { summary.secondary = summarizeWeapon(secondary); }
 
     return summary;
@@ -157,6 +155,15 @@ global.EquipmentManager = function(characterId) {
     const itemId = getSlot(slot);
     return (itemId != null && getBase(itemId).isWeapon()) ? itemId : null;
   }
+
+  // TODO: Eventually we'll want to include crit and fumble percentages as well. Because we don't yet have anywhere to
+  //       get these values, they're currently hard coded in the skill-check.
+
+  // TODO: We may eventually need to include some kind of accuracy information as well. Attacks are opposed weapon
+  //       skill vs defense skill checks though, so it's impossible to say how accurate a weapon is without knowing
+  //       who is being attacked. We may one day have accuracy modifiers as part of weapon enchantments that need to
+  //       be included as well though. We could also have aspects that effect accuracy as well. All future content that
+  //       isn't in the game yet though.
 
   function summarizeWeapon(itemId) {
     const item = Item(itemId);
