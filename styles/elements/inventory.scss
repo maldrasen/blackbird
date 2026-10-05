@@ -70,8 +70,12 @@
       margin-bottom: 5px;
       color: variables.$fg-weak;
     }
+    .attack-row {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+    }
     .attack {
-      margin-bottom: 10px;
       .weapon {
         margin-bottom: 5px;
       }

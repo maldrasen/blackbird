@@ -173,6 +173,7 @@ global.ItemDetailPanel = function() {
   function buildAttacks(damages) {
     const section = X.createElement(`<div class='section'>
       <div class='section-title'>Attacks</div>
+      <div class='attack-row'></div>
     </div>`);
 
     [EquipmentSlot.primary, EquipmentSlot.secondary].filter(slot => damages[slot]).forEach(slot => {
@@ -188,7 +189,7 @@ global.ItemDetailPanel = function() {
         { label:'Range', content:StringHelper.titlecase(damage.reach) },
       ].forEach(property => attack.querySelector('.properties').appendChild(buildProperty(property)));
 
-      section.appendChild(attack);
+      section.querySelector('.attack-row').appendChild(attack);
     });
 
     return section;
