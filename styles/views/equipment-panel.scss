@@ -15,11 +15,11 @@
     overflow-y: auto;
     overflow-x: hidden;
     border: variables.$border-light;
-    background-color: rgb(20 20 20 / 0.5);
   }
 
   .slots-panel {
     width: 200px;
+    background-color: rgb(20 20 20 / 0.5);
 
     .slot {
       margin: 5px;
@@ -46,6 +46,7 @@
 
   .candidate-panel {
     width: 320px;
+    background-color: rgb(10 10 10 / 0.5);
 
     .candidate {
       display: flex;
