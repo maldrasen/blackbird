@@ -8,11 +8,20 @@ global.EquipmentPanel = (function() {
   let itemDetailPanel;
 
   // The arrows step through the candidates so that the comparisons can be flipped through without clicking each one.
-  // These aren't configurable bindings, so they're wired straight to the key codes.
+  // These aren't configurable bindings, so they're wired straight to the key codes. The arrows listen to keydown
+  // directly rather than through X.onCodeDown() so that holding a key keeps stepping, and so that every repeat has its
+  // default prevented, otherwise the repeats scroll the panel.
   function init() {
-    X.onCodeDown(KeyCodes.ArrowUp, isNavigable, event => { event.preventDefault(); moveSelection(-1); });
-    X.onCodeDown(KeyCodes.ArrowDown, isNavigable, event => { event.preventDefault(); moveSelection(1); });
+    window.addEventListener('keydown', handleArrowKey);
     X.onCodeDown(KeyCodes.Enter, isNavigable, () => { if (selectedCandidate) { toggleEquipped(selectedCandidate); } });
+  }
+
+  function handleArrowKey(event) {
+    const deltas = { [KeyCodes.ArrowUp]:-1, [KeyCodes.ArrowDown]:1 };
+    if (deltas[event.code] == null || isNavigable() === false) { return; }
+
+    event.preventDefault();
+    moveSelection(deltas[event.code]);
   }
 
   function isNavigable() {
