@@ -1,78 +1,216 @@
-global.EquipmentPanel = function(options) {
+global.EquipmentPanel = (function() {
+  let character;
+  let equipmentManager;
+  let selectedSlot;
+  let selectedCandidate;
 
-  const characterId = options.character;
-  const equipmentManager = EquipmentManager(characterId);
+  let rootElement;
+  let itemDetailPanel;
 
-  let panel;
+  function init() {
+    window.addEventListener('keydown', handleArrowKey);
+    X.onCodeDown(KeyCodes.Enter, isNavigable, () => { if (selectedCandidate) { toggleEquipped(selectedCandidate); } });
+  }
 
-  // TODO: This is fine for now, but is going to need a lot of polish. For now it's fine for this panel to simply be
-  //       functional and I'll worry about making it look good once we have the accessories implemented and we do more
-  //       work on the equipment graphics. I think we'll also want more of a split panel interface. Selecting an item
-  //       by name works, but what would really be useful is after selecting a slot you see a list of equipment that
-  //       can go into that slot. Then selecting one of the equippable items shows you its stats. What would change if
-  //       you equip it. When nothing is selected we should show the current effects that the equipment is giving you.
+  function handleArrowKey(event) {
+    const deltas = { [KeyCodes.ArrowUp]:-1, [KeyCodes.ArrowDown]:1 };
+    if (deltas[event.code] == null || isNavigable() === false) { return; }
 
-  function buildInto(container) {
-    X.loadDocument(container,'views/templates/equipment-panel.html');
-    panel = X.first(container).querySelector('.equipment-panel');
+    event.preventDefault();
+    moveSelection(deltas[event.code]);
+  }
+
+  function isNavigable() {
+    return selectedSlot != null
+      && X.hasClass('#characterOverlay','hide') === false
+      && X.hasClass('#equipmentTab','active')
+      && Confirmation.isVisible() === false;
+  }
+
+  // Stepping off either end of the list stays put. With nothing selected, down starts at the top and up at the bottom.
+  function moveSelection(delta) {
+    const candidates = listCandidates();
+    if (candidates.length === 0) { return; }
+
+    const current = candidates.findIndex(candidate => candidate.itemId === selectedCandidate);
+    const start = (current >= 0) ? current : (delta > 0 ? -1 : candidates.length);
+    const next = Math.min(Math.max(start + delta, 0), candidates.length - 1);
+
+    selectedCandidate = candidates[next].itemId;
+    updateCandidates();
+    updateDetails();
+
+    rootElement.querySelector('.candidate.selected').scrollIntoView({ block:'nearest' });
+  }
+
+  // TODO: When we show a piece of equipment in this view, and it has a border, like in the slots panel or the
+  //       weapons in the equipment summary, should we set the border color to the item rarity?
+
+  function build(id) {
+    character = Character(id);
+    equipmentManager = EquipmentManager(id);
+    selectedSlot = null;
+    selectedCandidate = null;
+
+    rootElement = X.createElement(`<div class='equipment-root'>
+      <div class='slots-panel'><ul class='slots-list'></ul></div>
+      <div class='candidate-panel hide'><ul class='candidate-list'></ul></div>
+      <div class='detail-panel hide'><div class='empty hide'>Nothing equipped</div></div>
+      <div class='equipment-summary-panel'></div>
+    </div>`);
+
+    itemDetailPanel = ItemDetailPanel();
+    itemDetailPanel.setActions(item => [buildActionButton(item.getId())]);
+    itemDetailPanel.setCharacter(id);
+    rootElement.querySelector('.detail-panel').appendChild(itemDetailPanel.build());
+
+    X.fill('#equipmentTab', rootElement);
+
     update();
   }
 
   function update() {
-    const slotList = panel.querySelector('.slot-list');
-    X.empty(slotList);
-    Object.values(EquipmentSlot).forEach(slot => slotList.appendChild(buildSlotRow(slot)));
+    updateSlots();
+    updateCandidates();
+    updateDetails();
+    updateSummary();
   }
 
-  function buildSlotRow(slot) {
-    const itemId = equipmentManager.getSlot(slot);
-    const row = X.createElement(`<li class='slot-row' data-slot='${slot}'>
-      <div class='slot-name'>${StringHelper.titlecase(slot)}</div>
-      <div class='slot-item'>
-        <div class='item-icon'></div>
-        <div class='item-name'></div>
-      </div>
-    </li>`);
-    const slotItem = row.querySelector('.slot-item');
+  function updateSlots() {
+    const slotList = rootElement.querySelector('.slots-list');
+    X.empty(slotList);
+    character.getEquipmentSlots().forEach(slot => slotList.appendChild(buildEquipmentSlot(slot)));
+  }
 
-    if (itemId) {
-      const item = Item(itemId);
-      row.querySelector('.item-icon').style['background-image'] = X.assetURL(`icons/${item.getIcon()}`);
-      row.querySelector('.item-name').textContent = StringHelper.titlecaseName(item.getName());
-      X.addClass(row,'filled');
-    } else {
-      row.querySelector('.item-name').textContent = 'Empty';
+  function buildEquipmentSlot(slot) {
+    const equippedId = equipmentManager.getSlot(slot);
+    const itemName = equippedId ? ItemName({ itemId:equippedId, showIcon:true }).asString() : '';
+    const element = X.createElement(`<li class='slot ${slot === selectedSlot ? 'selected' : ''}'>
+      <div class='slot-name'>${StringHelper.titlecase(slot)}</div>
+      <div class='slot-content'>${itemName}</div>
+    </li>`);
+
+    element.addEventListener('click', () => selectSlot(slot));
+    return element;
+  }
+
+  function selectSlot(slot) {
+    selectedSlot = (slot === selectedSlot) ? null : slot;
+    selectedCandidate = null;
+    update();
+  }
+
+  function selectCandidate(itemId) {
+    selectedCandidate = (itemId === selectedCandidate) ? null : itemId;
+    updateCandidates();
+    updateDetails();
+  }
+
+  function updateCandidates() {
+    const candidatePanel = rootElement.querySelector('.candidate-panel');
+    const candidateList = rootElement.querySelector('.candidate-list');
+    X.empty(candidateList);
+
+    if (selectedSlot == null) { return X.addClass(candidatePanel,'hide'); }
+
+    const candidates = listCandidates();
+    if (candidates.length === 0) {
+      candidateList.appendChild(X.createElement(`<li class='empty'>Nothing to equip</li>`));
     }
 
-    slotItem.addEventListener('click', () => openSlotSelect(slot, slotItem));
-    return row;
+    candidates.forEach(candidate => candidateList.appendChild(buildCandidate(candidate.itemId, candidate.isEquipped)));
+    X.removeClass(candidatePanel,'hide');
   }
 
-  // The select lists whatever could go in the slot, with an unequip entry when something's already there. A slot
-  // with nothing to offer still opens the select so that clicking it doesn't feel broken. The select closes on mouse
-  // leave, so it's anchored to the inline item element rather than the full width row to keep it under the mouse.
-  function openSlotSelect(slot, anchor) {
-    const items = InventorySystem.getEquipmentForSlot(characterId, slot).map(entry => ({
-      label: StringHelper.titlecaseName(entry.name),
-      value: { equip:entry.itemId },
-    }));
+  // The equipped item has left the party inventory, so it's added back in and sorted with the candidates by name.
+  // That way the list keeps the same order as things are equipped and unequipped.
+  function listCandidates() {
+    const equippedId = equipmentManager.getSlot(selectedSlot);
+    const candidates = InventorySystem.getEquipmentForSlot(character.getEntity(), selectedSlot).
+      map(entry => ({ itemId:entry.itemId, name:entry.name, isEquipped:false }));
 
-    if (equipmentManager.getSlot(slot) != null) { items.push({ label:'Unequip', value:{ unequip:true } }); }
-    if (items.length === 0) { items.push({ label:'Nothing to equip', value:{} }); }
+    if (equippedId) {
+      candidates.push({ itemId:equippedId, name:Item(equippedId).getName(), isEquipped:true });
+    }
 
-    Select.open({
-      anchor: anchor,
-      items: items,
-      callback: choice => {
-        if (choice.equip) { InventorySystem.equip(characterId, choice.equip, slot); }
-        if (choice.unequip) { InventorySystem.unequip(characterId, slot); }
-        update();
-      },
-    });
+    return candidates.sort(InventorySystem.compareCandidates);
+  }
+
+  function buildCandidate(itemId, isEquipped=false) {
+    const itemName = ItemName({ itemId, showIcon:true }).asString();
+    const selectedClass = (itemId === selectedCandidate) ? 'selected' : '';
+    const equippedMark = `<span class='equipped-mark'>${isEquipped ? '▶' : ''}</span>`;
+    const element = X.createElement(`<li class='candidate ${selectedClass}'>${equippedMark}${itemName}</li>`);
+
+    element.addEventListener('click', () => selectCandidate(itemId));
+    element.addEventListener('dblclick', () => toggleEquipped(itemId));
+    return element;
+  }
+
+  // The two single clicks of a double click will have selected then deselected the candidate, so it's selected again
+  // before the equipment changes.
+  function toggleEquipped(itemId) {
+    selectedCandidate = itemId;
+    (itemId === equipmentManager.getSlot(selectedSlot)) ? unequip() : equip(itemId);
+  }
+
+  // The details show the selected candidate when there is one, otherwise whatever is in the selected slot.
+  function updateDetails() {
+    const detailPanel = rootElement.querySelector('.detail-panel');
+    const emptyMessage = detailPanel.querySelector('.empty');
+
+    if (selectedSlot == null) { return X.addClass(detailPanel,'hide'); }
+
+    const equippedId = equipmentManager.getSlot(selectedSlot);
+    const itemId = selectedCandidate || equippedId;
+
+    itemDetailPanel.setComparison(itemId === equippedId ? null : equippedId);
+    itemDetailPanel.update(itemId ? { id:itemId } : null);
+
+    if (itemId == null) { X.removeClass(emptyMessage,'hide'); }
+    if (itemId != null) { X.addClass(emptyMessage,'hide'); }
+
+    X.removeClass(detailPanel,'hide');
+  }
+
+  // The shown item is either in the selected slot or in the party inventory, so there's always exactly one action.
+  function buildActionButton(itemId) {
+    if (itemId === equipmentManager.getSlot(selectedSlot)) {
+      const button = X.createElement(`<a href='#' class='button unequip-button'>Unequip</a>`);
+      button.addEventListener('click', () => unequip());
+      return button;
+    }
+
+    const button = X.createElement(`<a href='#' class='button button-primary equip-button'>Equip</a>`);
+    button.addEventListener('click', () => equip(itemId));
+    return button;
+  }
+
+  // Equipping can knock items out of other slots, like a two-handed weapon clearing the off hand, so the whole tab is
+  // rebuilt. The candidate stays selected so the details flip to the opposite action.
+  function equip(itemId) {
+    InventorySystem.equip(character.getEntity(), itemId, selectedSlot);
+    update();
+  }
+
+  function unequip() {
+    InventorySystem.unequip(character.getEntity(), selectedSlot);
+    update();
+  }
+
+  function updateSummary() {
+    if (selectedSlot) {
+      EquipmentSummaryPanel.hide();
+    } else {
+      EquipmentSummaryPanel.update(character.getEntity());
+      EquipmentSummaryPanel.show();
+    }
   }
 
   return {
-    buildInto,
+    init,
+    build,
     update,
   };
-}
+
+})();

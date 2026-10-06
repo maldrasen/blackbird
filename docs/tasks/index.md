@@ -10,7 +10,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [009] Descriptions `13pt` #character — [009-descriptions.md](009-descriptions.md)
 - [011] Project Stuff `3pt` — [011-project-stuff.md](011-project-stuff.md)
 - [122] Training Enlighten View `5pt` — [122-training-enlighten-view.md](122-training-enlighten-view.md)
-- [142] Item detail panel `8pt` — [142-item-detail-panel.md](142-item-detail-panel.md)
 - [161] Join Text `8pt` — [161-join-text.md](161-join-text.md)
 - [194] Feeling Adjustments During Battle `2pt` — [194-feeling-adjustments-during-battle.md](194-feeling-adjustments-during-battle.md)
 - [197] Skill events `5pt` — [197-skill-episodes.md](197-skill-episodes.md)
@@ -24,7 +23,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [252] Person Record `5pt` — [252-person-record.md](252-person-record.md)
 - [253] Conversation Component `8pt` — [253-conversation-component.md](253-conversation-component.md)
 - [254] Return to episode after an encounter `3pt` — [254-return-to-episode-after-an-encounter.md](254-return-to-episode-after-an-encounter.md)
-- [255] Show item rarity `5pt` — [255-show-item-rarity.md](255-show-item-rarity.md)
+- [256] Unhack WeaverElements lootBlock `3pt` — [256-unhack-weaver-elements-loot-block.md](256-unhack-weaver-elements-loot-block.md)
 
 ## Priority 3
 

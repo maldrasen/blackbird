@@ -1,44 +1,150 @@
 @use "../variables";
 
-.equipment-panel {
+#equipmentTab.active {
+  display: flex;
+}
 
-  .equipment-frame {
+#equipmentTab {
+  .equipment-root {
+    display: flex;
+    flex-grow: 1;
+    gap: 10px;
+  }
+
+  .slots-panel, .candidate-panel {
+    overflow-y: auto;
+    overflow-x: hidden;
     border: variables.$border-light;
   }
 
-  .slot-row {
-    display: flex;
-    align-items: center;
-    height: 36px;
-    padding: 0 6px;
+  .slots-panel {
+    width: 200px;
+    background-color: rgb(20 20 20 / 0.5);
 
-    .slot-name {
-      width: 100px;
-      color: variables.$fg-weak;
-    }
-
-    .slot-item {
-      display: inline-flex;
-      align-items: center;
-      padding: 3px 8px;
+    .slot {
+      margin: 5px;
+      padding: 5px;
+      border: variables.$border-light;
+      box-shadow: variables.$shadow-shallow;
+      background-color: rgb(0 0 0 / 0.2);
       cursor: pointer;
     }
+    .slot:hover { background-color: variables.$select-hover; }
+    .slot.selected { background-color: variables.$select-active; }
+    .slot.selected:hover { background-color: variables.$select-active-hover; }
 
-    .slot-item:hover {
-      background-color: variables.$select-shade;
+    .slot-name {
+      margin-bottom: 2px;
+      font-size: variables.$fs-tiny;
+      color: variables.$fg-weak;
     }
-
-    .item-icon {
-      height: 24px;
-      width: 24px;
-      margin-right: 6px;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
+    .slot-content {
+      margin-left: 10px;
+      min-height: 26px;
     }
-
-    .item-name { opacity: 0.5; }
   }
 
-  .slot-row.filled .item-name { opacity: 1; }
+  .candidate-panel {
+    width: 320px;
+    background-color: rgb(10 10 10 / 0.5);
+
+    .candidate {
+      display: flex;
+      align-items: center;
+      padding: 5px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .candidate:hover { background-color: variables.$select-hover; }
+    .candidate.selected { background-color: variables.$select-active; }
+    .candidate.selected:hover { background-color: variables.$select-active-hover; }
+    .empty {
+      margin: 10px;
+      color: variables.$fg-very-weak;
+    }
+    .equipped-mark {
+      display: inline-block;
+      width: 15px;
+    }
+  }
+
+  .detail-panel {
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    .empty {
+      margin: 10px;
+      font-family: "habibi", serif;
+      color: variables.$fg-very-weak;
+    }
+  }
+
+  .equipment-summary-panel {
+    flex-grow: 1;
+    font-family: "habibi", serif;
+
+    .panel {
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    .weapon-section {
+      .weapon-row {
+        display: grid;
+        grid-template-columns: max-content max-content;
+        gap: 30px;
+        margin-top: -25px;
+      }
+      .weapon {
+        padding: 10px;
+        border: variables.$border-normal;
+        background-color: rgb(20 20 20 / 0.5);
+        box-shadow: variables.$shadow-shallow;
+      }
+    }
+
+    .armor-section {
+      .armor-table {
+        display: grid;
+        grid-template-columns: 90px 70px 70px 70px;
+        row-gap: 5px;
+      }
+      .heading {
+        text-align: right;
+        color: variables.$fg-weak;
+        border-bottom: variables.$border-normal;
+      }
+    }
+
+    .resistance-section {
+      .label {
+        display: inline-block;
+        width: 80px;
+        margin-top: 5px;
+      }
+    }
+
+    .properties {
+      font-size: variables.$fs-small;
+
+      li {
+        display: flex;
+      }
+      .label {
+        flex: none;
+        width: 90px;
+      }
+      .content {
+        font-family: "Roboto", serif;
+        color: variables.$fg-weak;
+      }
+    }
+
+    .amount {
+      font-family: "Roboto", serif;
+      text-align: right;
+    }
+    .amount.none { color: variables.$fg-very-weak; }
+    .amount.vulnerable { color: variables.$fg-warning; }
+  }
 }

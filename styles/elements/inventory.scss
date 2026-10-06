@@ -8,26 +8,16 @@
   li {
     display: flex;
     align-items: center;
-    padding: 2px 5px;
-    margin-bottom: 2px;
+    padding: 5px;
     white-space: nowrap;
     cursor: pointer;
   }
   li:last-child {
     margin-bottom: 0;
   }
-  .item-icon {
-    flex: none;
-    height: 24px;
-    width: 24px;
-    margin-right: 6px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-  .selected {
-    background-color: variables.$select-active;
-  }
+  li:hover { background-color: variables.$select-hover; }
+  .selected { background-color: variables.$select-active; }
+  .selected:hover { background-color: variables.$select-active-hover; }
 }
 
 .item-detail-panel {
@@ -37,20 +27,30 @@
   }
   .name {
     margin-bottom: 5px;
-    color: variables.$fg-strong;
-    font-size: variables.$fs-big;
     border-bottom: variables.$border-normal;
   }
   .description {
     margin-bottom: 10px;
     color: variables.$fg-weak;
   }
+  .properties li {
+    margin-bottom: 10px;
+  }
+  .value {
+    display: flex;
+    gap: 8px;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    border-bottom: variables.$border-normal;
+  }
+}
+
+.item-detail-panel {
   .properties {
     font-size: variables.$fs-small;
 
     li {
       display: flex;
-      margin-bottom: 10px;
     }
     .label {
       flex: none;
@@ -60,12 +60,49 @@
       font-family: "Roboto", serif;
       color: variables.$fg-weak;
     }
+    .diff {
+      margin-left: 5px;
+      opacity: 0.75
+    }
+    .diff.better { color: variables.$fg-good; }
+    .diff.worse { color: variables.$fg-bad; }
   }
-  .value {
-    display: flex;
-    gap: 8px;
-    padding-bottom: 5px;
-    margin-bottom: 10px;
-    border-bottom: variables.$border-normal;
+}
+
+.item-name {
+  display: inline-flex;
+  align-items: center;
+  font-family: Roboto, "sans-serif";
+
+  .item-icon {
+    flex: none;
+    background-color: currentColor;
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
   }
+
+  &.small {
+    font-size: variables.$fs-body;
+    .item-icon {
+      height: 20px;
+      width: 20px;
+      margin-right: 6px;
+    }
+  }
+
+  &.large {
+    font-size: variables.$fs-big;
+    .item-icon {
+      height: 26px;
+      width: 26px;
+      margin-right: 10px;
+    }
+  }
+
+  &.common      { color: variables.$fg-common; }
+  &.unusual     { color: variables.$fg-unusual; }
+  &.rare        { color: variables.$fg-rare; }
+  &.astonishing { color: variables.$fg-astonishing; }
+  &.unheardOf   { color: variables.$fg-unheard-of; }
 }

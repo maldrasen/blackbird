@@ -87,8 +87,6 @@ global.ArticleType = {
 
 // This category enum is ordered as the categories should appear in the inventory.
 global.InventoryCategory = {
-  weapon: 'weapon',
-  armor: 'armor',
   restoreHealth: 'restore-health',
   restoreMana: 'restore-mana',
   drug: 'drug',
@@ -97,6 +95,8 @@ global.InventoryCategory = {
   alchemy: 'alchemy',
   ammo: 'ammo',
   valuables: 'valuables',
+  weapon: 'weapon',
+  armor: 'armor',
 };
 
 global.UsableWhen = {

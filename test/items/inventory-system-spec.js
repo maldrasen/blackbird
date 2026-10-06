@@ -31,6 +31,20 @@ describe('InventorySystem', function() {
     expect(head[0].icon).to.be.a('string');
   });
 
+  it('getEquipmentForSlot() orders items with the same name by id', function() {
+    const { horse, hatchet } = armory();
+    const secondHatchet = ItemFixtures.buildSteel('hatchet');
+    Inventory().addItem(secondHatchet);
+
+    const names = InventorySystem.getEquipmentForSlot(horse, EquipmentSlot.secondary).map(row => row.name);
+    const hatchets = InventorySystem.getEquipmentForSlot(horse, EquipmentSlot.secondary).
+      filter(row => row.name === 'Steel Hatchet').
+      map(row => row.itemId);
+
+    expect(names).to.deep.equal(['Steel Hand Axe', 'Steel Hatchet', 'Steel Hatchet']);
+    expect(hatchets).to.deep.equal([hatchet, secondHatchet].sort());
+  });
+
   describe('equip()', function() {
     it('moves the item from the party inventory into the slot', function() {
       const { horse, hatchet } = armory();

@@ -176,6 +176,12 @@ global.Character = function(id) {
   //   Equipment
   // =============
 
+  // TODO: Characters will eventually have slots based on their body parts and body piercings. For now we can return
+  //       all the equipment slots and worry about filtering them later.
+  function getEquipmentSlots() {
+    return Object.keys(EquipmentSlot);
+  }
+
   // TODO: Should isNaked() be false if a person is only wearing a hat?
   function isNaked() {
     return Object.keys(ObjectHelper.select(EquipmentComponent.lookup(id), (key,value) => value != null)).length === 0;
@@ -183,7 +189,7 @@ global.Character = function(id) {
 
   function isEquipped(slot) { return EquipmentComponent.lookup(id)[slot] != null; }
 
-  // TODO: Support for equippable anal plugs and dildos and shit.
+  // TODO: Add the accessory item type for equippable anal plugs, dildos, and body piercings.
   function isAnusEmpty() { return true; }
   function isPussyEmpty() { return true; }
 
@@ -297,6 +303,7 @@ global.Character = function(id) {
     hasDoneAction,
 
     // Equipment
+    getEquipmentSlots,
     isNaked,
     isEquipped,
     isAnusEmpty,

@@ -8,7 +8,7 @@
     display: grid;
     background-color: rgba(20,20,20,0.6);
     grid-template-columns: 1fr 300px;
-    grid-template-rows: 50px 1fr;
+    grid-template-rows: 50px minmax(0, 1fr);
 
     .header-panel {
       grid-column: 1 / -1;
@@ -23,7 +23,8 @@
     .main-panel {
       grid-column: 1;
       grid-row: 2;
-      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
       padding: 10px;
     }
     .side-panel {
@@ -48,12 +49,19 @@
 
   // TODO: We may want to make these the tab default styles.
   .tab-container {
+    display: flex;
+    flex-grow: 1;
+    min-height: 0;
     border: variables.$border-normal;
     background-color: #000;
     box-shadow: variables.$shadow-frame;
   }
   .tab.active {
     box-shadow: 0 1px 1px #000;
+  }
+  .tab-content {
+    flex-grow: 1;
+    min-width: 0;
   }
 
   // TODO: Also default grid layout styles.
@@ -68,21 +76,25 @@
 
   // === Panels ===
 
+  // The row gap is wider than the column gap to leave room for the panel labels that sit on the top borders.
+  #overviewTab.active, #bodyTab.active {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
   .row-of-panels {
     display: flex;
+    gap: 10px;
   }
 
   .panel {
     flex-grow: 1;
     padding: 10px;
-    margin: 10px 5px 10px;
     background-color: rgb(0,0,0);
     white-space: nowrap;
     border: variables.$border-light;
     box-shadow: variables.$shadow-dark;
-
-    &:first-child { margin-left:0; }
-    &:last-child { margin-right:0; }
   }
   .panel-label {
     display: inline-block;

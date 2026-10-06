@@ -53,12 +53,12 @@ BaseEquipment.register('dagger', {
   textKey: 'quick-stab',
 });
 
-BaseEquipment.register('poignard', {
-  nameFunction: names => { return `${names[0]} Poignard`; },
-  icon: 'weapons/dagger-07.png',
+BaseEquipment.register('baselard', {
+  nameFunction: names => { return `${names[0]} Baselard`; },
+  icon: 'weapons/dagger-05.png',
   type: 'dagger',
   damageType: DamageType.pierce,
-  damageRange: [70,90],
+  damageRange: [60,80],
   hands: WeaponHandedness.one,
   reach: WeaponReach.short,
   speed: 500,
@@ -67,12 +67,12 @@ BaseEquipment.register('poignard', {
   textKey: 'quick-stab',
 });
 
-BaseEquipment.register('baselard', {
-  nameFunction: names => { return `${names[0]} Baselard`; },
-  icon: 'weapons/dagger-05.png',
+BaseEquipment.register('poignard', {
+  nameFunction: names => { return `${names[0]} Poignard`; },
+  icon: 'weapons/dagger-07.png',
   type: 'dagger',
   damageType: DamageType.pierce,
-  damageRange: [80,100],
+  damageRange: [70,90],
   hands: WeaponHandedness.one,
   reach: WeaponReach.short,
   speed: 500,

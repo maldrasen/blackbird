@@ -47,9 +47,17 @@ global.Fixtures = (function() {
 
   function randomBullshitGo() {
     const inventory = Inventory();
+    const depot = EquipmentDepot('standard');
+
     Article.getAllCodes().forEach(code => {
       if (Random.flipCoin()) { inventory.addArticle(code, Random.flipCoin() ? 1 : Random.between(2,10)); }
     });
+
+    for (let i=0; i<60; i++) {
+      const pick = Random.from(Random.flipCoin() ? depot.getArmor() : depot.getWeapons());
+      depot.pickItem(pick)
+      inventory.addItem(pick);
+    }
   }
 
   return {

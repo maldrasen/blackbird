@@ -243,4 +243,165 @@ describe('EquipmentManager', function() {
     });
   });
 
+  describe('summarizeResistances()', function() {
+    function equipSteel(character, codes) {
+      codes.forEach(code => ItemFixtures.equip(character, code, ['steel']));
+      return EquipmentManager(character);
+    }
+
+    it("lists the physical reduction of the equipment at every hit location", function() {
+      const human = CharacterFixtures.genericMale({ actor:{ species:SpeciesCode.human }});
+      const summary = equipSteel(human, ['breastplate', 'tower-shield']).summarizeResistances();
+
+      expect(Object.keys(summary.physical)).to.have.members(['head', 'chest', 'hands', 'legs', 'feet']);
+      expect(Object.keys(summary.magical).length).to.equal(0);
+      expect(summary.physical.chest.slash).to.equal(75);
+      expect(summary.physical.chest.crush).to.equal(60);
+      expect(summary.physical.head.slash).to.equal(30);
+      expect(summary.physical.feet.crush).to.equal(28);
+    });
+
+    it("includes the innate resistances of the species", function() {
+      const kobold = CharacterFixtures.genericMale({ actor:{ species:SpeciesCode.kobold }});
+      const summary = EquipmentManager(kobold).summarizeResistances();
+
+      expect(summary.physical.head).to.deep.equal({ crush:0, slash:10, pierce:0 });
+      expect(summary.physical.legs).to.deep.equal({ crush:0, slash:10, pierce:0 });
+      expect(summary.magical.fire).to.equal(20);
+      expect(summary.magical.psychic).to.equal(-10);
+    });
+
+    it("caps the combined equipment and innate reduction", function() {
+      const kobold = CharacterFixtures.genericMale({ actor:{ species:SpeciesCode.kobold }});
+      const summary = equipSteel(kobold, ['breastplate', 'tower-shield']).summarizeResistances();
+
+      expect(summary.physical.chest.slash).to.equal(80);
+      expect(summary.physical.head.slash).to.equal(40);
+    });
+  });
+
+  // The generic fixtures have 25 strength, so a weapon deals a quarter of its attack power.
+  describe('summarizeDamages()', function() {
+    it("scales the attack power of both weapons by strength", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const longsword = ItemFixtures.equip(horse, 'longsword', ['steel']);
+      const dagger = ItemFixtures.equip(horse, 'dagger', ['steel'], { slot:EquipmentSlot.secondary });
+      const summary = EquipmentManager(horse).summarizeDamages();
+
+      expect(summary.primary).to.deep.equal({
+        itemId: longsword,
+        low: 13,
+        high: 25,
+        dps: 19,
+        attackPower: { low:50, high:100 },
+        damageTypes: [{ type:DamageType.slash, percent:100 }],
+        speed: 1000,
+        reach: WeaponReach.close,
+      });
+      expect(summary.secondary).to.deep.equal({
+        itemId: dagger,
+        low: 13,
+        high: 19,
+        dps: 32,
+        attackPower: { low:50, high:75 },
+        damageTypes: [{ type:DamageType.slash, percent:60 }, { type:DamageType.pierce, percent:40 }],
+        speed: 500,
+        reach: WeaponReach.short,
+      });
+    });
+
+    it("leaves out an empty hand or a shield", function() {
+      const horse = CharacterFixtures.genericMale({});
+      ItemFixtures.equip(horse, 'longsword', ['steel']);
+      expect(EquipmentManager(horse).summarizeDamages()).to.have.keys('primary');
+
+      ItemFixtures.equip(horse, 'tower-shield', ['steel']);
+      expect(EquipmentManager(horse).summarizeDamages()).to.have.keys('primary');
+    });
+
+    it("summarizes an off-hand weapon on its own", function() {
+      const horse = CharacterFixtures.genericMale({});
+      ItemFixtures.equip(horse, 'dagger', ['steel'], { slot:EquipmentSlot.secondary });
+      expect(EquipmentManager(horse).summarizeDamages()).to.have.keys('secondary');
+    });
+
+    it("summarizes nothing for an unarmed character", function() {
+      const horse = CharacterFixtures.genericMale({});
+      expect(EquipmentManager(horse).summarizeDamages()).to.deep.equal({});
+    });
+  });
+
+  // Steel longsword 50–100 at speed 1000, steel dagger 50–75 at speed 500, both scaled to a quarter by 25 strength.
+  describe('compareWeapons()', function() {
+    it("returns the first weapon's numbers minus the second's", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const longsword = ItemFixtures.buildSteel('longsword');
+      const dagger = ItemFixtures.buildSteel('dagger');
+
+      expect(EquipmentManager(horse).compareWeapons(longsword, dagger)).to.deep.equal({
+        low: 0,
+        high: 6,
+        dps: -13,
+        attackPower: { low:0, high:25 },
+        speed: 500,
+      });
+      expect(EquipmentManager(horse).compareWeapons(dagger, longsword)).to.deep.equal({
+        low: 0,
+        high: -6,
+        dps: 13,
+        attackPower: { low:0, high:-25 },
+        speed: -500,
+      });
+    });
+
+    it("has nothing to compare when either item isn't a weapon", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const dagger = ItemFixtures.buildSteel('dagger');
+      const buckler = ItemFixtures.buildSteel('buckler');
+
+      expect(EquipmentManager(horse).compareWeapons(dagger, buckler)).to.be.null;
+      expect(EquipmentManager(horse).compareWeapons(buckler, dagger)).to.be.null;
+    });
+  });
+
+  // Steel plate reduces 40/50/48, iron plate 30/38/36.
+  describe('compareArmor()', function() {
+    it("returns the first piece's reductions minus the second's", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const steelPlate = ItemFixtures.buildSteel('plate');
+      const ironPlate = ItemFixtures.build('plate', ['iron']);
+
+      expect(EquipmentManager(horse).compareArmor(steelPlate, ironPlate)).to.deep.equal({
+        [DamageType.crush]: 10,
+        [DamageType.slash]: 12,
+        [DamageType.pierce]: 12,
+      });
+      expect(EquipmentManager(horse).compareArmor(ironPlate, steelPlate)).to.deep.equal({
+        [DamageType.crush]: -10,
+        [DamageType.slash]: -12,
+        [DamageType.pierce]: -12,
+      });
+    });
+
+    it("has nothing to compare when either item has no reduction", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const dagger = ItemFixtures.buildSteel('dagger');
+      const buckler = ItemFixtures.buildSteel('buckler');
+
+      expect(EquipmentManager(horse).compareArmor(buckler, dagger)).to.be.null;
+      expect(EquipmentManager(horse).compareArmor(dagger, buckler)).to.be.null;
+    });
+  });
+
+  describe('summarizeWeapon()', function() {
+    it("scales a weapon that isn't equipped", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const longsword = ItemFixtures.buildSteel('longsword');
+      const summary = EquipmentManager(horse).summarizeWeapon(longsword);
+
+      expect(summary).to.include({ itemId:longsword, low:13, high:25, dps:19 });
+      expect(summary.attackPower).to.deep.equal({ low:50, high:100 });
+    });
+  });
+
 });

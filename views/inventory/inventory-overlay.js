@@ -6,6 +6,21 @@ global.InventoryOverlay = (function() {
 
   function init() {
     X.onClick(`#inventoryOverlay .close-button`, close);
+    window.addEventListener('keydown', handleArrowKey);
+  }
+
+  function handleArrowKey(event) {
+    const deltas = { [KeyCodes.ArrowUp]:-1, [KeyCodes.ArrowDown]:1 };
+    if (deltas[event.code] == null || isNavigable() === false) { return; }
+
+    event.preventDefault();
+    itemPanel.moveSelection(deltas[event.code]);
+  }
+
+  function isNavigable() {
+    return itemPanel != null
+      && X.hasClass('#inventoryOverlay','hide') === false
+      && Confirmation.isVisible() === false;
   }
 
   function open() {
