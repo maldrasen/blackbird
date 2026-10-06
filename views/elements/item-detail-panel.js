@@ -2,6 +2,7 @@ global.ItemDetailPanel = function() {
   let panelElement;
   let itemPanel;
   let partySelect;
+  let buildActions;
 
   function build() {
     panelElement = X.createElement(`<div class='item-detail-panel'></div>`);
@@ -102,6 +103,10 @@ global.ItemDetailPanel = function() {
 
     details.insertBefore(properties, details.querySelector('.value'));
 
+    if (buildActions) {
+      buildActions(item).forEach(button => details.querySelector('.button-row').appendChild(button));
+    }
+
     return details;
   }
 
@@ -152,5 +157,6 @@ global.ItemDetailPanel = function() {
     update,
     setPartySelect: select => { partySelect = select; },
     setItemPanel: panel => { itemPanel = panel; },
+    setActions: builder => { buildActions = builder; },
   }
 }

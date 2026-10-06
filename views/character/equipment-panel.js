@@ -26,6 +26,7 @@ global.EquipmentPanel = (function() {
     </div>`);
 
     itemDetailPanel = ItemDetailPanel();
+    itemDetailPanel.setActions(item => [buildActionButton(item.getId())]);
     rootElement.querySelector('.detail-panel').appendChild(itemDetailPanel.build());
 
     X.fill('#equipmentTab', rootElement);
@@ -124,6 +125,31 @@ global.EquipmentPanel = (function() {
     if (itemId != null) { X.addClass(emptyMessage,'hide'); }
 
     X.removeClass(detailPanel,'hide');
+  }
+
+  // The shown item is either in the selected slot or in the party inventory, so there's always exactly one action.
+  function buildActionButton(itemId) {
+    if (itemId === equipmentManager.getSlot(selectedSlot)) {
+      const button = X.createElement(`<a href='#' class='button unequip-button'>Unequip</a>`);
+      button.addEventListener('click', () => unequip());
+      return button;
+    }
+
+    const button = X.createElement(`<a href='#' class='button button-primary equip-button'>Equip</a>`);
+    button.addEventListener('click', () => equip(itemId));
+    return button;
+  }
+
+  // Equipping can knock items out of other slots, like a two-handed weapon clearing the off hand, so the whole tab is
+  // rebuilt. The candidate stays selected so the details flip to the opposite action.
+  function equip(itemId) {
+    InventorySystem.equip(character.getEntity(), itemId, selectedSlot);
+    update();
+  }
+
+  function unequip() {
+    InventorySystem.unequip(character.getEntity(), selectedSlot);
+    update();
   }
 
   function updateSummary() {
