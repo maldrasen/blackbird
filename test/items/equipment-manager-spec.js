@@ -292,6 +292,7 @@ describe('EquipmentManager', function() {
         itemId: longsword,
         low: 13,
         high: 25,
+        attackPower: { low:50, high:100 },
         damageTypes: [{ type:DamageType.slash, percent:100 }],
         speed: 1000,
         reach: WeaponReach.close,
@@ -300,6 +301,7 @@ describe('EquipmentManager', function() {
         itemId: dagger,
         low: 13,
         high: 19,
+        attackPower: { low:50, high:75 },
         damageTypes: [{ type:DamageType.slash, percent:60 }, { type:DamageType.pierce, percent:40 }],
         speed: 500,
         reach: WeaponReach.short,
@@ -334,6 +336,7 @@ describe('EquipmentManager', function() {
       const summary = EquipmentManager(horse).summarizeWeapon(longsword);
 
       expect(summary).to.include({ itemId:longsword, low:13, high:25 });
+      expect(summary.attackPower).to.deep.equal({ low:50, high:100 });
     });
   });
 

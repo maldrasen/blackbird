@@ -23,8 +23,8 @@ global.EquipmentSummaryPanel = (function() {
   function hide() { X.addClass(findSummaryPanel(),'hide'); }
   function show() { X.removeClass(findSummaryPanel(),'hide'); }
 
-  // The damage shown here is what the character really deals with the weapon, unlike the attack power in the item
-  // details, which is the weapon's range before strength is applied.
+  // The damage is what the character really deals with the weapon. The attack power is the weapon's own range before
+  // strength is applied, listed the same way the item details do.
   function buildWeaponPanel(weapons) {
     if (weapons.primary || weapons.secondary) {
       findWeaponSection().appendChild(X.createElement(`<div class='panel'>
@@ -37,7 +37,8 @@ global.EquipmentSummaryPanel = (function() {
   function buildWeapon(weapon) {
     if (weapon) {
       const properties = [
-        { label:'Damage', content:`${weapon.low} – ${weapon.high} ${damageTypesText(weapon.damageTypes)}` },
+        { label:'Damage', content:`${weapon.low} – ${weapon.high}` },
+        { label:'Attack Power', content:`${weapon.attackPower.low} – ${weapon.attackPower.high} ${damageTypesText(weapon.damageTypes)}` },
         { label:'Attack Time', content:`${weapon.speed}` },
         { label:'Range', content:StringHelper.titlecase(weapon.reach) },
       ].map(buildProperty).join('');

@@ -137,7 +137,7 @@ global.EquipmentManager = function(characterId) {
   // Real main and off hand weapon damage ranges given the character's strength. A weapon's attack power is the percent
   // of the wielder's strength that a hit deals, the same way the DamageRoll works it out, before any ability, stance,
   // or crit adjustments.
-  //   { primary:{ itemId, low, high, damageTypes:[{ type, percent }], speed, reach }, secondary:{ ... } }
+  //   { primary:{ itemId, low, high, attackPower:{ low, high }, damageTypes:[{ type, percent }], speed, reach }, secondary:{ ... } }
   //
   // An entry is only there when the hand holds a weapon, not when it's empty or holding a shield.
   //
@@ -179,6 +179,7 @@ global.EquipmentManager = function(characterId) {
       itemId,
       low: Math.round((range.low / 100) * strength),
       high: Math.round((range.high / 100) * strength),
+      attackPower: range,
       damageTypes: base.getDamageTypes(),
       speed: base.getSpeed(),
       reach: base.getReach(),
