@@ -12,7 +12,6 @@
   }
 
   .slots-panel, .candidate-panel {
-    width: 200px;
     overflow-y: auto;
     overflow-x: hidden;
     border: variables.$border-light;
@@ -20,6 +19,8 @@
   }
 
   .slots-panel {
+    width: 200px;
+
     .slot {
       margin: 5px;
       padding: 5px;
@@ -44,6 +45,8 @@
   }
 
   .candidate-panel {
+    width: 320px;
+
     .candidate {
       display: flex;
       align-items: center;
@@ -57,6 +60,10 @@
     .empty {
       margin: 10px;
       color: variables.$fg-very-weak;
+    }
+    .equipped-mark {
+      display: inline-block;
+      width: 15px;
     }
   }
 

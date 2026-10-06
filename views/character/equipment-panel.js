@@ -77,22 +77,26 @@ global.EquipmentPanel = (function() {
 
     if (selectedSlot == null) { return X.addClass(candidatePanel,'hide'); }
 
-    const candidates = InventorySystem.getEquipmentForSlot(character.getEntity(), selectedSlot);
-    if (candidates.length === 0) {
+    const equippedId = equipmentManager.getSlot(selectedSlot);
+    const candidateIds = InventorySystem.getEquipmentForSlot(character.getEntity(), selectedSlot).map(entry => entry.itemId);
+    if (equippedId == null && candidateIds.length === 0) {
       candidateList.appendChild(X.createElement(`<li class='empty'>Nothing to equip</li>`));
     }
 
-    candidates.forEach(candidate => candidateList.appendChild(buildCandidate(candidate)));
+    // The equipped item has left the party inventory, so it's listed ahead of the candidates that could replace it.
+    if (equippedId) { candidateList.appendChild(buildCandidate(equippedId, true)); }
+    candidateIds.forEach(itemId => candidateList.appendChild(buildCandidate(itemId)));
+
     X.removeClass(candidatePanel,'hide');
   }
 
-  function buildCandidate(candidate) {
-    const itemName = ItemName({ itemId:candidate.itemId, showIcon:true }).asString();
-    const element = X.createElement(`<li class='candidate ${candidate.itemId === selectedCandidate ? 'selected' : ''}'>
-      ${itemName}
-    </li>`);
+  function buildCandidate(itemId, isEquipped=false) {
+    const itemName = ItemName({ itemId, showIcon:true }).asString();
+    const selectedClass = (itemId === selectedCandidate) ? 'selected' : '';
+    const equippedMark = `<span class='equipped-mark'>${isEquipped ? '▶' : ''}</span>`;
+    const element = X.createElement(`<li class='candidate ${selectedClass}'>${equippedMark}${itemName}</li>`);
 
-    element.addEventListener('click', () => selectCandidate(candidate.itemId));
+    element.addEventListener('click', () => selectCandidate(itemId));
     return element;
   }
 
