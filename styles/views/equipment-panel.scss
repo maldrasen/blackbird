@@ -11,18 +11,28 @@
     gap: 10px;
   }
 
-  .slots-panel {
+  .slots-panel, .candidate-panel {
     width: 200px;
     overflow-y: auto;
     overflow-x: hidden;
     border: variables.$border-light;
     background-color: rgb(20 20 20 / 0.5);
+  }
+
+  .slots-panel {
     .slot {
       margin: 5px;
       padding: 5px;
       border: variables.$border-light;
       box-shadow: variables.$shadow-shallow;
       background-color: rgb(0 0 0 / 0.2);
+      cursor: pointer;
+    }
+    .slot:hover {
+      background-color: rgb(0 0 0 / 0.4);
+    }
+    .slot.selected {
+      background-color: variables.$select-active;
     }
     .slot-name {
       margin-bottom: 2px;
@@ -35,10 +45,20 @@
     }
   }
 
-  .item-panel {
-    flex-grow: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
+  .candidate-panel {
+    .candidate {
+      padding: 2px 5px;
+      margin: 5px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .candidate:hover {
+      background-color: rgb(0 0 0 / 0.4);
+    }
+    .empty {
+      margin: 10px;
+      color: variables.$fg-very-weak;
+    }
   }
 
   .equipment-summary-panel {
