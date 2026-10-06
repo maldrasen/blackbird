@@ -97,7 +97,7 @@ global.EquipmentPanel = (function() {
       candidates.push({ itemId:equippedId, name:Item(equippedId).getName(), isEquipped:true });
     }
 
-    return candidates.sort((a,b) => a.name.localeCompare(b.name));
+    return candidates.sort(InventorySystem.compareCandidates);
   }
 
   function buildCandidate(itemId, isEquipped=false) {

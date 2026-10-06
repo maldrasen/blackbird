@@ -3,6 +3,7 @@ global.InventorySystem = (function() {
   // The party shares one inventory, and an equipped item leaves it for the character's slot. Items should only move
   // between the two through these functions, so that neither side ends up owning an item the other still lists.
 
+  // Items with the same name are ordered by id so that the list never shuffles them between renders.
   function getEquipmentForSlot(characterId, slot) {
     const equipment = EquipmentManager(characterId);
 
@@ -12,7 +13,11 @@ global.InventorySystem = (function() {
         const item = Item(itemId);
         return { itemId:itemId, name:item.getName(), icon:item.getIcon() };
       }).
-      sort((a,b) => a.name.localeCompare(b.name));
+      sort(compareCandidates);
+  }
+
+  function compareCandidates(a, b) {
+    return a.name.localeCompare(b.name) || a.itemId.localeCompare(b.itemId);
   }
 
   // Equipping throws before anything changes when the slot won't take the item, so the party inventory is only
@@ -31,6 +36,7 @@ global.InventorySystem = (function() {
 
   return {
     getEquipmentForSlot,
+    compareCandidates,
     equip,
     unequip,
   };
