@@ -135,7 +135,10 @@ global.ItemDetailPanel = function() {
   function damageProperty(item, diffs) {
     if (characterId == null) { return []; }
     const damage = EquipmentManager(characterId).summarizeWeapon(item.getId());
-    return [{ label:'Damage', content:rangeText(damage, diffs) }];
+    return [
+      { label:'Damage', content:rangeText(damage, diffs) },
+      { label:'DPS', content:`${damage.dps}${diffText(diffs?.dps)}` },
+    ];
   }
 
   // The diffs are against the item set with setComparison(), the equipped item when the equipment tab shows a

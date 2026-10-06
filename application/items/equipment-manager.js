@@ -137,7 +137,7 @@ global.EquipmentManager = function(characterId) {
   // Real main and off hand weapon damage ranges given the character's strength. A weapon's attack power is the percent
   // of the wielder's strength that a hit deals, the same way the DamageRoll works it out, before any ability, stance,
   // or crit adjustments.
-  //   { primary:{ itemId, low, high, attackPower:{ low, high }, damageTypes:[{ type, percent }], speed, reach }, secondary:{ ... } }
+  //   { primary:{ itemId, low, high, dps, attackPower:{ low, high }, damageTypes:[{ type, percent }], speed, reach }, secondary:{ ... } }
   //
   // An entry is only there when the hand holds a weapon, not when it's empty or holding a shield.
   //
@@ -168,17 +168,21 @@ global.EquipmentManager = function(characterId) {
   //       be included as well though. We could also have aspects that effect accuracy as well. All future content that
   //       isn't in the game yet though.
 
-  // The weapon doesn't need to be equipped. The item details use this to show what a candidate would deal.
+  // The weapon doesn't need to be equipped. The item details use this to show what a candidate would deal. The DPS
+  // is the average of the character's damage over the attack time, the same way the appraiser rates a weapon.
   function summarizeWeapon(itemId) {
     const item = Item(itemId);
     const base = item.getBase();
     const range = item.getDamageRange();
     const strength = Attributes(characterId).getStrength();
+    const low = Math.round((range.low / 100) * strength);
+    const high = Math.round((range.high / 100) * strength);
 
     return {
       itemId,
-      low: Math.round((range.low / 100) * strength),
-      high: Math.round((range.high / 100) * strength),
+      low,
+      high,
+      dps: Math.round(((low + high) / 2) / (base.getSpeed() / 1000)),
       attackPower: range,
       damageTypes: base.getDamageTypes(),
       speed: base.getSpeed(),
@@ -189,7 +193,7 @@ global.EquipmentManager = function(characterId) {
   // The item details show what would change if one item replaced another, so these return the first item's numbers
   // minus the second's, shaped like the summaries so that a diff sits at the same key as the property it belongs to.
   // There's nothing to compare when the two aren't the same kind of thing, like a dagger against a shield.
-  //   compareWeapons: { low, high, attackPower:{ low, high }, speed }
+  //   compareWeapons: { low, high, dps, attackPower:{ low, high }, speed }
   //   compareArmor:   { crush, slash, pierce }
   function compareWeapons(itemId, otherId) {
     if (getBase(itemId).isWeapon() === false || getBase(otherId).isWeapon() === false) { return null; }
@@ -200,6 +204,7 @@ global.EquipmentManager = function(characterId) {
     return {
       low: weapon.low - other.low,
       high: weapon.high - other.high,
+      dps: weapon.dps - other.dps,
       attackPower: {
         low: weapon.attackPower.low - other.attackPower.low,
         high: weapon.attackPower.high - other.attackPower.high,

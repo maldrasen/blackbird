@@ -292,6 +292,7 @@ describe('EquipmentManager', function() {
         itemId: longsword,
         low: 13,
         high: 25,
+        dps: 19,
         attackPower: { low:50, high:100 },
         damageTypes: [{ type:DamageType.slash, percent:100 }],
         speed: 1000,
@@ -301,6 +302,7 @@ describe('EquipmentManager', function() {
         itemId: dagger,
         low: 13,
         high: 19,
+        dps: 32,
         attackPower: { low:50, high:75 },
         damageTypes: [{ type:DamageType.slash, percent:60 }, { type:DamageType.pierce, percent:40 }],
         speed: 500,
@@ -339,12 +341,14 @@ describe('EquipmentManager', function() {
       expect(EquipmentManager(horse).compareWeapons(longsword, dagger)).to.deep.equal({
         low: 0,
         high: 6,
+        dps: -13,
         attackPower: { low:0, high:25 },
         speed: 500,
       });
       expect(EquipmentManager(horse).compareWeapons(dagger, longsword)).to.deep.equal({
         low: 0,
         high: -6,
+        dps: 13,
         attackPower: { low:0, high:-25 },
         speed: -500,
       });
@@ -395,7 +399,7 @@ describe('EquipmentManager', function() {
       const longsword = ItemFixtures.buildSteel('longsword');
       const summary = EquipmentManager(horse).summarizeWeapon(longsword);
 
-      expect(summary).to.include({ itemId:longsword, low:13, high:25 });
+      expect(summary).to.include({ itemId:longsword, low:13, high:25, dps:19 });
       expect(summary.attackPower).to.deep.equal({ low:50, high:100 });
     });
   });

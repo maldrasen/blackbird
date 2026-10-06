@@ -38,6 +38,7 @@ global.EquipmentSummaryPanel = (function() {
     if (weapon) {
       const properties = [
         { label:'Damage', content:`${weapon.low} – ${weapon.high}` },
+        { label:'DPS', content:`${weapon.dps}` },
         { label:'Attack Power', content:`${weapon.attackPower.low} – ${weapon.attackPower.high} ${damageTypesText(weapon.damageTypes)}` },
         { label:'Attack Time', content:`${weapon.speed}` },
         { label:'Range', content:StringHelper.titlecase(weapon.reach) },
