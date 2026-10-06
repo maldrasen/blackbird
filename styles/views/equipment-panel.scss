@@ -43,8 +43,48 @@
 
   .equipment-summary-panel {
     flex-grow: 1;
-    padding: 10px;
     font-family: "habibi", serif;
+
+    .panel {
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    .weapon-section {
+      .weapon-row {
+        display: grid;
+        grid-template-columns: max-content max-content;
+        gap: 30px;
+        margin-top: -25px;
+      }
+      .weapon {
+        padding: 10px;
+        border: variables.$border-normal;
+        background-color: rgb(20 20 20 / 0.5);
+        box-shadow: variables.$shadow-shallow;
+      }
+    }
+
+    .armor-section {
+      .armor-table {
+        display: grid;
+        grid-template-columns: 90px 70px 70px 70px;
+        row-gap: 5px;
+      }
+      .heading {
+        text-align: right;
+        color: variables.$fg-weak;
+        border-bottom: variables.$border-normal;
+      }
+    }
+
+    .resistance-section {
+      .label {
+        display: inline-block;
+        width: 80px;
+        margin-top: 5px;
+      }
+    }
 
     .properties {
       font-size: variables.$fs-small;
@@ -62,41 +102,11 @@
       }
     }
 
-    .weapon-section {
-      display: grid;
-      grid-template-columns: auto auto;
-      justify-content: center;
-      gap: 30px;
-
-      .weapon {
-        padding: 10px;
-        border: variables.$border-normal;
-        background-color: rgb(20 20 20 / 0.5);
-      }
+    .amount {
+      font-family: "Roboto", serif;
+      text-align: right;
     }
-
-    .resistance-grid {
-      display: grid;
-      grid-template-columns: 90px 70px 70px 70px;
-      justify-content: center;
-      row-gap: 4px;
-      font-size: variables.$fs-small;
-
-      .heading, .amount {
-        text-align: right;
-      }
-      .heading {
-        color: variables.$fg-very-weak;
-      }
-      .amount {
-        font-family: "Roboto", serif;
-      }
-      .amount.none {
-        color: variables.$fg-very-weak;
-      }
-      .amount.vulnerable {
-        color: variables.$fg-warning;
-      }
-    }
+    .amount.none { color: variables.$fg-very-weak; }
+    .amount.vulnerable { color: variables.$fg-warning; }
   }
 }

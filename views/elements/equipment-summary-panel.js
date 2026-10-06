@@ -1,39 +1,49 @@
 global.EquipmentSummaryPanel = (function() {
-  let summaryPanel;
 
   function update(id) {
-    summaryPanel = X.first(`#equipmentTab .equipment-summary-panel`);
-
     const equipment = EquipmentManager(id);
     const damages = equipment.summarizeDamages();
     const resistances = equipment.summarizeResistances();
+    const summaryPanel = X.first(`#equipmentTab .equipment-summary-panel`);
 
-    buildWeaponSection(damages);
-    buildArmorSection(resistances.physical);
-    buildResistanceSection(resistances.magical);
+    X.fill(summaryPanel,X.createElement(`<div>
+      <div class='weapon-section'></div>
+      <div class='protection-section row-of-panels'></div>
+    </div>`));
+
+    buildWeaponPanel(damages);
+    buildArmorPanel(resistances.physical);
+    buildResistancePanel(resistances.magical);
   }
+
+  function findWeaponSection() { return X.first('#equipmentTab .weapon-section'); }
+  function findProtectionSection() { return X.first('#equipmentTab .protection-section'); }
 
   // The damage shown here is what the character really deals with the weapon, unlike the attack power in the item
   // details, which is the weapon's range before strength is applied.
-  function buildWeaponSection(weapons) {
+  function buildWeaponPanel(weapons) {
     if (weapons.primary || weapons.secondary) {
-      summaryPanel.appendChild(X.createElement(`<div class='weapon-section'>
-        ${buildWeapon(weapons.primary)} ${buildWeapon(weapons.secondary)}
+      findWeaponSection().appendChild(X.createElement(`<div class='panel'>
+        <div class='panel-label'>Weapons</div>
+        <div class='weapon-row'>${buildWeapon(weapons.primary)} ${buildWeapon(weapons.secondary)}</div>
       </div>`));
     }
   }
 
   function buildWeapon(weapon) {
-    const properties = [
-      { label:'Damage', content:`${weapon.low} – ${weapon.high} ${damageTypesText(weapon.damageTypes)}` },
-      { label:'Attack Time', content:`${weapon.speed}` },
-      { label:'Range', content:StringHelper.titlecase(weapon.reach) },
-    ].map(buildProperty).join('');
+    if (weapon) {
+      const properties = [
+        { label:'Damage', content:`${weapon.low} – ${weapon.high} ${damageTypesText(weapon.damageTypes)}` },
+        { label:'Attack Time', content:`${weapon.speed}` },
+        { label:'Range', content:StringHelper.titlecase(weapon.reach) },
+      ].map(buildProperty).join('');
 
-    return `<div class='weapon'>
-      <div class='margin-bottom'>${ItemName({ itemId:weapon.itemId, showIcon:true, size:'large' }).asString()}</div>
-      <ul class='properties'>${properties}</ul>
-    </div>`;
+      return `<div class='weapon'>
+        <div class='margin-bottom'>${ItemName({ itemId:weapon.itemId, showIcon:true, size:'large' }).asString()}</div>
+        <ul class='properties'>${properties}</ul>
+      </div>`;
+    }
+    return '';
   }
 
   function damageTypesText(damageTypes) {
@@ -41,48 +51,48 @@ global.EquipmentSummaryPanel = (function() {
     return `(${damageTypes.map(entry => `${entry.percent}% ${entry.type}`).join(', ')})`;
   }
 
-  // <div class='armor-section section'>
-  //   <div class='section-title'>Armor</div>
-  //   <div class='resistance-grid'></div>
-  // </div>
+  function buildArmorPanel(armor) {
+    const types = [DamageType.crush, DamageType.slash, DamageType.pierce];
+    const headings = types.map(type => `<div class='heading'>${StringHelper.titlecase(type)}</div>`).join('');
 
-  function buildArmorSection(physical) {
-    // const types = Object.keys(Object.values(physical)[0]);
-    // const headings = types.map(type => `<div class='heading'>${StringHelper.titlecase(type)}</div>`).join('');
-    //
-    // const rows = Object.entries(physical).map(([location, reductions]) => {
-    //   const amounts = types.map(type => buildAmount(reductions[type])).join('');
-    //   return `<div class='label'>${StringHelper.titlecase(location)}</div>${amounts}`;
-    // }).join('');
+    const rows = Object.entries(armor).map(([location, reductions]) => {
+      const amounts = types.map(type => buildAmount(reductions[type])).join('');
+      return `<div class='label'>${StringHelper.titlecase(location)}</div>${amounts}`;
+    }).join('');
 
-    // Append headings and rows to resistance grid
-
+    findProtectionSection().appendChild(X.createElement(`<div class='armor-section panel'>
+      <div class='panel-label'>Protection</div>
+      <div class='panel-content armor-table'>
+        <div class='heading'>&nbsp;</div>
+        ${headings}
+        ${rows}
+      </div>
+    </div>`));
   }
 
-  // <div class='resistance-section section'>
-  //   <div class='section-title'>Resistances</div>
-  //   <ul class='resistance-list'></ul>
-  // </div>
+  function buildResistancePanel(resistances) {
+    if (Object.keys(resistances).length > 0) {
+      const rows = Object.entries(resistances).map(([type, amount]) => {
+        return `<li><span class='label'>${StringHelper.titlecase(type)}</span>${buildAmount(amount)}</li>`;
+      }).join('');
 
-  function buildResistanceSection(magical) {
-    // const rows = Object.entries(magical).map(([type, amount]) => {
-    //   return `<div class='label'>${StringHelper.titlecase(type)}</div>${buildAmount(amount)}`;
-    // }).join('');
+      findProtectionSection().appendChild(X.createElement(`<div class='resistance-section panel'>
+        <div class='panel-label'>Resistances</div>
+        <ul class='panel-content'>${rows}</ul>
+      </div>`));
+    }
   }
 
   function buildAmount(reduction) {
-    if (reduction === 0) { return `<div class='amount none'>0%</div>`; }
-    if (reduction < 0) { return `<div class='amount vulnerable'>${reduction}%</div>`; }
-    return `<div class='amount'>${reduction}%</div>`;
+    if (reduction === 0) { return `<span class='amount none'>0%</span>`; }
+    if (reduction < 0) { return `<span class='amount vulnerable'>${reduction}%</span>`; }
+    return `<span class='amount'>${reduction}%</span>`;
   }
 
   function buildProperty(property) {
     return `<li><span class='label'>${property.label}</span><div class='content'>${property.content}</div></li>`;
   }
 
-
-  return {
-    update,
-  };
+  return { update };
 
 })();
