@@ -140,14 +140,14 @@ describe('Inventory', function() {
     inventory.addArticle('string-of-teeth', 1);
 
     expect(inventory.listItems()).to.deep.equal([
+      { articleCode: 'dungeon-tripe', quantity: 3 },
+      { articleCode: 'string-of-teeth', quantity: 1 },
       { itemId: battleAxe },
       { itemId: cleaver },
       { itemId: hatchet },
       { itemId: boots },
       { itemId: hauberk },
       { itemId: helm },
-      { articleCode: 'dungeon-tripe', quantity: 3 },
-      { articleCode: 'string-of-teeth', quantity: 1 },
     ]);
   });
 
