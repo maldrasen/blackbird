@@ -60,6 +60,12 @@
       font-family: "Roboto", serif;
       color: variables.$fg-weak;
     }
+    .diff {
+      margin-left: 5px;
+      opacity: 0.75
+    }
+    .diff.better { color: variables.$fg-good; }
+    .diff.worse { color: variables.$fg-bad; }
   }
 }
 

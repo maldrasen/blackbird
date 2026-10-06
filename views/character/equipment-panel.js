@@ -127,7 +127,10 @@ global.EquipmentPanel = (function() {
 
     if (selectedSlot == null) { return X.addClass(detailPanel,'hide'); }
 
-    const itemId = selectedCandidate || equipmentManager.getSlot(selectedSlot);
+    const equippedId = equipmentManager.getSlot(selectedSlot);
+    const itemId = selectedCandidate || equippedId;
+
+    itemDetailPanel.setComparison(itemId === equippedId ? null : equippedId);
     itemDetailPanel.update(itemId ? { id:itemId } : null);
 
     if (itemId == null) { X.removeClass(emptyMessage,'hide'); }

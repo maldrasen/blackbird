@@ -4,6 +4,7 @@ global.ItemDetailPanel = function() {
   let partySelect;
   let buildActions;
   let characterId;
+  let comparisonId;
 
   function build() {
     panelElement = X.createElement(`<div class='item-detail-panel'></div>`);
@@ -120,20 +121,45 @@ global.ItemDetailPanel = function() {
   function weaponProperties(item) {
     const base = item.getBase();
     const range = item.getDamageRange();
+    const diffs = compareWeapons(item);
 
     return [
-      ...damageProperty(item),
-      { label:'Attack Power', content:`${range.low} – ${range.high} ${damageTypesText(base.getDamageTypes())}` },
-      { label:'Attack Time', content:`${base.getSpeed()}` },
+      ...damageProperty(item, diffs),
+      { label:'Attack Power', content:`${rangeText(range, diffs?.attackPower)} ${damageTypesText(base.getDamageTypes())}` },
+      { label:'Attack Time', content:`${base.getSpeed()}${diffText(diffs?.speed, { lowerIsBetter:true })}` },
       { label:'Hands', content:handsText(base.getHands()) },
       { label:'Range', content:StringHelper.titlecase(base.getReach()) },
     ];
   }
 
-  function damageProperty(item) {
+  function damageProperty(item, diffs) {
     if (characterId == null) { return []; }
     const damage = EquipmentManager(characterId).summarizeWeapon(item.getId());
-    return [{ label:'Damage', content:`${damage.low} – ${damage.high}` }];
+    return [{ label:'Damage', content:rangeText(damage, diffs) }];
+  }
+
+  // The diffs are against the item set with setComparison(), the equipped item when the equipment tab shows a
+  // candidate. They need a character, and there are none when the two items aren't the same kind of thing.
+  function compareWeapons(item) {
+    if (characterId == null || comparisonId == null) { return null; }
+    return EquipmentManager(characterId).compareWeapons(item.getId(), comparisonId);
+  }
+
+  function compareArmor(item) {
+    if (characterId == null || comparisonId == null) { return null; }
+    return EquipmentManager(characterId).compareArmor(item.getId(), comparisonId);
+  }
+
+  function rangeText(range, diffs) {
+    return `${range.low}${diffText(diffs?.low)} – ${range.high}${diffText(diffs?.high)}`;
+  }
+
+  // A zero diff is left out so that only the numbers that would change draw the eye.
+  function diffText(amount, options={}) {
+    if (amount == null || amount === 0) { return ''; }
+    const better = options.lowerIsBetter ? (amount < 0) : (amount > 0);
+    const sign = (amount > 0) ? '+' : '';
+    return `<span class='diff ${better ? 'better' : 'worse'}'>${sign}${amount}</span>`;
   }
 
   function damageTypesText(damageTypes) {
@@ -153,8 +179,9 @@ global.ItemDetailPanel = function() {
   // TODO: Can some armors absorb other damage types, even without an enchantment?
   function armorProperties(item) {
     const base = item.getBase();
+    const diffs = compareArmor(item);
     const reduction = [DamageType.crush, DamageType.slash, DamageType.pierce].
-      map(type => `<div>${item.getReduction(type)}% ${type}</div>`).join('');
+      map(type => `<div>${item.getReduction(type)}% ${type}${diffText(diffs?.[type])}</div>`).join('');
 
     return [
       { label:'Type', content:(base.isShield() ? 'Whole body' : StringHelper.titlecase(base.getSlot())) },
@@ -169,5 +196,6 @@ global.ItemDetailPanel = function() {
     setItemPanel: panel => { itemPanel = panel; },
     setActions: builder => { buildActions = builder; },
     setCharacter: id => { characterId = id; },
+    setComparison: id => { comparisonId = id; },
   }
 }
