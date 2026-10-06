@@ -78,10 +78,25 @@ global.ItemPanel = function() {
     selectItem(itemList.querySelector(`li[data-code='${code}']`));
   }
 
+  // Stepping off either end of the list stays put. With nothing selected, down starts at the top and up at the bottom.
+  // The entry at the edge is already selected when a step is clamped, and selecting it again would deselect it.
+  function moveSelection(delta) {
+    const entries = Array.from(itemList.children);
+    if (entries.length === 0) { return; }
+
+    const current = entries.indexOf(selected);
+    const start = (current >= 0) ? current : (delta > 0 ? -1 : entries.length);
+    const next = Math.min(Math.max(start + delta, 0), entries.length - 1);
+
+    if (entries[next] !== selected) { selectItem(entries[next]); }
+    selected.scrollIntoView({ block:'nearest' });
+  }
+
   return {
     build,
     update,
     selectArticle,
+    moveSelection,
     setDetailPanel: panel => { detailPanel = panel; },
   }
 }
