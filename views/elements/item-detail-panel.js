@@ -3,6 +3,7 @@ global.ItemDetailPanel = function() {
   let itemPanel;
   let partySelect;
   let buildActions;
+  let characterId;
 
   function build() {
     panelElement = X.createElement(`<div class='item-detail-panel'></div>`);
@@ -114,16 +115,25 @@ global.ItemDetailPanel = function() {
     return X.createElement(`<li><span class='label'>${property.label}</span><div class='content'>${property.content}</div></li>`);
   }
 
+  // Attack power is the weapon's own range. When the panel knows who would wield it, the damage that character really
+  // deals with it is shown as well.
   function weaponProperties(item) {
     const base = item.getBase();
     const range = item.getDamageRange();
 
     return [
+      ...damageProperty(item),
       { label:'Attack Power', content:`${range.low} – ${range.high} ${damageTypesText(base.getDamageTypes())}` },
       { label:'Attack Time', content:`${base.getSpeed()}` },
       { label:'Hands', content:handsText(base.getHands()) },
       { label:'Range', content:StringHelper.titlecase(base.getReach()) },
     ];
+  }
+
+  function damageProperty(item) {
+    if (characterId == null) { return []; }
+    const damage = EquipmentManager(characterId).summarizeWeapon(item.getId());
+    return [{ label:'Damage', content:`${damage.low} – ${damage.high}` }];
   }
 
   function damageTypesText(damageTypes) {
@@ -158,5 +168,6 @@ global.ItemDetailPanel = function() {
     setPartySelect: select => { partySelect = select; },
     setItemPanel: panel => { itemPanel = panel; },
     setActions: builder => { buildActions = builder; },
+    setCharacter: id => { characterId = id; },
   }
 }

@@ -168,6 +168,7 @@ global.EquipmentManager = function(characterId) {
   //       be included as well though. We could also have aspects that effect accuracy as well. All future content that
   //       isn't in the game yet though.
 
+  // The weapon doesn't need to be equipped. The item details use this to show what a candidate would deal.
   function summarizeWeapon(itemId) {
     const item = Item(itemId);
     const base = item.getBase();
@@ -197,6 +198,7 @@ global.EquipmentManager = function(characterId) {
     getDamageReduction,
     summarizeResistances,
     summarizeDamages,
+    summarizeWeapon,
   };
 
 }

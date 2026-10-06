@@ -27,6 +27,7 @@ global.EquipmentPanel = (function() {
 
     itemDetailPanel = ItemDetailPanel();
     itemDetailPanel.setActions(item => [buildActionButton(item.getId())]);
+    itemDetailPanel.setCharacter(id);
     rootElement.querySelector('.detail-panel').appendChild(itemDetailPanel.build());
 
     X.fill('#equipmentTab', rootElement);

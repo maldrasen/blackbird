@@ -327,4 +327,14 @@ describe('EquipmentManager', function() {
     });
   });
 
+  describe('summarizeWeapon()', function() {
+    it("scales a weapon that isn't equipped", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const longsword = ItemFixtures.buildSteel('longsword');
+      const summary = EquipmentManager(horse).summarizeWeapon(longsword);
+
+      expect(summary).to.include({ itemId:longsword, low:13, high:25 });
+    });
+  });
+
 });
