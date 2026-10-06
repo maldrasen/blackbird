@@ -7,7 +7,36 @@ global.EquipmentPanel = (function() {
   let rootElement;
   let itemDetailPanel;
 
-  function init() {}
+  // The arrows step through the candidates so that the comparisons can be flipped through without clicking each one.
+  // These aren't configurable bindings, so they're wired straight to the key codes.
+  function init() {
+    X.onCodeDown(KeyCodes.ArrowUp, isNavigable, event => { event.preventDefault(); moveSelection(-1); });
+    X.onCodeDown(KeyCodes.ArrowDown, isNavigable, event => { event.preventDefault(); moveSelection(1); });
+    X.onCodeDown(KeyCodes.Enter, isNavigable, () => { if (selectedCandidate) { toggleEquipped(selectedCandidate); } });
+  }
+
+  function isNavigable() {
+    return selectedSlot != null
+      && X.hasClass('#characterOverlay','hide') === false
+      && X.hasClass('#equipmentTab','active')
+      && Confirmation.isVisible() === false;
+  }
+
+  // Stepping off either end of the list stays put. With nothing selected, down starts at the top and up at the bottom.
+  function moveSelection(delta) {
+    const candidates = listCandidates();
+    if (candidates.length === 0) { return; }
+
+    const current = candidates.findIndex(candidate => candidate.itemId === selectedCandidate);
+    const start = (current >= 0) ? current : (delta > 0 ? -1 : candidates.length);
+    const next = Math.min(Math.max(start + delta, 0), candidates.length - 1);
+
+    selectedCandidate = candidates[next].itemId;
+    updateCandidates();
+    updateDetails();
+
+    rootElement.querySelector('.candidate.selected').scrollIntoView({ block:'nearest' });
+  }
 
   // TODO: When we show a piece of equipment in this view, and it has a border, like in the slots panel or the
   //       weapons in the equipment summary, should we set the border color to the item rarity?
