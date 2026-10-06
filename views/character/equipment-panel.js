@@ -77,17 +77,27 @@ global.EquipmentPanel = (function() {
 
     if (selectedSlot == null) { return X.addClass(candidatePanel,'hide'); }
 
-    const equippedId = equipmentManager.getSlot(selectedSlot);
-    const candidateIds = InventorySystem.getEquipmentForSlot(character.getEntity(), selectedSlot).map(entry => entry.itemId);
-    if (equippedId == null && candidateIds.length === 0) {
+    const candidates = listCandidates();
+    if (candidates.length === 0) {
       candidateList.appendChild(X.createElement(`<li class='empty'>Nothing to equip</li>`));
     }
 
-    // The equipped item has left the party inventory, so it's listed ahead of the candidates that could replace it.
-    if (equippedId) { candidateList.appendChild(buildCandidate(equippedId, true)); }
-    candidateIds.forEach(itemId => candidateList.appendChild(buildCandidate(itemId)));
-
+    candidates.forEach(candidate => candidateList.appendChild(buildCandidate(candidate.itemId, candidate.isEquipped)));
     X.removeClass(candidatePanel,'hide');
+  }
+
+  // The equipped item has left the party inventory, so it's added back in and sorted with the candidates by name.
+  // That way the list keeps the same order as things are equipped and unequipped.
+  function listCandidates() {
+    const equippedId = equipmentManager.getSlot(selectedSlot);
+    const candidates = InventorySystem.getEquipmentForSlot(character.getEntity(), selectedSlot).
+      map(entry => ({ itemId:entry.itemId, name:entry.name, isEquipped:false }));
+
+    if (equippedId) {
+      candidates.push({ itemId:equippedId, name:Item(equippedId).getName(), isEquipped:true });
+    }
+
+    return candidates.sort((a,b) => a.name.localeCompare(b.name));
   }
 
   function buildCandidate(itemId, isEquipped=false) {
