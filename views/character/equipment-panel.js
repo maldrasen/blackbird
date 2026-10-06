@@ -50,7 +50,6 @@ global.EquipmentPanel = (function() {
     return element;
   }
 
-  // Clicking the selected slot deselects it, which brings the summary back.
   function selectSlot(slot) {
     selectedSlot = (slot === selectedSlot) ? null : slot;
     update();
@@ -67,8 +66,8 @@ global.EquipmentPanel = (function() {
     if (candidates.length === 0) {
       candidateList.appendChild(X.createElement(`<li class='empty'>Nothing to equip</li>`));
     }
-    candidates.forEach(candidate => candidateList.appendChild(buildCandidate(candidate)));
 
+    candidates.forEach(candidate => candidateList.appendChild(buildCandidate(candidate)));
     X.removeClass(candidatePanel,'hide');
   }
 
@@ -79,11 +78,12 @@ global.EquipmentPanel = (function() {
   }
 
   function updateSummary() {
-    const summaryPanel = rootElement.querySelector('.equipment-summary-panel');
-    if (selectedSlot != null) { return X.addClass(summaryPanel,'hide'); }
-
-    EquipmentSummaryPanel.update(character.getEntity());
-    X.removeClass(summaryPanel,'hide');
+    if (selectedSlot) {
+      EquipmentSummaryPanel.hide();
+    } else {
+      EquipmentSummaryPanel.update(character.getEntity());
+      EquipmentSummaryPanel.show();
+    }
   }
 
   return {

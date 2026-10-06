@@ -16,8 +16,12 @@ global.EquipmentSummaryPanel = (function() {
     buildResistancePanel(resistances.magical);
   }
 
+  function findSummaryPanel() { return X.first('#equipmentTab .equipment-summary-panel'); }
   function findWeaponSection() { return X.first('#equipmentTab .weapon-section'); }
   function findProtectionSection() { return X.first('#equipmentTab .protection-section'); }
+
+  function hide() { X.addClass(findSummaryPanel(),'hide'); }
+  function show() { X.removeClass(findSummaryPanel(),'hide'); }
 
   // The damage shown here is what the character really deals with the weapon, unlike the attack power in the item
   // details, which is the weapon's range before strength is applied.
@@ -93,6 +97,10 @@ global.EquipmentSummaryPanel = (function() {
     return `<li><span class='label'>${property.label}</span><div class='content'>${property.content}</div></li>`;
   }
 
-  return { update };
+  return {
+    hide,
+    show,
+    update
+  };
 
 })();
