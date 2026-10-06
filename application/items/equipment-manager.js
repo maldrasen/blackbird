@@ -186,6 +186,38 @@ global.EquipmentManager = function(characterId) {
     };
   }
 
+  // The item details show what would change if one item replaced another, so these return the first item's numbers
+  // minus the second's, shaped like the summaries so that a diff sits at the same key as the property it belongs to.
+  // There's nothing to compare when the two aren't the same kind of thing, like a dagger against a shield.
+  //   compareWeapons: { low, high, attackPower:{ low, high }, speed }
+  //   compareArmor:   { crush, slash, pierce }
+  function compareWeapons(itemId, otherId) {
+    if (getBase(itemId).isWeapon() === false || getBase(otherId).isWeapon() === false) { return null; }
+
+    const weapon = summarizeWeapon(itemId);
+    const other = summarizeWeapon(otherId);
+
+    return {
+      low: weapon.low - other.low,
+      high: weapon.high - other.high,
+      attackPower: {
+        low: weapon.attackPower.low - other.attackPower.low,
+        high: weapon.attackPower.high - other.attackPower.high,
+      },
+      speed: weapon.speed - other.speed,
+    };
+  }
+
+  function compareArmor(itemId, otherId) {
+    if (getBase(itemId).hasReduction() === false || getBase(otherId).hasReduction() === false) { return null; }
+
+    const diffs = {};
+    physicalTypes.forEach(type => {
+      diffs[type] = Item(itemId).getReduction(type) - Item(otherId).getReduction(type);
+    });
+    return diffs;
+  }
+
   return {
     getSlot,
     getEquippedSlot,
@@ -200,6 +232,8 @@ global.EquipmentManager = function(characterId) {
     summarizeResistances,
     summarizeDamages,
     summarizeWeapon,
+    compareWeapons,
+    compareArmor,
   };
 
 }

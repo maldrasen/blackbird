@@ -329,6 +329,66 @@ describe('EquipmentManager', function() {
     });
   });
 
+  // Steel longsword 50–100 at speed 1000, steel dagger 50–75 at speed 500, both scaled to a quarter by 25 strength.
+  describe('compareWeapons()', function() {
+    it("returns the first weapon's numbers minus the second's", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const longsword = ItemFixtures.buildSteel('longsword');
+      const dagger = ItemFixtures.buildSteel('dagger');
+
+      expect(EquipmentManager(horse).compareWeapons(longsword, dagger)).to.deep.equal({
+        low: 0,
+        high: 6,
+        attackPower: { low:0, high:25 },
+        speed: 500,
+      });
+      expect(EquipmentManager(horse).compareWeapons(dagger, longsword)).to.deep.equal({
+        low: 0,
+        high: -6,
+        attackPower: { low:0, high:-25 },
+        speed: -500,
+      });
+    });
+
+    it("has nothing to compare when either item isn't a weapon", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const dagger = ItemFixtures.buildSteel('dagger');
+      const buckler = ItemFixtures.buildSteel('buckler');
+
+      expect(EquipmentManager(horse).compareWeapons(dagger, buckler)).to.be.null;
+      expect(EquipmentManager(horse).compareWeapons(buckler, dagger)).to.be.null;
+    });
+  });
+
+  // Steel plate reduces 40/50/48, iron plate 30/38/36.
+  describe('compareArmor()', function() {
+    it("returns the first piece's reductions minus the second's", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const steelPlate = ItemFixtures.buildSteel('plate');
+      const ironPlate = ItemFixtures.build('plate', ['iron']);
+
+      expect(EquipmentManager(horse).compareArmor(steelPlate, ironPlate)).to.deep.equal({
+        [DamageType.crush]: 10,
+        [DamageType.slash]: 12,
+        [DamageType.pierce]: 12,
+      });
+      expect(EquipmentManager(horse).compareArmor(ironPlate, steelPlate)).to.deep.equal({
+        [DamageType.crush]: -10,
+        [DamageType.slash]: -12,
+        [DamageType.pierce]: -12,
+      });
+    });
+
+    it("has nothing to compare when either item has no reduction", function() {
+      const horse = CharacterFixtures.genericMale({});
+      const dagger = ItemFixtures.buildSteel('dagger');
+      const buckler = ItemFixtures.buildSteel('buckler');
+
+      expect(EquipmentManager(horse).compareArmor(buckler, dagger)).to.be.null;
+      expect(EquipmentManager(horse).compareArmor(dagger, buckler)).to.be.null;
+    });
+  });
+
   describe('summarizeWeapon()', function() {
     it("scales a weapon that isn't equipped", function() {
       const horse = CharacterFixtures.genericMale({});
