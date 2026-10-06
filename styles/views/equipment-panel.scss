@@ -46,19 +46,6 @@
     padding: 10px;
     font-family: "habibi", serif;
 
-    .title {
-      margin-bottom: 10px;
-      font-size: variables.$fs-big;
-      border-bottom: variables.$border-normal;
-    }
-    .section {
-      margin-bottom: 15px;
-    }
-    .section-title {
-      margin-bottom: 5px;
-      color: variables.$fg-weak;
-    }
-
     .properties {
       font-size: variables.$fs-small;
 
@@ -75,25 +62,22 @@
       }
     }
 
-    .attack-row {
-      display: flex;
+    .weapon-section {
+      display: grid;
+      grid-template-columns: auto auto;
       justify-content: center;
       gap: 30px;
-    }
-    .attack {
+
       .weapon {
-        margin-bottom: 5px;
-      }
-      .properties {
-        margin-left: 10px;
-        li {
-          margin-bottom: 4px;
-        }
+        padding: 10px;
+        border: variables.$border-normal;
+        background-color: rgb(20 20 20 / 0.5);
       }
     }
+
     .resistance-grid {
       display: grid;
-      grid-template-columns: 90px repeat(var(--columns), 70px);
+      grid-template-columns: 90px 70px 70px 70px;
       justify-content: center;
       row-gap: 4px;
       font-size: variables.$fs-small;

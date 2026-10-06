@@ -3,14 +3,15 @@ global.EquipmentPanel = (function() {
   let equipmentManager;
 
   let rootElement;
-  let summaryPanel;
 
   function init() {}
+
+  // TODO: When we show a piece of equipment in this view, and it has a border, like in the slots panel or the
+  //       weapons in the equipment summary, should we set the border color to the item rarity?
 
   function build(id) {
     character = Character(id);
     equipmentManager = EquipmentManager(id);
-    summaryPanel = EquipmentSummaryPanel();
 
     rootElement = X.createElement(`<div class='equipment-root'>
       <div class='slots-panel'><ul class='slots-list'></ul></div>
@@ -24,7 +25,8 @@ global.EquipmentPanel = (function() {
   }
 
   function update() {
-    summaryPanel.update(character.getEntity());
+    // Only if nothing is selected.
+    EquipmentSummaryPanel.update(character.getEntity());
 
     X.empty('#characterOverlay .slots-list');
     character.getEquipmentSlots().forEach(slot => {

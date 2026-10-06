@@ -1,52 +1,39 @@
-global.EquipmentSummaryPanel = function() {
+global.EquipmentSummaryPanel = (function() {
+  let summaryPanel;
 
-  function build() {
-    return X.createElement(`<div class='equipment-summary-panel'></div>`);
-  }
+  function update(id) {
+    summaryPanel = X.first(`#equipmentTab .equipment-summary-panel`);
 
-  function update(characterId) {
-    const panel = X.first(`#equipmentTab .equipment-summary-panel`);
-
-    X.empty(panel);
-
-    const equipment = EquipmentManager(characterId);
+    const equipment = EquipmentManager(id);
     const damages = equipment.summarizeDamages();
     const resistances = equipment.summarizeResistances();
 
-    if (Object.keys(damages).length > 0) { panel.appendChild(buildAttacks(damages)); }
-    panel.appendChild(buildProtection(resistances.physical));
-    if (Object.keys(resistances.magical).length > 0) { panel.appendChild(buildMagicResistances(resistances.magical)); }
+    buildWeaponSection(damages);
+    buildArmorSection(resistances.physical);
+    buildResistanceSection(resistances.magical);
   }
 
   // The damage shown here is what the character really deals with the weapon, unlike the attack power in the item
   // details, which is the weapon's range before strength is applied.
-  function buildAttacks(damages) {
-    const section = X.createElement(`<div class='section'>
-      <div class='section-title'>Weapons</div>
-      <div class='attack-row'></div>
-    </div>`);
-
-    [EquipmentSlot.primary, EquipmentSlot.secondary].filter(slot => damages[slot]).forEach(slot => {
-      const damage = damages[slot];
-      const attack = X.createElement(`<div class='attack'>
-        <div class='weapon'>${ItemName({ itemId:damage.itemId, showIcon:true, size:'large' }).asString()}</div>
-        <ul class='properties'></ul>
-      </div>`);
-
-      [
-        { label:'Damage', content:`${damage.low} – ${damage.high} ${damageTypesText(damage.damageTypes)}` },
-        { label:'Attack Time', content:`${damage.speed}` },
-        { label:'Range', content:StringHelper.titlecase(damage.reach) },
-      ].forEach(property => attack.querySelector('.properties').appendChild(buildProperty(property)));
-
-      section.querySelector('.attack-row').appendChild(attack);
-    });
-
-    return section;
+  function buildWeaponSection(weapons) {
+    if (weapons.primary || weapons.secondary) {
+      summaryPanel.appendChild(X.createElement(`<div class='weapon-section'>
+        ${buildWeapon(weapons.primary)} ${buildWeapon(weapons.secondary)}
+      </div>`));
+    }
   }
 
-  function buildProperty(property) {
-    return X.createElement(`<li><span class='label'>${property.label}</span><div class='content'>${property.content}</div></li>`);
+  function buildWeapon(weapon) {
+    const properties = [
+      { label:'Damage', content:`${weapon.low} – ${weapon.high} ${damageTypesText(weapon.damageTypes)}` },
+      { label:'Attack Time', content:`${weapon.speed}` },
+      { label:'Range', content:StringHelper.titlecase(weapon.reach) },
+    ].map(buildProperty).join('');
+
+    return `<div class='weapon'>
+      <div class='margin-bottom'>${ItemName({ itemId:weapon.itemId, showIcon:true, size:'large' }).asString()}</div>
+      <ul class='properties'>${properties}</ul>
+    </div>`;
   }
 
   function damageTypesText(damageTypes) {
@@ -54,30 +41,33 @@ global.EquipmentSummaryPanel = function() {
     return `(${damageTypes.map(entry => `${entry.percent}% ${entry.type}`).join(', ')})`;
   }
 
-  function buildProtection(physical) {
-    const types = Object.keys(Object.values(physical)[0]);
-    const headings = types.map(type => `<div class='heading'>${StringHelper.titlecase(type)}</div>`).join('');
+  // <div class='armor-section section'>
+  //   <div class='section-title'>Armor</div>
+  //   <div class='resistance-grid'></div>
+  // </div>
 
-    const rows = Object.entries(physical).map(([location, reductions]) => {
-      const amounts = types.map(type => buildAmount(reductions[type])).join('');
-      return `<div class='label'>${StringHelper.titlecase(location)}</div>${amounts}`;
-    }).join('');
+  function buildArmorSection(physical) {
+    // const types = Object.keys(Object.values(physical)[0]);
+    // const headings = types.map(type => `<div class='heading'>${StringHelper.titlecase(type)}</div>`).join('');
+    //
+    // const rows = Object.entries(physical).map(([location, reductions]) => {
+    //   const amounts = types.map(type => buildAmount(reductions[type])).join('');
+    //   return `<div class='label'>${StringHelper.titlecase(location)}</div>${amounts}`;
+    // }).join('');
 
-    return X.createElement(`<div class='section'>
-      <div class='section-title'>Armor</div>
-      <div class='resistance-grid' style='--columns:${types.length}'><div></div>${headings}${rows}</div>
-    </div>`);
+    // Append headings and rows to resistance grid
+
   }
 
-  function buildMagicResistances(magical) {
-    const rows = Object.entries(magical).map(([type, amount]) => {
-      return `<div class='label'>${StringHelper.titlecase(type)}</div>${buildAmount(amount)}`;
-    }).join('');
+  // <div class='resistance-section section'>
+  //   <div class='section-title'>Resistances</div>
+  //   <ul class='resistance-list'></ul>
+  // </div>
 
-    return X.createElement(`<div class='section'>
-      <div class='section-title'>Resistances</div>
-      <div class='resistance-grid' style='--columns:1'>${rows}</div>
-    </div>`);
+  function buildResistanceSection(magical) {
+    // const rows = Object.entries(magical).map(([type, amount]) => {
+    //   return `<div class='label'>${StringHelper.titlecase(type)}</div>${buildAmount(amount)}`;
+    // }).join('');
   }
 
   function buildAmount(reduction) {
@@ -86,8 +76,13 @@ global.EquipmentSummaryPanel = function() {
     return `<div class='amount'>${reduction}%</div>`;
   }
 
+  function buildProperty(property) {
+    return `<li><span class='label'>${property.label}</span><div class='content'>${property.content}</div></li>`;
+  }
+
+
   return {
-    build,
     update,
   };
-}
+
+})();
