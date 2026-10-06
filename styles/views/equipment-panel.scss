@@ -60,6 +60,17 @@
     }
   }
 
+  .detail-panel {
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    .empty {
+      margin: 10px;
+      font-family: "habibi", serif;
+      color: variables.$fg-very-weak;
+    }
+  }
+
   .equipment-summary-panel {
     flex-grow: 1;
     font-family: "habibi", serif;

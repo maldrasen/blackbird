@@ -5,6 +5,7 @@ global.EquipmentPanel = (function() {
   let selectedCandidate;
 
   let rootElement;
+  let itemDetailPanel;
 
   function init() {}
 
@@ -20,8 +21,12 @@ global.EquipmentPanel = (function() {
     rootElement = X.createElement(`<div class='equipment-root'>
       <div class='slots-panel'><ul class='slots-list'></ul></div>
       <div class='candidate-panel hide'><ul class='candidate-list'></ul></div>
+      <div class='detail-panel hide'><div class='empty hide'>Nothing equipped</div></div>
       <div class='equipment-summary-panel'></div>
     </div>`);
+
+    itemDetailPanel = ItemDetailPanel();
+    rootElement.querySelector('.detail-panel').appendChild(itemDetailPanel.build());
 
     X.fill('#equipmentTab', rootElement);
 
@@ -31,6 +36,7 @@ global.EquipmentPanel = (function() {
   function update() {
     updateSlots();
     updateCandidates();
+    updateDetails();
     updateSummary();
   }
 
@@ -61,6 +67,7 @@ global.EquipmentPanel = (function() {
   function selectCandidate(itemId) {
     selectedCandidate = (itemId === selectedCandidate) ? null : itemId;
     updateCandidates();
+    updateDetails();
   }
 
   function updateCandidates() {
@@ -87,6 +94,22 @@ global.EquipmentPanel = (function() {
 
     element.addEventListener('click', () => selectCandidate(candidate.itemId));
     return element;
+  }
+
+  // The details show the selected candidate when there is one, otherwise whatever is in the selected slot.
+  function updateDetails() {
+    const detailPanel = rootElement.querySelector('.detail-panel');
+    const emptyMessage = detailPanel.querySelector('.empty');
+
+    if (selectedSlot == null) { return X.addClass(detailPanel,'hide'); }
+
+    const itemId = selectedCandidate || equipmentManager.getSlot(selectedSlot);
+    itemDetailPanel.update(itemId ? { id:itemId } : null);
+
+    if (itemId == null) { X.removeClass(emptyMessage,'hide'); }
+    if (itemId != null) { X.addClass(emptyMessage,'hide'); }
+
+    X.removeClass(detailPanel,'hide');
   }
 
   function updateSummary() {
