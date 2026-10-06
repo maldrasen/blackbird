@@ -46,65 +46,7 @@
   }
 }
 
-.equipment-summary-panel {
-  padding: 10px;
-  font-family: "habibi", serif;
-
-  .title {
-    margin-bottom: 10px;
-    font-size: variables.$fs-big;
-    border-bottom: variables.$border-normal;
-  }
-  .section {
-    margin-bottom: 15px;
-  }
-  .section-title {
-    margin-bottom: 5px;
-    color: variables.$fg-weak;
-  }
-  .attack-row {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-  }
-  .attack {
-    .weapon {
-      margin-bottom: 5px;
-    }
-    .properties {
-      margin-left: 10px;
-      li {
-        margin-bottom: 4px;
-      }
-    }
-  }
-  .resistance-grid {
-    display: grid;
-    grid-template-columns: 90px repeat(var(--columns), 70px);
-    justify-content: center;
-    row-gap: 4px;
-    font-size: variables.$fs-small;
-
-    .heading, .amount {
-      text-align: right;
-    }
-    .heading {
-      color: variables.$fg-very-weak;
-    }
-    .amount {
-      font-family: "Roboto", serif;
-    }
-    .amount.none {
-      color: variables.$fg-very-weak;
-    }
-    .amount.vulnerable {
-      color: variables.$fg-warning;
-    }
-  }
-}
-
-// The property lists are shared by the item details and the attack blocks in the equipment summary.
-.item-detail-panel, .equipment-summary-panel {
+.item-detail-panel {
   .properties {
     font-size: variables.$fs-small;
 

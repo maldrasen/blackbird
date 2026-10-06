@@ -10,24 +10,20 @@ global.EquipmentPanel = (function() {
   function build(id) {
     character = Character(id);
     equipmentManager = EquipmentManager(id);
+    summaryPanel = EquipmentSummaryPanel();
 
     rootElement = X.createElement(`<div class='equipment-root'>
       <div class='slots-panel'><ul class='slots-list'></ul></div>
       <div class='item-panel hide'></div>
-      <div class='detail-area'></div>
+      <div class='equipment-summary-panel'></div>
     </div>`);
 
     X.fill('#equipmentTab', rootElement);
-
-    summaryPanel = EquipmentSummaryPanel();
-    rootElement.querySelector('.detail-area').appendChild(summaryPanel.build());
 
     update();
   }
 
   function update() {
-
-    // ---When no slots are selected---
     summaryPanel.update(character.getEntity());
 
     X.empty('#characterOverlay .slots-list');

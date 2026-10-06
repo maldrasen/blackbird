@@ -1,23 +1,21 @@
 global.EquipmentSummaryPanel = function() {
-  let panelElement;
 
   function build() {
-    panelElement = X.createElement(`<div class='equipment-summary-panel'></div>`);
-    return panelElement;
+    return X.createElement(`<div class='equipment-summary-panel'></div>`);
   }
 
   function update(characterId) {
-    X.empty(panelElement);
+    const panel = X.first(`#equipmentTab .equipment-summary-panel`);
+
+    X.empty(panel);
 
     const equipment = EquipmentManager(characterId);
     const damages = equipment.summarizeDamages();
     const resistances = equipment.summarizeResistances();
-    const magical = ObjectHelper.select(resistances.magical, (type, amount) => amount !== 0);
 
-    panelElement.appendChild(X.createElement(`<div class='title'>Equipment Summary</div>`));
-    if (Object.keys(damages).length > 0) { panelElement.appendChild(buildAttacks(damages)); }
-    panelElement.appendChild(buildProtection(resistances.physical));
-    if (Object.keys(magical).length > 0) { panelElement.appendChild(buildMagicResistances(magical)); }
+    if (Object.keys(damages).length > 0) { panel.appendChild(buildAttacks(damages)); }
+    panel.appendChild(buildProtection(resistances.physical));
+    if (Object.keys(resistances.magical).length > 0) { panel.appendChild(buildMagicResistances(resistances.magical)); }
   }
 
   // The damage shown here is what the character really deals with the weapon, unlike the attack power in the item

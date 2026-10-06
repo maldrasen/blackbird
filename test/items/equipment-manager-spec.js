@@ -254,11 +254,11 @@ describe('EquipmentManager', function() {
       const summary = equipSteel(human, ['breastplate', 'tower-shield']).summarizeResistances();
 
       expect(Object.keys(summary.physical)).to.have.members(['head', 'chest', 'hands', 'legs', 'feet']);
+      expect(Object.keys(summary.magical).length).to.equal(0);
       expect(summary.physical.chest.slash).to.equal(75);
       expect(summary.physical.chest.crush).to.equal(60);
       expect(summary.physical.head.slash).to.equal(30);
       expect(summary.physical.feet.crush).to.equal(28);
-      expect(summary.magical).to.deep.equal({ fire:0, shock:0, arcane:0, psychic:0, corruption:0, nature:0 });
     });
 
     it("includes the innate resistances of the species", function() {
@@ -269,7 +269,6 @@ describe('EquipmentManager', function() {
       expect(summary.physical.legs).to.deep.equal({ crush:0, slash:10, pierce:0 });
       expect(summary.magical.fire).to.equal(20);
       expect(summary.magical.psychic).to.equal(-10);
-      expect(summary.magical.shock).to.equal(0);
     });
 
     it("caps the combined equipment and innate reduction", function() {

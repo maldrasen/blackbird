@@ -115,7 +115,10 @@ global.EquipmentManager = function(characterId) {
     });
 
     Object.values(DamageType).filter(type => physicalTypes.includes(type) === false).forEach(type => {
-      summary.magical[type] = cappedReduction(getInnateResistance(type));
+      const resistance = cappedReduction(getInnateResistance(type));
+      if (resistance !== 0) {
+        summary.magical[type] = resistance;
+      }
     });
 
     return summary;
