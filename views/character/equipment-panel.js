@@ -108,7 +108,15 @@ global.EquipmentPanel = (function() {
     const element = X.createElement(`<li class='candidate ${selectedClass}'>${equippedMark}${itemName}</li>`);
 
     element.addEventListener('click', () => selectCandidate(itemId));
+    element.addEventListener('dblclick', () => toggleEquipped(itemId));
     return element;
+  }
+
+  // The two single clicks of a double click will have selected then deselected the candidate, so it's selected again
+  // before the equipment changes.
+  function toggleEquipped(itemId) {
+    selectedCandidate = itemId;
+    (itemId === equipmentManager.getSlot(selectedSlot)) ? unequip() : equip(itemId);
   }
 
   // The details show the selected candidate when there is one, otherwise whatever is in the selected slot.
