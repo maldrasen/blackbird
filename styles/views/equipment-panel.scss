@@ -29,7 +29,7 @@
       cursor: pointer;
     }
     .slot:hover {
-      background-color: rgb(0 0 0 / 0.4);
+      background-color: variables.$select-hover;
     }
     .slot.selected {
       background-color: variables.$select-active;
@@ -53,7 +53,7 @@
       cursor: pointer;
     }
     .candidate:hover {
-      background-color: rgb(0 0 0 / 0.4);
+      background-color: variables.$select-hover;
     }
     .empty {
       margin: 10px;
