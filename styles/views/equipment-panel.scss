@@ -51,9 +51,9 @@
       white-space: nowrap;
       cursor: pointer;
     }
-    .candidate:hover {
-      background-color: variables.$select-hover;
-    }
+    .candidate:hover { background-color: variables.$select-hover; }
+    .candidate.selected { background-color: variables.$select-active; }
+    .candidate.selected:hover { background-color: variables.$select-active-hover; }
     .empty {
       margin: 10px;
       color: variables.$fg-very-weak;

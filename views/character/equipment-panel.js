@@ -2,6 +2,7 @@ global.EquipmentPanel = (function() {
   let character;
   let equipmentManager;
   let selectedSlot;
+  let selectedCandidate;
 
   let rootElement;
 
@@ -14,6 +15,7 @@ global.EquipmentPanel = (function() {
     character = Character(id);
     equipmentManager = EquipmentManager(id);
     selectedSlot = null;
+    selectedCandidate = null;
 
     rootElement = X.createElement(`<div class='equipment-root'>
       <div class='slots-panel'><ul class='slots-list'></ul></div>
@@ -52,7 +54,13 @@ global.EquipmentPanel = (function() {
 
   function selectSlot(slot) {
     selectedSlot = (slot === selectedSlot) ? null : slot;
+    selectedCandidate = null;
     update();
+  }
+
+  function selectCandidate(itemId) {
+    selectedCandidate = (itemId === selectedCandidate) ? null : itemId;
+    updateCandidates();
   }
 
   function updateCandidates() {
@@ -72,8 +80,12 @@ global.EquipmentPanel = (function() {
   }
 
   function buildCandidate(candidate) {
-    const element = X.createElement(`<li class='candidate'>${ItemName({ itemId:candidate.itemId, showIcon:true }).asString()}</li>`);
-    element.dataset.id = candidate.itemId;
+    const itemName = ItemName({ itemId:candidate.itemId, showIcon:true }).asString();
+    const element = X.createElement(`<li class='candidate ${candidate.itemId === selectedCandidate ? 'selected' : ''}'>
+      ${itemName}
+    </li>`);
+
+    element.addEventListener('click', () => selectCandidate(candidate.itemId));
     return element;
   }
 
