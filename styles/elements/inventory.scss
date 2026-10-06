@@ -8,17 +8,16 @@
   li {
     display: flex;
     align-items: center;
-    padding: 2px 5px;
-    margin-bottom: 2px;
+    padding: 5px;
     white-space: nowrap;
     cursor: pointer;
   }
   li:last-child {
     margin-bottom: 0;
   }
-  .selected {
-    background-color: variables.$select-active;
-  }
+  li:hover { background-color: variables.$select-hover; }
+  .selected { background-color: variables.$select-active; }
+  .selected:hover { background-color: variables.$select-active-hover; }
 }
 
 .item-detail-panel {
