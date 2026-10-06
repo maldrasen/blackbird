@@ -8,7 +8,7 @@
     display: grid;
     background-color: rgba(20,20,20,0.6);
     grid-template-columns: 1fr 300px;
-    grid-template-rows: 50px 1fr;
+    grid-template-rows: 50px minmax(0, 1fr);
 
     .header-panel {
       grid-column: 1 / -1;
@@ -51,6 +51,7 @@
   .tab-container {
     display: flex;
     flex-grow: 1;
+    min-height: 0;
     border: variables.$border-normal;
     background-color: #000;
     box-shadow: variables.$shadow-frame;
