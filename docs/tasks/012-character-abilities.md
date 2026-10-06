@@ -12,3 +12,5 @@ We've implemented a single ability for the monsters. (The dick-punch) When a mon
 
 ### Ability Ideas
 - Charge attack - A character in the back row, charges forward, makes a single weapon attack. The ability only takes maybe 100ms, meaning they'll likely get to go again soon after. The ability has a long cooldown, preventing two characters with the ability from swapping back and forth, taking double turns.
+
+- The equipment you use should influence how the abilities work. A slow hard hitting ability should use a weapon's maximum attack power to calculate it's damage, that way a slow weapon like a maul does a lot more damage than a longsword. Conversely, a dexterity based ability could reduce weapon speed by a flat number. Reducing a dagger's speed by 100ms does a lot more than reducing a heavy weapon by the same amount. So an extremely stabby ability might be to make your next three attacks 200ms faster.
