@@ -63,6 +63,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [238] Equipment details `0pt` — [238-equipment-details.md](238-equipment-details.md)
 - [239] Dungeon Light emitters `5pt` — [239-dungeon-light-emitters.md](239-dungeon-light-emitters.md)
 - [242] More Negotiation Requests `8pt` — [242-more-negotiation-requests.md](242-more-negotiation-requests.md)
+- [259] UI Debug Fixture `8pt` — [259-ui-debug-fixture.md](259-ui-debug-fixture.md)
 
 ## Priority 4
 
