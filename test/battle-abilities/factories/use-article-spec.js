@@ -20,7 +20,7 @@ describe("Ability.UseArticle", function() {
   }
 
   it("rejects an unknown article", function() {
-    expect(() => Ability.UseArticle({ article:'no-such-article' })).to.throw('Bad consumable code');
+    expect(() => Ability.UseArticle({ article:'no-such-article' })).to.throw('Bad Consumable code');
   });
 
   it("is named for its article and carries the monster's cooldown and priority", function() {

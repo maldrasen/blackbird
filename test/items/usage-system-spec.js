@@ -17,7 +17,7 @@ describe('UsageSystem', function() {
     it('rejects an unknown article', function() {
       const greg = CharacterFixtures.genericMale({});
 
-      expect(() => UsageSystem.useArticle(greg, 'no-such-article')).to.throw('Bad consumable code');
+      expect(() => UsageSystem.useArticle(greg, 'no-such-article')).to.throw('Bad Consumable code');
       expect(alerts).to.have.lengthOf(0);
     });
 
