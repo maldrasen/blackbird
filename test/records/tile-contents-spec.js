@@ -12,7 +12,7 @@ describe("TileContents", function() {
   });
 
   it("throws for an unknown code", function() {
-    expect(() => TileContents.lookup('no-such-contents')).to.throw('Bad tile contents code');
+    expect(() => TileContents.lookup('no-such-contents')).to.throw('Bad TileContents code');
   });
 
   it("rejects a record with an unknown type", function() {

@@ -22,29 +22,20 @@ the feature-authored tiles that rooms set directly.
 - `springTrap`    `(context) => text` when the trap goes off. `context.T` is the character it went off on.
 - `disarmTrap`    `(context) => text` when the trap is disarmed. `context.T` is the character who disarmed it.
 */
-global.TileContents = (function() {
-  const contents = {};
-
-  function register(code, data) {
+Record.define('TileContents', {
+  validate: (data, code) => {
     Validate.isIn(`TileContents[${code}].type`, data.type, Object.values(TileContentType));
-    if (data.type === TileContentType.trap) { validateTrap(`TileContents[${code}].trap`, data.trap); }
-    contents[code] = data;
-  }
+    if (data.type !== TileContentType.trap) { return; }
 
-  function validateTrap(name, trap) {
+    const name = `TileContents[${code}].trap`;
+    const trap = data.trap;
+
     Validate.exists(name, trap);
     if (trap.damage != null) { Validate.isDiceRoll(`${name}.damage`, trap.damage); }
     if (trap.disarm != null) { Validate.isNumber(`${name}.disarm`, trap.disarm); }
-  }
+  },
 
-  function getAllCodes() {
-    return Object.keys(contents);
-  }
-
-  function lookup(code) {
-    if (contents[code] == null) { throw new Error(`Bad tile contents code [${code}]`); }
-
-    const tileContents = { ...contents[code] };
+  getInstance: tileContents => {
 
     function isInRange(level) {
       const range = tileContents.range;
@@ -67,7 +58,6 @@ global.TileContents = (function() {
     }
 
     return {
-      getCode: () => { return code; },
       getType: () => { return tileContents.type; },
       getRange: () => { return tileContents.range; },
       getSecrecy: () => { return tileContents.secrecy; },
@@ -76,12 +66,5 @@ global.TileContents = (function() {
       getDescription,
       getGlyph,
     };
-  }
-
-  return {
-    register,
-    getAllCodes,
-    lookup,
-  };
-
-})();
+  },
+});
