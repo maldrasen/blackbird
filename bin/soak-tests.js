@@ -24,7 +24,7 @@ for (let i = 1; i <= runs; i++) {
 
   const summary = output.match(/\d+ passing.*/);
 
-  if (i === 1 && grep != null && summary && summary[0].startsWith('0 passing')) {
+  if (i === 1 && grep != null && summary?.[0].startsWith('0 passing')) {
     console.log(`--grep "${grep}" matched no specs`);
     process.exit(1);
   }

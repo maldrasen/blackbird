@@ -31,8 +31,7 @@ global.EpisodeView = (function() {
   // When an option is selected using a keyboard shortcut we invoke the button's click() function so that any event
   // listeners will work the same, weather the button was clicked or the shortcut was used.
   function selectOption(number) {
-    const button = X.all('#episodeButtons > a')[number - 1];
-    button?.click();
+    X.all('#episodeButtons > a')[number - 1]?.click();
   }
 
   function clickEpisodeButton(event) {

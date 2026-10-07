@@ -16,7 +16,7 @@ describe("TileContentPlacer", function() {
       room.getFootprint().forEach((row, y) => {
         row.forEach((cell, x) => {
           const contents = (cell == null) ? null : room.getTileContents(x, y);
-          if (contents && contents.type === TileContentType.trap) { tiles[`${room.getIndex()}:${x},${y}`] = contents.code; }
+          if (contents?.type === TileContentType.trap) { tiles[`${room.getIndex()}:${x},${y}`] = contents.code; }
         });
       });
     });
