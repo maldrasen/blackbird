@@ -16,7 +16,7 @@ global.WeaverElements = (function() {
   // Renders multiple results as blocks in a single list. Each entry is a { text, options } object.
   function resultBlocks(blocks) {
     const items = blocks.map(block => {
-      const classname = (block.options || {}).classname || '';
+      const classname = block.options?.classname || '';
       return `<li class='result-block ${classname}'>${block.text}</li>`;
     });
 

@@ -41,7 +41,7 @@ Record.define('BaseEquipment', {
     }
 
     function getReduction(type) {
-      return (record.reduction || {})[type] || 0;
+      return record.reduction?.[type] || 0;
     }
 
     function getReductionMap() {

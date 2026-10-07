@@ -34,7 +34,7 @@ global.WindowManager = (function() {
   // A locked window can only be closed programmatically, so it stays on the stack until whatever locked it lets go.
   function pop() {
     const modal = windowStack[windowStack.length - 1];
-    if (modal.isLocked && modal.isLocked()) { return; }
+    if (modal.isLocked?.()) { return; }
     Tooltip.close();
     windowStack.pop().close();
   }

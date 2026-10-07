@@ -183,7 +183,7 @@ global.DungeonFloor = function(level, theme=null) {
   // The direction of the stairs standing on a tile, if there are any.
   function getStairsAt(x, y) {
     const contents = getTileContents(x, y);
-    return (contents && contents.type === 'stairs') ? contents.direction : null;
+    return contents?.type === 'stairs' ? contents.direction : null;
   }
 
   function pack() {

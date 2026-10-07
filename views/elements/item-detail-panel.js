@@ -17,9 +17,7 @@ global.ItemDetailPanel = function() {
   function update(selected) {
     X.empty(panelElement);
 
-    if (partySelect) {
-      partySelect.hide();
-    }
+    partySelect?.hide();
 
     if (selected?.code) {
       const article = Article.lookup(selected.code);
@@ -84,7 +82,7 @@ global.ItemDetailPanel = function() {
 
     partySelect.update();
 
-    if (itemPanel) { itemPanel.update(); }
+    itemPanel?.update();
     if (itemPanel && Inventory().getArticleQuantity(code) > 0) { return itemPanel.selectArticle(code); }
 
     update(null);
@@ -105,9 +103,7 @@ global.ItemDetailPanel = function() {
 
     details.insertBefore(properties, details.querySelector('.value'));
 
-    if (buildActions) {
-      buildActions(item).forEach(button => details.querySelector('.button-row').appendChild(button));
-    }
+    buildActions?.(item).forEach(button => details.querySelector('.button-row').appendChild(button));
 
     return details;
   }

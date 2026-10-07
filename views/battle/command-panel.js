@@ -58,8 +58,7 @@ global.CommandPanel = (function() {
   }
 
   function pressCommand(code) {
-    const button = X.first(`#commandPanel .command[data-command='${code}']`);
-    if (button) { button.click(); }
+    X.first(`#commandPanel .command[data-command='${code}']`)?.click();
   }
 
   return {

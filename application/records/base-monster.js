@@ -96,7 +96,7 @@ Record.define('BaseMonster', {
 
       getSkills: () => { return monster.skills || {}; },
       getResistances: () => { return monster.resistances || {}; },
-      getResistance: type => { return (monster.resistances||{})[type] || 0; },
+      getResistance: type => { return monster.resistances?.[type] || 0; },
       getTriggers: () => { return monster.triggers || []; },
       getArchetypes: () => { return monster.archetypes; },
       getThreatWeights,

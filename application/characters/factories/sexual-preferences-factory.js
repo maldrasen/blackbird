@@ -44,7 +44,7 @@ global.SexualPreferencesFactory = (function() {
 
     Object.keys(speciesPrefs).forEach(code => {
       const pref = speciesPrefs[code];
-      if (pref.genders && pref.genders.includes(context.actor.gender) === false) { return; }
+      if (pref.genders?.includes(context.actor.gender) === false) { return; }
       if (pref.chance && Random.roll(100) < pref.chance) { sexualPreferences[code] = rollStrength(pref.strength); }
     });
   }

@@ -39,9 +39,7 @@ global.Browser = (function() {
   // Send a message to the client. The content of the message will be
   // serialized to JSON.
   function send(message, content) {
-    if (mainWindow && mainWindow.webContents) {
-      mainWindow.webContents.send(message, content);
-    }
+    mainWindow?.webContents?.send(message, content);
   }
 
   // Respond to a message sent by the client. The message parameter is just a

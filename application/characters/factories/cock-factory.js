@@ -100,11 +100,11 @@ global.CockFactory = (function() {
         andRemove(trigger);
       }
       if (trigger === 'big-balls') {
-        if (cockData && cockData.testicleWidth) { makeBallsBig(cockData, species); }
+        if (cockData?.testicleWidth) { makeBallsBig(cockData, species); }
         andRemove(trigger);
       }
       if (trigger === 'huge-balls') {
-        if (cockData && cockData.testicleWidth) { makeBallsHuge(cockData, species); }
+        if (cockData?.testicleWidth) { makeBallsHuge(cockData, species); }
         andRemove(trigger);
       }
       if (trigger === 'dog-cock') {

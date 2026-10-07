@@ -34,12 +34,12 @@ global.Confirmation = (function() {
   }
 
   function cancel() {
-    if (typeof noFunction === 'function') { noFunction(); }
+    noFunction?.();
     hide()
   }
 
   function confirm() {
-    if (typeof yesFunction === 'function') { yesFunction(); }
+    yesFunction?.();
     hide()
   }
 

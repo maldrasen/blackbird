@@ -31,13 +31,11 @@ global.EpisodeView = (function() {
   // When an option is selected using a keyboard shortcut we invoke the button's click() function so that any event
   // listeners will work the same, weather the button was clicked or the shortcut was used.
   function selectOption(number) {
-    const button = X.all('#episodeButtons > a')[number - 1];
-    if (button) { button.click(); }
+    X.all('#episodeButtons > a')[number - 1]?.click();
   }
 
   function clickEpisodeButton(event) {
-    const button = event.target.closest('#episodeButtons a');
-    if (typeof button.onSelect === 'function') { button.onSelect(); }
+    event.target.closest('#episodeButtons a').onSelect?.();
   }
 
   function show() {
@@ -104,21 +102,21 @@ global.EpisodeView = (function() {
 
     if (buttonData.jump) {
       return () => {
-        if (callback) { callback(); }
+        callback?.();
         EpisodeSystem.jumpToPage(buttonData.jump);
       };
     }
 
     if (buttonData.end) {
       return () => {
-        if (callback) { callback(); }
+        callback?.();
         EpisodeSystem.endEpisode();
       };
     }
 
     if (buttonData.startEncounter) {
       return () => {
-        if (callback) { callback(); }
+        callback?.();
         EpisodeSystem.startEncounter(buttonData.startEncounter);
       };
     }

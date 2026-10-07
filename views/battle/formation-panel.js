@@ -176,8 +176,7 @@ global.FormationPanel = (function() {
   }
 
   function pressTarget(action) {
-    const position = X.first(`#battleView.target-mode .position.valid-target[data-position$='${suffixFor(action)}']`);
-    if (position) { position.click(); }
+    X.first(`#battleView.target-mode .position.valid-target[data-position$='${suffixFor(action)}']`)?.click();
   }
 
   // =====================
@@ -284,7 +283,7 @@ global.FormationPanel = (function() {
   function cancelPendingMoves() {
     pendingMoves.forEach(move => {
       clearTimeout(move.timer);
-      if (move.animation) { move.animation.cancel(); }
+      move.animation?.cancel();
     });
     pendingMoves.clear();
     X.removeClass('.combatant.moving','moving');
