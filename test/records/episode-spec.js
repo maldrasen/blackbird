@@ -153,7 +153,7 @@ describe('Episode', function() {
 
   it('does not store an episode that fails validation', function() {
     expect(register({ layout:'sideways' })).to.throw();
-    expect(() => Episode.lookup('spec-invalid-episode')).to.throw(/Bad episode code/);
+    expect(() => Episode.lookup('spec-invalid-episode')).to.throw(/Bad Episode code/);
   });
 
   describe('meetsRequirements()', function() {
