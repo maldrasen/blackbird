@@ -15,10 +15,12 @@
 // define() adds the record to the global scope and returns it. The standard functions always win over extra
 // functions with the same name.
 global.Record = (function() {
+  const defined = new Set();
 
   function define(name, options) {
-    if (global[name] != null) { throw new Error(`Record [${name}] has already been defined.`); }
+    if (defined.has(name)) { throw new Error(`Record [${name}] has already been defined.`); }
     Validate.isFunction(`Record[${name}].getInstance`, options.getInstance);
+    defined.add(name);
 
     const records = {};
 

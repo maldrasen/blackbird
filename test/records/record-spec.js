@@ -78,7 +78,7 @@ describe("Record", function() {
     expect(gadgets.lookup('lever').getSize()).to.equal(3);
   });
 
-  it("refuses to define over an existing global or without getInstance", function() {
+  it("refuses to define a record twice or without getInstance", function() {
     expect(() => Record.define('Material', { getInstance: () => ({}) })).to.throw('already been defined');
     expect(() => Record.define('SpecNothing', {})).to.throw('getInstance is not a function');
   });
