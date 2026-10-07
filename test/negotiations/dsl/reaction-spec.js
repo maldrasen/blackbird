@@ -197,7 +197,7 @@ describe("Reaction", function() {
     it('throws for an unknown status effect code', function() {
       const { context } = startBattle();
       expect(() => applyStatusEffect({ target:'player', effect:'wobbly', duration:1 }, context))
-        .to.throw('Bad status effect code');
+        .to.throw('Bad StatusEffectType code');
     });
   });
 
