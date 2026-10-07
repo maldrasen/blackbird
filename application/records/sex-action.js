@@ -59,56 +59,10 @@ checked in this order:
 - `isPossible`         Predicate, passed the training context. For conditions that change during training, like
                        striptease needing a partner who is still clothed.
 */
-global.SexAction = (function() {
-  const sexActions = {};
+Record.define('SexAction', {
+  validate: (data, code) => { SexActionValidator(code, data); },
 
-  const MainCategory = {
-    foreplay: 'foreplay',
-    giving: 'giving',
-    performance: 'performance',
-    receiving: 'receiving',
-    sex: 'sex',
-  };
-
-  const PartCategory = {
-    ass: 'ass',
-    breasts: 'breasts',
-    cock: 'cock',
-    hands: 'hands',
-    mouth: 'mouth',
-    none: 'none',
-    pussy: 'pussy',
-  };
-
-  const BaseClass = {
-    emotional: 'emotional',
-    performance: 'performance',
-    penetration: 'penetration',
-    reverseService: 'reverseService',
-    roughService: 'roughService',
-    service: 'service',
-    touching: 'touching',
-  };
-
-  function register(code,data) {
-    SexActionValidator(code,data);
-    sexActions[code] = data;
-  }
-
-  function getAllCodes() {
-    return Object.keys(sexActions);
-  }
-
-  function getPossible(context) {
-    return Object.keys(sexActions).filter(key => {
-      return lookup(key).isPossible(context);
-    });
-  }
-
-  function lookup(code) {
-    if (sexActions[code] == null) { throw new Error(`Bad sex action code [${code}]`); }
-
-    const action = {...sexActions[code]};
+  getInstance: (action, code) => {
 
     function getDescription(context) {
       return Weaver(context).weave(action.description);
@@ -250,7 +204,6 @@ global.SexAction = (function() {
     return {
 
       // Name, Description, Category, Direction
-      getCode: () => { return code; },
       getName: () => { return action.name; },
       getPersistedName: () => { return action.persistedName; },
       getDescription,
@@ -289,16 +242,41 @@ global.SexAction = (function() {
       getSkills: () => { return { ...action.skills }; },
       getOrientation: () => { return { ...action.orientation }; },
     };
-  }
+  },
 
-  return {
-    BaseClass,
-    MainCategory,
-    PartCategory,
-    register,
-    getAllCodes,
-    getPossible,
-    lookup,
-  };
+  functions: () => {
+    const MainCategory = {
+      foreplay: 'foreplay',
+      giving: 'giving',
+      performance: 'performance',
+      receiving: 'receiving',
+      sex: 'sex',
+    };
 
-})();
+    const PartCategory = {
+      ass: 'ass',
+      breasts: 'breasts',
+      cock: 'cock',
+      hands: 'hands',
+      mouth: 'mouth',
+      none: 'none',
+      pussy: 'pussy',
+    };
+
+    const BaseClass = {
+      emotional: 'emotional',
+      performance: 'performance',
+      penetration: 'penetration',
+      reverseService: 'reverseService',
+      roughService: 'roughService',
+      service: 'service',
+      touching: 'touching',
+    };
+
+    function getPossible(context) {
+      return SexAction.getAllCodes().filter(code => SexAction.lookup(code).isPossible(context));
+    }
+
+    return { BaseClass, MainCategory, PartCategory, getPossible };
+  },
+});
