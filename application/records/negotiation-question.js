@@ -1,48 +1,9 @@
-global.NegotiationQuestion = (function() {
+// Reactions are registered separately from their questions, several per question code, so they're kept beside the
+// record where both the lookup and registerReaction() can reach them.
+const reactions = {};
 
-  const questions = {};
-  const reactions = {};
-  const propertyWeights = {
-    style: 1,
-    archetype: 5,
-    species: 10,
-    gender: 15,
-    monster: 50,
-  }
-
-  let whitelist;
-
-  function register(code, data) {
-    questions[code] = data;
-  }
-
-  function getAllowedCodes() { return whitelist ? Object.keys(questions).filter(code => whitelist.includes(code)) : getAllCodes(); }
-  function setWhitelist(list) { whitelist = list; }
-  function clearWhitelist() { whitelist = null; }
-
-  function registerReaction(code, data) {
-    data.weight = 0;
-
-    Object.entries(propertyWeights).forEach(([property,weight]) => {
-      if (data[property] != null) { data.weight += weight; }
-    });
-
-    if (reactions[code] == null) { reactions[code] = []; }
-    reactions[code].push(data);
-  }
-
-  function getAllCodes() {
-    return Object.keys(questions);
-  }
-
-  function getReactions(code) {
-    return reactions[code] || [];
-  }
-
-  function lookup(code) {
-    if (questions[code] == null) { throw new Error(`Bad negotiation question code [${code}]`); }
-
-    const question = questions[code];
+Record.define('NegotiationQuestion', {
+  getInstance: (question, code) => {
 
     // The reaction data for a question will be whatever reaction that's most applicable to the current monster. If a
     // question has no valid responses for the current monster then that's not question that this monster would be
@@ -90,7 +51,6 @@ global.NegotiationQuestion = (function() {
     }
 
     return {
-      getCode: () => { return code; },
       getText: () => { return question.text; },
       getStaticRequirements: () => { return question.staticRequirements || []; },
       getAnswers,
@@ -99,17 +59,43 @@ global.NegotiationQuestion = (function() {
       isPossible,
       isAvailable,
     };
-  }
+  },
 
-  return {
-    register,
-    registerReaction,
-    getAllCodes,
-    getAllowedCodes,
-    setWhitelist,
-    clearWhitelist,
-    getReactions,
-    lookup,
-  };
+  functions: () => {
+    const propertyWeights = {
+      style: 1,
+      archetype: 5,
+      species: 10,
+      gender: 15,
+      monster: 50,
+    };
 
-})();
+    let whitelist = null;
+
+    // A reaction's weight is the sum of the weights of the target properties it names, so the most specific reaction
+    // wins when several match a monster.
+    function registerReaction(code, data) {
+      data.weight = 0;
+
+      Object.entries(propertyWeights).forEach(([property,weight]) => {
+        if (data[property] != null) { data.weight += weight; }
+      });
+
+      if (reactions[code] == null) { reactions[code] = []; }
+      reactions[code].push(data);
+    }
+
+    function getAllowedCodes() {
+      const codes = NegotiationQuestion.getAllCodes();
+      return whitelist ? codes.filter(code => whitelist.includes(code)) : codes;
+    }
+
+    return {
+      registerReaction,
+      getReactions: code => { return reactions[code] || []; },
+      getAllowedCodes,
+      setWhitelist: list => { whitelist = list; },
+      clearWhitelist: () => { whitelist = null; },
+    };
+  },
+});

@@ -152,7 +152,7 @@ describe("NegotiationState", function() {
 
     it('throws for an unknown question code', function() {
       const state = buildState(40, 20);
-      expect(() => state.setFollowUp('tired-of-jogging')).to.throw('Bad negotiation question code');
+      expect(() => state.setFollowUp('tired-of-jogging')).to.throw('Bad NegotiationQuestion code');
     });
 
     it('throws when the monster has no reaction to the question', function() {
