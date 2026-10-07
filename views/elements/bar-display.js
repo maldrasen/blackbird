@@ -88,7 +88,7 @@ global.BarDisplay = function(options) {
 
     if (bar.style.width === `${width}%`) {
       setBarWidth(width);
-      if (onComplete) { onComplete(); }
+      onComplete?.();
       return;
     }
 
@@ -97,7 +97,7 @@ global.BarDisplay = function(options) {
       bar.addEventListener('transitionend', () => {
         X.removeClass(bar,'animate');
         updateFullState(width);
-        if (onComplete) { onComplete(); }
+        onComplete?.();
       }, { once:true });
       bar.setAttribute(`style`,`width:${width}%`);
     }));

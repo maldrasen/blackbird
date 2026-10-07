@@ -25,7 +25,7 @@ global.DragonDrop = (function() {
     if (dragContext) { return; }
 
     const element = event.target.closest(registration.source);
-    if (registration.canDrag && registration.canDrag(element) === false) { return; }
+    if (registration.canDrag?.(element) === false) { return; }
 
     event.preventDefault();
 

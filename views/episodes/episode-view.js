@@ -32,7 +32,7 @@ global.EpisodeView = (function() {
   // listeners will work the same, weather the button was clicked or the shortcut was used.
   function selectOption(number) {
     const button = X.all('#episodeButtons > a')[number - 1];
-    if (button) { button.click(); }
+    button?.click();
   }
 
   function clickEpisodeButton(event) {
@@ -104,21 +104,21 @@ global.EpisodeView = (function() {
 
     if (buttonData.jump) {
       return () => {
-        if (callback) { callback(); }
+        callback?.();
         EpisodeSystem.jumpToPage(buttonData.jump);
       };
     }
 
     if (buttonData.end) {
       return () => {
-        if (callback) { callback(); }
+        callback?.();
         EpisodeSystem.endEpisode();
       };
     }
 
     if (buttonData.startEncounter) {
       return () => {
-        if (callback) { callback(); }
+        callback?.();
         EpisodeSystem.startEncounter(buttonData.startEncounter);
       };
     }

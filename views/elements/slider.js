@@ -26,7 +26,7 @@ global.Slider = function(options) {
       updateInput();
       positionKnob();
 
-      if (options.onChange) { options.onChange(value); }
+      options.onChange?.(value);
     }
   }
 
@@ -100,9 +100,7 @@ global.Slider = function(options) {
   knob.addEventListener('mousedown', startDrag);
   element.addEventListener('mousedown', trackGrabbed);
 
-  if (input) {
-    input.addEventListener('change', inputChanged);
-  }
+  input?.addEventListener('change', inputChanged);
 
   updateInput();
   positionKnob();

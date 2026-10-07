@@ -52,7 +52,7 @@ global.BattleText = (function() {
     autoAdvanceTimer = setTimeout(() => {
       autoAdvanceTimer = null;
       const state = BattleSystem.getState();
-      if (isTextVisible() && state != null && state.isAutoBattle()) { BattleSystem.advanceBattle(); }
+      if (isTextVisible() && state?.isAutoBattle()) { BattleSystem.advanceBattle(); }
     }, BattleConstants.autoAdvanceTime);
   }
 

@@ -99,7 +99,7 @@ global.KeyBindingsPanel = (function() {
     cancelCapture();
     bindings = KeyBindings.getDefaults();
     render();
-    if (onChange) { onChange(); }
+    onChange?.();
   }
 
   function startCapture(event) {
@@ -136,7 +136,7 @@ global.KeyBindingsPanel = (function() {
     bindings[capturing.dataset.context][capturing.dataset.action][capturing.dataset.slot] = code;
     cancelCapture();
     updateConflicts();
-    if (onChange) { onChange(); }
+    onChange?.();
   }
 
   function getBindings() {

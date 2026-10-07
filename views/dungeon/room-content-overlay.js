@@ -30,7 +30,7 @@ global.RoomContentOverlay = (function() {
   }
 
   function addLoot(content, loot) {
-    if (loot && loot.length > 0) {
+    if (loot?.length > 0) {
       content.appendChild(X.createElement(WeaverElements.lootBlock(loot)));
     }
   }

@@ -100,9 +100,7 @@ global.Casement = (function() {
 
       casementBar.addEventListener('mousedown', event => startMoveDrag(event));
 
-      if (resizeHandle) {
-        resizeHandle.addEventListener('mousedown', event => startResizeDrag(event));
-      }
+      resizeHandle?.addEventListener('mousedown', event => startResizeDrag(event));
     }
 
     function setAssociatedWith(association) { associatedWith = association; }

@@ -18,9 +18,7 @@ global.MoveAnimation = (function() {
       easing: options.easing || 'ease-in-out',
     });
 
-    animation.onfinish = () => {
-      if (options.onComplete) { options.onComplete(); }
-    };
+    animation.onfinish = () => { options.onComplete?.(); };
 
     return animation;
   }

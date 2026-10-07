@@ -55,7 +55,7 @@ global.ItemPanel = function() {
 
     if (element == null || element === selected) {
       if (element) { X.removeClass(element,'selected'); }
-      if (detailPanel) { detailPanel.update(null); }
+      detailPanel?.update(null);
       selected = null;
       return;
     }
@@ -69,9 +69,7 @@ global.ItemPanel = function() {
 
     X.addClass(selected, 'selected');
 
-    if (detailPanel) {
-      detailPanel.update(selected.dataset.type === 'item' ? { id:selected.dataset.id } : { code:selected.dataset.code });
-    }
+    detailPanel?.update(selected.dataset.type === 'item' ? { id:selected.dataset.id } : { code:selected.dataset.code });
   }
 
   function selectArticle(code) {
