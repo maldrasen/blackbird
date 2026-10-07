@@ -64,7 +64,7 @@ global.Random = (function() {
       throw new Error(`Stubbed value ${value} is below minimum of ${limits.min}`); }
     if (limits.max != null && value > limits.max) {
       throw new Error(`Stubbed value ${value} is above maximum of ${limits.max}`); }
-    if (limits.within != null && limits.within.includes(value) === false) {
+    if (limits.within?.includes(value) === false) {
       throw new Error(`Stubbed value ${value} was not within ${JSON.stringify(limits.within)}`);
     }
 
@@ -123,7 +123,7 @@ global.Random = (function() {
   // Select a random element in an array.
   function from(array) {
     if (stubQueues.from != null) { return stubbedValue('from',{ within:array }); }
-    if (array && array.length) {
+    if (array?.length) {
       return array[Random.roll(array.length)];
     } else {
       throw new Error(`Empty array`);

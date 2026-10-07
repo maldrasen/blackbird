@@ -26,7 +26,7 @@ global.Record = (function() {
 
     function register(code, data) {
       const record = options.register ? options.register(code, data) : data;
-      if (options.validate) { options.validate(record, code); }
+      options.validate?.(record, code);
       records[code] = record;
     }
 

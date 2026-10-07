@@ -122,7 +122,7 @@ Record.define('SexAction', {
     // as the initial action filter. Actions that are filtered here are no longer considered when determining which
     // actions are visible.
     function isPossible(context) {
-      if (action.isPossible && action.isPossible(context) === false) { return false; }
+      if (action.isPossible?.(context) === false) { return false; }
 
       const player = Character(context.P);
       const partner = Character(context.T);

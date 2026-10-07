@@ -15,7 +15,7 @@ global.GeometryHelper = (function() {
   // so a single filled cell yields (0,0) (1,0) (1,1) (0,1). The filled region must be connected. Only the outside
   // edge is followed, so a hole (the ring left around a nested room) is traced as if it were filled.
   function traceOutline(footprint) {
-    const filled = (x,y) => footprint[y] != null && footprint[y][x] != null && footprint[y][x] !== false;
+    const filled = (x,y) => footprint[y]?.[x] != null && footprint[y][x] !== false;
 
     const start = startCorner(footprint);
     const vertices = [{ x:start.x, y:start.y }];

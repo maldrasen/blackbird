@@ -78,8 +78,8 @@ global.CurrencyHelper = (function() {
     const firstOption = denominations[index-1];
     const secondOption = denominations[index-2];
 
-    if (firstOption && firstOption.value <= remainingValue) { return firstOption; }
-    if (secondOption && secondOption.value <= remainingValue) { return secondOption; }
+    if (firstOption?.value <= remainingValue) { return firstOption; }
+    if (secondOption?.value <= remainingValue) { return secondOption; }
   }
 
   return {

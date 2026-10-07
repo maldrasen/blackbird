@@ -27,7 +27,7 @@ global.ItemHelper = (function() {
   //       item details panel to the equipment tab in the character overlay in order to look at these values though.
 
   function getScaledReduction(profile, material, type) {
-    const base = (profile || {})[type] || 0;
+    const base = profile?.[type] || 0;
     if (base === 0) { return 0; }
 
     const absorption = (material == null) ? 1 : Material.lookup(material).getFactor(MaterialFactor.absorption);
