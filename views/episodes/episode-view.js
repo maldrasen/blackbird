@@ -35,8 +35,7 @@ global.EpisodeView = (function() {
   }
 
   function clickEpisodeButton(event) {
-    const button = event.target.closest('#episodeButtons a');
-    if (typeof button.onSelect === 'function') { button.onSelect(); }
+    event.target.closest('#episodeButtons a').onSelect?.();
   }
 
   function show() {

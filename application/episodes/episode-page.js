@@ -22,7 +22,7 @@ global.EpisodePage = function(data) {
   // A page can specify a function to run after the page has been shown. This can be used to play an effect, or can
   // be used for hacky tweaks to the page output that isn't handled anywhere else.
   function executeOnShow() {
-    if (typeof data.onShow === 'function') { data.onShow(); }
+    data.onShow?.();
   }
 
   // Only render a button when it has no requirements or all its requirements are met. The buttons are copied before
