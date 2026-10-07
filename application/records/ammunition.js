@@ -1,21 +1,17 @@
-global.Ammunition = (function() {
-  const ammunitionRecords = {};
+Record.define('Ammunition', {
 
-  function register(code,data) {
+  // The article fields are registered as an Article, so only what makes the ammunition different is stored here.
+  register: (code, data) => {
     const { damageTypes, effects, stories, ...articleData } = data;
 
     Article.register(code, { ...articleData, type:ArticleType.ammunition });
-    ammunitionRecords[code] = { damageTypes, effects, stories };
-  }
+    return { damageTypes, effects, stories };
+  },
 
-  function lookup(code) {
-    if (ammunitionRecords[code] == null) { throw new Error(`Bad consumable code [${code}]`); }
-
-    const ammunition = { ...ammunitionRecords[code] };
+  getInstance: (ammunition, code) => {
     const article = Article.lookup(code);
 
     return {
-      getCode: () => { return code; },
       getName: () => { return article.getName(); },
       getDescription: () => { return article.getDescription(); },
       getCategory: () => { return article.getCategory(); },
@@ -23,11 +19,5 @@ global.Ammunition = (function() {
       getDamageTypes: () => { return { ...ammunition.damageTypes }},
       getEffects: () => { return [...(ammunition.effects||[])]; },
     };
-  }
-
-  return {
-    register,
-    lookup,
-  };
-
-})();
+  },
+});
