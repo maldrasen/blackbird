@@ -8,7 +8,7 @@ describe("NegotiationRequest", function() {
   }
 
   it('throws for an unknown request code', function() {
-    expect(() => NegotiationRequest.lookup('give-me-liberty')).to.throw('Bad negotiation request code');
+    expect(() => NegotiationRequest.lookup('give-me-liberty')).to.throw('Bad NegotiationRequest code');
   });
 
   it('is repeatable unless the record says otherwise', function() {

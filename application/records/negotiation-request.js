@@ -1,24 +1,5 @@
-global.NegotiationRequest = (function() {
-  const requests = {};
-
-  let whitelist;
-
-  function register(code,data) {
-    requests[code] = data;
-  }
-
-  function getAllCodes() {
-    return Object.keys(requests);
-  }
-
-  function getAllowedCodes() { return whitelist ? Object.keys(requests).filter(code => whitelist.includes(code)) : getAllCodes(); }
-  function setWhitelist(list) { whitelist = list; }
-  function clearWhitelist() { whitelist = null; }
-
-  function lookup(code) {
-    if (requests[code] == null) { throw new Error(`Bad negotiation request code [${code}]`); }
-
-    const request = { ...requests[code] };
+Record.define('NegotiationRequest', {
+  getInstance: request => {
 
     function getRequestParameters(context) {
       return typeof request.requestParameters === 'function' ?
@@ -58,7 +39,6 @@ global.NegotiationRequest = (function() {
     }
 
     return {
-      getCode: () => { return code; },
       getRequestParameters,
       getRequestText,
       isPossible,
@@ -67,15 +47,21 @@ global.NegotiationRequest = (function() {
       resolveAnswerReaction,
       isRepeatable: () => { return request.isRepeatable !== false; },
     };
-  }
+  },
 
-  return {
-    register,
-    getAllCodes,
-    getAllowedCodes,
-    setWhitelist,
-    clearWhitelist,
-    lookup,
-  };
+  // A whitelist narrows the requests a negotiation can draw from. Specs use it to pin the requests they expect.
+  functions: () => {
+    let whitelist = null;
 
-})();
+    function getAllowedCodes() {
+      const codes = NegotiationRequest.getAllCodes();
+      return whitelist ? codes.filter(code => whitelist.includes(code)) : codes;
+    }
+
+    return {
+      getAllowedCodes,
+      setWhitelist: list => { whitelist = list; },
+      clearWhitelist: () => { whitelist = null; },
+    };
+  },
+});
