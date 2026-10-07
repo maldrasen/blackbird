@@ -30,14 +30,19 @@ global.Effect = (function() {
   return {
     apply,
     resistDamage: (damageType, percent) => { return { type:'resist-damage', damageType, percent }; },
-    resistEffect: (effect, power) => { return { type:'resist-effect', effect, power }; },
+    resistEffect: (effect, strength) => { return { type:'resist-effect', effect, strength }; },
     restoreHealth: (min, max) => { return { type:'restore-health', min, max }; },
     restoreMana: (color, min, max) => { return { type:'restore-mana', color, min, max }; },
     damage: (damageType, damage) => { return { type:'damage', damageType, damage }; },
+
+    // TODO: By just passing an options object, it's not obvious what options a status effect effect should have...
+    //       Perhaps Effect.statusEffect(effect,strength) would be better than a function for each effect type? It's
+    //       unfortunate that status effect and effect have completely different meanings in this context.
     blind: options => { return { type:'status-effect', code:'blind', ...options }; },
     burn: options => { return { type:'status-effect', code:'burn', ...options }; },
     stun: options => { return { type:'status-effect', code:'stun', ...options }; },
     poison: options => { return { type:'status-effect', code:'poison', ...options }; },
+
     increasePotency: level => { return { type:'increase-potency', level }; },
   };
 

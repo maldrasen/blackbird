@@ -2,7 +2,15 @@
 // ==================================
 //    Resistance to Status Effects
 // ==================================
-// Status effect resistances should be more common, but also
+// Status effect resistances should be more common, especially on accessories like rings. Resistance strength is a
+// number that's added to the resist roll and directly opposes the strength of the effect being applied. The "blasto"
+// grenade for instance has a strength of 20, so a blind resistance of 20 gives an even chance of resisting the effect.
+// Because the contest floor is currently set to 100 though, we might not notice the effects of resistances until we
+// see resistance values in the 100s.
+
+// TODO: We Probably need to lower the resistance roll floor and move it into battle constants, or adjust the effect
+//       strength of consumables and spells like blasto and overwhelming-effulgence to bring the strengths closer to
+//       the floor.
 
 EnchantmentPattern.register('resistant-to-blind',{
   getName: id => { return { name:`Vigilant ${Item(id).getName()}` }},
