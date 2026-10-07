@@ -5,6 +5,11 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 ## Priority 
 
 - [258] Rework Character Cards `0pt` — [258-rework-character-cards.md](258-rework-character-cards.md)
+- [260] Use the optional chaining operator more `0pt` — [260-use-the-optional-chaining-operator-more.md](260-use-the-optional-chaining-operator-more.md)
+
+## Priority 1
+
+- [261] Create a record factory `5pt` — [261-create-a-record-factory.md](261-create-a-record-factory.md)
 
 ## Priority 2
 
