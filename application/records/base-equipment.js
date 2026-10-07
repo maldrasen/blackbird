@@ -5,21 +5,8 @@
 // but is held in a hand like a weapon. Materials are listed as { type:amount } using MaterialType, and the factory
 // picks the concrete material for each when it builds the item, so the record never knows what it was made from.
 
-global.BaseEquipment = (function() {
-  const records = {};
-
-  function register(code, data) {
-    records[code] = data;
-  }
-
-  function getAllCodes() {
-    return Object.keys(records);
-  }
-
-  function lookup(code) {
-    if (records[code] == null) { throw new Error(`Bad base equipment code [${code}]`); }
-
-    const record = { ...records[code] };
+Record.define('BaseEquipment', {
+  getInstance: record => {
 
     function isWeapon() { return record.damageRange != null; }
     function isShield() { return record.type === 'shield'; }
@@ -71,7 +58,6 @@ global.BaseEquipment = (function() {
     }
 
     return {
-      getCode: () => { return code; },
       getName,
       getIcon: () => { return record.icon || 'missing.png'; },
       getType: () => { return record.type; },
@@ -95,12 +81,5 @@ global.BaseEquipment = (function() {
       isLewd,
       hasReduction,
     };
-  }
-
-  return {
-    register,
-    getAllCodes,
-    lookup,
-  };
-
-})();
+  },
+});

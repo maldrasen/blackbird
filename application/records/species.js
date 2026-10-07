@@ -1,15 +1,5 @@
-global.Species = (function() {
-
-  const speciesMap = {};
-
-  function register(code,data) { speciesMap[code] = data; }
-  function getAllCodes() { return Object.keys(speciesMap); }
-
-  // The lookup() function returns a wrapper for the species data object.
-  function lookup(code) {
-    if (speciesMap[code] == null) { throw new Error(`Bad species code [${code}]`); }
-
-    const species = { ...speciesMap[code] };
+Record.define('Species', {
+  getInstance: species => {
 
     function getAverageHeight(gender=Gender.male) {
       const maleHeight = species.body.maleHeight;
@@ -34,7 +24,6 @@ global.Species = (function() {
     }
 
     return {
-      getCode: () => { return species.code; },
       getName: () => { return species.name; },
       getAdjective: () => { return species.adjective || species.name; },
       getGenderRatio: () => { return species.genderRatio; },
@@ -64,12 +53,5 @@ global.Species = (function() {
       getSmellFamily: () => { return species.body.smellFamily; },
       getNegotiationGreeting,
     };
-  }
-
-  return {
-    register,
-    getAllCodes,
-    lookup,
-  };
-
-})();
+  },
+});

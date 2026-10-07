@@ -11,21 +11,8 @@
 - `requires`      Predicate or array of predicates. Unmet commands aren't offered.
 - `startEpisode`  Episode code. Cannot be used with "execute" and uses its own requirements.
 */
-global.RoomContents = (function() {
-  const contents = {};
-
-  function register(code,data) {
-    contents[code] = data;
-  }
-
-  function getAllCodes() {
-    return Object.keys(contents);
-  }
-
-  function lookup(code) {
-    if (contents[code] == null) { throw new Error(`Bad room contents code [${code}]`); }
-
-    const roomContents = { ...contents[code] };
+Record.define('RoomContents', {
+  getInstance: roomContents => {
 
     function getAvailableEpisode() {
       const validEpisodes = roomContents.episode ?
@@ -59,7 +46,6 @@ global.RoomContents = (function() {
     }
 
     return {
-      getCode: () => { return code; },
       getRange: () => { return roomContents.range; },
       getSecrecy: () => { return roomContents.secrecy; },
       getEpisode: () => { return roomContents.episode; },
@@ -68,12 +54,5 @@ global.RoomContents = (function() {
       getDescription,
       getAllowedTileTypes: () => { return roomContents.allowedTileTypes || []; }
     };
-  }
-
-  return {
-    register,
-    getAllCodes,
-    lookup,
-  };
-
-})();
+  },
+});

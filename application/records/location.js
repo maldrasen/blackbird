@@ -1,32 +1,8 @@
-global.Location = (function() {
-  const locations = {};
-
-  function register(code,data) {
-    locations[code] = data;
-  }
-
-  function getAllCodes() {
-    return Object.keys(locations);
-  }
-
-  function lookup(code) {
-    if (locations[code] == null) { throw new Error(`Bad location code [${code}]`); }
-
-    const location = { ...locations[code] };
-
-    return {
-      getCode: () => { return code; },
-      getName: () => { return location.name; },
-      getDistrict: () => { return location.district; },
-      getBackground: () => { return location.background; },
-      getActions: () => { return (location.actions || []).filter(action => Requirements.met(action.requires)); },
-    };
-  }
-
-  return {
-    register,
-    getAllCodes,
-    lookup,
-  };
-
-})();
+Record.define('Location', {
+  getInstance: location => ({
+    getName: () => { return location.name; },
+    getDistrict: () => { return location.district; },
+    getBackground: () => { return location.background; },
+    getActions: () => { return (location.actions || []).filter(action => Requirements.met(action.requires)); },
+  }),
+});

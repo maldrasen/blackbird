@@ -154,7 +154,7 @@ describe("Reaction", function() {
 
     it('throws for an unknown preference code', function() {
       const id = MonsterFactory('kobold-sneak-slut').build();
-      expect(() => applyPreferences(id, { 'linoleum-slut':30 })).to.throw('Bad sexual preference code');
+      expect(() => applyPreferences(id, { 'linoleum-slut':30 })).to.throw('Bad SexualPreference code');
     });
   });
 
