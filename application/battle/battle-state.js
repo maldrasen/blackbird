@@ -274,7 +274,7 @@ global.BattleState = function(data) {
   }
 
   function isOnCooldown(id, abilityId) {
-    return abilityCooldowns[id] != null && abilityCooldowns[id][abilityId] != null;
+    return abilityCooldowns[id]?.[abilityId] != null;
   }
 
   function reduceCooldowns(id) {

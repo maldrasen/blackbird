@@ -21,7 +21,7 @@ global.BattleSystem = (function() {
   }
 
   function reset() {
-    if (state) { state.cleanup(); }
+    state?.cleanup();
     removeBattleEffects();
     state = null;
     round = null;
@@ -40,7 +40,7 @@ global.BattleSystem = (function() {
     const { removed } = StatusEffects(entity).apply(code, values);
     StatusEffectSystem.scheduleTick(entity, code);
     BattleSpellSystem.interruptCasting(entity, code);
-    if (round && round.getActing() === entity) { round.addAppliedStatus(code); }
+    if (round?.getActing() === entity) { round.addAppliedStatus(code); }
     if (removed.length > 0) { BattleInterface.updateCombatantView(entity); }
   }
 

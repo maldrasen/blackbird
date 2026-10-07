@@ -74,7 +74,7 @@ function isPossible(options) {
   const target = round.getTarget();
 
   if (StatusEffects(round.getActing()).hasHidden()) { return false; }
-  if (options.canTarget && options.canTarget(target) === false) { return false; }
+  if (options.canTarget?.(target) === false) { return false; }
   if (options.hitLocation && BattleHelper.hasHitLocation(target, options.hitLocation) === false) { return false; }
 
   return BattleHelper.isAttackWithinRange(buildProfile(options).reach, round.getActingPosition(), round.getTargetPosition());
@@ -104,7 +104,7 @@ function execute(ability, options) {
 
   if (contest.isHit() === false) { return PhysicalAttackSystem.processMiss(attackRoll, defendRoll); }
 
-  if (options.onHit) { options.onHit(acting, target); }
+  options.onHit?.(acting, target);
   applyEffects(options, target);
   PhysicalAttackSystem.processHit(attackRoll, defendRoll);
 }

@@ -41,7 +41,7 @@ global.MonsterSystem = (function() {
     const ability = round.getActingMonster().findAbility(state.takeForcedAbility());
 
     round.setTarget(GameSystem.getState().getPlayer());
-    if (ability && ability.isPossible()) { return ability; }
+    if (ability?.isPossible()) { return ability; }
 
     round.clearTarget();
     return null;

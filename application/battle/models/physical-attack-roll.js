@@ -27,7 +27,7 @@ global.PhysicalAttackRoll = function(attacker, target) {
 
   // An ability that can target any enemy is always long range. Otherwise, the weapon's reach determines the range.
   function isRangedAttack() {
-    if (ability && ability.getTargetingMode() === TargetingMode.anyEnemy) { return true; }
+    if (ability?.getTargetingMode() === TargetingMode.anyEnemy) { return true; }
     return attackSource.getReach() === WeaponReach.long;
   }
 

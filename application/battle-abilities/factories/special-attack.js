@@ -44,7 +44,7 @@ function isPossible(ability, options) {
   const weapon = BattleSystem.getRound().getPrimaryWeapon();
 
   if (weapon == null) { return false; }
-  if (options.isPossible && options.isPossible() === false) { return false; }
+  if (options.isPossible?.() === false) { return false; }
 
   return isInRange(ability, weapon);
 }
@@ -79,7 +79,7 @@ function execute(ability, options) {
 
   if (contest.isHit() === false) { return PhysicalAttackSystem.processMiss(attackRoll, defendRoll); }
 
-  if (options.onHit) { options.onHit(context.A, context.T); }
+  options.onHit?.(context.A, context.T);
   applyEffects(options, context.T);
   PhysicalAttackSystem.processHit(attackRoll, defendRoll);
 }

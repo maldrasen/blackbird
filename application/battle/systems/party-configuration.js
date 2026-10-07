@@ -90,7 +90,7 @@ global.PartyConfiguration = (function() {
 
   function isPartyPosition(position) {
     const match = position.match(BattleConstants.positionPattern);
-    return match != null && match[1] === 'P';
+    return match?.[1] === 'P';
   }
 
   // The party's scout is the character in the front rank, middle position. (P.0.2) If that spot is empty fallback to
