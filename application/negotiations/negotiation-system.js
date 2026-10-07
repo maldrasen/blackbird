@@ -93,7 +93,7 @@ global.NegotiationSystem = (function() {
   }
 
   function isRecruiting(id) {
-    return state != null && state.getMonster() === id && state.getResolution().type === 'join';
+    return state?.getMonster() === id && state.getResolution().type === 'join';
   }
 
   function resolveAbility(name) {

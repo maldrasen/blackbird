@@ -20,7 +20,7 @@ global.Tests = (function() {
   }
 
   function afterEachTest() {
-    if (this.currentTest && this.currentTest.state === 'failed') {
+    if (this.currentTest?.state === 'failed') {
       console.error(`Test Failed - Seed ⟪ ${currentSeed} ⟫ - "${this.currentTest.fullTitle()}"`);
     }
     reset();

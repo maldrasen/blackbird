@@ -84,9 +84,9 @@ global.CharacterFactoryState = function(options={}) {
   // These predicates mirror the ones on Character(), so that requirements can be checked against a character mid-build.
   function isMale() { return genderCode === Gender.male; }
   function hasBreasts() { return blocks.breasts != null; }
-  function hasNormalCock() { return blocks.cock != null && blocks.cock.placement === 'normal'; }
-  function hasNormalPussy() { return blocks.pussy != null && blocks.pussy.placement === 'normal'; }
-  function getSensitivity(code) { return (blocks.sensitivities||{})[code]; }
+  function hasNormalCock() { return blocks.cock?.placement === 'normal'; }
+  function hasNormalPussy() { return blocks.pussy?.placement === 'normal'; }
+  function getSensitivity(code) { return blocks.sensitivities?.[code]; }
   function hasSensitivity(code) { return getSensitivity(code) != null; }
 
   return {
@@ -157,7 +157,7 @@ global.CharacterFactoryState = function(options={}) {
     getSexualPreferences: () => { return getBlock('sexualPreferences'); },
     setSexualPreferences: (data) => { setBlock('sexualPreferences', data); },
     setSexualPreferenceData: (key, value) => { setBlockValue('sexualPreferences', key, value); },
-    removeSexualPreference: (key) => { delete (blocks.sexualPreferences||{})[key]; },
+    removeSexualPreference: (key) => { delete blocks.sexualPreferences?.[key]; },
 
     getSexualHistory: () => { return getBlock('sexualHistory'); },
     setSexualHistory: (data) => { setBlock('sexualHistory', data); },
