@@ -29,7 +29,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [254] Return to episode after an encounter `3pt` — [254-return-to-episode-after-an-encounter.md](254-return-to-episode-after-an-encounter.md)
 - [256] Unhack WeaverElements lootBlock `3pt` — [256-unhack-weaver-elements-loot-block.md](256-unhack-weaver-elements-loot-block.md)
 - [257] Turn DungeonControl into a GameControl `5pt` — [257-turn-dungeoncontrol-into-a-gamecontrol.md](257-turn-dungeoncontrol-into-a-gamecontrol.md)
-- [260] Use the optional chaining operator more `3pt` — [260-use-the-optional-chaining-operator-more.md](260-use-the-optional-chaining-operator-more.md)
 
 ## Priority 3
 
