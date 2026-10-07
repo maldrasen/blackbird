@@ -29,6 +29,8 @@ global.Effect = (function() {
 
   return {
     apply,
+    resistDamage: (damageType, percent) => { return { type:'resist-damage', damageType, percent }; },
+    resistEffect: (effect, power) => { return { type:'resist-effect', effect, power }; },
     restoreHealth: (min, max) => { return { type:'restore-health', min, max }; },
     restoreMana: (color, min, max) => { return { type:'restore-mana', color, min, max }; },
     damage: (damageType, damage) => { return { type:'damage', damageType, damage }; },
