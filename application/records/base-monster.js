@@ -1,26 +1,7 @@
-global.BaseMonster = (function() {
-  const monsters = {};
-  const essenceScale = 10;
-  const equipmentScale = 0.5;
-
-  function register(code,data) {
-    monsters[code] = data;
-  }
-
-  function getAllCodes() {
-    return Object.keys(monsters);
-  }
-
-  function compile() {
-    Object.values(monsters).forEach(monster => {
-      if (monster.buildAbilities) { monster.abilities = monster.buildAbilities(); }
-    });
-  }
-
-  function lookup(code) {
-    if (monsters[code] == null) { throw new Error(`Bad monster code [${code}]`); }
-
-    const monster = { ...monsters[code] };
+Record.define('BaseMonster', {
+  getInstance: monster => {
+    const essenceScale = 10;
+    const equipmentScale = 0.5;
 
     function getGenderRatio() {
       return monster.genderRatio ? monster.genderRatio : Species.lookup(monster.species).getGenderRatio();
@@ -102,7 +83,6 @@ global.BaseMonster = (function() {
     }
 
     return {
-      getCode: () => { return code; },
       getName: () => { return monster.name; },
       getNameType: () => { return monster.nameType || 'common'; },
       getDescription: () => { return monster.description; },
@@ -136,13 +116,15 @@ global.BaseMonster = (function() {
       getEssenceScale,
       getChallengeRating,
     };
-  }
+  },
 
-  return {
-    register,
-    getAllCodes,
-    compile,
-    lookup,
-  };
-
-})();
+  // A monster's own abilities are built once all the records are loaded and kept on the stored data, shared by
+  // every monster of the kind.
+  functions: records => ({
+    compile: () => {
+      Object.values(records).forEach(monster => {
+        if (monster.buildAbilities) { monster.abilities = monster.buildAbilities(); }
+      });
+    },
+  }),
+});
