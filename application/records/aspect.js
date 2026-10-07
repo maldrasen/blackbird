@@ -1,37 +1,17 @@
-global.Aspect = (function() {
+Record.define('Aspect', {
+  getInstance: aspect => ({
+    getName: () => { return aspect.name; },
+    getDescription: () => { return aspect.description; },
+    isLeveled: () => { return aspect.leveled === true; },
+    getMaxLevel: () => { return aspect.leveled ? 3 : 1; },
+  }),
 
-  const aspects = {};
-
-  function register(code,data) { aspects[code] = data; }
-  function getAllCodes() { return Object.keys(aspects); }
-
-  function getAllUnleveledCodes() {
-    return getAllCodes().
-      map(code => Aspect.lookup(code)).
-      filter(aspect => aspect.isLeveled() === false).
-      map(aspect => aspect.getCode());
-  }
-
-  // The lookup() function returns a wrapper for the aspect data object.
-  function lookup(code) {
-    if (aspects[code] == null) { throw new Error(`Bad aspect code [${code}]`); }
-
-    const aspect = { ...aspects[code] };
-
-    return {
-      getCode: () => { return code; },
-      getName: () => { return aspect.name; },
-      getDescription: () => { return aspect.description; },
-      isLeveled: () => { return aspect.leveled === true; },
-      getMaxLevel: () => { return aspect.leveled ? 3 : 1; },
-    };
-  }
-
-  return {
-    register,
-    getAllCodes,
-    getAllUnleveledCodes,
-    lookup,
-  };
-
-})();
+  functions: () => ({
+    getAllUnleveledCodes: () => {
+      return Aspect.getAllCodes().
+        map(code => Aspect.lookup(code)).
+        filter(aspect => aspect.isLeveled() === false).
+        map(aspect => aspect.getCode());
+    },
+  }),
+});

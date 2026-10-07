@@ -1,20 +1,7 @@
 // A status effect's essence is the threat of keeping one enemy under the effect for an entire battle. The essence
 // calculations scale it down by how likely the effect is to land and how much of the fight it actually covers.
-global.StatusEffectType = (function() {
-  const statusEffects = {};
-
-  function register(code,data) {
-    statusEffects[code] = data;
-  }
-
-  function getAllCodes() {
-    return Object.keys(statusEffects);
-  }
-
-  function lookup(code) {
-    if (statusEffects[code] == null) { throw new Error(`Bad status effect code [${code}]`); }
-
-    const statusEffect = { ...statusEffects[code] };
+Record.define('StatusEffectType', {
+  getInstance: (statusEffect, code) => {
 
     function getDamageMessage(damage) {
       return statusEffect.getDamageMessage == null ?
@@ -35,7 +22,6 @@ global.StatusEffectType = (function() {
     }
 
     return {
-      getCode: () => { return code; },
       getName: () => { return statusEffect.name; },
       getCategory: () => { return statusEffect.category; },
       getDamageType: () => { return statusEffect.damageType; },
@@ -47,12 +33,5 @@ global.StatusEffectType = (function() {
       getExpireMessage,
       getResistMessage,
     };
-  }
-
-  return {
-    register,
-    getAllCodes,
-    lookup,
-  };
-
-})();
+  },
+});

@@ -1,26 +1,15 @@
-global.Consumable = (function() {
-  const consumables = {};
+Record.define('Consumable', {
 
-  function register(code,data) {
-    const {
-      effects,
-      stories,
-      onUse,
-      target,
-      areaOfEffect,
-      messageForEntity,
-      ...articleData
-    } = data;
+  // The article fields are registered as an Article, so only what makes the consumable different is stored here.
+  register: (code, data) => {
+    const { effects, stories, onUse, target, areaOfEffect, messageForEntity, ...articleData } = data;
 
     Article.register(code, { ...articleData, type:ArticleType.consumable });
-    consumables[code] = { effects, stories, onUse, target, areaOfEffect, messageForEntity };
+    return { effects, stories, onUse, target, areaOfEffect, messageForEntity };
+  },
 
-    validate(code);
-  }
-
-  function validate(code) {
+  validate: (consumable, code) => {
     const article = Article.lookup(code);
-    const consumable = consumables[code];
     const onUse = consumable.onUse;
 
     if (onUse == null && [UsableWhen.anyTime, UsableWhen.outOfCombat].includes(article.getUsableWhen())) {
@@ -35,16 +24,12 @@ global.Consumable = (function() {
       if (onUse.startEpisode) { valid = true; }
       if (valid === false) { throw new Error(`Consumable[${code}] has an invalid onUse: ${JSON.stringify(onUse)}`); }
     }
-  }
+  },
 
-  function lookup(code) {
-    if (consumables[code] == null) { throw new Error(`Bad consumable code [${code}]`); }
-
-    const consumable = { ...consumables[code] };
+  getInstance: (consumable, code) => {
     const article = Article.lookup(code);
 
     return {
-      getCode: () => { return code; },
       getName: () => { return article.getName(); },
       getDescription: () => { return article.getDescription(); },
       getCategory: () => { return article.getCategory(); },
@@ -58,11 +43,5 @@ global.Consumable = (function() {
       pickStory: context => { return consumable.stories ? consumable.stories.pick(context) : null; },
       messageForEntity: (id,results) => { return consumable.messageForEntity ? consumable.messageForEntity(id,results) : null; },
     };
-  }
-
-  return {
-    register,
-    lookup,
-  };
-
-})();
+  },
+});

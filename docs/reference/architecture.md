@@ -22,6 +22,8 @@ In addition to the Components, Blackbird has four different types of data object
 ##### Records
 Records are generally accessed by their code, a string label used to access the data with the record's `lookup()` function. The `lookup()` function returns a wrapped record object with accessor functions. When a system or another object needs a reference to a record, only the record code is stored.
 
+Records are built with `Record.define(name, options)`, which adds the record to the global scope with the shared `register()`, `getAllCodes()`, and `lookup()` functions. The record file supplies the `getInstance` function that wraps its data, and optionally a `validate` check, a custom `register`, and extra top level `functions`.
+
 ##### Models
 A model is for something that has to carry state a record can't; an Ability that casts a particular spell at a particular power level, or a bite with one monster's damage range. Rather than using a traditional JavaScript class, we use factories to build a model object. Models aren't immutable, but they shouldn't really be changed after they've been built. The abilities for instance are shared across all monsters of a given type, so changing one would change all of them. Objects with mutable persistent state should be Components. Non persistent state belongs in the associated system state.
 

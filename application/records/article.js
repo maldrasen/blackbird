@@ -1,25 +1,5 @@
-global.Article = (function() {
-  const articles = {};
-
-  function register(code,data) {
-    articles[code] = data;
-  }
-
-  function getAllCodes() {
-    return Object.keys(articles);
-  }
-
-  function setValue(code, value) {
-    if (articles[code].value != null) {
-      throw new Error(`The value of article[${code}] has already been appraised.`);
-    }
-    articles[code].value = value;
-  }
-
-  function lookup(code) {
-    if (articles[code] == null) { throw new Error(`Bad article code [${code}]`); }
-
-    const article = { ...articles[code] };
+Record.define('Article', {
+  getInstance: article => {
 
     function getNameType() { return article.nameType || 'common'; }
     function getPluralName() { return article.pluralName || EnglishHelper.pluralize(article.name); }
@@ -31,7 +11,6 @@ global.Article = (function() {
     }
 
     return {
-      getCode: () => { return code; },
       getType: () => { return article.type || ArticleType.article; },
       getCategory: () => { return article.category; },
       getName: () => { return article.name; },
@@ -48,13 +27,15 @@ global.Article = (function() {
       getBaseValue: () => { return article.baseValue },
       getValue: () => { return article.value; },
     };
-  }
+  },
 
-  return {
-    register,
-    getAllCodes,
-    setValue,
-    lookup,
-  };
-
-})();
+  // The appraiser writes each article's value onto the stored record once, after everything has been registered.
+  functions: records => ({
+    setValue: (code, value) => {
+      if (records[code].value != null) {
+        throw new Error(`The value of article[${code}] has already been appraised.`);
+      }
+      records[code].value = value;
+    },
+  }),
+});

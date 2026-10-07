@@ -8,7 +8,7 @@ describe("Ability.CastSpell", function() {
   }
 
   it("rejects an unknown spell or a missing power level", function() {
-    expect(() => Ability.CastSpell({ spell:'no-such-spell', powerLevel:1 })).to.throw('Bad spell code');
+    expect(() => Ability.CastSpell({ spell:'no-such-spell', powerLevel:1 })).to.throw('Bad Spell code');
     expect(() => Ability.CastSpell({ spell:'ember' })).to.throw('CastSpell.powerLevel');
   });
 

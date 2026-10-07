@@ -15,7 +15,7 @@ describe("BattleCommand", function() {
   }
 
   it("throws for an unknown command", function() {
-    expect(() => BattleCommand.lookup('no-such-command')).to.throw('Bad battle command code');
+    expect(() => BattleCommand.lookup('no-such-command')).to.throw('Bad BattleCommand code');
   });
 
   it("is possible whenever the ability it builds is", function() {

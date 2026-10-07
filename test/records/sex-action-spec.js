@@ -141,7 +141,7 @@ describe('SexAction', function() {
 
     it('does not store an action that fails validation', function() {
       expect(register({ name:null })).to.throw();
-      expect(() => SexAction.lookup('spec-invalid-action')).to.throw(/Bad sex action code/);
+      expect(() => SexAction.lookup('spec-invalid-action')).to.throw(/Bad SexAction code/);
     });
   });
 

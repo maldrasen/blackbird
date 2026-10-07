@@ -11,7 +11,7 @@ describe('EquipmentDepot', function() {
   });
 
   it(`Throws when there are no matching equipment parameters`, function() {
-    expect(() => EquipmentDepot('nope')).to.throw(/Bad equipment parameters code/);
+    expect(() => EquipmentDepot('nope')).to.throw(/Bad EquipmentParameters code/);
     expect(GameSystem.getState().pack().equipmentDepots).to.deep.equal({});
   });
 

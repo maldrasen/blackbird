@@ -1,18 +1,5 @@
-global.DungeonTheme = (function() {
-  const themes = {};
-
-  function register(code,data) {
-    themes[code] = data;
-  }
-
-  function getAllCodes() {
-    return Object.keys(themes);
-  }
-
-  function lookup(code) {
-    if (themes[code] == null) { throw new Error(`Bad dungeon theme code [${code}]`); }
-
-    const theme = { ...themes[code] };
+Record.define('DungeonTheme', {
+  getInstance: (theme, code) => {
 
     function getRandomFeature() {
       const rarityOrder = RarityHelper.getOrder();
@@ -37,7 +24,6 @@ global.DungeonTheme = (function() {
     }
 
     return {
-      getCode: () => { return code; },
       getName: () => { return theme.name; },
       getRarity: () => { return theme.rarity; },
       getRange: () => { return theme.range; },
@@ -57,12 +43,5 @@ global.DungeonTheme = (function() {
       getLootQuality:() => { return theme.lootQuality || 1 },
       getLootGroups: () => { return theme.lootGroups || {}; },
     };
-  }
-
-  return {
-    register,
-    getAllCodes,
-    lookup,
-  };
-
-})();
+  },
+});

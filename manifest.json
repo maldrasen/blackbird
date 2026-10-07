@@ -2,6 +2,7 @@
   "applicationFiles": [
     "application/constants.js",
     "application/enums.js",
+    "application/records/record.js",
     "application/battle-abilities/ability.js",
     "application/application.js",
     "application/battle/areas-of-effect.js",
@@ -793,6 +794,7 @@
     "test/records/episode-spec.js",
     "test/records/feature-type-spec.js",
     "test/records/name-spec.js",
+    "test/records/record-spec.js",
     "test/records/sex-action-spec.js",
     "test/records/sex-position-spec.js",
     "test/records/tile-contents-spec.js",

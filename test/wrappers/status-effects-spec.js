@@ -5,7 +5,7 @@ describe("StatusEffects", function() {
       const entity = Registry.createEntity();
       expect(function() {
         StatusEffects(entity).apply('wobbly', { count:1 });
-      }).to.throw('Bad status effect code');
+      }).to.throw('Bad StatusEffectType code');
     });
 
     it("creates a new status effect", function() {

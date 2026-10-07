@@ -47,22 +47,10 @@
 - `id`              Element id.
 - `classname`       Classname string or array of classnames.
 */
-global.Episode = (function() {
-  const episodes = {};
+Record.define('Episode', {
+  validate: (data, code) => { EpisodeValidator(code, data); },
 
-  function register(code,data) {
-    EpisodeValidator(code,data);
-    episodes[code] = data;
-  }
-
-  function getAllCodes() {
-    return Object.keys(episodes);
-  }
-
-  function lookup(code) {
-    if (episodes[code] == null) { throw new Error(`Bad episode code [${code}]`); }
-
-    const episode = { ...episodes[code] };
+  getInstance: (episode, code) => {
 
     function getLayout() {
       return episode.layout || 'novel';
@@ -83,7 +71,6 @@ global.Episode = (function() {
     }
 
     return {
-      getCode: () => { return code; },
       getEndFunction: () => { return episode.endFunction; },
       getQueue: () => { return episode.queue; },
       getPages: () => { return episode.pages; },
@@ -92,12 +79,5 @@ global.Episode = (function() {
       getLayout,
       meetsRequirements,
     };
-  }
-
-  return {
-    register,
-    getAllCodes,
-    lookup,
-  };
-
-})();
+  },
+});

@@ -1,33 +1,14 @@
-global.Skill = (function() {
-  const skills = {};
+Record.define('Skill', {
 
-  // The skill register() function also needs to add the skill code as a property of the Skills component.
-  function register(code,data) {
-    skills[code] = data;
+  // Registering a skill also adds the skill code as a property of the Skills component.
+  register: (code, data) => {
     SkillsComponent.addSkill(code);
-  }
+    return data;
+  },
 
-  function getAllCodes() {
-    return Object.keys(skills);
-  }
-
-  function lookup(code) {
-    if (skills[code] == null) { throw new Error(`Bad skill code [${code}]`); }
-
-    const skill = { ...skills[code] };
-
-    return {
-      getCode: () => { return code; },
-      getName: () => { return skill.name; },
-      getFactor: () => { return skill.factor; },
-      getAttributes: () => { return skill.attributes; }
-    };
-  }
-
-  return {
-    register,
-    getAllCodes,
-    lookup,
-  };
-
-})();
+  getInstance: skill => ({
+    getName: () => { return skill.name; },
+    getFactor: () => { return skill.factor; },
+    getAttributes: () => { return skill.attributes; },
+  }),
+});

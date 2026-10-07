@@ -76,7 +76,7 @@ describe('Inventory', function() {
 
     it('throws when the article code is unknown', function() {
       expect(() => Inventory().setArticleQuantity('polished-turnip', 1)).to.throw(
-        `Bad article code [polished-turnip]`);
+        `Bad Article code [polished-turnip]`);
     });
   });
 

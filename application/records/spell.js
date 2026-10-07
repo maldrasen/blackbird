@@ -1,18 +1,5 @@
-global.Spell = (function() {
-  const spells = {};
-
-  function register(code,data) {
-    spells[code] = data;
-  }
-
-  function getAllCodes() {
-    return Object.keys(spells);
-  }
-
-  function lookup(code) {
-    if (spells[code] == null) { throw new Error(`Bad spell code [${code}]`); }
-
-    const spell = { ...spells[code] };
+Record.define('Spell', {
+  getInstance: spell => {
 
     // A spell's castingTime property can be fast (the default), medium, or slow. If a spell defines a
     // getCastingTime(powerLevel) closure then that will be called instead.
@@ -85,7 +72,6 @@ global.Spell = (function() {
     }
 
     return {
-      getCode: () => { return code; },
       getName: () => { return spell.name; },
       getColor: () => { return spell.color; },
       getManaCost,
@@ -98,12 +84,5 @@ global.Spell = (function() {
       getSpellSkill,
       rollSkillCheck,
     };
-  }
-
-  return {
-    register,
-    getAllCodes,
-    lookup,
-  };
-
-})();
+  },
+});

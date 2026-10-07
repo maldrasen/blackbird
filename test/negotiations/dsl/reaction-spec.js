@@ -154,7 +154,7 @@ describe("Reaction", function() {
 
     it('throws for an unknown preference code', function() {
       const id = MonsterFactory('kobold-sneak-slut').build();
-      expect(() => applyPreferences(id, { 'linoleum-slut':30 })).to.throw('Bad sexual preference code');
+      expect(() => applyPreferences(id, { 'linoleum-slut':30 })).to.throw('Bad SexualPreference code');
     });
   });
 
@@ -197,7 +197,7 @@ describe("Reaction", function() {
     it('throws for an unknown status effect code', function() {
       const { context } = startBattle();
       expect(() => applyStatusEffect({ target:'player', effect:'wobbly', duration:1 }, context))
-        .to.throw('Bad status effect code');
+        .to.throw('Bad StatusEffectType code');
     });
   });
 

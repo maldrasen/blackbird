@@ -1,21 +1,14 @@
 // A battle command is what a character picks from the command panel. Most commands stand for an ability and build
 // it when used, from whatever their overlay chose (a spell and power level, an item). A command with a check of its
 // own, like negotiate, answers for itself.
-global.BattleCommand = (function() {
-  const commands = {};
+//
+// A command with no overlay has nothing to choose, so its ability is built once and shared the way a monster type's
+// abilities are. The abilities read everything from the round when they run, so a shared model is safe. The shared
+// models are kept here rather than on the clones lookup() hands out.
+const sharedAbilities = {};
 
-  function register(code,data) {
-    commands[code] = data;
-  }
-
-  function getAllCodes() {
-    return Object.keys(commands);
-  }
-
-  function lookup(code) {
-    if (commands[code] == null) { throw new Error(`Bad battle command code [${code}]`); }
-
-    const command = { ...commands[code] };
+Record.define('BattleCommand', {
+  getInstance: (command, code) => {
 
     // TODO: A command with an overlay can't answer isPossible() by building its ability, because there's no data to
     //       build from until the overlay has chosen. We need to know if it's possible to cast any spell before we show
@@ -27,14 +20,11 @@ global.BattleCommand = (function() {
       return command.buildAbility ? getAbility().isPossible() : true;
     }
 
-    // A command with no overlay has nothing to choose, so its ability is built once and shared the way a monster
-    // type's abilities are. The abilities read everything from the round when they run, so a shared model is safe. A
-    // command with an overlay builds from what the overlay picked. The shared model is kept on the registered record
-    // rather than the clone lookup() hands out.
+    // A command with an overlay builds from what the overlay picked.
     function getAbility(data={}) {
       if (command.buildAbility == null) { throw new Error(`The [${code}] command doesn't build an ability.`); }
       if (command.overlay) { return command.buildAbility(data); }
-      return commands[code].ability ||= command.buildAbility();
+      return sharedAbilities[code] ||= command.buildAbility();
     }
 
     // A command needs a target picked when the ability it would build does.
@@ -50,7 +40,6 @@ global.BattleCommand = (function() {
     }
 
     return {
-      getCode: () => { return code; },
       getName: () => { return command.name; },
       getCategory: () => { return command.category; },
       hasOverlay: () => { return typeof command.overlay === 'function'; },
@@ -60,12 +49,5 @@ global.BattleCommand = (function() {
       getTargetingMode,
       execute,
     };
-  }
-
-  return {
-    register,
-    getAllCodes,
-    lookup,
-  };
-
-})();
+  },
+});
