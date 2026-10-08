@@ -118,4 +118,19 @@ describe('Item', function() {
     });
   });
 
+  describe('getEnchantment()', function() {
+    it('is null without an enchantment', function() {
+      const sword = build('longsword',['steel']);
+      expect(sword.hasEnchantment()).to.be.false;
+      expect(sword.getEnchantment()).to.equal(null);
+    });
+
+    it('wraps the enchantment when there is one', function() {
+      const sword = build('longsword',['steel'],{ enchantment:{ pattern:'endanger', properties:{ species:'kobold' } } });
+      expect(sword.hasEnchantment()).to.be.true;
+      expect(sword.getEnchantment().getPattern()).to.equal('endanger');
+      expect(sword.getEnchantment().getProperty('species')).to.equal('kobold');
+    });
+  });
+
 });

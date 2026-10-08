@@ -71,6 +71,7 @@ describe("BattleState", function() {
   });
 
   describe("cleanup()", function() {
+    const enchantment = { pattern:'endanger', properties:{ species:'kobold' } };
 
     function startBattle() {
       BattleFixtures.prepareForBattle();
@@ -116,7 +117,7 @@ describe("BattleState", function() {
       expect(Registry.entityExists(item)).to.be.true;
     });
 
-    it.skip('moves the enchanted items of the defeated monsters into the loot inventory', function() {
+    it('moves the enchanted items of the defeated monsters into the loot inventory', function() {
       const state = startBattle();
       const [dead, knockedOut] = state.getActiveMonsters();
       const deadLoot = giveItem(dead, { enchantment });
@@ -131,7 +132,7 @@ describe("BattleState", function() {
       expect(Registry.entityExists(mundane)).to.be.false;
     });
 
-    it.skip('monsters who were not defeated keep their enchanted items', function() {
+    it('monsters who were not defeated keep their enchanted items', function() {
       const state = startBattle();
       const [fled, active] = state.getActiveMonsters();
       const items = [giveItem(fled, { enchantment }), giveItem(active, { enchantment })];
@@ -143,7 +144,7 @@ describe("BattleState", function() {
       items.forEach(id => { expect(Registry.entityExists(id)).to.be.false; });
     });
 
-    it.skip('saves no loot when told not to', function() {
+    it('saves no loot when told not to', function() {
       const state = startBattle();
       const dead = state.getActiveMonsters()[0];
       const item = giveItem(dead, { enchantment });

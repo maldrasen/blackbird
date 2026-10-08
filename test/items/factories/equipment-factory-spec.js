@@ -60,4 +60,34 @@ describe("EquipmentFactory", function() {
     });
   });
 
+  describe("options", function() {
+    it("takes a name and text key from the options", function() {
+      const weapon = Item(EquipmentFactory({ steel:1 }).build('longsword', {
+        name: 'Stabitha',
+        nameType: 'proper',
+        textKey: 'quick-stab',
+      }));
+
+      expect(weapon.getName()).to.equal('Stabitha');
+      expect(weapon.getNameType()).to.equal('proper');
+      expect(weapon.getTextKey()).to.equal('quick-stab');
+    });
+
+    it("enchants the item with the given pattern and properties", function() {
+      const weapon = Item(EquipmentFactory({ steel:1 }).build('longsword', {
+        enchantment: { pattern:'endanger', properties:{ species:'kobold' } },
+      }));
+
+      expect(weapon.hasEnchantment()).to.be.true;
+      expect(weapon.getEnchantment().getPattern()).to.equal('endanger');
+      expect(weapon.getName()).to.equal('Steel Longsword of Kobold Endangerment');
+    });
+
+    it("leaves the text key and enchantment off when they are not given", function() {
+      const weapon = Item(EquipmentFactory().build('longsword'));
+      expect(weapon.getTextKey()).to.equal('basic-swing');
+      expect(weapon.hasEnchantment()).to.be.false;
+    });
+  });
+
 });

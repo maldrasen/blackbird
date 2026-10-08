@@ -5,6 +5,6 @@ global.Enchantment = function(id) {
   return {
     getPattern: () => { return enchantment.pattern; },
     getEffects: () => { return enchantment.effects; },
-    getProperty: key => { return enchantment.properties?.[key]; },
+    getProperty: key => { return enchantment.properties[key]; },
   };
 }

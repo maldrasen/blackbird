@@ -4,7 +4,7 @@ global.EquipmentFactory = function(availableMaterials) {
   //   - name         overrides the name built from the materials
   //   - nameType     'proper' for a named item, otherwise common
   //   - textKey      overrides the record's attack text key
-  //   - enchantment
+  //   - enchantment  { pattern, properties } handed to the enchanter once the item exists
   function build(code, options={}) {
     const base = BaseEquipment.lookup(code);
     const item = { base:code };
@@ -42,13 +42,17 @@ global.EquipmentFactory = function(availableMaterials) {
 
     function setOverrides() {
       if (options.textKey) { item.textKey = options.textKey; }
-      if (options.enchantment) { item.enchantment = options.enchantment; }
     }
 
     item.value = EquipmentAppraiser.appraise(item);
 
     const id = Registry.createEntity();
     ItemComponent.create(id, item);
+
+    if (options.enchantment) {
+      Enchanter.enchant(id, options.enchantment.pattern, options.enchantment.properties);
+    }
+
     return id;
   }
 
