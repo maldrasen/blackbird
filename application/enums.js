@@ -451,6 +451,23 @@ global.StatusEffectDurationType = {
 //   Items & Equipment
 // =====================
 
+global.ItemType = {
+  axe: 'axe',
+  bow: 'bow',
+  dagger: 'dagger',
+  mace: 'mace',
+  polearm: 'polearm',
+  shield: 'shield',
+  sword: 'sword',
+  whip: 'whip',
+
+  chest: 'chest',
+  feet: 'feet',
+  hands: 'hands',
+  head: 'head',
+  legs: 'legs',
+}
+
 global.OutfitStyle = {
   barbaric: 'barbaric',
   flirty: 'flirty',
