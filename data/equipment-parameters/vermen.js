@@ -33,6 +33,7 @@ EquipmentParameters.register('vermen',{
   // naked and screaming.
   armor:{},
 
+  enchantmentChance: 5,
   enchantments:{
     // Poison, venom and diseased weapons should be common.
   },

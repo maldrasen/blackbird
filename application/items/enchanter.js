@@ -25,6 +25,13 @@ global.Enchanter = (function() {
     return pick.code;
   }
 
+  // Rolls the percent chance that an item built for stock comes out enchanted, enchanting it randomly on a hit.
+  // Returns the pattern code, or null when the roll misses or nothing applies. A chance of zero never rolls.
+  function rollForEnchantment(id, chance) {
+    if (chance <= 0) { return null; }
+    return (Random.roll(100) < chance) ? enchantRandomly(id) : null;
+  }
+
   function scaleEffects(id, effects) {
     const material = Item(id).getPrimaryMaterial();
     const potential = Material.lookup(material).getFactor(MaterialFactor.potential);
@@ -39,6 +46,7 @@ global.Enchanter = (function() {
   return {
     enchant,
     enchantRandomly,
+    rollForEnchantment,
   }
 
 })();

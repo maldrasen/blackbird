@@ -71,4 +71,34 @@ describe('Enchanter', function() {
       expect(Item(id).getName()).to.equal('Incombustible Leather Boots');
     });
   });
+
+  describe('rollForEnchantment()', function() {
+    // The chance roll of 9 lands under 10. The rolls after it are the random enchantment's: a common rarity that
+    // steps up to endanger, the pick among the one weapon pattern, and the species. The between stub pins the
+    // strength.
+    it('enchants the item when the chance roll lands under the chance', function() {
+      const id = ItemFixtures.buildSteel('longsword');
+      Random.stubRoll(9, 0, 0, 0);
+      Random.stubBetween(30);
+
+      expect(Enchanter.rollForEnchantment(id, 10)).to.equal('endanger');
+      expect(Item(id).hasEnchantment()).to.equal(true);
+    });
+
+    it('leaves the item alone when the chance roll misses', function() {
+      const id = ItemFixtures.buildSteel('longsword');
+      Random.stubRoll(10);
+
+      expect(Enchanter.rollForEnchantment(id, 10)).to.equal(null);
+      expect(Item(id).hasEnchantment()).to.equal(false);
+    });
+
+    // The empty roll stub would throw if a chance of zero were rolled at all.
+    it('never rolls at a chance of zero', function() {
+      const id = ItemFixtures.buildSteel('longsword');
+      Random.stubRoll();
+
+      expect(Enchanter.rollForEnchantment(id, 0)).to.equal(null);
+    });
+  });
 });

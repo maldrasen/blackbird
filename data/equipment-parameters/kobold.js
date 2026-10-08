@@ -36,6 +36,7 @@ EquipmentParameters.register('kobold',{
     'chaps':             120,
   },
 
+  enchantmentChance: 5,
   enchantments:{},
 
 });
