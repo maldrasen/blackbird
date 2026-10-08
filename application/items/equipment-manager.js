@@ -96,26 +96,37 @@ global.EquipmentManager = function(characterId) {
     return (slot != null) ? equipItem(null, slot) : [];
   }
 
+  // Every equipped item carrying a resist-damage enchantment adds its strength to the wearer's resistance against that
+  // damage type. The total isn't capped here: the damage pipeline caps what it turns away, while the resist roll takes
+  // the whole amount.
+  function getEnchantedResistance(damageType) {
+    return getEquippedItems().reduce((total, itemId) => {
+      const enchantment = Item(itemId).getEnchantment();
+      return total + (enchantment ? enchantment.getDamageResistance(damageType) : 0);
+    }, 0);
+  }
+
+  function getEquippedItems() {
+    return Object.values(EquipmentSlot).map(slot => fetch()[slot]).filter(itemId => itemId != null);
+  }
+
   // Build an equipment summary, displayed in the detail panel. Also can be used by the battle system to get a
-  // character's resistance totals. These are the effective resistances, with the wearer's innate resistance included.
-  // Physical damage lands on a hit location, so those reductions are listed per location. The other damage types are
-  // whole body.
+  // character's resistance totals. These are the effective resistances: the wearer's own resistance, which includes
+  // what their enchanted equipment adds, plus the armor covering each hit location for physical damage. The other
+  // damage types are whole body.
   //   { physical:{ head:{ crush, slash, pierce }, ... }, magical:{ fire, shock, ... } }
-  //
-  // TODO: Equipment doesn't carry elemental resistances yet. Once the armor enchantments do they get added to the
-  //       magical resistances here.
   function summarizeResistances() {
     const summary = { physical:{}, magical:{} };
 
     hitLocations.forEach(location => {
       summary.physical[location] = {};
       physicalTypes.forEach(type => {
-        summary.physical[location][type] = cappedReduction(getDamageReduction(location, type) + getInnateResistance(type));
+        summary.physical[location][type] = cappedReduction(getDamageReduction(location, type) + getWearerResistance(type));
       });
     });
 
     Object.values(DamageType).filter(type => physicalTypes.includes(type) === false).forEach(type => {
-      const resistance = cappedReduction(getInnateResistance(type));
+      const resistance = cappedReduction(getWearerResistance(type));
       if (resistance !== 0) {
         summary.magical[type] = resistance;
       }
@@ -128,7 +139,7 @@ global.EquipmentManager = function(characterId) {
     return Math.min(reduction, BattleConstants.maxReduction);
   }
 
-  function getInnateResistance(type) {
+  function getWearerResistance(type) {
     return MonsterComponent.lookup(characterId) != null ?
       Monster(characterId).getResistance(type) :
       Character(characterId).getResistance(type);
@@ -234,6 +245,7 @@ global.EquipmentManager = function(characterId) {
     getEquippedShield,
     hasEquippedWeaponType,
     getDamageReduction,
+    getEnchantedResistance,
     summarizeResistances,
     summarizeDamages,
     summarizeWeapon,

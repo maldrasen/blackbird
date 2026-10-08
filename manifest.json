@@ -829,6 +829,7 @@
     "test/world/registry-spec.js",
     "test/world/world-state-spec.js",
     "test/wrappers/character-spec.js",
+    "test/wrappers/enchantment-spec.js",
     "test/wrappers/inventory-spec.js",
     "test/wrappers/item-spec.js",
     "test/wrappers/monster-spec.js",

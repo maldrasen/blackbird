@@ -209,10 +209,11 @@ global.Character = function(id) {
   //       character is in something like breast bondage they may not have any movement restrictions.
   function isUnbound() { return true; }
 
-  // TODO: There are a lot of different factors that will influence resistance, including a character's equipment.
-  //       Currently though, only the character's species carries any innate resistance.
+  // A character's resistance to a damage type is what their species gives them plus what their enchanted equipment
+  // adds. The damage pipeline and the resist roll both read it, so an enchantment counts for both.
   function getResistance(type) {
-    return Species.lookup(getSpecies()).getResistance(type);
+    const equipment = EquipmentComponent.lookup(id) ? EquipmentManager(id).getEnchantedResistance(type) : 0;
+    return Species.lookup(getSpecies()).getResistance(type) + equipment;
   }
 
   // ===============

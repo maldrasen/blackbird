@@ -51,6 +51,19 @@ describe("ResistRoll", function() {
     expect(ResistRoll(target, DamageType.psychic, 100)).to.equal(ResistResult.fail);
   });
 
+  // The Firewalker's helm is pinned to 8 fire resistance, the only fire resistance the human has. The resistance roll
+  // of 7 is only a valid stub because the helm raised the bound from 0 to 8.
+  it("adds the resistance of enchanted equipment to the roll", function() {
+    const state = startBattle();
+    const target = pinnedCharacter(state, SpeciesCode.human);
+    Random.stubBetween(8);
+    ItemFixtures.equip(target, 'helm', ['steel'], { enchantment:{ pattern:'resistant-to-fire' } });
+
+    Random.stubRoll(5, 15, 7, 10, 2);
+
+    expect(ResistRoll(target, DamageType.fire, 100)).to.equal(ResistResult.pass);
+  });
+
   // A resistance of zero doesn't roll at all, so the third and fourth stubbed values fall through to the power side
   // of the contest.
   it("skips the roll when the target has no resistance", function() {

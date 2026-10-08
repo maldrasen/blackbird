@@ -243,6 +243,27 @@ describe('EquipmentManager', function() {
     });
   });
 
+  describe('getEnchantedResistance()', function() {
+    // The fire resistance rolls 5 to 10 at steel, so the rolls are stubbed to pin each piece's strength.
+    it("adds up the resist damage strengths of the equipped items", function() {
+      const human = CharacterFixtures.genericMale({ actor:{ species:SpeciesCode.human }});
+      Random.stubBetween(8, 6);
+      ItemFixtures.equip(human, 'helm', ['steel'], { enchantment:{ pattern:'resistant-to-fire' } });
+      ItemFixtures.equip(human, 'breastplate', ['steel'], { enchantment:{ pattern:'resistant-to-fire' } });
+
+      const equipment = EquipmentManager(human);
+      expect(equipment.getEnchantedResistance(DamageType.fire)).to.equal(14);
+      expect(equipment.getEnchantedResistance(DamageType.shock)).to.equal(0);
+    });
+
+    it("is zero when nothing worn is enchanted", function() {
+      const human = CharacterFixtures.genericMale({ actor:{ species:SpeciesCode.human }});
+      ItemFixtures.equip(human, 'helm', ['steel']);
+
+      expect(EquipmentManager(human).getEnchantedResistance(DamageType.fire)).to.equal(0);
+    });
+  });
+
   describe('summarizeResistances()', function() {
     function equipSteel(character, codes) {
       codes.forEach(code => ItemFixtures.equip(character, code, ['steel']));
@@ -277,6 +298,15 @@ describe('EquipmentManager', function() {
 
       expect(summary.physical.chest.slash).to.equal(80);
       expect(summary.physical.head.slash).to.equal(40);
+    });
+
+    // A Firewalker's helm pinned to 8 fire resistance sits on top of the kobold's own 20.
+    it("adds enchanted resistances to the wearer's own", function() {
+      const kobold = CharacterFixtures.genericMale({ actor:{ species:SpeciesCode.kobold }});
+      Random.stubBetween(8);
+      ItemFixtures.equip(kobold, 'helm', ['steel'], { enchantment:{ pattern:'resistant-to-fire' } });
+
+      expect(EquipmentManager(kobold).summarizeResistances().magical.fire).to.equal(28);
     });
   });
 
