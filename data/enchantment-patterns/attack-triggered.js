@@ -13,5 +13,3 @@
 // chance to remain hidden after a sneak attack
 //   Trigger - Any sneak attack
 
-// The Endangerment enchantment goes here as well. Might as well keep it.
-

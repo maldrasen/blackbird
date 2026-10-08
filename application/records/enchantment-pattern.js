@@ -16,9 +16,16 @@ Record.define('EnchantmentPattern', {
       }
     }
 
+    // TODO: I've removed the WeaponEnchantment and ArmorEnchantment wrappers. Enchantments will need to know the
+    //       pattern they came from, but will need to store their own data, the effects array, and other per pattern
+    //       data like the species in the endanger enchantment. The pattern's onHit function should return the effect
+    //       array and messages.
+
     return {
-      buildEffects: id => { return pattern.buildEffects(id); },
       rename,
+      buildEffects: id => { return pattern.buildEffects(id); },
+      getTrigger: () => { return pattern.trigger; },
+      processOnHit: damageTypes => { return pattern.processOnHit(damageTypes); },
     }
   }
 });

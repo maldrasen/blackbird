@@ -34,6 +34,11 @@ global.BattleHelper = (function() {
     return (monster != null) ? Monster(target).getBodyPlan() : BodyPlan.humanoid;
   }
 
+  function getSpecies(id) {
+    const monster = MonsterComponent.lookup(id);
+    return (monster != null) ? Monster(id).getSpecies() : Character(id).getSpecies();
+  }
+
   function hasHitLocation(target, location) {
     return getBodyPlan(target)[location] != null;
   }
@@ -61,6 +66,7 @@ global.BattleHelper = (function() {
   return {
     isAttackWithinRange,
     distanceBetweenPositions,
+    getSpecies,
     hasHitLocation,
     randomHitLocation,
     getChallengeTarget,

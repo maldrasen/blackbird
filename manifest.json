@@ -399,7 +399,6 @@
     "data/dungeon-themes/temple.js",
     "data/dungeon-themes/warrens.js",
     "data/enchantment-patterns/attack-triggered.js",
-    "data/enchantment-patterns/protection.js",
     "data/enchantment-patterns/resistances.js",
     "data/encounters/kobolds.js",
     "data/encounters/nightgaunts.js",

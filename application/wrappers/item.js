@@ -30,13 +30,6 @@ global.Item = function(id) {
     return getBase().isWeapon() ? InventoryCategory.weapon : InventoryCategory.armor;
   }
 
-  // Weapon and armor enchantments are still separate models. Shields take armor enchantments.
-  function getEnchantment() {
-    const enchantment = getItemComponent().enchantment;
-    if (enchantment == null) { return null; }
-    return getBase().isWeapon() ? WeaponEnchantment(id, enchantment) : ArmorEnchantment(id, enchantment);
-  }
-
   function getDescription() {
     return `[TODO Item Descriptions]`;
   }
@@ -61,7 +54,7 @@ global.Item = function(id) {
     getPrimaryMaterial,
     isMetal: () => { return Material.isMetal(getPrimaryMaterial()); },
     hasEnchantment: () => { return getItemComponent().enchantment != null; },
-    getEnchantment,
+    getEnchantment: () => { return getItemComponent().enchantment ? Enchantment(id) : null; },
     getValue: () => { return getItemComponent().value; },
     isLewd: () => { return getBase().isLewd(); },
   };

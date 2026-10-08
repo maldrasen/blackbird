@@ -503,13 +503,10 @@ global.WeaponReach = {
   long: 'long',
 };
 
-global.ArmorEnchantments = {
-  resist: 'resist',
-};
-
-global.WeaponEnchantments = {
-  endanger: 'endanger',
-};
+// I assume there'll be other triggers? If an enchantment is triggered onHit than the enchantment's processOnHit should
+// be called when any physical attack is successful. There could be an onDefend that triggers when hit by a physical
+// attack?
+global.EnchantmentTrigger = { onHit:'on-hit' };
 
 global.ResistResult = {
   pass: 'pass',
