@@ -2,6 +2,7 @@ EnchantmentPattern.register(`endanger`, {
   rarity: Rarity.unusual,
   appliesTo: ItemConstants.allWeaponTypes,
   trigger: EnchantmentTrigger.onHit,
+  buildProperties: () => { return { species:Random.from(Species.getAllCodes()) }; },
   getName: id => {
     const species = Enchantment(id).getProperty('species');
     return { name:`${Item(id).getName()} of ${Species.lookup(species).getName()} Endangerment` }

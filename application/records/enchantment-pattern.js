@@ -44,6 +44,7 @@ Record.define('EnchantmentPattern', {
       getRarity: () => { return pattern.rarity },
       canBeAppliedTo,
       rename,
+      buildProperties: () => { return pattern.buildProperties ? pattern.buildProperties() : {}; },
       buildEffects: id => { return pattern.buildEffects(id); },
       getTrigger: () => { return pattern.trigger; },
       processBeforeHit,

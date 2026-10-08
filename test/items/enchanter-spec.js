@@ -38,4 +38,37 @@ describe('Enchanter', function() {
     Enchanter.enchant(id, 'vigilant');
     expect(Enchantment(id).getEffects()[0].strength).to.be.within(20,40);
   });
+
+  describe('enchantRandomly()', function() {
+    // Endanger is the only pattern that applies to a weapon, and it rolls the species it endangers.
+    it('picks a pattern that applies to the item and rolls its properties', function() {
+      const id = ItemFixtures.buildSteel('longsword');
+
+      expect(Enchanter.enchantRandomly(id)).to.equal('endanger');
+      expect(Species.getAllCodes()).to.include(Enchantment(id).getProperty('species'));
+      expect(Item(id).getName()).to.include('Steel Longsword of');
+    });
+
+    // The rarity roll of 250 lands on rare, and the pick of 0 takes the first rare pattern that applies to boots,
+    // skipping the head only patterns registered ahead of it. The between stub pins the enchantment's strength.
+    it('picks among the patterns that apply by rarity', function() {
+      const id = ItemFixtures.build('boots', ['leather']);
+      Random.stubRoll(250, 0);
+      Random.stubBetween(8);
+
+      expect(Enchanter.enchantRandomly(id)).to.equal('resistant-to-fire');
+      expect(Item(id).getName()).to.equal("Firewalker's Leather Boots");
+    });
+
+    // A rarity roll of 0 is common, and nothing is common, so the pick steps down to the first unusual pattern that
+    // applies to boots.
+    it('settles for a commoner rarity when nothing applies at the rolled one', function() {
+      const id = ItemFixtures.build('boots', ['leather']);
+      Random.stubRoll(0, 0);
+      Random.stubBetween(12);
+
+      expect(Enchanter.enchantRandomly(id)).to.equal('incombustible');
+      expect(Item(id).getName()).to.equal('Incombustible Leather Boots');
+    });
+  });
 });

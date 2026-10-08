@@ -10,6 +10,21 @@ global.Enchanter = (function() {
     patternRecord.rename(id);
   }
 
+  // Picks a pattern that applies to the item, favoring the commoner rarities, and enchants the item with it, rolling
+  // whatever properties the pattern needs. Returns the pattern code, or null when no pattern applies to the item.
+  function enchantRandomly(id) {
+    const candidates = EnchantmentPattern.getAllCodes().
+      map(code => EnchantmentPattern.lookup(code)).
+      filter(pattern => pattern.canBeAppliedTo(id)).
+      map(pattern => ({ code:pattern.getCode(), rarity:pattern.getRarity() }));
+
+    const pick = RarityHelper.pickByRarity(candidates);
+    if (pick == null) { return null; }
+
+    enchant(id, pick.code, EnchantmentPattern.lookup(pick.code).buildProperties());
+    return pick.code;
+  }
+
   function scaleEffects(id, effects) {
     const material = Item(id).getPrimaryMaterial();
     const potential = Material.lookup(material).getFactor(MaterialFactor.potential);
@@ -22,7 +37,8 @@ global.Enchanter = (function() {
   }
 
   return {
-    enchant
+    enchant,
+    enchantRandomly,
   }
 
 })();

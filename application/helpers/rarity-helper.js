@@ -31,11 +31,30 @@ global.RarityHelper = (function() {
     return getOrder().indexOf(rollRarity(type));
   }
 
+  // Picks one of the candidates by rolling a rarity, then choosing among the candidates of that rarity. When nothing
+  // was offered at the rolled rarity the pick steps down through the commoner rarities, then up through the rarer
+  // ones, so something is always picked when anything was offered. Each candidate carries its own { rarity }.
+  function pickByRarity(candidates) {
+    if (candidates.length === 0) { return null; }
+
+    const order = getOrder();
+    const index = rollRarityIndex();
+    const tiers = [];
+    for (let tier=index; tier>=0; tier--) { tiers.push(order[tier]); }
+    for (let tier=index+1; tier<order.length; tier++) { tiers.push(order[tier]); }
+
+    for (const rarity of tiers) {
+      const matches = candidates.filter(candidate => candidate.rarity === rarity);
+      if (matches.length > 0) { return Random.from(matches); }
+    }
+  }
+
   return {
     getColor: (rarity) => { return colors[rarity] },
     getOrder,
     rollRarity,
     rollRarityIndex,
+    pickByRarity,
   }
 
 })();
