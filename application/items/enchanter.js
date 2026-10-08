@@ -26,4 +26,4 @@ global.Enchanter = (function() {
     enchant
   }
 
-})()
+})();
