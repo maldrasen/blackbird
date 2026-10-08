@@ -30,6 +30,11 @@ global.Item = function(id) {
     return getBase().isWeapon() ? InventoryCategory.weapon : InventoryCategory.armor;
   }
 
+  // If the BaseEquipment doesn't define a type, then its type is the same as the equipment slot.
+  function getType() {
+    return getBase().getType() || getBase().getSlot();
+  }
+
   function getDescription() {
     return `[TODO Item Descriptions]`;
   }
@@ -48,6 +53,7 @@ global.Item = function(id) {
     getIcon: () => { return getBase().getIcon(); },
     getSkill: () => { return getBase().getSkill(); },
     getCategory,
+    getType,
     getTextKey,
     getReduction,
     getDamageRange,

@@ -1,6 +1,16 @@
 Record.define('EnchantmentPattern', {
   getInstance: pattern => {
 
+    // The appliesTo property is normally an array of ItemTypes. If the type is in that array this enchantment can be
+    // added to it. For more fine grained control appliesTo can also be a closure. For instance, a poison enchantment
+    // that can only be applied to a weapon that does piercing damage. Most maces don't deal piercing damage, but a
+    // morning star does, so the ItemType alone wouldn't be sufficient in this case. If the appliesTo isn't specified
+    // we can assume any item can have this enchantment.
+    function canBeAppliedTo(id) {
+      if (pattern.appliesTo == null) { return true; }
+      return Array.isArray(pattern.appliesTo) ? pattern.appliesTo.includes(Item(id).getType()) : pattern.appliesTo(id);
+    }
+
     // An enchantment pattern can be used to rename the enchanted item. The getName() function may need to know the
     // item being named in case the name depends on what kind of item is being named. The getName() function needs to
     // return an object with { name, nameType } in case the item name becomes a proper name. The getName() function is
@@ -31,6 +41,8 @@ Record.define('EnchantmentPattern', {
     }
 
     return {
+      getRarity: () => { return pattern.rarity },
+      canBeAppliedTo,
       rename,
       buildEffects: id => { return pattern.buildEffects(id); },
       getTrigger: () => { return pattern.trigger; },

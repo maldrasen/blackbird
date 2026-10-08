@@ -9,7 +9,7 @@
 BaseEquipment.register('bullwhip', {
   nameFunction: () => { return `Bullwhip`; },
   icon: 'weapons/whip-01.png',
-  type: 'whip',
+  type: ItemType.whip,
   damageType: DamageType.slash,
   damageRange: [20,50],
   hands: WeaponHandedness.main,
@@ -23,7 +23,7 @@ BaseEquipment.register('bullwhip', {
 BaseEquipment.register('chain-whip', {
   nameFunction: names => { return `${names[0]} Chain Whip`; },
   icon: 'weapons/chain-01.png',
-  type: 'whip',
+  type: ItemType.whip,
   damageType: DamageType.slash,
   damageRange: [30,70],
   hands: WeaponHandedness.main,
@@ -38,7 +38,7 @@ BaseEquipment.register('chain-whip', {
 BaseEquipment.register('sickle-and-chain', {
   nameFunction: names => { return `${names[0]} Sickle and Chain`; },
   icon: 'weapons/chain-01.png',
-  type: 'whip',
+  type: ItemType.whip,
   damageType: DamageType.slash,
   damageRange: [40,90],
   hands: WeaponHandedness.two,
@@ -57,7 +57,7 @@ BaseEquipment.register('ball-and-chain', {
     return `${names[0]} Ball and Chain`;
   },
   icon: 'weapons/chain-01.png',
-  type: 'whip',
+  type: ItemType.whip,
   damageType: DamageType.crush,
   damageRange: [40,100],
   hands: WeaponHandedness.main,
@@ -71,7 +71,7 @@ BaseEquipment.register('ball-and-chain', {
 BaseEquipment.register('flail', {
   nameFunction: names => { return `${names[0]} Flail`; },
   icon: 'weapons/flail-01.png',
-  type: 'whip',
+  type: ItemType.whip,
   damageType: DamageType.crush,
   damageRange: [35,90],
   hands: WeaponHandedness.main,
@@ -86,7 +86,7 @@ BaseEquipment.register('flail', {
 BaseEquipment.register('cat-o-nine-tails', {
   nameFunction: () => { return `Cat o' Nine Tails`; },
   icon: 'weapons/whip-01.png',
-  type: 'whip',
+  type: ItemType.whip,
   damageType: DamageType.slash,
   damageRange: [15,45],
   hands: WeaponHandedness.main,

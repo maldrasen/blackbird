@@ -2,7 +2,7 @@
 BaseEquipment.register('hammer', {
   nameFunction: names => { return `${names[0]} Hammer`; },
   icon: 'weapons/hammer-02.png',
-  type: 'mace',
+  type: ItemType.mace,
   damageType: DamageType.crush,
   damageRange: [10,50],
   hands: WeaponHandedness.one,
@@ -19,7 +19,7 @@ BaseEquipment.register('mace', {
     return `${names[0]} Mace`;
   },
   icon: 'weapons/mace-01.png',
-  type: 'mace',
+  type: ItemType.mace,
   damageType: DamageType.crush,
   damageRange: [20,100],
   hands: WeaponHandedness.one,
@@ -36,7 +36,7 @@ BaseEquipment.register('warhammer', {
     return `${names[0]} Warhammer`;
   },
   icon: 'weapons/hammer-04.png',
-  type: 'mace',
+  type: ItemType.mace,
   damageType: DamageType.crush,
   damageRange: [30,150],
   hands: WeaponHandedness.main,
@@ -50,7 +50,7 @@ BaseEquipment.register('warhammer', {
 BaseEquipment.register('morning-star', {
   nameFunction: names => { return `${names[0]} Morning Star`; },
   icon: 'weapons/mace-01.png',
-  type: 'mace',
+  type: ItemType.mace,
   damageTypes: [
     { type:DamageType.crush, percent:50 },
     { type:DamageType.pierce, percent:50 }
@@ -70,7 +70,7 @@ BaseEquipment.register('maul', {
     return `${names[0]} Maul`;
   },
   icon: 'weapons/hammer-03.png',
-  type: 'mace',
+  type: ItemType.mace,
   damageType: DamageType.crush,
   damageRange: [100,500],
   hands: WeaponHandedness.two,

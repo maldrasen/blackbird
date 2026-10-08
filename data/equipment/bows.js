@@ -2,7 +2,7 @@
 BaseEquipment.register('shortbow', {
   nameFunction: (names, materials) => { return materials.wood ? `Shortbow` : `${names[0]} Banded Shortbow`; },
   icon: 'weapons/bow-02.png',
-  type: 'bow',
+  type: ItemType.bow,
   damageType: DamageType.pierce,
   damageRange: [40,80],
   hands: WeaponHandedness.two,
@@ -16,7 +16,7 @@ BaseEquipment.register('shortbow', {
 BaseEquipment.register('longbow', {
   nameFunction: (names, materials) => { return materials.wood ? `Longbow` : `${names[0]} Banded Longbow`; },
   icon: 'weapons/bow-02.png',
-  type: 'bow',
+  type: ItemType.bow,
   damageType: DamageType.pierce,
   damageRange: [60,120],
   hands: WeaponHandedness.two,
@@ -30,7 +30,7 @@ BaseEquipment.register('longbow', {
 BaseEquipment.register('recursive-bow', {
   nameFunction: () => { return `Recursive Bow`; },
   icon: 'weapons/bow-01.png',
-  type: 'bow',
+  type: ItemType.bow,
   damageType: DamageType.pierce,
   damageRange: [70,140],
   hands: WeaponHandedness.two,
@@ -44,7 +44,7 @@ BaseEquipment.register('recursive-bow', {
 BaseEquipment.register('crossbow', {
   nameFunction: (names,materials) => { return materials.wood ? `Crossbow` : `${names[0]} Crossbow`; },
   icon: 'weapons/crossbow-01.png',
-  type: 'bow',
+  type: ItemType.bow,
   damageType: DamageType.pierce,
   damageRange: [80,160],
   hands: WeaponHandedness.two,
@@ -58,7 +58,7 @@ BaseEquipment.register('crossbow', {
 BaseEquipment.register('arbalest', {
   nameFunction: (names,materials) => { return materials.wood ? `Arbalest` : `${names[0]} Arbalest`; },
   icon: 'weapons/crossbow-01.png',
-  type: 'bow',
+  type: ItemType.bow,
   damageType: DamageType.pierce,
   damageRange: [100,220],
   hands: WeaponHandedness.two,

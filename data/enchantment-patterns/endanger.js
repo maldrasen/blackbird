@@ -1,4 +1,6 @@
 EnchantmentPattern.register(`endanger`, {
+  rarity: Rarity.unusual,
+  appliesTo: ItemConstants.allWeaponTypes,
   trigger: EnchantmentTrigger.onHit,
   getName: id => {
     const species = Enchantment(id).getProperty('species');

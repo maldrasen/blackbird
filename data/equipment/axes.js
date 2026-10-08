@@ -2,7 +2,7 @@
 BaseEquipment.register('hatchet', {
   nameFunction: names => { return `${names[0]} Hatchet`; },
   icon: 'weapons/axe-06.png',
-  type: 'axe',
+  type: ItemType.axe,
   damageType: DamageType.slash,
   damageRange: [20,40],
   hands: WeaponHandedness.one,
@@ -15,7 +15,7 @@ BaseEquipment.register('hatchet', {
 BaseEquipment.register('cleaver', {
   nameFunction: names => { return `${names[0]} Cleaver`; },
   icon: 'weapons/cleaver-01.png',
-  type: 'axe',
+  type: ItemType.axe,
   damageType: DamageType.slash,
   damageRange: [30,60],
   hands: WeaponHandedness.one,
@@ -28,7 +28,7 @@ BaseEquipment.register('cleaver', {
 BaseEquipment.register('hand-axe', {
   nameFunction: names => { return `${names[0]} Hand Axe`; },
   icon: 'weapons/axe-07.png',
-  type: 'axe',
+  type: ItemType.axe,
   damageType: DamageType.slash,
   damageRange: [40,80],
   hands: WeaponHandedness.one,
@@ -41,7 +41,7 @@ BaseEquipment.register('hand-axe', {
 BaseEquipment.register('broad-axe', {
   nameFunction: names => { return `${names[0]} Broad Axe`; },
   icon: 'weapons/axe-04.png',
-  type: 'axe',
+  type: ItemType.axe,
   damageType: DamageType.slash,
   damageRange: [60,120],
   hands: WeaponHandedness.main,
@@ -54,7 +54,7 @@ BaseEquipment.register('broad-axe', {
 BaseEquipment.register('war-axe', {
   nameFunction: names => { return `${names[0]} War Axe`; },
   icon: 'weapons/axe-03.png',
-  type: 'axe',
+  type: ItemType.axe,
   damageType: DamageType.slash,
   damageRange: [80,160],
   hands: WeaponHandedness.main,
@@ -68,7 +68,7 @@ BaseEquipment.register('war-axe', {
 BaseEquipment.register('goosewing', {
   nameFunction: names => { return `${names[0]} Goosewing`; },
   icon: 'weapons/axe-01.png',
-  type: 'axe',
+  type: ItemType.axe,
   damageType: DamageType.slash,
   damageRange: [100,200],
   hands: WeaponHandedness.two,
@@ -81,7 +81,7 @@ BaseEquipment.register('goosewing', {
 BaseEquipment.register('battle-axe', {
   nameFunction: names => { return `${names[0]} Battle Axe`; },
   icon: 'weapons/axe-02.png',
-  type: 'axe',
+  type: ItemType.axe,
   damageType: DamageType.slash,
   damageRange: [100,300],
   hands: WeaponHandedness.two,
@@ -94,7 +94,7 @@ BaseEquipment.register('battle-axe', {
 BaseEquipment.register('labrys', {
   nameFunction: names => { return `${names[0]} Labrys`; },
   icon: 'weapons/axe-05.png',
-  type: 'axe',
+  type: ItemType.axe,
   damageType: DamageType.slash,
   damageRange: [100,400],
   hands: WeaponHandedness.two,
