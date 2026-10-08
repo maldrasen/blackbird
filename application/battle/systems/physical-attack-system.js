@@ -14,14 +14,8 @@ global.PhysicalAttackSystem = (function() {
       round.addMessage(damageRoll.getMessage());
     }
 
-    // If the hit comes from a real weapon with a weapon enchantment, we process the on hit effect of the enchantment.
-    // This can add a message or modify the raw attack damage. If the damage is adjusted by the enchantment the
-    // damageTypes object is modified from within the processOnHit() function.
     if (attackRoll.getWeapon()) {
-      const weapon = attackRoll.getWeapon();
-      if (weapon.hasEnchantment()) {
-        weapon.getEnchantment().processOnHit(damageTypes);
-      }
+      processEnchantment(attackRoll.getWeapon(), target, damageTypes);
     }
 
     const actualDamage = BattleDamageSystem.applyDamage({
@@ -38,6 +32,23 @@ global.PhysicalAttackSystem = (function() {
     }});
 
     BattleDamageSystem.addDownedMessage(target);
+  }
+
+  // A hit with an enchanted weapon runs the enchantment's on hit trigger. The weapon's pattern decides whether the
+  // enchantment fires on this hit (endanger only fires against its species) and hands back the status effects to
+  // roll against the target along with the message shown when one lands. A pattern that adjusts the raw attack
+  // damage changes the damageTypes it was given.
+  function processEnchantment(weapon, target, damageTypes) {
+    const enchantment = weapon.getEnchantment();
+    if (enchantment?.getTrigger() === EnchantmentTrigger.onHit) {
+      const round = BattleSystem.getRound();
+      const context = { I:weapon.getId(), ...round.getContext() };
+      const result = enchantment.processOnHit(context, damageTypes);
+      if (result == null) { return; }
+
+      const landed = result.effects.filter(effect => EffectSystem.applyStatus(target, effect));
+      if (landed.length > 0) { round.addMessage({ text:result.message }); }
+    }
   }
 
   // If the attack missed, no damage is done, but the crits and fumbles may add status effects to either the attacker
@@ -91,6 +102,7 @@ global.PhysicalAttackSystem = (function() {
   return {
     updateContext,
     processHit,
+    processEnchantment,
     processMiss,
   };
 
