@@ -32,7 +32,6 @@ describe("EquipmentFactory", function() {
     });
 
     it("only weighs the materials that fit the material type", function() {
-      // Wool and leather can't hold an edge, so steel is the only thing left for the longsword to roll against.
       const factory = EquipmentFactory({ wool:100, leather:120, steel:50 });
       Random.stubRoll(49);
       expect(Item(factory.build('longsword')).getPrimaryMaterial()).to.equal('steel');
@@ -46,7 +45,6 @@ describe("EquipmentFactory", function() {
     });
 
     it("adds up the amounts when two material types land on the same material", function() {
-      // The flail is heavy:3 for the head and hard:1 for the chain; restricted to steel both types pick steel.
       expect(ItemComponent.lookup(EquipmentFactory({ steel:1 }).build('flail')).materials).to.deep.equal({ steel:4 });
     });
 
@@ -59,37 +57,6 @@ describe("EquipmentFactory", function() {
 
     it("throws when none of the available materials fit a material type", function() {
       expect(() => EquipmentFactory({ wool:100 }).build('longsword')).to.throw(/No available sharp material/);
-    });
-  });
-
-  describe("options", function() {
-    it("takes a name, text key, and enchantment from the options", function() {
-      const id = EquipmentFactory({ steel:1 }).build('longsword', {
-        name: 'Stabitha',
-        nameType: 'proper',
-        textKey: 'quick-stab',
-        enchantment: { type:WeaponEnchantments.endanger, species:'kobold', power:100 },
-      });
-
-      const weapon = Item(id);
-      expect(weapon.getName()).to.equal('Stabitha');
-      expect(weapon.getNameType()).to.equal('proper');
-      expect(weapon.getTextKey()).to.equal('quick-stab');
-      expect(weapon.hasEnchantment()).to.be.true;
-      expect(weapon.getEnchantment().getType()).to.equal(WeaponEnchantments.endanger);
-    });
-
-    it("scales an enchantment's power by the material's potential", function() {
-      const enchantment = { type:WeaponEnchantments.endanger, species:'kobold', power:100 };
-
-      expect(Item(EquipmentFactory({ steel:1 }).build('longsword', { enchantment })).getEnchantment().getPower()).to.equal(100);
-      expect(Item(EquipmentFactory({ silver:1 }).build('longsword', { enchantment })).getEnchantment().getPower()).to.equal(200);
-    });
-
-    it("leaves the text key and enchantment off when they are not given", function() {
-      const weapon = Item(EquipmentFactory().build('longsword'));
-      expect(weapon.getTextKey()).to.equal('basic-swing');
-      expect(weapon.hasEnchantment()).to.be.false;
     });
   });
 

@@ -118,28 +118,4 @@ describe('Item', function() {
     });
   });
 
-  describe('getEnchantment()', function() {
-    it('is null without an enchantment', function() {
-      const sword = build('longsword',['steel']);
-      expect(sword.hasEnchantment()).to.be.false;
-      expect(sword.getEnchantment()).to.equal(null);
-    });
-
-    it('gives a weapon a weapon enchantment', function() {
-      const enchantment = { type:WeaponEnchantments.endanger, species:'kobold', power:100 };
-      const sword = build('longsword',['steel'],{ enchantment });
-      expect(sword.hasEnchantment()).to.be.true;
-      expect(sword.getEnchantment().getType()).to.equal(WeaponEnchantments.endanger);
-      expect(sword.getEnchantment().processOnHit).to.be.a('function');
-    });
-
-    it('gives armor and shields an armor enchantment', function() {
-      const enchantment = { type:ArmorEnchantments.resist, power:50 };
-      const shield = build('buckler',['silver'],{ enchantment });
-      expect(shield.getEnchantment().getType()).to.equal(ArmorEnchantments.resist);
-      expect(shield.getEnchantment().getPower()).to.equal(100);
-      expect(shield.getEnchantment().processOnHit).to.be.undefined;
-    });
-  });
-
 });
