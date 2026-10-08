@@ -19,4 +19,21 @@ describe('Enchantment', function() {
     });
   });
 
+  describe('getEffectResistance()', function() {
+    // The status effect resistances roll 10 to 20 at steel, and a pattern covering two effects gives both the same
+    // strength.
+    it('reads the strength of the resist effect for each status effect it covers', function() {
+      Random.stubBetween(12);
+      const enchantment = enchantedHelm('incombustible');
+
+      expect(enchantment.getEffectResistance('burn')).to.equal(12);
+      expect(enchantment.getEffectResistance('mana-burn')).to.equal(12);
+      expect(enchantment.getEffectResistance('blind')).to.equal(0);
+    });
+
+    it('is zero for an enchantment without resist effect effects', function() {
+      expect(enchantedHelm('resistant-to-fire').getEffectResistance('burn')).to.equal(0);
+    });
+  });
+
 });

@@ -210,10 +210,15 @@ global.Character = function(id) {
   function isUnbound() { return true; }
 
   // A character's resistance to a damage type is what their species gives them plus what their enchanted equipment
-  // adds. The damage pipeline and the resist roll both read it, so an enchantment counts for both.
+  // adds. The damage pipeline and the resist roll both read it, so an enchantment counts for both. Resistance to a
+  // particular status effect only comes from equipment so far.
   function getResistance(type) {
-    const equipment = EquipmentComponent.lookup(id) ? EquipmentManager(id).getEnchantedResistance(type) : 0;
+    const equipment = EquipmentComponent.lookup(id) ? EquipmentManager(id).getEnchantedDamageResistance(type) : 0;
     return Species.lookup(getSpecies()).getResistance(type) + equipment;
+  }
+
+  function getEffectResistance(code) {
+    return EquipmentComponent.lookup(id) ? EquipmentManager(id).getEnchantedEffectResistance(code) : 0;
   }
 
   // ===============
@@ -313,6 +318,7 @@ global.Character = function(id) {
     isCrotchExposed,
     isUnbound,
     getResistance,
+    getEffectResistance,
 
     // Orgasm Data
     getOrgasmThreshold,

@@ -72,7 +72,7 @@ global.EffectSystem = (function() {
   // (a natural attack's venom) goes through here as well.
   function applyStatus(entity, effect) {
     const { type, code, ...values } = effect;
-    const resist = ResistRoll(entity, StatusEffectType.lookup(code).getDamageType(), effect.strength);
+    const resist = ResistRoll(entity, StatusEffectType.lookup(code).getDamageType(), effect.strength, code);
 
     if (resist === ResistResult.pass) { return false; }
 

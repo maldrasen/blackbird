@@ -8,6 +8,10 @@ global.Enchantment = function(id) {
     return sumStrengths(effect => effect.type === 'resist-damage' && effect.damageType === damageType);
   }
 
+  function getEffectResistance(code) {
+    return sumStrengths(effect => effect.type === 'resist-effect' && effect.effect === code);
+  }
+
   function sumStrengths(matches) {
     return enchantment.effects.filter(matches).reduce((total, effect) => total + effect.strength, 0);
   }
@@ -18,6 +22,7 @@ global.Enchantment = function(id) {
     getProperty: key => { return enchantment.properties[key]; },
     getTrigger: () => { return pattern.getTrigger(); },
     getDamageResistance,
+    getEffectResistance,
     processBeforeHit: (context, damageTypes) => { return pattern.processBeforeHit(wrapper, context, damageTypes); },
     processAfterHit: context => { return pattern.processAfterHit(wrapper, context); },
   };

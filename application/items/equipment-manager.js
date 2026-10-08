@@ -96,13 +96,21 @@ global.EquipmentManager = function(characterId) {
     return (slot != null) ? equipItem(null, slot) : [];
   }
 
-  // Every equipped item carrying a resist-damage enchantment adds its strength to the wearer's resistance against that
-  // damage type. The total isn't capped here: the damage pipeline caps what it turns away, while the resist roll takes
-  // the whole amount.
-  function getEnchantedResistance(damageType) {
+  // Every equipped item carrying a resistance enchantment adds its strength to the wearer's resistance: resist-damage
+  // against a damage type, resist-effect against a status effect. The totals aren't capped here: the damage pipeline
+  // caps what it turns away, while the resist roll takes the whole amount.
+  function getEnchantedDamageResistance(damageType) {
+    return sumEnchantments(enchantment => enchantment.getDamageResistance(damageType));
+  }
+
+  function getEnchantedEffectResistance(code) {
+    return sumEnchantments(enchantment => enchantment.getEffectResistance(code));
+  }
+
+  function sumEnchantments(valueOf) {
     return getEquippedItems().reduce((total, itemId) => {
       const enchantment = Item(itemId).getEnchantment();
-      return total + (enchantment ? enchantment.getDamageResistance(damageType) : 0);
+      return total + (enchantment ? valueOf(enchantment) : 0);
     }, 0);
   }
 
@@ -245,7 +253,8 @@ global.EquipmentManager = function(characterId) {
     getEquippedShield,
     hasEquippedWeaponType,
     getDamageReduction,
-    getEnchantedResistance,
+    getEnchantedDamageResistance,
+    getEnchantedEffectResistance,
     summarizeResistances,
     summarizeDamages,
     summarizeWeapon,

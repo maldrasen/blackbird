@@ -293,6 +293,26 @@ describe("StatusEffectSystem", function() {
       expect(messages[1].text).to.include('poison fades from');
     });
 
+    // The victim's Incorruptible helm is pinned to 12 poison resistance, so the tick's resist spends a roll on it. The
+    // 11 is only a valid stub because of the helm.
+    it("counts the victim's enchanted resistance against the effect when it ticks", function() {
+      const state = startBattle();
+      const victim = state.getEntityAtPosition('P',1,2);
+      setHealth(victim, 100);
+      setVitality(victim, 15);
+      makeHuman(victim);
+      Random.stubBetween(12);
+      ItemFixtures.equip(victim, 'helm', ['steel'], { enchantment:{ pattern:'incorruptible' } });
+      poisonVictim(state, victim);
+
+      Random.stubRollDice(6);
+      Random.stubRoll(5, 10, 11, 15, 5);
+      BattleSystem.advanceBattle();
+
+      expect(HealthComponent.lookup(victim).currentHealth).to.equal(94);
+      expect(StatusEffects(victim).hasPoison()).to.equal(false);
+    });
+
     it("ticks and reschedules when the victim fails to resist", function() {
       const state = startBattle();
       const victim = state.getEntityAtPosition('P',1,2);

@@ -243,7 +243,7 @@ describe('EquipmentManager', function() {
     });
   });
 
-  describe('getEnchantedResistance()', function() {
+  describe('getEnchantedDamageResistance()', function() {
     // The fire resistance rolls 5 to 10 at steel, so the rolls are stubbed to pin each piece's strength.
     it("adds up the resist damage strengths of the equipped items", function() {
       const human = CharacterFixtures.genericMale({ actor:{ species:SpeciesCode.human }});
@@ -252,15 +252,29 @@ describe('EquipmentManager', function() {
       ItemFixtures.equip(human, 'breastplate', ['steel'], { enchantment:{ pattern:'resistant-to-fire' } });
 
       const equipment = EquipmentManager(human);
-      expect(equipment.getEnchantedResistance(DamageType.fire)).to.equal(14);
-      expect(equipment.getEnchantedResistance(DamageType.shock)).to.equal(0);
+      expect(equipment.getEnchantedDamageResistance(DamageType.fire)).to.equal(14);
+      expect(equipment.getEnchantedDamageResistance(DamageType.shock)).to.equal(0);
     });
 
     it("is zero when nothing worn is enchanted", function() {
       const human = CharacterFixtures.genericMale({ actor:{ species:SpeciesCode.human }});
       ItemFixtures.equip(human, 'helm', ['steel']);
 
-      expect(EquipmentManager(human).getEnchantedResistance(DamageType.fire)).to.equal(0);
+      expect(EquipmentManager(human).getEnchantedDamageResistance(DamageType.fire)).to.equal(0);
+    });
+  });
+
+  describe('getEnchantedEffectResistance()', function() {
+    // The status effect resistances roll 10 to 20 at steel, so the rolls are stubbed to pin each piece's strength.
+    it("adds up the resist effect strengths of the equipped items", function() {
+      const human = CharacterFixtures.genericMale({ actor:{ species:SpeciesCode.human }});
+      Random.stubBetween(12, 15);
+      ItemFixtures.equip(human, 'helm', ['steel'], { enchantment:{ pattern:'vigilant' } });
+      ItemFixtures.equip(human, 'breastplate', ['steel'], { enchantment:{ pattern:'vigilant' } });
+
+      const equipment = EquipmentManager(human);
+      expect(equipment.getEnchantedEffectResistance('blind')).to.equal(27);
+      expect(equipment.getEnchantedEffectResistance('stun')).to.equal(0);
     });
   });
 

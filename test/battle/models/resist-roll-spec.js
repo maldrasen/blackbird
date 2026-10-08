@@ -64,6 +64,32 @@ describe("ResistRoll", function() {
     expect(ResistRoll(target, DamageType.fire, 100)).to.equal(ResistResult.pass);
   });
 
+  // A Vigilant helm pinned to 12 blind resistance counts when blind is the effect being resisted. The resistance roll
+  // of 11 is only a valid stub because the helm raised the bound from 0 to 12.
+  it("adds the resistance against the status effect being resisted", function() {
+    const state = startBattle();
+    const target = pinnedCharacter(state, SpeciesCode.human);
+    Random.stubBetween(12);
+    ItemFixtures.equip(target, 'helm', ['steel'], { enchantment:{ pattern:'vigilant' } });
+
+    Random.stubRoll(5, 15, 11, 10, 2);
+
+    expect(ResistRoll(target, DamageType.fire, 100, 'blind')).to.equal(ResistResult.pass);
+  });
+
+  // The same helm does nothing against stun, so no resistance roll is spent and the stubs fall through to the power
+  // side of the contest.
+  it("ignores resistance against other status effects", function() {
+    const state = startBattle();
+    const target = pinnedCharacter(state, SpeciesCode.human);
+    Random.stubBetween(12);
+    ItemFixtures.equip(target, 'helm', ['steel'], { enchantment:{ pattern:'vigilant' } });
+
+    Random.stubRoll(5, 15, 10, 4);
+
+    expect(ResistRoll(target, DamageType.shock, 100, 'stun')).to.equal(ResistResult.pass);
+  });
+
   // A resistance of zero doesn't roll at all, so the third and fourth stubbed values fall through to the power side
   // of the contest.
   it("skips the roll when the target has no resistance", function() {

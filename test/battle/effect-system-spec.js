@@ -136,6 +136,22 @@ describe("EffectSystem", function() {
       expect(messages[1].text).to.include('takes 4 damage!');
     });
 
+    // The victim's Vigilant helm is pinned to 12 blind resistance, so the blind resist spends a roll on it (the 11)
+    // while the stun resist still skips straight to the power side.
+    it("counts the victim's enchanted resistance against the effect being applied", function() {
+      const state = startBattle();
+      const victim = isolateVictim(state);
+      Random.stubBetween(12);
+      ItemFixtures.equip(victim, 'helm', ['steel'], { enchantment:{ pattern:'vigilant' } });
+
+      Random.stubRoll(...stubStory(), 10, 15, 11, 10, 2, ...stubFailedResist());
+      Random.stubRollDice(4);
+      throwBlasto(state, state.getEntityAtPosition('M',0,1));
+
+      expect(StatusEffects(victim).hasBlind()).to.equal(false);
+      expect(StatusEffects(victim).hasStun()).to.equal(true);
+    });
+
     // No resist rolls are stubbed here: the damage downs the victim, so trying to apply the statuses anyway would
     // throw for running out of stubbed values.
     it("stops applying effects to a victim the damage downs", function() {

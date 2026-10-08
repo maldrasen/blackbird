@@ -79,7 +79,8 @@ global.StatusEffectSystem = (function() {
 
     if (type.getDurationType() !== StatusEffectDurationType.untilResisted) { return false; }
     if (component.strength == null) { return false; }
-    if (ResistRoll(victim, type.getDamageType(), component.strength) === ResistResult.fail) { return false; }
+    const resist = ResistRoll(victim, type.getDamageType(), component.strength, component.code);
+    if (resist === ResistResult.fail) { return false; }
 
     BattleSystem.getRound().addMessage({ text:type.getResistMessage() });
     BattleSystem.removeStatus(victim, component.code);
