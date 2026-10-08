@@ -10,13 +10,12 @@ global.Enchanter = (function() {
     patternRecord.rename(id);
   }
 
-  // TODO: Material can't be null... right?
   function scaleEffects(id, effects) {
     const material = Item(id).getPrimaryMaterial();
     const potential = Material.lookup(material).getFactor(MaterialFactor.potential);
 
     effects.forEach(effect => {
-      effect.power = Math.round(effect.power * potential);
+      effect.strength = Math.round(effect.strength * potential);
     });
 
     return effects;

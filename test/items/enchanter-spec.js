@@ -26,4 +26,16 @@ describe('Enchanter', function() {
     expect(effect.type).to.equal('status-effect');
     expect(effect.code).to.equal('vulnerable');
   });
+
+  it('keeps the strength within the pattern range on a steel item', function() {
+    const id = ItemFixtures.buildSteel('helm');
+    Enchanter.enchant(id, 'resistant-to-blind');
+    expect(Enchantment(id).getEffects()[0].strength).to.be.within(10,20);
+  });
+
+  it('doubles the strength range on a silver item', function() {
+    const id = ItemFixtures.build('helm', ['silver']);
+    Enchanter.enchant(id, 'resistant-to-blind');
+    expect(Enchantment(id).getEffects()[0].strength).to.be.within(20,40);
+  });
 });
