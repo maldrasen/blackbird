@@ -8,7 +8,8 @@ global.Enchantment = function(id) {
     getEffects: () => { return enchantment.effects; },
     getProperty: key => { return enchantment.properties[key]; },
     getTrigger: () => { return pattern.getTrigger(); },
-    processOnHit: (context, damageTypes) => { return pattern.processOnHit(wrapper, context, damageTypes); },
+    processBeforeHit: (context, damageTypes) => { return pattern.processBeforeHit(wrapper, context, damageTypes); },
+    processAfterHit: context => { return pattern.processAfterHit(wrapper, context); },
   };
 
   return wrapper;

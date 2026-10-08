@@ -16,18 +16,33 @@ Record.define('EnchantmentPattern', {
       }
     }
 
-    // An on hit pattern is given the item's enchantment, the round context, and the raw damage types of the hit, which
-    // it may adjust. It decides whether the enchantment fires on this hit and returns { effects, message }: the status
-    // effects to roll against the target and the message shown when one lands. It returns null when it doesn't fire.
-    function processOnHit(enchantment, context, damageTypes) {
-      return pattern.processOnHit(enchantment, context, damageTypes);
+    // An on hit pattern takes part in a successful physical attack at one or both of two moments. Before the hit it's
+    // given the raw damage types of the attack, which it may adjust. After the hit the damage has been dealt. A status
+    // applied before the hit is caught by the hit itself (vulnerable doubles the damage and is consumed), so a status
+    // meant for the next attack goes after the hit. Either hook is given the item's enchantment and the round context,
+    // and returns { effects, message }: the status effects to roll against the target and the message shown when one
+    // lands. It returns null when the enchantment doesn't fire.
+    function processBeforeHit(enchantment, context, damageTypes) {
+      return pattern.processBeforeHit ? pattern.processBeforeHit(enchantment, context, damageTypes) : null;
+    }
+
+    function processAfterHit(enchantment, context) {
+      return pattern.processAfterHit ? pattern.processAfterHit(enchantment, context) : null;
     }
 
     return {
       rename,
       buildEffects: id => { return pattern.buildEffects(id); },
       getTrigger: () => { return pattern.trigger; },
-      processOnHit,
+      processBeforeHit,
+      processAfterHit,
     }
-  }
+  },
+
+  validate: (pattern, code) => {
+    const hasHook = pattern.processBeforeHit != null || pattern.processAfterHit != null;
+    if (pattern.trigger === EnchantmentTrigger.onHit && hasHook === false) {
+      throw new Error(`EnchantmentPattern [${code}] triggers on hit without a processBeforeHit or processAfterHit.`);
+    }
+  },
 });
