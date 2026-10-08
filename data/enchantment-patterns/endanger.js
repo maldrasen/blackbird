@@ -1,8 +1,11 @@
 EnchantmentPattern.register(`endanger`, {
   trigger: EnchantmentTrigger.onHit,
   processOnHit: endangerOnHit,
-  getName: id => { return { name:`${Item(id).getName()} of ${Species.lookup(species).getName()} Endangerment` }},
-  buildEffects: id => { return [Effect.vulnerable({ strength:Random.between(80,120), count:1 })] },
+  getName: id => {
+    const species = Enchantment(id).getProperty('species');
+    return { name:`${Item(id).getName()} of ${Species.lookup(species).getName()} Endangerment` }
+  },
+  buildEffects: id => { return [Effect.vulnerable({ strength:Random.between(20,40), count:1 })] },
 });
 
 // Standard battle context with { A,T,I } (attacker, target, this item)
