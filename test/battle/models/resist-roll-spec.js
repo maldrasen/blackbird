@@ -24,7 +24,7 @@ describe("ResistRoll", function() {
     const target = pinnedCharacter(state, SpeciesCode.human);
     await WorldState.setOptions({ difficulty:{ damage:100, mitigation:100, resistance:50 } });
 
-    Random.stubRoll(5, 50, 40, 50, 30);
+    Random.stubRoll(5, 10, 40, 10, 30);
 
     expect(ResistRoll(target, DamageType.shock, 100)).to.equal(ResistResult.pass);
   });
@@ -35,7 +35,7 @@ describe("ResistRoll", function() {
     const target = state.getActiveMonsters()[0];
     await WorldState.setOptions({ difficulty:{ damage:100, mitigation:100, resistance:100 } });
 
-    Random.stubRoll(5, 50, 15, 50, 30);
+    Random.stubRoll(5, 10, 15, 10, 30);
 
     expect(ResistRoll(target, DamageType.fire, 100)).to.equal(ResistResult.fail);
   });
@@ -46,7 +46,7 @@ describe("ResistRoll", function() {
     const state = startBattle();
     const target = pinnedCharacter(state, SpeciesCode.vermen);
 
-    Random.stubRoll(5, 50, 15, 40, 10);
+    Random.stubRoll(5, 15, 10, 10, 2);
 
     expect(ResistRoll(target, DamageType.psychic, 100)).to.equal(ResistResult.fail);
   });
@@ -57,7 +57,7 @@ describe("ResistRoll", function() {
     const state = startBattle();
     const target = pinnedCharacter(state, SpeciesCode.human);
 
-    Random.stubRoll(5, 60, 20, 30);
+    Random.stubRoll(5, 15, 10, 4);
 
     expect(ResistRoll(target, DamageType.shock, 100)).to.equal(ResistResult.pass);
   });

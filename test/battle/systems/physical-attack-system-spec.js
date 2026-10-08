@@ -88,7 +88,7 @@ describe("PhysicalAttackSystem", function() {
 
     it("says nothing about the enchantment when the target resists", function() {
       const battle = prepare(endanger('kobold'));
-      const messages = hit(battle, [10, 90, 10, 5]);
+      const messages = hit(battle, [10, 15, 10, 2]);
 
       expect(StatusEffects(battle.target).hasVulnerable()).to.equal(false);
       expect(messages.length).to.equal(1);

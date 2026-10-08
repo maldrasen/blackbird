@@ -58,7 +58,7 @@ describe("EffectSystem", function() {
   // The damage dice come from the separate rollDice queue.
   function stubStory() { return [0, 0]; }
   function stubFailedResist() { return [10, 10, 10, 5]; }
-  function stubPassedResist() { return [10, 90, 10, 5]; }
+  function stubPassedResist() { return [10, 15, 10, 2]; }
 
   describe("applyDuringBattle()", function() {
     it("hits every entity caught in the blast", function() {

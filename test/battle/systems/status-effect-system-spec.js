@@ -39,7 +39,7 @@ describe("StatusEffectSystem", function() {
   // about the tick itself force a failed one. Humans and kobolds both have no nature resistance, so that roll is
   // skipped.
   function failResist() {
-    Random.stubRoll(5, 10, 80, 5);
+    Random.stubRoll(5, 10, 15, 5);
   }
 
   // A turn count effect lasts through the acting entity's round, so a spec has to run a whole round to see a turn
@@ -280,7 +280,7 @@ describe("StatusEffectSystem", function() {
       poisonVictim(state, victim);
 
       Random.stubRollDice(6);
-      Random.stubRoll(5, 80, 20, 5);
+      Random.stubRoll(5, 15, 10, 2);
       BattleSystem.advanceBattle();
 
       expect(HealthComponent.lookup(victim).currentHealth).to.equal(94);
