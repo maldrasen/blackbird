@@ -10,6 +10,7 @@ global.BattleConstants = {
   maxEncounterTypes: 3,
   maxReduction: 80,
   threatBase: 100,
+  resistRollFloor: 20,
   positionPattern: /([PM])\.(\d)\.(\d)/,
   spellReleaseTime: 500,
 };

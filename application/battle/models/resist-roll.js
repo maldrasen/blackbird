@@ -1,10 +1,3 @@
-// Both sides of the contest roll the floor before adding their own resistance or power. Because the floor is a
-// constant, and not derived from the values being compared, resistance and power keep an absolute meaning: power 100
-// is a hard effect to shrug off no matter who it lands on, and a target with no resistance at all is unlucky rather
-// than doomed. Raising the floor makes every contest more random, lowering it makes resistance and power count for
-// more. Neither value needs an upper bound - a power of 500 simply lands at the far end of the same curve.
-const CONTEST_FLOOR = 100;
-
 global.ResistRoll = function(target, type, power) {
 
   // The 5% bands exist so that a character with no resistance to an effect can still resist it, and a character with
@@ -25,8 +18,8 @@ global.ResistRoll = function(target, type, power) {
     Monster(target).getResistance(type) :
     Character(target).getResistance(type) + Difficulty.getResistance();
 
-  const resistRoll = Random.roll(CONTEST_FLOOR) + Random.roll(resistance);
-  const powerRoll = Random.roll(CONTEST_FLOOR) + Random.roll(power);
+  const resistRoll = Random.roll(BattleConstants.resistRollFloor) + Random.roll(resistance);
+  const powerRoll = Random.roll(BattleConstants.resistRollFloor) + Random.roll(power);
 
   Console.log(`Resist Roll [${target}]`,{ system:'BattleSystem', level:3, data:{
     resistance:`${resistance}(${resistRoll})`,

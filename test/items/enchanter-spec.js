@@ -2,13 +2,13 @@ describe('Enchanter', function() {
 
   it('adds an enchantment given an item and pattern', function() {
     const id = ItemFixtures.buildSteel('helm');
-    Enchanter.enchant(id, 'resistant-to-blind');
+    Enchanter.enchant(id, 'vigilant');
 
     const enchantment = Enchantment(id);
     const effect = enchantment.getEffects()[0];
 
     expect(Item(id).getName()).to.equal('Vigilant Steel Helm');
-    expect(enchantment.getPattern()).to.equal('resistant-to-blind');
+    expect(enchantment.getPattern()).to.equal('vigilant');
     expect(effect.type).to.equal('resist-effect');
     expect(effect.effect).to.equal('blind');
   });
@@ -29,13 +29,13 @@ describe('Enchanter', function() {
 
   it('keeps the strength within the pattern range on a steel item', function() {
     const id = ItemFixtures.buildSteel('helm');
-    Enchanter.enchant(id, 'resistant-to-blind');
+    Enchanter.enchant(id, 'vigilant');
     expect(Enchantment(id).getEffects()[0].strength).to.be.within(10,20);
   });
 
   it('doubles the strength range on a silver item', function() {
     const id = ItemFixtures.build('helm', ['silver']);
-    Enchanter.enchant(id, 'resistant-to-blind');
+    Enchanter.enchant(id, 'vigilant');
     expect(Enchantment(id).getEffects()[0].strength).to.be.within(20,40);
   });
 });

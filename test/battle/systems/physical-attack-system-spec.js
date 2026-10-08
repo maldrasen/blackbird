@@ -105,7 +105,7 @@ describe("PhysicalAttackSystem", function() {
     });
 
     it("leaves an enchantment that isn't triggered on hit out of it", function() {
-      const battle = prepare({ pattern:'resistant-to-blind' });
+      const battle = prepare({ pattern:'vigilant' });
       expect(hit(battle, []).length).to.equal(1);
     });
 
