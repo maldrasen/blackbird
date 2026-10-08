@@ -133,4 +133,18 @@ describe('Item', function() {
     });
   });
 
+  describe('getRarity()', function() {
+    it('is common without an enchantment, whatever the material', function() {
+      expect(build('longsword',['steel']).getRarity()).to.equal(Rarity.common);
+      expect(build('longsword',['silver']).getRarity()).to.equal(Rarity.common);
+    });
+
+    it('takes the rarity of the enchantment', function() {
+      const sword = build('longsword',['steel'],{ enchantment:{ pattern:'endanger', properties:{ species:'kobold' } } });
+      const helm = build('helm',['steel'],{ enchantment:{ pattern:'resistant-to-fire' } });
+      expect(sword.getRarity()).to.equal(Rarity.unusual);
+      expect(helm.getRarity()).to.equal(Rarity.rare);
+    });
+  });
+
 });

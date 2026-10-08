@@ -21,6 +21,7 @@ global.Enchantment = function(id) {
     getEffects: () => { return enchantment.effects; },
     getProperty: key => { return enchantment.properties[key]; },
     getTrigger: () => { return pattern.getTrigger(); },
+    getRarity: () => { return pattern.getRarity(); },
     getDamageResistance,
     getEffectResistance,
     processBeforeHit: (context, damageTypes) => { return pattern.processBeforeHit(wrapper, context, damageTypes); },

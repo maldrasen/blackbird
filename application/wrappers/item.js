@@ -39,9 +39,13 @@ global.Item = function(id) {
     return `[TODO Item Descriptions]`;
   }
 
-  // TODO: Item rarity will depend on its enchantment. We can hold off on this until task 228 when we start
-  //       adding more enchantments to the game. For now, all normal armor and weapons are common.
-  function getRarity() { return Rarity.common; }
+  // An item is as rare as its enchantment. Plain armor and weapons are common whatever they're made of.
+  function getRarity() {
+    return hasEnchantment() ? getEnchantment().getRarity() : Rarity.common;
+  }
+
+  function hasEnchantment() { return getItemComponent().enchantment != null; }
+  function getEnchantment() { return hasEnchantment() ? Enchantment(id) : null; }
 
   return {
     getId: () => { return id; },
@@ -59,8 +63,8 @@ global.Item = function(id) {
     getDamageRange,
     getPrimaryMaterial,
     isMetal: () => { return Material.isMetal(getPrimaryMaterial()); },
-    hasEnchantment: () => { return getItemComponent().enchantment != null; },
-    getEnchantment: () => { return getItemComponent().enchantment ? Enchantment(id) : null; },
+    hasEnchantment,
+    getEnchantment,
     getValue: () => { return getItemComponent().value; },
     isLewd: () => { return getBase().isLewd(); },
   };
