@@ -3,11 +3,6 @@
 //   Trigger - Any physical attack
 //   Applies to daggers and whips
 
-// TODO: Implement toxic and an enchantment that adds toxic buildup. Every time toxic is applied it adds a toxic stack.
-//       When adding a stack, we'll need to roll the damage for that stack, adding it to an accumulator that's stored
-//       in the StatusEffectComponent with the stack count. Once 10 stacks have been applied it does all the
-//       accumulated damage at once.
-
 // change to become poised after a basic attack
 //   Trigger - Any basic attack
 //   Applies to swords
