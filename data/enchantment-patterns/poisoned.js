@@ -13,7 +13,7 @@ EnchantmentPattern.register(`poisoned-a`, {
   trigger: EnchantmentTrigger.onHit,
   processAfterHit,
   getName: id => { return { name:`Poisoned ${Item(id).getName()}` }},
-  buildEffects: () => { return [poisons.A] },
+  buildEffects: () => { return [{ ...poisons.A }] },
 });
 
 EnchantmentPattern.register(`poisoned-b`, {
@@ -22,7 +22,7 @@ EnchantmentPattern.register(`poisoned-b`, {
   trigger: EnchantmentTrigger.onHit,
   processAfterHit,
   getName: id => { return { name:`Envenomed ${Item(id).getName()}` }},
-  buildEffects: () => { return [poisons.B] },
+  buildEffects: () => { return [{ ...poisons.B }] },
 });
 
 EnchantmentPattern.register(`poisoned-c`, {
@@ -31,7 +31,7 @@ EnchantmentPattern.register(`poisoned-c`, {
   trigger: EnchantmentTrigger.onHit,
   processAfterHit,
   getName: id => { return { name:`Malignant ${Item(id).getName()}` }},
-  buildEffects: () => { return [poisons.C] },
+  buildEffects: () => { return [{ ...poisons.C }] },
 });
 
 EnchantmentPattern.register(`poisoned-d`, {
@@ -40,7 +40,7 @@ EnchantmentPattern.register(`poisoned-d`, {
   trigger: EnchantmentTrigger.onHit,
   processAfterHit,
   getName: id => { return { name:generateName(id), nameType:'proper' }},
-  buildEffects: () => { return [poisons.D] },
+  buildEffects: () => { return [{ ...poisons.D }] },
 });
 
 EnchantmentPattern.register(`poisoned-e`, {
@@ -49,7 +49,7 @@ EnchantmentPattern.register(`poisoned-e`, {
   trigger: EnchantmentTrigger.onHit,
   processAfterHit,
   getName: id => { return { name:generateName(id), nameType:'proper' }},
-  buildEffects: () => { return [poisons.E] },
+  buildEffects: () => { return [{ ...poisons.E }] },
 });
 
 // TODO: We should add variations that depend on the attack hit location.
