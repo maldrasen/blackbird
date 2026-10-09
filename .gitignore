@@ -3,6 +3,7 @@
 .tmp*
 
 /.claude/worktrees
+/.proxyai
 /.idea
 /debug/*.json
 /docs/.obsidian
