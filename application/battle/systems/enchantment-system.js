@@ -2,18 +2,18 @@ global.EnchantmentSystem = (function() {
 
   // A hit with an enchanted weapon runs the enchantment's on hit hooks, once before the damage is applied and once
   // after. The weapon's pattern decides whether the enchantment fires at either moment (endanger only fires against
-  // its species, and only after the hit). Whatever a hook hands back is rolled against the target.
-  function processBeforeHit(weapon, target, damageTypes) {
+  // its species, and only after the hit).
+  function processBeforeHit(weapon, damageTypes) {
     const enchantment = getEnchantment(weapon, EnchantmentTrigger.onHit);
     if (enchantment) {
-      applyResult(enchantment.processBeforeHit(getContext(weapon), damageTypes), target, EffectSystem.applyStatus);
+      applyResult(enchantment.processBeforeHit(getContext(weapon), damageTypes), getContext(weapon));
     }
   }
 
-  function processAfterHit(weapon, target) {
+  function processAfterHit(weapon) {
     const enchantment = getEnchantment(weapon, EnchantmentTrigger.onHit);
     if (enchantment) {
-      applyResult(enchantment.processAfterHit(getContext(weapon)), target, EffectSystem.applyStatus);
+      applyResult(enchantment.processAfterHit(getContext(weapon)), getContext(weapon));
     }
   }
 
@@ -22,13 +22,12 @@ global.EnchantmentSystem = (function() {
   // to, and a downed actor has no next turn to be buffed for.
   function processEndRound() {
     const round = BattleSystem.getRound();
-    const acting = round.getActing();
 
     if (round.getAbility() == null) { return; }
-    if (BattleSystem.getState().isDown(acting)) { return; }
+    if (BattleSystem.getState().isDown(round.getActing())) { return; }
 
     getEndRoundWeapons(round).forEach(weapon => {
-      applyResult(weapon.getEnchantment().processEndRound(getContext(weapon)), acting, EffectSystem.applyBuff);
+      applyResult(weapon.getEnchantment().processEndRound(getContext(weapon)), getContext(weapon));
     });
   }
 
@@ -47,14 +46,13 @@ global.EnchantmentSystem = (function() {
     return { I:weapon.getId(), ...BattleSystem.getRound().getContext() };
   }
 
-  // A hook hands back the effects to roll for an entity along with the message shown when one lands, or null when
-  // the enchantment didn't fire. The on hit hooks roll statuses against the target; the end of round hook rolls buffs
-  // for the acting entity.
-  function applyResult(result, entity, apply) {
+  // A hook hands back the effects to apply, each of which decides for itself who it lands on, and may add a message
+  // shown when at least one of them does. It returns null when the enchantment didn't fire.
+  function applyResult(result, context) {
     if (result == null) { return; }
 
-    const landed = result.effects.filter(effect => apply(entity, effect));
-    if (landed.length > 0) { BattleSystem.getRound().addMessage({ text:result.message }); }
+    const landed = result.effects.filter(effect => EffectSystem.applyEnchantmentEffect(effect, context));
+    if (landed.length > 0 && result.message) { BattleSystem.getRound().addMessage({ text:result.message }); }
   }
 
   return {

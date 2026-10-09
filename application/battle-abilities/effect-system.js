@@ -68,6 +68,19 @@ global.EffectSystem = (function() {
     return BattleDamageSystem.applyDamage({ entity:entity, damageTypes:{ [effect.damageType]:damage }});
   }
 
+  // An enchantment's effects are a mixed bag, and each type knows how it's applied and who it lands on: a status
+  // goes to the target of the hit, a buff to the acting entity. The resistances are passive, read from the item by
+  // whoever is resisting, so applying one does nothing. Returns true when the effect landed.
+  function applyEnchantmentEffect(effect, context) {
+    switch (effect.type) {
+      case 'status-effect':    return applyStatus(context.T, effect);
+      case 'buff-after-round': return applyBuff(context.A, effect);
+      case 'resist-damage':    return false;
+      case 'resist-effect':    return false;
+      default: throw new Error(`The [${effect.type}] effect can't be applied by an enchantment.`);
+    }
+  }
+
   // A status effect rolls its own resistance when it lands, so anything that applies one outside a spell or consumable
   // (a natural attack's venom) goes through here as well.
   function applyStatus(entity, effect) {
@@ -104,6 +117,7 @@ global.EffectSystem = (function() {
 
   return {
     applyDuringBattle,
+    applyEnchantmentEffect,
     applyStatus,
     applyBuff,
     getAffectedEntities,

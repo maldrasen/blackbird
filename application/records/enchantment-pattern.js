@@ -30,8 +30,9 @@ Record.define('EnchantmentPattern', {
     // given the raw damage types of the attack, which it may adjust. After the hit the damage has been dealt. A status
     // applied before the hit is caught by the hit itself (vulnerable doubles the damage and is consumed), so a status
     // meant for the next attack goes after the hit. Either hook is given the item's enchantment and the round context,
-    // and returns { effects, message }: the status effects to roll against the target and the message shown when one
-    // lands. It returns null when the enchantment doesn't fire.
+    // and returns { effects, message }: the effects to apply, each landing on whoever its type says (a status on the
+    // target, a buff on the attacker), and an optional message shown when one lands. It returns null when the
+    // enchantment doesn't fire.
     function processBeforeHit(enchantment, context, damageTypes) {
       return pattern.processBeforeHit ? pattern.processBeforeHit(enchantment, context, damageTypes) : null;
     }
@@ -41,8 +42,8 @@ Record.define('EnchantmentPattern', {
     }
 
     // An end of round pattern runs once the acting entity's ability has resolved, when it can see which ability was
-    // used and give the wielder a buff for it. It returns { effects, message }: the buffs to roll for the acting
-    // entity and the message shown when one takes hold. It returns null when the enchantment doesn't fire.
+    // used and give the wielder a buff for it. It returns { effects, message } the same way the hit hooks do, and null
+    // when the enchantment doesn't fire.
     function processEndRound(enchantment, context) {
       return pattern.processEndRound ? pattern.processEndRound(enchantment, context) : null;
     }
