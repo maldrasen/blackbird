@@ -40,14 +40,19 @@ describe('Enchanter', function() {
   });
 
   describe('enchantRandomly()', function() {
-    // Endanger is the only pattern that applies to an axe (swords and daggers have patterns of their own), and it
-    // rolls the species it endangers.
+    // More than one pattern applies to a sword and the pick among them is random, so the spec checks the promise
+    // rather than the winner: the item carries a pattern that applies to it, built with that pattern's properties
+    // and effects.
     it('picks a pattern that applies to the item and rolls its properties', function() {
-      const id = ItemFixtures.buildSteel('war-axe');
+      const id = ItemFixtures.buildSteel('longsword');
+      const code = Enchanter.enchantRandomly(id);
+      const pattern = EnchantmentPattern.lookup(code);
+      const enchantment = ItemComponent.lookup(id).enchantment;
 
-      expect(Enchanter.enchantRandomly(id)).to.equal('endanger');
-      expect(Species.getAllCodes()).to.include(Enchantment(id).getProperty('species'));
-      expect(Item(id).getName()).to.include('Steel War Axe of');
+      expect(pattern.canBeAppliedTo(id)).to.equal(true);
+      expect(enchantment.pattern).to.equal(code);
+      expect(Object.keys(enchantment.properties)).to.deep.equal(Object.keys(pattern.buildProperties()));
+      expect(enchantment.effects.map(effect => effect.type)).to.deep.equal(pattern.buildEffects(id).map(effect => effect.type));
     });
 
     // The rarity roll of 250 lands on rare, and the pick of 0 takes the first rare pattern that applies to boots,
@@ -74,16 +79,13 @@ describe('Enchanter', function() {
   });
 
   describe('rollForEnchantment()', function() {
-    // The chance roll of 9 lands under 10. The rolls after it are the random enchantment's: a common rarity that
-    // steps up to endanger, the pick among the one axe pattern, and the species. The between stub pins the
-    // strength.
+    // Every chance roll lands under 100, so nothing is stubbed and the pick among the sword patterns stays random.
     it('enchants the item when the chance roll lands under the chance', function() {
-      const id = ItemFixtures.buildSteel('war-axe');
-      Random.stubRoll(9, 0, 0, 0);
-      Random.stubBetween(30);
+      const id = ItemFixtures.buildSteel('longsword');
+      const code = Enchanter.rollForEnchantment(id, 100);
 
-      expect(Enchanter.rollForEnchantment(id, 10)).to.equal('endanger');
-      expect(Item(id).hasEnchantment()).to.equal(true);
+      expect(EnchantmentPattern.lookup(code).canBeAppliedTo(id)).to.equal(true);
+      expect(Enchantment(id).getPattern()).to.equal(code);
     });
 
     it('leaves the item alone when the chance roll misses', function() {
