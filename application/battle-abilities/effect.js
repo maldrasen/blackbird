@@ -1,7 +1,7 @@
 global.Effect = (function() {
 
   // The apply() function is currently only used by consumables, but could be used for other effects like casting a
-  // healing spell. Effects such as 'status-effect' are only applied doing a battle go though the EffectSystem.
+  // healing spell. Effects such as 'status-effect' are only applied during a battle go though the EffectSystem.
   function apply(entity, effect) {
     switch (effect.type) {
       case 'restore-health': return restoreHealth(entity, effect);
