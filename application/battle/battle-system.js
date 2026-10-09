@@ -108,6 +108,7 @@ global.BattleSystem = (function() {
   function finishRound() {
     round.validate();
     StealthSystem.processRound();
+    EnchantmentSystem.processEndRound();
     StatusEffectSystem.processEndRound();
 
     if (state.isDown(round.getActing()) === false) {
