@@ -2,6 +2,7 @@ global.BattleFixtures = (function() {
 
   // The player's sword endangers kobolds, so battles against the kobold packs run the enchantment's on hit path.
   const koboldFucker = { enchantment:{ pattern:'endanger', properties:{ species:'kobold' } } };
+  const poisoned = { enchantment:{ pattern:'poisoned-a' }};
 
   // The party wears fixed outfits rather than shopping from an equipment depot. What a depot stocks is random, so a
   // shopper can come away missing a slot entirely (an unlucky player ends up with no pants, which changes which
@@ -60,7 +61,7 @@ global.BattleFixtures = (function() {
       daggers: Random.between(10,20),
     }})[0];
 
-    ItemFixtures.equip(rogue, 'dagger', ['steel']);
+    ItemFixtures.equip(rogue, 'dagger', ['steel'], poisoned);
     ItemFixtures.equip(rogue, 'dagger', ['steel'], { slot:EquipmentSlot.secondary });
     equipOutfit(rogue, RogueOutfit);
     PartyConfiguration.setCharacter(rogue,position);

@@ -7,11 +7,11 @@ const poisons = {
   E: Effect.poison({ strength:60, damage:{ x:8, d:8, p:8 }}),
 }
 
-/*
 EnchantmentPattern.register(`poisoned-a`, {
   rarity: Rarity.unusual,
   appliesTo: [ItemType.dagger, ItemType.whip],
   trigger: EnchantmentTrigger.onHit,
+  processAfterHit,
   getName: id => { return { name:`Poisoned ${Item(id).getName()}` }},
   buildEffects: () => { return [poisons.A] },
 });
@@ -20,6 +20,7 @@ EnchantmentPattern.register(`poisoned-b`, {
   rarity: Rarity.rare,
   appliesTo: [ItemType.dagger, ItemType.whip],
   trigger: EnchantmentTrigger.onHit,
+  processAfterHit,
   getName: id => { return { name:`Envenomed ${Item(id).getName()}` }},
   buildEffects: () => { return [poisons.B] },
 });
@@ -28,6 +29,7 @@ EnchantmentPattern.register(`poisoned-c`, {
   rarity: Rarity.rare,
   appliesTo: [ItemType.dagger, ItemType.whip],
   trigger: EnchantmentTrigger.onHit,
+  processAfterHit,
   getName: id => { return { name:`Malignant ${Item(id).getName()}` }},
   buildEffects: () => { return [poisons.C] },
 });
@@ -36,6 +38,7 @@ EnchantmentPattern.register(`poisoned-d`, {
   rarity: Rarity.astonishing,
   appliesTo: [ItemType.dagger, ItemType.whip],
   trigger: EnchantmentTrigger.onHit,
+  processAfterHit,
   getName: id => { return { name:generateName(id), nameType:'proper' }},
   buildEffects: () => { return [poisons.D] },
 });
@@ -44,10 +47,19 @@ EnchantmentPattern.register(`poisoned-e`, {
   rarity: Rarity.astonishing,
   appliesTo: [ItemType.dagger, ItemType.whip],
   trigger: EnchantmentTrigger.onHit,
+  processAfterHit,
   getName: id => { return { name:generateName(id), nameType:'proper' }},
   buildEffects: () => { return [poisons.E] },
 });
- */
+
+// TODO: We should add variations that depend on the attack hit location.
+
+function processAfterHit(enchantment, context) {
+  return {
+    effects: enchantment.getEffects(),
+    message: `A searing pain spreads through {T:targetName's} veins!`,
+  }
+}
 
 function generateName(id) {
   return Item(id).getType() === ItemType.dagger ? generateDaggerName() : generateWhipName();
@@ -64,5 +76,5 @@ function generateDaggerName() {
 }
 
 function generateWhipName() {
-  return Random.from(['Soulflayer']);
+  return Random.from(['Agony','Mistress of Pain','Soulflayer']);
 }
