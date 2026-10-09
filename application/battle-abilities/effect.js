@@ -47,6 +47,10 @@ global.Effect = (function() {
     poison: options => { return { type:'status-effect', code:'poison', ...options }; },
     vulnerable: options => { return { type:'status-effect', code:'vulnerable', ...options }; },
 
+    // A buff is a status the acting entity gives itself once its round is over. The strength is the percent chance
+    // that it takes hold, which is also what sets one buff's worth apart from another's when it's appraised.
+    buffAfterRound: (code, options) => { return { type:'buff-after-round', code, ...options }; },
+
     increasePotency: level => { return { type:'increase-potency', level }; },
   };
 

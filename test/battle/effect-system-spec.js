@@ -173,6 +173,38 @@ describe("EffectSystem", function() {
     });
   });
 
+  // A buff rolls a single d100 against its strength and nothing else, so one stubbed roll decides it.
+  describe("applyBuff()", function() {
+    it("takes hold when the roll comes under its strength", function() {
+      const state = startBattle();
+      const acting = state.getEntityAtPosition('P',1,2);
+
+      Random.stubRoll(29);
+      const landed = EffectSystem.applyBuff(acting, Effect.buffAfterRound('poised', { strength:30, count:1 }));
+
+      expect(landed).to.equal(true);
+      expect(StatusEffects(acting).get('poised')).to.include({ count:1, strength:null });
+    });
+
+    it("fails when the roll reaches its strength", function() {
+      const state = startBattle();
+      const acting = state.getEntityAtPosition('P',1,2);
+
+      Random.stubRoll(30);
+      const landed = EffectSystem.applyBuff(acting, Effect.buffAfterRound('hidden', { strength:30 }));
+
+      expect(landed).to.equal(false);
+      expect(StatusEffects(acting).hasHidden()).to.equal(false);
+    });
+
+    it("throws for a buff without a strength", function() {
+      const state = startBattle();
+      const acting = state.getEntityAtPosition('P',1,2);
+
+      expect(() => EffectSystem.applyBuff(acting, Effect.buffAfterRound('hidden'))).to.throw('buff.strength');
+    });
+  });
+
   // The formation targets don't care what kind of record the effect source is, so these specs hand in stub sources
   // rather than coupling to a shipped consumable or spell.
   describe("getAffectedEntities()", function() {

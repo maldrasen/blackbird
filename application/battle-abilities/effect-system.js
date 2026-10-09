@@ -80,9 +80,22 @@ global.EffectSystem = (function() {
     return true;
   }
 
+  // A buff is a positive status an entity gives itself, so nothing resists it. The strength is the percent chance that
+  // it takes hold, and it stays off the status since it has nothing to say once the status has landed.
+  function applyBuff(entity, effect) {
+    const { type, code, strength, ...values } = effect;
+    Validate.isNumber('buff.strength', strength);
+
+    if (Random.roll(100) >= strength) { return false; }
+
+    BattleSystem.addStatus(entity, code, values);
+    return true;
+  }
+
   return {
     applyDuringBattle,
     applyStatus,
+    applyBuff,
     getAffectedEntities,
   };
 
