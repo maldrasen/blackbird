@@ -40,13 +40,14 @@ describe('Enchanter', function() {
   });
 
   describe('enchantRandomly()', function() {
-    // Endanger is the only pattern that applies to a weapon, and it rolls the species it endangers.
+    // Endanger is the only pattern that applies to an axe (swords and daggers have patterns of their own), and it
+    // rolls the species it endangers.
     it('picks a pattern that applies to the item and rolls its properties', function() {
-      const id = ItemFixtures.buildSteel('longsword');
+      const id = ItemFixtures.buildSteel('war-axe');
 
       expect(Enchanter.enchantRandomly(id)).to.equal('endanger');
       expect(Species.getAllCodes()).to.include(Enchantment(id).getProperty('species'));
-      expect(Item(id).getName()).to.include('Steel Longsword of');
+      expect(Item(id).getName()).to.include('Steel War Axe of');
     });
 
     // The rarity roll of 250 lands on rare, and the pick of 0 takes the first rare pattern that applies to boots,
@@ -74,10 +75,10 @@ describe('Enchanter', function() {
 
   describe('rollForEnchantment()', function() {
     // The chance roll of 9 lands under 10. The rolls after it are the random enchantment's: a common rarity that
-    // steps up to endanger, the pick among the one weapon pattern, and the species. The between stub pins the
+    // steps up to endanger, the pick among the one axe pattern, and the species. The between stub pins the
     // strength.
     it('enchants the item when the chance roll lands under the chance', function() {
-      const id = ItemFixtures.buildSteel('longsword');
+      const id = ItemFixtures.buildSteel('war-axe');
       Random.stubRoll(9, 0, 0, 0);
       Random.stubBetween(30);
 

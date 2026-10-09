@@ -45,6 +45,55 @@ describe("EnchantmentSystem", function() {
     return BattleSystem.getRound().getMessages().map(message => message.text);
   }
 
+  // The fixture player at P.0.2 holds the longsword that endangers kobolds, which the dualist's sword replaces.
+  function armPlayer(state) {
+    const player = state.getEntityAtPosition('P.0.2');
+    return { player, weapon:ItemFixtures.equip(player, 'longsword', ['steel'], { enchantment:{ pattern:'dualist' } }) };
+  }
+
+  function basicAttack(state, player) {
+    startCharacterRound(player, state.getEntityAtPosition('M.0.2'));
+    Ability.WeaponAttack().execute();
+    BattleSystem.finishCharacterRound();
+    return getMessages();
+  }
+
+  describe("processEndRound() with a dualist's sword", function() {
+    it("leaves the player poised after a basic attack", function() {
+      const state = startBattle();
+      const { player, weapon } = armPlayer(state);
+      pinChance(weapon, 100);
+
+      const messages = basicAttack(state, player);
+
+      expect(StatusEffects(player).hasPoised()).to.equal(true);
+      expect(messages[messages.length - 1]).to.include('Poised');
+    });
+
+    it("leaves the player as they were when the chance fails", function() {
+      const state = startBattle();
+      const { player, weapon } = armPlayer(state);
+      pinChance(weapon, 0);
+
+      basicAttack(state, player);
+
+      expect(StatusEffects(player).hasPoised()).to.equal(false);
+    });
+
+    it("sits out an ability that isn't a basic attack", function() {
+      const state = startBattle();
+      const { player, weapon } = armPlayer(state);
+      pinChance(weapon, 100);
+
+      BattleSystem.specRound(player, { target:state.getEntityAtPosition('M.0.2') });
+      BattleSystem.getRound().setAbility(Ability.SneakAttack());
+      EnchantmentSystem.processEndRound();
+
+      expect(StatusEffects(player).hasPoised()).to.equal(false);
+      expect(getMessages()).to.deep.equal([]);
+    });
+  });
+
   describe("processEndRound()", function() {
     it("lets the rogue slip back into hiding after a sneak attack", function() {
       const state = startBattle();
