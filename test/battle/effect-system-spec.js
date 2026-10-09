@@ -203,6 +203,14 @@ describe("EffectSystem", function() {
 
       expect(() => EffectSystem.applyBuff(acting, Effect.buffAfterRound('hidden'))).to.throw('buff.strength');
     });
+
+    it("throws for a hidden buff on an entity in the front rank", function() {
+      const state = startBattle();
+      const acting = state.getEntityAtPosition('P',0,2);
+
+      expect(() => EffectSystem.applyBuff(acting, Effect.buffAfterRound('hidden', { strength:100 }))).
+        to.throw("can't be hidden from the front rank");
+    });
   });
 
   // The formation targets don't care what kind of record the effect source is, so these specs hand in stub sources

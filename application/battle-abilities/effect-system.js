@@ -85,11 +85,21 @@ global.EffectSystem = (function() {
   function applyBuff(entity, effect) {
     const { type, code, strength, ...values } = effect;
     Validate.isNumber('buff.strength', strength);
+    assertCanHide(entity, code);
 
     if (Random.roll(100) >= strength) { return false; }
 
     BattleSystem.addStatus(entity, code, values);
     return true;
+  }
+
+  // Hiding is only possible from the back rank, which the Hide ability checks before it's offered. Nothing else that
+  // hands out the hidden status checks it, so a buff that would hide a front rank entity is a bug in whatever handed
+  // it out, and it throws rather than quietly passing for a failed roll.
+  function assertCanHide(entity, code) {
+    if (code === 'hidden' && BattleSystem.getState().isInBack(entity) === false) {
+      throw new Error(`Entity[${entity}] can't be hidden from the front rank.`);
+    }
   }
 
   return {
