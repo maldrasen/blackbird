@@ -26,6 +26,7 @@ global.Enchantment = function(id) {
     getEffectResistance,
     processBeforeHit: (context, damageTypes) => { return pattern.processBeforeHit(wrapper, context, damageTypes); },
     processAfterHit: context => { return pattern.processAfterHit(wrapper, context); },
+    processEndRound: context => { return pattern.processEndRound(wrapper, context); },
   };
 
   return wrapper;

@@ -40,6 +40,13 @@ Record.define('EnchantmentPattern', {
       return pattern.processAfterHit ? pattern.processAfterHit(enchantment, context) : null;
     }
 
+    // An end of round pattern runs once the acting entity's ability has resolved, when it can see which ability was
+    // used and give the wielder a buff for it. It returns { effects, message }: the buffs to roll for the acting
+    // entity and the message shown when one takes hold. It returns null when the enchantment doesn't fire.
+    function processEndRound(enchantment, context) {
+      return pattern.processEndRound ? pattern.processEndRound(enchantment, context) : null;
+    }
+
     return {
       getRarity: () => { return pattern.rarity },
       canBeAppliedTo,
@@ -49,13 +56,17 @@ Record.define('EnchantmentPattern', {
       getTrigger: () => { return pattern.trigger; },
       processBeforeHit,
       processAfterHit,
+      processEndRound,
     }
   },
 
   validate: (pattern, code) => {
-    const hasHook = pattern.processBeforeHit != null || pattern.processAfterHit != null;
-    if (pattern.trigger === EnchantmentTrigger.onHit && hasHook === false) {
+    const hasHitHook = pattern.processBeforeHit != null || pattern.processAfterHit != null;
+    if (pattern.trigger === EnchantmentTrigger.onHit && hasHitHook === false) {
       throw new Error(`EnchantmentPattern [${code}] triggers on hit without a processBeforeHit or processAfterHit.`);
+    }
+    if (pattern.trigger === EnchantmentTrigger.endRound && pattern.processEndRound == null) {
+      throw new Error(`EnchantmentPattern [${code}] triggers at the end of the round without a processEndRound.`);
     }
   },
 });

@@ -521,9 +521,10 @@ global.WeaponReach = {
 };
 
 // An enchantment triggered on hit takes part in every successful physical attack made with its weapon, through the
-// pattern's processBeforeHit and processAfterHit hooks. I assume there'll be other triggers? There could be an onDefend
-// that triggers when hit by a physical attack?
-global.EnchantmentTrigger = { onHit:'on-hit' };
+// pattern's processBeforeHit and processAfterHit hooks. One triggered at the end of the round runs after the acting
+// entity's ability has resolved, through processEndRound. There could also be an onDefend that triggers when hit by a
+// physical attack?
+global.EnchantmentTrigger = { onHit:'on-hit', endRound:'end-round' };
 
 global.ResistResult = {
   pass: 'pass',
