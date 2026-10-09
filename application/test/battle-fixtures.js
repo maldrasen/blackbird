@@ -2,8 +2,9 @@ global.BattleFixtures = (function() {
 
   // The player's sword endangers kobolds, so battles against the kobold packs run the enchantment's on hit path.
   const koboldFucker = { enchantment:{ pattern:'endanger', properties:{ species:'kobold' } } };
+  const dualist = { enchantment:{ pattern:'dualist' }};
   const poisoned = { enchantment:{ pattern:'poisoned-a' }};
-  const assassin =  { enchantment:{ pattern:'assassin' }}
+  const assassin =  { enchantment:{ pattern:'assassin' }};
   const secondary = { slot:EquipmentSlot.secondary };
 
   // The party wears fixed outfits rather than shopping from an equipment depot. What a depot stocks is random, so a
@@ -39,7 +40,7 @@ global.BattleFixtures = (function() {
   function addPlayer(position) {
     const player = CharacterFixtures.randomPlayer();
     setSkill(player,'swords',Random.between(20,40));
-    ItemFixtures.equip(player, 'longsword', ['steel'], koboldFucker);
+    ItemFixtures.equip(player, 'longsword', ['steel'], dualist);
     ItemFixtures.equip(player, 'round-shield', ['steel']);
     equipOutfit(player, PlayerOutfit);
     PartyConfiguration.setCharacter(player,position);
