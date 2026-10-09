@@ -14,7 +14,7 @@ global.ResistRoll = function(target, type, power, effect=null) {
   // The target resists with their resistance to the damage type behind the effect, and when a status effect is being
   // resisted, whatever resistance they carry against that effect in particular.
   function getResistance() {
-    const resister = isMonster ? Monster(target) : Character(target);
+    const resister = BattleHelper.getCombatant(target);
     const forEffect = (effect == null) ? 0 : resister.getEffectResistance(effect);
     return resister.getResistance(type) + forEffect;
   }

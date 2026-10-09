@@ -45,7 +45,6 @@ describe("EnchantmentSystem", function() {
     return BattleSystem.getRound().getMessages().map(message => message.text);
   }
 
-  // The fixture player at P.0.2 holds the longsword that endangers kobolds, which the dualist's sword replaces.
   function armPlayer(state) {
     const player = state.getEntityAtPosition('P.0.2');
     return { player, weapon:ItemFixtures.equip(player, 'longsword', ['steel'], { enchantment:{ pattern:'dualist' } }) };

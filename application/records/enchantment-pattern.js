@@ -60,13 +60,28 @@ Record.define('EnchantmentPattern', {
     }
   },
 
+  // A trigger needs its hooks and a hook needs its trigger: a pattern with a hook but no trigger would be applied,
+  // renamed, and then never fire.
   validate: (pattern, code) => {
+    Validate.isIn(`EnchantmentPattern [${code}] rarity`, pattern.rarity, Object.values(Rarity));
+    Validate.isFunction(`EnchantmentPattern [${code}] buildEffects`, pattern.buildEffects);
+
     const hasHitHook = pattern.processBeforeHit != null || pattern.processAfterHit != null;
-    if (pattern.trigger === EnchantmentTrigger.onHit && hasHitHook === false) {
+    const isOnHit = pattern.trigger === EnchantmentTrigger.onHit;
+    if (isOnHit && hasHitHook === false) {
       throw new Error(`EnchantmentPattern [${code}] triggers on hit without a processBeforeHit or processAfterHit.`);
     }
-    if (pattern.trigger === EnchantmentTrigger.endRound && pattern.processEndRound == null) {
+    if (hasHitHook && isOnHit === false) {
+      throw new Error(`EnchantmentPattern [${code}] has an on hit hook without the on hit trigger.`);
+    }
+
+    const hasEndRoundHook = pattern.processEndRound != null;
+    const isEndRound = pattern.trigger === EnchantmentTrigger.endRound;
+    if (isEndRound && hasEndRoundHook === false) {
       throw new Error(`EnchantmentPattern [${code}] triggers at the end of the round without a processEndRound.`);
+    }
+    if (hasEndRoundHook && isEndRound === false) {
+      throw new Error(`EnchantmentPattern [${code}] has a processEndRound without the end of round trigger.`);
     }
   },
 });

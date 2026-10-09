@@ -81,9 +81,7 @@ global.BattleDamageSystem = (function() {
   }
 
   function getTargetResistance(target, type) {
-    return BattleSystem.getState().isMonster(target) ?
-      Monster(target).getResistance(type) :
-      Character(target).getResistance(type);
+    return BattleHelper.getCombatant(target).getResistance(type);
   }
 
   // Any time damage is applied we should call this addDownedMessage() function to add the knocked out or killed

@@ -115,7 +115,8 @@ global.EquipmentManager = function(characterId) {
   }
 
   function getEquippedItems() {
-    return Object.values(EquipmentSlot).map(slot => fetch()[slot]).filter(itemId => itemId != null);
+    const equipment = fetch();
+    return Object.values(EquipmentSlot).map(slot => equipment[slot]).filter(itemId => itemId != null);
   }
 
   // Build an equipment summary, displayed in the detail panel. Also can be used by the battle system to get a
@@ -148,9 +149,7 @@ global.EquipmentManager = function(characterId) {
   }
 
   function getWearerResistance(type) {
-    return MonsterComponent.lookup(characterId) != null ?
-      Monster(characterId).getResistance(type) :
-      Character(characterId).getResistance(type);
+    return BattleHelper.getCombatant(characterId).getResistance(type);
   }
 
   // Real main and off hand weapon damage ranges given the character's strength. A weapon's attack power is the percent

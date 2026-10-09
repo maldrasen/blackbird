@@ -4,7 +4,7 @@ global.Enchanter = (function() {
     const patternRecord = EnchantmentPattern.lookup(pattern);
 
     const item = ItemComponent.lookup(id);
-    item.enchantment = { pattern, properties, effects:scaleEffects(id, patternRecord.buildEffects()) }
+    item.enchantment = { pattern, properties, effects:scaleEffects(id, patternRecord.buildEffects(id)) }
     ItemComponent.update(id, item);
 
     patternRecord.rename(id);

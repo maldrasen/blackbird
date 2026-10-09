@@ -12,7 +12,7 @@ EnchantmentPattern.register(`endanger`, {
   // The enchantment only fires against the species it was made to endanger, and lands after the hit so that the
   // vulnerability waits for the next attack rather than doubling this one.
   processAfterHit: (enchantment, context) => {
-    if (enchantment.getProperty('species') !== BattleHelper.getSpecies(context.T)) { return null; }
+    if (enchantment.getProperty('species') !== BattleHelper.getCombatant(context.T).getSpecies()) { return null; }
 
     return {
       effects: enchantment.getEffects(),

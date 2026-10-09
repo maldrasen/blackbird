@@ -1,7 +1,6 @@
 global.BattleFixtures = (function() {
 
-  // The player's sword endangers kobolds, so battles against the kobold packs run the enchantment's on hit path.
-  const koboldFucker = { enchantment:{ pattern:'endanger', properties:{ species:'kobold' } } };
+  // The player's sword and the rogue's daggers are enchanted so that the fixture battles run the enchantment hooks.
   const dualist = { enchantment:{ pattern:'dualist' }};
   const poisoned = { enchantment:{ pattern:'poisoned-a' }};
   const assassin =  { enchantment:{ pattern:'assassin' }};

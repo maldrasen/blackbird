@@ -129,5 +129,4 @@ EquipmentParameters.register('standard',{
   },
 
   enchantmentChance: 10,
-  enchantments:{},
 });

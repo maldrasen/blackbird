@@ -7,7 +7,6 @@ global.PhysicalAttackSystem = (function() {
     const attacker = round.getActing();
     const target = round.getTarget();
     const weapon = attackRoll.getWeapon();
-    const enchantment = getOnHitEnchantment(weapon);
 
     const damageRoll = DamageRoll(attacker, attackRoll, defendRoll);
     const damageTypes = damageRoll.getDamageTypes();
@@ -16,9 +15,7 @@ global.PhysicalAttackSystem = (function() {
       round.addMessage(damageRoll.getMessage());
     }
 
-    if (enchantment) {
-      applyEnchantmentResult(enchantment.processBeforeHit(getEnchantmentContext(weapon), damageTypes), target);
-    }
+    EnchantmentSystem.processBeforeHit(weapon, target, damageTypes);
 
     const actualDamage = BattleDamageSystem.applyDamage({
       entity: target,
@@ -34,32 +31,11 @@ global.PhysicalAttackSystem = (function() {
     }});
 
     // A status applied after the hit waits for the next attack, which a downed target won't be taking.
-    if (enchantment && BattleSystem.getState().isDown(target) === false) {
-      applyEnchantmentResult(enchantment.processAfterHit(getEnchantmentContext(weapon)), target);
+    if (BattleSystem.getState().isDown(target) === false) {
+      EnchantmentSystem.processAfterHit(weapon, target);
     }
 
     BattleDamageSystem.addDownedMessage(target);
-  }
-
-  // A hit with an enchanted weapon runs the enchantment's on hit hooks, once before the damage is applied and once
-  // after. The weapon's pattern decides whether the enchantment fires at either moment (endanger only fires against
-  // its species, and only after the hit).
-  function getOnHitEnchantment(weapon) {
-    const enchantment = weapon ? weapon.getEnchantment() : null;
-    return (enchantment?.getTrigger() === EnchantmentTrigger.onHit) ? enchantment : null;
-  }
-
-  function getEnchantmentContext(weapon) {
-    return { I:weapon.getId(), ...BattleSystem.getRound().getContext() };
-  }
-
-  // A hook hands back the status effects to roll against the target along with the message shown when one lands, or
-  // null when the enchantment didn't fire.
-  function applyEnchantmentResult(result, target) {
-    if (result == null) { return; }
-
-    const landed = result.effects.filter(effect => EffectSystem.applyStatus(target, effect));
-    if (landed.length > 0) { BattleSystem.getRound().addMessage({ text:result.message }); }
   }
 
   // If the attack missed, no damage is done, but the crits and fumbles may add status effects to either the attacker
