@@ -7,6 +7,7 @@ const poisons = {
   E: Effect.poison({ strength:60, damage:{ x:8, d:8, p:8 }}),
 }
 
+/*
 EnchantmentPattern.register(`poisoned-a`, {
   rarity: Rarity.unusual,
   appliesTo: [ItemType.dagger, ItemType.whip],
@@ -46,6 +47,7 @@ EnchantmentPattern.register(`poisoned-e`, {
   getName: id => { return { name:generateName(id), nameType:'proper' }},
   buildEffects: () => { return [poisons.E] },
 });
+ */
 
 function generateName(id) {
   return Item(id).getType() === ItemType.dagger ? generateDaggerName() : generateWhipName();
