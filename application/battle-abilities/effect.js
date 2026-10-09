@@ -1,7 +1,13 @@
+// An effect is a plain descriptor of something that can happen to an entity, built by the factories at the bottom of
+// this module. Spells, consumables, natural attacks, and enchantment patterns all describe what they do with the same
+// objects, so the systems that consume them don't need to know where an effect came from. The EffectSystem applies
+// them during battle. The AbilityAppraiser scores them to rate how dangerous a spell or ability is, which feeds into
+// how dangerous a monster is. The ArticleAppraiser prices consumables from them, and enchantment appraisal will do the
+// same for enchanted items.
 global.Effect = (function() {
 
   // The apply() function is currently only used by consumables, but could be used for other effects like casting a
-  // healing spell. Effects such as 'status-effect' are only applied during a battle go though the EffectSystem.
+  // healing spell. Effects such as 'status-effect' are only applied during a battle go through the EffectSystem.
   function apply(entity, effect) {
     switch (effect.type) {
       case 'restore-health': return restoreHealth(entity, effect);
