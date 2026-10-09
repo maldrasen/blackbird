@@ -1,7 +1,8 @@
 describe("EnchantmentSystem", function() {
 
-  // The fixture rogue at P.1.2 sits in the back rank with a dagger in each hand. The assassin's dagger replaces the
-  // primary unless a slot says otherwise.
+  // The fixture rogue at P.1.2 sits in the back rank with an assassin's dagger in the primary hand and a poisoned one
+  // in the off hand. The specs arm them with an assassin's dagger of their own so its chance can be pinned, replacing
+  // the primary unless a slot says otherwise.
   function startBattle() {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
@@ -67,9 +68,11 @@ describe("EnchantmentSystem", function() {
       expect(messages.join(' ')).to.not.include('slips back');
     });
 
+    // The fixture's own assassin's dagger is swapped for a plain one so only the off hand carries the enchantment.
     it("sits out a sneak attack made with the other hand", function() {
       const state = startBattle();
       const { rogue, weapon } = armRogue(state, EquipmentSlot.secondary);
+      ItemFixtures.equip(rogue, 'dagger', ['steel']);
       pinChance(weapon, 100);
 
       sneakAttack(state, rogue);

@@ -13,13 +13,14 @@ describe("Ability.SneakAttack", function() {
     BattleSystem.specRound(acting, { target });
   }
 
-  // A hidden rogue sneak attacks the kobold in front of them, with the weapon they came with unless told otherwise.
-  // The command that built an ability ends the round, so the helper ends it itself to see the rogue revealed.
-  function sneakAttackWith(base=null) {
+  // A hidden rogue sneak attacks the kobold in front of them with a plain steel weapon in place of the assassin's
+  // dagger they came with, which could hide them again. The command that built an ability ends the round, so the
+  // helper ends it itself to see the rogue revealed.
+  function sneakAttackWith(base) {
     const state = startBattle();
     const rogue = state.getEntityAtPosition('P.1.2');
 
-    if (base) { ItemFixtures.equip(rogue, base, ['steel']); }
+    ItemFixtures.equip(rogue, base, ['steel']);
     BattleSystem.addStatus(rogue, 'hidden');
     startCharacterRound(rogue, state.getEntityAtPosition('M.0.2'));
     Ability.SneakAttack().execute();
@@ -52,7 +53,7 @@ describe("Ability.SneakAttack", function() {
   });
 
   it("strikes from the shadows and is revealed by it", function() {
-    const { rogue, text } = sneakAttackWith();
+    const { rogue, text } = sneakAttackWith('dagger');
 
     expect(text).to.include('sneak-attack-pierce');
     expect(StatusEffects(rogue).hasHidden()).to.equal(false);
