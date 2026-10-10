@@ -66,8 +66,8 @@ global.TrapSystem = (function() {
   }
 
   // Trap damage skips the battle damage pipeline, but it's still mitigated like a physical hit in battle would be:
-  // reduced by the armor covering the trap's hit location on top of the target's own innate resistance, then scaled
-  // by the difficulty's mitigation option.
+  // reduced by the armor covering the trap's hit location on top of the target's own resistance, then scaled by the
+  // difficulty's mitigation option.
   function rollDamage(trap, target) {
     const reduction = Math.min(getReductionPercent(trap, target), BattleConstants.maxReduction);
     return Math.round(Random.rollDice(trap.damage) * (1 - reduction/100) * Difficulty.getMitigationFactor());

@@ -451,6 +451,23 @@ global.StatusEffectDurationType = {
 //   Items & Equipment
 // =====================
 
+global.ItemType = {
+  axe: 'axe',
+  bow: 'bow',
+  dagger: 'dagger',
+  mace: 'mace',
+  polearm: 'polearm',
+  shield: 'shield',
+  sword: 'sword',
+  whip: 'whip',
+
+  chest: 'chest',
+  feet: 'feet',
+  hands: 'hands',
+  head: 'head',
+  legs: 'legs',
+}
+
 global.OutfitStyle = {
   barbaric: 'barbaric',
   flirty: 'flirty',
@@ -503,13 +520,11 @@ global.WeaponReach = {
   long: 'long',
 };
 
-global.ArmorEnchantments = {
-  resist: 'resist',
-};
-
-global.WeaponEnchantments = {
-  endanger: 'endanger',
-};
+// An enchantment triggered on hit takes part in every successful physical attack made with its weapon, through the
+// pattern's processBeforeHit and processAfterHit hooks. One triggered at the end of the round runs after the acting
+// entity's ability has resolved, through processEndRound. There could also be an onDefend that triggers when hit by a
+// physical attack?
+global.EnchantmentTrigger = { onHit:'on-hit', endRound:'end-round' };
 
 global.ResistResult = {
   pass: 'pass',

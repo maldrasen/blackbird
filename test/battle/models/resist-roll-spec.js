@@ -14,28 +14,42 @@ describe("ResistRoll", function() {
     return target;
   }
 
-  // The stub order is the 5% critical roll, then the contest floor and resistance rolls, then the contest floor and
+  // The stub order is the resistance option's chance roll when the option is above zero and the target is a
+  // character, then the 5% critical roll, then the contest floor and resistance rolls, then the contest floor and
   // power rolls. A resistance of zero never rolls, so those specs stub one value fewer.
 
-  // The resistance roll of 40 is only a valid stub because the difficulty option raised the character's resistance
-  // bound from 0 to 50 - the stub validator throws if the option stops reaching the roll.
-  it("adds the resistance option to a character's resist roll", async function() {
+  // The chance roll comes ahead of everything else, so landing under the option passes without spending any of the
+  // contest's rolls. The stub queue is left empty behind it, and would throw if anything else rolled.
+  it("passes outright when the chance roll lands under the resistance option", async function() {
     const state = startBattle();
     const target = pinnedCharacter(state, SpeciesCode.human);
     await WorldState.setOptions({ difficulty:{ damage:100, mitigation:100, resistance:50 } });
 
-    Random.stubRoll(5, 50, 40, 50, 30);
+    Random.stubRoll(49);
 
     expect(ResistRoll(target, DamageType.shock, 100)).to.equal(ResistResult.pass);
   });
 
-  // The kobold's resist roll is bound by their own fire resistance of 20, not by the resistance option.
+  // A chance roll at or over the option falls through to the ordinary contest, which the option no longer adds to.
+  // The human has no shock resistance, so no resistance roll is spent.
+  it("falls through to the contest when the chance roll misses", async function() {
+    const state = startBattle();
+    const target = pinnedCharacter(state, SpeciesCode.human);
+    await WorldState.setOptions({ difficulty:{ damage:100, mitigation:100, resistance:50 } });
+
+    Random.stubRoll(50, 5, 10, 10, 5);
+
+    expect(ResistRoll(target, DamageType.shock, 100)).to.equal(ResistResult.fail);
+  });
+
+  // The resistance option never applies to a monster. With it at 100 the kobold still rolls the contest, bound by
+  // their own fire resistance of 20.
   it("rolls a monster's own resistance", async function() {
     const state = startBattle();
     const target = state.getActiveMonsters()[0];
     await WorldState.setOptions({ difficulty:{ damage:100, mitigation:100, resistance:100 } });
 
-    Random.stubRoll(5, 50, 15, 50, 30);
+    Random.stubRoll(5, 10, 15, 10, 30);
 
     expect(ResistRoll(target, DamageType.fire, 100)).to.equal(ResistResult.fail);
   });
@@ -46,9 +60,48 @@ describe("ResistRoll", function() {
     const state = startBattle();
     const target = pinnedCharacter(state, SpeciesCode.vermen);
 
-    Random.stubRoll(5, 50, 15, 40, 10);
+    Random.stubRoll(5, 15, 10, 10, 2);
 
     expect(ResistRoll(target, DamageType.psychic, 100)).to.equal(ResistResult.fail);
+  });
+
+  // The Firewalker's helm is pinned to 8 fire resistance, the only fire resistance the human has. The resistance roll
+  // of 7 is only a valid stub because the helm raised the bound from 0 to 8.
+  it("adds the resistance of enchanted equipment to the roll", function() {
+    const state = startBattle();
+    const target = pinnedCharacter(state, SpeciesCode.human);
+    Random.stubBetween(8);
+    ItemFixtures.equip(target, 'helm', ['steel'], { enchantment:{ pattern:'resistant-to-fire' } });
+
+    Random.stubRoll(5, 15, 7, 10, 2);
+
+    expect(ResistRoll(target, DamageType.fire, 100)).to.equal(ResistResult.pass);
+  });
+
+  // A Vigilant helm pinned to 12 blind resistance counts when blind is the effect being resisted. The resistance roll
+  // of 11 is only a valid stub because the helm raised the bound from 0 to 12.
+  it("adds the resistance against the status effect being resisted", function() {
+    const state = startBattle();
+    const target = pinnedCharacter(state, SpeciesCode.human);
+    Random.stubBetween(12);
+    ItemFixtures.equip(target, 'helm', ['steel'], { enchantment:{ pattern:'vigilant' } });
+
+    Random.stubRoll(5, 15, 11, 10, 2);
+
+    expect(ResistRoll(target, DamageType.fire, 100, 'blind')).to.equal(ResistResult.pass);
+  });
+
+  // The same helm does nothing against stun, so no resistance roll is spent and the stubs fall through to the power
+  // side of the contest.
+  it("ignores resistance against other status effects", function() {
+    const state = startBattle();
+    const target = pinnedCharacter(state, SpeciesCode.human);
+    Random.stubBetween(12);
+    ItemFixtures.equip(target, 'helm', ['steel'], { enchantment:{ pattern:'vigilant' } });
+
+    Random.stubRoll(5, 15, 10, 4);
+
+    expect(ResistRoll(target, DamageType.shock, 100, 'stun')).to.equal(ResistResult.pass);
   });
 
   // A resistance of zero doesn't roll at all, so the third and fourth stubbed values fall through to the power side
@@ -57,7 +110,7 @@ describe("ResistRoll", function() {
     const state = startBattle();
     const target = pinnedCharacter(state, SpeciesCode.human);
 
-    Random.stubRoll(5, 60, 20, 30);
+    Random.stubRoll(5, 15, 10, 4);
 
     expect(ResistRoll(target, DamageType.shock, 100)).to.equal(ResistResult.pass);
   });

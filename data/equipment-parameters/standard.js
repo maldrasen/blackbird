@@ -128,5 +128,5 @@ EquipmentParameters.register('standard',{
     // Legs:             1900
   },
 
-  enchantments:{},
+  enchantmentChance: 10,
 });

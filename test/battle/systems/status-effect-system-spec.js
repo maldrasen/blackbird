@@ -39,7 +39,7 @@ describe("StatusEffectSystem", function() {
   // about the tick itself force a failed one. Humans and kobolds both have no nature resistance, so that roll is
   // skipped.
   function failResist() {
-    Random.stubRoll(5, 10, 80, 5);
+    Random.stubRoll(5, 10, 15, 5);
   }
 
   // A turn count effect lasts through the acting entity's round, so a spec has to run a whole round to see a turn
@@ -280,7 +280,7 @@ describe("StatusEffectSystem", function() {
       poisonVictim(state, victim);
 
       Random.stubRollDice(6);
-      Random.stubRoll(5, 80, 20, 5);
+      Random.stubRoll(5, 15, 10, 2);
       BattleSystem.advanceBattle();
 
       expect(HealthComponent.lookup(victim).currentHealth).to.equal(94);
@@ -291,6 +291,26 @@ describe("StatusEffectSystem", function() {
       expect(messages.length).to.equal(2);
       expect(messages[0].text).to.include('takes 6');
       expect(messages[1].text).to.include('poison fades from');
+    });
+
+    // The victim's Incorruptible helm is pinned to 12 poison resistance, so the tick's resist spends a roll on it. The
+    // 11 is only a valid stub because of the helm.
+    it("counts the victim's enchanted resistance against the effect when it ticks", function() {
+      const state = startBattle();
+      const victim = state.getEntityAtPosition('P',1,2);
+      setHealth(victim, 100);
+      setVitality(victim, 15);
+      makeHuman(victim);
+      Random.stubBetween(12);
+      ItemFixtures.equip(victim, 'helm', ['steel'], { enchantment:{ pattern:'incorruptible' } });
+      poisonVictim(state, victim);
+
+      Random.stubRollDice(6);
+      Random.stubRoll(5, 10, 11, 15, 5);
+      BattleSystem.advanceBattle();
+
+      expect(HealthComponent.lookup(victim).currentHealth).to.equal(94);
+      expect(StatusEffects(victim).hasPoison()).to.equal(false);
     });
 
     it("ticks and reschedules when the victim fails to resist", function() {

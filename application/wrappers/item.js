@@ -30,20 +30,22 @@ global.Item = function(id) {
     return getBase().isWeapon() ? InventoryCategory.weapon : InventoryCategory.armor;
   }
 
-  // Weapon and armor enchantments are still separate models. Shields take armor enchantments.
-  function getEnchantment() {
-    const enchantment = getItemComponent().enchantment;
-    if (enchantment == null) { return null; }
-    return getBase().isWeapon() ? WeaponEnchantment(id, enchantment) : ArmorEnchantment(id, enchantment);
+  // If the BaseEquipment doesn't define a type, then its type is the same as the equipment slot.
+  function getType() {
+    return getBase().getType() || getBase().getSlot();
   }
 
   function getDescription() {
     return `[TODO Item Descriptions]`;
   }
 
-  // TODO: Item rarity will depend on its enchantment. We can hold off on this until task 228 when we start
-  //       adding more enchantments to the game. For now, all normal armor and weapons are common.
-  function getRarity() { return Rarity.common; }
+  // An item is as rare as its enchantment. Plain armor and weapons are common whatever they're made of.
+  function getRarity() {
+    return hasEnchantment() ? getEnchantment().getRarity() : Rarity.common;
+  }
+
+  function hasEnchantment() { return getItemComponent().enchantment != null; }
+  function getEnchantment() { return hasEnchantment() ? Enchantment(id) : null; }
 
   return {
     getId: () => { return id; },
@@ -55,12 +57,13 @@ global.Item = function(id) {
     getIcon: () => { return getBase().getIcon(); },
     getSkill: () => { return getBase().getSkill(); },
     getCategory,
+    getType,
     getTextKey,
     getReduction,
     getDamageRange,
     getPrimaryMaterial,
     isMetal: () => { return Material.isMetal(getPrimaryMaterial()); },
-    hasEnchantment: () => { return getItemComponent().enchantment != null; },
+    hasEnchantment,
     getEnchantment,
     getValue: () => { return getItemComponent().value; },
     isLewd: () => { return getBase().isLewd(); },

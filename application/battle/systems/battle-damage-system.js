@@ -56,19 +56,16 @@ global.BattleDamageSystem = (function() {
   // TODO: This function will also need to handle the spell resistance reduction. Some spells will still have a
   //       hitLocation, but an AoE spell, targeting several positions wouldn't. In that case we'd need to get an
   //       average damage resistance. A "blade tornado" spell for instance would deal slashing damage, so we'd still
-  //       want to use character's armor's slash resistance, but average it across all locations. Other resistance
-  //       types should be additive though. A character that has a 20% percent fire damage resistance amulet and a 10%
-  //       fire damage resistance cloak should have an 30% overall fire damage resistance across every hit location.
-  //       This is the same resistance used to resist status effects. Until equipment carries elemental resistances,
-  //       elemental damage is reduced by the target's innate resistance alone.
+  //       want to use character's armor's slash resistance, but average it across all locations.
 
   // Physical damage lands somewhere, so it's reduced by whatever armor covers that location on top of the target's
-  // own resistance. Elemental damage has no location to cover yet, leaving only the innate resistance. A negative
-  // resistance is a vulnerability either way, and raises the damage rather than reducing it.
+  // own resistance, which includes what their enchanted equipment adds. Elemental damage has no location to cover,
+  // leaving only that resistance. A negative resistance is a vulnerability either way, and raises the damage rather
+  // than reducing it.
   function getReductionPercent(target, hitLocation, type) {
-    if (isPhysical(type) === false) { return cappedReduction(getInnateResistance(target, type)); }
+    if (isPhysical(type) === false) { return cappedReduction(getTargetResistance(target, type)); }
     if (hitLocation == null) { throw new Error(`applyDamage() requires a hit location.`); }
-    return cappedReduction(getEquippedReduction(target, hitLocation, type) + getInnateResistance(target, type));
+    return cappedReduction(getEquippedReduction(target, hitLocation, type) + getTargetResistance(target, type));
   }
 
   function isPhysical(type) {
@@ -83,10 +80,8 @@ global.BattleDamageSystem = (function() {
     return EquipmentComponent.lookup(target) ? EquipmentManager(target).getDamageReduction(hitLocation, type) : 0;
   }
 
-  function getInnateResistance(target, type) {
-    return BattleSystem.getState().isMonster(target) ?
-      Monster(target).getResistance(type) :
-      Character(target).getResistance(type);
+  function getTargetResistance(target, type) {
+    return BattleHelper.getCombatant(target).getResistance(type);
   }
 
   // Any time damage is applied we should call this addDownedMessage() function to add the knocked out or killed

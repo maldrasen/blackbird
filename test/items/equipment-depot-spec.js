@@ -7,6 +7,7 @@ describe('EquipmentDepot', function() {
     expect(stocks.weapons).to.not.equal(stocks.armor);
     expect(stocks).to.deep.equal(EquipmentDepot('standard').getStocks());
     expect(depot.getParameters().getMaterials().iron).to.equal(80);
+    expect(depot.getParameters().getEnchantmentChance()).to.equal(10);
     expect(GameSystem.getState().pack().equipmentDepots).to.deep.equal({ standard:stocks });
   });
 

@@ -327,6 +327,18 @@ describe("BattleDamageSystem", function() {
       expect(damage).to.equal(80);
     });
 
+    // A Firewalker's helm pinned to 8 fire resistance goes on top of the kobold's own 20.
+    it("adds enchanted resistance to the elemental damage reduction", function() {
+      const state = startBattle();
+      const target = state.getActiveMonsters()[0];
+      Random.stubBetween(8);
+      ItemFixtures.equip(target, 'helm', ['steel'], { enchantment:{ pattern:'resistant-to-fire' } });
+
+      const damage = BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ fire:100 }});
+
+      expect(damage).to.equal(72);
+    });
+
     // A kobold's psychic resistance is -10, so they take more than what was thrown at them.
     it("raises damage for a negative resistance", function() {
       const state = startBattle();

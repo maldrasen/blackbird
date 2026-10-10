@@ -29,6 +29,12 @@ global.BattleHelper = (function() {
     }
   }
 
+  // Monsters and characters answer the same questions about themselves (resistance, species) through their own
+  // wrappers, so anything that only needs those answers can take whichever one the entity is.
+  function getCombatant(id) {
+    return (MonsterComponent.lookup(id) != null) ? Monster(id) : Character(id);
+  }
+
   function getBodyPlan(target) {
     const monster = MonsterComponent.lookup(target);
     return (monster != null) ? Monster(target).getBodyPlan() : BodyPlan.humanoid;
@@ -61,6 +67,7 @@ global.BattleHelper = (function() {
   return {
     isAttackWithinRange,
     distanceBetweenPositions,
+    getCombatant,
     hasHitLocation,
     randomHitLocation,
     getChallengeTarget,

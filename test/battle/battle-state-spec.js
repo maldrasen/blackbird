@@ -71,7 +71,7 @@ describe("BattleState", function() {
   });
 
   describe("cleanup()", function() {
-    const enchantment = { type:WeaponEnchantments.endanger, species:'kobold', power:100 };
+    const enchantment = { pattern:'endanger', properties:{ species:'kobold' } };
 
     function startBattle() {
       BattleFixtures.prepareForBattle();

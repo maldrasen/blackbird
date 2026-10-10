@@ -1,9 +1,10 @@
 global.BattleFixtures = (function() {
 
-  const koboldFucker = {
-    name:'Longsword of Kobold Endangerment',
-    enchantment:{ type:WeaponEnchantments.endanger, species:'kobold', power:100 }
-  }
+  // The player's sword and the rogue's daggers are enchanted so that the fixture battles run the enchantment hooks.
+  const dualist = { enchantment:{ pattern:'dualist' }};
+  const poisoned = { enchantment:{ pattern:'poisoned-a' }};
+  const assassin =  { enchantment:{ pattern:'assassin' }};
+  const secondary = { slot:EquipmentSlot.secondary };
 
   // The party wears fixed outfits rather than shopping from an equipment depot. What a depot stocks is random, so a
   // shopper can come away missing a slot entirely (an unlucky player ends up with no pants, which changes which
@@ -38,7 +39,7 @@ global.BattleFixtures = (function() {
   function addPlayer(position) {
     const player = CharacterFixtures.randomPlayer();
     setSkill(player,'swords',Random.between(20,40));
-    ItemFixtures.equip(player, 'longsword', ['steel'], koboldFucker);
+    ItemFixtures.equip(player, 'longsword', ['steel'], dualist);
     ItemFixtures.equip(player, 'round-shield', ['steel']);
     equipOutfit(player, PlayerOutfit);
     PartyConfiguration.setCharacter(player,position);
@@ -62,8 +63,8 @@ global.BattleFixtures = (function() {
       daggers: Random.between(10,20),
     }})[0];
 
-    ItemFixtures.equip(rogue, 'dagger', ['steel']);
-    ItemFixtures.equip(rogue, 'dagger', ['steel'], { slot:EquipmentSlot.secondary });
+    ItemFixtures.equip(rogue, 'dagger', ['steel'], { ...assassin });
+    ItemFixtures.equip(rogue, 'dagger', ['steel'], { ...poisoned, ...secondary });
     equipOutfit(rogue, RogueOutfit);
     PartyConfiguration.setCharacter(rogue,position);
   }

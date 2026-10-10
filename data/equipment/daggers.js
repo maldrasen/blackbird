@@ -8,7 +8,7 @@
 BaseEquipment.register('knife', {
   nameFunction: names => { return `${names[0]} Knife`; },
   icon: 'weapons/dagger-02.png',
-  type: 'dagger',
+  type: ItemType.dagger,
   damageTypes: [
     { type:DamageType.slash, percent:60 },
     { type:DamageType.pierce, percent:40 }
@@ -25,7 +25,7 @@ BaseEquipment.register('knife', {
 BaseEquipment.register('dirk', {
   nameFunction: names => { return `${names[0]} Dirk`; },
   icon: 'weapons/dagger-02.png',
-  type: 'dagger',
+  type: ItemType.dagger,
   damageType: DamageType.pierce,
   damageRange: [40,60],
   hands: WeaponHandedness.one,
@@ -39,7 +39,7 @@ BaseEquipment.register('dirk', {
 BaseEquipment.register('dagger', {
   nameFunction: names => { return `${names[0]} Dagger`; },
   icon: 'weapons/dagger-02.png',
-  type: 'dagger',
+  type: ItemType.dagger,
   damageTypes: [
     { type:DamageType.slash, percent:60 },
     { type:DamageType.pierce, percent:40 }
@@ -56,7 +56,7 @@ BaseEquipment.register('dagger', {
 BaseEquipment.register('baselard', {
   nameFunction: names => { return `${names[0]} Baselard`; },
   icon: 'weapons/dagger-05.png',
-  type: 'dagger',
+  type: ItemType.dagger,
   damageType: DamageType.pierce,
   damageRange: [60,80],
   hands: WeaponHandedness.one,
@@ -70,7 +70,7 @@ BaseEquipment.register('baselard', {
 BaseEquipment.register('poignard', {
   nameFunction: names => { return `${names[0]} Poignard`; },
   icon: 'weapons/dagger-07.png',
-  type: 'dagger',
+  type: ItemType.dagger,
   damageType: DamageType.pierce,
   damageRange: [70,90],
   hands: WeaponHandedness.one,
@@ -84,7 +84,7 @@ BaseEquipment.register('poignard', {
 BaseEquipment.register('stiletto', {
   nameFunction: names => { return `${names[0]} Stiletto`; },
   icon: 'weapons/dagger-07.png',
-  type: 'dagger',
+  type: ItemType.dagger,
   damageType: DamageType.pierce,
   damageRange: [100,120],
   hands: WeaponHandedness.one,

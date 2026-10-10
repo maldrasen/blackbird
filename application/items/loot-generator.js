@@ -143,24 +143,9 @@ global.LootGenerator = function() {
       return;
     }
 
-    const entry = pickEntry(affordableEntries(dropTable[group] || []));
+    const entry = RarityHelper.pickByRarity(affordableEntries(dropTable[group] || []));
     if (entry) {
       drops.push({ articleCode:entry.code, quantity:(entry.quantity ? Random.between(...entry.quantity) : 1) });
-    }
-  }
-
-  function pickEntry(candidates) {
-    if (candidates.length === 0) { return null; }
-
-    const order = RarityHelper.getOrder();
-    const index = RarityHelper.rollRarityIndex();
-    const tiers = [];
-    for (let tier=index; tier>=0; tier--) { tiers.push(order[tier]); }
-    for (let tier=index+1; tier<order.length; tier++) { tiers.push(order[tier]); }
-
-    for (const rarity of tiers) {
-      const matches = candidates.filter(entry => entry.rarity === rarity);
-      if (matches.length > 0) { return Random.from(matches); }
     }
   }
 

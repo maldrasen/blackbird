@@ -68,11 +68,24 @@ global.EffectSystem = (function() {
     return BattleDamageSystem.applyDamage({ entity:entity, damageTypes:{ [effect.damageType]:damage }});
   }
 
+  // An enchantment's effects are a mixed bag, and each type knows how it's applied and who it lands on: a status
+  // goes to the target of the hit, a buff to the acting entity. The resistances are passive, read from the item by
+  // whoever is resisting, so applying one does nothing. Returns true when the effect landed.
+  function applyEnchantmentEffect(effect, context) {
+    switch (effect.type) {
+      case 'status-effect':    return applyStatus(context.T, effect);
+      case 'buff-after-round': return applyBuff(context.A, effect);
+      case 'resist-damage':    return false;
+      case 'resist-effect':    return false;
+      default: throw new Error(`The [${effect.type}] effect can't be applied by an enchantment.`);
+    }
+  }
+
   // A status effect rolls its own resistance when it lands, so anything that applies one outside a spell or consumable
   // (a natural attack's venom) goes through here as well.
   function applyStatus(entity, effect) {
     const { type, code, ...values } = effect;
-    const resist = ResistRoll(entity, StatusEffectType.lookup(code).getDamageType(), effect.strength);
+    const resist = ResistRoll(entity, StatusEffectType.lookup(code).getDamageType(), effect.strength, code);
 
     if (resist === ResistResult.pass) { return false; }
 
@@ -80,9 +93,33 @@ global.EffectSystem = (function() {
     return true;
   }
 
+  // A buff is a positive status an entity gives itself, so nothing resists it. The strength is the percent chance that
+  // it takes hold, and it stays off the status since it has nothing to say once the status has landed.
+  function applyBuff(entity, effect) {
+    const { type, code, strength, ...values } = effect;
+    Validate.isNumber('buff.strength', strength);
+    assertCanHide(entity, code);
+
+    if (Random.roll(100) >= strength) { return false; }
+
+    BattleSystem.addStatus(entity, code, values);
+    return true;
+  }
+
+  // Hiding is only possible from the back rank, which the Hide ability checks before it's offered. Nothing else that
+  // hands out the hidden status checks it, so a buff that would hide a front rank entity is a bug in whatever handed
+  // it out, and it throws rather than quietly passing for a failed roll.
+  function assertCanHide(entity, code) {
+    if (code === 'hidden' && BattleSystem.getState().isInBack(entity) === false) {
+      throw new Error(`Entity[${entity}] can't be hidden from the front rank.`);
+    }
+  }
+
   return {
     applyDuringBattle,
+    applyEnchantmentEffect,
     applyStatus,
+    applyBuff,
     getAffectedEntities,
   };
 

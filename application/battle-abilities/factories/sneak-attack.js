@@ -23,9 +23,9 @@ function getAttackText(weapon, context) {
   const type = base.getType();
   const damageTypes = base.getDamageTypes().map(damageType => damageType.type);
 
-  if (type === 'bow') { return Dialog.lookupTemplate(DialogCategory.attackText, 'sneak-attack-ranged', context); }
+  if (type === ItemType.bow) { return Dialog.lookupTemplate(DialogCategory.attackText, 'sneak-attack-ranged', context); }
   if (damageTypes.includes(DamageType.pierce)) { return Dialog.lookupTemplate(DialogCategory.attackText, 'sneak-attack-pierce', context); }
-  if (['axe','mace'].includes(type)) { return Dialog.lookupTemplate(DialogCategory.attackText, 'sneak-attack-swing', context); }
+  if ([ItemType.axe, ItemType.mace].includes(type)) { return Dialog.lookupTemplate(DialogCategory.attackText, 'sneak-attack-swing', context); }
 
   return `[TODO: Sneak attack with ${base.getCode()}]`;
 }

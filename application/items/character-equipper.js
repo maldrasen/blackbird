@@ -32,17 +32,17 @@ global.CharacterEquipper = function(id) {
   // Only real weapon skills are considered when looking at what a character is trained in. Skills like block and
   // martial-arts are martial skills, but they don't map to a weapon we'd buy.
   const WeaponTypeBySkill = {
-    axes: 'axe',
-    bows: 'bow',
-    daggers: 'dagger',
-    maces: 'mace',
-    polearms: 'polearm',
-    swords: 'sword',
-    whips: 'whip',
+    axes: ItemType.axe,
+    bows: ItemType.bow,
+    daggers: ItemType.dagger,
+    maces: ItemType.mace,
+    polearms: ItemType.polearm,
+    swords: ItemType.sword,
+    whips: ItemType.whip,
   };
 
-  const StrengthWeaponTypes = ['axe','mace','polearm'];
-  const DexterityWeaponTypes = ['bow','dagger','whip'];
+  const StrengthWeaponTypes = [ItemType.axe, ItemType.mace, ItemType.polearm];
+  const DexterityWeaponTypes = [ItemType.bow, ItemType.dagger, ItemType.whip];
 
   //  - budget - The maximum a character can spend on any one piece of equipment, scaled by the SlotBudgetPercent.
   //  - bareHanded - This character will not buy weapons if this is true.

@@ -2,7 +2,7 @@
 BaseEquipment.register('spear', {
   nameFunction: names => { return `${names[0]} Spear`; },
   icon: 'weapons/spear-01.png',
-  type: 'polearm',
+  type: ItemType.polearm,
   damageType: DamageType.pierce,
   damageRange: [50,100],
   hands: WeaponHandedness.two,
@@ -16,7 +16,7 @@ BaseEquipment.register('spear', {
 BaseEquipment.register('pike', {
   nameFunction: names => { return `${names[0]} Pike`; },
   icon: 'weapons/spear-01.png',
-  type: 'polearm',
+  type: ItemType.polearm,
   damageType: DamageType.pierce,
   damageRange: [40,90],
   hands: WeaponHandedness.two,
@@ -30,7 +30,7 @@ BaseEquipment.register('pike', {
 BaseEquipment.register('halberd', {
   nameFunction: names => { return `${names[0]} Halberd`; },
   icon: 'weapons/halberd-01.png',
-  type: 'polearm',
+  type: ItemType.polearm,
   damageTypes: [
     { type:DamageType.slash, percent:60 },
     { type:DamageType.pierce, percent:40 }
@@ -47,7 +47,7 @@ BaseEquipment.register('halberd', {
 BaseEquipment.register('glaive', {
   nameFunction: names => { return `${names[0]} Glaive`; },
   icon: 'weapons/glaive-01.png',
-  type: 'polearm',
+  type: ItemType.polearm,
   damageType: DamageType.slash,
   damageRange: [70,140],
   hands: WeaponHandedness.two,
@@ -61,7 +61,7 @@ BaseEquipment.register('glaive', {
 BaseEquipment.register('scythe', {
   nameFunction: names => { return `${names[0]} Scythe`; },
   icon: 'weapons/scythe-01.png',
-  type: 'polearm',
+  type: ItemType.polearm,
   damageType: DamageType.slash,
   damageRange: [60,130],
   hands: WeaponHandedness.two,
@@ -75,7 +75,7 @@ BaseEquipment.register('scythe', {
 BaseEquipment.register('trident', {
   nameFunction: names => { return `${names[0]} Trident`; },
   icon: 'weapons/trident-01.png',
-  type: 'polearm',
+  type: ItemType.polearm,
   damageType: DamageType.pierce,
   damageRange: [55,120],
   hands: WeaponHandedness.two,
@@ -90,7 +90,7 @@ BaseEquipment.register('trident', {
 BaseEquipment.register('ranseur', {
   nameFunction: names => { return `${names[0]} Ranseur`; },
   icon: 'weapons/trident-01.png',
-  type: 'polearm',
+  type: ItemType.polearm,
   damageType: DamageType.pierce,
   damageRange: [60,120],
   hands: WeaponHandedness.two,

@@ -9,7 +9,12 @@ global.Monster = function(id) {
   function getResistance(type) {
     const speciesResistance = getSpecies() ? Species.lookup(getSpecies()).getResistance(type) : 0;
     const monsterResistance = getBaseMonster().getResistance(type);
-    return speciesResistance + monsterResistance;
+    const equipmentResistance = EquipmentComponent.lookup(id) ? EquipmentManager(id).getEnchantedDamageResistance(type) : 0;
+    return speciesResistance + monsterResistance + equipmentResistance;
+  }
+
+  function getEffectResistance(code) {
+    return EquipmentComponent.lookup(id) ? EquipmentManager(id).getEnchantedEffectResistance(code) : 0;
   }
 
   function populateThreatTable() {
@@ -48,6 +53,7 @@ global.Monster = function(id) {
     getCode,
     getBaseMonster,
     getResistance,
+    getEffectResistance,
     getSpecies,
     getArchetype,
     getType: () => { return MonsterType.lookup(getBaseMonster().getType()); },

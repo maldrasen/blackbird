@@ -125,20 +125,25 @@ describe('Item', function() {
       expect(sword.getEnchantment()).to.equal(null);
     });
 
-    it('gives a weapon a weapon enchantment', function() {
-      const enchantment = { type:WeaponEnchantments.endanger, species:'kobold', power:100 };
-      const sword = build('longsword',['steel'],{ enchantment });
+    it('wraps the enchantment when there is one', function() {
+      const sword = build('longsword',['steel'],{ enchantment:{ pattern:'endanger', properties:{ species:'kobold' } } });
       expect(sword.hasEnchantment()).to.be.true;
-      expect(sword.getEnchantment().getType()).to.equal(WeaponEnchantments.endanger);
-      expect(sword.getEnchantment().processOnHit).to.be.a('function');
+      expect(sword.getEnchantment().getPattern()).to.equal('endanger');
+      expect(sword.getEnchantment().getProperty('species')).to.equal('kobold');
+    });
+  });
+
+  describe('getRarity()', function() {
+    it('is common without an enchantment, whatever the material', function() {
+      expect(build('longsword',['steel']).getRarity()).to.equal(Rarity.common);
+      expect(build('longsword',['silver']).getRarity()).to.equal(Rarity.common);
     });
 
-    it('gives armor and shields an armor enchantment', function() {
-      const enchantment = { type:ArmorEnchantments.resist, power:50 };
-      const shield = build('buckler',['silver'],{ enchantment });
-      expect(shield.getEnchantment().getType()).to.equal(ArmorEnchantments.resist);
-      expect(shield.getEnchantment().getPower()).to.equal(100);
-      expect(shield.getEnchantment().processOnHit).to.be.undefined;
+    it('takes the rarity of the enchantment', function() {
+      const sword = build('longsword',['steel'],{ enchantment:{ pattern:'endanger', properties:{ species:'kobold' } } });
+      const helm = build('helm',['steel'],{ enchantment:{ pattern:'resistant-to-fire' } });
+      expect(sword.getRarity()).to.equal(Rarity.unusual);
+      expect(helm.getRarity()).to.equal(Rarity.rare);
     });
   });
 

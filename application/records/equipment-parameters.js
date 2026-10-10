@@ -3,6 +3,6 @@ Record.define('EquipmentParameters', {
     getMaterials: () => { return { ...parameters.materials }; },
     getWeapons: () => { return { ...parameters.weapons }; },
     getArmor: () => { return { ...parameters.armor }; },
-    getEnchantments: () => { return { ...parameters.enchantments }; },
+    getEnchantmentChance: () => { return parameters.enchantmentChance || 0; },
   }),
 });

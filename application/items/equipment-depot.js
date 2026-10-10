@@ -7,11 +7,9 @@ global.EquipmentDepot = function(code) {
   function fetch(id) { return InventoryComponent.lookup(id); }
   function update(id, inventory) { Registry.updateComponent(id, ComponentType.inventory, inventory); }
 
-  // TODO: The equipment parameters should include an enchantment chance. When building a new item, we should roll to
-  //       see if there should be an enchantment, then create random enchantment options to send to the factory. Other
-  //       options, like the name or text key may be used by unique weapons. The depot won't be building unique
-  //       weapons, and I'm not sure the factory would either honestly.
-
+  // Every item built for stock has the depot's chance of coming out enchanted. Named or unique weapons aren't the
+  // depot's business; it only ever stocks what the parameters list.
+  //
   // Every item picked since the last restock pushes the oldest item out of the stock as well, so the depot can't clog
   // with expensive equipment that no monster can afford within their budget. Items are stocked in the order they're
   // built, which keeps the oldest at the front. The eviction happens here rather than in pickItem() so that a list of
@@ -28,7 +26,9 @@ global.EquipmentDepot = function(code) {
     const shortfall = stockSize - inventory.items.length;
 
     for (let i=0; i<shortfall; i++) {
-      inventory.items.push(factory.build(Random.fromFrequencyMap(equipment)));
+      const id = factory.build(Random.fromFrequencyMap(equipment));
+      Enchanter.rollForEnchantment(id, parameters.getEnchantmentChance());
+      inventory.items.push(id);
     }
 
     update(id, inventory);

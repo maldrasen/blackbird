@@ -33,8 +33,8 @@ EquipmentParameters.register('vermen',{
   // naked and screaming.
   armor:{},
 
-  enchantments:{
-    // Poison, venom and diseased weapons should be common.
-  },
+  // TODO: Poison, venom and diseased weapons should be common for the vermen, which needs the depot to weight the
+  //       patterns it picks from rather than taking them by rarity alone.
+  enchantmentChance: 5,
 
 });

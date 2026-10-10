@@ -96,26 +96,46 @@ global.EquipmentManager = function(characterId) {
     return (slot != null) ? equipItem(null, slot) : [];
   }
 
+  // Every equipped item carrying a resistance enchantment adds its strength to the wearer's resistance: resist-damage
+  // against a damage type, resist-effect against a status effect. The totals aren't capped here: the damage pipeline
+  // caps what it turns away, while the resist roll takes the whole amount.
+  function getEnchantedDamageResistance(damageType) {
+    return sumEnchantments(enchantment => enchantment.getDamageResistance(damageType));
+  }
+
+  function getEnchantedEffectResistance(code) {
+    return sumEnchantments(enchantment => enchantment.getEffectResistance(code));
+  }
+
+  function sumEnchantments(valueOf) {
+    return getEquippedItems().reduce((total, itemId) => {
+      const enchantment = Item(itemId).getEnchantment();
+      return total + (enchantment ? valueOf(enchantment) : 0);
+    }, 0);
+  }
+
+  function getEquippedItems() {
+    const equipment = fetch();
+    return Object.values(EquipmentSlot).map(slot => equipment[slot]).filter(itemId => itemId != null);
+  }
+
   // Build an equipment summary, displayed in the detail panel. Also can be used by the battle system to get a
-  // character's resistance totals. These are the effective resistances, with the wearer's innate resistance included.
-  // Physical damage lands on a hit location, so those reductions are listed per location. The other damage types are
-  // whole body.
+  // character's resistance totals. These are the effective resistances: the wearer's own resistance, which includes
+  // what their enchanted equipment adds, plus the armor covering each hit location for physical damage. The other
+  // damage types are whole body.
   //   { physical:{ head:{ crush, slash, pierce }, ... }, magical:{ fire, shock, ... } }
-  //
-  // TODO: Equipment doesn't carry elemental resistances yet. Once the armor enchantments do they get added to the
-  //       magical resistances here.
   function summarizeResistances() {
     const summary = { physical:{}, magical:{} };
 
     hitLocations.forEach(location => {
       summary.physical[location] = {};
       physicalTypes.forEach(type => {
-        summary.physical[location][type] = cappedReduction(getDamageReduction(location, type) + getInnateResistance(type));
+        summary.physical[location][type] = cappedReduction(getDamageReduction(location, type) + getWearerResistance(type));
       });
     });
 
     Object.values(DamageType).filter(type => physicalTypes.includes(type) === false).forEach(type => {
-      const resistance = cappedReduction(getInnateResistance(type));
+      const resistance = cappedReduction(getWearerResistance(type));
       if (resistance !== 0) {
         summary.magical[type] = resistance;
       }
@@ -128,10 +148,8 @@ global.EquipmentManager = function(characterId) {
     return Math.min(reduction, BattleConstants.maxReduction);
   }
 
-  function getInnateResistance(type) {
-    return MonsterComponent.lookup(characterId) != null ?
-      Monster(characterId).getResistance(type) :
-      Character(characterId).getResistance(type);
+  function getWearerResistance(type) {
+    return BattleHelper.getCombatant(characterId).getResistance(type);
   }
 
   // Real main and off hand weapon damage ranges given the character's strength. A weapon's attack power is the percent
@@ -234,6 +252,8 @@ global.EquipmentManager = function(characterId) {
     getEquippedShield,
     hasEquippedWeaponType,
     getDamageReduction,
+    getEnchantedDamageResistance,
+    getEnchantedEffectResistance,
     summarizeResistances,
     summarizeDamages,
     summarizeWeapon,

@@ -6,6 +6,7 @@ global.PhysicalAttackSystem = (function() {
     const round = BattleSystem.getRound();
     const attacker = round.getActing();
     const target = round.getTarget();
+    const weapon = attackRoll.getWeapon();
 
     const damageRoll = DamageRoll(attacker, attackRoll, defendRoll);
     const damageTypes = damageRoll.getDamageTypes();
@@ -14,15 +15,7 @@ global.PhysicalAttackSystem = (function() {
       round.addMessage(damageRoll.getMessage());
     }
 
-    // If the hit comes from a real weapon with a weapon enchantment, we process the on hit effect of the enchantment.
-    // This can add a message or modify the raw attack damage. If the damage is adjusted by the enchantment the
-    // damageTypes object is modified from within the processOnHit() function.
-    if (attackRoll.getWeapon()) {
-      const weapon = attackRoll.getWeapon();
-      if (weapon.hasEnchantment()) {
-        weapon.getEnchantment().processOnHit(damageTypes);
-      }
-    }
+    EnchantmentSystem.processBeforeHit(weapon, damageTypes);
 
     const actualDamage = BattleDamageSystem.applyDamage({
       entity: target,
@@ -36,6 +29,11 @@ global.PhysicalAttackSystem = (function() {
     Console.log(`Damage Roll [${attacker}]`,{ system:'BattleSystem', level:3, data:{
       actualDamage, damageTypes
     }});
+
+    // A status applied after the hit waits for the next attack, which a downed target won't be taking.
+    if (BattleSystem.getState().isDown(target) === false) {
+      EnchantmentSystem.processAfterHit(weapon);
+    }
 
     BattleDamageSystem.addDownedMessage(target);
   }

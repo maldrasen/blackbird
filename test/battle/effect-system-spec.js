@@ -58,7 +58,7 @@ describe("EffectSystem", function() {
   // The damage dice come from the separate rollDice queue.
   function stubStory() { return [0, 0]; }
   function stubFailedResist() { return [10, 10, 10, 5]; }
-  function stubPassedResist() { return [10, 90, 10, 5]; }
+  function stubPassedResist() { return [10, 15, 10, 2]; }
 
   describe("applyDuringBattle()", function() {
     it("hits every entity caught in the blast", function() {
@@ -136,6 +136,22 @@ describe("EffectSystem", function() {
       expect(messages[1].text).to.include('takes 4 damage!');
     });
 
+    // The victim's Vigilant helm is pinned to 12 blind resistance, so the blind resist spends a roll on it (the 11)
+    // while the stun resist still skips straight to the power side.
+    it("counts the victim's enchanted resistance against the effect being applied", function() {
+      const state = startBattle();
+      const victim = isolateVictim(state);
+      Random.stubBetween(12);
+      ItemFixtures.equip(victim, 'helm', ['steel'], { enchantment:{ pattern:'vigilant' } });
+
+      Random.stubRoll(...stubStory(), 10, 15, 11, 10, 2, ...stubFailedResist());
+      Random.stubRollDice(4);
+      throwBlasto(state, state.getEntityAtPosition('M',0,1));
+
+      expect(StatusEffects(victim).hasBlind()).to.equal(false);
+      expect(StatusEffects(victim).hasStun()).to.equal(true);
+    });
+
     // No resist rolls are stubbed here: the damage downs the victim, so trying to apply the statuses anyway would
     // throw for running out of stubbed values.
     it("stops applying effects to a victim the damage downs", function() {
@@ -154,6 +170,46 @@ describe("EffectSystem", function() {
       expect(messages[1].text).to.include('takes 6 damage!');
       expect(messages[2].text).to.include('was knocked out!');
       expect(messages[2].color).to.equal('important');
+    });
+  });
+
+  // A buff rolls a single d100 against its strength and nothing else, so one stubbed roll decides it.
+  describe("applyBuff()", function() {
+    it("takes hold when the roll comes under its strength", function() {
+      const state = startBattle();
+      const acting = state.getEntityAtPosition('P',1,2);
+
+      Random.stubRoll(29);
+      const landed = EffectSystem.applyBuff(acting, Effect.buffAfterRound('poised', { strength:30, count:1 }));
+
+      expect(landed).to.equal(true);
+      expect(StatusEffects(acting).get('poised')).to.include({ count:1, strength:null });
+    });
+
+    it("fails when the roll reaches its strength", function() {
+      const state = startBattle();
+      const acting = state.getEntityAtPosition('P',1,2);
+
+      Random.stubRoll(30);
+      const landed = EffectSystem.applyBuff(acting, Effect.buffAfterRound('hidden', { strength:30 }));
+
+      expect(landed).to.equal(false);
+      expect(StatusEffects(acting).hasHidden()).to.equal(false);
+    });
+
+    it("throws for a buff without a strength", function() {
+      const state = startBattle();
+      const acting = state.getEntityAtPosition('P',1,2);
+
+      expect(() => EffectSystem.applyBuff(acting, Effect.buffAfterRound('hidden'))).to.throw('buff.strength');
+    });
+
+    it("throws for a hidden buff on an entity in the front rank", function() {
+      const state = startBattle();
+      const acting = state.getEntityAtPosition('P',0,2);
+
+      expect(() => EffectSystem.applyBuff(acting, Effect.buffAfterRound('hidden', { strength:100 }))).
+        to.throw("can't be hidden from the front rank");
     });
   });
 
