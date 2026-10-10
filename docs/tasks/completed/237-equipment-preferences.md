@@ -25,3 +25,13 @@ For this step, I think we start with the value as a baseline. Then use their equ
 > We're able to tag some base equipment based on the shape and coverage of that equipment. All hauberks are formidable. Other tags will depend on the primary material. Something made of silk is lavish. Something made of leather is natural. The equipment builder will need to add tags as items are built.
 
 > There's another step here that will only come when we start adding item descriptions. If an item is black or decorated with skulls it becomes morbid. We don't know any of that though until we do the step that adds such details to the items.
+
+---
+## Implemented
+Items carry style tags (`ItemStyle`). A base equipment record lists the tags its shape earns (hauberks and plate are formidable, corsets are slutty and feminine), and the equipment factory adds the tags of the item's primary material when it's built: silk and silver are lavish, leather and wood are natural, bone, flint, and stone are barbaric. Wool, iron, and steel say nothing. The tags are stored on the item component, so a future item description pass can add its own (black and skulls would be morbid).
+
+`EquipmentTaste(characterId)` answers how much a character wants to wear an item. `getPreference(itemId)` sums the archetype's weight for each of the item's tags, plus a fixed gender table: males weigh feminine at -80, females weigh masculine at -40, futa and none weigh nothing. `acceptsBare(slot)` is always true for the head, hands, and feet. For the chest and legs it's only true when the archetype's slutty weight is above zero, on the grounds that being bare there is itself slutty.
+
+The equipper scores each affordable piece of armor as `value + slotBudget × preference / 100`, so a +100 preference is worth one slot budget and a strong dislike pushes a cheap piece negative no matter how rich the shopper is. The pick is random among the pieces within 80% of the best positive score, which for a character with no opinion is the same as shopping by value. When nothing scores above zero the slot stays empty, unless the character doesn't accept being bare there, in which case they take the least hated piece. Weapons and shields are still picked by value alone.
+
+A character can't yet refuse to wear something they're handed. That should go through `EquipmentTaste` when it's added.

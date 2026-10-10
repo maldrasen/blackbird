@@ -12,7 +12,7 @@ This month that's mostly the dungeon side: learning spells and abilities, people
 - [x] [246] Party inventory overlay `5pt` — [246-party-inventory-overlay.md](246-party-inventory-overlay.md)
 - [x] [142] Item detail panel `8pt` — [142-item-detail-panel.md](142-item-detail-panel.md)
 - [x] [228] Effect based enchantments `3pt` — [228-effect-based-enchantments.md](228-effect-based-enchantments.md)
-- [ ] [237] Equipment preferences `3pt` — [237-equipment-preferences.md](237-equipment-preferences.md)
+- [x] [237] Equipment preferences `3pt` — [237-equipment-preferences.md](237-equipment-preferences.md)
 - [ ] [014] Bows & arrows `5pt` — [014-bows-arrows.md](014-bows-arrows.md)
 - [ ] [229] Implement ammunition `3pt` — [229-implment-ammunition.md](229-implment-ammunition.md)
 - [ ] [230] Add draw weight for bows `3pt` — [230-add-draw-weight-for-bows.md](230-add-draw-weight-for-bows.md)
