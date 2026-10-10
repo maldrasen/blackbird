@@ -36,8 +36,10 @@ global.EquipmentFactory = function(availableMaterials) {
       return Random.fromFrequencyMap(frequencies);
     }
 
-    // The item's style comes from its shape and from what it's mostly made of, so the base record's tags are joined
-    // by the primary material's.
+    // TODO: Currently an item's styles comes from its shape and from what it's mostly made of. We'll eventually add
+    //       more item properties, used to build the item descriptions, that will also add their own style tags. A
+    //       'morbid' item for instance could have skull embellishments. A 'cute' item could have bows, or ruffles.
+    //       For now though, we simply add the primary material's tags to the base's tags.
     function setTags() {
       const primary = Object.keys(item.materials)[0];
       item.tags = [...new Set([...base.getTags(), ...Material.lookup(primary).getTags()])];
