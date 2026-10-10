@@ -471,12 +471,15 @@ global.ItemType = {
 global.ItemStyle = {
   barbaric: 'barbaric',
   cute: 'cute',
+  degrading: 'degrading',
   feminine: 'feminine',
   formidable: 'formidable',
   lavish: 'lavish',
   masculine: 'masculine',
+  masochistic: 'masochistic',
   morbid: 'morbid',
   natural: 'natural',
+  restrictive: 'restrictive',
   slutty: 'slutty',
 };
 
