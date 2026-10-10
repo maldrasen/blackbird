@@ -9,7 +9,7 @@ Record.define('BaseEquipment', {
   getInstance: record => {
 
     function isWeapon() { return record.damageRange != null; }
-    function isShield() { return record.type === 'shield'; }
+    function isShield() { return record.type === ItemType.shield; }
     function isLewd() { return record.lewd === true; }
     function hasReduction() { return record.reduction != null; }
 
