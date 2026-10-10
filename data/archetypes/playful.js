@@ -8,7 +8,7 @@ Archetype.register(ArchetypeCode.playful, {
     [ItemStyle.lavish]: 60,
     [ItemStyle.morbid]: -10,
     [ItemStyle.natural]: 20,
-    [ItemStyle.slutty]: -20,
+    [ItemStyle.slutty]: 20,
   },
 
   denialStyle: DenialStyle.frightened,
