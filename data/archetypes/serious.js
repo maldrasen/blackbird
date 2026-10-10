@@ -1,7 +1,16 @@
 Archetype.register(ArchetypeCode.serious, {
   name: 'Serious',
 
-  outfitStyles: [OutfitStyle.sensible],
+  equipmentPreferences: {
+    [ItemStyle.barbaric]: 30,
+    [ItemStyle.cute]: -40,
+    [ItemStyle.formidable]: 100,
+    [ItemStyle.lavish]: -30,
+    [ItemStyle.morbid]: 0,
+    [ItemStyle.natural]: 80,
+    [ItemStyle.slutty]: -50,
+  },
+
   denialStyle: DenialStyle.violent,
   negotiationStyle: NegotiationStyle.serious,
   sexStyle: SexStyle.gentle,

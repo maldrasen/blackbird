@@ -15,3 +15,5 @@ We need to take a character's personality and sexual preferences into account wh
 The equipArmor() function is fairly simple right now. They'll pick whatever armor has the highest value within their budget. We'll need to extend this by adding a scoring step, where each armor piece is balanced by how well it works against how willing they are to wear it. This will become more important as more exotic and unusual armors and outfits are added.
 
 I don't think any of this applies to weapons though. 
+
+> The Archetypes already have an outfitStyles property, though I don't think I've used it anywhere yet. One possible implementation of this is we can change the outfit styles to a map of tag weights, and give equipment tags.

@@ -1,7 +1,16 @@
 Archetype.register(ArchetypeCode.playful, {
   name: 'Playful',
 
-  outfitStyles: [OutfitStyle.flirty],
+  equipmentPreferences: {
+    [ItemStyle.barbaric]: 20,
+    [ItemStyle.cute]: 100,
+    [ItemStyle.formidable]: -30,
+    [ItemStyle.lavish]: 60,
+    [ItemStyle.morbid]: -10,
+    [ItemStyle.natural]: 20,
+    [ItemStyle.slutty]: -20,
+  },
+
   denialStyle: DenialStyle.frightened,
   negotiationStyle: NegotiationStyle.playful,
   sexStyle: SexStyle.frisky,

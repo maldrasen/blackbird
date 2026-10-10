@@ -1,7 +1,16 @@
 Archetype.register(ArchetypeCode.brat, {
   name: 'Brat',
 
-  outfitStyles: [OutfitStyle.flirty],
+  equipmentPreferences: {
+    [ItemStyle.barbaric]: 20,
+    [ItemStyle.cute]: 80,
+    [ItemStyle.formidable]: -20,
+    [ItemStyle.lavish]: 100,
+    [ItemStyle.morbid]: -20,
+    [ItemStyle.natural]: 0,
+    [ItemStyle.slutty]: 40,
+  },
+
   denialStyle: DenialStyle.angry,
   negotiationStyle: NegotiationStyle.brat,
   sexStyle: SexStyle.frisky,

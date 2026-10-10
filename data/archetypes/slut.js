@@ -1,7 +1,16 @@
 Archetype.register(ArchetypeCode.slut, {
   name: 'Slut',
 
-  outfitStyles: [OutfitStyle.slutty],
+  equipmentPreferences: {
+    [ItemStyle.barbaric]: -30,
+    [ItemStyle.cute]: 20,
+    [ItemStyle.formidable]: -60,
+    [ItemStyle.lavish]: 60,
+    [ItemStyle.morbid]: -20,
+    [ItemStyle.natural]: 20,
+    [ItemStyle.slutty]: 100,
+  },
+
   denialStyle: DenialStyle.horny,
   negotiationStyle: NegotiationStyle.lewd,
   sexStyle: SexStyle.shameless,

@@ -468,11 +468,13 @@ global.ItemType = {
   legs: 'legs',
 }
 
-global.OutfitStyle = {
+global.ItemStyle = {
   barbaric: 'barbaric',
-  flirty: 'flirty',
+  cute: 'cute',
+  formidable: 'formidable',
+  lavish: 'lavish',
+  morbid: 'morbid',
   natural: 'natural',
-  sensible: 'sensible',
   slutty: 'slutty',
 };
 

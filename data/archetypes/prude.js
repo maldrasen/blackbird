@@ -2,7 +2,16 @@ Archetype.register(ArchetypeCode.prude, {
   name: 'Prude',
   parent: 'serious',
 
-  outfitStyles: [OutfitStyle.sensible],
+  equipmentPreferences: {
+    [ItemStyle.barbaric]: 10,
+    [ItemStyle.cute]: 30,
+    [ItemStyle.formidable]: 100,
+    [ItemStyle.lavish]: 60,
+    [ItemStyle.morbid]: 10,
+    [ItemStyle.natural]: 40,
+    [ItemStyle.slutty]: -100,
+  },
+
   denialStyle: DenialStyle.violent,
   negotiationStyle: NegotiationStyle.serious,
   sexStyle: SexStyle.bashful,
