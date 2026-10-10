@@ -18,6 +18,10 @@
 // enchanted silver equipment both valuable and powerful. Silk is the same story in cloth - thin and weak on its own,
 // but it takes an enchantment far better than wool. The absorption values here are a first pass and get tuned as the
 // armor is built out.
+//
+// A material can also carry style tags. An item built from the material takes the tags of its primary material on top
+// of its base record's tags, and the tags only matter when a character weighs whether they'd like to wear the item.
+// The plain working materials (wool, iron, steel) say nothing about an item's style.
 
 Material.register('wool', {
   name: 'Wool',
@@ -31,6 +35,7 @@ Material.register('wool', {
 Material.register('silk', {
   name: 'Silk',
   cost: 12,
+  tags: [ItemStyle.lavish],
   factors: {
     absorption: 0.12,
     potential: 1.8,
@@ -40,6 +45,7 @@ Material.register('silk', {
 Material.register('wood', {
   name: 'Wood',
   cost: 1,
+  tags: [ItemStyle.natural],
   factors: {
     absorption: 0.4,
     heft: 1.0,
@@ -51,6 +57,7 @@ Material.register('wood', {
 Material.register('bone', {
   name: 'Bone',
   cost: 2,
+  tags: [ItemStyle.barbaric],
   factors: {
     absorption: 0.5,
     heft: 1.0,
@@ -62,6 +69,7 @@ Material.register('bone', {
 Material.register('flint',{
   name: 'Flint',
   cost: 1,
+  tags: [ItemStyle.barbaric],
   factors: {
     sharpness: 0.75,
     potential: 0.66,
@@ -71,6 +79,7 @@ Material.register('flint',{
 Material.register('stone',{
   name: 'Stone',
   cost: 1,
+  tags: [ItemStyle.barbaric],
   factors: {
     heft: 0.75,
     potential: 0.5,
@@ -80,6 +89,7 @@ Material.register('stone',{
 Material.register('leather', {
   name: 'Leather',
   cost: 4,
+  tags: [ItemStyle.natural],
   factors: {
     absorption: 0.35,
     lash: 1.0,
@@ -116,6 +126,7 @@ Material.register('steel', {
 Material.register('silver', {
   name: 'Silver',
   cost: 50,
+  tags: [ItemStyle.lavish],
   factors: {
     absorption: 0.6,
     heft: 1.0,
