@@ -29,6 +29,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [256] Unhack WeaverElements lootBlock `3pt` — [256-unhack-weaver-elements-loot-block.md](256-unhack-weaver-elements-loot-block.md)
 - [257] Turn DungeonControl into a GameControl `5pt` — [257-turn-dungeoncontrol-into-a-gamecontrol.md](257-turn-dungeoncontrol-into-a-gamecontrol.md)
 - [262] Implement toxic status `3pt` — [262-implement-toxic-status.md](262-implement-toxic-status.md)
+- [263] Change weapon color in battle messages `1pt` — [263-change-weapon-color-in-battle-messages.md](263-change-weapon-color-in-battle-messages.md)
 
 ## Priority 3
 
@@ -64,6 +65,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [239] Dungeon Light emitters `5pt` — [239-dungeon-light-emitters.md](239-dungeon-light-emitters.md)
 - [242] More Negotiation Requests `8pt` — [242-more-negotiation-requests.md](242-more-negotiation-requests.md)
 - [259] UI Debug Fixture `8pt` — [259-ui-debug-fixture.md](259-ui-debug-fixture.md)
+- [264] Status effect tooltips `3pt` — [264-status-effect-tooltips.md](264-status-effect-tooltips.md)
 
 ## Priority 4
 
