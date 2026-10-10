@@ -19,7 +19,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [197] Skill events `5pt` — [197-skill-episodes.md](197-skill-episodes.md)
 - [229] Implment ammunition `3pt` — [229-implment-ammunition.md](229-implment-ammunition.md)
 - [230] Add draw weight for bows. `3pt` — [230-add-draw-weight-for-bows.md](230-add-draw-weight-for-bows.md)
-- [237] The Character Equipper Should Honor Gender and Sexual Preferences `3pt` — [237-equipper-should-honor-gender.md](237-equipper-should-honor-gender.md)
+- [237] Equipment Preferences `3pt` — [237-equipment-preferences.md](237-equipment-preferences.md)
 - [240] Safe Rooms `3pt` — [240-safe-rooms.md](240-safe-rooms.md)
 - [250] Casting Spells `8pt` — [250-casting-spells.md](250-casting-spells.md)
 - [251] Learning Spells `5pt` — [251-learning-spells.md](251-learning-spells.md)
