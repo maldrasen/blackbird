@@ -2,7 +2,7 @@ Record.define('Archetype', {
   getInstance: archetype => ({
     getName: () => { return archetype.name; },
     getRequires: () => { return archetype.requires; },
-    getEquipmentPreferences: () => { return archetype.outfitStyles; },
+    getEquipmentPreferences: () => { return archetype.equipmentPreferences; },
     getDenialStyle: () => { return archetype.denialStyle; },
     getNegotiationStyle: () => { return archetype.negotiationStyle; },
     getSexStyle: () => { return archetype.sexStyle; },
