@@ -17,3 +17,7 @@ The equipArmor() function is fairly simple right now. They'll pick whatever armo
 I don't think any of this applies to weapons though. 
 
 > The Archetypes already have an outfitStyles property, though I don't think I've used it anywhere yet. One possible implementation of this is we can change the outfit styles to a map of tag weights, and give equipment tags.
+
+> We're able to tag some base equipment based on the shape and coverage of that equipment. All hauberks are formidable. Other tags will depend on the primary material. Something made of silk is lavish. Something made of leather is natural. The equipment builder will need to add tags as items are built.
+
+> There's another step here that will only come when we start adding item descriptions. If an item is black or decorated with skulls it becomes morbid. We don't know any of that though until we do the step that adds such details to the items.
