@@ -1,4 +1,5 @@
 {
+  "autoMemoryDirectory": "./memory",
   "permissions": {
     "additionalDirectories": ["../blackbird-testbed"],
     "allow": [

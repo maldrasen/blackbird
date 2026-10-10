@@ -817,7 +817,6 @@
     "test/training/position-controller-spec.js",
     "test/training/sensation-results/sensation-arousal-spec.js",
     "test/training/sensation-results/sensation-baseline-spec.js",
-    "test/training/sensation-results/sensation-orientation-spec.js",
     "test/training/sensation-results/sensation-performance-spec.js",
     "test/training/sensation-results/sensation-preferences-spec.js",
     "test/training/sensation-results/sensation-result-spec.js",
