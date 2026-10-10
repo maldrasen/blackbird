@@ -471,8 +471,10 @@ global.ItemType = {
 global.ItemStyle = {
   barbaric: 'barbaric',
   cute: 'cute',
+  feminine: 'feminine',
   formidable: 'formidable',
   lavish: 'lavish',
+  masculine: 'masculine',
   morbid: 'morbid',
   natural: 'natural',
   slutty: 'slutty',

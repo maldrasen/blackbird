@@ -75,11 +75,18 @@ Record.define('BaseEquipment', {
       getReductionMap,
       getMaterials: () => { return record.materials; },
       getEffort: () => { return record.effort || 0; },
+      getTags: () => { return record.tags || []; },
       getTextKey: () => { return record.textKey; },
       isWeapon,
       isShield,
       isLewd,
       hasReduction,
     };
+  },
+
+  validate: (record, code) => {
+    (record.tags || []).forEach(tag => {
+      Validate.isIn(`BaseEquipment[${code}].tags`, tag, Object.values(ItemStyle));
+    });
   },
 });
