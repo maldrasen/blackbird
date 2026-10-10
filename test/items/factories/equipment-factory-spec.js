@@ -60,6 +60,31 @@ describe("EquipmentFactory", function() {
     });
   });
 
+  describe("tags", function() {
+    it("joins the base record's tags with the primary material's", function() {
+      expect(Item(EquipmentFactory({ leather:1 }).build('low-corset')).getTags()).to.deep.equal([
+        ItemStyle.slutty, ItemStyle.feminine, ItemStyle.natural,
+      ]);
+    });
+
+    it("takes the material's tags alone when the base has none", function() {
+      expect(Item(EquipmentFactory({ silk:1 }).build('doublet')).getTags()).to.deep.equal([ItemStyle.lavish]);
+    });
+
+    it("takes the base's tags alone when the material has none", function() {
+      expect(Item(EquipmentFactory({ steel:1 }).build('plate')).getTags()).to.deep.equal([ItemStyle.formidable]);
+    });
+
+    it("has no tags when neither has any", function() {
+      expect(Item(EquipmentFactory({ steel:1 }).build('longsword')).getTags()).to.deep.equal([]);
+    });
+
+    it("only reads the primary material", function() {
+      Random.stubFrom('bone', 'iron');
+      expect(Item(EquipmentFactory().build('flail')).getTags()).to.deep.equal([ItemStyle.barbaric]);
+    });
+  });
+
   describe("options", function() {
     it("takes a name and text key from the options", function() {
       const weapon = Item(EquipmentFactory({ steel:1 }).build('longsword', {

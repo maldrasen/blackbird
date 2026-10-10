@@ -10,6 +10,7 @@ global.EquipmentFactory = function(availableMaterials) {
     const item = { base:code };
 
     setMaterials();
+    setTags();
     setName();
     setOverrides();
 
@@ -33,6 +34,13 @@ global.EquipmentFactory = function(availableMaterials) {
 
       if (Object.keys(frequencies).length === 0) { throw new Error(`No available ${type} material for [${code}]`); }
       return Random.fromFrequencyMap(frequencies);
+    }
+
+    // The item's style comes from its shape and from what it's mostly made of, so the base record's tags are joined
+    // by the primary material's.
+    function setTags() {
+      const primary = Object.keys(item.materials)[0];
+      item.tags = [...new Set([...base.getTags(), ...Material.lookup(primary).getTags()])];
     }
 
     function setName() {
