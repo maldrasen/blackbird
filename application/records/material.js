@@ -13,7 +13,14 @@ Record.define('Material', {
       getName: () => { return material.name; },
       getCost: () => { return material.cost; },
       getFactor,
+      getTags: () => { return material.tags || []; },
     };
+  },
+
+  validate: (material, code) => {
+    (material.tags || []).forEach(tag => {
+      Validate.isIn(`Material[${code}].tags`, tag, Object.values(ItemStyle));
+    });
   },
 
   functions: () => {

@@ -12,6 +12,51 @@ describe('CharacterEquipper', function() {
       expect(EquipmentComponent.lookup(id).secondary).to.equal(shield);
       expect(Item(equipment.primary).getBase().getHands()).to.not.equal(WeaponHandedness.two);
     });
+
+    // The fixture elves shop the standard depot, which is stocked with known pieces so the specs can say what should
+    // be picked. A leather low corset is slutty, feminine, and natural, and is worth a little more than a wool
+    // doublet, so value alone would always take the corset.
+    describe('armor', function() {
+      function female(archetype) { return CharacterFixtures.genericFemale({ personality:{ archetype } }); }
+
+      function chestCodeFor(id, budget) {
+        const equipment = CharacterEquipper(id).equip({ budget, bareHanded:true });
+        return equipment.chest ? Item(equipment.chest).getBase().getCode() : null;
+      }
+
+      it('takes the piece the character likes over the better value', function() {
+        ItemFixtures.stockArmor('standard', [['low-corset',['leather']], ['doublet',['wool']]]);
+        expect(chestCodeFor(female(ArchetypeCode.bimbo), 150)).to.equal('low-corset');
+      });
+
+      it('skips a piece the character dislikes when there is something else to wear', function() {
+        ItemFixtures.stockArmor('standard', [['low-corset',['leather']], ['doublet',['wool']]]);
+        expect(chestCodeFor(female(ArchetypeCode.prude), 150)).to.equal('doublet');
+      });
+
+      it('wears a hated piece rather than going bare when the character minds showing skin', function() {
+        ItemFixtures.stockArmor('standard', [['low-corset',['leather']]]);
+        expect(chestCodeFor(female(ArchetypeCode.prude), 150)).to.equal('low-corset');
+      });
+
+      it('goes bare rather than wearing a hated piece when the character likes showing skin', function() {
+        ItemFixtures.stockArmor('standard', [['hauberk',['iron']]]);
+        expect(chestCodeFor(female(ArchetypeCode.slut), 300)).to.be.null;
+        expect(chestCodeFor(female(ArchetypeCode.prude), 300)).to.equal('hauberk');
+      });
+
+      it('leaves a slot that is fine bare empty rather than wearing a hated piece', function() {
+        ItemFixtures.stockArmor('standard', [['sabatons',['steel']]]);
+        const equipment = CharacterEquipper(female(ArchetypeCode.bimbo)).equip({ budget:600, bareHanded:true });
+        expect(equipment.feet).to.be.undefined;
+      });
+
+      it('still shops by value for a character with no opinion of the stock', function() {
+        ItemFixtures.stockArmor('standard', [['doublet',['wool']], ['doublet',['silk']]]);
+        const equipment = CharacterEquipper(female(ArchetypeCode.reserved)).equip({ budget:150, bareHanded:true });
+        expect(Item(equipment.chest).getPrimaryMaterial()).to.equal('silk');
+      });
+    });
   });
 
   describe('assignSkills()', function() {

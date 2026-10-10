@@ -2,7 +2,16 @@ Archetype.register(ArchetypeCode.bimbo, {
   name: 'Bimbo',
   requires: CharacterRequirements.isNotMale(),
 
-  outfitStyles: [OutfitStyle.flirty, OutfitStyle.slutty],
+  equipmentPreferences: {
+    [ItemStyle.barbaric]: -30,
+    [ItemStyle.cute]: 70,
+    [ItemStyle.formidable]: -50,
+    [ItemStyle.lavish]: 50,
+    [ItemStyle.morbid]: -20,
+    [ItemStyle.natural]: -10,
+    [ItemStyle.slutty]: 100,
+  },
+
   denialStyle: DenialStyle.frightened,
   negotiationStyle: NegotiationStyle.lewd,
   sexStyle: SexStyle.shameless,

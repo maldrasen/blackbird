@@ -2,7 +2,16 @@ Archetype.register(ArchetypeCode.bitch, {
   name: 'Bitch',
   requires: CharacterRequirements.isNotMale(),
 
-  outfitStyles: [OutfitStyle.sensible],
+  equipmentPreferences: {
+    [ItemStyle.barbaric]: 30,
+    [ItemStyle.cute]: 10,
+    [ItemStyle.formidable]: 50,
+    [ItemStyle.lavish]: 100,
+    [ItemStyle.morbid]: 10,
+    [ItemStyle.natural]: -20,
+    [ItemStyle.slutty]: -30,
+  },
+
   denialStyle: DenialStyle.violent,
   negotiationStyle: NegotiationStyle.fierce,
   sexStyle: SexStyle.rough,

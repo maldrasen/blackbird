@@ -19,7 +19,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [197] Skill events `5pt` — [197-skill-episodes.md](197-skill-episodes.md)
 - [229] Implment ammunition `3pt` — [229-implment-ammunition.md](229-implment-ammunition.md)
 - [230] Add draw weight for bows. `3pt` — [230-add-draw-weight-for-bows.md](230-add-draw-weight-for-bows.md)
-- [237] The Character Equipper Should Honor Gender and Sexual Preferences `3pt` — [237-equipper-should-honor-gender.md](237-equipper-should-honor-gender.md)
 - [240] Safe Rooms `3pt` — [240-safe-rooms.md](240-safe-rooms.md)
 - [250] Casting Spells `8pt` — [250-casting-spells.md](250-casting-spells.md)
 - [251] Learning Spells `5pt` — [251-learning-spells.md](251-learning-spells.md)
@@ -87,6 +86,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [180] Add Jet Stream Drug `3pt` — [180-add-jet-stream-drug.md](180-add-jet-stream-drug.md)
 - [181] Add a Snootle Jar `3pt` — [181-add-a-snootle-jar.md](181-add-a-snootle-jar.md)
 - [193] Large and Huge monsters `3pt` — [193-large-and-huge-monsters.md](193-large-and-huge-monsters.md)
+- [265] Characters should refuse some equipment `5pt` — [265-equipment-feelings.md](265-equipment-feelings.md)
 
 ## Priority 5
 

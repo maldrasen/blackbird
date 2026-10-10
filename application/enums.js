@@ -468,11 +468,18 @@ global.ItemType = {
   legs: 'legs',
 }
 
-global.OutfitStyle = {
+global.ItemStyle = {
   barbaric: 'barbaric',
-  flirty: 'flirty',
+  cute: 'cute',
+  degrading: 'degrading',
+  feminine: 'feminine',
+  formidable: 'formidable',
+  lavish: 'lavish',
+  masculine: 'masculine',
+  masochistic: 'masochistic',
+  morbid: 'morbid',
   natural: 'natural',
-  sensible: 'sensible',
+  restrictive: 'restrictive',
   slutty: 'slutty',
 };
 

@@ -2,7 +2,16 @@ Archetype.register(ArchetypeCode.nice, {
   name: 'Nice Guy',
   requires: CharacterRequirements.isMale(),
 
-  outfitStyles: [OutfitStyle.sensible],
+  equipmentPreferences: {
+    [ItemStyle.barbaric]: 20,
+    [ItemStyle.cute]: -20,
+    [ItemStyle.formidable]: 100,
+    [ItemStyle.lavish]: -30,
+    [ItemStyle.morbid]: -10,
+    [ItemStyle.natural]: 50,
+    [ItemStyle.slutty]: -40,
+  },
+
   denialStyle: DenialStyle.angry,
   negotiationStyle: NegotiationStyle.warm,
   sexStyle: SexStyle.gentle,

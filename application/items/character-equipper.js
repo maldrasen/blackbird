@@ -6,6 +6,7 @@ global.CharacterEquipper = function(id) {
   const skillsComponent = SkillsComponent.lookup(id);
   const attributesComponent = AttributesComponent.lookup(id);
   const equipmentManager = EquipmentManager(id);
+  const taste = EquipmentTaste(id);
   const equipment = {};
 
   const SlotBudgetPercent = {
@@ -156,16 +157,38 @@ global.CharacterEquipper = function(id) {
 
   // === Armor =========================================================================================================
 
+  // Armor is shopped by taste as well as price, so unlike the weapons it isn't picked straight from the budget window.
   function equipArmor(budget) {
     const stock = findDepot().getArmor();
 
     ArmorSlots.forEach(slot => {
       if (isFilled(slot)) { return; }
-      const itemId = selectByBudget(slotCandidates(stock, slot), budget * SlotBudgetPercent[slot]);
+      const itemId = selectArmor(slotCandidates(stock, slot), slot, budget * SlotBudgetPercent[slot]);
       if (itemId) {
         pickEquipment(itemId, slot);
       }
     });
+  }
+
+  // Every affordable piece is scored by its value plus what the character's preference for its style is worth
+  // against the slot's budget, so a strong enough dislike drags a cheap piece below zero. The pick is random among
+  // the pieces within the budget window of the best score, which for a character with no opinion is the same as
+  // shopping by value. When nothing scores above zero the slot stays empty, unless the character would rather wear
+  // something they hate than go bare there, in which case they take the least hated piece.
+  function selectArmor(candidates, slot, slotBudget) {
+    const scored = candidates.
+      filter(item => item.value <= slotBudget).
+      map(item => ({ ...item, score: item.value + (slotBudget * taste.getPreference(item.id) / 100) }));
+    if (scored.length === 0) { return null; }
+
+    const liked = scored.filter(item => item.score > 0);
+    if (liked.length > 0) {
+      const best = Math.max(...liked.map(item => item.score));
+      return Random.from(liked.filter(item => item.score >= best * budgetWindow).map(item => item.id));
+    }
+
+    if (taste.acceptsBare(slot)) { return null; }
+    return randomWithScore(scored, Math.max(...scored.map(item => item.score)));
   }
 
   // === Selection =====================================================================================================
@@ -202,6 +225,10 @@ global.CharacterEquipper = function(id) {
 
   function randomWithValue(candidates, value) {
     return Random.from(candidates.filter(item => item.value === value).map(item => item.id));
+  }
+
+  function randomWithScore(candidates, score) {
+    return Random.from(candidates.filter(item => item.score === score).map(item => item.id));
   }
 
   // === Giving ========================================================================================================

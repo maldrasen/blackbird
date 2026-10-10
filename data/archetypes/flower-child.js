@@ -1,7 +1,16 @@
 Archetype.register(ArchetypeCode.flowerChild, {
   name: 'Flower Child',
 
-  outfitStyles: [OutfitStyle.natural],
+  equipmentPreferences: {
+    [ItemStyle.barbaric]: 70,
+    [ItemStyle.cute]: 0,
+    [ItemStyle.formidable]: -30,
+    [ItemStyle.lavish]: -30,
+    [ItemStyle.morbid]: -20,
+    [ItemStyle.natural]: 100,
+    [ItemStyle.slutty]: 50,
+  },
+
   denialStyle: DenialStyle.frightened,
   negotiationStyle: NegotiationStyle.warm,
   sexStyle: SexStyle.gentle,

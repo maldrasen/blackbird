@@ -2,7 +2,16 @@ Archetype.register(ArchetypeCode.bastard, {
   name: 'Bastard',
   requires: CharacterRequirements.isMale(),
 
-  outfitStyles: [OutfitStyle.sensible],
+  equipmentPreferences: {
+    [ItemStyle.barbaric]: 50,
+    [ItemStyle.cute]: -50,
+    [ItemStyle.formidable]: 100,
+    [ItemStyle.lavish]: -20,
+    [ItemStyle.morbid]: 20,
+    [ItemStyle.natural]: 10,
+    [ItemStyle.slutty]: -10,
+  },
+
   denialStyle: DenialStyle.violent,
   negotiationStyle: NegotiationStyle.fierce,
   sexStyle: SexStyle.rough,

@@ -8,8 +8,8 @@ BaseEquipment.register('low-corset', {
   icon: 'armor/coat-01.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 20, slash: 30, pierce: 20 },
+  tags: [ItemStyle.slutty, ItemStyle.feminine],
   lewd: true,
-
   effort: 4,
   materials: { leather:2 },
   nameFunction: names => { return `Low ${names[0]} Corset`; },
@@ -20,7 +20,7 @@ BaseEquipment.register('high-corset', {
   icon: 'armor/coat-01.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 30, slash: 40, pierce: 25 },
-
+  tags: [ItemStyle.slutty, ItemStyle.feminine],
   effort: 4,
   materials: { leather:3 },
   nameFunction: names => { return `High ${names[0]} Corset`; },
@@ -30,7 +30,6 @@ BaseEquipment.register('doublet', {
   icon: 'armor/coat-01.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 40, slash: 60, pierce: 33 },
-
   effort: 3,
   materials: { pliable:4 },
   nameFunction: names => { return `${names[0]} Doublet`; },
@@ -40,7 +39,7 @@ BaseEquipment.register('hauberk', {
   icon: 'armor/chest-08.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 18, slash: 30, pierce: 20 },
-
+  tags: [ItemStyle.formidable],
   effort: 6,
   materials: { hard:6 },
   nameFunction: names => { return `${names[0]} Hauberk` },
@@ -50,7 +49,7 @@ BaseEquipment.register('cuirass', {
   icon: 'armor/chest-07.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 25, slash: 35, pierce: 30 },
-
+  tags: [ItemStyle.formidable],
   effort: 5,
   materials: { hard:4, pliable:4 },
   nameFunction: names => { return `${names[0]} Cuirass` },
@@ -60,7 +59,7 @@ BaseEquipment.register('breastplate', {
   icon: 'armor/chest-04.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 32, slash: 45, pierce: 40 },
-
+  tags: [ItemStyle.formidable],
   effort: 6,
   materials: { hard:8 },
   nameFunction: names => { return `${names[0]} Breastplate` },
@@ -70,7 +69,7 @@ BaseEquipment.register('plate', {
   icon: 'armor/chest-03.png',
   slot: EquipmentSlot.chest,
   reduction: { crush: 40, slash: 50, pierce: 48 },
-
+  tags: [ItemStyle.formidable],
   effort: 8,
   materials: { hard:12 },
   nameFunction: names => { return `${names[0]} Plate` },

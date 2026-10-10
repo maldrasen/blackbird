@@ -11,6 +11,7 @@ BaseEquipment.register('coif', {
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 10, slash: 20, pierce: 14 },
+  tags: [ItemStyle.formidable],
   materials: { hard:2 },
   effort: 3,
 });
@@ -20,6 +21,7 @@ BaseEquipment.register('helm', {
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 14, slash: 20, pierce: 16 },
+  tags: [ItemStyle.formidable],
   materials: { hard:2 },
   effort: 3,
 });
@@ -29,6 +31,7 @@ BaseEquipment.register('bascinet', {
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 16, slash: 24, pierce: 20 },
+  tags: [ItemStyle.formidable],
   materials: { hard:2 },
   effort: 4,
 });
@@ -38,6 +41,7 @@ BaseEquipment.register('sallet', {
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 16, slash: 25, pierce: 21 },
+  tags: [ItemStyle.formidable],
   materials: { hard:3 },
   effort: 4,
 });
@@ -47,6 +51,7 @@ BaseEquipment.register('armet', {
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 20, slash: 28, pierce: 24 },
+  tags: [ItemStyle.formidable],
   materials: { hard:3 },
   effort: 5,
 });
@@ -56,6 +61,7 @@ BaseEquipment.register('heaume', {
   icon: 'armor/head-01.png',
   slot: EquipmentSlot.head,
   reduction: { crush: 22, slash: 30, pierce: 26 },
+  tags: [ItemStyle.formidable],
   materials: { hard:4 },
   effort: 5,
 });

@@ -10,6 +10,7 @@ global.EquipmentFactory = function(availableMaterials) {
     const item = { base:code };
 
     setMaterials();
+    setTags();
     setName();
     setOverrides();
 
@@ -33,6 +34,15 @@ global.EquipmentFactory = function(availableMaterials) {
 
       if (Object.keys(frequencies).length === 0) { throw new Error(`No available ${type} material for [${code}]`); }
       return Random.fromFrequencyMap(frequencies);
+    }
+
+    // TODO: Currently an item's styles comes from its shape and from what it's mostly made of. We'll eventually add
+    //       more item properties, used to build the item descriptions, that will also add their own style tags. A
+    //       'morbid' item for instance could have skull embellishments. A 'cute' item could have bows, or ruffles.
+    //       For now though, we simply add the primary material's tags to the base's tags.
+    function setTags() {
+      const primary = Object.keys(item.materials)[0];
+      item.tags = [...new Set([...base.getTags(), ...Material.lookup(primary).getTags()])];
     }
 
     function setName() {

@@ -55,6 +55,7 @@ global.EquipmentDepot = function(code) {
 
   return {
     getStocks: () => { return { ...stocks }; },
+    getStockSize: () => { return stockSize; },
     getParameters: () => { return parameters },
     getWeapons,
     getArmor,

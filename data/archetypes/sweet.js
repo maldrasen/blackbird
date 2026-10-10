@@ -2,7 +2,16 @@ Archetype.register(ArchetypeCode.sweet, {
   name: 'Sweet',
   requires: CharacterRequirements.isNotMale(),
 
-  outfitStyles: [OutfitStyle.flirty, OutfitStyle.sensible],
+  equipmentPreferences: {
+    [ItemStyle.barbaric]: -20,
+    [ItemStyle.cute]: 100,
+    [ItemStyle.formidable]: 40,
+    [ItemStyle.lavish]: 60,
+    [ItemStyle.morbid]: -50,
+    [ItemStyle.natural]: 40,
+    [ItemStyle.slutty]: -50,
+  },
+
   denialStyle: DenialStyle.frightened,
   negotiationStyle: NegotiationStyle.warm,
   sexStyle: SexStyle.gentle,

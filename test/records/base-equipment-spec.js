@@ -26,6 +26,12 @@ describe("BaseEquipment", function() {
       expect(BaseEquipment.lookup('chaps').isLewd()).to.be.true;
     });
 
+    it("reads the style tags, and has none unless the record lists them", function() {
+      expect(BaseEquipment.lookup('plate').getTags()).to.deep.equal([ItemStyle.formidable]);
+      expect(BaseEquipment.lookup('low-corset').getTags()).to.deep.equal([ItemStyle.slutty, ItemStyle.feminine]);
+      expect(BaseEquipment.lookup('doublet').getTags()).to.deep.equal([]);
+    });
+
     it("armor and shields carry a reduction profile", function() {
       expect(BaseEquipment.lookup('plate').hasReduction()).to.be.true;
       expect(BaseEquipment.lookup('buckler').hasReduction()).to.be.true;

@@ -66,6 +66,7 @@ global.Item = function(id) {
     hasEnchantment,
     getEnchantment,
     getValue: () => { return getItemComponent().value; },
+    getTags: () => { return getItemComponent().tags || []; },
     isLewd: () => { return getBase().isLewd(); },
   };
 }

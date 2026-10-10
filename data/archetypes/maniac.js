@@ -5,7 +5,16 @@ Archetype.register(ArchetypeCode.maniac, {
   // preferences would a maniac have? Top is a possibility, but so is something
   // like the humiliating preferences, given that they have the frisky style.
 
-  outfitStyles: [OutfitStyle.sensible, OutfitStyle.flirty],
+  equipmentPreferences: {
+    [ItemStyle.barbaric]: 50,
+    [ItemStyle.cute]: -20,
+    [ItemStyle.formidable]: -20,
+    [ItemStyle.lavish]: 80,
+    [ItemStyle.morbid]: 100,
+    [ItemStyle.natural]: 20,
+    [ItemStyle.slutty]: 10,
+  },
+
   denialStyle: DenialStyle.violent,
   negotiationStyle: NegotiationStyle.fierce,
   sexStyle: SexStyle.frisky,

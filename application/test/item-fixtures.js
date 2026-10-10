@@ -26,11 +26,31 @@ global.ItemFixtures = (function() {
     return item;
   }
 
+  // A depot stocks fifty random pieces, so a spec about what a character picks from it can't trust the stock to
+  // hold anything in particular. This fills a depot's armor stock with known pieces instead, cycling through the
+  // given [code, materials] pairs until the stock is full so that the depot doesn't restock on top of them.
+  function stockArmor(depotCode, pieces) {
+    const depot = EquipmentDepot(depotCode);
+    const stock = depot.getStocks().armor;
+    const inventory = InventoryComponent.lookup(stock);
+
+    inventory.items.forEach(id => Registry.deleteEntity(id));
+    inventory.items = [];
+
+    for (let i=0; i<depot.getStockSize(); i++) {
+      const [code, materials] = pieces[i % pieces.length];
+      inventory.items.push(build(code, materials));
+    }
+
+    Registry.updateComponent(stock, ComponentType.inventory, inventory);
+  }
+
   return {
     buildStandard,
     build,
     buildSteel,
     equip,
+    stockArmor,
   };
 
 })();

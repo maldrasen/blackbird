@@ -1,7 +1,16 @@
 Archetype.register(ArchetypeCode.savage, {
   name: 'Savage',
 
-  outfitStyles: [OutfitStyle.natural, OutfitStyle.barbaric],
+  equipmentPreferences: {
+    [ItemStyle.barbaric]: 100,
+    [ItemStyle.cute]: -40,
+    [ItemStyle.formidable]: 60,
+    [ItemStyle.lavish]: -20,
+    [ItemStyle.morbid]: 50,
+    [ItemStyle.natural]: 80,
+    [ItemStyle.slutty]: 20,
+  },
+
   denialStyle: DenialStyle.violent,
   negotiationStyle: NegotiationStyle.fierce,
   sexStyle: SexStyle.rough,
