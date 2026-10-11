@@ -4,7 +4,6 @@
 - [Canonical test command](feedback_canonical_test_command.md) — tests run ONLY via plain `bin/test.sh` (`--grep`/`--seed`/`--seeds`/`--quiet`/`--reporter dot`); never loops, pipes, npm test, or SEED= prefix; extend the script if a capability is missing
 - [Headless test runner](project_headless_test_runner.md) — bin/run-headless.js + bin/run-tests.js run dungeon gen and mocha suite via CLI; SEED= repro + bin/soak-tests.js for flaky specs
 - [Remove Electron test runner](project_remove_electron_test_runner.md) — DONE (task 133): start.sh runs specs headlessly pre-launch; tests.js slimmed to hooks, must stay in manifest for Tests.running() guards
-- [Browser dev mode](project_browser_dev_mode.md) — node bin/serve.js :8300 runs the game in the browser pane; drive UI via preview_eval click dispatch (screenshots/preview_click broken)
 - [addMessage weaves text](project_addmessage_weaves.md) — BattleRound.addMessage always weaves message.text; pass raw templates not pre-woven HTML (double-weave mangles span quotes)
 - [GameState/view coupling](project_gamestate_view_coupling.md) — GameState/GameController now System/State pattern (GameSystem + GameState factory); setGameMode+view calls live on GameSystem, guarded by HEADLESS and Tests.running()
 - [Grid movement (task 215)](project_grid_movement_task215.md) — 8-direction tile movement shipped 2026-09-20; room-graph API deleted; step vs new-room encounter rolls; {primary,alternate} key bindings; view steps not play-tested by Claude
@@ -22,7 +21,6 @@
 - [Avoid else-if chains](feedback_avoid_else_if_chains.md) — prefer early-return helper functions or switch over if/else-if chains
 - [Boolean accessor naming](feedback_boolean_accessor_naming.md) — records/models use is*/has* for boolean accessors, never get* (isClearedAfterBattle, task 177)
 - [Records stay immutable](feedback_records_immutable.md) — never parameterize record lookup(); register derived variants as their own records
-- [Bounded loops](feedback_bounded_loops.md) — for loops with local bounds over while loops trusting another module's side effects
 - [Work in main checkout](feedback_work_in_main_checkout.md) — check cwd before editing: changes go in D:\Work\projects\blackbird on its current branch, never .claude/worktrees (recurred 2026-08-10)
 - [Use existing helpers](feedback_use_existing_helpers.md) — grep application/helpers before hand-rolling (conversions, Validate for record checks); extend the helper if a capability is missing
 - [Position text conventions](project_position_text_conventions.md) — task 008 rules: name-first entries, bigHardCock token, destination keys in move packages, ~4 per attitude
