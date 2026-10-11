@@ -15,8 +15,10 @@ global.EquipmentTaste = function(characterId) {
     [Gender.none]:   {},
   };
 
+  // The player has no personality component, so only their gender shapes their taste.
   function archetypePreferences() {
-    return Archetype.lookup(PersonalityComponent.lookup(characterId).archetype).getEquipmentPreferences();
+    const personality = PersonalityComponent.lookup(characterId);
+    return personality ? Archetype.lookup(personality.archetype).getEquipmentPreferences() : {};
   }
 
   function genderPreferences() {

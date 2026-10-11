@@ -25,6 +25,11 @@ describe('EquipmentTaste', function() {
       expect(EquipmentTaste(female(ArchetypeCode.bimbo)).getPreference(plate)).to.equal(-50);
     });
 
+    it('weighs only gender for the player, who has no archetype', function() {
+      const corset = ItemFixtures.build('low-corset', ['leather']);
+      expect(EquipmentTaste(CharacterFixtures.randomPlayer()).getPreference(corset)).to.equal(-80);
+    });
+
     it('is neutral about an untagged item', function() {
       const sword = ItemFixtures.buildSteel('longsword');
       expect(EquipmentTaste(female(ArchetypeCode.bimbo)).getPreference(sword)).to.equal(0);
@@ -45,6 +50,12 @@ describe('EquipmentTaste', function() {
       expect(EquipmentTaste(female(ArchetypeCode.bimbo)).acceptsBare(EquipmentSlot.legs)).to.be.true;
       expect(EquipmentTaste(female(ArchetypeCode.prude)).acceptsBare(EquipmentSlot.chest)).to.be.false;
       expect(EquipmentTaste(male(ArchetypeCode.nice)).acceptsBare(EquipmentSlot.legs)).to.be.false;
+    });
+
+    it('keeps the player covered at the chest and legs', function() {
+      const taste = EquipmentTaste(CharacterFixtures.randomPlayer());
+      expect(taste.acceptsBare(EquipmentSlot.chest)).to.be.false;
+      expect(taste.acceptsBare(EquipmentSlot.legs)).to.be.false;
     });
   });
 
