@@ -60,3 +60,5 @@
 - [Ternary over chain + nullish](feedback_ternary_over_chain_nullish.md) — prefer `x ? x.y : null` to `x?.y ?? null`; use `?.` only where it deletes a guard outright (task 260, 2026-10-07)
 - [Inline single-use constants](feedback_inline_single_use_constants.md) — a const used only on the next line gets folded into the chain: `X.first(sel)?.click()` not `const b = X.first(sel); b?.click()` (task 260)
 - [Equipment preferences (task 237)](project_equipment_preferences_task237.md) — SHIPPED 2026-10-10: ItemStyle tags on base+material → item component, EquipmentTaste (archetype+gender weights, acceptsBare), equipper scores armor value + slotBudget×pref/100; stockArmor fixture for depot specs
+- [Memory lives in repo](project_memory_lives_in_repo.md) — .claude/memory committed; autoMemoryDirectory is a per-machine absolute path in GLOBAL settings (relative + local-scope forms are broken); cross-project bleed accepted, separate memory repo deferred
+- [User dev environment](user_dev_environment.md) — three machines (Windows D:, Mac, Linux) with different repo paths; avoids Windows home dir
