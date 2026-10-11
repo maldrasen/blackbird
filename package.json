@@ -34,7 +34,7 @@
   "devDependencies": {
     "c8": "^11.0.0",
     "chai": "4.5.0",
-    "electron": "43.2.0",
+    "electron": "43.7.9",
     "electron-builder": "26.15.3",
     "mocha": "11.7.5",
     "sass": "1.97.3"
