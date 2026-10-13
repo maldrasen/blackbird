@@ -39,7 +39,7 @@ describe("AutoBattleSystem", function() {
 
     it("defends when no attack is possible", function() {
       // The rogue in the back rank holds a dagger, which can never reach a monster from the back row.
-      const { acting } = startAutoBattle(BattleFixtures.runtPack(), 'P.1.2');
+      const { acting } = startAutoBattle(BattleFixtures.runtPack(), 'P.1.3');
 
       BattleSystem.advanceBattle();
 

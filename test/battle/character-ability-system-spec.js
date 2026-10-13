@@ -1,7 +1,7 @@
 describe("CharacterAbilitySystem", function() {
 
-  // A single kobold runt at M.0.2 faces the fixture party: the player in front of it with a longsword, and rogues
-  // with short reach daggers in the back rank.
+  // A single kobold runt at M.0.2 faces the fixture party: the player in front of it with a longsword, an archer at
+  // P.1.2, and a rogue with short reach daggers at P.1.3.
   function startBattle() {
     BattleFixtures.prepareForBattle();
     BattleSystem.startBattle({ monster:'kobold-runt', ambushState:'normal' });
@@ -24,7 +24,7 @@ describe("CharacterAbilitySystem", function() {
     it("offers a rogue in the back rank a hiding place but no attack", function() {
       const state = startBattle();
 
-      BattleSystem.specRound(state.getEntityAtPosition('P.1.2'));
+      BattleSystem.specRound(state.getEntityAtPosition('P.1.3'));
       const commands = CharacterAbilitySystem.getCommands();
 
       expect(commands).to.include(StandardAbility.hide);
@@ -34,7 +34,7 @@ describe("CharacterAbilitySystem", function() {
 
     it("offers a hidden rogue a sneak attack in place of hiding", function() {
       const state = startBattle();
-      const rogue = state.getEntityAtPosition('P.1.2');
+      const rogue = state.getEntityAtPosition('P.1.3');
 
       BattleSystem.addStatus(rogue, 'hidden');
       BattleSystem.specRound(rogue);
