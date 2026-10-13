@@ -1,8 +1,6 @@
 
-// Bow damage is a dex based factor. Ammunition should simply add a flat value to that. Most ammo just adds a flat
-// amount of pierce damage, but magic ammo could add fire damage, or a status effect.
-Ammunition.register('arrows',{
-  name: 'Elm Arrow',
+Ammunition.register('elm-arrow',{
+  name: 'Elm Arrows',
   description: `Simple arrows made from elm wood, with a small iron head.`,
   category: InventoryCategory.ammo,
   rarity: Rarity.common,
@@ -12,7 +10,63 @@ Ammunition.register('arrows',{
   },
 
   sources:[
-    { withWeapon:'bow', rarity:Rarity.common, quantity:[10,20]},
-    { group:'supplies', rarity:Rarity.common, quantity:[10,20]},
+    { withWeapon:'bow', rarity:Rarity.common, quantity:[15,30]},
+    { group:'supplies', rarity:Rarity.common, quantity:[15,30]},
   ]
 });
+
+Ammunition.register('razerfang-arrow',{
+  name: 'Razerfang Arrows',
+  description: `These arrows have long serrated arrowheads that make removing them more painful than getting shot
+    with them in the first place.`,
+  category: InventoryCategory.ammo,
+  rarity: Rarity.common,
+
+  damageTypes: {
+    [DamageType.pierce]:{ low:4, high:10 },
+  },
+
+  sources:[
+    { group:'supplies', rarity:Rarity.unusual, quantity:[10,20]},
+  ]
+});
+
+Ammunition.register('blackflame-arrow',{
+  name: 'Blackflame Arrows',
+  description: `These arrows have a long black shaft, with blackened steel tip. When drawn the arrowhead glows with a
+    dull red light, and leaves a burning trail when it's fired.`,
+  category: InventoryCategory.ammo,
+  rarity: Rarity.unusual,
+
+  damageTypes: {
+    [DamageType.pierce]:{ low:2, high:8 },
+    [DamageType.fire]:{ low:2, high:8 },
+  },
+
+  sources:[
+    { group:'supplies', rarity:Rarity.rare, quantity:[5,10]},
+  ]
+});
+
+/*
+TODO: The appraiser has no value for a poison effect yet. The appraiser will need to take the strength and damage
+      into account.
+
+Ammunition.register('poison-arrow',{
+  name: 'Poison Arrows',
+  description: `The long steel tips of these arrows have been liberally coated with a poisonous resin.`,
+  category: InventoryCategory.ammo,
+  rarity: Rarity.unusual,
+
+  damageTypes: {
+    [DamageType.pierce]:{ low:1, high:8 },
+  },
+  effects:[
+    Effect.poison({ strength:20, damage:{ x:2, d:6, p:2 }})
+  ],
+
+  sources:[
+    { group:'supplies', rarity:Rarity.unusual, quantity:[10,20]},
+  ]
+});
+*/

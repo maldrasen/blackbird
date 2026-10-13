@@ -96,7 +96,7 @@ describe("Ability.WeaponAttack", function() {
       const player = state.getEntityAtPosition('P.0.2');
 
       ItemFixtures.equip(player, 'shortbow', ['wood']);
-      QuiverComponent.update(player, { ammunition:'arrows', quantity:1 });
+      QuiverComponent.update(player, { ammunition:'elm-arrow', quantity:1 });
       BattleSystem.specRound(player);
 
       expect(Ability.WeaponAttack().isPossible()).to.equal(true);
