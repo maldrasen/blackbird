@@ -1,12 +1,7 @@
 describe("Ability.Hide", function() {
 
-  // The fixture party puts a rogue with the stealth skill at P.1.3. The runt pack has a single rank, so the only
+  // The spec party puts a rogue with the stealth skill at P.1.3. The runt pack has a single rank, so the only
   // observer of that position is the kobold at M.0.3.
-  function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-    return BattleSystem.getState();
-  }
 
   // finishCharacterRound() requires the acting entity to be next in the turn order.
   function startRound(acting) {
@@ -33,14 +28,14 @@ describe("Ability.Hide", function() {
 
   describe("isPossible()", function() {
     it("is possible for a stealthy character in the back rank", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       startRound(state.getEntityAtPosition('P.1.3'));
 
       expect(Ability.Hide().isPossible()).to.equal(true);
     });
 
     it("is not possible from the front rank", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const player = state.getEntityAtPosition('P.0.2');
 
       setSkill(player, 'stealth', 10);
@@ -50,7 +45,7 @@ describe("Ability.Hide", function() {
     });
 
     it("is not possible without the stealth skill", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const rogue = state.getEntityAtPosition('P.1.3');
 
       setSkill(rogue, 'stealth', 0);
@@ -60,7 +55,7 @@ describe("Ability.Hide", function() {
     });
 
     it("is not possible while already hidden", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const rogue = state.getEntityAtPosition('P.1.3');
 
       BattleSystem.addStatus(rogue, 'hidden');
@@ -74,7 +69,7 @@ describe("Ability.Hide", function() {
   // beats the highest check a dim observer can make, and the reverse holds for a clumsy novice against a genius.
   describe("execute()", function() {
     it("hides in the shadows when no observer beats the stealth roll", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const rogue = state.getEntityAtPosition('P.1.3');
       const kobold = state.getEntityAtPosition('M.0.3');
       const ability = Ability.Hide();
@@ -93,7 +88,7 @@ describe("Ability.Hide", function() {
     });
 
     it("is spotted when an observer's intelligence check beats the stealth roll", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const rogue = state.getEntityAtPosition('P.1.3');
       const kobold = state.getEntityAtPosition('M.0.3');
 

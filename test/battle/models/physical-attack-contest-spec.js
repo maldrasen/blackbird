@@ -1,11 +1,5 @@
 describe("PhysicalAttackContest", function() {
 
-  function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-    return BattleSystem.getState();
-  }
-
   function rolledContest(attacker, defender) {
     const contest = PhysicalAttackContest(attacker, defender);
     contest.setWeapon(EquipmentFactory().build('longsword'));
@@ -15,7 +9,7 @@ describe("PhysicalAttackContest", function() {
   }
 
   it("keeps a normal pair as rolled", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const attacker = state.getEntityAtPosition('P',0,2);
     const defender = state.getEntityAtPosition('P',1,2);
 
@@ -30,7 +24,7 @@ describe("PhysicalAttackContest", function() {
   });
 
   it("rerolls the pair when the attack and defend both crit", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const attacker = state.getEntityAtPosition('P',0,2);
     const defender = state.getEntityAtPosition('P',1,2);
 
@@ -42,7 +36,7 @@ describe("PhysicalAttackContest", function() {
   });
 
   it("downgrades both crits when the reroll attempts are exhausted", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const attacker = state.getEntityAtPosition('P',0,2);
     const defender = state.getEntityAtPosition('P',1,2);
 

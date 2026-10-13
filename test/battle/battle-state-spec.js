@@ -2,10 +2,7 @@ describe("BattleState", function() {
 
   describe("Formation", function() {
     it('getEntityAtPosition()', function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.runtPack() });
-
-      const state = BattleSystem.getState();
+      const state = BattleSupport.startBattle();
       expect(state.getEntityAtPosition('M',0,3)).to.not.be.null;
       expect(state.getEntityAtPosition('M',1,3)).to.be.null;
     });
@@ -13,19 +10,13 @@ describe("BattleState", function() {
 
   describe("Combatant Conditions", function() {
     it('starts every combatant as active', function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-
-      const state = BattleSystem.getState();
+      const state = BattleSupport.startBattle();
       expect(state.getCondition(state.getActiveCharacters()[0])).to.equal(BattleCondition.active);
       expect(state.getCondition(state.getActiveMonsters()[0])).to.equal(BattleCondition.active);
     });
 
     it('conditions are mutually exclusive', function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-
-      const state = BattleSystem.getState();
+      const state = BattleSupport.startBattle();
       const monster = state.getActiveMonsters()[0];
 
       state.setCondition(monster, BattleCondition.dead);
@@ -36,19 +27,13 @@ describe("BattleState", function() {
     });
 
     it('throws for entities that are not in the battle', function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-
-      const state = BattleSystem.getState();
+      const state = BattleSupport.startBattle();
       expect(() => state.setCondition('nobody', BattleCondition.dead)).to.throw('Validate.exists');
       expect(() => state.setCondition(state.getActiveMonsters()[0], 'sleepy')).to.throw('not in list');
     });
 
     it('only monsters are listed in the dead and fled monster lists', function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-
-      const state = BattleSystem.getState();
+      const state = BattleSupport.startBattle();
       state.setCondition(state.getActiveCharacters()[0], BattleCondition.dead);
 
       expect(state.getDeadMonsters()).to.deep.equal([]);
@@ -56,10 +41,7 @@ describe("BattleState", function() {
     });
 
     it('lists the knocked out characters', function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-
-      const state = BattleSystem.getState();
+      const state = BattleSupport.startBattle();
       const character = state.getActiveCharacters()[0];
       state.setCondition(character, BattleCondition.knockedOut);
 
@@ -72,12 +54,6 @@ describe("BattleState", function() {
 
   describe("cleanup()", function() {
     const enchantment = { pattern:'endanger', properties:{ species:'kobold' } };
-
-    function startBattle() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-      return BattleSystem.getState();
-    }
 
     // A longsword in the primary slot unless told otherwise, replacing whatever the depot gave the monster.
     function giveItem(monster, options={}) {
@@ -92,7 +68,7 @@ describe("BattleState", function() {
     }
 
     it('deletes every monster along with their items', function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const [dead, knockedOut, active] = state.getActiveMonsters();
       const items = [dead, knockedOut, active].map(monster => giveItem(monster));
 
@@ -106,7 +82,7 @@ describe("BattleState", function() {
     });
 
     it('keeps the recruited monsters and their items', function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const recruit = state.getActiveMonsters()[0];
       const item = giveItem(recruit);
 
@@ -118,7 +94,7 @@ describe("BattleState", function() {
     });
 
     it('moves the enchanted items of the defeated monsters into the loot inventory', function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const [dead, knockedOut] = state.getActiveMonsters();
       const deadLoot = giveItem(dead, { enchantment });
       const knockedOutLoot = giveItem(knockedOut, { enchantment });
@@ -133,7 +109,7 @@ describe("BattleState", function() {
     });
 
     it('monsters who were not defeated keep their enchanted items', function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const [fled, active] = state.getActiveMonsters();
       const items = [giveItem(fled, { enchantment }), giveItem(active, { enchantment })];
 
@@ -145,7 +121,7 @@ describe("BattleState", function() {
     });
 
     it('saves no loot when told not to', function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const dead = state.getActiveMonsters()[0];
       const item = giveItem(dead, { enchantment });
 
@@ -159,10 +135,7 @@ describe("BattleState", function() {
 
   describe("Turn Order", function() {
     it('moves the character within the turn order after acting', function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-
-      const state = BattleSystem.getState();
+      const state = BattleSupport.startBattle();
       const next = state.getNext();
       next.time += 1000;
       state.setTurnOrder(next);
@@ -174,10 +147,7 @@ describe("BattleState", function() {
     });
 
     it('moves an entity to the top of the turn order', function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-
-      const state = BattleSystem.getState();
+      const state = BattleSupport.startBattle();
       const order = state.getTurnOrder();
       const last = order[order.length-1];
 
@@ -189,10 +159,7 @@ describe("BattleState", function() {
     });
 
     it('entities can be removed from the turn order', function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-
-      const state = BattleSystem.getState();
+      const state = BattleSupport.startBattle();
       const order = state.getTurnOrder();
       const second = order[1];
 
@@ -203,6 +170,5 @@ describe("BattleState", function() {
       expect(ids.includes(second.id)).to.be.false;
     });
   });
-
 
 });

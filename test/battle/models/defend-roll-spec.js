@@ -1,13 +1,7 @@
 describe("DefendRoll", function() {
 
-  function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-    return BattleSystem.getState();
-  }
-
-  // The battle fixtures equip the party randomly, so every test starts the defender bare-handed and equips
-  // exactly the loadout it needs.
+  // Every test starts the defender bare-handed and equips exactly the loadout it needs, so the party's own gear
+  // never decides a roll.
   function pinnedDefender(state) {
     const defender = state.getEntityAtPosition('P',1,2);
     const equipment = EquipmentManager(defender);
@@ -48,7 +42,7 @@ describe("DefendRoll", function() {
   }
 
   it("dodges bare handed", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const defender = pinnedDefender(state);
     setParry(defender, 0);
 
@@ -57,7 +51,7 @@ describe("DefendRoll", function() {
   });
 
   it("blocks with a shield equipped", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const defender = pinnedDefender(state);
     equipItem(defender, 'round-shield', EquipmentSlot.secondary);
 
@@ -66,7 +60,7 @@ describe("DefendRoll", function() {
   });
 
   it("parries with a sword and a trained parry skill", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const defender = pinnedDefender(state);
     equipItem(defender, 'longsword', EquipmentSlot.primary);
     setParry(defender, 25);
@@ -76,7 +70,7 @@ describe("DefendRoll", function() {
   });
 
   it("dodges with a sword but no parry training", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const defender = pinnedDefender(state);
     equipItem(defender, 'longsword', EquipmentSlot.primary);
     setParry(defender, 0);
@@ -86,7 +80,7 @@ describe("DefendRoll", function() {
   });
 
   it("parries when dexterity wins the block-or-parry roll", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const defender = pinnedDefender(state);
     equipItem(defender, 'longsword', EquipmentSlot.primary);
     equipItem(defender, 'round-shield', EquipmentSlot.secondary);
@@ -101,7 +95,7 @@ describe("DefendRoll", function() {
   });
 
   it("blocks when strength wins the block-or-parry roll", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const defender = pinnedDefender(state);
     equipItem(defender, 'longsword', EquipmentSlot.primary);
     equipItem(defender, 'round-shield', EquipmentSlot.secondary);
@@ -116,7 +110,7 @@ describe("DefendRoll", function() {
   });
 
   it("cannot parry a long reach weapon", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const defender = pinnedDefender(state);
     equipItem(defender, 'longsword', EquipmentSlot.primary);
     setParry(defender, 25);
@@ -126,7 +120,7 @@ describe("DefendRoll", function() {
   });
 
   it("cannot parry an any-enemy ability no matter the weapon", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const defender = pinnedDefender(state);
     equipItem(defender, 'longsword', EquipmentSlot.primary);
     setParry(defender, 25);
@@ -139,7 +133,7 @@ describe("DefendRoll", function() {
   });
 
   it("blocks arrows when parry is possible", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const defender = pinnedDefender(state);
     equipItem(defender, 'longsword', EquipmentSlot.primary);
     equipItem(defender, 'round-shield', EquipmentSlot.secondary);
@@ -151,7 +145,7 @@ describe("DefendRoll", function() {
 
   describe("status effect modifiers", function() {
     it("rolls with advantage while poised", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const defender = pinnedDefender(state);
       BattleSystem.addStatus(defender, 'poised', { count:1 });
 
@@ -160,7 +154,7 @@ describe("DefendRoll", function() {
     });
 
     it("rolls with disadvantage while blinded", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const defender = pinnedDefender(state);
       BattleSystem.addStatus(defender, 'blind', { duration:1000 });
 
@@ -169,7 +163,7 @@ describe("DefendRoll", function() {
     });
 
     it("cancels poise's advantage while blinded", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const defender = pinnedDefender(state);
       BattleSystem.addStatus(defender, 'poised', { count:1 });
       BattleSystem.addStatus(defender, 'blind', { duration:1000 });
@@ -179,7 +173,7 @@ describe("DefendRoll", function() {
     });
 
     it("cannot defend at all while stunned, blind or not", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const defender = pinnedDefender(state);
       BattleSystem.addStatus(defender, 'stun', { count:1 });
       BattleSystem.addStatus(defender, 'blind', { duration:1000 });
@@ -190,7 +184,7 @@ describe("DefendRoll", function() {
   });
 
   it("dodges as a monster without a shield", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const attacker = state.getEntityAtPosition('P',1,2);
     const defender = state.getActiveMonsters()[0];
 
@@ -204,7 +198,7 @@ describe("DefendRoll", function() {
   });
 
   it("blocks as a monster with a shield equipped", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const attacker = state.getEntityAtPosition('P',1,2);
     const defender = state.getActiveMonsters()[0];
     equipItem(defender, 'targe', EquipmentSlot.secondary);

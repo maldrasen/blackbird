@@ -1,11 +1,5 @@
 describe("PhysicalAttackSystem", function() {
 
-  function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-    return BattleSystem.getState();
-  }
-
   function setAttribute(id, key, value) {
     const attributes = AttributesComponent.lookup(id);
     attributes[key] = value;
@@ -42,7 +36,7 @@ describe("PhysicalAttackSystem", function() {
     // dodge are pinned so the stubbed rolls always mean the same thing, and the rogue's vitality is raised so a hit
     // that downs them knocks them out rather than killing them.
     function prepare(enchantment, health=100) {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const attacker = state.getEntityAtPosition('P',0,2);
       const target = state.getEntityAtPosition('P',1,2);
 

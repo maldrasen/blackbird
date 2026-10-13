@@ -1,11 +1,5 @@
 describe("BattleDamageSystem", function() {
 
-  function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-    return BattleSystem.getState();
-  }
-
   // The max is pinned as well, otherwise a randomly generated character can roll a max below the current health
   // we're setting and moderate() would clamp it back down.
   function setHealth(id, current) {
@@ -21,7 +15,7 @@ describe("BattleDamageSystem", function() {
     AttributesComponent.update(id, attributes);
   }
 
-  // The outcome tests aim their damage at a bared chest so the randomly equipped fixture characters can't
+  // The outcome tests aim their damage at a bared chest so the party's own armor can't
   // mitigate the hard-coded damage numbers. The species is pinned to human for the same reason - a randomly
   // rolled kobold or equian would resist part of the damage innately.
   function bareChest(id) {
@@ -38,7 +32,7 @@ describe("BattleDamageSystem", function() {
   }
 
   it("knocks a character out at zero or below", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const target = state.getEntityAtPosition('P',1,2);
     setHealth(target, 5);
     setVitality(target, 15);
@@ -56,7 +50,7 @@ describe("BattleDamageSystem", function() {
   });
 
   it("still only knocks a character out at exactly negative vitality", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const target = state.getEntityAtPosition('P',1,2);
     setHealth(target, 5);
     setVitality(target, 15);
@@ -70,7 +64,7 @@ describe("BattleDamageSystem", function() {
   });
 
   it("kills a character below negative vitality", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const target = state.getEntityAtPosition('P',1,2);
     setHealth(target, 5);
     setVitality(target, 15);
@@ -85,7 +79,7 @@ describe("BattleDamageSystem", function() {
   });
 
   it("kills a monster at zero, clamping their health", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const target = state.getActiveMonsters()[0];
 
     BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:9999 }, hitLocation:EquipmentSlot.chest });
@@ -96,7 +90,7 @@ describe("BattleDamageSystem", function() {
   });
 
   it("throws when damaging a target who is already down", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const target = state.getEntityAtPosition('P',1,2);
     setHealth(target, 5);
     setVitality(target, 15);
@@ -110,7 +104,7 @@ describe("BattleDamageSystem", function() {
   });
 
   it("throws when damage has no hit location", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const target = state.getEntityAtPosition('P',1,2);
 
     expect(() => {
@@ -127,7 +121,7 @@ describe("BattleDamageSystem", function() {
     }
 
     it("announces a knocked out character", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = state.getEntityAtPosition('P',1,2);
       setHealth(target, 5);
       setVitality(target, 15);
@@ -143,7 +137,7 @@ describe("BattleDamageSystem", function() {
     });
 
     it("announces a killed monster", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = state.getActiveMonsters()[0];
       const round = specRound(state);
 
@@ -156,7 +150,7 @@ describe("BattleDamageSystem", function() {
     });
 
     it("says nothing about an entity that is still up", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = state.getEntityAtPosition('P',1,2);
       setHealth(target, 100);
       const round = specRound(state);
@@ -168,7 +162,7 @@ describe("BattleDamageSystem", function() {
   });
 
   describe("armor mitigation", function() {
-    // The battle fixtures equip the party randomly, so each test pins the slots it touches: known gear goes on
+    // Each test pins the slots it touches so the party's own gear never enters the numbers: known gear goes on
     // explicitly and slots that must be bare are cleared. The gear is built in steel so its reduction profile
     // applies unscaled.
     function equipItem(id, item, slot) {
@@ -185,7 +179,7 @@ describe("BattleDamageSystem", function() {
     }
 
     it("reduces damage by the hit location's armor percent", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = pinnedTarget(state);
       equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
 
@@ -197,7 +191,7 @@ describe("BattleDamageSystem", function() {
     });
 
     it("mitigates and rounds each damage type separately", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = pinnedTarget(state);
       equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
 
@@ -208,7 +202,7 @@ describe("BattleDamageSystem", function() {
     });
 
     it("covers every hit location with a shield", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = pinnedTarget(state);
       EquipmentManager(target).equipItem(null, EquipmentSlot.head);
       equipItem(target, ItemSupport.buildSteel('tower-shield'), EquipmentSlot.secondary);
@@ -220,7 +214,7 @@ describe("BattleDamageSystem", function() {
     });
 
     it("adds shield reduction on top of worn armor", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = pinnedTarget(state);
       equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
       equipItem(target, ItemSupport.buildSteel('tower-shield'), EquipmentSlot.secondary);
@@ -232,7 +226,7 @@ describe("BattleDamageSystem", function() {
     });
 
     it("doubles vulnerable damage after mitigation", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = pinnedTarget(state);
       equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
       BattleSystem.addStatus(target, 'vulnerable', { count:1 });
@@ -245,7 +239,7 @@ describe("BattleDamageSystem", function() {
     });
 
     it("consumes one vulnerable stack per hit", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = pinnedTarget(state);
       equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
       BattleSystem.addStatus(target, 'vulnerable', { count:2 });
@@ -263,7 +257,7 @@ describe("BattleDamageSystem", function() {
     });
 
     it("quadruples damned damage and consumes it", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = pinnedTarget(state);
       equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
       BattleSystem.addStatus(target, 'damned', { count:1 });
@@ -278,7 +272,7 @@ describe("BattleDamageSystem", function() {
     });
 
     it("composes vulnerable and damned multiplicatively", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = pinnedTarget(state);
       equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
       BattleSystem.addStatus(target, 'vulnerable', { count:1 });
@@ -295,7 +289,7 @@ describe("BattleDamageSystem", function() {
     // The kobold species resists 10 slash - their scales - which reduces physical damage at every hit location.
     // The runt pack's kobolds wear nothing over them.
     it("applies a creature's innate resistance to physical damage", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = state.getActiveMonsters()[0];
       EquipmentManager(target).equipItem(null, EquipmentSlot.secondary);
 
@@ -306,7 +300,7 @@ describe("BattleDamageSystem", function() {
     });
 
     it("passes damage types the creature doesn't resist straight through", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = state.getActiveMonsters()[0];
       EquipmentManager(target).equipItem(null, EquipmentSlot.secondary);
 
@@ -319,7 +313,7 @@ describe("BattleDamageSystem", function() {
     // Elemental damage has no hit location, so a kobold's fire resistance of 20 is the only thing between them and
     // the flames. Their armor never enters into it, which is why the secondary slot doesn't need clearing here.
     it("reduces elemental damage by the innate resistance alone", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = state.getActiveMonsters()[0];
 
       const damage = BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ fire:100 }});
@@ -329,7 +323,7 @@ describe("BattleDamageSystem", function() {
 
     // A Firewalker's helm pinned to 8 fire resistance goes on top of the kobold's own 20.
     it("adds enchanted resistance to the elemental damage reduction", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = state.getActiveMonsters()[0];
       Random.stubBetween(8);
       ItemSupport.equip(target, 'helm', ['steel'], { enchantment:{ pattern:'resistant-to-fire' } });
@@ -341,7 +335,7 @@ describe("BattleDamageSystem", function() {
 
     // A kobold's psychic resistance is -10, so they take more than what was thrown at them.
     it("raises damage for a negative resistance", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = state.getActiveMonsters()[0];
 
       const damage = BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ psychic:100 }});
@@ -350,7 +344,7 @@ describe("BattleDamageSystem", function() {
     });
 
     it("passes elemental damage the creature doesn't resist straight through", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = state.getActiveMonsters()[0];
 
       const damage = BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ nature:100 }});
@@ -361,9 +355,7 @@ describe("BattleDamageSystem", function() {
     // A leather doublet turns away 21 slash, and it's worn over the kobold's scales so the chest takes both
     // reductions. The secondary slot is cleared because a trapper can carry a shield.
     it("stacks innate resistance with worn armor", function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.trapperPack(), ambushState:'normal' });
-      const target = BattleSystem.getState().getActiveMonsters()[0];
+      const target = BattleSupport.startBattle(BattleSupport.trapperPack()).getActiveMonsters()[0];
       EquipmentManager(target).equipItem(null, EquipmentSlot.secondary);
       ItemSupport.equip(target, 'doublet', ['leather']);
 
@@ -396,7 +388,7 @@ describe("BattleDamageSystem", function() {
     }
 
     it("scales damage dealt to monsters by the damage option", async function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = bareMonster(state);
       await setDifficulty({ damage:150 });
 
@@ -407,7 +399,7 @@ describe("BattleDamageSystem", function() {
     });
 
     it("rounds once after scaling", async function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = bareMonster(state);
       await setDifficulty({ damage:125 });
 
@@ -418,7 +410,7 @@ describe("BattleDamageSystem", function() {
     });
 
     it("does not scale damage dealt to characters by the damage option", async function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = pinnedCharacter(state);
       await setDifficulty({ damage:500 });
 
@@ -429,7 +421,7 @@ describe("BattleDamageSystem", function() {
     });
 
     it("divides damage dealt to characters by the mitigation option", async function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = pinnedCharacter(state);
       await setDifficulty({ mitigation:200 });
 
@@ -441,7 +433,7 @@ describe("BattleDamageSystem", function() {
     });
 
     it("rounds the mitigated damage", async function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = pinnedCharacter(state);
       await setDifficulty({ mitigation:300 });
 
@@ -452,7 +444,7 @@ describe("BattleDamageSystem", function() {
     });
 
     it("does not divide damage dealt to monsters by the mitigation option", async function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = bareMonster(state);
       await setDifficulty({ mitigation:200 });
 
@@ -463,7 +455,7 @@ describe("BattleDamageSystem", function() {
     });
 
     it("composes the mitigation factor with vulnerable doubling", async function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const target = pinnedCharacter(state);
       BattleSystem.addStatus(target, 'vulnerable', { count:1 });
       await setDifficulty({ mitigation:400 });

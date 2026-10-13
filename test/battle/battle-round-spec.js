@@ -1,14 +1,8 @@
 describe("BattleRound", function() {
 
-  function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-    return BattleSystem.getState();
-  }
-
   describe("applyCooldown()", function() {
     it("puts a monster's ability on cooldown for its full time when it's used", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const kobold = state.getEntityAtPosition('M.0.2');
       const bite = Ability.Bite({ damage:[10,20], speed:1000, cooldown:2500 });
 
@@ -19,7 +13,7 @@ describe("BattleRound", function() {
     });
 
     it("leaves an ability without a cooldown ready to use again", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const kobold = state.getEntityAtPosition('M.0.2');
       const bite = Ability.Bite({ damage:[10,20], speed:1000 });
 
@@ -30,7 +24,7 @@ describe("BattleRound", function() {
     });
 
     it("never puts a character's ability on cooldown", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const player = state.getEntityAtPosition('P.0.2');
       const punch = Ability.Punch({ damage:[10,20], speed:1000, cooldown:2500 });
 

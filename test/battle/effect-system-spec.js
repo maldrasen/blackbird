@@ -1,13 +1,8 @@
 describe("EffectSystem", function() {
 
-  // The runt pack puts kobold runts at M.0.1, M.0.2, and M.0.3, and the party fixtures fill P.0.2, P.0.3, P.1.2, and
+  // The runt pack puts kobold runts at M.0.1, M.0.2, and M.0.3, and the spec party fills P.0.2, P.0.3, P.1.2, and
   // P.1.3. A blasto thrown at P.0.2 therefore catches P.0.2, P.0.3, and P.1.2, plus the runt at M.0.2 standing across
   // the battle line.
-  function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-    return BattleSystem.getState();
-  }
 
   function setHealth(id, current) {
     const health = HealthComponent.lookup(id);
@@ -33,7 +28,7 @@ describe("EffectSystem", function() {
   }
 
   // Downing everyone but P.0.2 leaves a single victim in the blast, keeping the stubbed roll budget readable. The
-  // fixture characters have random species, so the victim is pinned to human (no innate resistances).
+  // party characters have random species, so the victim is pinned to human (no innate resistances).
   function isolateVictim(state) {
     const victim = state.getEntityAtPosition('P',0,2);
     makeHuman(victim);
@@ -62,7 +57,7 @@ describe("EffectSystem", function() {
 
   describe("applyDuringBattle()", function() {
     it("hits every entity caught in the blast", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const acting = state.getEntityAtPosition('M',0,1);
       ['P.0.2','P.0.3','P.1.2','P.1.3','M.0.2'].forEach(position => setHealth(state.getEntityAtPosition(position), 100));
       setHealth(acting, 100);
@@ -77,7 +72,7 @@ describe("EffectSystem", function() {
     });
 
     it("catches the acting entity in its own blast", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const acting = state.getEntityAtPosition('M',0,2);
       setHealth(acting, 100);
       setHealth(state.getEntityAtPosition('P',0,2), 100);
@@ -91,7 +86,7 @@ describe("EffectSystem", function() {
     // The crimson tear defines no target, areaOfEffect, or messageForEntity, and its story names the item with an
     // {I} token - the minimal shape a self targeted consumable can have.
     it("targets the acting entity with a bare self consumable", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const acting = state.getEntityAtPosition('P',0,2);
 
       BattleSystem.specRound(acting);
@@ -103,7 +98,7 @@ describe("EffectSystem", function() {
     });
 
     it("applies the statuses that fail their resist rolls", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const victim = isolateVictim(state);
       const now = state.getNext().time;
 
@@ -123,7 +118,7 @@ describe("EffectSystem", function() {
     });
 
     it("leaves the victim clean when the resists pass", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const victim = isolateVictim(state);
 
       Random.stubRoll(...stubStory(), ...stubPassedResist(), ...stubPassedResist());
@@ -139,7 +134,7 @@ describe("EffectSystem", function() {
     // The victim's Vigilant helm is pinned to 12 blind resistance, so the blind resist spends a roll on it (the 11)
     // while the stun resist still skips straight to the power side.
     it("counts the victim's enchanted resistance against the effect being applied", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const victim = isolateVictim(state);
       Random.stubBetween(12);
       ItemSupport.equip(victim, 'helm', ['steel'], { enchantment:{ pattern:'vigilant' } });
@@ -155,7 +150,7 @@ describe("EffectSystem", function() {
     // No resist rolls are stubbed here: the damage downs the victim, so trying to apply the statuses anyway would
     // throw for running out of stubbed values.
     it("stops applying effects to a victim the damage downs", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const victim = isolateVictim(state);
       setHealth(victim, 3);
       setVitality(victim, 10);
@@ -176,7 +171,7 @@ describe("EffectSystem", function() {
   // A buff rolls a single d100 against its strength and nothing else, so one stubbed roll decides it.
   describe("applyBuff()", function() {
     it("takes hold when the roll comes under its strength", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const acting = state.getEntityAtPosition('P',1,2);
 
       Random.stubRoll(29);
@@ -187,7 +182,7 @@ describe("EffectSystem", function() {
     });
 
     it("fails when the roll reaches its strength", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const acting = state.getEntityAtPosition('P',1,2);
 
       Random.stubRoll(30);
@@ -198,14 +193,14 @@ describe("EffectSystem", function() {
     });
 
     it("throws for a buff without a strength", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const acting = state.getEntityAtPosition('P',1,2);
 
       expect(() => EffectSystem.applyBuff(acting, Effect.buffAfterRound('hidden'))).to.throw('buff.strength');
     });
 
     it("throws for a hidden buff on an entity in the front rank", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const acting = state.getEntityAtPosition('P',0,2);
 
       expect(() => EffectSystem.applyBuff(acting, Effect.buffAfterRound('hidden', { strength:100 }))).
@@ -222,7 +217,7 @@ describe("EffectSystem", function() {
     }
 
     it("targets the whole enemy formation from the party side", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       BattleSystem.specRound(state.getEntityAtPosition('P',0,2));
 
       const affected = EffectSystem.getAffectedEntities(stubSource(EffectTarget.enemyFormation));
@@ -232,7 +227,7 @@ describe("EffectSystem", function() {
     });
 
     it("targets the whole enemy formation from the monster side", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       BattleSystem.specRound(state.getEntityAtPosition('M',0,2));
 
       const affected = EffectSystem.getAffectedEntities(stubSource(EffectTarget.enemyFormation));
@@ -242,7 +237,7 @@ describe("EffectSystem", function() {
     });
 
     it("excludes downed entities from a formation", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       state.setCondition(state.getEntityAtPosition('M',0,2), BattleCondition.dead);
       BattleSystem.specRound(state.getEntityAtPosition('P',0,2));
 
@@ -253,7 +248,7 @@ describe("EffectSystem", function() {
     });
 
     it("targets the acting entity's own side with an ally formation target", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       BattleSystem.specRound(state.getEntityAtPosition('P',0,2));
 
       const affected = EffectSystem.getAffectedEntities(stubSource(EffectTarget.allyFormation));
@@ -263,7 +258,7 @@ describe("EffectSystem", function() {
     });
 
     it("throws for a target it doesn't know", function() {
-      startBattle();
+      BattleSupport.startBattle();
       BattleSystem.specRound(BattleSystem.getState().getEntityAtPosition('P',0,2));
 
       expect(() => EffectSystem.getAffectedEntities(stubSource('everyone'))).to.throw('Bad effect target');

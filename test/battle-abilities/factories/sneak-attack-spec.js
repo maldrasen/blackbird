@@ -1,29 +1,18 @@
 describe("Ability.SneakAttack", function() {
 
-  // The fixture rogue at P.1.3 sits in the back rank with a dagger in each hand, out of reach of everything.
-  function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-    return BattleSystem.getState();
-  }
-
-  // finishCharacterRound() requires the acting entity to be next in the turn order.
-  function startCharacterRound(acting, target) {
-    BattleSystem.getState().moveToTopOfTurnOrder({ type:'character', id:acting });
-    BattleSystem.specRound(acting, { target });
-  }
+  // The spec party's rogue at P.1.3 sits in the back rank with a dagger in each hand, out of reach of everything.
 
   // A hidden rogue sneak attacks the kobold in front of them with a plain steel weapon in place of the assassin's
   // dagger they came with, which could hide them again. An arrow is loaded in case the weapon is a bow. The command
   // that built an ability ends the round, so the helper ends it itself to see the rogue revealed.
   function sneakAttackWith(base) {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const rogue = state.getEntityAtPosition('P.1.3');
 
     ItemSupport.equip(rogue, base, ['steel']);
     QuiverComponent.update(rogue, { ammunition:'elm-arrow', quantity:1 });
     BattleSystem.addStatus(rogue, 'hidden');
-    startCharacterRound(rogue, state.getEntityAtPosition('M.0.2'));
+    BattleSupport.startCharacterRound(rogue, state.getEntityAtPosition('M.0.2'));
     Ability.SneakAttack().execute();
     BattleSystem.finishCharacterRound();
 
@@ -43,7 +32,7 @@ describe("Ability.SneakAttack", function() {
   });
 
   it("is only possible while hidden", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const rogue = state.getEntityAtPosition('P.1.3');
 
     BattleSystem.specRound(rogue);
@@ -54,7 +43,7 @@ describe("Ability.SneakAttack", function() {
   });
 
   it("is not possible with a bow and an empty quiver", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const rogue = state.getEntityAtPosition('P.1.3');
 
     ItemSupport.equip(rogue, 'shortbow', ['wood']);
@@ -67,13 +56,13 @@ describe("Ability.SneakAttack", function() {
   });
 
   it("spends an arrow when shot from a bow", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const rogue = state.getEntityAtPosition('P.1.3');
 
     ItemSupport.equip(rogue, 'shortbow', ['wood']);
     QuiverComponent.update(rogue, { ammunition:'elm-arrow', quantity:2 });
     BattleSystem.addStatus(rogue, 'hidden');
-    startCharacterRound(rogue, state.getEntityAtPosition('M.0.2'));
+    BattleSupport.startCharacterRound(rogue, state.getEntityAtPosition('M.0.2'));
     Ability.SneakAttack().execute();
 
     expect(QuiverComponent.lookup(rogue).quantity).to.equal(1);

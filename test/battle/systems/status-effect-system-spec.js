@@ -1,11 +1,5 @@
 describe("StatusEffectSystem", function() {
 
-  function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-    return BattleSystem.getState();
-  }
-
   function setHealth(id, current) {
     const health = HealthComponent.lookup(id);
     health.maxHealth = 100;
@@ -54,7 +48,7 @@ describe("StatusEffectSystem", function() {
 
   describe("processEndRound()", function() {
     it("counts a turn against a turn count effect when the round ends, not when it starts", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const acting = state.getEntityAtPosition('P',0,2);
 
       BattleSystem.addStatus(acting, 'poised', { count:2 });
@@ -70,7 +64,7 @@ describe("StatusEffectSystem", function() {
     });
 
     it("removes the effect when its last turn ends", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const acting = state.getEntityAtPosition('P',0,2);
 
       BattleSystem.addStatus(acting, 'stun', { count:1 });
@@ -80,7 +74,7 @@ describe("StatusEffectSystem", function() {
     });
 
     it("keeps an effect the acting entity picked up during their own round", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const acting = state.getEntityAtPosition('P',0,2);
 
       runRound(state, acting, () => BattleSystem.addStatus(acting, 'poised', { count:1 }));
@@ -89,7 +83,7 @@ describe("StatusEffectSystem", function() {
     });
 
     it("keeps an effect renewed during the round", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const acting = state.getEntityAtPosition('P',0,2);
 
       BattleSystem.addStatus(acting, 'poised', { count:1 });
@@ -99,7 +93,7 @@ describe("StatusEffectSystem", function() {
     });
 
     it("leaves effects on the other combatants alone", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const acting = state.getEntityAtPosition('P',0,2);
       const other = state.getEntityAtPosition('P',1,2);
 
@@ -112,7 +106,7 @@ describe("StatusEffectSystem", function() {
 
   describe("scheduleTick()", function() {
     it("schedules a tick one record interval after the current time", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
       const now = state.getNext().time;
 
@@ -122,7 +116,7 @@ describe("StatusEffectSystem", function() {
     });
 
     it("overrides the record interval with the component's interval", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
       const now = state.getNext().time;
 
@@ -132,7 +126,7 @@ describe("StatusEffectSystem", function() {
     });
 
     it("keeps the pending tick's schedule when the effect is renewed", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
       const now = state.getNext().time;
 
@@ -144,7 +138,7 @@ describe("StatusEffectSystem", function() {
     });
 
     it("schedules nothing for an effect without an interval", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
 
       BattleSystem.addStatus(victim, 'poised');
@@ -155,7 +149,7 @@ describe("StatusEffectSystem", function() {
 
   describe("fixed time effects", function() {
     it("schedules the effect's removal at the end of its duration", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
       const now = state.getNext().time;
 
@@ -165,7 +159,7 @@ describe("StatusEffectSystem", function() {
     });
 
     it("extends a pending removal when the effect is renewed", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
       const now = state.getNext().time;
 
@@ -176,7 +170,7 @@ describe("StatusEffectSystem", function() {
     });
 
     it("schedules nothing for an effect applied without a duration", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
 
       BattleSystem.addStatus(victim, 'blind');
@@ -185,7 +179,7 @@ describe("StatusEffectSystem", function() {
     });
 
     it("removes the effect when its removal entry comes up", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
       setHealth(victim, 100);
 
@@ -205,7 +199,7 @@ describe("StatusEffectSystem", function() {
 
   describe("removeStatus()", function() {
     it("clears the effect's turn order entry", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
 
       BattleSystem.addStatus(victim, 'poison', { strength:10, damage:{ x:1, d:6, p:2 }});
@@ -216,7 +210,7 @@ describe("StatusEffectSystem", function() {
     });
 
     it("tolerates effects that never scheduled an entry", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
 
       BattleSystem.addStatus(victim, 'poised');
@@ -227,7 +221,7 @@ describe("StatusEffectSystem", function() {
 
   describe("processTick()", function() {
     it("damages the victim and reschedules the tick one interval later", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
       setHealth(victim, 100);
       setVitality(victim, 15);
@@ -250,7 +244,7 @@ describe("StatusEffectSystem", function() {
     });
 
     it("does not reschedule the tick when it downs the victim", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
       setHealth(victim, 1);
       setVitality(victim, 15);
@@ -272,7 +266,7 @@ describe("StatusEffectSystem", function() {
     // The stub order for the resist roll is the 5% critical roll, then the contest floor and resistance rolls, then
     // the contest floor and power rolls. The pinned human victim has no nature resistance, so that roll is skipped.
     it("ends the effect after its damage when the victim resists it", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
       setHealth(victim, 100);
       setVitality(victim, 15);
@@ -296,7 +290,7 @@ describe("StatusEffectSystem", function() {
     // The victim's Incorruptible helm is pinned to 12 poison resistance, so the tick's resist spends a roll on it. The
     // 11 is only a valid stub because of the helm.
     it("counts the victim's enchanted resistance against the effect when it ticks", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
       setHealth(victim, 100);
       setVitality(victim, 15);
@@ -314,7 +308,7 @@ describe("StatusEffectSystem", function() {
     });
 
     it("ticks and reschedules when the victim fails to resist", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
       setHealth(victim, 100);
       setVitality(victim, 15);
@@ -332,7 +326,7 @@ describe("StatusEffectSystem", function() {
     });
 
     it("interrupts the battle when the tick kills the last monster", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const monsters = state.getActiveMonsters();
       monsters.slice(1).forEach(id => BattleDeathSystem.killEntity(id));
 

@@ -1,11 +1,5 @@
 describe("ResistRoll", function() {
 
-  function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-    return BattleSystem.getState();
-  }
-
   function pinnedCharacter(state, species) {
     const target = state.getEntityAtPosition('P',1,2);
     const actor = ActorComponent.lookup(target);
@@ -21,7 +15,7 @@ describe("ResistRoll", function() {
   // The chance roll comes ahead of everything else, so landing under the option passes without spending any of the
   // contest's rolls. The stub queue is left empty behind it, and would throw if anything else rolled.
   it("passes outright when the chance roll lands under the resistance option", async function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const target = pinnedCharacter(state, SpeciesCode.human);
     await WorldState.setOptions({ difficulty:{ damage:100, mitigation:100, resistance:50 } });
 
@@ -33,7 +27,7 @@ describe("ResistRoll", function() {
   // A chance roll at or over the option falls through to the ordinary contest, which the option no longer adds to.
   // The human has no shock resistance, so no resistance roll is spent.
   it("falls through to the contest when the chance roll misses", async function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const target = pinnedCharacter(state, SpeciesCode.human);
     await WorldState.setOptions({ difficulty:{ damage:100, mitigation:100, resistance:50 } });
 
@@ -45,7 +39,7 @@ describe("ResistRoll", function() {
   // The resistance option never applies to a monster. With it at 100 the kobold still rolls the contest, bound by
   // their own fire resistance of 20.
   it("rolls a monster's own resistance", async function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const target = state.getActiveMonsters()[0];
     await WorldState.setOptions({ difficulty:{ damage:100, mitigation:100, resistance:100 } });
 
@@ -57,7 +51,7 @@ describe("ResistRoll", function() {
   // A vermen's psychic resistance of -20 subtracts its roll, turning what would otherwise be a passed resist into a
   // failed one.
   it("subtracts a roll for a negative resistance", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const target = pinnedCharacter(state, SpeciesCode.vermen);
 
     Random.stubRoll(5, 15, 10, 10, 2);
@@ -68,7 +62,7 @@ describe("ResistRoll", function() {
   // The Firewalker's helm is pinned to 8 fire resistance, the only fire resistance the human has. The resistance roll
   // of 7 is only a valid stub because the helm raised the bound from 0 to 8.
   it("adds the resistance of enchanted equipment to the roll", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const target = pinnedCharacter(state, SpeciesCode.human);
     Random.stubBetween(8);
     ItemSupport.equip(target, 'helm', ['steel'], { enchantment:{ pattern:'resistant-to-fire' } });
@@ -81,7 +75,7 @@ describe("ResistRoll", function() {
   // A Vigilant helm pinned to 12 blind resistance counts when blind is the effect being resisted. The resistance roll
   // of 11 is only a valid stub because the helm raised the bound from 0 to 12.
   it("adds the resistance against the status effect being resisted", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const target = pinnedCharacter(state, SpeciesCode.human);
     Random.stubBetween(12);
     ItemSupport.equip(target, 'helm', ['steel'], { enchantment:{ pattern:'vigilant' } });
@@ -94,7 +88,7 @@ describe("ResistRoll", function() {
   // The same helm does nothing against stun, so no resistance roll is spent and the stubs fall through to the power
   // side of the contest.
   it("ignores resistance against other status effects", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const target = pinnedCharacter(state, SpeciesCode.human);
     Random.stubBetween(12);
     ItemSupport.equip(target, 'helm', ['steel'], { enchantment:{ pattern:'vigilant' } });
@@ -107,7 +101,7 @@ describe("ResistRoll", function() {
   // A resistance of zero doesn't roll at all, so the third and fourth stubbed values fall through to the power side
   // of the contest.
   it("skips the roll when the target has no resistance", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const target = pinnedCharacter(state, SpeciesCode.human);
 
     Random.stubRoll(5, 15, 10, 4);
@@ -116,7 +110,7 @@ describe("ResistRoll", function() {
   });
 
   it("fumbles into a failed resist", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const target = pinnedCharacter(state, SpeciesCode.human);
 
     Random.stubRoll(0);
@@ -125,7 +119,7 @@ describe("ResistRoll", function() {
   });
 
   it("criticals into a passed resist", function() {
-    const state = startBattle();
+    const state = BattleSupport.startBattle();
     const target = pinnedCharacter(state, SpeciesCode.human);
 
     Random.stubRoll(19);
