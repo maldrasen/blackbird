@@ -6,7 +6,7 @@ global.OrphanSweeper = (function() {
   function sweep() {
     const swept = { monsters:sweepMonsters(), items:sweepItems() };
 
-    if (swept.monsters + swept.items > 0 && Environment.viewPresent()) {
+    if (swept.monsters + swept.items > 0 && Environment.viewPresent) {
       console.warn(`OrphanSweeper removed ${swept.monsters} monsters and ${swept.items} items.`);
     }
 

@@ -1,7 +1,7 @@
 global.BattleInterface = (function() {
 
   function viewActive() {
-    if (Environment.viewPresent() === false) { return false }
+    if (Environment.viewPresent === false) { return false }
     return GameSystem.getState().getGameMode() === GameMode.battle;
   }
 

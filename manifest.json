@@ -148,7 +148,6 @@
     "application/dungeon/systems/trap-system.js",
     "application/enlighten/enlighten-state.js",
     "application/enlighten/enlighten-system.js",
-    "application/environment-extensions.js",
     "application/episodes/episode-page.js",
     "application/episodes/episode-state.js",
     "application/episodes/episode-system.js",

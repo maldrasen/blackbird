@@ -17,6 +17,7 @@ window.Environment = {
   isMac: navigator.platform.startsWith('Mac'),
   isWindows: navigator.platform.startsWith('Win'),
   isLinux: navigator.platform.startsWith('Linux'),
+  viewPresent: true,
 };
 
 window.fs = (function() {
