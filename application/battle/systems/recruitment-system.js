@@ -9,6 +9,7 @@ global.RecruitmentSystem = (function() {
     FeelingsComponent.create(monsterId, { target:player, affection, fear, respect });
     ControlledComponent.create(monsterId, { control });
     SituatedComponent.create(monsterId, { currentLocation:SpecialLocation.inParty });
+    QuiverComponent.create(monsterId);
     MonsterComponent.destroy(monsterId);
 
     GameSystem.getState().addToRoster(monsterId);

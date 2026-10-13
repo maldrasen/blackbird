@@ -153,6 +153,7 @@ global.ComponentType = {
   mouth: 'MouthComponent',
   personality: 'PersonalityComponent',
   pussy: 'PussyComponent',
+  quiver: 'QuiverComponent',
   sensitivities: 'SensitivitiesComponent',
   sexualHistory: 'SexualHistoryComponent',
   sexualPreferences: 'SexualPreferencesComponent',
