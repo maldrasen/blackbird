@@ -6,6 +6,11 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 - [258] Rework Character Cards `0pt` — [258-rework-character-cards.md](258-rework-character-cards.md)
 
+## Priority 1
+
+- [266] Equip ammo in UI `5pt` — [266-equip-ammo-in-ui.md](266-equip-ammo-in-ui.md)
+- [267] Decouple Fixtures from Specs `8pt` — [267-decouple-fixtures-from-specs.md](267-decouple-fixtures-from-specs.md)
+
 ## Priority 2
 
 - [3] Persisted Action Controls `5pt` — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)
@@ -29,11 +34,11 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [257] Turn DungeonControl into a GameControl `5pt` — [257-turn-dungeoncontrol-into-a-gamecontrol.md](257-turn-dungeoncontrol-into-a-gamecontrol.md)
 - [262] Implement toxic status `3pt` — [262-implement-toxic-status.md](262-implement-toxic-status.md)
 - [263] Change weapon color in battle messages `1pt` — [263-change-weapon-color-in-battle-messages.md](263-change-weapon-color-in-battle-messages.md)
+- [268] Implement Change Equipment `5pt` — [268-implement-change-equipment.md](268-implement-change-equipment.md)
 
 ## Priority 3
 
 - [12] Character Abilities `5pt` — [012-character-abilities.md](012-character-abilities.md)
-- [014] Bows & Arrows `5pt` #battle — [014-bows-arrows.md](014-bows-arrows.md)
 - [016] Battle Character Inspect `5pt` #battle — [016-battle-character-inspect.md](016-battle-character-inspect.md)
 - [019] Stamina `3pt` #training — [019-stamina.md](019-stamina.md)
 - [020] Refactor how SexActions define their persistence `5pt` #training — [020-refactor-how-sexactions-define-their-persistence.md](020-refactor-how-sexactions-define-their-persistence.md)

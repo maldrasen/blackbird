@@ -2,7 +2,7 @@ describe("Ability.SpecialAttack", function() {
 
   const strike = { name:'Strike' };
 
-  // The fixture party puts the player at P.0.2 with a longsword and a shield, and rogues in the back rank with a
+  // The fixture party puts the player at P.0.2 with a longsword and a shield, and a rogue at P.1.3 with a
   // dagger in each hand. The runt pack is a single rank of kobolds.
   function startBattle() {
     BattleFixtures.prepareForBattle();
@@ -76,14 +76,14 @@ describe("Ability.SpecialAttack", function() {
       BattleSystem.specRound(state.getEntityAtPosition('P.0.2'));
       expect(Ability.SpecialAttack(strike).isPossible()).to.equal(true);
 
-      BattleSystem.specRound(state.getEntityAtPosition('P.1.2'));
+      BattleSystem.specRound(state.getEntityAtPosition('P.1.3'));
       expect(Ability.SpecialAttack(strike).isPossible()).to.equal(false);
     });
 
     it("reaches any position when it can target any enemy", function() {
       const state = startBattle();
 
-      BattleSystem.specRound(state.getEntityAtPosition('P.1.2'));
+      BattleSystem.specRound(state.getEntityAtPosition('P.1.3'));
 
       expect(Ability.SpecialAttack({ ...strike, targetingMode:TargetingMode.anyEnemy }).isPossible()).to.equal(true);
     });

@@ -28,8 +28,12 @@ function canMonsterAttack() {
 }
 
 function canCharacterAttack() {
-  if (BattleSystem.getRound().getPrimaryWeapon() == null) { return false; }
+  const round = BattleSystem.getRound();
+  const weapon = round.getPrimaryWeapon();
+
+  if (weapon == null) { return false; }
   if (isHidden()) { return false; }
+  if (AmmunitionSystem.hasAmmunitionFor(round.getActing(), weapon) === false) { return false; }
 
   return TargetingController.getMonstersInRange().length > 0;
 }
@@ -65,6 +69,7 @@ function executeAttacks(ability) {
 
     round.addMessage({ text:attackText }, Weaver(context));
     round.addTime(attackRoll.getWeapon().getBase().getSpeed());
+    if (AmmunitionSystem.isRequired(acting, attackRoll.getWeapon())) { AmmunitionSystem.spend(acting); }
 
     contest.isHit() ?
       PhysicalAttackSystem.processHit(attackRoll, defendRoll):
@@ -93,7 +98,15 @@ function calculateAttacks() {
     hand = (hand === 'primary' && dualWielding) ? 'secondary' : 'primary';
   }
 
-  return attacks;
+  return limitByAmmunition(attacks);
+}
+
+// A character spends an arrow on every shot, so they can't fire more times than their quiver holds.
+function limitByAmmunition(attacks) {
+  const round = BattleSystem.getRound();
+  return AmmunitionSystem.isRequired(round.getActing(), round.getPrimaryWeapon()) ?
+    attacks.slice(0, QuiverComponent.lookup(round.getActing()).quantity):
+    attacks;
 }
 
 // A character with a weapon in each hand swings each of them 25% faster.

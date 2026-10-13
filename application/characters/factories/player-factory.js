@@ -81,6 +81,7 @@ global.PlayerFactory = (function() {
 
       EquipmentComponent.create(playerId);
       ExperienceComponent.create(playerId);
+      QuiverComponent.create(playerId);
 
       adjustStartingAttributes(playerId);
 

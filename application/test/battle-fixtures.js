@@ -32,7 +32,7 @@ global.BattleFixtures = (function() {
   function prepareForBattle() {
     addPlayer('P.0.2');
     addTank('P.0.3');
-    addRogue('P.1.2');
+    addArcher('P.1.2');
     addRogue('P.1.3');
   }
 
@@ -67,6 +67,19 @@ global.BattleFixtures = (function() {
     ItemFixtures.equip(rogue, 'dagger', ['steel'], { ...poisoned, ...secondary });
     equipOutfit(rogue, RogueOutfit);
     PartyConfiguration.setCharacter(rogue,position);
+  }
+
+  function addArcher(position) {
+    Inventory().addArticle('elm-arrow',30);
+
+    const archer = CharacterFixtures.randomCharacters(1,{ skills:{
+      bows: Random.between(10,20),
+    }})[0];
+
+    ItemFixtures.equip(archer, 'longbow', ['wood']);
+    equipOutfit(archer, RogueOutfit);
+    AmmunitionSystem.loadQuiver(archer,'elm-arrow');
+    PartyConfiguration.setCharacter(archer,position);
   }
 
   function equipOutfit(id, outfit) {
