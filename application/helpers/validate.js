@@ -51,7 +51,7 @@ global.Validate = (function() {
   }
 
   function isNumber(name, value, message=null) {
-    if (typeof value !== 'number') {
+    if (typeof value !== 'number' || Number.isNaN(value)) {
       throw new Error(message ? message : `Validate.isNumber Failed: ${name} is not a number.`);
     }
   }
@@ -63,7 +63,7 @@ global.Validate = (function() {
   }
 
   function isNotNegative(name, value, message=null) {
-    if (typeof value !== 'number' || value < 0) {
+    if (typeof value !== 'number' || Number.isNaN(value) || value < 0) {
       throw new Error(message ? message : `Validate.isNotNegative Failed: ${name} is negative.`);
     }
   }

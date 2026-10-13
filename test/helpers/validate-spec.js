@@ -26,6 +26,10 @@ describe("Validate", function() {
     it("rejects a non-number", function() {
       expect(function() { Validate.isNotNegative('count', null); }).to.throw('count is negative');
     });
+
+    it("rejects NaN", function() {
+      expect(function() { Validate.isNotNegative('count', NaN); }).to.throw('count is negative');
+    });
   });
 
 });
