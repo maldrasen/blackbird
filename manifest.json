@@ -156,7 +156,6 @@
     "application/fixtures/character-fixtures.js",
     "application/fixtures/fixtures.js",
     "application/fixtures/item-fixtures.js",
-    "application/fixtures/tests.js",
     "application/fixtures/training-fixtures.js",
     "application/helpers/array-helper.js",
     "application/helpers/calendar-helper.js",
@@ -680,6 +679,9 @@
     "views/training/training-status-panel.js",
     "views/training/training-view.js",
     "views/views.js"
+  ],
+  "supportFiles": [
+    "test-support/tests.js"
   ],
   "testFiles": [
     "test/battle/areas-of-effect-spec.js",
