@@ -34,6 +34,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [257] Turn DungeonControl into a GameControl `5pt` — [257-turn-dungeoncontrol-into-a-gamecontrol.md](257-turn-dungeoncontrol-into-a-gamecontrol.md)
 - [262] Implement toxic status `3pt` — [262-implement-toxic-status.md](262-implement-toxic-status.md)
 - [263] Change weapon color in battle messages `1pt` — [263-change-weapon-color-in-battle-messages.md](263-change-weapon-color-in-battle-messages.md)
+- [268] Implement Change Equipment `5pt` — [268-implement-change-equipment.md](268-implement-change-equipment.md)
 
 ## Priority 3
 

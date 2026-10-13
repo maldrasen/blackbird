@@ -12,5 +12,4 @@ The equipment depots are now giving characters bows. They're working as normal w
 
 Monsters can also have bows, and we need to know what arrows they're using in order to add the arrow damage to their shots. Unlike the party characters though, monsters won't expend ammunition when shooting. We don't track monster resources anywhere, so this should remain the rule.
 
-
-
+> Attacks with a bow are now requiring and using ammunition. The added damage from the ammunition is not being included with the bow attack damage yet. We also need to update the item appraiser in order to uncomment the poison arrows.
