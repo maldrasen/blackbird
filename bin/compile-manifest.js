@@ -27,6 +27,7 @@ const testFiles = [];
 addFiles(applicationFiles,'application');
 addFiles(dataFiles,'data');
 addFiles(viewFiles,'views');
+addFiles(testFiles,'test-support');
 addFiles(testFiles,'test');
 
 const sourceCount = applicationFiles.length + dataFiles.length + viewFiles.length;
