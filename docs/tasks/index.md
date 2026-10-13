@@ -39,7 +39,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 ## Priority 3
 
 - [12] Character Abilities `5pt` — [012-character-abilities.md](012-character-abilities.md)
-- [014] Bows & Arrows `5pt` #battle — [014-bows-arrows.md](014-bows-arrows.md)
 - [016] Battle Character Inspect `5pt` #battle — [016-battle-character-inspect.md](016-battle-character-inspect.md)
 - [019] Stamina `3pt` #training — [019-stamina.md](019-stamina.md)
 - [020] Refactor how SexActions define their persistence `5pt` #training — [020-refactor-how-sexactions-define-their-persistence.md](020-refactor-how-sexactions-define-their-persistence.md)
