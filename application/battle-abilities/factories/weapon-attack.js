@@ -27,20 +27,15 @@ function canMonsterAttack() {
   return BattleHelper.isAttackWithinRange(weapon.getBase().getReach(), round.getActingPosition(), round.getTargetPosition());
 }
 
-// Only party members need ammunition. Monsters are not tracked that closely, so a monster with a bow always has
-// something to shoot.
 function canCharacterAttack() {
-  const weapon = BattleSystem.getRound().getPrimaryWeapon();
+  const round = BattleSystem.getRound();
+  const weapon = round.getPrimaryWeapon();
 
   if (weapon == null) { return false; }
   if (isHidden()) { return false; }
-  if (needsAmmunition(weapon) && hasAmmunition() === false) { return false; }
+  if (AmmunitionSystem.hasAmmunitionFor(round.getActing(), weapon) === false) { return false; }
 
   return TargetingController.getMonstersInRange().length > 0;
-}
-
-function hasAmmunition() {
-  return QuiverComponent.lookup(BattleSystem.getRound().getActing()).quantity > 0;
 }
 
 function isHidden() {
@@ -74,7 +69,7 @@ function executeAttacks(ability) {
 
     round.addMessage({ text:attackText }, Weaver(context));
     round.addTime(attackRoll.getWeapon().getBase().getSpeed());
-    if (needsAmmunition(attackRoll.getWeapon())) { AmmunitionSystem.spend(acting); }
+    if (AmmunitionSystem.isRequired(acting, attackRoll.getWeapon())) { AmmunitionSystem.spend(acting); }
 
     contest.isHit() ?
       PhysicalAttackSystem.processHit(attackRoll, defendRoll):
@@ -106,17 +101,12 @@ function calculateAttacks() {
   return limitByAmmunition(attacks);
 }
 
-// A character spends an arrow on every shot, so they can't fire more times than their quiver holds. A bow is two
-// handed, so when the primary weapon needs ammunition it is the only weapon making strikes.
+// A character spends an arrow on every shot, so they can't fire more times than their quiver holds.
 function limitByAmmunition(attacks) {
   const round = BattleSystem.getRound();
-  if (needsAmmunition(round.getPrimaryWeapon()) === false) { return attacks; }
-  return attacks.slice(0, QuiverComponent.lookup(round.getActing()).quantity);
-}
-
-// Monsters don't track ammunition, and an enchanted bow may someday not need any.
-function needsAmmunition(weapon) {
-  return BattleSystem.getRound().isActingMonster() === false && weapon.usesAmmunition();
+  return AmmunitionSystem.isRequired(round.getActing(), round.getPrimaryWeapon()) ?
+    attacks.slice(0, QuiverComponent.lookup(round.getActing()).quantity):
+    attacks;
 }
 
 // A character with a weapon in each hand swings each of them 25% faster.

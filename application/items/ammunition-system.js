@@ -32,6 +32,15 @@ global.AmmunitionSystem = (function() {
     QuiverComponent.update(id, { quantity: quiver.quantity + quantity });
   }
 
+  // Monsters don't track ammunition, and an enchanted bow may someday not need any.
+  function isRequired(id, weapon) {
+    return MonsterComponent.lookup(id) == null && weapon.usesAmmunition();
+  }
+
+  function hasAmmunitionFor(id, weapon) {
+    return isRequired(id, weapon) === false || QuiverComponent.lookup(id).quantity > 0;
+  }
+
   // Bow attacks always expend 1 arrow. If we add special bow attacks that shoot more than one arrow at a time
   // they should probably be making multiple attack rolls, and decrement the ammo each time. If we know a special
   // attack would use three arrows though, it shouldn't be possible if they only have two in their quiver.
@@ -44,6 +53,8 @@ global.AmmunitionSystem = (function() {
     restock,
     loadQuiver,
     unloadQuiver,
+    isRequired,
+    hasAmmunitionFor,
     spend,
   };
 

@@ -41,9 +41,11 @@ Ability.SpecialAttack = function(options) {
 }
 
 function isPossible(ability, options) {
-  const weapon = BattleSystem.getRound().getPrimaryWeapon();
+  const round = BattleSystem.getRound();
+  const weapon = round.getPrimaryWeapon();
 
   if (weapon == null) { return false; }
+  if (AmmunitionSystem.hasAmmunitionFor(round.getActing(), weapon) === false) { return false; }
   if (options.isPossible?.() === false) { return false; }
 
   return isInRange(ability, weapon);
@@ -77,6 +79,7 @@ function execute(ability, options) {
   round.addMessage({ text:getAttackText(options, weapon, attackRoll, context) }, Weaver(context));
   round.addTime(weapon.getBase().getSpeed());
 
+  if (AmmunitionSystem.isRequired(round.getActing(), weapon)) { AmmunitionSystem.spend(round.getActing()); }
   if (contest.isHit() === false) { return PhysicalAttackSystem.processMiss(attackRoll, defendRoll); }
 
   options.onHit?.(context.A, context.T);

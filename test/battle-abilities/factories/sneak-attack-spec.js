@@ -14,13 +14,14 @@ describe("Ability.SneakAttack", function() {
   }
 
   // A hidden rogue sneak attacks the kobold in front of them with a plain steel weapon in place of the assassin's
-  // dagger they came with, which could hide them again. The command that built an ability ends the round, so the
-  // helper ends it itself to see the rogue revealed.
+  // dagger they came with, which could hide them again. An arrow is loaded in case the weapon is a bow. The command
+  // that built an ability ends the round, so the helper ends it itself to see the rogue revealed.
   function sneakAttackWith(base) {
     const state = startBattle();
     const rogue = state.getEntityAtPosition('P.1.2');
 
     ItemFixtures.equip(rogue, base, ['steel']);
+    QuiverComponent.update(rogue, { ammunition:'elm-arrow', quantity:1 });
     BattleSystem.addStatus(rogue, 'hidden');
     startCharacterRound(rogue, state.getEntityAtPosition('M.0.2'));
     Ability.SneakAttack().execute();
@@ -50,6 +51,32 @@ describe("Ability.SneakAttack", function() {
 
     BattleSystem.addStatus(rogue, 'hidden');
     expect(Ability.SneakAttack().isPossible()).to.equal(true);
+  });
+
+  it("is not possible with a bow and an empty quiver", function() {
+    const state = startBattle();
+    const rogue = state.getEntityAtPosition('P.1.2');
+
+    ItemFixtures.equip(rogue, 'shortbow', ['wood']);
+    BattleSystem.addStatus(rogue, 'hidden');
+    BattleSystem.specRound(rogue);
+    expect(Ability.SneakAttack().isPossible()).to.equal(false);
+
+    QuiverComponent.update(rogue, { ammunition:'elm-arrow', quantity:1 });
+    expect(Ability.SneakAttack().isPossible()).to.equal(true);
+  });
+
+  it("spends an arrow when shot from a bow", function() {
+    const state = startBattle();
+    const rogue = state.getEntityAtPosition('P.1.2');
+
+    ItemFixtures.equip(rogue, 'shortbow', ['wood']);
+    QuiverComponent.update(rogue, { ammunition:'elm-arrow', quantity:2 });
+    BattleSystem.addStatus(rogue, 'hidden');
+    startCharacterRound(rogue, state.getEntityAtPosition('M.0.2'));
+    Ability.SneakAttack().execute();
+
+    expect(QuiverComponent.lookup(rogue).quantity).to.equal(1);
   });
 
   it("strikes from the shadows and is revealed by it", function() {
