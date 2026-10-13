@@ -147,24 +147,24 @@ describe("AmmunitionSystem", function() {
   describe("isRequired()", function() {
     it("is required for a character with a bow", function() {
       const id = buildArcher({});
-      expect(AmmunitionSystem.isRequired(id, Item(ItemFixtures.build('shortbow', ['wood'])))).to.equal(true);
+      expect(AmmunitionSystem.isRequired(id, Item(ItemSupport.build('shortbow', ['wood'])))).to.equal(true);
     });
 
     it("is not required for a weapon that doesn't use ammunition", function() {
       const id = buildArcher({});
-      expect(AmmunitionSystem.isRequired(id, Item(ItemFixtures.build('dagger', ['steel'])))).to.equal(false);
+      expect(AmmunitionSystem.isRequired(id, Item(ItemSupport.build('dagger', ['steel'])))).to.equal(false);
     });
   });
 
   describe("hasAmmunitionFor()", function() {
     it("needs a loaded quiver for a bow", function() {
-      const bow = Item(ItemFixtures.build('shortbow', ['wood']));
+      const bow = Item(ItemSupport.build('shortbow', ['wood']));
       expect(AmmunitionSystem.hasAmmunitionFor(buildArcher({}), bow)).to.equal(false);
       expect(AmmunitionSystem.hasAmmunitionFor(buildArcher({ ammunition:'elm-arrow', quantity:1 }), bow)).to.equal(true);
     });
 
     it("is satisfied by any weapon that doesn't use ammunition", function() {
-      const dagger = Item(ItemFixtures.build('dagger', ['steel']));
+      const dagger = Item(ItemSupport.build('dagger', ['steel']));
       expect(AmmunitionSystem.hasAmmunitionFor(buildArcher({}), dagger)).to.equal(true);
     });
   });

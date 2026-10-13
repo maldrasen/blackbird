@@ -25,7 +25,7 @@ describe("RecruitmentSystem", function() {
     GameSystem.getState().setPlayer(player);
 
     const monster = MonsterFactory('kobold-trapper').build();
-    const primary = ItemFixtures.equip(monster, 'spear', ['bone']);
+    const primary = ItemSupport.equip(monster, 'spear', ['bone']);
 
     RecruitmentSystem.recruit(monster, { affection:300, fear:50, respect:200, control:0 });
 

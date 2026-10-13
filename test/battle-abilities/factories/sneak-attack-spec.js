@@ -20,7 +20,7 @@ describe("Ability.SneakAttack", function() {
     const state = startBattle();
     const rogue = state.getEntityAtPosition('P.1.3');
 
-    ItemFixtures.equip(rogue, base, ['steel']);
+    ItemSupport.equip(rogue, base, ['steel']);
     QuiverComponent.update(rogue, { ammunition:'elm-arrow', quantity:1 });
     BattleSystem.addStatus(rogue, 'hidden');
     startCharacterRound(rogue, state.getEntityAtPosition('M.0.2'));
@@ -57,7 +57,7 @@ describe("Ability.SneakAttack", function() {
     const state = startBattle();
     const rogue = state.getEntityAtPosition('P.1.3');
 
-    ItemFixtures.equip(rogue, 'shortbow', ['wood']);
+    ItemSupport.equip(rogue, 'shortbow', ['wood']);
     BattleSystem.addStatus(rogue, 'hidden');
     BattleSystem.specRound(rogue);
     expect(Ability.SneakAttack().isPossible()).to.equal(false);
@@ -70,7 +70,7 @@ describe("Ability.SneakAttack", function() {
     const state = startBattle();
     const rogue = state.getEntityAtPosition('P.1.3');
 
-    ItemFixtures.equip(rogue, 'shortbow', ['wood']);
+    ItemSupport.equip(rogue, 'shortbow', ['wood']);
     QuiverComponent.update(rogue, { ammunition:'elm-arrow', quantity:2 });
     BattleSystem.addStatus(rogue, 'hidden');
     startCharacterRound(rogue, state.getEntityAtPosition('M.0.2'));

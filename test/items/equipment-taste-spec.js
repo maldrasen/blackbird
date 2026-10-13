@@ -8,30 +8,30 @@ describe('EquipmentTaste', function() {
 
   describe('getPreference()', function() {
     it('sums the archetype weights for every tag on the item', function() {
-      const corset = ItemFixtures.build('low-corset', ['leather']);
+      const corset = ItemSupport.build('low-corset', ['leather']);
       expect(EquipmentTaste(female(ArchetypeCode.bimbo)).getPreference(corset)).to.equal(90);
       expect(EquipmentTaste(female(ArchetypeCode.prude)).getPreference(corset)).to.equal(-60);
     });
 
     it('adds the gender weight on top of the archetype', function() {
-      const corset = ItemFixtures.build('low-corset', ['leather']);
+      const corset = ItemSupport.build('low-corset', ['leather']);
       expect(EquipmentTaste(male(ArchetypeCode.prude)).getPreference(corset)).to.equal(-140);
       expect(EquipmentTaste(male(ArchetypeCode.slut)).getPreference(corset)).to.equal(40);
     });
 
     it('weighs a style the archetype dislikes', function() {
-      const plate = ItemFixtures.buildSteel('plate');
+      const plate = ItemSupport.buildSteel('plate');
       expect(EquipmentTaste(female(ArchetypeCode.prude)).getPreference(plate)).to.equal(100);
       expect(EquipmentTaste(female(ArchetypeCode.bimbo)).getPreference(plate)).to.equal(-50);
     });
 
     it('weighs only gender for the player, who has no archetype', function() {
-      const corset = ItemFixtures.build('low-corset', ['leather']);
+      const corset = ItemSupport.build('low-corset', ['leather']);
       expect(EquipmentTaste(CharacterFixtures.randomPlayer()).getPreference(corset)).to.equal(-80);
     });
 
     it('is neutral about an untagged item', function() {
-      const sword = ItemFixtures.buildSteel('longsword');
+      const sword = ItemSupport.buildSteel('longsword');
       expect(EquipmentTaste(female(ArchetypeCode.bimbo)).getPreference(sword)).to.equal(0);
       expect(EquipmentTaste(male(ArchetypeCode.prude)).getPreference(sword)).to.equal(0);
     });

@@ -82,7 +82,7 @@ describe("BattleState", function() {
     // A longsword in the primary slot unless told otherwise, replacing whatever the depot gave the monster.
     function giveItem(monster, options={}) {
       const { code='longsword', slot=EquipmentSlot.primary, ...buildOptions } = options;
-      const item = ItemFixtures.buildSteel(code, buildOptions);
+      const item = ItemSupport.buildSteel(code, buildOptions);
       EquipmentManager(monster).equipItem(item, slot);
       return item;
     }

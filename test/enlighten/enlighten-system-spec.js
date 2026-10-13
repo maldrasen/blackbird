@@ -34,7 +34,7 @@ describe("EnlightenSystem", function() {
       Article.register('spec-enlighten-bauble', { name:'Spec Bauble', category:InventoryCategory.valuables });
       const player = CharacterFixtures.randomPlayer();
       const loot = GameSystem.getState().getLootInventory();
-      const item = ItemFixtures.buildSteel('longsword');
+      const item = ItemSupport.buildSteel('longsword');
       Inventory(loot).addItem(item);
 
       startBattleEnlightenment([player], 0, [{ articleCode:'spec-enlighten-bauble', quantity:3 }]);

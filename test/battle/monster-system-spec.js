@@ -7,7 +7,7 @@ describe("MonsterSystem", function() {
     BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
 
     const state = BattleSystem.getState();
-    ItemFixtures.equip(state.getEntityAtPosition('M.0.2'), 'spear', ['bone']);
+    ItemSupport.equip(state.getEntityAtPosition('M.0.2'), 'spear', ['bone']);
     return state;
   }
 

@@ -85,9 +85,9 @@ describe("Character", function() {
       const horse = CharacterFixtures.genericMale({ species:SpeciesCode.equian });
       const wolf = CharacterFixtures.genericMale({ species:SpeciesCode.lupin });
 
-      ItemFixtures.equip(goat, 'leggings', ['leather']);
-      ItemFixtures.equip(goat, 'boots', ['leather']);
-      ItemFixtures.equip(horse, 'leggings', ['leather']);
+      ItemSupport.equip(goat, 'leggings', ['leather']);
+      ItemSupport.equip(goat, 'boots', ['leather']);
+      ItemSupport.equip(horse, 'leggings', ['leather']);
 
       expect(Character(goat).isNaked()).to.be.false
       expect(Character(wolf).isNaked()).to.be.true;

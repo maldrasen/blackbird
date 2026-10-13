@@ -187,7 +187,7 @@ describe("BattleDamageSystem", function() {
     it("reduces damage by the hit location's armor percent", function() {
       const state = startBattle();
       const target = pinnedTarget(state);
-      equipItem(target, ItemFixtures.buildSteel('breastplate'), EquipmentSlot.chest);
+      equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
 
       const damage = BattleDamageSystem.applyDamage({
         entity:target, damageTypes:{ slash:100 }, hitLocation:EquipmentSlot.chest });
@@ -199,7 +199,7 @@ describe("BattleDamageSystem", function() {
     it("mitigates and rounds each damage type separately", function() {
       const state = startBattle();
       const target = pinnedTarget(state);
-      equipItem(target, ItemFixtures.buildSteel('breastplate'), EquipmentSlot.chest);
+      equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
 
       const damage = BattleDamageSystem.applyDamage({
         entity:target, damageTypes:{ crush:50, slash:50 }, hitLocation:EquipmentSlot.chest });
@@ -211,7 +211,7 @@ describe("BattleDamageSystem", function() {
       const state = startBattle();
       const target = pinnedTarget(state);
       EquipmentManager(target).equipItem(null, EquipmentSlot.head);
-      equipItem(target, ItemFixtures.buildSteel('tower-shield'), EquipmentSlot.secondary);
+      equipItem(target, ItemSupport.buildSteel('tower-shield'), EquipmentSlot.secondary);
 
       const damage = BattleDamageSystem.applyDamage({
         entity:target, damageTypes:{ slash:100 }, hitLocation:EquipmentSlot.head });
@@ -222,8 +222,8 @@ describe("BattleDamageSystem", function() {
     it("adds shield reduction on top of worn armor", function() {
       const state = startBattle();
       const target = pinnedTarget(state);
-      equipItem(target, ItemFixtures.buildSteel('breastplate'), EquipmentSlot.chest);
-      equipItem(target, ItemFixtures.buildSteel('tower-shield'), EquipmentSlot.secondary);
+      equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
+      equipItem(target, ItemSupport.buildSteel('tower-shield'), EquipmentSlot.secondary);
 
       const damage = BattleDamageSystem.applyDamage({
         entity:target, damageTypes:{ slash:100 }, hitLocation:EquipmentSlot.chest });
@@ -234,7 +234,7 @@ describe("BattleDamageSystem", function() {
     it("doubles vulnerable damage after mitigation", function() {
       const state = startBattle();
       const target = pinnedTarget(state);
-      equipItem(target, ItemFixtures.buildSteel('breastplate'), EquipmentSlot.chest);
+      equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
       BattleSystem.addStatus(target, 'vulnerable', { count:1 });
 
       const damage = BattleDamageSystem.applyDamage({
@@ -247,7 +247,7 @@ describe("BattleDamageSystem", function() {
     it("consumes one vulnerable stack per hit", function() {
       const state = startBattle();
       const target = pinnedTarget(state);
-      equipItem(target, ItemFixtures.buildSteel('breastplate'), EquipmentSlot.chest);
+      equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
       BattleSystem.addStatus(target, 'vulnerable', { count:2 });
 
       const hit = () => BattleDamageSystem.applyDamage({
@@ -265,7 +265,7 @@ describe("BattleDamageSystem", function() {
     it("quadruples damned damage and consumes it", function() {
       const state = startBattle();
       const target = pinnedTarget(state);
-      equipItem(target, ItemFixtures.buildSteel('breastplate'), EquipmentSlot.chest);
+      equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
       BattleSystem.addStatus(target, 'damned', { count:1 });
 
       const hit = () => BattleDamageSystem.applyDamage({
@@ -280,7 +280,7 @@ describe("BattleDamageSystem", function() {
     it("composes vulnerable and damned multiplicatively", function() {
       const state = startBattle();
       const target = pinnedTarget(state);
-      equipItem(target, ItemFixtures.buildSteel('breastplate'), EquipmentSlot.chest);
+      equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
       BattleSystem.addStatus(target, 'vulnerable', { count:1 });
       BattleSystem.addStatus(target, 'damned', { count:1 });
 
@@ -332,7 +332,7 @@ describe("BattleDamageSystem", function() {
       const state = startBattle();
       const target = state.getActiveMonsters()[0];
       Random.stubBetween(8);
-      ItemFixtures.equip(target, 'helm', ['steel'], { enchantment:{ pattern:'resistant-to-fire' } });
+      ItemSupport.equip(target, 'helm', ['steel'], { enchantment:{ pattern:'resistant-to-fire' } });
 
       const damage = BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ fire:100 }});
 
@@ -365,7 +365,7 @@ describe("BattleDamageSystem", function() {
       BattleSystem.startBattle({ ...BattleFixtures.trapperPack(), ambushState:'normal' });
       const target = BattleSystem.getState().getActiveMonsters()[0];
       EquipmentManager(target).equipItem(null, EquipmentSlot.secondary);
-      ItemFixtures.equip(target, 'doublet', ['leather']);
+      ItemSupport.equip(target, 'doublet', ['leather']);
 
       const damage = BattleDamageSystem.applyDamage({
         entity:target, damageTypes:{ slash:100 }, hitLocation:EquipmentSlot.chest });

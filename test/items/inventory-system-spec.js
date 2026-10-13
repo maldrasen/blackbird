@@ -3,11 +3,11 @@ describe('InventorySystem', function() {
   function armory() {
     const horse = CharacterFixtures.genericMale({});
     const items = {
-      hatchet: ItemFixtures.buildSteel('hatchet'),
-      handAxe: ItemFixtures.buildSteel('hand-axe'),
-      broadAxe: ItemFixtures.buildSteel('broad-axe'),
-      maul: ItemFixtures.buildSteel('maul'),
-      helm: ItemFixtures.buildSteel('helm'),
+      hatchet: ItemSupport.buildSteel('hatchet'),
+      handAxe: ItemSupport.buildSteel('hand-axe'),
+      broadAxe: ItemSupport.buildSteel('broad-axe'),
+      maul: ItemSupport.buildSteel('maul'),
+      helm: ItemSupport.buildSteel('helm'),
     };
 
     Object.values(items).forEach(itemId => Inventory().addItem(itemId));
@@ -33,7 +33,7 @@ describe('InventorySystem', function() {
 
   it('getEquipmentForSlot() orders items with the same name by id', function() {
     const { horse, hatchet } = armory();
-    const secondHatchet = ItemFixtures.buildSteel('hatchet');
+    const secondHatchet = ItemSupport.buildSteel('hatchet');
     Inventory().addItem(secondHatchet);
 
     const names = InventorySystem.getEquipmentForSlot(horse, EquipmentSlot.secondary).map(row => row.name);
@@ -82,7 +82,7 @@ describe('InventorySystem', function() {
 
     it("throws for an item that isn't in the party inventory and changes nothing", function() {
       const { horse, hatchet } = armory();
-      const stray = ItemFixtures.buildSteel('helm');
+      const stray = ItemSupport.buildSteel('helm');
 
       expect(() => InventorySystem.equip(horse, stray, EquipmentSlot.head)).to.throw(`isn't in the party inventory`);
       expect(() => InventorySystem.equip(horse, hatchet, EquipmentSlot.head)).to.throw(`Cannot equip`);

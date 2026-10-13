@@ -207,7 +207,7 @@ describe('EquipmentManager', function() {
       const equipment = EquipmentManager(horse);
 
       codes.forEach(([code, slot]) => {
-        const item = ItemFixtures.buildSteel(code);
+        const item = ItemSupport.buildSteel(code);
         equipment.equipItem(item, slot);
       });
 
@@ -248,8 +248,8 @@ describe('EquipmentManager', function() {
     it("adds up the resist damage strengths of the equipped items", function() {
       const human = CharacterFixtures.genericMale({ actor:{ species:SpeciesCode.human }});
       Random.stubBetween(8, 6);
-      ItemFixtures.equip(human, 'helm', ['steel'], { enchantment:{ pattern:'resistant-to-fire' } });
-      ItemFixtures.equip(human, 'breastplate', ['steel'], { enchantment:{ pattern:'resistant-to-fire' } });
+      ItemSupport.equip(human, 'helm', ['steel'], { enchantment:{ pattern:'resistant-to-fire' } });
+      ItemSupport.equip(human, 'breastplate', ['steel'], { enchantment:{ pattern:'resistant-to-fire' } });
 
       const equipment = EquipmentManager(human);
       expect(equipment.getEnchantedDamageResistance(DamageType.fire)).to.equal(14);
@@ -258,7 +258,7 @@ describe('EquipmentManager', function() {
 
     it("is zero when nothing worn is enchanted", function() {
       const human = CharacterFixtures.genericMale({ actor:{ species:SpeciesCode.human }});
-      ItemFixtures.equip(human, 'helm', ['steel']);
+      ItemSupport.equip(human, 'helm', ['steel']);
 
       expect(EquipmentManager(human).getEnchantedDamageResistance(DamageType.fire)).to.equal(0);
     });
@@ -269,8 +269,8 @@ describe('EquipmentManager', function() {
     it("adds up the resist effect strengths of the equipped items", function() {
       const human = CharacterFixtures.genericMale({ actor:{ species:SpeciesCode.human }});
       Random.stubBetween(12, 15);
-      ItemFixtures.equip(human, 'helm', ['steel'], { enchantment:{ pattern:'vigilant' } });
-      ItemFixtures.equip(human, 'breastplate', ['steel'], { enchantment:{ pattern:'vigilant' } });
+      ItemSupport.equip(human, 'helm', ['steel'], { enchantment:{ pattern:'vigilant' } });
+      ItemSupport.equip(human, 'breastplate', ['steel'], { enchantment:{ pattern:'vigilant' } });
 
       const equipment = EquipmentManager(human);
       expect(equipment.getEnchantedEffectResistance('blind')).to.equal(27);
@@ -280,7 +280,7 @@ describe('EquipmentManager', function() {
 
   describe('summarizeResistances()', function() {
     function equipSteel(character, codes) {
-      codes.forEach(code => ItemFixtures.equip(character, code, ['steel']));
+      codes.forEach(code => ItemSupport.equip(character, code, ['steel']));
       return EquipmentManager(character);
     }
 
@@ -318,7 +318,7 @@ describe('EquipmentManager', function() {
     it("adds enchanted resistances to the wearer's own", function() {
       const kobold = CharacterFixtures.genericMale({ actor:{ species:SpeciesCode.kobold }});
       Random.stubBetween(8);
-      ItemFixtures.equip(kobold, 'helm', ['steel'], { enchantment:{ pattern:'resistant-to-fire' } });
+      ItemSupport.equip(kobold, 'helm', ['steel'], { enchantment:{ pattern:'resistant-to-fire' } });
 
       expect(EquipmentManager(kobold).summarizeResistances().magical.fire).to.equal(28);
     });
@@ -328,8 +328,8 @@ describe('EquipmentManager', function() {
   describe('summarizeDamages()', function() {
     it("scales the attack power of both weapons by strength", function() {
       const horse = CharacterFixtures.genericMale({});
-      const longsword = ItemFixtures.equip(horse, 'longsword', ['steel']);
-      const dagger = ItemFixtures.equip(horse, 'dagger', ['steel'], { slot:EquipmentSlot.secondary });
+      const longsword = ItemSupport.equip(horse, 'longsword', ['steel']);
+      const dagger = ItemSupport.equip(horse, 'dagger', ['steel'], { slot:EquipmentSlot.secondary });
       const summary = EquipmentManager(horse).summarizeDamages();
 
       expect(summary.primary).to.deep.equal({
@@ -356,16 +356,16 @@ describe('EquipmentManager', function() {
 
     it("leaves out an empty hand or a shield", function() {
       const horse = CharacterFixtures.genericMale({});
-      ItemFixtures.equip(horse, 'longsword', ['steel']);
+      ItemSupport.equip(horse, 'longsword', ['steel']);
       expect(EquipmentManager(horse).summarizeDamages()).to.have.keys('primary');
 
-      ItemFixtures.equip(horse, 'tower-shield', ['steel']);
+      ItemSupport.equip(horse, 'tower-shield', ['steel']);
       expect(EquipmentManager(horse).summarizeDamages()).to.have.keys('primary');
     });
 
     it("summarizes an off-hand weapon on its own", function() {
       const horse = CharacterFixtures.genericMale({});
-      ItemFixtures.equip(horse, 'dagger', ['steel'], { slot:EquipmentSlot.secondary });
+      ItemSupport.equip(horse, 'dagger', ['steel'], { slot:EquipmentSlot.secondary });
       expect(EquipmentManager(horse).summarizeDamages()).to.have.keys('secondary');
     });
 
@@ -379,8 +379,8 @@ describe('EquipmentManager', function() {
   describe('compareWeapons()', function() {
     it("returns the first weapon's numbers minus the second's", function() {
       const horse = CharacterFixtures.genericMale({});
-      const longsword = ItemFixtures.buildSteel('longsword');
-      const dagger = ItemFixtures.buildSteel('dagger');
+      const longsword = ItemSupport.buildSteel('longsword');
+      const dagger = ItemSupport.buildSteel('dagger');
 
       expect(EquipmentManager(horse).compareWeapons(longsword, dagger)).to.deep.equal({
         low: 0,
@@ -400,8 +400,8 @@ describe('EquipmentManager', function() {
 
     it("has nothing to compare when either item isn't a weapon", function() {
       const horse = CharacterFixtures.genericMale({});
-      const dagger = ItemFixtures.buildSteel('dagger');
-      const buckler = ItemFixtures.buildSteel('buckler');
+      const dagger = ItemSupport.buildSteel('dagger');
+      const buckler = ItemSupport.buildSteel('buckler');
 
       expect(EquipmentManager(horse).compareWeapons(dagger, buckler)).to.be.null;
       expect(EquipmentManager(horse).compareWeapons(buckler, dagger)).to.be.null;
@@ -412,8 +412,8 @@ describe('EquipmentManager', function() {
   describe('compareArmor()', function() {
     it("returns the first piece's reductions minus the second's", function() {
       const horse = CharacterFixtures.genericMale({});
-      const steelPlate = ItemFixtures.buildSteel('plate');
-      const ironPlate = ItemFixtures.build('plate', ['iron']);
+      const steelPlate = ItemSupport.buildSteel('plate');
+      const ironPlate = ItemSupport.build('plate', ['iron']);
 
       expect(EquipmentManager(horse).compareArmor(steelPlate, ironPlate)).to.deep.equal({
         [DamageType.crush]: 10,
@@ -429,8 +429,8 @@ describe('EquipmentManager', function() {
 
     it("has nothing to compare when either item has no reduction", function() {
       const horse = CharacterFixtures.genericMale({});
-      const dagger = ItemFixtures.buildSteel('dagger');
-      const buckler = ItemFixtures.buildSteel('buckler');
+      const dagger = ItemSupport.buildSteel('dagger');
+      const buckler = ItemSupport.buildSteel('buckler');
 
       expect(EquipmentManager(horse).compareArmor(buckler, dagger)).to.be.null;
       expect(EquipmentManager(horse).compareArmor(dagger, buckler)).to.be.null;
@@ -440,7 +440,7 @@ describe('EquipmentManager', function() {
   describe('summarizeWeapon()', function() {
     it("scales a weapon that isn't equipped", function() {
       const horse = CharacterFixtures.genericMale({});
-      const longsword = ItemFixtures.buildSteel('longsword');
+      const longsword = ItemSupport.buildSteel('longsword');
       const summary = EquipmentManager(horse).summarizeWeapon(longsword);
 
       expect(summary).to.include({ itemId:longsword, low:13, high:25, dps:19 });

@@ -5,15 +5,15 @@ describe("OrphanSweeper", function() {
   }
 
   it('removes the items that are not in an inventory', function() {
-    const item = ItemFixtures.buildSteel('longsword');
+    const item = ItemSupport.buildSteel('longsword');
 
     expect(OrphanSweeper.sweep()).to.eql({ monsters:0, items:1 });
     expect(Registry.entityExists(item)).to.be.false;
   });
 
   it('keeps the items held by the party, depots, and the loot inventory', function() {
-    const carried = ItemFixtures.buildSteel('longsword');
-    const loot = ItemFixtures.buildSteel('longsword');
+    const carried = ItemSupport.buildSteel('longsword');
+    const loot = ItemSupport.buildSteel('longsword');
     const stock = EquipmentDepot('standard').getWeapons();
 
     Inventory().addItem(carried);
@@ -29,7 +29,7 @@ describe("OrphanSweeper", function() {
 
   it('keeps an equipped item that is in no inventory', function() {
     const character = CharacterFixtures.genericMale({});
-    const sword = ItemFixtures.buildSteel('longsword');
+    const sword = ItemSupport.buildSteel('longsword');
     EquipmentManager(character).equipItem(sword, EquipmentSlot.primary);
 
     expect(OrphanSweeper.sweep()).to.eql({ monsters:0, items:0 });
@@ -39,7 +39,7 @@ describe("OrphanSweeper", function() {
   // A bare handed monster, so the sword doesn't knock a depot weapon out of the slot and leave it orphaned.
   it('removes the monsters outside of a battle along with their items', function() {
     const monster = MonsterFactory('kobold-dick-puncher').build();
-    const item = ItemFixtures.buildSteel('longsword');
+    const item = ItemSupport.buildSteel('longsword');
     EquipmentManager(monster).equipItem(item, EquipmentSlot.primary);
 
     const swept = OrphanSweeper.sweep();

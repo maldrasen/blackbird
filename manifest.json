@@ -680,6 +680,7 @@
     "views/views.js"
   ],
   "supportFiles": [
+    "test-support/item-support.js",
     "test-support/tests.js"
   ],
   "testFiles": [

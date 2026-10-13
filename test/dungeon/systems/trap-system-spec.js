@@ -110,7 +110,7 @@ describe("TrapSystem", function() {
       const player = CharacterFixtures.genericMale({});
       GameSystem.getState().setPlayer(player);
       PartyConfiguration.setConfiguration({ [player]:'P.0.2' });
-      EquipmentManager(player).equipItem(ItemFixtures.buildSteel('plate-mail'), EquipmentSlot.legs);
+      EquipmentManager(player).equipItem(ItemSupport.buildSteel('plate-mail'), EquipmentSlot.legs);
 
       placeTrap();
       Random.stubRoll(0);

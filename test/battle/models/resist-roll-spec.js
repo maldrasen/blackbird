@@ -71,7 +71,7 @@ describe("ResistRoll", function() {
     const state = startBattle();
     const target = pinnedCharacter(state, SpeciesCode.human);
     Random.stubBetween(8);
-    ItemFixtures.equip(target, 'helm', ['steel'], { enchantment:{ pattern:'resistant-to-fire' } });
+    ItemSupport.equip(target, 'helm', ['steel'], { enchantment:{ pattern:'resistant-to-fire' } });
 
     Random.stubRoll(5, 15, 7, 10, 2);
 
@@ -84,7 +84,7 @@ describe("ResistRoll", function() {
     const state = startBattle();
     const target = pinnedCharacter(state, SpeciesCode.human);
     Random.stubBetween(12);
-    ItemFixtures.equip(target, 'helm', ['steel'], { enchantment:{ pattern:'vigilant' } });
+    ItemSupport.equip(target, 'helm', ['steel'], { enchantment:{ pattern:'vigilant' } });
 
     Random.stubRoll(5, 15, 11, 10, 2);
 
@@ -97,7 +97,7 @@ describe("ResistRoll", function() {
     const state = startBattle();
     const target = pinnedCharacter(state, SpeciesCode.human);
     Random.stubBetween(12);
-    ItemFixtures.equip(target, 'helm', ['steel'], { enchantment:{ pattern:'vigilant' } });
+    ItemSupport.equip(target, 'helm', ['steel'], { enchantment:{ pattern:'vigilant' } });
 
     Random.stubRoll(5, 15, 10, 4);
 

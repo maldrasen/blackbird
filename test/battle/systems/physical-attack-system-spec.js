@@ -52,7 +52,7 @@ describe("PhysicalAttackSystem", function() {
       setAttribute(target, 'vitality', 100);
       setHealth(target, health);
 
-      const weapon = ItemFixtures.equip(attacker, 'longsword', ['steel'], { enchantment });
+      const weapon = ItemSupport.equip(attacker, 'longsword', ['steel'], { enchantment });
       BattleSystem.specRound(attacker, { target });
 
       return { attacker, target, weapon };

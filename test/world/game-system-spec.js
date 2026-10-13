@@ -2,7 +2,7 @@ describe("GameSystem", function() {
 
   describe("saveGame()", function() {
     it('sweeps the orphaned entities out of the registry', async function() {
-      const item = ItemFixtures.buildSteel('longsword');
+      const item = ItemSupport.buildSteel('longsword');
 
       await GameSystem.saveGame();
 
@@ -12,7 +12,7 @@ describe("GameSystem", function() {
 
   describe("setGameMode()", function() {
     it('sweeps the orphaned entities out of the registry', function() {
-      const item = ItemFixtures.buildSteel('longsword');
+      const item = ItemSupport.buildSteel('longsword');
 
       GameSystem.setGameMode(GameMode.dungeon);
 

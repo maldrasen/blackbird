@@ -78,7 +78,7 @@ describe('EquipmentDepot', function() {
   });
 
   it(`throws when picking an item the depot doesn't have`, function() {
-    const item = ItemFixtures.buildStandard('longsword');
+    const item = ItemSupport.buildStandard('longsword');
 
     expect(() => EquipmentDepot('standard').pickItem(item)).to.throw(/doesn't have Item/);
   });

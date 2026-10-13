@@ -142,7 +142,7 @@ describe("EffectSystem", function() {
       const state = startBattle();
       const victim = isolateVictim(state);
       Random.stubBetween(12);
-      ItemFixtures.equip(victim, 'helm', ['steel'], { enchantment:{ pattern:'vigilant' } });
+      ItemSupport.equip(victim, 'helm', ['steel'], { enchantment:{ pattern:'vigilant' } });
 
       Random.stubRoll(...stubStory(), 10, 15, 11, 10, 2, ...stubFailedResist());
       Random.stubRollDice(4);

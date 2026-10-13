@@ -302,7 +302,7 @@ describe("StatusEffectSystem", function() {
       setVitality(victim, 15);
       makeHuman(victim);
       Random.stubBetween(12);
-      ItemFixtures.equip(victim, 'helm', ['steel'], { enchantment:{ pattern:'incorruptible' } });
+      ItemSupport.equip(victim, 'helm', ['steel'], { enchantment:{ pattern:'incorruptible' } });
       poisonVictim(state, victim);
 
       Random.stubRollDice(6);

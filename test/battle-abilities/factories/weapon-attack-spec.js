@@ -85,7 +85,7 @@ describe("Ability.WeaponAttack", function() {
       const state = startBattle();
       const player = state.getEntityAtPosition('P.0.2');
 
-      ItemFixtures.equip(player, 'shortbow', ['wood']);
+      ItemSupport.equip(player, 'shortbow', ['wood']);
       BattleSystem.specRound(player);
 
       expect(Ability.WeaponAttack().isPossible()).to.equal(false);
@@ -95,7 +95,7 @@ describe("Ability.WeaponAttack", function() {
       const state = startBattle();
       const player = state.getEntityAtPosition('P.0.2');
 
-      ItemFixtures.equip(player, 'shortbow', ['wood']);
+      ItemSupport.equip(player, 'shortbow', ['wood']);
       QuiverComponent.update(player, { ammunition:'elm-arrow', quantity:1 });
       BattleSystem.specRound(player);
 
@@ -106,7 +106,7 @@ describe("Ability.WeaponAttack", function() {
       const state = startBattle();
       const kobold = state.getEntityAtPosition('M.0.2');
 
-      ItemFixtures.equip(kobold, 'shortbow', ['wood']);
+      ItemSupport.equip(kobold, 'shortbow', ['wood']);
       BattleSystem.specRound(kobold, { target:state.getEntityAtPosition('P.1.2') });
 
       expect(Ability.WeaponAttack().isPossible()).to.equal(true);
@@ -116,7 +116,7 @@ describe("Ability.WeaponAttack", function() {
       const state = startBattle();
       const kobold = state.getEntityAtPosition('M.0.2');
 
-      ItemFixtures.equip(kobold, 'dagger', ['steel']);
+      ItemSupport.equip(kobold, 'dagger', ['steel']);
 
       BattleSystem.specRound(kobold, { target:state.getEntityAtPosition('P.0.2') });
       expect(Ability.WeaponAttack().isPossible()).to.equal(true);
@@ -149,7 +149,7 @@ describe("Ability.WeaponAttack", function() {
       const player = state.getEntityAtPosition('P.0.2');
       const kobold = state.getEntityAtPosition('M.0.2');
 
-      ItemFixtures.equip(player, 'dagger', ['steel']);
+      ItemSupport.equip(player, 'dagger', ['steel']);
       pinSpeed(player);
       makeUnkillable(kobold);
       startCharacterRound(player, kobold);
@@ -165,7 +165,7 @@ describe("Ability.WeaponAttack", function() {
       const player = state.getEntityAtPosition('P.0.2');
       const kobold = state.getEntityAtPosition('M.0.2');
 
-      ItemFixtures.equip(player, 'shortbow', ['wood']);
+      ItemSupport.equip(player, 'shortbow', ['wood']);
       QuiverComponent.update(player, { ammunition:'elm-arrow', quantity:3 });
       pinSpeed(player);
       makeUnkillable(kobold);
@@ -181,7 +181,7 @@ describe("Ability.WeaponAttack", function() {
       const player = state.getEntityAtPosition('P.0.2');
       const kobold = state.getEntityAtPosition('M.0.2');
 
-      ItemFixtures.equip(player, 'shortbow', ['wood']);
+      ItemSupport.equip(player, 'shortbow', ['wood']);
       QuiverComponent.update(player, { ammunition:'elm-arrow', quantity:1 });
       pinSpeed(player, SpeciesCode.kobold);
       makeUnkillable(kobold);
@@ -199,7 +199,7 @@ describe("Ability.WeaponAttack", function() {
       const player = state.getEntityAtPosition('P.0.2');
       const kobold = state.getEntityAtPosition('M.0.2');
 
-      ItemFixtures.equip(player, 'shortbow', ['wood']);
+      ItemSupport.equip(player, 'shortbow', ['wood']);
       QuiverComponent.update(player, { ammunition:'elm-arrow', quantity:5 });
       pinSpeed(player, SpeciesCode.kobold);
       makeUnkillable(kobold);
@@ -215,7 +215,7 @@ describe("Ability.WeaponAttack", function() {
       const player = state.getEntityAtPosition('P.0.2');
       const kobold = state.getEntityAtPosition('M.0.2');
 
-      ItemFixtures.equip(kobold, 'shortbow', ['wood']);
+      ItemSupport.equip(kobold, 'shortbow', ['wood']);
       makeUnkillable(player);
       BattleSystem.getState().moveToTopOfTurnOrder({ type:'monster', id:kobold });
       BattleSystem.specRound(kobold, { target:player });

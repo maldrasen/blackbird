@@ -14,7 +14,7 @@ describe("EnchantmentSystem", function() {
     const options = { enchantment:{ pattern:'assassin' } };
     if (slot) { options.slot = slot; }
 
-    return { rogue, weapon:ItemFixtures.equip(rogue, 'dagger', ['steel'], options) };
+    return { rogue, weapon:ItemSupport.equip(rogue, 'dagger', ['steel'], options) };
   }
 
   // A sneak attack spends rolls on its contest before the buff is rolled, so rather than stubbing the lot the chance
@@ -47,7 +47,7 @@ describe("EnchantmentSystem", function() {
 
   function armPlayer(state) {
     const player = state.getEntityAtPosition('P.0.2');
-    return { player, weapon:ItemFixtures.equip(player, 'longsword', ['steel'], { enchantment:{ pattern:'dualist' } }) };
+    return { player, weapon:ItemSupport.equip(player, 'longsword', ['steel'], { enchantment:{ pattern:'dualist' } }) };
   }
 
   function basicAttack(state, player) {
@@ -120,7 +120,7 @@ describe("EnchantmentSystem", function() {
     it("sits out a sneak attack made with the other hand", function() {
       const state = startBattle();
       const { rogue, weapon } = armRogue(state, EquipmentSlot.secondary);
-      ItemFixtures.equip(rogue, 'dagger', ['steel']);
+      ItemSupport.equip(rogue, 'dagger', ['steel']);
       pinChance(weapon, 100);
 
       sneakAttack(state, rogue);
