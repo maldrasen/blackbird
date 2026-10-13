@@ -1,7 +1,7 @@
 describe("SensationArousal", function() {
 
   it("applies arousal",function() {
-    const state = TrainingFixtures.standardTrainingState(
+    const state = TrainingSupport.standardTrainingState(
       { arousal: { arousal:25 }},
       { arousal: { arousal:75 }, feelings:{ affection:400, respect:600 } });
 

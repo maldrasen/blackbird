@@ -19,7 +19,7 @@ describe("NegotiationQuestion", function() {
     it('filters answers gated on a party reference when the key is null', function() {
       const question = NegotiationQuestion.lookup('no-interest-in-men');
 
-      const withGirl = question.getAnswers({ F:CharacterFixtures.genericFemale({}) });
+      const withGirl = question.getAnswers({ F:CharacterSupport.genericFemale({}) });
       expect(Object.keys(withGirl)).to.deep.equal(['noNeed','entertain','dontCare','noUse']);
 
       const alone = question.getAnswers({ F:null });
@@ -52,7 +52,7 @@ describe("NegotiationQuestion", function() {
 
     it('excludes a reaction whose static requirements fail', function() {
       const monster = bootMonster();
-      const context = { P:CharacterFixtures.genericFemale({}), T:monster };
+      const context = { P:CharacterSupport.genericFemale({}), T:monster };
 
       expect(NegotiationQuestion.lookup('what-is-best').getReactionData(context)).to.equal(null);
     });

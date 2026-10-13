@@ -1,7 +1,7 @@
 describe('InventorySystem', function() {
 
   function armory() {
-    const horse = CharacterFixtures.genericMale({});
+    const horse = CharacterSupport.genericMale({});
     const items = {
       hatchet: ItemSupport.buildSteel('hatchet'),
       handAxe: ItemSupport.buildSteel('hand-axe'),

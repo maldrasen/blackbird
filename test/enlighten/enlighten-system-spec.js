@@ -3,7 +3,7 @@ describe("EnlightenSystem", function() {
   // Elf essence costs: 804 total to reach level 2, 2526 total to reach level 3.
 
   function buildCharacter(essence=0) {
-    const id = CharacterFixtures.genericMale({});
+    const id = CharacterSupport.genericMale({});
     ExperienceComponent.update(id, { level:1, essence:essence });
     return id;
   }
@@ -32,7 +32,7 @@ describe("EnlightenSystem", function() {
 
     it("banks the loot in the party inventory", function() {
       Article.register('spec-enlighten-bauble', { name:'Spec Bauble', category:InventoryCategory.valuables });
-      const player = CharacterFixtures.randomPlayer();
+      const player = CharacterSupport.player();
       const loot = GameSystem.getState().getLootInventory();
       const item = ItemSupport.buildSteel('longsword');
       Inventory(loot).addItem(item);

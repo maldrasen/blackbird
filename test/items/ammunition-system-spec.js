@@ -1,7 +1,7 @@
 describe("AmmunitionSystem", function() {
 
   function buildArcher(quiverData) {
-    const id = CharacterFixtures.genericMale({ quiver:quiverData });
+    const id = CharacterSupport.genericMale({ quiver:quiverData });
     GameSystem.getState().setPartyConfiguration({ [id]:'p-0' });
     return id;
   }

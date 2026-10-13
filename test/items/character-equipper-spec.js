@@ -4,7 +4,7 @@ describe('CharacterEquipper', function() {
 
     // Every bow is two-handed, so an archer is the character most likely to shop their way out of a preset shield.
     it('only picks a primary that leaves a preset off-hand alone', function() {
-      const id = CharacterFixtures.genericMale({ skills:{ bows:50 } });
+      const id = CharacterSupport.genericMale({ skills:{ bows:50 } });
       const shield = ItemSupport.equip(id, 'round-shield', ['steel']);
 
       const equipment = CharacterEquipper(id).equip({ budget:150, naked:true });
@@ -17,7 +17,7 @@ describe('CharacterEquipper', function() {
     // be picked. A leather low corset is slutty, feminine, and natural, and is worth a little more than a wool
     // doublet, so value alone would always take the corset.
     describe('armor', function() {
-      function female(archetype) { return CharacterFixtures.genericFemale({ personality:{ archetype } }); }
+      function female(archetype) { return CharacterSupport.genericFemale({ personality:{ archetype } }); }
 
       function chestCodeFor(id, budget) {
         const equipment = CharacterEquipper(id).equip({ budget, bareHanded:true });
@@ -64,7 +64,7 @@ describe('CharacterEquipper', function() {
     // The sword is built and the equipper is made before the roll is stubbed because building an item rolls for its
     // materials.
     function swordsmanAt(level, skills={}) {
-      const id = CharacterFixtures.genericMale({ skills });
+      const id = CharacterSupport.genericMale({ skills });
       ExperienceComponent.update(id, { level:level, essence:1000000 });
       ItemSupport.equip(id, 'longsword', ['steel']);
       return id;

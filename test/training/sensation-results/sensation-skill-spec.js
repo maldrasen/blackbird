@@ -3,7 +3,7 @@ describe("SensationSkill", function() {
   it('when player has no skill', function() {
     Random.stubBetween(50,1);
 
-    const state = TrainingFixtures.standardTrainingState({},{ feelings:{ affection:150 }});
+    const state = TrainingSupport.standardTrainingState({},{ feelings:{ affection:150 }});
     const result = SensationResult('suck-pussy', state);
     SensationBaseline.apply(result);
     SensationSkills.apply(result);
@@ -16,7 +16,7 @@ describe("SensationSkill", function() {
   it('when player has skill', function() {
     Random.stubBetween(50,23);
 
-    const state = TrainingFixtures.standardTrainingState(
+    const state = TrainingSupport.standardTrainingState(
       { attributes:{ dexterity:30, vitality:30 }, skills:{ servicing:20 }},
       { feelings:{ affection:150 }});
     const result = SensationResult('suck-pussy', state);
@@ -31,7 +31,7 @@ describe("SensationSkill", function() {
   it('when skill fumbles', function() {
     Random.stubBetween(1);
 
-    const state = TrainingFixtures.standardTrainingState(
+    const state = TrainingSupport.standardTrainingState(
       { attributes:{ dexterity:30, vitality:30 }, skills:{ servicing:20 }},
       { feelings:{ affection:150 }});
     const result = SensationResult('suck-pussy', state);
@@ -52,7 +52,7 @@ describe("SensationSkill", function() {
   it('when skill crits', function() {
     Random.stubBetween(99);
 
-    const state = TrainingFixtures.standardTrainingState(
+    const state = TrainingSupport.standardTrainingState(
       { attributes:{ strength:30, vitality:30 }, skills:{ ravishing:30 }},
       { feelings:{ affection:400 }});
     const result = SensationResult('fuck-pussy', state);
@@ -76,7 +76,7 @@ describe('applyPartnerSkill()', function() {
   it('when normal skill', function() {
     Random.stubBetween(50,19);
 
-    const state = TrainingFixtures.standardTrainingState({},{
+    const state = TrainingSupport.standardTrainingState({},{
       feelings:{ respect:250, affection:200 },
       skills:{ servicing:20 },
       attributes:{ dexterity:30, vitality:20 }
@@ -93,7 +93,7 @@ describe('applyPartnerSkill()', function() {
   it(`when fumbled skill`, function() {
     Random.stubBetween(1);
 
-    const state = TrainingFixtures.standardTrainingState({},{
+    const state = TrainingSupport.standardTrainingState({},{
       feelings:{ respect:250, affection:200 },
       skills:{ servicing:20 },
       attributes:{ dexterity:30, vitality:20 }
@@ -116,7 +116,7 @@ describe('applyPartnerDancing()', function() {
   it('when normal dancing', function() {
     Random.stubBetween(50,25);
 
-    const state = TrainingFixtures.standardTrainingState({},{
+    const state = TrainingSupport.standardTrainingState({},{
       feelings:{ respect:200, affection:200 },
       skills:{ dancing:30 },
       attributes:{ dexterity:30, beauty:40 }
@@ -135,7 +135,7 @@ describe('applyPartnerDancing()', function() {
   it('when fumbled dancing', function() {
     Random.stubBetween(1);
 
-    const state = TrainingFixtures.standardTrainingState({},{
+    const state = TrainingSupport.standardTrainingState({},{
       feelings:{ respect:200, affection:200 },
       skills:{ dancing:30 },
       attributes:{ dexterity:30, beauty:40 }

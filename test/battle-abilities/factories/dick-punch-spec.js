@@ -3,16 +3,16 @@ describe("Ability.DickPunch", function() {
   // The kobold dick puncher squares up to a well-endowed elf who can't dodge to save his life, with the player behind
   // him and a woman beside him. The kobold's strength and training make every punch land.
   function startBattle() {
-    const target = CharacterFixtures.genericMale({
+    const target = CharacterSupport.genericMale({
       cock: 'huge',
       attributes: { dexterity:1 },
       health: { currentHealth:10000, maxHealth:10000 },
     });
-    const woman = CharacterFixtures.genericFemale({});
+    const woman = CharacterSupport.genericFemale({});
 
     PartyConfiguration.setCharacter(target, 'P.0.2');
     PartyConfiguration.setCharacter(woman, 'P.0.3');
-    CharacterFixtures.randomPlayer();
+    CharacterSupport.player();
     BattleSystem.startBattle({ monster:'kobold-dick-puncher', ambushState:'normal' });
 
     const kobold = BattleSystem.getState().getActiveMonsters()[0];

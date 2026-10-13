@@ -28,7 +28,7 @@ describe("OrphanSweeper", function() {
   });
 
   it('keeps an equipped item that is in no inventory', function() {
-    const character = CharacterFixtures.genericMale({});
+    const character = CharacterSupport.genericMale({});
     const sword = ItemSupport.buildSteel('longsword');
     EquipmentManager(character).equipItem(sword, EquipmentSlot.primary);
 
@@ -66,7 +66,7 @@ describe("OrphanSweeper", function() {
 
   it('keeps recruited monsters', function() {
     const recruit = buildMonster();
-    CharacterFixtures.randomPlayer();
+    CharacterSupport.player();
     RecruitmentSystem.recruit(recruit, { control:10, affection:10, fear:0, respect:0 });
 
     expect(OrphanSweeper.sweep()).to.eql({ monsters:0, items:0 });

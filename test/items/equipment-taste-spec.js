@@ -3,8 +3,8 @@ describe('EquipmentTaste', function() {
   // The expected numbers come straight from the shipped archetype weights and the module's gender table, so retuning
   // either trips these on purpose. A leather low corset is tagged slutty, feminine, and natural.
 
-  function female(archetype) { return CharacterFixtures.genericFemale({ personality:{ archetype } }); }
-  function male(archetype) { return CharacterFixtures.genericMale({ personality:{ archetype } }); }
+  function female(archetype) { return CharacterSupport.genericFemale({ personality:{ archetype } }); }
+  function male(archetype) { return CharacterSupport.genericMale({ personality:{ archetype } }); }
 
   describe('getPreference()', function() {
     it('sums the archetype weights for every tag on the item', function() {
@@ -27,7 +27,7 @@ describe('EquipmentTaste', function() {
 
     it('weighs only gender for the player, who has no archetype', function() {
       const corset = ItemSupport.build('low-corset', ['leather']);
-      expect(EquipmentTaste(CharacterFixtures.randomPlayer()).getPreference(corset)).to.equal(-80);
+      expect(EquipmentTaste(CharacterSupport.player()).getPreference(corset)).to.equal(-80);
     });
 
     it('is neutral about an untagged item', function() {
@@ -53,7 +53,7 @@ describe('EquipmentTaste', function() {
     });
 
     it('keeps the player covered at the chest and legs', function() {
-      const taste = EquipmentTaste(CharacterFixtures.randomPlayer());
+      const taste = EquipmentTaste(CharacterSupport.player());
       expect(taste.acceptsBare(EquipmentSlot.chest)).to.be.false;
       expect(taste.acceptsBare(EquipmentSlot.legs)).to.be.false;
     });

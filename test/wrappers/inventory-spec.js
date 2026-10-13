@@ -22,7 +22,7 @@ describe('Inventory', function() {
     });
 
     it('throws when the item is equipped by a character', function() {
-      const horse = CharacterFixtures.genericMale({});
+      const horse = CharacterSupport.genericMale({});
       const hatchet = EquipmentFactory().build('hatchet');
 
       EquipmentManager(horse).equipItem(hatchet, EquipmentSlot.primary);

@@ -2,8 +2,8 @@ describe("Character", function() {
 
   describe("Attribute Values", function() {
     it("Compares both characters and raw values", function() {
-      const greg = CharacterFixtures.genericMale({ attributes:{ strength:10, intelligence:30 }});
-      const grog = CharacterFixtures.genericMale({ attributes:{ strength:30, intelligence:10 }});
+      const greg = CharacterSupport.genericMale({ attributes:{ strength:10, intelligence:30 }});
+      const grog = CharacterSupport.genericMale({ attributes:{ strength:30, intelligence:10 }});
 
       expect(Character(greg).isSmarterThan(grog)).to.be.true;
       expect(Character(greg).isStrongerThan(20)).to.be.false;
@@ -14,9 +14,9 @@ describe("Character", function() {
 
   describe("Body Values", function() {
     it("Compares height", function() {
-      const biggest = CharacterFixtures.genericFemale({ body:{ height:2700 } });
-      const biggy =  CharacterFixtures.genericFemale({ body:{ height:2600 } });
-      const biggs =  CharacterFixtures.genericFemale({ body:{ height:2500 } });
+      const biggest = CharacterSupport.genericFemale({ body:{ height:2700 } });
+      const biggy =  CharacterSupport.genericFemale({ body:{ height:2600 } });
+      const biggs =  CharacterSupport.genericFemale({ body:{ height:2500 } });
 
       expect(Character(biggs).isShorterThan(biggy)).to.be.true;
       expect(Character(biggs).isShorterThan(biggy,150)).to.be.false;
@@ -27,7 +27,7 @@ describe("Character", function() {
     });
 
     it("Compares breast sizes", function() {
-      const horse = CharacterFixtures.genericFemale({ species:SpeciesCode.equian, breasts:{ breastSize:'big' } });
+      const horse = CharacterSupport.genericFemale({ species:SpeciesCode.equian, breasts:{ breastSize:'big' } });
       const volume = BreastsComponent.lookup(horse).absoluteBreastVolume;
 
       expect(Character(horse).breastsAreAtLeast('small')).to.be.true;
@@ -38,9 +38,9 @@ describe("Character", function() {
     });
 
     it("Knows when breasts have a shape that can be compared to an object", function() {
-      const round = CharacterFixtures.genericFemale({ breasts:{ breastShape:'balls' } });
-      const torpedo = CharacterFixtures.genericFemale({ breasts:{ breastShape:'torpedoes' } });
-      const flat = CharacterFixtures.genericMale({});
+      const round = CharacterSupport.genericFemale({ breasts:{ breastShape:'balls' } });
+      const torpedo = CharacterSupport.genericFemale({ breasts:{ breastShape:'torpedoes' } });
+      const flat = CharacterSupport.genericMale({});
 
       expect(Character(round).hasComparableBreasts()).to.be.true;
       expect(Character(torpedo).hasComparableBreasts()).to.be.false;
@@ -50,7 +50,7 @@ describe("Character", function() {
     });
 
     it("Compares cock sizes", function() {
-      const horse = CharacterFixtures.genericMale({ species:SpeciesCode.equian, cock:'huge' });
+      const horse = CharacterSupport.genericMale({ species:SpeciesCode.equian, cock:'huge' });
       const length = CockComponent.lookupNormalOf(horse).length;
 
       expect(Character(horse).cockIsAtLeast('big')).to.be.true;
@@ -64,15 +64,15 @@ describe("Character", function() {
   describe("Sexual Preferences", function() {
     describe("isStraight()", function() {
       it("males and females can be straight", function() {
-        const man = CharacterFixtures.genericMale({ sexualPreferences:{ androphilic:-10, gynophilic:10 } });
-        const woman = CharacterFixtures.genericFemale({ sexualPreferences:{ androphilic:10, gynophilic:-10 } });
+        const man = CharacterSupport.genericMale({ sexualPreferences:{ androphilic:-10, gynophilic:10 } });
+        const woman = CharacterSupport.genericFemale({ sexualPreferences:{ androphilic:10, gynophilic:-10 } });
         expect(Character(man).isStraight()).to.be.true;
         expect(Character(woman).isStraight()).to.be.true;
       });
 
       it("males and females can be gay", function() {
-        const man = CharacterFixtures.genericMale({ sexualPreferences:{ androphilic:10, gynophilic:-10 } });
-        const woman = CharacterFixtures.genericFemale({ sexualPreferences:{ androphilic:-10, gynophilic:10 } });
+        const man = CharacterSupport.genericMale({ sexualPreferences:{ androphilic:10, gynophilic:-10 } });
+        const woman = CharacterSupport.genericFemale({ sexualPreferences:{ androphilic:-10, gynophilic:10 } });
         expect(Character(man).isGay()).to.be.true;
         expect(Character(woman).isGay()).to.be.true;
       });
@@ -81,9 +81,9 @@ describe("Character", function() {
 
   describe("Equipment", function() {
     it('knows when you are naked', function() {
-      const goat = CharacterFixtures.genericMale({});
-      const horse = CharacterFixtures.genericMale({ species:SpeciesCode.equian });
-      const wolf = CharacterFixtures.genericMale({ species:SpeciesCode.lupin });
+      const goat = CharacterSupport.genericMale({});
+      const horse = CharacterSupport.genericMale({ species:SpeciesCode.equian });
+      const wolf = CharacterSupport.genericMale({ species:SpeciesCode.lupin });
 
       ItemSupport.equip(goat, 'leggings', ['leather']);
       ItemSupport.equip(goat, 'boots', ['leather']);
@@ -100,20 +100,20 @@ describe("Character", function() {
   describe("Orgasm Data", function() {
     describe("getOrgasmThreshold()", function() {
       it("when normal", function() {
-        const lady = Character(CharacterFixtures.genericFemale({}));
+        const lady = Character(CharacterSupport.genericFemale({}));
         expect(lady.getOrgasmThreshold()).to.equal(10000);
       });
 
       it("when premature", function() {
-        const lady = Character(CharacterFixtures.genericFemale({ aspects:{ premature:2 } }));
+        const lady = Character(CharacterSupport.genericFemale({ aspects:{ premature:2 } }));
         expect(lady.getOrgasmThreshold()).to.equal(5000);
       });
     });
 
     describe("rollForOrgasm()", function() {
       it("always orgasms when pleasure is above threshold (for now)", function() {
-        const lady = Character(CharacterFixtures.genericFemale({ arousal:{ arousal:1, pleasure:10001 } }));
-        const ladyboy = Character(CharacterFixtures.genericMale({ arousal:{ arousal:99, pleasure:9999 } }));
+        const lady = Character(CharacterSupport.genericFemale({ arousal:{ arousal:1, pleasure:10001 } }));
+        const ladyboy = Character(CharacterSupport.genericMale({ arousal:{ arousal:99, pleasure:9999 } }));
         expect(lady.rollForOrgasm(10001)).to.be.true;
         expect(ladyboy.rollForOrgasm(9999)).to.be.false;
       });
@@ -122,14 +122,14 @@ describe("Character", function() {
     describe("rollRefractoryPeriod()", function() {
       it("just randomly picks a number (for now)", function() {
         Random.stubBetween(10);
-        expect(Character(CharacterFixtures.genericMale({})).rollRefractoryPeriod()).to.equal(10);
+        expect(Character(CharacterSupport.genericMale({})).rollRefractoryPeriod()).to.equal(10);
       });
     });
   });
 
   describe("Equipment", function() {
     it("is naked or exposed", function() {
-      const entity = CharacterFixtures.genericMale({});
+      const entity = CharacterSupport.genericMale({});
       const character = Character(entity);
       const asslessChaps = EquipmentFactory().build('chaps');
       const titsOutCorset = EquipmentFactory().build('low-corset');

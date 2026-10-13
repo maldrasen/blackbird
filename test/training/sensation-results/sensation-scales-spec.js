@@ -1,7 +1,7 @@
 describe("SensationScales", function() {
 
   it("adds a factor for the scale", function() {
-    const state = TrainingFixtures.standardTrainingState({},{ arousal: { arousal:75 }});
+    const state = TrainingSupport.standardTrainingState({},{ arousal: { arousal:75 }});
     state.setPartnerScaleValue('pussy',2000);
     state.setPartnerScaleValue('clit',5000);
     state.setPartnerScaleValue('anus',20000);
