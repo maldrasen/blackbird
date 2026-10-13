@@ -81,6 +81,37 @@ describe("Ability.WeaponAttack", function() {
       expect(Ability.WeaponAttack().isPossible()).to.equal(false);
     });
 
+    it("is not possible with a bow and an empty quiver", function() {
+      const state = startBattle();
+      const player = state.getEntityAtPosition('P.0.2');
+
+      ItemFixtures.equip(player, 'shortbow', ['wood']);
+      BattleSystem.specRound(player);
+
+      expect(Ability.WeaponAttack().isPossible()).to.equal(false);
+    });
+
+    it("is possible with a bow and a loaded quiver", function() {
+      const state = startBattle();
+      const player = state.getEntityAtPosition('P.0.2');
+
+      ItemFixtures.equip(player, 'shortbow', ['wood']);
+      QuiverComponent.update(player, { ammunition:'arrows', quantity:1 });
+      BattleSystem.specRound(player);
+
+      expect(Ability.WeaponAttack().isPossible()).to.equal(true);
+    });
+
+    it("lets a monster shoot a bow without a quiver", function() {
+      const state = startBattle();
+      const kobold = state.getEntityAtPosition('M.0.2');
+
+      ItemFixtures.equip(kobold, 'shortbow', ['wood']);
+      BattleSystem.specRound(kobold, { target:state.getEntityAtPosition('P.1.2') });
+
+      expect(Ability.WeaponAttack().isPossible()).to.equal(true);
+    });
+
     it("checks a monster's reach against its chosen target", function() {
       const state = startBattle();
       const kobold = state.getEntityAtPosition('M.0.2');

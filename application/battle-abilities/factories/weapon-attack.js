@@ -27,11 +27,20 @@ function canMonsterAttack() {
   return BattleHelper.isAttackWithinRange(weapon.getBase().getReach(), round.getActingPosition(), round.getTargetPosition());
 }
 
+// Only party members need ammunition. Monsters are not tracked that closely, so a monster with a bow always has
+// something to shoot.
 function canCharacterAttack() {
-  if (BattleSystem.getRound().getPrimaryWeapon() == null) { return false; }
+  const weapon = BattleSystem.getRound().getPrimaryWeapon();
+
+  if (weapon == null) { return false; }
   if (isHidden()) { return false; }
+  if (weapon.usesAmmunition() && hasAmmunition() === false) { return false; }
 
   return TargetingController.getMonstersInRange().length > 0;
+}
+
+function hasAmmunition() {
+  return QuiverComponent.lookup(BattleSystem.getRound().getActing()).quantity > 0;
 }
 
 function isHidden() {

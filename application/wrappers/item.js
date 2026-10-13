@@ -35,6 +35,7 @@ global.Item = function(id) {
     return getBase().getType() || getBase().getSlot();
   }
 
+  // TODO: Item Descriptions.
   function getDescription() {
     return `[TODO Item Descriptions]`;
   }
@@ -46,6 +47,13 @@ global.Item = function(id) {
 
   function hasEnchantment() { return getItemComponent().enchantment != null; }
   function getEnchantment() { return hasEnchantment() ? Enchantment(id) : null; }
+
+  // TODO: For now, all bows use ammunition. I'm anticipating though that there will be bow enchantments for bows with
+  //       magical ammunition. Drawing a bow could create a 'magical' arrow, and fire that instead of using whatever's
+  //       in the quiver. When we get the ammunition when calculating bow damage we'll need to remember to lookup the
+  //       ammunition properties off of the bow enchantment, rather than using what's in the quiver. We won't decrement
+  //       the ammunition either.
+  function usesAmmunition() { return getType() === ItemType.bow; }
 
   return {
     getId: () => { return id; },
@@ -65,6 +73,7 @@ global.Item = function(id) {
     isMetal: () => { return Material.isMetal(getPrimaryMaterial()); },
     hasEnchantment,
     getEnchantment,
+    usesAmmunition,
     getValue: () => { return getItemComponent().value; },
     getTags: () => { return getItemComponent().tags || []; },
     isLewd: () => { return getBase().isLewd(); },
