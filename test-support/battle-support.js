@@ -1,13 +1,10 @@
 global.BattleSupport = (function() {
 
-  // The party the battle specs are written against. The player stands at P.0.2 with a one handed sword and a shield, a
-  // tank at P.0.3, and a rogue at P.1.2 and P.1.3, each with a dagger in both hands. The specs look up these positions
-  // and read the loadouts, so the party stays as it is whatever the menu fixtures change.
-  const dualist = { enchantment:{ pattern:'dualist' }};
-  const poisoned = { enchantment:{ pattern:'poisoned-a' }};
-  const assassin =  { enchantment:{ pattern:'assassin' }};
-  const secondary = { slot:EquipmentSlot.secondary };
-
+  // The party the battle specs are written against, so it stays as it is whatever the menu fixtures change. The player
+  // stands at P.0.2 with a one handed sword and a shield, a tank at P.0.3, and a rogue at P.1.2 and P.1.3, each with a
+  // plain dagger in both hands. Nothing is enchanted and every skill is fixed, so a round spends no rolls the specs
+  // didn't ask for; a spec that needs an enchantment or a skill level equips or sets it itself.
+  //
   // The party wears fixed outfits rather than shopping from an equipment depot. What a depot stocks is random, so a
   // shopper can come away missing a slot entirely (an unlucky player ends up with no pants, which changes which
   // negotiation questions are possible.)
@@ -52,18 +49,15 @@ global.BattleSupport = (function() {
 
   function addPlayer(position) {
     const player = CharacterSupport.player();
-    setSkill(player,'swords',Random.between(20,40));
-    ItemSupport.equip(player, 'longsword', ['steel'], dualist);
+    setSkill(player,'swords',30);
+    ItemSupport.equip(player, 'longsword', ['steel']);
     ItemSupport.equip(player, 'round-shield', ['steel']);
     equipOutfit(player, PlayerOutfit);
     PartyConfiguration.setCharacter(player,position);
   }
 
   function addTank(position) {
-    const tank = addCharacter({ skills: {
-      block: Random.between(10,20),
-      swords: Random.between(10,20),
-    }});
+    const tank = addCharacter({ skills:{ block:15, swords:15 }});
 
     ItemSupport.equip(tank, 'longsword', ['steel']);
     ItemSupport.equip(tank, 'round-shield', ['steel']);
@@ -72,13 +66,10 @@ global.BattleSupport = (function() {
   }
 
   function addRogue(position) {
-    const rogue = addCharacter({ skills:{
-      stealth: Random.between(10,20),
-      daggers: Random.between(10,20),
-    }});
+    const rogue = addCharacter({ skills:{ stealth:15, daggers:15 }});
 
-    ItemSupport.equip(rogue, 'dagger', ['steel'], { ...assassin });
-    ItemSupport.equip(rogue, 'dagger', ['steel'], { ...poisoned, ...secondary });
+    ItemSupport.equip(rogue, 'dagger', ['steel']);
+    ItemSupport.equip(rogue, 'dagger', ['steel'], { slot:EquipmentSlot.secondary });
     equipOutfit(rogue, RogueOutfit);
     PartyConfiguration.setCharacter(rogue,position);
   }

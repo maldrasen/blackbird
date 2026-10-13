@@ -59,7 +59,9 @@ pipes, or output filters — the flags cover those needs:
 - `--quiet` prints only the summary lines (a failing run still dumps its full output)
 - `--reporter dot` prints a dot per spec and only the failures in detail, for when a failing full run is too long to read
 
-Repeated random-seed runs to flush out flaky specs use `node bin/soak-tests.js [runs] [--grep "<spec title>"]`.
+Repeated random-seed runs to flush out flaky specs use `node bin/soak-tests.js [runs] [--grep "<spec title>"]`. The
+specs should all pass for a task to be considered complete, but the specs are allowed to be broken while a feature is
+being worked on.
 
 #### Spec support and fixtures
 The shared spec helpers live in the top level `test-support` directory. The main application never loads the test

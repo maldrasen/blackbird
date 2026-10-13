@@ -2,9 +2,9 @@ describe("Ability.SneakAttack", function() {
 
   // The spec party's rogue at P.1.3 sits in the back rank with a dagger in each hand, out of reach of everything.
 
-  // A hidden rogue sneak attacks the kobold in front of them with a plain steel weapon in place of the assassin's
-  // dagger they came with, which could hide them again. An arrow is loaded in case the weapon is a bow. The command
-  // that built an ability ends the round, so the helper ends it itself to see the rogue revealed.
+  // A hidden rogue sneak attacks the kobold in front of them with the given weapon. An arrow is loaded in case the
+  // weapon is a bow. The command that built an ability ends the round, so the helper ends it itself to see the rogue
+  // revealed.
   function sneakAttackWith(base) {
     const state = BattleSupport.startBattle();
     const rogue = state.getEntityAtPosition('P.1.3');
