@@ -2,10 +2,7 @@ describe("BattleCommand", function() {
 
   // finishCharacterRound() requires the acting entity to be next in the turn order.
   function startRound() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-
-    const state = BattleSystem.getState();
+    const state = BattleSupport.startBattle();
     const player = state.getEntityAtPosition('P.0.2');
 
     state.moveToTopOfTurnOrder({ type:'character', id:player });
@@ -53,10 +50,7 @@ describe("BattleCommand", function() {
   // A poised stack applied before the round is counted down when the round ends, which is how the spec can tell the
   // placeholder's round was finished.
   it("runs a placeholder command that has no ability yet, and ends the round for it", function() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-
-    const state = BattleSystem.getState();
+    const state = BattleSupport.startBattle();
     const player = state.getEntityAtPosition('P.0.2');
 
     BattleSystem.addStatus(player, 'poised', { count:2 });

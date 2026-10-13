@@ -1,11 +1,9 @@
 describe("CharacterAbilitySystem", function() {
 
-  // A single kobold runt at M.0.2 faces the fixture party: the player in front of it with a longsword, an archer at
-  // P.1.2, and a rogue with short reach daggers at P.1.3.
+  // A single kobold runt at M.0.2 faces the spec party: the player in front of it with a longsword, and rogues with
+  // short reach daggers at P.1.2 and P.1.3.
   function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ monster:'kobold-runt', ambushState:'normal' });
-    return BattleSystem.getState();
+    return BattleSupport.startBattle({ monster:'kobold-runt' });
   }
 
   describe("getCommands()", function() {

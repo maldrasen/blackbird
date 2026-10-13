@@ -6,8 +6,7 @@ describe("NegotiationSystem", function() {
   // directly once the state is built. Resolutions are set on the state directly — the reaction to resolution mapping
   // is thin and the question path is Random-heavy.
   function startNegotiation() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ monster:'kobold-runt', ambushState:'normal' });
+    BattleSupport.startBattle({ monster:'kobold-runt' });
 
     const player = GameSystem.getState().getPlayer();
     BattleSystem.getState().moveToTopOfTurnOrder({ type:'character', id:player });
@@ -108,11 +107,10 @@ describe("NegotiationSystem", function() {
     // zero out. Each skill check consumes a crit and a value roll (between) then an improve roll (roll).
     //
     // The question whitelist is set before the boot because the state builds its question pool when it's constructed.
-    // The player fixture has no mana, so no request is possible and a single whitelisted question is picked without a
-    // coin flip.
+    // The spec party's player has no mana, so no request is possible and a single whitelisted question is picked
+    // without a coin flip.
     function bootNegotiation() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ monster:'kobold-sneak-slut', ambushState:'normal' });
+      BattleSupport.startBattle({ monster:'kobold-sneak-slut' });
 
       const player = GameSystem.getState().getPlayer();
       BattleSystem.specRound(player);
@@ -224,16 +222,16 @@ describe("NegotiationSystem", function() {
       });
     });
 
-    // The player fixture is a human with no natural mana, so no request is possible until some is granted. With red
-    // mana the give-me-mana request is the only one in the pool, and the empty question whitelist leaves it as the only
-    // interaction, so no coin is flipped. The request parameters are rolled when the request is picked: the color is
-    // drawn from a single element list and the amount is the first stubbed between value.
+    // The spec party's player is a human with no natural mana, so no request is possible until some is granted. With
+    // red mana the give-me-mana request is the only one in the pool, and the empty question whitelist leaves it as the
+    // only interaction, so no coin is flipped. The request parameters are rolled when the request is picked: the color
+    // is drawn from a single element list and the amount is the first stubbed between value.
     describe("requests", function() {
       function bootRequest() {
         NegotiationQuestion.setWhitelist([]);
         const booted = bootNegotiation();
 
-        BattleFixtures.grantMana('red', 100);
+        BattleSupport.grantMana('red', 100);
         Random.stubBetween(20);
 
         expect(booted.state.pickInteraction().code).to.equal('give-me-mana');

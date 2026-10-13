@@ -3,8 +3,7 @@ describe("Ability.UseArticle", function() {
   // The tosser joins the runt pack in the back rank, behind the blast a blasto thrown at the front of the party
   // makes. Nothing is stubbed: a blasto's fire always leaves a mark on its target.
   function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
+    BattleSupport.startBattle();
 
     const tosser = MonsterFactory('kobold-tosser').build();
     BattleSystem.getState().addMonster(tosser, 'M.1.2');

@@ -161,8 +161,7 @@ describe("Reaction", function() {
   // These specs boot a real battle because giveStatusEffect applies effects through the battle state.
   describe("giveStatusEffect", function() {
     function startBattle() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ monster:'kobold-runt', ambushState:'normal' });
+      BattleSupport.startBattle({ monster:'kobold-runt' });
 
       const player = GameSystem.getState().getPlayer();
       const monster = BattleSystem.getState().getActiveMonsters()[0];

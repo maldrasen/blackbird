@@ -1,9 +1,9 @@
 describe("NegotiationQuestion", function() {
 
-  // The player fixture is a male human, so the hasCock('P') answer stays and the hasNoCock('P') answer filters out.
+  // The spec party's player is male, so the hasCock('P') answer stays and the hasNoCock('P') answer filters out.
   describe("getAnswers()", function() {
     it('filters out answers whose requirements fail', function() {
-      BattleFixtures.prepareForBattle();
+      BattleSupport.prepareParty();
       const context = { P:GameSystem.getState().getPlayer() };
 
       const answers = NegotiationQuestion.lookup('how-do-you-murder').getAnswers(context);
@@ -31,8 +31,7 @@ describe("NegotiationQuestion", function() {
   // only has a lewd reaction with static requirements: the player must have a cock.
   describe("getReactionData()", function() {
     function bootMonster() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ monster:'kobold-sneak-slut', ambushState:'normal' });
+      BattleSupport.startBattle({ monster:'kobold-sneak-slut' });
 
       const monster = BattleSystem.getState().getActiveMonsters()[0];
       const personality = PersonalityComponent.lookup(monster);

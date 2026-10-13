@@ -1,9 +1,9 @@
 describe("NegotiationRequest", function() {
 
-  // The player fixture is a human with no natural mana, so give-me-mana is impossible until some is granted. The specs
-  // that need the request to be possible grant 100 red mana, which makes the request ask for between 10 and 32.
+  // The spec party's player is a human with no natural mana, so give-me-mana is impossible until some is granted. The
+  // specs that need the request to be possible grant 100 red mana, which makes the request ask for between 10 and 32.
   function bootPlayer() {
-    BattleFixtures.prepareForBattle();
+    BattleSupport.prepareParty();
     return GameSystem.getState().getPlayer();
   }
 
@@ -22,7 +22,7 @@ describe("NegotiationRequest", function() {
 
       expect(request.isPossible({ P:player })).to.equal(false);
 
-      BattleFixtures.grantMana('red', 100);
+      BattleSupport.grantMana('red', 100);
       expect(request.isPossible({ P:player })).to.equal(true);
     });
   });
@@ -30,7 +30,7 @@ describe("NegotiationRequest", function() {
   describe("getRequestParameters()", function() {
     it('draws a color the player has and rolls an amount from a tenth to a half of it', function() {
       const player = bootPlayer();
-      BattleFixtures.grantMana('red', 100);
+      BattleSupport.grantMana('red', 100);
       const request = NegotiationRequest.lookup('give-me-mana');
 
       Random.stubBetween(10, 32);
@@ -40,8 +40,8 @@ describe("NegotiationRequest", function() {
 
     it('never asks for more than 32 and only draws colors with mana in them', function() {
       const player = bootPlayer();
-      BattleFixtures.grantMana('red', 100);
-      BattleFixtures.grantMana('blue', 5);
+      BattleSupport.grantMana('red', 100);
+      BattleSupport.grantMana('blue', 5);
       const request = NegotiationRequest.lookup('give-me-mana');
 
       Random.stubFrom('blue');
@@ -82,7 +82,7 @@ describe("NegotiationRequest", function() {
   describe("resolveAnswerReaction()", function() {
     it('spends the mana and returns the respect reaction when the request is granted', function() {
       const player = bootPlayer();
-      BattleFixtures.grantMana('red', 100);
+      BattleSupport.grantMana('red', 100);
       const request = NegotiationRequest.lookup('give-me-mana');
 
       const reaction = request.resolveAnswerReaction('yes', { P:player }, { color:'red', amount:20 });
@@ -93,7 +93,7 @@ describe("NegotiationRequest", function() {
 
     it('throws rather than overspending when the parameters outrun the pool', function() {
       const player = bootPlayer();
-      BattleFixtures.grantMana('red', 10);
+      BattleSupport.grantMana('red', 10);
       const request = NegotiationRequest.lookup('give-me-mana');
 
       expect(() => request.resolveAnswerReaction('yes', { P:player }, { color:'red', amount:20 })).to.throw(`doesn't have 20 red mana`);
@@ -102,7 +102,7 @@ describe("NegotiationRequest", function() {
 
     it('keeps the mana and returns the dislike reaction when the request is refused', function() {
       const player = bootPlayer();
-      BattleFixtures.grantMana('red', 100);
+      BattleSupport.grantMana('red', 100);
       const request = NegotiationRequest.lookup('give-me-mana');
 
       const reaction = request.resolveAnswerReaction('no', { P:player }, { color:'red', amount:20 });

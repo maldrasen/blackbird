@@ -50,8 +50,7 @@ describe("OrphanSweeper", function() {
   });
 
   it('keeps the monsters in the current battle', function() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
+    BattleSupport.startBattle();
 
     const monsters = BattleSystem.getState().getActiveMonsters();
     const stray = buildMonster();

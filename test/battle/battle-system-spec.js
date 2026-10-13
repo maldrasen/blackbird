@@ -2,8 +2,7 @@ describe("BattleSystem", function() {
 
   describe("addStatus()", function() {
     it('adds a new status effect', function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
+      BattleSupport.startBattle();
 
       const entity = BattleSystem.getState().getActiveCharacters()[0];
 
@@ -14,8 +13,7 @@ describe("BattleSystem", function() {
     });
 
     it('renews the duration when the effect is reapplied with a longer duration', function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
+      BattleSupport.startBattle();
 
       const entity = BattleSystem.getState().getActiveCharacters()[0];
 
@@ -28,8 +26,7 @@ describe("BattleSystem", function() {
     });
 
     it('keeps the longer duration when the effect is reapplied with a shorter duration', function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
+      BattleSupport.startBattle();
 
       const entity = BattleSystem.getState().getActiveCharacters()[0];
 
@@ -40,8 +37,7 @@ describe("BattleSystem", function() {
     });
 
     it('removes an opposing status effect', function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
+      BattleSupport.startBattle();
 
       const entity = BattleSystem.getState().getActiveCharacters()[0];
 
@@ -63,10 +59,7 @@ describe("BattleSystem", function() {
   // schedule their next action.
   describe("finishRound()", function() {
     it("finishes the round when the acting entity dies to its own blast", function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-
-      const state = BattleSystem.getState();
+      const state = BattleSupport.startBattle();
       const acting = state.getEntityAtPosition('M',0,2);
 
       const health = HealthComponent.lookup(acting);
@@ -87,10 +80,7 @@ describe("BattleSystem", function() {
 
   describe("reset()", function() {
     it("clears battle only status effects from the survivors", function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-
-      const state = BattleSystem.getState();
+      const state = BattleSupport.startBattle();
       const character = state.getActiveCharacters()[0];
 
       BattleSystem.addStatus(character, 'poised', { count:1 });

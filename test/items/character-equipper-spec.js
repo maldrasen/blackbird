@@ -13,7 +13,7 @@ describe('CharacterEquipper', function() {
       expect(Item(equipment.primary).getBase().getHands()).to.not.equal(WeaponHandedness.two);
     });
 
-    // The fixture elves shop the standard depot, which is stocked with known pieces so the specs can say what should
+    // The elves shop the standard depot, which is stocked with known pieces so the specs can say what should
     // be picked. A leather low corset is slutty, feminine, and natural, and is worth a little more than a wool
     // doublet, so value alone would always take the corset.
     describe('armor', function() {

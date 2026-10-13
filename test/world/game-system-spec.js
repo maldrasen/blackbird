@@ -20,8 +20,7 @@ describe("GameSystem", function() {
     });
 
     it('leaves the monsters in the current battle alone', function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
+      BattleSupport.startBattle();
 
       GameSystem.setGameMode(GameMode.battle);
 

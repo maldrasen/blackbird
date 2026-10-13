@@ -5,8 +5,7 @@ describe("BattleInitializer", function() {
     // The runts have no abilities with cooldowns, so the battle starts with a clean cooldown state and the tosser's
     // blasto is the only ability that consumes an initial cooldown roll.
     function addTosserToBattle() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
+      BattleSupport.startBattle();
 
       const tosser = MonsterFactory('kobold-tosser').build();
       BattleSystem.getState().addMonster(tosser,'M.1.2');

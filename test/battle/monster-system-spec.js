@@ -3,10 +3,7 @@ describe("MonsterSystem", function() {
   // The runt at M.0.2 acts, carrying a bone spear and a low priority bite of its own. Its threat is pinned so the
   // target choice is deterministic, and the player stands in front of it at P.0.2.
   function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-
-    const state = BattleSystem.getState();
+    const state = BattleSupport.startBattle();
     ItemSupport.equip(state.getEntityAtPosition('M.0.2'), 'spear', ['bone']);
     return state;
   }

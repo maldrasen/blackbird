@@ -324,7 +324,7 @@ describe('EquipmentManager', function() {
     });
   });
 
-  // The generic fixtures have 25 strength, so a weapon deals a quarter of its attack power.
+  // The generic characters have 25 strength, so a weapon deals a quarter of its attack power.
   describe('summarizeDamages()', function() {
     it("scales the attack power of both weapons by strength", function() {
       const horse = CharacterSupport.genericMale({});
