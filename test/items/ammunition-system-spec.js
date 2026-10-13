@@ -126,4 +126,22 @@ describe("AmmunitionSystem", function() {
     });
   });
 
+  describe("spend()", function() {
+    it("takes one piece of ammunition from the quiver", function() {
+      const id = buildArcher({ ammunition:'elm-arrow', quantity:3 });
+
+      AmmunitionSystem.spend(id);
+
+      expect(QuiverComponent.lookup(id)).to.deep.equal({ ammunition:'elm-arrow', quantity:2 });
+    });
+
+    it("throws when the quiver is already empty", function() {
+      const id = buildArcher({ ammunition:'elm-arrow', quantity:0 });
+
+      expect(function() {
+        AmmunitionSystem.spend(id);
+      }).to.throw('Quiver.quantity is negative');
+    });
+  });
+
 });

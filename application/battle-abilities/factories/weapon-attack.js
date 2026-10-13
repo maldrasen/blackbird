@@ -34,7 +34,7 @@ function canCharacterAttack() {
 
   if (weapon == null) { return false; }
   if (isHidden()) { return false; }
-  if (weapon.usesAmmunition() && hasAmmunition() === false) { return false; }
+  if (needsAmmunition(weapon) && hasAmmunition() === false) { return false; }
 
   return TargetingController.getMonstersInRange().length > 0;
 }
@@ -74,6 +74,7 @@ function executeAttacks(ability) {
 
     round.addMessage({ text:attackText }, Weaver(context));
     round.addTime(attackRoll.getWeapon().getBase().getSpeed());
+    if (needsAmmunition(attackRoll.getWeapon())) { AmmunitionSystem.spend(acting); }
 
     contest.isHit() ?
       PhysicalAttackSystem.processHit(attackRoll, defendRoll):
@@ -102,7 +103,20 @@ function calculateAttacks() {
     hand = (hand === 'primary' && dualWielding) ? 'secondary' : 'primary';
   }
 
-  return attacks;
+  return limitByAmmunition(attacks);
+}
+
+// A character spends an arrow on every shot, so they can't fire more times than their quiver holds. A bow is two
+// handed, so when the primary weapon needs ammunition it is the only weapon making strikes.
+function limitByAmmunition(attacks) {
+  const round = BattleSystem.getRound();
+  if (needsAmmunition(round.getPrimaryWeapon()) === false) { return attacks; }
+  return attacks.slice(0, QuiverComponent.lookup(round.getActing()).quantity);
+}
+
+// Monsters don't track ammunition, and an enchanted bow may someday not need any.
+function needsAmmunition(weapon) {
+  return BattleSystem.getRound().isActingMonster() === false && weapon.usesAmmunition();
 }
 
 // A character with a weapon in each hand swings each of them 25% faster.

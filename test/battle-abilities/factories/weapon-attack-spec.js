@@ -15,10 +15,10 @@ describe("Ability.WeaponAttack", function() {
   }
 
   // The speed factor comes from the species. A human's factor of 1 keeps the number of strikes a known weapon fits
-  // into a second predictable whatever species the fixture rolled.
-  function pinSpeed(id) {
+  // into a second predictable whatever species the fixture rolled. A kobold's 0.87 squeezes two shots from a bow.
+  function pinSpeed(id, species=SpeciesCode.human) {
     const actor = ActorComponent.lookup(id);
-    actor.species = SpeciesCode.human;
+    actor.species = species;
     ActorComponent.update(id, actor);
   }
 
@@ -158,6 +158,71 @@ describe("Ability.WeaponAttack", function() {
       const round = BattleSystem.getRound();
       expect(countStrikes()).to.equal(2);
       expect(round.getTime()).to.equal(2 * Math.ceil(500 * round.getSpeedFactor()));
+    });
+
+    it("spends an arrow on every shot", function() {
+      const state = startBattle();
+      const player = state.getEntityAtPosition('P.0.2');
+      const kobold = state.getEntityAtPosition('M.0.2');
+
+      ItemFixtures.equip(player, 'shortbow', ['wood']);
+      QuiverComponent.update(player, { ammunition:'elm-arrow', quantity:3 });
+      pinSpeed(player);
+      makeUnkillable(kobold);
+      startCharacterRound(player, kobold);
+      Ability.WeaponAttack().execute();
+
+      expect(countStrikes()).to.equal(1);
+      expect(QuiverComponent.lookup(player).quantity).to.equal(2);
+    });
+
+    it("stops shooting when the quiver runs dry", function() {
+      const state = startBattle();
+      const player = state.getEntityAtPosition('P.0.2');
+      const kobold = state.getEntityAtPosition('M.0.2');
+
+      ItemFixtures.equip(player, 'shortbow', ['wood']);
+      QuiverComponent.update(player, { ammunition:'elm-arrow', quantity:1 });
+      pinSpeed(player, SpeciesCode.kobold);
+      makeUnkillable(kobold);
+      startCharacterRound(player, kobold);
+      Ability.WeaponAttack().execute();
+
+      const round = BattleSystem.getRound();
+      expect(countStrikes()).to.equal(1);
+      expect(round.getTime()).to.equal(Math.ceil(1000 * round.getSpeedFactor()));
+      expect(QuiverComponent.lookup(player)).to.deep.equal({ ammunition:'elm-arrow', quantity:0 });
+    });
+
+    it("fires twice with a quick bow and a stocked quiver", function() {
+      const state = startBattle();
+      const player = state.getEntityAtPosition('P.0.2');
+      const kobold = state.getEntityAtPosition('M.0.2');
+
+      ItemFixtures.equip(player, 'shortbow', ['wood']);
+      QuiverComponent.update(player, { ammunition:'elm-arrow', quantity:5 });
+      pinSpeed(player, SpeciesCode.kobold);
+      makeUnkillable(kobold);
+      startCharacterRound(player, kobold);
+      Ability.WeaponAttack().execute();
+
+      expect(countStrikes()).to.equal(2);
+      expect(QuiverComponent.lookup(player).quantity).to.equal(3);
+    });
+
+    it("lets a monster shoot without spending anything", function() {
+      const state = startBattle();
+      const player = state.getEntityAtPosition('P.0.2');
+      const kobold = state.getEntityAtPosition('M.0.2');
+
+      ItemFixtures.equip(kobold, 'shortbow', ['wood']);
+      makeUnkillable(player);
+      BattleSystem.getState().moveToTopOfTurnOrder({ type:'monster', id:kobold });
+      BattleSystem.specRound(kobold, { target:player });
+      Ability.WeaponAttack().execute();
+
+      expect(countStrikes()).to.be.at.least(1);
+      expect(QuiverComponent.lookup(kobold).quantity).to.equal(0);
     });
 
     it("gets an extra strike in with a weapon in each hand", function() {

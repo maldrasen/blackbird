@@ -32,10 +32,19 @@ global.AmmunitionSystem = (function() {
     QuiverComponent.update(id, { quantity: quiver.quantity + quantity });
   }
 
+  // Bow attacks always expend 1 arrow. If we add special bow attacks that shoot more than one arrow at a time
+  // they should probably be making multiple attack rolls, and decrement the ammo each time. If we know a special
+  // attack would use three arrows though, it shouldn't be possible if they only have two in their quiver.
+  function spend(id) {
+    const quiver = QuiverComponent.lookup(id);
+    QuiverComponent.update(id, { quantity: quiver.quantity - 1 });
+  }
+
   return {
     restock,
     loadQuiver,
     unloadQuiver,
+    spend,
   };
 
 })();
