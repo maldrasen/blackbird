@@ -5,7 +5,7 @@ describe("Ability.Pass", function() {
   // own round isn't counted against at the end of it, so the specs stun the character before the round opens.
   function startBattle() {
     const state = BattleSupport.startBattle();
-    const acting = state.getEntityAtPosition('P',0,2);
+    const acting = BattleSupport.player();
 
     state.moveToTopOfTurnOrder({ type:'character', id:acting });
 

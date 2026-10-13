@@ -9,9 +9,9 @@ describe("PhysicalAttackContest", function() {
   }
 
   it("keeps a normal pair as rolled", function() {
-    const state = BattleSupport.startBattle();
-    const attacker = state.getEntityAtPosition('P',0,2);
-    const defender = state.getEntityAtPosition('P',1,2);
+    BattleSupport.startBattle();
+    const attacker = BattleSupport.player();
+    const defender = BattleSupport.centerRogue();
 
     Random.stubBetween(50, 1, 50, 1);
     const contest = rolledContest(attacker, defender);
@@ -24,9 +24,9 @@ describe("PhysicalAttackContest", function() {
   });
 
   it("rerolls the pair when the attack and defend both crit", function() {
-    const state = BattleSupport.startBattle();
-    const attacker = state.getEntityAtPosition('P',0,2);
-    const defender = state.getEntityAtPosition('P',1,2);
+    BattleSupport.startBattle();
+    const attacker = BattleSupport.player();
+    const defender = BattleSupport.centerRogue();
 
     Random.stubBetween(98, 98, 50, 1, 50, 1);
     const contest = rolledContest(attacker, defender);
@@ -36,9 +36,9 @@ describe("PhysicalAttackContest", function() {
   });
 
   it("downgrades both crits when the reroll attempts are exhausted", function() {
-    const state = BattleSupport.startBattle();
-    const attacker = state.getEntityAtPosition('P',0,2);
-    const defender = state.getEntityAtPosition('P',1,2);
+    BattleSupport.startBattle();
+    const attacker = BattleSupport.player();
+    const defender = BattleSupport.centerRogue();
 
     Random.stubBetween(98, 98, 98, 98, 98, 98, 98, 98, 98, 98);
     const contest = rolledContest(attacker, defender);

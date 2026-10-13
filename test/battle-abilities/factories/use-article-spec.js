@@ -32,8 +32,7 @@ describe("Ability.UseArticle", function() {
 
   it("takes a fixed time to use and applies the article around the target", function() {
     const tosser = startBattle();
-    const state = BattleSystem.getState();
-    const target = state.getEntityAtPosition('P.0.2');
+    const target = BattleSupport.player();
     const ability = Ability.UseArticle({ article:'blasto' });
 
     CharacterSupport.setHealth(target, 100);

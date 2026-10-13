@@ -49,8 +49,8 @@ describe("Ability.SpecialAttack", function() {
 
   describe("isPossible()", function() {
     it("is not possible without a weapon", function() {
-      const state = BattleSupport.startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      BattleSupport.startBattle();
+      const player = BattleSupport.player();
       const equipment = EquipmentManager(player);
 
       equipment.unequipItem(equipment.getSlot(EquipmentSlot.primary));
@@ -60,19 +60,19 @@ describe("Ability.SpecialAttack", function() {
     });
 
     it("needs a monster in reach of a character's weapon", function() {
-      const state = BattleSupport.startBattle();
+      BattleSupport.startBattle();
 
-      BattleSystem.specRound(state.getEntityAtPosition('P.0.2'));
+      BattleSystem.specRound(BattleSupport.player());
       expect(Ability.SpecialAttack(strike).isPossible()).to.equal(true);
 
-      BattleSystem.specRound(state.getEntityAtPosition('P.1.3'));
+      BattleSystem.specRound(BattleSupport.rogue());
       expect(Ability.SpecialAttack(strike).isPossible()).to.equal(false);
     });
 
     it("reaches any position when it can target any enemy", function() {
-      const state = BattleSupport.startBattle();
+      BattleSupport.startBattle();
 
-      BattleSystem.specRound(state.getEntityAtPosition('P.1.3'));
+      BattleSystem.specRound(BattleSupport.rogue());
 
       expect(Ability.SpecialAttack({ ...strike, targetingMode:TargetingMode.anyEnemy }).isPossible()).to.equal(true);
     });
@@ -83,17 +83,17 @@ describe("Ability.SpecialAttack", function() {
 
       ItemSupport.equip(kobold, 'dagger', ['steel']);
 
-      BattleSystem.specRound(kobold, { target:state.getEntityAtPosition('P.0.2') });
+      BattleSystem.specRound(kobold, { target:BattleSupport.player() });
       expect(Ability.SpecialAttack(strike).isPossible()).to.equal(true);
 
-      BattleSystem.specRound(kobold, { target:state.getEntityAtPosition('P.1.2') });
+      BattleSystem.specRound(kobold, { target:BattleSupport.centerRogue() });
       expect(Ability.SpecialAttack(strike).isPossible()).to.equal(false);
     });
 
     it("defers to its own possibility check", function() {
-      const state = BattleSupport.startBattle();
+      BattleSupport.startBattle();
 
-      BattleSystem.specRound(state.getEntityAtPosition('P.0.2'));
+      BattleSystem.specRound(BattleSupport.player());
 
       expect(Ability.SpecialAttack({ ...strike, isPossible:() => false }).isPossible()).to.equal(false);
     });
@@ -102,7 +102,7 @@ describe("Ability.SpecialAttack", function() {
   describe("execute()", function() {
     it("resolves a single strike with the primary weapon, whatever its speed", function() {
       const state = BattleSupport.startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      const player = BattleSupport.player();
       const kobold = state.getEntityAtPosition('M.0.2');
       const ability = Ability.SpecialAttack(strike);
 
@@ -119,7 +119,7 @@ describe("Ability.SpecialAttack", function() {
 
     it("uses its own attack text and hands it the weapon", function() {
       const state = BattleSupport.startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      const player = BattleSupport.player();
       const kobold = state.getEntityAtPosition('M.0.2');
 
       let swung = null;
@@ -137,7 +137,7 @@ describe("Ability.SpecialAttack", function() {
 
     it("applies its effects on a hit and reports which of them landed", function() {
       const state = BattleSupport.startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      const player = BattleSupport.player();
       const kobold = state.getEntityAtPosition('M.0.2');
 
       let hit = null;

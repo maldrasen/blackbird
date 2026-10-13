@@ -12,7 +12,7 @@ describe("BattleDamageSystem", function() {
 
   it("knocks a character out at zero or below", function() {
     const state = BattleSupport.startBattle();
-    const target = state.getEntityAtPosition('P',1,2);
+    const target = BattleSupport.centerRogue();
     CharacterSupport.setHealth(target, 5);
     CharacterSupport.setAttribute(target, Attrib.vitality, 15);
     bareChest(target);
@@ -30,7 +30,7 @@ describe("BattleDamageSystem", function() {
 
   it("still only knocks a character out at exactly negative vitality", function() {
     const state = BattleSupport.startBattle();
-    const target = state.getEntityAtPosition('P',1,2);
+    const target = BattleSupport.centerRogue();
     CharacterSupport.setHealth(target, 5);
     CharacterSupport.setAttribute(target, Attrib.vitality, 15);
     bareChest(target);
@@ -44,7 +44,7 @@ describe("BattleDamageSystem", function() {
 
   it("kills a character below negative vitality", function() {
     const state = BattleSupport.startBattle();
-    const target = state.getEntityAtPosition('P',1,2);
+    const target = BattleSupport.centerRogue();
     CharacterSupport.setHealth(target, 5);
     CharacterSupport.setAttribute(target, Attrib.vitality, 15);
     bareChest(target);
@@ -69,8 +69,8 @@ describe("BattleDamageSystem", function() {
   });
 
   it("throws when damaging a target who is already down", function() {
-    const state = BattleSupport.startBattle();
-    const target = state.getEntityAtPosition('P',1,2);
+    BattleSupport.startBattle();
+    const target = BattleSupport.centerRogue();
     CharacterSupport.setHealth(target, 5);
     CharacterSupport.setAttribute(target, Attrib.vitality, 15);
     bareChest(target);
@@ -83,8 +83,8 @@ describe("BattleDamageSystem", function() {
   });
 
   it("throws when damage has no hit location", function() {
-    const state = BattleSupport.startBattle();
-    const target = state.getEntityAtPosition('P',1,2);
+    BattleSupport.startBattle();
+    const target = BattleSupport.centerRogue();
 
     expect(() => {
       BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:10 }});
@@ -94,18 +94,18 @@ describe("BattleDamageSystem", function() {
   // The damage specs above run without a round, which is why the announcement is a separate call rather than part
   // of applyDamage(). These specs build one so there's somewhere for the messages to land.
   describe("addDownedMessage()", function() {
-    function specRound(state) {
-      BattleSystem.specRound(state.getEntityAtPosition('P',0,2));
+    function specRound() {
+      BattleSystem.specRound(BattleSupport.player());
       return BattleSystem.getRound();
     }
 
     it("announces a knocked out character", function() {
-      const state = BattleSupport.startBattle();
-      const target = state.getEntityAtPosition('P',1,2);
+      BattleSupport.startBattle();
+      const target = BattleSupport.centerRogue();
       CharacterSupport.setHealth(target, 5);
       CharacterSupport.setAttribute(target, Attrib.vitality, 15);
       bareChest(target);
-      const round = specRound(state);
+      const round = specRound();
 
       BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:10 }, hitLocation:EquipmentSlot.chest });
       BattleDamageSystem.addDownedMessage(target);
@@ -118,7 +118,7 @@ describe("BattleDamageSystem", function() {
     it("announces a killed monster", function() {
       const state = BattleSupport.startBattle();
       const target = state.getActiveMonsters()[0];
-      const round = specRound(state);
+      const round = specRound();
 
       BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:9999 }, hitLocation:EquipmentSlot.chest });
       BattleDamageSystem.addDownedMessage(target);
@@ -129,10 +129,10 @@ describe("BattleDamageSystem", function() {
     });
 
     it("says nothing about an entity that is still up", function() {
-      const state = BattleSupport.startBattle();
-      const target = state.getEntityAtPosition('P',1,2);
+      BattleSupport.startBattle();
+      const target = BattleSupport.centerRogue();
       CharacterSupport.setHealth(target, 100);
-      const round = specRound(state);
+      const round = specRound();
 
       BattleDamageSystem.addDownedMessage(target);
 
@@ -148,8 +148,8 @@ describe("BattleDamageSystem", function() {
       EquipmentManager(id).equipItem(item, slot);
     }
 
-    function pinnedTarget(state) {
-      const target = state.getEntityAtPosition('P',1,2);
+    function pinnedTarget() {
+      const target = BattleSupport.centerRogue();
       CharacterSupport.setHealth(target, 100);
       CharacterSupport.setAttribute(target, Attrib.vitality, 15);
       EquipmentManager(target).equipItem(null, EquipmentSlot.secondary);
@@ -158,8 +158,8 @@ describe("BattleDamageSystem", function() {
     }
 
     it("reduces damage by the hit location's armor percent", function() {
-      const state = BattleSupport.startBattle();
-      const target = pinnedTarget(state);
+      BattleSupport.startBattle();
+      const target = pinnedTarget();
       equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
 
       const damage = BattleDamageSystem.applyDamage({
@@ -170,8 +170,8 @@ describe("BattleDamageSystem", function() {
     });
 
     it("mitigates and rounds each damage type separately", function() {
-      const state = BattleSupport.startBattle();
-      const target = pinnedTarget(state);
+      BattleSupport.startBattle();
+      const target = pinnedTarget();
       equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
 
       const damage = BattleDamageSystem.applyDamage({
@@ -181,8 +181,8 @@ describe("BattleDamageSystem", function() {
     });
 
     it("covers every hit location with a shield", function() {
-      const state = BattleSupport.startBattle();
-      const target = pinnedTarget(state);
+      BattleSupport.startBattle();
+      const target = pinnedTarget();
       EquipmentManager(target).equipItem(null, EquipmentSlot.head);
       equipItem(target, ItemSupport.buildSteel('tower-shield'), EquipmentSlot.secondary);
 
@@ -193,8 +193,8 @@ describe("BattleDamageSystem", function() {
     });
 
     it("adds shield reduction on top of worn armor", function() {
-      const state = BattleSupport.startBattle();
-      const target = pinnedTarget(state);
+      BattleSupport.startBattle();
+      const target = pinnedTarget();
       equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
       equipItem(target, ItemSupport.buildSteel('tower-shield'), EquipmentSlot.secondary);
 
@@ -205,8 +205,8 @@ describe("BattleDamageSystem", function() {
     });
 
     it("doubles vulnerable damage after mitigation", function() {
-      const state = BattleSupport.startBattle();
-      const target = pinnedTarget(state);
+      BattleSupport.startBattle();
+      const target = pinnedTarget();
       equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
       BattleSystem.addStatus(target, 'vulnerable', { count:1 });
 
@@ -218,8 +218,8 @@ describe("BattleDamageSystem", function() {
     });
 
     it("consumes one vulnerable stack per hit", function() {
-      const state = BattleSupport.startBattle();
-      const target = pinnedTarget(state);
+      BattleSupport.startBattle();
+      const target = pinnedTarget();
       equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
       BattleSystem.addStatus(target, 'vulnerable', { count:2 });
 
@@ -236,8 +236,8 @@ describe("BattleDamageSystem", function() {
     });
 
     it("quadruples damned damage and consumes it", function() {
-      const state = BattleSupport.startBattle();
-      const target = pinnedTarget(state);
+      BattleSupport.startBattle();
+      const target = pinnedTarget();
       equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
       BattleSystem.addStatus(target, 'damned', { count:1 });
 
@@ -251,8 +251,8 @@ describe("BattleDamageSystem", function() {
     });
 
     it("composes vulnerable and damned multiplicatively", function() {
-      const state = BattleSupport.startBattle();
-      const target = pinnedTarget(state);
+      BattleSupport.startBattle();
+      const target = pinnedTarget();
       equipItem(target, ItemSupport.buildSteel('breastplate'), EquipmentSlot.chest);
       BattleSystem.addStatus(target, 'vulnerable', { count:1 });
       BattleSystem.addStatus(target, 'damned', { count:1 });
@@ -346,8 +346,8 @@ describe("BattleDamageSystem", function() {
   });
 
   describe("difficulty scaling", function() {
-    function pinnedCharacter(state) {
-      const target = state.getEntityAtPosition('P',1,2);
+    function pinnedCharacter() {
+      const target = BattleSupport.centerRogue();
       CharacterSupport.setHealth(target, 100);
       CharacterSupport.setAttribute(target, Attrib.vitality, 15);
       bareChest(target);
@@ -389,8 +389,8 @@ describe("BattleDamageSystem", function() {
     });
 
     it("does not scale damage dealt to characters by the damage option", async function() {
-      const state = BattleSupport.startBattle();
-      const target = pinnedCharacter(state);
+      BattleSupport.startBattle();
+      const target = pinnedCharacter();
       await setDifficulty({ damage:500 });
 
       const damage = BattleDamageSystem.applyDamage({
@@ -400,8 +400,8 @@ describe("BattleDamageSystem", function() {
     });
 
     it("divides damage dealt to characters by the mitigation option", async function() {
-      const state = BattleSupport.startBattle();
-      const target = pinnedCharacter(state);
+      BattleSupport.startBattle();
+      const target = pinnedCharacter();
       await setDifficulty({ mitigation:200 });
 
       const damage = BattleDamageSystem.applyDamage({
@@ -412,8 +412,8 @@ describe("BattleDamageSystem", function() {
     });
 
     it("rounds the mitigated damage", async function() {
-      const state = BattleSupport.startBattle();
-      const target = pinnedCharacter(state);
+      BattleSupport.startBattle();
+      const target = pinnedCharacter();
       await setDifficulty({ mitigation:300 });
 
       const damage = BattleDamageSystem.applyDamage({
@@ -434,8 +434,8 @@ describe("BattleDamageSystem", function() {
     });
 
     it("composes the mitigation factor with vulnerable doubling", async function() {
-      const state = BattleSupport.startBattle();
-      const target = pinnedCharacter(state);
+      BattleSupport.startBattle();
+      const target = pinnedCharacter();
       BattleSystem.addStatus(target, 'vulnerable', { count:1 });
       await setDifficulty({ mitigation:400 });
 

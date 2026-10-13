@@ -16,15 +16,15 @@ describe("Ability.Hide", function() {
 
   describe("isPossible()", function() {
     it("is possible for a stealthy character in the back rank", function() {
-      const state = BattleSupport.startBattle();
-      startRound(state.getEntityAtPosition('P.1.3'));
+      BattleSupport.startBattle();
+      startRound(BattleSupport.rogue());
 
       expect(Ability.Hide().isPossible()).to.equal(true);
     });
 
     it("is not possible from the front rank", function() {
-      const state = BattleSupport.startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      BattleSupport.startBattle();
+      const player = BattleSupport.player();
 
       CharacterSupport.setSkill(player, 'stealth', 10);
       startRound(player);
@@ -33,8 +33,8 @@ describe("Ability.Hide", function() {
     });
 
     it("is not possible without the stealth skill", function() {
-      const state = BattleSupport.startBattle();
-      const rogue = state.getEntityAtPosition('P.1.3');
+      BattleSupport.startBattle();
+      const rogue = BattleSupport.rogue();
 
       CharacterSupport.setSkill(rogue, 'stealth', 0);
       startRound(rogue);
@@ -43,8 +43,8 @@ describe("Ability.Hide", function() {
     });
 
     it("is not possible while already hidden", function() {
-      const state = BattleSupport.startBattle();
-      const rogue = state.getEntityAtPosition('P.1.3');
+      BattleSupport.startBattle();
+      const rogue = BattleSupport.rogue();
 
       BattleSystem.addStatus(rogue, 'hidden');
       startRound(rogue);
@@ -58,7 +58,7 @@ describe("Ability.Hide", function() {
   describe("execute()", function() {
     it("hides in the shadows when no observer beats the stealth roll", function() {
       const state = BattleSupport.startBattle();
-      const rogue = state.getEntityAtPosition('P.1.3');
+      const rogue = BattleSupport.rogue();
       const kobold = state.getEntityAtPosition('M.0.3');
       const ability = Ability.Hide();
 
@@ -77,7 +77,7 @@ describe("Ability.Hide", function() {
 
     it("is spotted when an observer's intelligence check beats the stealth roll", function() {
       const state = BattleSupport.startBattle();
-      const rogue = state.getEntityAtPosition('P.1.3');
+      const rogue = BattleSupport.rogue();
       const kobold = state.getEntityAtPosition('M.0.3');
 
       CharacterSupport.setSkill(rogue, 'stealth', 1);

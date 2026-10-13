@@ -24,7 +24,7 @@ describe("MonsterSystem", function() {
     it("uses its highest priority possible ability on its highest threat target", function() {
       const state = startBattle();
       const kobold = state.getEntityAtPosition('M.0.2');
-      const target = state.getEntityAtPosition('P.0.3');
+      const target = BattleSupport.tank();
 
       const round = takeTurn(kobold, target);
 
@@ -37,7 +37,7 @@ describe("MonsterSystem", function() {
       const kobold = state.getEntityAtPosition('M.0.2');
 
       disarm(kobold);
-      const round = takeTurn(kobold, state.getEntityAtPosition('P.0.2'));
+      const round = takeTurn(kobold, BattleSupport.player());
 
       expect(round.getAbility().getName()).to.equal('Bite');
     });
@@ -47,7 +47,7 @@ describe("MonsterSystem", function() {
       const kobold = state.getEntityAtPosition('M.0.2');
 
       state.setCooldown(kobold, Monster(kobold).findAbility('Attack').getId(), 99999);
-      const round = takeTurn(kobold, state.getEntityAtPosition('P.0.2'));
+      const round = takeTurn(kobold, BattleSupport.player());
 
       expect(round.getAbility().getName()).to.equal('Bite');
     });
@@ -81,7 +81,7 @@ describe("MonsterSystem", function() {
     it("makes its own choice when the forced ability isn't possible", function() {
       const state = startBattle();
       const kobold = state.getEntityAtPosition('M.0.2');
-      const target = state.getEntityAtPosition('P.0.3');
+      const target = BattleSupport.tank();
 
       disarm(kobold);
       state.setForcedAbility('Attack');

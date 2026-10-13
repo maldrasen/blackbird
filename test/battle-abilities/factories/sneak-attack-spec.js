@@ -7,7 +7,7 @@ describe("Ability.SneakAttack", function() {
   // revealed.
   function sneakAttackWith(base) {
     const state = BattleSupport.startBattle();
-    const rogue = state.getEntityAtPosition('P.1.3');
+    const rogue = BattleSupport.rogue();
 
     ItemSupport.equip(rogue, base, ['steel']);
     QuiverComponent.update(rogue, { ammunition:'elm-arrow', quantity:1 });
@@ -32,8 +32,8 @@ describe("Ability.SneakAttack", function() {
   });
 
   it("is only possible while hidden", function() {
-    const state = BattleSupport.startBattle();
-    const rogue = state.getEntityAtPosition('P.1.3');
+    BattleSupport.startBattle();
+    const rogue = BattleSupport.rogue();
 
     BattleSystem.specRound(rogue);
     expect(Ability.SneakAttack().isPossible()).to.equal(false);
@@ -43,8 +43,8 @@ describe("Ability.SneakAttack", function() {
   });
 
   it("is not possible with a bow and an empty quiver", function() {
-    const state = BattleSupport.startBattle();
-    const rogue = state.getEntityAtPosition('P.1.3');
+    BattleSupport.startBattle();
+    const rogue = BattleSupport.rogue();
 
     ItemSupport.equip(rogue, 'shortbow', ['wood']);
     BattleSystem.addStatus(rogue, 'hidden');
@@ -57,7 +57,7 @@ describe("Ability.SneakAttack", function() {
 
   it("spends an arrow when shot from a bow", function() {
     const state = BattleSupport.startBattle();
-    const rogue = state.getEntityAtPosition('P.1.3');
+    const rogue = BattleSupport.rogue();
 
     ItemSupport.equip(rogue, 'shortbow', ['wood']);
     QuiverComponent.update(rogue, { ammunition:'elm-arrow', quantity:2 });

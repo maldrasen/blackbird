@@ -6,7 +6,7 @@ describe("BattleRound", function() {
       const kobold = state.getEntityAtPosition('M.0.2');
       const bite = Ability.Bite({ damage:[10,20], speed:1000, cooldown:2500 });
 
-      BattleSystem.specRound(kobold, { target:state.getEntityAtPosition('P.0.2') });
+      BattleSystem.specRound(kobold, { target:BattleSupport.player() });
       bite.execute();
 
       expect(state.isOnCooldown(kobold, bite.getId())).to.equal(true);
@@ -17,7 +17,7 @@ describe("BattleRound", function() {
       const kobold = state.getEntityAtPosition('M.0.2');
       const bite = Ability.Bite({ damage:[10,20], speed:1000 });
 
-      BattleSystem.specRound(kobold, { target:state.getEntityAtPosition('P.0.2') });
+      BattleSystem.specRound(kobold, { target:BattleSupport.player() });
       bite.execute();
 
       expect(state.isOnCooldown(kobold, bite.getId())).to.equal(false);
@@ -25,7 +25,7 @@ describe("BattleRound", function() {
 
     it("never puts a character's ability on cooldown", function() {
       const state = BattleSupport.startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      const player = BattleSupport.player();
       const punch = Ability.Punch({ damage:[10,20], speed:1000, cooldown:2500 });
 
       state.moveToTopOfTurnOrder({ type:'character', id:player });

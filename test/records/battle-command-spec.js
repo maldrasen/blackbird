@@ -3,7 +3,7 @@ describe("BattleCommand", function() {
   // finishCharacterRound() requires the acting entity to be next in the turn order.
   function startRound() {
     const state = BattleSupport.startBattle();
-    const player = state.getEntityAtPosition('P.0.2');
+    const player = BattleSupport.player();
 
     state.moveToTopOfTurnOrder({ type:'character', id:player });
     BattleSystem.specRound(player);
@@ -51,7 +51,7 @@ describe("BattleCommand", function() {
   // placeholder's round was finished.
   it("runs a placeholder command that has no ability yet, and ends the round for it", function() {
     const state = BattleSupport.startBattle();
-    const player = state.getEntityAtPosition('P.0.2');
+    const player = BattleSupport.player();
 
     BattleSystem.addStatus(player, 'poised', { count:2 });
     state.moveToTopOfTurnOrder({ type:'character', id:player });

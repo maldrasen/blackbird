@@ -35,6 +35,13 @@ global.BattleSupport = (function() {
     addRogue('P.1.3');
   }
 
+  // The party by role, for specs that care who someone is rather than where they stand. The center rogue stands
+  // behind the player and the other rogue behind the tank, so both are out of reach of the front rank.
+  function player() { return BattleSystem.getState().getEntityAtPosition('P.0.2'); }
+  function tank() { return BattleSystem.getState().getEntityAtPosition('P.0.3'); }
+  function centerRogue() { return BattleSystem.getState().getEntityAtPosition('P.1.2'); }
+  function rogue() { return BattleSystem.getState().getEntityAtPosition('P.1.3'); }
+
   function startBattle(encounter=runtPack()) {
     prepareParty();
     BattleSystem.startBattle({ ambushState:'normal', ...encounter });
@@ -140,6 +147,10 @@ global.BattleSupport = (function() {
     prepareParty,
     startBattle,
     startCharacterRound,
+    player,
+    tank,
+    centerRogue,
+    rogue,
     grantMana,
     runtPack,
     trapperPack,

@@ -8,9 +8,9 @@ describe("CharacterAbilitySystem", function() {
 
   describe("getCommands()", function() {
     it("offers the player in the front rank an attack but nowhere to hide", function() {
-      const state = startBattle();
+      startBattle();
 
-      BattleSystem.specRound(state.getEntityAtPosition('P.0.2'));
+      BattleSystem.specRound(BattleSupport.player());
       const commands = CharacterAbilitySystem.getCommands();
 
       expect(commands).to.include.members([StandardAbility.attack, StandardAbility.defend, StandardAbility.negotiate]);
@@ -20,9 +20,9 @@ describe("CharacterAbilitySystem", function() {
     });
 
     it("offers a rogue in the back rank a hiding place but no attack", function() {
-      const state = startBattle();
+      startBattle();
 
-      BattleSystem.specRound(state.getEntityAtPosition('P.1.3'));
+      BattleSystem.specRound(BattleSupport.rogue());
       const commands = CharacterAbilitySystem.getCommands();
 
       expect(commands).to.include(StandardAbility.hide);
@@ -31,8 +31,8 @@ describe("CharacterAbilitySystem", function() {
     });
 
     it("offers a hidden rogue a sneak attack in place of hiding", function() {
-      const state = startBattle();
-      const rogue = state.getEntityAtPosition('P.1.3');
+      startBattle();
+      const rogue = BattleSupport.rogue();
 
       BattleSystem.addStatus(rogue, 'hidden');
       BattleSystem.specRound(rogue);
@@ -43,8 +43,8 @@ describe("CharacterAbilitySystem", function() {
     });
 
     it("offers only pass to a character who must pass", function() {
-      const state = startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      startBattle();
+      const player = BattleSupport.player();
 
       BattleSystem.addStatus(player, 'stun', { count:1 });
       BattleSystem.specRound(player);

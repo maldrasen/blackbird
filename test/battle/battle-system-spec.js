@@ -66,7 +66,7 @@ describe("BattleSystem", function() {
       health.currentHealth = 1;
       HealthComponent.update(acting, health);
 
-      BattleSystem.specRound(acting, { target:state.getEntityAtPosition('P',0,2) });
+      BattleSystem.specRound(acting, { target:BattleSupport.player() });
       BattleSystem.getRound().addTime(750);
       EffectSystem.applyDuringBattle(Consumable.lookup('blasto'));
       BattleSystem.finishRound();

@@ -11,9 +11,9 @@ describe("PhysicalAttackSystem", function() {
     // dodge are pinned so the stubbed rolls always mean the same thing, and the rogue's vitality is raised so a hit
     // that downs them knocks them out rather than killing them.
     function prepare(enchantment, health=100) {
-      const state = BattleSupport.startBattle();
-      const attacker = state.getEntityAtPosition('P',0,2);
-      const target = state.getEntityAtPosition('P',1,2);
+      BattleSupport.startBattle();
+      const attacker = BattleSupport.player();
+      const target = BattleSupport.centerRogue();
 
       CharacterSupport.setAttribute(attacker, Attrib.strength, 50);
       CharacterSupport.setSpecies(target, SpeciesCode.kobold);

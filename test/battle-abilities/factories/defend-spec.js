@@ -4,7 +4,7 @@ describe("Ability.Defend", function() {
   // survive, which requires the acting entity to be next in the turn order.
   function startRound() {
     const state = BattleSupport.startBattle();
-    const acting = state.getEntityAtPosition('P.0.2');
+    const acting = BattleSupport.player();
 
     state.moveToTopOfTurnOrder({ type:'character', id:acting });
     BattleSystem.specRound(acting, { target:state.getActiveMonsters()[0] });

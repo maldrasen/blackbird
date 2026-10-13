@@ -52,7 +52,7 @@ describe("Ability.NaturalAttack", function() {
     it("is possible for a monster with its target in reach", function() {
       const state = BattleSupport.startBattle();
 
-      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:state.getEntityAtPosition('P.0.2') });
+      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:BattleSupport.player() });
 
       expect(Ability.NaturalAttack(bite).isPossible()).to.equal(true);
     });
@@ -60,7 +60,7 @@ describe("Ability.NaturalAttack", function() {
     it("is not possible when the target is out of reach", function() {
       const state = BattleSupport.startBattle();
 
-      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:state.getEntityAtPosition('P.1.2') });
+      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:BattleSupport.centerRogue() });
 
       expect(Ability.NaturalAttack(bite).isPossible()).to.equal(false);
     });
@@ -70,7 +70,7 @@ describe("Ability.NaturalAttack", function() {
       const kobold = state.getEntityAtPosition('M.0.2');
 
       BattleSystem.addStatus(kobold, 'hidden');
-      BattleSystem.specRound(kobold, { target:state.getEntityAtPosition('P.0.2') });
+      BattleSystem.specRound(kobold, { target:BattleSupport.player() });
 
       expect(Ability.NaturalAttack(bite).isPossible()).to.equal(false);
     });
@@ -78,7 +78,7 @@ describe("Ability.NaturalAttack", function() {
     it("defers to the attack's own target check", function() {
       const state = BattleSupport.startBattle();
 
-      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:state.getEntityAtPosition('P.0.2') });
+      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:BattleSupport.player() });
 
       expect(Ability.NaturalAttack({ ...bite, canTarget:() => false }).isPossible()).to.equal(false);
     });
@@ -87,7 +87,7 @@ describe("Ability.NaturalAttack", function() {
       const state = BattleSupport.startBattle({ monster:'gnawbones' });
       const beast = state.getActiveMonsters()[0];
 
-      BattleSystem.specRound(state.getEntityAtPosition('P.0.2'), { target:beast });
+      BattleSystem.specRound(BattleSupport.player(), { target:beast });
 
       const punch = { ...bite, reach:WeaponReach.long };
       expect(Ability.NaturalAttack({ ...punch, hitLocation:EquipmentSlot.hands }).isPossible()).to.equal(false);
@@ -100,7 +100,7 @@ describe("Ability.NaturalAttack", function() {
       const state = BattleSupport.startBattle();
       const ability = Ability.NaturalAttack(bite);
 
-      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:state.getEntityAtPosition('P.0.2') });
+      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:BattleSupport.player() });
       ability.execute();
 
       const round = BattleSystem.getRound();
@@ -116,7 +116,7 @@ describe("Ability.NaturalAttack", function() {
         getAttackText: () => { return `{A:ActingName} gnaws on {T:targetName's} {hitLocation}.`; },
       });
 
-      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:state.getEntityAtPosition('P.0.2') });
+      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:BattleSupport.player() });
       ability.execute();
 
       const round = BattleSystem.getRound();
@@ -126,7 +126,7 @@ describe("Ability.NaturalAttack", function() {
 
     it("applies its effects on a hit and reports which of them landed", function() {
       const state = BattleSupport.startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      const player = BattleSupport.player();
       const kobold = state.getEntityAtPosition('M.0.2');
 
       let hit = null;

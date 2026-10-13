@@ -29,7 +29,7 @@ describe("Ability.CastSpell", function() {
   it("spends the turn starting the cast and stores the spell for the caster's next action", function() {
     const state = startBattle();
     const caster = state.getActiveMonsters()[0];
-    const target = state.getEntityAtPosition('P.0.2');
+    const target = BattleSupport.player();
     const ability = Ability.CastSpell({ spell:'ember', powerLevel:1 });
 
     BattleSystem.specRound(caster, { target });

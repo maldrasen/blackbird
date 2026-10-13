@@ -8,7 +8,7 @@ describe("BattleRequirements", function() {
       expect(BattleRequirements.actingIsMonster()({})).to.equal(true);
       expect(BattleRequirements.actingIsCharacter()({})).to.equal(false);
 
-      BattleSystem.specRound(state.getEntityAtPosition('P',0,2));
+      BattleSystem.specRound(BattleSupport.player());
       expect(BattleRequirements.actingIsMonster()({})).to.equal(false);
       expect(BattleRequirements.actingIsCharacter()({})).to.equal(true);
     });

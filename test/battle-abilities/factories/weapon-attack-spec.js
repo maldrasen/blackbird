@@ -26,24 +26,24 @@ describe("Ability.WeaponAttack", function() {
 
   describe("isPossible()", function() {
     it("is possible for a character with a monster in reach", function() {
-      const state = BattleSupport.startBattle();
+      BattleSupport.startBattle();
 
-      BattleSystem.specRound(state.getEntityAtPosition('P.0.2'));
+      BattleSystem.specRound(BattleSupport.player());
 
       expect(Ability.WeaponAttack().isPossible()).to.equal(true);
     });
 
     it("is not possible when no monster is in reach", function() {
-      const state = BattleSupport.startBattle();
+      BattleSupport.startBattle();
 
-      BattleSystem.specRound(state.getEntityAtPosition('P.1.3'));
+      BattleSystem.specRound(BattleSupport.rogue());
 
       expect(Ability.WeaponAttack().isPossible()).to.equal(false);
     });
 
     it("is not possible without a weapon", function() {
-      const state = BattleSupport.startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      BattleSupport.startBattle();
+      const player = BattleSupport.player();
       const equipment = EquipmentManager(player);
 
       equipment.unequipItem(equipment.getSlot(EquipmentSlot.primary));
@@ -53,8 +53,8 @@ describe("Ability.WeaponAttack", function() {
     });
 
     it("is not possible while hidden", function() {
-      const state = BattleSupport.startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      BattleSupport.startBattle();
+      const player = BattleSupport.player();
 
       BattleSystem.addStatus(player, 'hidden');
       BattleSystem.specRound(player);
@@ -63,8 +63,8 @@ describe("Ability.WeaponAttack", function() {
     });
 
     it("is not possible with a bow and an empty quiver", function() {
-      const state = BattleSupport.startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      BattleSupport.startBattle();
+      const player = BattleSupport.player();
 
       ItemSupport.equip(player, 'shortbow', ['wood']);
       BattleSystem.specRound(player);
@@ -73,8 +73,8 @@ describe("Ability.WeaponAttack", function() {
     });
 
     it("is possible with a bow and a loaded quiver", function() {
-      const state = BattleSupport.startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      BattleSupport.startBattle();
+      const player = BattleSupport.player();
 
       ItemSupport.equip(player, 'shortbow', ['wood']);
       QuiverComponent.update(player, { ammunition:'elm-arrow', quantity:1 });
@@ -88,7 +88,7 @@ describe("Ability.WeaponAttack", function() {
       const kobold = state.getEntityAtPosition('M.0.2');
 
       ItemSupport.equip(kobold, 'shortbow', ['wood']);
-      BattleSystem.specRound(kobold, { target:state.getEntityAtPosition('P.1.2') });
+      BattleSystem.specRound(kobold, { target:BattleSupport.centerRogue() });
 
       expect(Ability.WeaponAttack().isPossible()).to.equal(true);
     });
@@ -99,10 +99,10 @@ describe("Ability.WeaponAttack", function() {
 
       ItemSupport.equip(kobold, 'dagger', ['steel']);
 
-      BattleSystem.specRound(kobold, { target:state.getEntityAtPosition('P.0.2') });
+      BattleSystem.specRound(kobold, { target:BattleSupport.player() });
       expect(Ability.WeaponAttack().isPossible()).to.equal(true);
 
-      BattleSystem.specRound(kobold, { target:state.getEntityAtPosition('P.1.2') });
+      BattleSystem.specRound(kobold, { target:BattleSupport.centerRogue() });
       expect(Ability.WeaponAttack().isPossible()).to.equal(false);
     });
   });
@@ -112,7 +112,7 @@ describe("Ability.WeaponAttack", function() {
   describe("execute()", function() {
     it("resolves a single strike from a weapon that takes the whole second", function() {
       const state = BattleSupport.startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      const player = BattleSupport.player();
       const kobold = state.getEntityAtPosition('M.0.2');
       const ability = Ability.WeaponAttack();
 
@@ -129,7 +129,7 @@ describe("Ability.WeaponAttack", function() {
 
     it("fills the second with strikes from a quick weapon", function() {
       const state = BattleSupport.startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      const player = BattleSupport.player();
       const kobold = state.getEntityAtPosition('M.0.2');
 
       ItemSupport.equip(player, 'dagger', ['steel']);
@@ -145,7 +145,7 @@ describe("Ability.WeaponAttack", function() {
 
     it("spends an arrow on every shot", function() {
       const state = BattleSupport.startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      const player = BattleSupport.player();
       const kobold = state.getEntityAtPosition('M.0.2');
 
       ItemSupport.equip(player, 'shortbow', ['wood']);
@@ -161,7 +161,7 @@ describe("Ability.WeaponAttack", function() {
 
     it("stops shooting when the quiver runs dry", function() {
       const state = BattleSupport.startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      const player = BattleSupport.player();
       const kobold = state.getEntityAtPosition('M.0.2');
 
       ItemSupport.equip(player, 'shortbow', ['wood']);
@@ -179,7 +179,7 @@ describe("Ability.WeaponAttack", function() {
 
     it("fires twice with a quick bow and a stocked quiver", function() {
       const state = BattleSupport.startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      const player = BattleSupport.player();
       const kobold = state.getEntityAtPosition('M.0.2');
 
       ItemSupport.equip(player, 'shortbow', ['wood']);
@@ -195,7 +195,7 @@ describe("Ability.WeaponAttack", function() {
 
     it("lets a monster shoot without spending anything", function() {
       const state = BattleSupport.startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      const player = BattleSupport.player();
       const kobold = state.getEntityAtPosition('M.0.2');
 
       ItemSupport.equip(kobold, 'shortbow', ['wood']);
@@ -210,7 +210,7 @@ describe("Ability.WeaponAttack", function() {
 
     it("gets an extra strike in with a weapon in each hand", function() {
       const state = BattleSupport.startBattle();
-      const rogue = state.getEntityAtPosition('P.1.3');
+      const rogue = BattleSupport.rogue();
       const kobold = state.getEntityAtPosition('M.0.2');
 
       CharacterSupport.setSpecies(rogue, SpeciesCode.human);

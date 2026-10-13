@@ -3,7 +3,7 @@ describe("TargetingController", function() {
   // finishCharacterRound() requires the acting entity to be next in the turn order.
   function startRound() {
     const state = BattleSupport.startBattle();
-    const player = state.getEntityAtPosition('P.0.2');
+    const player = BattleSupport.player();
 
     state.moveToTopOfTurnOrder({ type:'character', id:player });
     BattleSystem.specRound(player);

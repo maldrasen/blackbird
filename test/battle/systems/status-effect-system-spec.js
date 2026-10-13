@@ -30,7 +30,7 @@ describe("StatusEffectSystem", function() {
   describe("processEndRound()", function() {
     it("counts a turn against a turn count effect when the round ends, not when it starts", function() {
       const state = BattleSupport.startBattle();
-      const acting = state.getEntityAtPosition('P',0,2);
+      const acting = BattleSupport.player();
 
       BattleSystem.addStatus(acting, 'poised', { count:2 });
       state.moveToTopOfTurnOrder({ type:'character', id:acting });
@@ -46,7 +46,7 @@ describe("StatusEffectSystem", function() {
 
     it("removes the effect when its last turn ends", function() {
       const state = BattleSupport.startBattle();
-      const acting = state.getEntityAtPosition('P',0,2);
+      const acting = BattleSupport.player();
 
       BattleSystem.addStatus(acting, 'stun', { count:1 });
       runRound(state, acting);
@@ -56,7 +56,7 @@ describe("StatusEffectSystem", function() {
 
     it("keeps an effect the acting entity picked up during their own round", function() {
       const state = BattleSupport.startBattle();
-      const acting = state.getEntityAtPosition('P',0,2);
+      const acting = BattleSupport.player();
 
       runRound(state, acting, () => BattleSystem.addStatus(acting, 'poised', { count:1 }));
 
@@ -65,7 +65,7 @@ describe("StatusEffectSystem", function() {
 
     it("keeps an effect renewed during the round", function() {
       const state = BattleSupport.startBattle();
-      const acting = state.getEntityAtPosition('P',0,2);
+      const acting = BattleSupport.player();
 
       BattleSystem.addStatus(acting, 'poised', { count:1 });
       runRound(state, acting, () => BattleSystem.addStatus(acting, 'poised', { count:1 }));
@@ -75,8 +75,8 @@ describe("StatusEffectSystem", function() {
 
     it("leaves effects on the other combatants alone", function() {
       const state = BattleSupport.startBattle();
-      const acting = state.getEntityAtPosition('P',0,2);
-      const other = state.getEntityAtPosition('P',1,2);
+      const acting = BattleSupport.player();
+      const other = BattleSupport.centerRogue();
 
       BattleSystem.addStatus(other, 'stun', { count:1 });
       runRound(state, acting);
@@ -88,7 +88,7 @@ describe("StatusEffectSystem", function() {
   describe("scheduleTick()", function() {
     it("schedules a tick one record interval after the current time", function() {
       const state = BattleSupport.startBattle();
-      const victim = state.getEntityAtPosition('P',1,2);
+      const victim = BattleSupport.centerRogue();
       const now = state.getNext().time;
 
       BattleSystem.addStatus(victim, 'poison', { strength:10, damage:{ x:1, d:6, p:2 }});
@@ -98,7 +98,7 @@ describe("StatusEffectSystem", function() {
 
     it("overrides the record interval with the component's interval", function() {
       const state = BattleSupport.startBattle();
-      const victim = state.getEntityAtPosition('P',1,2);
+      const victim = BattleSupport.centerRogue();
       const now = state.getNext().time;
 
       BattleSystem.addStatus(victim, 'poison', { strength:10, interval:500, damage:{ x:1, d:6, p:2 }});
@@ -108,7 +108,7 @@ describe("StatusEffectSystem", function() {
 
     it("keeps the pending tick's schedule when the effect is renewed", function() {
       const state = BattleSupport.startBattle();
-      const victim = state.getEntityAtPosition('P',1,2);
+      const victim = BattleSupport.centerRogue();
       const now = state.getNext().time;
 
       BattleSystem.addStatus(victim, 'poison', { strength:10, interval:500, damage:{ x:1, d:6, p:2 }});
@@ -120,7 +120,7 @@ describe("StatusEffectSystem", function() {
 
     it("schedules nothing for an effect without an interval", function() {
       const state = BattleSupport.startBattle();
-      const victim = state.getEntityAtPosition('P',1,2);
+      const victim = BattleSupport.centerRogue();
 
       BattleSystem.addStatus(victim, 'poised');
 
@@ -131,7 +131,7 @@ describe("StatusEffectSystem", function() {
   describe("fixed time effects", function() {
     it("schedules the effect's removal at the end of its duration", function() {
       const state = BattleSupport.startBattle();
-      const victim = state.getEntityAtPosition('P',1,2);
+      const victim = BattleSupport.centerRogue();
       const now = state.getNext().time;
 
       BattleSystem.addStatus(victim, 'blind', { duration:1000 });
@@ -141,7 +141,7 @@ describe("StatusEffectSystem", function() {
 
     it("extends a pending removal when the effect is renewed", function() {
       const state = BattleSupport.startBattle();
-      const victim = state.getEntityAtPosition('P',1,2);
+      const victim = BattleSupport.centerRogue();
       const now = state.getNext().time;
 
       BattleSystem.addStatus(victim, 'blind', { duration:1000 });
@@ -152,7 +152,7 @@ describe("StatusEffectSystem", function() {
 
     it("schedules nothing for an effect applied without a duration", function() {
       const state = BattleSupport.startBattle();
-      const victim = state.getEntityAtPosition('P',1,2);
+      const victim = BattleSupport.centerRogue();
 
       BattleSystem.addStatus(victim, 'blind');
 
@@ -161,7 +161,7 @@ describe("StatusEffectSystem", function() {
 
     it("removes the effect when its removal entry comes up", function() {
       const state = BattleSupport.startBattle();
-      const victim = state.getEntityAtPosition('P',1,2);
+      const victim = BattleSupport.centerRogue();
       CharacterSupport.setHealth(victim, 100);
 
       BattleSystem.addStatus(victim, 'blind', { duration:1000 });
@@ -181,7 +181,7 @@ describe("StatusEffectSystem", function() {
   describe("removeStatus()", function() {
     it("clears the effect's turn order entry", function() {
       const state = BattleSupport.startBattle();
-      const victim = state.getEntityAtPosition('P',1,2);
+      const victim = BattleSupport.centerRogue();
 
       BattleSystem.addStatus(victim, 'poison', { strength:10, damage:{ x:1, d:6, p:2 }});
       BattleSystem.removeStatus(victim, 'poison');
@@ -191,8 +191,8 @@ describe("StatusEffectSystem", function() {
     });
 
     it("tolerates effects that never scheduled an entry", function() {
-      const state = BattleSupport.startBattle();
-      const victim = state.getEntityAtPosition('P',1,2);
+      BattleSupport.startBattle();
+      const victim = BattleSupport.centerRogue();
 
       BattleSystem.addStatus(victim, 'poised');
 
@@ -203,7 +203,7 @@ describe("StatusEffectSystem", function() {
   describe("processTick()", function() {
     it("damages the victim and reschedules the tick one interval later", function() {
       const state = BattleSupport.startBattle();
-      const victim = state.getEntityAtPosition('P',1,2);
+      const victim = BattleSupport.centerRogue();
       CharacterSupport.setHealth(victim, 100);
       CharacterSupport.setAttribute(victim, Attrib.vitality, 15);
       CharacterSupport.setSpecies(victim, SpeciesCode.human);
@@ -226,7 +226,7 @@ describe("StatusEffectSystem", function() {
 
     it("does not reschedule the tick when it downs the victim", function() {
       const state = BattleSupport.startBattle();
-      const victim = state.getEntityAtPosition('P',1,2);
+      const victim = BattleSupport.centerRogue();
       CharacterSupport.setHealth(victim, 1);
       CharacterSupport.setAttribute(victim, Attrib.vitality, 15);
       CharacterSupport.setSpecies(victim, SpeciesCode.human);
@@ -248,7 +248,7 @@ describe("StatusEffectSystem", function() {
     // the contest floor and power rolls. The pinned human victim has no nature resistance, so that roll is skipped.
     it("ends the effect after its damage when the victim resists it", function() {
       const state = BattleSupport.startBattle();
-      const victim = state.getEntityAtPosition('P',1,2);
+      const victim = BattleSupport.centerRogue();
       CharacterSupport.setHealth(victim, 100);
       CharacterSupport.setAttribute(victim, Attrib.vitality, 15);
       CharacterSupport.setSpecies(victim, SpeciesCode.human);
@@ -272,7 +272,7 @@ describe("StatusEffectSystem", function() {
     // 11 is only a valid stub because of the helm.
     it("counts the victim's enchanted resistance against the effect when it ticks", function() {
       const state = BattleSupport.startBattle();
-      const victim = state.getEntityAtPosition('P',1,2);
+      const victim = BattleSupport.centerRogue();
       CharacterSupport.setHealth(victim, 100);
       CharacterSupport.setAttribute(victim, Attrib.vitality, 15);
       CharacterSupport.setSpecies(victim, SpeciesCode.human);
@@ -290,7 +290,7 @@ describe("StatusEffectSystem", function() {
 
     it("ticks and reschedules when the victim fails to resist", function() {
       const state = BattleSupport.startBattle();
-      const victim = state.getEntityAtPosition('P',1,2);
+      const victim = BattleSupport.centerRogue();
       CharacterSupport.setHealth(victim, 100);
       CharacterSupport.setAttribute(victim, Attrib.vitality, 15);
       CharacterSupport.setSpecies(victim, SpeciesCode.human);
