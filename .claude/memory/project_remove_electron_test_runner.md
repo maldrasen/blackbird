@@ -12,7 +12,8 @@ Task 133 completed 2026-07-24 (branch `133-remove-tests-from-electron`). The in-
 `bin/start.sh` now runs `node bin/run-tests.js` between manifest compile and `npm run start` — failures print to
 the terminal (with repro seeds) but don't block launch, the user's explicit choice. This resolved the old
 main-menu/suite race (fixture clicks draining Random stubs). `application/test/tests.js` was slimmed to only the
-headless-shared half (root hooks, reset, running()) and must stay in the manifest fileList: renderer guards in
-battle-interface, training-interface, game-system, and console still call `Tests.running()`. The `#testFrame` UI,
+headless-shared half (root hooks, reset, running()). Superseded 2026-10-13 by task 267: the file is now
+`test-support/tests.js`, loaded only by the runner, and no application code references `Tests` anymore
+(`Environment.viewPresent` property replaced the `Tests.running()` guards). The `#testFrame` UI,
 test-framework.scss, and MainContent.removeStylesheet were deleted. Headless runners are canonical — see
 [[headless-test-runner]].

@@ -38,3 +38,7 @@ Reproduce exactly with `SEED=<n> node bin/run-tests.js --grep "<spec title>"` (P
 dumping the failing run's full output. First soak session caught three real bugs; suite then passed
 a full 1000-run soak. Note `test/dungeon/systems/dungeon-navigation-system-spec.js` has a spec that
 conditionally `this.skip()`s, so the passing count legitimately flickers between 434/435.
+
+**Update 2026-10-13 (task 267):** the hooks module moved to `test-support/tests.js`; `bin/run-tests.js` requires the
+manifest's `supportFiles` right after `run-headless.js` and before `mocha.rootHooks`, then adds only `testFiles` to
+mocha. `Tests.running()`/`rootAfter()` were deleted. See [[project_fixture_boundary]].
