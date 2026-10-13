@@ -78,6 +78,17 @@ describe("AmmunitionSystem", function() {
       expect(Inventory().getArticleQuantity('elm-arrow')).to.equal(0);
     });
 
+    it("returns the old ammunition when switching to another type", function() {
+      const id = buildArcher({ ammunition:'elm-arrow', quantity:12 });
+      Inventory().addArticle('razerfang-arrow', 5);
+
+      AmmunitionSystem.loadQuiver(id, 'razerfang-arrow');
+
+      expect(QuiverComponent.lookup(id)).to.deep.equal({ ammunition:'razerfang-arrow', quantity:5 });
+      expect(Inventory().getArticleQuantity('elm-arrow')).to.equal(12);
+      expect(Inventory().getArticleQuantity('razerfang-arrow')).to.equal(0);
+    });
+
     it("remembers the ammunition when the inventory has none of it", function() {
       const id = buildArcher({});
 
