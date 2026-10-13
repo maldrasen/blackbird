@@ -18,22 +18,8 @@ global.CharacterSupport = (function() {
     ActorComponent.create(id, { ...defaultActor, ...(options.actor||{}) });
     SensitivitiesComponent.create(id, { ...defaultSensitivities, ...(options.sensitivities||{}) });
 
-    genericAttributes(id, options.attributes);
-    genericArousal(id, options.arousal);
-    genericHealth(id, options.health);
-    genericMana(id, options.mana);
-    genericPersonality(id, options.personality);
-    genericBody(id, options.body);
-    genericAnus(id, options.anus);
+    createSharedComponents(id, options);
     genericCock(id, options.cock);
-    genericMouth(id, options.mouth);
-    genericSexualPreferences(id, options.sexualPreferences);
-    genericAspects(id, options.aspects);
-    genericSkills(id, options.skills);
-    genericQuiver(id, options.quiver);
-
-    EquipmentComponent.create(id);
-    ExperienceComponent.create(id);
 
     return id;
   }
@@ -46,6 +32,17 @@ global.CharacterSupport = (function() {
     ActorComponent.create(id, { ...defaultActor, ...(options.actor||{}) });
     SensitivitiesComponent.create(id, { ...defaultSensitivities, ...(options.sensitivities||{}) });
 
+    createSharedComponents(id, options);
+    genericBreasts(id, options.breasts);
+    genericPussy(id, options.pussy);
+
+    return id;
+  }
+
+  function createSharedComponents(id, options) {
+    EquipmentComponent.create(id);
+    ExperienceComponent.create(id);
+
     genericAttributes(id, options.attributes);
     genericArousal(id, options.arousal);
     genericHealth(id, options.health);
@@ -53,18 +50,11 @@ global.CharacterSupport = (function() {
     genericPersonality(id, options.personality);
     genericBody(id, options.body);
     genericAnus(id, options.anus);
-    genericBreasts(id, options.breasts);
     genericMouth(id, options.mouth);
-    genericPussy(id, options.pussy);
     genericSexualPreferences(id, options.sexualPreferences);
     genericAspects(id, options.aspects);
     genericSkills(id, options.skills);
     genericQuiver(id, options.quiver);
-
-    EquipmentComponent.create(id);
-    ExperienceComponent.create(id);
-
-    return id;
   }
 
   function genericAttributes(id, options={}) {
