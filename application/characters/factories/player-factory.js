@@ -61,7 +61,6 @@ global.PlayerFactory = (function() {
       HealthComponent.create(playerId, state.getHealth());
       ManaComponent.create(playerId, state.getMana());
       SkillsComponent.create(playerId, state.getSkills());
-      QuiverComponent.create(playerId);
       AspectsComponent.create(playerId, state.getAspects());
       AnusComponent.create(playerId, state.getAnus());
       BodyComponent.create(playerId, state.getBody());
@@ -82,6 +81,7 @@ global.PlayerFactory = (function() {
 
       EquipmentComponent.create(playerId);
       ExperienceComponent.create(playerId);
+      QuiverComponent.create(playerId);
 
       adjustStartingAttributes(playerId);
 

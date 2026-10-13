@@ -63,6 +63,7 @@ global.CharacterFixtures = (function() {
     genericSexualPreferences(id, options.sexualPreferences);
     genericAspects(id, options.aspects);
     genericSkills(id, options.skills);
+    genericQuiver(id, options.quiver);
 
     EquipmentComponent.create(id);
     ExperienceComponent.create(id);
@@ -204,23 +205,15 @@ global.CharacterFixtures = (function() {
     return SkillsComponent.create(id, skillsData);
   }
 
+  function genericQuiver(id, options={}) {
+    return QuiverComponent.create(id, options);
+  }
+
   return {
     randomPlayer,
     randomCharacters,
     genericMale,
     genericFemale,
-    genericAttributes,
-    genericArousal,
-    genericPersonality,
-    genericBody,
-    genericAnus,
-    genericBreasts,
-    genericCock,
-    genericMouth,
-    genericPussy,
-    genericSexualPreferences,
-    genericAspects,
-    genericSkills,
   };
 
 })();
