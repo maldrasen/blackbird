@@ -2,7 +2,7 @@ describe("Personality", function() {
 
   describe('attitudeTowardsTraining()', function() {
     it('looks at the consent results for some basic actions', function() {
-      const context = TrainingFixtures.standardTrainingContext({},{});
+      const context = TrainingSupport.standardTrainingContext({},{});
       const personality = Personality(context.T);
       expect(personality.attitudeTowardsTraining()).to.equal(TrainingAttitude.unwilling);
     });
@@ -10,7 +10,7 @@ describe("Personality", function() {
 
   describe('getStrongestFetishes()', function() {
     it('gets a list of fetishes ordered by strength', function() {
-      const puppy = CharacterFixtures.genericFemale({ sexualPreferences:{
+      const puppy = CharacterSupport.genericFemale({ sexualPreferences:{
         'enemas': 10,
         'size-queen': 35,
         'gape-queen': 20,

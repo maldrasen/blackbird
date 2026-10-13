@@ -1,7 +1,7 @@
 describe("SensationBaseline", function() {
 
   it("baseline sensations", function() {
-    const state = TrainingFixtures.standardTrainingState({},{});
+    const state = TrainingSupport.standardTrainingState({},{});
     const result = SensationResult('massage-back',state);
     SensationBaseline.apply(result);
 
@@ -12,7 +12,7 @@ describe("SensationBaseline", function() {
   });
 
   it('sensations when reluctant', function() {
-    const state = TrainingFixtures.standardTrainingState({},{ feelings:{ respect:160 } });
+    const state = TrainingSupport.standardTrainingState({},{ feelings:{ respect:160 } });
     const result = SensationResult('get-handjob', state);
     SensationBaseline.apply(result);
 
@@ -24,7 +24,7 @@ describe("SensationBaseline", function() {
   });
 
   it('sensations when unwilling', function() {
-    const state = TrainingFixtures.standardTrainingState({},{});
+    const state = TrainingSupport.standardTrainingState({},{});
     const result = SensationResult('fondle-breasts', state);
     SensationBaseline.apply(result);
 
@@ -36,7 +36,7 @@ describe("SensationBaseline", function() {
   });
 
   it('sensations when the action is repeated', function() {
-    const state = TrainingFixtures.standardTrainingState({},{});
+    const state = TrainingSupport.standardTrainingState({},{});
     state.setPreviousAction('fondle-pussy');
 
     const result = SensationResult('fondle-pussy', state);
@@ -48,7 +48,7 @@ describe("SensationBaseline", function() {
   });
 
   it(`sensations when there are persisted actions`, function() {
-    const state = TrainingFixtures.standardTrainingState({},{ feelings:{ affection:200, respect:200 } });
+    const state = TrainingSupport.standardTrainingState({},{ feelings:{ affection:200, respect:200 } });
     state.addPersistedAction('fondle-breasts');
     state.addPersistedAction('kiss');
 

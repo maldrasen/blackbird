@@ -3,7 +3,7 @@ describe("SensationResult", function() {
   it("all together, when there are multiple sensitivities", function() {
     Random.stubBetween(99,99,99,99,0);
 
-    const state = TrainingFixtures.standardTrainingState({},{
+    const state = TrainingSupport.standardTrainingState({},{
       arousal: { arousal:75 },
       sexualPreferences:{ 'pussy-slut':50, 'masturbator':70 } });
     state.setPartnerScaleValue('pussy',1000);

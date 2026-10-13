@@ -1,46 +1,13 @@
-global.CharacterFixtures = (function() {
+global.CharacterSupport = (function() {
 
-  // When we build a player object, we set the player entity id in the GameState. This function could take character
-  // options if I wanted to test a specific player type.
-  function randomPlayer() {
+  // Specs that need the player set in the GameState (recruiting, leveling up, equipment taste) build one here.
+  function player() {
     const player = PlayerFactory.build({
       style:Random.from(['domination','degradation','sadism'])
     });
     GameSystem.getState().setPlayer(player);
     PartyConfiguration.addCharacter(player);
     return player;
-  }
-
-  // Creating random characters needs a player to exist in order to create their feelings. This fixture is still using
-  // placeholder values for the control and feelings components. Should figure out what the default values there are.
-  function randomCharacters(count, options={}) {
-    const characters = []
-    const player = GameSystem.getState().getPlayer();
-    const location = GameSystem.getState().getCurrentLocation();
-
-    for (let i=0; i<count; i++) {
-      characters.push(CharacterFactory.build(options));
-    }
-
-    characters.forEach(id => {
-      ControlledComponent.create(id,{ control:0 });
-      ArousalComponent.update(id,{ arousal:Random.between(0,25) });
-      GameSystem.getState().addToRoster(id);
-
-      if (location) {
-        SituatedComponent.create(id,{ currentLocation:location });
-      }
-
-      if (player) {
-        FeelingsComponent.create(id,{ target:player,
-          affection: Random.between(100,400),
-          respect: Random.between(100,400),
-          fear: Random.between(0,200)
-        });
-      }
-    });
-
-    return characters;
   }
 
   function genericMale(options) {
@@ -51,22 +18,8 @@ global.CharacterFixtures = (function() {
     ActorComponent.create(id, { ...defaultActor, ...(options.actor||{}) });
     SensitivitiesComponent.create(id, { ...defaultSensitivities, ...(options.sensitivities||{}) });
 
-    genericAttributes(id, options.attributes);
-    genericArousal(id, options.arousal);
-    genericHealth(id, options.health);
-    genericMana(id, options.mana);
-    genericPersonality(id, options.personality);
-    genericBody(id, options.body);
-    genericAnus(id, options.anus);
+    createSharedComponents(id, options);
     genericCock(id, options.cock);
-    genericMouth(id, options.mouth);
-    genericSexualPreferences(id, options.sexualPreferences);
-    genericAspects(id, options.aspects);
-    genericSkills(id, options.skills);
-    genericQuiver(id, options.quiver);
-
-    EquipmentComponent.create(id);
-    ExperienceComponent.create(id);
 
     return id;
   }
@@ -79,6 +32,17 @@ global.CharacterFixtures = (function() {
     ActorComponent.create(id, { ...defaultActor, ...(options.actor||{}) });
     SensitivitiesComponent.create(id, { ...defaultSensitivities, ...(options.sensitivities||{}) });
 
+    createSharedComponents(id, options);
+    genericBreasts(id, options.breasts);
+    genericPussy(id, options.pussy);
+
+    return id;
+  }
+
+  function createSharedComponents(id, options) {
+    EquipmentComponent.create(id);
+    ExperienceComponent.create(id);
+
     genericAttributes(id, options.attributes);
     genericArousal(id, options.arousal);
     genericHealth(id, options.health);
@@ -86,18 +50,11 @@ global.CharacterFixtures = (function() {
     genericPersonality(id, options.personality);
     genericBody(id, options.body);
     genericAnus(id, options.anus);
-    genericBreasts(id, options.breasts);
     genericMouth(id, options.mouth);
-    genericPussy(id, options.pussy);
     genericSexualPreferences(id, options.sexualPreferences);
     genericAspects(id, options.aspects);
     genericSkills(id, options.skills);
     genericQuiver(id, options.quiver);
-
-    EquipmentComponent.create(id);
-    ExperienceComponent.create(id);
-
-    return id;
   }
 
   function genericAttributes(id, options={}) {
@@ -210,11 +167,54 @@ global.CharacterFixtures = (function() {
     return QuiverComponent.create(id, options);
   }
 
+  // Read-change-write helpers for pinning a character's rolled components to what a spec needs. The health max is
+  // pinned as well, otherwise a randomly generated character can roll a max below the current health being set and
+  // the component would clamp it back down.
+  function setHealth(id, current, max=100) {
+    const health = HealthComponent.lookup(id);
+    health.maxHealth = max;
+    health.currentHealth = current;
+    HealthComponent.update(id, health);
+  }
+
+  function getHealth(id) {
+    return HealthComponent.lookup(id).currentHealth;
+  }
+
+  function setAttribute(id, code, value) {
+    const attributes = AttributesComponent.lookup(id);
+    attributes[code] = value;
+    AttributesComponent.update(id, attributes);
+  }
+
+  function setSkill(id, code, value) {
+    const skills = SkillsComponent.lookup(id);
+    skills[code] = value;
+    SkillsComponent.update(id, skills);
+  }
+
+  function setSpecies(id, species) {
+    const actor = ActorComponent.lookup(id);
+    actor.species = species;
+    ActorComponent.update(id, actor);
+  }
+
+  function setArchetype(id, archetype) {
+    const personality = PersonalityComponent.lookup(id);
+    personality.archetype = archetype;
+    PersonalityComponent.update(id, personality);
+  }
+
   return {
-    randomPlayer,
-    randomCharacters,
+    player,
     genericMale,
     genericFemale,
+    setHealth,
+    getHealth,
+    setAttribute,
+    setSkill,
+    setSpecies,
+    setArchetype,
   };
 
 })();

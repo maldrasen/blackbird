@@ -4,11 +4,8 @@ describe("Ability.Pass", function() {
   // down, which requires the acting entity to be next in the turn order. A status applied during the acting entity's
   // own round isn't counted against at the end of it, so the specs stun the character before the round opens.
   function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-
-    const state = BattleSystem.getState();
-    const acting = state.getEntityAtPosition('P',0,2);
+    const state = BattleSupport.startBattle();
+    const acting = BattleSupport.player();
 
     state.moveToTopOfTurnOrder({ type:'character', id:acting });
 

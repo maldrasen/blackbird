@@ -9,7 +9,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 ## Priority 1
 
 - [266] Equip ammo in UI `5pt` — [266-equip-ammo-in-ui.md](266-equip-ammo-in-ui.md)
-- [267] Decouple Fixtures from Specs `8pt` — [267-decouple-fixtures-from-specs.md](267-decouple-fixtures-from-specs.md)
 
 ## Priority 2
 

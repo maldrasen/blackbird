@@ -22,19 +22,21 @@ const applicationFiles = [
 ];
 const dataFiles = ['data/game-flags.js'];
 const viewFiles = [];
+const supportFiles = [];
 const testFiles = [];
 
 addFiles(applicationFiles,'application');
 addFiles(dataFiles,'data');
 addFiles(viewFiles,'views');
+addFiles(supportFiles,'test-support');
 addFiles(testFiles,'test');
 
 const sourceCount = applicationFiles.length + dataFiles.length + viewFiles.length;
-console.log(`Writing lists of ${sourceCount} source files and ${testFiles.length} test files.`)
+console.log(`Writing lists of ${sourceCount} source files, ${supportFiles.length} support files, and ${testFiles.length} test files.`)
 
-// Finally write these file lists as a JSON file. The loader imports all three source lists, while headless boots load
-// only the application and data lists.
-FileHelper.writeJSON(`${ROOT}/manifest.json`, { applicationFiles, dataFiles, viewFiles, testFiles });
+// Finally write these file lists as a JSON file. The loader imports the three source lists, headless boots load only the
+// application and data lists, and the test runner adds the support and test lists on top of those.
+FileHelper.writeJSON(`${ROOT}/manifest.json`, { applicationFiles, dataFiles, viewFiles, supportFiles, testFiles });
 
 // We convert the absolute file paths the FileHelper returns to relative paths when adding them to the manifest. Also,
 // we only include javascript files that haven't been included yet. Each list is initialized with the files that

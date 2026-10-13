@@ -110,8 +110,8 @@ describe('LootGenerator', function() {
   // The archer's bow qualifies it for the weapon sources, and the brawler's mace is there to not qualify.
   function buildMonster(code) {
     const id = MonsterFactory(code).build();
-    if (code === 'spec-loot-archer') { ItemFixtures.equip(id, 'longbow', ['wood']); }
-    if (code === 'spec-loot-brawler') { ItemFixtures.equip(id, 'mace', ['bone']); }
+    if (code === 'spec-loot-archer') { ItemSupport.equip(id, 'longbow', ['wood']); }
+    if (code === 'spec-loot-brawler') { ItemSupport.equip(id, 'mace', ['bone']); }
     return id;
   }
 

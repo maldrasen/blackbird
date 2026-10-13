@@ -4,7 +4,7 @@ describe("TrainingState", function() {
     it('updates the anima and animus when the scale levels are increased', function() {
       Random.stubBetween(99,99,99,99,99,99,0); // All crits and a guard.
 
-      const state = TrainingFixtures.standardTrainingState({},{
+      const state = TrainingSupport.standardTrainingState({},{
         arousal:{ arousal:50 },
         feelings:{ respect:170 }
       });

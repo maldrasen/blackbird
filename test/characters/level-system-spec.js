@@ -3,7 +3,7 @@ describe("LevelSystem", function() {
   describe("levelUp()", function() {
 
     it("raises the attribute by a random amount plus the species grade base and gender bonus", function() {
-      const id = CharacterFixtures.genericMale({ actor: { species:'human' }});
+      const id = CharacterSupport.genericMale({ actor: { species:'human' }});
       const start = AttributesComponent.lookup(id).strength;
       const increase = LevelSystem.levelUp(id, Attrib.strength);
 
@@ -12,25 +12,25 @@ describe("LevelSystem", function() {
     });
 
     it("applies attribute aspects when their attribute is raised", function() {
-      const id = CharacterFixtures.genericMale({ actor: { species:'human' }, aspects: { strong:1 }});
+      const id = CharacterSupport.genericMale({ actor: { species:'human' }, aspects: { strong:1 }});
       const increase = LevelSystem.levelUp(id, Attrib.strength);
       expect(increase).to.be.within(7,11);
     });
 
     it("increments the experience level", function() {
-      const id = CharacterFixtures.genericMale({});
+      const id = CharacterSupport.genericMale({});
       LevelSystem.levelUp(id, Attrib.intelligence);
       expect(ExperienceComponent.lookup(id).level).to.equal(2);
     });
 
     it("floors essence at the minimum for the new level", function() {
-      const id = CharacterFixtures.genericMale({ actor: { species:'human' }});
+      const id = CharacterSupport.genericMale({ actor: { species:'human' }});
       LevelSystem.levelUp(id, Attrib.strength);
       expect(ExperienceComponent.lookup(id).essence).to.equal(780);
     });
 
     it("leaves essence alone when it already covers the new level", function() {
-      const id = CharacterFixtures.genericMale({ actor: { species:'human' }});
+      const id = CharacterSupport.genericMale({ actor: { species:'human' }});
       ExperienceComponent.update(id, { level:1, essence:1000 });
       LevelSystem.levelUp(id, Attrib.strength);
       expect(ExperienceComponent.lookup(id).essence).to.equal(1000);
@@ -40,7 +40,7 @@ describe("LevelSystem", function() {
       Random.stubBetween(3);
       Random.stubRollDice(45, 1, 1); // Health, then the equian's two mana pools.
 
-      const id = CharacterFixtures.genericMale({ actor:{ species:'equian' }});
+      const id = CharacterSupport.genericMale({ actor:{ species:'equian' }});
       const start = HealthComponent.lookup(id).maxHealth;
       const increase = LevelSystem.levelUp(id, Attrib.vitality);
       expect(increase).to.equal(8);
@@ -51,7 +51,7 @@ describe("LevelSystem", function() {
     });
 
     it("grows the mana pools the species has an affinity for", function() {
-      const id = CharacterFixtures.genericMale({ actor:{ species:'elf' }});
+      const id = CharacterSupport.genericMale({ actor:{ species:'elf' }});
       LevelSystem.levelUp(id, Attrib.strength);
 
       const mana = ManaComponent.lookup(id);
@@ -63,7 +63,7 @@ describe("LevelSystem", function() {
     });
 
     it("adds the growth to both the current and maximum mana", function() {
-      const id = CharacterFixtures.genericMale({ actor:{ species:'elf' }, mana:{ red:{ current:3, max:10 } }});
+      const id = CharacterSupport.genericMale({ actor:{ species:'elf' }, mana:{ red:{ current:3, max:10 } }});
       LevelSystem.levelUp(id, Attrib.strength);
 
       const mana = ManaComponent.lookup(id);
@@ -72,7 +72,7 @@ describe("LevelSystem", function() {
     });
 
     it("doesn't grow mana for a human", function() {
-      const id = CharacterFixtures.genericMale({ actor:{ species:'human' }});
+      const id = CharacterSupport.genericMale({ actor:{ species:'human' }});
       LevelSystem.levelUp(id, Attrib.strength);
 
       const mana = ManaComponent.lookup(id);

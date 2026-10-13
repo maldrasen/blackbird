@@ -1,18 +1,16 @@
 describe("CharacterAbilitySystem", function() {
 
-  // A single kobold runt at M.0.2 faces the fixture party: the player in front of it with a longsword, an archer at
-  // P.1.2, and a rogue with short reach daggers at P.1.3.
+  // A single kobold runt at M.0.2 faces the spec party: the player in front of it with a longsword, and rogues with
+  // short reach daggers at P.1.2 and P.1.3.
   function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ monster:'kobold-runt', ambushState:'normal' });
-    return BattleSystem.getState();
+    return BattleSupport.startBattle({ monster:'kobold-runt' });
   }
 
   describe("getCommands()", function() {
     it("offers the player in the front rank an attack but nowhere to hide", function() {
-      const state = startBattle();
+      startBattle();
 
-      BattleSystem.specRound(state.getEntityAtPosition('P.0.2'));
+      BattleSystem.specRound(BattleSupport.player());
       const commands = CharacterAbilitySystem.getCommands();
 
       expect(commands).to.include.members([StandardAbility.attack, StandardAbility.defend, StandardAbility.negotiate]);
@@ -22,9 +20,9 @@ describe("CharacterAbilitySystem", function() {
     });
 
     it("offers a rogue in the back rank a hiding place but no attack", function() {
-      const state = startBattle();
+      startBattle();
 
-      BattleSystem.specRound(state.getEntityAtPosition('P.1.3'));
+      BattleSystem.specRound(BattleSupport.rogue());
       const commands = CharacterAbilitySystem.getCommands();
 
       expect(commands).to.include(StandardAbility.hide);
@@ -33,8 +31,8 @@ describe("CharacterAbilitySystem", function() {
     });
 
     it("offers a hidden rogue a sneak attack in place of hiding", function() {
-      const state = startBattle();
-      const rogue = state.getEntityAtPosition('P.1.3');
+      startBattle();
+      const rogue = BattleSupport.rogue();
 
       BattleSystem.addStatus(rogue, 'hidden');
       BattleSystem.specRound(rogue);
@@ -45,8 +43,8 @@ describe("CharacterAbilitySystem", function() {
     });
 
     it("offers only pass to a character who must pass", function() {
-      const state = startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      startBattle();
+      const player = BattleSupport.player();
 
       BattleSystem.addStatus(player, 'stun', { count:1 });
       BattleSystem.specRound(player);

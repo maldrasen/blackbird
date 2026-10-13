@@ -29,7 +29,7 @@
   "c8": {
     "reporter": ["text", "cobertura", "html"],
     "include": ["application/**"],
-    "exclude": ["application/views/**", "application/test/**"]
+    "exclude": ["application/views/**", "application/fixtures/**"]
   },
   "devDependencies": {
     "c8": "^11.0.0",

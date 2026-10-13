@@ -1,7 +1,7 @@
 describe('Enchantment', function() {
 
   function enchantedHelm(pattern) {
-    return Item(ItemFixtures.buildSteel('helm', { enchantment:{ pattern } })).getEnchantment();
+    return Item(ItemSupport.buildSteel('helm', { enchantment:{ pattern } })).getEnchantment();
   }
 
   describe('getDamageResistance()', function() {

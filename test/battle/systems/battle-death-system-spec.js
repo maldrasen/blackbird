@@ -1,14 +1,8 @@
 describe("BattleDeathSystem", function() {
 
-  function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-    return BattleSystem.getState();
-  }
-
   describe("knockOutEntity()", function() {
     it("moves the character behind forward in the battle formation only", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const front = state.getEntityAtPosition('P',0,3);
       const back = state.getEntityAtPosition('P',1,3);
 
@@ -21,13 +15,13 @@ describe("BattleDeathSystem", function() {
     });
 
     it("does not end the battle when the player goes down with the party still standing", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       BattleDeathSystem.knockOutEntity(GameSystem.getState().getPlayer());
       expect(state.getInterrupt()).to.be.undefined;
     });
 
     it("removes the character's status effect entries from the turn order", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const front = state.getEntityAtPosition('P',0,3);
       const other = state.getEntityAtPosition('P',1,3);
 
@@ -44,7 +38,7 @@ describe("BattleDeathSystem", function() {
     });
 
     it("loses the battle when the last standing character is knocked out", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
 
       BattleDeathSystem.knockOutEntity(state.getEntityAtPosition('P',1,2));
       BattleDeathSystem.knockOutEntity(state.getEntityAtPosition('P',1,3));
@@ -58,7 +52,7 @@ describe("BattleDeathSystem", function() {
 
   describe("killEntity()", function() {
     it("moves the character behind forward in the home positions when the front character dies", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const front = state.getEntityAtPosition('P',0,3);
       const back = state.getEntityAtPosition('P',1,3);
 
@@ -71,7 +65,7 @@ describe("BattleDeathSystem", function() {
     });
 
     it("does not touch the party configuration until the battle is won", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const front = state.getEntityAtPosition('P',0,3);
       const back = state.getEntityAtPosition('P',1,3);
 
@@ -82,7 +76,7 @@ describe("BattleDeathSystem", function() {
     });
 
     it("removes the entity's status effect entries from the turn order", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const front = state.getEntityAtPosition('P',0,3);
       const other = state.getEntityAtPosition('P',1,3);
 
@@ -97,13 +91,13 @@ describe("BattleDeathSystem", function() {
     });
 
     it("loses the battle when the player is killed", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       BattleDeathSystem.killEntity(GameSystem.getState().getPlayer());
       expect(state.getInterrupt()).to.equal('game-over');
     });
 
     it("loses the battle when the last standing character is killed", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
 
       BattleDeathSystem.knockOutEntity(state.getEntityAtPosition('P',1,2));
       BattleDeathSystem.knockOutEntity(state.getEntityAtPosition('P',1,3));
@@ -116,7 +110,7 @@ describe("BattleDeathSystem", function() {
 
   describe("reviveKnockedOut()", function() {
     it("revives knocked out characters with a single point of health", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const first = state.getEntityAtPosition('P',1,2);
       const second = state.getEntityAtPosition('P',1,3);
 

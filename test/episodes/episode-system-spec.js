@@ -2,7 +2,7 @@ describe('EpisodeSystem', function() {
 
   describe('startEncounter()', function() {
     it('ends the episode and starts a battle with the encounter record', function() {
-      BattleFixtures.prepareForBattle();
+      BattleSupport.prepareParty();
       Episode.register('spec-charge-episode',{ pages:[{ content:`<p>Text</p>` }] });
       EpisodeSystem.startEpisode('spec-charge-episode',{ P:GameSystem.getState().getPlayer() });
 
@@ -14,7 +14,7 @@ describe('EpisodeSystem', function() {
     });
 
     it('forces the ambush state when one is given', function() {
-      BattleFixtures.prepareForBattle();
+      BattleSupport.prepareParty();
       Episode.register('spec-ambush-episode',{ pages:[{ content:`<p>Text</p>` }] });
       EpisodeSystem.startEpisode('spec-ambush-episode',{ P:GameSystem.getState().getPlayer() });
 

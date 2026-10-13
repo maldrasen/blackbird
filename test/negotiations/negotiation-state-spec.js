@@ -1,28 +1,20 @@
 describe("NegotiationState", function() {
 
-  // The negotiation-fixture-2 encounter holds a single kobold-sneak-slut and the player fixture is a male human. The
-  // sneak slut favors the slut archetype, but a randomly drawn name can carry a trigger that overrides it, so the
+  // The negotiation-fixture-2 encounter holds a single kobold-sneak-slut and the spec party's player is a male human.
+  // The sneak slut favors the slut archetype, but a randomly drawn name can carry a trigger that overrides it, so the
   // archetype is pinned to slut (style lewd) before the question pool is built. The state is started through
   // NegotiationSystem because the dynamic question requirements read the flags through the system's state. The
   // constructor rolls the starting fear and respect randomly, so the values the specs care about are set directly
   // once the state is built.
   function buildState(fear, respect) {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ monster:'kobold-sneak-slut', ambushState:'normal' });
+    BattleSupport.startBattle({ monster:'kobold-sneak-slut' });
     BattleSystem.specRound(GameSystem.getState().getPlayer());
-    setArchetype(ArchetypeCode.slut);
+    CharacterSupport.setArchetype(BattleSystem.getState().getActiveMonsters()[0], ArchetypeCode.slut);
     NegotiationSystem.start();
 
     const state = NegotiationSystem.getState();
     state.setFeelings({ fear, respect });
     return state;
-  }
-
-  function setArchetype(archetype) {
-    const monster = BattleSystem.getState().getActiveMonsters()[0];
-    const personality = PersonalityComponent.lookup(monster);
-    personality.archetype = archetype;
-    PersonalityComponent.update(monster, personality);
   }
 
   // The party references are picked randomly, so the spec checks that each pick came from the right candidate pool
@@ -56,10 +48,10 @@ describe("NegotiationState", function() {
     });
   });
 
-  // The player fixture is a human with no natural mana, so no request is possible until some is granted. With red mana
-  // the give-me-mana request is the only one in the pool. When both a question and a request are available the pick
-  // flips a coin, tails for a request. Picking a request rolls its parameters: the color is drawn from a single element
-  // list and the amount is the first stubbed between value.
+  // The spec party's player is a human with no natural mana, so no request is possible until some is granted. With red
+  // mana the give-me-mana request is the only one in the pool. When both a question and a request are available the
+  // pick flips a coin, tails for a request. Picking a request rolls its parameters: the color is drawn from a single
+  // element list and the amount is the first stubbed between value.
   //
   // The exhaustion specs whitelist two questions before the state is built (the pool is built in the constructor) so
   // the pool runs dry on an exact pick.
@@ -68,7 +60,7 @@ describe("NegotiationState", function() {
 
     it('picks a request on tails, rolling its parameters and text', function() {
       const state = buildState(40, 20);
-      BattleFixtures.grantMana('red', 100);
+      BattleSupport.grantMana('red', 100);
       Random.stubFlipCoin(false);
       Random.stubBetween(20);
 
@@ -83,7 +75,7 @@ describe("NegotiationState", function() {
 
     it('keeps a repeatable request in the pool and re-rolls its parameters on each pick', function() {
       const state = buildState(40, 20);
-      BattleFixtures.grantMana('red', 100);
+      BattleSupport.grantMana('red', 100);
       Random.stubFlipCoin(false, false);
       Random.stubBetween(20, 25);
 
@@ -102,7 +94,7 @@ describe("NegotiationState", function() {
     it('falls back to a request once the questions are used up', function() {
       NegotiationQuestion.setWhitelist(twoQuestions);
       const state = buildState(40, 20);
-      BattleFixtures.grantMana('red', 100);
+      BattleSupport.grantMana('red', 100);
       Random.stubFlipCoin(true, true);
 
       expect(state.pickInteraction().type).to.equal('question');
@@ -135,7 +127,7 @@ describe("NegotiationState", function() {
   describe("followUp questions", function() {
     it('forces the follow up question to be asked next', function() {
       const state = buildState(40, 20);
-      setArchetype(ArchetypeCode.savage);
+      CharacterSupport.setArchetype(BattleSystem.getState().getActiveMonsters()[0], ArchetypeCode.savage);
       expect(state.hasFollowUp()).to.equal(false);
 
       state.setFollowUp('tired-of-fighting-other-way');
@@ -157,7 +149,7 @@ describe("NegotiationState", function() {
 
     it('throws when the monster has no reaction to the question', function() {
       const state = buildState(40, 20);
-      setArchetype(ArchetypeCode.reserved);
+      CharacterSupport.setArchetype(BattleSystem.getState().getActiveMonsters()[0], ArchetypeCode.reserved);
       expect(() => state.setFollowUp('tired-of-fighting-other-way')).to.throw('has no reaction');
     });
   });

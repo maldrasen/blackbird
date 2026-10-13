@@ -2,9 +2,7 @@ describe("Ability.CastSpell", function() {
 
   // The flamescale screamer is the only spellcasting monster. A single monster battle puts it at M.0.2.
   function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ monster:'flamescale-screamer', ambushState:'normal' });
-    return BattleSystem.getState();
+    return BattleSupport.startBattle({ monster:'flamescale-screamer' });
   }
 
   it("rejects an unknown spell or a missing power level", function() {
@@ -31,7 +29,7 @@ describe("Ability.CastSpell", function() {
   it("spends the turn starting the cast and stores the spell for the caster's next action", function() {
     const state = startBattle();
     const caster = state.getActiveMonsters()[0];
-    const target = state.getEntityAtPosition('P.0.2');
+    const target = BattleSupport.player();
     const ability = Ability.CastSpell({ spell:'ember', powerLevel:1 });
 
     BattleSystem.specRound(caster, { target });

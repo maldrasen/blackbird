@@ -1,7 +1,7 @@
 describe("SensationPreferences", function() {
 
   it("there is a body part preference", function() {
-    const state = TrainingFixtures.standardTrainingState({},{
+    const state = TrainingSupport.standardTrainingState({},{
       arousal: { arousal:75 },
       sexualPreferences:{ 'anal-slut':50 } });
 
@@ -13,7 +13,7 @@ describe("SensationPreferences", function() {
   });
 
   it("with a strong body preference", function() {
-    const state = TrainingFixtures.standardTrainingState({},{
+    const state = TrainingSupport.standardTrainingState({},{
       arousal: { arousal:100 },
       sexualPreferences:{ 'anal-slut':100 } });
 

@@ -9,25 +9,25 @@ global.BattleFixtures = (function() {
   // The party wears fixed outfits rather than shopping from an equipment depot. What a depot stocks is random, so a
   // shopper can come away missing a slot entirely (an unlucky player ends up with no pants, which changes which
   // negotiation questions are possible.)
-  const PlayerOutfit = [
-    ['hauberk',['steel']],
-    ['chainmail',['steel']],
-    ['boots',['leather']],
-    ['gloves',['leather']],
-  ];
+  const PlayerOutfit = {
+    hauberk: ['steel'],
+    chainmail: ['steel'],
+    boots: ['leather'],
+    gloves: ['leather'],
+  };
 
-  const TankOutfit = [
-    ['breastplate',['steel']],
-    ['greaves',['steel']],
-    ['helm',['steel']],
-    ['boots',['leather']],
-  ];
+  const TankOutfit = {
+    breastplate:['steel'],
+    greaves:['steel'],
+    helm:['steel'],
+    boots:['leather'],
+  }
 
-  const RogueOutfit = [
-    ['doublet',['leather']],
-    ['leggings',['leather']],
-    ['boots',['leather']],
-  ];
+  const RogueOutfit = {
+    doublet:['leather'],
+    leggings:['leather'],
+    boots:['leather'],
+  };
 
   function prepareForBattle() {
     addPlayer('P.0.2');
@@ -83,7 +83,7 @@ global.BattleFixtures = (function() {
   }
 
   function equipOutfit(id, outfit) {
-    outfit.forEach(([code, materials]) => ItemFixtures.equip(id, code, materials));
+    Object.entries(outfit).forEach(([code, materials]) => ItemFixtures.equip(id, code, materials));
   }
 
   function setSkill(id, code, value) {
@@ -100,32 +100,9 @@ global.BattleFixtures = (function() {
     ManaComponent.update(player,mana);
   }
 
-  // Stock encounter data for specs that need a battle without going through a cohort or an encounter record.
-  // Spread into the BattleSystem.startBattle() options.
-  function runtPack() {
-    return {
-      formation:[
-        [0,1,1,1,0],
-      ],
-      monsters:{ 1:{ code:'kobold-runt' } },
-    };
-  }
-
-  function trapperPack() {
-    return {
-      formation:[
-        [0,1,1,1,0],
-        [0,0,1,0,0],
-      ],
-      monsters:{ 1:{ code:'kobold-trapper' } },
-    };
-  }
-
   return {
     prepareForBattle,
     grantMana,
-    runtPack,
-    trapperPack,
   };
 
 })();

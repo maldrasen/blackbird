@@ -2,7 +2,7 @@ describe("PositionController", function() {
 
   describe('isPositionAligned()', function() {
     it('for sixty-nine position', function() {
-      const context = TrainingFixtures.standardTrainingState({}).getContext();
+      const context = TrainingSupport.standardTrainingState({}).getContext();
 
       TrainingSystem.startTraining({ player:context.P, partner:context.T,
         position: { code:'sixty-nine', first:context.T, second:context.P },
@@ -13,7 +13,7 @@ describe("PositionController", function() {
     });
 
     it('for prone position', function() {
-      const context = TrainingFixtures.standardTrainingState({}).getContext();
+      const context = TrainingSupport.standardTrainingState({}).getContext();
 
       TrainingSystem.startTraining({ player:context.P, partner:context.T,
         position: { code:'prone', first:context.P, second:context.T },
@@ -24,7 +24,7 @@ describe("PositionController", function() {
     });
 
     it('for kneeling position', function() {
-      const context = TrainingFixtures.standardTrainingState({}).getContext();
+      const context = TrainingSupport.standardTrainingState({}).getContext();
 
       TrainingSystem.startTraining({ player:context.P, partner:context.T,
         position: { code:'kneeling', first:context.P, second:context.T },
@@ -35,7 +35,7 @@ describe("PositionController", function() {
     });
 
     it('for standing reversed position', function() {
-      const context = TrainingFixtures.standardTrainingState({}).getContext();
+      const context = TrainingSupport.standardTrainingState({}).getContext();
 
       TrainingSystem.startTraining({ player:context.P, partner:context.T,
         position: { code:'standing-reversed', first:context.P, second:context.T },
@@ -48,7 +48,7 @@ describe("PositionController", function() {
 
   describe('findAlignedPosition()', function() {
     it('when characters will remain in the same roles', function() {
-      const context = TrainingFixtures.standardTrainingState({}).getContext();
+      const context = TrainingSupport.standardTrainingState({}).getContext();
 
       TrainingSystem.startTraining({ player:context.P, partner:context.T,
         position: { code:'standing', first:context.P, second:context.T },
@@ -58,7 +58,7 @@ describe("PositionController", function() {
     });
 
     it('when characters will need to swap roles', function() {
-      const context = TrainingFixtures.standardTrainingState({}).getContext();
+      const context = TrainingSupport.standardTrainingState({}).getContext();
 
       TrainingSystem.startTraining({ player:context.P, partner:context.T,
         position: { code:'cowgirl', first:context.P, second:context.T },
@@ -68,7 +68,7 @@ describe("PositionController", function() {
     });
 
     it('when no move is possible', function() {
-      const context = TrainingFixtures.standardTrainingState({}).getContext();
+      const context = TrainingSupport.standardTrainingState({}).getContext();
 
       TrainingSystem.startTraining({ player:context.P, partner:context.T,
         position: { code:'cowgirl', first:context.T, second:context.P },
@@ -80,7 +80,7 @@ describe("PositionController", function() {
 
   describe('shiftPosition()', function() {
     it("Updates the training state", function(){
-      const context = TrainingFixtures.standardTrainingState({}).getContext();
+      const context = TrainingSupport.standardTrainingState({}).getContext();
 
       TrainingSystem.startTraining({ player:context.P, partner:context.T,
         position: { code:'cowgirl', first:context.P, second:context.T },
@@ -100,7 +100,7 @@ describe("PositionController", function() {
 
   describe('changePosition()', function() {
     it("Updates the training state", function(){
-      const context = TrainingFixtures.standardTrainingState({}).getContext();
+      const context = TrainingSupport.standardTrainingState({}).getContext();
 
       TrainingSystem.startTraining({ player:context.P, partner:context.T });
 

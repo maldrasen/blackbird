@@ -5,15 +5,15 @@ describe("OrphanSweeper", function() {
   }
 
   it('removes the items that are not in an inventory', function() {
-    const item = ItemFixtures.buildSteel('longsword');
+    const item = ItemSupport.buildSteel('longsword');
 
     expect(OrphanSweeper.sweep()).to.eql({ monsters:0, items:1 });
     expect(Registry.entityExists(item)).to.be.false;
   });
 
   it('keeps the items held by the party, depots, and the loot inventory', function() {
-    const carried = ItemFixtures.buildSteel('longsword');
-    const loot = ItemFixtures.buildSteel('longsword');
+    const carried = ItemSupport.buildSteel('longsword');
+    const loot = ItemSupport.buildSteel('longsword');
     const stock = EquipmentDepot('standard').getWeapons();
 
     Inventory().addItem(carried);
@@ -28,8 +28,8 @@ describe("OrphanSweeper", function() {
   });
 
   it('keeps an equipped item that is in no inventory', function() {
-    const character = CharacterFixtures.genericMale({});
-    const sword = ItemFixtures.buildSteel('longsword');
+    const character = CharacterSupport.genericMale({});
+    const sword = ItemSupport.buildSteel('longsword');
     EquipmentManager(character).equipItem(sword, EquipmentSlot.primary);
 
     expect(OrphanSweeper.sweep()).to.eql({ monsters:0, items:0 });
@@ -39,7 +39,7 @@ describe("OrphanSweeper", function() {
   // A bare handed monster, so the sword doesn't knock a depot weapon out of the slot and leave it orphaned.
   it('removes the monsters outside of a battle along with their items', function() {
     const monster = MonsterFactory('kobold-dick-puncher').build();
-    const item = ItemFixtures.buildSteel('longsword');
+    const item = ItemSupport.buildSteel('longsword');
     EquipmentManager(monster).equipItem(item, EquipmentSlot.primary);
 
     const swept = OrphanSweeper.sweep();
@@ -50,8 +50,7 @@ describe("OrphanSweeper", function() {
   });
 
   it('keeps the monsters in the current battle', function() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
+    BattleSupport.startBattle();
 
     const monsters = BattleSystem.getState().getActiveMonsters();
     const stray = buildMonster();
@@ -66,7 +65,7 @@ describe("OrphanSweeper", function() {
 
   it('keeps recruited monsters', function() {
     const recruit = buildMonster();
-    CharacterFixtures.randomPlayer();
+    CharacterSupport.player();
     RecruitmentSystem.recruit(recruit, { control:10, affection:10, fear:0, respect:0 });
 
     expect(OrphanSweeper.sweep()).to.eql({ monsters:0, items:0 });

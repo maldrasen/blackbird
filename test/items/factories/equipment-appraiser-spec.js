@@ -79,7 +79,7 @@ describe("EquipmentAppraiser", function() {
 
   describe("EquipmentFactory", function() {
     it("writes the appraised value onto the item component", function() {
-      expect(ItemComponent.lookup(ItemFixtures.buildSteel('longsword')).value).to.equal(173);
+      expect(ItemComponent.lookup(ItemSupport.buildSteel('longsword')).value).to.equal(173);
     });
   });
 

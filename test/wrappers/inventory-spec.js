@@ -22,7 +22,7 @@ describe('Inventory', function() {
     });
 
     it('throws when the item is equipped by a character', function() {
-      const horse = CharacterFixtures.genericMale({});
+      const horse = CharacterSupport.genericMale({});
       const hatchet = EquipmentFactory().build('hatchet');
 
       EquipmentManager(horse).equipItem(hatchet, EquipmentSlot.primary);
@@ -126,12 +126,12 @@ describe('Inventory', function() {
   });
 
   it('listItems() orders the rows by category and then by name', function() {
-    const cleaver = ItemFixtures.buildSteel('cleaver');
-    const helm = ItemFixtures.buildSteel('helm');
-    const hauberk = ItemFixtures.buildSteel('hauberk');
-    const hatchet = ItemFixtures.buildSteel('hatchet');
-    const battleAxe = ItemFixtures.buildSteel('battle-axe');
-    const boots = ItemFixtures.build('boots', ['leather']);
+    const cleaver = ItemSupport.buildSteel('cleaver');
+    const helm = ItemSupport.buildSteel('helm');
+    const hauberk = ItemSupport.buildSteel('hauberk');
+    const hatchet = ItemSupport.buildSteel('hatchet');
+    const battleAxe = ItemSupport.buildSteel('battle-axe');
+    const boots = ItemSupport.build('boots', ['leather']);
 
     const inventory = Inventory();
     [cleaver, helm, hauberk, hatchet, battleAxe, boots].forEach(item => inventory.addItem(item));

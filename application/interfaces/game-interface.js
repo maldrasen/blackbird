@@ -1,7 +1,7 @@
 global.GameInterface = (function() {
 
   function openGame() {
-    if (Environment.viewPresent()) {
+    if (Environment.viewPresent) {
       MainContent.showCover();
       MainMenu.loadGameMenu();
       GameStateFrame.load();
@@ -10,11 +10,11 @@ global.GameInterface = (function() {
   }
 
   function endGame() {
-    if (Environment.viewPresent()) { Views.endGame(); }
+    if (Environment.viewPresent) { Views.endGame(); }
   }
 
   function showGameMode(mode) {
-    if (Environment.viewPresent()) {
+    if (Environment.viewPresent) {
       GameStateFrame.hide();
       LocationView.close();
       DungeonView.close();
@@ -31,11 +31,11 @@ global.GameInterface = (function() {
   }
 
   function showAlert(alertOptions) {
-    if (Environment.viewPresent()) { Alert.show(alertOptions); }
+    if (Environment.viewPresent) { Alert.show(alertOptions); }
   }
 
   function showSkillImprovement(id, code, level) {
-    if (Environment.viewPresent()) { Alert.showSkillImprovement(id, code, level); }
+    if (Environment.viewPresent) { Alert.showSkillImprovement(id, code, level); }
   }
 
   return {

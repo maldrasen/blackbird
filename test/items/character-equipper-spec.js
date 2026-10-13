@@ -4,8 +4,8 @@ describe('CharacterEquipper', function() {
 
     // Every bow is two-handed, so an archer is the character most likely to shop their way out of a preset shield.
     it('only picks a primary that leaves a preset off-hand alone', function() {
-      const id = CharacterFixtures.genericMale({ skills:{ bows:50 } });
-      const shield = ItemFixtures.equip(id, 'round-shield', ['steel']);
+      const id = CharacterSupport.genericMale({ skills:{ bows:50 } });
+      const shield = ItemSupport.equip(id, 'round-shield', ['steel']);
 
       const equipment = CharacterEquipper(id).equip({ budget:150, naked:true });
 
@@ -13,11 +13,11 @@ describe('CharacterEquipper', function() {
       expect(Item(equipment.primary).getBase().getHands()).to.not.equal(WeaponHandedness.two);
     });
 
-    // The fixture elves shop the standard depot, which is stocked with known pieces so the specs can say what should
+    // The elves shop the standard depot, which is stocked with known pieces so the specs can say what should
     // be picked. A leather low corset is slutty, feminine, and natural, and is worth a little more than a wool
     // doublet, so value alone would always take the corset.
     describe('armor', function() {
-      function female(archetype) { return CharacterFixtures.genericFemale({ personality:{ archetype } }); }
+      function female(archetype) { return CharacterSupport.genericFemale({ personality:{ archetype } }); }
 
       function chestCodeFor(id, budget) {
         const equipment = CharacterEquipper(id).equip({ budget, bareHanded:true });
@@ -25,34 +25,34 @@ describe('CharacterEquipper', function() {
       }
 
       it('takes the piece the character likes over the better value', function() {
-        ItemFixtures.stockArmor('standard', [['low-corset',['leather']], ['doublet',['wool']]]);
+        ItemSupport.stockArmor('standard', [['low-corset',['leather']], ['doublet',['wool']]]);
         expect(chestCodeFor(female(ArchetypeCode.bimbo), 150)).to.equal('low-corset');
       });
 
       it('skips a piece the character dislikes when there is something else to wear', function() {
-        ItemFixtures.stockArmor('standard', [['low-corset',['leather']], ['doublet',['wool']]]);
+        ItemSupport.stockArmor('standard', [['low-corset',['leather']], ['doublet',['wool']]]);
         expect(chestCodeFor(female(ArchetypeCode.prude), 150)).to.equal('doublet');
       });
 
       it('wears a hated piece rather than going bare when the character minds showing skin', function() {
-        ItemFixtures.stockArmor('standard', [['low-corset',['leather']]]);
+        ItemSupport.stockArmor('standard', [['low-corset',['leather']]]);
         expect(chestCodeFor(female(ArchetypeCode.prude), 150)).to.equal('low-corset');
       });
 
       it('goes bare rather than wearing a hated piece when the character likes showing skin', function() {
-        ItemFixtures.stockArmor('standard', [['hauberk',['iron']]]);
+        ItemSupport.stockArmor('standard', [['hauberk',['iron']]]);
         expect(chestCodeFor(female(ArchetypeCode.slut), 300)).to.be.null;
         expect(chestCodeFor(female(ArchetypeCode.prude), 300)).to.equal('hauberk');
       });
 
       it('leaves a slot that is fine bare empty rather than wearing a hated piece', function() {
-        ItemFixtures.stockArmor('standard', [['sabatons',['steel']]]);
+        ItemSupport.stockArmor('standard', [['sabatons',['steel']]]);
         const equipment = CharacterEquipper(female(ArchetypeCode.bimbo)).equip({ budget:600, bareHanded:true });
         expect(equipment.feet).to.be.undefined;
       });
 
       it('still shops by value for a character with no opinion of the stock', function() {
-        ItemFixtures.stockArmor('standard', [['doublet',['wool']], ['doublet',['silk']]]);
+        ItemSupport.stockArmor('standard', [['doublet',['wool']], ['doublet',['silk']]]);
         const equipment = CharacterEquipper(female(ArchetypeCode.reserved)).equip({ budget:150, bareHanded:true });
         expect(Item(equipment.chest).getPrimaryMaterial()).to.equal('silk');
       });
@@ -64,9 +64,9 @@ describe('CharacterEquipper', function() {
     // The sword is built and the equipper is made before the roll is stubbed because building an item rolls for its
     // materials.
     function swordsmanAt(level, skills={}) {
-      const id = CharacterFixtures.genericMale({ skills });
+      const id = CharacterSupport.genericMale({ skills });
       ExperienceComponent.update(id, { level:level, essence:1000000 });
-      ItemFixtures.equip(id, 'longsword', ['steel']);
+      ItemSupport.equip(id, 'longsword', ['steel']);
       return id;
     }
 
@@ -113,7 +113,7 @@ describe('CharacterEquipper', function() {
 
     it('covers the off-hand as well', function() {
       const id = swordsmanAt(1);
-      ItemFixtures.equip(id, 'round-shield', ['steel']);
+      ItemSupport.equip(id, 'round-shield', ['steel']);
       const equipper = CharacterEquipper(id);
 
       Random.stubRoll(0, 1);

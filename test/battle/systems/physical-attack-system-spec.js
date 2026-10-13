@@ -1,36 +1,5 @@
 describe("PhysicalAttackSystem", function() {
 
-  function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-    return BattleSystem.getState();
-  }
-
-  function setAttribute(id, key, value) {
-    const attributes = AttributesComponent.lookup(id);
-    attributes[key] = value;
-    AttributesComponent.update(id, attributes);
-  }
-
-  function setSkill(id, code, value) {
-    const skills = SkillsComponent.lookup(id);
-    skills[code] = value;
-    SkillsComponent.update(id, skills);
-  }
-
-  function setHealth(id, current) {
-    const health = HealthComponent.lookup(id);
-    health.maxHealth = 100;
-    health.currentHealth = current;
-    HealthComponent.update(id, health);
-  }
-
-  function setSpecies(id, species) {
-    const actor = ActorComponent.lookup(id);
-    actor.species = species;
-    ActorComponent.update(id, actor);
-  }
-
   describe("processHit()", function() {
 
     function endanger(species) {
@@ -42,17 +11,17 @@ describe("PhysicalAttackSystem", function() {
     // dodge are pinned so the stubbed rolls always mean the same thing, and the rogue's vitality is raised so a hit
     // that downs them knocks them out rather than killing them.
     function prepare(enchantment, health=100) {
-      const state = startBattle();
-      const attacker = state.getEntityAtPosition('P',0,2);
-      const target = state.getEntityAtPosition('P',1,2);
+      BattleSupport.startBattle();
+      const attacker = BattleSupport.player();
+      const target = BattleSupport.centerRogue();
 
-      setAttribute(attacker, 'strength', 50);
-      setSpecies(target, SpeciesCode.kobold);
-      setSkill(target, 'dodge', 20);
-      setAttribute(target, 'vitality', 100);
-      setHealth(target, health);
+      CharacterSupport.setAttribute(attacker, Attrib.strength, 50);
+      CharacterSupport.setSpecies(target, SpeciesCode.kobold);
+      CharacterSupport.setSkill(target, 'dodge', 20);
+      CharacterSupport.setAttribute(target, Attrib.vitality, 100);
+      CharacterSupport.setHealth(target, health);
 
-      const weapon = ItemFixtures.equip(attacker, 'longsword', ['steel'], { enchantment });
+      const weapon = ItemSupport.equip(attacker, 'longsword', ['steel'], { enchantment });
       BattleSystem.specRound(attacker, { target });
 
       return { attacker, target, weapon };

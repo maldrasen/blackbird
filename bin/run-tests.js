@@ -63,6 +63,11 @@ function runMocha(args) {
 
   require('./run-headless.js');
 
+  // The support files define the globals the specs share, including the root hooks, so they load before mocha is set
+  // up rather than being queued as spec files.
+  const manifest = require(`${ROOT}/manifest.json`);
+  manifest.supportFiles.forEach(path => require(`${ROOT}/${path}`));
+
   global.expect = require('chai').expect;
 
   const Mocha = require('mocha');
@@ -70,14 +75,13 @@ function runMocha(args) {
 
   mocha.rootHooks({
     beforeAll: Tests.rootBefore,
-    afterAll: Tests.rootAfter,
     beforeEach: Tests.beforeEachTest,
     afterEach: Tests.afterEachTest,
   });
 
   if (args.grep != null) { mocha.grep(args.grep); }
 
-  require(`${ROOT}/manifest.json`).testFiles.forEach(path => {
+  manifest.testFiles.forEach(path => {
     mocha.addFile(`${ROOT}/${path}`);
   });
 

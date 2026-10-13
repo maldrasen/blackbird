@@ -1,26 +1,7 @@
 describe("Ability.WeaponAttack", function() {
 
-  // The fixture party puts the player at P.0.2 with a longsword and a shield, and a rogue at P.1.3 with a
+  // The spec party puts the player at P.0.2 with a longsword and a shield, and a rogue at P.1.3 with a
   // dagger in each hand. The runt pack is a single rank of kobolds.
-  function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-    return BattleSystem.getState();
-  }
-
-  // finishCharacterRound() requires the acting entity to be next in the turn order.
-  function startCharacterRound(acting, target) {
-    BattleSystem.getState().moveToTopOfTurnOrder({ type:'character', id:acting });
-    BattleSystem.specRound(acting, { target });
-  }
-
-  // The speed factor comes from the species. A human's factor of 1 keeps the number of strikes a known weapon fits
-  // into a second predictable whatever species the fixture rolled. A kobold's 0.87 squeezes two shots from a bow.
-  function pinSpeed(id, species=SpeciesCode.human) {
-    const actor = ActorComponent.lookup(id);
-    actor.species = species;
-    ActorComponent.update(id, actor);
-  }
 
   // A target that can't go down never cuts the strikes short.
   function makeUnkillable(id) {
@@ -45,24 +26,24 @@ describe("Ability.WeaponAttack", function() {
 
   describe("isPossible()", function() {
     it("is possible for a character with a monster in reach", function() {
-      const state = startBattle();
+      BattleSupport.startBattle();
 
-      BattleSystem.specRound(state.getEntityAtPosition('P.0.2'));
+      BattleSystem.specRound(BattleSupport.player());
 
       expect(Ability.WeaponAttack().isPossible()).to.equal(true);
     });
 
     it("is not possible when no monster is in reach", function() {
-      const state = startBattle();
+      BattleSupport.startBattle();
 
-      BattleSystem.specRound(state.getEntityAtPosition('P.1.3'));
+      BattleSystem.specRound(BattleSupport.rogue());
 
       expect(Ability.WeaponAttack().isPossible()).to.equal(false);
     });
 
     it("is not possible without a weapon", function() {
-      const state = startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      BattleSupport.startBattle();
+      const player = BattleSupport.player();
       const equipment = EquipmentManager(player);
 
       equipment.unequipItem(equipment.getSlot(EquipmentSlot.primary));
@@ -72,8 +53,8 @@ describe("Ability.WeaponAttack", function() {
     });
 
     it("is not possible while hidden", function() {
-      const state = startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      BattleSupport.startBattle();
+      const player = BattleSupport.player();
 
       BattleSystem.addStatus(player, 'hidden');
       BattleSystem.specRound(player);
@@ -82,20 +63,20 @@ describe("Ability.WeaponAttack", function() {
     });
 
     it("is not possible with a bow and an empty quiver", function() {
-      const state = startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      BattleSupport.startBattle();
+      const player = BattleSupport.player();
 
-      ItemFixtures.equip(player, 'shortbow', ['wood']);
+      ItemSupport.equip(player, 'shortbow', ['wood']);
       BattleSystem.specRound(player);
 
       expect(Ability.WeaponAttack().isPossible()).to.equal(false);
     });
 
     it("is possible with a bow and a loaded quiver", function() {
-      const state = startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      BattleSupport.startBattle();
+      const player = BattleSupport.player();
 
-      ItemFixtures.equip(player, 'shortbow', ['wood']);
+      ItemSupport.equip(player, 'shortbow', ['wood']);
       QuiverComponent.update(player, { ammunition:'elm-arrow', quantity:1 });
       BattleSystem.specRound(player);
 
@@ -103,39 +84,41 @@ describe("Ability.WeaponAttack", function() {
     });
 
     it("lets a monster shoot a bow without a quiver", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const kobold = state.getEntityAtPosition('M.0.2');
 
-      ItemFixtures.equip(kobold, 'shortbow', ['wood']);
-      BattleSystem.specRound(kobold, { target:state.getEntityAtPosition('P.1.2') });
+      ItemSupport.equip(kobold, 'shortbow', ['wood']);
+      BattleSystem.specRound(kobold, { target:BattleSupport.centerRogue() });
 
       expect(Ability.WeaponAttack().isPossible()).to.equal(true);
     });
 
     it("checks a monster's reach against its chosen target", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const kobold = state.getEntityAtPosition('M.0.2');
 
-      ItemFixtures.equip(kobold, 'dagger', ['steel']);
+      ItemSupport.equip(kobold, 'dagger', ['steel']);
 
-      BattleSystem.specRound(kobold, { target:state.getEntityAtPosition('P.0.2') });
+      BattleSystem.specRound(kobold, { target:BattleSupport.player() });
       expect(Ability.WeaponAttack().isPossible()).to.equal(true);
 
-      BattleSystem.specRound(kobold, { target:state.getEntityAtPosition('P.1.2') });
+      BattleSystem.specRound(kobold, { target:BattleSupport.centerRogue() });
       expect(Ability.WeaponAttack().isPossible()).to.equal(false);
     });
   });
 
+  // The speed factor comes from the species. A human's factor of 1 keeps the number of strikes a known weapon fits
+  // into a second predictable whatever species the party rolled. A kobold's 0.87 squeezes two shots from a bow.
   describe("execute()", function() {
     it("resolves a single strike from a weapon that takes the whole second", function() {
-      const state = startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      const state = BattleSupport.startBattle();
+      const player = BattleSupport.player();
       const kobold = state.getEntityAtPosition('M.0.2');
       const ability = Ability.WeaponAttack();
 
-      pinSpeed(player);
+      CharacterSupport.setSpecies(player, SpeciesCode.human);
       makeUnkillable(kobold);
-      startCharacterRound(player, kobold);
+      BattleSupport.startCharacterRound(player, kobold);
       ability.execute();
 
       const round = BattleSystem.getRound();
@@ -145,14 +128,14 @@ describe("Ability.WeaponAttack", function() {
     });
 
     it("fills the second with strikes from a quick weapon", function() {
-      const state = startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      const state = BattleSupport.startBattle();
+      const player = BattleSupport.player();
       const kobold = state.getEntityAtPosition('M.0.2');
 
-      ItemFixtures.equip(player, 'dagger', ['steel']);
-      pinSpeed(player);
+      ItemSupport.equip(player, 'dagger', ['steel']);
+      CharacterSupport.setSpecies(player, SpeciesCode.human);
       makeUnkillable(kobold);
-      startCharacterRound(player, kobold);
+      BattleSupport.startCharacterRound(player, kobold);
       Ability.WeaponAttack().execute();
 
       const round = BattleSystem.getRound();
@@ -161,15 +144,15 @@ describe("Ability.WeaponAttack", function() {
     });
 
     it("spends an arrow on every shot", function() {
-      const state = startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      const state = BattleSupport.startBattle();
+      const player = BattleSupport.player();
       const kobold = state.getEntityAtPosition('M.0.2');
 
-      ItemFixtures.equip(player, 'shortbow', ['wood']);
+      ItemSupport.equip(player, 'shortbow', ['wood']);
       QuiverComponent.update(player, { ammunition:'elm-arrow', quantity:3 });
-      pinSpeed(player);
+      CharacterSupport.setSpecies(player, SpeciesCode.human);
       makeUnkillable(kobold);
-      startCharacterRound(player, kobold);
+      BattleSupport.startCharacterRound(player, kobold);
       Ability.WeaponAttack().execute();
 
       expect(countStrikes()).to.equal(1);
@@ -177,15 +160,15 @@ describe("Ability.WeaponAttack", function() {
     });
 
     it("stops shooting when the quiver runs dry", function() {
-      const state = startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      const state = BattleSupport.startBattle();
+      const player = BattleSupport.player();
       const kobold = state.getEntityAtPosition('M.0.2');
 
-      ItemFixtures.equip(player, 'shortbow', ['wood']);
+      ItemSupport.equip(player, 'shortbow', ['wood']);
       QuiverComponent.update(player, { ammunition:'elm-arrow', quantity:1 });
-      pinSpeed(player, SpeciesCode.kobold);
+      CharacterSupport.setSpecies(player, SpeciesCode.kobold);
       makeUnkillable(kobold);
-      startCharacterRound(player, kobold);
+      BattleSupport.startCharacterRound(player, kobold);
       Ability.WeaponAttack().execute();
 
       const round = BattleSystem.getRound();
@@ -195,15 +178,15 @@ describe("Ability.WeaponAttack", function() {
     });
 
     it("fires twice with a quick bow and a stocked quiver", function() {
-      const state = startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      const state = BattleSupport.startBattle();
+      const player = BattleSupport.player();
       const kobold = state.getEntityAtPosition('M.0.2');
 
-      ItemFixtures.equip(player, 'shortbow', ['wood']);
+      ItemSupport.equip(player, 'shortbow', ['wood']);
       QuiverComponent.update(player, { ammunition:'elm-arrow', quantity:5 });
-      pinSpeed(player, SpeciesCode.kobold);
+      CharacterSupport.setSpecies(player, SpeciesCode.kobold);
       makeUnkillable(kobold);
-      startCharacterRound(player, kobold);
+      BattleSupport.startCharacterRound(player, kobold);
       Ability.WeaponAttack().execute();
 
       expect(countStrikes()).to.equal(2);
@@ -211,11 +194,11 @@ describe("Ability.WeaponAttack", function() {
     });
 
     it("lets a monster shoot without spending anything", function() {
-      const state = startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      const state = BattleSupport.startBattle();
+      const player = BattleSupport.player();
       const kobold = state.getEntityAtPosition('M.0.2');
 
-      ItemFixtures.equip(kobold, 'shortbow', ['wood']);
+      ItemSupport.equip(kobold, 'shortbow', ['wood']);
       makeUnkillable(player);
       BattleSystem.getState().moveToTopOfTurnOrder({ type:'monster', id:kobold });
       BattleSystem.specRound(kobold, { target:player });
@@ -226,13 +209,13 @@ describe("Ability.WeaponAttack", function() {
     });
 
     it("gets an extra strike in with a weapon in each hand", function() {
-      const state = startBattle();
-      const rogue = state.getEntityAtPosition('P.1.3');
+      const state = BattleSupport.startBattle();
+      const rogue = BattleSupport.rogue();
       const kobold = state.getEntityAtPosition('M.0.2');
 
-      pinSpeed(rogue);
+      CharacterSupport.setSpecies(rogue, SpeciesCode.human);
       makeUnkillable(kobold);
-      startCharacterRound(rogue, kobold);
+      BattleSupport.startCharacterRound(rogue, kobold);
       Ability.WeaponAttack().execute();
 
       const round = BattleSystem.getRound();

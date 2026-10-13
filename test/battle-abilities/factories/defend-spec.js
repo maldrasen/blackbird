@@ -3,11 +3,8 @@ describe("Ability.Defend", function() {
   // The command that built an ability ends the round, so the execute spec ends it itself to see the poised stack
   // survive, which requires the acting entity to be next in the turn order.
   function startRound() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-
-    const state = BattleSystem.getState();
-    const acting = state.getEntityAtPosition('P.0.2');
+    const state = BattleSupport.startBattle();
+    const acting = BattleSupport.player();
 
     state.moveToTopOfTurnOrder({ type:'character', id:acting });
     BattleSystem.specRound(acting, { target:state.getActiveMonsters()[0] });

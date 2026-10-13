@@ -1,4 +1,4 @@
-global.ItemFixtures = (function() {
+global.ItemSupport = (function() {
 
   function buildStandard(code) {
     return EquipmentFactory(EquipmentParameters.lookup('standard').getMaterials()).build(code);

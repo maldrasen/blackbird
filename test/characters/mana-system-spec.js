@@ -1,7 +1,7 @@
 describe("ManaSystem", function() {
 
   function elfWithRed(current, max) {
-    return CharacterFixtures.genericMale({ mana:{ red:{ current:current, max:max } }});
+    return CharacterSupport.genericMale({ mana:{ red:{ current:current, max:max } }});
   }
 
   describe("getPool()", function() {
@@ -24,7 +24,7 @@ describe("ManaSystem", function() {
 
   describe("deepenPool()", function() {
     beforeEach(function() {
-      GameSystem.getState().setPlayer(CharacterFixtures.genericMale({ actor:{ species:'human' }}));
+      GameSystem.getState().setPlayer(CharacterSupport.genericMale({ actor:{ species:'human' }}));
     })
 
     it("raises the maximum and fills the new depth", function() {
@@ -77,7 +77,7 @@ describe("ManaSystem", function() {
 
   describe("restoreAll()", function() {
     it("fills every pool", function() {
-      const id = CharacterFixtures.genericMale({ mana:{ red:{ current:1, max:10 }, green:{ current:0, max:6 } }});
+      const id = CharacterSupport.genericMale({ mana:{ red:{ current:1, max:10 }, green:{ current:0, max:6 } }});
       ManaSystem.restoreAll(id);
       expect(ManaSystem.getPool(id, Mana.red)).to.deep.equal({ current:10, max:10 });
       expect(ManaSystem.getPool(id, Mana.green)).to.deep.equal({ current:6, max:6 });

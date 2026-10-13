@@ -3,7 +3,7 @@ describe("EquipmentComponent", function() {
   // EquipmentManager.equipItem() checks the slot before it writes, so these specs write to the component directly to
   // reach the validation behind it.
   function ownerOf(...codes) {
-    const horse = CharacterFixtures.genericMale({});
+    const horse = CharacterSupport.genericMale({});
     const items = codes.map(code => EquipmentFactory().build(code));
     return { horse, items };
   }

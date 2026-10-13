@@ -1,7 +1,7 @@
 describe('Item', function() {
 
   function build(code, materials, options={}) {
-    return Item(ItemFixtures.build(code, materials, options));
+    return Item(ItemSupport.build(code, materials, options));
   }
 
   describe('getName()', function() {

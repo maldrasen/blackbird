@@ -3,20 +3,12 @@ describe("Ability.UseArticle", function() {
   // The tosser joins the runt pack in the back rank, behind the blast a blasto thrown at the front of the party
   // makes. Nothing is stubbed: a blasto's fire always leaves a mark on its target.
   function startBattle() {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
+    BattleSupport.startBattle();
 
     const tosser = MonsterFactory('kobold-tosser').build();
     BattleSystem.getState().addMonster(tosser, 'M.1.2');
 
     return tosser;
-  }
-
-  function setHealth(id, current) {
-    const health = HealthComponent.lookup(id);
-    health.maxHealth = 100;
-    health.currentHealth = current;
-    HealthComponent.update(id, health);
   }
 
   it("rejects an unknown article", function() {
@@ -40,11 +32,10 @@ describe("Ability.UseArticle", function() {
 
   it("takes a fixed time to use and applies the article around the target", function() {
     const tosser = startBattle();
-    const state = BattleSystem.getState();
-    const target = state.getEntityAtPosition('P.0.2');
+    const target = BattleSupport.player();
     const ability = Ability.UseArticle({ article:'blasto' });
 
-    setHealth(target, 100);
+    CharacterSupport.setHealth(target, 100);
     BattleSystem.specRound(tosser, { target });
     ability.execute();
 

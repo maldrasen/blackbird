@@ -10,7 +10,7 @@ global.Console = (function() {
 
     notify(entry);
 
-    if (Environment.viewPresent()) {
+    if (Environment.viewPresent) {
       ConsoleView.append({ ...entry, time:TimeHelper.getTimeString() });
     }
 
@@ -24,7 +24,7 @@ global.Console = (function() {
 
     const entry = { ...options, data, level:1, type:LogType.error };
 
-    if (Environment.viewPresent() === false) {
+    if (Environment.viewPresent === false) {
       notify({ ...entry, message });
       console.error('=== Error ===');
       console.error(message);

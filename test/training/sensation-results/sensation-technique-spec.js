@@ -3,7 +3,7 @@ describe("SensationTechnique", function() {
   it('when player has no skill', function() {
     Random.stubBetween(50,15);
 
-    const state = TrainingFixtures.standardTrainingState({},{ feelings:{ affection:150 }});
+    const state = TrainingSupport.standardTrainingState({},{ feelings:{ affection:150 }});
     const result = SensationResult('suck-pussy', state);
     SensationBaseline.apply(result);
     SensationTechnique.apply(result);
@@ -17,7 +17,7 @@ describe("SensationTechnique", function() {
   it("when partner is 'performing' with double skill target", function() {
     Random.stubBetween(50,15);
 
-    const state = TrainingFixtures.standardTrainingState({},{
+    const state = TrainingSupport.standardTrainingState({},{
       skills: { technique:30 },
       feelings:{ respect:350 }});
 
@@ -36,7 +36,7 @@ describe("SensationTechnique", function() {
   it("crit when partner is 'performing'", function() {
     Random.stubBetween(99);
 
-    const state = TrainingFixtures.standardTrainingState({},{
+    const state = TrainingSupport.standardTrainingState({},{
       skills: { technique:30 },
       feelings:{ respect:350 }});
 
@@ -57,7 +57,7 @@ describe("SensationTechnique", function() {
   it("fumble when partner is 'performing'", function() {
     Random.stubBetween(1);
 
-    const state = TrainingFixtures.standardTrainingState({},{
+    const state = TrainingSupport.standardTrainingState({},{
       skills: { technique:30 },
       feelings: { respect:350 }});
 

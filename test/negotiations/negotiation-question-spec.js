@@ -1,9 +1,9 @@
 describe("NegotiationQuestion", function() {
 
-  // The player fixture is a male human, so the hasCock('P') answer stays and the hasNoCock('P') answer filters out.
+  // The spec party's player is male, so the hasCock('P') answer stays and the hasNoCock('P') answer filters out.
   describe("getAnswers()", function() {
     it('filters out answers whose requirements fail', function() {
-      BattleFixtures.prepareForBattle();
+      BattleSupport.prepareParty();
       const context = { P:GameSystem.getState().getPlayer() };
 
       const answers = NegotiationQuestion.lookup('how-do-you-murder').getAnswers(context);
@@ -19,7 +19,7 @@ describe("NegotiationQuestion", function() {
     it('filters answers gated on a party reference when the key is null', function() {
       const question = NegotiationQuestion.lookup('no-interest-in-men');
 
-      const withGirl = question.getAnswers({ F:CharacterFixtures.genericFemale({}) });
+      const withGirl = question.getAnswers({ F:CharacterSupport.genericFemale({}) });
       expect(Object.keys(withGirl)).to.deep.equal(['noNeed','entertain','dontCare','noUse']);
 
       const alone = question.getAnswers({ F:null });
@@ -31,8 +31,7 @@ describe("NegotiationQuestion", function() {
   // only has a lewd reaction with static requirements: the player must have a cock.
   describe("getReactionData()", function() {
     function bootMonster() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ monster:'kobold-sneak-slut', ambushState:'normal' });
+      BattleSupport.startBattle({ monster:'kobold-sneak-slut' });
 
       const monster = BattleSystem.getState().getActiveMonsters()[0];
       const personality = PersonalityComponent.lookup(monster);
@@ -52,7 +51,7 @@ describe("NegotiationQuestion", function() {
 
     it('excludes a reaction whose static requirements fail', function() {
       const monster = bootMonster();
-      const context = { P:CharacterFixtures.genericFemale({}), T:monster };
+      const context = { P:CharacterSupport.genericFemale({}), T:monster };
 
       expect(NegotiationQuestion.lookup('what-is-best').getReactionData(context)).to.equal(null);
     });

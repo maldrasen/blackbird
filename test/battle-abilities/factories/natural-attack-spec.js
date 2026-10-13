@@ -10,18 +10,6 @@ describe("Ability.NaturalAttack", function() {
     speed: 1000,
   };
 
-  function startBattle(pack=BattleFixtures.runtPack()) {
-    BattleFixtures.prepareForBattle();
-    BattleSystem.startBattle({ ...pack, ambushState:'normal' });
-    return BattleSystem.getState();
-  }
-
-  // finishCharacterRound() requires the acting entity to be next in the turn order.
-  function startCharacterRound(acting, target) {
-    BattleSystem.getState().moveToTopOfTurnOrder({ type:'character', id:acting });
-    BattleSystem.specRound(acting, { target });
-  }
-
   // A stunned target can't defend at all, and a trained attacker with some dexterity never rolls zero, so the strike
   // always lands.
   function guaranteeHit(attacker, target) {
@@ -62,44 +50,44 @@ describe("Ability.NaturalAttack", function() {
 
   describe("isPossible()", function() {
     it("is possible for a monster with its target in reach", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
 
-      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:state.getEntityAtPosition('P.0.2') });
+      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:BattleSupport.player() });
 
       expect(Ability.NaturalAttack(bite).isPossible()).to.equal(true);
     });
 
     it("is not possible when the target is out of reach", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
 
-      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:state.getEntityAtPosition('P.1.2') });
+      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:BattleSupport.centerRogue() });
 
       expect(Ability.NaturalAttack(bite).isPossible()).to.equal(false);
     });
 
     it("is not possible while hidden", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const kobold = state.getEntityAtPosition('M.0.2');
 
       BattleSystem.addStatus(kobold, 'hidden');
-      BattleSystem.specRound(kobold, { target:state.getEntityAtPosition('P.0.2') });
+      BattleSystem.specRound(kobold, { target:BattleSupport.player() });
 
       expect(Ability.NaturalAttack(bite).isPossible()).to.equal(false);
     });
 
     it("defers to the attack's own target check", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
 
-      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:state.getEntityAtPosition('P.0.2') });
+      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:BattleSupport.player() });
 
       expect(Ability.NaturalAttack({ ...bite, canTarget:() => false }).isPossible()).to.equal(false);
     });
 
     it("needs a target whose body has the forced hit location", function() {
-      const state = startBattle({ monster:'gnawbones' });
+      const state = BattleSupport.startBattle({ monster:'gnawbones' });
       const beast = state.getActiveMonsters()[0];
 
-      BattleSystem.specRound(state.getEntityAtPosition('P.0.2'), { target:beast });
+      BattleSystem.specRound(BattleSupport.player(), { target:beast });
 
       const punch = { ...bite, reach:WeaponReach.long };
       expect(Ability.NaturalAttack({ ...punch, hitLocation:EquipmentSlot.hands }).isPossible()).to.equal(false);
@@ -109,10 +97,10 @@ describe("Ability.NaturalAttack", function() {
 
   describe("execute()", function() {
     it("resolves a strike from the attack's profile", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const ability = Ability.NaturalAttack(bite);
 
-      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:state.getEntityAtPosition('P.0.2') });
+      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:BattleSupport.player() });
       ability.execute();
 
       const round = BattleSystem.getRound();
@@ -122,13 +110,13 @@ describe("Ability.NaturalAttack", function() {
     });
 
     it("forces the hit location and uses its own attack text", function() {
-      const state = startBattle();
+      const state = BattleSupport.startBattle();
       const ability = Ability.NaturalAttack({ ...bite,
         hitLocation: EquipmentSlot.head,
         getAttackText: () => { return `{A:ActingName} gnaws on {T:targetName's} {hitLocation}.`; },
       });
 
-      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:state.getEntityAtPosition('P.0.2') });
+      BattleSystem.specRound(state.getEntityAtPosition('M.0.2'), { target:BattleSupport.player() });
       ability.execute();
 
       const round = BattleSystem.getRound();
@@ -137,8 +125,8 @@ describe("Ability.NaturalAttack", function() {
     });
 
     it("applies its effects on a hit and reports which of them landed", function() {
-      const state = startBattle();
-      const player = state.getEntityAtPosition('P.0.2');
+      const state = BattleSupport.startBattle();
+      const player = BattleSupport.player();
       const kobold = state.getEntityAtPosition('M.0.2');
 
       let hit = null;
@@ -151,7 +139,7 @@ describe("Ability.NaturalAttack", function() {
       });
 
       guaranteeHit(player, kobold);
-      startCharacterRound(player, kobold);
+      BattleSupport.startCharacterRound(player, kobold);
       ability.execute();
 
       expect(hit).to.deep.equal({ acting:player, target:kobold });

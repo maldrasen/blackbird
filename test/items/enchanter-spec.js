@@ -1,7 +1,7 @@
 describe('Enchanter', function() {
 
   it('adds an enchantment given an item and pattern', function() {
-    const id = ItemFixtures.buildSteel('helm');
+    const id = ItemSupport.buildSteel('helm');
     Enchanter.enchant(id, 'vigilant');
 
     const enchantment = Enchantment(id);
@@ -14,7 +14,7 @@ describe('Enchanter', function() {
   });
 
   it('adds an enchantment with properties', function() {
-    const id = ItemFixtures.buildSteel('war-axe');
+    const id = ItemSupport.buildSteel('war-axe');
     Enchanter.enchant(id, 'endanger', { species:'vermen' });
 
     const enchantment = Enchantment(id);
@@ -28,13 +28,13 @@ describe('Enchanter', function() {
   });
 
   it('keeps the strength within the pattern range on a steel item', function() {
-    const id = ItemFixtures.buildSteel('helm');
+    const id = ItemSupport.buildSteel('helm');
     Enchanter.enchant(id, 'vigilant');
     expect(Enchantment(id).getEffects()[0].strength).to.be.within(10,20);
   });
 
   it('doubles the strength range on a silver item', function() {
-    const id = ItemFixtures.build('helm', ['silver']);
+    const id = ItemSupport.build('helm', ['silver']);
     Enchanter.enchant(id, 'vigilant');
     expect(Enchantment(id).getEffects()[0].strength).to.be.within(20,40);
   });
@@ -44,7 +44,7 @@ describe('Enchanter', function() {
     // rather than the winner: the item carries a pattern that applies to it, built with that pattern's properties
     // and effects.
     it('picks a pattern that applies to the item and rolls its properties', function() {
-      const id = ItemFixtures.buildSteel('longsword');
+      const id = ItemSupport.buildSteel('longsword');
       const code = Enchanter.enchantRandomly(id);
       const pattern = EnchantmentPattern.lookup(code);
       const enchantment = ItemComponent.lookup(id).enchantment;
@@ -58,7 +58,7 @@ describe('Enchanter', function() {
     // The rarity roll of 250 lands on rare, and the pick of 0 takes the first rare pattern that applies to boots,
     // skipping the head only patterns registered ahead of it. The between stub pins the enchantment's strength.
     it('picks among the patterns that apply by rarity', function() {
-      const id = ItemFixtures.build('boots', ['leather']);
+      const id = ItemSupport.build('boots', ['leather']);
       Random.stubRoll(250, 0);
       Random.stubBetween(8);
 
@@ -69,7 +69,7 @@ describe('Enchanter', function() {
     // A rarity roll of 0 is common, and nothing is common, so the pick steps down to the first unusual pattern that
     // applies to boots.
     it('settles for a commoner rarity when nothing applies at the rolled one', function() {
-      const id = ItemFixtures.build('boots', ['leather']);
+      const id = ItemSupport.build('boots', ['leather']);
       Random.stubRoll(0, 0);
       Random.stubBetween(12);
 
@@ -81,7 +81,7 @@ describe('Enchanter', function() {
   describe('rollForEnchantment()', function() {
     // Every chance roll lands under 100, so nothing is stubbed and the pick among the sword patterns stays random.
     it('enchants the item when the chance roll lands under the chance', function() {
-      const id = ItemFixtures.buildSteel('longsword');
+      const id = ItemSupport.buildSteel('longsword');
       const code = Enchanter.rollForEnchantment(id, 100);
 
       expect(EnchantmentPattern.lookup(code).canBeAppliedTo(id)).to.equal(true);
@@ -89,7 +89,7 @@ describe('Enchanter', function() {
     });
 
     it('leaves the item alone when the chance roll misses', function() {
-      const id = ItemFixtures.buildSteel('longsword');
+      const id = ItemSupport.buildSteel('longsword');
       Random.stubRoll(10);
 
       expect(Enchanter.rollForEnchantment(id, 10)).to.equal(null);
@@ -98,7 +98,7 @@ describe('Enchanter', function() {
 
     // The empty roll stub would throw if a chance of zero were rolled at all.
     it('never rolls at a chance of zero', function() {
-      const id = ItemFixtures.buildSteel('longsword');
+      const id = ItemSupport.buildSteel('longsword');
       Random.stubRoll();
 
       expect(Enchanter.rollForEnchantment(id, 0)).to.equal(null);

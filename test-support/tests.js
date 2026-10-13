@@ -1,6 +1,5 @@
 global.Tests = (function() {
 
-  let isRunning = false;
   let currentSeed;
 
   function reset() {
@@ -27,16 +26,11 @@ global.Tests = (function() {
   }
 
   function rootBefore() {
-    isRunning = true;
     console.log(`⟪ Random Test Seed : ${Random.getSeed()} ⟫\n`);
   }
-  function rootAfter() { isRunning = false; }
-  function running() { return isRunning; }
 
   return {
-    running,
     rootBefore,
-    rootAfter,
     beforeEachTest,
     afterEachTest,
   };

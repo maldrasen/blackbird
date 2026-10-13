@@ -2,14 +2,14 @@ describe("ManaMath", function() {
 
   describe("manaGrades()", function() {
     it("reads the grades from the character's species", function() {
-      const id = CharacterFixtures.genericMale({ actor: { species:SpeciesCode.elf }});
+      const id = CharacterSupport.genericMale({ actor: { species:SpeciesCode.elf }});
       const grades = ManaMath.manaGrades(id);
       expect(grades.red).to.equal('C');
       expect(grades.yellow).to.equal('F');
     });
 
     it("gives a human no grades at all", function() {
-      const id = CharacterFixtures.genericMale({ actor: { species:SpeciesCode.human }});
+      const id = CharacterSupport.genericMale({ actor: { species:SpeciesCode.human }});
       expect(ManaMath.manaGrades(id)).to.deep.equal({});
     });
 

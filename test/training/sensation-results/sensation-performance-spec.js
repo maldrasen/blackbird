@@ -3,7 +3,7 @@ describe("SensationPerformance", function() {
   it('when normal performance focused action', function() {
     Random.stubBetween(50,10);
 
-    const state = TrainingFixtures.standardTrainingState({},{
+    const state = TrainingSupport.standardTrainingState({},{
       skills: { performance:20 },
       feelings: { respect:150 }});
 
@@ -19,7 +19,7 @@ describe("SensationPerformance", function() {
     Random.stubBetween(99); // Technique Roll
     Random.stubBetween(99); // Performance Roll
 
-    const state = TrainingFixtures.standardTrainingState({},{
+    const state = TrainingSupport.standardTrainingState({},{
       skills: { performance:20 },
       feelings: { respect:400 }});
 
@@ -38,7 +38,7 @@ describe("SensationPerformance", function() {
   it('when performance focused action fumbles', function() {
     Random.stubBetween(1);
 
-    const state = TrainingFixtures.standardTrainingState({},{
+    const state = TrainingSupport.standardTrainingState({},{
       skills: { performance:20 },
       feelings: { respect:400 }});
 
@@ -59,7 +59,7 @@ describe("SensationPerformance", function() {
     Random.stubBetween(50,10); // Technique Roll
     Random.stubBetween(50,12); // Performance Roll
 
-    const state = TrainingFixtures.standardTrainingState({},{
+    const state = TrainingSupport.standardTrainingState({},{
       skills: { performance:20 },
       feelings: { respect:200 }});
 
@@ -76,7 +76,7 @@ describe("SensationPerformance", function() {
     Random.stubBetween(50,10); // Technique Roll
     Random.stubBetween(99);    // Performance Roll
 
-    const state = TrainingFixtures.standardTrainingState({},{
+    const state = TrainingSupport.standardTrainingState({},{
       skills: { performance:20 },
       feelings: { respect:200 }});
 
@@ -102,7 +102,7 @@ describe("SensationPerformance", function() {
   it('when normal action with default performance', function() {
     Random.stubBetween(50,10);
 
-    const state = TrainingFixtures.standardTrainingState({},{
+    const state = TrainingSupport.standardTrainingState({},{
       skills: { performance:20 },
       feelings: { affection:180, respect:180 }});
 
@@ -119,7 +119,7 @@ describe("SensationPerformance", function() {
   it('when normal action with reluctant consent', function() {
     Random.stubBetween(50,10);
 
-    const state = TrainingFixtures.standardTrainingState({},{
+    const state = TrainingSupport.standardTrainingState({},{
       skills: { performance:20 },
       feelings: { affection:140, respect:140 }});
 
@@ -135,7 +135,7 @@ describe("SensationPerformance", function() {
   it('when normal action with fumbled performance', function() {
     Random.stubBetween(1);
 
-    const state = TrainingFixtures.standardTrainingState({},{
+    const state = TrainingSupport.standardTrainingState({},{
       skills: { performance:20 },
       feelings: { affection:180, respect:180 }});
 

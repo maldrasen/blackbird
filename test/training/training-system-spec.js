@@ -4,7 +4,7 @@ describe("TrainingSystem", function() {
     it('updates the arousal level for both the player and the partner', function() {
       Random.stubBetween(99,99,99,99,99,0); // All crits and a guard.
 
-      const state = TrainingFixtures.standardTrainingState(
+      const state = TrainingSupport.standardTrainingState(
         { health:{ currentStamina:100 }, arousal:{ arousal:80 }, skills:{ technique:40 } },
         { health:{ currentStamina:20 }, arousal:{ arousal:20 }, feelings:{ affection:200, respect:200 }, preferences:{ 'anal-slut':75 },
       });

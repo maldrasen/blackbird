@@ -2,10 +2,7 @@ describe("EncounterBuilder", function() {
 
   describe("buildFromRecord()", function() {
     it("builds the record's monsters into the battle state", function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ encounter:'battle-fixture-1', ambushState:'normal' });
-
-      const state = BattleSystem.getState();
+      const state = BattleSupport.startBattle({ encounter:'battle-fixture-1' });
       expect(state.getActiveMonsters().length).to.equal(7);
       expect(state.getStartText()).to.be.null;
 
@@ -19,19 +16,13 @@ describe("EncounterBuilder", function() {
 
   describe("buildFromMonster()", function() {
     it("centers the monster in the front rank", function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ monster:'kobold-runt', ambushState:'normal' });
-
-      const state = BattleSystem.getState();
+      const state = BattleSupport.startBattle({ monster:'kobold-runt' });
       expect(state.getActiveMonsters().length).to.equal(1);
       expect(MonsterComponent.lookup(state.getEntityAtPosition('M',0,2)).code).to.equal('kobold-runt');
     });
 
     it("places even a back preferring monster in the front rank", function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ monster:'kobold-tosser', ambushState:'normal' });
-
-      const state = BattleSystem.getState();
+      const state = BattleSupport.startBattle({ monster:'kobold-tosser' });
       expect(state.getActiveMonsters().length).to.equal(1);
       expect(MonsterComponent.lookup(state.getEntityAtPosition('M',0,2)).code).to.equal('kobold-tosser');
       expect(state.getEntityAtPosition('M',1,2)).to.be.null;
@@ -204,10 +195,7 @@ describe("EncounterBuilder", function() {
 
   describe("build()", function() {
     it("builds a battle formation from the floor's cohorts", function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ cohorts:Cohort.getAllCodes(), challengeTarget:300, ambushState:'normal' });
-
-      const state = BattleSystem.getState();
+      const state = BattleSupport.startBattle({ cohorts:Cohort.getAllCodes(), challengeTarget:300 });
       const monsters = state.getActiveMonsters();
       expect(monsters.length).to.be.within(1,10);
       expect(state.getEntityAtPosition('M',0,2)).to.not.be.null;
@@ -228,7 +216,7 @@ describe("EncounterBuilder", function() {
     });
 
     it("passes the cohort's factory options to every monster", function() {
-      BattleFixtures.prepareForBattle();
+      BattleSupport.prepareParty();
 
       for (let i=0; i<3; i++) {
         BattleSystem.startBattle({ cohorts:['kobolds-deepdarks'], challengeTarget:400, ambushState:'normal' });
@@ -244,18 +232,14 @@ describe("EncounterBuilder", function() {
 
   describe("buildFromRecordData()", function() {
     it("starts a battle directly from formation data", function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ ...BattleFixtures.runtPack(), ambushState:'normal' });
-
-      const state = BattleSystem.getState();
+      const state = BattleSupport.startBattle();
       expect(state.getActiveMonsters().length).to.equal(3);
       expect(state.getStartText()).to.be.undefined;
       expect(MonsterComponent.lookup(state.getEntityAtPosition('M',0,2)).code).to.equal('kobold-runt');
     });
 
     it("resolves the formation grid and builds the monsters at their positions", function() {
-      BattleFixtures.prepareForBattle();
-      BattleSystem.startBattle({ monster:'kobold-runt', ambushState:'normal' });
+      BattleSupport.startBattle({ monster:'kobold-runt' });
 
       EncounterBuilder.buildFromRecordData([
         [1,0,0,0,1],
