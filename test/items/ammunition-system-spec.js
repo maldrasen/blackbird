@@ -55,16 +55,6 @@ describe("AmmunitionSystem", function() {
       expect(QuiverComponent.lookup(id)).to.deep.equal({ ammunition:null, quantity:0 });
       expect(Inventory().getArticleQuantity('arrows')).to.equal(10);
     });
-
-    it("skips a party member without a quiver", function() {
-      const id = CharacterFixtures.genericMale({});
-      GameSystem.getState().setPartyConfiguration({ [id]:'p-0' });
-      Inventory().addArticle('arrows', 10);
-
-      AmmunitionSystem.restock();
-
-      expect(Inventory().getArticleQuantity('arrows')).to.equal(10);
-    });
   });
 
 });

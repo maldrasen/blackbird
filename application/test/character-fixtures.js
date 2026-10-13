@@ -92,6 +92,7 @@ global.CharacterFixtures = (function() {
     genericSexualPreferences(id, options.sexualPreferences);
     genericAspects(id, options.aspects);
     genericSkills(id, options.skills);
+    genericQuiver(id, options.quiver);
 
     EquipmentComponent.create(id);
     ExperienceComponent.create(id);
