@@ -33,6 +33,7 @@ global.EnlightenSystem = (function() {
   }
 
   function finishEnlightenment() {
+    AmmunitionSystem.restock();
     state = null;
   }
 
