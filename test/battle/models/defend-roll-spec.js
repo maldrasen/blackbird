@@ -15,22 +15,6 @@ describe("DefendRoll", function() {
     EquipmentManager(id).equipItem(item, slot);
   }
 
-  function setParry(id, value) {
-    const skills = SkillsComponent.lookup(id);
-    skills.parry = value;
-    SkillsComponent.update(id, skills);
-  }
-
-  // The block-or-parry choice rolls the defender's strength against their dexterity, so the choice tests pin both
-  // attributes and stub the frequency roll. The remaining stubbed values feed the defend SkillCheck: a mid crit
-  // roll (a normal hit), a value roll of 1 (valid for any range), and the skill improvement roll.
-  function setAttributes(id, strength, dexterity) {
-    const attributes = AttributesComponent.lookup(id);
-    attributes.strength = strength;
-    attributes.dexterity = dexterity;
-    AttributesComponent.update(id, attributes);
-  }
-
   function attackAgainst(state, defender, base='longsword', ability=null) {
     const attacker = state.getActiveMonsters()[0];
     const attackRoll = PhysicalAttackRoll(attacker, defender);
@@ -44,7 +28,7 @@ describe("DefendRoll", function() {
   it("dodges bare handed", function() {
     const state = BattleSupport.startBattle();
     const defender = pinnedDefender(state);
-    setParry(defender, 0);
+    CharacterSupport.setSkill(defender, 'parry', 0);
 
     const roll = DefendRoll(defender, null, attackAgainst(state, defender));
     expect(roll.getDefendSkill()).to.equal('dodge');
@@ -63,7 +47,7 @@ describe("DefendRoll", function() {
     const state = BattleSupport.startBattle();
     const defender = pinnedDefender(state);
     equipItem(defender, 'longsword', EquipmentSlot.primary);
-    setParry(defender, 25);
+    CharacterSupport.setSkill(defender, 'parry', 25);
 
     const roll = DefendRoll(defender, null, attackAgainst(state, defender));
     expect(roll.getDefendSkill()).to.equal('parry');
@@ -73,19 +57,23 @@ describe("DefendRoll", function() {
     const state = BattleSupport.startBattle();
     const defender = pinnedDefender(state);
     equipItem(defender, 'longsword', EquipmentSlot.primary);
-    setParry(defender, 0);
+    CharacterSupport.setSkill(defender, 'parry', 0);
 
     const roll = DefendRoll(defender, null, attackAgainst(state, defender));
     expect(roll.getDefendSkill()).to.equal('dodge');
   });
 
+  // The block-or-parry choice rolls the defender's strength against their dexterity, so the choice tests pin both
+  // attributes and stub the frequency roll. The remaining stubbed values feed the defend SkillCheck: a mid crit
+  // roll (a normal hit), a value roll of 1 (valid for any range), and the skill improvement roll.
   it("parries when dexterity wins the block-or-parry roll", function() {
     const state = BattleSupport.startBattle();
     const defender = pinnedDefender(state);
     equipItem(defender, 'longsword', EquipmentSlot.primary);
     equipItem(defender, 'round-shield', EquipmentSlot.secondary);
-    setParry(defender, 25);
-    setAttributes(defender, 1, 99);
+    CharacterSupport.setSkill(defender, 'parry', 25);
+    CharacterSupport.setAttribute(defender, Attrib.strength, 1);
+    CharacterSupport.setAttribute(defender, Attrib.dexterity, 99);
 
     const attackRoll = attackAgainst(state, defender);
     Random.stubRoll(0, 50, 1, 50);
@@ -99,8 +87,9 @@ describe("DefendRoll", function() {
     const defender = pinnedDefender(state);
     equipItem(defender, 'longsword', EquipmentSlot.primary);
     equipItem(defender, 'round-shield', EquipmentSlot.secondary);
-    setParry(defender, 25);
-    setAttributes(defender, 99, 1);
+    CharacterSupport.setSkill(defender, 'parry', 25);
+    CharacterSupport.setAttribute(defender, Attrib.strength, 99);
+    CharacterSupport.setAttribute(defender, Attrib.dexterity, 1);
 
     const attackRoll = attackAgainst(state, defender);
     Random.stubRoll(99, 50, 1, 50);
@@ -113,7 +102,7 @@ describe("DefendRoll", function() {
     const state = BattleSupport.startBattle();
     const defender = pinnedDefender(state);
     equipItem(defender, 'longsword', EquipmentSlot.primary);
-    setParry(defender, 25);
+    CharacterSupport.setSkill(defender, 'parry', 25);
 
     const roll = DefendRoll(defender, null, attackAgainst(state, defender, 'longbow'));
     expect(roll.getDefendSkill()).to.equal('dodge');
@@ -123,7 +112,7 @@ describe("DefendRoll", function() {
     const state = BattleSupport.startBattle();
     const defender = pinnedDefender(state);
     equipItem(defender, 'longsword', EquipmentSlot.primary);
-    setParry(defender, 25);
+    CharacterSupport.setSkill(defender, 'parry', 25);
 
     const ability = Ability('Sneak Attack');
     ability.setTargetingMode(TargetingMode.anyEnemy);
@@ -137,7 +126,7 @@ describe("DefendRoll", function() {
     const defender = pinnedDefender(state);
     equipItem(defender, 'longsword', EquipmentSlot.primary);
     equipItem(defender, 'round-shield', EquipmentSlot.secondary);
-    setParry(defender, 25);
+    CharacterSupport.setSkill(defender, 'parry', 25);
 
     const roll = DefendRoll(defender, null, attackAgainst(state, defender, 'shortbow'));
     expect(roll.getDefendSkill()).to.equal('block');

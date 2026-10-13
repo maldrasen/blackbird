@@ -95,12 +95,6 @@ describe("NegotiationSystem", function() {
       AttributesComponent.update(id, attributes);
     }
 
-    function setArchetype(monster, archetype) {
-      const personality = PersonalityComponent.lookup(monster);
-      personality.archetype = archetype;
-      PersonalityComponent.update(monster, personality);
-    }
-
     // Boots the negotiation like the NegotiationState spec: the negotiation-fixture-2 kobold-sneak-slut with the
     // archetype pinned to slut so the question pool is deterministic. The player is made brilliant and the monster
     // dim, so the player wins the influence contest past the 100 point cap: helping feelings double and hurting ones
@@ -116,7 +110,7 @@ describe("NegotiationSystem", function() {
       BattleSystem.specRound(player);
 
       const monster = BattleSystem.getState().getActiveMonsters()[0];
-      setArchetype(monster, ArchetypeCode.slut);
+      CharacterSupport.setArchetype(monster, ArchetypeCode.slut);
 
       NegotiationSystem.start();
 
@@ -171,7 +165,7 @@ describe("NegotiationSystem", function() {
         NegotiationQuestion.setWhitelist(['tired-of-fighting']);
         const { state, monster } = bootNegotiation();
         expect(state.pickInteraction().code).to.equal('tired-of-fighting');
-        setArchetype(monster, ArchetypeCode.savage);
+        CharacterSupport.setArchetype(monster, ArchetypeCode.savage);
 
         const count = state.getInteractionCount();
         NegotiationSystem.answer('otherWay');
@@ -194,7 +188,7 @@ describe("NegotiationSystem", function() {
       // limit by taking follow up questions directly.
       it("bypasses the interaction limit without cutting the conversation short", function() {
         const { state, monster } = bootNegotiation();
-        setArchetype(monster, ArchetypeCode.savage);
+        CharacterSupport.setArchetype(monster, ArchetypeCode.savage);
 
         for (let i=0; i<5; i++) {
           state.setFollowUp('tired-of-fighting-other-way');
@@ -212,7 +206,7 @@ describe("NegotiationSystem", function() {
 
       it("shows a resolution before a pending follow up question", function() {
         const { state, monster } = bootNegotiation();
-        setArchetype(monster, ArchetypeCode.savage);
+        CharacterSupport.setArchetype(monster, ArchetypeCode.savage);
 
         state.setFollowUp('tired-of-fighting-other-way');
         state.setResolution({ type:'run' });
@@ -275,16 +269,11 @@ describe("NegotiationSystem", function() {
   });
 
   describe("dealDamage()", function() {
-    function setHealth(id, value) {
-      const health = HealthComponent.lookup(id);
-      health.currentHealth = value;
-      HealthComponent.update(id, health);
-    }
 
     it("takes the damage from the target's health", function() {
       startNegotiation();
       const player = GameSystem.getState().getPlayer();
-      setHealth(player, 10);
+      CharacterSupport.setHealth(player, 10);
 
       expect(NegotiationSystem.dealDamage(4)).to.equal(4);
       expect(HealthComponent.lookup(player).currentHealth).to.equal(6);
@@ -293,7 +282,7 @@ describe("NegotiationSystem", function() {
     it("never drops the target below 1 health", function() {
       startNegotiation();
       const player = GameSystem.getState().getPlayer();
-      setHealth(player, 10);
+      CharacterSupport.setHealth(player, 10);
 
       expect(NegotiationSystem.dealDamage(50)).to.equal(9);
       expect(HealthComponent.lookup(player).currentHealth).to.equal(1);

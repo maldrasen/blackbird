@@ -11,13 +11,6 @@ describe("Ability.UseArticle", function() {
     return tosser;
   }
 
-  function setHealth(id, current) {
-    const health = HealthComponent.lookup(id);
-    health.maxHealth = 100;
-    health.currentHealth = current;
-    HealthComponent.update(id, health);
-  }
-
   it("rejects an unknown article", function() {
     expect(() => Ability.UseArticle({ article:'no-such-article' })).to.throw('Bad Consumable code');
   });
@@ -43,7 +36,7 @@ describe("Ability.UseArticle", function() {
     const target = state.getEntityAtPosition('P.0.2');
     const ability = Ability.UseArticle({ article:'blasto' });
 
-    setHealth(target, 100);
+    CharacterSupport.setHealth(target, 100);
     BattleSystem.specRound(tosser, { target });
     ability.execute();
 

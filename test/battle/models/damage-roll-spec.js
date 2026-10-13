@@ -1,23 +1,11 @@
 describe("DamageRoll", function() {
 
-  function setStrength(id, value) {
-    const attributes = AttributesComponent.lookup(id);
-    attributes.strength = value;
-    AttributesComponent.update(id, attributes);
-  }
-
-  function setSkill(id, code, value) {
-    const skills = SkillsComponent.lookup(id);
-    skills[code] = value;
-    SkillsComponent.update(id, skills);
-  }
-
   // The stubbed values are consumed in order: attack crit roll, attack value roll, defend crit roll, defend value
   // roll, then the damage roll itself. A crit (98) or fumble (2) consumes only its crit roll.
   function contestDamage(state, stubs, status=null, materials=['steel']) {
     const attacker = state.getEntityAtPosition('P',0,2);
     const defender = state.getEntityAtPosition('P',1,2);
-    setStrength(attacker, 50);
+    CharacterSupport.setAttribute(attacker, Attrib.strength, 50);
 
     if (status) { BattleSystem.addStatus(attacker, status, { count:1 }); }
 
@@ -34,8 +22,8 @@ describe("DamageRoll", function() {
   function naturalAttackDamage(state, profile) {
     const monster = state.getEntityAtPosition('M',0,2);
     const defender = state.getEntityAtPosition('P',1,2);
-    setStrength(monster, 40);
-    setSkill(monster, 'martial-arts', 20);
+    CharacterSupport.setAttribute(monster, Attrib.strength, 40);
+    CharacterSupport.setSkill(monster, 'martial-arts', 20);
 
     Random.stubBetween(50, 1, 50, 1, 50);
 

@@ -1,20 +1,5 @@
 describe("BattleDamageSystem", function() {
 
-  // The max is pinned as well, otherwise a randomly generated character can roll a max below the current health
-  // we're setting and moderate() would clamp it back down.
-  function setHealth(id, current) {
-    const health = HealthComponent.lookup(id);
-    health.maxHealth = 100;
-    health.currentHealth = current;
-    HealthComponent.update(id, health);
-  }
-
-  function setVitality(id, value) {
-    const attributes = AttributesComponent.lookup(id);
-    attributes.vitality = value;
-    AttributesComponent.update(id, attributes);
-  }
-
   // The outcome tests aim their damage at a bared chest so the party's own armor can't
   // mitigate the hard-coded damage numbers. The species is pinned to human for the same reason - a randomly
   // rolled kobold or equian would resist part of the damage innately.
@@ -22,20 +7,14 @@ describe("BattleDamageSystem", function() {
     const equipment = EquipmentManager(id);
     equipment.equipItem(null, EquipmentSlot.chest);
     equipment.equipItem(null, EquipmentSlot.secondary);
-    makeHuman(id);
-  }
-
-  function makeHuman(id) {
-    const actor = ActorComponent.lookup(id);
-    actor.species = SpeciesCode.human;
-    ActorComponent.update(id, actor);
+    CharacterSupport.setSpecies(id, SpeciesCode.human);
   }
 
   it("knocks a character out at zero or below", function() {
     const state = BattleSupport.startBattle();
     const target = state.getEntityAtPosition('P',1,2);
-    setHealth(target, 5);
-    setVitality(target, 15);
+    CharacterSupport.setHealth(target, 5);
+    CharacterSupport.setAttribute(target, Attrib.vitality, 15);
     bareChest(target);
 
     BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:10 }, hitLocation:EquipmentSlot.chest });
@@ -52,8 +31,8 @@ describe("BattleDamageSystem", function() {
   it("still only knocks a character out at exactly negative vitality", function() {
     const state = BattleSupport.startBattle();
     const target = state.getEntityAtPosition('P',1,2);
-    setHealth(target, 5);
-    setVitality(target, 15);
+    CharacterSupport.setHealth(target, 5);
+    CharacterSupport.setAttribute(target, Attrib.vitality, 15);
     bareChest(target);
 
     BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:20 }, hitLocation:EquipmentSlot.chest });
@@ -66,8 +45,8 @@ describe("BattleDamageSystem", function() {
   it("kills a character below negative vitality", function() {
     const state = BattleSupport.startBattle();
     const target = state.getEntityAtPosition('P',1,2);
-    setHealth(target, 5);
-    setVitality(target, 15);
+    CharacterSupport.setHealth(target, 5);
+    CharacterSupport.setAttribute(target, Attrib.vitality, 15);
     bareChest(target);
 
     BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:21 }, hitLocation:EquipmentSlot.chest });
@@ -92,8 +71,8 @@ describe("BattleDamageSystem", function() {
   it("throws when damaging a target who is already down", function() {
     const state = BattleSupport.startBattle();
     const target = state.getEntityAtPosition('P',1,2);
-    setHealth(target, 5);
-    setVitality(target, 15);
+    CharacterSupport.setHealth(target, 5);
+    CharacterSupport.setAttribute(target, Attrib.vitality, 15);
     bareChest(target);
 
     BattleDamageSystem.applyDamage({ entity:target, damageTypes:{ crush:10 }, hitLocation:EquipmentSlot.chest });
@@ -123,8 +102,8 @@ describe("BattleDamageSystem", function() {
     it("announces a knocked out character", function() {
       const state = BattleSupport.startBattle();
       const target = state.getEntityAtPosition('P',1,2);
-      setHealth(target, 5);
-      setVitality(target, 15);
+      CharacterSupport.setHealth(target, 5);
+      CharacterSupport.setAttribute(target, Attrib.vitality, 15);
       bareChest(target);
       const round = specRound(state);
 
@@ -152,7 +131,7 @@ describe("BattleDamageSystem", function() {
     it("says nothing about an entity that is still up", function() {
       const state = BattleSupport.startBattle();
       const target = state.getEntityAtPosition('P',1,2);
-      setHealth(target, 100);
+      CharacterSupport.setHealth(target, 100);
       const round = specRound(state);
 
       BattleDamageSystem.addDownedMessage(target);
@@ -171,10 +150,10 @@ describe("BattleDamageSystem", function() {
 
     function pinnedTarget(state) {
       const target = state.getEntityAtPosition('P',1,2);
-      setHealth(target, 100);
-      setVitality(target, 15);
+      CharacterSupport.setHealth(target, 100);
+      CharacterSupport.setAttribute(target, Attrib.vitality, 15);
       EquipmentManager(target).equipItem(null, EquipmentSlot.secondary);
-      makeHuman(target);
+      CharacterSupport.setSpecies(target, SpeciesCode.human);
       return target;
     }
 
@@ -369,8 +348,8 @@ describe("BattleDamageSystem", function() {
   describe("difficulty scaling", function() {
     function pinnedCharacter(state) {
       const target = state.getEntityAtPosition('P',1,2);
-      setHealth(target, 100);
-      setVitality(target, 15);
+      CharacterSupport.setHealth(target, 100);
+      CharacterSupport.setAttribute(target, Attrib.vitality, 15);
       bareChest(target);
       return target;
     }

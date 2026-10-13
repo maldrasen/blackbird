@@ -9,19 +9,12 @@ describe("NegotiationState", function() {
   function buildState(fear, respect) {
     BattleSupport.startBattle({ monster:'kobold-sneak-slut' });
     BattleSystem.specRound(GameSystem.getState().getPlayer());
-    setArchetype(ArchetypeCode.slut);
+    CharacterSupport.setArchetype(BattleSystem.getState().getActiveMonsters()[0], ArchetypeCode.slut);
     NegotiationSystem.start();
 
     const state = NegotiationSystem.getState();
     state.setFeelings({ fear, respect });
     return state;
-  }
-
-  function setArchetype(archetype) {
-    const monster = BattleSystem.getState().getActiveMonsters()[0];
-    const personality = PersonalityComponent.lookup(monster);
-    personality.archetype = archetype;
-    PersonalityComponent.update(monster, personality);
   }
 
   // The party references are picked randomly, so the spec checks that each pick came from the right candidate pool
@@ -134,7 +127,7 @@ describe("NegotiationState", function() {
   describe("followUp questions", function() {
     it('forces the follow up question to be asked next', function() {
       const state = buildState(40, 20);
-      setArchetype(ArchetypeCode.savage);
+      CharacterSupport.setArchetype(BattleSystem.getState().getActiveMonsters()[0], ArchetypeCode.savage);
       expect(state.hasFollowUp()).to.equal(false);
 
       state.setFollowUp('tired-of-fighting-other-way');
@@ -156,7 +149,7 @@ describe("NegotiationState", function() {
 
     it('throws when the monster has no reaction to the question', function() {
       const state = buildState(40, 20);
-      setArchetype(ArchetypeCode.reserved);
+      CharacterSupport.setArchetype(BattleSystem.getState().getActiveMonsters()[0], ArchetypeCode.reserved);
       expect(() => state.setFollowUp('tired-of-fighting-other-way')).to.throw('has no reaction');
     });
   });

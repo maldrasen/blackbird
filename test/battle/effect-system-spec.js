@@ -4,35 +4,12 @@ describe("EffectSystem", function() {
   // P.1.3. A blasto thrown at P.0.2 therefore catches P.0.2, P.0.3, and P.1.2, plus the runt at M.0.2 standing across
   // the battle line.
 
-  function setHealth(id, current) {
-    const health = HealthComponent.lookup(id);
-    health.maxHealth = 100;
-    health.currentHealth = current;
-    HealthComponent.update(id, health);
-  }
-
-  function getHealth(id) {
-    return HealthComponent.lookup(id).currentHealth;
-  }
-
-  function setVitality(id, value) {
-    const attributes = AttributesComponent.lookup(id);
-    attributes.vitality = value;
-    AttributesComponent.update(id, attributes);
-  }
-
-  function makeHuman(id) {
-    const actor = ActorComponent.lookup(id);
-    actor.species = SpeciesCode.human;
-    ActorComponent.update(id, actor);
-  }
-
   // Downing everyone but P.0.2 leaves a single victim in the blast, keeping the stubbed roll budget readable. The
   // party characters have random species, so the victim is pinned to human (no innate resistances).
   function isolateVictim(state) {
     const victim = state.getEntityAtPosition('P',0,2);
-    makeHuman(victim);
-    setHealth(victim, 100);
+    CharacterSupport.setSpecies(victim, SpeciesCode.human);
+    CharacterSupport.setHealth(victim, 100);
     state.setCondition(state.getEntityAtPosition('P',0,3), BattleCondition.knockedOut);
     state.setCondition(state.getEntityAtPosition('P',1,2), BattleCondition.knockedOut);
     state.setCondition(state.getEntityAtPosition('M',0,2), BattleCondition.dead);
@@ -59,28 +36,30 @@ describe("EffectSystem", function() {
     it("hits every entity caught in the blast", function() {
       const state = BattleSupport.startBattle();
       const acting = state.getEntityAtPosition('M',0,1);
-      ['P.0.2','P.0.3','P.1.2','P.1.3','M.0.2'].forEach(position => setHealth(state.getEntityAtPosition(position), 100));
-      setHealth(acting, 100);
+      ['P.0.2','P.0.3','P.1.2','P.1.3','M.0.2'].forEach(position => {
+        CharacterSupport.setHealth(state.getEntityAtPosition(position), 100);
+      });
+      CharacterSupport.setHealth(acting, 100);
 
       throwBlasto(state, acting);
 
       ['P.0.2','P.0.3','P.1.2','M.0.2'].forEach(position => {
-        expect(getHealth(state.getEntityAtPosition(position)), position).to.be.lessThan(100);
+        expect(CharacterSupport.getHealth(state.getEntityAtPosition(position)), position).to.be.lessThan(100);
       });
-      expect(getHealth(state.getEntityAtPosition('P',1,3))).to.equal(100);
-      expect(getHealth(acting)).to.equal(100);
+      expect(CharacterSupport.getHealth(state.getEntityAtPosition('P',1,3))).to.equal(100);
+      expect(CharacterSupport.getHealth(acting)).to.equal(100);
     });
 
     it("catches the acting entity in its own blast", function() {
       const state = BattleSupport.startBattle();
       const acting = state.getEntityAtPosition('M',0,2);
-      setHealth(acting, 100);
-      setHealth(state.getEntityAtPosition('P',0,2), 100);
+      CharacterSupport.setHealth(acting, 100);
+      CharacterSupport.setHealth(state.getEntityAtPosition('P',0,2), 100);
 
       throwBlasto(state, acting);
 
-      expect(getHealth(acting)).to.be.lessThan(100);
-      expect(getHealth(state.getEntityAtPosition('P',0,2))).to.be.lessThan(100);
+      expect(CharacterSupport.getHealth(acting)).to.be.lessThan(100);
+      expect(CharacterSupport.getHealth(state.getEntityAtPosition('P',0,2))).to.be.lessThan(100);
     });
 
     // The crimson tear defines no target, areaOfEffect, or messageForEntity, and its story names the item with an
@@ -127,7 +106,7 @@ describe("EffectSystem", function() {
 
       expect(StatusEffects(victim).hasBlind()).to.equal(false);
       expect(StatusEffects(victim).hasStun()).to.equal(false);
-      expect(getHealth(victim)).to.equal(96);
+      expect(CharacterSupport.getHealth(victim)).to.equal(96);
       expect(messages[1].text).to.include('takes 4 damage!');
     });
 
@@ -152,8 +131,8 @@ describe("EffectSystem", function() {
     it("stops applying effects to a victim the damage downs", function() {
       const state = BattleSupport.startBattle();
       const victim = isolateVictim(state);
-      setHealth(victim, 3);
-      setVitality(victim, 10);
+      CharacterSupport.setHealth(victim, 3);
+      CharacterSupport.setAttribute(victim, Attrib.vitality, 10);
 
       Random.stubRoll(...stubStory());
       Random.stubRollDice(6);

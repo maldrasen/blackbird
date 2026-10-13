@@ -3,14 +3,6 @@ describe("Ability.WeaponAttack", function() {
   // The spec party puts the player at P.0.2 with a longsword and a shield, and a rogue at P.1.3 with a
   // dagger in each hand. The runt pack is a single rank of kobolds.
 
-  // The speed factor comes from the species. A human's factor of 1 keeps the number of strikes a known weapon fits
-  // into a second predictable whatever species the party rolled. A kobold's 0.87 squeezes two shots from a bow.
-  function pinSpeed(id, species=SpeciesCode.human) {
-    const actor = ActorComponent.lookup(id);
-    actor.species = species;
-    ActorComponent.update(id, actor);
-  }
-
   // A target that can't go down never cuts the strikes short.
   function makeUnkillable(id) {
     const health = HealthComponent.lookup(id);
@@ -115,6 +107,8 @@ describe("Ability.WeaponAttack", function() {
     });
   });
 
+  // The speed factor comes from the species. A human's factor of 1 keeps the number of strikes a known weapon fits
+  // into a second predictable whatever species the party rolled. A kobold's 0.87 squeezes two shots from a bow.
   describe("execute()", function() {
     it("resolves a single strike from a weapon that takes the whole second", function() {
       const state = BattleSupport.startBattle();
@@ -122,7 +116,7 @@ describe("Ability.WeaponAttack", function() {
       const kobold = state.getEntityAtPosition('M.0.2');
       const ability = Ability.WeaponAttack();
 
-      pinSpeed(player);
+      CharacterSupport.setSpecies(player, SpeciesCode.human);
       makeUnkillable(kobold);
       BattleSupport.startCharacterRound(player, kobold);
       ability.execute();
@@ -139,7 +133,7 @@ describe("Ability.WeaponAttack", function() {
       const kobold = state.getEntityAtPosition('M.0.2');
 
       ItemSupport.equip(player, 'dagger', ['steel']);
-      pinSpeed(player);
+      CharacterSupport.setSpecies(player, SpeciesCode.human);
       makeUnkillable(kobold);
       BattleSupport.startCharacterRound(player, kobold);
       Ability.WeaponAttack().execute();
@@ -156,7 +150,7 @@ describe("Ability.WeaponAttack", function() {
 
       ItemSupport.equip(player, 'shortbow', ['wood']);
       QuiverComponent.update(player, { ammunition:'elm-arrow', quantity:3 });
-      pinSpeed(player);
+      CharacterSupport.setSpecies(player, SpeciesCode.human);
       makeUnkillable(kobold);
       BattleSupport.startCharacterRound(player, kobold);
       Ability.WeaponAttack().execute();
@@ -172,7 +166,7 @@ describe("Ability.WeaponAttack", function() {
 
       ItemSupport.equip(player, 'shortbow', ['wood']);
       QuiverComponent.update(player, { ammunition:'elm-arrow', quantity:1 });
-      pinSpeed(player, SpeciesCode.kobold);
+      CharacterSupport.setSpecies(player, SpeciesCode.kobold);
       makeUnkillable(kobold);
       BattleSupport.startCharacterRound(player, kobold);
       Ability.WeaponAttack().execute();
@@ -190,7 +184,7 @@ describe("Ability.WeaponAttack", function() {
 
       ItemSupport.equip(player, 'shortbow', ['wood']);
       QuiverComponent.update(player, { ammunition:'elm-arrow', quantity:5 });
-      pinSpeed(player, SpeciesCode.kobold);
+      CharacterSupport.setSpecies(player, SpeciesCode.kobold);
       makeUnkillable(kobold);
       BattleSupport.startCharacterRound(player, kobold);
       Ability.WeaponAttack().execute();
@@ -219,7 +213,7 @@ describe("Ability.WeaponAttack", function() {
       const rogue = state.getEntityAtPosition('P.1.3');
       const kobold = state.getEntityAtPosition('M.0.2');
 
-      pinSpeed(rogue);
+      CharacterSupport.setSpecies(rogue, SpeciesCode.human);
       makeUnkillable(kobold);
       BattleSupport.startCharacterRound(rogue, kobold);
       Ability.WeaponAttack().execute();

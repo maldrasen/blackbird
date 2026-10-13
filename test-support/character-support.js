@@ -167,10 +167,54 @@ global.CharacterSupport = (function() {
     return QuiverComponent.create(id, options);
   }
 
+  // Read-change-write helpers for pinning a character's rolled components to what a spec needs. The health max is
+  // pinned as well, otherwise a randomly generated character can roll a max below the current health being set and
+  // the component would clamp it back down.
+  function setHealth(id, current, max=100) {
+    const health = HealthComponent.lookup(id);
+    health.maxHealth = max;
+    health.currentHealth = current;
+    HealthComponent.update(id, health);
+  }
+
+  function getHealth(id) {
+    return HealthComponent.lookup(id).currentHealth;
+  }
+
+  function setAttribute(id, code, value) {
+    const attributes = AttributesComponent.lookup(id);
+    attributes[code] = value;
+    AttributesComponent.update(id, attributes);
+  }
+
+  function setSkill(id, code, value) {
+    const skills = SkillsComponent.lookup(id);
+    skills[code] = value;
+    SkillsComponent.update(id, skills);
+  }
+
+  function setSpecies(id, species) {
+    const actor = ActorComponent.lookup(id);
+    actor.species = species;
+    ActorComponent.update(id, actor);
+  }
+
+  function setArchetype(id, archetype) {
+    const personality = PersonalityComponent.lookup(id);
+    personality.archetype = archetype;
+    PersonalityComponent.update(id, personality);
+  }
+
   return {
     player,
     genericMale,
     genericFemale,
+    setHealth,
+    getHealth,
+    setAttribute,
+    setSkill,
+    setSpecies,
+    setArchetype,
   };
 
 })();

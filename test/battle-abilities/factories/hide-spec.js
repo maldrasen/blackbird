@@ -9,18 +9,6 @@ describe("Ability.Hide", function() {
     BattleSystem.specRound(acting);
   }
 
-  function setAttribute(id, code, value) {
-    const attributes = AttributesComponent.lookup(id);
-    attributes[code] = value;
-    AttributesComponent.update(id, attributes);
-  }
-
-  function setSkill(id, code, value) {
-    const skills = SkillsComponent.lookup(id);
-    skills[code] = value;
-    SkillsComponent.update(id, skills);
-  }
-
   it("carries a monster's priority", function() {
     expect(Ability.Hide().getPriority()).to.equal(50);
     expect(Ability.Hide({ priority:70 }).getPriority()).to.equal(70);
@@ -38,7 +26,7 @@ describe("Ability.Hide", function() {
       const state = BattleSupport.startBattle();
       const player = state.getEntityAtPosition('P.0.2');
 
-      setSkill(player, 'stealth', 10);
+      CharacterSupport.setSkill(player, 'stealth', 10);
       startRound(player);
 
       expect(Ability.Hide().isPossible()).to.equal(false);
@@ -48,7 +36,7 @@ describe("Ability.Hide", function() {
       const state = BattleSupport.startBattle();
       const rogue = state.getEntityAtPosition('P.1.3');
 
-      setSkill(rogue, 'stealth', 0);
+      CharacterSupport.setSkill(rogue, 'stealth', 0);
       startRound(rogue);
 
       expect(Ability.Hide().isPossible()).to.equal(false);
@@ -74,9 +62,9 @@ describe("Ability.Hide", function() {
       const kobold = state.getEntityAtPosition('M.0.3');
       const ability = Ability.Hide();
 
-      setSkill(rogue, 'stealth', 100);
-      setAttribute(rogue, Attrib.dexterity, 100);
-      setAttribute(kobold, Attrib.intelligence, 1);
+      CharacterSupport.setSkill(rogue, 'stealth', 100);
+      CharacterSupport.setAttribute(rogue, Attrib.dexterity, 100);
+      CharacterSupport.setAttribute(kobold, Attrib.intelligence, 1);
       startRound(rogue);
       ability.execute();
 
@@ -92,9 +80,9 @@ describe("Ability.Hide", function() {
       const rogue = state.getEntityAtPosition('P.1.3');
       const kobold = state.getEntityAtPosition('M.0.3');
 
-      setSkill(rogue, 'stealth', 1);
-      setAttribute(rogue, Attrib.dexterity, 1);
-      setAttribute(kobold, Attrib.intelligence, 100);
+      CharacterSupport.setSkill(rogue, 'stealth', 1);
+      CharacterSupport.setAttribute(rogue, Attrib.dexterity, 1);
+      CharacterSupport.setAttribute(kobold, Attrib.intelligence, 100);
       startRound(rogue);
       Ability.Hide().execute();
 

@@ -42,17 +42,6 @@ describe("BattleSpellSystem", function() {
     return ['P.0.2','P.0.3','P.1.2','P.1.3'].map(position => state.getEntityAtPosition(position));
   }
 
-  function setHealth(id, current) {
-    const health = HealthComponent.lookup(id);
-    health.maxHealth = 100;
-    health.currentHealth = current;
-    HealthComponent.update(id, health);
-  }
-
-  function getHealth(id) {
-    return HealthComponent.lookup(id).currentHealth;
-  }
-
   // The skill check consumes the between queue: first the d100 crit band roll, then (in the normal band) the value
   // roll. A stubbed value roll of 1 still beats the difficulty because the skill factor scales it back up. The story
   // pick and damage rolls are left to real randomness - the damage dice always leave a mark, so nothing downstream
@@ -69,14 +58,14 @@ describe("BattleSpellSystem", function() {
     it("releases the stored spell at its stored power level", function() {
       const state = BattleSupport.startBattle();
       const party = getParty(state);
-      party.forEach(id => setHealth(id, 100));
+      party.forEach(id => CharacterSupport.setHealth(id, 100));
 
       Random.stubBetween(50, 1);
       const acting = castSpecSpark(state);
 
       expect(receivedPowerLevel).to.equal(2);
       expect(state.isCastingSpell(acting)).to.equal(false);
-      party.forEach(id => expect(getHealth(id), id).to.be.lessThan(100));
+      party.forEach(id => expect(CharacterSupport.getHealth(id), id).to.be.lessThan(100));
 
       const round = BattleSystem.getRound();
       expect(round.getTime()).to.be.greaterThan(0);
@@ -86,26 +75,26 @@ describe("BattleSpellSystem", function() {
     it("boosts the power level when the skill check crits", function() {
       const state = BattleSupport.startBattle();
       const party = getParty(state);
-      party.forEach(id => setHealth(id, 100));
+      party.forEach(id => CharacterSupport.setHealth(id, 100));
 
       Random.stubBetween(98);
       castSpecSpark(state);
 
       expect(receivedPowerLevel).to.equal(4);
-      party.forEach(id => expect(getHealth(id), id).to.be.lessThan(100));
+      party.forEach(id => expect(CharacterSupport.getHealth(id), id).to.be.lessThan(100));
     });
 
     it("fizzles the spell when the skill check fumbles", function() {
       const state = BattleSupport.startBattle();
       const party = getParty(state);
-      party.forEach(id => setHealth(id, 100));
+      party.forEach(id => CharacterSupport.setHealth(id, 100));
 
       Random.stubBetween(1);
       const acting = castSpecSpark(state);
 
       expect(receivedPowerLevel).to.equal(null);
       expect(state.isCastingSpell(acting)).to.equal(false);
-      party.forEach(id => expect(getHealth(id), id).to.equal(100));
+      party.forEach(id => expect(CharacterSupport.getHealth(id), id).to.equal(100));
 
       const round = BattleSystem.getRound();
       expect(round.getTime()).to.be.greaterThan(0);
@@ -117,7 +106,7 @@ describe("BattleSpellSystem", function() {
     it("hits the target stored when the cast began", function() {
       const state = BattleSupport.startBattle();
       const party = getParty(state);
-      party.forEach(id => setHealth(id, 100));
+      party.forEach(id => CharacterSupport.setHealth(id, 100));
       const target = party[1];
 
       Random.stubBetween(50, 1);
@@ -125,8 +114,8 @@ describe("BattleSpellSystem", function() {
       state.startCastingSpell({ code:'spec-bolt', powerLevel:2, target:target, targetPosition:state.getPosition(target) });
       BattleSpellSystem.castSpell();
 
-      expect(getHealth(target)).to.be.lessThan(100);
-      party.filter(id => id !== target).forEach(id => expect(getHealth(id), id).to.equal(100));
+      expect(CharacterSupport.getHealth(target)).to.be.lessThan(100);
+      party.filter(id => id !== target).forEach(id => expect(CharacterSupport.getHealth(id), id).to.equal(100));
 
       const messages = BattleSystem.getRound().getMessages();
       expect(messages[0].text).to.include(ActorComponent.lookup(target).name);
@@ -137,7 +126,7 @@ describe("BattleSpellSystem", function() {
     it("redirects to the closest available target when the original target is down", function() {
       const state = BattleSupport.startBattle();
       const party = getParty(state);
-      party.forEach(id => setHealth(id, 100));
+      party.forEach(id => CharacterSupport.setHealth(id, 100));
       const target = state.getEntityAtPosition('P',0,2);
 
       Random.stubBetween(50, 1);
@@ -147,14 +136,14 @@ describe("BattleSpellSystem", function() {
       BattleSpellSystem.castSpell();
 
       const redirected = state.getEntityAtPosition('P',0,3);
-      expect(getHealth(redirected)).to.be.lessThan(100);
-      party.filter(id => id !== redirected).forEach(id => expect(getHealth(id), id).to.equal(100));
+      expect(CharacterSupport.getHealth(redirected)).to.be.lessThan(100);
+      party.filter(id => id !== redirected).forEach(id => expect(CharacterSupport.getHealth(id), id).to.equal(100));
     });
 
     it("counts rank distance for more than position distance when redirecting", function() {
       const state = BattleSupport.startBattle();
       const party = getParty(state);
-      party.forEach(id => setHealth(id, 100));
+      party.forEach(id => CharacterSupport.setHealth(id, 100));
       const target = state.getEntityAtPosition('P',0,2);
 
       Random.stubBetween(50, 1);
@@ -165,8 +154,8 @@ describe("BattleSpellSystem", function() {
       BattleSpellSystem.castSpell();
 
       const redirected = state.getEntityAtPosition('P',1,2);
-      expect(getHealth(redirected)).to.be.lessThan(100);
-      expect(getHealth(state.getEntityAtPosition('P',1,3))).to.equal(100);
+      expect(CharacterSupport.getHealth(redirected)).to.be.lessThan(100);
+      expect(CharacterSupport.getHealth(state.getEntityAtPosition('P',1,3))).to.equal(100);
     });
 
     it("throws when the acting entity is not casting a spell", function() {

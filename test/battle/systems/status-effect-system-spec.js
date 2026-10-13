@@ -1,24 +1,5 @@
 describe("StatusEffectSystem", function() {
 
-  function setHealth(id, current) {
-    const health = HealthComponent.lookup(id);
-    health.maxHealth = 100;
-    health.currentHealth = current;
-    HealthComponent.update(id, health);
-  }
-
-  function setVitality(id, value) {
-    const attributes = AttributesComponent.lookup(id);
-    attributes.vitality = value;
-    AttributesComponent.update(id, attributes);
-  }
-
-  function makeHuman(id) {
-    const actor = ActorComponent.lookup(id);
-    actor.species = SpeciesCode.human;
-    ActorComponent.update(id, actor);
-  }
-
   // The specs push the poison's entry to the top of the turn order so that advanceBattle() dispatches it.
   function poisonVictim(state, victim) {
     BattleSystem.addStatus(victim, 'poison', { strength:10, interval:500, damage:{ x:1, d:6, p:2 }});
@@ -181,7 +162,7 @@ describe("StatusEffectSystem", function() {
     it("removes the effect when its removal entry comes up", function() {
       const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
-      setHealth(victim, 100);
+      CharacterSupport.setHealth(victim, 100);
 
       BattleSystem.addStatus(victim, 'blind', { duration:1000 });
       state.moveToTopOfTurnOrder({ type:'status', id:victim, code:'blind' });
@@ -223,9 +204,9 @@ describe("StatusEffectSystem", function() {
     it("damages the victim and reschedules the tick one interval later", function() {
       const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
-      setHealth(victim, 100);
-      setVitality(victim, 15);
-      makeHuman(victim);
+      CharacterSupport.setHealth(victim, 100);
+      CharacterSupport.setAttribute(victim, Attrib.vitality, 15);
+      CharacterSupport.setSpecies(victim, SpeciesCode.human);
       poisonVictim(state, victim);
 
       const start = state.getNext().time;
@@ -246,9 +227,9 @@ describe("StatusEffectSystem", function() {
     it("does not reschedule the tick when it downs the victim", function() {
       const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
-      setHealth(victim, 1);
-      setVitality(victim, 15);
-      makeHuman(victim);
+      CharacterSupport.setHealth(victim, 1);
+      CharacterSupport.setAttribute(victim, Attrib.vitality, 15);
+      CharacterSupport.setSpecies(victim, SpeciesCode.human);
       poisonVictim(state, victim);
 
       Random.stubRollDice(6);
@@ -268,9 +249,9 @@ describe("StatusEffectSystem", function() {
     it("ends the effect after its damage when the victim resists it", function() {
       const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
-      setHealth(victim, 100);
-      setVitality(victim, 15);
-      makeHuman(victim);
+      CharacterSupport.setHealth(victim, 100);
+      CharacterSupport.setAttribute(victim, Attrib.vitality, 15);
+      CharacterSupport.setSpecies(victim, SpeciesCode.human);
       poisonVictim(state, victim);
 
       Random.stubRollDice(6);
@@ -292,9 +273,9 @@ describe("StatusEffectSystem", function() {
     it("counts the victim's enchanted resistance against the effect when it ticks", function() {
       const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
-      setHealth(victim, 100);
-      setVitality(victim, 15);
-      makeHuman(victim);
+      CharacterSupport.setHealth(victim, 100);
+      CharacterSupport.setAttribute(victim, Attrib.vitality, 15);
+      CharacterSupport.setSpecies(victim, SpeciesCode.human);
       Random.stubBetween(12);
       ItemSupport.equip(victim, 'helm', ['steel'], { enchantment:{ pattern:'incorruptible' } });
       poisonVictim(state, victim);
@@ -310,9 +291,9 @@ describe("StatusEffectSystem", function() {
     it("ticks and reschedules when the victim fails to resist", function() {
       const state = BattleSupport.startBattle();
       const victim = state.getEntityAtPosition('P',1,2);
-      setHealth(victim, 100);
-      setVitality(victim, 15);
-      makeHuman(victim);
+      CharacterSupport.setHealth(victim, 100);
+      CharacterSupport.setAttribute(victim, Attrib.vitality, 15);
+      CharacterSupport.setSpecies(victim, SpeciesCode.human);
       poisonVictim(state, victim);
 
       const start = state.getNext().time;
@@ -331,7 +312,7 @@ describe("StatusEffectSystem", function() {
       monsters.slice(1).forEach(id => BattleDeathSystem.killEntity(id));
 
       const victim = monsters[0];
-      setHealth(victim, 1);
+      CharacterSupport.setHealth(victim, 1);
       poisonVictim(state, victim);
 
       Random.stubRollDice(6);
