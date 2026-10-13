@@ -56,6 +56,18 @@ global.Validate = (function() {
     }
   }
 
+  function isWholeNumber(name, value, message=null) {
+    if (!Number.isInteger(value)) {
+      throw new Error(message ? message : `Validate.isWholeNumber Failed: ${name} is not a whole number.`);
+    }
+  }
+
+  function isNotNegative(name, value, message=null) {
+    if (typeof value !== 'number' || value < 0) {
+      throw new Error(message ? message : `Validate.isNotNegative Failed: ${name} is negative.`);
+    }
+  }
+
   function isFunction(name, value, message=null) {
     if (typeof value !== 'function') {
       throw new Error(message ? message : `Validate.isFunction Failed: ${name} is not a function.`);
@@ -117,6 +129,8 @@ global.Validate = (function() {
     equals,
     isString,
     isNumber,
+    isWholeNumber,
+    isNotNegative,
     isFunction,
     isArray,
     isDiceRoll,

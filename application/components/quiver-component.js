@@ -31,7 +31,8 @@ global.QuiverComponent = (function() {
       }
     });
 
-    Validate.isNumber('Quiver.quantity', quiverComponent.quantity);
+    Validate.isWholeNumber('Quiver.quantity', quiverComponent.quantity);
+    Validate.isNotNegative('Quiver.quantity', quiverComponent.quantity);
 
     if (quiverComponent.ammunition != null) {
       Ammunition.lookup(quiverComponent.ammunition);

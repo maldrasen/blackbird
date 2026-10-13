@@ -12,6 +12,28 @@ describe("QuiverComponent", function() {
     expect(QuiverComponent.lookup(id)).to.deep.equal({ ammunition:'arrows', quantity:20 });
   });
 
+  it("keeps the ammunition type when the quiver runs empty", function() {
+    const id = Registry.createEntity();
+    QuiverComponent.create(id, { ammunition:'arrows', quantity:3 });
+    QuiverComponent.update(id, { quantity:0 });
+    expect(QuiverComponent.lookup(id)).to.deep.equal({ ammunition:'arrows', quantity:0 });
+  });
+
+  it("rejects a negative quantity", function() {
+    const id = Registry.createEntity();
+    QuiverComponent.create(id, { ammunition:'arrows', quantity:5 });
+    expect(function() {
+      QuiverComponent.update(id, { quantity:-1 });
+    }).to.throw('Quiver.quantity is negative');
+  });
+
+  it("rejects a fractional quantity", function() {
+    const id = Registry.createEntity();
+    expect(function() {
+      QuiverComponent.create(id, { ammunition:'arrows', quantity:1.5 });
+    }).to.throw('Quiver.quantity is not a whole number');
+  });
+
   it("rejects an ammunition code that doesn't exist", function() {
     const id = Registry.createEntity();
     expect(function() {
@@ -30,7 +52,7 @@ describe("QuiverComponent", function() {
     const id = Registry.createEntity();
     expect(function() {
       QuiverComponent.create(id, { ammunition:'arrows', quantity:'some' });
-    }).to.throw('Quiver.quantity is not a number');
+    }).to.throw('Quiver.quantity is not a whole number');
   });
 
 });

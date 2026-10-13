@@ -775,6 +775,7 @@
     "test/helpers/random-spec.js",
     "test/helpers/rarity-helper-spec.js",
     "test/helpers/string-helper-spec.js",
+    "test/helpers/validate-spec.js",
     "test/helpers/visibility-helper-spec.js",
     "test/items/article-appraiser-spec.js",
     "test/items/character-equipper-spec.js",
