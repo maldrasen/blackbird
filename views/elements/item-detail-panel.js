@@ -62,6 +62,8 @@ global.ItemDetailPanel = function() {
   function buildArticleDetails(article) {
     const details = buildDetails(article);
 
+    if (article.getType() === ArticleType.ammunition) { addProperties(details, ammunitionProperties(article)); }
+
     if (isUsableNow(article)) {
       const useButton = X.createElement(`<a href='#' class='button button-primary use-button'>Use</a>`);
       useButton.addEventListener('click', () => { clickUse(article); });
@@ -69,6 +71,16 @@ global.ItemDetailPanel = function() {
     }
 
     return details;
+  }
+
+  function ammunitionProperties(article) {
+    const code = article.getCode();
+    const damage = Object.entries(Ammunition.lookup(code).getDamageTypes()).
+      map(([type, range]) => `<div>${rangeText(range)} ${type}</div>`).join('');
+
+    return [
+      { label:'Damage', content:damage },
+    ];
   }
 
   // Using an article with no one selected puts the party select into target mode, and the article is used on
@@ -103,14 +115,20 @@ global.ItemDetailPanel = function() {
   function buildItemDetails(item) {
     const details = buildDetails(item);
     const base = item.getBase();
-    const properties = X.createElement(`<ul class='properties'></ul>`);
+    const properties = [];
 
-    if (base.isWeapon()) { weaponProperties(item).forEach(property => properties.appendChild(buildProperty(property))); }
-    if (base.hasReduction()) { armorProperties(item).forEach(property => properties.appendChild(buildProperty(property))); }
+    if (base.isWeapon()) { properties.push(...weaponProperties(item)); }
+    if (base.hasReduction()) { properties.push(...armorProperties(item)); }
 
-    details.insertBefore(properties, details.querySelector('.value'));
+    addProperties(details, properties);
 
     return details;
+  }
+
+  function addProperties(details, properties) {
+    const list = X.createElement(`<ul class='properties'></ul>`);
+    properties.forEach(property => list.appendChild(buildProperty(property)));
+    details.insertBefore(list, details.querySelector('.value'));
   }
 
   function buildProperty(property) {

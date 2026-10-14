@@ -79,6 +79,9 @@
       font-family: "habibi", serif;
       color: variables.$fg-very-weak;
     }
+    .value .label {
+      width: 80px;
+    }
   }
 
   .equipment-summary-panel {
