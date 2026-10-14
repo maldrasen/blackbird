@@ -1,4 +1,6 @@
 global.EquipmentPanel = (function() {
+  const ammunitionSlot = 'ammunition';
+
   let character;
   let equipmentManager;
   let selectedSlot;
@@ -79,7 +81,16 @@ global.EquipmentPanel = (function() {
   function updateSlots() {
     const slotList = rootElement.querySelector('.slots-list');
     X.empty(slotList);
-    character.getEquipmentSlots().forEach(slot => slotList.appendChild(buildEquipmentSlot(slot)));
+    listSlots().forEach(slot => slotList.appendChild(buildEquipmentSlot(slot)));
+  }
+
+  // Ammunition isn't an equipment slot, but it reads as one, so it's listed with the weapons that use it.
+  function listSlots() {
+    return character.getEquipmentSlots().flatMap(slot => slot === EquipmentSlot.secondary ? [slot, ammunitionSlot] : [slot]);
+  }
+
+  function isAmmunitionSlot(slot=selectedSlot) {
+    return slot === ammunitionSlot;
   }
 
   function buildEquipmentSlot(slot) {
@@ -95,11 +106,18 @@ global.EquipmentPanel = (function() {
   }
 
   function equippedNameOptions(slot) {
+    if (isAmmunitionSlot(slot)) { return quiverNameOptions(); }
     const equippedId = equipmentManager.getSlot(slot);
     return equippedId ? { itemId:equippedId } : null;
   }
 
+  function quiverNameOptions() {
+    const quiver = QuiverComponent.lookup(character.getEntity());
+    return quiver.ammunition ? { articleCode:quiver.ammunition, quantity:quiver.quantity } : null;
+  }
+
   function getEquipped() {
+    if (isAmmunitionSlot()) { return QuiverComponent.lookup(character.getEntity()).ammunition; }
     return equipmentManager.getSlot(selectedSlot);
   }
 
@@ -131,9 +149,18 @@ global.EquipmentPanel = (function() {
     X.removeClass(candidatePanel,'hide');
   }
 
+  function listCandidates() {
+    return isAmmunitionSlot() ? listAmmunitionCandidates() : listItemCandidates();
+  }
+
+  function listAmmunitionCandidates() {
+    return AmmunitionSystem.getAmmunitionFor(character.getEntity()).
+      map(entry => ({ key:entry.code, nameOptions:{ articleCode:entry.code, quantity:entry.quantity }, isEquipped:entry.isLoaded }));
+  }
+
   // The equipped item has left the party inventory, so it's added back in and sorted with the candidates by name.
   // That way the list keeps the same order as things are equipped and unequipped.
-  function listCandidates() {
+  function listItemCandidates() {
     const equippedId = getEquipped();
     const candidates = InventorySystem.getEquipmentForSlot(character.getEntity(), selectedSlot).
       map(entry => ({ itemId:entry.itemId, name:entry.name }));
@@ -184,7 +211,7 @@ global.EquipmentPanel = (function() {
   }
 
   function describe(key) {
-    return { id:key };
+    return isAmmunitionSlot() ? { code:key } : { id:key };
   }
 
   function keyOf(selected) {
@@ -206,13 +233,15 @@ global.EquipmentPanel = (function() {
 
   // Equipping can knock items out of other slots, like a two-handed weapon clearing the off hand, so the whole tab is
   // rebuilt. The candidate stays selected so the details flip to the opposite action.
-  function equip(itemId) {
-    InventorySystem.equip(character.getEntity(), itemId, selectedSlot);
+  function equip(key) {
+    const id = character.getEntity();
+    isAmmunitionSlot() ? AmmunitionSystem.loadQuiver(id, key) : InventorySystem.equip(id, key, selectedSlot);
     update();
   }
 
   function unequip() {
-    InventorySystem.unequip(character.getEntity(), selectedSlot);
+    const id = character.getEntity();
+    isAmmunitionSlot() ? AmmunitionSystem.unloadQuiver(id) : InventorySystem.unequip(id, selectedSlot);
     update();
   }
 

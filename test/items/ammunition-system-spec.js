@@ -134,8 +134,8 @@ describe("AmmunitionSystem", function() {
       Inventory().addArticle('rhysh-apple', 3);
 
       expect(AmmunitionSystem.getAmmunitionFor(id)).to.deep.equal([
-        { code:'elm-arrow', name:'Elm Arrows', quantity:30, isLoaded:false },
-        { code:'razerfang-arrow', name:'Razerfang Arrows', quantity:10, isLoaded:false },
+        { code:'elm-arrow', name:'Elm Arrow', quantity:30, isLoaded:false },
+        { code:'razerfang-arrow', name:'Razerfang Arrow', quantity:10, isLoaded:false },
       ]);
     });
 
@@ -145,8 +145,8 @@ describe("AmmunitionSystem", function() {
       Inventory().addArticle('blackflame-arrow', 5);
 
       expect(AmmunitionSystem.getAmmunitionFor(id)).to.deep.equal([
-        { code:'blackflame-arrow', name:'Blackflame Arrows', quantity:5, isLoaded:false },
-        { code:'elm-arrow', name:'Elm Arrows', quantity:20, isLoaded:true },
+        { code:'blackflame-arrow', name:'Blackflame Arrow', quantity:5, isLoaded:false },
+        { code:'elm-arrow', name:'Elm Arrow', quantity:20, isLoaded:true },
       ]);
     });
 
@@ -154,7 +154,7 @@ describe("AmmunitionSystem", function() {
       const id = buildArcher({ ammunition:'elm-arrow', quantity:0 });
 
       expect(AmmunitionSystem.getAmmunitionFor(id)).to.deep.equal([
-        { code:'elm-arrow', name:'Elm Arrows', quantity:0, isLoaded:true },
+        { code:'elm-arrow', name:'Elm Arrow', quantity:0, isLoaded:true },
       ]);
     });
 
