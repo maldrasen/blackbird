@@ -32,6 +32,20 @@ global.AmmunitionSystem = (function() {
     QuiverComponent.update(id, { quantity: quiver.quantity + quantity });
   }
 
+  // Every type of ammunition the party carries. The loaded type stays listed when the inventory has run out of it,
+  // so that it can be unloaded.
+  function getAmmunitionFor(id) {
+    const loaded = QuiverComponent.lookup(id).ammunition;
+    const codes = Object.keys(Inventory().getArticles()).
+      filter(code => Article.lookup(code).getType() === ArticleType.ammunition);
+
+    if (loaded && codes.includes(loaded) === false) { codes.push(loaded); }
+
+    return codes.
+      map(code => ({ code, name:Article.lookup(code).getName(), isLoaded:code === loaded })).
+      sort((a,b) => a.name.localeCompare(b.name));
+  }
+
   // Monsters don't track ammunition, and an enchanted bow may someday not need any.
   function isRequired(id, weapon) {
     return MonsterComponent.lookup(id) == null && weapon.usesAmmunition();
@@ -53,6 +67,7 @@ global.AmmunitionSystem = (function() {
     restock,
     loadQuiver,
     unloadQuiver,
+    getAmmunitionFor,
     isRequired,
     hasAmmunitionFor,
     spend,

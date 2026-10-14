@@ -10,7 +10,7 @@ metadata:
 
 The user works across three machines with different repo paths: Windows (D:\Work\projects\blackbird), a Mac, and a Linux box. They avoid the Windows home directory for project files.
 
-On the Windows box, `python`, `python3`, and `py` all resolve to Python 3.15 as of 2026-10-13. Before that only `py` worked, which caused silent "failed" Bash runs whenever a command shelled out to `python3`. Perl is also available in Git Bash and works for multi-line in-place edits.
+On the Windows box, `python`, `python3`, and `py` all resolve to Python 3.15 as of 2026-10-13. Before that only `py` worked, which caused silent "failed" Bash runs whenever a command shelled out to `python3`. Perl is also available in Git Bash and works for multi-line in-place edits. The Bash tool does not set a scratchpad environment variable on this box, so helper scripts need the explicit scratchpad path from the session's environment block.
 
 **Why:** Bash scripts that reach for python3 silently did nothing on this machine before the upgrade, so earlier sessions reported failures without explaining them.
 

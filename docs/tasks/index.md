@@ -6,10 +6,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 
 - [258] Rework Character Cards `0pt` — [258-rework-character-cards.md](258-rework-character-cards.md)
 
-## Priority 1
-
-- [266] Equip ammo in UI `5pt` — [266-equip-ammo-in-ui.md](266-equip-ammo-in-ui.md)
-
 ## Priority 2
 
 - [3] Persisted Action Controls `5pt` — [003-persisted-action-controlls.md](003-persisted-action-controlls.md)

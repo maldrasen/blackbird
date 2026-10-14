@@ -11,7 +11,9 @@
     gap: 10px;
   }
 
+  // Without this the two panels shrink to make room when the details hold a long line of text.
   .slots-panel, .candidate-panel {
+    flex: none;
     overflow-y: auto;
     overflow-x: hidden;
     border: variables.$border-light;
@@ -76,6 +78,9 @@
       margin: 10px;
       font-family: "habibi", serif;
       color: variables.$fg-very-weak;
+    }
+    .value .label {
+      width: 80px;
     }
   }
 

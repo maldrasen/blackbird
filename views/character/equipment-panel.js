@@ -1,4 +1,6 @@
 global.EquipmentPanel = (function() {
+  const ammunitionSlot = 'ammunition';
+
   let character;
   let equipmentManager;
   let selectedSlot;
@@ -32,11 +34,11 @@ global.EquipmentPanel = (function() {
     const candidates = listCandidates();
     if (candidates.length === 0) { return; }
 
-    const current = candidates.findIndex(candidate => candidate.itemId === selectedCandidate);
+    const current = candidates.findIndex(candidate => candidate.key === selectedCandidate);
     const start = (current >= 0) ? current : (delta > 0 ? -1 : candidates.length);
     const next = Math.min(Math.max(start + delta, 0), candidates.length - 1);
 
-    selectedCandidate = candidates[next].itemId;
+    selectedCandidate = candidates[next].key;
     updateCandidates();
     updateDetails();
 
@@ -60,7 +62,7 @@ global.EquipmentPanel = (function() {
     </div>`);
 
     itemDetailPanel = ItemDetailPanel();
-    itemDetailPanel.setActions(item => [buildActionButton(item.getId())]);
+    itemDetailPanel.setActions(selected => [buildActionButton(keyOf(selected))]);
     itemDetailPanel.setCharacter(id);
     rootElement.querySelector('.detail-panel').appendChild(itemDetailPanel.build());
 
@@ -79,12 +81,21 @@ global.EquipmentPanel = (function() {
   function updateSlots() {
     const slotList = rootElement.querySelector('.slots-list');
     X.empty(slotList);
-    character.getEquipmentSlots().forEach(slot => slotList.appendChild(buildEquipmentSlot(slot)));
+    listSlots().forEach(slot => slotList.appendChild(buildEquipmentSlot(slot)));
+  }
+
+  // Ammunition isn't an equipment slot, but it reads as one, so it's listed with the weapons that use it.
+  function listSlots() {
+    return character.getEquipmentSlots().flatMap(slot => slot === EquipmentSlot.secondary ? [slot, ammunitionSlot] : [slot]);
+  }
+
+  function isAmmunitionSlot(slot=selectedSlot) {
+    return slot === ammunitionSlot;
   }
 
   function buildEquipmentSlot(slot) {
-    const equippedId = equipmentManager.getSlot(slot);
-    const itemName = equippedId ? ItemName({ itemId:equippedId, showIcon:true }).asString() : '';
+    const nameOptions = equippedNameOptions(slot);
+    const itemName = nameOptions ? ItemName({ ...nameOptions, showIcon:true }).asString() : '';
     const element = X.createElement(`<li class='slot ${slot === selectedSlot ? 'selected' : ''}'>
       <div class='slot-name'>${StringHelper.titlecase(slot)}</div>
       <div class='slot-content'>${itemName}</div>
@@ -94,14 +105,30 @@ global.EquipmentPanel = (function() {
     return element;
   }
 
+  function equippedNameOptions(slot) {
+    if (isAmmunitionSlot(slot)) { return quiverNameOptions(); }
+    const equippedId = equipmentManager.getSlot(slot);
+    return equippedId ? { itemId:equippedId } : null;
+  }
+
+  function quiverNameOptions() {
+    const quiver = QuiverComponent.lookup(character.getEntity());
+    return quiver.ammunition ? { articleCode:quiver.ammunition, quantity:quiver.quantity } : null;
+  }
+
+  function getEquipped() {
+    if (isAmmunitionSlot()) { return QuiverComponent.lookup(character.getEntity()).ammunition; }
+    return equipmentManager.getSlot(selectedSlot);
+  }
+
   function selectSlot(slot) {
     selectedSlot = (slot === selectedSlot) ? null : slot;
     selectedCandidate = null;
     update();
   }
 
-  function selectCandidate(itemId) {
-    selectedCandidate = (itemId === selectedCandidate) ? null : itemId;
+  function selectCandidate(key) {
+    selectedCandidate = (key === selectedCandidate) ? null : key;
     updateCandidates();
     updateDetails();
   }
@@ -118,40 +145,50 @@ global.EquipmentPanel = (function() {
       candidateList.appendChild(X.createElement(`<li class='empty'>Nothing to equip</li>`));
     }
 
-    candidates.forEach(candidate => candidateList.appendChild(buildCandidate(candidate.itemId, candidate.isEquipped)));
+    candidates.forEach(candidate => candidateList.appendChild(buildCandidate(candidate)));
     X.removeClass(candidatePanel,'hide');
+  }
+
+  function listCandidates() {
+    return isAmmunitionSlot() ? listAmmunitionCandidates() : listItemCandidates();
+  }
+
+  function listAmmunitionCandidates() {
+    return AmmunitionSystem.getAmmunitionFor(character.getEntity()).
+      map(entry => ({ key:entry.code, nameOptions:{ articleCode:entry.code }, isEquipped:entry.isLoaded }));
   }
 
   // The equipped item has left the party inventory, so it's added back in and sorted with the candidates by name.
   // That way the list keeps the same order as things are equipped and unequipped.
-  function listCandidates() {
-    const equippedId = equipmentManager.getSlot(selectedSlot);
+  function listItemCandidates() {
+    const equippedId = getEquipped();
     const candidates = InventorySystem.getEquipmentForSlot(character.getEntity(), selectedSlot).
-      map(entry => ({ itemId:entry.itemId, name:entry.name, isEquipped:false }));
+      map(entry => ({ itemId:entry.itemId, name:entry.name }));
 
     if (equippedId) {
-      candidates.push({ itemId:equippedId, name:Item(equippedId).getName(), isEquipped:true });
+      candidates.push({ itemId:equippedId, name:Item(equippedId).getName() });
     }
 
-    return candidates.sort(InventorySystem.compareCandidates);
+    return candidates.sort(InventorySystem.compareCandidates).
+      map(entry => ({ key:entry.itemId, nameOptions:{ itemId:entry.itemId }, isEquipped:entry.itemId === equippedId }));
   }
 
-  function buildCandidate(itemId, isEquipped=false) {
-    const itemName = ItemName({ itemId, showIcon:true }).asString();
-    const selectedClass = (itemId === selectedCandidate) ? 'selected' : '';
-    const equippedMark = `<span class='equipped-mark'>${isEquipped ? '▶' : ''}</span>`;
+  function buildCandidate(candidate) {
+    const itemName = ItemName({ ...candidate.nameOptions, showIcon:true }).asString();
+    const selectedClass = (candidate.key === selectedCandidate) ? 'selected' : '';
+    const equippedMark = `<span class='equipped-mark'>${candidate.isEquipped ? '▶' : ''}</span>`;
     const element = X.createElement(`<li class='candidate ${selectedClass}'>${equippedMark}${itemName}</li>`);
 
-    element.addEventListener('click', () => selectCandidate(itemId));
-    element.addEventListener('dblclick', () => toggleEquipped(itemId));
+    element.addEventListener('click', () => selectCandidate(candidate.key));
+    element.addEventListener('dblclick', () => toggleEquipped(candidate.key));
     return element;
   }
 
   // The two single clicks of a double click will have selected then deselected the candidate, so it's selected again
   // before the equipment changes.
-  function toggleEquipped(itemId) {
-    selectedCandidate = itemId;
-    (itemId === equipmentManager.getSlot(selectedSlot)) ? unequip() : equip(itemId);
+  function toggleEquipped(key) {
+    selectedCandidate = key;
+    (key === getEquipped()) ? unequip() : equip(key);
   }
 
   // The details show the selected candidate when there is one, otherwise whatever is in the selected slot.
@@ -161,40 +198,50 @@ global.EquipmentPanel = (function() {
 
     if (selectedSlot == null) { return X.addClass(detailPanel,'hide'); }
 
-    const equippedId = equipmentManager.getSlot(selectedSlot);
-    const itemId = selectedCandidate || equippedId;
+    const equipped = getEquipped();
+    const key = selectedCandidate || equipped;
 
-    itemDetailPanel.setComparison(itemId === equippedId ? null : equippedId);
-    itemDetailPanel.update(itemId ? { id:itemId } : null);
+    itemDetailPanel.setComparison(key === equipped ? null : equipped);
+    itemDetailPanel.update(key ? describe(key) : null);
 
-    if (itemId == null) { X.removeClass(emptyMessage,'hide'); }
-    if (itemId != null) { X.addClass(emptyMessage,'hide'); }
+    if (key == null) { X.removeClass(emptyMessage,'hide'); }
+    if (key != null) { X.addClass(emptyMessage,'hide'); }
 
     X.removeClass(detailPanel,'hide');
   }
 
+  function describe(key) {
+    return isAmmunitionSlot() ? { code:key } : { id:key };
+  }
+
+  function keyOf(selected) {
+    return selected.id ? selected.id : selected.code;
+  }
+
   // The shown item is either in the selected slot or in the party inventory, so there's always exactly one action.
-  function buildActionButton(itemId) {
-    if (itemId === equipmentManager.getSlot(selectedSlot)) {
+  function buildActionButton(key) {
+    if (key === getEquipped()) {
       const button = X.createElement(`<a href='#' class='button unequip-button'>Unequip</a>`);
       button.addEventListener('click', () => unequip());
       return button;
     }
 
     const button = X.createElement(`<a href='#' class='button button-primary equip-button'>Equip</a>`);
-    button.addEventListener('click', () => equip(itemId));
+    button.addEventListener('click', () => equip(key));
     return button;
   }
 
   // Equipping can knock items out of other slots, like a two-handed weapon clearing the off hand, so the whole tab is
   // rebuilt. The candidate stays selected so the details flip to the opposite action.
-  function equip(itemId) {
-    InventorySystem.equip(character.getEntity(), itemId, selectedSlot);
+  function equip(key) {
+    const id = character.getEntity();
+    isAmmunitionSlot() ? AmmunitionSystem.loadQuiver(id, key) : InventorySystem.equip(id, key, selectedSlot);
     update();
   }
 
   function unequip() {
-    InventorySystem.unequip(character.getEntity(), selectedSlot);
+    const id = character.getEntity();
+    isAmmunitionSlot() ? AmmunitionSystem.unloadQuiver(id) : InventorySystem.unequip(id, selectedSlot);
     update();
   }
 
