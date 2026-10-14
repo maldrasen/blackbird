@@ -155,7 +155,7 @@ global.EquipmentPanel = (function() {
 
   function listAmmunitionCandidates() {
     return AmmunitionSystem.getAmmunitionFor(character.getEntity()).
-      map(entry => ({ key:entry.code, nameOptions:{ articleCode:entry.code, quantity:entry.quantity }, isEquipped:entry.isLoaded }));
+      map(entry => ({ key:entry.code, nameOptions:{ articleCode:entry.code }, isEquipped:entry.isLoaded }));
   }
 
   // The equipped item has left the party inventory, so it's added back in and sorted with the candidates by name.

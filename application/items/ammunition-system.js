@@ -32,18 +32,17 @@ global.AmmunitionSystem = (function() {
     QuiverComponent.update(id, { quantity: quiver.quantity + quantity });
   }
 
-  // Every type of ammunition the party carries, at the quantity left in the inventory. The loaded type stays listed
-  // when the inventory has run out of it, so that it can be unloaded.
+  // Every type of ammunition the party carries. The loaded type stays listed when the inventory has run out of it,
+  // so that it can be unloaded.
   function getAmmunitionFor(id) {
-    const quiver = QuiverComponent.lookup(id);
-    const quantities = ObjectHelper.select(Inventory().getArticles(), code => {
-      return Article.lookup(code).getType() === ArticleType.ammunition;
-    });
+    const loaded = QuiverComponent.lookup(id).ammunition;
+    const codes = Object.keys(Inventory().getArticles()).
+      filter(code => Article.lookup(code).getType() === ArticleType.ammunition);
 
-    if (quiver.ammunition && quantities[quiver.ammunition] == null) { quantities[quiver.ammunition] = 0; }
+    if (loaded && codes.includes(loaded) === false) { codes.push(loaded); }
 
-    return Object.entries(quantities).
-      map(([code, quantity]) => ({ code, name:Article.lookup(code).getName(), quantity, isLoaded:code === quiver.ammunition })).
+    return codes.
+      map(code => ({ code, name:Article.lookup(code).getName(), isLoaded:code === loaded })).
       sort((a,b) => a.name.localeCompare(b.name));
   }
 
