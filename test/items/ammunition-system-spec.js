@@ -126,6 +126,46 @@ describe("AmmunitionSystem", function() {
     });
   });
 
+  describe("getAmmunitionFor()", function() {
+    it("lists the ammunition in the party inventory by name", function() {
+      const id = buildArcher({});
+      Inventory().addArticle('razerfang-arrow', 10);
+      Inventory().addArticle('elm-arrow', 30);
+      Inventory().addArticle('rhysh-apple', 3);
+
+      expect(AmmunitionSystem.getAmmunitionFor(id)).to.deep.equal([
+        { code:'elm-arrow', name:'Elm Arrows', quantity:30, isLoaded:false },
+        { code:'razerfang-arrow', name:'Razerfang Arrows', quantity:10, isLoaded:false },
+      ]);
+    });
+
+    it("lists the loaded ammunition once, at the quantity in the quiver", function() {
+      const id = buildArcher({ ammunition:'elm-arrow', quantity:20 });
+      Inventory().addArticle('elm-arrow', 30);
+      Inventory().addArticle('blackflame-arrow', 5);
+
+      expect(AmmunitionSystem.getAmmunitionFor(id)).to.deep.equal([
+        { code:'blackflame-arrow', name:'Blackflame Arrows', quantity:5, isLoaded:false },
+        { code:'elm-arrow', name:'Elm Arrows', quantity:20, isLoaded:true },
+      ]);
+    });
+
+    it("keeps listing the loaded ammunition when the quiver and the inventory have both run out", function() {
+      const id = buildArcher({ ammunition:'elm-arrow', quantity:0 });
+
+      expect(AmmunitionSystem.getAmmunitionFor(id)).to.deep.equal([
+        { code:'elm-arrow', name:'Elm Arrows', quantity:0, isLoaded:true },
+      ]);
+    });
+
+    it("lists nothing for an unloaded quiver when the inventory has no ammunition", function() {
+      const id = buildArcher({});
+      Inventory().addArticle('rhysh-apple', 3);
+
+      expect(AmmunitionSystem.getAmmunitionFor(id)).to.deep.equal([]);
+    });
+  });
+
   describe("spend()", function() {
     it("takes one piece of ammunition from the quiver", function() {
       const id = buildArcher({ ammunition:'elm-arrow', quantity:3 });
