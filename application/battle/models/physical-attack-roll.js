@@ -3,6 +3,7 @@ global.PhysicalAttackRoll = function(attacker, target) {
   let hitLocation = null;
 
   let weapon = null;
+  let ammunition = null;
   let attackSource;
   let check;
   let finalValue;
@@ -12,16 +13,18 @@ global.PhysicalAttackRoll = function(attacker, target) {
   function setHitLocation(location) { hitLocation = location; }
 
   // The attack source answers for the shape of the attack: its skill, reach, text key, and damage types. For a real
-  // weapon that's the weapon's base record.
+  // weapon that's the weapon's base record. A bow also fires whatever ammunition the attacker has loaded.
   function setWeapon(itemId) {
     weapon = Item(itemId);
     attackSource = weapon.getBase();
+    ammunition = AmmunitionSystem.getLoaded(attacker, weapon);
   }
 
   // A natural attack profile - a punch, a bite, a claw - stands in for the base record, so the roll doesn't care
   // that no real weapon is involved.
   function setNaturalAttack(profile) {
     weapon = null;
+    ammunition = null;
     attackSource = NaturalAttack(profile);
   }
 
@@ -78,6 +81,7 @@ global.PhysicalAttackRoll = function(attacker, target) {
     setNaturalAttack,
     getWeapon: () => { return weapon; },
     getWeaponId: () => { return weapon ? weapon.getId() : null; },
+    getAmmunition: () => { return ammunition; },
     isRangedAttack,
     getTextKey,
     getDamageRange,

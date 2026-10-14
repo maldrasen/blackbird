@@ -1,19 +1,21 @@
 describe("DamageRoll", function() {
 
   // The stubbed values are consumed in order: attack crit roll, attack value roll, defend crit roll, defend value
-  // roll, then the damage roll itself. A crit (98) or fumble (2) consumes only its crit roll.
-  function contestDamage(stubs, status=null, materials=['steel']) {
+  // roll, the damage roll itself, then one roll for each of the loaded ammunition's damage types. A crit (98) or
+  // fumble (2) consumes only its crit roll.
+  function contestDamage(stubs, options={}) {
     BattleSupport.startBattle();
     const attacker = BattleSupport.player();
     const defender = BattleSupport.centerRogue();
     CharacterSupport.setAttribute(attacker, Attrib.strength, 50);
 
-    if (status) { BattleSystem.addStatus(attacker, status, { count:1 }); }
+    if (options.status) { BattleSystem.addStatus(attacker, options.status, { count:1 }); }
+    if (options.ammunition) { QuiverComponent.update(attacker, { ammunition:options.ammunition, quantity:1 }); }
 
     Random.stubBetween(...stubs);
 
     const contest = PhysicalAttackContest(attacker, defender);
-    contest.setWeapon(ItemSupport.build('longsword', materials));
+    contest.setWeapon(ItemSupport.build(options.weapon || 'longsword', options.materials || ['steel']));
     contest.setHitLocation('chest');
     contest.roll();
 
@@ -45,7 +47,7 @@ describe("DamageRoll", function() {
 
   // A steel longsword rolls 50-100, so the stub refuses a 38 unless the range really was scaled down to flint's 38-75.
   it("rolls within the range the weapon's material scales it to", function() {
-    const damage = contestDamage([50, 1, 50, 1, 38], null, ['flint']);
+    const damage = contestDamage([50, 1, 50, 1, 38], { materials:['flint'] });
 
     expect(damage.getDamageTypes()).to.deep.equal({ slash:19 });
   });
@@ -95,15 +97,46 @@ describe("DamageRoll", function() {
 
   // Advantage and disadvantage make the attack roll twice, so the stubs supply a second attack crit and value roll.
   it("adds half again to the damage while poised", function() {
-    const damage = contestDamage([50, 1, 50, 1, 50, 1, 80], 'poised');
+    const damage = contestDamage([50, 1, 50, 1, 50, 1, 80], { status:'poised' });
 
     expect(damage.getDamageTypes()).to.deep.equal({ slash:60 });
   });
 
   it("halves the damage while off balance", function() {
-    const damage = contestDamage([50, 1, 50, 1, 50, 1, 80], 'off-balance');
+    const damage = contestDamage([50, 1, 50, 1, 50, 1, 80], { status:'off-balance' });
 
     expect(damage.getDamageTypes()).to.deep.equal({ slash:20 });
+  });
+
+  // A wood shortbow rolls 40-80 pierce, so a shot is the bow's share of strength plus the arrow's own roll.
+  it("adds the loaded ammunition's roll to a shot from a bow", function() {
+    const damage = contestDamage([50, 1, 50, 1, 50, 4], { weapon:'shortbow', materials:['wood'], ammunition:'elm-arrow' });
+
+    expect(damage.getDamageTypes()).to.deep.equal({ pierce:29 });
+  });
+
+  it("keeps the ammunition's own damage types apart from the bow's", function() {
+    const damage = contestDamage([50, 1, 50, 1, 50, 3, 5], { weapon:'shortbow', materials:['wood'], ammunition:'blackflame-arrow' });
+
+    expect(damage.getDamageTypes()).to.deep.equal({ pierce:28, fire:5 });
+  });
+
+  it("doubles the ammunition's damage on a crit along with the bow's", function() {
+    const damage = contestDamage([98, 50, 1, 50, 4], { weapon:'shortbow', materials:['wood'], ammunition:'elm-arrow' });
+
+    expect(damage.getDamageTypes()).to.deep.equal({ pierce:58 });
+  });
+
+  it("adds half again to the ammunition's damage while poised", function() {
+    const damage = contestDamage([50, 1, 50, 1, 50, 1, 50, 4], { weapon:'shortbow', materials:['wood'], ammunition:'elm-arrow', status:'poised' });
+
+    expect(damage.getDamageTypes()).to.deep.equal({ pierce:44 });
+  });
+
+  it("rolls only the bow's damage when nothing is loaded", function() {
+    const damage = contestDamage([50, 1, 50, 1, 50], { weapon:'shortbow', materials:['wood'] });
+
+    expect(damage.getDamageTypes()).to.deep.equal({ pierce:25 });
   });
 
 });

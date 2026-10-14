@@ -5,18 +5,24 @@ global.DamageRoll = function(attacker, attackRoll, defendRoll) {
   const defendType = BattleHelper.getRollType(defendRoll);
   const damageRoll = Random.between(damageRange.low, damageRange.high);
   const ability = attackRoll.getAbility();
-  const damageFactor = (ability == null) ? 1 : ability.getDamageBonus();
+  const ammunition = attackRoll.getAmmunition();
+  const damageFactor = ((ability == null) ? 1 : ability.getDamageBonus()) * getStanceFactor();
   const damageTypes = {};
 
-  let rawDamage = Math.round((damageRoll / 100) * strength * damageFactor * getStanceFactor());
-  if (attackType === 'crit') { rawDamage = rawDamage*2; }
-  if (attackType === 'fumble') { rawDamage = Math.ceil(rawDamage/2); }
-  if (defendType === 'crit') { rawDamage = Math.ceil(rawDamage/2); }
-  if (defendType === 'fumble') { rawDamage = rawDamage*2; }
+  const rawDamage = applyContestResult(Math.round((damageRoll / 100) * strength * damageFactor));
 
   attackRoll.getDamageTypes().forEach(damageType => {
     damageTypes[damageType.type] = Math.round(rawDamage * (damageType.percent/100));
   });
+
+  // Ammunition rolls its own damage on top of the weapon's. An arrow's range is flat rather than a share of the
+  // attacker's strength, but the stance, the ability, and how the contest went tell on the whole shot.
+  if (ammunition) {
+    Object.entries(ammunition.getDamageTypes()).forEach(([type, range]) => {
+      const damage = applyContestResult(Math.round(Random.between(range.low, range.high) * damageFactor));
+      damageTypes[type] = (damageTypes[type] || 0) + damage;
+    });
+  }
 
   // TODO: Consider adding more variety to the crit and fumble messages.
 
@@ -41,6 +47,14 @@ global.DamageRoll = function(attacker, attackRoll, defendRoll) {
     if (statusEffects.hasPoised()) { return 1.5; }
     if (statusEffects.hasOffBalance()) { return 0.5; }
     return 1;
+  }
+
+  function applyContestResult(damage) {
+    if (attackType === 'crit') { damage = damage*2; }
+    if (attackType === 'fumble') { damage = Math.ceil(damage/2); }
+    if (defendType === 'crit') { damage = Math.ceil(damage/2); }
+    if (defendType === 'fumble') { damage = damage*2; }
+    return damage;
   }
 
   return {

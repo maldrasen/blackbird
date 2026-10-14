@@ -209,4 +209,29 @@ describe("AmmunitionSystem", function() {
     });
   });
 
+  describe("getLoaded()", function() {
+    it("is the ammunition in the quiver for a bow", function() {
+      const id = buildArcher({ ammunition:'razerfang-arrow', quantity:3 });
+      const bow = Item(ItemSupport.build('shortbow', ['wood']));
+      expect(AmmunitionSystem.getLoaded(id, bow).getName()).to.equal('Razerfang Arrow');
+    });
+
+    it("still names the ammunition when the quiver has run dry", function() {
+      const id = buildArcher({ ammunition:'elm-arrow', quantity:0 });
+      const bow = Item(ItemSupport.build('shortbow', ['wood']));
+      expect(AmmunitionSystem.getLoaded(id, bow).getName()).to.equal('Elm Arrow');
+    });
+
+    it("is nothing for a bow with an unloaded quiver", function() {
+      const bow = Item(ItemSupport.build('shortbow', ['wood']));
+      expect(AmmunitionSystem.getLoaded(buildArcher({}), bow)).to.equal(null);
+    });
+
+    it("is nothing for a weapon that doesn't use ammunition", function() {
+      const id = buildArcher({ ammunition:'elm-arrow', quantity:3 });
+      const dagger = Item(ItemSupport.build('dagger', ['steel']));
+      expect(AmmunitionSystem.getLoaded(id, dagger)).to.equal(null);
+    });
+  });
+
 });

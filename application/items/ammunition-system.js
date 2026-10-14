@@ -55,6 +55,14 @@ global.AmmunitionSystem = (function() {
     return isRequired(id, weapon) === false || QuiverComponent.lookup(id).quantity > 0;
   }
 
+  // The ammunition a shot from the weapon carries. A monster's quiver names its arrows without counting them, so the
+  // type is read whether or not any are left.
+  function getLoaded(id, weapon) {
+    if (weapon.usesAmmunition() === false) { return null; }
+    const code = QuiverComponent.lookup(id).ammunition;
+    return code ? Ammunition.lookup(code) : null;
+  }
+
   // Bow attacks always expend 1 arrow. If we add special bow attacks that shoot more than one arrow at a time
   // they should probably be making multiple attack rolls, and decrement the ammo each time. If we know a special
   // attack would use three arrows though, it shouldn't be possible if they only have two in their quiver.
@@ -70,6 +78,7 @@ global.AmmunitionSystem = (function() {
     getAmmunitionFor,
     isRequired,
     hasAmmunitionFor,
+    getLoaded,
     spend,
   };
 
