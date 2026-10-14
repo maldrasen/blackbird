@@ -60,7 +60,7 @@ global.EquipmentPanel = (function() {
     </div>`);
 
     itemDetailPanel = ItemDetailPanel();
-    itemDetailPanel.setActions(item => [buildActionButton(item.getId())]);
+    itemDetailPanel.setActions(selected => [buildActionButton(keyOf(selected))]);
     itemDetailPanel.setCharacter(id);
     rootElement.querySelector('.detail-panel').appendChild(itemDetailPanel.build());
 
@@ -185,6 +185,10 @@ global.EquipmentPanel = (function() {
 
   function describe(key) {
     return { id:key };
+  }
+
+  function keyOf(selected) {
+    return selected.id ? selected.id : selected.code;
   }
 
   // The shown item is either in the selected slot or in the party inventory, so there's always exactly one action.

@@ -28,6 +28,13 @@ global.ItemDetailPanel = function() {
     if (selected?.id) {
       panelElement.appendChild(buildItemDetails(Item(selected.id)));
     }
+
+    if (selected) { addActions(selected); }
+  }
+
+  function addActions(selected) {
+    const buttonRow = panelElement.querySelector('.button-row');
+    buildActions?.(selected).forEach(button => buttonRow.appendChild(button));
   }
 
   function isUsableNow(article) {
@@ -102,8 +109,6 @@ global.ItemDetailPanel = function() {
     if (base.hasReduction()) { armorProperties(item).forEach(property => properties.appendChild(buildProperty(property))); }
 
     details.insertBefore(properties, details.querySelector('.value'));
-
-    buildActions?.(item).forEach(button => details.querySelector('.button-row').appendChild(button));
 
     return details;
   }
