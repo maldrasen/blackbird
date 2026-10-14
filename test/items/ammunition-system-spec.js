@@ -139,19 +139,19 @@ describe("AmmunitionSystem", function() {
       ]);
     });
 
-    it("lists the loaded ammunition once, at the quantity in the quiver", function() {
+    it("lists the loaded ammunition at the quantity left in the inventory", function() {
       const id = buildArcher({ ammunition:'elm-arrow', quantity:20 });
-      Inventory().addArticle('elm-arrow', 30);
+      Inventory().addArticle('elm-arrow', 16);
       Inventory().addArticle('blackflame-arrow', 5);
 
       expect(AmmunitionSystem.getAmmunitionFor(id)).to.deep.equal([
         { code:'blackflame-arrow', name:'Blackflame Arrow', quantity:5, isLoaded:false },
-        { code:'elm-arrow', name:'Elm Arrow', quantity:20, isLoaded:true },
+        { code:'elm-arrow', name:'Elm Arrow', quantity:16, isLoaded:true },
       ]);
     });
 
-    it("keeps listing the loaded ammunition when the quiver and the inventory have both run out", function() {
-      const id = buildArcher({ ammunition:'elm-arrow', quantity:0 });
+    it("keeps listing the loaded ammunition when the inventory has run out of it", function() {
+      const id = buildArcher({ ammunition:'elm-arrow', quantity:20 });
 
       expect(AmmunitionSystem.getAmmunitionFor(id)).to.deep.equal([
         { code:'elm-arrow', name:'Elm Arrow', quantity:0, isLoaded:true },
