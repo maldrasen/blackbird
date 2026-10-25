@@ -8,6 +8,11 @@ global.ReferenceValidator = (function() {
       validateTileContents(code, theme.getTileContents());
     });
 
+    Ammunition.getAllCodes().forEach(code => validateAmmunition(code, Ammunition.lookup(code)));
+    EquipmentParameters.getAllCodes().forEach(code => {
+      validateEquipmentParameters(code, EquipmentParameters.lookup(code).getAmmunition());
+    });
+
     SexAction.getAllCodes().forEach(code => {
       const action = SexAction.lookup(code);
       validateSexAction(code, {
@@ -45,6 +50,18 @@ global.ReferenceValidator = (function() {
         Validate.isIn(`${name}.codes`, contentsCode, TileContents.getAllCodes());
         Validate.equals(`${name}.codes[${contentsCode}].type`, TileContents.lookup(contentsCode).getType(), entry.type);
       });
+    });
+  }
+
+  function validateAmmunition(code, ammunition) {
+    if (ammunition.hasEnchantment()) {
+      Validate.isIn(`Ammunition[${code}].enchantment.pattern`, ammunition.getEnchantment().getPattern(), EnchantmentPattern.getAllCodes());
+    }
+  }
+
+  function validateEquipmentParameters(code, ammunition) {
+    Object.keys(ammunition).forEach(ammunitionCode => {
+      Validate.isIn(`EquipmentParameters[${code}].ammunition`, ammunitionCode, Ammunition.getAllCodes());
     });
   }
 
@@ -87,6 +104,8 @@ global.ReferenceValidator = (function() {
 
   return {
     validate,
+    validateAmmunition,
+    validateEquipmentParameters,
     validateEpisodeQueue,
     validateDungeonTheme,
     validateSexAction,

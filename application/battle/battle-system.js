@@ -147,11 +147,11 @@ global.BattleSystem = (function() {
 
   function generateLoot() {
     const merged = {};
-    state.getDeadMonsters().forEach(id => {
-      LootGenerator().generateMonsterLoot(id).forEach(entry => {
-        merged[entry.articleCode] = (merged[entry.articleCode] || 0) + entry.quantity;
-      });
-    });
+    const add = entry => { merged[entry.articleCode] = (merged[entry.articleCode] || 0) + entry.quantity; };
+
+    state.getDeadMonsters().forEach(id => LootGenerator().generateMonsterLoot(id).forEach(add));
+    state.getDroppedArticles().forEach(add);
+
     return Object.entries(merged).map(([articleCode, quantity]) => ({ articleCode, quantity }));
   }
 

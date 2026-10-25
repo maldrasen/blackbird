@@ -126,6 +126,46 @@ describe("AmmunitionSystem", function() {
     });
   });
 
+  describe("getAmmunitionFor()", function() {
+    it("lists the ammunition in the party inventory by name", function() {
+      const id = buildArcher({});
+      Inventory().addArticle('razerfang-arrow', 10);
+      Inventory().addArticle('elm-arrow', 30);
+      Inventory().addArticle('rhysh-apple', 3);
+
+      expect(AmmunitionSystem.getAmmunitionFor(id)).to.deep.equal([
+        { code:'elm-arrow', name:'Elm Arrow', isLoaded:false },
+        { code:'razerfang-arrow', name:'Razerfang Arrow', isLoaded:false },
+      ]);
+    });
+
+    it("marks the loaded ammunition once when the inventory still has some", function() {
+      const id = buildArcher({ ammunition:'elm-arrow', quantity:20 });
+      Inventory().addArticle('elm-arrow', 16);
+      Inventory().addArticle('blackflame-arrow', 5);
+
+      expect(AmmunitionSystem.getAmmunitionFor(id)).to.deep.equal([
+        { code:'blackflame-arrow', name:'Blackflame Arrow', isLoaded:false },
+        { code:'elm-arrow', name:'Elm Arrow', isLoaded:true },
+      ]);
+    });
+
+    it("keeps listing the loaded ammunition when the inventory has run out of it", function() {
+      const id = buildArcher({ ammunition:'elm-arrow', quantity:20 });
+
+      expect(AmmunitionSystem.getAmmunitionFor(id)).to.deep.equal([
+        { code:'elm-arrow', name:'Elm Arrow', isLoaded:true },
+      ]);
+    });
+
+    it("lists nothing for an unloaded quiver when the inventory has no ammunition", function() {
+      const id = buildArcher({});
+      Inventory().addArticle('rhysh-apple', 3);
+
+      expect(AmmunitionSystem.getAmmunitionFor(id)).to.deep.equal([]);
+    });
+  });
+
   describe("spend()", function() {
     it("takes one piece of ammunition from the quiver", function() {
       const id = buildArcher({ ammunition:'elm-arrow', quantity:3 });
@@ -166,6 +206,31 @@ describe("AmmunitionSystem", function() {
     it("is satisfied by any weapon that doesn't use ammunition", function() {
       const dagger = Item(ItemSupport.build('dagger', ['steel']));
       expect(AmmunitionSystem.hasAmmunitionFor(buildArcher({}), dagger)).to.equal(true);
+    });
+  });
+
+  describe("getLoaded()", function() {
+    it("is the ammunition in the quiver for a bow", function() {
+      const id = buildArcher({ ammunition:'razerfang-arrow', quantity:3 });
+      const bow = Item(ItemSupport.build('shortbow', ['wood']));
+      expect(AmmunitionSystem.getLoaded(id, bow).getName()).to.equal('Razerfang Arrow');
+    });
+
+    it("still names the ammunition when the quiver has run dry", function() {
+      const id = buildArcher({ ammunition:'elm-arrow', quantity:0 });
+      const bow = Item(ItemSupport.build('shortbow', ['wood']));
+      expect(AmmunitionSystem.getLoaded(id, bow).getName()).to.equal('Elm Arrow');
+    });
+
+    it("is nothing for a bow with an unloaded quiver", function() {
+      const bow = Item(ItemSupport.build('shortbow', ['wood']));
+      expect(AmmunitionSystem.getLoaded(buildArcher({}), bow)).to.equal(null);
+    });
+
+    it("is nothing for a weapon that doesn't use ammunition", function() {
+      const id = buildArcher({ ammunition:'elm-arrow', quantity:3 });
+      const dagger = Item(ItemSupport.build('dagger', ['steel']));
+      expect(AmmunitionSystem.getLoaded(id, dagger)).to.equal(null);
     });
   });
 

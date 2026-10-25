@@ -8,6 +8,19 @@ describe("PhysicalAttackRoll", function() {
     return attackRoll;
   }
 
+  describe("setWeapon()", function() {
+    it("carries the ammunition loaded for a bow", function() {
+      const state = BattleSupport.startBattle();
+      const attacker = BattleSupport.player();
+      QuiverComponent.update(attacker, { ammunition:'elm-arrow', quantity:1 });
+
+      const attackRoll = PhysicalAttackRoll(attacker, state.getActiveMonsters()[0]);
+      attackRoll.setWeapon(ItemSupport.build('shortbow', ['wood']));
+
+      expect(attackRoll.getAmmunition().getName()).to.equal('Elm Arrow');
+    });
+  });
+
   describe("roll()", function() {
     it("rolls normally with clear eyes", function() {
       const state = BattleSupport.startBattle();

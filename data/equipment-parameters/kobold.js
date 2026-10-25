@@ -36,6 +36,12 @@ EquipmentParameters.register('kobold',{
     'chaps':             120,
   },
 
+  ammunition:{
+    'elm-arrow':        100,
+    'razerfang-arrow':  10,
+    'blackflame-arrow': 5,
+  },
+
   enchantmentChance: 5,
 
 });

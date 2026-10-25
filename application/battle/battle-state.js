@@ -32,9 +32,7 @@ global.BattleState = function(data) {
   // characters, so they're the only ones who survive it. The defeated monsters drop their enchanted items as loot
   // first. Monsters who fled (or who are still standing) take everything with them.
   function cleanup(saveLoot=true) {
-    if (saveLoot) {
-      [...getDeadMonsters(), ...getKnockedOut().filter(isMonster)].forEach(saveCarriedLoot);
-    }
+    if (saveLoot) { getDefeatedMonsters().forEach(saveCarriedLoot); }
 
     monsterIds.filter(id => conditions[id] !== BattleCondition.recruited).forEach(id => {
       deleteCarriedItems(id);
@@ -50,6 +48,23 @@ global.BattleState = function(data) {
       equipment.unequipItem(itemId);
       Inventory(GameSystem.getState().getLootInventory()).addItem(itemId);
     });
+  }
+
+  // The articles the defeated monsters carried, which is to say an archer's quiver. Items wait in the loot inventory
+  // for enlightenment, but articles are stacked into the battle's loot alongside whatever the loot generator rolls.
+  function getDroppedArticles() {
+    const dropped = {};
+
+    getDefeatedMonsters().forEach(id => {
+      const quiver = QuiverComponent.lookup(id);
+      if (quiver.quantity > 0) { dropped[quiver.ammunition] = (dropped[quiver.ammunition] || 0) + quiver.quantity; }
+    });
+
+    return Object.entries(dropped).map(([articleCode, quantity]) => ({ articleCode, quantity }));
+  }
+
+  function getDefeatedMonsters() {
+    return [...getDeadMonsters(), ...getKnockedOut().filter(isMonster)];
   }
 
   // A monster's equipment items are their own entities, not children of the monster, so they're deleted explicitly.
@@ -368,6 +383,7 @@ global.BattleState = function(data) {
     setCondition,
     getCondition,
     getDeadMonsters,
+    getDroppedArticles,
     getFledMonsters,
     getKnockedOut,
     getPosition,

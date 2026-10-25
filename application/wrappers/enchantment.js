@@ -1,6 +1,6 @@
-global.Enchantment = function(id) {
-  const item = ItemComponent.lookup(id);
-  const enchantment = item.enchantment;
+// Built from an enchanted item's id, or from the enchantment data itself for an enchantment that isn't on an item.
+global.Enchantment = function(argument) {
+  const enchantment = (typeof argument === 'object') ? argument : ItemComponent.lookup(argument).enchantment;
   const pattern = EnchantmentPattern.lookup(enchantment.pattern);
 
   // An item carrying more than one resistance effect for the same thing stacks their strengths.

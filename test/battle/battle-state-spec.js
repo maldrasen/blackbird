@@ -52,6 +52,38 @@ describe("BattleState", function() {
     });
   });
 
+  describe("getDroppedArticles()", function() {
+    // The depot may have armed a monster with a bow and arrows of its own, so every quiver is set by hand.
+    function emptyQuivers(state) {
+      state.getActiveMonsters().forEach(id => QuiverComponent.update(id, { ammunition:null, quantity:0 }));
+    }
+
+    it("stacks the arrows the defeated monsters carried", function() {
+      const state = BattleSupport.startBattle();
+      emptyQuivers(state);
+      const [dead, knockedOut, active] = state.getActiveMonsters();
+      QuiverComponent.update(dead, { ammunition:'elm-arrow', quantity:12 });
+      QuiverComponent.update(knockedOut, { ammunition:'elm-arrow', quantity:8 });
+      QuiverComponent.update(active, { ammunition:'poison-arrow', quantity:15 });
+
+      state.setCondition(dead, BattleCondition.dead);
+      state.setCondition(knockedOut, BattleCondition.knockedOut);
+
+      expect(state.getDroppedArticles()).to.deep.equal([{ articleCode:'elm-arrow', quantity:20 }]);
+    });
+
+    it("drops nothing from a defeated monster with an empty quiver", function() {
+      const state = BattleSupport.startBattle();
+      emptyQuivers(state);
+      const dead = state.getActiveMonsters()[0];
+      QuiverComponent.update(dead, { ammunition:'elm-arrow', quantity:0 });
+
+      state.setCondition(dead, BattleCondition.dead);
+
+      expect(state.getDroppedArticles()).to.deep.equal([]);
+    });
+  });
+
   describe("cleanup()", function() {
     const enchantment = { pattern:'endanger', properties:{ species:'kobold' } };
 

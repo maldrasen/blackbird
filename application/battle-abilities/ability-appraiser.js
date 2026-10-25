@@ -111,9 +111,7 @@ global.AbilityAppraiser = (function() {
   // A damaging effect's expected damage over its whole life is priced as a single burst: once it has landed nothing
   // the victim does can dodge or armor it away.
   function tickDamageEssence(effect, targets, period) {
-    if (effect.damage == null) { return 0; }
-    const ticks = (EffectMath.statusDurationSeconds(effect) * 1000) / EffectMath.interval(effect);
-    return spikeWeight(Random.averageDice(effect.damage) * ticks, targets, period);
+    return spikeWeight(EffectMath.expectedTickDamage(effect), targets, period);
   }
 
   return {

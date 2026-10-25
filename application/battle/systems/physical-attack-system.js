@@ -7,6 +7,7 @@ global.PhysicalAttackSystem = (function() {
     const attacker = round.getActing();
     const target = round.getTarget();
     const weapon = attackRoll.getWeapon();
+    const ammunition = attackRoll.getAmmunition();
 
     const damageRoll = DamageRoll(attacker, attackRoll, defendRoll);
     const damageTypes = damageRoll.getDamageTypes();
@@ -15,7 +16,7 @@ global.PhysicalAttackSystem = (function() {
       round.addMessage(damageRoll.getMessage());
     }
 
-    EnchantmentSystem.processBeforeHit(weapon, damageTypes);
+    EnchantmentSystem.processBeforeHit(weapon, damageTypes, ammunition);
 
     const actualDamage = BattleDamageSystem.applyDamage({
       entity: target,
@@ -32,7 +33,7 @@ global.PhysicalAttackSystem = (function() {
 
     // A status applied after the hit waits for the next attack, which a downed target won't be taking.
     if (BattleSystem.getState().isDown(target) === false) {
-      EnchantmentSystem.processAfterHit(weapon);
+      EnchantmentSystem.processAfterHit(weapon, ammunition);
     }
 
     BattleDamageSystem.addDownedMessage(target);

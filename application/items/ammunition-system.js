@@ -32,6 +32,20 @@ global.AmmunitionSystem = (function() {
     QuiverComponent.update(id, { quantity: quiver.quantity + quantity });
   }
 
+  // Every type of ammunition the party carries. The loaded type stays listed when the inventory has run out of it,
+  // so that it can be unloaded.
+  function getAmmunitionFor(id) {
+    const loaded = QuiverComponent.lookup(id).ammunition;
+    const codes = Object.keys(Inventory().getArticles()).
+      filter(code => Article.lookup(code).getType() === ArticleType.ammunition);
+
+    if (loaded && codes.includes(loaded) === false) { codes.push(loaded); }
+
+    return codes.
+      map(code => ({ code, name:Article.lookup(code).getName(), isLoaded:code === loaded })).
+      sort((a,b) => a.name.localeCompare(b.name));
+  }
+
   // Monsters don't track ammunition, and an enchanted bow may someday not need any.
   function isRequired(id, weapon) {
     return MonsterComponent.lookup(id) == null && weapon.usesAmmunition();
@@ -39,6 +53,14 @@ global.AmmunitionSystem = (function() {
 
   function hasAmmunitionFor(id, weapon) {
     return isRequired(id, weapon) === false || QuiverComponent.lookup(id).quantity > 0;
+  }
+
+  // The ammunition a shot from the weapon carries. A monster's quiver names its arrows without counting them, so the
+  // type is read whether or not any are left.
+  function getLoaded(id, weapon) {
+    if (weapon.usesAmmunition() === false) { return null; }
+    const code = QuiverComponent.lookup(id).ammunition;
+    return code ? Ammunition.lookup(code) : null;
   }
 
   // Bow attacks always expend 1 arrow. If we add special bow attacks that shoot more than one arrow at a time
@@ -53,8 +75,10 @@ global.AmmunitionSystem = (function() {
     restock,
     loadQuiver,
     unloadQuiver,
+    getAmmunitionFor,
     isRequired,
     hasAmmunitionFor,
+    getLoaded,
     spend,
   };
 

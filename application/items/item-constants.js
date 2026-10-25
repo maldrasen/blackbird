@@ -8,6 +8,7 @@ global.ItemConstants = {
   statusEffectValues: {
     blind: 4,
     stun: 15,
+    poison: 0,
   },
 
   chestChallengePercent: 0.3,
@@ -21,4 +22,10 @@ global.ItemConstants = {
 
   // TODO: Quiver capacity can be a constant for now, but we could also add aspects that increase this.
   quiverCapacity: 20,
+
+  // Monsters with bows are given random number of arrows. Monsters can never run out of arrows in a battle, because we
+  // don't want to deal with what they should do if they run out, but the arrows in their quiver are used to calculate
+  // the bow damage, and they'll still have them if they get recruited. We can't give a monster more arrows than the
+  // quiver capacity.
+  monsterArrows: [10,20],
 };

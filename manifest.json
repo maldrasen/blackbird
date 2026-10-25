@@ -804,6 +804,7 @@
     "test/negotiations/negotiation-request-spec.js",
     "test/negotiations/negotiation-state-spec.js",
     "test/negotiations/negotiation-system-spec.js",
+    "test/records/ammunition-spec.js",
     "test/records/archetype-spec.js",
     "test/records/base-equipment-spec.js",
     "test/records/base-monster-spec.js",

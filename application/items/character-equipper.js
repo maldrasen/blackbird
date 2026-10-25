@@ -53,12 +53,26 @@ global.CharacterEquipper = function(id) {
   //       ranged fighters and rogues, ability-aware armor selection for higher level characters, and a finery pass
   //       for wealthy non-fighters can all come later.
   //
-  // TODO: If a character is equipped with a bow, we'll also need to add arrows to the party inventory.
-  //
   function equip(options) {
     if (options.bareHanded !== true) { equipWeapons(options.budget); }
     if (options.naked !== true) { equipArmor(options.budget); }
+    loadQuiver();
     return equipment;
+  }
+
+  // An archer always gets arrows, whether they shopped for their bow or were handed one. The depot's ammunition is a
+  // frequency map like its weapons, and a depot that stocks none hands out elm arrows.
+  function loadQuiver() {
+    if (needsArrows()) {
+      const stock = findDepot().getParameters().getAmmunition();
+      const ammunition = Object.keys(stock).length > 0 ? Random.fromFrequencyMap(stock) : 'elm-arrow';
+      QuiverComponent.update(id, { ammunition, quantity:Random.between(...ItemConstants.monsterArrows) });
+    }
+  }
+
+  function needsArrows() {
+    const primary = equipmentManager.getSlot(EquipmentSlot.primary);
+    return primary != null && Item(primary).usesAmmunition() && QuiverComponent.lookup(id).ammunition == null;
   }
 
   // All the species have equipment parameters codes used to select which equipment depot to use as a fallback. A base

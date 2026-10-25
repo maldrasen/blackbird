@@ -40,11 +40,19 @@ global.EffectMath = (function() {
     return value;
   }
 
+  // The damage a status effect is expected to do over its whole life. An effect without damage dice does none.
+  function expectedTickDamage(effect) {
+    if (effect.damage == null) { return 0; }
+    const ticks = (statusDurationSeconds(effect) * 1000) / interval(effect);
+    return Random.averageDice(effect.damage) * ticks;
+  }
+
   return {
     averageDamage,
     landChance,
     statusDurationSeconds,
     expectedTicks,
+    expectedTickDamage,
     interval,
   };
 
