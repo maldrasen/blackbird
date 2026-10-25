@@ -4,6 +4,16 @@ describe('Enchantment', function() {
     return Item(ItemSupport.buildSteel('helm', { enchantment:{ pattern } })).getEnchantment();
   }
 
+  // An enchantment that isn't on an item, an arrow's for instance, is built straight from its data.
+  it('is built from the enchantment data as well as from an item', function() {
+    const effects = [Effect.poison({ strength:20, damage:{ x:2, d:6, p:2 } })];
+    const enchantment = Enchantment({ pattern:'poisoned-b', properties:{}, effects });
+
+    expect(enchantment.getPattern()).to.equal('poisoned-b');
+    expect(enchantment.getTrigger()).to.equal(EnchantmentTrigger.onHit);
+    expect(enchantment.getEffects()[0].strength).to.equal(20);
+  });
+
   describe('getDamageResistance()', function() {
     // The fire resistance rolls 5 to 10 at steel, so the roll is stubbed to pin the strength.
     it('reads the strength of the resist damage effect for its damage type', function() {
