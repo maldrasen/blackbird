@@ -23,7 +23,8 @@ global.ArticleAppraiser = (function() {
 
   function valueForAmmunition(code) {
     const ammunition = Ammunition.lookup(code);
-    return valueForDamageTypes(ammunition.getDamageTypes()) + valueForEffects(ammunition.getEffects());
+    const enchantment = ammunition.hasEnchantment() ? valueForEffects(ammunition.getEnchantment().getEffects()) : 0;
+    return valueForDamageTypes(ammunition.getDamageTypes()) + enchantment;
   }
 
   function valueForDamageTypes(damageTypes) {

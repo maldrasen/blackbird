@@ -8,6 +8,8 @@ global.ReferenceValidator = (function() {
       validateTileContents(code, theme.getTileContents());
     });
 
+    Ammunition.getAllCodes().forEach(code => validateAmmunition(code, Ammunition.lookup(code)));
+
     SexAction.getAllCodes().forEach(code => {
       const action = SexAction.lookup(code);
       validateSexAction(code, {
@@ -46,6 +48,12 @@ global.ReferenceValidator = (function() {
         Validate.equals(`${name}.codes[${contentsCode}].type`, TileContents.lookup(contentsCode).getType(), entry.type);
       });
     });
+  }
+
+  function validateAmmunition(code, ammunition) {
+    if (ammunition.hasEnchantment()) {
+      Validate.isIn(`Ammunition[${code}].enchantment.pattern`, ammunition.getEnchantment().getPattern(), EnchantmentPattern.getAllCodes());
+    }
   }
 
   function validateSexAction(code, data) {
@@ -87,6 +95,7 @@ global.ReferenceValidator = (function() {
 
   return {
     validate,
+    validateAmmunition,
     validateEpisodeQueue,
     validateDungeonTheme,
     validateSexAction,

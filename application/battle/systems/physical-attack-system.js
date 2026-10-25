@@ -42,8 +42,8 @@ global.PhysicalAttackSystem = (function() {
   // An arrow's effects land the way an enchantment's do, but an arrow has nothing to say when one does, so a poison
   // that takes hold is first heard from at its first tick.
   function applyAmmunitionEffects(ammunition, target) {
-    if (ammunition) {
-      ammunition.getEffects().forEach(effect => EffectSystem.applyStatus(target, effect));
+    if (ammunition && ammunition.hasEnchantment()) {
+      ammunition.getEnchantment().getEffects().forEach(effect => EffectSystem.applyStatus(target, effect));
     }
   }
 

@@ -57,9 +57,11 @@ Ammunition.register('poison-arrow',{
   damageTypes: {
     [DamageType.pierce]:{ low:1, high:8 },
   },
-  effects:[
-    Effect.poison({ strength:20, damage:{ x:2, d:6, p:2 }})
-  ],
+  enchantment: {
+    pattern: 'poisoned-b',
+    properties: {},
+    effects: [Effect.poison({ strength:20, damage:{ x:2, d:6, p:2 }})],
+  },
 
   sources:[
     { group:'supplies', rarity:Rarity.unusual, quantity:[10,20]},
