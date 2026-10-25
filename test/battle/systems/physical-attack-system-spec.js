@@ -104,20 +104,22 @@ describe("PhysicalAttackSystem", function() {
       expect(messages[1]).to.include('knocked out');
     });
 
-    it("poisons the target with a poison arrow, saying nothing until it ticks", function() {
+    it("poisons the target with a poison arrow's enchantment after the damage", function() {
       const battle = prepareArcher('poison-arrow');
       const messages = hit(battle, [10, 10, 10, 5], [4]);
 
       expect(StatusEffects(battle.target).hasPoison()).to.equal(true);
-      expect(messages.length).to.equal(1);
+      expect(messages.length).to.equal(2);
       expect(messages[0]).to.include('Hit for');
+      expect(messages[1]).to.include('searing pain');
     });
 
-    it("leaves the target clean when they resist the arrow's poison", function() {
+    it("says nothing about the arrow's poison when the target resists", function() {
       const battle = prepareArcher('poison-arrow');
-      hit(battle, [10, 15, 10, 2], [4]);
+      const messages = hit(battle, [10, 15, 10, 2], [4]);
 
       expect(StatusEffects(battle.target).hasPoison()).to.equal(false);
+      expect(messages.length).to.equal(1);
     });
 
     it("doesn't poison a target the arrow downs", function() {
@@ -129,7 +131,7 @@ describe("PhysicalAttackSystem", function() {
       expect(messages[1]).to.include('knocked out');
     });
 
-    it("spends no resist roll on an arrow with no effects", function() {
+    it("spends no resist roll on an arrow with no enchantment", function() {
       const battle = prepareArcher('elm-arrow');
       expect(hit(battle, [], [4]).length).to.equal(1);
     });

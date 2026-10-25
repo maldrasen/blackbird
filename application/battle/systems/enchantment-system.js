@@ -1,20 +1,25 @@
 global.EnchantmentSystem = (function() {
 
-  // A hit with an enchanted weapon runs the enchantment's on hit hooks, once before the damage is applied and once
-  // after. The weapon's pattern decides whether the enchantment fires at either moment (endanger only fires against
-  // its species, and only after the hit).
-  function processBeforeHit(weapon, damageTypes) {
-    const enchantment = getEnchantment(weapon, EnchantmentTrigger.onHit);
-    if (enchantment) {
+  // A hit runs the on hit hooks of the weapon's enchantment and, for a shot from a bow, the arrow's, once before the
+  // damage is applied and once after. Each pattern decides whether its enchantment fires at either moment (endanger
+  // only fires against its species, and only after the hit). The arrow was fired from the weapon, so the weapon stands
+  // in as the item in the arrow's context as well.
+  function processBeforeHit(weapon, damageTypes, ammunition=null) {
+    getHitEnchantments(weapon, ammunition).forEach(enchantment => {
       applyResult(enchantment.processBeforeHit(getContext(weapon), damageTypes), getContext(weapon));
-    }
+    });
   }
 
-  function processAfterHit(weapon) {
-    const enchantment = getEnchantment(weapon, EnchantmentTrigger.onHit);
-    if (enchantment) {
+  function processAfterHit(weapon, ammunition=null) {
+    getHitEnchantments(weapon, ammunition).forEach(enchantment => {
       applyResult(enchantment.processAfterHit(getContext(weapon)), getContext(weapon));
-    }
+    });
+  }
+
+  function getHitEnchantments(weapon, ammunition) {
+    return [weapon, ammunition].
+      map(source => getEnchantment(source, EnchantmentTrigger.onHit)).
+      filter(enchantment => enchantment != null);
   }
 
   // Once the acting entity's ability has resolved, each weapon they hold with an end of round enchantment gets to see

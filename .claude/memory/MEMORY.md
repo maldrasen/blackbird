@@ -65,3 +65,4 @@
 - [Fixture boundary](project_fixture_boundary.md) — SHIPPED task 267 (2026-10-13): specs use only test-support/ globals (BattleSupport.startBattle stable party, CharacterSupport, ItemSupport, TrainingSupport, Tests); application/fixtures/ is the menu's playground; no `Fixtures` under test/; Tests.running() replaced by Environment.viewPresent property
 - [Equip ammo in UI (task 266)](project_equip_ammo_ui_task266.md) — view pseudo-slot (not EquipmentSlot), generic candidate rows, no quantities on rows by user choice, counts in detail panel, listSlots() is task 268's override point
 - [Python edits preserve LF](project_python_edits_preserve_lf.md) — repo is LF; python read_text/write_text on Windows rewrites CRLF (whole-file diffs); use bytes/newline='' and re-normalize from HEAD
+- [Guard style](feedback_guard_style.md) — a single guard over a short body is a plain if, not an early return; presence checks use Validate.exists() (task 229)
