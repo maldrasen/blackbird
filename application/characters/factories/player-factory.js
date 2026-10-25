@@ -82,6 +82,7 @@ global.PlayerFactory = (function() {
       EquipmentComponent.create(playerId);
       ExperienceComponent.create(playerId);
       QuiverComponent.create(playerId);
+      SpellbookComponent.create(playerId);
 
       adjustStartingAttributes(playerId);
 

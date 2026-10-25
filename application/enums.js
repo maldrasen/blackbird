@@ -159,6 +159,7 @@ global.ComponentType = {
   sexualPreferences: 'SexualPreferencesComponent',
   situated: 'SituatedComponent',
   skills: 'SkillsComponent',
+  spellbook: 'SpellbookComponent',
   statusEffect: 'StatusEffectComponent',
 };
 

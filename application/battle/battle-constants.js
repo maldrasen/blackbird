@@ -9,6 +9,7 @@ global.BattleConstants = {
   challengeTargetGrowth: 1.25,
   maxEncounterTypes: 3,
   maxReduction: 80,
+  maxPowerLevel: 8,
   threatBase: 100,
 
   // Both sides of a resist contest roll the floor before adding their own resistance or power. Because the floor is
