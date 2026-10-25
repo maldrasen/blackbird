@@ -1,7 +1,7 @@
 ---
 id: 230
-title: Add draw weight for bows.
-priority: 2
+title: Equipment Requirements and Draw Strength
+priority: 4
 created: 2026-09-19
 tags:
   - battle
@@ -13,3 +13,5 @@ Bow damage should actually scale with strength, but an archer's strength should 
 Crossbows won't have a strength requirement, and they'll still hit as hard as a high draw strength bow. (Crossbow damage still shouldn't scale with strength.) The tradeoff is they take longer to fire because they need to be cranked to reload.
 
 > Tasks 014, 229, and 230 are all about using bows in combat. Should probably take care of all of this soon.
+
+> I'm reconsidering doing this. The core of this task is adding weapon requirements, but doing so would add a lot of complexity without adding a lot of value. I think I'll put this task on hold while I consider if it's worth doing. Having bow damage scale with strength is fine for now.

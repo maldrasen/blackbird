@@ -15,7 +15,6 @@ This month that's mostly the dungeon side: learning spells and abilities, people
 - [x] [237] Equipment preferences `3pt` — [237-equipment-preferences.md](237-equipment-preferences.md)
 - [x] [014] Bows & arrows `5pt` — [014-bows-arrows.md](014-bows-arrows.md)
 - [x] [229] Implement ammunition `3pt` — [229-implment-ammunition.md](229-implment-ammunition.md)
-- [ ] [230] Add draw weight for bows `3pt` — [230-add-draw-weight-for-bows.md](230-add-draw-weight-for-bows.md)
 
 ## Dungeon & Loop `13pt`
 - [ ] [240] Safe rooms `3pt` — [240-safe-rooms.md](240-safe-rooms.md)
