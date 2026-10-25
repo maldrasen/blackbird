@@ -13,6 +13,38 @@ describe('CharacterEquipper', function() {
       expect(Item(equipment.primary).getBase().getHands()).to.not.equal(WeaponHandedness.two);
     });
 
+    // The elves shop the standard depot, so an archer's arrows come from its ammunition map.
+    describe('quiver', function() {
+      function quiverAfterEquipping(id) {
+        CharacterEquipper(id).equip({ budget:150, naked:true });
+        return QuiverComponent.lookup(id);
+      }
+
+      it('loads an archer\'s quiver from the depot\'s ammunition', function() {
+        const id = CharacterSupport.genericMale({});
+        ItemSupport.equip(id, 'shortbow', ['wood']);
+
+        const quiver = quiverAfterEquipping(id);
+
+        expect(Object.keys(EquipmentParameters.lookup('standard').getAmmunition())).to.include(quiver.ammunition);
+        expect(quiver.quantity).to.be.within(...ItemConstants.monsterArrows);
+      });
+
+      it('leaves a quiver that is already loaded alone', function() {
+        const id = CharacterSupport.genericMale({ quiver:{ ammunition:'blackflame-arrow', quantity:3 } });
+        ItemSupport.equip(id, 'shortbow', ['wood']);
+
+        expect(quiverAfterEquipping(id)).to.deep.equal({ ammunition:'blackflame-arrow', quantity:3 });
+      });
+
+      it('gives a melee fighter no arrows', function() {
+        const id = CharacterSupport.genericMale({});
+        ItemSupport.equip(id, 'dagger', ['steel']);
+
+        expect(quiverAfterEquipping(id)).to.deep.equal({ ammunition:null, quantity:0 });
+      });
+    });
+
     // The elves shop the standard depot, which is stocked with known pieces so the specs can say what should
     // be picked. A leather low corset is slutty, feminine, and natural, and is worth a little more than a wool
     // doublet, so value alone would always take the corset.
