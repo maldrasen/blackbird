@@ -10,7 +10,6 @@ Ammunition.register('elm-arrow',{
   },
 
   sources:[
-    { withWeapon:'bow', rarity:Rarity.common, quantity:[15,30]},
     { group:'supplies', rarity:Rarity.common, quantity:[15,30]},
   ]
 });
