@@ -17,7 +17,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [161] Join Text `8pt` — [161-join-text.md](161-join-text.md)
 - [194] Feeling Adjustments During Battle `2pt` — [194-feeling-adjustments-during-battle.md](194-feeling-adjustments-during-battle.md)
 - [197] Skill events `5pt` — [197-skill-episodes.md](197-skill-episodes.md)
-- [229] Implment ammunition `3pt` — [229-implment-ammunition.md](229-implment-ammunition.md)
 - [230] Add draw weight for bows. `3pt` — [230-add-draw-weight-for-bows.md](230-add-draw-weight-for-bows.md)
 - [240] Safe Rooms `3pt` — [240-safe-rooms.md](240-safe-rooms.md)
 - [250] Casting Spells `8pt` — [250-casting-spells.md](250-casting-spells.md)
