@@ -128,5 +128,12 @@ EquipmentParameters.register('standard',{
     // Legs:             1900
   },
 
+  ammunition:{
+    'elm-arrow':        250,
+    'razerfang-arrow':  25,
+    'blackflame-arrow': 10,
+    'poison-arrow':     10,
+  },
+
   enchantmentChance: 10,
 });

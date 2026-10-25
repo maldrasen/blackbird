@@ -9,6 +9,9 @@ global.ReferenceValidator = (function() {
     });
 
     Ammunition.getAllCodes().forEach(code => validateAmmunition(code, Ammunition.lookup(code)));
+    EquipmentParameters.getAllCodes().forEach(code => {
+      validateEquipmentParameters(code, EquipmentParameters.lookup(code).getAmmunition());
+    });
 
     SexAction.getAllCodes().forEach(code => {
       const action = SexAction.lookup(code);
@@ -56,6 +59,12 @@ global.ReferenceValidator = (function() {
     }
   }
 
+  function validateEquipmentParameters(code, ammunition) {
+    Object.keys(ammunition).forEach(ammunitionCode => {
+      Validate.isIn(`EquipmentParameters[${code}].ammunition`, ammunitionCode, Ammunition.getAllCodes());
+    });
+  }
+
   function validateSexAction(code, data) {
     const name = `SexAction[${code}]`;
     const actionCodes = SexAction.getAllCodes();
@@ -96,6 +105,7 @@ global.ReferenceValidator = (function() {
   return {
     validate,
     validateAmmunition,
+    validateEquipmentParameters,
     validateEpisodeQueue,
     validateDungeonTheme,
     validateSexAction,
