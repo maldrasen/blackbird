@@ -48,10 +48,6 @@ Ammunition.register('blackflame-arrow',{
   ]
 });
 
-/*
-TODO: The appraiser has no value for a poison effect yet. The appraiser will need to take the strength and damage
-      into account.
-
 Ammunition.register('poison-arrow',{
   name: 'Poison Arrow',
   description: `The long steel tips of these arrows have been liberally coated with a poisonous resin.`,
@@ -69,4 +65,3 @@ Ammunition.register('poison-arrow',{
     { group:'supplies', rarity:Rarity.unusual, quantity:[10,20]},
   ]
 });
-*/

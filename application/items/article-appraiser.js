@@ -54,12 +54,18 @@ global.ArticleAppraiser = (function() {
     throw new Error(`Unsupported effect type [${effect.type}]`);
   }
 
+  // A status effect is worth its nuisance for as long as it's expected to last, plus whatever damage it's expected to
+  // do at the rate of a direct hit, discounted by its chance to land.
   function valueForStatusEffect(effect) {
     const value = ItemConstants.statusEffectValues[effect.code];
     if (value == null) {
       throw new Error(`No value has been set for the [${effect.code}] status effect.`);
     }
-    return value * EffectMath.statusDurationSeconds(effect) * EffectMath.landChance(effect.strength);
+
+    const nuisance = value * EffectMath.statusDurationSeconds(effect);
+    const damage = EffectMath.expectedTickDamage(effect) * ItemConstants.damageValue;
+
+    return (nuisance + damage) * EffectMath.landChance(effect.strength);
   }
 
   // An item that can be used on a single target is slightly more valuable than one that can only be used on yourself,

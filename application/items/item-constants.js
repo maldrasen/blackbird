@@ -8,6 +8,7 @@ global.ItemConstants = {
   statusEffectValues: {
     blind: 4,
     stun: 15,
+    poison: 0,
   },
 
   chestChallengePercent: 0.3,

@@ -43,9 +43,20 @@ describe('ArticleAppraiser', function() {
       expect(overwhelming).to.be.within(14, 15);
     });
 
+    // Strength 0 lands half the time and is expected to tick twice, so a d6 poison does 7 when it lands.
+    it('values a damaging status effect by the damage it is expected to do', function() {
+      const poison = ArticleAppraiser.valueForEffects([Effect.poison({ strength:0, damage:{ x:1, d:6 } })]);
+      expect(poison).to.be.closeTo(3.5, 0.001);
+    });
+
+    it('expects more damage from a poison that is harder to shake', function() {
+      const strong = ArticleAppraiser.valueForEffects([Effect.poison({ strength:100, damage:{ x:1, d:6 } })]);
+      expect(strong).to.be.within(13, 14);
+    });
+
     it('rejects effects that have not been priced', function() {
-      const unpriced = { type:'status-effect', code:'poison', strength:10 };
-      expect(() => ArticleAppraiser.valueForEffects([unpriced])).to.throw(/poison/);
+      const unpriced = { type:'status-effect', code:'burn', strength:10 };
+      expect(() => ArticleAppraiser.valueForEffects([unpriced])).to.throw(/burn/);
       expect(() => ArticleAppraiser.valueForEffects([{ type:'transmute' }])).to.throw(/transmute/);
     });
   });
@@ -63,6 +74,13 @@ describe('ArticleAppraiser', function() {
 
     it('returns nothing for ammunition with no damage', function() {
       expect(ArticleAppraiser.valueForDamageTypes({})).to.equal(0);
+    });
+  });
+
+  describe('run()', function() {
+    // 1-8 pierce averages 4.5, and the 2d6+2 poison at strength 20 lands 57% of the time for 2.3 ticks of 9.
+    it('prices the poison arrow by its pierce and its poison', function() {
+      expect(Article.lookup('poison-arrow').getValue()).to.equal(17);
     });
   });
 
