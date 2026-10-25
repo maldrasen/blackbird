@@ -33,9 +33,18 @@ global.PhysicalAttackSystem = (function() {
     // A status applied after the hit waits for the next attack, which a downed target won't be taking.
     if (BattleSystem.getState().isDown(target) === false) {
       EnchantmentSystem.processAfterHit(weapon);
+      applyAmmunitionEffects(attackRoll.getAmmunition(), target);
     }
 
     BattleDamageSystem.addDownedMessage(target);
+  }
+
+  // An arrow's effects land the way an enchantment's do, but an arrow has nothing to say when one does, so a poison
+  // that takes hold is first heard from at its first tick.
+  function applyAmmunitionEffects(ammunition, target) {
+    if (ammunition) {
+      ammunition.getEffects().forEach(effect => EffectSystem.applyStatus(target, effect));
+    }
   }
 
   // If the attack missed, no damage is done, but the crits and fumbles may add status effects to either the attacker
