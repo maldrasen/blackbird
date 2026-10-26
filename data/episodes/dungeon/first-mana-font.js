@@ -1,65 +1,47 @@
 
 const pages = {};
 
-function gainMana() {
+pages.start1 = `The small octagonal room is filled with a soft green glow, emanating from a wide but shallow fountain.
+  Looking down into water you see that it shimmers with it's own light, casting dancing rays across the walls, the
+  ceiling, and the statue of the voluptuous water nymph standing on a short pedestal in the center of the basin.`;
+pages.start2 = `The nymph's head tilted is back, her mouth open, her hands reaching up to firmly squeeze her large,
+  soft looking breasts. You can't help but stare a little. The sculptor had a very specific eye for detail, judging
+  from the way her fingers sink into her breasts, or the way her long erect nipples are jutting outward.`;
+pages.start3 = `Looking around the room you see other reliefs, carved into the stone walls depicting the same woman. In
+  some she's healing the sick or tending to people wounds. In others it looks like she's the one who's spreading the
+  disease. All the reliefs though emphasize her sensuality, even the one where she's pushing her tongue into a
+  screaming man's mouth as his face melts away.`;
+pages.start4 = `You've heard whispers of places like this before. Shrines and chapels devoted to heretical dungeon
+  gods. The Holy Church of course tells people to avoid such places. Though you've also heard, in even quieter and
+  secretive whispers that these gods grant powers to the people who worship them.`;
+
+const startButtons = [
+  { label:'Look closer', jump:'closer' },
+  { label:'Ignore the fountain', end:true },
+];
+
+const closerButtons = [
+  { label:'Drink', jump:'drink' },
+  { label:`Leave`, end:true },
+];
+
+pages.closer1 = `You look closer...`;
+pages.drink1 = `You drink...`;
+
+function drink() {
   DungeonSystem.getDungeonState().fontUsed(DungeonSystem.getDungeonFloor().getLevel());
 
   const amount = ManaSystem.deepenPool(Mana.green);
   return WeaverElements.resultBlock(`You've gained ${amount} green mana!`, { classname:'gain' });
 }
 
-pages.start1 = `The small octagonal room is filled with a soft green glow, emanating from a wide but shallow fountain.
-  Looking down into water you see that it shimmers with it's own light, casting dancing rays across the walls, the 
-  ceiling, and the `
-
-/*
-pages.start1 = `When you enter the room your hand tightens around your weapon when you see what waits within. A gaunt
-  figure, draped in a dark glistening cloak. Your breath catches in your throat as it turns to look at you. It's dark
-  skin is stretched tightly over a blank featureless face. Though it lacks eyes you can feel the menace in its gaze,
-  and when it speaks you hear its voice echoing in your skull.`;
-pages.start2 = `An unblessed being enters into these sacred halls. Come mortal. Drink of this divine nectar.`;
-pages.start3 = `The creature steps aside, gesturing to the ornate fountain behind him. Like the pool in the entrance
-  hall, the water sparkles as if reflecting a bright unseen source. The glimmering rays reflect off of the creature's
-  wet looking skin. You realise that what you thought was a dark cloak is actually an extension of its body; a thin
-  membrane like a bat's wing that it keeps tightly wrapped around itself.`;
-pages.start4 = `Something about this thing makes you think that attacking it would be a phenomenally stupid idea, 
-  leaving you with the choice to do as it bids, or politely decline.`;
-
-function accept1() {
-  return `You don't trust the creature, but you did come here seeking power. You do your best to hide a shudder of 
-    revulsion as you walk past it, ignoring the smell of rotting meat that seems to cling to it. Looking down into the 
-    water, you notice that it has a slight ${hue()} hue.`;
-}
-
-function accept2() {
-  return `${gainMana()}<p>You kneel before the fountain, reaching down to cup some of the glimering liquid in your 
-    hands. After but a single sip you feel a strange warmth spread through your body. It's hard to describe, but you 
-    feel like something is there now that wasn't before. Some well of power that can be tapped into.</p><p>You stand 
-    again, looking around the room, and see that the strange creature is gone, though the smell of it lingers.</p>`;
-}
-
-pages.refuse1 = `You shake your head, "But I refuse."`;
-
-function refuse2() {
-  const laugh = `The strange creature lets out a strange soundless laugh.`;
-  const quote = WeaverElements.telepathy(`You would refuse such a gift? Why? Do you think your meager strength is
-    enough to survive all that lies below? Drink, or I'll show you how weak you truly are.`);
-  return `${laugh} ${quote}`;
-}
-
-const startButtons = [
-  { label:'Drink from the fountain.', jump:'A.accept' },
-  { label:'Refuse.', jump:'B.refuse' },
-];
-
-const refuseButtons = [
-  { label:'Do as it says.', jump:'A.accept' },
-  { label:'Charge the creature!', startEncounter: { record:'nightgaunt' }},
-];
-*/
-
-Episode.register('first-mana-font',{
+Episode.register('first-mana-font', {
   pages: [
     { content:pages.start1 },
+    { content:pages.start2 },
+    { content:pages.start3 },
+    { content:pages.start4, buttons:startButtons, buttonStyle:'column' },
+    { content:pages.closer1, label:'closer', buttons:closerButtons, buttonStyle:'column' },
+    { content:pages.drink1, label:'drink', onShow:drink },
   ],
 });
