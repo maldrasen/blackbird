@@ -1,8 +1,6 @@
 FeatureType.register('mana-font',{
-
   build: function() {
-    const level = DungeonSystem.getDungeonFloor().getLevel();
-    const color = (level === 1) ? Mana.green : Random.from(Object.values(Mana));
+    const color = fontColor();
     const feature = Feature('mana-font');
     const room = Room(feature);
 
@@ -26,6 +24,9 @@ FeatureType.register('mana-font',{
 
     return feature;
   }
-
 });
 
+// Every font is green until the player has seen the first-mana-font episode, which teaches the first spell.
+function fontColor() {
+  return GameSystem.getState().hasViewedEpisode('first-mana-font') ? Random.from(Object.values(Mana)) : Mana.green;
+}
