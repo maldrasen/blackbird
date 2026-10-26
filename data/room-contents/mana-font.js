@@ -17,7 +17,7 @@ function describeStatue(color) {
 
 RoomContents.register('mana-font',{
   episodes:[
-    'nightgaunt-at-the-mana-font',
+    'first-mana-font',
     'deepen-mana-pool',
   ],
   description: describe,

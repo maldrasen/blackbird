@@ -56,7 +56,7 @@ const refuseButtons = [
   { label:'Charge the creature!', startEncounter: { record:'nightgaunt' }},
 ];
 
-Episode.register('nightgaunt-at-the-mana-font',{
+Episode.register('first-mana-font',{
   pages: [
     { content:pages.start1 },
     { contentFunction: () => { return WeaverElements.telepathy(pages.start2); }},
