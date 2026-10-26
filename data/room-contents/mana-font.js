@@ -4,8 +4,8 @@ function describe(options) {
 }
 
 function describeUnused(options) {
-  return `An ornately carved fountain sits in the center of the floor; filled with glistening water that glows with a 
-    soft ${hue(options.color)}. A statue in the center of the fountain depicts ${describeStatue(options.color)}`;
+  return `An ornately carved fountain sits in the center of the floor; filled with water that glistens with a soft
+    ${hue(options.color)} light. A statue in the center of the fountain depicts ${describeStatue(options.color)}`;
 }
 
 function describeUsed(options) {
