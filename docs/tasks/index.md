@@ -28,6 +28,8 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [262] Implement toxic status `3pt` — [262-implement-toxic-status.md](262-implement-toxic-status.md)
 - [263] Change weapon color in battle messages `1pt` — [263-change-weapon-color-in-battle-messages.md](263-change-weapon-color-in-battle-messages.md)
 - [268] Implement Change Equipment `5pt` — [268-implement-change-equipment.md](268-implement-change-equipment.md)
+- [269] Zoom still broken `3pt` — [269-zoom-still-broken.md](269-zoom-still-broken.md)
+- [270] Delete old saves `2pt` — [270-delete-old-saves.md](270-delete-old-saves.md)
 
 ## Priority 3
 
