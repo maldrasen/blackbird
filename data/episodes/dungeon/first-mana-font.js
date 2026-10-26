@@ -44,8 +44,11 @@ function drink() {
   DungeonSystem.getDungeonState().fontUsed(DungeonSystem.getDungeonFloor().getLevel());
 
   return [
-    WeaverElements.resultBlock(`You learn the spell {S/abl}Mending{/S}.`, { classname:'gain' }),
-    WeaverElements.resultBlock(`You gain ${amount} green mana.`, { classname:'gain' }),
+    WeaverElements.paragraph(pages.drink2),
+    WeaverElements.resultBlocks([
+      { text:`You learn the spell {S/abl}Mending{/S}.`, options:{ classname:'gain' }},
+      { text:`You gain ${amount} green mana.`, options:{ classname:'gain' }},
+    ]),
   ].join('');
 }
 
@@ -54,10 +57,10 @@ Episode.register('first-mana-font', {
     { content:pages.start1 },
     { content:pages.start2 },
     { content:pages.start3 },
-    { content:pages.start4, buttons:startButtons, buttonStyle:'column' },
-    { content:pages.closer, label:'closer', buttons:closerButtons, buttonStyle:'column' },
+    { content:pages.start4, buttons:startButtons, buttonsStyle:'column' },
+    { content:pages.closer, label:'closer', buttons:closerButtons, buttonsStyle:'column' },
     { content:pages.drink1, label:'drink' },
-    { content:pages.drink2, onShow:drink },
+    { contentFunction:drink },
     { content:pages.drink3 },
   ],
 });

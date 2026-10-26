@@ -41,6 +41,7 @@ global.WeaverElements = (function() {
     throw new Error(`Malformed loot entry: ${JSON.stringify(entry)}`);
   }
 
+  function paragraph(text) { return `<p>${text}</p>` }
   function telepathy(text) { return `<div class='telepathy'>《 ${text} 》</div>` }
 
   return {
@@ -48,6 +49,7 @@ global.WeaverElements = (function() {
     resultBlock,
     resultBlocks,
     lootBlock,
+    paragraph,
     telepathy,
   };
 
