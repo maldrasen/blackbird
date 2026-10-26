@@ -9,6 +9,11 @@ global.DungeonRequirements = (function() {
     return DungeonSystem.getDungeonFloor().getCurrentRoom().checkScoutingRoll();
   }
 
+  // Each level holds at most one font, so the font in the current room is unused while this level can still spawn one.
+  function fontUnused() {
+    return DungeonSystem.getDungeonState().canGenerateFont(DungeonSystem.getDungeonFloor().getLevel());
+  }
+
   return {
     isTinyRoom: () =>             { return () => { return roomSizeAtMost(1); }},
     isSmallRoom: () =>            { return () => { return roomSizeBetween(4, 16); }},
@@ -20,6 +25,7 @@ global.DungeonRequirements = (function() {
     roomSizeBetween: (min,max) => { return () => { return roomSizeBetween(min,max); }},
     scoutingSuccess: () =>        { return () => { return checkScoutingRoll() === true; }},
     scoutingFailure: () =>        { return () => { return checkScoutingRoll() === false; }},
+    fontUnused: () =>             { return () => { return fontUnused(); }},
   };
 
 })();
