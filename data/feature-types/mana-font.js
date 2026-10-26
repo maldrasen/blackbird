@@ -1,7 +1,8 @@
 FeatureType.register('mana-font',{
 
   build: function() {
-    const color = Random.from(Object.values(Mana));
+    const level = DungeonSystem.getDungeonFloor().getLevel();
+    const color = (level === 1) ? Mana.green : Random.from(Object.values(Mana));
     const feature = Feature('mana-font');
     const room = Room(feature);
 
