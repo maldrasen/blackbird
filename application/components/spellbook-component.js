@@ -19,6 +19,13 @@ global.SpellbookComponent = (function() {
     Registry.deleteComponent(id,ComponentType.spellbook);
   }
 
+  // TODO: Assert that the spell can be learned at the specified level.
+  function setSpell(id, code, level) {
+    const book = lookup(id);
+    book[code] = level;
+    update(id, book);
+  }
+
   function validate(id) {
     const spellbookComponent = lookup(id);
 
@@ -35,6 +42,7 @@ global.SpellbookComponent = (function() {
     update,
     lookup,
     destroy,
+    setSpell,
   };
 
 })();

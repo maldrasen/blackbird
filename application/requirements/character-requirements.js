@@ -135,6 +135,8 @@ global.CharacterRequirements = (function() {
 
   return {
     playerIs: key =>                         { return context => { return GameSystem.getState().getPlayer() === context[key]; }},
+    isSameEntity: (first, second) =>         { return context => { return context[first] === context[second]; }},
+    isNotSameEntity: (first, second) =>      { return context => { return context[first] !== context[second]; }},
     isSpecies: (key, code) =>                { return context => { return Character(context[key]).getSpecies() === code; }},
     isSpeciesIn: (key, list) =>              { return context => { return list.includes(Character(context[key]).getSpecies()); }},
     isNamed: (key, name) =>                  { return context => { return isNamed(context, key, name); }},

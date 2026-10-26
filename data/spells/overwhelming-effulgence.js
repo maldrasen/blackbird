@@ -4,7 +4,7 @@ stories.add(`Brilliant beams of light burst from {A:actingName's} palms, filling
 
 Spell.register('overwhelming-effulgence', {
   name: 'Overwhelming Effulgence',
-  color: 'red',
+  color: Mana.red,
   manaCost: 5,
   target: EffectTarget.enemyFormation,
 

@@ -6,7 +6,7 @@ stories.add(`{A:ActingName}'s body is wreathed in fire and smoke. {A:He} screams
 
 Spell.register('incinerate', {
   name: 'Incinerate',
-  color: 'red',
+  color: Mana.red,
   manaCost: 12,
   target: EffectTarget.single,
   castingTime: 'slow',
