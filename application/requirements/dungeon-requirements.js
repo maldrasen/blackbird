@@ -15,17 +15,18 @@ global.DungeonRequirements = (function() {
   }
 
   return {
-    isTinyRoom: () =>             { return () => { return roomSizeAtMost(1); }},
-    isSmallRoom: () =>            { return () => { return roomSizeBetween(4, 16); }},
-    isMediumRoom: () =>           { return () => { return roomSizeBetween(16, 49); }},
-    isLargeRoom: () =>            { return () => { return roomSizeBetween(49, 100); }},
-    isHugeRoom: () =>             { return () => { return roomSizeAtLeast(100); }},
-    roomSizeAtMost: max =>        { return () => { return roomSizeAtMost(max); }},
-    roomSizeAtLeast: min =>       { return () => { return roomSizeAtLeast(min); }},
-    roomSizeBetween: (min,max) => { return () => { return roomSizeBetween(min,max); }},
-    scoutingSuccess: () =>        { return () => { return checkScoutingRoll() === true; }},
-    scoutingFailure: () =>        { return () => { return checkScoutingRoll() === false; }},
-    fontUnused: () =>             { return () => { return fontUnused(); }},
+    isTinyRoom: () =>                { return () => { return roomSizeAtMost(1); }},
+    isSmallRoom: () =>               { return () => { return roomSizeBetween(4, 16); }},
+    isMediumRoom: () =>              { return () => { return roomSizeBetween(16, 49); }},
+    isLargeRoom: () =>               { return () => { return roomSizeBetween(49, 100); }},
+    isHugeRoom: () =>                { return () => { return roomSizeAtLeast(100); }},
+    roomSizeAtMost: max =>           { return () => { return roomSizeAtMost(max); }},
+    roomSizeAtLeast: min =>          { return () => { return roomSizeAtLeast(min); }},
+    roomSizeBetween: (min,max) =>    { return () => { return roomSizeBetween(min,max); }},
+    scoutingSuccess: () =>           { return () => { return checkScoutingRoll() === true; }},
+    scoutingFailure: () =>           { return () => { return checkScoutingRoll() === false; }},
+    fontUnused: () =>                { return () => { return fontUnused(); }},
+    contentsOptionIs: (key,value) => { return () => { return currentRoom().getContentsOptions()[key] === value; }},
   };
 
 })();

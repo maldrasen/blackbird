@@ -26,6 +26,9 @@ pages.drink2 = `Your eyes open wide as you feel something else pushed inside of 
   were to cut yourself, you could simply tell your flesh to close and it would obey.`;
 pages.drink3 = `Is this magic? You can't imagine what else it could be. The green glow fades from the fountain, leaving
   nothing behind but water and stone, its power now claimed.`;
+pages.return1 = `Once again you find yourself standing in front of the nymph goddess and her fountain; the rays cast 
+  by it's glowing water playing across her body in an almost sensual manner. You kneel down in front of it, gazing into
+  the waters below.`;
 
 const startButtons = [
   { label:'Look closer', jump:'closer' },
@@ -35,6 +38,11 @@ const startButtons = [
 const closerButtons = [
   { label:'Drink', jump:'drink' },
   { label:`Leave`, end:true },
+];
+
+const returnButtons = [
+  { label:'Drink', jump:'drink' },
+  { label:'Leave', end:true },
 ];
 
 function drink() {
@@ -59,6 +67,20 @@ Episode.register('first-mana-font', {
     { content:pages.start3 },
     { content:pages.start4, buttons:startButtons, buttonsStyle:'column' },
     { content:pages.closer, label:'closer', buttons:closerButtons, buttonsStyle:'column' },
+    { content:pages.drink1, label:'drink' },
+    { contentFunction:drink },
+    { content:pages.drink3 },
+  ],
+});
+
+Episode.register('first-mana-font-return', {
+  repeat: true,
+  requires: [
+    DungeonRequirements.fontUnused(),
+    DungeonRequirements.contentsOptionIs('first', true),
+  ],
+  pages: [
+    { content:pages.return1, buttons:returnButtons, buttonsStyle:'column' },
     { content:pages.drink1, label:'drink' },
     { contentFunction:drink },
     { content:pages.drink3 },
