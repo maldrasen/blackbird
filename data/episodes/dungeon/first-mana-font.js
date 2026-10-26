@@ -50,6 +50,7 @@ function drink() {
 
   SpellbookComponent.setSpell(GameSystem.getState().getPlayer(), 'mending', 1);
   DungeonSystem.getDungeonState().fontUsed(DungeonSystem.getDungeonFloor().getLevel());
+  DungeonSystem.getDungeonFloor().getCurrentRoom().refreshDescription();
 
   return [
     WeaverElements.paragraph(pages.drink2),

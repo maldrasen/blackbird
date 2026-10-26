@@ -31,5 +31,6 @@ RoomContents.register('mana-font',{
     'first-mana-font',
     'deepen-mana-pool',
   ],
+  commands:[{ code:'drink', label:'Drink', startEpisode:'first-mana-font-return' }],
   description: describe,
 });

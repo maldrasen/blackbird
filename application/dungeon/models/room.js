@@ -304,6 +304,12 @@ global.Room = function(feature, type='normal') {
     DungeonInterface.refreshDescription();
   }
 
+  // Drops the cached description so the contents can describe the room again after its state has changed.
+  function refreshDescription() {
+    description = null;
+    DungeonInterface.refreshDescription();
+  }
+
   function getAvailableCommands() {
     if (contents == null) { return []; }
     return RoomContents.lookup(contents).getCommands().filter(command => usedCommands.includes(command.code) === false);
@@ -392,6 +398,7 @@ global.Room = function(feature, type='normal') {
 
     getDescription,
     updateDescription,
+    refreshDescription,
     getAvailableCommands,
     useCommand,
     setScoutingRoll: roll => { scoutingRoll = roll; },
