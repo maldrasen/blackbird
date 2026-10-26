@@ -1,17 +1,18 @@
 
 const pages = {};
 
-function color() { return DungeonSystem.getDungeonFloor().getCurrentRoom().getContentsOptions().color; }
-function hue() { return color() === 'black' ? 'purple' : color(); }
-
 function gainMana() {
   DungeonSystem.getDungeonState().fontUsed(DungeonSystem.getDungeonFloor().getLevel());
 
-  const c = color();
-  const amount = ManaSystem.deepenPool(c);
-  return WeaverElements.resultBlock(`You've gained ${amount} ${c} mana!`, { classname:'gain' });
+  const amount = ManaSystem.deepenPool(Mana.green);
+  return WeaverElements.resultBlock(`You've gained ${amount} green mana!`, { classname:'gain' });
 }
 
+pages.start1 = `The small octagonal room is filled with a soft green glow, emanating from a wide but shallow fountain.
+  Looking down into water you see that it shimmers with it's own light, casting dancing rays across the walls, the 
+  ceiling, and the `
+
+/*
 pages.start1 = `When you enter the room your hand tightens around your weapon when you see what waits within. A gaunt
   figure, draped in a dark glistening cloak. Your breath catches in your throat as it turns to look at you. It's dark
   skin is stretched tightly over a blank featureless face. Though it lacks eyes you can feel the menace in its gaze,
@@ -55,16 +56,10 @@ const refuseButtons = [
   { label:'Do as it says.', jump:'A.accept' },
   { label:'Charge the creature!', startEncounter: { record:'nightgaunt' }},
 ];
+*/
 
 Episode.register('first-mana-font',{
   pages: [
     { content:pages.start1 },
-    { contentFunction: () => { return WeaverElements.telepathy(pages.start2); }},
-    { content:pages.start3 },
-    { content:pages.start4, buttons:startButtons, buttonsStyle:'column' },
-    { contentFunction:accept1, label:'A.accept' },
-    { contentFunction:accept2, end:true },
-    { content:pages.refuse1, label:'B.refuse' },
-    { contentFunction:refuse2, buttons:refuseButtons, buttonsStyle:'column' },
   ],
 });
