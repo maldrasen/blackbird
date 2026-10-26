@@ -30,6 +30,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [268] Implement Change Equipment `5pt` — [268-implement-change-equipment.md](268-implement-change-equipment.md)
 - [269] Zoom still broken `3pt` — [269-zoom-still-broken.md](269-zoom-still-broken.md)
 - [270] Delete old saves `2pt` — [270-delete-old-saves.md](270-delete-old-saves.md)
+- [271] Change use item stories `2pt` — [271-change-use-item-stories.md](271-change-use-item-stories.md)
 
 ## Priority 3
 
@@ -65,6 +66,7 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [242] More Negotiation Requests `8pt` — [242-more-negotiation-requests.md](242-more-negotiation-requests.md)
 - [259] UI Debug Fixture `8pt` — [259-ui-debug-fixture.md](259-ui-debug-fixture.md)
 - [264] Status effect tooltips `3pt` — [264-status-effect-tooltips.md](264-status-effect-tooltips.md)
+- [272] Remove empty room descriptions `2pt` — [272-remove-empty-room-descriptions.md](272-remove-empty-room-descriptions.md)
 
 ## Priority 4
 
