@@ -26,11 +26,13 @@ function describeStatue(color) {
   }
 }
 
+// Only the first font starts its episode on entry. Every later font waits for the drink command, and the first font
+// offers the same command when the player walked away from it. The episodes' requirements decide which command shows.
 RoomContents.register('mana-font',{
-  episodes:[
-    'first-mana-font',
-    'deepen-mana-pool',
+  episode: 'first-mana-font',
+  commands:[
+    { code:'first-drink', label:'Drink', startEpisode:'first-mana-font-return' },
+    { code:'drink', label:'Drink', startEpisode:'deepen-mana-pool' },
   ],
-  commands:[{ code:'drink', label:'Drink', startEpisode:'first-mana-font-return' }],
   description: describe,
 });

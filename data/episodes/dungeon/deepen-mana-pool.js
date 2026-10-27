@@ -6,6 +6,9 @@ function hue() { return color() === 'black' ? 'purple' : color(); }
 
 Episode.register('deepen-mana-pool',{
   repeat: true,
-  requires: DungeonRequirements.fontUnused(),
+  requires: [
+    DungeonRequirements.fontUnused(),
+    DungeonRequirements.contentsOptionIs('first', false),
+  ],
   pages: [{ content: `TODO: Write this episode nowish` }],
 });
