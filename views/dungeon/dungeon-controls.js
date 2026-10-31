@@ -29,6 +29,10 @@ global.DungeonControls = (function() {
     X.first('#dungeonControls .left-panel .zoom').replaceChildren(zoomControl.getElement());
   }
 
+  function refreshZoom() {
+    zoomControl.setLevel(DungeonViewport.getZoomLevel());
+  }
+
   function buildRank(rank, selector) {
     const parent = X.first(`#dungeonControls ${selector}`);
 
@@ -109,6 +113,7 @@ global.DungeonControls = (function() {
     refreshHealth,
     refreshRoom,
     refreshDescription,
+    refreshZoom,
   };
 
 })();

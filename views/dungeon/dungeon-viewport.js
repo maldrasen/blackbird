@@ -155,9 +155,11 @@ global.DungeonViewport = (function() {
 
   // The wheel steps the scale target through the fixed stops while the camera glides the actual scale toward it, so
   // scaleTarget rather than currentScale (usually somewhere between stops, mid-glide) tracks the position in the
-  // list. With no pan in play the zoom anchors on the center of the viewport.
+  // list. With no pan in play the zoom anchors on the center of the viewport. The zoom control's buttons come in
+  // through zoomToLevel() directly, so only the wheel needs to bring the control along.
   function zoom(step) {
     zoomToLevel(getZoomLevel() + step);
+    DungeonControls.refreshZoom();
   }
 
   function zoomToLevel(index) {
