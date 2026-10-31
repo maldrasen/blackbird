@@ -13,20 +13,7 @@ global.MainMenu = (function() {
 
   function loadBaseMenu() {
     X.loadDocument('#mainMenu','views/templates/base-menu.html');
-
-    const previousGame = WorldState.getPreviousGame();
-
-    if (previousGame) {
-      X.fill('#continueButton .game-name', WorldState.getSavedGames()[previousGame].legacyName);
-      X.removeClass('#mainMenu #continueButton','disabled');
-    }
-    else {
-      X.addClass('#mainMenu #continueButton','disabled');
-    }
-
-    Object.keys(WorldState.getSavedGames()).length > 0 ?
-      X.removeClass('#mainMenu #loadButton','disabled'):
-      X.addClass('#mainMenu #loadButton','disabled');
+    adjustBaseMenu();
 
     if (Environment.isDevelopment) {
       X.removeClass('#mainMenu #separator','hide');
@@ -36,6 +23,23 @@ global.MainMenu = (function() {
     MainContent.showCover();
     MainContent.setBackground('backgrounds/main-menu.jpg');
     MainContent.hideCover({ fadeTime:1000 });
+  }
+
+  function adjustBaseMenu() {
+    const previousGame = WorldState.getPreviousGame();
+
+    if (previousGame) {
+      X.fill('#continueButton .game-name', WorldState.getSavedGames()[previousGame].legacyName);
+      X.removeClass('#mainMenu #continueButton','disabled');
+    }
+    else {
+      X.fill('#continueButton .game-name', '');
+      X.addClass('#mainMenu #continueButton','disabled');
+    }
+
+    Object.keys(WorldState.getSavedGames()).length > 0 ?
+      X.removeClass('#mainMenu #loadButton','disabled'):
+      X.addClass('#mainMenu #loadButton','disabled');
   }
 
   function loadGameMenu() {
@@ -109,6 +113,7 @@ global.MainMenu = (function() {
   return {
     init,
     loadBaseMenu,
+    adjustBaseMenu,
     loadGameMenu,
 
     show,

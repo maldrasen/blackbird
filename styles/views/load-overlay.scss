@@ -6,8 +6,19 @@
   z-index: variables.$z-load-overlay;
 
   #savedGameList {
-    li { margin-bottom: 5px; }
-    a { display: block; }
+    li {
+      position: relative;
+      margin-bottom: 5px;
+    }
+    .load-button {
+      display: block;
+      padding-right: 70px;
+    }
+    .delete-button {
+      position: absolute;
+      right: 5px;
+      bottom: 5px;
+    }
 
     .details {
       display: block;
