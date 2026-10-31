@@ -32,7 +32,7 @@ RoomContents.register('mana-font',{
   episode: 'mana-font-first',
   commands:[
     { code:'first-drink', label:'Drink', startEpisode:'mana-font-first-return' },
-    { code:'drink', label:'Drink', startEpisode:'deepen-mana-pool' },
+    { code:'drink', label:'Drink', startEpisode:'mana-font-subsequent' },
   ],
   description: describe,
 });

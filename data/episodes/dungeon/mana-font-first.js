@@ -55,7 +55,7 @@ function drink() {
   return [
     WeaverElements.paragraph(pages.drink2),
     WeaverElements.resultBlocks([
-      { text:`You learn the spell {S/abl}Mending{/S}.`, options:{ classname:'gain' }},
+      { text:`You learn the spell Mending.`, options:{ classname:'gain' }},
       { text:`You gain ${amount} green mana.`, options:{ classname:'gain' }},
     ]),
   ].join('');

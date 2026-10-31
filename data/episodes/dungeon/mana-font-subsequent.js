@@ -36,7 +36,7 @@ function drink() {
     const spellCode = getSpell(color);
     const spellName = Spell.lookup(spellCode).getName();
     SpellbookComponent.setSpell(GameSystem.getState().getPlayer(), spellCode, 1);
-    results.push({ text:`You learn the spell {S/abl}${spellName}{/S}.`, options:{ classname:'gain' }})
+    results.push({ text:`You learn the spell ${spellName}.`, options:{ classname:'gain' }})
   }
 
   DungeonSystem.getDungeonState().fontUsed(DungeonSystem.getDungeonFloor().getLevel());
@@ -49,7 +49,7 @@ function drink() {
   ].join('');
 }
 
-Episode.register('deepen-mana-pool',{
+Episode.register('mana-font-subsequent',{
   repeat: true,
   requires: [
     DungeonRequirements.fontUnused(),
