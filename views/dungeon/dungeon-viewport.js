@@ -157,11 +157,18 @@ global.DungeonViewport = (function() {
   // scaleTarget rather than currentScale (usually somewhere between stops, mid-glide) tracks the position in the
   // list. With no pan in play the zoom anchors on the center of the viewport.
   function zoom(step) {
-    const index = scaleSteps.indexOf(scaleTarget) + step;
+    zoomToLevel(getZoomLevel() + step);
+  }
+
+  function zoomToLevel(index) {
     if (index < 0 || index >= scaleSteps.length) { return; }
 
     scaleTarget = scaleSteps[index];
     DungeonCamera.zoomTo(scaleTarget);
+  }
+
+  function getZoomLevel() {
+    return scaleSteps.indexOf(scaleTarget);
   }
 
   // The floor element is rebuilt every time the dungeon view is shown, dropping any applied transform, so the scale
@@ -187,6 +194,9 @@ global.DungeonViewport = (function() {
     centerOn,
     panTo,
     zoom,
+    zoomToLevel,
+    getZoomLevel,
+    getZoomLevels: () => { return scaleSteps.length; },
     applyCamera,
     deriveCamera,
     getScale: () => { return currentScale; },
