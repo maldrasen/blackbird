@@ -29,7 +29,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [263] Change weapon color in battle messages `1pt` — [263-change-weapon-color-in-battle-messages.md](263-change-weapon-color-in-battle-messages.md)
 - [268] Implement Change Equipment `5pt` — [268-implement-change-equipment.md](268-implement-change-equipment.md)
 - [269] Zoom still broken `3pt` — [269-zoom-still-broken.md](269-zoom-still-broken.md)
-- [270] Delete save button `2pt` — [270-delete-save-button.md](270-delete-save-button.md)
 - [271] Change use item stories `2pt` — [271-change-use-item-stories.md](271-change-use-item-stories.md)
 
 ## Priority 3
