@@ -1,6 +1,6 @@
 ---
 id: 270
-title: Delete old saves
+title: Delete save button
 priority: 2
 created: 2026-10-26
 tags: []
