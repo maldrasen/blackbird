@@ -55,10 +55,8 @@ global.FeaturePlacer = function() {
 
   function shouldSpawnFont() {
     if (DungeonSystem.getDungeonState().canGenerateFont(floor.getLevel()) === false) { return false; }
-    // === TEMP ===
-    return true;
-    // if (floor.getLevel() === 1) { return true; }
-    // return Random.roll(100) < DungeonConstants.fontChance;
+    if (floor.getLevel() === 1) { return true; }
+    return Random.roll(100) < DungeonConstants.fontChance;
   }
 
   function manaFont() {
