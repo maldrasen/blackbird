@@ -1,0 +1,49 @@
+@use "../variables";
+
+.zoom-control {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  .zoom-out, .zoom-in {
+    width: 20px;
+    padding: 0;
+    line-height: 20px;
+    text-align: center;
+    font-family: 'roboto-medium', sans-serif;
+  }
+
+  .track {
+    position: relative;
+    flex: 1;
+    height: 7px;
+    background-color: variables.$bg-scrolling-panel-track;
+    box-shadow: variables.$shadow-scrolling-panel-track;
+  }
+
+  // The marks are inset from the ends of the track so the first and last ones don't hang over its edges.
+  .marks {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 4px;
+    right: 4px;
+  }
+
+  .mark {
+    position: absolute;
+    top: 1px;
+    bottom: 1px;
+    width: 1px;
+    transform: translateX(-50%);
+    background-color: variables.$fg-very-weak;
+
+    &.current {
+      top: -4px;
+      bottom: -4px;
+      width: 3px;
+      background-color: variables.$fg-button-default;
+      box-shadow: 0 0 4px rgb(0 0 0 / 0.5);
+    }
+  }
+}

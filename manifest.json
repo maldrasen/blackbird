@@ -646,6 +646,7 @@
     "views/elements/tab-controller.js",
     "views/elements/tag-elements.js",
     "views/elements/tooltip.js",
+    "views/elements/zoom-control.js",
     "views/enlighten/enlighten-view.js",
     "views/enlighten/level-up-overlay.js",
     "views/episodes/episode-view.js",
