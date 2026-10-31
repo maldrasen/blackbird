@@ -7,17 +7,17 @@
 
   #savedGameList {
     li {
-      display: flex;
-      align-items: center;
+      position: relative;
       margin-bottom: 5px;
     }
     .load-button {
-      width: calc(100% - 22px);
+      display: block;
+      padding-right: 70px;
     }
     .delete-button {
       position: absolute;
-      right: 15px;
-      margin-top: 30px;
+      right: 5px;
+      bottom: 5px;
     }
 
     .details {
