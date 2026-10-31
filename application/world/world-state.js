@@ -48,6 +48,12 @@ global.WorldState = (function() {
     saveState();
   }
 
+  async function removeSavedGame(key) {
+    delete getState().savedGames[key];
+    if (getState().previousGame === key) { delete getState().previousGame; }
+    await saveState();
+  }
+
   async function saveState() {
     if (HEADLESS) { return; }
     localLog("Saving World State");
@@ -89,6 +95,7 @@ global.WorldState = (function() {
     getSavedGames: () => { return structuredClone(worldState.savedGames); },
 
     updateSaveMetadata,
+    removeSavedGame,
     saveState,
     loadState,
   };

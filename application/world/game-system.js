@@ -38,6 +38,13 @@ global.GameSystem = (function() {
     });
   }
 
+  async function deleteSave(key) {
+    await WorldState.removeSavedGame(key);
+    if (HEADLESS === false) {
+      fs.rmSync(`${saveDirectory}/${key}.json`, { force:true });
+    }
+  }
+
   // ===================
   //    Game Lifecycle
   // ===================
@@ -136,6 +143,7 @@ global.GameSystem = (function() {
     isLoaded,
     canSave,
     saveGame,
+    deleteSave,
 
     createNewGame,
     startNewGame,
