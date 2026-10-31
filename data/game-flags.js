@@ -1,7 +1,6 @@
 global.GameFlags = (function() {
 
   const flags = {
-    oathTaken: 'oath-taken',
     sixBladeStatus: 'six-blade.status',
     sixBladeRespect: 'six-blade.respect',
   }

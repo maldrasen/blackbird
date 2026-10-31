@@ -12,7 +12,7 @@ stories.add(`{A:ActingName} cackles wildly as a lance of searing heat erupts fro
 
 Spell.register('searing-lance', {
   name: 'Searing Lance',
-  color: 'red',
+  color: Mana.red,
   manaCost: 3,
   target: EffectTarget.single,
 

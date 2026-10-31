@@ -1,7 +1,7 @@
 FeatureType.register('mana-font',{
-
   build: function() {
-    const color = Random.from(Object.values(Mana));
+    const first = isFirstFont();
+    const color = first ? Mana.green : Random.from(Object.values(Mana));
     const feature = Feature('mana-font');
     const room = Room(feature);
 
@@ -19,12 +19,16 @@ FeatureType.register('mana-font',{
 
     room.setFloorBox({ x:1, y:1, width:1, height:1, type:'water' });
     room.setFloorChamfer(20);
-    room.setContents('mana-font', { color });
+    room.setContents('mana-font', { color, first });
 
     feature.addRoom(room);
 
     return feature;
   }
-
 });
 
+// Every font is green until the player has seen the mana-font-first episode, which teaches the first spell. The room
+// remembers whether it holds that first font, because its episodes differ from the later fonts.
+function isFirstFont() {
+  return GameSystem.getState().hasViewedEpisode('mana-font-first') === false;
+}

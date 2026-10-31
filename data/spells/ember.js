@@ -4,7 +4,7 @@ stories.add(`{A:ActingName} cups {A:his} hands, forming a small ball of fire tha
 
 Spell.register('ember', {
   name: 'Ember',
-  color: 'red',
+  color: Mana.red,
   manaCost: 2,
   target: EffectTarget.single,
   castingTime:'medium',
