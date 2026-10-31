@@ -61,7 +61,7 @@ function drink() {
   ].join('');
 }
 
-Episode.register('first-mana-font', {
+Episode.register('mana-font-first', {
   pages: [
     { content:pages.start1 },
     { content:pages.start2 },
@@ -74,7 +74,7 @@ Episode.register('first-mana-font', {
   ],
 });
 
-Episode.register('first-mana-font-return', {
+Episode.register('mana-font-first-return', {
   repeat: true,
   requires: [
     DungeonRequirements.fontUnused(),

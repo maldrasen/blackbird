@@ -27,8 +27,8 @@ FeatureType.register('mana-font',{
   }
 });
 
-// Every font is green until the player has seen the first-mana-font episode, which teaches the first spell. The room
+// Every font is green until the player has seen the mana-font-first episode, which teaches the first spell. The room
 // remembers whether it holds that first font, because its episodes differ from the later fonts.
 function isFirstFont() {
-  return GameSystem.getState().hasViewedEpisode('first-mana-font') === false;
+  return GameSystem.getState().hasViewedEpisode('mana-font-first') === false;
 }

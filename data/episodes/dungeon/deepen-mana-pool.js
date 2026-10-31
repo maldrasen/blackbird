@@ -1,11 +1,11 @@
 
-function color() { return DungeonSystem.getDungeonFloor().getCurrentRoom().getContentsOptions().color; }
-function hue() { return color() === 'black' ? 'purple' : color(); }
+function getColor() { return DungeonSystem.getDungeonFloor().getCurrentRoom().getContentsOptions().color; }
+function getHue(color) { return color === 'black' ? 'purple' : color; }
+function getPoolSize(color) { return ManaComponent.lookup(GameSystem.getState().getPlayer())[color].max }
 
 function describeFont() {
-  const color = color();
-  const poolSize = ManaComponent.lookup(GameSystem.getState().getPlayer())[color].max;
-  return (poolSize > 0) ? describeSubsequent(color) : describeFirst(color);
+  const color = getColor();
+  return (getPoolSize(color) > 0) ? describeSubsequent(color) : describeFirst(color);
 }
 
 function describeFirst(color) {
@@ -17,30 +17,31 @@ function describeSubsequent(color) {
 }
 
 function getSpell(color) {
-  const poolSize = ManaComponent.lookup(GameSystem.getState().getPlayer())[color].max;
-  if (poolSize === 0) {
-    switch (color) {
-      case [Mana.red]: return 'ember';
-      case [Mana.yellow]: return 'acidic-stream'
-      case [Mana.green]: return 'mending';
-      case [Mana.blue]: return 'shriek';
-      case [Mana.black]: return 'derp';
-    }
+  switch (color) {
+    case Mana.red: return 'ember';
+    case Mana.yellow: return 'caustic-burst'
+    case Mana.green: return 'mending';
+    case Mana.blue: return 'shriek';
+    case Mana.black: return 'uncanny-awareness';
   }
 }
 
 function drink() {
-  const color = color();
-  const spell = getSpell(color);
+  const color = getColor();
+  const first = getPoolSize(color) === 0;
   const amount = ManaSystem.deepenPool(color);
-  const results = [{ text:`You gain ${amount} ${color} mana.`, options:{ classname:'gain' }}];
+  const results = [];
 
-  // Player will learn a spell if they don't have any spells of this mana color yet. An introductory spell.
-  // SpellbookComponent.setSpell(GameSystem.getState().getPlayer(), 'mending', 1);
-  // { text:`You learn the spell {S/abl}Mending{/S}.`, options:{ classname:'gain' }},
+  if (first) {
+    const spellCode = getSpell(color);
+    const spellName = Spell.lookup(spellCode).getName();
+    SpellbookComponent.setSpell(GameSystem.getState().getPlayer(), spellCode, 1);
+    results.push({ text:`You learn the spell {S/abl}${spellName}{/S}.`, options:{ classname:'gain' }})
+  }
 
   DungeonSystem.getDungeonState().fontUsed(DungeonSystem.getDungeonFloor().getLevel());
   DungeonSystem.getDungeonFloor().getCurrentRoom().refreshDescription();
+  results.push({ text:`You gain ${amount} ${color} mana.`, options:{ classname:'gain' }});
 
   return [
     WeaverElements.paragraph('Drank text'),
