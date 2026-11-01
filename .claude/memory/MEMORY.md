@@ -67,3 +67,4 @@
 - [Python edits preserve LF](project_python_edits_preserve_lf.md) — repo is LF; python read_text/write_text on Windows rewrites CRLF (whole-file diffs); use bytes/newline='' and re-normalize from HEAD
 - [Guard style](feedback_guard_style.md) — a single guard over a short body is a plain if, not an early return; presence checks use Validate.exists() (task 229)
 - [Specs don't pin data](feedback_specs_dont_pin_data.md) — never assert the contents of tunable data tables (depot maps, weights, drop tables); assert the mechanic and read expectations from the same record or constant (task 229)
+- [Zoom control (task 269)](project_zoom_control_task269.md) — ZoomControl element in dungeon left panel; wheel handler kept untouched by user choice (LinearMouse on Mac), synced via zoom(step) only

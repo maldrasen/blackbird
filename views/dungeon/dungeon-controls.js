@@ -2,6 +2,7 @@ global.DungeonControls = (function() {
 
   let positionCells;
   let cards;
+  let zoomControl;
 
   function init() {
     X.onClick('#dungeonControls .open-party', () => { PartyOverlay.open('normal') });
@@ -14,7 +15,22 @@ global.DungeonControls = (function() {
     positionCells = {};
     buildRank(0,'.front-rank');
     buildRank(1,'.back-rank');
+    buildZoomControl();
     update();
+  }
+
+  function buildZoomControl() {
+    zoomControl = ZoomControl({
+      levels: DungeonViewport.getZoomLevels(),
+      level: DungeonViewport.getZoomLevel(),
+      onChange: DungeonViewport.zoomToLevel,
+    });
+
+    X.first('#dungeonControls .left-panel .zoom').replaceChildren(zoomControl.getElement());
+  }
+
+  function refreshZoom() {
+    zoomControl.setLevel(DungeonViewport.getZoomLevel());
   }
 
   function buildRank(rank, selector) {
@@ -97,6 +113,7 @@ global.DungeonControls = (function() {
     refreshHealth,
     refreshRoom,
     refreshDescription,
+    refreshZoom,
   };
 
 })();
