@@ -36,8 +36,14 @@ function getTargetingMode(spell) {
   return [EffectTarget.single, EffectTarget.position].includes(spell.getTarget()) ? TargetingMode.anyEnemy : null;
 }
 
+// A character pays the mana when the cast begins, so a cast that fails or is interrupted still costs them. A monster's
+// spells are innate and cost nothing.
 function execute(spell, powerLevel) {
   const round = BattleSystem.getRound();
+
+  if (round.isActingCharacter()) {
+    ManaSystem.spendMana(round.getActing(), spell.getColor(), spell.getManaCost(powerLevel));
+  }
 
   round.addTime(spell.getCastingTime(powerLevel));
   round.addMessage({ text:`{A:ActingName} begins casting a spell.` });

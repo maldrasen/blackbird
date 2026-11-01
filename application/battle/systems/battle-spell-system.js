@@ -1,8 +1,5 @@
 global.BattleSpellSystem = (function() {
 
-  // TODO: When a character casts a spell the mana should be spent here at cast time, that way, if their spell is
-  //       interrupted by getting stunned or silenced, their mana is still expended.
-
   function castSpell() {
     const round = BattleSystem.getRound();
     const acting = round.getActing();
