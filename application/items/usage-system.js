@@ -41,26 +41,35 @@ global.UsageSystem = (function() {
     });
   }
 
+  // Every consumable shown in an alert shares the same short message, built from whatever its effects actually
+  // restored. Consumables with no effects fall back to the onUse message. The battle system is the one that prints a
+  // consumable's own story and a result line per entity.
   function compileMessage(consumable, context) {
-    const story = consumable.hasStories() ? consumable.pickStory(context) : consumable.getOnUse().showAlert;
-    const resultMessage = consumable.messageForEntity(context.A, applyEffects(consumable, context.A));
+    const results = applyEffects(consumable, context.A);
+    const message = consumable.hasEffects() ? resultMessage(results) : consumable.getOnUse().showAlert;
 
-    return Weaver(context).weave(resultMessage ? `${story} ${resultMessage}` : story);
+    return Weaver(context).weave(message);
   }
 
-  // The battle system adds the story and each entity's result message as separate lines. Out of battle the consumable
-  // is only ever applied to the character using it, so the results are keyed the same way, but the message is appended
-  // to the story.
+  // The consumable results will usually be shown in an alert, so they need to be short and to the point. Consumables
+  // with more complex effects will either need to start an episode or display an overlay. Most usable items will have
+  // a single effect with a standardized message. It's possible that some future consumables will have multiple
+  // effects, though I don't think we'll have any consumables without visible effects.
+  function resultMessage(results) {
+    if (results.length !== 1) {
+      throw `We're only handling consumables with one result for now.`;
+    }
+
+    const result = results[0];
+    switch (result.type) {
+      case 'add-mana': return `{A:ActingName} uses the {I.name}, regaining ${result.value} ${result.color} mana.`;
+      case 'add-health': return `{A:ActingName} uses the {I.name}, regaining ${result.value} health.`;
+      default: throw `Unknown result type: ${result.type}`;
+    }
+  }
+
   function applyEffects(consumable, id) {
-    const results = {};
-
-    (consumable.getEffects() || []).forEach(effect => {
-      const result = Effect.apply(id, effect);
-      if (result.type === 'add-health') { results.health = result.value; }
-      if (result.type === 'add-mana') { results.mana = result.value; }
-    });
-
-    return results;
+    return (consumable.getEffects() || []).map(effect => Effect.apply(id, effect));
   }
 
   return {
