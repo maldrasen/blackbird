@@ -45,4 +45,45 @@ describe("SpellbookSystem", function() {
     });
   });
 
+  // The chance of a raise is (8 - level) × 2 percent, rolled on a d100 that has to come in at or under it.
+  describe("improvePowerLevel()", function() {
+    it("always raises the level when the raise is guaranteed", function() {
+      const player = playerWithMana({});
+      SpellbookComponent.setSpell(player, 'ember', 1);
+
+      expect(SpellbookSystem.improvePowerLevel(player, 'ember', true)).to.equal(2);
+      expect(SpellbookComponent.lookup(player).ember).to.equal(2);
+    });
+
+    it("raises the level when the roll comes in under the chance", function() {
+      const player = playerWithMana({});
+      SpellbookComponent.setSpell(player, 'ember', 1);
+
+      Random.stubBetween(14);
+      expect(SpellbookSystem.improvePowerLevel(player, 'ember')).to.equal(2);
+    });
+
+    it("leaves the level alone when the roll misses the chance", function() {
+      const player = playerWithMana({});
+      SpellbookComponent.setSpell(player, 'ember', 1);
+
+      Random.stubBetween(15);
+      expect(SpellbookSystem.improvePowerLevel(player, 'ember')).to.equal(null);
+      expect(SpellbookComponent.lookup(player).ember).to.equal(1);
+    });
+
+    it("never raises a spell past the cap, even on a guaranteed raise", function() {
+      const player = playerWithMana({});
+      SpellbookComponent.setSpell(player, 'ember', BattleConstants.maxPowerLevel);
+
+      expect(SpellbookSystem.improvePowerLevel(player, 'ember', true)).to.equal(null);
+      expect(SpellbookComponent.lookup(player).ember).to.equal(BattleConstants.maxPowerLevel);
+    });
+
+    it("throws for a spell the character doesn't know", function() {
+      const player = playerWithMana({});
+      expect(() => SpellbookSystem.improvePowerLevel(player, 'ember')).to.throw("doesn't know the ember spell");
+    });
+  });
+
 });

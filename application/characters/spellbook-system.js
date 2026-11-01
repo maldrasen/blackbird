@@ -22,9 +22,23 @@ global.SpellbookSystem = (function() {
       filter(entry => entry.maxPowerLevel > 0);
   }
 
+  // A successful cast can raise the level a character can cast that spell at. A crit always does; otherwise the
+  // chance falls as the level climbs, from 14% at the first level to 2% at the seventh, and nothing past the cap.
+  // Returns the new level, or null when it didn't move.
+  function improvePowerLevel(id, code, guaranteed=false) {
+    const level = lookup(id)[code];
+    if (level == null) { throw new Error(`Entity[${id}] doesn't know the ${code} spell.`); }
+    if (level >= BattleConstants.maxPowerLevel) { return null; }
+    if (guaranteed === false && Random.between(1,100) > (BattleConstants.maxPowerLevel - level) * 2) { return null; }
+
+    SpellbookComponent.setSpell(id, code, level + 1);
+    return level + 1;
+  }
+
   return {
     getMaxCastablePowerLevel,
     getCastableSpells,
+    improvePowerLevel,
   };
 
 })();

@@ -12,7 +12,18 @@ global.BattleSpellSystem = (function() {
       return round.addMessage({ text:`{A:ActingName} fucked up casting {A:his} spell.` });
     }
 
+    improveSpell(acting, spellData.code, check.crit);
     EffectSystem.applyDuringBattle(spell, { ...spellData, powerLevel:check.powerLevel, target:retarget(spell, spellData) });
+  }
+
+  // A character's grasp of a spell grows with successful casts, and the battle remembers the growth for the enlighten
+  // screen. A monster's spells are innate and never improve.
+  function improveSpell(acting, code, crit) {
+    const state = BattleSystem.getState();
+    if (state.isCharacter(acting) === false) { return; }
+
+    const level = SpellbookSystem.improvePowerLevel(acting, code, crit);
+    if (level != null) { state.spellImproved(acting, code, level); }
   }
 
   // The target was chosen when the cast began, and by the time the spell goes off they may be down or hidden. The

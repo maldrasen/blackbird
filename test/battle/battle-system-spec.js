@@ -86,6 +86,7 @@ describe("BattleSystem", function() {
       const player = BattleSupport.player();
       const target = state.getEntityAtPosition('M',0,2);
 
+      SpellbookComponent.setSpell(player, 'ember', 1);
       BattleSupport.startCharacterRound(player, target);
       state.startCastingSpell({ code:'ember', powerLevel:1, target, targetPosition:state.getPosition(target) });
       BattleSystem.advanceBattle();
