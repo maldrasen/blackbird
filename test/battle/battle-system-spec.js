@@ -78,6 +78,26 @@ describe("BattleSystem", function() {
     });
   });
 
+  // The player's sorcery is whatever the spec party rolled, so the release may succeed or fail. Either way the stored
+  // spell is gone and the round was spent on it rather than on a command.
+  describe("startCharacterRound()", function() {
+    it("releases a pending spell instead of offering commands", function() {
+      const state = BattleSupport.startBattle();
+      const player = BattleSupport.player();
+      const target = state.getEntityAtPosition('M',0,2);
+
+      BattleSupport.startCharacterRound(player, target);
+      state.startCastingSpell({ code:'ember', powerLevel:1, target, targetPosition:state.getPosition(target) });
+      BattleSystem.advanceBattle();
+
+      const round = BattleSystem.getRound();
+      expect(round.getActing()).to.equal(player);
+      expect(state.isCastingSpell(player)).to.equal(false);
+      expect(round.getTime()).to.be.above(0);
+      expect(round.getMessages().length).to.be.above(0);
+    });
+  });
+
   describe("reset()", function() {
     it("clears battle only status effects from the survivors", function() {
       const state = BattleSupport.startBattle();

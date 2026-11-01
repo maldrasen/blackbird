@@ -89,7 +89,13 @@ global.BattleSystem = (function() {
     round.getMessages().length === 0 ? advanceBattle() : BattleInterface.showMonsterResult();
   }
 
+  // A character who began a cast on their last turn spends this one releasing it, so they're never offered commands.
   function startCharacterRound() {
+    if (state.isCastingSpell(round.getActing())) {
+      BattleSpellSystem.castSpell();
+      return finishCharacterRound();
+    }
+
     state.isAutoBattle() ? AutoBattleSystem.takeTurn() : BattleInterface.showCharacterCommands();
   }
 
