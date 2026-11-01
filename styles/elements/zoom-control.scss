@@ -3,31 +3,37 @@
 .zoom-control {
   display: flex;
   align-items: center;
-  gap: 5px;
 
   .zoom-out, .zoom-in {
     width: 20px;
+    height: 20px;
     padding: 0;
     line-height: 20px;
     text-align: center;
-    font-family: 'roboto-medium', sans-serif;
+    font-family: 'roboto-mono-bold', monospace;
   }
+
+  .zoom-in { border-radius: 0 4px 4px 0; }
+  .zoom-out { border-radius: 4px 0 0 4px; }
 
   .track {
     position: relative;
     flex: 1;
-    height: 7px;
+    height: 20px;
     background-color: variables.$bg-scrolling-panel-track;
     box-shadow: variables.$shadow-scrolling-panel-track;
+    border: variables.$border-normal;
+    border-left: none;
+    border-right: none;
   }
 
   // The marks are inset from the ends of the track so the first and last ones don't hang over its edges.
   .marks {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 4px;
-    right: 4px;
+    top: 4px;
+    bottom: 4px;
+    left: 8px;
+    right: 8px;
   }
 
   .mark {
@@ -39,9 +45,9 @@
     background-color: variables.$fg-very-weak;
 
     &.current {
-      top: -4px;
-      bottom: -4px;
-      width: 3px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
       background-color: variables.$fg-button-default;
       box-shadow: 0 0 4px rgb(0 0 0 / 0.5);
     }
