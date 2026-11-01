@@ -30,14 +30,25 @@ Ability.CastSpell = function(options) {
   return ability;
 }
 
-// A spell aimed at one enemy or at a position needs a target picked. One that covers a formation or the caster
-// doesn't.
+// A spell aimed at one enemy, one ally, or a position needs a target picked. One that covers a formation or the
+// caster doesn't.
 function getTargetingMode(spell) {
-  return [EffectTarget.single, EffectTarget.position].includes(spell.getTarget()) ? TargetingMode.anyEnemy : null;
+  switch (spell.getTarget()) {
+    case EffectTarget.single:   return TargetingMode.anyEnemy;
+    case EffectTarget.position: return TargetingMode.anyEnemy;
+    case EffectTarget.ally:     return TargetingMode.anyAlly;
+    default: return null;
+  }
 }
 
+// A character pays the mana when the cast begins, so a cast that fails or is interrupted still costs them. A monster's
+// spells are innate and cost nothing.
 function execute(spell, powerLevel) {
   const round = BattleSystem.getRound();
+
+  if (round.isActingCharacter()) {
+    ManaSystem.spendMana(round.getActing(), spell.getColor(), spell.getManaCost(powerLevel));
+  }
 
   round.addTime(spell.getCastingTime(powerLevel));
   round.addMessage({ text:`{A:ActingName} begins casting a spell.` });

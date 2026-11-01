@@ -13,6 +13,10 @@ global.BattleInterface = (function() {
     if (viewActive()) { CommandPanel.showCommands(CharacterAbilitySystem.getCommands()); }
   }
 
+  function showSpellSelection() {
+    if (viewActive()) { SpellPanel.open(); }
+  }
+
   function showMonsterResult() {
     if (viewActive() === false) { return; }
     CommandPanel.hide();
@@ -54,6 +58,7 @@ global.BattleInterface = (function() {
   return {
     startTargeting,
     showCharacterCommands,
+    showSpellSelection,
     showCharacterResult,
     showMonsterResult,
     updateCombatantView,

@@ -54,7 +54,8 @@ global.CommandPanel = (function() {
   function isAcceptingCommands() {
     return X.first('#battleView') != null
         && X.hasClass('#commandPanel','hide') === false
-        && X.hasClass('#battleView','target-mode') === false;
+        && X.hasClass('#battleView','target-mode') === false
+        && X.hasClass('#battleView','spell-mode') === false;
   }
 
   function pressCommand(code) {

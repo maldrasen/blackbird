@@ -32,6 +32,18 @@ describe("BattleSpellSystem", function() {
       getEffects: () => { return [Effect.damage(DamageType.fire, { x:5, d:4 })]; },
       stories: boltStories,
     });
+
+    const salveStories = WeaverPackage('spec-salve');
+    salveStories.add(`A soothing light settles over {T:TargetName}.`);
+
+    Spell.register('spec-salve', {
+      name: 'Spec Salve',
+      color: 'red',
+      manaCost: 1,
+      target: EffectTarget.ally,
+      getEffects: () => { return [Effect.restoreHealth(10,10)]; },
+      stories: salveStories,
+    });
   });
 
   beforeEach(function() {
@@ -52,6 +64,17 @@ describe("BattleSpellSystem", function() {
     state.startCastingSpell({ code:'spec-spark', powerLevel });
     BattleSpellSystem.castSpell();
     return acting;
+  }
+
+  // The player knows the spark at its first level. The raise roll comes right after the skill check's rolls on the
+  // between queue, so a third stubbed value decides it on a plain success.
+  function castSparkAsPlayer(state) {
+    const player = BattleSupport.player();
+    SpellbookComponent.setSpell(player, 'spec-spark', 1);
+    BattleSystem.specRound(player);
+    state.startCastingSpell({ code:'spec-spark', powerLevel:1 });
+    BattleSpellSystem.castSpell();
+    return player;
   }
 
   describe("castSpell()", function() {
@@ -156,6 +179,92 @@ describe("BattleSpellSystem", function() {
       const redirected = state.getEntityAtPosition('P',1,2);
       expect(CharacterSupport.getHealth(redirected)).to.be.lessThan(100);
       expect(CharacterSupport.getHealth(state.getEntityAtPosition('P',1,3))).to.equal(100);
+    });
+
+    // A character releases a spell from their spellbook, so the player learns the salve first. The third stubbed value
+    // is the raise roll, kept high so the power level stays put.
+    it("heals the ally stored when the cast began", function() {
+      const state = BattleSupport.startBattle();
+      const party = getParty(state);
+      party.forEach(id => CharacterSupport.setHealth(id, 50));
+      const target = BattleSupport.tank();
+
+      SpellbookComponent.setSpell(BattleSupport.player(), 'spec-salve', 1);
+      Random.stubBetween(50, 1, 100);
+      BattleSystem.specRound(BattleSupport.player());
+      state.startCastingSpell({ code:'spec-salve', powerLevel:1, target, targetPosition:state.getPosition(target) });
+      BattleSpellSystem.castSpell();
+
+      expect(CharacterSupport.getHealth(target)).to.equal(60);
+      party.filter(id => id !== target).forEach(id => expect(CharacterSupport.getHealth(id), id).to.equal(50));
+    });
+
+    // With the tank at P.0.3 down, the player beside them at P.0.2 is the closest standing ally, so the caster ends
+    // up healing themself.
+    it("redirects an ally spell to the closest standing party member when the target is down", function() {
+      const state = BattleSupport.startBattle();
+      const party = getParty(state);
+      party.forEach(id => CharacterSupport.setHealth(id, 50));
+      const target = BattleSupport.tank();
+
+      SpellbookComponent.setSpell(BattleSupport.player(), 'spec-salve', 1);
+      Random.stubBetween(50, 1, 100);
+      BattleSystem.specRound(BattleSupport.player());
+      state.startCastingSpell({ code:'spec-salve', powerLevel:1, target, targetPosition:state.getPosition(target) });
+      state.setCondition(target, BattleCondition.knockedOut);
+      BattleSpellSystem.castSpell();
+
+      expect(CharacterSupport.getHealth(BattleSupport.player())).to.equal(60);
+      expect(CharacterSupport.getHealth(BattleSupport.centerRogue())).to.equal(50);
+      expect(CharacterSupport.getHealth(BattleSupport.rogue())).to.equal(50);
+    });
+
+    it("raises the caster's power level for the spell when the check crits", function() {
+      const state = BattleSupport.startBattle();
+
+      Random.stubBetween(98);
+      const player = castSparkAsPlayer(state);
+
+      expect(SpellbookComponent.lookup(player)['spec-spark']).to.equal(2);
+      expect(state.getSpellImprovements()).to.deep.equal({ [player]:{ 'spec-spark':2 } });
+    });
+
+    it("rolls for a raise on a plain success", function() {
+      const state = BattleSupport.startBattle();
+
+      Random.stubBetween(50, 1, 14);
+      const player = castSparkAsPlayer(state);
+
+      expect(SpellbookComponent.lookup(player)['spec-spark']).to.equal(2);
+    });
+
+    it("leaves the power level alone when the raise roll misses", function() {
+      const state = BattleSupport.startBattle();
+
+      Random.stubBetween(50, 1, 15);
+      const player = castSparkAsPlayer(state);
+
+      expect(SpellbookComponent.lookup(player)['spec-spark']).to.equal(1);
+      expect(state.getSpellImprovements()).to.deep.equal({});
+    });
+
+    it("never raises the power level for a fizzled spell", function() {
+      const state = BattleSupport.startBattle();
+
+      Random.stubBetween(1);
+      const player = castSparkAsPlayer(state);
+
+      expect(SpellbookComponent.lookup(player)['spec-spark']).to.equal(1);
+      expect(state.getSpellImprovements()).to.deep.equal({});
+    });
+
+    it("leaves a monster's innate spells alone", function() {
+      const state = BattleSupport.startBattle();
+
+      Random.stubBetween(98);
+      castSpecSpark(state);
+
+      expect(state.getSpellImprovements()).to.deep.equal({});
     });
 
     it("throws when the acting entity is not casting a spell", function() {

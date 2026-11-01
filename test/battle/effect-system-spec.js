@@ -80,6 +80,23 @@ describe("EffectSystem", function() {
       expect(ManaSystem.getPool(player, Mana.red).current).to.equal(8);
     });
 
+    // Mending restores 10 to 20 health a level. The round's target stands in for the stored one, as it would for a
+    // spell released the turn it was cast.
+    it("restores health with a healing spell", function() {
+      const state = BattleSupport.startBattle();
+      const target = BattleSupport.tank();
+      CharacterSupport.setHealth(target, 50);
+
+      BattleSystem.specRound(BattleSupport.player(), { target });
+      EffectSystem.applyDuringBattle(Spell.lookup('mending'), { powerLevel:1 });
+
+      const healed = CharacterSupport.getHealth(target) - 50;
+      expect(healed).to.be.within(10, 20);
+
+      const messages = BattleSystem.getRound().getMessages();
+      expect(messages[messages.length - 1].text).to.include(`recovers ${healed} health.`);
+    });
+
     it("applies the statuses that fail their resist rolls", function() {
       const state = BattleSupport.startBattle();
       const victim = isolateVictim(state);

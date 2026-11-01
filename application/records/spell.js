@@ -50,7 +50,8 @@ Record.define('Spell', {
 
       return {
         result: 'success',
-        powerLevel: check.crit ? boost(powerLevel) : powerLevel
+        crit: check.crit === true,
+        powerLevel: check.crit ? boost(powerLevel) : powerLevel,
       };
     }
 

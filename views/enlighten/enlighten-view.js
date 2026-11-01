@@ -25,29 +25,38 @@ global.EnlightenView = (function() {
 
   function showBattleResults() {
     showSkillImprovements();
+    showSpellImprovements();
     showRevives();
     showLoot();
     showEssenceBars();
   }
 
   function showSkillImprovements() {
-    const improvements = EnlightenSystem.getState().getSkillImprovements();
-    if (Object.keys(improvements).length > 0) {
-      X.removeClass('#enlightenView .skill-improvements','hide');
-      Object.keys(improvements).forEach(id => {
-        X.first('#enlightenView .skill-improvements .character-grid').appendChild(buildSkillCharacterItem(id, improvements[id]));
-      });
-    }
+    showImprovements('.skill-improvements', EnlightenSystem.getState().getSkillImprovements(), TagElements.buildSkillTag);
   }
 
-  function buildSkillCharacterItem(id, improvements) {
+  function showSpellImprovements() {
+    showImprovements('.spell-improvements', EnlightenSystem.getState().getSpellImprovements(), TagElements.buildSpellTag);
+  }
+
+  // The skill and spell improvements share a layout: a row per character, with a tag for each thing that improved.
+  function showImprovements(panel, improvements, buildTag) {
+    if (Object.keys(improvements).length === 0) { return; }
+
+    X.removeClass(`#enlightenView ${panel}`,'hide');
+    Object.keys(improvements).forEach(id => {
+      X.first(`#enlightenView ${panel} .character-grid`).appendChild(buildCharacterItem(id, improvements[id], buildTag));
+    });
+  }
+
+  function buildCharacterItem(id, improvements, buildTag) {
     const item = X.createElement(`<li class='character'>
       <span class='name'>${Character(id).getName()}</span>
       <ul class='skill-list'></ul>
     </li>`);
 
     Object.entries(improvements).forEach(([code,value]) =>
-      item.querySelector('.skill-list').appendChild(TagElements.buildSkillTag(code,value)));
+      item.querySelector('.skill-list').appendChild(buildTag(code,value)));
 
     return item;
   }

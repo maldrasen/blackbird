@@ -543,6 +543,7 @@ global.ResistResult = {
 global.StandardAbility = {
   attack: 'basic-attack',
   defend: 'basic-defend',
+  castSpell: 'cast-spell',
   changeEquipment: 'change-equipment',
   hide: 'hide',
   negotiate: 'negotiate',
@@ -554,6 +555,7 @@ global.StandardAbility = {
 global.TargetingMode = {
   enemyInWeaponRange: 'enemy-in-weapon-range',
   anyEnemy: 'any-enemy',
+  anyAlly: 'any-ally',
 };
 
 global.AreaOfEffect = {
@@ -565,6 +567,7 @@ global.AreaOfEffect = {
 global.EffectTarget = {
   self: 'self',
   single: 'single',
+  ally: 'ally',
   position: 'position',
   enemyFormation: 'enemy-formation',
   allyFormation: 'ally-formation',

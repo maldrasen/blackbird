@@ -10,6 +10,7 @@ global.KeyBindings = (function() {
       actions: {
         [StandardAbility.attack]:          { name:'Attack',           key:'KeyA' },
         [StandardAbility.defend]:          { name:'Defend',           key:'KeyD' },
+        [StandardAbility.castSpell]:       { name:'Cast Spell',       key:'KeyC' },
         [StandardAbility.hide]:            { name:'Hide',             key:'KeyH' },
         [StandardAbility.sneakAttack]:     { name:'Sneak Attack',     key:'KeyS' },
         [StandardAbility.negotiate]:       { name:'Negotiate',        key:'KeyN' },

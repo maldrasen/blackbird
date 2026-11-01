@@ -17,6 +17,7 @@ global.BattleState = function(data) {
   const abilityCooldowns = {};
   const conditions = {};
   const skillImprovements = {};
+  const spellImprovements = {};
   const spellCasting = {};
 
   characterIds.forEach(id => { conditions[id] = BattleCondition.active; });
@@ -368,6 +369,12 @@ global.BattleState = function(data) {
     }
   }
 
+  // A spell's power level growing is shown alongside the skill improvements, and only characters have spells to grow.
+  function spellImproved(id, code, level) {
+    if (spellImprovements[id] == null) { spellImprovements[id] = {}; }
+    spellImprovements[id][code] = level;
+  }
+
   return {
     cleanup,
     getAfterBattle: () => { return afterBattle; },
@@ -439,6 +446,8 @@ global.BattleState = function(data) {
     getTotalEssence,
     skillImproved,
     getSkillImprovements: () => { return skillImprovements; },
+    spellImproved,
+    getSpellImprovements: () => { return spellImprovements; },
   };
 
 }

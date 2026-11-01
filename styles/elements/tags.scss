@@ -72,3 +72,21 @@
     background-color: variables.$bg-beauty;
   }
 }
+
+@mixin spell-tag($fg, $bg) {
+  border-color: $bg;
+  .label {
+    color: $fg;
+    border-color: $bg;
+  }
+  .value {
+    color: $fg;
+    background-color: $bg;
+  }
+}
+
+.spell-tag.red    { @include spell-tag(variables.$fg-mana-red,    variables.$bg-mana-red); }
+.spell-tag.yellow { @include spell-tag(variables.$fg-mana-yellow, variables.$bg-mana-yellow); }
+.spell-tag.green  { @include spell-tag(variables.$fg-mana-green,  variables.$bg-mana-green); }
+.spell-tag.blue   { @include spell-tag(variables.$fg-mana-blue,   variables.$bg-mana-blue); }
+.spell-tag.black  { @include spell-tag(variables.$fg-mana-black,  variables.$bg-mana-black); }

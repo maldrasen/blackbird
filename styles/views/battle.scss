@@ -109,6 +109,51 @@ $roll-high-bright: rgb(250 250 250);
   .commands {
     a { margin-right: 5px }
   }
+
+  #spellArea {
+    display: none;
+    margin: 10px;
+    gap: 20px;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      min-width: 160px;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+
+    li a {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 3px 6px;
+      cursor: pointer;
+    }
+    li a:hover { background-color: variables.$select-hover; }
+    li a.selected { background-color: variables.$select-active; }
+    li a.selected:hover { background-color: variables.$select-active-hover; }
+
+    .cost { color: variables.$fg-weak; }
+
+    .red    { color: variables.$fg-mana-red; }
+    .yellow { color: variables.$fg-mana-yellow; }
+    .green  { color: variables.$fg-mana-green; }
+    .blue   { color: variables.$fg-mana-blue; }
+    .black  { color: variables.$fg-mana-black; }
+
+    .cast-area {
+      align-self: flex-end;
+      margin-left: auto;
+    }
+  }
+}
+
+#battleView.spell-mode #commandPanel {
+  #commandArea { display:none; }
+  #utilityArea { display:none; }
+  #cancelArea { display:block; }
+  #spellArea { display:flex; }
 }
 
 // ================

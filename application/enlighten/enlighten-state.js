@@ -35,6 +35,7 @@ global.EnlightenState = function(from, data) {
     getAnger: () => { return data.anger },
     getPartner: () => { return data.partner },
     getSkillImprovements: () => { return data.skillImprovements },
+    getSpellImprovements: () => { return data.spellImprovements },
     getRevived: () => { return data.revived },
     getLoot: () => { return loot; },
     getEssence: () => { return essence; },

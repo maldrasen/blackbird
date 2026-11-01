@@ -8,8 +8,9 @@ global.TargetingController = (function() {
     pending = { command, data };
 
     switch(command.getTargetingMode(data)) {
-      case TargetingMode.anyEnemy: return BattleInterface.startTargeting(monsterPositions(getTargetableMonsters()), []);
-      case TargetingMode.enemyInWeaponRange: return BattleInterface.startTargeting(monsterPositions(getMonstersInRange()), []);
+      case TargetingMode.anyEnemy: return BattleInterface.startTargeting(positionsOf(getTargetableMonsters()), []);
+      case TargetingMode.enemyInWeaponRange: return BattleInterface.startTargeting(positionsOf(getMonstersInRange()), []);
+      case TargetingMode.anyAlly: return BattleInterface.startTargeting([], positionsOf(getTargetableAllies()));
     }
   }
 
@@ -43,9 +44,14 @@ global.TargetingController = (function() {
       BattleHelper.isAttackWithinRange(reach, position, state.getPosition(monster)));
   }
 
-  function monsterPositions(monsters) {
+  // Every standing party member, the caster included. A hidden ally can still be helped.
+  function getTargetableAllies() {
+    return BattleSystem.getState().getActiveCharacters();
+  }
+
+  function positionsOf(entities) {
     const state = BattleSystem.getState();
-    return monsters.map(id => state.getPosition(id));
+    return entities.map(id => state.getPosition(id));
   }
 
   return {
@@ -53,6 +59,7 @@ global.TargetingController = (function() {
     targetSelected,
     cancelTargeting,
     getTargetableMonsters,
+    getTargetableAllies,
     getMonstersInRange,
   };
 

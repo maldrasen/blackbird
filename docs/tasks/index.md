@@ -18,7 +18,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [194] Feeling Adjustments During Battle `2pt` — [194-feeling-adjustments-during-battle.md](194-feeling-adjustments-during-battle.md)
 - [197] Skill events `5pt` — [197-skill-episodes.md](197-skill-episodes.md)
 - [240] Safe Rooms `3pt` — [240-safe-rooms.md](240-safe-rooms.md)
-- [250] Casting Spells `8pt` — [250-casting-spells.md](250-casting-spells.md)
 - [251] Learning Spells `5pt` — [251-learning-spells.md](251-learning-spells.md)
 - [252] Person Record `5pt` — [252-person-record.md](252-person-record.md)
 - [253] Conversation Component `8pt` — [253-conversation-component.md](253-conversation-component.md)

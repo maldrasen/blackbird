@@ -100,9 +100,14 @@ global.BattleFixtures = (function() {
     ManaComponent.update(player,mana);
   }
 
+  function grantSpell(code, level) {
+    SpellbookComponent.setSpell(GameSystem.getState().getPlayer(), code, level);
+  }
+
   return {
     prepareForBattle,
     grantMana,
+    grantSpell,
   };
 
 })();

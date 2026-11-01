@@ -63,6 +63,7 @@ global.AbilityAppraiser = (function() {
     switch (spell.getTarget()) {
       case EffectTarget.self: return 1;
       case EffectTarget.single: return 1;
+      case EffectTarget.ally: return 1;
       case EffectTarget.allyFormation: return 6;
       case EffectTarget.enemyFormation: return 6;
       case EffectTarget.position: return areaTargetCount(spell.getAreaOfEffect());

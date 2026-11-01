@@ -10,11 +10,8 @@ const sharedAbilities = {};
 Record.define('BattleCommand', {
   getInstance: (command, code) => {
 
-    // TODO: A command with an overlay can't answer isPossible() by building its ability, because there's no data to
-    //       build from until the overlay has chosen. We need to know if it's possible to cast any spell before we show
-    //       the command that opens the spell selection UI. Those commands will a bespoke isPossible() that checks to
-    //       see if a player has the spell, has enough mana to cast it, has a valid target, etc.
-
+    // A command with an overlay can't answer by building its ability, since there's nothing to build from until the
+    // overlay has chosen, so it brings a check of its own.
     function isPossible() {
       if (command.isPossible) { return command.isPossible(); }
       return command.buildAbility ? getAbility().isPossible() : true;

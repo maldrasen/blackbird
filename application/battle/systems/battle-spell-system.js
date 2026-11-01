@@ -1,8 +1,5 @@
 global.BattleSpellSystem = (function() {
 
-  // TODO: When a character casts a spell the mana should be spent here at cast time, that way, if their spell is
-  //       interrupted by getting stunned or silenced, their mana is still expended.
-
   function castSpell() {
     const round = BattleSystem.getRound();
     const acting = round.getActing();
@@ -15,17 +12,29 @@ global.BattleSpellSystem = (function() {
       return round.addMessage({ text:`{A:ActingName} fucked up casting {A:his} spell.` });
     }
 
+    improveSpell(acting, spellData.code, check.crit);
     EffectSystem.applyDuringBattle(spell, { ...spellData, powerLevel:check.powerLevel, target:retarget(spell, spellData) });
+  }
+
+  // A character's grasp of a spell grows with successful casts, and the battle remembers the growth for the enlighten
+  // screen. A monster's spells are innate and never improve.
+  function improveSpell(acting, code, crit) {
+    const state = BattleSystem.getState();
+    if (state.isCharacter(acting) === false) { return; }
+
+    const level = SpellbookSystem.improvePowerLevel(acting, code, crit);
+    if (level != null) { state.spellImproved(acting, code, level); }
   }
 
   // The target was chosen when the cast began, and by the time the spell goes off they may be down or hidden. The
   // spell is redirected to the closest available target to the original target's stored position, picking at random
-  // when targets are equally close. A spell that targets a position rather than an entity keeps its stored position,
-  // even if everyone has moved out of it.
+  // when targets are equally close. The candidates come from the stored target's side, so an ally spell stays with
+  // the party. A spell that targets a position rather than an entity keeps its stored position, even if everyone has
+  // moved out of it.
   function retarget(spell, spellData) {
     const state = BattleSystem.getState();
 
-    if (spell.getTarget() !== EffectTarget.single) { return spellData.target; }
+    if ([EffectTarget.single, EffectTarget.ally].includes(spell.getTarget()) === false) { return spellData.target; }
     if (state.canBeTargeted(spellData.target)) { return spellData.target; }
 
     const candidates = (state.isCharacter(spellData.target) ? state.getActiveCharacters() : state.getActiveMonsters()).
