@@ -64,7 +64,6 @@ Generated automatically by `bin/compile-task-index.js`. Do not edit by hand.
 - [242] More Negotiation Requests `8pt` — [242-more-negotiation-requests.md](242-more-negotiation-requests.md)
 - [259] UI Debug Fixture `8pt` — [259-ui-debug-fixture.md](259-ui-debug-fixture.md)
 - [264] Status effect tooltips `3pt` — [264-status-effect-tooltips.md](264-status-effect-tooltips.md)
-- [272] Remove empty room descriptions `2pt` — [272-remove-empty-room-descriptions.md](272-remove-empty-room-descriptions.md)
 - [273] Finish Mana Font Subsequent `5pt` — [273-finish-mana-font-subsequent.md](273-finish-mana-font-subsequent.md)
 
 ## Priority 4

@@ -1,6 +1,6 @@
 global.Room = function(feature, type='normal') {
 
-  let description;
+  let description = null;
   let position = { x:0, y:0 };
   let index;
   let floorPosition;
@@ -283,18 +283,9 @@ global.Room = function(feature, type='normal') {
     contentsOptions = options;
   }
 
-  // Get the description for this room. We lazy load the description if it hasn't been set yet, but once a description
-  // has been set it shouldn't change.
   function getDescription() {
-    const theme = DungeonTheme.lookup(DungeonSystem.getDungeonFloor().getTheme());
-
     if (description == null && contents) {
       description = RoomContents.lookup(contents).getDescription(contentsOptions);
-    }
-    if (description == null) {
-      const variety = (feature.getType() === 'corridor') ?
-        'corridor' : FeatureType.lookup(feature.getType()).getVariety();
-      description = theme.getDescription(variety);
     }
     return description;
   }

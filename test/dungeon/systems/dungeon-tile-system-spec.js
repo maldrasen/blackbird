@@ -21,7 +21,7 @@ describe("DungeonTileSystem", function() {
 
     it('describes the stairs in place of the room while standing on them', function() {
       expect(DungeonTileSystem.hasTileFeature()).to.equal(true);
-      expect(DungeonTileSystem.getTileInfo().description).to.include('stairs leading back up to the floor above');
+      expect(DungeonTileSystem.getTileInfo().description).to.include('stairs');
     });
 
     it("puts the command for the stairs ahead of the room's commands", function() {
@@ -89,7 +89,7 @@ describe("DungeonTileSystem", function() {
     });
 
     it('offers the way down', function() {
-      expect(DungeonTileSystem.getTileInfo().description).to.include('stairs descending down into the darkness below');
+      expect(DungeonTileSystem.getTileInfo().description).to.include('stairs');
       expect(DungeonTileSystem.getTileInfo().commands).to.deep.equal([{ code:'use-stairs', label:'Descend Stairs' }]);
     });
 

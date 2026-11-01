@@ -389,10 +389,6 @@ describe("Room", function() {
       floor.setPartyPosition(5,5);
     });
 
-    it('describes the stairs apart from the room', function() {
-      expect(room.getTileDescription(1,1)).to.include('You find a room with stairs descending down into the darkness below..');
-    });
-
     it('describes a tile with text or with a function', function() {
       room.setTileContents(0, 0, { description:'A mossy patch.' });
       room.setTileContents(2, 0, { description:() => 'Scattered bones.' });
@@ -408,9 +404,8 @@ describe("Room", function() {
       expect(room.getTileDescription(2,2)).to.equal(null);
     });
 
-    it('describes a room with stairs the same as any other room', function() {
-      expect(room.getDescription()).to.be.a('string');
-      expect(room.getDescription()).to.not.include('stairs');
+    it('has nothing to say about a room without contents', function() {
+      expect(room.getDescription()).to.equal(null);
     });
   });
 

@@ -18,8 +18,6 @@ function maxPadding(options, size) {
 }
 
 FeatureType.register('nested-room',{
-  variety:'plain',
-
   // Build a rectangular outer room with a second room nested in its center, joined by a single door centered on a
   // random wall of the inner room.
   //   size: [min,max] (min is at least 3)

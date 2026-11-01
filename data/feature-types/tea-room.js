@@ -7,8 +7,6 @@ function getTrimMax(length) {
 }
 
 FeatureType.register('tea-room',{
-  variety:'plain',
-
   // Build a "T" shaped room, rotated in any of the cardinal directions.
   //   size:    [min,max]
   build: function(options) {

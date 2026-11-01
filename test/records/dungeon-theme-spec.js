@@ -3,7 +3,7 @@ describe("DungeonTheme", function() {
   describe("getDescription()", function() {
 
     it("has nothing to say about a variety the theme doesn't describe", function() {
-      expect(DungeonTheme.lookup('crypt').getDescription('plain')).to.equal(null);
+      expect(DungeonTheme.lookup('crypt').getDescription('upStairs')).to.equal(null);
       expect(DungeonTheme.lookup('dungeon').getDescription('flooded')).to.equal(null);
     });
 
