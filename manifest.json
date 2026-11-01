@@ -614,6 +614,7 @@
     "views/battle/command-panel.js",
     "views/battle/formation-panel.js",
     "views/battle/position-panel.js",
+    "views/battle/spell-panel.js",
     "views/character/character-body-panel.js",
     "views/character/character-overlay.js",
     "views/character/character-overview-panel.js",

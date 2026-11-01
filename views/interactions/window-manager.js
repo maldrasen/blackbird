@@ -9,6 +9,7 @@ global.WindowManager = (function() {
       if (Confirmation.isVisible()) { return Confirmation.cancel(); }
       if (windowStack.length > 0) { return pop() }
       if (FormationPanel.isTargeting()) { return FormationPanel.cancelTargeting(); }
+      if (SpellPanel.isOpen()) { return SpellPanel.close(); }
 
       if (!MainMenu.isVisible()) {
         MainMenu.open();

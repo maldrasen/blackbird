@@ -12,6 +12,11 @@ global.Fixtures = (function() {
 
     BattleFixtures.prepareForBattle();
     BattleFixtures.grantMana('red',100);
+    BattleFixtures.grantMana('green',30);
+    BattleFixtures.grantSpell('ember',3);
+    BattleFixtures.grantSpell('searing-lance',2);
+    BattleFixtures.grantSpell('overwhelming-effulgence',1);
+    BattleFixtures.grantSpell('mending',2);
 
     // NegotiationQuestion.setWhitelist([]);
     // NegotiationRequest.setWhitelist([]);
