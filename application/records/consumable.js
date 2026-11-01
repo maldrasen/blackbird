@@ -18,7 +18,7 @@ Record.define('Consumable', {
 
     if (onUse) {
       let valid = false;
-      if (onUse.storyInAlert) { valid = consumable.stories != null; }
+      if (onUse.storyInAlert) { valid = consumable.effects != null; }
       if (onUse.storyInOverlay) { valid = consumable.stories != null; }
       if (onUse.showAlert) { valid = true; }
       if (onUse.startEpisode) { valid = true; }
