@@ -17,12 +17,13 @@ global.BattleSpellSystem = (function() {
 
   // The target was chosen when the cast began, and by the time the spell goes off they may be down or hidden. The
   // spell is redirected to the closest available target to the original target's stored position, picking at random
-  // when targets are equally close. A spell that targets a position rather than an entity keeps its stored position,
-  // even if everyone has moved out of it.
+  // when targets are equally close. The candidates come from the stored target's side, so an ally spell stays with
+  // the party. A spell that targets a position rather than an entity keeps its stored position, even if everyone has
+  // moved out of it.
   function retarget(spell, spellData) {
     const state = BattleSystem.getState();
 
-    if (spell.getTarget() !== EffectTarget.single) { return spellData.target; }
+    if ([EffectTarget.single, EffectTarget.ally].includes(spell.getTarget()) === false) { return spellData.target; }
     if (state.canBeTargeted(spellData.target)) { return spellData.target; }
 
     const candidates = (state.isCharacter(spellData.target) ? state.getActiveCharacters() : state.getActiveMonsters()).

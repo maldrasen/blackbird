@@ -554,6 +554,7 @@ global.StandardAbility = {
 global.TargetingMode = {
   enemyInWeaponRange: 'enemy-in-weapon-range',
   anyEnemy: 'any-enemy',
+  anyAlly: 'any-ally',
 };
 
 global.AreaOfEffect = {
@@ -565,6 +566,7 @@ global.AreaOfEffect = {
 global.EffectTarget = {
   self: 'self',
   single: 'single',
+  ally: 'ally',
   position: 'position',
   enemyFormation: 'enemy-formation',
   allyFormation: 'ally-formation',

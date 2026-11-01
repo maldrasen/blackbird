@@ -20,8 +20,9 @@ describe("Ability.CastSpell", function() {
     expect(ability.isPossible()).to.equal(true);
   });
 
-  it("targets an enemy for a single target spell and nobody for a formation spell", function() {
+  it("targets an enemy for a single target spell, an ally for a support spell, and nobody for a formation spell", function() {
     expect(Ability.CastSpell({ spell:'ember', powerLevel:1 }).getTargetingMode()).to.equal(TargetingMode.anyEnemy);
+    expect(Ability.CastSpell({ spell:'mending', powerLevel:1 }).getTargetingMode()).to.equal(TargetingMode.anyAlly);
     expect(Ability.CastSpell({ spell:'overwhelming-effulgence', powerLevel:2 }).getTargetingMode()).to.equal(null);
   });
 

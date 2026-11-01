@@ -48,6 +48,7 @@ global.EffectSystem = (function() {
     switch (source.getTarget()) {
       case EffectTarget.self: return [round.getActing()];
       case EffectTarget.single: return [data.target];
+      case EffectTarget.ally: return [data.target];
       case EffectTarget.enemyFormation: return actingIsMonster ? state.getActiveCharacters() : state.getActiveMonsters();
       case EffectTarget.allyFormation: return actingIsMonster ? state.getActiveMonsters() : state.getActiveCharacters();
       case EffectTarget.position: return getEntitiesWithinAreaOfEffect(source, data);

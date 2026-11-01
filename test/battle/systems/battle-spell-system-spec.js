@@ -32,6 +32,18 @@ describe("BattleSpellSystem", function() {
       getEffects: () => { return [Effect.damage(DamageType.fire, { x:5, d:4 })]; },
       stories: boltStories,
     });
+
+    const salveStories = WeaverPackage('spec-salve');
+    salveStories.add(`A soothing light settles over {T:TargetName}.`);
+
+    Spell.register('spec-salve', {
+      name: 'Spec Salve',
+      color: 'red',
+      manaCost: 1,
+      target: EffectTarget.ally,
+      getEffects: () => { return [Effect.restoreHealth(10,10)]; },
+      stories: salveStories,
+    });
   });
 
   beforeEach(function() {
@@ -156,6 +168,37 @@ describe("BattleSpellSystem", function() {
       const redirected = state.getEntityAtPosition('P',1,2);
       expect(CharacterSupport.getHealth(redirected)).to.be.lessThan(100);
       expect(CharacterSupport.getHealth(state.getEntityAtPosition('P',1,3))).to.equal(100);
+    });
+
+    // Restoring health isn't applied during a battle yet, so these pin the ally targeting through the story, which
+    // names whoever the spell settled on.
+    it("aims an ally spell at the ally stored when the cast began", function() {
+      const state = BattleSupport.startBattle();
+      const target = BattleSupport.tank();
+
+      Random.stubBetween(50, 1);
+      BattleSystem.specRound(BattleSupport.player());
+      state.startCastingSpell({ code:'spec-salve', powerLevel:1, target, targetPosition:state.getPosition(target) });
+      BattleSpellSystem.castSpell();
+
+      expect(BattleSystem.getRound().getMessages()[0].text).to.include(ActorComponent.lookup(target).name);
+    });
+
+    // With the tank at P.0.3 down, the player beside them at P.0.2 is the closest standing ally, so the caster ends
+    // up aiming the spell at themself.
+    it("redirects an ally spell to the closest standing party member when the target is down", function() {
+      const state = BattleSupport.startBattle();
+      const target = BattleSupport.tank();
+
+      Random.stubBetween(50, 1);
+      BattleSystem.specRound(BattleSupport.player());
+      state.startCastingSpell({ code:'spec-salve', powerLevel:1, target, targetPosition:state.getPosition(target) });
+      state.setCondition(target, BattleCondition.knockedOut);
+      BattleSpellSystem.castSpell();
+
+      const text = BattleSystem.getRound().getMessages()[0].text;
+      expect(text).to.include(ActorComponent.lookup(BattleSupport.player()).name);
+      expect(text).to.not.include(ActorComponent.lookup(target).name);
     });
 
     it("throws when the acting entity is not casting a spell", function() {
