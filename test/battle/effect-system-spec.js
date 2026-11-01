@@ -62,18 +62,22 @@ describe("EffectSystem", function() {
       expect(CharacterSupport.getHealth(state.getEntityAtPosition('P',0,2))).to.be.lessThan(100);
     });
 
-    // The crimson tear defines no target, areaOfEffect, or messageForEntity, and its story names the item with an
-    // {I} token - the minimal shape a self targeted consumable can have.
+    // The crimson tear defines no target, areaOfEffect, or story - the minimal shape a self targeted consumable can
+    // have. Without a story the round gets the usage system's shared message instead.
     it("targets the acting entity with a bare self consumable", function() {
       const state = BattleSupport.startBattle();
-      const acting = state.getEntityAtPosition('P',0,2);
+      const player = GameSystem.getState().getPlayer();
+      BattleSupport.grantMana(Mana.red, 20);
+      ManaSystem.spendMana(player, Mana.red, 20);
+      Random.stubBetween(8);
 
-      BattleSystem.specRound(acting);
+      BattleSystem.specRound(player);
       EffectSystem.applyDuringBattle(Consumable.lookup('crimson-tear'));
 
       const messages = BattleSystem.getRound().getMessages();
       expect(messages.length).to.equal(1);
-      expect(messages[0].text).to.include('swallows the Crimson Tear whole');
+      expect(messages[0].text).to.include('uses the Crimson Tear, regaining 8 red mana.');
+      expect(ManaSystem.getPool(player, Mana.red).current).to.equal(8);
     });
 
     it("applies the statuses that fail their resist rolls", function() {
