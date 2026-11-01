@@ -104,4 +104,16 @@ describe('UsageSystem', function() {
     });
   });
 
+  describe('applyAndDescribe()', function() {
+    it('applies the effects and returns the message unwoven', function() {
+      const greg = CharacterSupport.genericMale({ health:{ currentHealth:50 } });
+      Random.stubBetween(20);
+
+      const message = UsageSystem.applyAndDescribe(greg, Consumable.lookup('rhysh-apple'));
+
+      expect(HealthComponent.lookup(greg).currentHealth).to.equal(70);
+      expect(message).to.equal('{A:ActingName} uses the {I.name}, regaining 20 health.');
+    });
+  });
+
 });

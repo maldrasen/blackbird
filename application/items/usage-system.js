@@ -34,21 +34,20 @@ global.UsageSystem = (function() {
 
     Inventory().removeArticle(code, 1);
 
+    const message = consumable.hasEffects() ? applyAndDescribe(id, consumable) : onUse.showAlert;
+
     GameInterface.showAlert({
-      message: compileMessage(consumable, context),
+      message: Weaver(context).weave(message),
       type: (onUse.level || LogType.success),
       fadeTime: 3000
     });
   }
 
-  // Every consumable shown in an alert shares the same short message, built from whatever its effects actually
-  // restored. Consumables with no effects fall back to the onUse message. The battle system is the one that prints a
-  // consumable's own story and a result line per entity.
-  function compileMessage(consumable, context) {
-    const results = applyEffects(consumable, context.A);
-    const message = consumable.hasEffects() ? resultMessage(results) : consumable.getOnUse().showAlert;
-
-    return Weaver(context).weave(message);
+  // Applies the consumable's effects to the entity and returns the shared message describing what they did. The
+  // message is left unwoven so that each caller can supply its own context. Out of battle it goes into an alert, and
+  // in battle the EffectSystem adds it to the round when a consumable has no story of its own.
+  function applyAndDescribe(id, consumable) {
+    return resultMessage(applyEffects(consumable, id));
   }
 
   // The consumable results will usually be shown in an alert, so they need to be short and to the point. Consumables
@@ -73,7 +72,8 @@ global.UsageSystem = (function() {
   }
 
   return {
-    useArticle
-  }
+    useArticle,
+    applyAndDescribe,
+  };
 
 })();
