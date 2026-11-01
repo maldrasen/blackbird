@@ -17,6 +17,21 @@ describe("EnlightenSystem", function() {
   }
 
   describe("startEnlightenment()", function() {
+    it("carries the spell improvements from the battle", function() {
+      const caster = buildCharacter();
+      GameSystem.getState().setPartyConfiguration({ [caster]:'p-0' });
+
+      EnlightenSystem.startEnlightenment('battle', {
+        totalEssence: 0,
+        skillImprovements: {},
+        spellImprovements: { [caster]:{ ember:2 } },
+        revived: [],
+        loot: [],
+      });
+
+      expect(EnlightenSystem.getState().getSpellImprovements()).to.deep.equal({ [caster]:{ ember:2 } });
+    });
+
     it("splits the battle essence between the party and banks it", function() {
       const first = buildCharacter(100);
       const second = buildCharacter(200);

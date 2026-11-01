@@ -132,6 +132,7 @@ global.BattleSystem = (function() {
   function battleWon() {
     const totalEssence = state.getTotalEssence();
     const skillImprovements = state.getSkillImprovements();
+    const spellImprovements = state.getSpellImprovements();
     const revived = BattleDeathSystem.reviveKnockedOut();
     const loot = generateLoot();
 
@@ -143,6 +144,7 @@ global.BattleSystem = (function() {
 
     EnlightenSystem.startEnlightenment('battle', {
       skillImprovements,
+      spellImprovements,
       totalEssence,
       revived,
       loot,
