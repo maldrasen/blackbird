@@ -16,8 +16,8 @@ Record.define('DungeonTheme', {
       throw new Error(`Theme [${code}] has no feature at or below the [${rarityOrder[index]}] rarity tier`);
     }
 
-    // A room without contents will pull its description from the theme. Currently the variety can only be 'plain',
-    // 'corridor', 'upStairs' or 'downStairs'. A theme doesn't need to describe every variety, or any of them.
+    // Stairs pull their description from the theme. Currently the variety can only be 'upStairs' or 'downStairs'. A
+    // theme doesn't need to describe every variety, or any of them.
     function getDescription(variety) {
       const descriptions = theme.descriptions?.[variety];
       return descriptions ? descriptions.pick() : null;
