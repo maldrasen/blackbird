@@ -8,12 +8,29 @@ global.EffectSystem = (function() {
     if (data.target == null) { data.target = round.getTarget(); }
     if (data.targetPosition == null) { data.targetPosition = round.getTargetPosition(); }
 
+    if (isStoryless(source)) { return applyStoryless(source, data); }
+
     addBattleMessage(source, data);
     getAffectedEntities(source, data).forEach(entity => applyToAffected(source, entity, data));
   }
 
-  // An effect source that can be used in battle should always have a story. A spell released on a later turn carries
-  // its target in the spell data, so it takes precedence over the round's target in the story context.
+  // A consumable without a story of its own is described by the usage system's shared message, the same one it shows
+  // in an alert out of battle. Spells always carry a story.
+  function isStoryless(source) {
+    return source.hasStories != null && source.hasStories() === false;
+  }
+
+  function applyStoryless(source, data) {
+    const round = BattleSystem.getRound();
+
+    getAffectedEntities(source, data).forEach(entity => {
+      const context = { ...round.getContext(), T:entity, I:source.getCode() };
+      round.addMessage({ text:UsageSystem.applyAndDescribe(entity, source) }, Weaver(context));
+    });
+  }
+
+  // A spell released on a later turn carries its target in the spell data, so it takes precedence over the round's
+  // target in the story context.
   function addBattleMessage(source, data) {
     const round = BattleSystem.getRound();
     const context = { ...round.getContext(), T:data.target };

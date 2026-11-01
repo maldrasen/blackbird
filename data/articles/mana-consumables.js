@@ -1,7 +1,3 @@
-
-const tearPackage = WeaverPackage('consume-tear');
-tearPackage.add(`{A:ActingName} swallows the {I.name} whole.`);
-
 Consumable.register('crimson-tear',{
   name: 'Crimson Tear',
   description: `A small hardened droplet of condensed red mana. It feels warm in your hand and throbs softly with some internal heartbeat.`,
@@ -10,14 +6,10 @@ Consumable.register('crimson-tear',{
   rarity: Rarity.unusual,
 
   usableWhen: UsableWhen.anyTime,
-  stories: tearPackage,
   onUse: { storyInAlert:true },
   effects:[
     Effect.restoreMana(Mana.red, 5, 15)
   ],
-  messageForEntity: (id, results) => {
-    return (results.mana > 0) ? `{T:TargetName} regains ${results.mana} red mana.` : '';
-  },
 
   sources: [
     { group:'potions', rarity:Rarity.unusual },
@@ -33,14 +25,10 @@ Consumable.register('aureolin-tear',{
   rarity: Rarity.unusual,
 
   usableWhen: UsableWhen.anyTime,
-  stories: tearPackage,
   onUse: { storyInAlert:true },
   effects:[
     Effect.restoreMana(Mana.yellow, 5, 15)
   ],
-  messageForEntity: (id, results) => {
-    return (results.mana > 0) ? `{T:TargetName} regains ${results.mana} yellow mana.` : '';
-  },
 
   sources: [
     { group:'potions', rarity:Rarity.unusual },
@@ -56,14 +44,10 @@ Consumable.register('celadon-tear',{
   rarity: Rarity.unusual,
 
   usableWhen: UsableWhen.anyTime,
-  stories: tearPackage,
   onUse: { storyInAlert:true },
   effects:[
     Effect.restoreMana(Mana.green, 5, 15)
   ],
-  messageForEntity: (id, results) => {
-    return (results.mana > 0) ? `{T:TargetName} regains ${results.mana} green mana.` : '';
-  },
 
   sources: [
     { group:'potions', rarity:Rarity.unusual },
@@ -79,14 +63,10 @@ Consumable.register('cerulean-tear',{
   rarity: Rarity.unusual,
 
   usableWhen: UsableWhen.anyTime,
-  stories: tearPackage,
   onUse: { storyInAlert:true },
   effects:[
     Effect.restoreMana(Mana.blue, 5, 15)
   ],
-  messageForEntity: (id, results) => {
-    return (results.mana > 0) ? `{T:TargetName} regains ${results.mana} blue mana.` : '';
-  },
 
   sources: [
     { group:'potions', rarity:Rarity.unusual },
@@ -102,14 +82,10 @@ Consumable.register('ebony-tear',{
   rarity: Rarity.unusual,
 
   usableWhen: UsableWhen.anyTime,
-  stories: tearPackage,
   onUse: { storyInAlert:true },
   effects:[
     Effect.restoreMana(Mana.black, 5, 15)
   ],
-  messageForEntity: (id, results) => {
-    return (results.mana > 0) ? `{T:TargetName} regains ${results.mana} black mana.` : '';
-  },
 
   sources: [
     { group:'potions', rarity:Rarity.unusual },

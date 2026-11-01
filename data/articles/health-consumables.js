@@ -1,8 +1,3 @@
-
-const tripePackage = WeaverPackage('consume-tripe');
-tripePackage.add(`{A:ActingName} makes a disgusted face as {A:he} forces {A:him}self to eat the leathery, yet slimy...
-  "food". Despite the taste, the magic infused lichen does make {A:him} feel a bit better.`);
-
 Consumable.register('dungeon-tripe',{
   name: 'Dungeon Tripe',
   description: `A bright orange lichen commonly found growing in patches along amber seams in the dungeon. By feeding
@@ -13,23 +8,15 @@ Consumable.register('dungeon-tripe',{
   rarity: Rarity.common,
 
   usableWhen: UsableWhen.outOfCombat,
-  stories: tripePackage,
   onUse: { storyInAlert:true },
   effects: [
     Effect.restoreHealth(5,15),
   ],
-  messageForEntity: (id, results) => {
-    return (results.health > 0) ? `{T:TargetName} regains ${results.health} health.` : '';
-  },
 
   sources: [
     { group:'foods', rarity:Rarity.common },
   ],
 });
-
-const applePackage = WeaverPackage('consume-apple');
-applePackage.add(`{A:ActingName} bites into the {I.name} with a satisfying crunch. A comfortable warmth spreads though
-  {A:his} body as the magic infused fruit starts to heal {A:his} wounds.`);
 
 Consumable.register('rhysh-apple',{
   name: `Rhysh Apple`,
@@ -39,14 +26,10 @@ Consumable.register('rhysh-apple',{
   rarity: Rarity.common,
 
   usableWhen: UsableWhen.outOfCombat,
-  stories: applePackage,
   onUse: { storyInAlert:true },
   effects: [
     Effect.restoreHealth(15,25),
   ],
-  messageForEntity: (id, results) => {
-    return (results.health > 0) ? `{T:TargetName} regains ${results.health} health.` : '';
-  },
 
   sources: [
     { group:'foods', rarity:Rarity.common },

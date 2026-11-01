@@ -48,7 +48,7 @@ describe('UsageSystem', function() {
       expect(HealthComponent.lookup(greg).currentHealth).to.equal(70);
     });
 
-    it('shows the woven story in a success alert', function() {
+    it('shows the shared woven message in a success alert', function() {
       const greg = CharacterSupport.genericMale({ health:{ currentHealth:50 } });
 
       Inventory().addArticle('rhysh-apple', 1);
@@ -58,7 +58,7 @@ describe('UsageSystem', function() {
       expect(alerts[0].type).to.equal(LogType.success);
       expect(alerts[0].fadeTime).to.equal(3000);
       expect(alerts[0].message).to.include('Greg');
-      expect(alerts[0].message).to.include('bites into the Rhysh Apple with a satisfying crunch');
+      expect(alerts[0].message).to.include('uses the Rhysh Apple');
     });
 
     it('shows the onUse message at the onUse level for a consumable without stories', function() {
@@ -72,16 +72,25 @@ describe('UsageSystem', function() {
       expect(alerts[0].message).to.include('TODO: Drunk status effects.');
     });
 
-    it('appends the result message to the story', function() {
+    it('reports the health a consumable restored', function() {
       const greg = CharacterSupport.genericMale({ health:{ currentHealth:50 } });
       Random.stubBetween(20);
 
       Inventory().addArticle('rhysh-apple', 1);
       UsageSystem.useArticle(greg, 'rhysh-apple');
 
-      expect(alerts[0].message).to.include('heal his wounds.');
-      expect(alerts[0].message).to.include('regains 20 health.');
+      expect(alerts[0].message).to.include('uses the Rhysh Apple, regaining 20 health.');
       expect(alerts[0].message).to.not.include('[object Object]');
+    });
+
+    it('reports the colour of the mana a consumable restored', function() {
+      const greg = CharacterSupport.genericMale({ mana:{ red:{ current:0, max:20 } } });
+      Random.stubBetween(8);
+
+      Inventory().addArticle('crimson-tear', 1);
+      UsageSystem.useArticle(greg, 'crimson-tear');
+
+      expect(alerts[0].message).to.include('uses the Crimson Tear, regaining 8 red mana.');
     });
 
     it('shows only the onUse message when the consumable has no result message', function() {
@@ -92,6 +101,18 @@ describe('UsageSystem', function() {
 
       expect(alerts[0].message).to.include('TODO: Implement Increase Potency Effect');
       expect(alerts[0].message).to.not.include('[object Object]');
+    });
+  });
+
+  describe('applyAndDescribe()', function() {
+    it('applies the effects and returns the message unwoven', function() {
+      const greg = CharacterSupport.genericMale({ health:{ currentHealth:50 } });
+      Random.stubBetween(20);
+
+      const message = UsageSystem.applyAndDescribe(greg, Consumable.lookup('rhysh-apple'));
+
+      expect(HealthComponent.lookup(greg).currentHealth).to.equal(70);
+      expect(message).to.equal('{A:ActingName} uses the {I.name}, regaining 20 health.');
     });
   });
 

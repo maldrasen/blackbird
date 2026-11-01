@@ -34,37 +34,46 @@ global.UsageSystem = (function() {
 
     Inventory().removeArticle(code, 1);
 
+    const message = consumable.hasEffects() ? applyAndDescribe(id, consumable) : onUse.showAlert;
+
     GameInterface.showAlert({
-      message: compileMessage(consumable, context),
+      message: Weaver(context).weave(message),
       type: (onUse.level || LogType.success),
       fadeTime: 3000
     });
   }
 
-  function compileMessage(consumable, context) {
-    const story = consumable.hasStories() ? consumable.pickStory(context) : consumable.getOnUse().showAlert;
-    const resultMessage = consumable.messageForEntity(context.A, applyEffects(consumable, context.A));
-
-    return Weaver(context).weave(resultMessage ? `${story} ${resultMessage}` : story);
+  // Applies the consumable's effects to the entity and returns the shared message describing what they did. The
+  // message is left unwoven so that each caller can supply its own context. Out of battle it goes into an alert, and
+  // in battle the EffectSystem adds it to the round when a consumable has no story of its own.
+  function applyAndDescribe(id, consumable) {
+    return resultMessage(applyEffects(consumable, id));
   }
 
-  // The battle system adds the story and each entity's result message as separate lines. Out of battle the consumable
-  // is only ever applied to the character using it, so the results are keyed the same way, but the message is appended
-  // to the story.
+  // The consumable results will usually be shown in an alert, so they need to be short and to the point. Consumables
+  // with more complex effects will either need to start an episode or display an overlay. Most usable items will have
+  // a single effect with a standardized message. It's possible that some future consumables will have multiple
+  // effects, though I don't think we'll have any consumables without visible effects.
+  function resultMessage(results) {
+    if (results.length !== 1) {
+      throw `We're only handling consumables with one result for now.`;
+    }
+
+    const result = results[0];
+    switch (result.type) {
+      case 'add-mana': return `{A:ActingName} uses the {I.name}, regaining ${result.value} ${result.color} mana.`;
+      case 'add-health': return `{A:ActingName} uses the {I.name}, regaining ${result.value} health.`;
+      default: throw `Unknown result type: ${result.type}`;
+    }
+  }
+
   function applyEffects(consumable, id) {
-    const results = {};
-
-    (consumable.getEffects() || []).forEach(effect => {
-      const result = Effect.apply(id, effect);
-      if (result.type === 'add-health') { results.health = result.value; }
-      if (result.type === 'add-mana') { results.mana = result.value; }
-    });
-
-    return results;
+    return (consumable.getEffects() || []).map(effect => Effect.apply(id, effect));
   }
 
   return {
-    useArticle
-  }
+    useArticle,
+    applyAndDescribe,
+  };
 
 })();
