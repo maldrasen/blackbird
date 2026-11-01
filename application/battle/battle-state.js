@@ -53,12 +53,13 @@ global.BattleState = function(data) {
 
   // The articles the defeated monsters carried, which is to say an archer's quiver. Items wait in the loot inventory
   // for enlightenment, but articles are stacked into the battle's loot alongside whatever the loot generator rolls.
+  // Beasts are built without a quiver.
   function getDroppedArticles() {
     const dropped = {};
 
     getDefeatedMonsters().forEach(id => {
       const quiver = QuiverComponent.lookup(id);
-      if (quiver.quantity > 0) { dropped[quiver.ammunition] = (dropped[quiver.ammunition] || 0) + quiver.quantity; }
+      if (quiver && quiver.quantity > 0) { dropped[quiver.ammunition] = (dropped[quiver.ammunition] || 0) + quiver.quantity; }
     });
 
     return Object.entries(dropped).map(([articleCode, quantity]) => ({ articleCode, quantity }));

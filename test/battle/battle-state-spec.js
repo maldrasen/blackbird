@@ -82,6 +82,18 @@ describe("BattleState", function() {
 
       expect(state.getDroppedArticles()).to.deep.equal([]);
     });
+
+    it("drops nothing from a defeated beast, which has no quiver", function() {
+      const state = BattleSupport.startBattle({
+        formation:[[0,1,0]],
+        monsters:{ 1:{ code:'crawling-claw' } },
+      });
+      const dead = state.getActiveMonsters()[0];
+
+      state.setCondition(dead, BattleCondition.dead);
+
+      expect(state.getDroppedArticles()).to.deep.equal([]);
+    });
   });
 
   describe("cleanup()", function() {
