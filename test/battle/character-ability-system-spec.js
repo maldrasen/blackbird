@@ -52,6 +52,34 @@ describe("CharacterAbilitySystem", function() {
       expect(CharacterAbilitySystem.getCommands()).to.deep.equal([StandardAbility.pass]);
     });
 
+    // The player starts with an empty spellbook and empty mana pools, so both the spell and the mana to cast it are
+    // granted here. Ember costs 2 red mana.
+    it("offers cast spell once the character knows a spell they can pay for", function() {
+      startBattle();
+      const player = BattleSupport.player();
+
+      BattleSystem.specRound(player);
+      expect(CharacterAbilitySystem.getCommands()).to.not.include(StandardAbility.castSpell);
+
+      SpellbookComponent.setSpell(player, 'ember', 1);
+      expect(CharacterAbilitySystem.getCommands()).to.not.include(StandardAbility.castSpell);
+
+      BattleSupport.grantMana(Mana.red, 2);
+      expect(CharacterAbilitySystem.getCommands()).to.include(StandardAbility.castSpell);
+    });
+
+    it("withholds cast spell from a silenced character", function() {
+      startBattle();
+      const player = BattleSupport.player();
+
+      SpellbookComponent.setSpell(player, 'ember', 1);
+      BattleSupport.grantMana(Mana.red, 2);
+      BattleSystem.addStatus(player, 'silence', { duration:3000 });
+      BattleSystem.specRound(player);
+
+      expect(CharacterAbilitySystem.getCommands()).to.not.include(StandardAbility.castSpell);
+    });
+
     it("removes the negotiate command after a negotiation has been attempted", function() {
       const state = startBattle();
 

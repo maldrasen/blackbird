@@ -543,6 +543,7 @@ global.ResistResult = {
 global.StandardAbility = {
   attack: 'basic-attack',
   defend: 'basic-defend',
+  castSpell: 'cast-spell',
   changeEquipment: 'change-equipment',
   hide: 'hide',
   negotiate: 'negotiate',

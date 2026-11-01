@@ -36,6 +36,30 @@ describe("BattleCommand", function() {
     expect(BattleCommand.lookup(StandardAbility.useItem).getTargetingMode()).to.equal(null);
   });
 
+  it("builds an overlay command's ability from what the overlay chose, fresh each time", function() {
+    const command = BattleCommand.lookup(StandardAbility.castSpell);
+    const data = { spell:'ember', powerLevel:2 };
+
+    expect(command.hasOverlay()).to.equal(true);
+    expect(command.getAbility(data).getDetails()).to.deep.equal(data);
+    expect(command.getAbility(data)).to.not.equal(command.getAbility(data));
+    expect(command.getTargetingMode(data)).to.equal(TargetingMode.anyEnemy);
+    expect(command.getTargetingMode({ spell:'mending', powerLevel:1 })).to.equal(TargetingMode.anyAlly);
+  });
+
+  it("casts the chosen spell with the overlay's data and ends the round", function() {
+    const player = startRound();
+    const state = BattleSystem.getState();
+    BattleSupport.grantMana(Mana.red, 10);
+    BattleSystem.getRound().setTarget(state.getActiveMonsters()[0]);
+
+    BattleCommand.lookup(StandardAbility.castSpell).execute({ spell:'ember', powerLevel:2 });
+
+    expect(BattleSystem.getRound().getAbility().getName()).to.equal('Cast Ember');
+    expect(state.isCastingSpell(player)).to.equal(true);
+    expect(ManaSystem.getPool(player, Mana.red).current).to.equal(6);
+  });
+
   it("builds its ability and runs it", function() {
     const player = startRound();
 
