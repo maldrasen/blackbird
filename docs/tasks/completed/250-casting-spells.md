@@ -19,3 +19,14 @@ From this point the spell effects should be the same as a monster spell. The dif
 Like the skill progression, the spell's maximum power level has a chance of increasing each time the spell is cast. Critting when casting a spell increases the spell's power level, so it would make sense that that also triggers a permanent increase to the casting level. The power level is capped at 8, so a crit wouldn't increase it past that.
 
 > "We Love Casting Spells" - Shadow Money Wizard Gang
+
+---
+
+### Implementation notes
+The spell selection is a mode of the command panel rather than a separate overlay. The power level raise rolls only after a successful release, at whatever level the spell was cast: a crit always raises it, otherwise a d100 has to come in at or under (8 − level) × 2. Raises are shown on the enlighten screen beside the skill improvements. Healing and mana restoring effects weren't being applied in battle at all, so Mending now works, with an `ally` effect target and an `anyAlly` targeting mode that offers the party.
+
+Deferred:
+- Key bindings inside the spell selection. The C key opens it, after that it's mouse driven.
+- Cancelling targeting after Cast returns to the command list rather than the spell list.
+- Casting outside of battle, which belongs with the spellbook tab in [251-learning-spells.md](251-learning-spells.md).
+- The yellow, blue, and black stub spells have no mana cost or effects. They'd read as castable at any level if they ever reached a spellbook.

@@ -68,3 +68,4 @@
 - [Guard style](feedback_guard_style.md) — a single guard over a short body is a plain if, not an early return; presence checks use Validate.exists() (task 229)
 - [Specs don't pin data](feedback_specs_dont_pin_data.md) — never assert the contents of tunable data tables (depot maps, weights, drop tables); assert the mechanic and read expectations from the same record or constant (task 229)
 - [Zoom control (task 269)](project_zoom_control_task269.md) — ZoomControl element in dungeon left panel; wheel handler kept untouched by user choice (LinearMouse on Mac), synced via zoom(step) only
+- [Casting spells (task 250)](project_casting_spells_task250.md) — SHIPPED 2026-11-01: SpellPanel = command-panel spell-mode, mana paid at cast start for characters only, raise = crit or d100 <= (8-level)*2 after success, ally targeting + battle healing gap fixed, deferred panel key bindings
