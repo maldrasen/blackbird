@@ -16,7 +16,7 @@ Spell.register('mending', {
 
   stories: stories,
   messageForEntity: (id,results) => {
-    return `{T:TargetName} heals ${results.level} health?`;
+    return `{T:TargetName} recovers ${results.health} health.`;
   },
 
 });

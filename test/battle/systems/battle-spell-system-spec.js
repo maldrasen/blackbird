@@ -170,10 +170,10 @@ describe("BattleSpellSystem", function() {
       expect(CharacterSupport.getHealth(state.getEntityAtPosition('P',1,3))).to.equal(100);
     });
 
-    // Restoring health isn't applied during a battle yet, so these pin the ally targeting through the story, which
-    // names whoever the spell settled on.
-    it("aims an ally spell at the ally stored when the cast began", function() {
+    it("heals the ally stored when the cast began", function() {
       const state = BattleSupport.startBattle();
+      const party = getParty(state);
+      party.forEach(id => CharacterSupport.setHealth(id, 50));
       const target = BattleSupport.tank();
 
       Random.stubBetween(50, 1);
@@ -181,13 +181,16 @@ describe("BattleSpellSystem", function() {
       state.startCastingSpell({ code:'spec-salve', powerLevel:1, target, targetPosition:state.getPosition(target) });
       BattleSpellSystem.castSpell();
 
-      expect(BattleSystem.getRound().getMessages()[0].text).to.include(ActorComponent.lookup(target).name);
+      expect(CharacterSupport.getHealth(target)).to.equal(60);
+      party.filter(id => id !== target).forEach(id => expect(CharacterSupport.getHealth(id), id).to.equal(50));
     });
 
     // With the tank at P.0.3 down, the player beside them at P.0.2 is the closest standing ally, so the caster ends
-    // up aiming the spell at themself.
+    // up healing themself.
     it("redirects an ally spell to the closest standing party member when the target is down", function() {
       const state = BattleSupport.startBattle();
+      const party = getParty(state);
+      party.forEach(id => CharacterSupport.setHealth(id, 50));
       const target = BattleSupport.tank();
 
       Random.stubBetween(50, 1);
@@ -196,9 +199,9 @@ describe("BattleSpellSystem", function() {
       state.setCondition(target, BattleCondition.knockedOut);
       BattleSpellSystem.castSpell();
 
-      const text = BattleSystem.getRound().getMessages()[0].text;
-      expect(text).to.include(ActorComponent.lookup(BattleSupport.player()).name);
-      expect(text).to.not.include(ActorComponent.lookup(target).name);
+      expect(CharacterSupport.getHealth(BattleSupport.player())).to.equal(60);
+      expect(CharacterSupport.getHealth(BattleSupport.centerRogue())).to.equal(50);
+      expect(CharacterSupport.getHealth(BattleSupport.rogue())).to.equal(50);
     });
 
     it("throws when the acting entity is not casting a spell", function() {

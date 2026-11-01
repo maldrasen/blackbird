@@ -71,14 +71,31 @@ global.EffectSystem = (function() {
 
     source.getEffects(data.powerLevel).forEach(effect => {
       if (state.isDown(entity)) { return; }
-      if (effect.type === 'damage') { results.damage = applyDamage(entity, effect); }
-      if (effect.type === 'status-effect') { results[effect.code] = applyStatus(entity, effect); }
+      applyEffect(entity, effect, results);
     });
 
     const message = source.messageForEntity(entity, results);
     if (message) { round.addMessage({ text:message }, weaver); }
 
     BattleDamageSystem.addDownedMessage(entity);
+  }
+
+  // Each effect reports what it did under its own key, which is what a source's messageForEntity() reads. The
+  // restoring effects are applied the same way they are outside a battle.
+  function applyEffect(entity, effect, results) {
+    switch (effect.type) {
+      case 'damage':         return results.damage = applyDamage(entity, effect);
+      case 'status-effect':  return results[effect.code] = applyStatus(entity, effect);
+      case 'restore-health': return results.health = applyRestore(entity, effect);
+      case 'restore-mana':   return results.mana = applyRestore(entity, effect);
+      default: throw new Error(`The [${effect.type}] effect can't be applied during a battle.`);
+    }
+  }
+
+  function applyRestore(entity, effect) {
+    const { value } = Effect.apply(entity, effect);
+    BattleInterface.updateCombatantView(entity);
+    return value;
   }
 
   function applyDamage(entity, effect) {
