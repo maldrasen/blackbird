@@ -1,20 +1,5 @@
-# October 2026 Milestone
-
-Planned work for October, about 80 points, roughly half of the ~170 point pace of the last two releases. The rest of the month is left open for work discovered along the way, new ideas, and content.
-
-The focus is the dungeon crawler half of the game. Training depends on what the party brings back from the dungeon, so the dungeon needs to be playable first. Each month should strengthen the weakest link in the gameplay loop:
-
-**delve → recruit → train → delve**
-
-This month that's mostly the dungeon side: learning spells and abilities, people to talk to, a usable inventory, and working bows. Safe rooms and the training enlighten view are the seams that connect the loop back to training.
-
-## Items & Bows `27pt`
-- [x] [246] Party inventory overlay `5pt` — [246-party-inventory-overlay.md](246-party-inventory-overlay.md)
-- [x] [142] Item detail panel `8pt` — [142-item-detail-panel.md](142-item-detail-panel.md)
-- [x] [228] Effect based enchantments `3pt` — [228-effect-based-enchantments.md](228-effect-based-enchantments.md)
-- [x] [237] Equipment preferences `3pt` — [237-equipment-preferences.md](237-equipment-preferences.md)
-- [x] [014] Bows & arrows `5pt` — [014-bows-arrows.md](014-bows-arrows.md)
-- [x] [229] Implement ammunition `3pt` — [229-implment-ammunition.md](229-implment-ammunition.md)
+# November 2026 Milestone
+I didn't get as much done last month as I had planned, so most of what was in the last milestone is going to be rolling over into this one. I'm still focusing on the dungeon crawler half of the game, with the focus being on early game progression and the dungeon itself.
 
 ## Dungeon & Loop `13pt`
 - [ ] [240] Safe rooms `3pt` — [240-safe-rooms.md](240-safe-rooms.md)
@@ -29,7 +14,3 @@ This month that's mostly the dungeon side: learning spells and abilities, people
 - [ ] [253] Conversation component `8pt` — [253-conversation-component.md](253-conversation-component.md) Depends on 173 and 252.
 - [ ] [254] Return to episode after an encounter `3pt` — [254-return-to-episode-after-an-encounter.md](254-return-to-episode-after-an-encounter.md) Needed by the 208 episode chain and most person encounters.
 - [ ] [173] Compile episode pages to a graph `3pt` — [173-compile-episodes-to-graph.md](173-compile-episodes-to-graph.md) Worth doing before writing a batch of new episodes.
-
-## Deferred
-- [130] Accept death in game over event — depends on the legacy vs. traditional decision in 104.
-- [239] Dungeon light emitters — swapped out for 122. Could look nice, but it's an open investigation and lower priority.
